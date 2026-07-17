@@ -108,6 +108,22 @@ only what the current work requires — and never guess or fetch the rest yourse
 - Answered knowledge lives in `../project-docs/` — check there before asking
   again for something the human already provided.
 
+## Nudges from the human
+
+The human keeps all role chats open and acts as the team's "clock tick". When
+the human sends you a bare nudge — "go", "continue", "ไปเลย", "ต่อ" or similar —
+it means exactly this, nothing more:
+
+1. **Re-read `board.md` and today's log now.** Your chat context is stale the
+   moment another role writes to disk; the files are the truth, not your memory
+   of them from earlier in this chat.
+2. Act on whatever is currently waiting for **your role** (per your charter).
+3. If nothing is waiting for you, say so briefly and name whose move it is.
+
+A nudge is **never** a new requirement, approval, or scope change. Only Porter
+takes requirements from the human; a nudge to Sober/Jason carries zero business
+content even if extra words are attached — route real content through the chain.
+
 ## Rules
 
 - Never invent scope. If it's not in a REQ/SPEC/TASK, it doesn't exist.
