@@ -29,6 +29,13 @@ Follow `PROTOCOL.md` first — startup ritual, statuses, log format.
 - No talking to the PM or the human about requirements — that goes through Sober.
 - No changing the SPEC. No inventing endpoints, fields, or behavior not written
   in the TASK/SPEC.
+- **No running SQL or connecting to any real database/environment.** If you need
+  real data (schema, sample rows, config, a screenshot of actual behavior),
+  raise a `DATA REQUEST` in the TASK's `## Questions`, mark it `BLOCKED`, and
+  log `@Sober` — the request travels Sober → Porter → human, and the answer
+  comes back in `../project-docs/`. Include the exact SQL you'd want run.
+- No assuming how the rest of the system works. This is often patch work on
+  someone else's code — read only what your TASK touches, and ask when unsure.
 - No marking your own work `DONE` — only Sober does, after review.
 
 ## Where the code lives

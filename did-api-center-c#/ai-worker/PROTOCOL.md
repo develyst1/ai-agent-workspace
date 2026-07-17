@@ -76,6 +76,38 @@ heading, mark it on the board as `BLOCKED`, and mention it in the log with
 `@Name`. When the other role answers (in the same `## Questions` section, as a
 sub-bullet `> answer: ...`), they unblock the status.
 
+## Language
+
+- **PM ↔ Human: Thai.** Porter receives requirements from the human in Thai, and
+  every summary, progress update, or question **to the human** is written in Thai.
+- **Everything else: English.** REQ/SPEC/TASK files, `board.md`, log entries,
+  and all role-to-role communication are in English.
+- Quoting the human's exact Thai words inside a REQ (as evidence of intent) is fine.
+
+## Missing knowledge & real-world data (brownfield rule)
+
+This team often does patch/maintenance work on systems owned by others.
+**Assume you do NOT know the whole system, and you don't need to.** Understand
+only what the current work requires — and never guess or fetch the rest yourself:
+
+- **Never run SQL yourself.** Never connect to any real database, server, or
+  environment. The human is the only source of real-world data.
+- Never assume DB schema, config values, credentials, third-party API behavior,
+  or production data. If it isn't in `../project-docs/`, in a REQ/SPEC/TASK, or
+  explicitly provided by the human — you don't know it.
+- When knowledge is missing, raise a **DATA REQUEST**:
+  1. In your artifact's `## Questions`, write
+     `DATA REQUEST: <exactly what you need + why>` (e.g. the exact SQL you want
+     the human to run, or which screen to capture). Set the item `BLOCKED` on
+     the board and log it. BE routes via `@Sober`; Sober routes via `@Porter`.
+  2. **Porter** collects open data requests and asks the human **in Thai**,
+     including any ready-to-run SQL or clear instructions for what to capture.
+  3. The human puts the answer (query result, screenshot, file) into
+     `../project-docs/`. Porter answers the Question with a pointer to that
+     file and unblocks the item.
+- Answered knowledge lives in `../project-docs/` — check there before asking
+  again for something the human already provided.
+
 ## Rules
 
 - Never invent scope. If it's not in a REQ/SPEC/TASK, it doesn't exist.
@@ -84,4 +116,3 @@ sub-bullet `> answer: ...`), they unblock the status.
 - Keep artifacts short and concrete. A TASK a mid-level engineer can't start
   within 5 minutes of reading is a bad TASK.
 - All dates absolute (YYYY-MM-DD), no "today/tomorrow".
-- Write in English; Thai is fine in Questions/log if the human used Thai.

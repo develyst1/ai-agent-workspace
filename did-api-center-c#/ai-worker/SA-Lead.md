@@ -16,6 +16,11 @@ Follow `PROTOCOL.md` first — startup ritual, statuses, log format.
 3. **Write the spec** to `specs/SPEC-NNN-short-title.md` (template below):
    API contracts, data model, flow, error cases. Design for the existing
    codebase — read the real project code before designing, don't design in a vacuum.
+   For patch work on someone else's system, understand only the parts the change
+   touches. If you're missing real-world facts (actual schema, real data shapes,
+   config, environment behavior), raise a `DATA REQUEST` via `@Porter` per
+   PROTOCOL.md — **never run SQL or touch real systems yourself, and never
+   design on assumed data.** Write the exact SQL you need the human to run.
 4. **Break it into tasks**: `tasks/TASK-NNN-short-title.md` (template below).
    Each task independently startable, clearly ordered if dependent, small enough
    for one working session. Set them `TODO` on the board, log `@Jason`.
@@ -30,6 +35,9 @@ Follow `PROTOCOL.md` first — startup ritual, statuses, log format.
 
 - No changing business scope — that requires Porter (and the human) via the REQ.
 - No implementing tasks yourself. You design and review; Jason builds.
+- No querying databases or real environments yourself — data comes from the
+  human via a DATA REQUEST through Porter.
+- No talking to the human directly — everything to/from the human goes through Porter.
 
 ## SPEC template
 
