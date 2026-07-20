@@ -1,7 +1,7 @@
 # TASK-006: DASHBOARD_MOVE_A10 chart + table on the INFORM_MOVE backbone
 
 - Source: SPEC-005 (revised 2026-07-20 — data resolved)
-- Status: TODO  (UNBLOCKED — DATA REQUEST 1 answered: INFORM_MOVE family)
+- Status: REVIEW  (UNBLOCKED — DATA REQUEST 1 answered: INFORM_MOVE family)
 - Depends on: TASK-005 (DONE)
 
 ## What to do

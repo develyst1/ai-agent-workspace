@@ -15,6 +15,10 @@ auto-disable" (UC-016), realised through the backoffice's existing **stock**
 mechanic, under the confirmed **Path A (item-centric P&L)** direction. It does NOT
 introduce a full payroll engine or the student hour-wallet.
 
+It also covers **FT/PT salary as a per-teacher recurring monthly fixed cost** (set
+once, auto-posts to P&L each month — see #10), so all teacher cost lands in the P&L
+without monthly hand-keying.
+
 ## Requirement
 The system must:
 
@@ -49,10 +53,20 @@ The system must:
 9. Admin must be able to **lift the cap** so a capped teacher can keep taking work —
    by **either topping up the budget (add stock) or allowing it to go
    negative / override** (either mechanism is acceptable to the stakeholder).
-10. **Full-time / part-time pay is a fixed monthly cost only** — one `FIXED_COST`
-    item keyed manually per month. FT/PT are **never** part of any per-booking
-    calculation, cap, or day-end tally. The per-booking money mechanic (#4) is
-    **freelance-only**.
+10. **Full-time / part-time pay is a per-teacher RECURRING monthly fixed cost, kept
+    as effective-dated history.** Admin sets each FT/PT teacher's monthly salary
+    **once** (per person, e.g. เอก 20,000); the system **auto-posts it as a
+    `FIXED_COST` expense to the P&L every month automatically** — **no monthly
+    re-keying**.
+11. **A salary change must NOT alter past months** (correctness of historical P&L).
+    A change is **effective-dated**: admin enters the new amount and the **month it
+    takes effect from**; months before that stay **frozen at the old amount**, and
+    the new amount auto-posts from the effective month onward. The system keeps the
+    **salary history** per teacher (amount + effective-from → effective-to), so any
+    past month's P&L always reflects the salary that was actually in effect then.
+    Joining/leaving is the same idea (effective-from / effective-to a month).
+12. FT/PT are **never** part of any per-booking calculation, cap, or day-end tally —
+    the per-booking money mechanic (#4) is **freelance-only**.
 
 ## Acceptance Criteria
 - [ ] Admin can set and edit a per-freelance **monthly budget** and **rate**.
@@ -61,6 +75,12 @@ The system must:
       (booked − leave); it does **not** compute expense or touch freelance budgets.
 - [ ] A freelance's budget is **drawn down at booking** (not day-end); the drawn
       amount is the freelance **expense** in the P&L.
+- [ ] Admin sets each FT/PT teacher's monthly salary **once**; it **auto-posts to the
+      P&L as a fixed-cost expense every month** with no re-keying, until admin edits it.
+- [ ] A salary change is **effective-dated**: months before the effective month keep
+      the **old** amount; the new amount applies from the effective month onward.
+      Re-opening a past month's P&L shows the salary that was in effect then (not the
+      latest). Salary history (amount + from/to month) is viewable per teacher.
 - [ ] A freelance whose remaining budget is 0 **does not appear** on the frontoffice
       booking screen.
 - [ ] The teacher-management screen **flags capped freelancers**.
