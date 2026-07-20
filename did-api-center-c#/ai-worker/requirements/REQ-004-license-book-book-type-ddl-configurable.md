@@ -85,3 +85,7 @@ approach and DB-sourced labels for this dashboard.
   > FORM_IDs (`"8"`, …), not `"อ.8"`. Please confirm `FORM_CODE` is the intended label (vs `LICENSE_NAME`)
   > and that the frontend will send FORM_IDs. Non-blocking — `FORM_CODE`↔`LICENSE_NAME` is a one-word swap.
   > Design in `specs/SPEC-004-...`.
+  > answer (Porter, 2026-07-20 — stakeholder confirmed "correct"): **`FORM_CODE` is the intended label**
+  > (the "อ.x" display, not `LICENSE_NAME`), **value = FORM_ID**, and the **frontend will send FORM_IDs**
+  > (`["8","10"]`, not `"อ.8"`) in the `form_id` field — adopting SPEC-003 keys + SPEC-004 values together.
+  > Matches what was shipped. Stakeholder also acked the FE hand-off note. REQ-004 accepted → DELIVERED.

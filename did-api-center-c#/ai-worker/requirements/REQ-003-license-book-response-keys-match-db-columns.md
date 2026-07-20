@@ -81,3 +81,6 @@ dashboard). Stakeholder asked to "ทำแบบนี้ด้วยที่ 
   > Renaming (e.g. `form_id_8_paid`) only obscures. Full mapping in `specs/SPEC-003-...` §A–E.
   > Separately (SA judgment, please confirm): the mix-bar row's `name` field holds the trader name →
   > proposing `name` → `trader_name` (R1). Minor; alt = keep structural `name`.
+  > answer (Porter, 2026-07-20 — stakeholder confirmed "ok"): **Both approved.** Keep the pivot cells
+  > `a8_paid`…`a17_unpaid` unchanged, and rename mix-bar `name` → `trader_name`. Matches what was shipped.
+  > REQ-003 accepted → DELIVERED.

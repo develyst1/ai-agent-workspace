@@ -14,8 +14,8 @@
 |----|-------|----------|--------|--------------------|
 | REQ-001 | DASHBOARD_LICENSE_MOVE — align response keys to DB column names | MEDIUM | DELIVERED | — (done) |
 | REQ-002 | DASHBOARD_LICENSE_MOVE — weapon-type dropdown codes configurable in appsettings | MEDIUM | DELIVERED | — (done) |
-| REQ-003 | DASHBOARD_LICENSE_BOOK — align response keys to DB column names | MEDIUM | DELIVERED | — (done; 1 non-blocking confirm w/ stakeholder) |
-| REQ-004 | DASHBOARD_LICENSE_BOOK — book-type dropdown configurable in appsettings (DB labels) | MEDIUM | DELIVERED | — (done; 1 non-blocking confirm w/ stakeholder) |
+| REQ-003 | DASHBOARD_LICENSE_BOOK — align response keys to DB column names | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
+| REQ-004 | DASHBOARD_LICENSE_BOOK — book-type dropdown configurable in appsettings (DB labels) | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
 
 ## Tasks
 
@@ -30,5 +30,10 @@
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| REQ-003 Q1/Q2 | Porter → stakeholder | Confirm: keep pivot `a8_paid…` as-is; mix-bar `name`→`trader_name`. Non-blocking. |
-| REQ-004 Q2 | Porter → stakeholder | Confirm label=`FORM_CODE` (vs `LICENSE_NAME`), value=FORM_ID, frontend sends FORM_IDs. Non-blocking. |
+| _(none — all confirmations resolved 2026-07-20)_ | — | REQ-003/004 confirmed by stakeholder; FE hand-off note acked. |
+
+## Resolved confirmations (2026-07-20)
+
+- REQ-003: stakeholder OK'd keeping pivot `a8_paid…a17_unpaid` as-is + `name`→`trader_name`.
+- REQ-004: stakeholder confirmed label=`FORM_CODE`, value=FORM_ID, frontend sends FORM_IDs.
+- FE hand-off (acked): frontend sends `form_id` with FORM_IDs (`["8","10"]`, not `"อ.8"`) + adopts new snake_case keys; REQ-003+004 ship together.
