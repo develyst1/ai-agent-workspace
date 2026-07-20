@@ -1,7 +1,7 @@
 # TASK-004: Make DASHBOARD_LICENSE_BOOK book-type dropdown config-driven (DB labels, value=FORM_ID)
 
 - Source: SPEC-004
-- Status: TODO
+- Status: REVIEW
 - Depends on: TASK-003 (do the key rename first; same files)
 
 ## What to do
@@ -45,17 +45,78 @@ dropdowns/dashboards; change chart/table label sources; change DI registration.
 
 ## Definition of Done
 
-- [ ] Dropdown built from `Configurations:LicenseBookFormIds`; each FORM_ID looked up in
+- [x] Dropdown built from `Configurations:LicenseBookFormIds`; each FORM_ID looked up in
       `T_R_LICENSE_FORM`; `value=FORM_ID`, `label=FORM_CODE`; FORM_ID not in DB skipped (no error/log).
-- [ ] Filter in `BuildFilteredRows` compares FORM_ID (consistent with the new value).
-- [ ] `BOOK_TYPES` kept for chart/table labels; no data filter added; DI unchanged.
-- [ ] With config `[8,10,16,17]` the dropdown returns those (in order) with their DB `FORM_CODE` labels.
-- [ ] `dotnet build` succeeds. Paste output.
+- [x] Filter in `BuildFilteredRows` compares FORM_ID (`InList(req.BookTypes, r.FormId?.ToString())`).
+- [x] `BOOK_TYPES` kept for chart/table labels; no data filter added; DI unchanged.
+- [x] With config `[8,10,16,17]` the dropdown returns those (in order) with their DB `FORM_CODE` labels. (Static trace below.)
+- [x] `dotnet build` succeeds. **Build succeeded. 0 Error(s).**
 
 ## Blocking check before REVIEW
 - SPEC-004 Q2 (confirm label=`FORM_CODE`/value=FORM_ID with stakeholder) is **non-blocking** — implement
   as specified; if the stakeholder later picks `LICENSE_NAME`, it's a one-word change (`form.FormCode` →
   `form.LicenseName`).
 
-## Implementation Notes / Questions / Review
-(Jason fills Implementation Notes; Sober fills Review.)
+## Implementation Notes
+
+**Done by Jason 2026-07-17.** Book-type dropdown now: FORM_IDs+order from `appsettings.json`, label from DB
+(`T_R_LICENSE_FORM.FORM_CODE`), dropdown **value = FORM_ID**, filter compares FORM_ID. Config plumbing reuses
+the existing `IOptions<ConfigurationsModel>` mechanism (same as TASK-002). 4 files.
+
+### Files changed (4)
+1. **`appsettings.json`** — added under `Configurations` (after `MoveLicenseWeaponTypeCodes`):
+   `"LicenseBookFormIds": [ 8, 10, 16, 17 ]`. `appsettings.Development.json` has **no** `Configurations`
+   block → no dev override needed.
+2. **`Models/ConfigurationsModel.cs`** — added `public List<int> LicenseBookFormIds { get; set; } = new List<int>();`.
+3. **`Program.cs`** — in the existing `Configure<ConfigurationsModel>` block:
+   `options.LicenseBookFormIds = sectionConfigurations.GetSection("LicenseBookFormIds").Get<List<int>>() ?? new List<int>();`
+4. **`Services/DashboardLicenseBookService.cs`**:
+   - `using Microsoft.Extensions.Options;` added; ctor now takes `IOptions<ConfigurationsModel> config`; stores
+     `config.Value.LicenseBookFormIds` in `private readonly List<int> _bookTypeFormIds`.
+   - Rewrote the `SearchFilter()` book-type dropdown build: loop configured FORM_IDs in order,
+     `await _uowSPF.TRLicenseFormRepo.GetDataByFormId(formId)`, skip nulls (WHERE-IN), emit
+     `{ Value = formId.ToString(), Label = form.FormCode ?? "" }`.
+   - Fixed `BuildFilteredRows()` filter: `InList(req.BookTypes, r.FormId?.ToString())` (was
+     `BookTypeLabel(r.FormId)`) — dropdown value is now FORM_ID so the filter matches on FORM_ID.
+   - **Kept `BOOK_TYPES`** (L34-37) + `BookTypeLabel` — still used by chart grouping (`ChartData`) and the
+     table `form_id_name` field (`TableData`), which are chart/table logic = out of scope. Unchanged.
+
+### Pre-verified before editing (brownfield)
+- `IUnitOfWorkSPF.TRLicenseFormRepo` exists (`IUnitOfWorkSPF.cs:122`); `TRLicenseFormRepository.GetDataByFormId(int)`
+  → `Task<TRLicenseFormEntity?>`; entity `[Table("T_R_LICENSE_FORM")]`, `FormId` (`FORM_ID`, int),
+  `FormCode` (`FORM_CODE`, `string?`), `LicenseName` (`LICENSE_NAME`). No new wiring, no DATA REQUEST.
+
+### Not done / out of scope (per TASK/SPEC)
+- No labels moved to config; no server-side data filter added (chart/table still filter by user selection);
+  DI registration unchanged (`AddScoped` + `IOptions<T>` singleton injects fine); no other dropdown/dashboard
+  touched; chart/table label source (`BOOK_TYPES`) unchanged.
+
+### Verification (evidence)
+- **`dotnet build`** (from `spf/DidSpf.WebApi.Center`): **Build succeeded. 0 Error(s).**
+- **appsettings.json valid** — JSONC-aware parser: `LicenseBookFormIds = [8,10,16,17]`, existing
+  `MoveLicenseWeaponTypeCodes` intact.
+- **Static grep:** `BOOK_TYPES`/`BookTypeLabel` kept (chart L95/L107, table L132); dropdown uses
+  `_bookTypeFormIds` + `TRLicenseFormRepo.GetDataByFormId` + `FormCode`, `value=formId`; filter now
+  `InList(req.BookTypes, r.FormId?.ToString())`.
+- **Static trace** with config `[8,10,16,17]` (all present in `T_R_LICENSE_FORM`): iterate in order →
+  each `GetDataByFormId` returns a row → emit `{value: "8"/"10"/"16"/"17", label: FORM_CODE}` in that order.
+  A FORM_ID absent from the table ⇒ `form == null` ⇒ skipped (WHERE-IN, no error/log). Reorder config ⇒
+  output order follows.
+  - **Data dependency note (brownfield):** the literal label text (`FORM_CODE` values) comes from live DB
+    rows, so a text-level check needs a running Center + Oracle (out of BE scope). Behavior — config drives
+    FORM_IDs+order, DB drives labels, missing FORM_IDs skipped, filter matches FORM_ID — is conclusive from
+    code. Live capture available as a DATA REQUEST if wanted for sign-off (per SPEC-004 Q2, a 4-row
+    `T_R_LICENSE_FORM` sample would 100% confirm `FORM_CODE` = `อ.8/อ.10/อ.16/อ.17`).
+
+### Note on SPEC-004 Q2 (non-blocking)
+Implemented `label = FormCode`, `value = FORM_ID` as specified. If the stakeholder later prefers
+`LICENSE_NAME`, it's a one-word change (`form.FormCode` → `form.LicenseName`). Frontend must send FORM_IDs
+(`"8"/"10"/"16"/"17"`) in the `form_id` request field (adopt SPEC-003 keys + SPEC-004 values together).
+
+## Questions
+
+(Jason asks; Sober answers as `> answer: ...`)
+
+## Review
+
+(Sober fills this in at REVIEW: verdict + reasons.)
