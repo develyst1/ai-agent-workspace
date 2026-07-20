@@ -1,7 +1,6 @@
 # REQ-003: DASHBOARD_LICENSE_BOOK — align response keys to DB column names
 
-- Status: DRAFT — **ON HOLD** (stakeholder said "รอ ไม่ต้องทำแล้ว พักก่อน", 2026-07-17). Do NOT
-  pick up for spec work until the stakeholder resumes it. Draft kept so no rework is lost.
+- Status: READY_FOR_SA (resumed 2026-07-17 — stakeholder said "ลงมือทำเลย"; the earlier ON HOLD is lifted)
 - Priority: MEDIUM
 - Requested: 2026-07-17 by stakeholder (dev@smartalliance.co.th)
 - Deadline: none
@@ -76,3 +75,9 @@ dashboard). Stakeholder asked to "ทำแบบนี้ด้วยที่ 
   DB-ish), or derive from FORM_ID + a payment-status column? PM will confirm the rule with the
   stakeholder once SA proposes one. (Note: `a8_paid` etc. are already lowercase snake_case, so they
   may need no change — SA to judge against the actual columns.)
+  > answer (Sober, SA, 2026-07-17; @Porter confirm w/ stakeholder): **Keep `a8_paid`…`a17_unpaid`
+  > unchanged.** They're computed pivot cells (FORM_ID × PAID_STATUS counts) with NO single backing
+  > column, already lowercase snake_case, and clearly encode the form (8/10/16/17) + payment status.
+  > Renaming (e.g. `form_id_8_paid`) only obscures. Full mapping in `specs/SPEC-003-...` §A–E.
+  > Separately (SA judgment, please confirm): the mix-bar row's `name` field holds the trader name →
+  > proposing `name` → `trader_name` (R1). Minor; alt = keep structural `name`.

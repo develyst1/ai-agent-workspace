@@ -70,3 +70,4 @@ then edit the team names in the role files if you want different personas.
 | Project | Description | Team |
 |---------|-------------|------|
 | `did-api-center-c#` | DID API Center (C#) | Porter (PM), Sober (SA Lead), Jason (BE) |
+| `smart-scheduler` | Scheduling + back-office ERP for a sports activity center (monorepo, 4 repos) | Porter (PM), Sober (SA Lead), Jason (BE), Fern (FE) |

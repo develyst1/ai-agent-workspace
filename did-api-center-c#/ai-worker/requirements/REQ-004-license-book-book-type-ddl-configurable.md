@@ -1,8 +1,6 @@
 # REQ-004: DASHBOARD_LICENSE_BOOK — make book-type dropdown configurable in appsettings (DB labels)
 
-- Status: DRAFT — **ON HOLD** (stakeholder said "รอ ไม่ต้องทำแล้ว พักก่อน", 2026-07-17). Do NOT
-  pick up for spec work until the stakeholder resumes it. Draft kept so no rework is lost.
-  Note: Q1 (which FORM_IDs to show initially) is still unanswered — ask the stakeholder on resume.
+- Status: READY_FOR_SA (resumed 2026-07-17 — stakeholder said "ลงมือทำเลย"; the earlier ON HOLD is lifted)
 - Priority: MEDIUM
 - Requested: 2026-07-17 by stakeholder (dev@smartalliance.co.th)
 - Deadline: none
@@ -22,8 +20,8 @@ approach and DB-sourced labels for this dashboard.
 
 1. The options of the book-type dropdown (`book_type_ddl`) MUST be driven by a **configurable list
    of FORM_IDs in `appsettings.json`** (codes only), instead of the hardcoded `BOOK_TYPES` array.
-2. Only the configured FORM_IDs appear, **in configured order**. (Stakeholder to confirm the initial
-   set — see Questions; today the code shows 8, 10, 16, 17.)
+2. Only the configured FORM_IDs appear, **in configured order**. Initial set = **8, 10, 16, 17**
+   (keep all four; stakeholder did not ask to trim — see Q1).
 3. The **label comes from the DATABASE**, looked up by FORM_ID — WHERE-IN semantics (like REQ-002):
    a configured FORM_ID that exists in the DB shows with its DB name; one absent from the DB does not
    appear (no error, no log).
@@ -67,6 +65,23 @@ approach and DB-sourced labels for this dashboard.
   code shows all four (8, 10, 16, 17). REQ-002 trimmed move-license to a subset (PTG01-03) — does the
   stakeholder want to trim License Book too, or keep all four for now (config just makes it changeable
   later)? PM to confirm.
+  > answer (Porter, 2026-07-17): stakeholder said "ลงมือทำเลย" without specifying a trim, so
+  > **default = keep all four: `8, 10, 16, 17`, in that order** (preserves current behaviour; config
+  > makes it changeable later). Initial `appsettings.json` value = these four FORM_IDs. PM will adjust
+  > if the stakeholder later asks to trim — not a blocker for SA/BE.
 - Q2 (raised by PM for SA): Confirm the DB label source for FORM_ID → name (candidate
   `TRLicenseFormRepo` / `T_R_LICENSE_FORM`) and the `value` decision above. Raise a DATA REQUEST if the
   form-name column isn't discoverable from code.
+  > answer (Sober, SA, 2026-07-17; @Porter confirm w/ stakeholder): **No DATA REQUEST needed.**
+  > `TRLicenseFormRepo.GetDataByFormId(int)` over `T_R_LICENSE_FORM` is already wired
+  > (`IUnitOfWorkSPF.TRLicenseFormRepo`). The entity has two candidate label columns; the in-repo data
+  > dictionary (`_docs/db-schema/DATADIC.md`) settles it:
+  > - `FORM_CODE` = "รหัสแบบฟอร์ม (อ.2, อ.2-1)" → the **"อ.x" format** = matches the current hardcoded
+  >   `"อ.8/อ.10/อ.16/อ.17"` display.
+  > - `LICENSE_NAME` = long "ชื่อ" (100 chars).
+  > **Recommend label = `FORM_CODE`** (preserves current display, DB-sourced). **Recommend value = FORM_ID**
+  > (decouples the filter from display text; the filter is updated to compare FORM_ID — allowed by this
+  > REQ's Constraint). **Frontend impact:** after SPEC-003+004, the `form_id` request field carries
+  > FORM_IDs (`"8"`, …), not `"อ.8"`. Please confirm `FORM_CODE` is the intended label (vs `LICENSE_NAME`)
+  > and that the frontend will send FORM_IDs. Non-blocking — `FORM_CODE`↔`LICENSE_NAME` is a one-word swap.
+  > Design in `specs/SPEC-004-...`.
