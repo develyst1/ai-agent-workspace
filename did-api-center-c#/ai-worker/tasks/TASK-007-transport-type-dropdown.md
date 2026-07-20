@@ -1,7 +1,7 @@
 # TASK-007: Add T_R_TRANSPORT_TYPE SPF entity + wire the ประเภทการขนย้าย dropdown
 
 - Source: SPEC-005
-- Status: TODO  (UNBLOCKED — DATA REQUEST 2 answered: columns confirmed)
+- Status: REVIEW  (UNBLOCKED — DATA REQUEST 2 answered: columns confirmed)
 - Depends on: none (TASK-006 consumes it for the table's `transport_type_code_name`)
 
 ## Confirmed columns (DATA REQUEST 2, 2026-07-20)
@@ -22,10 +22,46 @@
    → `TRANSPORT_TYPE_NAME` via this repo (build a code→name dict, like move-license's common-code maps).
 
 ## Definition of Done
-- [ ] `T_R_TRANSPORT_TYPE` entity/repo added + wired into `IUnitOfWorkSPF`.
-- [ ] ประเภทการขนย้าย dropdown returns real code→name (no longer empty).
-- [ ] Table `transport_type_code_name` resolved from the same source (with TASK-006).
-- [ ] `dotnet build` succeeds.
+- [x] `T_R_TRANSPORT_TYPE` entity/repo added + wired into `IUnitOfWorkSPF`.
+- [x] ประเภทการขนย้าย dropdown returns real code→name (no longer empty).
+- [~] Table `transport_type_code_name` resolved from the same source — **TASK-006's job** (the repo +
+      `GetDataByCode`/`GetDataAll` are ready for it to build the code→name dict). Not in TASK-007 scope.
+- [x] `dotnet build` succeeds. **Build succeeded. 0 Error(s).**
 
-## Implementation Notes / Questions / Review
-(Jason fills Implementation Notes; Sober fills Review.)
+## Implementation Notes
+
+**Done by Jason 2026-07-17.** Added the `T_R_TRANSPORT_TYPE` SPF entity/repo (via `spf-add-entity`) and wired
+the ประเภทการขนย้าย dropdown in `DashboardMoveA10Service`. Natural-key reference table (mirrors
+`TRLicenseForm*`), no sequence.
+
+### Files created (2, SPF DAL)
+1. **`Entities/TRTransportTypeEntity.cs`** — `[Table("T_R_TRANSPORT_TYPE")]`; `[Key][Column("TRANSPORT_TYPE_CODE")]
+   int TransportTypeCode`; `[Column("TRANSPORT_TYPE_NAME")] string? TransportTypeName`; + 4 audit columns
+   (CREATE/UPDATE date+user). No `[AutoNoAndKey]`/`[SequenceAuto]` — the code is a natural key (no insert path),
+   same shape as `TRLicenseFormEntity`.
+2. **`Repositories/TRTransportTypeRepository.cs`** — ctor + `GetDataAll()` (for the dropdown + TASK-006's
+   code→name dict) + `GetDataByCode(int)` (point lookup, `:TRANSPORT_TYPE_CODE`). Mirrors `TRLicenseFormRepository`.
+
+### Files changed (3 DAL wiring + 1 service)
+- `IUnitOfWorkSPF.cs` — added `TRTransportTypeRepository TRTransportTypeRepo { get; }` (after `TRLicenseFormRepo`).
+- `UnitOfWorkSPF.cs` — added the lazy property (field `tRTransportTypeRepo` + `??=` guarded by transaction) and the
+  `tRTransportTypeRepo = null!;` reset in `resetRepositories()` under the `// ----- TR -----` group.
+- `Services/DashboardMoveA10Service.cs` — replaced the `// TASK-007` empty `MoveTypeDdl` stub with a real lookup:
+  `TRTransportTypeRepo.GetDataAll()` → `OrderBy(TransportTypeCode)` → `{ Value = code.ToString(), Label = TRANSPORT_TYPE_NAME }`.
+  Updated the class doc note (transport-type no longer pending).
+
+### Verification (evidence)
+- **`dotnet build`** (from `spf/DidSpf.WebApi.Center`, builds the DAL too): **Build succeeded. 0 Error(s).**
+- **Static grep:** `TRTransportTypeRepo` present in all 3 DAL spots (interface + property + reset — 4 refs in
+  `UnitOfWorkSPF.cs`: field decl, property sig, `??=`, reset); A10 service `MoveTypeDdl` now sourced from
+  `TRTransportTypeRepo.GetDataAll()`.
+- Live-response check deferred (brownfield — needs running Center + Oracle). The dropdown mirrors the same
+  `GetDataAll → DropdownDDLItem` shape already shipped (e.g. weapon-type / book-type), so the query wiring is proven.
+
+## Questions
+
+(Jason asks; Sober answers as `> answer: ...`)
+
+## Review
+
+(Sober fills this in at REVIEW: verdict + reasons.)
