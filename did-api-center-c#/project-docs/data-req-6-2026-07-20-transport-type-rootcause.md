@@ -99,3 +99,27 @@ The captured codes now resolve: `81/2569`→0 = "ขนย้ายให้ห�
 4. Buyer-group code `0` label (foreign buyer) still a minor open item.
 
 **No more stakeholder data needed. Sober wires it → Jason implements → re-run the same capture → close REQ-005.**
+
+---
+
+## FINAL ACCEPTANCE (Porter, 2026-07-20) — REQ-005 PASSED → DELIVERED
+Re-run capture after the re-source. **All 4 checks pass:**
+1. Dedup ✅ (6 rows; `80/2569 seq 3` once).
+2. `expiry_date` ✅ (all rows).
+3. Buyer-group chart ✅ ("ทหาร" 30330 + "ไม่ระบุ" 800).
+4. **`transport_type_code_name` ✅ NOW POPULATED** — all rows = "ขนย้ายให้หน่วยงานตามมาตรา 7" (MoveRequestType
+   code 0) via `L.REQUEST_ID→T_T_REQUEST_MOVE`→`T_S_COMMON_CODE`. The blank is gone.
+
+**Naming-trap resolved by data:** col5 `move_request_type_name` (ประเภทการขออนุญาต) varies 0/1
+("ขาย/ขนย้ายนอกหน่วยงาน" / "หน่วยงานตามมาตรา 7"); col6 `transport_type_code_name` (ประเภทการขนย้าย) = code 0.
+They render **distinct** → confirmed different fields, not conflated.
+
+**REQ-005 → DELIVERED.** All 5 REQs on this project delivered.
+
+### Known minor items (non-blocking, documented — not defects in scope)
+- Buyer-group code `0` (foreign buyer "…Sdn Bhd", row 6) has no label in the 1/2/3/9 map → shows blank /
+  "ไม่ระบุ". Stakeholder to say if `0` needs a label (e.g. ต่างประเทศ/อื่นๆ); one-line map add if so.
+- Row 2: same unit as rows 1/3–5 but that buyer-authority record has no `AUTHORITY_GROUP_NO` → "ไม่ระบุ".
+  Real source data, not a code bug.
+- Transport value is constant (code 0) across both captured licenses — plausible (1 request-type per license);
+  stakeholder can eyeball vs reality. Non-blocking.

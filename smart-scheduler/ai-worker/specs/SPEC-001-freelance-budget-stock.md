@@ -1,6 +1,6 @@
 # SPEC-001: Freelance monthly budget-stock — booking-time cap & expense
 - Source: REQ-001 (rules #1–#9, #12)
-- Status: ACTIVE
+- Status: DONE (all tasks 001/002/003/004/007/008/009/010 DONE — 2026-07-20)
 - Re-baselined 2026-07-20 after คุณฟีน's timing correction (booking-time, not day-end).
 - Sibling: SPEC-002 (FT/PT recurring fixed-cost salary) — same REQ.
 
@@ -112,6 +112,30 @@ booking path passes `allowNegative:true` for that teacher).
 top-ups don't carry. (Triggered by the shared month-start job — see SPEC-002 /
 TASK-005.)
 
+## Revenue recognition (REQ #5 — Porter/คุณฟีน confirmed 2026-07-20)
+
+Revenue timing is **per booking type**, chosen so nothing double-counts:
+
+| Booking type | Revenue recognized | Mechanism |
+|--------------|--------------------|-----------|
+| `COURSE_PACKAGE`, `VOUCHER` | **at sale** (unchanged) | existing `recordSale` on course/voucher creation posts an INCOME `OUT`. Booking a session only **consumes the prepaid entitlement** — no day-end revenue. |
+| `FIRST_TRIAL`, `SINGLE_SESSION` | **at attendance (day-end)** | these are **not** sold as packages and currently record **no** revenue at all → the end-of-day job recognizes them. **Additive, no double-count.** |
+
+**Design (day-end trial/single revenue):** the end-of-day job, after its existing
+no-show cut, selects the date's **`ATTENDED`** bookings of type `FIRST_TRIAL` /
+`SINGLE_SESSION` and posts revenue to ops via the existing **`recordSale`** path on
+**per-type INCOME items** — product codes **`first-trial`** and **`single-session`**
+(mirroring the existing `course-{size}` / `voucher-{hours}` INCOME items). Each is an
+INCOME `catalog_item`, **`track_stock=false`** (service, no balance), with a
+configurable `sale_price_minor` = the trial/single price. `recordSale` posts an
+INCOME `OUT` (amount = the item's price) → revenue in `/reports/pl`. Idempotent per
+booking (`idempotencyKey='rev:<bookingId>'`), best-effort (skips if ops off or the
+INCOME item isn't seeded yet — safe before real prices land).
+
+The day-end job **only** tallies revenue here — it never touches freelance budgets
+or expense (those are booking-time, per #4). Actual trial/single prices are a future
+seed/DATA REQUEST (a free trial = price 0 → posts nothing, harmless).
+
 ## Non-functional
 - **Idempotency**: per-booking keys make booking/cancel safe to retry.
 - **Cache staleness**: scheduling caches ops quotas 5 min (`ops-client.ts TTL_MS`).
@@ -130,6 +154,10 @@ TASK-005.)
 - **TASK-004** (@Fern, scheduler-front): baht `remaining/budget` display +
   near-cap warning + verify real-time auto-hide/override + cache invalidation. (dep: TASK-002)
 - Monthly reset step is folded into the shared month-start job — see **TASK-005** (SPEC-002).
+- **TASK-007** (@Jason, scheduling): end-of-day revenue tally for attended
+  `FIRST_TRIAL` + `SINGLE_SESSION` via `recordSale` on `first-trial`/`single-session`
+  INCOME items (idempotent per booking); packages/vouchers unchanged. (dep: TASK-001 —
+  reuses ops recordSale/INCOME items) — **unblocked 2026-07-20 by Porter's revenue decision.**
 
 ## Questions
 (Jason/Fern ask here; Sober answers as `> answer: ...`)

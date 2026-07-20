@@ -16,7 +16,9 @@
 | REQ-002 | DASHBOARD_LICENSE_MOVE — weapon-type dropdown codes configurable in appsettings | MEDIUM | DELIVERED | — (done) |
 | REQ-003 | DASHBOARD_LICENSE_BOOK — align response keys to DB column names | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
 | REQ-004 | DASHBOARD_LICENSE_BOOK — book-type dropdown configurable in appsettings (DB labels) | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
-| REQ-005 | DASHBOARD_MOVE_A10 — build Center backend for the อ.10 movement/delivery dashboard | MEDIUM | SPEC_DONE (3/4 accepted; transport-type re-source designed → TASK-006 REWORK #4) | Jason (BE) — TASK-006 REWORK #4 |
+| REQ-005 | DASHBOARD_MOVE_A10 — build Center backend for the อ.10 movement/delivery dashboard | MEDIUM | DELIVERED | — (done; live capture accepted 2026-07-20; 1 minor buyer-group `0` label optional) |
+| REQ-006 | DASHBOARD_LICENSE_MOVE — re-source to approved-request-first + attach actual delivery (mirror of A10) | MEDIUM | IN_SPEC (**impl authorized 2026-07-20 "ทำเลย"**) | Sober (SA) — dispatch TASK-009 to Jason |
+| REQ-007 | Dashboard date fields — one key, formatted value (drop `_formatted` twin) | MEDIUM | IN_SPEC (**impl authorized 2026-07-20 "ทำเลย"**) | Sober (SA) — dispatch TASK-008 to Jason |
 
 ## Tasks
 
@@ -27,15 +29,25 @@
 | TASK-003 | Rename DASHBOARD_LICENSE_BOOK JSON keys to DB column snake_case | SPEC-003 | DONE | Jason (BE) | none |
 | TASK-004 | Make DASHBOARD_LICENSE_BOOK book-type dropdown config-driven (DB labels, value=FORM_ID) | SPEC-004 | DONE | Jason (BE) | TASK-003 |
 | TASK-005 | Scaffold DASHBOARD_MOVE_A10 (controller+models+search-filter+cascades) | SPEC-005 | DONE | Jason (BE) | none |
-| TASK-006 | DASHBOARD_MOVE_A10 chart+table on the INFORM_MOVE backbone | SPEC-005 | IN_PROGRESS (rework #4: re-source ประเภทการขนย้าย; drop T_R_TRANSPORT_TYPE) | Jason (BE) | TASK-005 |
+| TASK-006 | DASHBOARD_MOVE_A10 chart+table on the INFORM_MOVE backbone | SPEC-005 | DONE (code; re-run capture to accept) | Jason (BE) | TASK-005 |
 | TASK-007 | Add T_R_TRANSPORT_TYPE entity + ประเภทการขนย้าย dropdown | SPEC-005 | SUPERSEDED (wrong source; entity removed in TASK-006 #4) | Jason (BE) | none |
+| TASK-008 | MOVE_A10 dates → single formatted `issue_date` (drop `issue_date_formatted`) | SPEC-007 | TODO (authorized — go) | Jason (BE) | none |
+| TASK-009 | LICENSE_MOVE — attach real `move_qty` (INFORM_MOVE SUM) + single formatted `issue_date` + col5 hardcode 3-value + col6 MoveRequestType | SPEC-006 + SPEC-007 | TODO (authorized — go) | Jason (BE) | none |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| col5/col6 naming-trap check (REQ-005) | Porter → stakeholder | Sober designed the re-source (SPEC-005 REWORK #4; join L.REQUEST_ID→T_T_REQUEST_MOVE traced from DATADIC). Flag: col5 ประเภทการขออนุญาต (INFORM_REQUEST_TYPE 0/1) vs col6 ประเภทการขนย้าย (MOVE_REQUEST_TYPE via `MoveRequestType`) read near-identical at 0/1; confirm the stakeholder wants both distinct columns (col6 diverges at 2–5). Non-blocking — verify at the re-run. |
-| Buyer-group code `0` label (minor) | stakeholder (unanswered) | Is code `0` (foreign "…Sdn Bhd") a real group (ต่างประเทศ/อื่นๆ) needing a label, or leave "ไม่ระบุ"? Non-blocking. |
+| ~~DATA REQUEST 7 (purchase_document)~~ RESOLVED | — | Stakeholder: **there is no such data ("ไม่มี").** Field came from the frontend chart "แยกตามเอกสารการซื้อ" + the pre-existing backend placeholder ("ไม่ระบุ"). Decision: leave "ไม่ระบุ" (backend can't fill); removing the chart = frontend change, out of scope. CLOSED. |
+| col5 ประเภทการขออนุญาต wiring (REQ-006) | Sober (SA) → Jason | ANSWERED: cols are distinct. col5 = **hardcode 3-value enum** (ขนย้าย / ขายขนย้ายในราชอาณาจักร / ขายขนย้ายนอกราชอาณาจักร), drop old INFORM_REQUEST_TYPE 0/1. Sober trace which field selects per row (likely license request/form type); col6 = `MoveRequestType` unblocked. |
+| Buyer-group source (REQ-006) | Sober (SA) | Stakeholder: กลุ่มผู้ซื้อ from `T_M_BUYER_AUTHORITY`. Sober confirm the group-NAME column on that table; source label from there (resolves code `0` too). Porter re-confirming the terse answer. |
+| Buyer-group code `0` label (minor, optional) | stakeholder (unanswered) | Is code `0` (foreign "…Sdn Bhd") a real group (ต่างประเทศ/อื่นๆ) needing a label, or leave "ไม่ระบุ"? Non-blocking; REQ-005 delivered without it. |
+
+## Parked / known notes
+
+- **`purchase_document` / "เอกสารการซื้อ" (License Move chart "แยกตามเอกสารการซื้อ"):** stakeholder doesn't
+  know what it is and confirms **no source data exists**. **Parked** — backend returns "ไม่ระบุ"; removing the
+  chart would be a frontend change. Revisit only if a source surfaces. (Stakeholder: "ปล่อยไปก่อน note ไว้", 2026-07-20.)
 
 ## Resolved confirmations (2026-07-20)
 

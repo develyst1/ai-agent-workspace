@@ -7,10 +7,10 @@
 - Description: Smart Scheduler — scheduling + back-office ERP for a balance/wheeled
   sports activity center (replaces manual Excel + Alis To Soft).
 - Code repository (monorepo root): `C:\Users\Admin\develyst\smart-scheduler`
-  - `smart-scheduler-back` — scheduling API, Bun + Drizzle, port 3001 (~75%) → Jason
-  - `smart-scheduler-front` — staff calendar UI, Next.js, port 3000 (~70%) → Fern
-  - `smart-scheduler-backoffice-back` — ops/finance API (`ops` schema), port 3002 (~40%) → Jason
-  - `smart-scheduler-backoffice-front` — admin ERP/money UI, Next.js, port 3100 → Fern
+  - `smart-scheduler-back` — scheduling API, Bun + Drizzle, **port 4006** (~75%) → Jason
+  - `smart-scheduler-front` — staff calendar UI, Next.js, **port 3016** (~70%) → Fern
+  - `smart-scheduler-backoffice-back` — ops/finance API (`ops` schema), **port 4010** → Jason
+  - `smart-scheduler-backoffice-front` — admin ERP/money UI, Next.js, **port 3018** → Fern
     (**NOT 0%** — P&L dashboard + Items CRUD already built; backoffice pivoted to an
     item-centric P&L model, wallet/payroll set aside — see `project-understanding.md` §6)
 - **Read first**: `ai-worker/project-understanding.md` (as-built map of all 4 repos,
@@ -27,7 +27,7 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| REQ-001 | Freelance pay as monthly budget-stock + auto-disable at cap | HIGH | IN_SPEC | Jason (build TASK-007) → then Porter deploy gate w/ human. Revenue Q ANSWERED. |
+| REQ-001 | Freelance pay as monthly budget-stock + auto-disable at cap | HIGH | **SPEC_DONE** | **Human — execute deploy** (runbook relayed by Porter in Thai 2026-07-20) → then Porter runs §6 live acceptance → DELIVERED. Build acceptance PASS; all 12 tasks DONE. |
 
 > SPECs written 2026-07-20: **SPEC-001** (freelance budget-stock, booking-time cap
 > & expense) + **SPEC-002** (FT/PT recurring effective-dated fixed-cost salary),
@@ -49,15 +49,16 @@
 | TASK-004 | scheduler-front: baht remaining/budget + near-cap warning + real-time hide | SPEC-001 | DONE | Fern | TASK-008 |
 | TASK-005 | ops: recurring FT/PT salary + shared month-start job (reset + materialize) | SPEC-002 | DONE | Jason | TASK-001 |
 | TASK-006 | backoffice-front: "FT/PT Salary" admin screen (effective-dated) | SPEC-002 | DONE | Fern | TASK-005 |
-| TASK-007 | scheduling: end-of-day REVENUE tally (attended TRIAL+SINGLE only) | SPEC-001 | TODO | Jason | (unblocked 2026-07-20) |
+| TASK-007 | scheduling: end-of-day REVENUE tally (attended TRIAL+SINGLE only) | SPEC-001 | DONE | Jason | TASK-001 |
 | TASK-008 | scheduling: teacher DTO budget fields + persist limit-override | SPEC-001 | DONE | Jason | TASK-002 |
 | TASK-009 | ops: PATCH /catalog/items/:id (edit item) | SPEC-001 | DONE | Jason | TASK-001 |
 | TASK-010 | backoffice-front: Edit modal for Freelance Budgets | SPEC-001 | DONE | Fern | TASK-009 |
+| TASK-011 | align cross-service port config to real map (ops-back :4010, ops-front :3018) | SPEC-001 | DONE | Jason | — |
+| TASK-012 | ops: seed first-trial / single-session INCOME items (day-end revenue) | SPEC-001 | DONE | Jason | TASK-007 |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| — | | *(TASK-007 ANSWERED 2026-07-20 → TODO for Jason. Revenue: TRIAL+SINGLE at attendance (day-end tally); COURSE+VOUCHER at sale (recordSale) — day-end counts TRIAL+SINGLE only. See REQ-001 #5.)* |
 | repo lint (both FE) | Porter/maint | `bun run lint` broken — `next lint` removed in Next 16. Pre-existing, not from our changes. Small maintenance fix (migrate to ESLint CLI). |
-| REQ-001 deploy gate | Porter → human | Before DELIVERED: (1) apply ops migration `drizzle/0003_even_turbo.sql` in the real env + reconcile the shared `__drizzle_migrations` meta-drift; (2) set up 2 scheduled tasks — end-of-day (:3001, INTERNAL_JOB_SECRET) + month-start (:3002, X-Service-Token, 1st of month). BE can't apply migrations/DB under brownfield. |
+| REQ-001 deploy gate | Porter → human | Before DELIVERED: (1) apply ops migration `drizzle/0003_even_turbo.sql` in the real env + reconcile the shared `__drizzle_migrations` meta-drift; (2) set up 2 scheduled tasks — end-of-day (**:4006**, INTERNAL_JOB_SECRET) + month-start (**:4010**, X-Service-Token, 1st of month); (3) seed data (DATA REQUEST) — **placeholder numbers PROVIDED** in `project-docs/seed-data-placeholder-2026-07-20.md` (FL budget 70k @ 500/hr, FT 50k, PT 15k, Trial 1,390, Single 1,390 placeholder). Can be typed via admin UI post-deploy or dev-seeded. BE can't apply migrations/DB under brownfield. |

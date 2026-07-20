@@ -1,6 +1,6 @@
 # REQ-005: DASHBOARD_MOVE_A10 — build the Center backend for the อ.10 movement/delivery dashboard
 
-- Status: READY_FOR_SA
+- Status: DELIVERED (2026-07-20 — live capture accepted; all 4 defects fixed, transport-type re-sourced)
 - Priority: MEDIUM
 - Requested: 2026-07-20 by stakeholder (dev@smartalliance.co.th)
 - Deadline: none

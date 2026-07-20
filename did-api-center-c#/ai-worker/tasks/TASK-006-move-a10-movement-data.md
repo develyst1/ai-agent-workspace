@@ -1,8 +1,51 @@
 # TASK-006: DASHBOARD_MOVE_A10 chart + table on the INFORM_MOVE backbone
 
 - Source: SPEC-005 (revised 2026-07-20 — data resolved)
-- Status: REWORK #4 (ประเภทการขนย้าย re-sourced — all data in hand; no gate). 3/4 defects already accepted.
+- Status: DONE (code — REWORK #4 verified 2026-07-20). Final acceptance = re-run live capture (Porter).
 - Depends on: TASK-005 (DONE)
+
+## REWORK #4 review — Verdict: DONE (code) — Sober (SA), 2026-07-20
+
+Verified the code: SQL `,(SELECT MAX(RM.MOVE_REQUEST_TYPE) FROM T_T_REQUEST_MOVE RM WHERE RM.REQUEST_ID =
+L.REQUEST_ID) AS MoveTypeCode` (repo L52-54) ✓; service resolves `MoveTypeCode` via
+`CommonCodeIntMap("MoveRequestType")` (L244/273) and the dropdown via `GetDataActiveByGroupCode` with
+**`Value = CODE_INT`** (L60-64 — matches the filter `InList(req.MoveTypes, r.MoveTypeCode?.ToString())`) ✓;
+col5 ประเภทการขออนุญาต left as-is (INFORM_REQUEST_TYPE 0/1 map) ✓; **`T_R_TRANSPORT_TYPE` fully removed** —
+grep across `spf/` = zero residue ✓; build 0 errors. Prior fixes (dedup/dates/buyer-group) intact.
+**Final acceptance = the re-run capture** confirms `transport_type_code_name` populates (= the L.REQUEST_ID →
+T_T_REQUEST_MOVE join resolves on live data; traced from DATADIC:631/906). col5/col6 flag routed to Porter.
+
+## REWORK #4 applied (Jason, 2026-07-20)
+
+Re-sourced ประเภทการขนย้าย per Sober's SPEC-005 "REWORK #4" (T_R_TRANSPORT_TYPE was empty; stakeholder
+re-sourced the field). Now `T_T_REQUEST_MOVE.MOVE_REQUEST_TYPE` → name via `T_S_COMMON_CODE` group
+`MoveRequestType`. All 5 steps done:
+
+1. **SQL (`GetMoveA10Dashboard`):** replaced the LDTL scalar subquery with
+   `,(SELECT MAX(RM.MOVE_REQUEST_TYPE) FROM T_T_REQUEST_MOVE RM WHERE RM.REQUEST_ID = L.REQUEST_ID) AS MoveTypeCode`
+   (`L` already joined; `L.REQUEST_ID`). DTO field `TransportTypeCode` → `MoveTypeCode`.
+2. **Service map/filter:** `transport_type_code_name` now resolves `MoveTypeCode` via `CommonCodeIntMap("MoveRequestType")`
+   (added the helper, mirrors move-license `CODE_INT→CODE_NAME`); response key unchanged. Move-type filter →
+   `InList(req.MoveTypes, r.MoveTypeCode?.ToString())`.
+3. **Dropdown (`SearchFilter`):** ประเภทการขนย้าย now from `TSCommonCodeRepo.GetDataActiveByGroupCode("MoveRequestType")`
+   → `{value: CODE_INT, label: CODE_NAME}` (replaced the `TRTransportTypeRepo` lookup).
+4. **Removed dead `T_R_TRANSPORT_TYPE`:** deleted `TRTransportTypeEntity` + `TRTransportTypeRepository`, unwired from
+   `IUnitOfWorkSPF`/`UnitOfWorkSPF` (property + reset). Grep confirms **zero `TRTransportType` residue** in the
+   codebase. (TASK-007 superseded.)
+5. `dotnet build` → **Build succeeded. 0 Error(s).**
+
+**Verified:** grep — SQL uses `T_T_REQUEST_MOVE`/`MoveTypeCode`; service uses common-code group `"MoveRequestType"`
+for both the dropdown and the row map; no `TRTransportType` anywhere. Rework #1/#2/#3-accepted (dedup, dates,
+buyer-group) untouched.
+
+**Naming trap (reported, not fixed — @Sober routing to Porter):** col5 ประเภทการขออนุญาต (`INFORM_REQUEST_TYPE`,
+my fixed 0/1 `MOVE_REQUEST_TYPE_MAP`) vs col6 ประเภทการขนย้าย (`MOVE_REQUEST_TYPE` via common-code) read
+near-identical at 0/1 but col6 diverges at 2–5. Left col5 as-is per the task. Clearly commented in the service
+(`GROUP_MOVE_TYPE`) to prevent a future mixup.
+
+Re-run the same live capture → expect `transport_type_code_name` populated (`81/2569`→"ขนย้ายให้หน่วยงานตามมาตรา 7",
+`80/2569`→"ขนย้ายเพื่อทดสอบ", per Sober's note). Runtime caveat (brownfield, flagged): `L.REQUEST_ID` +
+`T_T_REQUEST_MOVE.REQUEST_ID` join validity is confirmable only at the re-run — Sober traced it from DATADIC:631.
 
 ## REWORK #4 (2026-07-20) — re-source ประเภทการขนย้าย (design in SPEC-005 "REWORK #4")
 

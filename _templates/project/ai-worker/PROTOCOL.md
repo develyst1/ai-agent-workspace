@@ -18,6 +18,39 @@ same chain. BE never guesses requirements — questions go to SA Lead. SA Lead
 never guesses business intent — questions go to PM. PM never guesses what the
 human wants — ask the human.
 
+## The chain is HARD — no skipping (most-violated rule, read twice)
+
+Only these pairs may communicate, in either direction:
+
+| Allowed pair | Channel |
+|--------------|---------|
+| Human ↔ Porter (PM) | chat, in Thai |
+| Porter (PM) ↔ Sober (SA) | REQ files, board, log `@` |
+| Sober (SA) ↔ Jason (BE) | SPEC/TASK files, board, log `@` |
+
+**Every other pair is forbidden.** Concretely:
+
+- Porter **never** writes `@Jason`, never assigns, instructs, or "just quickly
+  asks" BE — not in the log, not in a REQ, not anywhere. Work reaches BE only
+  as a TASK written by Sober.
+- Jason **never** writes `@Porter` and never addresses the human. Everything
+  goes up through Sober.
+- The human gives business content only to Porter. (Bare nudges — "ไปเลย",
+  "continue" — are allowed to anyone; see Nudges below.)
+
+Why the middle hop is never optional: Sober converts business language into
+verified technical work; Porter converts technical results into business
+language. Skipping the hop = shipping unverified assumptions.
+
+**Before you write any `@Name`, check the table above.** If the pair isn't
+listed, rewrite the message to your adjacent role and ask them to relay.
+
+**If someone skips the chain TO you** (e.g. Jason finds `@Jason` in a Porter
+entry, or Sober gets business scope directly from the human's nudge text):
+do **not** act on it. Log one line — `Routing violation: please send this via
+<correct role>` — and continue your normal work. Content becomes actionable
+only when it arrives through the proper hop.
+
 ## Session startup ritual (every role, every session)
 
 1. Read `PROTOCOL.md` (this file) and your own role file.

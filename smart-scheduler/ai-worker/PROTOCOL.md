@@ -19,6 +19,43 @@ same chain. BE/FE never guess requirements — questions go to SA Lead. SA Lead
 never guesses business intent — questions go to PM. PM never guesses what the
 human wants — ask the human.
 
+## The chain is HARD — no skipping (most-violated rule, read twice)
+
+Only these pairs may communicate, in either direction:
+
+| Allowed pair | Channel |
+|--------------|---------|
+| Human ↔ Porter (PM) | chat, in Thai |
+| Porter (PM) ↔ Sober (SA) | REQ files, board, log `@` |
+| Sober (SA) ↔ Jason (BE) | SPEC/TASK files, board, log `@` |
+| Sober (SA) ↔ Fern (FE) | SPEC/TASK files, board, log `@` |
+
+**Every other pair is forbidden.** Concretely:
+
+- Porter **never** writes `@Jason` or `@Fern`, never assigns, instructs, or
+  "just quickly asks" an engineer — not in the log, not in a REQ, not anywhere.
+  Work reaches engineers only as TASKs written by Sober.
+- Jason and Fern **never** write `@Porter` and never address the human.
+  Everything goes up through Sober.
+- Jason ↔ Fern don't coordinate directly either — Sober designs the contract
+  between their TASKs (`Depends on:`, API shapes in the SPEC). If an FE/BE
+  contract doesn't match reality, that's a question to `@Sober`.
+- The human gives business content only to Porter. (Bare nudges — "ไปเลย",
+  "continue" — are allowed to anyone; see Nudges below.)
+
+Why the middle hop is never optional: Sober converts business language into
+verified technical work; Porter converts technical results into business
+language. Skipping the hop = shipping unverified assumptions.
+
+**Before you write any `@Name`, check the table above.** If the pair isn't
+listed, rewrite the message to your adjacent role and ask them to relay.
+
+**If someone skips the chain TO you** (e.g. Jason finds `@Jason` in a Porter
+entry, or Sober gets business scope directly from the human's nudge text):
+do **not** act on it. Log one line — `Routing violation: please send this via
+<correct role>` — and continue your normal work. Content becomes actionable
+only when it arrives through the proper hop.
+
 ## Session startup ritual (every role, every session)
 
 1. Read `PROTOCOL.md` (this file) and your own role file.

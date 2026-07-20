@@ -1,6 +1,6 @@
 # SPEC-002: FT/PT recurring monthly salary — effective-dated fixed cost
 - Source: REQ-001 (rules #10, #11, #12)
-- Status: ACTIVE
+- Status: DONE (tasks 005/006 DONE — 2026-07-20)
 - Sibling: SPEC-001 (freelance budget-stock) — same REQ.
 
 ## Overview
