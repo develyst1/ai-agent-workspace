@@ -1,171 +1,142 @@
-# SPEC-001: Freelance monthly budget-stock with auto-disable at cap
-- Source: REQ-001
-- Status: DRAFT   <!-- DRAFT until Porter confirms the 3 OPEN decisions in REQ-001 ## Questions -->
+# SPEC-001: Freelance monthly budget-stock — booking-time cap & expense
+- Source: REQ-001 (rules #1–#9, #12)
+- Status: ACTIVE
+- Re-baselined 2026-07-20 after คุณฟีน's timing correction (booking-time, not day-end).
+- Sibling: SPEC-002 (FT/PT recurring fixed-cost salary) — same REQ.
 
 ## Overview
 
-Realize UC-016 (freelance income ceiling / auto-disable) as a **per-freelance
-monthly baht budget** built on the **existing ops stock mechanic**, per the
-stakeholder-mandated Path A (item-centric P&L).
+Each freelance teacher gets a **per-person monthly budget (baht)** modeled as the
+**existing ops stock mechanic**. The budget stock is drawn down **at booking time**
+(not day-end — corrected by คุณฟีน). One stock movement at booking does three
+things at once: **(a) posts the freelance expense to P&L, (b) enforces the
+real-time cap (blocks over-booking + drives auto-hide), (c) shows `remaining /
+budget`.** **Cancel / customer-leave reverses the movement** (returns stock,
+releases the cap, un-books the expense).
 
-The design **reuses machinery that already exists** — the code sweep (2026-07-20)
-confirmed most of the pieces are already in place:
+The **end-of-day job does NOT touch freelance budgets** — it is revenue-only
+(SPEC covers that separately; see REQ #5 / open revenue-recognition question).
+FT/PT salary is out of this SPEC (→ SPEC-002).
 
-- Each freelance already maps to a backoffice **`EXPENSE` `catalog_item`** keyed
-  by `external_source='smart-scheduler'` + `external_ref=teacherId`. Today its
-  `stock_balances.quantity_on_hand` holds a monthly **hours** quota and
-  `sale_price_minor` holds the hourly rate.
-- A stock **`OUT` movement** on that item already (a) draws the balance down,
-  (b) posts `amount_minor` straight into the P&L as **EXPENSE** (`costMinor` /
-  `byType[EXPENSE]` in `GET /reports/pl` — only `direction='OUT'` is summed, so
-  `IN`/`ADJUST` are P&L-neutral), and (c) enforces a floor via the
-  `INSUFFICIENT_STOCK` (409) guard.
-- The scheduling API already exposes `overLimit` per teacher, and the **staff
-  frontend already auto-hides** any freelance with `overLimit=true` from the
-  booking columns (`toTeacherView` → `bookable=false`) and shows an "overCap"
-  badge + override switch on the Teachers screen.
+### What already exists (from the 2026-07-20 code sweep) — reused as-is
+- Per-teacher `EXPENSE` `catalog_item` keyed by `external_source='smart-scheduler'`
+  + `external_ref=teacherId`; `stock_balances.quantity_on_hand` = remaining;
+  `sale_price_minor` = rate.
+- `POST /api/v1/catalog/items/by-ref/movements` (OUT/IN/ADJUST by teacherId).
+- `overLimit = quantityOnHand ≤ 0` flows to scheduling's TeacherDTO; the **staff
+  FE already auto-hides** an `overLimit` freelance from booking columns
+  (`toTeacherView → bookable=false`) and shows an overCap badge + override switch.
+- Idempotency via the unique `stock_movements.idempotency_key`.
 
-So this SPEC is mostly **re-pointing and completing** existing wiring, not new
-infrastructure. Four real changes:
+### What changes vs. as-built
+1. **Deduction timing: attend → booking-commit.** Today `consumeTeacherHours`
+   fires on `attend` (`scheduler.service.ts:630`). Move it to **booking commit**,
+   and **add a reversal** on cancel / customer-leave. Remove the attend-time call.
+2. **Unit: hours → baht (satang).** `quantity_on_hand` now = remaining budget in
+   satang; each movement's `quantity`/`amount_minor` = the job's baht in satang.
+3. **Reversible P&L expense** — see the mechanism below (the key design decision).
+4. **Near-cap warning** via per-teacher `reorder_level`.
+5. **Monthly reset** (overwrite to base budget; top-ups don't carry).
 
-1. **Unit change** — model the budget in **baht (integer satang)** instead of
-   hours. `quantity_on_hand` = remaining budget in satang; `overLimit` =
-   remaining ≤ 0 (unchanged rule, new unit).
-2. **Move deduction to day-end** — remove the per-attend `consumeTeacherHours`
-   call (`smart-scheduler-back/src/services/scheduler.service.ts:630`) and make
-   the **existing end-of-day cut job** compute and post the freelance expense.
-3. **Allow the capping-day overage** — let the freelance budget item go to/below
-   0 on the day a teacher crosses the cap, so the P&L records the *true* expense
-   and the teacher is hidden *the next day* (REQ explicitly accepts day-end, not
-   intra-day, enforcement). This also implements REQ #9's "allow-negative" unlock.
-4. **Monthly reset + admin budget screen** — reset each budget to its configured
-   monthly amount at month start, and add a backoffice screen to set/edit/top-up
-   per-teacher budgets and rates.
+## Key design decision — reversible freelance expense in an OUT-only P&L
+
+`GET /reports/pl` sums only `direction='OUT'`. A cancel `IN` would restore stock
+but NOT un-book the expense, and is indistinguishable from an admin top-up `IN`.
+Resolution — **movement conventions**:
+
+| Event | Movement | quantity | amount_minor | ref_type | idempotencyKey |
+|-------|----------|----------|--------------|----------|----------------|
+| Freelance booking committed | `OUT` | job satang | job satang | `BOOKING` | `fl-book:<bookingId>` |
+| Cancel / customer-leave | `IN` | job satang | **job satang** | `BOOKING_REVERSAL` | `fl-unbook:<bookingId>` |
+| Admin top-up (unlock) | `IN` | top-up satang | **0** | `TOPUP` | `fl-topup:<teacherId>:<n>` |
+| Monthly reset | `ADJUST` `=budget` | — | **0** | `RESET` | `fl-reset:<teacherId>:<YYYY-MM>` |
+
+→ **P&L EXPENSE for a budget item = Σ(OUT.amount_minor) − Σ(IN.amount_minor WHERE
+ref_type='BOOKING_REVERSAL')`.** Because top-ups/resets carry `amount_minor=0`,
+they never affect P&L; only bookings (+) and their reversals (−) do → the reported
+freelance expense equals **net committed pay**. This is a scoped change to
+`reports.service` (INCOME stays OUT-only; FIXED_COST stays OUT-only).
 
 ## API / Interface Design
 
-No new ops table is required — the existing catalog/stock/report endpoints cover
-it. Endpoints touched:
+### ops (port 3002, `/api/v1`) — change
+- `reports.service.getPLReport`: EXPENSE amount = ΣOUT − Σ(reversal IN) per item
+  (reversal = `ref_type='BOOKING_REVERSAL'`). Revenue/fixed-cost unchanged.
+- `applyStockMovement` / `by-ref`: accept an **`allowNegative:boolean`** option
+  (default false) — when true, skip the `INSUFFICIENT_STOCK` guard so the balance
+  may go ≤ 0 (used by the capping-day overage and admin allow-negative override).
+- Freelance-budget item convention: `metadata={ kind:'FREELANCE_BUDGET',
+  monthlyBudgetMinor:<satang> }`; `reorder_level` = near-cap warning threshold
+  (satang). No new table.
 
-### Reuse (ops, port 3002, prefix `/api/v1`)
-- **Create/edit a per-teacher budget item** — `POST /catalog/items` /
-  (edit via movements). Item shape:
-  `item_group='SERVICE'`, `item_type='EXPENSE'`, `track_stock=true`,
-  `sale_price_minor` = hourly rate (satang, = the *unit cost*),
-  `external_source='smart-scheduler'`, `external_ref=<teacherId>`,
-  `metadata = { kind: 'FREELANCE_BUDGET', monthlyBudgetMinor: <satang> }`.
-  → `metadata.monthlyBudgetMinor` is the reset target; `metadata.kind` lets the
-  reset job and the admin screen select exactly the freelance-budget items.
-- **Draw down (day-end cut)** — `POST /catalog/items/by-ref/movements`
-  `{ externalSource:'smart-scheduler', externalRef:<teacherId>, direction:'OUT',
-     quantity:<pay satang>, amountMinor:<pay satang>, refType:'EOD',
-     refId:'<date>', idempotencyKey:'eod-fl:<teacherId>:<date>',
-     allowNegative:true }`.
-- **Top-up (admin unlock)** — `POST .../by-ref/movements` `direction:'IN'`
-  (P&L-neutral) → restores positive remaining, un-caps the teacher.
-- **Monthly reset** — `POST .../by-ref/movements` `direction:'ADJUST'`,
-  `reason:'=<monthlyBudgetMinor>'` (absolute set, P&L-neutral).
-- **List budgets / remaining** — `GET /catalog/items?externalSource=smart-scheduler&itemType=EXPENSE`
-  (returns `quantityOnHand` = remaining, `salePriceMinor` = rate, `metadata`).
-- **P&L** — `GET /reports/pl` — freelance expense appears automatically. *(Known
-  edge: the report month window is UTC while the cut job is Asia/Bangkok — see
-  Non-functional.)*
+### ops — reuse (no change)
+- Create/edit budget item: `POST /catalog/items` (SERVICE/EXPENSE/track_stock).
+- Movements by teacher: `POST /catalog/items/by-ref/movements`.
+- List budgets: `GET /catalog/items?externalSource=smart-scheduler&itemType=EXPENSE`.
 
-### Change (ops)
-- Add an **`allowNegative` option** to the stock-movement service
-  (`inventory.service.ts:applyStockMovement`) + `by-ref` validation, so a flagged
-  `OUT` skips the `INSUFFICIENT_STOCK` guard and may drive the balance ≤ 0. Only
-  used by the freelance day-end cut and admin allow-negative override; all other
-  callers keep the guard (default `false`).
-
-### Change (scheduling, port 3001)
-- **End-of-day job** (`jobs.service.ts:runEndOfDayJob`): after the existing
-  no-show cut, for each teacher with `type='FREELANCE'`, sum the day's **taught**
-  bookings and post **one** `OUT` by-ref movement (idempotent per teacher/day).
-- **Monthly reset**: a month-start step (new internal route
-  `POST /internal/jobs/month-start`, guarded by `INTERNAL_JOB_SECRET`) that
-  ADJUST-sets every freelance budget item to its `metadata.monthlyBudgetMinor`.
-- **Remove** the per-attend `consumeTeacherHours` call.
+### scheduling (port 3001) — change
+- **Booking commit** of a `FREELANCE` teacher's booking → synchronous `OUT`
+  by-ref movement (`fl-book:<bookingId>`). A `409 INSUFFICIENT_STOCK` (over
+  budget, no override) **blocks the booking** (real-time over-booking prevention).
+- **Cancel / customer-leave** (`SICK_LEAVE`) of a freelance booking → `IN`
+  reversal (`fl-unbook:<bookingId>`, `BOOKING_REVERSAL`).
+- **Remove** the attend-time `consumeTeacherHours` call.
 
 ## Data Model
-
-- **ops**: no migration. Freelance budget = existing `catalog_items` +
-  `stock_balances` + `stock_movements` rows; new well-known keys in
-  `catalog_items.metadata` (`kind`, `monthlyBudgetMinor`). `quantity_on_hand`
-  reinterpreted from hours → **satang**.
-- **scheduling**: no schema change for the recommended (hourly) path — the rate
-  comes from ops. *(A per-booking teaching-mode field would only be added if the
-  Group/Camp flat-rate variant is confirmed in scope — see OPEN #1.)*
+- **ops**: no migration; new well-known keys in `catalog_items.metadata`;
+  `reorder_level` reused; `quantity_on_hand` reinterpreted hours→satang.
+- **scheduling**: no schema change (rate/budget live in ops; amount = rate × 1h).
 
 ## Flow
 
-**Day-end cut (extends the existing job):**
-1. Existing behavior runs first (CONFIRMED→NO_SHOW, course/voucher quota cut).
-2. Select the day's **taught** bookings = `status='ATTENDED'` (SICK_LEAVE /
-   CANCELLED / NO_SHOW / PENDING excluded), joined to teachers where
-   `type='FREELANCE'`, grouped by teacher.
-3. Per teacher, pay = **Σ (rate × 1h)** across attended bookings *(every booking
-   is 1h today; see OPEN #1 for the Group/Camp flat variant)*.
-4. Post one `OUT` by-ref movement, `amountMinor` = pay satang, `allowNegative:true`,
-   `idempotencyKey='eod-fl:<teacherId>:<date>'` (safe re-run).
-5. The movement books the expense to P&L and lowers remaining. If remaining ≤ 0,
-   ops now returns `overLimit=true` → next day's calendar hides the teacher.
+**Booking a freelance (real-time gate):**
+1. Staff picks a freelance slot. Amount = `rate × 1h` (all bookings 1h).
+2. On commit, scheduling posts `OUT` by-ref (`allowNegative:false`).
+3. `2xx` → booking saved; ops balance ↓; expense booked to P&L. If remaining hits
+   the warning level (`reorder_level`) → near-cap flag. If it hits ≤ 0 → `overLimit`
+   → teacher auto-hidden from columns for the next bookings.
+4. `409` → budget exhausted → booking rejected (unless override active).
 
-**Auto-hide / cap flag (already built, no change beyond unit):**
-- `fetchTeacherQuotas`/`attachTeacherQuotas` set `overLimit = quantityOnHand ≤ 0`;
-  `toTeacherView` drops the teacher from booking columns; `FreelanceRow` shows the
-  capped badge. FE only needs the **display** changed from "เหลือโควตา n ชม." to
-  baht `remaining / budget`.
+**Cancel / customer-leave:** scheduling posts the `IN` reversal → stock restored,
+expense un-booked, cap released, teacher may reappear.
 
-**Admin unlock (REQ #9 — both mechanisms supported):**
-- **Top-up** = `IN` movement (durable, P&L-neutral) → remaining positive → un-capped.
-- **Allow-negative override** = the existing per-teacher override (currently
-  client-only `limitOverride`) keeps the teacher bookable at ≤ 0. *(Recommend
-  persisting override server-side so it survives across devices — small add.)*
+**Auto-hide / cap flag (already built):** `overLimit` → `bookable=false` (staff
+FE). *Display* changes from hours ("เหลือโควตา n ชม.") to baht `remaining/budget`;
+add the near-cap warning styling from `reorder_level`.
 
-**Monthly reset:** month-start job ADJUST-sets each budget to
-`metadata.monthlyBudgetMinor` (P&L-neutral); prior top-ups do **not** carry over
-(recommended semantics — see OPEN #3).
+**Unlock (REQ #9, both mechanisms):** top-up `IN` (durable) OR allow-negative
+override (persist the existing client-only `limitOverride` server-side so the
+booking path passes `allowNegative:true` for that teacher).
+
+**Monthly reset:** `ADJUST '=monthlyBudgetMinor'` per teacher, P&L-neutral,
+top-ups don't carry. (Triggered by the shared month-start job — see SPEC-002 /
+TASK-005.)
 
 ## Non-functional
-- **Idempotency**: rely on the unique `stock_movements.idempotency_key`
-  (`eod-fl:<teacherId>:<date>` for cuts). No middleware exists; per-row key is the
-  contract.
-- **Money**: integer satang everywhere; `quantity` must be a positive int, so pay
-  amounts are whole satang (freelance figures are whole baht — fine).
-- **Timezone edge (flag, not blocking)**: `/reports/pl` computes the month window
-  in **UTC**; the cut job runs **Asia/Bangkok**. A late-night cut on the last day
-  of a Bangkok month can land in the next UTC month. Recommend aligning the report
-  window to Asia/Bangkok in a follow-up; note it in the P&L task.
-- **Auth**: cut/reset via `INTERNAL_JOB_SECRET`; ops movements via
-  `adminOrService`. Dev bypasses (`SKIP_AUTH`, `SKIP_ADMIN_AUTH`) unchanged.
+- **Idempotency**: per-booking keys make booking/cancel safe to retry.
+- **Cache staleness**: scheduling caches ops quotas 5 min (`ops-client.ts TTL_MS`).
+  The synchronous OUT is the true gate; invalidate/shorten the cache after a
+  booking so the column auto-hide is prompt (FE task).
+- **Money**: integer satang; freelance figures are whole baht.
 
-## Tasks (proposed — created after Porter confirms OPEN #1–#3)
-- TASK-001 (@Jason, ops): `allowNegative` option on stock movements + `by-ref`.
-- TASK-002 (@Jason, scheduling): move freelance deduction to the end-of-day job;
-  remove the per-attend `consumeTeacherHours`; per-teacher day-end OUT (idempotent).
-  *(depends on: TASK-001)*
-- TASK-003 (@Jason, scheduling): month-start reset job (ADJUST to
-  `monthlyBudgetMinor`). *(depends on: TASK-001)*
-- TASK-004 (@Fern, backoffice-front): "Freelance Budgets" admin screen — set/edit
-  monthly budget + rate, view `remaining/budget`, top-up, capped flag (mirror the
-  Items partial/hook/service pattern).
-- TASK-005 (@Fern, scheduler-front): change the freelance display from hours quota
-  to baht `remaining/budget`; verify overCap badge + auto-hide still correct;
-  durable unlock via top-up.
-- TASK-006 (@Jason+@Fern, CONDITIONAL on OPEN #1): add per-booking teaching-mode
-  and Group/Camp flat-rate handling. Only created if the stakeholder needs flat
-  Group/Camp rates now.
+## Tasks
+- **TASK-001** (@Jason, ops): reversal-aware P&L + `allowNegative` + reversal IN
+  movement convention + freelance-budget item metadata. (dep: —)
+- **TASK-002** (@Jason, scheduling): booking-time draw-down + cancel/leave
+  reversal + remove attend-time consume + synchronous cap gate. (dep: TASK-001)
+- **TASK-003** (@Fern, backoffice-front): "Freelance Budgets" admin screen —
+  set/edit monthly budget + rate + near-cap threshold, `remaining/budget`, top-up,
+  capped flag. (dep: TASK-001)
+- **TASK-004** (@Fern, scheduler-front): baht `remaining/budget` display +
+  near-cap warning + verify real-time auto-hide/override + cache invalidation. (dep: TASK-002)
+- Monthly reset step is folded into the shared month-start job — see **TASK-005** (SPEC-002).
 
 ## Questions
 (Jason/Fern ask here; Sober answers as `> answer: ...`)
 
-**OPEN decisions are tracked in REQ-001 `## Questions` (routed to @Porter).** This
-SPEC's recommended defaults, pending confirmation:
-- **OPEN #1 (pay basis / Group-Camp flat rate)**: Phase 1 = per-teacher hourly
-  rate × attended 1h-slots. Flat Group/Camp (625/1250) deferred unless confirmed
-  needed (would add TASK-006 + a per-booking teaching-mode field).
-- **OPEN #2 (near-cap warning)**: support an optional per-teacher warning
-  threshold via the existing `reorder_level`; hard-stop still at 0.
-- **OPEN #3 (reset semantics)**: monthly reset = absolute set to
-  `monthlyBudgetMinor`; mid-month top-ups do **not** carry into next month.
+- Open (routed to @Porter, non-blocking for these tasks): **multi-month / future-
+  dated freelance bookings.** A `COURSE_PACKAGE` books its whole recurring chain
+  upfront; drawing every session now would hit the *current* month's budget for
+  sessions in future months. This SPEC assumes the launch case (ad-hoc 1h,
+  same-month) draws at booking against the current budget. If freelances teach
+  multi-month courses, we revisit to draw per session-month. Flagged to Porter.

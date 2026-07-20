@@ -1,8 +1,11 @@
 # TASK-007: Add T_R_TRANSPORT_TYPE SPF entity + wire the ประเภทการขนย้าย dropdown
 
 - Source: SPEC-005
-- Status: REVIEW  (UNBLOCKED — DATA REQUEST 2 answered: columns confirmed)
-- Depends on: none (TASK-006 consumes it for the table's `transport_type_code_name`)
+- Status: SUPERSEDED (2026-07-20) — `T_R_TRANSPORT_TYPE` is the WRONG source; stakeholder re-sourced
+  ประเภทการขนย้าย to `T_T_REQUEST_MOVE.MOVE_REQUEST_TYPE` (common-code `MoveRequestType`). The
+  `T_R_TRANSPORT_TYPE` entity/repo/wiring built here is now dead code and is **removed in TASK-006 REWORK #4**.
+  (Kept for history; the DATA REQ 2 column facts were correct — the table was just empty and not the source.)
+- Depends on: none
 
 ## Confirmed columns (DATA REQUEST 2, 2026-07-20)
 
@@ -64,4 +67,13 @@ the ประเภทการขนย้าย dropdown in `DashboardMoveA10S
 
 ## Review
 
-(Sober fills this in at REVIEW: verdict + reasons.)
+**Verdict: DONE — Sober (SA), 2026-07-20.** Verified the code:
+- `TRTransportTypeEntity` (`[Table("T_R_TRANSPORT_TYPE")]`, `[Key] TransportTypeCode`=`TRANSPORT_TYPE_CODE`,
+  `TransportTypeName`=`TRANSPORT_TYPE_NAME`, + audit) — matches the confirmed columns; mirrors the proven
+  `TRLicenseFormEntity` natural-key pattern (no sequence, correct).
+- `TRTransportTypeRepository` (`GetDataAll` + `GetDataByCode`) wired into `IUnitOfWorkSPF` +
+  `UnitOfWorkSPF` (field + `??=` property + reset) — verified at `UnitOfWorkSPF.cs:1301-1308`.
+- `DashboardMoveA10Service.SearchFilter()` ประเภทการขนย้าย now sourced from `TRTransportTypeRepo.GetDataAll()`
+  (`value = code`, `label = TRANSPORT_TYPE_NAME`); TASK-006 reuses the same repo for the table's
+  `transport_type_code_name` dict. Build 0 errors.
+- Low data risk (seeded ref table; same shape as shipped weapon-type/book-type dropdowns). No rework.

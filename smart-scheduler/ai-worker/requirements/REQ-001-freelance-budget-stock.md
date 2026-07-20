@@ -36,11 +36,20 @@ The system must:
    (b) enforces the **real-time cap** (drives auto-hide, prevents over-booking),
    (c) shows `remaining / budget`. **Cancel / customer-leave reverses it** (returns
    to stock → releases cap and un-books the expense).
-5. **The END-OF-DAY summary computes REVENUE only — NOT expense.** The day-end job
-   tallies **attended bookings = booked − customer-leave** to produce the day's
-   **income** figure for the P&L. It does **not** touch freelance budgets or expense.
-   → Net P&L inputs: **revenue** = attended bookings (day-end) · **expense** = freelance
-   draw-downs (at booking, per #4) + FT/PT fixed monthly cost (per #10). Nothing else.
+5. **Revenue recognition depends on booking type** (clarified by คุณฟีน 2026-07-20) —
+   the day-end summary must NOT double-count prepaid packages:
+   - **FIRST_TRIAL** and **SINGLE_SESSION** → revenue recognized **at attendance**.
+     The **end-of-day summary** tallies these **attended** bookings as the day's revenue.
+   - **COURSE_PACKAGE** and **VOUCHER** → revenue recognized **at purchase** (when the
+     customer confirms the buy — the current `recordSale`). Booking a session onto the
+     calendar only **consumes the pre-bought entitlement** — it is **NOT** revenue and
+     must **not** be counted again at day-end.
+   - So: **day-end revenue = attended TRIAL + SINGLE only**; package/voucher revenue =
+     at sale. The end-of-day summary computes revenue **only** — never expense, never
+     touches freelance budgets.
+   → Net P&L inputs: **revenue** = (course/voucher at sale) + (trial/single attended at
+   day-end) · **expense** = freelance draw-downs (at booking, per #4) + FT/PT fixed
+   monthly cost (per #10). Nothing else, no double count.
 6. Freelance expense posts to the P&L **automatically** (no manual monthly keying) —
    because it rides the booking-time budget-stock movement in #4.
    The per-job baht is a **plain amount = per-teacher hourly rate × hours** (all
@@ -71,8 +80,9 @@ The system must:
 ## Acceptance Criteria
 - [ ] Admin can set and edit a per-freelance **monthly budget** and **rate**.
 - [ ] Remaining budget is visible as `remaining / budget` per freelance.
-- [ ] The **end-of-day summary produces the day's REVENUE** from attended bookings
-      (booked − leave); it does **not** compute expense or touch freelance budgets.
+- [ ] The **end-of-day summary produces the day's REVENUE from attended FIRST_TRIAL +
+      SINGLE_SESSION only** (booked − leave). COURSE_PACKAGE / VOUCHER are NOT counted
+      at day-end (their revenue is at sale) — no double count. It never computes expense.
 - [ ] A freelance's budget is **drawn down at booking** (not day-end); the drawn
       amount is the freelance **expense** in the P&L.
 - [ ] Admin sets each FT/PT teacher's monthly salary **once**; it **auto-posts to the

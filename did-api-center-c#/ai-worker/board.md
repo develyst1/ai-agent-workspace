@@ -16,7 +16,7 @@
 | REQ-002 | DASHBOARD_LICENSE_MOVE — weapon-type dropdown codes configurable in appsettings | MEDIUM | DELIVERED | — (done) |
 | REQ-003 | DASHBOARD_LICENSE_BOOK — align response keys to DB column names | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
 | REQ-004 | DASHBOARD_LICENSE_BOOK — book-type dropdown configurable in appsettings (DB labels) | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
-| REQ-005 | DASHBOARD_MOVE_A10 — build Center backend for the อ.10 movement/delivery dashboard | MEDIUM | IN_SPEC (data resolved; TASK-005 done) | Jason (BE) — TASK-006 + TASK-007 |
+| REQ-005 | DASHBOARD_MOVE_A10 — build Center backend for the อ.10 movement/delivery dashboard | MEDIUM | SPEC_DONE (3/4 accepted; transport-type re-source designed → TASK-006 REWORK #4) | Jason (BE) — TASK-006 REWORK #4 |
 
 ## Tasks
 
@@ -27,14 +27,15 @@
 | TASK-003 | Rename DASHBOARD_LICENSE_BOOK JSON keys to DB column snake_case | SPEC-003 | DONE | Jason (BE) | none |
 | TASK-004 | Make DASHBOARD_LICENSE_BOOK book-type dropdown config-driven (DB labels, value=FORM_ID) | SPEC-004 | DONE | Jason (BE) | TASK-003 |
 | TASK-005 | Scaffold DASHBOARD_MOVE_A10 (controller+models+search-filter+cascades) | SPEC-005 | DONE | Jason (BE) | none |
-| TASK-006 | DASHBOARD_MOVE_A10 chart+table on the INFORM_MOVE backbone | SPEC-005 | IN_PROGRESS | Jason (BE) | TASK-005 |
-| TASK-007 | Add T_R_TRANSPORT_TYPE entity + ประเภทการขนย้าย dropdown | SPEC-005 | REVIEW | Jason (BE) → Sober (SA) | none |
+| TASK-006 | DASHBOARD_MOVE_A10 chart+table on the INFORM_MOVE backbone | SPEC-005 | IN_PROGRESS (rework #4: re-source ประเภทการขนย้าย; drop T_R_TRANSPORT_TYPE) | Jason (BE) | TASK-005 |
+| TASK-007 | Add T_R_TRANSPORT_TYPE entity + ประเภทการขนย้าย dropdown | SPEC-005 | SUPERSEDED (wrong source; entity removed in TASK-006 #4) | Jason (BE) | none |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| _(none — all REQ-005 DATA REQUESTs answered 2026-07-20)_ | — | Movement source resolved = INFORM_MOVE family. Ball is with Sober (revise SPEC-005) then Jason (TASK-006). |
+| col5/col6 naming-trap check (REQ-005) | Porter → stakeholder | Sober designed the re-source (SPEC-005 REWORK #4; join L.REQUEST_ID→T_T_REQUEST_MOVE traced from DATADIC). Flag: col5 ประเภทการขออนุญาต (INFORM_REQUEST_TYPE 0/1) vs col6 ประเภทการขนย้าย (MOVE_REQUEST_TYPE via `MoveRequestType`) read near-identical at 0/1; confirm the stakeholder wants both distinct columns (col6 diverges at 2–5). Non-blocking — verify at the re-run. |
+| Buyer-group code `0` label (minor) | stakeholder (unanswered) | Is code `0` (foreign "…Sdn Bhd") a real group (ต่างประเทศ/อื่นๆ) needing a label, or leave "ไม่ระบุ"? Non-blocking. |
 
 ## Resolved confirmations (2026-07-20)
 

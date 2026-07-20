@@ -1,8 +1,78 @@
 # SPEC-005: DASHBOARD_MOVE_A10 — Center backend for the อ.10 movement/delivery dashboard
 
 - Source: REQ-005
-- Status: ACTIVE (both DATA REQUESTs answered 2026-07-20 — movement source = INFORM_MOVE family;
-  `T_R_TRANSPORT_TYPE` columns confirmed). Revised data backbone below.
+- Status: ACTIVE — live capture (DATA REQUEST 3, 2026-07-20) cleared the core but found a dup-row bug +
+  blank columns → TASK-006 REWORK. Fix design in the "Live-capture REWORK" section below.
+
+## REWORK #4 (2026-07-20) — ประเภทการขนย้าย re-sourced (stakeholder correction)
+
+Root cause of the persistent blank (DATA REQ 6): `T_R_TRANSPORT_TYPE` is **empty (0 rows)** in this env — the
+join/subquery worked. **Stakeholder then re-sourced the field entirely:** ประเภทการขนย้าย is **NOT**
+`T_T_LICENSE_DTL.TRANSPORT_TYPE_CODE`/`T_R_TRANSPORT_TYPE`; it is **`T_T_REQUEST_MOVE.MOVE_REQUEST_TYPE`**,
+name via **`T_S_COMMON_CODE` group `MoveRequestType`** (codes 0–5: 0 ให้หน่วยงานตามมาตรา 7 · 1 ขาย/ขนย้ายนอก
+หน่วยงาน · 2 ทำลาย · 3 ทดสอบ · 4 จัดแสดง · 5 กลับโรงงาน).
+
+**New design (both the table column `transport_type_code_name` AND the ประเภทการขนย้าย dropdown):**
+- **Join (code-verified):** `T_T_INFORM_MOVE_DTL.REF_LICENSE_NO` → `T_T_LICENSE L` (already joined,
+  `FORM_ID=10`) → `L.REQUEST_ID` (DATADIC:631) → `T_T_REQUEST_MOVE.REQUEST_ID` (DATADIC:906). Resolve the code
+  via a **scalar subquery** (avoids the earlier multiplication trap):
+  `,(SELECT MAX(RM.MOVE_REQUEST_TYPE) FROM T_T_REQUEST_MOVE RM WHERE RM.REQUEST_ID = L.REQUEST_ID) AS MoveTypeCode`
+- **Name resolution:** reuse the move-license `CommonCodeIntMap` pattern —
+  `TSCommonCodeRepo.GetDataActiveByGroupCode("MoveRequestType")` → dict `CODE_INT → CODE_NAME`; map
+  `MoveTypeCode` → `transport_type_code_name`.
+- **Dropdown (SearchFilter, ประเภทการขนย้าย / `transport_type_code_ddl`):** source from the same common-code
+  group (`GetDataActiveByGroupCode("MoveRequestType")` → items `{value: CODE_INT, label: CODE_NAME}`) — drop
+  the empty `T_R_TRANSPORT_TYPE`. Move-type filter now compares `MoveTypeCode`.
+- **Remove the now-dead `T_R_TRANSPORT_TYPE`** entity/repo/UoW wiring + the old `TransportTypeCode` subquery
+  (TASK-007 is superseded — Karpathy: remove what this change orphaned). No new entity — common-code is already in the DAL.
+
+⚠ **Naming-trap flag to Porter (non-blocking):** col5 **ประเภทการขออนุญาต** stays sourced from
+`INFORM_REQUEST_TYPE` (0/1 hardcoded map, works today); col6 **ประเภทการขนย้าย** now = `MOVE_REQUEST_TYPE`
+via `MoveRequestType`. At 0/1 the two read near-identical; col6 diverges at 2–5. The re-run capture will show
+whether they differ — confirm the stakeholder genuinely wants both distinct columns (they appear on the page).
+
+## Live-capture REWORK (2026-07-20) — findings + fixes
+
+Capture: `project-docs/data-req-3-2026-07-20-move-a10-live-capture.md` (body `move_date_range
+["2026-06-01","2026-06-30"]`, 7 rows). **Cleared:** INNER join `LICENSE_NO=REF_LICENSE_NO & FORM_ID=10`
+returns rows; `move_date`/`move_seq`/`moved_qty` populated; `move_request_type_name` (0/1) resolves;
+charts SUM `moved_qty` correctly. **To fix:**
+
+1. **Duplicate rows (confirmed bug).** `key:6`/`key:7` identical (license `80/2569`, product `P-0672`) —
+   the `LEFT JOIN T_T_LICENSE_DTL LDTL ON LICENSE_ID + PRODUCT_CODE` multiplies the backbone row when a
+   license has >1 DTL line for the same product. **Fix: remove that join; resolve `TRANSPORT_TYPE_CODE`
+   via a correlated scalar subquery** so it can never multiply rows:
+   ```sql
+   ,(SELECT MAX(LDTL.TRANSPORT_TYPE_CODE) FROM T_T_LICENSE_DTL LDTL
+      WHERE LDTL.LICENSE_ID = L.ID AND LDTL.PRODUCT_CODE = DTL.PRODUCT_CODE) AS TransportTypeCode
+   ```
+2. **`expiry_date` blank on all rows (mapping bug).** It was mapped from the denormalized (null)
+   `DTL.REF_LICENSE_EXPIRY_DATE`. **Fix: source `issue_date` + `expiry_date` from the already-joined
+   `T_T_LICENSE L`** (`L.ISSUE_DATE`, `L.EXPIRY_DATE`) — authoritative, and we already have `L`.
+3. **`transport_type_code_name` blank on all rows (triage → DATA REQUEST 4).** The LDTL join *did* match
+   (it caused the dups) but `TRANSPORT_TYPE_CODE` is null → the license line doesn't carry it for these
+   records (move-license had the same trouble). Confirm whether it's ever populated / where ประเภทการขนย้าย
+   truly comes from. After the scalar-subquery fix it renders whatever exists (null → blank).
+4. **`authority_group_no`(+`_name`) blank → `by_buyer_group` chart dead — RESOLVED (wrong master).**
+   DATA REQ 4: `BUYER_AUTHORITY_ID` is **100% populated** but does **not** join `T_M_PRIMARY_BUYER_AUTHORITY.ID`.
+   **Root cause (from DATADIC, no DATA REQ 5):** the movement flow uses a *different* buyer master —
+   **`T_M_BUYER_AUTHORITY`** ("ข้อมูลหน่วยผู้ซื้อ **ใช้กับแบบ อ.10**", DATADIC:90), which has `AUTHORITY_GROUP_NO`
+   (1=ทหาร/2=ตำรวจ/3=สมาคม/9=อื่นๆ). The move-flow FK (`T_T_REQUEST_MOVE.BUYER_AUTHORITY_ID`, DATADIC:911)
+   targets `T_M_BUYER_AUTHORITY`, not the PRIMARY master that move-license borrowed.
+   **Fix (whole buyer dimension → `T_M_BUYER_AUTHORITY`):**
+   - **SQL (1-line swap):** `T_M_PRIMARY_BUYER_AUTHORITY BA` → `T_M_BUYER_AUTHORITY BA ON BA.ID = DTL.BUYER_AUTHORITY_ID`
+     (raw-SQL join — no entity needed). `BA.AUTHORITY_GROUP_NO` then resolves → chart + `authority_group_no(_name)` populate.
+   - **Dropdowns (SearchFilter):** the buyer **group** + **unit** dropdowns must also source from
+     `T_M_BUYER_AUTHORITY` (not PRIMARY) so the filter options match the table's `BUYER_NAME`/group. Add a
+     `TMBuyerAuthority` SPF entity/repo (`spf-add-entity`; ID/AUTHORITY_NAME/AUTHORITY_GROUP_NO) and point the two
+     dropdowns at it. (Group filter happens to work either way — same 1/2/3/9 codes — but the หน่วยผู้ซื้อ name
+     list would mismatch otherwise.)
+   - **Verification:** the planned re-run capture confirms the chart populates (strong DATADIC inference; if
+     `BUYER_AUTHORITY_ID` still doesn't match `T_M_BUYER_AUTHORITY.ID`, escalate to DATA REQ 5 — low likelihood).
+5. **dest region/province blank for `80/2569` — real data, not a bug.** `LEFT JOIN T_T_LICENSE_MOVE`
+   correctly yields null when that license has no move-authorization row. Leave as-is.
+
+Everything else (grain, joins, filters, movement/charts) stays as designed above.
 
 ## Overview
 
