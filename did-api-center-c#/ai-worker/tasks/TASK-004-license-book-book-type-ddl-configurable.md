@@ -1,7 +1,7 @@
 # TASK-004: Make DASHBOARD_LICENSE_BOOK book-type dropdown config-driven (DB labels, value=FORM_ID)
 
 - Source: SPEC-004
-- Status: REVIEW
+- Status: DONE
 - Depends on: TASK-003 (do the key rename first; same files)
 
 ## What to do
@@ -119,4 +119,20 @@ Implemented `label = FormCode`, `value = FORM_ID` as specified. If the stakehold
 
 ## Review
 
-(Sober fills this in at REVIEW: verdict + reasons.)
+**Verdict: DONE — Sober (SA), 2026-07-17.** Verified the actual code, not the notes:
+- **Config plumbing:** `appsettings.json:43` `LicenseBookFormIds:[8,10,16,17]`; `ConfigurationsModel.cs:22`
+  `List<int> LicenseBookFormIds`; `Program.cs:213-214` mapping; service ctor injects
+  `IOptions<ConfigurationsModel>` → `_bookTypeFormIds` (L44-47). ✓
+- **Dropdown** (`DashboardLicenseBookService.cs:65-72`): loops configured FORM_IDs **in order** →
+  `TRLicenseFormRepo.GetDataByFormId(formId)` → `if (form == null) continue;` (WHERE-IN, no error/log) →
+  `Value = formId.ToString()`, `Label = form.FormCode ?? ""`. Matches SPEC-004 + REQ-004 AC. ✓
+- **Filter** (`BuildFilteredRows` L153): `InList(req.BookTypes, r.FormId?.ToString())` — now matches on
+  FORM_ID, consistent with the new dropdown value. ✓
+- **`BOOK_TYPES` kept** (L35-38) with updated comment; still drives chart grouping (L95) + table
+  `form_id_name` (`BookTypeLabel`) — chart/table label source unchanged (out of scope). ✓
+- No server-side data filter added; no other dropdown/dashboard touched; DI unchanged; build 0 errors.
+- Brownfield deferral of the literal-label capture accepted — behaviour (config→FORM_IDs+order, DB→label,
+  missing→skip, filter matches FORM_ID) is conclusive from code.
+
+No rework. Matches every REQ-004 acceptance criterion. Q2 (label=`FORM_CODE` vs `LICENSE_NAME`) remains a
+non-blocking stakeholder confirmation — implemented `FORM_CODE` per spec; a one-word swap if they differ.

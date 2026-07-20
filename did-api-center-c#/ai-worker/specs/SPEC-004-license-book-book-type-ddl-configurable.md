@@ -1,7 +1,7 @@
 # SPEC-004: DASHBOARD_LICENSE_BOOK — book-type dropdown from appsettings (DB-sourced labels)
 
 - Source: REQ-004
-- Status: ACTIVE
+- Status: DONE
 
 ## Overview
 
