@@ -17,8 +17,8 @@
 | REQ-003 | DASHBOARD_LICENSE_BOOK — align response keys to DB column names | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
 | REQ-004 | DASHBOARD_LICENSE_BOOK — book-type dropdown configurable in appsettings (DB labels) | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
 | REQ-005 | DASHBOARD_MOVE_A10 — build Center backend for the อ.10 movement/delivery dashboard | MEDIUM | DELIVERED | — (done; live capture accepted 2026-07-20; 1 minor buyer-group `0` label optional) |
-| REQ-006 | DASHBOARD_LICENSE_MOVE — re-source to approved-request-first + attach actual delivery (mirror of A10) | MEDIUM | IN_SPEC (**impl authorized 2026-07-20 "ทำเลย"**) | Sober (SA) — dispatch TASK-009 to Jason |
-| REQ-007 | Dashboard date fields — one key, formatted value (drop `_formatted` twin) | MEDIUM | IN_SPEC (**impl authorized 2026-07-20 "ทำเลย"**) | Sober (SA) — dispatch TASK-008 to Jason |
+| REQ-006 | DASHBOARD_LICENSE_MOVE — re-source to approved-request-first + attach actual delivery (mirror of A10) | MEDIUM | IN_SPEC (dispatched; TASK-009 full scope ready) | Jason (BE) — impl TASK-009 |
+| REQ-007 | Dashboard date fields — one key, formatted value (drop `_formatted` twin) | MEDIUM | IN_SPEC (dispatched) | Jason (BE) — impl TASK-008 |
 
 ## Tasks
 
@@ -39,8 +39,8 @@
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
 | ~~DATA REQUEST 7 (purchase_document)~~ RESOLVED | — | Stakeholder: **there is no such data ("ไม่มี").** Field came from the frontend chart "แยกตามเอกสารการซื้อ" + the pre-existing backend placeholder ("ไม่ระบุ"). Decision: leave "ไม่ระบุ" (backend can't fill); removing the chart = frontend change, out of scope. CLOSED. |
-| col5 ประเภทการขออนุญาต wiring (REQ-006) | Sober (SA) → Jason | ANSWERED: cols are distinct. col5 = **hardcode 3-value enum** (ขนย้าย / ขายขนย้ายในราชอาณาจักร / ขายขนย้ายนอกราชอาณาจักร), drop old INFORM_REQUEST_TYPE 0/1. Sober trace which field selects per row (likely license request/form type); col6 = `MoveRequestType` unblocked. |
-| Buyer-group source (REQ-006) | Sober (SA) | Stakeholder: กลุ่มผู้ซื้อ from `T_M_BUYER_AUTHORITY`. Sober confirm the group-NAME column on that table; source label from there (resolves code `0` too). Porter re-confirming the terse answer. |
+| col5 common-code vs hardcode (REQ-006) | Porter → stakeholder | **Field FOUND (Sober):** col5 selector = `T_T_REQUEST.REQUEST_TYPE` (via `L.REQUEST_ID`; DATADIC:806, common-code group `RequestType`). TASK-009 wires it via the common-code `RequestType` names (cleaner than 3 literals). **Q: OK to use common-code names vs exactly-3 hardcode?** Non-blocking — Jason implements common-code; small swap if they insist on 3. |
+| ~~Buyer-group source (REQ-006)~~ RESOLVED | — | = `T_M_BUYER_AUTHORITY.AUTHORITY_GROUP_NO`, label via the 1/2/3/9 map (no separate name column — DATADIC:90; same as A10). In TASK-009 §E. Live-verify the license-side FK at the capture. |
 | Buyer-group code `0` label (minor, optional) | stakeholder (unanswered) | Is code `0` (foreign "…Sdn Bhd") a real group (ต่างประเทศ/อื่นๆ) needing a label, or leave "ไม่ระบุ"? Non-blocking; REQ-005 delivered without it. |
 
 ## Parked / known notes

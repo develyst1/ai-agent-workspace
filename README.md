@@ -41,7 +41,9 @@ All coordination state lives in each project's `ai-worker/` folder:
 
 ## How to run a work session
 
-Open one Claude Desktop chat **per role** and start it with a message like:
+Open one Claude Desktop chat **per role** and start it with the ready-made
+prompt from **`SESSION-STARTERS.md`** (recommended — it bakes in the
+no-chain-skipping rules from message #1). Quick version:
 
 > **PM session:**
 > You are working on project `did-api-center-c#` in

@@ -56,6 +56,27 @@ Replace the hardcoded `MoveQty = 0` with the **SUM of actual deliveries** for th
   col5/col6 naming-trap flagged (unresolved) on A10** — do NOT change the type columns here until Porter/
   stakeholder confirm whether the two "type" fields are distinct. Tracked separately; **not part of TASK-009.**
 
+## Stakeholder-answer updates (2026-07-20) — now in TASK-009 scope
+
+Both "type" columns are **distinct**, both come from the **request** (via `L.REQUEST_ID → T_T_REQUEST`), and
+buyer-group moves to `T_M_BUYER_AUTHORITY`:
+
+- **col5 ประเภทการขออนุญาต — field FOUND from code (my assigned investigation):** = `T_T_REQUEST.REQUEST_TYPE`
+  (DATADIC:806 "ประเภทคำขอ (enum RequestType)"), reached via `L.REQUEST_ID → T_T_REQUEST RQ`. **Recommend
+  resolving the name via the existing common-code group `"RequestType"`** (auto Thai name: ขนย้าย/ขายในราช
+  อาณาจักร/ขายนอกราชอาณาจักร = อ.9/อ.15/อ.14) — cleaner than a literal 3-value hardcode and same pattern as col6.
+  Drop the old `INFORM_REQUEST_TYPE`/`MOVE_REQUEST_TYPE` 0/1 source. **→ Porter Q: OK to use the common-code
+  `RequestType` group (proper names, maintainable) instead of hardcoding exactly 3 labels?** (If they insist on
+  3 literals, it's a small map — but the field + group are confirmed.)
+- **col6 ประเภทการขนย้าย — UNBLOCKED (distinct confirmed):** = `T_T_REQUEST_MOVE.MOVE_REQUEST_TYPE` via
+  common-code `"MoveRequestType"` (0–5) — same as A10. Join `L.REQUEST_ID → T_T_REQUEST_MOVE` (scalar subquery
+  `MAX(...)`). Replaces move-license's current empty `TRANSPORT_TYPE_CODE`/`TransportType` source.
+- **Buyer group → `T_M_BUYER_AUTHORITY`** (stakeholder). Same fix A10 needed: join `T_M_BUYER_AUTHORITY BA ON
+  BA.ID = DTL.BUYER_AUTHORITY_ID` → `BA.AUTHORITY_GROUP_NO`; label via the 1/2/3/9 map (T_M_BUYER_AUTHORITY has
+  **no** separate group-name column — DATADIC:90; group name = the code map, same as A10). Verify at the live
+  capture (the license-side `BUYER_AUTHORITY_ID`→`T_M_BUYER_AUTHORITY.ID` link, like A10).
+- **purchase_document → PARKED** (stakeholder: no such data; leave "ไม่ระบุ"; removing the chart = FE change).
+
 ## Acceptance / Non-functional
 
 - [ ] `move_qty` (col 12) = real SUM of INFORM_MOVE deliveries per license-line (0 if none); approved-but-
