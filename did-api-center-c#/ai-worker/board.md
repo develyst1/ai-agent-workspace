@@ -17,8 +17,8 @@
 | REQ-003 | DASHBOARD_LICENSE_BOOK — align response keys to DB column names | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
 | REQ-004 | DASHBOARD_LICENSE_BOOK — book-type dropdown configurable in appsettings (DB labels) | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
 | REQ-005 | DASHBOARD_MOVE_A10 — build Center backend for the อ.10 movement/delivery dashboard | MEDIUM | DELIVERED | — (done; live capture accepted 2026-07-20; 1 minor buyer-group `0` label optional) |
-| REQ-006 | DASHBOARD_LICENSE_MOVE — re-source to approved-request-first + attach actual delivery (mirror of A10) | MEDIUM | IN_SPEC (dispatched; TASK-009 full scope ready) | Jason (BE) — impl TASK-009 |
-| REQ-007 | Dashboard date fields — one key, formatted value (drop `_formatted` twin) | MEDIUM | IN_SPEC (dispatched) | Jason (BE) — impl TASK-008 |
+| REQ-006 | DASHBOARD_LICENSE_MOVE — re-source to approved-request-first + attach actual delivery (mirror of A10) | MEDIUM | SPEC_DONE (TASK-009 code done + reviewed; live capture to accept) | Porter (PM) — live capture |
+| REQ-007 | Dashboard date fields — one key, formatted value (drop `_formatted` twin) | MEDIUM | SPEC_DONE (a10 accepted; license-move ships w/ REQ-006) | Porter (PM) — accept (trivial) |
 
 ## Tasks
 
@@ -31,16 +31,17 @@
 | TASK-005 | Scaffold DASHBOARD_MOVE_A10 (controller+models+search-filter+cascades) | SPEC-005 | DONE | Jason (BE) | none |
 | TASK-006 | DASHBOARD_MOVE_A10 chart+table on the INFORM_MOVE backbone | SPEC-005 | DONE (code; re-run capture to accept) | Jason (BE) | TASK-005 |
 | TASK-007 | Add T_R_TRANSPORT_TYPE entity + ประเภทการขนย้าย dropdown | SPEC-005 | SUPERSEDED (wrong source; entity removed in TASK-006 #4) | Jason (BE) | none |
-| TASK-008 | MOVE_A10 dates → single formatted `issue_date` (drop `issue_date_formatted`) | SPEC-007 | TODO (authorized — go) | Jason (BE) | none |
-| TASK-009 | LICENSE_MOVE — attach real `move_qty` (INFORM_MOVE SUM) + single formatted `issue_date` + col5 hardcode 3-value + col6 MoveRequestType | SPEC-006 + SPEC-007 | TODO (authorized — go) | Jason (BE) | none |
+| TASK-008 | MOVE_A10 dates → single formatted `issue_date` (drop `issue_date_formatted`) | SPEC-007 | DONE | Jason (BE) | none |
+| TASK-009 | LICENSE_MOVE — move_qty attach + single formatted issue_date + col5 RequestType + col6 MoveRequestType + buyer=T_M_BUYER_AUTHORITY | SPEC-006 + SPEC-007 | DONE (code; live capture to accept) | Jason (BE) | none |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
 | ~~DATA REQUEST 7 (purchase_document)~~ RESOLVED | — | Stakeholder: **there is no such data ("ไม่มี").** Field came from the frontend chart "แยกตามเอกสารการซื้อ" + the pre-existing backend placeholder ("ไม่ระบุ"). Decision: leave "ไม่ระบุ" (backend can't fill); removing the chart = frontend change, out of scope. CLOSED. |
-| col5 common-code vs hardcode (REQ-006) | Porter → stakeholder | **Field FOUND (Sober):** col5 selector = `T_T_REQUEST.REQUEST_TYPE` (via `L.REQUEST_ID`; DATADIC:806, common-code group `RequestType`). TASK-009 wires it via the common-code `RequestType` names (cleaner than 3 literals). **Q: OK to use common-code names vs exactly-3 hardcode?** Non-blocking — Jason implements common-code; small swap if they insist on 3. |
+| ~~col5 common-code vs hardcode (REQ-006)~~ RESOLVED | — | **Stakeholder chose common-code (dynamic) 2026-07-20.** col5 = `T_T_REQUEST.REQUEST_TYPE` → common-code group `RequestType` DB names ("คำขออนุญาตขนย้าย…(อ.9)", "…ในราชอาณาจักร (อ.15)", "…นอกราชอาณาจักร (อ.14)"). Matches TASK-009's plan — no hardcode, no rework. |
 | ~~Buyer-group source (REQ-006)~~ RESOLVED | — | = `T_M_BUYER_AUTHORITY.AUTHORITY_GROUP_NO`, label via the 1/2/3/9 map (no separate name column — DATADIC:90; same as A10). In TASK-009 §E. Live-verify the license-side FK at the capture. |
+| REQ-006 live capture (acceptance) | stakeholder (asked by Porter 2026-07-20) | TASK-009 code done+reviewed. Capture LICENSE_MOVE `/table`+`/chart` (issue-date range) → confirm: `move_qty` (col 12) now non-zero for delivered lines; `issue_date` single formatted; col5 ประเภทการขออนุญาต (RequestType names) + col6 ประเภทการขนย้าย (MoveRequestType) both populated + distinct; buyer-group populated (license-side `BUYER_AUTHORITY_ID`→`T_M_BUYER_AUTHORITY.ID`). All pass → REQ-006 DELIVERED (REQ-007 rides along). If license-side buyer FK misses → targeted follow-up (like A10). Awaiting JSON. |
 | Buyer-group code `0` label (minor, optional) | stakeholder (unanswered) | Is code `0` (foreign "…Sdn Bhd") a real group (ต่างประเทศ/อื่นๆ) needing a label, or leave "ไม่ระบุ"? Non-blocking; REQ-005 delivered without it. |
 
 ## Parked / known notes
