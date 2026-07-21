@@ -1,6 +1,6 @@
 # REQ-009: Unify the weapon-type (ประเภทอาวุธ) dropdown onto ONE shared config for a10 + move-license (default all 4 PTG)
 
-- Status: READY_FOR_SA
+- Status: DELIVERED (2026-07-20 — TASK-013 done + Sober-reviewed; shared `DashboardWeaponTypeCodes`, default 4 PTG, empty⇒all; deterministic, accepted on review)
 - Priority: MEDIUM
 - Requested: 2026-07-20 by stakeholder (dev@smartalliance.co.th)
 - Deadline: none

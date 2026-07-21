@@ -27,16 +27,19 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| — | *(none yet — Porter creates the first REQ)* | | | |
+| REQ-001 | Per-project API authentication | HIGH | IN_SPEC | Jason (build TASK-001, TASK-002) |
+| REQ-002 | Real-time knowledge (date + general web search) | MEDIUM | READY_FOR_SA | Sober (write SPEC-002) |
+| REQ-003 | Internal knowledge / RAG | — | CANCELLED (de-scoped — RAG lives in consuming projects) | — |
 
 ## Tasks
 
 | ID | Title | Source | Status | Assignee | Depends on |
 |----|-------|--------|--------|----------|------------|
-| — | *(none yet)* | | | | |
+| TASK-001 | API key store module + example file + gitignore | SPEC-001 | REVIEW | Jason | none |
+| TASK-002 | Auth middleware, wiring, 401, attribution log, docs | SPEC-001 | REVIEW | Jason | TASK-001 |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| — | | |
+| TASK-002 (200-trace only) | Sober → human | All provider keys in `.env` empty → can't show real 200 end-to-end. Route a working key? (non-blocking for auth review) |

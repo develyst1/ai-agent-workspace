@@ -20,7 +20,9 @@
 | REQ-006 | DASHBOARD_LICENSE_MOVE — re-source to approved-request-first + attach actual delivery (mirror of A10) | MEDIUM | DELIVERED | — (all A–E captured ✅; TASK-010 label fix reviewed 2026-07-20) |
 | REQ-007 | Dashboard date fields — one key, formatted value (drop `_formatted` twin) | MEDIUM | DELIVERED | — (a10 + license-move captures: `issue_date` single formatted, no `_formatted`) |
 | REQ-008 | Dashboard /chart — echo the requested ประเภทอาวุธ (weapon-type) filter back in the response (for FE caption) | MEDIUM | DELIVERED | — (TASK-011 done+reviewed; additive/deterministic → accepted on Sober review, defaults locked) |
-| REQ-009 | Unify ประเภทอาวุธ dropdown onto ONE shared config for a10 + move-license (default all 4 PTG; empty⇒all) | MEDIUM | SPEC_DONE (TASK-013 done+reviewed; deterministic → acceptance met) | Porter (PM) — flip DELIVERED |
+| REQ-009 | Unify ประเภทอาวุธ dropdown onto ONE shared config for a10 + move-license (default all 4 PTG; empty⇒all) | MEDIUM | DELIVERED | — (TASK-013 done+reviewed; shared `DashboardWeaponTypeCodes`, default 4 PTG, empty⇒all → deterministic, accepted on review) |
+| REQ-010 | /chart — expose หน่วยนับ (unit) at TOP LEVEL (like the weapon-type echo; populated even when empty) | MEDIUM | DELIVERED | — (TASK-015 done+reviewed; additive/deterministic → accepted on Sober review, like REQ-008) |
+| REQ-011 | Dashboards support NO-date-range search (return all) without hanging — optimize the query | HIGH | READY_FOR_SA | Sober (SA) — diagnose hang + SPEC |
 
 ## Tasks
 
@@ -39,6 +41,8 @@
 | TASK-011 | /chart echo the requested ประเภทอาวุธ (code + Thai name) — a10 + license-move | SPEC-008 | DONE | Jason (BE) | none |
 | TASK-012 | Buyer-group **dropdown** code `0`/unmapped → "ไม่ระบุ" (align w/ TASK-010; a10 + license-move, L96) | stakeholder 2026-07-20 | DONE | Jason (BE) | none |
 | TASK-013 | Shared `DashboardWeaponTypeCodes` config + unified empty⇒all weapon dropdown (a10 + license) | SPEC-009 | DONE | Jason (BE) | none |
+| TASK-014 | Fix ประเภทอาวุธ FILTER source → `VW_PRODUCT.PRODUCT_TYPE_GROUP_CODE` (both dashboards; BUG) | bug 2026-07-20 | DONE (code; re-test to accept) | Jason (BE) | none |
+| TASK-015 | /chart — expose หน่วยนับ (unit) at top level (mirror weapon-type echo) — a10 + license-move | SPEC-010 | DONE | Jason (BE) | none |
 
 ## Blocked / waiting
 
@@ -57,6 +61,13 @@
 | ~~ประเภทอาวุธ dropdown EMPTY (move-license)~~ CONFIRMED = CONFIG | stakeholder (ops: set deployed config) | **Root cause CONFIRMED by capture (2026-07-20):** `GET /dashboard-move-a10/search-filter` `product_type_group_code_ddl` = **4 items** (PTG01 กระสุน/PTG02 อาวุธปืน/PTG03 วัตถุระเบิด/PTG04 อื่นๆ) → DB (`TMProductTypeGroupRepo`) is fine. move-license = **`[]`** because it's config-driven (REQ-002) and the **deployed `appsettings:Configurations:MoveLicenseWeaponTypeCodes` is empty/unset**. **NOT a code bug — no team code change.** Fix = set that config key in the deployed appsettings (e.g. `["PTG01","PTG02","PTG03","PTG04"]` or the desired subset) + restart. Stakeholder to pick which codes (that's the REQ-002 config purpose). Optional: team can update the repo appsettings default if they want a different baseline. |
 | ~~authority_group_no_ddl code `0` label~~ DONE (TASK-012) | — | Both services' buyer-group dropdown fallback → "ไม่ระบุ"; reviewed 2026-07-20. |
 | ~~ประเภทอาวุธ dropdown empty~~ → REQ-009 | — | Superseded: REQ-009 (shared config + empty⇒all) makes both dashboards default to all 4 PTG even if the deployed config is unset — kills the empty-trap. Interim "set the deployed key" no longer needed once REQ-009 ships. |
+
+## Open issues (2026-07-20, cont.)
+
+| Item | Waiting on | Question (short) |
+|------|-----------|------------------|
+| ~~weapon-type FILTER BUG → TASK-014~~ FIXED ✅ | — | **CONFIRMED FIXED (stakeholder re-test 2026-07-20):** `/dashboard-move-license/chart` filter=PTG01 → data returns (total 152030; was empty). `VW_PRODUCT.PRODUCT_TYPE_GROUP_CODE` source works. Bug closed. | 
+| REQ-010 top-level unit empty when no หน่วยนับ filter sent | stakeholder (asked by Porter 2026-07-20) | Re-test showed `quantity_unit_id/name` = "" because the curl omitted the หน่วยนับ filter (REQ-010 echoes the **requested** filter). On the real FE, หน่วยนับ is a **required** filter → populated. **Q: keep (a) echo-requested-filter (fine since FE always sends), or (b) source the top-level unit from the data (like the charts' `valueUnit`="นัด") so it's populated even without the filter?** If (b) → small SPEC-010 adjust → Jason. | Both SQLs now source `WeaponCategoryCode` from **`VW_PRODUCT.PRODUCT_TYPE_GROUP_CODE`** via `LEFT JOIN VW_PRODUCT VWP ON VWP.PRODUCT_CODE = DTL.PRODUCT_CODE` (a10 `TTInformMoveDtlRepository` L45/L72; license `TTLicenseDtlRepository` L228/L249); no `L.PRODUCT_TYPE_GROUP_CODE` left; build 0 errors; `WeaponCategoryCode` filter-only → no output change. **Only acceptance remaining = data-dependent stakeholder re-test:** `/dashboard-move-license/chart`+`/table` filter=PTG01 → returns data; spot-check move-a10. → Porter to relay to stakeholder. |
 
 ## Parked / known notes
 
