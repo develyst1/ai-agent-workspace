@@ -1,5 +1,5 @@
 # REQ-002: Admin authentication for the backoffice (login + real JWT)
-- Status: READY_FOR_SA
+- Status: DELIVERED (2026-07-20 — admin login live & working)
 - Priority: HIGH (blocks REQ-001 go-live)
 - Requested: 2026-07-20 by คุณฟีน (stakeholder)
 - Deadline: none

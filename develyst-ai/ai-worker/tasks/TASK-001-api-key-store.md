@@ -1,7 +1,7 @@
 # TASK-001: API key store module + example file + gitignore
 
 - Source: SPEC-001
-- Status: REVIEW
+- Status: DONE
 - Depends on: none
 
 ## What to do
@@ -103,4 +103,28 @@ Thai section comments are fine but not required.
 
 ## Review
 
-(Sober fills this in at REVIEW: verdict + reasons.)
+**Verdict: DONE** — 2026-07-21, Sober.
+
+Reviewed the real code (`src/auth/keyStore.ts`), not just the diff, against SPEC-001.
+
+- **Meets spec fully.** `lookupProject` returns the project only for a valid
+  *enabled* key; unknown and disabled both return `null` (indistinguishable) —
+  exactly as specified. mtime-based hot-reload is implemented and correct: on a
+  missing file `cachedMtimeMs` resets to `-1`, so when the file reappears the
+  `mtimeMs === cachedMtimeMs` short-circuit can't match and it re-parses (restore
+  works). Fail-closed on missing/empty/invalid-JSON and on non-array JSON
+  (`Array.isArray ? entries : []`) — never throws, never falls open.
+- **Warn-guard is sound, not over-engineered.** It warns on the first failure and
+  on a valid→broken transition (`cache.size > 0`), and stays quiet while broken —
+  no per-request spam. I'm fine keeping it; no change requested.
+- **Secrets discipline:** only project names are ever logged; no `key` value
+  anywhere. `api-keys.json` is gitignored (`git check-ignore` prints it),
+  `api-keys.example.json` is tracked with placeholder values, working tree clean.
+- **Verification accepted:** `tsc --noEmit` clean in `src/**` (the
+  `bun-types/ffi.d.ts` lib noise is pre-existing and unrelated); scratch smoke
+  covered enabled→project, disabled/unknown/empty→null, file-missing→null+warn
+  no crash, restore→hot-reload. Re-confirmed independently: example shape, gitignore,
+  and check-ignore all correct.
+
+No defects. Duplicate-key-first-wins and per-request `statSync` are acceptable per
+SPEC (tiny file). Good work.

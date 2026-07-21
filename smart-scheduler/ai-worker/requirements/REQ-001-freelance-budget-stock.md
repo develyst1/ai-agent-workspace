@@ -1,5 +1,5 @@
 # REQ-001: Freelance teacher pay as a monthly budget-stock with auto-disable at cap
-- Status: IN_SPEC
+- Status: DELIVERED (2026-07-20 — live & confirmed by คุณฟีน)
 - Priority: HIGH
 - Requested: 2026-07-20 by คุณฟีน (stakeholder)
 - Deadline: none

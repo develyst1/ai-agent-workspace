@@ -1,6 +1,6 @@
 # REQ-001: Per-project API authentication for the gateway
 
-- Status: READY_FOR_SA
+- Status: DELIVERED (accepted by Porter 2026-07-21 — all AC met, verified by SA against real code + live traces)
 - Priority: HIGH
 - Requested: 2026-07-21 by human (dev@smartalliance.co.th)
 - Deadline: none
@@ -34,11 +34,11 @@ treat access as untrusted-by-default.
 
 ## Acceptance Criteria
 
-- [ ] A request to `/chat` with no credential is rejected (not processed by any provider).
-- [ ] A request with a valid project key succeeds and is attributed to that project.
-- [ ] A request with a revoked/disabled key is rejected, while other projects' keys still work.
-- [ ] Two different projects use two different keys; logs/records show which project each call belongs to.
-- [ ] Provider API keys / `.env` secrets are never exposed to callers in any response.
+- [x] A request to `/chat` with no credential is rejected (not processed by any provider). — live 401 confirmed (no/malformed/unknown/disabled all identical).
+- [x] A request with a valid project key succeeds and is attributed to that project. — real 200 trace (gemini/deepseek/xai) + one `[auth] project=… POST /chat` line.
+- [x] A request with a revoked/disabled key is rejected, while other projects' keys still work. — `disabled`/removal → null via mtime hot-reload, no redeploy; SA-verified.
+- [x] Two different projects use two different keys; logs/records show which project each call belongs to. — per-project keys; attribution logs project name.
+- [x] Provider API keys / `.env` secrets are never exposed to callers in any response. — keys env-only, never logged/returned; SA-verified `logger()` can't leak header.
 
 ## Constraints
 

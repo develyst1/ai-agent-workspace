@@ -27,8 +27,9 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| REQ-001 | Freelance pay as monthly budget-stock + auto-disable at cap | HIGH | **SPEC_DONE** | Deployed; **live acceptance BLOCKED by REQ-002 (auth 403)**. Resume §6 acceptance once admin login exists. Build acceptance PASS; all 12 tasks DONE. |
-| REQ-002 | Backoffice admin authentication (login + real JWT) | HIGH | **SPEC_DONE** | **Human — deploy** (SEPARATE ops creds: set `ADMIN_USERNAME`/`ADMIN_PASSWORD`/`JWT_SECRET` + `SKIP_ADMIN_AUTH=false`, redeploy backoffice-front, log in at `/login`) → Porter live acceptance → then REQ-001 acceptance resumes. Runbook relayed by Porter. |
+| REQ-001 | Freelance pay as monthly budget-stock + auto-disable at cap | HIGH | ✅ **DELIVERED** | Live & confirmed by คุณฟีน 2026-07-20 (freelance cap shows on frontoffice; budgets/salaries/P&L working). **Remaining ops (non-blocking):** register 2 scheduled tasks + swap placeholder→real numbers. |
+| REQ-002 | Backoffice admin authentication (login + real JWT) | HIGH | ✅ **DELIVERED** | Live & confirmed 2026-07-20 — admin login works, auth enforced (`SKIP_ADMIN_AUTH=false`). |
+| REQ-003 | Unified teacher onboarding/offboarding — one action, auto-synced both systems | HIGH | IN_SPEC | Sober (writing SPEC — code sweep first). Path B: frontoffice teacher master, auto-sync backoffice by id. |
 
 > SPECs written 2026-07-20: **SPEC-001** (freelance budget-stock, booking-time cap
 > & expense) + **SPEC-002** (FT/PT recurring effective-dated fixed-cost salary),
@@ -63,6 +64,8 @@
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| REQ-001 acceptance — **auth 403** | REQ-002 **deploy** | REQ-002 **build DONE** (TASK-013/014, SPEC-003). REQ-001 live acceptance resumes once the auth is **deployed**: set ops `SKIP_ADMIN_AUTH=false` + `ADMIN_USERNAME`/`ADMIN_PASSWORD`/`JWT_SECRET`, redeploy backoffice-front, log in, then re-run runbook §6. |
+| ~~REQ-001/002 acceptance blockers (auth 403, cap not showing)~~ | ✅ RESOLVED | Both fixed 2026-07-20 (auth deployed; `OPS_API_URL` `/api` typo corrected). REQ-001 + REQ-002 DELIVERED. |
+| **Scheduled tasks not yet set up** | Human | 2 jobs to register on the Windows server: end-of-day (:4006 nightly) + month-start (:4010, 1st). **Step-by-step guide written: `smart-scheduler/DEPLOY-scheduled-tasks-windows.md`** (endpoints verified from code). Non-blocking for interactive use. |
+| Real numbers (placeholders live) | พี่ฟีน → Porter | Placeholders in use (FL 70k@500, FT 50k, PT 15k, Trial/Single 1,390). พี่ฟีน to give real figures + decide single-session price (program-dependent) + โต๊ด type. |
 | repo lint (both FE) | Porter/maint | `bun run lint` broken — `next lint` removed in Next 16. Pre-existing, not from our changes. Small maintenance fix (migrate to ESLint CLI). |
 | REQ-001 deploy gate | Porter → human | Before DELIVERED: (1) apply ops migration `drizzle/0003_even_turbo.sql` in the real env + reconcile the shared `__drizzle_migrations` meta-drift; (2) set up 2 scheduled tasks — end-of-day (**:4006**, INTERNAL_JOB_SECRET) + month-start (**:4010**, X-Service-Token, 1st of month); (3) seed data (DATA REQUEST) — **placeholder numbers PROVIDED** in `project-docs/seed-data-placeholder-2026-07-20.md` (FL budget 70k @ 500/hr, FT 50k, PT 15k, Trial 1,390, Single 1,390 placeholder). Can be typed via admin UI post-deploy or dev-seeded. BE can't apply migrations/DB under brownfield. |

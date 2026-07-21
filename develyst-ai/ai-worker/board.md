@@ -27,19 +27,22 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| REQ-001 | Per-project API authentication | HIGH | IN_SPEC | Jason (build TASK-001, TASK-002) |
-| REQ-002 | Real-time knowledge (date + general web search) | MEDIUM | READY_FOR_SA | Sober (write SPEC-002) |
+| REQ-001 | Per-project API authentication | HIGH | DELIVERED | — (done, accepted 2026-07-21) |
+| REQ-002 | Real-time knowledge (date + general web search) | MEDIUM | IN_SPEC | human→Porter (TAVILY key) → then Sober closes |
 | REQ-003 | Internal knowledge / RAG | — | CANCELLED (de-scoped — RAG lives in consuming projects) | — |
 
 ## Tasks
 
 | ID | Title | Source | Status | Assignee | Depends on |
 |----|-------|--------|--------|----------|------------|
-| TASK-001 | API key store module + example file + gitignore | SPEC-001 | REVIEW | Jason | none |
-| TASK-002 | Auth middleware, wiring, 401, attribution log, docs | SPEC-001 | REVIEW | Jason | TASK-001 |
+| TASK-001 | API key store module + example file + gitignore | SPEC-001 | DONE | Jason | none |
+| TASK-002 | Auth middleware, wiring, 401, attribution log, docs | SPEC-001 | DONE | Jason | TASK-001 |
+| TASK-003 | Inject current date/time into every model call | SPEC-002 | DONE | Jason | none |
+| TASK-004 | AIResponse.sources type + Tavily web-search client | SPEC-002 | BLOCKED (code APPROVED; live test only) | Jason | none (needs TAVILY key for live test) |
+| TASK-005 | Web-search tool-calling loop (OpenAI-compat providers) | SPEC-002 | BLOCKED (code APPROVED; live test only) | Jason | TASK-004 |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| TASK-002 (200-trace only) | Sober → human | All provider keys in `.env` empty → can't show real 200 end-to-end. Route a working key? (non-blocking for auth review) |
+| TASK-004/005 (live grounded trace only) | human (via Porter) | Free-tier `TAVILY_API_KEY` in `.env` (no spend) — code reviewed & APPROVED; sole remaining blocker to close REQ-002. |
