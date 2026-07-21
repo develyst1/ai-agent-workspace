@@ -1,8 +1,8 @@
 # TASK-004: `AIResponse.sources` type + Tavily web-search client module
 
 - Source: SPEC-002
-- Status: BLOCKED (code APPROVED by Sober; only the live `{answer,sources}` check waits on TAVILY_API_KEY)
-- Depends on: none (but needs `TAVILY_API_KEY` for live test — see Questions)
+- Status: DONE
+- Depends on: none
 
 ## What to do
 
@@ -99,14 +99,26 @@ No wiring into the chat flow (that's TASK-005).
   staged; `api-keys.json` still absent.
 - Signature exposes only `query` (+ optional `timeoutMs`) — **no URL parameter** ✅.
 
-### ⚠️ One DoD item pending — live `{answer, sources}` (BLOCKED on the key)
-The DoD's "with `TAVILY_API_KEY` set → `webSearch("current price of AAPL stock")`
-returns `{answer, sources}` with ≥1 source URL" **cannot be run**: `TAVILY_API_KEY`
-is still empty/absent in `.env` (checked by presence only). Everything buildable is
-done and verified; only this live call is outstanding, and it's already tracked as
-the DATA REQUEST you raised (board Blocked row + SPEC-002/TASK-004 Questions). I'll
-attach the trimmed live result (key redacted — it never appears anyway) the moment
-the key lands. See @Sober note in Questions.
+### ✅ Live `{answer, sources}` trace — DONE (2026-07-21, real `TAVILY_API_KEY` in `.env`)
+Ran `webSearch("current price of AAPL stock")` (scratch, `bun`, removed after). Key
+never appears in the result:
+
+```
+answer (trimmed): "As of today, the current price of AAPL stock is $324.83. This
+  price reflects a slight increase from recent lows and is part of a broader trend
+  of market fluctuations. For the most accurate and up-to-date information, ple…"
+sources count: 5
+sources: [
+  { "title": "Apple Inc. (AAPL) Stock Historical Prices & Data", "url": "https://finance.yahoo.com/quote/AAPL/history" },
+  { "title": "Buy or Sell Apple Stock - AAPL Stock Price Quote & News", "url": "https://robinhood.com/us/en/stocks/AAPL" },
+  { "title": "AAPL Stock Quote Price and Forecast", "url": "https://www.cnn.com/markets/stocks/AAPL" },
+  { "title": "Apple Inc. Stock Quote (U.S.: Nasdaq) - AAPL", "url": "https://www.marketwatch.com/investing/stock/aapl" },
+  { "title": "AAPL: Apple Inc - Stock Price, Quote and News", "url": "https://www.cnbc.com/quotes/AAPL" }
+]
+exit=0
+```
+`{answer, sources}` with 5 source URLs (≥1 ✅), title+url shape correct, no key in
+the output. **All TASK-004 DoD items now met.** No code change — status → REVIEW.
 
 ### Notes for review
 - I did **not** implement `topic:"news"`/`search_depth` knobs — kept the call
@@ -176,3 +188,14 @@ Reviewed `src/tools/webSearch.ts` + the type additions.
   against the live endpoint. That's a genuine external blocker (human DATA REQUEST),
   not a code issue and not something you can unblock. Holding at BLOCKED; attach the
   trimmed live trace when the key lands and I'll move it straight to DONE.
+
+---
+
+**Verdict: DONE** — 2026-07-21, Sober (2nd pass, after the live trace).
+
+The one held item is closed. Verified the attached live trace: `webSearch("current
+price of AAPL stock")` → `{answer, sources}` with **5 real source URLs**
+(finance.yahoo/robinhood/cnn/marketwatch/cnbc), correct `{title,url}` shape, and
+**no Tavily key** anywhere in the output. Confirms the live vendor contract (Tavily
+Bearer auth + `answer`/`results[]` fields) works as coded. With the earlier
+offline/fail-soft verification, all TASK-004 DoD items are met. **DONE.**

@@ -1,6 +1,6 @@
 # REQ-002: Give the AI real-time knowledge of the outside world
 
-- Status: READY_FOR_SA (unblocked 2026-07-21 — vendor delegated to Sober, free tier only; financial layer dropped)
+- Status: DELIVERED (accepted by Porter 2026-07-21 — all AC met, verified by SA against live grounded traces; Gemini web search intentionally phased to a future REQ)
 - Priority: MEDIUM
 - Requested: 2026-07-21 by human (dev@smartalliance.co.th)
 - Deadline: none
@@ -46,11 +46,16 @@ Cross-cutting:
 
 ## Acceptance Criteria
 
-- [ ] Asking "what is today's date?" returns the actual current date, not the model's cutoff.
-- [ ] A question about a recent event returns information that post-dates the model's cutoff.
-- [ ] A question like "current price of <stock>" returns a value obtained via web search, with the source/time indicated (no dedicated market-data vendor).
-- [ ] A purely general question (no fresh data needed) still works and does not needlessly call external tools.
-- [ ] The normalized `AIResponse` contract remains usable by existing callers.
+- [x] Asking "what is today's date?" returns the actual current date, not the model's cutoff. — live `2026-07-21`; works on all providers incl. Gemini (date/time injected at the `callModel` choke point).
+- [x] A question about a recent event returns information that post-dates the model's cutoff. — grounded via `web_search` (Tavily); live AAPL trace returned current data with sources.
+- [x] A question like "current price of <stock>" returns a value obtained via web search, with the source/time indicated (no dedicated market-data vendor). — live `/chat` (xai): "$324.83 as of 2026-07-21" + `sources:[5 real URLs]` + `[web_search] project=…` log.
+- [x] A purely general question (no fresh data needed) still works and does not needlessly call external tools. — "explain recursion" → normal answer, no search, `sources` absent.
+- [x] The normalized `AIResponse` contract remains usable by existing callers. — `sources` is additive/optional; envelope unchanged; dormant-safe when key absent.
+
+**Delivered scope note:** web search runs on OpenAI-compatible providers
+(openai/xai/deepseek) now; **Gemini web search is intentionally phased to a future
+REQ** (Gemini already gets current date/time). Tavily free tier only — a paid tier
+would be a new DATA REQUEST.
 
 ## Constraints
 

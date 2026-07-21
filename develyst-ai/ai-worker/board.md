@@ -28,8 +28,10 @@
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
 | REQ-001 | Per-project API authentication | HIGH | DELIVERED | — (done, accepted 2026-07-21) |
-| REQ-002 | Real-time knowledge (date + general web search) | MEDIUM | IN_SPEC | human→Porter (TAVILY key) → then Sober closes |
+| REQ-002 | Real-time knowledge (date + general web search) | MEDIUM | DELIVERED | — (done, accepted 2026-07-21; Gemini web search phased) |
 | REQ-003 | Internal knowledge / RAG | — | CANCELLED (de-scoped — RAG lives in consuming projects) | — |
+| REQ-004 | Project documentation (consumers + maintainers + overview) | MEDIUM | DELIVERED | — (done, accepted 2026-07-21) |
+| REQ-005 | Align server default port to 3009 | LOW | READY_FOR_SA | Sober (spec) |
 
 ## Tasks
 
@@ -38,11 +40,13 @@
 | TASK-001 | API key store module + example file + gitignore | SPEC-001 | DONE | Jason | none |
 | TASK-002 | Auth middleware, wiring, 401, attribution log, docs | SPEC-001 | DONE | Jason | TASK-001 |
 | TASK-003 | Inject current date/time into every model call | SPEC-002 | DONE | Jason | none |
-| TASK-004 | AIResponse.sources type + Tavily web-search client | SPEC-002 | BLOCKED (code APPROVED; live test only) | Jason | none (needs TAVILY key for live test) |
-| TASK-005 | Web-search tool-calling loop (OpenAI-compat providers) | SPEC-002 | BLOCKED (code APPROVED; live test only) | Jason | TASK-004 |
+| TASK-004 | AIResponse.sources type + Tavily web-search client | SPEC-002 | DONE | Jason | none |
+| TASK-005 | Web-search tool-calling loop (OpenAI-compat providers) | SPEC-002 | DONE | Jason | TASK-004 |
+| TASK-007 | Write docs/consumer-guide.md (verified) | SPEC-004 | DONE | Jason | none |
+| TASK-006 | Rewrite README.md (overview + doc map + quickstart) | SPEC-004 | DONE | Jason | TASK-007 |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| TASK-004/005 (live grounded trace only) | human (via Porter) | Free-tier `TAVILY_API_KEY` in `.env` (no spend) — code reviewed & APPROVED; sole remaining blocker to close REQ-002. |
+| KNOWN ISSUE (deferred): deepseek DSML tool-call leak | — (human deferred 2026-07-21) | `deepseek-v4-flash` intermittently emits web_search tool-call as DSML text → corrupts `AIResponse.content` (200 + sources OK, answer text garbage). Defect in TASK-005 (`_fetch.ts`). Human chose NOT to fix now — no fix REQ open. Risk: deepseek web-search answers may be corrupted; other providers unaffected. Re-open a fix REQ when wanted. |

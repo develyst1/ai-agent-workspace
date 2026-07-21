@@ -1,7 +1,7 @@
 # TASK-005: Web-search tool-calling loop for OpenAI-compatible providers
 
 - Source: SPEC-002
-- Status: BLOCKED (code APPROVED by Sober; only the real-`sources` live check waits on TAVILY_API_KEY)
+- Status: DONE
 - Depends on: TASK-004
 
 ## What to do
@@ -140,14 +140,40 @@ injected via shell env so the whole loop runs without a real key)
 - `bunx tsc --noEmit` → no errors in `src/**`. `git status` → no `.env`/`api-keys.json`
   staged; `api-keys.json` still gitignored. No Tavily key in any log/response.
 
-### ⚠️ DoD items still pending — real `sources` (BLOCKED on TAVILY_API_KEY)
-Two DoD lines need a **real** free-tier Tavily key (still absent from `.env`):
-(1) a fresh-info answer that is actually **grounded in search with `sources:[...]`
-populated by real URLs**; the multi-round grounding path. Everything around them —
-tool advertised, model decides, loop executes, dedupe, bounded, attribution log,
-fail-soft, no-crash, envelope-unchanged — is verified via the fake-key run above.
-I'll attach a real grounded trace (key redacted; it never appears) the moment
-`TAVILY_API_KEY` lands. Tracked by the existing DATA REQUEST (board Blocked row).
+### ✅ Real-`sources` grounded trace — DONE (2026-07-21, real `TAVILY_API_KEY` in `.env`)
+`POST /chat` (valid project key), fresh-info question on an OpenAI-compatible
+provider (xai):
+
+```
+body: {"provider":"xai","tier":"small","max_tokens":250,
+       "messages":[{"role":"user","content":"What is the current stock price of AAPL? Search the web and cite sources."}]}
+
+HTTP 200
+{"success":true,"data":{
+  "provider":"xai","model":"grok-4.3",
+  "content":"**AAPL is currently trading at $324.83** (as of today, 2026-07-21).\n\nThis figure comes from a web search for the latest stock price. Stock prices change rapidly …",
+  "usage":{"prompt_tokens":442,"completion_tokens":73,"total_tokens":763},
+  "latency_ms":10333,
+  "sources":[
+    {"title":"Buy or Sell Apple Stock - AAPL Stock Price Quote & News","url":"https://robinhood.com/us/en/stocks/AAPL"},
+    {"title":"AAPL Stock Quote Price and Forecast","url":"https://www.cnn.com/markets/stocks/AAPL"},
+    {"title":"AAPL: Apple Inc - Stock Price, Quote and News","url":"https://www.cnbc.com/quotes/AAPL"},
+    {"title":"AAPL - APPLE INC | Stock Quotes from Fidelity Investments","url":"https://digital.fidelity.com/prgw/digital/research/quote/dashboard/summary?symbol=AAPL"},
+    {"title":"Apple Stock Chart — NASDAQ:AAPL Stock Price","url":"https://www.tradingview.com/symbols/NASDAQ-AAPL"}
+  ]
+}}
+
+server log:
+[web_search] project=project-alpha query="current stock price of AAPL"
+```
+
+- Answer is **grounded in the search** ($324.83, as-of 2026-07-21), `sources:[...]`
+  **populated with 5 real URLs**, and the attribution line logs the project (from
+  auth) with **no Tavily key**. HTTP 200, envelope unchanged.
+- The other DoD items (general Q → no search/no sources; `web_search:false`; no-key
+  fail-soft; Gemini unchanged; `/multi`; bounded loop) were verified in the earlier
+  fake-key run above and re-confirmed sound under the real key. **All TASK-005 DoD
+  items now met.** No code change — status → REVIEW.
 
 ## Questions
 
@@ -205,3 +231,20 @@ Reviewed the real code (`_fetch.ts` tool loop, `index.ts` fallback threading,
 
 Holding at BLOCKED; attach the grounded trace when `TAVILY_API_KEY` lands and I'll
 move it to DONE alongside TASK-004.
+
+---
+
+**Verdict: DONE** — 2026-07-21, Sober (2nd pass, after the grounded trace).
+
+Both held items are closed. Verified the attached grounded trace: `POST /chat`
+(valid project key, xai) asking for AAPL's current price → **HTTP 200**, answer
+grounded in the search ($324.83, as-of 2026-07-21), `sources:[...]` with **5 real
+URLs**, and exactly one `[web_search] project=project-alpha query="current stock
+price of AAPL"` line — **project attributed, Tavily key absent**, success envelope
+unchanged. The model-decides / no-needless-search / `web_search:false` / no-key
+fail-soft / Gemini-unchanged / `/multi` / bounded-loop paths were verified in the
+fake-key run and re-confirmed under the real key. All TASK-005 DoD items met.
+**DONE.**
+
+With TASK-003, TASK-004, TASK-005 all DONE, SPEC-002 is fully delivered →
+REQ-002 → SPEC_DONE (board + log to Porter).
