@@ -1,8 +1,62 @@
 # TASK-009: LICENSE_MOVE — delivery-attach + dates + type columns + buyer-group
 
 - Source: SPEC-006 (+ SPEC-007 date). Stakeholder authorized impl 2026-07-20 ("ทำเลย").
-- Status: DONE (code — Sober reviewed 2026-07-20). Final acceptance = live capture (Porter).
+- Status: DONE (code — §E rework reviewed 2026-07-20). Final acceptance = buyer-column re-capture (Porter).
 - Depends on: none
+
+## §E rework review — Verdict: DONE (code) — Sober (SA), 2026-07-20
+Read the SQL: `BuyerGroupNo` = `MAX(BA.AUTHORITY_GROUP_NO)` from `T_T_REQUEST_MOVE RM JOIN T_M_BUYER_AUTHORITY BA
+ON BA.ID = RM.BUYER_AUTHORITY_ID WHERE RM.REQUEST_ID = L.REQUEST_ID` (L229-232) ✓; `BuyerUnitName` =
+`MAX(RM.AUTHORITY_NAME)` (L233-235) ✓; the old DTL-side `T_M_BUYER_AUTHORITY` join is **gone** (FROM list clean,
+L236-247); backbone + A–D untouched; build 0 errors. Service map unchanged. Correct per the trace.
+**Final acceptance = Porter re-captures buyer columns** (the `RM.BUYER_AUTHORITY_ID`→`T_M_BUYER_AUTHORITY.ID`
+link is data-verifiable only; low risk per DATADIC:911). If still empty → DATA REQUEST.
+
+## REWORK applied — §E buyer-group re-source (Jason, 2026-07-20)
+
+Capture accepted A–D; §E was empty because the license `T_T_LICENSE_DTL.BUYER_AUTHORITY_ID` is null (buyer
+lives on the request-move). Per Sober's DATADIC:911 trace — **SQL-only** change in `GetMoveLicenseDashboard`:
+- **Removed** the DTL-side `LEFT JOIN T_M_BUYER_AUTHORITY BA ON BA.ID = DTL.BUYER_AUTHORITY_ID` and its
+  `BA.AUTHORITY_GROUP_NO AS BuyerGroupNo` + `NVL(BA.AUTHORITY_NAME, DTL.AUTHORITY_NAME) AS BuyerUnitName` selects.
+- **Replaced** with request-move scalar subqueries (deterministic, no row multiplication):
+  `BuyerGroupNo = (SELECT MAX(BA.AUTHORITY_GROUP_NO) FROM T_T_REQUEST_MOVE RM JOIN T_M_BUYER_AUTHORITY BA ON
+  BA.ID = RM.BUYER_AUTHORITY_ID WHERE RM.REQUEST_ID = L.REQUEST_ID)`;
+  `BuyerUnitName = (SELECT MAX(RM.AUTHORITY_NAME) FROM T_T_REQUEST_MOVE RM WHERE RM.REQUEST_ID = L.REQUEST_ID)`.
+- Service map unchanged (`BuyerGroupLabel = map(BuyerGroupNo)`, `BuyerUnit = BuyerUnitName`). SearchFilter
+  buyer-group dropdown (1/2/3/9 map) unchanged — group filter still matches. A–D untouched.
+
+**Verified:** `dotnet build` → **Build succeeded. 0 Error(s).** Grep: DTL-side BA join gone (0 hits); buyer now
+from `T_T_REQUEST_MOVE` via `L.REQUEST_ID` (same join key already used for col6). Only the SQL changed.
+
+**Minor flag (not in scope of this rework — for the re-capture):** the SearchFilter **buyer-unit** dropdown still
+lists `T_M_BUYER_AUTHORITY.AUTHORITY_NAME`, whereas the table's `BuyerUnitName` now = `RM.AUTHORITY_NAME`
+(denormalized on the request-move). If those two name spellings diverge, the buyer-*unit* filter could miss —
+Porter's re-capture will show it; a follow-up dropdown-source tweak is a one-liner if needed. Buyer-*group*
+(1/2/3/9) is unaffected. Runtime caveat: `RM.BUYER_AUTHORITY_ID`→`T_M_BUYER_AUTHORITY.ID` link confirmable only
+at the re-capture (low likelihood of miss per DATADIC).
+
+## REWORK (2026-07-20) — buyer-group re-source (§E only; A–D verified & accepted)
+
+Capture PASSED move_qty (31230 exact), dates, col5, col6. **§E buyer-group empty** — `T_T_LICENSE_DTL.BUYER_AUTHORITY_ID`
+is null on the license side (buyer lives on the request-move). **Traced (DATADIC:911, no DATA REQUEST):** the
+buyer is `T_T_REQUEST_MOVE.BUYER_AUTHORITY_ID` (→ `T_M_BUYER_AUTHORITY`) + `T_T_REQUEST_MOVE.AUTHORITY_NAME`.
+
+**Fix (SQL `GetMoveLicenseDashboard` only):**
+1. **Remove** `LEFT JOIN T_M_BUYER_AUTHORITY BA ON BA.ID = DTL.BUYER_AUTHORITY_ID` and its
+   `BA.AUTHORITY_GROUP_NO AS BuyerGroupNo` + `NVL(BA.AUTHORITY_NAME, DTL.AUTHORITY_NAME) AS BuyerUnitName` selects.
+2. **Replace** with scalar subqueries off the request-move (deterministic, no row multiplication):
+   ```sql
+   ,(SELECT MAX(BA.AUTHORITY_GROUP_NO) FROM T_T_REQUEST_MOVE RM
+       JOIN T_M_BUYER_AUTHORITY BA ON BA.ID = RM.BUYER_AUTHORITY_ID
+      WHERE RM.REQUEST_ID = L.REQUEST_ID) AS BuyerGroupNo
+   ,(SELECT MAX(RM.AUTHORITY_NAME) FROM T_T_REQUEST_MOVE RM
+      WHERE RM.REQUEST_ID = L.REQUEST_ID) AS BuyerUnitName
+   ```
+3. Service map unchanged (`BuyerGroupLabel = map(BuyerGroupNo)`, `BuyerUnit = BuyerUnitName`). SearchFilter
+   buyer-group dropdown (1/2/3/9) unchanged — group filter still matches.
+4. `dotnet build`, set REVIEW → Porter re-captures **buyer columns only**. (If `RM.BUYER_AUTHORITY_ID` also null
+   → escalate to a DATA REQUEST — low likelihood per DATADIC.)
+A–D stay as-is.
 
 ## Review — Verdict: DONE (code) — Sober (SA), 2026-07-20
 Read the actual SQL + service + model — all 5 parts correct:

@@ -77,6 +77,32 @@ buyer-group moves to `T_M_BUYER_AUTHORITY`:
   capture (the license-side `BUYER_AUTHORITY_ID`→`T_M_BUYER_AUTHORITY.ID` link, like A10).
 - **purchase_document → PARKED** (stakeholder: no such data; leave "ไม่ระบุ"; removing the chart = FE change).
 
+## Live-capture REWORK (2026-07-20) — buyer-group re-source (the only fail)
+
+Capture (`project-docs/data-req-8-...`): **move_qty ✅ (31230 exact), dates ✅, col5/col6 ✅** — **buyer-group
+empty on all rows.** Root cause: License Move's `T_T_LICENSE_DTL.BUYER_AUTHORITY_ID` is null (the buyer/
+recipient lives on the **request-move**, not the license line; the license shows the buyer as the
+`dest_place_name`). **Traced from DATADIC:911 (no DATA REQUEST):** `T_T_REQUEST_MOVE.BUYER_AUTHORITY_ID` FK →
+`T_M_BUYER_AUTHORITY`, and `T_T_REQUEST_MOVE.AUTHORITY_NAME` = หน่วยผู้ซื้อ. We already reach `T_T_REQUEST_MOVE`
+via `L.REQUEST_ID` (col6). **Fix = source the buyer from there** (scalar subqueries, deterministic, no
+multiplication):
+```sql
+,(SELECT MAX(BA.AUTHORITY_GROUP_NO)
+    FROM T_T_REQUEST_MOVE RM JOIN T_M_BUYER_AUTHORITY BA ON BA.ID = RM.BUYER_AUTHORITY_ID
+   WHERE RM.REQUEST_ID = L.REQUEST_ID)                                   AS BuyerGroupNo
+,(SELECT MAX(RM.AUTHORITY_NAME) FROM T_T_REQUEST_MOVE RM
+   WHERE RM.REQUEST_ID = L.REQUEST_ID)                                   AS BuyerUnitName
+```
+Remove the old `LEFT JOIN T_M_BUYER_AUTHORITY BA ON BA.ID = DTL.BUYER_AUTHORITY_ID` + its
+`AUTHORITY_GROUP_NO`/`NVL(...)` selects. Service mapping unchanged (`BuyerGroupLabel = map(BuyerGroupNo)`,
+`BuyerUnit = BuyerUnitName`). **Re-capture buyer columns only** to accept (residual risk: if
+`RM.BUYER_AUTHORITY_ID` is also null → escalate to a DATA REQUEST, low likelihood given DATADIC).
+
+Minor (noted, not fixed): a license with **2 DTL lines for the same product** would each get the full
+license+product delivery SUM in `move_qty` (double-count) — rare; charts measure approved qty so unaffected.
+The buyer-unit **dropdown** still lists `T_M_BUYER_AUTHORITY` names (may not match the table's `RM.AUTHORITY_NAME`)
+— group filter works; unit-dropdown alignment is a low-priority follow-up.
+
 ## Acceptance / Non-functional
 
 - [ ] `move_qty` (col 12) = real SUM of INFORM_MOVE deliveries per license-line (0 if none); approved-but-

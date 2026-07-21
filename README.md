@@ -73,3 +73,4 @@ then edit the team names in the role files if you want different personas.
 |---------|-------------|------|
 | `did-api-center-c#` | DID API Center (C#) | Porter (PM), Sober (SA Lead), Jason (BE) |
 | `smart-scheduler` | Scheduling + back-office ERP for a sports activity center (monorepo, 4 repos) | Porter (PM), Sober (SA Lead), Jason (BE), Fern (FE) |
+| `develyst-ai` | Develyst AI Gateway — Bun+Hono multi-provider AI API (single backend repo) | Porter (PM), Sober (SA Lead), Jason (BE) |

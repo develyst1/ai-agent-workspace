@@ -16,9 +16,11 @@
 | REQ-002 | DASHBOARD_LICENSE_MOVE — weapon-type dropdown codes configurable in appsettings | MEDIUM | DELIVERED | — (done) |
 | REQ-003 | DASHBOARD_LICENSE_BOOK — align response keys to DB column names | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
 | REQ-004 | DASHBOARD_LICENSE_BOOK — book-type dropdown configurable in appsettings (DB labels) | MEDIUM | DELIVERED | — (done; stakeholder confirmed 2026-07-20) |
-| REQ-005 | DASHBOARD_MOVE_A10 — build Center backend for the อ.10 movement/delivery dashboard | MEDIUM | DELIVERED | — (done; live capture accepted 2026-07-20; 1 minor buyer-group `0` label optional) |
-| REQ-006 | DASHBOARD_LICENSE_MOVE — re-source to approved-request-first + attach actual delivery (mirror of A10) | MEDIUM | SPEC_DONE (TASK-009 code done + reviewed; live capture to accept) | Porter (PM) — live capture |
-| REQ-007 | Dashboard date fields — one key, formatted value (drop `_formatted` twin) | MEDIUM | SPEC_DONE (a10 accepted; license-move ships w/ REQ-006) | Porter (PM) — accept (trivial) |
+| REQ-005 | DASHBOARD_MOVE_A10 — build Center backend for the อ.10 movement/delivery dashboard | MEDIUM | DELIVERED | — (done; code-`0` label closed by TASK-010) |
+| REQ-006 | DASHBOARD_LICENSE_MOVE — re-source to approved-request-first + attach actual delivery (mirror of A10) | MEDIUM | DELIVERED | — (all A–E captured ✅; TASK-010 label fix reviewed 2026-07-20) |
+| REQ-007 | Dashboard date fields — one key, formatted value (drop `_formatted` twin) | MEDIUM | DELIVERED | — (a10 + license-move captures: `issue_date` single formatted, no `_formatted`) |
+| REQ-008 | Dashboard /chart — echo the requested ประเภทอาวุธ (weapon-type) filter back in the response (for FE caption) | MEDIUM | DELIVERED | — (TASK-011 done+reviewed; additive/deterministic → accepted on Sober review, defaults locked) |
+| REQ-009 | Unify ประเภทอาวุธ dropdown onto ONE shared config for a10 + move-license (default all 4 PTG; empty⇒all) | MEDIUM | SPEC_DONE (TASK-013 done+reviewed; deterministic → acceptance met) | Porter (PM) — flip DELIVERED |
 
 ## Tasks
 
@@ -32,7 +34,11 @@
 | TASK-006 | DASHBOARD_MOVE_A10 chart+table on the INFORM_MOVE backbone | SPEC-005 | DONE (code; re-run capture to accept) | Jason (BE) | TASK-005 |
 | TASK-007 | Add T_R_TRANSPORT_TYPE entity + ประเภทการขนย้าย dropdown | SPEC-005 | SUPERSEDED (wrong source; entity removed in TASK-006 #4) | Jason (BE) | none |
 | TASK-008 | MOVE_A10 dates → single formatted `issue_date` (drop `issue_date_formatted`) | SPEC-007 | DONE | Jason (BE) | none |
-| TASK-009 | LICENSE_MOVE — move_qty attach + single formatted issue_date + col5 RequestType + col6 MoveRequestType + buyer=T_M_BUYER_AUTHORITY | SPEC-006 + SPEC-007 | DONE (code; live capture to accept) | Jason (BE) | none |
+| TASK-009 | LICENSE_MOVE — move_qty attach + dates + col5/col6 + buyer-group (from REQUEST_MOVE) | SPEC-006 + SPEC-007 | DONE (captured ✅ all A–E) | Jason (BE) | none |
+| TASK-010 | Buyer-group unmapped code (`0`) → "ไม่ระบุ" label (a10 + license-move) | stakeholder 2026-07-20 | DONE | Jason (BE) | none |
+| TASK-011 | /chart echo the requested ประเภทอาวุธ (code + Thai name) — a10 + license-move | SPEC-008 | DONE | Jason (BE) | none |
+| TASK-012 | Buyer-group **dropdown** code `0`/unmapped → "ไม่ระบุ" (align w/ TASK-010; a10 + license-move, L96) | stakeholder 2026-07-20 | DONE | Jason (BE) | none |
+| TASK-013 | Shared `DashboardWeaponTypeCodes` config + unified empty⇒all weapon dropdown (a10 + license) | SPEC-009 | DONE | Jason (BE) | none |
 
 ## Blocked / waiting
 
@@ -41,8 +47,16 @@
 | ~~DATA REQUEST 7 (purchase_document)~~ RESOLVED | — | Stakeholder: **there is no such data ("ไม่มี").** Field came from the frontend chart "แยกตามเอกสารการซื้อ" + the pre-existing backend placeholder ("ไม่ระบุ"). Decision: leave "ไม่ระบุ" (backend can't fill); removing the chart = frontend change, out of scope. CLOSED. |
 | ~~col5 common-code vs hardcode (REQ-006)~~ RESOLVED | — | **Stakeholder chose common-code (dynamic) 2026-07-20.** col5 = `T_T_REQUEST.REQUEST_TYPE` → common-code group `RequestType` DB names ("คำขออนุญาตขนย้าย…(อ.9)", "…ในราชอาณาจักร (อ.15)", "…นอกราชอาณาจักร (อ.14)"). Matches TASK-009's plan — no hardcode, no rework. |
 | ~~Buyer-group source (REQ-006)~~ RESOLVED | — | = `T_M_BUYER_AUTHORITY.AUTHORITY_GROUP_NO`, label via the 1/2/3/9 map (no separate name column — DATADIC:90; same as A10). In TASK-009 §E. Live-verify the license-side FK at the capture. |
-| REQ-006 live capture (acceptance) | stakeholder (asked by Porter 2026-07-20) | TASK-009 code done+reviewed. Capture LICENSE_MOVE `/table`+`/chart` (issue-date range) → confirm: `move_qty` (col 12) now non-zero for delivered lines; `issue_date` single formatted; col5 ประเภทการขออนุญาต (RequestType names) + col6 ประเภทการขนย้าย (MoveRequestType) both populated + distinct; buyer-group populated (license-side `BUYER_AUTHORITY_ID`→`T_M_BUYER_AUTHORITY.ID`). All pass → REQ-006 DELIVERED (REQ-007 rides along). If license-side buyer FK misses → targeted follow-up (like A10). Awaiting JSON. |
-| Buyer-group code `0` label (minor, optional) | stakeholder (unanswered) | Is code `0` (foreign "…Sdn Bhd") a real group (ต่างประเทศ/อื่นๆ) needing a label, or leave "ไม่ระบุ"? Non-blocking; REQ-005 delivered without it. |
+| ~~REQ-006 buyer-column re-capture~~ PASSED | — | Re-capture 2026-07-20: **buyer-group resolves** (81/2569="1"/"ทหาร", 24/2569="9"/"อื่นๆ", `authority_name` real); **by-buyer-group chart splits** (ทหาร 150430 + "0" 1600 + อื่นๆ 16). Fix works. Only the code-`0` label is raw (below). |
+| ~~code-`0` label fix~~ DONE (TASK-010) | — | Both services' buyer-group label fallback → "ไม่ระบุ"; reviewed 2026-07-20. **REQ-006 DELIVERED**; closed REQ-005's minor code-`0` item too. |
+
+## Open issues (reported by stakeholder 2026-07-20)
+
+| Item | Waiting on | Question (short) |
+|------|-----------|------------------|
+| ~~ประเภทอาวุธ dropdown EMPTY (move-license)~~ CONFIRMED = CONFIG | stakeholder (ops: set deployed config) | **Root cause CONFIRMED by capture (2026-07-20):** `GET /dashboard-move-a10/search-filter` `product_type_group_code_ddl` = **4 items** (PTG01 กระสุน/PTG02 อาวุธปืน/PTG03 วัตถุระเบิด/PTG04 อื่นๆ) → DB (`TMProductTypeGroupRepo`) is fine. move-license = **`[]`** because it's config-driven (REQ-002) and the **deployed `appsettings:Configurations:MoveLicenseWeaponTypeCodes` is empty/unset**. **NOT a code bug — no team code change.** Fix = set that config key in the deployed appsettings (e.g. `["PTG01","PTG02","PTG03","PTG04"]` or the desired subset) + restart. Stakeholder to pick which codes (that's the REQ-002 config purpose). Optional: team can update the repo appsettings default if they want a different baseline. |
+| ~~authority_group_no_ddl code `0` label~~ DONE (TASK-012) | — | Both services' buyer-group dropdown fallback → "ไม่ระบุ"; reviewed 2026-07-20. |
+| ~~ประเภทอาวุธ dropdown empty~~ → REQ-009 | — | Superseded: REQ-009 (shared config + empty⇒all) makes both dashboards default to all 4 PTG even if the deployed config is unset — kills the empty-trap. Interim "set the deployed key" no longer needed once REQ-009 ships. |
 
 ## Parked / known notes
 

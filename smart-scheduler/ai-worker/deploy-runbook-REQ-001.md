@@ -17,7 +17,7 @@ Canonical ports: **staff-front :3016 · scheduling :4006 · ops :4010 · ops-fro
 | Service | Env vars to set (prod) |
 |---|---|
 | scheduling `:4006` | `OPS_API_URL=http://<ops-host>:4010` · `SERVICE_TOKEN=<shared>` · `INTERNAL_JOB_SECRET=<secret>` · `SKIP_AUTH=false` |
-| ops `:4010` | `SERVICE_TOKEN=<same shared>` · `SKIP_ADMIN_AUTH=false` · `DATABASE_URL=<postgres>` |
+| ops `:4010` | `SERVICE_TOKEN=<same shared>` · `SKIP_ADMIN_AUTH=false` · `DATABASE_URL=<postgres>` · **`JWT_SECRET=<secret>`** · **`ADMIN_USERNAME=<admin>`** · **`ADMIN_PASSWORD=<strong>`** (REQ-002 admin login) |
 | ops-front `:3018` | `NEXT_PUBLIC_BACKOFFICE_API_URL=http://<ops-host>:4010/api` |
 | staff-front `:3016` | `NEXT_PUBLIC_API_URL=https://som.develyst.online/api` (already prod) |
 
