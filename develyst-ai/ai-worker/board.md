@@ -31,7 +31,8 @@
 | REQ-002 | Real-time knowledge (date + general web search) | MEDIUM | DELIVERED | — (done, accepted 2026-07-21; Gemini web search phased) |
 | REQ-003 | Internal knowledge / RAG | — | CANCELLED (de-scoped — RAG lives in consuming projects) | — |
 | REQ-004 | Project documentation (consumers + maintainers + overview) | MEDIUM | DELIVERED | — (done, accepted 2026-07-21) |
-| REQ-005 | Align server default port to 3009 | LOW | READY_FOR_SA | Sober (spec) |
+| REQ-005 | Align server default port to 3009 | LOW | DELIVERED | — (done, accepted 2026-07-21) |
+| REQ-006 | Web-search primitives (classify + search) — replaces in-/chat auto-search | MEDIUM | DELIVERED | — (done, accepted 2026-07-21; breaking change to /chat) |
 
 ## Tasks
 
@@ -44,9 +45,13 @@
 | TASK-005 | Web-search tool-calling loop (OpenAI-compat providers) | SPEC-002 | DONE | Jason | TASK-004 |
 | TASK-007 | Write docs/consumer-guide.md (verified) | SPEC-004 | DONE | Jason | none |
 | TASK-006 | Rewrite README.md (overview + doc map + quickstart) | SPEC-004 | DONE | Jason | TASK-007 |
+| TASK-008 | Align server default port to 3009 (code + example + docs + Bruno) | SPEC-005 | DONE | Jason | none |
+| TASK-009 | Web-search primitives — POST /search + /search/classify | SPEC-006 | DONE | Jason | none |
+| TASK-010 | Remove in-/chat auto-search (revert /chat to plain; keep date/time) | SPEC-006 | DONE | Jason | none |
+| TASK-011 | Docs — primitives + remove in-/chat search (verified) | SPEC-006 | DONE | Jason | TASK-009, TASK-010 |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| KNOWN ISSUE (deferred): deepseek DSML tool-call leak | — (human deferred 2026-07-21) | `deepseek-v4-flash` intermittently emits web_search tool-call as DSML text → corrupts `AIResponse.content` (200 + sources OK, answer text garbage). Defect in TASK-005 (`_fetch.ts`). Human chose NOT to fix now — no fix REQ open. Risk: deepseek web-search answers may be corrupted; other providers unaffected. Re-open a fix REQ when wanted. |
+| ✅ RESOLVED: deepseek DSML tool-call leak | — (closed 2026-07-21) | Made **moot** by REQ-006/TASK-010 (DONE): the model tool-loop was removed from `/chat`, so the DSML-leak path no longer exists (SA-verified: clean `/chat` content, old repro gone). No fix needed. |

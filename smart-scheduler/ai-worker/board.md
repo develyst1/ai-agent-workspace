@@ -29,7 +29,15 @@
 |----|-------|----------|--------|--------------------|
 | REQ-001 | Freelance pay as monthly budget-stock + auto-disable at cap | HIGH | ✅ **DELIVERED** | Live & confirmed by คุณฟีน 2026-07-20 (freelance cap shows on frontoffice; budgets/salaries/P&L working). **Remaining ops (non-blocking):** register 2 scheduled tasks + swap placeholder→real numbers. |
 | REQ-002 | Backoffice admin authentication (login + real JWT) | HIGH | ✅ **DELIVERED** | Live & confirmed 2026-07-20 — admin login works, auth enforced (`SKIP_ADMIN_AUTH=false`). |
-| REQ-003 | Unified teacher onboarding/offboarding — one action, auto-synced both systems | HIGH | **SPEC_DONE** | **Human — deploy** (migration `0010_teacher_archived.sql` + redeploy scheduling :4006 & scheduler-front :3016) → Porter live acceptance → DELIVERED. Build acceptance PASS; 4 tasks DONE; deploy relayed by Porter. |
+| REQ-003 | Unified teacher onboarding/offboarding — one action, auto-synced both systems | HIGH | ⏸️ **ON HOLD** | **Do NOT deploy** (built, but its backoffice sync is moot — backoffice is being torn down). Rework the teacher-management parts as standalone under a later REQ. |
+| REQ-004 | Move freelance limit into the frontoffice — standalone, no backoffice dependency | HIGH | **SPEC_DONE** | **Human — deploy** (migration `0011_freelance_budgets` + month-reset :4006 task + redeploy scheduling/front + re-enter budgets) → Porter acceptance → DELIVERED. Build acceptance PASS; deploy relayed by Porter (scheduled-tasks doc updated). |
+| REQ-005 | Standalone teacher management (rework REQ-003 minus ops sync) | MEDIUM | DRAFT | Porter — confirm scope/priority with คุณฟีน (not urgent: REQ-003 is undeployed, so no live 502). |
+
+> ⚠️ **STRATEGIC PIVOT (2026-07-20, คุณฟีน):** current **backoffice is being torn down &
+> rebuilt from scratch** (hard to use / not scalable). Finish the **frontoffice first,
+> stand-alone**. Freelance limit → moves into frontoffice (REQ-004). Freelance **P&L/expense
+> + FT/PT salary = deferred** to the new backoffice. REQ-003 (teacher↔ops sync) ON HOLD.
+> REQ-001/002 stay DELIVERED but their backoffice-side money features are superseded by the rebuild.
 
 > SPECs written 2026-07-20: **SPEC-001** (freelance budget-stock, booking-time cap
 > & expense) + **SPEC-002** (FT/PT recurring effective-dated fixed-cost salary),
@@ -63,6 +71,8 @@
 | TASK-016 | scheduling: teacher CRUD + archive + ops sync + setup-incomplete gate | SPEC-004 | DONE | Jason | TASK-015 |
 | TASK-017 | scheduler-front: teacher add/edit/change-type/archive UI + setup-incomplete gate | SPEC-004 | DONE | Fern | TASK-016 |
 | TASK-018 | scheduling: teacher↔ops drift reconcile report | SPEC-004 | DONE | Jason | TASK-016 |
+| TASK-019 | scheduling: local freelance budget (re-home from ops, standalone) | SPEC-005 | DONE | Jason | — |
+| TASK-020 | scheduler-front: frontoffice freelance budget admin (set/edit/top-up) | SPEC-005 | DONE | Fern | TASK-019 |
 
 ## Blocked / waiting
 
@@ -72,6 +82,8 @@
 | **Scheduled tasks not yet set up** | Human | 2 jobs to register on the Windows server: end-of-day (:4006 nightly) + month-start (:4010, 1st). **Step-by-step guide written: `smart-scheduler/DEPLOY-scheduled-tasks-windows.md`** (endpoints verified from code). Non-blocking for interactive use. |
 | Real numbers (placeholders live) | พี่ฟีน → Porter | Placeholders in use (FL 70k@500, FT 50k, PT 15k, Trial/Single 1,390). พี่ฟีน to give real figures + decide single-session price (program-dependent) + โต๊ด type. |
 | repo lint (both FE) | Porter/maint | `bun run lint` broken — `next lint` removed in Next 16. Pre-existing, not from our changes. Small maintenance fix (migrate to ESLint CLI). |
-| REQ-003 deploy | Porter → human | Apply scheduling migration `drizzle/0010_teacher_archived.sql` (`ADD COLUMN IF NOT EXISTS`, same `__drizzle_migrations` meta-drift reconcile as ops 0003) + redeploy scheduling-back (:4006) & scheduler-front (:3016). No scheduled tasks/seed needed. Then teacher add/edit/change-type/archive is live. |
+| REQ-003 deploy | Porter → human | Apply scheduling migration `drizzle/0010_teacher_archived.sql` (`ADD COLUMN IF NOT EXISTS`, same `__drizzle_migrations` meta-drift reconcile as ops 0003) + redeploy scheduling-back (:4006) & scheduler-front (:3016). No scheduled tasks/seed needed. Then teacher add/edit/change-type/archive is live. ⚠️ But see "teacher CRUD not standalone" — with the backoffice offline, add/archive 502; sequence the REQ-003 rework before relying on it. |
+| REQ-004 deploy | Porter → human | (1) Apply scheduling migration `drizzle/0011_freelance_budgets.sql` (`CREATE TABLE IF NOT EXISTS`; same meta-drift reconcile). (2) Register a **monthly** Windows task → `POST :4006/internal/jobs/month-reset` (`x-internal-secret`=`INTERNAL_JOB_SECRET`, 1st of month) — replaces the ops month-start reset for freelance. (3) Redeploy scheduling-back (:4006) + scheduler-front (:3016). (4) Re-enter the freelance budgets via the frontoffice (placeholder 70k@500). **Pre-deploy:** Jason's month-reset idempotency guard (TASK-019 fast-follow) should land first. Then the freelance limit is fully standalone (works with ops offline). |
 | REQ-003 subjects (known limit) | Porter → พี่ฟีน | The teacher Add/Edit form lists **existing** subjects only (union across the roster) — a brand-new program/subject can't be created there yet. Out of REQ-003 scope. If คุณฟีน needs to add new programs via the UI → future small REQ (`GET /subjects` + subjects-admin). Non-blocking. |
+| ⚠️ Teacher CRUD not standalone yet | Porter (new REQ?) | **Pivot gap (flagged by Jason during TASK-019):** teacher add/edit/change-type/archive (REQ-003 / TASK-016) still calls ops **blocking** → once the backoffice goes offline those **502**, breaking teacher management. REQ-004 made the freelance *limit* standalone, but teacher CRUD isn't. Needs a follow-up REQ to make the teacher↔ops sync best-effort/removed (companion to the REQ-003 rework) **before the backoffice is torn down**. |
 | REQ-001 deploy gate | Porter → human | Before DELIVERED: (1) apply ops migration `drizzle/0003_even_turbo.sql` in the real env + reconcile the shared `__drizzle_migrations` meta-drift; (2) set up 2 scheduled tasks — end-of-day (**:4006**, INTERNAL_JOB_SECRET) + month-start (**:4010**, X-Service-Token, 1st of month); (3) seed data (DATA REQUEST) — **placeholder numbers PROVIDED** in `project-docs/seed-data-placeholder-2026-07-20.md` (FL budget 70k @ 500/hr, FT 50k, PT 15k, Trial 1,390, Single 1,390 placeholder). Can be typed via admin UI post-deploy or dev-seeded. BE can't apply migrations/DB under brownfield. |

@@ -1,6 +1,9 @@
 # REQ-002: Give the AI real-time knowledge of the outside world
 
 - Status: DELIVERED (accepted by Porter 2026-07-21 — all AC met, verified by SA against live grounded traces; Gemini web search intentionally phased to a future REQ)
+- **Partially superseded by REQ-006 (2026-07-21):** the in-`/chat` auto web-search
+  delivered here is being replaced by separate web-search primitives; date/time
+  injection remains. See REQ-006.
 - Priority: MEDIUM
 - Requested: 2026-07-21 by human (dev@smartalliance.co.th)
 - Deadline: none

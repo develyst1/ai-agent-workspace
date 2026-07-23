@@ -39,6 +39,50 @@ does not hang** ("ค้นทั้งหมดได้ + optimize").
 - No change to the response shape or to results when a date range is supplied. No new paging UX unless SA
   finds it necessary for `/table` (flag if so).
 
+## SA Diagnosis — Sober, 2026-07-21 (read both repo SQLs)
+
+Read `TTInformMoveDtlRepository.GetMoveA10Dashboard` (a10) + `TTLicenseDtlRepository.GetMoveLicenseDashboard`
+(license-move).
+
+**Q1 → (a) genuine full-scan, NOT a null/empty-date bug.** In both repos the date filter is *conditionally*
+concatenated: empty `dateStart`/`dateEnd` simply omits the `AND L.ISSUE_DATE >= …` / `AND DTL.MOVE_DATE >= …`
+line (license L252-253; a10 L75-76). Every JOIN carries a proper ON clause — dropping the date predicate does
+**not** create a cartesian or a missing-join. So no-date already returns all rows *correctly* (no error path); it
+is purely **unbounded + slow**. The amplifiers that turn "slow" into "hang" at full-table scale:
+- **License: 4 correlated scalar sub-queries per output row** — `MovedQty` (SUM over `T_T_INFORM_MOVE_DTL`) +
+  **three** that each re-scan `T_T_REQUEST_MOVE` by `REQUEST_ID` (`MoveTypeCode`, `BuyerGroupNo`, `BuyerUnitName`).
+  Unbounded = N×4 sub-query executions over the whole `LICENSE_STATUS=40` set.
+- **a10: 1 correlated sub-query per row** (`MoveTypeCode` from `T_T_REQUEST_MOVE`).
+- Both: `V_PROVINCE` joined on a **name string** (`VP.PROVINCE_NAME = LM.DEST_PROVINCE_NAME` — unindexable), a
+  `VW_PRODUCT` **view** join, and a full `ORDER BY ISSUE_DATE/MOVE_DATE DESC` sort of the entire result.
+
+**Q2 → fix split:**
+- **Code-side (team / Jason) — deterministic, result-preserving, safe regardless of DB facts:**
+  1. Collapse the three `T_T_REQUEST_MOVE`-by-`REQUEST_ID` correlated sub-queries (license) into **one** `LEFT JOIN`
+     to a pre-aggregated derived table `(SELECT REQUEST_ID, MAX(MOVE_REQUEST_TYPE), MAX(AUTHORITY_NAME),
+     MAX(BA.AUTHORITY_GROUP_NO) … GROUP BY REQUEST_ID)`. Turns 3×N sub-query runs into a single hash join; values
+     identical (same MAX per REQUEST_ID). Same for a10's single `MoveTypeCode` (minor).
+  2. Convert `MovedQty` correlated SUM → `LEFT JOIN` to `(SELECT REF_LICENSE_NO, PRODUCT_CODE, SUM(QUANTITY)
+     GROUP BY …)`. Identical values.
+  3. (Only if Q3 says a cap is OK) add a bounded `FETCH FIRST :N ROWS ONLY` for the **/table** unbounded case —
+     charts must still aggregate all, so the cap is `/table`-only.
+- **DB-side (stakeholder/DBA) — the primary lever; needs the OPS request below to finalize exact indexes.**
+  Candidate indexes to confirm against EXPLAIN + existing indexes: `T_T_LICENSE(LICENSE_STATUS, ISSUE_DATE)`,
+  `T_T_INFORM_MOVE_DTL(MOVE_DATE)` + `(REF_LICENSE_NO, PRODUCT_CODE)`, `T_T_REQUEST_MOVE(REQUEST_ID)`,
+  `T_T_LICENSE_MOVE(LICENSE_ID)`, `T_T_LICENSE_DTL(LICENSE_ID)`, `T_T_LICENSE(LICENSE_NO)`.
+
+**DATA/OPS REQUEST (via Porter → stakeholder/DBA) — needed to finalize the DB-side + rule out a hidden dup bug:**
+1. `EXPLAIN PLAN` for both `/chart` (and `/table`) queries **with no date range** (the unbounded form).
+2. Row counts: `T_T_LICENSE` (status 40), `T_T_LICENSE_DTL`, `T_T_INFORM_MOVE_DTL`, `T_T_REQUEST_MOVE`.
+3. Existing indexes on the join/filter/sort columns listed above.
+4. **Cardinality checks (latent-dup risk):** is `T_T_LICENSE_MOVE` 1:1 per `LICENSE_ID`? is `V_PROVINCE.PROVINCE_NAME`
+   unique? If either is many-per-key, the INNER `LM` join / `V_PROVINCE` name-join **multiplies rows** — both a
+   perf hit and a correctness bug (inflated aggregates), and the fix would add de-dup. Cannot tell from code.
+
+**Q3 → stakeholder:** for the **/table** unbounded case, is a hard cap (e.g. top-N most-recent rows) acceptable, or
+must it return every row? (Charts aggregate → need all; a fully unbounded `/table` may be huge and is the part most
+likely to hang the client too.)
+
 ## Questions
 
 (SA Lead asks here; PM answers as `> answer: ...`)

@@ -1,6 +1,6 @@
 # REQ-005: Align the server default port to 3009
 
-- Status: READY_FOR_SA
+- Status: DELIVERED (accepted by Porter 2026-07-21 — all AC met; SA-verified default :3009 + repo-wide grep of 3002 clean)
 - Priority: LOW
 - Requested: 2026-07-21 by human (dev@smartalliance.co.th)
 - Deadline: none
@@ -22,11 +22,10 @@ delivering REQ-004 (docs). The stakeholder has decided the intended default is
 
 ## Acceptance Criteria
 
-- [ ] With no `PORT` set in `.env`, the server listens on 3009.
-- [ ] `.env.example` shows 3009.
-- [ ] README / `docs/consumer-guide.md` / `CLAUDE.md` and the Bruno `local`
-      environment all reference 3009 consistently (no lingering 3002).
-- [ ] A quickstart example from the docs still works against the aligned port.
+- [x] With no `PORT` set in `.env`, the server listens on 3009. — `index.ts` default `|| 3009`; proven with PORT unset → `:3009`.
+- [x] `.env.example` shows 3009. — aligned.
+- [x] README / `docs/consumer-guide.md` / `CLAUDE.md` and the Bruno `local` environment all reference 3009 consistently (no lingering 3002). — repo-wide `grep 3002` CLEAN (SA-verified).
+- [x] A quickstart example from the docs still works against the aligned port. — docs examples executed green.
 
 ## Constraints
 
