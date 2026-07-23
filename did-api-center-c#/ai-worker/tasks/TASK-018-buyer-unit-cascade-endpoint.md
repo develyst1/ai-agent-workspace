@@ -1,7 +1,7 @@
 # TASK-018: หน่วยผู้ซื้อ cascade endpoint (← กลุ่มหน่วยผู้ซื้อ, optional) + remove from main search-filter (a10 + license)
 
 - Source: SPEC-013 (REQ-013)
-- Status: REVIEW
+- Status: DONE
 - Assignee: Jason (BE)
 - Depends on: none
 
@@ -78,8 +78,23 @@ on both dashboards; dropdown-options only (no data-filter change). 5 edits × 2 
 `authority_name_ddl` gone from both filter models; `BuyerUnitDdl` present in both interfaces + services. Deterministic
 DDL cascade (same shape as the shipped province cascade) → no live capture needed.
 
-## Questions
-(Jason asks; Sober answers as `> answer: ...`)
+## Review — Verdict: DONE — Sober (SA), 2026-07-21
+Read both services + both controllers + both models (not the notes). Correct + mirrors the province cascade:
+- **Service `BuyerUnitDdl(int? buyerGroup)`** — a10 `DashboardMoveA10Service` L125-139, license `DashboardMoveLicenseService`
+  L115-129: `TMBuyerAuthorityRepo.GetAllAsync()` → `.Where(!buyerGroup.HasValue || AuthorityGroupNo == buyerGroup.Value)`
+  (null → all, value → that group) → `.Where(AuthorityName not empty).Select(AuthorityName).Distinct()` → `{Value=Label=name}`.
+  Optional-parent semantics = จังหวัด←ภาค. ✅
+- **`SearchFilter()`** — buyer-unit block removed; `BuyerGroupDdl` (parent) + `resBuyer = GetAllAsync()` kept (a10 L105-116,
+  license L95-106). ✅
+- **Models** — `authority_name_ddl` (`BuyerUnitDdl`) removed from both search-filter response models; `authority_group_no_ddl`
+  kept (a10/ license L93-94). `authority_name_ddl` no longer appears anywhere in the codebase (grep). ✅
+- **Controllers** — `search-filter-buyer-unit` on both (`DashboardMoveA10Controller` L51-63, license L51-63), `[FromQuery(Name =
+  "buyer_group")] int? buyerGroup` → `_service.BuyerUnitDdl(buyerGroup)`, standard OfficerOnlyFilter/Swagger/try-catch. ✅
+- **Interfaces** — `BuyerUnitDdl(int? buyerGroup)` on both. Build 0 errors.
+- **Untouched:** the chart/table `authority_name` data filter (`InList(req.BuyerUnits, …)`), `authority_group_no_ddl`,
+  other cascades. Dropdown-options only + established-pattern mirror → **accepted on Sober review, no live capture** (like
+  the province cascade / REQ-009). **REQ-013 DELIVERED.** FE hand-off: switch หน่วยผู้ซื้อ to `search-filter-buyer-unit` +
+  pass the selected buyer group.
 
 ## Questions
 (Jason asks; Sober answers as `> answer: ...`)

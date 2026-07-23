@@ -23,8 +23,10 @@
 | REQ-009 | Unify ประเภทอาวุธ dropdown onto ONE shared config for a10 + move-license (default all 4 PTG; empty⇒all) | MEDIUM | DELIVERED | — (TASK-013 done+reviewed; shared `DashboardWeaponTypeCodes`, default 4 PTG, empty⇒all → deterministic, accepted on review) |
 | REQ-010 | /chart — expose หน่วยนับ (unit) at TOP LEVEL (like the weapon-type echo; populated even when empty) | MEDIUM | DELIVERED | — (TASK-015 done+reviewed; additive/deterministic → accepted on Sober review, like REQ-008) |
 | REQ-011 | Dashboards support NO-date-range search (return all) without hanging — optimize the query | HIGH | DELIVERED | — (stakeholder confirms no-date is faster/works 2026-07-20; TASK-016 subquery→join + TASK-017 view-materialization; code-only, no indexes) |
-| REQ-012 | Replace `VW_PRODUCT`/`V_PROVINCE` view joins with base tables in the dashboard queries (perf; result-identical) | MEDIUM | IN_SPEC (**SA recommends AGAINST** — perf already fixed; VW_PRODUCT wraps 3–4 table hierarchy → inlining adds joins+risk for no gain) | Porter → stakeholder: keep-as-is decision + view DDL DATA REQUEST |
-| REQ-013 | หน่วยผู้ซื้อ cascades from กลุ่มหน่วยผู้ซื้อ (optional parent) — own `search-filter-buyer-unit` endpoint; remove from main search-filter | MEDIUM | IN_SPEC | Jason — SPEC-013/TASK-018 dispatched |
+| REQ-012 | Replace `VW_PRODUCT`/`V_PROVINCE` view joins with base tables in the dashboard queries (perf; result-identical) | MEDIUM | SPEC_DONE (code done+reviewed; awaiting stakeholder re-capture) | stakeholder re-capture asked 2026-07-20: weapon type + dest region (ภาค) match today + no-date completes |
+| REQ-013 | หน่วยผู้ซื้อ cascades from กลุ่มหน่วยผู้ซื้อ (optional parent) — own `search-filter-buyer-unit` endpoint; remove from main search-filter | MEDIUM | DELIVERED | — (TASK-018 done+Sober-reviewed; deterministic cascade mirror → accepted on review. FE hand-off: call new endpoint + pass buyer group) |
+| REQ-014 | DASHBOARD_IMPORT — build Center backend for the อ.8 import-permit dashboard (license-first plan-vs-actual, mirror License Move) | MEDIUM | DELIVERED (code — TASK-020 scaffold + TASK-021 actual attach, both Sober-reviewed; perf learnings from day one) | Porter → stakeholder live capture: permitted vs actual per อ.8 line, ประเทศผู้ผลิต, ฉบับ=distinct count, no-date completes |
+| REQ-015 | `search-filter-buyer-unit` — accept MULTIPLE buyer-group codes (array parent); union of units (a10 + license) | MEDIUM | IN_SPEC (SPEC-015: `int?`→`List<int>` union; aligns w/ already-multi-select `req.Buyers`; backward-compatible) | Jason — TASK-022 |
 
 ## Tasks
 
@@ -47,7 +49,11 @@
 | TASK-015 | /chart — expose หน่วยนับ (unit) at top level (mirror weapon-type echo) — a10 + license-move | SPEC-010 | DONE | Jason (BE) | none |
 | TASK-016 | Collapse dashboard correlated sub-queries → pre-aggregated LEFT JOINs (a10 + license; perf, result-identical) | SPEC-011 | DONE ✅ (dated confirmed correct on re-test; no regression) | Jason (BE) | none |
 | TASK-017 | Materialize `VW_PRODUCT`/`V_PROVINCE` view joins via `GROUP BY` inline views (kills no-date timeout; a10 + license) | SPEC-011 | DONE ✅ (Sober-reviewed result-identical; perf = re-test to accept) | Jason (BE) | TASK-016 |
-| TASK-018 | หน่วยผู้ซื้อ cascade endpoint (`search-filter-buyer-unit?buyer_group=`, optional) + remove `authority_name_ddl` from main search-filter (a10 + license) | SPEC-013 | REVIEW | Jason (BE) → Sober (SA) | none |
+| TASK-018 | หน่วยผู้ซื้อ cascade endpoint (`search-filter-buyer-unit?buyer_group=`, optional) + remove `authority_name_ddl` from main search-filter (a10 + license) | SPEC-013 | DONE ✅ (Sober-reviewed both dashboards; deterministic mirror) | Jason (BE) | none |
+| TASK-019 | Swap fat `VW_PRODUCT`/`V_PROVINCE` inline views → slim base-table chains (3-table weapon / 2-table region; a10 + license) | SPEC-012 | DONE ✅ (Sober-reviewed result-identical; re-capture to accept) | Jason (BE) | TASK-017 |
+| TASK-020 | Scaffold DASHBOARD_IMPORT (อ.8): controller/models/service + search-filter + product cascade + permitted-side chart/table (imported_qty stub=0) | SPEC-014 | DONE ✅ (Sober-reviewed; permitted side correct, learnings applied; live capture w/ TASK-021) | Jason (BE) | none |
+| TASK-021 | Attach `imported_qty` = SUM(`V_RPT_IMPORT_PRODUCT`.QUANTITY) by REF_LICENSE_NO+REF_PRODUCT_CODE (pre-agg LEFT JOIN) | SPEC-014 | DONE ✅ (Sober-reviewed; a10-shape attach, no multiplication; live capture to accept) | Jason (BE) | TASK-020 |
+| TASK-022 | buyer-unit cascade `int?`→`List<int>` union (multiple buyer-group codes; a10 + license) | SPEC-015 | IN_PROGRESS | Jason (BE) | TASK-018 |
 
 ## Blocked / waiting
 

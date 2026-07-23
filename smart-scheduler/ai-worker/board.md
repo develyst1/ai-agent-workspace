@@ -30,8 +30,9 @@
 | REQ-001 | Freelance pay as monthly budget-stock + auto-disable at cap | HIGH | ✅ **DELIVERED** | Live & confirmed by คุณฟีน 2026-07-20 (freelance cap shows on frontoffice; budgets/salaries/P&L working). **Remaining ops (non-blocking):** register 2 scheduled tasks + swap placeholder→real numbers. |
 | REQ-002 | Backoffice admin authentication (login + real JWT) | HIGH | ✅ **DELIVERED** | Live & confirmed 2026-07-20 — admin login works, auth enforced (`SKIP_ADMIN_AUTH=false`). |
 | REQ-003 | Unified teacher onboarding/offboarding — one action, auto-synced both systems | HIGH | ⏸️ **ON HOLD** | **Do NOT deploy** (built, but its backoffice sync is moot — backoffice is being torn down). Rework the teacher-management parts as standalone under a later REQ. |
-| REQ-004 | Move freelance limit into the frontoffice — standalone, no backoffice dependency | HIGH | **SPEC_DONE** | **Human — deploy** (migration `0011_freelance_budgets` + month-reset :4006 task + redeploy scheduling/front + re-enter budgets) → Porter acceptance → DELIVERED. Build acceptance PASS; deploy relayed by Porter (scheduled-tasks doc updated). |
-| REQ-005 | Standalone teacher management (rework REQ-003 minus ops sync) | MEDIUM | DRAFT | Porter — confirm scope/priority with คุณฟีน (not urgent: REQ-003 is undeployed, so no live 502). |
+| REQ-004 | Move freelance limit into the frontoffice — standalone, no backoffice dependency | HIGH | ✅ **DELIVERED** | Deployed & confirmed working by คุณฟีน 2026-07-20. Freelance limit now standalone in the frontoffice. |
+| REQ-005 | Standalone teacher management (rework REQ-003 minus ops sync) | MEDIUM | DRAFT | Porter — confirm scope/priority with คุณฟีน (not urgent: REQ-003 is undeployed, so no live 502). May be absorbed by the backoffice rebuild (REQ-006). |
+| REQ-006 | Backoffice rebuild — universal "item" model on the shared DB | HIGH | **IN_SPEC** | Jason/Fern — build **SPEC-006** (TASK-021…026). Design rev.3 APPROVED (5 tables, no approvals). Core first (021→022→023), then freelance re-absorb + migration (024/025/026) last. |
 
 > ⚠️ **STRATEGIC PIVOT (2026-07-20, คุณฟีน):** current **backoffice is being torn down &
 > rebuilt from scratch** (hard to use / not scalable). Finish the **frontoffice first,
@@ -73,6 +74,12 @@
 | TASK-018 | scheduling: teacher↔ops drift reconcile report | SPEC-004 | DONE | Jason | TASK-016 |
 | TASK-019 | scheduling: local freelance budget (re-home from ops, standalone) | SPEC-005 | DONE | Jason | — |
 | TASK-020 | scheduler-front: frontoffice freelance budget admin (set/edit/top-up) | SPEC-005 | DONE | Fern | TASK-019 |
+| TASK-021 | backoffice-back: `bo` schema + migration (item/movement/tags) | SPEC-006 | TODO | Jason | — |
+| TASK-022 | backoffice-back: universal item/movement/tag API + P&L report (single-admin JWT) | SPEC-006 | TODO | Jason | TASK-021 |
+| TASK-023 | backoffice-front: admin UI on the universal item model | SPEC-006 | TODO | Fern | TASK-022 |
+| TASK-024 | scheduling: re-absorb freelance ceiling as a `bo.item` (in-tx, unit=hour) | SPEC-006 | TODO | Jason | TASK-021 |
+| TASK-025 | backoffice-back: data migration `ops.*` + `freelance_budgets` → `bo.*` | SPEC-006 | TODO | Jason | TASK-021 |
+| TASK-026 | scheduler-front: re-point freelance budget admin at `bo`-backed data | SPEC-006 | TODO | Fern | TASK-024 |
 
 ## Blocked / waiting
 
