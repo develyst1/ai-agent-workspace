@@ -32,7 +32,7 @@
 | REQ-003 | Unified teacher onboarding/offboarding — one action, auto-synced both systems | HIGH | ⏸️ **ON HOLD** | **Do NOT deploy** (built, but its backoffice sync is moot — backoffice is being torn down). Rework the teacher-management parts as standalone under a later REQ. |
 | REQ-004 | Move freelance limit into the frontoffice — standalone, no backoffice dependency | HIGH | ✅ **DELIVERED** | Deployed & confirmed working by คุณฟีน 2026-07-20. Freelance limit now standalone in the frontoffice. |
 | REQ-005 | Standalone teacher management (rework REQ-003 minus ops sync) | MEDIUM | DRAFT | Porter — confirm scope/priority with คุณฟีน (not urgent: REQ-003 is undeployed, so no live 502). May be absorbed by the backoffice rebuild (REQ-006). |
-| REQ-006 | Backoffice rebuild — universal "item" model on the shared DB | HIGH | **IN_SPEC** | Jason/Fern — build **SPEC-006** (TASK-021…026). Design rev.3 APPROVED (5 tables, no approvals). Core first (021→022→023), then freelance re-absorb + migration (024/025/026) last. |
+| REQ-006 | Backoffice rebuild — universal "item" model on the shared DB | HIGH | **IN_SPEC** | Jason/Fern — **4/6 DONE** (021/022/023/024). Left: Jason TASK-025 (data migration); Fern TASK-026 (near-trivial). + fast-follow: bo item DTO tags → prefill. See REQ-006 deploy note (hard ordering: 025 before 024 deploy). |
 
 > ⚠️ **STRATEGIC PIVOT (2026-07-20, คุณฟีน):** current **backoffice is being torn down &
 > rebuilt from scratch** (hard to use / not scalable). Finish the **frontoffice first,
@@ -74,10 +74,10 @@
 | TASK-018 | scheduling: teacher↔ops drift reconcile report | SPEC-004 | DONE | Jason | TASK-016 |
 | TASK-019 | scheduling: local freelance budget (re-home from ops, standalone) | SPEC-005 | DONE | Jason | — |
 | TASK-020 | scheduler-front: frontoffice freelance budget admin (set/edit/top-up) | SPEC-005 | DONE | Fern | TASK-019 |
-| TASK-021 | backoffice-back: `bo` schema + migration (item/movement/tags) | SPEC-006 | TODO | Jason | — |
-| TASK-022 | backoffice-back: universal item/movement/tag API + P&L report (single-admin JWT) | SPEC-006 | TODO | Jason | TASK-021 |
-| TASK-023 | backoffice-front: admin UI on the universal item model | SPEC-006 | TODO | Fern | TASK-022 |
-| TASK-024 | scheduling: re-absorb freelance ceiling as a `bo.item` (in-tx, unit=hour) | SPEC-006 | TODO | Jason | TASK-021 |
+| TASK-021 | backoffice-back: `bo` schema + migration (item/movement/tags) | SPEC-006 | DONE | Jason | — |
+| TASK-022 | backoffice-back: universal item/movement/tag API + P&L report (single-admin JWT) | SPEC-006 | DONE | Jason | TASK-021 |
+| TASK-023 | backoffice-front: admin UI on the universal item model | SPEC-006 | DONE | Fern | TASK-022 |
+| TASK-024 | scheduling: re-absorb freelance ceiling as a `bo.item` (in-tx, unit=hour) | SPEC-006 | DONE | Jason | TASK-021 |
 | TASK-025 | backoffice-back: data migration `ops.*` + `freelance_budgets` → `bo.*` | SPEC-006 | TODO | Jason | TASK-021 |
 | TASK-026 | scheduler-front: re-point freelance budget admin at `bo`-backed data | SPEC-006 | TODO | Fern | TASK-024 |
 
@@ -94,3 +94,4 @@
 | REQ-003 subjects (known limit) | Porter → พี่ฟีน | The teacher Add/Edit form lists **existing** subjects only (union across the roster) — a brand-new program/subject can't be created there yet. Out of REQ-003 scope. If คุณฟีน needs to add new programs via the UI → future small REQ (`GET /subjects` + subjects-admin). Non-blocking. |
 | ⚠️ Teacher CRUD not standalone yet | Porter (new REQ?) | **Pivot gap (flagged by Jason during TASK-019):** teacher add/edit/change-type/archive (REQ-003 / TASK-016) still calls ops **blocking** → once the backoffice goes offline those **502**, breaking teacher management. REQ-004 made the freelance *limit* standalone, but teacher CRUD isn't. Needs a follow-up REQ to make the teacher↔ops sync best-effort/removed (companion to the REQ-003 rework) **before the backoffice is torn down**. |
 | REQ-001 deploy gate | Porter → human | Before DELIVERED: (1) apply ops migration `drizzle/0003_even_turbo.sql` in the real env + reconcile the shared `__drizzle_migrations` meta-drift; (2) set up 2 scheduled tasks — end-of-day (**:4006**, INTERNAL_JOB_SECRET) + month-start (**:4010**, X-Service-Token, 1st of month); (3) seed data (DATA REQUEST) — **placeholder numbers PROVIDED** in `project-docs/seed-data-placeholder-2026-07-20.md` (FL budget 70k @ 500/hr, FT 50k, PT 15k, Trial 1,390, Single 1,390 placeholder). Can be typed via admin UI post-deploy or dev-seeded. BE can't apply migrations/DB under brownfield. |
+| ⚠️ REQ-006 deploy — **hard ordering** | Porter → human | When REQ-006 ships: **(1)** apply the `bo` migration `backoffice-back/drizzle/0004_bo_schema.sql` (`CREATE SCHEMA/TABLE IF NOT EXISTS`); **(2)** run the **TASK-025 data migration** (`ops.*` + `public.freelance_budgets` → `bo.*`) — **MUST run before/with step 3**, else live freelances have no `bo.item` → not bookable (breaks the live REQ-004 limit); **(3)** deploy TASK-024 scheduling + the rebuilt backoffice (:4010) & backoffice-front (:3018). Then the freelance limit runs off `bo.item` (still atomic, same DB). Ops routes/screens retired in a later cleanup. |

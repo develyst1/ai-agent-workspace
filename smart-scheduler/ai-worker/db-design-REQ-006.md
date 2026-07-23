@@ -87,7 +87,7 @@ erDiagram
     uuid   item_id FK
     int    qty             "signed: + = in/เพิ่ม, − = out/ลด"
     int    remaining_after "nullable — snapshot for ceiling/stock items"
-    int    value_minor     "the P&L baht value of this movement = |qty| × unit_price (same rule for income & expense)"
+    int    value_minor     "signed P&L value = −qty × unit_price (OUT positive, IN/reversal negative) so SUM nets"
     text   reason
     text   ref_type
     text   ref_id
@@ -97,13 +97,13 @@ erDiagram
 ```
 - **Two core enums:** `direction` (INCOME|EXPENSE) × `cadence` (VARIABLE|FIXED_*). (vs 11 today.)
 - **Symmetric income & expense** (คุณฟีน rev.2): both use `unit_price_minor` (money per unit) + optional
-  `ceiling_qty`/`remaining_qty` (stock). **`value_minor = qty × unit_price_minor`** for every movement — one rule,
-  same for income and expense.
+  `ceiling_qty`/`remaining_qty` (stock). **`value_minor = −qty × unit_price_minor`** (signed: OUT positive,
+  IN/reversal negative) for every movement — one rule, same for income and expense, and `SUM` nets reversals.
 - **Ceiling/remaining live on the item row** (no separate balance table); maintained by movements.
 - **The 4 old mechanisms collapse into one.** Stock, wallet (hours/points), recurring salary, price/cap are
   all just `item` + `movement`: a student hour-wallet = item(unit=ชม., ceiling/remaining); a salary =
   item(unit=เดือน, EXPENSE, FIXED_MONTHLY, unit_price=amount); a product = item(unit=ขวด, INCOME, ceiling, unit_price).
-- **P&L report = one query:** `SUM(qty × unit_price) GROUP BY item.direction (, item.cadence)`.
+- **P&L report = one query:** `SUM(value_minor) GROUP BY item.direction (, item.cadence)` (nets reversals via the signed value).
 
 ### Grouping via badge-tags (replaces `organizations`) — คุณฟีน rev.2
 Reuse the frontoffice badge pattern instead of a rigid org FK — flexible, admin-defined groupings (สาขา / หมวด / …):

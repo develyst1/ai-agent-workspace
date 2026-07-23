@@ -28,7 +28,8 @@ OUT (trivially added later as more items, once the backbone is live): freelance 
   (`VARIABLE|FIXED_MONTHLY|FIXED_DAILY|FIXED_QUARTERLY`), ceiling_qty int null, remaining_qty int null,
   unit_price_minor int (money per unit), owner_ref text null (e.g. teacherId), active, metadata jsonb, timestamps.
 - **`movement`**: id, item_id→item, qty int (signed: + in / − out), remaining_after int null, value_minor int
-  (= |qty| × unit_price), reason, ref_type, ref_id, idempotency_key unique, created_at.
+  (**= −qty × unit_price**, signed so OUT is positive and IN/reversal negative → `SUM` nets), reason, ref_type,
+  ref_id, idempotency_key unique, created_at.
 - **`tag_group`** / **`tag_value`** / **`item_tag`** — the badge-style grouping (mirrors `public.booking_badges`:
   `item_tag` PK(item_id, tag_value_id), UNIQUE(item_id, tag_group_id)).
 - 2 core enums: `direction`, `cadence`. No roles/approval tables.
