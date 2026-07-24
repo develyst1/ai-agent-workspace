@@ -1,6 +1,6 @@
 # TASK-025: backoffice-back — data migration `ops.*` + `freelance_budgets` → `bo.*`
 - Source: SPEC-006
-- Status: TODO
+- Status: REVIEW
 - Depends on: TASK-021 (schema). Coordinate with TASK-024 (freelance shape).
 - Assignee: @Jason (smart-scheduler-backoffice-back, port 4010)
 
@@ -29,10 +29,46 @@ Mapping:
 - [ ] `bunx tsc --noEmit` clean; the script is documented in the REQ-006 deploy note (run once, after `bo` migration).
 
 ## Implementation Notes
-(Jason fills in.)
+`smart-scheduler-backoffice-back/src/db/migrate-to-bo.ts` — a standalone, **idempotent** script run manually
+at deploy (`bun run migrate:bo`, added to package.json). Read-only on the old tables; upserts into `bo`.
+
+- **Idempotency:** ops items keyed by `metadata.migrationKey='ops-cat:<id>'`; freelance keyed by
+  `(external_source, owner_ref, kind='FREELANCE_CEILING')` — **the same key TASK-024's `findFreelanceItem`
+  uses**, so the migration writes the exact item the running app reads. `remaining_qty` is set on **INSERT
+  only** (never overwritten) → a re-run after teachers have booked won't clobber live remaining.
+- **`ops.catalog_items → bo.item`:** INCOME/EXPENSE→`direction` + `cadence=VARIABLE`; `FIXED_COST`→
+  EXPENSE + `FIXED_MONTHLY`. `sale_price_minor`→`unit_price_minor`, `unit`→`unit`, `external_ref`→`owner_ref`,
+  `reorder_level`→`metadata.reorder`. `stock_balances.quantity_on_hand`→`remaining_qty` (track-stock only).
+- **`ops.stock_movements → bo.movement`:** IN/OUT → signed `qty` + signed `value_minor` (OUT `+amount`,
+  IN `−amount`, matching TASK-022's signed rule so `SUM` nets); carries `idempotency_key`/`ref_*`. **ADJUST
+  skipped** (P&L-neutral; remaining comes from the balance).
+- **`ops.recurring_costs`:** corrects the salary item's `unit_price` to the current **open** effective amount
+  (the catalog pass already created the FIXED_COST item; effective-dated history isn't modelled in bo — salary
+  *posting* is a follow-up REQ, definitions migrated).
+- **`public.freelance_budgets → bo.item`** (unit=ชั่วโมง, `FREELANCE_CEILING`): `ceiling_qty=round(budget/rate)`,
+  `remaining_qty=round(remaining/rate)`, `unit_price_minor=rate`, `reorderQty=round(reorder/rate)`,
+  `owner_ref=teacher_id` — **exactly TASK-024's shape.** Read raw (`SELECT … FROM public.freelance_budgets`)
+  since that table isn't in this repo's Drizzle schema.
+- **Skipped:** ops `FREELANCE_BUDGET` catalog items (+ their movements) — superseded by `freelance_budgets`;
+  the 5 dead ops tables + `commercial_requests`.
+
+**Verification**
+- `bunx tsc --noEmit` clean; `bun test` → 48/0 (script isn't imported by tests; it typechecks). ⚠️ **The
+  script is DB-runtime and was NOT executed** (brownfield — no DB). Correctness is by inspection; it's the
+  manual deploy step. Documented for the REQ-006 deploy note: **run `bun run migrate:bo` after the `bo`
+  migration (0004) and before/with deploying TASK-024** (else live freelances have no `bo.item`).
 
 ## Questions
 (Jason asks; Sober answers as `> answer: ...`)
+
+- **Scoping confirmations (flag if any is wrong):** (1) skip ops `FREELANCE_BUDGET` items + their movements
+  (superseded by `freelance_budgets` → hour items; migrating them would double-count/confuse) — OK? (2) skip
+  ADJUST movements (P&L-neutral; remaining from balance) — OK? (3) salary = **definitions only** (unit_price =
+  current open amount), no salary posting movements (deferred REQ) — OK?
+- **Spot-check the DoD asks for** (P&L over migrated movements ≈ old `/reports/pl`, freelance lands as an
+  hour-item) is a **DB-runtime check I can't run** (brownfield). Recommend it as a deploy-time verification
+  step (run migrate → `GET /bo/reports/pl` vs the old ops `/reports/pl`); I can add a spot-check script if
+  you want one prepared.
 
 ## Review
 (Sober fills at REVIEW.)

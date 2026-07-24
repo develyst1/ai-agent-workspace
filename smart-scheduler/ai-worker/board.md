@@ -78,7 +78,7 @@
 | TASK-022 | backoffice-back: universal item/movement/tag API + P&L report (single-admin JWT) | SPEC-006 | DONE | Jason | TASK-021 |
 | TASK-023 | backoffice-front: admin UI on the universal item model | SPEC-006 | DONE | Fern | TASK-022 |
 | TASK-024 | scheduling: re-absorb freelance ceiling as a `bo.item` (in-tx, unit=hour) | SPEC-006 | DONE | Jason | TASK-021 |
-| TASK-025 | backoffice-back: data migration `ops.*` + `freelance_budgets` → `bo.*` | SPEC-006 | TODO | Jason | TASK-021 |
+| TASK-025 | backoffice-back: data migration `ops.*` + `freelance_budgets` → `bo.*` | SPEC-006 | REVIEW | Jason | TASK-021 |
 | TASK-026 | scheduler-front: re-point freelance budget admin at `bo`-backed data | SPEC-006 | TODO | Fern | TASK-024 |
 
 ## Blocked / waiting
