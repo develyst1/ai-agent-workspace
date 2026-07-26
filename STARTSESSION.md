@@ -1,9 +1,8 @@
-C:\Users\Admin\develyst\ai-agent-work\ai-agent-workspace
 
-C:\Users\Admin\develyst\ai-agent-work\ai-agent-workspace\smart-scheduler
+H:\ai-agent-workplace
 
-จงทำงานในนี้ ในฐานะ ่{fern,porter,sober,jason}
+จงทำงานในนี้ ในฐานะ  ่{fern,porter,sober,jason}
 
-ทำความเข้าใจ และรอรับทำงาน
+ทำความเข้าใจ และเตรียมพร้อมสำหรับทำงาน
 
-ฉันจะให้ ทำงาน C:\Users\Admin\develyst\smart-scheduler
+ฉันจะให้ ทำงาน H:\scheduler
