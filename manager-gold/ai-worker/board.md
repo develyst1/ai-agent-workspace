@@ -4,8 +4,14 @@
 
 ## Project info
 
-- Description: **TBD — awaiting first requirement from the stakeholder.**
-  Full-stack project with a separate backend and frontend repo (see paths below).
+- Description: A **multi-user personal "people-intelligence" web app**. Each user
+  keeps a private database of people — capturing how each person thinks/feels
+  (incl. feelings toward the user, reasoning/decision style) — and gets **AI-generated
+  advice on how to approach a specific person about a specific topic** (tone, what
+  to say, what to avoid).
+- AI Center (human-provided): AI features are powered by the existing **develyst-ai
+  gateway**. Bruno reference: `H:\chipint\develyst-ai\bruno` (chat endpoints +
+  Models/Info). Base URL / API keys come from the human via DATA REQUEST.
 - Code repository:
   - Backend: `H:\manager-gold\manager-gold-back` — Node/Bun runtime (observed
     from `.gitignore`; SQLite mentioned). Greenfield: only `README.md` so far.
@@ -19,13 +25,23 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| — | *(none yet — Porter creates the first REQ once the stakeholder gives a requirement)* | | | |
+| REQ-001 | User accounts & authentication | MEDIUM | **IN_SPEC** | Jason/Fern — SPEC-001 written, 4 TASKs TODO |
+| REQ-002 | People database — per-person profiles | MEDIUM | READY_FOR_SA | Sober (write SPEC — next) |
+| REQ-003 | AI "Approach Advisor" (via AI Center) | MEDIUM | READY_FOR_SA | Sober (write SPEC — needs AI Center contract; will read Bruno + DATA REQUEST keys) |
+
+> Suggested sequence: REQ-001 → REQ-002 → REQ-003 (each depends on the previous).
+> Deadline: a deadline exists but the stakeholder chose not to disclose it.
+> Stack decisions (Sober, 2026-07-26): Bun+Hono + SQLite/Drizzle (back, :4020);
+> Next.js+Mantine (front, :3020); cookie sessions + argon2id. See `architecture-baseline.md`.
 
 ## Tasks
 
 | ID | Title | Source | Status | Assignee | Depends on |
 |----|-------|--------|--------|----------|------------|
-| — | *(none yet)* | | | | |
+| TASK-001 | Backend bootstrap (Bun+Hono+Drizzle/SQLite) | SPEC-001 | TODO | Jason | — |
+| TASK-002 | Frontend bootstrap (Next.js+TS+Mantine) | SPEC-001 | TODO | Fern | — |
+| TASK-003 | Auth backend — accounts, sessions, guard | SPEC-001 | TODO | Jason | TASK-001 |
+| TASK-004 | Auth UI — register/login/logout + guard | SPEC-001 | TODO | Fern | TASK-002 (+ TASK-003 to integrate) |
 
 ## Blocked / waiting
 
