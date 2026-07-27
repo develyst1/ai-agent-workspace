@@ -49,3 +49,16 @@
 
 - Backend allows origin `FRONT_ORIGIN` with `credentials: true` and the methods/headers
   the API uses. No wildcard origin (cookies require an explicit origin).
+
+## 6. Source control / commit convention (Sober, 2026-07-27)
+
+Each repo (`manager-gold-back`, `manager-gold-front`) is its own git repo.
+- **Commit to branch `dong`** in each repo (matches Jason's TASK-001). Independent
+  branches per repo — that's expected; the repos don't share history.
+- **Each TASK produces at least one commit** whose message references the TASK id
+  (e.g. `TASK-002: frontend bootstrap`). "Done" means committed, not just in the tree.
+- **Commit** `.env.example` and all source. **Never commit** `.env`, `*.sqlite`,
+  `node_modules`, or build output (`.next`, `dist`) — the `.gitignore`s already cover these.
+- **Do not push / merge to the default branch** — pushing and any merge to
+  `main`/`master` is the human's call at integration/deploy time (via Porter), not the
+  engineers'. Keep commits local on `dong` unless told otherwise.

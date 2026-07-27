@@ -38,9 +38,9 @@
 
 | ID | Title | Source | Status | Assignee | Depends on |
 |----|-------|--------|--------|----------|------------|
-| TASK-001 | Backend bootstrap (Bun+Hono+Drizzle/SQLite) | SPEC-001 | TODO | Jason | — |
-| TASK-002 | Frontend bootstrap (Next.js+TS+Mantine) | SPEC-001 | TODO | Fern | — |
-| TASK-003 | Auth backend — accounts, sessions, guard | SPEC-001 | TODO | Jason | TASK-001 |
+| TASK-001 | Backend bootstrap (Bun+Hono+Drizzle/SQLite) | SPEC-001 | ✅ DONE | Jason | — |
+| TASK-002 | Frontend bootstrap (Next.js+TS+Mantine) | SPEC-001 | REVIEW | Fern (→ Sober) | — |
+| TASK-003 | Auth backend — accounts, sessions, guard | SPEC-001 | REVIEW | Jason (→ Sober) | TASK-001 |
 | TASK-004 | Auth UI — register/login/logout + guard | SPEC-001 | TODO | Fern | TASK-002 (+ TASK-003 to integrate) |
 
 ## Blocked / waiting
