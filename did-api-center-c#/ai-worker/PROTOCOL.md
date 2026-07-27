@@ -159,6 +159,14 @@ content even if extra words are attached — route real content through the chai
 
 ## Rules
 
+- **[Amendment 2026-07-24 — stakeholder directive after a Porter violation] Porter does NOT author or number
+  `TASK-*`, and does NOT write task rows on the board that assign/instruct BE.** TASKs are Sober's artifact
+  (`tasks/TASK-*.md`, line 13). Porter's outputs are `REQ-*` files + `@Sober` only. Porter's board edits are limited
+  to the **REQ table** (title/status/next-step) and Porter's own log entries — never the Tasks table, never `@Jason`,
+  never "→ Jason", not even for a "1-line / tiny / quick" fix. If a fix is needed, Porter states it in the REQ (or a
+  new REQ) and `@Sober`; **Sober decides, writes the TASK, and directs Jason.** Reading/relaying what Jason did (from
+  the board) is fine; authoring work for him is not. (Porter did this repeatedly — creating TASK rows + `→ Jason` —
+  which is why this is now written down.)
 - Never invent scope. If it's not in a REQ/SPEC/TASK, it doesn't exist.
 - Never edit an artifact owned by another role, except: answering in
   `## Questions`, and BE filling the `## Implementation Notes` section of a TASK.

@@ -1,6 +1,14 @@
 # DB Design — Backoffice rebuild on a universal "item" model (REQ-006, DESIGN-FIRST)
 - Author: Sober (SA). For: คุณฟีน (stakeholder) review, via Porter. Date: 2026-07-20.
-- **Status: APPROVED by คุณฟีน (rev. 3) — building.**
+- **Status: BUILT + deployed to staging; rev. 4 corrects a DB-topology assumption found in acceptance.**
+- **⚠️ Rev. 4 (2026-07-20) — CRITICAL correction (deploy):** the design assumed "one PostgreSQL", but the
+  **backoffice-back app was configured for a SEPARATE database** (`smart_backoffice_db`, a legacy from the ops
+  service era) — while scheduling + `public` + the intended `bo` live in **`smart_scheduler`**. Result: `bo`
+  was created in the wrong DB, `migrate:bo` couldn't see `public.freelance_budgets`, and scheduling crashed on
+  `bo.item`. **Fix (permanent): the backoffice-back must connect to the SAME DB as scheduling — `smart_scheduler`
+  — where `public` + `bo` coexist** (this is what "shared DB, in-tx" always required). The separate
+  `smart_backoffice_db` (old ops) is abandoned. `migrate-to-bo.ts` made ops-optional (runs against
+  `smart_scheduler`, which has `public` + `bo` but no `ops.*`). See §5 + TASK-027.
 - **Rev. 3 (2026-07-20)** — คุณฟีน **removed the approval system**: NO OWNER/STAFF roles, NO `approval_request`,
   no role-gating — **every action is direct**, single backoffice admin login (REQ-002-style JWT). Model is
   now **5 tables**.
@@ -148,6 +156,11 @@ reaches items **two ways**:
 - **Backoffice API** for admin CRUD + reporting (create/edit items, adjust movements, P&L) and future clients.
 - **Ownership:** the `bo` schema is owned by the (rebuilt) backoffice; the frontoffice has read + a narrow
   movement-write grant. One DB, clear boundary, no cross-DB/external_ref plumbing.
+- **⚠️ Which DB (rev.4):** that "one DB" is **`smart_scheduler`** — the scheduling app's database, which holds
+  `public.*` **and** `bo.*`. **The backoffice-back app must set `DATABASE_URL` to `smart_scheduler`** (not its
+  old `smart_backoffice_db`). If the two apps point at different databases, the shared-DB/in-tx premise breaks
+  (exactly the acceptance bug). Owning the `bo` migrations from backoffice-back is fine **as long as it connects
+  to `smart_scheduler`.**
 
 ## 6. Migration path (AFTER approval — future REQs, not built now)
 - `ops.catalog_items` → `bo.item` (`item_type` FIXED_COST → direction EXPENSE + cadence FIXED_MONTHLY;

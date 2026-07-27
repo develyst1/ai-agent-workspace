@@ -1,6 +1,6 @@
 # SPEC-006: Backoffice rebuild on the universal item/movement model (`bo` schema)
 - Source: REQ-006 (design APPROVED — `ai-worker/db-design-REQ-006.md` rev. 3)
-- Status: ACTIVE
+- Status: DONE (tasks 021–026 DONE — 2026-07-20; pre-deploy fast-follows: bo-Items tag prefill + migration spot-check script)
 
 ## Overview
 Rebuild the backoffice around **one money mechanism**: everything is an **`item`** (with a unit + two axes:
