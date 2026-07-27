@@ -25,7 +25,7 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| REQ-001 | User accounts & authentication | MEDIUM | **IN_SPEC** | Jason/Fern — SPEC-001 written, 4 TASKs TODO |
+| REQ-001 | User accounts & authentication | MEDIUM | **IN_SPEC** | Fern — 3/4 TASKs DONE (001/002/003); last = TASK-004 auth UI |
 | REQ-002 | People database — per-person profiles | MEDIUM | READY_FOR_SA | Sober (write SPEC — next) |
 | REQ-003 | AI "Approach Advisor" (via AI Center) | MEDIUM | READY_FOR_SA | Sober (write SPEC — needs AI Center contract; will read Bruno + DATA REQUEST keys) |
 
@@ -39,9 +39,9 @@
 | ID | Title | Source | Status | Assignee | Depends on |
 |----|-------|--------|--------|----------|------------|
 | TASK-001 | Backend bootstrap (Bun+Hono+Drizzle/SQLite) | SPEC-001 | ✅ DONE | Jason | — |
-| TASK-002 | Frontend bootstrap (Next.js+TS+Mantine) | SPEC-001 | REVIEW | Fern (→ Sober) | — |
-| TASK-003 | Auth backend — accounts, sessions, guard | SPEC-001 | REVIEW | Jason (→ Sober) | TASK-001 |
-| TASK-004 | Auth UI — register/login/logout + guard | SPEC-001 | TODO | Fern | TASK-002 (+ TASK-003 to integrate) |
+| TASK-002 | Frontend bootstrap (Next.js+TS+Mantine) | SPEC-001 | ✅ DONE | Fern | — |
+| TASK-003 | Auth backend — accounts, sessions, guard | SPEC-001 | ✅ DONE | Jason | TASK-001 |
+| TASK-004 | Auth UI — register/login/logout + guard | SPEC-001 | REVIEW | Fern (→ Sober) | TASK-002 ✅ + TASK-003 ✅ |
 
 ## Blocked / waiting
 

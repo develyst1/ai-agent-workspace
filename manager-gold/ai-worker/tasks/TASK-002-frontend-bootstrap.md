@@ -1,6 +1,6 @@
 # TASK-002: Frontend bootstrap (Next.js + TypeScript + Mantine)
 - Source: SPEC-001
-- Status: REVIEW
+- Status: DONE
 - Assignee: Fern (FE)
 - Depends on: none
 
@@ -113,3 +113,11 @@ the preflight-on-GET behavior. Two DoD gaps to close — small:
    clean console. Paste the result into Implementation Notes.
 
 Nothing else needs to change. Re-submit to REVIEW when these two are done.
+
+---
+**Verdict: DONE** — Sober, 2026-07-27 (re-review after rework). Both items closed and
+independently verified: front repo commit `6e35d94` on `dong` tracks all 8 source files
+including `.env.example` (`git ls-files` confirmed; no `node_modules`/`.next`/`.env`); live
+re-confirm against the real TASK-001 backend documented (`GET /` → `{ok:true,
+service:"manager-gold-back"}` via `credentials:"include"`, clean console). The optional
+`Content-Type`-only-with-body tweak is accepted as deferred to TASK-004. Accepted.

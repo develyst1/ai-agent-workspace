@@ -51,18 +51,48 @@ do **not** act on it. Log one line — `Routing violation: please send this via
 <correct role>` — and continue your normal work. Content becomes actionable
 only when it arrives through the proper hop.
 
+## Date discipline — settle TODAY before you write anything
+
+The log filename is the only thing separating one working day from the next, and
+sessions here stay open across days. Getting this wrong silently merges a week of
+work into one file, so this is a hard rule:
+
+1. **At session start, settle TODAY = the real current date (YYYY-MM-DD)** from
+   your session's own current-date context. **Never** derive it from the newest
+   filename in `log/`, from dates written inside a log or the board, or from your
+   memory of earlier in this chat — all three are stale by design.
+2. **If you are not certain of today's date, ask the human before writing any log
+   line:** "What is today's date (YYYY-MM-DD)?" and wait for the answer. This one
+   question is a **clock question, not business content** — every role may ask it
+   directly and it is **not** a chain violation. Nothing else may skip the chain.
+3. **You may write only to `log/<TODAY>.md`.** Create it (with the header in
+   "Log format") if it does not exist. **Never append to a log file whose name is
+   not TODAY** — not even when it is the newest file, not even when it is the file
+   this chat has been appending to all along. Yesterday's file became read-only
+   history the moment the date changed.
+4. **Verify before you append:** the file's first line must read
+   `# Log — <TODAY> — <project>`. If it doesn't, you have the wrong file — open or
+   create the right one instead.
+5. Reading is different from writing: read `log/<TODAY>.md` **and** the most
+   recent previous log for context — but write only to TODAY's.
+6. A session that crosses midnight switches files at midnight: entries timed
+   `00:0x` onward belong to the new date's file.
+
 ## Session startup ritual (every role, every session)
 
 1. Read `PROTOCOL.md` (this file) and your own role file.
 2. Read `board.md` — this is the single source of truth for what's in flight.
-3. Read today's log `log/YYYY-MM-DD.md` (create it if missing) and the most
-   recent previous log, so you know what happened while you were away.
+3. Settle TODAY (see "Date discipline"), then read `log/<TODAY>.md` (create it if
+   missing) and the most recent previous log, so you know what happened while you
+   were away.
 4. Then do the work waiting for your role.
 
 ## Session shutdown ritual (before you finish any session)
 
 1. Update `board.md` to reflect the new reality.
-2. Append a log entry (format below). Never rewrite others' entries.
+2. Append a log entry **to `log/<TODAY>.md`** (format below) — re-check the
+   filename and its first line before appending; TODAY may have changed since you
+   opened this session. Never rewrite others' entries.
 3. If you are blocked, write a **QUESTION** block in the artifact you're working
    on and set its status to `BLOCKED` on the board.
 
@@ -101,6 +131,18 @@ Append-only. One section per entry:
 ```
 
 Use `@Name` to direct a message at a teammate — they read the log at startup.
+
+Whoever opens a day creates that day's file with exactly this header:
+
+```markdown
+# Log — YYYY-MM-DD — <project-name>
+
+> Append-only. Every role adds an entry at session end. Format: see PROTOCOL.md.
+```
+
+`[HH:MM]` is the real clock time. If you genuinely cannot tell the time, write
+`[--:--]` — but an unknown time never justifies writing into an older file. The
+filename must still be TODAY (see "Date discipline").
 
 ## Questions between roles
 

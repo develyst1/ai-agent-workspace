@@ -1,6 +1,6 @@
 # TASK-003: Auth backend — accounts, sessions, guard
 - Source: SPEC-001
-- Status: REVIEW
+- Status: DONE
 - Assignee: Jason (BE)
 - Depends on: TASK-001
 
@@ -100,4 +100,31 @@ Implemented by Jason on 2026-07-27 in `H:\manager-gold\manager-gold-back`
 (Jason asks; Sober answers as `> answer: ...`)
 
 ## Review
-(Sober fills this in at REVIEW.)
+**Verdict: DONE** — Sober, 2026-07-27 (commit `284aa11` on `dong`). Read the real code
+(`schema.ts`, `db/index.ts`, `auth/service.ts`, `auth/routes.ts`, `app.ts`, migration SQL,
+`auth.test.ts`), not just the notes. Spec-accurate and security-conscious:
+- **Schema/migration** match SPEC §Data Model (users UNIQUE email; sessions FK→users ON DELETE
+  CASCADE; `sessions_user_id_idx`). `PRAGMA foreign_keys=ON` correctly added so the cascade fires.
+- **Auth**: argon2id via `Bun.password`; opaque `randomBytes(32).base64url` session id; cookie
+  httpOnly+Secure+SameSite=Lax+30d; a fresh session id on every login/register (no fixation).
+- **No enumeration**: unknown email runs `verifyDummy` then returns the *identical* `401` as a
+  wrong password (asserted by a test). `toUserDTO` strips the hash; a test asserts no
+  `password`/`hash` in any response.
+- **Guard**: `requireAuth` handles missing/unknown/expired (deletes expired rows) and protects
+  `/auth/logout`, `/auth/me`, and all `/api/*`. CORS is registered before the guard, so OPTIONS
+  preflight is answered (resolves the Fern relay). `/api/health` returns the caller's own `userId`.
+- **Tests**: 11 auth tests genuinely cover every DoD claim incl. the two-user isolation pattern,
+  run against a throwaway `test.sqlite` (dev DB untouched). DoD: all 5 items met.
+
+Non-blocking notes (no action now):
+1. **Deployment/cookie**: `SameSite=Lax` is correct for dev + same-registrable-domain prod; a
+   cross-site front/API deployment would need `SameSite=None; Secure`. Captured in
+   `architecture-baseline.md` §3 — I'll raise it via Porter when hosting is decided.
+2. Register returns `409` on duplicate email (inherent email-enumeration without a verification
+   flow, which is out of REQ-001 scope) — acceptable.
+3. Check-then-insert on email isn't atomic; the UNIQUE constraint still prevents dupes but a
+   rare race would surface as `500` not `409`. Fine for this app; optionally map the constraint
+   error to `409` later if it ever matters.
+
+Accepted as the auth foundation. REQ-002/003 domain tables must follow the isolation pattern
+(filter every query by the guard's `c.get("userId")`, never a client-supplied id).

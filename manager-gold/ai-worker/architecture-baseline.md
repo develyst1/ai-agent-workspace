@@ -34,6 +34,12 @@
   filtered by the authenticated `userId`** — never by an id sent from the client.
   The client is never trusted to say "whose data" this is.
 - Session lifetime: **30 days**, fixed expiry (`expires_at`). Expired → treated as 401.
+- **Deployment note (raise via Porter before REQ-001 delivery):** `SameSite=Lax` +
+  `Secure` works in dev (front :3020 / back :4020 are both `localhost` = same-site) and in
+  production **only if** frontend and API share a registrable domain (e.g. `app.example.com`
+  + `api.example.com`). If they end up **cross-site** (different domains), the cookie must
+  switch to `SameSite=None; Secure` and CORS must keep the exact origin. Depends on the
+  (still-undisclosed) hosting topology — a DATA REQUEST when hosting is decided.
 
 ## 4. Config / secrets
 
