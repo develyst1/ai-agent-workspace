@@ -32,7 +32,7 @@
 | REQ-003 | Unified teacher onboarding/offboarding — one action, auto-synced both systems | HIGH | ⏸️ **ON HOLD** | **Do NOT deploy** (built, but its backoffice sync is moot — backoffice is being torn down). Rework the teacher-management parts as standalone under a later REQ. |
 | REQ-004 | Move freelance limit into the frontoffice — standalone, no backoffice dependency | HIGH | ✅ **DELIVERED** | Deployed & confirmed working by คุณฟีน 2026-07-20. Freelance limit now standalone in the frontoffice. |
 | REQ-005 | Standalone teacher management (rework REQ-003 minus ops sync) | MEDIUM | DRAFT | Porter — confirm scope/priority with คุณฟีน (not urgent: REQ-003 is undeployed, so no live 502). May be absorbed by the backoffice rebuild (REQ-006). |
-| REQ-006 | Backoffice rebuild — universal "item" model on the shared DB | HIGH | **IN_SPEC** | Jason/Fern — **4/6 DONE** (021/022/023/024). Left: Jason TASK-025 (data migration); Fern TASK-026 (near-trivial). + fast-follow: bo item DTO tags → prefill. See REQ-006 deploy note (hard ordering: 025 before 024 deploy). |
+| REQ-006 | Backoffice rebuild — universal "item" model on the shared DB | HIGH | **SPEC_DONE (fix applied) → re-deploy** | DB-topology bug FIXED (**TASK-027 DONE**): backoffice-back `.env`→`smart_scheduler`, `migrate-to-bo` ops-optional, ops routes retired (only `/auth`+`/bo`). Code is now shared-DB-correct. **Porter/human — re-deploy:** on `smart_scheduler`, apply `bo` 0004 → `bun run migrate:bo` (ops-optional now) → restart both on `smart_scheduler` → re-enter budgets via FE. **Follow-ups:** re-home TRIAL/SINGLE revenue → `bo` (ops retired = no-op now); 2 pre-deploy fast-follows (tag prefill; migration spot-check). |
 
 > ⚠️ **STRATEGIC PIVOT (2026-07-20, คุณฟีน):** current **backoffice is being torn down &
 > rebuilt from scratch** (hard to use / not scalable). Finish the **frontoffice first,
@@ -78,13 +78,16 @@
 | TASK-022 | backoffice-back: universal item/movement/tag API + P&L report (single-admin JWT) | SPEC-006 | DONE | Jason | TASK-021 |
 | TASK-023 | backoffice-front: admin UI on the universal item model | SPEC-006 | DONE | Fern | TASK-022 |
 | TASK-024 | scheduling: re-absorb freelance ceiling as a `bo.item` (in-tx, unit=hour) | SPEC-006 | DONE | Jason | TASK-021 |
-| TASK-025 | backoffice-back: data migration `ops.*` + `freelance_budgets` → `bo.*` | SPEC-006 | REVIEW | Jason | TASK-021 |
-| TASK-026 | scheduler-front: re-point freelance budget admin at `bo`-backed data | SPEC-006 | TODO | Fern | TASK-024 |
+| TASK-025 | backoffice-back: data migration `ops.*` + `freelance_budgets` → `bo.*` | SPEC-006 | DONE | Jason | TASK-021 |
+| TASK-026 | scheduler-front: re-point freelance budget admin at `bo`-backed data | SPEC-006 | DONE | Fern | TASK-024 |
+| TASK-027 | backoffice-back: shared-DB topology fix (`bo` in `smart_scheduler`; migrate ops-optional; retire ops routes) | SPEC-006 | DONE | Jason | TASK-025 |
+| TASK-028 | scheduling: freelance-drawdown idempotency — reconcile-to-target invariant (fixes the REQ-006 bug + latent REQ-004) | SPEC-006 | **BLOCKED** (Porter: NO_SHOW) | Jason | TASK-024 |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
+| 🐛 REQ-006 BUG — freelance drawdown not idempotent | Sober → Jason (TASK-028, UNBLOCKED) | **Business rule ANSWERED by คุณฟีน 2026-07-20 — state machine locked:** CONSUMING (held=1, pay the freelance) = **CONFIRMED, ATTENDED, SICK_LEAVE**; RELEASING (held=0, don't pay) = **NO_SHOW, CANCELLED**. ⚠️ **This CHANGES REQ-004's behavior:** SICK_LEAVE now **keeps** the drawdown (was refunding) — TASK-028 must flip that. Fix = Sober's reconcile-to-target invariant (`held∈{0,1}` from net `bo.movement(ref=booking)`; post `delta=target(status)−held` on every change; no-op at target; `remaining≤ceiling`). @Sober: fold the confirmed rule in + release TASK-028 to Jason. REQ-006 NOT delivered until it lands. |
 | ~~REQ-001/002 acceptance blockers (auth 403, cap not showing)~~ | ✅ RESOLVED | Both fixed 2026-07-20 (auth deployed; `OPS_API_URL` `/api` typo corrected). REQ-001 + REQ-002 DELIVERED. |
 | **Scheduled tasks not yet set up** | Human | 2 jobs to register on the Windows server: end-of-day (:4006 nightly) + month-start (:4010, 1st). **Step-by-step guide written: `smart-scheduler/DEPLOY-scheduled-tasks-windows.md`** (endpoints verified from code). Non-blocking for interactive use. |
 | Real numbers (placeholders live) | พี่ฟีน → Porter | Placeholders in use (FL 70k@500, FT 50k, PT 15k, Trial/Single 1,390). พี่ฟีน to give real figures + decide single-session price (program-dependent) + โต๊ด type. |

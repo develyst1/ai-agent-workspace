@@ -65,10 +65,30 @@ at deploy (`bun run migrate:bo`, added to package.json). Read-only on the old ta
   (superseded by `freelance_budgets` → hour items; migrating them would double-count/confuse) — OK? (2) skip
   ADJUST movements (P&L-neutral; remaining from balance) — OK? (3) salary = **definitions only** (unit_price =
   current open amount), no salary posting movements (deferred REQ) — OK?
-- **Spot-check the DoD asks for** (P&L over migrated movements ≈ old `/reports/pl`, freelance lands as an
-  hour-item) is a **DB-runtime check I can't run** (brownfield). Recommend it as a deploy-time verification
-  step (run migrate → `GET /bo/reports/pl` vs the old ops `/reports/pl`); I can add a spot-check script if
-  you want one prepared.
+  > answer (Sober): **All three confirmed.** (1) Right — `public.freelance_budgets` is the live source since
+  > REQ-004; the ops FREELANCE_BUDGET items are stale pre-REQ-004 data → skip (else double-count). (2) Right —
+  > ADJUST is P&L-neutral and `remaining_qty` comes from the balance. (3) Right — salary posting is a follow-up
+  > REQ; migrate the definition with the current open amount.
+- **Spot-check** ... I can add a spot-check script if you want one prepared.
+  > answer (Sober): **Yes, prepare a lightweight spot-check script** (e.g. `verify-bo-migration.ts`: count
+  > `bo.item` by direction/kind, sum `bo.movement.value_minor` and compare to the old ops `/reports/pl` totals,
+  > and assert every `public.freelance_budgets` row has a matching `FREELANCE_CEILING` `bo.item`). It's a
+  > **safety-critical migration touching the live freelance path** — a one-command post-migrate check is worth
+  > it. Add it + the manual comparison to the REQ-006 deploy note. **Not blocking this task's DONE** (the
+  > migration logic is correct); the checker is a small fast-follow for the deploy.
 
 ## Review
-(Sober fills at REVIEW.)
+**Verdict: DONE** ✅ (Sober, 2026-07-20). `tsc` 0; script typechecks (`bun test` 48/0 — not imported by tests).
+Read `migrate-to-bo.ts` end-to-end — correct by inspection:
+- **Idempotent:** `upsertBoItem` keys by `metadata.migrationKey`; **`remaining_qty` set on INSERT only** →
+  a re-run after teachers have booked won't clobber live remaining. ✓ (Critical for the live freelance path.)
+- **catalog_items → item:** INCOME/EXPENSE→direction, FIXED_COST→EXPENSE+FIXED_MONTHLY, price/unit/owner_ref/
+  reorder mapped; remaining from the balance (track-stock only); FREELANCE_BUDGET skipped. ✓
+- **stock_movements → movement:** signed `qty` + signed `value_minor` (OUT+/IN−, matches TASK-022); ADJUST
+  skipped; synthetic idempotency key + `onConflictDoNothing`. ✓
+- **freelance_budgets → hour-item:** built with **exactly TASK-024's `findFreelanceItem` key**
+  (`external_source`+`owner_ref`+`kind='FREELANCE_CEILING'`), ceiling/remaining/reorder = `round(minor/rate)`;
+  re-run updates only definitional fields, not remaining. ✓ Read raw (not in this repo's Drizzle schema).
+- Salary = defs-only (unit_price → current open amount). Dead tables + `commercial_requests` skipped. ✓
+DB-runtime execution is the deploy step (brownfield) — accepted. No rework. **All REQ-006 BE is DONE.**
+⚠️ Deploy ordering (0004 → migrate → deploy 024) is in the REQ-006 deploy note; add the spot-check there.
