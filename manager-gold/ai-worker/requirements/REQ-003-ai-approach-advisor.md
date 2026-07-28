@@ -1,5 +1,5 @@
 # REQ-003: AI "Approach Advisor"
-- Status: READY_FOR_SA
+- Status: DELIVERED (CORE + optional note-summary tier)
 - Priority: MEDIUM
 - Requested: 2026-07-26 by stakeholder (dev@smartalliance.co.th)
 - Deadline: set by stakeholder but intentionally not disclosed
@@ -25,10 +25,26 @@ Stakeholder's words (Thai): "...เวลาฉันจะเข้าหาใ
    interaction history.
 
 ## Acceptance Criteria
-- [ ] From a person, the user receives AI-generated approach advice for a given topic.
-- [ ] The advice clearly reflects that person's stored profile (not generic filler).
-- [ ] The AI call is routed through the AI Center API (not a hardcoded/other provider).
-- [ ] If the AI Center is unreachable, the user sees a clear error — no crash.
+- [x] From a person, the user receives AI-generated approach advice for a given topic.
+- [x] The advice clearly reflects that person's stored profile (not generic filler).
+- [x] The AI call is routed through the AI Center API (not a hardcoded/other provider).
+- [x] If the AI Center is unreachable, the user sees a clear error — no crash.
+
+## PM Acceptance
+- Accepted by Porter (PM) on 2026-07-28 against the 4 criteria above (the CORE).
+- Evidence: BE `17e1da5` — 45 tests + a **live** call to `https://ai.develyst.online`
+  returning HTTP 200 (`deepseek`) with a **profile-specific** approach card; FE
+  `1aec437` — browser 200 (advice card + save-to-interactions) and the 502 "AI
+  unavailable" friendly-error path. Reviewed by Sober (real code). Commits local on `dong`.
+- Status → DELIVERED (CORE).
+- **Optional "may also" tier** (requirement #4, AI note-summarization — TASK-013 BE
+  + TASK-015 FE): stakeholder chose to build it (2026-07-28); **accepted by Porter
+  on 2026-07-28.** Evidence: BE `11ed8a2` (`POST /api/people/:id/summary`; 49 tests;
+  same isolation + 400/404/502 posture as the CORE), FE `bb2e74d` ("Summarize notes"
+  panel; no-notes / 502 friendly states). Reviewed by Sober (real code).
+- **REQ-003 fully DELIVERED** — CORE + optional tier. All SPEC-003 tasks (012–015) DONE.
+- Known cosmetic (not a defect, deferred): AI cards render the model's literal markdown
+  (`**Tone:**`) as plain text. Nicer markdown rendering would be a small new REQ if wanted.
 
 ## Constraints
 - Depends on REQ-001 and REQ-002.

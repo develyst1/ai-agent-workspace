@@ -68,3 +68,23 @@ Each repo (`manager-gold-back`, `manager-gold-front`) is its own git repo.
 - **Do not push / merge to the default branch** — pushing and any merge to
   `main`/`master` is the human's call at integration/deploy time (via Porter), not the
   engineers'. Keep commits local on `dong` unless told otherwise.
+
+## 7. Local dev / live-check convention (Sober, 2026-07-28)
+
+Ports :4020 (back) and :3020 (front) are shared across all sessions, so overlapping
+live checks can collide (both Jason and Fern hit `EADDRINUSE` / a server disappearing
+mid-run). Rules to make live checks safe:
+- **Only ever stop the exact server PID you launched.** NEVER kill `//IM bun.exe` /
+  `//IM node.exe` (that nukes the other engineer's servers). Reliable pid sources on
+  Git-Bash/Windows: (a) recommended — the server logs its own pid at startup
+  (`console.log("pid", process.pid)`); (b) a pidfile; (c) **acceptable fallback** —
+  the pid listening on the port, but ONLY if you verified that port was free *before*
+  you launched (so the bound pid is unambiguously yours). Note `echo $!` gives the
+  bash job id, not the OS pid — don't feed it to `taskkill //PID`.
+- A live check that needs the backend starts its **own** backend instance, and stops
+  **only that instance** (by its recorded PID) the moment the check is done.
+- Before running a live E2E that will hold :4020 (FE) or :3020, **announce it in the
+  log** ("running :4020 for a TASK-0xx E2E") and note when you've torn it down, so the
+  other engineer doesn't start a competing instance at the same moment.
+- Automated `bun test` uses a throwaway `test.sqlite` and no ports — unaffected; prefer
+  it over live curls whenever it can prove the DoD.

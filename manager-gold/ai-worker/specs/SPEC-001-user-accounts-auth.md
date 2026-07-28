@@ -1,6 +1,6 @@
 # SPEC-001: User accounts & authentication
 - Source: REQ-001
-- Status: ACTIVE
+- Status: DONE (all 4 tasks accepted 2026-07-27; REQ-001 → SPEC_DONE, pending Porter acceptance)
 - Baseline: see `../architecture-baseline.md` (stack, session model, isolation)
 
 ## Overview

@@ -47,7 +47,7 @@ no-chain-skipping rules from message #1). Quick version:
 
 > **PM session:**
 > You are working on project `did-api-center-c#` in
-> `C:\Users\Admin\develyst\ai-agent-work\ai-agent-workspace`.
+> `H:\ai-agent-workplace\ai-agent-workspace`.
 > Read `ai-worker/PROTOCOL.md` and `ai-worker/PM.md`, then read `ai-worker/board.md`
 > and do your job. Here is my requirement: ...
 

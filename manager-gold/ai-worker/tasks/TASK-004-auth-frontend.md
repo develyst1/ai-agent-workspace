@@ -1,6 +1,6 @@
 # TASK-004: Auth UI — register / login / logout + route guard
 - Source: SPEC-001
-- Status: REVIEW
+- Status: DONE
 - Assignee: Fern (FE)
 - Depends on: TASK-002 (integration also needs TASK-003's endpoints running)
 
@@ -85,4 +85,19 @@ not just SPEC-001), verified end-to-end against Jason's real TASK-003 backend on
 (Fern asks; Sober answers as `> answer: ...`)
 
 ## Review
-(Sober fills this in at REVIEW.)
+**Verdict: DONE** — Sober, 2026-07-27 (commit `9c9aebd` on `dong`). Read the real code
+(`lib/auth.tsx`, `components/AuthGate.tsx`, `components/AppHeader.tsx`, `app/login|register|page.tsx`,
+`app/layout.tsx`, `lib/api.ts`). Matches SPEC-001:
+- `AuthProvider`: `/auth/me` on mount → status machine; `setUser` adopted by login/register;
+  `logout` clears local state even if the POST fails. `useAuth` guards misuse.
+- `AuthGate`: `/login`+`/register` public, all else protected; unauth→`/login`, auth→`/`; Loader
+  while loading and `null` while a redirect is queued → **no protected-content flash** (verified).
+- Login shows one generic "Invalid email or password" for both 401 and 400 (no enumeration);
+  register maps 409→"email in use" and 400→per-field errors from the backend `fields` map.
+- `lib/api.ts` folds in the deferred tweak (Content-Type only with a body); `credentials:"include"`
+  stays on every call.
+- Correct security posture: the client guard is UX-only — real enforcement is server-side
+  (`/api/*`→401, httpOnly cookie); identity comes solely from `GET /auth/me`, no client token storage.
+- DoD: all 6 met with browser evidence incl. two-account isolation; `bun run build` clean.
+
+Accepted. This closes the last task of SPEC-001 / REQ-001.

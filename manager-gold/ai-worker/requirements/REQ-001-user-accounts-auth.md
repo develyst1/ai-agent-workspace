@@ -1,5 +1,5 @@
 # REQ-001: User accounts & authentication
-- Status: READY_FOR_SA
+- Status: DELIVERED
 - Priority: MEDIUM
 - Requested: 2026-07-26 by stakeholder (dev@smartalliance.co.th)
 - Deadline: set by stakeholder but intentionally not disclosed
@@ -19,10 +19,21 @@ per-user data).
 4. Credentials must be stored securely (exact mechanism is the SA Lead's decision).
 
 ## Acceptance Criteria
-- [ ] A new user can register, then log in.
-- [ ] After login the user sees only the records they created.
-- [ ] Logging out ends the session; protected pages are not reachable when logged out.
-- [ ] With two test accounts, neither can see the other's data.
+- [x] A new user can register, then log in.
+- [x] After login the user sees only the records they created. *(Isolation is
+      server-enforced on every `/api/*` by session `userId` and proven with a
+      two-user test; will be exercised on real records once REQ-002 lands.)*
+- [x] Logging out ends the session; protected pages are not reachable when logged out.
+- [x] With two test accounts, neither can see the other's data.
+
+## PM Acceptance
+- Accepted by Porter (PM) on 2026-07-27 against the criteria above, based on
+  SPEC-001 DONE + all 4 TASKs accepted by Sober (real-code review) with evidence
+  (BE commit `284aa11`, FE commit `9c9aebd`, both on branch `dong`, not pushed).
+- Status → DELIVERED.
+- Forward note (not blocking this REQ): final cookie `SameSite` setting depends on
+  the hosting topology (same-domain vs cross-domain front/API). To be resolved via
+  a DATA REQUEST at deploy time — see log 2026-07-27 and `architecture-baseline.md` §3.
 
 ## Constraints
 - Frontend: Next.js + Mantine component library. Backend: Bun + Hono. (Stakeholder-mandated.)

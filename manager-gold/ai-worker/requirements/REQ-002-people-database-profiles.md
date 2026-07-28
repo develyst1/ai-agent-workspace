@@ -1,5 +1,5 @@
 # REQ-002: People database — per-person profiles
-- Status: READY_FOR_SA
+- Status: DELIVERED
 - Priority: MEDIUM
 - Requested: 2026-07-26 by stakeholder (dev@smartalliance.co.th)
 - Deadline: set by stakeholder but intentionally not disclosed
@@ -32,11 +32,23 @@ The system must also let the user:
 10. Export their own data (backup).
 
 ## Acceptance Criteria
-- [ ] User can add a person with the agreed fields and see it saved.
-- [ ] User can edit and delete a person.
-- [ ] User can add multiple dated interaction-log entries to a person.
-- [ ] User can search / filter the people list by tag or attribute.
-- [ ] User can export their own data.
+- [x] User can add a person with the agreed fields and see it saved.
+- [x] User can edit and delete a person.
+- [x] User can add multiple dated interaction-log entries to a person.
+- [x] User can search / filter the people list by tag or attribute.
+- [x] User can export their own data.
+
+## PM Acceptance
+- Accepted by Porter (PM) on 2026-07-28 against the criteria above, based on
+  SPEC-002 DONE + all 7 TASKs (005–011) accepted by Sober via real-code review
+  with evidence (BE commits `8bf4f60`/`d9e3653`/`eabbc5f`, FE commits
+  `8165e7d`/`f9e8642`/`ce50924`, branch `dong`, not pushed).
+- Per-user isolation is server-enforced (`getOwnedPerson`; a second user gets 404
+  on another's data — tested), now exercised on real records.
+- Status → DELIVERED.
+- Deploy note (carried forward, not blocking): applying drizzle migrations `0000`
+  (auth) + `0001` (people) is needed whenever REQ-001+002 actually ship — tracked
+  with the SameSite/hosting item from REQ-001.
 
 ## Constraints
 - Depends on REQ-001 (all data is per-user and private).
