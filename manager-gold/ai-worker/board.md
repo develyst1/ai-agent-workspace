@@ -29,12 +29,14 @@
 | REQ-002 | People database — per-person profiles | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-28) |
 | REQ-003 | AI "Approach Advisor" (via AI Center) | MEDIUM | ✅ DELIVERED (CORE + optional) | — (fully accepted by Porter 2026-07-28; all SPEC-003 tasks 012–015 DONE) |
 | REQ-004 | Render markdown in the AI cards (advisor + summary) | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-28; XSS-safe verified) |
+| REQ-005 | UI/UX redesign — clean, minimal, modern (+ dark mode) | MEDIUM | READY_FOR_SA | Sober (write SPEC) — Mantine; coordinate w/ REQ-007 |
+| REQ-006 | Migrate database SQLite → PostgreSQL | MEDIUM | READY_FOR_SA | Sober (write SPEC) — db `manager_gold`; build on local PG, remote = deploy-time |
+| REQ-007 | Thai/English bilingual UI (default Thai) | MEDIUM | READY_FOR_SA | Sober (write SPEC) — coordinate w/ REQ-005 |
 
-> **STATUS 2026-07-28:** All 4 REQs DELIVERED · all 16 tasks DONE · build complete.
-> **Deployment PARKED at stakeholder's request** — nothing waiting on any role. To
-> resume going live: Porter collects a hosting DATA REQUEST (where front/API live →
-> SameSite) + routes a deploy REQ (push `dong` both repos → drizzle `0000`+`0001` →
-> `AI_CENTER_BASE_URL=https://ai.develyst.online`). Code on `dong`, not pushed.
+> **STATUS 2026-07-28 (updated):** REQ-001..004 DELIVERED (v1 build). After trying the app
+> the stakeholder requested 3 changes → **REQ-005 (UI redesign), REQ-006 (PostgreSQL), REQ-007
+> (Thai/EN i18n)** are now READY_FOR_SA → **Sober**. Deployment still PARKED (resume: hosting
+> DATA REQUEST + deploy REQ — push `dong` → migrations → `AI_CENTER_BASE_URL`). Code on `dong`, not pushed.
 > Suggested sequence: REQ-001 → REQ-002 → REQ-003 (each depends on the previous).
 > Deadline: a deadline exists but the stakeholder chose not to disclose it.
 > Stack decisions (Sober, 2026-07-26): Bun+Hono + SQLite/Drizzle (back, :4020);
