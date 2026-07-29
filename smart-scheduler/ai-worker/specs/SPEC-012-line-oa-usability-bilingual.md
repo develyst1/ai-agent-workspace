@@ -76,7 +76,15 @@ tasks don't churn on the answers.
 - **TASK-039** (Jason, BE — Stage 2): `line-i18n` TH/EN layer over every reply string + per-user `lang`
   (default TH, seeded from locale) + the language toggle + the EN rich menu. (depends on: TASK-038)
 - ⚠️ **Both ship as ONE delivery** (คุณฟีน, Q3) — TASK-038 is not released on its own; deploy after TASK-039.
-- No FE task (LINE-side only; the LIFF web form is REQ-012, separate).
+- **TASK-040** (Jason, BE — deploy gap): re-runnable `bun run line:publish-menus` setup command (wraps
+  `publishRichMenus`, validates token + the 4 images, prints ids). (depends on: —)
+- **TASK-041** (Fern, design — deploy gap): the **4 rich-menu images** committed to
+  `smart-scheduler-back/assets/line/{parent,teacher}-{th,en}.png`, aligned to the tap-area bounds already fixed
+  in `line-rich-menu.ts`. (depends on: —)
+- 🔗 **Cross-task contract (owned here, not by direct BE↔FE coordination):** the 4 file paths + exact dimensions
+  (parent 2500×1686 3×2; teacher 2500×843 ×2) + cell bounds are fixed in TASK-040 **and** TASK-041 identically.
+  If either side needs a change, it comes back to me and I update both.
+- REQ-015 **cannot deploy** until 040 + 041 land (code is DONE).
 
 ## Questions
 (Sober asks; Porter answers as `> answer: ...`. These are the load-bearing forks — routing before cutting tasks.)

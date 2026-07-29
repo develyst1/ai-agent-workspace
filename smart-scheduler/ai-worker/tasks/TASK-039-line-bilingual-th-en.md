@@ -1,6 +1,6 @@
 # TASK-039: LINE (BE) — bilingual TH/EN (i18n layer + per-user language + toggle + EN menu)
 - Source: SPEC-012 (REQ-015, Stage 2)
-- Status: REVIEW  (built 2026-07-29 by Jason — @Sober; ⚠️ ships together with TASK-038 as ONE delivery)
+- Status: DONE  (reviewed 2026-07-29 by Sober — verified tsc 0 / suite 126/0 + my own Thai-literal grep + migration check; see ## Review). ⚠️ ships together with TASK-038 as ONE delivery
 - Depends on: TASK-038. ⚠️ **Ships together with TASK-038 as ONE delivery** (คุณฟีน).
 - Assignee: @Jason (smart-scheduler-back, port 4006 — LINE webhook/bot)
 
@@ -113,4 +113,32 @@ tests added ✓.
     locale — no per-message auto-detect. As specified.
 
 ## Review
-(Sober fills at REVIEW.)
+**Verdict: DONE ✅ (Sober, 2026-07-29).** Completes REQ-015; ships **with TASK-038 as one delivery**.
+- **The DoD line I added — verified by my own grep, not taken on trust.** Thai remaining in
+  `line-webhook.service.ts` is **only**: input-keyword vocabularies (`SKIP_WORDS`, `เมนู`, `เพิ่มนักเรียน` regex,
+  `นักเรียน/ลูก`, `qr/คิวอาร์`, `เช็คอิน`, `ลา`, `สมัคร` — what the user *types*, correctly still Thai), the
+  internal booking note `"แจ้งลาผ่าน LINE"` (stored as **data**, not a reply), and the `msg.includes("สูงสุด")`
+  error-match. **No reply-output literal remains** — replies go through `t(key, lang)`. The carried TASK-038
+  handoff (`เช็คอินสำเร็จ ✅`, `แจ้งลาสำเร็จ ✅`, quota-⚠️, catch fallbacks) is swept. ✓
+- **Boundary call accepted:** `createStudentForParent`'s "…สูงสุด…" message is thrown by `parent.service` and
+  **shared with the REST API**, so it stays un-keyed — correct: that's outside the LINE reply layer, and re-keying
+  a shared service error to a LINE-only i18n table would be the wrong coupling. Flagged, not fixed — right call.
+- **Scope extension accepted (good judgment):** he also made the **outbox pushes** bilingual (`formatOutboxMessage`
+  + the worker resolving the *recipient's* language). Beyond the literal task text but squarely inside REQ-015's
+  "the bot's replies are available in TH/EN" — a teacher push arriving in Thai for an EN user would have been an
+  obvious hole. Existing outbox test stays green on the TH default.
+- **Verified in code:** `line-i18n.ts` keyed TH/EN + **TH fallback** + `{var}` interpolation + `isLang`/
+  `langFromLocale`; `resolveBotLang` shared by the webhook **and** the outbox worker (one concept, not two);
+  toggle flips `line_lang`, **re-links the matching-language menu**, and confirms in the **new** language; four
+  rich menus (parent/teacher × TH/EN) with the same postback areas.
+- **Migration correct for brownfield:** `drizzle/0012_line_lang.sql` = `ADD COLUMN IF NOT EXISTS` on
+  `parents`+`teachers`, additive/idempotent, **explicitly not applied** — the human applies it at deploy. ✓
+- **Verified myself:** `bunx tsc --noEmit` → 0; full `bun test` → **126 pass / 0 fail** (23 files, incl. the new
+  `line-i18n.test.ts`: per-lang lookup, interpolation, no raw-key leak, locale mapping).
+- **LINE-API paths (profile locale, EN menu create/link, push delivery) not runnable** under brownfield —
+  accepted; the OA smoke list is documented and belongs to the combined deploy.
+- **TASK-039 → DONE. REQ-015 → SPEC_DONE.** Combined deploy (both tasks, one release): **(1)** apply
+  `drizzle/0012_line_lang.sql` · **(2)** publish the **four** rich menus (parent/teacher × TH/EN images) via
+  `publishRichMenus` · **(3)** redeploy scheduling-back (:4006) · **(4)** OA smoke: tap check-in/leave/children,
+  the booking picker, language toggle (replies + menu flip to EN, persisted), and confirm the old keywords +
+  `/checkin?token=` still work.
