@@ -29,14 +29,17 @@
 | REQ-002 | People database — per-person profiles | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-28) |
 | REQ-003 | AI "Approach Advisor" (via AI Center) | MEDIUM | ✅ DELIVERED (CORE + optional) | — (fully accepted by Porter 2026-07-28; all SPEC-003 tasks 012–015 DONE) |
 | REQ-004 | Render markdown in the AI cards (advisor + summary) | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-28; XSS-safe verified) |
-| REQ-005 | UI/UX redesign — clean, minimal, modern (+ dark mode) | MEDIUM | READY_FOR_SA | Sober (write SPEC) — Mantine; coordinate w/ REQ-007 |
-| REQ-006 | Migrate database SQLite → PostgreSQL | MEDIUM | READY_FOR_SA | Sober (write SPEC) — db `manager_gold`; build on local PG, remote = deploy-time |
-| REQ-007 | Thai/English bilingual UI (default Thai) | MEDIUM | READY_FOR_SA | Sober (write SPEC) — coordinate w/ REQ-005 |
+| REQ-005 | UI/UX redesign — clean, minimal, modern (+ dark mode) | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-29; stakeholder approved the new look via live review) |
+| REQ-006 | Migrate database SQLite → PostgreSQL | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-29; 50 tests green on local PG). Remote-server migrate = parked deploy |
+| REQ-007 | Thai/English bilingual UI (default Thai) | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-29). Thai copy engineer-drafted; stakeholder wording pass offered (optional) |
+| REQ-008 | AI output follows the user's selected language | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-29; TH→Thai, EN→English verified) |
 
-> **STATUS 2026-07-28 (updated):** REQ-001..004 DELIVERED (v1 build). After trying the app
-> the stakeholder requested 3 changes → **REQ-005 (UI redesign), REQ-006 (PostgreSQL), REQ-007
-> (Thai/EN i18n)** are now READY_FOR_SA → **Sober**. Deployment still PARKED (resume: hosting
-> DATA REQUEST + deploy REQ — push `dong` → migrations → `AI_CENTER_BASE_URL`). Code on `dong`, not pushed.
+> **STATUS 2026-07-29:** **ALL 8 REQs DELIVERED · all 25 tasks DONE.** v1 (REQ-001–004) + v2
+> change-requests (REQ-005 UI redesign, REQ-006 PostgreSQL, REQ-007 Thai/EN i18n, REQ-008 AI-language)
+> all accepted. **Only remaining work = the PARKED deployment** (human/Porter): push `dong` (both
+> repos) → on remote `154.197.124.206` create db `manager_gold` + `DATABASE_URL` (`%23` prod password)
+> + run migrations → set `AI_CENTER_BASE_URL=https://ai.develyst.online` → resolve SameSite/hosting
+> (baseline §3). Code on `dong`, not pushed. Optional soft item: stakeholder Thai-wording pass.
 > Suggested sequence: REQ-001 → REQ-002 → REQ-003 (each depends on the previous).
 > Deadline: a deadline exists but the stakeholder chose not to disclose it.
 > Stack decisions (Sober, 2026-07-26): Bun+Hono + SQLite/Drizzle (back, :4020);
@@ -62,10 +65,20 @@
 | TASK-014 | Approach Advisor UI (CORE) | SPEC-003 | ✅ DONE (+ full-chain live confirm) | Fern | TASK-012 ✅ |
 | TASK-015 | Note-summary UI (OPTIONAL) | SPEC-003 | ✅ DONE | Fern | TASK-013 ✅, TASK-014 ✅ |
 | TASK-016 | Shared XSS-safe markdown renderer for AI cards | SPEC-004 | ✅ DONE | Fern | — |
+| TASK-017 | Port backend SQLite → PostgreSQL (local build/test) | SPEC-006 | ✅ DONE | Jason | — |
+| TASK-018 | Theme foundation + dark mode + AppShell | SPEC-005 | ✅ DONE | Fern | — |
+| TASK-019 | Restyle auth + people list + form | SPEC-005 | ✅ DONE | Fern | TASK-018 ✅ |
+| TASK-020 | Restyle person profile + AI cards + states | SPEC-005 | ✅ DONE | Fern | TASK-018 ✅ |
+| TASK-021 | i18n foundation (provider + switcher + catalog) | SPEC-007 | ✅ DONE | Fern | — |
+| TASK-022 | Translate auth + people list + form | SPEC-007 | ✅ DONE | Fern | TASK-021 ✅ |
+| TASK-023 | Translate profile + sections + AI panel chrome | SPEC-007 | ✅ DONE | Fern | TASK-021 ✅ |
+| TASK-024 | AI language param (BE) — advice + summary | SPEC-008 | ✅ DONE | Jason | — |
+| TASK-025 | Send selected language to the AI calls (FE) | SPEC-008 | ✅ DONE | Fern | TASK-024 ✅, TASK-021 ✅ |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
+| ~~DATA REQUEST — dev Postgres for TASK-017~~ ✅ ANSWERED (Porter, 2026-07-29) | — | Use a **local** Postgres: `postgresql://postgres:smart2026@localhost:5432/manager_gold` (localhost; password `smart2026` — **no `#`** so no `%23`). See `project-docs/db-postgres-access.md`. @Sober/@Jason: TASK-017 unblocked. |
 | ~~DATA REQUEST — AI Center URL/auth~~ ✅ ANSWERED (Porter, 2026-07-28) | — | `AI_CENTER_BASE_URL=https://ai.develyst.online` (chat `POST {base}/chat` → `https://ai.develyst.online/chat`); **no auth**. **Supersedes** the Bruno `r1.develyst.online/ai`. See `project-docs/ai-center-access.md`. **Applied by Sober 2026-07-28** — SPEC-003 updated; live E2E confirmed on TASK-012 (real 200, deepseek, profile-specific card). |
 | ~~Privacy confirm~~ ✅ ANSWERED (Porter, 2026-07-28) | — | Stakeholder **accepts** sending a person's profile to the external AI Center. See `project-docs/ai-center-access.md`. |

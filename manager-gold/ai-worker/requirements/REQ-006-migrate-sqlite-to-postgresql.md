@@ -1,5 +1,5 @@
 # REQ-006: Migrate the database from SQLite to PostgreSQL
-- Status: READY_FOR_SA
+- Status: DELIVERED
 - Priority: MEDIUM
 - Requested: 2026-07-28 by stakeholder (dev@smartalliance.co.th)
 - Deadline: none (a deadline exists for the project but is not disclosed)
@@ -21,12 +21,27 @@ must work fully on PostgreSQL with the same features and data model.
    summary).
 
 ## Acceptance Criteria
-- [ ] The app runs end-to-end on PostgreSQL (all flows above) — verified against a
-      Postgres instance.
-- [ ] Migrations create the full schema on a fresh Postgres db named `manager_gold`.
-- [ ] Backend connects via `DATABASE_URL` and works with the `%23`-encoded password
-      (see Constraints).
-- [ ] The test suite passes against PostgreSQL.
+- [x] The app runs end-to-end on PostgreSQL — verified against a local Postgres
+      instance (backend boots on PG; full suite exercises all flows).
+- [x] Migrations create the full schema on a fresh Postgres db (`bun run migrate`
+      → 6 tables on a fresh `manager_gold`).
+- [x] Backend connects via `DATABASE_URL`. *(Verified with the local URL, which has
+      no `#`. The `%23`-encoded **remote/prod** password is exercised only at the
+      parked deploy step — standard URL parsing, no app change needed.)*
+- [x] The test suite passes against PostgreSQL (**50 pass / 0 fail on local PG,
+      repeatable ×2**).
+
+## PM Acceptance
+- Accepted by Porter (PM) on 2026-07-29 against the criteria above.
+- Evidence: BE `b91413b` — `pgTable` + `postgres.js`; **epoch-ms columns → `bigint`**
+  (13-digit round-trip proven); PRAGMA dropped (native PG cascades); async refactor of
+  all DB call sites; 50 tests green on local Postgres (×2); `test/setup.ts` refuses
+  non-local DBs before its destructive reset; **no secret committed** (`git grep
+  smart2026` on tracked files = empty, `.env` untracked). Sober real-code review.
+- Same API/behaviour + per-user isolation as before — now on Postgres. Commit on `dong`.
+- Status → DELIVERED.
+- Parked (deploy step, not this REQ): creating `manager_gold` on the **remote** server
+  `154.197.124.206` and running migrations there with the `%23`-encoded prod password.
 
 ## Constraints
 - **Build/test against a LOCAL or dev Postgres.** The stakeholder's **remote** server

@@ -1,6 +1,9 @@
 # TASK-031: scheduler-front — freelance budget strip on the calendar + keep over-cap selectable + per-action override
 - Source: SPEC-008
-- Status: DONE  (re-reviewed 2026-07-28 by Sober — Attend-path override verified: tsc 0 / test 4/0 / build ok + code inspection; see ## Review)
+- Status: DONE — but ⚠️ **SUPERSEDED 2026-07-28** by the REQ-007 revision (คุณฟีน): the "bookable + override"
+  design is replaced by **hide-when-full + %-used strip** → see **TASK-032**. This task's code (bookable-over-cap,
+  confirm/attend override) is being reverted by TASK-032; kept here as the historical record of the first,
+  correct-to-the-old-requirement build. (Original: re-reviewed 2026-07-28 by Sober — tsc 0 / test 4/0 / build ok.)
 - Depends on: none (backend already ships the data + enforces the override-gated confirm — no BE task)
 - Assignee: @Fern (smart-scheduler-front, port 3016)
 

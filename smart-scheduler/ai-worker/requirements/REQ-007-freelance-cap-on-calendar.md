@@ -1,66 +1,65 @@
-# REQ-007: Freelance income-cap visible on the staff calendar (show + keep bookable)
-- Status: READY_FOR_SA
+# REQ-007: Freelance income-cap on the staff calendar — budget-fill color strip + auto-hide when full
+- Status: READY_FOR_SA  (⚠️ REVISED 2026-07-28 — changes the already-built TASK-031; needs rework)
 - Priority: MEDIUM
-- Requested: 2026-07-26 by stakeholder (PM chat) — confirms คุณฟีน's 2026-07-11 meeting decision
+- Requested: 2026-07-26 by stakeholder; **REVISED 2026-07-28 by stakeholder (คุณฟีน)**
 - Deadline: none
-- Source: requirement hub UC-016 (WF-005 → UC-016 → SCR-006). Builds on delivered
-  REQ-001 / REQ-004 (freelance budget-stock, standalone).
+- Source: requirement hub UC-016. Builds on delivered REQ-001 (auto-disable at cap) / REQ-004.
+
+## ⚠️ REVISION note (read first)
+The first build (SPEC-008 / TASK-031, DONE) made over-cap freelances **stay bookable with a per-action
+override**. **The stakeholder has corrected the intent (2026-07-28):** the point of the freelance income
+ceiling is to **stop giving a full freelance more work** — so when a freelance's budget is **full, the
+teacher must be HIDDEN from the calendar (auto-disabled, like an inactive teacher)**, not bookable-with-
+override. This **supersedes** the earlier "show + keep bookable" reading (and the confirm/attend override
+work). The **color strip stays** (with corrected %-based bands). The admin can still bring a full freelance
+back via the existing top-up / limit-override on the Teachers page.
 
 ## Problem / Goal
-Staff book teachers from the calendar, but a freelance teacher's remaining monthly
-income budget is only visible on the separate "Teachers" management page — not on the
-calendar, where booking actually happens. So staff can't see how much budget a
-freelance has left at the moment they book. Worse, today the calendar **hides** a
-freelance who is over budget, so they vanish from view entirely (surprising) instead
-of showing their status.
-
-Goal: make each freelance teacher's budget status visible **on the calendar** and keep
-them selectable, so staff stay in control of the decision.
+On the staff calendar, staff can't see how "loaded" each freelance teacher is against their monthly income
+ceiling. They want an at-a-glance color indicator of how much of the ceiling a freelance has taken, and — the
+whole purpose of the ceiling — a freelance who has hit the ceiling should **drop off the calendar** so work
+goes to others.
 
 ## Requirement
-1. The staff calendar must show, for each freelance teacher column, a budget
-   indicator: green → yellow → red reflecting remaining vs. total monthly budget
-   (green = healthy, yellow = near cap, red = at/over cap).
-2. A freelance who is at or over budget must **remain visible and selectable** on the
-   calendar — reversing today's "hide when over budget" behavior (per คุณฟีน 2026-07-11).
-3. Booking a freelance who is **over budget** must require a deliberate per-action
-   **override** by staff; the system must not silently let the budget go negative. The
-   override control must be reachable at the point of booking on the calendar.
-4. Without an override, the system must still prevent confirming a booking that would
-   exceed a freelance's budget (existing safeguard stays).
-5. The "near cap" (yellow) threshold must use the per-teacher near-cap value already
-   configured today — no new configuration surface required.
+1. On the calendar, each **freelance** teacher column shows a **budget-fill color strip** reflecting **how
+   much of their monthly ceiling is used** (higher use = "less available"):
+   - 🟢 **green** — 0–30% used (plenty of budget left)
+   - 🟡 **yellow** — 30–70% used
+   - 🔴 **red** — 70 to <100% used (near the ceiling)
+2. When a freelance is **full — budget 100% used, or the next booking's pay would exceed the ceiling — the
+   teacher is HIDDEN from the calendar** (auto-disabled, like an inactive teacher): no column, not selectable
+   in the booking/course-create flows. (This restores REQ-001's "auto-disable at cap".)
+3. The admin can bring a hidden (full) freelance **back** by **topping up the budget or setting the
+   limit-override** on the existing Teachers management page (no new surface) — or it returns automatically on
+   the monthly budget reset.
 
 ## Acceptance Criteria
-- [ ] On the calendar, a freelance with healthy budget shows green; near-cap shows
-      yellow; at/over budget shows red.
-- [ ] A freelance who is over budget is still shown as a column and can be selected
-      (not hidden).
-- [ ] Booking/confirming an over-budget freelance **without** override is blocked with
-      a clear message; **with** override it proceeds and the budget may go negative.
-- [ ] The override control is reachable from the calendar booking flow.
-- [ ] The indicator reflects the same remaining/total budget the backend already
-      computes (drawn down at booking confirm) — FE and backend never disagree.
-- [ ] No regression on the "Teachers" page budget display.
+- [ ] A freelance's calendar strip is green at ≤30% used, yellow at 30–70%, red at 70–<100%.
+- [ ] A freelance whose budget is full (or whose next booking would exceed the ceiling) is **not shown** on
+      the calendar and cannot be selected for a new booking — same as an inactive teacher.
+- [ ] Topping up the budget or setting the limit-override on the Teachers page makes the teacher reappear on
+      the calendar (and the monthly reset does too).
+- [ ] The strip/hide reflect the same budget the backend already computes (drawn at booking confirm) — FE and
+      backend never disagree. No regression on the Teachers-page budget display.
 
 ## Constraints
-- The freelance budget model (per-teacher monthly budget, drawn down at booking
-  confirm, reversed on cancel/leave) is already built and DELIVERED (REQ-001/REQ-004).
-  This REQ is about **visibility + keeping the teacher selectable on the calendar** —
-  reuse the existing remaining/total the backend already ships; do NOT define a new
-  "which hours count" rule.
-- Today the calendar folds "over budget" into "not bookable" and hides the teacher,
-  AND the backend rejects a confirm that would exceed budget unless an override flag
-  is set. **Both must be reconciled** to deliver #2–#4 — this reconciliation is the
-  real work, not just adding a colored bar. HOW to reconcile is the SA's design.
-- Backend stays the source of truth; any FE indicator is display-only.
+- The freelance budget model (per-teacher monthly ceiling, drawn at booking confirm, admin top-up /
+  limit-override, monthly reset) is already built (REQ-001/REQ-004). This REQ is **display (the color strip)
+  + auto-hide-when-full** — reuse the existing budget/remaining/override the backend already ships.
+- The **exact %-used thresholds** (green/yellow/red cut-offs) and the precise **"full" trigger** (remaining ≤ 0
+  vs. "next session's pay would exceed remaining") are confirmed as the bands above; the SA maps them to the
+  backend's `remaining`/`budget`/`overLimit` fields.
+- Rework note: TASK-031 built (a) a color strip via a reorder-based tone and (b) over-cap-stays-bookable +
+  override at confirm/attend. Keep the strip **but switch it to the %-based bands**, and **replace
+  bookable+override with hide-when-full**. The confirm/attend override dialog is **removed** by this revision.
+- Backend is source of truth; the FE strip/hide is display + gating only.
 
 ## Out of Scope
-- Changing how the budget is set, reset, or topped up (already delivered).
-- Freelance P&L / expense reporting (deferred to the backoffice work).
-- Bulk actions (covered by REQ-008).
+- Changing how the budget is set / reset / topped up, or the limit-override mechanism (already delivered).
+- Freelance P&L / expense reporting; bulk actions (REQ-008).
 
 ## Questions
-(SA Lead asks here; Porter answers as `> answer: ...`. Per stakeholder: if anything
-is unclear or a business/scope question arises, DO NOT guess or decide — write it here
-and route `@Porter` before building.)
+(SA Lead asks here; Porter answers as `> answer: ...`. Per stakeholder: unclear / business call → write it
+here and route `@Porter` before building — do not guess.)
+- ~~Override at confirm vs PENDING-create~~ — **moot:** the override-to-book flow is removed; full freelances
+  are hidden instead.

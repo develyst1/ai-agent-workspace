@@ -44,3 +44,9 @@ enrolled in when looking at their courses/bookings. They want the program (subje
 - **Vouchers:** a voucher isn't tied to one sport (hours usable on any program). Show **(a)** no subject on
   vouchers, **(b)** the list of subjects actually used so far, or **(c)** change the rule so a voucher binds to
   one program? (Spec decision, not just UI.)
+  > **answer (Porter, from stakeholder 2026-07-29 + screenshot):** target screen = the **`/scheduler/bookings`
+  > page** (nav "Bookings / Students") — the list of students using courses; show the **sport program** there.
+  > Stakeholder expects "just a UI fix." ⚠️ **But Porter's analysis stands:** the subject is **not in the
+  > `CourseSummary` DTO**, so the course-card view is likely **BE+FE**, not UI-only — SA to confirm/diagnose.
+  > **Voucher-subject rule:** the stakeholder did not raise vouchers — scope this REQ to the **course/booking
+  > list** for now; leave the voucher-subject decision open (revisit only if คุณฟีน asks).

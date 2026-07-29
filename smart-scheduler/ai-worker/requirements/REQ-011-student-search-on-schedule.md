@@ -1,47 +1,46 @@
-# REQ-011: Student search on the schedule (calendar) page
-- Status: READY_FOR_SA
+# REQ-011: Student picker doesn't filter when you type (New Booking / course / voucher) — fix the search
+- Status: READY_FOR_SA  (⚠️ RE-SCOPED 2026-07-29 after the stakeholder's screenshot — this is a BUG fix, not a new calendar feature)
 - Priority: MEDIUM
-- Requested: 2026-07-28 by stakeholder (relaying คุณฟีน / the customer)
+- Requested: 2026-07-28 by stakeholder; **clarified 2026-07-29 with screenshots**
 - Deadline: none
-- Source: customer request — "จำเป็นต้องมี search bar ในหน้า schedule เพราะนักเรียนเยอะมาก เลื่อนหายาก."
+- Source: customer request — originally "search bar on the schedule page"; the stakeholder clarified with
+  screenshots that the real pain is the **Student dropdown in the booking flow not searching**.
 
 ## Problem / Goal
-The staff calendar shows bookings in a teacher × time grid. With many students, finding a specific student's
-booking by scrolling the grid is slow and error-prone. Staff need to **search for a student on the schedule
-page** and quickly locate that student's booking(s).
+When staff create a booking (or buy a course / voucher), the **Student** field is a dropdown that is meant to
+be searchable — but **typing a name does NOT filter the list**. Per the stakeholder's screenshots (2026-07-29),
+typing "โอ๊ด" or "น้องมิ้น" still shows the **full** student list unfiltered, so with many students staff must
+scroll to find the right one. It should narrow the list as you type.
 
 ## Requirement
-1. The schedule / calendar page must provide a **search control** to find a student and locate their
-   booking(s) in the current view.
+1. In the **New Booking modal** (and the course / voucher purchase flows that use the same student picker),
+   typing in the Student field must **filter the list to matching students** as you type.
+2. Clearing the field restores the full/normal list.
 
 ## Acceptance Criteria
-- [ ] Staff can type a student's name in a search box on the calendar page and immediately see that student's
-      booking(s) surfaced (filtered / highlighted per the confirmed behavior below).
-- [ ] Clearing the search restores the normal calendar.
+- [ ] In New Booking → Student, typing part of a name shows **only** matching students (not the whole list).
+- [ ] Works in the course-package and voucher purchase student pickers too (same component).
+- [ ] Clearing the search returns to the normal list; selecting a student still works as before.
+- [ ] "Add new student «…»" still appears for a non-matching name (per the screenshot) — not removed.
 
 ## Analysis / current state (Porter, read-only sweep — for Sober to verify)
-- The calendar today has **no student search** — only filters by **teacher**, **teacher type**, and **badge**.
-  No way to find/highlight a specific student's bookings on the grid.
-- Each calendar cell **already shows the student name** and all day/week bookings are already loaded
-  client-side (`GET /calendar`). So for the **current day/week**, this can be **FE-only** (filter/highlight the
-  already-loaded bookings — mirror the existing badge-filter pattern).
-- **Student search already exists elsewhere** (the booking-create modal's student picker + the Bookings list
-  page), and the backend already has `GET /students?q=` (name / nickname / parent phone) and `GET /bookings?q=`
-  (name / subject). Finding a student's booking **outside** the loaded day/week (their next booking across
-  future weeks) would reuse those endpoints + navigate the calendar's date — a small BE touch may be needed
-  for exact per-student filtering.
+- The picker is `StudentSelect.tsx` (used in `BookingModal`), wired to `useStudentSearch` → `GET /students?q=`
+  which the backend **does** support (matches name / nickname / parent phone). So the search *plumbing* exists —
+  yet the UI shows all students regardless of the typed text (per the screenshots). ⇒ the bug is most likely in
+  the **FE wiring**: the typed value isn't being passed to the query, or the combobox renders unfiltered options
+  (a common Mantine `Select`/`Combobox` pitfall — options provided but not filtered / `q` not sent). SA/FE to
+  pinpoint. Likely a **small FE fix**, backend probably unchanged.
 
 ## Constraints
-- Prefer reusing the existing student-search endpoints / components; don't build a parallel search.
-- HOW (FE-only filter vs. cross-view lookup + date jump) is the SA's design, driven by the behavior chosen below.
+- Reuse the existing `GET /students?q=` search + the existing `StudentSelect` component — this is fixing the
+  wiring, not building a new search. HOW is the SA's design.
 
 ## Out of Scope
-- Redesigning the calendar filters that already exist (teacher / type / badge).
+- A separate student search on the **calendar grid** (find a student's existing bookings on the calendar) —
+  that was Porter's earlier mis-reading; the stakeholder's actual ask is the booking-picker search above. If a
+  calendar-grid search is wanted later, raise it as its own REQ.
 
 ## Questions
-(SA Lead + stakeholder. Porter answers as `> answer: ...`; business calls route to `@Porter` — don't guess.)
-- **What should picking a student do?** (a) **filter** the calendar to only that student's cells, (b)
-  **highlight + scroll** to their cells (grid still visible), or (c) open that student's **booking list**?
-- **Search by what?** Name only, or also **nickname** + **parent phone**?
-- **Scope:** current day/week only, or also **find their next booking** across future weeks (jump the calendar
-  to that date)?
+(SA Lead + stakeholder. Porter answers as `> answer: ...`; business calls → `@Porter`, don't guess.)
+- **Search by what?** Name only, or also nickname + parent phone? (The `GET /students?q=` endpoint already
+  supports all three — Porter's lean: keep all three.)

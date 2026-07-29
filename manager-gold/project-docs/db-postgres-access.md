@@ -22,6 +22,17 @@ DATABASE_URL=postgresql://postgres:smart2026%23@154.197.124.206:5432/manager_gol
 - port: `5432`
 - database: **`manager_gold`** (the deploy-time remote may need this db created first).
 
+## Dev / local database (for build + test) — stakeholder-provided 2026-07-29
+Engineers build/test against a **local** Postgres (the test suite creates/drops
+data, so never the prod db). Stakeholder: use localhost, password `smart2026`
+(the LOCAL password has **no `#`** → no `%23` encoding needed).
+```
+DATABASE_URL=postgresql://postgres:smart2026@localhost:5432/manager_gold
+```
+- host `localhost` · port `5432` · user `postgres` · password `smart2026` · db `manager_gold`.
+- Jason may run a local Postgres (e.g. Docker) with these credentials; `.env`-only, never committed.
+- **This is the DATA REQUEST answer that unblocks TASK-017.**
+
 ## Build vs deploy (important)
 - **Build:** engineers implement PostgreSQL support and test against a LOCAL/dev
   Postgres — they do NOT need to connect to `154.197.124.206`.

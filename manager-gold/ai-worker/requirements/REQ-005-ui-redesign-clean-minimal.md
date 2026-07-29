@@ -1,5 +1,5 @@
 # REQ-005: UI/UX redesign — clean, minimal, modern (+ dark mode)
-- Status: READY_FOR_SA
+- Status: DELIVERED
 - Priority: MEDIUM
 - Requested: 2026-07-28 by stakeholder (dev@smartalliance.co.th)
 - Deadline: none (a deadline exists for the project but is not disclosed)
@@ -23,13 +23,22 @@ a much better-looking, easier-to-use interface.
    CRUD, interactions/feelings/tags, search/filter/export, AI advice + summary).
 
 ## Acceptance Criteria
-- [ ] Main screens are visibly restyled to a consistent clean/minimal/modern Mantine
+- [x] Main screens are visibly restyled to a consistent clean/minimal/modern Mantine
       theme (spacing, typography, hierarchy) — not the current default look.
-- [ ] Light/dark toggle works and persists; both modes are polished.
-- [ ] Layout is responsive (no broken layout on mobile width).
-- [ ] All existing flows still work (no behaviour regressions).
-- [ ] **Stakeholder reviews the new look and approves it** (visual sign-off — the
-      final gate, since "nice" is the stakeholder's judgment).
+- [x] Light/dark toggle works and persists; both modes are polished.
+- [x] Layout is responsive (no broken layout on mobile width).
+- [x] All existing flows still work (no behaviour regressions).
+- [x] **Stakeholder reviews the new look and approves it** — approved 2026-07-29
+      ("REQ-005 ผ่านละ") after a live review of the running app.
+
+## PM Acceptance
+- Accepted by Porter (PM) on 2026-07-29. Criteria 1–4 verified by Sober's real-code
+  review + Fern's browser checks (FE `5c8d86a`/`6b30c73`/`9298ae6` on `dong`);
+  criterion 5 met by the stakeholder's live review + explicit approval.
+- Status → DELIVERED.
+- Note: this REQ is the visual redesign only. Thai default + language switcher is
+  REQ-007, and AI-output language is REQ-008 — both still pending (the app is in
+  English with no switcher until those land; expected, not a defect).
 
 ## Constraints
 - Must stay on **Mantine** (stakeholder-mandated). Frontend-only expected.
