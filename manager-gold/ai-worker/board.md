@@ -33,7 +33,7 @@
 | REQ-006 | Migrate database SQLite → PostgreSQL | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-29; 50 tests green on local PG). Remote-server migrate = parked deploy |
 | REQ-007 | Thai/English bilingual UI (default Thai) | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-29). Thai copy engineer-drafted; stakeholder wording pass offered (optional) |
 | REQ-008 | AI output follows the user's selected language | MEDIUM | ✅ DELIVERED | — (accepted by Porter 2026-07-29; TH→Thai, EN→English verified) |
-| REQ-009 | Fix color-scheme toggle hydration mismatch (Sun/Moon icon) | MEDIUM | **IN_SPEC (REOPENED)** | Sober/Fern — **CONFIRMED repro** by stakeholder on fresh `dong` dev: fires when **dark is persisted** (`mantine-color-scheme-value=dark`) — the condition TASK-026 missed. SPEC-009 "still reproduces" branch → apply the **mounted-gate** icon fix; verify with dark persisted. See REQ-009 §Reproduction |
+| REQ-009 | Fix color-scheme toggle hydration mismatch (Sun/Moon icon) | MEDIUM | **SPEC_DONE** | Porter — **mounted-gate fix landed** (`e55a362`), correct-by-construction + dev-clean. Neither Fern nor Sober could repro the "before" locally (env differs) → **have the stakeholder confirm the `Hydration failed` is gone on THEIR env** before DELIVERED |
 
 > **STATUS 2026-07-29:** **ALL 8 REQs DELIVERED · all 25 tasks DONE.** v1 (REQ-001–004) + v2
 > change-requests (REQ-005 UI redesign, REQ-006 PostgreSQL, REQ-007 Thai/EN i18n, REQ-008 AI-language)
@@ -75,7 +75,7 @@
 | TASK-023 | Translate profile + sections + AI panel chrome | SPEC-007 | ✅ DONE | Fern | TASK-021 ✅ |
 | TASK-024 | AI language param (BE) — advice + summary | SPEC-008 | ✅ DONE | Jason | — |
 | TASK-025 | Send selected language to the AI calls (FE) | SPEC-008 | ✅ DONE | Fern | TASK-024 ✅, TASK-021 ✅ |
-| TASK-026 | Fix header color-scheme icon hydration mismatch | SPEC-009 | **REWORK** (repro confirmed w/ dark persisted → apply mounted-gate) | Fern | — |
+| TASK-026 | Fix header color-scheme icon hydration mismatch | SPEC-009 | ✅ DONE (mounted-gate `e55a362`; stakeholder to confirm on their env) | Fern | — |
 
 ## Blocked / waiting
 

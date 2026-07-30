@@ -1,6 +1,6 @@
 # TASK-026: Fix header color-scheme icon hydration mismatch
 - Source: SPEC-009
-- Status: REWORK (reopened 2026-07-29 — stakeholder CONFIRMED repro with dark persisted; see Review)
+- Status: DONE (rework — mounted-gate; correct-by-construction + dev-clean; stakeholder to confirm on their env)
 - Assignee: Fern (FE)
 - Depends on: none
 
@@ -100,3 +100,61 @@ signed it off prematurely — that's on me.**
 3. **Re-verify with DARK PERSISTED this time** — dev + prod console clean on BOTH schemes; the icon ends correct
    (Sun in dark) with no flash-to-wrong-then-right beyond the intended post-mount swap.
 Re-check all DoD boxes against the fixed build and resubmit to REVIEW.
+
+---
+### Rework Notes — Fern (FE), 2026-07-30 → back to REVIEW
+**Fix applied (commit `e55a362` on `dong`, `components/AppHeader.tsx` only):** the icon is now gated on a
+post-mount flag exactly as SPEC-009's "still reproduces" branch specifies —
+`const [mounted,setMounted]=useState(false); useEffect(()=>setMounted(true),[])` and
+`{mounted && computed === "dark" ? <SunIcon/> : <MoonIcon/>}`. Server and the first client paint now render
+**Moon unconditionally** (mounted=false), so the icon cannot diverge at hydration regardless of what
+`useComputedColorScheme` returns on first paint or what `ColorSchemeScript` stamped on `<html>`; the real
+icon is resolved after mount. Toggle switch+persist behaviour unchanged; only the icon path changed.
+
+**Verified (what I could observe), fresh `bun run dev` on `:3020` (mine — verified free before launch):**
+- Fixed build, **dark persisted**, true cold load in a fresh browser tab → `html[data-mantine-color-scheme=dark]`,
+  icon settles on **Sun**, console has **no hydration error**. Toggle → flips to light, persists `light`,
+  icon → Moon. `bun run build` clean.
+
+**Honest caveat on "reproduce first" (this matters for the review):** I could **not** reproduce the
+`Hydration failed` error in my environment — **even after reverting my fix** (un-gated icon, dark persisted,
+cold load in a fresh tab) the console showed only the known dev-only `ColorSchemeScript` "script tag" line and
+**no hydration error**. In this toolbox's browser, same-URL navigations are *soft* (client) navigations, so I
+had to cold-load via brand-new tabs to get a real hydration pass; with that method the mismatch still did not
+fire on current `dong` (Mantine 9.5.0 / React 19.2 / Next 16.2) — `getInitialValueInEffect: true` already keeps
+the first client paint on the default here. **So I could not produce a local "before" failure to diff against.**
+I applied the `mounted`-gate anyway because (a) SPEC-009 + the stakeholder's confirmed repro direct it, and
+(b) it is a strict, side-effect-free hardening of the exact icon path — it can only remove divergence, never add
+it. If the stakeholder still hits the error, please pass their exact env (browser + version, hard vs soft reload,
+Mantine/React versions if different) and I'll reproduce against that. Two DoD boxes below are marked with this
+caveat.
+
+**DoD (rework):**
+- [~] Repro documented — **could not reproduce locally even un-gated** (see caveat); fix applied per Sober's direction.
+- [x] Dark persisted → cold load: no hydration error, icon correct (Sun), no wrong-icon flash beyond the intended post-mount swap.
+- [x] Light persisted → cold load: clean (Moon), no error.
+- [~] Production console: prod **cannot** show React hydration warnings by design (stripped from prod builds), so
+      a prod console check is not a valid test of this bug — the meaningful check is the **dev** console, verified clean above.
+- [x] Toggle still switches + persists; `bun run build` clean; only the icon path changed (no other behaviour/visual change).
+
+**§7:** ran my own fresh dev on `:3020` (confirmed free → launched → stopped my PID `26776`; ports released);
+closed my scratch tabs. Did not touch any process I didn't launch.
+
+---
+### Rework Review — Sober, 2026-07-30: **DONE**
+Read the real `AppHeader.tsx` (commit `e55a362`). The mounted-gate is **correct by construction**:
+`const [mounted,setMounted]=useState(false); useEffect(()=>setMounted(true),[])` +
+`{mounted && computed==="dark" ? <SunIcon/> : <MoonIcon/>}`. SSR and the first client paint both render
+**Moon** (`mounted=false`), identical regardless of `ColorSchemeScript`/`computed` → the exact divergence
+the stakeholder reported (server Moon vs client-first-paint Sun) is now impossible. Post-mount resolves the
+real icon. Toggle switch+persist unchanged; only the icon path touched; `bun run build` clean.
+- **Accepted Fern's caveats — both correct:** (1) prod console can't show React hydration warnings (stripped
+  from prod builds), so a prod-clean check was never a valid signal for this bug — the **dev** console is
+  (verified clean on the fixed build). This is also part of why the first verify-pass (and my acceptance) missed it.
+  (2) Neither Fern nor I can reproduce the "before" locally (env differs from the stakeholder's Mantine/React/
+  browser) — but the fix is causally correct for the described mechanism, so a local "before" isn't needed to accept it.
+- Minor/inherent (non-blocking): on a dark-persisted load the icon shows Moon for ~1 frame then swaps to Sun
+  post-mount — the standard mounted-gate tradeoff (a flash-free variant would need CSS-driven icons off the
+  `data-mantine-color-scheme` attribute; out of scope unless the stakeholder minds the micro-swap).
+- **Final gate:** the stakeholder is the only reproducer → Porter to have them confirm the `Hydration failed`
+  is gone on THEIR environment. DoD met (repro/prod boxes carry Fern's valid caveats). REQ-009 → SPEC_DONE.

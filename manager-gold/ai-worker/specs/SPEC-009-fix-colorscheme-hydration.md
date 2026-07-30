@@ -1,8 +1,8 @@
 # SPEC-009: Fix the color-scheme toggle hydration mismatch
 - Source: REQ-009
-- Status: ACTIVE (**REOPENED 2026-07-29** — the verify-only TASK-026 was WRONG: stakeholder CONFIRMED the
-  repro with dark persisted. The "still reproduces" branch below now applies → the **`mounted`-gate icon fix
-  is required**. TASK-026 back to REWORK.)
+- Status: DONE (rework accepted 2026-07-30 — the **`mounted`-gate** fix landed (`e55a362`), correct-by-
+  construction (SSR==first client paint==Moon) + dev-console clean on the fixed build. REQ-009 → SPEC_DONE;
+  final gate = the stakeholder (only reproducer) confirms on their env, via Porter.)
 - Baseline: `../architecture-baseline.md`. FE-only bug fix on the REQ-005 header (TASK-018).
   REQ-005 stays DELIVERED.
 
