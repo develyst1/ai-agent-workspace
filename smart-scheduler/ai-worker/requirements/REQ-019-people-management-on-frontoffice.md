@@ -60,6 +60,20 @@ the customer information the business needs.
 1. **What should "suspend a parent" actually stop?** (a) their LINE bot access only, (b) also block new bookings
    for their students, or (c) hide them from day-to-day lists entirely? (Porter's lean: (a)+(b) — stop the account
    acting, keep the history visible.)
+   > **answer (Porter, from คุณฟีน) — the definition of "suspended" has now been settled in three steps:**
+   > 1. **2026-08-01 (a)+(b):** blocks **LINE bot access** and **new bookings** for their students. History,
+   >    bookings and students stay intact and visible. Reversible. **Enforced server-side**, not hidden in the UI.
+   > 2. **2026-08-01:** their students are **NOT listed in the booking picker at all** (not shown-disabled) —
+   >    คุณฟีน: *"แล้วเขากดระงับไปทำไม"*. The People screen is where suspended families remain visible.
+   > 3. **2026-08-01 — EXTENSION: a suspended family may NOT BUY a course or voucher either.** คุณฟีน:
+   >    *"ไม่ควรซื้อได้"*. Rationale: selling a course they cannot schedule is taking money for something we
+   >    can't deliver — a refund conversation we'd be creating for ourselves. Staff un-suspend first, then sell.
+   >
+   > ⚠️ **Note for whoever implements #3:** the selling screens (CreateCourseModal / CreateVoucherModal) share
+   > the `GET /students?q=` picker with other, non-selling uses — Sober flagged this exact trap on TASK-056. So
+   > this must **not** be a blanket filter on that shared endpoint; scope it to the selling flows deliberately.
+   > **Existing** courses/vouchers a suspended family already owns are untouched (consistent with #1 —
+   > suspension stops new activity, it never erases what exists).
 2. **Whose demographics do we record** — the **student** (the one who trains) or the **parent** (the paying
    customer), or both? (Porter's lean: the **student**, since the dashboard asks about the people attending; the
    parent keeps name/phone/province.)
