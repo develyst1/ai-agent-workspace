@@ -1,6 +1,6 @@
 # TASK-058: scheduling (BE) — a suspended household cannot BUY; `/students` excludes them by default
 - Source: SPEC-016 addendum (REQ-019) — คุณฟีน 2026-08-01: *"ไม่ควรซื้อได้"*
-- Status: REVIEW  (built 2026-08-01 by Jason — renamed to one neutral `blockedBySuspension`; old `bookable` param verified ignored ⇒ **no deploy-order constraint**. @Sober; unblocks Fern's TASK-059)
+- Status: DONE  (reviewed 2026-08-01 by Sober — one neutral `blockedBySuspension`, both sale gates verified in-tx and before the revenue post, one suspension message, `bookable` retired; tsc 0 / 234 tests. Deploy order FREE)
 - Depends on: TASK-056 (DONE)
 - Assignee: @Jason (smart-scheduler-back, port 4006)
 
@@ -120,4 +120,33 @@ one definition of "suspended", in `lib/suspend.ts` ✓ · tsc clean + `bun test`
   error worse (e.g. two different messages for one action), tell me — one clear message beats two correct ones.
 
 ## Review
-(Sober fills at REVIEW.)
+**Verdict: DONE ✅ (Sober, 2026-08-01).** `bunx tsc --noEmit` → **0**; `bun test` → **234/0** (my own run).
+
+- **The naming call was his to make and he made the better one.** I offered "rename or add a sibling"; he
+  renamed `bookingBlockedBySuspension` → **`blockedBySuspension`** with the reasoning that a booking-flavoured
+  and a purchase-flavoured predicate would be two things to keep correct **with no difference between them**.
+  `lib/suspend.ts` is now the single place "suspended" is defined, and its doc names both gates. tsc passing is
+  itself the proof the rename left nothing stale.
+- **Both gates verified in place, not just claimed:** `assertHouseholdNotSuspended` is called **inside the
+  transaction, immediately after `resolveStudentId`** in `createCoursePackage` (`:633`) and `createVoucher`
+  (`:715`) — and in the voucher path it sits **before the insert**, so a blocked sale can never reach the
+  `recordSale(...)` revenue post that fires after the transaction. That was the specific hole (`createVoucher`
+  had no gate at all) and it's closed at the right point.
+- **He answered my "two messages for one action" question by preventing it rather than reporting it.** One
+  `SUSPENDED_MESSAGE` constant, with the booking gate appending "จอง". So one policy has one wording, and there
+  is one string to change if the copy is revised. **And the booking message is byte-identical to before**, so
+  REQ-019's just-passed acceptance doesn't regress.
+- **Walk-in carve-out preserved** on both paths via the same predicate, unit-tested.
+- **`bookable` retired cleanly:** `searchStudents(q, limit)` always excludes, the param is gone from the service
+  and `studentsQuery`, and the exclusion-set machinery (empty-array guard, `innerJoin` keeping parentless
+  students visible by construction) is kept exactly as built.
+- **He verified the ignored-param claim instead of repeating mine** — parsed `{q:"a", bookable:"true"}` and
+  showed it yields `{q:"a", limit:50}`. **Deploy order is free here** (BE-first, FE-first, simultaneous all
+  safe), in contrast to TASK-055 which genuinely needs FE first. Checking rather than inheriting my assertion is
+  the right instinct — I'd have accepted "Zod strips unknown keys" as obvious, and obvious is where things hide.
+- **Third-purchase-path question answered with a search, not a guess:** only the two paths; top-ups and the
+  sick-leave auto-extension are not purchases and were left alone, as instructed.
+
+**TASK-058 → DONE. @Fern: TASK-059 unblocked** — the sale endpoints now return the suspension `400`, so the two
+sale modals need the `ApiClientError` → visible message treatment (the picker default change is already done
+server-side, so the FE only removes plumbing).

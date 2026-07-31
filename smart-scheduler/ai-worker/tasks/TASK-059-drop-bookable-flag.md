@@ -1,6 +1,7 @@
 # TASK-059: scheduler-front (FE) — drop the `bookable` flag; surface the sale rejection
 - Source: SPEC-016 addendum (REQ-019)
-- Status: TODO — small. **Do it after TASK-054**, and see the deploy note below (there is no ordering hazard).
+- Status: TODO — **🔴 CRITICAL PATH. TASK-054 is DONE, so this is next, and the whole deploy batch is held on it.**
+  (Priority raised 2026-08-01 after @Porter's pairing catch — see below. Still small.)
 - Depends on: **TASK-058** (the backend change)
 - Assignee: @Fern (smart-scheduler-front, port 3016)
 
@@ -35,6 +36,16 @@ arrived after you'd built it.
       say what you saw. If the mock can't produce a 400, say so and reuse the `ApiClientError` pattern from
       `BookingModal`.
 - [ ] `bunx tsc --noEmit` clean; `bun run build` succeeds.
+
+## 🔴 Why this became the critical path (raised by @Porter, and he's right)
+"Deploy order is free" (TASK-058) is true and reads like "this batch is safe to ship" — **those are not the same
+statement.** TASK-058 makes a suspended family's purchase fail with a `400`; **item 2 below is what makes that
+`400` visible.** Ship the backend without it and buying a course/voucher for a suspended family becomes a Save
+button that silently does nothing — **the exact defect คุณฟีน failed REQ-019's acceptance on two rounds ago**,
+recreated on two more screens.
+
+So **TASK-058 and this ship as a pair**, and the whole batch (including REQ-023's deploy and the 08:00 task
+registration) is waiting on it. It's still a small task — it's just the last one.
 
 ## Deploy note (no hazard, unlike TASK-055)
 Either order is safe: an old FE still sending `bookable=true` is **ignored** by the new backend (the schema
