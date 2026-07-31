@@ -66,3 +66,38 @@ and the /table + /chart weapon filters keep working (EXISTS on T_T_LICENSE_DTL, 
 @Sober — please SPEC this (reuse move-license's Unit/Weapon Ddl; tracking is FORM_ID=10/STATUS=40 so scope the
 product source the same way move-license does) and write the TASK for Jason. Everything else in REQ-017 is captured &
 accepted; this weapon cascade is the only remaining gap before DELIVERED. Status reverted IN_SPEC.
+
+---
+## ADDENDUM 2 — 2026-07-24 (stakeholder) — "สถานะหนังสืออนุญาต" is EXPIRY-based, NOT LICENSE_STATUS
+Stakeholder answer to REQ-019 Q1: **"หมดอายุมั้ย คือ วันหมดอายุ เกินหรือไม่เกินวันปัจจุบันน่ะ ไม่เกี่ยวกับ สถานะ 40"**
+FE dropdown confirms the exact option set: **ทั้งหมด / ยังไม่หมดอายุ / หมดอายุ** (screenshot 2026-07-24).
+
+**We built it wrong** — DR-16 recorded LICENSE_STATUS code→label ({40:"ออกหนังสืออนุญาตแล้ว"}); that was Porter's
+reading, not the stakeholder's meaning. `LICENSE_STATUS=40` remains correct **as the backbone filter** (which licenses
+appear at all) — it is simply NOT what the "สถานะหนังสืออนุญาต" column/filter means.
+
+### Correct definition (verbatim from stakeholder)
+- **ยังไม่หมดอายุ** — `EXPIRY_DATE` **ไม่เกิน** วันปัจจุบัน ⇒ `EXPIRY_DATE >= TRUNC(SYSDATE)` (today itself counts as
+  ยังไม่หมดอายุ)
+- **หมดอายุ** — `EXPIRY_DATE` **เกิน** วันปัจจุบันไปแล้ว ⇒ `EXPIRY_DATE < TRUNC(SYSDATE)`
+
+### 4 touchpoints to fix (all in `DashboardTrackingService`, verified)
+| # | line | now (wrong) | must become |
+|---|---|---|---|
+| 1 | L42 `LICENSE_STATUS_MAP` | `{40:"ออกหนังสืออนุญาตแล้ว"}` | remove/replace — status is derived from EXPIRY_DATE, not a code map |
+| 2 | L110 `LicenseStatusDdl.Items` | items from the code map (1 item) | exactly 2 items: **ยังไม่หมดอายุ / หมดอายุ** (empty ⇒ ทั้งหมด, per the FE dropdown) |
+| 3 | L269 `InList(req.LicenseStatuses, r.LicenseStatus?.ToString())` | filters by LICENSE_STATUS code | filter by the derived expiry bucket |
+| 4 | L288 + L309 `LicenseStatusLabel(r.LicenseStatus)` | code→label | derive from `EXPIRY_DATE` vs today |
+
+Backbone `FORM_ID=10 AND LICENSE_STATUS=40` — **unchanged**.
+`expiry_date` is already selected & returned, so no query change is needed for the derivation (SA to choose:
+derive in SQL or in the service — service is fine and keeps the query untouched).
+
+**@Sober — SPEC + TASK.** Two open implementation details for you to settle (not stakeholder-facing):
+(a) the `license_statuses` request value encoding for the 2 buckets (the FE currently sends whatever the DDL `value` is
+    — keep DDL value and request value identical, like every other cascade); (b) rows with NULL `EXPIRY_DATE`, if any
+    exist under FORM_ID=10/STATUS=40 — pick a deterministic bucket and state it (raise a DATA REQUEST via Porter only
+    if you actually need a count).
+
+Acceptance: FE dropdown shows ทั้งหมด/ยังไม่หมดอายุ/หมดอายุ; picking each filters the table+charts accordingly; the
+table's `license_status` column and the REQ-019 modal badge both show the expiry label and always agree.
