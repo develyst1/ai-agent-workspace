@@ -1,7 +1,7 @@
 # REQ-012: Registration / profile form (opened from LINE) capturing customer demographics
 - Status: READY_FOR_SA  (⚠️ RE-SCOPED 2026-07-29 — form-based, opened from LINE; not "add fields to the staff form")
 - Priority: MEDIUM
-- Requested: 2026-07-25 meeting (คุณกุ้ง) → re-scoped by stakeholder 2026-07-29
+- Requested: 2026-07-25 meeting (คุณปุ้ม) → re-scoped by stakeholder 2026-07-29
 - Deadline: none — **after REQ-015 (LINE UX); prerequisite for REQ-013 demographics**
 - Source: `20260725-{meeting,todo}.md` (§4) + stakeholder direction 2026-07-29 (registration lives on LINE).
 

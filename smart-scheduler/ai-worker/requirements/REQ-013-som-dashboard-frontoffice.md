@@ -1,7 +1,7 @@
 # REQ-013: SOM dashboard (frontoffice) — customer / activity / attendance analytics
 - Status: READY_FOR_SA
 - Priority: MEDIUM
-- Requested: 2026-07-25 meeting (คุณกุ้ง) → relayed by stakeholder 2026-07-29
+- Requested: 2026-07-25 meeting (คุณปุ้ม) → relayed by stakeholder 2026-07-29
 - Deadline: none
 - Source: `smart-scheduler-requirement/20260725-{meeting,todo}.md` (Dashboard req §1–4). The **financial**
   parts (revenue-by-sport, per-customer spend, access control) are split out to REQ-014 (backoffice).

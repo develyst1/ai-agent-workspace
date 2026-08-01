@@ -40,6 +40,15 @@ services/attention.service.ts   runAttentionChecks() => AttentionReport   ← th
 **Extensibility (AC #4) is the registry, not a framework.** Adding a check = one entry in the array with a `run`.
 Delivery, ordering, empty-handling, and both renderers are untouched. Do **not** build a plugin system.
 
+> **⚠️ AMENDED 2026-08-01 (measured on the first real 8th check, TASK-067) — the honest claim is:**
+> **one array entry, plus one `AttentionCtx.load` field + loader if the check needs a data source nobody has
+> loaded yet** (plus the i18n pair every check needs).
+> The load-bearing half held exactly as promised: the digest renderer, `decideDigest`, the job, the runner, the
+> panel producer and the endpoint **all stayed untouched**, and the privacy layer picked the new check up for
+> free. The loader is *deliberate*, not a leak: the registry is kept free of query plumbing so the predicates
+> stay pure and unit-testable, and importing `db` into `lib/attention.ts` to preserve a tidier slogan would be
+> the wrong trade. Recorded because "one entry, full stop" would over-promise to whoever adds the ninth.
+
 ## Design decision 2 — a dead job must be VISIBLE, not silent
 This project has **two scheduled jobs that have never been registered on the server** and nobody noticed, because
 a job that never runs produces nothing to notice. A third silent job is the predictable outcome here, and "we'll

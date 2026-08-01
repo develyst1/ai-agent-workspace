@@ -1,7 +1,7 @@
 # REQ-014: Backoffice — revenue by activity + per-customer spend (executive-only by system, no new roles)
 - Status: READY_FOR_SA  (⚠️ CLARIFIED 2026-07-29 — the "RBAC" question dissolved; see below)
 - Priority: MEDIUM
-- Requested: 2026-07-25 meeting (คุณกุ้ง) → relayed + clarified by stakeholder 2026-07-29
+- Requested: 2026-07-25 meeting (คุณปุ้ม) → relayed + clarified by stakeholder 2026-07-29
 - Deadline: none
 - Source: `smart-scheduler-requirement/20260725-{meeting,todo}.md` (Dashboard §5, §6 + access-control note).
 
@@ -52,3 +52,25 @@ executive-only). Porter over-thought this earlier — corrected.
   system separation.
 - **Revenue-by-sport method** (SA design): tag each sale with its sport going forward (cleanest; past untagged
   sales split best-effort via the indirect join), or maintain per-subject income items? SA to pick.
+
+---
+
+## ✅ Access model RE-CONFIRMED with a harder fact (2026-08-01)
+
+Porter re-checked this with the project owner after learning the backoffice has **one shared admin password**,
+and the answer holds — **with a stronger reason than the one recorded on 2026-07-29**:
+
+> **"ไม่ต้องแยกรหัส เขามีแค่คนเดียวที่เข้า backoffice ตอนนี้"**
+
+- The backoffice has **one credential**, and **one person** using it today. The two people who will ever look at
+  it are **คุณฟีน and คุณปุ้ม** (REQ-013/014's requester — the "พี่กุ้ง" of the meeting minutes, an AI
+  transcription error corrected 2026-08-01).
+- ⇒ **No per-user permissions, no roles, no second login. Nothing to build.** "Executive-only" is satisfied
+  entirely by *which app the data lives in*, exactly as recorded on 2026-07-29.
+- The system genuinely **cannot** distinguish users here, so any design that gates on *who is logged in* would be
+  gating on a value that does not vary. If per-person access is ever wanted, **separate credentials are the
+  prerequisite** and that is its own REQ — not a rider on this one.
+
+📌 **Note for whoever reads this next:** this section adds no new decision. It exists because the "one shared
+password" fact arrived later and is the sort of detail that makes people re-open a settled design; it is written
+down so the question doesn't get asked a third time.
