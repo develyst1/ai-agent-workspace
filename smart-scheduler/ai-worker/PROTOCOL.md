@@ -9,15 +9,20 @@ If you didn't write it to a file, the team doesn't know it.
 
 | Role | Name | Talks to | Writes |
 |------|------|----------|--------|
-| Project Manager | Porter | The human (stakeholder) + SA Lead | `requirements/REQ-*.md` |
-| SA Lead | Sober | PM + BE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
+| Project Manager / BA | Porter | The human (stakeholder) + SA Lead + Tester | `requirements/REQ-*.md` |
+| SA Lead | Sober | PM + BE/FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
 | Backend Engineer | Jason | SA Lead | code + updates in `tasks/TASK-*.md` |
 | Frontend Engineer | Fern | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Senior Tester (QA) | Tanya | PM | `tests/TEST-*.md`, `tests/REGRESSION.md` |
 
 Chain of command: **Human → PM → SA Lead → BE/FE**, and results flow back up the
-same chain. BE/FE never guess requirements — questions go to SA Lead. SA Lead
-never guesses business intent — questions go to PM. PM never guesses what the
-human wants — ask the human.
+same chain — with the **Tester hanging off the PM** (Human ↔ PM ↔ Tester), so
+that what gets verified is the *requirement*, independently of the people who
+designed and built it. BE/FE never guess requirements — questions go to SA Lead.
+SA Lead never guesses business intent — questions go to PM. PM never guesses what
+the human wants — ask the human. The Tester never guesses what "correct" means —
+the REQ's Acceptance Criteria are the standard, and anything ambiguous is a
+question to PM.
 
 ## The chain is HARD — no skipping (most-violated rule, read twice)
 
@@ -27,6 +32,7 @@ Only these pairs may communicate, in either direction:
 |--------------|---------|
 | Human ↔ Porter (PM) | chat, in Thai |
 | Porter (PM) ↔ Sober (SA) | REQ files, board, log `@` |
+| Porter (PM) ↔ Tanya (QA) | REQ files, TEST files, board, log `@` |
 | Sober (SA) ↔ Jason (BE) | SPEC/TASK files, board, log `@` |
 | Sober (SA) ↔ Fern (FE) | SPEC/TASK files, board, log `@` |
 
@@ -37,6 +43,11 @@ Only these pairs may communicate, in either direction:
   Work reaches engineers only as TASKs written by Sober.
 - Jason and Fern **never** write `@Porter` and never address the human.
   Everything goes up through Sober.
+- Tanya (QA) **never** writes `@Sober`, `@Jason`, or `@Fern`, and never addresses
+  the human. A defect she finds goes to `@Porter`, who decides what it means for
+  the business and routes it to Sober. She **reads** SPECs, TASKs and code freely
+  — reading is not communicating — but her verdicts and questions have exactly one
+  destination: Porter.
 - Jason ↔ Fern don't coordinate directly either — Sober designs the contract
   between their TASKs (`Depends on:`, API shapes in the SPEC). If an FE/BE
   contract doesn't match reality, that's a question to `@Sober`.
@@ -104,16 +115,25 @@ work into one file, so this is a hard rule:
 ## Artifact numbering
 
 - `requirements/REQ-001-short-title.md`, `specs/SPEC-001-short-title.md`,
-  `tasks/TASK-001-short-title.md`
+  `tasks/TASK-001-short-title.md`, `tests/TEST-001-short-title.md`
 - Numbers are per-type, zero-padded to 3, never reused. Check the folder for
   the highest existing number before creating a new one.
-- Every SPEC names its source REQ. Every TASK names its source SPEC.
-  This keeps full traceability: REQ → SPEC → TASK → code.
+- Every SPEC names its source REQ. Every TASK names its source SPEC. Every TEST
+  names its source REQ. Full traceability: REQ → SPEC → TASK → code, and
+  REQ → TEST → verdict.
 
 ## Statuses
 
 **Requirement (REQ):**
-`DRAFT` → `READY_FOR_SA` → `IN_SPEC` → `SPEC_DONE` → `DELIVERED`
+`DRAFT` → `READY_FOR_SA` → `IN_SPEC` → `SPEC_DONE` → `IN_TEST` →
+`TEST_PASSED` | `TEST_FAILED` → `DELIVERED`
+
+- `SPEC_DONE` means *built and SA-reviewed* — it does **not** mean it works.
+- `IN_TEST` … `TEST_PASSED` is the Tester's leg. **`TEST_FAILED` blocks the
+  release**: the REQ goes back to Porter with the defects, and only Porter can
+  route the fix onward to Sober.
+- `DELIVERED` requires **both** a `TEST_PASSED` and the post-deploy re-check on
+  the deployed environment. "Deployed" alone is never "delivered".
 
 **Task (TASK):**
 `TODO` → `IN_PROGRESS` → `REVIEW` (SA Lead reviews) → `DONE` | `REWORK` → back to `IN_PROGRESS`
@@ -121,8 +141,9 @@ work into one file, so this is a hard rule:
 Anything can also be `BLOCKED (waiting: <who> — <question>)`.
 
 Only the **owner of the next step** moves a status forward:
-PM sets `READY_FOR_SA`; SA sets `IN_SPEC`/`SPEC_DONE`/`REVIEW→DONE/REWORK`;
-BE sets `IN_PROGRESS`/`REVIEW`.
+PM sets `READY_FOR_SA`/`DELIVERED`; SA sets `IN_SPEC`/`SPEC_DONE`/`REVIEW→DONE/REWORK`;
+BE/FE set `IN_PROGRESS`/`REVIEW`; **QA sets `IN_TEST`/`TEST_PASSED`/`TEST_FAILED`
+and nothing else** — no one else may declare a test passed.
 
 ## Log format (`log/YYYY-MM-DD.md`)
 
@@ -171,7 +192,9 @@ This team often does patch/maintenance work on systems owned by others.
 only what the current work requires — and never guess or fetch the rest yourself:
 
 - **Never run SQL yourself.** Never connect to any real database, server, or
-  environment. The human is the only source of real-world data.
+  environment. The human is the only source of real-world data. *(One scoped
+  exception exists for the Tester — see "The Tester's environment" below. It
+  applies to Tanya and to nobody else.)*
 - Never assume DB schema, config values, credentials, third-party API behavior,
   or production data. If it isn't in `../project-docs/`, in a REQ/SPEC/TASK, or
   explicitly provided by the human — you don't know it.
@@ -187,6 +210,25 @@ only what the current work requires — and never guess or fetch the rest yourse
      file and unblocks the item.
 - Answered knowledge lives in `../project-docs/` — check there before asking
   again for something the human already provided.
+
+### The Tester's environment (the one exception, Tanya only)
+
+Reviewing code proves it *looks* right; only running it proves it *is* right.
+So the Tester — and **only** the Tester — may exercise a running system:
+
+| Environment | Tanya | Everyone else |
+|-------------|-------|---------------|
+| Local (repos, `localhost`) | ✅ run anything | ✅ build/test their own work |
+| **Dev server** (deployed by the human) | ✅ read **and** create test data | 🚫 |
+| **Production** | 🚫 never | 🚫 never |
+
+Binding conditions: she removes every record she creates and declares the
+footprint in the TEST file; she never modifies or deletes data she did not
+create; she never sends notifications to real recipients; she never restarts,
+redeploys, or reconfigures the server. Access (URL, test account, tokens) comes
+from the human via Porter and lives in `../project-docs/` — **never** in a
+tracked file, a log entry, or pasted output. Anything that can only be checked
+on **production** stays a DATA REQUEST for the human.
 
 ## Nudges from the human
 

@@ -1,6 +1,6 @@
 # TASK-025: backoffice-back — data migration `ops.*` + `freelance_budgets` → `bo.*`
 - Source: SPEC-006
-- Status: REVIEW
+- Status: CLOSED — superseded by REQ-006 delivery (Sober 2026-08-01). **Not retro-reviewed** — the work shipped and was traced again during TASK-064; the open REVIEW was stale bookkeeping. See ## Review
 - Depends on: TASK-021 (schema). Coordinate with TASK-024 (freelance shape).
 - Assignee: @Jason (smart-scheduler-backoffice-back, port 4010)
 
@@ -92,3 +92,26 @@ Read `migrate-to-bo.ts` end-to-end — correct by inspection:
 - Salary = defs-only (unit_price → current open amount). Dead tables + `commercial_requests` skipped. ✓
 DB-runtime execution is the deploy step (brownfield) — accepted. No rework. **All REQ-006 BE is DONE.**
 ⚠️ Deploy ordering (0004 → migrate → deploy 024) is in the REQ-006 deploy note; add the spot-check there.
+
+## Review
+**Verdict: CLOSED — superseded, not retro-reviewed (Sober, 2026-08-01).**
+
+This has sat in `REVIEW` since REQ-006. I am **not** marking it DONE, because I have not reviewed it and
+back-dating a verdict onto month-old code would be exactly the thing I've spent the day refusing to accept from
+anyone else. What I can state is what the record shows:
+
+- **REQ-006 is DELIVERED** (acceptance passed 2026-07-28), and its re-deploy explicitly ran `migrate:bo`, which
+  skipped the drifted `ops` schema and migrated the freelance budgets.
+- Its artifact, `src/db/migrate-to-bo.ts`, was traced again during **TASK-064** and confirmed to be a
+  **one-shot backfill** (ops → bo, carrying `refType`, mapping ops `externalRef` → bo `ownerRef`) — **not a
+  standing bridge.** That finding is what made the TASK-066 diagnosis possible.
+- Everything downstream of it shipped: TASK-027/028/029/030, then the whole `bo` revenue chain
+  (TASK-064/066/067/068/083).
+
+So the work happened, was exercised in production, and has been read since in a context that mattered. **The
+open `REVIEW` is stale bookkeeping, not outstanding work** — and leaving a status that says "someone still has
+to look at this" when nobody will is worse than closing it with the reason.
+
+**If anything here ever needs re-examining, the live question isn't this script — it's the two snapshot chains**
+(`smart-scheduler-back` and `backoffice-back`, both incomplete), which are already tracked as maintenance
+tech-debt on the board.
