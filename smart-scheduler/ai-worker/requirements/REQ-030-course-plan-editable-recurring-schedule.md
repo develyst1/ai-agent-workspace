@@ -172,3 +172,54 @@ Design it as a **named, configurable rule** (like the existing leave-notice rule
 page", now again alongside the two-courses problem. That is a signal worth acting on: **the missing thing is a
 per-entitlement view.** Both requests, plus REQ-029's two-identical-rows defect, plus REQ-025's migration, are
 the same absence — **nowhere in the product can you look at one child's entitlement as a thing.**
+
+---
+
+## ➕ 2026-08-02 — the owner's worked example. This is the clearest statement of the mechanism; treat it as the spec.
+
+> *"ขอให้แบบเข้าไปแล้วมีให้แก้ได้ว่า สมมุติมันบอกวันที่ 7, 14, 21, 28 นะ มันสามารถไปกดบอกว่า 14 ใช้สิทธิ์ลา
+> ไปล่วงหน้าเลย แล้วพอกดยืนยัน ผ่านกฎถูกต้องทุกอย่างได้ มันจะตัด quota leave และงอกใหม่ที่วันที่ 4 เดือนหน้า
+> หรือก็คือบวกสัปดาห์สุดท้ายไปอีก 1 สัปดาห์*
+>
+> *แต่ถ้าต้องการจองแทรก คือลาวันที่ 14 เพราะไม่ว่างจริง ๆ แต่ 15 มาได้นะ ไม่อยากรอสัปดาห์หน้า ก็จองแทรกที่ 15
+> **ไอ้ที่งอกมาก็หายไป** (วันที่ 4 เดือนหน้า)"*
+
+### Walked through, so the arithmetic is unambiguous
+
+Plan: **7 · 14 · 21 · 28**
+
+| Step | Action | Result |
+|---|---|---|
+| 1 | Open the plan, click **14**, mark it as a **planned absence** | |
+| 2 | Confirm — **all rules are checked at this point** | leave quota **decremented**; a session **appears on the 4th of next month**; the course now ends one week later |
+| 3 | *Instead of waiting*, book an **insert on the 15th** | the **session on the 4th disappears**; the course ends on **28** again, as originally planned |
+
+### 🔴 The rule this makes explicit, and it is the one to get right
+
+**The appended session and the inserted session are the same session, moved.** An insert does not *add* a
+session — **it satisfies the one the absence created.** A 6-session course must still be 6 sessions after any
+sequence of absences and inserts. If a family marks an absence and then books an insert and ends up with 7
+sessions, the feature is wrong even though every individual step looked correct.
+
+⇒ **"How many sessions does this course still owe?" is the invariant**, and the end date is simply *when the
+last of them falls*. Both the absence and the insert are moves within that number, never changes to it.
+
+### Confirmation is the gate
+The owner says *"พอกดยืนยัน ผ่านกฎถูกต้องทุกอย่างได้"* — **all validation happens at confirm**, and the
+quota deduction, the appended session and the new end date are **one atomic outcome**. Nothing is written on the
+way there. If any rule fails (quota, extension ceiling, teacher availability, slot clash, freelance ceiling),
+**nothing changes and the reason is shown** — a half-applied plan is worse than a rejected one.
+
+### ➕ Start date
+> *"ขอให้มี start date ด้วย — หรือถ้าแผนที่ดีอยู่แล้ว ก็ไม่ต้องก็ได้"*
+
+Show (and where sensible let staff set) the course's **start date** on the plan. **The owner has explicitly made
+this optional**: if the plan view already makes the start obvious — the first row *is* the start — a separate
+field is redundant. **SA's call.** Don't add a field that only repeats what the first row already says.
+
+### 📌 Where this lives — the entry point already exists
+The Bookings ▸ **Courses + leave** tab already renders one card per course with everything the plan needs as its
+header: student · size · expiry · **program** · sessions used · **leave quota with "extendable to week N"** ·
+and the `SPECIAL UNLOCK` state. **That card is the natural way in** — the plan is what you get when you open
+one. It also already carries **"Already in progress"** (REQ-025), which is the other producer of plans, so the
+two features meet on this screen exactly as expected.

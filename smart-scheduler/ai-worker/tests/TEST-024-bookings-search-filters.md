@@ -41,8 +41,8 @@ perfectly correct and simply not on the server.
 | 1 | AC3 — search matches student **nickname** | happy | `GET /bookings?q=kcik` (student name is "kick", nickname "kcik") | ≥1 booking, found via nickname not name | `total:1` | **PASS** |
 | 2 | AC3 — search matches **parent phone** | happy | `GET /bookings?q=<parent phone>` | the child's bookings returned | `total:16`, 0 before REQ-024 | **PASS** |
 | 3 | AC2 — sort is a **sort, not a filter** (count unchanged) | happy | compare `total` across `sort=upcoming/date_asc/date_desc` | all equal | all `79` | **PASS** (count invariant holds) |
-| 4 | AC2 — default view starts at the **next** session, header flips order | happy | `sort=upcoming` on 2026-08-01 should surface ≥2026-08-01 first; `date_desc` should start 2026-09-23 | reordering | **all sorts identical, start 2026-07-01** | **NOT TESTED** — sort not deployed on `sid` |
-| 5 | AC — unknown sort rejected, never silent fallback | negative | `GET /bookings?sort=NONSENSE` | `400` | `200` | **NOT TESTED** — enum not deployed |
+| 4 | AC2 — header flips order (sort works) | happy | `date_asc` vs `date_desc`, limit 3 | different order; desc starts at the max date | asc→2026-07-01…, **desc→2026-09-23,17,16** — orders differ | **PASS** (re-checked 2026-08-02 after `sid` redeploy) |
+| 5 | AC — unknown sort rejected, never silent fallback | negative | `GET /bookings?sort=NONSENSE` | `400` | `400` | **PASS** (2026-08-02) |
 | 6 | AC4 — custom date range filters | happy | `GET /bookings?from=2026-09-01&to=2026-09-30` | only Sep rows, total < 79 | `11`, all in range | **PASS** (API side; the FE date-input widget is a separate painted round) |
 
 ## Defects
@@ -59,15 +59,17 @@ would be a defect; today there is nothing to file against the engineers.
 
 ## Verdict
 
-`IN_TEST` — **partial, and it cannot be completed on `sid` in its current state.**
-- **PASS:** search by nickname + parent phone (AC3); sort-not-filter count invariant (AC2, count leg);
-  custom date range at the API (AC4).
-- **NOT TESTED:** the actual ordering (AC2 — "starts at next session", header flip) and the unknown-sort
-  rejection — **because TASK-073 is not deployed on `sid`**. These are the ACs that answer the customer's
-  "shows oldest first" complaint, so **REQ-024 is not acceptance-complete** until the batch deploys and
-  this round is re-run.
-- **Out of this round (needs a composited browser):** the tab bar, URL-persisted filters, and the
-  collapsed custom-date-input fix (TASK-081). Those go in the FE round.
+`IN_TEST` — **API level PASS; the only remaining gate is a painted defect I cannot reach.**
+- **PASS (2026-08-02, `sid`):** search by nickname + parent phone (AC3); sort works and rejects unknown
+  values (AC2 — orders differ, `NONSENSE`→400); sort-not-filter count invariant; custom date range at the
+  API (AC4). **Yesterday's blocker cleared** — `sid` was redeployed during today's recovery, so TASK-073 is
+  now live; my "sort not deployed" finding is resolved, not a defect.
+- **NOT TESTED — blocked, not failed:** the **collapsed custom-date-input fix (TASK-081)**. It is *painted*
+  (input pixel widths), so it needs a composited browser measured at 1600/1280/768/375 per the board standing
+  rule. **I cannot drive the authenticated `sid` UI** — the bookings page is behind login and I do not enter
+  passwords into a login field. Board also lists the tab bar + URL-persisted filters as painted; same block.
+- **Consequence:** REQ-024's closure now hinges **solely** on that one painted item, exactly as Porter said.
+  It is the one thing my role structurally can't verify — see the Questions block for how to unblock it.
 
 ## Questions
 

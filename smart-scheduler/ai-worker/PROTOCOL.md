@@ -191,6 +191,15 @@ This team often does patch/maintenance work on systems owned by others.
 **Assume you do NOT know the whole system, and you don't need to.** Understand
 only what the current work requires — and never guess or fetch the rest yourself:
 
+🚨 **`env -u DATABASE_URL bun run …` DOES NOT ISOLATE YOU FROM THE REAL DATABASE.**
+**Bun auto-loads `.env`, and `.env` wins.** Both backends' checked-in `.env` point `DATABASE_URL` at the
+live `sid` host, so a command you believe is unconfigured connects to a real server. This defeated a
+**deliberate** safety measure and was found the only way it can be — by someone running it and then auditing
+from source (Jason, 2026-08-02, self-reported before presenting his work; two read-only `SELECT`s, no writes).
+**It will catch anyone, including whoever reads this.** If you need to prove a script merely parses, do it
+without starting it, or ask . And note: **anything such a run happens to display is NOT a sanctioned
+DATA REQUEST answer** and must not be used as one.
+
 - **Never run SQL yourself.** Never connect to any real database, server, or
   environment. The human is the only source of real-world data. *(One scoped
   exception exists for the Tester — see "The Tester's environment" below. It

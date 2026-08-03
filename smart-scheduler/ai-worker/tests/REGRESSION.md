@@ -25,26 +25,26 @@ Env legend: **L** = local · **D** = dev server (`sid` / som.develyst.online). P
 
 | # | Must still do | From | Env | Last verified |
 |---|---------------|------|-----|---------------|
-| C1 | Calendar loads and shows all teachers across the 09:00–18:00 slots | baseline | L/D | — |
+| C1 | Calendar loads and shows all teachers across the 09:00–18:00 slots | baseline | L/D | 2026-08-02 `sid` — `GET /calendar` 200 (API; not the painted grid) |
 | C2 | Create a booking (New booking → student, teacher, slot) → it appears on the calendar as PENDING | baseline | L/D | — |
 | C3 | Confirm a booking → status CONFIRMED, teacher gets exactly **one** LINE push (retry does not double-send) | baseline | D | — |
 | C4 | Check-in → ATTENDED, and the entitlement it came from is drawn down by one | REQ-022 | L/D | — |
 | C5 | Backoffice admin login works and `/api/v1/bo/**` refuses an unauthenticated request — **reads included** | REQ-002 / TASK-068 | D | — |
 | C6 | Frontoffice pages load with no console error after a deploy (smoke) | ops | D | — |
-| C7 | `GET /teachers` returns 200 (the 2026-08-01 outage signature: a migration not applied) | outage 2026-08-01 | D | — |
+| C7 | `GET /teachers` returns 200 (the 2026-08-01 outage signature: a migration not applied) | outage 2026-08-01 | D | 2026-08-02 `sid` — **PASS** 200 (also `/bookings` 200 post-0015–0017) |
 
 ## Scheduling & bookings
 
 | # | Must still do | From | Env | Last verified |
 |---|---------------|------|-----|---------------|
 | S1 | Bookings search matches student **name, nickname, and parent phone** | REQ-011 / REQ-024 | D | 2026-08-01 `sid` — **PASS** (API: q=nickname→1, q=phone→16) |
-| S2 | Bookings list page 1 starts at the **next** session, not the oldest row; clicking the date header flips the order and the **count does not change** | REQ-024 | D | 2026-08-01 `sid` — count-invariant PASS; **ordering NOT deployed** (date_asc==date_desc, sort=NONSENSE→200) |
+| S2 | Bookings list page 1 starts at the **next** session, not the oldest row; clicking the date header flips the order and the **count does not change** | REQ-024 | D | 2026-08-02 `sid` — **PASS** (desc→2026-09-23 first, asc→2026-07-01, orders differ, NONSENSE→400; count invariant held 08-01). Painted date-*input* fix still unmeasured. |
 | S2b | Custom date range filters at the API (arbitrary from/to) | REQ-024 | D | 2026-08-01 `sid` — **PASS** (Sep-only → 11 rows, all in range) |
 | S3 | Custom date-range **inputs** on the Bookings page are usable (not collapsed to a few px) — measure at 1600/1280/768/375 | REQ-024 / TASK-081 | L | — (painted; needs composited browser) |
 | S4 | Bulk-confirm: tick several PENDING → confirmed in one action, results modal reports each outcome, an over-budget freelance is **skipped and reported** (no rollback), retry sends no duplicate LINE | REQ-008 | L/D | — |
 | S5 | Booking modal is **type-first tabs**; Course/Voucher tabs list only eligible students with their context; the Voucher tab offers **no** teacher/slot | REQ-022 | L/D | — |
 | S6 | Booking from the Course tab → check-in → that course's **used** count goes up by one (course sessions are not free) | REQ-022 | L/D | — |
-| S7 | An expired voucher booked past expiry shows the **red reason alert** — ⚠️ never yet exercised, needs a genuinely expired voucher | REQ-022 | L/D | **NOT TESTED** |
+| S7 | An expired voucher booked past expiry is **refused** with reason "วอยเชอร์หมดอายุแล้ว" (backend) **and** shows the red reason alert (painted) | REQ-022 | L/D | 2026-08-02 `sid` — **backend PASS** (real expired voucher → 400, TEST-022b); **red alert still NOT TESTED** (painted; owner click-script #3) |
 | S8 | Each `/scheduler/bookings` course card shows its sport program | REQ-010 | L/D | — |
 | S9 | Leave → session cancelled + one auto-appended in a later week, within the package's quota; over quota locks until an admin unlocks | baseline | L/D | — |
 
@@ -90,6 +90,14 @@ Env legend: **L** = local · **D** = dev server (`sid` / som.develyst.online). P
 | M3 | The mismatch badge actually turns red on an inconsistent month | REQ-014 / TASK-084 | L/D | — |
 | M4 | A course sale and a voucher sale each post a `bo.movement` SALE row (they never did before TASK-066) | REQ-014 / TASK-066 | D | — |
 | M5 | Voucher sale prices match the price card — ⚠️ open risk: placeholder prices 30–55 % high if `sale:ensure-items` already ran | Blocked-item 2026-08-01 | D | **NOT TESTED** |
+
+## Products & pricing (per-program price card)
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| PR1 | All 8 named subjects carry a `price_group` after migration 0016 (name-match backfill) | REQ-027 / 0016 | D | 2026-08-02 `sid` — **PASS** (8/8; only `1st Trial` unpriced, likely by design — Q to Porter) |
+| PR2 | Sellable combos correct: bike-skate 4/6/10 · onewheel no 10 · Balance Play (both) no 4 | REQ-027 | D | 2026-08-02 `sid` — **PASS** via `/sellable-packages` |
+| PR3 | The **server** refuses a forbidden (program,size) combo, not just the dropdown | REQ-027 | D | 2026-08-02 `sid` — **PASS** (Onewheel-10 & Balance-4 → 400; allowed combo passes the gate) |
 
 ## Scheduled jobs
 
