@@ -1,6 +1,6 @@
 # TASK-091: scheduling (BE) — 🔴 moving a booking between teachers never reconciles the freelance ceiling
 - Source: found while designing REQ-030 (Porter asked me to verify interaction #1 rather than assume it)
-- Status: REVIEW  (built 2026-08-02 by Jason — @Sober. tsc 0 · **396/0** (+12). ✅ **`moveBooking` is the ONLY
+- Status: DONE  (Sober-verified 2026-08-03 on branch `dong` — tsc 0 · bun test 396/0, run by me; see ## Review. Stale-hold DATA REQUEST routed to @Porter.)  (built 2026-08-02 by Jason — @Sober. tsc 0 · **396/0** (+12). ✅ **`moveBooking` is the ONLY
   writer of an existing booking's `teacherId`** (grep-verified). 🔴 **Found a SECOND bug while building it: the
   idempotency key wasn't per-item**, so a round trip A→B→A would silently leave the booking held on **two**
   items — it now includes the item. **Replaced `reconcileFreelanceDraw` rather than adding a second reconcile**,
@@ -155,4 +155,62 @@ writers: **none** ✓ · stale-data signature + query stated, **no repair writte
   this has to be right before that lands. That's why it's ahead of it, not part of it.
 
 ## Review
-(Sober fills at REVIEW.)
+**Verdict: DONE ✅** — Sober, 2026-08-03 (code-level verification completed on branch `dong`, once the office
+tree was synced — HEAD `95ea213`). `bunx tsc --noEmit` → exit 0 · `bun test` → **396 pass / 0 fail** (51 files),
+run by me.
+
+**Read the real code, not the notes:**
+- **Per-item idempotency key confirmed** — `applyHoldMove:160` emits `` `fl:${bookingId}:${item.id}:held${0|1}` ``.
+  The round-trip collision (A→B→A both keying `…:held0`) is genuinely closed. Draw blocks on no-budget/no-override;
+  refund clamped to ceiling via `reconcileRemaining`; `valueMinor` signed.
+- **`reconcileBookingHolds:176` is whole-booking** — derives `held` across **all** items for `refId=bookingId`,
+  targets via `heldTarget(status)` only (no second definition), releases foreign holds, and **a release is never
+  cap-blocked** (`move.delta > 0 ? allowNegative : true`). Persisted unlock still honored via `readLimitOverride`,
+  so a moved-to teacher who is unlocked may exceed cap and a locked one may not — consistent with booking.
+- **The regression surface I flagged is clean** — `updateBookingStatus:1255` calls the same
+  `reconcileBookingHolds` with `current.teacherId` + the actual post-status; with no teacher change it produces
+  exactly one adjustment, identical to the old per-teacher `reconcileFreelanceDraw`. `planHoldMoves` ignores
+  foreign items at net-0 (`h.held !== 0`), so a previously-moved booking doesn't spuriously re-release.
+- **`moveBooking:1315` is transactional** — teacher write + reconcile in one `db.transaction`; no-teacher-change
+  ⇒ zero moves (date/time-only unchanged). `override` is `false` there, but the persisted per-teacher unlock is
+  still read inside the reconcile, so an unlocked target isn't wrongly refused.
+- **`planHoldMoves` (pure)** and **`hold-moves.test.ts`** cover every DoD line incl. A→B→A→B and the
+  two-item-collapse; assert on the applied result, not the emitted moves.
+
+**Still open and routed to @Porter (not part of this task's code):** the **stale-hold DATA REQUEST** — Jason's
+read-only query counting bookings held on >1 `bo.item` (from moves made before this fix). Once counted, the
+repair is a `PATCH`-with-current-`teacherId` per booking (self-correcting reconcile, tested), no bespoke SQL.
+Only relevant on an environment where such moves happened; on `sid` it's likely zero, but confirm before closing.
+
+### Design review (this I can judge, and it holds)
+- **Root cause confirmed as a real class of bug.** `reconcileFreelanceDraw` (TASK-028) derives `held` for a
+  *single* item; a teacher change parks the hour on *another* teacher's item it cannot see. So `moveBooking`
+  writing `teacherId` with no reconcile strands A's draw and lets B exceed cap. ✅
+- **The whole-booking reconcile is correct by construction, not by arithmetic** — "release any item holding this
+  booking that isn't the current teacher's, then bring the current teacher's to target" makes *at most one hour
+  on exactly one item* true for any number of moves and collapses to identity when nothing moved. Right shape. ✅
+- **The second bug (idempotency key not per-item) is a genuine catch** — without the item in the key `A→B→A`
+  collides on `…:held0`, `onConflictDoNothing` swallows the second release → held on two items. Safe to change
+  the key format because `held` is derived from the movement ledger, never the key. ✅
+- **Transactional `moveBooking` + release-never-blocked-by-cap (`allowNegative` on delta<0)** — both correct; a
+  full ceiling must not strand the old teacher's budget forever. ✅
+- **Stale-data process is right** — no query run, exact signature + read-only query handed to @Porter to route,
+  no repair written; the self-correcting `PATCH`-with-current-`teacherId` repair needs no bespoke SQL. ✅
+
+### 🔴 Why this is NOT DONE — the evidence step is blocked, not passed
+The edited tree is on **`H:\scheduler`**, which is **not reachable from this SA session** — the only copy on
+this machine (`C:\Users\Admin\develyst\smart-scheduler\smart-scheduler-back`) is **frozen at ~2026-07-23**
+(`freelance-budget.ts` is still the 16-line TASK-024 version; `git log` tops out at the REQ-006 `bo.item`
+refactor). So I could **not** read `planHoldMoves`/`reconcileBookingHolds`/`applyHoldMove`, confirm the new
+reconcile call sits inside `moveBooking`'s transaction, or run `tsc`/`bun test` myself. I will not stamp a
+money task DONE on the strength of the implementation notes alone — that is the exact "trust the claim, skip the
+check" failure this week kept punishing.
+
+**The one place that genuinely needs the real code before sign-off:** `reconcileFreelanceDraw` was **replaced**,
+so `updateBookingStatus` — the **live** status→money path — now runs through the new `reconcileBookingHolds`.
+That is the regression surface (live money, not just the new move path). "Identical single adjustment when
+nothing moved" + the **396/0** suite must be *seen* passing against the actual tree, not read from a note.
+
+**Routed to @Porter** (see 2026-08-03 log): decide how the code-level verification is produced — relay `tsc` +
+`bun test` output and the three functions from the `H:` machine, or make the current tree reachable to SA. Task
+stays **REVIEW** until then.

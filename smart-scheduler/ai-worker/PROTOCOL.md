@@ -220,6 +220,32 @@ DATA REQUEST answer** and must not be used as one.
 - Answered knowledge lives in `../project-docs/` — check there before asking
   again for something the human already provided.
 
+### 🟢 Stakeholder policy — DON'T guess to spare the human; ask (คุณฟีน, 2026-08-03)
+
+The stakeholder has **explicitly committed to supporting the engineering team** and
+**values precision in engineers' work very highly**. So this is now a standing rule,
+not just a fallback:
+
+- **Whenever missing or incomplete information would otherwise force you to *guess the
+  direction* of the work — STOP and raise a DATA REQUEST instead.** A guessed direction
+  that could have been an exact question to the human is a **process failure**, not a
+  time-saver. Accuracy is worth far more than the human's few minutes.
+- **The human will run it — fully and willingly.** Any read-only query, any screen
+  capture, any real value, any "which of these did you mean" — send it up the chain
+  (BE/FE → `@Sober` → `@Porter` → human) with the **exact** thing to run/provide, and
+  the human runs it and returns the result. They would rather spend the effort than
+  have the team ship on an assumption.
+- This does **not** relax the brownfield rule: engineers/SA still **never** run SQL or
+  touch a real environment themselves. The trade is *"ask precisely and wait"* over
+  *"guess and move"* — the human is generously available to make that trade cheap.
+- Porter: make DATA REQUESTs **copy-paste-ready** (the literal SQL / the exact screen /
+  the specific options) so the human's part is trivial. That is what makes this policy
+  actually get used instead of quietly guessed around.
+- **For DB queries, hand PURE SQL only** — the raw `SELECT …;` — **not** wrapped in
+  `psql "<connection>" -c "…"` or any shell command. The human runs it in their own
+  already-open psql session; the connection string is theirs, never ours to write.
+  (Stakeholder preference, 2026-08-03.)
+
 ### The Tester's environment (the one exception, Tanya only)
 
 Reviewing code proves it *looks* right; only running it proves it *is* right.
