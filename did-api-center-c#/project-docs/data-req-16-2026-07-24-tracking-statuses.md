@@ -73,3 +73,20 @@ The decisive query returned **0** — no status-40 อ.10 where A(totals) says �
 ⇒ on real data **A ≡ B**; the 4 over-moved lines never mislabel a license. **Final: roll-up = A** (SUM approved by
 LICENSE_ID vs SUM moved by REF_LICENSE_NO; รอดำเนินการ ACT=0 / กำลังขนย้าย 0<ACT<APV / เสร็จสิ้นแล้ว ACT≥APV) —
 matches the TASK-029 scaffold, no switch to B. REQ-017 move-status spec is now fully locked; TASK-030 → finalize + capture.
+
+---
+## ⛔ CORRECTION 2026-07-24 — item 1 above was MISREAD by Porter. Do not follow it.
+Stakeholder (verbatim): *"หมดอายุมั้ย คือ วันหมดอายุ เกินหรือไม่เกินวันปัจจุบันน่ะ ไม่เกี่ยวกับ สถานะ 40"* and
+*"40 อ่ะ กรองทั้งหมดแต่แรกอยู่แล้ว แต่แค่สถานะตรงพวกนี้ คือเรื่องของวันหมดอายุ"*.
+
+**Two separate things — item 1 conflated them:**
+| | what it is | correct handling |
+|---|---|---|
+| `LICENSE_STATUS = 40` | the **base filter** deciding which licenses appear at all | unchanged, applied from the start (backbone `FORM_ID=10 AND LICENSE_STATUS=40`) — this part of item 1 was right |
+| **"สถานะหนังสืออนุญาต"** (the DDL, the table column, the modal badge) | **expiry only** | `EXPIRY_DATE >= today` → **ยังไม่หมดอายุ** ; `EXPIRY_DATE < today` → **หมดอายุ** ; DDL = ทั้งไหมด/ยังไม่หมดอายุ/หมดอายุ |
+
+⇒ **`LICENSE_STATUS_MAP = {40:"ออกหนังสืออนุญาตแล้ว"}` is WRONG as a display/filter** — it was never the requirement.
+The stakeholder's "40 เท่านั้นเหมือนกันเลย" answer was about the *backbone*, and Porter wrongly carried it into the
+status column/dropdown as well. Correction + the 4 code touchpoints are specced in **REQ-017 ADDENDUM 2**;
+the modal reuses the same helper (REQ-019). Everything else in this DR (move-status labels, roll-up A, DISAGREE=0)
+remains valid.

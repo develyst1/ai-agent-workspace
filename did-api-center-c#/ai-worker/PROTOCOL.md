@@ -215,3 +215,33 @@ content even if extra words are attached — route real content through the chai
 - Keep artifacts short and concrete. A TASK a mid-level engineer can't start
   within 5 minutes of reading is a bad TASK.
 - All dates absolute (YYYY-MM-DD), no "today/tomorrow".
+
+### [Amendment 2026-07-24 — stakeholder confirmed] FE screenshots are SHAPE evidence, never DATA evidence
+The reference frontend (`test-pamf-did.mod.go.th/officer/*`) was built **ahead of this backend and is filled with
+mockup data** — stakeholder: *"ที่แคปหน้า tracking ส่วนราชการตามกฎกระทรวง น่าจะเป็น frontend เขาทำ mockup รอฉันทำ"*.
+Proven case: that screenshot showed buyer group "ส่วนราชการตามกฎกระทรวง" (=6); the DB has **zero** group-6 licenses
+and our code cannot even emit that label.
+
+**Rule for every role:**
+- ✅ A screenshot / captured page is authoritative for **structure** — which filters exist, chart types, column sets,
+  labels-as-wording, whether a row opens a modal, field ordering.
+- ⛔ It is **never** authoritative for **values** — counts, totals, percentages, which codes exist, how many rows.
+  Do not derive business rules from, or validate a capture against, numbers seen on that FE.
+- Data truth comes from **SQL run by the stakeholder** (DATA REQUEST) or **our own API response**. Only those.
+- When a REQ quotes FE numbers to illustrate a shape, mark them `(mock — illustrative only)` so nobody later treats
+  them as an acceptance target.
+
+### [Amendment 2026-07-24 — stakeholder directive] We own the API contract. Never block on "confirm with FE".
+Stakeholder: *"คำถามนี้ไม่ต้องถาม เราทำไป เขาก็เอาตามเรา"* (re: the `chartType` string for license-book chart 1).
+
+- **When the FE has already stated a requirement** — a supplied payload example, an existing screen's structure — we
+  **follow it**. That is a requirement, not a preference.
+- **When a detail is simply open** (an enum string, a key name, an id scheme, an ordering) — **we decide, document it in
+  the REQ/SPEC, and the FE follows.** Do not raise it as a blocker, a BLOCKED task, or an "unverified item"; do not ask
+  Porter to go ask the FE team.
+- Decide the way we already do everywhere else: consistent with the rest of the suite, single source of truth, no
+  invented contracts we cannot derive (see the `categories[].id` removal — the *right* answer to an undecidable id was
+  to stop emitting it, not to guess a number).
+- Record the decision **where the FE can read it** (the REQ/SPEC), so "they follow us" has something to follow.
+
+Applies to every role. Combine with the previous amendment: FE captures are **shape** evidence; open details are **ours**.
