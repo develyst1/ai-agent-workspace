@@ -28,3 +28,20 @@ No new money mechanism — a rental is four product codes through the existing s
 
 ## Out of scope
 Stock levels, deposits, damage (REQ-028 §Out of scope).
+
+## Review
+**Verdict: DONE ✅ (add-on path) · one required addition for the STANDALONE path** — Sober, 2026-08-04. Read the
+service + endpoint; ran the suite: **tsc 0 · 444/0**.
+- **Correct + as specced:** the four codes/prices with `revenueKind="RENTAL"`; `SaleItemSeed` metadata merged by
+  `ensure-sale-items` (re-run on deploy); `POST /rentals` validates code∈four + hours>0; and 🔑 **the surfaced-result
+  inversion is exactly the SA nuance** — `recorded`→201, `duplicate`→200, item-missing/unknown/error→
+  `RENTAL_NOT_POSTED` **502** (never a silent 200). No new money mechanism — straight through `recordSale`.
+- 🔴 **AC #4 gap on the STANDALONE path (the one thing to fix):** `rental.service.ts:12` keys idempotency on
+  `refId ?? crypto.randomUUID()`. A **session add-on** (refId=bookingId) is idempotent — a double-click posts once ✅.
+  A **standalone** walk-in gets a **fresh uuid per request**, so a double-submit **double-posts** (double-charges).
+  AC #4 says "recording twice by accident does not double-charge." Other sales dedupe on a natural key (courseId /
+  voucherId); a standalone rental has none, so **the client must supply an idempotency key.**
+  **Required (small):** accept an optional `idempotencyKey` (or `clientRef`) in the body →
+  `idBase = refId ?? body.idempotencyKey ?? uuid`; **TASK-109 generates one per rental action** and sends it for the
+  standalone surface. **Contingent on Q2** — if only the add-on (a) ships, it's already idempotent and no change is
+  needed; the moment the standalone (b) surface ships, this is required. Cheap; do it with/before TASK-109's (b) path.

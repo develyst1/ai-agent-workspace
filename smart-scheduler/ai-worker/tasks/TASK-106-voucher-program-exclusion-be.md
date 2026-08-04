@@ -22,3 +22,15 @@ Part (a) (per-program course sizes) is already live; this is the voucher-exclusi
 - [ ] `1st Trial` (null price group) is refused via the same null-group path — no special case.
 - [ ] Already-sold vouchers keep their hours (untouched); only the new excluded booking is refused (AC #5).
 - [ ] `voucherAllowsProgram` pure + tested (excluded / allowed / null); `bunx tsc --noEmit` clean; `bun test` green.
+
+## Review
+**Verdict: DONE ✅** — Sober, 2026-08-04 (code-verified). Read `sale-items.ts` + the enforcement; ran the suite:
+**tsc 0 · 440/0**.
+- `VOUCHER_EXCLUDED_GROUPS = {onewheel, balance-private, balance-group}` — matches the voucher card exactly.
+  `voucherAllowsProgram(null/""/undefined) = false` → **1st Trial refused via the null-group path, no special case**.
+- **Better placement than I specced** — enforced at **`insertBooking:761`** (the single chokepoint every VOUCHER
+  booking passes) instead of `prepareVoucherBooking`, so no future voucher-insert path can bypass it. At booking
+  time (not attendance).
+- **`voucherAllowedGroups()` is derived** from `PRICE_GROUPS.filter(voucherAllowsProgram)` and exposed via
+  `GET /sellable-packages` — the FE filters from one source, can't drift from the excluded set.
+- Already-sold vouchers untouched (only the new booking refused). **DONE — unblocks TASK-107 (FE picker).**
