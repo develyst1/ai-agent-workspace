@@ -37,3 +37,10 @@
 - The size-6 rollback relies on transaction atomicity (Drizzle/postgres-js). If a
   future audit ever finds an orphaned Onewheel size-6 course with no student, this
   is the entry to check it against.
+
+## 2026-08-04 (Tanya) — NO FOOTPRINT
+
+Nothing was created, modified or read on `sid` this session: the access file (`H:\sm-test-access.txt`)
+is unreachable, so no login and no backend token were ever obtained. All work was **local** (`next dev`
+on :3016 in mock mode, stopped at end of session). No DB writes anywhere. Evidence screenshots live in
+`../project-docs/qa-2026-08-04/` and contain no credential, cookie or token.

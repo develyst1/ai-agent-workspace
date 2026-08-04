@@ -126,3 +126,19 @@ Env legend: **L** = local · **D** = dev server (`sid` / som.develyst.online). P
   only a deployed look catches it (board standing rule, 2026-08-01).
 - **Production is never in scope** for me. A check that can only be done there is
   a DATA REQUEST to Porter.
+
+## Layout regressions (measured, not eyeballed — board STANDING RULE)
+
+Run `tests/harness/plan-modal-widths.mjs` + `tests/harness/voucher-manage-375.mjs` against a local
+`next dev` in mock mode (a real compositing Chrome; no real env, no credential). Env: **L**.
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| L1 | Voucher table's **Manage** button is reachable at 375 (visible **or** the table scrolls) — today it is **NOT**: table `scrollWidth` 624 vs card `clientWidth` 341, `overflow-x: hidden`, `elementFromPoint()` → `null` | TASK-099 / DEF-1 | L | 🔴 **FAIL 2026-08-04** |
+| L2 | Course card "Manage plan" button stays full-width at 1600/1280/768/375 (379/273/310/301) | TASK-099 | L | ✅ 2026-08-04 |
+| L3 | Plan-modal session table scrolls rather than clips at 375 (`Table.ScrollContainer`, `overflow-x:auto`; Edit + Mark absence reachable) | TASK-099 | L | ✅ 2026-08-04 |
+| L4 | REQ-024 custom date inputs are **176 px**, not 26/36 (the original collapsed-input defect) | TASK-081 | D | — (needs `sid`) |
+
+**Escaped-defect case added by DEF-1:** a table that gains a column must be checked at 375 for
+*clipping*, not just for narrowness — a `Card` with `overflow-x: hidden` swallows the overflow silently
+and the page shows no horizontal scrollbar to hint at it.
