@@ -4,6 +4,12 @@
 - Depends on: TASK-024
 - Assignee: @Jason (smart-scheduler-back, port 4006)
 
+> 🔁 **REVERSED 2026-08-03 (owner, via Porter → TASK-104):** the "SICK_LEAVE is CONSUMING (still pay the
+> sick-leave freelance)" rule below is **overturned**. `SICK_LEAVE` is now **RELEASING** — a sick-leave no longer
+> draws the freelance ceiling (only the makeup does, when taught). This task stays DONE as the reconcile-invariant
+> record; the SICK_LEAVE classification is corrected in **TASK-104**. Any fuel allowance is a manual backoffice
+> EXPENSE movement, not automatic.
+
 ## The bug
 Freelance draw fires on `confirm`, refund on `cancel`/`sick-leave`, each guarded only by the **current**
 status — not by a per-booking "is 1 hour held?" invariant. So a `SICK_LEAVE → ATTENDED → SICK_LEAVE`

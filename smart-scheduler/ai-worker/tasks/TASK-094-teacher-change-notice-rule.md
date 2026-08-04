@@ -20,3 +20,17 @@
 - [ ] Both old + new teachers get a LINE outbox message on a successful swap.
 - [ ] Rule is a pure function with the threshold passed in (REQ-031-ready); default 3 days if unset.
 - [ ] `bunx tsc --noEmit` clean; `bun test` green (notice boundary, override, dual-notify).
+
+## Review
+**Verdict: DONE ✅** — Sober, 2026-08-04 (code-verified). Read `lib/teacher-change-notice.ts` + the `applyPlanChange`
+move branch; ran the suite: **tsc 0 · 421/0**.
+- **Pure lib, whole DAYS, floored** — `daysUntilClass = floor(minutesUntilClass/1440)` so 2d 23h is **not** 3 days;
+  default 3; **threshold is a `days` param** → REQ-031 feeds a DB override with **zero `app_settings` coupling** (the
+  seam I required). Mirrors `leave-notice.ts`.
+- 🔑 **Fires only on an ACTUAL teacher change** (`teacherChanged = change.teacherId !== undefined && !== b.teacherId`,
+  `:1489`) — a date/subject-only edit is untouched (the trap I'd have flagged); `override` bypasses; notice is keyed
+  to the (possibly moved) class date the new teacher inherits.
+- **Dual-notify in the tx** — old teacher `teacher_unassigned`, new teacher `teacher_assigned`; a missing lineUserId
+  is a SKIPPED row (an unlinked teacher never blocks the swap). TH/EN i18n added.
+- Tests cover the boundary (exactly 3 / 2 / 2d23h-floors-to-2), override, custom threshold, both render kinds.
+**REQ-030 BE is complete** (092/093/094/095/096/097 all DONE).

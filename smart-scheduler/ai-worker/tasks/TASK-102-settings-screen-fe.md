@@ -1,6 +1,6 @@
 # TASK-102: scheduler-front (FE) — the Settings screen (the load-bearing half of REQ-031)
 - Source: SPEC-029 §3 (REQ-031)
-- Status: BLOCKED (on TASK-101)
+- Status: TODO (unblocked — TASK-101 DONE 2026-08-04; `GET/PUT /api/settings` shape final)
 - Depends on: TASK-101 (`GET/PUT /api/settings`)
 - Assignee: @Fern (smart-scheduler-front)
 

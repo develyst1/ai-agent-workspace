@@ -135,6 +135,8 @@ the existing `notification_outbox` — a silent reassignment means someone doesn
 `cancel` and `moveBooking` operate on **any** status with no `ATTENDED` guard (`scheduler.service.ts:1164`, `1295`).
 SPEC: add the guard centrally in `applyPlanChange` (and defensively in `moveBooking`) — a `DELIVERED` session is
 immutable; edits targeting one are refused with a reason. (AC: *"sessions already attended cannot be edited away."*)
+> 🔁 **Owner reversal (2026-08-03, TASK-105):** the guard blocks **edit/move** of a delivered session, but **cancel
+> IS allowed on a delivered session with a MANDATORY reason** (fix a mis-marked attendance, audited). See §11.
 
 Also fold in the availability re-check `moveBooking` currently skips (`teacherWorksOnDay`/archived/freelance-set,
 present in `insertBooking:705` but not in `moveBooking`) so a date/teacher edit can't land a teacher on a
@@ -258,3 +260,46 @@ teacher-change 3-day notice rule (`lib/`) + dual-teacher LINE notify · **TASK-0
 per-session plan → atomic confirm) · **TASK-099** after-purchase per-entitlement view (course plan + voucher),
 mark-absence / insert / change-teacher / derived end / reasons-on-refusal, from the Bookings ▸ Courses card.
 Dependency spine: 092 → 093 → {094, 095, 097} → FE {098, 099}; 096 independent.
+
+---
+
+## 11. Owner reversals (2026-08-03) — two decisions after seeing the built behaviour
+
+Both came from the two cross-rule consequences I surfaced at the TASK-093 review. Neither changes the plan *engine*
+(092); both are money/guard changes on top.
+
+### 11.1 SICK_LEAVE no longer draws the freelance ceiling (reverses TASK-028) — **TASK-104**
+The owner reversed the locked "still pay the sick-leave freelance" rule. **`heldTarget(SICK_LEAVE)` → 0**
+(SICK_LEAVE moves from the *consuming* set to *releasing*): `consuming = {CONFIRMED, ATTENDED, EXTENDED}`;
+`releasing = {SICK_LEAVE, NO_SHOW, CANCELLED, PENDING}`.
+- **Effect:** a sick-leave now costs **1** freelance hour, not 2 — the absent session's hold **releases**, and only
+  the **makeup** draws (when taught, Q4 unchanged). This is the money side only; the **course-size reconcile is
+  unchanged** — a sick-leave still appends a makeup (that's 092, a separate concern).
+- **Compensation is MANUAL:** if the owner wants to pay a fuel/travel allowance (ค่าน้ำมัน) for the held slot, an
+  admin records an **ad-hoc EXPENSE movement** in the backoffice. ✅ **Already supported** — the REQ-006 item model
+  has `POST /bo/items` (create a variable EXPENSE item) + `POST /bo/items/:id/movements` (hand-entered movement),
+  both `adminAuth`. No new REQ; optionally seed one "ค่าน้ำมันครู" EXPENSE item for convenience (ops choice).
+- Touches TASK-028/091's classification + the tests that pin SICK_LEAVE consuming. Single-line rule change, but
+  it's live money — careful pass + test updates.
+
+### 11.2 An ATTENDED session CAN be cancelled — with a MANDATORY reason (relaxes TASK-093) — **TASK-105**
+The `isDelivered` guard stays for **edit/move**, but **cancel is allowed on a delivered session iff a non-empty
+`reason` is supplied** (audit: store reason + actor + timestamp). Intent: undo a mis-marked attendance, with a why.
+- **Ripple, made explicit (Porter asked):**
+  - **money** — CANCELLED is *releasing*, so `reconcileBookingHolds` **releases** the drawn hour. ✅
+  - **course-size** — a delivered→cancelled session drops `current` below `size`, so `reconcileCoursePlan`
+    **re-owes it** (appends a makeup) → the session "goes back to un-taught". That is the intended mis-mark behaviour.
+### 11.3 The UNIFIED course-cancel rule (owner, 2026-08-03) — every course-session cancel re-owes
+The owner settled the follow-up: **cancelling any course session — delivered OR non-delivered — re-owes a makeup;
+the student stays at `size`** ("ใช่ A"). A per-session cancel is a **reschedule, not a forfeit**. So:
+- **`CANCELLED` (from any prior status) → `reconcileCoursePlan` re-owes** (appends a makeup) + releases the money.
+  `reconcileCoursePlan` is **not** wired into the cancel path today (only `applyPlanChange`) — **TASK-105 adds it to
+  `updateBookingStatus:cancel`.**
+- **Only `NO_SHOW` consumes** (the forfeit already lives there, §1). A cancel never consumes.
+- **Reason is required only for the DELIVERED case** (the audit trail for undoing a mis-mark); a plain
+  non-delivered cancel needs no reason. So TASK-105 widens to *all* course cancels for the re-owe, and gates
+  *only delivered* cancels on a reason.
+- 🔴 **Boundary (confirmed gap → future REQ, not go-live-blocking):** since a cancel never shrinks a course, **the
+  only way to end/shorten a course early is a separate cancel-course / refund flow — which does NOT exist** (grep:
+  no `cancelCourse`/`terminate`/`refund` path). Early termination / refund is a **post-go-live REQ** (@Porter).
+  Confirmed with the owner that quitting a course is a separate flow from per-session cancel.

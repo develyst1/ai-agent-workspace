@@ -35,3 +35,19 @@ stay pure. Mirror the `lib/line-admin.ts` read / `onConflictDoUpdate` write patt
 - [ ] `isWithinCheckinWindow` takes `earlyMinutes`; nothing in `lib/` reads the DB.
 - [ ] Adding a third rule later = one registry entry, **no schema change** (AC).
 - [ ] `bunx tsc --noEmit` clean; `bun test` green.
+
+## Review
+**Verdict: DONE ✅** — Sober, 2026-08-04 (code-verified). Read `settings.ts` + `settings.service.ts` + the two wiring
+points; ran the suite: **tsc 0 · 429/0**.
+- **`resolveSetting` is the load-bearing bit and it's exactly AC #4** — no override → default+`isDefault`+reason;
+  **malformed → default+reason (never zero/null/"no rule")**; valid → parsed. `intInRange` accepts number/numeric-
+  string only, bounds-checked (0–30 / 0–240). `isSettingKey` is `hasOwnProperty`-based (proto-safe — nice).
+- **`settings.service` is the only DB edge** — `setSetting` validates via the registry `parse` and **400s malformed
+  with a Thai reason** (never writes junk); `onConflictDoUpdate` upsert (line-admin pattern). Nothing in `lib/` reads
+  the DB.
+- **Wiring, values read at ACTION time (AC #5):** `isWithinCheckinWindow`/`checkinWindowMessage` take `earlyMinutes`
+  (pure, default the constant); both check-in paths resolve `checkin_early_minutes`. `applyPlanChange` resolves
+  `teacher_change_notice_days` **in-tx** and passes it to TASK-094's pure fn (`:1495-1497`) — **no double-wire**,
+  the exact SPEC-029/REQ-030 seam.
+- **Scope held** — exactly the two go-live keys; the other six stay constants. Adding a 3rd = one registry entry.
+**DONE — unblocks TASK-102 (FE settings screen).**

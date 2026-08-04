@@ -23,3 +23,15 @@ after-the-fact net.
 - [ ] The FE warns before applying; the admin can proceed or cancel; it is **not** a hard block.
 - [ ] Adding a weekday / no-impact changes apply with no warning.
 - [ ] `bunx tsc --noEmit` clean; `bun test` green (impact count pure-tested); FE tsc/build ok.
+
+## Review
+**BE half → DONE ✅** — Sober, 2026-08-04 (code-verified). Read `lib/work-days.ts` + the impact endpoint; ran the
+suite: **tsc 0 · 434/0**.
+- 🔑 **The subtle bit is right:** `removedWorkDays` expands **both** sides via `expandWorkDays` (empty/absent → all
+  seven, matching `teacherWorksOnDay`'s convention), so narrowing **all-days → a subset** correctly reports the
+  complement removed; widening / reorder / no-op / adding a day → **empty** (no warning path). Pure-tested.
+- **`GET /teachers/:id/work-days/impact`** composes `removedWorkDays` + `sessionsOnRemovedDays` over **future LIVE**
+  bookings only (`gte(date, today)` + `COURSE_LIVE_STATUSES`), **read-only** — the FE previews then applies via the
+  existing `PATCH`. Not a hard block; TASK-096 stays the backstop.
+- `COURSE_LIVE_STATUSES` extracted as a typed tuple (one source of truth) so `inArray` typechecks the enum column.
+- **FE half (the confirm dialog) is @Fern's** — contract ready; `orphanCount > 0` → "orphans N sessions, proceed?".
