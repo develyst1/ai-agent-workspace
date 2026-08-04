@@ -30,3 +30,8 @@ This REQ owns that **separate, course-level flow** — deliberately distinct fro
 ## Notes
 - Explicitly **post-go-live**. Parked as DRAFT so the gap is on the board, not in memory. Sober offered to draft the
   full spec when Porter/owner green-light scheduling it.
+- **Strengthened by the TASK-105 ceiling-edge (2026-08-04):** cancelling a session of a course already at `MAX_WEEK`
+  is refused `EXTENSION_CEILING` (the re-owe makeup can't fit) — today's only escape is admin `override`. That refusal
+  is a symptom of having no early-termination path: a course that genuinely needs to end/shrink has nowhere to go but
+  a cancel that tries to re-owe. This REQ is that path. (Interim: Sober is clarifying the misleading "extension"
+  wording on the cancel message; the real fix is here.)
