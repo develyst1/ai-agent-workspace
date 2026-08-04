@@ -44,3 +44,16 @@ Nothing was created, modified or read on `sid` this session: the access file (`H
 is unreachable, so no login and no backend token were ever obtained. All work was **local** (`next dev`
 on :3016 in mock mode, stopped at end of session). No DB writes anywhere. Evidence screenshots live in
 `../project-docs/qa-2026-08-04/` and contain no credential, cookie or token.
+
+## 2026-08-04 (Tanya) — SECOND SESSION, after access was restored: one course package created
+
+Access file relocated to `C:\Users\Admin\sm-test-access.txt`; TASK-090's `mint-session.mjs` used as
+written. **No token, cookie or secret was written to disk or printed.**
+
+| What | Where | Removed? |
+|---|---|---|
+| Course package `6710384c-19d3-4afb-997b-1f56f9063c11` (4 sessions, teacher Bank, Bike/Scooter/Balance Cruiser) for **QA-expv-student** — created for the TASK-099 behavioural pass | `sid` | ❌ **no delete endpoint exists.** Left in place; QA-owned student only |
+| That course's own session edits: 2 moves, 1 mark-absence (→ SICK_LEAVE + appended EXTENDED), 1 insert, 2 cancels, 1 confirm→attend on a past-dated session | `sid` | ❌ same — they are that course's sessions |
+| A `POST /courses` attempt that returned 409 SLOT_TAKEN | `sid` | ✅ nothing created (atomic refusal) |
+| Booking attempt on the expired QA voucher via the UI | `sid` | ✅ nothing created — the student was never selectable (FIND-1) |
+| **Not** created: any teacher/roster row (REQ-009 was not run), any LINE message, any change to another person's data | — | — |

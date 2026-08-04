@@ -1,0 +1,11 @@
+anchor 2026-08-01 09:00:00 victim 2026-08-25 13:00:00
+HARNESS ERROR: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('option', { name: 'Sat 1 Aug', exact: true })[22m
+
+    at C:\Users\Admin\develyst\ai-agent-work\ai-agent-workspace\smart-scheduler\ai-worker\tests\harness\sid-task099-refusal-and-delivered.mjs:56:80 {
+  log: [
+    "  - waiting for getByRole('option', { name: 'Sat 1 Aug', exact: true })"
+  ],
+  name: 'TimeoutError'
+}

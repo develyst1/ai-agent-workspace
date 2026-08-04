@@ -1,0 +1,156 @@
+{
+  "cases": [
+    {
+      "id": "AC-plan-endpoint",
+      "expected": "GET /entitlements/:id/plan → 200 with a kind-discriminated DTO",
+      "actual": "200 kind=course sessions=4 liveEnd=2026-09-01",
+      "result": "PASS"
+    },
+    {
+      "id": "AC-1 plan modal renders the course plan",
+      "expected": "4 session rows + summary (size/leave/owed/end date)",
+      "actual": "rows=4 · QA-expv-student — plan · COURSE ·  · 4-session course ·  · · Leave 0/1 ·  · Ends 1 Sep 26 ·  · Date\tTime\tTeacher\tSubject\tStatus\t · 11 Aug\t13:00:00\tBank\tBike / Scooter / Balance Cruiser\t · PENDING · \t · Edit · Mark absenc",
+      "result": "PASS"
+    },
+    {
+      "id": "AC-2 edit/move applies",
+      "expected": "session 2 moves 09:00 → 10:00",
+      "actual": "server now says 10:00:00 (was 09:00:00)",
+      "result": "PASS"
+    },
+    {
+      "id": "AC-3a server refuses a clashing move",
+      "expected": "4xx with a typed reason",
+      "actual": "409 {\"error\":{\"code\":\"SLOT_TAKEN\",\"message\":\"ครูมีคาบในช่วงเวลานี้แล้ว\"}}",
+      "result": "PASS"
+    },
+    {
+      "id": "AC-3b the modal surfaces the SERVER's reason",
+      "expected": "a red alert carrying the server text (ครูมีคาบในช่วงเวลานี้แล้ว…)",
+      "actual": "alertBlocks=0 · text=\"\" · notif=\"  Plan updated Plan updated Plan updated Plan updated     \"",
+      "result": "FAIL"
+    },
+    {
+      "id": "AC-4 mark-absence keeps the course at size",
+      "expected": "the absent session leaves the plan and one appended session takes its place — total stays 4",
+      "actual": "before: 4 live rows / statuses PENDING,PENDING,PENDING,PENDING → after: 5 live rows / SICK_LEAVE,PENDING,PENDING,PENDING,EXTENDED",
+      "result": "PASS"
+    },
+    {
+      "id": "AC-5 insert is offered when the course owes a session",
+      "expected": "an 'Insert make-up' action is present when owedCount > 0",
+      "actual": "owedCount=0, insert button present=true",
+      "result": "PASS"
+    },
+    {
+      "id": "AC-6 delivered rows are read-only",
+      "expected": "an ATTENDED row shows 'locked' and offers no Edit / Mark absence",
+      "actual": "mark-status=400 · deliveredRow=\"none\"",
+      "result": "FAIL"
+    },
+    {
+      "id": "AC-6b a delivered session cannot be moved",
+      "expected": "4xx SESSION_DELIVERED",
+      "actual": "200 {\"change\":\"move\",\"bookingId\":\"d64f4e53-9c0e-4aee-9051-495b03eadb58\"}",
+      "result": "FAIL"
+    }
+  ],
+  "created": {
+    "courseId": "6710384c-19d3-4afb-997b-1f56f9063c11",
+    "bookingIds": [
+      "8455f0b7-d371-4bf2-b4f2-dcee0a9c4a66",
+      "d64f4e53-9c0e-4aee-9051-495b03eadb58",
+      "60b83826-b0b4-47d0-8f06-0cf930598442",
+      "1f329809-875d-4b38-b4e1-ff4326018d7f",
+      "df9016be-ab3e-46e8-bb84-89adf760cb97"
+    ]
+  },
+  "finalPlan": {
+    "sessions": [
+      {
+        "id": "8455f0b7-d371-4bf2-b4f2-dcee0a9c4a66",
+        "date": "2026-08-11",
+        "startTime": "13:00:00",
+        "status": "SICK_LEAVE",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      },
+      {
+        "id": "d64f4e53-9c0e-4aee-9051-495b03eadb58",
+        "date": "2026-08-18",
+        "startTime": "16:00:00",
+        "status": "PENDING",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      },
+      {
+        "id": "60b83826-b0b4-47d0-8f06-0cf930598442",
+        "date": "2026-08-25",
+        "startTime": "13:00:00",
+        "status": "PENDING",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      },
+      {
+        "id": "1f329809-875d-4b38-b4e1-ff4326018d7f",
+        "date": "2026-09-01",
+        "startTime": "13:00:00",
+        "status": "PENDING",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      },
+      {
+        "id": "df9016be-ab3e-46e8-bb84-89adf760cb97",
+        "date": "2026-09-08",
+        "startTime": "13:00:00",
+        "status": "EXTENDED",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      }
+    ],
+    "summary": {
+      "kind": "course",
+      "size": 4,
+      "leaveUsed": 1,
+      "leaveQuota": 1,
+      "maxWeek": 5,
+      "owedCount": 0,
+      "expiryDate": "2026-09-15"
+    }
+  }
+}

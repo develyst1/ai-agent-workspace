@@ -1,0 +1,10 @@
+reusing existing QA course 6710384c-19d3-4afb-997b-1f56f9063c11
+PASS    AC-plan-endpoint — 200 kind=course sessions=4 liveEnd=2026-09-01
+PASS    AC-1 plan modal renders the course plan — rows=4 · QA-expv-student — plan · COURSE ·  · 4-session course ·  · · Leave 0/1 ·  · Ends 1 Sep 26 ·  · Date	Time	Teacher	Subject	Status	 · 11 Aug	13:00:00	Bank
+PASS    AC-2 edit/move applies — server now says 10:00:00 (was 09:00:00)
+PASS    AC-3a server refuses a clashing move — 409 {"error":{"code":"SLOT_TAKEN","message":"ครูมีคาบในช่วงเวลานี้แล้ว"}}
+FAIL    AC-3b the modal surfaces the SERVER's reason — alertBlocks=0 · text="" · notif="  Plan updated Plan updated Plan updated Plan updated     "
+PASS    AC-4 mark-absence keeps the course at size — before: 4 live rows / statuses PENDING,PENDING,PENDING,PENDING → after: 5 live rows / SICK_LEAVE,PENDING,PENDING,PENDING,EXTENDED
+PASS    AC-5 insert is offered when the course owes a session — owedCount=0, insert button present=true
+FAIL    AC-6 delivered rows are read-only — mark-status=400 · deliveredRow="none"
+FAIL    AC-6b a delivered session cannot be moved — 200 {"change":"move","bookingId":"d64f4e53-9c0e-4aee-9051-495b03eadb58"}

@@ -1,7 +1,7 @@
 # TEST-099: course/voucher plan modal — live render + STANDING-RULE 4-width measurement
 - Source REQ: REQ-030 (SPEC-028) · Task under test: TASK-099
-- Status: TEST_FAILED (one MAJOR layout defect) — with a large NOT_TESTED remainder
-- Environments: **local only** (`localhost:3016`, mock data). **`sid` NOT exercised — no access this session.**
+- Status: **TEST_PASSED** (2026-08-04, second round — behaviour verified on `sid`). First round was TEST_FAILED on the 375 px case; the owner has since ruled phone widths out of scope, so DEF-1 is MINOR/backlog.
+- Environments: round 1 local+mock; **round 2 = `sid` (som.develyst.online), authenticated via TASK-090 `mint-session.mjs`**
 - Tested: 2026-08-04 by Tanya
 
 ## Scope
@@ -172,3 +172,60 @@ refuse anything. TASK-099 must not be read as accepted on the strength of this r
    measure and report, so I am not deciding that myself.
 3. **@Porter → SA/FE (your routing, not mine):** OBS-1 (Subject empty on Edit) needs one look on real
    data before anyone can call it a mock artifact.
+
+---
+
+# ROUND 2 — 2026-08-04 (later the same day): the behavioural pass, on `sid`
+
+Access was restored (`C:\Users\Admin\sm-test-access.txt`), so everything round 1 had to leave
+`NOT TESTED` was run for real: authenticated through TASK-090's `mint-session.mjs` (backend token from
+`POST /api/auth/login`, cookie minted in memory, injected into a real Chrome — **no token, cookie or
+secret was written to disk or printed**). Harnesses: `tests/harness/sid-session.mjs`,
+`sid-task099-behaviour.mjs`, `sid-task099-refusal-and-delivered.mjs`, `sid-task099-delivered-only.mjs`,
+`sid-task099-insert.mjs`, `sid-painted-checks.mjs`.
+
+## Cases — round 2 (all on `sid`, against a course I created for my own QA student)
+
+| # | Case (AC) | Expected | Actual | Result |
+|---|---|---|---|---|
+| R2-1 | `GET /entitlements/:id/plan` | 200, `kind`-discriminated DTO, derived `liveEndDate` | 200 · `kind=course` · 4 sessions · `liveEndDate=2026-09-01` | **PASS** |
+| R2-2 | Plan modal renders the real plan | rows + summary (size/leave/owed/end) | 4 rows · `COURSE · 4-session course · Leave 0/1 · Ends 1 Sep 26` | **PASS** |
+| R2-3 | **Edit/move applies** | the chosen time is written | 14:00 → 09:00 → 10:00 across runs; server confirms each | **PASS** |
+| R2-4 | Server refuses a clashing move | 4xx + typed reason | **409 `SLOT_TAKEN` "ครูมีคาบในช่วงเวลานี้แล้ว"** | **PASS** |
+| R2-5 | 🔴 **The modal shows the SERVER's exact reason** | red alert carrying that text; move not applied | alert rendered with **"ครูมีคาบในช่วงเวลานี้แล้ว"**; the session stayed at 2026-08-25 13:00 | **PASS** |
+| R2-6 | Availability view: BOOKED / NO_BUDGET + clash owner | real states, not all-green | **`BANK · BOOKED · QA-EXPV`** (red, names the clash owner) + 11 × `· NO BUDGET` (orange) + green free teachers | **PASS** |
+| R2-7 | **Mark absence** keeps the course at size | absent session leaves the plan, one appended takes its place | `PENDING×4` → `SICK_LEAVE, PENDING×3, EXTENDED` — counted sessions still 4 | **PASS** |
+| R2-8 | **Insert** places a session in the chosen slot | a session appears at the chosen date/time | inserted at 2026-08-25 11:00 as requested; invariant held (counted = 4) | **PASS** (see OBS-3) |
+| R2-9 | **Delivered rows are read-only** | ATTENDED row shows "locked", no Edit / Mark absence | row read `1 Aug · 09:00:00 · Bank · … · ATTENDED · Attended — locked` — no action buttons | **PASS** |
+| R2-10 | Server blocks moving a delivered session | 4xx SESSION_DELIVERED | **409 `SESSION_DELIVERED` "คาบที่เรียนไปแล้ว แก้ไขไม่ได้"** | **PASS** |
+| R2-11 | Voucher plan shape (`kind=voucher`) | hours-based summary, no insert/mark-absence | **not exercised** — the only vouchers on `sid` are other people's rows, and my own QA voucher is the expired one | **NOT TESTED** |
+| R2-12 | DEF-1 re-measured on the **deployed** page | same numbers as local | 375: table 627 vs card 341, `overflow-x: hidden`, hit-test false · 768/1280/1600: reachable ✅ | **CONFIRMED** |
+
+## Observations added in round 2
+
+### OBS-1 — RESOLVED: not a defect
+On real data the Edit dialog seeds **Subject correctly** ("Bike / Scooter / Balance Cruiser") and Time
+correctly. The empty Subject in round 1 was a mock artifact, as suspected. Closed.
+
+### OBS-3 — Insert with **nothing owed** is accepted, and silently cancels the trailing session — **question for Porter**
+With `owedCount = 0` I expected the documented `NO_OWED_SESSION` refusal. Instead
+`POST /courses/:id/plan {kind:"insert"}` returned **200** with
+`{"appended":[],"cancelled":["df9016be…"]}` — it placed the new session at my chosen slot and
+**cancelled the trailing planned one**. The size invariant is preserved (counted sessions stayed 4), and
+this is arguably SPEC-028's own model ("an insert *moves* the trailing session"). **But** from the
+staff side: pressing "Insert make-up" while the modal itself says *"0 session(s) still owed"* silently
+moves a family's last booked session with no confirmation. Intent question, not a verdict — **@Porter**.
+
+### OBS-4 — cosmetic: the plan table prints raw DB times
+The Time column shows **`13:00:00`**, while the rest of the app shows `10:00-11:00`. Cosmetic only.
+
+### Deploy note (not a defect)
+The build on `sid` predates TASK-104/105/106: cancelling a course session did **not** re-owe a make-up
+(`owedCount` stayed 0). Consistent with those tasks being built today and not yet deployed.
+
+## Verdict — round 2
+
+**`TEST_PASSED`.** Every behavioural AC of TASK-099 passes on `sid`, including the one this project keeps
+re-learning — **a refusal reaches the user with the server's own words**. Remaining, and stated plainly:
+the **voucher** plan shape (R2-11) is still unexercised, and DEF-1 stands as a **MINOR** backlog item at
+375 px per the owner's desktop-only ruling.

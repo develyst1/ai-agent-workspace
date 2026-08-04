@@ -1,0 +1,97 @@
+{
+  "cases": [
+    {
+      "id": "HARNESS ERROR",
+      "actual": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: 'Sat 1 Aug', exact: true })\u001b[22m\n",
+      "result": "ERROR"
+    }
+  ],
+  "finalPlan": {
+    "sessions": [
+      {
+        "id": "d64f4e53-9c0e-4aee-9051-495b03eadb58",
+        "date": "2026-08-01",
+        "startTime": "09:00:00",
+        "status": "PENDING",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      },
+      {
+        "id": "8455f0b7-d371-4bf2-b4f2-dcee0a9c4a66",
+        "date": "2026-08-11",
+        "startTime": "13:00:00",
+        "status": "SICK_LEAVE",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      },
+      {
+        "id": "60b83826-b0b4-47d0-8f06-0cf930598442",
+        "date": "2026-08-25",
+        "startTime": "13:00:00",
+        "status": "PENDING",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      },
+      {
+        "id": "1f329809-875d-4b38-b4e1-ff4326018d7f",
+        "date": "2026-09-01",
+        "startTime": "13:00:00",
+        "status": "PENDING",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      },
+      {
+        "id": "df9016be-ab3e-46e8-bb84-89adf760cb97",
+        "date": "2026-09-08",
+        "startTime": "13:00:00",
+        "status": "EXTENDED",
+        "teacher": {
+          "id": "2fb4f78d-726b-4971-8a27-f67cf2907ffb",
+          "name": "Bank",
+          "nickname": "Bank"
+        },
+        "subject": {
+          "id": "acfac12c-442e-44d3-8394-057015a9f67c",
+          "name": "Bike / Scooter / Balance Cruiser"
+        }
+      }
+    ],
+    "summary": {
+      "kind": "course",
+      "size": 4,
+      "leaveUsed": 1,
+      "leaveQuota": 1,
+      "maxWeek": 5,
+      "owedCount": 0,
+      "expiryDate": "2026-09-15"
+    }
+  }
+}

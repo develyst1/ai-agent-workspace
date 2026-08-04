@@ -1,0 +1,5 @@
+PASS    AC-5a setup — owedCount is 0 — owedCount=0
+FAIL    AC-5a insert with nothing owed is refused with a reason — 200 {"change":"insert","bookingId":"89d4bb4f-a1d9-44aa-970e-238e5d9a19cb","appended":[],"cancelled":["df9016be-ab3e-46e8-bb84-89adf760cb97"]}
+PASS    AC-5b setup — cancel a live session — cancel 200 · owedCount now 0 · statuses ATTENDED,SICK_LEAVE,PENDING,CANCELLED,PENDING,EXTENDED,CANCELLED
+NOT TESTED AC-5b insert places the owed session — cancel did not leave the course owing a session (TASK-105 re-owe not deployed here) — insert-success path not exercised
+PASS    AC-5c the modal exposes Insert make-up with the owed hint — 0 session(s) still owed · Insert make-up

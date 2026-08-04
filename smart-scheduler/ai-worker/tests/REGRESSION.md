@@ -142,3 +142,17 @@ Run `tests/harness/plan-modal-widths.mjs` + `tests/harness/voucher-manage-375.mj
 **Escaped-defect case added by DEF-1:** a table that gains a column must be checked at 375 for
 *clipping*, not just for narrowness — a `Card` with `overflow-x: hidden` swallows the overflow silently
 and the page shows no horizontal scrollbar to hint at it.
+
+## Verified on `sid` 2026-08-04 (first entries in this file carrying a QA verdict)
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S1 | A clashing plan-modal move is refused **and the modal prints the server's own reason** (`SLOT_TAKEN` → "ครูมีคาบในช่วงเวลานี้แล้ว") | TASK-099 | D | ✅ 2026-08-04 |
+| S2 | The availability view shows real states: `BOOKED · <clash owner>`, `NO BUDGET`, free | TASK-099 | D | ✅ 2026-08-04 |
+| S3 | Mark-absence keeps a course at its size (absence + appended make-up, counted sessions unchanged) | TASK-099 | D | ✅ 2026-08-04 |
+| S4 | A delivered (ATTENDED) session is read-only in the plan **and** the server refuses to move it (`SESSION_DELIVERED`) | TASK-099 | D | ✅ 2026-08-04 |
+| S5 | REQ-024 CUSTOM date inputs measure **176 px** at 1600/1280/768/375 (old defect: 26/36) | TASK-081 | D | ✅ 2026-08-04 |
+| S6 | Bookings search matches nickname **and** parent phone; date sort keeps the total (89=89); `sort=NONSENSE` → 400 | REQ-024 | D | ✅ 2026-08-04 |
+| S7 | Nav has no bare "Dashboard"; SOM dashboard / Needs attention / Daily report all load | REQ-026 | D | ✅ 2026-08-04 |
+| S8 | The attention panel shows a real "Digest last sent" stamp, with per-check counts | REQ-023 | D | ✅ 2026-08-04 |
+| S9 | An **expired** voucher's student is not offered in the Voucher tab (prevention path — see FIND-1) | REQ-022 | D | ✅ 2026-08-04 (behaviour recorded, intent pending Porter) |

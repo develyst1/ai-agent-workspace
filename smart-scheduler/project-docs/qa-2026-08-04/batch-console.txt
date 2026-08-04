@@ -1,0 +1,8 @@
+PASS       [REQ-024] AC-1 all-bookings list responds — 200 total=89
+PASS       [REQ-024] AC-3 search matches nickname AND parent phone — nickname "QA-expv" → 8 · phone "0900000091" → 8
+PASS       [REQ-024] AC-5 date sort is a sort, not a filter (and rejects nonsense) — asc=2026-01-05 desc=2026-09-23 totals 89/89 · bad=400
+PASS       [REQ-024] AC-4 arbitrary custom range filters correctly — 200 rows=28 outsideWindow=0
+PASS       [REQ-023] AC — the panel shows a real last-run timestamp for the daily digest — neverRunWarning=false · stampSeen="2026-08-03" · panel="Smart Scheduler ·  · Back-office scheduling ·  · Schedule · Teachers · People · LINE links · Bookings / Students · Badges · SOM dashbo
+PASS       [REQ-020] AC-2/4 staff screen exists with approve / reject / unlink controls — url=/scheduler/link-requests · buttons=["Sign out","Unlink"] · text="Smart Scheduler ·  · Back-office scheduling ·  · Schedule · Teachers · People · LINE links · Bookings / Students · Badges
+PASS       [REQ-020] AC-1 a claim queues as a pending request (API surface) — 200 {"items":[]}
+PASS       [REQ-026] Stage 1 — the extra Dashboard entry is gone, the three keepers remain — ["Schedule","Teachers","People","LINE links","Bookings / Students","Badges","SOM dashboard","Needs attention","Daily report"]

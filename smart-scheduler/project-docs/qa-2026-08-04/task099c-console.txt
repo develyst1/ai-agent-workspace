@@ -1,0 +1,4 @@
+PASS    AC-6 setup — a past-dated session exists to deliver — 2026-08-01 09:00:00 PENDING
+PASS    AC-6 setup — mark it delivered — confirm 200 {"booking":{"id":"d64f4e53-9c0e-4aee-9051-495b03eadb58","date":"2026-08-01","sta · attend 200 {"booking":{"id":"d64f4e53-9c0e-4aee-9051-495b03eadb58","date":"2026-08-01","sta
+PASS    AC-6 delivered rows are read-only in the plan table — row="1 Aug	09:00:00	Bank	Bike / Scooter / Balance Cruiser	 · ATTENDED · 	 ·  · Attended — locked"
+PASS    AC-6b the server refuses to move a delivered session — 409 {"error":{"code":"SESSION_DELIVERED","message":"คาบที่เรียนไปแล้ว แก้ไขไม่ได้"}}

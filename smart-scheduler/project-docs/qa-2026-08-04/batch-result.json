@@ -1,0 +1,60 @@
+{
+  "cases": [
+    {
+      "req": "REQ-024",
+      "id": "AC-1 all-bookings list responds",
+      "expected": "200 + paged shape",
+      "actual": "200 total=89",
+      "result": "PASS"
+    },
+    {
+      "req": "REQ-024",
+      "id": "AC-3 search matches nickname AND parent phone",
+      "expected": "both queries return the same student's bookings",
+      "actual": "nickname \"QA-expv\" → 8 · phone \"0900000091\" → 8",
+      "result": "PASS"
+    },
+    {
+      "req": "REQ-024",
+      "id": "AC-5 date sort is a sort, not a filter (and rejects nonsense)",
+      "expected": "asc first ≠ desc first, both totals equal, bad sort → 400",
+      "actual": "asc=2026-01-05 desc=2026-09-23 totals 89/89 · bad=400",
+      "result": "PASS"
+    },
+    {
+      "req": "REQ-024",
+      "id": "AC-4 arbitrary custom range filters correctly",
+      "expected": "every row inside the requested window",
+      "actual": "200 rows=28 outsideWindow=0",
+      "result": "PASS"
+    },
+    {
+      "req": "REQ-023",
+      "id": "AC — the panel shows a real last-run timestamp for the daily digest",
+      "expected": "a timestamp, not the red 'never run' warning",
+      "actual": "neverRunWarning=false · stampSeen=\"2026-08-03\" · panel=\"Smart Scheduler ·  · Back-office scheduling ·  · Schedule · Teachers · People · LINE links · Bookings / Students · Badges · SOM dashboard · Needs attention · Daily report · v0.1 · Back-office team · Needs attention · EN \"",
+      "result": "PASS"
+    },
+    {
+      "req": "REQ-020",
+      "id": "AC-2/4 staff screen exists with approve / reject / unlink controls",
+      "expected": "pending requests listed; approve, reject and unlink available",
+      "actual": "url=/scheduler/link-requests · buttons=[\"Sign out\",\"Unlink\"] · text=\"Smart Scheduler ·  · Back-office scheduling ·  · Schedule · Teachers · People · LINE links · Bookings / Students · Badges · SOM dashboard · Needs attention · Daily report · v0.1 · Back-office team · LINE links · EN · ไทย\"",
+      "result": "PASS"
+    },
+    {
+      "req": "REQ-020",
+      "id": "AC-1 a claim queues as a pending request (API surface)",
+      "expected": "an endpoint that lists pending teacher link requests",
+      "actual": "200 {\"items\":[]}",
+      "result": "PASS"
+    },
+    {
+      "req": "REQ-026",
+      "id": "Stage 1 — the extra Dashboard entry is gone, the three keepers remain",
+      "expected": "no bare 'Dashboard'; SOM dashboard + Daily report + Needs attention present",
+      "actual": "[\"Schedule\",\"Teachers\",\"People\",\"LINE links\",\"Bookings / Students\",\"Badges\",\"SOM dashboard\",\"Needs attention\",\"Daily report\"]",
+      "result": "PASS"
+    }
+  ]
+}
