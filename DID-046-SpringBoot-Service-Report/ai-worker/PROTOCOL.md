@@ -9,14 +9,19 @@ If you didn't write it to a file, the team doesn't know it.
 
 | Role | Name | Talks to | Writes |
 |------|------|----------|--------|
-| Project Manager | Porter | The human (stakeholder) + SA Lead | `requirements/REQ-*.md` |
+| Project Manager | Porter | The human (stakeholder) + SA Lead + Tester | `requirements/REQ-*.md` |
 | SA Lead | Sober | PM + BE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
 | Backend Engineer | Jason | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Senior Tester (QA) | Tanya | PM | `tests/TEST-*.md`, `tests/REGRESSION.md` |
 
 Chain of command: **Human → PM → SA Lead → BE**, and results flow back up the
-same chain. BE never guesses requirements — questions go to SA Lead. SA Lead
+same chain — with the **Tester hanging off the PM** (Human ↔ PM ↔ Tester), so
+that what gets verified is the *requirement*, independently of who designed and
+built it. BE never guesses requirements — questions go to SA Lead. SA Lead
 never guesses business intent — questions go to PM. PM never guesses what the
-human wants — ask the human.
+human wants — ask the human. The Tester never guesses what "correct" means — the
+REQ's Acceptance Criteria are the standard, and anything ambiguous is a question
+to PM.
 
 ## The chain is HARD — no skipping (most-violated rule, read twice)
 
@@ -26,6 +31,7 @@ Only these pairs may communicate, in either direction:
 |--------------|---------|
 | Human ↔ Porter (PM) | chat, in Thai |
 | Porter (PM) ↔ Sober (SA) | REQ files, board, log `@` |
+| Porter (PM) ↔ Tanya (QA) | REQ files, TEST files, board, log `@` |
 | Sober (SA) ↔ Jason (BE) | SPEC/TASK files, board, log `@` |
 
 **Every other pair is forbidden.** Concretely:
@@ -35,6 +41,11 @@ Only these pairs may communicate, in either direction:
   as a TASK written by Sober.
 - Jason **never** writes `@Porter` and never addresses the human. Everything
   goes up through Sober.
+- Tanya (QA) **never** writes `@Sober` or `@Jason`, and never addresses the
+  human. A defect she finds goes to `@Porter`, who decides what it means for the
+  business and routes it to Sober. She **reads** SPECs, TASKs and code freely —
+  reading is not communicating — but her verdicts and questions have exactly one
+  destination: Porter.
 - The human gives business content only to Porter. (Bare nudges — "ไปเลย",
   "continue" — are allowed to anyone; see Nudges below.)
 
@@ -108,7 +119,15 @@ work into one file, so this is a hard rule:
 ## Statuses
 
 **Requirement (REQ):**
-`DRAFT` → `READY_FOR_SA` → `IN_SPEC` → `SPEC_DONE` → `DELIVERED`
+`DRAFT` → `READY_FOR_SA` → `IN_SPEC` → `SPEC_DONE` → `IN_TEST` →
+`TEST_PASSED` | `TEST_FAILED` → `DELIVERED`
+
+- `SPEC_DONE` means *built and SA-reviewed* — it does **not** mean it works.
+- `IN_TEST` … `TEST_PASSED` is the Tester's leg. **`TEST_FAILED` blocks the
+  release**: the REQ goes back to Porter with the defects, and only Porter can
+  route the fix onward to Sober.
+- For an investigate/verify REQ with no build (e.g. REQ-001), Porter may hand it
+  straight to Tanya for `IN_TEST` once the analysis it depends on is available.
 
 **Task (TASK):**
 `TODO` → `IN_PROGRESS` → `REVIEW` (SA Lead reviews) → `DONE` | `REWORK` → back to `IN_PROGRESS`
@@ -116,8 +135,8 @@ work into one file, so this is a hard rule:
 Anything can also be `BLOCKED (waiting: <who> — <question>)`.
 
 Only the **owner of the next step** moves a status forward:
-PM sets `READY_FOR_SA`; SA sets `IN_SPEC`/`SPEC_DONE`/`REVIEW→DONE/REWORK`;
-BE sets `IN_PROGRESS`/`REVIEW`.
+PM sets `READY_FOR_SA`/`DELIVERED`; SA sets `IN_SPEC`/`SPEC_DONE`/`REVIEW→DONE/REWORK`;
+BE sets `IN_PROGRESS`/`REVIEW`; **QA (Tanya) sets `IN_TEST`/`TEST_PASSED`/`TEST_FAILED`**.
 
 ## Log format (`log/YYYY-MM-DD.md`)
 
@@ -166,7 +185,10 @@ This team often does patch/maintenance work on systems owned by others.
 only what the current work requires — and never guess or fetch the rest yourself:
 
 - **Never run SQL yourself.** Never connect to any real database, server, or
-  environment. The human is the only source of real-world data.
+  environment. The human is the only source of real-world data. *(One narrow
+  exception exists for the Tester — see "The Tester's environment" below. It
+  applies to Tanya and to nobody else — Sober and Jason never touch any DB or
+  environment.)*
 - Never assume DB schema, config values, credentials, third-party API behavior,
   or production data. If it isn't in `../project-docs/`, in a REQ/SPEC/TASK, or
   explicitly provided by the human — you don't know it.
@@ -182,6 +204,29 @@ only what the current work requires — and never guess or fetch the rest yourse
      file and unblocks the item.
 - Answered knowledge lives in `../project-docs/` — check there before asking
   again for something the human already provided.
+
+### The Tester's environment (the one exception, Tanya only)
+
+Reading code is not testing — so the Tester, and **only** the Tester, may
+exercise a running system to verify a REQ. For this project the human has granted
+a **read-only** testing environment:
+
+| Environment | Tanya | Everyone else (Porter/Sober/Jason) |
+|-------------|-------|-----------------------------------|
+| **Local** (the repo, `./mvnw spring-boot:run`) | ✅ run it | 🚫 |
+| **Dev / local wired to the UAT database** | ✅ **read-only** | 🚫 |
+| **Production** | 🚫 never | 🚫 never |
+
+**Read-only means read-only (hard rule).** Tanya may call **GET / read** APIs and
+generate/inspect reports (e.g. produce the อ.6 PDF for a sample requestId — a read
+operation). She may **NOT** create, update, or delete any record, run any writing
+SQL, or trigger any endpoint that mutates data — not even to "set up" a test. She
+creates no test data, so there is nothing to clean up; if a check genuinely needs
+written data, that is a **DATA REQUEST to Porter**, and the human provides it.
+Never restart/redeploy/reconfigure the environment, never touch production, never
+message real people. Access (URLs, test API key, tokens) comes from the human via
+Porter and lives in `../project-docs/` — never paste a credential into a TEST file
+or the log.
 
 ## Nudges from the human
 

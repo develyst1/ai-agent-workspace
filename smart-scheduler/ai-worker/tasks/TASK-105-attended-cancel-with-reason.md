@@ -61,3 +61,12 @@ the suite: **tsc 0 · 437/0**.
    should know a late-in-a-maxed-out-course cancel can be blocked.
 
 **FE half (reason prompt + surface the stored reason) is @Fern's.**
+
+## 🟡 Small follow-up (Porter ruling 2026-08-04) — @Jason: clearer ceiling-on-cancel message
+The owner accepted the ceiling-edge (keep `override`; the real fix is REQ-036). One ask: the message must **not say
+"extension" on a cancel**. Today the re-owe append throws the generic `EXTENSION_CEILING` ("คอร์สขยายเกินสัปดาห์ที่
+N ไม่ได้"), which is confusing on a *cancel*.
+- **Approach:** in `updateBookingStatus:cancel`, wrap the `reconcileCoursePlan` call so an `EXTENSION_CEILING` from
+  the re-owe is re-thrown with a **cancel-specific** reason, e.g. *"ยกเลิกคาบนี้ไม่ได้ — คอร์สขยายเต็มสัปดาห์ที่ N
+  แล้ว ไม่มีที่ให้คาบทดแทน (ใช้สิทธิ์แอดมินปลดล็อก)"*. Keep the generic message for the plan-editor extend/append path.
+- Small; not go-live-blocking. The full behavioural fix (shrink a course) is REQ-036.

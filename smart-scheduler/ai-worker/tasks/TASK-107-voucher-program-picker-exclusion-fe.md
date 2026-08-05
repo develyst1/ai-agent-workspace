@@ -1,6 +1,6 @@
 # TASK-107: scheduler-front (FE) — voucher program picker omits the excluded programs
 - Source: SPEC-030 §4 (REQ-027 part b, UI half)
-- Status: BLOCKED (on TASK-106)
+- Status: TODO (unblocked — TASK-106 DONE 2026-08-04; `voucherAllowedGroups` on `GET /sellable-packages`)
 - Depends on: TASK-106 (the exposed allowed/excluded set + the server rule)
 - Assignee: @Fern (smart-scheduler-front)
 

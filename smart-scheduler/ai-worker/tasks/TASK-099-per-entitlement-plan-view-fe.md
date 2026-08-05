@@ -72,5 +72,43 @@ confirming exact wire shapes from the backend before writing.
   the raw key (rows are read-only regardless). Add `NO_SHOW` to the enum+color+dict as a small follow-up?
 - Built against 097/093/095 — all DONE now (095's rework verified 2026-08-04); started per your "099 is a go".
 
+## Questions — answered
+- **Voucher edit path** → **✅ YES, `moveBooking` (PATCH /bookings/:id) is the intended voucher path.** SPEC-028 §7:
+  a voucher has no recurrence, so a session move is a plain per-session move — **no append/contract**. There is no
+  voucher plan endpoint by design; `/courses/:id/plan` is course-scoped (runs the size reconcile) and correctly is
+  NOT used for vouchers. Confirmed in your code (`PlanModal.tsx:322-324`, the `else` branch). Correct.
+- **Layout measurement (auth gate to sid)** → **not your blocker; routes to @Tanya's acceptance.** You're right not
+  to log into a real env. The one shared-row change — the voucher table's new **"Manage" column at 375** — goes to
+  Tanya via her dev-session-cookie (TASK-090), the only role wired to reach the painted page. Your reflow-safe
+  patterns (`Table.ScrollContainer minWidth={560}`, `Group grow wrap`) are the right mitigation. Flagged to @Porter
+  for the acceptance round; not held.
+- **NO_SHOW label** → **✅ yes, add it** — `NO_SHOW` is now a real status shown in the plan table (and TASK-105 made
+  cancel/no-show visible), so the raw-key fallback would show. Small: add `NO_SHOW` to the FE `BookingStatus`
+  enum + color + `bookingStatus.*` dict. Fold into this task before ship, or a tiny follow-up — your call; it's
+  cosmetic (rows read-only) but visible, so please don't let it ship as a raw key.
+
 ## Review
-(Sober fills at REVIEW.)
+**Verdict: DONE ✅ (code/contract level) — one small polish (NO_SHOW label) + layout-measure routed to QA.**
+Sober, 2026-08-04. Read `PlanModal.tsx` + the service/hook wiring; ran **`bunx tsc --noEmit` → exit 0** myself
+(build 0 per Fern).
+- **One shared component, `mode:"edit"|"create"`** — create mode renders a passed `initialPlan` + overridable
+  `onConfirm`, so TASK-098 is a thin wrapper (not a second modal). ✅ Matches the "same modal, create vs update".
+- **Course** move/insert/mark-absence → `applyPlanChange` (the atomic gate); **voucher** move → `moveBooking` (plain,
+  no reconcile) — the §7 distinction, correct. **`planned:true`** on mark-absence (`:210`).
+- **Delivered (ATTENDED/NO_SHOW) rows read-only** via `isDeliveredStatus`; **refusals show the server's exact
+  reason** (`ApiClientError.message` in a red Alert) — no dead buttons.
+- **`liveEndDate` comes from the server** and refetches live — no client re-derivation (SPEC-028 §4). Summary bar
+  branches course (size/leave/owed) vs voucher (hours-remaining).
+- Entry points wired on the course card + voucher table; `BookingsContent` lifts `planId`.
+**This unblocks TASK-098** (the create wrapper). Solid work — it's the FE long pole and it lands clean.
+
+## Post-review polish (Fern 2026-08-04 — the 3 small opens from Sober's DONE + Tanya's TEST_PASSED)
+- **NO_SHOW label** (Sober's "before ship") — added `NO_SHOW` to the FE `BookingStatus` (app **and** contract,
+  kept in lockstep), `BOOKING_STATUS_COLOR` (danger), and `bookingStatus.NO_SHOW` (en "No-show" / th "ไม่มาเรียน").
+  `StatusChip` now renders it instead of the raw key.
+- **OBS-4 (raw `13:00:00`)** — plan table time now `s.startTime.slice(0,5)` → `13:00`.
+- **DEF-1 (voucher "Manage" column unreachable at 375)** — wrapped `VoucherPanel`'s table in
+  `Table.ScrollContainer minWidth={640}` → it scrolls instead of clipping, so the Manage button (the only
+  phone-width entry to the plan modal) is reachable; **also fixes the pre-existing Status-column clip Tanya noted**.
+- Verified: `bunx tsc --noEmit` 0 · `bun run build` 0. ⚠️ The 375 re-measure is still @Tanya's (auth gate); this
+  is the fix she should see reproduce as *reachable*. OBS-3 (insert@owed=0) stays @Porter's call (BE behaviour).

@@ -45,3 +45,11 @@ service + endpoint; ran the suite: **tsc 0 · 444/0**.
   `idBase = refId ?? body.idempotencyKey ?? uuid`; **TASK-109 generates one per rental action** and sends it for the
   standalone surface. **Contingent on Q2** — if only the add-on (a) ships, it's already idempotent and no change is
   needed; the moment the standalone (b) surface ships, this is required. Cheap; do it with/before TASK-109's (b) path.
+
+## 🔴 REQUIRED FOLLOW-UP (owner Q2 = BOTH, 2026-08-04) — @Jason, small BE add
+Standalone (b) is now in scope, so the idempotency addition above is **required**:
+- `POST /rentals` accepts an **optional `idempotencyKey`** in the body (validation: non-empty string when present).
+- `rental.service`: `idBase = input.refId ?? input.idempotencyKey ?? crypto.randomUUID()` (add-on keeps `refId`;
+  standalone uses the client key; uuid is the last-resort fallback only).
+- Test: two standalone POSTs with the **same** client `idempotencyKey` → **one** movement (`duplicate` on the 2nd).
+- TASK-109 generates + sends one key per rental action.
