@@ -303,3 +303,42 @@ the student stays at `size`** ("ใช่ A"). A per-session cancel is a **resch
   only way to end/shorten a course early is a separate cancel-course / refund flow — which does NOT exist** (grep:
   no `cancelCourse`/`terminate`/`refund` path). Early termination / refund is a **post-go-live REQ** (@Porter).
   Confirmed with the owner that quitting a course is a separate flow from per-session cancel.
+
+---
+
+## 12. OBS-3 — plan-change transparency: an `insertable` flag + a plan-diff preview (owner ruling 2026-08-04)
+
+Tanya observed that at `owedCount == 0` an Insert can still cancel a trailing make-up "silently". I flagged that
+**disabling Insert at owed-0 would break REQ-030's own worked example** (after an absence, the makeup restores owed
+to 0, and the insert-that-satisfies-it happens at owed 0). The owner confirmed **(A)**: keep the flow, but make it
+**not silent** — show the resulting plan *before* confirm. Owner: *"บอกว่าแผนจะเป็นแบบนี้นะ."* Two parts:
+
+### 12.1 The `insertable` flag (disable Insert only when there's truly nothing to reschedule)
+`owedCount` alone can't tell the two 0-owed states apart (full course vs a course with an appended makeup). So the
+**course plan DTO (TASK-097 `getEntitlementPlan`) exposes `insertable: boolean = canInsert(sessions, size)`**
+(`current < size || hasEXTENDED`; always `false` for a voucher — no insert). The FE **disables the Insert action
+when `!insertable`** with the reason "no session to reschedule". That blocks *only* the genuinely-nothing case (which
+the BE already refuses with `NO_OWED_SESSION`) — the post-absence insert stays enabled, as REQ-030 requires.
+
+### 12.2 The plan-diff preview (show what the change does, before commit)
+A **dry-run** of the plan change that returns the resulting plan **without writing**, so the confirm shows a
+**plan diff** ("session on the 14th → moves to week 5; inserting the 15th removes the appended make-up; your plan
+becomes wk1·wk2·wk3·15·wk5"), not a raw "continue?".
+
+- 🔑 **Reuse the REAL applier — the preview must not diverge from the apply.** Add a `dryRun` mode to
+  `applyPlanChange`: it runs the **full** transaction (every guard + `reconcileCoursePlan` + `reconcileBookingHolds`),
+  then **reads back the resulting sessions + derived end and ROLLS BACK** instead of committing, returning
+  `{ moves: {appended, cancelled}, resultingSessions, liveEndDate }`. On a guard failure it throws the **same typed
+  reason** the real apply would (the FE shows it). A separate re-derivation would be a second definition of the
+  reconcile — exactly the drift this project keeps paying for; the rollback approach guarantees preview == apply.
+- **Endpoint:** `POST /courses/:id/plan/preview` (same body as `/plan`).
+- **FE:** on Insert / mark-absence / move, call preview → render the diff in the confirm → on confirm, call the real
+  `/plan`. (mark-absence already sets `planned:true`; the preview shows the appended makeup + new end.)
+
+### 12.3 Tasks
+- **BE TASK-114** — `insertable` on the plan DTO (`= canInsert`, false for voucher) + `applyPlanChange` `dryRun` mode
+  (real tx, roll back, return resulting sessions + `liveEndDate` + moves; same typed refusals) + `POST
+  /courses/:id/plan/preview`. Tests: dry-run writes nothing; its result matches a real apply's; `insertable` false on a
+  full no-EXTENDED course and true post-absence.
+- **FE TASK-115** — disable Insert when `!insertable` (with the reason); on a plan change, show the **preview diff**
+  in the confirm before committing. (Also folds OBS-4: render `HH:mm`, not raw `13:00:00`.)
