@@ -1,6 +1,6 @@
 # TASK-102: scheduler-front (FE) — the Settings screen (the load-bearing half of REQ-031)
 - Source: SPEC-029 §3 (REQ-031)
-- Status: TODO (unblocked — TASK-101 DONE 2026-08-04; `GET/PUT /api/settings` shape final)
+- Status: FAST-FOLLOW (not in the 3-day launch — owner 2026-08-04; 3d/30m defaults already live in code, so the screen is deferrable). Unblocked (TASK-101 DONE); build after the REQ-030 core ships.
 - Depends on: TASK-101 (`GET/PUT /api/settings`)
 - Assignee: @Fern (smart-scheduler-front)
 

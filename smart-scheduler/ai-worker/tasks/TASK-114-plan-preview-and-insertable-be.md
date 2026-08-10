@@ -24,3 +24,20 @@
       real apply produces for the same change — tested.
 - [ ] A preview of a change that would be refused returns the same typed reason (e.g. `EXTENSION_CEILING`, `SLOT_TAKEN`).
 - [ ] `bunx tsc --noEmit` clean; `bun test` green.
+
+## Review
+**Verdict: DONE ✅** — Sober, 2026-08-04 (code-verified). Read the dry-run path + the catch; ran the suite:
+**tsc 0 · 445/0**.
+- **`insertable`** (`:1139` course = `canInsert`, `:1164` voucher = false) — disables Insert **only** on a
+  genuinely-full course (no EXTENDED), NOT at every `owedCount==0`, so REQ-030's post-absence insert stays enabled.
+  The BE still refuses the truly-empty case with `NO_OWED_SESSION`. Exactly §12.1.
+- 🔑 **The dry-run-rollback is the elegant, drift-proof version I specced** — `finalize()` sits at the **end** of
+  each branch (after all guards + `reconcileCoursePlan` + `reconcileBookingHolds`); in dry-run it reads back the
+  resulting sessions + `deriveLiveEndDate` from the tx, then **throws `DryRunSignal` to roll the whole tx back**
+  (nothing written, incl. any enqueued LINE). The outer catch (`:1593`) returns the captured preview **first**, then
+  falls through to the normal typed-error handling — so a **refused** change rethrows the **same** reason
+  (`EXTENSION_CEILING`/`SLOT_TAKEN`/`TEACHER_CHANGE_TOO_LATE`/…) in dry-run as in a real apply.
+- **preview == apply by construction** — the same code path, writes discarded. No second reconcile definition — the
+  drift this project keeps paying for is structurally impossible here.
+- **`POST /courses/:id/plan/preview`** returns `{change, moves, resultingSessions, liveEndDate}` (or the typed refusal).
+**DONE — unblocks TASK-115 (the FE plan-diff confirm).**

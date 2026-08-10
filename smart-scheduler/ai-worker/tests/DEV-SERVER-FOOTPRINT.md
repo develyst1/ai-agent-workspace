@@ -57,3 +57,14 @@ written. **No token, cookie or secret was written to disk or printed.**
 | A `POST /courses` attempt that returned 409 SLOT_TAKEN | `sid` | ✅ nothing created (atomic refusal) |
 | Booking attempt on the expired QA voucher via the UI | `sid` | ✅ nothing created — the student was never selectable (FIND-1) |
 | **Not** created: any teacher/roster row (REQ-009 was not run), any LINE message, any change to another person's data | — | — |
+
+## 2026-08-04 (Tanya) — THIRD SESSION: post-deploy acceptance of REQ-030 / REQ-037 / OBS-3 + REQ-009
+
+| What | Where | Removed? |
+|---|---|---|
+| Course package `11cca516-1c1e-46d0-bd77-d70a1689f420` (4 sessions, QA-owned `QA-expv-student`) + its own edits: moves, one planned absence, one insert, several cancels, one delivered-then-cancelled row | `sid` | ❌ no delete endpoint — left in place, QA-owned rows only |
+| Two **extra paid sessions** (`SINGLE_SESSION`) on the QA courses, created for REQ-037 — both **cancelled** as part of the test | `sid` | ❌ rows remain (CANCELLED), QA-owned only |
+| Throwaway teachers **`QA-req009`, `QA-req009b`, `QA-req009c`, `QA-req009d`** (Porter-authorized; three extras were created while fixing harness row-targeting) | `sid` | ✅ **ALL ARCHIVED.** Roster verified after: FULL_TIME 7 · PART_TIME 6 · FREELANCE 10 |
+| 🔴 **Near-miss, declared:** a first harness attempt opened the **type-change dialog on teacher `Bank`** (wrong row) and pressed Save with the type unchanged | `sid` | ✅ **nothing written** — the FE returns early when the type is unchanged; verified directly: Bank is still FULL_TIME. Harness fixed so it cannot leave a row again |
+| Dry-run previews (`/plan/preview`) — many | `sid` | ✅ by design: the transaction is rolled back, nothing persists |
+| No LINE message sent · no other person's row modified · production (`frontoffice.develyst.online`) never touched | — | — |

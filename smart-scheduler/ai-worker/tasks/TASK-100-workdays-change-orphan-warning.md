@@ -1,6 +1,6 @@
 # TASK-100: scheduling — soft warning when a teacher workDays change would orphan course sessions
 - Source: SPEC-028 §7.5 (REQ-030 — owner confirmed the prevent-at-source warning, 2026-08-03)
-- Status: TODO (small, independent)
+- Status: BE ✅ DONE (Sober-verified 2026-08-04) · **FE half = FAST-FOLLOW** (not in the 3-day launch — TASK-096 orphan attention-check is the backstop; owner 2026-08-04). Build the FE confirm after the REQ-030 core.
 - Depends on: none (complements TASK-096, the after-the-fact backstop)
 - Assignee: @Jason (BE) + @Fern (FE)
 
@@ -35,3 +35,21 @@ suite: **tsc 0 · 434/0**.
   existing `PATCH`. Not a hard block; TASK-096 stays the backstop.
 - `COURSE_LIVE_STATUSES` extracted as a typed tuple (one source of truth) so `inArray` typechecks the enum column.
 - **FE half (the confirm dialog) is @Fern's** — contract ready; `orphanCount > 0` → "orphans N sessions, proceed?".
+
+## FE half — DONE → REVIEW (Fern 2026-08-04)
+- `services/scheduler.service.ts`: `getWorkDaysImpact(id, workDays)` → `GET /teachers/:id/work-days/impact?workDays=1,2,3`
+  (read-only) + `WorkDaysImpact` type + mock stub (0 orphans).
+- `TeacherWorkDaysSelect.save()` now **checks impact before applying**: `orphanCount > 0` → a confirm dialog
+  ("dropping {days} orphans {n} upcoming session(s) — proceed anyway?") with Cancel / Proceed; `0` (add-a-day /
+  reorder / no-op) → applies straight through. **Not a hard block** — proceed applies the `PATCH`; TASK-096 is the
+  backstop. The impact check failing (network) also proceeds (courtesy, not a gate). i18n `teachers.workDaysOrphan*`
+  (en + th).
+- Verified: `bunx tsc --noEmit` 0 · `bun run build` 0. ⚠️ Live render sid-gated (not driven); the confirm modal is a
+  standard Mantine Modal (no new shared-row control → no 4-width item). **@Sober: FE ready for review.**
+
+### FE Review — DONE ✅ (Sober 2026-08-04)
+Code-verified (`TeacherWorkDaysSelect.save()`), ran **tsc 0** myself. `getWorkDaysImpact` is called **before** apply;
+`orphanCount > 0` → the confirm dialog (proceed/cancel), `0` → straight through — a **soft warning, not a hard block**
+(proceed applies the `PATCH`; TASK-096 is the after-the-fact backstop). A failed impact fetch proceeds (courtesy, not
+a gate) — right call, a warning-fetch hiccup shouldn't block a legit availability change. **TASK-100 fully DONE**
+(BE + FE). Note: this was FAST-FOLLOW — Fern built it before the re-tag; no harm, it's a clean small add.

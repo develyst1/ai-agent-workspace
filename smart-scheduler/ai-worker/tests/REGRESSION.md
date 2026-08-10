@@ -156,3 +156,23 @@ and the page shows no horizontal scrollbar to hint at it.
 | S7 | Nav has no bare "Dashboard"; SOM dashboard / Needs attention / Daily report all load | REQ-026 | D | ✅ 2026-08-04 |
 | S8 | The attention panel shows a real "Digest last sent" stamp, with per-check counts | REQ-023 | D | ✅ 2026-08-04 |
 | S9 | An **expired** voucher's student is not offered in the Voucher tab (prevention path — see FIND-1) | REQ-022 | D | ✅ 2026-08-04 (behaviour recorded, intent pending Porter) |
+
+## REQ-030 batch — verified on `sid` after the 2026-08-04 deploy
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S10 | A planned absence keeps a course at size (absent row leaves, one appended takes its place) | REQ-030 | D | ✅ 2026-08-04 |
+| S11 | A teacher change inside 3 days is refused (`TEACHER_CHANGE_TOO_LATE`); the same change further out is allowed; `override` bypasses | REQ-030 | D | ✅ 2026-08-04 |
+| S12 | A delivered row refuses edit/move (`SESSION_DELIVERED`) but **offers Cancel**; cancel without a reason → `REASON_REQUIRED`; with a reason → cancels + re-owes | REQ-030 | D | ✅ 2026-08-04 |
+| S13 | A live-row cancel re-owes a make-up (a cancel is a reschedule, never a forfeit) | REQ-030 | D | ✅ 2026-08-04 |
+| S14 | `GET /teachers/:id/work-days/impact` reports `orphanCount` + the affected future LIVE sessions | REQ-030 | D | ✅ 2026-08-04 |
+| S15 | "Add extra (charged)" is a visibly separate control from "Insert make-up" (different label + colour) | REQ-037 | D | ✅ 2026-08-04 |
+| S16 | An extra session is a `SINGLE_SESSION`, badged EXTRA, with no Mark absence; course size/end unchanged; its cancel does **not** re-owe | REQ-037 | D | ✅ 2026-08-04 |
+| S17 | Every course move/insert/absence shows a plan-diff **before** commit ("Your plan will become: … ends …"); backing out writes nothing | OBS-3 | D | ✅ 2026-08-04 |
+| S18 | `/plan/preview` is a true dry run and refuses with the SAME typed reason as the real apply | OBS-3 | D | ✅ 2026-08-04 |
+| S19 | Insert is disabled only on a genuinely-full course (`insertable=false`); post-absence at owed 0 stays enabled | OBS-3 | D | ✅ 2026-08-04 |
+| S20 | Plan times render `HH:mm` (no raw `13:00:00`) | OBS-4 | D | ✅ 2026-08-04 |
+| S21 | Changing a freelance teacher to FT/PT warns, naming the budget + remaining ("This closes X's freelance budget (remaining ฿N)"); cancel changes nothing; confirm closes the ceiling; switching back re-arms `NO_BUDGET` | REQ-009 | D | ✅ 2026-08-04 |
+
+**Escaped-defect case added:** a QA harness must scope DOM row-targeting to a row-sized container — walking
+to the page root opened another teacher's dialog (no write occurred; see the footprint ledger).

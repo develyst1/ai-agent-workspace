@@ -62,6 +62,43 @@ the suite: **tsc 0 · 437/0**.
 
 **FE half (reason prompt + surface the stored reason) is @Fern's.**
 
+## FE half — BLOCKED (Fern 2026-08-04): the task assumes a cancel UI the FE doesn't have + a DTO gap → @Sober
+Investigated before building. Two concrete blockers — routing to you rather than guessing where a brand-new
+cancel surface lands on the just-`TEST_PASSED` plan modal:
+1. **There is NO cancel-booking action anywhere in the FE today.** `BookingModal` has confirm/attend/sick-leave
+   only; there's no `cancelBooking` in `scheduler.service.ts`/`useScheduler.ts`, no `action:"cancel"` call
+   (grep-clean). So this isn't "add a reason to the existing cancel" — it's **adding the cancel capability**.
+   **Where should it live?** My proposal: the **plan modal** (TASK-099) — delivered rows (currently read-only for
+   edit/move, correctly) gain a **"cancel (with reason)"** action; non-delivered rows get a plain cancel (re-owes,
+   no reason). That's consistent with §11 ("opens only the cancel-with-reason door"; edit/move stay blocked). OK,
+   or should cancel live in the calendar/BookingsTable instead?
+2. **"Surface the stored reason where cancellations are shown" isn't reachable from the plan modal.** The plan
+   **session DTO (`toSessionRow`) has no `note`/`reason`** — only `{id,date,startTime,status,teacher,subject}`. The
+   reason is on the full `BookingDTO.note` (calendar/bookings-table have it), but the plan rows don't. So either
+   (a) @Jason adds `note` to `toSessionRow` so I can show the reason on a cancelled plan row, or (b) the reason is
+   surfaced only in the booking views that already carry `note` (which is also where a cancel button might belong).
+   Please decide (1)+(2) together — they're the same "where does cancel live" question.
+- **Ready to build immediately** once you confirm placement; the BE (`cancel` + reason-gate + `CANCEL_AT_CEILING`)
+  is DONE, so it's a focused FE add. Set FE `BLOCKED (waiting: Sober)`.
+
+### ✅ Sober decision (2026-08-04) — UNBLOCKED, and it's smaller than it looked
+Good investigation — routing before guessing was right. Both answered:
+1. **Placement → the PLAN MODAL (your proposal, confirmed).** Add a `cancelBooking(id, reason?)` service call (the
+   BE `updateBookingStatus` cancel action) and wire it in `PlanModal`:
+   - **Delivered rows** (ATTENDED/NO_SHOW, currently read-only for edit/move) → a **"ยกเลิกคาบ (ระบุเหตุผล)"**
+     action that prompts for a **required reason**, then cancels. Empty reason → the BE 400s `REASON_REQUIRED`; show it.
+   - **Non-delivered LIVE rows** (PENDING/CONFIRMED/EXTENDED) → a plain **"ยกเลิกคาบ"** (no reason; the BE re-owes).
+   - Edit/move of delivered stay blocked (unchanged). Consistent with §11 "opens only the cancel-with-reason door."
+   - After a cancel, the plan refetches → the cancelled row drops out and the re-owed makeup appears (BE already does this).
+2. **Surfacing the stored reason → DEFER (no DTO change now, not a 3-day-core item).** A **cancelled session leaves
+   the plan** (CANCELLED isn't LIVE/DELIVERED → filtered out; the makeup replaces it), so there is **no plan row to
+   show the reason on** — surfacing it belongs to a **booking-history / calendar** view (where cancelled bookings
+   are listed, which already carries `note`), and that's **post-go-live**. So **do NOT** add `note` to `toSessionRow`
+   for launch. The core AC — *cancel-with-reason works and the reason is stored/audited* — is met by the BE gate +
+   the prompt. **No @Jason dependency; build now.**
+
+So 105-FE core = **the cancel action + the required-reason prompt in the plan modal.** Small, no BE change. **GO.**
+
 ## 🟡 Small follow-up (Porter ruling 2026-08-04) — @Jason: clearer ceiling-on-cancel message
 The owner accepted the ceiling-edge (keep `override`; the real fix is REQ-036). One ask: the message must **not say
 "extension" on a cancel**. Today the re-owe append throws the generic `EXTENSION_CEILING` ("คอร์สขยายเกินสัปดาห์ที่
@@ -70,3 +107,36 @@ N ไม่ได้"), which is confusing on a *cancel*.
   the re-owe is re-thrown with a **cancel-specific** reason, e.g. *"ยกเลิกคาบนี้ไม่ได้ — คอร์สขยายเต็มสัปดาห์ที่ N
   แล้ว ไม่มีที่ให้คาบทดแทน (ใช้สิทธิ์แอดมินปลดล็อก)"*. Keep the generic message for the plan-editor extend/append path.
 - Small; not go-live-blocking. The full behavioural fix (shrink a course) is REQ-036.
+
+## FE half — DONE → REVIEW (Fern 2026-08-04, per your placement decision)
+Built exactly as ruled — cancel-with-reason in the plan modal, reason-surfacing deferred (no DTO change).
+- `services/scheduler.service.ts`: `cancelBooking(id, reason?)` → `PATCH /bookings/:id/status {action:"cancel", reason?}`
+  + mock stub. Hook `useCancelBooking` (→ `invalidateAll`, so the plan refetches → cancelled row drops, makeup appears).
+- `PlanModal` (edit mode only): a per-row **cancel** action + `CancelSessionDialog`:
+  - **Delivered rows** (ATTENDED/NO_SHOW — edit/move stay blocked) → "ยกเลิกคาบ" → dialog with a **required reason**
+    (client-guarded + the server's `REASON_REQUIRED` shown inline if it slips through).
+  - **Live rows** (PENDING/CONFIRMED/EXTENDED) → plain "ยกเลิกคาบ" → dialog confirms (no reason; note: re-owes a makeup).
+  - The dialog surfaces the server's exact refusal **inline** (`REASON_REQUIRED` / `CANCEL_AT_CEILING` / clash) and
+    stays open so nothing is silently dropped. Create mode has no cancel (preview rows aren't bookings).
+- i18n `plan.cancel*` (en + th). **Surfacing the stored reason DEFERRED** per your call (a cancelled session leaves
+  the plan; belongs to a post-go-live booking-history/calendar view; no `toSessionRow` change).
+- Verified: `bunx tsc --noEmit` 0 · `bun run build` 0. ⚠️ Live render sid-gated (not driven); the cancel button
+  sits in the existing plan-table actions cell (already `Table.ScrollContainer`) → no new 4-width item.
+- **@Sober: FE ready for review.** Note: this is the intended relaxation of TASK-099's "delivered rows read-only"
+  (edit/move still blocked; cancel-with-reason is the newly-opened door) — worth a QA line since Tanya passed the
+  read-only behaviour.
+
+## FE Review — DONE ✅ (Sober 2026-08-04) — 🎉 completes the REQ-030 core FE
+Code-verified (`CancelSessionDialog` + `cancelBooking` + the PlanModal wiring); ran **tsc 0** myself.
+- **Built exactly to the placement decision:** `cancelBooking(id, reason?)` → the BE `action:"cancel"`; delivered
+  rows send the reason (`delivered ? reason.trim() : undefined`) with a **client-guard + the BE `REASON_REQUIRED`
+  surfaced inline**; live rows plain-cancel; **edit/move of delivered stay blocked** (`:285`). Refusals
+  (`REASON_REQUIRED`/`CANCEL_AT_CEILING`/clash) keep the dialog open — nothing dropped, input kept. On success the
+  plan refetches → cancelled row drops, makeup appears.
+- **Reason-surfacing correctly deferred** (no `toSessionRow` change). Create mode has no cancel (right — preview rows
+  aren't bookings). No new shared-row control (button in the existing `ScrollContainer` actions cell).
+- **TASK-105 fully DONE (BE + FE).**
+- 📌 **QA flag routed (@Porter → Tanya):** delivered rows are no longer *fully* read-only — **edit/move still blocked,
+  but cancel-with-reason is now allowed.** Tanya passed the read-only behaviour, so her re-check should confirm:
+  edit/move of a delivered row still refuses, AND the new cancel-with-reason works (empty reason → refused; with
+  reason → cancels + a makeup appears). Good proactive flag by Fern.
