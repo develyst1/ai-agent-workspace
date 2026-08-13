@@ -76,3 +76,4 @@ then edit the team names in the role files if you want different personas.
 | `develyst-ai` | Develyst AI Gateway — Bun+Hono multi-provider AI API (single backend repo) | Porter (PM), Sober (SA Lead), Jason (BE) |
 | `manager-gold` | TBD — awaiting first requirement (full-stack: Node/Bun backend + Next.js frontend, 2 repos at `H:\manager-gold`) | Porter (PM), Sober (SA Lead), Jason (BE), Fern (FE) |
 | `DID-046-SpringBoot-Service-Report` | Spring Boot service generating Thai govt PDF permit docs (weapons-factory forms อ.1/อ.3/อ.6/อ.7) via JasperReports from Oracle DIDPERMIT. Code repo at `C:\Users\Admin\sa-project\service-report2\DID-046-SpringBoot-Service-Report` | Porter (PM), Sober (SA Lead), Jason (BE), **Tanya (QA — trial)** |
+| `api-linkage2` | Four Thai govt API linkage/proxy services (DOPA, DGA, RD, IEAT) — JWT check → upstream token exchange → forward → log. Code repo at `C:\Users\Admin\sa-project\api-linkage2` | Porter (PM), Sober (SA Lead), Jason (BE) |

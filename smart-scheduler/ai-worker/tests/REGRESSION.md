@@ -176,3 +176,42 @@ and the page shows no horizontal scrollbar to hint at it.
 
 **Escaped-defect case added:** a QA harness must scope DOM row-targeting to a row-sized container — walking
 to the page root opened another teacher's dialog (no write occurred; see the footprint ledger).
+
+## Verified on `sid` 2026-08-10
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S22 | A voucher booking carries and DISPLAYS its class/subject — API rows all populated, Subject column filled in the bookings table, and per-session in the voucher plan modal | REQ-029 / REQ-038 #4 | D | ✅ 2026-08-10 |
+| S23 | The plan modal renders the **voucher** shape for a voucher: `kind=voucher`, hours summary, `insertable=false`, **only** an Edit action (no Insert / Mark absence / Add extra), and the "one at a time (no make-up chain)" note | REQ-030 | D | ✅ 2026-08-10 |
+| S24 | 🔴 The timetable page (`/scheduler/calendar`) offers a **student search** — **currently FAILS**: teacher/type/badge filters only (DEF-2, essential-set #3, unbuilt) | REQ-038 #3 | D | 🔴 **FAIL 2026-08-10** |
+
+**Mapping trap added by DEF-2:** "REQ-x is DELIVERED" does not prove a *derived* customer item is done —
+REQ-011 delivered student search **in the booking modal**, which is not the same screen as the timetable.
+Verify derived items at runtime, on the screen the customer named.
+
+## Verified on `sid` 2026-08-10 (afternoon deploy)
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S25 | `GET /courses/:id/history` returns `{courseId, summary, events}`, the modal renders dated entries with teacher/subject, **no raw i18n key leaks** (`kindNo-show` style), and the "who isn't tracked yet" note is shown | REQ-038 #5 / TASK-119+120 | D | ✅ 2026-08-10 |
+| S26 | The calendar course-picker labels each of a student's courses with subject + used/size | REQ-038 #2 / TASK-121 | D | ✅ 2026-08-10 |
+| S27 | The voucher program picker omits every group outside `voucherAllowedGroups`; an unclassifiable program stays selectable and the server refuses it (`409 VOUCHER_PROGRAM_EXCLUDED`) | REQ-027(b) / TASK-107 | D | ✅ 2026-08-10 |
+| S28 | "Record rental" opens the standalone rental form from the All-bookings tab | REQ-028 / TASK-109 | D | ✅ 2026-08-10 |
+| S29 | A setting can be overridden and **reset** back to its default (`isOverridden` returns to false) | REQ-031 / TASK-102+122 | D | ✅ 2026-08-10 |
+
+**Harness rule learned 2026-08-10:** derive an expected set from the server's own contract
+(`voucherAllowedGroups`), never from a name regex — `/balance/i` matched "Balance **Cruiser**", an allowed
+program, and produced a false FAIL. A red result from QA must survive checking before it is reported.
+
+## Verified on `sid` 2026-08-10 (evening — scheduler-front deploy)
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S24 | 🔁 **now PASSES** (was FAIL this morning): the timetable page offers a **student search** that filters the visible schedule — week view 6→2, case-insensitive, nonsense query → 0 cells, clear restores, and it applies in the **day** view too | REQ-038 #3 / TASK-124 | D | ✅ 2026-08-10 |
+| S30 | The calendar filter row holds **four** controls without collapsing at 1600/1280/768/375 (wraps 2→3→4 lines, narrowest 115 px, no page overflow) | STANDING RULE / TASK-124 | D | ✅ 2026-08-10 |
+| S31 | When one student holds two same-program courses, the picker distinguishes them (expiry tiebreaker) | OBS-5 / TASK-125 | D | ✅ 2026-08-10 |
+
+**Second harness rule learned 2026-08-10:** read UI cells format-agnostically — the week grid renders
+`10:00 | Student` while the day grid renders `Student | Subject | TYPE` with no time, so a time-anchored
+regex reports an empty day grid and looks like a product defect. And count only what the UI actually
+paints (cancelled bookings are not drawn) before claiming the grid is missing rows.

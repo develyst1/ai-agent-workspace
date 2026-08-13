@@ -1,6 +1,6 @@
 # TASK-120: scheduler-front (FE) — "ประวัติการตัดคอร์ส" history timeline on the course card
 - Source: SPEC-035 (REQ-038 #5)
-- Status: REVIEW (TASK-119 DONE — endpoint delivered)
+- Status: DONE ✅ (SA-reviewed 2026-08-04 — tsc 0 reproduced; read-only server-rendered timeline, all 9 kind labels present EN+TH (checked the hyphen-key transform `kindNo-show`/`kindMakeup-appended` resolves), actor "who not tracked" note shown, hook guards null id. Closes essential-set #5 build.)
 - Depends on: TASK-119 (`GET /courses/:id/history`) — DONE
 - Assignee: @Fern (smart-scheduler-front)
 

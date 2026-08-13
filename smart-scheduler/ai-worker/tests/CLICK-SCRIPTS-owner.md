@@ -142,3 +142,95 @@ check and its count. What can't be verified from a browser is what actually land
    - ❌ **Fail:** a duplicate arrives. ⚠️ Skip this step if you'd rather not; steps 1–3 are the important ones.
 5. **Tell Porter:** the time the message arrived, whether it was one or several, and whether the counts
    matched the panel. A screenshot of the LINE message beside the panel answers all three at once.
+
+---
+
+# Script 6 — CUSTOMER-PROD post-deploy smoke (2026-08-11 deploy)
+
+> **Why this is a click-script and not a QA run:** the target is
+> **`frontoffice.develyst.online` — the customer's production server.** My role card says production is
+> never mine (*"not read, not write, not 'just a GET'"*), and TASK-090's `mint-session.mjs` refuses that
+> host on purpose. So this is written for the owner (or whoever holds prod), the same way Scripts 1–5 were.
+> **Everything below was already accepted on `sid` against the same build** — so this is a
+> *did-the-deploy-land* check, not a fresh feature test. It should take ~10 minutes.
+>
+> **Rules while running it:** don't create data you won't remove; don't touch rows you didn't create; and
+> **do not trigger anything that sends LINE messages** (no digest run, no teacher-link approval) — those
+> reach real people.
+
+**Report back to Porter:** for each numbered step, just ✅ or ❌ + a screenshot if ❌.
+
+---
+
+## A. It's the new build at all (30 seconds — do this first; if A fails, stop)
+
+1. Open **`/scheduler/calendar`**.
+   - ✅ **Expected:** the filter row shows **FOUR** controls: **Find student** · Teacher · Type · Badge.
+   - ❌ **Fail:** only three (Teacher / Type / Badge) → the frontoffice front build did **not** land. Stop and tell Porter.
+
+## B. REQ-038 #3 — the student search (the newest feature)
+
+2. Type part of a student's name into **Find student**.
+   - ✅ Only that student's sessions stay on the grid; everyone else's disappear.
+3. Type nonsense (e.g. `zzzz`).
+   - ✅ The grid goes **empty** (it really filters — it doesn't ignore the box).
+4. Clear the box (the ✕).
+   - ✅ The full schedule comes back.
+5. Switch **Weekly → Daily** and repeat step 2 on a day that has sessions.
+   - ✅ The day grid filters the same way.
+6. **Width check** — make the browser window **narrow** (about half your screen), then very narrow.
+   - ✅ The four controls **wrap onto more lines** and each stays a normal, usable width.
+   - ❌ **Fail:** any control squeezes to a thin sliver (a few characters wide) or the page scrolls sideways.
+   - *(Measured on `sid`: 4 controls, wrapping 2 → 3 → 4 lines, narrowest 115 px, no sideways scroll.)*
+
+## C. REQ-038 #5 — deduction history
+
+7. **Bookings / Students** → Courses tab → on any course card press **History**.
+   - ✅ A **Deduction history** panel opens with `Used / Leave used / Remaining / Ends` and a dated list of
+     what happened to that course.
+   - ✅ At the bottom: *"Who made each change isn't tracked yet — the branch shares one login."*
+   - ❌ **Fail:** the panel is empty on a course that clearly has activity, or you see odd code-like text
+     such as `kindNo-show` instead of "No-show".
+
+## D. The rest of the set (quick looks)
+
+8. **#2 — course picker:** calendar → click an empty slot → **Weekly course** tab → search a student who has
+   a course. ✅ Each course appears as its own line showing the subject and progress (e.g. `(1/4)`).
+9. **#4 — voucher shows its class:** Bookings / Students → **All bookings** → set Type = **Voucher**.
+   ✅ Every voucher row has a **Subject** filled in (not blank, not "—").
+10. **#107 — voucher exclusions:** calendar → empty slot → **Voucher** tab → open the **Program** list.
+    ✅ **Onewheel** and **Balance Play** are **not** offered.
+11. **#109 — rental:** Bookings / Students → **All bookings** tab → **Record rental**.
+    ✅ A form opens asking for Equipment + Hours. **Press Cancel — do not record one.**
+12. **#102/122 — settings:** open **Settings** in the left menu.
+    ✅ The two rules are listed with their values (teacher-change notice 3 days · check-in 30 minutes).
+    ⚠️ **Please don't change them here** — the override/reset path was already proven on `sid`.
+
+## E. REQ-030 / REQ-037 — the plan editor (⚠️ this one writes data)
+
+> Steps 13–15 **create and change bookings**. The customer's env has master data but **no real bookings
+> yet**, so the safe way is: use a course you are happy to edit, and undo what you can.
+> **If you'd rather not touch it, skip E entirely and tell Porter "E skipped"** — this exact behaviour was
+> fully accepted on `sid`, so skipping it costs little.
+
+13. Course card → **Manage plan**. ✅ The session table opens with a summary line (size · leave · end date).
+14. Press **Edit** on one row, change the time, **Save**.
+    ✅ A **"Your plan will become…"** preview appears **before** anything is saved, listing the resulting
+    sessions and the new end date. Confirm it → the row moves.
+    ❌ **Fail:** it saves immediately with no preview.
+15. Find a session already marked **attended** (if none exists, skip).
+    ✅ It shows **"Attended — locked"** with **no** Edit / Mark absence, but it **does** offer **Cancel**;
+    pressing Cancel asks for a **reason (required)** before it will proceed. Press *Cancel* on the dialog
+    to back out — you don't need to actually cancel anything.
+16. **"เพิ่มคาบ (คิดเงิน)" / Add extra (charged)** — just confirm the button is **there and visibly
+    different** (purple, beside the blue "Insert make-up"). ✅ Don't press it.
+
+---
+
+## What to send Porter
+
+- A ✅/❌ per numbered step (steps 1–12 at minimum; 13–16 optional).
+- Any screenshot where you answered ❌.
+- Whether you skipped section E.
+
+That's everything QA needs to convert the `sid` verdicts into DELIVERED for the customer env.

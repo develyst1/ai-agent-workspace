@@ -101,6 +101,18 @@ SELECT * FROM T_T_REQUEST_DOC
 - `ID_CARD_NO` → detail "เลขที่"; `ID_CARD_EXPIRY_DATE` → detail "วันหมดอายุ"
 - doc `DOCUMENT_ID=102` (บัตรประชาชน) + file → **idCard ☐✓**; `103` (ทะเบียนบ้าน) + file → **houseReg ☐✓**
 
+### 7d. Item 8 "เอกสารอื่น ๆ (ถ้ามี)" line — STATIC, no query
+The last sub-row under item 8 is **hardcoded** in `buildEvidences` (not from any table):
+```java
+employerSubs.add(new EvidenceSub("employer", null,
+    "เอกสารอื่น ๆ (ถ้ามี) ....................", null, null, false, null));
+```
+- **No SQL, no `T_S_REQUEST_CHECKLIST` SEQ, no `T_T_REQUEST_DOC`.** Fixed dotted-line label
+  for manual write-in; `checked` is hardcoded **`false` → always unticked**.
+- ⇒ There is **no row/field the human can edit** to tick it — it is always empty by design.
+  Making it data-driven would be a new REQ.
+- (Item 8's real sub-rows (1)–(4) = master SEQ6–9 → IDs 94/95/96/97, ticked per #7b like items 1/2/5/6/7.)
+
 ### 8. Component annex table — `buildComponents(:req)`
 ```sql
 SELECT * FROM T_T_REQUEST_DTL WHERE REQUEST_ID = :req ORDER BY ITEM_NO ASC;

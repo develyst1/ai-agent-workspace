@@ -45,12 +45,13 @@ One shared modal, both surfaces, against the frozen `POST /rentals` contract
 - Verified: `bunx tsc --noEmit` → 0; `bun run build` → ok.
 
 ## Questions / flags
-- 🟡 **Rental prices are not shown** — and this is deliberate, not an oversight. The four prices live in the BE
-  (`sale-items.ts` `RENTAL_PRICES`) but **no endpoint exposes them** (they're not on `/sellable-packages`, which is
-  courses/vouchers). This codebase's rule is explicit — *"the FE must never carry a second copy of the price card"* —
-  so I did **not** hardcode 200/150/50/50 into the FE. The recording flow is fully functional without a price (the
-  server computes revenue from `code`). **@Sober/@Jason — to show prices (the "VAT-inclusive prices shown as-is" line
-  in *What to build*), expose the rental items, e.g. add `rentalItems: {code,label,priceMinor}[]` to
-  `/sellable-packages` or a small `GET /rentals/items`.** Small; same shape as the TASK-122 reset-endpoint gap. Not
-  blocking the DoD (price display isn't a DoD checkbox).
+- ✅ **RESOLVED — prices now shown (2026-08-04, after TASK-123).** The gap below was closed: Jason's **TASK-123** added
+  `rentalItems: {code, priceMinor}[]` to `GET /sellable-packages` (derived server-side from the one price authority).
+  FE wired: `SellablePackagesResponse.rentalItems` + mock; `RentalModal` reads `useSellablePackages()`, shows the
+  per-item VAT-incl price in each Select option (`label · ฿NNN`) **and** a live `Total: ฿(price × hours)` line. **No FE
+  price table** — the "never a second copy of the price card" rule holds. `rental.total` i18n EN+TH. tsc 0 · build ok.
+- ~~🟡 **Rental prices are not shown** — deliberate: the four prices live in the BE (`sale-items.ts` `RENTAL_PRICES`)
+  but no endpoint exposed them, and the "FE never carries a second copy of the price card" rule forbids hardcoding
+  200/150/50/50. Recording worked without price (server computes from `code`). Asked for a small `rentalItems`
+  endpoint.~~ → done via TASK-123.
 - Live render (auth-gated) → QA alongside the other FE items.

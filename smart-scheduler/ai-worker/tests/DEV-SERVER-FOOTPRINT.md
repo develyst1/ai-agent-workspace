@@ -68,3 +68,54 @@ written. **No token, cookie or secret was written to disk or printed.**
 | 🔴 **Near-miss, declared:** a first harness attempt opened the **type-change dialog on teacher `Bank`** (wrong row) and pressed Save with the type unchanged | `sid` | ✅ **nothing written** — the FE returns early when the type is unchanged; verified directly: Bank is still FULL_TIME. Harness fixed so it cannot leave a row again |
 | Dry-run previews (`/plan/preview`) — many | `sid` | ✅ by design: the transaction is rolled back, nothing persists |
 | No LINE message sent · no other person's row modified · production (`frontoffice.develyst.online`) never touched | — | — |
+
+## 2026-08-10 (Tanya) — REQ-038 verify rounds: read-only apart from one reversible settings round-trip
+
+| What | Where | Removed? |
+|---|---|---|
+| Morning round (#3 / #4 / voucher plan shape) | `sid` | ✅ **nothing created** — every check was a read |
+| Afternoon round (#5 acceptance, #2 spot-verify, fast-follow smoke) | `sid` | ✅ read-only except the two rows below |
+| `teacher_change_notice_days` overridden 3 → 5 to exercise TASK-122's reset | `sid` settings | ✅ **RESET; verified back to `value:3, isOverridden:false`** — the environment is exactly as I found it |
+| One voucher-booking attempt on `1st Trial` (expected refusal) | `sid` | ✅ nothing created — **409 `VOUCHER_PROGRAM_EXCLUDED`** |
+| No teacher/roster write · no LINE message · production never touched | — | — |
+
+## 2026-08-10 evening (Tanya) — #3 acceptance: READ-ONLY
+
+Filtering and pixel measurement only. **Nothing created, nothing modified, no LINE message.** The settings
+override from the afternoon round remains reset (`teacher_change_notice_days = 3, isOverridden=false`).
+
+## 2026-08-11 (Tanya) — customer-prod: NO CONTACT
+
+The post-deploy smoke was routed to QA on **`frontoffice.develyst.online` (production)**. I did not run it
+and **made no request of any kind to that host — not a page load, not an API call, not a status check.**
+Reason: `QA.md` ("Production — never; not read, not write, not 'just a GET'"), the workspace QA rule, and
+TASK-090's built-in `PRODUCTION_HOSTS` refusal, **which I did not modify or bypass**. Delivered
+`CLICK-SCRIPTS-owner.md` **Script 6** for the owner instead. No footprint anywhere this session.
+
+## 2026-08-11 (Tanya) — customer-prod PHASE 1: authorized, and ZERO footprint
+
+Ran under the human's in-session authorization. Access via the app's **own login form**;
+`mint-session.mjs` was **not run, not edited, not bypassed**.
+
+| What | Where | Removed? |
+|---|---|---|
+| Reads: students / courses / vouchers / bookings / teachers / settings / sellable-packages | customer-prod | ✅ nothing created |
+| Calendar filter-row width measurement at 1600 / 1280 / 768 / 375 | customer-prod | ✅ read-only |
+| Voucher Program picker opened (never submitted) · rental form opened then **Cancelled** (never recorded) · settings screen viewed (**no override on prod**) | customer-prod | ✅ nothing written |
+| **#2 / #4 data — deliberately NOT created.** The app has no delete for students/parents/courses/vouchers/bookings, so the "remove what you create" condition could not be met. Held for a decision. | — | n/a |
+| No LINE message · no teacher-change flow · no row touched that QA did not create (QA created none) | — | — |
+
+## 2026-08-11 (Tanya) — customer-prod PHASE 2 + SECTION E: data created, **cleanup waived by the human**
+
+The human approved creating QA-owned data for #2/#4 and **explicitly waived cleanup** — he will re-run the
+reset to return prod to a clean slate. The app has no delete for these rows in any case (only
+booking-cancel and parent-suspend), which is why the waiver was needed.
+
+| What | Where | Removed? |
+|---|---|---|
+| Parent + student **`QA-prod-student`** (`QA-prod`, phone 0900000092) | customer-prod | ❌ by agreement — reset to follow |
+| **2 course packages** (Bike / Scooter / Balance Cruiser · Surfskate), 4 sessions each | customer-prod | ❌ by agreement |
+| **1 voucher** (5 h) + **1 voucher booking** | customer-prod | ❌ by agreement |
+| Section-E edits **on those rows only**: 1 move, 1 planned absence (+ appended make-up), 1 insert, 1 live cancel, 1 delivered-then-cancelled-with-reason, 1 extra paid session (cancelled) | customer-prod | ❌ by agreement |
+| Full id list for the reset to verify against | `../project-docs/qa-prod-2026-08-11/phase2-created.json` | — |
+| **No LINE message · no teacher-change flow · no row touched that QA did not create · TASK-090 guard untouched** | — | — |

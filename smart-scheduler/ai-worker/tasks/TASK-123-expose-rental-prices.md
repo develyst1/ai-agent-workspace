@@ -1,7 +1,7 @@
 # TASK-123: scheduling (BE) — expose rental item prices on `GET /sellable-packages`
 
 - Source: SPEC-031 (REQ-028 rental) — surfaced by @Fern while building TASK-109 (rental FE)
-- Status: GREENLIT → @Jason (SA call, 2026-08-04 — API-shape decision, backend owns the price card)
+- Status: DONE ✅ (SA-reviewed 2026-08-11 — tsc 0 reproduced; BE `rentalPriceList()` derives from the single `RENTAL_PRICE` authority (`sale-items.ts:130`, no second copy), exposed on `/sellable-packages` (`scheduler.service.ts:888`); FE `RentalModal` reads `card.rentalItems` (no hardcoded prices), shared `formatPriceMinor`, Total = `priceMinor×hours`. Closes the TASK-109 price-display gap.)
 - Depends on: — (extends the delivered `/sellable-packages` payload)
 - Assignee: @Jason (smart-scheduler-back)
 

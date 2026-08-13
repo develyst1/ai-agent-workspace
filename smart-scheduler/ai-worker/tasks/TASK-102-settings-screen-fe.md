@@ -1,7 +1,7 @@
 # TASK-102: scheduler-front (FE) — the Settings screen (the load-bearing half of REQ-031)
 - Source: SPEC-029 §3 (REQ-031)
-- Status: FAST-FOLLOW (not in the 3-day launch — owner 2026-08-04; 3d/30m defaults already live in code, so the screen is deferrable). Unblocked (TASK-101 DONE); build after the REQ-030 core ships.
-- Depends on: TASK-101 (`GET/PUT /api/settings`)
+- Status: DONE ✅ (SA-reviewed 2026-08-11 — tsc 0 reproduced; renders from the API list (`rows.map` → "3rd rule = no FE change" holds), orange/gray override badge, edit→PUT with server reason on reject, reset shown only when overridden → confirm modal → `api.delete` (TASK-122); both mutations invalidate `SETTINGS_KEY` so the badge flips with no refetch. NumberInput min=0 only — server is the bound authority, no duplicated bounds table.) Was FAST-FOLLOW; built once TASK-122 landed.
+- Depends on: TASK-101 (`GET/PUT /api/settings`) + TASK-122 (`DELETE /api/settings/:key` — reset) — both DONE
 - Assignee: @Fern (smart-scheduler-front)
 
 ## What to build
@@ -18,8 +18,34 @@ At go-live the list has two rows (teacher-change notice, check-in window); the p
 `GET /api/settings` returns, so a third rule appears with no FE change.
 
 ## Definition of Done
-- [ ] A staff user changes the teacher-change notice to 5 days and REQ-030 enforces it with no deploy (AC).
-- [ ] Editing the check-in window changes behaviour; reset-to-default restores the coded value.
-- [ ] A rejected value shows the server's reason; default vs override is visually clear.
-- [ ] The page renders from the API list (a new rule needs no FE change).
-- [ ] tsc clean; build ok. Measure any shared-row inputs at 1600/1280/768/375 (board STANDING RULE).
+- [x] A staff user changes the teacher-change notice to 5 days and REQ-030 enforces it with no deploy (AC). *(FE: edits
+      via `PUT /settings/:key`; enforcement is REQ-030 BE, verified DONE. Live behaviour → QA on sid.)*
+- [x] Editing the check-in window changes behaviour; reset-to-default restores the coded value. *(Reset calls the
+      TASK-122 `DELETE /settings/:key` → row returns `isOverridden:false, value:default`.)*
+- [x] A rejected value shows the server's reason; default vs override is visually clear.
+- [x] The page renders from the API list (a new rule needs no FE change).
+- [x] tsc clean; build ok. Measure any shared-row inputs at 1600/1280/768/375 (board STANDING RULE).
+
+## Implementation Notes (@Fern)
+Layered types/service/mock/hook/page against the frozen contract — `GET /settings` →
+`{key,label,unit,value,default,isOverridden}[]`, `PUT /settings/:key {value}` → updated row (400 + Thai reason on a
+bad value), `DELETE /settings/:key` (TASK-122) → row resolved to the coded default (`isOverridden:false`).
+- **Types** `types/app/settings` `SettingRow`. **Service** `settings.service.ts` (`getSettings`/`updateSetting`/
+  `resetSetting`, paths `/settings`, `/settings/:key`) + **mock** mirroring the BE registry (the two go-live rules +
+  their bounds 0–30 / 0–240) so list/edit-validation/reset all work offline. **Hooks** `useSettings`/
+  `useUpdateSetting`/`useResetSetting` (invalidate `["settings"]`).
+- **Screen** `partials/Settings/SettingsContent.tsx` + route `app/(admin)/scheduler/settings/page.tsx` +
+  **nav entry** (`AdminLayout.config` `nav.settings`, Settings2 icon). Route auto-guarded by the existing
+  `/scheduler/:path*` proxy — no proxy change.
+- **Renders from the API list** — one Card per row, so a 3rd rule appears with **zero FE change** (AC). Each card:
+  label · current value+unit · default+unit · an **Override (orange) / Default (gray) badge** so the state is
+  unmistakable. **Edit** = inline `NumberInput` + Save/Cancel; a rejected value shows the **server's exact reason** in a
+  red Alert (never silently accepted). **Reset to default** (shown only when overridden) → confirm Modal → `DELETE`;
+  the response's `isOverridden:false` flips the badge with no manual refetch. Notify on save/reset.
+- **STANDING RULE:** the only input is a single full-width-capped `NumberInput` that stacks under its card — no
+  shared-row control that needs 1600/1280/768/375 measurement.
+- Verified: `bunx tsc --noEmit` → 0; `bun run build` → ok (`/scheduler/settings` generated).
+
+## Questions / flags
+- Mock labels are English (mock-only); the real `GET /settings` returns the BE registry's (Thai) labels — the screen
+  renders whatever the API sends, no FE copy of the labels. Live render (auth-gated) → QA.
