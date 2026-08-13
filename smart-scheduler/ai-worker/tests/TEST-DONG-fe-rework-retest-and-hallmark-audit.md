@@ -1,6 +1,6 @@
 # TEST-DONG: FE rework retest + `hallmark audit` — `smart-scheduler-front@dong`
 - Source: `neeeeroooo` commits **`63f734d`** (responsive tables + pinned columns) + **`7f9456e`** (hallmark skill), graded against **`FRONTEND-STANDARD.md`**
-- Status: **Functional retest `TEST_PASSED`** (3 misses, all minor-to-major, none blocking) · **hallmark verdict: `close, fix the minors`** — but **two §3 DoD gates formally fail**, so by our own standard it is not "done" yet
+- Status: **Round 1** — functional retest `TEST_PASSED`; hallmark `close, fix the minors`; §3.3 + §3.5 failing. · **Round 2 (REQ-041 fixes)** — **TASK-129 `TEST_PASSED`** · **TASK-128 `TEST_FAILED` on DEF-3** (the token migration silently disabled Tailwind's opacity modifier at 6 sites; 4 visibly regressed). §3.3 + §3.5 now genuinely pass.
 - Environment: **local**, branch `dong`, `next dev` in mock mode (`localhost:3016`). **Nothing on any server.**
 - Tested: 2026-08-11 by Tanya
 
@@ -124,3 +124,94 @@ cheap ones and would clear both gates.
    carries Thai. Worth the owner's eye before anyone implements it.
 2. **@Porter — R-4 (bulk confirm) stayed unexercised** because the filtered set had no selectable rows. If
    you want it covered I'll run it on a pending-only set; it is unrelated to this rework.
+
+---
+
+# ROUND 2 — REQ-041 verification (TASK-128 tokens/motion + TASK-129 polish), 2026-08-11
+
+Ran locally on `dong`. **Note: Fern's work is uncommitted** — 36 modified files in the working tree, HEAD
+still at `7f9456e`. So this verdict covers the working tree, not a commit. Harnesses:
+`local-req041-verify.mjs`, `local-req041-precise.mjs`, `local-alpha-modifier-probe.mjs`,
+`local-alpha-cssom.mjs`, `local-alpha-regression-sites.mjs`. Evidence: `../project-docs/qa-dong-2026-08-11/`.
+
+## What is fixed — verified
+
+| # | Item | Measured | Result |
+|---|---|---|---|
+| V-1 | **§3.5 gates** — inline hex · `transition-all` · `font-family` · residual `-default-N` · dead `font-num` | **all five greps = 0** | **PASS** |
+| V-2 | **§3.3 focus ring instant** | 12 controls sampled: **0** animate the ring. Nav links transition `color, background-color, border-color…` at 0.15 s — explicit properties, exactly the fix — and the one `all` seen carries `duration: 0s`, so it animates nothing | **PASS** |
+| V-3 | **M-1 dates** — bookings table | `iso = 0`, 10 cells now read **`13/Aug/26`** | **PASS** |
+| V-4 | **M-2 tabular-nums** — was 0/20 | **20/20** numeric cells | **PASS** |
+| V-5 | **H-8 status shape** | chips now carry icons, `aria-hidden="true"` so the text label stays the accessible name | **PASS** |
+| V-6 | **M-3 / H-9 hit target** | Voucher "Manage" at 375 → **h = 44 px**, reachable | **PASS** |
+| V-7 | **the date FILTER still queries** (the risk in swapping a date renderer) | preset "This month" → **10 rows** returned | **PASS** |
+| V-8 | **the 63f734d rework survives the token swap** | pinned = 11 all `sticky`, truncated badges 0, clipped cells 0, no page h-scroll — at 375 / 768 / 1280 | **PASS** |
+| V-9 | **DEF-1 stays closed** | reachable at 375 | **PASS** |
+
+### Correction to my own earlier reading (§3.3)
+My first run flagged the focus ring as animated because the computed `transition-property` was `all`. That
+was **my error**: the same element's `transition-duration` was **0 s**, so nothing animates. The question is
+whether it *animates*, not what the property list says. Re-measured across 12 controls: **0 animated**.
+§3.3 passes. I'd rather correct myself here than let a false FAIL travel.
+
+## 🔴 DEF-3 — the token migration silently disabled every Tailwind opacity modifier — **MAJOR**
+
+**This is a real visual regression, and it contradicts TASK-128's "zero visual delta by construction".**
+
+- **Mechanism (proved, not inferred).** `git diff tailwind.config.ts`: before, colours were **literal hex**
+  (`content1: "#ffffff"`, `default-100: "#f1f5f9"`) — Tailwind can compose an alpha modifier from a hex.
+  After, they are `var(--color-…)`. In Tailwind v3 a bare `var()` colour **cannot** carry `/NN`, so the
+  utility is **never generated**.
+- **Evidence — the generated CSS itself.** Reading the CSSOM for the classes actually used in `src`:
+
+  | class | rule Tailwind emitted | paints |
+  |---|---|---|
+  | `bg-muted-50` | `background-color: var(--color-muted-50)` | `rgb(248,250,252)` ✅ |
+  | `bg-muted-100` | `background-color: var(--color-muted-100)` | `rgb(241,245,249)` ✅ |
+  | `bg-muted-50/40` | **no rule generated** | `rgba(0,0,0,0)` ❌ |
+  | `bg-muted-50/80` | **no rule generated** | `rgba(0,0,0,0)` ❌ |
+  | `bg-muted-100/60` | **no rule generated** | `rgba(0,0,0,0)` ❌ |
+  | `bg-muted-100/50` | **no rule generated** | `rgba(0,0,0,0)` ❌ |
+  | `bg-content1/80` | **no rule generated** | `rgba(0,0,0,0)` ❌ |
+
+- **Affected sites — 6 usages in 5 files:**
+
+  | Site | Class | Before | Now |
+  |---|---|---|---|
+  | `layout/AdminLayout/Header/Header.tsx:27` | `bg-content1/80` | `#ffffff` @ 80 % | **nothing** — 🔴 regression (the app header backdrop) |
+  | `partials/Teachers/TeachersContent.tsx:255` | `bg-muted-100/60` | `#f1f5f9` @ 60 % | **nothing** — 🔴 regression |
+  | `partials/Teachers/TeachersContent.tsx:342` | `bg-muted-100/60` | `#f1f5f9` @ 60 % | **nothing** — 🔴 regression |
+  | `partials/Reports/ReportsContent.tsx:155` | `bg-muted-100/50` | `#f1f5f9` @ 50 % | **nothing** — 🔴 regression |
+  | `partials/Bookings/PlanModal.tsx:269` | `bg-muted-50/40` | nothing (`default-50` never existed) | **still nothing** — ⚠️ not the fix the review predicted |
+  | `partials/Calendar/CalendarWeekGrid.tsx:106` | `bg-muted-50/80` | nothing | **still nothing** — ⚠️ same |
+
+- **Why it matters beyond these 6:** the modifier is silently unavailable for **every future use** of these
+  tokens. The next person writing `bg-muted-200/50` gets no background and no error.
+- **Repro:** open any screen, inject `<div class="bg-muted-50/40">` → `backgroundColor: rgba(0,0,0,0)`;
+  the same div with `bg-muted-50` paints. Harness: `local-alpha-cssom.mjs`.
+- **Not my fix to write**, but the shape is standard: express the vars as channel triplets and reference
+  them with the alpha placeholder — `--color-muted-50: 248 250 252` +
+  `muted: { 50: "rgb(var(--color-muted-50) / <alpha-value>)" }`.
+
+### Correction to the review's expectation, on the record
+SA's 128 review flagged **six newly-defined `muted-{50,700,800,900}` sites** as "no-colour → a colour, so
+Tanya must eyeball them". Measured: the **text** ones do now paint (`RentalModal` price `฿200` at
+`rgb(51,65,85)`, contrast **10.35:1** — comfortably over 4.5) — but the **two `bg-muted-50/…` ones do
+not**, because of DEF-3. The prediction was right about intent and wrong about outcome for 2 of the 6;
+that's exactly what a runtime pass is for.
+
+## Verdict — round 2
+
+**TASK-129 → `TEST_PASSED`** (all four items verified: dates, tabular-nums, status shape, 44 px).
+**TASK-128 → `TEST_FAILED` on DEF-3.** The gates it set out to close (§3.3, §3.5) genuinely **are** closed,
+and the rename is sound — but the migration took a working Tailwind feature away at 6 sites, 4 of which
+visibly regressed. One config-shape change fixes all six at once.
+
+**REQ-041 as a whole: not yet done** — items 1–5, 7, 8 land correctly once DEF-3 is fixed; item 6 (type
+pairing) remains held on the owner's Thai display-face pick.
+
+## Test data created
+
+**None.** Local, mock data, read-only inspection plus two throwaway `<div>`s injected into the page and
+removed in the same evaluation. Dev server stopped afterwards; the product repo is untouched (Fern's
+uncommitted changes left exactly as found).

@@ -32,6 +32,21 @@
     it is an **unverified baseline** seeded from this board's acceptance notes,
     **no line carries a QA verdict yet**. No REQ is `IN_TEST`; nothing has been
     routed to Tanya.
+  - 🔴 **2026-08-11 (Tanya) — REQ-041 verification: TASK-129 `TEST_PASSED` · TASK-128 `TEST_FAILED` on DEF-3.**
+    **Fixed & verified:** §3.5 all five greps = 0 · §3.3 ring instant (12 controls, 0 animated) · dates now `13/Aug/26` (iso=0) ·
+    **20/20** cells `tabular-nums` · status chips carry icons (`aria-hidden`, label stays the a11y name) · Voucher Manage **44 px**
+    at 375 · **the date FILTER still queries** (preset → 10 rows — the one place a formatter swap could have broken data) · the
+    63f734d rework survives the token swap and **DEF-1 stays closed**.
+    🔴 **DEF-3 (MAJOR) — the token migration silently disabled Tailwind's opacity modifier.** Before: literal hex
+    (`content1:"#ffffff"`, `default-100:"#f1f5f9"`) ⇒ `/NN` composed. After: `var(--color-…)` ⇒ in Tailwind v3 the utility is
+    **never generated**. Proved from the generated CSS: rules exist for `.bg-muted-50`/`.bg-muted-100`, **none** for
+    `.bg-muted-50/40` · `/80` · `.bg-muted-100/60` · `/50` · `.bg-content1/80` — all paint `rgba(0,0,0,0)`. **6 sites:**
+    `Header.tsx:27` (app header backdrop, was #fff@80%) · `TeachersContent.tsx:255,342` · `ReportsContent.tsx:155` — **4 visible
+    regressions**; `PlanModal.tsx:269` + `CalendarWeekGrid.tsx:106` — **still colourless**, so 2 of the review's “six newly-defined
+    sites” did NOT gain the predicted colour. Beyond these, the modifier is silently unavailable for every future use of the
+    tokens. Fix shape: channel triplets + `<alpha-value>` — one config change closes all six. **REQ-041 not done.**
+    ⚠️ Also corrected **my own** round-1 §3.3 FAIL: `transition-property: all` with `duration: 0s` animates nothing — the ring was
+    always instant. ⚠️ Fern's work is **uncommitted** (36 modified files, HEAD `7f9456e`) — verdict covers the working tree.
   - 🎨 **2026-08-11 (Tanya) — FE REWORK RETEST (`front@dong`, `neeeeroooo`): functional `TEST_PASSED`, no regressions;
     hallmark verdict **`close, fix the minors`** (0 critical · 7 major · 2 minor).** Run locally on `dong`, mock mode — no server
     touched. **Verified, measured:** 11 `[data-pin]` cells all `position: sticky` at 375/768/960/1280 · **0 truncated badges** (the
