@@ -1,6 +1,6 @@
 # TEST-DONG: FE rework retest + `hallmark audit` — `smart-scheduler-front@dong`
 - Source: `neeeeroooo` commits **`63f734d`** (responsive tables + pinned columns) + **`7f9456e`** (hallmark skill), graded against **`FRONTEND-STANDARD.md`**
-- Status: **Round 1** — functional retest `TEST_PASSED`; hallmark `close, fix the minors`; §3.3 + §3.5 failing. · **Round 2 (REQ-041 fixes)** — **TASK-129 `TEST_PASSED`** · **TASK-128 `TEST_FAILED` on DEF-3** (the token migration silently disabled Tailwind's opacity modifier at 6 sites; 4 visibly regressed). §3.3 + §3.5 now genuinely pass.
+- Status: **Round 1** — functional retest `TEST_PASSED`; hallmark `close, fix the minors`. · **Round 2** — TASK-129 `TEST_PASSED`; TASK-128 `TEST_FAILED` on DEF-3. · **Round 3 (customer-prod, read-only)** — ✅ **DEF-3 CLOSED, no regression; REQ-041 items 1–5, 7, 8 verified on the deployed build** (item 6 cut by the owner).
 - Environment: **local**, branch `dong`, `next dev` in mock mode (`localhost:3016`). **Nothing on any server.**
 - Tested: 2026-08-11 by Tanya
 
@@ -215,3 +215,76 @@ pairing) remains held on the owner's Thai display-face pick.
 **None.** Local, mock data, read-only inspection plus two throwaway `<div>`s injected into the page and
 removed in the same evaluation. Dev server stopped afterwards; the product repo is untouched (Fern's
 uncommitted changes left exactly as found).
+
+---
+
+# ROUND 3 — post-deploy visual verify on CUSTOMER-PROD, 2026-08-11. **DEF-3 CLOSED. No regression.**
+
+Human-authorized in-session; **strictly read-only** — nothing created, changed or submitted, no LINE, no
+teacher-change flow. Access was the app's own login form; `mint-session.mjs` was **not run, not edited, not
+bypassed**. Harnesses: `prod-req041-visual-verify.mjs`, `prod-req041-hover-tints.mjs`. Evidence:
+`../project-docs/qa-prod-req041-2026-08-11/`.
+
+## DEF-3 — the opacity modifiers compose again on the deployed build
+
+The fix (RGB channel triplets + `rgb(var(--…) / <alpha-value>)`) is live. Read from the **deployed CSS**,
+not inferred:
+
+| Class | Emitted rule | Paints |
+|---|---|---|
+| `bg-content1/80` | `background-color: rgb(var(--color-surface) / .8)` | **`rgba(255,255,255,0.8)`** ✅ |
+| `hover:bg-muted-100/60` | `background-color: rgb(var(--color-muted-100) / .6)` | **`rgba(241,245,249,0.6)`** ✅ |
+| `bg-muted-100/50` | generated | **`rgba(241,245,249,0.5)`** ✅ |
+| `bg-muted-50/40` | generated | **`rgba(248,250,252,0.4)`** ✅ |
+| `bg-muted-50/80` | generated | **`rgba(248,250,252,0.8)`** ✅ |
+| `bg-muted-50` · `bg-muted-100` (plain) | unchanged | `rgb(248,250,252)` · `rgb(241,245,249)` ✅ value-preserving |
+
+## The six tinted sites
+
+| # | Site | Confirmed | Evidence |
+|---|---|---|---|
+| 1 | **`Header.tsx:27` — the app header backdrop** | ✅ **in situ** | the live `<header>` computes **`rgba(255,255,255,0.8)`** — **the backdrop is back** (`prod041-1-header.png`) |
+| 2 | `TeachersContent.tsx:255` — hover tint | ✅ **in situ** | **21** blocks carry `hover:bg-muted-100/60` on the Teachers page; hovering computes `rgba(241,245,249,0.6)` |
+| 3 | `TeachersContent.tsx:342` — hover tint | ✅ | same class as #2, same rule |
+| 4 | `ReportsContent.tsx:155` | ✅ **in situ** | the tinted block computes **`rgba(241,245,249,0.5)`** |
+| 5 | `PlanModal.tsx:269` — summary bar | ✅ **in situ** | the modal's summary bar computes **`rgba(248,250,252,0.4)`** — this is one of the two that were *still colourless* in round 2 |
+| 6 | `CalendarWeekGrid.tsx:106` — non-bookable cell | ⚠️ **not seen in place** | no non-bookable cell rendered in the current week, so there was nothing to point at. Confirmed by the generated rule + a synthetic paint (`rgba(248,250,252,0.8)`). Stated rather than claimed as an in-situ sighting |
+
+## No visual regression from the token migration
+
+| Viewport | pinned | all sticky | truncated badges | clipped cells | ISO dates | `DD/MMM/YY` | tabular-nums | page h-scroll |
+|---|---|---|---|---|---|---|---|---|
+| 1440 | 11 | ✅ | 0 | 0 | 0 | 10 | 20/20 | none |
+| 768 | 11 | ✅ | 0 | 0 | 0 | 10 | 20/20 | none |
+| 375 | 11 | ✅ | 0 | 0 | 0 | 10 | 20/20 | none |
+
+**DEF-1 stays closed on prod** — the Voucher "Manage" control at 375 is reachable and **44 px** tall.
+
+## A correction I owe on my own run (third time this pattern has bitten, and worth naming)
+
+My first prod probe reported `bg-muted-100/60` as still dead. **That was my artifact, not the product's.**
+That class is only ever used as **`hover:`bg-muted-100/60**, so Tailwind generates
+`.hover\:bg-muted-100\/60:hover` and never the bare class — injecting a plain `<div class="bg-muted-100/60">`
+was therefore guaranteed to paint nothing regardless of the fix. Re-tested the way it actually renders
+(hover the real element, read the emitted rule): **it composes.**
+
+Same shape as the two false negatives I caught in the earlier rounds (`bg-paper/50` not in source; the
+day-grid regex). The lesson has now earned its place in `REGRESSION.md`: **a synthetic probe only proves
+something about a class Tailwind actually generated — check the source usage and the variant before
+concluding the product is broken.**
+
+## Verdict — round 3
+
+**DEF-3 → CLOSED on the deployed build.** All six tinted sites compose; four confirmed in situ (including
+the header backdrop the owner specifically asked about), one covered by an identical class, one verified by
+rule + synthetic because the state that renders it wasn't present. **No visual regression** — the pinned /
+no-truncation / date / tabular-nums baseline holds at 1440 / 768 / 375, and DEF-1 remains closed.
+
+**REQ-041 items 1–5, 7, 8: verified on customer-prod.** Item 6 was cut by the owner.
+**@Porter — this is the gate met; DELIVERED is yours to mark.**
+
+## Test data created
+
+**None.** Read-only throughout: page loads, computed-style reads, one hover, one plan modal opened and
+closed with Escape, and two throwaway `<div>`s injected and removed inside a single `evaluate`. No writes,
+no LINE, no teacher-change.

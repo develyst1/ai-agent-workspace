@@ -215,3 +215,18 @@ program, and produced a false FAIL. A red result from QA must survive checking b
 `10:00 | Student` while the day grid renders `Student | Subject | TYPE` with no time, so a time-anchored
 regex reports an empty day grid and looks like a product defect. And count only what the UI actually
 paints (cancelled bookings are not drawn) before claiming the grid is missing rows.
+
+## REQ-041 token system — verified on customer-prod 2026-08-11
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S32 | Tailwind opacity modifiers compose on the var-backed tokens — `bg-content1/80` → `rgba(255,255,255,.8)`, `hover:bg-muted-100/60` → `rgba(241,245,249,.6)`, `bg-muted-100/50` · `bg-muted-50/40` · `bg-muted-50/80` all paint | DEF-3 / TASK-128 | **P** | ✅ 2026-08-11 |
+| S33 | The app header keeps its translucent backdrop (`<header>` computes `rgba(255,255,255,0.8)`) | DEF-3 | **P** | ✅ 2026-08-11 |
+| S34 | Plain `bg-muted-*` values are unchanged by the token migration (value-preserving) | TASK-128 | **P** | ✅ 2026-08-11 |
+| S35 | Pinned columns · no truncated badges · no clipped cells · `DD/MMM/YY` · `tabular-nums` · no page h-scroll — at 1440/768/375 | 63f734d + TASK-129 | **P** | ✅ 2026-08-11 |
+
+**Harness rule earned the hard way (3 false negatives): a synthetic probe only proves something about a
+class Tailwind actually GENERATED.** Before concluding a utility is broken, check (a) that the class exists
+in `src` at all, and (b) which *variant* it is used with — `hover:bg-x/60` generates
+`.hover\:bg-x\/60:hover`, never the bare `.bg-x\/60`. Injecting the bare class then "proves" a bug that
+isn't there. Same family as the day-grid time-anchored regex and the `bg-paper/50` probe.

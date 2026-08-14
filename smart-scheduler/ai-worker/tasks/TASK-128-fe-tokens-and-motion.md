@@ -1,7 +1,7 @@
 # TASK-128: scheduler-front (FE) — one colour token source + kill inline hex + kill transition-all (clears §3.3 + §3.5)
 
 - Source: SPEC-037 / REQ-041 (items 1–3) — the two failing `FRONTEND-STANDARD.md` §3 DoD gates + the biggest colour fix.
-- Status: DONE ✅ (SA-reviewed 2026-08-11 — §3.5 all 4 greps=0, no `default-*` left; §3.3 focus ring instant; tsc 0; core 100–600 swap **value-preserving** confirmed by `git diff` (same slate hexes via vars). **Gates cleared.** ⚠️ CORRECTION to Fern's "zero delta by construction": `muted-{50,700,800,900}` are NEWLY added — 6 sites (PlanModal:268, BookingModal:995, CalendarWeekGrid:106, RentalModal:145, DashboardContent:64, BookingsTable:297) go from *undefined→colour*. Likely latent-intent fixes, not regressions, but they ARE visual changes → **@Tanya visual pass must cover those 6** specifically, not "zero delta".)
+- Status: DONE ✅ (DEF-3 rework SA-reviewed 2026-08-11 — tsc 0 reproduced; vars now RGB channel triplets (values match the SA table = value-preserving), tailwind tokens wrapped `rgb(var(--…) / <alpha-value>)`, all globals.css direct usages wrapped in `rgb()` — **zero bare `var(--color-*)` outside `rgb(`** (gotcha handled), 6 `bg-*/NN` sites intact + will paint, §3.5 greps still 0. Code sign-off; visual confirm of the 6 sites → @Tanya. Prior: §3.3/§3.5 gates cleared + base swap value-preserving by git diff.)
 - Depends on: — · Repo `smart-scheduler-front` (branch `dong`)
 
 ## What to fix (all SA-grounded, 2026-08-11)
@@ -66,3 +66,66 @@ Scope = the tokens-&-motion delta this task made (a full structural redesign is 
 - Live visual-regression pass (Tanya's `dong` retest baseline — pinned columns, no truncation, DEF-1) → **@Tanya**:
   the change is value-preserving so no delta is expected, but the app is auth-gated (I can't drive it here). tsc+build
   +grep are green; the SA UI-lens pass (§4) is Sober's on review.
+
+---
+
+## 🔧 REWORK — DEF-3 (SA, 2026-08-11): restore Tailwind opacity modifiers on the colour tokens
+**Bug (Tanya, MAJOR):** the swap defined the tokens as **hex** in `globals.css` (`--color-muted-100: #f1f5f9`) and
+mapped them `muted.100: "var(--color-muted-100)"`. In Tailwind v3, a bare `var()` colour **can't carry an alpha
+modifier**, so `bg-*/NN` utilities aren't generated → paint **transparent**. Six sites broke (SA-confirmed):
+`Header.tsx:27 bg-content1/80` (header backdrop gone) · `PlanModal.tsx:269 bg-muted-50/40` · `CalendarWeekGrid.tsx:106
+bg-muted-50/80` · `ReportsContent.tsx:155 bg-muted-100/50` · `TeachersContent.tsx:255,342 bg-muted-100/60`. And the
+modifier is silently dead for **every future** use of these tokens.
+
+### The fix — channel triplets + `<alpha-value>` (value-preserving; restores `/NN` everywhere)
+**1) `globals.css`** — redefine every `--color-*` as **space-separated RGB channels** (no `#`, no `rgb()`). Exact
+value-preserving conversions (do not eyeball — use these):
+```
+--color-fg: 30 41 59;         /* was #1e293b */
+--color-surface: 255 255 255; /* #ffffff */
+--color-paper: 245 247 251;   /* #f5f7fb */
+--color-muted-50: 248 250 252;   /* #f8fafc */
+--color-muted-100: 241 245 249;  /* #f1f5f9 */
+--color-muted-200: 226 232 240;  /* #e2e8f0 */
+--color-muted-300: 203 213 225;  /* #cbd5e1 */
+--color-muted-400: 148 163 184;  /* #94a3b8 */
+--color-muted-500: 100 116 139;  /* #64748b */
+--color-muted-600: 71 85 105;    /* #475569 */
+--color-muted-700: 51 65 85;     /* #334155 */
+--color-muted-800: 30 41 59;     /* #1e293b */
+--color-muted-900: 15 23 42;     /* #0f172a */
+```
+**2) `tailwind.config.ts`** — wrap every token with the placeholder so opacity composes:
+`foreground: "rgb(var(--color-fg) / <alpha-value>)"`, `content1: "rgb(var(--color-surface) / <alpha-value>)"`,
+`paper: "rgb(var(--color-paper) / <alpha-value>)"`, and each `muted.N: "rgb(var(--color-muted-N) / <alpha-value>)"`.
+**3) 🔴 The gotcha that will cause NEW breakage if missed** — `globals.css` also uses these vars **directly** in raw
+CSS (SA-found: **lines 34, 56, 62, 69, 73** — `border-color: var(--color-muted-200)`, `background-color:
+var(--color-paper)`, `scrollbar-color: var(--color-muted-300) transparent`, the two scrollbar-thumb bgs). Once the vars
+are channel triplets, a bare `var(--color-…)` is an **invalid colour**. **Wrap each direct usage in `rgb(...)`:**
+`border-color: rgb(var(--color-muted-200));` · `background-color: rgb(var(--color-paper));` ·
+`scrollbar-color: rgb(var(--color-muted-300)) transparent;` · both thumb `background-color: rgb(var(--color-muted-3/400));`.
+
+### REWORK DoD
+- [x] All six `bg-*/NN` sites paint their tinted colour again (not transparent) — code fix in place (Tailwind now emits
+      `rgb(var(--color-…) / <alpha>)` for `bg-content1/80`, `bg-muted-50/40`, `/80`, `bg-muted-100/50`, `/60`×2); **@Tanya
+      visual re-check** confirms on screen.
+- [x] Every direct `var(--color-*)` in `globals.css` wrapped in `rgb()` — grep **no bare `var(--color-` outside `rgb(`
+      = 0** (border-color, body bg, scrollbar-color + 2 thumb bgs all wrapped).
+- [x] Value-preserving: used the SA hex→triplet table verbatim (`#f1f5f9` → `241 245 249`, etc.) — no colour shift on
+      the already-working sites.
+- [x] §3.5 greps still **0** (no hex/`transition-all`/`font-family`); §3.3 focus ring still instant.
+- [x] `bunx tsc --noEmit` 0 · `bun run build` ok · hallmark verdict re-run (below). → @Tanya re-verify.
+
+### REWORK notes (@Fern)
+Applied Sober's fix exactly. **My original bug, owned:** I stored the tokens as hex and referenced them as bare
+`var(--color-…)`; Tailwind v3 can't inject an alpha modifier into a bare `var()`, so every `bg-x/NN` on these tokens
+generated transparent (6 sites). Root form is now the standard Tailwind-v3 pattern: **channel triplets** in `:root`
+(`--color-muted-100: 241 245 249`) + **`rgb(var(--color-…) / <alpha-value>)`** in the theme, so opacity composes for
+the 6 sites *and every future use*. Caught the raw-CSS gotcha too — the 5 direct `var(--color-…)` usages in globals.css
+(body bg, reset border, scrollbar ×3) are now wrapped in `rgb()` (a bare triplet var is an invalid colour). Verified:
+no bare `var(--color-` outside `rgb(` = 0; §3.5 greps = 0; tsc 0; build ok.
+
+### hallmark audit (post-rework) — unchanged verdict
+Tokens/motion axes still pass (§3.5 one-source PASS, §3.3 focus instant PASS, no anti-pattern). The rework only changes
+the *form* of the token (hex→triplet, wrapped) — same values, now opacity-composable. Residual = item 6 font (owner CUT
+per Porter; not spun). **Verdict: gates hold; opacity regression fixed.**

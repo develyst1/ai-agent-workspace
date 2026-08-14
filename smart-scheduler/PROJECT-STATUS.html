@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>smart-scheduler — Project Status</title>
+<style>
+  :root{
+    --paper:#f7f8fb; --surface:#ffffff; --ink:#1e293b; --muted:#64748b; --line:#e6e9f0;
+    --accent:#3b5bdb; --accent-soft:#eaeefb;
+    --ok:#2f9e44; --ok-soft:#e6f4ea; --warn:#e8590c; --warn-soft:#fdebe0;
+    --wait:#9333ea; --wait-soft:#f3e8fd; --park:#868e96; --park-soft:#eef0f3; --qa:#0c8599; --qa-soft:#e0f2f5;
+    --radius:12px; --num:"tnum" 1;
+    font-family: "Noto Sans Thai", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --paper:#12151c; --surface:#191d26; --ink:#e8ebf2; --muted:#9aa4b4; --line:#2a2f3a;
+      --accent:#748ffc; --accent-soft:#20263a; --ok:#69db7c; --ok-soft:#182b1e; --warn:#ffa94d; --warn-soft:#2e2115;
+      --wait:#da9bff; --wait-soft:#251830; --park:#adb5bd; --park-soft:#21252c; --qa:#66d9e8; --qa-soft:#12262b; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);line-height:1.5;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:32px 20px 64px}
+  header.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:8px}
+  header.top h1{font-size:24px;margin:0;letter-spacing:-.01em}
+  header.top .sub{color:var(--muted);font-size:14px}
+  header.top .upd{margin-left:auto;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+  .live{display:inline-block;padding:3px 10px;border-radius:999px;background:var(--ok-soft);color:var(--ok);font-size:12px;font-weight:700;vertical-align:middle}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin:22px 0 28px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+  .stat .n{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+  .stat .l{color:var(--muted);font-size:12.5px;margin-top:4px}
+  section.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin:16px 0;overflow:hidden}
+  section.card>h2{margin:0;font-size:15px;padding:12px 16px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--line)}
+  .dot{width:9px;height:9px;border-radius:3px;flex:none}
+  .rows{padding:6px 16px 14px}
+  .row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+  .row:last-child{border-bottom:0}
+  .id{flex:none;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:6px;white-space:nowrap;margin-top:1px}
+  .body b{font-weight:600}
+  .body .note{color:var(--muted);font-size:13.5px;margin-top:2px}
+  .chip{flex:none;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap;margin-top:1px}
+  .c-ok{background:var(--ok-soft);color:var(--ok)} .c-warn{background:var(--warn-soft);color:var(--warn)}
+  .c-wait{background:var(--wait-soft);color:var(--wait)} .c-park{background:var(--park-soft);color:var(--park)}
+  .c-qa{background:var(--qa-soft);color:var(--qa)} .c-build{background:var(--accent-soft);color:var(--accent)}
+  .flat{padding:12px 16px;color:var(--muted);font-size:13.5px}
+  .flat b{color:var(--ink)}
+  .callout{background:var(--warn-soft);border:1px solid var(--warn);border-radius:var(--radius);padding:13px 16px;margin:16px 0;font-size:14px}
+  .callout b{color:var(--warn)}
+  .resume{background:var(--accent-soft);border:1px solid var(--accent);border-radius:var(--radius);padding:14px 16px;margin:22px 0 0;font-size:13.5px}
+  .resume b{color:var(--accent)}
+  code{font-family:ui-monospace,"Cascadia Code",monospace;font-size:12.5px;background:var(--park-soft);padding:1px 5px;border-radius:4px}
+  footer{color:var(--muted);font-size:12.5px;margin-top:24px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>smart-scheduler</h1>
+    <span class="sub">Project status · <span class="live">● LIVE on frontoffice.develyst.online</span></span>
+    <span class="upd">อัปเดต 2026-08-11</span>
+  </header>
+  <p class="flat" style="padding-left:0">Go-live essential set <b>DELIVERED</b> บน customer-prod · ทีมยึด <b>FRONTEND-STANDARD.md</b> · ไม่มี engineering blocker — เหลือ backlog + งานที่เจ้าของรันเอง</p>
+
+  <div class="stats">
+    <div class="stat"><div class="n" style="color:var(--ok)">30+</div><div class="l">DELIVERED / live</div></div>
+    <div class="stat"><div class="n" style="color:var(--accent)">1</div><div class="l">พร้อม build</div></div>
+    <div class="stat"><div class="n" style="color:var(--wait)">3</div><div class="l">รอ decision</div></div>
+    <div class="stat"><div class="n" style="color:var(--qa)">5</div><div class="l">QA ค้าง (เทสเอง)</div></div>
+    <div class="stat"><div class="n" style="color:var(--park)">6</div><div class="l">parked</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">defect เปิด</div></div>
+  </div>
+
+  <div class="callout">⚠️ <b>2 ธงสำคัญ:</b> (1) <b>REQ-035</b> = งาน build เดียวที่พร้อม รอ call go-live/fast-follow ของคุณ · (2) <b>REQ-014</b> อาจ "build เสร็จแต่ไม่เคย verify + โชว์ ฿0 จนกว่าจะใส่ราคาจริง" — เคลียร์ก่อนใครอ่านตัวเลขรายได้</div>
+
+  <section class="card">
+    <h2><span class="dot" style="background:var(--accent)"></span>🔨 พร้อม build — รอ decision คุณ</h2>
+    <div class="rows">
+      <div class="row"><span class="id">REQ-035</span><div class="body"><b>Sell-side item model</b> — frontoffice ขายจาก catalog bo → ตัด stock + ลงรายได้ บล็อกเมื่อ 0<div class="note">SPEC-034 + TASK-116/117/118 ตัดแล้ว ยังไม่ build · แตะเงินจริง + 1 migration → คุณเลือก go-live หรือ fast-follow (เป็น frontoffice — ตรงกับที่เน้น)</div></div><span class="chip c-build">READY</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="dot" style="background:var(--wait)"></span>❓ รอ decision / คุยลูกค้า</h2>
+    <div class="rows">
+      <div class="row"><span class="id">REQ-036</span><div class="body"><b>จบคอร์สก่อนกำหนด / คืนเงิน</b><div class="note">ไม่รีบ — คุยลูกค้าก่อน · แนวคิดคุณ: คอร์ส = <b>ชั่วโมง</b> (ซื้อ 10h ใช้ 10h เมื่อไหร่ก็ได้ ไม่บังคับจบ) = คนละโมเดลกับที่ build (count+expiry) → ถาม Sober: อะไรทำให้คอร์ส "ไม่ปิด" จริง + เปลี่ยนโมเดลได้ไหม</div></div><span class="chip c-wait">DEFER</span></div>
+      <div class="row"><span class="id">REQ-034</span><div class="body"><b>SOM dashboard filter by booking type</b><div class="note">SPEC/TASK ตัดแล้ว · post-go-live + รอ 2 owner confirm</div></div><span class="chip c-wait">post-GL</span></div>
+      <div class="row"><span class="id">REQ-039</span><div class="body"><b>รวม dashboard + REQ-033 (8 เรื่องจากมีตติ้ง)</b><div class="note">มี conversion-rate-per-teacher (ลูกค้าว่า "สำคัญ") · board-only approval ติด "login แยกคน" · รวบ wishlist ก่อน scope — ทำ "ถ้าไม่มีอย่างอื่น"</div></div><span class="chip c-wait">gather</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="dot" style="background:var(--qa)"></span>🧪 QA ค้าง — คุณเทสเอง</h2>
+    <div class="rows">
+      <div class="row"><span class="id">REQ-020</span><div class="body"><b>Script 4 — LINE claim ครูต้องรออนุมัติ</b> (ไม่ให้สิทธิ์ทันที)<div class="note">มือถือ + <code>/scheduler/link-requests</code> · claim→approve/reject→unlink</div></div><span class="chip c-qa">TEST</span></div>
+      <div class="row"><span class="id">REQ-023</span><div class="body"><b>Script 5 — digest เช้า</b> = 1 ข้อความ / เงียบเมื่อว่าง / ไม่ซ้ำ<div class="note">มือถือที่รับแจ้งเตือน admin · เทียบกับ <code>/scheduler/attention</code></div></div><span class="chip c-qa">TEST</span></div>
+      <div class="row"><span class="id">REQ-037</span><div class="body"><b>รายได้ extra-session</b> — ยังไม่เทส (รอ day-end job)</div><span class="chip c-qa">day-end</span></div>
+      <div class="row"><span class="id">REQ-009</span><div class="body"><b>"past P&L unchanged"</b> cross-month — 1 AC ยังไม่เทส</div><span class="chip c-qa">1 AC</span></div>
+      <div class="row"><span class="id">REQ-015</span><div class="body"><b>LINE role-switch + PII fix</b> — build+verified แล้ว รอ sid deploy + repro re-check</div><span class="chip c-qa">re-check</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="dot" style="background:var(--park)"></span>💤 Parked / post-go-live</h2>
+    <div class="rows">
+      <div class="row"><span class="id">REQ-014</span><div class="body"><b>Revenue-by-activity (backoffice)</b> — เน้น frontoffice ไว้ทีหลัง<div class="note">⚠️ build แต่ดูเหมือน acceptance ไม่เคยรัน + โชว์ ฿0 จนใส่ราคาจริง = delivered-but-UNVERIFIED</div></div><span class="chip c-warn">verify?</span></div>
+      <div class="row"><span class="id">REQ-017</span><div class="body">Teacher phone calendar — ติด UX มือถือ (webcal) คุณสั่งช่างมัน</div><span class="chip c-park">parked</span></div>
+      <div class="row"><span class="id">REQ-021</span><div class="body">Badge/tagging — priority ต่ำสุด</div><span class="chip c-park">backlog</span></div>
+      <div class="row"><span class="id">REQ-038</span><div class="body">#6–9 (ชั่วโมงทำงานครู · Group/Camp · conversion · freelance/PT รายวัน) — post-go-live</div><span class="chip c-park">post-GL</span></div>
+      <div class="row"><span class="id">REQ-041</span><div class="body">item 6 — ฟอนต์ heading — <b>CUT</b></div><span class="chip c-park">cut</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="dot" style="background:var(--ok)"></span>✅ DELIVERED / live</h2>
+    <div class="flat">
+      <b>Go-live essential set (prod):</b> REQ-030 · REQ-037 · REQ-038 #1–5 · OBS-3 · REQ-040 · REQ-041 (1–5,7,8)<br>
+      <b>Shipped 08-11 deploy:</b> REQ-009 · 022 · 024 · 026 · 027 · 028 · 029 · 031 · 032<br>
+      <b>Older/live:</b> REQ-001 · 002 · 004 · 005 · 006 · 007 · 008 · 010 · 011 · 013 · 016 · 019<br>
+      <b>Defects:</b> DEF-1 · DEF-2 · DEF-3 — <b style="color:var(--ok)">ปิดหมด</b>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="dot" style="background:var(--warn)"></span>🧹 Housekeeping — deferred (คุณรันเอง ไม่บล็อก)</h2>
+    <div class="flat">
+      • ปิด prod <code>pg_hba</code> temp-open (บรรทัด <code>110.171.40.169/32</code>)<br>
+      • ล้าง QA test data ออกจาก prod (<code>QA-prod-student</code> + 2 courses + 1 voucher + bookings) — รัน REQ-040 delete block
+    </div>
+  </section>
+
+  <div class="resume"><b>▶ Resume (เครื่องไหนก็ได้):</b> <code>git pull</code> workspace → อ่าน <code>ai-worker/PROTOCOL.md</code> + role file → อ่าน <code>PROJECT-STATUS.md</code> + <code>ai-worker/board.md</code> + log ล่าสุด → ทำ ball ของ role ตัวเอง · <b>ความจำข้ามเครื่อง = ไฟล์ใน git นี้</b> (ไม่ใช่ .claude local)</div>
+
+  <footer>smart-scheduler · PM=Porter SA=Sober BE=Jason FE=Fern QA=Tanya · คู่กับ PROJECT-STATUS.md (AI อ่าน)</footer>
+</div>
+</body>
+</html>

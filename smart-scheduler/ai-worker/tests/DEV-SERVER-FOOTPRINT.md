@@ -119,3 +119,16 @@ booking-cancel and parent-suspend), which is why the waiver was needed.
 | Section-E edits **on those rows only**: 1 move, 1 planned absence (+ appended make-up), 1 insert, 1 live cancel, 1 delivered-then-cancelled-with-reason, 1 extra paid session (cancelled) | customer-prod | ❌ by agreement |
 | Full id list for the reset to verify against | `../project-docs/qa-prod-2026-08-11/phase2-created.json` | — |
 | **No LINE message · no teacher-change flow · no row touched that QA did not create · TASK-090 guard untouched** | — | — |
+
+## 2026-08-11 (Tanya) — customer-prod REQ-041 visual verify: READ-ONLY
+
+Human-authorized in-session for a post-deploy visual check. Access via the app's **own login form**;
+`mint-session.mjs` **not run, not edited, not bypassed**.
+
+| What | Where | Removed? |
+|---|---|---|
+| Page loads + computed-style reads (header, Teachers, Reports, Calendar, Bookings, Vouchers) | customer-prod | ✅ nothing created |
+| One hover on a Teachers block · one plan modal opened and closed with Escape | customer-prod | ✅ nothing submitted |
+| Two throwaway `<div>`s injected and removed inside a single `evaluate` (CSS probe) | customer-prod (browser only) | ✅ never persisted |
+| **No writes · no LINE · no teacher-change flow · no row touched** | — | — |
+| Pre-existing QA residue from the 2026-08-11 phase-2 run is unchanged and still listed in `../project-docs/qa-prod-2026-08-11/phase2-created.json` (owner clears it) | customer-prod | ❌ by agreement |
