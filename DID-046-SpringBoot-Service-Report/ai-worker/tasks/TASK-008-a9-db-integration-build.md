@@ -1,8 +1,78 @@
 # TASK-008: อ.9 (A9) DB integration — build the real A9 report (mirror a6)
 
 - Source: SPEC-014 (+ SPEC-016 field map & findings)
-- Status: DONE
+- Status: BLOCKED (waiting: Sober → QA — emitted-JSON diagnostic on /a9/db/18847; see Rework r2 Notes)
 - Depends on: none (graceful degradation covers the not-yet-seeded evidence master)
+
+## Rework (round 2) — DEF-4: อ.9 page-1 fields blank despite data (Sober, 2026-08-05)
+QA on `/a9/db/18847`: item 1 (ชื่อผู้ขอ), 2 (ประเภท), 5 (สถานที่กำจัด/ทำลาย), 7 (ระยะเวลา) BLANK, and
+the **law-reference list is empty** though 6 rows have IS_CHECKED=1. (item 8 blank = expected, master
+unseeded.) SA verified the a9 **template is correct** (applicant.name→applicantName, .permitType,
+.destroyLocation, subDataSource("lawReferences") all match the model) **and** `RequestMoveEntity`/repo
+mappings are correct — so the blanks are the **builder emitting null at runtime**, an อ.9-data-shape reality.
+
+### Diagnose first (definitive, no DB query): read the emitted JSON
+`JasperPdfReportService.exportPdfA9` already `System.out.println`s the record JSON. Boot (dev), hit
+`/a9/db/18847`, and read that JSON — it shows exactly which fields are null vs populated. (PII — do NOT
+paste real values into files; just report which fields are null/present.) Use it to confirm each fix below.
+
+### Fixes
+1. **item 2 (permitType) — map the FULL `MOVE_REQUEST_TYPE` value list**, not the `==2`-only hardcode
+   (18847 = type 0 → currently ""). From the data dictionary:
+   `0`=ขนย้ายให้หน่วยงานตามมาตรา 7 · `1`=ขายและขนย้ายให้บุคคลอื่นนอกจากหน่วยงานตามมาตรา 7 ·
+   `2`=ขนย้ายเพื่อทำลาย · `3`=ขนย้ายเพื่อทดสอบ · `4`=ขนย้ายเพื่อจัดแสดง · `5`=ขนย้ายกลับโรงงาน.
+   (Use a small map/switch; null/unknown → "".)
+2. **item 7 (permitDuration) — source from `T_T_REQUEST_MOVE.START_DATE`/`END_DATE`** (Thai range via
+   `ThaiDateFormatUtil`), NOT `T_T_LICENSE.PERIOD_TEXT` (18847 has 2019-12-01→2020-03-31; a9 has no
+   license period). Blank when both dates null.
+3. **item 5 (destroyLocation) & item 2** — if the JSON shows `applicant.destroyLocation` null even though
+   the DB row has `DEST_PLACE_NAME`, then `requestMoveRepository.findByRequestId(18847)` returned empty in
+   the app → find why (confirm one MOVE row per request; check the actual FK; add a `@Query` if the
+   derived name isn't matching). If the JSON shows it populated but the PDF is blank, escalate to me
+   (would contradict the template check). Fixing `move` loading also fixes item 2.
+4. **item 1 (name)** — objective (same `request` row) prints but name is blank ⇒ likely
+   `T_T_REQUEST.TRADER_NAME` is null for อ.9 requests. Confirm via the JSON; if null, source the applicant
+   name from the correct place for อ.9 (check the app/screen + dictionary — e.g. trader/company or MOVE).
+   Report what you find; if it needs a DB fact, flag it to me (I'll raise a DATA REQUEST).
+5. **law references** — if the JSON `lawReferences` is empty, `requestLawRefRepository.findByRequestIdOrderByIdAsc(18847)`
+   returned nothing → อ.9 law refs link differently than อ.6. Check how the 6 IS_CHECKED rows attach to the
+   request (REQUEST_ID vs a form/move key); flag the linkage to me if it needs a schema fact.
+6. **signatures heads-up** — `REFERENCE_NO="MV000407"` (a MOVE ref). Confirm `T_T_LICENSE_INFORM` lookup
+   by REFERENCE_NO returns signers for อ.9 (else signatures are silently empty too) — check the JSON.
+
+**Rework DoD:**
+- [ ] item 2 uses the full MOVE_REQUEST_TYPE label map; item 7 uses MOVE START/END dates.
+- [ ] item 1 / item 5 / lawReferences populate on 18847 (or, for any that need a DB/schema fact, a
+      precise DATA REQUEST is raised to Sober rather than guessed).
+- [ ] `./mvnw -o -DskipTests=false test-compile` green; graceful degradation preserved (no 500).
+- [ ] Re-hand to QA on `/a9/db/18847`: items 1/2/5/7 + law list populate; report the emitted-JSON findings.
+
+## Review (round 2) — DEF-3 fixed (Sober, 2026-08-05)
+`A9PreviewTest:43` now `new A9CheckListPreviewBuilder().createPreviewData()` (import added); I re-ran
+**`./mvnw -o -DskipTests=false test-compile` → exit 0** (the gate my round-1 DoD missed). Full project
+incl. tests compiles; Jason's A9PreviewTest run is green (pages=4). Round-1 verification of the build
+still stands. **Verdict: DONE.** REQ-014 + REQ-013 → SPEC_DONE; QA does the real-data proof (/a9/db/33630).
+
+## Rework (round 1) — DEF-3: test compilation broken (Sober, 2026-08-05)
+`src/test/.../a9/A9PreviewTest.java:43` still calls `new A9CheckListReportBuilder().createData("preview")`,
+but §1 moved the mock into `A9CheckListPreviewBuilder` and `A9CheckListReportBuilder` now needs 12 repos
+→ `./mvnw test-compile` fails (constructor mismatch). Confirmed: `test-compile` → COMPILATION ERROR at
+A9PreviewTest:43. (Main compile passed because our DoD used `-DskipTests`, which skips TEST compilation —
+my miss; DoD updated below.)
+
+**Fix (one line):** in `A9PreviewTest`, build the mock via the split-out no-arg preview builder:
+```java
+// was: new A9CheckListReportBuilder().createData("preview")
+A9CheckListReportData data = new A9CheckListPreviewBuilder().createPreviewData();
+```
+(`A9CheckListPreviewBuilder` has a no-arg ctor — no repos — so `new ...()` works in the plain-JUnit test,
+exactly the pattern A6PreviewTest uses for its mock.)
+
+**Rework DoD (added):**
+- [ ] `A9PreviewTest` uses `A9CheckListPreviewBuilder().createPreviewData()`; no ref to the DB builder's ctor.
+- [ ] **`./mvnw -o -DskipTests=false test-compile` succeeds** (full project incl. tests compiles) —
+      this is the gate that was missing. Then re-run A9PreviewTest if you want the preview PDF.
+- [ ] Re-hand for review; the rest of the build (verified round 1) is unchanged.
 
 ## What to do
 Make อ.9 build from the DB instead of mock, mirroring the a6 builder. This also **fixes the
@@ -128,7 +198,16 @@ while `'ReqMove'` unseeded — expected), person2 shows if EXAMPLE_SIGN rows exi
 `/a9/db/37940` (incomplete) → 200 PDF, degraded (no 500); `/preview/checklist/a9` (mock) unchanged.
 
 ## Questions
-(Jason asks; Sober answers as `> answer: ...`)
+- **Q4 (Jason) — the emitted-JSON diagnostic is a real-UAT read; BE rule #4?**
+  > answer (Sober, 2026-08-05): **Correct — hold the line.** Booting + hitting `/a9/db/18847` reads
+  > real UAT data by a real (PII) id; that is QA's read-only leg (same as my TASK-003 ruling), not BE's.
+  > Your two code-only fixes (item 2 MOVE_REQUEST_TYPE map, item 7 MOVE START/END dates) are accepted.
+  > I'm routing the **emitted-JSON field-presence check** to Tanya via Porter — she reports which of
+  > `applicant.name`, `applicant.destroyLocation`, `lawReferences[]`, `approvalSignatures[]` are
+  > **null/empty vs populated** in the console JSON on `/a9/db/18847` (field-presence only — no PII values).
+  > Then: JSON-populated but PDF-blank → template (I'll re-open); JSON-null → the builder's query got
+  > nothing → I raise the exact DATA REQUEST (name source / MOVE-row for 18847 / a9 law-ref linkage /
+  > REFERENCE_NO signer join) and hand you the confirmed source to wire. TASK-008 stays BLOCKED on that check.
 
 ## Review
 **Verdict: DONE (code leg)** (Sober, 2026-08-05). Verified independently — large build, key points:
@@ -151,3 +230,49 @@ while `'ReqMove'` unseeded — expected), person2 shows if EXAMPLE_SIGN rows exi
 - **Open for QA/Porter (non-blocking):** permitDuration source for อ.9 (code uses `T_T_LICENSE.PERIOD_TEXT`;
   MOVE `START/END` is the alternative) — confirm what prints on 33630. Evidence pages 2-3 will render
   blank/unticked until the data team seeds `'ReqMove'` — that is EXPECTED (graceful), not a defect.
+
+## Rework Notes (round 1 — DEF-3 test-compile, Jason)
+Fixed the test-compile break (my `-DskipTests` DoD miss).
+- `A9PreviewTest`: import + line 43 now `new A9CheckListPreviewBuilder().createPreviewData()`
+  (was `new A9CheckListReportBuilder().createData("preview")`). The preview builder has a no-arg
+  ctor (no repos), so plain-JUnit instantiation works — same pattern as A6PreviewTest.
+- Evidence: `./mvnw -o -DskipTests=false test-compile` → **BUILD SUCCESS** (full project incl. tests).
+  `./mvnw -o -Dtest=A9PreviewTest test` → `Tests run: 1, Failures: 0`, `A9 PREVIEW PDF … pages=4`
+  (mock preview intact). Main compile + app-boot from round 1 unchanged.
+- Re-handing for review. Q1/Q2/Q3 from round 1 still stand (permitDuration source, evidence
+  SEQ-mapping graceful-until-seeded, and the REQ-004 gate note — now tracked as REQ-018).
+
+## Rework Notes (round 2 — DEF-4, Jason)
+**Done — the 2 deterministic (code-only) fixes:**
+1. **item 2 (permitType)** — new `moveRequestTypeLabel(move)`: full `MOVE_REQUEST_TYPE` map
+   0→ให้หน่วยงานตามมาตรา 7, 1→ขาย/ขนย้ายให้บุคคลอื่นนอกมาตรา 7, 2→ทำลาย, 3→ทดสอบ, 4→จัดแสดง,
+   5→กลับโรงงาน; null/unknown→"". (18847=type 0 will now show its label instead of blank.)
+2. **item 7 (permitDuration)** — new `moveDurationText(move)` = `MOVE.START_DATE` " ถึง " `END_DATE`
+   via `ThaiDateFormatUtil` (พ.ศ.); blank when both null. Dropped `T_T_LICENSE.PERIOD_TEXT` for a9
+   and removed the now-unused `licenseRepository` field (surgical).
+- `./mvnw -o -DskipTests=false test-compile` → **BUILD SUCCESS**. Graceful degradation preserved.
+
+**BLOCKED — the other 4 need a real `/a9/db/18847` run (BE boundary):**
+The rework's diagnosis step ("boot dev, hit `/a9/db/18847`, read the emitted JSON") is a read of the
+**real UAT DB by a real PII request-id** — outside the BE hard boundary (workspace rule #4: BE never
+connects to a real DB), and you (Sober) already ruled in TASK-003 that real-data runs are **QA's leg**.
+I'm holding that line for consistency rather than crossing rule #4. So for:
+- **item 1 (name)** — is `T_T_REQUEST.TRADER_NAME` null for อ.9? (objective from the same row prints,
+  so the row loads — name may just be null / sourced elsewhere for อ.9.)
+- **item 5 (destroyLocation)** — did `requestMoveRepository.findByRequestId(18847)` return empty
+  (→ FK/linkage issue) or is `DEST_PLACE_NAME` null? (also gates item 2's label showing.)
+- **lawReferences empty** — did `findByRequestIdOrderByIdAsc(18847)` return nothing → อ.9 law refs link
+  by a different key than `REQUEST_ID`?
+- **signatures** — does `T_T_LICENSE_INFORM` by `REFERENCE_NO="MV000407"` return signers for อ.9?
+
+**Request (please route):** ask **Tanya (QA, dev)** to hit `/a9/db/18847` and report **which of these
+fields the emitted JSON shows null vs populated** (no PII values — just null/present per field). With
+that I can finish: if a field is null in the DB / links by a different key, that's a schema/DB fact →
+please raise it as a **DATA REQUEST** and I'll wire the correct source. If you intend BE to self-run the
+diagnostic against real data, I need an explicit override of rule #4 (recommend the human confirms) —
+otherwise QA owns the run, same as TASK-003.
+
+## Questions
+- **Q4 (DEF-4 diagnostic routing):** see Rework r2 Notes — route the `/a9/db/18847` emitted-JSON
+  field-presence check to Tanya; any null-in-DB / different-linkage finding → DATA REQUEST to me.
+  The 2 code fixes (item 2 full map, item 7 MOVE dates) are done + compile and can be reviewed now.

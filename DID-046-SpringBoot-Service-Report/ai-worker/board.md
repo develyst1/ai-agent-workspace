@@ -33,10 +33,11 @@
 | REQ-011 | Make อ.6 item-8 "เอกสารอื่นๆ" dynamic (type-99 docs w/ file, comma-joined names) | HIGH | SPEC_DONE | Tanya (QA — IN_TEST: 38314 line = "wdw"); Q1 checkbox default=tick (human may override) |
 | REQ-012 | อ.6 evidence sub-item render types (label-only vs label + dotted write-in) | MEDIUM | SPEC_DONE | Tanya (QA — IN_TEST: 38314 value on dotted line, no overlap) |
 | REQ-013 | Add the อ.9 (a9) db preview seam (plain requestId, dev-only) | HIGH | SPEC_DONE | Tanya (QA — IN_TEST with REQ-014: /a9/db/33630) |
-| REQ-014 | อ.9 (A9) DB integration — build the real A9 report from Oracle | HIGH | SPEC_DONE | Tanya (QA — IN_TEST: /a9/db/33630; also fixes download-mock defect) |
+| REQ-014 | อ.9 (A9) DB integration — build the real A9 report from Oracle | HIGH | REWORK | Sober → Jason: DEF-4 page-1 fields blank (name/type/destroyLocation/duration + lawRefs) |
 | REQ-015 | Fix NULL-STATUS regression in the อ.6 person filter (REQ-010 follow-up) | HIGH | SPEC_DONE | Tanya (QA — IN_TEST: /a6/db/37940 NULL persons appear; 38272 unchanged) |
 | REQ-017 | NULL-safe document queries across ALL 7 report builders (pre-existing) | — | **CANCELLED** | — stakeholder decision 2026-08-05: won't fix (legacy data only); do not spec |
-| REQ-018 | Make the dev-profile actually activate, then re-enable the preview gate | HIGH | READY_FOR_SA (step 1 only) | Sober — investigate profile activation NOW; restore gate only AFTER internal testing (Porter triggers) |
+| REQ-018 | Make the dev-profile actually activate, then re-enable the preview gate | HIGH | IN_SPEC (step 1) | Jason (BE) — TASK-009 verify; step 2 (restore gate) DEFERRED (Porter triggers) |
+| REQ-019 | อ.9 has TWO form variants — split by MOVE_REQUEST_TYPE (2=destroy, else=transport) | HIGH | IN_SPEC | Porter → human: DESTROY completeness audit done (SPEC-019, field-by-field + evidence levels + assumptions). Gate before transport: type-2 sample + DEF-4 wirings + a few business confirms |
 | REQ-016 | Investigate the อ.9 data model before building the A9 report | HIGH | DELIVERED | — GO: อ.9 = a6 model, data merely unseeded; field map + seed spec delivered (SPEC-016) |
 
 ## Tasks
@@ -50,7 +51,9 @@
 | TASK-005 | อ.6 item-8 "เอกสารอื่นๆ" dynamic (type-99+file, comma-joined) | SPEC-011 | DONE | Jason (BE) | none |
 | TASK-006 | อ.6 "เอกสารอื่นๆ" Type B: value on dotted write-in line (jrxml) | SPEC-012 | DONE | Jason (BE) | none |
 | TASK-007 | NULL-safe อ.6 person query (@Query, keep NULL, exclude only 'D') | SPEC-015 | DONE | Jason (BE) | none |
-| TASK-008 | อ.9 DB integration — build a9 (mirror a6 + MOVE + EXAMPLE_SIGN, graceful) + seam | SPEC-014 | DONE | Jason (BE) | none |
+| TASK-008 | อ.9 DB integration — build a9 (mirror a6 + MOVE + EXAMPLE_SIGN, graceful) + seam | SPEC-014 | BLOCKED | Sober → QA (diagnostic) | none |
+| TASK-009 | Verify dev profile activates via SPRING_PROFILES_ACTIVE=dev (REQ-018 step 1) | SPEC-018 | TODO | Jason (BE) | none |
+| TASK-010 | อ.9 destroy: item1/5 template binding (DEF-4a) + null-date (DEF-5) + item12(1) date | SPEC-019 | TODO | Jason (BE) | none |
 
 ## Blocked / waiting
 
@@ -58,6 +61,8 @@
 |------|-----------|------------------|
 | REQ-005 close proof | RESOLVED | QA re-tested the rework → **TEST_PASSED**: 38272/38273 item 7 = PERIOD_TEXT (DR-1 exact), 38240 blank, all 200, 0 ORA-00933. DEF-1+DEF-2 closed → Porter to accept→DELIVERED. |
 | ⚠️ REQ-004 gate OFF (deliberate) | Porter — re-enable after internal testing | Human commented out `@Profile("dev")` ON PURPOSE so the build can go up for internal testing (their dev-profile config attempts did not take effect). DEFERRED via REQ-018: do NOT restore it yet. Accepted risk: unauthenticated real-PII PDFs — **CONFIRMED internal-only network**, so contained. MUST be restored before production. |
+| DEF-3 build broken (TASK-008) | RESOLVED | Jason fixed A9PreviewTest → `new A9CheckListPreviewBuilder().createPreviewData()`. `test-compile` BUILD SUCCESS; A9PreviewTest green (pages=4). TASK-008 → REVIEW. |
+| DEF-4 อ.9 page-1 blanks | MOSTLY RESOLVED (human fixed lawRefs + margins directly) | Jason DONE the 2 code fixes: item2=full MOVE_REQUEST_TYPE label map, item7=MOVE START/END date range (dropped LICENSE.PERIOD_TEXT); test-compile SUCCESS. BLOCKED on the rest: item1/5/lawRefs/signatures diagnosis needs the /a9/db/18847 emitted-JSON run = real UAT read (BE rule #4 → QA's leg, per the TASK-003 ruling). Ask Tanya to report which fields JSON shows null/present; null-in-DB/different-linkage → DATA REQUEST to wire. See TASK-008 Q4. |
 | ENV FACT | noted | UAT DB = Oracle **11.2** — no `FETCH FIRST`, no 12c-only SQL. Applies to all future queries. |
 | DEPLOY note (REQ-004) | Human | After REQ-004 redeploys, run the UAT :33000 instance with `dev` profile (jar → SPRING_PROFILES_ACTIVE=dev) or the /a6/db QA seam 401s. |
 | Commit hold (PII) | RESOLVED | project-docs/ now gitignored (REQ-006 verified — no PII tracked). PII commit-hold lifted. |
