@@ -22,7 +22,7 @@
 - [ ] `bunx tsc --noEmit` 0 · `bun run build` ok · FRONTEND-STANDARD holds · hallmark verdict pasted.
 
 ## Implementation Notes / Questions
-**Fern 2026-08-16 — `smart-scheduler-front@dong`, uncommitted. 🟢 This is the one task in today's batch I could
+**Fern 2026-08-18 — `smart-scheduler-front@dong`, uncommitted. 🟢 This is the one task in today's batch I could
 verify in a RENDERED browser** (the settings screen is a page, not a modal), so the evidence below is observed, not read.
 
 ### Contract — matched to Jason's code, not to my reading of the SPEC

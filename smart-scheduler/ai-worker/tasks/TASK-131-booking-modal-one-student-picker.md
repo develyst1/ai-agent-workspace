@@ -60,7 +60,7 @@ Presentation only; **no BE change, no behaviour change**.
 - [ ] Self-run `hallmark audit` on the modal; paste the verdict + a note on each AC into Implementation Notes.
 
 ## Implementation Notes
-**Fern 2026-08-16 — repo `smart-scheduler-front@dong`, uncommitted (5 files).**
+**Fern 2026-08-18 — repo `smart-scheduler-front@dong`, uncommitted (5 files).**
 
 ### What changed
 | File | Change |

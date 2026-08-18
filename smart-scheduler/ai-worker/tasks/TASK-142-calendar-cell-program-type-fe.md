@@ -5,6 +5,9 @@
 - Depends on: TASK-141 (nickname on the Booking DTO) · **Porter's palette sign-off** (SPEC-046 §Palette)
 
 ## What to do (smart-scheduler-front)
+0. **Nickname is now FE-only** (TASK-141 found the BE already carries `student.nickname`): carry it through the
+   flatten at `src/lib/api/mappers.ts:13` (`nickname: dto.student.nickname`) and render `nickname || studentName`
+   in the cells. No BE dependency — TASK-141 is closed as no-change.
 1. **Week cell** (`CalendarWeekGrid.tsx:120-122`): render line 1 `{time} {nickname}`, line 2
    `{type} · {program}` (`t(bookingType.*)` short form + `booking.subject`). `tabular-nums` on the time.
 2. **Type marker (the dual-colour, no collision):** a **thin leading edge-stripe** on the card + a labelled

@@ -37,7 +37,7 @@ In the `isVoucher` branch of `CreateForm`:
 - [ ] FRONTEND-STANDARD holds; self-run `hallmark audit`, paste verdict + AC notes into Implementation Notes.
 
 ## Implementation Notes
-**Fern 2026-08-16 — `smart-scheduler-front@dong`, uncommitted (stacked on TASK-131's tree, per your Q3 answer).**
+**Fern 2026-08-18 — `smart-scheduler-front@dong`, uncommitted (stacked on TASK-131's tree, per your Q3 answer).**
 
 ### What changed (one file + 2 dict keys)
 1. **`BookingModal.tsx`, `isVoucher` render branch** — the read-only `<Alert>` became an Alert **+** the standard

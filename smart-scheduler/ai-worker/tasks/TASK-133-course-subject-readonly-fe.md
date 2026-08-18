@@ -29,7 +29,7 @@ In `smart-scheduler-front/src/components/partials/Bookings/PlanModal.tsx`, `Sess
 - [ ] `bunx tsc --noEmit` 0 · `bun run build` ok · FRONTEND-STANDARD holds · hallmark verdict pasted.
 
 ## Implementation Notes
-**Fern 2026-08-16 — `smart-scheduler-front@dong`, uncommitted (`PlanModal.tsx` + `dictionaries.ts`).**
+**Fern 2026-08-18 — `smart-scheduler-front@dong`, uncommitted (`PlanModal.tsx` + `dictionaries.ts`).**
 
 ### What changed
 One predicate in `SessionEditor` drives all three effects:

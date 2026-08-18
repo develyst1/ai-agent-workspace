@@ -1,6 +1,6 @@
 # TASK-141: Add `nickname` to the Booking DTO (BE)
 - Source: SPEC-046 (REQ-052)
-- Status: TODO
+- Status: DONE — no BE change needed, verified (SA-reviewed Sober 2026-08-17); the FE nickname wiring folds into TASK-142
 - Assignee: @Jason (BE)
 - Depends on: none
 
@@ -20,3 +20,45 @@ The calendar cell (REQ-052) shows the student's **nickname**, but the Booking DT
 
 ## Implementation Notes / Questions
 (Jason fills in. Coordinate the FE `Booking` type add with TASK-142.)
+
+## Implementation Notes / Questions
+🟢 **No BE change needed — the field is already there. I verified rather than added it.**
+
+- `src/db/mappers.ts` → `studentRef()` already emits **`nickname: s.nickname ?? null`**, and `toBookingDTO`
+  embeds `student: studentRef(b.student)`. `src/types/contract.ts` `StudentRef` already declares
+  `nickname: string | null`, so `BookingDTO.student.nickname` is part of the published contract.
+- **Every booking-returning path carries it** (DoD item 3): `loadBookingDTO` uses `withBookingRelations`
+  (which includes `student: true`), and **`getCalendar` maps every cell through the full `toBookingDTO`** —
+  so the day *and* week grids already receive the nickname. Checked the other booking loaders too
+  (`checkin.service`, `calendar.service`, `attention.service`) — all join `student`.
+- **The gap is FE-side, one line:** `smart-scheduler-front/src/lib/api/mappers.ts:13` flattens the DTO into
+  `studentName: dto.student.name` and simply **doesn't carry `nickname` through**;
+  `CalendarGrid.tsx:119` then renders `booking.studentName`. So the week-view nickname is a **TASK-142**
+  change (`nickname: dto.student.nickname` in that mapper + render `nickname || studentName`), not a BE one.
+- `students.nickname` is **nullable** in the schema, hence `?? null`.
+
+**On the DoD's "falls back to name/empty":** I did **not** change `nickname` to fall back to `name`. That field
+is shared by every student-bearing DTO (courses, vouchers, bookings), and making it silently mirror `name` would
+destroy the "has no nickname" signal for existing consumers. The fallback belongs at the render site
+(`nickname || name`), which is what the FE already does elsewhere (`attention.ts` uses exactly that shape).
+
+**Verified:** `bunx tsc --noEmit` **0** · `bun test` **493 pass / 0 fail** — unchanged, because no code changed
+for this task.
+
+## Questions
+- Q1: agreed that this is FE-only, and that the `nickname || name` fallback belongs in TASK-142's render rather
+  than in the shared `StudentRef`? If you'd rather the BE emit a non-null `nickname`, say so and I'll do it as a
+  contract change with the consumers checked — but I wouldn't fold it in silently.
+
+  > answer (Sober): **agreed on both — good verify-instead-of-add.** The BE already carries `student.nickname` (`mappers.ts:54`
+  > `?? null`), so there's no BE task here; keeping `StudentRef.nickname` **nullable** preserves the "has no nickname"
+  > signal for every consumer, and the `nickname || name` fallback belongs at the **render** site. **The whole nickname
+  > change is now one FE line inside TASK-142** — carry `nickname` through `api/mappers.ts:13` (`nickname: dto.student.nickname`)
+  > and render `nickname || studentName` in the cells. I've folded that into SPEC-046 / TASK-142. **TASK-141 = DONE (no BE
+  > change).** Nice catch — saved a needless contract change.
+
+## Review
+**PASS ✅ — no BE change, verified (Sober 2026-08-17).** Confirmed `mappers.ts:54` already emits `nickname: s.nickname ?? null`
+and `getCalendar` maps every cell through `toBookingDTO`, so both grids already receive `student.nickname`. The gap is the
+FE flatten dropping it (`smart-scheduler-front/src/lib/api/mappers.ts:13`) → moved into TASK-142. `bun test` 493/0 (unchanged).
+Correctly refused to make the shared `nickname` mirror `name` (would destroy the null signal). DONE.

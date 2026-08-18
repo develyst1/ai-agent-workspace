@@ -36,12 +36,7 @@ size, sessions already used, or expiry.** So this file can create **people**; it
 Confirmed by the owner: **column D = the child's date of birth** · **column H = a family/parent note** (e.g.
 *"คุณแม่จิ๋ว"*), not a voucher marker · **the teacher roster in the system is already the real one** — this import
 is people only ·
-🔴 **Column A is UNKNOWN — do not build anything on it.** Porter earlier wrote "= the day of the week the child
-attends" and attributed it to the owner. **The owner never said that; it was Porter's inference from the merged
-Wed/Thu/Fri labels, mislabelled as a confirmed answer.** The owner's own reading is different — this is a **master
-student list**, so a weekday column more likely means something like *"needed by / to be done before Monday"*
-(he recalls the customer saying something of that shape on a call). **He is asking the customer.** Until they
-answer, column A is imported nowhere and inferred from by nobody. ·
+**Column A = the child’s class day** — **confirmed by the owner in the evening of 2026-08-16** (see the UPDATE block at the end of this file). Earlier in the day Porter had inferred this, been corrected for presenting an inference as the owner’s answer, and marked it unknown; the owner then checked and confirmed it himself. It is **not used in wave 1** (*“ไม่เกี่ยว ช่างมันไป”*) — it is preserved per AC-12 and it **orders the import batches**. ·
 **courses come later**: the customer will send them and will want our help loading them, but *"ตอนนี้ยัง เขาให้แค่
 เด็กๆ มา เราแค่เอาเข้า master เด็กๆ และครอบครัวรอ"* ⇒ **wave 1 = master data only, confirmed.**
 
@@ -177,3 +172,102 @@ import is written optimistically:**
   The file stays in gitignored `project-docs/`; **this REQ carries the counts, never the rows.**
 - **Q5 (to SA):** does an import path exist today (REQ-019's People screens, a script, a CSV route), or does this
   need a one-off importer? Say which, and whether it can produce the AC-2 reconciliation report.
+
+---
+
+## 🔄 UPDATE 2026-08-16 (evening) — the last two unknowns are answered, and the import is now a plan, not a blob
+
+**Owner's answers:**
+- **Yellow highlight = "ยังไม่พร้อม" (not ready).** ⇒ **those rows are excluded from this import entirely** — not
+  "imported with a flag", not "imported and hidden". **27 rows.** They come back in a later pass when the customer
+  says they are ready.
+- **Column A *is* the child's class day** — *"ตารางเรียนน้องวันไหน"* — but it is **not needed for wave 1**
+  (*"ไม่เกี่ยว ช่างมันไป"*). It stays preserved per AC-12 and becomes wave 2's starting point.
+  *(Note for the record: this is what Porter originally inferred, then correctly retracted when the owner said he
+  had not confirmed it. It is confirmed now — by him, not by me.)*
+- 🔴 **The import runs DAY BY DAY, top-down** — *"เราจะเริ่มทำจากข้างบนทีละวัน"*. Not one 176-row transaction.
+
+## Re-analysis with those rules applied (Porter, from the file)
+**176 named rows → ✅ 110 import now · ⚠️ 39 need the customer's confirmation · ⛔ 27 not ready (yellow) ·
+21 families with more than one child.**
+Remaining issues among the 39: 23 no phone · 31 no DOB · 8 DOB needing confirmation · 4 parent-rows.
+
+**Day batches (the order of work):**
+
+| วัน | ทั้งหมด | ✅ นำเข้าได้ | ⚠️ ต้องยืนยัน | ⛔ ยังไม่พร้อม |
+|---|---|---|---|---|
+| Monday | 9 | 5 | 4 | 0 |
+| Tuesday | 9 | 4 | 2 | 3 |
+| Wed | 4 | 4 | 0 | 0 |
+| Thu | 11 | 5 | 2 | 4 |
+| Fri | 3 | 2 | 1 | 0 |
+| **Sat** | **55** | 41 | 10 | 4 |
+| **Sun** | **80** | 44 | 20 | 16 |
+| Voucher | 5 | 5 | 0 | 0 |
+
+*(per-day breakdown in `../project-docs/2026-08-16-student-import-issues.md`)*
+
+**Two things this table changes about the plan:**
+1. **The weekend is the product.** Sat + Sun = **135 of 176** children. A day-by-day run means Mon–Fri (36 rows) is
+   a genuine rehearsal — small, low-risk, and it proves the importer before it touches the bulk. **Porter's
+   recommendation: run Monday first, stop, and have the owner look at the result on screen before continuing.**
+2. **Column A also contains a `Voucher` group (5 rows)** — that is not a weekday, so those children attend on no
+   fixed day. They are imported as people like everyone else; the label matters only to wave 2.
+
+## Additional acceptance criteria from this update
+- [ ] **AC-13 (yellow rows are excluded, visibly)** — **Given** the 27 not-ready rows, **When** the import runs,
+      **Then** none of them exists in the system afterwards, and they appear as their own list — never mixed into
+      the "needs confirmation" list, because the two need different actions from the customer.
+- [ ] **AC-14 (day-by-day, resumable)** — **Given** the owner runs one day's batch, **When** it finishes,
+      **Then** the result is reviewable on screen before the next day starts, and re-running a completed day
+      changes nothing (AC-6 idempotency applies per batch, not just overall).
+
+## 🔄 UPDATE 2 (2026-08-16, evening) — the report is a WORK CHECKLIST for the owner, not a letter to the customer
+Porter had framed the output as "a list to send the customer". **Wrong shape.** The owner corrected the workflow:
+the customer keeps the sheet as a **live Excel Online document**; he only downloaded a copy for us. What he
+actually needs is: *"ทีมนายแค่ทำสิ่งที่ทำได้ แล้วบอกฉันว่าใครทำไปแล้วบ้าง และใครติด เพราะอะไร"* — **he then colours
+the finished rows green in the online sheet himself.**
+
+**Consequences for what this REQ delivers:**
+1. **The report is keyed to the Excel ROW NUMBER and sorted by it**, top-down, so he can walk the online sheet in
+   order without hunting. Grouping by problem type made him cross-reference; grouping by row lets him work.
+2. **Three states per row, and only three:** ✅ ทำได้ (imported / importable) · ⚠️ ติด + **the reason in the same
+   row** · ⛔ ยังไม่พร้อม (the customer's own yellow — the team does not touch these at all).
+3. **The report is produced again after every batch actually runs**, listing what really landed — not only the
+   pre-run prediction. Green in the sheet must mean "in the system", so the list he colours from has to be the
+   post-run truth.
+4. **We do not write to the customer.** Anything that needs the customer goes to the owner, in his list, and he
+   carries it.
+
+- [ ] **AC-15 (row-keyed reconciliation)** — **Given** a batch has run, **When** the report is produced, **Then**
+      every line carries the **source Excel row number**, its status (✅/⚠️/⛔) and, when stuck, the reason — and the
+      ✅ set is exactly what exists in the system, verifiable by opening the People screen.
+- [ ] **AC-16 (nothing yellow is touched)** — no row the customer highlighted yellow is created, updated or
+      reported as done, in any batch.
+
+## 🔄 UPDATE 3 (2026-08-19) — the owner's actual plan: BOTH environments, and `sid` is the rehearsal
+Porter had scoped this REQ to the customer box only. **Wrong.** The owner's instruction:
+*"ให้นายทำการเคลียร์ข้อมูลทั้งหมดที่ sid และ uat พวกข้อมูลเทสๆ เอาออก แล้วเราจะเอาข้อมูลขึ้น sid ดู ถ้ามัน work ก็จะเอาขึ้น uat"*
+
+⇒ **The data operation follows the same rule he set for migrations: `sid` first, prove it, then `uat`.**
+
+**Revised sequence (both environments, in this order):**
+1. **`sid`**: verified backup → wipe test data → import the top day → **look at it in the product** → continue
+   day by day.
+2. **Only when `sid` looks right**: the identical run on **`uat`**, which is what the customer receives.
+
+**Why this is better than what I had written, and worth saying rather than quietly patching:** the wipe and the
+import both run for the first time in their lives. On `uat` a mistake costs the customer their opening day; on
+`sid` it costs a re-run. The rehearsal is free and I should have proposed it — he did.
+
+- [ ] **AC-17 (`sid` rehearsal first)** — **Given** the wipe + import have never been run, **When** they are run,
+      **Then** they run on **`sid`** first and the owner confirms the result **in the product** before `uat` is
+      touched at all.
+- [ ] **AC-18 (both environments end clean)** — **Given** both runs are complete, **When** staff look at either
+      environment, **Then** neither contains QA/demo/test records, and both contain the same real families and
+      students for the days imported so far.
+
+**Consequence for the reset script (REQ-040's `db:reset`, still unbuilt):** it is now needed **twice**, on two
+environments, by someone who should not be hand-deleting rows in a UI. That settles the "could the owner just
+click them away tonight" question — for `sid` maybe, for a repeatable two-environment operation, no. **It is the
+critical-path item.**

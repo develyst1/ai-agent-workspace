@@ -24,7 +24,7 @@ editor, whose `courseSubjectLocked` is deliberately false in create mode (`PlanM
 - [ ] `bunx tsc --noEmit` 0 · `bun run build` ok · FRONTEND-STANDARD holds · hallmark verdict pasted.
 
 ## Implementation Notes / Questions
-**Fern 2026-08-16 — `smart-scheduler-front@dong`, uncommitted.** This closes the hole I flagged as TASK-133's Q1, so
+**Fern 2026-08-18 — `smart-scheduler-front@dong`, uncommitted.** This closes the hole I flagged as TASK-133's Q1, so
 thanks for turning it into REQ-054 rather than parking it.
 
 ### What changed (2 files, 3 edits)

@@ -48,6 +48,14 @@ eyeball:** `cyan` vs `teal` are adjacent — if they don't read as distinct on s
 `pink`-family and `first-trial` elsewhere. Since type is also carried by the **edge-stripe channel + the text
 label**, hue proximity is a polish concern, not a correctness one.
 
+**🔴 Rendered comparison produced** (`project-docs/req-052-palette-comparison.html`, accurate Mantine shade-6
+hexes, both themes). It shows the honest finding: **the wheel is full** — status uses 6 families, so at
+saturated shade 6 the type hues have real near-pairs (indigo≈blue, teal≈green, pink≈red, cyan↔teal). **So
+the stripe is a QUIET muted tint** (shade 2 light / shade 8 dark), not the saturated hue — a different
+*loudness* as well as a different *place* than the status chip. That plus the always-shown text label is
+what separates them; hue-distance is not relied on. This refines the mechanism (muted stripe) and is the SA
+decision; the exact hues remain the owner's eye on the real calendar (Tanya's 375px pass).
+
 **Two gates before the FE build (Porter's conditions, both are on-screen checks I cannot composite headless):**
 1. the four type hues vs the **rendered** status hues (the token check above rules out same-family collisions;
    the on-screen confirmation is the last 5%), and 2. **both themes** (a "quiet marker" invisible in dark mode is
