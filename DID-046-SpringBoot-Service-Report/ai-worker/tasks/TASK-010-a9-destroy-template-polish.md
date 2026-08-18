@@ -2,7 +2,7 @@
 
 - Source: SPEC-019 audit / DEF-4a, DEF-5. No data/human needed — all template/builder + verifiable in
   the A9PreviewTest mock loop.
-- Status: TODO
+- Status: SUPERSEDED by TASK-012 (folded into the SPEC-020 set; residual DEF-5 now in TASK-013). Not open BE work.
 - Depends on: none
 
 Repo: `C:\Users\Admin\sa-project\service-report2\DID-046-SpringBoot-Service-Report`.

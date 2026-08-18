@@ -29,6 +29,20 @@ Any ONE of these makes `dev` active on the deployed instance (no code change):
 **Recommend #2 (`SPRING_PROFILES_ACTIVE=dev`)** — it survives repackaging and works the same for a
 bare jar, a Windows service, or a container. Whoever owns the deploy sets it once.
 
+### ✅ VERIFIED (TASK-009) + config-location caveat — the exact one-liner
+Proven on the packaged jar: `SPRING_PROFILES_ACTIVE=dev java -jar ...` → boot log "The following 1
+profile is active: dev"; without it → "default". **But** `application.yml` lives at the **project root**
+(there is NO `src/main/resources/application.yml`), so it is **NOT bundled in the jar** — Spring reads it
+from the **working directory** (`optional:file:./`). Launch from a different cwd and boot fails with a
+placeholder error (e.g. `Could not resolve placeholder 'external.urls.base'`) — a *config-not-found*
+issue, not a profile issue. **So the stakeholder's one step is:**
+```
+SPRING_PROFILES_ACTIVE=dev java -jar SpringBoot-Service-Report-0.0.1-SNAPSHOT.jar
+```
+run **from the directory that holds `application.yml`** (or add `--spring.config.location=file:/path/to/application.yml`).
+With that, `dev` activates cleanly and the REQ-004 gate can stay ON. (Also relevant to any อ.9/อ.6 deploy —
+the root `application.yml` must ship alongside the jar.)
+
 > Do NOT put `spring.profiles.active: dev` in `application.yml` — that would make `dev` the default
 > **everywhere including production**, defeating the fail-closed gate. Keep it a per-instance runtime flag.
 
