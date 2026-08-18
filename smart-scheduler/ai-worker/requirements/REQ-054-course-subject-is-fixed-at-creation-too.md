@@ -70,8 +70,7 @@ possible.
   currently rely on the `bookings[0].subject` derivation that would have to be repointed? Say what you find; if the
   honest answer is "bigger than it looks", tell Porter and I will split requirement 4 into its own REQ rather than
   let it swell this one.
-- **Q2 (to owner — pending the DATA REQUEST Porter is raising for REQ-053):** if existing mixed-program courses are
-  found, do we correct them to one program (which one?) or leave and flag them? *(Porter's lean: show me the list
-  first — the right answer may differ per course, and some may be legitimate data-entry mistakes with a family who
-  remembers what they actually bought.)*
-  > answer: _pending_
+- **Q2 (to owner — pending the DATA REQUEST):** if existing mixed-program courses are found, correct or flag them?
+  > **CLOSED 2026-08-16 — owner ran the query: ZERO rows.** No mixed-program course exists. This REQ is therefore
+  > **purely preventive** and carries **no data-migration risk**: requirement 4 (a course-level program field) can
+  > be introduced by deriving it from each course's existing sessions, which are — verified — all in agreement.

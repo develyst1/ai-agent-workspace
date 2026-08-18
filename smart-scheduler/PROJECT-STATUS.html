@@ -48,13 +48,9 @@
   .flat b{color:var(--ink)}
   .callout{background:var(--warn-soft);border:1px solid var(--warn);border-radius:var(--radius);padding:13px 16px;margin:16px 0;font-size:14px}
   .callout b{color:var(--warn)}
-  .good{background:var(--ok-soft);border:1px solid var(--ok);border-radius:var(--radius);padding:13px 16px;margin:16px 0;font-size:14px}
-  .good b{color:var(--ok)}
   .resume{background:var(--accent-soft);border:1px solid var(--accent);border-radius:var(--radius);padding:14px 16px;margin:22px 0 0;font-size:13.5px}
   .resume b{color:var(--accent)}
   code{font-family:ui-monospace,"Cascadia Code",monospace;font-size:12.5px;background:var(--park-soft);padding:1px 5px;border-radius:4px}
-  pre{margin:10px 0 0;padding:12px 14px;background:var(--park-soft);border:1px solid var(--line);border-radius:8px;overflow-x:auto;
-      font-family:ui-monospace,"Cascadia Code",monospace;font-size:12.5px;line-height:1.55;color:var(--ink)}
   footer{color:var(--muted);font-size:12.5px;margin-top:24px;text-align:center}
 </style>
 </head>
@@ -63,107 +59,80 @@
 
   <header class="top">
     <h1>smart-scheduler</h1>
-    <span class="sub">Project status · <span class="live">● LIVE on frontoffice.develyst.online</span></span>
-    <span class="upd">อัปเดต 2026-08-16 (เย็น)</span>
+    <span class="sub">Project status · <span class="live">● LIVE บน uat = frontoffice.develyst.online</span></span>
+    <span class="upd">อัปเดต 2026-08-16 (ปิดวัน)</span>
   </header>
-  <p class="flat" style="padding-left:0">วันนี้: ซ่อม <b>LINE rich menu</b> ที่สลับบทบาทแล้วเมนูไม่เปลี่ยน (พังเงียบมานาน) · รับงานจาก <b>มีตติ้งลูกค้า 9 เรื่อง</b> → เขียนเป็น REQ-045…053 · เปิด REQ-054 เพิ่มจากที่ตรวจเจอ · <b>4 REQ โค้ดเสร็จแล้ว</b> รอเทสต์ของจริง</p>
+  <p class="flat" style="padding-left:0">วันนี้: ปิด <b>REQ-042</b> (เมนู LINE สลับตามบทบาท/ภาษาได้แล้ว) · รับงานจากมีตติ้งลูกค้า + go-live รวม <b>11 REQ (045–055)</b> · ทีม build ไป <b>8 ทาสก์</b> · <b>4 REQ โค้ดเสร็จรอเทสต์จริง</b> · 🔴 <b>ลูกค้าจะเริ่มใช้ระบบแล้ว → REQ-055 สำคัญสุดในโปรเจกต์</b></p>
 
   <div class="stats">
     <div class="stat"><div class="n" style="color:var(--ok)">30+</div><div class="l">DELIVERED / live</div></div>
     <div class="stat"><div class="n" style="color:var(--qa)">4</div><div class="l">โค้ดเสร็จ รอ QA</div></div>
-    <div class="stat"><div class="n" style="color:var(--wait)">5</div><div class="l">รอคำตอบคุณ</div></div>
-    <div class="stat"><div class="n" style="color:var(--accent)">4</div><div class="l">คิว SA/BE</div></div>
-    <div class="stat"><div class="n" style="color:var(--park)">6</div><div class="l">parked</div></div>
+    <div class="stat"><div class="n" style="color:var(--accent)">8</div><div class="l">REQ ในคิวทีม</div></div>
+    <div class="stat"><div class="n" style="color:var(--wait)">124</div><div class="l">เด็กที่นำเข้าได้เลย</div></div>
+    <div class="stat"><div class="n" style="color:var(--warn)">52</div><div class="l">เด็กที่ต้องยืนยัน</div></div>
     <div class="stat"><div class="n">0</div><div class="l">defect เปิด</div></div>
   </div>
 
-  <div class="good">✅ <b>REQ-042 ปิดจ็อบใหญ่ของวันนี้:</b> เมนู LINE ไม่สลับตอนเปลี่ยนบทบาท เพราะ <b>ฐานข้อมูลไม่มี id ของเมนูเก็บไว้</b> → โค้ดหาเป้าไม่เจอ + error ถูกกลืน ⇒ link สำเร็จแต่เมนูเงียบ ทีม<b>ไม่</b>สั่ง publish ใหม่ (จะไปสร้างเมนูซ้ำ + เปลี่ยน default ของ OA ที่ลูกค้าใช้จริง) แต่ทำ <code>line:adopt-menus</code> = ดึง id ที่มีอยู่มาเก็บ <b>ไม่เขียนอะไรลง LINE เลย</b> · คุณรันแล้ว ครู/ผู้ปกครองใช้งานได้ ปุ่มไม่ตาย</div>
-
-  <div class="callout">⚠️ <b>3 เรื่องที่รอคุณลงมือ (ไม่ใช่ทีม):</b>
-    (1) <b><code>.env.local</code> ของ frontend ชี้ไปเครื่องลูกค้า</b> — เปิด dev server แล้วเด้งไปหน้า login ตัวจริง ควร default เป็น <code>localhost</code> ·
-    (2) <b>ปิด IP ที่เปิดค้าง 2 รายการ</b> — <code>49.237.170.101</code> (วันนี้) + <code>110.171.40.169</code> (จาก 08-11 ที่ board ยังบันทึกว่าไม่ได้ปิด) ·
-    (3) <b>รัน SQL ตรวจคอร์สกิจกรรมปนกัน</b> (ด้านล่าง) แล้วส่งผลให้ Porter</div>
+  <div class="callout">🔴 <b>REQ-055 — GO-LIVE (สำคัญสุด):</b> ลูกค้าส่ง <code>Student list.xlsx</code> มา ให้ล้างข้อมูลเทสก่อน แล้วอัปเด็ก+ครอบครัวให้เขา · ลำดับ: <b>backup → ล้าง → นำเข้าคน → ส่งมอบ</b> · ไฟล์นี้ <b>สร้าง "คน" ได้ แต่สร้าง "คอร์ส" ไม่ได้</b> (ไม่มีโปรแกรม / ครู / เวลา / แพ็ก / เรียนไปแล้วกี่คาบ) ⇒ <b>คลื่น 1 = master data</b> · <b>คลื่น 2 = ตารางจริง</b> รอลูกค้าส่งข้อมูลเพิ่ม</div>
 
   <section class="card">
-    <h2><span class="dot" style="background:var(--qa)"></span>🧪 โค้ดเสร็จแล้ว — รอเทสต์ของจริง (สิ่งเดียวที่กั้นไม่ให้ปิด 4 REQ)</h2>
-    <div class="rows">
-      <div class="row"><span class="id">REQ-043</span><div class="body"><b>ช่องเลือกนักเรียนเหมือนกันทั้ง 4 แท็บ</b> (เดิม course/voucher เป็นกล่องค้นหา + dropdown แยกกัน)<div class="note">TASK-131 · SA รีวิวผ่านโดยรันซ้ำเอง — รอ <b>Tanya</b> เปิดจอจริงที่ 375/768/1440 (modal เปิดใน headless ไม่ได้)</div></div><span class="chip c-qa">รอ QA</span></div>
-      <div class="row"><span class="id">REQ-048</span><div class="body"><b>voucher เลือกเวลาได้แล้ว</b> (เดิมล็อก 09:00)<div class="note">TASK-132 · FE อย่างเดียว — BE รับเวลาอยู่แล้ว · ค่าเริ่มต้น = เวลาของช่องที่กดมา (แก้ได้)</div></div><span class="chip c-qa">รอ QA</span></div>
-      <div class="row"><span class="id">REQ-053</span><div class="body"><b>วิชาในคาบของคอร์ส แก้ไม่ได้</b> — กันทั้งหน้าจอและฝั่งเซิร์ฟเวอร์<div class="note">TASK-133 (FE) + TASK-134 (BE, ปฏิเสธ 409) · คาบเดี่ยว/บัตร/ทดลอง ยังแก้ได้ตามเดิม</div></div><span class="chip c-qa">รอ QA</span></div>
-      <div class="row"><span class="id">REQ-046</span><div class="body"><b>ลาในไลน์บอกชัดว่าลาคาบไหน / ลูกคนไหน</b><div class="note">TASK-135 · 🟢 ตรวจแล้วระบบ<b>เก็บเป็นรายคาบอยู่แล้ว</b> ไม่ใช่รายวัน — ไม่มีข้อมูลเก่าเพี้ยน ที่ต้องแก้คือ<b>ข้อความ</b> · รอ Tanya ทดสอบบน LINE จริง</div></div><span class="chip c-qa">รอ QA</span></div>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2><span class="dot" style="background:var(--wait)"></span>❓ รอคำตอบคุณ — Sober สเปกต่อไม่ได้ถ้าไม่มี</h2>
-    <div class="rows">
-      <div class="row"><span class="id">REQ-045</span><div class="body"><b>ลาล่วงหน้าตั้งแต่ตอนสร้างคอร์ส</b> — เลือก A / B / C<div class="note">คุณบอก "ไม่ตัดโควตาลา" แต่ REQ-030 คุณเคยตอบว่า "ควรสิ" (ตัดโควตา และ<b>การตัดโควตานี่แหละที่ทำให้คอร์สยืด</b>) ⇒ <b>A</b> ฟรีไม่จำกัด · <b>B</b> ฟรีเฉพาะตอนสร้าง (Porter แนะนำ) · <b>C</b> ที่หมายถึงคือ "อย่าล็อกคอร์ส" ซึ่งไม่ล็อกอยู่แล้ว</div></div><span class="chip c-wait">BLOCKED</span></div>
-      <div class="row"><span class="id">REQ-047</span><div class="body"><b>ลาได้ถึง 3 ชม. ก่อนเรียน + ตั้งค่าได้</b><div class="note">ของเดิมมีอยู่แล้วและ<b>ไม่ใช่ 3 ชม.</b> — ครูประจำ ≥1 ชม. / ฟรีแลนซ์ ≥2 ชม. ⇒ 3 ชม. จะ<b>แทนที่ทั้งคู่</b> (Porter แนะนำ) หรือแยกตามประเภทครูต่อ?</div></div><span class="chip c-wait">Q1</span></div>
-      <div class="row"><span class="id">REQ-049</span><div class="body"><b>ลาแล้วแจ้งแอดมิน/ครู (ตั้งค่าได้)</b><div class="note">3 ข้อ: "แอดมิน" คือใคร (แนะนำ: ช่องทางเดิมที่ digest ใช้) · แจ้งทันทีหรือรวม digest 08:00 (แนะนำ: ทันที) · ลากระชั้นเขียนต่างมั้ย (แนะนำ: เหมือนกัน)</div></div><span class="chip c-wait">Q1-3</span></div>
-      <div class="row"><span class="id">REQ-051</span><div class="body"><b>หน้า QR เช็คอินหน้างาน</b><div class="note">รับกฎ <b>"แคบไว้ เปิดเผยน้อยที่สุด"</b> มั้ย — โชว์เฉพาะคาบในช่วงเช็คอิน · ชื่อเล่นเท่านั้น · เบอร์ไม่มีในระบบกับเบอร์ที่ไม่มีคาบ ได้ข้อความเหมือนกัน (กันคนสุ่มเบอร์ไล่เก็บชื่อเด็ก) · + จะให้กดลาด้วยมั้ย (แนะนำ: ไม่) · QR ใบเดียวพอมั้ย (แนะนำ: ใบเดียว)</div></div><span class="chip c-wait">Q1-3</span></div>
-      <div class="row"><span class="id">REQ-044</span><div class="body"><b>เปลี่ยนชื่อแท็บ "คอร์ส" → "แทรกคาบชดเชย"</b><div class="note">ยืนยันคำนี้เป็นคำที่พนักงานใช้จริงมั้ย (ถ้าเขาเรียกอย่างอื่น ใช้คำเขา) · ข้อความยืนยันควรบอกด้วยมั้ยว่าคาบไหนถูกย้าย (แนะนำ: ไม่ บอกวันสิ้นสุดใหม่พอ)</div></div><span class="chip c-wait">คำ</span></div>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2><span class="dot" style="background:var(--accent)"></span>🔨 คิวทีม — มีคำตอบครบแล้ว ทำได้เลย</h2>
-    <div class="rows">
-      <div class="row"><span class="id">REQ-052</span><div class="body"><b>ช่องในตารางบอกกิจกรรม + ประเภทการจอง</b> (ทดลอง/คาบเดี่ยว/คอร์ส/บัตร)<div class="note">คุณตอบแล้ว: สองสี (สถานะ = สีหลัก, ประเภท = ตัวเล็ก) + ชื่อเล่น · กติกา: <b>ตัวหนังสือต้องอยู่ ห้ามสื่อด้วยสีอย่างเดียว</b> · ห้ามใช้สีสถานะซ้ำ · ชุดสีจริงเอามาให้คุณดูก่อนทำ · โหมดสลับมุมมอง = <b>พักไว้</b> (ไม่ตัดทิ้ง)</div></div><span class="chip c-build">SA</span></div>
-      <div class="row"><span class="id">REQ-054</span><div class="body"><b>สร้างคอร์สใหม่ก็ต้องเป็นกิจกรรมเดียว</b> — REQ-053 กันแค่ตอนแก้<div class="note">เจอตอนรีวิว: หน้าสร้างส่งวิชา<b>รายคาบ</b> ⇒ เกิดคอร์สปนกิจกรรมได้ตั้งแต่แรก · Porter ดึง "ให้คอร์สมีวิชาเป็นของตัวเองในฐานข้อมูล" เข้ามาด้วย เพราะทุกวันนี้ระบบเดาจาก "คาบแรก" — นั่นคือต้นเหตุ</div></div><span class="chip c-build">SA</span></div>
-      <div class="row"><span class="id">REQ-050</span><div class="body"><b>เช็คอินลงถูกคน + แก้ผิดแล้วต้องคืนคาบ</b><div class="note">🟢 ตรวจแล้ว: เส้นทางหลัก<b>ผูก id ถูกคนอยู่แล้ว</b> · 🔴 ของจริงที่พัง: <b>แก้เช็คอินผิดแล้วคาบที่ถูกหักไม่ถูกคืน</b> = ครอบครัวเสียคาบฟรี → Porter สั่งแก้ (ถือเป็นเงินค้างลูกค้า) · ย้อนหลัง = ตรวจไม่ได้ ไม่ให้ใครเดาแก้</div></div><span class="chip c-build">ตัดงาน</span></div>
-      <div class="row"><span class="id">REQ-035</span><div class="body"><b>Sell-side item model</b> — ขายจาก catalog → ตัด stock + ลงรายได้<div class="note">SPEC/TASK ตัดไว้ตั้งแต่ 08-04 <b>ยังไม่ build</b> · แตะเงินจริง + 1 migration → รอคุณเลือก go-live หรือ fast-follow</div></div><span class="chip c-wait">รอ call</span></div>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2><span class="dot" style="background:var(--warn)"></span>📋 DATA REQUEST — รบกวนคุณรัน (อ่านอย่างเดียว)</h2>
+    <h2><span class="dot" style="background:var(--warn)"></span>📋 ผลตรวจไฟล์ลูกค้า — ลิสต์ที่ต้องส่งให้เขายืนยัน</h2>
     <div class="flat">
-      ตรวจว่ามี <b>คอร์สที่คาบข้างในเป็นคนละกิจกรรม</b> อยู่แล้วหรือไม่ — ถ้ามี แถวพวกนี้ทำให้รายงาน <b>สัดส่วนกีฬา (REQ-013)</b> และ <b>รายได้แยกตามกิจกรรม (REQ-014)</b> ผิดมาตลอด และเป็น<b>การตัดสินใจของคุณ</b>ว่าจะแก้ยังไง ไม่ใช่ให้ทีมแก้เงียบ ๆ
-      <pre>SELECT b.course_id, count(DISTINCT b.subject_id) AS programs,
-       string_agg(DISTINCT s.name, ', ') AS program_names,
-       min(b.student_id) AS student_id
-FROM bookings b JOIN subjects s ON s.id = b.subject_id
-WHERE b.course_id IS NOT NULL AND b.status &lt;&gt; 'CANCELLED'
-GROUP BY b.course_id HAVING count(DISTINCT b.subject_id) &gt; 1;</pre>
-      ไม่มีแถว = สบายใจได้ · มีแถว = ส่งให้ Porter แล้วจะเอารายชื่อมาให้คุณดูก่อน
+      <b>176 แถวที่มีชื่อ · นำเข้าได้เลย 124 · ต้องยืนยัน 52 · ครอบครัวที่มีลูกหลายคน 21</b><br>
+      แยกเป็น: ไม่มีเบอร์ <b>32</b> (ตามที่สั่ง = พักไว้ ไม่นำเข้า) · ไม่มีวันเกิด <b>40</b> · วันเกิดต้องยืนยัน <b>11</b> · แถวที่เป็นชื่อผู้ปกครองไม่ใช่เด็ก <b>4</b> · เบอร์เติม 0 แล้วยังไม่ครบ 10 หลัก <b>1</b><br>
+      รายชื่อเต็ม (ชื่อ + ปัญหารายคน): <code>project-docs/2026-08-16-student-import-issues.md</code> — gitignored<br>
+      <b>กติกาที่คุณสั่ง:</b> เติม <code>0</code> หน้าเบอร์อัตโนมัติ · ไม่ครบ 10 หลัก = ไม่บันทึก เข้าลิสต์แทน · แถวชื่อแม่ = ชื่อผู้ปกครอง ไม่ใช่นักเรียน<br>
+      ⚠️ <b>กับดักที่จดไว้ให้คนเขียนตัว import:</b> Excel เก็บเบอร์เป็น <code>8.64197169E8</code> และเก็บวันเกิดเป็นตัวเลขซีเรียล · วันเกิดที่พิมพ์ผิดจะกลายเป็น "วันที่ที่ดูปกติ" เงียบ ๆ (<code>22022020</code> → ปี 62194 · อีกรายอ่านได้ปี 1985) ⇒ ใส่กรอบปี 2005–2026 แล้วส่งที่เหลือให้ลูกค้ายืนยัน
     </div>
   </section>
 
   <section class="card">
-    <h2><span class="dot" style="background:var(--ok)"></span>✅ DELIVERED / live</h2>
-    <div class="flat">
-      <b>วันนี้ (2026-08-16):</b> REQ-042 เมนู LINE สลับตามบทบาทได้แล้ว — <span style="color:var(--warn)">ยังไม่ mark DELIVERED</span> เพราะเหลือ 2 ข้อที่ยังไม่ได้ทดสอบ: <b>ใส่ข้อมูลผิดกลางทาง</b> และ <b>สลับภาษา TH↔EN แล้วเมนูเปลี่ยนตามมั้ย</b> (บอกผลมา หรือสั่งให้ Tanya ทำ)<br>
-      <b>Go-live essential set (prod):</b> REQ-030 · 037 · 038 #1–5 · OBS-3 · 040 · 041 (1–5,7,8)<br>
-      <b>Shipped 08-11:</b> REQ-009 · 022 · 024 · 026 · 027 · 028 · 029 · 031 · 032<br>
-      <b>Older/live:</b> REQ-001 · 002 · 004 · 005 · 006 · 007 · 008 · 010 · 011 · 013 · 016 · 019<br>
-      <b>Defects:</b> DEF-1 · DEF-2 · DEF-3 — <b style="color:var(--ok)">ปิดหมด ไม่มี defect เปิดอยู่</b>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2><span class="dot" style="background:var(--park)"></span>💤 Parked / รอคุยลูกค้า</h2>
+    <h2><span class="dot" style="background:var(--qa)"></span>🧪 โค้ดเสร็จแล้ว — รอ Tanya เทสต์ของจริง</h2>
     <div class="rows">
-      <div class="row"><span class="id">REQ-036</span><div class="body"><b>จบคอร์สก่อนกำหนด / คืนเงิน</b><div class="note">แนวคิดคุณ: คอร์ส = <b>ชั่วโมง</b> ใช้เมื่อไหร่ก็ได้ = คนละโมเดลกับที่ build (นับคาบ + วันหมดอายุ) → คุยลูกค้าก่อน</div></div><span class="chip c-wait">DEFER</span></div>
-      <div class="row"><span class="id">REQ-014</span><div class="body"><b>Revenue-by-activity (backoffice)</b><div class="note">⚠️ build แล้วแต่ดูเหมือน acceptance ไม่เคยรัน + โชว์ ฿0 จนกว่าจะใส่ราคาจริง = <b>delivered-but-UNVERIFIED</b> เคลียร์ก่อนใครอ่านตัวเลขรายได้</div></div><span class="chip c-warn">verify?</span></div>
-      <div class="row"><span class="id">REQ-034/039/033</span><div class="body">Dashboard + wishlist 8 เรื่องจากมีตติ้ง 08-01<div class="note">คุณสั่ง "ทำเมื่อไม่เหลืออย่างอื่น" + รวบ wishlist ให้ครบก่อน scope</div></div><span class="chip c-park">post-GL</span></div>
-      <div class="row"><span class="id">REQ-017/021/038#6-9</span><div class="body">Teacher calendar feed · Badge/tagging · ชั่วโมงครู/Group-Camp/conversion</div><span class="chip c-park">backlog</span></div>
-      <div class="row"><span class="id">REQ-020/023</span><div class="body"><b>QA ที่คุณรับไปทดสอบเอง</b> — Script 4 (LINE claim ครูต้องรออนุมัติ) · Script 5 (digest เช้า)</div><span class="chip c-qa">คุณเทส</span></div>
+      <div class="row"><span class="id">REQ-043</span><div class="body"><b>ช่องเลือกนักเรียนเหมือนกันทั้ง 4 แท็บ</b><div class="note">TASK-131 · รอเปิดจอจริงที่ 375 / 768 / 1440</div></div><span class="chip c-qa">รอ QA</span></div>
+      <div class="row"><span class="id">REQ-048</span><div class="body"><b>voucher เลือกเวลาได้</b> (เดิมล็อก 09:00)<div class="note">TASK-132 · ค่าเริ่มต้น = เวลาของช่องที่กดมา แก้ได้</div></div><span class="chip c-qa">รอ QA</span></div>
+      <div class="row"><span class="id">REQ-053</span><div class="body"><b>วิชาในคาบคอร์สแก้ไม่ได้</b> — กันทั้งหน้าจอและเซิร์ฟเวอร์<div class="note">TASK-133 (FE) + TASK-134 (BE)</div></div><span class="chip c-qa">รอ QA</span></div>
+      <div class="row"><span class="id">REQ-046</span><div class="body"><b>ลาในไลน์บอกชัดว่าลาคาบไหน / ลูกคนไหน</b><div class="note">TASK-135 · ระบบเก็บเป็นรายคาบอยู่แล้ว — ที่ขาดคือ <b>ข้อความ</b></div></div><span class="chip c-qa">รอ QA</span></div>
+      <div class="row"><span class="id">REQ-042</span><div class="body"><b>เก็บตก:</b> AC-4 (ใส่ข้อมูลผิดกลางทาง <code>สมัคร</code>) + <b>Script 4 ครึ่งหลัง</b> (แอดมินกด approve/reject)</div><span class="chip c-qa">เก็บตก</span></div>
     </div>
   </section>
 
   <section class="card">
-    <h2><span class="dot" style="background:var(--warn)"></span>🧹 Housekeeping — คุณรันเอง ไม่บล็อกทีม</h2>
-    <div class="flat">
-      • <b>ปิด IP ที่เปิดค้าง 2 รายการ</b>: <code>49.237.170.101</code> (เปิดวันนี้เพื่อ debug LINE) + <code>110.171.40.169</code> (จาก deploy 08-11 — board ยังบันทึกว่าไม่ได้ปิด) → ลบบรรทัดใน <code>pg_hba.conf</code> → <code>SELECT pg_reload_conf();</code> → เช็คว่าหายจริง<br>
-      • <b>แก้ <code>.env.local</code> ของ smart-scheduler-front</b> ให้ default เป็น localhost (ตอนนี้ชี้ <code>frontoffice.develyst.online</code>)<br>
-      • <b>commit TASK-133</b> (ไฟล์เดียวที่ยังไม่ commit — 131/132 คุณ commit เป็น <code>c6db8ca</code>, TASK-130 เป็น <code>9d01efd</code> แล้ว)<br>
-      • ล้างข้อมูลทดสอบ <code>QA-prod-*</code> ออกจากระบบจริง (รัน REQ-040 delete block)
+    <h2><span class="dot" style="background:var(--accent)"></span>🔨 คิวทีม — มีคำตอบครบแล้ว ทำต่อได้เลย</h2>
+    <div class="rows">
+      <div class="row"><span class="id">REQ-049</span><div class="body"><b>ลาแล้วแจ้งแอดมิน/ครู</b> (ตั้งค่าได้)<div class="note">SPEC-044 + TASK-136/137 · แจ้งทันที ไม่รวม digest · ใช้ช่องทางแอดมินเดิม</div></div><span class="chip c-build">กำลังทำ</span></div>
+      <div class="row"><span class="id">REQ-054</span><div class="body"><b>สร้างคอร์สใหม่ต้องเป็นกิจกรรมเดียว</b><div class="note">SPEC-045 + TASK-138/139/140 · ตรวจแล้วไม่มีคอร์สปนกิจกรรมในระบบเลย ⇒ เพิ่มคอลัมน์ได้แบบไม่มีความเสี่ยง</div></div><span class="chip c-build">กำลังทำ</span></div>
+      <div class="row"><span class="id">REQ-052</span><div class="body"><b>ช่องในตารางบอกกิจกรรม + ประเภท</b><div class="note">SPEC-046 + TASK-141/142 · สถานะ = สีหลัก · ประเภท = แถบขอบ + จุด + <b>ตัวหนังสือ</b> · Porter อนุมัติชุดสีแล้วโดยมี 2 เงื่อนไข (เทียบกับสีสถานะจริง · เช็คโหมดมืด)</div></div><span class="chip c-build">รอเช็คสี</span></div>
+      <div class="row"><span class="id">REQ-050</span><div class="body"><b>แก้เช็คอินผิดคน ต้องคืนคาบให้ครอบครัว</b><div class="note">เส้นทางหลักผูก id ถูกอยู่แล้ว · ของจริงที่พังคือคาบที่ถูกหักไม่ถูกคืน — Porter สั่งแก้ (ถือเป็นเงินค้างลูกค้า) · ย้อนหลังตรวจไม่ได้ ไม่ให้ใครเดา</div></div><span class="chip c-build">รอตัดงาน</span></div>
+      <div class="row"><span class="id">REQ-045</span><div class="body"><b>ลาล่วงหน้าตอนสร้างคอร์ส = แบบ B</b><div class="note">แจ้งตอนสร้าง = ฟรี · แจ้งทีหลัง = ตัดโควตาตามเดิม</div></div><span class="chip c-build">รอสเปก</span></div>
+      <div class="row"><span class="id">REQ-047</span><div class="body"><b>เวลาตัดการลา = ตั้งค่าแยกตามประเภทครู</b><div class="note">Porter ตั้งค่าเริ่มต้น 3 ชม. ทั้งสองประเภท — ถ้าไม่ใช่บอกได้</div></div><span class="chip c-build">รอสเปก</span></div>
+      <div class="row"><span class="id">REQ-051</span><div class="body"><b>หน้า QR เช็คอิน / แจ้งลา หน้างาน</b><div class="note">ลากระชั้น = <b>คำขอ รอแอดมินอนุมัติ</b> (หรือแอดมินใส่รหัสยืนยันตรงนั้น) — ข้อเสนอของคุณที่อุดช่องโหว่ของผม</div></div><span class="chip c-build">รอสเปก</span></div>
+      <div class="row"><span class="id">REQ-044</span><div class="body">🔴 <b>แท็บ "คอร์ส" ที่หน้าจอง — รอคำตอบจากโค้ด</b><div class="note">ความจริง: มัน <b>เพิ่มคาบ +1</b> ไม่ใช่ย้ายคาบชดเชย (Porter เคยเล่าผิด) · คุณอนุมัติไว้ทั้ง <b>ก</b> (ทำให้เป็นการย้ายจริง) และ <b>ค</b> (เอาแท็บออก) · Sober ต้องตอบก่อนว่า "คาบค้าง" เกิดขึ้นตอนไหน</div></div><span class="chip c-wait">BLOCKED</span></div>
     </div>
   </section>
 
-  <div class="callout" style="background:var(--accent-soft);border-color:var(--accent)">🔴 <b style="color:var(--accent)">แก้ความเข้าใจผิดที่ค้างมานาน:</b> <code>frontoffice.develyst.online</code> ที่ทีมเรียกว่า <b>"customer-prod"</b> มาตลอด = เครื่องเดียวกับที่คุณเรียกว่า <b>"UAT"</b> — มี 2 เครื่องคือ <code>sid</code> กับเครื่องนี้เท่านั้น แก้ลง board แล้ว ⇒ งานบ้านที่เขียนว่า "prod" ทั้งหมด = เครื่องนี้ และการแก้ REQ-042 วันนี้ก็<b>ซ่อมให้ผู้ใช้จริงไปด้วยในตัว</b></div>
+  <section class="card">
+    <h2><span class="dot" style="background:var(--ok)"></span>✅ ปิดวันนี้</h2>
+    <div class="flat">
+      <b>REQ-042 DELIVERED</b> — เมนู LINE ไม่สลับเพราะฐานข้อมูลไม่มี id เมนู + error ถูกกลืน · แก้ด้วย <code>line:adopt-menus</code> (<b>ไม่เขียนอะไรลง OA ลูกค้าเลย</b>) · คุณยืนยันเองบนของจริง ทั้งเปลี่ยนบทบาทและเปลี่ยนภาษา<br>
+      <b>ก่อนหน้า:</b> REQ-030 · 037 · 038 #1–5 · OBS-3 · 040 · 041 · 009 · 022 · 024 · 026 · 027 · 028 · 029 · 031 · 032 และของเดิม 001–019<br>
+      <b>Defects:</b> ปิดหมด ไม่มีเปิดค้าง
+    </div>
+  </section>
 
-  <div class="resume"><b>▶ Resume (เครื่องไหนก็ได้):</b> <code>git pull</code> workspace → อ่าน <code>ai-worker/PROTOCOL.md</code> + role file → อ่าน <code>PROJECT-STATUS.md</code> + <code>ai-worker/board.md</code> + <code>ai-worker/log/2026-08-16.md</code> → ทำ ball ของ role ตัวเอง · <b>ความจำข้ามเครื่อง = ไฟล์ใน git นี้</b> (ไม่ใช่ .claude local) · repo โค้ดอยู่ที่ <code>H:\scheduler</code></div>
+  <section class="card">
+    <h2><span class="dot" style="background:var(--park)"></span>🧹 ของคุณ (เลื่อนไว้เอง / ทำเอง)</h2>
+    <div class="flat">
+      • ปิด IP ที่เปิดค้าง 2 รายการ (<code>49.237.170.101</code> · <code>110.171.40.169</code>)<br>
+      • <code>.env.local</code> ชี้ uat — <b>คุณตัดสินใจว่าไม่แก้</b> (ทีมจะไม่ถามซ้ำ)<br>
+      • commit เอง · ล้าง <code>QA-prod-*</code> · <b>REQ-035</b> ทำท้ายสุด<br>
+      • <b>ถามลูกค้า:</b> คอลัมน์ A คืออะไร · แถวไฮไลต์เหลืองหมายถึงอะไร · ขอข้อมูลคลื่น 2 (โปรแกรม · แพ็ก · เรียนไปแล้วกี่คาบ · วัน+เวลา · ครู)
+    </div>
+  </section>
+
+  <div class="callout" style="background:var(--accent-soft);border-color:var(--accent)">🚦 <b style="color:var(--accent)">กฎถาวร (คุณสั่งวันนี้):</b> <b>sid</b> = som.develyst.online + backoffice-som.develyst.online (ทีมพัฒนา/ทดสอบ) · <b>uat</b> = frontoffice.develyst.online + backoffice.develyst.online (ระบบลูกค้า — คุณคนเดียวที่แตะ) · <b>เลิกใช้คำว่า "prod"</b> · 🔴 <b>migration ต้องลองที่ sid ก่อนเสมอ</b> เพราะหลัง REQ-055 ลง uat จะมีครอบครัวจริงและเงินจริงอยู่ — พังที่นั่นคือธุรกิจของลูกค้า ไม่ใช่การซ้อม</div>
+
+  <div class="resume"><b>▶ Resume (เครื่องไหนก็ได้):</b> <code>git pull</code> → <code>ai-worker/PROTOCOL.md</code> + role file → <code>PROJECT-STATUS.md</code> + <code>ai-worker/board.md</code> + <code>ai-worker/log/2026-08-16.md</code> → ทำ ball ของ role ตัวเอง · repo โค้ด: <code>H:\scheduler</code></div>
 
   <footer>smart-scheduler · PM=Porter SA=Sober BE=Jason FE=Fern QA=Tanya · คู่กับ PROJECT-STATUS.md (AI อ่าน)</footer>
 </div>

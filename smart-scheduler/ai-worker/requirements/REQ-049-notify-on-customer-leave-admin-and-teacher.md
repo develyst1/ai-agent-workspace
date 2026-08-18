@@ -72,16 +72,14 @@ want the coach told directly and others want every message to pass through the o
 - A digest/summary variant — see Q2; today's 08:00 digest (REQ-023) is a different product.
 
 ## Questions
-- **Q1 (to owner):** **who is "the admin"** — every staff account, one named notification recipient, or the
-  existing admin LINE/`Needs attention` panel? Porter's lean: the existing admin channel that REQ-023's digest
-  already uses, so we don't invent a second address book.
-  > answer: _pending_
-- **Q2 (to owner):** **immediate message, or collected into the 08:00 digest?** Porter's lean: **immediate** — a
-  leave for today's 10:00 session is worthless in tomorrow's digest — but if the customer wants quiet mornings, say
-  so and I will split it.
-  > answer: _pending_
-- **Q3 (to owner):** should a **late** leave (inside REQ-047's cut-off, i.e. one an admin had to make) read
-  differently to the teacher, so they know it was last-minute? Porter's lean: same message; the timestamp says it.
-  > answer: _pending_
+**All three answered by the owner, 2026-08-16: *"เอาทั้งคู่ ตามที่แนะนำ"* — every Porter recommendation accepted.**
+- **Q1 — who is "the admin":** the **existing admin channel REQ-023's digest already uses.** No second address
+  book, no new list to maintain, and it inherits whatever already works for the digest.
+- **Q2 — immediate, not folded into the 08:00 digest.** A leave for today's 10:00 session is worthless in
+  tomorrow's summary; that is the whole point of the REQ.
+- **Q3 — a late leave reads the same as any other.** The timestamp already tells the coach it was last-minute;
+  a second tone of voice for the same event is more vocabulary for no gain.
+> Note for the SPEC: with Q2 = immediate, **AC-6 (exactly one message per recipient) is the risk to design for** —
+> retries, a re-save, or a staff cancel that follows a parent's cancel must not each produce a message.
 - **Q4 (to SA — investigation):** what is sent **today** when a session is cancelled — anything at all, to anyone?
   Ground it in the code before designing, so we extend what exists rather than building a parallel path.

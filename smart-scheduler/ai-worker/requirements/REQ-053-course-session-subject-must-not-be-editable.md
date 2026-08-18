@@ -71,6 +71,11 @@ every consequence is silent:
   **not** query real data yourself — give Porter the query and I will raise it as a DATA REQUEST. If such rows
   exist they have been feeding REQ-013/REQ-014 wrong numbers, and that is the owner's decision to make, not a
   cleanup to run quietly.
-- **Q3 (to owner, only if Q2 finds rows):** correct them to the course's program, or leave them and flag them?
-  *(Porter's lean: correct, with the list shown to you first.)*
-  > answer: _pending_
+- **Q3 (to owner, only if Q2 finds rows):** correct them, or leave and flag them?
+  > **CLOSED 2026-08-16 — the question never arises. DATA REQUEST run by the owner: ZERO rows.** No course in the
+  > live database has sessions with more than one program. So: **no historical corruption, nothing to correct, no
+  > owner decision needed, and REQ-013/REQ-014's numbers were never distorted by this.**
+  > *(Porter's first version of the query errored — `min(uuid)` has no such function; my mistake, corrected and
+  > re-run.)*
+  > ⇒ REQ-053 and REQ-054 are now purely **preventive**: they close a door nobody has walked through yet. That is
+  > the cheapest moment to close it, and it means neither REQ carries a data-migration risk.

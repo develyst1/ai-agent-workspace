@@ -17,8 +17,9 @@ replaces that split or sits on top of it. See Q1 — I am not guessing.
 
 ## Requirement
 1. **Taking leave is refused once the session is within the cut-off**, with a reason that states the rule.
-2. **The cut-off is an editable setting**, changed by staff on the settings screen (REQ-031's mechanism), **never
-   by an engineer and never by SQL against production**.
+2. **The cut-off is an editable setting — one value per teacher type** (full/part-time · freelance, matching
+   today's `lib/leave-notice.ts` shape), changed by staff on the settings screen (REQ-031's mechanism), **never by
+   an engineer and never by SQL against production**. *(Owner's decision, Q1 below.)*
 3. **The rule is enforced server-side**, so LINE, the staff screens, and anything future all obey it — a client
    that forgets to check cannot create a late leave.
 4. **Staff may still cancel a late session** as an administrative action (with the usual consequences); the cut-off
@@ -60,11 +61,18 @@ replaces that split or sits on top of it. See Q1 — I am not guessing.
 - Charging for late cancellations — a money rule nobody has asked for; if the customer wants it, it is its own REQ.
 
 ## Questions
-- **Q1 (to owner — the load-bearing one):** today the notice period **depends on the teacher**: full/part-time
-  **1 h**, freelance **2 h**. Does the customer's **3 hours replace both** with a single school-wide number
-  (Porter's lean — one rule everyone can state out loud), or should it stay **per teacher type** with 3 h as the
-  new default for some of them?
-  > answer: _pending_
+- **Q1 (to owner — the load-bearing one):** does 3 h replace both, or stay per teacher type?
+  > **answer (owner, 2026-08-16): keep it PER TEACHER TYPE, as it is today** — *"เอาเป็น setting ครู เหมือนเดิมก็ได้"*.
+  > So the shape is **not** one school-wide number: the existing per-type rule stays, and what changes is that the
+  > **values become editable settings** instead of constants in the code. My "one number" lean is overruled, and
+  > that is fine — his staff already think in terms of ครูประจำ vs ฟรีแลนซ์.
+  > **⇒ Requirement 2 is now: one editable value per teacher type** (full/part-time · freelance), each enforced
+  > server-side, each shown on REQ-031's settings screen. Every AC below reads **"the configured cut-off for that
+  > session's teacher type"**, not a literal 3.
+  > **Assumption Porter is proceeding on (say if it's wrong — it is a one-line change, so I am not blocking on
+  > it):** the customer asked for **3 hours**, so the **defaults become 3 h for both types** (up from 1 h / 2 h),
+  > with staff free to set them apart afterwards. The alternative reading — keep 1 h / 2 h and merely make them
+  > editable — would mean the customer's actual request ships unmet, which is why I did not choose it silently.
 - **Q2 (to owner):** does the cut-off apply to **planned absences declared far in advance** as well? (Porter's
   lean: irrelevant by definition — a planned absence is days ahead — but if someone marks one for tonight, it is
   the same act as a late leave and should be refused the same way.)

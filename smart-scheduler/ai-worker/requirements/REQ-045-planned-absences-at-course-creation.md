@@ -1,5 +1,5 @@
 # REQ-045: Mark planned absences while CREATING the course — not only after it exists
-- Status: **BLOCKED (waiting: owner — the quota question below)**
+- Status: **READY_FOR_SA** (unblocked 2026-08-16 — owner picked **(B)**)
 - Priority: **HIGH** — this is how admins say they actually work, on the screen they use most
 - Requested: 2026-08-16 by stakeholder (owner), from a customer meeting
 - Deadline: none stated
@@ -77,9 +77,18 @@ are owed, so it is the owner's call, not mine.
 - Letting a *parent* declare planned absences at registration — staff-side only in this REQ.
 
 ## Questions
-- **Q1 (to owner — this REQ is BLOCKED on it):** (A), (B) or (C) above? And if (A)/(B): with the quota no longer
-  limiting planned absences, is the **extension ceiling** the only limit you want?
-  > answer: _pending_
+- **Q1 (to owner — this REQ was BLOCKED on it):** (A), (B) or (C)?
+  > **answer (owner, 2026-08-16): (B).** Planned absences declared **at creation** are **free** — they do not
+  > touch `leaveUsed` — but a planned absence marked **later**, once the course is running, still consumes the
+  > quota exactly as REQ-030 decided. So the rule is about *when* it was declared, not about weakening the quota.
+  > **Consequences the SPEC must handle explicitly:**
+  > 1. **The extension ceiling (`MAX_WEEK_BY_SIZE`) becomes the only limit on creation-time absences** — so AC-3's
+  >    refusal is now load-bearing, not a nicety.
+  > 2. **"Declared at creation" must be a real distinction in the data**, not a timing coincidence — a session
+  >    absent from birth is not the same event as one cancelled in week 3, and the plan/history should be able to
+  >    tell them apart (it is also what makes AC-5 verifiable).
+  > 3. REQ-030's behaviour for everything after creation is **unchanged**.
 - **Q2 (to owner):** Can staff mark **consecutive** weeks absent (e.g. weeks 3 and 4 — a family travelling for two
   weeks)? Porter assumes yes.
-  > answer: _pending_
+  > **answer: not answered — Porter proceeding on "yes"** (a two-week family trip is the obvious real case, and
+  > the extension ceiling already caps the damage). Say so if that is wrong; it is a one-line change.

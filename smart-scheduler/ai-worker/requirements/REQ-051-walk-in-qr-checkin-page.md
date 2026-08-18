@@ -1,110 +1,142 @@
-# REQ-051: Walk-in check-in — a QR poster at the centre opens a phone-friendly page (phone → child → check in)
-- Status: **READY_FOR_SA — with one business decision the owner must make first (Q1)**
-- Priority: **MEDIUM–HIGH** — real daily friction (nanny drop-offs, forgotten phones), but it touches attendance = money
-- Requested: 2026-08-16 by stakeholder (owner)
+# REQ-051: Walk-in QR page at the centre — enter phone → pick the child → check in **or** take leave
+- Status: READY_FOR_SA
+- Priority: **MEDIUM–HIGH** — real daily friction (nanny drop-offs, forgotten phones), and it touches attendance = money
+- Requested: 2026-08-16 by stakeholder (owner); **concept confirmed and simplified by him the same day**
 - Deadline: none stated
 - Source: owner, 2026-08-16 — *"web responsive page … เอาไปทำเป็น QR ไปแปะไว้หน้างาน ให้ลูกค้าที่ลืมเอามือถือมา หรือ
-  พี่เลี้ยงพาลูกมาเรียนแทน แล้วแม่อาจจะไม่ได้กดเช็คอิน … สแกน QR แล้วเปิดเว็บเรา แล้วกรอกเบอร์ เลือกนักเรียน แล้วกดเช็คอินเลย"*
+  พี่เลี้ยงพาลูกมาเรียนแทน"* → then, when Porter raised the exposure question: *"ไม่เข้าใจนาย worry อะไร ก็แค่สแกนเพื่อ
+  เข้าหน้าเว็บ ง่ายๆ มีแค่กรอกเบอร์ทันที กรอกเสร็จ เลือกเด็กของเบอร์ แล้วกดเช็คอิน **และ ลาได้ เผื่ออีกคนลา แต่อีกคนมา**
+  แค่นี้นะ concept"*
 
 ## Problem / Goal
-Check-in today assumes the **parent** taps it in LINE. Reality at the counter: the mother didn't come, a **nanny or
-grandparent** dropped the child off, or the phone was left at home — and the session goes unchecked. Staff then
-fix attendance by hand, or it is never recorded at all.
+Check-in today assumes the **parent** taps it in LINE. At the counter, reality is a nanny or grandparent dropping
+the child off, or a phone left at home — so the session goes unrecorded and staff patch attendance by hand.
 
-**Goal: anyone standing at the centre with the child can check that child in, in under 15 seconds, with no app, no
-login and no staff involvement** — by scanning a printed QR that opens a phone-friendly page: **enter phone →
-pick the child → check in.**
-
-## 🔴 The decision the owner must make first (Q1) — what a phone number is allowed to unlock
-This page has **no login**. A phone number is the only thing the visitor types, and it is not a secret: it is
-written on forms, known to relatives, and guessable at scale. Two consequences the owner must weigh, in plain
-terms — I am not choosing this alone because it is a trade between counter convenience and customer trust:
-
-- **Attendance is money.** A check-in consumes a session from a paid course/voucher and draws the freelance
-  teacher's budget. A stranger who types a phone could burn a family's lesson.
-- **Names are personal data.** If typing a phone lists that family's children, then anyone can type phone numbers
-  and harvest **children's names**. This team has already fixed one PII leak on the LINE pairing path (TASK-047) —
-  the same mistake at the front door would be worse.
-
-**Porter's recommendation — "narrow window, minimum disclosure":** the page only ever works for a session that is
-**within the check-in window today at this centre** (the existing ±30-minute rule), only lists children who
-**actually have a session in that window**, and shows **nicknames**, not full names. A phone with nothing on today
-returns the same neutral message as a phone that doesn't exist — so it cannot be used to test whether a number
-belongs to a customer. That keeps the counter experience intact and removes almost all of the abuse value.
+**Goal (the owner's concept, verbatim in shape): scan the QR → type the phone → see that phone's children →
+per child, tap เช็คอิน or แจ้งลา. Nothing else.** The two-action design is his, and it is right: siblings come as a
+pair — one attends, one doesn't — and a page that can only check in would send staff back to their desk anyway.
 
 ## Requirement
-1. A **printable QR** that staff can put on a poster at the counter; scanning it opens a **responsive web page** on
-   any phone browser — **no app, no login, no LINE account required**.
-2. The visitor **enters a phone number** and is shown **only the children with a session inside the check-in window
-   right now**, then taps one and confirms.
-3. The page **records a normal check-in** — the same event, the same rules, the same consequences as a LINE
-   check-in (REQ-050's requirement 5 applies: right child, right session, named confirmation).
-4. **Nothing else is exposed:** no schedules, no history, no contact details, no other families — and no ability to
-   change anything other than checking in.
-5. **Staff can see it happened and can correct it** (who was checked in, when, from this page), and a correction
-   returns the session and reconciles the money (REQ-050 AC-5).
-6. Works on a mid-range phone over mobile data, one-handed, in Thai and English.
+1. A **printable QR** for a poster at the counter; scanning opens a **responsive web page** in any phone browser —
+   **no app, no login, no LINE account**.
+2. The visitor **types a phone number**, and the page lists **that phone's children who have a session today**.
+3. **Per child, two actions: `เช็คอิน` and `แจ้งลา`** — so one sibling can be checked in and the other excused in
+   the same visit (the owner's explicit case).
+4. **Both actions are the normal events**, with the same consequences as their LINE equivalents: a check-in
+   consumes the session and obeys REQ-050 (right child, right session, named confirmation); a leave re-owes the
+   session and extends the plan exactly as REQ-030 defines.
+5. **Nothing else is exposed and nothing else can be changed** — no schedules beyond today's session, no history,
+   no contact details, no other families, no editing.
+6. **Staff can see and correct what this page did** — every action is marked as coming from the walk-in page, and a
+   correction returns whatever it consumed (REQ-050 AC-5).
+7. Works one-handed on a mid-range phone over mobile data, in **Thai and English**.
+8. **A leave taken inside REQ-047's cut-off needs an admin.** It is allowed (the owner's decision), but it is
+   recorded as **`PENDING_APPROVAL`**, the admin is notified immediately, and it becomes a real leave only when an
+   admin approves — one tap on the existing approval surface (the REQ-020 teacher-claim pattern), or on the spot at
+   the counter with an **admin code**. A leave **outside** the cut-off needs no approval at all.
+
+## What Porter raised, what the owner decided, what Porter kept anyway
+He asked what the worry was, so plainly: **the page has no login, and a phone number is not a secret** — it is on
+forms, known to relatives, and guessable. Two exposures follow, and only the first is a real question of taste:
+- **Attendance is money.** A stranger who types a phone could burn a family's paid lesson (or now, cancel one).
+- **A phone → children lookup can be harvested.** Typing numbers would reveal **children's names** to anyone. This
+  team already fixed one PII leak on the LINE pairing path (TASK-047).
+
+**Owner's decision: build the simple flow as described** — including **leave**, which overrules my earlier lean.
+Accepted; his sibling case is a better argument than my "one job per screen".
+
+**Three safeguards Porter is keeping, because none of them changes his flow by even one tap:**
+1. **Only today's sessions** are listed (which the concept already implies — nobody checks in for next Tuesday).
+2. **Nicknames, not full names** — enough for a nanny to recognise the child, useless as a harvested list.
+3. **One neutral message** for "this phone has nothing today" and "this phone isn't ours", plus a **rate limit** on
+   repeated attempts from one device — so the page cannot be used to test whether a number is a customer.
+If the owner wants any of these three removed, say so and I will remove it — but they cost him nothing.
 
 ## Acceptance Criteria
-- [ ] **AC-1 (the happy path)** — **Given** a nanny at the counter with a child whose session starts in 10 minutes,
-      **When** they scan the QR, type the parent's phone, pick the child and confirm, **Then** the session is marked
-      attended, the page shows the confirmation (child · time · teacher), and it appears in the staff calendar.
-- [ ] **AC-2 (several children)** — **Given** a phone with two children in the window, **When** the number is
-      entered, **Then** **both** are listed and only the tapped one is checked in.
-- [ ] **AC-3 (privacy floor)** — **Given** a phone number with **no** session in the window — including a number
-      that belongs to nobody — **When** it is entered, **Then** the page shows the **same neutral message** in both
-      cases and reveals **no** name, no child, and no hint that the number exists.
-- [ ] **AC-4 (window)** — **Given** a session outside the check-in window (too early, or already finished),
-      **When** the visitor tries, **Then** it is refused with a clear reason and nothing is recorded.
-- [ ] **AC-5 (no double-consumption)** — **Given** a session already checked in (from LINE or this page), **When**
-      the visitor tries again, **Then** they are told it is already done and **nothing is consumed twice**.
+- [ ] **AC-1 (check in)** — **Given** a nanny at the counter with a child whose session is today, **When** they
+      scan, type the parent's phone, and tap `เช็คอิน` for that child, **Then** the session is marked attended, the
+      page confirms (child · time · teacher), and it appears in the staff calendar.
+- [ ] **AC-2 (the sibling case — the owner's reason for the REQ)** — **Given** a phone with **two** children who
+      both have a session today, **When** the visitor taps `เช็คอิน` for one and `แจ้งลา` for the other, **Then**
+      exactly that happens: one attended, one on leave, neither action touching the other child.
+- [ ] **AC-3 (leave behaves like a leave)** — **Given** a leave taken on this page, **When** it is recorded,
+      **Then** the session is re-owed and the plan extends exactly as a LINE leave would, and REQ-049's
+      notification fires with the same setting.
+- [ ] **AC-4 (privacy floor)** — **Given** a phone number with **no session today** — including a number that
+      belongs to nobody — **When** it is entered, **Then** the page shows the **same neutral message** in both
+      cases and reveals no name, no child, and no hint that the number exists.
+- [ ] **AC-10 (late leave needs an admin)** — **Given** a session starting in 10 minutes (inside the cut-off),
+      **When** a visitor taps `แจ้งลา`, **Then** the page says it is **waiting for admin confirmation**, the admin is
+      notified immediately, and the session is **not** yet a leave. **When** an admin approves, **Then** it becomes a
+      normal leave (re-owed, plan extends). **When** nobody approves before the session starts, **Then** it stays
+      pending and the session follows the normal attendance path — it never silently becomes a leave, and never
+      silently disappears.
+- [ ] **AC-11 (the easy case stays easy)** — **Given** a leave taken **outside** the cut-off, **When** it is
+      submitted, **Then** it is recorded straight away with **no approval step**.
+- [ ] **AC-5 (no double-consumption)** — **Given** a session already checked in (from LINE or here), **When** the
+      visitor tries again, **Then** they are told it is already done and **nothing is consumed twice**.
 - [ ] **AC-6 (abuse resistance)** — Repeated attempts with different numbers from one device are **rate-limited**,
       and the limit's behaviour is stated in the SPEC rather than left to a library default.
-- [ ] **AC-7 (staff visibility)** — Every check-in made from this page is **distinguishable** in the staff view
-      (source = walk-in), so staff can tell it apart from a parent's LINE check-in.
-- [ ] **AC-8 (device reality)** — The page is usable one-handed on a 375 px screen, hit targets ≥ 44 px, and passes
-      the FRONTEND-STANDARD checks the team already applies (REQ-041).
-- [ ] **AC-9 (bilingual)** — Every string is TH and EN, switchable on the page, with no raw i18n key.
+- [ ] **AC-7 (staff visibility)** — Every action from this page is **distinguishable** in the staff view (source =
+      walk-in), so staff can tell it from a parent's own LINE action.
+- [ ] **AC-8 (device reality)** — Usable one-handed at 375 px, hit targets ≥ 44 px, and passes the
+      FRONTEND-STANDARD checks the team already applies (REQ-041).
+- [ ] **AC-9 (bilingual)** — Every string in TH and EN, switchable on the page, no raw i18n key.
 
 ## User-facing wording (Porter as UX writer)
 - Page title — TH: `เช็คอินหน้างาน` · EN: `Check in`
 - Phone field — TH: `เบอร์โทรผู้ปกครอง` · EN: `Parent's phone number` · placeholder `08xxxxxxxx`
-- Button — TH: `ค้นหา` · EN: `Continue`
-- Child list heading — TH: `เลือกนักเรียนที่มาเรียน` · EN: `Select the student`
+- Continue — TH: `ค้นหา` · EN: `Continue`
+- List heading — TH: `คาบเรียนวันนี้` · EN: `Today's sessions`
 - Child row — TH: `{nickname} · {time} น. · ครู{teacher}` · EN: `{nickname} · {time} · {teacher}`
-- Confirm button — TH: `เช็คอิน` · EN: `Check in`
-- Success — TH: `เช็คอินแล้ว: {nickname} · {time} น. · ครู{teacher} ขอให้สนุกกับการเรียนค่ะ` ·
+- Actions — TH: `เช็คอิน` / `แจ้งลา` · EN: `Check in` / `Take leave`
+- Leave confirm step (one tap, so a mis-tap can't cancel a lesson) — TH: `ยืนยันแจ้งลา {nickname} คาบ {time} น.?` ·
+  EN: `Confirm leave for {nickname} at {time}?`
+- Check-in success — TH: `เช็คอินแล้ว: {nickname} · {time} น. · ครู{teacher} ขอให้สนุกกับการเรียนค่ะ` ·
   EN: `Checked in: {nickname} · {time} · {teacher}. Have a great session!`
-- **Neutral not-found / nothing-now message (used for both cases — this exact behaviour is AC-3)** —
-  TH: `ตอนนี้ยังไม่มีคาบเรียนที่เช็คอินได้สำหรับเบอร์นี้ค่ะ กรุณาติดต่อเจ้าหน้าที่` ·
-  EN: `There is no session available to check in for this number right now. Please see our staff.`
+- Leave success (outside the cut-off) — TH: `แจ้งลาแล้ว: {nickname} · {time} น. — คาบนี้จะถูกเลื่อนไปต่อท้าย` ·
+  EN: `Leave recorded: {nickname} · {time} — this session moves to the end.`
+- Leave submitted **inside** the cut-off (pending) — TH: `ส่งคำขอลาแล้ว: {nickname} · {time} น. — รอแอดมินยืนยันค่ะ` ·
+  EN: `Leave requested: {nickname} · {time} — waiting for admin confirmation.`
+- Admin code prompt (the on-the-spot fast path) — TH: `ให้แอดมินใส่รหัสเพื่อยืนยันทันที (หรือรอแอดมินกดอนุมัติ)` ·
+  EN: `An admin can enter their code to confirm now — or wait for approval.`
+- **Neutral not-found / nothing-today message (used for both cases — this is AC-4)** —
+  TH: `ตอนนี้ยังไม่มีคาบเรียนของเบอร์นี้ค่ะ กรุณาติดต่อเจ้าหน้าที่` ·
+  EN: `There is no session for this number right now. Please see our staff.`
 - Already checked in — TH: `คาบนี้เช็คอินไปแล้วค่ะ` · EN: `This session is already checked in.`
-- Poster line (printed next to the QR, Porter's copy) — TH: `สแกนเพื่อเช็คอิน` · EN: `Scan to check in`
+- Poster line next to the QR — TH: `สแกนเพื่อเช็คอิน / แจ้งลา` · EN: `Scan to check in or take leave`
 
 ## Constraints
-- **Attendance rules are not re-invented here** — same window, same consumption, same money effects as any other
-  check-in. This REQ adds a **door**, not a second set of rules.
-- Public page: it must not require or expose credentials, and it must not become a second read-only view of
-  customer data.
-- Must satisfy REQ-050 requirement 5 (right child, right session, named confirmation).
+- **Attendance and leave rules are not re-invented here** — same consumption, same re-owing, same extension, same
+  notification. This REQ adds a **door**, not a second rulebook.
+- Public page: never requires or exposes credentials, and never becomes a second read-only view of customer data.
+- Must satisfy REQ-050 (right child, right session, named confirmation).
 
 ## Out of Scope
-- Registration, booking, payment, or viewing a schedule from this page — check-in only.
-- Per-child personal QR codes (a different product; the owner asked for one poster at the counter).
-- Replacing the LINE check-in — this is an additional route for people without it.
+- Registration, booking, payment, or viewing a schedule — check-in and leave only.
+- Per-child personal QR codes (the owner asked for one poster at the counter).
+- Replacing the LINE flows — this is an extra route for people without them.
 
 ## Questions
-- **Q1 (to owner — the one that shapes the design):** do you accept the "narrow window, minimum disclosure" rule
-  above (only sessions inside the check-in window · nicknames only · identical message for unknown numbers)? If you
-  want the page to be more helpful than that — e.g. show today's whole schedule for the phone — say so and I will
-  write it, but understand it becomes a public lookup for anyone holding a phone number.
-  > answer: _pending_
-- **Q2 (to owner):** should the page also let the visitor **report an absence** ("we're here but the sibling isn't
-  coming")? Porter's lean: **no** — one job per screen; leave has its own rules and cut-off (REQ-047).
-  > answer: _pending_
-- **Q3 (to owner):** one QR for the whole centre, or one per room/coach area? Porter's lean: **one** — a poster per
-  area is more to maintain and gains nothing, since the child list is already narrowed by time.
-  > answer: _pending_
-- **Q4 (to SA):** we already have a token-based `/checkin?token=` path (and REQ-015 deliberately dropped the QR
-  button from the LINE menu). Does this page reuse that mechanism with a different entry point, or does it need its
-  own? Say which, and whether anything in the existing path assumes a logged-in parent.
+- **Q1 (to owner):** should a counter leave inside REQ-047's cut-off be allowed?
+  > **answer (owner, 2026-08-16): YES — allowed (option ก) — but an ADMIN must know about it and approve it.**
+  > His shape: either the admin types an **admin code** on the page at that moment, or it goes to the admin as an
+  > **approval**, *"คล้ายๆ approve LINE ครู linking"* (the REQ-020 teacher-claim pattern).
+  >
+  > **⇒ New requirement 8 (below).** Porter's reading, for the SPEC to design against — say if it's wrong:
+  > - **A leave taken on this page INSIDE the cut-off is a request, not a completed act.** It is recorded
+  >   immediately, marked `PENDING_APPROVAL`, and the admin is notified the same instant (REQ-049's channel).
+  > - **The admin approves or rejects in one tap**, reusing the existing approval surface pattern from REQ-020 so
+  >   staff learn one mechanism, not two.
+  > - **An admin standing at the counter can approve on the spot with their admin code**, which is the fast path
+  >   the owner described — same decision, taken immediately instead of remotely.
+  > - **Outside the cut-off** (a normal, early leave) the page just records it — no approval needed, no friction
+  >   for the common case.
+  > - **The visitor is told the truth**: "แจ้งแล้ว รอแอดมินยืนยัน" — never a confirmation that implies it's done.
+  > - **If nobody approves before the session starts**, it stays pending and the session follows the normal
+  >   no-show/attendance path — the request must not silently become a leave, and must not silently vanish.
+- **Q2 (to owner):** one QR for the whole centre, or one per room/coach area? *(Porter's lean: one.)*
+  > answer: _pending_ — not blocking; SPEC assumes one.
+- **Q3 (to SA):** we already have a token-based `/checkin?token=` path (and REQ-015 deliberately dropped the QR
+  button from the LINE menu). Does this page reuse that mechanism with a different entry point, or need its own?
+  Say which, and whether anything in the existing path assumes a logged-in parent.

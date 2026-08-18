@@ -107,3 +107,13 @@ too long for the weekly cell, that is a layout decision for the SPEC, not a new 
   > **answer (owner, 2026-08-16): ชื่อเล่น — nickname.**
 - **Q3 (to SA):** does the cell already receive program and type from the API, or is this a data-shape change as
   well as a layout one? Say which, because it decides whether this is FE-only.
+  > answer (Sober 2026-08-17): **mostly FE + one small BE field.** Program (`Booking.subject`) and type
+  > (`Booking.bookingType`) are **already on the DTO** — the **day view already renders both** today
+  > (`CalendarGrid.tsx:119-122`), so AC-4 is essentially met; the missing work is the **week view** (shows only
+  > time + name). **`nickname` is NOT on the Booking DTO** (both grids show `studentName` = full name), so your Q2
+  > "nickname" answer needs a small **BE addition** — add `nickname` to the booking DTO (mapper joins
+  > `students.nickname`; no schema change). So: TASK-141 (BE nickname) + TASK-142 (FE cell + dual-colour). Spec'd in
+  > SPEC-046. 🔴 **One thing that shapes the colour design, flagged:** `BOOKING_STATUS_COLOR` already uses **all six**
+  > semantic hues, so a type can't take a *different* semantic colour without colliding with a status — the dual-colour
+  > has to disambiguate by **channel + text** (type = a leading edge-stripe with a **dedicated** token palette + the
+  > type text label always shown), not by hue. Palette proposed in SPEC-046 for Porter's sign-off before the FE build.
