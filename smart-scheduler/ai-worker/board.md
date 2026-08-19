@@ -32,6 +32,18 @@
     it is an **unverified baseline** seeded from this board's acceptance notes,
     **no line carries a QA verdict yet**. No REQ is `IN_TEST`; nothing has been
     routed to Tanya.
+  - 🧪 **2026-08-19 (Tanya) — sid six-REQ screen pass: ALL 6 PASS UI-acceptance @1440, zero writes; DEF-5 (minor).**
+    On `som.develyst.online` only (minted cookie, no password typed; post-wipe people-only data). **PASS@1440:**
+    REQ-044 (New-booking modal = 3 tabs, COURSE gone) · REQ-043 (student picker every tab) · REQ-048 (voucher Time
+    selectable) · REQ-049 (settings rows render) · REQ-054 (one course-level Program; teacher-swap resets it; plan
+    preview = 6 sessions all one program, no per-session control) · **REQ-053** (Edit-session: Date/Time/Teacher
+    editable but **Subject read-only text + the exact explanation line**). REQ-053/054 verified via **plan preview
+    (Generate plan = dry-run; never pressed Create/Save)** — **no course created, no footprint** (there is no course
+    delete anywhere, so creating one was deliberately avoided). 🟡 **DEF-5 (minor):** booking-modal labels
+    `สาขา`/`จังหวัด` render Thai on the EN UI (hardcoded copy). ⚠️ **Not TEST_PASSED yet:** 375/768 responsive sweep
+    pending (only 1440); server-side negatives REQ-053/054 AC-2 + reporting AC-6 = NOT_TESTED → holding at **IN_TEST
+    (PASS@1440)**. Detail: `tests/TEST-055-sid-six-req-screen-pass.md`.
+    **@Porter — Q1: create-a-QA-course (owner runs REQ-040 delete after) vs defer REQ-053/054 to real imports? Q2: DEF-5 scope?**
   - ✅ **2026-08-11 (Tanya) — DEF-3 CLOSED on CUSTOMER-PROD; REQ-041 items 1–5, 7, 8 verified on the deployed build.**
     Human-authorized, **strictly read-only** (nothing created/changed/sent; TASK-090 guard untouched — access via the app's own
     login form). Read from the **deployed CSS**: `bg-content1/80` → `rgb(var(--color-surface) / .8)` ⇒ **`rgba(255,255,255,0.8)`**;

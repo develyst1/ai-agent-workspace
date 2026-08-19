@@ -148,3 +148,50 @@ What this REQ deliberately does not cover.
 ## Questions
 (SA Lead asks here; you answer as `> answer: ...`)
 ```
+
+## 🚦 THE UAT GATE — Porter + Tanya sign, or it does not ship (owner's rule, 2026-08-19)
+
+The owner has made this explicit and it now binds this project:
+
+> **Nothing reaches `uat` until BOTH Porter (PM) and Tanya (QA) have given a green light — and the two of us
+> carry the responsibility for that call.**
+
+`uat` = `frontoffice.develyst.online` + `backoffice.develyst.online` — **the system the customer opens.** From the
+moment REQ-055 landed it holds **real families, real children, real money records.** A bad deploy there is not a
+rollback exercise; it is the customer's business day.
+
+### Two signatures, two different questions — neither substitutes for the other
+| | asks | answers with |
+|---|---|---|
+| **Tanya (QA)** | *Does it actually work?* | evidence from **running the deployed build on `sid`** — screens rendered, flows exercised, numbers checked. Never a code read. |
+| **Porter (PM)** | *Is it the right thing, is now the right moment, and is the customer impact understood?* | the REQ's acceptance criteria, what is **not** covered, what the customer is doing right now, and what breaks if we are wrong. |
+
+**Neither of us can green-light alone.** If Tanya passes it and Porter sees a business reason to hold — the
+customer is mid-review, a migration is unproven, a screen is honest but reads wrong — **Porter holds**. If Porter
+wants it shipped and Tanya has not run it, **there is no green light.** Silence is not agreement from either side.
+
+### 🚫 What is NOT a green light — every one of these has been mistaken for one on this project
+- **"Code-complete"** · **"SA-reviewed"** · **"tests pass"** · **"tsc 0"** — these say the code is *built and
+  correct in the reviewer's judgement*. They say nothing about whether it works on a deployed environment.
+- **A dry run**, a script's own success message, or a report that reconciles with itself. *(A batch importer once
+  reported `1 row · success` for a 9-row day.)*
+- **"It worked on my machine / locally."**
+- **Nobody objecting.**
+
+### What a green light must contain (write it in the log, in this shape)
+1. **Build** — what is being shipped, and confirmation it is the build that was tested (not "the branch").
+2. **Tested on `sid`** — by Tanya, on the **deployed** build, with the REQ/AC each result maps to.
+3. **NOT tested** — named explicitly. `NOT_TESTED` is a legitimate, expected line. An unnamed gap is the failure.
+4. **Migrations** — run and verified on `sid` first, per the standing rule; and what the owner must run on `uat`.
+5. **Rollback** — the verified backup, and what "undo" actually means for this change.
+6. **Customer impact** — what they will notice, and anything they should be told before or after.
+7. **Both names** — `Tanya: PASS (…)` and `Porter: GO (…)`, in the log, before the owner is asked to deploy.
+
+### Accountability, stated plainly
+If it goes out on our green light and breaks something that was inside the scope we signed for, **that is ours** —
+we say so in the log, we write what let it through, and we fix the gate, not just the bug. The owner is free to
+override us and ship anyway; that is his product and his call — and we record it as **his** decision rather than
+quietly restating it as ours.
+
+**The owner should never have to be the one who notices.** He is the person who nudges the team and runs the
+commands; deciding whether the customer's system is safe to touch is our job, not one more thing on his list.
