@@ -129,6 +129,33 @@ Board state at stop: TASK-002 / 003 / 006 / 007 DONE. TASK-004 at REVIEW (Sober'
 HUMAN-ONLY ACTION OUTSTANDING (unchanged): accounts JSON file + SEED_USERS_FILE + `bun run seed:users`.
 Open non-blocking question: Q14 (does "ใช้ได้" approve only TASK-008's 22 new strings, or the whole deferred th/en copy bundle?).
 
+## RUN 2026-08-20-m — N=4 — started from: answer (Q14=ทั้งระบบ) + ไปเลย
+hop 1 | PM  | did: recorded Q14, closed the COPY BUNDLE (all th/en strings in both repos approved as authored) and wrote down three limits so a later session cannot over-read it (KnowCode rename still owed; Latin KnowCode stands in Thai UI; unbuilt screens' labels not covered) | ball_to: SA | flags: DATA REQUEST 3 still outstanding (seed:users)
+hop 2 | SA  | did: reviewed TASK-004 → REWORK, 3 items (stage callback reusing the wire progress field names with a different total; report period printed as ISO against Requirement 15; repository material reaching the model unlabelled — an analysed repo's README could instruct the model and produce a report that lies to a manager); answered Q-BE-6/7/8, amended SPEC-001 twice, added TASK-009 run 12 | ball_to: BE | flags: 1 low-confidence assumption (fallback head model class — TASK-009 run 12 turns it into evidence)
+hop 3 | FE  | did: closed the single TASK-008 rework item (underline cue on report links), proved it as a computed value against the real compiled stylesheets, measured link-vs-body 2.35:1 two independent ways; commit f00e78d; TASK-008 → REVIEW | ball_to: SA | flags: -
+hop 4 | BE  | did: completed the TASK-004 rework (callback shape now structurally incompatible with the wire progress, report dates DD/MMM/YY, repository material in a labelled data-not-instructions block); 145 tests pass; commit e3453a8; TASK-004 → REVIEW | ball_to: SA | flags: -
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+Board state at stop: TASK-002 / 003 / 006 / 007 DONE. TASK-004 + TASK-008 both at REVIEW (Sober's queue, 2 items). TASK-005 gated on the TASK-004 review. TASK-001 blocked ONLY on the human running seed:users. Requirements 16/17/18 + the KnowCode rename still need TASK lines from Sober. Neither engineer has a build task until Sober reviews.
+
+HUMAN-ONLY ACTION OUTSTANDING (unchanged, now the ONLY open item with the human): accounts JSON file + SEED_USERS_FILE + `bun run seed:users`.
+No open questions for the human.
+
+## RUN 2026-08-20-n — N=4 — started from: "ฉันสร้างแล้ว รันไปแล้ว" (seed:users, no console output supplied)
+hop 1 | PM  | did: recorded that the accounts file was created and the seed command run, but deliberately did NOT record success (the previous two runs exited 1); re-asked for the console output only | ball_to: HUMAN | flags: 1 data request (paste the output, do not re-run)
+hop 2 | SA  | did: re-reviewed TASK-004 → DONE, re-proved all three rework items outside the test suite and tested the type-level claim as a type claim (both @ts-expect-error directives fired); unblocked TASK-005 | ball_to: BE | flags: 1 low-confidence minor (repo text can close its own delimiter block — candidate TASK line, nonce delimiter)
+hop 3 | BE  | did: implemented TASK-005 (POST/GET report endpoints, in-process worker clone→tree→markdown→commits→3 AI stages→persist→always rm -rf, six statuses, semaphore, startup temp sweep); 192 tests pass; commit a092f99; TASK-005 → REVIEW | ball_to: SA | flags: 4 non-blocking questions (Q-BE-9..12), 1 conditional data request
+hop 4 | SA  | did: re-reviewed TASK-008 → DONE, and CORRECTED HIS OWN EARLIER FINDING on the record — he measured the pre-fix state and the underline was already there (preflight is disabled in this build since 08c6b94, so his REWORK asserted what preflight normally does without checking whether it was enabled); cost the project one FE round, logged as his error not Fern's | ball_to: SA | flags: -
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+DISPATCHER DEVIATION LOGGED: hop 1 returned ball_to: HUMAN (condition 7), but PM's own routing note said the pipeline was not blocked and the real ball was SA. Continued on the human's standing "ไปเลย"; flagged in the digest.
+
+Board state at stop: TASK-002 / 003 / 004 / 006 / 007 / 008 DONE (6 of 9). TASK-005 at REVIEW — Sober's only queue item and the last gate before TASK-009. TASK-001 blocked ONLY on the seed console output. Requirements 16/17/18 + the KnowCode rename still need TASK lines from Sober. Neither engineer has a build task until TASK-005 is reviewed.
+
+OPEN WITH THE HUMAN: paste the console output of the seed:users run already performed into project-docs/ (output only — no password, no JSON file). Nothing else.
+
+
+
 
 
 

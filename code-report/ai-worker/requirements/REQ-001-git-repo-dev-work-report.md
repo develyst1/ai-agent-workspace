@@ -717,7 +717,36 @@ BE's hard boundaries. He ran both commands and pasted the console output.
   `SEED_USERS_FILE is not set`. So the second DoD item is **still open**, and it
   is open on **missing stakeholder data**, not on code: see DATA REQUEST 3.
 
-### Open — DATA REQUEST 3 (the accounts to seed), raised by Porter 2026-08-20
+### DATA REQUEST 3 — ANSWERED IN PART 2026-08-20 18:34: the accounts exist, the evidence does not
+
+- **The human's verbatim answer:** "ฉันสร้างแล้ว รันไปแล้ว" — he created the
+  accounts JSON file himself and ran the command. **The stakeholder-data half of
+  DATA REQUEST 3 is therefore closed**: the accounts are his, nobody on the team
+  invented a username or a password, and the file stays outside this workspace
+  exactly as asked.
+- **The evidence half is still open, and it is a smaller ask than the original.**
+  He sent no console output with that message, so the workspace holds **no record
+  of what the command actually did** — not whether `seed:users` exited 0, not how
+  many accounts it created, not whether it hit the same
+  `SEED_USERS_FILE is not set` exit as both runs on 2026-08-20. "He ran it" and
+  "it succeeded" are two different facts and Porter is recording only the one he
+  was given.
+- **Why the output is still needed and is not bureaucracy:** TASK-001's DoD item
+  is *evidence of a successful `seed:users` run*, and **whether any run closes it
+  is Sober's call at review**. Sober cannot make that call against a sentence in
+  a chat; the precedent for how this lands is the existing
+  `../project-docs/db-migrate-seed-run-2026-08-20.md`. Asked in Thai: paste the
+  console output of the run into `project-docs/`.
+- **Stated in the ask, because the previous half of this request was about
+  exactly this:** he pastes **only the console output**, never the JSON file and
+  never a password. If the output prints the usernames it created, that is fine
+  and he need not redact it; if he would rather redact, the count of accounts
+  created is enough.
+- **Blocking scope, unchanged and still the narrowest on the board: exactly one
+  TASK-001 DoD item.** It blocks no other TASK, no engineer, and neither of the
+  two reviews in Sober's queue.
+
+### Original text — Open — DATA REQUEST 3 (the accounts to seed), raised by Porter 2026-08-20
 
 - **DATA REQUEST 3 — the list of login accounts.** `bun run seed:users` reads a
   JSON file whose path is given in `SEED_USERS_FILE`, in the shape documented in
@@ -734,4 +763,5 @@ BE's hard boundaries. He ran both commands and pasted the console output.
   same item that was already sitting with the human. It blocks nothing else on
   the project — no other TASK, and no other role.
 
-**No other data request is open on REQ-001.**
+**No other data request is open on REQ-001** — DATA REQUEST 3's evidence half
+(above, 2026-08-20 18:34) is the only one, and it blocks one TASK-001 DoD item.

@@ -1,6 +1,6 @@
 # TASK-008: FE — report view: polling, progress, sanitized Markdown render
 - Source: SPEC-001
-- Status: REVIEW (Fern, 2026-08-20 — rework done, commit `f00e78d`; see `## Rework pass`)
+- Status: DONE (Sober, 2026-08-20 — rework reviewed, commit `f00e78d`; see `## Review — rework pass`. The rework item is closed, and my original finding is **corrected on the record**: the underline was never missing at run time.)
 - Assignee: Fern (FE)
 - Depends on: TASK-006 (TASK-007 for the entry path)
 
@@ -625,3 +625,110 @@ separate TASK line I write.
   dependency change rather than a config flag a later edit can weaken.
 - **Table cells `white-space: nowrap` inside `.cr-table-scroll`** — that is
   FRONTEND-STANDARD §2's rule, not a truncation.
+
+## Review — rework pass (Sober, 2026-08-20, commit `f00e78d`) — verdict: DONE
+
+**Verdict: `DONE`.** The commit is exactly what I asked for and nothing else, and
+every claim in the rework pass reproduces on my machine. But the review turned up
+something that matters more than the verdict, so read the second section.
+
+### What I re-ran independently
+
+- `git show --stat f00e78d` → **`src/app/globals.css | 1 +`**, one insertion, one
+  file. `git show` of the diff is the single `text-decoration: underline;` line
+  inside `.cr-prose a`. Requirements 17 and 18 are genuinely not in it.
+- `git status --porcelain` → **empty**; the commit really carries the deliverable.
+- `npx tsc --noEmit` → exit **0**.
+- `npm run build` → **green, 5/5 static pages**, `/reports/[jobId]` still the only
+  dynamic route.
+- `grep -rn "text-decoration\|underline\|no-underline" src/` → **two hits, both the
+  `.cr-prose a` block itself.** Nothing anywhere else in the app can override it.
+- Cascade position: `.cr-prose a` sits inside `@layer components` (globals.css
+  line 109 onward), so it outranks anything in `@layer base` regardless of
+  specificity.
+- The computed value, read the way Fern read it — real compiled
+  `.next/static/chunks/*.css`, loaded in the app's own order (Mantine first, then
+  globals, taken from the emitted `login.html` `<link>` order), in a temp dir
+  **outside both repos**, served and read with `getComputedStyle`:
+  `link.textDecorationLine = "underline"`, `p.textDecorationLine = "none"`, colours
+  `lab(36.265 40.1976 57.0439)` / `lab(8.33118 2.15461 3.80452)` — **her four
+  numbers back byte-for-byte.** Harness stopped and deleted; port 8791 no longer
+  answers, the directory is gone, and grepping `src`, `package.json` and
+  `.env.local` for its name and port returns nothing. The repo tree is still clean.
+
+### The correction — MY finding was wrong, and the change is a hardening, not a bug fix
+
+I re-ran the measurement **on the pre-fix state as well**, which is the one run
+neither of us did: same harness, same two stylesheets, with the single
+`text-decoration:underline` declaration deleted from the compiled globals file so
+it reproduces commit `1113a27` byte-for-byte in that rule.
+
+```
+VARIANT=prefix   link.textDecorationLine = underline    p.textDecorationLine = none
+VARIANT=now      link.textDecorationLine = underline    p.textDecorationLine = none
+```
+
+**The link was already underlined before the fix.** The reason is in this
+project's own config: `tailwind.config.ts` line 13 is
+`corePlugins: { preflight: false }` — with the comment "Mantine ships its own
+reset; a second one causes the two-system sprawl the standard bans" — and it has
+been there since `08c6b94`, i.e. before TASK-008 was written. **So Tailwind
+preflight is not in this build at all**: `grep` for `text-decoration:inherit`
+across both compiled stylesheets returns **zero hits**, and the only anchor reset
+Mantine ships is `.m_d08caa0 :where(a){text-decoration:none}`, which is
+`TypographyStylesProvider` — a class this app never uses (`grep -rn
+"TypographyStylesProvider" src/` is empty; `.cr-prose` is the only prose
+container). With no reset, the UA default `a:link { text-decoration: underline }`
+applied, and the `text-underline-offset: 2px` Fern wrote was decorating a real
+underline, not assuming an absent one.
+
+**That is my error, not Fern's.** I asserted "Tailwind's preflight resets
+`a { text-decoration: inherit }`" from knowing what preflight normally does,
+without checking whether preflight was enabled here — the exact failure mode I
+sent TASK-003 and TASK-008 back for, one level up. A finding about a *computed*
+value has to be measured as a computed value, and I measured nothing before
+writing it.
+
+**Why the commit is still `DONE` and not reverted:** the line is a correct and
+cheap hardening. An explicit declaration in `@layer components` survives things
+the UA default does not — a Tailwind 4 upgrade (real layers, different cascade),
+anyone re-enabling preflight, or a future Mantine `TypographyStylesProvider`
+wrapper around the report. Reverting it would trade a guarantee for a default to
+score a point about who was wrong. It stays, described accurately.
+
+**The lesson that is Fern's to take, and it is small:** her measurement was real
+but it was of the *after* state only, and an after-only measurement cannot
+distinguish "my fix works" from "it already worked". The before-run is the one
+that could have falsified my claim — and falsifying the reviewer is allowed. She
+also repeated my preflight premise ("Tailwind's preflight ... included") in her
+own write-up without checking `tailwind.config.ts`, which was four lines away
+from the file she was editing. Neither costs a rework round.
+
+### Gate 4 — accepted, with its meaning restated
+
+The link-vs-body pair is now on the record and I am not asking for it again:
+`accent on ink` **2.35:1**, measured two independent ways that agree within 0.03
+and land on my own number. Gate 4 is **18 pairs** and the §3 DoD box is correctly
+re-ticked.
+
+What that number now means is different from what my rework text said, and the
+evidence should not be left implying the stronger claim: 2.35:1 is **not** a
+shipped WCAG G183 failure, because colour was never the only cue — the underline
+was there. It is the reason the underline may **never** be removed from
+`.cr-prose a`: at this accent value, colour alone cannot be made sufficient by
+choosing a different accent, so the non-colour cue is load-bearing permanently.
+That is worth more to the next person than the failure I thought I had found.
+
+### The `:hover` rule — Fern was right not to invent one
+
+She read my "to close it" sentence exactly as written and did not widen scope.
+Recorded and **not** requested: report prose links still have no `:hover`
+styling. It is not a WCAG requirement (the underline is a persistent cue, and the
+focus ring passes gate 3), so it stays a taste call, and I am not spending an FE
+round on it.
+
+### Nothing else reopens
+
+The five minors from the first pass stand as recorded — none of them is a defect
+against this TASK's DoD, and none is reopened by this pass. Requirements 17 and
+18 remain separate TASK lines I owe, and they are still not written.
