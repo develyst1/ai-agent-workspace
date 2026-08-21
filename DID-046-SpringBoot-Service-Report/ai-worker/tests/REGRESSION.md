@@ -35,3 +35,17 @@
 | R9 | D1 person expiry source (idCardExpiryDate vs DOC.EXPIRY_DATE) | DB truth (DATA REQUEST) | not verifiable read-only from PDF |
 | R10 | D5 tick rule vs real `ATTACH_FILE_ID` | DB truth (DATA REQUEST) | visual plausible; DB confirm pending |
 | R11 | D2 history path `/checklist/history/{formId}` | checklist-form ids | NOT_TESTED |
+
+## Family checklist reports — content on real data (2026-08-21, /aN/db seams, read-only)
+
+> ⚠️ These verify report CONTENT only. `/aN/db` calls each builder directly and does NOT exercise the
+> family resolver — main routing (which form a REQUEST_TYPE maps to) is a `/download`-only check, owned by the human.
+
+| # | Check | Endpoint | Expected | Last verified | By |
+|---|-------|----------|----------|---------------|-----|
+| R12 | อ.15 content | `/a15/db/18041` | 200; ข้อ5 = org name (DEF-12 fixed, not `-`); ข้อ2 = มาตรา-7 นอกหน่วยงาน const | 2026-08-21 (TEST-004) | Tanya |
+| R13 | อ.14 content | `/a14/db/27300` | 200; heading = ...ส่งออกนอกราชอาณาจักร; ข้อ12 = `เอกสารขอผู้ซื้อ`; empty law-ref block = OK (data-driven) | 2026-08-21 (TEST-004) | Tanya |
+| R14 | อ.9 transport | `/a9/db/38336` | 200; resolver→transport; ข้อ2 = ขนย้ายให้หน่วยงาน มาตรา 7 | 2026-08-21 (TEST-004) | Tanya |
+| R15 | อ.9 destroy | `/a9/db/38362` | 200, 4p; resolver→destroy; ข้อ2 = ขนย้ายเพื่อทำลาย; matches official DESTROY form | 2026-08-21 (TEST-004) | Tanya |
+| R16 | ข้อ7 PERIOD_TEXT — licence-present | `/a9/db/38362` | ข้อ7 = `180 วัน นับแต่วันที่ได้รับอนุญาต` (verbatim, not blank/date-range) — REQ-023 positive | 2026-08-21 (TEST-004) | Tanya |
+| — | every family: no literal `null`, 4 signature slots, ข้อ7 = PERIOD_TEXT-or-blank | all `/aN/db` | holds | 2026-08-21 | Tanya |

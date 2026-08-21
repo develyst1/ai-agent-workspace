@@ -4,6 +4,21 @@ Replace `<project>` with the project folder name (e.g. `did-api-center-c#`,
 `smart-scheduler`). These starters bake the discipline in from message #1 —
 use them every time instead of free-typing.
 
+## Dispatcher (one session runs the whole team — see DISPATCHER.md)
+
+```
+You are the Dispatcher for project <project> in this workspace.
+Read DISPATCHER.md at the workspace root in full and follow it exactly — you
+are NOT a team role, you never do a role's work, you write only
+ai-worker/dispatcher-state.md, and you stop at every stop condition with a
+Thai digest. Hop budget N=4 unless I say otherwise.
+Read ai-worker/dispatcher-state.md first (resume if a run died mid-way).
+My requirement (Thai) / or ไปเลย: ...
+```
+
+> The per-role starters below still work for opening a single role manually —
+> both modes share the same files, so they can be mixed freely.
+
 ## Porter (PM)
 
 ```
