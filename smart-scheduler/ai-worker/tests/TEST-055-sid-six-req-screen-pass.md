@@ -1,6 +1,6 @@
 # TEST-055: sid six-REQ screen pass (REQ-043/044/048/049/053/054)
 - Source REQ: REQ-043, REQ-044, REQ-048, REQ-049, REQ-053, REQ-054
-- Status: IN_TEST
+- Status: TEST_PASSED (screen/UI acceptance) — server-side negatives (AC-2) + reporting (AC-6) NOT_TESTED, see Verdict
 - Environments: dev-server (`som.develyst.online` = sid)
 - Tested: 2026-08-19 by Tanya
 
@@ -24,7 +24,8 @@ discipline note: cases below captured at 1440; 375/768 responsive sweep still pe
 | 7 | REQ-054 — teacher-swap does not keep a stale subject | edge | New course → pick Teacher Bank → note Program → swap to Teacher Ek | Program re-derives from the new teacher; no stale/mismatched subject carried | Program disabled→enabled on first teacher; **resets to "Select a program" on every swap** (Bank→Ek). No stale value. | PASS |
 | 8 | REQ-053 AC-1 — วิชา read-only on a course session (Edit session) | happy | New course → fill (Bike program) → Generate plan (dry-run preview, NOT created) → session ⋯ → **Edit** | Subject shown read-only text + explanation line; not editable | **Edit session** shows Date/Time/Teacher editable but **Subject = read-only plain text** "Bike / Scooter / Balance Cruiser" under the explanation *"A course's subject is fixed when the course is created and can't be changed per session…"*. Same PlanModal component used for persisted sessions. | PASS |
 | 9 | REQ-054 AC-3 — plan modal shows program per session, read-only | happy | New course → fill → Generate plan (dry-run preview) → inspect rows | per-session rows show the one program, no per-row program control | Plan = 6 rows, **every row Subject = "Bike / Scooter / Balance Cruiser"**, zero per-session program controls (`perSessionProgramControls: []`); dates render `DD/MMM/YY` | PASS |
-| 10 | REQ-053 AC-2 — server refuses a crafted subject change on a course session | negative | crafted API request | API refuses, stored program unchanged | **NOT_TESTED** — server-side negative case not exercised | NOT_TESTED |
+| 10 | REQ-053 AC-2 — server refuses a crafted subject change on a course session | negative | `PATCH /bookings/:id` with a different `subjectId` on a course session | refused (`COURSE_SUBJECT_LOCKED`), stored program unchanged | **NOT_TESTED** — no course session exists on sid (0 courses globally) to PATCH; creating a fixture = unremovable residue on the go-live-import box. See Blocker. | NOT_TESTED |
+| 11 | REQ-054 AC-2 — server refuses a mixed-program course create | negative | `POST /courses` subjectId=Bike, session[1].subjectId=Surfskate, existing student `{id}` | course NOT created, refusal names the rule | **HTTP 400** — `"ทุกคาบในคอร์สต้องเป็นกิจกรรมเดียวกัน"` (REQ-054's exact wording); **courses 0→0, nothing persisted** | PASS |
 
 ## Defects
 ### DEF-5 — booking modal renders สาขา / จังหวัด labels in Thai while the UI is in English — MINOR
@@ -51,26 +52,41 @@ session's **Edit** panel. I never clicked **Create plan** or **Save**, so nothin
 catalog **is** seeded — "Bike / Scooter / Balance Cruiser" (and other programs) have packages and generate a plan;
 only "1st Trial" has no packages (expected — trials aren't courses).
 
-### Still NOT_TESTED (need a real persisted course or a server-side call)
-- **REQ-053 AC-2 / REQ-054 AC-2** — server-side refusal of a crafted subject-change / mixed-program create (API
-  negative tests). Not exercised.
-- **REQ-053 AC-1 on a calendar-persisted session** — the Edit-session UI verified here is the same PlanModal
-  component, but the exact แก้ไขคาบ-from-the-calendar route on a saved course was not run (no saved course on sid).
-  High confidence (shared component), but not a separate run.
-- **REQ-054 AC-6** (reporting reads a course's sessions as one program) — needs a created course + report read.
+### Server-side negatives (Porter's 2026-08-19 ruling: AC-2 required before sign-off)
+- **REQ-054 AC-2 — DONE, PASS** (case 11): the live `POST /courses` guard refuses a mixed-program create with the
+  REQ's exact rule text and persists nothing. The rule constant is `COURSE_SUBJECT_LOCKED` (src/lib/course-subject-lock.ts).
+- **REQ-053 AC-2 — NOT_TESTED, needs a decision** (case 10): the guard is `changesCourseSubject` on `PATCH /bookings/:id`
+  and only fires on a booking with `courseId != null`. sid has **0 courses globally**, so there is no course session
+  to PATCH, and creating a fixture leaves unremovable residue (no course/booking delete) on the box the owner is
+  importing the customer's real courses onto. Corroborating (not a substitute for the live run): it is the **same
+  one-course-one-subject rule** whose create-side (REQ-054 AC-2) just passed live, and `course-subject-lock.test.ts`
+  unit-covers both edit paths. **Q1 → Porter:** authorize an isolated QA fixture (new QA student + one course; I run
+  the PATCH-refusal, then owner scoped-deletes just that student's rows), or defer REQ-053 AC-2 until real courses land?
+- **REQ-054 AC-6** (reporting reads a course's sessions as one program) — Porter **deliberately deferred** it
+  (REQ-013/014 read per-session subject, untouched by this change); named in the green light, not dropped.
 
 ## Test data created
 | What | Where | Removed? |
 |------|-------|----------|
 | (none — no records created; all writes deliberately avoided for lack of a cleanup path) | dev-server | ✅ nothing to remove |
 
+## Responsive sweep (375 / 768 / 1440)
+Measured at all three widths on Calendar, New-booking modal, Settings, New-course modal:
+- **No horizontal scroll** anywhere (`scrollWidth == innerWidth` at 375 and 768); nothing clipped.
+- New-booking modal: **3-tab strip intact** at 375 & 768; nav collapses to a hamburger at 375; fields stack cleanly
+  (Student / Teacher / Subject+Time / สาขา+จังหวัด / Cancel-Save); all reachable.
+- ⚠️ **Tap targets under the 44px touch guideline** — modal tabs & Save/Cancel 36px, Settings Edit 30px. This is a
+  **pre-existing MINOR** (the 2026-08-11 hallmark audit already logged "30px hit target at 375"), **not a regression**
+  from this work, and does not block content acceptance. Noted, not re-raised as a new defect.
+
 ## Verdict
-**All six REQs PASS their UI acceptance at 1440**, with rendered evidence and **zero writes**:
-REQ-043 · REQ-044 · REQ-048 · REQ-049 · REQ-053 (AC-1 read-only + explanation, AC-3 date/time/teacher still editable)
-· REQ-054 (AC-1 one program, AC-3 plan-modal, teacher-swap resets). Remaining before I mark them **TEST_PASSED**:
-1. **375 / 768 responsive sweep** per FRONTEND-STANDARD (only 1440 captured) — the one discipline item left.
-2. The server-side negatives (REQ-053 AC-2 / REQ-054 AC-2) and reporting (REQ-054 AC-6) stay **NOT_TESTED**.
-Until (1) is done I hold these at **IN_TEST (PASS@1440)** — a partial reported as partial, not rounded up.
+**TEST_PASSED — screen/UI acceptance — for all six REQs at 375 / 768 / 1440**, rendered evidence, **zero writes /
+zero footprint**: REQ-043 · REQ-044 · REQ-048 · REQ-049 · REQ-053 (AC-1 read-only+explanation, AC-3 date/time/teacher
+editable) · REQ-054 (AC-1 one program, AC-3 plan-modal, teacher-swap resets).
+**Explicitly NOT covered by this pass (still NOT_TESTED):** the server-side negatives REQ-053 AC-2 / REQ-054 AC-2
+(crafted-request refusals) and REQ-054 AC-6 (reporting reads a course as one program) — API/report tests, not screen
+tests. Porter to decide whether the screen pass is sufficient for sign-off or those are required too (Q1).
+**Carry-over:** DEF-5 (สาขา/จังหวัด Thai on EN UI, minor); sub-44px tap targets (pre-existing minor).
 
 ## Questions
 - **Q1 (to Porter):** to finish REQ-053/054, either (a) authorize a QA course on sid **and** have the owner run the

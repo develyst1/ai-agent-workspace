@@ -1,6 +1,24 @@
 # TASK-149: Planned absences at course creation (FE)
 - Source: SPEC-049 (REQ-045)
-- Status: REVIEW (Fern 2026-08-18)
+- Status: DONE (code — SA-reviewed Sober 2026-08-19); rendered pass → @Tanya; Q1 undo-copy → @Porter · Q2 recorded
+
+## Review
+**PASS ✅ (code — Sober 2026-08-19).** Reproduced: `bunx tsc --noEmit` **0** · `bun test src/lib/scheduler/` **15/0** ·
+§3.5 greps on both changed components **0**. Faithful: **one preview path** (`runPreview` serves generate + every
+toggle → AC-2 holds by construction, no FE math); the draft renders absent→`SICK_LEAVE` / make-up→`EXTENDED`; the
+toggle is offered **only on the `size` weekly rows** (not on make-ups — right call); preview line + ceiling refusal
+(Alert + disabled Confirm with the reason, AC-3); **payload sends only the `size` weekly rows + `absentWeeks`** (make-ups
+BE-appended — matches TASK-148's contract + avoids the FE deciding placement); AC-4 byte-identical when no absence
+(`absentWeeks` undefined). Good contract-from-code discipline.
+- **Q1 (undo label `ยกเลิกการลาล่วงหน้า`/`Remove planned absence`) → @Porter** — a toggle needs an undo string the REQ
+  didn't supply; Fern shipped a faithful **draft** and flagged it rather than inventing copy silently (same as TASK-132).
+  Porter confirms the final string.
+- **Q2 recorded in SPEC-049:** the payload contract *"`sessions` = the weekly chain only; make-ups come from
+  `absentWeeks`"* is load-bearing + invisible — if anyone later sends the full draft, create silently fails the
+  `length===size` refine. Worth keeping next to the birth-marker rule.
+- 🔴 **Rendered/hallmark not verifiable headless** (PlanModal won't composite) → @Tanya (with 131/132/133/139/143).
+- **Verdict: code DONE.** REQ-045 is now code-complete end to end (148 BE + 149 FE); closes on Tanya's render pass +
+  the owner-run `0019` deploy.
 - Assignee: @Fern (FE)
 - Depends on: TASK-148 (the create-mode preview shape + the marked-absent input)
 

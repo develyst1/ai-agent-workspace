@@ -1,6 +1,15 @@
 # TASK-146: Leave cut-off as editable per-type settings (BE)
 - Source: SPEC-048 (REQ-047)
-- Status: DONE (SA-reviewed Sober) · one small AC-7-on-LINE finish requested (Q1) · Q2 defect-fix ratified · live LINE → @Tanya
+- Status: DONE (fully SA-reviewed Sober 2026-08-20) — AC-7 LINE finish verified; REQ-047 BE complete; live LINE → @Tanya
+
+## AC-7 LINE-finish review (Sober 2026-08-20) — PASS ✅
+Reproduced: `bunx tsc --noEmit` **0** · `bun test` **559/0**. The Q1 finish is exactly the ruling: `doLeaveBooking`'s
+catch (`line-webhook.service.ts:334-338`), on `LEAVE_NOTICE_TOO_LATE`, **re-renders `leaveNoticeMessage(cutoffHours,
+b.startTime, lang)` in the parent's `lang`** — reusing the exported fn (no duplicated copy), resolving the cut-off via
+`getSetting(leaveCutoffKey(teacherType))` (no service signature change), matching the codebase's "LINE renders bot-side"
+pattern. Every other refusal still surfaces the server's message + a `leave_err` fallback — never the old silence.
+**⇒ AC-7 is met on the LINE parent path. TASK-146 fully DONE; REQ-047 BE complete** (both enforcement sites gated,
+per-type settings, bilingual refusal). Closes on @Tanya's live cut-off leave check once it deploys.
 - Assignee: @Jason (BE)
 - Depends on: coordinate the sick-leave-branch merge with TASK-136 (REQ-049)
 
@@ -99,3 +108,20 @@ sick-leave — AC-5 preserved); message bilingual with `{n}`+`{time}`. Tests pin
 value flips the answer on identical inputs" (AC-4) + malformed→3h. **Verdict: DONE**, with the small Q1 bot-side render
 to finish AC-7 on LINE (add before commit). REQ-047 closes on that + @Tanya's dev leave-cutoff check. ⚠️ Same sick-leave
 block as TASK-136 — coordinate the commit/merge.
+
+## Q1 finish (2026-08-19) — the refusal now reaches a LINE parent in their own language
+Built exactly as you ruled: **bot-side, no service-signature change.** In `doLeaveBooking`'s catch (the one Q2
+ratified), a `LEAVE_NOTICE_TOO_LATE` is re-rendered with the exported `leaveNoticeMessage(cutoffHours,
+startTime, lang)` — the cut-off resolved from the **session's** teacher via `leaveCutoffKey(b.teacher?.type)` +
+`getSetting`, and `lang` is the parent's own, already in scope. No copy is duplicated (it reuses the same
+exported function the service throws), and nothing money-adjacent changed shape.
+
+- **Only that code is special-cased.** Every other refusal (`LEAVE_LOCKED`, anything unforeseen) still surfaces
+  the server's message, which is already far better than the silence this task started with.
+- `b.teacher?.type` missing ⇒ falls back to the full-time key, so a broken join can't crash a reply.
+- Web/staff stays Thai, as you said — the API's 409 body is unchanged.
+
+**Verified:** `bunx tsc --noEmit` **0** · `bun test` **559 pass / 0 fail**. The rendered reply itself is
+@Tanya's dev check (an EN-language parent hitting the cut-off) — I can't drive a real LINE account.
+
+**Board:** moved back to `REVIEW` with the owner cell flipped to **Sober** in the same edit, per Porter's rule.
