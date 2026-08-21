@@ -717,7 +717,76 @@ BE's hard boundaries. He ran both commands and pasted the console output.
   `SEED_USERS_FILE is not set`. So the second DoD item is **still open**, and it
   is open on **missing stakeholder data**, not on code: see DATA REQUEST 3.
 
-### DATA REQUEST 3 — ANSWERED IN PART 2026-08-20 18:34: the accounts exist, the evidence does not
+### DATA REQUEST 3 — CLOSED 2026-08-21: the console output arrived
+
+- **The human supplied the verbatim console output** of his `bun run seed:users`
+  run, stored unedited at **`../project-docs/seed-users-run-2026-08-21.md`**.
+  **DATA REQUEST 3 is now closed in both halves** — the accounts were always his
+  (2026-08-20 18:34) and the evidence of the run now exists in the workspace.
+- **What the output says:** `[seed:users] updated admin` and
+  `[seed:users] done — 1 account(s) processed`. So the command **reached its own
+  completion line** and did **not** hit the `SEED_USERS_FILE is not set` exit
+  that both 2026-08-20 runs hit, and `bun run` printed none of the
+  `error: script "seed:users" exited with code 1` line those runs printed.
+- **What the output does not say, recorded rather than smoothed over:** the exit
+  code is not printed, so "exited 0" is an inference from a missing error line,
+  not a recorded fact; and the word is **`updated`, not `created`**, so the
+  `admin` row already existed from a run this workspace has no record of. The
+  end state — an existing account with a password only the stakeholder knows —
+  is what the DoD item is about, but the record must not be read as "this run
+  created the account".
+- **Whether this closes the TASK-001 DoD item is Sober's call at review, not
+  Porter's.** Porter's job was to get the evidence into the workspace in the
+  shape the precedent set (`../project-docs/db-migrate-seed-run-2026-08-20.md`);
+  it is there. Nothing else on the project was waiting on this.
+- **No credential material entered the workspace**: only the console output was
+  pasted, the accounts JSON stays outside both repositories, and no password
+  appears in any file, log or REQ.
+
+### Q15 — ANSWERED 2026-08-21 — "admin เริ่มต้นก่อน ให้ Tanya ใช้ test ได้ด้วย"
+
+> answer (2026-08-21, human, verbatim): "admin เริ่มต้นก่อน ให้Tanya ใช้test ได้ด้วย"
+
+- **Settled: the single `admin` account is the intended starting arrangement.**
+  Separate per-person logins for the CEO / SA / PM are not needed now. Nothing in
+  Requirement 10 changes — permissions stay identical, there is still no
+  user-management screen, and accounts are still seeded at installation; this
+  answer only settles *how many accounts exist today*. **Zero code change**, as
+  the question already said. The `admin` account that the 2026-08-21 seed run
+  processed is therefore the account TASK-009's acceptance run uses.
+- **The second half of his sentence is NOT settled and is not being guessed** —
+  "ให้ Tanya ใช้ test ได้ด้วย". This project's team is Porter, Sober, Jason and
+  Fern; there is **no QA role on `code-report`** (Tanya is the workspace Tester
+  role being trialled on `smart-scheduler`). It could mean the `admin` login is
+  simply also used for testing, or that a second account is seeded for her, or
+  that Tanya joins this project as QA — the last being a team/chain change.
+  **Carried to REQ-003 as Q20 (NON-BLOCKING)**, where the rest of today's open
+  questions live.
+
+### ~~Q15 original~~ (kept for the record) — one `admin` account, or one per person?
+
+- **Where it comes from:** the `seed:users` output above processed **1 account**,
+  named `admin`. **Requirement 10** describes the users as **the CEO, the SA and
+  the PM** — three people, with deliberately identical permissions — and
+  Requirement 10.3 says accounts are put in place once, at installation, with no
+  user-management screen inside the tool. So a person added later needs the
+  stakeholder to run the seed again.
+- **The question, asked in Thai and answerable in one line:** is one shared
+  `admin` login the intended arrangement for all three people, or are separate
+  accounts per person still to be seeded?
+- **Why it is not guessed:** either answer is defensible and neither is a
+  technical decision. One shared login is a legitimate choice for an internal
+  three-person tool; separate logins is what Requirement 10's own wording
+  suggests. The difference is visible in the product — the report screen greets
+  the logged-in `displayName` — so inventing an answer would put an invented
+  name on screen.
+- **Blocking scope: none.** No TASK, no engineer and no review depends on how
+  many accounts exist; the login flow behaves identically either way, and
+  TASK-009's acceptance run needs exactly one working account, which now exists.
+  If the answer is "separate accounts", it costs **no code change** — it is the
+  stakeholder re-running the same seed with a longer JSON file.
+
+### Original text — DATA REQUEST 3 — ANSWERED IN PART 2026-08-20 18:34: the accounts exist, the evidence does not
 
 - **The human's verbatim answer:** "ฉันสร้างแล้ว รันไปแล้ว" — he created the
   accounts JSON file himself and ran the command. **The stakeholder-data half of
@@ -763,5 +832,201 @@ BE's hard boundaries. He ran both commands and pasted the console output.
   same item that was already sitting with the human. It blocks nothing else on
   the project — no other TASK, and no other role.
 
-**No other data request is open on REQ-001** — DATA REQUEST 3's evidence half
-(above, 2026-08-20 18:34) is the only one, and it blocks one TASK-001 DoD item.
+### Q-SA-16 — ANSWERED 2026-08-21 — "ค" = he runs the two jobs himself
+
+> answer (2026-08-21, human, verbatim): "Q-SA-16=ค เดี๋ยวรันเอง"
+
+Raised by **Sober** in TASK-014 `## Questions` (BLOCKING) and routed to the human
+by Porter. Recorded **here** because **Porter may not write in `tasks/`** —
+**@Sober transcribes it into TASK-014 `## Questions`**, exactly as he did with
+Q-SA-6 (the same precedent, same file).
+
+- **He chose option (ค): the stakeholder runs the two jobs himself** and pastes
+  the evidence into `../project-docs/` — "เดี๋ยวรันเอง" = he will run it shortly.
+  **The team never connects to a database at all.** This is the same arrangement
+  he already used for `migrate` / `seed:users`, and it is the reading that keeps
+  PROTOCOL's no-real-environment rule intact rather than relaxing it.
+- **What this settles:** options (ก) and (ข) are **closed** — the team does **not**
+  point `DATABASE_URL` at his `code_report`, and **no throwaway database will be
+  created**. It also makes the trailing half of Q-SA-16 moot: **the `admin`
+  password is not needed and must not be asked for again**, because nobody on the
+  team logs in.
+- **What it does NOT settle, and I am not deciding it — it is squarely Sober's:**
+  TASK-014 is written as work for *Jason* (start the server, submit two jobs, read
+  the fields back). Under (ค) the person at the keyboard is the stakeholder, so
+  **what TASK-014 now is** — an evidence-review task for Jason, a rewritten
+  instruction sheet, or something else — and **when its DoD lines count as met**
+  are TASK decisions. Porter moved no TASK status and wrote nothing in `tasks/`.
+- **Porter's half of the loop is running:** the ask went to the human in Thai,
+  pointing at TASK-014's Run A / Run B and naming exactly what to paste (the two
+  `GET /api/reports/:jobId` bodies and the provider/model log lines for the three
+  AI stages), with the standing rule that **no secret** — session cookie, DB
+  password, AI token — goes into `../project-docs/`. When the file lands, Porter
+  points the Question at it; **whether it closes TASK-014's DoD is Sober's call.**
+- **Blocking scope: this removes the block on TASK-014.** Jason is no longer
+  parked on a human answer — but he is not automatically started either; that is
+  Sober's move. TASK-009's runs 1–11 are a *different* question → **Q24** below.
+
+### Q24 — CLOSED BY PORTER 2026-08-21 — asked twice, not understood twice; the recommendation stands and Q24 goes away
+
+> answer (2026-08-21, human, verbatim): "Q24 -  ไม่เข้าใจเลยมันคืออะไรวะ ตัวนี้"
+
+- **This is the second time he has told me he does not know what Q24 is** (the
+  first was "คืออะไร เอาตามที่แนะนำเลยแล้วกัน", below). Asking a third time would
+  buy nothing: the reason the question is unintelligible to him is that **it is
+  about an internal artifact — TASK-009's eleven acceptance runs — that he has
+  never been shown and has no reason to carry in his head.** A question the
+  stakeholder cannot answer is a question Porter should not be holding open.
+- **So Porter closes it, which is within Porter's own authority: it was Porter's
+  question to the human, and Porter withdraws it.** The recommendation already on
+  file (below) becomes the settled working arrangement — **the team writes the
+  eleven runs as an exact click-through script; he runs them once himself**, the
+  same way he already runs `migrate` / `seed:users` and TASK-014's two jobs.
+- **Why this is safe to close rather than escalate, stated instead of assumed:**
+  (1) it commits **nothing** today — TASK-009 is `TODO` and not startable, so
+  nobody's time is being spent on the strength of it; (2) the arrangement it
+  records is the one **already in use** on this project three times over, not a
+  new permission; (3) the alternative — the team running them — would require a
+  **database connection he has declined twice** (Q-BE-1, Q-SA-16), so closing it
+  this way cannot quietly grant anything; (4) it is **reversible by one line** the
+  day the script is actually in front of him and the question means something.
+- **What Porter did NOT do:** treat "ไม่เข้าใจ" as a yes, and re-word the same
+  question a third time. He was told plainly, in Thai, what it was about — twice —
+  and the honest conclusion is that the question was mis-aimed, not that he is
+  refusing to answer it.
+- **Still not Porter's to schedule. @Sober: the TASK-009 re-scope is unchanged and
+  is yours** — this closes a question, not a TASK. Porter wrote nothing in
+  `tasks/` and moved no TASK status.
+
+### ~~Q24~~ (kept for the record) — ANSWERED 2026-08-21 BY DELEGATION — "คืออะไร เอาตามที่แนะนำเลยแล้วกัน"
+
+> answer (2026-08-21, human, verbatim): "Q24=คืออะไร เอาตามที่แนะนำเลยแล้วกัน"
+
+- **Two things arrived in one line, and they are not the same thing.** He asked
+  **what the question even is** ("คืออะไร"), and then **delegated the choice**
+  ("เอาตามที่แนะนำเลยแล้วกัน" — go with whatever you recommend). A delegation
+  given without the question being understood is not a decision about the eleven
+  runs; it is permission for Porter to propose one. **Porter therefore explained
+  it back to him in Thai in the same reply, and records the recommendation here
+  so it is reversible by one line rather than buried.**
+- **Porter's recommendation, recorded as the working answer:** the team writes
+  the eleven runs as an exact click-through script (which screen, which language,
+  what to look at), and **he runs them himself once**, the same way he ran
+  `migrate` / `seed:users` and TASK-014's two jobs. Everything in TASK-009 that
+  can be checked **without** a real database, the team keeps doing itself.
+- **Why that and not the alternative:** runs 1–11 are the UI acceptance run in
+  th + en and they need a running app on a **real database**. He has now declined
+  a team database connection twice (Q-BE-1, Q-SA-16), and **Q-SA-17 = "ก"** has
+  him starting the backend on his own machine anyway — so the cheapest honest
+  arrangement is the one already working, not a new permission.
+- **Explicitly reversible:** if he would rather the team run them, one line
+  changes it — and that line would be a *database permission*, which is the part
+  Porter will not assume in either direction.
+- **Still not Porter's to schedule.** **Re-scoping TASK-009 on this is @Sober's**
+  — Porter wrote nothing in `tasks/` and moved no TASK status. It also does not
+  make TASK-009 startable by itself.
+
+### ~~Q24 original~~ (kept for the record) — does "ค" also cover TASK-009's runs 1–11? — OPEN 2026-08-21 (**NON-BLOCKING**)
+
+- **Falls out of Q-SA-16 and is not the same question.** Q-SA-16 asked about
+  **two** jobs submitted over the API with no browser. TASK-009's runs 1–11 are
+  the **UI** acceptance run (th + en, three screens, someone clicking through) and
+  they need the same real database. "เดี๋ยวรันเอง" was said about the two jobs; it
+  does not state that he also wants to sit through eleven UI runs himself.
+- **Asked in Thai:** "รัน 12/13 พี่รันเองแล้ว — ส่วน TASK-009 อีก 11 รอบที่เป็นการ
+  กดผ่านหน้าจอ (ไทย+อังกฤษ) พี่จะรันเองด้วยไหมครับ หรือค่อยคุยกันตอนถึงจริง ๆ?"
+- **Not guessed, and the cost is concrete:** assuming he will do eleven manual UI
+  runs commits his time without asking; assuming the team may run them instead
+  quietly re-opens the database permission he just declined twice.
+- **Blocks nothing.** TASK-009 is `TODO` and **PAUSED until TASK-013 is DONE**
+  (Q19 ordering), so this comes due only when the frontend rework lands. Recorded
+  now so it is not rediscovered as a surprise then.
+
+### Q-SA-18 — ANSWERED 2026-08-21 — "Bruno" + a path + "อ่าน docs ก่อน"
+
+> answer (2026-08-21, human, verbatim): "Q-SA-18= C:\Users\Admin\Downloads\bruno\bruno  อ่านdocs ก่อน"
+
+**@Sober — this is your question and TASK-014 is your file; recorded here because
+Porter may not write in `tasks/`. Please transcribe it into TASK-014
+`## Questions`.** Porter names no DoD line, no format detail and no work.
+
+- **The choice is made: Bruno, not `curl`.** He answered with a Bruno collection
+  path rather than picking the option in words, and he had already worked with
+  Bruno (`ai-api-center-bruno/`), so the runbook Jason wrote as `curl` is to be
+  re-formatted. **Whether that is a re-format, a replacement, or both forms side
+  by side is Sober's call, not Porter's** — Jason's `curl` sheet is currently in
+  `REWORK` for D1/D2, so the two changes land in the same neighbourhood.
+- **The path is verified, not relayed on trust** (the D1 lesson from the same
+  review — absolute paths, checked). `C:\Users\Admin\Downloads\bruno\bruno`
+  **exists** and is a Bruno collection: `bruno.json`, an `environments\` folder,
+  and eight `.bru` files (`GET Info`, `GET Models`, five `POST Chat - …`, and
+  `POST Chat Multi (4 models parallel)`). It is an **AI API CENTER** collection —
+  i.e. an example of the shape he expects, not a collection for `code-report`.
+- **What is NOT established, and Porter is not filling in: which "docs".** There
+  is **no `docs` file or folder anywhere under that path** (checked to depth 3).
+  So "อ่านdocs ก่อน" is either "read Bruno's own documentation before writing one"
+  or "read the collection at this path first as the reference". → **Q33,
+  NON-BLOCKING.** Meanwhile the safe reading is the one that needs nothing from
+  outside the machine: the collection at the given path is the reference.
+
+### Q33 — ANSWERED 2026-08-21 — the docs are **inside** the `.bru` files
+
+> answer (2026-08-21, human, verbatim): "Q33 - เปิด ดูไฟล์ .bru ก่อน จะเห็น docs ข้างใน"
+
+- **Settled, and it is the reading that needs nothing from outside this machine.**
+  "อ่านdocs ก่อน" = open the `.bru` files at
+  `C:\Users\Admin\Downloads\bruno\bruno` and read the documentation **written
+  inside each request**. It is **not** Bruno's website documentation, and no
+  internet fetch is being asked for.
+- **Verified before relaying, not taken on trust** (the D1 lesson): every one of
+  the eight `.bru` files carries a **`docs { … }` block** alongside its `meta` /
+  request / `tests` blocks, and those blocks are written **in Thai** — e.g.
+  `GET Info.bru` documents "ผลลัพธ์ที่คาดว่าจะได้ (200 OK)" with the expected JSON
+  body. So the collection is not just a set of requests: it is **the house style
+  for how a request is documented**, which is what he wants copied.
+- **@Sober — this joins Q-SA-18 in your TASK-014 transcription, and it makes that
+  question smaller, not bigger.** What it settles is *where to look*; **whether
+  Jason's runbook becomes a Bruno collection, keeps `curl`, or carries both is
+  still your call**, and so is whether a `docs` block per request becomes a DoD
+  line. Porter names none of that.
+- **Blocks nothing.** TASK-014 Phase A is in `REWORK` for D1/D2, both unrelated.
+
+### ~~Q33 original~~ (kept for the record) — which "docs" should be read first?
+
+- **Falls out of Q-SA-18.** He wrote "อ่านdocs ก่อน" next to a path that contains
+  no docs of its own.
+- **Asked in Thai:** "ที่บอกว่าอ่าน docs ก่อน — หมายถึงเอกสารของ Bruno เอง
+  (เว็บ docs.usebruno.com) หรือหมายถึงให้ดู collection ที่พี่ให้ path มาเป็นตัวอย่าง
+  ครับ? (ในโฟลเดอร์นั้นไม่มีไฟล์ docs อยู่)"
+- **Not guessed:** the two readings send the work to different places — one is
+  reading a folder that is already on this machine, the other is fetching
+  documentation from the internet, which is not something this team has been
+  asked to do before. **Cheap to ask, awkward to undo.**
+- **Blocks nothing:** TASK-014 Phase A is in `REWORK` for two unrelated one-line
+  fixes (D1/D2), and the collection on disk is enough to model a `.bru` file on.
+
+**No data request is open on REQ-001 as of 2026-08-21** — DATA REQUEST 3 was the
+last one and it is closed in both halves (see above). **Q15 is now ANSWERED
+(`admin` first)**; its unanswered half ("ให้ Tanya ใช้ test ได้ด้วย") was carried
+as **REQ-003 Q20** and is answered there.
+
+**Current 2026-08-21: NO question is open on REQ-001.** Q33 is **ANSWERED** (the
+docs live inside the `.bru` files, verified) and Q24 is **CLOSED by Porter** (see
+above). **Two answers now wait for @Sober to transcribe into TASK-014 — Q-SA-18
+(Bruno) and Q33 (where its documentation lives).**
+
+**Superseded 2026-08-21 (this session): one question is open on REQ-001 — Q33
+(NON-BLOCKING, above), and Q-SA-18 is ANSWERED (Bruno) and waits for @Sober to
+transcribe into TASK-014.**
+
+**Superseded 2026-08-21 (earlier session): no question is open on REQ-001.** Q24 is
+**answered by delegation** (above) with Porter's recommendation recorded and
+reversible; re-scoping TASK-009 on it is @Sober's. The paragraph below is kept
+as it was written.
+
+**Superseded 2026-08-21 (earlier session):** one question is now open on REQ-001 —
+**Q24**, NON-BLOCKING, above. **Q-SA-16 is ANSWERED (ค)**, which unblocks
+TASK-014, and one **evidence hand-over is in flight**: the stakeholder runs
+TASK-014's two jobs himself and pastes the output into `../project-docs/`
+(the DATA REQUEST loop, Porter's, tracked on the board). **Nothing on this
+project is blocked** on a human answer any more.

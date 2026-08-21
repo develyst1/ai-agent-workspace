@@ -54,6 +54,13 @@ not need a broker). Concurrency is bounded by a simple in-process semaphore.
 
 ## API / Interface Design
 
+> **Extended 2026-08-21 by SPEC-003 (source REQ-004).** Two read-only
+> repository-inspection endpoints — `POST /api/repos/branches` and
+> `POST /api/repos/committers` — are specified **in SPEC-003**, not here, and they
+> add **no** field, code, table or config key to this SPEC. They reuse this
+> section's envelope, `Accept-Language` rule, error table and PAT rules verbatim.
+> `POST /api/reports` and `GET /api/reports/:jobId` are unchanged.
+
 All endpoints are under `/api`. All responses are JSON. All errors use the
 envelope `{ "error": { "code": "<CODE>", "message": "<human readable>" } }`.
 `message` is already in the language the client asked for (`Accept-Language:
@@ -400,6 +407,28 @@ resolves to a loopback/link-local/private range unless
 `ALLOW_PRIVATE_GIT_HOSTS=true` (a self-hosted GitLab on the LAN is a legitimate
 case, so it is configurable, off by default). Never pass the URL to a shell —
 `git` is spawned with an argv array, never `sh -c`.
+
+**A repo URL carrying userinfo is rejected. Added 2026-08-21 (Sober), at the
+TASK-005 review — and it is a gap in this spec, not an engineer's mistake.**
+A URL of the form `https://<user>:<secret>@host/owner/repo.git` currently passes
+every gate above: the scheme is `https`, the host is public, and nothing in this
+document told anyone to look at `URL.username` / `URL.password`. The consequence
+is that the credential is **stored in `report_jobs.repo_url`, returned verbatim
+in `GET /api/reports/:jobId` → `params.repoUrl`, and handed to `git` as the
+remote URL — which writes it into `.git/config` on disk.** That is PAT handling
+3 and 4 broken by the one input path they never named, and it defeats the reason
+the `http.extraHeader` mechanism exists at all. The redactor is not a defence
+here: `repo_url` is stored and echoed without passing through it, and even if it
+did, only `gh*_` / `glpat-` shapes would match — a Bitbucket app password or a
+self-hosted token would not.
+
+The rule: **the scheme gate rejects any URL with a non-empty `username` or
+`password`**, as `400 VALIDATION_ERROR` with the existing `INVALID_URL` field
+issue, before a job row exists. Rejecting is deliberate rather than silently
+stripping: the user typed a secret into the wrong box and must be told, and a
+stripped URL would then fail to clone a private repo with no explanation. The
+`pat` field is the only supported way to authenticate. Because the gate is one
+function (`parseRepoUrl`), the run-time path inherits the same rule.
 
 **Auth.** argon2id password hashing. All `/api/reports*` routes behind the
 session middleware; an unauthenticated call returns `401 AUTH_REQUIRED` and

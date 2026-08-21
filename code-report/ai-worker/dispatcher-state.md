@@ -154,6 +154,146 @@ Board state at stop: TASK-002 / 003 / 004 / 006 / 007 / 008 DONE (6 of 9). TASK-
 
 OPEN WITH THE HUMAN: paste the console output of the seed:users run already performed into project-docs/ (output only — no password, no JSON file). Nothing else.
 
+## RUN 2026-08-21-a — N=4 — started from: seed:users console output (updated admin, 1 account processed)
+hop 1 | PM  | did: closed DATA REQUEST 3, filed the output to project-docs/seed-users-run-2026-08-21.md, noted the script said "updated" not "created" and that no exit code was printed; raised Q15 | ball_to: SA | flags: 1 non-blocking question, 1 low-confidence inference (exit 0 inferred from absence of an error line)
+hop 2 | SA  | did: reviewed TASK-005 → REWORK, one item — a repo URL carrying userinfo (https://user:secret@host/o/r.git) passed every gate and was stored in report_jobs.repo_url, echoed back on the wire, and written into .git/config; amended SPEC-001; answered Q-BE-9..12; bound the unexecuted SQL into TASK-009 run 13 | ball_to: BE | flags: -
+hop 3 | BE  | did: closed the rework — parseRepoUrl now rejects (not strips) userinfo before a job row exists, one function so both gates inherit it, no new error code or user-facing string; 199 tests pass; commit 4101551 | ball_to: SA | flags: -
+hop 4 | SA  | did: re-reviewed TASK-005 → DONE; found the fix also closes a host-spoofing path (https://github.com@evil.example.com reads as GitHub but resolves to evil.example.com, passed every gate before this commit); parked the query-string-secret residual as a SPEC decision rather than inventing a fix | ball_to: BE+FE (TASK-009) | flags: 1 non-blocking question (Q-SA-11 wording), 1 low-confidence parking judgement
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+Board state at stop: TASK-002/003/004/005/006/007/008 DONE (7 of 9). TASK-001 IN_PROGRESS — seed evidence now supplied, SA's parked item 3 is the DoD call. TASK-009 UNBLOCKED and is the last open TASK: joint BE+FE acceptance run, and the FIRST task requiring a real environment (live calls to https://ai.develyst.online, human-authorised, low-tier models first).
+
+Open non-blocking questions: Q15 (one shared `admin` account vs one per person — REQ-001 §10 names CEO/SA/PM), Q-SA-11 (wording when a URL carries a credential).
+
+## RUN 2026-08-21-b — N=4 — started from: answers (Q15=admin เริ่มต้นก่อน + ให้ Tanya ใช้ test ได้ด้วย, Q-SA-11=ข้อความใหม่) + a NEW REQUIREMENT (frontend UI + folder structure overhaul)
+hop 1 | PM  | did: recorded both answers into REQ-001; captured the new frontend requirement as REQ-003 (DRAFT, deliberately NOT READY_FOR_SA) with five open questions | ball_to: HUMAN | flags: Q16 + Q17 BLOCK REQ-003; Q18/Q19/Q20 non-blocking
+STOPPED hop 1/4 — conditions 1 + 7 (blocking questions; ball_to HUMAN)
+
+Dispatcher note on why the run was NOT continued into TASK-009 this time (unlike earlier deviations): Q19 asks whether the frontend rework comes before the acceptance run. Running TASK-009 now would spend real AI tokens on a frontend that may be rebuilt immediately after. Stopping is the cheaper branch, and the human explicitly said he wants to discuss the frontend.
+
+Key finding from PM this hop: the path the human gave (code-report-front\.agent\skills) contains only the `hallmark` DESIGN skill — it does not define a Next.js folder structure, so "folder structure from that skill" cannot be taken literally. Q17 asks whether structure comes from nextjs-pattern-generator and design from hallmark.
+
+Board state at stop: TASK-002..008 DONE (7 of 9). TASK-001 IN_PROGRESS (SA's DoD call). TASK-009 unblocked but deliberately not started pending Q19. REQ-003 DRAFT, blocked on Q16 + Q17. REQ-002 (email the report) still unwritten.
+
+## RUN 2026-08-21-c — N=4 — started from: answers (Q16 รื้อทุกหน้าด้วย hallmark, Q17 ใช่, Q18 คงไว้ทั้งคู่ แต่เริ่มจาก Mantine, Q19 รื้อ frontend ก่อน, Q20=ค Tanya เป็น QA) + ไปเลย
+hop 1 | PM  | did: recorded Q16-Q20, moved REQ-003 DRAFT → READY_FOR_SA with acceptance criteria; raised Q21 (who writes QA.md + amends PROTOCOL for Tanya) | ball_to: SA | flags: 1 non-blocking question
+hop 2 | SA  | did: wrote SPEC-002 (frontend overhaul) — target folder tree, Mantine-first + Tailwind-confinement rule, hallmark redesign rules, a 10-item BEHAVIOUR FREEZE used as the regression checklist, TASK-010..013 breakdown; paused TASK-009 per the human's Q19 order | ball_to: SA | flags: 2 non-blocking questions (Q-SA-12 skill libraries, Q-SA-13 how the human wants to review UI)
+hop 3 | SA  | did: wrote TASK-010..013 with a file-by-file move map for all 23 files measured from the real tree | ball_to: FE | flags: -
+hop 4 | FE  | did: implemented TASK-010 (folder-structure rebuild, 66 files, commit 9b6345c); build green with the SAME four routes before and after; diff at -M25% -C25% has NO deletions; dictionaries.ts moved at R100 byte-identical (proof the Q14 copy bundle is untouched); executed all 10 behaviour-freeze items at run time | ball_to: SA | flags: 2 non-blocking questions to SA, 1 BOUNDARY INCIDENT reported
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+SA MEASURED CORRECTION worth carrying: not one screen used a single Mantine component before this work — grep found four hits, all plumbing; all seven components were hand-rolled HTML + Tailwind. So "keep both" is NOT zero work; "every screen starts from Mantine" is a full UI-markup rebuild of all three screens.
+
+BOUNDARY INCIDENT (Fern self-reported, no data written): a `next dev` server was already running out of code-report-front on port 3000 (not hers), and .env.local proxies /api to localhost:8080. Her first probe requests therefore reached a LIVE backend on 8080 instead of her fake. Three login attempts, all rejected INVALID_CREDENTIALS — no session, no report, no SQL, no DB write. She stopped on identifying it and rebuilt the harness on her own port. Logged for SA.
+
+Board state at stop: TASK-002..008 DONE. TASK-010 at REVIEW (Sober). TASK-011/012/013 TODO, chained behind the TASK-010 review. TASK-009 PAUSED by SA per the human's Q19 order — which also parks Jason; splitting its BE-only runs is SA's top queued unit.
+
+Open non-blocking questions: Q21 (who writes QA.md + amends PROTOCOL so Tanya can actually work), Q-SA-12 (skill's folder layout only, or its libraries too — React Query / Axios / NextAuth), Q-SA-13 (how the human wants to review UI: screenshots in the TASK, or run npm run dev himself).
+
+## RUN 2026-08-21-d — N=4 — started from: answers (Q21=เขียนเลย, Q-SA-12=เอาแค่โครง, Q-SA-13=screenshot) + ไปเลย
+hop 1 | PM  | did: wrote ai-worker/QA.md, amended PROTOCOL.md in exactly 4 places (QA team row, Porter↔Tanya chain pair, IN_TEST/TEST_PASSED/TEST_FAILED REQ leg, QA data-request routing), created ai-worker/tests/; deliberately did NOT copy smart-scheduler's dev-server grant (this project has no deployed environment); raised Q22 | ball_to: SA | flags: 1 non-blocking question
+hop 2 | SA  | did: reviewed TASK-010 → DONE; the decisive check was his own, not Fern's — a rename gate cannot see markup edited during a split, so he diffed the full className and t() inventories of all four split files pre/post move: zero diff; answered Q-FE-11; closed the port-8080 incident at SA level with a standing rule (confirm the proxy target before a harness's first request) | ball_to: FE | flags: 1 non-blocking question (Q-SA-14 session-expired notice)
+hop 3 | FE  | did: implemented TASK-011 (shell, header, language switch, login rebuilt on @mantine/core; hallmark redesign picked theme `cobalt`; KnowCode product name folded in); commit 0b63dec | ball_to: SA | flags: 4 non-blocking questions to SA, 2 low-confidence assumptions
+hop 4 | SA  | did: reviewed TASK-011 → DONE, re-derived every contrast number from the raw OKLCH tokens rather than reading Fern's in-page values; answered all four FE questions; rescoped the token-gate DoD across TASK-012/013; escalated the screenshot problem as Q-SA-15 | ball_to: FE | flags: 1 question that BLOCKS REQ-003's final acceptance
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+KEY TECHNICAL FIND (Fern, load-bearing): theme.colors is only half of Mantine's colour surface — 24 semantic variables still defaulted to Mantine's own greys, its red, and literal #fff/#000. A cssVariablesResolver re-points all of them at project tokens; without it the app would have had exactly the two-colour-system split FRONTEND-STANDARD §1 bans. He also measured a real 3:1 failure: Mantine's input border resolved to the decorative rule token at 1.37:1, now 3.47:1.
+Font substitution: cobalt mandates Space Grotesk / Inter / JetBrains Mono, none of which carry Thai glyphs; display face is Chakra Petch instead. Measured constraint, not preference.
+
+CONFLICT NEEDING THE HUMAN (Q-SA-15): he answered Q-SA-13 with "screenshot", but no role on this team has a display capable of capturing one. REQ-003's final acceptance criterion currently has no owner. Does not block TASK-012/013 being built; does block REQ-003 being accepted.
+
+Board state at stop: TASK-002..008, 010, 011 DONE. TASK-012 next for Fern, then TASK-013. TASK-009 still PAUSED, so Jason is still parked — the TASK-009 BE-only split is SA's top queued unit and the only thing that unparks him.
+Open non-blocking questions: Q22 (add an FE row to PROTOCOL.md — Fern was never listed), Q-SA-14 (show a "session expired" notice on the 401 redirect? pre-existing behaviour), Q-SA-15 (screenshots).
+
+## RUN 2026-08-21-e — N=4 — started from: answers (Q-SA-15=ก ส่ง URL มา, Q22=เพิ่มเลย, Q-SA-14=ขึ้นข้อความ) + ไปเลย
+hop 1 | PM  | did: added the FE row + Sober↔Fern chain pair to PROTOCOL.md (tables only, as authorised); recorded the screenshot answer — REQ-003's final acceptance now has an owner (the human); raised Q23 | ball_to: SA | flags: 2 non-blocking questions
+hop 2 | SA  | did: split TASK-009's BE-only runs into TASK-014 — AND FOUND THE SPLIT DOES NOT UNPARK JASON, the opposite of what the board had claimed twice: run 13 is by definition a real-database run, and the only code_report DB on record is the human's own. Raised Q-SA-16. Also fixed a stale record: Q-SA-6 was answered 2026-08-20 but had never been transcribed into TASK-009, which still read "BLOCKS THIS TASK" | ball_to: PM | flags: 1 BLOCKING question + data request + irreversible pending
+hop 3 | FE  | did: implemented TASK-012 (new-report form rebuilt on @mantine/core, redesigned in the cobalt register); commit 8cac881; found and fixed a real regression by measuring — a bare Mantine Checkbox gave a 20px hit target against a 44px floor | ball_to: SA | flags: 3 non-blocking questions to SA
+hop 4 | SA  | did: reviewed TASK-012 → DONE; the decisive check was one the DoD never named — the diff deleted 273 lines of the SHARED globals.css, so he inventoried every cr-* class defined against every one used to prove nothing was orphaned. AMENDED HIS OWN SPEC: Decision 3.4's authorisation of @mantine/dates is withdrawn, its stated justification was false, and SPEC-002 now authorises no new dependency at all | ball_to: FE | flags: 1 low-confidence parked item
+
+Notable: Fern refused to install @mantine/dates because it drags in dayjs — one of the four packages the human declined at Q-SA-12 — and shipped TextInput type="date" instead, raising the dependency choice rather than widening it. Sober verified the peer dependency independently and agreed, then withdrew his own authorisation. The wire format is now guaranteed by the HTML spec rather than by measurement.
+
+Board state at stop: TASK-002..008, 010, 011, 012 DONE (10). TASK-013 is the LAST redesign screen and the one that unpauses TASK-009. TASK-014 BLOCKED on Q-SA-16 — Jason still has no runnable work until the human answers.
+Open questions: Q-SA-16 (BLOCKING Jason — which database may a real run use: ก point at the human's code_report and let the app insert 2 rows, ข a throwaway DB he authorises, ค he runs the two jobs himself and pastes evidence; ก/ข also need the admin password). Non-blocking: Q23 (URL = localhost he runs himself, or a deployed link — deployment is not in scope), PROTOCOL prose still names BE only.
+
+## RUN 2026-08-21-f — N=4 — started from: answers (Q-SA-16=ค เดี๋ยวรันเอง, Q23=localhost) + ไปเลย
+hop 1 | PM  | did: recorded both answers — the admin password is now moot and must not be asked for again; no deployment work falls out of REQ-003; raised Q24 | ball_to: SA | flags: 1 non-blocking question, 1 data request (the human runs TASK-014's two jobs)
+hop 2 | FE  | did: implemented TASK-013 (report view rebuilt on @mantine/core, redesigned as a "run dossier"); drove the repo-wide token gate from 22 to ZERO; commit 1f90b87 | ball_to: SA | flags: 1 non-blocking question to SA
+hop 3 | SA  | did: reviewed TASK-013 → DONE — all four SPEC-002 redesign TASKs now complete; ruled Q-FE-19 from written rules without escalating; deliberately did NOT set REQ-003 to SPEC_DONE because two TASK lines were still missing | ball_to: SA | flags: Q24 now DUE
+hop 4 | SA  | did: transcribed all five answered questions into SPEC-002 and wrote the two missing TASK lines — TASK-015 (session-expired line, TODO, Fern can start now) and TASK-016 (localhost acceptance hand-over, BLOCKED on Q-SA-17) | ball_to: FE | flags: 1 new non-blocking question
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+Notable this run: Fern kept .cr-progress and .cr-spinner instead of Mantine's Progress/Loader with measured reasons — Mantine's Progress hard-codes aria-valuemax=100 plus an untranslated aria-valuetext (would break the six-stage freeze), and Mantine's Loader animates from a stylesheet the app's reduced-motion block does not reach. He also falsified Sober's own "measurement artefact" hypothesis on the input-border issue and named the next probe rather than shipping a speculative fix. Sober found a second bare-/login clobber source (src/app/page.tsx) that nobody had named while writing TASK-015.
+
+Board state at stop: TASK-002..008, 010..013 DONE (11). TASK-015 TODO (Fern, startable). TASK-016 BLOCKED on Q-SA-17. TASK-014 + TASK-009 both wait on the human running things himself. REQ-003 still IN_SPEC by design.
+
+## RUN 2026-08-21-g — N=4 — started from: a NEW REQUIREMENT (UI usability problems on the new-report form + no way back from the report screen + "find and fix the rest")
+hop 1 | PM  | did: captured it as REQ-004 (DRAFT) with 5 written requirements and 6 new questions; flagged that three of the items REVERSE what the human himself approved at Q-SA-2 on 2026-08-20 (branch/committer typed as free text) and recorded which answers are superseded rather than silently changing them | ball_to: HUMAN | flags: Q25 + Q26 BLOCK REQ-004; Q30 blocks REQ-003's verdict
+STOPPED hop 1/4 — conditions 1 + 7 (blocking questions; ball_to HUMAN)
+
+Dispatcher note on stopping immediately rather than continuing to TASK-015: Q30 asks whether the screens the human just criticised were the newly rebuilt code or a stale app still running on his machine (port 3000 was observed live and not started by any role, twice). If it was the stale app, part of the feedback may describe code that has already been replaced. Building on it before that is settled risks wasted work. He also did not say "ไปเลย" this time.
+
+## RUN 2026-08-21-h — N=4 — started from: answers (Q30=โค้ดล่าสุด, Q25=ค, Q26=ก, Q27=ไปต่อไม่ได้, Q28=วันนี้→วันนี้ คงเพดาน, Q29=มีค่าเดิม, Q-SA-17=ก, Q24=เอาตามที่แนะนำ) + ไปเลย
+hop 1 | PM  | did: transcribed all eight answers, released REQ-004 DRAFT → READY_FOR_SA (7 requirements); deliberately recorded Q30 as "he judged the reworked build" but NOT as acceptance of REQ-003 — he described code he has seen, not a verdict; raised Q31 | ball_to: SA | flags: 2 non-blocking questions
+hop 2 | SA  | did: transcribed Q-SA-16 into TASK-014 and re-scoped it into Phase A (Jason authors the runbook the human executes) / Phase B (Jason reviews the pasted evidence); BLOCKED → TODO, which put work back in Jason's court after three idle rounds | ball_to: BE | flags: 1 non-blocking question (Q-SA-18 curl vs Bruno)
+hop 3 | BE  | did: wrote the Phase A runbook — start command, full env table, login, Run A body, Run B failure path, exactly what to paste, no-secrets table — every command and log-line shape quoted from the real code across 14 files; found three code-vs-TASK mismatches by reading | ball_to: SA | flags: 4 non-blocking questions to SA
+hop 4 | SA  | did: reviewed TASK-014 Phase A → REWORK on exactly two lines, and RE-GATED the hand-over: the runbook must NOT be relayed to the human yet | ball_to: BE | flags: -
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+The two defects Sober caught are worth recording: (D1) the runbook told the human to save evidence to ../project-docs/, which from the shell the sheet itself puts him in resolves to C:\Users\Admin\develyst\code-report\project-docs — a folder that does not exist; workspace shorthand that is correct between roles and wrong in a document handed to someone standing somewhere else. (D2) step 5 greps a server-output.txt that step 1 never creates. Also ruled Q-BE-14: finished_at is written on every terminal transition but appears in no SELECT, type or wire shape, so no API response can ever show it — proof is indirect and finishNoCommits stays unproven, which Phase B must state rather than paper over.
+
+Board state at stop: TASK-002..008, 010..013 DONE. TASK-014 Phase A in REWORK (Jason, startable now). TASK-015 TODO (Fern). TASK-016 unblocked by Q-SA-17=ก but not yet started. REQ-004 READY_FOR_SA — SPEC-003 is Sober's next unit. REQ-003 still IN_SPEC, neither accepted nor rejected.
+
+Open questions for the human: Q31 (does "find and fix the rest" cover only the two screens he named or every screen — and usability only, or behaviour too), Q-SA-18 (runbook as curl commands or a Bruno collection), Q24 (recorded as: team writes the click-through script, he runs TASK-009's eleven UI rounds himself — reversible in one line).
+NOTE: do NOT relay the TASK-014 runbook to the human until Jason's D1/D2 rework lands.
+
+## RUN 2026-08-21-i — N=4 — started from: answers (Q31=ทุกหน้า แก้พฤติกรรมได้ด้วย, Q-SA-18=Bruno + path, อ่าน docs ก่อน) + ไปเลย
+hop 1 | PM  | did: widened REQ-004 req 7 to every existing screen + behaviour; held two things back explicitly (on-screen copy still gated by Q14; "ทุกหน้า" = existing screens, not new ones); VERIFIED the Bruno path exists rather than relaying it on trust; raised Q32 + Q33 | ball_to: SA | flags: 2 non-blocking questions
+hop 2 | SA  | did: wrote SPEC-003 — REQ-004 is the FIRST requirement here that is not frontend-only. Two new READ-ONLY endpoints: POST /api/repos/branches (git ls-remote --symref --heads, no clone) and POST /api/repos/committers (metadata-only clone, range-scoped, on demand). No new table, error code, config key or migration; POST /api/reports unchanged | ball_to: SA | flags: 1 non-blocking question (Q-SA-19 copy round)
+hop 3 | SA  | did: wrote TASK-017 (BE endpoints), TASK-018 (re-shaped form), TASK-019 (back-from-report), TASK-020 (usability pass, last on purpose) | ball_to: FE | flags: -
+hop 4 | BE  | did: implemented TASK-017 — both endpoints, PAT only in http.extraHeader, no directory created for ls-remote; 230 tests pass (was 199, none removed); commit d1f0993 | ball_to: SA | flags: 3 non-blocking questions to SA
+
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+Root cause Sober traced for "หน้า report กดย้อนกลับไม่ได้": ONE line of our own code — NewReportContent.tsx:169 navigates with router.replace, which overwrites the form's history entry. Fix is push + an explicit back control + the existing retryParams handoff. He also caught that push ALONE does not satisfy it: the browser Back button would remount the form empty, which is exactly what Q29 refused.
+Sober also corrected a bookkeeping error both board.md and REQ-004 carried: what they call "freeze item 3" is item 4 in SPEC-002; item 3 is RequireAuth and stays frozen.
+Stated consequence of Q27 the team did not hide: going back to a private repo means re-entering the PAT before the branch list reloads, because the PAT is never prefilled.
+
+Board state at stop: TASK-002..008, 010..013 DONE. TASK-017 at REVIEW. TASK-015 + TASK-019 TODO for Fern (both startable). TASK-014 Phase A rework still open for Jason. TASK-018 gated on 017+019; TASK-020 gated on 018.
+Open non-blocking questions: Q32 (does "แก้พฤติกรรมได้" include things REQ-001 explicitly specified — 366-day cap, DD/MMM/YY, th/en, token rules, the no-commits sentence — or only what was never specified), Q33 ("อ่าน docs ก่อน" = Bruno's own web docs, or the collection at that path as the example? that folder has no docs file), Q-SA-19 (13 new th/en strings drafted — approve them in one round at the end?), Q24.
+NOTE: the TASK-014 runbook is STILL not to be relayed — D1/D2 unfixed.
+
+## RUN 2026-08-21-j — N=4 — started from: answers (Q32=ใช่ หากดีขึ้นก็จัดการเลย, Q33=เปิดไฟล์ .bru จะเห็น docs, Q-SA-19=ok, Q24=ไม่เข้าใจ)
+hop 1 | PM  | did: widened REQ-004 req 7 to cover behaviour REQ-001 itself specified, with the human's own condition attached as binding (must actually be easier to use, and the TASK must write down why); held back the sanitizer and PAT rules as safety-not-usability; CLOSED Q24 himself rather than asking a third time, calling the failure his own question's fault | ball_to: SA | flags: none — no question open with the human
+hop 2 | SA  | did: reviewed TASK-017 → DONE; added two checks the DoD did not ask for (the whole test/ diff has ZERO deleted lines, so "31 added, none removed" is proof not arithmetic; the six-file untouched diff prints nothing); re-measured the PAT handling outside Jason's suite | ball_to: FE | flags: 1 parked SPEC gap (committer clone has no concurrency bound while worker clones do)
+hop 3 | FE  | did: implemented TASK-019 — replace→push, an explicit back control in all five states, both routes back landing on a filled form; commit 32e8eed | ball_to: SA | flags: 3 non-blocking questions to SA
+hop 4 | SA  | did: reviewed TASK-019 → DONE, opened all 14 deleted lines individually, verified structurally rather than re-running a browser; ruled all three FE questions; raised Q-SA-20 | ball_to: FE | flags: 1 non-blocking question
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+Worth recording: Fern FALSIFIED Sober's suggested mechanism instead of arguing it. Sober's shape alone leaves a window — between push and the first poll the report page has no params to write from — and she measured that browser Back produced a completely empty form. She added a second writer and raised it for reversal; Sober accepted, noting his own shape "cannot write what the page does not yet have".
+Sober then found a gap in the DoD HE wrote: the handoff carries six values and the free-text extra-context box is not one of them, so going back loses it — while the human's Q29 answer was "มีค่าเดิม". He raised it rather than quietly deciding.
+
+Board state at stop: TASK-002..008, 010..013, 017, 019 DONE. TASK-018 (re-shaped form: branch list, committer list, one date range) NOW STARTABLE — this is the TASK that actually fixes what the human complained about. TASK-015 also open for Fern. TASK-014 Phase A D1/D2 still open for Jason. TASK-020 gated on 018.
+Open non-blocking question: Q-SA-20 (should "back" also restore the free-text extra-context box? currently restores URL, branch, author, date range, report language).
+
+## RUN 2026-08-21-k — N=4 — started from: answer (Q-SA-20=เก็บด้วย) + ไปเลย
+hop 1 | PM  | did: recorded Q-SA-20 as REQ-004 req 4b; read it narrowly on purpose — one field only, no PAT prefill, no new strings, no API change | ball_to: SA | flags: none
+hop 2 | SA  | did: transcribed Q-SA-19 + Q-SA-20 into SPEC-003 and TASK-018 — AND CORRECTED HIS OWN COSTING from the previous review, found only by reading the real code: jobResponse builds params with exactly six keys and extraContext is not one, so the report-page writer cannot source it at all, and because the writer is a whole-payload setItem it would OVERWRITE whatever the form stored. A naive "add the key" would have shipped a value the next 2-second poll silently wipes | ball_to: FE | flags: -
+hop 3 | FE  | did: implemented TASK-018 — the re-shaped form: explicit "load branches" action gating the whole form, single-day/range switch DELETED, one date range pre-filled today→today with three presets, on-demand committer list, branch/committer restored as pending selections applied only after their lists load; commit f70fb02; +773/-183 over 12 files | ball_to: SA | flags: 4 non-blocking questions to SA
+hop 4 | SA  | did: reviewed TASK-018 → DONE; ruled all four questions; verified the client contract against TASK-017's REAL backend code rather than Fern's fake, confirming the ≤366 bound is the same number and the same comparison on both sides | ball_to: FE | flags: -
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+How Fern made the fragile part safe: she split the handoff into two writers and typed the report-side one as Omit<RetryParams,"extraContext">, so "the report page must not write that key" is a COMPILE ERROR rather than a comment. Proved with sentinels — all six job-sourced keys overwritten, extraContext survived.
+Sober's own extra checks worth keeping: the six dictionary deletions are safe BY CONSTRUCTION (MessageKey is derived from th and en is Record<MessageKey,string>, so a surviving reader or a one-sided key is a type error — typecheck 0 proves both); the branch Select is searchable={false}, so "nowhere to type a branch" is a property of the control, not a habit; the submit gate is both a disabled attribute and an early return, so the Enter key cannot bypass it.
+Two gaps Sober named as his own rather than smoothing over, both carried into TASK-020: the committer value is restored only once that list loads, and a second round trip (form → report → Back → Forward → Back) empties the extra-context box.
+
+Board state at stop: 17 TASKs DONE. TASK-020 (usability pass over every screen) is SPEC-003's LAST task and is now startable. TASK-015 also open for Fern. TASK-014 Phase A D1/D2 still open for Jason — the runbook still must not be relayed.
+ZERO questions open with the human on this project.
+NOTE: Fern committed TASK-018 to branch `develop`, not `main` where every earlier FE commit landed. No role flagged it. Worth asking the human whether that was intended before anything is merged.
+
+Older open questions: Q-SA-17 (BLOCKS TASK-016 only — what runs behind localhost so he can see all three screens: ก run the backend + his DB + log in as admin, ข frontend only with a team-built stub showing fake data, ค just /login for now), Q24 (does "เดี๋ยวรันเอง" also cover TASK-009's eleven manual UI runs, or only TASK-014's two API jobs). Plus the standing data request: run TASK-014's Run A and Run B and paste the two GET /api/reports/:jobId bodies and the three AI-stage log lines — no passwords, cookies or tokens.
+
+
 
 
 

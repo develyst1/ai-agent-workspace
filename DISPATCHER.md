@@ -70,6 +70,11 @@ re-spawning itself.
   That sentence is coordination routing, not work content, so it is allowed.
 - Two roles both have work waiting → prefer the one on the **critical path** as
   the PM's latest log entry states it; if unclear, PM first.
+- **Board over 40KB** → before dispatching anything else, spend one hop waking
+  **PM for housekeeping**: compact `board.md` to state-only (one-line cells,
+  history moved to `ai-worker/archive/board-<date>.md` — detail already lives
+  in the TASK/REQ files), per the file-discipline rules in the spawn header.
+  This hop counts against N.
 
 ### STOP CONDITIONS — any one of these ends the run with a digest
 
@@ -109,6 +114,18 @@ role's starter from `SESSION-STARTERS.md` with three changes:
    > invented user-facing string, a scope question, or missing real-world data
    > is something you WRITE INTO YOUR REPORT (and your files, per PROTOCOL) —
    > not something you resolve by assumption and keep moving.
+   >
+   > **File discipline — every fact is written ONCE:**
+   > - The TASK/REQ file is the home of detail: evidence, review verdicts,
+   >   reasoning, history. Everything else points there.
+   > - A board cell is ONE line: status + date + owner + a pointer
+   >   (`DONE — reviewed 2026-08-21, evidence in TASK-005 §Review`). Never
+   >   paste evidence or command output into a cell, and never keep old text
+   >   in a cell ("Earlier text: ...") — replace it; the history already
+   >   lives in the task file.
+   > - A log entry is ≤ 15 lines: what you did, the headline result, open
+   >   questions, ball-to, and links to the files that hold the detail. Do
+   >   not retell what a TASK/REQ file already says.
 
 3. Append the REPORT contract:
 

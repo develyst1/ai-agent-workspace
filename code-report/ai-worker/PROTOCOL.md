@@ -9,14 +9,28 @@ If you didn't write it to a file, the team doesn't know it.
 
 | Role | Name | Talks to | Writes |
 |------|------|----------|--------|
-| Project Manager | Porter | The human (stakeholder) + SA Lead | `requirements/REQ-*.md` |
-| SA Lead | Sober | PM + BE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
+| Project Manager | Porter | The human (stakeholder) + SA Lead + Tester | `requirements/REQ-*.md` |
+| SA Lead | Sober | PM + BE + FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
 | Backend Engineer | Jason | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Frontend Engineer | Fern | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Senior Tester (QA) | Tanya | PM | `tests/TEST-*.md`, `tests/REGRESSION.md` |
+
+> **QA added 2026-08-21** — stakeholder approved on Q20 ("ค"), Porter authorised
+> to write it in on Q21 ("เขียนเลย"); both verbatim in REQ-003 `## Questions`.
+> **FE row added 2026-08-21** — the frontend engineer **Fern** had never been
+> listed here (a desync predating the QA amendment). Stakeholder authorised the
+> fix on Q22 ("เพิ่มเลย"), verbatim in REQ-003 `## Questions`. Pure bookkeeping:
+> Fern is SA-Lead's engineer exactly like Jason, which is how she was already
+> working — no behaviour, TASK or status changed.
 
 Chain of command: **Human → PM → SA Lead → BE**, and results flow back up the
-same chain. BE never guesses requirements — questions go to SA Lead. SA Lead
+same chain — with the **Tester hanging off the PM** (Human ↔ PM ↔ Tester), so
+that what gets verified is the *requirement*, independently of whoever designed
+and built it. BE never guesses requirements — questions go to SA Lead. SA Lead
 never guesses business intent — questions go to PM. PM never guesses what the
-human wants — ask the human.
+human wants — ask the human. The Tester never guesses what "correct" means — the
+REQ's Acceptance Criteria are the standard, and anything ambiguous is a question
+to PM.
 
 ## The chain is HARD — no skipping (most-violated rule, read twice)
 
@@ -26,7 +40,9 @@ Only these pairs may communicate, in either direction:
 |--------------|---------|
 | Human ↔ Porter (PM) | chat, in Thai |
 | Porter (PM) ↔ Sober (SA) | REQ files, board, log `@` |
+| Porter (PM) ↔ Tanya (QA) | REQ files, TEST files, board, log `@` |
 | Sober (SA) ↔ Jason (BE) | SPEC/TASK files, board, log `@` |
+| Sober (SA) ↔ Fern (FE) | SPEC/TASK files, board, log `@` |
 
 **Every other pair is forbidden.** Concretely:
 
@@ -35,6 +51,11 @@ Only these pairs may communicate, in either direction:
   as a TASK written by Sober.
 - Jason **never** writes `@Porter` and never addresses the human. Everything
   goes up through Sober.
+- Tanya (QA) **never** writes `@Sober` or `@Jason` (nor `@Fern`), and never
+  addresses the human. A defect she finds goes to `@Porter`, who decides what it
+  means for the business and routes it onward. She **reads** SPECs, TASKs and
+  code freely — reading is not communicating — but her verdicts and questions
+  have exactly one destination: Porter.
 - The human gives business content only to Porter. (Bare nudges — "ไปเลย",
   "continue" — are allowed to anyone; see Nudges below.)
 
@@ -102,13 +123,23 @@ work into one file, so this is a hard rule:
   `tasks/TASK-001-short-title.md`
 - Numbers are per-type, zero-padded to 3, never reused. Check the folder for
   the highest existing number before creating a new one.
-- Every SPEC names its source REQ. Every TASK names its source SPEC.
-  This keeps full traceability: REQ → SPEC → TASK → code.
+- Every SPEC names its source REQ. Every TASK names its source SPEC. Every TEST
+  names its source REQ. Full traceability: REQ → SPEC → TASK → code, and
+  REQ → TEST → verdict. TEST files live in `tests/TEST-NNN-short-title.md`.
 
 ## Statuses
 
 **Requirement (REQ):**
-`DRAFT` → `READY_FOR_SA` → `IN_SPEC` → `SPEC_DONE` → `DELIVERED`
+`DRAFT` → `READY_FOR_SA` → `IN_SPEC` → `SPEC_DONE` → `IN_TEST` →
+`TEST_PASSED` | `TEST_FAILED` → `DELIVERED`
+
+- `SPEC_DONE` means *built and SA-reviewed* — it does **not** mean it works.
+- `IN_TEST` … `TEST_PASSED` is the Tester's leg (added 2026-08-21 with the QA
+  role). **`TEST_FAILED` blocks the release**: the REQ goes back to Porter with
+  the defects, and only Porter routes the fix onward to Sober.
+- REQs that reached `SPEC_DONE` **before** 2026-08-21 are not retro-tested by
+  this change; whether an already-delivered REQ gets a test round is Porter's
+  call with the human, not an automatic consequence of adding the leg.
 
 **Task (TASK):**
 `TODO` → `IN_PROGRESS` → `REVIEW` (SA Lead reviews) → `DONE` | `REWORK` → back to `IN_PROGRESS`
@@ -116,8 +147,9 @@ work into one file, so this is a hard rule:
 Anything can also be `BLOCKED (waiting: <who> — <question>)`.
 
 Only the **owner of the next step** moves a status forward:
-PM sets `READY_FOR_SA`; SA sets `IN_SPEC`/`SPEC_DONE`/`REVIEW→DONE/REWORK`;
-BE sets `IN_PROGRESS`/`REVIEW`.
+PM sets `READY_FOR_SA`/`DELIVERED`; SA sets `IN_SPEC`/`SPEC_DONE`/`REVIEW→DONE/REWORK`;
+BE sets `IN_PROGRESS`/`REVIEW`; **QA sets `IN_TEST`/`TEST_PASSED`/`TEST_FAILED`
+and nothing else** — no one else may declare a test passed.
 
 ## Log format (`log/YYYY-MM-DD.md`)
 
@@ -166,7 +198,13 @@ This team often does patch/maintenance work on systems owned by others.
 only what the current work requires — and never guess or fetch the rest yourself:
 
 - **Never run SQL yourself.** Never connect to any real database, server, or
-  environment. The human is the only source of real-world data.
+  environment. The human is the only source of real-world data. **This is not
+  relaxed for the Tester on this project:** `code-report` has **no deployed
+  environment** (no deployment TASK exists; the cookie-`Secure` note is still
+  parked), so Tanya's testing ground is **local only** — the two repos and
+  `localhost`. If a dev server is ever deployed, its URL and test account come
+  from the human via Porter into `../project-docs/`, and this paragraph gets
+  amended then, not assumed now. See `QA.md` for the full environment card.
 - Never assume DB schema, config values, credentials, third-party API behavior,
   or production data. If it isn't in `../project-docs/`, in a REQ/SPEC/TASK, or
   explicitly provided by the human — you don't know it.
@@ -174,7 +212,8 @@ only what the current work requires — and never guess or fetch the rest yourse
   1. In your artifact's `## Questions`, write
      `DATA REQUEST: <exactly what you need + why>` (e.g. the exact SQL you want
      the human to run, or which screen to capture). Set the item `BLOCKED` on
-     the board and log it. BE routes via `@Sober`; Sober routes via `@Porter`.
+     the board and log it. BE routes via `@Sober`; Sober routes via `@Porter`;
+     QA routes to `@Porter` directly.
   2. **Porter** collects open data requests and asks the human **in Thai**,
      including any ready-to-run SQL or clear instructions for what to capture.
   3. The human puts the answer (query result, screenshot, file) into

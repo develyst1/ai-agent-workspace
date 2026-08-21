@@ -54,23 +54,15 @@ Runs to perform, through the **UI**, logged in as a seeded user:
     same wrong-password attempt must return Thai with the UI on `th` and
     English with the UI on `en`, composed by the backend, not the frontend.
 
-12. **Which model actually answered** (added by Sober 2026-08-20 as the
-    condition of answering Q-BE-6 with "no `model` key"). We send no `model` and
-    no `provider`, so AI API CENTER's own fallback chain picks. Q-SA-7's answer
-    was a *rule* — mid-tier where a step reads code, cheap for procedural steps
-    — and mapping it to real ids needs a fact nobody has: the `.bru` docs list
-    models **per provider** and never say whether a `model` is honoured, ignored
-    or rejected when the chain is doing the choosing. Every call already logs
-    `provider` and `model`, so: **from run 1's logs, record the provider and
-    model that answered each of the three AI stages**, and say plainly whether
-    that is an acceptable tier under Q-SA-7. Two lines of output. If it is not,
-    Sober writes the mapping TASK line against this evidence — not against a
-    guess. This is the only run here whose purpose is a decision rather than a
-    proof.
+**Runs 12 and 13 are no longer part of this TASK.** Sober split them out into
+**TASK-014** on 2026-08-21. Reason: this TASK is joint and PAUSED until TASK-013
+is `DONE` (its runs 1–11 exercise the three screens being rebuilt under
+SPEC-002), while runs 12 and 13 touch **no screen** and are not invalidated by
+the rework. They are re-anchored there to a job submitted through the API
+instead of "from run 1"; nothing else about them changed. Do not re-run them
+here — if TASK-014 has already landed, cite it.
 
 ## Definition of Done
-- [ ] Run 12's provider/model per AI stage recorded from the real run's logs,
-      with a one-line verdict against Q-SA-7's tier rule.
 - [ ] Every numbered run above executed, with evidence in `## Implementation
       Notes`: screenshots for the UI, and the `GET /api/reports/:jobId` JSON
       (`status`, `stage`, `commitCount`) for each.
@@ -100,6 +92,22 @@ Runs to perform, through the **UI**, logged in as a seeded user:
 
   **TASK-001…008 are unaffected** — they are built and tested against the fake
   `AiClient` and a fixture repo, with no network.
+
+  > answer (2026-08-20, human, verbatim, via Porter — transcribed into this TASK
+  > by Sober 2026-08-21; it had been recorded in REQ-001 `## Questions` only):
+  > "Q-SA-6=https://ai.develyst.online ใช้ได้ แต่ ลองใช้model ต่ำๆไปก่อน".
+  > So: use `https://ai.develyst.online` (the production endpoint, **not** a
+  > local `:3009` he starts for us), real AI calls are authorised, and start with
+  > lower-tier models. Q-SA-8 adds: **no spend ceiling**; Q-SA-7 makes the tier a
+  > **rule per step** (mid-tier where a step reads code, cheap for procedural
+  > steps), so "low" is the default, not a cap. **Q-SA-6 no longer blocks this
+  > TASK.** What still holds this TASK is Sober's ordering decision (paused until
+  > TASK-013 is `DONE`), not a missing answer.
+
+- **NOT answered here — the database.** Runs 1–11 also need a real
+  `DATABASE_URL`, and no database is authorised for the team. That question is
+  **Q-SA-16**, raised in TASK-014 (which hits it first). Its answer applies to
+  this TASK too; do not start runs 1–11 before it lands.
 
 (Jason/Fern ask; Sober answers as `> answer: ...`)
 
