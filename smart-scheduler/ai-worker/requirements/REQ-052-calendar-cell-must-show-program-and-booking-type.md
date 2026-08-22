@@ -117,3 +117,22 @@ too long for the weekly cell, that is a layout decision for the SPEC, not a new 
   > semantic hues, so a type can't take a *different* semantic colour without colliding with a status — the dual-colour
   > has to disambiguate by **channel + text** (type = a leading edge-stripe with a **dedicated** token palette + the
   > type text label always shown), not by hue. Palette proposed in SPEC-046 for Porter's sign-off before the FE build.
+
+---
+
+## ✅ OWNER SIGN-OFF ON THE PALETTE — 2026-08-22, with one change
+Owner reviewed `project-docs/req-052-palette-comparison.html`: *"เปิดดูแล้วก็ไม่เลว ขอแค่ไม่ใส่ emoji พอ
+ใส่ icon แทนดีกว่า"*
+
+⇒ **The palette is APPROVED. TASK-142 is unblocked.** One binding change:
+1. **No emoji anywhere in the calendar cell, the legend, or the booking-type labels.** Use **icons** — the
+   component library's icon set the rest of the product already uses, not pictographs in a text node.
+2. **Reason it matters beyond taste** (so nobody re-adds one later): an emoji is a *character* — it renders
+   differently on Windows, iOS and Android, it inherits the text colour rules inconsistently, it cannot be sized
+   or aligned like the rest of the row, and it is read aloud by screen readers as its unicode name. An icon is a
+   component: one size, one colour token, one alignment, and it can be given a label or hidden from assistive
+   tech deliberately.
+3. **The icon never carries meaning alone** — the booking type is already named in text (AC-3's legend names
+   status **and** type). The icon is reinforcement, not the message, so a monochrome or missing icon loses nothing.
+- [ ] **AC-9 (new)** — no emoji character appears in any calendar cell, legend entry or booking-type label; every
+      type marker is an icon component with the type also present as text.

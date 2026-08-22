@@ -56,3 +56,54 @@ subjects and config — on `uat` that would delete **the 25 imported students an
 - **Q2 (to SA):** is "money/quota has moved" cleanly detectable (an `ATTENDED` row, a `bo.movement`, a drawn
   freelance budget)? If it is not cheaply knowable, say so and I will re-scope AC-3 rather than have it silently
   half-work.
+
+---
+
+## 📌 UPDATE 2026-08-22 — the target is named, and the risk has changed since this REQ was written
+**When REQ-057 was raised, `uat` held test data. It now holds the customer's real families.** That inverts what
+matters most about this tool: it was "let me undo my test", it is now **"a delete tool pointed at a live customer
+system."** The requirement did not change; the **guardrails carry all the weight**.
+
+### The target, from the DATA REQUEST (no guessing needed)
+- Student **`Test`**, parent **`SOM Team` (0924912848)**, one **Skateboard** course (size 10, **4 used**),
+  `source = IMPORT`, created 2026-08-21 20:38, plus its bookings.
+- **Everything else on `uat` is real**: 137 students / 115 parents / 17 courses / 109 bookings.
+
+### What Porter is adding to the requirement because of that
+1. **The tool takes an explicit id and never a predicate.** No `--name Test`, no "delete where name like…". A
+   human typing a pattern against a live roster is the failure mode we are buying protection from.
+2. **Dry-run must print the full blast radius by name before anything** — the student, the parent, the course,
+   **and every booking with its date** — so the owner reads *"4 bookings for Test on 25/8, 1/9, 8/9, 15/9"* and not
+   a count.
+3. **It must REFUSE, not warn, if the target has any sign of real life**: a LINE-linked parent, a booking with
+   `ATTENDED` status, a posted sale (`bo.movement` with that `refId`), or more than one student on the parent.
+   **A refusal the owner has to override deliberately is worth more than a confirmation prompt he will click.**
+4. **Never touch `subjects`, `teachers`, `bo.item`, or anything not reachable from the given id.**
+- [ ] **AC-8** — **Given** the real course of a real family, **When** it is passed to the tool, **Then** it is
+      **refused** with the reason named (linked parent / attended session / posted sale), and nothing is written.
+- [ ] **AC-9** — **Given** `Test`'s course id, **When** dry-run runs, **Then** it lists the student, parent, course
+      and **each booking by date**, and writes nothing.
+- [ ] **AC-10** — After `--commit`, **`select count(*)` for students/parents/courses/bookings drops by exactly the
+      numbers the dry run printed** — no more, no less.
+
+**Question that is now the owner's, not SA's:** does he want the **parent `SOM Team` removed too**, or only the
+student and course? Porter's lean: **remove both** — it is a fabricated household, and leaving an orphan parent in
+a customer's roster is its own small mess. **Asked; not assumed.**
+
+---
+
+## ⏸️ ON HOLD — owner, 2026-08-22
+> *"ไม่ๆ เราไม่ลบข้อมูลนักเรียน ผู้ปกครอง และการจองคอร์สในตอนนี้ จนกว่าเขาจะแจ้ง"*
+
+**Nothing is deleted from `uat` until the customer asks.** The `Test` / `SOM Team` residue **stays** for now — it is
+one fabricated family sitting quietly beside 137 real ones, and that is a much smaller cost than running a delete
+tool across a live roster nobody has asked us to touch.
+
+**Status: HOLD, not dropped.** The REQ keeps everything gathered today — the named target, the explicit-id rule,
+the refuse-don't-warn guardrails, AC-8/9/10 — so that when the customer does ask, **the spec is ready and nobody
+re-derives it under time pressure**, which is exactly when a delete tool gets built carelessly.
+
+**Porter's note on sequencing, for the record:** building it now would also have been defensible (dry-run-only is
+harmless), but it would have gone ahead of work that is **hurting the customer today** — 24 children whose gender
+the product will not show, an importer that cannot absorb the sheet edits already on their way back to us, and a
+program that cannot be sold at all. **A tool for a delete nobody will run this week does not outrank those.**

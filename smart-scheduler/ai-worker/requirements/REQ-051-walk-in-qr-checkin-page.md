@@ -136,7 +136,11 @@ If the owner wants any of these three removed, say so and I will remove it — b
   > - **If nobody approves before the session starts**, it stays pending and the session follows the normal
   >   no-show/attendance path — the request must not silently become a leave, and must not silently vanish.
 - **Q2 (to owner):** one QR for the whole centre, or one per room/coach area? *(Porter's lean: one.)*
-  > answer: _pending_ — not blocking; SPEC assumes one.
+  > **RESOLVED 2026-08-22 by Porter (default adopted, not left dangling): ONE QR for the whole centre.**
+  > Reason: the owner asked for *"QR ไปแปะไว้หน้างาน"* — singular, at the counter — and a per-area QR would have to
+  > carry which area it is, which is a distinction the page never uses (it lists the child's session wherever it
+  > is). One poster, one URL, nothing to keep in sync. **If the owner wants per-area codes, say so and it is a
+  > small change — but SPEC-050 will no longer wait on it.**
 - **Q3 (to SA):** we already have a token-based `/checkin?token=` path (and REQ-015 deliberately dropped the QR
   button from the LINE menu). Does this page reuse that mechanism with a different entry point, or need its own?
   Say which, and whether anything in the existing path assumes a logged-in parent.
