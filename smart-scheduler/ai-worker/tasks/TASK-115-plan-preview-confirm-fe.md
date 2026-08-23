@@ -1,6 +1,8 @@
 # TASK-115: scheduler-front (FE) — disable Insert when not insertable + plan-diff confirm (OBS-3 = A)
 - Source: SPEC-028 §12 (REQ-030, owner ruling 2026-08-04)
-- Status: REVIEW (Fern 2026-08-04 — dep TASK-114 DONE)
+- Status: **DONE (SA-reviewed Sober 2026-08-04; top label flipped 2026-08-22).** The `## Review` verdict below was
+  written 2026-08-04 — only this status line lagged. Re-confirmed 2026-08-22: front `tsc` 0 and the feature
+  (`previewPlanChange` / `PlanDiffConfirm`) is still present in the tree.
 - Depends on: TASK-114 (`insertable` flag + `/plan/preview`), TASK-099 (the plan modal)
 - Assignee: @Fern (smart-scheduler-front)
 

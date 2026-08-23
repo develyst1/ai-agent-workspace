@@ -1,6 +1,8 @@
 # TASK-113: scheduler-front (FE) — "Add extra session (charged)" action on the course/plan surface
 - Source: SPEC-033 (REQ-037)
-- Status: REVIEW (Fern 2026-08-04 — deps TASK-112 + TASK-099 DONE)
+- Status: **DONE (SA-reviewed Sober 2026-08-04; top label flipped 2026-08-22).** The `## Review` verdict below was
+  written 2026-08-04 — only this status line lagged. Re-confirmed 2026-08-22: front `tsc` 0 and the feature
+  (`useAddExtraSession` + "เพิ่มคาบ (คิดเงิน)") is still present in the tree.
 - Depends on: TASK-112 (`POST /courses/:id/extra-session`), TASK-099 (the plan modal + availability picker)
 - Assignee: @Fern (smart-scheduler-front)
 
