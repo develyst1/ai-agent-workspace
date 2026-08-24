@@ -991,6 +991,130 @@ Porter may not write in `tasks/`. Please transcribe it into TASK-014
   line. Porter names none of that.
 - **Blocks nothing.** TASK-014 Phase A is in `REWORK` for D1/D2, both unrelated.
 
+> **Sober, 2026-08-24 — both Q-SA-18 and Q33 are now TRANSCRIBED into TASK-014
+> `## Questions` and RULED; nothing on this REQ waits on me for them any more.**
+> The ruling in one line: **Bruno takes Steps 2–4 only**, `curl` survives verbatim
+> as a labelled fallback, the collection is authored **inside the TASK file**
+> (not on disk) with an absolute destination path for him, and a `docs { … }`
+> block per request became a DoD row. It landed as **D3** on the existing D1/D2
+> return trip — one trip, not two. **One new NON-BLOCKING question goes up to
+> @Porter: Q-SA-21** — English or Thai for those `docs` blocks. I ruled English
+> and Phase A proceeds either way; it is asked because a `.bru` file reaches him
+> *verbatim* with no relay step, and his own eight are documented in Thai.
+
+### Q-SA-21 — ANSWERED 2026-08-24 by the human — **"ไทยหลัก อังกฤษรอง"**
+
+> answer (2026-08-24, human, verbatim): "ไทยหลัก อังกฤษรอง"
+
+- **Thai is primary, English secondary.** This reverses Sober's English ruling
+  for the `docs { … }` blocks, and it costs a translation pass on content that
+  Jason has already written in English (TASK-014 §Implementation Notes item 7).
+- **@Sober — the ruling is yours to rewrite, not mine.** Whether "อังกฤษรอง"
+  means Thai text with an English line beside it, or Thai text with the English
+  kept only where a term has no Thai equivalent, is a wording decision inside
+  *your* TASK; I am not naming a format, and I am not touching `tasks/`.
+- **Scope read NARROWLY, on purpose:** the question he answered was about the
+  Bruno `docs` blocks, so that is all this answer changes. **PROTOCOL's "team
+  artifacts are English" is untouched** — REQ/SPEC/TASK files, board and log
+  stay English until he says otherwise. Whether he meant something wider is
+  **Q39**, non-blocking; nothing waits on it.
+- Consistent with his Q37 answer the same day (mixing English into Thai is fine
+  and he counts such words as Thai), which is why "Thai first, English where it
+  is needed" is a coherent instruction rather than a contradiction.
+
+### Q39 — ANSWERED 2026-08-24 — **"anything I have to read" (stakeholder-facing, not team-internal)**
+
+> answer (2026-08-24, human, verbatim): "แค่เอกสารที่ฉันต้องอ่าน หรือ UI หรือ
+> อะไรก็ตามที่ฉันต้องอ่าน"
+
+- **The dividing line is the READER, not the file type.** "ไทยหลัก อังกฤษรอง"
+  applies to **everything the stakeholder himself reads** — the product UI, and
+  any document or output produced *for him* (the Bruno runbook he runs, report
+  output, hand-over docs). His word "แค่" (only) is a **limit**: it does **not**
+  reach the internal artifacts only the team reads.
+- **Therefore, ruled clearly:**
+  - **Team-internal, English stays** — REQ/SPEC/TASK prose, `board.md`, the log.
+    He does not read these; PROTOCOL's "team artifacts are English" is intact.
+    (Verbatim human evidence and product strings may be quoted in them as before.)
+  - **Stakeholder-facing, Thai-primary/English-secondary** — the UI he reads and
+    any doc/output written for him.
+- **The one thing Porter will NOT decide by assumption → Q40.** He named "UI",
+  but on 2026-08-24 Q37 also said **he edits Thai copy himself** and the Q14 copy
+  bundle is CLOSED (no team reword without a yes/no + TASK line). So this answer
+  states a **principle** for stakeholder-facing language; whether it also
+  **authorises the team to go reword existing approved UI strings** to be
+  Thai-primary — or is forward-only with him still owning Thai copy — is a scope
+  question, not a design one, and it is **Q40**. Read forward-only until answered;
+  no existing UI string is reworded on the strength of Q39 alone.
+
+### Q40 — ANSWERED 2026-08-24 — **"แก้เลย" = the team does the reword pass**
+
+> answer (2026-08-24, human, verbatim): "แก้เลย"
+
+- **Option A chosen: the team goes and rewords the EXISTING UI strings** to be
+  Thai-primary/English-secondary ("ไทยหลัก อังกฤษรอง", per Q-SA-21/Q39). Q40's
+  binary was "team does the reword pass" vs "forward-only principle he applies
+  himself"; "แก้เลย" ("just fix it") is the first.
+- **This OVERRIDES Q37 for this work.** Q37 (2026-08-24) said *he* edits Thai
+  copy himself; his direct "แก้เลย" to "อยากให้ทีมไล่แก้…ไหม" hands that reword
+  work to the **team** instead. Recorded as an override, not treated as still
+  binding.
+- **This is now real, actionable scope, so it becomes its own deliverable:**
+  **REQ-007** (reword existing UI strings to Thai-primary), `READY_FOR_SA`,
+  handed to @Sober. Without a REQ the reword "does not exist" (PROTOCOL); with
+  it, Sober can spec and the engineers can draft.
+- **What "แก้เลย" does NOT clearly settle, and Porter will not guess → Q41.**
+  Q40's option A was worded "*a reword pass, which needs his yes/no per Q14*". So
+  the plain reading keeps the standing **Q14 gate**: reworded strings return to
+  him for yes/no before they ship. But "แก้เลย" could equally be an impatient
+  "just fix it, don't send each string back". **Working default = Q14 stands (the
+  safe, reversible direction — an approval he did not clearly waive is not
+  assumed waived; no un-approved Thai copy reaches the screen).** The waiver
+  question is **Q41**, NON-BLOCKING — drafting can start regardless; only the
+  final sign-off gate is in question.
+- **What "แก้เลย" does NOT touch:** the product name stays the Latin `KnowCode`
+  (Req 14); on-screen dates stay `DD/MMM/YY` (Req 15); team-internal artifacts
+  stay English (Q39). The concrete FORM of "อังกฤษรอง" (Thai with an English line
+  beside it, vs English kept only where a term has no Thai equivalent) is a
+  wording/design decision for @Sober — the same open point he named on Q-SA-21 —
+  **not named here.**
+
+### Q41 (to the human) — NEW 2026-08-24, NON-BLOCKING
+
+Now that the team does the reword (Q40): do the reworded Thai-primary strings
+still come back to you for a yes/no before they ship (the standing Q14 process),
+or does "แก้เลย" mean go ahead and ship the "ไทยหลัก อังกฤษรอง" version without a
+per-string sign-off? Working default until you answer: they come back to you for
+yes/no. Nothing waits on this — the team can draft either way.
+Thai, ready to send:
+> "เรื่องแก้ UI เป็นไทยนำ — ให้ทีมแก้เสร็จแล้วส่งให้พี่ดู yes/no ก่อนขึ้นจริงไหมครับ
+> หรือ 'แก้เลย' คือให้ทีมแก้แล้วขึ้นได้เลยไม่ต้องส่งกลับ? ตอนนี้ผมตั้ง default ไว้ว่า
+> ส่งให้พี่ดูก่อนครับ"
+
+### ~~Q40 original~~ (kept for the record)
+
+**Q40 (to the human) — NON-BLOCKING.**
+Q39 says the Thai-primary rule covers the UI he reads. Q37 (same day) says he
+edits Thai copy himself and the copy bundle is closed. So: does he want the
+**team** to now go through the existing UI and make current strings Thai-primary
+(a reword pass, which needs his yes/no per Q14), or is Q39 a going-forward
+principle he applies himself when he edits Thai copy? Nothing waits on this —
+no UI-language TASK is written meanwhile.
+Thai, ready to send:
+> "ต่อเรื่อง 'ไทยหลัก อังกฤษรอง' ที่รวม UI ด้วย — อยากให้ทีมไล่แก้ข้อความใน UI
+> ที่มีอยู่ตอนนี้ให้เป็นไทยนำเลยไหมครับ หรือถือเป็นแนวทางไว้ แล้วพี่แก้คำไทยเอง
+> ตามที่เคยบอก? (ผมยังไม่สั่งแก้ UI จนกว่าจะได้คำตอบครับ)"
+
+### ~~Q39 original~~ (kept for the record)
+
+**Q39 (to the human) — NON-BLOCKING.**
+Does "ไทยหลัก อังกฤษรอง" apply only to the Bruno `docs` blocks he was asked
+about, or to everything the team writes for him? Read narrowly until answered.
+Thai, ready to send:
+> "เรื่องภาษา 'ไทยหลัก อังกฤษรอง' — ที่ตอบมา หมายถึงเฉพาะ docs ใน .bru ที่ถามไป
+> ใช่ไหมครับ หรืออยากให้เอกสารของทีมทั้งหมด (REQ/SPEC/TASK, board, log)
+> เป็นไทยนำด้วย? ตอนนี้ผมตีความแบบแคบไว้ก่อน คือเฉพาะ docs ใน .bru ครับ"
+
 ### ~~Q33 original~~ (kept for the record) — which "docs" should be read first?
 
 - **Falls out of Q-SA-18.** He wrote "อ่านdocs ก่อน" next to a path that contains

@@ -291,6 +291,74 @@ Board state at stop: 17 TASKs DONE. TASK-020 (usability pass over every screen) 
 ZERO questions open with the human on this project.
 NOTE: Fern committed TASK-018 to branch `develop`, not `main` where every earlier FE commit landed. No role flagged it. Worth asking the human whether that was intended before anything is merged.
 
+## RUN 2026-08-24-a — N=4 — started from: ไปเลย + a toolchain change (frontend now runs on Bun: `bun run dev`, not `npm run dev`) + a SCREENSHOT pasted into chat with "เห็นอะไรไม่ตรงกันมั้ย แก้ด้วย"
+hop 1 | PM  | ABORTED — the dispatcher interrupted its own PM spawn when the screenshot arrived.
+STOPPED hop 0/4 — blocked on the human: the requirement is partly an IMAGE, and the dispatcher cannot carry it. Per PROTOCOL the human drops the file into project-docs/ himself and the role reads it there.
+
+Two items are queued together for the next PM hop, both unrecorded so far:
+1. TOOLCHAIN CHANGE: code-report-front now runs on Bun. Every FE TASK DoD on file says `npm run typecheck` / `npm run build`, and TASK-016's hand-over sheet says `npm run dev`. Those are stale across many files — SA's call how to re-issue them.
+2. The screenshot review request — needs the image in project-docs/ first.
+
+## RUN 2026-08-24-b — N=4 — started from: the screenshot path (project-docs/image-1787542760015.png) + the bun toolchain change + ไปเลย
+hop 1 | PM  | did: recorded both as REQ-005 (bun toolchain) and REQ-006 (screen inconsistency), both READY_FOR_SA. He opened the frontend folder rather than taking the change on trust and found the repo MID-MIGRATION: bun.lock added but untracked, package-lock.json deleted, neither committed — so the tree is dirty and every FE TASK DoD requires a clean tree. Raised Q34 | ball_to: SA | flags: Q34 BLOCKS the whole FE lane; Q35/36/37 non-blocking
+hop 2 | SA  | did: ruled Q-SA-18 + Q33 into TASK-014 — Bruno takes runbook steps 2-4 only, because a request runner starts no server, greps no log and writes no evidence file; "Bruno instead of the sheet" would have dropped exactly the half that produces the evidence. curl kept verbatim as a labelled fallback. Explicitly did NOT pick up REQ-005/006: they are FE-lane and Q34 has stopped that lane, so a TASK written today could not tick its own DoD | ball_to: BE | flags: 1 non-blocking question (Q-SA-21 docs language)
+hop 3 | BE  | did: reworked TASK-014 Phase A for D1+D2+D3 in one trip — absolute evidence path, tee-captured server log with its buffering caveat stated honestly rather than hidden, and steps 2-4 re-formatted as an 8-file Bruno collection authored inside the TASK (nothing created on disk) | ball_to: SA | flags: 3 non-blocking questions to SA
+STOPPED hop 3/4 — condition 1 (Q34 blocks the FE lane, and the FE lane is where the human's newest requirements live)
+
+Notable: Sober refused to rule whether Bruno carries the session cookie between requests — third-party behaviour, and the whole run dies at step 3 if wrong. Jason ESTABLISHED it by reading the Bruno application installed on this machine (read-only grep of its own bundle; Bruno never launched) rather than assuming or quoting a website: a shared cookie jar stores on response and rebuilds the Cookie header on request, both gated on two preference checkboxes. So the residual is a SETTING, not a behaviour — the sheet has the human tick the two boxes and prove the carry with a one-second call before anything expensive runs.
+Jason also noticed HEAD had moved 4101551 → d1f0993 since he wrote the sheet, so he diffed it and re-read every changed file the sheet quotes; no quoted fact changed.
+
+Board state at stop: 17 TASKs DONE. TASK-014 Phase A at REVIEW. TASK-015 + TASK-020 open for Fern but the FE lane is stopped by Q34. REQ-005 + REQ-006 READY_FOR_SA, also waiting on the FE lane.
+
+## RUN 2026-08-24-c — N=4 — started from: answers (Q34=ฉันทำไปแล้ว, Q35=ตัด npm ออก, Q36=ไม่ใช่วันที่ — ปุ่มโหลดไม่ตรงกับ dropdown, Q37=คง Branch ไว้, Q-SA-21=ไทยหลัก อังกฤษรอง) + ไปเลย
+hop 1 | PM  | did: recorded all five; VERIFIED the bun commit on disk rather than taking it on trust (d44f523 = bun.lock added + package-lock.json deleted, tree now clean) so the FE lane reopened; re-shaped REQ-006 around the layout item the human actually named, measuring the offset from his own screenshot; closed Q37 with a standing rule that English words mixed into a Thai screen are not an inconsistency on this project | ball_to: SA | flags: Q34 CLOSED (was the only blocker); Q38 + Q39 non-blocking
+hop 2 | SA  | did: reviewed TASK-014 Phase A → content accepted on all ten DoD rows; proved DoD row 9 by DIFF rather than reading (every deleted line falls outside the curl steps, so that text is byte-identical to what was verified on 2026-08-21); WITHDREW his own earlier English ruling after the human's answer and re-ruled the concrete form from the human's own .bru files | ball_to: BE | flags: -
+hop 3 | BE  | did: the Thai pass on the six Bruno docs blocks — Thai prose, English kept for every identifier, endpoint, status code, env var and fenced sample; verified afterwards that all 21 headings are Thai-led | ball_to: SA | flags: 1 non-blocking question (Q-BE-24 whether "Step N" should be Thai too)
+hop 4 | SA  | did: accepted the Thai pass, TASK-014 Phase A → DONE, and RELEASED the runbook to Porter; verified the form character-for-character against the human's own GET Info.bru, and proved "nothing else was opened" by diff — no new deletion region appeared | ball_to: PM | flags: 1 data request (the human runs the runbook)
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+Sober refused to edit one thing on principle: the curl form tells the human to delete the cookie jar afterwards, but the Bruno form never tells him to clear his real password out of POST Login.bru. Pre-existing, the file never leaves his machine — so rather than re-open a sheet he is about to use, he routed it as a spoken caution for Porter's relay.
+
+Board state at stop: 18 TASKs DONE. TASK-014 Phase A DONE, whole TASK now BLOCKED waiting on the human's run output. FE lane REOPEN — TASK-015 and TASK-020 are startable, and REQ-005 + REQ-006 are SA's queue top.
+Open non-blocking questions: Q38 (also fix the date-format mismatch 24/08/2026 vs 24/Aug/26, or only the button/dropdown alignment?), Q39 ("ไทยหลัก อังกฤษรอง" = only the .bru docs, or all team documents?), Q-BE-24.
+PENDING RELAY: the finished runbook goes to the human next PM hop — plus the caution about the password sitting in POST Login.bru.
+
+## RUN 2026-08-24-d — N=4 — started from: answers (Q38=ทำให้หมดอ่ะ, Q39=แค่เอกสาร/UI/อะไรก็ตามที่ฉันต้องอ่าน) + Try again
+hop 1 | PM  | did: Q38 → REQ-006 req 3 (date-format consistency) hold LIFTED, now GO; Q39 → ruled the language line BY READER: Thai-primary covers everything the stakeholder reads (UI + docs/output for him), team-internal REQ/SPEC/TASK/board/log stay English; raised Q40 (reword existing UI strings now, or forward-only?) | ball_to: SA | flags: 1 non-blocking question
+hop 2 | SA  | did: picked up REQ-005 (bun) → found it has NO frontend code work (package.json scripts already runner-agnostic, repo docs carry no npm — the human's own migration did the runtime side); wrote SPEC-004, aligned npm→bun wording in the OPEN tasks only (DONE tasks left as historical record), created TASK-021 to verify the repo boots under bun | ball_to: FE | flags: -
+hop 3 | FE  | did: executed TASK-021 at d44f523 — bun install no-churn, bun run typecheck exit 0, bun run build green with the same four routes, bun run dev reached ✓ Ready; zero source diff | ball_to: SA | flags: 1 non-blocking question (Q-FE-27: a pre-existing dev server PID 7380 held the project dir; she did NOT kill an unknown-owner process)
+hop 4 | SA  | did: reviewed TASK-021 → DONE, corroborated the evidence himself against the real repo; SPEC-004 DONE; REQ-005 → SPEC_DONE, handed to Porter for the acceptance check | ball_to: PM | flags: -
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+Board state at stop: 19 TASKs DONE. REQ-005 SPEC_DONE (awaiting Porter's DELIVERED mark — an acceptance check, PM's call). REQ-006 (button/dropdown alignment + date-format) READY_FOR_SA, unspecced, SA queue top. FE lane open: TASK-015, TASK-020 startable.
+TWO THINGS STILL WAITING ON THE HUMAN:
+  1. TASK-014 runbook is FINAL and unrelayed — the human runs the 6 steps + the 8-file Bruno collection and drops ONE evidence file into project-docs/. Location: TASK-014 §Implementation Notes ("#### Runbook for the stakeholder" → "#### End of runbook"). Caution to relay: if he uses the Bruno form, his password stays saved in POST Login.bru — clear it after.
+  2. Nothing blocks the pipeline otherwise.
+Open non-blocking questions: Q40 (reword existing UI strings to Thai-primary now, or hold as guidance?), Q-BE-24, Q-FE-27 (answered by SA).
+
+## RUN 2026-08-24-e — N=4 — started from: ไป (bare nudge)
+hop 1 | PM  | did: acceptance check on REQ-005 → DELIVERED; independently re-verified 3 of 4 ACs read-only against the real repo | ball_to: HUMAN | flags: -
+hop 2 | SA  | did: specced REQ-006 → SPEC-005 + TASK-022 (button/dropdown alignment) + TASK-023 (date inputs → DD/MMM/YY). Root-caused the alignment bug by measurement: an UN-PREFIXED Tailwind items-stretch overrides Mantine's align="flex-end" because globals.css loads after Mantine's stylesheet; ruled REQ-004 req 7d licenses bringing the native date input to DD/MMM/YY without a new dependency | ball_to: FE | flags: -
+hop 3 | FE  | did: implemented TASK-022 — CONFIRMED the hypothesis by production-build measurement (label-less button rode 16.8px above the dropdown line at sm+), fixed with sm:items-end on both Groups, mobile stack intact; two-line diff, commit 859148a | ball_to: SA | flags: -
+hop 4 | SA  | did: reviewed TASK-022 → DONE; proved layout-only by diff (exactly two lines, only a className string moved, so no behaviour change is possible); deliberately skipped re-running bun to avoid colliding with the live dev server PID 7380 | ball_to: FE | flags: -
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+Board state at stop: 20 TASKs DONE. REQ-005 DELIVERED. REQ-006 IN_SPEC — TASK-022 DONE (button alignment fixed, the item the human pointed at in the screenshot), TASK-023 (date format DD/MMM/YY) startable for Fern and is the last piece before REQ-006 is SPEC_DONE. TASK-015, TASK-020 also open for Fern.
+STILL WAITING ON THE HUMAN: TASK-014 runbook (final, unrelayed — human runs it, drops evidence in project-docs/; clear the password from POST Login.bru if using the Bruno form). Dev server PID 7380 still running.
+Open non-blocking questions: Q40 (reword existing UI strings to Thai-primary now, or hold as guidance?), Q-BE-24.
+
+## RUN 2026-08-24-f — N=4 — started from: a DIRECT QUESTION from the human (what model/temp/max_tokens the AI pipeline uses) that turned into a NEW REQUIREMENT (redesign the pipeline deeper)
+Dispatcher note: the human FIRST asked the dispatcher directly what model/config the running system uses. The dispatcher answered from the real code (client.ts + pipeline.ts) + the human's own pasted run log — that answer is dispatcher↔human factual Q&A, not a role's work. Key facts surfaced: every /chat body is `{messages}` only — NO model, NO temperature, NO max_tokens sent; AI API CENTER's fallback picked deepseek-v4-flash for all 3 stages; 120s timeout, 1 retry. The human then gave a new requirement to redesign the pipeline. ALSO: the pasted log IS the TASK-014 Phase B evidence (real run succeeded, DONE, 19 commits, 3 AI calls) — flagged to the human that it should go into project-docs/ so Jason can close Phase B formally; awaiting his go.
+hop 1 | PM  | did: captured the redesign as REQ-008 (READY_FOR_SA) — 5 stages: AI_PROJECT → AI_COMMITS → AI_CURIOUSNESS (env loop default 5, reads real files to fill gaps) → AI_UNDERSTANDING (forms its own reasoning first) → AI_WRITING (env pass-limit, split by topic); per-stage max_tokens from env + confirmed model list by tier | ball_to: SA | flags: 1 non-blocking question (Q-REQ008-1 model→stage mapping)
+hop 2 | SA  | did: wrote SPEC-007 + TASK-025/026/027/028; the "help think" the human asked for — ruled AI_WRITING assembly = deterministic by-topic concat (no stitch call), AI_CURIOUSNESS = text-action loop because /chat has no native tool-calling, kept the wire at 6 stages so the FE progress bar doesn't break (curiosity→AI_COMMITS, understanding→AI_WRITING); proposed a model→stage mapping within the human's caps | ball_to: BE | flags: 2 non-blocking questions (Q-REQ008-1, Q-SA-23 show new stages in progress bar = separate FE REQ)
+hop 3 | BE  | did: delivered TASK-025's config.ts half (per-stage model+max_tokens from 12 env vars, validation rejects unknown model / over-cap budget, defaults per the human's numbers); 235 tests pass. BLOCKED the client.ts half on a real conflict he refused to paper over: making the fields required breaks pipeline.ts, which is TASK-027's scope — raised Q-BE-25 to Sober rather than guessing | ball_to: SA | flags: -
+hop 4 | SA  | did: ruled Q-BE-25 (Option 2) — moved the client contract flip into TASK-027 so it lands with its only consumer in one green commit; verified by grep that pipeline.ts is the ONLY client.chat caller, so the ruling rests on a checked fact not a guess; re-scoped 025/027/SPEC-007 | ball_to: BE | flags: -
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+
+Board state at stop: 20 TASKs DONE. REQ-008 IN_SPEC — TASK-025 config half green & startable to commit/REVIEW, TASK-026 (RepoInspector) startable, TASK-027 (5-stage pipeline + client flip) depends on 025, TASK-028 (curiosity loop) depends on 026+027. REQ-006 SPEC_DONE awaiting PM acceptance. REQ-007 (Thai-primary UI) TASK-024 BLOCKED on Q-SA-22.
+Open questions for the human (all NON-BLOCKING): Q-REQ008-1 (confirm model per stage, or delegate within your caps? — team proposed PROJECT/COMMITS=gpt-4.1-mini, CURIOUSNESS=grok-4-latest, UNDERSTANDING/WRITING=gpt-4.1), Q-SA-23 (show AI_CURIOUSNESS + AI_UNDERSTANDING as their own steps in the progress bar? = separate FE work), Q40, Q-BE-24, plus REQ-006 acceptance.
+STILL WAITING ON THE HUMAN: TASK-014 Phase B evidence into project-docs/ (he pasted it in chat; awaiting his go to route it).
+
 Older open questions: Q-SA-17 (BLOCKS TASK-016 only — what runs behind localhost so he can see all three screens: ก run the backend + his DB + log in as admin, ข frontend only with a team-built stub showing fake data, ค just /login for now), Q24 (does "เดี๋ยวรันเอง" also cover TASK-009's eleven manual UI runs, or only TASK-014's two API jobs). Plus the standing data request: run TASK-014's Run A and Run B and paste the two GET /api/reports/:jobId bodies and the three AI-stage log lines — no passwords, cookies or tokens.
 
 

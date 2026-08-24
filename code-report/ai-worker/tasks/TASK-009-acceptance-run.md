@@ -70,7 +70,7 @@ here — if TASK-014 has already landed, cite it.
 - [ ] The grep commands and their empty output for run 9.
 - [ ] A tick-list mapping each row of SPEC-001's "Acceptance mapping" table to
       the run that proves it — anything unproven is named, not silently skipped.
-- [ ] Full `bun test` (backend) and `npm run build` (frontend) green.
+- [ ] Full `bun test` (backend) and `bun run build` (frontend) green.
 - [ ] Run 11's four flows evidenced against the real backend, with the th/en
       wrong-password messages pasted — this is the line TASK-006 could not
       close for real.
