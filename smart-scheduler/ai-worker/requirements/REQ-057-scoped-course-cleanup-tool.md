@@ -1,5 +1,5 @@
 # REQ-057: A scoped way to remove ONE course and everything it created
-- Status: READY_FOR_SA
+- Status: **GO — SA cut authorised by the owner 2026-08-23.** (was READY_FOR_SA, then HOLD 08-22)
 - Priority: **HIGH** — it blocks safe testing on `uat`, and `uat` now holds the customer's real families
 - Requested: 2026-08-20 by stakeholder (owner) — *"เขียนสคริปเคลียร์ข้อมูลที่จะเกิดขึ้นหลังจากสร้างคอร์สให้หน่อย พอดีจะลองสร้างที่ uat"*
 - Deadline: none stated, but it is wanted tonight
@@ -92,7 +92,7 @@ a customer's roster is its own small mess. **Asked; not assumed.**
 
 ---
 
-## ⏸️ ON HOLD — owner, 2026-08-22
+## ⏸️ ON HOLD — owner, 2026-08-22 — ✅ **LIFTED by the owner 2026-08-23: *"REQ-057 เดินต่อได้ ให้ Sober cut ได้เลย"***
 > *"ไม่ๆ เราไม่ลบข้อมูลนักเรียน ผู้ปกครอง และการจองคอร์สในตอนนี้ จนกว่าเขาจะแจ้ง"*
 
 **Nothing is deleted from `uat` until the customer asks.** The `Test` / `SOM Team` residue **stays** for now — it is
@@ -107,3 +107,22 @@ re-derives it under time pressure**, which is exactly when a delete tool gets bu
 harmless), but it would have gone ahead of work that is **hurting the customer today** — 24 children whose gender
 the product will not show, an importer that cannot absorb the sheet edits already on their way back to us, and a
 program that cannot be sold at all. **A tool for a delete nobody will run this week does not outrank those.**
+
+---
+
+## ✅ HOLD LIFTED — owner, 2026-08-23
+> *"REQ-057 เดินต่อได้ ให้ Sober cut ได้เลย"*
+
+**@Sober — cut it.** Everything below the 08-22 UPDATE stands unchanged: explicit id only (never a predicate),
+dry-run default, blast radius printed **by name** not by count, and **refuse — not warn** on any sign of real life.
+Q1/Q2 at the top are still yours to ground from the schema; **do not take Porter's table list as the spec.**
+
+⚠️ **One distinction Porter is drawing rather than assuming, because the owner's 08-22 hold was about deleting and
+this authorisation is about building.** *Cutting and building* the tool is now GO. **Running it against `uat` is a
+separate owner decision** and the 08-22 rule — *nothing is deleted until the customer asks* — is **not** treated as
+withdrawn by this line. A dry-run-only tool sitting ready is exactly what the hold anticipated. If the owner does
+mean "and delete the `Test` / `SOM Team` household too", he says so and it is one more owner-run step.
+
+**Still open and it is the owner's, not SA's:** does the parent **`SOM Team` (0924912848)** go with the student and
+the course, or only the student + course? Porter's lean is **both** — a fabricated household, and an orphan parent
+in a customer's roster is its own small mess. **Does not block the cut**; it is a run-time argument, not a design.
