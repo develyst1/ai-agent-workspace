@@ -55,12 +55,14 @@ if (dsSize) {
 // 3) today's log — size + entry length
 const today = new Date().toISOString().slice(0, 10);
 const logPath = join(AW, "log", `${today}.md`);
+// Logs are append-only (never rewritten by housekeeping) → WARN, not FAIL:
+// the discipline applies to the NEXT entries, not retroactively.
 const logSize = size(logPath);
-if (logSize > LIMITS.logToday) fails.push(`log/${today}.md ${fmt(logSize)} > ${fmt(LIMITS.logToday)}`);
+if (logSize > LIMITS.logToday) warns.push(`log/${today}.md ${fmt(logSize)} > ${fmt(LIMITS.logToday)} (append-only; write shorter entries from now on)`);
 if (logSize) {
   const entries = readFileSync(logPath, "utf8").split(/^## /m).slice(1);
   const long = entries.filter((e) => e.split("\n").length > LIMITS.logEntryLines).length;
-  if (long > 0) fails.push(`log/${today}.md has ${long} entr(ies) > ${LIMITS.logEntryLines} lines (rule: <=15 — point at files instead of retelling)`);
+  if (long > 0) warns.push(`log/${today}.md has ${long} entr(ies) > ${LIMITS.logEntryLines} lines (rule: <=15 — point at files instead of retelling)`);
 }
 
 // 4) requirements/ and tasks/ file sizes

@@ -6,14 +6,26 @@ use them every time instead of free-typing.
 
 ## Dispatcher (one session runs the whole team — see DISPATCHER.md)
 
+One line is enough — everything else lives in `DISPATCHER.md` (it will run the
+hygiene gate, read its state, and check in with you before dispatching):
+
 ```
-You are the Dispatcher for project <project> in this workspace.
-Read DISPATCHER.md at the workspace root in full and follow it exactly — you
-are NOT a team role, you never do a role's work, you write only
-ai-worker/dispatcher-state.md, and you stop at every stop condition with a
-Thai digest. Hop budget N=4 unless I say otherwise.
-Read ai-worker/dispatcher-state.md first (resume if a run died mid-way).
-My requirement (Thai) / or ไปเลย: ...
+อ่าน DISPATCHER.md แล้วรัน <project>
+```
+
+Restart the dispatcher session freely (every few hours is healthy — a fresh
+session always loads the latest rules; memory lives in files, not in the chat).
+
+## Atlas — AI Workforce Architect (workspace-level, see ATLAS.md)
+
+```
+อ่าน ATLAS.md — <คำถาม/สิ่งที่อยากให้วิเคราะห์>
+```
+
+## Marie — Workflow Operations Steward (workspace-level, see MARIE.md)
+
+```
+อ่าน MARIE.md — <งาน เช่น housekeeping code-report / migrate smart-scheduler>
 ```
 
 > The per-role starters below still work for opening a single role manually —

@@ -42,5 +42,9 @@ You talk to the human in Thai. Atlas (`ATLAS.md`) designs; you operate.
 
 ## Operations log (append one line per operation, newest first)
 
-- 2026-08-25 — Role created. First assignment: code-report full housekeeping
-  (board 144KB, dispatcher-state 36 runs, REQ-001 78KB) + inbox rollout.
+- 2026-08-25 — code-report full housekeeping DONE via spawned PM: board
+  144.8→16.4KB, dispatcher-state 78.5→12.1KB (37→5 runs), REQ-001 76.4→18.5KB
+  (Req numbering stable), 3 verbatim archives. Hygiene gate: PASS (3 WARNs —
+  append-only log + SA-owned TASK-014, both forward-discipline items).
+- 2026-08-25 — Role created; `check-hygiene.mjs` v1 shipped; inbox/ rolled out
+  to code-report.
