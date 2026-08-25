@@ -242,6 +242,12 @@ STOPPED line means the previous session died mid-run — re-read the board and
 resume from the files (the files, not this log, are the truth about what got
 done).
 
+**Size discipline applies to you too** (check-hygiene.mjs measures this file):
+one line per hop — no essays, no "patterns worth noting" (those belong in the
+digest to the human, once); the board-state note at a stop is ≤ 5 lines. Keep
+only the last 5 runs here; rotating older runs into archive/ is part of the PM
+housekeeping hop.
+
 ---
 
 ## What you are NOT (read this twice)
