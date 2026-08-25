@@ -1,6 +1,6 @@
 # SPEC-007: Deeper backend AI analysis pipeline (5-stage redesign)
 - Source: REQ-008
-- Status: ACTIVE
+- Status: DONE (all five tasks TASK-025..029 reviewed DONE 2026-08-25; REQ-008 → SPEC_DONE)
 
 ## Overview
 Replace the current **3-stage** pipeline (`AI_PROJECT → AI_COMMITS → AI_WRITING`,
@@ -98,6 +98,7 @@ value is a fatal `ConfigError` (existing pattern).
 | `AI_WRITING_MODEL` | model id for AI_WRITING | *(D3)* |
 | `AI_WRITING_MAX_TOKENS` | max_tokens per AI_WRITING pass | **50000** |
 | `AI_WRITING_MAX_PASSES` | AI_WRITING pass cap | **3** (REQ example) |
+| `AI_FALLBACK_MODELS` | ordered, comma-separated backup model chain tried when a primary call exhausts (Req-7, §Fallback below) | **`deepseek-v4-pro,deepseek-v4-flash`** |
 
 - **Model defaults (D3 — PENDING stakeholder confirmation via Q-REQ008-1).** The
   stakeholder gave approved model ids + tiers + per-call caps but no explicit
@@ -116,10 +117,82 @@ value is a fatal `ConfigError` (existing pattern).
   without a code change.
 - **Cap enforcement (AC 8):** the config loader must reject a per-stage
   `*_MAX_TOKENS` that exceeds the per-call cap of the model assigned to that stage
-  (`gpt-4.1`/`grok-4-latest` ≤ 50000; `gpt-4.1-mini`/`deepseek-v4-pro` ≤ 30000),
-  and reject an unknown model id — a fatal `ConfigError` at startup, so a
-  misconfiguration can never reach the wire. The approved-model→cap table lives in
-  one constant.
+  (`gpt-4.1`/`grok-4-latest` ≤ 50000; `gpt-4.1-mini`/`deepseek-v4-pro`/
+  `deepseek-v4-flash` ≤ 30000), and reject an unknown model id — a fatal
+  `ConfigError` at startup, so a misconfiguration can never reach the wire. The
+  approved-model→cap table lives in one constant.
+- **`deepseek-v4-flash` cap (Q-REQ008-4, confirmed 2026-08-24):** add
+  `"deepseek-v4-flash": 30000` to `APPROVED_MODEL_CAPS` (same 40–50% tier / ≤ 30000
+  per-call cap as `gpt-4.1-mini`). It becomes a valid stage model **and** a valid
+  fallback model after this.
+- **Fallback list validation:** every id in `AI_FALLBACK_MODELS` must be an approved
+  model id (rejected with a fatal `ConfigError` at startup exactly like a stage
+  model). An **empty** `AI_FALLBACK_MODELS` is legal and means *fallback disabled* —
+  a primary exhaustion then fails the job as it does today.
+
+## Fallback models (Req-7, decision D6 — PROPOSED, pending Q-SA-25)
+The system must fall back to a **backup model** when the primary model chosen for a
+call runs out of credit/quota or errors (REQ-008 Req-7). Fallback models:
+`deepseek-v4-pro` then `deepseek-v4-flash` (the stakeholder's order).
+
+**Where it lives — inside `AiClient`, not the pipeline.** Every stage (pipeline +
+the curiosity loop) already calls the one seam `client.chat({ stage, model,
+max_tokens, messages })`, and `createHttpAiClient` already owns the per-attempt
+retry loop **and** the failure classification (`Failure.outcome` /
+`Failure.retryable`, `client.ts` L102–213). Putting the model-level fallback there
+means the pipeline, `curiosity.ts`, `worker.ts` and `routes.ts` are **unchanged**:
+the client is constructed with a fallback chain + the cap table and handles it
+transparently. The request's `model`/`max_tokens` remain the **primary** for that
+stage; the chain is client-global config, not per-call.
+
+**Two independent resilience layers — keep them distinct:**
+1. *Provider* fallback `deepseek → xai → gemini → openai` — the AI API CENTER's own,
+   for free, because we send no `provider`. Unchanged.
+2. *Model* fallback (this section) — **our** layer, sitting **above** the existing
+   per-model retry: primary model → its `MAX_ATTEMPTS` retries → next fallback model
+   → its retries → … until one succeeds or the chain is exhausted.
+
+### Trigger (D6a)
+A call advances to the next fallback model exactly when the current model **exhausts
+its retry loop on a provider/model-side failure** — i.e. the failure family that
+today ends in `throw AiLayerError("AI_UNAVAILABLE")`: `timeout`, `network-error`,
+`http-error` (5xx) and `service-error` (`{success:false}`, HTTP 500). It does **NOT**
+fall back on a **non-retryable 4xx `http-error`** — that means *we* built the request
+wrong, so a different model fails identically; falling back would just burn a second
+model's quota on a guaranteed failure. That failure still throws as today.
+
+**We do not distinguish "out of credit" from a generic error for *routing*.** The
+documented failure shape is a bare `{ success:false, error:"<message>" }` / HTTP 500
+(`AI-API-CENTER.md`) with no structured credit/quota code, and Req-7 fires on *either*
+condition — so both simply trigger the same fallback. Any credit-vs-error labelling is
+**log-only, best-effort** (substring match on `error`), never a routing input. **See
+Q-SA-25** — if the stakeholder wants a *true* distinction we need a real out-of-credit
+payload sample (a DATA REQUEST); the mechanism ships correctly without it.
+
+### Token-cap clamp on fallback (D6b)
+`deepseek-v4-pro`/`deepseek-v4-flash` cap at **30000/call**, but the primary budget
+of `AI_CURIOUSNESS`/`AI_WRITING` is **50000** (and `AI_UNDERSTANDING` 40000). A
+fallback call therefore sends **`min(request.max_tokens, fallbackModelCap)`** so it
+honours the fallback model's approved per-call cap (REQ-008 AC "each call stays within
+its per-call token cap"). **Consequence:** a fallback of a 40000/50000-budget stage is
+capped at 30000 → a possibly shorter completion. A produced-but-shorter report beats a
+failed job; this trade-off is part of the **proposal to the stakeholder (Q-SA-25)**.
+
+### Chain construction (D6c)
+- Order = `AI_FALLBACK_MODELS` as written (default `deepseek-v4-pro,deepseek-v4-flash`).
+- **De-dup per call:** skip any fallback id equal to the primary `model` (retrying the
+  same failing model is pointless) — e.g. if a stage's primary is already
+  `deepseek-v4-pro`, only `deepseek-v4-flash` remains for that stage.
+- Empty list ⇒ no fallback (today's behaviour) — see §Configuration.
+- The log line already carries `model` + `outcome`; extend it so each fallback attempt
+  records the model it used and that it was a fallback (observability; no wire change).
+
+### Testability (D6d)
+Fallback is exercised against the injected fake `fetchImpl`/`AiClient` with **no
+network**: a fake that fails the primary model then succeeds the next asserts (a) the
+success comes from the fallback model, (b) `max_tokens` was clamped to 30000, (c) a
+non-retryable 4xx does **not** fall back, (d) an empty chain fails as today. This keeps
+`pipeline.ts`/`curiosity.ts` pure and untouched.
 
 ## Flow
 Pipeline input gains a `RepoInspector` and a per-stage `StageConfig`
@@ -215,11 +288,31 @@ Pipeline input gains a `RepoInspector` and a per-stage `StageConfig`
   three call sites. AI_CURIOUSNESS is present but its loop body is behind an injected
   `CuriosityInvestigator` interface so this task lands with a trivial (pass-through)
   investigator + full unit tests. (depends on: TASK-025) **[client flip added
-  2026-08-24, Q-BE-25.]**
-- **TASK-028**: BE — AI_CURIOUSNESS investigation loop (text-action protocol over
-  `RepoInspector`, env loop-limit, bounded reads, safe early exit) + worker wiring
-  (build the real inspector over `clone.dir`, map internal→wire stages per D-wire)
-  + end-to-end env verification. (depends on: TASK-026, TASK-027)
+  2026-08-24, Q-BE-25.]** **[Q-BE-26, 2026-08-24, Option A: the MINIMAL worker wiring
+  needed to stay green with the client flip is folded in here — thread `Config.aiStages`/
+  `aiCuriosityMaxIterations`/`aiWritingMaxPasses` through `WorkerOptions`+`routes.ts`,
+  build the inspector + a **pass-through** investigator in the worker, add the
+  internal→wire stage mapping (curiosity→AI_COMMITS, understanding→AI_WRITING, wire
+  stays 6), update `reports-worker.test.ts`. Verified read-only at `157e5a2`:
+  `runPipeline`'s sole prod caller is `worker.ts:198`, the three `client.chat` sites are
+  all in `pipeline.ts`, so there is no green subset — same class as Q-BE-25.]**
+- **TASK-028**: BE — the **real** AI_CURIOUSNESS investigation loop (text-action
+  protocol over `RepoInspector`, env loop-limit, bounded reads, safe early exit) that
+  **swaps in for TASK-027's pass-through** at the worker construction site, + the
+  end-to-end env verification for the now-live curiosity call. **[Q-BE-26, 2026-08-24,
+  Option A: the worker wiring + internal→wire mapping moved UP to TASK-027; this task no
+  longer touches `WorkerOptions`/`routes.ts`/the mapping — only the investigator swap.]**
+  (depends on: TASK-026, TASK-027)
+- **TASK-029**: BE — **model-level fallback (Req-7)**: add `deepseek-v4-flash`=30000 to
+  `APPROVED_MODEL_CAPS`; add the `AI_FALLBACK_MODELS` env var (ordered chain, default
+  `deepseek-v4-pro,deepseek-v4-flash`, validated against approved ids, empty = disabled)
+  to `config.ts` + `.env.example`; implement the fallback chain **inside
+  `createHttpAiClient`** per §Fallback (trigger D6a, clamp D6b, de-dup D6c, log D6d) —
+  primary model → its retries → next fallback model (clamped) → … . **No change to
+  `pipeline.ts`/`curiosity.ts`/`worker.ts`/`routes.ts`.** (depends on: TASK-027)
+  **[The fallback *policy* — trigger rule, pro-before-flash order, the 30000 clamp — is a
+  PROPOSAL to the stakeholder (Q-SA-25, NON-BLOCKING); every knob is env, so his answer
+  changes config, not code, exactly like the D3 model defaults.]**
 
 ## Questions
 (Jason asks here as sub-bullets; Sober answers as `> answer: ...`.)
@@ -233,6 +326,86 @@ Pipeline input gains a `RepoInspector` and a per-stage `StageConfig`
   shown as their own steps in the progress ledger?** If yes, that is a *separate FE
   requirement* (add two stages + labels) for Porter to raise — it is out of REQ-008
   as written. BE is not blocked either way.
+
+- **Q-SA-24 (to Porter → the human; NON-BLOCKING for BE/FE).** Implementing D2 (the
+  by-topic deterministic assembly, TASK-027, DONE at `23df16f`) produces **two
+  user-facing changes to the report** that follow from the SPEC's letter but that I
+  cannot decide alone — both cross into business scope. BE (Jason) surfaced them as
+  Q-BE-27 instead of guessing; I am routing the business call to you.
+  1. **The report header is now `formatReportParams` verbatim** — prompt-style labels
+     (`REPORT PARAMETERS:` / `Repository:` / `Period:` / `Branch:` / `Author filter:`),
+     written for the model, now head the visible report. SPEC-007 D2 said "a fixed header
+     via the existing `formatReportParams`", so it was used as-is. **Does the stakeholder
+     accept these prompt labels as the visible report header, or should BE add a small
+     reader-facing header (a separate, stakeholder-approved string — cf. REQ-007)?**
+  2. **The old fixed report sections are no longer guaranteed.** The 5-stage writer plans
+     its own topics, so SPEC-001's mandated **Contributors** section and **Commit
+     appendix** (`REPORT_STRUCTURE` in `prompts.ts`, driven by the now-orphaned
+     `stage3System`) appear only if the plan model chooses them. **Is dropping the
+     Contributors + Commit appendix intended for the 5-stage report, or must the writer
+     always include them (or BE append a deterministic commit appendix)?**
+  Neither answer blocks TASK-028 (real curiosity loop) or FE REQ-009 (progress UI). If the
+  stakeholder wants either changed, it is a SPEC-007 amendment + a NEW task, not a rework
+  of TASK-027 (which faithfully built D2). Raised 2026-08-25 by Sober.
+  > Porter (2026-08-25): **routed to the human, pending answer** — part of REQ-008's PM
+  > acceptance check. REQ-008 held at `SPEC_DONE` (not `DELIVERED`) until this is answered.
+  > I will transcribe his decision here when it lands; a change becomes a SPEC-007 amendment
+  > + new task (yours), not a rework of TASK-027. NON-BLOCKING — nothing waits on it now.
+  > **ANSWERED 2026-08-25 (stakeholder via Porter), both items:**
+  > 1. **Header — accepted as-is** *"รับได้ ขอดูก่อนค่อยกลับมาแก้"* (acceptable; I'll look
+  >    first and come back to fix later). The prompt-style `formatReportParams` header ships
+  >    unchanged. Any later reader-facing header is a **new** stakeholder request, not a
+  >    REQ-008 rework — do nothing now.
+  > 2. **Contributors + Commit appendix — remove if not useful** *"ถ้าไม่มีประโยชน์ต่อ
+  >    รายงาน เอาออกไป"* (if it adds no benefit to the report, take it out). He **delegated
+  >    the usefulness judgment to you.** The current 5-stage build already does not guarantee
+  >    these sections, so REQ-008 delivery is not blocked. **@Sober, your design call, a
+  >    separate later unit:** assess whether the orphaned Contributors/Commit-appendix
+  >    (`REPORT_STRUCTURE` / `stage3System` in `prompts.ts`) add value to the 5-stage report;
+  >    if not, a **SPEC-007 amendment + a NEW task** removes the dead code — not a rework of
+  >    the DONE TASK-025..029. NON-BLOCKING; REQ-008 is `DELIVERED` regardless.
+
+- **Q-SA-25 (to Porter → the human; NON-BLOCKING for BE) — Req-7 fallback policy sign-off.**
+  Req-7 says the system falls back to `deepseek-v4-pro`/`deepseek-v4-flash` when a primary
+  model "runs out of credit/quota or errors", and explicitly asks the team to *propose the
+  mechanism back before ship*. My proposed design (SPEC §Fallback, D6) — carried in code now
+  as env defaults, so an answer changes config not code:
+  1. **Trigger.** The documented failure shape is a bare `{ success:false, error }` / HTTP 500
+     with **no credit/quota code**, and Req-7 fires on *either* credit-exhaustion *or* error —
+     so I fall back on **any** provider/model-side exhaustion (timeout / 5xx / `success:false` /
+     network), and **not** on a 4xx (our own malformed request). Credit-vs-error is **log-only,
+     best-effort**. **Does the stakeholder want a *true* credit-vs-generic distinction?** If yes
+     that needs a real out-of-credit response sample → **DATA REQUEST** (a captured
+     `{success:false,error:...}` body when a model is actually out of quota). The mechanism
+     ships correctly without it; this only adds labelling fidelity.
+  2. **Order** = `deepseek-v4-pro` then `deepseek-v4-flash` (his listed order). Confirm?
+  3. **Token clamp.** Both fallbacks cap at 30000/call, but `AI_CURIOUSNESS`/`AI_WRITING` run at
+     50000 and `AI_UNDERSTANDING` at 40000. A fallback call is therefore **clamped to 30000** —
+     a possibly shorter completion, but a produced report vs a failed job. **Accept the clamp,
+     or should a stage rather fail than degrade to 30000?**
+  4. **Disable switch.** Empty `AI_FALLBACK_MODELS` = fallback off (fails as today). OK as the
+     escape hatch?
+  None of this blocks TASK-029 being *built* (defaults are safe + env-reversible), but it MUST be
+  confirmed **before ship**, same gate as Q-REQ008-1. Raised 2026-08-25 by Sober.
+  > Porter (2026-08-25): **routed to the human, pending answer** — carried in REQ-008's PM
+  > acceptance check together with Q-REQ008-1 (D3 model→stage defaults). This is the AC-mandated
+  > pre-ship fallback sign-off, so REQ-008 stays `SPEC_DONE` (not `DELIVERED`) until he answers
+  > items 1–4. If he wants the *true* credit-vs-error distinction (item 1) I will open the
+  > DATA REQUEST for a real out-of-credit `{success:false,error}` sample. NON-BLOCKING for the team.
+  > **ANSWERED 2026-08-25 (stakeholder via Porter): ACCEPT AS PROPOSED** — verbatim *"ก"*
+  > (option a / as proposed) then *"ไปเลย"* (go ahead). All four sub-items ship as the D6
+  > design proposed, no code change:
+  > 1. **Trigger** as proposed — fall back on any retryable provider/model-side exhaustion,
+  >    not on a 4xx; credit-vs-error stays **log-only**. He did **NOT** ask for a true
+  >    credit-vs-generic distinction → the optional DATA REQUEST is **not opened** (no
+  >    out-of-credit sample needed).
+  > 2. **Order** `deepseek-v4-pro` → `deepseek-v4-flash` — confirmed.
+  > 3. **30000 clamp** on fallback calls — **accepted** (degrade to a shorter completion
+  >    rather than fail the job).
+  > 4. **Empty `AI_FALLBACK_MODELS` disables** — confirmed as the escape hatch.
+  > This clears REQ-008's ship-gating AC ("the fallback design was confirmed back to the
+  > stakeholder before ship"). The built defaults already match; **REQ-008 → `DELIVERED`
+  > 2026-08-25.**
 
 - **Design decisions recorded (SA calls, not questions):**
   - **D2 — AI_WRITING assembly = deterministic concatenation** of by-topic sections,
@@ -251,6 +424,13 @@ Pipeline input gains a `RepoInspector` and a per-stage `StageConfig`
   - **D5 — RepoInspector is path-confined + size-capped**, output wrapped as DATA.
   - **D-wire — wire stage set stays at six** (map the two new stages onto
     AI_COMMITS / AI_WRITING) to keep REQ-008 backend-only. See Q-SA-23.
+  - **D6 — model-level fallback (Req-7) lives inside `AiClient`**, above the existing
+    per-model retry, so the pipeline/curiosity/worker are untouched. Triggers on any
+    provider/model-side exhaustion (not a 4xx); tries `deepseek-v4-pro` then
+    `deepseek-v4-flash`, de-duped against the primary, `max_tokens` **clamped to the
+    fallback model's 30000 cap**; empty `AI_FALLBACK_MODELS` disables it. Credit-vs-error
+    is log-only (no structured code in the documented failure shape). **Proposed, pending
+    Q-SA-25** — env-configurable, so confirmation is a config change not a code change.
   - **Q-REQ008-3 confirmed:** the per-stage token budgets are `max_tokens` (the
     completion cap), agreeing with Porter's high-confidence reading and the confirmed
     gap ("no max_tokens per stage").

@@ -1,5 +1,5 @@
 # REQ-006: Inconsistencies on the new-report screen (from the stakeholder's screenshot)
-- Status: READY_FOR_SA
+- Status: SPEC_DONE (built + SA-reviewed; awaiting stakeholder visual confirm — see PM acceptance check)
 - Priority: HIGH
 - Requested: 2026-08-24 by the stakeholder
 - Deadline: none
@@ -124,7 +124,59 @@ a from/to pair) stays an observation only and may be correct as built.
 - The behaviour of the branch/committer gate, the presets, and the 366-day cap —
   all built and SA-verified under SPEC-003.
 
+## PM acceptance check (2026-08-25, Porter)
+
+Both SPEC-005 tasks are built and SA-reviewed DONE (TASK-022 = Req 1 load-button
+alignment at `859148a`; TASK-023 = Req 3 `DD/MMM/YY` period inputs at `68a1475`).
+I re-verified the two commits read-only in `code-report-front` (branch `develop`,
+both present in history):
+
+- **TASK-022 (`859148a`):** exactly `NewReportFields.tsx`, 2 lines — adds
+  `sm:items-end` to the branch and committer load-button rows. Layout-only.
+- **TASK-023 (`68a1475`):** `globals.css` (+52) + `NewReportFields.tsx` (+88/−15) —
+  a read-face overlay renders the value via the shared `formatIsoDate()` in
+  `DD/MMM/YY`; native `type="date"` control kept for the picker; wire values stay
+  `YYYY-MM-DD`. No new string, no new dependency.
+
+**Verdict against the Acceptance Criteria:**
+
+- **AC 3 (no change to values submitted / 366-day rule / gating / any string /
+  any other screen) — PASSES.** Corroborated by the two diffs above: TASK-022 is a
+  className-only layout change; TASK-023 keeps the wire (`dateFrom`/`dateTo`)
+  `YYYY-MM-DD` and adds no string. SA independently confirmed the logic files are
+  absent from both diffs.
+- **AC 1, AC 2, AC 4 — VISUAL/render criteria; NOT closeable from code alone.**
+  AC 1 (buttons read as one aligned row, both rows consistent) and AC 4 (one
+  consistent date format in inputs + summary card) are rendering claims that
+  typecheck/tests do not prove (Sober noted the build gate is inert to a
+  CSS/className diff). **AC 2 is by its own wording the stakeholder's to satisfy:**
+  "The stakeholder, opening the same screen again, no longer sees the mismatch he
+  photographed and named." This project has **no deployed environment** and the
+  new-report screen is gated behind admin login against the real backend, which the
+  team may not touch — so Porter cannot produce an honest render either. The proper
+  close is the stakeholder's own eyes on the rebuilt screen (same pattern as the
+  TASK-009 / REQ-009 acceptance runs).
+
+**Outcome:** REQ-006 stays `SPEC_DONE`. The code-level criterion is met; the three
+visual criteria are routed to the stakeholder for a look-and-confirm (Q-REQ006-1
+below). **BLOCKS `DELIVERED` only** — no engineer or SA is waiting; SPEC-005 is
+fully built. On his "ok" Porter sets REQ-006 → `DELIVERED`.
+
 ## Questions
+
+### Q-REQ006-1 — to the human, 2026-08-25 — **visual confirm of the two fixes (gates DELIVERED only)**
+
+The two fixes are built and SA-verified; only the stakeholder's eyes can satisfy
+AC 2 (and confirm the visual AC 1 / AC 4). Thai, ready to send:
+
+> "REQ-006 (จุดที่ไม่ตรงกันในหน้าสร้างรายงานที่พี่ถ่ายรูปมา) ทีมแก้เสร็จและ SA ตรวจโค้ดผ่านแล้วทั้ง 2 จุด
+> — (1) ปุ่ม 'โหลดรายการ branch' กับ 'โหลดรายชื่อผู้เขียนคอมมิต' จัดให้อยู่แถวเดียวกับ dropdown ของมันแล้ว
+> (แก้เฉพาะการจัดวาง ไม่แตะข้อความ/ค่า/การล็อกฟอร์ม) และ (2) วันที่ในช่องกรอกช่วงเวลาแสดงเป็น DD/MMM/YY
+> (เช่น 24/Aug/26) ตรงกับกล่องสรุปแล้ว (ค่าที่ส่งยังเป็น YYYY-MM-DD เหมือนเดิม). รบกวนพี่เปิดหน้าสร้างรายงาน
+> อีกครั้งแล้วยืนยันว่า (ก) ปุ่มโหลดทั้งสองตรงแถวกับ dropdown แล้ว และ (ข) วันที่ในช่องกรอกกับในกล่องสรุป
+> เป็นรูปแบบเดียวกันแล้ว ถ้าโอเคผมจะปิดงานเป็น DELIVERED ครับ (ไม่มีใครในทีมต้องรอ — รอแค่ตายืนยันของพี่)"
+
+> answer: _(pending)_
 
 ### Q36 — ANSWERED 2026-08-24 — **not the date; it is the buttons vs the dropdowns**
 

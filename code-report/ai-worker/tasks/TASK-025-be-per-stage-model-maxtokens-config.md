@@ -1,7 +1,8 @@
 # TASK-025: BE — per-stage `model` + `max_tokens` config (env-configurable)
 - Source: SPEC-007
-- Status: IN_PROGRESS (unblocked 2026-08-24 by Sober — Q-BE-25 ruled Option 2; scope
-  narrowed to `config.ts` only, the `client.ts` required-field flip MOVED to TASK-027)
+- Status: DONE (reviewed 2026-08-24 by Sober at `1663ee9`; scope narrowed to
+  `config.ts` only by Q-BE-25 Option 2 — the `client.ts` required-field flip MOVED to
+  TASK-027)
 - Assignee: Jason (BE)
 - Depends on: none
 - Written: 2026-08-24 by Sober (SA Lead)
@@ -47,16 +48,20 @@ the contract change and its only consumer land in ONE green commit. Rationale: s
 ## Definition of Done
 (The `chatBody`/`ChatRequest` row and the `test/ai-client.test.ts` row were MOVED to
 TASK-027 by the Q-BE-25 ruling — this task is `config.ts` only.)
-- [ ] `Config` carries per-stage `{ model, maxTokens }` + iteration/pass limits from
+- [x] `Config` carries per-stage `{ model, maxTokens }` + iteration/pass limits from
       env with the mandated defaults; unknown model or over-cap `max_tokens` → fatal
       `ConfigError`; `.env.example` updated.
-- [ ] Unit tests: config rejects an unknown model and an over-cap budget, and reads
+- [x] Unit tests: config rejects an unknown model and an over-cap budget, and reads
       env overrides. Extend `test/config.test.ts`.
-- [ ] `bun run typecheck` exits 0 and `bun test` passes (`cd code-report-back`).
+- [x] `bun run typecheck` exits 0 and `bun test` passes (`cd code-report-back`).
 
 ## Implementation Notes
-Partial — the `config.ts` half is done and green; the `client.ts` half is
-**blocked** (Q-BE-25 below). Nothing committed yet (working tree changes only).
+**Committed 2026-08-24 at `1663ee9`** (branch `develop`, parent `d1f0993`) — the
+`config.ts` half is the whole task under the Q-BE-25 Option-2 re-scope. Exactly three
+files changed, all in scope, +205 lines: `src/config.ts`, `test/config.test.ts`,
+`.env.example`. No `client.ts`/`pipeline.ts` touched. Re-verified against the committed
+tree before submitting: `bun run typecheck` → exit 0; `bun test test/config.test.ts` →
+12 pass / 0 fail; `bun test` (full suite) → 235 pass / 0 fail.
 
 **Done (part 2, `src/config.ts` — the whole "per-stage settings" section):**
 - `Config` gains `aiStages: Record<AiStageKey, {model, maxTokens}>` (one object
@@ -151,4 +156,56 @@ now gone) — so that DoD item needs no action.
   > startable; TASK-027 now carries the client contract change from the top.
 
 ## Review
-(Sober fills in at REVIEW.)
+**Verdict: DONE — reviewed 2026-08-24 by Sober (SA Lead) at `1663ee9`.** Corroborated
+read-only against the real backend `code-report-back` (clean tree; HEAD `1663ee9`,
+parent `d1f0993`); no code, no SQL, no environment.
+
+**Scope correct under the Q-BE-25 Option-2 re-scope.** `git diff d1f0993..1663ee9`
+= exactly the three in-scope files, +205, all additive: `src/config.ts` (+98),
+`test/config.test.ts` (+76), `.env.example` (+31). **`src/ai/client.ts` and
+`src/ai/pipeline.ts` are absent from the diff** — the client required-field flip was
+correctly left to TASK-027, and the moot `console.log` DoD item was correctly not
+re-added.
+
+**Correctness re-derived from the diff, not trusted:**
+- `Config` gains `aiStages: Record<AiStageKey,{model,maxTokens}>` (one object/stage,
+  as SPEC-007 §Configuration asks) + top-level `aiCuriosityMaxIterations` /
+  `aiWritingMaxPasses`. All twelve env vars parsed via the **pre-existing**
+  `optionalWithDefault`/`positiveInt` helpers (verified they exist and behave:
+  `positiveInt` rejects ≤0 and non-integers).
+- Defaults match SPEC-007 exactly — max_tokens PROJECT/COMMITS 20000, CURIOUSNESS
+  50000, UNDERSTANDING 40000, WRITING 50000; iterations 5; passes 3 — and the D3
+  model→stage map (PROJECT/COMMITS `gpt-4.1-mini`, CURIOUSNESS `grok-4-latest`,
+  UNDERSTANDING/WRITING `gpt-4.1`), commented **pending Q-REQ008-1**, env-overridable.
+- `APPROVED_MODEL_CAPS` = SPEC-007's table (`gpt-4.1`/`grok-4-latest` 50000,
+  `gpt-4.1-mini`/`deepseek-v4-pro` 30000). `loadAiStages` validates in the right
+  order: unknown `*_MODEL` → fatal `ConfigError`; then `*_MAX_TOKENS` over the
+  **assigned model's** cap → fatal `ConfigError`. All five defaults are within cap.
+- `describeConfig` extended with `aiStages` + the two limits — no secrets involved
+  (models/budgets are not sensitive); the "never exposes secret values" test still
+  passes.
+- `.env.example` documents all twelve vars with defaults + the cap table.
+
+**Gates re-run by me (read-only, at the committed tree):**
+- `bun run typecheck` → **exit 0**.
+- `bun test test/config.test.ts` → **12 pass / 0 fail** (defaults, env overrides,
+  unknown-model reject, over-cap reject + same-budget-OK-once-model-allows,
+  non-positive reject — deterministic across repeated runs).
+- `bun test` (full suite) → **235 pass / 0 fail on 3 of 4 runs.** One run showed a
+  single failure in `test/auth.test.ts` (`GET /api/auth/me > with a tampered token →
+  401`). **Established as a PRE-EXISTING flaky test, NOT this change's defect:**
+  (a) `auth.test.ts` run in isolation passes 16/0 twice; (b) the full suite passes
+  235/0 on three consecutive runs; (c) the failing test exercises session/token auth,
+  which shares no code with a config-only diff (`config.ts`/`config.test.ts`/
+  `.env.example` touch nothing in the auth path). It is cross-file test-state
+  non-determinism in the suite, unrelated to TASK-025 — recorded, not attributed.
+
+**Observation carried up (not a blocker, not TASK-025's fault):** the full test
+suite is non-deterministic — one auth test flakes intermittently under full-suite
+run only. Worth a separate hardening pass someday; flagged to @Porter as an
+observation, no REQ implied.
+
+**No question raised.** TASK-025 is `config.ts`-only and fully green; `Config.aiStages`
+is now available for TASK-027 to thread. @Jason: **TASK-027 is unblocked** (its
+`depends on: TASK-025` is satisfied) and carries the `client.ts` contract flip from
+the top; TASK-026 remains independently startable.

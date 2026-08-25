@@ -56,8 +56,9 @@
 | REQ-004 | New-report form usability (branch list, committer, dates) + back from the report page | HIGH | **IN_SPEC 2026-08-21 — SPEC-003 ACTIVE**; 017 + 018 + 019 all `DONE` (Reqs 1/1a/2/2a/3/4a/4b/6 built and SA-verified); only **TASK-020** is left, and Q32/Req 7d's freeze widening is still unwritten | Fern (TASK-020) · Sober (the 7d widening) |
 | REQ-005 | Frontend repo runs on **bun** instead of npm (stakeholder-mandated toolchain) | HIGH | **DELIVERED 2026-08-24 — Porter acceptance check PASSED.** All 4 ACs met; AC 2/3/4 independently re-verified by Porter at `d44f523` (clean tree; `diff f70fb02..HEAD` = two lockfiles only, zero source diff; open FE tasks + board proxy rule carry no npm), AC 1 on TASK-021's SA-corroborated evidence. No team code work was ever required (stakeholder did the lockfile swap himself). Human informed in Thai | — (delivered) |
 | REQ-007 | Reword existing UI strings to Thai-primary / English-secondary (Q40 = "แก้เลย") | MEDIUM | **IN_SPEC 2026-08-24 — SPEC-006 ACTIVE, TASK-024 created (BLOCKED on sign-off).** Form ruled = Form 2 (Thai-led, English kept only for no-Thai-equiv terms); scope = `th` values in `dictionaries.ts` only (`en` untouched). `th` already ~90% Thai-primary → finite candidate set. **Q-SA-22 up (loanword policy + Q41 sign-off): does Q37's "keep Branch" generalise to repository/branch/PAT?** — routed to human via Porter | Porter (relay Q-SA-22 to human) → then Fern (TASK-024) |
-| REQ-006 | Inconsistencies on the new-report screen (his own screenshot, `project-docs/image-1787542760015.png`) | HIGH | **SPEC_DONE 2026-08-24 — both SPEC-005 tasks reviewed DONE by Sober (TASK-022 at `859148a`, TASK-023 at `68a1475`).** Req 1 (load-button alignment) + Req 3 (`DD/MMM/YY` period inputs) built and SA-verified; no backend, no dependency, no string change. Awaiting Porter's acceptance check. | Porter (acceptance) |
-| REQ-008 | Deeper backend AI analysis pipeline — 5-stage redesign (AI_PROJECT → AI_COMMITS → AI_CURIOUSNESS → AI_UNDERSTANDING → AI_WRITING), model + max_tokens explicit & env-configurable per stage | HIGH | **IN_SPEC 2026-08-24 — SPEC-007 ACTIVE.** **Q-BE-25 RULED 2026-08-24 (Option 2):** the `client.ts` required-field flip moved TASK-025→TASK-027 (contract change lands with its sole caller `pipeline.ts` in one green commit; verified only `.chat(` caller read-only at `d1f0993`). TASK-025 now `config.ts`-only (config half already green → Jason commits + REVIEW); TASK-027 carries the client flip. Q-REQ008-2 answered (D2), Q-REQ008-3 confirmed. Model→stage defaults **pending Q-REQ008-1**; **Q-SA-23** (surface 2 stages in FE bar?) NON-BLOCKING with Porter. | Jason (TASK-025 unblocked→commit+REVIEW; TASK-026 startable; TASK-027 startable after 025) · Porter (relay Q-REQ008-1 + Q-SA-23) |
+| REQ-006 | Inconsistencies on the new-report screen (his own screenshot, `project-docs/image-1787542760015.png`) | HIGH | **SPEC_DONE — PM acceptance check DONE 2026-08-25 (Porter); stays SPEC_DONE pending stakeholder visual confirm (Q-REQ006-1).** Both SPEC-005 tasks reviewed DONE (TASK-022 `859148a`, TASK-023 `68a1475`); Porter re-verified both diffs read-only on `develop` (022 = 2 className lines, layout-only; 023 = read-face via shared `formatIsoDate`, wire stays `YYYY-MM-DD`, no new string/dep). **AC 3 (no value/gating/string/other-screen change) PASSES.** ACs 1/2/4 are VISUAL/render criteria not closeable from code (typecheck/tests inert to CSS) — **AC 2 is by its wording the stakeholder's to satisfy** (open screen, no longer sees the mismatch); no deployed env + admin-gated screen means Porter can't render it honestly either. Routed Q-REQ006-1 to the human (Thai) to look-and-confirm the two fixes. **BLOCKS DELIVERED only — no engineer/SA waits.** On his "ok" → DELIVERED. | Human (visual confirm) → then Porter (DELIVERED) |
+| REQ-009 | Show the two new reasoning stages (AI_CURIOUSNESS, AI_UNDERSTANDING) as their own steps in the report progress bar (Q-SA-23 = "yes, show them") | MEDIUM | **SPEC_DONE 2026-08-25 — both SPEC-008 tasks reviewed DONE by Sober (TASK-030 BE at `803a44c`, TASK-031 FE at `e75346e`).** Design = un-folded SPEC-007's D-wire: wire stage list six→**eight** (both reasoning stages carried as themselves, in pipeline-announce order `…AI_PROJECT, AI_COMMITS, AI_CURIOUSNESS, AI_UNDERSTANDING, AI_WRITING`), `WIRE_STAGE_BY_INTERNAL` = identity map; `progress.total`→8 (derived, no literal); FE `REPORT_STAGES` mirrors the list (Sober verified byte-for-byte = backend `JOB_STAGES`) + two labels; `ReportProgress` render unchanged. Pipeline/report/model UNCHANGED (display-only, REQ-008 stays DELIVERED). Gates re-run by Sober both sides (BE `bun test` 288/0; FE typecheck 0 + build OK). **`SPEC_DONE` = built + SA-reviewed, NOT shipped:** the combined end-to-end live-highlight acceptance run (a real job tracked through all eight steps — same shape as TASK-009) is Porter's pre-ship check, and the labels are still DRAFTS. **Labels = team DRAFTS pending stakeholder confirm → Q-SA-26 (Sober→Porter, NON-BLOCKING)** carries Q-REQ009-1: `AI_CURIOUSNESS`="สำรวจโค้ดเพิ่มเติม"/"Exploring the codebase", `AI_UNDERSTANDING`="ทำความเข้าใจข้อมูล"/"Making sense of the findings"; final text = one-line dict edit, blocks nothing. | Porter (acceptance check + relay Q-SA-26, both NON-BLOCKING) |
+| REQ-008 | Deeper backend AI analysis pipeline — 5-stage redesign (AI_PROJECT → AI_COMMITS → AI_CURIOUSNESS → AI_UNDERSTANDING → AI_WRITING), model + max_tokens explicit & env-configurable per stage | HIGH | **DELIVERED 2026-08-25 — Porter acceptance PASSED; stakeholder cleared all three pre-ship sign-offs, no code change needed (build already ships as confirmed at `4bfc21e`).** Q-REQ008-1 (D3 model→stage defaults) CONFIRMED *"ตามนั้น"* (built `STAGE_MODEL_DEFAULTS` = AI_PROJECT/AI_COMMITS `gpt-4.1-mini`, AI_CURIOUSNESS `grok-4-latest`, AI_UNDERSTANDING/AI_WRITING `gpt-4.1` — verified byte-for-byte). Q-SA-25 (fallback policy) ACCEPTED AS PROPOSED (*"ก"* + *"ไปเลย"*): trigger on retryable exhaustion not 4xx, credit-vs-error log-only (**no true distinction wanted → optional DATA REQUEST NOT opened**), order pro→flash, 30000 clamp accepted, empty-list disables. Q-SA-24 ACCEPTED with two stakeholder-led follow-ups (neither blocks delivery): header accepted as-is *"รับได้ ขอดูก่อนค่อยกลับมาแก้"*; Contributors + Commit appendix *"ถ้าไม่มีประโยชน์ต่อรายงาน เอาออกไป"* — usefulness judgment delegated to @Sober (assess the orphaned `REPORT_STRUCTURE`/`stage3System`; if useless → SPEC-007 amendment + NEW task to remove dead code, NOT a rework of DONE tasks). Stakeholder informed in Thai. — HISTORY: **all five SPEC-007 tasks (TASK-025..029) built + SA-reviewed DONE; Req-7 fallback was the last un-built piece.** **Q-BE-25 RULED 2026-08-24 (Option 2):** the `client.ts` required-field flip moved TASK-025→TASK-027 (contract change lands with its sole caller `pipeline.ts` in one green commit; verified only `.chat(` caller read-only at `d1f0993`). TASK-025 now `config.ts`-only (config half already green → Jason commits + REVIEW); TASK-027 carries the client flip. Q-REQ008-2 answered (D2), Q-REQ008-3 confirmed. **Q-REQ008-1 ANSWERED 2026-08-24 (human):** model→stage mapping **delegated to team as proposed**, PLUS a **new fallback-model requirement** — `deepseek-v4-pro`/`deepseek-v4-flash` used when a primary model runs out of credit or errors (folded into REQ-008 Req 7 + Constraints + AC; @Sober to design into SPEC-007/config). **Q-SA-23 ANSWERED 2026-08-24 (human): yes, show the reasoning steps** → becomes a **separate FE REQ-009** (Porter's next unit), REQ-008 stays backend-only, BE unaffected. **Q-REQ008-4 ANSWERED 2026-08-24 (human): `deepseek-v4-flash` = same tier as `gpt-4.1-mini` → 40–50% reasoning, ≤ 30000/call** (folded into REQ-008 Req 6/7 + Constraints; @Sober adds `deepseek-v4-flash`=30000 to `APPROVED_MODEL_CAPS` when designing the fallback into SPEC-007). **TASK-025 reviewed DONE 2026-08-24 (`1663ee9`) → TASK-027 unblocked.** **Q-BE-26 RULED 2026-08-24 (Option A): TASK-027 widened to carry the minimal worker wiring + internal→wire mapping (so the client flip lands green with its sole caller); TASK-028 narrowed to the real investigator swap. TASK-027 now STARTABLE.** **Req-7 fallback DESIGNED 2026-08-25 (Sober): SPEC-007 §Fallback + D6 + TASK-029 (TODO, STARTABLE). Policy proposed to human as Q-SA-25 (NON-BLOCKING). REQ-008 stays `IN_SPEC` until TASK-029 is built + reviewed.** **TASK-029 reviewed DONE 2026-08-25 at `4bfc21e` → all five SPEC-007 tasks DONE → REQ-008 `SPEC_DONE`.** **PM ACCEPTANCE CHECK DONE 2026-08-25 (Porter):** built work verified against ACs (all technical ACs satisfied per Sober's gates — typecheck 0, 287 tests pass); the one ship-gating AC ("fallback design confirmed back to stakeholder before ship") is UNMET. **REQ-008 stays `SPEC_DONE`, NOT `DELIVERED`** — three pre-ship business sign-offs routed to the human 2026-08-25 (in Thai): **Q-REQ008-1 (D3)** per-stage model→stage default mapping; **Q-SA-24** two user-facing report changes (prompt-style header; Contributors + Commit appendix no longer guaranteed); **Q-SA-25** Req-7 fallback policy (trigger / pro→flash order / 30000 clamp / empty-disable). All three are env/config or wording decisions — answers change config or a small string, not the built code; they gate only `DELIVERED`, no engineer is blocked. On answers: Sober transcribes Q-SA-24/Q-SA-25 into SPEC-007 §Questions, any change = SPEC-007 amendment + new task, then Porter → `DELIVERED`. (REQ-009 progress-UI = separate later PM unit, not part of this backend-only REQ.) | — (DELIVERED) · follow-ups: Sober (appendix-cleanup design call, non-blocking) · Porter (REQ-009, later) |
 
 ## Specs
 
@@ -69,7 +70,8 @@
 | SPEC-004 | Frontend toolchain — bun replaces npm (team wording alignment, no product change) | REQ-005 | **DONE 2026-08-24** — no repo code work; command mapping + DONE-vs-open ruling recorded; Req 3+5 wording edits executed by Sober; **TASK-021 reviewed DONE (bun toolchain verified, AC 1 evidence in hand)**. REQ-005 now `SPEC_DONE` | — (REQ-005 with Porter) |
 | SPEC-005 | New-report screen inconsistencies — load-button alignment + date-format parity | REQ-006 | **DONE 2026-08-24** — both tasks reviewed DONE (TASK-022 at `859148a`, TASK-023 at `68a1475`); Req 1 + Req 3 built and SA-verified. REQ-006 → `SPEC_DONE` | — (REQ-006 with Porter) |
 | SPEC-006 | Reword existing UI strings to Thai-primary / English-secondary | REQ-007 | **ACTIVE 2026-08-24** — form ruled Form 2 (Thai-led, English only for no-Thai-equiv terms); scope = `th` values in `dictionaries.ts` only; grounded audit done (`th` already ~90% Thai-primary, finite candidate set); reword drafts gated on human sign-off (Q-SA-22) | Porter (relay Q-SA-22) · Fern (TASK-024, blocked) |
-| SPEC-007 | Deeper backend AI pipeline — 5 stages, explicit env-configurable model+max_tokens per call | REQ-008 | **ACTIVE 2026-08-24** — 5-stage flow designed on the real backend; pipeline stays pure (RepoInspector + CuriosityInvestigator injected); wire progress kept at 6 stages (D-wire, backend-only); AI_CURIOUSNESS = text-action loop over live clone (D4); AI_WRITING = multi-pass by-topic + concat assembly (D2); model defaults pending Q-REQ008-1. TASK-025 config half done, BLOCKED on Q-BE-25 (client-field-vs-pipeline sequencing); 026 startable; 027/028 pending | Jason (TASK-026) · Sober (Q-BE-25) |
+| SPEC-007 | Deeper backend AI pipeline — 5 stages, explicit env-configurable model+max_tokens per call | REQ-008 | **DONE 2026-08-25 — all five tasks TASK-025..029 reviewed DONE; REQ-008 → SPEC_DONE.** 5-stage flow designed on the real backend; pipeline stays pure (RepoInspector + CuriosityInvestigator injected); wire progress kept at 6 stages (D-wire, backend-only); AI_CURIOUSNESS = text-action loop over live clone (D4); AI_WRITING = multi-pass by-topic + concat assembly (D2); model defaults pending Q-REQ008-1. **TASK-025 DONE (`1663ee9`); 026 DONE (`157e5a2`); TASK-027 reviewed DONE 2026-08-25 at `23df16f`** (5-stage flow, client flip, worker wiring + internal→wire mapping; gates re-run by Sober: `typecheck` 0 / `bun test` 259/0; D-wire mapping traced to the six `JOB_STAGES` in order). **Q-BE-27 → Q-SA-24 (NON-BLOCKING) raised to Porter:** the D2 `formatReportParams` prompt-style header + dropped Contributors/Commit-appendix are business-scope calls for the stakeholder — do NOT block TASK-028/REQ-009. **TASK-028 reviewed DONE 2026-08-25 at `75acb5f`** (real curiosity loop; gates re-run by Sober: `typecheck` 0 / `bun test` 274/0; conforms to §Flow 3 + D4 + D5 + all DoD). **All four TASK-025..028 now DONE.** **Req-7 fallback-model design ADDED 2026-08-25 (Sober): new §"Fallback models (Req-7)" + decision D6 + Q-SA-25 (to Porter, NON-BLOCKING) + `AI_FALLBACK_MODELS` config row + `deepseek-v4-flash`=30000 cap note → TASK-029 (TODO, STARTABLE). Fallback lives inside `AiClient` (above the existing retry); pipeline/curiosity/worker untouched. REQ-008 remains IN_SPEC until TASK-029 is built + reviewed.** **TASK-029 reviewed DONE 2026-08-25 at `4bfc21e`** (fallback inside `createHttpAiClient`; gates re-run by Sober: `typecheck` 0 / `bun test` 287/0; conforms to §Fallback D6a–d + all DoD; Q-BE-29 both notes confirmed, no rework). **All five TASK-025..029 now DONE → REQ-008 SPEC_DONE.** **Q-SA-24 + Q-SA-25 ANSWERED 2026-08-25 (stakeholder via Porter), transcribed into SPEC-007 §Questions:** Q-SA-25 fallback ACCEPTED AS PROPOSED (no true credit-vs-error distinction → no DATA REQUEST); Q-SA-24 header accepted as-is, Contributors/Commit-appendix "remove if not useful" — @Sober design call (assess orphaned `REPORT_STRUCTURE`/`stage3System`; if useless → SPEC amendment + new task). REQ-008 → DELIVERED. | — (SPEC done; REQ-008 DELIVERED) · Sober: optional appendix-cleanup assessment (non-blocking) |
+| SPEC-008 | Surface AI_CURIOUSNESS + AI_UNDERSTANDING as their own progress steps | REQ-009 | **DONE 2026-08-25 (Sober) — both TASK-030 (BE `803a44c`) + TASK-031 (FE `e75346e`) reviewed DONE; REQ-009 → SPEC_DONE.** Un-folded SPEC-007's D-wire: wire stage list six→**eight** (identity `WIRE_STAGE_BY_INTERNAL`, pipeline already announces both stages), `progress.total` derived→8; FE mirrors the eight-stage list (verified byte-for-byte = backend `JOB_STAGES`) + two draft labels; `ReportProgress` unchanged structurally. No pipeline/worker-flow/report/model/schema change (display-only, REQ-008 stays DELIVERED). Gates re-run by Sober both sides (BE `bun test` 288/0; FE typecheck 0 + build OK). **Combined end-to-end live-highlight acceptance run (both tasks now DONE) is a Porter/human pre-ship follow-up (same shape as TASK-009), not a SPEC gate.** **Q-SA-26 (→Porter, NON-BLOCKING)** = the two draft labels for stakeholder confirm (carries Q-REQ009-1); final wording = one-line dict edit, blocks nothing. | — (SPEC done; REQ-009 with Porter) · Porter (relay Q-SA-26 + combined acceptance run, both NON-BLOCKING) |
 
 ## Tasks
 
@@ -100,10 +102,273 @@
 | TASK-023 | FE — period inputs render `DD/MMM/YY`, matching the summary card (REQ-006 Req 3) | SPEC-005 | **DONE — reviewed 2026-08-24 by Sober at `68a1475`.** Diff independently corroborated read-only: clean tree, parent `859148a`, only `globals.css` (+52) + `NewReportFields.tsx` (+88/−15); `package.json`/i18n not in diff. Read-face driven by the **same** `formatIsoDate(value)` the summary uses (`NewReportContent.tsx` L452–453) → parity by construction; native `type="date"` value/onChange/picker unchanged → wire + behavioural rows inert to the diff (logic files `NewReportContent.tsx`/`NewReport.config.ts` confirmed absent from diff). Gates re-run by me: `typecheck` exit 0, token gate real zero outside `globals.css` (neither touched file appears); build not re-run (live-server PID 7380 collision — inert for a render/CSS diff, Fern's green evidence stands, same as TASK-022). Q-FE-28 answered NON-BLOCKING: by-construction sufficient, no authed render required (creds prohibited / real backend not team's to stop; pixel-alignment low-risk, derived from Mantine `--input-padding`). Evidence in TASK-023 §Review | Fern (FE) | none (after TASK-022, done) |
 
 | TASK-024 | FE — apply the stakeholder-approved Thai-primary `th` strings to `dictionaries.ts` | SPEC-006 | **BLOCKED (waiting: stakeholder sign-off on the reword drafts via Porter — Q-SA-22).** Strings-only; only `th` values in the one dictionary file; `en`/keys/excluded-terms untouched; apply ONLY approved copy | Fern (FE), after Q-SA-22 | Q-SA-22 answered |
-| TASK-025 | BE — per-stage `model`+`max_tokens` **config** (config.ts only) | SPEC-007 | **IN_PROGRESS 2026-08-24 — UNBLOCKED (Q-BE-25 ruled Option 2 by Sober).** Scope narrowed to `config.ts`; the `client.ts` flip moved to TASK-027. Config half is DONE & green: `Config.aiStages` {model,maxTokens}×5 + curiosity/writing limits, 12 env vars + D3 defaults, unknown-model / over-cap → fatal `ConfigError`, `describeConfig` + `.env.example` + config tests; `typecheck` 0, `bun test` 235 pass. **Nothing further to implement — Jason commits the config half and moves to REVIEW.** `console.log` item moot. | Jason (BE) | none |
-| TASK-026 | BE — `RepoInspector` over the live clone (list tree / read file / search word), path-confined + capped | SPEC-007 | **TODO 2026-08-24 — STARTABLE.** New `src/git/inspect.ts`, reuses existing caps; local-file-only, no network/PAT/DB; injectable for AI_CURIOUSNESS | Jason (BE) | none |
-| TASK-027 | BE — **client.ts required-field flip (Q-BE-25)** + 5-stage pipeline: stages/prompts, AI_UNDERSTANDING, AI_WRITING multi-pass by-topic + concat assembly | SPEC-007 | **TODO 2026-08-24.** Now also owns making `ChatRequest.model`/`max_tokens` required + `chatBody` always emits both + `ai-client.test` (moved from TASK-025, lands green with the 3 pipeline call sites it updates). Curiosity loop behind an injected seam (pass-through here); every call threads per-stage model+max_tokens; unit-tested against fakes | Jason (BE) | TASK-025 |
-| TASK-028 | BE — AI_CURIOUSNESS loop (text-action protocol) + worker wiring + internal→wire stage mapping | SPEC-007 | **TODO 2026-08-24.** Real investigator over RepoInspector, env loop cap (default 5), safe exit; worker maps curiosity→AI_COMMITS, understanding→AI_WRITING (progress.total stays 6) | Jason (BE) | TASK-026, TASK-027 |
+| TASK-025 | BE — per-stage `model`+`max_tokens` **config** (config.ts only) | SPEC-007 | **DONE — reviewed 2026-08-24 by Sober at `1663ee9`.** Diff corroborated read-only: exactly the 3 in-scope additive files (`config.ts`/`config.test.ts`/`.env.example`, +205); `client.ts`/`pipeline.ts` absent (client flip correctly left to 027). Defaults + `APPROVED_MODEL_CAPS` match SPEC-007; validation order correct (unknown model then over-cap → fatal `ConfigError`); `describeConfig` no secrets. Gates re-run by me: `typecheck` 0, config 12 pass, full `bun test` 235/0 on 3 of 4 runs — the one failure was a PRE-EXISTING flaky auth test (`tampered token → 401`; passes 16/0 isolated, unrelated to a config-only diff), not TASK-025's defect. Evidence in TASK-025 §Review | — (TASK-027 unblocked) | none |
+| TASK-026 | BE — `RepoInspector` over the live clone (list tree / read file / search word), path-confined + capped | SPEC-007 | **DONE — reviewed 2026-08-24 by Sober; committed 2026-08-24 by Jason at `157e5a2` (parent `1663ee9`, own commit, 3 in-scope files, clean tree).** Read-only, `git status --porcelain` = exactly the 3 in-scope changes (`index.ts`/`inspect.ts`/`test`). D5 verified by inspection: two-layer path confinement (lexical `..`/absolute + `realpath` on both root & target), typed sentinels not throws, caps reuse `MAX_TREE_PATHS`/`MAX_CHARS_PER_FILE`/`TRUNCATION_MARK`, `search` = literal `git grep --fixed-strings -e <word>` via argv (no shell) capped at `MAX_SEARCH_HITS=200`, no network/PAT/DB. Gates re-run by me: `typecheck` exit 0, inspect test 14/0, full `bun test` **249/0** (+14, no regression). Both Jason caveats ACCEPTED not reworked — (1) symlink assertion env-skipped on Windows (branch sound; POSIX-CI note), (2) `search` not mirroring `tree.ts` exclusions is SPEC-conformant (D5 = capped git grep; tracked-only + `-I` + 200-cap suffice). **@Jason: commit the 3 files (parent `1663ee9`) as their own commit before TASK-027.** Evidence in TASK-026 §Review | Jason (commit, then TASK-027) | none |
+| TASK-027 | BE — **client.ts required-field flip (Q-BE-25)** + 5-stage pipeline: stages/prompts, AI_UNDERSTANDING, AI_WRITING multi-pass by-topic + concat assembly + **minimal worker wiring & internal→wire mapping (Q-BE-26 §5)** | SPEC-007 | **DONE — reviewed 2026-08-25 by Sober at `23df16f` (parent `157e5a2`, own commit, 11 files, `git status --porcelain` clean).** Conforms to SPEC-007 + every DoD row. Gates **re-run by me**: `typecheck` exit 0; full `bun test` **259/0** (730 expect, 19 files). Traced read-only: §0 client flip (both fields required + always emitted, `provider` absent); five internal stages; `understandingMessages` = own reasoning not pass-through; `parseTopicPlan` fence-tolerant/capped/deduped/degrades-to-1 no-throw; D2 = pure concat, no stitch; pipeline stays pure. **D-wire mapping (Q-BE-26 risk area) traced end-to-end:** `WIRE_STAGE_BY_INTERNAL` + `reportStage` dup-collapse yield exactly the six `JOB_STAGES` in order; worker test L178 (`stages`===`[...JOB_STAGES]`) + L188 (`[1..6]`) intact & strong against a real temp repo. **Q-BE-27 answered:** implemented-per-SPEC = correct, NOT a rework; the two user-facing D2 effects (prompt-style header; dropped Contributors/Commit-appendix) are business scope → routed to Porter as **Q-SA-24** (SPEC-007 §Questions, NON-BLOCKING). Evidence in TASK-027 §Review | — (TASK-028 unblocked) | TASK-025 (DONE), rests on 026 `157e5a2` |
+| TASK-028 | BE — the **real** AI_CURIOUSNESS loop (text-action protocol) that swaps in for 027's pass-through + env end-to-end | SPEC-007 | **TODO 2026-08-24 — NARROWED (Q-BE-26 Option A).** Worker wiring + internal→wire mapping moved UP to TASK-027; this task is now only `src/ai/curiosity.ts` (real investigator over RepoInspector, env loop cap default 5, safe exit) swapped in at the worker construction site + verifying the now-live curiosity call's env model/max_tokens. No `WorkerOptions`/`routes.ts`/mapping work here. **027's code is committed (`23df16f`); the pass-through seam + `CuriosityInput` interface this task swaps into now exist. TASK-027 reviewed DONE 2026-08-25 → this task is STARTABLE.** **DONE — reviewed 2026-08-25 by Sober at `75acb5f` (parent `23df16f`, 4 files, tree clean).** Conforms to SPEC-007 §Flow 3 + D4 + D5 and all four DoD rows. Gates **re-run by me**: `typecheck` exit 0; full `bun test` **274/0** (771 expect, 20 files; was 259/0 at `23df16f`). Traced read-only: env-bounded loop (default 5) with safe exit on done/unparseable/no-actionable/cap, `JSON.parse` in try/catch (malformed reply = safe `stop`, never a job abort); D4 vocabulary exact, unknown/incomplete items dropped; results fed back via `repoBlock` (`REPO_OPEN`/`REPO_CLOSE`) — DATA not instructions (D5); investigator returns **raw** findings, `understandingMessages` wraps once (no double-fence); **worker swap only** (single allowed edit, no `WorkerOptions`/`routes.ts`/mapping/DB/wire change, `progress.total` stays 6); env model+`max_tokens` reach every AI_CURIOUSNESS call body (REQ-008 AC 3, now-live stage asserted in both new tests). No new user-facing string, no scope guessed. Evidence in TASK-028 §Review | — (SPEC-007 tasks all DONE) | TASK-026, TASK-027 (both DONE) |
+| TASK-029 | BE — **model-level fallback (Req-7)**: `deepseek-v4-flash`=30000 in `APPROVED_MODEL_CAPS` + `AI_FALLBACK_MODELS` env chain + fallback **inside `createHttpAiClient`** (primary → retries → next fallback model, clamped to 30000) | SPEC-007 | **TODO — written 2026-08-25 by Sober.** Design = SPEC-007 §"Fallback models (Req-7)" + D6: trigger on any provider/model-side exhaustion (NOT a 4xx), order `deepseek-v4-pro`→`deepseek-v4-flash` de-duped vs primary, `max_tokens` clamped to the fallback model's 30000 cap, empty `AI_FALLBACK_MODELS` = disabled. **Only `config.ts`/`.env.example`/`client.ts`/`routes.ts` (+ tests) change — `pipeline.ts`/`curiosity.ts`/`worker.ts` untouched.** **Policy is a stakeholder PROPOSAL (Q-SA-25, NON-BLOCKING) — build to proposed env defaults now; his answer changes config not code (D3 precedent).** **REVIEW 2026-08-25 (Jason) at `4bfc21e`** (parent `75acb5f`, tree clean). Fallback lives in `createHttpAiClient`: ordered de-duped chain (`buildModelChain`) → per-model `MAX_ATTEMPTS` retries → next fallback, `max_tokens` clamped to fallback cap (D6b); advances only on `retryable===true` exhaustion (`shouldFallBack`), a non-retryable 4xx throws as today; empty chain = today's behaviour. `deepseek-v4-flash`=30000 added; `AI_FALLBACK_MODELS` (default pro,flash; explicit-empty=disabled; unknown id=fatal ConfigError) in config + `.env.example` + `describeConfig`. `routes.ts` wires it; **`pipeline.ts`/`curiosity.ts`/`worker.ts` untouched**. One extra file `src/ai/log.ts` = the D6d `fallback:true` marker (flagged Q-BE-29, NON-BLOCKING). **DONE — reviewed 2026-08-25 by Sober at `4bfc21e`** (parent `75acb5f`, tree clean, `git show --stat` = the 5 named files + 2 tests only; `pipeline.ts`/`curiosity.ts`/`worker.ts` absent). Gates **re-run by me**: `typecheck` exit 0; `bun test` **287/0** (was 274/0; +13). Traced read-only: D6a `shouldFallBack=retryable===true` = exactly the fallback family (4xx + malformed-response are `retryable:false` → throw as today); D6b clamp `min(max_tokens,cap)`; D6c de-duped chain (empty ⇒ `[primary]` ⇒ today's behaviour); D6d marker on non-primary attempts only. Six DoD test cases (a–f) + de-dup + marker all green. **Q-BE-29 both notes confirmed, neither a rework** (log.ts is the required D6d edit; absent-vs-empty followed the SPEC table). Evidence in TASK-029 §Review. Policy (Q-SA-25) still a pre-ship gate, NON-BLOCKING. | — (SPEC-007 all tasks DONE) · Jason (done) | TASK-027 (DONE) |
+| TASK-030 | BE — grow the wire stage list six→eight (`JOB_STAGES` + `AI_CURIOUSNESS`/`AI_UNDERSTANDING`) and make `WIRE_STAGE_BY_INTERNAL` an identity map (un-fold D-wire) | SPEC-008 | **DONE 2026-08-25 (Sober review) at `803a44c`.** Six files: `jobs.ts` (list six→eight + doc), `worker.ts` (identity map + 3 doc comments), comment-only `stages.ts`/`pipeline.ts`, worker + routes tests. `progress.total` stays **derived** from `JOB_STAGES.length` (no literal 6/8; `JobStage` also tracks the list). Pipeline flow/report/model/config/`WorkerOptions`/`routes.ts`/DB all UNTOUCHED (confirmed `git show --stat` = the six named files only). Real fake-AiClient run reports **eight distinct** wire stages in order; new test asserts `AI_CURIOUSNESS`=6/8 + `AI_UNDERSTANDING`=7/8 (REQ-009 AC 1/2). **Gates re-run by Sober (HEAD `803a44c`, clean tree): `typecheck` exit 0; `bun test` 288/0** (807 expect, 20 files; matches Jason exactly, +1 over 287/0 at `4bfc21e`). Conformance + all DoD rows traced read-only; no questions either side. Verdict/evidence in TASK-030 §Review. | Jason (BE) → Sober (DONE) | none |
+| TASK-031 | FE — mirror the eight-stage list in `REPORT_STAGES` + add the two (DRAFT) step labels to both dictionaries; `ReportProgress` structurally unchanged | SPEC-008 | **DONE — reviewed 2026-08-25 by Sober at `e75346e`** (branch `develop`, parent `68a1475`, tree clean; `git show --stat` = exactly the three named files). Three files only: `report.ts` `REPORT_STAGES` six→eight (**verified byte-for-byte equal to backend `JOB_STAGES` at `803a44c`**) + comment fix; `dictionaries.ts` two new `reports.view.stage.*` keys in **both** `th`+`en` (draft labels, pending Q-SA-26 — final = one-line edit); `ReportProgress.tsx` doc comments six→eight only (render is list-driven, unchanged; no `-1`/raw-key by construction — `MessageKey`+`Record<MessageKey,string>` force both keys in both langs, typecheck green proves it). Gates **re-run by me**: `bun run typecheck` exit 0; `bun run build` compiled OK (Next 16.3.2, 5 pages). Optional stale "six" comments in `ReportViewContent.tsx`/`globals.css` correctly left (dynamic numerals). Verdict/evidence in TASK-031 §Review. End-to-end live-highlight (both tasks now DONE) = combined REQ-009 acceptance run, a Porter/human pre-ship follow-up, not this DoD. | Fern (FE) → Sober (DONE) | none |
+
+**Next (2026-08-25, PM unit): PM acceptance check on REQ-006 (`SPEC_DONE`) — code AC passes,
+visual ACs routed to the human; REQ-006 stays `SPEC_DONE`.** Startup ritual done (PROTOCOL, PM.md,
+board, 2026-08-25 + 2026-08-24 logs). No specs/tasks/code touched; edits limited to REQ-006 (mine),
+board, log. Read the two SPEC-005 commits read-only in `code-report-front` (`develop`) — reading is
+not communicating. **Re-verified both diffs:** TASK-022 `859148a` = `NewReportFields.tsx` 2 lines
+(`sm:items-end`, layout-only); TASK-023 `68a1475` = `globals.css` + `NewReportFields.tsx`, read-face
+overlay via shared `formatIsoDate` → `DD/MMM/YY`, native `type=date` kept, wire stays `YYYY-MM-DD`,
+no new string/dep. **AC 3 (no value/366-day/gating/string/other-screen change) PASSES** on the
+diffs. **ACs 1/2/4 are VISUAL/render criteria not closeable from code** (typecheck/tests inert to a
+CSS/className diff — Sober's own note), and **AC 2 by its wording is the stakeholder's to satisfy**
+(he opens the same screen and no longer sees the mismatch he photographed). No deployed env + the
+new-report screen is admin-gated behind the real backend (team may not touch), so Porter cannot
+render it honestly either — same shape as the TASK-009/REQ-009 acceptance runs. **Did NOT guess the
+visual outcome:** routed **Q-REQ006-1** to the human (Thai, in REQ-006 §Questions) to look-and-confirm
+the two fixes. **REQ-006 stays `SPEC_DONE`; on his "ok" → `DELIVERED`.** **This BLOCKS DELIVERED
+only — NON-BLOCKING for the team** (SPEC-005 fully built, no engineer/SA waits). Writes: REQ-006
+(status header, §"PM acceptance check", §Questions Q-REQ006-1), board REQ-006 row + this entry, the
+log. **@Sober/@Jason/@Fern: nothing new is yours.** Not this unit (still open PM items for a later
+unit): relay **Q-SA-26** (REQ-009 draft step labels) + run the **REQ-009** combined live-highlight
+acceptance check; both NON-BLOCKING.
+
+**Next (2026-08-25, SA unit): picked up REQ-009 (READY_FOR_SA) → IN_SPEC; wrote SPEC-008 +
+TASK-030 (BE) + TASK-031 (FE).** Design only — no code, no SQL, no environment. Read the real
+backend (`jobs.ts`/`worker.ts`/`stages.ts`/`pipeline.ts`) + frontend (`report.ts`/
+`ReportProgress.tsx`/`dictionaries.ts`) before designing. **Design = un-fold SPEC-007's
+deliberate D-wire fold:** the pipeline already announces AI_CURIOUSNESS + AI_UNDERSTANDING
+unconditionally, so the only reason they're hidden is `WIRE_STAGE_BY_INTERNAL` folding them
+onto AI_COMMITS/AI_WRITING. Un-fold it: grow `JOB_STAGES` (and FE `REPORT_STAGES`) six→eight in
+pipeline-announce order, make the mapping identity; `progress.total` is derived from the list
+length so it becomes 8 with no literal change; `ReportProgress` renders per-`REPORT_STAGES` row
+so it needs **no structural change**, only two list entries + two labels. Nothing in the
+pipeline, report content, model config, or schema changes (display-only; REQ-008 stays
+DELIVERED). Two independently-startable tasks (wire strings fixed by the SPEC remove any
+BE/FE coordination risk). **Did NOT invent the shipped labels:** drafted Thai-primary/English
+labels in the existing step voice and routed them to Porter as **Q-SA-26 (NON-BLOCKING, carries
+REQ-009's Q-REQ009-1)** for stakeholder confirm — FE builds the keys with drafts now; final text
+= one-line dict edit, blocks nothing. Writes: SPEC-008, TASK-030, TASK-031, board rows (REQ-009,
+SPEC-008, TASK-030/031), this Next entry, the log. **@Jason: TASK-030 STARTABLE now. @Fern:
+TASK-031 STARTABLE now.** **@Porter: Q-SA-26 awaits your relay to the stakeholder — NON-BLOCKING**
+(does not gate either task's build). Q-SA-24 (SPEC-007 appendix, my optional cleanup assessment)
+also still open on my side.
+
+**Next (2026-08-25, SA unit): reviewed TASK-029 (model-level fallback, Req-7) → `DONE` at
+`4bfc21e`; SPEC-007 → DONE; REQ-008 → `SPEC_DONE`.** Review only — no code, no SQL, no
+environment. Gates re-run by me in `code-report-back` (clean tree at `4bfc21e`): `typecheck`
+exit 0; `bun test` **287/0** (matches Jason's evidence). Conforms to SPEC-007 §Fallback + D6a–d
+and all four DoD rows; files touched = the allowed set (`config.ts`/`.env.example`/`client.ts`/
+`routes.ts`/`log.ts` + 2 tests, `pipeline.ts`/`curiosity.ts`/`worker.ts` untouched). D6a predicate
+`shouldFallBack=retryable===true` cross-checked against the `Failure` classification = exactly the
+fallback family (4xx + malformed-response are non-retryable → throw as today). **Q-BE-29 both
+notes confirmed, neither a rework:** `log.ts` is the required D6d edit; absent-vs-empty followed
+the SPEC §Configuration table (my TASK-prose slip, SPEC governs). TASK-029 was the last un-built
+SPEC-007 piece (Req-7), so REQ-008 is now `SPEC_DONE` (SA-Lead resp. #7). **`SPEC_DONE` = built +
+SA-reviewed, NOT shipped:** Q-SA-25 (fallback policy) + Q-REQ008-1 (D3 model defaults) remain
+**pre-ship** sign-offs Porter must clear before `DELIVERED`. Writes: TASK-029 (§Review + §Questions
+answer, Status DONE), SPEC-007 (Status DONE), board rows (REQ-008, SPEC-007, TASK-029), this Next
+entry. **@Porter: REQ-008 is ready for your acceptance check** — and Q-SA-24 + Q-SA-25 still await
+your business call (both NON-BLOCKING). **@Jason: no startable BE task right now** — all SPEC-007
+work is DONE; next BE work is whatever Porter routes next (e.g. TASK-014 Phase B when the human's
+run data lands). @Fern: nothing new.
+
+**Next (2026-08-25, SA unit): designed REQ-008 Req-7 (model-level fallback) into
+SPEC-007 + created TASK-029.** No code, no SQL, no environment — design only. Added SPEC-007
+§"Fallback models (Req-7)" + decision **D6**: fallback lives **inside `AiClient`** (above the
+existing per-model retry) so `pipeline.ts`/`curiosity.ts`/`worker.ts` are untouched; triggers
+on any provider/model-side exhaustion (timeout/5xx/`success:false`/network) but **not** a 4xx;
+chain `deepseek-v4-pro`→`deepseek-v4-flash` de-duped vs the primary; `max_tokens` **clamped to
+the fallback's 30000 cap** (the 40000/50000-budget stages degrade rather than fail); empty
+`AI_FALLBACK_MODELS` disables it. Added the `AI_FALLBACK_MODELS` config row + `deepseek-v4-flash`
+=30000 to the cap table (Q-REQ008-4). **The policy is a stakeholder PROPOSAL → Q-SA-25 to
+@Porter (NON-BLOCKING):** trigger rule, we cannot distinguish credit-exhaustion from a generic
+error from the documented `{success:false,error}`/500 shape (log-only labelling; optional DATA
+REQUEST for a real out-of-credit payload), pro→flash order, and the 30000 clamp trade-off — all
+env, so his answer changes config not code (D3 precedent). **TASK-029 = TODO/STARTABLE** (only
+`config.ts`/`.env.example`/`client.ts`/`routes.ts`+tests change). REQ-008 stays **IN_SPEC** until
+TASK-029 is built + reviewed. Writes: SPEC-007 (§Config, §Fallback, §Tasks, §Questions Q-SA-25,
+D6), TASK-029 (new), board rows (REQ-008, SPEC-007, TASK-029). **@Jason: TASK-029 is your
+startable top.** **@Porter: Q-SA-25 (+ still Q-SA-24) await your business call — both
+NON-BLOCKING.** @Fern: nothing new.
+
+**Next (2026-08-25, SA unit): TASK-027 reviewed → `DONE` at `23df16f`; TASK-028
+unblocked/startable.** Gates re-run by me (`typecheck` 0, `bun test` 259/0); conforms to
+SPEC-007 + all DoD; D-wire mapping traced to exactly the six `JOB_STAGES` in order (worker
+tests L178/L188 intact). Answered **Q-BE-27**: Jason implemented per SPEC (not a rework);
+its two user-facing D2 effects (prompt-style `formatReportParams` header; dropped
+Contributors/Commit-appendix) are business scope, so I raised **Q-SA-24 to @Porter**
+(SPEC-007 §Questions, **NON-BLOCKING** — does not gate TASK-028 or FE REQ-009). Writes:
+TASK-027 §Questions answer + §Review, SPEC-007 §Questions (Q-SA-24), board rows
+(TASK-027/028, SPEC-007, REQ-008). **@Jason: TASK-028 (real AI_CURIOUSNESS loop) is your
+startable top.** **@Porter: Q-SA-24 awaits your business call (NON-BLOCKING).** My own next
+SA unit remains designing REQ-008 Req-7 fallback-model into SPEC-007/config (incl.
+`deepseek-v4-flash`=30000 cap) — NOT done this unit. @Fern: nothing new.
+
+**Next (2026-08-25, BE unit): no startable BE TASK — ball with Sober.** TASK-027 is
+in REVIEW at `23df16f` (Sober advances it, not BE). TASK-028 is TODO but `Depends on:
+TASK-027`, which is not DONE — per "respecting Depends on: order" it is not yet
+startable (027 could return REWORK, changing the curiosity seam 028 swaps into). Same
+class as Q-BE-25/Q-BE-26: BE does not build across an unsettled boundary. No code/SQL/
+env. **@Sober: review TASK-027 (+ Q-BE-27 non-blocking scope confirm); marking it DONE
+unblocks TASK-028.** @Porter/@Fern: nothing new.
+
+**Next (2026-08-24, BE unit): TASK-027 implemented + committed `23df16f` → REVIEW.**
+The 5-stage pipeline + §0 client `model`/`max_tokens` flip + §5 minimal worker wiring
+(Q-BE-26 Option A) all in ONE green commit (parent `157e5a2`; 10 files + 1 new test
+fixture). Pass-through `CuriosityInvestigator` only — no `curiosity.ts`, no text-action
+loop, no env end-to-end (all TASK-028). Wire stays six: internal→wire mapping
+(curiosity→AI_COMMITS, understanding→AI_WRITING) with consecutive-dup collapse in the
+worker; `JOB_STAGES`/`progress.total`/schema untouched. `typecheck` 0; `bun test`
+**259/0** run 3× (+10 vs 249; no flaky auth failure seen). **Q-BE-27 raised
+(NON-BLOCKING):** D2 assembly makes the report header `formatReportParams` verbatim
+(prompt-style labels) and drops the old guaranteed Contributors/Commit-appendix (now
+AI-planned topics) — implemented per SPEC, Sober to confirm scope. **@Sober: TASK-027 in
+REVIEW.** @Porter/@Fern: nothing new.
+
+**Next (2026-08-24, SA unit): Q-BE-26 RULED → Option A. TASK-027 widened (minimal
+worker wiring + internal→wire mapping) and UNBLOCKED → `TODO`/startable; TASK-028
+narrowed to the real investigator swap.** Jason surfaced a real sequencing conflict
+(not guessed), the same class as Q-BE-25, so it takes the same ruling for the same
+reason: a required-field contract change lands in ONE green commit with its sole
+consumer, never a red tree "between tasks". **Verified his load-bearing facts read-only
+at `157e5a2` before ruling:** `grep -rn "runPipeline" src/` = def `pipeline.ts:68` +
+sole call `worker.ts:198`; `grep -rn "\.chat(" src/` = exactly the three `pipeline.ts`
+sites (L84/97/111) → §0's client flip forces per-stage config into the pipeline that
+only `worker.ts` supplies, no green subset. `reports-worker.test.ts` L157/L165/L168–174
+are exactly as cited; `worker.ts` L221 passes the stage straight through
+(`onStage:(stage)=>jobs.setStage`) so the mapping's home is that callback; `routes.ts`
+`productionDeps()` already `loadConfigOrExit()`s + builds `createReportWorker({...})` at
+L63, so threading `Config.aiStages`/`aiCuriosityMaxIterations`/`aiWritingMaxPasses`
+there is a clean extension beside the existing `createAiClient` seam. **Rejected Option
+B** (red project typecheck + red suite between 027/028) on the same grounds I rejected
+Q-BE-25 Option 1. **Boundary fixed so it can't drift:** 027 gains ONLY the mapping + the
+*pass-through* investigator construction + config threading + the `reports-worker.test.ts`
+update; **028 keeps the REAL work** — `src/ai/curiosity.ts` loop (text-action protocol,
+env cap, safe exit), swapping the real investigator in for the pass-through, and the
+end-to-end env check for the now-live curiosity call. **Applied (SA owns specs/tasks):**
+TASK-027 answer in §Questions + §5 in "What to do" + 3 DoD rows tagged (Q-BE-26 §5) +
+status BLOCKED→TODO; TASK-028 §2/DoD narrowed + amend note; SPEC-007 §Tasks 027/028
+annotated. No code, no SQL, no environment; SA edits to SA-owned files only (+ read-only
+git/grep to verify). **@Jason: TASK-027 is unblocked and STARTABLE** — it now carries the
+minimal worker wiring + the internal→wire mapping (curiosity→AI_COMMITS,
+understanding→AI_WRITING, wire stays 6); do NOT pull the real curiosity loop in, that
+stays 028. **@Porter/@Fern: nothing new is yours.** REQ-008's Req 7 fallback-model design
+(incl. `deepseek-v4-flash`=30000 cap) into SPEC-007/config remains my NEXT SA unit —
+deliberately not this one (one unit only).
+
+**Next (2026-08-24, BE unit): TASK-026 committed at `157e5a2`; TASK-027 picked up →
+BLOCKED on Q-BE-26 (a real TASK-027/028 worker-boundary sequencing conflict, surfaced
+not guessed).** Committed the 3 reviewed TASK-026 files (`index.ts`/`inspect.ts`/
+`test/git-inspect.test.ts`) as their own commit (parent `1663ee9`, clean tree) per
+Sober's process note — 028's `depends on: 026` now rests on a committed base. Then read
+SPEC-007 + TASK-027 + the real ai layer (`client.ts`/`pipeline.ts`/`prompts.ts`/
+`stages.ts`) + `worker.ts`/`config.ts`/`reports-worker.test.ts` at `157e5a2`.
+**Found a blocking conflict before writing any code:** TASK-027's §0 client flip makes
+`model`+`max_tokens` required on every `client.chat`, so the pipeline must receive
+per-stage config that only its sole prod caller `worker.ts` can supply — the whole task
+is entangled through project-wide typecheck (no green subset). And the 5-stage redesign
+breaks three `reports-worker.test.ts` assertions (report shape L157, 6-unique wire
+stages L165, 6-stage progress L168–174) whose correct fix — worker wiring + the
+internal→wire stage mapping — is **explicitly TASK-028**. Yet 027's DoD demands
+`bun test`+typecheck green. Doing it anyway = pulling TASK-028's `worker.ts` + mapping
+into 027 (the overlap/throwaway anti-pattern Sober rejected as Option 1 in Q-BE-25). So
+I raised **Q-BE-26** in TASK-027 §Questions with two options + my lean (**Option A** —
+land the contract change with its sole caller in one green commit, per Sober's own
+Q-BE-25 principle; narrow TASK-028 to the real investigator loop + env verification).
+No TASK-027 code written. No SQL, no environment; the only repo write is the TASK-026
+commit (mandated follow-through). **@Sober: TASK-027 is BLOCKED on Q-BE-26 — please rule
+the sequencing (and, if A, confirm the internal→wire mapping is mine to add in 027).**
+TASK-028 stays blocked on 027. @Fern/@Porter: nothing new is yours.
+
+**Next (2026-08-24, SA unit): TASK-026 (`RepoInspector`) reviewed → `DONE`; commit
+PENDING @Jason.** Read-only against the real backend `code-report-back`; working tree
+at parent `1663ee9`, `git status --porcelain` = exactly the 3 in-scope changes
+(`index.ts`/`inspect.ts`/`test/git-inspect.test.ts`) — no `client.ts`/`pipeline.ts`/
+config touched. SPEC-007 **D5 re-derived, not trusted:** two-layer path confinement
+(lexical `..`/absolute via `relative`, then `realpath` on **both** root & target so a
+symlinked clone root isn't falsely rejected and an escaping symlink is caught);
+typed sentinels (`OUTSIDE_REPO_MARK`/`NOT_FOUND_MARK`/`BINARY_FILE_MARK`) never a throw;
+caps reuse `MAX_TREE_PATHS`/`MAX_CHARS_PER_FILE`/`TRUNCATION_MARK`; `search` =
+`git grep --no-color -n -I --fixed-strings -e <word> --` via `runGit`'s argv spawn (no
+shell), capped `MAX_SEARCH_HITS=200`; no network/PAT/DB/clone-lifecycle change. Gates
+re-run by me: `bun run typecheck` **exit 0**, `bun test test/git-inspect.test.ts`
+**14/0**, full `bun test` **249/0** (was 235; +14, no regression, no flake this run).
+**Jason's two caveats both ACCEPTED, not reworked:** (1) symlink-escape assertion
+env-skipped on this Windows host (unprivileged `fs.symlink` EPERM) — branch sound by
+inspection, lexical vectors proven; **POSIX-CI note, not a code gap**; (2) `search`
+not mirroring the `tree.ts` exclusion list is **SPEC-conformant** — D5 scopes `search`
+to a capped `git grep`, which is tracked-files-only (gitignored node_modules never
+appears) + `-I` skips binaries + 200-hit cap; mirroring is an optional future tuning,
+flag to Porter only if noisy. **Process note (not a defect): the reviewed work is
+uncommitted** — all DoD rows pass without a commit so the verdict is DONE, but
+**@Jason: commit the 3 files (parent `1663ee9`) as their own commit before starting
+TASK-027**, so 026/027 land separately and TASK-028's `depends on: 026` rests on a
+committed base. SA does not commit code. No SQL, no environment; SA edits to SA-owned
+files only (+ read-only git/test gates). **@Jason: TASK-026 DONE — after you commit it,
+TASK-027 is your startable top (carries the client-flip); TASK-028 still needs
+026+027.** @Porter: nothing new from me this unit; the Req 7 fallback design remains my
+next SA unit (deliberately NOT this one — one unit only). @Fern: nothing new is yours.
+
+**Next (2026-08-24, PM unit): stakeholder answered Q-REQ008-4 — `deepseek-v4-flash`
+tier/cap settled.** Verbatim *"ระดับเดียวกันกับ gpt-4.1mini"* → same tier as
+`gpt-4.1-mini`, which Req 6 fixes at **40–50% reasoning, ≤ 30000 token/call**; so
+`deepseek-v4-flash` takes the **same 40–50% tier, ≤ 30000/call** (identical to its
+sibling fallback `deepseek-v4-pro`). Unambiguous against the confirmed model list — no
+new question, no assumption. Writes: REQ-008 §Questions (Q-REQ008-4 answer, CLOSED) +
+Req 6 approved-model list + Req 7 note + Constraints line, the REQ-008 board row, this
+narrative, today's log. No `specs/`, no `tasks/`, no code, no TASK status moved, no SQL,
+no environment, no engineer addressed. **@Sober:** the flash cap is now a known number —
+when you design the fallback (Req 7) into SPEC-007, add `deepseek-v4-flash = 30000` to
+the config validation table (`APPROVED_MODEL_CAPS`, TASK-025's config work). NON-BLOCKING:
+Jason's current TASK-026/027 are unaffected; fallbacks stay bounded by each stage's
+`max_tokens` regardless. **REQ-009** (surface the two new stages, Q-SA-23 yes) is still
+Porter's to raise in a later PM unit — not this one (one unit only). @Jason/@Fern:
+nothing new reaches you except as Sober's TASKs. **PM intake/relay unit only — I designed
+nothing.**
+
+**Next (2026-08-24, SA unit): TASK-025 reviewed → `DONE` at `1663ee9`; TASK-027
+unblocked.** Config-only diff corroborated read-only against the real backend
+`code-report-back` (clean tree, HEAD `1663ee9`, parent `d1f0993`): `git diff` =
+exactly the three in-scope additive files (`config.ts` +98, `config.test.ts` +76,
+`.env.example` +31), `client.ts`/`pipeline.ts` absent — the Q-BE-25 Option-2 re-scope
+held (client flip stays in 027). Defaults + `APPROVED_MODEL_CAPS` match SPEC-007's
+table; `loadAiStages` validates in the right order (unknown `*_MODEL` → fatal
+`ConfigError`, then `*_MAX_TOKENS` over the assigned model's cap → fatal), all five
+defaults within cap; `describeConfig` extended with no secrets. Gates re-run by me:
+`bun run typecheck` **exit 0**, `bun test test/config.test.ts` **12 pass/0 fail**
+(deterministic). **Full `bun test` = 235/0 on 3 of 4 runs;** one run flaked a single
+auth test (`GET /api/auth/me > tampered token → 401`) — established PRE-EXISTING &
+non-deterministic (isolated `auth.test.ts` = 16/0 twice; full suite = 235/0 three
+times running), and it shares no code with a config-only diff, so **not TASK-025's
+defect**. **Observation to @Porter (NON-BLOCKING, no REQ implied):** the full test
+suite is flaky under full-run — a separate hardening pass someday. No code, no SQL,
+no environment; SA edits to SA-owned files only (+ read-only git/test gates).
+**@Jason: TASK-027 is unblocked** (`depends on: TASK-025` satisfied) — it carries the
+`client.ts` required-field flip from the top; TASK-026 still independently startable.
+**@Sober (me), next unit:** design REQ-008's fallback-model requirement (Req 7,
+`deepseek-v4-pro`/`deepseek-v4-flash` on credit-exhaustion/error) into SPEC-007 +
+the model-config — NOT this unit (one unit only). @Fern: nothing new is yours.
+
+**Next (2026-08-24, PM unit): stakeholder answered REQ-008's two open questions
+(Q-REQ008-1 + Q-SA-23); recorded into REQ-008 and routed.** No `specs/`, no `tasks/`,
+no code, no TASK status moved, no SQL, no environment, no engineer addressed. Writes:
+REQ-008 (§Questions answers + new Req 7 / AC / Constraints), REQ-008 board row, this
+narrative, today's log. **Q-REQ008-1 = delegated to the team as proposed** (*"ให้ทีม
+เลือกตามที่เสนอ"*): the team's proposed model→stage mapping stands (still proposal-back
+before ship). **PLUS a new fallback-model requirement he added in the same breath** —
+`deepseek-v4-pro` + `deepseek-v4-flash` are **backup models used when a primary model
+runs out of credit ("เงินหมด") or errors** — folded into REQ-008 as **Req 7** + a
+Constraints line + an AC. **@Sober: the fallback is new business intent to design into
+SPEC-007 / the model-config work** (detection off the AI API CENTER failure shapes, and
+the pro-vs-flash order, are your design calls → propose back to him). **Q-REQ008-4 (NEW,
+NON-BLOCKING, to human):** `deepseek-v4-flash` is a new model id with no stated tier/cap
+— team proposes, he confirms; fallbacks stay bounded by each stage's `max_tokens`.
+**Q-SA-23 = yes, show the reasoning steps** (*"ต้อง นิดหน่อย แสดง พอสมควร ให้รู้ว่า
+กำลังทำสเต็ปไหนอยู่"*) → per Sober this is a **separate FE requirement** (surface
+AI_CURIOUSNESS + AI_UNDERSTANDING as their own progress steps + Thai/English labels, and
+BE emits the two new wire stages). **Porter will raise it as REQ-009 in a following PM
+unit** — REQ-008 stays backend-only and the current BE work is NOT blocked (Jason stays
+on the six-stage wire). @Jason/@Fern: nothing new reaches you except as Sober's TASKs.
+**PM relay/intake unit only — I designed nothing.**
 
 **Next (2026-08-24, SA unit): Q-BE-25 RULED → Option 2. Re-scoped TASK-025 (config.ts
 only) + TASK-027 (gains the client.ts contract flip); TASK-025 UNBLOCKED.** Jason hit a
