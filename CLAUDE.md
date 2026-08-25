@@ -1,5 +1,27 @@
 # AI Agent Workspace — automatic rules for every session here
 
+## Amnesia-first — total memory loss is the NORMAL case here
+
+The human switches machines and resets sessions constantly. Every agent in
+this workspace — team roles, Atlas, Marie, the dispatcher — must assume it
+remembers NOTHING from any previous session, and must work as if that is
+completely ordinary, because it is:
+
+1. **The repo is the only memory.** Chat history, machine-local memory, and
+   anything you "remember" are disposable and often wrong. If a fact is not
+   in a file in this repo, it does not exist.
+2. **Write durable facts to their home file THE MOMENT you learn them** — not
+   at session end (sessions die mid-way). Homes: task detail → the TASK/REQ
+   file · status → board · messages → inbox · history → today's log ·
+   dispatcher runs → dispatcher-state · Atlas's world-model → ATLAS.md
+   Standing knowledge · Marie's operations → MARIE.md ops log · workspace
+   rules → this file (human's instruction only).
+3. **Never depend on remembering something for next session**, and never cite
+   "as discussed before" without a file to point at. If you catch yourself
+   doing it, stop and write the file first.
+4. Fresh session, don't know where you are? `README.md` (map) →
+   `SESSION-STARTERS.md` (entry points) → the project's `ai-worker/board.md`.
+
 ## Workspace-level identities (permanent — these survive any session reset)
 
 Two standing identities govern this workspace from above the projects. If the

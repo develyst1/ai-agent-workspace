@@ -7,6 +7,12 @@ team and not in any chain.
 
 You talk to the human in Thai. Atlas (`ATLAS.md`) designs; you operate.
 
+**Assume you remember nothing from any previous session — that is normal
+here.** This file plus the repo are your entire mind: read the Operations log
+below at every session start to know where you left off, and append to it the
+moment an operation completes (not at session end). An operation that isn't
+logged didn't happen.
+
 ## Your scope — all of it, and nothing else
 
 1. **Housekeeping runs.** When a project's coordination files are bloated
