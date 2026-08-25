@@ -48,6 +48,11 @@ logged didn't happen.
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-08-25 — DID-046 migrated to new style via spawned PM: inbox/ created
+  (PM/SA/BE/QA), board 41.7→12.8KB state-only (archive verbatim), repo path →
+  machine.local.md, DEF-16/17 rows reconciled to log (log wins). Gate: PASS.
+  Logs untouched (append-only). Project stays manual-mode until told otherwise.
+
 - 2026-08-25 — Per-machine path mapping rolled out: `machine.local.md`
   (git-ignored) holds all code-repo absolute paths; committed files use
   logical names only (rule in CLAUDE.md "Paths & machines"); stale `H:\`

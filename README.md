@@ -39,7 +39,20 @@ All coordination state lives in each project's `ai-worker/` folder:
 └── project-docs/            # raw material you drop in (PDFs, notes, images)
 ```
 
-## How to run a work session
+## Two work modes (same files, switch freely — even mid-project)
+
+| | **Manual mode** (multi-session) | **Dispatcher mode** |
+|---|---|---|
+| How | One chat per role; the human routes and nudges | One session spawns roles as subagents (`DISPATCHER.md`); stops at checkpoints with a digest |
+| The human is | MD/PM/PO — deep in the details | CEO — answers questions at checkpoints |
+| Best for | Custom, design-heavy work you want to steer closely | Routine delivery, speed, lower token burn |
+| Start | Role starters in `SESSION-STARTERS.md` | `อ่าน DISPATCHER.md แล้วรัน <project>` |
+
+Both modes read and write the same `ai-worker/` files, so nothing migrates
+when you switch. Workspace-level identities: **Atlas** (`ATLAS.md`, architect)
+and **Marie** (`MARIE.md`, workflow operations).
+
+## How to run a work session (manual mode)
 
 Open one Claude Desktop chat **per role** and start it with the ready-made
 prompt from **`SESSION-STARTERS.md`** (recommended — it bakes in the
