@@ -53,10 +53,10 @@
 | REQ-003 | Frontend UI quality + folder-structure overhaul | HIGH | IN_SPEC — TASK-015 open; TASK-016 blocked on paper only, Q-SA-17 answered "ก" awaiting Sober's transcription (REQ-003 §Questions) | Sober · Fern (TASK-015) |
 | REQ-004 | New-report form usability + back from report page | HIGH | IN_SPEC 2026-08-21 — SPEC-003 ACTIVE; 017/018/019 DONE, only TASK-020 left; Q32/Req 7d freeze widening unwritten (REQ-004 §Questions) | Fern (TASK-020) · Sober (7d widening) |
 | REQ-005 | Frontend repo runs on bun instead of npm | HIGH | DELIVERED 2026-08-24 (Porter) — evidence in REQ-005 + TASK-021 §Review | — |
-| REQ-006 | Inconsistencies on the new-report screen | HIGH | SPEC_DONE — PM acceptance 2026-08-25; visual confirm Q-REQ006-1 with the human (REQ-006 §Questions); on his "ok" → DELIVERED | Human → Porter |
-| REQ-007 | Reword existing UI strings Thai-primary (Q40) | MEDIUM | IN_SPEC 2026-08-24 — SPEC-006 ACTIVE; TASK-024 BLOCKED on Q-SA-22 sign-off (SPEC-006 §Questions) | Porter (relay Q-SA-22) → Fern |
+| REQ-006 | Inconsistencies on the new-report screen | HIGH | SPEC_DONE — PM acceptance 2026-08-25; blanket human reply 2026-08-25 does NOT satisfy the visual confirm — Q-REQ006-1 still open, re-asking narrowly (REQ-006 §Questions) | Human → Porter |
+| REQ-007 | Reword existing UI strings Thai-primary (Q40) | MEDIUM | IN_SPEC 2026-08-24 — SPEC-006 ACTIVE; Q-SA-22 ANSWERED 2026-08-25 (accepted as proposed, also closes Q41 for this pass) — TASK-024 unblocked (SPEC-006 §Questions) | Sober · Fern (TASK-024) |
 | REQ-008 | Deeper backend AI pipeline — 5-stage redesign | HIGH | DELIVERED 2026-08-25 (Porter) — all sign-offs cleared at `4bfc21e`; detail in REQ-008 + SPEC-007 §Questions | — · Sober (optional appendix-cleanup assessment, NON-BLOCKING) |
-| REQ-009 | Show AI_CURIOUSNESS + AI_UNDERSTANDING as their own progress steps | MEDIUM | SPEC_DONE 2026-08-25 — both SPEC-008 tasks DONE (`803a44c` BE, `e75346e` FE); labels DRAFT pending Q-SA-26 (SPEC-008 §Questions) | Porter (acceptance run + relay Q-SA-26, both NON-BLOCKING) |
+| REQ-009 | Show AI_CURIOUSNESS + AI_UNDERSTANDING as their own progress steps | MEDIUM | SPEC_DONE 2026-08-25 — both SPEC-008 tasks DONE (`803a44c` BE, `e75346e` FE); Q-SA-26 ANSWERED 2026-08-25 (labels confirmed as shipped, no edit needed); combined live-highlight acceptance run still open (SPEC-008 §Questions) | Porter (acceptance run, NON-BLOCKING) |
 
 ## Specs
 
@@ -67,9 +67,9 @@
 | SPEC-003 | New-report form usability + back | REQ-004 | ACTIVE 2026-08-21 — 017/018/019 DONE, only TASK-020 open; 7d freeze widening unwritten | Fern (TASK-020) · Sober |
 | SPEC-004 | bun replaces npm | REQ-005 | DONE 2026-08-24 — REQ-005 DELIVERED | — |
 | SPEC-005 | New-report screen: button alignment + date-format parity | REQ-006 | DONE 2026-08-24 — both tasks DONE (`859148a`, `68a1475`) | — (REQ-006 with Porter/human) |
-| SPEC-006 | Thai-primary UI reword | REQ-007 | ACTIVE 2026-08-24 — Form 2 ruled; scope = `th` values in `dictionaries.ts` only; drafts gated on Q-SA-22 | Porter (Q-SA-22) · Fern (TASK-024) |
+| SPEC-006 | Thai-primary UI reword | REQ-007 | ACTIVE 2026-08-24 — Form 2 ruled; scope = `th` values in `dictionaries.ts` only; Q-SA-22 ANSWERED 2026-08-25, TASK-024 unblocked | Sober · Fern (TASK-024) |
 | SPEC-007 | 5-stage AI pipeline, env model+max_tokens per call | REQ-008 | DONE 2026-08-25 — TASK-025..029 all DONE; Q-SA-24/Q-SA-25 answered + transcribed; REQ-008 DELIVERED | — · Sober (appendix cleanup, NON-BLOCKING) |
-| SPEC-008 | Surface the two reasoning stages in progress | REQ-009 | DONE 2026-08-25 — TASK-030/031 DONE; combined live-highlight run = Porter/human follow-up; Q-SA-26 open | Porter (Q-SA-26 + acceptance run) |
+| SPEC-008 | Surface the two reasoning stages in progress | REQ-009 | DONE 2026-08-25 — TASK-030/031 DONE; Q-SA-26 ANSWERED (labels confirmed, no edit); combined live-highlight run = Porter/human follow-up | Porter (acceptance run) |
 
 ## Tasks
 
@@ -115,10 +115,10 @@ its REQ/SPEC/TASK file, where the answers live).
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| EVIDENCE HAND-OVER (open) — TASK-014 Run A + Run B output into `../project-docs/` | human; Porter relays | Blocks TASK-014 Phase B only. Detail: TASK-014 §Review |
-| Q-SA-22 (open) — REQ-007 loanword policy + Q41 sign-off gate | human; Porter relays | Blocks TASK-024. Detail: SPEC-006 §Questions |
-| Q-REQ006-1 (open) — visual confirm of the two REQ-006 fixes | human | Blocks REQ-006 DELIVERED only. Detail: REQ-006 §Questions |
-| Q-SA-26 (open, NON-BLOCKING) — the two draft step labels for REQ-009 | human; Porter relays | Final wording = one-line dict edit. Detail: SPEC-008 §Questions |
+| EVIDENCE HAND-OVER (still open) — TASK-014 Run A + Run B output into `../project-docs/` | human; Porter relays | 2026-08-25 blanket reply *"ให้คิดแล้วเอาที่ควรนั้นแหละ"* does NOT satisfy this — it is a real data hand-over (actual command/log output), not a judgment call. Still needs the human to run the TASK-014 runbook and paste real output. Blocks TASK-014 Phase B only. Detail: TASK-014 §Review |
+| Q-SA-22 — **ANSWERED 2026-08-25** — REQ-007 loanword policy + Q41 sign-off gate | closed | Accepted as proposed via the blanket reply (usable — a wording call inside settled policy). TASK-024 unblocked. Detail: SPEC-006 §Questions |
+| Q-REQ006-1 (still open) — visual confirm of the two REQ-006 fixes | human | 2026-08-25 blanket reply does NOT satisfy this — AC 2 needs his own eyes on the screen. Porter re-asking narrowly. Blocks REQ-006 DELIVERED only. Detail: REQ-006 §Questions |
+| Q-SA-26 — **ANSWERED 2026-08-25** — the two draft step labels for REQ-009 | closed | Confirmed as shipped via the blanket reply (usable — a wording call already in the voice of existing labels). No dict edit needed. Detail: SPEC-008 §Questions |
 | Q41 (open, NON-BLOCKING) — do reworded strings still come back for his yes/no | human; Porter relays | Working default = yes. Detail: REQ-001 §Questions |
 | BRUNO COOKIE CARRY (2026-08-24) — does Bruno carry `cr_session` Step 2 → 3/4 itself? | @Jason, inside the D3 rework | Not a human question; if unestablishable, `curl` stays primary. Detail: TASK-014 §Questions |
 | Q-BE-24 (2026-08-24, NON-BLOCKING) — `Step N` English or Thai inside the Thai `docs` blocks | @Sober, at the TASK-014 review | Jason kept it English and said why. Detail: TASK-014 §Questions |

@@ -176,7 +176,19 @@ AC 2 (and confirm the visual AC 1 / AC 4). Thai, ready to send:
 > อีกครั้งแล้วยืนยันว่า (ก) ปุ่มโหลดทั้งสองตรงแถวกับ dropdown แล้ว และ (ข) วันที่ในช่องกรอกกับในกล่องสรุป
 > เป็นรูปแบบเดียวกันแล้ว ถ้าโอเคผมจะปิดงานเป็น DELIVERED ครับ (ไม่มีใครในทีมต้องรอ — รอแค่ตายืนยันของพี่)"
 
-> answer: _(pending)_
+> answer: _(still pending — see note below)_
+>
+> **2026-08-25, Porter:** this was in the batch of four items sent to the
+> stakeholder; he replied with one blanket instruction, verbatim:
+> *"ให้คิดแล้วเอาที่ควรนั้นแหละ"* (think it through and go with whatever's
+> appropriate). **Not usable here as-is.** AC 2 is written as *his own eyes on
+> the rebuilt screen* ("opening the same screen again, no longer sees the
+> mismatch he photographed") — a visual confirmation, not a judgment call the
+> team can make on his behalf; nothing the team writes substitutes for him
+> actually looking. REQ-006 stays `SPEC_DONE`, not `DELIVERED`. I will ask him
+> again, narrowly, whether this general reply was also meant to close this
+> specific item (i.e. "trust the team, no need to look") or whether he still
+> wants to open the screen and check. No status moved on a guess.
 
 ### Q36 — ANSWERED 2026-08-24 — **not the date; it is the buttons vs the dropdowns**
 

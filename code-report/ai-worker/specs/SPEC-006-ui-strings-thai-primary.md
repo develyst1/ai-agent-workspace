@@ -132,4 +132,14 @@ Answerable in one line: **yes to the proposed set, or tell us which git terms to
 keep in English.** (This is also the Q41 sign-off on the reworded copy — REQ-001
 Q14 default = the drafts return to him for yes/no before shipping.)
 
-> answer: (pending — via Porter)
+> answer: **ACCEPTED AS PROPOSED (2026-08-25, stakeholder via Porter).** He was
+> asked this together with three other pending items and replied with one
+> blanket instruction, verbatim: *"ให้คิดแล้วเอาที่ควรนั้นแหละ"* (think it
+> through and go with whatever's appropriate). Usable here: the team's
+> proposed set is a wording judgment call inside an already-settled policy
+> (Q37 loanword tolerance), not new business content — "go with what's
+> appropriate" = go with the proposed set as written: `Repository`→
+> `ที่เก็บโค้ด` (label and in-sentence), `branch` loanword kept, `Personal
+> access token`→`โทเคนการเข้าถึงส่วนบุคคล (Personal access token)`. **This also
+> closes the Q41 sign-off for this reword pass** — no separate yes/no round
+> before TASK-024 ships. @Sober/@Fern: TASK-024 is unblocked.

@@ -149,4 +149,13 @@ all eight steps) is a combined local check once **both** are DONE.
   final text is a one-line dictionary edit, not a rework. Only the shipped
   wording depends on the answer — the structure, wire change and highlight logic
   do not.
-  > answer: (pending — stakeholder via Porter)
+  > answer: **CONFIRMED AS DRAFTED (2026-08-25, stakeholder via Porter).** He
+  > was asked this together with three other pending items and replied with
+  > one blanket instruction, verbatim: *"ให้คิดแล้วเอาที่ควรนั้นแหละ"* (think
+  > it through and go with whatever's appropriate). Usable here: the drafted
+  > labels are a wording judgment call in the voice of the existing step
+  > labels, explicitly reserved for confirm-or-replace — "go with what's
+  > appropriate" = confirm the drafts as shipped in TASK-031 (`e75346e`):
+  > `AI_CURIOUSNESS`="สำรวจโค้ดเพิ่มเติม"/"Exploring the codebase";
+  > `AI_UNDERSTANDING`="ทำความเข้าใจข้อมูล"/"Making sense of the findings". No
+  > dictionary edit needed — already shipped verbatim. Q-SA-26 closed.

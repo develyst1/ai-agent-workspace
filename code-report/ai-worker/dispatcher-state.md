@@ -52,6 +52,10 @@ Two things Porter parked: Sober's design call on removing orphaned Contributors/
 Open non-blocking questions for the human: Q-SA-26 (confirm the 2 progress-step labels: AI_CURIOUSNESS='สำรวจโค้ดเพิ่มเติม'/'Exploring the codebase', AI_UNDERSTANDING='ทำความเข้าใจข้อมูล'/'Making sense of the findings'), Q-SA-22 (REQ-007 git-term Thai), Q40, Q-BE-24.
 STILL WAITING ON THE HUMAN: TASK-014 Phase B evidence into project-docs/ (report #2 idea — header revisit he wants to see first).
 
+## RUN 2026-08-25-e — N=4 — started from: answer (blanket "ให้คิดแล้วเอาที่ควรนั้นแหละ")
+hop 1 | PM  | did: routed the blanket reply across 4 pending items — closed Q-SA-22 (loanword policy, unblocks TASK-024) and Q-SA-26 (step labels confirmed) as wording judgment calls; left Q-REQ006-1 (visual confirm) and TASK-014 evidence hand-over open (need the human's own eyes / real command output, not delegable) | ball_to: HUMAN | flags: 2 questions for human, 1 data request
+STOPPED hop 1/4 — condition 1 (questions_for_human non-empty) + condition 7 (ball_to: HUMAN)
+
 ## RUN 2026-08-24-h — N=4 — started from: answer (Q-REQ008-4: deepseek-v4-flash = same tier as gpt-4.1-mini → ≤30000/call)
 hop 1 | PM  | did: recorded Q-REQ008-4 CLOSED, folded deepseek-v4-flash=30000 into REQ-008 Req 6/7 | ball_to: SA | flags: -
 hop 2 | SA  | did: reviewed TASK-026 (RepoInspector) → DONE; re-verified the 2-layer path confinement + literal git-grep read-only; ruled the symlink test env-skip (Windows) and the search-vs-exclusions point both SPEC-conformant; flagged that Jason left it UNCOMMITTED and routed the commit to him | ball_to: BE | flags: -
