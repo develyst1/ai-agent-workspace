@@ -18,8 +18,10 @@
   screen, later optionally emailed. Stakeholder infrastructure: AI API CENTER
   (his multi-provider AI API), PostgreSQL, SMTP.
 - Product name on screen: `KnowCode` (REQ-001 Req 14; repos/folders NOT renamed).
-- Repos: `C:\Users\Admin\develyst\code-report\code-report-back` (Jason) ·
-  `C:\Users\Admin\develyst\code-report\code-report-front` (Fern).
+- Repos (logical names): `code-report-back` (Jason) · `code-report-front`
+  (Fern). Real absolute paths are per-machine — read the workspace-root
+  `machine.local.md` (CLAUDE.md "Paths & machines"); if it is missing or
+  wrong, ask the human via the chain, never guess.
 - Team: Porter (PM) · Sober (SA Lead) · Jason (BE) · Fern (FE) · Tanya (QA,
   operational since 2026-08-21, **local-only** — no deployed environment; no-SQL
   rule not relaxed for her; nothing handed to her yet). See PROTOCOL.md.

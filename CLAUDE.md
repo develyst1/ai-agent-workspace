@@ -22,6 +22,19 @@ completely ordinary, because it is:
 4. Fresh session, don't know where you are? `README.md` (map) →
    `SESSION-STARTERS.md` (entry points) → the project's `ai-worker/board.md`.
 
+## Paths & machines — the human moves between machines constantly
+
+- **Workspace-internal paths are always RELATIVE** to the workspace root (the
+  folder the session was opened in). Never write an absolute workspace path
+  into any committed file — it will be wrong on the next machine.
+- **Code-repo paths live ONLY in `machine.local.md`** at the workspace root —
+  a git-ignored, per-machine file. Committed files (boards, TASKs, logs)
+  refer to repos by logical name (`code-report-back`, …), never by absolute
+  path. Need the real path? Read `machine.local.md`.
+- If `machine.local.md` is missing (fresh machine) or a path in it does not
+  exist: **stop and ask the human**, then write/fix the file. Never guess a
+  path, and never "fix" a path by editing a committed file.
+
 ## Workspace-level identities (permanent — these survive any session reset)
 
 Two standing identities govern this workspace from above the projects. If the

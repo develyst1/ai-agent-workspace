@@ -146,3 +146,6 @@ vite.config.ts.timestamp-*
 # (names, national-ID numbers in generated อ.6 PDFs). NEVER commit. (REQ-006)
 # Folder stays on disk; already-tracked .gitkeep markers remain tracked.
 project-docs/
+
+# Per-machine path mapping — NEVER synced between machines (see CLAUDE.md "Paths & machines")
+machine.local.md

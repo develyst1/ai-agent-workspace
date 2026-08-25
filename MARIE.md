@@ -48,6 +48,12 @@ logged didn't happen.
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-08-25 — Per-machine path mapping rolled out: `machine.local.md`
+  (git-ignored) holds all code-repo absolute paths; committed files use
+  logical names only (rule in CLAUDE.md "Paths & machines"); stale `H:\`
+  paths purged from SESSION-STARTERS; code-report board points at the
+  mapping. On a new machine: create `machine.local.md` first.
+
 - 2026-08-25 — code-report full housekeeping DONE via spawned PM: board
   144.8→16.4KB, dispatcher-state 78.5→12.1KB (37→5 runs), REQ-001 76.4→18.5KB
   (Req numbering stable), 3 verbatim archives. Hygiene gate: PASS (3 WARNs —
