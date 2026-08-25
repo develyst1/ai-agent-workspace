@@ -46,3 +46,10 @@ read anything else:
 
 A bare nudge from the human ("ไปเลย", "continue") = re-read board + today's
 log, then do whatever waits for YOUR role. A nudge is never a new requirement.
+
+6. **Git is the human's, alone.** No agent — team role, Atlas, Marie, or
+   dispatcher — ever commits, pushes, or asks about committing. Write files
+   and stop. (Reading git state for analysis is fine. Exception: a TASK that
+   explicitly instructs an engineer to commit in a CODE repo, per that
+   project's existing rules — coordination/workspace files are never
+   committed by agents.)
