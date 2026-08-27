@@ -97,13 +97,13 @@
 | TASK-033 | Compile jasper in Maven build | SPEC-033 | DONE (SA-verified) — see TASK-033 | Jason | none |
 | TASK-034 | Build อ.4 import checklist | SPEC-034 | BLOCKED (REQ-031 QA) — see TASK-034 | Jason | REQ-031 QA |
 | TASK-035 | Purge src .jasper + tests→target | REQ-031 | DONE (SA-verified) — see TASK-035 | Jason | none |
-| TASK-036 | DEF-17 buyer re-map + doc-row values | DEF-17 | DONE 2026-08-25 (SA-verified 500-fix; 2 open Qs → Porter) — see TASK-036, log 2026-08-24 end | Jason→QA | a14 §4 date src + เลขที่ field |
+| TASK-036 | DEF-17 buyer re-map + doc-row values | DEF-17 | DONE — SA re-reviewed 2026-08-27 (เลขที่=DOCUMENT_NAME_OTHER no-fallback verified; entity DID_SPF-clean; GRANTOR :271/:278 fixed; a14 §4=accepted-blank) → QA prove 200 | QA (Tanya via Porter) | a14 §4 dates = ACCEPTED-BLANK gap |
 
 ## Open items / waiting
 
 | Item | Waiting on | One-line state + pointer |
 |------|-----------|--------------------------|
-| 🔴 DEF-17 prod 500 (ORA-00904 buyer) | QA | Code fix DONE+SA-verified 2026-08-25; QA to prove real /download 200 (3 forms) + a6/38272 canary; 2 open Qs → Porter. See TASK-036 / TEST-006, log 2026-08-24 end. |
+| 🔴 DEF-17 prod 500 (ORA-00904 buyer) | Sober re-review → QA | Code fix DONE 2026-08-26 (both Porter Qs answered + applied: เลขที่=DOCUMENT_NAME_OTHER, a14 §4 dates accepted-blank); QA to prove real /download 200 (3 forms) + a6/38272 canary. See TASK-036 / TEST-006. |
 | REQ-031 close | Porter + QA | Build PASS (52/52, jar renders OK); blocked by DEF-17 QA + no-auth-seam coverage gap for a1/a3/open/expand/personChange/planChange — Porter to provide a reachable path. See TEST-006. |
 | REQ-009 close proof | Porter → human | DATA REQUEST parked: need 46784's current ATTACH_FILE_ID or a request+item with NO file. See REQ-009 / TEST-004. |
 | REQ-029 release | Jason | BLOCKED until REQ-031 QA closes; mapping complete in REQ-029. |
