@@ -123,8 +123,8 @@ to the team, and pre-writing the findings here would take it back.
 - [ ] The **walk** and the **findings list** are in `## Implementation Notes`,
       including the findings you did **not** act on and why (7c, copy, freeze).
 - [ ] Every change traces to a numbered finding.
-- [ ] `npm run typecheck` exit 0.
-- [ ] `npm run build` green, listing **the same four routes**.
+- [ ] `bun run typecheck` exit 0.
+- [ ] `bun run build` green, listing **the same four routes**.
 - [ ] Repo-wide SPEC-002 gate still a real zero: **0 Tailwind colour utilities,
       0 font-family utilities** outside `globals.css`.
 - [ ] **Nothing in the 7c list changed** — state it item by item, naming the files
@@ -138,7 +138,7 @@ to the team, and pre-writing the findings here would take it back.
 - [ ] `git status --porcelain` empty at the reported commit, and the hash in
       `## Implementation Notes`.
 - [ ] Standing FE proxy rule honoured: set `API_PROXY_TARGET` **before**
-      `npm run build`, and restore the env afterwards.
+      `bun run build`, and restore the env afterwards.
 
 **Acceptance is not this DoD.** The DoD closes the TASK; REQ-004's criterion is
 the stakeholder opening every screen himself and saying it is acceptable — the

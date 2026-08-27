@@ -34,6 +34,25 @@ Everything else (spawn prompts, state file) is English, per workspace rules.
 
 ---
 
+## Session start — the check-in ritual (MANDATORY, before any dispatching)
+
+The canonical way the human opens you is one line: **"อ่าน DISPATCHER.md แล้วรัน
+<project>"** — everything else you need is in files. On every new session:
+
+1. **Run the hygiene gate:** `node check-hygiene.mjs <project>` (or `bun`) from
+   the workspace root. This is a command you execute, not a file you read.
+   - **FAIL** → your first hop MUST be a PM housekeeping hop (fix exactly the
+     FAIL lines; archive verbatim first, per the file-discipline rules). No
+     other work is dispatched until the gate passes.
+2. Read `ai-worker/dispatcher-state.md` (resume an unfinished run from the
+   files if the previous session died mid-run) + `board.md` + today's log.
+3. **Check in with the human before dispatching** — 3–5 Thai lines: last run
+   and how it ended, what work is waiting and for whom, open questions, plus
+   the hygiene result. End with: ถูกต้องมั้ย? พิมพ์ "ไปเลย" แล้วผมเริ่ม.
+4. Dispatch only after the human confirms (their opening message counts as
+   confirmation only if it already contains a requirement or "ไปเลย" AND the
+   hygiene gate passed).
+
 ## The run loop
 
 A **run** starts when the human gives you a requirement or says "ไปเลย".
@@ -70,11 +89,15 @@ re-spawning itself.
   That sentence is coordination routing, not work content, so it is allowed.
 - Two roles both have work waiting → prefer the one on the **critical path** as
   the PM's latest log entry states it; if unclear, PM first.
-- **Board over 40KB** → before dispatching anything else, spend one hop waking
-  **PM for housekeeping**: compact `board.md` to state-only (one-line cells,
-  history moved to `ai-worker/archive/board-<date>.md` — detail already lives
-  in the TASK/REQ files), per the file-discipline rules in the spawn header.
-  This hop counts against N.
+- **Hygiene gate FAIL** (from `check-hygiene.mjs`, run at session start and
+  after any run that touched many files) → before dispatching anything else,
+  spend one hop waking **PM for housekeeping**: fix exactly the FAIL lines —
+  compact `board.md` to state-only, rotate `dispatcher-state.md` down to the
+  last 5 runs (older runs verbatim into `archive/dispatcher-state-<date>.md`),
+  consolidate any flagged REQ file (fold answered Q&A into the requirement
+  text, keep requirement numbering stable, original verbatim into archive/).
+  Always archive before compacting; never drop a fact that exists nowhere
+  else. This hop counts against N. Re-run the script after; it must PASS.
 
 ### STOP CONDITIONS — any one of these ends the run with a digest
 
@@ -126,6 +149,16 @@ role's starter from `SESSION-STARTERS.md` with three changes:
    > - A log entry is ≤ 15 lines: what you did, the headline result, open
    >   questions, ball-to, and links to the files that hold the detail. Do
    >   not retell what a TASK/REQ file already says.
+   >
+   > **Inbox — how messages reach you and leave you:**
+   > - Your unread messages are in `ai-worker/inbox/<YOUR-ROLE>.md`. Read it
+   >   FIRST, act on what it points to, then DELETE the messages you have
+   >   processed (an empty inbox = nothing waiting for you). You no longer
+   >   need to dig through old logs for `@` mentions.
+   > - To `@` another role, APPEND 1–3 lines to `ai-worker/inbox/<ROLE>.md`:
+   >   `From <you> <date>: <what> — see <file §section>`. Adjacent roles
+   >   only, per the chain. The log still records your session as history;
+   >   the inbox is the delivery channel.
 
 3. Append the REPORT contract:
 
@@ -208,6 +241,12 @@ On session start, always read this file first: an unfinished RUN with no
 STOPPED line means the previous session died mid-run — re-read the board and
 resume from the files (the files, not this log, are the truth about what got
 done).
+
+**Size discipline applies to you too** (check-hygiene.mjs measures this file):
+one line per hop — no essays, no "patterns worth noting" (those belong in the
+digest to the human, once); the board-state note at a stop is ≤ 5 lines. Keep
+only the last 5 runs here; rotating older runs into archive/ is part of the PM
+housekeeping hop.
 
 ---
 

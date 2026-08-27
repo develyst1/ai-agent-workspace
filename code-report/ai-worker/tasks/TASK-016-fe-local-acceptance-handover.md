@@ -46,12 +46,12 @@ does **not** go into `../project-docs/` — that directory is where *he* puts
 evidence for *us*, and this travels the other way.
 
 1. **Write the steps for a machine that has only the repo.** Assume nothing is
-   already running and nothing is already set. Name the Node/npm requirement you
+   already running and nothing is already set. Name the Node/bun requirement you
    actually verified against, the working directory, the command, the port, and
    how he stops it. Prefer the fewest steps that work.
 2. **Name the proxy setting explicitly.** `next.config.ts` reads
    `API_PROXY_TARGET`, and Next bakes `rewrites()` into the build manifest — so
-   whichever start path you document (`npm run dev`, or `build` + `start`), the
+   whichever start path you document (`bun run dev`, or `build` + `start`), the
    setting must be in place at the right moment and your instructions must say
    so in one line he can follow on **his** shell, not yours. Verify the form you
    write actually works; do not write a command you have not run.
@@ -84,7 +84,7 @@ evidence for *us*, and this travels the other way.
       commands, port, stop instructions, the eight rows with reachability marked.
 - [ ] **You ran your own instructions verbatim, from a stopped state**, and say
       what you observed at each URL you could reach.
-- [ ] `npm run typecheck` exit 0 and `npm run build` green with the same four
+- [ ] `bun run typecheck` exit 0 and `bun run build` green with the same four
       routes — this TASK expects **no production-code change**; if you find you
       must change code, stop and write it in `## Questions`.
 - [ ] `git status --porcelain` empty, and any throwaway server or fake stopped

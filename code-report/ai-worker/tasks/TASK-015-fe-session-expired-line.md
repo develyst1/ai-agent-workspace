@@ -83,8 +83,8 @@ rounding error — it is the reason this table is in the TASK.
   same `setUnauthorizedHandler` wiring, same `?expired=1` reading on the screen.
 
 ## Definition of Done
-- [ ] `npm run typecheck` exit 0.
-- [ ] `npm run build` green and listing **the same four routes**.
+- [ ] `bun run typecheck` exit 0.
+- [ ] `bun run build` green and listing **the same four routes**.
 - [ ] Repo-wide SPEC-002 gates still a real zero: **0 Tailwind colour utilities,
       0 font-family utilities** outside `globals.css` (the gate you took to zero
       in TASK-013 — prove it did not move).
@@ -98,7 +98,7 @@ rounding error — it is the reason this table is in the TASK.
 - [ ] `git status --porcelain` empty at the reported commit, and the commit hash
       in `## Implementation Notes`.
 - [ ] The standing FE proxy rule honoured: set `API_PROXY_TARGET` **before**
-      `npm run build` (Next bakes `rewrites()` into the manifest at build time —
+      `bun run build` (Next bakes `rewrites()` into the manifest at build time —
       your own finding, adopted 2026-08-21), and restore the env afterwards.
 
 ## Implementation Notes
