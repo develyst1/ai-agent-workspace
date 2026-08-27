@@ -97,3 +97,23 @@ imported from (179 named rows). **These are counts, not estimates.**
 **Not in scope, stated so it is not assumed:** gender was **not** an import defect — 8 of the 179 original rows
 had no gender in the source, which is what the customer was filling in by hand. The importer wrote it wherever the
 sheet had it. (Verified in `uat`.)
+
+---
+
+## ✅ CONFLICT POLICY — DECIDED 2026-08-22. Owner: *"เอาตามที่แนะนำ"*
+**The sheet wins, and every change is shown in the dry run.** Built as specced; **no code change needed.**
+
+**Why this is safe rather than merely convenient** — recorded so a future reader does not mistake it for the lazy
+option:
+- **The dry run IS the review gate.** Every overwrite is printed `field: old → new`, per row, before anything is
+  written. Nothing changes silently, which was the actual risk — not "the sheet wins", but "the sheet wins and
+  nobody sees it happen".
+- **The dangerous cases are already excluded from this policy**, so "sheet wins" never reaches them:
+  a **blank never blanks** a stored value · **only import-owned fields** are touched (never courses, bookings,
+  vouchers, quota, LINE links or notes) · a **rename is held for review**, never auto-applied.
+- **Holding every conflict would stall routine corrections** — the customer edits this sheet constantly, and a
+  tool that stops on each change would be abandoned within a week, which is how people go back to editing the
+  database by hand.
+
+**Reversible:** it is one branch in `planStudentUpdate`. If the owner ever wants conflicts held, say so and it
+flips — no redesign.

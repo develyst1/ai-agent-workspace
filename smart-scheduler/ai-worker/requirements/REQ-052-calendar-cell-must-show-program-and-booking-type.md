@@ -136,3 +136,61 @@ Owner reviewed `project-docs/req-052-palette-comparison.html`: *"เปิดด
    status **and** type). The icon is reinforcement, not the message, so a monochrome or missing icon loses nothing.
 - [ ] **AC-9 (new)** — no emoji character appears in any calendar cell, legend entry or booking-type label; every
       type marker is an icon component with the type also present as text.
+
+---
+
+# 🔄 AMENDED 2026-08-23 — the cell needs a DISPLAY TOGGLE, and the owner saw the collision before we did
+> *"เขาอยากให้โชว์ตรง calendar เหมือนกันน่ะสิ ฉันเลยมองว่ามันจะชนกับเคสนี้พอดี แล้วมันจะทำให้ ui calendar มันบวมเกินไปมั้ย
+> ฉันเลยได้ข้อสรุปว่า ทำปุ่มเปิดปิดโชว์รายละเอียดขึ้นมา … default โชว์หมด"*
+
+**He is right, and he caught it at exactly the right moment — before Fern built the cell.** REQ-052 adds
+**program + type**. REQ-068 adds a **note**. Badges and rentals are already there or coming. **Four more things in
+a cell that today holds `09:00 Aileen` is not a richer calendar, it is an unusable one** — and we would have
+discovered that after building it.
+
+## The decision (owner's, adopted)
+**The admin chooses what a calendar cell shows.** A toggle, **default ON for everything on first use**, so the
+feature is discovered rather than hidden — and anyone who wants a clean board turns things off.
+
+**This is progressive disclosure decided by the user instead of guessed by us**, which is the right call for a
+screen different people use for different jobs: the person running the floor wants detail; the person checking
+capacity wants density.
+
+## Requirement (added to this REQ — TASK-142 must be re-specced BEFORE it is built)
+7. **A visible control on the calendar toggles what each cell shows.** The set, pinned deliberately rather than
+   left as *"บลาๆ"*:
+   - **ประเภทการจอง** (booking type) · **ชื่อโปรแกรม** (program) · **Badge** · **Note** (REQ-068) ·
+     **อุปกรณ์เช่า** (rental)
+   ⚠️ **Anything beyond these five is a new decision, not an assumption.** A toggle list that grows by guesswork
+   becomes a settings screen nobody understands.
+8. **Time + student name are ALWAYS shown** and are not toggleable — they are what makes a cell a cell.
+9. **Default: everything ON, the first time.** Thereafter the admin's choice is remembered — see Q4.
+10. **Turning things off must genuinely reduce the cell**, not grey it out. The point is a calmer board.
+11. **The toggle changes display only.** No filtering of which bookings appear, no data change.
+
+- [ ] **AC-7 (new)** — with everything ON, a cell shows time · name · type · program · badge · note · rental, and
+      is still readable at **375 px** (REQ-041). **If it is not, the design is wrong — say so rather than shipping
+      it.**
+- [ ] **AC-8 (new)** — with everything OFF, the cell is **time + name**, i.e. exactly today's calendar. **The
+      current view must remain reachable**, so nobody is forced into a busier board.
+- [ ] **AC-9 (new)** — a fresh admin sees **everything ON** and can find the control without being told.
+- [ ] **AC-10 (new)** — the choice persists across page loads (per Q4's answer) and **never** changes what data is
+      shown to whom.
+- [ ] **AC-11 (regression)** — the palette decision holds: **type shown by icon + text, NO emoji** (owner,
+      2026-08-22), and type colour uses the dedicated type tokens, never the status hues.
+
+## Questions raised by the amendment
+- **Q4 (to SA):** where does the preference live — browser-local, or per user on the server? **Porter's lean:
+  browser-local.** It is a view preference, it needs no migration, and with one shared admin login a server-side
+  setting would mean one person's choice silently changes everyone's screen.
+- **Q5 (to SA/Fern):** individual toggles for the five, or **preset levels** (compact / normal / detailed)? Porter
+  leans **individual** — the owner described picking items — **but if five checkboxes on a calendar toolbar is
+  clumsy in practice, say so; you can see it and I cannot.**
+- **Q6 (to owner, non-blocking):** does the toggle apply to the **day view** as well as the week view, or is the
+  week grid the crowded one? *(Porter's lean: both, same control.)*
+
+## ⚠️ Sequencing — this is the point of the amendment
+**TASK-142 must NOT be built to the old spec.** REQ-052 and REQ-068 now share one surface: **build the cell once,
+with the toggle, carrying all five items.** Building program+type now and adding note+rental later means building
+the cell twice and discovering the crowding problem in production. **The owner's timing is what makes that
+avoidable.**

@@ -130,3 +130,33 @@ entitled to cancel**, and the definition of that set **cannot simply be "CONFIRM
   created, the day before, or on the day? The answer decides between (a), (b) and (c) above, and Porter will not
   guess it: the button sends a message to a customer, so the wrong choice is a wrong message, not just a wrong
   status.
+
+---
+
+## ✅ Q4 ANSWERED — 2026-08-22, and it **dissolves** most of the design problem I raised
+Owner: *"ตอนสร้างคอร์สสิ แล้วเขาจะดูว่าแน่ใจไม่เปลี่ยนแผน เขาก็กดยืนยัน มันก็ส่งไลน์ครูนะ ปกติ ปุ่มนี้"*
+
+⇒ **Staff confirm at course creation**, once they are sure the plan is settled.
+
+### 🔻 Porter correction — I had this wrong, and it was the whole basis of requirement 7
+I wrote that confirming ten sessions up front would fire **"ten LINE notifications to the parent"**. **It does not
+notify the parent at all.** `scheduler.service.ts:1801` — `recipientType: "teacher"`, payload
+`kind: "booking_confirmed"`. **The message goes to the TEACHER**, which is exactly who wants to know a session is
+now firm. The owner said so plainly and the code agrees with him.
+
+**So the tension I built requirement 7 around does not exist:**
+- Sessions are **meant to be `CONFIRMED` from creation**. That is the normal working state, not an edge case.
+- ⇒ the leave picker's `eq(b.status, "CONFIRMED")` filter is **correct and stays**.
+- ⇒ **REQ-062 really is just "widen the date range"** — requirement 7's options (a)/(b)/(c) are **withdrawn**, and
+  **AC-9 is withdrawn** with them. AC-10 (check-in stays `CONFIRMED`-only) still stands and is now trivially true.
+
+### What remains true, and is now a fact rather than a defect
+`uat` currently holds **106 `PENDING` bookings** because those courses were created **without** anyone pressing
+confirm. That is **a data state, not a bug** — and it means **advance leave (and check-in) will find nothing for
+those sessions until staff confirm them.** Worth one line to the customer: *confirm the course once the plan is
+settled, and the parent's LINE leave/check-in works for it.*
+
+- **Q5 (new, to SA — not the owner):** is confirming a course's sessions **one click per session**, or is there a
+  confirm-the-whole-course path? Ten clicks per course is the difference between "they'll do it" and "they won't",
+  and 106 unconfirmed bookings on `uat` is weak evidence for the latter. **Do not design a bulk confirm on my
+  say-so** — just report what exists, and Porter will raise it separately if it is one-at-a-time.
