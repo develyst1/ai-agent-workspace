@@ -98,6 +98,25 @@ do NOT guess or decide it yourself.)
 **Until #1–#5 are answered, this stays a spec, not a build** — the answers decide the enum's behaviour, the migration,
 and whether it's a revenue path (which we never guess). SA will cut BE+FE tasks once the owner responds.
 
+### ✅ Owner's answers + PARK (Porter, 2026-08-29 — written into this file 2026-08-30)
+
+> ⏸️ **PARKED by the owner**, not dropped: *"งานขนาดระดับนึง ก็ปล่อยไปก่อน มา deploy เรื่องนั้นก่อน"*
+> These answers were only in `log/2026-08-29.md` until now. **They must not be re-asked.**
+
+- **Q1 — what IS "other":** a **flexible booking the admin configures per instance** — charged **or not**,
+  consumes a course/voucher **or not**, **with or without a student**.
+- **Q3 (consumes) / Q2 (charged):** both are **per-instance choices**, not a fixed property of the type.
+- **Q5 — day-end:** the **same rule as everything else** — unmarked ⇒ auto-attend at 23:30.
+- **Q4 — teacher LINE:** not separately answered; follows from Q1 once the studentless-label answer below lands.
+
+**🔴 Still owed by the owner, and blocking the build — do NOT invent either:**
+- **(a) If charged, what price** — a typed amount, or a catalogue item? (There is no card price for "other".)
+- **(b) What names the cell and the teacher's LINE line when there is no student.**
+  *Porter's lean (his call, not mine): a short required title — "ประชุมทีม", "ปิดปรับปรุงลาน".*
+
+**Canonical REQ id (@Sober asked):** while parked it **stays here, in REQ-005 §"booking type OTHER"**.
+Renumbering a parked item costs board space for nothing; it gets its own REQ number the day he unparks it.
+
 ## Moved from board.md (2026-08-29 housekeeping)
 
 The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.

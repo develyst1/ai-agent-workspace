@@ -4,7 +4,7 @@
 > Resume: `git pull` → `ai-worker/PROTOCOL.md` + your role file → this + `ai-worker/board.md` → **the newest
 > `ai-worker/log/*.md`** → act on your role's ball.
 >
-> **Last updated: 2026-08-29** by Porter (PM), written as a **machine-move handoff**.
+> **Last updated: 2026-08-30** by Porter (PM). (The 2026-08-29 revision was the machine-move handoff.)
 
 ---
 
@@ -19,6 +19,8 @@
 | Tanya's access file | `sm-test-access.txt` | 🔴 **NO** |
 | server job scripts | `C:\sm-jobs\*.ps1` **on each server** (not the dev box) | 🔴 lives on the servers |
 | local `.claude/memory/` | the old machine | 🔴 **NO — this file is the replacement** |
+
+🔴 **The customer-facing status list (the owner's REQ-001…012 · REQ-BO-001…006 · FIX-001…007) is `ai-worker/OWNER-LIST.md`** — read it before answering "what is left". The board is our internal numbering, not his.
 
 **Branch: `develop` is canonical in every repo.** `dong` / `dong3` are dead.
 🔴 **`smart-scheduler-front` is SHARED with another team.** Check what exists on `develop` before building FE, or
@@ -58,6 +60,37 @@ customer impact, and both names.
    **Needed on 4 of the last 6 migrations.** Safe: it derives from that box's own schema.
 3. **Restart BE → then FE.**
 4. **Confirm from the SCREEN, not from the deploy command.** A stale FE bundle passed for a fresh one on 2026-08-28.
+
+---
+
+## Where we are — 2026-08-30
+
+### 🔻 What moved on 2026-08-30 (append; the 08-29 picture below still stands)
+
+- **REQ-058 (nine programs) — `TEST_PASSED` on `sid`** (Tanya, `tests/TEST-063`): all nine selectable on all four
+  booking types, two **actually booked** and cancelled, prices match the card, and the 1-hour gap REQ-058 itself
+  flagged is closed (฿1,390). `Surfskate & Skateboard` (added 08-29) is live in all four pickers.
+  🔴 **`NOT_TESTED`: AC-9 / AC-10** — `teacher-subjects:link-all` bulk + dry-run is a **server CLI run**, outside
+  QA's charter. **Needs the owner's dry-run counts** ⇒ held at `TEST_PASSED`, **not `DELIVERED`**.
+- 🔴 **TASK-220 (cancel a 1st Trial) is `DONE` on the board and has NEVER been deployed or QA-run.** Tanya
+  confirmed the button exists on a PENDING trial, but Sober's stated check is an **ATTENDED** trial (→ CANCELLED
+  + reason stored + freelance hold released). Running it posts a `bo.movement` she cannot reverse ⇒ **the owner
+  decides whether that money row is acceptable residue before she runs it.** It does not reach `uat` without her.
+- **The cancel dialog still says nothing about already-posted revenue** — corroborated on a running `sid` build,
+  not merely inferred. `SPEC-069` / **TASK-221** (BE lookup) is in REVIEW; **TASK-222** (the FE warning) is `TODO`
+  behind it.
+- **TASK-218** (per-recipient reminder idempotency) is in REVIEW and 🔴 **carries migration `0028`** ⇒ `sid` first.
+- **TASK-223** — the `link-all` script's header **and its console output** no longer assert the policy the owner
+  revoked on 08-29 (`link-all` is `sid`-only; on `uat` a program is linked to a **named list**, and the tool can
+  never unlink).
+- **REQ-063 status corrected.** The REQ file said `READY_FOR_SA`, the board said `TEST_PASSED`, this file listed
+  it as live on `uat` — **three of Porter's own files, three answers.** Reconciled: **code live on `uat`,
+  requirement `TEST_PASSED`, NOT `DELIVERED`** — blocked on the owner confirming his own assumptions.
+- **Housekeeping:** `board.md` went past the 40KB hygiene line (42.3KB). Porter trimmed the two REQ cells he owns
+  after moving their content into `REQ-058` / `REQ-063` — **40.8KB, still FAIL.** The rest is the standing-rules
+  header, which is load-bearing safety text ⇒ **compaction is Marie's, not Porter's.**
+- ⚠️ **A session recreated `log/2026-08-30.md` over an existing entry.** The log is **append-only** — create the
+  day's file only when it does not exist.
 
 ---
 

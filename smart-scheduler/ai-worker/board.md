@@ -72,6 +72,20 @@ out of reach — **a deployed look is the only full detector**, so ship in small
   REQ-027/029) · `0017_entitlement_source` (REQ-025, import ≠ sale). ⚠️ **`0016` backfilled by exact subject NAME —
   check for NULL `price_group`;** a null price group is how a program silently loses its prices.
 
+### 🔴 STANDING RULE — `teacher-subjects:link-all` is `sid`-ONLY (owner, 2026-08-29)
+
+The board's REQ-058 record — *"every teacher can teach every program"* — **no longer holds on `uat`.** Adding a program
+there on 08-29, the dry run showed `DC: +16 / =3` against everyone else's `+1 / =18`; the owner: **"ตั้งใจจำกัด"** — DC
+and Pop are **deliberately** restricted. `--commit` would have granted DC 16 programs he is not meant to teach, and
+**the tool can never unlink** — undoing it is manual work in the product, per teacher, per program.
+
+- **`sid` (or any box where open-by-default still holds): use `link-all`. `uat`: NEVER.** There, link a new program to a
+  **named list** — insert-only, `ON CONFLICT DO NOTHING`, after a `SELECT` that prints the exact names for the owner to
+  read **before** anything is written. That is how the 08-29 addition was done: 26 teachers linked, DC excluded.
+- 📌 **Per-row dry-run output is what made the outlier visible.** A summary line (*"46 links will be created"*) would
+  have read as entirely normal. Worth keeping for anything that writes in bulk.
+- The script's own header still asserts the revoked policy → **TASK-223** (@Jason).
+
 ### 🚦 DEPLOY RULES (standing)
 
 1. **`bun run db:migrate`** in the repo owning the schema, **before** restarting anything; then **`bun run db:verify`
@@ -134,7 +148,7 @@ timestamp. Without those three distinct states, "quiet" and "dead" look identica
 | REQ-025 | Go-live: continue a part-way-through course | HIGH | **SPEC_DONE** | Needs ONE real import on `sid`, not on the day. TASK-080, TASK-067 DONE. |
 | REQ-026 | Nav tidy — four "statistics" menus is too many | MED | Stage 1 **TEST_PASSED** | Old entry hidden, not deleted. Stage 2 unscheduled. |
 | REQ-027 | Enforce the price card — sizes + voucher exclusions | HIGH | **SPEC_DONE** SPEC-030 | (a) live; (b) → TASK-106. @Sober. |
-| REQ-028 | Equipment rental as recorded revenue | MED–HI | **SPEC_DONE** SPEC-031 | The voucher card excludes gear ⇒ it is a rental sale. TASK-108. |
+| REQ-028 | Equipment rental as recorded revenue (owner calls it "REQ-004") | MED–HI | **SPEC_DONE** SPEC-031 | Retest 08-29 → `tests/TEST-062`: live ✅, ledger DATA REQUEST open → owner. TASK-108. |
 | REQ-029 | Booking modal — a voucher must CHOOSE its program | HIGH | **SPEC_DONE** | @Porter — acceptance. TASK-088, TASK-089 DONE. |
 | REQ-030 | A course is an editable PLAN (teacher/date, inserts) | HIGH | **DELIVERED** (`sid` 08-10) | TASK-092, TASK-096, TASK-091 DONE. Notice is a `lib/` constant; its editability is REQ-031. |
 | REQ-031 | Business rules as editable settings | MED–HI | BE **DONE** SPEC-029 | Defaults in code, overrides in `app_settings`. TASK-101, TASK-102, TASK-094. |
@@ -156,7 +170,7 @@ timestamp. Without those three distinct states, "quiet" and "dead" look identica
 | REQ-068 | A note on the session | MED | **DELIVERED 08-25** | Live on `uat` (`attendee_note`, `0022`). Follow-up → @Sober (TASK-142). |
 | REQ-053 | `แก้ไขคาบ` must not change วิชา on a course session | HIGH | **DELIVERED 08-23** | Read-only + explanation line on `uat`. TASK-133, TASK-134. |
 | REQ-054 | A course is created with ONE program | HIGH | **DELIVERED 08-23** | ~43 `uat` courses, no mixed case. TASK-138, TASK-139, TASK-140. |
-| REQ-063 | ส่วนลด — discount a sale (% or บาท) | HIGHEST | 🔨 **SPEC-059 + 4 tasks cut (Sober 08-22) — spans 3 repos.** RE-SCOPED owner-final to **FIVE types, TWO moments**: at-sale course·voucher·rental (TASK-160), day-end 1st Trial·single-session (TASK-162); FE covers all five forms (TASK-161); backoffice actor/note + gross·discount·net (TASK-159) | @Sober. **TASK-161 (FE forms) needs Fern — @Porter stand up.** The four requirement answers are the OWNER’S ASSUMPTIONS, not the customer’s — **must be confirmed before DELIVERED**. Tanya TEST_PASSED (sid) 08-23 — NOT delivered; owner assumptions unconfirmed. Q1/Q2 + AC-6 risk: REQ file. |
+| REQ-063 | ส่วนลด — discount a sale (% or บาท) | HIGHEST | **TEST_PASSED** (`sid`, 08-23) — NOT delivered | Scope, the 5 types / 2 moments, Q1/Q2 + AC-6 risk: REQ file. 🔴 Blocked on the owner **confirming his own assumptions**. SPEC-059; TASK-159/160/161/162. |
 | REQ-065 | `1st Trial` is not a program | MED–HI | **DELIVERED 08-23** | Filtered at `toTeacherDTO` ⇒ no FE change. TASK-173. |
 | REQ-066 | Every program has a 1-hour price (REQ-061's guard) | HIGHEST | cut → @Jason | `bike-skate` gains `1: THB(1390)`. TASK-174. |
 | REQ-069 | Week must be Mon→Sun; Sunday is always missing | HIGHEST | cut → @Jason | Fix `weekRange` at source. TASK-175; with REQ-067 Part B. |
@@ -165,7 +179,7 @@ timestamp. Without those three distinct states, "quiet" and "dead" look identica
 | REQ-062 | ลาล่วงหน้าในไลน์ — pick a future session | HIGH | **READY_FOR_SA** | `checkin.service.ts` matches exactly today. @Sober. |
 | REQ-061 | Onewheel pricing wrong vs the price card | HIGH | SPEC-058 cut | TASK-158. BOTH boxes wrong; found while mapping REQ-058. |
 | REQ-057 | Scoped cleanup tool for test data on `uat` | HIGH | **GO** — hold lifted 08-23 | @Sober to cut; scope named by the `uat` DATA REQUEST. |
-| REQ-058 | Nine new programs | HIGH | **IN_TEST** — 19 live both boxes | `sid`=`uat`=19. Subjects exist only in `db/seed.ts`. TASK-155, TASK-153. |
+| REQ-058 | Nine new programs | HIGH | **TEST_PASSED** (`sid`, 08-30) — AC-9/AC-10 `NOT_TESTED` | `tests/TEST-063` + verdict in the REQ file. AC-9/10 need the owner's `link-all` dry-run ⇒ not `DELIVERED`. TASK-155, TASK-153. |
 | REQ-059 | The importer must UPDATE in place | HIGH | SPEC-056 cut | 31 names edited ⇒ a `(phone,name)` key forks the roster. TASK-156. |
 | REQ-060 | Imported gender + nationality are invisible | HIGH | Part A **DONE**; B.1 cut | Porter's "not a defect" verdict is retracted. TASK-157. |
 | REQ-055 | GO-LIVE: wipe test data, import real families | HIGHEST | **WAVE 1 DELIVERED `uat` 08-22** | TASK-150. The wipe is the REQ-040 reset (owner-run). |
@@ -306,7 +320,7 @@ timestamp. Without those three distinct states, "quiet" and "dead" look identica
 | TASK-151 | BE: GO-LIVE BLOCKER… | SPEC-052/REQ-040 | DONE | Jason |
 | TASK-149 | FE: create-mode Planned… | SPEC-049/REQ-045 | DONE | Fern |
 | TASK-148 | BE: `bookings.planned_at_creat… | SPEC-049/REQ-045 | DONE | Jason |
-| TASK-147 | FE: dict keys (label/help TH+EN) for the 2… | SPEC-048/REQ-047 | TODO | Fern |
+| TASK-147 | FE: dict keys (label/help TH+EN) for the 2… | SPEC-048/REQ-047 | BLOCKED (@Sober — Q1) | Fern |
 | TASK-146 | BE: 2 number settings… | SPEC-048/REQ-047 | DONE | Sober |
 | TASK-145 | BE: check-in Gap-A/AC-3… | SPEC-043/REQ-050 | DONE | Jason |
 | TASK-144 | BE: check-in Gap-C (money)… | SPEC-043/REQ-050 | DONE | Jason |
@@ -381,13 +395,17 @@ timestamp. Without those three distinct states, "quiet" and "dead" look identica
 | TASK-206 | BE: REQ-072 part-2 fix — the course-confirm… | SPEC-066/REQ-072 | REVIEW | Sober |
 | TASK-207 | BE: REQ-072 part 3A — on confirm (whole-course… | SPEC-066/REQ-072 | REVIEW | Sober |
 | TASK-208 | BE: REQ-072 part 3B — daily 08:15 "class today"… | SPEC-066/REQ-072 | REVIEW | Sober |
-| TASK-209 | BE: the daily-reminder must ALWAYS write a… | SPEC-066/REQ-072 | REVIEW | Sober |
-| TASK-211 | BE: REQ-074 — cancel a 1HR / Voucher booking… | SPEC-067/REQ-074 | REVIEW · see TASK-212 | Sober |
-| TASK-213 | BE: import-form batch — off-card size 500s →… | SPEC-068 | REVIEW | Sober |
-| TASK-215 | BE: import-form batch — `leaveQuota` missing… | SPEC-068 | REVIEW · see TASK-217 | Sober |
-| TASK-217 | BE: off-card import 500s — `course_size_chk… | SPEC-068 | REVIEW | Sober |
-| TASK-219 | BE: REQ-007's missing half — the attendee note… | SPEC-066 | REVIEW | Sober |
-| TASK-220 | scheduler-front + scheduler-back: cancel a… | SPEC-067/REQ-074 | REVIEW | Sober |
+| TASK-209 | BE: the daily-reminder must ALWAYS write a… | SPEC-066/REQ-072 | **DONE** (Sober 08-29) | Jason |
+| TASK-211 | BE: REQ-074 — cancel a 1HR / Voucher booking… | SPEC-067/REQ-074 | **DONE** (Sober 08-29) · with TASK-212 | Jason |
+| TASK-213 | BE: import-form batch — off-card size 500s →… | SPEC-068 | **DONE** (Sober 08-29) | Jason |
+| TASK-215 | BE: import-form batch — `leaveQuota` missing… | SPEC-068 | **DONE** (Sober 08-29) · see TASK-217 | Jason |
+| TASK-217 | BE: off-card import 500s — `course_size_chk… | SPEC-068 | **DONE** (Sober 08-29) | Jason |
+| TASK-219 | BE: REQ-007's missing half — the attendee note… | SPEC-066 | **DONE** (Sober 08-29) | Jason |
+| TASK-220 | scheduler-front + scheduler-back: cancel a… | SPEC-067/REQ-074 | **DONE** (Sober 08-29) | Fern + Jason |
+| TASK-218 | BE: daily reminder — per-RECIPIENT idempotency… 🔴 **migration 0028** | Porter flag 08-29 | REVIEW | Sober |
+| TASK-221 | BE: `GET /bookings/:id/posted-sale` — was this booking's revenue already posted? | SPEC-069 | REVIEW | Sober |
+| TASK-222 | FE: cancel dialog says what is already in the books (amount + date, and a loud "could not verify") | SPEC-069 | **TODO** · depends on TASK-221 | @Fern |
+| TASK-223 | BE: `link-all` header documents a policy the owner revoked — `sid`-only, cannot unlink | Porter 08-29 | REVIEW | Sober |
 | REQ-065 | 1st Trial shows up as a selectable program (a booking TYPE in the picker) | SPEC-061 | see the Requirements table | @Sober |
 
 ## Blocked / waiting

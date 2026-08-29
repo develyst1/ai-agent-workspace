@@ -1,5 +1,9 @@
 # REQ-063: ส่วนลด — แอดมินลดราคาให้ตอนขายคอร์ส/บัตรได้ ทั้งแบบ % และแบบบาท
-- Status: READY_FOR_SA
+- Status: **TEST_PASSED** (Tanya, on `sid`, 2026-08-23) — code is **live on `uat`**, requirement is **NOT `DELIVERED`**
+  - 🔴 Corrected 2026-08-30 (Porter): this line still read `READY_FOR_SA` while the board read `TEST_PASSED` and
+    `PROJECT-STATUS.md` listed the feature as live on `uat`. **Three of my own files, three different answers.**
+    The blocker is not code — it is that the four requirement answers are the **owner's assumptions**, still
+    unconfirmed by the customer. Shipped ≠ delivered; that gap is the whole point of this REQ's first section.
 - Priority: 🔴 **HIGHEST** — the customer is running a **Mother's Day promotion this month** and cannot record it
 - Requested: 2026-08-22 by stakeholder (owner), relaying an urgent customer need
 - Deadline: **the customer wants to use it today**

@@ -41,16 +41,20 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| — | *(none yet — awaiting the human's first requirement, then Porter writes REQ-001)* | | | Human (via Porter) |
+| REQ-001 | Visual identity rebuild — Home page first | HIGH | IN_SPEC 2026-08-30, Sober — TASK-001..004 DONE; TASK-005 now in REVIEW — last item before SPEC_DONE; see requirements/REQ-001-ui-visual-redesign.md | Sober (SA) |
 
 ## Tasks
 
 | ID | Title | Source | Status | Assignee | Depends on |
 |----|-------|--------|--------|----------|------------|
-| — | *(none yet)* | | | | |
+| TASK-001 | Token layer + fonts + dark-only mount | SPEC-001 | DONE 2026-08-30, Sober — see tasks/TASK-001-token-layer-fonts-dark-only.md §Review | — | — |
+| TASK-002 | Shared primitives + quotes content | SPEC-001 | DONE 2026-08-30, Sober — see tasks/TASK-002-shared-primitives-and-quotes.md §Review | — | TASK-001 |
+| TASK-003 | Shell rebuild (header, footer, eyebrow) | SPEC-001 | DONE 2026-08-30, Sober — FQ3/FQ4/FQ5 answered; drawer check carried to TASK-005 #18-19; see tasks/TASK-003-shell-rebuild.md §Review | — | TASK-001 |
+| TASK-004 | Home rebuild — four sections | SPEC-001 | DONE 2026-08-30, Sober — FQ8 answered (min-height is a floor); 2 boxes carried to TASK-005 c16/c20; see tasks/TASK-004-home-rebuild.md §Review | — | TASK-002, TASK-003 |
+| TASK-005 | Acceptance sweep before handover | SPEC-001 | REVIEW 2026-08-30, Fern — 19/20 passed, c16 NOT-RUN (env); FQ9-FQ12 open; see tasks/TASK-005-acceptance-sweep.md §Implementation Notes | Sober (SA) | — |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| — | | |
+| — | — | Nothing blocked. |

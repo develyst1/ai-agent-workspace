@@ -230,3 +230,22 @@ class Tailwind actually GENERATED.** Before concluding a utility is broken, chec
 in `src` at all, and (b) which *variant* it is used with — `hover:bg-x/60` generates
 `.hover\:bg-x\/60:hover`, never the bare `.bg-x\/60`. Injecting the bare class then "proves" a bug that
 isn't there. Same family as the day-grid time-anchored regex and the `bg-paper/50` probe.
+
+## REQ-058 programs — verified on `sid` 2026-08-30 (`TEST-063`)
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S36 | The program picker lists **all active programs** on every booking path — Course · 1 HR · 1st Trial — with the customer's exact spelling, combined `X & Y` names included | REQ-058 AC-1/AC-2 | D | ✅ 2026-08-30 |
+| S37 | The **Voucher** program list drops exactly `Onewheel E-Skate`, `Balance Play (Private)`, `Balance Play (Group)` and keeps everything on `bike-skate` | REQ-027 / REQ-058 AC-2 | D | ✅ 2026-08-30 |
+| S38 | A **combined** program (`Bike & Scooter`, `Surfskate & Freeskate`) can be booked to a teacher and saves — and the calendar cell renders the `&` in the name without escaping damage | REQ-058 AC-3 / REQ-052 | D | ✅ 2026-08-30 |
+| S39 | A `bike-skate` course prices **4,790 / 6,490 / 9,790** at sizes 4 / 6 / 10 with leave quota 1→wk5 · 2→wk8 · 3→wk13 — identically for a pre-existing program (`Surfskate`) and a REQ-058 one (`Surfskate & Inline Skate`) | REQ-058 AC-4/AC-5 | D | ✅ 2026-08-30 |
+| S40 | A **1-hour** session on a `bike-skate` program prices at **฿1,390** and Save is enabled (the gap REQ-058 note 3 raised; closed by REQ-066/TASK-174) | REQ-066 | D | ✅ 2026-08-30 |
+| S41 | The KEPT combined program `Bike / Scooter / Balance Cruiser` is still selectable and its live courses still point at it — never renamed, merged or migrated | REQ-058 owner decision 08-22 | D | ✅ 2026-08-30 |
+| S42 | A program added later by command (`Surfskate & Skateboard`, 08-29) shows up in **all four** pickers with no FE change | REQ-058 AC-6 | D | ✅ 2026-08-30 |
+
+**Harness note 2026-08-30:** the booking-modal option lists live in a **portal outside `<main>`**, so
+`get_page_text` (which reads `main`) returns the calendar and silently shows *nothing* of the open dropdown —
+which reads exactly like "the picker is empty". Read `[role="option"]` from the document instead, and filter to
+the **visible** listbox: several closed listboxes (teachers, students, times, branches) stay in the DOM and a
+naive query returns all of them mixed together. Same family as the day-grid regex lesson above — the probe has
+to match what the page actually is, or it invents a defect.

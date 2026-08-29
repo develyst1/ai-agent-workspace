@@ -132,3 +132,21 @@ Human-authorized in-session for a post-deploy visual check. Access via the app's
 | Two throwaway `<div>`s injected and removed inside a single `evaluate` (CSS probe) | customer-prod (browser only) | ✅ never persisted |
 | **No writes · no LINE · no teacher-change flow · no row touched** | — | — |
 | Pre-existing QA residue from the 2026-08-11 phase-2 run is unchanged and still listed in `../project-docs/qa-prod-2026-08-11/phase2-created.json` (owner clears it) | customer-prod | ❌ by agreement |
+
+## 2026-08-30 (Tanya) — REQ-058 AC-2/AC-3 pass on `sid`: two bookings, both cancelled
+
+Access via the app's own login form on `som.develyst.online`. No token, cookie or secret written to disk or
+printed. No script run on the server, no restart, no redeploy, no setting changed.
+
+| What | Where | Removed? |
+|---|---|---|
+| Booking `QA-req072-fixture` · **1 HR** · `Bike & Scooter` · teacher Bank · 2026-08-31 09:00–10:00 · session note "QA REQ-058 AC-3 test 2026-08-30 - delete after" | `sid` | ✅ **CANCELLED** (`ADMIN_ERROR` + note "QA cleanup - REQ-058 AC-3 test row"); verified `CANCELLED` in Bookings → All bookings |
+| Booking `QA-req072-fixture` · **1st Trial** · `Surfskate & Freeskate` · teacher Bank · 2026-09-01 09:00–10:00 · session note "QA REQ-058 AC-3 trial test 2026-08-30 - delete after" | `sid` | ✅ **CANCELLED** (`ADMIN_ERROR` + note "QA cleanup - REQ-058 AC-3 trial test row"); verified `CANCELLED` in the same list |
+| Course-plan price previews (`Surfskate & Inline Skate` sizes 4/6/10; `Surfskate` size 6) | `sid` | ✅ **nothing created** — form read, then **Cancel**; "Generate plan" never pressed |
+| **No** new student or parent — the QA-owned `QA-req072-fixture` from an earlier round was reused deliberately (students have no delete path) | — | — |
+| **No** `bo.movement`: neither booking was confirmed or marked ATTENDED, so nothing posted to the money ledger | — | ✅ |
+| **No LINE message** — `Confirm + LINE` never pressed | — | ✅ |
+| **No row modified that QA did not create today**; the pre-existing `QA-req072-fixture` Onewheel course sessions were read only | — | ✅ |
+| `uat` / `frontoffice.develyst.online` — **no contact of any kind** | — | ✅ |
+
+Evidence: `TEST-063-req058-nine-programs-bookable.md`.

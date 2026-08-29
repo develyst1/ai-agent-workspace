@@ -191,3 +191,22 @@ Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
 ```
 | REQ-058 | ➕ **Nine new programs** (Bike · Balance Cruiser · Balance Bike · Scooter · Inline Skate & Bike · Surfskate & Bike · Surfskate & Inline Skate · Bike & Scooter · Surfskate & Freeskate) **+ a repeatable way to add a program** | 🔴 **HIGH** | 🟢 **IN_TEST — 19 programs LIVE on both boxes** (owner ran the runsheet; Porter verified `sid`=`uat`=19 byte-identical). AC-1/4/5/6 ✅ verified in data. **Q2 answered — owner: every teacher × every program.** Last step cut: **SPEC-055 + TASK-155 (`teacher-subjects:link-all`) → @Jason** — bulk idempotent link; owner runs on both boxes ⇒ closes AC-2/AC-3 ⇒ **DELIVERED**. (`subjects:add` = SPEC-053/TASK-153, SA-reviewed tsc 0 · 578/0.) —_build note:_ Grounded BE/data-only, **no FE change**: booking UI reads `teacher.subjectOptions` (data) ⇒ AC-2 by construction; price+voucher key off `price_group`, all nine=`bike-skate` ⇒ AC-4 & **Q3 voucher eligibility answered** (`voucherAllowsProgram("bike-skate")=true` → all nine eligible, owner only acts to EXCLUDE). Build = the missing **owner-run `subjects:add`** (dry-run-first, insert-if-missing by unique name, validated group, optional `--teacher` link) — satisfies AC-6 (add tenth = a command, not a deploy) & AC-5 (insert-only can't touch existing rows / the KEPT combined program). **Only owner-owed blocker left: Q2 which teachers teach which** (AC-3 proof; mechanism ships now). | @Sober + owner. Structural: `subjects` are created **only** in `db/seed.ts:46` — there is no API/UI to add a program (the limit already noted under REQ-003). ✅ **CLOSED — owner: “เก็บอันรวมไว้ด้วย 3 คอร์สนั้นไม่ต้องย้าย”** ⇒ the combined program `Bike / Scooter / Balance Cruiser` is **KEPT** and its 3 live courses (น้องเก่ง · เอสร่า · มาดี) are **NOT migrated** ⇒ REQ-058 is **purely additive: no back-fill, zero migration risk to live courses** (9 → 18 subjects). ⚠️ SPEC must NOT fold the combined program into the split ones in REQ-013/014 reporting — that would rewrite what those 3 families bought. ✅ **PRICE ANSWERED 2026-08-22 (customer’s official card): all nine sell on the existing `bike-skate` line** (4h 4,790 · 6h 6,490 · 10h 9,790 — byte-identical to `sale-items.ts:61`) ⇒ **no new price group, no `PriceGroup` change, no new items, no deploy for the mapping.** Still owed by owner (does NOT block creating them): which teachers teach each · voucher eligibility: `price_group` per program (esp. the 5 combined ones) · which teachers teach them · voucher eligibility. |
 ```
+
+## Verdict — TEST_PASSED on `sid`, 2026-08-30 (Tanya) — full evidence in `tests/TEST-063`
+
+Board cell trimmed to a pointer on 2026-08-30 (hygiene); nothing lost — the detail is in `tests/TEST-063` and
+in `log/2026-08-30.md`. Recorded here so the REQ carries its own verdict:
+
+- **PASSED on the deployed `sid` build:** AC-1 (all nine present, customer's exact spelling; 19 selectable
+  programs) · AC-2 (selectable on Course · 1 HR · 1st Trial · Voucher; voucher list correctly shows 16,
+  REQ-027's exclusions hold) · AC-3 (two **actually booked** and cancelled — `Bike & Scooter` 1 HR,
+  `Surfskate & Freeskate` 1st Trial) · AC-4 (prices 4,790 / 6,490 / 9,790 at sizes 4/6/10, VAT-inclusive; and
+  the 1-hour gap REQ-058 note 3 flagged is **closed** — 1 HR prices at ฿1,390 via REQ-066/TASK-174) ·
+  AC-5 (pre-existing programs untouched) · AC-6 (`Surfskate & Skateboard`, added 08-29, live in all four pickers).
+- 🔴 **`NOT_TESTED`, named rather than rounded up:** **AC-9 / AC-10** — the `teacher-subjects:link-all` bulk
+  and dry-run behaviour is a **CLI run on the server**, which QA's charter forbids. It needs the owner's
+  dry-run counts. **AC-3 covered 1 HR + 1st Trial only** (course/voucher proven selectable, not booked —
+  a course has no delete and a voucher sale writes an unreversible `bo.movement`). **`sid` only — no `uat` evidence.**
+- ⇒ **Not `DELIVERED`.** Porter holds it at `TEST_PASSED` until AC-9/AC-10 land. (Porter answered Tanya's
+  AC-6 "no code change / no redeploy" half from his own 08-29 run record: scripts against the DB, no build,
+  no `pm2 restart`.)

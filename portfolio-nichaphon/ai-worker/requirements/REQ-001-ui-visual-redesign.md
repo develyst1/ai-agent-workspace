@@ -1,0 +1,337 @@
+# REQ-001: Visual identity rebuild — Home page first
+
+- Status: IN_SPEC
+- Priority: HIGH
+- Requested: 2026-08-30 by the human (stakeholder / site owner)
+- Deadline: none given
+- History: opened 2026-08-30 as DRAFT/BLOCKED with six open questions (title
+  then: "Full UI visual redesign — remove the Claude-like look"). The owner
+  answered all six the same day; the answers narrowed the first deliverable to
+  the Home route, so the title now names that. Q1–Q6 answers are recorded in
+  `## Questions` below. Updated again 2026-08-30 with the Q7–Q9 answers and the
+  reference screenshot (R9); the visual direction is no longer blocked. Updated
+  again 2026-08-30 with the Q10–Q11 answers: English wording for quotes 1–3 now
+  exists in R5 (owner authorised translation); Q10 stayed open because "yes"
+  arrived without the changed Thai strings. Updated again 2026-08-30 — Q10
+  closed: the owner told Porter to make the corrections himself, so R5 now
+  carries settled Thai for quotes 1–3. Updated again 2026-08-30 — the owner
+  answered the Q10 scope note with a bare `ใช่`; that is now **Q12**, open and
+  non-blocking. Updated again 2026-08-30 — **Q12 is CLOSED**: the owner answered
+  `แค่วรรคตอนพอ` ("punctuation is enough"), i.e. reading (B). R5's Thai is final;
+  no quote is re-worded. Same update opens and closes **Q13** (the owner's answer
+  to the SA's SQ1: the light/dark toggle is removed from Home). Status moved to
+  IN_SPEC to match the board — SPEC-001 is active. **R5 is unchanged in wording
+  and nothing in this REQ is blocked.**
+
+## Problem / Goal
+
+The site owner judged that the live site (`portfolio.develyst.online`) reads as
+a copy of Claude's / Anthropic's look rather than as his own brand. For a
+personal portfolio that is a direct business problem: the site is his shopfront
+to freelance clients, and a borrowed look undercuts the impression of an
+independent professional.
+
+His answers on 2026-08-30 turned "not like Claude" into a positive direction:
+he wants a portfolio **that is unlike anyone else's and that reads as
+egoist** — self-assured, opinionated, a personality on the page rather than a
+neutral template. Verbatim:
+
+> อยากได้ เว็บPortfolio ที่ไม่เหมือนใคร ที่เป็นegoist
+
+Goal for this REQ: **the Home route is rebuilt in that new identity, and the
+design language it establishes is reusable for the other five routes.**
+
+## Requirement
+
+The system must:
+
+1. **R1 — Replace the visual identity wholesale, component patterns included.**
+   The owner's answer to "which part feels like Claude" was `ทุกอย่าง รวมทั้ง
+   pattern component` — *everything, including the component patterns*. So
+   colours, typography, spacing, and the shape/behaviour of the recurring
+   components (cards, chips, section headings, buttons, header/footer) must all
+   change. Re-colouring the existing components is **not** sufficient.
+
+2. **R2 — Base palette: black mixed with purple.** Owner's words: `ดำปนม่วง`.
+   Dark-dominant with purple as the identity colour. Exact hues, ramps and any
+   secondary/accent colours are the design's call, not fixed here.
+
+3. **R3 — Rebuild, not re-skin.** Owner's answer to Q4 was `รื้อใหม่`. The Home
+   page's sections may be re-laid-out, merged, added or dropped. This permission
+   is about **structure and layout**, not about words — see R4.
+
+4. **R4 — No invented copy.** Existing real copy (about a real person and a real
+   business) may be moved, re-grouped or left out, but no role rewrites it or
+   writes new client-facing text. If the new layout needs a headline, label or
+   section that has no existing copy, that is a **DATA REQUEST to the owner via
+   Porter**, not a plausible-sounding placeholder. The four quotes in R5 are the
+   only new copy supplied so far.
+
+5. **R5 — Carry the owner's quotes, distributed, never all in one place.**
+   Owner's words: `มีquoteให้หลายอันเลย เอาไปแยกหน้าได้ หรือแยกใส่หลายๆส่วนใน
+   แต่ละหน้าได้ แต่ไม่ควรใส่หมดเลยหน้าเดียว` — the quotes may live on their own
+   page, or be spread across sections of several pages, but **not all of them on
+   a single page**. The four quotes, verbatim as given on 2026-08-30:
+
+   1. `นักพนันที่เก่งมากๆไม่ได้เล่นแค่ตาที่ตัวเองไพ่ดี`
+   2. `ผมไม่ได้ทำงาน"ให้"ใคร ผมทำงาน "ร่วม" กับใคร`
+   3. `จุดอ่อนและจุดแข็งของผมคือ "ไม่สนใจอย่างอื่นเลยนอกจากการแก้ไขปัญหาที่สำคัญที่สุดขององค์กร"`
+   4. `Dont say why me Say Try me`
+
+   Which quote(s) land on Home, and how they are presented, is the design's
+   call — subject to the "not all on one page" rule.
+
+   **Rendering, settled 2026-08-30 (Q7, Q8):**
+   - Quote 4 renders as `Don't say why me. Say try me.` — the owner authorised
+     the punctuation fix (`แก้ช่วยได้เลย`); this exact string is the form he
+     approved, and it is now the canonical wording. No further wording changes.
+   - **Quotes 1–3, Thai — settled 2026-08-30 (Q10).** The owner asked for them to
+     be corrected (`แก้ช่วยได้เลย ทั้งหมด`), then handed the correcting to Porter:
+     `ก็นายคิดให้ไปเลย`. That instruction, and only that instruction, lifts R4 for
+     these three strings — **and only for punctuation and spacing. Not one word
+     was added, removed or replaced.** The owner confirmed that scope on
+     2026-08-30 (`แค่วรรคตอนพอ`, Q12), so the three strings below are **FINAL** —
+     no re-wording, and no confirmation of them is outstanding at the Home review.
+     Canonical Thai:
+
+     1. `นักพนันที่เก่งมากๆ ไม่ได้เล่นแค่ตาที่ตัวเองไพ่ดี`
+     2. `ผมไม่ได้ทำงาน "ให้" ใคร ผมทำงาน "ร่วม" กับใคร`
+     3. `จุดอ่อนและจุดแข็งของผมคือ "ไม่สนใจอย่างอื่นเลย นอกจากการแก้ไขปัญหาที่สำคัญที่สุดขององค์กร"`
+
+     Every edit, listed so he can check them one by one at review:
+     - Quote 1 — one space added at the clause break, after `มากๆ`. `มากๆ` kept
+       the way he writes it (not respaced to `มาก ๆ`): that is his register, not
+       an error.
+     - Quote 2 — the two halves now space their quote marks the same way. He
+       wrote `ทำงาน"ให้"ใคร` tight and `ทำงาน "ร่วม" กับใคร` spaced; the spaced
+       form is his own, so both halves use it. Straight `"` kept as typed.
+     - Quote 3 — one space added before `นอกจาก`. Nothing else; it was already
+       well-formed.
+
+     The English strings below are unaffected — no meaning changed, so the pairs
+     still match.
+   - **English wording — authorised 2026-08-30 (Q11).** The owner answered
+     `แปลมาเลย` ("just translate them"). That instruction, and only that
+     instruction, lifts R4 for these three strings. Canonical English, translated
+     by Porter, to be confirmed by the owner at the Home review:
+
+     1. `A truly great gambler doesn't only play the hands where his own cards are good.`
+     2. `I don't work "for" anyone. I work "with" them.`
+     3. `My weakness and my strength are the same thing: "I care about nothing but solving the most important problem of the organisation."`
+
+     Quote 4 is already English (`Don't say why me. Say try me.`); no Thai
+     version exists and none is invented.
+     Translator's note for the owner, so he can check the two places wording was
+     added rather than mirrored: quote 1 uses "truly great" for `เก่งมากๆ`, and
+     quote 3 adds "are the same thing" as the connective that Thai carries
+     without a word. If either reads wrong, his replacement string wins.
+   - **Bilingual presentation is the design's call.** Both languages are wanted
+     (`เอาทั้งคู่ไปเลย`); whether they appear paired, stacked, toggled, or one
+     language per section is a design decision, not a business rule. A Thai
+     string later changed under Q10 must have its English pair re-checked.
+
+6. **R6 — Home first, then approval.** Owner's answer to Q6 was `Home ก่อนก็ได้`.
+   Only the Home route (`/`) ships under this REQ. The owner reviews Home
+   locally and approves the direction before the remaining five routes are
+   requested as a follow-up REQ.
+
+7. **R7 — The build must stay clean.** Whatever the redesign does to the UI
+   library (see Constraints), `npm run build` must succeed and `npm run dev`
+   must run with no version conflicts or console errors. Owner's words:
+   `ต้องทำให้version match กันไม่error`.
+
+8. **R8 — The site keeps doing what it does.** Navigation to all six routes,
+   the contact form, and the existing behaviours on Home keep working; no route
+   404s as a side effect of the rebuild.
+
+9. **R9 — Reference: the owner's screenshot is on disk.**
+   `project-docs/image-1788033178719.webp` (supplied 2026-08-30 as his answer to
+   Q2). It is the only concrete evidence of the look he wants and it is now the
+   anchor for the visual direction. Factual observations only — how far to
+   follow it is the design's call: near-black page, large purple/violet-to-blue
+   gradient shapes bleeding across the hero, an oversized display wordmark as
+   the main visual event, a thin minimal top nav, translucent "glass" stat
+   cards, a plain underlined text link as the call to action.
+   **The reference's own content is not ours.** Its brand name, its filler
+   paragraph and its metrics (`150+ Win Awards`, `12Years Experience`) belong to
+   the sample — putting any of them on this site would be invented copy, which
+   R4 forbids.
+
+10. **R10 — Home is dark-only; the light/dark toggle is removed.** The SA raised
+    this as decision notice SQ1 (the rebuilt Home ships one dark scheme, so the
+    toggle leaves the header). Porter put it to the owner on 2026-08-30 and he
+    answered `เอาออก` — take it out. Recorded as **Q13** below. The owner is
+    therefore not losing a visible control by surprise: he chose to drop it. If
+    he ever wants light mode back, that is a second designed colour scheme and a
+    new REQ, not a re-enabled toggle.
+
+## Acceptance Criteria
+
+- [ ] Viewing `/` locally, the owner states the page no longer reads as "like
+      Claude" and reads as his own.
+- [ ] The page is dark-dominant with purple as its identity colour (R2).
+- [ ] The recurring components on Home are visibly different in shape/style, not
+      just recoloured versions of the current ones (R1).
+- [ ] At least one, and not all four, of the quotes in R5 appears on Home.
+- [ ] Any quote shown matches R5 character-for-character — Thai quotes 1–3 as
+      settled in R5, quote 4 as `Don't say why me. Say try me.`, and any English
+      rendering of quotes 1–3 exactly as listed in R5 (no re-translation).
+- [ ] At the Home review the owner confirms **Porter's English** for quotes 1–3;
+      his replacement string wins. (The Thai is settled — Q12 closed 2026-08-30.)
+- [ ] Home has no light/dark toggle in the header and renders dark-only (R10).
+- [ ] No client-facing wording on Home is new or altered, except the quotes (R4).
+- [ ] Nothing from the reference screenshot's own content appears on the page —
+      no `150+`, no `12Years`, no filler paragraph, no other brand's name (R9).
+- [ ] `npm run build` completes with no errors; `npm run dev` serves `/` with no
+      console errors (R7).
+- [ ] Every navigation link still reaches its route; the other five routes still
+      render (they may still look old — that is expected at this stage) (R8).
+
+## Constraints
+
+- **Brownfield, live site.** Work lands on `develop` as edited files. The human
+  alone merges, releases and deploys. No role runs git writes, `pm2`, ssh, or
+  the release/merge scripts.
+- **UI library: change permitted, compatibility mandatory.** The owner's answer
+  to Q5 was `เปลี่ยนได้ แต่จะเปลี่ยนเป็นอะไร ต้องทำให้version match กันไม่error`
+  — the team **may** move off Mantine 8, but whatever it moves to must be
+  version-compatible with the existing Next 15.5 / React 19 app and must build
+  clean. Whether to actually change it is a technical decision for the SA, not a
+  business requirement. Note the survey's paid-for gotcha: Mantine 9 breaks on
+  Next 15. **Settled 2026-08-30 (Q9): the choice is the team's, no owner
+  sign-off needed** (`ให้ทีมตัดสินเอง`) — R7 still binds, and the owner is told
+  what was chosen when Home is handed to him for review.
+- **Content is real.** No invented client names, testimonials, certificates,
+  dates or metrics (R4) — including anything read off the reference (R9).
+- **Reference material: received 2026-08-30**, `project-docs/image-1788033178719.webp`.
+  The earlier DATA REQUEST is closed and the visual direction is unblocked (R9).
+
+## Out of Scope
+
+- The other five routes (About, Services, Portfolio, Blog, Contact) — they
+  follow as a separate REQ after the owner approves Home (R6).
+- A dedicated quotes page, if one is wanted — the owner allowed it (`เอาไปแยก
+  หน้าได้`) but Home is this REQ's only route; a quotes page is a follow-up.
+- Rewriting or translating any existing copy (R4).
+- The survey's known gaps (missing `/blog/[slug]`, posts authored as "Develyst
+  Team") and repo hygiene items (stale root `README.md`, credentials in
+  `SERVER_MAINTENANCE.md`, committed `.DS_Store`).
+- Deployment.
+
+## Questions
+
+### Answered 2026-08-30 by the owner
+
+- **Q1.** Which part of the current look feels most like Claude?
+  > answer: `ทุกอย่าง รวมทั้งpattern component` — everything, component patterns
+  > included. Folded into R1.
+- **Q2.** Is there a site/brand/design you want it to feel like?
+  > answer: one reference screenshot, saved by the owner on 2026-08-30 to
+  > `project-docs/image-1788033178719.webp`. DATA REQUEST closed. Folded into R9.
+- **Q3.** If no reference: which mood?
+  > answer: `ดำปนม่วง` — black mixed with purple. Folded into R2.
+- **Q4.** Re-skin or rebuild?
+  > answer: `รื้อใหม่` — rebuild. Folded into R3.
+- **Q5.** May the UI library change?
+  > answer: `เปลี่ยนได้ แต่จะเปลี่ยนเป็นอะไร ต้องทำให้version match กันไม่error`
+  > — permitted, with compatibility mandatory. Folded into R7 + Constraints.
+- **Q6.** Deadline / all six routes at once or Home first?
+  > answer: `Home ก่อนก็ได้` — Home first. No deadline given. Folded into R6.
+
+- **Q7.** Quote 4 `Dont say why me Say Try me` — render exactly, or as
+  `Don't say why me. Say try me.`?
+  > answer: `แก้ช่วยได้เลย ทั้งหมด` — correct it. Quote 4's canonical wording is
+  > now `Don't say why me. Say try me.` (the form offered in the question, so
+  > that is the form he approved). `ทั้งหมด` extends the permission to the Thai
+  > quotes, but see Q10 — nothing Thai is touched without his exact string.
+- **Q8.** Do the quotes render in the language given, or translated?
+  > answer: `เอาทั้งคู่ไปเลย` — both. Bilingual is what he wants; the English
+  > wording for quotes 1–3 has to be his, not ours. See Q11. Folded into R5.
+- **Q9.** Does the owner want to approve a UI-library change?
+  > answer: `ให้ทีมตัดสินเอง` — the team decides, R7 still binds. Folded into
+  > Constraints.
+
+- **Q11 — DATA REQUEST, closed 2026-08-30.** Asked for the owner's own English
+  wording for quotes 1–3.
+  > answer: `แปลมาเลย` — he does not want to write them; the team translates.
+  > Porter's three English strings are now canonical in R5, flagged there for
+  > his confirmation at the Home review. Bilingual quotes are unblocked.
+
+- **Q10 — closed 2026-08-30.** Asked him to paste the exact final Thai string
+  for each of quotes 1–3, after his earlier `yes`.
+  > answer: `ก็นายคิดให้ไปเลย` — "you do it for me, go ahead." He declined to
+  > write them and delegated the correcting, the same way he delegated the
+  > English in Q11. The three corrected strings are now in R5, with every edit
+  > itemised there for him to check at the Home review.
+  >
+  > **Scope Porter applied, stated so he can overrule it:** Q10 was a
+  > *punctuation-and-spacing* question — it descends from Q7's `แก้ช่วยได้เลย`
+  > about `Dont say why me` — so the corrections are punctuation and spacing
+  > only. No word of his was rewritten. If what he actually meant was "rewrite
+  > the wording of my quotes", that is a different and larger permission and he
+  > has to say so; R5 stands until he does.
+
+### Answered 2026-08-30 — second round
+
+- **Q12 — opened 2026-08-30, CLOSED 2026-08-30.** Was non-blocking throughout.
+  Q10 closed with a scope note saying that if the owner meant "rewrite the
+  *wording* of my quotes" — not just punctuation and spacing — that is a larger
+  permission he has to grant explicitly. Porter put that to him as a yes/no
+  question in chat. **The question's exact Thai text was not written to a file
+  before the session ended** (process gap, now fixed by this entry); it was, in
+  substance: *"the corrections I made are punctuation and spacing only — no word
+  of yours was changed. If what you meant was for me to re-word the quotes
+  themselves, say so."*
+  > answer received 2026-08-30, verbatim: `ใช่`
+  >
+  > **Porter did not act on it, on purpose.** A bare `ใช่` against a question
+  > whose text is not on disk has two opposite readings, and Porter cannot tell
+  > which from the files:
+  > - **(A)** yes — go ahead and re-word the quotes themselves; or
+  > - **(B)** yes — punctuation-and-spacing only is correct, that is what I meant.
+  >
+  > Reading (A) means Porter writes new personal quotes for a real person on his
+  > client-facing shopfront. That is the one thing R4 exists to prevent, and a
+  > one-word answer with an unverifiable antecedent is not the explicit
+  > permission R4 requires. Reading (B) means doing nothing. Doing nothing is
+  > therefore correct under (B) and merely *deferred* under (A) — the quotes in
+  > R5 are already safe to build with, and a wording swap later is a one-line
+  > copy edit on strings the design treats as content.
+  >
+  > **R5 is unchanged and stays canonical.** Nothing in this REQ is blocked.
+  >
+  > **What unblocks Q12 — one line from the owner, either:**
+  > - `แค่วรรคตอนพอ` / "punctuation only is right" → Porter closes Q12, R5 final; or
+  > - the **new Thai wording he wants**, quote by quote → the only form of (A)
+  >   Porter can act on without inventing his voice for him. If he again
+  >   delegates the wording itself (`นายคิดให้`), Porter will draft it and mark
+  >   every rewritten quote for his line-by-line approval at the Home review
+  >   before it can ship — a rewrite is never confirmed by silence.
+  >
+  > **Resolution, 2026-08-30, verbatim: `แค่วรรคตอนพอ`** — "punctuation is
+  > enough." That is the first of the two unblocking lines above, i.e. reading
+  > **(B)**: punctuation-and-spacing only was the right scope, no word of his is
+  > re-written. **Q12 is CLOSED and R5's Thai for quotes 1–3 is FINAL.** No
+  > re-wording happens under this REQ; a future wording change would be a new
+  > request from him. The Thai strings no longer need his confirmation at the
+  > Home review — only Porter's English (Q11) still does.
+
+- **Q13 — opened and CLOSED 2026-08-30 (the SA's SQ1, relayed by Porter).**
+  SPEC-001 §Questions SQ1 notified the owner that the rebuilt Home ships a single
+  dark scheme and the light/dark toggle therefore leaves the header — a control
+  he can see on the live site today. Porter put that to him rather than let him
+  find it at review.
+  > answer, verbatim: `เอาออก` — take it out. The toggle is removed with his
+  > agreement. Folded into **R10** and into the acceptance criteria. SPEC-001's
+  > dark-only decision stands; Sober keeps the SQ1 answer in his own file — Porter
+  > does not write to `specs/`.
+  >
+  > Not asked, not assumed: this says nothing about the other five routes, which
+  > are out of scope here. Whether they keep a toggle while Home has none is a
+  > question for the follow-up REQ, not something decided by this answer.
+
+### Open — owner must answer (Porter asks; nobody guesses)
+
+- None. Everything the owner owes this REQ is answered; the only item still
+  needing him is his **confirmation of Porter's English** for quotes 1–3, which
+  happens at the Home review (see Acceptance Criteria), not before.

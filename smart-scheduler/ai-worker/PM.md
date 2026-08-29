@@ -195,3 +195,16 @@ quietly restating it as ours.
 
 **The owner should never have to be the one who notices.** He is the person who nudges the team and runs the
 commands; deciding whether the customer's system is safe to touch is our job, not one more thing on his list.
+
+## ✍️ HOW PORTER WRITES TO THE OWNER (his instruction, 2026-08-30: *"พิมพ์ไม่รู้เรื่องเข้าใจยาก"*)
+
+**Short. Plain Thai. No walls of text.** He said it after three long answers in a row, and
+`PROJECT-STATUS.md` already recorded the same lesson for log entries — *"a two-line instruction
+buried in forty lines of reasoning does not get read."* It applies to chat too.
+
+Rules for every message to the owner:
+- **Under 15 lines.** If it does not fit, the detail goes in a file and the message points at it.
+- **Lead with what is left / what he must decide.** Never with background or with what I did.
+- **One idea per line.** No dense tables, no stacked bold, no English jargon he did not use.
+- **Ask for ONE decision at a time.** A list of nine open items is not a question.
+- **Reasoning belongs in the files** (REQ / log / `OWNER-LIST.md`), not in the message.
