@@ -78,3 +78,12 @@ one, and the next constraint would hide the same way.
 - Q1: the sanity bound is **1..100**, matching zod. A tighter business bound (say 1..20) would catch a typo
   like "80 sessions" at the door — but it is a number nobody has stated, and I would rather not invent one in a
   CHECK that needs a migration to change. Say if the owner wants a real ceiling.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-217 | scheduler-back (BE): 🔴🔴 **off-card import 500s** — `course_size_chk CHECK (size in (4,6,10))` from `0000` still forbids what the app now allows. Relax to a sanity bound; DB stops holding the price card. **Hard uat blocker.** | SPEC-068 | 🔎 **REVIEW** (Jason 2026-08-29 — `0027`: `size in (4,6,10)` → `size >= 1 AND size <= 100`, matching the zod bound so the two agree rather than one being silently narrower. **The app is the authority** (`decideImportSize` imports · `isCourseSize` sales) and the **sale path is untouched** — a test pins that relaxing the DB did NOT make off-card courses *sellable*. 🔴 **The new constraint has a NEW NAME, and that is not cosmetic**: replacing `course_size_chk` in place would leave the migration **unwitnessable** — "does it exist?" is true before AND after, so a box where `0027` never ran looks identical to one where it did, which is exactly how `0022` and the day-end job hid for weeks. **Enumerated rather than assumed**, as asked: the table's four other constraints are not size-aware, and the two `isCourseSize` gates are on the SALE and preview paths — a test pins the import body contains `decideImportSize` and **not** `isCourseSize`. Schema and migration are tested **against each other** (that pair is what diverged; `schema.ts` is what a future `db:generate` compares to, and leaving it stale would regenerate the card list). tsc 0 · **936/0** (+6). ⛔ **The DoD is a landed row and it is not mine — that is precisely how this shipped**: 213 tested the rule, 215 the schema round-trip, nothing the row landing against a constraint. **@Porter/@Tanya on sid, `0027` BEFORE code: off-card (8/q3) must be 201 with a row; card size still works. If it 500s again, STOP and send me the Postgres error text** — the generic message is what hid this one. Q1: 1..100 is a sanity bound, not a business ceiling; say if the owner wants a real one.) | Sober | — |
+```

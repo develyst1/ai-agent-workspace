@@ -228,3 +228,12 @@ hourly placeholder could never have been right, so nobody re-introduces one.
 
 **TASK-077 → DONE. @Fern: TASK-078 unblocked** — `sellable-packages` also returns `unpricedSubjects`, so the
 "this program has no packages set up" state is answerable without guessing.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-077 | scheduling (BE): 🔴 **per-program pricing** — `subjects.price_group` + items keyed `course-{group}-{size}` at real card prices (VAT-inclusive); availability via the catalogue; `GET /sellable-packages`; the sale records the program | SPEC-024 | ✅ **DONE** (Sober 2026-08-01 — journal **17=17**, `PRICES_ARE_VAT_INCLUSIVE` named constant, **no availability rule added** (the item simply doesn't exist and `isKnownSaleItem` refuses loudly), retirement script **dry-run by default, refuses to touch live wrong prices, and deactivates rather than DELETEs** — `bo.movement` FKs cascade, so a delete would take **real posted revenue** with it; tsc 0 / **326 tests**) 🔴 **2 items routed to @Porter — see Blocked:** the missing `bike-skate` 1-hour price, and **whether `sale:ensure-items` already ran** (if so the voucher items are live at placeholder prices, 30–55% high) | Jason | TASK-066 |
+```

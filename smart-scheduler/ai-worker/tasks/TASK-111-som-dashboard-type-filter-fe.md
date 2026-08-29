@@ -21,3 +21,12 @@ client recomputation — the FE stays a renderer (SPEC-020).
 - [ ] `applicable=false` sections show "not applicable", never a stale unfiltered number.
 - [ ] The doesn't-sum-to-All note and the voucher historical caveat are on screen.
 - [ ] tsc clean; build ok. Measure any new shared-row control at 1600/1280/768/375 (board STANDING RULE).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-111 | scheduler-front (FE): SOM dashboard booking-type control + render `applicable=false` as "not applicable" + the doesn't-sum-to-All note + the voucher historical caveat | SPEC-032 | **BLOCKED** (TASK-110) | Fern | TASK-110 |
+```

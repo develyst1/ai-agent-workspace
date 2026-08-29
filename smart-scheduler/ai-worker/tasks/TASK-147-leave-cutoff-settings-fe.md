@@ -23,3 +23,12 @@ FE-renderable now.
 
 ## Implementation Notes / Questions
 (Fern fills in.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-147 | scheduler-front (FE): dict keys (label/help TH+EN) for the 2 leave-cut-off settings rows | SPEC-048 (REQ-047) | **TODO** (dep TASK-146) | Fern | TASK-146 |
+```

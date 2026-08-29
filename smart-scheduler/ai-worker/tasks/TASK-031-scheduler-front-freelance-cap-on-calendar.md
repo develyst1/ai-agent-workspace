@@ -183,3 +183,12 @@ AC gap; parts 1–3 unchanged.
   proceeds with override · durable-override no dialog · no Teachers-page regression · tsc + test + build clean.
 - **TASK-031 → DONE.** It's REQ-007's only task → **REQ-007 → SPEC_DONE** (→ @Porter for acceptance; ships on
   the next frontoffice deploy). Backend untouched (correctly — verified twice).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-031 | scheduler-front: freelance budget strip on calendar + keep over-cap selectable + per-action override (confirm **+ direct-attend**) | SPEC-008 | DONE — ⚠️ **SUPERSEDED** by TASK-032 (REQ-007 revised) | Fern | — |
+```

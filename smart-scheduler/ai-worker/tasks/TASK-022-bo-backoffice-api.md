@@ -85,3 +85,12 @@ Read the pure `bo-money.ts` + the routes:
   reads open; route-tested (no token → 401, bad body → 400). Mounted `/api/v1/bo/*`, coexisting with dormant ops
   (D1, approved). Pure math + auth tested; DB round-trips accepted under brownfield. No rework.
 **TASK-023 unblocked.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-022 | backoffice-back: universal item/movement/tag API + P&L report (single-admin JWT) | SPEC-006 | DONE | Jason | TASK-021 |
+```

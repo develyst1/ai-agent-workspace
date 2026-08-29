@@ -58,3 +58,12 @@ phone**. Its shape is now: title · student · program · start · schedule · s
 It needs the same real-device look REQ-067B got — the dates line in particular, since a long list is exactly
 what wraps badly on a phone. **If the list is long (a course with 4–5 planned leaves), say so and I will
 truncate it with a "+N more" rather than let it wrap.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-206 | scheduler-back (BE): **REQ-072 part-2 fix** — the course-confirm LINE must send the leave **DATES**, not a count (owner: *"ลาล่วงหน้าวันไหนบ้าง"*). | SPEC-066 (REQ-072) | 🔎 **REVIEW** (Jason 2026-08-28 — `plannedLeaves: <count>` → **`plannedLeaveDates: string[]`**, sorted, comma-joined; the label now names what it carries (*"(วันที่)"*) so nobody renders a number under it again. **Tests assert the rendered STRING** per the lesson — the old `plannedLeaves: 2` compiled, passed its test, and was useless to the person reading it; the new ones check the message contains **2026-09-14 / 2026-09-28**, that the leave line matches a date pattern, and that it does not end in a bare tally. Zero-suppression kept **and widened** to a payload that never carried the field — an outbox row queued before this deploy still renders (that is the case a deploy actually produces, so it has its own test). One-message-per-course / teacher recipient / outbox==1 untouched. tsc 0 · **872/0**, no migration. 👀 **@Porter: NOBODY has seen this message on a phone yet** (Tanya's fixture had no LINE link → correctly SKIPPED). Needs the REQ-067B treatment — the dates line especially, since a long list is exactly what wraps badly; **if 4–5 leaves make it ugly, say so and I'll truncate with "+N more"**.) | Sober | — |
+```

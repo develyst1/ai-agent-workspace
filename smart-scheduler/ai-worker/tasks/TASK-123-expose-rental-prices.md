@@ -30,3 +30,12 @@ Add to the `/sellable-packages` response:
 - [ ] Shared response type updated; FE mock carries the field.
 - [ ] `bunx tsc --noEmit` clean; `bun test` green.
 - [ ] Unblocks the TASK-109 price display (Fern wires it off this field — no FE-side price table).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-123 | scheduling (BE): expose `rentalItems:{code,priceMinor}[]` on `GET /sellable-packages` (from `RENTAL_PRICE` — one price authority, no FE copy; FE owns labels via i18n) | SPEC-031 | ✅ **DONE** (SA-reviewed 2026-08-11 — tsc 0 reproduced; `rentalPriceList()` from the single `RENTAL_PRICE` authority (`sale-items.ts:130`) on `/sellable-packages:888`; FE `RentalModal` reads `card.rentalItems` + shared `formatPriceMinor`, Total=priceMinor×hours, no hardcoded prices. **REQ-028 fully closed; fast-follow 107/109/102/122/123 all SA-reviewed.**) · (Jason 2026-08-04 — tsc 0 · **458/0**. `rentalPriceList()` in `sale-items.ts` derives `{code, priceMinor}[]` from `RENTAL_CODES`+`RENTAL_PRICE` (the same authority `RENTAL_ITEMS` maps — no second copy); added to the `/sellable-packages` payload as `rentalItems`. **code+priceMinor only** — no name/i18n crosses the wire (FE owns labels via `rental.item*`). BE return type is Hono-RPC-inferred, so the field flows to the FE type automatically. Pure test: the four codes at 200/150/50/50 THB, each matching its seed item's price. **Unblocks TASK-109 price display** — Fern wires off this field, no FE price table. @Fern: update the FE mock to carry `rentalItems`.) | Jason | — |
+```

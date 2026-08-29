@@ -102,3 +102,12 @@ started sending it in **TASK-052**. So:
 
 FE-first is safe: the new FE sends `courseId`, and the old backend simply accepts it (the field has always been
 optional). Please put this line in the deploy manifest — it's the only ordering constraint in the batch.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-055 | scheduling (BE): server backstop — **require `courseId` on COURSE_PACKAGE bookings** | SPEC-017 | ✅ **DONE** (Sober 2026-08-01 — symmetric refine + `path:["courseId"]`, caller check done properly (both other insert paths bypass the schema), symmetry test guards the voucher rule too; tsc 0 / 232 tests) — 🔴 **DEPLOY ORDER: frontoffice FIRST or both together — backend-first 400s every Course-tab booking** | Jason | — |
+```

@@ -81,3 +81,12 @@ asserted ✅ · tsc/test ✅.
   rather than refused — I read that as a special agreement, not a typo. Say if it should refuse instead.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-213 | scheduler-back (BE): **import-form batch** — off-card size **500s** → validate with a Thai reason; computed-editable expiry default; `MAX_WEEK = size + quota`. | SPEC-068 | 🔎 **REVIEW** (Jason 2026-08-29 — the 500 is gone: `decideImportSize` is pure — **4/6/10 needs nothing, any other size needs its quota stated** — and a missing one is refused **in Thai, naming the field with the card's three examples**, which a staff member can act on where `เกิดข้อผิดพลาดภายในระบบ` told them nothing. 🔴 **The two tables are now ONE rule**: `MAX_WEEK_BY_SIZE` is **derived** from `LEAVE_QUOTA_BY_SIZE` (`size + quota`), with a test pinning the derived table still equals the owner's 5/8/13. Their real failure was worse than drift — **an off-card size fell through both to `quota 0, maxWeek 0`**: no leave allowance and an expiry inside its own first week, silently (it 500'd first, which is the only reason no family has one). Quota is **stored** (`0026`, nullable + CHECK≥0 — for an off-card course it is a fact somebody entered); **`maxWeek` is never a column**. 🔴 **Expiry: I NARROWED TASK-195, not reversed it** — TASK-195 killed the form's `today + 2 months` (a number from no rule); the owner's later ruling protected **a date a human actually typed** (why 164 imports were skipped in the repair). So the server computes the default and honours an explicit date; `expiryDate` is now optional. New read-only `POST /courses/import/preview` gives the FE the default so it never owns a second copy of the expiry rule. 📌 TASK-185's completeness test caught the new route by omission — **fourth time**. tsc 0 · **922/0** (+11). ⛔ `0026` owner-run, sid first, joins `0025` in the uat batch. Q1: the migration wasn't asked for — without it an off-card import has nowhere to keep its quota; the only honest alternative is refusing off-card sizes outright, which contradicts the owner's stated intent.) | Sober | — |
+```

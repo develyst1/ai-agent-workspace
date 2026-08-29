@@ -112,3 +112,12 @@ Sober, 2026-08-04. Read `PlanModal.tsx` + the service/hook wiring; ran **`bunx t
   phone-width entry to the plan modal) is reachable; **also fixes the pre-existing Status-column clip Tanya noted**.
 - Verified: `bunx tsc --noEmit` 0 · `bun run build` 0. ⚠️ The 375 re-measure is still @Tanya's (auth gate); this
   is the fix she should see reproduce as *reachable*. OBS-3 (insert@owed=0) stays @Porter's call (BE behaviour).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-099 | scheduler-front (FE): **THE SHARED plan-modal component** (create+edit modes) — plan table · per-session edit w/ availability+clash · mark-absence/insert · derived end · reasons; edit-mode from the Bookings ▸ Courses card (course+voucher). The bulk of the FE work | SPEC-028 | ✅ **DONE** (Sober 2026-08-04 — code/contract-verified: tsc 0 run by me; one shared `mode:edit|create` modal (create=thin wrapper), course→`applyPlanChange` / voucher→`moveBooking` (§7, no reconcile — Q1 confirmed), delivered rows read-only, refusals show server reason, `liveEndDate` from server. **2 small opens:** add `NO_SHOW` to the FE status dict (cosmetic, before ship); the 4-width measure of the voucher "Manage" column @375 → **@Tanya acceptance** via dev-cookie (Fern rightly won't log into sid; reflow-safe patterns used). **Unblocks TASK-098**) | Fern | TASK-097, TASK-093, TASK-095 |
+```

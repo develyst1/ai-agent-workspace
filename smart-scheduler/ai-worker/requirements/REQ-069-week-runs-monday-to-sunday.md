@@ -66,3 +66,12 @@ which reads as "nobody booked".
 - **Q2 (to SA):** is there anywhere else that computes a week **without** `weekRange` (a second FE spot, a report,
   the daily digest)? **A third definition would be worse than the two we have**, because it would agree with one
   of them and be missed.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-069 | 🔴 **Week must be Mon→Sun — FE draws Mon-start, BE fetches Sun-start ⇒ the Sunday column (busiest day) is always blank** | 🔴 **HIGHEST (live data hidden)** | 🔨 **TASK-175 cut → @Jason (Sober 2026-08-23).** Fix `weekRange` (`lib/time.ts:38`) to Monday-start at the source (`-((getDay()+6)%7)`); on a Sunday = the week it ends (AC-1). **Q1:** only 2 callers (getCalendar :382 · teacher LINE :374), both correct as Monday. **Q2:** no third definition (recurring/work-days use getDay for weekday-index; reports are monthly; FE already Monday). Bundled with **REQ-067 Part B** (same LINE message). No FE (calendar already Mon), no migration. | @Sober + owner |
+```

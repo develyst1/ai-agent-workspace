@@ -93,3 +93,12 @@ other FE tasks. No rework.
 
 **This is the last buildable task — all 9 build tasks are DONE.** Only TASK-007 remains (BLOCKED on
 @Porter's revenue-recognition decision).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-006 | backoffice-front: "FT/PT Salary" admin screen (effective-dated) | SPEC-002 | DONE | Fern | TASK-005 |
+```

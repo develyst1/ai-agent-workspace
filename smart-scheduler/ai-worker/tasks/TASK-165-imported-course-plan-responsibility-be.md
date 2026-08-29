@@ -125,3 +125,12 @@ set at import, 0 for SALE, back-filled ✅.
   with its own API is a bug waiting for a support call. Flagging it because it is outside the three you listed.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-165 | scheduler-back (BE): **REQ-064 core** — new immutable `coursePackages.priorSessions` (set at import = usedSessions-at-import · 0 SALE); reconciler/`owedCount`/`insertable` use `planSize = size − priorSessions` (keep `size` for quota/label/expiry); **cancel guard: never auto-delete a family session** (req 6); backfill import=usedSessions/SALE=0. AC-1 (1 makeup) · AC-2 (owed 0) · **AC-5 SALE never appends/cancels** · AC-6. Migration, sid-first. | SPEC-060 (REQ-064) | ✅ **DONE (SA-reviewed Sober 2026-08-22)** — tsc 0 · 697/0 (+14). `coursePlanSize` at **4** sites (Jason found the 4th, the server insert gate — approved); `size` kept for quota/label. AC-5 asserted (0→10 attendance loop on SALE = empty plan). Cancel guard `withholdImportCancels` (imports only) → never auto-deletes (req 6). **Q1 backfill validated:** `size−liveCount` would continue the give-away on phantom'd courses; `prior=used` stops it, under-append flagged by TASK-166 both ways. **⚠️ Porter: run TASK-166 + fix flagged imports before affected families take leaves.** — _prior:_ 🔎 REVIEW (Jason 2026-08-22 — `0021` adds immutable `prior_sessions` (default 0 + IMPORT back-fill, guarded so a re-run cannot compound); the fix is one argument: `coursePlanSize(course)` replaces `course.size` at the plan sites. 🔴 **There were FOUR, not three** — the server-side `NO_OWED_SESSION` insert gate asks the same question, and a DTO disagreeing with its own API is a support call waiting to happen (Q2 flags that I changed it). **AC-5 holds by construction** (`prior_sessions` is attendance-invariant) and is asserted by a loop over attendance 0→10 that must yield an empty plan every time. §6 guard withholds + logs an import’s cancels instead of applying them. Q1: the back-fill over-states prior where a session was attended **since** import ⇒ silent under-appending; TASK-166 reports it rather than me inventing a derivation off the already-corrupted plan. tsc 0 · **697/0**. ⚠️ No DB touched; `0021` owner-run, sid first.) | Sober | |
+```

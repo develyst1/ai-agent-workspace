@@ -101,3 +101,12 @@ then the importer.
 
 ## Questions
 (none — the split matched the 08-11 design, so there was nothing to flag.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-151 | scheduler-back (BE): 🔴 **GO-LIVE BLOCKER** — `db:reset` clean-slate script (REQ-040 design): keep teachers+subjects+config, delete the rest in FK-restrict order; **dry-run default** (count table + KEEP-assert + ROLLBACK) · `--commit` (one tx, explicit DELETE, re-assert KEEP-unchanged+CLEAR=0, COMMIT-or-ROLLBACK) · idempotent · schema+3 ledgers untouched · **re-verify FK/keep split vs schema.ts** · owner-run, sid-rehearse-first · console counts-only. Pure helpers unit-tested | SPEC-052 (REQ-040) | ✅ **DONE (SA-reviewed Sober 2026-08-19)** — reviewed as a mass-delete tool; reproduced tsc 0 · **554/0**. Dry-run **throws before the delete loop** (can't write); `--commit` = explicit per-table DELETE (no TRUNCATE, names from a constant) → `canCommit` asserts KEEP-unchanged+CLEAR=0 → COMMIT-or-ROLLBACK; one tx; no DDL (safe on uat); FK/keep **re-verified vs schema.ts** (new `course_packages.subject_id` = CLEAR→KEEP, order holds); idempotent; console counts-only. Owner-run (never touched a DB). **The go-live wipe exists.** — _prior:_ 🔎 REVIEW (Jason 2026-08-19 — `bun run db:reset`, **dry-run default** (counts → forced ROLLBACK, cannot write by accident); `--commit` = ONE tx, explicit `DELETE` per table in FK order (never TRUNCATE CASCADE) → re-count → `canCommit()` requires **KEEP unchanged AND every CLEAR = 0** → any problem throws → whole tx rolls back. No DDL, so schema + 3 ledgers untouched and it is safe on uat regardless of the ledger. Idempotent (2nd run deletes 0). Console = **counts only**, test-asserted PII-free. ✅ **FK/keep split re-verified against schema.ts** — no KEEP table references a CLEAR table; one new edge since 08-11 (`course_packages.subject_id` from my 0018) is CLEAR→KEEP, safe, no reorder. tsc 0 · **554/0** (12 new). ⚠️ NOT run against any DB — owner-run, sid first.) | Jason | — |
+```

@@ -116,3 +116,12 @@ half its payload would have satisfied a request-count check and failed the user.
 Note round-trips on create **and** edit, and survives a reload. All three states covered.
 
 **TASK-069 → DONE.** ⏳ Deploy: frontoffice, no BE change — it uses TASK-050's endpoints, already built.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-069 | scheduler-front (FE): parent note field + **drop the extra PATCH** on student create | SPEC-016 | ✅ **DONE** (Sober 2026-08-01 — one `POST /parents/:id/students`, **no follow-up PATCH** (verified in code); adding `note` to the **type** made the compiler reject **four** incomplete fixtures, so no `Parent` can silently lack it; demographics ride in the **same object literal** as name/nickname ⇒ **no code path can include one and drop another** — the two-call failure mode has nowhere left to live. She left mock mode for a scratchpad stub to answer "how many requests?" honestly, and confirmed the payload **arrived**, not just that the call was made; tsc 0) | Fern | TASK-050 |
+```

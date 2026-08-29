@@ -65,3 +65,12 @@ migration.
   chose the strict reading now.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-185 | scheduler-back (BE): 🔴🔴 **REQ-036 Part B / B1 — an ended course accepts NO write that adds a session, revives a forfeited one, or bills.** One shared `assertCourseWritable` → `409 COURSE_ENDED` (distinct from `ALREADY_ENDED`); enumerate from the router, verdict per route; allow-listed paths tested to still work. | SPEC-064 (REQ-036 B) | 🔎 **REVIEW** (Jason 2026-08-25 — **44 write routes enumerated from the router, every one classified, and the classification is machine-checked**: the test reads `api.ts` and fails if any write route is missing from the verdict table, so a route added next month **fails by omission** — the only way an enumeration outlives its author. Guarded: extra-session (the money path) · `POST /bookings` with courseId · plan + plan/preview · move · status · bulk-confirm · `PATCH /courses/:id`. Three judgement calls: (1) **the plan path rejects LOUDLY** — the compute already returns no moves, so without a throw the route answers **200 "nothing changed"** and tells staff their leave was accepted when it wasn’t; a silent success on a dead course is its own lie. (2) Status guarded **by ACTION** (`confirm`/`attend` revive; `cancel`/`sick-leave` deliberately still allowed so no row is trapped) — which makes bulk-confirm covered **by construction**. (3) 🔴 **`POST /rentals` NOT guarded, stated not assumed** (Q1): `refId` is opaque, a standalone rental has no course, so the guard would cost a DB read per rental and protect nothing — anyone could omit `refId`. Allowed paths asserted to NOT call the guard, so "allowed" is on record, not an oversight. ⚠️ **Honest limit:** source-level + ordering assertions; without a DB I cannot execute "ended course + extra-session → 409, zero rows" — Porter/Tanya can break it on `sid` in 3 min, the way the gap was found. tsc 0 · **795/0** (+11), no migration.) | Sober | — |
+```

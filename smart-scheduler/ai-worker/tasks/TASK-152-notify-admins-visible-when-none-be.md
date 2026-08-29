@@ -71,3 +71,12 @@ leave produces a PENDING row instead of a SKIPPED one, which is the thing to loo
 
 ## Questions
 (none)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-152 | scheduler-back (BE): `notifyAdmins` — when **zero** admins configured, enqueue **one visible SKIPPED** admin row (not nothing), so a leave is never silent (REQ-049 AC-4). Found live 2026-08-20 (empty outbox = no admin LINE-linked on sid; config, not the wipe). Small; rides `lib/line-admin.ts` | REQ-049 | ✅ **DONE (SA-reviewed Sober 2026-08-20)** — reproduced tsc 0 · 564/0. `notifyAdmins` zero-admins → one visible SKIPPED row (`skipReason:"no admin recipient configured"`, carries bookingId/payload); ≥1-admin loop unchanged; idempotency intact. **REQ-049 AC-4 (never silent) closed;** AC-1 (admin actually notified) still needs the config step (admin links `229`) + wave-2 re-test. (Jason 2026-08-20 — zero configured admins now enqueue **one visible SKIPPED row** via the existing `enqueueLine` (null recipient), carrying the `bookingId` + payload, so a leave always leaves a trace; the ≥1-admin loop is byte-for-byte unchanged. Added an optional `skipReason` to `enqueueLine` so the row reads **`no admin recipient configured`** rather than the misleading `no line userId` — nobody’s link is missing, the environment has no admin. AC-6 re-save guard still short-circuits before this. tsc 0 · **564/0**, +5 stub-exec tests incl. no-settings-row and the ≥1-admin no-extra-row case. ⚠️ This makes the miss visible; the live fix is still the per-env config step (admin links with 229) — after which the same leave shows PENDING instead of SKIPPED.) | Sober | — |
+```

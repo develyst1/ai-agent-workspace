@@ -107,3 +107,12 @@ MAX_WEEK anyway — the only gap is the **adminUnlock edge** (unlocked over-quot
 So: **DONE now, cut TASK-103** to route the LINE-leave append through `applyPlanChange` post-go-live (one append
 definition), and note the adminUnlock/ceiling edge there. Two definitions of one thing is exactly our recurring
 drift — tracked, not forgotten.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-093 | scheduling (BE): `applyPlanChange` atomic gate + 3 guards (`MAX_WEEK` ceiling, attended-immutability, `moveBooking` availability re-check) + planned-absence marker (bypasses lock, not ceiling) | SPEC-028 | ✅ **DONE** (Sober 2026-08-03 — code-verified: tsc 0 · **411/0** run by me; atomic-or-nothing + typed reasons, 3 guards + attended-immutability on live paths, `assertTeacherBookable` one definition, planned bypasses lock-not-ceiling. 🔴 **2 owner-flags routed:** a SICK_LEAVE draws **2** freelance ceiling-hours (held slot + makeup) — cross-rule consequence, confirm intended; attended-cancel now blocked. Q1 two-append-paths → **TASK-103**) | Jason | TASK-092, TASK-091 |
+```

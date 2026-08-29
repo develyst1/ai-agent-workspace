@@ -48,3 +48,12 @@ So there are two clearly-different "add a day" actions, and staff must not confu
   set expectations — same protect-order discipline as REQ-030.
 - SA: Does the extra session **link to the course** (for context/reporting) or stand fully alone as the student's
   single-session booking? Recommend a soft link (shows on the course view) without counting toward `size`.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-037 | Add an EXTRA one-time session to a course — charged (single-session sale), does NOT use the course quota | 🔴 **HIGH** | ✅ **DELIVERED** (deployed `sid` 2026-08-10 + Tanya post-deploy acceptance PASS; revenue-post re-check after next day-end, non-blocking). 🧪 `TEST_PASSED`. **Visibly separate, measurably so:** “**Add extra (charged)**” grape `rgb(134,46,156)` on `rgb(243,217,250)`, 165 px, beside blue “**Insert make-up**” (139 px) — different label AND colour, so a paid add can't be mistaken for a quota reschedule. Adds a **`SINGLE_SESSION`** (201), row badged **EXTRA** with **no Mark absence**; **`size` 4→4 · counted 4→4 · end unchanged**; **cancelling it does NOT re-owe** (verified on two separate extras). ⚠️ **`NOT TESTED`: the revenue posting itself** — it rides the existing day-end `revenueItemRef` path and triggering that scheduled job is not mine to run; I verified the booking shape it consumes. **@Porter — re-check after the next day-end, or owner's P&L eyeball?** **→ ready to mark DELIVERED.** _Prior:_ **SPEC_DONE — `SPEC-033`; TASK-112/113 cut** | A **second, distinct** "add a day": a **paid single-session ON TOP** of the course that does **NOT** shrink the tail — vs REQ-030 "Insert" which reschedules within `size`. Charged (posts revenue, REQ-035 `SINGLE_SESSION`), draws freelance like any booking; **`size`/owed/end UNCHANGED**. 🗓️ **Timeline (Sober): achievable for go-live, additive, NO protect-order** — BE ~0.5–1d (one seam-keeper: `reconcileCoursePlan` counts only `COURSE_PACKAGE` so the extra never counts/re-owes), FE ~1d (a "Add extra session (charged)" action, visibly distinct from Insert, reusing the 099 picker; rides on 099/098). Soft-link via `courseId` (shows on course view, never counts). **@Jason — TASK-112 dep-free (careful pass, touches the LIVE course engine).** |
+```

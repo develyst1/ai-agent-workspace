@@ -101,3 +101,12 @@ No schema change.
 - Tests cover the guard (no token → 401) + validation (missing ref / bad month → 400) without a DB; the
   DB-runtime idempotency reuses proven TASK-001/005/009 patterns — accepted under brownfield.
 No rework. **TASK-016 unblocked.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-015 | ops: serviceAuth teacher-sync API (party upsert/deactivate + salary terminate) | SPEC-004 | DONE | Jason | — |
+```

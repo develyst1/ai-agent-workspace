@@ -81,3 +81,12 @@ top-up modal; mock stubs mirror the server (first-set→remaining=budget, edit k
 unchanged (local-sourced DTO, same field names) → no regression; `setupIncomplete` badge clears when a budget
 is set. Live render behind prod NextAuth — accepted under brownfield (same posture as TASK-004/017). No rework.
 **REQ-004 is fully built (019/020).**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-020 | scheduler-front: frontoffice freelance budget admin (set/edit/top-up) | SPEC-005 | DONE | Fern | TASK-019 |
+```

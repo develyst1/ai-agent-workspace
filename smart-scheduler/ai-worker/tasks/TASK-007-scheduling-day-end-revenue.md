@@ -97,3 +97,12 @@ future seed/DATA REQUEST. The job is safe before they're seeded (best-effort ski
 - Freelance budgets/expense untouched here — correct (booking-time, TASK-002). ✓
 Matches SPEC-001's Revenue-recognition section exactly. DB-runtime posting verified by inspection under
 brownfield; the type-mapping + ops contract are unit-tested. No rework.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-007 | scheduling: end-of-day REVENUE tally (attended TRIAL+SINGLE only) | SPEC-001 | DONE | Jason | TASK-001 |
+```

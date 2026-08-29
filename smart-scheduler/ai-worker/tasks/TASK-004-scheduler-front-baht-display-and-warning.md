@@ -118,3 +118,12 @@ real-env login); display logic is pure and fully typechecked against the now-DON
 Accepted on the same basis as prior DB/env-runtime items. No rework.
 
 Repo `lint` is the pre-existing broken `next lint` (Next 16) — logged for Porter, not a task defect.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-004 | scheduler-front: baht remaining/budget + near-cap warning + real-time hide | SPEC-001 | DONE | Fern | TASK-008 |
+```

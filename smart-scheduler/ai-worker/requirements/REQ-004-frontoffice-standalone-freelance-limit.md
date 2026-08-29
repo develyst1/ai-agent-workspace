@@ -83,3 +83,12 @@ freelance calls are **switched off**.
   > SA (Sober): **Confirmed — leave dormant.** TASK-019 removes the ops freelance calls from the live
   > booking/teachers paths but keeps the `ops-client.ts` functions in place (unused) for the eventual
   > backoffice rebuild. Least churn; the standalone-proof test asserts no ops fetch on those paths.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-004 | Move freelance limit into the frontoffice — standalone, no backoffice dependency | HIGH | ✅ **DELIVERED** | Deployed & confirmed working by คุณฟีน 2026-07-20. Freelance limit now standalone in the frontoffice. |
+```

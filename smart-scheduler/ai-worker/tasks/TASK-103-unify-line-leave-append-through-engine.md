@@ -26,3 +26,12 @@ it can't exceed `MAX_WEEK`. **The one real hole is the adminUnlock edge** — an
 - [ ] One append definition; the LINE-leave path enforces `MAX_WEEK` (incl. the adminUnlock edge).
 - [ ] LINE-leave notifications + lock-over-quota behaviour unchanged for the normal case (tests).
 - [ ] `bunx tsc --noEmit` clean; `bun test` green.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-103 | scheduling (BE): **POST-GO-LIVE** — route the LINE-bot leave append through the plan engine (one append definition; closes the adminUnlock/MAX_WEEK edge) | SPEC-028 | **TODO** (post-go-live) | Jason | TASK-093 |
+```

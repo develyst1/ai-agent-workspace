@@ -198,3 +198,12 @@ will never apply.**
 ⏳ **@Porter — backoffice's remaining steps are yours**, dry-run first as always. Expect `4 applied · 2 retired ·
 0 need a human`, verify **green**, and the two `ops` entries **printed with their reason** — if they ever stop
 being printed, that's the regression to catch.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-087 | backoffice-back: third verdict **`retired`** for the two `ops`-only migrations | — | ✅ **DONE** (Sober 2026-08-02 — `{kind:"retired",since}` in the **same union** as `superseded-by` (resolves without a query, so it's one mechanism not a flag); the exemption is scoped to **exactly those tags** and tested **both ways** — an unrecorded non-retired migration still goes **red**, a `rerunnable:false` one still **halts** — so `retired` can't become an off-switch; masking check clean (those columns are read only by unmounted files). 🔴 **He corrected my framing on the emptied-ledger case: ordering does NOT protect** — an empty ledger attempts everything from `0000`; what stops it is the **unguarded baseline** (`CREATE SCHEMA "ops"`, 42 CREATEs, 0 `IF NOT EXISTS`) + the single transaction ⇒ loud rollback. I gave him an easy out and he didn't take it; tsc 0 both, **131/0** + **374/0**) | Jason | TASK-086 |
+```

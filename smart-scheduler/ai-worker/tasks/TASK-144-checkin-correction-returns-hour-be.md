@@ -80,3 +80,12 @@ QA check on dev.
 
 ## Questions
 (none)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-144 | scheduler-back (BE): check-in Gap-C (money) — cancelling an **ATTENDED** booking returns the consumed `usedSessions`/`usedHours` in the same tx as the freelance reconcile; guard ≥0; non-attended cancel unaffected | SPEC-043 (REQ-050) | ✅ **DONE (SA-reviewed Sober 2026-08-17)** · balance-return dev check → @Tanya. Reproduced tsc 0 · 493/0; `afterReturn` applied in the cancel branch in-tx (`:1781`/`:1788`), ATTENDED-only, floored ≥0 — money return verified, not just the pure fn. — _prior:_ 🔎 REVIEW (Jason 2026-08-17 — pure `lib/checkin-correction.ts`: `returnsConsumedUnit` (ATTENDED only) + `afterReturn` (−1, floored at 0). Wired into the `cancel` branch **inside the existing tx**, before the re-owe/freelance reconcile; refunds `coursePackages.usedSessions` and `vouchers.usedHours`. Non-attended cancels untouched (no double-credit); 0 stays 0. The voucher line is the real money case — no make-up to re-owe. tsc 0 · **493/0**, 5 new tests. No back-fill, per Porter.) | Jason | — |
+```

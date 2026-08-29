@@ -56,3 +56,14 @@ is aimed at the cause and not at TASK-155.
 - **Q2 (to SA):** does anything currently *depend* on `1st Trial` existing as a selectable subject — the trial
   booking path, `db/seed.ts:185`, or any report grouping? **If the trial flow needs a subject row to exist, say
   so** — that changes (a) from a one-line change into something to think about.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-065 | 🧹 **`1st Trial` ไม่ใช่กิจกรรม — เอาออกจากรายการ “วิชา”** (booking TYPE sitting in the program list since the 2026-06-30 seed) | **MEDIUM–HIGH** | ✅ **DELIVERED 2026-08-23 (both boxes)** | SPEC-061/TASK-173 (Jason) + PASS (Sober). Filter at **one site** — `toTeacherDTO` (`mappers.ts:30`) — which every picker flows through ⇒ **no FE change**. Owner deployed + ran the one-row flip (`active=false`) on `sid` → `uat`; `วิชา` now opens at `Bike / Scooter / Balance Cruiser`, `ทดลองเรียน` tab untouched. **AC-3 risk did not exist: 0 bookings referenced it on EITHER box** — a choice that could be made and never was. 🔑 **Jason’s catch:** the teacher form seeds from the *filtered* list and saves delete-all→insert, so a display filter would have **silently unlinked data on the next save** — guarded with *“a client may only change what it was shown.”* |
+
+| REQ-065 | 🧹 **`1st Trial` shows up as a selectable program** — a booking TYPE in the `วิชา` picker (wrong since seed day one; TASK-155 bulk-link surfaced it) | **MED–HIGH** | 🔨 **SPEC-061 + TASK-173 cut → @Jason (Sober 2026-08-23).** Q1: **(a) active=false + add a `subject.active` filter to the `subjectOptions` build** (it doesn't filter today, so the flag alone won't hide it) — all pickers read `subjectOptions`, no FE change, fixes AC-1/2 at the cause. Q2: nothing depends on it being selectable (trials book the REAL activity); the **row stays** (FK-restrict, historical bookings incl. `seed.ts:185` ref it → AC-3). Read paths must NOT filter `active`. Data flip = owner-run 1-row UPDATE (dry-run-first). | @Sober + owner |
+```

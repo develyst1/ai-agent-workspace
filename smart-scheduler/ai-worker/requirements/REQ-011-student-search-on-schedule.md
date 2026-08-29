@@ -44,3 +44,12 @@ scroll to find the right one. It should narrow the list as you type.
 (SA Lead + stakeholder. Porter answers as `> answer: ...`; business calls → `@Porter`, don't guess.)
 - **Search by what?** Name only, or also nickname + parent phone? (The `GET /students?q=` endpoint already
   supports all three — Porter's lean: keep all three.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-011 | 🐛 Student picker doesn't filter when typing (New Booking / course / voucher) — fixed | MEDIUM | ✅ **DELIVERED** | **Live acceptance PASSED 2026-07-29** (stakeholder ran, Porter verified): typing a name in the student dropdown now **filters** the list (not the whole roster). Root cause was backend: `searchStudents` added a parent-phone `ilike('%%')` for non-numeric queries → matched everyone; TASK-033 adds the phone term only when the query has digits. Sober-verified, deployed to `smart-scheduler-back`. |
+```

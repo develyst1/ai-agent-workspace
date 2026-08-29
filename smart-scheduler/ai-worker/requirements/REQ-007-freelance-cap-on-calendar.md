@@ -63,3 +63,12 @@ goes to others.
 here and route `@Porter` before building — do not guess.)
 - ~~Override at confirm vs PENDING-create~~ — **moot:** the override-to-book flow is removed; full freelances
   are hidden instead.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-007 | Freelance cap on the calendar — budget-fill color strip + auto-hide when full | MEDIUM | ✅ **DELIVERED** | **Live acceptance PASSED 2026-07-29** (stakeholder ran, Porter verified): freelance with budget shows the **%-used color strip** (🟢≤30/🟡30-70/🔴>70); a **full** freelance is **hidden** from the calendar (like inactive); **top-up / limit-override / monthly reset brings them back**. TASK-032 (revised, superseded TASK-031; hide-when-full + %-strip, override-to-book removed), FE-only, deployed to `smart-scheduler-front`. TASK-031 never shipped → no wrong behavior was ever live. |
+```

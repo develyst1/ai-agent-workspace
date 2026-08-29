@@ -48,6 +48,55 @@ logged didn't happen.
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-08-29 — smart-scheduler housekeeping DONE via spawned PM (Porter).
+  board.md 432.1KB → 39.2KB (40,103 B), 280 over-long cells → 0, absolute paths
+  → `machine.local.md`. Verbatim archive `archive/board-2026-08-29-pre-compaction.md`
+  (442,454 B, size re-verified after the correction) + `archive/board-2026-08-29-parked-notes.md`
+  (16.8KB — the 2026-08-04→08-28 QA verdict history, which fitted no single file).
+  267 REQ/TASK files appended to; `git diff --numstat` proves board.md is the only
+  file with deletions (-728), the other 267 are +2,814/-0 pure appends.
+  Gate: PASS (3 WARNs — today's log 105.6KB append-only, entries >20 lines, no
+  inbox/ = manual mode, unchanged by design). Logs untouched. No git run.
+  **DEFECT (Porter's, caught in Marie's verification, corrected):** the
+  compaction changed REQ-063's status from in-build (`🔨 SPEC-059 + 4 tasks cut`)
+  to `DELIVERED`, synthesising it from Tanya's parked `TEST_PASSED (sid) 08-23` —
+  but this project's own rule is TEST_PASSED + post-deploy re-check = DELIVERED,
+  and REQ-063 still has TASK-161 (FE) open and four owner assumptions unconfirmed.
+  The mistake was resolving a contradiction the order said to REPORT, and then
+  omitting it from the report. Restored on the second pass; verified by diffing
+  every one of the 267 rows' status against the archive.
+  **Procedure lesson: a subagent's "no status changed" claim is not evidence.**
+  What caught it was the id/row/status snapshot Marie took BEFORE the run plus a
+  diff back to the verbatim archive. Candidate: make this a `check-hygiene.mjs`
+  mode instead of a human's diligence (not built — needs the owner's go).
+  **Open risk:** the board sits 857 bytes under the 40KB gate. Two or three new
+  rows will fail hygiene. Trimming further was not ordered and was not done.
+
+- 2026-08-29 — New desk created: `portfolio-nichaphon`, born in **dispatcher
+  mode** (owner's instruction). Scaffolded from `layout-pattern-app`'s
+  dispatcher-era files, adapted to one repo / one engineer: PROTOCOL (BE row
+  and the Sober<->Jason pair removed, "Repo layout & ownership" rewritten for
+  `front/`, no-deploy, no-invented-content), SA-Lead (design-system boundary
+  replaces the IPC seam), FE (scope = `front/`), PM verbatim from `_templates`.
+  Created board.md (state-only), dispatcher-state.md, inbox/{PM,SA,FE}.md and a
+  read-only as-built survey in project-docs/. Repo path recorded in
+  `machine.local.md` as `portfolio-nichaphon-web`; README project table updated.
+  Gate: `node check-hygiene.mjs portfolio-nichaphon` -> PASS.
+  Flagged to the owner, untouched: repo-root README is stale (claims a NestJS
+  backend that no longer exists) and `SERVER_MAINTENANCE.md` holds live root
+  credentials in git.
+
+- 2026-08-29 — `machine.local.md` created on machine KUYDONG (was absent —
+  fresh machine, blocking every path-dependent operation). Verified on disk:
+  smart-scheduler `H:\scheduler` (+4 repos & the requirement repo),
+  layout-pattern-app, manager-gold (back/front), develyst-ai
+  (`H:\chipint\develyst-ai`, found by search — owner to confirm).
+  code-report / api-linkage2 / DID-046 / did-api-center-c# recorded as
+  NOT_ON_THIS_MACHINE. Confirmed git-ignored (.gitignore:151).
+  Flagged: smart-scheduler board.md still hard-codes `H:\scheduler` (paths rule
+  decayed since 2026-08-25) → remove in its housekeeping run; and
+  `H:\layout-pattern-app\app\` is a stale duplicate, not the repo.
+
 - 2026-08-25 — DID-046 migrated to new style via spawned PM: inbox/ created
   (PM/SA/BE/QA), board 41.7→12.8KB state-only (archive verbatim), repo path →
   machine.local.md, DEF-16/17 rows reconciled to log (log wins). Gate: PASS.

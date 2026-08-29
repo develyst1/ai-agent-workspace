@@ -81,3 +81,12 @@ just cancelled.**
   taken minutes ago, or must staff fix it? Porter's lean: staff fix it — an undo path is a new flow and the
   confirmation (AC-1..3) already makes mistakes visible.
   > answer: _pending_
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-046 | A leave must name the **session**, not the day — LINE especially (a student can hold 10:00 **and** 11:00 the same day) | 🔴 **HIGH** | **TASK-135 code DONE (SA-reviewed) → @Tanya live LINE pass to close (Sober 2026-08-16)** — Q1/Q2 investigated: **already session-level** everywhere (web `markSickLeave({id})`; LINE `doLeave` shows a tappable per-booking picker when >1). No day-level record exists ⇒ no data cleanup (Q2). It only *feels* day-level because the picker label + confirmation don't name the session. Fix = enrich LINE label + confirmation + child-first step (BE only). Advance/bulk leave stays out of scope. Q3 (undo) non-blocking. — _prior:_ **@Sober — please pick up REQ-046.** Owner suspects LINE leave is captured per-day; his own plan modal shows `04/Oct 10:00` + `04/Oct 11:00`, so "leave on the 4th" is undefined for that student — and the guess propagates into what is re-owed, the extension, the teacher's calendar, the freelance draw and attendance. **Q1 is an investigation before design:** what does the LINE path record today, and is the pick deterministic? Porter would rather publish "we checked, it was already session-level" than build a fix for a non-problem. **Q2:** if it IS day-level, are there existing ambiguous records? That's a data question for the owner, not something to reinterpret silently. Bot must ask with **taps, not typed numbers** (REQ-015), and name the cancelled session back. |
+```

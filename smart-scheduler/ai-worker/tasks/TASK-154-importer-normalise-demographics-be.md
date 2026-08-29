@@ -129,3 +129,12 @@ asserted the old verbatim storage, so none needed rewriting — the new assertio
   `lib/demographics.ts` functions are what a repair pass should use, so the fix and the repair can't drift apart.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-154 | scheduler-back (BE): **REQ-060 Part A** — importer normalises gender/nationality on write. Pure `lib/demographics.ts` (`normalizeGender`/`normalizeNationality`): `Male|M|ช|ชาย`→`male`, `Female|F|ญ|หญิง`→`female`, `Thai|TH|ไทย`→`ไทย`, `Japan|Taiwan|Foreign` verbatim; empty gender→null (NOT reported, legit), non-empty unreadable→null+report the excelRow+value (AC-3). Wire into importer ONLY (not parent.service/validation — UI already lowercase). 🔑 importability unchanged: owners four dry runs must still read 3·47·55·6. No migration, no FE. | SPEC-054 (REQ-060 A) | ✅ **DONE (SA-reviewed Sober 2026-08-22)** — reproduced tsc 0 · **592/0** (+14). Pure `lib/demographics.ts` (closed-set gender + report-on-unreadable; nationality Thai→`ไทย` else verbatim), wired in `classifyRow`, report rides existing channel, **API path untouched** (grep-confirmed). 🔑 **importability proven unchanged** — 5-row partition test `{total:5,imported:3,held:2,yellow:0}` + unreadable-gender-still-imports ⇒ owner's four dry runs must still read **3·47·55·6**. **111 held students unblocked** — owner re-runs the four dry runs (sid→uat), confirms counts, commits. Jason's Q1 answered: Part B repair reuses these fns (no-clobber AC-6 falls out free). — _prior:_ 🔎 REVIEW (Jason 2026-08-22 — pure `lib/demographics.ts` wired into `classifyRow`: `Male|M|ช|ชาย→male`, `Female|F|ญ|หญิง→female`, `Thai|TH|ไทย→ไทย`, `Japan`/`Taiwan`/`Foreign` **verbatim**. **Blank gender → null and NOT reported** (legitimate no-gender); **non-empty unreadable → null + a report line on the existing per-row channel, child still imports** (AC-3). Nationality can never be `unreadable` — we don’t own a list of nationalities. `parent.service`/`validation` untouched as instructed. 🔑 **Importability demonstrated unchanged**: a 5-row mixed unit test pins `imported 3 / held 2 / yellow 0`, and a synthetic dry run reads `ทำได้ 4 · ติด 1` with the `?`-gender row reported **and imported** — ⇒ **the owner’s four real dry runs must still read 3 · 47 · 55 · 6; if they move, the change is wrong.** tsc 0 · **592/0** (+14). I ran nothing against a DB.) | Sober | — |
+```

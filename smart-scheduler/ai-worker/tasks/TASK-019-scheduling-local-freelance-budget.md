@@ -129,3 +129,12 @@ above). Re-ran `smart-scheduler-back`: `bun test` → **88 pass / 0 fail**, `tsc
   `CREATE TABLE IF NOT EXISTS` + guarded FK (safe). DTO fields unchanged → FE untouched.
 - Trivial: a stale comment (`:828`) still names `drawFreelanceBudget` — cosmetic, fix when you touch it.
 No rework on the reviewed core. **TASK-020 unblocked.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-019 | scheduling: local freelance budget (re-home from ops, standalone) | SPEC-005 | DONE | Jason | — |
+```

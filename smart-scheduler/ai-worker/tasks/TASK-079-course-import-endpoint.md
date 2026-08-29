@@ -195,3 +195,12 @@ batch. **Smoke, and this one is load-bearing:** import "10 sessions, 4 used" →
 = 4`, the exact expiry, **and no new `bo.movement` row** · then check the digest **does not** list it · then
 sell a course normally and confirm revenue **does** post. The last two together are what prove the exclusion
 narrowed the check instead of breaking it.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-079 | scheduling (BE): 🔴 **import an in-progress course/voucher** — two VERBS, no flag; `source` column; explicit expiry; excluded from `sales_not_posted` | SPEC-025 | ✅ **DONE** (Sober 2026-08-01 — verified myself: **`skipRevenue` appears only in comments explaining its deliberate absence**, `recordSale` has exactly 3 call sites and **no import touches `bo`**, import routes registered **before** the literal ones (TASK-029 lesson, third time unprompted), journal **18=18**. The exclusion is asserted **from generated SQL** in the one module nobody stubs, with **both halves tested** — an exclusion and a switched-off check look identical from one side — **plus a guard that the check is still registered**, so nobody "fixes" go-live noise by deleting it; tsc 0 / **336 tests**) | Jason | TASK-066/067 |
+```

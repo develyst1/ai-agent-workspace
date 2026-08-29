@@ -53,3 +53,12 @@ Code-verified (`TeacherWorkDaysSelect.save()`), ran **tsc 0** myself. `getWorkDa
 (proceed applies the `PATCH`; TASK-096 is the after-the-fact backstop). A failed impact fetch proceeds (courtesy, not
 a gate) — right call, a warning-fetch hiccup shouldn't block a legit availability change. **TASK-100 fully DONE**
 (BE + FE). Note: this was FAST-FOLLOW — Fern built it before the re-tag; no harm, it's a clean small add.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-100 | scheduling (BE+FE): soft **warning** when a teacher workDays change orphans future course sessions (impact count + FE confirm; NOT a hard block — TASK-096 is the backstop) | SPEC-028 | 🔎 **BE REVIEW · FE→Fern** (Jason 2026-08-04 — tsc 0 · **434/0**. Pure `removedWorkDays(current,next)` (honours "empty=all-days" on both sides → all-days→weekdays reports Sat+Sun) + `sessionsOnRemovedDays`, both in `lib/work-days.ts`, pure-tested. `GET /teachers/:id/work-days/impact?workDays=1,2,3` → `{removedDays, removedDaysLabel, orphanCount, sessions[]}` over **future LIVE** bookings only; **does NOT mutate** — FE previews before `PATCH .../work-days`. No-removal (add-a-day/reorder) → `orphanCount:0`, no warning. **@Fern:** show a confirm when `orphanCount>0` before applying; not a hard block — ✅ **BE DONE** Sober 2026-08-04: code-verified, the "empty=all on BOTH sides" convention is right (narrow all→subset reports the complement, widen/reorder/no-op→empty), impact is read-only over future-LIVE; tsc 0 · 434/0 run by me. **FE half still @Fern**) · 🖥️ **FE → REVIEW** (Fern 2026-08-04 — `getWorkDaysImpact` + a confirm dialog in `TeacherWorkDaysSelect`: orphanCount>0 → "orphans N sessions, proceed?" applies the PATCH on proceed; not a hard block; check-fail proceeds (TASK-096 backstop); tsc 0 / build 0) | Jason+Fern | — |
+```

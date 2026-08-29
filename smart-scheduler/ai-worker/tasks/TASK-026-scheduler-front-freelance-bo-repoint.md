@@ -69,3 +69,12 @@ No FE edit was needed because TASK-024 kept the endpoints + `*Minor` DTO fields 
 admin (TASK-020) already targets the now-`bo`-backed contract, and `setupIncomplete`/auto-hide are unchanged
 (re-sourced from `bo.item`). Surgical no-op with a clear rationale recorded. No rework.
 **🏁 ALL 6 REQ-006 TASKS DONE — the backoffice rebuild is code-complete.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-026 | scheduler-front: re-point freelance budget admin at `bo`-backed data | SPEC-006 | DONE | Fern | TASK-024 |
+```

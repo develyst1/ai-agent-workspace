@@ -129,3 +129,12 @@ acceptance rather than waved away.
 
 ## Review
 (superseded — see the verdict above)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-049 | scheduler-front (FE): `/scheduler/people` — parents with students underneath, search, demographics modals, suspend/un-suspend (**browser-checked** before DONE) | SPEC-016 | ✅ **DONE** | Fern | TASK-048 |
+```

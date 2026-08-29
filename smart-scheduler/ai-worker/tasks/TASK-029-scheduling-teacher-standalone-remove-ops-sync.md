@@ -206,3 +206,12 @@ do **not** add it to this task. Nothing for you to do here now.
   part of this task; no follow-up needed from you here.
 - **TASK-029 → DONE.** It was REQ-005's only task → **REQ-005 → SPEC_DONE** (→ @Porter for acceptance). With
   TASK-028 also DONE, both pre-deploy blockers for the REQ-006 re-deploy are cleared.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-029 | scheduling: standalone teacher mgmt — remove ops teacher-sync (5 sites) + retire `reconcile` + fix availability 500 (routing) | SPEC-007 | ✅ **DONE** | Jason | — |
+```

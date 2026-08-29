@@ -160,3 +160,12 @@ settled, and the parent's LINE leave/check-in works for it.*
   confirm-the-whole-course path? Ten clicks per course is the difference between "they'll do it" and "they won't",
   and 106 unconfirmed bookings on `uat` is weak evidence for the latter. **Do not design a bulk confirm on my
   say-so** — just report what exists, and Porter will raise it separately if it is one-at-a-time.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-062 | 🗓️ **ลาล่วงหน้าในไลน์ — พ่อแม่ต้องเลือกคาบวันข้างหน้าได้ ไม่ใช่แค่วันนี้** | **HIGH** | **READY_FOR_SA** (owner 2026-08-22: *“ให้เลือกคาบวันข้างหน้าได้ด้วย”*) | @Sober. Grounded: `checkin.service.ts:87` uses `eq(b.date, date)` — an **exact match on today**, so the picker structurally cannot show tomorrow. Advance leave needs **no approval** (REQ-047’s cut-off only ever applies to today) but **does** consume quota — it is NOT REQ-045’s free staff-declared planned absence; the REQ carries a 3-row table keeping the three apart. ⚠️ **Q3 → SA: the same function feeds CHECK-IN at seven call sites — widening the date range must NOT let a parent check a child in for next Tuesday.** Q1 (how far ahead — Porter proposes 14 days) + Q2 (undo an advance leave — own REQ) → owner.
+```

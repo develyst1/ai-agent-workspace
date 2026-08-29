@@ -92,3 +92,12 @@ PlanModal create-mode branch; ran **`bunx tsc --noEmit` → exit 0** (build 0 pe
 - Picker reuses the proven `sellablePackages`/`courseSizesFor` guards (off-card sizes never offered — REQ-027(a)).
 - No NEW shared-row control (picker Selects stack full-width); the STANDING-RULE measure is TASK-099's (voucher @375 → Tanya).
 - **🎉 With 099 already `TEST_PASSED`, 098 closes REQ-030 — the feature is shippable.** Only 105-FE remains in the core.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-098 | scheduler-front (FE): purchase-time **create-mode wrapper** (student→course/size picker + start-date→generate-preview + create-confirm) — **reuses TASK-099's component**, not a second modal | SPEC-028 | ✅ **DONE** (Sober 2026-08-04 — code-verified, tsc 0 run by me: thin wrapper **reusing PlanModal** (create=local-draft branch, no dup plan UI), `previewCoursePackage`→create-mode→`POST /courses` sessions[] atomic, refusals show server reason. Qs answered: retire `CreateCourseModal` ✅; mark-absence/insert edit-only is correct for launch. 🎉 **With 099 `TEST_PASSED`, this closes REQ-030 — shippable; only 105-FE left in the core**) | Fern | TASK-099, TASK-095 |
+```

@@ -103,3 +103,12 @@ separately, `importedCourseExpiry` corrected via the identity (no drift), `cours
 no FE mirror (checked both repos), the import worked example honestly updated (5 Feb case → 2026-04-02). The test now
 asserts the owner's real number with a "do not simplify back to arithmetic" comment — which is the whole lesson of the
 miss. Nothing to change. **This releases the held FIX-007 repair.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-197 | scheduler-back (BE): 🔴🔴 **`courseExpiry` off by one week** — the ceiling is a week NUMBER (week 1 = the start week), so it must be `start + (N−1)` weeks. Corrects TASK-195; **blocks any expiry write to real data.** | FIX-007 | 🔎 **REVIEW** (Jason 2026-08-28 — fix is `(weekNumber − 1) * 7`; `importedCourseExpiry` needed **no edit** — it composes `courseExpiry` and the identity test proves it inherited the correction. **Tests rewritten around the OWNER'S NUMBER, not the formula**: `courseExpiry("2026-09-04", 6) === "2026-10-23"`, with a comment telling the next reader **not to "simplify" it back into arithmetic** — my old tests said `weeks * 7` because the code said `weeks * 7`, so they agreed all the way into production. Also pinned the *meaning* separately ("the start week counts as week 1"), which is where the next off-by-one will live. Checked rather than assumed: **`courseSessionDates` was already correct** (`i*7` from 0 — the ceiling was the odd one out, not the cadence), and **no FE mirror exists** (`MAX_WEEK_BY_SIZE` is only a display week number in both FE repos; nothing there computes a date). The owner's import example moves 04-09 → **2026-04-02** and the one fixture that hard-coded it is updated with the reason. Stale ceiling comment in `course-plan.ts` (which stated the bug) fixed. tsc 0 · **833/0**. ⛔ **Repair stays un-run — releasable to the owner once this merges.** Q1: every live row is now a week long, so the change list will be much bigger than FIX-007 implied and **native courses will move too** — my TASK-195 Q1 said that would mean a second defect; it doesn't any more, this IS that defect. The flip list may contain families who lose a week — the owner reads it before commit.) | Sober | — |
+```

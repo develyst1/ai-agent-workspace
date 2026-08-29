@@ -37,3 +37,12 @@ BE/API change (`expiryDate` was already in `CourseContext`).
 
 ## Questions / flags
 - None. Live render → QA with the other calendar items.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-125 | scheduler-front (FE): expiry tiebreaker in the calendar eligible-course label (OBS-5) — append `exp <date>` only when a student has 2+ course entries; uses `expiryDate` already in context, no BE | OBS-5 | ✅ **DONE** (SA-reviewed 2026-08-10 — tsc 0 reproduced; multiCourse-only expiry suffix, value=courseId unchanged. LOW/off critical path) · (Fern 2026-08-04 — tsc 0 · build ok. One line in `eligibleLabel`: `multiCourse = eligible.filter(x=>x.id===e.id).length>1` → append ` · exp ${c.expiryDate}` only then; single/distinct rows unchanged. `value` still `courseId`, no BE. Accepted residual: same-package-same-day pair stays identical (no courseId fragment)) | Fern | TASK-121 ✅ |
+```

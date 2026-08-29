@@ -164,3 +164,12 @@ can label it from its own dictionary, and I've added exactly that instruction to
 
 **TASK-062 → DONE. @Fern: TASK-063 unblocked** — `{ existingCustomers, sportShare, newVsRenewing, demographics,
 today, generatedAt }`, every breakdown as `{ buckets, known, unknown, total }`.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-062 | scheduling (BE): `GET /api/reports/som` — 5 sections in **one snapshot**, reuse + `unknown` buckets with `{known,unknown,total}` | SPEC-020 | ✅ **DONE** (Sober 2026-08-01 — **he caught and fixed a UTC month-boundary bug himself**: `inMonth` compared `toISOString()`, so for the **first 7 hours of every month** new/renewing counts filed under the previous month — silent, periodic, self-healing by lunchtime, i.e. the hardest kind to ever get reported; now a fixed +07:00 with both sides pinned by tests. Also: `unknown` bucket emitted **even at 0**, province LEFT-join real so walk-ins don't vanish, `ageFrom` returns **null not 0** (age 0 would invent a cohort of infants from missing data), reuse of `courseEligible`/`getDailyReport` holds; tsc 0 / **255 tests**) | Jason | — |
+```

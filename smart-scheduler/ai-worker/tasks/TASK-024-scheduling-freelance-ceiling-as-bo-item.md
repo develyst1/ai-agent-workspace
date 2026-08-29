@@ -95,3 +95,12 @@ Repo: `smart-scheduler-back`. The freelance ceiling now lives as a `bo.item` (un
   **freelance expense now flows into the `bo` P&L automatically** — the "freelance P&L" that REQ-004 deferred is
   achieved for free by the universal model. Net-zero on cancel (signed value). Not a defect; the intended end state.
 No rework. **TASK-026 unblocked** (near-trivial). ⚠️ Deploy ordering (025-before-024) captured in the deploy note.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-024 | scheduling: re-absorb freelance ceiling as a `bo.item` (in-tx, unit=hour) | SPEC-006 | DONE | Jason | TASK-021 |
+```

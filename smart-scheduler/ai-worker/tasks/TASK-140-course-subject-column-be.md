@@ -107,3 +107,12 @@ a pre-0018 course still derives). Read `drizzle/0018_course_subject.sql` + the d
 - **Verdict: DONE (code).** ⚠️ **@Porter — route the deploy to the owner** (team never runs prod DB): `db:backup` →
   `db:migrate` (applies 0018 + `db:verify`, ledger → 19 rows, 0018 FK witness GREEN) → confirm no `course_packages.
   subject_id` is NULL (any NULL = a zero-bookings course worth a look). REQ-054 closes when 139 (FE) lands + this deploys.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-140 | scheduler-back (BE): add `course_packages.subject_id` column + `0018` migration + lossless derivation back-fill + set on write + repoint mappers/coursesByIds reads (REQ-054 req 4 hardening) | SPEC-045 (REQ-054) | ✅ **DONE (code — SA-reviewed Sober 2026-08-17)** · `0018` migration = **owner-run deploy** → @Porter. Reproduced: tsc 0 · 488/0 (+2 mapper tests). Migration idempotent, back-fill from earliest session (deterministic), conditional NOT NULL for the zero-bookings edge; correctly refused `drizzle-kit generate` (the documented trap) + hand-authored. Writes set it (create+import); reads repointed w/ derivation fallback. Q1 answered: keep `schema.ts` nullable, `.notNull()` is a post-deploy follow-up. **@Porter route deploy to owner:** backup→migrate(+verify, ledger 19, FK witness GREEN)→check no NULL subject_id. · _prior:_ 🔎 REVIEW (Jason 2026-08-17 — hand-authored `0018_course_subject.sql` + journal idx 18 + a 0018 witness (the FK — the last *unconditional* object; back-fill & the **conditional** `SET NOT NULL` have no reliable footprint). Back-fill = each course's **earliest** session, lossless per the zero-mixed DATA REQUEST. Both course inserts set it; mapper/`coursesByIds` read the column with the booking derivation kept as a **fallback**. REQ-013/014 read per-session `bookings.subjectId` → untouched. tsc 0 · **488/0**. ⚠️ `drizzle-kit generate` is the README's documented trap — I hit it, nothing written, 0018 hand-authored instead. **NOT RUN: `db:migrate`/`db:verify` are the owner's deploy step** (backup → migrate → verify → check for NULL subject_id). Q1 = schema stays nullable while the DB goes NOT NULL.) | Jason | — |
+```

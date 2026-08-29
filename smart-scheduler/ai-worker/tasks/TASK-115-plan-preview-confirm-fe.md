@@ -51,3 +51,12 @@ Repo: `smart-scheduler-front`. Built on TASK-114's DONE `insertable` + `/plan/pr
   create stays local (both correct — no course reconcile).
 - **OBS-4** folded: `startTime.slice(0,5)` → `HH:mm` in both the plan table and the diff table (no raw `13:00:00`).
 - **DONE — OBS-3=(A) complete (BE+FE). This is the last build item.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-115 | scheduler-front (FE): disable Insert only when `!insertable` (not at owed==0) + **plan-diff confirm** (preview before commit) + OBS-4 (`HH:mm`) | SPEC-028 §12 | ✅ **DONE (SA-reviewed Sober 2026-08-04; label flipped 08-22)** — the task's `## Review` verdict was written 08-04; only the label lagged. Re-confirmed 08-22: front tsc 0, feature present. (Fern 2026-08-04 — Insert disabled+tooltip only when `!plan.insertable`; move/insert/mark-absence now dry-run via `/plan/preview` → `PlanDiffConfirm` (resulting plan + new end + added/removed) → confirm applies; refusals show typed reason, no confirm; times `HH:mm`; tsc 0 / build 0) — ✅ **DONE** Sober 2026-08-04: code-verified — `insertable !== false` (disable only on explicit false, post-absence stays enabled), preview→diff→commit (no re-derivation), OBS-4 `slice(0,5)`; tsc 0 run by me. **OBS-3=(A) complete (BE+FE)** | Fern | TASK-114 | ✅ 🧪 **OBS-3 `TEST_PASSED` (Tanya, 2026-08-04, LIVE on `sid`):** `/plan/preview` is a **true dry run** (200 `{change,moves,resultingSessions,liveEndDate}`; the stored plan was byte-identical after) and a refused change fails **in preview with the SAME typed reason** (409 `SLOT_TAKEN`); the UI shows **“Your plan will become: 0 added · 1 removed · ends 1 Sep 26”** + the resulting sessions before commit, and backing out wrote nothing (rows 9→9). **`insertable` is the right predicate:** post-absence at `owedCount=0` stays **enabled**, a genuinely-full course reports `insertable=false` and the button is **disabled** (paid extra still available). OBS-4 done — times render `HH:mm`. 🔑 **This closes my earlier OBS-3 hazard better than a refusal would:** the trailing-session cancellation is now **shown as “1 removed” before anything is written.** STANDING RULE on the deployed build — 1600/1280/768/375: both footer actions hold 165 px / 139 px, nothing collapses, table scrolls, and at 375 the footer **wraps** instead of crushing.
+```

@@ -117,3 +117,12 @@ contract)** — not in scope here.
 - **All DoD met.** `updateBookingStatus`/LINE/draw untouched (reused).
 - **TASK-036 → DONE.** **@Fern: TASK-037 unblocked** — the `POST /bookings/bulk-confirm` endpoint +
   `BulkConfirmResult {id, outcome, reason?}` contract are in. REQ-008 stays IN_SPEC until TASK-037 lands.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-036 | scheduling (BE): `POST /bookings/bulk-confirm` — loop single-confirm per id (own tx, partial-success, no batch rollback) | SPEC-011 | ✅ **DONE** | Jason | — |
+```

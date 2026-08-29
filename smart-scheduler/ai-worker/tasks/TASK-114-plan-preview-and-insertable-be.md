@@ -41,3 +41,12 @@
   drift this project keeps paying for is structurally impossible here.
 - **`POST /courses/:id/plan/preview`** returns `{change, moves, resultingSessions, liveEndDate}` (or the typed refusal).
 **DONE — unblocks TASK-115 (the FE plan-diff confirm).**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-114 | scheduling (BE): **OBS-3=(A)** — `insertable` flag on the plan DTO (= `canInsert`, false for voucher) + `applyPlanChange` **dryRun** mode (real tx, roll back → resulting sessions + end + moves; same typed refusals) + `POST /courses/:id/plan/preview`. Preview can't diverge from apply | SPEC-028 §12 | 🔎 **REVIEW** (Jason 2026-08-04 — tsc 0 · **445/0**. `getEntitlementPlan` DTO now carries `insertable = canInsert(sessions, size)` (course) / `false` (voucher) — FE disables Insert only on a genuinely-full course, not every owed==0 (post-absence stays enabled). `applyPlanChange` gained `opts.dryRun`: runs the **full** tx (every guard + `reconcileCoursePlan` + `reconcileBookingHolds`) via a `finalize()` wrapper that, in dry-run, reads back the resulting sessions + `deriveLiveEndDate` and throws `DryRunSignal` to **roll the tx back**; outer catch returns `{change, moves:{appended,cancelled}, resultingSessions, liveEndDate}`. **Reuses the real applier — preview==apply by construction, no re-derivation.** A refused change throws the **same typed reason** (EXTENSION_CEILING/SLOT_TAKEN/…). `POST /courses/:id/plan/preview` (same body as `/plan`). `insertable` logic pure-tested via `canInsert`; dry-run rollback verified by inspection — brownfield, no DB tests) — ✅ **DONE** Sober 2026-08-04: code-verified — `finalize` at end of each branch, `DryRunSignal` rollback, catch (`:1593`) returns preview first then rethrows real typed reasons; preview==apply by construction; tsc 0 · 445/0 run by me. Unblocks TASK-115 | Jason | TASK-097, TASK-093 |
+```

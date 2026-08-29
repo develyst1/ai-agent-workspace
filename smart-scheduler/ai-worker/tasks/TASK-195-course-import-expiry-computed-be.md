@@ -114,3 +114,12 @@ needs the dry-run output; it is the first question the report answers.
 - Q2: the stale `6→8 assumption` line in both `CLAUDE.md` files — flagged, not edited (owner's docs).
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-195 | scheduler-back (BE): **FIX-007** — course expiry COMPUTED on the import path (`realStart = firstRemaining − prior weeks; expiry = realStart + MAX_WEEK[size]`), confirm-by-test that create is already correct, delete the confirmed `6→8` assumption, + owner-run dry-run repair whose deliverable is the by-name list of changed + newly-EXPIRED courses. | FIX-007 | 🔎 **REVIEW** (Jason 2026-08-28 — **verified your scope correction independently**: enumerated every `insert(coursePackages)` — two in services (import 🔴 taken, create ✅ computes) + `db/seed.ts`; `:1153` is `importVoucher`, untouched. The rule is **one rule, two entry points**, and the test says so as an **identity** (`importedCourseExpiry(f,s,p) === courseExpiry(f − p weeks, s)`) rather than repeating the arithmetic — if they disagree, that IS the bug. Owner's worked example pinned (10 · 4 prior · 5 Feb → 9 Apr) plus the case that shows why it matters: **a course imported near its end now expires SOONER than a naive start+ceiling** — a typed-in date would have handed that family a fresh 13-week window they never bought. `6→8` caveat deleted with its history in the replacement (📌 Q2: the same stale line still lives in **both `CLAUDE.md` files** — flagged, not edited, they’re the owner’s docs). **Repair: the dry-run list IS the deliverable** — flip-list first (who becomes EXPIRED on commit, by nickname + both dates), then moved-but-active, then ⚠️ AC-4 courses whose last LIVE session sits past the new expiry — **flagged, never moved**. "Newly expired" means the **status flips**, not just an earlier date, or the real cases drown. Counts to console, names to gitignored `project-docs/`; AC-6 idempotence tested. tsc 0 · **831/0**, no migration. ⚠️ SQL un-exercised until the owner’s `sid` dry run; **AC-5 (uat’s "Expired (2)") is the first question that report answers.**) | Sober | — |
+```

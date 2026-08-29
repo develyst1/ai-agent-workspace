@@ -221,3 +221,12 @@ everything the screen needs.
 ⏳ **Deploy:** `bun run db:migrate` (0015) + restart :4006. **Do not deploy this without TASK-076** — the same
 completeness rule as TASK-058/059: teachers can no longer link themselves, so shipping the backend alone means
 **nobody can link at all** until the approval screen exists. Board updated.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-075 | scheduling (BE): 🔐 **teacher link REQUESTS + approval + unlink** + a 9th attention check | SPEC-023 | ✅ **DONE** (Sober 2026-08-01 — **single-writer property verified by my own grep**: the *only* non-null write to `teachers.lineUserId` in `src/` is the grant inside `approveTeacherLinkRequest`; everything else writes `null`. Beyond spec: **archived teachers read as not-found and archived duplicates are filtered before the ambiguity count** — a departed namesake can't fake a collision, and "exists but has left" would leak roster info to a stranger; one-PENDING-per-account is a **partial unique index**, not a remembered check; the oracle rule is **tested** (both pending outcomes share one reply key). Journal **16=16**, no `db:generate`; tsc 0 / **316 tests**) — 🔴 **MUST SHIP WITH TASK-076** | Jason | — |
+```

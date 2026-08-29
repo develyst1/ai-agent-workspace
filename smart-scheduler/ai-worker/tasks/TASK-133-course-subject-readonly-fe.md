@@ -104,3 +104,12 @@ same REQ-013/014 corruption class, one step upstream. **It is out of REQ-053's s
 and the fix needs a different shape (subject as a **course-level** field at creation, not per-row, + a BE guard that all
 `sessions[].subjectId` match). **I did not widen 133/134** (scope discipline). Recorded as a follow-up in SPEC-042 and
 routed to Porter for a small sibling REQ. Correctly not silently fixed. **Verdict: code DONE.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-133 | scheduler-front (FE): PlanModal `SessionEditor` — วิชา read-only + explanation on a course-session edit; drop `subjectId` from the course move payload; keep it live for insert/extra + voucher | SPEC-042 (REQ-053) | ✅ **DONE (code — SA-reviewed Sober 2026-08-16)** · visual pass → @Tanya · REQ-053 closes with TASK-134 (BE). Reproduced: tsc 0 · build ok · 15/0 · §3.5 greps 0. Faithful (locked `Input.Wrapper`, `subjectId` omitted from course move payload, AC-4 preserved). Q2 approved (read-only text > disabled Select). 🔴 **Q1 real finding accepted as scoped-out:** create-mode (`CreatePlanFlow` per-row `sessions[].subjectId`) can still birth a mixed-program course — own follow-up REQ (subject = course-level field + BE guard), recorded in SPEC-042 §follow-ups, routed to @Porter; NOT widened here. · _prior:_ 🖥️ REVIEW (Fern 2026-08-18 — `PlanModal.tsx`+dict, uncommitted. One predicate `plan.kind==="course" && target.kind==="move" && !onLocalSave` drives all three effects: วิชา becomes `Input.Wrapper` label + read-only text + REQ-053's TH/EN explanation (subject-less session → labelled `—`, never blank); `subjectId` **omitted** from the course `move` payload, not just disabled in the UI; insert/extra/voucher-move untouched (AC-4); date/time/teacher still editable. tsc **0** · build ok · tests **15/0** · §3.5 greps 0/0/0/0. 🔴 rendered check + hallmark ride the same @Tanya pass. **Q1: the same corruption is reachable in CREATE mode** — `CreatePlanFlow` posts per-row `sessions[].subjectId` (`:152`), so a brand-new course can be born mixed-program; deliberately NOT widened (out of scope + needs different UX — the program belongs to the course-level field). Own REQ, or accepted in SPEC-042?) | Fern | — |
+```

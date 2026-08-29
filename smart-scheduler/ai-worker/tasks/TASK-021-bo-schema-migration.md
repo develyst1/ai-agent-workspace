@@ -74,3 +74,12 @@ Read the real schema + migration `0004_bo_schema.sql`:
 - Migration is fully idempotent (`CREATE SCHEMA/TABLE/TYPE IF NOT EXISTS` + guarded DO blocks) and **`ops.*` is
   untouched** (additive only — the app still boots on ops). DB apply is the deploy step (brownfield). No rework.
 **TASK-022, TASK-024, TASK-025 unblocked** (all dep TASK-021).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-021 | backoffice-back: `bo` schema + migration (item/movement/tags) | SPEC-006 | DONE | Jason | — |
+```

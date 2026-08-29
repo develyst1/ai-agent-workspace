@@ -140,3 +140,12 @@ month-start job lives in ops, not scheduling, since both halves are ops-owned; s
 further build: (1) apply `drizzle/0003_even_turbo.sql` in the real env + reconcile the drizzle meta-drift;
 (2) set up the two scheduled tasks — existing end-of-day (scheduling :3001) + new month-start (ops :3002).
 **TASK-006 (Fern) is unblocked.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-005 | ops: recurring FT/PT salary + shared month-start job (reset + materialize) | SPEC-002 | DONE | Jason | TASK-001 |
+```

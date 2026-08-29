@@ -138,3 +138,12 @@ gave the evidence, and said how to revert it in one word. **Do that every time.*
 the goal, and when the code disagrees with my guess, the code usually knows something I didn't.
 
 **TASK-073 → DONE.** Ships with the TASK-070/071 batch.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-073 | scheduling (BE): `sort` param on `/bookings` | SPEC-022 | ✅ **DONE** (Sober 2026-08-01 — **he overrode my DoD default and was right**: I wrote "newest/upcoming first" as one thing, but courses write a booking every week for `size` weeks forward, so the newest row is routinely **months away** — `date_desc` would have opened page 1 on **November while it is August**. He also rejected my `date_asc + from=today` alternative because it hides the past — *a filter dressed as a sort*. Shipped **`upcoming`**: today/future soonest-first then past most-recent-first, **nothing hidden**, `total` unchanged; tsc 0 / 316 tests) | Jason | TASK-070 |
+```

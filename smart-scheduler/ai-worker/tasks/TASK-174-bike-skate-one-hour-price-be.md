@@ -47,3 +47,12 @@ is accepted while revenue silently doesn't post (the 08-22 hole). AC-2 is the ow
 ## Notes / Questions
 (Jason fills in. REQ-061's guard is deliberately kept — do NOT remove it; with all four groups priced it simply
 stops firing and still protects the next unpriced program. `ensure-items` after deploy is not optional.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-174 | scheduler-back (BE): 🔴 **REQ-066 (blocking)** — `CARD["bike-skate"]` gains `1: THB(1390)` (only bike-skate). `isSellable(bike-skate,1)`→true ⇒ REQ-061 SINGLE_SESSION guard stops firing (KEPT/dormant; NULL-group still refused, AC-4); auto-defines `session-bike-skate`@1390. Deploy: code → `sale:ensure-items` → verify (both boxes; else revenue silently unposted). Update the sale-items tests. No migration, no FE. | REQ-066 | ✅ **DONE (code) — SA-reviewed Sober 2026-08-23** — tsc 0 · 707/0. `bike-skate` gains `1: THB(1390)`; `isSellable(bike-skate,1)`→true (AC-1), null-group still refused (AC-4, tested); `session-bike-skate` derives for `ensure-items`. Killed the "gap = intentional" comment lie (both file-level + guard). Guard untouched. **Blocker clears on deploy: code → `sale:ensure-items` → verify, sid→uat.** AC-2 = ledger check. — _prior:_ 🔎 REVIEW (Jason 2026-08-23 — `1: THB(1390)` on bike-skate; guard KEPT and now dormant, with its own AC-4 test because a quiet guard is exactly what someone deletes. 🔴 **The test asserted the bug — again**: "bike/skate has NO single-hour rate" passed while every single-session booking on the busiest program was refused. Rewritten from the owner’s card, and since this is the second time (Onewheel 10 h was the first) I corrected the two file comments that listed these absences as deliberate — one still named bike/skate — and added a standing warning: **a gap in `CARD` is only "not offered" if the card says so.** tsc 0 · **707/0**, no migration, no FE. ⛔ **Owner-run, sid first: deploy → `bun run sale:ensure-items` → VERIFY `session-bike-skate` @ 139000 before anyone books** — without it the booking is accepted and the revenue silently does not post, exactly 2026-08-22. AC-2 is a ledger check, not a screen.) | Sober | |
+```

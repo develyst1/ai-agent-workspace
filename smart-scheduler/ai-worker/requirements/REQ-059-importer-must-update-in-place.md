@@ -117,3 +117,12 @@ option:
 
 **Reversible:** it is one branch in `planStudentUpdate`. If the owner ever wants conflicts held, say so and it
 flips — no redesign.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-059 | 🔁 **The importer must UPDATE in place** — create new · update changed · never blank a human-entered value · never touch courses/bookings/LINE links · per-row report | 🔴 **HIGH** | 🔨 **SPEC-056 + TASK-156 cut → @Jason (Sober 2026-08-22).** **Q1 (identity key) RULED:** there is no fully-automatic stable key — exact `(phone,name)`→update; a name-miss under a **known** parent is an ambiguous rename/new-sibling ⇒ **HELD `review: possible rename`, never auto-created** (turns the 31 dup-forks into 31 explicit review lines; the current 31 are a one-time human reconciliation, out of the tool). Q2 (field diff) YES — dry-run prints `field: old→new`. Rules: fill empties · corrections shown · **never blank** · normalise via `lib/demographics.ts`. +AC-8 dual-phone (first wins, second echoed) · +AC-9 rename visible. Run target **uat** (divergent data, not sid-first). | @Sober. Measured against the customer's updated sheet: **31 student names were edited** (nickname → nickname + surname) ⇒ the `(parent phone, name)` identity key **fails on all 31** and would fork the roster. On `uat` the live exposure is **2 students — `เอแคลร์` and `อาร์ตี้` — and BOTH already have courses** ⛔; the bulk of the risk sits on `sid`'s 130-row rehearsal. Also: 3 rows now carry **two phone numbers**, nationality gained `Japan`/`Taiwan`. ✅ Q4 closed by owner — the `Note` column is **ignored and echoed in the report**, never interpreted. **⛔ Identity key is not to be finalised until the reconciliation against the `uat` CSV is done.** |
+```

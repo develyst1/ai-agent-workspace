@@ -128,3 +128,12 @@ the same basis as TASK-001/002 (build + inspection). No rework on the delivered 
 
 Separately (not blocking): repo `bun run lint` is broken (`next lint` removed in Next 16),
 pre-existing on both FE repos → logged for Porter as a maintenance item.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-003 | backoffice-front: "Freelance Budgets" screen (list/create/top-up/display) | SPEC-001 | DONE | Fern | TASK-001 |
+```

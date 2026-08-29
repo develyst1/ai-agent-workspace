@@ -148,3 +148,12 @@ about and rule on than discover later.
 
 **TASK-060 → DONE. @Fern: TASK-061 unblocked** (no contract change — build against today's
 `PATCH /api/teachers/:id`). ⏳ Deploy: **backend only, no migration**; smoke steps as documented.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-060 | scheduling (BE): **close the freelance ceiling** (`bo.item.active=false`) on change-away-from-FREELANCE **and on archive** | SPEC-019 | ✅ **DONE** (Sober 2026-08-01 — 4-line one-field close inside **both** transactions; pure `shouldCloseCeiling` makes "FT↔PT / name-only edit does nothing" a **test not prose**; "start fresh" traced to `setFreelanceBudget`'s INSERT branch with **no code written**; tsc 0 / **239 tests**) — deploy: **backend only, no migration** | Jason | — |
+```

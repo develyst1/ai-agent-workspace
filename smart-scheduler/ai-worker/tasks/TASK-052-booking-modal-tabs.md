@@ -216,3 +216,12 @@ Course tab → book → check in → the course's *used* count goes up by one (t
 alert names the right teacher/time; and the **item-7 path** — book a voucher far past its expiry and confirm the
 red alert carries the backend's own reason (the mock can't enforce expiry, so this is the one behaviour never
 exercised locally).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-052 | scheduler-front (FE): booking modal **type-first tabs** + per-type fields + eligible-student lists + in-modal context (**browser-checked**) | SPEC-017 | ✅ **DONE** (Sober re-review 2026-08-01 — `courseId` traced end-to-end through type→service→payload, so the **free-session leak is closed** and the two-courses pick survives submit; voucher alert now names teacher+time; tsc 0 + `bun run build` success on my own run; Fern re-pressed บันทึก on the Course tab) — ⏳ deploy: **FE only, no BE change, no migration** | Fern | TASK-051 |
+```

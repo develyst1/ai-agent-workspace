@@ -273,3 +273,12 @@ correction up.
   *"if it says 0015–0017 are already applied, stop"*. Written for someone with an outage in front of them.
 
 **TASK-085 → DONE.** ⏳ **@Porter — the sequence is yours to hand over verbatim.** Nobody on this team runs it.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-085 | 🔴 **BOTH repos**: per-repo migration ledger + split-by-hash + a post-migrate guard that exits non-zero | — | ✅ **DONE** (Sober 2026-08-02 — verified in code: `migrations:{table,schema}` in both configs, `db:migrate` = `drizzle-kit migrate && db:verify`, and in the split script **every CREATE/INSERT sits after the `if (!apply)` exit** so the dry-run cannot write; tsc 0 both repos, **357/0** + **109/0**. Found in the evidence: the old `db-check-migrate.ts` wrote `hash` as the **tag string**, so a pure hash match would have left 0004/0005 "unrecorded" forever — matched by a second rule that **prints that it used one**. Guard is pure + tested against missing/empty/complete ledgers, so it is known to go red **and** known not to be always-red) — ⏳ **@Porter: operator sequence in the task, hand over verbatim; nobody on the team runs it** | Jason | — |
+```

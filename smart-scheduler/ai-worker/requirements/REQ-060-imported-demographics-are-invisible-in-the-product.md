@@ -113,3 +113,12 @@ urgent and the rest normal, so the REQ says which rather than leaving SA to gues
 **Verification the owner can do himself once Part A ships:** re-run the four dry runs — they must report the same
 **3 · 47 · 55 · 6** — then commit. A change in those numbers means the normalisation altered who is importable,
 which it must not.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-060 | 🔴 **Imported gender + nationality are INVISIBLE in the product** — the customer has been re-typing by hand | 🔴 **HIGH** | ✅ **PART A DONE (SA-reviewed, tsc 0 · 592/0)** — normalise-on-write; 111 arrived with readable gender (104/105 readable, 1 blank). 🔨 **PART B.1 cut — SPEC-057 + TASK-157 → @Jason (Sober 2026-08-22):** `demographics:repair` in-place fix of the **24** stored `Male`/`Thai` rows on `uat` (+~130 on `sid`), reusing `lib/demographics.ts`; already-normalised skipped (`คุณมะเหมี่ยว` untouched, no special case); never blanks; writes only gender/nationality; PII console counts-only + named report to gitignored project-docs; owner runs on BOTH boxes. **PART B.2 (forgiving readers, req 3) — SPECced, NOT cut: LOW priority, FE+BE, needs Fern → Porter to schedule.** | @Sober. **Porter's earlier "not a defect" verdict is retracted; the owner was right.** `student-import.ts:264` stores column F **verbatim** (`Male`/`Female`, `Thai`), but the product only understands lowercase — `GENDERS = ["male","female","other"]` (`types/app/people/index.ts:36`), so the edit-form `Select` renders **empty** and `PeopleContent.tsx:62` falls through to **`null`**. Nationality is worse: `THAI_NATIONALITY = "ไทย"` ⇒ every imported Thai child is shown as **FOREIGN**. SOM demographics buckets switch on the same lowercase keys ⇒ **the reports are quietly wrong too**. Fix = normalise on write · forgiving readers · **in-place repair** of the 25 rows on `uat` + 130 on `sid` (dry-run first, owner runs it) · **never overwrite a row the customer already fixed** (`คุณมะเหมี่ยว`). |
+```

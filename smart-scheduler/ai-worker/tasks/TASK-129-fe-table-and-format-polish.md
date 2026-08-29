@@ -61,3 +61,12 @@
 - Live `dong` functional pass (bookings filter still submits ISO + returns rows; the new date format renders; the icon
   + 44px on a real phone width) → **@Tanya** (app is auth-gated; I verified via tsc/build/grep + the ISO-preservation
   counts). SA UI-lens (§4) on review → Sober.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-129 | scheduler-front (FE): `tabular-nums` on numeric/date cols + one date-DISPLAY formatter (`DD/MMM/YY`; ISO query/input values untouched) + status-chip shape-not-hue + Voucher Manage ≥44px@375 | SPEC-037 (REQ-041) | ✅ **DONE** (SA-reviewed 2026-08-11 — tsc 0 reproduced; item5 ISO query calls preserved + no missed date cell, item7 3 red statuses icon-distinct + aria-hidden, item4 dead `font-num`→`tabular-nums` (12), item8 44px. Clean, no correction. Live pass → @Tanya.) · (Fern 2026-08-11 — all 4 items; tsc 0 · build ok; hallmark verdict in task. **item5:** new `lib/ui/format.ts` `formatDateDisplay`→`DD/MMM/YY`, routed BookingsTable/VoucherPanel/PlanModal date cells; **ISO query/input VALUES verified untouched**. **item4:** found `font-num` was a **dead undefined class** (8 sites, =Tanya's 0/20) → replaced w/ real `tabular-nums` + table-level on Bookings/Voucher. **item7:** `StatusChip` per-status icon (the 3 shared-red statuses now shape-distinct; label+colour+icon). **item8:** Voucher Manage `min-h-[44px] sm:min-h-0`. Item 6 font HELD. Live `dong` pass → @Tanya, SA UI-lens → Sober) | Fern | — |
+```

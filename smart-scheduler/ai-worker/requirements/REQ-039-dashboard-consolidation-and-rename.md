@@ -33,3 +33,12 @@ Dashboard.
   the Dashboard's attendance-detail section rather than being dropped.
 - Any other meeting asks the owner mentioned ("มีหลายเรื่อง … เรื่องการนำข้อมูลมาโชว์") — gather the full list before
   scoping, so this isn't reopened item-by-item.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-039 | Dashboard consolidation — rename "SOM dashboard" → **"Dashboard"**, merge **"Daily report"** into it (one menu), implement well | MEDIUM | **CAPTURED — QUEUED (post-go-live "dashboard rework" phase); design WITH REQ-034** | **@Porter holds.** Owner 2026-08-10 reviewing the live dashboard: two menus overlap (SOM dashboard already has a "Today" attendance block that duplicates Daily report). Wants **one** well-built Dashboard: (1) rename SOM→Dashboard; (2) collapse nav to a single "Dashboard" menu, Daily-report becomes a section/tab; (3) REQ-034's **booking-type filter** (first-trial / voucher / weekly-course) applies to it — for meeting use. ⚠️ Owner: *"มีหลายเรื่อง … เรื่องการนำข้อมูลมาโชว์"* — **gather the FULL meeting list before scoping** so it isn't reopened item-by-item. Keep REQ-013 honesty (unknown buckets shown). Not the LINE digest (REQ-023). Full: `requirements/REQ-039-…md`. |
+```

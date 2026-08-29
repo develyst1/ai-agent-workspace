@@ -139,3 +139,12 @@ a back-to-menu tap ✓ · `qr` keyword + token untouched ✓ · tsc clean + `bun
   inline in the service (`เช็คอินสำเร็จ ✅`, `แจ้งลาสำเร็จ ✅`, the ⚠️ quota line, the catch-message fallbacks) —
   TASK-039 must extend `S`/`t()` to cover **those too**, not just the centralized `S` strings.
 - **TASK-038 → DONE.** REQ-015 stays IN_SPEC until TASK-039 lands; **do not deploy this alone.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-038 | LINE (BE): tap UI — parent/teacher rich menus (**no QR button**) + postback routing + quick-reply/flex; check-in & leave tap-driven | SPEC-012 | ✅ **DONE** (⚠️ don't deploy alone — ships with 039) | Jason | — |
+```

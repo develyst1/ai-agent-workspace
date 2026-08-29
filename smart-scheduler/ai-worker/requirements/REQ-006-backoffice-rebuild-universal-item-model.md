@@ -86,3 +86,12 @@ Kept concise and reviewable. **No implementation tasks until the stakeholder app
   > item movement in the booking's own transaction (direct same-DB), rather than reverting to a cross-service
   > API call. So `freelance_budgets` maps 1:1 onto the new `item`/`movement` tables — a clean migration, no
   > loss of atomicity. The design doc shows this as worked-example #1.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-006 | Backoffice rebuild — universal "item" model on the shared DB | HIGH | ✅ **DELIVERED** | **Deployed + acceptance PASSED 2026-07-28** (stakeholder ran, Porter verified). Code DONE & Sober-verified: TASK-027 (shared `smart_scheduler` DB + retire ops) · TASK-028 (freelance money leak fixed — ATTENDED↔SICK_LEAVE toggle no longer inflates) · TASK-029 · TASK-030 (drift-safe `migrate:bo`). Re-deploy done: `migrate:bo` skipped the drifted `ops`, migrated freelance budgets; both backends restarted on `smart_scheduler`. **Non-blocking follow-ups:** verify the FULL freelance roster's budgets in FE (migrate carried only `freelance=1`); re-home TRIAL/SINGLE revenue → `bo`; tag-prefill; `bo.movement` unique-index; **REQ-009** (type-change budget close). |
+```

@@ -38,3 +38,12 @@ here so nobody "repairs" it.)
 
 ## Notes
 (Jason fills in. The DoD asserts the row COUNT and the delivered NUMBER — the outcome — not "the guard runs".)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-209 | scheduler-back (BE): the daily-reminder must **ALWAYS** write a `job_runs` row (+ honest `sent` count, + `month-reset`'s missing row). Corrects TASK-208. | SPEC-066 (REQ-072) | 🔎 **REVIEW** (Jason 2026-08-29 — the guard now gates the **SEND, never the RECORD**: a re-run writes `{attempted:false, sent:0, reason:"already-sent"}` instead of returning early, so two runs ⇒ **two rows**. `sent` is the **delivered count** with `skipped` beside it, and `attempted` is the separate fact that it ran — one boolean was being asked two questions and on `sid` answered the second wrongly (reached **zero**, recorded `sent:true`). 🔴 **The failure hiding inside the fix**: `reminderAlreadySent` keyed on `summary.sent === true`; with `sent` now a count that would make the job **re-run all morning on exactly the days it reached nobody** — it keys on `attempted`, with a test. `month-reset` now records too (it wrote nothing at all). **And a property test instead of a per-job memory**: "every scheduled job inserts a `job_runs` row", asserted across all three service files — between us we have missed it twice, so the fifth job should fail a test rather than depend on either of us remembering. **My TASK-208 test asserted `sent: true` and passed while the run reached nobody** — rewritten; that assertion had to change, not just the code. tsc 0 · **903/0** (+4), no migration. ⛔ **@Porter: owner runs `sm-daily-reminder` TWICE on sid → expect two rows, second `sent:0`; the first row's `sent` will be LESS than teachers+parents on uat (0/180 parents linked) — that is honesty, not a bug.**) | Sober | — |
+```

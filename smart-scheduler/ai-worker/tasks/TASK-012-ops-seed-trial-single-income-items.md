@@ -78,3 +78,12 @@ catalog loop:
 (`first-trial`/`single-session` — matches TASK-007's `recordSale` refs), `THB(1390)` placeholder,
 `.onConflictDoNothing()` → idempotent on re-seed. Correct and minimal. Running `db:seed` is a deploy-gate
 step (needs the DB, brownfield) — accepted. No rework.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-012 | ops: seed first-trial / single-session INCOME items (day-end revenue) | SPEC-001 | DONE | Jason | TASK-007 |
+```

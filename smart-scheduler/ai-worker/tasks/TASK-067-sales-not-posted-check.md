@@ -158,3 +158,12 @@ first impression.** Flagged on the board so the first digest isn't read as a new
 
 **TASK-067 → DONE. @Jason: TASK-064 resumes** — `bo.item.external_ref` now exists, so build the attribution map
 keyed on it. TASK-050 after that.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-067 | scheduling (BE): 8th attention check **`sales_not_posted`** — sold-but-unposted entitlements surface in the daily digest | SPEC-018 | ✅ **DONE** (Sober 2026-08-01 — 8 entries, **digest/job/panel/endpoint untouched** as promised; he reported the honest qualification instead of quietly absorbing it (**"one entry + one loader when the check needs an unloaded source"** — SPEC-018 amended, credited); absence-of-movement is the whole signal so it can't disagree with TASK-066; **+ an unasked guard that every `titleKey` resolves in TH *and* EN — turning the gap I owned on TASK-053 into a failing test**; tsc 0 / **280 tests**) ⚠️ **Day one it will legitimately light up** with every course/voucher sold in the last 7 days — none ever posted. Correct, not an emergency | Jason | TASK-066 |
+```

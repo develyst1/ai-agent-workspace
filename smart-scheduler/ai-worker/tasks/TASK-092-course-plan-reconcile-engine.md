@@ -84,3 +84,12 @@ myself: `bunx tsc --noEmit` exit 0 · `bun test` **401/0** (course-plan **5/5**,
 - **Boundary respected:** no `MAX_WEEK`/quota/availability here — correctly deferred to TASK-093's gate. Append
   clash-avoidance reuses `findFreeExtensionDate`.
 - Append-template default (Q) confirmed correct. **The critical-path spine is solid — TASK-093 can build on it.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-092 | scheduling (BE): course-plan reconcile engine — pure `planCourseMoves` + `reconcileCoursePlan` (the `size`-target invariant; leave appends, insert cancels newest `EXTENDED`; "6 stays 6 by construction") | SPEC-028 | ✅ **DONE** (Sober 2026-08-03 — code-verified on the office tree: **tsc 0 · 401/0 run by me**; owner's 7·14·21·28 is a real test asserting *still 4 LIVE, ends 28*; 🔑 idempotency confirmed in code — applier sets `extendedFromId:1175` so a re-run won't re-append; `MAX_WEEK`/quota correctly deferred to TASK-093. The critical-path spine is solid) | Jason | — |
+```

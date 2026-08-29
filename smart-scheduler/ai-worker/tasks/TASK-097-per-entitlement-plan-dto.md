@@ -58,3 +58,12 @@ suite: `bunx tsc --noEmit` exit 0 · `bun test` **413/0** (`course-plan` 10/10, 
 - **No second definition of the derived math** — reuses `toCourseSummary` + `courseCurrent`; `owedCount =
   max(0, size − current)`; voucher `hoursRemaining = totalHours − usedHours`, no append/contract (no `size` target).
 - course-first → voucher → 404 dispatch. Clean. **DONE** — unblocks TASK-099 (the FE plan view).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-097 | scheduling (BE): per-entitlement plan DTO (course rows + **derived** live-end; voucher sessions + hours remaining) — one shape for both | SPEC-028 | ✅ **DONE** (Sober 2026-08-03 — code-verified: tsc 0 · **413/0** run by me; `liveEndDate` derived in both branches (never stored `expiryDate` — exposed only as labelled ceiling), one `kind`-discriminated DTO, reuses `toCourseSummary`/`courseCurrent` (no re-derived math), `owedCount` clamped ≥0. Unblocks TASK-099) | Jason | TASK-092 |
+```

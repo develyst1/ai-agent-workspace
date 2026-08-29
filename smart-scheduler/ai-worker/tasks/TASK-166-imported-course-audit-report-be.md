@@ -77,3 +77,12 @@ bun run courses:audit-imports
 ```
 The console's `ผิดปกติ: N` is the answer to Q2 — it sizes the requirement-6 cleanup. The named report stays on
 his machine.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-166 | scheduler-back (BE): **REQ-064 AC-7/Q2 read-only audit** — list IMPORT courses where live COURSE_PACKAGE count ≠ `size − priorSessions` (phantoms/drift), with the correction each would need. Report only, no writes; nicknames-only console; owner runs it → the count sizes the req-6 cleanup. Depends TASK-165. | SPEC-060 (REQ-064) | ✅ **DONE (SA-reviewed Sober 2026-08-22)** — tsc 0 · 697/0 (audit 9/0). Pure `auditImportedCourses` reports **both** over (phantoms) & under (mis-backfill catch-net for TASK-165 Q1); req-6-safe suggestions (excess > appended EXTENDED ⇒ "a human must look", never propose deleting real sessions); counts with engine `courseCurrent`; read-only, PII counts-only + nickname report to project-docs. Console `ผิดปกติ:N` = Q2's affected count for @Porter to relay. — _prior:_ 🔎 REVIEW (Jason 2026-08-22 — `courses:audit-imports`, read-only with **no `--commit` and no write path at all**: every row it lists is a real family that has been told when their lessons are. Counts with the reconciler’s own `courseCurrent`, so the audit and the engine can’t disagree. Reports **both directions** — "over" is the give-away, "under"/over-with-no-EXTENDED is the silent one from TASK-165 Q1 — and where the excess exceeds the appended rows it says **a human must look** instead of proposing a removal. Console = counts only; nicknames to gitignored `project-docs/`. tsc 0 · **697/0**. **@Porter: `bun run courses:audit-imports` for the owner after `0021`; the `ผิดปกติ: N` line is Q2’s answer.**) | Sober | |
+```

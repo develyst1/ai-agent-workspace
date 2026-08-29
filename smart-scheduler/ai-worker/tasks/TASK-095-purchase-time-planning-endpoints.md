@@ -78,3 +78,12 @@ so preview-clash == enforcement-clash **exactly**.
 
 **Not blocking the FE:** the endpoint *shape* is final, so @Fern can build TASK-099 against it in parallel — this
 is a one-line + one-test change to the clash filter, not a contract change.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-095 | scheduling (BE): purchase-time endpoints — `GET /slots/availability` (free teachers + clash owner) + `POST /courses/preview` + `POST /courses` `sessions[]` override | SPEC-028 | ✅ **DONE** (SA-reviewed Sober 2026-08-04; board marker reconciled 2026-08-16 — the row body + task file both recorded DONE, only this headline lagged) — (Jason 2026-08-04 — tsc 0 · **421/0**. New pure `lib/booking-slot.ts`: `SLOT_NON_BLOCKING = [CANCELLED, PENDING_RESCHEDULE, SICK_LEAVE]` + `holdsSlot()` — the SAME set as the partial unique index. `getSlotAvailability` clash query now `notInArray(status, SLOT_NON_BLOCKING)` so a SICK_LEAVE/reschedule-freed slot no longer hides a free teacher. Added `booking-slot.test.ts`. Prior: Sober 2026-08-03 one-liner rework — preview/override/eligibility all correct, endpoint shape final — ✅ **DONE** Sober 2026-08-04: `SLOT_NON_BLOCKING` == index set exactly, one named constant so preview/index can't drift; tsc 0 · 421/0 run by me) | Jason | TASK-093 |
+```

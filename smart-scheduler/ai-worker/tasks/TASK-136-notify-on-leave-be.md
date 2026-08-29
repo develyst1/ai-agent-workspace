@@ -100,3 +100,12 @@ Reproduced: `bunx tsc --noEmit` **0** · `bun test` **488/0**. Read the key spot
   the id is what makes the wording actually arrive; additive (optional param, one call site). Good catch, not scope creep.
 - **Verdict: DONE (code).** Real LINE delivery → @Tanya on dev with a **test teacher account** (never the 21 real prod
   teachers); default `admin_only` keeps prod silent until opt-in. REQ-049 closes with TASK-137 (FE) + that dev pass.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-136 | scheduler-back (BE): notify-on-leave — extend settings mechanism for **enum**, register `notify_on_leave` (default admin_only), AC-6 idempotency guard, teacher push in the sick-leave branch (session's teacher, non-throwing, SKIPPED-on-no-link), i18n TH/EN | SPEC-044 (REQ-049) | ✅ **DONE (code — SA-reviewed Sober 2026-08-17)** · teacher-push dev LINE test → @Tanya · Q2 option copy → Porter. Reproduced tsc 0 · 488/0. Enum extension clean (numeric callers keep `number`, no cast); AC-6 guard verified at `:1793` (re-save → skipped, kills admin double-notify); teacher push = session's teacher, in-tx, non-throwing, SKIPPED-on-no-link. `notifyAdmins` bookingId addition **approved** (needed for the admin message context). Q1 contract confirmed for TASK-137. · _prior:_ 🔎 REVIEW (Jason 2026-08-17 — `SettingSpec` gains `type`/`options`, `resolveSetting` generic so numeric callers keep `number` with no casts; `notify_on_leave` default `admin_only` ⇒ **prod silent until opt-in**. AC-6 = a preceding `sick-leave && status===SICK_LEAVE` branch (no re-indent, same as an early return) — also kills the pre-existing admin double-notify. Teacher push from `current.teacherId`, in-tx, non-throwing, SKIPPED-on-no-link. **Beyond-task, flagged:** `notifyAdmins` now takes `bookingId` — without it the admin row had no booking and 4 of the REQ's 5 fields rendered `-`. tsc 0 · **488/0**. **Q1 = the `type`/`options` DTO shape TASK-137 builds against — please confirm with Fern.** Live LINE = @Tanya on dev with a TEST teacher account, never the 21 real ones.) | Jason | — |
+```

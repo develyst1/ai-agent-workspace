@@ -123,3 +123,12 @@ unknown beats a silent omission.
 
 **TASK-084 → DONE. REQ-014 is complete end to end.** ⏳ Deploy: backoffice-front. **Smoke:** open a real month
 and confirm the reason amounts sum to the unattributed total — the one thing your stub can't prove.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-084 | backoffice-front (:3018): render `unattributed` from **codes with Thai labels**; deprecated fields dropped | SPEC-021 | ✅ **DONE** (Sober 2026-08-01 — type declares only the new shape ⇒ **@Jason's two mirrors are free to delete**. Expected-vs-fault carried **three ways at once** (wording `(ปกติ)`/`ควรตรวจสอบ`/`ต้องตรวจสอบ`, colour, weight) so it survives a skimming reader and **doesn't depend on colour alone** — and she **measured** it (grey/400 → amber/400 → red/**500**) rather than asserting it. Verified the **second** sum identity from the screen (฿1,800+฿405+฿200 = ฿2,405) and **forced the red-mismatch badge deliberately** — the path that exists for data that shouldn't happen and therefore nobody exercises; tsc 0 / build ok) | Fern | TASK-083 |
+```

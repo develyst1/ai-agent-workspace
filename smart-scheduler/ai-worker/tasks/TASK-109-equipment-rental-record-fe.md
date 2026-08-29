@@ -55,3 +55,12 @@ One shared modal, both surfaces, against the frozen `POST /rentals` contract
   200/150/50/50. Recording worked without price (server computes from `code`). Asked for a small `rentalItems`
   endpoint.~~ → done via TASK-123.
 - Live render (auth-gated) → QA alongside the other FE items.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-109 | scheduler-front (FE): record a rental in a few clicks (item+hours → `POST /rentals`); **BOTH** surfaces (add-on + standalone, owner Q2); show success/duplicate/error; **standalone sends a client `idempotencyKey`** (AC #4) | SPEC-031 | ✅ **DONE** (SA-reviewed 2026-08-04 — tsc 0 reproduced; idempotency honest end-to-end `rentalIdBase=refId??clientKey??undefined`, key sent only when refId absent, codes match FE/BE. **REQ-028 recording DONE**; price *display* deferred to **TASK-123**. 107-note closed: `sellable.test.ts` 3/3.) · (Fern 2026-08-04 — tsc 0 · build ok. One shared `RentalModal` (item Select + hours), both surfaces: **add-on** = kebab item in the booking modal (`refId=booking.id`), **standalone** = button on Bookings→All (`refId` omitted, mints a `crypto.randomUUID()` per open, sent only on the standalone path). Result panel recorded/duplicate("not charged again")/error(`RENTAL_NOT_POSTED` surfaced). types/service/mock/hook (`useRecordRental`, invalidates report) + `rental.*` i18n EN+TH. ✅ **Prices now shown** (Fern 2026-08-04, post-TASK-123): `RentalModal` reads `rentalItems` off `/sellable-packages` → per-item VAT-incl price in each option (`label · ฿NNN`) + live `Total: ฿(price×hours)`; no FE price table (`rental.total` i18n EN+TH; tsc 0 · build ok). Live render → QA) | Fern | TASK-108 ✅, TASK-123 ✅ |
+```

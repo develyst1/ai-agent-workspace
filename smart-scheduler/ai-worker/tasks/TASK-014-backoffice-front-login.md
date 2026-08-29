@@ -103,3 +103,12 @@ security-critical paths:
 - `Header.tsx`: real username via `getUser()` (post-mount, avoids hydration mismatch) + logout. ✓
 Correct-creds round-trip / `SKIP_ADMIN_AUTH=false` enforcement are live/real-env (deploy step) — accepted
 under the brownfield rule; the guard + logic are verified. No rework. **REQ-002 build complete.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-014 | backoffice-front: login page + cookie session + proxy.ts guard + logout | SPEC-003 | DONE | Fern | TASK-013 |
+```

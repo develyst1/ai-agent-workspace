@@ -112,3 +112,12 @@ screenshots — but every step above is a real click, and I read `aria-label` an
 confirm **page 1 starts at the next session, not the oldest one in the system** — then click the date header
 and confirm it flips to oldest-first **without hiding anything** (the count must not change). That single check
 is REQ-024's headline symptom either fixed or not.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-074 | scheduler-front (FE): date sort control on the bookings tab | SPEC-022 | ✅ **DONE** (Sober 2026-08-01 — a **clickable column header, not a fifth control**, so TASK-071's crowding argument doesn't come true; server-side and resets to page 1 with every other filter; toggle is **upcoming ⇄ oldest**, which is what staff actually mean; tsc 0) | Fern | TASK-073 |
+```

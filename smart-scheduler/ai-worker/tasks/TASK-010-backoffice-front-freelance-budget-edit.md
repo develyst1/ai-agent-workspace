@@ -79,3 +79,12 @@ cleared), `metadata:{monthlyBudgetMinor}` (backend shallow-merges → `kind` pre
 Top-up to change remaining now" (matches the TASK-009 semantics). Reuses the proven Create/TopUp wiring.
 Live edit round-trip is DB-runtime, unverifiable under brownfield — accepted on the same basis as
 TASK-003/009. No rework.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-010 | backoffice-front: Edit modal for Freelance Budgets | SPEC-001 | DONE | Fern | TASK-009 |
+```

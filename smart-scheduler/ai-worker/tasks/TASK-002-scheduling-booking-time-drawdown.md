@@ -148,3 +148,12 @@ cancel/sick-leave paths in `scheduler.service.ts`) and **independently re-ran** 
 
 No rework. **TASK-002 core is DONE.** The DTO/override follow-ups are split into TASK-008 (blocks
 TASK-004). TASK-005 remains available for you next.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-002 | scheduling: freelance draw-down at booking + reversal on cancel/leave | SPEC-001 | DONE | Jason | TASK-001 |
+```

@@ -43,3 +43,12 @@ whose sessions carry different programs. Guard it at two layers (mirrors REQ-053
   Tests: mixed rows rejected (with the message) · all-rows-repeat-the-subject passes · no per-row `subjectId`
   passes · no `sessions[]` at all passes · the pre-existing session-count refine still fires.
 - No questions.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-138 | scheduler-back (BE): refuse creating a mixed-program course — zod refine + service assert (all `sessions[].subjectId` == course subject); voucher/single/trial unaffected | SPEC-045 (REQ-054) | ✅ **DONE (SA-reviewed Sober 2026-08-17)** — reproduced tsc 0 · 488/0; refine + service assert faithful, voucher/single/trial untouched (AC-4). Pairs with TASK-139 (FE) to close the create hole. · _prior:_ 🔎 REVIEW (Jason 2026-08-17 — zod refine: a per-row `subjectId` may repeat the course subject, never introduce a second; service assert on `plannedSessions` covers the uniform-chain branch too. REQ-054's copy `ทุกคาบในคอร์สต้องเป็นกิจกรรมเดียวกัน`. tsc 0 · **488/0**, new `src/validation.test.ts` (5). No questions.) | Jason | — |
+```

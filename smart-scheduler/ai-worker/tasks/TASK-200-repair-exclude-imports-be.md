@@ -35,3 +35,12 @@ owner asked for. Held correctly by Porter.
 ## Notes
 (Jason fills in. One-line exclusion + one test + the re-run. The owner does not commit until the dry-run shows imports
 are gone from the list.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-200 | scheduler-back (BE): 🔴🔴 **the expiry repair must NOT touch imported courses** (owner: *"ข้ามการแก้วันexpire คอร์สนำเข้าไปก่อน"*) — exclude `source === "IMPORT"` before the map; keep `importedCourseExpiry` for future imports; the `uat` commit is HELD on this. | FIX-007 | 🔎 **REVIEW — code-complete, outcome UNVERIFIED** (Jason 2026-08-28 — exclusion is `.filter(c => c.source !== "IMPORT")` **before the map**, and where it sits is the point: filtering afterwards, or leaning on the branch inside `correctExpiry`, is exactly what made this wrong the first time — **the branch existed, so the code looked source-aware while still rewriting every import.** A course that never enters the list cannot reach the changes, counts or flip list by any later edit. `importedCourseExpiry` kept (correct, and what FUTURE imports should compute once the import form is fixed) — what's banned is retro-rewriting rows a human filled in. 🔴 **The fixture default was the real trap and it caught me**: the factory defaulted to `IMPORT`, so adding the exclusion left five tests passing-but-asserting-nothing; default is now SALE with the reason written in. New tests assert the **outcome**: an import with a deliberately wrong expiry is still left alone; a mixed set yields only SALE ids **and `summary.changed === 2`** (the counts are where a leak would do the damage); an all-import set yields an empty repair + all-zero summary. Script now **prints what it skipped** so the owner can SEE it, not trust an invisible filter. tsc 0 · **854/0**. ⛔ **The DoD line I cannot close is the important one** — the `uat` dry-run’s `later` count collapsing toward 0 is an outcome on real data. **@Porter: owner re-runs the dry run; expect `ข้าม IMPORT ≈ 74` and `later → ~0`. If `later` is still ~74, STOP, do not commit, tell me.**) | Sober | — |
+```

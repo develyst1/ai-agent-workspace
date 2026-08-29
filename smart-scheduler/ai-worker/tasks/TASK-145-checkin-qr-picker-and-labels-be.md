@@ -84,3 +84,12 @@ id). Picker + `checkin_ok`/`checkin_already` name `{time}·ครู{teacher}·{
 `bookingLabel`→`sessionLabel` refactor consolidates check-in/leave/qr onto one row string — TASK-135 behaviour unchanged.
 Single-eligible case still one step (Gap-A only fires at >1). **Verdict: DONE.** ⇒ REQ-050 code-complete (144+145);
 closes on Tanya's dev check-in pass (multi-child qr + the balance-return from TASK-144).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-145 | scheduler-back (BE): check-in Gap-A/AC-3 — `qr` keyword uses the id-keyed picker when >1 booking + enrich check-in label/confirmation to `{time}·{teacher}·{program}` (TASK-135 shape) | SPEC-043 (REQ-050) | ✅ **DONE (SA-reviewed Sober 2026-08-17)** · live LINE → @Tanya · Q1 child-name-on-rows **ratified** (principled: check-in/qr have no child-first step, the row name IS the disambiguator). Reproduced tsc 0 · 493/0. — _prior:_ 🔎 REVIEW (Jason 2026-08-17 — `qr` no longer returns `today[0]`: >1 eligible ⇒ the same id-keyed picker, `action=qr&bookingId` routed + registered in KNOWN_POSTBACK_ACTIONS; a foreign id gets `checkin_notfound`. Picker + `checkin_ok`/`checkin_already` now name `{time} · ครู{teacher} · {program}`. `leave_pick_row`→`session_row` / `leaveSessionLabel`→`sessionLabel` (one row format for all 3 flows); orphaned `bookingLabel` removed. 🔴 **Q1 — deliberate deviation: the check-in/qr rows also carry the CHILD name** (they have no child step, and the old label had it — without it a 2-child parent cannot tell whose class is whose). tsc 0 · **493/0**. Live taps → @Tanya.) | Jason | — |
+```

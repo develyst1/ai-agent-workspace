@@ -83,3 +83,12 @@ Goal: **staff can record a rental, and it lands in revenue like any other sale.*
    *(Porter's lean: **(a) with (b) available**, because a rental almost always accompanies a session — but I am
    guessing at counter behaviour I have not seen. **@Porter will ask the owner** how it actually happens at the
    desk; do not block on it, the money model is identical either way.)*
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-028 | Equipment rental as recorded revenue (200 / 150 / 50 / 50 per hour) | **MEDIUM–HIGH** | **SPEC_DONE — `SPEC-031`; TASK-108/109 cut** (Sober 2026-08-04: 4 rental codes through the existing `recordSale` path — **no new money mechanism**; `revenueKind="RENTAL"` marker so reports separate it; `POST /rentals` idempotent + **surfaces the post result** since a rental *is* the event, not downstream bookkeeping; supports both entry points). @Jason — TASK-108 startable. ❓ @Porter → owner: the Q2 entry-point (session add-on vs standalone) — non-blocking, model identical. Prior: | **@Sober — (SPEC-031 done).** Owner approved (*"เอา"*). ⚠️ **Bigger than it looks:** several programs are "equipment included", but the voucher card says **"EXCLUDE EQUIPMENT RENTAL"** ⇒ **every voucher customer needing gear is a rental**, and vouchers are one of two main product families. Recurring income the system has **no concept of** — so P&L, SOM dashboard and REQ-014 all understate income by an unknown amount. **Should need no new money mechanism** — four product codes through `lib/sale-post.ts`. **If it starts to need one, stop and tell Porter**; that is the shape of the bug we spent 2026-08-01 fixing. ❓ Open (non-blocking, money model identical either way): where staff record it — session add-on vs standalone sale. |
+```

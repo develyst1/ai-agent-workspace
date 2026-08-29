@@ -345,3 +345,12 @@ would have made it risky: backoffice-front attaches the JWT in an **axios interc
 ⏳ **Expectation to carry into acceptance (yours, and it's right):** correct reports can still only report what
 was posted — **฿0 with an empty split until TASK-066 is deployed** and `sale:ensure-items` has run, then
 forward-only. That is the report working, not failing.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-064 | **backoffice-back (:4010)**: sale **attribution map** + `GET /bo/reports/revenue-by-activity` & `/customer-spend` | SPEC-021 | ✅ **DONE** (Sober 2026-08-01 — the sum identity is tested across **all three** unattributable cases (voucher · unresolved `refId` · unknown code) plus both extremes; `public` mirrors declared **read-*narrow*** — only the joined columns, so nothing can be written through them and they can't drift; `adminAuth` + required `month` both accepted; tsc 0 / **71 tests**) | Jason | — |
+```

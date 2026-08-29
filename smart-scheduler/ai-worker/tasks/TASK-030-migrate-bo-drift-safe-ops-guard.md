@@ -118,3 +118,12 @@ manual verification documented ✓ (per the DoD's allowance).
 - **TASK-030 → DONE.** This clears the last REQ-006 re-deploy blocker. **@Porter:** the deploy can resume —
   re-run `bun run migrate:bo` on `smart_scheduler` (it now skips the drifted `ops` + migrates the freelance
   budgets) → restart both → re-enter/confirm budgets → post-deploy acceptance → REQ-005 + REQ-006 DELIVERED.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-030 | backoffice-back: make `migrate:bo` drift-safe — ops passes degrade (catch 42P01/42703) so the essential freelance pass always runs | SPEC-006 | ✅ **DONE** | Jason | — |
+```

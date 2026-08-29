@@ -70,3 +70,12 @@ i18n key. No schema change.
   + 08:00 digest by membership. Digest-naming is right (Q answer).
 - Weekday from the date (convention-robust); past/delivered/cancelled/sick excluded — pinned by the tests.
 - Closes the "living plan" detection gap; the re-plan side already exists (the editor). **DONE.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-096 | scheduling (BE): `orphaned_sessions` attention check (10th) — future LIVE session whose teacher is archived / no longer works that weekday → digest + panel | SPEC-028 | ✅ **DONE** (Sober 2026-08-03 — code-verified: tsc 0 · **408/0** run by me; `isOrphanedSession` reuses `teacherWorksOnDay` (no re-derivation), null-teacher safe, past/delivered excluded; digest-naming kept — same actionability as `unconfirmed_bookings`) | Jason | — |
+```

@@ -110,3 +110,12 @@ notes). Verified the gate + contract:
 - Subjects: union-of-existing accepted for launch (see Q&A). Live render behind prod NextAuth — accepted under
   brownfield (same posture as TASK-004); logic reuses proven patterns + the DONE TASK-016 contract. No rework.
 **REQ-003 is fully built (015/016/017/018).**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-017 | scheduler-front: teacher add/edit/change-type/archive UI + setup-incomplete gate | SPEC-004 | DONE | Fern | TASK-016 |
+```

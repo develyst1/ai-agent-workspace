@@ -45,3 +45,12 @@ Layered per the FE convention (types → service → mock → hook → component
   `sid` events. Routing the behavioural render to QA (Tanya) alongside the other FE items.
 - Ordering chosen **oldest→newest** (the task called it SA-flexible and noted oldest-first "reads as a story"). Easy
   to flip to newest-first if SA/owner prefers — one `.reverse()`.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-120 | scheduler-front (FE): read-only "ประวัติการตัดคอร์ส" timeline on the course card (with the "who not tracked yet" note) | SPEC-035 | ✅ **DONE** (SA-reviewed 2026-08-04 — tsc 0 reproduced; read-only server-rendered timeline, all 9 kind labels present EN+TH (hyphen-key transform resolves), actor note shown, hook guards null id. **Essential-set #5 build-complete.**) · (Fern 2026-08-04 — tsc 0 · build ok. Read-only Mantine `Timeline` (oldest→newest) in `CourseHistoryModal.tsx`, opened by a "ประวัติ" button beside "Manage plan" on each `CoursePackagePanel` card. Layered types/service/mock/hook (`useCourseHistory`) against the 119 contract; summary-badge header + persistent grey Alert = the "who not tracked yet" note; `history.*` i18n EN+TH incl. the 9 kind labels. STANDING RULE ok — footer is 2 buttons in a `Group grow`, single-column at 375, no new table/overflow surface. ⚠️ live render not exercised (auth-gate + mock returns course shape) → behavioural render → QA. Ordering oldest→newest, SA-flippable) | Fern | TASK-119 ✅ |
+```

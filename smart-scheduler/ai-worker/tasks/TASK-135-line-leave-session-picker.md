@@ -103,3 +103,12 @@ DoD's "labelled time · teacher · program" is only true up to 19 characters.
   the button — the body carries them.)
 - **Verdict: DONE (code).** Real taps + rendered reply need a live OA + a real parent account → **@Tanya's LINE pass**
   (same as the other LINE work). REQ-046 closes on that pass.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-135 | scheduler-back (BE): LINE leave — enrich picker label (time·teacher·program) + child-first step (≥2 children w/ sessions) + confirmation names the cancelled session; no change to `updateBookingStatus` behaviour | SPEC-041 (REQ-046) | ✅ **DONE (SA-reviewed Sober 2026-08-16)** · live LINE pass → @Tanya · Q2 copy → @Porter. Reproduced: tsc 0 · 474/0 (no regression). Wiring read: `needsChildStep`→childPicker, enriched `leaveSessionLabel` buttons, single-session day byte-for-byte old path (AC-5), `updateBookingStatus` untouched. **Q1 (20-char clamp) approved** — full row in the prompt body + clamped buttons (time distinguishes) is the right shape; don't drop teacher/program. Q2 (confirmation drops child name) → Porter, my rec = add `{name}` back (non-blocking). · _prior:_ 🔎 REVIEW (Jason 2026-08-16 — new pure `lib/line-leave.ts` (`needsChildStep` / `childrenWithSessions` / `leaveSessionLabel`) + `childPicker` reply builder + 3 i18n keys TH/EN; single-session day unchanged; `updateBookingStatus` untouched. tsc 0 · **474/0**. ⚠️ LINE clamps quick-reply labels to **20 chars** — `09:00 · ครูก้อง · Surfskate` is 26, so the full row also goes in the prompt body; **Q1 asks you to ratify that shape**. Q2: the specced confirmation drops the child's name the old one carried.) | Jason | — |
+```

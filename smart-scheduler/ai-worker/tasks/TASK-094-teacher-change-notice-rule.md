@@ -34,3 +34,12 @@ move branch; ran the suite: **tsc 0 · 421/0**.
   is a SKIPPED row (an unlinked teacher never blocks the swap). TH/EN i18n added.
 - Tests cover the boundary (exactly 3 / 2 / 2d23h-floors-to-2), override, custom threshold, both render kinds.
 **REQ-030 BE is complete** (092/093/094/095/096/097 all DONE).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-094 | scheduling (BE): teacher-change **3-day** notice rule (pure `lib/`, REQ-031-ready) + dual-teacher LINE notify | SPEC-028 | 🔎 **REVIEW** (Jason 2026-08-04 — tsc 0 · **421/0**. Pure `lib/teacher-change-notice.ts` mirrors `leave-notice` in **whole DAYS** (floored), default **3**, threshold **passed in** ⇒ REQ-031/TASK-101 feeds the override with **zero app_settings coupling**; `hasEnoughTeacherChangeNotice`/`teacherChangeNoticeMessage`. Enforced in `applyPlanChange` **move** branch **only on an actual teacher change** — `throw conflict("TEACHER_CHANGE_TOO_LATE", …)` unless admin `override`; notice keyed to the (possibly moved) class date. Dual-notify via `enqueueLine` in-tx: old teacher `teacher_unassigned` + new teacher `teacher_assigned`, rendered TH/EN in `line-message.ts` (2 i18n keys). Tests: notice boundary/floor/override + both render kinds. **Finishes REQ-030 BE.** — ✅ **DONE** Sober 2026-08-04: code-verified, fires only on an actual teacher change (date/subject-only edit untouched), threshold-param seam confirms REQ-031 needs zero app_settings coupling; tsc 0 · 421/0 run by me) | Jason | TASK-093 |
+```

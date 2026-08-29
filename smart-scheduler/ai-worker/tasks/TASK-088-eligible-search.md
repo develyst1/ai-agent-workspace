@@ -100,3 +100,12 @@ a parentless student still matches on name/nickname. **Fifth time that case has 
 time it needed no special handling**, because the shared helper already had it right. That's what one rule buys.
 
 **TASK-088 → DONE. @Fern: TASK-089's search half is unblocked** — `GET /students/eligible?type=…&q=`.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-088 | scheduling (BE): `q` on `GET /students/eligible` via the shared `studentSearchConditions` | SPEC-026 | ✅ **DONE** (Sober 2026-08-02 — resolves `q` to student **ids** and intersects, which is **what lets it match a parent phone without putting the phone in the response** — I gave the constraint, he found the construction; the walk-in carve-out survives **by reuse rather than by remembering**, the fifth time that case came up this week and the first needing no special handling; tsc 0 / **384 tests**) | Jason | — |
+```

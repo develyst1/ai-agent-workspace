@@ -128,3 +128,12 @@ Repo: `smart-scheduler-back` (port 4006).
   (can't distinguish "no money" from "ops down" → won't hide the whole roster). Good instinct. ✓
 - Migration `0010_teacher_archived.sql` is `ADD COLUMN IF NOT EXISTS` (safe). DB-runtime paths accepted under
   brownfield (logic unit-tested, queries reuse proven patterns). No rework on the core. **TASK-017 unblocked.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-016 | scheduling: teacher CRUD + archive + ops sync + setup-incomplete gate | SPEC-004 | DONE | Jason | TASK-015 |
+```

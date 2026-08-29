@@ -149,3 +149,12 @@ review.
   **owner's STEP 3a run on the server**. The runtime half of DoD bullet 1 is verified there.
 
 **Verdict: DONE.** Commit `dong` on the owner's word (Jason flagged he held the commit to avoid racing review — go ahead).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-130 | scheduler-back (BE): `line:adopt-menus` — store the OA's **existing** rich-menu ids into `app_settings.line_rich_menu_ids` (read + one upsert; NO create/link/delete/set-default) — the REQ-042 fix (DB missing ids → menu switch silently no-ops) | SPEC-038 (REQ-042) | ✅ **DONE** (SA-reviewed Sober 2026-08-16 — **reproduced**: tsc 0 · selector 4/4 · full suite **462 pass/0 fail** · no-OA-write grep clean; selector deterministic last-wins + missing-name guard + foreign-menu ignore all correct; `storeMenuIds` extracted surgically, publish unchanged; not run by design → owner runs STEP 3a server-side. Jason's Q1 answered: adopt doesn't set default = expected/OK; SPEC-038 STEP 4.1 corrected.) · _prior:_ 🔎 REVIEW (Jason 2026-08-16 — `scripts/line-adopt-menus.ts` + `line:adopt-menus` + pure `selectMenuIds` (last-occurrence pick, missing-name ⇒ exit 1 writing nothing); upsert extracted to shared `storeMenuIds()`. tsc 0 · **462/0** · grep proof clean. NOT executed — `.env` auto-load would hit the real OA/DB; the run is the owner's STEP 3a. Uncommitted on `dong`.) | Jason | — |
+```

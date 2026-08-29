@@ -150,3 +150,12 @@ The owner adding his own pass before the lift is **not redundant with QA** and i
 Tanya answers *"does it do what the AC says"*; **he** answers *"is this what my customer will actually do with it"*.
 Two different questions, and today produced three examples of the second one catching what the first would not.
 ⇒ **The UAT gate for this block = Tanya's pass + Porter's sign + the owner's own run.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-064 | 🔴 **Imported course plan invents free sessions** — an imported 10/4 course appends 5 EXTENDED on ONE leave; owed shows 4 phantom | 🔴 **HIGHEST** (live on uat · 16 IMPORT courses) | 🔨 **SPEC-060 + TASK-165/166/167 cut → @Jason/@Fern (Sober 2026-08-22).** Confirmed BE defect: `reconcileCoursePlan`/`owedCount`/`insertable` use `course.size` vs the 6 live bookings ⇒ phantom append. **Fix (Q1):** new immutable `priorSessions` (set at import · 0 SALE) → plan-responsibility uses `size−priorSessions`; keep `size` for quota/label. **AC-5 guaranteed** (SALE prior=0 ⇒ never appends/cancels). **Cancel guard:** reconciler never auto-deletes a family session (req 6); existing phantoms → **TASK-166 report**, owner decides. **🔻 AC-3/AC-4 label/quota NOT built — premise challenged:** FE already reads `c.size`/`c.leaveQuota` & BE quota=`leaveQuota(size)`, so a 10/4 course already shows 4/10 & 0/3; the reported 6/0/2 implies size=6 stored (inconsistent w/ the append bug) ⇒ **DATA REQUEST via Porter** for the tested course's stored `size,used_sessions,source` first. AC-8 modal align = TASK-167. | @Sober + owner |
+```

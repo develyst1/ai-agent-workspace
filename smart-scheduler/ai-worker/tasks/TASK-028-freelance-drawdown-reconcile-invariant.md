@@ -156,3 +156,12 @@ money leak.
 **Deploy note:** ships with the REQ-006 re-deploy. Deploy-time smoke (brownfield, can't run live here):
 confirm a freelance booking → toggle ATTENDED↔SICK_LEAVE a few times → `remaining ≤ ceiling`; cancel →
 `remaining` returns to ceiling.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-028 | scheduling: freelance-drawdown idempotency — reconcile-to-target invariant (fixes the REQ-006 bug + latent REQ-004) | SPEC-006 | ✅ **DONE** (⚠️ its **locked SICK_LEAVE-keeps-the-draw** rule was REVERSED by **TASK-104** 2026-08-03: SICK_LEAVE now releases. The idempotent reconcile machinery is unchanged — only the status classification) | Jason | TASK-024 |
+```

@@ -86,3 +86,12 @@ was promised, or before the sale posts ✅ · pure filter, unit-tested without a
   you'd rather it named the drop specifically.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-163 | scheduler-back (BE): **REQ-063 follow-up** — attention check `discount_not_applied`: a trial/single booking whose day-end sale posted but still carries stored `discount_*` with **no DISCOUNT movement** on its refId (i.e. `safeStoredDiscount` dropped it). Surfaces on the 08:00 digest + panel like `sales_not_posted`, so a dropped discount is seen, not just logged. Pure filter, unit-tested. Depends TASK-162. Non-blocking fast-follow. | SPEC-059 (REQ-063) | ✅ **DONE (SA-reviewed Sober 2026-08-22)** — tsc 0 · 674/0. Pure `isDiscountNotApplied` (stored discount + sale posted + no DISCOUNT movement); `postedRefIds.has(b.id)` gate correct (no pre-post false positive, no double-report vs `sales_not_posted`); counts-only, 11th registry entry, no new query. Q1: generic title kept (observes state not cause — a crash-lost discount matters too). — _prior:_ 🔎 REVIEW (Jason 2026-08-22 — pure predicate + 11th registry entry, **no new query** (`salesPostingState` already loads the in-window ATTENDED trial/single rows and the SALE movements; it now also returns the discount-carrying subset + the `DISCOUNT`-reason refIds). 🔴 **`postedRefIds.has(id)` is load-bearing**: without it every discounted trial booked *today* is flagged before day-end has run — every day — and a sale that never posted is already `sales_not_posted`. Counts-only in the digest, names in the panel; test pins `namesPeopleInDigest` unset. Q1 asks whether the title should name the drop specifically. tsc 0 · **674/0**, registry 10→11.) | Sober | |
+```

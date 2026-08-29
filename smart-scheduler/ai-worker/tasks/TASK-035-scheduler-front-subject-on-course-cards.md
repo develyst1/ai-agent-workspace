@@ -85,3 +85,12 @@ reality, keeps the change surgical (no mock-DTO churn), and the render/mapper bo
   panel · tsc + build clean.
 - **TASK-035 → DONE.** With TASK-034 (BE) also DONE, **REQ-010 → SPEC_DONE** (→ @Porter for acceptance; ships on
   the next `smart-scheduler-front` deploy — pairs with the TASK-034 backend on `smart-scheduler-back`).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-035 | scheduler-front (FE): render the sport-program name on the `/scheduler/bookings` course cards | SPEC-010 | ✅ **DONE** | Fern | TASK-034 |
+```

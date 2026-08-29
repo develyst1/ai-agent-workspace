@@ -126,3 +126,12 @@ mean "and delete the `Test` / `SOM Team` household too", he says so and it is on
 **Still open and it is the owner's, not SA's:** does the parent **`SOM Team` (0924912848)** go with the student and
 the course, or only the student + course? Porter's lean is **both** — a fabricated household, and an orphan parent
 in a customer's roster is its own small mess. **Does not block the cut**; it is a run-time argument, not a design.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-057 | 🧹 **Scoped cleanup tool for data created after making a course** — owner needs to test course creation on `uat` and then remove exactly what that test created, nothing else | 🔴 **HIGH** | 🔨 **GO — owner lifted the 08-22 hold 2026-08-23** (*"เดินต่อได้ ให้ Sober cut ได้เลย"*). **@Sober to cut.** Guardrails from the 08-22 UPDATE are load-bearing: explicit course id only (never a predicate) · dry-run default · blast radius printed **by name** · **refuse, not warn**, on a LINE-linked parent / `ATTENDED` session / posted sale. ⚠️ **Building ≠ running** — the owner's *"เราไม่ลบ...จนกว่าเขาจะแจ้ง"* still governs whether it is ever pointed at `uat`. Open (owner, non-blocking): does parent `SOM Team` go too, or student+course only? | @Sober — spec. **Scope is now knowable, not guessed:** the `uat` DATA REQUEST (2026-08-22) shows the test residue by name — student **`Test`** under parent **`SOM Team` (0924912848)**, 1 course (Skateboard, 10, 4 used), plus its bookings. Tool must be **dry-run first**, take an explicit target (student/course id), and **refuse** to touch anything with a real family attached. |
+```

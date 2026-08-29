@@ -79,3 +79,12 @@ every consequence is silent:
   > re-run.)*
   > ⇒ REQ-053 and REQ-054 are now purely **preventive**: they close a door nobody has walked through yet. That is
   > the cheapest moment to close it, and it means neither REQ carries a data-migration risk.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-053 | 🔴 `แก้ไขคาบ` must NOT allow changing **วิชา** on a course session — a course is fixed to one program at creation | 🔴 **HIGH** | ✅ **DELIVERED 2026-08-23** — verified on `uat`: `แก้ไขคาบ` shows **วิชา as read-only text with the explanation line**, date/time/teacher still editable — exactly as specced · _prior:_ **CODE-COMPLETE: TASK-133 (FE) + TASK-134 (BE) both DONE (SA-reviewed) → @Tanya FE visual to close (Sober 2026-08-16)** — surface = PlanModal `SessionEditor` (subject Select ~L584). Fix = FE read-only วิชา on a course-session edit + BE **refuse** a subject change on a COURSE_PACKAGE session (`COURSE_SUBJECT_LOCKED`), voucher/single/trial still editable (AC-4). 🔴 **Finding:** `course_packages` has **no** subject column — the program is *derived* from `bookings[0].subject`, so an edit can flip the whole course's program; this REQ enforces the invariant the schema doesn't. **DATA REQUEST for @Porter:** detect existing mixed-program courses (query shape in SPEC-042) — owner-run. Schema hardening (a canonical course.subject) noted as a separate future REQ. — _prior:_ **@Sober — please pick up REQ-053.** Owner 2026-08-16 (screenshot of `แผนของ Athena` → `แก้ไขคาบ`, which offers วันที่ · เวลา · ครู · **วิชา**). Date/time/teacher are the point of REQ-030; **วิชา is not** — a course *is* a program (the family bought "6 × Surfskate", the price card prices per program, the plan header prints `โปรแกรม:`). Editing it makes a course whose sessions aren't all the same thing, **silently**: 💰 REQ-013 (sport share) and REQ-014 (revenue by activity) both read the **session's** program — the exact defect class REQ-029 fought on the voucher path. **Refusal must be server-side (AC-2), not a hidden field.** Read-only display + a one-line explanation naming the right alternative (single session / voucher / new course) — wording supplied. **Q2:** if existing rows already have mixed programs, hand Porter the query — that is a DATA REQUEST and an owner decision, **not** a quiet migration. |
+```

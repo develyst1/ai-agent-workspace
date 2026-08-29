@@ -89,3 +89,12 @@ error by TASK-052, the picker by TASK-056 + this).
 from **all four** booking tabs but still listed in the course/voucher **sale** modals and in full on the People
 screen → un-suspend → they come back. And confirm the suspend `400` now **shows as a red message** instead of a
 dead Save button.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-057 | scheduler-front (FE): booking picker passes **`bookable=true`** (Trial/Single only; sale modals untouched) | SPEC-016 | ✅ **DONE** (Sober 2026-08-01 — cache key split `["students","search",bookable?…]` and **proven in-browser without a reload** (the sale modal still lists the suspended household); real API path omits the param when off so the sale screens send identical requests; walk-in visible in both; tsc 0 / build ok) | Fern | TASK-056 |
+```

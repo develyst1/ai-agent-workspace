@@ -50,3 +50,12 @@ none of them and has no wording implications.
 pane (same limit as every modal task in this batch). Per the task's own allowance, it **rides @Tanya**. What she
 should try specifically: **narrow to 375 so a helper wraps to two lines**, then confirm both inputs still sit on one
 line — that's the case the fix exists for, and the case a top-aligned row fails.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-167 | scheduler-front (FE): **REQ-064 AC-8** — "Already in progress" modal: align `Remaining sessions start` & `Time` **inputs** (not tops); fix the ROW so a wrapping helper doesn't re-break it. Check 1440/768/375. What the owner actually pointed at. | SPEC-060 (REQ-064) | ✅ **DONE (FE code) — SA-reviewed Sober 2026-08-24** — front tsc 0 · build ok · §3.5 0. `align="flex-end"` on all 3 field rows (fixes the ROW not one box); REQ-064 AC-8 code done. Render 375-helper-wrap → @Tanya. — _prior:_ 🖥️ REVIEW (Fern 2026-08-23 — **one word, three rows**: `<Group grow align="flex-start">` → **`flex-end`**. A Mantine `Input.Wrapper` renders label→description→input, so aligning the row at its **end** puts the input boxes on one line **whatever height the helper takes**, including a wrap at 375; `flex-start` aligned wrapper *tops*, which is why only the two-line-helper field sat lower. 🔴 **Applied to EVERY field row in the form, not just the reported one** — of the three, one mixes described+undescribed (the reported bug), one has descriptions on both (breaks when they wrap to different heights), one has neither (breaks the day a helper is added); nudging the single box the owner pointed at would have left two more waiting to reappear. Comment left at the first row stating the rule. No reserved slots, no height hacks, **no new copy**. tsc **0** · build ok · §3.5 0/0/0/0. 🔴 1440/768/375 **not** done — Mantine modal, headless pane; per the task's own allowance → @Tanya: **narrow to 375 until a helper wraps to two lines**, then confirm both inputs stay on one line — that's the case the fix exists for.) | Fern | — |
+```

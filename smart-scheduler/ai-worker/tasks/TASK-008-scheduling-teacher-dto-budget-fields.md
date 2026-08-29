@@ -81,3 +81,12 @@ old localStorage-only switch).
 read in the confirm path (`allowNegative = override || readLimitOverride(tx, ...)`, `scheduler.service.ts:564`)
 and batch-attached on both `getCalendar`/`getTeachers`. App_settings persistence is DB-runtime (verified
 by inspection, reuses the proven type-order pattern) — accepted. No rework. **TASK-004 unblocked (and DONE).**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-008 | scheduling: teacher DTO budget fields + persist limit-override | SPEC-001 | DONE | Jason | TASK-002 |
+```

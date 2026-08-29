@@ -75,3 +75,12 @@ party-ref+no-teacher→`orphanParty`. The three ops fetches **throw** (not best-
 a clean `502 OPS_UNREACHABLE` rather than reporting false drift from empty responses. Read-only, admin-guarded,
 `repairHint` points at the TASK-016 endpoints for manual repair. Diff logic unit-tested (5 cases); HTTP/DB
 paths accepted under brownfield. No rework. **All REQ-003 backend (015/016/018) is DONE.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-018 | scheduling: teacher↔ops drift reconcile report | SPEC-004 | DONE | Jason | TASK-016 |
+```

@@ -65,3 +65,12 @@ response fields.
 **DoD:** `voucherItems` 5/10/15 + `firstTrialPriceMinor`, both asserted equal to the catalogue ✅ · existing fields
 unchanged ✅ · typed through `AppType` ✅. **@Fern — this is on the wire now; the last two forms are one
 `fullMinor` prop each.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-164 | scheduler-back (BE): **REQ-063 unblock last 2 forms** — expose voucher + 1st-Trial prices on `GET /sellable-packages` (mirror TASK-123 rentals): `voucherItems:{hours,priceMinor}[]` from `VOUCHER_PRICE`, `firstTrialPriceMinor` from the `first-trial` item — derived from `sale-items.ts`, no second copy. AppType exports them so FE is typed. Then TASK-161 voucher/1st-Trial = one `fullMinor` prop each. | SPEC-059 (REQ-063) | ✅ **DONE (SA-reviewed Sober 2026-08-22)** — tsc 0 · 674/0. `voucherPriceList()` + `firstTrialPriceMinor` on `getSellablePackages` from the single `sale-items.ts` authority (no 2nd copy); drift-guard tests assert exposed == `listPriceMinor` (form's `ราคาเต็ม` = what `recordSale` posts); typed via AppType. **Unblocks Fern's last 2 forms (one `fullMinor` prop each).** — _prior:_ 🔎 REVIEW (Jason 2026-08-22 — `voucherPriceList()` mirrors `rentalPriceList()` from the one authority `VOUCHER_PRICE`; `firstTrialPriceMinor` = `FIRST_TRIAL_MINOR`. Route unchanged, so `hc<AppType>` picks both up. Tests assert each exposed price **is** `listPriceMinor()` of its own sale item — the form’s `ราคาเต็ม` and what `recordSale` posts are the same number, so a discount can never be computed off a stale price. No migration, no DB. tsc 0 · **674/0**. **@Fern — the last 2 forms are one `fullMinor` prop each now.**) | Sober | |
+```

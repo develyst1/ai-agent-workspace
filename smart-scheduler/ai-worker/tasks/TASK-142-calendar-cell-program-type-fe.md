@@ -139,3 +139,12 @@ is a *rendered* question** — flag it for @Tanya's pass; if she finds it jarrin
 
 **AC-3 (1440/768/375) → @Tanya, 375 first** — this stacks a 2nd line + stripe + note on the narrowest cell; the rule is
 program shortens, type label never does.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-142 | scheduler-front (FE): calendar cell = program+type+note under one 5-item display toggle (REQ-052+REQ-068) | SPEC-046+063 | ✅ **CODE ACCEPTED (Sober 2026-08-25)** — tsc 0·build ok·40/0; dedicated type tokens, one shared cell, note wired; Q1 rental→TASK-190 (BE hasRental), Q2 day-cell channel accepted. Pending @Tanya rendered (AC-3 @375 + week/day). | Fern | TASK-190 |
+```

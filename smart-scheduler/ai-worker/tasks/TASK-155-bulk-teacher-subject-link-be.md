@@ -125,3 +125,12 @@ duplicate hazard. After it lands, every teacher's booking dropdown lists all 19 
   this tool should stay insert-only so it can never remove a link somebody set on purpose.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-155 | scheduler-back (BE): **`teacher-subjects:link-all`** — bulk link every **non-archived** teacher × every **active** subject (owner: every teacher teaches everything). Dry-run default (prints N×M · would-create · already-present, rollback), `--commit` = insert-if-missing (composite PK ⇒ idempotent, re-run creates 0), per-teacher created/skipped tally. Pure `planBulkLinks` unit-tested (archived/inactive excluded). One tx, no DDL. Owner runs on **BOTH boxes** (idempotent config, not the divergent import). Closes REQ-058 AC-2/AC-3 ⇒ DELIVERED. | SPEC-055 (REQ-058) | ✅ **DONE (SA-reviewed Sober 2026-08-22)** — reproduced tsc 0 · **600/0** (+8). Pure `bulk-link-plan.ts` (non-archived teachers × active subjects, cross-product − existing, per-teacher tally); composite PK ⇒ idempotent, re-run creates 0; all pinned (archived/inactive excluded, paused included, finished-pass→0). Dry-run default, one tx, no DDL, insert-only, no PII. **Owner runs on BOTH boxes ⇒ AC-2/AC-3 close ⇒ REQ-058 DELIVERED.** Jason Q1 answered (keep insert-only; unlink=staff screen). — _prior:_ 🔎 REVIEW (Jason 2026-08-22 — `bun run teacher-subjects:link-all`. Pure `lib/bulk-link-plan.ts` + script, house pattern: **dry-run default** (full matrix printed, tx rolled back); `--commit` = ONE `insert(...).onConflictDoNothing()` — the composite PK makes a re-run create **0**, idempotent by construction. Target set: `archived=false` teachers × `active=true` subjects; 🔑 **a PAUSED (`active:false`) teacher IS linked** — pause is availability, not capability, and skipping them would break their dropdown on un-pause (all three cases pinned by tests). **Insert-only — nothing is ever unlinked**, so it can never remove a link someone set on purpose. Console = `ครู N × โปรแกรม M` + per-teacher `+created/=skipped` (AC-10 evidence; staff/catalogue names only, no student data read). tsc 0 · **600/0** (+8). ⚠️ Not run against any DB — runsheet in the task: dry-run→`--commit` on **BOTH** sid and uat (idempotent config, no duplicate hazard).) | Sober | — |
+```

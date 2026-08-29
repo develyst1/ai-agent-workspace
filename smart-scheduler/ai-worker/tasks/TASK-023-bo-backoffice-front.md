@@ -93,3 +93,12 @@ create**), Movement modal (signed in/out), Tags screen, and the reworked P&L Das
 (`incomeMinor`/`expenseMinor`/`profitMinor`) all built; nav retired the old ops screens (unlinked, dormant —
 approved). Live CRUD is behind the bo API (brownfield) — accepted; render/nav/guard confirmed. No rework on
 the delivered scope. **Backoffice core (021/022/023) is DONE.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-023 | backoffice-front: admin UI on the universal item model | SPEC-006 | DONE | Fern | TASK-022 |
+```

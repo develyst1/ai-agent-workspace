@@ -131,3 +131,12 @@ by metadata.
   indicative table; menu↔reply consistency is the point). No change required; flagged to @Porter as an FYI for
   the pre-release image review.
 - **TASK-041 → DONE.** With TASK-040, **REQ-015's deploy gaps are closed.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-041 | LINE artwork: 4 rich-menu images → `smart-scheduler-back/assets/line/{parent,teacher}-{th,en}.png`, aligned to the fixed tap bounds | SPEC-012 | ✅ **DONE** | Fern | — |
+```

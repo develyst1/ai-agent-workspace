@@ -53,3 +53,12 @@ Standalone (b) is now in scope, so the idempotency addition above is **required*
   standalone uses the client key; uuid is the last-resort fallback only).
 - Test: two standalone POSTs with the **same** client `idempotencyKey` → **one** movement (`duplicate` on the 2nd).
 - TASK-109 generates + sends one key per rental action.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-108 | scheduling (BE): equipment rental as revenue — 4 codes (`rental-set/ride/helmet/pads`, VAT-incl) + `revenueKind="RENTAL"` marker in `lib/sale-items.ts`; `POST /rentals` via `recordSale` (idempotent, **surfaces the result** — a rental IS the event); re-run `sale:ensure-items` on deploy | SPEC-031 | 🔎 **REVIEW** (Jason 2026-08-04 — tsc 0 · **444/0**. 4 rental codes in `SALE_ITEMS` at 200/150/50/50 VAT-incl, each `metadata.revenueKind="RENTAL"`; `SaleItemSeed` gained optional `metadata`, `ensure-sale-items` now merges it (⚠️ **re-run `sale:ensure-items` on deploy** to create the 4 items). `POST /rentals {code,hours>0,refId?}` → `recordSale(code, hours, {refId, idempotencyKey: rental:{refId??uuid}:{code}})`; **surfaces the result** — `recorded`→201, `duplicate`→200 (idempotent), else `RENTAL_NOT_POSTED` 502 (never a silent 200). Both entry points (refId add-on / standalone). Pure tests: prices, RENTAL marker, `hours×price` signed movement, `isRentalCode`, key format. **Out of scope:** stock/deposits/damage — ✅ **DONE (add-on path)** Sober 2026-08-04: code-verified, prices/marker/surfaced-result(201/200/502) all correct; tsc 0 · 444/0. 🔴 **1 required addition for STANDALONE:** idempotency keys on `refId ?? uuid`, so a standalone walk-in double-submit **double-posts** (AC #4). Accept an optional client `idempotencyKey` in the body; TASK-109 sends one per action — 🔴 **NOW REQUIRED** (owner Q2 = **both** surfaces, 2026-08-04, so standalone (b) is in scope). @Jason: small BE add — 🔧 **FOLLOW-UP DONE** Jason 2026-08-04: `POST /rentals` now accepts optional `idempotencyKey`; `idBase = refId ?? idempotencyKey ?? uuid` via pure `rentalIdBase` (tested: refId wins, else client key, else undefined→fresh id). A standalone double-submit with the same client key derives the same key ⇒ recordSale dedupes to one movement. tsc 0 · **445/0**. **@Fern (109):** send a client `idempotencyKey` per standalone rental action) | Jason | — |
+```

@@ -48,3 +48,12 @@ issue flow. Course bookings use a different subject path and are untouched.
 - None blocking. Note the picker location (booking-time, not issue-time) above — if the owner expected an exclusion on
   a *voucher-issue* program field, there isn't one to filter (issue is hours-only); the exclusion correctly lives where
   a program is actually chosen. Live render (auth-gated) → QA alongside the other FE items.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-107 | scheduler-front (FE): voucher program picker omits Onewheel + Balance Play (from the exposed set, not hardcoded); surface the server refusal | SPEC-030 | ✅ **DONE** (SA-reviewed 2026-08-04 — tsc 0 reproduced; BE `voucherAllowedGroups()` enforced at `service:763`, FE filters picker+preselect+payload off one `voucherSubjectOptions`, no over-hide. Minor non-blocking: add a 3-case `voucherAllowsSubject` unit test. **REQ-027(b) closed.**) · (Fern 2026-08-04 — tsc 0 · build ok. The picker is the **calendar `BookingModal` voucher tab** (`voucherSubjectId`) — a voucher is issued as program-agnostic hours, program chosen at booking time. Added `voucherAllowedGroups:string[]` to `SellablePackagesResponse` (matches BE `service:885`, real card = `["bike-skate"]`) + mock; pure `voucherAllowsSubject(data,subjectId)` in `lib/scheduler/sellable.ts` excludes a subject **only** when it maps to a known excluded price group (no package / not-yet-loaded → selectable, server is backstop — no over-hide, no hardcoded list). Filters the voucher `<Select>` + preselect + payload lookup; course bookings untouched. New empty state `voucherNoAllowedProgram` (EN+TH) when a teacher has programs but none voucher-allowed. Server `VOUCHER_PROGRAM_EXCLUDED` already surfaced via `submitError` (`:732→:951`). Live render → QA) | Fern | TASK-106 ✅ |
+```

@@ -145,3 +145,12 @@ lands so you can do the three-line removal. Your reasoning for not leaving it is
 string on a Thai screen is how it becomes permanent.**
 
 **TASK-083 → DONE.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-083 | backoffice-back (:4010): `unattributed` reason **codes + counts + amounts** instead of English prose | SPEC-021 | ✅ **DONE** (Sober 2026-08-01 — **codes are the vocabulary end to end**, not a boundary translation: he could have mapped an internal set to public codes and passed, but two vocabularies for one concept is how they drift; `count`/`amountMinor` accumulated in the **same single pass** so the sum identity holds **by construction** — his line, better than the guard I was going to ask for: *"the way to stop that is to not compute it twice"*; stable order puts the **expected** case before the two faults; tsc 0 / **93 tests**) | Jason | TASK-064 |
+```

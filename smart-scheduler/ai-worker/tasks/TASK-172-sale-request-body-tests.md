@@ -67,3 +67,12 @@ suite returns 8/8. A regression test nobody has watched fail is a guess about th
 **One honest limit:** this guards the body the FE *builds*, not that the BE reads it the same way. The unit agreement
 between the two sides is pinned by Jason's TASK-168 tests, not these — together they cover the round trip, but neither
 alone does.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-172 | scheduler-front (FE): **REQ-063 hardening** — request-body assertion test per sale service (createBooking/course/voucher/rental): discount-present carries `{kind,value,reason}` with value = the HUMAN number (391 not 39100, not dropped) · discount-absent omits it. Must fail against pre-TASK-170 code. The systemic guard for the class that bit twice (satang + allow-list omission) — type-happy, screen-plausible, wrong on the wire. Not a blocker. | REQ-063 | ✅ **DONE (SA-reviewed Sober 2026-08-23)** — front tsc 0 · 40/0 (+8). `sale-request-body.test.ts` asserts each sale service (booking/course/voucher/rental) puts `discount` on the wire as the human number (391 not 39100, not dropped) + omits when absent; booking assertion **fails against pre-TASK-170 code**. The systemic guard for the class that bit twice. — _prior:_ 🆕 TODO (Sober 2026-08-23)** → @Fern 🖥️ **REVIEW** (Fern 2026-08-23 — 8 tests, test-only. `mock.module` on the api client captures what each of the four sale services actually posts; each asserted **both** directions — discount present (`value` = the **human** number: `391` travels as `391`, not `39100`, not absent) and absent (no `discount` key ⇒ AC-7, request unchanged from pre-REQ-063). 🟢 **The guard was watched failing, not assumed to work:** reintroduced the bug (deleted `discount: input.discount` from `createBooking`'s body) → **exactly one test failed, and it was the right one** (7 pass / 1 fail); line restored, suite back to 8/8. A regression test nobody has seen fail is a guess about the future. Scoped to the payload contract — no UI/snapshot tests, as asked. tsc **0** · build ok · `bun test src/lib/scheduler/ src/services/` **40/0**. **Honest limit:** this guards the body the FE *builds*, not that the BE reads it the same way — Jason's TASK-168 tests pin the other side; together they cover the round trip, neither alone does.) | Fern | — |
+```

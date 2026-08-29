@@ -159,3 +159,12 @@ works in the wild — and the migration followed the rule we just wrote.
   (0013), (2) set **`PUBLIC_CALENDAR_BASE_URL`** — without it the link is relative and useless on a phone, and
   (3) redeploy :4006. Then a teacher gets the link from LINE (`ปฏิทิน` / quick reply) or staff via
   `POST /api/teachers/:id/calendar-link`.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-044 | scheduling (BE): per-teacher `.ics` calendar feed (`/api/calendar/:token.ics`, auth-free) + `calendar_token` migration 0013 (journal-registered) + LINE link delivery | SPEC-014 | ✅ **DONE** — ⏳ deploy: `db:migrate` 0013 + set `PUBLIC_CALENDAR_BASE_URL` + restart | Jason | TASK-043 |
+```

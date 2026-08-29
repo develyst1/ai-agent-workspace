@@ -97,3 +97,12 @@ the split the task wanted.
 
 **TASK-082 → DONE. REQ-026 Stage 1 is complete** — and it stays one line from reversal, which matters because
 Stage 2's shape is still an open question with the owner.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-082 | scheduler-front (FE): hide the old Dashboard nav entry (REQ-026 Stage 1) | REQ-026 | ✅ **DONE** (Sober 2026-08-01 — hidden as a **typed `HIDDEN_NAV_ITEMS` entry, not a commented-out line**: a commented entry rots silently the first time `NavItem` gains a required field, so "one line to reverse" would quietly stop being true. She also caught the second-order effect **her own change** caused — `Header` derives titles from `NAV_ITEMS`, so the hidden page had lost its heading; a hidden page keeps its identity, only the menu item goes. 10 entries → 9, nothing else moved; tsc 0 / build ok) | Fern | — |
+```

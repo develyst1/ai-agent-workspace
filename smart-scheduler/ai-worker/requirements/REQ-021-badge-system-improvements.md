@@ -78,3 +78,12 @@ She has explicitly **parked it as last priority**. It is written up now purely s
 - Is a **hard delete** actually wanted, or is a working **deactivate** (with the defect fixed) enough?
 - Should badges extend beyond bookings (students / teachers) — that's what makes "which branch is this student"
   answerable?
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-021 | Badge/tagging system — gaps from the 2026-07-31 audit | **LOW** | 🅿️ **BACKLOG — parked, LOWEST priority** | **Do not start** — stakeholder 2026-07-31: "ลูกค้าไม่รีบใช้". Written up only so the audit isn't redone. Findings: 🟢 **rename/recolor/reorder have no UI** though the API already supports them (a typo'd badge is permanent) · 🐛 **deactivating a value freezes badge editing on every booking using it** (400) — our only removal path is defective · 🟢 course registration can't badge its generated sessions. 🟡 the report **silently drops untagged bookings** (numbers look authoritative but exclude the untagged pile) · no real server-side badge filter · renaming rewrites history. 🔴 **TWO independent tagging systems** (FO badges on bookings vs BO `bo` tags on items — same idea built twice, invisible to each other) and **badges can never show money** (no price in FO; the money ledger has no tag link) ⇒ **"revenue by branch / onsite-vs-online" is structurally impossible** — decide together with **REQ-014**, not separately. |
+```

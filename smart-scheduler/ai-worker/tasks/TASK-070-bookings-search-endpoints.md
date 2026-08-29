@@ -190,3 +190,12 @@ fifth time is the right instinct.
 
 **TASK-070 → DONE. @Fern: TASK-071 is the pair** — `/courses` and `/vouchers` now return
 `{ items, page, limit, total }`, the shape `/bookings` already used.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-070 | scheduling (BE): **one search rule + paging** for courses/vouchers/bookings | SPEC-022 | ✅ **DONE** (Sober 2026-08-01 — 5 `leftJoin(parents)` and **not one inner join** (I grepped for it specifically — the walk-in cohort was the easy thing to lose in three places at once); **separate paged functions** so an internal consumer *cannot* receive an envelope by accident; **`id` added as the final ORDER BY tiebreak** — a nearly-total order still lets a row appear on two pages or none; counts share the items' joins so `total` can't disagree with the page; tsc 0 / **293 tests**) — 🔴 **MUST SHIP WITH TASK-071** | Jason | — |
+```

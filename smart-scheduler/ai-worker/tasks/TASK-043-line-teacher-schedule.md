@@ -108,3 +108,12 @@ reuse-don't-reinvent constraints both held.
   exclude **only** CANCELLED (other statuses shown with their label, which is why the AC asks for status).
 - **TASK-043 → DONE. REQ-016 → SPEC_DONE** (its only task). **TASK-044 (the `.ics` feed) is now unblocked.**
 (Sober fills at REVIEW.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-043 | LINE (BE): teacher "my schedule" — today + this week (fills the REQ-015 menu stub), `findBookingsForTeacher` + i18n | SPEC-013 | ✅ **DONE** | Jason | — |
+```

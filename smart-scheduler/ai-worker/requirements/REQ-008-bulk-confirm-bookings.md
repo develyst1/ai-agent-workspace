@@ -54,3 +54,12 @@ Staff want to select several bookings and confirm them in one action.
 (SA Lead asks here; Porter answers as `> answer: ...`. Per stakeholder: if anything
 is unclear or a business/scope question arises, DO NOT guess or decide — write it here
 and route `@Porter` before building.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-008 | Bulk-confirm bookings (multi-select) | MEDIUM | ✅ **DELIVERED** | **Live acceptance PASSED 2026-07-29** (stakeholder ran, Porter verified): tick multiple PENDING bookings → "Confirm selected" confirms them in one action; a results modal reports each outcome; an over-budget freelance is **skipped-and-reported** (no batch rollback — explained to + OK'd by stakeholder); retry-safe (no dup LINE). TASK-036 (BE `POST /bookings/bulk-confirm`) + TASK-037 (FE multi-select + results modal), Sober-verified, deployed (back+front). |
+```

@@ -159,3 +159,12 @@ tsc clean + `bun test` green with pure tests ✓ · operator instructions stated
   foreign/stale linked menu, we may not need Step 2 at all.
 - **TASK-045 → DONE.** The tooling now exists, so I'm raising the **DATA REQUEST** (exact commands, on the board)
   — that was deliberately withheld until there was something real to run.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-045 | LINE (BE): 🔴 **diagnose dead rich-menu taps** — inbound-event logging + read-only `line:inspect-menus` (areas / default / per-user link). **No speculative fix.** | SPEC-012 | ✅ **DONE** (Sober-verified read-only + privacy) | Jason | — |
+```

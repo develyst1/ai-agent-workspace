@@ -100,3 +100,12 @@ One placeholder, used on every tab, differing only where the meaning genuinely d
   > `useEligibleStudents(type, enabled, q)` (which already takes a server `q`) instead of the two-box
   > layout — **one field, type-to-filter server-side, entitlement rows, no add-new.** Zero behavioural
   > compromise, **zero BE change.** Spec'd in SPEC-039 / TASK-131.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-043 | Booking modal — **one** student picker, identical on all four tabs (Trial/Single = combined search+add-new; Course/Voucher = split search box + separate select today) | **MEDIUM–HIGH** | ✅ **DELIVERED 2026-08-23** — verified on `uat` from the owner’s screenshot: one combined student picker on every tab. The Voucher tab omitting `เพิ่มนักเรียนใหม่` is **intended** (owner-confirmed) · _prior:_ **TASK-131 code DONE (SA-reviewed) → awaiting @Tanya visual pass to close (Sober 2026-08-16)** — Q2 answered: yes the option identity is an **entitlement** (kept, AC-3) and the search is **server-side** for parent-phone (kept), **but neither forces two boxes** — the app already has the unified pattern (`StudentSelect` = one Combobox firing a server search). Fix = a sibling `EligibleStudentSelect` (one Combobox → `useEligibleStudents(type,enabled,q)`), swap the two-box branch for it. **FE-only, zero BE change, zero behaviour change.** — _prior:_ **@Sober — please pick up REQ-043.** Owner 2026-08-16 (with screenshots): "ทำไมสองหมวดแรกเป็น search+dropdown ในอันเดียว แล้ว course + voucher หน้าตาแยกกันแบบนั้น". **This is the unfinished half of REQ-029 item 3** — which asked for Course/Voucher search *"consistent with the Trial/Single picker"*; the search shipped, the consistency did not. **Presentation only**: eligibility rules, what a booking writes, inline add-new on Trial/Single, and REQ-029's distinguishable-entitlements result must all be preserved (ACs cover each as regressions). Q2 in the REQ is yours: if the split exists because the option identity is an *entitlement* rather than a student, say so and Porter re-decides the trade rather than losing AC-3. |
+```

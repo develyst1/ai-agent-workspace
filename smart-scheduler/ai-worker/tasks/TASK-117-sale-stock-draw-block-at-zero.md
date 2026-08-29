@@ -27,3 +27,12 @@ sellable sale's movement behind this.
 - [ ] Cancel/refund **restores** stock + reverses the movement.
 - [ ] The expense side is unchanged (freelance ceiling already blocks at 0); one shared ceiling-draw definition.
 - [ ] `bunx tsc --noEmit` clean; `bun test` green (block-at-0, unlimited, atomic+idempotent, cancel-restore).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-117 | scheduling (BE): 🔴 **LIVE MONEY** — atomic sale **stock-draw + block-at-0 + revenue in-tx** (income mirror of the freelance ceiling; replaces best-effort `void recordSale` for sellables; unlimited=null ceiling; cancel restores) | SPEC-034 | **TODO** (deps 116; careful pass) | Jason | TASK-116 |
+```

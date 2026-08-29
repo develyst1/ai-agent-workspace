@@ -150,3 +150,12 @@ one definition of "suspended", in `lib/suspend.ts` ✓ · tsc clean + `bun test`
 **TASK-058 → DONE. @Fern: TASK-059 unblocked** — the sale endpoints now return the suspension `400`, so the two
 sale modals need the `ApiClientError` → visible message treatment (the picker default change is already done
 server-side, so the FE only removes plumbing).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-058 | scheduling (BE): **sell-side suspend block** — a suspended household cannot BUY + retire the `bookable` flag (exclusion is now the default on `/students`) | SPEC-016 | ✅ **DONE** (Sober 2026-08-01 — renamed to one neutral `blockedBySuspension` (his call, better than my either/or); both sale gates verified **in-transaction, after `resolveStudentId`, before the revenue post** — `createVoucher` had **no gate at all**; **one** `SUSPENDED_MESSAGE` so a policy has one wording, and the booking text is byte-identical so REQ-019's acceptance doesn't regress; tsc 0 / **234 tests**) — ✅ **deploy order FREE** (he verified the old param is stripped, not rejected) | Jason | TASK-056 |
+```

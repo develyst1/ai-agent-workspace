@@ -48,3 +48,12 @@ tapped open from the LINE bot — like a Google Form, but simpler and prettier).
 - Store **date of birth** (derive age) — confirm.
 - Should the form also let the parent **enroll a course/voucher/trial**, or just the student profile for now?
   (Enrollment-via-LINE doesn't exist today — flag if wanted, likely a separate REQ.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| ~~REQ-012~~ | ~~Registration/profile form opened from LINE capturing demographics~~ | — | ⛔ **SUPERSEDED by REQ-019 (2026-07-30)** | Stakeholder redirected: instead of a LINE/LIFF form, **manage people (parents + students) on the frontoffice web** and capture the demographics there. The 4 new fields (gender/DOB/province/nationality) live on in **REQ-019**. File kept for history. |
+```

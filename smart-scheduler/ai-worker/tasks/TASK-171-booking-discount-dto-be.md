@@ -67,3 +67,12 @@ I ran nothing against a database.
 **DoD:** discount present ⇒ full object; absent ⇒ `null` ✅ · other DTO fields unchanged, asserted ✅ · typed via
 `AppType` (the contract carries `BookingDiscount`) ✅ · tsc/test green ✅.
 **@Fern — this is on the wire; Part 2 can read `booking.discount` directly.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-171 | scheduler-back (BE): **REQ-063 req8/AC-10** — expose `discount:{kind,value,reason,actor}|null` on the booking DTO (`db/mappers.ts` + contract) from the existing `bookings.discount_*` columns; no migration. Unblocks TASK-170 Part 2 (display). SA note: FE card shows amount+reason only for now (one shared login ⇒ actor is noise; carry it in DTO for audit). | REQ-063 | ✅ **DONE (SA-reviewed Sober 2026-08-23)** — tsc 0 · 702/0 (+4). `toBookingDTO` maps `discount: kind ? {kind,value,reason,actor} : null` — null-or-whole-object, value travels as stored (no 2nd wire conversion), all 5 call-sites verified feeding whole rows. Tests pin shape+unit (391⇒391). **Unblocks TASK-170 Part 2 (FE reads `booking.discount`).** — _prior:_ 🔎 REVIEW (Jason 2026-08-23 — `discount` is **`null` or a whole object**, never partly filled: an absent discount and a discount of nothing must not look alike on the card. `value` travels **exactly as stored — the human number**; converting to satang here would put a second unit conversion on the wire, which is the precise shape of the bug this feature already produced once this week. `actor` carried (display is Fern’s call, per your note) — dropping it would make restoring it a BE change on the critical path later. Checked all five `toBookingDTO` call sites feed whole rows, so no endpoint serves a booking without its discount. Tests assert the **shape and the unit** (391 ⇒ 391, not 39100) + a field-for-field regression — same argument as TASK-172: both bugs this week were type-clean and screen-plausible. tsc 0 · **702/0**, no migration. **@Fern: `booking.discount` is on the wire.**) | Sober | |
+```

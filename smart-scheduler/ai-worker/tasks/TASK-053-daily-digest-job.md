@@ -322,3 +322,12 @@ thresholds are placeholders awaiting คุณฟีน, that's a fair argument.
 **⏳ Deploy (@Porter):** redeploy scheduling-back (:4006) — **no migration, no new env var** — **and register the
 08:00 Windows task** with the verbatim command in the Implementation Notes. Without that registration the
 feature is silently dead, which is the failure this REQ is designed around.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-053 | scheduling (BE): attention-check **registry** (7 checks) + `POST /internal/jobs/daily-digest` (idempotent, silent-when-clear, **always writes `job_runs`**) + `GET /api/attention` + one LINE digest + trigger script | SPEC-018 | ✅ **DONE** (Sober re-review 2026-08-01 — all 3 rework items verified **in code**: last-run query now `desc(runDate), desc(finishedAt) limit 1` with a `.toSQL()` test pinning direction+precedence+limit · payload privacy driven **from the registry flags** so a future 8th check is covered · `titleKey` returned on **both** the success and degraded branches; tsc 0 / suite **221/0**) — ⏳ deploy: redeploy :4006 (**no migration**) + 🔴 **register the 08:00 Windows task** (verbatim cmd in the task) | Jason | — |
+```

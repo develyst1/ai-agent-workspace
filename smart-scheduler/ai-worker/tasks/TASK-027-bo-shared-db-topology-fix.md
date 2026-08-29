@@ -88,3 +88,12 @@ Verified the three parts of the fix:
   no `ops.*`). Route/service files left dormant (delete in a later cleanup). ✓
 App-boot + migration run are DB-runtime (brownfield) — the human/Porter staging step. No rework.
 **REQ-006 acceptance-fix complete — the shared-DB topology is now permanent in the repo.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-027 | backoffice-back: shared-DB topology fix (`bo` in `smart_scheduler`; migrate ops-optional; retire ops routes) | SPEC-006 | DONE | Jason | TASK-025 |
+```

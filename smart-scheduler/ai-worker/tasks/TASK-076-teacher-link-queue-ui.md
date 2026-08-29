@@ -157,3 +157,12 @@ and "say so and I'll compact the row" is the correct offer rather than pre-optim
 Backend alone means **nobody can link at all**. Smoke: claim a nickname → "sent to staff" and the teacher stays
 unlinked · approve → linked + they get the notice · **approve the same request twice → the second shows a clear
 refusal** · claim a shared nickname → one row, no teacher, both candidates · unlink → pushes stop.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-076 | scheduler-front (FE): teacher link approval queue — approve · pick-on-collision · reject · unlink | SPEC-023 | ✅ **DONE** (Sober 2026-08-01 — `disabled={collision && !picked}` with one `isCollision` definition; all three caches invalidated so the pending count can't disagree with the list just emptied. **She added a REAL second `ดิว` to the roster fixture** — *"a collision demoed against a fabricated candidate proves nothing"* — then verified approve granted the link to the teacher **she chose** (ณัฐวรรณ, not ธนพล). That single assertion is REQ-020's entire purpose. Also fixed the EN label for my 9th check, which was falling back to Thai; tsc 0 / build ok) — 🔴 **MUST SHIP WITH TASK-075** | Fern | TASK-075 |
+```

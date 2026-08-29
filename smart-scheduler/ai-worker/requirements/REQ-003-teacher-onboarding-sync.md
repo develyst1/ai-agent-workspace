@@ -99,3 +99,12 @@ teacher roster into the backoffice.)
   > `date >= today` and status NOT IN (CANCELLED, NO_SHOW) — i.e. PENDING/CONFIRMED/EXTENDED/SICK_LEAVE
   > in the future. Past + attended + cancelled are history and don't block (they're retained on archive).
   > (I'll pin the exact status set against the booking_status enum in the SPEC.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-003 | Unified teacher onboarding/offboarding — one action, auto-synced both systems | HIGH | ⏸️ **ON HOLD** | **Do NOT deploy** (built, but its backoffice sync is moot — backoffice is being torn down). Rework the teacher-management parts as standalone under a later REQ. |
+```

@@ -91,3 +91,12 @@ rows/filters/paging; `BookingsContent` just renders it, so no prop-drilling need
   retry-safe (`already_confirmed`, no error, no dup LINE — server-guaranteed) · no table regression · tsc + build clean.
 - **TASK-037 → DONE.** With TASK-036 (BE) DONE, **REQ-008 → SPEC_DONE** (→ @Porter for acceptance). Ships on the
   next deploy of **both** `smart-scheduler-back` (endpoint) + `smart-scheduler-front` (UI).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-037 | scheduler-front (FE): multi-select PENDING rows on `BookingsTable` + "Confirm selected" + result summary | SPEC-011 | ✅ **DONE** | Fern | TASK-036 |
+```

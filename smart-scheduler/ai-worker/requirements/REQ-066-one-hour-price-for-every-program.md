@@ -58,3 +58,12 @@ it to the customer. **Porter corrects the document and tells him.**
   product code** (`session-bike-skate`) for reporting? Porter's assumption is **yes — same price, different
   product**: a first visit and a repeat hour are different things commercially even at the same price, and REQ-014
   should be able to tell them apart. Say if that is wrong.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-066 | 🔴 **Every program has a 1-hour price (฿1,390)** — REQ-061's guard (Porter's wrong "no 1h price" inference) now BLOCKS legit single-session bookings on the blue block | 🔴 **HIGHEST (blocking live)** | 🔨 **TASK-174 cut → @Jason (Sober 2026-08-23).** One line: `bike-skate` gains `1: THB(1390)` (only bike-skate; the others keep their rates). `isSellable(bike-skate,1)`→true ⇒ REQ-061 guard stops firing (**KEPT, dormant** — still refuses NULL-price programs, AC-4); auto-defines `session-bike-skate`@1390. **Deploy: code → `sale:ensure-items` → verify, both boxes** (else booking OK but revenue silently unposted — the 08-22 hole). No migration, no FE. | @Sober + owner |
+```

@@ -42,3 +42,12 @@ ran the suite: **tsc 0 · 450/0**.
   carries `bookingType` so the FE can flag the extra on the course view.
 - Tests: extra leaves size/owed/end unchanged; its cancel doesn't re-owe; a real absence still re-owes with an extra
   present; full-course+extra still not `insertable`. **DONE — unblocks TASK-113. REQ-037 BE complete.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-112 | scheduling (BE): **REQ-037 extra paid session** — the `COURSE_PACKAGE` seam-keeper (`reconcileCoursePlan`/`planCourseMoves`/`courseCurrent` count only COURSE_PACKAGE) + `POST /courses/:id/extra-session` (SINGLE_SESSION, `courseId` soft-link; reuses availability/freelance/revenue) — size/owed/end unchanged, cancel doesn't re-owe | SPEC-033 | 🔎 **REVIEW** (Jason 2026-08-04 — tsc 0 · **450/0**, careful pass on the live engine. Seam-keeper built **into** the pure engine: `PlanSession.bookingType?` + `isCoursePlanRow` (absent/COURSE_PACKAGE→count, else ignore); `courseCurrent`/`planCourseMoves`/`canInsert` all filter it, so they self-defend regardless of caller. `reconcileCoursePlan` load now `WHERE bookingType='COURSE_PACKAGE'`; DTO/dry-run `deriveLiveEndDate` + insert-branch `canInsert` filtered too. `POST /courses/:id/extra-session` → `createBooking({SINGLE_SESSION, courseId, student from course})` (reuses insertBooking gates + freelance draw + day-end single-session revenue — no new mechanism). `toSessionRow` exposes `bookingType` so FE flags the extra. **"6 stays 6" re-verified:** all pre-existing `S()`-based plan tests (no bookingType) still green (back-compat); new tests: extra doesn't count, its cancel doesn't re-owe, doesn't mask a real absence, never makes a full course insertable) — ✅ **DONE** Sober 2026-08-04: careful pass — filter self-defends in the pure engine + the `reconcileCoursePlan:1325` load (both layers), one seam closes count + no-re-owe, invariant re-verified via unchanged legacy tests; tsc 0 · 450/0 run by me. **REQ-037 BE complete; unblocks TASK-113** | Jason | — |
+```

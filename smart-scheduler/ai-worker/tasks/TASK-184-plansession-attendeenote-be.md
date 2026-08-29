@@ -60,3 +60,12 @@ change beyond surfacing a column that already existed. ⚠️ I ran nothing agai
 **DoD:** `attendeeNote` reaches the plan (`?? null` when empty) ✅ · `toSessionRow` is typed to the DTO so it
 cannot silently drop a field again — **type, stated** ✅ · tsc/test ✅.
 **@Fern — the per-session half of TASK-179 is unblocked; the plan now returns `attendeeNote` on every session.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-184 | scheduler-back (BE): **REQ-068 unblock** — `toSessionRow` (`scheduler.service.ts`) is an untyped allow-list that never set `attendeeNote`, so the manage-course per-session editor could **save but not show** a note; carry the field + a structural guard so the next dropped field can't be silent. | SPEC-063 (REQ-068) | 🔎 **REVIEW** (Jason 2026-08-25 — **took the TYPE, not the test, and said why**: a round-trip test only covers the fields someone remembered to assert, and the next dropped field is by definition one nobody thought of — the annotation makes it a compile error for free and can't rot. New `PlanSessionRow` in the contract (named so, because `course-plan.ts` already owns `PlanSession` and two of them is its own trap); `toSessionRow`/`teacherRef`/`subjectRef` annotated to it. The test I did add covers the half a type **can't**: that the mapper actually READS the column instead of declaring the field and always filling `null` — which type-checks perfectly and is just as broken for the person using the editor. `studentRef` deliberately left alone (feeds several DTOs; pinning it here would be wrong). 📌 Flagged not fixed: `toSessionRow` returns `startTime` as stored `HH:mm:ss` while `toBookingDTO` formats `HH:mm` — predates this task, changing the wire format under Fern mid-task would be the wrong tidy. tsc 0 · **784/0** (+3), no migration. **@Fern: the per-session half of TASK-179 is unblocked.**) | Sober | — |
+```

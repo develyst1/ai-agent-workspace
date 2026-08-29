@@ -130,3 +130,12 @@ and **independently re-ran** the suite: `bun test` → **7 pass / 0 fail**; `bun
   (not a blocker for this task).
 
 No rework. TASK-002 and TASK-005 are unblocked.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-001 | ops: reversible P&L expense + allowNegative + freelance-budget item | SPEC-001 | DONE | Jason | — |
+```

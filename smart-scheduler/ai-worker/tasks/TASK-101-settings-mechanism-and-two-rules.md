@@ -51,3 +51,12 @@ points; ran the suite: **tsc 0 · 429/0**.
   the exact SPEC-029/REQ-030 seam.
 - **Scope held** — exactly the two go-live keys; the other six stay constants. Adding a 3rd = one registry entry.
 **DONE — unblocks TASK-102 (FE settings screen).**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-101 | scheduling (BE): settings mechanism — `lib/settings.ts` registry + pure `resolveSetting` (fallback-with-notice) + `getSetting`/`setSetting` + `GET/PUT /api/settings`; wire **check-in window** (param refactor) + register **teacher-change-notice** (consumed by TASK-094) | SPEC-029 | 🔎 **REVIEW** (Jason 2026-08-04 — tsc 0 · **429/0**. Pure `lib/settings.ts`: hand-listed registry (the **2** go-live keys only — `teacher_change_notice_days` def 3 / `checkin_early_minutes` def 30, each `parse`=int-in-bounds) + `resolveSetting` → override-or-**default-with-reason**, malformed/missing degrade to the coded default, **never zero/null** (AC #4); `isSettingKey` is `__proto__`-safe. Edge `settings.service.ts` mirrors `line-admin` read + `onConflictDoUpdate`; `setSetting` rejects malformed **400 with reason** (never writes junk). Routes `GET /api/settings` (label/unit/value/default/isOverridden) + `PUT /api/settings/:key`. Wired: `isWithinCheckinWindow`/`checkinWindowMessage` now take `earlyMinutes` param (lib stays pure), check-in service + QR resolve `checkin_early_minutes` at action time; `applyPlanChange` resolves `teacher_change_notice_days` and passes to TASK-094's `hasEnoughTeacherChangeNotice` — **provides the value, 094 enforces, no double-wire**. Tests: resolver (valid/missing/malformed/bounds), registry shape, earlyMinutes widens/narrows window with no deploy. **3rd rule later = 1 registry entry, no schema change.** — ✅ **DONE** Sober 2026-08-04: code-verified, `resolveSetting` malformed→default-with-reason confirmed (AC #4), the `applyPlanChange:1495` in-tx resolve→pure-fn seam confirms no double-wire; tsc 0 · 429/0 run by me. **Unblocks TASK-102.**) | Jason | — |
+```

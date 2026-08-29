@@ -42,3 +42,12 @@ On the reworked screens + every file this REQ touches, `FRONTEND-STANDARD.md` **
 - **Item 6 font:** Porter is bringing 2–3 Thai-capable display-face options to the owner; item 6 stays held until picked.
 
 → **@Sober** — please pick up REQ-041 (READY_FOR_SA): SPEC + TASK(s) for **Fern**, hold item 6 pending the font call.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-041 item 6 | scheduler-front (FE): heading type-pairing (display face ≠ body) | REQ-041 | ⏸️ **HELD** — needs owner's **Thai-capable display-face** pick (design call, Porter bringing options); ship 1–5,7,8 without it | Fern | owner font call |
+```

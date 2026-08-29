@@ -34,3 +34,12 @@ Part (a) (per-program course sizes) is already live; this is the voucher-exclusi
 - **`voucherAllowedGroups()` is derived** from `PRICE_GROUPS.filter(voucherAllowsProgram)` and exposed via
   `GET /sellable-packages` — the FE filters from one source, can't drift from the excluded set.
 - Already-sold vouchers untouched (only the new booking refused). **DONE — unblocks TASK-107 (FE picker).**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-106 | scheduling (BE): voucher **program exclusion** — `VOUCHER_EXCLUDED_GROUPS` (Onewheel + Balance Play) + pure `voucherAllowsProgram` in `lib/sale-items.ts`; enforce at booking (`VOUCHER_PROGRAM_EXCLUDED` + reason); expose the allowed set for FE | SPEC-030 | 🔎 **REVIEW** (Jason 2026-08-04 — tsc 0 · **440/0**. `VOUCHER_EXCLUDED_GROUPS = {onewheel, balance-private, balance-group}` + pure `voucherAllowsProgram(group)` (`!!group && !excluded`) + `voucherAllowedGroups()` in `lib/sale-items.ts`, unit-tested (excluded/allowed/null). Enforced in **`insertBooking`** — the single chokepoint every VOUCHER passes — `if bookingType==="VOUCHER" && !voucherAllowsProgram(resolvePriceGroup(subjectId))` → `conflict("VOUCHER_PROGRAM_EXCLUDED", …)`; null group refused via the same path (no 1st-Trial special case). Already-sold voucher hours untouched (AC #5 — only the new excluded booking is refused). Exposed `voucherAllowedGroups` on the `GET /sellable-packages` payload so FE filters from one source — ✅ **DONE** Sober 2026-08-04: code-verified, excluded set matches the card, null-group refused (1st Trial), enforced at the `insertBooking:761` chokepoint (better than my spec's `prepareVoucherBooking`), `voucherAllowedGroups` derived from `PRICE_GROUPS`; tsc 0 · 440/0 run by me. Unblocks TASK-107) | Jason | — |
+```

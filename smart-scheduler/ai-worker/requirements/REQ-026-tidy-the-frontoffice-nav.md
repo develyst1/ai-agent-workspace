@@ -83,3 +83,12 @@ Files: `components/partials/Dashboard/DashboardContent.tsx` (2 tables), `partial
 2. **Do the by-badge counts deserve to survive** into the merged Overview, or should they wait for REQ-021 to
    make badges trustworthy first? *(Porter's lean: wait. A filter by an imperfect tag is honest; a **count** by
    an imperfect tag is a wrong number that looks right.)*
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-026 | Nav tidy — four "statistics" menus is too many | MEDIUM | ✅ 🧪 **Stage 1 `TEST_PASSED` (Tanya, 2026-08-04)** on the deployed `sid` build: no bare "Dashboard" in the nav, and SOM dashboard · Needs attention · Daily report are all present and loading. Prior: **Stage 1 ✅ DONE 2026-08-01 · Stage 2 ⏸️ open question with the owner** | **Stage 1 (TASK-082 ✅):** the old Dashboard entry is hidden — **hidden, not deleted**, as a typed `HIDDEN_NAV_ITEMS` entry so it reverses in one line and stays type-checked. Porter checked the cost before proposing it: "by teacher" is already **duplicated and beaten** by the Daily report's workload section, and "by badge" is the only unique content but stands on the **parked** badge system whose report **silently drops untagged rows** — i.e. the screen is *what is duplicated* plus *what is not trustworthy*. **Stage 2 (merge to Overview / Today) is NOT started and must not be** — its shape is an open question with the owner. ⚠️ Worth recording: the honest answer to her *"why are they separate?"* is that **nobody decided they should be** — they were built at different times, and REQ-013 was specced as a new screen because that is how I wrote it. **She is the first person to look at all four together, on a deployed build** — which is the deploy-cadence argument, made by the product rather than by me. |
+```

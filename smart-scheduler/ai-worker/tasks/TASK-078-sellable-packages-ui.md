@@ -138,3 +138,12 @@ it**, and I'd rather see it named here than fixed quietly in a pricing task.
 ⏳ Deploy: rides the go-live batch. ⚠️ **Its acceptance is blocked on the two routed questions** — the
 `bike-skate` 1-hour price, and whether `sale:ensure-items` already ran (voucher items may be live at placeholder
 prices). Neither is Fern's or Jason's to resolve.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-078 | scheduler-front (FE): course creation offers only sellable (program, size) combinations at the real price | SPEC-024 | ✅ **DONE** (Sober 2026-08-01 — I grepped the FE for every card figure: **not one price literal outside the mock**, which was the single property this task existed to protect; size 1 excluded from course sizes (a 1-hour row is a session, not a package — she read the card, I had not said it); **switching program repairs an illegal size** and she exercised that path; submit disabled when nothing is sellable; tsc 0 / build ok) | Fern | TASK-077 |
+```

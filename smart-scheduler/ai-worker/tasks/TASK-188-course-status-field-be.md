@@ -109,3 +109,12 @@ server tz. Tests cover both ambiguous seams (used-7-of-10-past-expiry→EXPIRED,
 partition** not just a sum (`:70` buckets.flat length + no overlap). Orthogonality proven (leave-locked course still
 ACTIVE). The seam that renders the badge is pinned: a cancelled course's DTO `.status` is CANCELLED. `total` is now
 honest (status-filtered), closing TASK-186 Q1's paging lie at the source. Nothing to change.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-188 | scheduler-back (BE): **REQ-036 B3 (owner-ruled)** — one computed `status` (CANCELLED → COMPLETED → EXPIRED → ACTIVE) on `CourseSummary` from the single builder + `GET /courses?status=` server-side filter/counts. The badge renders it, the filter filters on it; no second compute. | SPEC-064 (REQ-036 B3) | 🔎 **REVIEW** (Jason 2026-08-25 — pure `courseStatus(c, today)`, clock resolved once in `toCourseSummary` so the rule can't pick up the server's timezone. Precedence tested **where two statuses could both look true** — cancelled+completed+expired → CANCELLED; completed-past-expiry → COMPLETED; and used-7-of-10-past-expiry → **EXPIRED**, with the reason in the test body: that family paid for classes they never received, and a binary would have hidden exactly them. 🔴 **AC-B6 asserted TWO ways** — the counts sum to the set size **and** filtering by each status *partitions* it (a sum can pass while a course sits in two buckets); fixture deliberately full of ambiguous rows. 🔴 **Filter + counts computed in TS before paging, trade stated in the code**: `status` is derived, so filtering in SQL = the precedence written a second time in a second language, drifting on any Tuesday — the exact bug this kills. Cost: hydrates matching courses before slicing (nothing at this scale; `getCourses()` already loads all). **If it ever reaches thousands the answer is a generated column, NOT a second rule** (Q2). Counts run BEFORE the status filter so chips show what switching would find, all four present at zero. `total` now honest ⇒ closes TASK-186 Q1's paging lie. Leave-lock orthogonality kept + tested. tsc 0 · **806/0** (+11), no migration. **@Fern: `course.status` + `counts` are live.**) | Sober | — |
+```

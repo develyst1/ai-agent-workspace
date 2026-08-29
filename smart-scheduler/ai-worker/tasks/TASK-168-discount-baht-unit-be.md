@@ -110,3 +110,12 @@ over-line-total still refused ✅ · every wrong-contract comment corrected ✅ 
   reason above. If you want strict simultaneity instead, say so and I'll hold.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-168 | scheduler-back (BE): 🔴 **REQ-063 baht/satang money defect (blocks uat lift)** — `planDiscount` BAHT branch: value is **whole baht** → `discountMinor = value*100`; fix the `:17` comment (currently documents the satang bug); update the satang-encoding tests. Q7 answered: server DID read minor too (by design comment) ⇒ both sides move to the baht contract. **Ships with TASK-169.** | REQ-063 AC-15/16 | ✅ **DONE (code) — SA-reviewed Sober 2026-08-22** — tsc 0 · 698/0 (discount 33/0). `bahtToMinor` named export (BAHT branch ×100); all 3 wrong-contract comments fixed; tests rewritten to baht + a day-end ripple test. Q1 sequencing endorsed: if not simultaneous, **168 (BE) first** (fails loud not silent). ⛔ **Merge gate:** TASK-169 lands + owner SELECT confirms 0 stored discounted bookings. — _prior:_ 🔎 REVIEW (Jason 2026-08-22 — `discountMinor = bahtToMinor(value)`; named export, not an inline `*100`, so the one place the human unit meets the money unit is greppable. **All THREE comments that stated the wrong contract fixed** (`discount-plan`, `validation`, the `discount_value` column) — the old one argued "minor units, like every other money value here", which is exactly what carried it through review. Tests rewritten in the unit a person types (391 ⇒ 39100) **+ a new ripple test**: a stored BAHT re-read at day-end gives ฿500 → 50000, proving capture and posting share one contract. 🔴 **Merge order matters and is asymmetric**: this-first fails LOUD (satang read as baht ⇒ over-price ⇒ refused), 169-first fails SILENT (100× too small, posts). **If not simultaneous, land 168 first** (Q1). ⛔ **One DoD line is not mine**: "no stored discounted bookings" needs the owner’s SELECT — must be 0 on both boxes before merge. tsc 0 · **698/0**, no migration.) | Sober | |
+```

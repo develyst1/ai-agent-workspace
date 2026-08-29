@@ -56,3 +56,12 @@ console.log(`   pg_restore --clean --if-exists -d "$DATABASE_URL" ${file}`);
 - [ ] `bunx tsc --noEmit` clean. (No unit test — it shells out to `pg_dump`; the guard is the non-zero exit.)
 - [ ] Runbook note: **`pg_dump` must be on the owner's PATH** (Postgres client tools). I'll add this precondition to
       GATE 0.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-126 | scheduling (BE): `db:backup` script — `scripts/backup.ts` + `"db:backup"` (reads `DATABASE_URL` from `.env`, `pg_dump -Fc -f`, non-zero on fail/empty, prints path+size+restore cmd) for prod-deploy GATE 0 | prod runbook | ✅ **DONE** (SA-reviewed 2026-08-11 — tsc 0 reproduced; all guards present per spec, Windows-safe ISO stamp, no false-positive on failure. **GATE 0 unblocked → owner runs `bun run db:backup`.**) · (Jason 2026-08-10 — `scripts/backup.ts` created verbatim from the task spec + `"db:backup": "bun run scripts/backup.ts"` added beside the other `db:*`. Reads `DATABASE_URL` from bun-loaded `.env` (no hand-pasted conn), Windows-safe ISO timestamp (`toISOString().replace(/[:.]/g,"-")` — no shell `date`), `pg_dump -Fc -f` (pg_dump owns the file → no false-positive partial on `>`), exits non-zero on no-URL / pg_dump-missing-or-fail / 0-byte, prints path+size+`pg_restore` cmd. tsc 0. **Not executed** — it connects to a real DB (brownfield); guard paths verified by inspection, DoD says no unit test. Precondition: `pg_dump` on PATH — in your GATE 0.) | Jason | — |
+```

@@ -151,3 +151,12 @@ two empty states stay distinct.
 ⏳ **Deploy + acceptance note for @Porter:** the fix stops *new* wrong data. **It does not repair the voucher
 bookings already written** with a program chosen by array position — that's the item I asked you to put to the
 owner, and it's now the only part of REQ-029 that isn't closed.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-089 | scheduler-front (FE): 🔴 **voucher program is now CHOSEN, not guessed** + search on both eligible pickers | SPEC-026 | ✅ **DONE** (Sober 2026-08-02 — grep-verified: **`slotSubjectId` is gone from the codebase**, every surviving `subjectOptions[0]` is a `length===1` preselect that still lands as a choice ⇒ **the guess has no form left to regress to**. She proved it the only way that proves anything: **deliberately picked index 2** (Onewheel, on a teacher whose index 0 was Bike) and read the saved booking back — picking index 0 would have passed every check and proved nothing. Also removed the **Course** branch's `?? slotSubjectId` third-choice default, which my instruction covered and my task failed to name; tsc 0 / build ok) | Fern | TASK-088 |
+```

@@ -62,3 +62,12 @@ for this task.
 and `getCalendar` maps every cell through `toBookingDTO`, so both grids already receive `student.nickname`. The gap is the
 FE flatten dropping it (`smart-scheduler-front/src/lib/api/mappers.ts:13`) → moved into TASK-142. `bun test` 493/0 (unchanged).
 Correctly refused to make the shared `nickname` mirror `name` (would destroy the null signal). DONE.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-141 | scheduler-back (BE): add `nickname` to the Booking DTO (mapper joins `students.nickname`; no schema change) | SPEC-046 (REQ-052) | ✅ **DONE — no BE change, verified (SA-reviewed Sober 2026-08-17)** · the FE nickname wiring folds into TASK-142 (`api/mappers.ts:13` + render `nickname||studentName`); kept `StudentRef.nickname` nullable (preserves the no-nickname signal). · _prior:_ 🟢 REVIEW — no BE change needed (Jason 2026-08-17 — verified, not added: `studentRef()` already emits `nickname`, `BookingDTO.student.nickname` is already in `contract.ts`, and **`getCalendar` maps every cell through the full `toBookingDTO`**, so both grids already receive it. The gap is **FE-only**: `front/src/lib/api/mappers.ts:13` flattens `studentName: dto.student.name` and drops nickname → a TASK-142 line. Did NOT make `nickname` fall back to `name` — that field is shared by every student-bearing DTO and the fallback belongs at the render site. Q1 for @Sober.) | Jason | — |
+```

@@ -142,3 +142,12 @@ tests added ✓.
   `publishRichMenus` · **(3)** redeploy scheduling-back (:4006) · **(4)** OA smoke: tap check-in/leave/children,
   the booking picker, language toggle (replies + menu flip to EN, persisted), and confirm the old keywords +
   `/checkin?token=` still work.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-039 | LINE (BE): bilingual TH/EN — `line-i18n` layer + per-user `lang` (default TH, seeded) + toggle + EN menu | SPEC-012 | ✅ **DONE** | Jason | TASK-038 |
+```

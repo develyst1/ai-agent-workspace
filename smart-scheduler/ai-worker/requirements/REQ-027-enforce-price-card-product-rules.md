@@ -74,3 +74,12 @@ Goal: **the system knows what the school sells, and refuses the rest.**
    and books Onewheel — refuse, or honour it as a grandfathered case? *(Porter's lean: refuse, with a clear
    message. The exclusion is printed on the card they bought, so it was never a promise we made — and a silent
    exception is how a rule stops being a rule.)*
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-027 | Enforce the price card's product rules — packages a program doesn't offer, and voucher exclusions | **HIGH** | **SPEC_DONE — `SPEC-030`; part (a) LIVE, part (b) specced → TASK-106/107 cut** (Sober 2026-08-03: voucher-exclusion = data `VOUCHER_EXCLUDED_GROUPS` next to the card + pure `voucherAllowsProgram` + enforce at booking `VOUCHER_PROGRAM_EXCLUDED`; grandfathered vouchers → REFUSE; `1st Trial` refused via the null-group path). REQ closeable when (b) ships. @Jason — TASK-106 startable. Prior: | **@Sober — (SPEC-030 done).** 🔴 **NEVER ROUTED UNTIL NOW — my board failure, caught by @Tanya**, which is why the backlog looked empty. Owner approved both rules 2026-08-01 (*"เอา"*). (a) A program may only be sold sizes it offers: **Onewheel has NO 10 h**, **Balance Play has NO 4 h** — the system offers 4/6/10 to everything, so staff can sell a package that does not exist. (b) **A voucher may not be spent on Onewheel or Balance Play** (printed on the voucher card); nothing stops it today. Server-side + a visible reason (the REQ-019 rule: a rejection with no message is a dead button). 🔗 **Do this WITH per-program pricing** — once a code is `course-{program}-{size}`, "which sizes exist" is "which codes exist" and the rule largely falls out. Split them and the item model gets touched twice. **🧪 QA intel for @Sober's spec (Tanya, 2026-08-02, TEST-027):** part **(a) is ALREADY enforced on `sid`** — it arrived with TASK-077/migrations 0016-0017. I verified server-side: `POST /courses` Onewheel-10 → 400 "ไม่มีแพ็กเกจ 10 ชั่วโมง", Balance-Private-4 → 400, and an allowed combo passes the same gate (no residue — all rejected pre-tx/rolled back). Migration clean: 8/8 named subjects priced, only `1st Trial` unpriced (likely by design). So the spec may only need part **(b)** the voucher exclusion (unbuilt). |
+```

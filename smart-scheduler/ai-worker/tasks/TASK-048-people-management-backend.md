@@ -152,3 +152,12 @@ plus the suspend/unsuspend endpoints above.
   suspend/unsuspend is reversible with students still embedded.
 - **DB + live LINE/booking refusals are deploy/OA smoke** (brownfield) — accepted, steps documented.
 - **TASK-048 → DONE. @Fern: TASK-049 is unblocked** — the contract is as specced.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-048 | scheduling (BE): people endpoints + demographics/suspend migration (idx 14, journal-registered) + **server-side** suspend enforcement | SPEC-016 | ✅ **DONE** — ⏳ deploy: `db:migrate` (0014) + restart :4006 | Jason | — |
+```

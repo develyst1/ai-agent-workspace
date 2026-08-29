@@ -97,3 +97,12 @@ do NOT guess or decide it yourself.)
 
 **Until #1–#5 are answered, this stays a spec, not a build** — the answers decide the enum's behaviour, the migration,
 and whether it's a revenue path (which we never guess). SA will cut BE+FE tasks once the owner responds.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-005 | Standalone teacher management (rework REQ-003 minus ops sync) | **HIGH** | ✅ **DELIVERED** | **Live acceptance PASSED 2026-07-28** (stakeholder ran, Porter verified): teacher **archive** + **switch active/inactive** now return **200** (were 502/500); create/edit/reactivate OK. SPEC-007 / TASK-029 DONE & Sober-verified, deployed — teacher management is standalone (ops teacher-sync removed; availability routing fixed). |
+```

@@ -146,3 +146,12 @@ stub too — you closed the gap between the test passing and the test meaning so
 is **cross-file** and only appears in a full run.
 
 **TASK-072 → DONE.** No production code changed, no new dependencies.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-072 | scheduling (BE): replace the leaky whole-module test stubs | — | ✅ **DONE** (Sober 2026-08-01 — **`mock.module` grep-verified at zero call sites**; **all three** stubs converted, not just the one named (`calendar` had 3 stubbed names where the tests reach **1** — the pathology in miniature); he **probed the fallback first** (`spyOn` works on an ESM namespace, so no DI needed) rather than assuming; the isolation test asserts the imports are **real implementations**, since *"it imported fine"* would be true of a stub too; +1 unasked guard on `PATCH /teachers/:id` because **"literals win" and ":id is broken" look identical from the literal side**; tsc 0 / **341 tests**). He also held it correctly through several idle turns: *"BE's queue being clear isn't the same as the queue being clear"* | Jason | — |
+```

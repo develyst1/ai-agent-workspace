@@ -44,3 +44,12 @@ Repo: `smart-scheduler-front`. Built on TASK-112's DONE endpoint + TASK-099's pl
   change size/end) beside the no-charge quota "Insert". SINGLE_SESSION rows carry a **"คาบพิเศษ" badge** and hide
   mark-absence (they're not plan rows — consistent with TASK-112's engine filter). Refusals show the server reason.
 - Reflow-safe (`Group wrap="wrap"`); no new measured shared-row control. **DONE — REQ-037 complete (BE+FE).**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-113 | scheduler-front (FE): visibly-separate "Add extra session (charged)" action on the plan surface (vs "Insert"); reuses the availability picker | SPEC-033 | ✅ **DONE (SA-reviewed Sober 2026-08-04; label flipped 08-22)** — the task's `## Review` verdict was written 08-04; only the label lagged. Re-confirmed 08-22: front tsc 0, feature present. (Fern 2026-08-04 — `useAddExtraSession` + a grape "เพิ่มคาบ (คิดเงิน)" action beside Insert (Ticket icon + hint), reuses `SessionEditor`; `SINGLE_SESSION` rows get an "คาบพิเศษ" badge + no mark-absence; refusals inline; tsc 0 / build 0) — ✅ **DONE** Sober 2026-08-04: code-verified, visibly separate from Insert, extra badged + no mark-absence, `addExtraSession`→the 112 endpoint; tsc 0 run by me. **REQ-037 complete (BE+FE)** | Fern | TASK-112, TASK-099 |
+```

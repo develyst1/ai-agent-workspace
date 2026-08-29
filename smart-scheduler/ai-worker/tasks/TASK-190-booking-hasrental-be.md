@@ -93,3 +93,12 @@ presence check.
 ⚠️ **@Fern — the FE half is still not done:** `smart-scheduler-front/src/types/app/scheduler/index.ts`
 `Booking` has no `hasRental`, so its mapper can't carry one. Add it **required** (like `nickname`) and
 TASK-187's guard forces the mapper to set it. TASK-194 is unblocked on the BE side as of now.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-190 | scheduler-back (BE): **REQ-052** — `hasRental` on the booking DTO so the calendar cell's 5th toggle item (rental) has data; batched over the range, no N+1. | SPEC-045 (REQ-052) | 🔎 **REVIEW — rebuilt 2026-08-28** (the lone BE casualty of the branch crisis; restored on `develop` exactly as reviewed, tsc 0 · **831/0**. _Original notes:_ (Jason 2026-08-25 — `bookingsWithRentals(ids)` returns a Set, resolved **before** the mapping loop; a test asserts the **ordering**, not just the call — "batched" is an ordering property and a helper called inside a loop would pass a presence check. 🔴 **A rental is identified by its PRODUCT CODE, not the movement's reason**: every sale posts `reason = "SALE"`, so matching on reason would mark **every sold course** as rented; the join is `bo.item.external_ref ∈ RENTAL_CODES`, straight from `sale-items.ts`, so a fifth code needs no second list. **Presence only** — no code/hours/amount on a booking (the ledger owns that; a second home drifts), asserted by a test that no `rental*` field leaks. All four read paths (calendar · paged list · single · check-in) use the one helper, so it can't be right in one place and wrong in another; course-creation keeps the `false` default **by construction** (the rows don't exist until its tx returns), with the reason in the code. 📌 **TASK-184's guard bit its own author**: I mis-anchored the contract field onto `PlanSessionRow` and tsc failed instantly — pre-184 that compiles and ships. tsc 0 · **814/0** (+8), no migration. ⚠️ **@Fern: the FE `Booking` type has NO `hasRental`** — add it **required** (like `nickname`) so TASK-187's guard forces the mapper; the cell stays inert until then.) | Sober | — |
+```

@@ -74,3 +74,12 @@ only when `metadata` is provided (editing `monthlyBudgetMinor` keeps `kind` — 
 tests); identity/classification fields are not accepted; empty-patch guard avoids a drizzle error. The
 "budget edit takes effect at next reset, not current remaining" note is correctly surfaced for TASK-010.
 DB round-trip verified by inspection (brownfield) — accepted. No rework. **TASK-010 unblocked.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-009 | ops: PATCH /catalog/items/:id (edit item) | SPEC-001 | DONE | Jason | TASK-001 |
+```

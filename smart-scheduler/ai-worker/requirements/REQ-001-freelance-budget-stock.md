@@ -176,3 +176,12 @@ The system must:
   > **answer (Porter, 2026-07-20):** Confirmed — monthly reset overwrites to the
   > base budget; mid-month top-ups do NOT carry into next month (each month starts
   > clean at the configured amount).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-001 | Freelance pay as monthly budget-stock + auto-disable at cap | HIGH | ✅ **DELIVERED** | Live & confirmed by คุณฟีน 2026-07-20 (freelance cap shows on frontoffice; budgets/salaries/P&L working). **Remaining ops (non-blocking):** register 2 scheduled tasks + swap placeholder→real numbers. |
+```

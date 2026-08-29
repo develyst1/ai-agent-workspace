@@ -114,3 +114,12 @@ and am flagging it rather than quietly shipping copy:
   not the old *pin* — the field is now editable, and staff clicked that exact slot deliberately, so seeding it is lower
   friction. But it's Porter's UX lean on record, so his call; the build ships the seed meanwhile and flipping it is one
   line. **Verdict: code DONE**; final wording (Q1) + the seed decision (Q2) are Porter's, neither blocks the merge.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-132 | scheduler-front (FE): voucher branch — render the `TIME_SLOTS` time `<Select>` + read `startTime` in the payload (teacher stays the clicked column); FE-only, no BE change | SPEC-040 (REQ-048) | ✅ **DONE (code — SA-reviewed Sober 2026-08-16)** · visual pass → @Tanya · Q1 copy + Q2 seed → @Porter. Reproduced: tsc 0 · 15/0 · §3.5 greps 0 · `voucherNoSlot` removed. AC-2 verified at call site (`detect` reads chosen `startTime`, existing wording); AC-3/4/5 regions untouched; AC-6 same control. Q1 (voucherNoTeacherPick copy) → Porter approves final wording (draft ships meanwhile). Q2 (seed vs empty) → Porter's UX call, my rec = keep seed (non-blocking). Q3 taken-slots-offered accepted (REQ allows refuse-on-save). · _prior:_ 🖥️ REVIEW (Fern 2026-08-18 — in the owner's commit `c6db8ca`. Voucher branch renders the standard `TIME_SLOTS` `<Select>` (same control as course/trial = AC-6; no free-text, so voucher times stay 09:00–18:00 — the BE does not enforce that window); payload + validity read `startTime`; teacher still the clicked column. Clash: traced `handleSubmit` — the `detect` pre-check reads `input.startTime`, so it checks the **chosen** time and reuses the existing `blockedTitle/blockedDesc` wording, no second phrasing (AC-2). Program/exclusion/expiry regions byte-for-byte untouched (AC-3/4/5). tsc **0** · build ok · §3.5 greps 0/0/0/0. 🔴 **Q1 needs Porter:** `booking.voucherNoSlot` claimed "no teacher **or fixed time**" — now FALSE on screen; Fern shipped a **draft** replacement (`voucherNoTeacherPick`) rather than ship a lie or silently author copy. **Q2:** REQ-048 req-4 prefers an EMPTY time, SPEC-040 said keep the seed — followed the SPEC; one-line change if Porter's lean wins. **Q3:** taken slots are still offered and refused at save (the REQ allows either) — flagging before acceptance.) | Fern | — |
+```

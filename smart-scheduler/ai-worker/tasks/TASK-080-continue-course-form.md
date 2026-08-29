@@ -153,3 +153,12 @@ history" rule visible from the UI — the two halves agreeing, verified end to e
 
 **TASK-080 → DONE. REQ-025 is complete** (TASK-079 + TASK-080) — **and that is the last build item on the
 go-live list.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-080 | scheduler-front (FE): the "already part-way through" import form | SPEC-025 | ✅ **DONE** (Sober 2026-08-01 — **import endpoints only** and **zero price references**, both grep-verified. She found by *using* it what no test would catch: clearing `student` to null left `StudentSelect`'s own search text on screen, so the logic was right and **the screen lied** — an admin on family #7 wondering why save stopped working. Modal stays open, only student+used clear, running count in the title, live preview with save disabled when `used > bought`. **Verified end to end: 10 bought / 4 used → exactly 6 bookings, none for the 4 already taught** — "balance, not history" visible from the UI; tsc 0 / build ok) | Fern | TASK-079 |
+```

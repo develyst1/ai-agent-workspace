@@ -104,3 +104,12 @@ re-runnable ✓ · tsc clean + `bun test` green ✓ · deploy usage documented �
 - **Success path (real publish) is OA-runtime** — correctly left to the deploy step; re-runnable for the
   artwork tweak round.
 - **TASK-040 → DONE.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-040 | LINE (BE): re-runnable `bun run line:publish-menus` setup command (validates token + 4 images, prints ids) | SPEC-012 | ✅ **DONE** | Jason | — |
+```

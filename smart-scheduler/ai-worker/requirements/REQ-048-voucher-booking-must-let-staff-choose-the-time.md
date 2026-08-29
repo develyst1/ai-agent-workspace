@@ -63,3 +63,12 @@ the tab.
   standard slot times? Porter's lean: the same rule the Trial/Single tabs already use — one availability rule for
   the whole screen, not a per-tab dialect.
   > answer: _pending_
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-048 | Booking a **voucher** session must let staff choose the TIME — it is pinned to 09:00 today | 🔴 **HIGH** | **TASK-132 code DONE (SA-reviewed) → @Tanya visual pass to close (Sober 2026-08-16)** — Q1 answered: **not hardcoded** — the voucher branch simply doesn't render the time `<Select>` the other tabs have; `startTime` is wired to the clicked cell. **FE-only** (BE already accepts any in-schema time for a voucher). Fix = render the existing `TIME_SLOTS` Select in the voucher branch + read `startTime` in the payload; teacher stays the clicked column (domain rule). REQ-029/027/expiry preserved as ACs. — _prior:_ **@Sober — please pick up REQ-048.** A voucher is precisely the product a family uses *whenever they can come*, and it is the least flexible tab on the screen. Regressions written in as ACs: REQ-029 program choice, REQ-027 voucher exclusions, remaining/expiry. **Q1 to SA:** is 09:00 a hardcoded default, or does the tab simply not render the time control the other tabs have? Porter wants that in writing either way — "it was hardcoded" is worth knowing before we trust similar defaults elsewhere on this modal. **Third REQ on the same FE surface** (with REQ-043/044) — sequencing is Sober's call, not Porter's. |
+```

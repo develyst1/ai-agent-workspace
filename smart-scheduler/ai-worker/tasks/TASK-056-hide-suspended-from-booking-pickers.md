@@ -134,3 +134,12 @@ student table grows a lot.
 **⏳ Small FE follow-up (mine to raise, not his):** the booking picker must actually pass `bookable=true`, or
 the Trial/Single tabs still list suspended households. Raised as **TASK-057** for @Fern. Note `/students/eligible`
 already filters unconditionally, so the **Course and Voucher tabs are correct with no FE change at all**.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-056 | scheduling (BE): 🔴 **REQ-019 acceptance blocker** — hide a suspended household's students from the **booking** pickers (`/students/eligible` unconditionally + opt-in `bookable=true` on `/students`, so the course/voucher **sale** screens are untouched) | SPEC-016 | ✅ **DONE** (Sober 2026-08-01 — one rule via `lib/suspend.ts`; the exclusion-set `innerJoin` keeps walk-in students visible **by construction** and dodges the `NOT IN` + SQL-NULL trap that would have deleted the whole walk-in cohort; empty-set case handled; flag contract tested incl. `bookable=yes` rejected; tsc 0 / **232 tests**) | Jason | TASK-048 |
+```

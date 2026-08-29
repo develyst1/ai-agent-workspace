@@ -88,3 +88,12 @@ notes they actually needed go unread too.)*
 **Still open: Q3 (to SA — is `bookings.note` already occupied?)** — that one is a code question, not the owner's.
 **Q6 on REQ-052 (does the toggle cover the day view too) is unanswered and non-blocking**; Porter proceeds on
 **both views, one control**, and will change it on one word.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-068 | 📝 **A note on the session** — staff need somewhere to write what happened in a class (owner, 2026-08-23) | MEDIUM | ✅ **DELIVERED 2026-08-25** — session note live on `uat` (`attendee_note`, migration `0022`) and verified on the customer's own calendar. 🔴 Open follow-up: the **display toggle does not re-render** when ticked — the content is correct, it just does not redraw. Normal priority; no data and no money affected. _Prior:_ 🔨 **READY_FOR_SA — bundled with REQ-052 into one re-cut of TASK-142 (Porter 2026-08-23).** Scope SHRANK after the owner answered **Q1 and Q2 both "ไม่"**: no history/audit trail, no per-note visibility rules — one note on the session, that is all. Requirement: `requirements/REQ-068-session-note.md`; the collision write-up is in `log/2026-08-23.md`. **Build the cell once — program + booking type + display toggle + note — not three passes over the same component.** | **@Sober** — re-spec TASK-142 |
+```

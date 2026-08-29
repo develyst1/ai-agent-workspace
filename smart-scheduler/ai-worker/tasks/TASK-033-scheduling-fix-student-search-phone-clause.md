@@ -92,3 +92,12 @@ normal list (unchanged) ✓ · unit test added (builder) ✓ · tsc + `bun test`
 - **TASK-033 → DONE.** REQ-011's only task → **REQ-011 → SPEC_DONE** (→ @Porter for acceptance). Deploy smoke:
   type a name in the New-Booking student picker → the list filters (not the whole roster); type a phone
   fragment → matches by phone. No FE change (FE was correct).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-033 | scheduling: fix student search — phone `ilike` only when the query has digits (non-numeric q was matching all) | SPEC-009 | ✅ **DONE** | Jason | — |
+```

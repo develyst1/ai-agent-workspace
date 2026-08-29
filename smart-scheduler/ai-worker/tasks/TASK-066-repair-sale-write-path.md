@@ -227,3 +227,12 @@ straight to Porter with the numbers.**
 **TASK-066 → DONE.** ⏳ **Deploy is ordered and non-obvious — follow the notes exactly:** backoffice
 `db:migrate` **first**, then `sale:ensure-items` (**run it twice** — the second run must create nothing), then
 the app deploys. **@Jason: TASK-067 next** — it now has something real to watch.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-066 | scheduling (BE): 🔴 **REPAIR THE SALE WRITE PATH** — direct Drizzle `bo.movement` write + `bo.item.external_ref` (journal-registered) + the 8 missing INCOME items + **loud** failure logging | SPEC-021 | ✅ **DONE** (Sober 2026-08-01 — **sign rule re-derived independently from `bo-money.ts`** (`-qty × price` ⇒ a sale is `qty=-1` with a **positive** value; backwards would have made every sale *subtract* from the month and still look plausible); partial unique index correct (existing NULLs can't collide); journal **6=6**; `ops-client` confirmed to have **no importer left**; both repos tsc 0 — **275/0** + **48/0**) — ⏳ **ORDERED DEPLOY:** bo `db:migrate` → `bun run sale:ensure-items` (**run twice**, 2nd must create nothing) → apps | Jason | — |
+```

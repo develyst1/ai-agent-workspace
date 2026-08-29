@@ -97,3 +97,12 @@ single-session confirm notifies the parent ✅ · unlinked ⇒ SKIPPED + reporte
   > **Q2 — same payload, accept.** For a course summary the parent and teacher genuinely need the same facts (child ·
   > program · slot · leave dates). One payload, not a second voice invented by us. Parent-specific wording = a second
   > template; hold it until the owner reads this one on a phone (the TASK-206 unseen-message flag stands).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-207 | scheduler-back (BE): **REQ-072 part 3A** — on confirm (whole-course **and** single-session), notify the **parent** as well as the teacher; one message per PERSON; unlinked parents ⇒ SKIPPED + counted. | SPEC-066 (REQ-072) | 🔎 **REVIEW** (Jason 2026-08-28 — course confirm = **two enqueues, one per person, both outside the loop**; the payload is built **once** and handed to both, because two literals are two places to update and one would be missed — which is how a parent ends up reading a different schedule from the teacher. The old "exactly one enqueue" test now asserts **exactly two**, still outside the loop, so the count can never grow with the session count. Unlinked parent = **reported fact, not an error**: `enqueueLine` already SKIPs a null recipient, and the response now carries `parentLinked`/`parentNotified` so "we told the parent" is **checkable, not assumed**. Single-session confirm notifies the parent too, **inside the `confirm` branch only** — a cancel or a leave must not start messaging parents (that would be a different feature decided by me); test asserts the parent row is absent from `attend`. 🔴 **Q1 — the bulk-confirm fan-out, flagged not fixed and not ignored**: `bulkConfirm` loops the single path, so 10 sessions now = 10+10 messages. The fan-out is **pre-existing** (it already sent 10 to the teacher) and this doubles it; suppressing it changes **existing teacher behaviour**, which is a product call. My preference: **point the FE at `confirmCourse`** (already the one-per-person path). Documented at the call site with a test that the comment stays. Q2: parent gets the same payload — for a course summary the information genuinely is the same; a parent voice would be a second template, and I'd rather the owner saw this one on a phone first. tsc 0 · **878/0**, no migration. ⛔ outbox counts on `sid` remain the owner/Tanya outcome check.) | Sober | — |
+```

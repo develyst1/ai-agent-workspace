@@ -115,3 +115,12 @@ is a DB assertion I can't make from here; both halves are pinned in isolation.
   for human handling**, say which — it is a small branch either way.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-162 | scheduler-back (BE): **REQ-063 DAY-END moment** — 1st Trial · single session. Additive nullable `public.bookings` discount cols (kind/value/reason/actor); capture+validate (`planDiscount`) at booking (admin present); **post at day-end** (`jobs.service.ts:99`) — sale unchanged + discount movement (same item/refId, reason DISCOUNT, stored actor/reason, idem `discount:{refId}`); reverse both by refId after day-end. Shares `planDiscount` w/ TASK-160. Depends TASK-159. | SPEC-059 (REQ-063) | ✅ **DONE (SA-reviewed Sober 2026-08-22)** — reproduced tsc 0 · **663/0** (+5). `0020` (4 nullable `bookings.discount_*` + CHECK on kind, witness=CHECK); capture via shared `planDiscount` before the row exists (COURSE/VOUCHER on booking-path refused w/ pointer); **day-end re-validation `safeStoredDiscount`** (unprompted, correct — catalogue can move between capture & post) drops+full-price rather than posting negative. **Q1 ruling: drop is right (not clamp/skip); but console.error is invisible here → cut TASK-163** to surface the drop on the attention panel (the booking keeps `discount_*` while its sale has no DISCOUNT movement = queryable trace). Non-blocking. — _prior:_ 🔎 REVIEW (Jason 2026-08-22 — `0020` adds 4 nullable booking columns **+ a CHECK on `discount_kind`** (witness = the CHECK: last object, only exists once every column landed). Capture at booking via the **same `planDiscount`** as at-sale, before the row exists; a discount on a COURSE/VOUCHER booking is refused with a pointer to the at-sale path. 🔴 **Added a posting-time re-validation the task did not ask for**: capture and day-end are hours apart and the catalogue can move (REQ-061 moved a price today) — a stored ฿ amount could exceed a since-reduced price, so `safeStoredDiscount` re-runs the rule and **drops with a loud log** rather than posting a negative bigger than the sale. Drop-not-refuse is deliberate here: the session happened. Q1 asks you to ratify that choice. tsc 0 · **663/0**. ⚠️ Not run against any DB; `0020` is sid-first and queues behind uat’s 0018/0019.) | Sober | |
+```

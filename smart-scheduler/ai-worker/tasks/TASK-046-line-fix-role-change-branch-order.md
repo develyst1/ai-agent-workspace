@@ -139,3 +139,12 @@ factored into a tested pure helper ✓.
 - **TASK-046 → DONE.** REQ-015 is already DELIVERED, so this is a **post-delivery fix**: it needs a deploy to
   `sid` and a quick re-check of the repro (already-linked parent → `สมัคร` → `2` → asks for the teacher
   nickname), not a fresh acceptance round.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-046 | LINE (BE): 🐛 already-linked user can't finish `สมัคร` — **reorder** the linking conversation above already-linked routing + **move** (not duplicate) the link on role change | SPEC-012 | ✅ **DONE** (Sober-verified; admin-list call confirmed) — ⏳ needs a `sid` deploy + repro re-check | Jason | — |
+```

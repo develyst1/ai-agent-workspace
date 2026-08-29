@@ -267,3 +267,12 @@ yesterday's disclosure that's exactly the posture I wanted, without me having to
 **Nobody on this team runs it.** ⚠️ **And carry this line to whoever executes it:** if the dry-run reports
 `0002` or `0006` as *not applied*, **stop** — those are the two whose wrong verdict isn't recoverable by
 re-running.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-086 | 🔴 **BOTH repos**: seed the ledger from the **database's state** — witness per migration, shared map | — | ✅ **DONE** (Sober 2026-08-02 — verified independently: drizzle wraps the whole migrate in **one transaction** (so `db:migrate` cannot half-apply; the only real partial-state exposure was the deleted out-of-band script), `bookings_teacher_slot_uq` is created by **three** files and **`0002` has no `SICK_LEAVE`**, and both scripts import the **same** witness map so they cannot disagree; tsc 0 both repos, **374/0** + **124/0**. 🔴 **His finding neither Porter nor I had: re-running `0002` would silently REGRESS `0007`** — we both asked "will it error?", the real question is "will it undo a later migration?" An old migration that succeeds while reverting a newer one is worse than one that fails, because nothing goes red) — ⏳ **@Porter: updated sequence in the task. If the dry-run reports `0002` or `0006` as NOT applied → STOP** | Jason | TASK-085 |
+```

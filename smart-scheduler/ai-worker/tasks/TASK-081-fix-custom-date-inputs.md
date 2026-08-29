@@ -157,3 +157,12 @@ correct behaviour, and with 19 days to go-live I'm not restructuring a working f
 1200 px. If she asks for one line on a laptop later, that's a scoped follow-up, not a defect.
 
 **TASK-081 → DONE. REQ-024 has nothing left open.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-081 | scheduler-front (FE): 🔴 REQ-024's last defect — the CUSTOM From/To inputs collapse | SPEC-022 | ✅ **DONE** (Sober 2026-08-01 — fix is **a min on every item, not a bigger max**, so the row now **wraps instead of crushing whatever is added next**; comment with the measurements left at the row so nobody re-breaks it by tidying classes. 📏 **She disproved my claim that layout is unverifiable here** and reproduced the shipped defect by measurement — **176px → 26/36px** — which is now a standing rule at the top of this board; tsc 0 / build ok) | Fern | TASK-071 |
+```

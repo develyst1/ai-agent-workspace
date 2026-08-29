@@ -90,3 +90,12 @@ make-up insert would refuse `NO_OWED_SESSION` almost always, since owed-count is
   lands on Voucher expecting Course.
 - ⏸️ **Porter's redirect note not added** — the task says add it *only if he supplies the copy*, and he hasn't yet.
   Flagging rather than writing staff-facing copy myself (same line I held on TASK-132's Q1).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-143 | scheduler-front (FE): remove `COURSE_PACKAGE` from the New-booking modal `BOOKING_TABS` + delete the dead `isCourse` paths; keep trial/single/voucher (voucher still uses the eligible picker); grep-clean orphans; FE-only, no BE | SPEC-047 (REQ-044) | ✅ **DONE (code — SA-reviewed Sober)** · tab-strip render → @Tanya · Porter redirect wording owed. Reproduced tsc 0 · 15/0 · §3.5 0; 3 tabs, 0 `COURSE_PACKAGE`/`isCourse` left, **orphan discipline verified** (kept `bookingType.COURSE_PACKAGE` + `noCourseStudents`, removed only true orphans), voucher/trial/single intact. ⇒ REQ-044 resolves via C. · _prior:_ 🖥️ REVIEW (Fern — 2 files, uncommitted. `BOOKING_TABS` → Trial · Single · Voucher, with the reason kept as a comment so nobody re-adds the tab without meeting the argument. Removed the `isCourse` flag, the `useEligibleStudents("COURSE_PACKAGE")` query, the course payload/validity branch, the course ContextCard and the course teacher/time row; the `isVoucher ? … : …` fork **collapsed** rather than left as a dead else. Orphans: `CourseContext` import + `booking.courseContext` (0 readers) gone; ⚠️ **kept on purpose** `bookingType.COURSE_PACKAGE` (still labels EXISTING course bookings in BookingTypeChip/BookingsTable) and `booking.noCourseStudents` (still a live branch of the generic EligibleStudentSelect) — removing either would have been a grep-says-orphan mistake. **Zero `COURSE_PACKAGE` left in the file.** Voucher path fully intact (REQ-043 picker · REQ-048 time · REQ-027 exclusions · program pick). tsc **0** · build ok · tests **15/0** · §3.5 0/0/0/0. 🔴 rendered check → @Tanya (worth checking staff don't land on Voucher where COURSE used to sit). ⏸️ Porter's redirect copy not supplied → note not added, per the task's own condition.) | Fern | — |
+```

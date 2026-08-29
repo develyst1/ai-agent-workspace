@@ -107,3 +107,12 @@ parts + the re-banded strip.
   intact · no Teachers-page regression (`reorderMinor` still serves that page) · tsc + test + build clean.
 - **TASK-032 → DONE**, superseding TASK-031. It's REQ-007's active task → **REQ-007 → SPEC_DONE** (→ @Porter
   for acceptance; ships on the next frontoffice deploy). Backend untouched.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-032 | scheduler-front: REQ-007 revised — hide-when-full + %-used strip; remove the override-to-book (reverts TASK-031) | SPEC-008 | ✅ **DONE** | Fern | — |
+```

@@ -120,3 +120,12 @@ API types it nullable (`job_runs.finished_at` is nullable in the schema), so `fm
 registration can now be done and tested in one go**, with the panel itself as the proof — before registering,
 it should show the red "never run" warning; after the first run, a real timestamp. That's the whole reason the
 indicator exists, so please use it as the acceptance rather than trusting the task list.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-054 | scheduler-front (FE): "needs attention" panel + **digest last-run / "never run" warning** (**browser-checked**) | SPEC-018 | ✅ **DONE** (Sober 2026-08-01 — all **three** `lastRun` states visibly distinct so "ran, nothing outstanding" can't be misread as "never ran", and she **exercised the never-run state for real** — the state that is true on the server right now; no FE recomputation; degraded ≠ zero; `titleKey` with a fallback so a **future 8th check** still shows a Thai title; tsc 0 / build ok) | Fern | TASK-053 |
+```

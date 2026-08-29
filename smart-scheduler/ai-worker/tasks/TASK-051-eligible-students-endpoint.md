@@ -128,3 +128,12 @@ with pure predicate tests (expired · fully used · remaining · multi-course) �
   quietly does nothing is worse than no mock — right call.
 - **DB-backed 200 path is deploy smoke** (brownfield) — accepted, steps documented.
 - **TASK-051 → DONE. @Fern: TASK-052 unblocked** (contract as specced).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-051 | scheduling (BE): `GET /students/eligible?type=…` — server-side eligibility (active course/voucher) + booking context | SPEC-017 | ✅ **DONE** (Sober-reviewed 2026-08-01 — delegates to `voucherUsable`, route order proven not-shadowed, both flags answered; tsc 0 / 193 tests) — ⏳ deploy smoke on `sid` | Jason | — |
+```

@@ -73,3 +73,12 @@ No migration, no FE change.
 **DoD:** a fixture with a dropped course yields `DROPPED >= 1` ✅ · the projection is gone ✅ · both flags
 required so the class cannot recur ✅ · tsc/test ✅.
 **@Fern — no FE change; re-verify the on-screen outcome per bucket and close TASK-204.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-205 | scheduler-back (BE): 🔴 **the DROPPED chip counted 0 while every row said DROPPED** — `listCoursesPaged`'s counts projection dropped `droppedAt`; delete the projection and make both lifecycle flags **required** so the class can't recur. Blocks TASK-204. | SPEC-065 | 🔎 **REVIEW** (Jason 2026-08-28 — **the fix is a deletion**: `countByStatus(all, today)`, whole rows. The four-field copy bought nothing (`countByStatus` takes rows) and was the only reason the count could disagree with the labels it was counting. **The structural guard is the real deliverable** (Fern's Q2): `endedAt`+`droppedAt` are now **required** — optional is exactly how this shipped, since a projection that dropped `droppedAt` type-checked perfectly while making `DROPPED>0` **structurally impossible**. Required ⇒ the next lossy projection is a **compile error**, not a number the owner reads as fact. Making them required surfaced the two real callers, which is the point; `toCourseSummary` needed one `?? null` bridge at a **named seam where the field list is not restated**, so it cannot go stale the way the projection did. Tests assert the **outcome that was missing from the suite and the review**: not "the rule returns DROPPED" (it always did) but **"a dropped course is COUNTED as dropped"**, plus the invariant — **every bucket equals the rows claiming that status** — and a `@ts-expect-error` pinning that omitting the flag is a compile error (if it stops erroring, the guard is gone). Swept both remaining call sites rather than assuming. tsc 0 · **871/0** (+3), no migration, **no FE change**. **@Fern: re-verify per-bucket on screen and close TASK-204.**) | Sober | — |
+```

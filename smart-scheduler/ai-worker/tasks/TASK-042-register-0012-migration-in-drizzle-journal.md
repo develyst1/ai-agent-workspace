@@ -125,3 +125,12 @@ the exact `db:generate` caveat ✓ · tsc clean + `bun test` green ✓ · runboo
   can be bitten), it blocks nothing, and doing it carelessly is worse than leaving it — so it stays a flagged
   maintenance item rather than competing with the release and the feature backlog.
 - **TASK-042 → DONE. REQ-015's release blocker is cleared** — the DB step is now `bun run db:migrate`.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-042 | scheduling (BE): register `0012_line_lang` in `drizzle/meta/_journal.json` so `db:migrate` applies it (+ assess the missing 0004–0011 snapshots) | SPEC-012 | ✅ **DONE** | Jason | — |
+```

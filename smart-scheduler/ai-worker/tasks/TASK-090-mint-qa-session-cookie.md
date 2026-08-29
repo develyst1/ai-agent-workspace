@@ -184,3 +184,12 @@ over verbatim.**
 **TASK-090 → DONE.** ⚠️ **@Porter — one line to carry with it:** this unblocks the *authenticated* half only.
 It gets QA onto the painted screens; **the promises that were `NOT TESTED` become testable, not tested.** Don't
 let the unblock be read as the verification.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-090 | scheduler-front (FE): **mint a QA session cookie from a backend token** — local script, nothing added to the deployed app | SPEC-027 | ✅ **DONE** (Sober 2026-08-02 — zero `src/` references, route surface unchanged, **production host refused**, blank-but-present token exits 1 (the input that would otherwise mint a *valid-looking* cookie with no authority), and **`salt: cookieName`** — in Auth.js v5 the cookie name IS the encoder salt, so the wrong one yields a structurally valid cookie the app can't decode; he read that from the library source and **proved** the wrong salt is rejected. 🔴 **His answer to my Q1 is the best part: he named the reasoning error he would have made** — his own pane never composites, and generalising that to "`sid` won't paint either" would have killed a correct fix. He checked what QA actually reported instead: *"her browser paints; she is stopped at a login form by a safety rule, not by rendering"*) | Fern | — |
+```

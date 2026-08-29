@@ -155,3 +155,12 @@ contacted — is the honest way to exercise a contract. And you said plainly tha
 **TASK-065 → DONE. REQ-014's UI is complete.** ⏳ Deploy: backoffice-front. **Smoke, and it's the whole claim:**
 open a real month and confirm **attributed + unattributed = total** on screen with the green badge — that's the
 one thing the stub can't prove.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-065 | backoffice-front (:3018): revenue-by-activity + customer-spend screens | SPEC-021 | ✅ **DONE** (Sober 2026-08-01 — percentages of **`totalMinor`, never the attributed subset** (`RevenueContent:94`), proven numerically: they sum to **exactly 100.0%**, and she stated what the wrong version would have read (Skate 47.7% vs 38.2%). **The reconciliation is stated on screen** — `฿9,595 + ฿2,405 = ฿12,000` with a badge that **flips red and names the real total** on mismatch — turning an invariant into something an executive can watch hold. Own Thai explanation for `unattributed`, not reliant on the API string; the two empty states worded **differently** so a filter miss never looks like an empty month; tsc 0 / build ok) | Fern | TASK-064 |
+```

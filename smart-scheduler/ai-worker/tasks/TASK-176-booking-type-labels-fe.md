@@ -53,3 +53,12 @@ changed. Confirmed by the suite still passing, including the request-body tests 
 `bun test src/lib/scheduler/ src/services/` **40 pass / 0 fail**.
 🔴 Rendered read-through → @Tanya (cheap to fold into any other pass): the two words should now read identically on
 the tab, the calendar chip, the bookings table + its filter, and the Overview stats — in **both** languages.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-176 | scheduler-front (FE): **REQ-067 Part A** — rename booking-type labels `ทดลองเรียน`→`1st Trial`, `จองรายครั้ง`→`1 HR`, TH+EN (card names, not translated); labels ONLY (bookingType/data/codes untouched, AC-2); same 2 words everywhere staff see them (tab · legend · booking detail · REQ-052 label · daily report — grep to be sure, AC-3). | REQ-067 A | ✅ **DONE (FE code) — SA-reviewed Sober 2026-08-24** — front tsc 0 · build ok · 40/0. 4 dictionary lines (`FIRST_TRIAL:1st Trial`, `SINGLE_SESSION:1 HR`, both dicts, Thai=English product names AC-1); AC-3 grep-verified (one `bookingType.*` def per lang), AC-2 values untouched. REQ-067 Part A done. Render read-through → @Tanya. — _prior:_ 🖥️ REVIEW (Fern 2026-08-23 — **4 dictionary lines, nothing else**. `bookingType.FIRST_TRIAL` → **`1st Trial`**, `SINGLE_SESSION` → **`1 HR`**, in **both** dictionaries — **the Thai entries carry the same English strings on purpose (AC-1)**: product names off the printed card, not phrases to translate. **AC-3 verified by grep BEFORE changing anything:** every staff-facing surface renders through the `bookingType.*` key family — `BookingTypeChip` (calendar cell · bookings table · booking detail), the New-booking tabs, the table filter, and all three Overview/report call-sites — exactly one definition per language, so four lines is the whole change. Also grepped the old literals: only a mock *sentence* and two source comments, neither user-facing, both left. **AC-2:** the `FIRST_TRIAL`/`SINGLE_SESSION` **values**, data, reports and sale codes untouched — confirmed by the suite incl. the request-body tests that assert `bookingType` on the wire. tsc **0** · build ok · **40/0**. Rendered read-through → @Tanya, cheap to fold into another pass.) | Fern | — |
+```

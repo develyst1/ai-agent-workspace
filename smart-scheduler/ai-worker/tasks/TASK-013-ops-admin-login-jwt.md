@@ -88,3 +88,12 @@ Send the token as `Authorization: Bearer <token>` on admin calls (mutations were
 - `POST /api/v1/auth/login` mirrors scheduling's contract exactly (`hono/jwt`, no new dep). Tests run a real
   Hono app with `SKIP_ADMIN_AUTH=false` covering login ok/bad + verify pass/fail + service-token path.
 No rework. **TASK-014 unblocked (and DONE).**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-013 | ops: admin login endpoint + real JWT verification (mirror scheduling) | SPEC-003 | DONE | Jason | — |
+```

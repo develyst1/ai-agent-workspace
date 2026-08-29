@@ -101,3 +101,12 @@ tasks without jumping the queue, which is what I asked for when I filed it.
 ⏳ **Small FE follow-up (mine to raise, not blocking):** the People screen can now drop its extra `PATCH` after
 create, and add the parent note field. Filed as **TASK-069** for @Fern — it isn't urgent, since the current
 two-call flow works and is invisible to users.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-050 | scheduling (BE): small people-endpoint gaps — parent `note` + demographics on student-create | SPEC-016 | ✅ **DONE** (Sober 2026-08-01 — parent `note` finally reachable (**my TASK-049 spec error**, Fern was right to omit it); student-create takes demographics so one call is enough; neighbours untouched; tsc 0 / 280 tests). **It waited behind six higher-value tasks without jumping the queue** | Jason | TASK-048 |
+```

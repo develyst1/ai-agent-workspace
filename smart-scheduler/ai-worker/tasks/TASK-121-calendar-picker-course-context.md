@@ -44,3 +44,12 @@ a voucher is per-student, name-only is fine):
 
 ## Questions / flags
 - None. Pure label-display change, value/payload unchanged as the task pinned.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-121 | scheduler-front (FE): course context in the calendar eligible-student picker label (REQ-038 #2) | SPEC-035 | ✅ **DONE** (SA-reviewed 2026-08-04 — tsc 0 reproduced; `value=entKey` untouched, voucher unchanged) · (Fern 2026-08-04 — tsc 0 · build ok. `BookingModal.tsx:590` new `eligibleLabel(e)`: course entries → `${nickname||name} · ${subject} (${used}/${size})`, voucher/other unchanged; `:791` Select `data=` uses it. **`value=entKey(e)` untouched** — selection/payload identical, no API change. Plain string label, no new shared-row control → STANDING RULE n/a) | Fern | — |
+```

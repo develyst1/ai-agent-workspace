@@ -64,3 +64,12 @@ Shape (SA/FE to finalise; LINE text messages support newlines, not markdown):
 - **Q1 (to owner, non-blocking):** should the teacher's message also show **where** (branch/room), or is time ·
   student · program · status the complete set? Porter is **not adding fields on assumption** — the ask was
   readability, and adding content while fixing legibility is how a small change becomes a redesign.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-067 | 🏷️ **Booking-type labels `1st Trial`/`1 HR` (Part A) + teacher LINE schedule readability (Part B)** | MEDIUM | 🔨 **Part B → TASK-175 (with REQ-069); Part A → TASK-176 @Fern (Sober 2026-08-23).** A: rename tabs + everywhere the types are named, labels-only (AC-2, data/codes untouched), card words not translated. B: group LINE schedule by day, time-first, TH/EN, keep cap/empty/quick-replies — ships with the Mon→Sun range fix. Q1 (location on the LINE msg) = owner, non-blocking. | @Sober + owner |
+```

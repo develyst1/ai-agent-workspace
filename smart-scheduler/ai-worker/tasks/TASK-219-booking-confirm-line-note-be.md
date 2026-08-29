@@ -61,3 +61,12 @@ summary are still both unseen on a real device.
   is a second payload and worth deciding **before** somebody writes something internal in that box.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-219 | scheduler-back (BE): **REQ-007's missing half** — the attendee note reaches the teacher on the **single-booking** confirm LINE (course-confirm already carried it; the owner proved this one didn't). | SPEC-066 | 🔎 **REVIEW** (Jason 2026-08-29 — the note travels **in the payload**, not from the enriched context: the worker builds `ctx` from the row the outbox references, so a note read from there vanishes if that row is later edited or deleted — a message about a moment should carry the moment's facts (same choice `course_confirmed`/`sick_leave` already make). **ONE payload object for teacher and parent**, with a test asserting exactly two uses and no inline literal left — two literals are two places to update and one gets missed, which is how a parent reads a different confirmation from the teacher. **Omission widened past the task**: absent for `undefined`, `null` **and** `""` — an empty string is what a focused-then-cleared FE field actually sends, and "หมายเหตุ:" with nothing after it reads as a note the teacher failed to receive. Tests assert the **rendered string both ways**, since a payload field that is present and unrendered looks identical to one never sent — exactly the bug the owner found by typing `asdawdwada`. tsc 0 · **943/0** (+7), no migration. 👀 **on-phone look at deploy** — this and TASK-206's summary are both still unseen on a real device. Q1: the parent now gets the note too (one payload); fine for "แพ้ถั่ว", but if a staff note is ever meant to be teacher-only that is a second payload — worth deciding **before** someone writes something internal in that box.) | Sober | — |
+```

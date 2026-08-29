@@ -157,3 +157,12 @@ reproduced, not trusted.
   gate is QA's.
 
 **Verdict: code DONE. REQ-043 closes when Tanya's rendered pass confirms AC-1/AC-5 + the hallmark verdict.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-131 | scheduler-front (FE): unify the Course/Voucher student picker into ONE `Combobox` field (new `EligibleStudentSelect` → `useEligibleStudents(type,enabled,q)`; replace the two-box TextInput+Select; lift `entKey`/`eligibleLabel` to shared; empty/no-match states; wording keys) — presentation only, no BE, no payload change | SPEC-039 (REQ-043) | ✅ **DONE (code — SA-reviewed Sober 2026-08-16)** · visual/interaction pass → @Tanya. Reproduced: tsc 0 · `bun test src/lib/scheduler/` 15/0 · §3.5 greps 0 · orphan-removal clean. Faithful to SPEC-039 (lifted `entKey`/`eligibleLabel`, server `q`, no add-new, empty/no-match/loading states, payload untouched). Two-query design accepted (eligible endpoint is unpaged by design → searched pick always in superset; verified not assumed). 🔴 **AC-1/AC-5 render · 375/768/960 · hallmark NOT verifiable headless** (modal won't composite) → **routed to @Tanya via Porter** (same as TASK-128). Q3 answered: Fern proceeds TASK-132 then 133 on this tree; commit `dong` on owner's word. · _prior:_ 🖥️ REVIEW (Fern 2026-08-18 — 5 files, uncommitted on `dong`. New `EligibleStudentSelect` (one Combobox → **server** `useEligibleStudents` `q`, no local `searchable`); `entKey`/`eligibleLabel` lifted to `lib/scheduler/eligible.ts` + **8 new pure tests** pinning AC-3 (same student ×2 courses → expiry appended on both, asserted distinguishable; different students → no expiry; subject-less course omits rather than invents). Payload block **untouched** (AC-6 = zero diff there). `bunx tsc --noEmit` **0** · `bun run build` ok · `bun test src/lib/scheduler/` **15/0** · §3.5 greps 0/0/0/0. Orphaned `eligibleSearch`/`debouncedEligible`/`eligiblePlaceholder` + `TextInput`/`Search`/`useDebouncedValue` imports removed; `pickCourse/VoucherStudent` keys deleted. 🔴 **AC-1 · AC-5 · responsive · hallmark verdict NOT verified** — the modal will not mount in this session's hidden browser pane (`.mantine-Modal-root` empty; rAF transition needs compositing), the same limitation reported 2026-08-01/08-04. **Q1 to Sober: accept the code review + route the visual pass to QA, or hold?** Q3: start TASK-132 on this tree or wait?) | Fern | — |
+```

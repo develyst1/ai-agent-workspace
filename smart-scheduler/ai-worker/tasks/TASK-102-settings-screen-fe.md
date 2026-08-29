@@ -49,3 +49,12 @@ bad value), `DELETE /settings/:key` (TASK-122) → row resolved to the coded def
 ## Questions / flags
 - Mock labels are English (mock-only); the real `GET /settings` returns the BE registry's (Thai) labels — the screen
   renders whatever the API sends, no FE copy of the labels. Live render (auth-gated) → QA.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-102 | scheduler-front (FE): Settings screen — list rules (value/default/override) · edit-with-validation · reset-to-default. The load-bearing half of REQ-031 | SPEC-029 | ✅ **DONE** (SA-reviewed 2026-08-11 — tsc 0 reproduced; renders from the API list (`rows.map` → 3rd-rule-no-FE-change holds), override/default badge, edit→PUT w/ server reason, reset-only-when-overridden→confirm→`api.delete` (TASK-122), both mutations invalidate `SETTINGS_KEY` → badge auto-flips, min=0 only (server is bound authority). **REQ-031 fully SA-reviewed: 101+122+102.**) · (Fern 2026-08-04 — tsc 0 · build ok, `/scheduler/settings` route generated. New nav entry + page; renders from `GET /settings` (one Card/rule → a 3rd rule needs **zero FE change**), Override/Default badge, inline `NumberInput` edit → `PUT` (server's Thai reject reason shown in a red Alert, never silent), **Reset** (only when overridden) → confirm → TASK-122 `DELETE` → `isOverridden:false` flips the badge. types/service/mock(mirrors registry bounds 0–30/0–240)/hooks. STANDING RULE n/a (single stacked NumberInput). Live render → QA) | Fern | TASK-101 ✅, TASK-122 ✅ |
+```

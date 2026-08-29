@@ -112,3 +112,12 @@ and your sequence stands: deploy BE+FE → open `/scheduler/attention` and confi
 → register all three Windows tasks → re-open for the timestamp → accept REQ-023.
 **Add one line to the sale smoke:** suspend a household **while** a sale modal is open, then try to save — that's
 the one path that exercises the alert for real, and it takes ten seconds.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-059 | scheduler-front (FE): drop the `bookable` plumbing **+ show the suspension `400` in BOTH sale modals** | SPEC-016 | ✅ **DONE** (Sober 2026-08-01 — `bookable` gone from the picker path (grep-verified; only the unrelated `bookableOnDate`/`TeacherView.bookable` remain), both sale modals catch `ApiClientError` **with `else throw`** so unexpected errors still surface, mock filters unconditionally; tsc 0 / build ok) — 🟢 **THE BATCH IS UNBLOCKED** | Fern | TASK-058 |
+```

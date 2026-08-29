@@ -59,3 +59,12 @@ Built to the spec's two edits exactly.
 
 ## Questions / flags
 - None. Pure client-side, matches the badge-filter pattern the task pointed to.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-124 | scheduler-front (FE): **student search on `/scheduler/calendar`** (REQ-038 #3) — client-side `byStudent` filter on `studentName` beside Teacher/Type/Badge; day+week grids; no BE/endpoint/migration | REQ-038 #3 | ✅ **DONE** (SA-reviewed 2026-08-10 — tsc 0 reproduced; `byStudent(byBadge(...))` both memos, header TextInput+clear+i18n EN+TH, Search imported. **#3 build-complete → essential set 1–5 build-complete.** 4-width pixel measure → @Tanya (wraps not clips). Needs `sid` deploy.) · (Fern 2026-08-04 — tsc 0 · build ok. Two-edit spec exactly: `CalendarContent` `byStudent(byBadge(...))` case-insensitive substring on `studentName`, composed into both day+week memos (+dep); `CalendarHeader` gets a clearable `TextInput` (Search icon + CloseButton) first in the existing flex-wrap filter row. `calendar.studentSearch`(+placeholder) i18n EN+TH. STANDING RULE: same `flex-wrap`+`min-w`+`basis-0 grow` pattern as the 3 existing controls → wraps, never clips; **live 4-width measure → @Tanya** (auth-gated, per 099 precedent). **Last essential-set build.**) | Fern | — |
+```

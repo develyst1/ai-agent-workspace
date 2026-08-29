@@ -74,3 +74,12 @@ template still references `:3002`**. Canonical port map (staff :3016 · scheduli
 ops-front :3018) written into `monorepo-overview.md` + root `CLAUDE.md` and synced to all 4 repos' `docs/`.
 Staff-front left on its prod domain (correct). No logic touched → no test/tsc needed. Doc-consistency fix
 (backoffice-front maturity cell) approved. No rework.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-011 | align cross-service port config to real map (ops-back :4010, ops-front :3018) | SPEC-001 | DONE | Jason | — |
+```

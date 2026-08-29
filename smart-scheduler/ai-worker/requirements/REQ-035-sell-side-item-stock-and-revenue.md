@@ -81,3 +81,12 @@ the board can see — same universal item + movement model, opposite direction.
   **+stock decrement, +block-at-0, +catalog-sourced picker**? Confirm the existing wiring.
 - SA: Where does the **board set an item's stock** — the existing backoffice Items screen (add a
   stock/ceiling field), or a new control? (Likely the Items screen.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-035 | Sell side of the item model — frontoffice sells from the backoffice catalog → stock decrement + revenue | 🔴 **HIGH** — **SPEC_DONE `SPEC-034`; TASK-116/117/118 cut** (Sober 2026-08-04). Reuses existing `ceiling/remaining` for stock (no new col); the **one migration is a structural `kind`** (1:1 booking types); the sale **draws stock + posts revenue IN-TX atomic** (block-at-0), mirroring the freelance ceiling — a deliberate reversal of the `void recordSale` best-effort posture, safe now `bo` is same-DB. Q1: keep subject picker, draw the mapped catalog item. 🗓️ **Bigger than REQ-037 + touches live money + a migration — @Porter: go-live vs fast-follow?** (stage: block-at-0 core / board stock screen). | **READY_FOR_SA** (queued behind REQ-030/031/037) | Frontoffice pickers sourced from the backoffice catalog; selling a course/voucher → **atomic** stock decrement + revenue post; stock-limited items **BLOCK at 0** (cancel restores), items may be **UNLIMITED** (null ceiling, movement-only, both income & expense). **Sale-type = a first-class `kind` (FIRST_TRIAL/SINGLE_SESSION/COURSE_PACKAGE/VOUCHER/RETAIL), NOT a badge** — maps 1:1 to the 4 booking types; **reseed OK** if the seed doesn't map cleanly. Reuse REQ-006 `bo.item`/`movement`; scalable so future web apps decrement the same catalog. **Crux Q for SA:** catalog-item ↔ teaching-subject mapping (several subjects → one price-group; picker must still yield a subject). **@Sober to SPEC.** |
+```

@@ -123,3 +123,12 @@ not taken from the report.
 - **TASK-047 → DONE = REQ-020 Stage 1 complete.** Needs a `sid` deploy to take effect; Stage 2 (approval queue +
   unlink/suspend) still waits on REQ-019's screens **and** the unanswered dual-role question.
 (Sober fills at REVIEW.)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-047 | LINE (BE): 🔐 **stop the PII leak** — parent-link confirmation reports a **count, not children's names**; **teacher-nickname collision binds nobody** (was: first match wins) | SPEC-015 | ✅ **DONE** — ⏳ needs `sid` deploy | Jason | — |
+```

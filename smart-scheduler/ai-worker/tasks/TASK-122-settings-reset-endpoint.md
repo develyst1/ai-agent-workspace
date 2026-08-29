@@ -29,3 +29,12 @@ with `isOverridden: false`.
 - [ ] Deleting a key that has no override succeeds as a no-op (idempotent); an unknown key is rejected (`isSettingKey`).
 - [ ] `bunx tsc --noEmit` clean; `bun test` green (resolver-returns-default-after-delete is the piece to unit-test).
 - [ ] Unblocks FE TASK-102 (reset button calls DELETE, not PUT-the-default).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-122 | scheduling (BE): `DELETE /api/settings/:key` — true reset-to-default (drop the override row → resolver returns coded default, `isOverridden:false`; idempotent, `isSettingKey`-guarded) | SPEC-029 | ✅ **DONE** (SA-reviewed 2026-08-04 — tsc 0 · settings 9/9 reproduced; test asserts delete-not-PUT + `isOverridden:false`, `isSettingKey`-guarded, idempotent) · (Jason 2026-08-04 — tsc 0 · **457/0**. `resetSetting(key)` in `settings.service.ts`: `delete from appSettings where key` → returns the default shape `{key,label,unit,value:<coded default>,default,isOverridden:false}` so the FE reflects the reset without a refetch. **Idempotent** — deleting an absent override is a no-op success (already at default), not 404. Route `DELETE /api/settings/:key` beside GET/PUT, same `isSettingKey` guard (junk key → 400, never creates rows). Test (stub exec): reset deletes the row + returns the coded default with `isOverridden:false`. **Unblocks TASK-102.**) | Jason | — |
+```

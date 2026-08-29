@@ -126,3 +126,12 @@ Both boxes is correct — this is idempotent normalisation, not the divergent-da
   `lib/demographics.ts` in that write path is the smaller and more durable half of it.
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-157 | scheduler-back (BE): **REQ-060 Part B.1** — `demographics:repair`, in-place normalise stored gender/nationality (reuse `lib/demographics.ts`). Candidate = normalised non-null & ≠ stored (`Male`→`male`, `Thai`→`ไทย`); already-normalised **skipped** (`คุณมะเหมี่ยว` untouched, no special case); unreadable **left+reported**, never blanked. Writes ONLY `students.gender`/`nationality`, one tx, no DDL, dry-run default. 🔴 PII: console counts-only, named report → gitignored `project-docs/`. Idempotent. Owner runs on **BOTH boxes** (uat 24 · sid ~130). | SPEC-057 (REQ-060 B) | ✅ **DONE (SA-reviewed Sober 2026-08-22)** — reproduced tsc 0 · **624/0** (+11). Pure `demographics-repair.ts` reuses `lib/demographics.ts`; already-normalised skipped (`คุณมะเหมี่ยว` untouched, no name check — structural); AC-5 structural (`repairValues` can only emit gender/nationality keys — tested); never blanks; PII console-counts-only (no name, tested) + named report → gitignored project-docs; dry-run throws before write loop; idempotent. **Owner runs on BOTH boxes** to clear 24(uat)/~130(sid). — _prior:_ 🔎 REVIEW (Jason 2026-08-22 — `bun run demographics:repair`, pure `lib/demographics-repair.ts` **reusing `lib/demographics.ts`** so repair and importer cannot drift. 🔑 The `คุณมะเหมี่ยว` protection is **structural, not a special case**: the rule is *a value that already normalises to itself is skipped*, so `female`→`female` produces no change — I deliberately did NOT write a name check (a repair that must *remember* an exception is one waiting to break it), and a test pins that row anyway. Unreadable values **left + reported, never blanked**; `Japan` untouched. Writes ONLY `students.gender`/`nationality` — `repairValues()` can structurally produce no other key, and a test asserts it (the honest form of AC-5). Dry-run default via the rollback sentinel. 🔴 PII split: **console = counts only** (test-asserted no-name), named per-row report → gitignored `project-docs/`. tsc 0 · **624/0** (+11, incl. a second pass finding 0). ⚠️ Not run against any DB — runsheet: dry-run→`--commit` on **BOTH** boxes (uat ~24, sid ~130).) | Sober | — |
+```

@@ -108,3 +108,12 @@ The one thing this task could get wrong, it gets right — and I checked the spe
 coverage line and a large "unknown" slice on day one. **That is the dashboard being honest, not broken** — the
 "needs attention" panel lists exactly which students are missing data, and the number climbs as staff fill them
 in. Worth saying to คุณฟีน *before* she sees it, not after.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-063 | scheduler-front (FE): the SOM dashboard section | SPEC-020 | ✅ **DONE** (Sober 2026-08-01 — **percentages are of `total`, not of the known subset** (the trap: dividing by `known` would have inflated every slice exactly when demographics are mostly blank); the `unknown` bucket survives the zero-filter so "nobody is unknown" is stated not inferred; coverage on **every** breakdown; unknown labelled from the FE dictionary; tsc 0) | Fern | TASK-062 |
+```

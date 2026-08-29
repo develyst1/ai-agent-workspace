@@ -14,3 +14,12 @@ Extend the existing backoffice **Items** screen (no new screen):
 - [ ] Staff can set an item's stock, edit it, or clear it to unlimited; the value persists.
 - [ ] The screen shows remaining/ceiling (or "—/unlimited") and revenue per item; `kind` is read-only.
 - [ ] tsc clean; build ok. Measure any new shared-row control at 1600/1280/768/375 (board STANDING RULE).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-118 | backoffice-front (FE): Items-screen **stock field** (set/edit/unlimited) + `remaining/ceiling` + revenue-per-item + read-only `kind` | SPEC-034 | **BLOCKED** (TASK-116) | Fern | TASK-116 |
+```

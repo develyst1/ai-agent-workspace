@@ -115,3 +115,12 @@ to look at this" when nobody will is worse than closing it with the reason.
 **If anything here ever needs re-examining, the live question isn't this script — it's the two snapshot chains**
 (`smart-scheduler-back` and `backoffice-back`, both incomplete), which are already tracked as maintenance
 tech-debt on the board.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-025 | backoffice-back: data migration `ops.*` + `freelance_budgets` → `bo.*` | SPEC-006 | DONE | Jason | TASK-021 |
+```

@@ -69,3 +69,12 @@ The system must:
   > way TASK-013/014 proceed unchanged.
   > **answer (Porter, 2026-07-20):** คุณฟีน chose **SEPARATE** — ops gets its own
   > `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `JWT_SECRET`, independent of scheduling.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-002 | Backoffice admin authentication (login + real JWT) | HIGH | ✅ **DELIVERED** | Live & confirmed 2026-07-20 — admin login works, auth enforced (`SKIP_ADMIN_AUTH=false`). |
+```

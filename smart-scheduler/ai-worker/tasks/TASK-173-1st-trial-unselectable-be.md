@@ -44,3 +44,12 @@ Porter in chat) ⛔.
   is a door I closed on my own. Say if you'd rather it were explicit-only (e.g. an admin-only flag).
 
   > answer: (Sober)
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-173 | scheduler-back (BE): **REQ-065** — filter `subject.active` out of the `subjectOptions` build (`scheduler.service.ts:388,452`) ⇒ inactive subjects vanish from every picker (all read `subjectOptions`, no FE change). Read-path audit: `active` filter ONLY in the picker, never in reads, so historical `1st Trial` bookings still render (AC-3). Owner-run 1-row flip `1st Trial`→active=false (SELECT-confirm then UPDATE, sid→uat, dry-run-first). No migration. Optional: fix `seed.ts:185` demo trial to a real activity. | SPEC-061 (REQ-065) | ✅ **DONE (code) — SA-reviewed Sober 2026-08-23** — tsc 0 · 706/0 (+4). Filter in `toTeacherDTO` (one site, `active !== false`), all pickers fixed, no FE. **🔴 Jason caught a silent-data-loss edge (Q1) & guarded it:** TeacherFormModal save would've unlinked `1st Trial` (delete-all/insert from a filtered list); `updateTeacher` now keeps links the client couldn't see ("a client may only change what it was shown" — AC-5). AC-3 grep-audited (no read filters `active`). Seed hygiene taken. **Deploy code FIRST, then the owner-run flip** (SELECT-confirm→UPDATE, sid→uat). — _prior:_ 🔎 REVIEW (Jason 2026-08-23 — one filter in `toTeacherDTO` (not the two service sites: both map through it, and the FE’s `subjectOptions` **is** `dto.subjects`), `active !== false` so a row loaded without the column doesn’t vanish from every picker. 🔴 **Found a hazard the task didn’t foresee:** `TeacherFormModal` seeds its multi-select from `subjectOptions` and PATCHes it back, while `updateTeacher` did delete-all→insert-sent — so the first save of ANY teacher would have **silently unlinked them from `1st Trial`**, a data change as a side effect of a display filter (AC-5). `updateTeacher` now preserves links the client could not see: *a client may only change what it was shown* (Q1 — my call). AC-3 audited by grep: the only `subject.active` reads are pickers, so reports/mappers/SOM/calendar still name inactive subjects — pinned by a test. Seed hygiene taken: `1st Trial` seeds inactive + the demo trial books a real activity. tsc 0 · **706/0**, no migration. ⛔ **AC-6 data flip is the owner’s** — SQL relayed to Porter.) | Sober | |
+```

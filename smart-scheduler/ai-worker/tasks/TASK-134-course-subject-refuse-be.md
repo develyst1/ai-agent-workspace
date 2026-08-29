@@ -86,3 +86,12 @@ I did not widen the guard into it.
   trial pass (`courseId == null` → AC-4) · typed code the FE surfaces. One shared predicate → guards can't drift.
 - **Correctly did NOT widen to create-mode** (my TASK-133-Q1 follow-up, routed to Porter). Good scope discipline.
 - **Verdict: DONE.** REQ-053 is now code-complete (FE 133 + BE 134); closes on @Tanya's FE visual pass.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-134 | scheduler-back (BE): server **refuse** a subject change on a COURSE_PACKAGE session (`applyPlanChange` move + `moveBooking`; `COURSE_SUBJECT_LOCKED`; no-op passes; voucher/single/trial unaffected) | SPEC-042 (REQ-053) | ✅ **DONE (SA-reviewed Sober 2026-08-16)** · Q1 copy-language → @Porter. Reproduced: tsc 0 · 474/0 · predicate = exactly specced (idempotent no-op; voucher/single/trial pass); wired at `scheduler.service.ts:1632`+`:1921`, 409 before any write. Correctly not widened to create-mode (my follow-up finding). REQ-053 now **code-complete (FE 133 + BE 134)** → closes on @Tanya FE visual. · _prior:_ 🔎 REVIEW (Jason 2026-08-16 — one pure `changesCourseSubject()` in `lib/course-subject-lock.ts`, called from **both** `applyPlanChange`'s move branch and `moveBooking`, before any write; 409 `COURSE_SUBJECT_LOCKED`; no-op + no-`subjectId` patches pass; voucher/single/trial untouched (AC-4). tsc 0 · **467/0**, 5 new tests. Q1: the specced refusal message is English while every neighbouring conflict in that service is Thai.) | Jason | — |
+```

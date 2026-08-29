@@ -50,3 +50,12 @@ enrolled in when looking at their courses/bookings. They want the program (subje
   > `CourseSummary` DTO**, so the course-card view is likely **BE+FE**, not UI-only — SA to confirm/diagnose.
   > **Voucher-subject rule:** the stakeholder did not raise vouchers — scope this REQ to the **course/booking
   > list** for now; leave the voucher-subject decision open (revisit only if คุณฟีน asks).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| REQ-010 | Show each student's sport program (subject) on the `/scheduler/bookings` course list | MEDIUM | ✅ **DELIVERED** | **Live acceptance PASSED 2026-07-29** (stakeholder ran, Porter verified): each `/scheduler/bookings` course card shows its **sport program** (Surfskate/Inline/…). TASK-034 (BE — `CourseSummary.subject` derived at read time, no migration) + TASK-035 (FE — `CoursePackagePanel`), Sober-verified, deployed (back+front). Vouchers out of scope. |
+```

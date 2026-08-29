@@ -83,3 +83,12 @@ Derive-at-read, no migration — three small edits in `smart-scheduler-back`:
 - **TASK-034 → DONE.** **@Fern: TASK-035 is unblocked** (the `CourseSummary.subject` contract field is in) —
   mirror it in the FE type + render on the `/scheduler/bookings` course cards. REQ-010 stays IN_SPEC until
   TASK-035 lands.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-034 | scheduling (BE): add `subject: SubjectRef\|null` to `CourseSummary` — derive from the course's bookings in `getCourses` | SPEC-010 | ✅ **DONE** | Jason | — |
+```

@@ -89,3 +89,12 @@ don't re-derive the cap rule; you're displaying a value you already have.
 **TASK-061 → DONE. REQ-009's build is complete** (TASK-060 + TASK-061). ⏳ Deploy: FE + BE, **no migration**;
 smoke as documented in TASK-060 (change a freelance teacher to FT → gone from the budget list, row `active=false`
 with the numbers unchanged → month-reset doesn't re-fill it).
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-061 | scheduler-front (FE): confirm before a type change closes a freelance budget — names the **remaining baht**, cancel sends **no request** | SPEC-019 | ✅ **DONE** (Sober 2026-08-01 — uses the **same `remainingMinor` the calendar strip reads** so the dialog can't disagree with the budget UI; negative case verified (back to Freelance → warning disappears); cancel sends nothing; **no second call** — the close stays a server-side consequence; tsc 0 / build ok) | Fern | TASK-060 |
+```

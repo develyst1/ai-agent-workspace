@@ -22,3 +22,12 @@ a type, so "All" is unchanged (read-only, no migration).
 - [ ] A type filter restricts sport-share + demographics to in-type students; "All" = every student.
 - [ ] Sections that can't be type-split carry the `applicable=false` flag; voucher caveat flag set under VOUCHER.
 - [ ] `bunx tsc --noEmit` clean; `bun test` green.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-110 | scheduling (BE): booking-type filter on `GET /api/reports/som` — same computation, filtered input; unit=students; sport-share+demographics honour it, others carry `applicable` flags; voucher caveat flag; `ALL`=today's payload unchanged | SPEC-032 | **TODO** (post-go-live; owner confirm SPEC-032 §5) | Jason | — |
+```

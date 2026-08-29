@@ -129,3 +129,12 @@ no bare `var(--color-` outside `rgb(` = 0; §3.5 greps = 0; tsc 0; build ok.
 Tokens/motion axes still pass (§3.5 one-source PASS, §3.3 focus instant PASS, no anti-pattern). The rework only changes
 the *form* of the token (hex→triplet, wrapped) — same values, now opacity-composable. Residual = item 6 font (owner CUT
 per Porter; not spun). **Verdict: gates hold; opacity regression fixed.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-128 | scheduler-front (FE): one colour token source (kill 26-file `bg-default-*` parallel scale) + 4 inline hex→`--color-paper` token + kill 4 `transition-all` + never animate focus ring — **clears FRONTEND-STANDARD §3.3 + §3.5** | SPEC-037 (REQ-041) | ✅ **DONE (code — DEF-3 fixed)** (SA-reviewed 2026-08-11 — tsc 0 reproduced; vars = RGB channel triplets matching the SA table (value-preserving), theme wrapped `rgb(var(--…)/<alpha-value>)`, all globals.css direct usages in `rgb()` (**bare-`var(--color-` outside rgb = 0**), 6 `bg-*/NN` sites intact + compose again, §3.5 greps=0. Visual confirm of the 6 → @Tanya. **REQ-041 items 1-5,7,8 code-done; item 6 CUT.**) · _rework:_ (Fern 2026-08-11: channel triplets + `<alpha-value>`, globals.css direct usages wrapped) · _prior:_ 🔧 REWORK (DEF-3, Tanya TEST_FAILED MAJOR — hex→bare-`var()` killed `bg-*/NN` opacity at 6 sites; SA fix-shape = triplets+`<alpha-value>`+wrap globals.css direct usages). · (SA-reviewed 2026-08-11 — gates cleared: §3.5 greps=0/no `default-*`; §3.3 focus instant; tsc 0; 100–600 swap value-preserving **confirmed by git diff**; flagged 6 undefined→colour sites → Tanya's pass surfaced DEF-3.) · (Fern 2026-08-11 — all 3 items done; DoD greps **all 0**; tsc 0 · build ok; hallmark verdict pasted in task. **Single source = CSS vars in `globals.css`**; Tailwind theme references them; `default`→`muted` (full 50–900, fixing a latent undefined-700/800/900 bug) via `-default-N`→`-muted-N` bulk (27 files, `variant="default"` untouched); 4 hex→`bg-paper`; 4 `transition-all`→`transition-colors`/`-shadow`; focus ring outline-based=instant. **Value-preserving → zero visual delta.** Mantine palette + pure-white surface left (redesign, out of scope); item 6 font HELD. Live visual-regression → @Tanya, SA UI-lens → Sober) | Fern | — |
+```

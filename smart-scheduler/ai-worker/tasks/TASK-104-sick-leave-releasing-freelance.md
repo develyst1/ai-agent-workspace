@@ -41,3 +41,12 @@ The manual fuel-allowance (ค่าน้ำมัน) path already exists — 
 - **`reconcileCoursePlan` untouched** — a sick-leave still appends a makeup, which draws on its own confirm ⇒ a
   sick-leave costs **1** freelance hour, not 2. **This resolves the TASK-093 owner-flag.**
 - Fuel allowance = manual `bo` EXPENSE (no code, already supported), left un-seeded. **DONE.**
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-104 | scheduling (BE): **owner reversal** — SICK_LEAVE no longer draws the freelance ceiling (`heldTarget(SICK_LEAVE)→0`; releasing not consuming; overturns TASK-028). Course append unchanged; fuel allowance = manual bo EXPENSE | SPEC-028 §11.1 | 🔎 **REVIEW** (Jason 2026-08-04 — tsc 0 · **434/0**. One-line classification change: dropped `SICK_LEAVE` from `FREELANCE_CONSUMING_STATUSES` (`freelance-budget.ts:36`) → `heldTarget(SICK_LEAVE)=0`, a CONFIRMED→SICK_LEAVE **refunds** the held hour. Reconcile-to-target machinery (TASK-091) untouched — only the status set. **`reconcileCoursePlan` NOT touched**: a sick-leave still appends a makeup, which draws on its own confirm ⇒ a sick-leave costs **1** freelance hour, not 2 (resolves the TASK-093 owner-flag). Tests flipped to the new rule: round-trip CONFIRMED→SICK_LEAVE→ATTENDED→SICK_LEAVE holds **1→0→1→0**, idempotency still green. Stale rule-comments in `freelance-budget.ts` + `scheduler.service.ts` updated; TASK-028 note points here — ✅ **DONE** Sober 2026-08-04: code-verified, tests **pin the new rule** (heldTarget(SICK_LEAVE)=0, reconcileDelta(1,·)=-1, round-trip [1,0,1,0]); reconcile machinery self-corrects from the one classification line; tsc 0 · 434/0 run by me. Resolves the TASK-093 sick-leave-2-hours flag) | Jason | — |
+```

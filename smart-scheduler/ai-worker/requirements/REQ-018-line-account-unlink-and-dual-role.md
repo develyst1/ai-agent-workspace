@@ -60,3 +60,12 @@ role/person. So the everyday "I linked the wrong thing" case is self-serviceable
    - (b) It happens → they should be able to **switch** between their two roles on demand.
    - (c) It happens → they should see **both** surfaces at once (biggest change).
 4. When someone is unlinked, should they get a **LINE message telling them** so it isn't silent?
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| ~~REQ-018~~ | ~~LINE account unlink + dual-role~~ | — | ⛔ **SUPERSEDED by REQ-020 (2026-07-30)** | Written as a DRAFT, then absorbed: unlinking/link-control is now part of the wider **REQ-020** (approval + collision + link control). Its open dual-role question carried over as REQ-020 Q3. File kept for history. |
+```

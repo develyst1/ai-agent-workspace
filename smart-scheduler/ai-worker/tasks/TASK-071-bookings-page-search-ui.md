@@ -151,3 +151,12 @@ Both tiny, both ride the same batch as this pair.
 assume. Routed to @Porter → คุณฟีน as a real question: keep deferred, or does she want it now?
 
 **TASK-071 → DONE.** Ships together with TASK-070.
+
+## Moved from board.md (2026-08-29 housekeeping)
+
+The board row below is reproduced verbatim as it stood before the 2026-08-29 compaction.
+Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
+
+```
+| TASK-071 | scheduler-front (FE): Bookings page — Courses/Vouchers search + paging, custom date range, one pagination component | SPEC-022 | ✅ **DONE** (Sober 2026-08-01 — one `PagerBar` across all three tabs, `Paged<T>` typed end-to-end, whole query object in the react-query key so filters re-query and reset to page 1, bulk-confirm + course-card sport untouched; tsc 0 / build ok. Her two environment limits — no phone in mock fixtures, every mock tab under one page — stated precisely rather than implied) — 🔴 **ships with TASK-070** | Fern | TASK-070 |
+```
