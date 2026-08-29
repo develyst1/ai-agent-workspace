@@ -1,122 +1,152 @@
 # smart-scheduler — PROJECT STATUS (resume-here / cross-machine memory)
 
 > **Source of truth for resuming on any machine.** git-synced, so it travels; local `.claude/memory/` does not.
-> Resume: `git pull` → `ai-worker/PROTOCOL.md` + your role file → this + `ai-worker/board.md` + the newest
-> `ai-worker/log/*.md` → act on your role's ball.
+> Resume: `git pull` → `ai-worker/PROTOCOL.md` + your role file → this + `ai-worker/board.md` → **the newest
+> `ai-worker/log/*.md`** → act on your role's ball.
 >
-> **Last updated:** **2026-08-23 (evening)** by Porter (PM). Human twin: `PROJECT-STATUS.html`.
-> Code repos: **`H:\scheduler`** · uat deploy paths: `C:\som-balance-project\{frontoffice,backoffice}\back\dist`
+> **Last updated: 2026-08-29** by Porter (PM), written as a **machine-move handoff**.
 
-## 🚦 Environments (owner's names — "prod" is not a word we use)
+---
+
+## 🖥️ MOVING MACHINES — read this first, it is the part that does not travel in git
+
+| what | where | travels? |
+|---|---|---|
+| code (4 repos) | `H:\scheduler\` — `smart-scheduler-back` · `-front` · `-backoffice-back` · `-backoffice-front` | ✅ git |
+| workspace / logs / board | `H:\ai-agent-workplace\ai-agent-workspace\smart-scheduler\` | ✅ git |
+| **`.env` in each repo** | repo root | 🔴 **NO — not in git. Copy by hand or nothing connects.** |
+| **which box `.env` points at** | decides whether you are on `sid` or `uat` | 🔴 **NO** |
+| Tanya's access file | `sm-test-access.txt` | 🔴 **NO** |
+| server job scripts | `C:\sm-jobs\*.ps1` **on each server** (not the dev box) | 🔴 lives on the servers |
+| local `.claude/memory/` | the old machine | 🔴 **NO — this file is the replacement** |
+
+**Branch: `develop` is canonical in every repo.** `dong` / `dong3` are dead.
+🔴 **`smart-scheduler-front` is SHARED with another team.** Check what exists on `develop` before building FE, or
+you rebuild what they already did — that cost a full revert on 2026-08-28.
+
+**First command on the new machine:** `bun run db:verify` in `smart-scheduler-back`. Not green ⇒ either the wrong
+box or the ledger needs `db:seed-ledger`.
+
+---
+
+## 🚦 Environments (the owner's names — "prod" is not a word we use)
+
 | | **`sid`** — the team builds & verifies here | **`uat`** — the customer's system |
 |---|---|---|
 | frontoffice | som.develyst.online | frontoffice.develyst.online |
 | backoffice | backoffice-som.develyst.online | backoffice.develyst.online |
-| who touches it | team verifies (owner deploys) | **owner only** |
+| server | 154.197.124.206 | 154.197.124.29 |
+| who touches it | team verifies (owner deploys) | **owner only — never QA, not even a GET** |
 
-**Migrations: `sid` first, verified, then `uat`.** Both boxes are now at **20/20 migrations, `db:verify` GREEN**.
+🔴 **Both boxes report identical `db:verify` numbers.** They cannot be told apart from that output.
+**Use `SELECT count(*) FROM course_packages` — `sid` ≈ 20, `uat` ≈ 201.** This cost two rounds of confusion.
 
-## 🚦 The UAT gate (owner's rule, 2026-08-19 — written into `PM.md` and `QA.md`)
-**Nothing reaches `uat` without BOTH Porter and Tanya green-lighting it**, and we carry that responsibility.
-Tanya answers *"does it work?"* from a run on the deployed `sid` build; Porter answers *"is it the right thing,
-is now the right moment, is the customer impact understood?"* **Not a green light:** code-complete · SA-reviewed ·
-tests pass · a dry run · "worked locally" · nobody objecting. A green light is a written block naming the build,
-what was tested, **what was NOT**, migrations, rollback, customer impact, and both names.
+## 🚦 The UAT gate (owner's rule, 2026-08-19)
 
-## Where we are (2026-08-23 evening) — READ THIS FIRST
+**Nothing reaches `uat` without BOTH Porter and Tanya green-lighting it.** Tanya answers *"does it work?"* from a
+run on the deployed `sid` build; Porter answers *"is it the right thing, is now the right moment, is the customer
+impact understood?"*
+**Not a green light:** code-complete · SA-reviewed · tests pass · "worked locally".
+A green light is a **written block** naming the build, what was tested, **what was NOT**, migrations, rollback,
+customer impact, and both names.
 
-**The customer is running their business on `uat`.** 137 students · 115 families · **60 imported courses**, ~43 of
-them created by them on 23 Aug alone. **Saturday and Sunday are their business; Mon–Fri are nearly empty.**
+## 🚦 DEPLOY ORDER — two of this project's outages came from getting this wrong
 
-### Shipped and live on BOTH boxes
-- **REQ-055 wave 1** — 111 students imported, zero duplicates.
-- **REQ-058** — 19 programs, every teacher linked. Adding a program is now one command (`subjects:add`).
-- **REQ-063** — **discount** on all five sale types, two posting moments, both proven in the ledger.
-- **REQ-064** — imported courses no longer append unbought sessions.
-- **REQ-065** — `1st Trial` removed from the program pickers.
-- **REQ-066** — every program has a 1-hour price (฿1,390).
-- **REQ-069 + REQ-067 Part B** — **week is Monday→Sunday** everywhere, teacher LINE schedule rewritten.
-- **REQ-060 Part A + Part B.1** — gender/nationality normalised on write, and the stored `Male`/`Thai`
-  rows repaired in place (`demographics:repair`, owner-run, both boxes).
-- **REQ-059** — the importer **UPDATES in place**; wipe-and-re-import is retired as the correction path.
-  Run on `uat` (divergent data — not sid-first).
-- **REQ-061** — Onewheel priced correctly; 10 h sellable; `SINGLE_SESSION` guard.
-- **Sale catalogue seeded on both boxes (22 items).** Before 08-22 **no sale had ever posted** — `sale:ensure-items`
-  had never been run. **It belongs in the standard deploy sequence.**
+1. **`db:migrate` → `db:verify` GREEN. Blocking.** `db:migrate` can print *"migrations applied successfully"* and
+   exit 0 having applied **nothing** — that took the customer's calendar down on 2026-08-24.
+2. If verify is red: **`db:seed-ledger`** (dry-run) → read it → `--apply` → `db:migrate` → verify.
+   **Needed on 4 of the last 6 migrations.** Safe: it derives from that box's own schema.
+3. **Restart BE → then FE.**
+4. **Confirm from the SCREEN, not from the deploy command.** A stale FE bundle passed for a fresh one on 2026-08-28.
 
-### In flight
-| who | what |
-|---|---|
-| **@Sober** | **REQ-068 + REQ-052 re-spec** — calendar cell + **display toggle** + **session note**, built ONCE |
-| **@Fern** | **TASK-167** (modal field alignment) → **TASK-176** (labels `1st Trial` / `1 HR`) |
+---
 
-### Owed by the owner
-`ชวินท์`'s ฿9,790 sale never posted (decide) · register an admin via the bot (REQ-049 AC-1) · 11 phone numbers +
-8 nationalities from the customer · REQ-066 AC-2 (฿1,390 posts at day-end — on `sid`).
+## Where we are — 2026-08-29
 
-### Parked / not built
-REQ-045 · REQ-047 · REQ-051 · REQ-062
-(blocked on: when do staff press `ยืนยัน + แจ้งเตือน Line`?) · REQ-035 · backoffice reads need no token (TASK-068) ·
-no build stamp anywhere (cost two round trips).
+**The customer runs their business on `uat`.** ~201 courses · 180 parents · 20 teachers.
+**Saturday and Sunday are their business; Mon–Fri are nearly empty.**
 
-## Two rules this week keeps teaching the hard way
-1. **Data being right and the screen showing it are different facts.** REQ-060 existed because gender was in the
-   database and **invisible in the product**. Check the screen, not the row.
-2. **"sid first" is load-bearing for MIGRATIONS and misleading for DATA IMPORTS.** `sid` holds the old-name
-   rehearsal, so re-running an import there **duplicates**. Config → both boxes. Divergent data → `uat` only.
+### ✅ Delivered and live on `uat` (the 2026-08-28/29 batch)
 
-## Go-live (REQ-055) — wave 1 DONE, wave 2 still blocked on the customer
-**Wave 1 = people. ✅ COMPLETE on `uat`.** Rules used: `0`-prefix phones (exactly 10 digits or held) · DOB sanity ·
-no-phone ⇒ held · parent-name rows donate the family name, never become students · **yellow excluded** ·
-day-by-day batches · row-keyed report.
-**Still outstanding from wave 1:** **11 students need phone numbers from the customer**; **2 are fixable in the
-sheet** (rows 69 `ยูจีน ธีภพ`, 109 `วุฒิ ปัญญาวุฒิ` — two phone numbers in one cell); 29 yellow rows deliberately
-excluded (`ยังไม่พร้อม`, owner-confirmed); the **24** rows that held `Male`/`Thai` are **repaired** (REQ-060 Part B.1, owner-run).
-**Wave 2 = the customer's real courses** — still blocked on **them**: program · package size · sessions used ·
-day+time · coach, per student. Their `Course` sheet is a progress tracker, **not** this data.
-Files: `project-docs/2026-08-22-student-list.csv`, `…-yellow-rows.txt`.
+- **FIX-007** — course expiry is **computed**, not typed: `start + MAX_WEEK[size]` weeks, where
+  **`MAX_WEEK = size + leaveQuota`** (4→5 · 6→8 · 10→13). Off-by-one fixed (week 1 **is** the start date).
+  Native courses repaired; **`source = IMPORT` deliberately NOT rewritten** — owner:
+  *"ลูกค้าเขาคิดบางอย่างมาดีแล้ว"*. That protected **164 real courses**.
+- **REQ-070 — `NO_SHOW` no longer exists.** Day-end marks an unmarked `CONFIRMED` session **`ATTENDED`**.
+  Owner's reasoning: the quota is cut either way, so the label was only a false claim about a child. Good vs
+  ordinary customers are separated by **CRM points earned at check-in**, not by the status.
+- **REQ-071 Drop / Pause** — a 5th status, resume with a new expiry, and **`SLOT_TAKEN` refuses rather than
+  double-books**.
+- **REQ-072 Confirm-whole-course** — bulk `PENDING→CONFIRMED` · LINE carrying the **leave DATES** · **the parent
+  is notified too** · **`sm-daily-reminder` at 08:15** (one message **per person**, idempotent per day, writes a
+  `job_runs` row).
+- **REQ-073** confirm popups at 5 sites (`มาเรียน` is the light one — click→Enter, no reason field) ·
+  **REQ-074** cancel a 1HR/Voucher using **REQ-036's shared reason enum** · **REQ-075** `Mon/Tue/Wed` + "Course".
+- **The `เรียนอยู่แล้ว (ย้ายข้อมูล)` dialog** — sizes 4/6/10 plus an explicit **off-card {size, quota}**; a
+  rejected size explains itself in Thai instead of a 500; expiry computed but still editable; closes on save.
+- **REQ-007** — a note on every booking type **and** it reaches the teacher on both a single-booking confirm and a
+  whole-course confirm.
+- Earlier: REQ-036 cancel-course · REQ-052/068 calendar cell + note + display toggle · REQ-063 discount ·
+  REQ-066 ฿1,390 for every program · REQ-069 Mon→Sun week · scheduled tasks on both boxes.
 
-## Open work, ranked
-1. **REQ-057** — scoped cleanup tool. **GO 2026-08-23 — the owner lifted his 08-22 hold; @Sober to cut.**
-   Target is **named**: student `Test` / parent `SOM Team` (0924912848), 1 Skateboard course (4/10 used) + its
-   bookings, sitting in the customer's system. ⚠️ **Building it is authorised; running it against `uat` is a
-   separate decision** — *"เราไม่ลบ…จนกว่าเขาจะแจ้ง"* still stands until the owner says otherwise.
-2. **REQ-068 + REQ-052 re-spec** — the calendar cell (program + booking type), the **display toggle** and the
-   **session note** are one cell and must be built **once**. TASK-142 is **not** ready to build until it is re-cut.
-   Palette approved, **no emoji, icons only** (AC-9). **@Sober — the longest open lane.**
-3. **`ชวินท์`'s sale is not in the books** — needs a targeted back-post; `recordSale` fires at sale time only.
-4. **REQ-051** (walk-in QR) — `READY_FOR_SA`, **nothing owed by the owner** (Q1 answered 08-16, Q2 resolved by
-   Porter: one QR for the centre).
-5. **REQ-062** (advance leave in LINE) — ⛔ **do not spec yet**: the picker filters `CONFIRMED` and course sessions
-   are born `PENDING`, so widening the date range alone would ship and do nothing. Owner owes Q4 — *when do staff
-   press `ยืนยัน + แจ้งเตือน Line`?*
-6. **REQ-049 AC-1** — owner registers an admin via the bot (`สมัคร` → 3 → `229`) so a leave notification has a
-   recipient. ⚠️ A link request is sitting *"รอการอนุมัติ"* — confirm whether that is the admin one.
-7. **REQ-060 Part B.2** (forgiving readers) — SPECced, **not cut**. LOW, FE+BE, needs Fern. Porter to schedule.
-8. **REQ-035** (sell-side stock + revenue) — owner's instruction: **last**.
+### ⏸️ Open — every one is PARKED BY THE OWNER, not forgotten
 
-## Deferred tests (grouped into wave-2 acceptance, named not dropped)
-REQ-053 AC-2 (crafted `PATCH` refusal — needs a real course) · REQ-054 AC-6 (reports read a course as one program) ·
-REQ-049 AC-1 (admin actually notified) · the LINE flows on `uat` itself.
+- **REQ-005 "other" booking type.** **Answered:** flexible per instance — charged **or not**, consumes an
+  entitlement **or not**, **with or without a student**; day-end auto-attends it like everything else.
+  🔴 **Unanswered, and NOT to be invented: (a) if charged, what price — a typed amount or a catalogue item;
+  (b) what names the calendar cell and the teacher's LINE line when there is no student** (Porter's lean: a short
+  required title such as *"ประชุมทีม"*).
+- **The six `REQ-BO` backoffice items** — link programs · dashboard · freelance ceiling · teacher salary · course
+  deduction from the frontoffice · cancel 1HR/Voucher from the back office. **Untouched, unplanned, the largest
+  thing left on the owner's list.**
+- **LINE reach: 2 of 20 teachers, 0 of 180 parents.** ⇒ the parent half of REQ-072 reaches nobody.
+  **Owner parked both** (*"ยังไม่ผูกช่างมันไปเถอะ"*). **Do not run a campaign at 180 families.**
+- **`ชวินท์`'s ฿9,790 sale** never posted — decide or leave.
+- **REQ-062** (advance leave in LINE) — probably unblocked now that Confirm exists, but the **owner still owes Q4**
+  (*when do staff press `ยืนยัน + แจ้งเตือน Line`?*).
+- **REQ-004 rental** — the owner's own status is *In Progress (Testing)*; the team has not touched it.
+- Low priority: TASK-218 per-recipient reminder idempotency · **the internal secret sits in plaintext in
+  `sm-jobs/*.ps1`, committed to git** · bulkConfirm multi-select fan-out · **REQ-057 cleanup tool is built but has
+  never been run on `uat`** (the `Test` / `SOM Team` household is still there).
 
-## Open questions owed by the owner
-- **REQ-062 Q4 — when do staff press `ยืนยัน + แจ้งเตือน Line`?** (at course creation / the day before / on the
-  day). It decides the whole design, because that button also **messages the parent**. **This blocks REQ-062.**
-- **11 students need phone numbers** from the customer (listed in `log/2026-08-22.md`), + 2 sheet cells to fix.
-- **`ชวินท์`'s ฿9,790 sale** — record it retroactively, or leave it?
-- ~~**REQ-061:** does the customer sell a plain 1-hour session on the bike/skate programs?~~ — **ANSWERED and
-  BUILT.** Yes: **REQ-066** put a 1-hour price (฿1,390) on every program including `bike-skate`, delivered to both
-  boxes 08-23. Closing it here so it stops reading as owner-blocked.
-- ~~REQ-051's three security decisions~~ — **NOT owed.** Q1 was answered 2026-08-16, Q3 is an SA question, and
-  Q2 (one QR or one per area) was resolved by Porter: **one QR**. Corrected 2026-08-22; it had been mis-listed as
-  owner-blocked for six days.
+### 🔴 Known-unverified — recorded as such, never as passed
 
-## Parked by the owner (his explicit decisions — do not re-raise)
-Dashboards + the 8-item meeting wishlist (REQ-033/034/036/039) · the `.dump` pushed to git (`0b8966c`) ·
-the two open DB whitelists (`49.237.170.101`, `110.171.40.169`) · `.env.local` pointing at `uat` ·
-`QA-prod-*` residue · REQ-056 (`สาขา`/`จังหวัด` are **badge names**, not untranslated strings — closed, not a defect).
+- **`notification_outbox` == 1 row on a LINE-LINKED recipient** — proven only on the *skip* path.
+  **If a family ever reports repeated messages on a confirm, look here first.**
+- **`PROGRAM_CHANGED` / `CUSTOMER_CANCELLED` end-reasons** were never individually round-tripped (identical
+  server-validated path to `ADMIN_ERROR`). **First place to look if a stored reason is ever wrong.**
+- **A scheduled 08:15 run has never been watched actually delivering** — our own tests consumed the day each time.
+- ⚠️ **The reminder guard eats the day: a manual trigger before 08:15 silently cancels that day's reminders for
+  real families.** **Do not trigger it manually on `uat` in the morning.**
+
+---
+
+## The rules this project keeps re-learning
+
+1. **Check the OUTCOME, not the mechanism.** *"It computes"* (the number was wrong) · *"the key exists"* (missing
+   from the dictionary) · *"a source-aware branch exists"* (it still rewrote every import) · *"the value survives
+   the schema"* (the row never landed). **Every one of those passed a review and failed on first contact with
+   reality — and the owner caught most of them by looking at the actual value on the actual screen.**
+2. **Data being right and the screen showing it are different facts.**
+3. **A value a human typed is a hypothesis about their business, not an error in our data.** The owner has stopped
+   the team rewriting customer data twice; the second time it was **164 courses**.
+4. **Migration before code. Always.**
+5. **Two numbering systems and two vocabularies.** The owner keeps his own list (REQ-001…012, FIX-001…007); the
+   board runs REQ-001…075. **Quote his numbers to him; use board numbers in tasks.** And **name things by the
+   label on the screen** — he could not recognise his own request after Porter renamed it.
 
 ## Team & workflow
-PM=Porter · SA=Sober · BE=Jason · FE=Fern · QA=Tanya. Chain: Human→Porter→Sober→(Jason/Fern); QA hangs off Porter.
-Everything lives in `ai-worker/`. **Write the log entry in the day's file** — a status without an owner, or work
-without a log line, is how three items went missing this week.
+
+PM=Porter · SA=Sober · BE=Jason · FE=Fern · QA=Tanya.
+
+🔴 **Chain: Human → Porter → Sober → (Jason/Fern). QA hangs off Porter.**
+**Porter does NOT hand work straight to Jason or Fern** — that removes the lead who decides order, and it left him
+running a stale queue.
+
+**Orders live in TODAY's dated log** (`ai-worker/log/YYYY-MM-DD.md`), never a previous day's file. Porter appended
+to a three-day-old file once and Sober parked live work because he could not find the current priority.
+**Keep order entries SHORT** — a two-line instruction buried in forty lines of reasoning does not get read.
+
+**Tanya MAY write on `sid`** (board 154-159, answered by คุณฟีน 2026-08-04): remove what she creates, declare the
+footprint in the TEST file, never touch data she did not create, never restart or redeploy. **`uat` is never
+hers.** A QA fixture is retired with **cancel + `ADMIN_ERROR`** — there is still no course-delete anywhere.

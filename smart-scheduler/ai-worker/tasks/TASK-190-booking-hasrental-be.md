@@ -2,7 +2,7 @@
 
 - Source: TASK-142 Q1 (Fern). 🟢 **LOW** — the calendar cell's `rental` toggle item is inert because the booking DTO
   carries no rental marker. Not urgent; 142 ships without it (interim-inert). BE-only, no migration.
-- Status: TODO → @Jason (BE)
+- Status: 🔴 **REDO on develop (Sober 2026-08-28)** — branch settled (dong≡develop); hasRental confirmed absent from develop BE (grep=0). Re-apply the TASK-190 change on develop → unblocks TASK-194. → @Jason
 - Repo: **smart-scheduler-back**.
 
 ## What & why
@@ -27,3 +27,69 @@ rental" is derivable.
 (Jason fills in. FE TASK-142 already has the toggle item + slot; it just needs the field to render a marker. Confirm
 the FE booking type/mapper carries `hasRental` through — the response-mapper omission class has bitten this feature set
 four times.)
+
+## Implementation Notes
+**Files:** `services/scheduler.service.ts` (`bookingsWithRentals` + 3 call sites) · `db/mappers.ts`
+(`toBookingDTO` takes `opts`) · `services/checkin.service.ts` · `types/contract.ts` ·
+`db/mappers.test.ts` (+4) · `services/plan-session-row.test.ts` (+4).
+
+**One query per read, never one per booking.** `bookingsWithRentals(ids)` returns a `Set`, resolved **before**
+the mapping loop — a calendar week is ~90 bookings, so a per-booking lookup would be ~90 round trips to render
+a grid that otherwise reads in three. There is a test asserting the call sits *before* the loop, not just that
+it exists: "batched" is an ordering property, and a helper called from inside a loop would still pass a
+presence check.
+
+**🔴 A rental is identified by its PRODUCT CODE, not by the movement's reason.** Every sale posts
+`reason = "SALE"`, so matching on reason would mark **every sold course** as having a rental. The join is
+`bo.item.external_ref ∈ RENTAL_CODES`, and the codes come from `sale-items.ts` — a fifth rental code added
+there is picked up here with no second list to update.
+
+**Presence only, deliberately.** No code/hours/amount on the booking: the ledger already owns rental detail, and
+a second home for it would drift the first time a rental was edited. There is a test asserting no
+`rental*` field leaks onto the DTO.
+
+**Every read path sets it, so the field can't be right in one place and wrong in another** — calendar, paged
+list, single booking and check-in all resolve through the same helper. The one caller that doesn't is course
+creation, and that is correct *by construction*: those bookings don't exist until the transaction returns them,
+so nothing can have rented against them yet. That reason is in the code, not left as a bare default.
+
+**📌 TASK-184's guard bit me, on this task.** I first anchored the new contract field on the wrong
+`attendeeNote:` line and put `hasRental` on **`PlanSessionRow`** instead of `BookingDTO` — `tsc` failed
+immediately with "Property 'hasRental' is missing". Before TASK-184 that would have compiled and shipped as a
+plan session carrying a field nobody set. Worth recording that the guard caught its own author within a week.
+
+**Verified:** `bunx --package typescript@5.6.3 tsc --noEmit` **0** · `bun test` **814 pass / 0 fail** (+8). No
+migration. ⚠️ I ran nothing against a database, so the rental join is un-exercised against real rows.
+
+**DoD:** `hasRental` true iff a rental references that booking ✅ · present on the calendar path (and every
+other read path) ✅ · no N+1, asserted by ordering ✅ · tsc/test ✅.
+
+### ⚠️ @Fern — the FE half is NOT done, and the task asked me to confirm it
+`smart-scheduler-front/src/types/app/scheduler/index.ts` `Booking` has **no `hasRental`**, and its response
+mapper therefore can't carry one. That is the same omission class TASK-187 just turned into a compile error —
+so add it as a **required** field (like `nickname`/`badges`) and the guard will force the mapper to set it. The
+BE field is live now; the cell's fifth toggle item stays inert until that lands.
+
+## Review — ✅ PASS (Sober 2026-08-25)
+Reproduced tsc 0 · `bun test` **814/0** (+8). `hasRental` is derived from the bo rental movements in **one batched
+query** (`inArray(boMovement.refId, ids)` + `inArray(boItem.externalRef, RENTAL_CODES)` → a `Set`, `scheduler.service
+.ts:407-416`), consumed via `rented.has(row.id)` in every calendar mapping path (`:387/:459/:764`) — **no N+1**, exactly
+the ask. `toBookingDTO` takes it as an option defaulting `false` ("correct by construction, not omission", `:1321`).
+On the wire contract (`contract.ts:180`). Cross-schema read of `bo.*` is read-only, which the ownership rule allows.
+Clean. FE side carries nothing yet → **TASK-194** threads it + renders the marker (the cell's 5th toggle is inert until
+then, as you noted).
+
+## Rebuild 1 — 2026-08-28 (the branch-crisis casualty, restored)
+This work was lost with the uncommitted tree; Porter's inventory confirmed `hasRental` was the lone BE
+casualty. **Rebuilt on `develop` exactly as reviewed** — `bookingsWithRentals(ids)` returning a Set, resolved
+before the mapping loop; the product-code join (`bo.item.external_ref ∈ RENTAL_CODES`, never the movement's
+`reason`, which is `"SALE"` for every sale and would mark every sold course as rented); presence-only on the
+DTO; all four read paths (calendar · paged list · single · check-in) through the one helper; course creation
+keeping the `false` default by construction, with the reason at the site. Tests restored too, including the
+**ordering** assertion — "batched" is an ordering property, and a helper called inside the loop would pass a
+presence check.
+
+**Verified:** tsc **0** · `bun test` **831 pass / 0 fail**.
+⚠️ **@Fern — the FE half is still not done:** `smart-scheduler-front/src/types/app/scheduler/index.ts`
+`Booking` has no `hasRental`, so its mapper can't carry one. Add it **required** (like `nickname`) and
+TASK-187's guard forces the mapper to set it. TASK-194 is unblocked on the BE side as of now.

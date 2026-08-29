@@ -71,3 +71,29 @@ hotfix**, not merely a pre-deploy blocker.
 (SA Lead asks here; Porter answers as `> answer: ...`. Per stakeholder standing rule: if anything
 is unclear or a business/scope question arises, write it here and route `@Porter` before building —
 do NOT guess or decide it yourself.)
+
+---
+## ⚠️ REQ-005 "booking type OTHER (อื่นๆ)" — SA questions-first (Sober 2026-08-29)
+> Note: the owner's actual 2026-08-29 request is **"การจองลงตาราง แบบ other (อื่นๆ)"** — a new booking type. (Filed
+> here as the nearest REQ number Porter routed; Porter to confirm the canonical REQ id.)
+
+**Grounded from code (what a new `OTHER` type would touch):**
+- `booking_type` is a pg enum `FIRST_TRIAL · SINGLE_SESSION · COURSE_PACKAGE · VOUCHER` (`schema.ts:40`) — **no OTHER**.
+  Adding it = a **migration** (enum alter) + a label (both dicts) + a cell colour/icon (REQ-052 token set).
+- `createBooking` requires `courseId` for COURSE_PACKAGE and `voucherId` for VOUCHER; FIRST_TRIAL/SINGLE_SESSION are
+  standalone. An OTHER would presumably be **standalone** (no entitlement) — but confirm.
+- Day-end (`jobs.service`): FIRST_TRIAL/SINGLE_SESSION auto-attend + **post revenue at ATTENDED** (REQ-063/070). Whether
+  OTHER posts revenue is the biggest unknown.
+- Confirm sends a teacher LINE; an OTHER on the calendar would presumably show + notify — confirm.
+
+**🔴 Owner questions (route via @Porter — do NOT invent a price or a rule, Porter's instruction):**
+1. **What IS "other"?** A non-teaching block (meeting/holiday/maintenance)? A walk-in lesson with no package? A
+   placeholder? The intent shapes every answer below.
+2. **Charged?** Does OTHER post revenue at day-end when attended (like SINGLE_SESSION), or is it free / no-revenue? If
+   charged, at what price (there is no card price for "other") — his number, not ours.
+3. **Consumes an entitlement?** Standalone (like SINGLE_SESSION), or draws on a course/voucher?
+4. **On the teacher's LINE schedule + a confirm LINE?** Or an internal-only calendar block?
+5. **Day-end:** does auto-attend touch it (mark ATTENDED / consume quota), or is it inert?
+
+**Until #1–#5 are answered, this stays a spec, not a build** — the answers decide the enum's behaviour, the migration,
+and whether it's a revenue path (which we never guess). SA will cut BE+FE tasks once the owner responds.

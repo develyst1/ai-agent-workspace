@@ -1,0 +1,53 @@
+# TASK-215: Import SAVE schema strips `leaveQuota` → off-card import can't save (import-form batch) (scheduler-back)
+
+- Source: TASK-214 trace (Fern). 🔴 Small but BLOCKS the off-card save shipped in TASK-213/214. On `develop`. No schema.
+- Status: ✅ **BE DONE (Sober 2026-08-29)** — TWO lines (leaveQuota + expiryDate-optional, TASK-213 edit never applied); save schema round-trip proven + preview/save-parity guard test. tsc 0·930/0. Off-card save unblocked (FE 214). 🔴 row-in-Postgres = Tanya/owner sid.
+- Repo: **scheduler-back**.
+
+## The gap (attributed)
+`leaveQuota` is declared on `importCoursePreview` (`validation.ts:577`) but **not on the SAVE schema
+`importCoursePackage` (`:496`)**, which has no `.passthrough()`. So **zod strips `leaveQuota` on save** → the service's
+`input.leaveQuota` is `undefined` → `decideImportSize(size)` with no quota returns `ok:false` → **an off-card import is
+refused "fill in the leave quota" even though the staff member filled it in.** Preview accepts it, save drops it — the
+field is present on both ends and absent from the contract in the middle (TASK-170/204 class).
+**Whose:** TASK-213 added `leaveQuota` to preview, not save; **and my TASK-213 review verified `decideImportSize` but not
+the off-card SAVE round-trip** — mechanism, not outcome, again. Fern caught it by tracing the round trip.
+
+## Fix
+- Add `leaveQuota: z.coerce.number().int().min(0).max(20).optional()` to `importCoursePackage` (`:496`) — identical to
+  the preview line. That's the one line.
+
+## DoD — the OUTCOME (an off-card course actually saves)
+- [ ] 🔴 An **off-card import with a stated quota SAVES** (round-trip: request → service sees `leaveQuota` → course
+      created with the derived expiry) — a test that the save path receives the quota, not a schema unit test alone.
+- [ ] 4/6/10 (no quota) still saves. `bunx --package typescript@5.6.3 tsc --noEmit` 0 · `bun test` green.
+
+## Notes
+(Jason fills in. One line + one round-trip test. Unblocks TASK-214's off-card save.)
+## Implementation Notes
+**Files:** `validation.ts` (the import save schema) · `src/validation.import.test.ts` (new, 8).
+
+**It was not one missing line, it was two — and the second one is worse.** Fern found `leaveQuota` missing from
+the save schema. Checking the file showed **`expiryDate` was still required** as well: *neither* of TASK-213's
+two edits to that schema had actually applied. My task notes claimed "`expiryDate` is now optional on the
+import schema" — **that claim was false when I wrote it.**
+
+**How it happened, plainly:** both edits were text substitutions that printed no error, and I took "no error" as
+"applied" instead of reading the file back. Then my tests exercised the pure rule (`decideImportSize`) and never
+the schema that feeds it, so 922 tests passed over a feature that could not save. That is the same
+mechanism-not-outcome miss we have both been naming all week, in my own work, one layer below where I was
+looking.
+
+**The fix is the two fields. The deliverable is the test that would have caught them:**
+- the save schema **keeps** `leaveQuota` (including `0`, which is a real answer, not a missing one);
+- the value that survives the schema is the one `decideImportSize` then accepts — **the two halves asserted
+  together**, because either half alone passed while the feature was broken;
+- `expiryDate` omitted parses, and a typed date is carried through;
+- 🔑 **every field the preview schema accepts is also accepted on save.** The gap was exactly that one schema
+  learned a field and its twin did not; this is the cheapest thing that catches the next one.
+
+**Verified:** `bunx --package typescript@5.6.3 tsc --noEmit` **0** · `bun test` **930 pass / 0 fail** (+8).
+No migration (`0026` from TASK-213 still carries the column).
+
+⚠️ **Still not the full outcome:** these prove the value survives the *schema*, not that a row lands in Postgres.
+The off-card save on `sid` is Tanya's/the owner's check, with `0026` applied.
