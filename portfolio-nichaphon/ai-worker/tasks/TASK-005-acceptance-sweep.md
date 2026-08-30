@@ -1,7 +1,7 @@
 # TASK-005: Acceptance sweep before handover
 
 - Source: SPEC-001
-- Status: REVIEW
+- Status: DONE
 - Owner: Fern (FE)
 - Depends on: TASK-004 (DONE 2026-08-30 — this task is ungated)
 
@@ -82,7 +82,12 @@ edited files on `develop`.
     the owner's eye, and this sweep is how they reach him.
     (a) **The hero grows past the fold at short viewports.** `min-height: 100dvh` is a
     floor and the copy is taller than it at 1280×600 (790px vs 600) and 360×740 (769.56
-    vs 740), so the primary CTA sits below the fold there. Capture `/` at **1280×600**
+    vs 740), so the primary CTA sits below the fold there.
+    **CORRECTED 2026-08-30 by Sober (FQ9), from the run recorded below: that last clause
+    holds at 1280×600 ONLY. At 360×740 both CTAs and the hero quote are fully above the
+    fold (CTA 619.56–663.56 against a 740 fold) and the 29.56px overhang is the hero's
+    bottom padding, not content. The owner is asked about 1280×600 only.**
+    Capture `/` at **1280×600**
     and **360×740** at scroll 0 and say what is visible above the fold at each — CTA in
     or out. If a screenshot is impossible, say so and quote the rects instead.
     (b) **A 1px band of page ground above the aurora, at scroll 0 only.** `header` is
@@ -498,6 +503,88 @@ display-scale `h1` now applied to all five out-of-scope routes, and the correcti
    not tick it from a code read. Every mover on `/` is covered by a rule (evidence above).
    Route it to the owner the way checks 18/19 were routed, or leave it open?
 
+   > **answers — Sober (SA), 2026-08-30. All four: you were right not to fix any of them.**
+   >
+   > **FQ9 — corrected, in check 20(a) above.** Your browser beats my prose: I wrote the
+   > premise from TASK-004's rects and generalised one viewport's result to both. The check
+   > text now says 1280×600 only, so the owner is not sent looking for something a phone
+   > does not show. **Nothing to redo** — this is the correction landing where the owner
+   > will read it. The 1280×600 case still goes to him, as item **C** in §Review below.
+   >
+   > **FQ10 — not fixed under REQ-001, and not silently accepted either: it goes to the
+   > owner as a scope question (item F).** SPEC-001 §Non-functional binds contrast on `/`;
+   > REQ-001's acceptance for the other five is only that they "still render". So this
+   > breaks no bar we agreed. But it is a **regression this REQ caused** — Mantine's default
+   > `red` was legible on the old light ground and is 4.37:1 on the new one — and I will not
+   > let a regression pass as "out of scope" without the owner hearing it. The fix is a
+   > token re-point (`theme.ts` `red` ramp), which is mine to make but repaints error text
+   > on all five out-of-scope routes; that is exactly the blast radius REQ-001 said it would
+   > not take. **No TASK now.** Recorded in SPEC-001 §Follow-ups for the routes REQ.
+   >
+   > **FQ11 — same route, and thank you for calling it a change rather than "still old".**
+   > It is a foreseen consequence of the layering, not a defect: SPEC-001 §Overview layer 1
+   > deliberately made the token layer global, and §Token layer set `h1: clamp(3rem, 11vw,
+   > 8.5rem)` knowing every route reads it. R8 promised those routes would still *render*,
+   > not that they would look untouched. Whether a ~136px `/about` headline is acceptable
+   > groundwork or wants containment until those routes are rebuilt is the **owner's
+   > aesthetic call, not mine to assume** — item **G**. Containment, if he wants it, costs a
+   > per-route h1 scale = a SPEC change plus a re-verify of five routes; I am not scoping it
+   > on spec.
+   >
+   > **FQ12 — route it, exactly the way 18/19 were routed; the task does not stay open for
+   > it.** Item **A**. Your CSSOM enumeration is the right substitute evidence and I checked
+   > it against the source: every mover on `/` sits in a file that carries a
+   > `prefers-reduced-motion: reduce` block (`globals.css`, `SiteHeader`, `SiteFooter`,
+   > `HomeHero`, `HomeCapabilities`), and `respectReducedMotion: true` covers the Burger.
+   > Coverage is verified; the behavioural look needs an OS switch neither of us has.
+
 ## Review
 
-(Sober fills this in at REVIEW.)
+**Verdict: DONE** — Sober (SA), 2026-08-30.
+
+19 checks run and passed; check 16 NOT-RUN for a stated environmental reason with rule
+coverage verified instead and the behavioural look routed to the owner. No source file
+changed — corroborated independently: the human has since committed this REQ's work
+(`566d466`, `2ef36ec`, `0211d44` on `develop`), and HEAD's file set is **16 files = your
+12 modified + 4 untracked**, so nothing entered the tree during this sweep. Working tree
+is now clean apart from `front/.next.zip`, which is the human's, not ours.
+
+What makes this a pass rather than a tick-through: every check reports an observation, the
+two carried-over checks (18/19) were actually run in a painting browser, the three method
+limits are stated rather than buried (scripted activation at mobile, no synthetic `Return`,
+the valid `mailto:` submit deliberately not fired), and you corrected my own check text
+instead of matching the browser to it. Spot-checked against the repo, not taken on trust:
+old-identity grep 0 hits in `front/src`; `header` `border-bottom: 1px solid transparent`
+vs `--site-header-height` 64/72px — the 1px is real and by construction; dark-block
+`--site-cta-bg/-hover/-fg` = `iris[4]`/`iris[3]`/`obsidian[9]`, the SA-OWN-1 corrected
+values behind your 5.11/7.08; exactly two `PullQuote`s on Home (`q4` hero, `q2` band).
+
+**Owner-eye checklist — the handover package for Porter.** Seven items no agent on this
+team can settle. Detail is in this file; Porter takes these to the owner, in Thai.
+
+- **A — reduced motion (check 16).** With the OS reduced-motion switch ON, load `/`: the
+  hero should not animate in and nothing should move. Coverage is proven; the look is not.
+- **B — the 1px band (check 20(b)).** At scroll 0, is a thin dark rule visible along the
+  very top edge, at 1280 and at 360? Measured step 1.15–1.43:1, up to +37R/+20G/+86B. If he
+  sees it, the remedy is a SPEC decision (most likely the header hairline becomes a
+  `box-shadow` so it stops adding to the bar's box) — not a one-off `+1px`.
+- **C — the hero at a short desktop window (check 20(a), corrected).** At 1280×600 both
+  CTAs and the hero quote are below the fold and the lead paragraph cuts mid-sentence.
+  **On a phone (360×740) they are not** — that half of the original premise was wrong.
+- **D — `/contact` real send (check 4).** A valid submit was deliberately not fired; it
+  sets `window.location.href = mailto:…` and would launch his mail client. Unchanged code
+  (empty diff), but only he can send one for real.
+- **E — skip-link activation by keyboard (check 13).** Ring, tab order and pointer
+  activation all verified; `Enter` specifically could not be dispatched through the
+  automation layer. One keystroke for him.
+- **F — `/contact` required-field asterisk is 4.37:1** (three instances, Mantine's default
+  red on the new dark ground). Caused by this REQ, out of its Home-only scope, no bar
+  broken. Scope question: fold into the routes REQ, or its own small one?
+- **G — the display `h1` now applies to all five out-of-scope routes** (`/about` ~136px).
+  Intentional groundwork from the global token layer. Leave it, or contain it until those
+  routes are rebuilt (SPEC change + five-route re-verify)?
+
+**All five TASKs of SPEC-001 are DONE.** SPEC-001 → `DONE`, REQ-001 → `SPEC_DONE` on the
+board. Porter owns the next step: the owner's acceptance check, which includes the three
+criteria only he can tick — that `/` no longer reads as "like Claude" and reads as his own,
+and his confirmation of Porter's English for quote `q2`.

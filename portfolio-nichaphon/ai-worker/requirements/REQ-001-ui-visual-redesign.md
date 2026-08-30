@@ -1,6 +1,6 @@
 # REQ-001: Visual identity rebuild — Home page first
 
-- Status: IN_SPEC
+- Status: SPEC_DONE
 - Priority: HIGH
 - Requested: 2026-08-30 by the human (stakeholder / site owner)
 - Deadline: none given
@@ -335,3 +335,145 @@ The system must:
 - None. Everything the owner owes this REQ is answered; the only item still
   needing him is his **confirmation of Porter's English** for quotes 1–3, which
   happens at the Home review (see Acceptance Criteria), not before.
+
+## Home acceptance review — issued 2026-08-30 by Porter
+
+The five TASKs of SPEC-001 are DONE and the SA handed over an owner-eye package
+(items A–G in `tasks/TASK-005-acceptance-sweep.md` §Review). Porter put the list
+to the owner **in Thai, in chat**, on 2026-08-30. Nothing here is decided by the
+team; each line is answered by the owner and recorded below as `> answer: ...`.
+Until every blocking item is answered, REQ-001 stays `SPEC_DONE` — **not**
+`DELIVERED`.
+
+How he looks at it: the work is on `develop` in `portfolio-nichaphon-web`
+(absolute path: workspace-root `machine.local.md`), run `cd front && npm run dev`
+→ http://localhost:3000. The human has already committed this REQ's work
+(`566d466` and earlier) — no team member commits, deploys or runs `pm2`.
+
+**Blocking — an acceptance criterion cannot be ticked without it:**
+
+- **AC1 — the identity call.** Does `/` no longer read as "like Claude", and does
+  it read as his own? (Acceptance criteria 1–3.) One word is enough; if "no", the
+  reason is the next REQ's starting point.
+  > answer:
+- **AC2 — Porter's English for quote 2**, the only translated quote rendered on
+  Home: `I don't work "for" anyone. I work "with" them.` Approve it, or paste his
+  replacement string (his wins). Quotes 1 and 3 are not on Home; their English
+  stays unconfirmed until a route that shows them ships. The **Thai** is settled
+  (Q12) and is not reopened here.
+  > answer:
+
+**Owner-eye observations — things no agent on this team can settle (A–E). Each
+is a look/one-keystroke check on his own machine; none has been "fixed" by the
+team, and none is presumed a defect until he says so:**
+
+- **A — reduced motion (check 16).** OS reduced-motion switch ON, load `/`: the
+  hero should not animate in and nothing should move. The CSS rule coverage is
+  proven; the *look* was never run — the flag is not emulable in the team's
+  environment.
+  > routed to QA 2026-08-30 (see §QA round). Answer only if Tanya reports NOT TESTED.
+  > answer:
+- **B — the 1px band (check 20(b)).** At scroll 0, is a thin dark rule visible
+  along the very top edge, at 1280px and at 360px? Measured, so it is really
+  there: contrast step 1.15–1.43:1. Whether it is *objectionable* is his call. If
+  it is, the remedy is a SPEC decision for Sober, not a one-off `+1px`.
+  > answer:
+- **C — the hero in a short desktop window (check 20(a)).** At 1280×600 both CTAs
+  and the hero quote fall below the fold and the lead paragraph cuts mid-sentence.
+  **On a phone (360×740) they do not** — that half of the original premise was
+  wrong and was corrected. Acceptable, or should the hero shrink at short heights?
+  > evidence routed to QA 2026-08-30 (see §QA round); the accept/reject call stays yours.
+  > answer:
+- **D — `/contact` real send (check 4).** The team deliberately did **not** fire a
+  valid submit: it sets `window.location.href = mailto:…` and would launch his
+  mail client. The code is unchanged by this REQ (empty diff). Only he can send
+  one for real and confirm it still works.
+  > answer:
+- **E — skip-link by keyboard (check 13).** Focus ring, tab order and pointer
+  activation are verified; `Enter` specifically could not be dispatched through
+  the automation layer. One keystroke for him: Tab once on `/`, press Enter, does
+  focus land on the main content?
+  > routed to QA 2026-08-30 (see §QA round). Answer only if Tanya reports NOT TESTED.
+  > answer:
+
+**Scope questions — business calls, not defects (F–G). Both were caused by this
+REQ and both are outside its Home-only scope, so neither was changed:**
+
+- **F — `/contact` required-field asterisk is 4.37:1** (three instances; Mantine's
+  default red on the new dark ground). No acceptance bar in this REQ is broken.
+  Fold it into the five-routes REQ, or raise it as its own small REQ now?
+  > answer:
+- **G — the display `h1` now applies to all five out-of-scope routes** (`/about`
+  renders ~136px). Intentional groundwork from the global token layer. Leave it as
+  the preview of the new identity, or contain it to Home until those routes are
+  rebuilt? Containing it is a SPEC change plus a five-route re-verify — real work,
+  so it is his call, not a tidy-up.
+  > answer:
+
+**Not asked, on purpose:** nothing about the other five routes' design, and no
+new scope. Home approval (R6) is the gate to the follow-up REQ; that REQ is
+written only after AC1 is answered.
+
+## QA round — brief for Tanya, issued 2026-08-30 by Porter
+
+The project now has a QA role. The owner's words on 2026-08-30, verbatim:
+`ok ลองดูมี QA ละ` — "ok, let's try it, we have QA now." That is an instruction to
+put this REQ through an independent QA round, not a change to the requirement.
+Nothing below is new scope: every item is already an acceptance criterion or an
+already-issued review item in this file.
+
+**Why an independent round when TASK-005 already swept.** TASK-005 was the
+builder's own evidence run, reviewed by the SA. QA is the first pass by someone
+who did not build it and does not read the diff to decide. Tanya re-runs the
+browser checks herself; the team's earlier results are context, not evidence she
+may tick from.
+
+**Scope: Home (`/`) only, local only** (`cd front && npm run dev`). Production is
+the owner's alone. The five out-of-scope routes are checked for regression only
+(R8) — they may look old, they may not be broken.
+
+**QA verifies (objective — these are REQ §Acceptance Criteria):**
+
+- Dark-only render and **no light/dark toggle in the header** (R10).
+- Any quote rendered on Home matches R5 **character-for-character**, and **at
+  least one but not all four** quotes appear (R5).
+- **Nothing from the reference screenshot's own content** is on the page — no
+  `150+`, no `12Years`, no filler paragraph, no other brand's name (R9).
+- Recurring components are visibly different in shape/style, not recoloured
+  (R1) — reported as observation + screenshot, not as a verdict on taste.
+- `npm run build` clean; `/` served with **no console errors** (R7).
+- **Regression (R8):** all six routes reachable from header and footer, mobile
+  drawer included; no 404; nothing on the five old routes renders broken
+  (invisible text, white-on-white, missing border).
+- Desktop **and** mobile viewports, with screenshots for each.
+
+**Three items are moved off the owner's list to QA — attempt them, and if the
+environment genuinely cannot run one, the verdict is `NOT TESTED` and it goes
+straight back to him.** Do not tick any of them from a code read:
+
+- **A — reduced motion.** With the OS/browser reduced-motion preference on, `/`
+  must not animate in and nothing may move. Previously marked not-runnable by
+  the team; QA attempts it.
+- **C — hero at a short desktop window (1280x600).** Capture what falls below the
+  fold at 1280x600 **and** at 360x740. **The accept/reject call stays the
+  owner's** — QA supplies the picture so he decides from evidence, not from
+  resizing his own window.
+- **E — skip-link by keyboard.** On `/`, press Tab once then Enter; report where
+  focus lands. `Enter` specifically could not be dispatched before.
+
+**QA does NOT decide these — they stay with the owner, unchanged:**
+
+- **AC1** (does `/` read as his own) and **AC2** (Porter's English for quote 2):
+  business/taste calls, his alone.
+- **B** (is the 1px top band objectionable): measured already; the judgment is his.
+- **D** (`/contact` real send): fires his mail client. QA must not send one.
+- **F** and **G**: scope questions, not defects.
+
+**Deliverables to Porter:** `tests/TEST-NNN-*.md` per the QA template, screenshots
+saved under `../project-docs/` and referenced by path, one verdict
+(`TEST_PASSED` / `TEST_FAILED` / partial stated as partial), and the first
+`tests/REGRESSION.md`. Defects are reported, never fixed — a `TEST_FAILED`
+routes to Sober as a REQ-level concern, never to the engineer.
+
+**Gate:** a QA verdict does not replace the owner's sign-off. REQ-001 goes
+`DELIVERED` only when AC1 + AC2 are answered by him **and** QA is not failing.

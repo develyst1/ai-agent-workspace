@@ -48,6 +48,25 @@ logged didn't happen.
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-08-30 — portfolio-nichaphon: NEW QA role "Tanya" added (additive workforce
+  change designed by Atlas, human-approved) via spawned PM (Porter), verified by
+  Marie. Pre-flight: no dispatcher run mid-flight (run -h stopped hop 3/4, ball to
+  HUMAN; the QA request was explicitly routed out of dispatcher/PM scope to
+  Atlas+Marie). Created `QA.md` (byte-identical to Atlas's draft, diff verified) +
+  `tests/.gitkeep` (empty, mirrors requirements/specs/tasks). Five PROTOCOL.md
+  edits verified coherent: team-table row, Human↔PM↔Tester chain prose, allowed-pair
+  row + routing-violation bullet, TEST verdict statuses (IN_TEST→TEST_PASSED|
+  TEST_FAILED, NOT_TESTED; only Tanya sets them), and the final paragraph rewritten
+  from "no QA role" to the local-only-Playwright QA paragraph (semantic-preserving,
+  production still human-only, human keeps final sign-off). PM.md: `@Tanya` contact +
+  verdict/screenshot relay added, other boundaries unchanged. board.md: Team line +
+  "no QA role" parenthetical corrected, state-only "## QA / Tests" table added.
+  Design constraint held: frontend-only, local-only, NO dev server (differs from
+  smart-scheduler's Tanya — not copied), NO DB, production off-limits. Gate:
+  `node check-hygiene.mjs portfolio-nichaphon` → PASS (1 WARN: today's log 9 entries
+  >20 lines — pre-existing append-only item, logs untouched). No git run. No
+  REQ/SPEC/TASK/code/log touched.
+
 - 2026-08-29 — smart-scheduler housekeeping DONE via spawned PM (Porter).
   board.md 432.1KB → 39.2KB (40,103 B), 280 over-long cells → 0, absolute paths
   → `machine.local.md`. Verbatim archive `archive/board-2026-08-29-pre-compaction.md`

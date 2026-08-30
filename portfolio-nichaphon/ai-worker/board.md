@@ -22,10 +22,12 @@
 - As-built survey (read-only, gathered before the team existed):
   `../project-docs/as-built-survey-2026-08-29.md`. It is source material, not a
   requirement — Porter still writes the first REQ from the human's words.
-- Team: Porter (PM) · Sober (SA Lead) · Fern (FE — the only engineer).
-  **No BE role** (no backend exists) and **no QA role** (the human is the
-  acceptance tester, via Porter). If a backend ever appears, that is the
-  human's scope decision, not a team improvisation.
+- Team: Porter (PM) · Sober (SA Lead) · Fern (FE — the only engineer) ·
+  Tanya (QA — Senior Tester, local Playwright only).
+  **No BE role** (no backend exists). A **QA role (Tanya)** now exists — she
+  runs acceptance tests on local only and reports to Porter; the human still
+  gives final business sign-off via Porter. If a backend ever appears, that is
+  the human's scope decision, not a team improvisation.
 - 🤖 Run mode: **DISPATCHER** (workspace-root `DISPATCHER.md`) — one session
   spawns the roles as subagents. Files remain the only channel; PROTOCOL
   unchanged. Dispatcher run log: `dispatcher-state.md`.
@@ -41,7 +43,7 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| REQ-001 | Visual identity rebuild — Home page first | HIGH | IN_SPEC 2026-08-30, Sober — TASK-001..004 DONE; TASK-005 now in REVIEW — last item before SPEC_DONE; see requirements/REQ-001-ui-visual-redesign.md | Sober (SA) |
+| REQ-001 | Visual identity rebuild — Home page first | HIGH | SPEC_DONE 2026-08-30, Porter — QA round done (TEST_PASSED partial, 0 defects); owner acceptance still open, see tests/TEST-001-req001-home-acceptance.md §Verdict | Human (owner), via Porter |
 
 ## Tasks
 
@@ -51,10 +53,18 @@
 | TASK-002 | Shared primitives + quotes content | SPEC-001 | DONE 2026-08-30, Sober — see tasks/TASK-002-shared-primitives-and-quotes.md §Review | — | TASK-001 |
 | TASK-003 | Shell rebuild (header, footer, eyebrow) | SPEC-001 | DONE 2026-08-30, Sober — FQ3/FQ4/FQ5 answered; drawer check carried to TASK-005 #18-19; see tasks/TASK-003-shell-rebuild.md §Review | — | TASK-001 |
 | TASK-004 | Home rebuild — four sections | SPEC-001 | DONE 2026-08-30, Sober — FQ8 answered (min-height is a floor); 2 boxes carried to TASK-005 c16/c20; see tasks/TASK-004-home-rebuild.md §Review | — | TASK-002, TASK-003 |
-| TASK-005 | Acceptance sweep before handover | SPEC-001 | REVIEW 2026-08-30, Fern — 19/20 passed, c16 NOT-RUN (env); FQ9-FQ12 open; see tasks/TASK-005-acceptance-sweep.md §Implementation Notes | Sober (SA) | — |
+| TASK-005 | Acceptance sweep before handover | SPEC-001 | DONE 2026-08-30, Sober — FQ9-FQ12 answered, c20(a) text corrected; see tasks/TASK-005-acceptance-sweep.md §Review | — | — |
+
+## QA / Tests
+
+| ID | Title | Source REQ | Status | Tester |
+|----|-------|------------|--------|--------|
+| TEST-001 | REQ-001 Home acceptance — independent QA round | REQ-001 | TEST_PASSED (partial) 2026-08-30, Tanya — A+E now pass and leave the owner's list; C evidence supplied; 0 defects; 3 questions — see tests/TEST-001-req001-home-acceptance.md §Verdict | Tanya |
+| REGRESSION | Standing site regression checklist | — | OPEN 2026-08-30, Tanya — first version, 19 checks; see tests/REGRESSION.md | Tanya |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| — | — | Nothing blocked. |
+| REQ-001 acceptance | Human (owner) | 7 items (AC1–AC2 blocking, B, C, D, F, G); A and E are closed by QA and do not return — see requirements/REQ-001-ui-visual-redesign.md §Home acceptance review |
+| TEST-001 questions | Porter | 3 (footer `© 2025`, before/after for R1, harness in repo) — see tests/TEST-001-req001-home-acceptance.md §Questions |

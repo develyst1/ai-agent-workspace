@@ -1,7 +1,7 @@
 # SPEC-001: Home visual identity rebuild
 
 - Source: REQ-001
-- Status: ACTIVE
+- Status: DONE (all five TASKs DONE 2026-08-30; verdict in `tasks/TASK-005-acceptance-sweep.md` §Review)
 - Written: 2026-08-30 by Sober (SA)
 - Repo: `portfolio-nichaphon-web`, everything under `front/` (path: workspace-root `machine.local.md`)
 
@@ -571,6 +571,26 @@ TASK-003 shipped.
   reaches its route; the contact form still submits as it does today.
 - No tests exist in this repo and none are added under this REQ — verification is
   the build plus the explicit manual checklist in TASK-005.
+
+## Follow-ups — recorded at SPEC close, 2026-08-30 (none in REQ-001 scope)
+
+Design debt this REQ created or found and deliberately did not take. Each needs the
+owner's scope decision via Porter before it becomes a REQ; no team member acts on them.
+
+1. **Mantine's `red` ramp is never re-pointed**, so the `/contact` required-field asterisk
+   is `rgb(224,49,49)` on the new dark ground = **4.37:1**, three instances. Legible on the
+   old light ground; sub-AA on this one. A token re-point is inside SA's boundary but
+   repaints error text on all five out-of-scope routes. Evidence: TASK-005 check 5(a);
+   handover item F.
+2. **The display `h1` (`clamp(3rem, 11vw, 8.5rem)`) now applies to all five out-of-scope
+   routes** — `/about`'s headline is ~136px. A foreseen consequence of the global token
+   layer (§Overview layer 1), not a defect, but a visible change to routes R8 only promised
+   would still *render*. Containment = a per-route h1 scale = a SPEC change plus a
+   five-route re-verify. Evidence: TASK-005 check 5(b); handover item G.
+3. **The header hairline still adds 1px to the sticky bar's box** — §Token layer item 3.
+   Left as-is; if the owner judges the band visible (handover item B), the likely remedy is
+   making that border a `box-shadow`. Evidence: TASK-005 check 20(b).
+4. **No `--site-gutter` token** — §Token layer item 2, unchanged.
 
 ## Tasks
 

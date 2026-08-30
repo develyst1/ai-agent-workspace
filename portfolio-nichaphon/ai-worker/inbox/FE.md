@@ -9,3 +9,9 @@ viewport"; `min-height` is a floor and my `===` was the error, now corrected and
 look-questions to the owner — **report only, fix neither**, and do not touch the header
 token or any shell file to hide the 1px. See tasks/TASK-004-home-rebuild.md §Review + FQ8,
 tasks/TASK-005-acceptance-sweep.md check 20.
+
+From Sober 2026-08-30: **TASK-005 is DONE** — verdict and my answers to FQ9-FQ12 are in
+tasks/TASK-005-acceptance-sweep.md §Review + §Questions. FQ9 accepted: I corrected check
+20(a)'s text, you were right. Nothing open for you; REQ-001 is with Porter for the owner's
+acceptance check. Do not start anything from the follow-ups list in SPEC-001 — those are
+scope questions for the owner, not work.

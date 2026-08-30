@@ -3,24 +3,8 @@
 > Written ONLY by the dispatcher (workspace-root `DISPATCHER.md`): one line per
 > hop, a run header per run, and the digest that ended the run. Keep the last 5
 > runs here; older runs go verbatim to `archive/` in a PM housekeeping hop.
-
-## RUN 2026-08-30-a — N=4 — started from: requirement (human, Thai) — hygiene PASS
-hop 1 | PM  | did: wrote REQ-001 (full UI visual redesign) and held it DRAFT/BLOCKED | ball_to: HUMAN | flags: 6 questions, 1 data request, 1 low-confidence assumption
-STOPPED hop 1/4 — condition 7 (ball_to HUMAN) + 1 + 2 + 3
-Board: REQ-001 DRAFT/BLOCKED on human; no SA/FE dispatched; inbox/SA.md deliberately untouched.
-Digest sent to human: 6 scoping questions (Q1 what feels Claude-like / Q2 reference links-screenshots into project-docs/ / Q3 mood / Q4 re-skin vs rebuild / Q5 stay on Mantine 8 / Q6 deadline + all-6-pages vs Home-first) + DATA REQUEST for 1-3 reference sites.
-
-## RUN 2026-08-30-b — N=4 — started from: human answers to Q1-Q6 + 4 quotes + 1 reference screenshot (chat only)
-hop 1 | PM  | did: rewrote REQ-001 from the 6 answers + quotes, narrowed to Home-first, set READY_FOR_SA | ball_to: SA | flags: 4 questions, 1 data request, 1 low-confidence assumption
-STOPPED hop 1/4 — conditions 1 + 2 + 3
-Board: REQ-001 READY_FOR_SA (Home route only); handed to Sober via inbox/SA.md; SA not yet dispatched.
-Digest sent to human: save the chat reference screenshot into project-docs/ (blocks visual direction, not SA start) + 3 copy/scope questions (quote 4 wording, quote language, approve library swap or not).
-
-## RUN 2026-08-30-c — N=4 — started from: human answers Q7-Q9 + reference image landed in project-docs/
-hop 1 | PM  | did: folded Q7-Q9 + the saved reference image into REQ-001, closed the reference DATA REQUEST | ball_to: SA | flags: 2 questions (non-blocking), 1 data request, 2 low-confidence assumptions
-STOPPED hop 1/4 — conditions 1 + 2 + 3
-Board: REQ-001 READY_FOR_SA, fully unblocked for the Home route; pointer in inbox/SA.md; SA still not dispatched.
-Digest sent to human: Q10 (edit the 3 Thai quotes? paste exact strings) + Q11 (his own English wording for quotes 1-3) — neither blocks Home; a bare "ไปเลย" wakes Sober.
+> Rotated 2026-08-30 (PM housekeeping): runs -a, -b, -c moved verbatim to
+> `archive/dispatcher-state-2026-08-30.md`. Runs -d onward stay below.
 
 ## RUN 2026-08-30-d — N=4 — started from: human answers Q10-Q11
 hop 1 | PM  | did: closed Q11 (English quotes locked into R5 under the human's explicit authorisation), kept Q10 open | ball_to: SA | flags: 1 question (non-blocking), 1 low-confidence assumption
@@ -59,3 +43,23 @@ hop 6 | FE  | did: implemented TASK-004 (Home rebuild: hero/stats/capabilities/s
 hop 7 | SA  | did: answered FQ6/FQ7 — hero + band invert nesting to bleed full-width with zero shared-file edits; hero aurora alphas 55/62/24 -> 48/52/22 so peak luminance clears AA everywhere | ball_to: FE | flags: 2 low-confidence assumptions (composite luminance is modelled not pixel-read; alpha drop is the owner's to accept at review)
 hop 8 | FE  | did: implemented TASK-004 §8 (bleed inversion + aurora alphas), seams gone, hero at viewport top, all contrast measured passing -> REVIEW | ball_to: SA | flags: FQ8 open (hero taller than fold at short viewports), 1 DoD box unticked
 hop 9 | SA  | did: reviewed TASK-004 -> DONE (5 out-of-scope diffs verified, tsc/build re-run), answered FQ8 (min-height is a floor; the "===" was SA's wording defect), carried 2 look-questions to TASK-005 check 20 | ball_to: FE | flags: 2 owner look-questions (non-blocking, routed via TASK-005 -> Porter)
+hop 10 | FE | did: ran the full TASK-005 acceptance sweep — 19/20 checks passed with evidence, no source file changed -> REVIEW | ball_to: SA | flags: FQ9-FQ12 for SA; check 16 NOT-RUN (needs the owner's OS reduced-motion toggle)
+STOPPED hop 10/10 — condition 5 (hop budget reached)
+Board: TASK-001..004 DONE, TASK-005 REVIEW (Sober). REQ-001 IN_SPEC. Nothing BLOCKED.
+Digest sent to human: Home rebuilt and passing 19/20; FQ11 (display h1 leaked onto the 5 out-of-scope routes) is the one worth his call; check 16 needs his OS toggle; English quote translations still await his confirmation.
+
+## RUN 2026-08-30-h — N=4 — started from: ไปเลย (hygiene FAIL -> housekeeping hop first)
+hop 1 | PM  | did: housekeeping — archived runs -a/-b/-c verbatim to archive/dispatcher-state-2026-08-30.md, trimmed to last 5 runs; hygiene now PASS (1 warning: today's log has 9 entries > 20 lines) | ball_to: SA | flags: -
+hop 2 | SA  | did: reviewed TASK-005 -> DONE (19/20, check 16 NOT-RUN with reason), answered FQ9-FQ12, closed SPEC-001; REQ-001 -> SPEC_DONE with a 7-item owner-eye handover | ball_to: PM | flags: 7 questions for the human — routed to PM per the chain, not delivered raw
+hop 3 | PM  | did: turned the SPEC_DONE handover into a 10-item owner acceptance review in REQ-001; REQ-001 SPEC_DONE, blocked on the owner (NOT delivered) | ball_to: HUMAN | flags: 10 acceptance questions
+STOPPED hop 3/4 — condition 7 (ball_to HUMAN)
+Board: TASK-001..005 all DONE, SPEC-001 DONE, REQ-001 SPEC_DONE awaiting the owner's AC1/AC2. No work waits for SA or FE — spawn PM only, after the human answers.
+Digest sent to human: Home is done and reviewable at localhost:3000; 10 acceptance items (2 sign-off, 5 owner-hands-only checks, 2 scope calls, 1 next-REQ ordering).
+DISPATCHER NOTE 2026-08-30: human asked for a new QA role (Tanya, Playwright, screenshots to PM, QA<->PM only). Out of dispatcher scope (I write only this file) and out of PM scope (role charters are not PM's). Routed to Atlas (design) + Marie (operate). No hop spawned.
+
+## RUN 2026-08-30-i — N=4 — started from: human ("ok ลองดูมี QA ละ") — Tanya/QA now exists on the board
+hop 1 | PM  | did: opened the first QA round on REQ-001, briefed Tanya in the REQ, moved owner items A/C/E to QA (owner list 10 -> 7) | ball_to: QA | flags: 6 acceptance questions still with the human (non-blocking for QA)
+hop 2 | QA  | did: first QA round on REQ-001 in a real browser on local — TEST-001 + REGRESSION.md + harness, 18 screenshots in project-docs/qa-req001-2026-08-30/; TEST_PASSED (partial), 0 defects; items A + E now PASS and leave the owner's list | ball_to: PM | flags: 2 questions, 1 optional data request, irreversible_pending (item D, git, playwright dep)
+STOPPED hop 2/4 — condition 4 (irreversible_pending) + 1 + 2 + 3
+Board: REQ-001 SPEC_DONE + QA TEST_PASSED (partial); owner list down to 5 (AC1, AC2, B, C-call, D) + 2 scope calls F/G.
+Digest sent to human: QA screenshots delivered; Playwright kept OUT of front/package.json on purpose; footer still says (c) 2025.

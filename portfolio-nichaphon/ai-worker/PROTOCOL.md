@@ -12,11 +12,16 @@ If you didn't write it to a file, the team doesn't know it.
 | Project Manager | Porter | The human (stakeholder) + SA Lead | `requirements/REQ-*.md` |
 | SA Lead | Sober | PM + FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
 | Frontend Engineer | Fern | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Senior Tester (QA) | Tanya | PM | tests/TEST-*.md, tests/REGRESSION.md |
 
 Chain of command: **Human → PM → SA Lead → FE**, and results flow back up the
 same chain. The engineer never guesses requirements — questions go to SA Lead. SA Lead
 never guesses business intent — questions go to PM. PM never guesses what the
 human wants — ask the human.
+
+The Tester hangs off the PM — **Human ↔ PM ↔ Tester**: Tanya's only contact is
+Porter. She takes her acceptance work from Porter and reports verdicts and
+screenshots back to him; she never talks to Sober, Fern, or the human directly.
 
 ## The chain is HARD — no skipping (most-violated rule, read twice)
 
@@ -27,6 +32,7 @@ Only these pairs may communicate, in either direction:
 | Human ↔ Porter (PM) | chat, in Thai |
 | Porter (PM) ↔ Sober (SA) | REQ files, board, log `@` |
 | Sober (SA) ↔ Fern (FE) | SPEC/TASK files, board, log `@` |
+| Porter (PM) ↔ Tanya (QA) | REQ files, TEST files, board, log `@` |
 
 **Every other pair is forbidden.** Concretely:
 
@@ -35,6 +41,9 @@ Only these pairs may communicate, in either direction:
   Fern only as a TASK written by Sober.
 - Fern **never** writes `@Porter` and never addresses the human. Everything
   goes up through Sober.
+- Tanya **never** writes `@Sober`, `@Fern`, or addresses the human directly. A
+  nudge with content sent to her is a routing violation — she logs `Routing
+  violation: please send this via Porter` and continues her own work.
 - The human gives business content only to Porter. (Bare nudges — "ไปเลย",
   "continue" — are allowed to anyone; see Nudges below.)
 
@@ -109,6 +118,11 @@ work into one file, so this is a hard rule:
 
 **Requirement (REQ):**
 `DRAFT` → `READY_FOR_SA` → `IN_SPEC` → `SPEC_DONE` → `DELIVERED`
+
+**Test (TEST / QA leg of a REQ):**
+`IN_TEST` → `TEST_PASSED` | `TEST_FAILED` (and `NOT_TESTED` when the page could
+not be run). Only Tanya (QA) sets `IN_TEST` / `TEST_PASSED` / `TEST_FAILED` /
+`NOT_TESTED` on a REQ/TEST.
 
 **Task (TASK):**
 `TODO` → `IN_PROGRESS` → `REVIEW` (SA Lead reviews) → `DONE` | `REWORK` → back to `IN_PROGRESS`
@@ -240,5 +254,9 @@ droplet) is **production and the human's hands alone** — no role deploys, runs
 (`add`/`commit`/`push`, branch creation) are the human's too; the team hands
 work off as edited files on `develop`.
 
-There is **no QA role** on this project: the human is the acceptance tester,
+The project now has a **QA role** — Tanya (see `QA.md`) — who runs acceptance
+tests on **local only** (`cd front && npm run dev`, http://localhost:3000),
+driving the page with **Playwright** and capturing **screenshots** for Porter.
+Production (`portfolio.develyst.online`) stays the human's hands alone — Tanya
+never touches it, not even a GET. The human still gives final business sign-off,
 via Porter.
