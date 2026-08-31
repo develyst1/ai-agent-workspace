@@ -14,3 +14,6 @@ presence-based, named missing-list). Added the codebase's first builder-level un
 directly prove the 4 rule scenarios from the task — flagged as a new precedent in TASK-041 "Done", say if
 unwanted. History builder untouched. Then QA: 38237 live + FORM_ID 211 history.
 
+From Jason 2026-08-31: TASK-043 done — 3 อ.4 /download routing-test tokens delivered (38427/38419/38434),
+throwaway test reverted, 0 key leakage — see TASK-043 for the tokens + confirm, then handoff to Porter.
+

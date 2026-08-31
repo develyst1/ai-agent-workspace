@@ -41,7 +41,7 @@
 | REQ-013 | อ.9 db preview seam | HIGH | DELIVERED 2026-08-24 (proof-in-use) — see REQ-013, log 2026-08-24 | — |
 | REQ-014 | อ.9 DB integration | HIGH | DELIVERED (superseded — parts shipped via TASK-008/012/015, REQ-023/024/026) — see REQ-014 | — |
 | REQ-015 | อ.6 NULL-status person regression | HIGH | DELIVERED 2026-08-24 — see REQ-015 / TEST-005 | — |
-| REQ-032 | ตรวจสอบประวัติ checklist report | HIGH | Live=CODE-COMPLETE (TASK-038/039/041 SA-verified); History=SA-verified (TASK-040, interim person-row match). Open: DATA REQ 211 …_DOC names + QA both paths (38237 live + 211 history) → CLOSED | QA + Porter |
+| REQ-032 | ตรวจสอบประวัติ checklist report | HIGH | **DELIVERED** 2026-08-31 — accepted by Porter | Both paths QA-passed on real data: live 38237 (400→200, ครบ rule on ๑–๔, DEF-18 gone) + history 211 (verbatim snapshot). See TEST-007 |
 | REQ-016 | อ.9 data-model investigation | HIGH | DELIVERED — see REQ-016 / SPEC-016 | — |
 | REQ-017 | NULL-safe doc queries all builders | — | CANCELLED (stakeholder 2026-08-05, won't fix) — see REQ-017 | — |
 | REQ-018 | Dev-profile activation + restore gate | HIGH | IN_SPEC (step 1 DONE; step 2 DEFERRED until pre-production) — see REQ-018 / SPEC-018 | Porter triggers |
@@ -55,10 +55,12 @@
 | REQ-026 | Split อ.9 destroy/transport reports | MEDIUM | DELIVERED — see REQ-026 | — |
 | REQ-027 | อ.15 checklist report | HIGH | DELIVERED — see REQ-027 | — |
 | REQ-028 | Resolver = one REQUEST_TYPE lookup | HIGH | DELIVERED — see REQ-028 (อ.7 = accepted untestable gap) | — |
-| REQ-029 | อ.4–อ.8 import checklist | MEDIUM | ⏸️ **ON HOLD** (human 2026-08-27) — REQ-031 unblocked it, but the stakeholder put REQ-032 first. Mapping complete in REQ-029; resumes on their word | Jason, after REQ-032 |
+| REQ-029 | อ.4–อ.8 import checklist | MEDIUM | **DELIVERED** 2026-08-31 | QA on real 38427: 200, 4pp, DEF-19 headings verbatim, ระยะเวลา = item **6**, 17 evidence items with real ticks, DEF-17 column-safe. ⚠️ **Accepted gap:** annex อ.8 3-column block, item-6 §4 and the 1:N rule **never rendered a real value — `T_T_REQUEST_DTL_REF_IMPORT` is EMPTY (verified)**; covered by unit test + column-safety + structure only. Re-check when the first อ.4 with an อ.8 reference exists |
 | REQ-030 | Tick binding by CHECKLIST_CODE | HIGH | DELIVERED 2026-08-24 — see REQ-030 / SPEC-032 | — |
 | REQ-031 | Compile `.jrxml` → `.jasper` in the Maven build; stop tracking `.jasper` in git | HIGH | **DELIVERED** | — 52 `.jrxml` → 52 `.jasper` packaged in the jar, `src` purged, 0 tracked in git, loud-fail if precompile is skipped ⇒ **the stale-`.jasper` failure mode (DEF-7, DEF-15) is structurally impossible now**. Broad smoke from the UI: อ.1/อ.3/อ.20 + open + expand + plantChange + personChange all render clean ⇒ **no other form was carrying a stale binary**. (38237/38192 errored for an unrelated reason → REQ-032.) |
 
+| ✅ DEF-19 | **QA-CONFIRMED FIXED 2026-08-31** (Tanya) | a4 annex + page-2 evidence headings were a14-clone `…ขายและขนย้ายอาวุธ`; TASK-042 fixed both to `…สั่งหรือนำเข้ามาในราชอาณาจักร`. QA real render 38427: both headings correct, `"ขายและขนย้ายอาวุธ"` absent. Closed. |
+| อ.4 QA samples | noted | REQUEST_TYPE=4 with most attachments: **38427 (17 docs)** ← use this · 38419 (16) · 38434 (14) · 38429/38428/38422/38420 (12). **Most อ.4 requests have ZERO documents** — a random pick yields a false pass. |
 ## Tasks
 
 | ID | Title | Source | Status | Assignee | Depends on |
@@ -96,7 +98,9 @@
 | TASK-031 | DEF-15 JSON instrumentation | DEF-15 | DONE (decisive; reverted via TASK-032) | — | — |
 | TASK-032 | Revert TASK-031 debug | DEF-15 | DONE | Jason | none |
 | TASK-033 | Compile jasper in Maven build | SPEC-033 | DONE (SA-verified) — see TASK-033 | Jason | none |
-| TASK-034 | Build อ.4 import checklist | SPEC-034 | BLOCKED (REQ-031 QA) — see TASK-034 | Jason | REQ-031 QA |
+| TASK-034 | Build อ.4 import checklist (7 page-1 items ระยะเวลา@6; 17 evidence ReqImport TICK RULE; item-6 §4 REF_IMPORT; annex +3 cols; +unit-test the 1:N annex; verify cols vs live DID_SPF) | SPEC-034 | DONE — SA-verified 2026-08-31 (verbatim labels 5(4)/12/13/14 fixed + preview mock; item-6 min-2 slots; 1:N annex unit-tested; 15/15) → QA real REQUEST_TYPE=4 | no-history + REF_IMPORT live-verify = accepted-flagged | Jason (BE) | none |
+| TASK-042 | DEF-19: fix อ.4 annex heading + page-2 heading (a14-clone leftovers in main.jrxml, verbatim from PDF) — full-template sweep done, only 2 strings | DEF-19 | DONE — SA-verified (grep 0 leftovers; annex + page-2 headings verbatim per PDF; preview clean; tests+package green) | Jason (BE) | none |
+| TASK-043 | One-off: encrypted /download tokens for 3 อ.4 ids (38427/38419/38434) — REQ-029 routing test; throwaway, no key leak, deleted after (=TASK-037) | REQ-029 | DONE — SA-verified (file deleted, 0 key leak, src/test clean); 3 tokens relayed to Porter in log | Porter → human /download smoke | none |
 | TASK-035 | Purge src .jasper + tests→target | REQ-031 | DONE (SA-verified) — see TASK-035 | Jason | none |
 | TASK-036 | DEF-17 buyer re-map + doc-row values | DEF-17 | DONE + **QA-CONFIRMED 2026-08-27** (200 on 3 forms, item-12 values populate, :271/:278 differ) — see TEST-006 | — | a14 §4 dates = ACCEPTED-BLANK gap |
 | TASK-037 | One-off: print encrypted download tokens for 7 ids (REQ-031 smoke) — throwaway, no key leak, reverted after | REQ-031 | DONE — SA-verified 2026-08-27 (file deleted, 0 key leak, src/test git-clean; 7 tokens relayed to Porter in log) | Porter → human UI smoke | none |
@@ -109,7 +113,7 @@
 
 | Item | Waiting on | One-line state + pointer |
 |------|-----------|--------------------------|
-| ✅ DEF-18 (REQ-032) | Jason (TASK-039) — **fixed, DB-free verified** | personCheck footer `วันที่มาติดต่อ` printed literal `"null"` — root cause was JSON null-serialization (`NullNode.asText()`→`"null"`), fixed via `@JsonInclude(NON_NULL)` on the top-level record + nz guards. Regression-guarded in `PersonCheckPreviewTest` (asserts no literal `"null"` in rendered JSON). Awaiting QA re-verify on 38237. |
+| ✅ DEF-18 (REQ-032) | **QA-CONFIRMED FIXED 2026-08-31** (Tanya) | personCheck footer `วันที่มาติดต่อ` printed literal `"null"`; fixed via `@JsonInclude(NON_NULL)` + nz guards (TASK-039). QA real render 38237: footer now **blank**, 0 literal `null` in the PDF. Closed with REQ-032. |
 | ✅ DEF-17 (ORA-00904 buyer) | QA-CONFIRMED FIXED 2026-08-27 (Tanya) | a9-transport/38336 + a14/27300 + a15/18041 now **200** (were 500), 0 null, 0 ORA; canaries a6/38272 + a9-destroy/38362 unchanged. Item-12 **values populate** (37956: เลขที่ incl. e0001=DOCUMENT_NAME_OTHER, ชื่อนายกสมาคม, dates, 1 tick); **:271/:278 lines now differ**. 18041/27300 blank = genuine no-data / accepted a14 gap. See TEST-006. |
 | REQ-031 close | Porter + QA | Build PASS (52/52, jar renders OK); **DEF-17 now QA-confirmed fixed**. ONLY remaining blocker = no-auth-seam coverage gap for a1/a3/open/expand/personChange/planChange — Porter to provide a reachable path (/download key+ids or temp seams). See TEST-006. |
 | REQ-009 close proof | Porter → human | DATA REQUEST parked: need 46784's current ATTACH_FILE_ID or a request+item with NO file. See REQ-009 / TEST-004. |

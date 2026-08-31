@@ -32,3 +32,32 @@ The REQ-032 core is right: **38237 now returns 200 instead of 400**, the output 
 ตรวจสอบประวัติ form, per-person ticks land by the TICK RULE, the hardcoded sample person is gone, and
 the canaries are unaffected. **One defect blocks a clean close: DEF-18** (literal `null` at
 `วันที่มาติดต่อ`). Fix DEF-18, re-render 38237 → then REQ-032 closes.
+
+---
+
+## Re-verify after TASK-039 (DEF-18 fix) — 2026-08-31, both paths — **PASS → REQ-032 CLOSES**
+(Note: the UAT DB was unreachable for a window on 2026-08-31; once restored, ran both paths from a clean
+build via the real `/download` — auth gate off in dev. New layout is 2 pages per TASK-039.)
+
+**Live — 38237 `/download/checklist/{token}`:**
+- **DEF-18 FIXED:** footer `วันที่มาติดต่อ` now renders **blank** (was literal `"null"`); `0` literal `null`
+  anywhere in the PDF. ✅
+- ครบ/ไม่ครบ **judged on items ๑–๔ only** (item ๕ excluded): person `1. นายแพทย์ มงคล มีชัย` has both
+  บัตร+ทะเบียนบ้าน ticked ⇒ item ๔ ticked ⇒ **ครบ ticked**, ไม่ครบ unticked. ✅
+- Person table **padded to 5 rows** (1 real + 4 blank). 4 verify sub-sections (ไม่ครบ/แก้ไข/หมดอายุ/เพิ่มเติม)
+  each with **(1)(2)(3)** blank rows. **หมายเหตุ present.** No sample person. Matches the official form. ✅
+
+**History — FORM_ID 211 `/download/checklist/history/211` — verbatim snapshot:**
+- **6 doc rows (1)–(6) all ticked** (matches SEQ 1–6 HAS_FILE=1); person `1. นายแพทย์มงคล มีชัย` both
+  columns ticked; footer **verbatim**: ผู้มายื่นเรื่อง `ผู้ช่วยศาสตราจารย์วิชาญ ศรีพัฒนา` · เจ้าหน้าที่รับเรื่อง
+  `ส.อ.หญิง พัชราภรณ์ ผดุงขวัญ` · วันที่มาติดต่อ `07/05/2569`. **Every value matches Porter's snapshot table
+  — nothing recomputed.** ✅  0 literal null, no sample person.
+- Observation (not a defect): เอกสารเพิ่มเติม (1) renders `P-0005 : (Bulk Emulsion) : ข้อมูลผิด` — that text
+  is what the snapshot stores; the history renders it verbatim (correct behaviour for a snapshot).
+
+**Canary:** a6/38272 → 200, unaffected. ✅
+
+## Final verdict
+**REQ-032 → TEST_PASSED (both paths).** 38237 renders (200, not 400), DEF-18 gone (no literal `null`),
+live ครบ/ไม่ครบ rule correct on items ๑–๔, history snapshot verbatim, ≥5 person rows, ≥3 rows/section,
+หมายเหตุ present, sample person gone, canary unaffected. Nothing left blocking — REQ-032 closes.
