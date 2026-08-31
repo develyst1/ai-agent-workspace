@@ -41,6 +41,7 @@
 | REQ-013 | อ.9 db preview seam | HIGH | DELIVERED 2026-08-24 (proof-in-use) — see REQ-013, log 2026-08-24 | — |
 | REQ-014 | อ.9 DB integration | HIGH | DELIVERED (superseded — parts shipped via TASK-008/012/015, REQ-023/024/026) — see REQ-014 | — |
 | REQ-015 | อ.6 NULL-status person regression | HIGH | DELIVERED 2026-08-24 — see REQ-015 / TEST-005 | — |
+| REQ-032 | ตรวจสอบประวัติ checklist report | HIGH | Live=CODE-COMPLETE (TASK-038/039/041 SA-verified); History=SA-verified (TASK-040, interim person-row match). Open: DATA REQ 211 …_DOC names + QA both paths (38237 live + 211 history) → CLOSED | QA + Porter |
 | REQ-016 | อ.9 data-model investigation | HIGH | DELIVERED — see REQ-016 / SPEC-016 | — |
 | REQ-017 | NULL-safe doc queries all builders | — | CANCELLED (stakeholder 2026-08-05, won't fix) — see REQ-017 | — |
 | REQ-018 | Dev-profile activation + restore gate | HIGH | IN_SPEC (step 1 DONE; step 2 DEFERRED until pre-production) — see REQ-018 / SPEC-018 | Porter triggers |
@@ -54,9 +55,9 @@
 | REQ-026 | Split อ.9 destroy/transport reports | MEDIUM | DELIVERED — see REQ-026 | — |
 | REQ-027 | อ.15 checklist report | HIGH | DELIVERED — see REQ-027 | — |
 | REQ-028 | Resolver = one REQUEST_TYPE lookup | HIGH | DELIVERED — see REQ-028 (อ.7 = accepted untestable gap) | — |
-| REQ-029 | อ.4–อ.8 import checklist | MEDIUM | SPEC_DONE (SPEC-034 → TASK-034, BLOCKED on REQ-031 QA) — mapping in REQ-029 | Jason after REQ-031 |
+| REQ-029 | อ.4–อ.8 import checklist | MEDIUM | ⏸️ **ON HOLD** (human 2026-08-27) — REQ-031 unblocked it, but the stakeholder put REQ-032 first. Mapping complete in REQ-029; resumes on their word | Jason, after REQ-032 |
 | REQ-030 | Tick binding by CHECKLIST_CODE | HIGH | DELIVERED 2026-08-24 — see REQ-030 / SPEC-032 | — |
-| REQ-031 | Compile .jrxml→.jasper in build | HIGH | Build PASS, NOT closed — blocked by DEF-17 QA leg + older-builder coverage gap; see REQ-031 / TEST-006 | Porter (reachable path) + QA |
+| REQ-031 | Compile `.jrxml` → `.jasper` in the Maven build; stop tracking `.jasper` in git | HIGH | **DELIVERED** | — 52 `.jrxml` → 52 `.jasper` packaged in the jar, `src` purged, 0 tracked in git, loud-fail if precompile is skipped ⇒ **the stale-`.jasper` failure mode (DEF-7, DEF-15) is structurally impossible now**. Broad smoke from the UI: อ.1/อ.3/อ.20 + open + expand + plantChange + personChange all render clean ⇒ **no other form was carrying a stale binary**. (38237/38192 errored for an unrelated reason → REQ-032.) |
 
 ## Tasks
 
@@ -97,14 +98,20 @@
 | TASK-033 | Compile jasper in Maven build | SPEC-033 | DONE (SA-verified) — see TASK-033 | Jason | none |
 | TASK-034 | Build อ.4 import checklist | SPEC-034 | BLOCKED (REQ-031 QA) — see TASK-034 | Jason | REQ-031 QA |
 | TASK-035 | Purge src .jasper + tests→target | REQ-031 | DONE (SA-verified) — see TASK-035 | Jason | none |
-| TASK-036 | DEF-17 buyer re-map + doc-row values | DEF-17 | DONE — SA re-reviewed 2026-08-27 (เลขที่=DOCUMENT_NAME_OTHER no-fallback verified; entity DID_SPF-clean; GRANTOR :271/:278 fixed; a14 §4=accepted-blank) → QA prove 200 | QA (Tanya via Porter) | a14 §4 dates = ACCEPTED-BLANK gap |
+| TASK-036 | DEF-17 buyer re-map + doc-row values | DEF-17 | DONE + **QA-CONFIRMED 2026-08-27** (200 on 3 forms, item-12 values populate, :271/:278 differ) — see TEST-006 | — | a14 §4 dates = ACCEPTED-BLANK gap |
+| TASK-037 | One-off: print encrypted download tokens for 7 ids (REQ-031 smoke) — throwaway, no key leak, reverted after | REQ-031 | DONE — SA-verified 2026-08-27 (file deleted, 0 key leak, src/test git-clean; 7 tokens relayed to Porter in log) | Porter → human UI smoke | none |
+| TASK-038 | Build CHECKPERSON (personCheck) report def + builder (a1/a3 shape; BgChk TICK RULE by code; remove hardcoded sample person; ครบ/ไม่ครบ result) | SPEC-035 | DONE — SA-verified 2026-08-27 (contract match, TICK RULE by code, per-person ticks via REF_ID = no DEF-17 risk, sample person removed, 4 JCs ruled w/ dict; expired-docs=accepted-empty) → QA 38237 | Jason (BE) | none |
+| TASK-039 | personCheck: DEF-18 no-literal-null + date-only + human's revised layout (person min-5 rows; 4 verify sub-sections แก้ไข/เพิ่มเติม NEW ×3 blank rows; หมายเหตุ) — closes REQ-032 | REQ-032/DEF-18 | DONE — SA-verified 2026-08-27 (@JsonInclude(NON_NULL) fixes literal-null + regression-guarded, date-only, pad-to-5, 4 sub-sections+หมายเหตุ) → QA 38237 | Jason (BE) | none |
+| TASK-040 | personCheck HISTORY builder — render stored snapshot verbatim (clone a1 history; …_FORM/_DOC/_PER/_DTL; DESCRIPTION-primary; no recompute) + history-switch case CHECKPERSON | SPEC-036 | DONE — SA-verified (verbatim snapshot, DESCRIPTION-primary, no live repos, history-switch wired); person-row match = INTERIM heuristic → DATA REQ (211 …_DOC names) + QA confirm | Jason (BE) | none |
+| TASK-041 | personCheck LIVE ครบ/ไม่ครบ rule (๑–๔ only, ๕ excluded, item๔=person-presence, every person complete, system-populated named missing list) | SPEC-037 | DONE — SA-verified (๕ excluded, item๔=presence, named missing list, pad excluded; unit test 4/4 — endorsed precedent) | Jason (BE) | none |
 
 ## Open items / waiting
 
 | Item | Waiting on | One-line state + pointer |
 |------|-----------|--------------------------|
-| 🔴 DEF-17 prod 500 (ORA-00904 buyer) | Sober re-review → QA | Code fix DONE 2026-08-26 (both Porter Qs answered + applied: เลขที่=DOCUMENT_NAME_OTHER, a14 §4 dates accepted-blank); QA to prove real /download 200 (3 forms) + a6/38272 canary. See TASK-036 / TEST-006. |
-| REQ-031 close | Porter + QA | Build PASS (52/52, jar renders OK); blocked by DEF-17 QA + no-auth-seam coverage gap for a1/a3/open/expand/personChange/planChange — Porter to provide a reachable path. See TEST-006. |
+| ✅ DEF-18 (REQ-032) | Jason (TASK-039) — **fixed, DB-free verified** | personCheck footer `วันที่มาติดต่อ` printed literal `"null"` — root cause was JSON null-serialization (`NullNode.asText()`→`"null"`), fixed via `@JsonInclude(NON_NULL)` on the top-level record + nz guards. Regression-guarded in `PersonCheckPreviewTest` (asserts no literal `"null"` in rendered JSON). Awaiting QA re-verify on 38237. |
+| ✅ DEF-17 (ORA-00904 buyer) | QA-CONFIRMED FIXED 2026-08-27 (Tanya) | a9-transport/38336 + a14/27300 + a15/18041 now **200** (were 500), 0 null, 0 ORA; canaries a6/38272 + a9-destroy/38362 unchanged. Item-12 **values populate** (37956: เลขที่ incl. e0001=DOCUMENT_NAME_OTHER, ชื่อนายกสมาคม, dates, 1 tick); **:271/:278 lines now differ**. 18041/27300 blank = genuine no-data / accepted a14 gap. See TEST-006. |
+| REQ-031 close | Porter + QA | Build PASS (52/52, jar renders OK); **DEF-17 now QA-confirmed fixed**. ONLY remaining blocker = no-auth-seam coverage gap for a1/a3/open/expand/personChange/planChange — Porter to provide a reachable path (/download key+ids or temp seams). See TEST-006. |
 | REQ-009 close proof | Porter → human | DATA REQUEST parked: need 46784's current ATTACH_FILE_ID or a request+item with NO file. See REQ-009 / TEST-004. |
 | REQ-029 release | Jason | BLOCKED until REQ-031 QA closes; mapping complete in REQ-029. |
 | REQ-010 Q3 audit (opt) | Porter → human | Unmapped STATUS='D' rows in LAW_REF/DTL/EMPLOYER/LICENSE? SQL in SPEC-009 Q3. |
@@ -138,4 +145,4 @@ Full narrative for everything below: `archive/board-2026-08-25-pre-compaction.md
 - External dependency: destroy-request creation flow owned by another team, unfinished — first real type-2 sample was 38362 (arrived 2026-08-21). a6 canary sample = 38272; a15 = 18041; a14 = 27300; a9-transport = 38336/37956.
 - DEPLOY note (REQ-004): UAT :33000 must run with `SPRING_PROFILES_ACTIVE=dev` or the /db QA seams 401.
 - a6-main template quirk (pre-existing, no ticket): appended text to 2 static labels is dropped in render — see TASK-033 flag.
-- OBSOLETE-A14-checklist-seed-spec-for-data-team.md in project-docs — do NOT send (master was already seeded).
+- OBSOLETE-A14-checklist-seed-spec-for-data-team.md in project-docs — do NOT send (master was already seeded).| DEF-17 | ✅ **CLOSED — QA-confirmed on real data** | อ.9-transport/อ.14/อ.15 back to **200** (were 500); a6/38272 + a9-destroy/38362 canaries unchanged; 0 null, 0 ORA-00904. Item-12 values proven live on **37956** (the transport request that actually has item-12 data): `เลขที่ e0001` via `DOCUMENT_NAME_OTHER`, ชื่อนายกสมาคม populated (DEF-14), วันหมดอายุ rendered, and the two assoc-president ID lines now **differ** (`:271`/`:278` duplicate resolved via `GRANTOR_ID_CARD_NO`). Entity re-mapped to DID_SPF-surviving columns only. |

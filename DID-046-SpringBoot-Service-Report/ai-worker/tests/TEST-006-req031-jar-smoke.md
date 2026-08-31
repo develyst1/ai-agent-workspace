@@ -54,3 +54,25 @@ per family) or temporary `/db` seams. **Their freshly-compiled `.jasper` are the
   regression — must be fixed regardless), and 6 older builders are unreachable read-only.
 - Needs from Porter/human: (1) route DEF-16 to Sober (invalid buyer column(s)); (2) a `/download` path or
   seams to smoke a1/a3/open/expand/personChange/planChange.
+
+---
+
+## DEF-17 (was DEF-16) fix verification — 2026-08-27, Tanya (clean build, own :33011/:33012, read-only)
+The buyer re-map (TASK-036) is confirmed on real data. "200 is the floor" — also checked item-12 values.
+
+**200 + no ORA (the 500-fix):** a9-transport/38336, a14/27300, a15/18041 all now **HTTP 200** (were 500);
+a6/38272 + a9-destroy/38362 canaries 200 unchanged; **0 `null`, 0 ORA-00904** across all five.
+
+**Item-12 write-ins actually populate (not a hollow 200):** used **37956** (the a9-transport request known
+to carry item-12 data). Its item-12 prints real values — `เลขที่` on multiple lines (นายกสมาคม card
+`1234455678903`, ผู้รับมอบ `1119922345697`, ลายมือชื่อ `1122233232123`), **`เลขที่ e0001` from
+`DOCUMENT_NAME_OTHER`**, ชื่อนายกสมาคม (the DEF-14 blank-name fix), `วันหมดอายุ 12/08/2570`, and one ticked
+box. So the new wiring reads data. ✅
+- **`:271`/`:278` duplicate fix:** the two assoc-president ID lines now differ — บัตรนายกสมาคม `1234455678903`
+  vs นายกสมาคม/ผู้มอบอำนาจ **blank**. Not the old identical-duplicate. ✅
+- **18041 (a15) item-12 blank** = that request genuinely has no buyer-doc data — NOT a wiring failure
+  (37956 proves the wiring populates). **27300 (a14) item-12 blank** = the documented accepted gap
+  (no attachments/source in the อ.14 family). Neither raised.
+
+**DEF-17 verdict: QA-CONFIRMED FIXED.** REQ-031 build + DEF-17 both pass; REQ-031's ONLY remaining blocker
+is the no-auth-seam coverage gap for a1/a3/open/expand/personChange/planChange (Porter to provide a path).
