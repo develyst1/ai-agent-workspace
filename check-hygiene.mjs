@@ -25,6 +25,8 @@ const LIMITS = {
   reqFile: 45 * KB,        // any single requirements/ file
   taskFile: 60 * KB,       // any single tasks/ file (DONE tasks are cold; warn-only)
   inboxMsg: 2 * KB,        // a single inbox file (should be near-empty)
+  boardClosedWarn: 10,     // closed rows tolerated on the live board before a nudge
+  boardClosedFail: 30,     // closed rows that force a sweep to archive/board-closed.md
 };
 
 const fails = [], warns = [];
@@ -41,6 +43,27 @@ if (boardSize) {
     .flatMap((l) => l.split("|"))
     .filter((c) => c.length > LIMITS.cell).length;
   if (longCells > 0) fails.push(`board.md has ${longCells} table cell(s) > ${LIMITS.cell} chars (evidence belongs in the TASK/REQ file)`);
+
+  // Closed rows (DONE / DELIVERED / CODE ACCEPTED) belong in archive/board-closed.md,
+  // not on the live board. They never shrink, so a board that keeps them grows
+  // monotonically and hits the size gate again no matter how short the cells are.
+  // Evidence (smart-scheduler, 2026-08-31): a board compacted to 39.2KB by shortening
+  // prose was back over 40KB in 1.5 days — 191 of its 272 rows were already closed,
+  // 39% of the file. Sweep a row to the archive at the moment it closes.
+  const closedRows = readFileSync(boardPath, "utf8").split("\n")
+    .filter((l) => /^\|\s*(REQ|TASK|DEF)-/.test(l))
+    .filter((l) => {
+      const status = (l.split("|")[4] || "").replace(/[*`]/g, "").replace(/^[^A-Za-z]+/, "");
+      return /^(DONE|DELIVERED|CODE ACCEPTED)\b/i.test(status);
+    }).length;
+  // Proportionate on purpose: piling up closed rows only BLOCKS once the board is
+  // actually running out of room (>60% of the size gate). Below that it is a nudge,
+  // not a stop — a small board carrying old rows is on the wrong trajectory, not in
+  // danger, and a gate that reds out a healthy 13KB board teaches people to ignore it.
+  if (closedRows > LIMITS.boardClosedFail && boardSize > 0.6 * LIMITS.board)
+    fails.push(`board.md carries ${closedRows} closed rows > ${LIMITS.boardClosedFail} at ${fmt(boardSize)} (sweep DONE/DELIVERED rows to archive/board-closed.md)`);
+  else if (closedRows > LIMITS.boardClosedWarn)
+    warns.push(`board.md carries ${closedRows} closed rows (sweep them to archive/board-closed.md before they pile up)`);
 }
 
 // 2) dispatcher-state.md — size + run count

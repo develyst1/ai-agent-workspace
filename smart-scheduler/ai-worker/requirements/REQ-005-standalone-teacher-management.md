@@ -125,3 +125,12 @@ Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
 ```
 | REQ-005 | Standalone teacher management (rework REQ-003 minus ops sync) | **HIGH** | ✅ **DELIVERED** | **Live acceptance PASSED 2026-07-28** (stakeholder ran, Porter verified): teacher **archive** + **switch active/inactive** now return **200** (were 502/500); create/edit/reactivate OK. SPEC-007 / TASK-029 DONE & Sober-verified, deployed — teacher management is standalone (ops teacher-sync removed; availability routing fixed). |
 ```
+
+---
+
+## ➡️ MOVED 2026-08-30 — "booking type OTHER" now lives in `REQ-078-booking-type-other.md`
+
+The owner unparked it and ranked it #1, so it took its own REQ number as Porter said it would. **Everything above
+in the §"booking type OTHER" and §"Owner's answers" sections is superseded by `REQ-078`** — that file carries the
+five answers, the acceptance criteria, and the wording. Nothing was deleted here; go to `REQ-078` for the current
+truth. **The owner still calls this REQ-005 in his own list** (`OWNER-LIST.md`).

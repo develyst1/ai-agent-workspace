@@ -48,6 +48,46 @@ logged didn't happen.
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-08-31 — smart-scheduler SPLIT done via spawned PM (Porter), owner's go,
+  Porter's interactive session closed first. board.md **41,754 → 25,937 B**
+  (40.8KB → 25.3KB), gate **FAIL → PASS**, ~15KB headroom. New
+  `archive/board-closed.md` (17,094 B) holds the 190 swept rows; verbatim
+  pre-run copy at `archive/board-2026-08-31-pre-split.md` (41,754 B, size-verified).
+  Row accounting: Requirements 66 = 44 live + 22 swept · Tasks 206 = 38 + 168.
+  Marie's independent verification: the diff pre-split→new board is **190 deletions
+  and 4 additions** (the two pointer lines + blanks) — no surviving row reworded,
+  re-ordered or re-statused; **all 190 swept rows found verbatim** in board-closed.md
+  (0 missing); 269 distinct ids before = 269 after, none lost or invented.
+  Ids in both files: `REQ-065` (the known stray duplicate row, left as found) and
+  `TASK-064` — the latter is NOT a duplicate: its Tasks row was swept while its
+  entry in the separate **Blocked / waiting** table stayed. Which surfaces a real
+  contradiction for the project to settle: **TASK-064 is DONE in the Tasks table
+  and still listed as blocked** in Blocked/waiting. Not Marie's to fix; reported.
+  Porter refused to sweep 8 rows carrying a QUALIFIED closed status (`DELIVERED
+  (+1 fix pending)`, `WAVE 1 DELIVERED`, `BE DONE`, `code DONE`, `code-complete
+  DONE`, `Part A DONE; B.1 cut`). That judgment is correct and better than the
+  v2 regex, which still counts REQ-015 as closed — 1 row, far under the WARN
+  threshold of 10, so no tuning needed. **Open follow-up:** Blocked/waiting is a
+  third table (34 rows) that no size or closed-row rule covers; it will accumulate.
+  Log date fixed: `log/2026-08-31.md` created and used; `log/2026-08-30.md`
+  untouched (append-only).
+
+- 2026-08-31 — `check-hygiene.mjs` v2: new **closed-rows rule** (owner's go).
+  A board row whose Status starts with DONE / DELIVERED / CODE ACCEPTED belongs
+  in `archive/board-closed.md`, not on the live board. WARN over 10 rows; FAIL
+  over 30 **only when the board is also past 60% of the size gate** — deliberately
+  proportionate, because a rule that reds out a healthy 13KB board teaches people
+  to ignore the gate. Thresholds 10/30/60% are Marie's pick, changeable by the owner.
+  Why it exists: smart-scheduler's board was compacted 432KB→39.2KB on 2026-08-30
+  by shortening cells, and was back over the 40KB gate 1.5 days later — 191 of its
+  272 rows were already closed (39% of the file). Shortening prose treats wording;
+  the board's SHAPE was the defect. Closed rows never shrink, so any board that
+  keeps them grows monotonically until it fails again.
+  Blast radius checked across all 9 projects before and after: no project that was
+  PASS became FAIL. Current closed-row load — did-api-center-c# 57 (FAIL, board
+  already 59.3KB and dormant since 2026-07-17), DID-046 58, manager-gold 34,
+  code-report 26, develyst-ai 16, layout-pattern-app 11 (all WARN).
+
 - 2026-08-30 — portfolio-nichaphon: NEW QA role "Tanya" added (additive workforce
   change designed by Atlas, human-approved) via spawned PM (Porter), verified by
   Marie. Pre-flight: no dispatcher run mid-flight (run -h stopped hop 3/4, ball to
@@ -67,7 +107,7 @@ logged didn't happen.
   >20 lines — pre-existing append-only item, logs untouched). No git run. No
   REQ/SPEC/TASK/code/log touched.
 
-- 2026-08-29 — smart-scheduler housekeeping DONE via spawned PM (Porter).
+- 2026-08-30 — smart-scheduler housekeeping DONE via spawned PM (Porter).
   board.md 432.1KB → 39.2KB (40,103 B), 280 over-long cells → 0, absolute paths
   → `machine.local.md`. Verbatim archive `archive/board-2026-08-29-pre-compaction.md`
   (442,454 B, size re-verified after the correction) + `archive/board-2026-08-29-parked-notes.md`
@@ -88,6 +128,10 @@ logged didn't happen.
   What caught it was the id/row/status snapshot Marie took BEFORE the run plus a
   diff back to the verbatim archive. Candidate: make this a `check-hygiene.mjs`
   mode instead of a human's diligence (not built — needs the owner's go).
+  NOTE (added 2026-08-31): the archive filenames and the 267 "Moved from
+  board.md" headings carry the label `2026-08-29`; the run actually happened
+  2026-08-30 04:29 (Marie mis-dated it from the newest log file instead of the
+  clock). Filenames left as-is; this line is the correction.
   **Open risk:** the board sits 857 bytes under the 40KB gate. Two or three new
   rows will fail hygiene. Trimming further was not ordered and was not done.
 
@@ -105,7 +149,7 @@ logged didn't happen.
   backend that no longer exists) and `SERVER_MAINTENANCE.md` holds live root
   credentials in git.
 
-- 2026-08-29 — `machine.local.md` created on machine KUYDONG (was absent —
+- 2026-08-30 — `machine.local.md` created on machine KUYDONG (was absent —
   fresh machine, blocking every path-dependent operation). Verified on disk:
   smart-scheduler `H:\scheduler` (+4 repos & the requirement repo),
   layout-pattern-app, manager-gold (back/front), develyst-ai

@@ -2,7 +2,7 @@
 
 - Source: **Porter's log entry 2026-08-29** — *"POLICY CHANGED: `link-all` is now DANGEROUS on `uat`"*, closing with
   *"@Sober, the header should say so"*.
-- Status: REVIEW → @Sober (SA)
+- Status: ✅ DONE (Sober 2026-09-01)
 - Depends on: none. **Comment + console output only — no behaviour change, no schema, no new flag.**
 - Repo: **smart-scheduler-back**, on `develop`. Assignee: **@Jason** (tiny — take it between larger items)
 
@@ -121,6 +121,63 @@ bun test                                          → 970 pass / 0 fail (+5), 93
   closing line told the operator to run it on `uat`). Detail in the Implementation Notes — flagging it because
   it is more than the task literally listed, and I would rather you see it than find it in review.
 
-## Review
+## Review — Sober, 2026-08-31: ⛔ **CANNOT REVIEW — same finding as TASK-221.**
 
-(Sober fills this in at REVIEW.)
+`scripts/link-all-teacher-subjects.ts` in `H:\scheduler\smart-scheduler-back` (the path `machine.local.md` names)
+still carries **the revoked wording, unedited**: `:2` *"OWNER-RUN, on BOTH `sid` and `uat`"* and `:13`
+*"open-by-default … the trade-off the owner accepted"*. `grep UAT_WARNING` / `grep "เฉพาะ sid"` → **no match**;
+working tree clean; no branch has it. Full evidence in **TASK-221 §Review** — one cause, three tasks (218 · 221 ·
+223), so please answer it there rather than three times.
+
+**Nothing in your design is in question.** For when it re-lands, both judgement calls are answered:
+
+> **The two `console.log`s were IN SCOPE and you were right to take them.** DoD box 1 says *"states **or
+> implies**"*, and `:58`'s closing line — *"don't forget to run on both sid and uat"* — is strictly worse than the
+> header: it is the **last thing on screen after a successful run**, telling the operator to go and do the
+> dangerous thing. A header nobody has open cannot compete with that. This is the same reason I asked for item 3
+> at all, and you found the instance I missed.
+
+> **Q — item 3 scope: dry-run only, or both paths?** ✅ **Both. Print it on the `--commit` path too.**
+> My wording said "dry run" and my wording was too narrow — the person typing `--commit` is the exact person the
+> line exists for, and a warning that disappears at the moment of danger is a warning that fires only when it
+> cannot matter. Drop the `if (!commit)`. **Not a rework of your judgement — a correction of my instruction.**
+
+> **Not exporting `UAT_WARNING`, and testing the source text rather than importing the module: correct.**
+> Importing that script constructs the DB client. Reading the file as text is the right shape for this test, and
+> the grep-guard against `NODE_ENV` / `DATABASE_URL` / `isUat` / `--force` puts my 🚫 somewhere it cannot be
+> quietly undone. Keep all of it.
+
+**Re-land with the `if (!commit)` dropped and this passes on sight.**
+
+---
+
+## Rebuild — 2026-08-31 (Jason)
+
+🔴 **This code was built on 2026-08-30, then destroyed before review.** A branch sweep in `smart-scheduler-back`
+(`dong → develop → production → dong`) at **2026-08-30 04:26:26** restored every tracked file and removed the new
+ones. Evidence and the full root cause are in **TASK-221 §Review**. Agents never commit (`CLAUDE.md` rule 6), so
+BE output lives only as an uncommitted working tree — **which is not storage.**
+
+**Rebuilt in full from the Implementation Notes above**, which are the only reason this was recoverable.
+
+🛟 **A recovery patch for all three tasks now exists:**
+`ai-worker/archive/patch-TASK-218-221-223-scheduler-back.diff` (base `7217599`; `git apply` from the repo root).
+Interim measure only — where finished agent work should live is a workspace decision for the human, raised via
+@Sober in TASK-221 §Review.
+
+🔴 **@Sober correction folded in — item 3 now prints on BOTH paths, not just the dry run.** Your words: *"the
+person typing `--commit` is who it is for; a warning that vanishes at the moment of danger fires only when it
+cannot matter."* You were right and my first cut was wrong. The `if (!commit)` gate is gone, and a test asserts
+its **absence** so it cannot come back.
+
+**Verified after rebuild:** tsc **0** · `bun test` **972 pass / 0 fail**. The script was **not executed**.
+
+### ✅ RE-REVIEW — Sober, 2026-09-01: **the code is here, and my correction was taken. DONE.**
+
+Verified at the source: the header now opens **`sid`-ONLY — … NEVER `uat`** with the "can never unlink" reason;
+`UAT_WARNING` is defined at `:56` and printed at `:78` — **above** `if (!commit) throw`, i.e. on **both** paths, which
+is the correction I owed you. The revoked wording is absent, including as a quotation, and a test enforces that.
+`tsc --noEmit` **0**; `bulk-link-plan.test.ts` with the other five → **91 pass / 0 fail**.
+
+Behaviour unchanged (dry-run still rolls back, `--commit` still `onConflictDoNothing`), and the grep-guard against a
+box-detection check is still in place. **Your two console strings remain the best find in this task.**

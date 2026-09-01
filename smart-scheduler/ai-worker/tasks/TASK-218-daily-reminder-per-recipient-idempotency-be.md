@@ -2,7 +2,7 @@
 
 - Source: Porter's open-item flag (2026-08-29) — *"a manual pre-08:15 trigger silently eats the day"*. 🟢 LOW /
   non-blocking (the batch is LIVE). On `develop`.
-- Status: REVIEW → @Sober (SA)
+- Status: ✅ DONE (Sober 2026-09-01)
 - Repo: **scheduler-back**.
 
 ## The gap (my decision, since Porter flagged it as mine)
@@ -111,3 +111,76 @@ needs `0028` applied and a real recipient. That is `sid` + Tanya, after the depl
   wearing a different hat, and it is in the command every one of our DoDs tells an engineer to run. I did not
   touch it — it is not in TASK-218's scope and it is your call whether it becomes its own task. (Related: the
   board's ⚠️ 08-16 note that the owner's remote-DB whitelist line on `uat` must be closed.)
+
+## Review — Sober, 2026-08-31: ⛔ **CANNOT VERIFY the code** · ✅ **the DESIGN passes**
+
+**Two separate verdicts, kept separate on purpose.**
+
+### 1. The code is not in the repo — same finding as TASK-221 and TASK-223
+`H:\scheduler\smart-scheduler-back` (the path `machine.local.md` names) has **28 `drizzle/*.sql`, 28 journal tags,
+newest `0027_course_size_sanity`**. There is **no `0028`**, no `daily-reminder.ts`, no
+`outbox-idempotency.test.ts`; working tree clean, HEAD `7217599` on `develop`≡`dong`, and no branch carries them.
+Full evidence and the three questions for you are in **TASK-221 §Review** — one cause, three tasks; answer it once,
+there.
+
+### 2. The design — ✅ **PASS, and both of your judgement calls are right**
+
+> **1. A SKIPPED row never stores the key.** ✅ Correct, and for the reason you gave: unreachable ≠ reminded. A
+> parent who links LINE between 07:00 and 08:15 must get the 08:15 message. You traded **outbox noise** for **not
+> silently missing a person** — that is the same trade this whole task exists to make, applied one layer down.
+> Consistent, not merely defensible.
+
+> **2. Read-then-write as the fast path, the UNIQUE INDEX as the guarantee.** ✅ This is the right shape and it
+> mirrors `recordSale` (`sale-post.ts:84` reads first, `bo_movement_idempotency_uq` catches the concurrent case) —
+> **one pattern for idempotency in this codebase, not two.** Catching `23505` **only when a key was passed** is the
+> detail that makes it safe: an unkeyed insert still throws.
+> 🔴 **The transaction caveat is the load-bearing part of this task and it must not be lost.** Swallowing `23505`
+> inside a transaction leaves it aborted, so a keyed send must stay outside one. You documented it on the option;
+> when this re-lands, make sure that comment sits on `enqueueLine`'s signature where the next caller reads it, not
+> only in a task file. A future `exec: tx` caller passing a key is the one way this design breaks.
+
+> **Keeping `job_runs` for observability but not for suppression** — ✅ exactly the split I asked for, and the
+> rename `reminderAlreadySent` → `reminderRanToday` earns its place: the old name asserted a fact the function no
+> longer establishes.
+
+**Nothing to change. When it re-lands, this is a PASS on sight** — subject only to the DoD's own outcome check
+(a 07:00 trigger then the 08:15 run: everyone due gets exactly one).
+
+📌 **Standing risk you raised, promoted out of this task:** `bun test` reaches the live `sid` DB through
+`eligible.route.test.ts:13` because Bun loads `.env` before the `??=`. Refused at authentication here (`28000`), but
+**on a whitelisted machine the same command reads real rows** — and it is the command every DoD in this project
+tells an engineer to run. Not yours to fix inside 218; I am routing it to @Porter as its own item.
+
+---
+
+## Rebuild — 2026-08-31 (Jason)
+
+🔴 **This code was built on 2026-08-30, then destroyed before review.** A branch sweep in `smart-scheduler-back`
+(`dong → develop → production → dong`) at **2026-08-30 04:26:26** restored every tracked file and removed the new
+ones. Evidence and the full root cause are in **TASK-221 §Review**. Agents never commit (`CLAUDE.md` rule 6), so
+BE output lives only as an uncommitted working tree — **which is not storage.**
+
+**Rebuilt in full from the Implementation Notes above**, which are the only reason this was recoverable.
+
+🛟 **A recovery patch for all three tasks now exists:**
+`ai-worker/archive/patch-TASK-218-221-223-scheduler-back.diff` (base `7217599`; `git apply` from the repo root).
+Interim measure only — where finished agent work should live is a workspace decision for the human, raised via
+@Sober in TASK-221 §Review.
+
+**@Sober review point folded in:** the transaction caveat now lives on **`enqueueLine`'s own JSDoc** — above the
+function and on the `idempotencyKey` option — not only in a task file. A test asserts it is there
+(`outbox-idempotency.test.ts` → *"the transaction caveat lives on `enqueueLine` itself"*).
+
+**Verified after rebuild:** tsc **0** · `bun test` **972 pass / 0 fail** · migrations 29 = journal 29.
+
+### ✅ RE-REVIEW — Sober, 2026-09-01: **the code is here. DONE.**
+
+It landed with TASK-224 (Jason gave the repo facts: `H:\scheduler\smart-scheduler-back`, HEAD `7217599`, 23 working-
+tree entries, plus a patch kept outside the repo). **Verified rather than assumed:** `drizzle/0028_outbox_idempotency.sql`
+exists, journal idx 28 registered, `src/lib/daily-reminder.ts` present; `tsc --noEmit` **0**; `daily-reminder.test.ts` +
+the other five task-owned files → **91 pass / 0 fail**.
+
+The design verdict above is unchanged and stands — **PASS**. Nothing was re-litigated.
+
+⚠️ Carried, not closed: the transaction caveat on `enqueueLine` (a future `exec: tx` caller passing a key), and the
+`bun test` → live-`sid` connection, which is now with @Porter as its own item.

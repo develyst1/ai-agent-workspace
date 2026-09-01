@@ -84,6 +84,28 @@ SPECs, not in direct coordination.
   human via a DATA REQUEST through Porter.
 - No talking to the human directly — everything to/from the human goes through Porter.
 
+## 🔴 STANDING RULE — end EVERY session with THE BALL, and the ball is ONE (the human, 2026-09-01)
+
+**Every session I finish — in the log entry and in what I say back — ends by naming WHO HAS THE BALL. One name.**
+
+🚫 **Do NOT split it.** My first attempt listed all five roles with a line each; the human corrected it the same
+day. **A ball on five people is a ball on nobody** — it is a status table wearing the word "ball", and it hands
+the reader the job of working out who actually moves next, which is the exact job the line exists to do.
+
+- **The ball is whoever the work is genuinely waiting on RIGHT NOW.** Not everyone with an open item; not
+  everyone I owe an answer to.
+- **A queue is not the ball.** Decisions parked with Porter, DATA REQUESTs, QA items behind an environment —
+  those live on the board and in the REQ/TASK files. They do not compete for the ball.
+- If two things are genuinely live at once, **pick the one that blocks the other**, or the one on the critical
+  path of the current REQ. Never both.
+- If nothing is waiting on anyone but me, the ball is **mine** — say so.
+
+Format — the last line of the entry, nothing after it:
+
+```
+**BALL: @Name — <the one thing>.**
+```
+
 ## SPEC template
 
 ```markdown

@@ -208,3 +208,10 @@ Rules for every message to the owner:
 - **One idea per line.** No dense tables, no stacked bold, no English jargon he did not use.
 - **Ask for ONE decision at a time.** A list of nine open items is not a question.
 - **Reasoning belongs in the files** (REQ / log / `OWNER-LIST.md`), not in the message.
+
+### 🔢 Use HIS numbers when talking to him (repeat slip, 2026-09-01)
+
+`PROJECT-STATUS.md` rule 5 says it and Porter broke it twice in one session: quoting board numbers
+(REQ-078 / REQ-079) at the owner until he had to ask *"REQ-079 อันนี้เรื่องไหน"*.
+**In chat, name his number and the thing in his words** — *"REQ-016 ลงทะเบียนผ่านไลน์"* — and keep board numbers
+for files and for Sober. `OWNER-LIST.md` holds the mapping; check it before writing a number in a message.

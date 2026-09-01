@@ -41,7 +41,21 @@ box or the ledger needs `db:seed-ledger`.
 | who touches it | team verifies (owner deploys) | **owner only — never QA, not even a GET** |
 
 🔴 **Both boxes report identical `db:verify` numbers.** They cannot be told apart from that output.
-**Use `SELECT count(*) FROM course_packages` — `sid` ≈ 20, `uat` ≈ 201.** This cost two rounds of confusion.
+**Use `SELECT count(*) FROM course_packages` — `uat` ≈ 201; `sid` GROWS (≈20 in Aug, **32 on 2026-09-01**).** This cost two rounds of confusion. ⚠️ The `sid` figure is a moving number — QA fixtures and imports add to it. **Treat it as "two digits, not three": the ORDER OF MAGNITUDE is the tell, never the exact value.**
+
+### 📡 LINE: the webhook lives on `uat`, and the owner borrows it (his answer, 2026-08-30)
+
+**The webhook points at `uat` permanently.** To exercise LINE, the owner switches it to `sid` **briefly, late at
+night**, with the customer, then switches it back. **Owner-only, manual, temporary.**
+
+- ⇒ **Nobody — Tanya included — can schedule a LINE *inbound* test.** It happens inside his window. This is the
+  practical shape of the long-standing *"isolatable LINE test recipient"* blocker.
+- ⇒ **While the window is open, `uat`'s LINE is deaf.** Late at night is when that is cheapest. Do not widen it.
+- 🔴 **Inbound ≠ outbound, and conflating them wastes a window:** *inbound* (linking · tapping เช็คอิน · ลา ·
+  rich-menu) needs the webhook; *outbound* (course-confirm · booking-confirm · the **08:15 daily reminder**) is a
+  push on the channel token and **does not**.
+- ⚠️ **Unanswered and blocking any outbound test from `sid`: does `sid` share `uat`'s LINE channel/token?**
+  If it does, a "test" push from `sid` reaches **real linked people** (2 real teachers). Ask before firing one.
 
 ## 🚦 The UAT gate (owner's rule, 2026-08-19)
 
@@ -72,7 +86,11 @@ customer impact, and both names.
   flagged is closed (฿1,390). `Surfskate & Skateboard` (added 08-29) is live in all four pickers.
   🔴 **`NOT_TESTED`: AC-9 / AC-10** — `teacher-subjects:link-all` bulk + dry-run is a **server CLI run**, outside
   QA's charter. **Needs the owner's dry-run counts** ⇒ held at `TEST_PASSED`, **not `DELIVERED`**.
-- 🔴 **TASK-220 (cancel a 1st Trial) is `DONE` on the board and has NEVER been deployed or QA-run.** Tanya
+- ✅ **CORRECTED 2026-08-31 — the paragraph below is WRONG and is kept only to show what was believed.**
+  **TASK-220 shipped to `uat` and the customer is using it** (owner: *"deploy ไปนานแล้ว เขาใช้แล้ว"*). Porter
+  asserted "never deployed" because **no log entry recorded the deploy** and he read silence as absence.
+  ⇒ **Standing fix: every `uat` deploy gets a line in the day's log AND here.** "Deployed" had no home file.
+- ~~🔴 **TASK-220 (cancel a 1st Trial) is `DONE` on the board and has NEVER been deployed or QA-run.**~~ Tanya
   confirmed the button exists on a PENDING trial, but Sober's stated check is an **ATTENDED** trial (→ CANCELLED
   + reason stored + freelance hold released). Running it posts a `bo.movement` she cannot reverse ⇒ **the owner
   decides whether that money row is acceptable residue before she runs it.** It does not reach `uat` without her.

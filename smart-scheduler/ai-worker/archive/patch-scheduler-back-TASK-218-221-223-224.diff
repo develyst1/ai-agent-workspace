@@ -1,0 +1,1946 @@
+# RECOVERY PATCH — TASK-218 + TASK-221 + TASK-223 + TASK-224 (scheduler-back)
+#
+# Written by Jason (BE). TASK-218/221/223 were built on 2026-08-30 and DESTROYED by a branch sweep
+#   (dong -> develop -> production -> dong) at 2026-08-30 04:26:26, which restored every tracked file and
+#   cleaned the new ones. Agents never commit (CLAUDE.md rule 6), so BE/FE output lives only as an
+#   uncommitted working tree — which is not storage. Root cause + evidence: TASK-221 section Review.
+#
+# INTERIM measure only, pending the human's decision on where finished agent work should live.
+# Base commit: 7217599a6a71596533b9c8d1a9bb318c6f6ce6a4
+# Apply from the repo root:  git apply <this file>
+#
+diff --git a/drizzle/0028_outbox_idempotency.sql b/drizzle/0028_outbox_idempotency.sql
+new file mode 100644
+index 0000000..898b011
+--- /dev/null
++++ b/drizzle/0028_outbox_idempotency.sql
+@@ -0,0 +1,24 @@
++-- TASK-218 — per-RECIPIENT idempotency for the 08:15 daily reminder.
++--
++-- 🔴 What broke: `runDailyReminderJob` suppressed a whole day on a job-level flag (`job_runs.summary.attempted`,
++-- TASK-209). A manual/ops trigger at 07:00 set that flag, so the real 08:15 scheduled run skipped and **the
++-- day's reminders were silently eaten** — a test trigger suppressing the morning send. Neither `sent` nor
++-- `attempted` at the JOB level can be right: one re-runs all morning on a zero-reach day, the other eats the day.
++--
++-- The idempotency belongs at the **recipient**, exactly like the day-end sale's `rev:<bookingId>`
++-- (`lib/sale-post.ts`): each person is keyed `reminder:<recipientType>:<personId>:<business-date>`, so the job
++-- may run any number of times a day and each run sends only to people not already reminded.
++--
++-- Nullable BY DESIGN: every other outbox writer (confirms, leave, digests) has its own natural non-repeat and
++-- passes no key — those rows stay NULL, and Postgres treats NULLs as distinct, so the unique index constrains
++-- only the keyed rows. SKIPPED rows never carry a key either (see `lib/line.ts`): a person who was unlinked at
++-- 07:00 and links LINE by 08:15 must still be reached, so an un-sendable row must not claim the key.
++--
++-- Hand-authored + journal-registered per drizzle/README.md (do NOT run `db:generate` — the snapshot chain stops
++-- at 0003). Idempotent, and safe on every existing row (they are all NULL).
++ALTER TABLE "notification_outbox" ADD COLUMN IF NOT EXISTS "idempotency_key" text;
++--> statement-breakpoint
++-- The LAST object this migration creates — after the column it indexes — so a half-applied run is detectable,
++-- and the index name exists only because 0028 ran (a real witness, per lib/migration-witness.ts rule 2).
++CREATE UNIQUE INDEX IF NOT EXISTS "notification_outbox_idempotency_uq"
++  ON "notification_outbox" ("idempotency_key");
+diff --git a/drizzle/0029_other_booking_type.sql b/drizzle/0029_other_booking_type.sql
+new file mode 100644
+index 0000000..27f5fd0
+--- /dev/null
++++ b/drizzle/0029_other_booking_type.sql
+@@ -0,0 +1,62 @@
++-- SPEC-070 / TASK-224 (REQ-078) — the `OTHER` booking type: อื่นๆ on the calendar.
++--
++-- A booking that is not a lesson — a meeting, a maintenance slot, a school visit. It may have no student and no
++-- program, it carries its own typed title, and it may be run by SEVERAL teachers at once.
++--
++-- 🔴 Numbering: TASK-218 took `0028` (the outbox key). Counted at the moment of writing — `drizzle/*.sql` = 29,
++-- journal tags = 29 — so this is `0029` (board rule: *"no migration" is a CLAIM, not a state*).
++-- Hand-authored + journal-registered per drizzle/README.md; do NOT run `db:generate` (snapshots stop at 0003).
++--
++-- ⚠️ TRAP 1 — `ALTER TYPE … ADD VALUE` and the value's first USE must not share a transaction. `drizzle-kit
++-- migrate` runs the whole pending set inside ONE transaction, so nothing in this file may reference `'OTHER'`:
++-- no backfill, no CHECK naming it, no seed. Nothing here does. **Keep it that way.**
++--
++-- ⚠️ TRAP 2 — `DROP NOT NULL` is NOT witnessable by existence: *"does `student_id` exist?"* is true before AND
++-- after, so an un-migrated box would look identical to a migrated one. That blindness is how `0022` hid and
++-- took the calendar down. The witness is `booking_other_price_chk` — an object that exists only after this ran.
++ALTER TYPE "booking_type" ADD VALUE IF NOT EXISTS 'OTHER';
++--> statement-breakpoint
++
++-- An อื่นๆ booking may have no student and no program.
++-- 🚫 NOT a placeholder `อื่นๆ` row in `subjects`: REQ-065 exists because `1st Trial` sitting in that table leaked
++-- into the program picker and had to be filtered back out at `toTeacherDTO`. A booking with no program has none.
++ALTER TABLE "bookings" ALTER COLUMN "student_id" DROP NOT NULL;
++--> statement-breakpoint
++ALTER TABLE "bookings" ALTER COLUMN "subject_id" DROP NOT NULL;
++--> statement-breakpoint
++
++-- The typed name of an อื่นๆ booking. It is what `displayName` renders, so AC-10 ("never blank, never the word
++-- อื่นๆ") is a property of one computed field rather than a promise repeated across the FE.
++ALTER TABLE "bookings" ADD COLUMN IF NOT EXISTS "other_title" text;
++--> statement-breakpoint
++ALTER TABLE "bookings" ADD COLUMN IF NOT EXISTS "other_price_minor" integer;
++--> statement-breakpoint
++ALTER TABLE "bookings" ADD COLUMN IF NOT EXISTS "other_price_item_id" uuid;
++--> statement-breakpoint
++
++-- 🆕 AC-18/19/20 (owner, 2026-08-31): *"ทุกการจองต้องมีครู แค่การจองนั้น อาจจะครูหลายคนได้"*.
++--
++-- `bookings.teacher_id` STAYS NOT NULL and is the FIRST teacher; this table holds the ADDITIONAL ones only.
++-- Additive by design ⇒ every existing reader, index, freelance hold and report is untouched, and AC-20 (the
++-- other four types take exactly one teacher) is true by construction rather than by a rule someone must enforce.
++--
++-- `ON DELETE CASCADE` is what makes AC-18's "cancelling removes it from all three columns" free: there is still
++-- exactly ONE booking row, so a cancel stays one status change. `RESTRICT` on the teacher matches
++-- `bookings.teacher_id` — a teacher with history is never silently deleted out from under a booking.
++CREATE TABLE IF NOT EXISTS "booking_teachers" (
++  "booking_id" uuid NOT NULL REFERENCES "bookings"("id") ON DELETE CASCADE,
++  "teacher_id" uuid NOT NULL REFERENCES "teachers"("id") ON DELETE RESTRICT,
++  PRIMARY KEY ("booking_id", "teacher_id")
++);
++--> statement-breakpoint
++
++-- AC-12: a charge is EITHER a typed amount OR a catalogue item — never both. Refuse, never clamp, never pick
++-- one for the user (REQ-063's line). The app refuses it first; this is the backstop that makes the rule true of
++-- the DATA and not only of the path that happens to write it — the TASK-217 lesson, in the other direction.
++--
++-- 🔑 THE WITNESS for 0029: this constraint exists only after this migration ran. Named last, and created after
++-- the columns it constrains, so a half-applied run reads as "not applied" rather than as finished.
++ALTER TABLE "bookings" DROP CONSTRAINT IF EXISTS "booking_other_price_chk";
++--> statement-breakpoint
++ALTER TABLE "bookings" ADD CONSTRAINT "booking_other_price_chk"
++  CHECK ("other_price_minor" IS NULL OR "other_price_item_id" IS NULL);
+diff --git a/drizzle/meta/_journal.json b/drizzle/meta/_journal.json
+index e7b1826..5e20791 100644
+--- a/drizzle/meta/_journal.json
++++ b/drizzle/meta/_journal.json
+@@ -197,6 +197,20 @@
+       "when": 1783000000023,
+       "tag": "0027_course_size_sanity",
+       "breakpoints": true
++    },
++    {
++      "idx": 28,
++      "version": "7",
++      "when": 1783000000024,
++      "tag": "0028_outbox_idempotency",
++      "breakpoints": true
++    },
++    {
++      "idx": 29,
++      "version": "7",
++      "when": 1783000000025,
++      "tag": "0029_other_booking_type",
++      "breakpoints": true
+     }
+   ]
+ }
+diff --git a/scripts/link-all-teacher-subjects.ts b/scripts/link-all-teacher-subjects.ts
+index 851b767..6b6e6eb 100644
+--- a/scripts/link-all-teacher-subjects.ts
++++ b/scripts/link-all-teacher-subjects.ts
+@@ -1,19 +1,39 @@
+ // SPEC-055 / TASK-155 (REQ-058 req 6) — `teacher-subjects:link-all`: link every non-archived teacher to every
+-// active program, in one owner-run command. OWNER-RUN, on BOTH `sid` and `uat`.
++// active program, in one owner-run command.
+ //
+-// Why a bulk command exists at all: `subjects:add --teacher` links one pair per invocation, and the owner's
+-// choice ("every teacher can teach every program") is 456 links. 456 hand-typed lines is not a runsheet, it is a
+-// half-finished roster waiting to happen — and a half-finished roster *looks* configured.
++// 🔴 **`sid`-ONLY — or any box where open-by-default still holds. NEVER `uat`.** (Owner, 2026-08-29; TASK-223.)
++//
++// This header used to say the tool was owner-run on both boxes, and that open-by-default was a trade-off the
++// owner had accepted. **Both statements are now false, and are not repeated here even as a quotation** — a grep
++// for the revoked wording must find nothing in this repo. On `uat` the roster is **deliberately restricted** —
++// the owner's words were *"ตั้งใจจำกัด"*: DC and Pop teach a chosen subset. A `--commit` there on 2026-08-29
++// would have granted DC **16 programs he is not meant to teach**.
++//
++// 🔴 **And this tool can NEVER unlink.** That is what makes a wrong run expensive rather than merely wrong:
++// undoing it is manual work in the product, one teacher × one program at a time, by someone who first has to
++// work out which of the new links were the mistake. A bulk grant is one command; the repair is not.
++//
++// ⇒ **On `uat`, link a new program to a NAMED LIST** instead: insert-only, `ON CONFLICT DO NOTHING`, preceded by
++// a `SELECT` that prints the exact names for the owner to read **before** anything is written. That is how the
++// Surfskate & Skateboard program was added on 2026-08-29 — 26 teachers, DC deliberately excluded.
++//
++// 📌 The catch only surfaced because the dry run prints **per-teacher deltas** (`DC: +16 / =3` beside everyone
++// else's `+1 / =18`). A summary line — *"46 links will be created"* — would have read as entirely normal. Keep
++// the per-row output in anything that writes in bulk.
++//
++// Why a bulk command exists at all: `subjects:add --teacher` links one pair per invocation, and on a box where
++// open-by-default holds that is 456 links. 456 hand-typed lines is not a runsheet, it is a half-finished roster
++// waiting to happen — and a half-finished roster *looks* configured.
+ //
+ // Safety, same family as `db:reset` / `subjects:add`:
+ //   · DRY RUN BY DEFAULT — the full matrix is computed and printed, then the transaction is rolled back.
+ //   · `--commit` inserts with `onConflictDoNothing`; the composite PK `(teacher_id, subject_id)` makes a second
+ //     run create exactly 0 rows. Re-running is safe by construction, not by carefulness.
+-//   · Insert-only. No DDL. Nothing is ever unlinked by this tool — pruning who *actually* teaches what is staff
+-//     work in the product, which is the trade-off the owner accepted when he chose open-by-default.
++//   · Insert-only. No DDL. **Nothing is ever unlinked by this tool** — see the danger paragraph above; on a box
++//     with a deliberately restricted roster that is not a trade-off, it is a one-way door.
+ //   · Console prints staff/catalogue names + counts. No student or parent data is read.
+ //
+-// Usage (run on sid, then uat):
++// Usage (`sid` only):
+ //   bun run teacher-subjects:link-all            # DRY RUN
+ //   bun run teacher-subjects:link-all --commit   # link
+ import { db } from "../src/db";
+@@ -23,6 +43,21 @@ import { formatBulkLinkPlan, planBulkLinks } from "../src/lib/bulk-link-plan";
+ const commit = process.argv.includes("--commit");
+ const DRY_RUN_ROLLBACK = "__dry_run_rollback__";
+ 
++/**
++ * TASK-223 item 3 — the revoked-policy warning, in the console rather than only in the file header.
++ *
++ * 🔴 Printed on **both** paths, dry run and `--commit` (SA correction at review): my first cut showed it only
++ * on the dry run, and *"the person typing `--commit` is who it is for — a warning that vanishes at the moment
++ * of danger fires only when it cannot matter."*
++ *
++ * Not exported: nothing imports it, and its test reads this file's source text rather than the module
++ * (importing this script would construct the DB client).
++ */
++const UAT_WARNING =
++  "⚠️  `uat`: the roster is deliberately restricted (owner 2026-08-29) — this tool is sid-only.\n" +
++  "   It can NEVER unlink: undoing a wrong grant is manual work in the product, per teacher, per program.\n" +
++  "   On `uat`, link a new program to a NAMED LIST after a SELECT the owner reads first.";
++
+ async function main() {
+   console.log(`── teacher-subjects:link-all · ${commit ? "COMMIT (เขียนจริง)" : "DRY RUN (ไม่เขียนอะไร)"}`);
+ 
+@@ -37,6 +72,10 @@ async function main() {
+         .from(teacherSubjects);
+ 
+       const plan = planBulkLinks({ teachers: teacherRows, subjects: subjectRows, existingPairs: existing });
++      // TASK-223 item 3 — the same rule as the file header, printed where the decision is actually made. The
++      // person about to type `--commit` is reading THIS, not a header they opened weeks ago. On BOTH paths:
++      // a warning that disappears exactly when someone is about to write is a warning that never fires.
++      console.log(`\n${UAT_WARNING}`);
+       console.log(formatBulkLinkPlan(plan));
+ 
+       if (!commit) throw new Error(DRY_RUN_ROLLBACK);
+@@ -47,7 +86,7 @@ async function main() {
+     });
+   } catch (e: any) {
+     if (e?.message === DRY_RUN_ROLLBACK) {
+-      console.log("\n  DRY RUN — ยังไม่เขียน. ตรวจตัวเลขข้างบนแล้วรันซ้ำด้วย --commit");
++      console.log("\n  DRY RUN — ยังไม่เขียน. ตรวจตัวเลขข้างบนแล้วรันซ้ำด้วย --commit (เฉพาะ sid)");
+       process.exit(0);
+     }
+     console.error(`✗ teacher-subjects:link-all ไม่สำเร็จ — ไม่มีการเปลี่ยนแปลง (rollback): ${e?.message ?? e}`);
+@@ -55,7 +94,10 @@ async function main() {
+   }
+ 
+   console.log("✓ ผูกครูกับโปรแกรมเรียบร้อย — ครูที่ถูก archive และโปรแกรมที่ปิดใช้งานไม่ถูกผูก");
+-  console.log("  รันซ้ำได้ — ครั้งที่สองจะสร้าง 0 ลิงก์ (idempotent). อย่าลืมรันทั้ง sid และ uat");
++  // TASK-223: this line used to end by telling the operator to run it on both boxes — the revoked policy, in
++  // the last words they read after a SUCCESSFUL run. (Not reproduced here: a grep for the old wording must find
++  // nothing.) On `uat` the roster is deliberately restricted; a named list is how a program is added there.
++  console.log("  รันซ้ำได้ — ครั้งที่สองจะสร้าง 0 ลิงก์ (idempotent). ห้ามรันบน uat — ที่นั่นต้องผูกตามรายชื่อที่เจ้าของอนุมัติ");
+   process.exit(0);
+ }
+ 
+diff --git a/src/db/mappers.ts b/src/db/mappers.ts
+index 84c253b..2aaabab 100644
+--- a/src/db/mappers.ts
++++ b/src/db/mappers.ts
+@@ -96,6 +96,27 @@ export const toBadgeTypeDTO = (t: any) => ({
+     .map(toBadgeValueDTO),
+ });
+ 
++/**
++ * SPEC-070 / TASK-224 (REQ-078 AC-18) — **the one accessor for a booking's teachers.**
++ *
++ * `bookings.teacher_id` is the first teacher; `booking_teachers` holds the additional ones. 🔴 Nothing outside
++ * this function may read either source: two call sites reading two sources is how the two get to disagree, and
++ * a booking that shows two teachers on the calendar and one in a report is worse than either answer alone.
++ *
++ * `teachers[0]` is ALWAYS the row's `teacher_id`, so the order is stable and the existing single-teacher
++ * meaning survives everywhere. The four lesson types can never have extras (validation refuses the field, and
++ * nothing else writes the table), so this returns exactly one for them — by construction, not by filtering.
++ */
++export const bookingTeachers = (b: any) => [
++  toTeacherBase(b.teacher),
++  // `additionalTeachers` is absent when a caller did not load the relation — which is correct for the lesson
++  // types and, for `OTHER`, is why the relation lives in the shared `withBookingRelations` rather than being
++  // opted into per query.
++  ...(b.additionalTeachers ?? [])
++    .filter((a: any) => a?.teacher)
++    .map((a: any) => toTeacherBase(a.teacher)),
++];
++
+ export const toBookingDTO = (b: any, opts: { hasRental?: boolean } = {}) => ({
+   id: b.id,
+   date: b.date,
+@@ -107,9 +128,22 @@ export const toBookingDTO = (b: any, opts: { hasRental?: boolean } = {}) => ({
+   // SPEC-063 / TASK-178 (REQ-068) — what a parent told us about this session ("พาน้องมาด้วย 2 คน"), distinct
+   // from `note` above, which is what the system did to it (cancel reason, auto-extend, leave).
+   attendeeNote: b.attendeeNote ?? null,
+-  student: studentRef(b.student),
++  // TASK-224 (REQ-078): `null` for an อื่นๆ booking with no student / no program. 🚫 Never a placeholder —
++  // REQ-065 exists because `1st Trial` sitting in `subjects` leaked into the program picker and had to be
++  // filtered back out. A booking with no program has none, and says so.
++  student: b.student ? studentRef(b.student) : null,
+   teacher: toTeacherBase(b.teacher),
+-  subject: { id: b.subject.id, name: b.subject.name },
++  subject: b.subject ? { id: b.subject.id, name: b.subject.name } : null,
++  // TASK-224 — the typed name of an อื่นๆ booking; `null` on the four lesson types.
++  title: b.otherTitle ?? null,
++  // 🔴 TASK-224 / AC-10 — the ONE field every surface renders a booking by. Computed for **every** booking
++  // type (a 1HR's is its student's nickname, unchanged), so "never blank, never the word อื่นๆ" is a property
++  // of this function instead of a fallback re-invented at 31 FE call sites, each free to get it wrong
++  // differently. Validation guarantees the inputs: an อื่นๆ booking with no student must carry a title.
++  displayName: b.otherTitle ?? b.student?.nickname ?? b.student?.name ?? "",
++  // 🔴 TASK-224 / AC-18 — EVERY assigned teacher, from the ONE accessor. Present on every booking type
++  // (length 1 for the four lesson types), so the FE has one shape rather than two.
++  teachers: bookingTeachers(b),
+   course: b.course ? toCourseSummary(b.course) : null,
+   badges: (b.badges ?? []).map(toBookingBadge),
+   // SPEC-045 / TASK-190 (REQ-052) — does this session have equipment rented against it? A **presence marker**
+diff --git a/src/db/outbox-idempotency.test.ts b/src/db/outbox-idempotency.test.ts
+new file mode 100644
+index 0000000..1a15595
+--- /dev/null
++++ b/src/db/outbox-idempotency.test.ts
+@@ -0,0 +1,60 @@
++// TASK-218 — the outbox send-once key, at the two places that must agree.
++//
++// 🔴 What this closes: `runDailyReminderJob` suppressed a whole day on a JOB-level flag. A manual/ops trigger
++// at 07:00 wrote `attempted: true`, so the real 08:15 scheduled run skipped and **the day's reminders were
++// silently eaten** — a test trigger suppressing the morning send, on a channel where nobody notices a message
++// that never arrives. The idempotency moved to the recipient (`lib/daily-reminder.ts`, tested there).
++//
++// I cannot INSERT from here, so what these pin is the pair that can silently diverge — the hand-written
++// migration and `schema.ts` — plus the properties the whole design rests on: the key is UNIQUE (a read alone is
++// a race when both boxes fire at 08:15), a SKIPPED row never claims it, and the 23505 swallow is scoped.
++import { describe, expect, test } from "bun:test";
++import { readSrc } from "../lib/read-src";
++
++const SCHEMA = readSrc(await Bun.file(new URL("./schema.ts", import.meta.url)).text());
++const SQL = readSrc(await Bun.file(new URL("../../drizzle/0028_outbox_idempotency.sql", import.meta.url)).text());
++const LINE = readSrc(await Bun.file(new URL("../lib/line.ts", import.meta.url)).text());
++
++describe("0028 — the outbox can refuse a second send of the same message", () => {
++  test("🔑 the migration and the Drizzle schema agree — they are the pair that silently diverges", () => {
++    // `schema.ts` is what a future `db:generate` would compare against; leaving it behind would make the next
++    // generated migration try to add the column again.
++    expect(SQL).toContain('ADD COLUMN IF NOT EXISTS "idempotency_key"');
++    expect(SCHEMA).toContain('idempotencyKey: text("idempotency_key")');
++    for (const src of [SQL, SCHEMA]) expect(src).toContain("notification_outbox_idempotency_uq");
++  });
++
++  test("🔴 the index is UNIQUE — a read-then-write is a race when two boxes fire at 08:15", () => {
++    expect(SQL).toContain('CREATE UNIQUE INDEX IF NOT EXISTS "notification_outbox_idempotency_uq"');
++    expect(SCHEMA).toContain('uniqueIndex("notification_outbox_idempotency_uq")');
++  });
++
++  test("the column is NULLABLE — every other outbox writer has its own natural non-repeat", () => {
++    // NULLs are distinct in Postgres, so the unique index constrains only the keyed rows. A NOT NULL column
++    // would force a key on confirms, leave notices and digests, none of which want one.
++    expect(SQL).not.toContain('idempotency_key" text NOT NULL');
++    expect(SCHEMA).not.toContain('text("idempotency_key").notNull()');
++  });
++
++  test("🔴 a SKIPPED row never carries the key — 'unreachable' is not 'reminded'", () => {
++    // The SKIPPED branch writes no `idempotencyKey`. If it did, a parent who was unlinked at the 07:00 trigger
++    // and links LINE by 08:15 would be permanently skipped for that day — the same silent miss, one layer over.
++    const skippedBranch = LINE.slice(LINE.indexOf("if (!opts.recipientLineUserId)"), LINE.indexOf("try {"));
++    expect(skippedBranch).toContain('status: "SKIPPED"');
++    expect(skippedBranch).not.toContain("idempotencyKey");
++  });
++
++  test("🔴 the unique violation is reported as `duplicate`, not thrown — and only for a keyed send", () => {
++    // Swallowing 23505 for an unkeyed insert would hide a real constraint failure.
++    expect(LINE).toContain('if (opts.idempotencyKey && pgErrorCode(e) === "23505")');
++    expect(LINE).toContain('status: "duplicate"');
++  });
++
++  test("🔴 the transaction caveat lives on `enqueueLine` itself, not only in a task file", () => {
++    // Sober's review point: a swallowed 23505 inside a transaction leaves it ABORTED, so a keyed send must
++    // stay outside one. A caveat that lives in a TASK is a caveat the next caller never reads.
++    const doc = LINE.slice(0, LINE.indexOf("export async function enqueueLine"));
++    expect(doc).toContain("OUTSIDE a transaction");
++    expect(doc).toContain("aborted");
++  });
++});
+diff --git a/src/db/schema.ts b/src/db/schema.ts
+index f98c29c..ae58f73 100644
+--- a/src/db/schema.ts
++++ b/src/db/schema.ts
+@@ -42,6 +42,9 @@ export const bookingType = pgEnum("booking_type", [
+   "SINGLE_SESSION",
+   "COURSE_PACKAGE",
+   "VOUCHER",
++  // SPEC-070 / TASK-224 (REQ-078) `0029` — a booking that is not a lesson: a meeting, a maintenance slot, a
++  // school visit. No student and no program required, its own typed title, and possibly several teachers.
++  "OTHER",
+ ]);
+ 
+ export const bookingStatus = pgEnum("booking_status", [
+@@ -237,9 +240,9 @@ export const teacherSubjects = pgTable(
+     teacherId: uuid("teacher_id")
+       .notNull()
+       .references(() => teachers.id, { onDelete: "cascade" }),
+-    subjectId: uuid("subject_id")
+-      .notNull()
+-      .references(() => subjects.id, { onDelete: "restrict" }),
++    // NULLABLE for `OTHER` (`0029`). 🚫 Never a placeholder `อื่นๆ` row in `subjects` — REQ-065 exists because
++    // `1st Trial` sitting in that table leaked into the program picker. A booking with no program has none.
++    subjectId: uuid("subject_id").references(() => subjects.id, { onDelete: "restrict" }),
+   },
+   (t) => [primaryKey({ columns: [t.teacherId, t.subjectId] })],
+ );
+@@ -253,9 +256,10 @@ export const coursePackages = pgTable(
+   "course_packages",
+   {
+     id: uuid("id").primaryKey().defaultRandom(),
+-    studentId: uuid("student_id")
+-      .notNull()
+-      .references(() => students.id, { onDelete: "restrict" }),
++    // SPEC-070 / TASK-224 `0029` — NULLABLE for `OTHER`: a maintenance slot has no student. Every other
++    // booking type still refuses a missing student, in `validation.ts` — the column stopped enforcing it, the
++    // contract did not.
++    studentId: uuid("student_id").references(() => students.id, { onDelete: "restrict" }),
+     size: smallint("size").notNull(), // 4 | 6 | 10
+     // SPEC-045 / TASK-140 (REQ-054): the course's program, canonical at last. It used to be DERIVED from
+     // `bookings[0].subject` — order-dependent, which is exactly why a per-session edit or a mixed create could
+@@ -391,6 +395,20 @@ export const bookings = pgTable(
+       startTime: string;
+       endTime: string;
+     }>(),
++    // ── SPEC-070 / TASK-224 (REQ-078) `0029` — the อื่นๆ booking ──
++    //
++    // The typed name of a booking that is not a lesson. It is what `displayName` renders, which is how AC-10
++    // ("never blank, never the word อื่นๆ") stays a property of ONE computed field instead of a promise
++    // repeated across 31 FE call sites.
++    otherTitle: text("other_title"),
++    // The charge: EITHER a typed amount OR a catalogue item, never both (`booking_other_price_chk`). The
++    // fields live here; posting the sale is TASK-225.
++    //
++    // `otherPriceItemId` is a `bo.item` id and is deliberately NOT declared as an FK: the `bo` schema is owned
++    // and migrated by backoffice-back, and a cross-schema constraint written from here would make this repo's
++    // migrations depend on the order of theirs.
++    otherPriceMinor: integer("other_price_minor"),
++    otherPriceItemId: uuid("other_price_item_id"),
+     note: text("note"),
+     confirmedAt: timestamp("confirmed_at", { withTimezone: true }), // idempotent confirm/notify
+     /** C.1: one-time token for QR / link check-in; issued on confirm */
+@@ -417,9 +435,41 @@ export const bookings = pgTable(
+     uniqueIndex("bookings_checkin_token_uq")
+       .on(t.checkinToken)
+       .where(sql`${t.checkinToken} is not null`),
++    // AC-12 (`0029`): a charge is EITHER a typed amount OR a catalogue item, never both. The app refuses it
++    // first; this makes the rule true of the DATA rather than only of the path that happens to write it.
++    check(
++      "booking_other_price_chk",
++      sql`${t.otherPriceMinor} is null or ${t.otherPriceItemId} is null`,
++    ),
+   ],
+ );
+ 
++// SPEC-070 / TASK-224 (REQ-078) `0029` — the ADDITIONAL teachers on an อื่นๆ booking.
++//
++// Owner, 2026-08-31: *"ทุกการจองต้องมีครู แค่การจองนั้น อาจจะครูหลายคนได้"*.
++//
++// 🔴 `bookings.teacher_id` STAYS NOT NULL and is the FIRST teacher; this table holds only the extra ones. That
++// is what keeps this additive: every existing reader, index, freelance hold and report is untouched, and AC-20
++// (the other four types take exactly one teacher) is true **by construction** rather than by a rule someone has
++// to remember. `teachers[0]` is always `teacher_id`, so the order is stable.
++//
++// ⚠️ Read it through the ONE accessor in `db/mappers.ts` (`bookingTeachers`). Two call sites reading
++// `teacher_id` and this table separately is how the two get to disagree.
++export const bookingTeachers = pgTable(
++  "booking_teachers",
++  {
++    bookingId: uuid("booking_id")
++      .notNull()
++      .references(() => bookings.id, { onDelete: "cascade" }),
++    teacherId: uuid("teacher_id")
++      .notNull()
++      .references(() => teachers.id, { onDelete: "restrict" }),
++  },
++  // CASCADE + this composite PK are what make AC-18 ("cancelling removes it from all three columns") free:
++  // there is still exactly ONE booking row, so a cancel stays one status change.
++  (t) => [primaryKey({ columns: [t.bookingId, t.teacherId] })],
++);
++
+ // ───────────────────── LINE OA link sessions (C.4) ─────────────────────
+ // Short-lived conversation state while a LINE user picks a role + enters a code.
+ export const lineLinkSessions = pgTable("line_link_sessions", {
+@@ -434,19 +484,31 @@ export const lineLinkSessions = pgTable("line_link_sessions", {
+ 
+ // ─────────────────────── Notification outbox (LINE) ───────────────────────
+ // Reliable push: write a row, a worker delivers + retries. Audit trail included.
+-export const notificationOutbox = pgTable("notification_outbox", {
+-  id: uuid("id").primaryKey().defaultRandom(),
+-  channel: text("channel").notNull().default("line"),
+-  recipientType: text("recipient_type").notNull(), // 'teacher' | 'parent' | 'student'
+-  recipientLineUserId: text("recipient_line_user_id"),
+-  bookingId: uuid("booking_id").references(() => bookings.id, { onDelete: "set null" }),
+-  payload: jsonb("payload").notNull(),
+-  status: notifyStatus("status").notNull().default("PENDING"),
+-  attempts: integer("attempts").notNull().default(0),
+-  error: text("error"),
+-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+-  sentAt: timestamp("sent_at", { withTimezone: true }),
+-});
++export const notificationOutbox = pgTable(
++  "notification_outbox",
++  {
++    id: uuid("id").primaryKey().defaultRandom(),
++    channel: text("channel").notNull().default("line"),
++    recipientType: text("recipient_type").notNull(), // 'teacher' | 'parent' | 'student'
++    recipientLineUserId: text("recipient_line_user_id"),
++    bookingId: uuid("booking_id").references(() => bookings.id, { onDelete: "set null" }),
++    payload: jsonb("payload").notNull(),
++    status: notifyStatus("status").notNull().default("PENDING"),
++    attempts: integer("attempts").notNull().default(0),
++    error: text("error"),
++    // TASK-218 (`0028`) — per-RECIPIENT send-once key, mirroring the day-end sale's `rev:<bookingId>`.
++    // NULL for every writer that has its own natural non-repeat (confirms, leave, digests); NULLs are
++    // distinct in Postgres, so the unique index below constrains only the keyed rows.
++    idempotencyKey: text("idempotency_key"),
++    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
++    sentAt: timestamp("sent_at", { withTimezone: true }),
++  },
++  (t) => [
++    // The thing that makes a double-send impossible rather than merely unlikely: the up-front read in
++    // `runDailyReminderJob` is the fast path, this index is what holds when two boxes fire at once.
++    uniqueIndex("notification_outbox_idempotency_uq").on(t.idempotencyKey),
++  ],
++);
+ 
+ // ─────────────────────────── App settings (KV) ───────────────────────────
+ // Small global settings persisted server-side (single source of truth across
+@@ -625,6 +687,15 @@ export const bookingsRelations = relations(bookings, ({ one, many }) => ({
+   }),
+   voucher: one(vouchers, { fields: [bookings.voucherId], references: [vouchers.id] }),
+   badges: many(bookingBadges),
++  // TASK-224 — the ADDITIONAL teachers only (`teacher` above is the first). Loaded by
++  // `withBookingRelations` so every booking read has the same shape; never read directly — see
++  // `bookingTeachers` in `db/mappers.ts`.
++  additionalTeachers: many(bookingTeachers),
++}));
++
++export const bookingTeachersRelations = relations(bookingTeachers, ({ one }) => ({
++  booking: one(bookings, { fields: [bookingTeachers.bookingId], references: [bookings.id] }),
++  teacher: one(teachers, { fields: [bookingTeachers.teacherId], references: [teachers.id] }),
+ }));
+ 
+ export const badgeTypesRelations = relations(badgeTypes, ({ many }) => ({
+diff --git a/src/lib/bulk-link-plan.test.ts b/src/lib/bulk-link-plan.test.ts
+index cbe332c..98d8299 100644
+--- a/src/lib/bulk-link-plan.test.ts
++++ b/src/lib/bulk-link-plan.test.ts
+@@ -76,3 +76,58 @@ describe("operator evidence (AC-10)", () => {
+     expect(out).not.toContain("เก่า"); // the archived teacher isn't even listed
+   });
+ });
++
++// ═══ TASK-223 — the header must not document a policy the owner revoked ═══
++//
++// 🔴 A comment asserting a revoked policy is worse than no comment: it is the reason someone runs the command
++// confidently. This header said `link-all` was for both boxes, and that open-by-default was a trade-off the
++// owner had accepted. On 2026-08-29 he said **"ตั้งใจจำกัด"** — DC and Pop are deliberately restricted — and a
++// `--commit` on `uat` would have given DC 16 programs he is not meant to teach, with **no way to unlink**.
++// Prose rots silently, so the claims that matter are pinned here (the TASK-191 lesson, applied to comments).
++//
++// ⚠️ Asserted on the SOURCE TEXT, never by importing the script: importing it would construct the DB client.
++const SCRIPT = await Bun.file(new URL("../../scripts/link-all-teacher-subjects.ts", import.meta.url)).text();
++const PLAN_SRC = await Bun.file(new URL("./bulk-link-plan.ts", import.meta.url)).text();
++
++describe("TASK-223 — what the header is allowed to claim", () => {
++  test("🔴 neither file says the tool is for `uat`, or that open-by-default is current policy", () => {
++    // Not even as a quotation: a grep that finds the revoked wording hands the reader the old policy out of
++    // context, which is exactly the failure mode being fixed.
++    expect(SCRIPT).not.toContain("on BOTH `sid` and `uat`");
++    expect(SCRIPT).not.toContain("อย่าลืมรันทั้ง sid และ uat");
++    expect(SCRIPT).not.toContain("the trade-off the owner accepted when he chose open-by-default");
++    expect(SCRIPT).not.toContain("Usage (run on sid, then uat)");
++  });
++
++  test("🔴 it names all three: `sid`-only · `uat` = a named list · it can NEVER unlink", () => {
++    expect(SCRIPT).toContain("sid`-ONLY");
++    expect(SCRIPT).toContain("NAMED LIST");
++    expect(SCRIPT).toContain("can NEVER unlink");
++  });
++
++  test("the revoked premise in the pure planner points at the script's danger paragraph", () => {
++    // `bulk-link-plan.ts` repeated "every teacher can teach every program" as if it were still the roster.
++    expect(PLAN_SRC).toContain("revoked for `uat`");
++    expect(PLAN_SRC).toContain("link-all-teacher-subjects.ts");
++  });
++
++  test("🔴 item 3: the warning prints above the plan on BOTH paths, dry run AND --commit", () => {
++    // SA correction at review: the person typing `--commit` is who it is for. A warning that vanishes at the
++    // moment of danger fires only when it cannot matter.
++    expect(SCRIPT).toContain("${UAT_WARNING}");
++    expect(SCRIPT.indexOf("${UAT_WARNING}")).toBeLessThan(SCRIPT.indexOf("console.log(formatBulkLinkPlan(plan))"));
++    expect(SCRIPT).toContain("this tool is sid-only");
++    // Not gated on the dry-run flag — that gate is what the review struck.
++    expect(SCRIPT).not.toContain("if (!commit) console.log(");
++  });
++
++  test("🔴 behaviour is UNCHANGED — dry run still rolls back, --commit still inserts on-conflict-do-nothing", () => {
++    // The task is a comment fix. A safety guard nobody ordered (box detection, an env check) would be a
++    // behaviour change, and getting "which box am I on" wrong in a guard is worse than a stale comment.
++    expect(SCRIPT).toContain("if (!commit) throw new Error(DRY_RUN_ROLLBACK);");
++    expect(SCRIPT).toContain(".onConflictDoNothing()");
++    for (const guard of ["process.env.NODE_ENV", "DATABASE_URL", "isUat", "--force"]) {
++      expect(SCRIPT).not.toContain(guard);
++    }
++  });
++});
+diff --git a/src/lib/bulk-link-plan.ts b/src/lib/bulk-link-plan.ts
+index 5b03f0c..46d098c 100644
+--- a/src/lib/bulk-link-plan.ts
++++ b/src/lib/bulk-link-plan.ts
+@@ -4,6 +4,11 @@
+ // owner chose "every teacher can teach every program", which is 24 × 19 = 456 links — far too many to do one
+ // command at a time without a half-finished pass leaving a roster that *looks* configured.
+ //
++// 🔴 **That choice was revoked for `uat` on 2026-08-29** (owner: *"ตั้งใจจำกัด"* — TASK-223). Open-by-default is
++// no longer current policy there, so this file describes what `link-all` **computes**, not what any roster is
++// meant to be. Where it is safe to apply is the caller's question, and the answer is in the danger paragraph of
++// `scripts/link-all-teacher-subjects.ts`: `sid`-only, and the tool can never unlink.
++//
+ // Two exclusions, and they are not the same idea:
+ //   · **archived** = offboarded. The teacher is hidden from bookings entirely, so a link would be dead config.
+ //   · **active:false** = paused — an availability state, not a capability one. A paused teacher still teaches
+diff --git a/src/lib/daily-reminder.test.ts b/src/lib/daily-reminder.test.ts
+index c7af489..5f54c06 100644
+--- a/src/lib/daily-reminder.test.ts
++++ b/src/lib/daily-reminder.test.ts
+@@ -1,5 +1,11 @@
+ import { describe, expect, test } from "bun:test";
+-import { groupReminders, reminderReach, type ReminderSession } from "./daily-reminder";
++import {
++  dueReminders,
++  groupReminders,
++  reminderKey,
++  reminderReach,
++  type ReminderSession,
++} from "./daily-reminder";
+ 
+ // SPEC-066 / TASK-208 (REQ-072 3B). The rule this feature lives or dies by is ONE MESSAGE PER PERSON: a
+ // Saturday is ~60 sessions, and a per-booking push would send one teacher eight notifications before 08:20.
+@@ -98,3 +104,62 @@ describe("🔴 the reach is COUNTED before anything is sent", () => {
+     });
+   });
+ });
++
++// ═══ TASK-218 — a manual pre-08:15 trigger must not eat the day ═══
++//
++// The old guard asked "did this JOB already run today?" (`job_runs.summary.attempted`). An ops trigger at 07:00
++// answered yes, so the real 08:15 run skipped and **nobody was reminded**. The DoD is written per-person, so the
++// deciding rule is pure and lives here: given who was already keyed, who is still due?
++describe("🔴 TASK-218 — idempotency is per RECIPIENT per day, not per job", () => {
++  const DAY = "2026-09-05";
++  const key = (t: "teacher" | "parent", id: string) => reminderKey(t, id, DAY);
++
++  test("the key is person + business date — 'one per day' is a calendar statement", () => {
++    expect(key("teacher", "t1")).toBe("reminder:teacher:t1:2026-09-05");
++    expect(key("parent", "t1")).not.toBe(key("teacher", "t1")); // a person is never both by accident
++    expect(reminderKey("teacher", "t1", "2026-09-06")).not.toBe(key("teacher", "t1")); // tomorrow is a new send
++  });
++
++  test("🔑 07:00 trigger then the 08:15 run: everyone due gets exactly one — none twice, none missed", () => {
++    const day = [
++      s({ id: "a", teacherId: "t1", parentId: "p1" }),
++      s({ id: "b", teacherId: "t2", parentId: "p2", startTime: "13:00:00" }),
++    ];
++    const groups = groupReminders(day);
++    expect(groups).toHaveLength(4); // t1, t2, p1, p2
++
++    // 07:00 — an ops trigger reaches whoever it reaches. Say it got the two teachers.
++    const at0700 = dueReminders(groups, DAY, new Set());
++    expect(at0700).toHaveLength(4);
++    const keyedAfter0700 = new Set([key("teacher", "t1"), key("teacher", "t2")]);
++
++    // 08:15 — the scheduled run. It must NOT be suppressed, and must send only to the two parents.
++    const at0815 = dueReminders(groups, DAY, keyedAfter0700);
++    expect(at0815.map((g) => `${g.recipientType}:${g.personId}`)).toEqual(["parent:p1", "parent:p2"]);
++
++    // Union across both runs = every person exactly once.
++    const all = [...at0700.slice(0, 2), ...at0815].map((g) => `${g.recipientType}:${g.personId}`);
++    expect(new Set(all).size).toBe(all.length);
++  });
++
++  test("two runs with no gap still send each person once (double-run safe)", () => {
++    const groups = groupReminders([s({ id: "a" })]);
++    const keyed = new Set(groups.map((g) => reminderKey(g.recipientType, g.personId, DAY)));
++    expect(dueReminders(groups, DAY, keyed)).toEqual([]);
++  });
++
++  test("🔴 yesterday's keys never suppress today — the date is part of the key", () => {
++    const groups = groupReminders([s({ id: "a" })]);
++    const yesterday = new Set(groups.map((g) => reminderKey(g.recipientType, g.personId, "2026-09-04")));
++    expect(dueReminders(groups, DAY, yesterday)).toHaveLength(groups.length);
++  });
++
++  test("an UNLINKED person stays due — they were not reminded, they were unreachable", () => {
++    // `enqueueLine` deliberately stores no key on a SKIPPED row, so a parent who links LINE between the 07:00
++    // trigger and 08:15 is still reached. Suppressing on "we tried" would silently never send to them.
++    const groups = groupReminders([s({ id: "a", parentLineUserId: null })]);
++    const parent = groups.find((g) => g.recipientType === "parent")!;
++    expect(parent.lineUserId).toBeNull();
++    expect(dueReminders(groups, DAY, new Set()).map((g) => g.personId)).toContain(parent.personId);
++  });
++});
+diff --git a/src/lib/daily-reminder.ts b/src/lib/daily-reminder.ts
+index 4dcc7e4..e3d0441 100644
+--- a/src/lib/daily-reminder.ts
++++ b/src/lib/daily-reminder.ts
+@@ -89,6 +89,37 @@ export function groupReminders(sessions: ReminderSession[]): ReminderGroup[] {
+   return [...byTeacher.values(), ...byParent.values()];
+ }
+ 
++/**
++ * TASK-218 — the send-once key for **one person on one business date**, mirroring the day-end sale's
++ * `rev:<bookingId>`.
++ *
++ * 🔴 Why the key is per-RECIPIENT and not per-job: the job used to suppress itself on a `job_runs` flag, so a
++ * manual trigger at 07:00 made the real 08:15 run skip and **the day's reminders were silently eaten**. Neither
++ * job-level flag can be right — `sent` re-runs all morning on a zero-reach day, `attempted` eats the day. Keyed
++ * here, the job may run any number of times: each run sends only to whoever is not already keyed today.
++ *
++ * The date is the **business date** (Asia/Bangkok), not a timestamp — "one per day" is a calendar statement.
++ */
++export const reminderKey = (
++  recipientType: ReminderGroup["recipientType"],
++  personId: string,
++  date: string,
++) => `reminder:${recipientType}:${personId}:${date}`;
++
++/**
++ * Who still needs today's reminder — the groups whose key is **not** already in `alreadyKeyed`.
++ *
++ * Pure, so the property the DoD is written in ("a 07:00 trigger then the 08:15 run: every due person gets
++ * exactly one reminder") is a test rather than a live-box hope.
++ */
++export function dueReminders(
++  groups: ReminderGroup[],
++  date: string,
++  alreadyKeyed: ReadonlySet<string>,
++): ReminderGroup[] {
++  return groups.filter((g) => !alreadyKeyed.has(reminderKey(g.recipientType, g.personId, date)));
++}
++
+ /**
+  * The reach, counted **before** anything is sent — the number that says whether this feature does anything at
+  * all today. `unlinkedParents` is the one to watch: it is large on `uat` by construction.
+diff --git a/src/lib/line.ts b/src/lib/line.ts
+index d0657ca..1891f3c 100644
+--- a/src/lib/line.ts
++++ b/src/lib/line.ts
+@@ -7,13 +7,24 @@
+ 
+ import { db } from "../db";
+ import { notificationOutbox } from "../db/schema";
++import { pgErrorCode } from "./http";
+ 
+ export type NotifyResult = {
+   channel: "line";
+-  status: "queued" | "skipped";
++  /** `duplicate` is a success: this exact message was already queued (see `idempotencyKey`). */
++  status: "queued" | "skipped" | "duplicate";
+   reason?: string;
+ };
+ 
++/**
++ * Queue one LINE push.
++ *
++ * 🔴 **`idempotencyKey` may only be used OUTSIDE a transaction** (TASK-218). The duplicate case is detected by
++ * letting the insert hit `notification_outbox_idempotency_uq` and swallowing the `23505` — and a swallowed
++ * constraint error inside a transaction leaves that transaction **aborted**, so every later statement in it
++ * fails. The caveat lives here, on the signature, rather than in a task file nobody opens: every `exec: tx`
++ * caller passes no key, and the daily reminder — the only keyed caller — enqueues on the default connection.
++ */
+ export async function enqueueLine(
+   opts: {
+     recipientType: "teacher" | "parent" | "student" | "admin";
+@@ -22,11 +33,22 @@ export async function enqueueLine(
+     payload: unknown;
+     /** TASK-152: why this row was skipped, when the reason isn't simply "this recipient has no LINE link". */
+     skipReason?: string;
++    /**
++     * TASK-218 — send-once key for callers that can legitimately fire more than once for the same message,
++     * mirroring the day-end sale's `rev:<bookingId>` (`lib/sale-post.ts`). A second insert with the same key
++     * hits `notification_outbox_idempotency_uq` and returns `duplicate` instead of queueing a second push.
++     *
++     * ⚠️ **Never pass this together with a transactional `exec`** — see the note on the function above.
++     */
++    idempotencyKey?: string;
+   },
+   // pass a transaction to keep the outbox write atomic with the state change
+   exec: any = db,
+ ): Promise<NotifyResult> {
+   if (!opts.recipientLineUserId) {
++    // 🔴 A SKIPPED row NEVER carries the key. It records that we could not reach someone — not that they were
++    // reminded — and claiming the key here would mean a parent who was unlinked at 07:00 and links LINE by
++    // 08:15 is silently never sent to. That is the exact class of bug TASK-218 exists to remove.
+     await exec.insert(notificationOutbox).values({
+       recipientType: opts.recipientType,
+       recipientLineUserId: null,
+@@ -38,12 +60,21 @@ export async function enqueueLine(
+     return { channel: "line", status: "skipped", reason: "ผู้รับยังไม่ผูก LINE userId" };
+   }
+ 
+-  await exec.insert(notificationOutbox).values({
+-    recipientType: opts.recipientType,
+-    recipientLineUserId: opts.recipientLineUserId,
+-    bookingId: opts.bookingId ?? null,
+-    payload: opts.payload as any,
+-    status: "PENDING",
+-  });
++  try {
++    await exec.insert(notificationOutbox).values({
++      recipientType: opts.recipientType,
++      recipientLineUserId: opts.recipientLineUserId,
++      bookingId: opts.bookingId ?? null,
++      payload: opts.payload as any,
++      status: "PENDING",
++      idempotencyKey: opts.idempotencyKey ?? null,
++    });
++  } catch (e) {
++    // Only for a KEYED send: swallowing 23505 on an unkeyed insert would hide a real constraint failure.
++    if (opts.idempotencyKey && pgErrorCode(e) === "23505") {
++      return { channel: "line", status: "duplicate", reason: opts.idempotencyKey };
++    }
++    throw e;
++  }
+   return { channel: "line", status: "queued" };
+ }
+diff --git a/src/lib/migration-witness.ts b/src/lib/migration-witness.ts
+index 716906c..b8a1445 100644
+--- a/src/lib/migration-witness.ts
++++ b/src/lib/migration-witness.ts
+@@ -286,6 +286,27 @@ export const SCHEDULING_WITNESSES: Witness[] = [
+       "only after this ran (TASK-217 — the off-card import 500).",
+     rerunnable: true,
+   },
++  {
++    tag: "0028_outbox_idempotency",
++    probe: { kind: "index", index: "notification_outbox_idempotency_uq" },
++    why:
++      "The LAST object 0028 creates — after the column it indexes — so a half-applied run is detectable, and " +
++      "nothing else creates this index. It is also the object that carries the behaviour: without the unique " +
++      "index the per-recipient key is advisory and two boxes firing at 08:15 can both send (TASK-218 — a " +
++      "manual pre-08:15 trigger used to eat the whole day's reminders).",
++    rerunnable: true,
++  },
++  {
++    tag: "0029_other_booking_type",
++    probe: { kind: "constraint", constraint: "booking_other_price_chk" },
++    why:
++      "🔴 0029's headline effects are UNWITNESSABLE BY EXISTENCE: `student_id` and `subject_id` both exist " +
++      "before and after their `DROP NOT NULL`, so probing a column would make an un-migrated box look " +
++      "identical to a migrated one — exactly how 0022 hid and took the calendar down. " +
++      "`booking_other_price_chk` is the LAST object 0029 creates, after the columns it constrains, and " +
++      "nothing else creates it (TASK-224 — the อื่นๆ booking type).",
++    rerunnable: true,
++  },
+ ];
+ 
+ export type Verdict = "applied" | "not-applied" | "needs-human";
+diff --git a/src/lib/sale-post.test.ts b/src/lib/sale-post.test.ts
+index a640c75..1b2661a 100644
+--- a/src/lib/sale-post.test.ts
++++ b/src/lib/sale-post.test.ts
+@@ -1,7 +1,8 @@
+ // TASK-066 — what can be proven without a database. The insert itself is deploy smoke (brownfield);
+ // the two things that can be wrong *in code* are the sign rule and the unknown-code guard.
+ import { describe, expect, test } from "bun:test";
+-import { recordSale, saleMovement } from "./sale-post";
++import { netPostedSale, recordSale, saleMovement } from "./sale-post";
++import { readSrc } from "./read-src";
+ import { FIRST_TRIAL_MINOR, courseItemRef } from "./sale-items";
+ 
+ describe("sign rule — must match backoffice-back's bo-money.ts or the P&L reads backwards", () => {
+@@ -51,3 +52,107 @@ describe("unknown product code is loud, not silent", () => {
+     expect(courseItemRef("onewheel", 6)).toBe("course-onewheel-6");
+   });
+ });
++
++// ═══ SPEC-069 / TASK-221 — the READ side: was this booking's revenue already posted? ═══
++//
++// The netting and the SIGN are the parts that can be wrong in code, so they are pure and tested here. The query
++// itself needs `bo.movement` rows and is deploy smoke, like `recordSale`'s insert — but *what* it looks the sale
++// up BY is a source claim worth pinning: inferring it from booking type/status/date would be a second copy of a
++// rule that lives in the day-end job, and the two would drift.
++//
++// Read at module top level — a `describe` callback is not a module scope, so `await` is not allowed inside it.
++const SRC = readSrc(await Bun.file(new URL("./sale-post.ts", import.meta.url)).text());
++const API = readSrc(await Bun.file(new URL("../routes/api.ts", import.meta.url)).text());
++const FN = (() => {
++  const at = SRC.indexOf("export async function postedSaleForBooking");
++  const rest = SRC.slice(at);
++  return rest.slice(0, rest.indexOf("\n}\n") + 2);
++})();
++
++describe("SPEC-069 / TASK-221 — netting a posted sale", () => {
++  const at = new Date("2026-08-29T16:30:00.000Z");
++
++  test("🔑 a ฿1,390 trial with no discount reads 139000, POSITIVE", () => {
++    // A flipped sign here is invisible until month end, and would render the warning as a negative amount.
++    const p = netPostedSale({ listMinor: 139000, discountMinor: 0, productCode: "first-trial", postedAt: at });
++    expect(p.amountMinor).toBe(139000);
++    expect(p.amountMinor).toBeGreaterThan(0);
++    expect(p.listMinor).toBe(139000);
++    expect(p.productCode).toBe("first-trial");
++    expect(p.postedAt).toBe("2026-08-29T16:30:00.000Z");
++  });
++
++  test("🔴 a DISCOUNTED trial nets to the discounted amount — never the list price", () => {
++    // The discount rides the same sale as a `discount:<refId>` movement with `valueMinor = −discountMinor`
++    // (`discount-plan.ts`). Warning a family with ฿1,390 when ฿1,190 was posted sends someone to reverse the
++    // wrong number.
++    const p = netPostedSale({
++      listMinor: 139000,
++      discountMinor: -20000, // the movement's OWN value, as stored
++      productCode: "first-trial",
++      postedAt: at,
++    });
++    expect(p.amountMinor).toBe(119000);
++    expect(p.amountMinor).not.toBe(p.listMinor);
++    expect(p.discountMinor).toBe(-20000);
++  });
++
++  test("the netting is `list + discount` — the same addition the P&L does, not a second rule", () => {
++    // `bo-money.ts:17`: amount = ΣOUT − Σ(reversal IN), expressed as an addition of signed values. Writing a
++    // subtraction here would be a second arithmetic that has to be kept in step with that one by hand.
++    for (const [list, disc] of [
++      [139000, 0],
++      [139000, -20000],
++      [65000, -65000], // fully discounted: posted, and worth nothing
++    ] as const) {
++      expect(netPostedSale({ listMinor: list, discountMinor: disc, productCode: "x", postedAt: at }).amountMinor).toBe(
++        list + disc,
++      );
++    }
++  });
++
++  test("a fully-discounted sale still reads as POSTED — `0` is not `null`", () => {
++    // "posted ฿0" and "nothing posted" are different facts, and the dialog must not conflate them.
++    expect(netPostedSale({ listMinor: 65000, discountMinor: -65000, productCode: "x", postedAt: at }).amountMinor).toBe(0);
++  });
++
++  test("🔴 the NEGATIVE-discount contract is documented where a consumer will read it", () => {
++    // SA ruling (TASK-221 → TASK-222): render `amountMinor`, never re-derive it. `list - discountMinor` on a
++    // negative value yields a HIGHER number than the truth — on a warning whose whole job is the number.
++    const iface = SRC.slice(SRC.indexOf("export interface PostedSale"), SRC.indexOf("export function netPostedSale"));
++    expect(iface).toContain("NEGATIVE");
++    expect(iface).toContain("re-deriving");
++  });
++});
++
++describe("SPEC-069 / TASK-221 — how the sale is FOUND (source claims)", () => {
++  test("🔴 detection is by IDEMPOTENCY KEY — no booking-type list, no status or date condition", () => {
++    expect(FN).toContain("`rev:${bookingId}`");
++    expect(FN).toContain("boMovement.idempotencyKey");
++    for (const inferred of ["bookingType", "FIRST_TRIAL", "SINGLE_SESSION", "ATTENDED", "status", "date"]) {
++      expect(FN).not.toContain(inferred);
++    }
++  });
++
++  test("the discount sibling is looked up by its own key, on the same booking", () => {
++    expect(FN).toContain("`discount:${bookingId}`");
++  });
++
++  test("🔴 it does NOT catch — a swallowed error would render as 'no money posted'", () => {
++    // The rest of this file is best-effort by design (a sale must never fail the booking it describes). This
++    // read is the opposite: it IS the warning, so it must be allowed to fail loudly.
++    expect(FN).not.toContain("catch");
++    expect(FN).not.toContain("return { posted: null }");
++  });
++
++  test("🔴 it writes NOTHING — this endpoint adds no way to move money", () => {
++    for (const write of ["insert(", "update(", "delete("]) expect(FN).not.toContain(write);
++  });
++
++  test("the route is registered and returns `{ posted }`, with no try/catch of its own", () => {
++    const route = API.slice(API.indexOf('.get("/bookings/:id/posted-sale"'));
++    const decl = route.slice(0, route.indexOf("\n  )") + 3);
++    expect(decl).toContain("{ posted: await postedSaleForBooking(");
++    expect(decl).not.toContain("catch");
++  });
++});
+diff --git a/src/lib/sale-post.ts b/src/lib/sale-post.ts
+index 042c8f2..975ff80 100644
+--- a/src/lib/sale-post.ts
++++ b/src/lib/sale-post.ts
+@@ -130,3 +130,97 @@ export async function recordSale(
+     return { ok: false, skipped: "error" };
+   }
+ }
++
++// ─────── SPEC-069 / TASK-221 — the READ side: was this booking's revenue already posted? ───────
++//
++// Cancelling an ATTENDED `FIRST_TRIAL` / `SINGLE_SESSION` fixes the schedule, releases the freelance hold and
++// returns the quota — and leaves the day-end sale in the books, silently. This read is what lets the cancel
++// dialog say so, with the number. **It writes nothing, and it adds no way to move money**: reversal stays a
++// backoffice act (the owner's line, held twice — REQ-036 and the `ADMIN_ERROR` course cancels).
++//
++// 🔴 It reports what was POSTED, never that the money is *still* there. A reversal is a manual movement that
++// carries no `refId` (backoffice `bo.service.ts:58`), so it is not attributable to the booking it undoes —
++// claiming "still in the books" would invite a SECOND reversal. See SPEC-069 §Limitation.
++
++export interface PostedSale {
++  /** NET satang actually in the books for this booking: `listMinor + discountMinor`. */
++  amountMinor: number;
++  /** The sale movement alone, before any discount. POSITIVE — see `saleMovement`. */
++  listMinor: number;
++  /** The discount movement's own `value_minor`, so it is **NEGATIVE** when there was one, `0` when there was
++   *  not. Kept in the movement's own sign so the netting below is the same addition the P&L does
++   *  (backoffice `bo-money.ts:17`) rather than a second, subtly different rule.
++   *  ⚠️ Consumers render `amountMinor`; re-deriving it as `listMinor - discountMinor` yields a HIGHER number
++   *  than the truth, on a warning whose whole job is the number (SA ruling, TASK-221 → TASK-222). */
++  discountMinor: number;
++  /** `bo.item.external_ref` — the product code ("first-trial", "single-session", …). */
++  productCode: string;
++  /** When the sale movement was written, ISO. */
++  postedAt: string;
++}
++
++/**
++ * Net a sale and its optional discount into what is actually in the books. **Pure**, and exported so the sign
++ * rule is tested rather than trusted: this is the file where a flipped sign stays invisible until month end.
++ *
++ * `amountMinor = list + discount` — a subtraction written as the addition of a negative, exactly as the P&L
++ * nets OUT against reversal IN.
++ */
++export function netPostedSale(input: {
++  listMinor: number;
++  discountMinor: number;
++  productCode: string;
++  postedAt: Date;
++}): PostedSale {
++  return {
++    amountMinor: input.listMinor + input.discountMinor,
++    listMinor: input.listMinor,
++    discountMinor: input.discountMinor,
++    productCode: input.productCode,
++    postedAt: input.postedAt.toISOString(),
++  };
++}
++
++/**
++ * The sale posted for one booking, or `null` if there is none.
++ *
++ * 🔴 Found by **`idempotency_key = 'rev:<bookingId>'`** — the key the day-end job actually writes
++ * (`jobs.service.ts`). Never inferred from `bookingType` / `status` / `date`: a type list here would be a
++ * second copy of a rule that lives in the posting job, and the two would drift.
++ *
++ * A `COURSE_PACKAGE` or `VOUCHER` booking returns `null` **by construction** — those post at sale time, keyed
++ * on the course/voucher, not on any booking. That is the design, not an omission.
++ *
++ * 🔴 **This function does not catch.** Everywhere else in this file a sale operation is best-effort, because it
++ * must never fail the booking it describes. Here the opposite is true: **this read IS the warning**, and an
++ * error swallowed into `null` renders as "no money posted" — the exact defect SPEC-069 exists to close. Let it
++ * throw; the caller turns it into a visible "could not verify".
++ */
++export async function postedSaleForBooking(bookingId: string): Promise<PostedSale | null> {
++  const [sale] = await db
++    .select({
++      valueMinor: boMovement.valueMinor,
++      createdAt: boMovement.createdAt,
++      productCode: boItem.externalRef,
++    })
++    .from(boMovement)
++    .innerJoin(boItem, eq(boItem.id, boMovement.itemId))
++    .where(eq(boMovement.idempotencyKey, `rev:${bookingId}`))
++    .limit(1);
++  if (!sale) return null;
++
++  // The discount rides the SAME sale (same item, same refId), keyed `discount:<refId>` where refId is the
++  // booking — `lib/discount-plan.ts`. A discounted trial must not warn with the list price.
++  const discount = await db.query.boMovement.findFirst({
++    where: (m, { eq: e }) => e(m.idempotencyKey, `discount:${bookingId}`),
++  });
++
++  return netPostedSale({
++    listMinor: sale.valueMinor,
++    discountMinor: discount?.valueMinor ?? 0,
++    // `external_ref` is nullable on the table but never null on a sale item (that is what `recordSale` looks
++    // the item up BY). Falling back to "" rather than asserting keeps a data oddity from throwing a warning away.
++    productCode: sale.productCode ?? "",
++    postedAt: sale.createdAt,
++  });
++}
+diff --git a/src/routes/api.ts b/src/routes/api.ts
+index 718ab76..bc69a25 100644
+--- a/src/routes/api.ts
++++ b/src/routes/api.ts
+@@ -15,6 +15,7 @@ import * as rental from "../services/rental.service";
+ import { calendarUrls } from "../lib/calendar-link";
+ import { crmLevelLadder } from "../lib/crm";
+ import { isSettingKey } from "../lib/settings";
++import { postedSaleForBooking } from "../lib/sale-post";
+ import { badRequest } from "../lib/http";
+ 
+ // Chained so `typeof api` carries every route for Hono's RPC client (hc<AppType>).
+@@ -257,6 +258,15 @@ export const api = new Hono()
+   .get("/bookings/:id/checkin", async (c) =>
+     c.json(await checkin.getCheckinQr(c.req.param("id"))),
+   )
++  // SPEC-069 / TASK-221 — read-only: was this booking's revenue already posted, and how much?
++  //
++  // 🔴 Deliberately NOT wrapped in a try/catch. Everywhere else here a sale read is best-effort so it can never
++  // fail the booking it describes; this read IS the warning the cancel dialog shows, and an error swallowed
++  // into `{ posted: null }` renders as "no money posted" — the whole defect. A 500 costs nothing (the cancel
++  // path is untouched) and the FE turns it into a visible "could not verify".
++  .get("/bookings/:id/posted-sale", async (c) =>
++    c.json({ posted: await postedSaleForBooking(c.req.param("id")) }),
++  )
+   // ── Badges (admin-defined tags on bookings) ──
+   .get("/badges", zValidator("query", v.badgesQuery), async (c) =>
+     c.json(await badge.listBadges(c.req.valid("query").includeInactive)),
+diff --git a/src/services/cancel-reason.test.ts b/src/services/cancel-reason.test.ts
+index bdffc4d..6d29521 100644
+--- a/src/services/cancel-reason.test.ts
++++ b/src/services/cancel-reason.test.ts
+@@ -34,13 +34,19 @@ describe("the reason is the SAME enum as a course ending (TASK-211)", () => {
+   });
+ });
+ 
+-describe("required for the three NON-COURSE types — and ONLY those", () => {
+-  test("🔴 SINGLE_SESSION, VOUCHER and FIRST_TRIAL (TASK-220 added the trial)", () => {
++describe("required for the NON-COURSE types — and ONLY those", () => {
++  test("🔴 SINGLE_SESSION, VOUCHER, FIRST_TRIAL (TASK-220) and OTHER (TASK-224)", () => {
+     // A first trial belongs with the other two: it is a **standalone session that bills** at day-end when
+     // attended, so cancelling one is exactly the act the audit question is about. Leaving it out made "find
+     // every cancellation someone made by mistake" silently incomplete — the worst kind of wrong for a query
+     // whose whole purpose is completeness.
+-    expect(CANCEL).toContain('REASON_ENUM_REQUIRED = new Set(["SINGLE_SESSION", "VOUCHER", "FIRST_TRIAL"])');
++    //
++    // TASK-224 (AC-13) adds `OTHER` for the same reason: an อื่นๆ booking is standalone and can bill, so its
++    // cancel is found by the same `WHERE cancel_reason = 'ADMIN_ERROR'` as every other standalone type — on
++    // day one, rather than after someone notices the gap.
++    expect(CANCEL).toContain(
++      'REASON_ENUM_REQUIRED = new Set(["SINGLE_SESSION", "VOUCHER", "FIRST_TRIAL", "OTHER"])',
++    );
+     expect(CANCEL).toContain('throw new ApiException(400, "REASON_REQUIRED"');
+   });
+ 
+diff --git a/src/services/checkin.service.ts b/src/services/checkin.service.ts
+index 749e16f..f6a064e 100644
+--- a/src/services/checkin.service.ts
++++ b/src/services/checkin.service.ts
+@@ -14,6 +14,9 @@ const withBookingRelations = {
+   teacher: true,
+   subject: true,
+   course: true,
++  // TASK-224 (AC-18) — same shape as the scheduler's loader: the check-in screen renders the same cell as the
++  // calendar, so it must resolve a booking's teachers the same way rather than showing only the first.
++  additionalTeachers: { with: { teacher: true } },
+ } as const;
+ 
+ async function loadBooking(id: string) {
+diff --git a/src/services/day-end-auto-attend.test.ts b/src/services/day-end-auto-attend.test.ts
+index 961322f..612c71b 100644
+--- a/src/services/day-end-auto-attend.test.ts
++++ b/src/services/day-end-auto-attend.test.ts
+@@ -74,15 +74,38 @@ describe("runDailyReminderJob (TASK-208)", () => {
+ 
+   test("🔴 it enqueues per GROUP, never per booking", () => {
+     // `groupReminders` is what collapses ~60 Saturday sessions into one message per person; enqueuing from
+-    // `rows` instead would put eight pushes on a teacher's phone before 08:20.
+-    expect(body).toContain("for (const g of groups)");
++    // `rows` instead would put eight pushes on a teacher's phone before 08:20. TASK-218 narrowed the loop from
++    // `groups` to `due` (the not-yet-reminded subset) — still one entry per PERSON, never per booking.
++    expect(body).toContain("for (const g of due)");
+     expect(body).toContain("groupReminders(");
++    expect(body).toContain("dueReminders(groups, runDate, alreadyKeyed)");
+     expect(body).not.toMatch(/for \(const [a-z]+ of rows\)/);
+   });
+ 
+-  test("🔴 idempotent per business date — a retry or a second box sends nothing", () => {
+-    expect(body).toContain("reminderAlreadySent(runDate)");
+-    expect(body.indexOf("reminderAlreadySent")).toBeLessThan(body.indexOf("enqueueLine"));
++  test("🔴 TASK-218: idempotency is per RECIPIENT per day, and it is what gates the send", () => {
++    // The gate must sit between "who is due" and "send", and it must be the per-person key — not a job flag.
++    expect(body).toContain("reminderKey(g.recipientType, g.personId, runDate)");
++    expect(body).toContain("idempotencyKey: reminderKey(");
++    expect(body.indexOf("dueReminders(")).toBeLessThan(body.indexOf("await enqueueLine("));
++  });
++
++  test("🔴 TASK-218: NO job-level flag may suppress the send — that is what ate the day", () => {
++    // A manual trigger at 07:00 set `attempted: true`, so the real 08:15 run skipped and nobody was reminded.
++    // `reminderRanToday` survives ONLY as an observability field; the moment it appears in an `if` around the
++    // send, or the early return comes back, the bug is back.
++    expect(body).not.toContain("reminderAlreadySent");
++    expect(body).not.toMatch(/if \(\s*(await )?reminderRanToday/);
++    expect(body).not.toContain('reason: "already-sent"');
++    expect(body).toContain("summary: { attempted: true, sent, skipped, alreadyReminded, priorRunToday");
++    // Exactly one `return` — the final one. An early return is how the previous two versions went wrong.
++    expect(body.match(/^\s{2}return /gm)).toHaveLength(1);
++  });
++
++  test("🔴 TASK-218: the up-front read is the fast path — the UNIQUE INDEX is what makes it safe", () => {
++    // Read-then-write is a race when both boxes fire at 08:15. `enqueueLine` turns the index collision into a
++    // `duplicate` result, and it must be counted as already-reminded, never as a send.
++    expect(body).toContain("notificationOutbox.idempotencyKey");
++    expect(body).toContain('if (result.status === "duplicate") alreadyReminded++');
+   });
+ 
+   test("🔴 a `job_runs` row is always written — 'never registered' must stay visible", () => {
+@@ -92,29 +115,31 @@ describe("runDailyReminderJob (TASK-208)", () => {
+   });
+ 
+   test("the reach is counted BEFORE sending and returned", () => {
+-    expect(body.indexOf("reminderReach(groups)")).toBeLessThan(body.indexOf("for (const g of groups)"));
++    expect(body.indexOf("reminderReach(groups)")).toBeLessThan(body.indexOf("for (const g of due)"));
+     expect(body).toContain("...reach");
+   });
+ 
+   test("🔴 TASK-209: `sent` is a DELIVERED COUNT and `attempted` is the separate fact that it ran", () => {
+     // This test asserted `sent: true` and passed — while a run that reached ZERO people recorded itself as
+     // sent. "Did it fire?" and "did it reach anyone?" are two questions, and one boolean cannot answer both.
+-    expect(body).toContain("summary: { attempted: true, sent, skipped, ...reach }");
++    expect(body).toContain("attempted: true, sent, skipped");
+     expect(body).not.toContain("sent: true, ...reach");
+   });
+ 
+-  test("🔴 TASK-209: EVERY invocation writes a row — the re-run records `sent: 0`, it does not return early", () => {
+-    // The early return made "ran, nothing to do" and "never ran" indistinguishable, which is the one property
+-    // these rows exist to preserve.
+-    const guard = body.slice(body.indexOf("reminderAlreadySent(runDate)"), body.indexOf("bookings.findMany"));
+-    expect(guard).toContain("insert(jobRuns)");
+-    expect(guard).toContain('reason: "already-sent"');
++  test("🔴 TASK-218: `alreadyReminded` and `skipped` stay SEPARATE counts", () => {
++    // "already had it" and "cannot be reached at all" are the two answers an operator is choosing between when
++    // a morning looks short. Folding them into one number loses exactly the distinction they are read for.
++    expect(body).toContain('else if (result.status === "skipped") skipped++');
++    expect(body).toContain("alreadyReminded = groups.length - due.length");
+   });
+ 
+-  test("the already-sent check keys on `attempted`, never on the delivered count", () => {
+-    // Keying on `sent` would make the job re-run all morning on exactly the days it reached nobody.
+-    const predicate = SRC.slice(SRC.indexOf("async function reminderAlreadySent"));
++  test("`reminderRanToday` is recorded, never acted on — and still keys on `attempted`", () => {
++    // Keying on `sent` would make it misreport a day that reached nobody as "never fired".
++    const predicate = SRC.slice(SRC.indexOf("async function reminderRanToday"));
+     expect(predicate.slice(0, predicate.indexOf("\n}\n"))).toContain("attempted === true");
++    // Its only consumer is the summary/return payload.
++    expect(body).toContain("const priorRunToday = await reminderRanToday(runDate)");
++    expect(body.match(/priorRunToday/g)).toHaveLength(3);
+   });
+ 
+   test("parents are loaded in ONE query, not one per student", () => {
+diff --git a/src/services/jobs.service.ts b/src/services/jobs.service.ts
+index 8d66ee2..7d3db3b 100644
+--- a/src/services/jobs.service.ts
++++ b/src/services/jobs.service.ts
+@@ -14,14 +14,14 @@
+ // signal, and it is deliberately kept. `NO_SHOW` stays in the enum so historical rows still render.
+ import { and, eq, inArray, sql } from "drizzle-orm";
+ import { db } from "../db";
+-import { bookings, coursePackages, jobRuns, vouchers } from "../db/schema";
++import { bookings, coursePackages, jobRuns, notificationOutbox, vouchers } from "../db/schema";
+ import { bangkokNow } from "../lib/bangkok-time";
+ import { recordSale } from "../lib/sale-post";
+ import { listPriceMinor, revenueItemRef } from "../lib/sale-items";
+ import { safeStoredDiscount } from "../lib/discount-plan";
+ import { getDailyReport, resolvePriceGroup } from "./scheduler.service";
+ import { enqueueLine } from "../lib/line";
+-import { groupReminders, reminderReach } from "../lib/daily-reminder";
++import { dueReminders, groupReminders, reminderKey, reminderReach } from "../lib/daily-reminder";
+ 
+ export async function runEndOfDayJob(date?: string) {
+   const now = bangkokNow();
+@@ -160,15 +160,26 @@ export async function runEndOfDayJob(date?: string) {
+ 
+ export const REMINDER_JOB = "daily-reminder";
+ 
+-/** Has the reminder already gone out for this business date? Read before sending, like the digest. */
+-async function reminderAlreadySent(runDate: string): Promise<boolean> {
++/**
++ * Had this business date already fired at least once before this invocation? **Observability only.**
++ *
++ * 🔴 TASK-218 — this function used to be the suppression gate (`reminderAlreadySent`), and that was the bug:
++ * a manual trigger at 07:00 wrote `attempted: true`, so the real 08:15 scheduled run skipped and **the day's
++ * reminders were silently eaten**. Suppression now lives per-recipient (`reminderKey`), where re-running is
++ * harmless. This survives only because *"was 08:15 the first firing today, or did something beat it?"* is the
++ * question an operator asks when a morning looks wrong — and it is now recorded, never acted on.
++ *
++ * ⚠️ **Never re-wire this into an `if` around the send.** Both job-level flags are wrong: `sent` re-runs all
++ * morning on a day that reached nobody, `attempted` eats the day.
++ */
++async function reminderRanToday(runDate: string): Promise<boolean> {
+   const rows = await db
+     .select()
+     .from(jobRuns)
+     .where(and(eq(jobRuns.job, REMINDER_JOB), eq(jobRuns.runDate, runDate)));
+-  // 🔴 TASK-209: keyed on `attempted`, NOT on `sent`. `sent` is now a delivered COUNT, and a day where every
+-  // recipient was unlinked delivers 0 — reading "already sent" off that number would make the job re-run all
+-  // morning on exactly the days it reached nobody.
++  // 🔴 TASK-209: keyed on `attempted`, NOT on `sent`. `sent` is a delivered COUNT, and a day where every
++  // recipient was unlinked delivers 0 — reading this off that number would misreport a day that reached
++  // nobody as one that never fired.
+   return rows.some((r) => (r.summary as any)?.attempted === true);
+ }
+ 
+@@ -181,26 +192,16 @@ async function reminderAlreadySent(runDate: string): Promise<boolean> {
+  * is the only thing that makes *"did it fire this morning?"* answerable without guessing, and it is written
+  * even when there is nothing to send.
+  *
+- * Idempotent per business date: a second run — a retry, or both boxes firing — sends nothing.
++ * 🔴 TASK-218 — idempotent **per recipient per business date**, not per job. The job may run any number of
++ * times a day: each run sends only to people not already reminded today, so a 07:00 ops trigger reminds whoever
++ * is due, the 08:15 run reminds the rest, and nobody is sent to twice.
+  */
+ export async function runDailyReminderJob(date?: string) {
+   const runDate = date ?? bangkokNow().date;
+ 
+-  // 🔴 TASK-209 — the guard gates the SEND, never the RECORD.
+-  //
+-  // This used to `return` here, so a second run sent nothing **and wrote nothing** — leaving "ran, nothing to
+-  // do" and "never ran" indistinguishable, which is the one property these job rows exist to preserve. The row
+-  // is now written on **every** invocation; a re-run records `attempted: false, sent: 0`.
+-  if (await reminderAlreadySent(runDate)) {
+-    await db.insert(jobRuns).values({
+-      job: REMINDER_JOB,
+-      runDate,
+-      status: "success",
+-      summary: { attempted: false, sent: 0, reason: "already-sent" },
+-      finishedAt: new Date(),
+-    });
+-    return { date: runDate, skipped: "already-sent" as const, sent: 0 };
+-  }
++  // Recorded, not acted on — see `reminderRanToday`. Read BEFORE this run writes its own row, or it would
++  // always report itself.
++  const priorRunToday = await reminderRanToday(runDate);
+ 
+   const rows = await db.query.bookings.findMany({
+     where: (b: any, { eq: e }: any) => e(b.date, runDate),
+@@ -236,6 +237,24 @@ export async function runDailyReminderJob(date?: string) {
+   // a reminder feature that reaches nobody looks identical to one that works, for as long as nobody checks.
+   const reach = reminderReach(groups);
+ 
++  // 🔴 TASK-218 — who has ALREADY been reminded today, read in ONE query keyed on the outbox.
++  //
++  // This is the fast path only. The `notification_outbox_idempotency_uq` index is what actually makes a
++  // double-send impossible when two boxes fire at the same moment — read-then-write alone is a race, and
++  // `enqueueLine` reports that collision back as `duplicate` rather than throwing.
++  const keys = groups.map((g) => reminderKey(g.recipientType, g.personId, runDate));
++  const alreadyKeyed = new Set(
++    keys.length
++      ? (
++          await db
++            .select({ key: notificationOutbox.idempotencyKey })
++            .from(notificationOutbox)
++            .where(inArray(notificationOutbox.idempotencyKey, keys))
++        ).map((r) => r.key as string)
++      : [],
++  );
++  const due = dueReminders(groups, runDate, alreadyKeyed);
++
+   // 🔴 TASK-209 — `sent` is the number ACTUALLY queued for delivery, not a boolean.
+   //
+   // The first version recorded `sent: true` on a run that reached **zero** people (every recipient unlinked on
+@@ -244,7 +263,11 @@ export async function runDailyReminderJob(date?: string) {
+   // "it fired and reached nobody" and "it never fired" stay distinguishable in both directions.
+   let sent = 0;
+   let skipped = 0;
+-  for (const g of groups) {
++  // TASK-218: people this run deliberately did not send to because they already had today's reminder. It is a
++  // separate count from `skipped` (= unreachable, no LINE link) on purpose — "already done" and "cannot reach"
++  // are the two answers an operator is choosing between when a morning looks short.
++  let alreadyReminded = groups.length - due.length;
++  for (const g of due) {
+     const result = await enqueueLine({
+       recipientType: g.recipientType,
+       recipientLineUserId: g.lineUserId,
+@@ -252,8 +275,12 @@ export async function runDailyReminderJob(date?: string) {
+       // composer in each recipient's own language — no second format, no per-booking enrichment.
+       payload: { kind: "daily_reminder", rows: g.rows },
+       skipReason: g.lineUserId ? undefined : "ยังไม่ผูก LINE",
++      // 🔴 The send-once key. A SKIPPED row never stores it (`lib/line.ts`), so someone who was unlinked at
++      // 07:00 and links LINE by 08:15 is still reached — an unreachable person was not reminded.
++      idempotencyKey: reminderKey(g.recipientType, g.personId, runDate),
+     });
+-    if (result.status === "skipped") skipped++;
++    if (result.status === "duplicate") alreadyReminded++;
++    else if (result.status === "skipped") skipped++;
+     else sent++;
+   }
+ 
+@@ -261,9 +288,9 @@ export async function runDailyReminderJob(date?: string) {
+     job: REMINDER_JOB,
+     runDate,
+     status: "success",
+-    summary: { attempted: true, sent, skipped, ...reach },
++    summary: { attempted: true, sent, skipped, alreadyReminded, priorRunToday, ...reach },
+     finishedAt: new Date(),
+   });
+ 
+-  return { date: runDate, attempted: true, sent, skipped, ...reach };
++  return { date: runDate, attempted: true, sent, skipped, alreadyReminded, priorRunToday, ...reach };
+ }
+diff --git a/src/services/other-booking.test.ts b/src/services/other-booking.test.ts
+new file mode 100644
+index 0000000..1e05c98
+--- /dev/null
++++ b/src/services/other-booking.test.ts
+@@ -0,0 +1,298 @@
++// SPEC-070 / TASK-224 (REQ-078) — the `OTHER` booking type: อื่นๆ on the calendar.
++//
++// Two kinds of claim are pinned here, and they are not the same kind of evidence:
++//   · **Contract**: the zod schema and `toBookingDTO` are callable without a database, so what they accept,
++//     refuse and compute is tested by CALLING them.
++//   · **Source claims**: the freelance guard and the migration live inside a transaction with no pure seam, so
++//     they are asserted at the source — the same way TASK-180's day-end job is.
++//
++// 🔴 The riskiest thing in this task is not the new type. It is **AC-14**: four booking types that already work
++// must come out byte-identical now that their student/subject columns are no longer NOT NULL. Half of this file
++// is about them.
++import { describe, expect, test } from "bun:test";
++import { readSrc } from "../lib/read-src";
++import { createBooking } from "../validation";
++import { toBookingDTO, bookingTeachers } from "../db/mappers";
++
++const SVC = readSrc(await Bun.file(new URL("./scheduler.service.ts", import.meta.url)).text());
++const SCHEMA = await Bun.file(new URL("../db/schema.ts", import.meta.url)).text();
++const SQL = await Bun.file(new URL("../../drizzle/0029_other_booking_type.sql", import.meta.url)).text();
++
++const base = {
++  teacherId: "11111111-1111-4111-8111-111111111111",
++  date: "2026-09-10",
++  startTime: "10:00",
++};
++const student = { id: "22222222-2222-4222-8222-222222222222" };
++const subjectId = "33333333-3333-4333-8333-333333333333";
++const teacher2 = "44444444-4444-4444-8444-444444444444";
++// The two lesson types that need no entitlement id, so a test about student/subject is not secretly about those.
++const SIMPLE = ["FIRST_TRIAL", "SINGLE_SESSION"] as const;
++
++// A booking row as the relational query returns it, so the DTO is exercised the way it is really called.
++function row(over: Record<string, any> = {}) {
++  return {
++    id: "b1",
++    date: "2026-09-10",
++    startTime: "10:00:00",
++    endTime: "11:00:00",
++    bookingType: "OTHER",
++    status: "PENDING",
++    student: { id: "st1", name: "เด็กชายเอ", nickname: "น้องเอ" },
++    teacher: { id: "t1", name: "ครูหนึ่ง", nickname: "หนึ่ง", type: "FULL_TIME" },
++    subject: { id: "s1", name: "Surfskate" },
++    ...over,
++  };
++}
++
++describe("🔴 AC-14 — the four LESSON types keep every guard they had", () => {
++  test("a missing STUDENT is still refused, per type — the column stopped enforcing it, the contract did not", () => {
++    // `0029` dropped `student_id`'s NOT NULL so `OTHER` can omit it. Without the refine, relaxing the schema
++    // for one type would silently let a 1HR be booked with no student — a change nobody asked for, for free.
++    for (const bookingType of SIMPLE) {
++      const r = createBooking.safeParse({ ...base, subjectId, bookingType });
++      expect(r.success).toBe(false);
++      expect(JSON.stringify(r.error?.issues)).toContain("ต้องระบุนักเรียน");
++    }
++  });
++
++  test("a missing PROGRAM is still refused, per type", () => {
++    for (const bookingType of SIMPLE) {
++      const r = createBooking.safeParse({ ...base, student, bookingType });
++      expect(r.success).toBe(false);
++      expect(JSON.stringify(r.error?.issues)).toContain("ต้องเลือกโปรแกรม");
++    }
++  });
++
++  test("a complete booking of each lesson type still parses — the guards did not become a wall", () => {
++    // The failure mode that would make the two tests above pass for the wrong reason.
++    const ok = (o: Record<string, unknown>) =>
++      createBooking.safeParse({ ...base, student, subjectId, ...o }).success;
++    expect(ok({ bookingType: "FIRST_TRIAL" })).toBe(true);
++    expect(ok({ bookingType: "SINGLE_SESSION" })).toBe(true);
++    expect(ok({ bookingType: "VOUCHER", voucherId: student.id })).toBe(true);
++    expect(ok({ bookingType: "COURSE_PACKAGE", courseId: student.id })).toBe(true);
++  });
++
++  test("🔴 AC-20 — the four lesson types REFUSE every อื่นๆ field, rather than ignoring it", () => {
++    // Silently dropping them is how `other_title` ends up on a course session nothing renders it for, and how
++    // "the other four take exactly one teacher" stops being true of the DATA while still being true on screen.
++    for (const extra of [
++      { otherTitle: "ประชุม" },
++      { otherPriceMinor: 50000 },
++      { otherPriceItemId: subjectId },
++      { additionalTeacherIds: [teacher2] },
++    ]) {
++      for (const bookingType of SIMPLE) {
++        expect(createBooking.safeParse({ ...base, student, subjectId, bookingType, ...extra }).success).toBe(false);
++      }
++    }
++  });
++
++  test("their DTO is unchanged: `student` and `subject` are still objects, `teachers` has exactly one", () => {
++    const dto = toBookingDTO(row({ bookingType: "SINGLE_SESSION" }));
++    expect(dto.student).not.toBeNull();
++    expect(dto.subject).toEqual({ id: "s1", name: "Surfskate" });
++    expect(dto.teachers).toHaveLength(1);
++    expect(dto.title).toBeNull();
++  });
++});
++
++describe("an อื่นๆ booking — what it may and may not be", () => {
++  test("saves WITHOUT a student when a title is given", () => {
++    expect(createBooking.safeParse({ ...base, bookingType: "OTHER", otherTitle: "ปิดปรับปรุงลาน" }).success).toBe(true);
++  });
++
++  test("saves WITH a student too — อื่นๆ is not the same as 'nobody'", () => {
++    expect(createBooking.safeParse({ ...base, student, bookingType: "OTHER" }).success).toBe(true);
++  });
++
++  test("🔴 no student AND no title → refused with the owner's message; nothing to write", () => {
++    const r = createBooking.safeParse({ ...base, bookingType: "OTHER" });
++    expect(r.success).toBe(false);
++    expect(JSON.stringify(r.error?.issues)).toContain("กรุณาระบุชื่อรายการ");
++  });
++
++  test("a blank / whitespace title does not count as a title", () => {
++    for (const otherTitle of ["", "   "]) {
++      expect(createBooking.safeParse({ ...base, bookingType: "OTHER", otherTitle }).success).toBe(false);
++    }
++  });
++
++  test("🔴 AC-12 — both price sources at once is REFUSED, never clamped and never picked for the user", () => {
++    const r = createBooking.safeParse({
++      ...base,
++      bookingType: "OTHER",
++      otherTitle: "ประชุม",
++      otherPriceMinor: 50000,
++      otherPriceItemId: subjectId,
++    });
++    expect(r.success).toBe(false);
++  });
++
++  test("an amount of 0, a negative or a non-integer is refused — a charge of nothing is not a charge", () => {
++    for (const otherPriceMinor of [0, -1, 1.5, Number.NaN]) {
++      expect(
++        createBooking.safeParse({ ...base, bookingType: "OTHER", otherTitle: "ประชุม", otherPriceMinor }).success,
++      ).toBe(false);
++    }
++    expect(
++      createBooking.safeParse({ ...base, bookingType: "OTHER", otherTitle: "ประชุม", otherPriceMinor: 1 }).success,
++    ).toBe(true);
++  });
++
++  test("🔴 AC-19 — no teacher is refused; and the extra teachers must be a sane list", () => {
++    expect(
++      createBooking.safeParse({
++        date: base.date,
++        startTime: base.startTime,
++        bookingType: "OTHER",
++        otherTitle: "ประชุม",
++      }).success,
++    ).toBe(false);
++    const other = { ...base, bookingType: "OTHER", otherTitle: "ประชุม" };
++    expect(createBooking.safeParse({ ...other, additionalTeacherIds: [teacher2, teacher2] }).success).toBe(false);
++    expect(createBooking.safeParse({ ...other, additionalTeacherIds: [base.teacherId] }).success).toBe(false);
++    expect(createBooking.safeParse({ ...other, additionalTeacherIds: [teacher2] }).success).toBe(true);
++  });
++
++  test("a discount is still refused on อื่นๆ — by the rule that already existed, not a second one", () => {
++    // `captureBookingDiscount` refuses anything that is not FIRST_TRIAL / SINGLE_SESSION, so `OTHER` is
++    // excluded by construction. Pinned so a future edit to that list cannot let it in unnoticed.
++    expect(SVC).toContain('input.bookingType !== "FIRST_TRIAL" && input.bookingType !== "SINGLE_SESSION"');
++  });
++});
++
++describe("🔴 AC-10 — one `displayName`, computed once, never blank and never the word อื่นๆ", () => {
++  test("a titled booking shows its title", () => {
++    expect(toBookingDTO(row({ otherTitle: "ประชุมทีม", student: null, subject: null })).displayName).toBe("ประชุมทีม");
++  });
++
++  test("every other type shows the student's nickname — unchanged behaviour, one code path", () => {
++    expect(toBookingDTO(row({ bookingType: "SINGLE_SESSION" })).displayName).toBe("น้องเอ");
++  });
++
++  test("no nickname falls back to the full name, not to blank", () => {
++    expect(toBookingDTO(row({ student: { id: "st1", name: "เด็กชายเอ", nickname: null } })).displayName).toBe(
++      "เด็กชายเอ",
++    );
++  });
++
++  test("🔴 it is never empty for anything validation lets through, and never renders the word อื่นๆ", () => {
++    // The saveable shapes are exactly two: a student, or a title. Both produce a name.
++    for (const r of [row({ otherTitle: "ปิดปรับปรุงลาน", student: null, subject: null }), row()]) {
++      const dto = toBookingDTO(r);
++      expect(dto.displayName).not.toBe("");
++      expect(dto.displayName).not.toBe("อื่นๆ");
++    }
++  });
++
++  test("a title WINS over a student's nickname — the person typed it for this booking", () => {
++    expect(toBookingDTO(row({ otherTitle: "ประชุมกับผู้ปกครอง" })).displayName).toBe("ประชุมกับผู้ปกครอง");
++  });
++});
++
++describe("🚫 no placeholder program, no placeholder student", () => {
++  test("`subject` and `student` are NULL, not a fabricated row", () => {
++    // REQ-065 exists because `1st Trial` sitting in `subjects` leaked into the program picker and had to be
++    // filtered back out at `toTeacherDTO`. A fake อื่นๆ program would leak the same way — picker, `link-all`,
++    // `price_group`.
++    const dto = toBookingDTO(row({ student: null, subject: null, otherTitle: "ประชุม" }));
++    expect(dto.student).toBeNull();
++    expect(dto.subject).toBeNull();
++  });
++
++  test("the migration adds NO subjects row — it drops a NOT NULL instead", () => {
++    expect(SQL).not.toMatch(/INSERT INTO "?subjects"?/i);
++    expect(SQL).toContain('ALTER COLUMN "subject_id" DROP NOT NULL');
++  });
++});
++
++describe("🔴 AC-18 — every teacher, from ONE accessor", () => {
++  test("`teachers[0]` is always the row's own `teacher_id`, so the order is stable", () => {
++    const dto = toBookingDTO(
++      row({ additionalTeachers: [{ teacher: { id: "t2", name: "ครูสอง", nickname: "สอง", type: "PART_TIME" } }] }),
++    );
++    expect(dto.teachers.map((t: any) => t.id)).toEqual(["t1", "t2"]);
++    expect(dto.teachers[0]!.id).toBe(dto.teacher.id);
++  });
++
++  test("every booking type carries `teachers` — length 1 with no extras, so the FE has ONE shape", () => {
++    expect(toBookingDTO(row({ bookingType: "VOUCHER" })).teachers).toHaveLength(1);
++    expect(bookingTeachers(row())).toHaveLength(1);
++  });
++
++  test("a half-loaded relation cannot produce a phantom teacher", () => {
++    expect(bookingTeachers(row({ additionalTeachers: [{ teacher: null }, {}] }))).toHaveLength(1);
++  });
++
++  test("🔴 nothing outside the accessor READS the join table — two readers is how two answers appear", () => {
++    // The table may be touched only where rows are WRITTEN. Every read goes through the mapper, which is why
++    // the relation lives in the shared `withBookingRelations` rather than being opted into per query.
++    expect(SVC).toContain("insert(bookingTeachers)");
++    expect(SVC.split("bookingTeachers").length - 1).toBe(2); // the import, and that single insert
++  });
++
++  test("the relation is loaded in the SHARED relation set, not opted into per query", () => {
++    expect(SVC).toContain("additionalTeachers: { with: { teacher: true } }");
++    expect(SVC).toContain("with: withBookingRelations");
++  });
++});
++
++describe("🔴 AC-21 — an อื่นๆ booking draws NO freelance budget, from any teacher", () => {
++  const fn = (() => {
++    const at = SVC.indexOf("async function reconcileBookingHolds");
++    const rest = SVC.slice(at);
++    return rest.slice(0, rest.indexOf("\n}\n") + 2);
++  })();
++
++  test("the guard is INSIDE `reconcileBookingHolds`, before anything is read or written", () => {
++    // Six call sites. Guarding six is how five stay right and one drifts.
++    expect(fn).toContain('if (booking?.bookingType === "OTHER") return;');
++    expect(fn.indexOf('bookingType === "OTHER"')).toBeLessThan(fn.indexOf("boMovement"));
++  });
++
++  test("🔴 it returns before any movement is written — the DoD asserts the ABSENCE of an `fl:` row", () => {
++    const beforeGuard = fn.slice(0, fn.indexOf('bookingType === "OTHER"'));
++    for (const write of ["applyHoldMove", "insert("]) expect(beforeGuard).not.toContain(write);
++  });
++
++  test("🚫 `heldTarget` is untouched — it answers a different question and is still right", () => {
++    // It says what a STATUS holds. "Does this booking hold at all" is a booking-type question and belongs
++    // where the booking is known. Editing it would change the four existing types' holds.
++    const at = SVC.indexOf("function heldTarget");
++    expect(SVC.slice(at, at + 600)).not.toContain("OTHER");
++  });
++});
++
++describe("the migration `0029` — the two traps it must not fall into", () => {
++  test("🔴 TRAP 1 — no STATEMENT uses 'OTHER'; ADD VALUE shares its transaction with the whole run", () => {
++    // `drizzle-kit migrate` wraps every pending migration in ONE transaction, and a new enum value cannot be
++    // used in the transaction that added it. No backfill, no CHECK naming it, no seed.
++    //
++    // Comments are stripped first: the file deliberately EXPLAINS this trap, and a test that read prose would
++    // either fail on the explanation or pass on a comment. Only the statements are evidence.
++    const statements = SQL.replace(/^\s*--.*$/gm, "");
++    expect(statements).toContain("ADD VALUE IF NOT EXISTS 'OTHER'");
++    expect(statements.split("'OTHER'")).toHaveLength(2); // exactly one occurrence: the ADD VALUE itself
++  });
++
++  test("🔴 TRAP 2 — the witness is a CHECK, because DROP NOT NULL is invisible to an existence probe", () => {
++    // "Does `student_id` exist?" is true before AND after, so a column probe would make an un-migrated box
++    // look identical to a migrated one — how `0022` hid and took the calendar down.
++    expect(SQL).toContain('ADD CONSTRAINT "booking_other_price_chk"');
++    expect(SCHEMA).toContain('"booking_other_price_chk"');
++  });
++
++  test("the join table cascades from the booking, and restricts on the teacher", () => {
++    // CASCADE is what makes AC-18's "cancelling removes it everywhere" free: there is still ONE booking row.
++    expect(SQL).toContain('REFERENCES "bookings"("id") ON DELETE CASCADE');
++    expect(SQL).toContain('REFERENCES "teachers"("id") ON DELETE RESTRICT');
++    expect(SQL).toContain('PRIMARY KEY ("booking_id", "teacher_id")');
++  });
++
++  test("`bookings.teacher_id` stays NOT NULL — every existing reader, index and hold is untouched", () => {
++    expect(SQL).not.toContain('"teacher_id" DROP NOT NULL');
++    expect(SCHEMA).toContain('teacherId: uuid("teacher_id")');
++  });
++});
+diff --git a/src/services/scheduler.service.ts b/src/services/scheduler.service.ts
+index a87adfc..b788bff 100644
+--- a/src/services/scheduler.service.ts
++++ b/src/services/scheduler.service.ts
+@@ -3,7 +3,7 @@
+ 
+ import { and, asc, desc, eq, gte, ilike, inArray, lte, ne, or, sql } from "drizzle-orm";
+ import { db } from "../db";
+-import { appSettings, bookings, boItem, boMovement, coursePackages, jobRuns, parents, students, subjects, teacherSubjects, teachers, vouchers } from "../db/schema";
++import { appSettings, bookings, bookingTeachers, boItem, boMovement, coursePackages, jobRuns, parents, students, subjects, teacherSubjects, teachers, vouchers } from "../db/schema";
+ import type { BulkConfirmResult, CourseStatus, PlanSessionRow, TeacherType } from "../types/contract";
+ import { countByStatus } from "../lib/course-status";
+ import { decideImportSize } from "../lib/import-size";
+@@ -235,6 +235,25 @@ async function reconcileBookingHolds(
+   status: string,
+   override: boolean,
+ ) {
++  // 🔴 SPEC-070 / TASK-224 — AC-21: an อื่นๆ booking draws NO freelance budget, from any of its teachers.
++  //
++  // `heldTarget(status)` is **status-only** and has never had a booking-type opinion, so as things stood an
++  // อื่นๆ booking on a FREELANCE teacher would have silently drawn an hour off their ceiling the moment it was
++  // confirmed. The owner ruled it must not: a meeting is not a taught lesson.
++  //
++  // The guard is HERE, in the one function, rather than at the six call sites (`:1988 · :2065 · :2402 ·
++  // :2486 · :2960` + the move path) — guarding six is how five stay right and one drifts.
++  //
++  // 🚫 `heldTarget` is deliberately untouched: it answers *"what does this STATUS hold"*, which is still
++  // exactly right. "Does this booking hold at all" is a different question and belongs where the booking is
++  // known. Returning before the movement read also means an อื่นๆ booking never writes a `fl:` movement at
++  // all — the DoD asserts the absence of the row, not merely a number that did not change.
++  const booking = await tx.query.bookings.findFirst({
++    columns: { bookingType: true },
++    where: (b: any, { eq }: any) => eq(b.id, bookingId),
++  });
++  if (booking?.bookingType === "OTHER") return;
++
+   // Every freelance item holding this booking — including teachers it was moved away from.
+   const movements = await tx.query.boMovement.findMany({
+     where: (m: any, { and, eq, inArray }: any) =>
+@@ -379,6 +398,10 @@ const withBookingRelations = {
+   subject: true,
+   course: true,
+   badges: { with: { value: true, type: true } },
++  // TASK-224 (AC-18) — the ADDITIONAL teachers of an อื่นๆ booking. Loaded HERE, in the one shared relation
++  // set, rather than opted into per query: every booking read then produces the same `teachers[]`, and no
++  // caller can accidentally render a multi-teacher booking as though it had one.
++  additionalTeachers: { with: { teacher: true } },
+ } as const;
+ 
+ async function loadBookingDTO(exec: any, id: string) {
+@@ -853,16 +876,45 @@ async function assertTeacherBookable(exec: any, teacherId: string, date: string)
+   return teacher;
+ }
+ 
++/**
++ * SPEC-070 / TASK-224 (AC-18/19) — attach the ADDITIONAL teachers of an อื่นๆ booking.
++ *
++ * Insert-only and `onConflictDoNothing`, so a retried request cannot create a second row for the same pair —
++ * the composite PK is what makes that true, not carefulness here.
++ *
++ * `assertTeacherBookable` is applied to each one for the same reason `insertBooking` applies it to the first:
++ * an archived teacher must not acquire new work through a side door. What is deliberately NOT applied is the
++ * slot-clash rule — `bookings_teacher_slot_uq` covers `teacher_id` only, and an อื่นๆ booking is exactly the
++ * case where several teachers legitimately share one hour. Making the extras clash-checked would forbid the
++ * feature the owner asked for.
++ */
++async function attachAdditionalTeachers(exec: any, bookingId: string, teacherIds: string[]) {
++  const booking = await exec.query.bookings.findFirst({
++    columns: { date: true },
++    where: (b: any, { eq: e }: any) => e(b.id, bookingId),
++  });
++  for (const teacherId of teacherIds) {
++    await assertTeacherBookable(exec, teacherId, booking!.date);
++  }
++  await exec
++    .insert(bookingTeachers)
++    .values(teacherIds.map((teacherId) => ({ bookingId, teacherId })))
++    .onConflictDoNothing();
++}
++
+ async function insertBooking(
+   exec: any,
+-  studentId: string,
++  studentId: string | null,
+   input: any,
+   opts: { pendingSlot?: boolean } = {},
+ ): Promise<string> {
+   await assertTeacherBookable(exec, input.teacherId, input.date);
+   // REQ-019 / TASK-048: a suspended household gets no NEW bookings (existing ones are untouched). Server-side,
+   // so hiding the button in the UI isn't the only defence. Walk-in students with no parent are never blocked.
+-  if (blockedBySuspension(await findParentOfStudent(studentId, exec))) {
++  // TASK-224: no student ⇒ no household ⇒ nothing to be suspended. The check is skipped rather than made
++  // null-tolerant inside `findParentOfStudent`, so the suspension rule keeps exactly the meaning it had for
++  // every booking that names a student.
++  if (studentId && blockedBySuspension(await findParentOfStudent(studentId, exec))) {
+     throw badRequest(`${SUSPENDED_MESSAGE}จอง`);
+   }
+   // SPEC-030 / TASK-106: a voucher can't book Onewheel or Balance Play (course-only programs). Enforced here —
+@@ -908,6 +960,11 @@ async function insertBooking(
+         // TASK-178 (REQ-068) — the attendee note travels with the session it describes, and never touches
+         // `note` above: one is what a parent told us, the other is what the system did.
+         attendeeNote: input.attendeeNote ?? null,
++        // SPEC-070 / TASK-224 (REQ-078) — the อื่นๆ fields. Validation has already refused all three on the
++        // four lesson types, so `?? null` here is the whole story: nothing to branch on, nothing to forget.
++        otherTitle: input.otherTitle ?? null,
++        otherPriceMinor: input.otherPriceMinor ?? null,
++        otherPriceItemId: input.otherPriceItemId ?? null,
+         pendingSlot: opts.pendingSlot ?? false,
+       })
+       .returning({ id: bookings.id });
+@@ -1034,14 +1091,22 @@ export async function createBooking(input: any) {
+   // Validated before the booking exists, so an invalid discount refuses the booking rather than storing junk.
+   const discountCapture = await captureBookingDiscount(input);
+   return await db.transaction(async (tx) => {
+-    const studentId = await resolveStudentId(tx, input.student);
++    // TASK-224: `null` for an อื่นๆ booking with no student. Validation has already refused a missing student
++    // on the four lesson types, so this is only ever null where the schema now allows it.
++    const studentId = input.student ? await resolveStudentId(tx, input.student) : null;
+     if (input.bookingType === "VOUCHER" && input.voucherId) {
+-      await prepareVoucherBooking(tx, input.voucherId, input.date, studentId);
++      await prepareVoucherBooking(tx, input.voucherId, input.date, studentId!);
+     }
+     const id = await insertBooking(tx, studentId, input);
+     if (discountCapture) {
+       await tx.update(bookings).set(discountCapture).where(eq(bookings.id, id));
+     }
++    // TASK-224 (AC-18) — the ADDITIONAL teachers. Inside the same transaction as the booking: a booking that
++    // exists with only some of its teachers is a booking that renders wrongly in a teacher's column, and no
++    // later request would know to repair it.
++    if (input.additionalTeacherIds?.length) {
++      await attachAdditionalTeachers(tx, id, input.additionalTeacherIds);
++    }
+     if (input.badgeValueIds?.length) {
+       await attachBookingBadges(tx, id, input.badgeValueIds);
+     }
+@@ -2216,7 +2281,10 @@ export async function updateBookingStatus(
+       //
+       // ⛔ This set is coupled to the FE's `canCancelWithReason` (TASK-220): the two must list the same types,
+       // or the dialog asks for a reason nobody stores — or the API refuses a cancel the UI offers.
+-      const REASON_ENUM_REQUIRED = new Set(["SINGLE_SESSION", "VOUCHER", "FIRST_TRIAL"]);
++      // TASK-224 (AC-13) adds `OTHER` — one line, no migration: `0025`'s `cancel_reason` column and its CHECK
++      // already carry the three values. Exactly the TASK-220 shape, and it means an อื่นๆ cancel is found by
++      // the same `WHERE cancel_reason = 'ADMIN_ERROR'` as every other type, on day one.
++      const REASON_ENUM_REQUIRED = new Set(["SINGLE_SESSION", "VOUCHER", "FIRST_TRIAL", "OTHER"]);
+       const enumReason = REASON_ENUM_REQUIRED.has(current.bookingType) ? reasonCode : undefined;
+       if (REASON_ENUM_REQUIRED.has(current.bookingType)) {
+         if (!enumReason) {
+diff --git a/src/validation.ts b/src/validation.ts
+index ce41452..60f5f56 100644
+--- a/src/validation.ts
++++ b/src/validation.ts
+@@ -28,7 +28,20 @@ const BOOKING_TYPE = z.enum([
+   "SINGLE_SESSION",
+   "COURSE_PACKAGE",
+   "VOUCHER",
++  // SPEC-070 / TASK-224 (REQ-078) — a booking that is not a lesson.
++  "OTHER",
+ ]);
++
++/**
++ * The four LESSON types. TASK-224 relaxed `student` / `subjectId` to optional **in the schema** so `OTHER` can
++ * omit them — this set is what keeps them mandatory **in practice** for everything that was already shipping.
++ *
++ * 🔴 AC-14: the four existing types must behave byte-identically. Optional-in-the-object plus a refine that
++ * refuses the absence is the same contract as `.notNull()`, with one type carved out — and a test per type
++ * pins it, because "we relaxed a field for one case" is exactly how the other four quietly lose a guard.
++ */
++const LESSON_TYPES = ["FIRST_TRIAL", "SINGLE_SESSION", "COURSE_PACKAGE", "VOUCHER"] as const;
++const isLessonType = (t: string) => (LESSON_TYPES as readonly string[]).includes(t);
+ const BOOKING_STATUS = z.enum([
+   "PENDING",
+   "CONFIRMED",
+@@ -98,9 +111,11 @@ const studentInput = z.union([
+ 
+ export const createBooking = z
+   .object({
+-    student: studentInput,
++    // TASK-224: optional in the OBJECT so `OTHER` may omit them; the four lesson types still refuse the
++    // absence in the refinements below (`isLessonType`). Relaxing the shape must not relax the contract.
++    student: studentInput.optional(),
+     teacherId: ID,
+-    subjectId: ID,
++    subjectId: ID.optional(),
+     date: DATE,
+     startTime: TIME,
+     bookingType: BOOKING_TYPE,
+@@ -114,6 +129,15 @@ export const createBooking = z
+     // TASK-162 (REQ-063) — a discount on a TRIAL / SINGLE session: captured here (an admin is present at
+     // booking), posted by the day-end job (nobody is present then). Refused on any other booking type.
+     discount: discountInput.optional(),
++    // ── SPEC-070 / TASK-224 (REQ-078) — `OTHER` only; refused outright on the four lesson types below ──
++    /** The typed name of an อื่นๆ booking ("ประชุมทีม", "ปิดปรับปรุงลาน"). Required when there is no student. */
++    otherTitle: z.string().trim().min(1).optional(),
++    /** A typed charge in satang. EITHER this OR `otherPriceItemId` — never both (AC-12). */
++    otherPriceMinor: z.number().int().min(1).optional(),
++    /** A `bo.item` id to charge instead of a typed amount. */
++    otherPriceItemId: ID.optional(),
++    /** AC-18/19/20 — the teachers BEYOND `teacherId`. `OTHER` only; `teacherId` is always the first. */
++    additionalTeacherIds: z.array(ID).optional(),
+   })
+   // การจองแบบ Voucher ต้องผูกวอยเชอร์เสมอ (ไม่งั้นชั่วโมงจะไม่ถูกตัด)
+   .refine((d) => d.bookingType !== "VOUCHER" || !!d.voucherId, {
+@@ -125,7 +149,62 @@ export const createBooking = z
+   .refine((d) => d.bookingType !== "COURSE_PACKAGE" || !!d.courseId, {
+     message: "การจองแบบคอร์สต้องเลือกคอร์ส (courseId)",
+     path: ["courseId"],
+-  });
++  })
++  // ── TASK-224 — AC-14: the four LESSON types keep every guard they had ──
++  //
++  // 🔴 These two exist because the columns stopped enforcing it (`0029` dropped both NOT NULLs so `OTHER` can
++  // omit them). Without them, relaxing the schema for one type would silently let a 1HR be booked with no
++  // student and a course session with no program — the change nobody asked for, arriving for free.
++  .refine((d) => !isLessonType(d.bookingType) || !!d.student, {
++    message: "การจองประเภทนี้ต้องระบุนักเรียน",
++    path: ["student"],
++  })
++  .refine((d) => !isLessonType(d.bookingType) || !!d.subjectId, {
++    message: "การจองประเภทนี้ต้องเลือกโปรแกรม",
++    path: ["subjectId"],
++  })
++  // ── TASK-224 — `OTHER`'s own rules ──
++  //
++  // AC-10: an อื่นๆ booking with no student MUST carry a title, because the title is the only thing left to
++  // name it with. `displayName` then never falls through to "" — that is the property, and it is enforced
++  // here rather than papered over with a placeholder at render time.
++  .refine((d) => d.bookingType !== "OTHER" || !!d.student || !!d.otherTitle, {
++    message: "กรุณาระบุชื่อรายการ",
++    path: ["otherTitle"],
++  })
++  // AC-12: EITHER a typed amount OR a catalogue item. 🔴 Refuse — never clamp, never pick one for the user
++  // (REQ-063's line). `booking_other_price_chk` is the same rule in the database.
++  .refine((d) => d.otherPriceMinor === undefined || d.otherPriceItemId === undefined, {
++    message: "เลือกได้อย่างเดียว: ระบุจำนวนเงินเอง หรือเลือกรายการจากแคตตาล็อก",
++    path: ["otherPriceMinor"],
++  })
++  // At least one teacher is ALWAYS required (AC-19) — `teacherId` is `ID`, so that is already true. What this
++  // adds is that the EXTRA ones are a closed, sane list: no duplicates, and never a repeat of the first.
++  .refine((d) => !d.additionalTeacherIds || new Set(d.additionalTeacherIds).size === d.additionalTeacherIds.length, {
++    message: "ครูซ้ำกัน",
++    path: ["additionalTeacherIds"],
++  })
++  .refine((d) => !d.additionalTeacherIds || !d.additionalTeacherIds.includes(d.teacherId), {
++    message: "ครูซ้ำกับครูคนแรก",
++    path: ["additionalTeacherIds"],
++  })
++  // ── TASK-224 — the four LESSON types must REFUSE every `OTHER` field ──
++  //
++  // 🔴 Refused outright, not ignored. A silently-dropped field is how `other_title` ends up on a course
++  // session that nothing renders it for, and how AC-20 ("the other four take exactly one teacher") stops
++  // being true of the DATA while still being true of the screen.
++  .refine(
++    (d) =>
++      d.bookingType === "OTHER" ||
++      (d.otherTitle === undefined &&
++        d.otherPriceMinor === undefined &&
++        d.otherPriceItemId === undefined &&
++        d.additionalTeacherIds === undefined),
++    {
++      message: "ฟิลด์นี้ใช้ได้เฉพาะการจองประเภท “อื่นๆ”",
++      path: ["bookingType"],
++    },
++  );
+ 
+ // รายการวอยเชอร์ (GET /api/vouchers) — กรองตามนักเรียน/ค้นหาชื่อได้
+ // Courses/vouchers tabs (TASK-070) — same q/page/limit shape as `bookingsQuery`, so the FE ends up with one
