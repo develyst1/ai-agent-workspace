@@ -363,16 +363,20 @@ How he looks at it: the work is on `develop` in `portfolio-nichaphon-web`
   (Q12) and is not reopened here.
   > answer:
 
-**Owner-eye observations — things no agent on this team can settle (A–E). Each
-is a look/one-keystroke check on his own machine; none has been "fixed" by the
-team, and none is presumed a defect until he says so:**
+**Owner-eye observations (A–E). None has been "fixed" by the team, and none is
+presumed a defect until he says so. Updated 2026-09-02: QA ran A and E for real
+and both PASS — they are closed below and do not come back to him. B, C and D
+remain his: C now with QA's evidence attached, B and D untouched.**
 
 - **A — reduced motion (check 16).** OS reduced-motion switch ON, load `/`: the
   hero should not animate in and nothing should move. The CSS rule coverage is
   proven; the *look* was never run — the flag is not emulable in the team's
   environment.
-  > routed to QA 2026-08-30 (see §QA round). Answer only if Tanya reports NOT TESTED.
-  > answer:
+  > **CLOSED 2026-09-02 by QA — off the owner's list, does not come back.** Tanya
+  > ran it for real (TEST-001 case 14): `getAnimations()` empty at first paint,
+  > two settled frames byte-identical, hero fully visible (not stuck at the
+  > animation start), and a `no-preference` control run *did* show the 520ms rise
+  > — so the check can fail and didn't. No answer owed.
 - **B — the 1px band (check 20(b)).** At scroll 0, is a thin dark rule visible
   along the very top edge, at 1280px and at 360px? Measured, so it is really
   there: contrast step 1.15–1.43:1. Whether it is *objectionable* is his call. If
@@ -382,7 +386,12 @@ team, and none is presumed a defect until he says so:**
   and the hero quote fall below the fold and the lead paragraph cuts mid-sentence.
   **On a phone (360×740) they do not** — that half of the original premise was
   wrong and was corrected. Acceptable, or should the hero shrink at short heights?
-  > evidence routed to QA 2026-08-30 (see §QA round); the accept/reject call stays yours.
+  > **Evidence supplied 2026-09-02 by QA — the call is still yours, nothing was
+  > changed.** TEST-001 §C, independent run: at **1280×600** the lead paragraph is
+  > cut mid-sentence (last words visible "…by an average of 40"), and both CTAs
+  > plus the hero quote sit entirely below the fold. At **360×740** nothing is cut
+  > and everything is above the fold. Shots `07` and `08` in
+  > `../project-docs/qa-req001-2026-08-30/`. Look at the two shots, then answer.
   > answer:
 - **D — `/contact` real send (check 4).** The team deliberately did **not** fire a
   valid submit: it sets `window.location.href = mailto:…` and would launch his
@@ -393,8 +402,11 @@ team, and none is presumed a defect until he says so:**
   activation are verified; `Enter` specifically could not be dispatched through
   the automation layer. One keystroke for him: Tab once on `/`, press Enter, does
   focus land on the main content?
-  > routed to QA 2026-08-30 (see §QA round). Answer only if Tanya reports NOT TESTED.
-  > answer:
+  > **CLOSED 2026-09-02 by QA — off the owner's list, does not come back.** Tanya
+  > dispatched the keystrokes (TEST-001 case 15): Tab #1 focuses `Skip to content`
+  > with a visible ring; Enter sets `#main` and scrolls; the **next** Tab lands on
+  > `View my work`, inside `<main>`, while the control run without Enter lands on
+  > the header wordmark instead. The skip link does skip. No answer owed.
 
 **Scope questions — business calls, not defects (F–G). Both were caused by this
 REQ and both are outside its Home-only scope, so neither was changed:**
@@ -408,6 +420,11 @@ REQ and both are outside its Home-only scope, so neither was changed:**
   the preview of the new identity, or contain it to Home until those routes are
   rebuilt? Containing it is a SPEC change plus a five-route re-verify — real work,
   so it is his call, not a tidy-up.
+  > answer:
+- **H — the footer year reads `© 2025`** (added 2026-09-02, raised by QA as
+  TEST-001 Q1). The string **predates this REQ** and R4 forbids the team touching
+  it, so nothing was changed. Whether the year is meant to be the current one is a
+  fact only he has. **Not blocking** — it does not affect any acceptance criterion.
   > answer:
 
 **Not asked, on purpose:** nothing about the other five routes' design, and no
@@ -477,3 +494,121 @@ routes to Sober as a REQ-level concern, never to the engineer.
 
 **Gate:** a QA verdict does not replace the owner's sign-off. REQ-001 goes
 `DELIVERED` only when AC1 + AC2 are answered by him **and** QA is not failing.
+
+## Owner's own change after the QA round — recorded 2026-09-02 by Porter
+
+**Fact, not an interpretation.** After Tanya's QA round finished (her screenshots
+are timestamped 12:05 on 2026-08-30), the owner edited and committed code on
+`portfolio-nichaphon-web` himself. HEAD is now `76ad68e`, message
+`fix: correct Thai translation in quotes and adjust max-width for lead and band
+styles`, authored by him; the working tree is clean. Files newer than the QA run:
+`front/src/constant/content/quotes.ts`, `PullQuote.tsx`, `PullQuote.module.css`,
+`HomeStatement.tsx`, `HomeStatement.module.css`. No team member touched any of
+these — git writes are his alone.
+
+His message to Porter, verbatim: `ตอนนี้ฉันแก้ไข ok แล้ว`.
+
+**Porter is not guessing what that sentence closes.** It could mean the code is
+now the way he wants it, or that some of the open acceptance items are settled by
+his own edit, or both. Nothing on his list (AC1, AC2, B, C, D, F, G, H) is being
+ticked off it — an acceptance criterion is ticked by his answer to that criterion,
+never inferred from a commit message.
+
+**Two consequences that are facts, and are open:**
+
+1. **R5's canonical Thai may no longer match what ships.** R5 fixes the Thai of
+   quotes 1–3 as FINAL (Q10/Q12: punctuation and spacing only). His commit says it
+   corrected the Thai in `quotes.ts`. His words always win over Porter's edits, so
+   the REQ is the thing that is now possibly stale — but Porter will not copy new
+   strings out of code into a requirement. **He supplies the strings, or QA
+   compares code against R5 and reports the difference.**
+2. **QA's evidence is now partly stale.** TEST-001 verified the quote strings
+   character-for-character and measured the hero/fold against R5 and item C on the
+   pre-`76ad68e` build. `PullQuote` and `HomeStatement` — the components carrying
+   the quote and the hero lead — have changed since. TEST-001 stays a true record
+   of the build it ran on; it is not evidence about HEAD.
+
+**Open — the owner answers; nobody re-runs or re-writes anything until he does:**
+
+- **N1 — what does `แก้ไข ok แล้ว` close?** Just the code, or does it also answer
+  any of AC1 / AC2 / B / C / D / F / G / H in §Home acceptance review? Name
+  them; silence closes none.
+  > **WITHDRAWN 2026-09-02 — not answered, and not re-asked.** See §Standing rule
+  > below. Nothing on the A–H / AC1 / AC2 list is ticked by this; every one of
+  > them is still owed by him as an answer to that criterion.
+- **N2 — the corrected Thai of quotes 1–3.** Paste the three strings as they now
+  stand, so R5 records his wording rather than Porter's. If he would rather QA
+  read them out of the build and report the diff to Porter, say so and that is
+  what happens instead.
+  > **WITHDRAWN 2026-09-02 as a question to him.** The fallback already written
+  > into this bullet is what happens instead: **QA reads the strings out of the
+  > build and reports the diff against R5 to Porter.** R5's wording is NOT edited
+  > by anyone until he rules on the diff.
+- **N3 — re-verify HEAD?** His edit changed the two components QA measured. Should
+  Tanya re-run the affected part of TEST-001 against `76ad68e` (quote strings, the
+  hero fold at 1280×600 / 360×740, clean build, no console errors) before REQ-001
+  is signed off?
+  > **WITHDRAWN 2026-09-02 as a question to him — Porter decides it, and did.**
+  > Re-verifying is inside the QA leg Porter already owns, and re-running existing
+  > cases from TEST-001 is not new scope. **Tanya re-runs the affected part of
+  > TEST-001 against the working tree as it now stands.** Reason stated without
+  > reference to how the tree changed: TEST-001's evidence is older than the
+  > current build of `PullQuote` and `HomeStatement`.
+
+## Standing rule — the team does not track the owner's code changes (2026-09-02)
+
+His instruction to Porter, verbatim: `เลิกสนใจการ commmit code ของฉันตั้งใจทำงานกันไป`
+— stop paying attention to my code commits, get on with the work.
+
+From now on, and until he says otherwise:
+
+- **No role inspects, reports on, or asks about his commits, HEAD, authorship or
+  git history.** No commit hash is quoted at him and no question is raised
+  *because* something was committed.
+- **The build as it stands is the only thing the team looks at.** When the team
+  needs to know what ships, QA runs it and reports what renders — never a diff
+  read against his authorship.
+- **This changes nothing about acceptance.** AC1 and AC2 are still blocking and
+  still owed by him; B, C, D, F, G and H are still his non-blocking calls. Those
+  are questions about the product, not about his commits, so they stay open and
+  Porter will keep asking for them.
+- **The two consequences recorded above stay true and stay handled** — but by QA,
+  not by him: R5's canonical Thai versus what renders is a QA report to Porter,
+  and TEST-001's staleness is closed by a QA re-run, not by an answer from him.
+  If the diff turns out to be real, the resulting question to him is a product
+  question ("does the Thai on the page stand as final, so R5 records it?") and it
+  is asked as such.
+
+## QA re-verify round — issued 2026-09-02 by Porter
+
+**Why:** TEST-001's evidence is older than the current build of `PullQuote` and
+`HomeStatement` — the two components carrying the Home quote and the hero lead.
+TEST-001 stays a true record of the build it ran on; it is not evidence about
+what is on disk now. No new scope: every case below is already in TEST-001 and
+already an acceptance criterion in this REQ.
+
+**Scope: Home (`/`) only, local only** (`cd front && npm run dev`). Re-run these
+cases against the working tree as it now stands, and nothing else:
+
+1. **R5 character-for-character.** Every quote rendered on Home, compared to R5's
+   canonical Thai in this file. If they differ, **report the difference to Porter
+   — do not tick, do not fail it as a defect, and do not edit anything.** R5 is
+   Porter's file and only the owner rules on the wording. State both strings.
+2. **R5 count** — at least one but not all four quotes appear.
+3. **Item C, the hero fold** at **1280×600** and **360×740**: what falls below the
+   fold, and whether the lead paragraph is cut mid-sentence. Fresh screenshots.
+   The accept/reject call remains the owner's; QA supplies the picture only.
+4. **R7** — `npm run build` clean, and `/` served with no console errors.
+
+**Explicitly not re-run:** A and E (closed by QA, they do not come back), the R8
+six-route regression (unaffected), and everything already passing in TEST-001 and
+untouched by these two components. If QA judges a fifth case genuinely affected,
+name it to Porter first rather than widening the round.
+
+**Standing rule applies** (see §Standing rule above): report what the page
+renders. Do not inspect git, do not quote commits, do not mention authorship.
+
+**Deliverable:** append the re-verify result to `tests/TEST-001-...md` as a dated
+section (do not overwrite the original round), screenshots under
+`../project-docs/`, and one verdict for the re-run. `TEST_FAILED` routes to
+Porter, never to the engineer.

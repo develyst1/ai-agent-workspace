@@ -20,6 +20,8 @@
 | server job scripts | `C:\sm-jobs\*.ps1` **on each server** (not the dev box) | 🔴 lives on the servers |
 | local `.claude/memory/` | the old machine | 🔴 **NO — this file is the replacement** |
 
+🔴 **`ai-worker/SYSTEM-FACTS.md` — how the running system actually behaves** (schedules, product limits, LINE, box-telling). **Read it before reporting anything as broken.** Porter writes an owner-stated fact there BEFORE replying.
+
 🔴 **The customer-facing status list (the owner's REQ-001…012 · REQ-BO-001…006 · FIX-001…007) is `ai-worker/OWNER-LIST.md`** — read it before answering "what is left". The board is our internal numbering, not his.
 
 **Branch: `develop` is canonical in every repo.** `dong` / `dong3` are dead.
@@ -43,10 +45,22 @@ box or the ledger needs `db:seed-ledger`.
 🔴 **Both boxes report identical `db:verify` numbers.** They cannot be told apart from that output.
 **Use `SELECT count(*) FROM course_packages` — `uat` ≈ 201; `sid` GROWS (≈20 in Aug, **32 on 2026-09-01**).** This cost two rounds of confusion. ⚠️ The `sid` figure is a moving number — QA fixtures and imports add to it. **Treat it as "two digits, not three": the ORDER OF MAGNITUDE is the tell, never the exact value.**
 
-### 📡 LINE: the webhook lives on `uat`, and the owner borrows it (his answer, 2026-08-30)
+### 📡 LINE — REVERSED 2026-09-01: **the webhook now points at `sid` PERMANENTLY** (owner)
 
-**The webhook points at `uat` permanently.** To exercise LINE, the owner switches it to `sid` **briefly, late at
-night**, with the customer, then switches it back. **Owner-only, manual, temporary.**
+> Owner, 09-01: *"ตอนนี้ไลน์ webhook ผูกที่ sid ถาวรแล้ว"* — during the REQ-079 work the arrangement flipped.
+> Context: `uat` has **no real parents linked** and the customer's real OA will be a **separate account later**
+> (his 09-01 ruling in `REQ-079` §8, with its expiry trigger).
+
+- ⇒ **Inbound LINE (linking, taps, typed replies) now lands on `sid` — testable any time, no night window.**
+- ⇒ **`uat`'s LINE inbound is DEAF for as long as this stands.** Acceptable per the owner precisely because no
+  real parent is linked; **it stops being acceptable the moment one is** — same trigger as `REQ-079` §8.
+- ⚠️ **Outbound is unchanged**: pushes use the channel token, and the **2 real teachers remain linked on the
+  shared channel** — a rehearsal message can still reach them. The "never message the 2 real teachers" rule
+  stands. The owner is linking **himself as a test teacher on `sid`** (2026-09-01) — the isolatable LINE test
+  recipient the board has wanted since 08-04.
+
+*(The paragraph below is the OLD arrangement, kept for history — the webhook lived on `uat` and the owner
+borrowed it briefly at night. Superseded by the reversal above.)*
 
 - ⇒ **Nobody — Tanya included — can schedule a LINE *inbound* test.** It happens inside his window. This is the
   practical shape of the long-standing *"isolatable LINE test recipient"* blocker.
@@ -201,3 +215,20 @@ to a three-day-old file once and Sober parked live work because he could not fin
 **Tanya MAY write on `sid`** (board 154-159, answered by คุณฟีน 2026-08-04): remove what she creates, declare the
 footprint in the TEST file, never touch data she did not create, never restart or redeploy. **`uat` is never
 hers.** A QA fixture is retired with **cancel + `ADMIN_ERROR`** — there is still no course-delete anywhere.
+
+## ✅ 2026-09-02 — `end-of-day` runs at **18:30**, and that is CORRECT (owner-set)
+
+**Every artefact in this repo said 23:30. It has been 18:30 since 2026-08-29.** From `job_runs.started_at`:
+`08-19 → 08-28` = `23:30:02` nightly · `08-29 · 08-30 · 08-31 · 09-01` = **`18:30:02`**. Moved five hours
+earlier between 08-28 and 08-29 and stayed there.
+
+- ⚠️ **Anything scheduled or reasoned against "23:30" is wrong** — including test plans that create a fixture in
+  the evening expecting it to post that night.
+- ✅ **RESOLVED, and there was never an issue.** 🔴 **The OWNER changed the time himself**, and **the app only
+  lets you book a teacher until 18:00** ⇒ **18:30 is after the last session that can exist.** Nothing is missed
+  on either box. **Porter raised this as a possible live money incident. It was not one** — he read "23:30" from
+  stale documents and alarmed the owner about the owner's own setting. **See `ai-worker/SYSTEM-FACTS.md`.**
+- 📌 The scheduled tasks live in `C:\sm-jobs\*.ps1` **on each server separately**, so the boxes can differ and
+  one being wrong proves nothing about the other.
+- 📌 `job_runs.byBookingType` reports only the four original types — **no `OTHER`.** Whether the job also *skips*
+  `OTHER` when selecting what to auto-attend is a separate question, open with @Sober.

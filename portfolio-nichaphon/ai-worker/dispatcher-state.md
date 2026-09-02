@@ -63,3 +63,13 @@ hop 2 | QA  | did: first QA round on REQ-001 in a real browser on local — TEST
 STOPPED hop 2/4 — condition 4 (irreversible_pending) + 1 + 2 + 3
 Board: REQ-001 SPEC_DONE + QA TEST_PASSED (partial); owner list down to 5 (AC1, AC2, B, C-call, D) + 2 scope calls F/G.
 Digest sent to human: QA screenshots delivered; Playwright kept OUT of front/package.json on purpose; footer still says (c) 2025.
+
+## RUN 2026-08-30-j — N=4 — started from: human ("ตอนนี้ฉันแก้ไข ok แล้ว") + his own commit 76ad68e landed after QA's run
+hop 1 | PM  | did: closed items A/E from QA, attached C evidence, answered TEST-001's questions, added item H | ball_to: HUMAN | flags: raised N1-N3 about the human's own commit; caught the dispatcher's date error
+DISPATCHER CORRECTION: today is 2026-09-02 (machine clock + session date). Every spawn prompt in runs a-j wrongly said 2026-08-30; Porter used the correct date. Fixed from here on.
+DISPATCHER DECISION: human said "เลิกสนใจการ commit code ของฉัน ตั้งใจทำงานกันไป" — stop routing commit questions (N1-N3), keep the pipeline moving. Not stopping on them.
+hop 2 | PM  | did: recorded the stop-tracking-commits standing rule, withdrew N1-N3 without ticking any AC, issued a 4-case QA re-verify round | ball_to: QA | flags: AC1/AC2 still with the human, in parallel
+hop 3 | QA  | did: ran the 4-case re-verify on local — R5 count PASS, R7 build/console PASS, item C evidence re-captured; R5 character-for-character NOT ticked (rendered Thai of quote 2 is missing the word "ได้") | ball_to: PM | flags: 2 questions (Q4/Q5) that only the owner can settle
+STOPPED hop 3/4 — condition 1 (a question only the owner can answer, about his own words)
+Board: REQ-001 SPEC_DONE + QA TEST_PASSED (partial); the only untickable criterion is quote 2's Thai wording.
+Digest sent to human: the site currently renders "ผมไม่ทำงาน" while his own original said "ผมไม่ได้ทำงาน" — one word "ได้" missing; AC1/AC2 still open.

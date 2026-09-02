@@ -3,7 +3,7 @@
 - Status: TEST_PASSED (with two ACs explicitly NOT_TESTED — see Verdict)
 - Environments: **`sid` only** (`som.develyst.online`, deployed build). No local run — REQ-058 is data on a
   deployed box; a local suite would prove nothing about it.
-- Tested: 2026-08-30 by Tanya
+- Tested: 2026-08-30 by Tanya (this round). See §Session note at the end — the session later continued into 2026-09-01.
 
 ## Scope
 
@@ -108,3 +108,36 @@ call, and it needs the AC-9/AC-10 answer from the owner first.
    I did not do it on my own initiative. If you want that check run, say so and tell me whether the resulting
    money row is acceptable residue (or whether the owner will reverse it in the backoffice).
    > answer: _pending_
+
+---
+
+## Session note + answers received (2026-09-01)
+
+**On the date, because I nearly corrupted this file trying to "fix" it.** This session stayed open across days:
+the round above ran on **2026-08-30** (the app's own header read `24 Aug – 30 Aug 2026 · Today`), and the
+session then continued into **2026-09-01**. `PROTOCOL.md` §Date discipline covers exactly this — *"a session
+that crosses midnight switches files at midnight"* — so **`2026-08-30` on this file is correct**, my entry
+belongs in `log/2026-08-30.md` where it is, and the 2026-09-01 work goes in its own file.
+
+📌 **Kept because I got it wrong first.** On resuming I read the session's current-date context (`2026-09-01`)
+against my *memory* of the app showing `30 Aug`, and concluded I had misdated the whole round. I edited this
+file and the footprint ledger to say `2026-09-01`, and drafted a question asking whether `sid`'s **server clock**
+was two days adrift. **All of that was wrong**, and wrong in the expensive direction: it would have sent the
+owner to check a healthy server, and it stamped a false date on evidence that was correctly dated. Reverted in
+full. **The lesson is not "check the clock" — it is that a remembered screen is not evidence.** I should have
+re-read the screen before rewriting the record; one page load settled it in seconds.
+
+### Answers received since the round above
+
+- **Q2 — ANSWERED by Porter: YES, no code change and no redeploy.** `Surfskate & Skateboard` went in via
+  `subjects:add --group bike-skate` + a named-list link INSERT — scripts against the DB, no build, no
+  `pm2 restart`; his own record of running it. ⇒ **AC-6 is closed**: case 14 upgrades from
+  *PASS (partial evidence)* to **PASS**, with the "no deploy" half carried by PM evidence, not by a test.
+- **Q3 — WITHDRAWN. TASK-220 is not mine to verify.** Porter, 2026-08-31 22:04: the owner confirmed
+  *"deploy TASK-220 ไปนานแล้วโว้ย เขาใช้แล้ว"* — it shipped long ago and the customer uses that path daily.
+  ⇒ **OBS-2 above is superseded**: real usage beats a re-proof, and the `bo.movement`-residue question I was
+  holding is moot. **Stood down; no ATTENDED-first-trial run.**
+- **Q1 — still open with the owner** (AC-9/AC-10 `link-all` dry-run counts). Unchanged: `NOT_TESTED`.
+
+⇒ **Verdict unchanged: `TEST_PASSED`**, with AC-9/AC-10 still `NOT_TESTED` and the Course/Voucher paths still
+proven *selectable* rather than *booked*.

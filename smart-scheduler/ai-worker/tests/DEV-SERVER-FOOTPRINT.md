@@ -150,3 +150,96 @@ printed. No script run on the server, no restart, no redeploy, no setting change
 | `uat` / `frontoffice.develyst.online` — **no contact of any kind** | — | ✅ |
 
 Evidence: `TEST-063-req058-nine-programs-bookable.md`.
+
+## 2026-09-01 (Tanya) — REQ-078 (อื่นๆ) acceptance round on `sid`: two bookings, both cancelled
+
+Access via the app's own login form on `som.develyst.online`. No token, cookie or secret written to disk or
+printed. No script run on the server, no restart, no redeploy, no setting changed. Evidence: `TEST-064`.
+
+| What | Where | Removed? |
+|---|---|---|
+| อื่นๆ booking **`QA-078 ประชุมทีม b8`** — teachers **Bank + Dewy + Ek**, 2026-09-02 09:00–10:00, **no student**, charge OFF | `sid` | ✅ **CANCELLED** (`ADMIN_ERROR` + note "QA cleanup - REQ-078 b8"); confirmed gone from all three teacher columns |
+| อื่นๆ booking **`QA-078 clash b11`** — teacher **Camp**, 2026-09-01 11:00–12:00, **no student**, charge OFF | `sid` | ✅ **CANCELLED** (`ADMIN_ERROR` + note "QA cleanup - REQ-078 b11"); confirmed gone from the calendar, and the pre-existing Ally session reappeared |
+| ⚠️ **Cleanup could NOT be re-verified in the bookings list** — `All bookings` with Type=Other reports "2 found" and renders zero rows (**TEST-064 DEF-3**). Verified on the calendar and in the cancel dialog instead | `sid` | ⚠️ declared, not glossed |
+| `QA-078 clash CONFIRMED b12` (Camp 2026-09-08 11:00) | — | ✅ **never created** — refused by the slot guard before any write (DEF-2) |
+| `QA-078 charged b14` (with a typed amount) | — | ✅ **never created** — the page crashed before Save on both attempts (DEF-5) |
+| **No `bo.movement`** — every fixture had `Charge for this booking` **OFF**, none was confirmed or marked ATTENDED, and both were cancelled well before the 23:30 day-end | — | ✅ |
+| **No LINE message** — `Confirm + LINE` never pressed on any booking (AC-16 deliberately left untested; `sid` may share `uat`'s channel and 2 real teachers are linked) | — | ✅ |
+| **No row touched that QA did not create.** Ally's 2026-09-01 11:00 session was read only; it was `ON LEAVE` before and after — DEF-4 is a *display* fault, verified against the bookings list | — | ✅ |
+| Viewport emulation used for the AC-15 measurements (1600 / 1280 / 768 / 375) | browser only | ✅ reset to desktop |
+| `uat` / `frontoffice.develyst.online` | — | ✅ **no contact of any kind** |
+
+## 2026-09-01 (Tanya) — ⏳ REQ-078 money run: **two fixtures LEFT LIVE overnight, owner-approved**
+
+🔴 **This is the one entry in this ledger where the residue is deliberate and is NOT yet retired.** The owner
+approved a real `bo.movement` on `sid` so that REQ-078's money path could be proven at all
+(`log/2026-09-01.md`, Porter). **It is not closed until he confirms the reversal.**
+
+| What | Where | Removed? |
+|---|---|---|
+| **F1** — อื่นๆ `QA-078 F1 money test 20B` · teacher **Bank** · 2026-09-01 14:00–15:00 · no student · **Charge ON, typed ฿20** · id **`4014e65e-72f2-4fba-b9f2-788c8f76cd22`** | `sid` | ⏳ **LEFT DELIBERATELY** so the 23:30 day-end posts it (AC-5/AC-9). Expected movement key **`rev:4014e65e-72f2-4fba-b9f2-788c8f76cd22`** = ฿20 / 2000 satang. **The OWNER reverses it in the backoffice** — that is the agreed disposal, and this row stays open until he says it is done. |
+| **F2** — อื่นๆ `QA-078 F2 free control` · teacher **Dewy** · 2026-09-01 13:00–14:00 · no student · **Charge OFF** · id **`25d695c3-3ace-4b8d-9689-4c49d75d1a55`** | `sid` | ⏳ **LEFT DELIBERATELY** as the control — it must auto-attend and post **nothing** (AC-4/AC-9). **I cancel it myself** once the result is read; it needs no reversal because it should create no money. |
+| Teacher rows | — | ✅ **none touched.** I established that all 10 freelance teachers are `฿0/h · SET PAY BEFORE BOOKING` and **did not set a pay rate**, even though it blocks AC-21 — that is a row I did not create. Raised to Porter instead. |
+| Student / parent / course / voucher | — | ✅ **none created.** AC-7/AC-8 were left untested rather than spend a real family's quota or write an unsanctioned course sale. |
+| LINE | — | ✅ **no message sent.** `Confirm + LINE` not pressed. AC-16 is held until Porter confirms the owner's own link is live. |
+| Catalogue-item charge (AC-6) | — | ✅ **not run.** The approval was for ฿20; a catalogue item posts its own, larger price. Not assumed. |
+| `uat` | — | ✅ **no contact of any kind.** |
+
+**Disposal checklist for whoever reads this next:**
+1. Owner reverses `rev:4014e65e-72f2-4fba-b9f2-788c8f76cd22` (฿20) and confirms → then F1's row can be closed.
+2. Tanya cancels F1 and F2 once AC-4/AC-5/AC-9 are read.
+3. If F2 turns out to have posted anything at all, that is a **defect**, not residue — it goes in `TEST-064`.
+
+## 2026-09-01 (Tanya) — 📤 AC-16: **two LINE messages deliberately SENT — to the owner only**
+
+Porter released AC-16 after the owner linked himself on `sid` as teacher **Bank**. This is the first outbound
+LINE this project has sent in testing, so it is recorded here in full. Evidence: `TEST-064` §Round 3.
+
+| What | Where | Removed? |
+|---|---|---|
+| **F3** — อื่นๆ `ประชุมทีม QA-078 F3` · teacher **Bank** (the owner) · 2026-09-02 09:00 · charge **OFF** · id **`94db6903-5470-42b1-a980-1ff3cf0d3ebd`** · **CONFIRMED**, `notification {channel: line, status: queued}` | `sid` | ⏳ left until the owner reports the message text; charge OFF ⇒ auto-attends tonight and **posts nothing**. Cancelled once AC-16 is settled. |
+| **F4** — อื่นๆ `ประชุมทีม QA-078 F4 หลายครู` · teachers **Bank + Dewy** · 2026-09-02 10:00 · charge **OFF** · id **`4357f125-1028-429b-944e-2203c25e704b`** · **CONFIRMED**, `notification {channel: line, status: queued}` | `sid` | ⏳ same. |
+| **2 LINE pushes sent** | the **owner's** phone only | n/a — deliberate and sanctioned; that is the test |
+| 🔴 **The 2 real teachers on the shared channel — NEVER messaged.** Every fixture used **Bank** (= the owner) and **Dewy** (a `sid` fixture with no LINE link). The standing rule was not bent. | — | ✅ |
+| Money | — | ✅ **charge OFF on both** ⇒ no `bo.movement` from this round |
+| Students · teacher rows · settings · scripts · `uat` | — | ✅ untouched / never contacted |
+
+⚠️ **Known and accepted:** cancelling F3/F4 later may itself push a LINE to the owner. Acceptable (it is him), and
+I will report whatever arrives — a cancel notification on an อื่นๆ is worth knowing about.
+
+**Live QA residue on `sid` at the end of this session — four bookings, all deliberate:**
+`4014e65e…` (F1, ฿20, **owner reverses the movement**) · `25d695c3…` (F2, free control) ·
+`94db6903…` (F3, LINE) · `4357f125…` (F4, LINE multi-teacher). **None is cleaned up yet, on purpose** — each is
+waiting on a reading that only tomorrow's day-end or the owner's phone can give.
+
+## 2026-09-02 (Tanya) — REQ-078 final round on `sid`. One fixture created and cancelled; the rest left, deliberately
+
+Evidence: `TEST-064` §Round 4. No script run, no restart, no redeploy, no setting changed, no teacher row edited.
+
+| What | Where | Removed? |
+|---|---|---|
+| **R4a** อื่นๆ `QA-078 R4 crash retest XYZ2` · **Bank + Camp + Dewy** · 2026-09-03 09:00 · charge OFF · id **`56fa6ee3-43a1-4dd3-bfaa-390b0fac71a2`** · **CONFIRMED** (used for DEF-6's dialog) | `sid` | ⏳ left — see the note below |
+| **R4b** อื่นๆ `QA-078 R4 leave-overbook` · **Dewy + Ek** · 2026-09-03 10:00 · charge OFF (used for TASK-239 + DEF-4) | `sid` | ✅ **CANCELLED** (`ADMIN_ERROR`, note "QA cleanup R4 leave-overbook"). Cancelling it also **proved DEF-4 is display-only** — the hidden `Aileen · Inline Skate` session reappeared intact |
+| Two clash attempts, อื่นๆ on **Camp** 2026-09-08 11:00 (single- and multi-teacher) | — | ✅ **never created** — refused before any write |
+| **1 LINE push** (R4a's confirm) to **Bank = the owner** | owner's phone | n/a — sanctioned; Camp and Dewy have no LINE link, so nobody else was reachable |
+| Money | — | ✅ charge **OFF** on both new fixtures ⇒ **no `bo.movement` from this round** |
+| The 2 real teachers on the shared channel | — | ✅ **never messaged** |
+| Other people's data | — | ✅ untouched. `Aileen · Inline Skate` was read only and is **verified back in place**; the freelance teachers' `฿0/h` rows were read, never edited |
+| `uat` | — | ✅ **no contact of any kind** |
+
+### 🔴 Live QA residue on `sid` at park time — 5 bookings, each with a named owner
+
+| id | what | who retires it |
+|---|---|---|
+| `4014e65e-72f2-4fba-b9f2-788c8f76cd22` | **F1** ฿20 charged, 2026-09-01 14:00, **PENDING** | **owner** reverses `rev:4014e65e-…` if it posts → then Tanya cancels. **Do not cancel first** — it is the only ฿20 evidence |
+| `25d695c3-3ace-4b8d-9689-4c49d75d1a55` | **F2** free control, 2026-09-01 13:00, **PENDING** | Tanya, once AC-4/AC-9 are read |
+| `94db6903-5470-42b1-a980-1ff3cf0d3ebd` | **F3** LINE single, 2026-09-02 09:00, **CONFIRMED** | Tanya, once the owner reports the message text |
+| `4357f125-1028-429b-944e-2203c25e704b` | **F4** LINE multi, 2026-09-02 10:00, **CONFIRMED** | Tanya, as F3 |
+| `56fa6ee3-43a1-4dd3-bfaa-390b0fac71a2` | **R4a** 3-teacher, 2026-09-03 09:00, **CONFIRMED** | Tanya — purpose served |
+
+⚠️ **Why they are still standing — a decision, not neglect.** F3/F4/R4a are **CONFIRMED**, and cancelling a
+confirmed booking may push a LINE **to the owner's own phone** (he is linked as teacher **Bank**). Retiring three
+of them now would send him three cancellation notices for zero test value while he is still reading the two
+messages AC-16 depends on. **"Never message a real person unnecessarily" outranks tidy housekeeping.**
+F1 must additionally survive until the movement question is settled. **Porter has the call (TEST-064 Q16); one
+word and I retire all three in a single pass.**

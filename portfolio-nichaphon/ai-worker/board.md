@@ -43,7 +43,7 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| REQ-001 | Visual identity rebuild — Home page first | HIGH | SPEC_DONE 2026-08-30, Porter — QA round done (TEST_PASSED partial, 0 defects); owner acceptance still open, see tests/TEST-001-req001-home-acceptance.md §Verdict | Human (owner), via Porter |
+| REQ-001 | Visual identity rebuild — Home page first | HIGH | SPEC_DONE 2026-09-02, Porter — owner told the team to stop tracking his commits; N1-N3 withdrawn, QA re-verify round issued instead — see requirements/REQ-001-ui-visual-redesign.md §Standing rule + §QA re-verify round | Tanya (re-verify) + Human (AC1, AC2) |
 
 ## Tasks
 
@@ -59,12 +59,12 @@
 
 | ID | Title | Source REQ | Status | Tester |
 |----|-------|------------|--------|--------|
-| TEST-001 | REQ-001 Home acceptance — independent QA round | REQ-001 | TEST_PASSED (partial) 2026-08-30, Tanya — A+E now pass and leave the owner's list; C evidence supplied; 0 defects; 3 questions — see tests/TEST-001-req001-home-acceptance.md §Verdict | Tanya |
-| REGRESSION | Standing site regression checklist | — | OPEN 2026-08-30, Tanya — first version, 19 checks; see tests/REGRESSION.md | Tanya |
+| TEST-001 | REQ-001 Home acceptance — independent QA round | REQ-001 | TEST_PASSED (partial) 2026-09-02, Tanya — re-verify done; R5 Thai differs from canonical, referred to Porter as Q4/Q5, not ticked — see tests/TEST-001-req001-home-acceptance.md §Re-verify round | Tanya |
+| REGRESSION | Standing site regression checklist | — | OPEN 2026-09-02, Tanya — 19 checks; H3 has no agreed baseline until Q4 is answered; see tests/REGRESSION.md | Tanya |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
-| REQ-001 acceptance | Human (owner) | 7 items (AC1–AC2 blocking, B, C, D, F, G); A and E are closed by QA and do not return — see requirements/REQ-001-ui-visual-redesign.md §Home acceptance review |
-| TEST-001 questions | Porter | 3 (footer `© 2025`, before/after for R1, harness in repo) — see tests/TEST-001-req001-home-acceptance.md §Questions |
+| REQ-001 acceptance | Human (owner) | 8 items (AC1+AC2 blocking; B, C, D, F, G, and new H footer-year non-blocking); A and E closed by QA — see requirements/REQ-001-ui-visual-redesign.md §Home acceptance review |
+| REQ-001 quote-2 Thai | Porter → Human | Page renders `ผมไม่ทำงาน…`, R5 says `ผมไม่ได้ทำงาน…` (one word, not punctuation) — which is canonical? See tests/TEST-001-req001-home-acceptance.md §R5 difference + Q4/Q5 |

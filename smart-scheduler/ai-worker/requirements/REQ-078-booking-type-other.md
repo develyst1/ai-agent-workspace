@@ -263,3 +263,91 @@ would let a teacher be double-booked with nobody told. **His ruling: warn at sav
 
 📌 **"บันทึกต่อไป" is deliberately the affirmative button** — the owner said allow, so the default path must not
 feel like an error the admin is overriding.
+
+### 🔴 AC-24 / AC-25 — SUPERSEDED by the owner's ruling, 2026-09-01 ("ตามนั้น")
+
+**The overlap capability is DEFERRED.** After TEST-064 exposed that honouring *"เตือนพอ ไม่ห้าม"* requires
+relaxing the slot-uniqueness guard **and** teaching the calendar to show two items in one slot (DEF-4 — an
+อื่นๆ over a session HIDES the session today), the owner accepted Porter's recommendation:
+
+1. **For now an อื่นๆ MAY NOT overlap an existing booking.** The refusal stays — but with an honest message:
+   - [ ] **AC-24 (revised)** — **Given** an อื่นๆ booking on a slot where the teacher already has a booking,
+         **When** the admin saves, **Then** it is refused with **`ครู{ชื่อ} มีคาบสอนช่วงเวลานี้อยู่แล้ว
+         ({ชื่อคาบ} {เวลา}) กรุณาเลือกเวลาอื่น`** — naming the teacher and the clashing booking, never a generic
+         error, never a silent save.
+   - [ ] **AC-25 (unchanged in spirit)** — no clash ⇒ no message of any kind.
+2. **The full behaviour (overlap allowed + warning + two items visible in one slot) is a FOLLOW-UP REQ**, not
+   part of REQ-078. It must ship as one piece: guard relaxation, the warning dialog (the original AC-24 wording,
+   `บันทึกต่อไป`/`ยกเลิก`), and the calendar rendering — **DEF-4's fix is a precondition, or overlaps are
+   invisible.** Original wording preserved above for that day.
+3. **DEF-4 within REQ-078's scope:** since overlap is now refused, the hide-a-session state should be
+   unreachable via the form. ⚠️ @Sober to confirm no other path creates it (e.g. a booking moved onto an อื่นๆ).
+
+---
+
+# 🅿️ PARK STATE — REQ-078, as of 2026-09-02. **Read this first if you are resuming.**
+
+**Status: `TEST_FAILED`, parked on the owner's order** (*"รอบสุดท้าย … เทสแล้วไม่ผ่านก็พักไว้ note ไว้ แล้วไปทำ line ก่อน"*).
+**Parked ≠ delivered ≠ done.** In `OWNER-LIST.md` it reads **"In Progress — PARKED"**, never Completed.
+**The build is COMPLETE** — every task DONE (224 · 225 · 226 · 227 · 228 · 229 · 236 · 237 · 238 · 239 · 241).
+**18 ACs pass** on the deployed `sid` build. Full evidence: `tests/TEST-064` §Round 4.
+
+## What blocks the pass — exactly three things, in order of size
+
+### 1. 🔴 No อื่นๆ has ever been observed posting money — and there are TWO candidate causes
+
+**AC-4 · AC-5 · AC-9 are `NOT_TESTED`.** This is the real blocker; the other two are small.
+
+**Cause A — a test-setup error, MINE, and now understood.** `end-of-day` runs at **18:30**
+(`SYSTEM-FACTS.md` — owner-set, correct, because bookings only go to 18:00). **I told Tanya "23:30" from stale
+documents.** Her fixtures F3/F4 were confirmed at **22:39 / 22:45**, i.e. after that night's run. If F1/F2 were
+created the same evening they simply **missed the run** — no defect involved.
+⇒ **The cheap close, no new build and no new round:** create a **฿20 อื่นๆ, charge ON, before 18:30**, let it
+post that night, and have the owner reverse it. That closes AC-4 · AC-5 · AC-9 together.
+**Offered to the owner 2026-09-02; he has not said yes or no. Do not run it without his word — it posts money.**
+
+**Cause B — 🔴 OPEN, and possibly a real defect that must not ship.** `job_runs.byBookingType` reports only
+**four** types — `FIRST_TRIAL · SINGLE_SESSION · COURSE_PACKAGE · VOUCHER`. **No `OTHER`.**
+⇒ **Does the day-end merely fail to COUNT an อื่นๆ, or does it SKIP it when selecting what to auto-attend?**
+**If it skips, an อื่นๆ never posts at all and AC-9 fails outright.**
+**This is answerable from the source with no data and no owner** — it is with **@Sober**, asked 2026-09-02,
+not yet answered. 🔴 **Answer this BEFORE spending another overnight run**, or Cause A's test proves nothing.
+
+### 2. DEF-4 (reopened) — display only, data proven intact
+An อื่นๆ laid over an **on-leave** session hides that session from the teacher's column. Data is fine — Tanya
+cancelled hers and the session came straight back. It survives because overlapping an on-leave booking is
+**sanctioned** (UC-004), which is the premise I got wrong when I deferred it: I reasoned from the change I had
+just approved instead of from the product's own rules. **Porter accepts it as a named gap; it would not hold a
+release on its own.**
+
+### 3. DEF-7 (new) — the clash refusal never names WHICH teacher
+`AC-24 revised` leads with `ครู{ชื่อ}` precisely because อื่นๆ is the one multi-teacher type. With five teachers
+and one clash the admin is left guessing. Small, real, named.
+
+## Accepted gaps — decisions, not oversights
+
+- **AC-6** (catalogue-item pricing) — AC-5 proves the posting mechanism; AC-6 differs only in where the amount
+  comes from. Risk: attribution for a catalogue-priced อื่นๆ is unverified.
+- **AC-7 / AC-8** (consumes / does not consume an entitlement) — QA owns no course on `sid` and buying one posts
+  irreversible money. ⚠️ **The owner's own use cases (ประชุมทีม, ปิดปรับปรุงลาน) do not consume entitlements.**
+- **AC-21** (freelance untouched) — all 10 `sid` freelancers are ฿0/h. Closing it needs the owner to set one rate.
+- **AC-16 multi-teacher half** — only ONE LINE recipient is linked (the owner, as `Bank`). The **send** is proven
+  from source to fan out per teacher; the **on-phone proof for a second teacher** needs a second linked device.
+
+## Deferred to a follow-up REQ — decided, not forgotten
+
+- **Overlap allowed + warning + two items visible in one slot.** The owner ruled *"เตือนพอ ไม่ห้าม"*, then
+  accepted deferring it once TEST-064 showed it needs the calendar to render two items in a slot (DEF-4's fix is
+  its precondition, or overlaps become invisible). **The original AC-24 wording is preserved above for that day.**
+- **The post-confirm chip says `ส่ง LINE แล้ว` while an unlinked teacher's row is `SKIPPED`.** Ruling: change the
+  words cheaply (`ส่ง LINE ถึงครูหลักแล้ว`), and make per-recipient results a follow-up carrying the owner's
+  one-line question — *does he want the screen to answer "did everyone get it?"*
+
+## The first three moves for whoever resumes
+
+1. **Get @Sober's answer on Cause B** (does the day-end skip `OTHER`?). Source read, costs nothing, and it
+   decides whether this is a fixture problem or a defect.
+2. **If it does not skip:** ask the owner for the ฿20 run **before 18:30**, then his reversal + the
+   `bo.movement` query. AC-4/5/9 close together.
+3. **Re-run nothing that passed.** 18 ACs are green on this build; `TEST-064` §Round 4 lists them and names the
+   five live `sid` fixtures with their ids and who retires each.

@@ -31,20 +31,20 @@ Minimum viewports every round: **1280x900 desktop** and **360x740 mobile**.
 | S8 | No horizontal overflow at 360px (`scrollWidth === clientWidth`, no element past the right edge) | REQ-001 | 2026-08-30 PASS |
 | S9 | No invisible or unreadable text — nothing rendering at the same value as its own ground. Verify against the screenshot, never against a contrast script alone: a translucent `rgba(..., 0.1)` panel makes a naive ratio lie | REQ-001 (the false positives it produced) | 2026-08-30 PASS |
 | S10 | The three webfonts actually **load**, not merely declare: Space Grotesk, IBM Plex Sans Thai, JetBrains Mono | REQ-001 | 2026-08-30 PASS |
-| S11 | `cd front && npm run build` exits 0 with no errors | REQ-001 | 2026-08-30 PASS |
+| S11 | `cd front && npm run build` exits 0 with no errors | REQ-001 | 2026-09-02 PASS |
 
 ## Home (`/`) — added by REQ-001
 
 | # | Check | Last run |
 |---|-------|----------|
 | H1 | **No light/dark toggle** anywhere in the header, and no colour-scheme control anywhere in the document (R10) | 2026-08-30 PASS |
-| H2 | Between one and three of the four R5 quotes appear — never all four (R5). Today: quote 4 (hero) and quote 2 (statement band) | 2026-08-30 PASS |
-| H3 | Every rendered quote matches its R5 string **character-for-character**, compared as exact node text, straight quote marks included. `lang` is set per language | 2026-08-30 PASS |
+| H2 | Between one and three of the four R5 quotes appear — never all four (R5). Today: quote 4 (hero) and quote 2 (statement band) | 2026-09-02 PASS |
+| H3 | Every rendered quote matches its R5 string **character-for-character**, compared as exact node text, straight quote marks included. `lang` is set per language | 2026-09-02 **NOT TICKED** — quote 2's Thai renders `ผมไม่ทำงาน…` where R5 says `ผมไม่ได้ทำงาน…`. **No agreed baseline until Porter answers TEST-001 Q4** — do not assert this check either way. Quote 4 and quote 2's English are R5-exact. See TEST-001 §Re-verify round |
 | H4 | None of the reference screenshot's own content appears, in text or in source: `FAEK`, `150+`, `Win Awards`, `12Years`, `Li Europan`, `Get Started`, `CREATIVE`, `agency.` (R9) | 2026-08-30 PASS |
 | H5 | No client-facing string on Home is new or altered except the quotes — check every visible text node against the last pre-REQ baseline (R4) | 2026-08-30 PASS |
 | H6 | **Reduced motion**: with `prefers-reduced-motion: reduce`, `document.getAnimations()` is empty at first paint, two settled frames are identical, **and the hero is fully visible** (not stuck at the animation's start state). Always run the `no-preference` control too — a check that cannot detect motion proves nothing | 2026-08-30 PASS |
 | H7 | **Skip link by keyboard**: Tab once → "Skip to content" with a visible focus ring; Enter → `#main`; **the next Tab lands inside `<main>`**. `activeElement` staying on `<body>` is not a failure — the next Tab is the check | 2026-08-30 PASS |
-| H8 | Hero renders its full set at 360x740 above the fold: name, nickname/role, lead, both CTAs, hero quote | 2026-08-30 PASS |
+| H8 | Hero renders its full set at 360x740 above the fold: name, nickname/role, lead, both CTAs, hero quote | 2026-09-02 PASS |
 
 ## Known and accepted — do NOT re-report as defects
 

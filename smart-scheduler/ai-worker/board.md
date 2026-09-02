@@ -36,8 +36,14 @@
     REQ-063 · REQ-064 / TASK-168 · REQ-046 · REQ-047 · REQ-049 / TASK-152 · REQ-044 · REQ-043 · REQ-048 · REQ-054 ·
     REQ-053 · DEF-5 → REQ-056 · DEF-3 → REQ-041 / TASK-090 · DEF-1 · TASK-129 · TASK-128 · REQ-030 ·
     REQ-037 / TASK-124 · REQ-038 / TASK-099 · REQ-024 · REQ-026 · REQ-020 · REQ-022 · REQ-009.
-  - 🔴 **Open for the human:** a dev-server URL + test staff account + an **isolatable LINE test recipient** in
-    `../project-docs/`. Still blocks every LINE-touching test.
+  - ✅ **LINE test recipient — CLOSED 2026-09-01** (open since 08-04). The owner linked **himself** on `sid` as
+    teacher **Bank**; outbound LINE is testable, and AC-16 was fired from it the same day (`tests/TEST-064`
+    §Round 3). The rule that the **2 real teachers are never messaged in rehearsal stands unchanged.**
+    🔴 **Still short one thing:** only **ONE** recipient is linked, so *"every assigned teacher gets it"*
+    (REQ-078 AC-16 revised) **cannot be proven** — a second linked device/teacher is needed.
+  - 🔴 **Open for the human (QA):** **backoffice read access** (`backoffice-som.develyst.online`) — without it
+    Tanya cannot read what any day-end actually posted, so every money AC stays `NOT_TESTED` even after the job
+    runs. Access lives in `../project-docs/`, never in a tracked file.
 
 ### 📏 STANDING RULE — FE layout IS verifiable here (08-01, TASK-081)
 
@@ -198,9 +204,9 @@ timestamp. Without those three distinct states, "quiet" and "dead" look identica
 | REQ-014 | Backoffice — revenue by activity + customer spend | MED | **SPEC_DONE** | Acceptance: open a real month, confirm its reconciliation. |
 | REQ-015 | LINE OA — pretty & bilingual (rich menu / flex) | HIGH | **DELIVERED** (+1 fix pending) | TASK-046 needs a `sid` deploy + repro. TASK-045, TASK-038, TASK-040, TASK-041, TASK-039. |
 | REQ-017 | Teacher bookings → phone calendar feed | MED | **DEPLOYED — acceptance INCOMPLETE** | NOT delivered; LINE does not linkify `webcal://`. TASK-044. |
-| REQ-078 | การจองแบบ **อื่นๆ** (owner's REQ-005) — 🔢 **owner's #1** | HIGHEST | ✅ **SPEC_DONE** SPEC-070 (Sober 09-01) — all 6 tasks DONE | @Porter — acceptance |
+| REQ-078 | การจองแบบ **อื่นๆ** (owner's REQ-005) — 🔢 **owner's #1** | HIGHEST | 🅿️ **PARKED at TEST_FAILED — narrowly** (`sid`, 09-02) — verdict + **PARK NOTE** in `tests/TEST-064` §Round 4 | ✅ All 4 defects verified fixed; 18 ACs pass. 🔴 Blocking: **DEF-4 reopened** (display-only, data intact) · **DEF-7** · **AC-4/5/9 never observed** — see §Round 4 and the 18:30 job finding. |
 | REQ-076 | พักการจอง 1HR / Voucher / 1st Trial (owner's REQ-013) — 🔢 **#2** | HIGH | **DRAFT — 7 questions** | Do NOT build. Money-at-day-end is the sharp one. @Porter holds. |
-| REQ-079 | LINE chatbot — ผปค ลงทะเบียน/ลา/เช็คอินเอง + คุยแอดมินในแชทเดียว (owner's **REQ-016**) — 🔢 **#2** | HIGH | **IN_SPEC** SPEC-071 (Sober 09-01) | §6 SETTLED (REQ-079 §6b). Tasks 230–235 cut, **held**: Q1 (AC-17 trigger) + Q2 (PC cannot start Flow 2) → @Porter |
+| REQ-079 | LINE chatbot — ผปค ลงทะเบียน/ลา/เช็คอินเอง + คุยแอดมินในแชทเดียว (owner's **REQ-016**) — 🔢 **#2** | HIGH | **IN_SPEC** SPEC-071 — 🔄 re-cut 09-02 for §15/§16 | §2 = PHONE ALONE. SPEC-071 Amendment #2 outranks all. 231/232 re-cut; 235 withdrawn. 🔴 accepted risk in `SYSTEM-FACTS.md` |
 | REQ-077 | LINE OA + rich menu + notification set (owner's REQ-014) — 🔢 **#5** | HIGH | **DRAFT** | Customer's list in; **5 of 6 already exist**, 1 new (check-in msg). Design first. @Porter holds. |
 
 > 🔢 **Owner's order (2026-08-30): REQ-078 → REQ-076 → REQ-051 → REQ-077 → REQ-028 → the `REQ-BO` block.**
@@ -260,6 +266,20 @@ timestamp. Without those three distinct states, "quiet" and "dead" look identica
 | TASK-227 | FE: the อื่นๆ cell + one `displayName` everywhere a booking is named · 🆕 AC-18 one booking in every teacher’s column | SPEC-070/REQ-078 | ✅ **DONE — code** (Sober 09-01) · Q1/Q2/Q3 answered · 375 measurement = @Tanya | @Fern |
 | TASK-228 | BE: teacher LINE for อื่นๆ — the typed title names it (AC-16 revised — EVERY assigned teacher; AC-17 WITHDRAWN) | SPEC-070/REQ-078 | ✅ **DONE — code** (Sober 09-01) · rendered LINE = @Tanya | @Jason |
 | TASK-229 | BE: `/catalog-items` must not offer this repo’s own sale items (`IS DISTINCT FROM` — mind the NULL case) | SPEC-070 Q2 | ✅ **DONE** (Sober 09-01) · DATA REQUEST with @Porter | @Jason |
+| TASK-236 | BE: DEF-3 — the bookings list COUNTS อื่นๆ rows then inner-joins them away (`getBookings` :768/:770) | REQ-078 DEF-3 | ✅ **DONE — code** (Sober 09-01) · re-test = @Tanya | Sober |
+| TASK-237 | FE: DEF-1 + DEF-5 — the form dies on a null `.value` when the last teacher chip is removed | REQ-078 DEF-1/5 | ✅ **DONE — code** (Sober 09-01) · lead disproved, real cause was TASK-226's lazy updater · regression fails without the fix · DEF-5 re-walk = @Tanya | @Fern |
+| TASK-238 | BE: AC-24 revised — the clash refusal names the teacher + the clashing booking · + the DEF-4 other-writer sweep | REQ-078 AC-24 | ✅ **DONE — code** (Sober 09-01) · sweep found an open door → TASK-239 | Sober |
+| TASK-239 | BE: an ADDITIONAL teacher must not be double-booked — the door `bookings_teacher_slot_uq` does not guard | REQ-078 / TASK-238 sweep | ✅ **DONE — code** (Sober 09-01) · one definition of "live" left in the repo | Sober |
+| TASK-241 | FE: DEF-6 — the confirm dialog must name EVERY assigned teacher (the SEND already fans out — proven from source) | REQ-078 DEF-6 | ✅ **DONE — code** (Sober 09-02) · 🏁 last build item on REQ-078 · chip ruling (Q1) + the count (Q2) → @Porter · rendered = LOCAL | @Fern |
+| TASK-230 | BE: LINE — migration: `family_line_links` + `family_invites` + `muted_until`/`unexpected_count` | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · 🔴 `0030` awaits the `sid` run → @Porter | Sober |
+| TASK-231 | BE: LINE — 🔴 silence by default is a CHANGE to shipped behaviour (§16) + mute + two-strikes | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · TTL at the source, touch is route-scoped · ⚠️ re-test needs 30 min of silence first | Sober |
+| TASK-232 | BE: LINE — Flow 1 (invite → phone → children). Flow 2 DELETED; `parentChildrenNote` untouched | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · 🔴 2FA ships OFF and **cannot be switched on** until the owner answers code DELIVERY | Sober |
+| TASK-233 | BE: LINE — Flow 3 เพิ่มนักเรียน: summary before write, admin told, nothing partial | SPEC-071 | **TODO** · depends on 232 | @Jason |
+| TASK-234 | BE: LINE — Flows 4–6 on the EXISTING pickers + the two rich menus | SPEC-071 | **TODO** · depends on 232 | @Jason |
+| TASK-243 | BE+FE: an admin must be able to CLEAR a family’s LINE link — today "contact an admin" points at nobody | TASK-232 Q3 | **TODO** 🟠 before anyone is told to contact an admin | @Jason → @Fern |
+| TASK-235 | FE: the admin invite control on the People screen — now the ONLY way anyone joins | SPEC-071 | ⛔ **WITHDRAWN 09-02** — the invite is cut; nothing left to issue | @Fern |
+| TASK-242 | FE: the post-confirm chip claims more than it knows → `ส่ง LINE ถึงครูหลักแล้ว` | REQ-078 DEF-6 §2 | 🔒 **HELD** — only if QA forces an FE touch, else with the follow-up | @Fern |
+| TASK-240 | BE: course search drops a studentless course (count ≠ rows) — same shape as DEF-3, pre-existing | TASK-236 sweep | **TODO** 🟢 after the release | @Jason |
 | REQ-065 | 1st Trial shows up as a selectable program (a booking TYPE in the picker) | SPEC-061 | see the Requirements table | @Sober |
 
 > 168 closed rows swept to archive/board-closed.md (2026-08-31).

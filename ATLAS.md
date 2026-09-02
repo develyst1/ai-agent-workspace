@@ -50,9 +50,64 @@ and it isn't written yet, writing it comes before answering.
   human acts as MD/PM/PO) and **dispatcher mode** (`DISPATCHER.md` — one
   session spawns roles as subagents, human is a checkpoint approver). File
   improvements (inbox, hygiene, board discipline) serve both modes.
-- Trial ground for dispatcher mode: `code-report`. Other projects still run
-  manual mode until proven + migrated (Marie's queue).
+- Dispatcher mode is past its trial: `code-report` (original trial ground),
+  `portfolio-nichaphon` and `layout-pattern-app` are dispatcher-run. The rest —
+  including `smart-scheduler`, the biggest — still run manual mode (Marie's queue).
 - History worth remembering: smart-scheduler's board hit 292KB and its
   coordination failures (TASK-150 stall, stale-log verdicts) motivated the
   dispatcher; code-report re-proved that prose rules decay in 4 working days
   (board 9KB → 144KB) — hence `check-hygiene.mjs` as a forced gate.
+
+### The three tiers of memory (2026-09-02 — the missing layer, found the hard way)
+
+Amnesia-first says "the repo is the only memory" but never said **which file is
+the memory**. There are three tiers, and this workspace only ever built two:
+
+| Tier | What it is | Grows | Home |
+|---|---|---|---|
+| **History** | narrative — what happened, who said what to whom | unbounded, forever | `log/YYYY-MM-DD.md` |
+| **State** | what is in flight right now | bounded (gated) | `board.md` |
+| **Knowledge** | facts that do NOT change: owner decisions, how the running system behaves, product limits, terminology | grows slowly, never compacted | **was missing** |
+
+With no Knowledge tier, the only path to a durable fact is **archaeology through
+the narrative stream** — so every fresh session re-learns, and eventually alarms
+the owner about a setting the owner chose himself. This is the same
+**state/narrative mixing** disease that killed the boards; it was fixed on the
+board and never on the logs, and the facts lived in the logs.
+
+**Evidence (smart-scheduler, 2026-09-02, measured):** `PROTOCOL.md:97-103` orders
+every role to read PROTOCOL + role file + board + today's log + *the most recent
+previous log*. That day this was 16+13.7+35+44+**202**KB ≈ **311KB** — too big to
+actually read (log 09-01 alone holds **61** `@Porter` mentions), and at the same
+time a **2-day sliding window**: 08-29's 39 `@Porter` mentions were already
+unreachable by design. It does not remember; it forgets on a schedule. The
+project also had **no `inbox/`** (rolled out to code-report + DID-046 on 08-25,
+never to the busiest project: 253 tasks, 76 REQs), so messages were delivered by
+grep-luck with no read/unread state. And `SYSTEM-FACTS.md` — the Knowledge file
+the owner ordered into existence on 09-02 — was referenced from **nothing** in
+the startup path: not PROTOCOL, not PM.md, not board.md. *The file built to end
+re-learning was about to be forgotten by the exact mechanism it was built to fix.*
+
+**Design rules this yields (owner-approved 2026-09-02, executed by Marie):**
+1. The Knowledge file is **step 1** of the startup ritual, not a footnote —
+   a memory file nothing points at is not memory.
+2. `inbox/` is the delivery channel in **both** modes. "Scroll the log for `@you`"
+   is not a channel: it has no read/unread state and no upper bound.
+3. Yesterday's log drops from **mandatory** to **on demand** (read it when the
+   inbox points at it). Bounded ritual ≈ 110KB, and it stops shrinking with age.
+4. Enforce all of the above in `check-hygiene.mjs`. A rule that is only prose
+   will decay — proven here twice, now three times.
+
+### Spending resources on memory (2026-09-02)
+
+When the owner has budget to burn, the instinct is "make the agent read
+everything from day one" (smart-scheduler: `log/` **3.07MB** ≈ 800K tokens; whole
+`ai-worker/` **7.81MB** ≈ 2M tokens — it does not fit one context anyway).
+**That converts budget into one well-informed ghost that dies at session end**,
+and the bill repeats every session. The correct instrument is an
+**archaeology run**: chunk the history, one throwaway agent per chunk, whose ONLY
+output is appended facts (with attribution + date) in the Knowledge file — 3MB in,
+~20KB out, read by every future session in two seconds. High effort/model is
+right for that run precisely because it is a *separate* run, not the working
+session. Guard: such a run may write exactly ONE file and must never resolve a
+contradiction it was told to report (the REQ-063 defect Marie caught on 08-30).

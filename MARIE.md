@@ -8,7 +8,7 @@ team and not in any chain.
 You talk to the human in Thai. Atlas (`ATLAS.md`) designs; you operate.
 
 **Assume you remember nothing from any previous session — that is normal
-here.** This file plus the repo are your entire mind: read the Operations log
+here.** This file plus the repo are your entire mind: read **Pending orders from Atlas** and the Operations log
 below at every session start to know where you left off, and append to it the
 moment an operation completes (not at session end). An operation that isn't
 logged didn't happen.
@@ -45,6 +45,101 @@ logged didn't happen.
 - You may write: workspace-root tooling (`check-hygiene.mjs`), `MARIE.md`'s
   own log section below, `_templates/` (with approval). Everything inside a
   project happens via that project's spawned PM.
+
+## Pending orders from Atlas (owner-approved — read this BEFORE the log below)
+
+> Written by Atlas 2026-09-02 with the owner's explicit go on all four items.
+> Design rationale and the measurements behind it: `ATLAS.md` → "The three tiers
+> of memory". Delete an order from this section only after its line is in the
+> Operations log below. Nothing here overrides your Hard boundaries.
+
+### ORDER 1 — smart-scheduler: build the Knowledge tier into the startup path
+
+**Problem measured 2026-09-02:** a fresh Porter's ordered reading was ~311KB
+(PROTOCOL 16 + PM.md 13.7 + board 35 + log/09-02 44 + log/09-01 **202**) — too big
+to read honestly, and simultaneously a **2-day window** that hides everything
+older. `SYSTEM-FACTS.md` (the owner ordered it into existence on 09-02) is
+referenced by **nothing** in that path — only by today's log and PROJECT-STATUS.md.
+
+**Execute via smart-scheduler's spawned PM** (project files are never yours to
+edit). One hop, additive edits only, nothing deleted or reworded:
+
+1. `ai-worker/PROTOCOL.md` → "Session startup ritual" (currently lines 97-104):
+   insert **as the new step 1** — read `SYSTEM-FACTS.md` and `OWNER-LIST.md`
+   ("what the owner has already told us and how the running system behaves —
+   never re-derive these from logs"). Renumber the rest.
+2. Same section: the current step 3 makes **"the most recent previous log"
+   mandatory**. Demote it: read yesterday's log **only when your inbox or the
+   board points you at it**. Keep today's log mandatory. (Also fix the same
+   sentence at "Date discipline" item 5.)
+3. Same section: add reading `ai-worker/inbox/<YOUR-ROLE>.md` (ORDER 2).
+4. `ai-worker/PM.md`: after "Follow `PROTOCOL.md` first…", name `SYSTEM-FACTS.md`
+   as Porter's own file, with the rule already written in that file's header —
+   **when the owner states a fact about how the system behaves, it is written
+   there BEFORE the reply is sent.** `OWNER-LIST.md` is already referenced; leave it.
+5. `ai-worker/board.md` "Read first" bullet: add `SYSTEM-FACTS.md` **first** in
+   the list. One line, no new table.
+
+**Verify yourself:** `grep -l SYSTEM-FACTS` returns PROTOCOL.md, PM.md, board.md
+(before this run it returned only a log file and PROJECT-STATUS.md);
+`node check-hygiene.mjs smart-scheduler` still PASS.
+
+### ORDER 2 — smart-scheduler: create `inbox/`
+
+It is the only project without one (code-report + DID-046 got it 2026-08-25),
+and it is the busiest: 253 tasks, 76 REQs, 61 `@Porter` mentions in a single
+day's log. Create `ai-worker/inbox/{PM,SA,BE,FE,QA}.md`, same shape as
+code-report's. The rule is the one already in `DISPATCHER.md`: read it FIRST,
+act, then **delete what you processed** — empty inbox = nothing waiting.
+Seed each file empty; do **not** backfill old `@` mentions by hand (ORDER 3
+covers history). The log stays the history record; the inbox is the channel.
+
+### ORDER 3 — smart-scheduler: the archaeology run (do AFTER 1 and 2)
+
+Convert the history into memory, once. `log/` is **3.07MB across 28 files**
+(≈800K tokens — it does not fit one context, so it must be chunked anyway).
+
+- One throwaway subagent **per log file**, parallel where you can.
+- Its ONLY job: extract facts that do **not** change — what the owner decided,
+  how the running system behaves, product limits, terminology — each with
+  **who said it and when**, and append them to `ai-worker/SYSTEM-FACTS.md` in
+  that file's existing format. It does not need to understand the work.
+- **It may write exactly ONE file: `SYSTEM-FACTS.md`.** Never board, REQ, SPEC,
+  TASK, TEST or log. Never a status. **A contradiction is REPORTED, never
+  resolved** — that is the REQ-063 defect you caught on 2026-08-30, and this run
+  is the ideal shape for repeating it.
+- High effort/model is the owner's explicit instruction for this run, and it is
+  affordable precisely because it is a separate run. Normal work returns to
+  normal settings afterwards.
+- Expect ~15-25KB out. Dedupe on the way in; if two entries conflict, keep both
+  with their dates and flag it to the owner.
+
+### ORDER 4 — `check-hygiene.mjs`: make the above un-decayable (do LAST)
+
+Your own tooling, your own hands. A rule that is only prose decays — proven
+three times here now. Add, for every project:
+
+- `SYSTEM-FACTS.md` (or the project's Knowledge file) **exists** and is
+  **referenced from `PROTOCOL.md`** — WARN if absent, FAIL if it exists but
+  nothing in the startup path points at it (an unreachable memory file is worse
+  than none: it looks solved).
+- `inbox/` — the existing WARN stays for manual mode; raise it to FAIL for any
+  project whose board or dispatcher-state shows an active team.
+- today's log size: WARN over 100KB (smart-scheduler's 09-01 hit **202KB**).
+- Never compact `SYSTEM-FACTS.md`: exempt it from every size rule, by name.
+
+Thresholds are yours to pick; clear them with the owner as usual, and run the
+blast-radius check across all 9 projects before and after, as you did for v2.
+
+### Sequencing and session hygiene for these orders
+
+Do them in order 1 → 2 → 3 → 4 (ORDER 3 needs somewhere to put what it finds;
+ORDER 4 would red-line everything if it landed first).
+**Before ORDER 1: the owner closes his open Porter session** — it holds a stale
+copy of PROTOCOL.md/PM.md in context and writes the same files (same reason the
+08-31 SPLIT waited). Jason/Fern/Tanya sessions may finish the unit they are
+holding first; the edits are additive and do not break work in flight. New rules
+only take effect at each role's **next** session start — say so in your report.
 
 ## Operations log (append one line per operation, newest first)
 

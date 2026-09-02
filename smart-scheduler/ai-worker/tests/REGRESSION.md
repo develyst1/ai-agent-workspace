@@ -249,3 +249,49 @@ which reads exactly like "the picker is empty". Read `[role="option"]` from the 
 the **visible** listbox: several closed listboxes (teachers, students, times, branches) stay in the DOM and a
 naive query returns all of them mixed together. Same family as the day-grid regex lesson above — the probe has
 to match what the page actually is, or it invents a defect.
+
+## REQ-078 อื่นๆ — from the 2026-09-01 FAILED round (`TEST-064`). Re-run every line after the fix.
+
+⚠️ REQ-078 is **not delivered**. S43–S46 passed on `sid` and must keep passing; **S47–S50 are the four defects**
+and are written as the checks that must go green before this type ships.
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S43 | An อื่นๆ booking with **several teachers** shows in **every** assigned teacher's column, names the others (`With X, Y`), reads as **one** booking, and **one cancel clears all of them** | REQ-078 AC-18 | D | ✅ 2026-09-01 |
+| S44 | A **studentless** อื่นๆ is named on the calendar by the **admin's typed title** — never "อื่นๆ"/"Other", never blank; Thai titles render | REQ-078 AC-2 | D | ✅ 2026-09-01 |
+| S45 | อื่นๆ negatives all refuse with a message and book nothing: no title · amount `0` / negative / non-numeric. The two price sources are **one segmented control** so both can never be set | REQ-078 AC-10/11/12 | D | ✅ 2026-09-01 |
+| S46 | The other four types still take **exactly one** teacher, and a **1 HR with no student is still refused** — the guard `0029` moved out of the DB and into code | REQ-078 AC-14/AC-20 | D | ✅ 2026-09-01 (client-side) |
+| S47 | 🔴 Removing the **last teacher chip** on an อื่นๆ and then typing must leave the form standing — no uncaught `TypeError`, no "This page couldn't load" | DEF-1 / AC-19 | D | ❌ **FAILS 2026-09-01** |
+| S48 | 🔴 An อื่นๆ clashing with a teacher's existing booking must **warn, name the teacher and the clashing booking, and still allow the save** — never refuse; and **no warning** when there is no clash | DEF-2 / AC-24+25 | D | ❌ **FAILS 2026-09-01** (refuses instead) |
+| S49 | 🔴 `All bookings` → Type=**Other** must render the rows it counts — a studentless booking is reviewable somewhere | DEF-3 / AC-13 | D | ❌ **FAILS 2026-09-01** ("2 found", 0 rows) |
+| S50 | 🔴 Booking an อื่นๆ over an existing session must **not hide that session** on the calendar | DEF-4 | D | ❌ **FAILS 2026-09-01** (display only; data intact) |
+
+**Harness note 2026-09-01 (cost me three false starts):** this app's modals **re-flow when a validation banner
+appears or disappears**, so a coordinate captured before typing can land on a different control after. Two of my
+"crashes" were really mis-aimed clicks. **Screenshot immediately before every click in a modal**, and confirm what
+was actually hit before calling anything a defect — the one real crash (S47) only became credible once it survived
+that discipline three times. Same family as the day-grid regex and the Tailwind-probe lessons above.
+
+### REQ-078 update after the 2026-09-02 defect build (`TEST-064` §Round 4)
+
+S47–S50 were written on 2026-09-01 as the four checks that had to go green. Re-run on the deployed build:
+
+| # | Now | Note |
+|---|---|---|
+| **S47** | ✅ **PASSES 2026-09-02** | remove the last teacher chip then type — form survives, no `TypeError`. Held through repeated add/remove/type/toggle cycles |
+| **S48** | ⚠️ **PARTIAL** | the rule was changed by the owner (warn → **refuse**, AC-24 revised). The refusal now **names the clashing booking** ✅ but **never which teacher** ❌ — identical message when only one of several teachers clashes. **DEF-7** |
+| **S49** | ✅ **PASSES 2026-09-02** | `All bookings` → Type=Other: `6 found` → 6 rows rendered; studentless rows show the typed title and every teacher |
+| **S50** | ❌ **STILL FAILS** | narrowed but alive: an อื่นๆ over an **on-leave** session still hides that session (the *sanctioned* overbook path). **Display only — data proven intact** by the session reappearing on cancel |
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S51 | Toggling `คิดเงินรายการนี้` and then typing in the title must not kill the page (DEF-5's second path) | DEF-5 / TASK-237 | D | ✅ 2026-09-02 |
+| S52 | The confirm dialog on a multi-teacher อื่นๆ names **every** assigned teacher **and** states the count (`…to 3 teachers: Bank, Camp, Dewy`) | DEF-6 / TASK-241 | D | ✅ 2026-09-02 |
+| S53 | An อื่นๆ with an **additional teacher** over an **on-leave** session still SAVES — the slot guard must not be widened into UC-004 overbooking | TASK-239 | D | ✅ 2026-09-02 |
+| S54 | The อื่นๆ form's Thai strings match REQ-078's wording table exactly (อื่นๆ · ครู · นักเรียน (ไม่บังคับ) · ชื่อรายการ · เช่น ประชุมทีม, ปิดปรับปรุงลาน · คิดเงินรายการนี้ · ตัดสิทธิ์จากคอร์ส / Voucher · กรุณาระบุชื่อรายการ) | REQ-078 wording | D | ✅ 2026-09-02 |
+| S55 | An unmarked อื่นๆ session becomes ATTENDED at the 23:30 day-end **the same as every other type** | REQ-078 AC-9 | D | ❌ **UNVERIFIED** — F1/F2 sat `PENDING` overnight. ⚠️ Do **not** re-file as a defect before checking `job_runs`: it may be that the job only promotes `CONFIRMED`, in which case the fixture shape was wrong, not the product |
+
+**Harness note 2026-09-02:** a fixture that "should" have been swept overnight and wasn't is **not evidence of a
+skipped job** until you know what the job does to that *status*. I built F1/F2 as `PENDING` and only afterwards
+realised `PENDING` may never have been in scope — the comparison row, or the `job_runs` entry, is the evidence;
+the fixture alone is not. Same family as the earlier lessons: **match the probe to what the system actually is.**

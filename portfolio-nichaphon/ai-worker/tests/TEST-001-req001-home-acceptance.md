@@ -170,16 +170,144 @@ For Porter; he answers as `> answer: ...`.
   string predates REQ-001 and R4 forbids the team changing it. Is the year meant
   to be the current one (i.e. is this a real defect the owner wants raised), or
   is 2025 deliberate? One line from the owner settles it. Not blocking this round.
-  > answer:
+  > answer (Porter, 2026-09-02): right to raise it, and right not to touch it. I
+  > cannot settle it either — the correct year is a fact only the owner has, and
+  > "it is 2026 so it must say 2026" is exactly the kind of inference this team
+  > does not make. It is now item **H** in REQ-001 §Home acceptance review, marked
+  > non-blocking, and goes to him with the rest of his list. If he says it is
+  > wrong, it becomes a change for Sober to spec — never a QA or PM edit.
 - **Q2 — do you want a before/after for R1?** QA can only show the page as it is
   now: rendering the pre-REQ build needs a git checkout, and production is
   off-limits to QA. If a side-by-side would help the owner answer AC1, that is a
   **DATA REQUEST** — the human captures the live site himself and drops the shot
   in `../project-docs/`. QA does not need it to close this round.
-  > answer:
+  > answer (Porter, 2026-09-02): **no — do not chase it.** Stating the limit
+  > plainly in §R1 is the right outcome; a before/after is not needed to close
+  > this round and I am not raising a DATA REQUEST for it. AC1 asks the owner
+  > whether the page reads as *his own* — he has the old site in his head and can
+  > open production himself if he wants the comparison. I will only ask him for a
+  > capture if he answers AC1 with "I can't tell without seeing the old one".
 - **Q3 — should the harness live in the repo?** `tests/harness/home-sweep.cjs`
   currently runs with Playwright installed **outside** `front/`, because adding
   it to `front/package.json` is an engineer's change and not QA's to make. If the
   team wants a committed, repeatable test setup in the repo, that needs a SPEC
   and a TASK. Reported, not decided.
+  > answer (Porter, 2026-09-02): correct on both counts — it is not yours to add,
+  > and it is not mine to decide either (it changes `front/package.json`, so it is
+  > a SPEC/TASK, and it is work the owner has to want). **Parked, named, not
+  > dropped:** I hold it until REQ-001's acceptance closes, then put it to the
+  > owner as its own small scope question rather than lengthening his list now.
+  > Until he says yes, keep running the harness outside `front/` and keep
+  > declaring the footprint the way you did this round.
+
+---
+
+# Re-verify round — 2026-09-02 (REQ-001 §QA re-verify round)
+
+- Status of this round: **TEST_PASSED (partial) — 3 of 4 cases closed; case 1
+  is NOT ticked and is referred to Porter, exactly as the brief instructs.**
+- Environment: local only. Production was not opened, not even a GET.
+- Tested: 2026-09-02 by Tanya. Original round above is untouched.
+- Scope: the four cases Porter issued and nothing else. A and E do not come
+  back; the R8 six-route sweep was not re-run.
+
+**Environment note, declared not assumed.** Port 3000 was already held by a
+process QA did not start (it answers `/` with HTTP 404), so `next dev` chose
+**3001** and the whole round ran against `http://localhost:3001` — QA's own
+`npm run dev` on the working tree, started and stopped by QA. The foreign
+process on 3000 was left alone and never used as evidence. Footprint: that dev
+server (stopped) and `front/.next` rewritten by the R7 build. Playwright is
+still installed **outside** the repo and `front/package.json` is untouched.
+Harness: `tests/harness/reverify-2026-09-02.cjs` (observations only, no verdict).
+Screenshots: `../project-docs/qa-req001-reverify-2026-09-02/` (4 files).
+
+## Cases
+
+| # | Case | Viewport | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| R1 | R5 character-for-character — every quote rendered on Home vs R5 canonical | 1280 | Byte-exact | **Quote 2's Thai does not match.** Quote 4 (`Don't say why me. Say try me.`, 29 chars) and quote 2's English (`I don't work "for" anyone. I work "with" them.`, 46 chars) are exact. See §R5 difference below | **NOT TICKED — reported to Porter** (his instruction: not a tick, not a defect) |
+| R2 | R5 count — at least one but not all four | 1280 | 1–3 of 4 | **Two of four**: quote 4 in the hero, quote 2 (Thai + English pair) in the statement band. Whole-body text search for all seven canonical strings: quotes 1 and 3 absent in both languages | PASS |
+| R3 | Item C — hero fold, evidence only | 1280x600, 360x740 | Evidence, no verdict | See §C re-measured below. Shots `03`, `04` | EVIDENCE SUPPLIED — the call stays the owner's |
+| R4 | R7 — clean build, no console errors on `/` | — / 1280, 360 | Clean | `npm run build` → `✓ Compiled successfully in 7.3s`, 10/10 static pages, postbuild copy ok, **exit 0**, no warnings. `/` logged **no errors and no warnings** at 1280x900 and at 360x740 | PASS |
+
+## §R5 difference — quote 2's Thai (for Porter; nothing was edited)
+
+The statement band renders a Thai string that is **not** R5's canonical Thai.
+Both strings in full, as required:
+
+- **Rendered on the page** (node `PullQuote_primary`, `lang="th"`), 42 characters:
+  `ผมไม่ทำงาน "ให้" ใคร ผมทำงาน "ร่วม" กับใคร`
+- **R5 canonical**, 45 characters:
+  `ผมไม่ได้ทำงาน "ให้" ใคร ผมทำงาน "ร่วม" กับใคร`
+
+First divergence is at character index 5. The rendered string is missing the
+word **`ได้`** (U+0E44 U+0E14 U+0E49) — `ผมไม่ทำงาน` where R5 has `ผมไม่ได้ทำงาน`.
+Everything after that point is identical, quote marks and spacing included.
+
+Two facts Porter needs and QA will not decide:
+
+1. **This is a word, not punctuation.** R4 was lifted for quotes 1–3 for
+   punctuation and spacing only (Q10/Q12), and `ได้` is present in the owner's
+   own verbatim string recorded at the top of R5. So the page and R5 disagree on
+   a word. Which one is right is the owner's ruling, not QA's and not a fix.
+2. **The English pair is R5-exact and was not re-checked against the new Thai.**
+   R5 says a Thai string that changes must have its English pair re-checked;
+   `I don't work "for" anyone. I work "with" them.` still matches R5 byte for
+   byte. Whether it still pairs with the Thai now on the page is part of the
+   same ruling — and AC2 (the owner's approval of that English) is still open.
+
+Consequence, stated plainly: the acceptance criterion *"any quote shown matches
+R5 character-for-character"* **cannot be ticked from this build**. It is not
+recorded as PASS and, per Porter's instruction, not raised as a defect either.
+
+## C re-measured — the hero fold (evidence only, the call is the owner's)
+
+Clean load, scroll 0, measured on the rendered nodes and then **looked at** in
+the screenshot. The 2026-08-30 picture is confirmed; nothing has moved.
+
+**1280x600** — `../project-docs/qa-req001-reverify-2026-09-02/03-home-fold-1280x600.png`
+- Lead paragraph spans 521→643 and **is cut mid-sentence**: 150 of its 282
+  characters are on a fully visible line (last full line ends `…from zero to`),
+  and the next line is clipped in half by the fold, reading `…cut client costs by
+  an average of 40`.
+- `View my work` and `Get in touch` both sit at 683→727 — **entirely below the fold**.
+- The hero quote sits at 687→723 — **below the fold**.
+- Above the fold: header, `Open to new opportunities`, the display name,
+  `Dong · Senior / AI Software Engineer`, three lead lines and half of a fourth.
+
+**360x740** — `../project-docs/qa-req001-reverify-2026-09-02/04-home-fold-360x740.png`
+- Lead paragraph 335→580, **not cut** (282 of 282 characters visible). Both CTAs
+  (620→664) and the hero quote (696→723) are **fully above the fold**. The phone
+  case is still not the problem.
+
+## Verdict for the re-run
+
+**`TEST_PASSED` — partial, and the partial is case R1.**
+
+- **R5 count, and R7 (build + console), pass on the current build.** The quote
+  count is two of four, the build exits 0, and `/` logs nothing at either viewport.
+- **Item C is evidence only**, re-measured and re-shot; the accept/reject call
+  is the owner's and is untouched.
+- **The R5 character-for-character criterion is not ticked.** The Thai on the
+  page differs from R5 by one word. Porter ruled in advance that this is neither
+  a tick nor a defect, so it is reported to him and nothing was edited — not R5,
+  not the code.
+- Nothing in this round could not be run; there is no `NOT TESTED` item.
+- This does not revisit AC1, AC2, B, D, F, G or H — all still the owner's.
+
+## Questions — re-verify round
+
+For Porter; he answers as `> answer: ...`.
+
+- **Q4 — which string is canonical for quote 2's Thai?** The page says
+  `ผมไม่ทำงาน…`, R5 says `ผมไม่ได้ทำงาน…`. QA cannot rule and will not guess:
+  either the page is to be corrected to R5, or R5 records what the owner now
+  wants — and only he decides which. Until he does, the character-for-character
+  criterion stays unticked and the H3 regression check has no baseline to
+  assert against.
+  > answer:
+- **Q5 — does the English pair need re-confirming once Q4 is settled?** R5's own
+  rule says a changed Thai string has its English pair re-checked. The English is
+  still R5-exact, so QA raises the rule rather than a finding. It may fold into
+  AC2 rather than becoming a separate question to him.
   > answer:

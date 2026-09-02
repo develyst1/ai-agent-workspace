@@ -1,7 +1,7 @@
 # SPEC-071: LINE self-service on a family code — registration, leave, check-in
 
 - Source: **REQ-079** (owner's REQ-016). Priority: **#2**, behind REQ-078 (SPEC_DONE).
-- Status: **DRAFT** — 🔴 two answers outstanding (Q1, Q2). **Tasks are cut but NOT released** (see §Tasks).
+- Status: **ACTIVE** — 🔴 **AMENDMENT #2 (2026-09-02) OUTRANKS EVERYTHING ABOVE IT: the invite is CUT too; entry is the PHONE ALONE.** Read it before anything else. — 🔄 AMENDED 2026-09-02 for REQ-079 §15 (the code is CUT) + §16 (the admin-reply trigger is impossible). Tasks 230–235 RELEASED. Was: **DRAFT** — 🔴 two answers outstanding (Q1, Q2). **Tasks are cut but NOT released** (see §Tasks).
 - Repos: `smart-scheduler-back` (all of it) · `smart-scheduler-front` (one admin control, REQ-019 People screen)
 - Grounding: everything below was read from the code on 2026-09-01. REQ-079 §6b holds the two findings that shape it.
 
@@ -154,3 +154,195 @@ the one place it cannot talk over an admin. **My lean is (b)**, with (a) as the 
 read. ⚠️ But it means **an admin cannot read a family's code back to them on the phone** — the remedy is
 "reset and tell them the new one". If the owner expects an admin to be able to *read* it, say so and I will
 change it; **it is a two-line difference now and a migration later.**
+
+---
+
+# 🔴 AMENDMENT 2026-09-02 — the family code is CUT (REQ-079 §15) and the admin-reply trigger is IMPOSSIBLE (§16)
+
+> **Where anything above disagrees with this section, THIS section is right.** Same rule REQ-079 §15 sets for
+> itself. The title of this spec now names a thing that does not exist; it is kept for continuity.
+
+## What is deleted from this spec
+
+| Deleted | Because |
+|---|---|
+| `parents.family_code_hash` · `family_code_set_at` | the customer rejected the code (§15) |
+| `parents.code_attempts` · `code_locked_until` | the lockout dies with it — 4 attempts / 3 min / per family, gone |
+| The weak-code check + its `app_settings` switch | nothing to check |
+| **Flow 2 in every form** — self-service phone + code | **no self-service path exists.** A second guardian or a new device is **an admin opening the door again** |
+| Q3 (hash vs plaintext) | moot |
+| **AC-4 · AC-6 · AC-7 · AC-8** | withdrawn by §15. AC-2 loses its "asks for a code" clause |
+
+⚠️ **One precision, because the two are easy to conflate and one of them is still required.**
+@Porter's release note says *"the attempt counter you called the only new state is gone."* That is the **code
+lockout** counter (`code_attempts`). It is **not** the **two-strikes** counter (`unexpected_count`): Rule 5 and
+**AC-18** still require *"two unexpected replies and the bot hands over to a human"*, and that still needs a
+per-conversation count. 🔴 **Do not delete both because one sentence covered them.**
+
+## What survives, and is now MORE load-bearing
+
+**§6b's finding is unchanged and its consequence is larger:** a chat cannot be addressed until it speaks
+(`eventUserId` is the only producer of a `lineUserId`). ⇒ **the door is still something the parent presents.**
+
+With the code gone, the invite is **the only way anyone ever joins a family** — mother, father, grandmother, a
+new phone. It was one of two doors; it is now the only one. ⇒ **`family_invites` and `family_line_links` are the
+whole data model of this REQ.**
+
+```sql
+CREATE TABLE "family_line_links" (
+  "parent_id"    uuid NOT NULL REFERENCES "parents"("id") ON DELETE CASCADE,
+  "line_user_id" text NOT NULL,
+  "linked_at"    timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY ("parent_id", "line_user_id")
+);
+CREATE UNIQUE INDEX "family_line_links_user_uq" ON "family_line_links" ("line_user_id");
+
+CREATE TABLE "family_invites" (
+  "code" text PRIMARY KEY, "parent_id" uuid NOT NULL REFERENCES "parents"("id") ON DELETE CASCADE,
+  "expires_at" timestamptz NOT NULL, "used_at" timestamptz, "used_by" text
+);
+```
+🔴 **`family_line_links_user_uq` is still the load-bearing one** — one LINE account, one family. Without it a
+second family's invite silently re-points an account and a parent sees another family's children: TASK-047's
+failure by another route.
+`line_link_sessions` gains **`muted_until`** and **`unexpected_count`** only.
+
+## §16 — AC-17: the mechanism is built, the automatic trigger is NOT
+
+**Measured, not assumed:** the owner replied in OA Manager on `sid` and **no `[line-in]` was logged**. An admin's
+reply is outbound and never reaches our webhook. ⇒ build `muted_until` and wire the **two inbound triggers**:
+the parent pressing `คุยกับแอดมิน`, and the two-strikes handover. **Nothing else.**
+🚫 **Do not build the back-office "หยุดบอทในแชทนี้" control** — @Porter has it noted as the fallback, not now.
+
+## 🔴 §16's second finding changes what TASK-231 IS — read this before estimating it
+
+From the same screenshot: in an **idle** chat the **deployed** bot answers stray text with errors —
+`เมนู` → *"เบอร์โทรไม่ถูกต้อง…"*, `yo` → *"ไม่พบครูชื่อเล่น \"yo\""*.
+
+⇒ **AC-16 ("silent by default") is a CHANGE TO SHIPPED BEHAVIOUR, not a new capability.** The current handlers
+demonstrably reply. That makes TASK-231 a **regression-shaped** task, not an additive one:
+- it must **prove** the bot no longer answers unrecognised text in an idle chat, with a test that **fails on
+  today's handlers**;
+- and it must not silence the paths that *should* answer — the linking conversation, and every in-flow step.
+📌 This is the one place in the REQ where we are taking something away from a running system that real teachers
+use. It deserves the sharpest regression in the batch.
+
+## The flows, as they now stand
+
+1. **Flow 1 (the only way in):** admin gives an invite in the chat → parent types it → chat bound to the family
+   → parent enters their phone → **children shown by name** → done. **No code is set. Flow 1 got shorter.**
+2. **Flow 2: deleted.** A second guardian or a new device = an admin opens the door again.
+3. **Flows 3–6** unchanged: เพิ่มนักเรียน (summary-before-write, admin notified) · แจ้งลา · เช็คอิน ·
+   คอร์สของฉัน, all on REQ-050's existing pickers. 🚫 Never infer the child, never infer the session.
+4. **Flow 7** sets `muted_until`; the bot does not resume by itself.
+
+## 📌 The trade §15 names, carried into the build so nobody re-derives it
+
+The **sick-mother case** now depends on an admin being reachable: dad, unlinked, filing leave on a Sunday
+evening, must reach a person. **That is the customer's call and the shop's phone has always worked** — it is
+written here because it is invisible at decision time and obvious the first evening it happens. ⚠️ If it ever
+becomes a complaint, **the fix is not to re-litigate the code — it is to make "open the door" one tap from where
+staff already are.** That is why TASK-235 is not a throwaway.
+
+## Tasks — RE-CUT and RELEASED
+
+| Task | Repo | What |
+|---|---|---|
+| **TASK-230** | back | the migration: `family_line_links` · `family_invites` · the two session columns |
+| **TASK-231** | back | 🔴 silence-by-default as a **behaviour change** (AC-16) + the route precedence + `muted_until` + two-strikes |
+| **TASK-232** | back | **Flow 1 only** — invite → bind → phone → children by name. 🚫 `parentChildrenNote` untouched outside an invited chat |
+| **TASK-233** | back | Flow 3 เพิ่มนักเรียน — summary before write, admin notified, no partial row |
+| **TASK-234** | back | Flows 4–6 on the existing pickers + the two rich menus |
+| **TASK-235** | front | the admin control: issue an invite from the People screen |
+
+**Questions: none open.** §15 and §16 closed Q1, Q2 and Q3.
+
+---
+
+# 🔴 AMENDMENT #2 — 2026-09-02 — THE INVITE IS CUT TOO. Entry is the PHONE NUMBER ALONE (REQ-079 §2)
+
+> **This section outranks everything above it, including Amendment #1.** Read §2 of REQ-079 first.
+> Owner: *"ฉันเอาแค่เบอร์ ก็สามารถใช้งานได้เลย"* — a parent enters their phone, their children are shown, they
+> are in. **No code. No invite. No TTL. No lockout. No admin step.**
+
+## Deleted — do not build, and delete from anything already written
+
+`family_invites` · the code generator · the 8-char base32 alphabet · the 30-minute TTL · single-use redemption ·
+the invite attempt counter · **and the admin "opens the door" step in every form.**
+
+⇒ **My §6b invite mechanism is dead**, and with it Amendment #1's Flow 1. **TASK-235 is WITHDRAWN entirely** —
+it existed only to issue invites (@Porter did not name it; it follows from the cut).
+
+## ⚠️ TWO things in that CUT list are easy to over-delete. Read this before touching either.
+
+**1. `unexpected_count` SURVIVES.** @Porter's list says *"the attempt counter"* — that is the **invite/code**
+attempt counter. It is **not** the **two-strikes** counter, which Rule 5 and AC-18 still require (*"two
+unexpected replies and the bot hands over to a human"*) and which **TASK-230 has already shipped**.
+🔴 **This is the third time these two counters have nearly been deleted on one sentence.** The distinction is in
+the migration, in `schema.ts` and in a comment-stripping test — **do not remove any of them.**
+
+**2. 🚫 DO NOT EDIT MIGRATION `0030`.** It creates `family_invites`, which we no longer use, and **it may already
+have run on `sid`** (it was with the owner when this landed). The risk is asymmetric:
+- edit it and it has run ⇒ the file and the database disagree, and **`db:verify` witnesses by name so it cannot
+  see the difference** — the `0022` blindness, and exactly what TASK-239's byte-identity test exists to prevent;
+- leave it and it has not run ⇒ **one unused table.**
+⇒ **Leave it.** `family_invites` stays dormant. Dropping it is a one-line migration whenever someone is in there
+anyway — **never urgent, never bundled with a release.**
+
+## ✅ Kept, and its reason never depended on the code
+
+`family_line_links` + `family_line_links_user_uq`. **One LINE account belongs to one family.** Without it a
+second entry silently re-points an account and a parent sees another family's children — TASK-047 by another
+route. **It survived three entry designs because it was never about the code.**
+
+## The flow now
+
+```
+ผปค : 0812345678                    ← the phone. INBOUND, so this is also what binds the chat
+[ 2FA step — present in the flow, OFF by default ]
+บอท : พบข้อมูลของคุณแล้วค่ะ — น้องรดา, น้องต้น
+```
+
+📌 **The phone lookup is now the binding event**, doing the job the invite did: it is the first inbound message
+that identifies a family, so it is where `family_line_links` is written. **§6b's finding is unchanged and is why
+this works at all** — a chat cannot be addressed until it speaks.
+
+📌 **And the sick-mother case is solved outright.** Dad needs no admin, no code, no invite. The problem that drove
+three designs disappears with the third — worth stating, because two of those designs are archived above.
+
+## 🆕 The 6-digit 2FA — BUILT, shipped OFF (§2)
+
+- A **per-session** 6-digit verification step **between the phone and the children**. **Off by default.**
+- **The switch is `app_settings`** — REQ-031's mechanism, the same shape as the retired weak-code check.
+- 🔴 **Turning it on must be a SETTING, never a rebuild.** The branch exists in the flow from day one.
+  **A stub that would need the flow re-cut later is explicitly not what was asked for** — build the branch,
+  default it off, and prove with a test that flipping the setting changes behaviour with no code change.
+- **Its parameters (lifetime · attempts · lockout) return to the OWNER on the day it is switched on.** They are
+  **not** inherited from the two deleted designs. *An acceptance does not transfer across a mechanism change* —
+  the principle this REQ has now proved three times.
+
+## 🔴 The accepted risk — carried into the build, not re-litigated in it
+
+**Anyone who knows a phone number can see that family's children and act for them.** The owner raised it with the
+customer, **explained the danger, and the customer refused** the code and anything in its place (§2, and
+`SYSTEM-FACTS.md`).
+
+**Whoever meets this later must read *"the customer was told and declined"*, not *"nobody thought about it"*.**
+🚫 **Do not silently re-open it. Do not silently harden it** — a well-meant extra check added in a task is exactly
+the "quiet hardening" that is forbidden.
+
+⚠️ **Two limits keep it survivable and must not be traded away without a NEW decision:**
+1. 🔴 **LINE never unlocks anything that moves money** — children, leave, check-in only. **This is the line that
+   bounds the risk, and it has held across all three entry designs.** AC-20's grep-guard test is what keeps it
+   true, so that test is now load-bearing rather than tidy.
+2. **A parent cannot delete a student with any history** (§6b of the REQ).
+
+## Tasks after this amendment
+
+| Task | State |
+|---|---|
+| **TASK-230** | ✅ DONE — unchanged. `family_invites` ships dormant; **`0030` is not to be edited.** |
+| **TASK-231** | **TODO, unchanged in substance** — silence-by-default, `muted_until`, two-strikes. ⚠️ `unexpected_count` stays. |
+| **TASK-232** | 🔄 **RE-CUT** — phone → (2FA branch, off) → children. No invite, no door. |
+| **TASK-233 / 234** | unchanged — they begin from a bound chat, and the binding just moved. |
+| **TASK-235** | ⛔ **WITHDRAWN** — it issued invites, and there are none. |

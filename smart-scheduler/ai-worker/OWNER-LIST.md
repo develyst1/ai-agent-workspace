@@ -16,7 +16,7 @@
 | REQ-002 | upload ข้อมูล นักเรียน | ✅ Completed | REQ-025 / REQ-059 / REQ-060 importer work — *mapping believed* |
 | REQ-003 | ส่วนลดรายครั้ง | ✅ Completed | **REQ-063** — ⚠️ see Risk 2 |
 | **REQ-004** | **เช่าอุปกรณ์** | 🔴 **REOPENED 2026-08-30 — the customer says it is wrong** | **REQ-028 / SPEC-031 / `tests/TEST-062`** — see Risk 4 |
-| **REQ-005** | **การจองลงตาราง แบบ other (อื่นๆ)** | 📋 **ToDo** — in build, 2 answers owed | **`requirements/REQ-005…md` §"booking type OTHER"** |
+| **REQ-005** | **การจองลงตาราง แบบ other (อื่นๆ)** | 🅿️ **In Progress — PARKED 2026-09-02** (owner: last round, then park). Build complete, 18 ACs pass; `TEST_FAILED` on 1 display bug + 1 message. 🔴 **The money path was never observed** — that, not the bugs, is what holds it. **NOT Completed.** | **`requirements/REQ-005…md` §"booking type OTHER"** |
 | **REQ-013** | **พักการจองรายครั้ง / voucher / 1st Trial** (เหมือนพักคอร์ส) + กล่องรายการที่พักไว้ | 🆕 **ToDo — captured 2026-08-30, NOT ready to build** | `requirements/REQ-076…md` (DRAFT) |
 | **REQ-014** | **LINE OA จริงจัง** — rich menu · ลูกค้าใช้ตอบลูกค้าด้วย · ชุดแจ้งเตือนให้ครบ | 🆕 **ToDo — captured 2026-08-30, NOT ready to build** | `requirements/REQ-077…md` (DRAFT) |
 | REQ-006 | popup confirm ตอนกด มาเรียน / confirm ส่งไลน์ครู | ✅ Completed | REQ-073 |
