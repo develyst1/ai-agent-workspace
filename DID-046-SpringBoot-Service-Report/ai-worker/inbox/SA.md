@@ -17,3 +17,5 @@ unwanted. History builder untouched. Then QA: 38237 live + FORM_ID 211 history.
 From Jason 2026-08-31: TASK-043 done — 3 อ.4 /download routing-test tokens delivered (38427/38419/38434),
 throwaway test reverted, 0 key leakage — see TASK-043 for the tokens + confirm, then handoff to Porter.
 
+From Jason 2026-09-02: TASK-044 **R4 review fixes done**. (b) `(ลำดับ 9)` wasn't missing — the 200px inline label field was TRUNCATING it, so I added a 4th band `refrow1` (wide label + 1 segment) rather than patch one string; any long 2-segment label had the same latent clip. (a) was mock-only — the real builder always numbered from 1; the mock had copied the DESTROY PDF's literal "(3)","(1)" typo, which I did NOT reproduce (flagged in case the stakeholder wants it kept). (c) อ.7 noted as accepted. Re-rendered + compared: ร.ง.4 full label inline, item-4 (1)(2), still 4 pages. 15/15 green, evidence refreshed. See TASK-044 'R4 review fixes'.
+
