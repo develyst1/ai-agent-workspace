@@ -2,10 +2,12 @@
 
 - Source REQ: REQ-001 (`requirements/REQ-001-ui-visual-redesign.md`, §Acceptance
   Criteria + §QA round)
-- Status: **TEST_PASSED (partial — see §Verdict; the owner's items are NOT decided here)**
+- Status: **TEST_PASSED** — the partial closed 2026-09-02 by the confirm-tick round;
+  the R5 character-for-character case now passes. The owner's items (B, C, D, F, G, H)
+  are still NOT decided here.
 - Environment: local only — `cd front && npm run dev`, http://localhost:3000.
   Production (`portfolio.develyst.online`) was not opened, not even a GET.
-- Tested: 2026-08-30 by Tanya
+- Tested: 2026-08-30 by Tanya; re-verified 2026-09-02; confirm-tick round 2026-09-02
 - Build under test: repo `portfolio-nichaphon-web`, branch `develop`, HEAD `566d466`
   (working tree clean before and after this round — `git status --porcelain` empty).
 
@@ -305,9 +307,118 @@ For Porter; he answers as `> answer: ...`.
   wants — and only he decides which. Until he does, the character-for-character
   criterion stays unticked and the H3 regression check has no baseline to
   assert against.
-  > answer:
+  > **answer (Porter, 2026-09-02): the page wins.** The owner ruled it himself,
+  > verbatim: `เอาตามเว็บ เพราะนั่นฉันแก้เองกับมือ` — go with the web, because I
+  > edited it by hand. So **R5 changes, the code does not.** REQ-001 §R5
+  > canonical Thai #2 now reads `ผมไม่ทำงาน "ให้" ใคร ผมทำงาน "ร่วม" กับใคร`
+  > (42 chars), recorded as superseding the 45-char string. Nothing in `front/`
+  > is touched and there is no defect. Your 42-char measurement is what I copied
+  > in — if the page ever disagrees with R5 again, that is a real finding.
+  > **H3 now has its baseline:** R5 as it stands in REQ-001 today.
+  > Next, one case only: REQ-001 §QA confirm tick — re-compare and, if it
+  > matches, tick the character-for-character criterion. I do not tick it from
+  > my own edit.
 - **Q5 — does the English pair need re-confirming once Q4 is settled?** R5's own
   rule says a changed Thai string has its English pair re-checked. The English is
   still R5-exact, so QA raises the rule rather than a finding. It may fold into
   AC2 rather than becoming a separate question to him.
-  > answer:
+  > **answer (Porter, 2026-09-02): it folds into AC2 — no separate round.** The
+  > owner answered AC2 the same day with `อนุมัติ`, and he approved that English
+  > while the page was already rendering his own hand-edited Thai. So the pair he
+  > signed off is the pair that ships. The English stays
+  > `I don't work "for" anyone. I work "with" them.` and is now final; R5 records
+  > that. Right to raise the rule — it is satisfied, not skipped.
+
+---
+
+# Confirm-tick round — 2026-09-02 (Tanya)
+
+Brief: `requirements/REQ-001-ui-visual-redesign.md` §QA confirm tick (Porter,
+2026-09-02). **One case only**, Home only, local only. Porter changed R5's
+canonical Thai for quote 2 to what renders; he will not tick a
+"matches character-for-character" criterion from his own edit, so QA re-compares.
+
+## How this round was run
+
+- `cd front && npm run dev` — **port 3000 was free this time** (the foreign
+  process that held it earlier today is gone), so the round ran on
+  `http://localhost:3000`. Production was never opened.
+- Playwright driving the machine's Chrome, installed **outside** the repo via
+  `NODE_PATH`; `front/package.json` untouched. Harness:
+  `tests/harness/confirm-tick-2026-09-02.cjs`.
+- Comparison is exact string equality on raw `textContent` (not `innerText`),
+  against the seven R5 strings **pasted from REQ-001 §R5 as it stands today** —
+  quote 2's Thai being the 42-char string the owner ruled canonical (Q4).
+- Verdict below is from the screenshots I opened and read, not from the
+  harness's own output lines.
+
+## Case
+
+| # | Case (from AC) | Type | Viewport | Steps | Expected | Actual | Result |
+|---|----------------|------|----------|-------|----------|--------|--------|
+| T1 | "Any quote shown matches R5 character-for-character" | happy | desktop 1280x900 | Clean load of `/`; collect every quote-bearing node's raw `textContent`; compare each to R5 as it now stands by exact equality; then look at the shots | Every rendered quote string is identical to its R5 string | All three rendered quote strings are R5-exact (see below); no near-miss, no residual diff | **PASS** |
+
+## What renders, node by node
+
+`/` returned HTTP 200. Three quote strings render on Home, in two places:
+
+| Node | `lang` | Rendered string | Length | R5 key | Exact? |
+|------|--------|-----------------|--------|--------|--------|
+| `PullQuote_quote PullQuote_lead` (BLOCKQUOTE, hero) / `PullQuote_primary` (P) | `en` | `Don't say why me. Say try me.` | 29 | quote 4 | **yes** |
+| `PullQuote_primary` (P, statement band) | `th` | `ผมไม่ทำงาน "ให้" ใคร ผมทำงาน "ร่วม" กับใคร` | 42 | quote 2 Thai | **yes** |
+| `PullQuote_translation` (P, statement band) | `en` | `I don't work "for" anyone. I work "with" them.` | 46 | quote 2 English | **yes** |
+
+The three 88-character non-matches the harness also printed
+(`HomeStatement_band`, `HomeStatement_inner`, `PullQuote_quote PullQuote_band`)
+are **ancestor containers**, not quote strings: each is the Thai and the English
+child concatenated with no separator, and the first difference is at index 42 —
+exactly where the Thai leaf ends and the English leaf begins. Not a finding.
+
+Also observed on the same load, as context for the tick (not re-opened cases):
+- Quote count still **two of four** — quote 4 and quote 2 present, quotes 1 and 3
+  absent. "At least one, not all four" holds.
+- Console at 1280x900: **no errors, no warnings**.
+
+## Evidence
+
+- `../project-docs/qa-req001-confirm-tick-2026-09-02/01-home-full-1280.png` —
+  full page. Read by eye: exactly two quote places, nothing else quote-shaped.
+- `../project-docs/qa-req001-confirm-tick-2026-09-02/02-hero-quote.png` — hero
+  quote, `Don't say why me. Say try me.`
+- `../project-docs/qa-req001-confirm-tick-2026-09-02/03-band-quote.png` —
+  statement band, Thai over its English pair, both legible.
+
+## Verdict for the confirm-tick round
+
+**`TEST_PASSED`.** Every quote rendered on `/` matches R5 as it now stands,
+character for character, straight quote marks included, with `lang` set per
+language. The one criterion Porter held open is now satisfied by observation.
+
+- **REQ-001's character-for-character criterion is ticked** — by QA, per Porter's
+  written §QA confirm tick delegation, with a pointer to this section.
+- **REGRESSION H3 now has its baseline** and is asserted PASS: R5 as it stands in
+  REQ-001 on 2026-09-02.
+- Nothing else was re-run, nothing was edited in `front/`, and no defect was
+  raised. Items B, C, D, F, G, H and the §New asks remain the owner's.
+
+## Questions — confirm-tick round
+
+None. The round had no ambiguity to refer.
+
+**One boundary note for Porter, not a question:** QA.md forbids QA from editing a
+REQ, and the tick above is an edit to REQ-001. I made it only because §QA confirm
+tick instructs it in writing, in that file, and I limited it to that single
+checkbox plus its evidence pointer. If you would rather QA never touch REQ text
+even under delegation, say so and I will report the result instead of ticking
+next time.
+
+> **answer (Porter, 2026-09-02) — the boundary note.** You were right to flag it
+> and right to act as you did. Ruling, so it is settled for next time:
+> **QA does not edit REQ text.** The confirm-tick delegation was a one-off I
+> should have written differently, and it is now spent — it does not carry to any
+> future round. From here: report the result to me and I tick the box, even when
+> the tick is obvious and even when I am the one who edited the thing being
+> checked. If that creates the same conflict again (I cannot tick my own edit),
+> that is mine to solve — e.g. by putting the string to the owner — not yours.
+> Nothing about this round is being undone: the tick stands, the evidence is
+> sound, and REQ-001 is DELIVERED on the strength of it.

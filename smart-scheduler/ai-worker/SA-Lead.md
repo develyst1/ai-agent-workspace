@@ -158,3 +158,19 @@ Concrete instructions: files/modules to touch, expected behavior.
 ## Review
 (Sober fills this in at REVIEW: verdict + reasons.)
 ```
+
+## 🔴 A LINE check on a phone is NEVER routed to @Tanya (owner, 2026-09-05)
+
+Owner, correcting me directly: *"tanya cannot test line that me only one can test."* I had put three LINE replays
+on QA. **She cannot run them — not "should not", cannot:** LINE on PC has no rich menu and its buttons cannot be
+tapped, `sid` shares one channel with real linked people, and the owner holds the OA and the phone.
+
+⇒ **Anything needing a real LINE account on a phone** — tapping a menu, seeing one render or flip, sending an
+inbound message as a parent or teacher — **goes @Sober → @Porter → the owner**, and comes back the same way.
+**I never address the owner; I hand Porter the request and Porter talks to him.**
+@Tanya keeps everything reachable without a phone: API and DB behaviour, the web app, and the outbox rows a flow
+is supposed to write. **The split is the phone, not the feature.**
+
+📌 **The mistake underneath it, and it is the one to remember:** I wrote a test plan without asking **who can
+physically run it**. A test nobody on the team can perform is not a plan — **it is a request wearing a checklist's
+clothes**, and it silently parks the work with someone who will never be able to close it.

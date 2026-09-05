@@ -92,3 +92,34 @@ Full pre-compaction board: `archive/board-2026-08-29-pre-compaction.md`.
 ```
 | REQ-028 | Equipment rental as recorded revenue (200 / 150 / 50 / 50 per hour) | **MEDIUM–HIGH** | **SPEC_DONE — `SPEC-031`; TASK-108/109 cut** (Sober 2026-08-04: 4 rental codes through the existing `recordSale` path — **no new money mechanism**; `revenueKind="RENTAL"` marker so reports separate it; `POST /rentals` idempotent + **surfaces the post result** since a rental *is* the event, not downstream bookkeeping; supports both entry points). @Jason — TASK-108 startable. ❓ @Porter → owner: the Q2 entry-point (session add-on vs standalone) — non-blocking, model identical. Prior: | **@Sober — (SPEC-031 done).** Owner approved (*"เอา"*). ⚠️ **Bigger than it looks:** several programs are "equipment included", but the voucher card says **"EXCLUDE EQUIPMENT RENTAL"** ⇒ **every voucher customer needing gear is a rental**, and vouchers are one of two main product families. Recurring income the system has **no concept of** — so P&L, SOM dashboard and REQ-014 all understate income by an unknown amount. **Should need no new money mechanism** — four product codes through `lib/sale-post.ts`. **If it starts to need one, stop and tell Porter**; that is the shape of the bug we spent 2026-08-01 fixing. ❓ Open (non-blocking, money model identical either way): where staff record it — session add-on vs standalone sale. |
 ```
+
+---
+
+## 📌 PARKED LEAD — the customer's own published rental prices (Porter, 2026-09-05)
+
+**Owner's instruction: note it, do not act.** *"เรื่องเช่า โน็ตไว้ก่อน มีต้องกลับไปทำอยู่แล้ว รอ รวดเดียว"* —
+REQ-004 comes back as one piece, not in fragments. **Nothing here is a defect report and nothing is to be built,
+specced or asked of the customer on the strength of it.**
+
+**Where it came from:** on 2026-09-05 the owner sent a screenshot of the customer's LINE OA greeting for an
+unrelated reason (it carries their own welcome message). Attached to it is **the shop's public price table**, and
+it states the rental structure in the customer's own words:
+
+> **RENTAL / HOUR: 200 BAHT — FOR SET RENTAL: RIDE + HELMET + PADS**
+> **RENTAL / HOUR: 150 BAHT — RIDE ONLY / 50 BAHT HELMET / 50 BAHT PADS**
+
+**Why it is worth keeping:** REQ-004 is REOPENED on *"เรื่องเช่า rent ยังไม่ถูก ลูกค้าแจ้ง"* and **what is wrong
+has never been stated.** This is the first artefact we hold that says what the customer charges — published by
+them, to their own customers, so it is not an assumption we made.
+
+⚠️ **It may equally show that nothing is wrong.** SPEC-031 was verified against the ledger on 2026-08-30 and the
+numbers matched, and this table has **four prices** where SPEC-031 has **four codes**. That is a resemblance, not
+a match — **nobody has compared them line by line, and this note is not that comparison.**
+
+⇒ **When REQ-004 is picked up:** compare these four published prices against SPEC-031's four codes **before**
+going back to the customer. If they differ, the difference is the question to ask. If they agree, the complaint
+is about something else entirely and asking about prices would waste the round.
+
+📌 **Method note, kept because this project keeps relearning it:** the owner sent this screenshot to make a point
+about **greeting messages.** The rental prices were incidental to his reason for sending it. **Evidence does not
+arrive labelled with the question it answers** — the same lesson as the AC-13 screenshots on 2026-09-02.

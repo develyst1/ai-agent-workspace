@@ -295,3 +295,49 @@ S47–S50 were written on 2026-09-01 as the four checks that had to go green. Re
 skipped job** until you know what the job does to that *status*. I built F1/F2 as `PENDING` and only afterwards
 realised `PENDING` may never have been in scope — the comparison row, or the `job_runs` entry, is the evidence;
 the fixture alone is not. Same family as the earlier lessons: **match the probe to what the system actually is.**
+
+## REQ-079 LINE chatbot — from the 2026-09-03 verdict (`TEST-065` §Round 2)
+
+⚠️ REQ-079 is **not delivered**: only 14 of 26 ACs were exercised. These are the ones now proven on `sid`.
+🔴 **Every line below needs a LINE-capable tester** — QA has no LINE account (`SYSTEM-FACTS.md`), so the owner is
+the hands. **S61–S62 are the exception: they are checked from the admin screens and QA can run them alone.**
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S56 | An **idle** chat stays **silent** — stray text gets no reply at all | REQ-079 AC-1 | D | ✅ 2026-09-03 |
+| S57 | Every flow step offers an exit (`หรือพิมพ์ ยกเลิก เพื่อออก`) — incl. the **rejection re-prompt** and the **duplicate-name** prompt — and `ยกเลิก` deletes the draft **and says so** | REQ-079 AC-19 | D | ✅ 2026-09-03 |
+| S58 | A word the bot advertises (`เมนู`) is **refused as a student name**, names the escape, **and never reaches the database** | REQ-079 AC-20 | D | ✅ 2026-09-03 |
+| S59 | Two consecutive unexpected replies **hand the chat to a human**; a **duplicate name is NOT a strike** — it asks for a surname | REQ-079 AC-14/21 + §6a | D | ✅ 2026-09-03 |
+| S60 | A muted chat stays silent **even on a command word the bot advertises**, tells the parent `เปิดเมนู`, and `เปิดเมนู` really works and starts nothing | REQ-079 AC-13/23/24/26 | D | ✅ 2026-09-03 |
+| S61 | 🔵 **QA-runnable:** a parent who abandons mid-flow leaves **no partial student** — search the abandoned name on `People`; the parent count must be unchanged | REQ-079 AC-9 | D | ✅ 2026-09-03 |
+| S62 | 🔵 **QA-runnable:** `Clear LINE link` states the link state **before** the admin acts — `Cancel`-only when nothing is linked; when linked it names the count and says students/bookings/notes/history are kept and the account may rebind to **a different family** | TASK-243 | D | ✅ 2026-09-03 |
+| S63 | 🔴 A **muted** chat stays silent against typed text (**distinct from S56's idle state** — the mute path was rewritten by TASK-246) | REQ-079 AC-25 | D | ❌ **UNVERIFIED on this build** — QA asked for it 09-03 |
+| S64 | 🔴 A mute in one chat leaves **every other family's chat working normally** | REQ-079 AC-13 2nd half | D | ❌ **UNVERIFIED** — needs a **second linked chat** (same missing fixture as REQ-078 AC-16) |
+| S65 | 🔴 Clearing a family's LINE link lets that account **rebind to a different family**, with students/bookings/history intact | REQ-079 AC-4 / TASK-243 | D | ❌ **UNVERIFIED** — QA will not clear the owner's live account; his to run |
+
+**Harness note 2026-09-03 — how to trust a negative.** Three of this round's passes (S58, S61) rest on a search
+returning **nothing**. Before reporting any of them I searched a name I *knew* existed and confirmed the box
+returns students, not just parents. **An empty result from a broken filter looks exactly like a clean database** —
+and on this project I have twice nearly filed my own mistake as a product defect. **Prove the instrument works
+before you trust it to say "nothing is there."**
+
+### REQ-079 update after the 2026-09-03 night run (`TEST-065` §Round 3)
+
+| # | Now | Note |
+|---|---|---|
+| **S63** | ✅ **PASSES 2026-09-03** — in the **strong** form | a muted chat stayed silent against `awdw` · `สวัสดี` · **`นักเรียน`** · **`เมนู`** — including two commands the bot advertises itself |
+| **S64** | ✅ **PASSES 2026-09-03** | one chat muted while another was **served** ⇒ the mute is **per-chat, not account-wide**. ⚠️ residual: the second chat was *unlinked*, so the fully-equivalent linked-parent case is unexercised. Judged very low — account-wide muting would have silenced it regardless of link state |
+| **S65** | ✅ **PASSES 2026-09-03** | cleared → re-bound to a **different** family, **verified from both ends in the admin data**, students intact |
+
+| # | Must still do | From | Env | Last verified |
+|---|---------------|------|-----|---------------|
+| S66 | An already-linked LINE account entering **another family's phone** is **refused** — and the refusal must **not** name the other family **nor reveal whether the number exists** | REQ-079 AC-4 | D | ✅ 2026-09-03 |
+| S67 | 🔵 **QA-runnable:** clearing a family's LINE link removes **only** the link — its students, bookings, notes and history all survive; the admin screen shows **not linked** afterwards, and the family it moved to shows **1 linked** | TASK-243 / AC-4 | D | ✅ 2026-09-03 |
+| S68 | 🔴 The **four existing notifications** still fire after this REQ rewired their shared message path — teacher schedule · course-confirm · booking-confirm · **the 08:15 daily** | REQ-079 AC-17 | D | ❌ **UNVERIFIED.** The 08:15 job has been *known-unverified* on this project since before the QA role existed. **The cheapest remaining AC and the one QA would hold a ship for** |
+| S69 | 🔴 Entry via the **`[เข้าใช้ระบบ]` rich-menu button** (not typed `สมัคร`) shows that family's children | REQ-079 AC-2 | D | ❌ **UNVERIFIED** — outcome proven by typing, but a **postback and a text message are different handler branches**, and Rule 2 says only a button starts a flow. Closes when the menus are published |
+
+**Harness note 2026-09-03 (late) — two different facts.** The bot replying *"ผูกบัญชีสำเร็จ ✅"* and the admin
+screen agreeing that the link moved are **not the same fact**, and a half-written link is exactly what hides
+between them. I checked **both ends** (old family → not linked, new family → 1 linked) before ruling. 📌 And I
+**declined** an offer to close S64 by reading the mute key from source: **reading code is not testing** — a
+source read says the implementation looks right, it adds no fact to what the two chats demonstrated.

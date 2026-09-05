@@ -243,3 +243,54 @@ of them now would send him three cancellation notices for zero test value while 
 messages AC-16 depends on. **"Never message a real person unnecessarily" outranks tidy housekeeping.**
 F1 must additionally survive until the movement question is settled. **Porter has the call (TEST-064 Q16); one
 word and I retire all three in a single pass.**
+
+## 2026-09-02 (Tanya) — REQ-079 testable slice: **READ-ONLY. Nothing created.**
+
+Evidence: `TEST-065`. Post-`0030`/`0031` build on `sid`.
+
+| What | Where | Removed? |
+|---|---|---|
+| **Nothing was created, modified or deleted** | `sid` | ✅ n/a |
+| One `Clear LINE link` dialog **opened and cancelled** on a real parent row (phone `0897946312`) | `sid` | ✅ **nothing written** — it offered only `Cancel`, and a real family's link state is not mine to change in any case |
+| Read-only page sweep: Schedule · Teachers · People · Bookings/Students · Overview · LINE links | `sid` | ✅ reads only |
+| **No LINE message sent** · no booking · no student · no teacher row · no setting · no script · no restart | — | ✅ |
+| 🔴 **Newly visible and recorded: `Haris` — a real teacher — is LINE-linked on `sid`** (the two linked accounts are `Bank` = the owner, and `Haris`). The standing rule that he is **never** messaged in rehearsal still binds. **Every fixture I have ever confirmed used Bank, Camp, Dewy or Ek — never Haris.** | — | ✅ |
+| `uat` | — | ✅ **no contact of any kind** |
+
+**Live residue is unchanged from 09-02's earlier round** — the five REQ-078 fixtures, their ids and who retires
+each, are in `TEST-064` §Park note. Nothing added, nothing retired today.
+
+## 2026-09-03 (Tanya) — REQ-079 verdict round: **READ-ONLY. Nothing created.**
+
+Evidence: `TEST-065` §Round 2. The owner ran the LINE side from his device; I read the database/admin side.
+
+| What | Where | Removed? |
+|---|---|---|
+| **Nothing was created, modified or deleted** | `sid` | ✅ n/a |
+| `People` searches: `QA` · `QA ทดสอบ` · `adwa` · `เมนู` · `มิลล่` · `0900000092` — the AC-9 / AC-20 orphan-record check | `sid` | ✅ reads only. **All three abandoned-flow names return no record; parent count unchanged at 111** |
+| **Two `Clear LINE link` dialogs opened and CANCELLED** — `0897946312` (not linked) and **`0900000092` (linked)** | `sid` | ✅ **nothing written** |
+| 🔴 **I did NOT press `Clear LINE link` on the linked family.** That link is the **owner's own live account**, the fixture he is using to test REQ-079 — clearing it would destroy his campaign mid-run and modify data I did not create. **His to run, when he is done with it** | `sid` | ✅ deliberate |
+| No booking · no student · no teacher row · no setting · no script · no restart · **no LINE message sent** | — | ✅ |
+| **AC-18 rehearsal boundary holds:** the two linked accounts on `sid` are **`Bank` (the owner)** and **`Haris`** (a real teacher). Every fixture I have ever confirmed used Bank, Camp, Dewy or Ek — **never Haris** | — | ✅ |
+| `uat` | — | ✅ **no contact of any kind** |
+
+**Live residue unchanged** — the five REQ-078 fixtures, ids and owners, in `TEST-064` §Park note. Nothing added
+or retired today.
+
+## 2026-09-03 late (Tanya) — ruling on the owner's night run: **READ-ONLY**
+
+Evidence: `TEST-065` §Round 3.
+
+| What | Where | Removed? |
+|---|---|---|
+| **Nothing created, modified or deleted** | `sid` | ✅ n/a |
+| Two `Clear LINE link` dialogs **opened and CANCELLED** — `0900000092` (now shows **not linked**) and `0905622548` (now shows **1 linked**). **I pressed `Clear` on neither** | `sid` | ✅ nothing written |
+| `People` searches on both phone numbers — the independent check that the owner's clear→rebind actually landed in the data at **both** ends | `sid` | ✅ reads only |
+| No booking · no student · no LINE message · no setting · no script · no restart | — | ✅ |
+| `uat` | — | ✅ **no contact of any kind** |
+
+📌 **Verified as a by-product, and worth recording:** clearing a family's link **kept all three of its students**
+(`มิลล่า` · `มิลลิม` · `asda`). The dialog's promise — *"Students, bookings, notes and message history are all
+kept"* — is **true**, not just displayed. That is the sentence an admin reads before pressing a red button.
+
+**REQ-078's five live fixtures (`TEST-064` §Park note) are unchanged.** Nothing added or retired.

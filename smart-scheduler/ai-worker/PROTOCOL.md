@@ -89,19 +89,25 @@ work into one file, so this is a hard rule:
 4. **Verify before you append:** the file's first line must read
    `# Log — <TODAY> — <project>`. If it doesn't, you have the wrong file — open or
    create the right one instead.
-5. Reading is different from writing: read `log/<TODAY>.md` **and** the most
-   recent previous log for context — but write only to TODAY's.
+5. Reading is different from writing: read `log/<TODAY>.md` for context — the
+   most recent previous log **only when your inbox or the board points you at
+   it** — but write only to TODAY's.
 6. A session that crosses midnight switches files at midnight: entries timed
    `00:0x` onward belong to the new date's file.
 
 ## Session startup ritual (every role, every session)
 
-1. Read `PROTOCOL.md` (this file) and your own role file.
-2. Read `board.md` — this is the single source of truth for what's in flight.
-3. Settle TODAY (see "Date discipline"), then read `log/<TODAY>.md` (create it if
-   missing) and the most recent previous log, so you know what happened while you
-   were away.
-4. Then do the work waiting for your role.
+1. Read `SYSTEM-FACTS.md` and `OWNER-LIST.md` — what the owner has already told
+   us and how the running system behaves. **Never re-derive these from logs.**
+2. Read `PROTOCOL.md` (this file) and your own role file.
+3. Read `board.md` — this is the single source of truth for what's in flight.
+4. Read `ai-worker/inbox/<YOUR-ROLE>.md` — read it **first** among your messages,
+   act on it, then **delete what you processed**. An empty inbox means nothing is
+   waiting for you.
+5. Settle TODAY (see "Date discipline"), then read `log/<TODAY>.md` (create it if
+   missing). The most recent previous log is **not** mandatory reading — read it
+   only when your inbox or the board points you at it.
+6. Then do the work waiting for your role.
 
 ## Session shutdown ritual (before you finish any session)
 
@@ -220,7 +226,7 @@ DATA REQUEST answer** and must not be used as one.
 - Answered knowledge lives in `../project-docs/` — check there before asking
   again for something the human already provided.
 
-### 🟢 Stakeholder policy — DON'T guess to spare the human; ask (คุณฟีน, 2026-08-03)
+### 🟢 Stakeholder policy — DON'T guess to spare the human; ask (owner โด่ง, 2026-08-03)
 
 The stakeholder has **explicitly committed to supporting the engineering team** and
 **values precision in engineers' work very highly**. So this is now a standing rule,
@@ -254,16 +260,29 @@ So the Tester — and **only** the Tester — may exercise a running system:
 | Environment | Tanya | Everyone else |
 |-------------|-------|---------------|
 | Local (repos, `localhost`) | ✅ run anything | ✅ build/test their own work |
-| **Dev server** (deployed by the human) | ✅ read **and** create test data | 🚫 |
-| **Production** | 🚫 never | 🚫 never |
+| **`sid`** — dev server (deployed by the human) | ✅ **full access** — read **and** create test data | 🚫 |
+| **`uat`** — the customer's system (`frontoffice.develyst.online` + `backoffice.develyst.online`) | 👁️ **READ-ONLY** — reading permitted, **writing absolutely forbidden** (owner, 2026-09-04, relayed by Marie) | 🚫 never — not read, not write |
 
 Binding conditions: she removes every record she creates and declares the
 footprint in the TEST file; she never modifies or deletes data she did not
 create; she never sends notifications to real recipients; she never restarts,
 redeploys, or reconfigures the server. Access (URL, test account, tokens) comes
 from the human via Porter and lives in `../project-docs/` — **never** in a
-tracked file, a log entry, or pasted output. Anything that can only be checked
-on **production** stays a DATA REQUEST for the human.
+tracked file, a log entry, or pasted output. Anything on **`uat`** that requires a
+**write** — create, update, delete, import, deploy, restart, or any state-changing
+call — stays a DATA REQUEST for the human. Tanya's `uat` grant is **read-only**;
+reading is hers, writing never is, and nothing destructive is allowed anywhere.
+
+🚧 **The two `uat` hosts are NOT in the same state (2026-09-04).** The front-end's
+`scripts/mint-session.mjs` lists **only** `frontoffice.develyst.online` in `PRODUCTION_HOSTS`:
+- **frontoffice** — refused by the guard, so **no read can happen there until the code changes**.
+  Tanya refusing it is **correct**, not a breach of this rule, and nobody works around the guard.
+- 🔴 **backoffice — not in the guard, and never has been.** Nothing in the code stops a
+  **write-capable** session against the customer's money UI. **The absence of a guard is not
+  permission:** the read-only rule above is the only control there, and it binds absolutely.
+
+**`REQ-080`** carries both halves — narrow the guard on frontoffice so a read is possible,
+**extend** it to backoffice so a write is not. Its **§4b** holds the finding.
 
 ## Nudges from the human
 

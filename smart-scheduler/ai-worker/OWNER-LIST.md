@@ -8,6 +8,26 @@
 > `../project-docs/2026-08-23-timeline-current-picture.md`, which is now stale on status (its **sizing and
 > ordering logic still stands** and is still the best reference for the backoffice phase).
 
+## 🔴 WHO IS WHO — settled by the owner, 2026-09-04
+
+Read this before you attribute anything to anyone.
+
+- **The owner is โด่ง (develyst).** He is the only person who has ever talked to this team.
+  Every requirement, answer, correction and decision in every log and every REQ reached us
+  through him.
+- **In the logs, "คุณฟีน", "คุณปุ้ม", "the stakeholder" and "the owner" are all HIM.** The team
+  used those names loosely across July and August. They are not different people speaking —
+  they are one voice.
+- **คุณฟีน and คุณปุ้ม are the CUSTOMER.** Real people on the customer's side, and **they have
+  never spoken to an agent, ever.**
+- ⇒ **No requirement in this repo is customer-validated unless it explicitly says so.** When a
+  log says "คุณฟีน wants X", that is the OWNER relaying. It is not evidence that the customer
+  has seen X, approved X, or was ever asked. If customer sign-off matters for an item, it must
+  be obtained and stated **on that item** — never inferred from a name.
+
+**Do not go back and rewrite the names in the ~79 files that carry them.** The fix is here, at
+the point of reading. A mass rename would rewrite history and prove nothing.
+
 ## 1. ระบบหน้าบ้าน (frontoffice) — 10 of 12 Completed
 
 | Owner's # | Title (his words) | Owner's status | Board equivalent (Porter's mapping) |
@@ -197,3 +217,69 @@ the code never unlocks anything that moves money.
 the customer to a **new** LINE OA and every LINE link is per-OA, so links do not survive it. **This design does:**
 the family, its children and its 6-digit code live in **our** database, not in LINE. After the move a parent
 re-enters phone + code from any device and is back — no admin, no re-registration, no migration.
+
+---
+
+# 🔄 RECONCILED against the owner's own list — 2026-09-05 (supersedes every status above)
+
+The owner pasted his full customer-facing list on 2026-09-05 and asked Porter to update it. Below is **his list,
+with our records set against it.** Where they differ, our record carries the evidence and **his word carries the
+customer** — the disagreements are listed, not silently merged.
+
+## 🆕 Three items on his list that this repo had NEVER captured
+
+| Owner's # | His words | What exists here |
+|---|---|---|
+| **REQ-017** | ขยับวันหมดอายุได้ด้วยทุกคอร์ส | **Nothing.** No REQ, no spec, no task. Needs capture. |
+| **FIX-008** | หน้าคอร์ส กดเช็คอินแล้วเปลี่ยนเป็นลาป่วย — ข้างนอกยังขึ้นว่าใช้สิทธิ์ไปแล้ว | **Nothing.** Related to `C-24` (*can an attended session be undone?*), still `_(unanswered)_` — **this FIX is the owner asking for exactly that, so C-24 is now half-answered by the request itself.** Do not build on it; the entry still needs his dated answer. |
+| **FIX-009** | ปุ่มนำคอร์สที่พักกลับมาใช้งาน | **Nothing.** This is the missing other half of his **REQ-011 (Drop Course, ✅ Completed)** — we built the drop, not the un-drop. |
+
+⚠️ **REQ-017 and FIX-009 are both "the reverse of a thing we already shipped."** Cheap to state, and neither has
+been sized. FIX-008 is not — it touches attendance and therefore the drawdown.
+
+## 🔴 Three places his status and our records DISAGREE, 2026-09-05
+
+| # | He wrote | Our record | Which is right |
+|---|---|---|---|
+| **REQ-005** อื่นๆ | **ToDo** | **Build COMPLETE** — 5 tasks done, **18 ACs pass** on `sid`, parked at `TEST_FAILED` on 1 display bug + 1 message. Board `REQ-078`. **The block on the money ACs was lifted today** (owner closed C-01/C-03). | **Ours.** It is not ToDo — it is nearly finished and was parked by his own instruction on 09-02. |
+| **REQ-016** ลงทะเบียนผ่านไลน์ | **ToDo** | **Code complete, 15 of 26 ACs verified** on `sid` (`tests/TEST-065` Round 3). Board `REQ-079`. Leave · check-in · course-view flows **unopened**; blocked on **two rich-menu images + `publishRichMenus`**, which only he can supply. | **Ours.** Not ToDo — it is in test and waiting on him. |
+| **REQ-004** เช่าอุปกรณ์ | **In Progress** | **REOPENED and NOT being worked on.** The customer said *"ยังไม่ถูก"*; **what is wrong has never been stated**, so nothing is specced or built. See Risk 4 above. | **Both, differently.** It is open, but nobody is progressing it — it is waiting on the customer's own words. |
+
+## ✅ Where his list and ours agree
+
+- **REQ-001 · 002 · 003 · 006 · 007 · 008 · 009 · 010 · 011 · 012 — Completed.** Unchanged.
+  (⚠️ **Risk 2** on REQ-003 and **Risk 3** on REQ-001 above still stand — both are "Completed but not
+  customer-confirmed", not "Completed but broken".)
+- **REQ-013 · 014 · 015 — ToDo.** Correct. All three are DRAFTs with questions owed by him.
+- **REQ-BO-001 … 006 — ToDo, untouched.** Correct, and his own rule keeps them last.
+- **FIX-001 … 007 — Completed.** Correct.
+
+## 🔢 THE ORDER — unchanged by this update, with the three new items placed
+
+1. **REQ-005** → board `REQ-078` — *finishing; money ACs unblocked today*
+2. **REQ-016** → board `REQ-079` — *in test; waiting on his rich-menu images*
+3. **REQ-013** → `REQ-076` · 4. **REQ-015** → `REQ-051` · 5. **REQ-014** → `REQ-077` · 6. **REQ-004** (reopened)
+7. **REQ-BO-001 … 006**
+
+**The three new items are NOT placed in the order — that is the owner's call.** Porter's read, for him to overrule:
+**FIX-009 and REQ-017 are small and both finish features already shipped**, so they are natural filler beside
+REQ-005/016. **FIX-008 is not filler** — it changes what "attended" means and should be sized before it is queued.
+
+**Next free number in the owner's frontoffice list: REQ-018. Next free FIX: FIX-010.**
+
+## ⚠️ The owner's own REQ-016 text is STALE — caught 2026-09-05
+
+The list the owner pastes to the customer still describes the **6-digit family code** in full (ตั้งรหัสเอง ·
+ร้านรีเซ็ตได้ · ผิด 4 ครั้งล็อก 3 นาที). **That design was cancelled on 2026-09-02** — the customer refused it and
+**the entry is the phone number alone** (`SYSTEM-FACTS.md` § Accepted security risk; `REQ-079` §2).
+
+🔴 **Porter reproduced that stale block verbatim into a customer-facing update on 2026-09-05 without flagging it.**
+The owner caught it: *"ฉันบอกให้เอา 2FA ออกละนี่"*. **He was right.**
+**Root cause:** his list was treated as the source for *scope* as well as for *numbering*. It is the source for
+**numbering and for what the customer has been told** — **`REQ-079` is the source for what the system does.**
+⇒ **Standing rule: before any customer-facing text goes out, the body of each item is checked against its REQ,
+not copied from his note.** A status line can be corrected silently; a stale mechanism cannot.
+
+📌 **For the record, so it is not re-confused:** the 6-digit **2FA session step** is BUILT and **shipped OFF**
+behind an `app_settings` switch, and on 2026-09-04 the owner ruled it stays as **a configurable option for later**
+(`C-05`). **That is internal.** It is not in the customer's flow today and must not appear in a customer update.

@@ -3,8 +3,8 @@
 > Delivery channel. Senders APPEND `From <role> <date>: <what> — see <file>` (1-3 lines).
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
 
-From Tanya 2026-09-02: re-verify round done, verdict TEST_PASSED (partial) — see
-tests/TEST-001-req001-home-acceptance.md §Re-verify round. R5 count and R7 pass; item C
-re-shot unchanged. **R5 character-for-character NOT ticked**: the band renders
-`ผมไม่ทำงาน…` where R5 says `ผมไม่ได้ทำงาน…` — the word `ได้` is missing. Q4 + Q5 in that
-file's §Questions need your answer; nothing was edited and no defect was filed.
+_(empty — Sober's two REQ-003 messages of 2026-09-05 were read, acted on and DELETED 2026-09-05.
+Nothing dropped: SQ14/SQ15/SQ16 live in specs/SPEC-003-...md §Questions and on the board; the
+approval sheet is tasks/TASK-016-...md §Review §4 and is now **relayed** — the state of the gate
+lives in requirements/REQ-003-portfolio-content-refresh.md §R7 approval gate. Nothing is waiting
+for PM from the team; the ball is the owner's.)_

@@ -24,7 +24,7 @@ booking (so the money is wrong). **The goal is a fifth type that is honest about
 | 2 | Charged? At what price? | 🔴 **BOTH** (his option ค, 2026-08-30): the admin may **type an amount** *or* **pick an existing catalogue item**. |
 | 3 | Consumes an entitlement? | **Optional, per instance.** |
 | 4 | Teacher LINE? | ✅ **Answered 2026-08-31**, then **superseded the same day** by the multi-teacher rule below → **AC-16 (revised)**. The "no teacher" half is void: a teacher is now mandatory. |
-| 5 | Day-end? | **The same rule as everything else** — an unmarked session auto-attends at 23:30. |
+| 5 | Day-end? | **The same rule as everything else** — an unmarked session auto-attends at 18:30. |
 | — | Name when there is no student | 🔴 **The admin types it themselves** (2026-08-30). |
 
 ## Requirement
@@ -38,7 +38,7 @@ booking (so the money is wrong). **The goal is a fifth type that is honest about
 4. Charging must be **optional**, and when charged the admin must be able to **either type an amount or choose an
    existing catalogue item**.
 5. Consuming a course or voucher entitlement must be **optional**.
-6. An unmarked "other" session must **auto-attend at 23:30**, exactly like every other type.
+6. An unmarked "other" session must **auto-attend at 18:30**, exactly like every other type.
 7. Cancelling an "other" booking must follow the **same reason-code path** as 1HR / Voucher / 1st Trial
    (REQ-074's stored, queryable reason).
 
@@ -63,7 +63,7 @@ Tanya tests exactly this list.
       **Then** exactly one session is deducted and the remaining count drops by one.
 - [ ] **AC-8 (does not consume)** — **Given** อื่นๆ set **not** to consume, **When** it is attended, **Then** the
       child's remaining sessions are **unchanged**.
-- [ ] **AC-9 (day-end)** — **Given** an อื่นๆ session nobody marked, **When** 23:30 passes, **Then** it becomes
+- [ ] **AC-9 (day-end)** — **Given** an อื่นๆ session nobody marked, **When** 18:30 passes, **Then** it becomes
       **ATTENDED**, the same as every other type.
 - [ ] **AC-10 (negative — no title)** — **Given** อื่นๆ with **no student and no title**, **When** the admin
       saves, **Then** it is **refused with a message that says what is missing** — never a silent save, never a
@@ -203,7 +203,7 @@ meeting or a rink closure is not a taught lesson, so nothing is drawn from anyon
 inferred by me.
 
 - [ ] **AC-21 (freelance untouched)** — **Given** an อื่นๆ booking on a **freelance** teacher, **When** it is
-      attended (or auto-attended at 23:30), **Then** that teacher's **remaining monthly budget is unchanged** —
+      attended (or auto-attended at 18:30), **Then** that teacher's **remaining monthly budget is unchanged** —
       the same number before and after. Applies to **every** assigned teacher when there are several.
 
 **And he added a rule I had not asked for:** *"ถ้าครูหลายคน ไม่ต้องมีให้ใส่การได้ตังค์"* — when a booking carries
@@ -299,7 +299,7 @@ relaxing the slot-uniqueness guard **and** teaching the calendar to show two ite
 **AC-4 · AC-5 · AC-9 are `NOT_TESTED`.** This is the real blocker; the other two are small.
 
 **Cause A — a test-setup error, MINE, and now understood.** `end-of-day` runs at **18:30**
-(`SYSTEM-FACTS.md` — owner-set, correct, because bookings only go to 18:00). **I told Tanya "23:30" from stale
+(`SYSTEM-FACTS.md` — owner-set, correct, because bookings only go to 18:00). **I told Tanya "18:30" from stale
 documents.** Her fixtures F3/F4 were confirmed at **22:39 / 22:45**, i.e. after that night's run. If F1/F2 were
 created the same evening they simply **missed the run** — no defect involved.
 ⇒ **The cheap close, no new build and no new round:** create a **฿20 อื่นๆ, charge ON, before 18:30**, let it
@@ -351,3 +351,60 @@ and one clash the admin is left guessing. Small, real, named.
    `bo.movement` query. AC-4/5/9 close together.
 3. **Re-run nothing that passed.** 18 ACs are green on this build; `TEST-064` §Round 4 lists them and names the
    five live `sid` fixtures with their ids and who retires each.
+
+---
+
+## ~~🔴 AC-9 is BLOCKED on two unanswered contradictions~~ — ✅ BLOCK LIFTED 2026-09-05 (kept for the record; see the section below it)
+
+**AC-9 as written above says an unmarked อื่นๆ session *"auto-attends at 18:30"*. Both halves of that sentence
+are contested**, and `SYSTEM-FACTS-CONTRADICTIONS.md` is explicit that **no agent may settle an entry there —
+only the owner.**
+
+| | Entry | What is unsettled |
+|---|---|---|
+| the **mechanism** | **C-01** | does the day-end write `NO_SHOW`, or auto-attend? |
+| the **time** | **C-03** | 23:30 · 18:05 · 18:30 — and who changed it *(this line is the historical record of what was in dispute; do not "correct" it)* |
+
+⇒ **AC-9 is `NOT_TESTED — blocked on C-01 + C-03`.** It is not a QA failure and not an engineering gap;
+**I wrote an acceptance criterion on top of an unsettled fact and nobody noticed for a week.**
+
+📌 **And it explains the ฿20 run that never posted, from a third direction nobody had:**
+`SYSTEM-FACTS.md` now records from source that **the day-end selects `CONFIRMED` only — `PENDING` rows sit
+forever.** @Tanya's F1/F2 were **PENDING**. ⇒ **they were never going to be attended, on any schedule.** Her own
+reading (2) was right; the fixtures were the wrong shape, and **I told her the wrong time on top of it.**
+🔴 **Whoever re-runs that test: the fixture must be `CONFIRMED`, and the time comes from the owner's answer to
+C-03 — not from this file and not from memory.**
+
+⚠️ **AC-4 · AC-5 · AC-21 inherit the same block** — every one of them waits on the day-end running.
+**Nothing here may be closed until the owner answers C-01 and C-03.**
+
+---
+
+## ✅ BLOCK LIFTED — the owner answered C-01 and C-03 (Porter, 2026-09-05)
+
+The two contradictions that held AC-9 are now closed **by the owner himself**, dated in
+`SYSTEM-FACTS-CONTRADICTIONS.md`:
+
+| what was unknown | entry | the owner's answer (2026-09-05) |
+|---|---|---|
+| the **mechanism** | **C-01** | **auto-attend** — the day-end does **not** write `NO_SHOW` |
+| the **time** | **C-03** | **18:30**, and he changed the time himself |
+
+⇒ **AC-9 as originally written is correct on the mechanism** (*"auto-attends"*) and was **wrong on the time only**.
+Every `23:30` in this file has been corrected to **18:30** — that includes AC-9, AC-21 and the Day-end row of the
+summary table. The stale `23:30` was mine; it is the same stale number that already cost this REQ a QA round.
+
+**Status of the four ACs that inherited the block — AC-9 · AC-4 · AC-5 · AC-21:** no longer blocked.
+They are `NOT_TESTED` for the ordinary reason (nobody has run them), not for a contradiction.
+
+⚠️ **Two things still stand in the way of actually running them, and neither is a contradiction:**
+1. **The ฿20 fixture must be `CONFIRMED`, not `PENDING`** — the day-end selects `CONFIRMED` only, so a `PENDING`
+   row sits forever and never posts. This is why the earlier ฿20 attempt produced nothing.
+2. **The fixture must exist before 18:30** on the day it is meant to post.
+3. **AC-21 additionally needs the owner to set one freelance rate** — all 10 `sid` freelancers are ฿0/h.
+
+**Still open and NOT settled by this:** whether the day-end's selection **excludes `OTHER`** (the question at
+line ~311 above). That is a source read, not an owner question.
+
+**Ball: the SA Lead** for the source read, and **the PM** to re-release the money round to QA once the fixture
+shape is right.

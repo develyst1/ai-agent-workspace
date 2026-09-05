@@ -4,7 +4,7 @@
 > Resume: `git pull` → `ai-worker/PROTOCOL.md` + your role file → this + `ai-worker/board.md` → **the newest
 > `ai-worker/log/*.md`** → act on your role's ball.
 >
-> **Last updated: 2026-08-30** by Porter (PM). (The 2026-08-29 revision was the machine-move handoff.)
+> 🔵 **Last updated: 2026-09-04** by Porter (PM). **START AT the `🔵 RESUME HERE` section at the END of this file** — it carries the live state, who is waiting on what, and the process lessons. Everything above it is history in date order.
 
 ---
 
@@ -232,3 +232,76 @@ earlier between 08-28 and 08-29 and stayed there.
   one being wrong proves nothing about the other.
 - 📌 `job_runs.byBookingType` reports only the four original types — **no `OTHER`.** Whether the job also *skips*
   `OTHER` when selecting what to auto-attend is a separate question, open with @Sober.
+
+---
+
+# 🔵 RESUME HERE — state as of 2026-09-04 00:2x (Porter, written for a cold session)
+
+**Reading order for a fresh session:** this block → `ai-worker/SYSTEM-FACTS.md` → `ai-worker/OWNER-LIST.md`
+→ `ai-worker/board.md` → today's `ai-worker/log/<date>.md`.
+🔴 **Run `date "+%Y-%m-%d"` and use that exact string as the log filename.** Porter misfiled the log **four
+times in five days**; the fourth was after running the check and ignoring it.
+
+## The two live requirements
+
+| Owner's # | Board | State |
+|---|---|---|
+| **REQ-005** จองอื่นๆ | `REQ-078` | 🅿️ **PARKED at `TEST_FAILED`** on the owner's order. Build complete, 18 ACs pass. **Resume instructions are in `REQ-078` §PARK STATE** — read that, not the log. |
+| **REQ-016** LINE | `REQ-079` | 🧪 **`TEST_PASSED` on 15 of 26 — NOT a REQ-079 pass.** Code complete. |
+
+🔴 **The sentence that must travel with REQ-079's "TEST_PASSED", every time:**
+**proven = escape hatches · silence · per-chat mute · strike counter · duplicate rule · link lifecycle.**
+**Leave, check-in, course view and every regression AC are UNOPENED.**
+
+## What is waiting on the OWNER
+
+1. 🔴 **AC-17 — look at his phone at 08:15.** The cheapest thing left and **@Tanya said she would hold a ship
+   for it.** This REQ rewired the shared message path, so the *existing* notifications (teacher schedule ·
+   course-confirm · booking-confirm · the 08:15 daily) may have broken silently. **The 08:15 job has been
+   known-unverified since before QA joined.**
+2. 🔴 **Backoffice read access for @Tanya.** Without it she cannot read what any day-end posted ⇒ **every money
+   AC on every REQ stays `NOT_TESTED` forever.** *Porter's judgement: the highest-value item on this list, because
+   it is the only one that unblocks a whole category permanently rather than one AC.*
+3. **The two rich-menu images + `publishRichMenus`** — spec in `REQ-079` §12. Until then the **two-state menu has
+   never run** (the live menu is the old REQ-015/042 one) and **AC-2 cannot close**, because Rule 2 says only a
+   button may start a flow and there is no button.
+4. **2FA delivery** — it is built and OFF and **cannot be switched on at all** until he says how six digits reach
+   a parent. No SMS exists and LINE cannot verify LINE. *A switch with no wire.*
+5. **`province` is a household field** — a second child overwrites the first.
+
+## What is waiting on the TEAM
+
+- **@Tanya** — reading the current LINE-link state (which accounts → which teacher/family; **is `Bank` on one
+  account or two**; did account 1's teacher link survive becoming a parent). **No LINE and no owner time needed.**
+  📌 It also answers a fact nobody has established: **can one LINE account be teacher and parent at once?**
+- **@Tanya** — Q24 is unresolved: Porter believes a **parent** link closes AC-13's equivalent and a **teacher**
+  link closes `TEST-064`'s AC-16 — **two links, not one run.** Her read stands unanswered.
+- **@Sober / @Jason / @Fern** — nothing. REQ-079's code is complete.
+
+## Fixtures alive on `sid` — do not tidy blindly
+
+- **REQ-078:** five bookings, ids and who retires each in `tests/TEST-064` §Park note.
+- **Students created during testing that CANNOT be deleted:** `asda`, `QA ทดสอบ`(?), and anything from the owner's
+  runs. **There is no student-delete anywhere in the product.**
+- **LINE:** the owner's account 1 is linked as a **parent** to family `0905622548` (เตาไป้); account 2
+  (`support08 Dong`) was just linked as **teacher Bank**. 🔴 **`Haris` is a REAL teacher linked on `sid` —
+  never message him in rehearsal.**
+
+## Process lessons from 2026-09-01…04 that cost real time
+
+1. **Write the fact in its home file BEFORE replying.** `SYSTEM-FACTS.md` exists because the owner had to
+   re-explain his own decisions across sessions — including a rule he set himself (max 5 students per phone)
+   that appeared in **no** requirement, spec or task.
+2. **Do not route a defect read off a screenshot.** Porter reported a Thai "typo" that did not exist and created
+   work for an engineer. **If a defect is one character, confirm it before routing it.**
+3. **Evidence does not arrive labelled with the question it answers.** AC-13's second half was proven in two
+   screenshots Porter already had; **the owner spotted it, not Porter**, because Porter checked each image
+   against the step he had asked for and never laid two side by side.
+4. **Noting an implication is not following it.** Porter wrote down that a PC user who gets muted has no way
+   back — as "worth knowing" — and moved on. **The owner read the same note as a defect and was right.**
+5. **Ask when one sentence resolves it.** The `เช็คอิน` welcome screen meant *correct* or *defect* depending
+   on one fact Porter did not have. He asked. **It was correct** — a guess would have been a 50% chance of a
+   false bug report.
+6. 🔴 **The owner is the only LINE-capable tester** (`SYSTEM-FACTS.md`). **Owner = hands, QA = verdict** is the
+   process, not a workaround — and its cost is that every LINE test is gated on his time. **Decide the way out
+   (a spare LINE account for QA, or a synthetic webhook harness) BEFORE the next LINE REQ, not during it.**

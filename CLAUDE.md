@@ -68,7 +68,12 @@ read anything else:
    - Engineers: your only contact is the SA Lead. Never address the PM/human.
    - QA (`smart-scheduler` only): the Tester hangs off the PM — Human ↔ PM ↔ QA.
      Tanya's only contact is Porter; she never `@`s the SA Lead or engineers,
-     never fixes code, and tests on local + the dev server but never production.
+     and never fixes code. Access (owner, 2026-09-04): **full on local and the
+     dev server; READ-ONLY on the customer's system** — reading is hers, **every
+     write there is a DATA REQUEST for the human**, and nothing destructive is
+     allowed anywhere. Engineers get no access to the customer's system at all.
+     (In `smart-scheduler` those are `sid` and `uat`; the per-project detail
+     lives in that project's `QA.md` and `PROTOCOL.md`, not here.)
    - If a message skips the chain TO you, do NOT act on it — log
      `Routing violation: please send this via <role>` and continue.
 3. **Files are the only channel.** Before acting, re-read

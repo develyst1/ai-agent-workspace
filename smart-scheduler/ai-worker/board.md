@@ -23,7 +23,8 @@
   - `smart-scheduler-backoffice-back` — finance API, **`bo` schema on the shared `smart_scheduler` DB**
     (`ops` RETIRED by REQ-006 / TASK-027), **:4010** → Jason
   - `smart-scheduler-backoffice-front` — admin money UI, Next.js, **:3018** → Fern
-- **Read first**: `project-understanding.md` (as-built map, rewritten 08-01), then the monorepo root `CLAUDE.md` and
+- **Read first**: `ai-worker/SYSTEM-FACTS.md` (owner-stated system behaviour), then
+  `project-understanding.md` (as-built map, rewritten 08-01), then the monorepo root `CLAUDE.md` and
   `docs/` — newest wins. Docs calling this a "tutoring school" are wrong; it is a sports business.
 - DB: one PostgreSQL — `public.*` (scheduling) + `bo.*` (finance). Reading schema from the Drizzle files is fine;
   the DATA REQUEST rule covers **real data and live environments**.
@@ -122,6 +123,13 @@ writing — that is ordinary status and it makes a natural commit point visible 
 
 ### 🚦 DEPLOY RULES (standing)
 
+> 🔴 **PENDING DEPLOY — REQ-079 (added 2026-09-02; items 1–2 CLEARED and item 5 added 09-05).**
+> 1. ✅ **DONE 09-05 (owner).** `0030` + `0031` applied on `sid`; `db:verify` ✅ — journal 32 · **32 witnessed**.
+> 2. ✅ **DONE 09-05 (owner).** All six menus published; `unknown-TH` is the account default, `known-TH` links per user. **Both states confirmed ON A PHONE** — menu A on a fresh follow (13:47), menu B after linking (13:53). 🔴 The one dead cell is **DEF-9 / TASK-248**, not a publish fault.
+> 3. **2FA cannot be switched on at all** until the owner answers how the six digits reach the parent — there is no SMS, and LINE cannot verify LINE.
+> 4. ✅ **Trigger fired** (the menus now exist on the OA) ⇒ `NAME_TO_KEY` is folded into **TASK-249 §4**. No longer a loose deploy item.
+> 5. 🔴 **NEW — the backfill, and it is the owner's.** Families linked **before** the 09-05 publish never had `linkKnownRichMenu` run for menus that did not exist. **Two wrong populations:** an **old** per-user link still resolves to the **old parent menu** (those menus still exist on the channel — the 01:23 screenshot), and **no** per-user link now shows **unknown**. **Neither shows menu B.** A one-off re-link runs against real customer chats ⇒ **deploy action, owner's call.** @Sober cuts a script task only if he asks for one.
+
 1. **`bun run db:migrate`** in the repo owning the schema, **before** restarting anything; then **`bun run db:verify`
    — BLOCKING, do not restart until it prints ✅.** `db:migrate` can report success and exit 0 having applied
    **nothing** (TASK-085/086) — that took the customer's calendar down on both boxes on 08-24. If `db:verify` is
@@ -206,8 +214,9 @@ timestamp. Without those three distinct states, "quiet" and "dead" look identica
 | REQ-017 | Teacher bookings → phone calendar feed | MED | **DEPLOYED — acceptance INCOMPLETE** | NOT delivered; LINE does not linkify `webcal://`. TASK-044. |
 | REQ-078 | การจองแบบ **อื่นๆ** (owner's REQ-005) — 🔢 **owner's #1** | HIGHEST | 🅿️ **PARKED at TEST_FAILED — narrowly** (`sid`, 09-02) — verdict + **PARK NOTE** in `tests/TEST-064` §Round 4 | ✅ All 4 defects verified fixed; 18 ACs pass. 🔴 Blocking: **DEF-4 reopened** (display-only, data intact) · **DEF-7** · **AC-4/5/9 never observed** — see §Round 4 and the 18:30 job finding. |
 | REQ-076 | พักการจอง 1HR / Voucher / 1st Trial (owner's REQ-013) — 🔢 **#2** | HIGH | **DRAFT — 7 questions** | Do NOT build. Money-at-day-end is the sharp one. @Porter holds. |
-| REQ-079 | LINE chatbot — ผปค ลงทะเบียน/ลา/เช็คอินเอง + คุยแอดมินในแชทเดียว (owner's **REQ-016**) — 🔢 **#2** | HIGH | **IN_SPEC** SPEC-071 — 🔄 re-cut 09-02 for §15/§16 | §2 = PHONE ALONE. SPEC-071 Amendment #2 outranks all. 231/232 re-cut; 235 withdrawn. 🔴 accepted risk in `SYSTEM-FACTS.md` |
+| REQ-079 | LINE chatbot — ผปค ลงทะเบียน/ลา/เช็คอินเอง (owner's **REQ-016**) — 🔢 **#2** | HIGH | 🧪 **`TEST_PASSED` 15/26 (09-03) — NOT a REQ-079 pass** · `tests/TEST-065` §Round 3 | Proven: escapes · silence · per-chat mute · strikes · duplicate rule · clear→rebind (verified in data). 🔴 **Leave · check-in · course view · regressions UNOPENED.** @Porter Q23–Q24. |
 | REQ-077 | LINE OA + rich menu + notification set (owner's REQ-014) — 🔢 **#5** | HIGH | **DRAFT** | Customer's list in; **5 of 6 already exist**, 1 new (check-in msg). Design first. @Porter holds. |
+| REQ-080 | QA read-only on **both** `uat` hosts — narrow the `mint-session.mjs` guard on `frontoffice`, **extend** it to `backoffice` | HIGH | **READY_FOR_SA** (09-04) | 🔴 `backoffice` is **unguarded today** — see REQ §4b. @Sober — Q1/Q3 open, Q2 answered. |
 
 > 🔢 **Owner's order (2026-08-30): REQ-078 → REQ-076 → REQ-051 → REQ-077 → REQ-028 → the `REQ-BO` block.**
 > His own numbering and the customer-facing status list live in **`OWNER-LIST.md`** — read it before answering
@@ -274,9 +283,15 @@ timestamp. Without those three distinct states, "quiet" and "dead" look identica
 | TASK-230 | BE: LINE — migration: `family_line_links` + `family_invites` + `muted_until`/`unexpected_count` | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · 🔴 `0030` awaits the `sid` run → @Porter | Sober |
 | TASK-231 | BE: LINE — 🔴 silence by default is a CHANGE to shipped behaviour (§16) + mute + two-strikes | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · TTL at the source, touch is route-scoped · ⚠️ re-test needs 30 min of silence first | Sober |
 | TASK-232 | BE: LINE — Flow 1 (invite → phone → children). Flow 2 DELETED; `parentChildrenNote` untouched | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · 🔴 2FA ships OFF and **cannot be switched on** until the owner answers code DELIVERY | Sober |
-| TASK-233 | BE: LINE — Flow 3 เพิ่มนักเรียน: summary before write, admin told, nothing partial | SPEC-071 | **TODO** · depends on 232 | @Jason |
-| TASK-234 | BE: LINE — Flows 4–6 on the EXISTING pickers + the two rich menus | SPEC-071 | **TODO** · depends on 232 | @Jason |
-| TASK-243 | BE+FE: an admin must be able to CLEAR a family’s LINE link — today "contact an admin" points at nobody | TASK-232 Q3 | **TODO** 🟠 before anyone is told to contact an admin | @Jason → @Fern |
+| TASK-233 | BE: LINE — Flow 3 เพิ่มนักเรียน: summary before write, admin told, nothing partial | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · `0031` pending on `sid` with `0030` | Sober |
+| TASK-234 | BE: LINE — Flows 4–6 on the EXISTING pickers + the two rich menus | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · 🔴 **menus NOT live** until published with images — see PENDING DEPLOY | Sober |
+| TASK-243 | BE+FE: an admin must be able to CLEAR a family’s LINE link — today "contact an admin" points at nobody | TASK-232 Q3 | ✅ **DONE** (Sober 09-02) — BE + FE · 🏁 last open code in REQ-079 | Sober |
+| TASK-244 | BE: a durable trail for the ONE act that can move a LINE account between families (today: a log line) | TASK-243 Q1 | **TODO** 🟢 after the REQ-079 deploy | @Jason |
+| TASK-245 | BE: **a parent is never stuck** — an exit at every step · reserved words mean what they say · rule 5 actually fires | Porter ORDER 09-02 | ✅ **DONE — code** (Sober 09-03) · one command list · exit checked before any step reads · strike sites **4→6** (the 4→11 in my review was a COMMENT count — corrected by Jason 09-03; pinned at 7 incl. declaration in `line-silence.test.ts`) | @Sober |
+| TASK-246 | BE: **DEF-8 + §14** — a mute silences the bot’s initiative, never the parent’s way OUT or BACK IN | Porter DEF-8 09-03 | ✅ **DONE — code** (Sober 09-03 r2) · one `FLOW_CLEARED` for both writers · un-mute clears the flow, scoped to *muted-right-now* so an unmuted parent’s live flow survives · `สมัคร` ORDER pinned by test · 1278/0 · 🧪 DEF-8 replay + Round C need a PHONE ⇒ @Porter → owner (NOT @Tanya — owner 09-05) | @Porter |
+| TASK-247 | BE: **REQ-079 rich menus** — two orange menus, AND the publish path that never created them | REQ-079 · Porter 09-05 | ✅ **DONE — code** (Sober 09-05) · publish creates **6**, default → **unknown**, `storeMenuIds` **merges** (pure `mergeMenuIds`) · generator↔code bounds test **with a permanent negative control** · 4 old PNGs byte-identical · tsc 0 · **1295/0** · 🚫 nothing published — see PENDING DEPLOY 2 + 4 | @Porter (deploy) |
+| TASK-248 | BE: **DEF-9** — `เข้าใช้ระบบ` asks for a phone and sets no step, so nothing receives it | DEF-9 (owner 09-05) | ✅ **DONE — code** (Sober 09-05) · tsc 0 · 1316/0 · 🧪 phone run = **owner, not @Tanya** — see the TASK + log 09-05 | @Porter |
+| TASK-249 | BE: **C-13 evidence** — the per-user menu link must follow the DB link state | C-13 · Porter 09-05 | ✅ **DONE — code** (Sober 09-05) · un-link on **both** clear paths (2nd case: departed teachers) · 🔴 a passing test had **pinned** the missing call — see the TASK + log 09-05 | @Sober |
 | TASK-235 | FE: the admin invite control on the People screen — now the ONLY way anyone joins | SPEC-071 | ⛔ **WITHDRAWN 09-02** — the invite is cut; nothing left to issue | @Fern |
 | TASK-242 | FE: the post-confirm chip claims more than it knows → `ส่ง LINE ถึงครูหลักแล้ว` | REQ-078 DEF-6 §2 | 🔒 **HELD** — only if QA forces an FE touch, else with the follow-up | @Fern |
 | TASK-240 | BE: course search drops a studentless course (count ≠ rows) — same shape as DEF-3, pre-existing | TASK-236 sweep | **TODO** 🟢 after the release | @Jason |
