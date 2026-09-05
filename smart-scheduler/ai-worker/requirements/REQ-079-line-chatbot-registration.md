@@ -524,3 +524,45 @@ not compete with anything. It stands as written.
 **LINE OA Manager**, ours is a **follow-event push from our code**. **Two independent senders, neither aware of
 the other.** When REQ-014 moves them to a new OA, **the greeting must be re-created there** — it does not travel
 with the account switch, and losing the shop's own onboarding would be a visible regression the day of the move.
+
+## 16. 🔴 CUSTOMER CHANGE REQUEST — the role step must not use `1 / 2 / 3` (customer, via the owner, 2026-09-05)
+
+**The first change request that has ever reached us from the customer about the bot**, and it arrives because the
+bot is now running on **their** OA. Owner, relaying: *"พวกคำสั่งเริ่มต้น ไอ่ 1, 2, 3 น่ะ มันชนกับของเขาที่มีอยู่แล้ว
+เขาขอว่าแก้ให้เป็น พ่อ แม่ หรือกลุ่มคำสั่งที่เข้าชุดคำสั่งแทนได้มั้ย"*.
+
+**The collision, plainly:** our role prompt is *"เลือกบทบาทของคุณ: 1 = ลูกค้า/ผู้ปกครอง · 2 = ครู · 3 = แอดมิน"*.
+**Their OA already answers to bare numbers** for their own menu. A parent typing `1` is answering two systems at
+once. **This is not a preference — it is two systems claiming the same input on one account.**
+
+📌 **And it is exactly the failure mode this REQ already has a rule for.** `AC-20` exists because *"advertised
+words must not become data"*. **The same principle, one level up: a word the ACCOUNT already owns is not ours to
+claim.** We were the second system onto that OA; the numbers were theirs first.
+
+### The design — words, and the parent should not have to type them
+
+**Roles stay three. The input stops being a number.**
+
+| Role | Accepted answers |
+|---|---|
+| ผู้ปกครอง | **`ผู้ปกครอง`** · `พ่อ` · `แม่` · `ปกครอง` |
+| ครู | **`ครู`** |
+| แอดมิน | **`แอดมิน`** · `admin` |
+
+🔴 **Bare `1` / `2` / `3` must STOP being accepted at this step** — leaving them as a hidden fallback keeps the
+collision alive and makes it intermittent, which is worse than keeping it.
+
+**Preferred presentation: LINE quick-reply buttons on the role question**, so the parent **taps** and never types.
+That removes the collision at the source rather than negotiating around it. **Whether quick replies are already
+wired is @Sober's read, not my assumption** — if they are not, the typed words above are correct and sufficient
+on their own, and quick replies are an improvement to sequence later.
+
+**Wording, if it stays typed:**
+> เลือกบทบาทของคุณค่ะ — พิมพ์ **ผู้ปกครอง** · **ครู** · หรือ **แอดมิน**
+> (พ่อหรือแม่ พิมพ์ `ผู้ปกครอง` ได้เลยค่ะ)
+
+⚠️ **`พ่อ` and `แม่` are ACCEPTED but not ADVERTISED.** Offering them as the headline invites *"แล้วยายล่ะ / ป้าล่ะ"*
+— the design is deliberately one guardian role with many people in it (§2), and the label must not imply otherwise.
+
+⚠️ **Anywhere else the bot asks for a number must be swept too** — this request names the role step because that
+is where the customer hit it, **not because it is the only one.** ⇒ **@Sober: a read across the flows.**

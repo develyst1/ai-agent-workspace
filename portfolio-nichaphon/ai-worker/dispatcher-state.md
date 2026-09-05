@@ -13,30 +13,12 @@
 > verbatim to `archive/dispatcher-state-2026-09-02.md`.
 > Rotated 2026-09-05 (PM housekeeping, 4th — gate said 7 runs > limit 6): runs
 > **2026-09-02-d** and **2026-09-03-a** appended verbatim to the same archive file and
-> `cmp`-verified byte-for-byte BEFORE this file was cut. Runs 2026-09-04-a onward stay below
-> (5 runs — the "last 5" this header asks for, one under the gate's limit of 6).
-
-## RUN 2026-09-04-a — N=8 — started from: human answer SQ10 (fix inside REQ-002) — hygiene FAIL, housekeeping first
-hop 1 | PM  | did: housekeeping (shortened the one over-length SQ8 board cell, content verified present in SPEC-002) + recorded SQ10 and unblocked TASK-012; gate PASS | ball_to: SA | flags: check-hygiene.mjs was updated on disk mid-hop and now warns about a missing SYSTEM-FACTS.md — workspace-level, not this project's to invent
-hop 2 | SA  | did: reviewed TASK-010 -> REWORK with all 5 of Fern's questions answered (T3 mechanism found in Mantine's own CSS, T4 added), scheduled TASK-012 between 010 and 011 | ball_to: FE | flags: FQ35 (no-animation-frame harness) written into SQ7 as a candidate mechanism for TEST-003 to confirm; gate not moved
-hop 3 | FE  | did: TASK-010 rework round — T3 via the Accordion vars, T4 placeholder 4.28 -> 7.61:1, FQ33 comment; re-verified, no 20th file -> REVIEW | ball_to: SA | flags: harness also refuses to scroll — another datum for FQ35/SQ7
-hop 4 | SA  | did: reviewed TASK-010 rework -> DONE (19-file scope, the exact 4 theme.ts hunks, tsc and both greps re-verified first-hand), carried its 4 UNVERIFIED checks into TASK-011 §7 + a 4th QA eye | ball_to: FE | flags: -
-hop 5 | FE  | did: repaired DEF-1 with one line (display:block on .frame), proved the cause by a rendered before/after A/B, nine thumbnails now measure non-zero at both viewports -> REVIEW | ball_to: SA | flags: painted pixel still wants a QA eye (harness will not scroll); modal open still UNVERIFIED (FQ35)
-hop 6 | SA  | did: reviewed TASK-012 -> DONE (one hunk, span kept, import graph and tsc re-verified); carried the painted-pixel check to TASK-011 §7 and a 5th QA eye | ball_to: FE | flags: 1 low-confidence item — nobody has SEEN the nine /about images paint; routed to QA via PM
-hop 7 | FE  | did: ran TASK-011 site-wide sweep on 6 routes x 3 widths against a pristine HEAD copy, 0 files changed, 25/39 ticked -> REVIEW; DEF-1 proved by A/B (9 images at 0x0 on HEAD, 0 now) | ball_to: SA | flags: FQ38 (no visible focus ring on /contact fields, pre-existing, WCAG 2.4.7), FQ37 (+123 kB First Load JS on /blog and /portfolio), FQ36 (orphan dev server squatting the repo)
-hop 8 | SA  | did: reviewed TASK-011 -> DONE, adjudicated all 5 unticked boxes, answered FQ36-FQ38 (corrected its own inline-vars rule, disputed Fern's FQ38 mechanism), placed SQ11/SQ12; REQ-002 -> SPEC_DONE | ball_to: PM | flags: 2 low-confidence items routed to a QA eye rather than resolved; SQ7 gate still deferred
-STOPPED hop 8/8 — condition 5 (hop budget reached)
-Board: SPEC-002 CLOSED — TASK-006..012 all DONE. REQ-002 SPEC_DONE awaiting Porter's acceptance round. 7 QA eyes queued under SQ8; TEST-003 + REGRESSION S13 are Tanya's.
-Digest sent to human: all 6 routes rebuilt, DEF-1 repaired, SQ11 (+123 kB JS) needs his call; nobody has SEEN the /about images paint.
-
-## RUN 2026-09-05-a — N=6 — started from: N=6 (board ball on PM, REQ-002 acceptance round)
-hop 1 | PM  | did: ran the REQ-002 acceptance pass — 8 criteria adjudicated (1 ticked, 3 with the owner, 2 evidence gaps, 2 partial), requested TEST-004 from Tanya | ball_to: HUMAN | flags: 8 owner decisions; AC2 is the one only he can make
-hop 2 | PM  | did: opened N5 as REQ-003 (portfolio content refresh) DRAFT-BLOCKED after the owner re-raised it; recorded that the re-sent repos are material, not an answer to Q21; added Q22 as a DATA REQUEST | ball_to: HUMAN | flags: Q20/Q21/Q22 + REQ-002 AC2 with the owner; nobody has cloned the 4 repos
-hop 3 | QA  | did: ran TEST-004 (REQ-002 acceptance) in headed Chrome with real scrolling and real Tab — TEST_FAILED; DEF-1 CLOSED on painted evidence, AC6 passes (0 hits in 96+96 checks), all 7 SQ8 eyes answered positive, SQ12 settled in Sober's favour; 58 screenshots | ball_to: PM | flags: DEF-2 (Home mobile CTA sliced by the fold) + DEF-3 (/services table unusable at 360), both MAJOR; QQ4-QQ7
-hop 4 | PM  | did: processed TEST-004's TEST_FAILED intake — accepted the verdict unchanged, ticked AC6, closed DEF-1, recorded DEF-2/DEF-3 with no cause named, answered QQ4-QQ7, opened Q23/Q24/Q25 | ball_to: HUMAN | flags: 7 owner decisions; Q23/Q24 + AC2/AC5/AC7 gate REQ-002 DELIVERED
-STOPPED hop 4/6 — condition 7 (ball_to HUMAN) + 1
-Board: REQ-002 SPEC_DONE, acceptance 2 of 8; DEF-1 CLOSED; DEF-2/DEF-3 open awaiting the owner's scope call. REQ-003 DRAFT-BLOCKED on Q20/Q21/Q22. TEST-003 is Tanya's next unit.
-Digest sent to human: 58 screenshots delivered incl. all 6 routes desktop+mobile; DEF-1 proven fixed on painted evidence; two mobile defects need his call.
+> `cmp`-verified byte-for-byte BEFORE this file was cut.
+> Rotated 2026-09-05 (PM housekeeping, 5th — gate said 7 runs > limit 6 again): run
+> **2026-09-04-a** → `archive/dispatcher-state-2026-09-04.md` (new file) and run
+> **2026-09-05-a** → `archive/dispatcher-state-2026-09-05.md` (new file), both copied
+> verbatim and `diff`-verified identical BEFORE this file was cut. Runs 2026-09-05-b
+> onward stay below (5 runs — the "last 5" this header asks for, one under the limit).
 
 ## RUN 2026-09-05-b — N=8 — started from: human answers AC2/Q23/Q24/AC5/AC7 — hygiene FAIL, housekeeping first
 hop 1 | PM  | did: cleared 3 hygiene FAILs (runs + REQ-001 archived verbatim and diff-verified before compacting) and recorded the owner's 5 answers — AC2 + AC5 ticked, Q19/Q23/Q24 closed; REQ-002 now 5 of 8 | ball_to: SA | flags: AC1's tick is PM's inference from AC2, declared as overrulable; AC7 not ticked until QA has SEEN the 5 routes
@@ -76,3 +58,10 @@ Board: REQ-001 + REQ-002 DELIVERED; REQ-003 IN_SPEC with SPEC-003 ACTIVE, TASK-0
 Digest sent to human: the full drafted text for both entries, 4 decisions.
 
 ## RUN 2026-09-05-f — N=4 — started from: owner approval of the REQ-003 draft pack
+hop 1 | PM  | did: cleared 2 hygiene FAILs (2 runs rotated + 4 board cells shortened, all archived verbatim and verified first) and recorded the owner's verbatim "อนุมัติ" as the R7 approval record; AC-g ticked, TASK-017 unblocked on the board | ball_to: SA | flags: approved text is cited to DRAFT-001 rather than re-typed, so no second copy can drift
+hop 2 | SA  | did: re-checked the R7 record and both target files on disk, moved TASK-017 BLOCKED -> TODO with 5 pack-to-code mapping rulings so Fern needs no round-trip | ball_to: FE | flags: SQ17 — the repo is now checked out on branch D1 (not develop) with TASK-013/014/015 committed as c152314; branch choice is the owner's, so Fern edits the checked-out tree and switches nothing
+hop 3 | FE  | did: placed the two owner-approved entries in projects.ts (+52/-0, now 11) and changed the intro numeral to "Eleven"; 18/18 approved strings verified verbatim, tsc 0, build 0, 11 cards + both modals + both live links checked on the served build | ball_to: SA | flags: no screenshot of an open modal (same harness limit as SQ7/FQ35), declared not claimed; branch found = D1, zero git writes
+hop 4 | SA  | did: reviewed TASK-017 -> DONE by re-deriving every approved string from DRAFT-001 with its own parser and comparing against the evaluated module — 24/24 character-exact, 0 diffs; SPEC-003 DONE, REQ-003 SPEC_DONE | ball_to: PM | flags: modal pixels still uncaptured (a QA leg); SQ17 (branch D1) still the owner's
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+Board: REQ-001 + REQ-002 DELIVERED; REQ-003 SPEC_DONE — the two projects are in the code, awaiting Porter's acceptance + a QA look.
+Digest sent to human: his two projects are on /portfolio, text character-identical to what he approved.

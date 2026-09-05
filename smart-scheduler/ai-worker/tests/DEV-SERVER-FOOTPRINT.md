@@ -294,3 +294,24 @@ Evidence: `TEST-065` §Round 3.
 kept"* — is **true**, not just displayed. That is the sentence an admin reads before pressing a red button.
 
 **REQ-078's five live fixtures (`TEST-064` §Park note) are unchanged.** Nothing added or retired.
+
+## 2026-09-05 (Tanya) — REQ-078 ฿20 money round, **correct fixture shape**: two bookings LEFT LIVE for the 18:30 pass
+
+Evidence: `TEST-064` §Round 5. Server clock read **14:35** at the start; the day-end is **18:30** (owner closed
+`C-03` — my earlier 23:30 was Porter's stale number), and it selects **`CONFIRMED` only**.
+
+| What | Where | Removed? |
+|---|---|---|
+| **M1** — อื่นๆ `QA-078 M1 money 20B` · teacher **Ek** · 2026-09-05 **15:00–16:00** · no student · **Charge ON ฿20** · **CONFIRMED** · id **`5788d6fe-6099-40a4-8440-712ed7ceac5e`** | `sid` | ⏳ **LEFT DELIBERATELY** to post at 18:30. Expected movement key **`rev:5788d6fe-6099-40a4-8440-712ed7ceac5e`** = ฿20. **Owner reverses**; then Tanya cancels |
+| **M2** — อื่นๆ `QA-078 M2 free control` · teacher **Kowjoe** · 2026-09-05 **15:00–16:00** · no student · **Charge OFF** · **CONFIRMED** · id **`6ac8c7d4-95e0-4370-bf93-0534df5ed5de`** | `sid` | ⏳ **LEFT DELIBERATELY** as the control — must post **nothing**. Tanya cancels once read |
+| 🟢 **No LINE message reached anyone.** Both confirms returned `notification {channel: line, status: **skipped**, reason: "ผู้รับยังไม่ผูก LINE userId"}` — Ek and Kowjoe are unlinked **by deliberate choice**. **Bank (the owner) and `Haris` (a real teacher) were not used** | — | ✅ |
+| No student · no parent · no teacher row · no setting · no script · no restart | — | ✅ |
+| 🔴 **`uat` — no contact of any kind.** The owner's 09-04 read grant is live in principle, but the frontoffice `PRODUCTION_HOSTS` guard still refuses and **I did not look for another route around it** (`QA.md`). Backoffice `uat` was not touched either — the absence of a guard there is not permission | — | ✅ |
+
+### 🧹 Superseded residue — F1/F2 are now KNOWN-DEAD, not merely unread
+**`4014e65e-…` (F1, ฿20) and `25d695c3-…` (F2, free)** sit `PENDING` on 2026-09-01. With the selection rule now
+known (**`CONFIRMED` only**), **they can never be swept** — no amount of waiting changes that. **M1/M2 supersede
+them.** They should be cancelled; recorded here so no future session mistakes them for live evidence.
+
+**Also still live from earlier rounds:** `94db6903-…` (F3, LINE) · `4357f125-…` (F4, LINE multi) ·
+`56fa6ee3-…` (R4a, 3-teacher) — ids and owners in `TEST-064` §Park note, unchanged.

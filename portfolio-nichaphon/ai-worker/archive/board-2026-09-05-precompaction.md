@@ -36,10 +36,8 @@
   deploys**: the live droplet, `pm2`, ssh, `merge-workflow.sh` and
   `release-workflow.sh` are the human's hands only. Real-world material (copy,
   screenshots, client facts) arrives via DATA REQUEST into `../project-docs/`.
-- Branches on the repo: **checkout is `D1` with a CLEAN tree as of 2026-09-05**
-  (was `develop`; TASK-013/014/015 are committed as `c152314` — no role did that)
-  · `develop` · `main` · `production`. Branch choice stays the human's — see
-  SPEC-003 §Questions SQ17.
+- Branches on the repo: `develop` (current checkout) · `main` · `production`
+  (+ `origin/D1`). Which branch a change targets is the human's call via Porter.
 
 ## Requirements
 
@@ -47,7 +45,7 @@
 |----|-------|----------|--------|--------------------|
 | REQ-001 | Visual identity rebuild — Home page first | HIGH | DELIVERED 2026-09-02, Porter — 11/11 AC ticked, 5/5 TASKs DONE, TEST-001 PASSED; B/C/D/F/G/H + N4/N5 carried forward, not closed — see requirements/REQ-001-ui-visual-redesign.md §Delivery | Human (sign-off) |
 | REQ-002 | Whole-site visual step-up (AI/robotic/IoT) + the five remaining routes | HIGH | **DELIVERED 2026-09-05, Porter** — 8/8 AC ticked (AC3+AC7 on TEST-005, AC8 on TEST-003), 10/10 TASKs DONE; carries SQ7-look/H5-Q25/Q18/SQ8-SQ13/Q26 survive and are NOT closed — see requirements/REQ-002-whole-site-step-up-five-routes.md §Delivery | Human (sign-off) |
-| REQ-003 | Portfolio content refresh — his real projects on the site (N5) | HIGH | **SPEC_DONE 2026-09-05, Sober** — SPEC-003 `DONE`, TASK-016 + TASK-017 both `DONE`; shipped strings 24/24 character-exact vs the approved DRAFT-001 — see tasks/TASK-017-place-approved-project-entries.md §Review | Porter (acceptance) |
+| REQ-003 | Portfolio content refresh — his real projects on the site (N5) | HIGH | **IN_SPEC — AT THE R7 GATE 2026-09-05, Porter** — the draft pack is RELAYED to the owner; 4 decisions on his desk (entries as drafted · 2 titles · 1 intro numeral), 3 of them a tick on an SA default. **AC-g unticked and TASK-017 `BLOCKED` until his approved text + date are recorded** in requirements/REQ-003-portfolio-content-refresh.md §R7 approval record | **Human (R7 approval)** |
 
 ## Tasks
 
@@ -68,8 +66,9 @@
 | TASK-013 | DEF-2 — Home hero must fit above the fold at 360x740 | SPEC-002 (owner Q23) | **DONE** 2026-09-05, Sober — scope/diff/tsc re-verified by me; >=48em frozen structurally (the whole diff is one `max-width:47.99em` block); FQ39 answered (mobile lead stays 17px); AC3 still ticks on QA H8 only — see tasks/TASK-013-def2-home-hero-mobile-fold.md §Review | — | none |
 | TASK-014 | DEF-3 — visible scroll signal on the `/services` table | SPEC-002 (owner Q24) | **DONE** 2026-09-05, Sober — FQ40 ruled (rule now in SPEC-002), FQ41 → SQ13; both carries settled by TEST-005 — see tasks/TASK-014-def3-services-table-scroll-affordance.md §Review | — | none |
 | TASK-015 | Remove the dead `ColorSchemeToggle` + its `ui` barrel re-export | SPEC-002 (owner AC7) | **DONE** 2026-09-05, Sober — 3 paths, greps 0/0, `forceColorScheme` 3, zero `use client` in `ui`, tsc 0, all re-run by me; FQ42 confirmed (my DoD wording was wrong), FQ43 ruled (SQ11 lead struck, no follow-up task); AC7 still QA — see tasks/TASK-015-remove-dead-colorscheme-toggle.md §Review | — | none |
-| TASK-016 | Source read + draft pack for the two new entries | SPEC-003 | **DONE** 2026-09-05, Sober — see tasks/TASK-016-source-read-and-draft-pack.md §Review | — | none |
-| TASK-017 | Place the approved entries + the `/portfolio` intro numeral | SPEC-003 | **DONE** 2026-09-05, Sober — approved values re-derived from DRAFT-001 by my own parser vs the evaluated module: **24/24 character-exact, 0 diffs**; scope 2 files (+52/-0), tsc 0 re-run by me, prerendered HTML shows `Eleven…` + 11 cards in order; modal pixels stay UNVERIFIED (QA, via Porter) — see tasks/TASK-017-place-approved-project-entries.md §Review | — | TASK-016 (DONE) + approval record (RECORDED 2026-09-05) |
+
+| TASK-016 | Source read + draft pack for the two new entries | SPEC-003 | **DONE** 2026-09-05, Sober — ids/type/links/SKILL_GROUPS/greps/`git status` re-run by me + 10 citations re-read at 2 re-cloned pinned SHAs (10/10 exact); FQ44/FQ46 ruled (no owner question), FQ45 corrected (Entry 1 IS a real disagreement); approval sheet = 4 lines, 3 of them a tick — see tasks/TASK-016-source-read-and-draft-pack.md §Review | — | none |
+| TASK-017 | Place the approved entries + the `/portfolio` intro numeral | SPEC-003 | **BLOCKED** (waiting: Human via Porter — the R7 approval record in REQ-003) | Fern | TASK-016 + approval record |
 
 ## QA / Tests
 
@@ -96,11 +95,9 @@
 | **OBS-5 / SQ13 overlap** (new 2026-09-05) — the `/services` scroller is 1156px tall on a 740px phone, so its scrollbar is off-screen while the visitor reads the top of the table | Human (owner), **inside SQ13** — QQ9 answered | **QQ9 answered 2026-09-05, Porter: it rides with SQ13** (one fact, one owner, one question); stays in TEST-005 only, no separate QA note. Not a defect, not blocking — see log/2026-09-05.md |
 | REQ-001 carry-forward items | Human (owner) | 6 non-blocking calls survive DELIVERED: B, C, D, F, G, H — see requirements/REQ-001-ui-visual-redesign.md §Delivery |
 | ~~N5 / REQ-003 — Q20/Q21/Q22/Q27~~ — **UNBLOCKED 2026-09-05** by his four answers | — (nothing) | Publish permitted for both projects, team drafts, he approves every entry (R7); REQ-003 is `READY_FOR_SA` and Sober may start — see requirements/REQ-003-portfolio-content-refresh.md §His answers |
-| **SPEC-003 SQ14 / SQ15 / SQ16** (new 2026-09-05) — three SA notices; **SQ15 + SQ16b SETTLED 2026-09-05** by the owner's `อนุมัติ` (SA defaults taken); SQ14 was FYI only | — (nothing) | Full text of all three notices — see specs/SPEC-003-portfolio-content-refresh.md §Questions; the picks he settled are in requirements/REQ-003-portfolio-content-refresh.md §R7 approval record |
-| ~~**REQ-003 R7 approval gate**~~ — **CLOSED 2026-09-05, Porter** by the owner's `อนุมัติ` | — (nothing) | All 4 decisions settled on the SA defaults: entries as drafted · `Learning Curve` · `Ong Match` · `Eleven projects, and what each one had to solve`. **AC-g ticked, TASK-017 unblocked** — see requirements/REQ-003-portfolio-content-refresh.md §R7 approval record |
+| **SPEC-003 SQ14 / SQ15 / SQ16** (new 2026-09-05) — three SA notices; **SQ15 + SQ16b RELAYED 2026-09-05 inside the R7 sheet** (decisions 4, 2 and 3), SQ14 relayed as FYI | Human (owner) | SQ14 no screenshot ships (no image slot; R5) so Q29 cannot bite this REQ · SQ15 `/portfolio` intro numeral "Nine"→the real count, sentence untouched · SQ16 new entries placed first + he picks the name if sources disagree — **SQ16b now carries an SA default per title (2026-09-05), so each pick is a tick, not an open question** — see specs/SPEC-003-portfolio-content-refresh.md §Questions + tasks/TASK-016-…md §Review §4 |
+| **REQ-003 R7 approval gate** — **RELAYED 2026-09-05, Porter; now the owner's only** | **Human (owner)** | 4 decisions on his desk, 3 a tick on an SA default: entries as drafted · Entry 1 title (default `Learning Curve`) · Entry 2 title (default `Ong Match`) · intro numeral (default `Eleven projects, and what each one had to solve`). His answer → Porter records the exact text + date in REQ-003 §R7 approval record (= AC-g) → TASK-017 unblocks — see requirements/REQ-003-portfolio-content-refresh.md §R7 approval gate |
 | REQ-003 **Q22-b / Q28 / Q29** (new 2026-09-05) — all NON-blocking | Human (owner) | Q22-b dates + result per project · Q28 keep or remove the old `/portfolio` entries (default: keep) · Q29 screenshots showing other people's data (default: not published, R8) — see requirements/REQ-003-portfolio-content-refresh.md §Questions |
-| **SPEC-003 SQ17** (new 2026-09-05) — repo checkout is `D1`; PROTOCOL says hand over on `develop` | Porter (PM) → human (owner) | TASK-017 is `DONE`; its **2 files sit unstaged on `D1`**, zero git writes by any role. Branch choice + every git write are the human's — see specs/SPEC-003-portfolio-content-refresh.md §Questions SQ17 |
-| **REQ-003 modal pixels UNVERIFIED** (new 2026-09-05) — the two new cards' open modal was never seen as a picture | Porter (PM) → QA (Tanya) | Content verified as data (DOM + 24/24 character-exact strings); only the painted modal is unseen — same limit class as SQ7 / FQ35. Note for QA: `front/.next` holds a build output, so use `next start` or clear it — see tasks/TASK-017-...md §Review §5 |
 | SPEC-002 SQ1-SQ6 | Porter (PM) | 6 SA notices, none blocking — SQ2 updated 2026-09-02: ordinals ALREADY ship on /portfolio + Home, so existing ones are kept and no new one is added until he answers — see specs/SPEC-002-site-wide-step-up-five-routes.md §Questions |
 | SPEC-002 SQ7 — scope half only (the "never opens" claim did not reproduce) | Human (owner) → then Sober | STILL UNANSWERED, and REQ-002 went `DELIVERED` 2026-09-05 with the modal *look* UNVERIFIED — his sign-off is where he answers it; the gate-lift itself is Sober's — see requirements/REQ-002-...md §Questions SQ7 |
 | ~~TEST-002 DEF-1 / SQ10~~ — CLEARED 2026-09-04 | — (nothing) | Owner answered `SQ10=รวมใน REQ-002`: the repair ships inside REQ-002, no separate defect REQ. TASK-012 unblocked — see requirements/REQ-002-whole-site-step-up-five-routes.md §Questions DEF-1 |

@@ -20,3 +20,21 @@ answered in that file's §Questions**. What left this role: the pack + the 4-lin
 to **Porter** (`inbox/PM.md`). Still carried on board.md §Blocked, not here: my **SQ7 look gate**,
 SPEC-003 **SQ14/SQ15/SQ16** and SQ1-SQ6/SQ8/SQ9/SQ11/SQ12/SQ13 with Porter.
 **Nothing is waiting for SA until his R7 approval lands and TASK-017 runs.**)_
+
+_(Porter's R7-approval message of 2026-09-05 read, acted on and DELETED by Sober 2026-09-05.
+Nothing dropped: I re-checked the record on disk (REQ-003 §R7 approval record — `อนุมัติ`, AC-g
+ticked) and moved **TASK-017 `BLOCKED` → `TODO`**, copying the four approved values and the
+pack→`projects.ts` mapping rules into the task so Fern starts without a round-trip. What left this
+role: **TASK-017 to Fern** (`inbox/FE.md`). Still carried on board.md §Blocked, not here: my **SQ7
+look gate**, SPEC-003 SQ14/SQ15/SQ16 and SQ1-SQ6/SQ8/SQ9/SQ11/SQ12/SQ13 with Porter.
+**Nothing is waiting for SA until TASK-017 hits `REVIEW`.**)_
+
+_(Fern's TASK-017 `REVIEW` message of 2026-09-05 read, acted on and DELETED by Sober 2026-09-05.
+Nothing dropped: **TASK-017 is `DONE`** — my own parser re-derived the approved values from DRAFT-001
+and compared them against the evaluated module: **24/24 character-exact, 0 diffs**; verdict + every
+re-run check live in `tasks/TASK-017-place-approved-project-entries.md` §Review, **FQ47 answered** in
+that file's §Questions. **SPEC-003 is `DONE`; REQ-003 is `SPEC_DONE`** and with Porter for acceptance.
+What left this role: the SPEC_DONE notice + the **modal-pixel QA leg** + **SQ17** to Porter
+(`inbox/PM.md`). Still carried on board.md §Blocked, not here: my **SQ7 look gate**, SQ17, the modal
+pixels, and SQ1-SQ6/SQ8/SQ9/SQ11/SQ12/SQ13 with Porter.
+**Nothing is waiting for SA — the ball is Porter's.**)_

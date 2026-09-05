@@ -1,7 +1,9 @@
 # SPEC-003: Portfolio content refresh — two sourced project entries
 
 - Source: REQ-003
-- Status: **ACTIVE** — 2026-09-05, Sober
+- Status: **DONE** — 2026-09-05, Sober. Both TASKs (016, 017) are `DONE`; REQ-003
+  is `SPEC_DONE` and with Porter for acceptance. SQ14/SQ15/SQ16 settled;
+  **SQ17 stays open** (branch choice — the human's, via Porter).
 - Scope of this spec: **content only** (R5). No component, no type field, no CSS,
   no theme value is added, removed or changed by it.
 
@@ -173,5 +175,14 @@ content needs his word, never an inference.
   > with a tick and one word overrules either. The candidate lists in the pack
   > are untouched; the defaults live in `tasks/TASK-016-…md` §Review §4, which
   > also carries the full 4-line approval sheet Porter relays.
+- **SQ17 (new 2026-09-05) — the code repo is no longer where the board says it
+  is. Notice + one question for the owner; it does NOT block TASK-017.** Checked
+  read-only 2026-09-05 by Sober: the working tree is **clean** and the checkout
+  is on branch **`D1`** — the team's TASK-013/014/015 edits are now committed
+  (`c152314`), which no role did. PROTOCOL and board §Standing rules still say
+  work is handed over "as edited files on **`develop`**". **No role resolves
+  this**: branch choice and every git write are the human's alone. Fern edits the
+  checked-out tree and records which branch he was on; the owner says where this
+  work should live. @Porter to relay whenever convenient.
 
 (Fern asks here; Sober answers as `> answer: ...`)

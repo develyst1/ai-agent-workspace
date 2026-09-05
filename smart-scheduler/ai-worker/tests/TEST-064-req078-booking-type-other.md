@@ -508,3 +508,84 @@ funnels into those two answers plus the DEF-4 decision** — do not re-run any o
 16. **Do you want F3/F4/R4a retired now**, accepting that the owner may get cancellation LINEs, or left until he
     has read the two messages?
     > answer: _pending_
+
+---
+
+# Round 5 — 2026-09-05: the ฿20 money round, **in the right fixture shape this time**
+
+Porter released it (`inbox/QA.md`) once two facts landed that I had been reasoning without:
+
+| I had assumed | The fact |
+|---|---|
+| the day-end runs at **23:30** | 🔴 **18:30** — owner closed `C-03`. My Round-4 reasoning was built on Porter's stale number |
+| the day-end might skip `OTHER` | @Sober's source read: the auto-attend select has **no `bookingType` filter**, and the revenue select names **`OTHER` explicitly** ⇒ an อื่นๆ **is** swept and it **does** post |
+| a `PENDING` fixture would be swept | 🔴 **The day-end selects `CONFIRMED` only — a `PENDING` row sits forever.** |
+
+📌 **That last line is the answer to my own open AC-9 question, and it lands on me, not the product.** In
+`TEST-064` §Round 4 I recorded F1/F2 sitting `PENDING` overnight and offered three readings, one of which was
+*"the job only promotes CONFIRMED ⇒ my fixtures were the wrong shape, which is my error to own."* **That is the
+one that was true.** I flagged it as a possibility rather than filing a defect — the right call — but the fixture
+was mine to get right and I got it wrong. **F1 and F2 were never going to post, and no amount of waiting would
+have changed that.**
+
+## The fixtures — created and CONFIRMED today, ending before 18:30
+
+Server clock read **14:35** when I started (Overview header, browser agrees) — ~4 hours before the pass.
+
+| Fixture | What | Booking id | Proves |
+|---|---|---|---|
+| **M1** | อื่นๆ · teacher **Ek** · **2026-09-05 15:00–16:00** · no student · **Charge ON, typed ฿20** · **`CONFIRMED`** | **`5788d6fe-6099-40a4-8440-712ed7ceac5e`** ⇒ expected sale key **`rev:5788d6fe-6099-40a4-8440-712ed7ceac5e`** | **AC-5** (posted == typed) · **AC-9** (auto-attend) |
+| **M2** | อื่นๆ · teacher **Kowjoe** · **2026-09-05 15:00–16:00** · no student · **Charge OFF** · **`CONFIRMED`** | **`6ac8c7d4-95e0-4370-bf93-0534df5ed5de`** | **AC-4** (free ⇒ nothing posts) · **AC-9** · the control that gives M1's result meaning |
+
+Both `POST /api/bookings` → **201**, both `PATCH …/status` → **200** with `"status":"CONFIRMED"`.
+
+🟢 **Teacher choice was deliberate, and the API confirmed it worked:** Ek and Kowjoe are **not LINE-linked**, so
+confirming sent nothing to a real person. Both responses carry
+**`notification: {channel:"line", status:"skipped", reason:"ผู้รับยังไม่ผูก LINE userId"}`**.
+📌 **Worth recording as a small good thing:** the outbox says **`skipped` with a reason** rather than silently
+doing nothing — a send that never happened is visible as such. Bank (the owner) and **Haris** (a real teacher)
+are the only linked accounts and **neither was used**.
+
+## What must be read after 18:30 tonight — and by whom
+
+1. **Both M1 and M2 become `ATTENDED`** with nobody touching them ⇒ **AC-9**, closed by me from the calendar.
+2. **M1 posts exactly ฿20** on `rev:5788d6fe-…`, **M2 posts nothing** ⇒ **AC-5** + **AC-4**.
+   🔴 **I still cannot read this.** The backoffice (`backoffice-som.develyst.online`) is not in my access file —
+   it is the board's own open item for the human. **Per Porter's instruction and my own rule all week: I will
+   not infer a money outcome I could not observe.** If the movement is not shown to me, **AC-4 and AC-5 stay
+   `NOT_TESTED` even after a successful sweep** — the ATTENDED flip alone only proves AC-9.
+3. **The owner reverses `rev:5788d6fe-…`** afterwards, as agreed for the earlier ฿20.
+
+## Still blocked, and neither is mine to unblock
+
+- **AC-21 (freelance budget unchanged)** — all 10 `sid` freelancers remain **`฿0/h · SET PAY BEFORE BOOKING`**.
+  **One rate on one freelancer** and this is a ten-minute check. Porter is carrying it as a DATA REQUEST; per his
+  instruction I did **not** park the round on it, and AC-4/5/9 do not depend on it.
+- **AC-7 / AC-8 (consumes / does not consume)** — still no QA-owned course or voucher to deduct from.
+
+## 🧹 Retired: F1 and F2 are now known-dead, not merely unread
+
+`4014e65e-…` (F1, ฿20) and `25d695c3-…` (F2, free) are **`PENDING` on 2026-09-01**. Now that the selection rule
+is known, **they can never be swept** — waiting on them is waiting on nothing. They are superseded by M1/M2 and
+should be cancelled; recorded here so no future session re-adopts them as live evidence.
+
+## Test data created
+
+| What | Where | Removed? |
+|------|-------|----------|
+| **M1** `QA-078 M1 money 20B` — `5788d6fe-6099-40a4-8440-712ed7ceac5e`, **฿20**, CONFIRMED | `sid` | ⏳ **left deliberately** to post at 18:30 — **owner-approved residue**. **Owner reverses `rev:5788d6fe-…`**; then I cancel |
+| **M2** `QA-078 M2 free control` — `6ac8c7d4-95e0-4370-bf93-0534df5ed5de`, charge OFF, CONFIRMED | `sid` | ⏳ **left deliberately**. Must post **nothing**; I cancel once read |
+| **No LINE message reached anyone** — both pushes `skipped`, recipients unlinked. Bank and Haris untouched | — | ✅ |
+| No student · no parent · no teacher row · no setting · no script · no restart | — | ✅ |
+| **`uat`** — 🔴 **no contact of any kind.** The read grant (owner, 09-04) is live in principle but the frontoffice `PRODUCTION_HOSTS` guard still refuses, and **I did not look for another route to it** | — | ✅ |
+| Superseded: **F1 `4014e65e-…` · F2 `25d695c3-…`** — proven unsweepable, to be cancelled | `sid` | ⏳ pending cleanup |
+
+## Questions
+
+25. **Who reads the ฿20 tonight?** Unchanged from Q5 and still the single thing that decides whether this round
+    produces a verdict or another `NOT_TESTED`: either the owner reports what `rev:5788d6fe-…` posted, or I get
+    **backoffice read access**. **The fixture is now correct — the observation is the only missing piece.**
+    > answer: _pending_
+
+26. **AC-21 needs one freelance rate**, still. Naming it again only because it is the last cheap AC in REQ-078.
+    > answer: _pending_

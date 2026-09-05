@@ -302,3 +302,24 @@ message path they share.
     `support08 Dong` now exists and has followed the OA — **if it completes `สมัคร` as a parent on a third
     family, both fall out of one run.** Worth doing while that account is fresh.
     > answer: _pending_
+
+---
+
+## 2026-09-05 — 🔴 THREE OF MY PASSES ARE PENDING A RE-CHECK (Porter, `inbox/QA.md`)
+
+The rich menus went live on `sid` on 2026-09-05 and both states are confirmed on a phone. That makes the two
+entry messages **out of date** — they tell a parent to type a keyword while a button now sits underneath — so
+Porter has written a wording pass (**`REQ-079` §15**).
+
+⇒ **`AC-19` (every step has an exit) · `AC-22` (the promise is visible) · `AC-24` (the way out is told) were
+passed against the OLD copy.** When the new strings ship they are **re-checked, not carried over.** One screen,
+not a round.
+
+📌 **Recorded here rather than left in an inbox message**, because an inbox is a delivery channel and gets
+cleared — and a pass that quietly refers to text no longer in the product is exactly the kind of stale evidence
+this file exists to prevent. **The verdict count (15 of 26) stands only while those three strings are unchanged.**
+
+⚠️ **Also live and eventually mine, but blocked:** menu A's `เข้าใช้ระบบ` button dead-ends (DEF-9, today's log).
+**I am not to open the LINE flows against it** — @Sober has it. It does not change any verdict above, because
+AC-2 was already open for a related reason: the flow has only ever been entered by **typing**, never by the
+button, and a postback is a different handler branch.

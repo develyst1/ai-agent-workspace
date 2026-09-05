@@ -1,10 +1,15 @@
 # REQ-003: Portfolio content refresh — his real projects on the site (N5)
 
-- Status: **IN_SPEC — AT THE R7 GATE, 2026-09-05, Porter.** SPEC-003 ACTIVE,
-  TASK-016 DONE, the draft pack **relayed to the owner 2026-09-05** and TASK-017
-  `BLOCKED` until his approved text + date exist in **§R7 approval record**
-  below. **AC-g is NOT met yet** — the record is empty by design until he
-  answers. See §R7 approval gate.
+- Status: **IN_SPEC — R7 APPROVED, 2026-09-05, Porter.** SPEC-003 ACTIVE,
+  TASK-016 DONE. The owner answered **`อนุมัติ`** on 2026-09-05: the pack ships
+  as drafted, on the three SA defaults. **AC-g is MET** — the record is written
+  in **§R7 approval record** below, and **TASK-017 is UNBLOCKED**. Q22-b, Q28,
+  Q29 and both Observations stay open and non-blocking.
+- Status history: **IN_SPEC — AT THE R7 GATE, 2026-09-05, Porter.** SPEC-003
+  ACTIVE, TASK-016 DONE, the draft pack **relayed to the owner 2026-09-05** and
+  TASK-017 `BLOCKED` until his approved text + date exist in **§R7 approval
+  record** below. **AC-g is NOT met yet** — the record is empty by design until
+  he answers. See §R7 approval gate.
 - Status history: **READY_FOR_SA — 2026-09-05, Porter.** Q20, Q21, Q27 answered in full;
   Q22 answered on its **role** field only. Not blocked: the two unanswered
   fields (dates · result) and the old-entries call (**Q28**) are non-blocking by
@@ -262,10 +267,15 @@ deliverable** rather than a "we broke nothing" list.
       **result/metric** unless he has supplied it in writing by then (R9). A
       draft that fills one of those from the repo's git history or from the code
       **fails this criterion**.
-- [ ] **AC-g — nothing shipped that he had not approved (R7).** For every entry,
+- [x] **AC-g — nothing shipped that he had not approved (R7).** For every entry,
       this REQ records the exact text he approved and the date. Zero published
       words without a matching approval line. This is the criterion that makes
       `ทีมร่าง` safe; if it cannot be shown, the REQ is not done.
+      > **TICKED 2026-09-05, Porter.** His verbatim `อนุมัติ`, the date, the two
+      > `title` picks, the intro line and the cited approved text are all in
+      > **§R7 approval record** below. The tick is on the *record existing*,
+      > which is what AC-g asks for; it does **not** claim the strings are on the
+      > site yet — that is TASK-017, and AC-a/AC-d/AC-e/AC-f still verify it.
 - [ ] **AC-h — the whole-site scope (Q16 = `ทั้งเว็บ`) was actually looked at.**
       Every route that describes his work was reviewed against the two new
       entries, and the spec lists which strings changed **and which were
@@ -476,8 +486,75 @@ an unsourced claim about the other 9.
 
 ### R7 approval record — AC-g
 
-> **EMPTY 2026-09-05. Nothing is approved yet and nothing may ship.**
-> When he answers, Porter writes here: the exact approved strings (or his edits),
-> which title he picked for each entry, the intro line, and the date. Only then
-> does `TASK-017` leave `BLOCKED`. **Until this record exists on disk, AC-g is
-> unticked and no word of the pack reaches the site.**
+**RECORDED 2026-09-05 by Porter. AC-g is TICKED. `TASK-017` is UNBLOCKED.**
+
+#### His answer, verbatim
+
+> อนุมัติ
+
+Received 2026-09-05. That is the whole reply — one word, no edit to any string,
+no alternative picked.
+
+#### How that one word is read, and why it is not an inference
+
+The approval sheet Porter relayed carries a **written SA default per decision**,
+under the column heading *"SA default (applies if he just says 'approve')"*
+(`tasks/TASK-016-source-read-and-draft-pack.md` §Review §4, reproduced above in
+§The four decisions put to him). **`อนุมัติ` is "approve".** So the reading below
+is the sheet's own stated rule being applied to the answer it was written for —
+not Porter guessing what he meant. Every one of the four is a default that was
+**shown to him** before he answered; had he wanted the alternative, decisions 2
+and 3 each listed it beside the default.
+
+#### The four decisions, as approved
+
+| # | Decision | **APPROVED value** |
+|---|---|---|
+| 1 | The two entries as drafted | **ship as drafted** — `drafts/DRAFT-001-req003-project-entries.md` byte for byte, no edit |
+| 2 | Entry 1 `title` | **`Learning Curve`** (not `LearningCurve`) |
+| 3 | Entry 2 `title` | **`Ong Match`** (not `Ong Match — หาคนไทป์เดียวกัน`) |
+| 4 | `/portfolio` intro numeral (SQ15 — numeral only) | **`Eleven projects, and what each one had to solve`** |
+
+#### The exact approved text
+
+**The approved text is `drafts/DRAFT-001-req003-project-entries.md` as it stood
+on 2026-09-05 when it was relayed, unedited**, with the two `title` fields
+resolved to the values in the table above. That file is the record of the
+strings; it is cited here rather than re-typed, deliberately — a second copy of
+the same strings in a second file is a second thing that can drift, and R7 asks
+for *the exact wording approved*, which is that file's wording.
+
+Approved, per entry:
+
+- **Entry 1** — `id` `learning-curve` · `title` **`Learning Curve`** ·
+  `summary` (4 sentences) · `highlights` (5) · `techStack` (11 values) ·
+  `link` `https://learning.develyst.online/` (trailing slash **kept**, FQ46)
+  — all as drafted, DRAFT-001 §Entry 1.
+- **Entry 2** — `id` `ong-match` · `title` **`Ong Match`** ·
+  `summary` (4 sentences) · `highlights` (5) · `techStack` (9 values) ·
+  `link` `https://ong.develyst.online/` (trailing slash **kept**, FQ46)
+  — all as drafted, DRAFT-001 §Entry 2.
+- **The one existing string that changes** — `PORTFOLIO_INTRO.title` becomes
+  **`Eleven projects, and what each one had to solve`**. Numeral only; the rest
+  of the sentence is untouched (SQ15).
+
+#### What this record does NOT approve — unchanged, still open
+
+`อนุมัติ` answers the four decisions on the sheet and nothing beyond them. Still
+his, still unanswered, still non-blocking, and **none of them may be read as
+settled by this word**:
+
+- **Q22-b** — the dates and any result/number per project. Under **R9** both
+  entries ship with those fields simply absent. He is looking at that omission
+  now, and closes it in one line whenever he wants.
+- **Q28** — the nine existing `/portfolio` entries. Default **keep**; nothing is
+  removed. `PROJECTS` becomes eleven, which is exactly why decision 4 existed.
+- **Q29** — moot for this REQ per **SQ14**: `Project` has no image slot, so no
+  screenshot ships either way.
+- **Observation 1** (nine technologies not in `SKILL_GROUPS`) and
+  **Observation 7** (six sourced product numerals) — offered, not taken. Nothing
+  is added to `SKILL_GROUPS` and no numeral enters either entry.
+- The two SA rulings recorded above (FQ44 numerals out · FQ46 trailing slash
+  kept) and the absence of an AC-f "sole author" line stand as ruled. He can
+  still overrule any of them in one word; this record is not his agreement to
+  them, it is his approval of the text they produced.
