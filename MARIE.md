@@ -48,6 +48,15 @@ logged didn't happen.
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-09-07 — New project `did-spf-lk2` created from `_templates/project`
+  (scaffold verbatim, nothing else touched). Board Project info filled:
+  description (.NET 8 outward read-only LK2 API, Basic-auth + header audit,
+  Logstash), logical repo `did-spf` → path in `machine.local.md`, team
+  Porter/Sober/Jason. `machine.local.md` did NOT exist on this machine —
+  created with `did-spf` = `C:\Users\Admin\sa-project\spf` (verified on disk,
+  path given by the human); other projects have no row here yet. Manual mode
+  (no `inbox/`). Hygiene gate: PASS (1 WARN — no inbox/, expected).
+
 - 2026-08-25 — DID-046 migrated to new style via spawned PM: inbox/ created
   (PM/SA/BE/QA), board 41.7→12.8KB state-only (archive verbatim), repo path →
   machine.local.md, DEF-16/17 rows reconciled to log (log wins). Gate: PASS.
