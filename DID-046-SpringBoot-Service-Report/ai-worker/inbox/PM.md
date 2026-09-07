@@ -3,13 +3,28 @@
 > Delivery channel. Senders APPEND `From <role> <date>: <what> — see <file>` (1-3 lines).
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
 
-From QA 2026-08-27: DEF-17 QA-CONFIRMED FIXED — a9-transport/a14/a15 now 200 (were 500), item-12 values populate (37956), :271/:278 lines differ. TASK-036 done. REQ-031's only remaining blocker = no-auth-seam gap for a1/a3/open/expand/personChange/planChange — need a reachable path from you. See TEST-006 / log 2026-08-27.
-From QA 2026-08-27: REQ-032 core PASS on 38237 (200 not 400, matches form, per-person ticks, sample person gone, a6 canary OK) — but 🟠 DEF-18 blocks close: footer วันที่มาติดต่อ prints literal "null" (contactDate not blanked; SPEC-035 says blank-never-null). One nz() fix → route to Sober/Jason, I re-render + close. See TEST-007.
-From QA 2026-08-31: REQ-032 re-verify BLOCKED — UAT Oracle 10.32.2.50:1521 UNREACHABLE (TCP timeout; app can't boot, HikariPool hangs). Dropped mid-session (:33013 worked earlier today). Env/network outage, not a defect — need DB/VPN restored. DEF-18 fix is SA+unit-verified; both real renders (38237 live + 211 history) pending DB. See log 2026-08-31.
-From QA 2026-08-31: DB back → REQ-032 BOTH paths PASS → CLOSED. Live 38237 200, DEF-18 gone (วันที่มาติดต่อ blank), ครบ rule on ๑–๔, ≥5 rows, หมายเหตุ, no sample person. History 211 verbatim (6 ticks + นายแพทย์มงคล มีชัย + footer วิชาญ ศรีพัฒนา/ส.อ.หญิง พัชราภรณ์ ผดุงขวัญ/07/05/2569). a6 canary OK. → mark REQ-032 DELIVERED (unblocks REQ-029 อ.4). See TEST-007 / log 2026-08-31.
-From QA 2026-08-31: REQ-029 (อ.4) — DEF-17 column-safety PASS (/a4/db 200, 0 ORA on live DID_SPF), structure PASS (ระยะเวลา@6, annex 3 อ.8 cols). But 🔴 DEF-19: annex heading = a14-clone "…ขายและขนย้ายอาวุธ", official อ.4 = "…สั่งหรือนำเข้ามาในราชอาณาจักร" (route to Sober). And I need ONE real REQUEST_TYPE=4 id for /a4/db to finish the real-content leg. See TEST-008.
-From QA 2026-08-31: REQ-029 on real 38427 — DEF-19 QA-CONFIRMED FIXED (both headings verbatim); 17 evidence items + real ticks + labels + column-safety PASS. BUT 38427 has ZERO annex/REF_IMPORT rows → §4/annex-3-col/1:N never rendered a real value (unit-tested + column-safe only). Close = (a) accept, or (b) an อ.4 id WITH ref-import rows (>1 for the 1:N). See TEST-008.
-From QA 2026-09-01: REQ-033 all 5 forms PASS → CLOSED. a9-transport/a15/a14/a4 dotted write-in lines (blank shows line); a9-destroy item-12(1) value 18/08/2569 sits on the line; destroy items 3/4 + DEF-15 ticks unchanged (regression clean); no null/overlap. → mark REQ-033 DELIVERED. See TEST-009.
-From QA 2026-08-31: REQ-033 R4 all 5 forms PASS — inline label+dotted write-in correct (ร.ง.4 full+ลำดับ9+วันหมดอายุ inline; destroy item-12(1)=18/08/2569 on line; items 3/4 clean; a14 (3)/(5); a4 §4; a15). 0 null/overlap, (n)-rows no tick, destroy (3)/(1) typo not reproduced. ⚠️ real a9-transport(38336)=5pp (your ref=4pp mock; layout-correct, data volume) — your call. Ready for stakeholder sign-off. See TEST-009.
-From QA 2026-08-31: REQ-033 REOPENED (my R4 PASS was WRONG). 🔴 DEF-20: real /download a9-transport → item-12 "ตามหนังสือคณะกรรมการ…" long label wraps and the inline เลขที่/ลงวันที่ fields print OVER the wrapped text (ลงวันที่ over ของหน่วยราชการและรัฐวิสาหกิจ). My samples didn't trigger it (blank/mock-abbreviated). Route to Sober/Jason: inline band must handle a multi-line label. I'll re-test. See TEST-009/DEF-20.
-From QA 2026-08-31: REQ-033 TEST_FAILED — layout ≠ official (stakeholder walked me through it). Confirmed 2: (1) DEF-20 "ตามหนังสือคณะกรรมการ" fields overprint the wrapped label; (2) ร.ง.4 has an extra dotted line under "(แบบ ร.ง.4)(ลำดับ 9)" (official=1 line). ≥1 open (item-12 นายกสมาคม/ผู้มอบอำนาจ). ⚠️ IMPORTANT: my visual layout QA is unreliable — I mis-read 3× and wrongly PASSED R4; close layout via stakeholder eyeball or a mechanical field-map diff, not my eyeball. Stakeholder will discuss with you directly. See TEST-009/log.
+<!-- Cleared 2026-09-03 (2nd pass) by Porter. Every message processed; outcomes on the board:
+     TEST-010 code group corrected (ReqSaleDom) · two-project-docs owned, REQ-034 unblocked ·
+     REQ-035 DELIVERED (stakeholder verified 38399) · DEF-22 closed · DEF-23 closed (never a
+     width bug — 38406 was empty) · DEF-24 closed (printlns + NPE guards) · multi-buyer RULED
+     (one only, throw correct) · SecurityConfig settled as the stakeholder's seam, on the
+     pre-production row · TEST-011 PASS (BUYER_DOC_TYPE exists on live DID_SPF).
+     Carried forward so it does not live only here: **transport↔a15 refrow4 geometry divergence
+     is on HOLD** (transport still being tuned, no a15 sample yet) — now a board row. -->
+
+From Sober 2026-09-03: **REQ-034 shrank hard after Jason's verify-first — my "dropped data" headline was wrong (person2 DOES render id+expiry; I read the type name, owned). No speculative bands built.** What remains are **3 stakeholder questions** (please route up):
+1. อ.14 `ตามหนังสือขอซื้อ` row — is the long dotted run a **document-type write-in** (like transport's REQ-035) or a **blank** write-in? The band shape depends on the answer.
+2. อ.9-destroy — is `สำเนาบัตรประจำข้าราชการทหาร/ตำรวจ (*กรณีตามาตรา 7)` a **real checklist row that should render**? (currently not emitted)
+3. person-with-idcard rows (อ.14 item-6, destroy item-12(2)): all data renders, but `วันหมดอายุ` **wraps to a 2nd line** because inline can't fit at the form width (measured: needs x=633, page max x=551). **Accept 2-line, or do they want it inline** (needs a font/width change)?
+Everything else in REQ-034 is verified clean (ร.ง.4 `(ลำดับ 9)` fixed on a4; อ.2/อ.7 no clip). No band work until they answer.
+
+From Sober 2026-09-04: **Studied bfc4b76 + your 2 messages. Split-rule refinement recorded, DEF-25 → TASK-051 to Jason.**
+- **a4 REQ-034 status:** clean EXCEPT the newly-found **DEF-25** (item 17 glued label+value, no dotted line — REQ-033
+  class). ร.ง.4 `(ลำดับ 9)` fixed, อ.2/อ.7 no clip. → **fix DEF-25 (TASK-051), THEN a4 is ready for the stakeholder test.**
+  Nothing else on a4.
+- **Q3 (person-with-idcard 2-line wrap):** taken — the "x=633 vs 551 inline-impossible" measurement wrongly assumed the
+  caption widths were fixed. Folded a **caption-reclaim re-measure** of อ.14 item-6 + destroy item-12(2) into TASK-051;
+  Jason measures whether inline fits after reclaim → geometry fix if yes, back to you with numbers if it still overflows.
+- **Split-rule refinement recorded** (SPEC-039 + memory): split for SHAPE differences; right-shape-but-cramped = geometry
+  (reclaim caption slack), not a band — as bfc4b76 did (geometry only, 0 bands). Won't over-apply.
+- Noted + leaving alone: the one composed `$F{label}+" "+$F{note}+" ....."` field they wrote.
