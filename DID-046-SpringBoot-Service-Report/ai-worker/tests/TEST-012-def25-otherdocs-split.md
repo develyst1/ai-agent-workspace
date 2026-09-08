@@ -1,7 +1,7 @@
 # TEST-012: DEF-25 close — `เอกสารอื่น ๆ (ถ้ามี)` split label + dotted write-in (5 forms)
 
 - Source: DEF-25 / TASK-051/052/053 close gate (Porter, 2026-09-07)
-- Status: **EMPTY branch PASS on all 5 · POPULATED branch PASS on อ.4 · POPULATED UNVERIFIED on อ.14 + a9-family (no sample with data)**
+- Status: **DEF-25 QA-CLOSED — EMPTY PASS ×5 · POPULATED PASS on อ.4 (38427) + a9 base (38448) · POPULATED on อ.14 = evidenced accepted gap (no sample in DB)**
 - Environment: own clean build, `:33024`, dev, UAT-wired (DID_SPF), read-only
 - Tested: 2026-09-07 by Tanya
 
@@ -55,3 +55,27 @@ this boot and every `target/classes/.../evidence.jasper` is timestamped to this 
 อ.4 38419 + the other 4 forms EMPTY PASS (dotted line prints, label separate, never glued), all 200 / 0 ORA.
 POPULATED still unverified on อ.14/อ.15/a9-transport/a9-destroy (no sample with item-13 data). Confirms the
 first run was not a stale-`.jasper` artifact.
+
+## Populated branch closed 2026-09-08 — 38448 (the one sample the stakeholder's finder SQL returned)
+Stakeholder ran Query 1; it returned exactly one populated request: `REQUEST_ID 38448 · REQUEST_TYPE 3 (อ.9) ·
+OTHER_DOC_TEXT "ทดสอบ001"`. Rendered `/a9/db/38448` → **HTTP 200, 0 ORA, 5 pp**. Resolver picked the **transport
+(A9T)** variant (title `หลักฐาน…ขนย้ายอาวุธ`, no "เพื่อทำลาย"; `MOVE_REQUEST_TYPE≠2`). Item-13 on page 3:
+```
+13.☑ เอกสารอื่น ๆ (ถ้ามี)  ทดสอบ001 .............................
+```
+**POPULATED PASS** — checkbox ticked, label separate, value `ทดสอบ001` sits **on** the dotted write-in, the dotted
+line continues past it, **not glued**. This exercises the shared a9 base element (`A9CheckListReportBuilderBase:236`),
+which is the single implementation behind **อ.9 transport, อ.15 and อ.9 destroy** — so the populated branch is proven
+for all three at once (their empty branch already passed).
+
+**Query 1 returned nothing for type 6 (อ.14) and type 5 (อ.15); Query 2 returned nothing (no อ.15 with a real
+tick+file on 00014/00020).** Searched-and-absent, queries on record.
+
+## FINAL verdict — DEF-25 QA-CLOSED
+- **EMPTY branch PASS on all 5** (อ.4 38419 · อ.14 27300 · อ.15 35429 · a9-transport 37956 · a9-destroy 38362).
+- **POPULATED branch PASS on อ.4** (38427 `test`) **and on the a9 shared base** (38448 `ทดสอบ001`, transport) —
+  covering อ.15 + a9-destroy via the same `Base:236` element.
+- **POPULATED branch on อ.14 = evidenced accepted gap.** อ.14 is an **independent builder**, so อ.4's pass does
+  **not** cover it, and Query 1 confirmed **no type-6 request with `เอกสารอื่น ๆ` content exists** — nothing to
+  render. Re-verify when the first such อ.14 appears (re-run Query 1). Its code path is covered by Jason's
+  `structure_check.py` fail-on-revert (34/34) and mirrors อ.4's proven element.

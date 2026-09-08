@@ -80,3 +80,33 @@ From Sober 2026-09-07: **Sample-finder SQL delivered → `ai-worker/DATA-QUERY-2
    an อ.15 that actually ticks those rows. None = the accepted gap stands with evidence.
 Each query says in-line what every column proves, so they can read the result, not the SQL. **If a family returns nothing,
 that's the answer — accepted gap, not padded.** Logged Tanya's DEF-21 confirmation (9/9 render, tick branch = gap).
+
+From Tanya (QA) 2026-09-08: **38448 rendered → DEF-25 QA-CLOSED · DEF-21 closes.** `/a9/db/38448` → 200, 0 ORA, 5pp; resolver picked **transport (A9T)** (title `…ขนย้ายอาวุธ`, MOVE_REQUEST_TYPE≠2). Item-13: **`13.☑ เอกสารอื่น ๆ (ถ้ามี)  ทดสอบ001`** — ticked, label separate, value on the dotted write-in, not glued = **POPULATED PASS on the shared a9 base** (`Base:236` → covers a9-transport/a15/a9-destroy). **DEF-25 = QA-CLOSED:** EMPTY ×5 + POPULATED อ.4 (38427) + a9 base (38448); **อ.14 populated = evidenced accepted gap** (independent builder — อ.4's pass does NOT cover it — and your Query 1 found no type-6 sample). **DEF-21 = closes:** structural 9/9 + Query 2 (no อ.15 tick+file) = evidenced accepted gap. tests/TEST-012 + TEST-010 + board rows all updated. Nothing waiting on me.
+
+From Sober 2026-09-07: **REQ-036 delivered → `specs/SPEC-041-a4-correctness-field-mapping.md`.** Every อ.4 section
+(page-1 header + law refs, signatures, evidence items 1-17, annex) as Rule · Source · table.COLUMN · Code(A4:line) ·
+Verify SQL · Status. Enumerated by **walking `buildFromDb` + sub-builders, not a render** (stated in the doc). All
+columns/lines cited from source — **no UNKNOWN rows, no guesses**; a4 code untouched. Oracle 11.2, `(STATUS IS NULL OR
+<>'D')`, default :req=38427, and each query says in one line what it proves. **Gaps carried INTO the table:** item 6 อ.8
++ annex 3-col block = `T_T_REQUEST_DTL_REF_IMPORT` EMPTY (accepted gap, with the query that would prove it once data
+exists); annex join key `VW_REQUEST_DTL.ID=T_T_REQUEST_DTL.ID` flagged UNCONFIRMED on live; item 17 populated = PASS 38427.
+Also noted for them: signatures print in order 1,3,2,4 (slots 2&3 swapped, deliberate) so it doesn't look like a bug.
+Stakeholder can run it top-to-bottom against a 38427 render without asking us anything.
+
+From Sober 2026-09-08: **DEF-26 → TASK-054 (Jason, all 4 builders). SPEC-041 items 3/4 corrected.** Fix = partition in Java:
+fetch `findActivePersonsAll` once, item4 = `perType==2`, item3 = the complement (NULL + every non-2 land here by
+construction) — makes "no person in neither/both" structural, not two predicates, and avoids the Oracle `<>2`-on-NULL trap.
+Required a **partition unit test** (assert exactly-one-bucket + fail-on-revert) + mock with a non-1/2 person. Scope = a4/a6/
+a14/a9-base per your approval. SPEC-041 now states the corrected rule + a PER_TYPE-filter-free Verify SQL + notes the
+stakeholder found this by reading the doc. **Ball → Jason.** QA still halted; nothing for Tanya.
+
+From Sober 2026-09-08: **DEF-26 code CLOSED (TASK-054), all 4 builders — SA-verified.** Partition-in-Java (no one droppable), exact-match repo method removed (trap deleted), partition test falsified 19/19. The "mock a non-1/2 person" step is N/A — the preview bypasses buildPersons/PER_TYPE, so it'd be decorative; the unit test is the coverage (my mis-spec, owned). Only remaining = QA a real request with a non-1/2/NULL person → item 3, whenever QA is unhalted. Nothing on Jason.
+
+From Sober 2026-09-08: **Query 3 added → `DATA-QUERY-2026-09-07-samples.md` (appended, one batch for the stakeholder).**
+Finds active `T_T_REQUEST_PER` with `(PER_TYPE IS NULL OR PER_TYPE NOT IN (1,2))` (the NULL trap you flagged, written
+correctly) joined to REQUEST_TYPE + a per-family COUNT. Answers both: did DEF-26 bite real data, and which request QA
+renders to see a recovered person. **a6 = REQUEST_TYPE 8** — looked it up in `RequestTypeResolverService:41-51` (the
+resolver, authoritative; CLAUDE.md's FORM_ID note is stale), not guessed. Fixed forms = types 3/4/5/6/8. One line per
+column on what it proves; explicit reading rule (0 rows = nobody lost, say so plainly; rows = pick a 3/4/5/6/8 one for QA).
+
+From Tanya (QA) 2026-09-08: **TEST-013 (DEF-26) → PASS.** Counted, not eyeballed. **อ.9 38238:** item 3 shows **all 8** dropped `PER_TYPE=0` people (numbered 1–8, all named); item 4 = 0 named (2 blank pads → no dup-into-4; 0 type-2 on this req). **Spot-checks 2 recovered each** under item 3: อ.4 38304 · อ.15 38305 · อ.14 38307 (a4/a14 independent builders + a9-base all carry the partition). **อ.6 = 0 affected** (stated, no render). All 200/0 ORA. ⚠️ **Data finding routed up:** 38238 has 8 PER rows but 5 distinct identities (3 exact name+ID dupes) — upstream duplicate `T_T_REQUEST_PER` rows, NOT a DEF-26 fault; stakeholder's call whether to clean. See tests/TEST-013. **DEF-26 = QA-PASS.** — Also: the board's TEST-012 row still says "38448 NOT RUN", but I **did** render 38448 on 2026-09-08 (transport A9T, `13.☑ … ทดสอบ001` = populated PASS on the a9 base) — see my 84-line PM entry above + tests/TEST-012. Left the row for you to reconcile. Nothing waiting on me.

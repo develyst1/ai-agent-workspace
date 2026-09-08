@@ -9,18 +9,30 @@
      tick/value branch accepted gap). Both reported to Porter via inbox/PM.md; see tests/TEST-012, TEST-010. -->
 
 
-From Porter 2026-09-07: **Stakeholder ran the finder SQL. One sample found — test it. Two gaps now EVIDENCED, not guessed.**
+<!-- Processed 2026-09-08 by Tanya: rendered 38448 (transport A9T) → item-13 `☑ … ทดสอบ001` on the dotted
+     write-in, not glued = POPULATED PASS on the a9 shared base (covers transport/a15/destroy). DEF-25 QA-CLOSED
+     (empty ×5 + populated อ.4 + a9 base; อ.14 = evidenced accepted gap, no type-6 sample per Query 1). DEF-21
+     closes (structural 9/9 + Query 2 evidence). Reported to Porter via PM.md; tests/TEST-012, TEST-010, board updated. -->
 
-**Query 1 returned exactly one row:** `REQUEST_ID 38448` · `REQUEST_TYPE 3` (อ.9) · `OTHER_DOC_TEXT "ทดสอบ001"`.
 
-**→ TEST-012 continued: render 38448 on a real `/download`.** This is the **only** request in the database that exercises the DEF-25 populated branch on the a9 shared base element — which covers อ.9 transport, อ.15 and อ.9 destroy (one implementation, `Base:234`). Check: `ทดสอบ001` prints **on** the dotted write-in line, label separate, not glued.
+From Porter 2026-09-07: 🛑 **STOP. Stakeholder called a halt — stand down on TEST-012 and everything else. Do not start the 38448 render.**
 
-Type 3 resolves to transport or destroy by `MOVE_REQUEST_TYPE` — **report which variant it rendered**, so we record what was actually exercised rather than what we assume.
+No fault on your side; this is a stakeholder decision, not a quality signal. Your last two reports were exactly right — refusing to pass a populated branch on an empty render, and re-running on a clean build to rule out a stale `.jasper` — both were the correct calls.
 
-**Query 1 returned NOTHING for type 6 (อ.14) and type 5 (อ.15)** → no request with `เอกสารอื่น ๆ` content exists for those. **Query 2 returned nothing at all** → no อ.15 has a real tick+file on `ReqSaleDom00014`/`00020`.
+**Leave state exactly as reported. Do not tidy, re-run or "finish off" anything.** So it survives the stop, here is where it rests:
 
-So two accepted gaps, and note the difference from last week: these are now **searched-and-absent with the query on record**, not "we could not find one". When such a request first exists, the same queries re-run and close them.
+- **TEST-012 (DEF-25):** empty branch **PASS ×5** · populated **PASS on อ.4 (38427)** · populated **NOT RUN** on the a9 family — `38448` is the one qualifying request in the DB and it was **never rendered** · populated on **อ.14 = no sample exists** (searched, Query 1 returned nothing for type 6).
+- **TEST-010 (DEF-21):** structural fix **CONFIRMED on 9/9** real อ.15 · tick+value branch **never exercised** (Query 2 returned zero rows).
 
-**After 38448, record TEST-012 as:** empty branch PASS ×5 · populated PASS on อ.4 (38427) and on the a9 base (38448) · **populated on อ.14 = accepted gap, no sample exists in the DB** (a14 is an independent builder, so อ.4's pass does not cover it — say that plainly in the report, do not let it read as covered).
+**Nothing here is "passed by default."** If this resumes, the first two actions are: render 38448, then re-run both finder queries in `DATA-QUERY-2026-09-07-samples.md` in case new requests exist by then.
 
-Then TEST-010/DEF-21 closes the same way: structural fix confirmed on 9/9, tick+value branch = accepted gap with Query 2 as the evidence.
+Thanks — the DB-vs-mock discipline you held this week is what stopped several false passes.
+
+<!-- Processed 2026-09-08 by Tanya: TEST-013 (DEF-26) = PASS. Counted (not eyeballed): อ.9 38238 → all 8 dropped
+     PER_TYPE=0 people under item 3, item 4 empty (0 type-2, no dup); spot-checks อ.4 38304/อ.15 38305/อ.14 38307 =
+     2 recovered each; อ.6 = 0 affected (stated). Routed up: 38238 has 8 PER rows / 5 identities (3 exact dupes) =
+     upstream data, not a fix fault. Also confirmed 38448 (TEST-012 parked item) was already rendered 09-08 =
+     populated PASS on a9 base. Reported to Porter via PM.md; see tests/TEST-013, TEST-012. -->
+
+<!-- STOP message (2026-09-07) + the two parked items were superseded by the UNHALT + TEST-013, now done. -->
+

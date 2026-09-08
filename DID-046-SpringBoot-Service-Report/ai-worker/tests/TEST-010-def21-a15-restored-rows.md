@@ -55,3 +55,10 @@ The two decisive facts, kept separate:
   real อ.15 with 00014 or 00020 attached ever appears.
 - Note: `/a15/db` bypasses the family resolver (routing is REQ-028's gate); data & form are identical to
   what `/download` produces for a type-5 request.
+
+## Accepted gap now EVIDENCED 2026-09-08 — DEF-21 closable
+Porter had the stakeholder run the finder SQL (Query 2): **no อ.15 request has a real tick+file on
+`ReqSaleDom00014`/`00020`** — searched-and-absent, query on record. So the ticked/populated branch of the two
+restored rows is not a "couldn't find one", it is **confirmed to not exist in the DB yet**. Combined with the
+structural fix confirmed on 9/9 here, **DEF-21 closes**: silent-drop fixed and proven on real data; tick/value
+branch = accepted gap with Query 2 as evidence. Re-run Query 2 to re-verify when such a request first exists.
