@@ -86,8 +86,10 @@ chosen. **Both halves — the schedule and the 18:00 booking limit — had been 
 - **There is NO rate limiter anywhere in the codebase** (Sober, 2026-08-17, grounding REQ-051 — its public
   no-login page). Any attempt-counting or throttling is new infrastructure, never a library flag.
 - **`job_runs.byBookingType` reports only the four original types** — `FIRST_TRIAL · SINGLE_SESSION ·
-  COURSE_PACKAGE · VOUCHER`. Observed 09-02. ⚠️ Whether the day-end also *skips* `OTHER` when selecting what to
-  auto-attend is **open with @Sober** — reporting and selecting are different questions.
+  COURSE_PACKAGE · VOUCHER`. Observed 09-02. ✅ **RESOLVED from the code, Sober 2026-09-07: the day-end does NOT
+  skip `OTHER` when SELECTING** — the query is `inArray(bookingType, ["FIRST_TRIAL","SINGLE_SESSION","OTHER"])`
+  (`jobs.service.ts`, TASK-225). **Only the REPORT omits it.** Reporting and selecting were different questions and
+  the answers differ.
 - 🔴 **The product has almost no DELETE at all.** Exactly **two** deletes exist — `DELETE /teachers/:id/line-link` and `DELETE /settings/:key` — and the FE calls one. **Students, parents, courses, vouchers, bookings and posted `bo.movement` rows have no delete anywhere**: a booking is only *cancelled*, a parent only *suspended*, both still listed (Tanya, API + FE, 2026-08-11; earliest 2026-08-01, `api.ts:34`). **Nothing with history can be removed — only hidden.** ⚠️ **This supersedes the earlier student-only line, which was too narrow.** ⇒ **anything created on a real box is permanent**; QA can never clean up after itself. **`course:cleanup` is no escape hatch: it refuses any course with a posted sale, and creation always posts one — so it refuses 100% of normally-created courses** (Porter, 2026-08-23).
 - 🔴 **ONE shared staff login ⇒ every history event carries `actor = null` by design** (SPEC-035 §1) — **the product cannot attribute an action to a person** (2026-08-24). Per-person permissions cannot be enforced at all — "only person X may do this" needs separate logins as a **prerequisite** (Porter, 2026-08-01).
 - **NO audit table exists anywhere** (BE, 2026-09-02) : clearing a family's LINE link (the only way an account moves families) is a **log line only**.
@@ -107,6 +109,27 @@ chosen. **Both halves — the schedule and the 18:00 booking limit — had been 
 - **`notification_outbox` and the `bo` ledger have NO read API; QA cannot trigger any job** ⇒ each is a DATA REQUEST or the owner's hands (Tanya, 2026-08-20/08-29).
 - **A charged `อื่นๆ` amount is WRITE-ONLY with NO CEILING** — nothing reads it back, nothing bounds it; a ฿2,000-for-฿20 typo is money before anyone sees it (Tanya/Sober, 2026-09-01).
 - 5-per-phone cap = `MAX_STUDENTS_PER_PARENT`, asserted in `module-isolation.test.ts` (Jason/Sober 08-01).
+- 🔴 **A course RE-PLAN moves what is OWED; it does NOT move what has HAPPENED.** A resumed course lays its
+  remaining sessions out from the admin's new date/time, but **a declared leave keeps its ORIGINAL date and
+  time** — `endableSessions` is `COURSE_LIVE` only, so a pause never touches a `SICK_LEAVE` row, and a re-plan
+  never re-dates one. ⇒ **a re-planned course legitimately shows a mixed-time plan**, and that is the truth: the
+  leave WAS at the old time. 🔑 **Same distinction as `cancelledByPause`: a leave is a DECISION that was made;
+  the remaining sessions are the PLAN being replaced.** (Owner's screenshots + @Porter's question, ruled by
+  @Sober, 2026-09-08.) 📌 **Confirmed twice in two nights, from two different directions.**
+- 🔴 **THIS PRODUCT COMMITS AND THEN SHOWS — there is no preview surface anywhere, and it has bitten twice in one night** (Sober, 2026-09-08). **The six notifications** can be read only by the owner, **after sending** (no preview endpoint; a push to an unlinked recipient returns `skipped` without rendering). **A course RE-PLAN** states its new last session and expiry only in the **response** — `POST /courses/:id/resume` is the only route, so *"read before you confirm"* is not reachable without a `resume/preview`. ⇒ **every verification of a message or a re-plan costs a round trip through a human doing the act.** 🚫 **Not a defect in either feature — it is the shape of the product**, and @Fern's refusal to compute the dates client-side to fake the ordering is the right ranking: **a computed preview that drifts from the server is worse than reading the outcome a second later.** 📌 Something to decide about deliberately, on a day when nobody is deploying.
+- 🔴 **THE SIX NOTIFICATION MESSAGES CAN BE READ BY EXACTLY ONE HUMAN BEING BEFORE THEY GO OUT — the owner.** There is **no message-preview surface** (no preview endpoint), and **a push to an unlinked recipient returns `skipped` WITHOUT rendering any text** ⇒ @Tanya cannot see a composed message at all, on any box. **This is structural, not a QA gap** (@Porter + Tanya, 2026-09-08). ⇒ **every correction to a notification is verified on the owner’s phone or not at all**, which is why each one costs a round trip. 📌 It is also why @Porter’s *"test it with a note PRESENT"* mattered: an empty booking renders the omit-empty path and proves nothing about the field.
+- 🔴 **`tsched_empty` is the ONE i18n key shared by a CONVERSATIONAL reply and a NOTIFICATION** — `line-schedule.ts:42` (the teacher’s `ตาราง`) and `line-today-schedule.ts:64` (the daily-reminder outbox). ⚠️ **The conversation is bilingual and the notifications are held single-language (SPEC-077 §5), so this key sits ON that boundary.** ✅ **It is safe because composition happens at the CALLER** — `both((l) => …)` makes the reply bilingual while the notification still calls `t(key, lang)` itself. 🔴 **A per-key bilingual helper would have made the notification bilingual SILENTLY**, which is what `SPEC-077` §3 originally specified before @Jason replaced it for an unrelated reason. ⇒ **if the notification language decision is ever unheld, this key is the first thing to look at** (Sober + Jason, 2026-09-07).
+- 🔴 **The two `BookingStatus` unions are DELIBERATELY SEPARATE — a decision, not a coincidence** (@Fern's Q1, ruled by @Sober, 2026-09-08). `smart-scheduler-front/types/api/contract.ts` is **the wire**, synced from the backend's `types/contract.ts`; `types/app/scheduler` is **the app's own model**, already deliberately not the wire's (`Booking` is flattened, `dtoToBooking` is the seam) and carrying app-only vocabulary (`OFF_CALENDAR_STATUSES`, `BOOKING_STATUS_COLOR`, `isDeliveredStatus`). 🔑 **The argument is an event that happened:** her wire copy was CORRECT while the backend's published contract was WRONG (TASK-270) — **had the app union derived from the wire, the error would have propagated into the colour map, the icon map and `OFF_CALENDAR_STATUSES` instead of being contradicted by them.** ⇒ **DERIVATION MAKES THE CLIENT INHERIT THE SERVER'S MISTAKES.** 🚫 **This RANKS the two options @Sober left open on 09-07: codegen from the OpenAPI is not merely one of two, it is the WRONG one.** ✅ **If the duplication is ever closed, it is closed with a CROSS-REPO CONTRACT TEST — "the two lists must agree" — never by making one depend on the other.**
+- 🔴 **Cross-repo duplication is a CLASS, not an incident — three instances by 2026-09-07:** the booking-status **list** · the status **labels** (`dictionaries.ts`) · the **attention-card keys and their headings** (`attention.service.ts` + `dictionaries.ts`). **Each is complete and correct today; none has a mechanism keeping it so, and a RENAME on the backend would break the front end silently.** ✅ **No task cut for any of them (Sober, 09-07):** there is no defect, only a missing mechanism, and the two real options — **(a) generate the FE types from our OpenAPI** or **(b) a cross-repo contract test** — are decisions about how the repos relate. 📌 **Three occurrences strengthen (a); it is @Porter's to raise when the owner has room.**
+- 🔴 **A FIFTH copy of the booking-status list lives in `smart-scheduler-front`** (`types/api/contract.ts:13`) and it is **COMPLETE — all nine** (@Fern added `PAUSED` for REQ-076). ⇒ **the CLIENT's contract was correct while the server's own published OpenAPI said the status did not exist.** ✅ **No task cut (Sober, 09-07): there is no defect — the list is right — only a missing mechanism.** The two real options are **(a) generate the FE types from our OpenAPI document** (truthful since TASK-270) or **(b) a cross-repo contract test**; both are decisions about how the repos relate. 📌 `BookingStatusAction` (the four verbs) matches on both sides — **the write path has never had this problem.**
+- 🔴 **The booking-status list exists FOUR times, and only the DB enum is the truth** — `db/schema.ts`
+  `pgEnum("booking_status")` (**9 values**) · `validation.ts` `BOOKING_STATUS` · `types/contract.ts`
+  `BookingStatus` · `openapi/document.ts` (**7 each**). **`PAUSED` reached one of the four ⇒ DEF-1: the pause
+  tray's own request is a 400** (Tanya on `sid`, 2026-09-07). **`NO_SHOW` has the identical gap and nobody had
+  found it** — historical no-show rows render but cannot be listed. ⇒ **TASK-270 makes the three derive from the
+  DB enum.** 🚫 **Not the same thing as `SLOT_INACTIVE_STATUSES` / `CALENDAR_HIDDEN_STATUSES` / the
+  availability list** — those answer *questions* and are allowed to differ; these four are the same list, four
+  times, for no reason (Sober, 2026-09-07).
 
 ## LINE
 
@@ -140,8 +163,13 @@ person who can run it.**
 - 🔴 **An admin's reply typed in LINE OA Manager is OUTBOUND and never reaches our webhook.** Measured by the
   owner on `sid`, 2026-09-01: he replied, and no `[line-in]` was logged. ⇒ "bot mutes when an admin replies"
   **cannot be triggered automatically.**
-- **LINE on PC: no rich menu, and buttons cannot be tapped at all — text only** (owner, 09-01). Every choice in
-  every flow therefore needs a typed equivalent.
+- 🔻 **SUPERSEDED — do not read this line alone.** *"LINE on PC: no rich menu, and buttons cannot be tapped at
+  all — text only"* (owner, 09-01). **CORRECTED 2026-09-02, in this same file (§LINE, the ‹CORRECTED› entry):
+  quick-reply chips ARE tappable on PC.** What is true: **they vanish the moment the user types**, and PC has no
+  rich menu to bring them back. ⚠️ **The conclusion is unchanged — every choice still needs a typed equivalent —
+  but the reason is different, and the difference decides where the buttons must be RE-OFFERED** (TASK-251).
+  📌 **Left in place rather than deleted, marked rather than trusted: @Sober quoted the superseded half on 09-06
+  and specced from it.** RULE ZERO is newest-wins, and a file can contradict itself in two places.
 ### Who can receive a message — read before ANY send
 - 🔴 **Who is LINE-linked on `sid` is CONTESTED.** Logs show `Bank` **and `Haris`, a REAL teacher** (09-02), a third account as a parent (09-03), and on 09-04 `Bank` turning parent while another account took that name. ⚠️ CONTESTED — see `SYSTEM-FACTS-CONTRADICTIONS.md`; do not act without the owner. **Whichever side is right, `sid` is not a safe isolated test box.**
 - 🔴 **A departed teacher whose account is still bound keeps receiving schedule pushes on their personal LINE — there is no staff-side unbind** (Porter, 2026-07-30).
@@ -331,6 +359,22 @@ cover the invite code, and the invite's parameters do not cover the 2FA. **Each 
 - **Prices are per PROGRAM × PACKAGE across FOUR groups: `bike-skate` (one line for 6+ programs) · `onewheel` · `balance-private` · `balance-group`. Availability is NOT uniform (no 10 h Onewheel, no 4 h Balance Play), and the per-hour rate FALLS with size (1,198 → 1,082 → 979)** (owner's card, 08-01/22). Numbers: `real-price-list-2026-08-01.md`.
 - 🔴 **LINE NEVER UNLOCKS ANYTHING THAT MOVES MONEY** — children, leave, check-in only. It keeps the accepted phone-only LINE entry risk survivable (owner, 09-02; verbatim in `SYSTEM-FACTS.md`).
 - ⚠️ CONTESTED — **the phone-keyed lookup posture**: "a live disclosure" on 07-31 vs accepted risk by 09-02.
+- 🔴 **`refType` CANNOT tell a per-booking revenue posting from a package sale — both are `"SALE"`.**
+  `recordSale` / `postBookingSale` write `refType: "SALE"` with **`refId` = the BOOKING id** and
+  `idempotency_key = rev:<bookingId>` (`lib/sale-post.ts:133/238/425`). ⇒ **the discriminators are the
+  idempotency key (`rev:%`) and `ref_id`, never `refType`.** *(`BOOKING` / `BOOKING_REVERSAL` is the FREELANCE
+  budget draw — a third thing again.)* **A ledger reading that classifies by `refType` alone cannot answer "is
+  any movement tied to a booking"** (Sober, from the code, 2026-09-07).
+- 🔴 **A box whose bookings are all COURSE sessions will have ZERO `rev:<bookingId>` movements, and that is
+  CORRECT.** The day-end select is `inArray(bookingType, ["FIRST_TRIAL","SINGLE_SESSION","OTHER"])` —
+  **`COURSE_PACKAGE` and `VOUCHER` are excluded on purpose**, because their revenue posted at sale and
+  re-posting would double-count. **This is the same fact as the 08-23 lines above, seen from the ledger end**
+  (Sober, 2026-09-07, ruling on @Tanya's `sid` classification).
+- 🔴 **A `SINGLE_SESSION` posts NOTHING, loudly, if its program has no price group** — `resolvePriceGroup` →
+  none ⇒ `[sale] NOT POSTED — no price group …` *(bike/skate have no 1-hour rate)*. ⇒ **"no movement appeared"
+  has at least three causes** (no price group · no seeded `bo.item` ⇒ `sale:ensure-items` · the job never ran).
+  **All three print `[sale] NOT POSTED` with the reason** ⇒ **read the LOG, never the absence of a row**
+  (Sober, 2026-09-07).
 
 ## How the customer actually operates
 
@@ -458,3 +502,179 @@ in `jobs.service.ts`; **REQ-070/TASK-180 removed it** after it told 15 real fami
 that their child had not turned up because nobody pressed a button. The enum value stays only so historical rows
 render. **And the sweep does NOT exclude `OTHER`:** the auto-attend select has no `bookingType` filter at all, and
 the revenue select names `OTHER` explicitly (TASK-225).
+
+## 🔴 The customer's LINE OA — both boxes hold their token (owner, 2026-09-05)
+
+🔴 **The two OAs, told apart — confirmed 2026-09-05 by `line:remove-menus`'s own account line:**
+- **`SOM.BALANCE.SCHOOL` (`@427ybeky`)** — **the CUSTOMER'S real account.** The token on the servers points here.
+- **`SOM-Balance-Demo`** — the demo account every LINE test before 2026-09-05 was run on.
+**Every LINE tool prints which one the token resolves to. Read that line before believing any other output** —
+it is the only thing that distinguishes a rehearsal from a change on a customer's live account.
+
+
+**What the owner set up:** the customer's **channel secret + access token** are in the env of **BOTH `sid` and
+`uat`**, deliberately — *"เขาอาจจะใช้ทดสอบได้ หรือวันที่เขาอยากใช้จริง ก็แล้วแต่เขา"*. The **webhook is switched by
+the customer on the LINE console** between the two URLs; the owner has told them to point it at **`uat`** to test.
+The customer's OA already carries **their own greeting and notifications**; our rich menus are **not** on it.
+
+🔴 **INBOUND is exclusive. OUTBOUND IS NOT. This is the whole risk in one line.**
+- **Inbound** (a person types or taps) reaches **only** the box the webhook currently names. Controlled.
+- **Outbound** (every push we send) rides the **access token**, which **both boxes hold**. ⇒ **a push from EITHER
+  box lands in the customer's real users' chats, no matter where the webhook points.** `daily-digest` 08:00 ·
+  `daily-reminder` 08:15 · `end-of-day` 18:30 · every booking confirmation — **all outbound, all unaffected by
+  the webhook switch.**
+
+⚠️ **The specific way this bites, stated before it happens:** each box has its **own database**. Today `sid`'s
+`family_line_links` hold userIds from the **demo** OA, which is why `sid` pushes are probably inert. **The moment
+the customer's webhook is pointed at `sid` even once, real people link into `sid`'s database — and `sid`'s daily
+jobs will keep messaging them afterwards, forever, including after the webhook moves back to `uat`.** Nothing
+un-links them and no job asks which OA a row came from.
+
+**🔻 Porter recommended `sid` keep the demo token. THE OWNER OVERRULED IT, 2026-09-05, and his reasons are
+better than mine. This stands as the decision; do not re-open it.**
+1. *"line oa ลูกค้ามี set up ต่างจาก demo หลายอย่าง"* — **the two OAs are configured differently**, so a green run
+   on the demo OA proves nothing about the customer's. **The 1/2/3 collision is the proof: it existed only on
+   their account and could never have been found on ours.**
+2. *"ลูกค้าตอนนี้ หมายถึงคนที่เป็น admin นะ เขายังไม่ให้ลูกค้าเขามาใช้"* — **the people on that OA today are the
+   shop's ADMIN STAFF, who are doing the testing. No parent has been let in yet.** A stray push reaches someone
+   who is expecting bot messages.
+🔻 **My framing was wrong and I am correcting it, not softening it:** I wrote this as *"a test message reaches
+real parents"*. **It does not — it reaches the admins running the test.** The risk was real; **its severity was
+not what I said**, and overstating a risk to win an argument is its own defect.
+
+🔴 **What survives, as a TRIGGER and not as a disagreement:** the exposure becomes real **the day the shop opens
+that OA to actual parents.** From that day, `sid` holding a live token means `sid`'s 08:00 / 08:15 / 18:30 jobs
+can reach them. **Whoever reads this on that day: raise it again then.** It is not an argument to have now.
+
+**Porter's superseded recommendation, kept for the record:** **`sid` keeps the DEMO OA's token; only `uat` carries the
+customer's.** The customer switches their webhook to `uat` to test — which is already what he told them — and the
+team keeps a box it can test LINE on without touching a real account. **Both boxes holding the live token buys
+nothing the webhook switch does not already provide, and it is the only thing that makes an accident possible.**
+
+📌 **Consequence if it stays as-is:** `QA.md` rule 4 (*never message real people*) can no longer be honoured on
+`sid` by care alone — it would depend on stored userIds happening not to resolve.
+
+## 🔴 SUPERSEDES the section above — one OA per box (customer's decision, relayed 2026-09-05 evening)
+
+**The customer decided this, not us.** Owner: *"ลูกค้าบอกให้เอาออกก่อนเพราะกลัวลูกค้าเขาเห็น ยังไม่พร้อมใช้งาน
+เขาคุยกับฉันแล้วว่าจะเอาแบบนี้ `sid` => my line / `uat` => admin line oa"*.
+
+| Box | LINE OA | Whose |
+|---|---|---|
+| **`sid`** | `SOM-Balance-Demo` | **the owner's own** — the team rehearses here |
+| **`uat`** | `SOM.BALANCE.SCHOOL` (`@427ybeky`) | **the customer's**, used by their ADMINS |
+
+⇒ **`sid` must have the DEMO token + secret in its env again.** Until that is done, `sid` still holds the
+customer's credentials and the split is a decision, not a state. **This is an ops step for the owner.**
+
+🔴 **Why the customer wanted the menus off, and it retires an assumption of ours:** *"กลัวลูกค้าเขาเห็น
+ยังไม่พร้อมใช้งาน"* — **they were afraid their OWN customers, the parents, would see an unfinished system.**
+📌 **A LINE OA is public.** Any parent can follow it at any time. **The earlier reading — "only the shop's admins
+are on that account" — described who had been INVITED, never who could arrive.** The customer acted on precisely
+the exposure this file recorded as a future trigger; **the trigger fired the same day it was written.**
+
+📌 **This is also the split Porter recommended and the owner overruled earlier the same day.** **The overrule was
+correct on its reasons** — the two OAs are configured differently and a demo run proves nothing about the
+customer's, which is how the `1/2/3` collision was found at all. **What changed is not the reasoning; it is that
+the customer weighed being seen unready above test fidelity.** Both boxes now get an OA, so the fidelity argument
+survives: `uat` still tests against the real account.
+
+### 🔻 Correction, 2026-09-06 — the customer refused the MENU only, not the commands
+
+**Porter recorded, and told the owner, that the customer wanted "no rich menu AND no commands" on their OA, and
+concluded that nobody could link there so no notification could reach anyone.** **The owner corrected it:**
+*"เรื่อง line ฉันแค่ไม่เอา line rich menu ขึ้น ก็พอ"*.
+
+⇒ **Typed commands are ON on the customer's OA.** `สมัคร` works, so **an admin or a parent CAN link**, and
+**notifications CAN reach a real person there.** ⇒ **`uat` is a usable review surface for REQ-077 after all.**
+🔻 **The error was mine and it is the same one as the illustrator brief and the stale 2FA text: I took a phrase
+("ยังไม่เอา line rich menu + command") and built a conclusion on my reading of it instead of checking the reading
+first.** The conclusion was large — *"the customer cannot see anything we send"* — and it was wrong.
+📌 **What stays true:** **no rich menu on the customer's OA** (they took it down on 2026-09-05, deliberately), and
+**links do not carry over from the demo OA** — a LINE `userId` is provider-scoped, so anyone wanting to receive
+must link on that account.
+
+## 🅿️ PARKED — LINE inbound stopped working when the customer moved from the demo OA to their own (2026-09-08)
+
+**Symptom:** typing into the customer's OA produces **no `[line-in]` lines on `uat`**, where the same act on `sid`
+produces them. ⇒ **inbound webhook events are not reaching `uat` at all.**
+
+🔴 **The timeline is the evidence, and it is the customer's own words via the owner:** *"ตอนแรกของเขาก็ใช้งานได้
+อยู่ แต่เหมือนอยู่ ๆ ตอนเขาแจ้งว่าเปลี่ยนจากที่เคยต่อ demo ไปต่อตัวจริงแล้วนะคะ ก็ใช้ไม่ได้เลย"*
+⇒ **It WORKED, then stopped AT THE MOMENT THEY SWITCHED OA.** **Nothing we deployed sits at that boundary.**
+
+**Four candidates, in the order worth checking — the third is the one that fits their own stated goal:**
+1. The **webhook URL** on their LINE console does not point at `uat` *(they were told to switch it there to test;
+   it may never have been switched, or was switched back)*.
+2. **`Use webhook` is OFF** in LINE Official Account Manager — **a separate switch from the URL.**
+3. 🔴 **The OA is in CHAT mode rather than BOT mode.** **LINE sends no webhook at all in chat mode**, and **the
+   customer's stated intention is that admins answer in the same account** — so this setting is exactly the one
+   they would have reached for.
+4. `uat` logging at a different level from `sid` — cheap to rule out, last.
+
+⚠️ **Consequence while it stands: NOBODY can link on the customer's OA**, which means **inbound LINE is dead
+there and nothing can be verified through it.** 📌 **OUTBOUND is unaffected** — notifications ride the channel
+token, not the webhook. ⇒ **silence at 08:00/08:15 would prove nothing about the message code.**
+🅿️ **Owner's call, 2026-09-08: parked pending the customer's answer.** *"ช่างมันเถอะ รอเขามาตอบ … อันนี้ค่อยดู"*
+**It is a setting on their console, not a defect in our build.**
+
+
+---
+
+## ⬅️ MOVED FROM `board.md` 2026-09-08 (hygiene: board was 44KB > 40KB). VERBATIM, nothing dropped.
+These are standing rules, so this file is their home; the board keeps a pointer where they used to sit.
+
+### 🚦 DEPLOY RULES (standing)
+
+> 🔴 **PENDING DEPLOY (REQ-079 + TASK-225).** Items 1–2 cleared 09-05; item 5 frozen; **item 6 added 09-06 and it is live money.**
+> 1. ✅ **DONE 09-05 (owner).** `0030` + `0031` applied on `sid`; `db:verify` ✅ — journal 32 · **32 witnessed**.
+> 2. ✅ **DONE 09-05 (owner).** All six menus published; `unknown-TH` is the account default, `known-TH` links per user. **Both states confirmed ON A PHONE** — menu A on a fresh follow (13:47), menu B after linking (13:53). 🔴 The one dead cell is **DEF-9 / TASK-248**, not a publish fault.
+> 3. **2FA cannot be switched on at all** until the owner answers how the six digits reach the parent — there is no SMS, and LINE cannot verify LINE.
+> 4. ✅ **Trigger fired** (the menus now exist on the OA) ⇒ `NAME_TO_KEY` is folded into **TASK-249 §4**. No longer a loose deploy item.
+> 5. 🧊 **FROZEN 09-05 — do NOT run.** The server now points at the **CUSTOMER'S OA**, and a LINE userId is scoped to the provider ⇒ the stored ids may match nothing there. @Porter has three unknowns open (which box holds the token · are `family_line_links` rows still valid · which OA). **Unfreeze only when he answers.** Original note: the backfill, and it is the owner's. Families linked **before** the 09-05 publish never had `linkKnownRichMenu` run for menus that did not exist. **Two wrong populations:** an **old** per-user link still resolves to the **old parent menu** (those menus still exist on the channel — the 01:23 screenshot), and **no** per-user link now shows **unknown**. **Neither shows menu B.** A one-off re-link runs against real customer chats ⇒ **deploy action, owner's call.** @Sober cuts a script task only if he asks for one.
+> 6. 🔴 **`bun run sale:ensure-items` — OWED ON EVERY BOX SINCE TASK-225, and this is the AC-5 defect (added 09-06 by @Sober).** TASK-225 added the `other-booking` INCOME bucket to `SALE_ITEMS`; `sale:ensure-items` **only ever INSERTS what is missing**, so until it runs on a box, **every typed-amount อื่นๆ booking auto-attends and posts NOTHING** — `postOtherBookingSale` logs *"NOT POSTED — no bo.item for external_ref='other-booking'"* and returns false. 📌 **TASK-225 stated this deploy step twice, in its own file, and it never reached this block** — which is the block anyone actually reads. That is rule 4 below, missed by me. **Order per box: `db:migrate` → `db:verify` ✅ → `sale:ensure-items` → restart.** ✅ **Recovery after seeding is safe:** re-run the day-end for the affected date — the auto-attend touches only `CONFIRMED`, and revenue posts on `rev:<bookingId>` which is idempotent (a duplicate returns `skipped: "duplicate"`, plus a 23505 fallback), so nothing double-posts.
+> 7. 🔴 **REQ-076's index rebuild — run it when the shop is CLOSED (added 09-06).** `0032` adds the `PAUSED` enum label; `0033` drops and recreates `bookings_teacher_slot_uq`. **`DROP INDEX` + `CREATE UNIQUE INDEX` take ACCESS EXCLUSIVE on `bookings`: reads AND writes block.** ⚠️ **The build itself is ~100–300 ms (budget 2 s) — that is NOT the risk.** If any transaction is holding the table when it starts, the `DROP` queues behind it **and everything else queues behind the DROP.** 🚫 `CREATE INDEX CONCURRENTLY` is unavailable — it cannot run in a transaction and every migration does. ⇒ **the note says "closed shop", never "it takes 300 ms".** (Jason's measurement, Sober 09-06.)
+> 8. 🔴 **THE MIGRATIONS GO IN TWO RUNS — the commands, literally (added 09-06 after `sid` failed; TASK-266 landed).** `drizzle-kit migrate` applies **every pending migration in ONE transaction**, and `0033` uses the `PAUSED` label `0032` adds ⇒ a single `db:migrate` fails the whole batch. ✅ **`db:migrate` now REFUSES it up front** (`db:preflight`) and prints the split. **Type these two, in order, each ending in its own verify:**
+>    ```
+>    bun run db:migrate:through 0032_booking_paused_status
+>    bun run db:migrate
+>    ```
+>    ⚠️ **What a failure would leave behind — say this to the owner, it is not "nothing".** Run 1 **commits**, so the batch is no longer atomic: if run 2 fails, the `'PAUSED'` enum label stays. ✅ It is **inert** (no index, no column, no code reads it until `0033`), `0032` is `ADD VALUE IF NOT EXISTS` so run 1 is safe to repeat, and **re-running `db:migrate` recovers** — `db:verify` names what is missing. 🟢 On `sid` (before the fix) the whole batch rolled back and left nothing; **that guarantee is what the split trades away, deliberately.**
+>    🔴 **Separately, and not about `uat`: a FRESH database is broken today.** All 35 are pending from empty, so migrate-from-scratch fails at **`0002`** — `0001` adds `PENDING_RESCHEDULE` and `0002` uses it. **Thirty-one migrations old, never noticed because they were applied a few at a time.** A rebuilt dev box or `db:reset` needs the same split, chained (`through 0001…` → `db:migrate` → `through 0032…` → `db:migrate`). The preflight prints it.
+
+1. **`bun run db:migrate`** in the repo owning the schema, **before** restarting anything; then **`bun run db:verify`
+   — BLOCKING, do not restart until it prints ✅.** `db:migrate` can report success and exit 0 having applied
+   **nothing** (TASK-085/086) — that took the customer's calendar down on both boxes on 08-24. If `db:verify` is
+   red: `db:seed-ledger` (dry-run) → read → `--apply` → `db:migrate` → `db:verify` ✅.
+2. Deploy `smart-scheduler-back` (:4006) → `pm2 restart`, then `smart-scheduler-front` (:3016) **in the same
+   sitting**; `backoffice-back` (:4010) + `backoffice-front` (:3018) follow, order free (TASK-083/084).
+3. 🟠 **Never ship a new server-side gate without the screen that opens it.** Completeness ≠ order. Canonical pairs:
+   **TASK-075 + 076** (backend alone means nobody can link at all) · **TASK-077 + 078** · **TASK-079 + 080**.
+4. **PENDING DEPLOY discipline:** add a line here **the moment a task is DONE**, not at deploy time — a stale
+   manifest has bitten us three times.
+5. **The old Dashboard nav entry stays gone** (TASK-082 — hidden, not deleted).
+6. 🔴 **A DEPLOY TOOL MUST HAVE A MODE THAT CAN BE RUN WITHOUT THE THING IT IS RISKY AGAINST — and that mode must be RUN in the task, not read.** (Added 2026-09-06 by @Sober, after `db:migrate:through` failed on its first real use with `Cannot find module 'drizzle-kit'`.) **The engineers cannot reach a database or an OA; the only person who can is the owner, at deploy time, on the night.** ⇒ a tool whose whole job is to be executed can pass `tsc`, pass 1553 tests, pass review, and **have never been executed once** — which is exactly what happened. 📌 **Same shape as `publishRichMenus` being a silent no-op for weeks and @Fern's layout checks landing on someone else: a gap in *who can exercise what*, not in anyone's care.** ⇒ **every deploy tool ships with a dry-run / `--plan` that does everything except the irreversible step, and the TASK's DoD says "you ran it, paste the output".** ✅ `line:remove-menus` already had this (TASK-250 §2, *"the dry-run is the deliverable, not a courtesy"*) — **the precedent existed and was not applied to the next tool.**
+
+
+### 🔴 MIGRATION CHECK — before every single deploy. No exceptions.
+
+> **"No migration" is a CLAIM, not a state. It expires the moment another task lands. Nobody may write or repeat it
+> without re-counting the migration files at that moment.**
+
+On 08-01 the site went down because this board said *"no DB migration in this batch"* — true when written, then
+**TASK-066 added `0005_bo_item_external_ref`** and nobody updated the line. The check, no DB access needed: count
+`drizzle/*.sql` in each backend repo against the `"tag"` count in its `drizzle/meta/_journal.json`. **They must be
+equal** — a `.sql` missing from the journal is **silently skipped** (TASK-042). Then compare the newest file with
+what is applied on the server; a newer one means **this batch HAS a migration**. `db:migrate` applies schema
+migrations; `migrate:bo` only moves DATA `ops.*` → `bo.*` — **not** interchangeable.
+**Never accept "the command said success" — load the page and confirm.**
+
+> 📦 The 08-01/02 batch manifest, its outage post-mortems and the rest of rule 3's pairs are archived verbatim in
+> `archive/board-2026-08-29-pre-compaction.md`: TASK-054 · TASK-050 · **TASK-070 + TASK-071** (breaking response
+> shape) · TASK-064 · TASK-068 · TASK-055 · TASK-076 · **TASK-058 + TASK-059** (a `400` nobody can see is a Save
+> button that silently does nothing — the defect the owner failed REQ-019 acceptance on).
+
+🔴 **Acceptance that must not be skipped when the digest ships — REQ-023:** open `/scheduler/attention` **before**
+registering the 08:00 task (it must show the red *"digest has never run"* warning), register it, then confirm a real
+timestamp. Without those three distinct states, "quiet" and "dead" look identical.
+

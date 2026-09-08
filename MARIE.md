@@ -85,6 +85,48 @@ only take effect at each role's **next** session start — say so in your report
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-09-06 — **New desk created: `dte`, born in dispatcher mode — and born with the three
+  things `portfolio-nichaphon` had to learn the hard way.** Owner's instruction: open the desk,
+  *"อย่า copy portfolio-nichaphon ดิบ ๆ"*. Scaffolded fresh (not copied): `PROTOCOL.md`, `PM.md`,
+  `SA-Lead.md`, `BE.md`, `FE.md`, `board.md` (state-only), `dispatcher-state.md`,
+  `inbox/{PM,SA,BE,FE}.md`, `SYSTEM-FACTS.md`, and empty `requirements/ specs/ tasks/ tests/
+  log/ archive/`. Team: Porter · Sober · Jason (`back/`) · Fern (`front/`) — **no QA**.
+  ✅ **The gap that motivated the order is closed at birth.** `portfolio-nichaphon` has neither
+  `SYSTEM-FACTS.md` nor a startup ritual that names its inbox — `grep` over its `PROTOCOL.md`
+  returns 0 for both. In `dte`'s PROTOCOL the ritual is **1. SYSTEM-FACTS.md → 2. PROTOCOL +
+  role file → 3. board → 4. YOUR inbox (delete what you processed) → 5. today's log**, with a
+  whole section stating the write-it-before-you-reply rule and the append-only/never-compacted
+  guarantee. `tests/` exists with the rule that makes it usable without a QA role: `TEST-*.md`
+  reserved, **`tests/harness/` for throwaway verification scripts so they never land in the
+  product repo**, and evidence living in the TASK's Implementation Notes.
+  🔴 **`SYSTEM-FACTS.md` seeded before the team's first session, not after** — stack as verified
+  in the repo, `develop` as the working branch, `develyst-ai` as the AI gateway, and the owner's
+  🔴 **root `README.md` is stale (claims NestJS + Prisma), `back/README.md` is the correct one**.
+  📌 **The survey earned its keep immediately — it found four things nobody may answer by
+  inference**, filed as Q1–Q4 with **both sides recorded and neither acted on**: (1) the owner
+  says `develop → main → production`, but `release-workflow.sh` merges **develop → production
+  directly** and `main` sits **10 commits behind** at 2025-12-06 while `origin/HEAD` still points
+  at it; (2) the API port is **3001 in the code and root `.env.example`, 4002 in `back/README.md`
+  and `front/services/api.ts`** — the two halves disagree out of the box; (3) `/portfolio`,
+  `/services`, `/blog` + `constants/portfolio.ts` look inherited from another site; (4) whether
+  production actually runs `develop`'s tip (`253eeda`, 2026-04-07 — the repo is ~5 months
+  dormant). Also recorded, not reported as defects: **payments are in the schema and the env keys
+  but have no route** — nothing charges anyone; **`/courses` renders `mockData.ts`, not the API**.
+  As-built survey read-only in `project-docs/as-built-survey-2026-09-06.md`, with a §8 naming
+  what was deliberately NOT done. **No file in `H:\dte\dte` created, edited or deleted; no git
+  write; no contact with `dte.develyst.online`, its server or any DB — not even a GET.**
+  Evidence: `git status --porcelain` returns **empty** (covers modifications, deletions AND
+  untracked additions). 📌 **`find -newermt` is useless as proof on this repo** — every tracked
+  file carries today's mtime from a checkout, which is exactly the trap `check-hygiene.mjs`
+  documents about mtime; use `git status`, not the clock. Path
+  recorded in `machine.local.md`; README project table updated.
+  Gate: `node check-hygiene.mjs dte` → **PASS, 0 warnings**.
+  ⚠️ **Not done, and the owner's call:** the three additions are proven now in `smart-scheduler`
+  *and* born-with in `dte`, but `_templates/project` still ships without them — a fourth desk
+  opened tomorrow would repeat `portfolio-nichaphon`'s gap. Promoting them into the template
+  needs his explicit go (Marie's scope rule 4). Also untouched by design: `portfolio-nichaphon`
+  itself, which still has no `SYSTEM-FACTS.md` and no inbox step in its ritual.
+
 - 2026-09-04 — **Owner's decision: NO interim measure on the backoffice gap.** Asked whether he
   wanted something in place before REQ-080's design lands, he answered **"ปล่อยเถอะ"** — leave it.
   **Recorded so nobody re-raises it as if it were an oversight: the `backoffice.develyst.online`

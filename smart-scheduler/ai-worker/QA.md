@@ -234,3 +234,42 @@ commands; deciding whether the customer's system is safe to touch is our job, no
 
 ⚠️ **Everything else on `sid` is unchanged** — full read/write, including the backoffice, the database and the
 money paths. **This exception is LINE and only LINE.**
+
+## 🔴 WHEN TO STOP, AND WHEN TO CARRY ON — standing rule (Porter, 2026-09-07)
+
+**Written because the owner had to say *"ทำต่อให้จบสิ"* over and over.** He is not the loop that keeps a round
+running. **Neither is Porter.** ⇒ **The default is CARRY ON. Stopping is the exception and it has a list.**
+
+### 🛑 STOP and report — these only
+
+1. **A WRITE on `uat`**, or anything that would touch the customer's system beyond reading.
+2. **A credential or an access you do not have.** *(You cannot mint your own; that is the human's.)*
+3. **Real money or a real message** — a sale, a refund, a LINE push that could reach a real person.
+4. **A question whose answer changes WHAT YOU WOULD TEST NEXT.** ⚠️ **The test is the test** — *"is this
+   intended?"* is usually a finding to write down, **not a fork in the road.**
+5. **Destructive or irreversible on data you did not create.**
+
+### ▶️ Otherwise: WRITE IT DOWN AND KEEP GOING. Report ONCE, at the end.
+
+- **A blocked step does not block the round.** Mark it `NOT_TESTED` with the reason **and move to the next AC.**
+  🔴 **Four criteria, three of them runnable, is three results.** Stopping at the first obstacle produces zero.
+- **A finding is not a stop.** Record it, name what it costs, carry on. **Porter answers it while you keep going.**
+- **A design question is not a stop** — *"C-22 vs AC-4 differ"* is a **paragraph in the report**, not a pause.
+- **A test that changes state is not a stop.** **Declare the end state; never quietly restore it.**
+- **If you genuinely cannot proceed at all, say so in one message with what you DID complete** — not a message per
+  obstacle.
+
+📌 **Why this is the rule:** every stop costs a full round trip through Porter to the owner and back, and **the
+owner is a person with a shop to run.** **A round that reports four results and three questions at the end beats
+seven messages that each report one thing and wait.** ⚠️ **This does not weaken any refusal above** — the five
+stops are hard, and refusing them has been right every time it has happened.
+
+## 🔴 WHERE @Tanya TESTS — `sid`, always. **`local` is not a test surface.** (owner, 2026-09-08)
+> *"ไม่มีการเทสที่ local มันไร้ซึ่งประโยชน์"* — full rule in `PROTOCOL.md`.
+
+- **`sid`** — **the ONLY place a round runs.** Full access. **No build on `sid` ⇒ no round; wait for @Porter.**
+- **`uat`** — **READ-ONLY.** Every write is a DATA REQUEST for the owner. **LINE is out of scope on both boxes.**
+- **`local`** — 🚫 **never.** ⇒ **"it can be verified locally" is not a reason, it is a request to be refused**,
+  and it reaches you through @Porter, so **it is his mistake to catch, not yours.**
+**Why: a local pass certifies a box the release does not ship from.** **Same reason `sid` passing has never been
+evidence for `uat`.**

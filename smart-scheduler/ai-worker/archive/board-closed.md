@@ -217,3 +217,167 @@ Board before the sweep: 41,754 bytes. No row was reworded, re-ordered, or re-sta
 | TASK-217 | BE: off-card import 500s — `course_size_chk… | SPEC-068 | **DONE** (Sober 08-29) | Jason |
 | TASK-219 | BE: REQ-007's missing half — the attendee note… | SPEC-066 | **DONE** (Sober 08-29) | Jason |
 | TASK-220 | scheduler-front + scheduler-back: cancel a… | SPEC-067/REQ-074 | **DONE** (Sober 08-29) | Fern + Jason |
+
+## Swept from board.md on 2026-09-05 — 27 DONE task rows (Porter, hygiene FAIL: board >40KB)
+
+> Verbatim, nothing edited. These are **DONE (code)** rows; deploy state lives in the board's PENDING DEPLOY block, not here.
+
+| Task | What | Source | State | Owner |
+|---|---|---|---|---|
+
+## Swept from board.md on 2026-09-05 — 27 DONE task rows (Porter; hygiene FAIL: board >40KB)
+
+> Verbatim, nothing edited. These are **DONE (code)** rows — **deploy state is NOT here**, it lives in the board's PENDING DEPLOY block. A row being archived says the code landed, never that it shipped.
+
+| Task | What | Source | State | Owner |
+|---|---|---|---|---|
+| TASK-147 | FE: dict keys (label/help TH+EN) for the 2… | SPEC-048/REQ-047 | ✅ **DONE — code** (Sober 09-01) · local login check = @Tanya | Fern |
+| TASK-218 | BE: daily reminder — per-RECIPIENT idempotency… 🔴 **migration 0028** | Porter flag 08-29 | ✅ **DONE** (Sober 09-01) ✅ `0028` applied + witnessed on `sid` | @Jason |
+| TASK-221 | BE: `GET /bookings/:id/posted-sale` — was this booking's revenue already posted? | SPEC-069 | ✅ **DONE** (Sober 09-01) · FE half = TASK-222 | @Jason |
+| TASK-222 | FE: cancel dialog says what is already in the books (amount + date, and a loud "could not verify") | SPEC-069 | ✅ **DONE — code** (Sober 09-01) · Q1/Q2 answered · 3 rendered states + 375 = @Tanya | @Fern |
+| TASK-223 | BE: `link-all` header documents a policy the owner revoked — `sid`-only, cannot unlink | Porter 08-29 | ✅ **DONE** (Sober 09-01) | @Jason |
+| TASK-224 | BE: `OTHER` core — migration (enum + nullable student/subject + title/price cols) · validation · `displayName` · cancel enum · 🆕 `booking_teachers` (multi-teacher) · AC-21 no freelance draw | SPEC-070/REQ-078 | ✅ **DONE** (Sober 09-01) · `0029` applied + witnessed on `sid` ✅ · `uat` with the batch | @Jason |
+| TASK-225 | BE: charging an อื่นๆ — typed amount OR catalogue item, posted at day-end on `rev:<bookingId>` | SPEC-070/REQ-078 | ✅ **DONE — code** (Sober 09-01) · follow-up TASK-229 | @Jason |
+| TASK-226 | FE: the booking form — อื่นๆ, title, charge (amount OR item), consume · 🆕 several teachers (≥1) | SPEC-070/REQ-078 | ✅ **DONE — code** (Sober 09-01) · Q1/Q2 answered · local rendered check = @Tanya | @Fern |
+| TASK-227 | FE: the อื่นๆ cell + one `displayName` everywhere a booking is named · 🆕 AC-18 one booking in every teacher’s column | SPEC-070/REQ-078 | ✅ **DONE — code** (Sober 09-01) · Q1/Q2/Q3 answered · 375 measurement = @Tanya | @Fern |
+| TASK-228 | BE: teacher LINE for อื่นๆ — the typed title names it (AC-16 revised — EVERY assigned teacher; AC-17 WITHDRAWN) | SPEC-070/REQ-078 | ✅ **DONE — code** (Sober 09-01) · rendered LINE = @Tanya | @Jason |
+| TASK-229 | BE: `/catalog-items` must not offer this repo’s own sale items (`IS DISTINCT FROM` — mind the NULL case) | SPEC-070 Q2 | ✅ **DONE** (Sober 09-01) · DATA REQUEST with @Porter | @Jason |
+| TASK-236 | BE: DEF-3 — the bookings list COUNTS อื่นๆ rows then inner-joins them away (`getBookings` :768/:770) | REQ-078 DEF-3 | ✅ **DONE — code** (Sober 09-01) · re-test = @Tanya | Sober |
+| TASK-237 | FE: DEF-1 + DEF-5 — the form dies on a null `.value` when the last teacher chip is removed | REQ-078 DEF-1/5 | ✅ **DONE — code** (Sober 09-01) · lead disproved, real cause was TASK-226's lazy updater · regression fails without the fix · DEF-5 re-walk = @Tanya | @Fern |
+| TASK-238 | BE: AC-24 revised — the clash refusal names the teacher + the clashing booking · + the DEF-4 other-writer sweep | REQ-078 AC-24 | ✅ **DONE — code** (Sober 09-01) · sweep found an open door → TASK-239 | Sober |
+| TASK-239 | BE: an ADDITIONAL teacher must not be double-booked — the door `bookings_teacher_slot_uq` does not guard | REQ-078 / TASK-238 sweep | ✅ **DONE — code** (Sober 09-01) · one definition of "live" left in the repo | Sober |
+| TASK-241 | FE: DEF-6 — the confirm dialog must name EVERY assigned teacher (the SEND already fans out — proven from source) | REQ-078 DEF-6 | ✅ **DONE — code** (Sober 09-02) · 🏁 last build item on REQ-078 · chip ruling (Q1) + the count (Q2) → @Porter · rendered = LOCAL | @Fern |
+| TASK-230 | BE: LINE — migration: `family_line_links` + `family_invites` + `muted_until`/`unexpected_count` | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · 🔴 `0030` awaits the `sid` run → @Porter | Sober |
+| TASK-231 | BE: LINE — 🔴 silence by default is a CHANGE to shipped behaviour (§16) + mute + two-strikes | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · TTL at the source, touch is route-scoped · ⚠️ re-test needs 30 min of silence first | Sober |
+| TASK-232 | BE: LINE — Flow 1 (invite → phone → children). Flow 2 DELETED; `parentChildrenNote` untouched | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · 🔴 2FA ships OFF and **cannot be switched on** until the owner answers code DELIVERY | Sober |
+| TASK-233 | BE: LINE — Flow 3 เพิ่มนักเรียน: summary before write, admin told, nothing partial | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · `0031` pending on `sid` with `0030` | Sober |
+| TASK-234 | BE: LINE — Flows 4–6 on the EXISTING pickers + the two rich menus | SPEC-071 | ✅ **DONE — code** (Sober 09-02) · 🔴 **menus NOT live** until published with images — see PENDING DEPLOY | Sober |
+| TASK-243 | BE+FE: an admin must be able to CLEAR a family’s LINE link — today "contact an admin" points at nobody | TASK-232 Q3 | ✅ **DONE** (Sober 09-02) — BE + FE · 🏁 last open code in REQ-079 | Sober |
+| TASK-245 | BE: **a parent is never stuck** — an exit at every step · reserved words mean what they say · rule 5 actually fires | Porter ORDER 09-02 | ✅ **DONE — code** (Sober 09-03) · one command list · exit checked before any step reads · strike sites **4→6** (the 4→11 in my review was a COMMENT count — corrected by Jason 09-03; pinned at 7 incl. declaration in `line-silence.test.ts`) | @Sober |
+| TASK-246 | BE: **DEF-8 + §14** — a mute silences the bot’s initiative, never the parent’s way OUT or BACK IN | Porter DEF-8 09-03 | ✅ **DONE — code** (Sober 09-03 r2) · one `FLOW_CLEARED` for both writers · un-mute clears the flow, scoped to *muted-right-now* so an unmuted parent’s live flow survives · `สมัคร` ORDER pinned by test · 1278/0 · 🧪 DEF-8 replay + Round C need a PHONE ⇒ @Porter → owner (NOT @Tanya — owner 09-05) | @Porter |
+| TASK-247 | BE: **REQ-079 rich menus** — two orange menus, AND the publish path that never created them | REQ-079 · Porter 09-05 | ✅ **DONE — code** (Sober 09-05) · publish creates **6**, default → **unknown**, `storeMenuIds` **merges** (pure `mergeMenuIds`) · generator↔code bounds test **with a permanent negative control** · 4 old PNGs byte-identical · tsc 0 · **1295/0** · 🚫 nothing published — see PENDING DEPLOY 2 + 4 | @Porter (deploy) |
+| TASK-248 | BE: **DEF-9** — `เข้าใช้ระบบ` asks for a phone and sets no step, so nothing receives it | DEF-9 (owner 09-05) | ✅ **DONE — code** (Sober 09-05) · tsc 0 · 1316/0 · 🧪 phone run = **owner, not @Tanya** — see the TASK + log 09-05 | @Porter |
+| TASK-249 | BE: **C-13 evidence** — the per-user menu link must follow the DB link state | C-13 · Porter 09-05 | ✅ **DONE — code** (Sober 09-05) · un-link on **both** clear paths (2nd case: departed teachers) · 🔴 a passing test had **pinned** the missing call — see the TASK + log 09-05 | @Sober |
+
+## Swept from board.md 2026-09-06 by Porter — 14 closed TASK rows
+> Closed or superseded rows, moved verbatim. Nothing edited, nothing deleted.
+
+| Task | What | Source | Status | Owner |
+|---|---|---|---|---|
+| TASK-250 | BE: **`line:remove-menus`** — take our rich menus off an account, **reviewably** (owner refused the raw API calls) | Owner → Porter 09-05 | ✅ **DONE — code** (Sober 09-05) · dry-run default, `--apply` needs `REMOVE <n>` typed · 🔴 Jason caught: a **foreign** default is reported and LEFT, not cancelled · 🚫 nobody here has run it. Detail in the TASK. | @Porter (owner runs it) |
+| TASK-251 | BE: **REQ-079 §16** — the role step stops accepting bare numbers, becomes a picker | Customer → Porter 09-05 | ✅ **DONE — code** (Sober 09-06) · `rolePicker` postbacks; `parseRoleChoice` refuses `1/2/3` **and `๑`** · 🔴 **the first-strike re-ask now re-sends the PICKER** — chips vanish on typing, so the buttons were offered once, *to everyone except the person who just proved they needed them* · label↔parser tied by a test (the drift only a PC user hitting a renamed label would find) · deviation accepted: `action=role&role=X` keeps the product's one dispatch style · 🔴 **my Q2 quoted a SYSTEM-FACTS line the same file had already corrected** · tsc 0 · **1485/0** | @Porter |
+| TASK-252 | BE: **a menu is OURS by its NAME**, not by a row we own and mutate | Porter 09-05 → Sober 09-06 | ✅ **DONE — code** (Jason 09-06) · one predicate `ourMenuMatch` in `line-rich-menu.ts`, **id OR name**, derived from the defs · both readers rewired, **asserted neither keeps a copy** (`ChannelMenu` is now an alias, not a twin) · 🔴 **a TASK-250 test had to be CORRECTED — it asserted `toDelete: []` / 6 foreign for six menus we made**: the defect written down as an expectation, invisible to every other test because they all store ids first · ➕ `matchedBy` printed per row — §5 permits a name match *because a human reviews*, so the review must show which rows rest on a convention · **Q: 6 vs 8, both derived** (`NAME_TO_KEY` = must be present; `OUR_MENU_NAMES` = did we name it) — collapsing them breaks `adopt` in one direction and re-creates this bug in the other · `publish` now **reports** the litter, deletes nothing · tsc 0 · **1505/0** · 🚫 no OA touched, no SQL | @Sober (review) |
+| TASK-253 | BE: **REQ-077 notifications** — the renderer learns WHO it writes to, + the template fields | SPEC-072 · owner priority 09-06 | ✅ **DONE — code** (Sober 09-06) · `visibleFields = TEMPLATE_FIELDS − TYPE_OMITS − AUDIENCE_OMITS` ⇒ Porter’s per-type + teacher-privacy rules are structural, not asserted. tsc 0 · 1359/0. Detail in the TASK. | @Porter (customer Q) |
+| TASK-254 | BE: **REQ-077 `COURSE DEDUCTION`** — the one new message, and it has **two** triggers | SPEC-072 §3 | ✅ **DONE — code** (Sober 09-06) · `COURSE DEDUCTION` fires from **both** deduction paths (manual check-in + day-end auto-attend), one helper, `Remaining` read from the write. tsc 0 · 1377/0. Detail in the TASK. | @Porter (customer Q) |
+| TASK-255 | BE: **a family with TWO linked LINE accounts** — messages reach one phone, the other cannot use the bot at all | Jason's read 09-06 · Porter | ➡️ **SUPERSEDED by TASK-259** · the read that found it is preserved in this file · 🔴 **DEFECT, not a refactor:** a 2-account family was messaged on the **last-linked phone only**; the other account could not use the bot. Detail in the TASK. | @Sober (spec) |
+| TASK-256 | BE: **REQ-077 `TODAY'S SCHEDULE`** — blocks under a shared header (Decision 6) | REQ-077 Decision 6 · Porter 09-06 | ✅ **DONE — code** (Sober 09-06) · hoisting is **computed**, not hardcoded · @Jason closed the half Sober missed. tsc 0 · 1395/0 · `renderSchedule` untouched, so the old list survives as a fallback. Detail in the TASK. | @Porter (customer review) |
+| TASK-257 | BE: **REQ-077 `CONFIRMED SCHEDULE`** — three format defects found on a phone (+1 with the same cause) | Owner's phone 09-06 → Porter | ✅ **DONE — code** (Sober 09-06) · 🔑 `Time` asserted by **comparing the two messages** (the defect was their disagreement) · `Sessions`+`Note` were **one** bug, fixed by a net · @Jason covered the pre-deploy outbox window. tsc 0 · 1402/0. Detail in the TASK. | @Porter |
+| TASK-258 | BE: **REQ-083 undo an attendance** — entitlement back · revenue reversed · no leave quota spent | SPEC-073 · REQ-083 | ✅ **DONE — code** (Sober 09-06) · generation keys (`rev`/`rev-undo`/`discount`), gen 0 = the un-suffixed legacy key ⇒ **history stays readable and a replay cannot double-post.** Detail in the TASK. | @Porter (note) |
+| TASK-259 | BE: **a family's SECOND LINE account** must receive messages **and** be able to use the bot | SPEC-074 · Jason's read 09-06 | ✅ **DONE — code** (Sober 09-06) · **both halves** · the primary keeps the un-suffixed key ⇒ **no existing family is re-notified on deploy.** Detail in the TASK. | @Porter |
+| TASK-260 | BE: **REQ-076 pause/resume a single booking** — 1HR · Voucher · 1st Trial | SPEC-075 · REQ-076 | ✅ **DONE — code** (Sober 09-06) · ⛔ **ships with TASK-261** · migrations are **0032/0033** — he **re-counted** instead of trusting my draft (0031 had landed since) · witness on the index **PREDICATE**, with `not.toBe("index")` asserting the wrong witness cannot be used · 🔴 **found a THIRD status list** (`findFreeExtensionDate`) that would have blocked a make-up from a slot the pause just released · **two more left deliberately, with reasons** (a paused booking IS a voucher use) · **AC-16 needed no code — the falsifier came back clean** · tsc 0 · **1469/0** · 34 sql = 34 tags | @Porter (deploy) |
+| TASK-261 | FE: **REQ-076 the `รายการที่พักไว้` tray** + pause/resume controls | SPEC-075 §4 · REQ-076 | ✅ **DONE — code** (Sober 09-06) · ⛔ **ships with TASK-260** · 🔴 **Q3: the contract did not exist — my omission**; Fern took REQ-071's course-pause shapes, now ratified in **TASK-260 §8** · **no-body pause ⇒ AC-8's reason cannot be sent even by accident** · rail only at **2xl**: at 1280 a rail would cut the already-overflowing grid from 5.4 to **3.5 day columns** — *she changed her own answer because of a number* · one `OFF_CALENDAR_STATUSES` read by BOTH grids · tsc 0 · 99/0 · ⏳ **deployed measurement OWED → batch check** | @Porter (batch check) |
+| TASK-262 | FE: **REQ-084 defect half** — a `DROPPED` course must stop offering `พักคอร์ส` | REQ-084 AC-A/B/C | ✅ **DONE — code** (Sober 09-06) · 🔴 **the root cause was a MISSING PAYLOAD FIELD, not the control** — the plan summary carries no `status`, so `courseDropped` was false on **every** course ⇒ **both** owner symptoms (pause never hid · resume rendered on nothing) · AC-C found a **second surface** (unlock/relock gated on leave state, never lifecycle) · `undefined` is an **explicit case, not a default** — both defaults are wrong in opposite directions · tsc 0 · 109/0 | @Porter |
+| TASK-263 | BE: **the entitlement plan summary must carry `status`/`endedAt`** — one field, the root cause | Fern's Q1 on TASK-262 | ✅ **DONE — code** (Sober 09-06) · 🔴 **it was THREE fields** — `endReason` too, and `SummaryBar`'s "course has ended" notice could never render: **a third symptom nobody had connected** · the whole summary is **spread**, never projected — `toCourseSummary` was already called on the line above · **TASK-205's finding, third time in this file** · 📌 the FE type's own comment named `lib/leave.ts` — **the FE was written against the builder, believing it was the payload** · deviation from §3 taken **with evidence, not an argument** · tsc 0 · **1514/0** · 34 = 34 | @Porter (deploy) |
+
+
+## Swept from board.md 2026-09-06 by Porter — 4 closed TASK rows
+> Closed or superseded rows, moved verbatim. Nothing edited, nothing deleted.
+
+| Task | What | Source | Status | Owner |
+|---|---|---|---|---|
+| TASK-264 | BE: **REQ-082 edit a course's expiry** + the audit record + **(ข)** conditional `EXPIRY_REQUIRED` | SPEC-076 · REQ-082 · owner 09-06 | ✅ **DONE — code** (Sober 09-06) · migration **`0034`** · 35 sql = 35 tags · 🔑 **witness is the index PREDICATE, not its existence** — the trap that would give a false green on `uat`. Detail in the TASK. | @Fern (FE half) |
+| TASK-265 | FE: **REQ-082 expiry control + warning**, and **REQ-084's resume button** | SPEC-076 §6 · REQ-082 · REQ-084 | ✅ **DONE — code** (Sober 09-06) · @Fern moved the control from `PlanModal` to the course card — **where it was specified it would have been unreachable in exactly the case REQ-084 needs it.** 4 deployed checks → @Tanya. Detail in the TASK. | @Porter (batch check) |
+| TASK-266 | BE: **`db:migrate` REFUSES a batch it cannot apply in one run** (preflight + split command) | `sid` failure 09-06 | ✅ **DONE — code** (Sober 09-06) · `db:preflight` **fails closed** — refuses and instructs · 🔴 a **FRESH database is broken today** (same pair at `0001`/`0002`) · 🔴 **batch no longer atomic — run 1 commits**. Commands: PENDING DEPLOY 8. | @Porter (deploy note) |
+| TASK-267 | BE: **`db:migrate:through` cannot resolve `drizzle-kit`** — and it had never been RUN | owner's `sid` run 09-06 | ✅ **DONE — code** (Sober 09-06, **`--plan` executed by both of us**) · scratch folder now inside the repo, gitignored, removed on **four** exit paths · 🔴 **his first `--plan` printed a ✓ over the exact failure** (`Bun.resolveSync` finds the global cache) ⇒ replaced with **node's own walk-up**, *"break the thing it guards and watch"* · 🔴 **`process.exit()` inside the `try` meant `finally` never ran** — cleanup written, never executed · a false-red on Windows pinned as its own case · **1568/0** | @Porter (deploy) |
+
+
+## Swept from board.md 2026-09-06 by Porter — 1 closed TASK rows
+> Closed or superseded rows, moved verbatim. Nothing edited, nothing deleted.
+
+| Task | What | Source | Status | Owner |
+|---|---|---|---|---|
+| TASK-269 | BE: `CONFIRMED SCHEDULE` — **`Sessions` is the course as bought · the note is `Remark` · the teacher's copy is the parent's** | owner's two LIVE `sid` messages 09-07 · REQ-077 §CONFIRMED SCHEDULE · SPEC-072 §8 | ✅ **DONE — code** (Sober 09-07, **mutated twice by both of us**) · `Sessions` reads **`size`, the field `programLabel` already reads** — the message had printed `Program : Surfskate 10 HR` and `Sessions : 8` **in one breath** · `confirmed` off the payload, **still gates the send** · `ob_f_note` → **`Remark`** (`ob_l_note` byte-frozen, untouched) · 🔻 Decision 5 REVERSED ⇒ `AUDIENCE_OMITS` both `[]`, **kept and pinned by teacher==parent byte-identical** · 🔴 **EIGHT tests pinned the old rule, not the four I listed — `course_deduction` and `todays_schedule` too, because the table is per-AUDIENCE and my own §3 said so** · 🔴 **the fixture had `size: 6` AND `confirmed: 6`, so it passed either way** — the suite had the same defect as the message · **1578/0** · ⏸️ Q2 partial-confirm **HELD by @Sober**, SPEC-072 §8.6 | — (ships with the next back deploy) |
+
+
+## Swept from board.md "Blocked / waiting" 2026-09-07 by Porter — 16 resolved rows
+> Verbatim. Resolved, closed, answered or recovered. Nothing edited.
+
+| Item | Waiting on | Note |
+|---|---|---|
+| ~~REQ-012~~ | ~~LINE registration form capturing demographics~~ | — | **SUPERSEDED by REQ-019** | Demographics live on in REQ-019. |
+| ~~REQ-018~~ | ~~LINE account unlink + dual-role~~ | — | **SUPERSEDED by REQ-020** | Became REQ-020 Q3. |
+| RESOLVED — `MAX_WEEK_BY_SIZE` 6-session = "week 8" (owner, REQ-030 Q2) | ~~คุณฟีน~~ | `lib/leave.ts:11` `{4:5, 6:8, 10:13}`; SPEC-028 §5 makes it a HARD ceiling. |
+| OUTAGE 08-02 — migrations silently skipped (shared ledger) | RECOVERED 08-02 | One shared `__drizzle_migrations`; closed by REQ-032. |
+| ~~Why are the LINE rich-menu taps dead?~~ | CLOSED / MOOT 07-30 | Environmental: the webhook pointed at the stale server. |
+| ~~`migrate:bo` failed: which DB is `DATABASE_URL` on?~~ | ANSWERED 07-28 | Config is CORRECT; the "wrong DB" hypothesis is disproven. |
+| ~~REQ-006 BUG — freelance drawdown not idempotent~~ | RESOLVED — TASK-028 DONE | Reconcile-to-target: `held` from the ledger, `delta===0` no-op. |
+| ~~REQ-001/002 acceptance blockers (auth 403, cap not showing)~~ | RESOLVED | Both fixed 07-20. |
+| ~~Scheduled tasks not set up~~ DONE 08-01 | Human | All three on `sid`: digest 08:00 · end-of-day 23:30 · month-reset 1st 00:05. |
+| ~~REQ-003 deploy~~ | SUPERSEDED (closed 07-30) | Its value shipped via REQ-005. |
+| ~~REQ-004 deploy~~ | DONE (closed 07-30) | Only leftover is the month-reset task above. |
+| ~~Teacher archive/activate BROKEN (07-28)~~ | FIXED — TASK-029 DONE | Old ops-live backoffice errored on `ops.catalog_items`, plus a routing fault. |
+| ~~Deploy fact from the 07-28 traces~~ | RESOLVED (closed 07-30) | REQ-006 re-deploy replaced the drifted build; TASK-030 skips drifted `ops`. |
+| ~~Teacher type-change money = local no-op~~ | PROMOTED → REQ-009 (07-30) | Owner: close the budget **and warn the admin first**; history kept. |
+| ~~REQ-001 deploy gate~~ | DONE (closed 07-30) | REQ-001 DELIVERED 07-20; migration applied, budgets entered. |
+| ~~REQ-006 deploy — hard ordering~~ | DONE (closed 07-30) | Ran 07-28: `bo` migration → `migrate:bo` (TASK-030) → both backends restarted. |
+
+
+## Swept from board.md 2026-09-06 by Porter — 3 closed TASK rows
+> Closed or superseded rows, moved verbatim. Nothing edited, nothing deleted.
+
+| Task | What | Source | Status | Owner |
+|---|---|---|---|---|
+| TASK-270 | BE: 🔴🔴 **DEF-1 — `PAUSED` never reached the API's status enum; FOUR copies of that list** | @Tanya on `sid` 09-07 · REQ-076 | ✅ **DONE — code** (Sober 09-07, mutated by both of us — **different mutations, different failure sets**) · the three now derive from `bookingStatus.enumValues`; `contract.ts` is `import type`, so it gains **no runtime import** · `?status=PAUSED` **and** `?status=NO_SHOW` parse · 🔴 **`tsc` did NOT light up, and the reason matters: `bookingEventKind` takes `{status: string}` — never exhaustive, so nothing was asking** · 🔴 **a FIFTH copy is live on the FE and is COMPLETE — the client was ahead of the server's own OpenAPI** ⇒ recorded, **deliberately NOT cut as a task** · **1588/0** | ⛔ ships with TASK-271 |
+| TASK-271 | BE: **a paused session reaches a teacher's `ตาราง` and renders as the literal `status_PAUSED`** | @Jason's fifth enumeration, TASK-270 | ✅ **DONE — code** (Sober 09-07, **`tsc` mutation run by both of us**) · labels are now `Record<BookingStatus, Entry>` ⇒ **the compiler asks, and the union in the error is the DATABASE enum** · `checkin.service.ts` reads `CALENDAR_HIDDEN_STATUSES`, no sixth list · ⚠️ `PENDING_RESCHEDULE` = flagged **placeholder**, @Porter asking the customer · 🔑 **his `totalBooked` reasoning beat my question: it is the report's only NEGATIVE counter with no `paused` bucket, so excluding would make a paused row VANISH** ⇒ leave it; the fix would be to ADD a bucket · **1597/0** | ⛔ ships with 270 + 272 |
+| TASK-272 | BE: 🔴 **a paused session stays on a teacher's phone calendar as `CONFIRMED`** | TASK-271 sweep | ✅ **DONE — code** (Sober 09-07, `tsc` mutation run by both of us) · `VEVENT_STATUS` is a total `Record<BookingStatus,…>`, **`PAUSED → CANCELLED`**, round trip asserted (same UID, rising SEQUENCE) · DESCRIPTION now carries the **label in the teacher's language** · 🔑 **he typed the INPUT as well as the map — "with a `string` parameter the map would still have needed a fallback, and the fallback is the defect"; I had asked for half the control** · 🔑 **and typing it broke a fixture that could build a booking whose status no longer existed — fixed by typing, not casting** · **1609/0** | ⛔ ships with 270 + 271 |
+
+
+## Swept from board.md 2026-09-06 by Porter — 1 closed TASK rows
+> Closed or superseded rows, moved verbatim. Nothing edited, nothing deleted.
+
+| Task | What | Source | Status | Owner |
+|---|---|---|---|---|
+| TASK-275 | BE: 🔴 **the CONVERSATION becomes bilingual** — bodies only; labels and menu keep the switch | REQ-079 §18 · SPEC-077 · owner: *"เอาให้จบคืนนี้ซะ"* | ✅ **DONE — code, REGISTRATION flow whole** (Sober 09-07) · `both(build)` / `tb(key)` **take no language, asserted by arity** · **12 label keys, both languages, none over 20**, list checked against the labels the code uses · notifications + ICS **byte-identical** · 🔴 **he replaced my `tb()` with `both()` — four keys are `\n`-prefixed FRAGMENTS appended to other bodies; "the fragment is not a message"** · 🔴 **`children_title` + `(3/5)` lands on the ENGLISH line only — silent** · 🔻 **THE ENGLISH IS OURS: the customer's 8-screen copy is NOT in the repo — §17 is @Porter's analysis; I wrote a DoD line citing a source I never opened** ⇒ 📨 DATA REQUEST · **1621/0** | @Porter (transcript) |
+
+
+## Swept from board.md 2026-09-06 by Porter — 6 closed TASK rows
+> Closed or superseded rows, moved verbatim. Nothing edited, nothing deleted.
+
+| Task | What | Source | Status | Owner |
+|---|---|---|---|---|
+| TASK-268 | BE: **drop `bunx` from the deploy path** — check the binary the run actually uses | Jason's flag on TASK-267 | ✅ **DONE — code** (Sober 09-07, **`--plan` run by both of us**) · **zero `bunx` in any command**, asserted across three scripts **and every `package.json` script** · 🔑 **§3's `node_modules/.bin/drizzle-kit` DOES NOT EXIST** (`.exe` + `.bunx` on Windows, symlink on POSIX) ⇒ he read the package's own **`bin` field** instead — *"reverse-engineering a shim is exactly the 'agrees today' shape this task exists to remove"* · **PENDING DEPLOY 8 unchanged, quoted back and asserted** · 🔴 **third resolution named (`db:migrate`'s bare `drizzle-kit` via the script-runner PATH) — RULED no task: the `.bin` shim is GENERATED from the same `bin` field, so it is one fact seen twice, not two that agree** · **1694/0** | — |
+| TASK-273 | BE: **the eleventh attention card will ship `att_my_new_card` as its heading** | @Jason's `t()` sweep, TASK-271 | ✅ **DONE — code** (Sober 09-07, mutation run by both of us) · `AttentionKey = (typeof CHECKS)[number]["key"]`, labels a `Record<AttentionKey, Entry>` ⇒ **an 11th card without a heading fails the build** · 🔑 **`as const satisfies` on the EXPORT narrowed away an optional field and broke four readers** ⇒ private `CHECKS` + re-export, **one array two views** · ➕ **he added the check I did not ask for: `titleKey === att_ + key`** — the digest builds its own key, so a typo would still render raw **with the Record in place** · 🔻 **my first mutation failed for the WRONG reason and would have "confirmed" nothing** · **1628/0** | — |
+| TASK-276 | BE: **the remaining five conversational flows go bilingual** | @Jason's scope call on TASK-275 | ✅ **DONE — code. THE CONVERSATION IS BILINGUAL END TO END** (Sober 09-07) · 🔴 **`tsched_empty` is called by BOTH the teacher's `ตาราง` AND the daily-reminder outbox** ⇒ **my SPEC-077 §3 (`tb` per key) would have made a HELD notification bilingual, silently — §5 of my own document** · **his `both()` redesign, made on TASK-275 for an unrelated reason, is what kept the hold** · 🔑 **§2 answered with a number and then made the number irrelevant: 3,848 doubled vs 5,000, and the bound is the CAP not the data — asserted with a 40-row fixture so a raised cap fails** · children count asserted **per LINE**, with the broken shape written into the test · **1683/0** | — |
+| TASK-277 | BE: 🔴 **the owner's birth-date ruling (`วัน-เดือน-ปี`) was UNBUILT since 09-06** — prompt AND parser | REQ-079 §17, closed by the owner 2026-09-06 | ✅ **DONE — code** (Sober 09-07) · the four-digit-first shape is **refused BEFORE the day-first pattern is tried**, so the parent reads a FORMAT sentence, not *"day 2024"* — 🔑 **the behaviour was already right; the MESSAGE was not, and the caller cannot tell a range failure from a format failure** · `ข้าม` kept · stored value still `YYYY-MM-DD` · 🔴 **two existing tests were actively DEFENDING the overruled format** — which is why a day of green builds hid it · **1639/0** | — |
+| TASK-278 | BE: **apply the customer's English** (`REQ-079` §17b) + **the phone shown formatted** | @Porter's transcript · §3c | ✅ **DONE — code** (Sober 09-07) · every screen mapped; **screen 2 has NO applicable string** (their only line is the typed `Next` we replaced with buttons) — stated, not skipped · five literal-text traps all held (`withExit` prints once · `{list}`/`{phone}` · `{max}` · the DOB format + `skip` · no inline `Thai / English` labels) · `formatPhoneForDisplay` **beside `normalizePhone` with "it is NOT the inverse"**, three call sites **asserted by position** · ✅ **clean negative: no step in their copy that we lack** · **1659/0** | — |
+| TASK-280 | BE: **the confirm step echoed a date format the parent did not type** | @Jason's finding on TASK-278 | ✅ **DONE — code** (Sober 09-07) · `formatBirthDateForDisplay` beside `parseBirthDate`, **one caller**, asserted by position · 🔑 **his test is better than my DoD: `03-04-2024` beside `04-03-2024`, asserting the two echoes DIFFER — the property, not the string** (mine would have passed a formatter that returned its input) · 🔴 **a test was pinning the ISO echo — SECOND time in two tasks that this file defended the wrong behaviour** · 🔑 **`parseImportDob` has been DAY-FIRST since it was written** ⇒ **TASK-277 REMOVED a divergence rather than creating one** — the ruling is a correction, not a preference · ⚠️ import accepts dots, LINE does not — **deliberate, recorded so nobody "aligns" it** · **1669/0** | — |
+
+
+## Swept from board.md 2026-09-06 by Porter — 1 closed TASK rows
+> Closed or superseded rows, moved verbatim. Nothing edited, nothing deleted.
+
+| Task | What | Source | Status | Owner |
+|---|---|---|---|---|
+| TASK-281 | BE: 🛑 **`db:seed-ledger` refused to seed over a risk belonging to `db:migrate`** — the `uat` deploy was held on it | owner’s `uat` run 09-08 · @Porter | ✅ **DONE — code. `uat` UNBLOCKED** (Sober 09-08) · 🔻 **my PLACEMENT error: `blockers()`’s own comment said *"anything that would have `db:migrate` attempt…"* — a migrate guard inside a seed tool** … **detail in the TASK.** | — |
+
+
+## Swept 2026-09-08 by Porter — 5 closed/ready rows
+> Verbatim. Nothing edited.
+
+| Item | What | Source | Status | Owner |
+|---|---|---|---|---|
+| REQ-033 | Captured from the 08-01 customer presentation | BACKLOG | **CAPTURED — not READY_FOR_SA** | @Porter holds; do NOT build. Handled: REQ-022 · REQ-015/016 · REQ-029 · REQ-030. |
+| REQ-039 | Dashboard consolidation — one Dashboard | MED | **CAPTURED — QUEUED** | Design with REQ-034. @Porter holds. |
+| REQ-076 | พักการจอง 1HR / Voucher / 1st Trial (owner's REQ-013) — 🔢 **#3** | HIGH | ✅ **READY_FOR_SA (09-05)** — 18 ACs + wording | Owner answered all 3 same-day: all 3 types · voucher quota **held** · tray on the **calendar**. 🔴 AC-10: the tray is never a grid cell. |
+| REQ-081 | ยกเลิก Voucher แล้วได้สิทธิ์คืน — split out of REQ-076 by the owner | — | **CAPTURED — not queued, not sized** | 🔴 **NOT on the owner's customer list.** May belong inside REQ-BO-006. Do not let it drift into REQ-076. |
+| REQ-083 | เช็คอินแล้วเปลี่ยนเป็นลาป่วย (owner's **FIX-008**) | HIGH | ✅ **READY_FOR_SA (09-05)** — 10 ACs + wording | `C-24` answered + 3 follow-ups. 🔴 @Sober: **no `usedSessions - 1` anywhere and no reversal path** ⇒ a build, not a patch. |
+
+
+## Swept 2026-09-08 by Porter — 3 closed/ready rows
+> Verbatim. Nothing edited.
+
+| Item | What | Source | Status | Owner |
+|---|---|---|---|---|
+| TASK-285 | FE: **hide the COURSE pause/resume control** so tonight's release ships without DEF-2 | @Porter's ship-tonight question, 09-08 | ✅ **DONE — code, READY** (Sober 09-08) · 🔑 **she REFUSED the gate I specified and was right: gating `courseDropped` would have made a paused course compute as ENDED and the screen say "this course has ended" — a FALSE claim** ⇒ the two BUTTONS are gated instead · 🔑 **revert = `PlanModal.tsx:79`, read by BOTH faces, so it cannot come back by halves** (I asked for one line; she made it un-half-revertable) · booking tray asserted untouched, **verified by me** · the temporary test announces its own expiry · **131/0** | — |
+| TASK-283 | BE: **DEF-3 — `TODAY'S SCHEDULE` printed `09:00:00-10:00`** | owner's phone, `sid` 09-08 | ✅ **DONE — code** (Sober 09-08) · 🔑 **the cause was NOT "one end had no formatter" — the two ends of one range had two OWNERS and one did not exist**; `hhmm` **removed** from `jobs.service.ts` so one place owns both · 🔑 `TIME_OWNER` closes it **two** ways: a new template is a compile error, **and declaring `null` when it does print a `Time` FAILS** (the half I would have missed) · 🔴 **a test asserting `1) Time : 09:00:00` kept PASSING across the fix** — the first green-across-the-fix instance this week · **1723/0** | — |
+| TASK-274 | FE: **the status label map is complete BY CARE, not by construction** | Sober's sweep across the wire, 09-07 | ✅ **DONE — code** (Sober 09-08) · 🔻 **my §2 asked for one control that ALREADY existed (`const th: typeof en`) and specified the other as an ANNOTATION, which would have widened `en` and traded the existing control away** — she used `satisfies` and checked it by re-running the break · 🔑 **break (a) throws TWO errors: dropping `PAUSED` from `en` makes the Thai one an EXCESS property — the two controls compose** · 🔴 **Q1 RULED and recorded: the two `BookingStatus` unions are deliberately separate, because her wire copy was RIGHT while ours was WRONG — derivation would have propagated our error into the screen** ⇒ **codegen is the WRONG option; a contract test is the only one** · **131/0** | — |

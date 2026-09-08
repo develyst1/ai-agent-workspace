@@ -174,3 +174,46 @@ is supposed to write. **The split is the phone, not the feature.**
 📌 **The mistake underneath it, and it is the one to remember:** I wrote a test plan without asking **who can
 physically run it**. A test nobody on the team can perform is not a plan — **it is a request wearing a checklist's
 clothes**, and it silently parks the work with someone who will never be able to close it.
+
+## 🔴 A CLOSED ruling must name its TASK — or say "no work" (added 2026-09-07, after two misses in one file)
+
+**When a requirement section is marked ✅ CLOSED / ANSWERED, the closing entry must name the TASK that carries
+each ruling in it — or state explicitly that a ruling needs no work.**
+
+**Why, in one paragraph.** `REQ-079` §17 was closed by the owner on 2026-09-06 with two rulings. I carried one
+(*"adding students: unchanged"*) and **never cut a task for the other** — the birth-date format — so the deployed
+bot went on demanding `ปปปป-ดด-วว` for a day, **and TASK-275 then translated that prompt into English.** A second
+item in the same file (§3c's *"phone shown formatted"*) had gone the same way. **Both were found by @Jason, while
+looking for something else.**
+
+🔑 **Once is a slip; twice in one file is that there is no mechanism.** This week's whole lesson —
+*a note is not a mechanism* — **applies to my own workflow, not only to code.** A decision recorded in a
+requirement and not carried into a task **is a note**, and the requirement being marked CLOSED makes it look
+carried.
+
+📌 **Why at the moment of CLOSING and nowhere else:** that is the only moment anyone re-reads the section. A
+sweep afterwards is a search; the closing line is a checklist that costs nothing while the decisions are still in
+front of you.
+⚠️ **"No work" is a real and common answer** — *"unchanged"*, *"deferred"*, *"already built (verified where)"* —
+**and writing it is the point.** An unmentioned ruling and a ruling that needs nothing look identical later.
+🚫 **This does not make the tests or the board responsible for it.** A green suite defended the overruled date
+format for a full day (`parseBirthDate("2018-04-02")` asserted four lines from `("02-04-2018").ok === false`) —
+**a test pins the decision it was written for, and cannot know it was superseded.**
+
+## 🔴 Content with backticks goes through a FILE, never a shell string (added 2026-09-08, after breaking it twice in one hour)
+
+**Backticks inside a double-quoted shell string are COMMAND SUBSTITUTION.** Every code identifier in a board row,
+a task section or a log entry is written in backticks, so a `node -e "…"` or a double-quoted heredoc **executes
+them** and writes the text with the identifiers stripped out.
+
+**It has happened twice:** `TASK-282` §5 — **the task an engineer was working from at that moment** — and two
+board rows, **an hour after I logged the lesson from the first one.**
+
+⇒ **The rule: write the content with the Write tool to the scratchpad, then read it with `readFileSync` (or
+`cat` it).**
+⚠️ **And single-quote the `node -e` body**, so nothing inside it can be substituted at all — **that is the half
+that makes it structural instead of a thing to remember.**
+
+🔴 **Why it needs a rule and not care: the command REPORTS SUCCESS.** The file is wrong and nothing says so — the
+same class as every other false confirmation this week. ⇒ **check the FILE, not the exit code**, and `grep` for a
+string that contained a backtick.

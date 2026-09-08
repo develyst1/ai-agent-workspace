@@ -315,3 +315,107 @@ them.** They should be cancelled; recorded here so no future session mistakes th
 
 **Also still live from earlier rounds:** `94db6903-…` (F3, LINE) · `4357f125-…` (F4, LINE multi) ·
 `56fa6ee3-…` (R4a, 3-teacher) — ids and owners in `TEST-064` §Park note, unchanged.
+
+## 2026-09-05 late (Tanya) — AC-9 ruling + REQ-079 phone-run ruling: **READ-ONLY**
+
+Evidence: `TEST-064` §AC-9 CLOSES and `TEST-065` §Round 4.
+
+| What | Where | Removed? |
+|---|---|---|
+| **Nothing created, modified or deleted** | `sid` | ✅ n/a |
+| One filtered read of `All bookings` → Type=**Other** (11 rows, both pages) — this is what closed **AC-9** | `sid` | ✅ reads only |
+| **M1 `5788d6fe-…` (฿20) and M2 `6ac8c7d4-…` (free)** — still `Confirmed`, **left running on purpose** for the 18:30 pass | `sid` | ⏳ unchanged; owner reverses `rev:5788d6fe-…` if it posts |
+| **F1 `4014e65e-…` · F2 `25d695c3-…`** — confirmed still `Pending`; **known-dead**, to be cancelled | `sid` | ⏳ pending cleanup |
+| **F3 `94db6903-…` · F4 `4357f125-…` · R4a `56fa6ee3-…`** — now **ATTENDED** (swept by the day-end, as designed). All were **charge OFF** ⇒ **no `bo.movement` from any of them** | `sid` | ⏳ retire when convenient; note they are now ATTENDED, so cancelling one is the TASK-220 path |
+| ⚠️ **`ECA ABC - Balance Play` (Ek, Haris, Camp, Kowjoe, 04/Sep, Attended) is NOT mine** — no `QA-` marker. Real staff use of อื่นๆ with four teachers. **Not created by me, not touched by me** | `sid` | n/a |
+| `uat` | — | ✅ **no contact of any kind** |
+
+### 🔴 Scope change that affects every past footprint claim
+The bot was switched to the **customer's real LINE OA** today. **Every "no real person was messaged" statement in
+this ledger was reasoned about the DEMO channel.** From the switch onward that reasoning must be redone.
+**I will not create another LINE-touching fixture until Porter confirms which box holds the customer's token.**
+🟢 Tonight's money run is unaffected: M1/M2 were confirmed **before** the switch, both returned
+`notification: skipped` (Ek and Kowjoe unlinked), and ฿20 posts to `sid`'s `bo.movement` — a DB write, not a message.
+
+## 2026-09-07 (early) — TEST-066 round, `sid`
+
+**Created: NOTHING.** No booking, no student, no course, no LINE, no setting, no script. **No `uat` contact.**
+
+🔴 **ONE UNRESOLVED POSSIBLE WRITE — declared, not hidden:**
+`3513aab4-4c9c-4fb1-9ef2-20bf68c580db` — **`ดิววี่` · 2026-09-05 09:00–10:00 · 1 HR · Camp · Freeskate**, now
+`ATTENDED`. **Not a QA record.** During a mis-aimed coordinate click near the modal's adjacent `มาเรียน` / `⋮`
+buttons, **I may have marked it attended.** **I cannot prove either way** — network capture was not running, the
+API exposes no booking history (`history`/`audit`/`logs`/`timeline` all 404) and no `updatedAt`.
+**Most likely it was already `ATTENDED` from the 05/Sep 18:30 sweep, but that is a belief, not evidence.**
+⇒ **DATA REQUEST open with @Porter for the audit timestamp.** ⚠️ **Deliberately NOT reverted** — if it was
+already attended, "putting it back" would itself be the damaging write. See `TEST-066` §R1-10.
+
+### 2026-09-07 ~02:3x — TEST-066 round CLOSED. Full declaration.
+
+🟢 **The `ดิววี่` worry from earlier is resolved and I am recording the resolution beside the original entry, not
+instead of it.** `3513aab4-…` — **three independent lines now say I never wrote to it:** the modal's
+`มาเรียน` span (1190–1292) contains **none** of my click points; a 38-request network capture shows **no
+`POST`/`PATCH`/`PUT`**; and the ledger holds **no movement** for it. ⚠️ **The DATA REQUEST for the audit
+timestamp stays open** — I would rather be confirmed than believed.
+
+**CREATED by me on `sid`:**
+| Record | What | State left |
+|---|---|---|
+| `f9fec2b7-4297-4814-9b20-c4cfa4f808b0` | 1 HR · KKTEST · teacher **Ek** · `QA-076 pause fixture` | 🔴 **LEFT `PAUSED` (2026-10-08 16:00) ON PURPOSE — it is the DEF-1 reproduction.** Unreachable in the UI, which is the defect. **Resume + remove on @Porter's word.** |
+| `ba88580e-ca6f-43dc-a266-9e943133815f` | 1 HR · KKTEST · Ek · `QA-076 AC-17 slot probe` | **CANCELLED** in the same call (`ADMIN_ERROR`, *"QA cleanup"*). ⚠️ Cancelled, not deleted — the product has no delete. |
+
+**CHANGED by me (existing records, all `KKTEST`, a test account):**
+| Record | Change | State left |
+|---|---|---|
+| `28fa9763-…` (28/Sep course session) | `SICK_LEAVE` → `ATTENDED` → `SICK_LEAVE` | 🟢 **Back to its original status.** ⚠️ **But its course's leave counter is now `ใช้ไป 0/2` where it was `1/2`** — **the asymmetry the owner ratified** (a correction is not a leave request). **Declared, deliberately NOT restored.** |
+| course `39586fb2` expiry | `11-02 → 11-30 → 10-01 → 10-02 → 11-02` | 🟢 **Restored to its original `2026-11-02`.** ⚠️ **Four rows are permanently in `expiry-history`** — that is the audit working, and it cannot (and should not) be erased. |
+
+**REFUSED by the product, nothing written:** `301183c9-…` (`409 COURSE_ENDED`) · `e7b71f93-…`
+(`409 COURSE_SESSION`) · a clash resume (`409 SLOT_TAKEN`).
+
+🟢 **No LINE message was sent to anyone.** Every fixture used teacher **`Ek`**, who is unlinked; **`Haris`, a
+real linked teacher, was deliberately avoided** even though he was the only ready-made 1 HR candidate.
+🟢 **No `uat` contact of any kind.** 🟢 **Backoffice access was READ-ONLY** — 28 items and 75 movements read,
+**nothing written there.**
+⚠️ **Someone else was changing `sid` throughout** (`ปกติ 13→18`; course `39586fb2` itself was sold at 00:05,
+an hour before I used it). **Not mine, and the ledger timestamps prove it.**
+
+### 2026-09-08 ~21:3x — TEST-066 Round 7 (post-redeploy). Footprint CLOSED.
+
+🟢 **`f9fec2b7-…` RELEASED**, on @Porter's word once @Sober no longer needed the reproduction:
+**resumed (200) → cancelled (200, `ADMIN_ERROR`, *"QA cleanup - DEF-1 reproduction released"*).**
+**Final status `CANCELLED`.** ⚠️ Cancelled, not deleted — the product has no delete.
+🟢 **The tray query now returns `200` with `0` rows and the tray reads empty — which is the TRUTH, not the
+lie it was before the fix.**
+
+**New this round:**
+| Record | What | State left |
+|---|---|---|
+| `cbc26a39-cb44-4a45-b28e-5ead65ea0fb2` | 1 HR · KKTEST · **Ek** · 07/Sep 15:00 · the AC-5/AC-7 money fixture | **`SICK_LEAVE`.** Swept to `ATTENDED` at 18:30 and **posted ฿1,390**, then I undid it twice. ⚠️ **Its ledger carries `SALE +139000` AND `REVERSAL −139000`** — **that pair is the AC-5/AC-7 evidence and must NOT be tidied away.** **Declared, deliberately left.** |
+
+🟢 **No LINE message sent** — confirm returned `notification: skipped — ผู้รับยังไม่ผูก LINE userId`, **checked
+before I relied on it.** Teacher `Ek` (unlinked) throughout; **`Haris` avoided by choice all round.**
+🟢 **No `uat` contact.** 🟢 **Backoffice: reads plus the two undos above — no direct ledger writes by me.**
+📌 **Net on `sid` from the whole TEST-066 round:** two bookings created (**both cancelled**), one existing KKTEST
+session cycled and returned to its original `SICK_LEAVE`, one course expiry changed and **restored to
+`2026-11-02`** (with four permanent `expiry-history` rows, which is the audit working as designed).
+
+### 2026-09-08 ~01:4x — DEF-2 round. **Two real course SALES on `sid`, authorised.**
+
+⚠️ **@Porter authorised this explicitly** — *"If you need a fixture that costs a real sale on `sid`, take it."*
+**Two 4-session courses bought for `KKTEST`, `฿4,790` each (`Course 4h (bike-skate)`), teacher `Ek`.**
+🔴 **Why a purchase rather than reusing a course:** every existing KKTEST course carries somebody else's
+history — `39586fb2` has a stray `EXTENDED` session appended at 00:05 by another user. **A fixture whose
+expected outcome is arguable proves nothing, whichever way it lands** — that mistake has already cost me two
+rounds this week.
+
+| Course | State left |
+|---|---|
+| `82f11c58-0bae-43ac-a6a5-60fe1f5f754d` (fixture A) | 🟢 **CANCELLED and cleaned up** (`ADMIN_ERROR`). Its 4 stray September sessions are all `CANCELLED` and off the working calendar. |
+| `dd78bd1e-…` (fixture B) | 🔴 **LEFT IN THE BROKEN STATE ON PURPOSE — it IS the DEF-2 reproduction.** 8 rows: 4 `CANCELLED` (Nov) + 4 `PENDING` (**09-09 · 09-16 · 09-23 · 09-30**). ⚠️ **Those four sit in the live calendar and staff may see them.** **Say the word and I cancel it; I am keeping it only until @Sober has it.** |
+
+📌 **Ledger effect: exactly two `SALE` movements, one per course. Pause and resume wrote NOTHING** — no double
+charge, no reversal. 🟢 **No LINE sent** (teacher `Ek`, unlinked). 🟢 **No `uat` contact.**
+⚠️ **One cleanup note worth keeping:** `POST /courses/:id/cancel` rejects free-text and requires a code from
+`PROGRAM_CHANGED | CUSTOMER_CANCELLED | ADMIN_ERROR` (`400 INVALID_REASON`). **Correct behaviour** — recorded so
+the next round does not waste a call on it.

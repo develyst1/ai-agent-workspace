@@ -266,3 +266,17 @@ That one was *"I checked and ignored the answer"*, which no amount of extra chec
 > filename you remember, never the newest file in `ls`.**
 > If the file does not exist, create it with the header. **A file whose name you did not just read off `date`
 > is the wrong file**, no matter how recent it looks.
+
+## 🔴 Two rules taken 2026-09-08 — both from the owner, both about how I ask
+
+**1. I am the answer, not the relay.** Before a question leaves this team it needs **my best answer and my
+reason.** *"The customer has not said"* only blocks when the answer is **theirs to hold** — prices, policy, their
+words, their timing, what their own document meant. **How our feature behaves is never theirs to unblock.**
+⇒ **And when I cannot see it: the OWNER first.** He answered in one message what I had recorded as a customer
+question — **and reframed it so it no longer needed answering.** ⇒ **When a question looks unanswerable, suspect
+the question before you post it.**
+
+**2. Never manage his rest.** The clock is for **windows, durations and reaching him** — never for suggesting he
+stop. **I did it at least three times in one night with a release open. It reads as wanting the exit.**
+⇒ **State the work, the number, the choice.** **If continuing costs something, name the cost — a cost is
+information.** **"Go to sleep" is not, and it is not mine to say.**

@@ -123,3 +123,14 @@ is about something else entirely and asking about prices would waste the round.
 📌 **Method note, kept because this project keeps relearning it:** the owner sent this screenshot to make a point
 about **greeting messages.** The rental prices were incidental to his reason for sending it. **Evidence does not
 arrive labelled with the question it answers** — the same lesson as the AC-13 screenshots on 2026-09-02.
+
+### ➕ 2026-09-05 — two of the four prices are confirmed present in the backoffice catalogue
+From the owner's own screenshot of Smart Backoffice → `รายการ (Items)`, seen while looking for something else:
+**`Equipment rental — full set / hr` = ฿200** · **`Equipment rental — helmet / hr` = ฿50**.
+⇒ **Both match the customer's published table exactly** (set 200 · helmet 50). **The other two — ride-only ฿150
+and pads ฿50 — were below the fold and have NOT been checked.**
+⚠️ Still a **parked lead**, still nothing to build. **But the comparison this REQ asks for is now half done**, and
+whoever picks REQ-004 up starts from here rather than from the price table alone.
+📌 Also unexplained on that box: the revenue report shows **฿150 under `ยังไม่ระบุกีฬา`** with *"รหัสสินค้าไม่รู้จัก
+… 1 รายการ"*. **฿150 is the customer's ride-only rental price.** That is a **resemblance, not a finding** — do not
+treat it as one, but do look at that row when REQ-004 is picked up.

@@ -1,6 +1,6 @@
 # TEST-065: REQ-079 — the testable slice (the rest is blocked on the rich menus)
 - Source REQ: REQ-079 (LINE chatbot registration / family linking)
-- Status: **TEST_PASSED on 15 of 26 ACs — 11 remain NOT_TESTED. Verdict in §Round 2, updated in §Round 3.**
+- Status: **TEST_PASSED on 16 of 26 ACs — 10 remain NOT_TESTED. Verdict §Round 2, updated §Round 3 and §Round 4. 🔴 ALL of it was observed on the DEMO OA — see §Round 4 scoping caveat.**
 - Environments: **`sid` only** (`som.develyst.online`), the build after `0030` + `0031` were applied and
   witnessed (`db:verify` ✅, BE + FE restarted). `uat` never touched.
 - Tested: 2026-09-02 by Tanya
@@ -323,3 +323,72 @@ this file exists to prevent. **The verdict count (15 of 26) stands only while th
 **I am not to open the LINE flows against it** — @Sober has it. It does not change any verdict above, because
 AC-2 was already open for a related reason: the flow has only ever been entered by **typing**, never by the
 button, and a postback is a different handler branch.
+
+---
+
+# Round 4 — 2026-09-05: ruling on the owner's phone run. **16 of 26 — AC-2 finally closes.**
+
+Five checks + AC-25, run by the owner 15:58–16:09 on the **demo OA**. His observations; the verdict is mine.
+
+| # | What he did | My ruling |
+|---|---|---|
+| **1** | Tapped **`เข้าใช้ระบบ`** on menu A → typed `0900000092` → *"ผูกบัญชีผู้ปกครองสำเร็จ ✅ … มิลล่า, มิลลิม, asda"*, menu flipped to **B** | 🎉 **AC-2 PASSES — and this is the one I have been holding open since 09-03.** I refused to close it on the 23:49 run because that entry was **typed** (`สมัคร`) and *"a postback and a text message are different handler branches"*. **This time he used the button the AC names**, with a known phone, and the family's children came back. **The right call was to wait; the button now exists and it works.** ✅ **DEF-9/TASK-248 fixed** in the same action |
+| **2** | `นพดยนกนก` → *"เบอร์โทรไม่ถูกต้อง … (เช่น 0812345678)"* · `Kfkfkfkf` → handover **+ `พิมพ์ เปิดเมนู`** | ✅ Re-proves **AC-14/21** (two strikes → human) and **AC-24** (the way back is told) **on today's build**. 🔴 **It does NOT close AC-3.** Both inputs were **malformed**, not *valid-but-unknown* numbers — AC-3 is about a well-formed phone the system does not know, and its "reveals nothing" clause is the part that matters. **Different branch, still `NOT_TESTED`** |
+| **3** | Admin clears the link → the chat falls back to menu A | ✅ **TASK-249 works, and it answers `C-13`** — the open question *"does clearing a family's link put that chat back on the unknown menu?"* **Yes, observed.** Not an AC, but a real closure |
+| **4** | Muted → tapped `เพิ่มนักเรียน` → name → birthdate → **the typed reply is received** | ✅ **DEF-8/TASK-246 confirmed on today's build.** A muted chat entered **by button** answers its own question |
+| **5** | Duplicate name → asks for a surname | 🔴 **NOT counted as today's evidence.** His own words were *"เคยเห็นแล้ว"* — **a prior sighting, not a run today**, and Porter flagged it as such. **AC-6 stands as PASS from the 2026-09-03 run**, not from this one. A remembered result is not an observation |
+| **⭐** | Unprompted: got muted again, then typed **`เมนู`** and **`ๅๅๅๅๅๅๅๅ`** → **silence, both** | ✅ **AC-25 re-proven in the strong form on TODAY's build** — including a command the bot advertises about itself. This matters because AC-25 previously passed on the 09-03 build and **TASK-248/249 have shipped since**. Re-running it rather than carrying it forward was the right instinct |
+
+📌 **Incidental, and worth recording so it is not re-discovered:** 16:00 `แจ้งลา` → *"วันนี้ไม่มีคาบที่แจ้งลาได้"*.
+**That is the leave flow answering** — one of three flows never opened. ⚠️ **It is not an AC-10 pass**: AC-10 wants
+child → session → confirm → **teacher notified**. An empty-state reply proves the flow is *reachable*, nothing more.
+**AC-10 stays `NOT_TESTED`.**
+
+### 📌 On the 4:07 "barge-in" that was not one
+Porter saw a handover and a new prompt in the same minute, could not tell from the image whether a **tap** sat
+between them, and **asked instead of filing**. The owner had tapped. ⇒ correct behaviour.
+**Recording it because the discipline is the point:** a screenshot cannot show a tap, and had it gone to @Sober it
+would have been a false defect. Same for the 16:01 duplicate `กรุณาพิมพ์เบอร์โทร`, **still unanswered and still
+not filed.** Two open questions, zero bad defect reports.
+
+## Verdict — updated
+
+# `TEST_PASSED` on **16 of 26**. Still not a REQ-079 pass.
+
+**Now passing (16):** AC-1 · **AC-2** · AC-4 · AC-6 · AC-9 · AC-13 · AC-14 · AC-18 · AC-19 · AC-20 · AC-21 ·
+AC-22 · AC-23 · AC-24 · AC-25 · AC-26 — plus DEF-8 · DEF-9 · TASK-243 both states · TASK-249/`C-13`.
+
+**Still open (10):** **AC-3** (unknown *well-formed* phone) · AC-5 · AC-7 · AC-8 · **AC-10** (reachable, not
+tested) · AC-11 · AC-12 · AC-15 · AC-16 · **AC-17** — the four existing notification regressions incl. the 08:15
+daily, still the one I would hold a ship for.
+
+## 🔴🔴 A scoping caveat that outranks the count — read this before quoting "16 of 26"
+
+**The bot was switched onto the customer's real LINE OA today** (owner, after the phone run): their channel
+secret + access token are in the server env, their webhook points at us, and typed commands answer on **their**
+account.
+
+**Every one of the 16 passes above was observed on the DEMO OA.** Porter has stated three unknowns and asked
+rather than guessed; two of them decide how much of my verdict survives:
+
+1. **Which box holds the customer's token — `sid` or `uat`?** Unanswered.
+2. **A LINE `userId` is scoped to the provider** ⇒ if the customer's OA sits under their own provider, **every
+   existing `family_line_links` row may be dead** — his test families and the 2 real teachers included.
+3. **The rich menus were published to the demo OA and do not travel with a token.**
+
+⇒ 🔴 **My verdict describes the demo OA.** If the customer's OA is the target, then **AC-2 · AC-13 · AC-23 ·
+AC-24 · AC-25 · AC-26 — everything that depends on a menu button or on a link existing — needs re-validating
+there**, because the menus are not published on it and the links may not resolve. **That is not a defect and not
+a retraction; it is the scope the evidence actually has.** Do not let "16 of 26" travel without it.
+
+⚠️ **And a consequence for my own footprint claims:** every "no real person was messaged" statement I have
+written was reasoned about the **demo** channel. **From the switch onward that reasoning has to be redone**, and
+I will not create another LINE-touching fixture until Porter answers which box carries the customer's token.
+
+## Test data created
+
+| What | Where | Removed? |
+|------|-------|----------|
+| **Nothing.** Ruling round — read-only | `sid` | ✅ n/a |
+| One filtered read of `All bookings` (Type = Other, 11 rows, both pages) | `sid` | ✅ reads only |
+| `uat` | — | ✅ **no contact of any kind** |

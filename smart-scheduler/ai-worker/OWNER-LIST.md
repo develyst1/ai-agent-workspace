@@ -283,3 +283,17 @@ not copied from his note.** A status line can be corrected silently; a stale mec
 📌 **For the record, so it is not re-confused:** the 6-digit **2FA session step** is BUILT and **shipped OFF**
 behind an `app_settings` switch, and on 2026-09-04 the owner ruled it stays as **a configurable option for later**
 (`C-05`). **That is internal.** It is not in the customer's flow today and must not appear in a customer update.
+
+### ➕ Captured 2026-09-06 — a `CEO` / ผู้บริหาร audience for the BACKOFFICE
+
+**Arrived inside the customer's LINE registration copy**, as a fourth role to type `CEO` at the role step.
+**It is not a chat role.** Owner, having asked them: *"เรื่อง CEO เป็นเรื่องของแจ้งยอดขาย ยอดจ่าย กำไร ของระบบ
+backoffice ฉันเลยบอกลูกค้าไว้ทีหลัง ไว้ช่วงทำ backoffice"*.
+
+⇒ **Sales · spend · profit reporting for an owner-level audience.** **Deferred by the owner to the `REQ-BO`
+phase, and the customer has been told so.** **Not queued, not sized, and NOT on his customer-facing list.**
+📌 **Closest existing item: `REQ-BO-002` (dashboard)** — *"a dashboard reads what BO-001…005 create"*, which is
+exactly what this is. **It may simply BE that item's audience rather than a new line.** **His call when the
+backoffice phase opens; do not add a number to his list on our own.**
+⚠️ **How it arrived is the lesson:** one word in a copy document was a whole subsystem in another phase.
+**Their documents are read for decisions, never transcribed.**

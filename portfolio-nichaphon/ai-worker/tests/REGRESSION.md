@@ -17,7 +17,12 @@ Real browser, real render (Playwright against the machine's Chrome, installed
 sweep, the R9 six-route sweep and the SQ8 eyes) and
 `tests/harness/test005-2026-09-05.cjs` + `-b` + `-c` + `-d` (H8, S14, S15, S16
 and the `/services` desktop eye) and `tests/harness/test003-2026-09-05.cjs` (the
-**build** leg — S11, S12's three triggers, S13, on a `npm run build` output).
+**build** leg — S11, S12's three triggers, S13, on a `npm run build` output) and
+`tests/harness/test006-2026-09-05.cjs` + `-b` (P1, P2 — the `/portfolio` cards
+and every project modal's live link, on a build output) and
+`tests/harness/test007-2026-09-05.cjs` (P2 across all 7 linked entries + P3, the
+pinned modal footer, on a build output — it reloads the page before every modal
+so no reading is stale).
 The harness prints observations; the verdict always comes from what was seen.
 
 **Serving a build (S11):** clear `front/.next` first, `npm run build`, then serve
@@ -81,6 +86,14 @@ reading (2026-09-05):**
 | H6 | **Reduced motion**: with `prefers-reduced-motion: reduce`, `document.getAnimations()` is empty at first paint, two settled frames are identical, **and the hero is fully visible** (not stuck at the animation's start state). Always run the `no-preference` control too — a check that cannot detect motion proves nothing | 2026-09-05 PASS — `reduce` 0 animations + hero `opacity:1`/`transform:none`; control `no-preference` 1 (`HomeHero_rise`) |
 | H7 | **Skip link by keyboard**: Tab once → "Skip to content" with a visible focus ring; Enter → `#main`; **the next Tab lands inside `<main>`**. `activeElement` staying on `<body>` is not a failure — the next Tab is the check. **Do not click the page first** — a click moves the sequential-focus start point and the first Tab then lands on the wrong element | 2026-09-05 PASS |
 | H8 | Hero renders its full set at 360x740 above the fold: name, nickname/role, lead, both CTAs, hero quote | **2026-09-05 PASS** — all six above the fold with 49px to spare: name 167–256, role 268–293, lead 309–520, CTA 1 544–588, CTA 2 "Get in touch" 600–644, quote 664–691 (fold 740). **DEF-2 closed**, see TEST-005 case 1 |
+
+## Portfolio (`/portfolio`) — added by REQ-003
+
+| # | Check | Last run |
+|---|-------|----------|
+| P1 | The intro line and the card count agree with each other: the heading names the same number in words that the grid renders as cards. Count `button[aria-label^="Open project detail for"]`, not cards by class | **2026-09-05 PASS** — `Eleven projects, and what each one had to solve` + **11** triggers, Learning Curve (01) and Ong Match (02) first, the nine pre-existing entries kept. Both viewports. See tests/TEST-006-req003-acd-portfolio-modal-pictures.md |
+| P2 | **Every project entry carrying a `link` shows it as a reachable "Open live project" button inside its OPEN modal, with the href its content file gives it.** Open the modal, read the anchor's `href`/`target`/`rel` off the live DOM and LOOK at it — never click it, those URLs are the owner's own live products. **At 360 the button is inside the viewport on open with no scrolling** (the old note here recorded OBS-8's pre-REQ-004 behaviour and became wrong the day TASK-018 landed — rewritten 2026-09-05 by Tanya, as Porter flagged) | **2026-09-05 PASS — now all 7 linked entries, not two.** `learning.develyst.online/` · `ong.develyst.online/` · `dte.develyst.online` · `develyst.online` · `laichill.develyst.online` · `yodbarber.develyst.online` · `avatar.develyst.online`, every one `target="_blank" rel="noopener noreferrer"`, seen as pictures at 360 (all 7) and 1280 (the two new). See tests/TEST-007-req004-pinned-footer-picture-round.md |
+| P3 | **The project modal's footer bar is pinned and does not break the modal.** At 360x740 open any project modal from a clean load: the footer (button, or the `Internal project — no public demo available.` note where the entry has no `link`) must be **fully inside the viewport with the modal's own `scrollTop` still 0**, and nothing may cover it (`elementFromPoint` at its centre returns it). At full scroll the bar must **un-pin** — the last chip and last bullet uncovered. At 1280x900 the modal must not overflow, so the bar stays inert | **2026-09-05 PASS** — 11/11 modals at 360 (`scrollTop 0`, footer box inside 740, nothing covering it), un-pin seen at full scroll, 1280 scrollports 705/705 and 756/756. **Known cost, not a defect: the bar is 89px = 13.4% of the 664px scrollport and hides content beneath it at open — OBS-9, the owner's call.** See tests/TEST-007-req004-pinned-footer-picture-round.md |
 
 ## Known and accepted — do NOT re-report as defects
 

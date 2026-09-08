@@ -589,3 +589,58 @@ should be cancelled; recorded here so no future session re-adopts them as live e
 
 26. **AC-21 needs one freelance rate**, still. Naming it again only because it is the last cheap AC in REQ-078.
     > answer: _pending_
+
+### 🎉 AC-9 CLOSES — and the evidence was already on the box, from my own earlier fixtures
+
+**2026-09-05, 17:16** (server clock; the 18:30 pass has **not** run yet). Reading `All bookings` → Type = **Other**
+gave me a controlled experiment I did not have to set up, because I had already run both arms of it by accident:
+
+| อื่นๆ booking | date | status when I left it | **status now** |
+|---|---|---|---|
+| `ประชุมทีม QA-078 F3` (Bank) | 02/Sep | **CONFIRMED**, unmarked | ✅ **ATTENDED** |
+| `ประชุมทีม QA-078 F4 หลายครู` (Bank, Dewy) | 02/Sep | **CONFIRMED**, unmarked | ✅ **ATTENDED** |
+| `QA-078 R4 crash retest XYZ2` (Bank, Camp, Dewy) | 03/Sep | **CONFIRMED**, unmarked | ✅ **ATTENDED** |
+| `QA-078 F2 free control` (Dewy) | 01/Sep | **PENDING**, unmarked | ✗ **still Pending** |
+| `QA-078 F1 money test 20B` (Bank) | 01/Sep | **PENDING**, unmarked | ✗ **still Pending** |
+
+⇒ **Three confirmed อื่นๆ sessions, left untouched, were auto-attended. Two pending ones never were.**
+
+## AC-9 — **PASS**
+
+*"An อื่นๆ session nobody marked becomes ATTENDED at the day-end, the same as every other type."* **Observed, on
+three independent bookings across two different nights.** And it confirms the `CONFIRMED`-only selection rule
+**from the running product**, not only from @Sober's source read — the two pending rows are the control that
+makes the three attended ones mean something.
+
+📌 **I did not need tonight's pass for this, and I did not need to wait.** The fixtures I got *wrong* (F1/F2,
+`PENDING`) and the ones I got *right for another purpose* (F3/F4/R4a, `CONFIRMED`) together form exactly the
+comparison AC-9 asks for. **The evidence had been sitting there since 03-09; I only had to look at the status
+column.** Worth remembering: a botched fixture is still data.
+
+🟢 **No stray money:** F3, F4 and R4a were all created **charge OFF**, so being auto-attended posted nothing.
+The `bo.movement` ledger is unaffected by any of the three.
+
+## What tonight's 18:30 pass is still needed for — and it is only the money
+
+**AC-9 is closed. AC-4 and AC-5 are not.** M1 (`5788d6fe-…`, ฿20) and M2 (`6ac8c7d4-…`, free) are both
+**`Confirmed` and still waiting** as of 17:16. After 18:30 they should attend — which now adds nothing new — and
+**post ฿20 / nothing respectively**, which is the part nobody has ever seen. 🔴 **I still cannot read a
+`bo.movement`** (no backoffice access), so **AC-4/AC-5 stay `NOT_TESTED` unless the owner reports what
+`rev:5788d6fe-6099-40a4-8440-712ed7ceac5e` posted.**
+
+## ⚠️ A non-QA อื่นๆ booking is in real use on `sid`
+
+`ECA ABC - Balance Play` — **Ek, Haris, Camp, Kowjoe** — 04/Sep 16:00–17:00 — **Attended**. **Not mine** (no `QA-`
+marker). ⇒ **staff are already using อื่นๆ, with four teachers, in earnest**, and the day-end swept it normally.
+That is the feature under test being exercised by its actual users — worth Porter knowing, and worth noting that
+**a real linked teacher (`Haris`) is on it**. **I did not create it and have not touched it.**
+
+## 🔴 The LINE OA switch — what it does and does not do to this round
+
+The bot was moved onto the **customer's real LINE OA** today. **It does not affect this money round:** M1/M2 were
+confirmed **before** the switch, both returned `notification: skipped` (Ek and Kowjoe are unlinked), and the
+฿20 posts to **`sid`'s `bo.movement`** — a database write, not a LINE message. **I am leaving both fixtures to
+run.** Cancelling them would destroy the only correctly-shaped money fixture to avoid a risk that is about
+message delivery, not revenue.
+⚠️ **But I will not create another LINE-touching fixture until Porter answers which box holds the customer's
+token** — and every "no real person was messaged" claim I have written is scoped to the **demo** channel.

@@ -4,7 +4,7 @@
 > Resume: `git pull` → `ai-worker/PROTOCOL.md` + your role file → this + `ai-worker/board.md` → **the newest
 > `ai-worker/log/*.md`** → act on your role's ball.
 >
-> 🔵 **Last updated: 2026-09-04** by Porter (PM). **START AT the `🔵 RESUME HERE` section at the END of this file** — it carries the live state, who is waiting on what, and the process lessons. Everything above it is history in date order.
+> 🔵 **Last updated: 2026-09-05** by Porter (PM). **START AT the `🔵 RESUME HERE — 2026-09-05` section at the END of this file** — it carries the live state, who is waiting on what, and the process lessons. Everything above it is history in date order. 🔴 **2026-09-05 changed the environment: the bot now runs on the CUSTOMER’S real LINE OA.** Read that section before acting on anything LINE.
 
 ---
 
@@ -305,3 +305,82 @@ times in five days**; the fourth was after running the check and ignoring it.
 6. 🔴 **The owner is the only LINE-capable tester** (`SYSTEM-FACTS.md`). **Owner = hands, QA = verdict** is the
    process, not a workaround — and its cost is that every LINE test is gated on his time. **Decide the way out
    (a spare LINE account for QA, or a synthetic webhook harness) BEFORE the next LINE REQ, not during it.**
+
+---
+
+# 🔵 RESUME HERE — state as of 2026-09-05 evening (Porter, written for a cold session)
+
+**Supersedes the 2026-09-04 block above.** Read this one.
+
+## 🔴 The one thing that changed everything today
+
+**The LINE bot is live on the CUSTOMER'S own Official Account.** The owner put their channel secret + access
+token into the env of **BOTH `sid` and `uat`** and restarted; the customer points their webhook at **`uat`** to
+test and switches it themselves on the LINE console. **The rich menus were published on the customer's OA from
+`uat` on 2026-09-05.** Full detail and the standing risks: `ai-worker/SYSTEM-FACTS.md` § "The customer's LINE OA".
+
+- **The people on that OA today are the shop's ADMIN STAFF, not parents.** No parent has been let in.
+- 🔴 **`publishRichMenus` creates six NEW menus every run and deletes nothing.** It was run **once**, on `uat`.
+  **Running it again anywhere leaves orphaned menus on a customer's live account.**
+- 🔴 **`sid` holds no menu ids for that OA**, so anything served from `sid` finds no `knownTH`. **@Sober owes the
+  answer for how ids reach the second box without a second publish.**
+- 🔴 **Standing TRIGGER, for whoever reads this later:** the day the shop opens that OA to **real parents**,
+  `sid` holding a live token means `sid`'s 08:00 / 08:15 / 18:30 jobs can reach them. **Raise it that day.**
+- ⚠️ **Everything QA has ever passed on LINE was passed on the DEMO OA.** Tanya's own caveat: **6 ACs need
+  re-validating** on the customer's account. **Menus do not travel with a token; links are provider-scoped.**
+
+## Where the two live REQs stand
+
+**REQ-078 (owner's REQ-005, การจองอื่นๆ)** — build complete, **18 ACs pass**, parked at `TEST_FAILED` on DEF-4
+(display-only) + DEF-7. **The money ACs were unblocked today** (owner closed `C-01` auto-attend / `C-03` 18:30;
+@Sober confirmed from source that the day-end does **not** exclude `OTHER`). **Tanya's ฿20 fixtures are in the
+correct `CONFIRMED` shape for the 18:30 pass.** 🔴 **AC-4/5 still cannot close without a backoffice read Tanya
+has no access to — the owner must look, or she stays `NOT_TESTED` forever.** AC-21 needs one freelance rate set.
+
+**REQ-079 (owner's REQ-016, LINE)** — **`TEST_PASSED` 16/26**, not a REQ pass. Today closed DEF-8, DEF-9, AC-2,
+AC-25 in its strong form, and `C-13` in code (TASK-249). **Still unopened: แจ้งลา · เช็คอิน · คอร์สของฉัน and the
+four notification regressions (AC-17).** The customer has the flow guide
+(`ai-worker/project-docs/2026-09-05-customer-line-flow-guide.md`) and **is testing now**.
+
+## Waiting on whom
+
+- **The customer** — feedback on the LINE flows. **Their first change request is already in:** the role step's
+  `1 / 2 / 3` collides with numbers their OA already owns ⇒ `REQ-079` §16, with @Sober.
+- **@Sober** — §16 + a sweep for any other numbered prompt · the menu-ids-on-the-second-box question · whether
+  auto-attend pushes to LINE.
+- **The owner** — the ฿20 backoffice read after 18:30 · one freelance rate on `sid` · placing REQ-017 / FIX-008 /
+  FIX-009 in the queue.
+- **@Tanya** — nothing blocking; her next LINE round waits on the customer's OA being stable.
+
+## The contradictions file
+
+**`SYSTEM-FACTS-CONTRADICTIONS.md`: 14 answered, 31 still `_(unanswered)_`.** The owner closed **eight** on
+2026-09-05 (C-01, C-03, C-12, C-23, C-27, C-29, C-35, C-41). 🔴 **Only the owner closes an entry — never an
+agent, not even when the code has since been fixed.** `C-13` is fixed in code and **still open**, deliberately.
+
+## What I got wrong today, so the next session does not repeat it
+
+1. **I copied the owner's own stale note into a customer-facing update** — it still described the cancelled
+   6-digit family code. **His list is the source for NUMBERS and for what the customer was told; the REQ is the
+   source for what the system DOES.**
+2. **I wrote a brief for an illustrator** for artwork our own repo generates from a script. **Read what the repo
+   has before planning what to build.**
+3. **I overstated a risk** ("real parents get test messages" — it was the admins running the test). **Overstating
+   to win an argument is its own defect.**
+4. **What went right, and it is the same habit each time: I asked instead of filing.** Twice a screenshot looked
+   like a defect and was not. **A screenshot cannot show a tap.**
+
+## 🔴 CORRECTION to the block above — the rich menus were REMOVED again, same day (2026-09-05, evening)
+
+The section above says the menus were published on the customer's OA. **They were, and then the owner removed
+them** with `line:remove-menus --apply` on `SOM.BALANCE.SCHOOL (@427ybeky)`: **6 deleted, default cancelled,
+stored ids cleared.** Clean run.
+
+**The state a cold session must start from:**
+- **No menu exists on the customer's OA.** No follower has one, linked or not.
+- **`getMenuIds()` is empty ⇒ `linkKnownRichMenu` does nothing. That is EXPECTED, not `C-13` again.**
+- **Typing is the only entry** — `สมัคร` · `เมนู` · `เช็คอิน` · `ลา` · `qr` · `เปิดเมนู`.
+- **Every rich-menu id written anywhere before this point is dead.** `publish` mints new ones.
+- **`REQ-079` §15's wording pass must NOT ship as written** — it points parents at buttons that are gone.
+- **Tanya's "6 ACs need re-validating on the customer's OA" is suspended**, not resolved: there is nothing to
+  validate there until a re-publish.

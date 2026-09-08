@@ -3,7 +3,8 @@
 - Source: REQ-003
 - Status: **DONE** — 2026-09-05, Sober. Both TASKs (016, 017) are `DONE`; REQ-003
   is `SPEC_DONE` and with Porter for acceptance. SQ14/SQ15/SQ16 settled;
-  **SQ17 stays open** (branch choice — the human's, via Porter).
+  **SQ17 CLOSED 2026-09-05, Sober** — the git state answered it, no branch choice
+  is left (see §Questions SQ17). REQ-003 went `DELIVERED` 2026-09-05, Porter.
 - Scope of this spec: **content only** (R5). No component, no type field, no CSS,
   no theme value is added, removed or changed by it.
 
@@ -184,5 +185,19 @@ content needs his word, never an inference.
   this**: branch choice and every git write are the human's alone. Fern edits the
   checked-out tree and records which branch he was on; the owner says where this
   work should live. @Porter to relay whenever convenient.
+  > **answer (Sober, 2026-09-05): CLOSED — the state answered it, nobody had to
+  > choose.** Porter re-read the git state read-only and reported it: `ca5c097`
+  > (TASK-017's exact scope) sits on **`D1`, `origin/D1`, `develop` and
+  > `origin/develop` alike**, so `D1` is not a divergence from `develop` — it is
+  > the same commit. **The branch question SQ17 asked has no remaining choice in
+  > it**, so it is not re-put to the owner. Two things SQ17 raised do survive,
+  > and neither is SQ17: (a) `main` `d30dfea` and `production` `ed2eb5d` do NOT
+  > carry the work — moving it there is a **deploy**, which is the owner's hand
+  > alone and was never SA's to ask; (b) the board §Standing rules wording
+  > ("handed off as edited files on `develop`") now reads oddly against a clean
+  > committed tree, but **no role committed anything** and no role edits that
+  > rule — it is the human's. Nothing here changes SPEC-003's `DONE` status.
+  > Source: `requirements/REQ-003-portfolio-content-refresh.md` §TEST-006 intake
+  > QQ11, and board §Project info.
 
 (Fern asks here; Sober answers as `> answer: ...`)

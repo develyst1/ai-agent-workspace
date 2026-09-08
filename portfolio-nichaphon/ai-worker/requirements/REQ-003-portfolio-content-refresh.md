@@ -1,6 +1,21 @@
 # REQ-003: Portfolio content refresh — his real projects on the site (N5)
 
-- Status: **IN_SPEC — R7 APPROVED, 2026-09-05, Porter.** SPEC-003 ACTIVE,
+- Status: **DELIVERED 2026-09-05, Porter.** **8 of 8 AC ticked** — AC-d closed on
+  TEST-006 (`TEST_PASSED`, 10/10, 0 defects: both modals SEEN as pictures at 1280
+  and 360, each live href read off the DOM). SPEC-003 + TASK-016 + TASK-017 all
+  `DONE`. **DELIVERED is the team's word, not his** — his sign-off is still to
+  come, and **nothing is deployed** (`main`/`production` do not carry it).
+  Q22-b, Q29 + both Observations survive DELIVERED, NOT closed; **Q28 + OBS-8
+  ANSWERED 2026-09-05, OBS-8 → REQ-004.** **CONSOLIDATED** — 3 superseded history
+  sections became pointers; the full pre-consolidation file is verbatim in
+  `../archive/REQ-003-portfolio-content-refresh-2026-09-05-preconsolidation.md`.
+- Status history: **SPEC_DONE — ACCEPTANCE PASS RUN, 2026-09-05, Porter.** SPEC-003 and
+  both TASKs are `DONE` (Sober). **7 of 8 AC ticked; AC-d alone is open** and
+  needs one QA round — the two new cards' modal has never been seen as a picture,
+  so the rendered live-URL link rests on the implementer's own load. Requested
+  from Tanya. **NOT `DELIVERED`, not his sign-off, not a deploy** — the 2 edited
+  files sit unstaged on `D1` (SQ17). See **§Acceptance pass**.
+- Status history: **IN_SPEC — R7 APPROVED, 2026-09-05, Porter.** SPEC-003 ACTIVE,
   TASK-016 DONE. The owner answered **`อนุมัติ`** on 2026-09-05: the pack ships
   as drafted, on the three SA defaults. **AC-g is MET** — the record is written
   in **§R7 approval record** below, and **TASK-017 is UNBLOCKED**. Q22-b, Q28,
@@ -92,21 +107,11 @@ the URLs are the same set. **One sentence is genuinely new:**
    §Standing rules). So even after this REQ is built, what port 3000 shows is
    whatever he last started there.
 
-### What this does NOT settle — and is not resolved by assumption here
+### What this did NOT settle at the third handover — CONSOLIDATED 2026-09-05
 
-> **SUPERSEDED 2026-09-05 by §His answers — all four are now answered.** Kept
-> verbatim as the record of what was *not* assumed while it was open.
-
-- **Q20 (permission to publish) is still unanswered.** His words are the
-  strongest signal yet toward its first half — a man asking why two projects are
-  not on his portfolio is not hiding them. **Porter declares that reading and
-  does not apply it**, for one concrete reason: Q20's *second* half — is either
-  one client work with a confidentiality limit, and is there anything on either
-  site that must not be shown — **cannot be inferred from any sentence he has
-  written**, and it is the half that causes real damage if guessed wrong.
-- **Q22 is still unanswered** except possibly one field of it — see Q27.
-- **Q21 may or may not have just been answered.** That is exactly Q27, and it is
-  the reason this hop did not start work.
+Superseded on 2026-09-05 by §His answers (all four answered). The verbatim block
+— what was deliberately *not* assumed while Q20/Q21/Q22 were open — is kept in
+`../archive/REQ-003-portfolio-content-refresh-2026-09-05-preconsolidation.md`.
 
 ## His answers — 2026-09-05, verbatim (Q27, Q20, Q21, Q22)
 
@@ -238,30 +243,49 @@ deliverable** rather than a "we broke nothing" list.
 
 ### The three that held under every possible answer (written at the third handover)
 
-- [ ] **AC-a — every published fact traces to a line he wrote.** For each claim
+- [x] **AC-a — every published fact traces to a line he wrote.** For each claim
       about him or a project on the finished pages, the exact source is citable:
       his own text, or a draft he approved. Testable by inspection against this
       REQ's record; needs none of his facts to be written down as a rule.
-- [ ] **AC-b — nothing appears that he has not permitted.** No project name,
+- [x] **AC-b — nothing appears that he has not permitted.** No project name,
       screenshot, link or client name on any route that is not covered by his
       Q20 answer. Ticks empty-handed if Q20 comes back "no": the criterion is
       then met by nothing being added.
-- [ ] **AC-c — the shipped visual identity is untouched (R5).** The change is
+- [x] **AC-c — the shipped visual identity is untouched (R5).** The change is
       words, images and links only; REQ-001 + REQ-002's look is not restyled.
       Verifiable as a diff-shape criterion, and it survives every answer.
 
 ### The content criteria — new 2026-09-05, on his answers
 
-- [ ] **AC-d — both projects are on the site.** **Learning curve** and **Ong
+- [x] **AC-d — both projects are on the site.** **Learning curve** and **Ong
       match** each appear as an entry on the route(s) that carry his work, each
       linking to its live URL (`https://learning.develyst.online/`,
       `https://ong.develyst.online/`). Testable by loading the pages.
-- [ ] **AC-e — each entry says what the project is, from its own source.** The
+      > **NOT ticked 2026-09-05, Porter — the only AC still open.** That both
+      > entries are *on* `/portfolio` is proven (prerendered HTML, re-read by
+      > Sober). The **rendered live-URL link sits inside each card’s modal**, and
+      > the only person who has seen it is the engineer who wrote it — from the
+      > DOM, never as a picture. An AC that says "testable by loading the pages"
+      > is not ticked on the implementer’s own load. It closes on QA — see
+      > §Acceptance pass.
+      > **TICKED 2026-09-05, Porter, on TEST-006 (`TEST_PASSED`, 10/10, 0
+      > defects).** Both halves are now SEEN, not inferred: `/portfolio` painted
+      > with the intro line and **11** cards (Learning Curve 01, Ong Match 02
+      > first, the nine old ones kept), and **each new card's modal opened and
+      > captured as a picture** at 1280x900 and 360x740, on a fresh `npm run
+      > build` (exit 0) served from `node .next/standalone/server.js`. The live
+      > link inside each modal reads `https://learning.develyst.online/` and
+      > `https://ong.develyst.online/`, `target="_blank" rel="noopener
+      > noreferrer"` — read off the live DOM, never clicked (no live product URL
+      > was contacted). One non-defect fact rides along: **OBS-8** — see
+      > §TEST-006 intake. Evidence: tests/TEST-006-req003-acd-portfolio-modal-pictures.md,
+      > shots in `../project-docs/qa-test006-2026-09-05/`.
+- [x] **AC-e — each entry says what the project is, from its own source.** The
       description of what each project *does* is traceable to something the team
       actually read — that repo or that live site — and the citation exists in
       the drafting record. No claim about *quality*, *scale* or *impact* appears
       unless he supplied it (that is AC-a's other half).
-- [ ] **AC-f — his role appears exactly as he stated it, and no further.** Both
+- [x] **AC-f — his role appears exactly as he stated it, and no further.** Both
       entries may say he is the **sole author / wrote it all himself** (Q27=ก,
       Q22). Neither entry states a **date**, a **client or employer**, or a
       **result/metric** unless he has supplied it in writing by then (R9). A
@@ -276,7 +300,7 @@ deliverable** rather than a "we broke nothing" list.
       > **§R7 approval record** below. The tick is on the *record existing*,
       > which is what AC-g asks for; it does **not** claim the strings are on the
       > site yet — that is TASK-017, and AC-a/AC-d/AC-e/AC-f still verify it.
-- [ ] **AC-h — the whole-site scope (Q16 = `ทั้งเว็บ`) was actually looked at.**
+- [x] **AC-h — the whole-site scope (Q16 = `ทั้งเว็บ`) was actually looked at.**
       Every route that describes his work was reviewed against the two new
       entries, and the spec lists which strings changed **and which were
       deliberately left unchanged, with the reason**. Silence about a route is
@@ -310,6 +334,7 @@ judgement, not a test the team can run on his behalf.
   **Porter does not read "add these" as "delete those"**, so the default written
   into AC-h is: **existing entries stay untouched** until he says otherwise.
   Removing his content is destructive and needs his word, not an inference.
+  > answer 2026-09-05, owner: **`เก็บไว้`** = keep. **Q28 CLOSED**, nine stay.
 - **Q29 — screenshots that contain other people's data (NEW 2026-09-05,
   non-blocking, R8).** Q20 permits screenshots of his two sites. If a screen on
   either one shows **real users, real names, messages or matches**, the team will
@@ -407,51 +432,14 @@ in a form he could answer in one message.** That is Porter's to fix, and it is
 fixed this hop: Q20/Q21/Q22/Q27 go to him as a single copy-paste block in Thai,
 short enough to answer in one reply.
 
-## Where this REQ stands now — 2026-09-05, after his answers
+## Where this REQ stood while it was open — CONSOLIDATED 2026-09-05
 
-**Every gate that was blocking has lifted, and the REQ is `READY_FOR_SA`.**
-Nothing below is a guess; each line names the answer it stands on.
-
-| Now settled | On what |
-|---|---|
-| The two projects **may be published** — names, screenshots, links | Q20 `ลงได้ทั้งคู่` |
-| The **team drafts** the entry copy, from the four repos + two live sites | Q21 `ทีมร่าง` |
-| **He approves every entry before it ships** (R7) — no exception | Q21's gate |
-| His **role** on both: sole author, front and back | Q27 `ก` + Q22 |
-| Scope is the **whole site**, not `/portfolio` alone | Q16 `ทั้งเว็บ` |
-| An unsourced date/client/metric is **omitted, never filled** (R9) | R2 + R7 |
-| Existing `/portfolio` entries **stay** until he says otherwise | Q28 default, declared |
-
-**Still with him, none of it blocking:** **Q22-b** (dates · result), **Q28**
-(keep/replace the old entries), **Q29** (screens showing other people's data).
-Each one changes the drafts he will be shown, not whether drafting may start.
-
-**What Sober can begin without another round-trip:** the whole spec — which
-routes carry an entry, what shape an entry has in the shipped layout, how the
-drafts are produced from the four handed-over repos and the two live URLs, and
-where the draft text lands as a file for Porter to relay. The one thing a spec
-**must not** do is write his facts: dates, clients and results are R9 territory
-until Q22-b comes back.
-
-## What happened the moment each gate lifted — the original table (2026-09-05)
-
-Kept because it is the record of what was promised before the answers arrived:
-
-| Answer arrives | What it unlocks, immediately |
-|---|---|
-| **Q27 = (ก) role** | Q21 is still open and must be answered; but the *role* field of Q22 is filled for both projects, from him, and never needs asking again. |
-| **Q27 = (ข) he writes** | Q21 closes as "he writes"; the REQ becomes small — the team places his text and nothing is drafted. Q20 and the rest of Q22 stay open. |
-| **Q20 = yes** (with any limits) | The two projects become publishable content; Porter writes R1's acceptance criteria against exactly what he permits. |
-| **Q20 = no / partial** | REQ-003 shrinks to whatever he does permit, or closes. Better to learn this before anyone reads a line of that code. |
-| **Q21 = team drafts** | The repos and live sites become source material; drafts go to him for approval, and **no draft ships unapproved**. |
-| **Q21 = he writes** | The team stops at placing his text — no drafting at all, and the REQ becomes small. |
-| **Q22 answered** | The last facts exist; the REQ becomes testable and moves `READY_FOR_SA` → Sober specs it → Fern builds → Tanya tests. |
-
-**No duration is promised here.** Porter has no basis for one and does not invent
-estimates. **Updated 2026-09-05:** the sentence "it is waiting on three answers
-from him" is now **false** — he gave them. The wait is over and the work is the
-team's; the next thing he owes is not an unblock, it is an **approval** of drafts
-that do not exist yet.
+Two sections lived here and are now history, not state: **§Where this REQ stands
+now (after his answers)** and **§What happened the moment each gate lifted — the
+original table**. Both are superseded by §Acceptance pass, §TEST-006 intake and
+§Delivery below. Kept **verbatim** in
+`../archive/REQ-003-portfolio-content-refresh-2026-09-05-preconsolidation.md`.
+Nothing was deleted; nothing that is still open lived only there.
 
 ## R7 approval gate — pack relayed 2026-09-05 (Porter)
 
@@ -558,3 +546,157 @@ settled by this word**:
   kept) and the absence of an AC-f "sole author" line stand as ruled. He can
   still overrule any of them in one word; this record is not his agreement to
   them, it is his approval of the text they produced.
+
+## Acceptance pass — Porter (PM), 2026-09-05
+
+**REQ-003 stays `SPEC_DONE`. 7 of 8 acceptance criteria are ticked; AC-d is the
+one that is not, and it is not ticked because the evidence for its second half
+comes only from the engineer who wrote the code.** Both TASKs (016, 017) are
+`DONE` and reviewed by Sober, who re-derived every shipped string himself rather
+than agreeing with Fern's claim.
+
+### How the seven closed
+
+| AC | Closed on | The evidence, named |
+|----|-----------|---------------------|
+| AC-a | Porter 2026-09-05 | Every line of `DRAFT-001` carries a citation (`<repo>@<sha7>:<path>:<line>`, or the live URL + load date); the owner approved that pack verbatim (`อนุมัติ`, §R7 approval record); Sober proved the shipped strings **are** that pack — 24/24 character-exact against the evaluated module |
+| AC-b | Porter 2026-09-05 | Only the two projects his **Q20** permits were added. Nothing else appears: `git diff --numstat` on `projects.ts` is `52 0` — **additions only**, so no existing entry was rewritten — and no screenshot ships at all (SQ14: `Project` has no image slot) |
+| AC-c | Porter 2026-09-05 | The REQ defines this one as a **diff-shape** criterion and the diff shape is exactly right: **2 files, both content**, no CSS, component, theme or type file; `Portfolio.config.ts` is 1 insertion / 1 deletion, `Nine`→`Eleven` only (SQ15) — see tasks/TASK-017-…md §Review §2–§3 |
+| AC-e | Porter 2026-09-05 | Each summary sentence and each highlight in DRAFT-001 names the repo line or live page it came from. On the "no quality/scale/impact claim unless he supplied it" half: the byte sweep found **zero digit characters** in either entry, and anything adjectival that survived is text **he approved verbatim** — which is him supplying it. Stated so he can overrule it in one word |
+| AC-f | Porter 2026-09-05 | **Zero digits** in either entry, so no date and no metric is even expressible; `client` / `employer` / `users` / `months` / `%` sweeps all clean. No "sole author" line was added — AC-f **permits** one, it does not require one (FQ44, R9) |
+| AC-g | Already ticked 2026-09-05 | Unchanged. TASK-017 does not re-tick it; it **confirms** it — the record said what he approved, and what shipped is character-exact to that record |
+| AC-h | Porter 2026-09-05 | SPEC-003 §Whole-site review lists **all six routes plus `metadata.description` and `SKILL_GROUPS`** — 2 changed, 8 deliberately unchanged, each with its reason. No route is passed over in silence, and the nine existing entries are **kept** (Q28 default) |
+
+### The one that is open — AC-d, and what it needs
+
+**AC-d — both projects on the site, each linking to its live URL.** Its first
+half is met: the prerendered `/portfolio` HTML that Sober read himself carries
+**11 cards in the approved order** and the intro line `Eleven projects, and what
+each one had to solve`. Its second half — the **live-URL link, which renders only
+inside each card's modal** — rests on Fern's own DOM read of his own build, and
+**the open modal has never been seen as a picture by anyone** (the capture came
+back a flat dark frame every time; he declared that rather than claiming a render,
+which is the correct behaviour). Same limit class as SQ7 / FQ35.
+
+So the criterion is not ticked, and the round that closes it is the round the
+owner would want anyway: **see it**.
+
+### What is being asked of QA — and what is deliberately not
+
+Requested from Tanya, via inbox, as one round:
+
+1. `/portfolio` **as a picture**, showing the intro line and the 11 cards.
+2. **Each new card's modal opened and captured as a picture** — Learning Curve
+   and Ong Match — with the "Open live project" link's `href` read off the live
+   DOM in the same round and reported next to the picture.
+
+**Not asked, on purpose:** no re-run of the string comparison (Sober's parser
+already did it independently, 24/24 character-exact — a second pass adds nothing
+and would read as distrust of a check that was done properly), no re-audit of the
+DRAFT-001 citations (that is document inspection, already adjudicated here), and
+no full REGRESSION re-run (this change touches two content files and REQ-002's
+site-wide round closed five days' worth of look questions). Method stays hers;
+the one constraint is the standing one — **name the surface the round ran on**.
+Standing note she needs: `front/.next` currently holds a build output, so it is
+`next start` or clear `.next` first, never `npm run dev` on top of it.
+
+### What `SPEC_DONE` means right now
+
+- **Porter's acceptance pass has run and found one gap**, which is with QA. It
+  is **not** `DELIVERED`, it is **not** the owner's sign-off, and it is **not**
+  a deploy. Nothing has shipped anywhere: the two edited files are still
+  **unstaged on branch `D1`**, with zero git writes by any role (SQ17).
+- Q22-b, Q28, Q29, Observation 1 and Observation 7 are untouched by this pass
+  and stay open and non-blocking, exactly as §R7 recorded them.
+
+## TEST-006 intake — Porter (PM), 2026-09-05
+
+Tanya's AC-d round came back **`TEST_PASSED`, 10/10 cases, 0 defects**, on a
+declared surface (fresh `npm run build`, exit 0, served from
+`node .next/standalone/server.js` on :3061; `.next` deleted before and after; no
+product file touched; production never contacted). **AC-d is ticked above on
+this round**, and both items I deliberately excluded — the string comparison and
+the citation audit — stayed excluded, as asked.
+
+### QQ11 — answered: SQ17's premise moved, and the new state answers SQ17 itself
+
+> QA's question: the board and this REQ say the 2 edited files "sit unstaged on
+> `D1`"; at test time the tree was **clean** and the content **committed** as
+> `ca5c097`. Is SQ17 to be re-put to the owner?
+
+**> answer (Porter, 2026-09-05): QA's fact is correct, and I confirmed it myself
+by reading the repo's git state (read-only — no role wrote anything).** What I
+read: `ca5c097` *"feat: update portfolio intro title and add new projects…"*,
+2 files / 53 insertions / 1 deletion — **exactly TASK-017's scope** — and the SHA
+sits on **`D1`, `origin/D1`, `develop` and `origin/develop` alike**. `main` is
+`d30dfea`, `production` is `ed2eb5d` — neither carries it.
+
+So **SQ17 is not re-put: the state answered it.** SQ17 asked whether work on `D1`
+should be handed over on `develop`; `develop` **is** the work, same SHA, pushed —
+nothing for the owner to choose between. What is left is not SQ17: **whether it
+goes further (`main` / `production` = a deploy) is the owner's hand alone**, and
+that reaches him as a status line, not a branch question.
+
+Attribution, stated so nobody has to infer it later: **no role committed
+anything.** The team's git rule is unbroken — every role wrote files and stopped.
+Who made the commit is the owner's own business and this REQ does not assert it.
+Sober's SQ17 text in `specs/SPEC-003-…md §Questions` is his file, not mine; I
+have `@Sober`'d him in today's log so he can close it against the new state.
+
+### QQ12 — answered: OBS-8 goes to the owner on its own, it does NOT ride with SQ13
+
+> QA's question: does OBS-8 (at 360 the modal's "Open live project" button starts
+> below the modal's fold, reachable once scrolled) go to the owner, or ride with
+> SQ13 the way OBS-5 does?
+
+**> answer (Porter, 2026-09-05): it goes to the owner on its own, inside this
+REQ, and it is NOT folded into SQ13.** QQ9's rule was *one fact, one owner, one
+question* — and applying that rule here **separates** these two, it does not join
+them. OBS-5 rides with SQ13 because they are literally the same fact about the
+same thing: `/services`, the table scroller, phone height. OBS-8 is a different
+route (`/portfolio`), a different component (the project modal), and it lands on
+**the two entries he approved verbatim today** — bundling it under a `/services`
+layout question would bury the one observation that touches his own new copy.
+
+**Not a defect, not blocking:** QA proved the button reachable, uncovered and
+hit-testable after ordinary scrolling. Recorded as **Observation 8** below and
+put to him with the picture, answerable in one line. Moving it would be a new
+scope call for a later REQ — the team does not restyle on an observation (R5).
+
+### Observation 8 — recorded, non-blocking
+
+- **OBS-8 (from TEST-006, QA):** at **360x740** both new modals open scrolled to
+  the top with the **"Open live project" button ~600px further down** inside the
+  modal's own scroll region (y=1255 Learning Curve / y=1293 Ong Match on open;
+  y=634 and in-viewport after ordinary scrolling, nothing covering either).
+  Desktop 1280 is unaffected — the button is inside the viewport on open.
+  **Owner's call, one line: leave it, or raise the button on phones in a later
+  REQ.** Not a defect, not a blocker, no task exists for it.
+
+## Delivery — Porter (PM), 2026-09-05
+
+**REQ-003 is `DELIVERED`.** All **8 of 8** acceptance criteria are ticked
+(AC-a/b/c/e/f/g/h on 2026-09-05 in §Acceptance pass; **AC-d** on TEST-006, above).
+SPEC-003 is `DONE`, TASK-016 and TASK-017 are `DONE` and both were re-verified by
+Sober rather than accepted from the implementer.
+
+**What was actually delivered:** two new project entries — **Learning Curve** and
+**Ong Match** — as the first two of **11** cards on `/portfolio`, each with the
+approved summary, five highlights, its tech-stack chips and a live link to its own
+site; plus the `/portfolio` intro line `Eleven projects, and what each one had to
+solve`. Every shipped string is **character-exact (24/24)** to the pack he
+approved with `อนุมัติ`. The nine existing entries are byte-untouched (`52 0`,
+additions only), no CSS/theme/component file was touched (R5 holds), and there are
+**zero digits** in either entry, so no date, metric or claim he did not supply
+can be present.
+
+**What `DELIVERED` does NOT mean — stated so it is never read as more than it is:**
+
+- It is **not his sign-off.** DELIVERED is the team saying every criterion it
+  wrote is met and evidenced; only he can say the copy is *right about him*.
+- It is **not a deploy.** `main` and `production` do not carry `ca5c097`; the
+  live droplet is untouched. Deploying is his hand alone.
+- It **closes nothing that was open.** Q22-b (dates + result per project), Q28
+  (keep or remove the old entries — default *keep*, held), Q29 (screenshots of
+  other people's data — default *not published*, R8), Observation 1, Observation
+  7 and the new **OBS-8** all survive this delivery, unchanged and non-blocking.

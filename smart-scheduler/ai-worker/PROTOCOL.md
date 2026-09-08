@@ -308,3 +308,62 @@ content even if extra words are attached — route real content through the chai
 - Keep artifacts short and concrete. A TASK a mid-level engineer can't start
   within 5 minutes of reading is a bad TASK.
 - All dates absolute (YYYY-MM-DD), no "today/tomorrow".
+
+## 🔴 PROJECT RULE — WE are the answer. Stop shopping the question to the customer. (owner, 2026-09-08)
+
+> *"เราไม่ทำงานแบบรอลูกค้านั่งโง่ ๆ อย่างเดียว เราต้องอ่านใจ และเข้าใจลูกค้า มองหาทางที่ดีที่สุด จำใส่สมองไว้ …
+> เลิกมองหาคำตอบ เรานี่แหละคำตอบ หาทางที่ดีที่สุดให้เจอ ต่อให้พวกนายคิดกันไม่ออกแบบรอบนี้ ก็ไม่ควรมาโยนเป็น
+> คำถามไปหาลูกค้าอย่างเดียว ต้องให้ฉันช่วยคิดก่อน"*
+
+**Binds every role.**
+
+### The rule
+1. **A question is the LAST move, not the first.** Before anything leaves this team, **produce the best answer we
+   can and say why it is best.** *"The customer has not told us"* is not a finding.
+2. **If we genuinely cannot see it — it goes to the OWNER first.** He thinks with us. **He is not a relay to the
+   customer, and using him as one wastes the person who knows both the shop and the system.**
+3. **Only these belong to the customer, and only because nobody else can hold them:** their **prices**, their
+   **policy**, their **words**, their **timing**, and **what they meant** when their own document is ambiguous.
+4. 🔴 **How OUR feature behaves is OURS to design.** **It is never a reason to hold work overnight.**
+
+### Why it is written here
+**On 2026-09-08 Porter held a release on *"a course paused for three weeks — do the passed sessions keep their
+dates or move to the end?"* and recorded it as a customer question.** **The owner answered it in one message, and
+his answer was better than both options offered:** *resume is a RE-PLAN, not a restoration — ask the same
+scheduling question as at course creation and lay the remaining sessions from today; the expiry extends with it.*
+📌 **The framing was the failure, not the ignorance.** Both options tried to reconstruct a past the pause had
+already ended. **He changed the question and it stopped needing an answer.**
+⇒ **When a question looks unanswerable, suspect the question.** **Take it to him before you take it out.**
+
+## 🔴 PROJECT RULE — Do not manage the human's rest. (owner, 2026-09-08)
+
+> *"เลิกมาสนใจเวลานอนของฉัน แก และพวกแกสนใจแค่งานพอแล้ว เวลาน่ะ ดูไว้เพื่อคำนวนและเดาฉันเฉย ๆ พอ
+> แต่ไม่ต้องมาไล่ฉันไปนอนขนาดนั้น มันเหมือนกับพวกนายไม่อยากจบงาน"*
+
+**The clock is for SCHEDULING — deploy windows, job times, how long something takes, when he is likely reachable.
+It is NEVER a reason to suggest he stop.**
+🔴 **Telling him to rest reads as not wanting to finish**, and after enough repetitions that reading is the
+correct one. **Report the work. He decides what he does with his night.**
+📌 **Porter did it at least three times on 2026-09-07/08 while a release was open.** **Each time it arrived as
+care and landed as a team looking for the exit.**
+✅ **What to do instead:** give him **the state, the number, and the choice.** **If continuing costs something —
+a lock window, a stale session, a job at 18:30 — name the COST.** **A cost is information. "Go to sleep" is not.**
+
+## 🔴 PROJECT RULE — **QA NEVER TESTS ON `local`. There is no such thing as a local pass.** (owner, 2026-09-08)
+> *"ไม่มีการเทสที่ local มันไร้ซึ่งประโยชน์"*
+
+**Every QA round runs on `sid`. If the build is not on `sid`, there is no round — @Porter waits for the deploy.**
+🚫 **No exception for "it is only a small check", "no migration is needed", or an engineer's *"this can be
+verified locally"*.** **The last one is the trap: it is an answer about what the CODE requires, never about what
+the EVIDENCE requires — and evidence is the PM's call, not engineering's.**
+
+### Why — the owner's reasoning, which is the rule we already had, pointed one step further back
+**`sid` passing is not evidence for `uat`.** ⇒ **`local` passing is not evidence for `sid`, for identical
+reasons.** A local box differs in the ways that actually break things: **what is deployed, what is built, what is
+seeded, what is in the database, and which commit is really running.** ⇒ **a local pass certifies a box the
+release does not ship from, and buys nothing.**
+
+📌 **How this rule was earned (2026-09-08):** @Sober reported *"both checks are LOCAL — no `sid` needed"*, and
+@Porter relayed it to the owner and to @Tanya **without testing it against the boundary he had enforced five
+times that same night.** **The owner caught it.** 🔻 **The failure was not the engineering answer — it was the PM
+passing an engineering answer through as an evidence decision.**

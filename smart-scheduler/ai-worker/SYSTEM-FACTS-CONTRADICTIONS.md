@@ -443,8 +443,13 @@ Side A shipped as an acceptance criterion.
 - **Side B — yes, with a stored reason** — an attended session **CAN** be cancelled provided a non-empty reason is supplied and stored for audit. The guard stays for edit/move only. — (owner โด่ง, 2026-08-03, same day)
 - **What the canonical file says today:** **silent.**
 - **Note recorded at the time:** B supersedes A for cancel, *"but recorded because A shipped as an acceptance criterion and both halves are still true of different operations."*
+- **Owner's answer (2026-09-05):** **An attended session CAN be undone, and the entitlement is GIVEN BACK.** — *"C-24 ตอบเลย ยกเลิกได้ แล้วคืนสิทธิ์ให้ด้วย"* (owner โด่ง, to Porter, 2026-09-05)
+  - ⇒ **Side B stands** and is now owner-confirmed; **Side A's `isDelivered` guard on cancel is superseded.** The guard on **edit/move** was never in dispute and is untouched by this.
+  - ⇒ It also **answers the first question in `REQ-083`** (his FIX-008): correcting an attendance returns the session.
+  - ✅ **The three follow-ups Porter flagged are ALSO answered, same day:** **revenue reverses — as a NEW compensating movement, never an edit or a delete** (*"เป็นสร้าง transaction อีกอัน ย้อนกลับแทน … ควรเพิ่ม ติดลบ 1000 บาท"*) · **no leave quota is consumed** · **no reason is required**, which drops Side B's condition. All specified as ACs in `REQ-083`.
+  - 🔴 **His "no leave quota" answer is a NAMED EXCEPTION to `C-22`, not a revision of it.** `C-22` says a leave declared **after** the course was created consumes quota, and a correction is always after. **`C-22` stands unchanged for real leave.** Recorded here so nobody later reads the two as contradicting.
 - **Sighted in:** 2026-08-03
-- **Owner's answer:** _(unanswered)_
+- **Owner's answer:** see the dated line above
 
 ---
 
@@ -800,7 +805,8 @@ These pairs looked like they might be one question. Each was left as two, with t
 - **Resolved by any agent: none — not one, at any point.** That discipline held through the whole archaeology run and still holds. No side of any entry was omitted, ranked or preferred.
 - **Answered by the OWNER himself on 2026-09-04: six — C-04, C-05, C-08, C-11, C-22, C-31.** That is the **only** way an entry here is ever closed. An entry closed by the owner is **settled**; an entry closed by an agent would be a **defect**.
 - **Answered by the OWNER himself on 2026-09-05: eight — C-01, C-03, C-12, C-23, C-27, C-29, C-35, C-41.** Six of the eight were confirmations of his own earlier words: Porter located each quote in the logs and put it back to him verbatim, and he confirmed the set with *"ใช่ทั้ง 6 ข้อ"*. **C-01 and C-03 were new answers.** Porter recorded them; Porter settled nothing.
-- **The remaining 31 still read `_(unanswered)_`, and nobody may build on them.**
+- **Answered by the OWNER on 2026-09-05, later the same day: C-24** — an attended session can be undone and the entitlement is returned. Raised by Porter because the owner's own **FIX-008** was blocked on it; **asking for a fix is not answering the entry, and it was put to him as a question rather than read as one.**
+- **The remaining 30 still read `_(unanswered)_`, and nobody may build on them.**
 
 
 
