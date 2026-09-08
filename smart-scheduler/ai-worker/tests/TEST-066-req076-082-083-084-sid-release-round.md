@@ -1152,3 +1152,337 @@ not independently seen it and this line is not evidence that it does.**
 ## Footprint
 🔴 **`b7dc8ace` is left `DROPPED` with all 9 rows `CANCELLED`** — the state my last (failed) resume left it in.
 **Declared, not tidied.** **Say the word and I cancel the course outright.**
+
+---
+
+# Round 13 — ✅ the COUNT is fixed · 🔴🔴 **DEF-5: COURSE RESUME IS BROKEN IN THE UI.** 2026-09-08 ~05:xx
+
+## ✅ ITEM 1 — the count defect is FIXED, and it now reconciles on screen
+**Opened an ACTIVE 6-session course's plan and pressed `Pause course` — then pressed `Cancel`. No write.**
+| | |
+|---|---|
+| dialog | *"the remaining **6** sessions come off the schedule"* |
+| plan list | **7 rows** — `ON LEAVE 1` · `CONFIRMED 5` · `EXTENDED 1` |
+🟢 **6 = the 5 `CONFIRMED` + 1 `EXTENDED`.** **The `ON LEAVE` row is correctly NOT counted — it is already off
+the schedule, so it cannot "come off" it.** ⇒ **every row the number counts is visible on the same screen**,
+which is exactly what the old `9`-against-`5` was not. **The server's number (`/cancel/preview`) agrees with the
+admin's eyes.**
+📌 **Small note, not a defect:** an admin counting 7 rows and reading "6" must know that `ON LEAVE` is excluded;
+the dialog does not say so. **Defensible — but it is the one step of reasoning left to the reader.**
+
+## 🔴🔴 ITEM 2 — **DEF-5. Course resume cannot be completed through the UI at all.**
+**Pressing `Resume the course` renders a RAW ZOD VALIDATOR ERROR into the dialog, in place of resuming:**
+```
+[ { "origin": "string", "code": "invalid_format", "format": "regex",
+    "pattern": "/^([01]\d|2[0-3]):[0-5]\d$/",
+    "path": [ "startTime" ], "message": "ต้องเป็นรูปแบบ HH:mm" } ]
+```
+### It is not a defaults problem — I checked
+| Attempt | `startTime` submitted | Result |
+|---|---|---|
+| the form's own defaults (`15 Sep 2026`, `10:00`) | `10:00:00` | 🔴 **rejected** |
+| **typed `11:00` by hand** into the visible field | **still `10:00:00`** | 🔴 **rejected, identically** |
+🔑 **The dialog holds THREE inputs: `2026-09-15`, the visible `11:00` I typed, and a HIDDEN `10:00:00`.**
+⇒ **The field the admin edits is not the field that is submitted.** **Typing the correct value does not help.**
+
+### The server is innocent — isolated directly
+`POST /courses/:id/resume {"startDate":"2026-09-15","startTime":"11:00"}` → **200 ACCEPTED.**
+⇒ 🔴 **The contract is fine. The FE sends `HH:mm:ss` where the API requires `HH:mm`.** **A front-end defect,
+not a spec disagreement.**
+
+### Severity
+🔴 **RELEASE-BLOCKING. A paused course cannot be brought back by any admin using the product.** The only route
+back is a hand-made API call. ⚠️ **And the admin is shown a regex** — `origin`, `code`, `format`, `pattern`,
+`path` — **not a message.** **Two defects in one: the submission is malformed, and the failure is unreadable.**
+🟢 **No partial write: the course stayed `DROPPED` across both attempts** *(verified from data before reporting,
+as last round)*.
+
+## 🔻 And this is the note I DECLINED TO FILE last round. I under-called it.
+**Round 12, in my own words:** *"The Time field's underlying value is `10:00:00` — seconds again… **Displayed as
+`10:00`, so harmless as seen.** Noted because of the history, not filed."*
+🔴 **It was not harmless. It is the defect.**
+📌 **What I got right:** I wrote the observation down with the exact value, so it was here to match against.
+📌 **What I got wrong:** I judged it by how it *displayed* rather than by what it would be *submitted as* — and
+**resume did work in Round 11, which is what made "harmless" feel safe.** ⚠️ **A value that renders correctly can
+still be wrong on the wire, and "it worked last build" is not a property of the value.**
+
+## Footprint
+🔴 **`b7dc8ace` RE-PAUSED and left `DROPPED`** — I resumed it once via the API purely to prove the server accepts
+`HH:mm`, then **put it straight back so @Sober still has the reproduction.** **Declared, not tidied.**
+🟢 **The 6-session course used for ITEM 1 was NOT paused** — dialog opened, read, cancelled.
+
+---
+
+# Round 14 — TASK-293 build. ✅ **COUNT PASSES** · 🔴🔴 **DEF-5 SURVIVED — it is not the last item**
+
+## ✅ The count — PASSES, on a harder case than the last one
+**Opened `Aileen — plan` (a real student's ACTIVE course), pressed `Pause course`, read the dialog, pressed
+`Cancel`. No write — Aileen is untouched.**
+| | |
+|---|---|
+| dialog | *"the remaining **6** sessions come off the schedule"* |
+| plan list | **9 rows** — `ON LEAVE 2` · `CANCELLED 1` · `CONFIRMED 3` · `EXTENDED 3` |
+🟢 **6 = 3 `CONFIRMED` + 3 `EXTENDED`.** **The 2 `ON LEAVE` and 1 `CANCELLED` are correctly excluded — and all
+three are still ON SCREEN**, so the admin can reconcile 9 → 6 without leaving the dialog.
+🎯 **This is a stronger pass than Round 13's:** that case had one excluded category; **this one has two, and both
+are visible.** ⇒ **the `9`-against-`5` defect is closed, and closed on the server's number.**
+
+## ✅ Free observation — a copy fix I flagged has landed
+**The paused plan header now reads `Paused — no dates until it resumes`.** **It previously read `Ends no live
+sessions`**, which I noted as reading oddly *(Round 11, recorded not filed)*. 🟢 **It now says what it means.**
+
+## 🔴🔴 DEF-5 IS STILL PRESENT ON THIS BUILD — and it blocks the free confirmation too
+**Same fixture, same flow, same failure, verbatim:**
+```
+[ { "code": "invalid_format", "format": "regex",
+    "pattern": "/^([01]\d|2[0-3]):[0-5]\d$/",
+    "path": [ "startTime" ], "message": "ต้องเป็นรูปแบบ HH:mm" } ]
+```
+🔴 **`TASK-293` did not touch it.** **Course resume still cannot be completed by any admin through the UI.**
+🟢 **No partial write — `b7dc8ace` is still `DROPPED`**, verified from data before reporting.
+
+### ⛓️ And it makes @Porter's "free confirmation" unanswerable
+**The resume dialog's title should now read `Course resumed`.** 🔴 **It still reads `Resume this course?` —
+but NOT because the string is wrong.** **The resume never succeeds, so the success state never renders.**
+⇒ **`Course resumed` is `NOT_TESTED`, and it is BLOCKED BY DEF-5, not failing on its own.** ⚠️ **Anyone reading
+"title still says Resume this course?" as a copy defect would be chasing the wrong bug.**
+
+## 🔴 The line that matters for tonight
+**@Porter's dispatch called the count *"the only thing standing between us and `uat`"*.** **On this build that
+is not true.** ✅ **The count passes.** 🔴 **DEF-5 does not, and it is release-blocking on its own terms:
+a paused course cannot be brought back by anyone using the product.**
+📌 **Two real courses are already sitting `PAUSED` on `sid` — `Aileen` and `Anya`** *(plus my `b7dc8ace`)*.
+**With DEF-5 live, none of them can be resumed from the UI.** **That is not a hypothetical.**
+
+---
+
+# Round 15 — TASK-295 build. 🎉 **(a) PASS · (b) PASS · DEF-5 FIXED · and the summary dialog is finally SEEN**
+
+## ✅ (a) — the `Time` field on open, **untouched**. And it answers @Porter's question
+| | |
+|---|---|
+| visible input | **`10:00`** · `type="text"` · 🔑 **`readOnly: true`** |
+| hidden submit value | **`10:00`** — **identical** |
+| seconds | **none** |
+🟢 **PREFILLED, not blank** — and it shows **the course's own current time.** *(This fixture's plan has been
+`10:00` since Round 11; its original `17:00` sessions were superseded then.)*
+🔑 **@Porter asked what that field contains on open — prefilled, blank, or something else. Answer: PREFILLED,
+and the control itself has changed.** **The visible box is now `readOnly`** ⇒ **an admin cannot type into it at
+all; they must pick.** **That is the `searchable` removal, visible in the DOM.**
+📌 **So the three states across three builds are: `10:00:00` (R12) → blank (owner's shots) → `10:00` + readOnly
+(now).** **The control was replaced, not patched.**
+
+## ✅ (b) — **the value SHOWN is the value that LANDED.** This is the one (a) could not clear
+**Opened the select, PICKED `14:00`** *(distinct from both the `10:00` default and the course's original
+`17:00`, so no result could be a coincidence)*.
+| Stage | Value |
+|---|---|
+| visible after picking | **`14:00`** |
+| hidden after picking | **`14:00`** |
+| **landed in the plan** | **`15/Sep · 22/Sep · 29/Sep · 06/Oct — all `14:00`** |
+🟢 **Cross-checked against the API: four live rows, every one `14:00`.** ⇒ **no silent substitution.**
+🔑 **This is the check @Porter refused to let me fold into (a), and he was right to:** with a valid default
+finally rendering, **a wrong value would no longer error — it would land quietly.** **It did not.**
+🟢 **And the hand-cancelled `22/Sep 10:00 CANCELLED` is STILL LISTED beside the new `22/Sep 14:00 PENDING`** —
+**@Fern's decision-vs-replaced distinction survives a re-plan.**
+
+## 🎉 DEF-5 is FIXED — and the summary dialog is SEEN, at last
+**Title: `Course resumed`** *(not "Resume this course?")* ⇒ ✅ **@Porter's free confirmation PASSES, and
+@Fern's string was fine all along — exactly as I said it would be.**
+**Body, verbatim:**
+```
+4 session(s) put back on the schedule.
+The course now ends on 06/Oct/26.
+The expiry is unchanged: 01/Dec/26.
+                                    [Close]
+```
+🟢 **It HOLDS OPEN with a `Close` button, and it states all three things the owner's *"read the dates AFTER
+confirming"* answer depends on: sessions put back · the new last session · whether the expiry moved.**
+🟢 **Every number is true** — API confirms 4 live sessions, last on `2026-10-06`, expiry still `2026-12-01`.
+📌 **My Round 12 `NOT_TESTED` on this dialog is now closed by observation, not by assurance.**
+
+## 📌 One thing to keep an eye on, not filed
+**The course now carries 13 `CANCELLED` rows in the database**, accumulated across my cycles, **all hidden from
+the plan view.** 🟢 **The pause dialog's count correctly excludes them** *(proven in Round 14)*, so this is not
+the old defect returning. ⚠️ **But they accumulate permanently and nothing ever prunes them** — **worth a
+decision before a real course goes through several pauses, not a defect today.**
+
+## Footprint
+⚠️ **`b7dc8ace` is now `ACTIVE` again** — the successful resume changed it from the `DROPPED` reproduction
+@Porter asked me to preserve. **That was unavoidable: check (b) IS a resume.** **Declared rather than restored;
+say the word and I will re-pause or cancel it.** 🟢 No other record touched; `Aileen` untouched from Round 14.
+
+---
+
+# Round 16 — `TASK-296` regression pass. ✅ **No raw zod reached any screen** · 🔴 **one form swallows the refusal entirely**
+
+**Four unrelated forms, spread deliberately** *(the resume dialog was NOT used — @Porter said it is the obvious
+one and not the point)*.
+
+| # | Form | What the admin got |
+|---|---|---|
+| 1 | **New course — plan the sessions** | `Generate plan` **disabled** until valid ⇒ **no server refusal reachable** |
+| 2 | **Add parent** (phone `12`) | 🔴 **NOTHING. `POST /api/parents` → 400, twice, and the dialog showed no message at all** |
+| 3 | **Add student** (empty required name) | ⚠️ `Save` does nothing — **no request sent, no message shown** |
+| 4 | **New booking → Other → charge `0`** | 🟢 **`⚠ Please enter a valid amount` inline, and `Save` DISABLED** |
+
+## ✅ `TASK-296` — PASS on the contract, verified verbatim on the wire
+**The 400 from form 2, read from the network log:**
+```json
+{"error":{"code":"VALIDATION",
+  "message":"ข้อมูลที่กรอกไม่ถูกต้อง กรุณาตรวจสอบแล้วลองใหม่อีกครั้ง",
+  "details":[{"origin":"string","code":"too_small","minimum":9,"path":["phone"], …}]}}
+```
+🟢 **`message` is ONE THAI SENTENCE.** 🟢 **No zod array as the message, no regex, nowhere.** 🟢 **The zod detail
+is confined to `details`** — **exactly the "rides on the wire, nothing consumes it" @Porter named as deliberate,
+so I am NOT reporting it as dead data.**
+🎯 **And the regression the task was about did not recur: across all four forms, no raw zod array and no regex
+reached a screen.** ⇒ **`TASK-296` PASSES.**
+
+## 🔴 NEW — separate from `TASK-296`: **the Add-parent form swallows the refusal**
+**The server answered correctly. The FORM showed the admin nothing** — no banner, no field error, no toast. The
+dialog simply sat there. **I clicked `Save` twice and the log shows two `400`s.** ⇒ **an admin would keep
+clicking, and would reasonably conclude the app had frozen.**
+⚠️ **This is NOT @Porter's trap #1.** He warned that *"the refusal did not tell me WHICH FIELD"* is a form
+question, not this fix failing. **This is a stronger thing: the refusal does not reach the admin AT ALL.**
+**Logged separately, as instructed, and `TASK-296` is not marked failed for it.**
+📌 **Form 3 is the milder sibling** — `Save` with an empty required name sends nothing and says nothing.
+**Same family: a form that refuses in silence.**
+🟢 **Form 4 is the counter-example and shows the intended division working**: the FORM names the problem beside
+the field (`Please enter a valid amount`) and disables `Save`. **That is what forms 2 and 3 are missing.**
+
+## ⚠️ The honest limit on this pass
+🔴 **I could not observe the Thai sentence ON A SCREEN.** **The only form that reached the server is the one
+that swallows the response.** ⇒ **"one Thai sentence" is verified as a CONTRACT, not as something an admin has
+been seen to read.** 📌 **@Porter's check was *"read what the admin sees"* — and on these four forms the admin
+either sees a good inline message from the FORM, or nothing at all.** **A form that both submits and renders the
+server's message is what would close that gap; I did not find one in this pass.**
+
+## Footprint — nothing created
+🟢 **No parent** (`116 parents` before and after — both attempts were refused) · 🟢 **no student** (no request
+ever sent) · 🟢 **no booking** (`Save` disabled; dialog cancelled) · 🟢 **no course touched.**
+🚫 **Did not go near the LINE webhook 401, the ICS 404 or the unknown-`/api` plain text** — @Porter marked all
+three not mine.
+
+---
+
+# Round 17 — `uat` read-only pass. 🟢 **Both hosts serve** · 🔴 **all three checks NEED A DATA REQUEST**
+
+## 🔴 First, the access fact that decides this pass — checked before touching anything
+| | |
+|---|---|
+| `mint-session.mjs` | **`PRODUCTION_HOSTS = ["frontoffice.develyst.online"]`** — **still refuses `uat`'s frontoffice by design** |
+| owner's access file | **`URL` (sid) · `user` · `pass` · `AUTH_SECRET` · `URL_backoffice` (sid) · `user` · `pass`** — 🔴 **NO `uat` entry of any kind** |
+| `REQ-080` *(narrow the guard for read-only `uat`)* | **still `READY_FOR_SA` — not shipped** |
+
+⇒ 🔴 **I cannot authenticate on `uat`, and the one mechanism that exists refuses that host on purpose.**
+🚫 **I did not work around it** — no hand-made cookie, no second route, no password typed anywhere. **That
+refusal has been correct every time it has come up and it is correct now.**
+📌 **This is `QA.md`'s stop #2 — *an access you do not have* — and it is the reason, not a product result.**
+
+## 🟢 What I COULD read, anonymously, with GETs only
+| Read | Result |
+|---|---|
+| `GET frontoffice.develyst.online/login` | **200** |
+| `GET backoffice.develyst.online/login` | **200** |
+| `GET frontoffice…/scheduler/calendar` *(unauthenticated)* | **302** → redirected to login |
+| `GET frontoffice…/api/bookings?from=…&to=…` *(unauthenticated)* | **401** |
+
+🟢 **BOTH `uat` hosts are serving** — the frontoffice and the backoffice each answer their login page.
+🟢 **And `uat` does not leak behind an anonymous request**: the calendar redirects (302) and the API refuses
+(401) rather than returning data. **The same check I ran on `sid` on 09-06, run again here because — as
+@Porter keeps saying — `sid` passing is not evidence for `uat`.**
+⛔ **Every request above is a `GET`. Nothing was submitted, nothing was written, no form was opened.**
+
+## 🔴 The three checks — **`NEEDS DATA REQUEST`, all three**
+| # | Check | State |
+|---|---|---|
+| 1 | pause/resume control **present** in the plan modal | 🔴 **`NEEDS DATA REQUEST`** — behind the login |
+| 2 | resume dialog's `Time`: own time, `readOnly`, no seconds *(then Cancel)* | 🔴 **`NEEDS DATA REQUEST`** — behind the login |
+| 3 | plan with cancelled sessions: pause-cancelled hidden, hand-cancelled visible | 🔴 **`NEEDS DATA REQUEST`** — behind the login |
+📌 **All three are pure READS once inside.** **None of them needs a write — what they need is a session.**
+⇒ **The gap is authentication, not the read-only rule.** 🔑 **If the owner opens `uat` in a browser and lands on
+the plan modal, all three are answerable in about a minute — and by his own hand, which keeps the box untouched
+by me entirely.**
+
+## 📌 The standing change from last night, applied here
+@Porter: *"if you see nothing on a screen, say what would distinguish 'it never rendered' from 'I missed it'."*
+🔑 **Applied in advance: I am reporting nothing about `uat`'s screens at all — not "the control was absent", not
+"the field was blank".** **I never reached a screen.** ⇒ **there is no negative observation in this pass to
+mistake for evidence.** *(That distinction is exactly what I got wrong on the Add-parent toast — the `400`s were
+real, the conclusion was not, and it was a transient toast I captured after it had gone.)*
+
+---
+
+# 🏁 RELEASE VERDICT — `REQ-076` / `082` / `083` / `084` · 2026-09-08
+## The two columns are kept separate. **`sid` passing is not evidence for `uat`.**
+
+## Column A — `uat`, from the owner's three screenshots. **He was the hands; the verdict is mine.**
+
+### ✅ CHECK 1 — the pause/resume control is PRESENT on `uat`. **PASS**
+`อาร์ตี้ — plan` · 10-session · `ACTIVE`. **The control row is complete:** `Confirm whole course (6)` ·
+**`Pause course`** · `Cancel course` · `Add extra (charged)` · `Insert make-up`.
+⇒ **The hide that shipped the night before is gone on `uat`.** 🟢 **And the count agrees with the visible rows
+on a REAL course** — button `(6)`, plan shows **6 `PENDING`** beside 2 `ATTENDED`. **That is my Round-14 count
+result reproduced on the customer's box, on data neither of us made.**
+
+### ✅ CHECK 2 — the resume dialog's `Time`. **PASS**
+`เรย์ยัน — plan` · 10-session · `PAUSED` · header `Paused — no dates until it resumes`.
+**`First session date *` = `21 Sep 2026` · `Time *` = `15:00`.**
+- 🟢 **`15:00` is THIS course's own time** — the row behind the dialog reads `24/Aug/26 · 15:00 · ATTENDED`.
+  ⇒ **prefilled from the course, not a global default.**
+- 🟢 **No seconds.** 🟢 **Both fields carry the required `*`** — the missing asterisk was half of DEF-5.
+🔑 **Why this is evidence and not a repeat of mine:** **`15:00` is a value that appears NOWHERE in my `sid`
+round** *(I saw `10:00`, `14:00`, `17:00`)*. **A prefill that lands on a fourth, course-specific value cannot be
+a coincidence of my fixtures.**
+🚫 **Not submitted — the dialog was left at `Cancel`. No write on `uat`.**
+⚪ **`readOnly` NOT confirmed on `uat`** — that is a DOM property and a screenshot cannot carry it. **Proven on
+`sid` only.**
+
+### ✅ CHECK 3 — HALF A: pause-cancelled rows are HIDDEN. **PASS**
+`ซอส ภวตล — plan` · 10-session · `PAUSED` · `Leave 1/3` · badge **`2 OWED`** · **two rows only**
+(`23/Aug ATTENDED` · `30/Aug ON LEAVE`).
+⇒ 🟢 **A 10-session course showing TWO rows — the pause-cancelled sessions are hidden**, on `uat`, on a real
+course. 🟢 **And `2 OWED` states what is owed where the admin can see it**, so the hiding does not lose the
+count.
+
+### 🔴 CHECK 3 — HALF B: hand-cancelled row still VISIBLE. **`NOT_TESTED` on `uat` — no fixture exists there**
+**The owner checked all five paused courses; none holds a hand-cancelled row.** ⇒ **hidden-vs-visible cannot be
+seen side by side on `uat`.** 🚫 **Nobody manufactures one — that is a WRITE on the customer's box.**
+✅ **`NOT_TESTED (no fixture on `uat`)` is the honest verdict and I am not dressing it as anything else.**
+
+## Column B — `sid`. **Labelled `sid`. NOT `uat` evidence.**
+
+### ✅ CHECK 3 HALF B — **PASS on `sid`**, fixture **`b7dc8ace-8be5-4385-8a54-86787fb8e5cf`**
+**Observed TWICE, on two different builds, in the paused plan modal:**
+| When | What the modal showed |
+|---|---|
+| Round 13 | **ONE row: `22/Sep/26 · 10:00 · Ek · Freeskate · CANCELLED`** · badge `4 OWED` |
+| Round 15 (setup) | **ONE row: the same `22/Sep 10:00 CANCELLED`** · badge `4 OWED` · header `Paused — no dates until it resumes` |
+⇒ 🟢 **The HAND-cancelled row stayed visible while EVERY pause-cancelled row vanished — the two behaviours in
+one screen.** 🟢 **@Porter's build note applies: `TASK-296` landed after that round but is BACKEND-only with no
+FE change**, so the row-visibility evidence is unaffected.
+⚠️ **I tried to re-capture it fresh tonight and could not:** the minted session authenticates
+(`/api/auth/session` → `qa`, token present) **but the app bounces to `/login` and will not render.** **A harness
+failure, not a product result** — **and per the standing rule, I stopped rather than take a fourth run at it.**
+🔑 **I am ruling it PROVEN on the strength of the two prior observations, with the fixture id, exactly as
+@Porter invited — not on tonight's failed attempt.**
+
+## 🏁 The verdict, in one place
+| Check | `uat` | `sid` |
+|---|---|---|
+| 1 · control present | ✅ **PASS** | ✅ PASS (Round 12) |
+| 2 · resume `Time` = course's own, no seconds | ✅ **PASS** *(`readOnly` not observable in a shot)* | ✅ PASS (Round 15) |
+| 3A · pause-cancelled HIDDEN | ✅ **PASS** | ✅ PASS |
+| 3B · hand-cancelled VISIBLE | 🔴 **`NOT_TESTED` — no fixture on `uat`** | ✅ **PASS** (`b7dc8ace`) |
+
+🔑 **What `uat` never showed us, said plainly: that a hand-cancelled session survives a pause.** **It is proven
+on `sid` and only on `sid`.** ⚠️ **If that distinction ever breaks on the customer's box, this release would not
+have caught it** — **and the reason is that `uat` has no course with a hand-cancelled session, which is a
+property of their data, not of the product.**
+
+## 📌 Two things I was asked to look at and am NOT filing
+- **@Porter's `10-session course showing 8 rows / 0 still owed`** *(flagged without weight)*: 🔴 **I never got
+  into `uat`, so I cannot see it properly. `NOT_TESTED` — and I am not guessing from a screenshot.**
+- **The `ON LEAVE` row keeping `15:00` through a re-plan:** noted, **not chased** — it is the open question
+  @Porter is owed by @Sober and it is on the owner's list.

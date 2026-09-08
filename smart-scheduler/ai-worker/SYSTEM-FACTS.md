@@ -678,3 +678,180 @@ migrations; `migrate:bo` only moves DATA `ops.*` → `bo.*` — **not** intercha
 registering the 08:00 task (it must show the red *"digest has never run"* warning), register it, then confirm a real
 timestamp. Without those three distinct states, "quiet" and "dead" look identical.
 
+
+### The plan DTO ships `HH:mm:ss` deliberately, and the FE formats — at DISPLAY sites only (2026-09-08, DEF-5)
+`bookings.startTime` is a pg `time` column ⇒ reads back **`"17:00:00"`**. `toSessionRow`
+(`scheduler.service.ts:1781`) ships it **raw**, and `contract.ts:155` **documents it**: *"As stored (`HH:mm:ss`)
+— the FE formats."*
+- **The FE keeps that promise at every display site**: `PlanModal.tsx:689`, `:1143`, `:1210` — all `.slice(0, 5)`.
+- **It does NOT keep it where the value seeds a control**: `resumeDefaultTime` (`resume-defaults.ts`) and
+  `PlanModal.tsx:828` both pass the raw value into a `Select` over `TIME_SLOTS` (`"09:00" … "17:00"`).
+🔑 **Message-build sites use `hhmm()` (`lib/time.ts:20`); the DTO does not, and that is correct.** ⇒ **a
+seconds-shaped `startTime` on the wire is not a defect. Failing to format it at a MATCHING site is.**
+
+### A `Select` given a value outside its options renders EMPTY — the one silent failure mode (2026-09-08)
+Mantine `Select`: a `value` that is not in `data` displays as blank. **No error, no warning, nothing at compile
+time.** The state still holds the value, so any `disabled={!value}` gate **does not fire** and the form **can be
+submitted with a value the admin never saw**.
+🔴 **This is DEF-5 exactly**, and it explains why @Tanya's Round-12 `10:00:00` (the VALUE) and the owner's empty
+field (the same value through the control) never looked like the same defect.
+⚠️ **`TIME_SLOTS` is a closed list of nine strings; server data can miss all nine** — `"17:30:00"` slices to
+`"17:30"`, still not a member. **The guard is MEMBERSHIP, not slicing.**
+
+### `zValidator` answers directly — `app.onError` is NOT on the validation path (2026-09-08)
+`routes/api.ts` uses `@hono/zod-validator` on every validated route **with no error hook**. On a refusal the
+validator **responds itself**, so `app.onError` (`index.ts:55`) — which maps `ApiException`, `23505` and `23503`
+to Thai sentences — **is never reached**. The `ZodError`'s `.message` is the **JSON-stringified issue array**,
+regex source included, and the FE correctly renders `e.message`.
+⇒ 🔴 **Every 400 in the product, on every screen, has always reached the admin as a raw array.** Unseen only
+because forms normally gate the button.
+🔑 **A handler that is not reached is worse than a missing one: it looks handled.**
+
+### A `Select` seeded with `null` shows a PLACEHOLDER; one seeded with a wrong-format value shows NOTHING (2026-09-08)
+Both look like "no value" in a screenshot, and they are opposite states. `null` ⇒ the control says *choose one*.
+A value outside `data` ⇒ the control draws **empty while holding the value**, so `disabled={!value}` stays off
+and the form submits what was never displayed.
+📌 `BookingModal:680` (REQ-076 resume time) is safe **by the first route** — `useState<string | null>(null)`.
+🔑 **"Empty on screen" is not one state. Ask which.**
+
+### `startTime` has TWO mappers with TWO formats, and the contract comment documents only the exception (2026-09-08)
+| | |
+|---|---|
+| `db/mappers.ts:123` — the **booking** DTO | `startTime: hhmm(b.startTime)` ⇒ **`HH:mm`** |
+| `scheduler.service.ts:1781` — `toSessionRow`, the **plan** DTO | `startTime: b.startTime` ⇒ **`HH:mm:ss`** |
+⇒ `contract.ts:155`'s *"As stored (`HH:mm:ss`) — the FE formats"* reads like the project's rule and is **the one
+place it applies**. ⚠️ **A reader would fairly take the exception for the rule.**
+✅ **The booking side is proved by behaviour, not by grep:** `CalendarGrid.tsx:66` matches `b.startTime === time`
+against a `TIME_SLOTS` string — **if bookings shipped seconds, the calendar would render no bookings at all.**
+
+### A `searchable` Select's text is not its value (2026-09-08, @Tanya Round 13)
+Typing into a `searchable` Mantine `Select` **without picking the filtered option** leaves the box reverting on
+blur while the state keeps the previous value. ⇒ ***"the field the admin edits is not the field submitted"* —
+with no hidden input involved.**
+🔴 **Dangerous specifically AFTER a value bug is fixed:** while the field rendered empty a typed-but-unpicked
+value produced a server ERROR; with a valid default showing, the same gesture **submits the old time silently.**
+📌 Nine fixed options do not need a search box. Removed from the resume `Time` (TASK-295 §6).
+
+### A `DONE` board row can outlive its code — the window between review and commit is real (2026-09-08)
+**TASK-295 was implemented, reviewed and verified (`tsc 0 · 168/0 · build ok`), the board row said `DONE`, and
+the code existed only as uncommitted changes.** A `discard` in `smart-scheduler-front` wiped every **tracked**
+modification since `01203d3`; **untracked files survived** — which is why the new `time-slot.ts` and its test
+remain while every wiring edit is gone.
+🔑 **Git keeps no record of a discarded uncommitted change** ⇒ **the engineer's own task notes are the only map**,
+and only that engineer knows whether they touched a file the notes do not mention.
+⚠️ **Nothing in the agent process was wrong: the task WAS done and the row WAS true.** The exposure is the time
+between a green row and a commit, **and it belongs to the human alone — no agent here commits.**
+📌 **Recovery check for next time:** `git status` showing **only untracked files** plus a suite failing on
+**source-text assertions** is the signature of a discard, **not of unwritten work.**
+
+### Rule-green + wiring-red is a LOST edit, not a bad change (2026-09-08, @Fern, TASK-295)
+When a pure module survives and its callers do not — the signature of a `discard`, since untracked files survive
+and tracked modifications do not — **the suite fails as *"a rule with no caller"***: every failure is a WIRING
+assertion and **not one is a RULE assertion.** The module's own behavioural tests stay green, **because the logic
+is in the file that survived.**
+🔑 **A genuinely broken change fails the other way round, or fails both.** ⇒ **read the SHAPE of the failures
+before concluding anything about who caused them.**
+📌 The source-text assertions that detected it were written to prove **absences** (the AC-8 pattern); catching a
+vanished edit was not what they were designed for. **They also gave the redo a checklist that was not the
+engineer's memory: the four failures were the four missing edits, one each.**
+⚠️ **Corollary for scoping a loss:** *"every tracked file modified since `<sha>`"* is accurate and **reads wider
+than the loss usually is.** Tasks pinned by source-text tests **prove their own survival** — if their wiring had
+gone, those tests would have failed too. **Redoing already-committed work is its own defect.**
+
+### A Mantine `Select` has TWO inputs, and DEF-5 lived between them (2026-09-08)
+The component renders a **visible text input** and a **hidden input carrying the value**
+(`@mantine/core/.../Select.mjs` — `hiddenInputProps`, and `readOnly: readOnly || !searchable` at `:134`).
+⇒ **`readOnly: true` on the visible box is the observable signature of `searchable` being absent** — that is how
+a DOM read tells a patched Select from a replaced one.
+🔑 **The two inputs can disagree**, and DEF-5 was exactly that disagreement:
+| **hidden `10:00:00`** | the value, with seconds — what @Tanya read in Round 12 |
+| **visible BLANK** | the same build: no option matched, so nothing rendered — what the owner screenshotted |
+⇒ **a screenshot shows one end and a DOM read shows the other**, which is why three observers held three
+irreconcilable readings of **one** component for a week.
+📌 **`searchable` adds a third string** — the search box's text, which is neither: typing without picking reverts
+it on blur while the value stands.
+⚠️ **When a form field looks wrong, ask WHICH of the three you are looking at before theorising.**
+
+## ✅ SOLVED 2026-09-08 (owner) — LINE inbound was dead because **`ecosystem.cjs` HARD-CODED the demo LINE credentials on `uat`**
+🔴 **UNPARKS and CORRECTS the section above.** **I wrote there: *"It is a setting on their console, not a defect
+in our build."* THAT WAS WRONG. It was ours, on our server.**
+
+**The owner's finding:** he changed `.env` on `uat` and **the value did not change**. Logging showed the process
+still holding the **demo** channel secret + token. **`pm2`'s `ecosystem.cjs` had the LINE credentials written
+into it literally**, so the `env` file was never consulted. ✅ **Fixed to read from `env` always.**
+🔑 **Why the symptom looked exactly like a customer-console problem:** inbound webhooks are verified with the
+**channel secret**. **With the DEMO secret loaded, every signed request from the CUSTOMER'S OA failed
+verification and was dropped** ⇒ **no `[line-in]` lines, no error anyone would notice, and the failure appeared
+at the exact moment they switched OA.** **All four of my candidates were on their side. None of them was it.**
+
+### 🔴 CONSEQUENCES that do NOT go away with the fix — check these before trusting anything LINE on `uat`
+1. **OUTBOUND on `uat` was riding the DEMO token.** ⇒ **anything `uat` sent went to the DEMO OA's users, not the
+   customer's.** **The customer's parents received NOTHING from `uat`, and the demo OA may hold real messages
+   about real students.**
+2. 🧊 **PENDING DEPLOY item 5 was frozen on a FALSE premise** — its note says *"the server now points at the
+   CUSTOMER'S OA"*. **It did not. It pointed at demo.** ⇒ **the three unknowns behind that freeze must be
+   re-asked, not resumed.**
+3. **Which OA holds the six rich menus?** `publishRichMenus` uses the **token** ⇒ **they were published to
+   whichever OA the token named.** **The 09-05 phone confirmation was on the owner's demo OA.** ⇒ **the
+   customer's OA may have NO menus at all**, and *"the menus exist"* is unverified there.
+4. **`family_line_links` rows written from `uat`** carry userIds **scoped to the DEMO provider** ⇒ **they may
+   match nothing on the customer's OA.**
+
+📌 **The lesson worth keeping: a value in TWO places, where one silently wins, is invisible from the outside.**
+**Everyone could read the `.env` and everyone was reading the wrong file.** ⇒ **the same class as the two Thai
+sentences and the two live-status lists we hit the same week.**
+
+### ✅ ALL FOUR CONSEQUENCES CLOSED, same day — I over-escalated them and the owner closed each one
+**Recorded because the escalation is on the record above and must not outlive its answer.**
+1. **Outbound rode the demo token** — **TRUE and HARMLESS.** **Inbound was dead, so NOBODY was ever linked on the
+   customer's OA** ⇒ **no parent was waiting for a message that never came**, and what `uat` did send went to
+   the owner's own demo test accounts. **Nothing to fix.**
+2. **The frozen item-5 note states a false premise** — **a document correction, not work.**
+3. 🔑 **"The customer's OA may have NO menus" — TRUE, AND IT IS THE INTENDED STATE.** **The owner removed them
+   deliberately on 09-08 with the team's `line:remove-menus` tool**, because *"ลูกค้าบอกให้เอาออกก่อนเพราะกลัว
+   ลูกค้าเขาเห็น ยังไม่พร้อมใช้งาน"*. ⇒ **absence is the decision, not a symptom.**
+4. **`family_line_links` rows are demo-scoped** — **TRUE and inert: nothing to collide with, since nobody had
+   linked on the customer's OA.**
+🔻 **The lesson is mine: I derived four consequences from one true mechanism without checking any of them against
+what we had already DONE ON PURPOSE.** **Item 3 was an instruction I carried myself, eight hours earlier.**
+⇒ **a consequence chain is a hypothesis list, and I presented it as a findings list.**
+🟢 **LINE inbound on the customer's OA is WORKING — the owner's screenshot: `สมัคร` → the bilingual entry message
+with `ผู้ปกครอง · ครู · แอดมิน`. Nothing is outstanding from this fix.**
+
+### `SICK_LEAVE` is ONE state with SIX independent prices — the consequence table (2026-09-08)
+Leave has needed a ruling per feature five times in one week. **It is not a missing definition.** `SICK_LEAVE`
+is one status, used consistently; what differs is **what it COSTS**, and the six consequences are set
+separately:
+| consequence | file | rule today |
+|---|---|---|
+| **quota** | `scheduler.service.ts:2328`, `:2751` | consumed — **unless `plannedAtCreation`** |
+| **make-up** | `course-plan.ts:111` | **always earned** — the appender never reads the flag |
+| **slot blocking** | `booking-slot.ts:6` (`SLOT_NON_BLOCKING`) | **frees the slot** for a replacement |
+| **expiry** | `course-expiry-impact.ts:31` (`EXPIRY_SETTLED_STATUSES`) | **settled** — counts as done |
+| **freelance pay** | `freelance-budget.ts:33` | **releases** the held hour |
+| **notification** | `line-message.ts` | parent only — **`REQ-085 §2` adds teacher + admin** |
+
+🔑 **The proof they are independent is the owner's own reversal**, recorded at `freelance-budget.ts:34`:
+*"SICK_LEAVE also RELEASES — owner reversal 2026-08-03, overturning the 2026-07-20 'SICK_LEAVE keeps the draw'
+rule."* ⇒ **he moved ONE price and left the other five untouched.**
+⚠️ **A single definition of "leave" would have made that reversal inexpressible** — it would have forced a new
+status or a change to all six.
+📌 **What was actually missing is this table.** Six files cannot be read at once, so every new ruling
+re-derived the previous five.
+
+### A re-plan moves what is OWED, not what has HAPPENED — so an `ON LEAVE` row keeps its old time (2026-09-08)
+A `SICK_LEAVE` row is a **happened** fact: the family already missed that lesson. **What is owed is its
+MAKE-UP, and the make-up is what moves.** ⇒ rewriting the leave row's time would be **rewriting history to make
+a schedule look tidy.**
+✅ True by construction today — `COURSE_LIVE` excludes `SICK_LEAVE`, so a re-plan cannot touch it. **No task.**
+
+### `REQ-085 §1` (unlimited advance leave, free of quota) was ALREADY BUILT (2026-09-08)
+`plannedAtCreation` — `REQ-045` owner decision B, TASK-148, migration `0019` — already makes a creation-time
+leave free of quota, guarded in **two** service paths. **There is no cap:** `validation.ts:276-279` refuses only
+a week beyond the course size and *every* week absent; the FE picker caps nothing.
+✅ **A creation-time leave DOES earn its make-up** — `course-plan.ts:111` appends for any unmatched `SICK_LEAVE`
+and never reads the flag.
+⚠️ **So the requirement is satisfied and the owner still reported it** ⇒ **he is probably reading a DISPLAY**
+(`CreatePlanFlow.tsx:77` shows `LEAVE_QUOTA_BY_SIZE` on the size picker — a quota stated on the one screen where
+it does not apply). **Unconfirmed; asked rather than built.**
+🔑 **A requirement that is already implemented is the strongest signal that the report is about something else.**

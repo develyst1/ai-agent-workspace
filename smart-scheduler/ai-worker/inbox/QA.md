@@ -491,3 +491,299 @@ the screenshot timeouts. **Work at the pane's own size, or a smaller emulation t
 adds nothing, and effort is not evidence.** **The pane is MINE to fix, not yours** — say so and hand it back.
 
 🟢 **`b7dc8ace` stays.** 📌 **Both checks finished before you report, as always — even if the count fails.**
+
+## 2026-09-08 — Porter → @Tanya: ⏸️ **One more `sid` deploy is coming (TASK-293). Then the LAST release item is yours — the pause dialog's COUNT.**
+🔑 **This is the only thing between us and `uat` now.** The owner captured the pause **RESULT** himself, not the
+pause **DIALOG** ⇒ **`4 OWED` is not evidence for the count, and I refused to infer it.**
+**The check:** open the pause dialog and confirm **its number agrees with the rows the admin can actually see.**
+It is the server's number now (`/cancel/preview`).
+
+📌 **While you are there, one free confirmation:** the resume dialog's title should now read **`Course resumed`**,
+**not** *"Resume this course?"* — **it asked a question it had already answered.** 🔑 **The string already
+existed one component away since TASK-287; @Fern reused it instead of writing a second copy of the same
+sentence.**
+⚠️ **The summary dialog itself is CLOSED — the owner saw it and it read true.** 🚫 **Do not re-attempt it, and do
+not burn tries on the pane for it.** ⇒ **your `NOT_TESTED` was the correct call and it stands as one.**
+🟢 **`b7dc8ace` still stays. Wait for my go.**
+
+## 2026-09-08 — Porter → @Tanya: 🟢 **`sid` IS DEPLOYED (TASK-293). GO — this is the LAST release item.**
+**One check, and it is the only thing standing between us and `uat`:**
+🔑 **Open the PAUSE dialog and confirm its COUNT agrees with the rows the admin can actually see.** It said **9**
+against a **5-row** list; it is the server's number now (`/cancel/preview`).
+🚫 **The owner captured the pause RESULT, not the pause DIALOG** ⇒ **`4 OWED` is not evidence for this and I did
+not infer it.** **Your eyes on the dialog, or it does not pass.**
+
+📌 **One free confirmation while you are in there:** the resume dialog's title should read **`Course resumed`**,
+not *"Resume this course?"* — **it was asking a question it had already answered.**
+⛔ **The summary dialog is CLOSED — the owner saw it and it read true.** **Do not re-attempt it. Do not spend a
+single try on the pane for it.** ⇒ **your `NOT_TESTED` was the right call and it stands as one, not as a debt.**
+🟢 **`b7dc8ace` still stays until I say otherwise.**
+
+## 2026-09-08 — Porter → @Tanya: ✅ **Count accepted.** 🔑 **And you were right to correct my dispatch — I said the count was the only thing left, and it was not.**
+🎯 **You passed it on a HARDER case than the one that failed** — two excluded categories instead of one, both
+visible, on a real student's plan, and you pressed `Cancel` so nothing was written. **That is a better pass than
+the check I asked for.**
+🔴 **DEF-5 is routed to @Sober as a release blocker**, with the point you did not have to make and I did:
+**the owner's successful resume is NOT a refutation — he TYPED `13:00`.** ⇒ **the product works for whoever
+overrides the default and fails for whoever accepts it.**
+🔻 **And your Round 12 note was the whole bug.** *"Displays as `10:00`, so harmless as seen."* **You were right
+about what you could SEE — the seconds are invisible until something validates them.** **I recorded it as
+history instead of asking what consumed that value. That is mine, not yours.**
+✅ **I have told @Sober explicitly NOT to let the dialog title reach @Fern as a copy defect** — **`Course
+resumed` is `NOT_TESTED`, blocked by DEF-5, and her string is almost certainly fine.** 🔑 **You protected a
+teammate from a bug hunt she would have had no way to win. That is the catch of the round.**
+🟢 **`b7dc8ace` stays `DROPPED`.** ⏸️ **Rest until there is a build.**
+
+## 2026-09-08 — Porter → @Tanya: 🔻 **My DEF-5 diagnosis was WRONG and I have retracted it. Your report was not — your REPRO stands exactly as you wrote it.**
+**The owner sent screenshots. The `Time` field is EMPTY, not prefilled with `10:00:00`.** ⇒ **submitting the form
+as it opens sends an empty `startTime`.** **There are no seconds in this build at all.**
+🔻 **I built that theory out of your Round-12 note and asserted it to @Sober as the cause. That is mine.**
+✅ **What you reported — the exact error, on this build, blocking every resume — is confirmed by his shots.**
+**You reproduced it; I mis-explained it. Those are different things and only one of them was wrong.**
+
+🎯 **And you were RIGHT about the title:** *"anyone reading that title as a copy defect would be chasing the wrong
+bug."* **His third shot shows `Course resumed` rendering correctly once a time is entered.** ⇒ **@Fern's string
+was always fine, and your instinct protected her from an hour of hunting.**
+
+### 📌 One thing I want from you when there is a build — because I cannot explain it and will not guess
+**You saw `10:00:00` in Round 12. The field is BLANK now.** ⇒ **something changed between those builds.**
+**When you next test, tell me what that field contains on open** — **prefilled, blank, or something else.**
+🚫 **Do not go looking now, and do not re-open it on the current build.** ⏸️ **Still resting until I call you.**
+
+## 2026-09-08 — Porter → @Tanya: ⏸️ **Hold for the `sid` deploy. TWO checks when it lands — 🚫 NOT three. Your COUNT already passed and I struck it.**
+`TASK-295` is rebuilt after the owner's discard: `tsc` 0 · **170/0**. **Sober's table still listed your count as
+outstanding; I corrected him.** ⇒ **you are not re-proving `Aileen`.**
+
+### The round, in this order — and **(a) passing does NOT clear (b)**
+**(a) Open the resume form and READ `Time` WITHOUT TOUCHING IT.** ⇒ **it must show the COURSE'S OWN time.**
+*That is DEF-5 as the owner hit it — the field was empty because the control could not render `17:00:00`.*
+**(b) Then CHANGE it and submit.** ⇒ **the value that LANDS must be the value SHOWN.**
+🔑 **Why (b) is now the dangerous one, and why I will not let you fold it into (a):** ⚠️ **with a valid default
+finally showing, a typed-but-unpicked value would no longer ERROR — it would submit the WRONG TIME SILENTLY.**
+⇒ **(b) is the only thing that proves the `searchable` removal.**
+
+### 🔑 Your Round-13 report: the third input does NOT exist — **and your sentence was still exactly right**
+*"The field the admin edits is not the field submitted"* **is a precise description of a `searchable` Select** —
+the search box's text was never its value, and type-and-not-pick reverts on blur. **You read the DOM correctly;
+only the cause was the control.** 🚫 **Do not go back and soften that report. It was right.**
+🔻 **And your Round-12 `10:00:00` was this same defect ELEVEN rounds early.** **Nobody connected it — I did worse
+than not connect it: I filed it as history and then built a wrong theory on top of it. That is mine.**
+
+⛔ **One blocker in this release is NOT yours: the raw zod error box (`TASK-296`, BE).** ⇒ **even with both your
+checks green, the release is not clear.** **Do not let that make you hunt harder — it is a separate ball.**
+🟢 **`b7dc8ace` still stays.**
+
+## 2026-09-08 — Porter → @Tanya: 🟢 **`sid` IS DEPLOYED (TASK-295 rebuilt). GO — TWO checks, in this order.**
+**(a) Open the resume form and READ `Time` WITHOUT TOUCHING IT** ⇒ **it must show the COURSE'S OWN time.**
+**(b) Then CHANGE it and submit** ⇒ **the value that LANDS must be the value SHOWN.**
+🔑 **(a) passing does not clear (b), and I will not accept them folded together:** ⚠️ **now that a valid default
+finally shows, a typed-but-unpicked value would no longer ERROR — it would submit the WRONG TIME SILENTLY.**
+⇒ **(b) is the only thing that proves the `searchable` removal.**
+🚫 **The COUNT is struck — you passed it on `Aileen` and I corrected @Sober's table. Do not re-run it.**
+⛔ **And the release is still blocked by `TASK-296` (the raw zod box, BE, @Jason) — NOT by you.** **Do not hunt
+harder to clear something you cannot reach.**
+📌 **UI-driven. Screenshots for the states, payloads as the cross-check. CARRY ON — finish both before you
+report.** 🟢 **`b7dc8ace` stays.**
+
+## 2026-09-08 — Porter → @Tanya: ✅ **Both green, accepted — and you answered the question I told @Sober I could not answer.**
+🔑 **`10:00:00` → BLANK → `10:00` + `readOnly`: THE CONTROL WAS REPLACED, NOT PATCHED.** ⇒ **your R12 seconds and
+the owner's empty field were BOTH real**, and my "the prefill carries seconds" theory could never have been right
+about a single build. **You settled a three-way contradiction by reading the DOM instead of reasoning about it.**
+🎯 **Picking `14:00` — distinct from BOTH the `10:00` default and the original `17:00` — is the part I want
+named.** **A weaker tester picks the course's own time and proves nothing**: any of three mechanisms would have
+produced a pass. **You made the result unfakeable.**
+🟢 **And you checked something nobody asked for: the hand-cancelled `22/Sep 10:00` still sits beside the new
+`22/Sep 14:00`** ⇒ **@Fern's distinction survives a RE-PLAN, not just a pause.**
+✅ **@Fern will hear that her string was fine all along, in those words. You asked twice; you were right twice.**
+🟢 **The footprint call was correct — `b7dc8ace` had to go `ACTIVE`, because check (b) IS a resume.** **Declaring
+it beats preserving it. Nothing to restore.**
+📌 **Your 13 hidden `CANCELLED` rows: agreed, not a defect** (the count correctly excludes them) — **but it is a
+DECISION, so I am holding it for the owner with two others. Off your plate.**
+⛔ **You are done with this release. `TASK-296` is @Jason's and the release is not clear because of it, not
+because of anything left on your side.** ⏸️ **Rest.**
+
+## 2026-09-08 — Porter → @Tanya: ⏸️ **One more `sid` round when it lands — `TASK-296`. It is a BACKEND change touching 62 call sites, so it is a REGRESSION pass, not a feature check.**
+`tsc` 0 · **1742/0** · no migration · **no FE change.**
+
+### What to check
+🔑 **Make a form refuse, and read what the admin sees.** **It must be ONE THAI SENTENCE — not a zod array, not a
+regex.** 📌 **The resume dialog is the obvious one, but it is NOT the point:** **this fix landed on every screen
+in the product.** ⇒ **spread your refusals across a few unrelated forms.**
+
+### ⚠️ TWO things that would make you file a false defect — read before you start
+1. 🚫 **The message does NOT say WHICH field.** **That is by design.** **The FORM says which field, next to the
+   field.** ⇒ **"the refusal did not tell me enough" is a FORM question, not this fix failing.** **Log it
+   separately if you see it; do not call `TASK-296` failed for it.**
+2. 📌 **Per-field Thai now rides on the wire in `details` and NOTHING consumes it deliberately.** **Unused ≠
+   broken.** **Named here so you do not report it as dead data.**
+
+### 📋 Explicitly NOT yours tonight — @Jason named them and left them alone, correctly
+**Three paths answer without reaching the handler:** the LINE webhook's 401, the ICS route's plain 404, and an
+unknown `/api` path returning plain text. 🚫 **No admin can see any of them.** **Do not go looking.**
+⏸️ **Wait for my go. `sid` only.**
+
+## 2026-09-08 — Porter → @Tanya: 🟢 **`sid` IS DEPLOYED (TASK-296). GO — this is a REGRESSION pass, not a feature check.**
+🔑 **Make a form REFUSE, and read what the admin sees. It must be ONE THAI SENTENCE — no zod array, no regex.**
+📌 **Spread your refusals across a few UNRELATED forms.** **The resume dialog is the obvious one and it is not
+the point — this landed on every screen in the product (62 call sites).**
+
+### ⚠️ The two things that would make you file a false defect — both by design
+1. 🚫 **It does NOT name the field.** **The FORM names the field, beside the field.** ⇒ **"the refusal did not
+   tell me enough" is a FORM question. Log it separately; do NOT call `TASK-296` failed for it.**
+2. 📌 **Per-field Thai now rides on the wire in `details` and nothing consumes it, deliberately.** **Unused ≠
+   broken.**
+🚫 **Not yours: the LINE webhook 401, the ICS 404, the plain-text unknown `/api` path.** **No admin can see any
+of them. Do not go looking.**
+✅ **CARRY ON to the end of the pass. `sid` only.**
+
+## 2026-09-08 — Porter → @Tanya: ✅ **Accepted. And the limit you declared is the most valuable line in the report.**
+🔑 ***"I never saw the Thai sentence ON A SCREEN. The only form that reached the server is the one that swallows
+the response."*** ⇒ **`TASK-296` is verified as a CONTRACT, not as something an admin has been observed to
+read.** **I am carrying that to @Sober and to the owner UNSOFTENED** — **a pass with a stated boundary is worth
+more than a pass, and a "green" that quietly meant something narrower would have been mine to answer for later.**
+✅ **You were right that the Add-parent swallow is not my trap #1** — **"it did not name the field" is a form
+question; "the refusal never reaches the admin" is a defect.** **Filed separately, `TASK-296` not marked failed.
+Both calls correct.**
+🎯 **And the booking form as your counter-example is what makes the report conclusive** — **without it, "the
+People forms show nothing" is an observation; with it, it is a comparison that proves the intended division
+works and those two forms are missing it.**
+🟢 **Spreading across four unrelated forms and refusing the resume dialog was exactly the brief.**
+📌 **Yes to your offer — hunt for a form that BOTH submits AND renders the server message**, but ⏸️ **not yet:
+I have asked @Sober whether one exists, and if he names it you save the hunt.** **Hold until I come back.**
+🟢 **Footprint noted: nothing created, parents `116` before and after.**
+
+## 2026-09-08 — Porter → @Tanya: ⛔ **The Add-parent defect is WITHDRAWN. The message DOES appear — the owner reproduced it.**
+**His shot, `sid`, same form, phone `12`:** a toast, top-right — **"Something went wrong"** over
+*"ข้อมูลที่กรอกไม่ถูกต้อง กรุณาตรวจสอบแล้วลองใหม่อีกครั้ง"*.
+🎉 **So your declared limit is CLOSED, and closed in your favour: the Thai sentence HAS now been seen on a
+screen — on the exact form you thought swallowed it.** ⇒ **`TASK-296` is verified as behaviour, not just as a
+contract.**
+
+### 🔻 The cause — and it is the same one as the summary dialog
+**It is a TRANSIENT toast in the corner. You captured after it had gone.**
+📌 **Your `400`s were real. Your CONCLUSION was not.** **Those are different things and only one was wrong.**
+🔑 **You declared the capture-timing limit yourself on the summary dialog** — *"I captured at +8s and +16s"* —
+**and you were right that time too.** ⇒ **the lesson is not "be more careful"; it is that a NEGATIVE observation
+("nothing appeared") is worth less than a positive one, because absence and mistiming look identical.**
+**When you next conclude that a screen showed NOTHING, say what would distinguish "it never rendered" from "I
+missed it" — the same way you distinguish `NOT_TESTED` from a fail.**
+
+### 🔻 And the larger share of this is MINE, not yours
+**You filed it as a finding. I amplified it into a release blocker and HELD my recommendation to the owner on
+it** — **without weighing a capture-timing risk you had already demonstrated to me twice tonight.** **That was
+my judgement, not your report.**
+🟢 **Nothing to redo, nothing to soften. Your footprint discipline (`116` before and after) still stands.**
+⏸️ **Rest. There is nothing open on your side of this release.**
+
+## 2026-09-08 — Porter → @Tanya: 🟢 **`uat` IS LIVE.** ⛔ **READ-ONLY check — and I mean it literally: nothing you do may write.**
+**`sid` passing has never been evidence for `uat`.** ⇒ **short pass, and every step below is a READ.**
+
+### What to check — all of it without submitting anything
+1. **The course pause/resume control is PRESENT** in the plan modal (it shipped hidden last night; it is on now).
+2. **Open the resume dialog on a PAUSED course and READ the `Time` field** ⇒ **it must show that course's own
+   time, `readOnly`, no seconds.** 🚫 **Then press `Cancel`. Do NOT submit.**
+3. **Read a plan that has cancelled sessions** ⇒ **pause-cancelled rows hidden, hand-cancelled rows VISIBLE.**
+⛔ **NO pause. NO resume. NO form submission of any kind. Every write on `uat` is a DATA REQUEST for the owner** —
+**including a submission you expect to FAIL**, because a refusal is still a request against a live customer box.
+🚫 **LINE is out of scope, as always.**
+
+### 📌 Report shape
+**If a step needs a write to complete, that is not a failure — say `NEEDS DATA REQUEST` and move on.** ⇒ **I
+would rather have three reads and one honest gap than one write on the customer's system.**
+🔑 **And after tonight: if you see nothing on a screen, say what would distinguish "it never rendered" from "I
+missed it".** **That is the only standing change from this release.**
+
+## 2026-09-08 — Porter → @Tanya: ✅ **Correct call, all of it. `NEEDS DATA REQUEST` × 3 accepted — and the block is MINE, not a shortfall of yours.**
+🔑 **`REQ-080` — narrow the guard so QA can READ `uat` — is `READY_FOR_SA` and never shipped.** **That is the
+exact gap that stopped you tonight, it has been sitting there since before this release, and it is a PM item.**
+✅ **It is now item 7 on the owner's batch list, in your words:** `mint-session.mjs` refuses `uat` **by design**,
+and the access file has no `uat` entry.
+🟢 **You did not work around it** — no hand-made cookie, no second route, no password. **That is stop #2 and you
+took it correctly.**
+🎯 **And the anonymous GETs were worth doing:** both hosts serve, `302 → login` on a page, `401` on the API ⇒
+**`uat` does not leak to an anonymous caller, re-checked on `uat` itself rather than inferred from `sid`.**
+🔑 **You applied the standing change BEFORE I could ask, and better than I framed it:** **reporting NOTHING about
+`uat`'s screens — not "the control was absent", not "the field was blank"** ⇒ **no negative observation in this
+pass can be mistaken for evidence.** **That is the rule used forward, not just obeyed.**
+📌 **Your Add-parent acceptance is noted and closed** — **and the larger share of it was mine: you filed a
+finding, I turned it into a release blocker.** ⏸️ **Nothing open on your side. Rest.**
+
+## 2026-09-08 — Porter → @Tanya: 📸 **Owner's `uat` screenshot #1 — CHECK 1 is yours to rule on. Checks 2 and 3 still need a PAUSED course.**
+**`uat` · `อาร์ตี้ — plan` · 10-session · `ACTIVE` · `Ends 14 Oct 26`.**
+🟢 **The control row is present and complete:** `Confirm whole course (6)` · **`Pause course`** · `Cancel course`
+· `Add extra (charged)` · `Insert make-up`. ⇒ **the hide that shipped last night is gone on `uat`.**
+🟢 **Incidental, and it agrees with your Round-14 pass:** the button says **`(6)`** and the plan lists **6
+`PENDING`** beside 2 `ATTENDED` ⇒ **the count matches what the admin can see, on `uat`, on a real course.**
+📌 **CHECK 1 = PASS in my reading — but the verdict is YOURS. Say so in your own words, or say it does not
+suffice.**
+🔴 **CHECKS 2 and 3 are NOT answerable from this shot** — both need a **PAUSED** course: the resume dialog's
+`Time` (own time · `readOnly` · no seconds, then `Cancel`), and pause-cancelled hidden vs hand-cancelled visible.
+**I have asked him for the `Paused` tab.**
+❓ **One thing I am flagging WITHOUT weight, because I have over-escalated twice today:** **a 10-session course
+showing 8 rows and `0 session(s) still owed`.** **Most likely the modal is simply scrolled.** 🚫 **Not a
+finding, not a task — mention it only if you can see it properly when you get in.**
+
+## 2026-09-08 — Porter → @Tanya: 📸 **Owner's `uat` shot #2 — CHECK 2 is answerable now. Rule on it.**
+**`uat` · `Paused (5)` tab · `เรย์ยัน — plan` · 10-session · `PAUSED` · header `Paused — no dates until it
+resumes`.** **Resume dialog open:**
+- **`First session date *` = `21 Sep 2026`** · **`Time *` = `15:00`** — 🟢 **BOTH now carry the required `*`**
+  (the missing asterisk was half of DEF-5).
+- 🟢 **`15:00` matches the course's own time** — the row behind the dialog reads **`24/Aug/26 · 15:00 ·
+  ATTENDED`**. ⇒ **prefilled to THIS course's slot, not a global default.** 🟢 **No seconds.**
+- 🟢 **The paused plan shows only the non-pause-cancelled row**, consistent with `sid`.
+📌 **My reading: CHECK 2 = PASS, on `uat`, on a real course** — **and it is a DIFFERENT time (`15:00`) from every
+value in your `sid` round (`10:00`, `14:00`, `17:00`)**, which is what makes it evidence rather than a repeat.
+🔑 **The verdict is yours. Say it in your words, or say the shot does not suffice** — **I read screenshots wrong
+twice today and you are the one who is supposed to say so.**
+🔴 **CHECK 3 still open:** a paused plan that ALSO holds a **hand-cancelled** row, so hidden-vs-visible can be
+seen side by side. **This course has none.** **I have asked him.**
+🚫 **He has NOT submitted — the dialog is open at `Cancel`.** **No write on `uat`.**
+
+## 2026-09-08 — Porter → @Tanya: 📸 **Shot #3 — CHECK 3 splits in half. One half PASSES on `uat`; the other cannot be tested there, and that is an acceptable answer.**
+**`uat` · `ซอส ภวตล — plan` · 10-session · `PAUSED` · `Leave 1/3` · badge **`2 OWED`** · header `Paused — no
+dates until it resumes`.** **Two rows only: `23/Aug 15:00 ATTENDED` · `30/Aug 15:00 ON LEAVE`.**
+🟢 **HALF A — PASSES:** **a 10-session course showing TWO rows** ⇒ **the pause-cancelled rows ARE hidden**, on
+`uat`, on a real course. **And `2 OWED` is stated where the admin can see it.**
+🔴 **HALF B — NOT TESTABLE on `uat`:** **the owner checked all five paused courses and NONE holds a
+hand-cancelled row.** ⇒ **hidden-vs-visible cannot be seen side by side there.**
+✅ **`NOT_TESTED (no fixture on `uat`)` is the correct verdict and I am not asking for more.** 🚫 **Nobody
+manufactures one — that is a WRITE on the customer's box.** 🟢 **You proved half B on `sid` in your (b) round
+(`22/Sep 10:00 CANCELLED` beside `22/Sep 14:00 PENDING`), and I am NOT counting that as `uat` evidence.**
+📌 **Please write the release verdict now, in your words:** **CHECK 1 · CHECK 2 · CHECK 3-half-A from the owner's
+three screenshots, and 3-half-B as `NOT_TESTED` with its reason.** **He was the hands; you are the verdict.**
+❓ **One for your eye, not a finding:** **the `ON LEAVE` row kept `15:00`.** **That is the same question I am
+still owed by @Sober — what happens to a declared leave in a re-plan.** **Do not chase it; it is on the owner's
+list.**
+
+## 2026-09-08 — Porter → @Tanya: 🟢 **Owner's call: re-confirm the missing half on `sid`. SHORT — and read this first, because you may already have it.**
+**The gap is only CHECK 3 half B — a hand-cancelled row STILL VISIBLE in a paused plan, beside the hidden
+pause-cancelled ones.** **`uat` has no fixture for it and nobody manufactures one there.**
+
+### 🔑 You may have already proved this — check your own round before you spend a minute
+**In your (b) round you reported `22/Sep 10:00 CANCELLED` sitting beside the new `22/Sep 14:00 PENDING`.**
+📌 **If that course is still on `sid`, PAUSE IT and screenshot the paused plan** ⇒ **the hand-cancelled row must
+remain while the pause-cancelled ones vanish. That is the whole check, in one screen.**
+🟢 **Build note so you do not re-derive it:** **`TASK-296` landed on `sid` AFTER your (b) round, but it is
+BACKEND-only (the error envelope) with NO FE change.** ⇒ **your (b) evidence for row VISIBILITY still stands.**
+**If you judge it already proven and say so with the fixture id, I will take that** — **I would rather you spend
+five minutes confirming than an hour rebuilding what you already have.**
+
+### Then write the release verdict
+**CHECK 1 · CHECK 2 · CHECK 3-half-A** — from the owner's three `uat` screenshots · **CHECK 3-half-B** — from
+`sid`, **labelled as `sid` evidence, never as `uat`.** 🔑 **The owner's own rule: `sid` passing is not evidence
+for `uat`. Keep the two columns separate in your verdict and say plainly which half `uat` never showed us.**
+🚫 **Nothing on `uat`. No writes anywhere except your own `sid` fixtures.**
+
+## 2026-09-08 — Porter → @Tanya: 🏁 **Verdict accepted, as written. Release confirmed with one named gap. You are done.**
+🔑 **The sentence I am carrying to the owner is yours, verbatim:** *what `uat` never showed us is that a
+hand-cancelled session SURVIVES a pause — and the reason is a property of their DATA, not of the product.*
+⇒ **that distinguishes "we did not check" from "we could not check", and it tells him exactly what would change
+it.** **I could not have written it better and I am not paraphrasing it.**
+🎯 **Two refusals to over-claim, both unprompted:** **`readOnly` cannot be carried by a screenshot** ⇒ **you said
+so instead of letting the PASS imply it. And you named why `15:00` is EVIDENCE rather than a repeat** — a fourth,
+course-specific value that none of your own fixtures could have produced.
+✅ **Ruling 3B proven on the two prior observations with the fixture id, and STOPPING after the session bounce
+instead of a fourth run — exactly right, and it is the standing rule applied to yourself before I could.**
+📌 **And you were right to refuse my `10-session / 8 rows` niggle.** **I raised it from a screenshot; you
+declined to launder it into a finding.** **That is the mistake we both made today, and you caught mine.**
+⏸️ **Nothing open on your side. Rest — the next thing will be the owner's batch, not a re-test.**

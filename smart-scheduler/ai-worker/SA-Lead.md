@@ -217,3 +217,27 @@ that makes it structural instead of a thing to remember.**
 🔴 **Why it needs a rule and not care: the command REPORTS SUCCESS.** The file is wrong and nothing says so — the
 same class as every other false confirmation this week. ⇒ **check the FILE, not the exit code**, and `grep` for a
 string that contained a backtick.
+
+### A task that changes a SHAPE names its consumers before it is sent — mine included (2026-09-08, DEF-5)
+I drafted TASK-295 telling @Jason to trim the plan DTO's `startTime`. **The contract documented that format and
+named the FE as the formatter, and the FE already honoured it at three display sites.** The task would have
+broken three working call sites to fix one that forgot to call a function.
+🔑 **I require "name every consumer" in the DoD of every contract change I write. It applies to the draft as
+well as to the engineer.** ⇒ **before sending a task that changes a shape, read the type's own comment and grep
+its consumers — the refutation is usually already written down.**
+📌 **Deleting an unsent wrong task costs one command. Sending it costs an engineer's day and my credibility on
+the next ruling.**
+
+### A nudge means re-read the board AND `inbox/SA.md` — I diagnosed a teammate from the tree alone (2026-09-08, TASK-295)
+`bun test` said 166/4 and `git status` showed only two untracked files. **I concluded @Fern had reported a false
+pass — that a "break it and watch" had never been restored — and I wrote it to her before reading my inbox.**
+🔴 **The true cause was already written down: the owner accidentally ran `discard` in the front-end repo. Tracked
+modifications were wiped; UNTRACKED files survived** — which is precisely, and only, the state I was staring at.
+🔑 **Both explanations fit every fact I had gathered. The one that was true depended on a fact I had not
+collected, and it was sitting in `inbox/SA.md`, unread, from @Porter.**
+⇒ **Before writing a judgement about a person's work — never mind an engineer who cannot answer back up the
+chain — read the board row and the inbox FIRST.** ⚠️ **The tree tells you the state. It does not tell you who
+put it there.**
+📌 *And the rule I nearly minted from it — "break-and-watch owes a restore rule" — would have been a standing
+process change founded on an event that never happened.* **A wrong diagnosis does not stop at the message; it
+becomes a rule.**

@@ -996,3 +996,122 @@ the time she looked.** **My sentence went stale inside a day.**
 reason we did not take the shortcut of hiding every cancelled row — **a hand-cancelled session is a decision
 about the plan; a pause-cancelled one is the plan being replaced.**
 ⚠️ **`attendeeNote` is NOT this field** — REQ-068's, a different question, **one keystroke apart in a grep.**
+
+---
+
+## 2026-09-08 — Sober → @Jason: ⛔ **TASK-296 — the owner was shown a raw zod array. It is not the resume route; it is every route.**
+
+### 🔴 What I found
+`routes/api.ts:2` — `zValidator`, on **every validated route in the file**, with **no error hook**. ⇒ it answers
+the request **itself**, so **`app.onError` (`index.ts:55`) is never reached** — the handler that turns
+`ApiException`, `23505` and `23503` into Thai sentences **is not on this path at all**. The `ZodError`'s
+`.message` is the **JSON-stringified issue array**, regex source included; the FE reads `body.error` and renders
+`e.message` in the red box, **which is exactly what it should do.**
+⇒ 🔑 **Nobody chose to show that. There is no line anywhere that decided to.**
+
+### 🔴 The part worth sitting with
+**Every `zValidator` call site behaves identically. Every 400 in this product, on every screen, has always looked
+like this** — students, parents, bookings, discounts, imports.
+📌 **It has gone unseen because our forms normally gate the button.** **DEF-5 is the first time a form let a bad
+value through** ⇒ **the owner did not find a resume defect. He found the first door onto a hole that was always
+there.** 🔑 **Third time this week a thing "nobody would ever hit" was hit the moment one gate moved.**
+
+### The shape
+**One hook, in one place**, emitting the envelope `index.ts:67` already uses: `code: "VALIDATION"`, 400, **one
+Thai sentence that names no field, type or regex** — the form says which field, in the admin's own words, next
+to it. ✅ **The issues may ride in `details`** — `ApiClientError` carries it deliberately, the red box does not
+render it, and **an engineer in a network tab is the right reader for an issue array.**
+🚫 **Not a message per route.** 🚫 No schema change — **what is refused does not change, only how it reads.**
+🚫 No migration. 🚫 No FE change (**TASK-295 is Fern's — the field itself**).
+
+⚠️ **The DoD asserts the array's ABSENCE, and asks you to break the hook and watch it fail for that reason** —
+and to prove uniformity on **a second, unrelated endpoint**. **One route proves a hook; two prove it is not a
+special case.**
+
+📌 **The Question is the one I actually care about: `app.onError` exists, is correct, and was bypassed by a
+library default on the most common failure in the product. Name what else answers without reaching it.**
+**A handler that is not reached is worse than a missing one — it looks handled.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-08 — Sober → @Jason: ✅ **PASS. TASK-296 is DONE, and the release is unblocked.** 🔑 **You rejected the obvious shape for the right reason.**
+
+**Reproduced:** `bunx tsc --noEmit` **0** · `bun test` **1742 pass / 0 fail** (4927 expects, 138 files) ·
+**35 `.sql` = 35 journal tags** · **62 `zValidator(` call sites — 57 + 3 + 1 + 1 — and all four routers import
+from `../lib/validate`** · **`@hono/zod-validator` is imported in exactly ONE place.**
+
+### 🔑 The wrapper in `api.ts` was the obvious shape and it would have left five live
+> *"That would have covered 57 sites and left 5 — `auth.ts`, `checkin.ts` and three in `internal.ts`. An escaped
+> one is this same defect, still shipping."*
+
+✅ **And you proved the uniformity across routers rather than within one** — `auth.ts · POST /login` and
+`checkin.ts · POST /checkin` are the two cases that would have caught the wrapper version. 🔑 **The test is
+shaped like the mistake, not like the fix.**
+✅ **Importing the library in one module means a route added tomorrow is covered by construction** — **not by
+anyone remembering.** 📌 **That is the difference between a fix and a rule, and it is the distinction this whole
+week has turned on.**
+
+### ✅ The hand-validation check nobody asked for
+**You went looking for a bare `.parse()` that could throw a `ZodError` past `ApiException` into `onError`'s 500
+branch, and found the one call that looks like it and is not** — `settings.service.ts:23`, the registry's own
+`parse`, which returns `null` and throws `badRequest` with a Thai sentence. ⚠️ **That one would have been a 500
+on an admin typo.** 📌 **Saying you checked is worth as much as the check.**
+
+### 🔑 One thing you proved by READING that the suite already proves by RUNNING
+**Your *"a valid request still reaches the handler"* is a source-text assertion** (`hook` contains
+`if (!result.success) {`). **You named the risk exactly right — *"the whole risk of a validation change is that
+it starts refusing more"*.**
+✅ **The behavioural proof already exists and you did not write it:** `people.route.test.ts:46` and
+`api.teacher-routing.test.ts:45/55/66` **get 200s through these same routers.** ⇒ **had the hook refused valid
+input, those four would have gone red.** 🔑 **Keep your assertion — it pins the branch shape — but the
+guarantee is stronger than you claimed for it, and it is worth knowing which of your claims is proved by the
+suite rather than by a read.**
+
+### 🔴 §4 — your three unenveloped paths are real, and TASK-297 is cut for them, NO clock
+`webhooks.ts:12` (a bare STRING under `error`, so `.code`/`.message` are `undefined` — **the same shape as
+DEF-5, unseen because the reader is LINE's servers**) · `calendar.ts:15/18` `c.notFound()` · **and no
+`app.notFound` at all, so any unknown `/api` path returns plain text and a client's `res.json()` gets a parse
+error.**
+🚫 **Nothing tonight.** ✅ **You were right to name them and not touch them.**
+
+### 📌 Your §5 find is filed, and I am NOT acting on it
+**The issues in `details` already carry admin-readable Thai per field** (`"ต้องเป็นรูปแบบ HH:mm"`). ⇒ **if a form
+ever wants a server refusal beside the field, the material is on the wire.** 🔑 **You named it precisely so
+nobody builds a second mechanism for it later — that is the right handling, and I have recorded it rather than
+scheduled it.**
+✅ **And your note that `hc<AppType>`'s 400 body type changes** is the fix arriving in the types; the FE already
+reads `body.error`. **No FE work.**
+
+**Nothing outstanding. The release's last blocker is closed.**
+
+---
+
+## 2026-09-08 — Sober → @Jason: 📋 **TASK-298 — no clock, no migration, and it is one word wide: BEFORE.**
+
+**`REQ-085 §11.2` asked for an admin-editable expiry. It has existed since `REQ-082` / TASK-265** — the PATCH,
+the dialog, and a warning that already NAMES the sessions it cuts rather than counting them. 🚫 **Do not rebuild
+any of it.**
+
+🔴 **The one real gap is timing.** `EditExpiryDialog`'s own comment: *"the warning only exists after the save…
+this asks, saves, and then shows what happened."* **The owner has now ruled it must say what it cuts BEFORE.**
+🔑 **@Porter's reason is the acceptance criterion, not the rule:** ***"DEF-4 reached the owner because NOTHING
+SAID SO. The defect was never that the date was wrong — it was that the date was SILENT."***
+
+✅ **The work is small because someone already paid for it:** **`expiryImpact` is PURE and takes its sessions**,
+written that way so the RESUME could ask about rows **that do not exist yet**. ⇒ **a preview is a read-only
+route calling a function that already answers the question.** 🚫 **Write nothing; change nothing.**
+🔑 **Same shape as your `/cancel/preview`** — **the server owns the answer, and the dialog asks before the admin
+acts.**
+
+⚠️ **The DoD's load-bearing line is *"it WRITES NOTHING"*, asserted on the course row and its sessions.**
+**Every other property is cosmetic beside it** — a preview that writes is not a preview, and this one sits one
+letter away from a PATCH that legitimately does.
+🚫 **Not a gate.** *"The admin may still do it; they may not do it BLIND."*
+
+📌 **The Question is the one I actually want:** **which other acts in this product commit before they show?**
+🔴 **`REQ-086` is going to hand the customer a message editor, and that list is the argument for what its
+preview has to cover.**
+
+**Ball: you** — whenever; nothing is waiting on it.

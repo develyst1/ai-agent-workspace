@@ -59,6 +59,14 @@
     `2026-11-11` came back as `2026-09-09`, and **this week's calendar now shows November sessions.**
     🟢 **NOT a money defect: exactly one `SALE` per course, pause/resume wrote nothing; entitlement intact.**
     Reproduction left live: course `dd78bd1e-…`. `tests/TEST-066` → DEF-2. @Sober.
+  - 🔴🔴 **DEF-5 (QA, 2026-09-08) — RELEASE-BLOCKING. Course RESUME cannot be completed through the UI.**
+    `Resume the course` renders a raw Zod error: the FE submits `startTime: "10:00:00"` where the API requires
+    `HH:mm`. **Fails on the form's defaults AND on a hand-typed value** — the dialog holds a HIDDEN third input
+    still carrying `10:00:00`, so the field the admin edits is not the field submitted. 🟢 **Server is innocent:**
+    `POST /courses/:id/resume {startTime:"11:00"}` → **200**. ⚠️ The admin is shown a REGEX, not a message.
+    ⇒ **a paused course can only be recovered by a hand-made API call.** `tests/TEST-066` → Round 13. @Sober.
+  - ✅ **Pause-dialog COUNT fixed (QA, 2026-09-08)** — dialog says 6 against a 7-row plan (`ON LEAVE` correctly
+    excluded); every counted row is visible on the same screen. The `9`-against-`5` defect is closed.
   - ✅ **DEF-1 CLOSED 2026-09-08 (QA).** Post-redeploy retest: `?status=PAUSED` → **200** *(was 400)* and the
     tray on screen reads **`Paused bookings | 1 | KKTEST | 1 HR | Was: 08/Oct/26 16:00`**. **Verified BOTH via
     the API and on screen** — a 200 with an empty array would have read identically. ⇒ **`REQ-076` AC-1, AC-9
@@ -274,7 +282,12 @@ writing — that is ordinary status and it makes a natural commit point visible 
 | TASK-290 | BE: **the plan DTO could not say a session was cancelled BY A PAUSE** | @Fern §3 on TASK-289 | ✅ **DONE — code** (Sober 09-08) · `cancelledByPause`, **derived**, on the mapper and the contract ⇒ a HAND-cancelled row stays visible · ⏳ **awaits @Tanya check 2** · **see the TASK** | — |
 | TASK-291 | FE: **the pause dialog said 9 where the pause cancels 4** · the summary dialog has still never been SEEN | @Tanya round 12 09-08 | ✅ **DONE — code** (Sober 09-08) · the count is **the server's** (`/cancel/preview`) ⇒ the dialog can no longer count rows the admin cannot see · 3 stale comments killed, now a TEST · ⏳ **awaits @Tanya on `sid`** · **see the TASK** | — |
 | TASK-292 | FE: **the client still computes a COUNT on a bulk act, and a NAME from an arbitrary row** | @Fern s answer on TASK-291 | 🆕 **TODO — no clock, blocks nothing** → @Fern (Sober 09-08) · 🔴 **`pendingCount` is a CLIENT count on a bulk-confirm button whose `skips` panel exists because the server confirms FEWER** ⇒ same class as tonight's `9 vs 5` · **see the TASK** | @Fern |
-| TASK-293 | FE: **two LABELS that outlived their values** — *“Resume this course?”* on a done act, and `Ends` on a non-date | owner s own screenshots, `sid` 09-08 | 🆕 **TODO — small, no clock** → @Fern (Sober 09-08) · 🎉 **the summary dialog EXISTS and reads true — NOT_TESTED closed by the OWNER** · 🔴 @Porter s defect, his copy verbatim: **title asks a question the body answers in the PAST TENSE, with only Close** ⇒ *“Course resumed”*; the PAUSE face keeps its question · 🟡 `Ends no live sessions` is a **category error — the value is right, the label is wrong**; `deriveLiveEndDate` must not change | @Fern |
+| TASK-293 | FE: **two LABELS that outlived their values** — a title asking after the act, `Ends` on a non-date | owner s screenshots, `sid` 09-08 | ✅ **DONE — code** (Sober 09-08) · 🔑 **@Porter's replacement copy ALREADY existed** (`endCourse.resumeDone`, since TASK-287) ⇒ reused, not duplicated · the owner's 4 sentences pinned as byte-for-byte tests · **see the TASK** | — |
+| TASK-294 | FE: **two OPPOSITE English facts share ONE Thai sentence** | @Fern s sweep on TASK-293 | 🆕 **TODO — no clock** → @Fern (Sober 09-08) · 🔴 **`plan.noLiveEnd` and `plan.noSessions` are the SAME Thai sentence** — *none left* vs *not begun*, **opposite meanings** · `REQ-036` fixed the CASE, left the COLLISION · **see the TASK** | @Fern |
+| TASK-295 | FE: **DEF-5 — the resume form's `Time` field is EMPTY, and the admin can still submit** | owner on `uat` 09-08 via @Porter | ✅ **DONE — rebuilt after the discard, REVIEWED** (Sober 09-08) · tsc 0 · **170/0** · ✅✅ **VERIFIED ON A SCREEN by @Tanya: (a) `readOnly`, the course's own time · (b) picked `14:00` ≠ default ≠ original, landed on all four rows** · **see the TASK** | @Fern |
+| TASK-296 | BE: **EVERY validation refusal in the product reached the admin as a RAW ZOD ARRAY** | owner's screenshot 09-08 via @Porter | ✅ **DONE — code, REVIEWED by @Sober** (09-08) · tsc 0 · **1742/0** · 🚫 no migration · 🔑 **62 of 62 `zValidator` sites — a wrapper would have left 5 live** · ⏳ **awaits @Tanya on `sid`** · **see the TASK** | — |
+| TASK-297 | BE: **three paths answer WITHOUT reaching `app.onError`** — a bare-string 401, a plain 404, **and no `app.notFound` at all** | @Jason's §4 answer on TASK-296 | 🆕 **TODO — no clock, blocks nothing** → @Jason (Sober 09-08) · 🚫 **no admin sees any of them** — LINE, a calendar client, a stale path · 🔑 ***"a handler that is not reached is worse than a missing one: it looks handled"*** · **see the TASK** | @Jason |
+| TASK-298 | BE: **the expiry warning arrives AFTER the save; `REQ-085 §11.3` requires it BEFORE** | owner's `§11.2`/`§11.3` via @Porter | 🆕 **TODO — no clock, blocks nothing** → @Jason (Sober 09-08) · 🔴 **`§11.2` is ALREADY BUILT** (`REQ-082` AC-1/AC-4, TASK-265) — **only the TIMING is wrong** · ✅ **`expiryImpact` is already PURE** ⇒ a read-only route, not a feature · 🔑 DoD's load-bearing line: **it WRITES NOTHING** · **see the TASK** | @Jason |
 | TASK-286 | FE: **a `Record` proves completeness; nothing proves a SUBSET is still the right subset** | @Fern's Q2 on TASK-274 | 🆕 **TODO — no clock, blocks nothing** → @Fern (Sober 09-08) · 🔑 **her sentence is the task: "nothi … **see the TASK.** | @Fern |
 | TASK-279 | **SA: sweep the requirements for CLOSED rulings that never became tasks** | two misses in REQ-079, both found by @Jason | ⏳ **IN PROGRESS — mine, blocks nothing** (Sober 09-07) · ✅ **REQ-079 SWEPT, written in as §19** — 11 … **see the TASK.** | @Sober |
 
@@ -301,3 +314,24 @@ Full text of every item is in `archive/board-2026-08-29-pre-compaction.md`.
 | repo lint (both FE) | Porter / maint | `bun run lint` broken — `next lint` removed in Next 16. Pre-existing. |
 | drizzle snapshot chain incomplete (scheduling-back) | maint / future task | `meta/` holds 0000–0003, journal 0000–0012 ⇒ `db:generate` re-emits everything. |
 | REQ-003 subjects (known limit) | Porter → พี่ฟีน | The teacher form lists existing subjects only. See REQ-058. |
+
+## 📋 OWNER'S NEXT BATCH — he is assembling it; **nothing here is dispatched until he says so** (opened 2026-09-08)
+> *"อยู่ในลิสต์นะ จดไว้ เดี๋ยวจะส่งงานชุดวันนี้ให้ทำให้หมด"* ⇒ **@Porter holds this list. Do NOT route any of it
+> to @Sober early** — he sends the batch as one, and a half-sent batch is how build order gets set by accident.
+
+| # | Item | State | Note |
+|---|---|---|---|
+| 1 | **`TASK-284` — `Remark` does not reach the course-level confirmation message** | TODO, @Jason | 🔑 **he reproduced it himself**; a KNOWN limitation from `TASK-269 §2` that was deliberately not fixed — **his finding overrides that decision** |
+| 2 | **The `ON LEAVE` row keeps its OLD time after a re-plan** | ❓ **@Sober still owes the ruling** | on the screen he verified himself; **3rd time this week a leave sat at the edge of a rule** |
+| 3 | **The toast header is ENGLISH** — *"Something went wrong"* over a Thai body | not filed | **a Thai admin's first line is in the wrong language, and says less than the line beneath it** |
+| 4 | **`TASK-292`** — the client computes a COUNT on a bulk act | TODO, @Fern | **same class as the `9`-vs-`5` we just fixed** |
+| 5 | **`TASK-294`** — `ยังไม่มีคาบ` means two OPPOSITE things | TODO, @Fern | *none left* vs *not begun*; **no English-side review can catch it** |
+| 6 | **`TASK-297`** — three paths answer without reaching the error handler | TODO, @Jason | 🚫 **no admin can see any of them** |
+| 7 | **`REQ-080` — narrow the guard so QA can READ `uat`** | `READY_FOR_SA`, never shipped | 🔴 **@Tanya was blocked out of tonight's `uat` confirmation by this exact gap** — `mint-session.mjs` refuses `uat` BY DESIGN and there is no `uat` entry in the access file |
+| 8 | **A READ of `ecosystem.cjs`** — what ELSE is hard-coded there? | @Porter's ask | **not a task**; the LINE credentials cost us days |
+
+### 🔴 DECISIONS, not defects — these are HIS to answer, and no agent may settle them
+- **13+ `CANCELLED` rows accumulate per paused course and nothing prunes them.** 🟢 The count correctly excludes them ⇒ **not the old defect.**
+- **An OVER-QUOTA leave is locked with no make-up** ⇒ a re-plan lays out one MORE than the pause cancelled, **spending the lock.**
+- **The extension ceiling measures from the PURCHASE start date** ⇒ after a long pause, a later make-up can be refused on a course that legitimately moved.
+- **`resume/preview`** — the admin reads the moved dates AFTER confirming. **@Sober and @Porter both recommend NOT building it.**

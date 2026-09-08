@@ -475,3 +475,134 @@ this file, where the next reader will be.**
 ⚠️ **What the sweep does NOT cover:** rulings in *other* requirements. **`REQ-076` · `REQ-077` · `REQ-082` ·
 `REQ-083` are next, and TASK-279 says where it stopped.** **A sweep nobody finishes is worse than one that is
 honestly partial — it makes the backlog look checked.**
+
+---
+
+# §17c — THE CUSTOMER'S REGISTRATION COPY, **VERBATIM, 2026-09-08 (via the owner).** 🔴 SUPERSEDES §17b's text.
+**Owner: *"ลูกค้าส่งมาให้ทำตามเลย"*** ⇒ **this is the SPEC for the words.** 🚫 **@Porter's `REQ-085 §5` proposal
+is WITHDRAWN — the customer's wording wins, exactly as recorded there.**
+🔑 **Kept verbatim and NOT paraphrased.** **My analysis is in §17d, BELOW and separated.** 📌 **That separation
+exists because I once said a section held the customer's source text when it held my analysis.**
+
+```
+1. เริ่มลงทะเบียน / Start Registration
+กรุณาพิมพ์ "สมัคร" เพื่อลงทะเบียนค่ะ
+Please type "register" to start.
+
+2. เลือกบทบาท / Select Your Role
+กรุณาพิมพ์ "Next" เพื่อเข้าใช้งานค่ะ
+Please type "Next" to continue.
+*** ถ้าพิมพ์ Next คือผปค
+บทบาทอื่นเดี๋ยวทางภายในที่เหลือจะสื่อสารกันเองค่ะ
+ว่าในขั้นตอนนี้ให้พิมพ์คำว่าอะไร
+(แต่ให้ผูกไว้ว่า ครู ใช้คำว่า ครู
+แอดมิน ใช้แอดมิน
+ผู้บริหารใช้ CEO) ***
+
+3. เบอร์โทรศัพท์ / Phone Number
+กรุณาระบุเบอร์โทรศัพท์ค่ะ
+Please enter your phone number.
+
+4. เพิ่มนักเรียน / Add a Student
+ลงทะเบียนผู้ปกครองสำเร็จแล้วค่ะ
+Registration completed
+เบอร์โทรศัพท์ / Phone: 082-503-1502
+กรุณาระบุชื่อนักเรียน เช่น "ส้ม"
+Please enter the student's name, e.g. "Emily".
+
+5. วันเดือนปีเกิด / Date of Birth
+กรุณาระบุวันเกิดของนักเรียนค่ะ
+(วัน-เดือน-ปีค.ศ. )
+Please enter the date of birth in (DD-MM-YYYY)
+
+6. ที่อยู่/ Address
+กรุณาระบุ เขต แขวง จังหวัด เช่น พระโขนงเหนือ วัฒนา กทม
+"Please enter your address: District, Sub-district, Province
+Eg. Prakanueng Nuea, Wattana, BKK"
+
+7. ตรวจสอบข้อมูล / Confirm Information
+กรุณาตรวจสอบข้อมูลก่อนบันทึกค่ะ
+Please check your information before saving.
+ชื่อ / Name: น้องส้ม
+วันเดือนปีเกิด / Date of Birth: 02-12-2024
+ที่อยู่ / Address: พระโขนงเหนือ วัฒนา กทม
+ข้อมูลถูกต้องหรือไม่คะ?
+Is this information correct?
+กรุณาพิมพ์ "ยืนยัน" เพื่อบันทึก
+Please Type "Confirm" to save.
+พิมพ์ "ยกเลิก" เพื่อออกจากการลงทะเบียน
+Type "Cancel" to exit.
+
+8. เพิ่มนักเรียนสำเร็จ / Student Added Successfully
+เพิ่ม "น้องดีซี" สำเร็จแล้วค่ะ
+"Nong DC" has been added successfully.
+หากต้องการเพิ่มนักเรียนเข้าระบบ
+กรุณาพิมพ์ "เพิ่มนักเรียน" ค่ะ
+If you would like to add another student,
+please type "Add Student".
+```
+(The customer's original carries a green tick emoji after the two success lines in screens 4 and 8.)
+
+# §17d — @PORTER'S ANALYSIS of §17c. 🚫 **NOT the customer's words. Nothing here overrides §17c.**
+
+## SETTLED, and it was open before
+- **The entry keyword is `สมัคร` / `register`** — screen 1. **Not `Next`.** `Next` is screen 2.
+- **`Next` = PARENT**, confirming `REQ-085 §5`.
+- **FOUR roles, words chosen by the customer: ครู → `ครู` · แอดมิน → `แอดมิน` · ผู้บริหาร → `CEO`.**
+  **The owner's `ครูเอง` and my `แอดมินเอง` are BOTH WITHDRAWN.**
+- **Date of birth `DD-MM-YYYY`, Gregorian** (*"ปีค.ศ."*) — matches the owner's earlier ruling.
+- **Address = District, Sub-district, Province — three parts, not a free address line.**
+- **Keywords: `ยืนยัน`/`Confirm` · `ยกเลิก`/`Cancel` · `เพิ่มนักเรียน`/`Add Student`.**
+- **Every screen BILINGUAL** — consistent with **§18** (conversation bilingual).
+
+## FOUR things for the owner. **None is a wording preference.**
+1. **`ผู้บริหาร / CEO` is a FOURTH role.** **Does a CEO role exist in this product at all?** **He said on
+   2026-09-06 that CEO concerns *"แจ้งยอดขาย ยอดจ่าย กำไร ของระบบ backoffice"* — a BACKOFFICE reporting
+   audience.** ⇒ **this copy has a CEO REGISTERING THROUGH LINE. That is a new capability, not a string.**
+2. **The role words are ordinary Thai nouns: `ครู`, `แอดมิน`.** **`REQ-085 §5`'s purpose was that a parent
+   cannot reach another role by GUESSING. A parent can type `ครู`.** ⇒ **the words satisfy the customer's screen
+   and weaken the owner's stated goal.** **That is exactly why he wrote `ครูเอง`.** **Not mine to overrule — but
+   it is a SECURITY decision wearing the clothes of copy, and he should choose it knowing that.**
+3. **Screen 2's heading is *"เลือกบทบาท / Select Your Role"*.** **If that heading is ON SCREEN it tells every
+   parent that roles exist — the exact thing §5 removes.** **It may be only a section label in their document.**
+4. **Screen 4 prints `082-503-1502`.** ⇒ **it must echo the number the person just typed. Flagged so nobody
+   ships a literal.**
+
+## Smaller — recorded, not raised
+- **Screen 7 confirms `น้องส้ม`; screen 8 announces `น้องดีซี`.** Their examples disagree — harmless in a spec,
+  **but the built screen must echo the name that was actually confirmed.**
+- **Screen 8 offers "add ANOTHER student".** **`REQ-085 §6` forbids a SKIP at the FIRST child only** ⇒ **no
+  conflict: a later child is optional, the first is not.**
+
+# §17e — OWNER'S RULINGS on §17d's four, 2026-09-08. **All four closed.**
+> *"1. ผู้บริหาร / CEO ข้าม · 2. เอาตามลูกค้าบอกเลย · 3. นายคิดว่าไงล่ะ คิดด้วยสิ · 4. อ่า เอาตามเขา"*
+
+- **🚫 §17d-1 — CEO: SKIPPED.** **`ผู้บริหาร / CEO` is NOT built in this flow.** **No CEO registers through
+  LINE.** 📌 **The word stays in the customer's verbatim copy; it does not become a code path.**
+- **✅ §17d-2 — the customer's role words STAND: `ครู` · `แอดมิน`.** 🔻 **The owner accepted the trade knowingly
+  after I named it: a parent CAN guess `ครู`.** ⇒ **`REQ-085 §5` is satisfied by not ADVERTISING the roles, not
+  by making them unguessable.** **Recorded as a decision, not an oversight — nobody re-opens it as a defect.**
+- **✅ §17d-4 — the phone follows the customer:** **screen 4 shows the number the person just typed.**
+- **§17d-3 — the owner asked ME to rule. See §17f.**
+
+## ➕ CORRECTION — the ADDRESS is FREE TEXT. My "three parts" reading was WRONG.
+> *"ไม่ต้องแก้ ให้เก็บเหมือนเดิม แล้วแต่เขาจะพิมพ์ freestyle ซึ่งเดิมก็เป็นอย่างนั้น แค่มันถามว่าจังหวัด แต่ตอนตอบก็ freestyle ได้เหมือนกัน"*
+🔻 **I read a data-shape decision into a PROMPT.** **The prompt names District / Sub-district / Province as
+GUIDANCE; the answer is and remains one free-text field.** ⇒ **NO CHANGE. Nothing to build here.**
+🔑 **The lesson: a prompt that lists parts is not a schema.** **I have now twice today turned a sentence into a
+structure it never claimed** (this, and the `HH:mm:ss` prefill I invented).
+
+# §17f — @PORTER'S RULING on the screen-2 heading. **The owner asked me to decide; I decide.**
+## 🚫 **NONE of the eight headings is sent to the user. They are the customer's document structure.**
+**The evidence is internal to their own document:** **every screen carries one** — *"3. เบอร์โทรศัพท์ / Phone
+Number"*, *"5. วันเดือนปีเกิด / Date of Birth"*, *"7. ตรวจสอบข้อมูล / Confirm Information"*.
+🔑 **They are numbered, they are titles, and every one of them merely NAMES the message beneath it.** ⇒ **they
+are a table of contents, not copy.** **Reading heading 2 as on-screen text forces you to read all eight that
+way — and heading 1, *"เริ่มลงทะเบียน / Start Registration"*, would then be shown to someone who has not yet
+started anything, above a line that already says what to do.**
+## 🔴 **And even if they intended it, `เลือกบทบาท / Select Your Role` must NOT be shown**
+**It is the ONE heading whose text defeats the requirement the screen exists to satisfy.** **`REQ-085 §5`:
+*"ไม่ให้ลูกค้ารู้ว่ามี role อื่นด้วย"*.** ⇒ **a heading reading *"Select Your Role"* above a message offering ONE
+option tells a parent both that roles exist AND that they were not offered a choice.**
+✅ **Ruling: send the message bodies only.** ⚠️ **If the customer later says the headings ARE on-screen, screen 2
+still needs a different title, and that is a question I will put to them with this reasoning attached.**
