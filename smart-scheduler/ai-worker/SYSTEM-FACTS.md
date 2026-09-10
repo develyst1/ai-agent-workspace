@@ -2036,3 +2036,368 @@ notification with a Thai header is the one no parent ever sees.**
   **TASK-294 is an OPEN RULING on it** — ⚠️ **and all THREE states of its pin are recorded, because that pin's
   REASON went stale twice in two days.** 📌 **TASK-294 now has a fact it did not have: one of its three strings
   is dead, which may make it a deletion rather than a rewording.**
+
+- 🔴 **A BREAK-AND-WATCH WINDOW IS A WINDOW IN WHICH SOMEONE ELSE MAY COMMIT.** (@Jason, TASK-325.)
+  **Commit `0d91b4d` captured his deliberately-mutated line** — a build in history with `§16.3` NOT fixed —
+  **taken between his mutation and his restore, two Bash calls apart.** ⚠️ ***"Verify the restore by READING
+  the line" protects YOUR state and cannot protect a commit taken by another actor inside the window.***
+  ✅ **Standing fix, costs nothing: the mutation and its restore go in ONE tool call — the window becomes zero,
+  not short.** 📌 **What made it detectable: the commit contained the very test that catches it, and the
+  `// MUTATED` marker was greppable** ⇒ 🔑 **the marker is not decoration, it is the detector.**
+  *(Resolved by `3ba04ff`; the tree and HEAD agree.)*
+- 🔑 **To tell an ARTEFACT byte from a DELIBERATE one, RENDER THE OLD BUILDER** (@Jason, TASK-325): he rendered
+  all 14 kinds against `git show HEAD:` in a scratch module and read the actual trailing whitespace.
+  **Exactly TWO of fourteen carried a trailing `\n`, both single, never `\n\n` ⇒ zero deliberate, seven pins,
+  all artefacts.** 📌 **By-product: `course_confirmed` was NOT one of the two** ⇒ ***the `CONFIRMED SCHEDULE`
+  the customer photographed was the PER-SESSION message (`§7.3`)*** — both open with `ob_course_title`, so
+  neither their report nor our reading could tell them apart. 🔑 ***And their two reports were the COMPLETE
+  list, not a sample.***
+- 🔑 **A property that belongs to ALL messages but lives in each branch is held by N coincidences.** @Jason's
+  tell, counted the other way: ***a property is at risk exactly when the number of places implementing it is
+  neither ONE nor ALL.*** 📌 **`§16.3` was 5 of 14. `line()` vs `extra()` is 9 of 14.** ⚠️ **OPEN refinement
+  (TASK-327's Question): `ALL` may be safe only when it is ALL BY CONSTRUCTION (one helper) and fragile when
+  ALL BY REPETITION** — *no-un-interpolated-`{placeholder}` is 14 of 14 and held by nothing.*
+- ✅ **A TITLE belongs to a TEMPLATE (a field block), not to a MESSAGE.** *"Every message has a title line"*
+  looks like a property and is not: `booking_paused`, `booking_resumed`, `leave_teacher`, `makeup_far_out` and
+  `default` are **deliberately single sentences with no title**, and the titled ones are exactly the ones that
+  render a block. *(@Jason, TASK-325.)*
+- ⚠️ **A TEST-ONLY task is safe to run during a tester's round; a LABEL change is not.** 🔑 *A build that moves
+  under a tester is what @Porter has been burned by three times this week.* ⇒ **TASK-327 (test-only) runs
+  during @Tanya's `uat` round; the `line()`/`extra()` convention task is HELD until she is finished.**
+
+- 🔑 **@Jason's REFRAMING, adopted whole (2026-09-10) — it REPLACES the count-based tell:**
+  ***"When the fifteenth branch is written, does it get the property for free, or must it re-earn it?"***
+  📌 **The count was always a proxy: `5/14` and `14/14-by-habit` fail for the SAME reason and the count
+  separates them; `14/14-by-habit` and `14/14-by-construction` share a number and differ completely.**
+  ✅ **Keep the count as a CHEAP FIRST PASS — it is a grep and it finds every `5/14` without reading code — but
+  it cannot finish the job.**
+- 🔴 **AND THE SHARPER HALF: a helper is not enough — IT MUST BE UNAVOIDABLE.** ***Safe by construction
+  requires the mechanism to sit on the path you cannot avoid, not merely to exist.*** **`line()` / `extra()` /
+  `renderFieldBlock` are AVAILABLE (a branch can call `t()` instead); `formatOutboxMessage`'s exit is
+  COMPULSORY (every `return` in the switch passes through it).** ⇒ 🔑 **that is why `§16.3` is genuinely
+  one-and-done and the placeholder property is not, though both were "fixed with a helper".**
+  ✅ **THE STANDING AUDIT, in this order: 1. what is the narrowest point every message must pass through?
+  2. which invariants live THERE, and which live in the BRANCHES? — everything in the second list is held by
+  habit, whatever its count.** *(TASK-327)*
+- ⚠️ **NOT every invariant CAN move to the narrowest point.** **The trim could, because whitespace can be
+  applied to a finished string without knowing what it MEANS.** 🔴 **A LABELLING convention cannot: normalising
+  `label:` → `label :` at `formatOutboxMessage`'s exit would rewrite colons inside the customer's own headers
+  (`📅CONFIRMED SCHEDULE:`, `⏱️TODAY'S SCHEDULE:`) and inside a parent's typed `Remark`** — **a new defect
+  class, not a fix.** ⇒ 🔑 **when the invariant cannot move, the question becomes: can the HELPER be made
+  COMPULSORY?** *(TASK-328, open and HELD.)*
+- ✅ **A negative test that cannot fail is DECORATION** (@Jason, TASK-327): he asserted that the leak probe can
+  SEE a leak (`t("added_atmax_note","TH")` renders `{max}` verbatim with no vars) **before trusting a file that
+  is almost entirely negative assertions.** 📌 **Same method as TASK-325's render-the-old-builder: MEASURE,
+  then assert — never assert, then discover.**
+- 📌 **Five branches hold no-placeholder-leak by HABIT** (`booking_paused`, `booking_resumed`, `makeup_far_out`,
+  `sick_leave`, `leave_teacher`) — they call `t(key, lang, {…})` directly and are safe only because their
+  authors wrote `?? "-"` twelve times. **The other nine are safe by CONSTRUCTION** — `line()`/`extra()`/
+  `renderFieldBlock` drop a falsy value so the whole line disappears. **The count of five is itself asserted.**
+
+- 🔴 **A GREP FOR A RENDER SHAPE CANNOT FIND A VALUE PASSED AS A PROP OR AS AN i18n ARGUMENT OBJECT.** The raw
+  time-render count moved **4 → 6 → 9**, and the three found last were `BookingModal:427` (a `value=` prop),
+  `BookingModal:669` and `PausedTray:181` (both `t(key, { time: booking.startTime })`). 🔑 **Twice the wrong
+  number was @Sober's grep.** 📌 **And the sharpest instance: `:669` passes `date: formatDateDisplay(b.date)`
+  and `time: b.startTime` on ADJACENT LINES — the date had a helper and the time did not, in the same call,
+  and nobody saw it while looking straight at it.** *(TASK-326)*
+- 🔻 **`smart-scheduler-front/src/types/api/contract.ts` says *"Synced … keep in lockstep"* AND IS NOT A
+  MIRROR.** **9 exports exist only on the BE** (including `PlanSessionRow`) **and 17 only on the FE**
+  (`ExpiryWarning`, `ExpiryWarningSession`, `ResumeCourseResponse`, `PostedSale`, `Paged`, `CourseListItem`,
+  the badge family). ⇒ 🔑 **it is partly an independent file that claims to be generated from another one.**
+  ⚠️ ***A false claim of automation is worse than no claim: it converts a file people would check by hand into
+  one they trust by default*** — **@Sober cited it twice for a line that lives only in the other repo.**
+  ✅ **DECIDED (TASK-329): the header stops promising lockstep and says what the file is, plus the clause *a
+  type here is this repo's CLAIM about the wire, not the BE's declaration*.**
+- 🔴 **`ExpiryWarningSession` is an FE-ONLY type — the BE has none.** Its BE equivalent is `ExpiryCandidate`
+  (`lib/course-expiry-impact.ts:39`), which declares `startTime?: string | null` — **honest.** ⇒ 🔑 **`HhMm` is
+  OUR claim about a payload nothing normalises: the VALUE is not wrong, the TYPE is.** 🚫 **Adding `hhmm()` to
+  `expiryDecision`'s candidates map would be a CHOICE about the wire, not a correction of a BE defect.**
+  *(TASK-326 — @Sober had routed this to @Jason in error.)*
+- ✅ **`PlanSession.startTime` was annotated `// HH:mm` and that was FALSE** — the plan row arrives with
+  seconds, which is the whole of TASK-295 and TASK-324. **The other three `// HH:mm` annotations are TRUE**
+  (`Booking` and `RescheduleTarget` are `hhmm()`-mapped; `CoursePackage.startTime` is never on the wire).
+  🔑 ***The annotations were an accurate map of which payloads are normalised — and the one that lied is
+  exactly the one payload that is not.*** *(TASK-326)*
+
+- 🔴 **`Remaining : 0` CANNOT PRINT, and nothing would tell us.** `line-message.ts:307` —
+  `remaining: (payload.remaining as string) || undefined` — **`||`, not `??`** ⇒ **`0` is falsy ⇒ the field is
+  `undefined` ⇒ omit-empty deletes THE WHOLE LINE.** ⚠️ **LATENT, not live:** the one producer
+  (`remainingLabel`) always returns a non-empty string. 🔑 **@Sober counted the idiom — `as string) ||` appears
+  THIRTEEN times in that file** ⇒ ***a thirteen-wide class, not one line.***
+  📌 **The compiler looks like it is helping and is not:** `payload.remaining` is `unknown` off a JSON column,
+  and `as string` is an ASSERTION, so the number path type-checks perfectly. *(TASK-330 · sweep = TASK-331)*
+- 🔑 **THE CLASS THE REPORTING CHANNEL CANNOT REACH** (@Jason, TASK-330): ***not "the message is wrong", but
+  "the message is incomplete and looks complete".*** **Every rule this week came from a message somebody SAW
+  and objected to; a missing LINE produces nothing to object to** — ⚠️ **and omit-empty, which the owner asked
+  for, makes the absence look deliberate.** ***His own `(-)` reasoning pointed back at us.***
+  ⇒ **the only way to find these is to read what the code does with an EMPTY or ZERO value, field by field,
+  rather than waiting for a screenshot.**
+- ⚠️ **The `||` → `??` fix has a TRAP: `?? undefined` alone converts the EMPTY-string case from an ABSENT line
+  into a label with nothing after it** — **which TASK-219 established reads as information that went missing.**
+  ⇒ 🚫 **the fix is cut from the FULL sweep, never from one example.**
+- 🚫 **THREE things that LOOK like message invariants and are NOT** (@Jason, TASK-330 §2, all MEASURED):
+  **1. language-invariance — 10 of 14 kinds DIFFER between TH and EN**; the four that do not are exactly the
+  field-block templates ⇒ **a property of the TEMPLATE FAMILY.** ⚠️ *`§4`'s "eng ล้วน" makes this easy to "fix"
+  into existence — the same boundary `§16e` had to draw.*
+  **2. the 20-char quick-reply cap — a CATEGORY ERROR:** an outbox message is pushed as `{type:"text", text}`
+  with **no quick reply at all**; the cap belongs to `line-reply.ts`, the CONVERSATION layer.
+  **3. `(-)` vs absent — a rule about ONE FIELD in ONE template**, not a message property.
+  ⚪ **And `AUDIENCE_OMITS`: 0 of 14 differ by audience, but it is held by a deliberately EMPTY TABLE** ⇒
+  ***a current SETTING that is asserted, not an invariant.***
+- ⚠️ **`renderTodaySchedule` (the AUTO morning push) has NO row cap; `renderSchedule` (the COMMAND one) caps at
+  20 with a "+N more" line.** **Two renderers of one thing, one respecting a platform limit and the other
+  not.** ✅ **Its failure is LOUD** — LINE rejects an over-long push and the outbox row goes `FAILED` — **so it
+  is listed, not alarming.** 📌 **The cap is a PLATFORM limit, so @Porter's *AUTO and COMMAND are different
+  shapes by design* does not cover it.** *(TASK-330)*
+- 🔴 **THE GAP THE MAP COULD NOT CLOSE: the renderer is safe GIVEN a payload, and NOTHING checks what producers
+  put in one.** `row.payload as any` ⇒ **the compiler checks none of it**, and payloads are built across
+  `scheduler.service.ts` (~3000 lines) and a dozen smaller writers. 🔑 ***That is where `Remaining : 0` lives***
+  — found by reading one branch, not by a method that would find the others. *(TASK-330 §4)*
+
+- 🔻 **@Sober counted an idiom and reported a CLASS. It was ONE defect and TWELVE correct usages.**
+  `as string) ||` appears 13 times in `line-message.ts`; @Jason read all thirteen with a producer column:
+  **ten can lose a LINE, three fall through to `-`, and twelve are CORRECT** — `Remark` is the customer's
+  `*ถ้ามี` rule, an absent `expiryDate` is a TRUE statement, an absent `studentName` is TASK-224's decision.
+  🔑 ***A COUNT is a place to LOOK, never a finding*** — the same rule @Sober had already given @Jason twice
+  about numbers written into tasks. 📌 **The count saved no reading; it only said where to start.** *(TASK-331)*
+- 🔑 **THE CRITERION that separates a wrong omission from a right one** (@Jason, TASK-331 §2):
+  ***a field's absence is a defect when it removes the MESSAGE'S PURPOSE.*** **`Remaining` is the only such
+  field: a `COURSE DEDUCTION` exists to tell a parent what is left, and without that line it is a receipt with
+  no balance.** ✅ **Every other absent line is either the customer's own rule or a true statement about
+  missing data.**
+- 🔴 **THE MIRROR — the file has BOTH bugs, one per idiom** (@Jason, TASK-331 §3): ***`||` eats a legitimate
+  ZERO; `??` lets an EMPTY STRING through.*** `String(payload.weeks ?? "-")` on `makeup_far_out` renders a
+  half-sentence for `""`. ⚠️ **So "fix the `||` with `??`" walks straight into the opposite defect** — and
+  `?? undefined` on `remaining` would turn an absent line into a BARE LABEL, which TASK-219 established reads
+  as information that went missing.
+- ✅ **`coursePackages.startDate` is `notNull()`** (`schema.ts:346`) ⇒ the `course_confirmed` `startDate` row is
+  **SAFE, not "not established"**. 📌 *Closed with one grep by @Sober — cheap only because @Jason wrote "not
+  established" instead of guessing "no".*
+- ⚠️ **Since TASK-318 removed `Sessions :`, the PROGRAM LABEL is the only place a course's hours appear.**
+  A falsy `size` renders `Program : Freeskate` with the hours silently dropped. ✅ **Safe today**
+  (`PackageSize = 4|6|10`, column `smallint notNull`). 📌 **The redundancy that would have caught a bad size is
+  the line the customer asked us to delete — correctly deleted, noted, not reopened.** *(TASK-331)*
+- ✅ **DECIDED (TASK-333, HELD): the outbox payload becomes a DISCRIMINATED UNION on `kind`, PARSED at the
+  read — not cast.** 🔑 ***`row.payload as any` is where type information is destroyed: the producer knew
+  `remaining` was a string, the column knows nothing, and `as string` re-asserts a fact nobody checked.***
+  **Assertions cannot fail for the FIFTEENTH KIND; a parsed union makes it declare its fields or fail to
+  compile.** 🔴 **The hard requirement, from @Jason and made the spec: *no message that sends today stops
+  sending*** — a LENIENT parse that LOGS, the shape of `notifyAdmins`' loud SKIPPED row. ⚠️ *A strict parse
+  would turn a type improvement into an outage on rows nobody can re-create, and the oldest rows are from when
+  we were least careful.*
+
+- 🔑 **THE ONE-SENTENCE TEST for whether a COUNT is evidence** (@Jason, TASK-332, adopted):
+  ***try to write, in ONE sentence, what all the instances are FOR. If the only sentence you can write
+  describes what they LOOK LIKE, it is a SHAPE and the count is only a place to look.***
+  ✅ Separates this week's four correctly: `withExit` × 11 (*every question advertises the exit*) — **evidence,
+  and it is what showed the customer's "two screens" was under-scoped** · `.trimEnd()` × 5-of-14 (*no message
+  ends in whitespace*) — **evidence** · `t(key, lang, {…})` × 5 (*no placeholder leaks*) — **evidence** ·
+  `as string) ||` × 13 — 🔴 **SHAPE: 12 of 13 were correct**, because the thirteen had **THREE intentions** —
+  a customer RULE, a TRUE STATEMENT, and a DEFECT. ***One operator, three meanings.***
+  🔑 **The asymmetry that makes it usable: calling a rule-count "a place to look" costs nothing; calling a
+  shape-count "a finding" creates work** ⇒ ***when the test is unclear, default to "a place to look".***
+  🚫 **Do NOT stop reporting counts.**
+- 🔴 **`?? undefined` IS NOT A FIX FOR `|| undefined`, and reading cannot tell you that.** @Sober prescribed it;
+  @Jason ran it as a mutation and it failed **two** ways: **(1) it does not fix the ZERO** — the value stays a
+  NUMBER and `fieldLines`' own omit-empty (`facts[f] ? …`) is falsy too, so the line drops one layer further
+  down; **(2) the bare-label trap is reachable through WHITESPACE, not `""`** — `"" ?? undefined` stays falsy
+  and absent, but `"   "` is TRUTHY and renders a label with nothing after it (TASK-219).
+  ⇒ 🔑 ***The fix must produce a NON-EMPTY STRING, not merely a defined value — three conditions, and an
+  operator states one.*** ✅ **Hence `fieldValue` (`line-message.ts:78`): reject null/undefined, coerce to
+  string, reject whitespace-only.** 📌 *@Sober named the right DANGER with the wrong CAUSE; only running it
+  separated them.* *(TASK-332)*
+- ✅ **`weeks` on `makeup_far_out` is LEFT ALONE deliberately** — `weeksBetween(...)` is a computed NUMBER, so
+  `""` is **unreachable** from the producer, and its failure is a half-sentence a human would report.
+  ⇒ **latent AND unreachable AND loud**, against `remaining`'s **latent AND reachable-in-principle AND
+  silent.** 📌 **The two-idiom sentence lives at `fieldValue`, where the next person reaching for `??` to
+  "fix" a `||` will be standing.**
+- ⚠️ **A HOLD SHOULD BE SCOPED TO THE RISK, NOT TO THE TASK.** @Sober held TASK-333 entirely *"after @Tanya
+  AND after TASK-328"*, but **its DESIGN half is analysis-only** — by his own rule the safest work available
+  during a tester's round. ✅ **Design half released; code half still held.** 🔑 *An over-broad hold idles an
+  engineer for a reason that only applies to part of the work.*
+
+- 🔴🔴 **LIVE (2026-09-10): THREE payload kinds are ENQUEUED and have NO renderer branch, so all three send the
+  generic default** — `teacher_link_approved` (`teacher-link.service.ts:157`, direct `enqueueLine`),
+  `student_registered` and `parent_asked_for_admin` (both via `notifyAdmins` → `enqueueLine`).
+  **Renderer `case`s = 14 · producer kinds = 14 · three do not overlap.** *(Verified by @Sober.)*
+  🔑 **`teacher_link_approved` CARRIES the correct, translated sentence on its payload (`text:
+  t("verify_teacher_ok", …)`) and the renderer never reads it** — and the comment above that send says *"the
+  bot promised you'll be told once it's approved — not sending would make it a lie."* ⇒ ***the send happened
+  and the message said nothing: kept in form, broken in content.*** 📌 **The mirror of TASK-152, which made a
+  SKIPPED row LOUD — these rows are SENT and MUTE.** ⚠️ **The two ADMIN ones need COPY from the owner.**
+  *(TASK-334 — found while answering a DESIGN question, not by a report.)*
+- 🔑 **THE TWO CRITERIA FOR A CHOKEPOINT vs ASSERTIONS** (@Jason, TASK-333, adopted verbatim):
+  **(1) does the invariant have ONE answer for every instance? (2) can the chokepoint SEE the difference from
+  where it stands?** ⇒ ***`REQ-085 §8.1` fails the first*** — `(-)` always prints and `Remark` vanishes, both
+  at the bottom of ONE message, so a chokepoint would carry a table of exceptions, ***and a table of
+  exceptions is the per-instance knowledge you were escaping, moved somewhere nobody reads it against the
+  message it applies to.*** ⇒ ***the labelling convention fails the second*** — a colon is a separator AND a
+  character in the customer's headers and a parent's typed `Remark`.
+  🔴 **And the third edge: a chokepoint on the unavoidable path is a SINGLE POINT OF FAILURE.** ***The
+  principle is strongest for chokepoints that can only SUBTRACT (trim, omit) and weakest for those that
+  REWRITE*** — the trim is safe because it is idempotent and the worst it can do is nothing.
+- ✅ **The outbox union ships OBSERVE-ONLY** (TASK-333 design, accepted): **it does not gate rendering; a row
+  that lacks a required field renders exactly as today and the parse writes one log line naming row, kind and
+  field.** 🔑 ***The union's first job is to TELL US WHAT IS IN THE TABLE, not to enforce anything*** — the
+  only version that cannot cause an outage. 📌 **Parse at `outbox.service.ts:78`, where the `any` is created —
+  NOT at `formatOutboxMessage`'s entry, which is pure and called from ~20 test files with hand-built payloads.**
+- 🔴 **THE PARSE DETECTS; THE PRODUCER TYPE PREVENTS. Neither alone closes the class.** ⚠️ **And a union must
+  describe what producers ACTUALLY send, historically — not what we wish they sent:** after TASK-332 the
+  renderer handles `remaining: 0` CORRECTLY, so a union declaring `string` would now **reject a payload the
+  product renders perfectly.** 🚫 **It also cannot catch a WRONG VALUE of the RIGHT type** (`remaining: "3 HR"`
+  when the balance is 2). *(TASK-333)*
+- 📌 **SEVENTEEN outbox kinds exist, not fourteen:** 11 in both lists · **3 renderer-only DEAD branches**
+  (`reschedule_requested`, `sick_leave`, `leave_teacher` — two unsent as a side effect of TASK-305) · **3
+  producer-only** (the live finding). 🔑 ***The union is the small part; the work is the six anomalies***, and
+  each needs a decision rather than a type.
+
+- 🟢 **`REQ-087`'s narrowed sweep (notifications only): the VOUCHER is at PARITY with the COURSE everywhere
+  except ONE message.** **Equal:** per-session `CONFIRMED SCHEDULE` · `LEAVE NOTICE` · today/this-week
+  schedules · daily reminder + digest · teacher assigned/unassigned. **By design:** whole-course
+  `CONFIRMED SCHEDULE` (a voucher is HOURS, not a schedule) · `makeup_far_out` · **expiry warning — NEITHER
+  has one, it is a SCREEN.** **Voucher-only:** pause/resume (AC-1: hold is `1HR · VOUCHER · FIRST_TRIAL`).
+  🔴 **Wrong: `COURSE DEDUCTION`.** 🔑 ***"Vouchers never got what courses got" is true of the ADMIN side and
+  of flows — NOT of notifications:*** **the notification layer is type-driven (`notifyTypeOf`, `TYPE_OMITS`)
+  and `VOUCHER` has been a first-class type in it with no omissions.** *(2026-09-11)*
+- 🔴 **`COURSE DEDUCTION` has NEVER carried `Remark` — not for a VOUCHER and NOT FOR A COURSE.**
+  `TEMPLATE_FIELDS.course_deduction` = `student · program · date · time · coach · remaining · expiry`, and
+  nothing is appended below the block. ⇒ 🔑 ***The customer compared their voucher DEDUCTION to their course
+  CONFIRMATION.*** ⚠️ **Adding it is NOT restoring parity — it is adding a field to a message they already
+  approved, and it changes the byte-pinned COURSE deduction too.** ❓ **OPEN with the customer via @Porter.**
+  *(`REQ-087 §1b`)*
+- ⚠️ **`remainingLabel` is ONE function with TWO readers:** the notification's `4/6 ครั้ง` **and** the CARD's
+  **owner-verified** `เหลือ 6/10` (TASK-234). 🔑 **`REQ-085 §4` governs the MESSAGE; the card is a staff
+  surface the owner signed off** ⇒ **the Thai comes out of the message without touching the card.**
+  📌 *One transformation, two contracts — the `ddmmyyyy` shape from TASK-318.* *(TASK-335)*
+- ✅ **`parent_asked_for_admin`'s `lineUserId` CAN be resolved to a parent name and phone at send time** —
+  `findParentByLineUserId` is already the ONE resolver (TASK-259/316). ⇒ 🚫 **"no wording rescues an unusable
+  identifier" is NOT a constraint on that alert's copy.** 🅿️ *Part B parked by the owner; recorded so the
+  limitation is not carried to him when it returns.* *(TASK-334)*
+- 🔑 **Why `teacher_link_approved` got a SPECIFIC `case` and not a general `text` passthrough** (@Porter's
+  reason, better than @Sober's): ***a general passthrough makes every future payload's `text` field silently
+  load-bearing — a field added for LOGGING becomes a message nobody meant to send.*** *(TASK-334 Part A)*
+
+- 🔴 **A COMMENT RECORDS INTENT — IT IS NOT EVIDENCE OF WIRING.** @Sober warned that `remainingLabel` was
+  SHARED with the owner-verified card and told @Jason to protect it. **It never was:** `line-course-view.ts`
+  has **zero** references to it and computes `Math.max(0, c.size - c.usedSessions)` itself. **The warning came
+  from the function's OWN comment — *"matching `courseLine`'s owner-verified `เหลือ 6/10`"*.**
+  🔑 ***"Matching" and "shared" are one word apart in a comment and a whole task apart in the code.***
+  📌 **The comment version of @Jason's rule: a source pin proves a line EXISTS, never that it EXECUTES.**
+  *(Fourth derived-fact error of this batch — after the compressed spec block, the miscounted call sites and
+  "a thirteen-wide class".)* *(TASK-335)*
+- 🔴 **`remainingLabel`'s REAL second reader is the AUTO DAILY SCHEDULE** (`jobs.service.ts:418`, both course
+  and voucher branches). ⇒ ***`Remaining : … ครั้ง` was in TWO messages, not one — the deduction AND the daily
+  reminder — and one line fixed both.*** 📌 **The `ddmmyyyy` shape with the pairing reversed: both real readers
+  were NOTIFICATIONS, and the surface that LOOKED shared was the independent one.** *(TASK-335)*
+- ✅ **`§4` is satisfied by REMOVING a Thai word, not by translating it** (@Jason, TASK-335 `§1c`):
+  ***removing a Thai word APPLIES a ruling; choosing an English one INVENTS a string*** — and a PLACEHOLDER in
+  a VALUE is worse than in a title. **`Remaining : 14/15` — the `n/N` form carries the meaning `HR` carries
+  for a course, and the owner already signed that form off on the card.** 📌 *A unit word is the customer's to
+  name, and it is one constant when they do.*
+- 🚫 **There is NO cheap assertion that "no message contains Thai in a generated value"** (@Jason, TASK-335,
+  by TASK-333's own second criterion). **A student's name, an admin's typed `Remark`, every bilingual half and
+  `LEAVE NOTICE / แจ้งลา ‼️` are all Thai in a message and all correct** ⇒ 🔑 ***the rule is not about the
+  CHARACTERS but about WHO WROTE THEM, and authorship is exactly what a finished string does not carry.***
+  ✅ **The workable version moves UPSTREAM, where authorship still exists: assert that the VALUE GENERATORS
+  return no Thai** — `remainingLabel`, `programLabel`, `ddmmyyyy`, `hhmm`, `shortDate`, `joinCoaches`,
+  `ob_dow_*`. ⚠️ **It would NOT catch a Thai literal written straight into a branch of `line-message.ts`** —
+  📌 *but both `ครั้ง` and `อังคาร` lived in the generator set.* **NOT CUT — `uat` first.**
+- 📖 **The VOUCHER deduction header that ships is OURS, not the customer's** — `💡VOUCHER DEDUCTION`, declared
+  a PLACEHOLDER in the i18n table the way `tsched_title_week` is. **Its test pins the FORM** (the `💡`, upper
+  case, **no trailing colon — its course twin has none**, checked rather than assumed) **and DIFFERENT from the
+  twin**, deliberately not the bytes. *(TASK-335 `§1a`)*
+
+- ✅ **WHICH NOTE a DEDUCTION carries: the SESSION's own** (`payload.attendeeNote`), **not `courseNote`'s
+  *first non-empty in date order*.** 🔑 **`courseNote`'s rule exists because a COURSE SUMMARY has no true
+  answer to "which session's note" — a deduction HAS one: the session just used.** 📌 **`booking_confirmed`
+  (`§7.3`) and `leave_notice` (`§9.1`) already do exactly this.** *(TASK-336)*
+- 🔴 **A `Remark` must come from the PAYLOAD, never from `ctx`** — `§7.3`'s own comment: ***"the worker
+  enriches `ctx` from the booking row it points at, and the note must survive a row that has since been edited
+  or deleted."*** 🔑 **The reason is STRONGER for a DEDUCTION: it is a RECEIPT for something that already
+  happened — if the booking is edited afterwards, the receipt must still say what it said.**
+  ⇒ **`bookingContext` returns no note by design, and adding one there would be the wrong fix.** *(TASK-336)*
+- 🔑 **@Porter's test for what needs asking at all:** ***"the rule is `*ถ้ามี`, so the line appears only when a
+  note exists ⇒ adding it cannot make an existing message noisier. A change that cannot make things worse does
+  not need to be asked about."*** 📌 **Nearly the same shape as @Jason's TASK-318 sentence — *removing one of
+  two fields is safe only because they had been made to AGREE*** — **both argue a change is safe BY
+  CONSTRUCTION rather than by review.** ❓ **OPEN (TASK-336's Question): where does it FAIL? Working guess —
+  it holds for ADDITIONS under a `*ถ้ามี` rule and breaks the moment a change is UNCONDITIONAL.**
+- 🔴 **A SCREEN and a COMMENT are both DESCRIPTIONS, and neither is the wiring.** **@Sober read
+  `remainingLabel`'s comment (*"matching `courseLine`'s owner-verified …"*) as evidence that the card SHARED
+  it — it does not.** **@Porter made the same error on `TASK-284`: he read the plan editor SHOWING a note as
+  the note BEING there.** 🔑 ***Both times the artefact described an INTENT and it was read as a FACT.***
+
+- 🔑 **@Jason's REPAIR of @Porter's safe-unasked test (TASK-336, adopted):** ***a change is safe unasked when
+  it cannot make an existing message DIFFERENT — not merely when it cannot make one LONGER.***
+  **Counter-example that kills the weaker form: had the deduction's note been the COURSE-level one, it would
+  still be `*ถ้ามี`, conditional and silent when empty — passing the original test exactly — and it would
+  print ANOTHER SESSION'S note on a receipt for this one.** ⇒ ***"Cannot add a line" is not the same as
+  "cannot say something false."***
+- 🔴 **STATE THE PRIOR FACT, THEN THE CONCLUSION.** **Both *"safe because the line is conditional"* and
+  TASK-318's *"removing one of two fields is safe because they had been made to AGREE"* are arguments that a
+  change is safe BY CONSTRUCTION — and both rest on a PRIOR FACT that is easy to leave implicit.**
+  ⚠️ ***The prior fact is the part nobody writes down, and when someone later changes it the conclusion is
+  still sitting there in a comment looking true.*** *(TASK-336)*
+- ⚠️ **The whitespace-only-note bare label is LATENT, NOT LIVE.** `validation.ts:22` is
+  `z.string().trim().max(200)`; **zod's `.trim()` TRANSFORMS** — verified by running it: a whitespace-only
+  value parses to empty — **and every write path uses that schema through `zValidator`.** ⇒ **`§7.3` and
+  `§9.1`'s `|| undefined` cannot produce a bare label today.** 🔑 **They still move to `fieldValue`
+  (TASK-337) because *the renderer's safety depends on a `.trim()` in a validator it cannot see*** —
+  **TASK-330's gap in miniature.** 📌 **And the COMMENT matters more than the change: a reader who later finds
+  the zod trim will "simplify" the guard away.**
+- ✅ **`notifyCourseDeduction` reads the note ITSELF, as a PARAMETER on `deductionPayload` — not a field on
+  `DeductionInput`.** 🔴 **@Sober's "all four callers have the booking in hand" was HALF WRONG: the DAY-END
+  (`jobs.service.ts`) selects an explicit column list without the note, and its own comment calls that path
+  *the MAJORITY path since REQ-070*.** ⇒ **reading it in the one writer needs nothing from any caller, and a
+  deduction site added later inherits it.** 📌 ***An input field that no caller ever sets reads as one somebody
+  forgot.*** *(TASK-336)*
+
+- 🔴 **NEVER RESTORE A MUTATION WITH GIT.** `git checkout -- <file>` reverts to **HEAD**, not to the
+  pre-mutation bytes. **@Jason used it during a break-it-and-watch and discarded FOUR tasks of UNCOMMITTED
+  work in one file** (TASK-334 A, TASK-335 §1a, TASK-336, TASK-337). ✅ **Recovered and verified change by
+  change by @Sober.** 🔑 ***Restore from a byte copy you took yourself; the git index is not a backup. In a
+  tree where several tasks sit uncommitted, `git checkout` is a DELETE of other people's work, not an undo of
+  yours.*** ⚠️ **And it is a boundary matter too: `CLAUDE.md` permits READING git state — that command
+  WRITES.** ✅ **The mutation script now writes the original bytes to a scratch file and verifies the restore
+  by SHA-256 against that copy.** 📌 **The exposure was FOUR tasks because four rounds had landed since the
+  last commit — the size of the uncommitted window is the human's to choose, and he should know what it is
+  worth.** *(2026-09-11)*
+- ✅ **What made that recovery possible: the tests pin the SOURCE STRINGS and the COMMENT SENTENCES**, so a
+  rebuilt file that satisfies them is the file. 🔑 ***A habit paid out in a way it was not designed for.***
+  ⚠️ **Limit, stated by @Jason: comment line-WRAPS may fall differently; the content is the same.**
+- 🔑 **A COMMENT GOES STALE IN THE COMMIT THAT MAKES IT STALE, AND THAT IS THE ONLY MOMENT ANYONE KNOWS.**
+  **`course-deduction.ts:21` still describes `remainingLabel` as returning `4/6 ครั้ง` hours after TASK-335
+  removed the word** — **on the very function whose comment misled @Sober two days earlier**
+  (*"matching"* read as *"shared"*). 📌 **The tense test: a comment stating the CURRENT contract must be true;
+  one recording what CHANGED must stay.** *(TASK-338)*
+- 🔑 **@Jason on why "which guards are load-bearing?" has no comment-based answer:** ***the distinction is a
+  TYPE distinction being carried by a comment.*** **`payload` is `[k: string]: unknown` and every read is a
+  cast, so *"this field is always a non-empty string"* can only be written as prose** ⇒ **a parsed union
+  (TASK-333) puts it where the compiler holds it.** ⚠️ **And a comment describing a REMOTE fact rots — delete
+  the zod `.trim()` and a comment claiming it exists still sits there.** ✅ **Kept as a PRACTICE, not a
+  convention: name the upstream BY FILE, but only where the guard is genuinely redundant today — that is the
+  only place a reader is tempted to delete.**
+
+- 🔑 **GREP FOR THE LITERAL YOU JUST DELETED.** (@Jason, TASK-338 — adopted by @Sober for task-writing too.)
+  **TASK-335 removed `ครั้ง` from a return expression; the same literal was still sitting THREE LINES ABOVE the
+  return, FORTY BELOW it, and in a THIRD FILE.** ⚠️ **One `grep` at the moment of deletion would have found all
+  three in a second.** 📌 ***Not a convention — one command, at the only moment anyone knows a comment has gone
+  stale.***
+- 🔴 **A FILE CAN DISAGREE WITH ITSELF AND BOTH HALVES PASS — because one of them is PROSE.**
+  `remaining-zero.test.ts`'s header claimed `remainingLabel` returns `"0/6 ครั้ง"` while an assertion 100 lines
+  below it read `0/6`. 🔑 **Written by the same person, hours apart, in one file.** *(TASK-338)*
+- ✅ **A comment that QUOTES A LITERAL THE FUNCTION PRODUCES can be checked by ASKING THE FUNCTION** — the
+  `course-deduction` doc-block test asserts it contains `` `${remainingLabel("voucher", 4, 6)}` ``.
+  ⚠️ **STATED LIMIT, and it is why the mechanism is kept: it generalises no further.** **A comment about WHY,
+  about another file, or about intent has nothing to compare itself against.** 🚫 **Applied to ONE doc-block —
+  the one that has now misled two people — and nowhere else.** 📌 ***A narrow mechanism with its limit written
+  down is worth more than a broad one without.***
+  🔻 *Its first catch was its own author: a version demanding `ครั้ง` be absent from the whole block FAILED on
+  the history line recording the removal — history asserted away one minute after the tense rule was written.*
+- 🔑 **THE TENSE TEST for a comment** (TASK-338): ***a comment stating the CURRENT contract must be true; one
+  recording what CHANGED must stay.*** ⇒ `ครั้ง` still appears twice in `course-deduction.ts` and both are
+  correct, because both are past tense about a change.
+- ✅ **`remainingLabel`'s *"matching `courseLine`'s owner-verified `เหลือ 6/10`"* is REWRITTEN to say SHAPE
+  ONLY**, with the reason (`line-course-view.ts` imports nothing from that file) and a line recording that
+  *matching* was read as *shared*. 📌 **The sentence that caused @Sober's error now carries its own
+  correction.**

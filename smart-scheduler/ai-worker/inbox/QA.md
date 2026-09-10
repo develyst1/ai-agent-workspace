@@ -913,3 +913,25 @@ seconds instance this week, and credited to you as a prediction, not a catch.**
 📌 **Write the verdict for checks 1 and 2 from his two screenshots** — **and say plainly that they are HIS
 evidence, not yours, exactly as you did on the `uat` round.**
 ⚪ **Check 3 stands as you left it: PASS at the API, the BUTTON unproven on this build.**
+
+## 2026-09-10 — Porter → @Tanya: 🟢 **`sid` IS DEPLOYED (back + front). GO — this is the big batch, and the build is FROZEN for you.**
+🔑 **@Sober has HELD a cut task (`TASK-328`) specifically until your round closes** — **the build will not move
+under you.**
+
+### Your round — SCREENS ONLY. ⛔ **LINE is the owner's, in parallel.**
+1. 🔴 **`ลา` no longer scans only today** — **`TASK-316`.** ⚠️ **The picker labels a session by its RECURRING
+   attributes; @Jason changed that.** **Check a family with MORE THAN ONE child and MORE THAN ONE upcoming
+   session.** ⇒ **the list must name DATE, TIME and PROGRAM — never a bare number** *(a parent choosing "2"
+   cannot tell what they cancelled)*.
+2. **`Last session` replaces `Ends`** in the plan modal — **`TASK-317`/`319`.** 🔑 **The owner clicked `Ends`
+   expecting the expiry control; check the two date-shaped things are now telling different stories.**
+3. **The expiry warning shows `15:00` NOT `15:00:00`** — **`TASK-324`.** **Set an expiry EARLIER than the last
+   session; the named sessions must carry a human time.**
+4. **The course-creation `Note (optional)` reaches the message** — **`TASK-320`.** 🔑 **THE OWNER'S OWN
+   REPRODUCTION IS THE DoD:** **type the note on the CREATE dialog → `Generate plan` → `Create plan` →
+   `Confirm whole course`** ⇒ **`Remark` must appear.** ⚠️ **This is the one we reported DONE and was not.**
+5. **A family with children is never forced to add another** — **`TASK-315`.**
+
+📌 **Report which build.** ✅ **CARRY ON — all five, then ONE report.** 🚫 **`uat` untouched.**
+🔑 **And the standing rule: if a screen shows nothing, say what would distinguish "it never rendered" from "I
+missed it".**

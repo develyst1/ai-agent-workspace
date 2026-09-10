@@ -1605,3 +1605,83 @@ what `TASK-311` built and exactly what I cannot see.**
 🟢 **Nothing created, changed or deleted this round.** **One `POST /courses/preview`** — **a preview route; it
 computes and returns, it does not persist.** *(Verified by its own contract: no course id is issued.)*
 🟢 **No LINE, no `uat`, no phone** *(the `adb` round is explicitly for after this one)*.
+
+---
+
+# Round 20 — the owner's big batch. **3 PASS · 2 need the LINE surface** · 2026-09-11
+📌 **Build: the one @Porter announced FROZEN (back + front, 2026-09-10).** Fresh session minted for this run.
+
+## First — the `TASK-311` verdict @Porter asked me to write, from the OWNER'S screenshots
+🔑 **These are HIS observations, not mine** — stated the same way as the `uat` round.
+- ✅ **Check 1 — PASS.** The card's `expires …` opens the dialog. 🟢 **And I have now corroborated this on my own
+  screen this round:** the date is **underlined**, and clicking it opened `Expiry date — Aileen`.
+- ✅ **Check 2 — PASS.** `13 Oct 2026` on a course ending `27/Oct` produced the warning **before** the save,
+  **naming both sessions**, and stating it would not be refused.
+- ⚪ **Check 3 — unchanged: PASS at the API, the `Create plan` BUTTON still unproven by me.**
+🔻 **And the `15:00:00` in his shot was the thing I predicted would be inherited.** **I called it a prediction,
+not a catch, and @Porter recorded it that way** — **check 3 below is its fix.**
+
+## ✅ CHECK 2 — `Last session` replaces `Ends`. **PASS**
+Plan modal header now reads **`Last session 27 Oct 26`** *(was `Ends 27 Oct 26`)*, seen again on a second course
+as **`Last session 23 Oct 26`**.
+🔑 **And the two date-shaped things now tell different stories, which is exactly what the owner's mis-click was
+about:** the plan says **`Last session 27 Oct`**, the card says **`expires 2026-10-20`.** **Different labels,
+different dates, different meanings — no longer one word doing two jobs.**
+
+## ✅ CHECK 3 — the expiry warning shows a HUMAN time. **PASS**
+**Set Aileen's expiry to `6 Oct 2026` (her sessions run to 27/Oct). The warning, verbatim:**
+```
+⚠ Before you save — what this date would change
+   3 scheduled session(s) would fall after 06/Oct/26:
+     • 13/Oct/26 · 12:00
+     • 20/Oct/26 · 12:00
+     • 27/Oct/26 · 12:00
+   Nothing is saved yet. You can still save this date — it will not be refused.
+```
+🟢 **`12:00`, NOT `12:00:00`** — **`TASK-324` fixed, and the fourth seconds instance is closed on the screen it
+reached.** 🟢 **BEFORE the save** (*"Nothing is saved yet"*) · 🟢 **NAMES each session** · 🟢 **says it will not
+be refused.** ⇒ **the whole `§11.3` shape, on screen, proven by me this time rather than inferred.**
+🚫 **`Cancel`led — Aileen's expiry is still `2026-10-20`, verified from the API afterwards. Nothing saved.**
+
+## ✅ CHECK 4 — the creation note reaches the message. **PASS at the field**
+🔑 **The label itself has changed:** the create dialog now reads **`Session note (optional) — added to every
+session`** *(Round 18 showed only `Note (optional)`)*. **The field now says what it does.**
+**Drove the owner's reproduction: typed the note → `Generate plan` → `Create plan`.** **Read back from the
+created sessions:**
+```
+note         = null
+attendeeNote = "QA-320 remark probe"
+```
+🎯 **That is `TASK-320`'s "one word in one object": the note now rides as `attendeeNote` — the field that reaches
+the message — and NOT as `note`, which was the defect.** ⇒ **the FE half is proven.**
+⚪ **The last step — `Remark` rendering in the LINE message — is NOT mine.** `POST …/confirm` → **200** with
+**`notification: {channel:"line", status:"queued"}`** ⇒ **the text is composed into an outbox, not returned**,
+so there is nothing for me to read. **The owner's phone closes it.**
+
+## 🔴 CHECKS 1 and 5 — **NOT_TESTED: both are LINE flows, and LINE is the owner's**
+| | |
+|---|---|
+| **1 · `TASK-316`** — `ลา` no longer scans one day; the picker must name DATE, TIME, PROGRAM | **`smart-scheduler-back`, no FE change** — the picker is the PARENT'S LINE leave flow |
+| **5 · `TASK-315`** — a family with children is never forced to add another | **`smart-scheduler-back`, no FE change** — the `เพิ่มนักเรียน` LINE registration step |
+⚠️ **@Porter's dispatch said "SCREENS ONLY — LINE is the owner's, in parallel", and then listed these two.**
+🔑 **There is no admin screen for either.** ⇒ **I am not able to reach them, and I am not going to invent a
+surface.** **Writing it down and carrying on, per the standing rule.**
+📌 **One thing I CAN hand him for check 5:** **`KKTEST`'s parent (`0924912848`) has FIVE children —
+`KKTEST / ส้ม / เหมียว / ส้มตำ / ปลางา`.** ⇒ **that is the fixture `TASK-315` needs, already on the box.** **He
+does not have to build one.**
+
+## 📌 Two observations, neither filed
+- 🟢 **The FE now calls `POST /courses/:id/expiry/preview`** — I watched it fire when the date changed.
+  **In Round 18 that route existed and nothing consumed it.** **The half that was missing is wired.**
+- ⚠️ **The stale-modal empty re-render recurred:** after cancelling the expiry dialog, my next click reopened it
+  as **`Expiry date — —`** with a blank `Current expiry:`. **Same family as the `Pause — for — · 0 sessions`
+  flash.** **Cosmetic, self-clearing, and I have never seen it lose data** — recorded, not filed.
+
+## Footprint
+| Record | State |
+|---|---|
+| **NEW course `2fbed92a…`** — KKTEST · 6-session Freeskate · `Ek` · **฿6,490** | **ACTIVE and CONFIRMED.** The check-4 fixture; **left as evidence** *(its `attendeeNote` IS the result)*. |
+| Aileen's expiry | 🚫 **NOT saved — cancelled.** Still `2026-10-20`, verified after. |
+🟢 **No message reached anyone: `KKTEST`'s parent has NO LINE link (`lineUserId: none`) and teacher `Ek` is
+unlinked** ⇒ **the queued notification has no recipient. Checked rather than assumed.**
+🟢 **No `uat`. No phone** — the `adb` round has not been started.
