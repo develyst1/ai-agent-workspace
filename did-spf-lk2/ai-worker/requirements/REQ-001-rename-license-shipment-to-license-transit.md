@@ -1,5 +1,5 @@
 # REQ-001: Free the term "shipment" in the LK2 API — rename form 9 to "transit"
-- Status: READY_FOR_SA
+- Status: DELIVERED (2026-09-10 — all 8 acceptance criteria observed)
 - Priority: HIGH
 - Requested: 2026-09-07 by stakeholder (human)
 - Deadline: none
@@ -91,12 +91,19 @@ file list:
   `api/v1/license-transit` carrying `endpointTemplate = api/v1/license-transit`
   **and** `basicAuthSection = LicenseShipment`. Exactly the split this REQ asked
   for. **Observed, not inferred.**
-- **Still NOT observed (1 of 8)** — "returns the same data, in the same shape".
-  The audit event deliberately never logs the payload
-  (`responseBody` is only `{message, statusCode, traceId}`), so the Kibana record
-  cannot close this one. Needs the actual response bodies — see SA-2 (remaining
-  part). **Not to be reported to the stakeholder as confirmed, and this REQ does
-  not go to `DELIVERED`, until those bodies are in `../project-docs/`.**
+- **8th criterion — CLOSED 2026-09-10. "Returns the same data, in the same shape"
+  is now OBSERVED.** Stakeholder supplied a live response body, archived at
+  `../project-docs/2026-09-10-SA-2-response-body-and-services-row.md`.
+  PM checked it field by field against `Models/LicenseTransitModel.cs`: the model
+  declares exactly `CitizenId, IssueDate, ExpireDate, JuristicId, LicenseNo,
+  ProductName, TraderName`, and the response carries exactly those seven,
+  camelCase, same order, nothing added or missing, inside the standard
+  `ResponseResult<T>` envelope (`responseCode "000"`). Dates still `yyyyMMdd`.
+  Two real rows, not an empty list — SA-2's "expect empty" prediction was based on
+  form-9 rows sitting at `STATUS=30`; they have since reached `STATUS=40`, so the
+  evidence is stronger than anticipated, not contradictory.
+
+**Verdict: all 8 acceptance criteria observed. REQ-001 is `DELIVERED` (2026-09-10).**
 
 ## Constraints
 
