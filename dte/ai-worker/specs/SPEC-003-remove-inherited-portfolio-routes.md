@@ -1,6 +1,6 @@
 # SPEC-003: Remove the inherited portfolio-site routes from the DTE frontend
 - Source: REQ-003
-- Status: ACTIVE
+- Status: DONE — its one TASK (TASK-014) reviewed `DONE` 2026-09-09 by Sober
 - Written: 2026-09-08 by Sober (SA Lead)
 
 ## Overview
@@ -177,8 +177,15 @@ is read or written by this SPEC, and no existing row is affected anywhere. Front
   §Questions**; do not delete a live route to make a build go green.
 - **A query string** (`/contact?utm=x`) — Next carries the query through the redirect; the
   visitor lands on `/`. No special handling.
-- **A trailing slash** (`/blog/`) — Next normalises it before matching, so the redirect fires.
-  This is verified for one of the four in step 6, not assumed.
+- **A trailing slash** (`/blog/`) — the visitor still lands on `/`, but in **two hops**, not one.
+  ⚠️ **Corrected 2026-09-09 by Sober** — this bullet originally read "Next normalises it before
+  matching, so the redirect fires", which is **wrong** and was written without measuring. Measured
+  twice (Fern in TASK-014 §Implementation Notes item 4, and me again at review):
+  `/blog/` → **308 `location: /blog`** (Next's own built-in trailing-slash normalisation, not our
+  `redirects()`) → our **307 `location: /`** → `/` **200**, `hops=2`. Decision 1 is unaffected:
+  all four of *our* entries emit 307, the extra 308 is Next's, it is emitted with or without this
+  change, it cannot be switched off from `redirects()`, and it caches only `/blog/` → `/blog` — a
+  path we still control, so the outcome stays reversible. No code changes because of this.
 - **Port 3000 already taken** — then the dev server on 3000 is not this change's server. Note
   the port actually used in the evidence rather than writing 3000 by habit.
 
@@ -221,7 +228,24 @@ would leave the live site answering 404 on four real URLs between the halves.
   support contact and what it is. **I am not waiting for an answer before TASK-014 runs** —
   REQ-003 is not blocked by it, and no agent may invent that copy either way. If he wants one,
   it is a new REQ.
+
+  > **answer (Porter 2026-09-08, from the owner): NO — he does not want one. `Q3=ไม่ต้อง`**
+  > (*not needed*). Put to him in Thai exactly as you framed it (removing `/contact` leaves a user
+  > stuck in email verification with no contact route at all); recorded verbatim in
+  > `SYSTEM-FACTS.md` **A32**. Consequences: **no new REQ is opened**, the verify-email Help Text
+  > stays removed as TASK-014 built it, and **nobody re-raises this** — it is a deliberate owner
+  > decision, not a gap in the site. If he ever wants a support contact he states the channel and
+  > the copy himself, and that is a fresh REQ. **Q1 is CLOSED and changes nothing in TASK-014.**
+
 - **Q2 — for Porter (NOT blocking, housekeeping).** `front/src/app/about/page-new.tsx` and
   `front/src/app/about/page.tsx.backup` are stray duplicates of the About page that predate
   this team. They serve no route, and REQ-003 does not cover them (§Enumeration Trap 3), so I
   left them alone. If the owner wants the tree clean, that is a separate REQ.
+
+  > **answer (Porter 2026-09-08): received, and you were right to leave them.** This was **not**
+  > put to the owner in this round — his 2026-09-08 digest carried the four items that were
+  > blocking work, and a dead file that serves no route blocks nothing. **No REQ is opened and
+  > nothing is deleted**: `front/src/app/about/page-new.tsx` and `about/page.tsx.backup` stay
+  > exactly as they are, out of REQ-003's reach (§Enumeration Trap 3). I carry it as a
+  > housekeeping item to raise the next time I have his attention. **Q2 is CLOSED for SPEC-003 —
+  > it changes nothing in TASK-014 and is not a gate on anything.**

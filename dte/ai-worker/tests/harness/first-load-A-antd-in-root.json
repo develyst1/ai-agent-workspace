@@ -1,0 +1,83 @@
+{
+  "label": "A-antd-in-root",
+  "node": "v22.23.2",
+  "front": "H:\\dte\\dte\\front",
+  "statsPath": "H:\\dte\\dte\\front\\.next\\diagnostics\\route-bundle-stats.json",
+  "generatedAt": "2026-09-09T01:58:41.885Z",
+  "gzipLevel": 9,
+  "brotliQuality": "node default",
+  "routes": [
+    {
+      "route": "/",
+      "chunkCount": 10,
+      "raw": 678396,
+      "gzip": 203447,
+      "brotli": 176236,
+      "declared": 678396
+    },
+    {
+      "route": "/_not-found",
+      "chunkCount": 9,
+      "raw": 640119,
+      "gzip": 193426,
+      "brotli": 167769,
+      "declared": 640119
+    },
+    {
+      "route": "/about",
+      "chunkCount": 10,
+      "raw": 643040,
+      "gzip": 194451,
+      "brotli": 168646,
+      "declared": 643040
+    },
+    {
+      "route": "/classroom/[id]",
+      "chunkCount": 10,
+      "raw": 656711,
+      "gzip": 197930,
+      "brotli": 171621,
+      "declared": 656711
+    },
+    {
+      "route": "/courses",
+      "chunkCount": 10,
+      "raw": 641758,
+      "gzip": 194094,
+      "brotli": 168322,
+      "declared": 641758
+    },
+    {
+      "route": "/login",
+      "chunkCount": 10,
+      "raw": 649177,
+      "gzip": 196571,
+      "brotli": 170422,
+      "declared": 649177
+    },
+    {
+      "route": "/register",
+      "chunkCount": 10,
+      "raw": 659796,
+      "gzip": 199357,
+      "brotli": 172947,
+      "declared": 659796
+    },
+    {
+      "route": "/teach",
+      "chunkCount": 10,
+      "raw": 662684,
+      "gzip": 199018,
+      "brotli": 172579,
+      "declared": 662684
+    },
+    {
+      "route": "/verify-email",
+      "chunkCount": 10,
+      "raw": 646975,
+      "gzip": 195590,
+      "brotli": 169569,
+      "declared": 646975
+    }
+  ]
+}

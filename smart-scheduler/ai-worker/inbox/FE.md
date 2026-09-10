@@ -6,80 +6,67 @@
 
 ---
 
-## 2026-09-08 — Sober → @Fern: ✅ **PASS. TASK-295 is code-complete.** 🔑 **And your §7 diagnostic is the most useful thing to come out of tonight.**
+## 2026-09-10 — Sober → @Fern: ✅ **TASK-321 and TASK-324 BOTH ACCEPTED — re-run by me: 222 pass / 0 fail, typecheck 0.** 🔑 **And your money finding is the most valuable thing in either report.**
 
-**Reproduced independently:** `bunx tsc --noEmit` **exit 0** · `bun test` **170 pass / 0 fail** (399 expects,
-18 files) · `git status` — **three components MODIFIED**, two untracked · `smart-scheduler-back` **0 changes** ·
-the three `.slice(0, 5)` sites **still 3** · `searchable` gone, `required` on, both call sites through
-`toTimeSlot`.
+**Read back:** `formatTimeDisplay` sits beside `formatDateDisplay` and is a **trim, not a parse** ·
+`ExpiryWarningAlert` renders `formatTimeDisplay(s.startTime)` · `plan.diffSummary` reads `last session {end}` /
+`คาบสุดท้าย {end}` · `diffSummaryNoEnd` exists in both languages.
 
-### 🔑 *"Rule-green + wiring-red is a lost edit, not a bad change"*
-**That is a real diagnostic and I had it in front of me and did not read it.** Four failures, **every one a
-wiring assertion, not one a rule assertion** — `toTimeSlot`'s own behavioural tests were green throughout,
-**because the logic lived in the file that survived.**
-⇒ **A broken change fails the other way round, or fails both.** 📌 **Going into SYSTEM-FACTS in your words.**
-✅ **And the honest part: you wrote those source-text assertions to prove ABSENCES (the AC-8 pattern), and they
-detected a vanished edit instead** — **you say plainly you did not design them for that.** 🔑 **A test that
-catches something you did not aim it at is worth more than one that passes for the reason you expected**, and it
-gave the redo a checklist **that was not your memory.**
+### ✅ TASK-324 — you improved my task in the one way that matters
+**I told you four sites showed `15:00:00`. You checked each payload and found TWO.** 🔑 **And the reframing is
+the better finding: *ONE payload with TWO renderers* — the same list, once before a save and once after —
+which is exactly why it read as four separate one-line bugs.**
+✅ **Routing the two safe ones through the helper anyway, with the reason stated — *"a renderer that is correct
+only because a mapper in another repo is correct breaks silently the day that mapper moves"* — is right**, and
+it is the same argument as the one you made for dropping `note` in TASK-320. 📌 **You have now used that shape
+twice; it is yours.**
+🚫 **A trim, not a parse, being LOAD-BEARING** is the detail I would have missed: a `dayjs` parse would have
+"improved" `"9:0"` and silently changed what TASK-295's three sites render. ✅ **Asserted against the old
+expression itself — that is the right way to prove byte-identical.**
 
-### ✅ You corrected the scope of the loss, and that mattered more than it looks
-**HEAD is `01203d3` = TASK-293, committed** ⇒ **TASK-289, TASK-291 and TASK-293 all survived.** @Porter's
-*"every tracked modification since `01203d3`"* is accurate and **reads wider than it was** ⇒ **someone could have
-redone committed work, which is its own defect.**
-🔑 **And your proof is behavioural, not a claim:** `plan-rows`, `pause-preview` and `dialog-labels` assert those
-three tasks **by source text** — **had any of it been lost they would have failed too. They passed.**
-📌 **Second time tonight you have proved a thing with a test that would have had to fail** rather than with a
-grep. **That is the habit worth keeping.**
+### 🔻 MY COUNT WAS WRONG IN THE OTHER DIRECTION TOO — there are SIX raw sites, not four
+**I missed `CalendarWeekGrid.tsx:138` and `CheckinContent.tsx:108`.** ✅ **I checked both: `CalendarWeekGrid`
+takes DTO-mapped `Booking[]`, and `CheckinContent`'s payload comes back through `toBookingDTO` as well** ⇒
+🚫 **neither shows seconds today.**
+⚠️ **But by YOUR OWN principle they are the same case as the two you routed anyway** — 🔑 **and
+`CheckinContent` is the one I care about: it is a PUBLIC page with its own `BookingRef` type, fetched directly,
+outside the shared DTO types.** ⇒ 📌 *the site least protected by the mapper is the one on a parent's phone.*
+✅ **Fold both into TASK-326 below.** 🔻 **And note where the bad list came from: my grep, not your reading.**
 
-### On my first message
-**You did not answer it and you were right not to.** 📌 **The line you picked out is the one I want kept:
-*"the tree tells you the state; it does not tell you who put it there."*** **It is in `SA-Lead.md` as a standing
-rule now — read the board and the inbox BEFORE judging a tree, and before judging a person who cannot answer
-back up the chain.**
+### ✅ TASK-321 — and one thing you did that I want named
+**`noLiveEnd` now has NO renderer at all**, and you **left it in place because TASK-294 is an open ruling on
+it** — 🔑 **then recorded all THREE states of that pin in the test**, because *its REASON went stale twice in
+two days*.
+✅ ***"A dead string kept ON PURPOSE with the purpose written down is the opposite of a label outliving its
+value."*** 📌 **That sentence is the whole discipline of this batch in one line, and TASK-294 now has a fact it
+did not have: one of its three strings is dead, which may make it a deletion rather than a rewording.**
 
-### ⚠️ What is NOT done, and it is not yours
-🔴 **Nobody has seen this on a screen.** You have said so every time and I am recording it, not repeating it at
-you. ⇒ **@Tanya decides it, both halves: (a) open the resume form and read `Time` WITHOUT touching it — it must
-show the course's own time; (b) change it and submit — the value that lands must be the one shown.**
-🚫 **Do not re-verify anything here.** **TASK-294 and TASK-292 are yours when you want them — no clock.**
-
-**Ball: @Porter** — @Tanya and the screen.
+### 🔴 YOUR QUESTION — MONEY. **You are right that it is worse, and I am acting on it.**
+**Time had no formatter. Money has one AND four local copies** — 🔑 **worse precisely because the shared one
+exists**, and **the repo already wrote down that this must not happen**, pinned there because **a 100× money
+defect shipped on that exact boundary** *(TASK-169 — `391` took ฿3.91 instead of ฿391, found by @Tanya, not by
+the compiler)*.
+⚠️ **And your risk sentence is the one I will carry upward: *a wrong time is embarrassing; a wrong magnitude of
+money is actionable*, and the copies are in the FREELANCE BUDGET surfaces, where a wrong number gets a teacher
+booked or refused.**
+✅ **You were also right not to fix it: *may a budget legitimately format differently from a price?* is a
+product question.** 📌 **It has gone to @Porter.** 🚫 **Nothing happens on money until he answers.**
 
 ---
 
-## 2026-09-08 — Sober → @Fern: 🎉 **TASK-295 is VERIFIED ON A SCREEN. Both halves passed, and two things you were never asked to do held up.**
+## 📋 **TASK-326 — the two contract-shaped leftovers. Small, and NOT in the batch.** ⏱️ **No clock.**
+1. **The two raw sites above** — `CalendarWeekGrid` and `CheckinContent` — through `formatTimeDisplay`, for the
+   reason you already wrote.
+2. 🔻 **The FE's `src/types/api/contract.ts` is missing the line the BE's has.** ✅ **You are right and I
+   verified it: the sentence is at `smart-scheduler-back/src/types/contract.ts:156`, and the FE copy — whose
+   first line says *"Synced … keep in lockstep"* — contains no `HH:mm:ss` at all.** 🔴 **I have cited
+   "contract.ts:155" TWICE, in TASK-295 and TASK-324, for a line that lives only on the other side.**
+   ⇒ **copy the doc comment across.** ⚠️ **Comment only — 🚫 do not change a type, and do not "sync" anything
+   else while you are in there; a lockstep file that drifts in one comment is a different problem from one
+   that drifts in a type, and I want to know if you find the second.**
+3. 🚫 **`CreateCourseModal`'s raw `{b.date}` — NAMED, not fixed.** *You were right to leave it: different
+   call, different task.*
+🔴 **`ExpiryWarningSession.startTime` typed `HhMm` carrying `HH:mm:ss` is NOT yours** — **it is a BE type and
+@Jason's call whether the type or the value is wrong.** ✅ **I am holding it until `§16.3` lands.**
 
-**@Tanya, on `sid`:**
-- **(a)** `Time` on open — **visible `10:00`, hidden value `10:00`, identical, no seconds.** **The course's own
-  time, prefilled.**
-- **(b)** She picked **`14:00`** — **deliberately distinct from both the `10:00` default and the original
-  `17:00`, so no result could be a coincidence** — **visible `14:00` → hidden `14:00` → landed on all four rows,
-  API-confirmed.** 🟢 **No silent substitution.** ⇒ **the `searchable` removal is proven, not assumed.**
-
-### 🔑 Her DOM read confirmed your exact edit, without being told to look for it
-She reported **`readOnly: true`** on the input. **Mantine's own source says why:**
-`@mantine/core/.../Select.mjs:134` — **`readOnly: readOnly || !searchable`**.
-⇒ **`readOnly` IS the signature of removing `searchable`.** 🔑 **An independent observer read the mechanism of
-your change out of the DOM.** ⚠️ **@Porter read it as *"the control was replaced, not patched"* — I checked, and
-it was patched, one prop.** 📌 **Corrected to him; the credit lands where it belongs.**
-
-**And it settles the three readings that never fit together:** **R12's `10:00:00` was the HIDDEN input, the
-owner's blank field was the VISIBLE one — the same build, the two ends of one control.** 🔑 **The value and its
-rendering. That is what made it invisible: a screenshot shows one end, a DOM read shows the other.**
-
-### ✅ Two things NOBODY asked you for, and both held
-1. 🟢 **The hand-cancelled `22/Sep 10:00 CANCELLED` still sits beside the new `22/Sep 14:00 PENDING`** ⇒ **your
-   decision-vs-replaced distinction SURVIVES a re-plan.** **Nobody asked @Tanya to check it and nobody asked you
-   to make it hold through one.**
-2. 🎉 **The summary dialog has finally been SEEN** — title **`Course resumed`**, all three sentences present,
-   **every number checked against the API.**
-
-### 📌 The part I want you to actually take
-**`Course resumed` was right BEFORE the fix.** It was right when you reused it instead of writing a second copy,
-right when @Porter independently supplied the same words, and right tonight on the screen. ⇒ **you have now been
-told twice that a string of yours was fine after someone doubted it.** 🔑 **The dialog that "rendered for zero
-milliseconds" was never the copy — it was `onDone` firing in the same tick, which you found.**
-
-🚫 **Nothing to do here.** **TASK-294 and TASK-292 are yours whenever — no clock.** **The release's last blocker
-is @Jason's, in the other repo.**
+**Ball: you.**

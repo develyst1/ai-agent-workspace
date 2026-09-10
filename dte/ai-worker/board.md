@@ -57,40 +57,104 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
-| REQ-001 | Frontend foundation — house folder pattern, component library, icons not emoji | HIGH | IN_SPEC — 2026-09-08, Sober · SPEC-001 **ACTIVE**, no gate open; TASK-001…003 all **DONE**; next units are Sober's: the §Decision 6 bundle measurement, then TASK-004 (`/login`) — see `specs/SPEC-001-frontend-foundation.md` §Tasks | **Sober (SA)** — write the next TASK |
+| REQ-001 | Frontend foundation — house folder pattern, component library, icons not emoji | HIGH | IN_SPEC — 2026-09-09, Sober · **TASK-006 is `DONE`, so SPEC-006 Phase 2 is complete**; Phase 3 (TASK-007…010) stays gated on the owner seeing `/` **and** `/courses`; §Q9 still open with him — see `requirements/REQ-001-frontend-pattern-and-ui-foundation.md` §Questions | **Human (owner)** — the Phase-1 + Phase-2 look, via Porter |
 | REQ-002 | Course creation via the teacher-side AI training loop | (unset) | DRAFT — 2026-09-07, Porter · INTAKE only; **Q1 fully CLOSED** (2% of gross price, no opening fee, platform pays gateway); Q2–Q7 open — see `requirements/REQ-002-course-creation-ai-training-loop.md` §Open questions | **Human (owner)** |
-| REQ-003 | Remove the inherited portfolio-site routes from the frontend | MEDIUM — after REQ-001 | IN_SPEC — 2026-09-08, Sober · SPEC-003 **ACTIVE**, its one unit TASK-014 is `TODO` with Fern; nothing blocked — see `specs/SPEC-003-remove-inherited-portfolio-routes.md` | **Fern (FE)** — build TASK-014 |
-| REQ-004 | Replace the superseded product name "Disrupt Thai Education" everywhere | MEDIUM | **SPEC_DONE** — 2026-09-08, Porter · acceptance check DONE, held for the owner's eyes (AC 5) — see `requirements/REQ-004-product-name-rename-everywhere.md` §"Porter's acceptance check" | **Human (owner)** — look, then Porter sets `DELIVERED` |
-| REQ-005 | Unify the browser page titles across the whole site | LOW | DRAFT — 2026-09-08, Porter · Q1 ANSWERED `Q2=ข` (A29) = page name + one common tail; **Q2 open** (separator/word order + what `/` reads) — see `requirements/REQ-005-unify-page-titles-site-wide.md` §Open questions | **Human (owner)** |
+| REQ-003 | Remove the inherited portfolio-site routes from the frontend | MEDIUM — after REQ-001 | **SPEC_DONE** — 2026-09-09, Porter · AC 7 (owner's eyes, Q4) OPEN, so NOT `DELIVERED`; his unlabelled "ผ่าน" was NOT spent here (A46) — see `requirements/REQ-003-remove-inherited-portfolio-routes.md` §"Porter's acceptance check (2026-09-09)" | **Human (owner)** — answer Q4 |
+| REQ-006 | Replace the leftover `DTE Platform` wording in the visible page copy | LOW | **SPEC_DONE** — 2026-09-09, Porter · AC 1–5 MET on evidence, **AC 6 (owner's eyes, Q1) OPEN** so NOT `DELIVERED`; his unlabelled "ผ่าน" was NOT spent here (A46) — see `requirements/REQ-006-replace-dte-platform-body-copy.md` §"Porter's acceptance check (2026-09-09)" | **Human (owner)** — answer Q1 |
+| REQ-007 | Remove the dead `/forgot-password` link from `/login` (he chose "ตัดลิงก์ทิ้ง", A45 — no flow is built) | LOW — Porter's call, unstated by him | **READY_FOR_SA** — 2026-09-09, Porter · frontend-only, subtractive; born from REQ-001 §Q6 as that question framed it — see `requirements/REQ-007-remove-dead-forgot-password-link.md` | **SA (Sober)** |
+
+> Swept 2026-09-09 (housekeeping): **REQ-004 `DELIVERED`** moved byte-verbatim to
+> `archive/board-closed.md`. Closed rows leave the live board; their detail never lived here.
+>
+> Swept 2026-09-09 (second housekeeping hop): **REQ-005 `DELIVERED`** moved byte-verbatim to
+> the same file. Its acceptance check stays in `requirements/REQ-005-unify-page-titles-site-wide.md`.
 
 ## Tasks
 
 | ID | Title | Source | Status | Assignee | Depends on |
 |----|-------|--------|--------|----------|------------|
-| TASK-001 | Upgrade `front/` — Next 15→16 + Tailwind 3→4 | SPEC-001 | **DONE** — reviewed 2026-09-07, Sober · Q1–Q4 answered; 3 UNVERIFIED items accepted and owed to the owner's eyes — see `tasks/TASK-001-next16-tailwind4-upgrade.md` §Review | FE (Fern) — closed | none |
-| TASK-002 | Folder skeleton + `FRONTEND-CONVENTIONS.md` + no-emoji harness | SPEC-001 | **DONE** — reviewed 2026-09-07, Sober · Q1–Q3 answered, 6 DoD checks re-run by me, 3 UNVERIFIED accepted; its git finding **struck 2026-09-07** per A23 — see `tasks/TASK-002-folder-skeleton-conventions-emoji-harness.md` §Review | FE (Fern) — closed | TASK-001 ✅ |
-| TASK-003 | Install Ant Design v6 + registry, theme-token bridge, first 2 `ui/` wrappers | SPEC-001 | **DONE** — reviewed 2026-09-08, Sober · no rework; Q1–Q4 answered, 13 DoD checks re-run by me, 1 UNVERIFIED carried (compressed bundle delta) — see `tasks/TASK-003-antd-install-and-theme-bridge.md` §Review | FE (Fern) — closed | TASK-002 ✅ |
-| TASK-011 | Product-name rename in `front/` — 3 occurrences, 2 files (`metadata` only) | SPEC-002 | **DONE** — reviewed 2026-09-08, Sober · no rework; em dash re-verified as bytes, `tsc` + emoji harness (124) re-run by me, Q1 answered → SPEC-002 Q5 — see `tasks/TASK-011-rename-product-name-front.md` §Review | FE (Fern) — closed | none |
-| TASK-012 | Product-name rename in `back/` — 7 occurrences, 6 files (Swagger + AI prompt) | SPEC-002 | **DONE** — reviewed 2026-09-08, Sober · no rework; all 7 substitutions + banner width re-verified by me, `/docs` browser evidence accepted, no DB touched; Q1 answered (banner is pre-existing, no TASK) — see `tasks/TASK-012-rename-product-name-back.md` §Review | BE (Jason) — closed | none |
-| TASK-013 | Product-name rename in the repo-root `README.md` — 1 line (Rule S, whole sentence) | SPEC-002 | **DONE** — reviewed 2026-09-08, Sober · no rework; literal re-read as bytes, one line changed, enumeration re-run by me; Q1 answered (pre-existing U+FFFD → no TASK) — see `tasks/TASK-013-rename-product-name-readme.md` §Review | BE (Jason) — closed | none |
-
-| TASK-014 | Remove 4 inherited routes + 2 data files + 4 links; add `redirects()` to `/` | SPEC-003 | **TODO** — 2026-09-08, Sober · enumerated against the real tree; 3 traps called out (`src/services/` is NOT the route) — see `tasks/TASK-014-remove-inherited-portfolio-routes.md` | FE (Fern) | none |
+| TASK-021 | `.btn-primary` resting **and** hover onto the theme-scoped accent — `themes.css` only, no screen file | SPEC-006 §R-COLOUR-7 | **DONE** — reviewed 2026-09-09, Sober · 6 DoD re-run by me; Q1+Q2 answered — see `tasks/TASK-021-btn-primary-theme-scoped-accent.md` §Review | FE (Fern) | none |
 
 > Numbering note: **TASK-004…010 stay reserved for SPEC-001's per-screen units**, so SPEC-002's
-> tasks start at 011 and SPEC-003's at 014. Numbers are never reused (PROTOCOL.md §Artifact
-> numbering).
+> tasks start at 011, SPEC-003's at 014, SPEC-004's at 015–017 and SPEC-005's at 018. Numbers are
+> never reused (PROTOCOL.md §Artifact numbering).
+
+> **Closed 2026-09-09:** the *"antd shared-chunk cost"* Blocked row is removed — TASK-019 measured it
+> (**+40.55 kB gzip / +35.71 kB Brotli per route, uniform on all 9**) and **SPEC-001 §Decision 6 is
+> CLOSED**: the provider **stays in the root layout**, the route-group split is **rejected**, with a
+> two-condition re-open trigger written into the SPEC. Nothing reverts; TASK-004…010 are ungated.
+
+> Swept 2026-09-09 (housekeeping): **TASK-001/002/003/011/012/013/014/015/016/017 — all `DONE`** —
+> moved byte-verbatim to `archive/board-closed.md`. Their reviews stay in their own `tasks/` files.
+>
+> Swept 2026-09-09 (second housekeeping hop): **TASK-004/005/006/018/019/020 — all `DONE`** —
+> moved byte-verbatim to the same file. Their reviews stay in their own `tasks/` files, which the
+> open Blocked rows and REQ-001 §Owner's-eyes gates still point at.
 
 ## Blocked / waiting
 
 | Item | Waiting on | Since | Note |
 |------|-----------|-------|------|
+| **Owner's own eyes on SPEC-006 Phase 1 — the `/` (home) visual pass** | **Human (owner)**, via Porter | 2026-09-09 | **OPEN and UNMET** — 2026-09-09, Porter · A43 gate RE-ASKED labelled (A46); Phase 3 still gated, Phase 2 is not; 2 UNVERIFIED to carry — see `requirements/REQ-001-frontend-pattern-and-ui-foundation.md` §Owner's-eyes gates |
+| **Owner's own eyes on SPEC-006 Phase 2 — the `/courses` visual pass** | **Human (owner)**, via Porter | 2026-09-09 | **OPEN** — 2026-09-09, Porter · TASK-006 `DONE` on evidence; 2 UNVERIFIED + the 2 changes most likely to read as new — see `requirements/REQ-001-frontend-pattern-and-ui-foundation.md` §Owner's-eyes gates |
+| Owner's own eyes — the **8** unified tabs (`/` `/about` `/courses` `/login` `/register` `/teach` `/verify-email` + `/classroom/<id>`) | **Human (owner)**, via Porter | 2026-09-09 | Non-blocking: REQ-005 is `DELIVERED` on evidence, but only an automated Chrome looked, `DELIVERED` ≠ deployed, and the classroom tab was never seen while authenticated — see REQ-005 §"Porter's acceptance check". |
+| **`/courses/[id]` does not exist** — every course card and every AI-search result links to it | **Porter (PM)**, then the owner | 2026-09-09 | Sober's finding while writing TASK-006; **UNVERIFIED** (a code read, no `courses/[id]/page.tsx` exists — nobody opens the live site). Gates nothing: TASK-006 proceeds. A product decision (build the page, or change what a card does) — never SA's. See `tasks/TASK-006-…md` §Findings 1. |
+| **`/login`'s "resend verification email" path is dead code** (REQ-001 §Q9) | **Human (owner)** | 2026-09-09 | **ASKED 2026-09-09**: tell an unverified user so and offer the resend, or keep today's single generic message? Sober's finding, pre-existing, gates nothing; NOT in REQ-001's scope — either answer becomes its own new REQ. UNVERIFIED: a code read, not an observed login. |
 | The API port `4013` — needs a REQ | **Porter (PM)**, then Sober | 2026-09-07 | ANSWERED "ทั้งคู่" = prod AND local; all 4 places in the repo are wrong. Porter writes the REQ next session. See `SYSTEM-FACTS.md` A7. |
 | DATA REQUEST — the Thai copy for the DTE `/about` page | **Human (owner)** | 2026-09-07 | `/about` stays ("about for DTE", `SYSTEM-FACTS.md` A10) but he gave no text; no agent invents it. Not blocking REQ-003 — see REQ-003 §Out of Scope. |
-| antd shared-chunk cost `+100.8 kB` uncompressed on every route | **Sober (SA)** | 2026-09-08 | Measured in TASK-003, not a defect. Remedy open (route-group scoping) and needs the compressed delta first — `UNVERIFIED`. Not blocking TASK-004+. See `specs/SPEC-001-frontend-foundation.md` §Decision 6. |
-| REQ-005 — the exact separator/word order + what `/` reads | **Human (owner)** | 2026-09-08 | Shape settled (A29 `Q2=ข`); the string is not. Re-asked in Thai 2026-09-08 by Porter · blocks only REQ-005, still `DRAFT` — see `requirements/REQ-005-unify-page-titles-site-wide.md` §Open questions **Q2**. |
 | REQ-002 scoping | **Human (owner)** | 2026-09-06 | Q1 closed 2026-09-07; **Q2–Q7 still open** — see REQ-002 §Open questions. |
+| **REQ-003 AC 7** — the owner's own eyes on the removals (the 4 redirects, the Footer, `/verify-email`) | **Human (owner)** | 2026-09-09 | **ASKED 2026-09-09 as REQ-003 §Questions Q4**; the only thing keeping REQ-003 out of `DELIVERED` — what he must look at, the AC 6 classroom gap and the live-site caveat are all in REQ-003 §Questions Q4 + §"Porter's acceptance check (2026-09-09)". |
+| **REQ-006 AC 6** — the owner's own eyes on the shortened body copy | **Human (owner)** | 2026-09-09 | **ASKED 2026-09-09 as REQ-006 §Questions Q1**; the only thing keeping REQ-006 out of `DELIVERED`. What he must look at (the 3-char `DTE` wordmark, `/about`, and `สอนกับ DTE` on `/teach` which nobody here can render) is all in REQ-006 §Questions Q1. |
 | Owner's own eyes — the upgrade AND the folder moves | **Human (owner)**, via Porter | 2026-09-07 | `/teach` + `/classroom/[id]` (auth-guarded), below-the-fold everywhere, and routes other than `/` after the moves. No QA here; nobody claims these work until he looks. See TASK-001 §Review + TASK-002 §Review. |
-| Owner's own eyes — the renamed page titles (REQ-004 AC 5) | **Human (owner)**, via Porter | 2026-09-08 | Asked in Thai 2026-09-08 by Porter · rename evidenced, REQ-004 held at `SPEC_DONE` for his eyes only — see REQ-004 §"Porter's acceptance check" (⚠️ what to look at, and why the live site is unchanged). |
+
+> **Closed 2026-09-09:** the *"`.btn-primary` fails contrast site-wide"* row is removed — **TASK-021 is
+> `DONE`** and SPEC-006 **§R-COLOUR-7 is CLOSED**. All four states are **measured** in real Chrome with a
+> real pointer-hover: light **5.93** resting / **7.56** hover, dark **6.31** / **8.16**; dark resting is
+> byte-identical to before. Two things did **not** close and are not reported as observed: the old light
+> hover **≈1.15:1 stays computed-only, UNVERIFIED**, and the ~200 ms colour-in on every load is a
+> pre-existing whole-site finding **parked** (TASK-021 §Q1/§Q2). The light-theme side effect Porter
+> carries is unchanged — see `requirements/REQ-001-frontend-pattern-and-ui-foundation.md`
+> §"Owner's-eyes gates".
+
+> **Closed 2026-09-09 (third round of owner answers):** two rows are removed. **(1)** *"Which page is
+> หน้าคอร์ส"* — **`Q1=ก`** (`SYSTEM-FACTS.md` **A44**): the course **LIST** page **`/courses`**, not a
+> detail page, not both. SPEC-006 **Phase 2 = `/courses` only** and is unblocked; **how and when it is
+> sequenced stays Sober's design call** — Porter proposed no mechanism. **(2)** *"`/login` links to
+> `/forgot-password`"* — **`Q2=ตัดลิงก์ทิ้ง`** (**A45**): **remove the link, do not build the flow**, so
+> there is no backend work. Exactly as REQ-001 §Q6 was framed, it becomes its **own** requirement —
+> **REQ-007** above — and REQ-001 is not widened. The 404 itself stays **UNVERIFIED** (a code read).
+> 🔴 **NOT closed by the same message:** his trailing **"ผ่าน" carried no label** while four pass/fail
+> items were open (the `/` look, REQ-003 AC 7, REQ-006 AC 6, plus the `/about` copy which is not
+> pass/fail at all). Porter did **not** assign it — see **A46**; all three gates stay open and were
+> re-asked separately labelled.
+
+> **Closed 2026-09-09 (Q7, the blocking one):** the *"How far ทำหน้าตาใหม่ให้ดีขึ้น goes"* row is
+> removed — he answered **`Q7=ข`** (`SYSTEM-FACTS.md` **A43**): a **deliberate visual-improvement
+> pass**, his stated criteria **ระยะห่าง (spacing) + สี (colour), โมเดิร์น (modern)**, and he
+> **changed the first screen** — **home page first, courses page second, seen by him before the
+> other screens copy the result**; `/login` was NOT taken as the first screen. Sequencing the seven
+> SPEC-001 screens and every mechanism stay **Sober's** call; Porter proposed none. The one thing
+> his sentence leaves open — *which* courses page — is the new non-blocking **Q8** row above.
+
+> **Closed 2026-09-09 (the two half-answers, second round):** two rows are removed at once.
+> **(1)** *"REQ-005 Part B — the shared page name for `/classroom/[id]`"* — he answered **`Q1=ก`**
+> (`SYSTEM-FACTS.md` **A37**): the shared name is **`ห้องเรียน`**, one fixed name on every
+> classroom, tab `ห้องเรียน | DTE — Develyst The Education`; the per-course title stays rejected.
+> REQ-005 has nothing open with him. **(2)** *"REQ-006 — what the body copy changes TO"* — he
+> answered **`Q2=ข`** (**A38**): the short **`DTE`**, plus **`ไม่ต้องเอาคอมเมนต์`** (**A39**)
+> excluding the `src/services/api.ts:1` source comment, which keeps its wording. REQ-006 is
+> `READY_FOR_SA`; its in-scope list is still enumerated from the code first, never from a count.
+
+> **Closed 2026-09-08 (second round of owner answers):** three rows are removed at once.
+> **(1)** *"REQ-005 — the exact separator/word order + what `/` reads"* — he answered **`Q1=ข`** and
+> **`Q2=คงเดิม`** (`SYSTEM-FACTS.md` **A30/A31**): every route reads `<page name> | DTE — Develyst
+> The Education` and `/` stays exactly `DTE — Develyst The Education`. REQ-005 is `READY_FOR_SA`.
+> **(2)** *"Owner's own eyes — the renamed page titles (REQ-004 AC 5)"* — **`Q4=ผ่าน`** (**A33**):
+> AC 5 is met and REQ-004 is `DELIVERED`. `DELIVERED` ≠ deployed; the live site is unchanged until
+> he ships it. **(3)** Sober's SPEC-003 §Questions **Q1** (support contact after `/contact` is
+> removed) — **`Q3=ไม่ต้อง`** (**A32**): he does not want one, **no new REQ**, and nobody re-raises
+> it. Sober's **Q2** (2 stray `about/` files) is answered in the SPEC too: nothing deleted, no REQ,
+> Porter carries it as housekeeping.
 
 > **Closed 2026-09-08:** the *"`DTE Platform` suffix — unify or leave"* row is replaced by the REQ-005
 > row above — the owner answered **"ให้เหมือนกันทั้งเว็บ"** = unify (`SYSTEM-FACTS.md` **A27**), which by the

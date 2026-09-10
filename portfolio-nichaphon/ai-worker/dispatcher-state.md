@@ -23,12 +23,10 @@
 > **2026-09-05-b** and **2026-09-05-c** appended verbatim to
 > `archive/dispatcher-state-2026-09-05.md` and string-verified present BEFORE this
 > file was cut. Runs 2026-09-05-d onward stay below (6 runs — at the limit).
-
-## RUN 2026-09-05-d — N=4 — started from: human says /portfolio still shows nothing + "I wrote all of these myself" (hygiene FAIL, housekeeping folded into hop 1)
-hop 1 | PM  | did: cleared both hygiene FAILs (rotated 2 runs, consolidated REQ-002 49.3->42.5KB, each archived verbatim and cmp-verified first) and recorded the third handover in REQ-003, filing the new sentence as Q27 instead of resolving it | ball_to: HUMAN | flags: /portfolio gap fully explained — no role has ever changed site content and nobody has read the 4 repos
-STOPPED hop 1/4 — condition 7 (ball_to HUMAN) + 2 (data request)
-Board: REQ-001 + REQ-002 DELIVERED. REQ-003 DRAFT-BLOCKED on Q20/Q21/Q22/Q27 — Q27 decides whether the next hop is a repo survey or just placing his own text.
-Digest sent to human: the /portfolio gap is expected, not a bug; one reply block answers everything.
+> Rotated 2026-09-09 (PM housekeeping, 6th — gate said 7 runs > limit 6 after the new
+> intake run opened): run **2026-09-05-d** appended verbatim to
+> `archive/dispatcher-state-2026-09-05.md` and `diff`-verified identical BEFORE this file
+> was cut. Runs 2026-09-05-e onward stay below (6 runs — at the limit).
 
 ## RUN 2026-09-05-e — N=8 — started from: human answers Q27/Q20/Q21/Q22 — REQ-003 unblocked
 hop 1 | PM  | did: recorded Q20/Q21/Q22/Q27 verbatim, added R7 (every drafted line needs the owner's approval) + R9 (an unsourced field stays empty), and moved REQ-003 DRAFT-BLOCKED -> READY_FOR_SA | ball_to: SA | flags: Q22-b/Q28/Q29 non-blocking with written defaults; reading the 4 repos is now sanctioned read-only
@@ -73,3 +71,22 @@ hop 3 | PM  | did: ticked AC-a/b/c/d/g on TEST-007 and set REQ-004 DELIVERED (7/
 STOPPED hop 3/4 — condition 7 (ball_to HUMAN) — all four REQs DELIVERED, every team role idle
 Board: REQ-001/002/003/004 all DELIVERED. Nothing queued for PM, SA, FE or QA. Every open row is a non-blocking carry addressed to the owner.
 Digest sent to human: REQ-004 closed with pictures; the only real question left is whether the 89px pinned bar is acceptable.
+
+## RUN 2026-09-09-a — N=4 — started from: new requirement (resume -> MD, Bun/Hono back/, LLM-gateway-backed AI Q&A on Home)
+hop 1 | PM  | did: intake of the new requirement — secured both resume files into project-docs and transcribed the PNG (references withheld), read the gateway's CLAUDE.md + Bruno contract WITHOUT firing a call, opened REQ-005 (profile MD + 8 site/resume conflicts), REQ-006 (back/ Bun+Hono gateway client) and REQ-007 (Home ask-AI with ideas A-I) | ball_to: HUMAN | flags: 9 blocking questions; the gateway's Bruno collection declares auth:none on every request
+STOPPED hop 1/4 — condition 7 (ball_to HUMAN) + 1 + 2
+Board: REQ-001..004 DELIVERED; REQ-005/006/007 all DRAFT-BLOCKED on the owner. No team role has work waiting.
+Digest sent to human: the three REQs, the ideas table, the 8 resume-vs-site conflicts, and the auth:none cost exposure.
+
+## RUN 2026-09-09-b — N=8 — started from: human answers Q33-Q45 — REQ-005/006/007 unblocked
+hop 1 | PM  | did: recorded the 9 answers as §Owner decisions in REQ-005/006/007, resolved C1-C8 under "resume base", and moved all three to READY_FOR_SA | ball_to: SA | flags: surfaced 2 collisions inside the owner's own answers rather than resolving them (idea H vs no-cap; Q45 omitting F vs Q39's language default); noted 5 calls covers REQ-006 only
+hop 2 | SA  | did: took REQ-005 to IN_SPEC — SPEC-005 + TASK-019/020 (TODO, Fern) + TASK-021 (BLOCKED on one owner approval) | ball_to: FE | flags: grepped the tree and found the REQ undercounted conflict C1 — it is 5 strings not 2, including visible homepage copy and 2 indexed metadata descriptions
+hop 3 | FE  | did: applied all 10 decided resume-fact corrections (10 insertions / 10 deletions across 4 files), tsc 0, build 0 before and after -> REVIEW | ball_to: SA | flags: FQ32 — an 11th string ("Three years of shipping...") now contradicts the new "4 Years"; left untouched deliberately. Also logged a self-caught mistake: wrongly "fixed" CRLF->LF then restored it
+hop 4 | SA  | did: reviewed TASK-019 -> DONE (diff, 4 greps, tsc, build and CRLF re-verified by bytes; closed Fern's photo gap by reading the BUILT html), routed FQ32 as C9 into TASK-020's approval sheet instead of a second owner hop | ball_to: FE | flags: 0 of the owner's 5 gateway calls spent; branches have diverged (D1=6c17609, develop=ca5c097)
+hop 5 | FE  | did: wrote DRAFT-002 profile pack (395 lines: full PROFILE.md body + 66-row citation file + 9 skill items + C5/C8/C9 + a 5-line approval sheet), zero code touched -> REVIEW | ball_to: SA | flags: FQ35 — 6 body claims have a site citation but NO resume backing, listed together rather than dropped silently, because the REQ-007 AI would repeat them as fact
+hop 6 | SA  | did: reviewed TASK-020 -> REWORK — the pack is sound but its approval sheet said 6 resume-unbacked claims when the citation table shows 22, incl. 4 certificates and a claim about a named third-party company; struck one unsourced identity inference; answered FQ33/34/35 | ball_to: FE | flags: ruled KEEP all 22 and make them visible — deleting his own published copy would be the team editing his life
+hop 7 | FE  | did: applied all 3 rework fixes in DRAFT-002 — 22 of 66 rows flagged by a mechanical rule (0 mismatch either way), the unsourced bridge struck, sheet grown to 6 lines -> REVIEW | ball_to: SA | flags: corrected SA's arithmetic (17 newly flagged, not 16); FQ36 — striking the bridge may now imply two separate CRM projects, which no source states either
+hop 8 | SA  | did: re-reviewed the rework with its own independent scan (22/22 flagged, 0 either way) and set TASK-020 DONE — the REQ-005 approval pack is ready for the owner; answered FQ36 as SQ29 instead of a third pass | ball_to: PM | flags: corrected two of its own numbers on the record (Fern's 17 was right, its own 73-row parse was wrong)
+STOPPED hop 8/8 — condition 5 (hop budget reached)
+Board: REQ-005 IN_SPEC (TASK-019 + TASK-020 DONE, TASK-021 BLOCKED on the owner's approval); REQ-006 and REQ-007 still READY_FOR_SA and untouched. 0 of the owner's 5 gateway calls spent.
+Digest sent to human: 10 resume corrections are live in the code; the profile pack needs his approval; the gateway/AI work has not started.

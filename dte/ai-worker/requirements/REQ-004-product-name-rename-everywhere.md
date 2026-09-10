@@ -1,12 +1,13 @@
 # REQ-004: Replace the superseded product name "Disrupt Thai Education" everywhere
 
-- Status: **SPEC_DONE** — 2026-09-08. SPEC-002 is closed (all 3 TASKs DONE, no rework) and
-  **Porter's acceptance check is done: 5 of the 6 acceptance criteria are MET on recorded
-  evidence; the 6th (AC 5) is met on its engineer-evidence half and outstanding only on its
-  "owner's own eyes" half** — see §"Porter's acceptance check (2026-09-08)" at the end of this
-  file. **Deliberately NOT `DELIVERED` yet:** AC 5 names the owner's own eyes as part of "done",
-  he was asked in Thai on 2026-09-08, and one word from him closes it. Nothing on this REQ waits
-  on Sober or on an engineer. All four parts of the rename remain owner-stated: the exact
+- Status: **DELIVERED** — 2026-09-08, Porter. SPEC-002 is closed (all 3 TASKs DONE, no rework) and
+  **all 6 acceptance criteria are now MET**: 5 on recorded engineer/SA evidence, and **AC 5's
+  "owner's own eyes" half closed by the owner himself — `Q4=ผ่าน`** (*it passes*, 2026-09-08;
+  `SYSTEM-FACTS.md` **A33**). See §"Porter's acceptance check (2026-09-08)" at the end of this file.
+  ⚠️ **`DELIVERED` means the criteria are met with evidence in the files — it has never meant
+  deployed** (PROTOCOL.md §Statuses). The change lives in the repo on `develop`; no agent deployed
+  anything, and `dte.develyst.online` still shows the old name until the owner ships it himself.
+  Nothing on this REQ waits on anyone. All four parts of the rename remain owner-stated: the exact
   `<title>` string (A19), the `front/` scope (A20), the outside-`front/` scope (A21), the form
   used elsewhere (A22).
 - Priority: MEDIUM — user-facing copy on a live site; not blocking REQ-001 and not blocked by it.
@@ -60,8 +61,9 @@ whole-product copy change, not part of the frontend foundation.
 - [x] The page `<title>` reads exactly `DTE — Develyst The Education`, confirmed in a browser, not
       by reading the source.
 - [x] Every other changed occurrence reads exactly `Develyst The Education`.
-- [~] `front/` builds and every touched route still renders — engineer's own run output, plus the
+- [x] `front/` builds and every touched route still renders — engineer's own run output, plus the
       owner's own eyes. There is no QA role here; anything not actually run is written `UNVERIFIED`.
+      **Owner half closed 2026-09-08: `Q4=ผ่าน` (`SYSTEM-FACTS.md` A33).**
 - [x] The owner-only list has been handed to the owner (via Porter) as a plain list of places he
       must change himself.
 
@@ -224,16 +226,16 @@ are written above:
 | 2 | The same search afterwards returns zero, with actual output | **MET** | Re-run **by Sober at the closing review** (SPEC-002 §Flow step 3 + §Status): **zero** hits in `front/`, `back/` and `README.md`. Each engineer also recorded a scoped re-run returning no output (TASK-011/012/013 §Implementation Notes). The three remaining `DTE.md` hits are **owner-only and EXPECTED** (A26) — scored out by the rule written into §Questions on 2026-09-08, not a defect and never to be reported as one. |
 | 3 | The page `<title>` reads exactly `DTE — Develyst The Education`, confirmed in a browser | **MET** | TASK-011 — Fern read the rendered `/` tab in a browser and read codepoint `2014` (the em dash) **from the live DOM**, not from source; she served the production build with `next start` after `npm run dev` refused a held port, which Sober judged **stronger** evidence, not weaker. Independently, TASK-012 — Jason confirmed the Swagger `/docs` title in a browser. |
 | 4 | Every other changed occurrence reads exactly `Develyst The Education` | **MET** | Sober re-verified **on the tree, not from the notes** (TASK-011/012/013 §Review): all 7 `back/` Rule-N substitutions, `layout.tsx:26` `creator` keeping its hyphen, the banner line still 49 codepoints inside its borders, and `README.md:3` read as bytes = `> **Develyst The Education**` — Rule S, blockquote and bold preserved, no em dash. |
-| 5 | `front/` builds and every touched route still renders — engineer output **plus the owner's eyes** | **PARTLY MET — engineer half MET, owner half OUTSTANDING** | Engineer half: `npm run build` exit **0** (13 routes), `npx tsc --noEmit` exit **0**, no-emoji harness **124** = the TASK-002 baseline, `/` and `/courses` both loaded (TASK-011); `back/` ran locally with `GET /health` = **200** (TASK-012); TASK-013 built nothing by its own DoD — a Markdown line — which is **not** an UNVERIFIED. Owner half: **he has not looked yet.** Asked in Thai 2026-09-08. |
+| 5 | `front/` builds and every touched route still renders — engineer output **plus the owner's eyes** | **MET** (owner half closed 2026-09-08) | Engineer half: `npm run build` exit **0** (13 routes), `npx tsc --noEmit` exit **0**, no-emoji harness **124** = the TASK-002 baseline, `/` and `/courses` both loaded (TASK-011); `back/` ran locally with `GET /health` = **200** (TASK-012); TASK-013 built nothing by its own DoD — a Markdown line — which is **not** an UNVERIFIED. Owner half: **he looked and it passes — `Q4=ผ่าน`** (2026-09-08, `SYSTEM-FACTS.md` **A33**), answering the ⚠️ ask below verbatim. |
 | 6 | The owner-only list handed to the owner as a plain list | **MET** | Handed over and accepted on 2026-09-08 — **"เดี๋ยวจัดการเอง"** (`SYSTEM-FACTS.md` **A26**): `DTE.md` ×3 plus everything outside the repo are his. Nobody edits them and nobody chases him. |
 
-**Verdict: the rename itself is complete and evidenced. REQ-004 stays `SPEC_DONE`, not `DELIVERED`,
-for exactly one reason — AC 5 names the owner's own eyes as part of "done" and he has not looked.**
-There is no QA role here, so that half cannot be substituted by anyone on this team, and Porter will
-not tick it on somebody's behalf. It is one word from him; when he confirms, the status moves to
-`DELIVERED` with no other work.
+**Verdict (updated 2026-09-08): the rename is complete and evidenced, and the one criterion that was
+held — AC 5's owner half — is now closed by the owner's own word, `Q4=ผ่าน` (A33). REQ-004 is
+`DELIVERED`.** It was never ticked on his behalf: there is no QA role here, so that half could not
+be substituted by anyone on this team, and it waited until he looked.
 
-⚠️ **What he is being asked to look at, stated exactly so nobody over-claims:** on the code as it
+⚠️ **ANSWERED 2026-09-08 — `Q4=ผ่าน` (A33). Kept below as the record of exactly what he was asked
+to look at, so nobody later over-claims what his one word covered:** on the code as it
 stands on `develop` — running it himself, or after he ships it, which is his alone — **confirm the
 browser tab reads `DTE — Develyst The Education` and the pages still render.** One word closes it.
 The change lives in the repo on `develop` — **no agent deployed anything and nothing here is on the

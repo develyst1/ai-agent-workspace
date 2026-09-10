@@ -104,8 +104,16 @@ his words on that are captured in `REQ-002` (DRAFT) and `SYSTEM-FACTS.md`.
 
 - Any product feature: course creation, the AI Teacher, payments, the 2% fee, roles.
 - Backend (`back/`) work of any kind, and any change to `develyst-ai`.
-- Visual redesign / rebranding. This is structure and component substrate, not a new look —
-  unless the owner says otherwise.
+- ~~Visual redesign / rebranding. This is structure and component substrate, not a new look —
+  unless the owner says otherwise.~~ 🔴 **AMENDED 2026-09-09 by Porter, answering Sober's
+  `specs/SPEC-006-visual-improvement-pass.md` §Questions Q1** (the line had gone self-contradictory
+  against A43 and should not stay so on the record). The owner **did** say otherwise — that is the
+  "unless" clause firing, not a widening by the team. **What this REQ still puts out of scope is
+  REBRANDING** (a new identity, logo, name or product surface, which nobody has asked for) **and
+  every product-surface change.** A **deliberate visual-improvement pass on the migrated screens —
+  spacing and colour, modern — is IN scope by his own word** (`SYSTEM-FACTS.md` **A43**), carried by
+  SPEC-006, home page first then `/courses` (**A44**), each shown to him before the rest copy it.
+  The sub-bullets below are the audit trail of how the line got here; read the amendment, not them.
   - **EXCEPTION, owner-stated 2026-09-07 ("เปลี่ยน", `SYSTEM-FACTS.md` A17):** the superseded
     product name in the page `<title>` **is** cleared to change, to the settled name
     **"Develyst The Education"** (A6). That is the one piece of user-facing copy he has cleared.
@@ -121,6 +129,32 @@ his words on that are captured in `REQ-002` (DRAFT) and `SYSTEM-FACTS.md`.
     `requirements/REQ-004-product-name-rename-everywhere.md` (READY_FOR_SA, 2026-09-07).** Nothing
     about the rename is decided inside SPEC-001 any more; Sober's earlier call ("its own TASK, not
     folded into TASK-001/002") stands and is now carried by REQ-004.
+  - ~~🔴 **REAFFIRMED BY THE OWNER 2026-09-09, and now his word rather than Porter's reading**
+    (`SYSTEM-FACTS.md` **A41**): ... he chose **preserve today's look** ... This binds all seven
+    SPEC-001 screens, not just `/login`.~~ 🔴 **STRUCK 2026-09-09 — this was Porter's MISREADING of
+    "re UI", and the owner corrected it himself.** The struck text is kept verbatim in
+    `SYSTEM-FACTS.md` §A41 (also struck there); it is quoted here only so nobody hunts for what
+    changed. **Do not act on it.**
+  - 🔴 **THE OWNER'S CORRECTION, 2026-09-09 — this is the line that binds** (`SYSTEM-FACTS.md`
+    **A42**, verbatim): **"re UI ไม่ได้หมายถึง ให้ ย้อนเป็น หน้าตาเดิม หมายถึงให้ทำ หน้าตาใหม่ให้ดีขึ้น และ
+    แค่ เอา emojiออก ใช้icon"**. Read against TASK-004 §Questions **Q1**: option **(b) preserve
+    today's look is NOT his answer**. Concretely, for all seven SPEC-001 screens:
+    1. **Reverting a migrated screen to its legacy look is not wanted** — the new appearance the
+       antd substrate brings is not a defect to be undone.
+    2. **The look may change and he wants it BETTER** — "ทำหน้าตาใหม่ให้ดีขึ้น". So this Out-of-Scope
+       line no longer reads as a flat ban on visual change during the antd migration; what it still
+       bans is an unasked-for **rebranding**, and any product-surface change.
+    3. **emoji → icons stands** — Requirement 3, restated by him a third time.
+    ⚠️ **NOT decided by that sentence, and nobody guesses it:** *how far* "ให้ดีขึ้น" goes — antd's
+    defaults already being "better", versus a deliberate visual-improvement pass he sees first.
+    Asked back to him as **§Questions Q7** below; non-blocking, because point 1 stands on its own.
+    🔴 **ANSWERED 2026-09-09 — §Questions Q7, option (ข)** (`SYSTEM-FACTS.md` **A43**): it goes as
+    far as a **deliberate visual-improvement pass**, criteria **spacing + colour, modern**, starting
+    with the **home page**, then the courses page, **shown to him before the rest copy it**. So this
+    Out-of-Scope line bans only an unasked-for **rebranding** and product-surface change — a designed
+    visual improvement on the migrated screens is now IN scope, by his word.
+    **How** anything is built stays Sober's design call — the owner named no mechanism and Porter
+    proposes none.
 - Deciding the fate of the inherited routes (C4), and deleting the `about/` leftovers.
 
 ## Questions
@@ -188,3 +222,143 @@ same answers are in `SYSTEM-FACTS.md` § "Owner's answers to REQ-001 Q1–Q3".
   > Two pre-existing defects found while reading (a hex-vs-`rgb()` mismatch between
   > `tailwind.config.ts` and `themes.css`, and an unused `@headlessui/react`) are recorded in
   > SPEC-001 §Decision 3 — **UNVERIFIED**, found by reading, not by running a build.
+
+**For Porter — NEW, asked by Sober 2026-09-09. NOT blocking: TASK-004 (`/login`) is written and
+runnable without it.**
+
+- **Q5 — the form-validation messages.** The house pattern's component library (antd) validates a
+  form with a **message string per rule** ("this field is required", "this is not a valid email",
+  "the password is too short", …). Those strings are **user-facing Thai copy the owner has never
+  given us**, and nobody here invents user-facing copy. The library's own built-in defaults are
+  **English**; making them Thai means switching antd's `locale`, which is a whole-site setting and
+  produces machine-worded Thai the owner never approved either.
+  So: **TASK-004 does not introduce antd's form validation at all** — `/login` keeps exactly
+  today's behaviour (the browser's own "please fill in this field" bubble, English or Thai
+  depending on the visitor's browser, unchanged from what is live now). That is safe for `/login`,
+  which has two fields.
+  It stops being comfortable at **`/register`** (TASK-005), which has more fields and real rules.
+  What Sober needs before that screen is written, and it is a business/copy call, not a technical
+  one: **does the owner want to write the Thai validation messages himself** (Sober will send him
+  the exact list of rules that need one, one line each), **or does he want the screens to keep the
+  browser's own default bubbles** and no in-form messages at all?
+  Porter: this is a question to ask **with the rule list in hand** — Sober will send that list at
+  the time TASK-005 is written, so it can go to the owner as a concrete list, not as an abstract
+  question. Nothing is needed from him today.
+
+**For the owner — NEW, asked 2026-09-09. NOT blocking anything: TASK-004 is in `REVIEW` and this
+does not gate it.**
+
+- **Q6 — `/login` links to `/forgot-password`, a route that does not exist.** Reported to Porter by
+  Sober 2026-09-09 as a *finding, not a request*: `front/src/app/login/page.tsx:151` renders a
+  "forgot password" link pointing at **`/forgot-password`**, and there is no such route — so it
+  **404s on the live site today**. It is **pre-existing**, it was **not** introduced by TASK-004,
+  and TASK-004 did not touch it. Nobody here decides what happens to a user-facing feature, so it
+  goes to the owner: **build the forgotten-password flow, or drop the link?**
+  🔴 Recorded here only because this is where it surfaced — **it is NOT in REQ-001's scope** (this
+  REQ is foundation, no product feature, §Out of Scope). If he says "build it", that is a **new
+  REQ** with backend work in it, not a widening of REQ-001; if he says "drop the link", that is a
+  one-line frontend change and still its own small REQ. Porter writes neither until he answers.
+  ⚠️ UNVERIFIED by Porter: nobody here may open the live site (PROTOCOL.md §Environments), so the
+  404 is Sober's read of the code, not an observed response.
+  > **answer (owner, 2026-09-09): "Q2=ตัดลิงก์ทิ้ง"** — *cut the link out* (`SYSTEM-FACTS.md` **A45**).
+  > **He chose DROP THE LINK, not build the flow.** So there is **no forgotten-password feature**,
+  > **no backend work**, and the whole of it is removing the link `front/src/app/login/page.tsx:151`
+  > renders at `/forgot-password`. 🔴 **Q6 is ANSWERED and CLOSED here.** Exactly as this question
+  > framed it, the answer becomes its **own new requirement — `REQ-007-remove-dead-forgot-password-link.md`
+  > (`READY_FOR_SA`, 2026-09-09)** — and **REQ-001 is not widened by one line**; nothing in REQ-001's
+  > scope, SPEC-001 or SPEC-006 changes because of this answer. ⚠️ The 404 itself stays **UNVERIFIED**
+  > (nobody here may open the live site); his answer does not turn a code read into an observation.
+  > **What he did NOT say, and nobody guesses:** whether a forgotten-password flow is wanted *later*.
+  > He answered the question put to him — remove it today — not the product's future.
+
+- **Q7 — how far does "ทำหน้าตาใหม่ให้ดีขึ้น" go?** Asked 2026-09-09, straight after his correction
+  (`SYSTEM-FACTS.md` **A42**). The unambiguous half is already being acted on: **stop restoring the
+  old look.** The half his sentence does not settle is the size of "better", and it changes the size
+  of the job, so Porter asks instead of choosing:
+  **(ก)** the antd default appearance **is already** the "better" he means — take it as it comes,
+  the team stops here and only keeps emoji → icons; or
+  **(ข)** he wants a **deliberate visual-improvement pass** — someone designs the new look on
+  purpose, and **he sees one screen (`/login`) before the other six copy it.**
+  Either answer is cheap to act on today; (ข) additionally needs him to say what "better" means to
+  him (spacing? colour? the gradient? something he has seen elsewhere?), because **nobody here
+  invents the owner's taste**, exactly as nobody here invents his copy.
+  ~~🔴 Not blocking: Sober can reverse the restoration on point 1 of A42 without this answer.~~
+  🔴 **ESCALATED — now BLOCKING (2026-09-09, Porter).** Sober applied A42's unambiguous half that
+  same day (SPEC-001 §Decision 7 struck → §Decision 8; TASK-004's `REWORK` verdict withdrawn), and
+  the two answers demand **opposite code on the same four files**. So `TASK-004` is `BLOCKED` on
+  this question and **TASK-005…010 stay unwritten** until it lands. What each answer triggers is
+  pre-written in `specs/SPEC-001-frontend-foundation.md` §Decision 8; the TASK-side reasoning is
+  in `tasks/TASK-004-login-screen-migration.md` §Review addendum (second).
+  > **answer (owner, 2026-09-09): "ข ทำ /หน้าแรกเลย และ หน้าคอร์สต่อ ให้ดูก่อน เน้นระยะห่างกับสีให้ดูโมเดิร์น"**
+  > — **(ข), the deliberate visual-improvement pass** (`SYSTEM-FACTS.md` **A43**). Three things land
+  > with it: **(1)** antd's defaults alone are **not** the finish line; the new look is designed on
+  > purpose. **(2)** He **changed the first screen**: not `/login` as this question proposed, but the
+  > **home page first, the courses page second**, and he **sees those two before the rest copy the
+  > result** ("ให้ดูก่อน"). **(3)** He gave the taste criteria unprompted — **spacing (ระยะห่าง) and
+  > colour (สี), aiming at modern (โมเดิร์น)**; those are the only stated criteria and nobody adds to
+  > them. 🔴 **Q7 is ANSWERED and no longer blocking.** What it does **not** settle: which page
+  > "หน้าคอร์ส" is (→ **Q8** below) and what happens to `/login`/TASK-004 and the order of the
+  > remaining SPEC-001 screens — he named a starting order, not a re-plan, and **sequencing and
+  > mechanism are Sober's design call alone**. Porter proposes neither.
+
+- **Q8 — which page is "หน้าคอร์ส"?** Asked 2026-09-09, arising from his own Q7 answer (A43). He put
+  the courses page second in the visual pass, but the site has more than one candidate: the course
+  **list** (`/courses`) and a course **detail** page. Porter will not pick one — the two are
+  different screens with different work in them.
+  **(ก)** the course **list** page · **(ข)** a course **detail** page · **(ค)** both, list first.
+  🔴 **Not blocking:** the first screen he named — the **home page** — is unambiguous, so the pass
+  can start today and this answer is only needed before the second screen.
+  > **answer (owner, 2026-09-09): "Q1=ก"** — the course **LIST** page **`/courses`**
+  > (`SYSTEM-FACTS.md` **A44**). Not (ข) a detail page, not (ค) both. So the "หน้าคอร์ส" of A43 —
+  > the **second** screen of the SPEC-006 visual pass — is **`/courses`, and only `/courses`**;
+  > a course **detail** page is **not** in the pass he named. 🔴 **Q8 is ANSWERED and CLOSED.**
+  > **What it does NOT decide, stated rather than guessed:** **how** Phase 2 is built and **when**
+  > it is sequenced against the remaining SPEC-001 screens — **Sober's design call alone**, Porter
+  > proposes no mechanism; and it does not rule a detail page out forever — he simply did not put
+  > one in this pass, and nobody widens it on his behalf.
+
+**For the owner — NEW, asked 2026-09-09. NOT blocking anything, and NOT in REQ-001's scope.**
+
+- **Q9 — the `/login` "resend verification email" path is dead code.** Reported to Porter by Sober
+  2026-09-09 as a *finding, not a request*: `front/src/contexts/AuthContext.tsx` `login()` catches
+  every error and returns `false` (l.83–85), so the unverified-email branch on `/login` **can never
+  run** — a user whose email is unverified only ever sees **"อีเมลหรือรหัสผ่านไม่ถูกต้อง"** (*wrong
+  email or password*), which is not what actually happened to them. It is **pre-existing**, it was
+  **not** introduced by TASK-004, and it gates nothing. Nobody here decides the behaviour of a
+  user-facing feature, so it goes to the owner: **should an unverified user be told so and offered
+  the resend, or is today's single generic message what he wants?**
+  🔴 Recorded here only because this is where it surfaced — as with Q6, **it is NOT in REQ-001's
+  scope**, and whichever way he answers it becomes its **own new REQ**, never a widening of this
+  one. Porter writes nothing until he answers. Detail: `tasks/TASK-004-login-screen-migration.md`
+  §Questions **Q2** (Sober's answer).
+  ⚠️ **UNVERIFIED by Porter:** this is Sober's read of the code, not an observed login attempt —
+  nobody here may open the live site (PROTOCOL.md §Environments).
+  > (owner answers here)
+
+## Owner's-eyes gates on the SPEC-006 visual pass — Porter's carry notes
+
+_Written 2026-09-09 by Porter in a housekeeping hop, moving detail off `board.md`
+(the hygiene gate caps a board cell at 300 chars). Nothing here is new: the board's
+Blocked rows now point at this section. No status changes, no scope changes._
+
+- **Phase 1 — the `/` (home) visual pass.** The **A43 "ให้ดูก่อน" gate is OPEN and still
+  UNMET**. His trailing unlabelled **"ผ่าน"** of 2026-09-09 is **not** read as this answer
+  (`SYSTEM-FACTS.md` **A46**); the gate was **RE-ASKED, separately labelled**. **Phase 2
+  (`/courses`) is no longer gated on it** (§Questions **Q8** answered, A44); **Phase 3
+  (TASK-007…010) still is.** Two UNVERIFIED to carry when he looks:
+  `tasks/TASK-020-home-look-rulings.md` §Review (the band actually painting) and
+  `specs/SPEC-006-visual-improvement-pass.md` §Questions **Q2**.
+- **Phase 2 — the `/courses` visual pass.** TASK-006 is `DONE` **on evidence**
+  (`tasks/TASK-006-courses-screen-migration-and-visual-pass.md` §Review). Two UNVERIFIED to
+  carry: **nobody has scrolled the finished page top-to-bottom** in either theme — the
+  preview pane's screenshots went stale after scrolling, so it was shot section by section —
+  and **the hero's contrast numbers are the optimistic token-pair bound**, not composited
+  over the orbs. The two changes **most likely to read as "new"** to him: the **now-opaque
+  sticky filter bar** and the **full-width CTA card** (§Questions Q2 there: keep it).
+- **Side effect Porter carries into the Phase-1 look — the `.btn-primary` contrast fix
+  (SPEC-006 §R-COLOUR-7, TASK-021).** In the **light** theme the primary button — the Navbar
+  included, so **every route** — is visibly **darker** (`#0EA5E9` → `#0369A1`) while the
+  Phase-1 gate is still open; **dark resting is byte-identical and does not move.** All four
+  states now measure **≥ 5.93:1** in real Chrome. The old **hover ≈1.15:1** "before" number
+  stays **UNVERIFIED** — an after-state cannot settle a before-claim
+  (`tasks/TASK-021-btn-primary-theme-scoped-accent.md` §Questions **Q1**).

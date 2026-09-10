@@ -28,6 +28,16 @@
   runs acceptance tests on local only and reports to Porter; the human still
   gives final business sign-off via Porter. If a backend ever appears, that is
   the human's scope decision, not a team improvisation.
+- **SCOPE CHANGE 2026-09-09, the owner's own decision (recorded, not improvised):
+  the project gains a backend** — `back/` (Bun + Hono) at the repo root, a **client** of his
+  gateway `https://ai.develyst.online` (no keys here, **no auth**), plus an "ask the AI about
+  me" feature on Home over a **real WebSocket** (his Q37b). **A database is NOT in scope —
+  Q44 answered `ไว้คราวหลัง` (later)**, and **no usage cap ships (Q38)**: the endpoint is open
+  and each question is 3+ paid calls on his account — his call, exposure written down in
+  requirements/REQ-006-back-bun-hono-llm-gateway-client.md §Owner decisions. Until REQ-006
+  lands, every "no backend" line above still describes what actually ships. **First thing to
+  appear under `back/` is REQ-005's profile knowledge (two Markdown files, SPEC-005 §D1/SQ26)
+  — text only, no code, no dependency, nothing to run.**
 - 🤖 Run mode: **DISPATCHER** (workspace-root `DISPATCHER.md`) — one session
   spawns the roles as subagents. Files remain the only channel; PROTOCOL
   unchanged. Dispatcher run log: `dispatcher-state.md`.
@@ -46,6 +56,9 @@
 
 | ID | Title | Priority | Status | Owner of next step |
 |----|-------|----------|--------|--------------------|
+| REQ-005 | Profile source-of-truth MD from the 2026-09-06 resume + reconcile 8 site-vs-resume fact conflicts | HIGH | **IN_SPEC 2026-09-09 — TASK-019 + TASK-020 `DONE`, TASK-021 `BLOCKED` on the owner. The pack is READY: `drafts/DRAFT-002-req005-profile-pack.md`, 6-line sheet; FQ33-FQ36 all answered** — see specs/SPEC-005-profile-source-of-truth-and-fact-reconciliation.md | **Porter (PM)** — put the 6-line sheet to the owner (+ SQ29's clause on line 1) |
+| REQ-006 | `back/` service (Bun + Hono) that calls the owner's LLM gateway, incl. one recorded real test fire | HIGH | **READY_FOR_SA 2026-09-09, Porter — Q33/Q34/Q35/Q36/Q44 answered: `back/` at repo root, CLIENT of `https://ai.develyst.online`, no auth, 5 real calls, no DB** — see requirements/REQ-006-back-bun-hono-llm-gateway-client.md §Owner decisions | **Sober (SA)** |
+| REQ-007 | Home "ask the AI about me" — 3+ stacked gateway calls as thinking steps; depends on REQ-005 + REQ-006 | HIGH | **READY_FOR_SA 2026-09-09, Porter — Q37/Q38/Q45 answered: real WebSocket (owner-mandated), NO cap, ideas A+B+C+D+G+H; build after 005+006; Q50 language held** — see requirements/REQ-007-home-ask-ai-about-me.md §Owner decisions | **Sober (SA)** |
 | REQ-004 | "Open live project" button reachable without scrolling on a phone (from OBS-8) | MEDIUM | **DELIVERED 2026-09-05, Porter — 7/7 AC ticked** on TEST-007 (`TEST_PASSED`, 12/12, 0 defects, built surface). Not signed off, not deployed — see requirements/REQ-004-portfolio-modal-live-link-button-on-phones.md §Delivery | **Human (owner)** — sign-off |
 
 > **Swept 2026-09-05 (PM housekeeping):** REQ-001 / REQ-002 / REQ-003 are all
@@ -59,10 +72,13 @@
 
 | ID | Title | Source | Status | Assignee | Depends on |
 |----|-------|--------|--------|----------|------------|
+| TASK-019 | Apply the ten decided resume-fact corrections (C1×5, C2, C3×2, C4, C6) | SPEC-005 | **DONE 2026-09-09, Sober** — 10/10 re-verified by SA (diff, 4 greps, tsc 0, build 0 clean, CRLF by bytes, and the un-photographable "4" found in the **built** HTML); FQ32 answered, SQ22's five stands — see tasks/TASK-019-apply-decided-resume-fact-corrections.md §Review | Fern (FE) | none |
+| TASK-020 | Draft the profile source-of-truth pack + approval sheet (no code edited) | SPEC-005 | **DONE 2026-09-09, Sober** — rework re-verified by SA's own scan: **22 of 66 unbacked, 22 flagged, 0 mismatch**, bridge clause gone, sheet 6 lines asking all five; certificates + xAI rows re-checked; zero code touched (`6c17609`, `back/` empty). **FQ36 answered → SQ29**, no third pass — see tasks/TASK-020-profile-source-of-truth-draft-pack.md §Review | Fern (FE) | none |
+| TASK-021 | Place the approved profile, C5/C8/**C9** and the Class 1 skill additions | SPEC-005 | **BLOCKED 2026-09-09, Sober (waiting: Human via Porter — TASK-020's approval sheet)** — now **three** conditional steps: Class 1b (line 2), delete-what-he-names (line 6), and the ICM one-project-or-two merge (SQ29, step 9) — see tasks/TASK-021-place-approved-profile-and-additions.md | Fern (FE) | TASK-019, TASK-020, owner approval |
 
-> **Empty on purpose.** TASK-001 … TASK-018 are all `DONE`; their rows were swept
-> verbatim to `archive/board-closed.md` on 2026-09-05, each still carrying its own
-> `§Review` pointer into `tasks/`. Nothing is open, nothing is assigned.
+> TASK-001 … TASK-018 are all `DONE`; their rows were swept verbatim to
+> `archive/board-closed.md` on 2026-09-05, each still carrying its own `§Review`
+> pointer into `tasks/`.
 
 ## QA / Tests
 
@@ -81,6 +97,15 @@
 
 | Item | Waiting on | Question (short) |
 |------|-----------|------------------|
+| ~~**NEW INTAKE 2026-09-09 — 9 blocking questions**~~ **CLEARED 2026-09-09, Porter** | — (nothing) | All 9 answered by the owner and recorded verbatim; **REQ-005/006/007 are all `READY_FOR_SA`**. Q44 answered too. Nothing on this intake waits on him to start work — see each REQ's §Owner decisions |
+| **ACCEPTED EXPOSURE 2026-09-09 (his call, not a team default)** — open gateway, no cap | Human (owner) — FYI, no action | Q35 `ไม่มี auth` + Q38 `ปล่อย ไม่จำกัดไปก่อน`: once Home ships, nothing known to this team stops a stranger's script spending his provider credit. Cap must stay **cheap to add later** (REQ-007 R6) — see requirements/REQ-006-...md §Owner decisions |
+| **SPEC-005 SQ27** (new 2026-09-09) — applying C6 correctly left the site stating his career length twice, `/` "4 Years experience" vs `/about` `<h1>` "Three years…", both in **built** HTML | Porter (PM) → human, **inside TASK-020's sheet** | Not a new hop and not a defect: it becomes **C9** in SPEC-005 Group B, so the sheet grew to 5 lines (and to **6** at TASK-020's review, see SQ28) — line 5 asks him to pick the `/about` headline (two candidates + the "career total or one pattern of work?" question). Reverting the `4` is not offered — it is his Q40 decision — see specs/SPEC-005-profile-source-of-truth-and-fact-reconciliation.md §Questions SQ27 |
+| **SPEC-005 SQ28** (new 2026-09-09) — **22 of the 66 citation rows cite only a shipped site string** (no resume line, no owner decision); the draft flagged 5 and called it six | Porter (PM) → human, **inside TASK-020's sheet** | Not a defect and nothing waits on Porter: all 22 are copy already on his site and **all are kept**. The unflagged 16 include the **four certificates** (the resume names none) and "GFAI had no product of its own and resold third-party hardware" — a claim about a named third-party company. **The sheet is now 6 lines, not 5**: line 6 names these in plain words and asks keep-all-or-name-what-to-remove, because line 1 cannot be answered honestly otherwise — see specs/SPEC-005-profile-source-of-truth-and-fact-reconciliation.md §Questions SQ28 |
+| **SPEC-005 SQ29** (new 2026-09-09) — striking one unsourced inference exposed its mirror: two adjacent ICM bullets each describe a four-month CRM AI build | Porter (PM) → human, **as one clause on sheet line 1** | Not a defect and not a 7th line: SA decided the body does **not** change (every repair asserts *same* or *different*, both unsourced). When Porter puts line 1 into Thai he names the spot — one project or two? Silence is safe: TASK-021 step 9 then ships them as drafted — see specs/SPEC-005-profile-source-of-truth-and-fact-reconciliation.md §Questions SQ29 |
+| **Git state on the board is stale — verified 2026-09-09 by SA, one line for Porter** | Porter (PM) | The §Project info bullet says team work sits at `ca5c097` on `D1` = `develop` and that TASK-018's file is unstaged. Neither still holds: the human committed TASK-018 as **`6c17609`**, and **`D1` = `origin/D1` = `6c17609` while `develop` = `ca5c097`** — the branches have diverged. SA read git but will not rewrite Porter's bullet |
+| **SPEC-005 SQ22 / SQ23 / SQ24 / SQ25 / SQ26** (new 2026-09-09) — five SA notices from REQ-005; **none blocks any task** | Porter (PM) → human | SQ22 **C1 is FIVE strings, not the two AC-c names** (one is visible Home copy, two are indexed metadata) — Porter records the count · SQ23 Q47's answer moves **three** strings · SQ24 Education/Languages need NEW UI that §Out of Scope bars → profile-only, site question is his; **Porter must copy the approved add-list into REQ-005 §Owner decisions** (SA/FE may not) · SQ25 auto-year answered NO by SA · SQ26 profile placed at `back/knowledge/` (FYI) — see specs/SPEC-005-profile-source-of-truth-and-fact-reconciliation.md §Questions |
+| **Q47 / Q48 / Q49 / Q50** (new 2026-09-09) — non-blocking, none stops Sober | Human (owner) | Q47 C5 two resume title lines into one `SITE.role` (default: "AI Engineer / Senior Software Engineer") · Q48 footer year still 2025 (default: 2026) · **Q49 test-call budget for REQ-007** — the 5 of Q36 cover REQ-006 only, one visitor question is 3+ calls (suggested 30) · Q50 answer language — Q39's default vs Q45 omitting idea F; **default deliberately NOT applied** |
+| **Q43 / Q46** (2026-09-09) — non-blocking, written defaults stand | Human (owner) | Q43 deploy `back/` this round (default: **local only**; when he does deploy, a WebSocket needs nginx upgrade headers — REQ-006 §Questions Q43) · Q46 placement on Home (default: added below the hero, nothing removed) |
 | **REQ-001 / REQ-002 / REQ-003 / REQ-004 — all DELIVERED, none signed off** (001-003 rows in archive/board-closed.md) | Human (owner) | Four sign-offs still his, plus the deploy call: `main` `d30dfea` and `production` `ed2eb5d` do **not** carry `ca5c097` and TASK-018's file is still unstaged — moving any of it is his hand alone |
 | **OBS-9** (new 2026-09-05, QA) — the pinned bar costs **89px = 13.4%** of the 664px phone scrollport and at open hides the whole "What it does" list on Learning Curve + Ong Match | Human (owner), **inside SQ19** | **QQ13 ANSWERED 2026-09-05, Porter: OBS-9 rides WITH the SQ19 pictures as one question** (one fact, one owner, one question — same rule as QQ9). Not a defect — see REQ-004 §Delivery |
 | REGRESSION H5 — unrunnable as written (no baseline exists anywhere QA may read) | **Human (Q25)** only — QQ8 answered | **QQ8 answered 2026-09-05, Porter: do NOT rewrite; H5 stays `NOT_TESTED` and REGRESSION says so.** The (a)/(b) pick IS Q25 and only the owner may make it — see log/2026-09-05.md |

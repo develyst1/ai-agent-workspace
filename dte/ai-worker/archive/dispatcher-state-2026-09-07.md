@@ -112,3 +112,97 @@ Digest sent (Thai): TASK-002 ปิด DONE. ประเด็นใหม่: 
 ซึ่งขัดกับ SYSTEM-FACTS A4 ที่ owner ตอบ yes ไว้ — ต้องให้ owner ชี้ขาดว่า live รัน develop tip หรือ branch production.
 SA เหลือ 3 units: TASK-003 (antd), REQ-003, REQ-004.
 
+
+## RUN 2026-09-07-l — N=4 — started from: standing instruction (stop asking about git) + code work
+hop 1 | PM  | did: recorded owner's standing ruling as SYSTEM-FACTS A23 (git/branches/commits are outside the team's scope — never asked, never reported, never a gate; the no-commit/no-deploy guard is unchanged), closed every board item that existed only for that subject | ball_to: SA | flags: 1 low-confidence assumption, and it is itself a git-scope boundary note — not raised to the owner, per A23
+hop 2 | SA  | did: struck the closed git item in TASK-002 per A23, wrote TASK-003 (antd 6.4.3 + nextjs-registry, themes.css->antd token bridge with drift-guard, 2 ui/ wrappers, probe route deleted before close) for Fern | ball_to: FE | flags: 2 low-confidence assumptions, both hazards TASK-003 makes Fern measure in a browser — not owner questions
+hop 3 | FE  | did: TASK-003 -> REVIEW: antd 6.4.3 + registry at exact pins, theme-token bridge browser-verified in both themes, 2 ui/ wrappers, probe route deleted, build+tsc green | ball_to: SA | flags: 1 low-confidence assumption, 4 questions for Sober (biggest: +100.8 kB First Load JS on all 13 routes)
+STOPPED hop 3/4 — condition 3 (low-confidence assumption)
+Digest sent (Thai): foundation ครบ 3 tasks. ประเด็นที่ owner ควรรู้: antd ทำให้ First Load JS +100.8 kB ทุก route
+(ยังไม่ได้วัดแบบ gzip). Sober ต้อง review TASK-003 แล้วตัดสิน 4 ข้อ. REQ-003/REQ-004 ยังรอ SA.
+
+## RUN 2026-09-08-a — N=4 — started from: ไปเลย
+hop 1 | SA  | did: reviewed TASK-003 -> DONE no rework (re-ran 13 DoD checks himself, AFTER bundle numbers reproduced exactly), answered Fern's Q1-Q4, opened SPEC-001 Decision 6 for the bundle cost | ball_to: SA | flags: 1 low-confidence assumption (no performance budget exists, so the bundle remedy is treated as SA's call)
+hop 2 | SA  | did: REQ-004 -> IN_SPEC: enumerated 14 old-name hits in 9 files (front 3 / back 7 / docs 1 / owner-only 3), wrote SPEC-002 + TASK-011 (FE) + TASK-012 (BE) | ball_to: FE | flags: 3 questions, 2 irreversible_pending
+STOPPED hop 2/4 — condition 1 (questions for human)
+Digest sent (Thai): TASK-003 ปิด DONE. REQ-004 แตกเป็น 2 tasks ทำขนานกันได้ (Fern + Jason ซึ่งยังไม่เคยถูกปลุกเลย).
+3 คำถาม: README บรรทัด "Disrupting Thai Education" เป็นประโยคไม่ใช่ชื่อ / ตัดคำโปรยไทยใน tab title ทิ้งจริงไหม / ของนอก repo owner จัดการเอง.
+พบว่า back/ โดนด้วยจริง รวมถึง Swagger info.title ที่ /docs และ system prompt ภาษาไทยใน src/routes/ai.ts.
+
+
+## RUN 2026-09-08-b — N=4 — started from: answers (README sentence / cut taglines / owner handles the rest) + ไปเลย
+hop 1 | PM  | did: recorded A24-A26 (README line 3 replaced whole-sentence with the bare name; taglines may be cut; owner-only items are his and the team stops chasing them), scoped AC-2's zero-search to front/+back/+README.md | ball_to: SA | flags: none
+hop 2 | SA  | did: folded A24-A26 into SPEC-002 (Rule S + exact README literal), wrote TASK-013 (README, BLOCKED pending a routing call), TASK-011 unblocked | ball_to: PM | flags: none for the owner; SPEC-002 Q4 is a routing question for Porter (repo root belongs to neither engineer)
+hop 3 | FE  | did: TASK-011 -> REVIEW: 3 line edits in front/ (2 Rule T titles, em dash byte-verified; 1 Rule N creator), build+tsc green, browser tab checked via next start | ball_to: SA | flags: 1 irreversible_pending (stale next dev PID 8400 on port 3000, not his to kill)
+hop 4 | BE  | did: TASK-012 -> REVIEW: 7 substring swaps across 6 back/ files (Swagger info.title, console banner, Thai AI system prompt, 2 SQL comments, package.json, back/README.md), /docs checked in a browser, no DB touched | ball_to: SA | flags: 1 low-confidence assumption (banner box was already misaligned before this task)
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+Digest sent (Thai): REQ-004 ลงมือแล้วทั้งสองฝั่ง — Fern (front 3 จุด) + Jason (back 7 จุด) รอ Sober review ทั้งคู่.
+ค้าง: TASK-013 (README) ยังไม่มีคนรับ เพราะ repo root ไม่ใช่ของ engineer คนไหนตาม PROTOCOL — Porter ต้องตัดสิน.
+owner อาจต้องฆ่า process next dev PID 8400 ที่ค้างบน port 3000.
+
+## RUN 2026-09-08-c — N=4 — started from: ไปเลย
+hop 1 | SA  | did: reviewed TASK-011 + TASK-012 as one unit -> both DONE no rework; zero old-name hits left in front/ + back/; answered both engineers' Q1; trimmed inbox 2.6KB->0.9KB | ball_to: PM | flags: 1 question (unify other tab titles?), REQ-004 still IN_SPEC only because TASK-013 has no assignee
+hop 2 | PM  | did: answered SPEC-002 Q4 as a routing call — TASK-013 (repo-root README) to Jason as a one-off, PROTOCOL unamended; confirmed the exact literal; carried Q5 to the owner | ball_to: SA | flags: 2 questions (both optional/non-blocking), 1 low-confidence assumption
+hop 3 | SA  | did: assigned TASK-013 to Jason and moved it BLOCKED -> TODO, recorded the one-off limits in TASK/SPEC-002 Q4/board | ball_to: BE | flags: none
+hop 4 | BE  | did: TASK-013 -> REVIEW: repo-root README.md:3 replaced with `> **Develyst The Education**`, verified byte-exact | ball_to: SA | flags: none; 1 non-blocking Q1 for Sober (pre-existing U+FFFD chars in README lines 5 and 157)
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+Digest sent (Thai): REQ-004 แก้ครบทุกจุดที่ทีมดูแลแล้ว (front 3 + back 7 + README 1) เหลือ Sober review TASK-013 ตัวเดียว.
+ค้างที่ owner: Q5 ชื่อแท็บหน้าอื่นจะทำให้เหมือนกันทั้งเว็บไหม (ไม่บล็อก) + veto การให้ Jason แก้ README ได้.
+
+
+## RUN 2026-09-08-d — N=4 — started from: answers (unify titles site-wide / veto declined) + ไปเลย
+hop 1 | PM  | did: recorded A27/A28, opened REQ-005 (unify page titles) at DRAFT with one owner question about the title shape, closed SPEC-002 Q5 | ball_to: SA | flags: 1 question (a vs b title shape, non-blocking), 1 low-confidence assumption (REQ-005 priority LOW)
+hop 2 | SA  | did: reviewed TASK-013 -> DONE, re-ran the full-repo enumeration himself (0 hits in front/+back/+README, 3 left in DTE.md = owner-only), SPEC-002 -> DONE, REQ-004 -> SPEC_DONE | ball_to: PM | flags: none
+hop 3 | PM  | did: REQ-004 acceptance check — AC 1/2/3/4/6 MET, AC 5 met only on its engineer half, so REQ-004 held at SPEC_DONE pending the owner's eyes | ball_to: HUMAN | flags: 2 questions
+STOPPED hop 3/4 — conditions 1 + 7
+Digest sent (Thai): REQ-004 เสร็จหมดฝั่งทีม รอ owner ดูด้วยตาแล้วพูดคำเดียวถึงจะเป็น DELIVERED.
+คำถามค้าง: REQ-005 ต้องเลือกว่า title เหมือนกันแบบ (ก) ทุกหน้าข้อความเดียวกัน หรือ (ข) ชื่อหน้า + หางเดียวกัน.
+Sober เดินต่อได้เองโดยไม่ต้องรอ owner: REQ-003, วัด bundle, TASK-004 (/login).
+
+## RUN 2026-09-08-e — N=4 — started from: answer (REQ-005 shape = b) + ไปเลย
+hop 1 | PM  | did: housekeeping — compacted 3 over-length board cells after moving the one board-only fact into REQ-004; gate back to PASS | ball_to: HUMAN | flags: none (pipeline not actually blocked — SA queue is full)
+hop 2 | PM  | did: recorded A29 (title shape = page name + common tail), closed REQ-005 Q1, opened Q2 for the exact separator + what `/` reads; REQ-005 held at DRAFT | ball_to: HUMAN | flags: 2 questions, non-blocking
+hop 3 | SA  | did: REQ-003 -> IN_SPEC: wrote SPEC-003 + TASK-014 (remove 4 inherited routes + 2 data files + 4 links, 307 redirects via next.config.ts), enumerated against the real tree | ball_to: FE | flags: 2 non-blocking questions (no support-contact affordance after /contact goes; stray about-page files)
+hop 4 | FE  | did: TASK-014 -> REVIEW: deleted 4 inherited routes + 2 constants files, removed 4 links, added four 307 redirects in next.config.ts; all 8 DoD checks pasted | ball_to: SA | flags: 1 low-confidence assumption (stopped the orphaned next dev PID 8400 to get the evidence)
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+Digest sent (Thai): หน้าเก่า 4 หน้าถูกลบจริงแล้ว + redirect กลับ / (307 ชั่วคราว ไม่ใช่ 308 ถาวร ตั้งใจให้ owner กลับคำได้).
+ค้างที่ owner: REQ-005 ตัวคั่น + หน้าแรกอ่านว่าอะไร / ตาดู REQ-004 / เว็บไม่มีช่องทางติดต่อเลยหลังลบ /contact.
+
+
+## RUN 2026-09-08-f — N=4 — started from: answers (title tail / home unchanged / no contact / REQ-004 accepted) + ไปเลย
+hop 1 | PM  | did: recorded A30-A33; REQ-005 -> READY_FOR_SA with the owner-stated title string; REQ-004 -> DELIVERED on his AC 5 pass; answered both SPEC-003 questions (no support contact, strays left) | ball_to: SA | flags: none
+hop 2 | SA  | did: reviewed TASK-014 -> DONE no rework (re-ran all 8 DoD checks himself on a fresh dev server), corrected SPEC-003 Flow (/blog/ takes Next's own 308 first, 2 hops), REQ-003 -> SPEC_DONE | ball_to: PM | flags: none; he detected the midnight rollover and correctly opened log/2026-09-09.md
+hop 3 | SA  | did: wrote SPEC-004 for REQ-005 (title.template in the root layout, 8-route enumeration), tasked the owner-stated half as TASK-015 to Fern, left Part B blocked | ball_to: FE | flags: 2 blocking questions (page names for /login /register /teach /verify-email, and what /classroom/[id] shows), 1 non-blocking
+hop 4 | FE  | did: TASK-015 -> REVIEW: root title.template + 3 route edits, all 10 DoD checks run, all 8 route titles read from a live dev server | ball_to: SA | flags: 1 low-confidence (automated browser is not the owner's eyes)
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+Digest sent (Thai): REQ-004 DELIVERED. REQ-003 หน้าเก่าถูกลบ + review ผ่านแล้ว รอ Porter ตรวจรับ.
+REQ-005 ครึ่งแรกทำแล้ว (title.template) ครึ่งหลังติดที่ owner ต้องตั้งชื่อหน้า 4-5 หน้า.
+
+## RUN 2026-09-09-a — N=4 — started from: answers (4 page names / shared classroom name / change body copy) + ไปเลย
+hop 1 | PM  | did: recorded A34-A36 (4 page names, classroom uses one shared name, body copy to be changed), unblocked Part B for 4 of 5 routes, opened REQ-006 DRAFT | ball_to: SA | flags: 2 questions (the shared classroom word; what the 6 body-copy spots change to)
+hop 2 | SA  | did: reviewed TASK-015 -> DONE no rework (re-ran all 10 DoD checks himself; / has pipe count 0 so A31 holds), corrected his own DoD 8 line after Fern's Q1 | ball_to: SA | flags: none
+hop 3 | SA  | did: wrote TASK-016 (Part B: four pass-through layout.tsx files for /login /register /teach /verify-email), added SPEC-004 Decision 6 excluding /classroom/[id] until the owner names it | ball_to: FE | flags: none
+hop 4 | FE  | did: TASK-016 -> REVIEW: four new pass-through server layouts giving /login /register /teach /verify-email their Thai titles, owner's Thai copied byte-for-byte, all 12 DoD checks run | ball_to: SA | flags: 1 low-confidence (quote style, no lint config exists)
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+Digest sent (Thai): REQ-005 ทำครบ 4 จาก 5 หน้าแล้ว เหลือ /classroom/[id] ที่ยังไม่มีชื่อกลางจาก owner.
+ค้างที่ owner: คำว่าอะไรสำหรับห้องเรียน + 6 จุด DTE Platform เปลี่ยนเป็นอะไร (REQ-006).
+
+
+## RUN 2026-09-09-b — N=4 — started from: answers (classroom = ห้องเรียน / body copy -> DTE / comments excluded) + ไปเลย
+hop 1 | PM  | did: housekeeping — compacted 4 over-length board cells after verifying every removed fact lives in TASK-015/016 or REQ-005; gate back to PASS | ball_to: SA | flags: none
+hop 2 | PM  | did: recorded A37-A39 (classroom = ห้องเรียน, body copy -> short DTE, api.ts comment excluded), closed REQ-005 Q3 and REQ-006 Q1, REQ-006 -> READY_FOR_SA | ball_to: SA | flags: none
+hop 3 | SA  | did: reviewed TASK-016 -> DONE no rework (re-ran all 12 DoD checks on his own dev server with a different classroom id), confirmed /classroom/[id] untouched and no name invented, fixed his own DoD 10 defect | ball_to: SA | flags: none
+hop 4 | SA  | did: wrote TASK-017 (last SPEC-004 unit): pass-through layout giving /classroom/[id] the title ห้องเรียน, the owner's Thai carried as machine-checked bytes from A37 | ball_to: FE | flags: 1 low-confidence (what a non-numeric classroom id renders — Fern must record it)
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+Digest sent (Thai): ไม่มีคำถามถึง owner รอบนี้เลย. เหลือ Fern ทำ TASK-017 แล้วชื่อแท็บครบทั้ง 8 หน้า.
+ค้างที่ owner: copy หน้า /about + เปิดดูเว็บด้วยตาตัวเอง (7 แท็บ, Footer, /verify-email).
+
+## RUN 2026-09-09-c — N=4 — started from: ไปเลย
+hop 1 | FE  | did: TASK-017 -> REVIEW: one pass-through layout gives /classroom/[id] the title ห้องเรียน (bytes copied from A37), all 14 DoD checks run, ids 1/7/abc all render the identical title | ball_to: SA | flags: none
+hop 2 | SA  | did: reviewed TASK-017 -> DONE (all 14 DoD checks re-run himself), SPEC-004 -> DONE, REQ-005 -> SPEC_DONE; per-course tab is structurally impossible in the file, not just absent | ball_to: PM | flags: none
+hop 3 | PM  | did: REQ-003 acceptance check — AC 1-5 MET, AC 6 met except the unexercised /classroom/[id], AC 7 is the owner's eyes; REQ-003 held at SPEC_DONE, inbox drained 2.5KB->1.2KB | ball_to: HUMAN | flags: 1 question
+hop 4 | SA  | did: wrote SPEC-005 + TASK-018 for REQ-006 (5 in-scope visible-copy lines re-enumerated from the code; api.ts comment and 2 stray About files excluded) | ball_to: FE | flags: none
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+Digest sent (Thai): ชื่อแท็บครบทั้ง 8 หน้าแล้ว REQ-005 -> SPEC_DONE. REQ-003 ตรวจแล้ว AC1-5 ผ่าน เหลือตา owner.
+ค้างที่ owner: เปิด front/ ดู 3 อย่าง (redirect 4 path, Footer เหลือลิงก์เดียว, /verify-email ที่หายไปหนึ่งบล็อก).
+

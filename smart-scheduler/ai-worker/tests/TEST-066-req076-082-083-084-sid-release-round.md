@@ -1486,3 +1486,122 @@ property of their data, not of the product.**
   into `uat`, so I cannot see it properly. `NOT_TESTED` — and I am not guessing from a screenshot.**
 - **The `ON LEAVE` row keeping `15:00` through a re-plan:** noted, **not chased** — it is the open question
   @Porter is owed by @Sober and it is on the owner's list.
+
+---
+
+# Round 18 — the owner's batch on `sid` (frozen build). **All four checks PASS.** 2026-09-09
+
+## ✅ CHECK 3 first, because its fixture is also check 1's — `TASK-300`. **PASS**
+**Built the owner's exact arrangement through the form: a 4-session course, absences declared in weeks 2–4.**
+| | |
+|---|---|
+| **PREVIEW** (before `Create plan`) | `16/Sep PENDING` · `23/Sep · 30/Sep · 07/Oct ON LEAVE` · **make-ups `14/Oct · 21/Oct · 28/Oct`** · *"4 sessions · absent 3 · ends 28/Oct/26"* |
+| **SAVED** (read back) | `16/Sep PENDING` · `23/Sep · 30/Sep · 07/Oct SICK_LEAVE` · **`14/Oct · 21/Oct · 28/Oct EXTENDED`** |
+🟢 **No make-up landed on a declared-absent day.** The old defect would have put them on **23/Sep · 30/Sep ·
+07/Oct** — the very weeks the family said they were away. **They are on weeks 5, 6, 7 instead.**
+🎯 **And the assertion `TASK-300` said it existed for: the PREVIEW and the SAVE now place them in the SAME
+weeks.** **I compared the two directly rather than checking either alone** — that is the comparison the two
+anchors used to fail.
+📌 **This is the arrangement the owner tried twice and could not reproduce.** **Built from the task's own §1
+conditions, not from his description.**
+
+## ✅ CHECK 1 — a STRETCHED course CAN take its quota leave. **PASS, clicked end to end**
+**Same fixture, now stretched to week 7 (`ends 28 Oct`) against a card that reads `extendable to week 5`** —
+🔑 **exactly the owner's condition: a card promising a leave the course could not take.**
+**`Manage plan` → `⋯` → `Mark absence` on 16/Sep:**
+- 🟢 **NO refusal.** *(The old failure was `คอร์สขยายเกินสัปดาห์ที่ 5 ไม่ได้`.)*
+- 🟢 **A preview appeared BEFORE committing:** *"Your plan will become: 1 added · 0 removed · **ends 4 Nov 26**"*,
+  listing the resulting plan, with `Cancel` / `Apply this plan`.
+- 🟢 **After applying: `Leave 1/1` · `Ends 4 Nov 26` · a fourth make-up `04/Nov` appended.**
+⇒ 🔑 **It went through AND the dates MOVED to make room** — both halves of @Porter's requirement.
+🟢 **The card then correctly leave-locks** (`0 left · Used 1/1`, red `Unlock (admin)`) — **the quota refusing a
+SECOND leave is the one refusal that should exist.**
+
+## ✅ CHECK 2 — a RE-PLANNED course too. **PASS (server half)**
+**Fixture `b7dc8ace`: paused → resumed to `2026-09-16 14:00` → then a quota leave on `07/Oct`.**
+`PATCH …/status {action:"sick-leave"}` → **200 ACCEPTED** · `leaveUsed 0/1 → 1/1` · **`liveEndDate 07/Oct →
+14/Oct`** ⇒ **no refusal, and the dates moved.**
+⚠️ **Honest limit: the pause, resume AND the leave were driven through the API on this one.** The plan modal
+would not open after several attempts (it hung on `Loading…` with a valid session). **Check 1 WAS clicked end to
+end; check 2 was not.** **Stating it rather than letting one PASS borrow the other's evidence.**
+
+## ✅ CHECK 4 — the expiry warning arrives BEFORE the save and NAMES the sessions. **PASS (the half that shipped)**
+🔻 **I nearly filed this as a FAILURE. Reading the task's own header stopped me.**
+**What I saw first:** set a course's expiry to `20 Sep 2026` — earlier than four of its sessions — and **the
+dialog showed no warning at all.** **I waited 6s, read the DOM directly, and found no alert anywhere.**
+🔑 **Applying the standing rule — what distinguishes "never rendered" from "I missed it":** **the network log
+shows NO preview request fired when the date changed.** ⇒ **nothing was asked, so nothing could have rendered.**
+**Not a timing miss.**
+🔴 **But it is not a failure either: `TASK-298` is `smart-scheduler-back` and says on its own second line —
+*"🚫 No FE change (that half comes after this route exists)"*.** ⇒ **the display half was never in this round,
+and @Porter's dispatch was explicitly BACKEND ONLY.**
+**So I tested the half that shipped:**
+```
+POST /api/courses/:id/expiry/preview {"expiryDate":"2026-09-20"}  →  200
+{"expiryWarning":{"expiryDate":"2026-09-20","warn":true,
+  "outside":[{"date":"2026-09-23","status":"PENDING","startTime":"14:00:00"},
+             {"date":"2026-09-30",...},{"date":"2026-10-...",...}]}}
+```
+🟢 **It answers BEFORE any save, and it NAMES the sessions — id, date, status and time for each one that would
+be cut.** 🔑 **Not a count.** *"3 sessions" would not tell a family which lessons they lose; this does.*
+⚪ **The UI half is `NOT_TESTED` and correctly so — it does not exist yet, by the task's own design.**
+
+## 📌 One note, not filed
+**The preview payload carries `startTime: "14:00:00"` — seconds again**, the same shape as the DEF-5 thread.
+**A payload, not a screen, and nothing renders it yet** ⇒ **recorded so that whoever builds the FE half does not
+inherit it.**
+
+## Footprint — declared
+| Record | State |
+|---|---|
+| **NEW course `80fae836…`** (KKTEST · 4-session Freeskate · Ek · ฿4,790) | **ACTIVE**, 3 declared absences + 1 quota leave, `Leave 1/1`, ends 04/Nov. **The check-1/3 fixture; left as evidence.** |
+| `b7dc8ace…` | **ACTIVE**, paused+resumed, `Leave 1/1`, live sessions to 14/Oct. **The check-2 fixture.** |
+| Expiry dialog on `b7dc8ace` | 🟢 **`Cancel`led — the date was NEVER saved.** Its expiry is still `2026-12-01`. |
+🟢 **No LINE** (teacher `Ek`, unlinked throughout) · 🟢 **no `uat` contact** · 🚫 **did not touch `TASK-311`'s FE
+items, the four LINE message formats, or the registration copy** — all named as not mine.
+
+---
+
+# Round 19 — `TASK-311` on the FINAL build. **1 of 3 tested · 2 BLOCKED on the pane, not on the product**
+
+📌 **Which build: the one @Porter announced as FINAL** *(back + front, `§6.1`, after the `db:verify` ledger
+repair and restart)*. **A session was minted fresh for this run.**
+
+## ✅ CHECK 3 — the dead `Create plan` gate is GONE. **PASS (server half)**
+```
+POST /api/courses/preview   {size:4, absentWeeks:[2,3,4], …}   →   200
+liveCount: 4 · expiryDate: 2026-11-25 · endDate: 2026-11-25 · exceedsCeiling: FALSE
+```
+🟢 **NOT REFUSED**, and 🔑 **`exceedsCeiling: false` is the field the dead gate used to trip on.** ⇒ **a plan
+with three advance leaves is no longer refused by a week ceiling** — **the rule @Porter re-cut** *(the quota is
+the only thing that may refuse)* **holds at the preview, which is where the refusal used to happen.**
+⚪ **Limit: the API preview route, not the `Create plan` BUTTON.** *(I did click that button successfully in
+Round 18 — but that was a different build, and @Porter told me to re-run, so I am not carrying it forward.)*
+
+### 📌 One thing that looks like an inconsistency and is NOT — worth writing down before someone asks
+**The make-ups here land on `11 · 18 · 25 Nov`, where Round 18's landed on `14 · 21 · 28 Oct`.**
+🟢 **Correct, and the reason is my own footprint:** **Round 18's course still holds `14/21/28 Oct 10:00` with
+teacher `Ek`** ⇒ **those slots are genuinely occupied, so the search skipped them.** **`TASK-300` §4 says
+`findFreeExtensionDate` must keep skipping occupied slots — this is that rule working.**
+⚠️ **Not a discrepancy between builds. A discrepancy between BOX STATES, caused by my earlier fixture.**
+
+## 🔴 CHECKS 1 and 2 — **NOT_TESTED. The browser pane will no longer hold the session.**
+**Both are pure-UI checks** — the `expires …` date being clickable on the card, and the warning rendering on
+screen before the save. **Neither can be answered without a rendered page.**
+**What happened, precisely:** the minted cookie authenticates — **`/api/auth/session` returns `qa` with a valid
+token from inside the page** — **but every full navigation bounces to `/login`.** **The `__Secure-` cookie set
+from JS is not being stored for document requests any more**, though it was earlier tonight.
+**Three attempts, all identical:** fresh `preview_start` → set cookie → navigate · set cookie → `location.href`
+· fresh tab → set cookie → `reload()`. 🔑 **I stopped at three, per the standing rule** *(two clean attempts,
+then hand the pane back — it is @Porter's to fix, not mine)*.
+🔑 **Applying the other standing rule — what distinguishes "the feature is absent" from "I could not look":
+I never reached a rendered page at all.** ⇒ **I am reporting NOTHING about what those two screens show.** **No
+negative observation exists in this round to be mistaken for evidence.**
+📌 **And the server half of check 2 is already proven** *(Round 18: `POST …/expiry/preview` → `warn:true` with
+`outside[]` naming each session)*. **What is missing is only whether the screen renders it — which is exactly
+what `TASK-311` built and exactly what I cannot see.**
+
+## Footprint
+🟢 **Nothing created, changed or deleted this round.** **One `POST /courses/preview`** — **a preview route; it
+computes and returns, it does not persist.** *(Verified by its own contract: no course id is issued.)*
+🟢 **No LINE, no `uat`, no phone** *(the `adb` round is explicitly for after this one)*.

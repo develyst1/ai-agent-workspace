@@ -855,3 +855,1184 @@ and never reads the flag.
 (`CreatePlanFlow.tsx:77` shows `LEAVE_QUOTA_BY_SIZE` on the size picker — a quota stated on the one screen where
 it does not apply). **Unconfirmed; asked rather than built.**
 🔑 **A requirement that is already implemented is the strongest signal that the report is about something else.**
+
+### The extension ceiling is RE-DERIVED from the purchase date and never reads the stored `expiryDate` (2026-09-08)
+`course-plan.ts:86` — `exceedsExtensionCeiling(date, startDate, size)` → `date > courseExpiry(startDate, size)`.
+⚠️ **`course-plan.ts:45` calls the stored `expiryDate` column *"only the MAX_WEEK ceiling"* — the code does not
+read the column that says it is the answer.**
+**Two callers:** `scheduler.service.ts:2027` (the creation preview's `exceedsCeiling`) and `:2199` (the
+auto-extend's `EXTENSION_CEILING`).
+🔴 **Three consequences, one cause:**
+1. a course with several planned absences **cannot be created** — the plan runs past a ceiling computed without it;
+2. a **resumed** course is at its ceiling immediately — `:3849` deliberately keeps `startDate` as the PURCHASE
+   date (correctly), and the ceiling measures from it;
+3. 🔑 **an admin who moves the expiry changes nothing** — `PATCH /courses/:id/expiry` writes the column `:2199`
+   never reads. **`REQ-085 §11.2` exists and is inert for the purpose the owner asked for it.**
+✅ **Ruling (2026-09-08): the ceiling is measured from the course's own AGREED PLAN, not from its purchase date.**
+⇒ **it refuses AUTOMATIC growth (a leave-driven auto-extend) and yields to a DELIBERATE act (an admin edit, or a
+plan being drawn).** 🚫 It does **not** become an unreachable branch — only its source changes.
+
+### Two overrides of the leave lock already exist, and they are not interchangeable (2026-09-08)
+1. **`adminUnlocked`** — the `admin_unlocked` column, `updateCourse`, `useSetCourseAdminUnlock`, the buttons on
+   the course card ⇒ **unlocks THE COURSE, standing, until re-locked.**
+2. **A per-change `override: boolean`** — `validation.ts:316`, enforced at `scheduler.service.ts:2319`
+   (`if (!change.planned && !change.override && leaveLocked) throw LEAVE_LOCKED`) ⇒ **one absence pushed past the
+   lock, the lock still standing.**
+🔑 **"Can an admin override the lock?" has two different yeses. The difference is whether the NEXT leave is also
+free.** 📌 Recorded as a fact rather than a pending decision — `REQ-085 §11.1` was withdrawn (it was a
+misreading; the owner meant moving the EXPIRY), and **neither mechanism is to be changed.**
+
+### "Already built" is the MIDDLE of a triage, never the end (2026-09-08)
+Twice in one batch a requirement named something that already existed, and **both times the report was real:**
+- **`REQ-085 §1`** — `plannedAtCreation` worked perfectly **and the screen still refused him**: the blocker was
+  the WEEK CEILING, not the quota.
+- **`REQ-085 §11.2`** — the expiry editor exists **and is inert for the purpose he asked for it** (see above).
+🔑 **The question is not *"does this exist?"* but *"does it do the thing they want it for?"*** ⇒ **the second
+question is answered by their stated REASON**, which is why quoting the requester verbatim is what makes this
+findable. **What a person can see is a SCREEN; what changed is a RULE.**
+
+### The question is not "stored or derived" — it is **"is there an ACT that can move one without the other?"** (2026-09-08, @Jason)
+Sharper than *"two things that agree today are two things that can disagree later"*, because it is **answerable**:
+one names a risk, the other names where to look. **Every pair below was fine until exactly such an act appeared.**
+| stored | re-derived | the act that splits them |
+|---|---|---|
+| `coursePackages.usedSessions` | the delivered count `courseCurrent` sees | the attendance write moves both — ⚠️ guarded only by a COMMENT in `getEntitlementPlan` |
+| `coursePackages.leaveUsed` | the count of `SICK_LEAVE` rows | ⚠️ **designed to disagree** — a `plannedAtCreation` leave never increments it (TASK-148) |
+| `coursePackages.expiryDate` | `deriveLiveEndDate(sessions)` | two different questions (TASK-097); the plan returns both side by side |
+| `coursePackages.weekday` / `startTime` | `weekdayOf(booking.date)` (`:2971`) | ⚠️ a RE-PLAN — TASK-282 had to write the stored pair back **because they drift** |
+| `coursePackages.expiryDate` | `courseExpiry(startDate, size)` | 🔴 **a plan with absences — TASK-299** |
+🔑 ***"The act that will split them is usually already in the backlog."***
+⚠️ **Two of the five are guarded only by prose.** This week showed twice what a sentence is worth: a
+`COURSE_PAUSE_NOTE` comment went stale inside a day, and `scheduler.service.ts:15` outlived its mechanism.
+
+### The extension ceiling now reads the course's stored `expiryDate` (2026-09-08, TASK-299)
+`exceedsExtensionCeiling(date, ceiling)` — **the SOURCE changed, nothing was skipped.** `courseExpiry`,
+`maxWeekFor` and `MAX_WEEK_BY_SIZE` still COMPUTE the boundary a course is born with.
+✅ **`courseBornCeiling(base, lastPlanned, absences)` = `max(base, lastPlanned + absences×7d)`** — computed
+before the insert from the same `plannedSessions` array that is inserted, and used by **both** the preview and
+the create, so the two cannot disagree.
+🚫 **The stretch is ONE-DIRECTIONAL** — a short plan keeps the full MAX_WEEK window, because *"the family bought
+a leave window and shrinking it to fit a plan takes back something nobody agreed to give up."*
+🔑 **The rule: the ceiling refuses AUTOMATIC growth (a leave-driven auto-extend) and yields to a DELIBERATE act
+(an admin edit, or a plan being drawn).**
+❓ **Open, asked of @Jason, not yet a defect:** the ceiling stretches by the **ideal weekly cadence** while the
+make-up's real date comes from `findFreeExtensionDate`, a **slot SEARCH** ⇒ **on a busy calendar the search may
+outrun the ceiling by a week.** ⚠️ **Not a regression** — before this the ceiling was week 5 and it failed for
+every course with two absences.
+
+### The PREVIEW and the SAVE place creation-time make-ups in DIFFERENT weeks (2026-09-08, @Jason, TASK-300)
+| | anchor | code | 4-session course, absences in weeks 2–4 |
+|---|---|---|---|
+| **preview** | the last **PLANNED** session | `scheduler.service.ts:2027` | weeks 5, 6, 7 |
+| **save** | the last **LIVE** session | `:2216` — `liveAfterCancel.reduce(max, startDate)` | 🔴 weeks **2, 3, 4** |
+`liveAfterCancel` filters `COURSE_LIVE`, and **`SICK_LEAVE` is not in it** ⇒ the absent weeks are invisible to
+the anchor, so the search starts at week 1. **`SICK_LEAVE` IS in `SLOT_INACTIVE_STATUSES`** ⇒ those weeks read
+FREE ⇒ they get filled.
+🔴 **The make-up for a declared absence is booked ON the absent day** — same teacher, same time, mirrored from
+the absence it replaces. **A lesson on a day the family said they could not attend, with no warning anywhere.**
+🔑 **It also explains the owner's `Create plan` refusal:** the preview refused over weeks 5–7 against a week-5
+ceiling **while the save would never have passed week 4** ⇒ the two disagreed and the admin saw the stricter one.
+⚠️ **`SICK_LEAVE` freeing the slot is CORRECT (UC-004) and must not change** — `migration-witness.ts:77` says
+reversing it *"must never be attempted"*. **The bug is that the course reused ITS OWN absent week.**
+
+### A source sweep can ask the SHAPE question; only a request can ask the REACHABILITY one (2026-09-08, @Jason)
+✅ **Mechanical:** every `c.json({ error: … })` in the routers carries both a `code` and a `message` — source-read,
+because *"a route no test requests still ships"*. **The `35 = 35` shape.**
+🔴 **Invisible to it, and written into the test so nobody trusts it too far:** a Response built in a helper ·
+`new Response(...)` · `c.text`/`c.body` with an error status (**the ICS route is deliberately one**) · and **a
+library answering before our code runs — which is exactly what DEF-5/TASK-296 was.**
+🔑 ***"No source sweep would have found TASK-296"*** — that needed a route-level assertion that made the request.
+📌 **Conflating the two questions is how a sweep that looks complete lets the next one through.**
+
+### `c.notFound()` dispatches to the APP's handler — adding `app.notFound` silently changes every route that used it (2026-09-08, TASK-297)
+The ICS route (`routes/calendar.ts`) deliberately answers a calendar client with Hono's plain-text 404. Adding an
+app-level `app.notFound` envelope **switched that route to JSON as a side effect**, invisibly: no test, no error,
+a client quietly ignoring a body.
+✅ **It now writes its own `c.text("404 Not Found", 404)`** — **byte-identical output, changed in order to
+PRESERVE it**, and pinned against the next app-level edit.
+🔑 **And why nothing looked wrong from the inside: a 404 is not a thrown error, so `onError` was never a fallback
+for it — the two are siblings, not a chain.**
+
+### The stretched ceiling drops the quota's week — `plan end + quota weeks` is the promise (2026-09-08, TASK-301)
+`courseExpiry(start, size)` = `start + (maxWeekFor(size, quota) − 1)` weeks ⇒ for size 4, **week 5**, while an
+absence-free plan ends at **week 4**. 🔑 **The base ceiling always encoded *plan end + quota weeks* — that one
+week of headroom IS the quota.**
+🔴 `courseBornCeiling` stretches from `lastPlanned` by the **absences only** ⇒ on a 4-session course with 3
+declared absences the plan ends week 7 and the ceiling is week 7 ⇒ **zero headroom, and the card's `Leave 0/1`
+cannot be used.** **`§10` gave unlimited absences at creation and removed the leave the family had afterwards.**
+
+### A refusal that prints a number the check did not use (2026-09-08)
+`scheduler.service.ts:2230` compares against `course.expiryDate` (the real ceiling); `:2233` prints
+`MAX_WEEK_BY_SIZE[course.size]`. ⇒ **refused at week 7, told "week 5".**
+🔑 **It did not merely confuse an admin: it sent the PM to a wrong diagnosis** (*"the after-creation path uses the
+OLD limit"*) **and nearly bought a task for a defect that was not there.**
+📌 **Same class as DEF-3 and the two `startTime` formats — one value with two sources.** ⚠️ **An error message is
+a derived value like any other, and nothing tests it against the branch that raised it.**
+
+### Reading tells you what CAN happen; only running tells you what DOES (2026-09-08)
+Two escalations in one night came from correct source-reads and were contradicted or narrowed by saved data:
+- **`REQ-085 §1`** — `plannedAtCreation` was right in every line, **and the screen still refused the owner** (the
+  blocker was the week ceiling).
+- **TASK-300** — the anchors do differ in the source, **and the owner's saved plan shows correct placement**,
+  because his absences sat BEFORE his last live week. **The condition is the POSITION of the absences, not the
+  count** — and it is still unproven either way.
+🔑 **Standing rule (SA): a family-facing claim gets a FAILING TEST before it gets a message.** Stricter than
+"a reproduction someone can click", because it needs nobody else's time.
+⚠️ **Corollary for writing a task: put the CONDITION in the headline.** A count in the title and a position in a
+table cell means the reader reproduces the count. **They are reading what you emphasised.**
+
+### TASK-300 CONFIRMED by gate, then fixed: the make-up anchor must be the last PLANNED session (2026-09-08)
+**The gate run, before any code was touched** — 4-session course, weeks 2/3/4 declared absent, week 1 live:
+the save placed all three make-ups on **`2026-09-08` · `09-15` · `09-22`** — **the same three dates as the
+declared absences.** The mirror arrangement (absences first, live session last) placed them correctly.
+🔑 **The condition is the POSITION of the absences, never the count:** the defect needs a live session EARLIER
+than a declared absence, so the old `liveAfterCancel` anchor started the search before it — and `SICK_LEAVE`
+being in `SLOT_INACTIVE_STATUSES` made those weeks read FREE.
+✅ **Fixed with ONE anchor — the last planned session — used by the preview and the save.** 🚫 **Neither status
+list changed:** a student on leave still frees the slot for someone else (UC-004). **The bug was the course
+reusing its OWN absent week.**
+🔴 **And the same anchor was wrong AFTER creation** — a leave taken on the LAST session fell back to the
+second-to-last live row, whose own date then read as free. **Not a creation-time special case.**
+
+### A reconstruction pinned to the source is the strongest evidence available here — and it is weaker than a click (2026-09-08)
+Placement lives inside a DB-bound function and **no agent in this workspace touches a database**, so the test
+reproduces those lines and **asserts the source still contains them**. A source mutation therefore fails the
+**pin**, not the placement assertions.
+🔑 **@Jason wrote that limit into the test file rather than into a report:** *"a reconstructed test that stops
+describing the code it names would be worse than no test."*
+⚠️ **When reporting such a result upward, say which it is.** A reconstruction can reproduce a defect the real
+code does not have, if the reconstruction is wrong; **the pin is the only thing standing between those two.**
+
+### The ceiling promise, stated once: **plan end + remaining leave quota** (2026-09-08, TASK-301/302)
+`courseBornCeiling(base, lastPlanned, absences, quota)` — the absences move the plan's END; the quota's weeks sit
+BEYOND it; still `max(base, …)` so a short plan keeps its full window. **Quota via `courseLeaveQuota`, so an
+off-card size answers with its own allowance instead of falling through to zero.**
+🔑 **The check that proves the TERM rather than the ROOM:** an absence-free size-6 course ends week 6, ceiling
+week 8 = `courseExpiry(start, 6)` — **the two agree by arithmetic, not coincidence.** *A `+ 7` that merely made
+tests pass would fail this.*
+⚠️ **Two paths do NOT keep the promise:** **a re-plan** (`replanExpiry` sets the expiry to the last session
+exactly ⇒ zero headroom — **TASK-302**), and **an admin edit**, which is a deliberate exception and correct.
+
+### Break-it-and-watch has a second half: which tests must NOT fail (2026-09-08, @Jason, TASK-302)
+Mutating the remaining-quota term made the resumed-course assertions fail — **and the *"quota SPENT"* test kept
+passing, correctly**: with nothing remaining, the two builds agree.
+🔑 ***"A mutation that broke it too would have meant the term was doing something other than what it claims."***
+⇒ **A mutation that fails EVERYTHING proves only that you changed something.** **Naming the tests that must stay
+green is what proves the change is the one you described.**
+
+### The ceiling promise holds on three computing paths and deliberately not on the fourth (2026-09-08, TASK-302)
+| path | ceiling | keeps *plan end + remaining quota* |
+|---|---|---|
+| **created** | `courseBornCeiling(courseExpiry, lastPlanned, absences, quota)` | ✅ |
+| **imported** | `importedCourseExpiry` → `courseExpiry(realStart, size, quota)` | ✅ |
+| **re-planned** | `replanExpiry` → `courseBornCeiling(…, absences = 0, remaining)` | ✅ |
+| ⚪ **admin edit** | whatever the person typed | **deliberately not — a deliberate act sets the boundary (TASK-299)** |
+🔑 **A re-plan declares no absences, so it IS `courseBornCeiling` with `absences = 0`** — one arithmetic because
+the domain says so, not for convenience. **Asserted BY AGREEMENT across every quota value**, so a change to
+either function that does not change the other fails in a test.
+⚠️ **The imported path keeps the same promise by a DIFFERENT expression** (`courseExpiry` encodes it directly).
+They cannot disagree in the direction that matters — `courseBornCeiling` `max`es with `courseExpiry` — **but it
+is one sentence in two arithmetics. A third path needing a third expression is the moment to collapse them.**
+
+### Nothing warns an admin who edits a course's expiry into its remaining LEAVE (2026-09-08)
+`updateCourseExpiry` computes `expiryImpact`, which reports the **sessions** falling outside the new date and
+**says nothing about the leave the family has not used.** ⇒ **an admin can spend a course's remaining quota by
+moving one date**, and the first sign is a leave refused weeks later — with a message that names the course's end
+date (TASK-301) and explains nothing about why the room went.
+📌 **Folded into TASK-298 §5 rather than cut as its own task:** that task exists so an admin is told what an
+earlier expiry cuts off BEFORE saving, and unused leave is one of the things it cuts off.
+✅ **Asserted meanwhile as the ABSENCE of `leaveUsed` in that function**, so a later warning makes the note stale
+instead of letting it rot.
+
+### Answer "assert that X agrees with Y" by deleting one of them (2026-09-09, @Jason)
+TASK-298's DoD asked the expiry PREVIEW and the PATCH to return the same warning, **asserted by comparison**.
+He instead made disagreement impossible: `expiryDecision(id, date)` loads once and both callers read it, with
+**exactly one `expiryImpact(` call in the service, asserted by count.**
+🔑 **A comparison test proves they agree TODAY; one call site means they cannot diverge.**
+📌 Same move as `lib/validate.ts` owning the `@hono/zod-validator` import (TASK-296) — *"covered by construction,
+not by memory"*. ⇒ **when a DoD asks for agreement between two derivations, the better answer is usually one
+derivation.**
+
+### The acts with NO preview are `sick-leave` and `resume` — the two highest-frequency dates the system picks (2026-09-09)
+| act | previews? |
+|---|---|
+| create course · import · end course · workDays change · plan change (incl. `mark-absence`) · expiry | ✅ |
+| 🔴 `POST /bookings/:id/status` — **`sick-leave`** | ❌ |
+| 🔴 `POST /courses/:id/resume` — the re-plan | ❌ |
+| `cancel` on a course session (reconciles and re-owes) · `bulkConfirm` partial success | ❌ |
+🔑 ***"That is how TASK-300 stayed invisible: nobody could see where a make-up would land until it had landed."***
+⚠️ **The plan editor previews the SAME act** (`planChange` `mark-absence`) ⇒ **the product already knows how to
+answer; the per-session path never asks.** **The resume picks N dates at once and can fail mid-way on
+`SLOT_TAKEN`** — the admin discovers a clash only on submit.
+
+### The line for `REQ-086`: not acts that WRITE, but acts where the SYSTEM decides something the person is held to (2026-09-09, @Jason)
+🔑 **A date a family is told about is exactly that.** ⇒ it explains why the preview list above splits so cleanly,
+and it says what a message editor's preview must cover: **not every save — every place the product commits
+someone to something they did not choose.**
+📌 Sharpens @Porter's `REQ-086 §2` refusal (*no editor without a preview*) into a test for WHICH previews.
+
+### A test that fails because a requirement changed is not a wrong test — it is a test in the WRONG PLACE (2026-09-09, @Jason)
+TASK-284 made the course `CONFIRMED SCHEDULE` **language-invariant** (`TH` and `EN` render byte-for-byte the
+same), which broke two tests asserting `th !== en` on it.
+🔑 **He found what they were FOR** — a **proxy** for *"the language switch still switches"* — **moved the proxy to
+`booking_confirmed`**, whose `ob_l_*` labels are genuinely bilingual and byte-frozen, **and asserted the real
+property in their place**: no notification renders both languages.
+📌 **Seven tests in total were pinning the Thai weekday or `ไม่มี`; all corrected with their reason, none
+deleted.** ⇒ **before deleting a failing test, name the property it was standing in for.**
+
+### The course `CONFIRMED SCHEDULE` is language-invariant BY RULING (2026-09-09, TASK-284)
+Every piece is a label, a value we generate (`TEMPLATE_LANG = "EN"`, `TEMPLATE_NONE = "(-)"`), or a human's own
+words ⇒ **`TH` and `EN` are byte-identical, asserted**, so a translation creeping into any of them fails.
+🚫 **A human's words are never translated:** a student's Thai name and the admin's Thai `Remark` are reproduced
+exactly as typed (`REQ-085 §8.2`). 🔑 *Translating a Remark is putting words in an admin's mouth.*
+⚠️ **`§7.1` has TWO OPPOSITE empty-field rules in one message** — `Advance Leave Notice` always prints `(-)`;
+`Remark` is absent entirely. **Asserted three ways, including a case with both empty.** *A single "empty fields"
+test passes through the swap.*
+
+### `Coach` on a course summary is the earliest session's teacher, and nothing says it must be the only one (2026-09-09)
+| field | source | can rows differ? |
+|---|---|---|
+| `coach` | `rows[0]?.teacher` | 🔴 **yes** — `createCoursePackage` accepts a per-session `teacherId`, and `planChange`'s `move` accepts one |
+| `subject` | `rows[0]?.subject?.name` | ✅ **no** — a mixed course is refused in the zod refine AND again in the service (SPEC-045 / TASK-138) |
+🔑 **The product has already decided `Program` is a promise and `Coach` is not, and nobody chose that.**
+⚠️ **Unlike a missing note, a wrong coach does not look empty — it looks confidently right**, which is harder to
+notice. 📌 **Raised to the customer via @Porter as a question (main coach? several? enforce one per course?),
+not cut as a task — the answer is theirs, not ours.**
+
+### Two of the customer's messages share ONE title and ONE i18n key (2026-09-09, TASK-303)
+`§7.1` (course `CONFIRMED SCHEDULE`) and `§7.3` (per-session) both render `t("ob_course_title")`.
+| what distinguishes them | strength |
+|---|---|
+| `payload.kind` | ⚠️ a plain string on an untyped payload — a typo falls through to the generic fallback |
+| **`TemplateKey`** (`confirmed_schedule` vs `session_confirmed`) | ✅ **structural** — `Record<TemplateKey, …>` forces the declaration, and it caught the new template on the day it was added |
+| the two byte-for-byte pins | ✅ pasting one message's text into the other's builder fails both |
+🔴 **The TITLE distinguishes nothing.** ⇒ **`REQ-086` would list two editable rows with the same name, and an edit
+to the wrong one would look like it worked.**
+✅ **RULING (2026-09-09): the message editor keys its rows on `TemplateKey`, never on the title.** 🔑 **The titles
+are the customer's words and two are identical; the template key is ours and cannot be.**
+📌 **Not a defect today:** a human reading a LINE message always knows which one they got, because the lines
+beneath it differ. **It is only a problem in a LIST, which does not exist yet.**
+
+### The `th !== en` proxy does not belong on a NOTIFICATION (2026-09-09 ruling)
+It moved twice in one night — off `course_confirmed` (TASK-284) and then off `booking_confirmed` (TASK-303) — as
+each `§7` format made another message language-invariant.
+🔑 **Every notification is English-by-ruling (`REQ-079 §18`), so a notification-based proxy for *"the language
+switch still switches"* is guaranteed to move again.** ⇒ **it belongs on a CONVERSATION flow, where bilingual is
+the RULE rather than a leftover.** 🚫 **Not deleted — the property is real; it was measured in the one place that
+is disappearing.**
+📌 **@Jason's line, and the reason for the ruling: *"a proxy that has to move twice in one night is a proxy worth
+retiring."***
+
+### The customer's own examples disagree on `HR` vs `Hr` (2026-09-09)
+`REQ-085 §7.3` writes `Private Freeskate 1 Hr`; `§9.1`, the same batch, writes `Private Freeskate 6 HR`.
+⇒ **there is no casing to follow.** ✅ **We keep ours (`HR`), which is what `§7.1` already ships**, and a change
+would move both messages from one line in `programLabel`.
+
+### The COMMAND daily schedule was rendered TWICE, once per language (2026-09-09, TASK-304)
+`renderSchedule` was wrapped in `both((l) => …)` ⇒ **a teacher who asked for their day received the whole list
+twice in one message.** 🔑 **The customer reported it as a preference — *"ให้เป็นภาษาเดียวพอ"* — and it was a
+duplicate of their own schedule.**
+✅ The renderer itself was never bilingual: **one line at the call site, rendering in `TEMPLATE_LANG`** — the same
+constant every `§7` format uses, rather than a fourth answer to *"which language is a notification in?"*
+📌 **Second time in two days a politely-worded request was a defect underneath** (the first: `REQ-085 §1`, where
+the requirement said *"make leave unlimited"* and the screen was refusing him at the week ceiling).
+
+### Seven statuses reach the COMMAND schedule; two are our words, not a coach's (2026-09-09)
+The query excludes `CALENDAR_HIDDEN_STATUSES` (`CANCELLED`, `PAUSED`), so **seven of the enum's nine can appear.**
+✅ Plain: `Pending` · `Confirmed` · `Attended` · `Leave` · `No-show`.
+🔴 **`Extended`** — our word for our mechanism (*a make-up appended because someone took leave*), **and the
+commonest non-obvious row on the list.** 🔴 **`Awaiting move`** — does not say **who** is being waited on.
+⚠️ **The reader is a TEACHER, not a parent**, which makes `Extended` more defensible here than it would be on a
+family's message. **Raised to the customer as wording, not cut as a defect.**
+📌 **`PAUSED` has a label for a row the query can never render** — the mirror of TASK-271, where a row rendered
+its own key because no label existed.
+
+### A shape assertion catches changes a byte pin was not written for (2026-09-09, @Jason)
+TASK-304 asserted AUTO as *"the message with the note IS the message without it, plus one line"*. When a
+mutation made `Remark` fall back to `(-)`, **that assertion fired too** — catching a wrong string as a **layout**
+change.
+🔑 **Stronger than a byte pin, because it survives the field being added and still fails on changes nobody
+predicted.**
+
+### The bilingual proxy is retired: assert the property, not a symptom (2026-09-09, TASK-304)
+The `th !== en` proxy moved three times in one night as each `§7` format made another notification invariant.
+✅ It now sits on `tb("children_none")` — a CONVERSATION reply — **and stopped being a proxy at all**: it asserts
+`tb()` composes **one string containing both `t(key,"TH")` and `t(key,"EN")`**, which is the bilingual property
+itself. 🔑 **`§7.4` cannot move it.**
+📌 **The general form: when a proxy keeps moving, the fix is not a better location — it is asserting the property
+the proxy was standing in for.**
+
+### A feature behind a default-off setting is indistinguishable from a feature nobody wrote (2026-09-09, TASK-305)
+The owner reported TWICE that teachers were not told when a student takes leave. **The notification already
+existed** — `kind: "leave_teacher"`, wrapped in `if (notifyOnLeave === "admin_and_teacher")`, with
+`notify_on_leave` defaulting to `admin_only`. ⇒ **on a default install that branch never ran.**
+⚠️ **It had a comment explaining the default**, so it was deliberate and documented — **and still wrong for what
+was asked.** 🔑 **A reviewer reading that branch would have found it correct: the defect was the DEFAULT, and
+nobody reviews defaults.**
+✅ **The owner's `§9` ruling is unconditional (*"เฉพาะแชทครู / แอดมิน"*)** ⇒ the setting gates nothing and is
+**removed from the registry and the settings screen** (TASK-306). 🚫 **Stored rows are NOT deleted** — a value
+nothing reads is inert; a DELETE is irreversible and buys nothing.
+🔑 **The general rule: a CONTROL that does nothing is worse than a missing feature — an admin who sets it
+believes they changed something.**
+
+### FOUR writes set `SICK_LEAVE`; only one notifies (2026-09-09)
+| path | notifies | verdict |
+|---|---|---|
+| `scheduler.service.ts:1703` declared at creation | ❌ | ✅ fine — the leave predates the course; the teacher has not been told of the class either |
+| `:2382` **the plan editor's `mark-absence`** | ❌ | 🔴 **the hole — a FUTURE session, the same act, a different door** (TASK-306) |
+| `:2749` attendance correction `ATTENDED → SICK_LEAVE` | ❌ | ✅ fine — the class already happened; a notice would be about the past |
+| `:2810` `updateBookingStatus` `sick-leave` | ✅ | the `LEAVE NOTICE` |
+🔑 **A teacher told SOMETIMES is worse than never: never is a gap people work around; sometimes is a promise that
+fails silently.**
+
+### `bunx tsc` is broken on this machine — use a pinned version (2026-09-09)
+`bunx tsc --noEmit` panics with `bundled: …/@typescript/typescript-win32-x64/lib/lib.d.ts does not exist` — a
+`typescript-go` preview binary whose temp install was cleaned. **It is a toolchain fault with no relation to the
+code, and it exits 2.**
+✅ **`bunx --package typescript@5.6.3 tsc --noEmit` works** (exit 0). ⚠️ **There is no local `typescript`
+dependency in `smart-scheduler-back`**, so there is no `./node_modules/.bin/tsc` fallback.
+📌 **An engineer's `tsc 0` can be TRUE and unreproducible an hour later. Check the failure's SHAPE before
+reading it as a code defect.**
+
+### A sweep whose SCOPE is hand-written is only as complete as somebody's memory (2026-09-09, @Jason)
+Sweeping for "settings nobody reads", @Jason's **first** attempt hand-listed the files to search and reported the
+two `leave_cutoff_hours_*` keys as UNREAD. **They are read** — via `leaveCutoffKey(teacher.type)` in
+`lib/leave-notice.ts`, a file the list omitted. 🔴 **It would have recommended deleting two LIVE settings, minutes
+after a real dead one was removed.**
+🔑 **The technique was sound; the INPUT was not.** Every reader names its key as a **string literal** — including
+the one that looks dynamic: `leaveCutoffKey` is a **ternary over two literals**, not a composed string, so a
+whole-tree grep finds it.
+📌 **This revises TASK-297's split.** The honest question is not *"mechanical vs needs an eye"* — it is
+***"walks the tree vs walks a list"***. **A hand-scoped sweep fails the same way as the thing it is looking for.**
+⚠️ **Residual risk, checked rather than assumed:** a key built by template literal (`getSetting(\`…${x}\`)`).
+**Zero such calls today**, and a grep for that shape is the cheap guard if anyone starts.
+
+### `sick_leave` and `leave_teacher` are dead as PRODUCERS and live as CONSUMERS until the queue drains (2026-09-09)
+TASK-305/306 replaced both with one `leave_notice`, so **no non-test code enqueues either kind** — *"exactly the
+shape that makes dead code look alive"*.
+🔴 **They are NOT removable yet:** `outbox.service.ts:78` renders `row.payload` **at SEND time**, so any row
+already queued with those kinds still needs its branch.
+✅ **RULING: keep the renderers, keep the "re-wiring fails loudly" assertions.** **They become removable after a
+deploy plus a drain — not before.**
+⚠️ **Constraint for `REQ-086`: a template kind nothing sends must NOT appear as an editable row** — the same
+defect as a setting nobody reads, one layer up.
+
+### `REQ-085 §5`'s entry copy is with the CUSTOMER — no engineer may write it (2026-09-09)
+`§5`'s MECHANISM is settled (no role list; teachers and admins type a phrase — an undocumented door), but the
+**wording is unsettled and the REQ says so explicitly**: *"No engineer may implement this text."* The customer's
+words win **verbatim**, per the `REQ-079 §17b` precedent.
+⏸️ **Still owed by @Porter: the admin phrase (proposed `แอดมินเอง`) and the parent-certainty wording.**
+🔑 **`§6` (no SKIP past having a child) is the buildable half** — and TASK-307 asserts `§5`'s prompt stays
+**byte-identical**, because a stray diff there is invisible to us and visible to the customer.
+📌 **The precedent for the discipline: `Date : อังคาร` shipped after `REQ-079 §18` had already ruled labels
+English — an engineer's sentence outliving a ruling nobody re-read.**
+
+### The registration flow honours "conversation is bilingual" WITHOUT `both()` — it answers in the session's language (2026-09-09)
+`line-webhook.service.ts` uses **`t(key, lang)` 39 times against `both()` 13 times**, and
+`add_student_name_prompt` is called **five** times — four with `lang`, one (a new re-ask) with `both()`.
+🔑 **`both()` is for a reader whose language is not known; inside a session it IS known.** ⇒ **`REQ-079 §18` is
+satisfied by answering IN the parent's language, not by composing both into one message.**
+🔻 **My TASK-307 §3 told the engineer to make a re-ask bilingual, without checking the flow's convention** — which
+would have left one sentence rendering in two forms depending on how a parent arrived at it. **He flagged it
+rather than choosing; corrected to `t(…, lang)`.**
+📌 ***An instruction about a CONVENTION must be checked against the convention.*** **Second time in one day an SA
+instruction was refuted by the code it was about** (the first: a DTO-formatting task that `contract.ts` forbade).
+
+### A parent account can be CREATED empty by abandonment, and cannot BECOME empty (2026-09-09, TASK-307)
+| road to a usable-looking childless account | reachable? |
+|---|---|
+| 🔴 **abandoning registration mid-way** | **YES, and it is the widest road** — `ensureParentByPhone` (`parent.service.ts:66`) creates the `parents` row **at LINK time, before any child.** **Nobody types anything, so `§6`'s "no skip" cannot touch it.** |
+| 🔴 **blocking and re-adding the bot** | **YES** — the link persists, so re-adding lands on the same empty parent. Road 1 by another exit. |
+| ⚪ **an admin creating a parent** (`POST /parents`) | **YES, deliberately** — a household may be registered before its children. Not a defect. |
+| ✅ **a child DELETED later** | **NO** — there is no student delete route and no archive flag ⇒ **an account cannot BECOME empty.** |
+🔑 **So `§6` is complete for its own shape.** ⚠️ **The gap is abandonment, and the remedy is a different shape:
+*not a refused word — something that notices an account has sat childless.*** **How long is "sat", and who is
+told, are the owner's questions.**
+
+### The four `§7` notification messages are a FIELD TABLE, not free text (2026-09-09, SPEC-078)
+In code a notification already is: **`TemplateKey` → an ordered `FieldKey[]` (`TEMPLATE_FIELDS`)**, each field
+carrying **a label + a value source + an empty rule**, with `TYPE_OMITS` / `AUDIENCE_OMITS` removing fields per
+booking type and audience (`fieldsFor(template, type, audience)`).
+🔑 **So `REQ-086`'s editor edits WORDS — the title per `TemplateKey` and the label per `FieldKey` — never a
+template string.** ⇒ **@Porter's *"no raw text box with `{{placeholders}}`"* is satisfied structurally: there are
+no placeholders to mistype, because labels do not name values — fields do, and fields are ours.**
+⚠️ **Labels are GLOBAL per `FieldKey`, not per message** — `ob_f_note` is deliberately one word across all four,
+*"so the word means one thing across every message a family receives"*. **Per-message labels would reintroduce
+the drift this week was spent closing, as a feature.**
+✅ **Defaults are never copied: store only OVERRIDES, and `Reset` DELETES the override row** ⇒ *"back to default"
+is the ABSENCE of an edit, not a stored copy that can rot.*
+🔴 **`REQ-086` needs the batch's FIRST migration.** Everything in `REQ-085` shipped `35 = 35`; this will not.
+
+### An editor must list templates that are ENQUEUED, not templates that RENDER (2026-09-09)
+`sick_leave` and `leave_teacher` still have renderers because a queued outbox row needs them, while no code
+enqueues either. ⇒ **an editor built from the renderer list would offer the customer two messages the product no
+longer sends** — *edited, and never seen.*
+🔑 **Derive that list rather than hand-writing it** — a hand-scoped sweep is only as complete as somebody's
+memory, and here it is wrong in the more embarrassing direction.
+
+
+---
+
+## ⬅️ MOVED FROM `board.md` 2026-09-09 (hygiene: board over 40KB). VERBATIM, nothing dropped.
+
+## Project info
+
+- Scheduling + back-office ERP for a balance/wheeled sports activity centre. Repos by logical name:
+  `smart-scheduler-back` / `-front` / `-backoffice-back` /
+  `-backoffice-front` (+ `smart-scheduler-requirement`). **Absolute paths on this machine are in `machine.local.md`
+  at the workspace root** — never in a committed file.
+- 🔴 **STANDING RULE (owner, 2026-08-28): `develop` is the CANONICAL central branch in every repo.** `dong`/`dong2`/
+  `dong3` are no longer the reference. **Another team also builds on `develop`** — before speccing anything on
+  shared ground (calendar, course card, cell, expiry, LINE), **read what `develop` already does**
+  (`git show develop:<path>`) and re-apply only what is genuinely missing. Never build against a remembered tree.
+  *(08-28: merged — front `dong`≡`develop`≡`origin/develop` @9ec5d35, back @d901dc7; one tree with our REQ-052/068
+  cell + the TASK-191 toggle fix; only `hasRental` (TASK-190) was missing.)*
+  - `smart-scheduler-back` — scheduling API, Bun + Drizzle, **:4006** → Jason
+  - `smart-scheduler-front` — staff calendar UI, Next.js, **:3016** → Fern
+  - `smart-scheduler-backoffice-back` — finance API, **`bo` schema on the shared `smart_scheduler` DB**
+    (`ops` RETIRED by REQ-006 / TASK-027), **:4010** → Jason
+  - `smart-scheduler-backoffice-front` — admin money UI, Next.js, **:3018** → Fern
+- **Read first**: `ai-worker/SYSTEM-FACTS.md` (owner-stated system behaviour), then
+  `project-understanding.md` (as-built map, rewritten 08-01), then the monorepo root `CLAUDE.md` and
+  `docs/` — newest wins. Docs calling this a "tutoring school" are wrong; it is a sports business.
+- DB: one PostgreSQL — `public.*` (scheduling) + `bo.*` (finance). Reading schema from the Drizzle files is fine;
+  the DATA REQUEST rule covers **real data and live environments**.
+- Team: Porter (PM/BA) · Sober (SA) · Jason (BE) · Fern (FE) · **Tanya (QA)**.
+  - **QA trial, this project only.** Tanya talks to Porter only; tests on **local + `sid`** (never `uat`); owns
+    `IN_TEST` / `TEST_PASSED` / `TEST_FAILED`. A REQ is `DELIVERED` only after a `TEST_PASSED` **and** a post-deploy
+    re-check. She **may create test data on `sid`**, declaring and retiring the footprint in the TEST file.
+  - 🧪 **QA verdict history 08-04 → 08-28 — parked verbatim** in `archive/board-2026-08-29-parked-notes.md`;
+    evidence in `tests/TEST-055…TEST-060`. Verdicts exist, in board order, for: REQ-071 · REQ-072 · REQ-036 ·
+    REQ-063 · REQ-064 / TASK-168 · REQ-046 · REQ-047 · REQ-049 / TASK-152 · REQ-044 · REQ-043 · REQ-048 · REQ-054 ·
+    REQ-053 · DEF-5 → REQ-056 · DEF-3 → REQ-041 / TASK-090 · DEF-1 · TASK-129 · TASK-128 · REQ-030 ·
+    REQ-037 / TASK-124 · REQ-038 / TASK-099 · REQ-024 · REQ-026 · REQ-020 · REQ-022 · REQ-009.
+  - ✅ **LINE test recipient — CLOSED 2026-09-01** (open since 08-04). The owner linked **himself** on `sid` as
+    teacher **Bank**; outbound LINE is testable, and AC-16 was fired from it the same day (`tests/TEST-064`
+    §Round 3). The rule that the **2 real teachers are never messaged in rehearsal stands unchanged.**
+    🔴 **Still short one thing:** only **ONE** recipient is linked, so *"every assigned teacher gets it"*
+    (REQ-078 AC-16 revised) **cannot be proven** — a second linked device/teacher is needed.
+  - 🔴🔴 **BLOCKING NOW (QA, 2026-09-06):** **the `sid` session harness will not run on this machine.** The minted
+    cookie expired with the deploy; re-minting (`mint-session.mjs`, TASK-090) needs the owner's access file and the
+    API login, and **QA's tooling refused that step — twice.** `sid` itself is UP (`/login` 200, `POST
+    /api/auth/login` → 400 from the backend's own validator). ⇒ **the whole REQ-076/082/083/084 round is
+    `NOT_TESTED` for an ACCESS reason, not a product one**, and since **`uat` is read-only**, every write-shaped
+    AC is proven on `sid` or nowhere. **`tests/TEST-066-…` is open as a PLAN only** — `NOT_TESTED` on every line, no verdict in it, and it may not be quoted as evidence.
+  - ✅ **CLOSED 2026-09-07 — backoffice access GRANTED** (owner: both `sid` hosts, full). QA authenticated via
+    the API, never the login form. **28 items / 75 movements read.** It immediately closed `REQ-083` AC-6 and
+    `REQ-076` AC-4, and proved `REQ-082` AC-5 against the ledger instead of by inference.
+  - 🔴🔴 **DEF-2 (QA, 2026-09-08) — RELEASE-BLOCKING. Course RESUME regenerates the plan.** Reproduced twice on
+    fresh 4-session fixtures: **4 rows → 4 (all flipped `CANCELLED` by pause) → 8 (originals + a brand-new plan).**
+    🎯 **Isolated: PAUSE does not duplicate; RESUME does** — but pause writes the TERMINAL code `CANCELLED`, so
+    resume has no plan to restore and builds one. Course history shows 4 `cancelled` then 4 `scheduled` events.
+    🔴 **Second, worse half: the new plan starts from TODAY, not the course's own slot** — a course sold for
+    `2026-11-11` came back as `2026-09-09`, and **this week's calendar now shows November sessions.**
+    🟢 **NOT a money defect: exactly one `SALE` per course, pause/resume wrote nothing; entitlement intact.**
+    Reproduction left live: course `dd78bd1e-…`. `tests/TEST-066` → DEF-2. @Sober.
+  - 🔴🔴 **DEF-5 (QA, 2026-09-08) — RELEASE-BLOCKING. Course RESUME cannot be completed through the UI.**
+    `Resume the course` renders a raw Zod error: the FE submits `startTime: "10:00:00"` where the API requires
+    `HH:mm`. **Fails on the form's defaults AND on a hand-typed value** — the dialog holds a HIDDEN third input
+    still carrying `10:00:00`, so the field the admin edits is not the field submitted. 🟢 **Server is innocent:**
+    `POST /courses/:id/resume {startTime:"11:00"}` → **200**. ⚠️ The admin is shown a REGEX, not a message.
+    ⇒ **a paused course can only be recovered by a hand-made API call.** `tests/TEST-066` → Round 13. @Sober.
+  - ✅ **Pause-dialog COUNT fixed (QA, 2026-09-08)** — dialog says 6 against a 7-row plan (`ON LEAVE` correctly
+    excluded); every counted row is visible on the same screen. The `9`-against-`5` defect is closed.
+  - ✅ **DEF-1 CLOSED 2026-09-08 (QA).** Post-redeploy retest: `?status=PAUSED` → **200** *(was 400)* and the
+    tray on screen reads **`Paused bookings | 1 | KKTEST | 1 HR | Was: 08/Oct/26 16:00`**. **Verified BOTH via
+    the API and on screen** — a 200 with an empty array would have read identically. ⇒ **`REQ-076` AC-1, AC-9
+    and AC-12 all PASS.** The empty state is honest again. **Nothing from QA holds `uat`.**
+  - ✅ **`REQ-083` AC-5 · AC-7 · AC-9 PASS (QA, 2026-09-08).** A swept `1 HR` posted **฿1,390**; undo wrote **one**
+    `REVERSAL −139000` beside an unedited `SALE`; **the replay wrote nothing.** 🟢 **`end-of-day` DOES run on
+    `sid`** — answered from movements, not `job_runs`.
+  - 🔻 **QA RETRACTION (2026-09-08):** the 09-07 claim *"no movement is tied to a booking"* was **FALSE**.
+    `postBookingSale` writes `refType: "SALE"` with `refId` = the **booking** id, so `refType` cannot
+    discriminate. **@Sober called it before it could be measured.** The money thread is fine.
+  - ⚠️ **FE width checks NOT_TESTED** — QA could not change the viewport (Chrome fixed at 1920, in-app browser
+    refused). **DEF-1 also means the tray can only be measured EMPTY, so 1280-decides-AC-9 is unanswerable
+    until the fix lands.** **Re-run them together.**
+  - ⚠️ **`sid` was being written to by someone else during the QA round** (`ปกติ 13→18`; the QA fixture course
+    was sold at 00:05). **Baselines must be re-read, never carried across hours.**
+  - 🔴 **Open for the human (QA):** **backoffice read access** (`backoffice-som.develyst.online`) — without it
+    Tanya cannot read what any day-end actually posted, so every money AC stays `NOT_TESTED` even after the job
+    runs. Access lives in `../project-docs/`, never in a tracked file.
+
+### 📏 STANDING RULE — FE layout IS verifiable here (08-01, TASK-081)
+
+The in-app browser does not *paint* but it does **compute layout**. **Any FE change that adds or resizes a control
+in a shared row must measure that row at 1600 / 1280 / 768 / 375 and report the numbers.** Anything painted stays
+out of reach — **a deployed look is the only full detector**, so ship in small slices.
+
+🔴 **HEIGHTS — added 09-08 (TASK-291 §2, @Porter's finding, @Sober's instruction; written in by @Fern, reword at
+will).** **The four widths above were the whole rule, and nobody had ever checked a height — on any dialog.**
+⇒ **Any change that makes a DIALOG taller is measured at 900 / 650, and its primary action must stay reachable
+at 450.** *650 = a 1366×768 laptop after browser chrome, the commonest real admin screen. 450 = the harness
+height that exposed this; a floor that only holds on real screens is not a floor.*
+📌 **The reason is not the viewport: a dialog whose primary action can be unreachable cannot be VERIFIED.**
+
+### ⚠️ ENVIRONMENTS — exactly TWO servers. Read before any deploy talk.
+
+| | `sid` — where we build | `uat` — the customer's system |
+|---|---|---|
+| frontoffice | `som.develyst.online` | `frontoffice.develyst.online` |
+| backoffice | `backoffice-som.develyst.online` | `backoffice.develyst.online` |
+| who touches it | the team verifies here | **owner only** — the team never runs anything against it |
+
+- **No third environment** (owner, REQ-042, 08-16): `frontoffice.develyst.online` = the owner's **UAT** = what older
+  artifacts call "production". **Stop writing "prod".** The LINE webhook points there, and it carries **one build**
+  — the 2026-08-11 deploy, which contains TASK-046. **One-directional: build → verify on `sid` → deploy to `uat`.**
+- 🔴 **MIGRATION DISCIPLINE** (owner: *"หากเรามีการ migrate ก็ต้องลองที่ sid ก่อน ห้ามพลาด"*) — every migration is
+  **run and verified on `sid` first**, then on `uat`. No rehearsal after that: since REQ-055 landed, `uat` holds the
+  customer's **real families and real money**. `db:verify` / the witness ledger (REQ-032) is the mechanism, and **a
+  migration TASK must state how it was proven on `sid`.**
+- 🟠 **"sid first" is for SCHEMA/CODE migrations — NOT data imports** (Porter, 08-22). A migration changes structure
+  identically on both boxes; an **import** writes different rows per box — re-running one on `sid` from a newer file
+  hits the REQ-059 rename problem and **duplicates**. ⇒ **the run target is whichever box lacks the rows; say so in
+  the TASK.**
+- ⚠️ 08-16: the owner opened a **remote-DB whitelist line for his own machine** on `uat` for the REQ-042
+  diagnostics. **It must be closed and verified closed when the LINE work is done.** Porter owns the reminder.
+- Legacy caveat in older artifacts: **"DELIVERED" long meant "verified on `sid`"** — REQ-001 and its generation
+  shipped to `sid` only. Separate DBs, so data diverges as well as code.
+- Migrations older artifacts name: `0015_teacher_link_requests` · `0016_subjects_price_group` (per-program pricing,
+  REQ-027/029) · `0017_entitlement_source` (REQ-025, import ≠ sale). ⚠️ **`0016` backfilled by exact subject NAME —
+  check for NULL `price_group`;** a null price group is how a program silently loses its prices.
+
+### 🔴 STANDING RULE — `teacher-subjects:link-all` is `sid`-ONLY (owner, 2026-08-29)
+
+The board's REQ-058 record — *"every teacher can teach every program"* — **no longer holds on `uat`.** Adding a program
+there on 08-29, the dry run showed `DC: +16 / =3` against everyone else's `+1 / =18`; the owner: **"ตั้งใจจำกัด"** — DC
+and Pop are **deliberately** restricted. `--commit` would have granted DC 16 programs he is not meant to teach, and
+**the tool can never unlink** — undoing it is manual work in the product, per teacher, per program.
+
+- **`sid` (or any box where open-by-default still holds): use `link-all`. `uat`: NEVER.** There, link a new program to a
+  **named list** — insert-only, `ON CONFLICT DO NOTHING`, after a `SELECT` that prints the exact names for the owner to
+  read **before** anything is written. That is how the 08-29 addition was done: 26 teachers linked, DC excluded.
+- 📌 **Per-row dry-run output is what made the outlier visible.** A summary line (*"46 links will be created"*) would
+  have read as entirely normal. Worth keeping for anything that writes in bulk.
+- ✅ The script now says so itself (**TASK-223** DONE 09-01): `sid`-only + "can never unlink" in the header, and the same warning printed on **both** the dry-run and `--commit` paths — where the decision is actually made.
+
+### 🔴 STANDING RULE — the human COMMITS at the end of every batch (his decision, 2026-09-01)
+
+**An uncommitted working tree is not storage.** Agents never commit (`CLAUDE.md` rule 6), so finished engineering
+output lives **only** as uncommitted changes until the human commits. On 2026-08-31 a routine branch sweep
+(`dong → develop → production → dong`, fast-forward + a clean) **silently destroyed three completed tasks**
+(TASK-218 / 221 / 223) — identical mtimes across every touched file, new files gone, no stash.
+
+🔴 **The dangerous part is not the loss, it is how it presents: a clean tree looks exactly like an engineer who
+never built it.** Sober came within one step of recording that, which would have cost a re-cut task, a rewritten
+spec, and a false line in a log everyone treats as history.
+
+**🔴 UPDATED 2026-09-01, his instruction:** *"เลิกยุ่งเรื่อง commit ฉันจะทำเองเมื่อถึงเวลาของฉัน"*
+**Nobody reports, chases, or asks about commit state** — not in the log, not in a hand-off, not as a reminder.
+He commits on his own schedule; it is his repo and his call. *"This batch is code-complete"* is still worth
+writing — that is ordinary status and it makes a natural commit point visible **without anyone being chased.**
+**State your work; never request his.** *(Porter put commit state into the reporting loop and has removed it.)*
+
+**What protects the work is OURS, not his, and it is unchanged:** ⇒
+- **Engineers:** when a batch is code-complete, say so plainly in the log so the commit point is visible. Keep
+  every load-bearing fact in the **TASK file's `## Implementation Notes`** — that is the only reason the three
+  tasks were reviewable and rebuildable after the tree was swept. **Evidence in the TASK, never only in the log.**
+- **Nobody may conclude "it was never built" from an empty diff alone.** Check `git reflog` and file mtimes
+  first — that is how the real cause was found.
+- Interim artifact from that incident: `archive/patch-scheduler-back-TASK-218-221-223-224.diff` (base `7217599`).
+
+*(Project-level record. If this should bind every project in the workspace, it belongs in the workspace
+`CLAUDE.md` — the human's or Atlas's call, not Porter's.)*
+
+### 🚦 DEPLOY RULES (standing) → **MOVED VERBATIM to `SYSTEM-FACTS.md` (board hygiene 09-08). Read it there before any deploy.**
+
+### 🔴 MIGRATION CHECK — before every single deploy → **MOVED VERBATIM to `SYSTEM-FACTS.md` (board hygiene 09-08). Read it there before any deploy.**
+
+
+### `REQ-085 §12` — the leave QUOTA is the ONLY gate on leave (2026-09-09, the owner)
+> *"quota ลา มี แต่การยืดเวลาไม่มี quota … ถ้าเขาจะลา ต้องได้ เพราะเขามี quota ลา ส่วนวันหมดอายุ ก็ให้ยืดตามไปเลย"*
+
+| | |
+|---|---|
+| **leave quota** | ✅ **the only thing that may ever refuse a leave** |
+| **week / extension ceiling** | 🚫 **not a quota, not a limit — may NEVER refuse a leave** |
+| **expiry date** | ✅ **STRETCHES to fit, every time a leave is legitimately taken** |
+🔑 **`§10`'s principle with no exception: *the plan decides the dates; the dates do not veto the plan* — at
+creation AND after it.**
+🔻 **`§11`'s two-rule table was @Porter's misreading of one sentence, and @Sober RATIFIED it** — inventing a job
+for the ceiling (*"it refuses AUTOMATIC growth and yields to a DELIBERATE act"*) so the table would be coherent.
+**TASK-299/301/302 were all shaped by it.**
+🔻 **CORRECTED (@Jason, same day): the ceiling was NOT an unsourced invention.** `SPEC-028 §5 #2` **specifies the
+refusal explicitly** and calls week-8 *"owner-confirmed and load-bearing"*. ⇒ **it was a real, owner-confirmed
+rule that the owner has now REVERSED.** ⚠️ **What went wrong was that three tasks treated a SUPERSEDED rule as
+current** — not that its authority was missing. 🔑 **A ruling that contradicts a shipped SPEC does not update the
+SPEC, and nothing makes them collide.**
+📌 **`SPEC-028` line 102 saw it two months early:** *"the ceiling and the quota already encode the same limit:
+`MAX_WEEK = natural_end + leaveQuota` for every size."*
+📌 **An accurate refusal is still a refusal:** TASK-301 moved the message from *"week 5"* to *"27 Oct"* and the
+owner still could not take his leave.
+
+### A PM's misreading costs a message; an SA's ratification costs a sprint (2026-09-09)
+@Porter read a structure into the owner's prose **four times in one day** — the `HH:mm:ss` prefill, the address as
+three fields, the "admin override", and a second gate on leave. **He caught and withdrew all four himself.**
+🔴 **The one that reached code is the one @Sober RATIFIED without asking where its authority came from.**
+🔑 **The check that was missing: *"which REQ or ruling says this limit exists?"*** ⇒ **before building against a
+structure in a REQ, trace it to the requester's own words.**
+
+### When the requester reports with a screenshot, the SCREENSHOT is the DoD (2026-09-09, @Porter)
+`TASK-301` was reported fixed twice and the owner found it standing twice. **Its DoD did not contain his exact
+course and his exact click** — the screenshot was relayed as a DESCRIPTION rather than as an acceptance test.
+🔑 **Adopted: a defect reported with a reproduction gets that reproduction as the first DoD line.**
+⚠️ **And assert the OUTCOME, not the mechanism:** *"the leave succeeds"* AND *"the expiry moved"* — **the leave
+going through with a stale date is the same defect wearing a different face.**
+
+### 🔻 CORRECTED 2026-09-09 — the ceiling WAS properly sourced. A rule can be right and still be wrong, because the owner changed his mind.
+**The earlier version of this entry said `SPEC-028 §5 #2` "named a worry and never asked for a gate". That is
+FALSE, and @Jason corrected it by reading the source I had only read a code comment about.**
+**`SPEC-028 §5 #2`, verbatim (line 115):**
+> *"SPEC: the reconcile's **append refuses** when the appended date would exceed `startDate + MAX_WEEK weeks`,
+> with a reason (…). Week-8 (size 6) is **owner-confirmed** and load-bearing."*
+
+⇒ 🔑 **The SPEC specified the refusal explicitly, named its message, and attributed its number to the owner.
+Nothing was invented.** ⚠️ **I judged the citation by the CODE COMMENT quoting it** (*"a leave could otherwise
+extend a course indefinitely"* — a fear) **rather than by the source one paragraph above it.**
+🔴 **So the real failure was not untraceable authority. It was that THREE tasks treated a SUPERSEDED rule as
+current, and nobody noticed the owner had since said something that contradicted it.**
+📌 **And `SPEC-028` itself saw it coming, at line 102:** ***"the ceiling and the quota already encode the same
+limit: `MAX_WEEK = natural_end + leaveQuota` for every size."*** ⇒ **the redundancy `§12` removed was written down
+two months before anyone acted on it.**
+🔑 **The lesson: a rule can be correctly sourced, correctly built, owner-confirmed — and still be wrong because
+the owner changed his mind. The repo has no way to notice a reversal.** ⚠️ **A ruling that contradicts a shipped
+SPEC does not update the SPEC, and nothing makes it collide.**
+
+### The test for an unauthorised limit: does the cited source ask for a REFUSAL, or only name a WORRY? (2026-09-09, @Jason)
+🔑 ***"The first is a grep; the second is a read."*** ⚠️ **Do NOT apply this to the extension ceiling — see the
+correction above; the ceiling passes this test.** **It earns its place on what it actually caught, the same day:**
+- ✅ **`TEACHER_CHANGE_TOO_LATE` PASSES cleanly** — `SPEC-028 §5 #3` specifies the mechanism, names the code, and
+  attributes the number (*"3 days (owner)"*). **The source asks for the refusal.**
+- 🔴 **`LEAVE_NOTICE_TOO_LATE` cannot be closed.** `SPEC-048` **inherits** the refusal and never asks for one — its
+  own ask is that the values become *editable settings* (`REQ-047`). **The refusal's authority is cited as
+  `UC-029`** — ⚠️ **and `UC-029` does not exist in this workspace: every mention is a reference to it, never a
+  definition.**
+  🔴 **And it matters now: `REQ-085 §12` says the QUOTA is the only thing that may ever refuse a leave, and this
+  refuses one.** It has an admin `override` — **but a parent using LINE self-service has no override.** 🚫 Nothing
+  changed; raised to the owner.
+📌 **A limit whose authority is a document nobody can read is a different problem from one with no comment at
+all** — **and harder, because the citation looks like an answer.**
+### `EXTENSION_CEILING` is gone; the QUOTA is the only refusal on leave (2026-09-09, TASK-308)
+✅ **The refusal became a stretch:** the append loop collects the furthest date and grows the expiry **once**
+through `recordExpiryChange` with a **NULL actor** — *the system moved it, not a person* — so a course earning
+three make-ups records one expiry change and REQ-082's trail still answers *"why did this date move?"*.
+🔻 **Reverted with it:** TASK-301's pre-allocated quota week **and** TASK-302's twin in `replanExpiry` — *leaving
+either would pre-allocate on one path only, which is the inconsistency `§12` ends.*
+🔻 **Only dead once the refusal went, both removed:** the `CANCEL_AT_CEILING` re-map (*"a handler for an exception
+that cannot arrive"*, `EXPIRY_REQUIRED`'s shape — and the reconcile still runs on a cancel, so a cancel is still a
+reschedule, not a forfeit) and a comment claiming the ceiling was enforced at creation.
+📌 **Both were invisible before the change and obvious after** — which is what makes them easy to leave behind.
+
+### `firstFreeWeeklySlot` gives up and answers anyway — and its backstop was deleted (2026-09-09)
+`MAX_EXTENSION_WEEKS_SCANNED = 26` (`extension-slot.ts:7`): the scan finds no free slot and **returns the last
+candidate regardless.** Its comment says *"the caller's ceiling is what refuses it — this function never silently
+invents a valid-looking date."* 🔴 **That caller was `EXTENSION_CEILING`, removed by TASK-308.**
+⇒ **on a slot booked solid for 26 weeks a make-up lands SIX MONTHS out and the expiry stretches to meet it, in
+silence.**
+✅ **RULING: it must not REFUSE (`§12` forbids it) and must not be SILENT** ⇒ **the leave succeeds and the ADMIN is
+told.** 🔑 ***A refusal is the owner's to grant; a warning is ours to owe*** — the shape of `warn, and still save`
+(REQ-082 AC-4) and `§11.3`. ❓ **The threshold is with the owner; `26` was chosen as a scan limit, not a promise.**
+
+### `MAX_STUDENTS_PER_PARENT = 5` cites nothing (2026-09-09)
+`parent.service.ts:13`, refusing at `:119`, commented *"Business rule: a single phone may register at most 5
+students"* — **no REQ, no SPEC, no TASK, no owner ruling.** The customer's own copy hardcodes 5
+(`line-i18n.ts:142`), **and it cannot be told from the repo whether the copy is the SOURCE or an ECHO of the
+code — which is itself the finding.**
+📌 **Raised to the owner via @Porter as two questions — *is five yours?* and *do you want a limit at all?*** 🚫 Not
+changed; nothing is broken. ⚠️ **A family with six children would meet a wall nobody remembers building.**
+
+### `searchExhausted` — a warning trigger nobody had to choose (2026-09-09, TASK-309)
+`firstFreeWeeklySlot` returns the last candidate when its 26-week scan finds nothing, so **a found slot and a
+surrendered one differ by exactly one signal: the distance.** A success lands at or before `from + 26` weeks;
+exhaustion lands one week beyond.
+✅ **So the alert fires on EXHAUSTION, not on a threshold anyone picked** — 🔑 *"a threshold of my own choosing would
+be the same mistake as the ceiling."* **The leave succeeds, the ADMIN is told (never the parent), and the alert
+carries `weeks` / `replaces` / `landedOn` so a tighter number can become one constant later.**
+✅ **A normal make-up warns nobody, including one that skipped a few busy weeks** — *a warning that fires every
+time is not a warning.*
+📌 **The general form: when a threshold is needed and nobody has authority to set one, look for a signal the
+mechanism already produces.**
+
+### A field that CANNOT be true beats a field assigned `false` (2026-09-09, TASK-309)
+The creation preview's `exceedsCeiling` now compares against `max(bornCeiling, furthest session the preview laid
+out)` — **and nothing in that array can exceed a maximum taken over it**, so the field is false **by
+construction**.
+🔑 **Left as the computation rather than a literal `false`, so *"the day someone narrows the ceiling again it starts
+telling the truth instead of lying quietly."***
+⚠️ **The field stays on the DTO** — the FE reads it to disable `Create plan`. **Two repos, one order: the FE gate
+goes before the field does, never both at once.**
+
+### `LEAVE_NOTICE_TOO_LATE`'s authority is a document that does not exist (2026-09-09)
+`SPEC-048` **inherits** the refusal and never asks for one — its own ask (`REQ-047`) is that the cutoff values
+become **editable settings**. The refusal's authority is cited as **`UC-029`**, and **five files mention `UC-029`,
+every one of them REFERRING to it. There is no such document in this workspace.**
+🔴 **And it collides with `REQ-085 §12`: the quota is now the only thing that may refuse a leave — and this
+refuses one.** ⚠️ **An admin has an `override`; a parent using LINE self-service does not** ⇒ **a parent declaring
+leave too close to the class is refused by a rule nobody can read the source of.**
+🚫 **Nothing changed.** ❓ **With the owner: does `§12` retire the cutoff for parents, or is a LATE leave a different
+thing from a leave?**
+
+### `REQ-085 §12.2` — a LATE leave is a different thing from a leave (2026-09-09, the owner)
+🔑 **The precise rule, after @Porter corrected his own `§12` wording:** ***among the reasons a leave may be
+refused for BEING A LEAVE, the quota is the only one.***
+✅ **`§12` deleted the EXTENSION ceiling — a limit on how far the CALENDAR may move.** ⚠️ **`LEAVE_NOTICE_TOO_LATE`
+is about WHEN THE FAMILY SPOKE, and it STANDS — parents on LINE included.** 🔴 **Removing a refusal on that path
+is a REGRESSION, not the requirement.**
+✅ **Verified after TASK-308/309: it still throws at `scheduler.service.ts:2480` and `:2914`, mapped at
+`line-webhook.service.ts:838`.**
+📌 **Recorded and deliberately NOT raised to the owner:** an admin has an `override` for the cutoff and a parent
+does not · **`UC-029`, its cited authority, does not exist in this workspace.**
+
+### The registration screens are BILINGUAL; the rest of the conversation is not (2026-09-09)
+`REQ-079 §17c` — the customer's verbatim copy — shows **Thai and English in one block on every registration
+screen**. ⚠️ **This SUPERSEDES the TASK-307 ruling that `add_student_name_prompt` render in the session's single
+language.**
+🔑 **Both are right, and `both()`'s own purpose is the reconciliation: it exists for a reader whose language is
+not yet KNOWN — and during REGISTRATION it is not.** ⇒ **bilingual on the `§17c` screens; single-language once the
+session knows.**
+📌 **`§17f` (@Porter's ruling): NONE of the eight numbered headings is sent** — *"a table of contents, not
+copy"* — **and screen 2's `เลือกบทบาท / Select Your Role` is the one whose text defeats the requirement its own
+screen exists to satisfy.**
+
+### The entire LINE surface is served by the BACKEND (2026-09-09)
+Checked, not assumed: **nothing in `smart-scheduler-front` touches `line-webhook`, `replyToken` or
+`enqueueLine`.** ⇒ **the front end serves the admin frontoffice and no part of the LINE conversation or its
+notifications.**
+🔑 **Consequence for release planning: a LINE test round is gated by the BACKEND deploy alone.** ⇒ **FE work can
+never delay a LINE round, and a "split deploy" to get one LINE item out early is not a thing that needs
+negotiating — the two repos already are the split.**
+⚠️ **The real caveat is the opposite one: deploying the backend ships EVERYTHING currently in it**, so "just this
+one item" is never available within a repo. **Whether that is safe is a question about what else is in there,
+not about the item.**
+
+### `both()` cannot render the `§17c` registration screens — the STRING is bilingual, the call site is not (2026-09-09, TASK-310)
+`both()` stacks a whole Thai body above a whole English one. **`REQ-079 §17c` alternates LINE BY LINE** — a Thai
+sentence, its English sentence, and on screen 4 a `เบอร์โทรศัพท์ / Phone:` line in the middle of the pair. ⇒
+**there is no pair of `TH`/`EN` values `both()` could join to make their screen.**
+✅ **So the STRING holds both languages and the call site keeps `t(key, lang)`** — which satisfies TASK-307's
+property more strongly: **every reader gets the IDENTICAL screen.**
+🔑 **The guard lives in the JOINER, not in a list of keys:** `both()` now returns a body once when both languages
+render the same text — **because `` tb(`code_${role}`) `` renders a `§17c` screen for a parent and one of OURS for
+a teacher from ONE expression**, so no call site could carry the rule.
+⚠️ **A doubled screen passes every string pin** — assert the ASSEMBLED screen.
+
+### The errors clustered where we DECIDED, not where we TRANSLATED (2026-09-09, @Jason, TASK-310)
+Scoring our eight registration screens against the customer's own `§17c`:
+- ✅ **Five English sentences were already byte-correct** — **because `§17b` was a transcript of the same
+  document.** *"Our wording was right wherever we COPIED it"* — which says almost nothing about our writing.
+- 🔴 **The four that were WRONG were all STRUCTURAL, not tone:** the role list (`§5`'s whole subject) · the
+  address asked as ONE part when they ask for three · their *"type เพิ่มนักเรียน"* invitation missing · their
+  field labels dropped **by an explicit judgement (TASK-278)**.
+🔑 **TASK-278 named five places their text *"must not be applied literally"* — three right, two wrong, and both
+misses are the same mistake: reading BODY TEXT as document furniture.** *(`§17f` later ruled the numbered HEADINGS
+out on that same reasoning, correctly — same reasoning, two different objects.)*
+⇒ ⚠️ **An editor (`REQ-086`) would have prevented NEITHER miss.** 📌 **Its shipped defaults matter less than a
+review of what an engineer decided NOT to apply.** **Still worth building; it buys something narrower than "we
+stop getting the words wrong".**
+✅ **The cheap control is the one TASK-310 used: pin the customer's text byte-for-byte in a test.**
+
+### The bot's command vocabulary is ONE file and ALREADY bilingual — except `ครู` (2026-09-09, `§13` inventory)
+`src/lib/line-commands.ts` holds the router's vocabulary **and** the reserved set, deliberately (TASK-245:
+*"a second copy is how 'the bot said `เมนู` is a command' and 'the bot stored `เมนู` as a name' both become true
+at once"*).
+✅ **English forms already accepted:** `register` · `menu` `help` · `courses` `mycourses` · `admin` ·
+`children` `students` · `qr` · `checkin` `check-in` · `leave` `sick` · `schedule` · `calendar` · `cancel` ·
+`reopen` `open menu` · `skip` `no` `done`, plus `confirm` `yes` `ok` in `lib/line-add-student.ts`.
+🔴 **The only Thai keyword with no English form is `ครู`.**
+⚠️ **Two keywords live OUTSIDE that file** — `confirm` (`line-add-student.ts`) and `Add Student` (a REGEX in the
+router) — **so a "every keyword has an English form" sweep over the list cannot see them.**
+
+### 🔴 `Add Student` creates a child NAMED "Student" (2026-09-09)
+`line-webhook.service.ts:1028` — `raw.match(/^(?:เพิ่มนักเรียน|เพิ่มลูก|add)\s*(.*)$/i)` — and `:1031` adds a
+student with the captured remainder as the NAME.
+**`REQ-079 §17c` screen 8 tells the parent: *please type "Add Student"*.** ⇒ **`add` matches, `Student` is
+captured, and a child called `Student` is created — silently, successfully, wrongly.**
+⚠️ **`Student` is not in `RESERVED_WORDS` (`students` is), so nothing stops it.**
+🔑 **This is TASK-245's defect returned: the bot advertises a phrase and swallows part of it as data** — the one
+that cost the owner *"a student record that can never be deleted"*, **and there is still no delete route and no
+archive flag.**
+📌 **The failure mode: obey our own screen, in the language our own screen offers, and create a permanent record.**
+
+### 🔻 CORRECTED 2026-09-09 — the `add` prefix swallows `address` and `Add Student`. **NOT `admin`.**
+**The earlier version of this entry claimed `admin` created a child named `in`. That is FALSE — `a-d-m` is not
+`a-d-d`.** Run, not read:
+```
+"admin" -> NO MATCH   |   "address" -> "ress"   |   "Add Student" -> "Student"
+```
+🔻 **@Sober asserted it from reading the pattern, sent it as URGENT while @Porter was mid-warning to the owner,
+and @Porter relayed it.** ⇒ **`CMD_ADMIN` was reachable the whole time.**
+
+**What was REAL, and justified shipping on its own:** `line-webhook.service.ts:1028` —
+`/^(?:เพิ่มนักเรียน|เพิ่มลูก|add)\s*(.*)$/i`, where **`add` is a bare prefix and `\s*` matches EMPTY**:
+| input | result before TASK-312 |
+|---|---|
+| **`Add Student`** *(screen 8 tells the parent to type it)* | a child named **`Student`** |
+| `address` | a child named `ress` |
+⚠️ **Neither is in `RESERVED_WORDS`, and there is no delete route and no archive flag — both writes are
+permanent.** 🔑 **TASK-245's defect returned: the bot advertises a word and swallows part of it as data.**
+✅ **Fixed in `parseAddCommand` (pure, `line-add-student.ts`): `add` is the command only when the input ENDS
+there or a SEPARATOR follows, and `Add Student` is matched as the COMMAND (case-insensitive, space-collapsed).**
+**`Add Student Emily` creates `Emily` — the phrase takes a name exactly as bare `add` does.**
+🚫 **The check still sits ABOVE `CMD_ADMIN`, pinned by a source assertion** — *the pattern was the defect, not
+its position.*
+
+### 🔴 `add child` — OUR OWN English menu writes a child named `child` (2026-09-09, unfixed)
+`line-i18n.ts:220`, the EN menu's first line: *"· add child — register a child (up to 5)"*.
+⇒ **a parent who types what our menu tells them gets a permanent record named `child`.**
+🔑 **TASK-312 could NOT have caught it: `add child` IS the correct shape for an inline add** — separator, then a
+name. **It was true before that fix and is true after.**
+📌 **`Add Student` came from the customer's copy. This one we wrote ourselves.** ❓ **With @Porter as a COPY
+decision** — rename the hint, reserve `child`, or make `add child` a phrase.
+⚠️ **Also named, not fixed: `เช็คอิน 2` / `ลา 1` are Thai-only regexes** (`:1055`, `:1065`) — **`checkin 2` and
+`leave 1` match nothing.** **Never advertised in English, so nobody is told to type them.**
+
+### 🔻 `ครู`/`teacher` was never missing — an inventory's SCOPE is part of its claim (2026-09-09)
+**@Sober inventoried `lib/line-commands.ts`, found no `ครู`, and reported "the only Thai keyword with no English
+form".** 🔴 **`ครู` is not in that file at all** — **the bot accepts it in `parseRoleChoice`, where `teacher` has
+sat since TASK-251.**
+⇒ **@Porter took a ratification question to the owner that never needed asking, and @Jason correctly refused to
+add a `teacher` command keyword** — *"that would have been inventing a command nobody asked for."*
+🔑 **The inventory was accurate about the file and wrong about the product.** ⚠️ **State the SCOPE of a sweep in
+the same breath as its result** — *"nothing in `line-commands.ts`"* is a different claim from *"nothing in the
+product"*, and only one of them was true.
+### An English-only defect on a Thai-speaking team is invisible by construction (2026-09-09)
+**`admin` has been broken since inline-add was built and nobody reported it — because everyone here types
+`แอดมิน`.** 📌 **`REQ-085 §13` exists because the customer has foreign parents: they are exactly who would have
+found it, in production, by following our own menu.**
+🔑 **The general form: a branch nobody on the team has a reason to walk is untested by the team's own habits, not
+by oversight.** ⇒ **ask which paths have an ENGLISH (or any minority) branch that no one here has ever used.**
+
+### `REQ-085 §13.3` — every English keyword is CASE-INSENSITIVE, and the test must be ABSURD (2026-09-09)
+> *"คำสั่งภาษาอังกฤษ ต้องไม่สนใจ จะพิมพ์เล็กใหญ่ได้หมด เช่น confirm Confirm ConFirm ConFiRM"*
+
+🔑 **The letters are what matter; their case never does.** ⚠️ **English only — Thai has no case.**
+🔴 **Test with `ConFiRM`, never `Confirm`:** *a test using `Confirm` passes a `toLowerCase()` applied to the first
+letter only.* **The owner's four absurd examples ARE the requirement.**
+📌 **`Add Student` carries case AND a space** ⇒ `ADD STUDENT` · `add student` · `AdD StUdEnT` · and collapsed.
+🚫 **Case-insensitive is not FORGIVING: `CONFIRMM` is not `confirm`.** **We accept the same WORD however typed;
+never a different word.**
+
+### 🔴 The reserved-word guard is on ONE of two doors — `add เมนู` writes a child named `เมนู` (2026-09-09)
+| path | check |
+|---|---|
+| the name PROMPT — `line-webhook.service.ts:563` | ✅ `isReservedWord(name)` → `strikeOrPrompt` (TASK-245) |
+| 🔴 the INLINE add — `:1035` | 🔴 **none**; `addStudentAndReply(name)` is called directly |
+⇒ **`เมนู` typed at the prompt is refused; `add เมนู` creates a permanent child named `เมนู`.**
+🔑 **That is TASK-245's ORIGINAL defect** — *"`เมนู` was stored as a child's NAME, in a roster with no delete, by
+a bot that had just told him `เมนู` was a command"* — **live on the other door the entire time.**
+📌 **The shape: a rule extracted into a helper, applied where the defect was REPORTED, never applied to the
+sibling call site.** ⚠️ **Second instance this week — the leave notice fired from one door of four (TASK-306).**
+***The fix went where the report came from.***
+
+### "What the product ADVERTISES is reserved" is two-thirds mechanical (2026-09-09, @Porter's principle)
+> ***No word the product PRINTS in a menu or a prompt may become a child's name.***
+1. ✅ **STRUCTURAL** — with the inline guard in place, every word in `RESERVED_WORDS` is unusable as a name on
+   both doors, by construction.
+2. ✅ **MECHANICAL for the MENU** — `menu_body` is `· <word> — <description>` in both languages, so a test can
+   parse the menu STRING and assert every advertised token is reserved. **It fails the day someone advertises a
+   word without reserving it.**
+3. 🔴 **HAND-KEPT for the customer's eight `§17c` screens** — they are PROSE (*"please type "Add Student"."*) and
+   no parser finds that reliably. **Mitigation, not mechanism: `§17c` is pinned byte-for-byte (TASK-310), so the
+   words cannot change silently; what is unguarded is a NEW instruction added later without reserving its word.**
+⚠️ **Declared in the test file beside the part that works** — the same rule as TASK-312's blind spot.
+
+### `add child` is retired as ADVERTISING, not as input (2026-09-09, @Porter's copy ruling)
+**Three phrasings for one act — `เพิ่มนักเรียน` (ours) · `add child` (ours) · `Add Student` (the customer's,
+screen 8) — TWO of them ours.**
+✅ **The EN menu now says `Add Student`** — the customer's own phrase, matched by the same rule.
+🚫 **We do not invent a second English phrase for an act the customer has already named.** 🔑 *Two ways to say one
+thing is how it starts meaning two things.*
+⚠️ **`add child` REMAINS ACCEPTED** — parents have seen it. **It stops being advertised; it does not start being
+refused** — and when typed it must ADD a child, not name one `child`.
+
+### The wizard door gets the rules; the INLINE door predates them (2026-09-09, @Jason)
+> ***"`addStudentAndReply` predates the wizard, and every rule written FOR the wizard was written INTO the
+> wizard. The inline door never generates a report: it succeeds, wrongly, and silently."***
+
+🔑 **The wizard is the door with a prompt to get STUCK in, so it is the only door that ever complains** — which is
+why *"the fix went where the report came from"* keeps producing defects in this feature specifically.
+**Four instances found in one week, all by ASKING, none by failing:**
+| rule | on the wizard | on the inline add |
+|---|---|---|
+| the leave notice (TASK-306) | ✅ | 🔴 one door of four |
+| `isReservedWord` (TASK-313) | ✅ `:563` | 🔴 none — `add เมนู` wrote a child named `เมนู` |
+| `decideDuplicate` (AC-9) | ✅ | 🔴 **`add น้องเอ` twice creates two identical PERMANENT records** |
+| `notifyAdmins({student_registered})` (AC-11) | ✅ | 🔴 **a child added inline is one no admin is told about** |
+⚪ **NOT an instance:** the cap's courtesy check is wizard-only but **harmless** — the write's own precondition
+still enforces it, *which is why it was extracted.* **A worse MESSAGE, not a missing rule.**
+
+### A parsed-from-source assertion found a defect its own principle had not named (2026-09-09, TASK-313)
+The test that parses `menu_body` for advertised tokens **found `เพิ่มนักเรียน` and `Add Student` unreserved on its
+first run** ⇒ **`add เพิ่มนักเรียน` would have written a child named `เพิ่มนักเรียน`.**
+✅ **Closed WITHOUT a second list: `isReservedWord` CONSULTS `parseAddCommand`** (`parseAddCommand(text)?.name ===
+null` ⇒ reserved), **so the regex stays the single source and the two cannot drift.**
+🔑 **A guard whose reach is DERIVED from what the product prints catches words nobody remembered to reserve.**
+
+### `add child` is the COMMAND, and `child` is NOT reserved (2026-09-09 ruling)
+@Porter: *"`add child` must still be ACCEPTED — parents have seen it. It stops being ADVERTISED; it does not start
+being refused. **And when it is typed, it must add a child and NOT name one `child`.**"*
+⇒ ✅ **`add child` is a PHRASE like `Add Student`** — bare it starts the prompt; `add child Emily` creates `Emily`.
+🚫 **`child` must NOT join `RESERVED_WORDS`** — ⚠️ **that would REFUSE a parent who typed the retired phrase
+instead of SERVING them.** 🔑 **Reserving is for words we ADVERTISE; this one we retired.**
+
+### 🔴 A GREEN mutation is a result about the TEST, not the code — a source pin proves a line EXISTS, never that it EXECUTES (2026-09-09, @Jason, TASK-314)
+Break-and-watch mutation B disabled the inline duplicate question (`if (false && …)`) and the suite came back
+**9 pass, 0 fail** — because the pins were an `indexOf` ordering check and a `toContain` of the helper call, **and
+both are satisfied by the TEXT of a condition that can never run.**
+> *"A green mutation proves nothing, and I nearly reported it as coverage."*
+
+🔑 **This is the limit of the technique we leaned on all week** — source-text pins are the only way to assert a
+DB-bound path from a pure test, **and they cannot tell a live line from a dead one.**
+✅ **The fix: pin the EXACT guard line, and write the reason beside the pin.** ⚠️ **And chase every green mutation
+rather than filing it — it is evidence the assertion is in the wrong place.**
+
+### Look for TWO WRITERS, not two doors (2026-09-09, @Jason)
+Counted rather than reasoned: **nine of eleven `do*` handlers are reached from BOTH the typed word and the tap,
+and converge on ONE function within a line** — so the rules live in that function and cannot diverge.
+`doCheckin`/`doLeave` look single-door only because the tapped form carries a booking id and lands on the
+`…Booking` sibling — the same convergence, one hop later.
+🔑 **Add-student was the ONE feature with TWO WRITERS** — `addStudentAndReply` (older, inline) and the wizard's
+confirm (newer) — **which is why FOUR instances of "the rule guards one door" landed in one feature in one week
+and none anywhere else.** ✅ **After TASK-313/314 it has one writer (`createStudentFromLine`).**
+📌 **Two pairs to watch, neither a defect today:** **`verifyAndLink`'s 2FA branch** (existing parent only —
+correct, but a rule on one branch of two) and **`handleFollow` vs the unlinked-postback fallback**, which
+**diverged once (TASK-231's silence rules) and was re-converged by hand.**
+⇒ ***two doors that converge are safe; a feature whose second entry point grew its own WRITE is where the next
+one is.***
+
+### `add child` is a PHRASE, and AC-11's notification lives on the LINE side (2026-09-09, TASK-313 §5 / TASK-314)
+✅ **`parseAddCommand` has one alternative (`student|child`): `add child` · `AdD ChIlD` · `addchild` → the prompt;
+`add child Emily` → `Emily`; `addchildemily` → nothing.** 🚫 **`child` is NOT in `RESERVED_WORDS`** — reserving is
+for words we advertise, and this one was retired.
+✅ **AC-9's duplicate rule moved to HANDLER helpers** — *"the rule's whole content is a QUESTION, and only a
+handler can ask one"* — and an inline duplicate now joins the wizard at `AWAIT_STUDENT_DETAIL`.
+✅ **AC-11's `student_registered` moved to `createStudentFromLine`, NOT to `createStudentForParent`** — 🔑 **that
+service function is also the STAFF screen's write, so an admin adding a student would be notified of their own
+act.** **The rule is *a parent registered a child over LINE*, so it lives on the LINE side.** ⇒ **one caller, one
+notify site, unskippable by construction.**
+
+### 🔴 `REQ-085 §6.1` — the no-skip rule applies ONLY to a family with ZERO children (2026-09-09)
+**The defect, from the owner's own screen:** a phone with FOUR existing children linked and was dropped straight
+into *"กรุณาระบุชื่อนักเรียน"* — **a family with four children made to add a fifth**, with `ยกเลิก` the only exit
+and not advertised in English. **Owner: *"เหมือนบังคับเลยมั้ย"*.**
+✅ **RULING (ratified):** **0 children → the mandatory prompt, unchanged.** **≥1 child → NO prompt: the
+found-your-family line, then the screen-8 invitation (`add_another_hint`), then the menu.**
+🔑 **`§6`'s justification was *"a parent account with no child can do nothing"*** ⇒ **a family that already has
+children can do everything, so the rule never reached them.**
+🚫 **Not fixed by adding a skip:** ***the prompt should not be there; a skip on a prompt that should not exist is
+a second wrong thing.***
+🔴 **TWO doors set that step: `line-webhook.service.ts:1327` (link success) and `:1291` (the 2FA branch, which
+has already fetched the children).** ⚠️ **2FA is unreachable today (`line_parent_2fa` off) and exists so
+*"switching the setting on is a setting change and not a rebuild"*** ⇒ **fixing only the reported door means the
+defect returns the day that switch is flipped, by someone certain they changed only a setting.**
+
+### A rule can be RIGHT and its BOUNDARY assumed — and tests that match the requirement exactly will pass (2026-09-09)
+`REQ-085 §6` shipped in the morning and produced a defect on the owner's phone the same afternoon.
+**TASK-307 asserted both halves the requirement named** — *a parent with NO children cannot skip*, *a parent WITH
+a child can still skip* — **both true, both green.** 🔴 **Neither is the failing case: a family with children being
+forced into the flow AT ALL.**
+🔑 **The gap was not in the assertions; it was in the requirement, which never said what happens to a RETURNING
+family.** 📌 **Tests written faithfully to a requirement cannot cover a case the requirement does not mention** —
+⇒ **when a rule is about a STATE (no children), ask what the other states do, and write that into the
+requirement rather than leaving it to the code.**
+
+### 🔴 A restore that fails silently turns "break it and watch" into "break it and ship it" (2026-09-09, @Jason)
+On TASK-315 his mutation script's RESTORE threw, **so the `bun test` after it never ran** — the passing number he
+first saw was **stale output from before the mutation**, and the working tree still contained `if (true)`.
+**He caught it only by READING the file back.**
+🔑 **New rule, his:** **verify a restore by READING the line, never by the exit code of the script that wrote
+it.**
+✅ **And @Sober's review rule adopted from it: any report that mentions a mutation gets the suite RE-RUN by the
+reviewer, not read from the report.** ⚠️ **This is the one error class this week that could have reached the
+owner as a broken DEPLOY rather than a wrong belief.**
+
+### A rule that names who it PROTECTS, and not who it TOUCHES, has an assumed boundary (2026-09-09, @Jason)
+> *"`REQ-085 §6` was specified for the population it was ABOUT — parents with no children — and silent about the
+> population it would also REACH."*
+
+**TASK-307's two assertions were the right two for what `§6` said** — *no children cannot skip*, *with a child can
+still skip* — **both about a parent already INSIDE the add-child flow.** 🔴 **The defect was about whether a family
+should be in that flow AT ALL: a question the requirement never asked, so no assertion could have been written
+against it.** ⇒ ***not a missing test; a missing sentence.***
+🔑 **The pair to carry:** ***"look for two writers" finds the sibling DOOR; "look for the sibling POPULATION"
+finds this.*** 📌 **Both are questions asked at the right moment, not coverage targets.**
+
+### Record the assertion you REJECTED, inside the test file (2026-09-09, @Jason)
+His first TASK-315 assertion counted `setStep(…, "AWAIT_STUDENT_NAME", …)` and expected 3; there are **4** — the
+inline add's prompt, TASK-313's reserved-word refusal and the `register` postback all set it legitimately. ⇒ **a
+count that includes them measures the wrong thing.**
+✅ Replaced with the property actually meant — **neither door contains the decision, asserted as an ABSENCE on
+both slices** — **and the WRONG version is named in the test so the next reader does not re-add it.**
+🔑 **The obvious-but-wrong assertion is exactly what a future reader reaches for; writing down why it was
+rejected is worth more than the one that was kept.**
+
+## 📱 LINE MOBILE AND LINE DESKTOP DO NOT RENDER OUR MESSAGES IDENTICALLY (2026-09-10, owner-verified)
+**Same message, side by side:** **desktop ends at the last field; MOBILE shows a VISIBLE EMPTY LINE below it.**
+**Reported by the customer** (*"ในคอมไม่ขึ้น แต่ในโทรศัพท์ขึ้นค่ะ"*), **then reproduced by the owner with both
+clients on screen at once.**
+📖 **Likely cause (@Porter, unconfirmed): a TRAILING NEWLINE that desktop trims and mobile does not** — **most
+probably a conditional field emitting its separator before deciding it has nothing to print.**
+🔴 **THE CONSEQUENCE, which outlives the bug:** **every message check this team has ever run was on a computer.**
+⇒ **we have been verifying a DIFFERENT RENDERING from the one a parent sees.** **Nobody here has a phone; the
+owner is the only person who can see what we actually ship.**
+📌 **So a message that "looks right" in a transcript, a screenshot from a desktop, or an API payload is verified
+for CONTENT and not for APPEARANCE.** **Say which one you mean.**
+
+### `§14` and `§15` are ONE defect: a label that names a RECURRING attribute (2026-09-10)
+**`REQ-085 §15`:** the teacher received two byte-identical LEAVE NOTICES because `Date : Tuesday` names a
+recurring slot, and the course runs every Tuesday.
+**`§14`, one surface over:** `lib/line-leave.ts:32` — **`sessionLabel` is `time · teacher · program`, with NO
+date.** ✅ Correct while `doLeave` scans **today only**; 🔴 **the moment the window widens, one weekly course
+produces three identical picker rows and the parent cannot tell which class they are cancelling.**
+🔑 ***Both labels were sufficient only while their context was one day wide.*** ⇒ **widening a scan without
+widening its labels converts a fixed defect into a new one, on the other side of the same act.**
+⚠️ **Constraint: LINE clamps a picker BUTTON label to 20 chars** (the prompt BODY is unclamped), and
+`time · teacher · program` already overflows — **so a date cannot simply be prepended; body and button may need
+different forms.** 🚫 **Never a half-printed date: it looks like information.**
+
+### `§14`'s flow already exists — only the WINDOW is one day wide (2026-09-10)
+`doLeave` (`line-webhook.service.ts:901`) already **scans**, already asks **which child** (`needsChildStep`, only
+when ≥2 have a session), already lists **which session** (`sessionPicker`), and already skips the question when
+there is one answer. 🔴 **`findTodayBookingsForParent(lineUserId, date)` is the whole defect.**
+🔴 **And `doLeaveBooking` (`:915`) re-fetches with the SAME today window** ⇒ **widening only the picker makes
+every pick outside today fail authorization AFTER the parent has chosen.** *(The sibling-door shape again.)*
+✅ **Eligibility must reuse `hasEnoughLeaveNotice`, the helper `updateBookingStatus` throws from** — 🔑 *offering a
+session the bot will then refuse is worse than not offering it*, and `§12.2` keeps that refusal.
+📌 **The empty message must distinguish "nothing upcoming" from "everything is inside the cutoff"** — *"too late
+for tomorrow's class, call the school" is help; "no class eligible" is a shrug.*
+
+### `REQ-085 §4` governs values the system GENERATES, never what a message is CALLED (2026-09-10, @Porter)
+`§4` — *"eng ล้วน ไม่ควรไทยเลยแม้แต่ติด"* — was always about the SYSTEM'S OWN words (`Date : อังคาร` → `Tuesday`,
+`ไม่มี` → `(-)`). ⇒ **it does not forbid the customer's bilingual HEADER `LEAVE NOTICE / แจ้งลา ‼️` (`§16e`),
+which REVERSES the owner's earlier `§9` English-header ruling — superseded, not wrong.**
+🔑 **Write the boundary next to the header**, or someone "fixes" it back to English citing `§4` — 📌 **exactly the
+shape that let `Date : อังคาร` ship after `REQ-079 §18` had already ruled labels English.**
+⚠️ **And the audience is why it holds: the leave notice goes to COACHES and ADMINS, never a parent** — **the one
+notification with a Thai header is the one no parent ever sees.**
+
+- 🔴 **The LEAVE NOTICE date format is the CUSTOMER's: `Date : 10-09-2026`, the date ALONE, `DD-MM-YYYY`** —
+  `REQ-085 §16d`. 🔻 **@Porter's `Tuesday 22/Sep/26` was withdrawn**; the customer used the same `DD-MM-YYYY`
+  they specified for date of birth in `REQ-079 §17c`. 🚫 **The `§14` picker's `อังคาร 22/09` is a DIFFERENT
+  surface and stays as it is** — two audiences, two formats, both correct. *(TASK-318)*
+- 🔴 **The leave-notice header is `LEAVE NOTICE / แจ้งลา ‼️`, BILINGUAL** (`§16e`) — **this REVERSES the
+  owner's own `§9` English-header ruling**, which was given before the customer had asked. **Superseded, not
+  wrong.** 🔑 **The boundary that keeps it alive, and it is written in the code beside the header:** ***`§4`
+  governs values the system GENERATES; it never governed what a message is CALLED.*** ⚠️ **Without it, `§4`
+  gets cited to "fix" the header back to English** — the same shape that let `Date : อังคาร` ship after
+  `REQ-079 §18` had ruled labels English. ✅ **It holds because the audience is coaches and admins, never a
+  parent.** *(TASK-318)*
+- ✅ **`Sessions :` is removed from `§7.1`** (`§16.4`) — the program name already carries the hours
+  (*"Freeskate 6 HR"*). 🚫 **`Remaining` and `*Expiry date` STAY** — they are how a coach tells a COURSE row
+  from a one-off, which is the owner's own acceptance criterion (*"ไม่งั้นมันจะแยกยังไง"*). ⚠️ **`§7.1`'s
+  byte pin is REWRITTEN, not deleted** — *an assertion that changes because a requirement changed is correct;
+  one deleted because it failed is how this class ships.* *(TASK-318)*
+- 🔑 **A label is at risk exactly when it names an attribute that is CONSTANT across the set it is displayed
+  in** — and **whenever a list's WINDOW widens, re-ask what VARIES among the rows, because the label was
+  written against the old set and NOTHING WILL FAIL.** *(@Jason, TASK-316 — the `§14` picker labelled
+  sessions by teacher and program, which are identical across the rows being told apart.)*
+
+- 🔴 **`note` and `attendeeNote` are TWO DIFFERENT booking columns and only ONE of them is ever rendered.**
+  **`attendeeNote`** (TASK-178) is what the plan editor's `Session note` reads/writes and **the only note any
+  LINE message renders**; **`note`** is the **STATUS-FLOW** note where machine text lands
+  (*"ยกเลิกโดยแอดมิน"*), displayed in exactly one place in the app (`BookingModal.tsx:461`).
+  📌 **`coursePackages` has NO note column** — only `endNote`. 🔑 **A note "on a course" is always N rows on
+  the bookings, never one row on the course.** *(TASK-320)*
+- 🔴 **The create-course dialog sent the admin's note as `note`, never `attendeeNote`** —
+  `CreatePlanFlow.tsx:214` — **while `createCoursePackage` already sent `attendeeNote` and the BE and schema
+  had accepted it since TASK-178.** ⇒ ***"one note at creation, carried onto every session" was never
+  reachable from the UI, from REQ-068 until TASK-320.*** 🔑 **Every layer individually correct, the product
+  doing nothing: each side asserted its own half of a boundary neither crossed.** ⚠️ **The fix is NOT
+  retroactive.** *(TASK-320 — and `courseNote`/TASK-284's BE fix were correct all along.)*
+
+- 🔑 **@Fern's rule, and it is the FRONT END's own version of @Jason's:** ***on the front end a label becomes
+  at risk when the USER'S PATH gains a second candidate for the thing it names — not when a SCREEN does. And a
+  path is exactly what no component's tests can see.*** 📌 **The `Ends` defect crossed two screens** — the
+  owner conflated the course CARD's `expires` with the plan MODAL's `Ends`, **and neither screen's own context
+  had changed.** ⇒ **@Jason's form names the SET (one screen); hers names the PATH (two).** *(TASK-319)*
+- 🔴 **`attendeeNote`'s own hint FORBIDS what the product's own fixtures put in it.** The hint (REQ-068 /
+  TASK-178, both languages) reads *"Not for phone numbers, addresses or medical details"* — **while `แพ้ถั่ว`
+  (a peanut allergy) is the canonical `Remark` fixture in the back end's tests**
+  (`customer-english.test.ts:238`, `line-message-fields.test.ts:225`). ⚠️ **OPEN — with the owner through
+  @Porter (2026-09-10):** is `Session note` logistics-only (⇒ our fixtures teach the wrong example) or
+  anything-a-coach-should-know (⇒ the HINT is wrong)? 🚫 **Nothing changed pending his answer; the TASK-320
+  wiring is correct either way.**
+- ⚠️ **The BROKEN-typecheck fact is BACK-END-ONLY, and here is why.** `smart-scheduler-front` has typescript
+  in its own `node_modules`, so **`bunx tsc --noEmit` there resolves to the local one and works (exit 0)**.
+  `smart-scheduler-back` has NO local typescript, so `bunx tsc` downloads one and panics ⇒ **there, and only
+  there, use `bunx --package typescript@5.6.3 tsc --noEmit`.** 📌 **Even that can fail with a missing
+  `lib.*.d.ts` from a half-populated bunx cache** — the reliable fallback in a repo that HAS typescript is
+  `bun node_modules/typescript/lib/tsc.js --noEmit`. *(Verified by @Sober, 2026-09-10.)*
+
+- 🔑 **@Jason's law, tested against ten items and ADOPTED (2026-09-10):** ***everything we wrote that was a
+  rule about BEHAVIOUR survived the customer; everything that was a rule about APPEARANCE was overridden the
+  moment they spoke.*** ⇒ **the split is not "defects vs wording" — it is *what the message must DO* vs *what
+  it must LOOK LIKE*.** ✅ **Consequence, now standing: the ACCEPTANCE CRITERION is the deliverable and the
+  string is a PLACEHOLDER until the customer ratifies it** — 🔑 **and the concrete cost is that @Sober stops
+  asking for BYTE PINS on strings the customer has not seen.** 📌 *The convention already exists in the repo:
+  `PENDING_RESCHEDULE`'s comment says "PLACEHOLDER … do not treat it as agreed."* 🚫 **We do NOT stop designing
+  the wording — you cannot find the defect without imagining the fix; the string is the by-product of the
+  thinking, not the waste.** *(`§15`'s durable content was ONE sentence and it survived all three readings.)*
+- 🔴 **A TASK NEVER RE-TRANSCRIBES A SPEC BLOCK — it points at the requirement.** @Sober compressed `§16d`'s
+  one-field-per-line block onto two `·`-joined lines in TASK-318, @Jason wrote his byte pin from the task page,
+  **and it failed against `REQ-085` itself.** ⚠️ **Had he trusted the task, he would have rewritten the field
+  block for EVERY template to match an artefact the task introduced.** 🔑 **Where a TASK and a REQUIREMENT
+  disagree, the REQUIREMENT wins, without asking.** *(TASK-318)*
+- ✅ **`§16d`'s `Time :12:00-13:00` (no space) is DELIBERATELY NOT reproduced**, and the reason is a BEHAVIOUR
+  rule, not an appearance judgement: **`TASK-257 §3` — a message with two labelling conventions is what put
+  `จำนวนคาบที่ยืนยัน` under eight English labels.** ` : ` is the separator in every field of every template.
+  📌 **Reported to the customer through @Porter as a stated deviation, never a silent one.** *(TASK-318)*
+- 🔑 **The general test for any "remove the redundant field" request** (@Jason, TASK-318 §4): ***removing one
+  of two fields is safe only because they had already been made to AGREE. Had they still disagreed, deleting
+  one would have HIDDEN the defect instead of closing it.*** 📌 *The safe edit and the defect-hiding edit are
+  the same keystroke; only the state BEFORE it tells them apart.*
+
+- 🔑 **@Jason's TELL, adopted (2026-09-10) — run it BEFORE dispatching a copy item:** ***count the call sites
+  of the string the customer named; a copy item is a SCOPE DECISION exactly when the string is SHARED, and you
+  only need to ask "which screens?" when the answer is more than one.*** ✅ **It partitions the whole `§16`
+  batch correctly**: `§16.2`'s exit hint had **11** sites and arrived under-scoped; `§16g`, `§16.4` and `§16d`
+  had one each and did not. 📌 **And the cause is THEIR document being right, not wrong: a screenshot cannot
+  know a string appears anywhere else — a customer describing what they SEE is the customer doing it right.**
+  ⚠️ **Predicted next: `add_student_name_prompt` (5 sites) and `withExit` (11) are the two shared strings left
+  in the registration flow.**
+- ✅ **A test that pins a COINCIDENCE turns a silent assumption into a scheduled question.** (@Jason, TASK-323
+  `§16g`.) **Two keys hold the same value on purpose** — reuse would couple them silently, a copy would let
+  them drift silently ⇒ **separate keys AND a test asserting they are equal**, so the day either moves a human
+  is told and decides. 🔻 *@Sober had offered only the two flawed options and priced the risk of just one.*
+- 🔴 **A TASK may say what to CHECK; any count, layout or list of sites in it is a HYPOTHESIS, not a fact — and
+  the engineer's finding overrides it SILENTLY.** ⚠️ **Two instances in two days: `§16d`'s block compressed in
+  TASK-318, and *"twelve call sites"* in TASK-323 (it is eleven — the twelfth match is the declaration).**
+  🔑 **Both are the same failure: a DERIVED fact written into a task and pinned as an assertion.**
+- 🔴 **There is NO shared time formatter in the front end, and dates have one.** Four sites render a raw
+  `HH:mm:ss` (`ExpiryWarningAlert:54`, `EditExpiryDialog:205`, `BookingsTable:369`, `CreateCourseModal:174`),
+  three do `.slice(0, 5)` inline (TASK-295's), and `formatDateDisplay` exists for dates.
+  ⇒ 🔑 ***the owner reported the same missing function FOUR times in one week and every report looked like a
+  one-line bug.*** 📌 **`contract.ts:155` documents `HH:mm:ss` and names the FE as the formatter — the contract
+  is right; the formatter was never written.** *(TASK-324)*
+
+- 🔴 **`§16.3` IS NOT DONE, and @Sober reported it done.** **`.trimEnd()` is in 5 of `formatOutboxMessage`'s
+  14 branches and there is NO trim at the builder** ⇒ **nine messages are clean or dirty by accident of which
+  branch someone trimmed.** 🔻 **@Sober assembled the completion table from MEMORY and ticked a row he had
+  never dispatched — in the ONE message that releases a tester.** ✅ **Standing correction: the completion
+  message is built by CHECKING each row IN THE CODE, and says so.** 📌 *A table assembled from memory is a
+  report about that memory.* *(TASK-325)*
+- 🔴 **MONEY: a shared formatter EXISTS and four local copies coexist** — `formatPriceMinor` against
+  `FreelanceBudgetStrip:11` and `FreelanceBudgetControls:13` (**byte-identical lines**), `TeacherRowActions:36`,
+  `TeachersContent:41`. 🔑 **Worse than the time gap precisely BECAUSE the shared one exists**, and
+  `money-display.test.ts` already records that this must not happen — **pinned there because a 100× money
+  defect shipped on that exact boundary** *(TASK-169: `391` took ฿3.91 instead of ฿391, found by @Tanya, not
+  the compiler)*. ⚠️ **@Fern: *a wrong time is embarrassing; a wrong magnitude of money is actionable*, and the
+  copies are in the FREELANCE BUDGET surfaces.** ❓ **OPEN with the owner via @Porter: may a budget legitimately
+  format differently from a price?** 🚫 **Nothing moves on money until he answers.** *(TASK-324)*
+- ⚠️ **The FE's `src/types/api/contract.ts` says *"Synced … keep in lockstep"* and has DRIFTED.** The sentence
+  *"As stored (`HH:mm:ss`) — the FE formats"* exists only at `smart-scheduler-back/src/types/contract.ts:156`;
+  the FE copy contains no `HH:mm:ss`. 🔴 **@Sober cited `contract.ts:155` in TASK-295 and TASK-324 for a line
+  that lives only in the other repo** — **the third instance of a derived fact written into a task.**
+  📌 **Neither repo's tests could ever have noticed.** *(TASK-326)*
+- ✅ **`formatTimeDisplay` is a TRIM, not a parse, and that is LOAD-BEARING** (@Fern, TASK-324): a `dayjs` parse
+  would "improve" a malformed value and **silently change what the three already-correct `.slice(0,5)` sites
+  render.** 📌 **Byte-identical asserted against the OLD EXPRESSION itself** — the right way to prove it.
+- 🔑 **@Fern, TASK-321: *a dead string kept ON PURPOSE with the purpose written down is the opposite of a label
+  outliving its value.*** **`noLiveEnd` now has NO renderer** (both callers removed) but stays, because
+  **TASK-294 is an OPEN RULING on it** — ⚠️ **and all THREE states of its pin are recorded, because that pin's
+  REASON went stale twice in two days.** 📌 **TASK-294 now has a fact it did not have: one of its three strings
+  is dead, which may make it a deletion rather than a rewording.**

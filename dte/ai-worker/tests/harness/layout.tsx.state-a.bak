@@ -1,0 +1,65 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import "@/styles/themes.css";
+import { Navbar, Footer } from "@/components/layout";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import AntdConfigProvider from "@/contexts/AntdConfigProvider";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: "DTE — Develyst The Education",
+    template: "%s | DTE — Develyst The Education",
+  },
+  description: "แพลตฟอร์มเรียนออนไลน์ที่ให้คุณเลือกเรียนได้ตามใจชอบ พร้อม AI ช่วยเรียน วิชาความรู้หลากหลาย ทั้งเทคโนโลยี ธุรกิจ การตลาด และอื่นๆ อีกมากมาย",
+  keywords: ["เรียนออนไลน์", "คอร์สเรียน", "DTE", "AI เรียน", "การศึกษาไทย", "online learning", "courses"],
+  authors: [{ name: "DTE Team" }],
+  creator: "DTE - Develyst The Education",
+  publisher: "DTE",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="th" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-theme-primary text-theme-primary`}
+        suppressHydrationWarning
+      >
+        <AntdRegistry>
+          <ThemeProvider>
+            <AntdConfigProvider>
+              <AuthProvider>
+                <Navbar />
+                <main className="flex-grow">
+                  {children}
+                </main>
+                <Footer />
+              </AuthProvider>
+            </AntdConfigProvider>
+          </ThemeProvider>
+        </AntdRegistry>
+      </body>
+    </html>
+  );
+}

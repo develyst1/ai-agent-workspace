@@ -701,3 +701,290 @@
   · REQ-002 Q2–Q7 · the DTE About-page Thai copy (A10) · the `4013` port fix has a fact (A7) but
   still no REQ · SYSTEM-FACTS Q3 / A3, the inherited `/portfolio` `/services` `/contact` `/blog`
   routes · the owner's own eyes on REQ-004 AC 5, TASK-001 and TASK-002.
+
+---
+
+## Owner's answers on the REQ-005 title string, the support contact, and REQ-004 AC 5 (2026-09-08)
+
+> Added by Porter from the owner's own words, verbatim, BEFORE replying. Four answers, in the order
+> they appeared in the digest he was reading: `Q1=ข`, `Q2=คงเดิม`, `Q3=ไม่ต้อง`, `Q4=ผ่าน`. His
+> numbering is the digest's, not any file's — the mapping to the artifacts is written on each line.
+
+- **A30 — the unified page title is `<page name> | DTE — Develyst The Education`** — **`Q1=ข`**
+  (owner, 2026-09-08, answering `requirements/REQ-005-unify-page-titles-site-wide.md` §Open
+  questions **Q2.1**, whose four offered options were *(ก)* em dash + full tail, *(ข)* `|` + full
+  tail, *(ค)* em dash + short `DTE` tail, *(ง)* his own wording). He chose **(ข)**: the separator is
+  the **pipe `|`** (today's separator, kept) and the site part is the **full A19 string
+  `DTE — Develyst The Education`** — not the short `DTE`. Example as offered to him:
+  `ทักษะทั้งหมด | DTE — Develyst The Education` replaces today's `ทักษะทั้งหมด | DTE Platform`.
+  The em dash inside the site part is the A19 em dash (U+2014); the separator between the two parts
+  is `|`. Together with **A29** (two-part shape) the title rule is now fully owner-stated and
+  nothing about it is inferred.
+- **A31 — the home route `/` keeps exactly the A19 string, unchanged** — **`Q2=คงเดิม`** (*keep it
+  as it is* — owner, 2026-09-08, answering REQ-005 §Open questions **Q2.2**, which asked him to
+  confirm or overwrite Porter's option-(ข) text that `/` would stay `DTE — Develyst The Education`).
+  He **confirmed**: `/` gains no page name and is the one route with a one-part title. This closes
+  REQ-005 AC "A19 is not altered on `/`" as an owner-stated rule rather than an assumption, and
+  keeps REQ-004 closed on its own scope.
+- **A32 — DTE does NOT want a support-contact affordance added back after `/contact` is removed** —
+  **`Q3=ไม่ต้อง`** (*not needed* — owner, 2026-09-08, answering the question Sober raised in
+  `specs/SPEC-003-remove-inherited-portfolio-routes.md` §Questions **Q1** and Porter relayed:
+  deleting `/contact` and its "ติดต่อฝ่ายสนับสนุน" link leaves a user stuck in email verification
+  with no contact route on the site). He does **not** want one. Consequences: **no new REQ is
+  opened**, the verify-email Help Text stays removed as TASK-014 built it, and **nobody re-raises
+  this** — it is a deliberate decision, not a gap. If he ever wants a support contact, he states the
+  channel and the copy himself and it is a fresh REQ.
+- **A33 — the owner has looked at the rename and it passes** — **`Q4=ผ่าน`** (*passes* — owner,
+  2026-09-08, answering `requirements/REQ-004-product-name-rename-everywhere.md` §Acceptance
+  Criteria **AC 5**'s owner half: on the code as it stands on `develop`, the browser tab reads
+  `DTE — Develyst The Education` and the pages still render). This is the **only** thing REQ-004 was
+  held for; with it, all 6 acceptance criteria are met and REQ-004 moves to **`DELIVERED`**.
+  ⚠️ `DELIVERED` here means the criteria are met with evidence in the files — **it has never meant
+  deployed** (PROTOCOL.md §Statuses). `dte.develyst.online` still shows the old name until the owner
+  ships it himself; no agent deployed anything.
+- **Still unanswered after this session:** REQ-002 Q2–Q7 · the DTE About-page Thai copy (A10) · the
+  `4013` port fix has a fact (A7) but still no REQ · the owner's own eyes on TASK-001 and TASK-002
+  (the Next 16 / Tailwind 4 upgrade and the folder moves — separate from A33, which covers the
+  rename only). **REQ-004 and REQ-005 now have NOTHING open with him.**
+
+---
+
+## Owner answers — 2026-09-09, the three SPEC-004 questions
+
+> Added by Porter from the owner's own words, verbatim, BEFORE replying. Three answers, in the
+> order they were asked: `Q1=เข้าสู่ระบบ, สมัครสมาชิก, สอน, ยืนยันอีเมล`, `Q2=ชื่อกลาง`, `Q3=เปลี่ยน`.
+> His numbering is the digest's, not any file's — the mapping to the artifacts is on each line.
+
+- **A34 — the four Thai page names for the nameless client routes** — **`Q1=เข้าสู่ระบบ,
+  สมัครสมาชิก, สอน, ยืนยันอีเมล`** (owner, 2026-09-09, answering
+  `specs/SPEC-004-unify-page-titles.md` §Questions **Q1**, first half, which listed the four routes
+  in this exact order). Mapped **positionally, in the order the question listed them**:
+  **`/login` → `เข้าสู่ระบบ`** · **`/register` → `สมัครสมาชิก`** · **`/teach` → `สอน`** ·
+  **`/verify-email` → `ยืนยันอีเมล`**. With **A30** each of those four tabs therefore reads
+  `<that name> | DTE — Develyst The Education`. These are his words, not anyone's translation, and
+  nobody may re-word, expand or shorten them (REQ-005 §Requirement 4).
+- **A35 — `/classroom/[id]` gets ONE shared fixed name, not the course's own title** —
+  **`Q2=ชื่อกลาง`** (*a common/central name* — owner, 2026-09-09, answering SPEC-004 §Questions
+  **Q1**, second half, which offered exactly two branches: all classrooms share one fixed name, or
+  the tab shows each course's own title). He chose the **shared fixed name**; the per-course title —
+  which would need `generateMetadata` and is the metadata redesign REQ-005 C2 forbids — is
+  **rejected and not to be built**. ⚠️ **The name itself is still unstated**: "ชื่อกลาง" names the
+  *rule*, not the *word*. Nobody may invent it (REQ-005 §Requirement 4) — Porter asked him for the
+  exact word on 2026-09-09, see `requirements/REQ-005-unify-page-titles-site-wide.md` §Open
+  questions **Q3**.
+- **A36 — the six surviving `DTE Platform` body-copy occurrences are to be CHANGED** —
+  **`Q3=เปลี่ยน`** (*change (them)* — owner, 2026-09-09, answering SPEC-004 §Questions **Q2**, which
+  reported that `DTE Platform` survives as **visible on-screen copy** in six places: `/about` ×2
+  incl. a table header, `/login:86`, `/register:193`, `/teach:104`, and a comment in
+  `src/services/api.ts:1`). This is **outside REQ-005** by SPEC-004's own framing, so it becomes a
+  **new REQ (REQ-006)** and widens nothing already in flight. ⚠️ **What they change TO is still
+  unstated** — the full A19 string, the short `DTE`, or other wording is a copy decision only he
+  makes; Porter asked on 2026-09-09, see `requirements/REQ-006-replace-dte-platform-body-copy.md`
+  §Open questions **Q1**.
+- **Still unanswered after this session:** REQ-002 Q2–Q7 · the DTE About-page Thai copy (A10) · the
+  `4013` port fix has a fact (A7) but still no REQ · the owner's own eyes on TASK-001, TASK-002 and
+  on TASK-014's Footer / `/verify-email` · **new:** the `/classroom/[id]` shared name (A35) and the
+  replacement wording for the six body-copy occurrences (A36).
+
+---
+
+## Owner answers — 2026-09-09, round 2: the two half-answers closed
+
+> Added by Porter from the owner's own words, verbatim, BEFORE replying. Two answers plus one
+> exclusion, in the order they were asked: `Q1=ก`, `Q2=ข`, `ไม่ต้องเอาคอมเมนต์`. His `Q1`/`Q2` are
+> the digest's numbering, not any file's — the mapping is on each line below. These close the two
+> ⚠️ half-answers left by **A35** and **A36**.
+
+- **A37 — the shared page name for `/classroom/[id]` is `ห้องเรียน`** — **`Q1=ก`** (owner,
+  2026-09-09, answering `requirements/REQ-005-unify-page-titles-site-wide.md` §Open questions
+  **Q3**, whose option **(ก)** was `ห้องเรียน`; (ข) `เรียน` and (ค) `บทเรียน` are **rejected**).
+  This is the *word* that **A35** left unstated — one shared fixed name for every classroom, the
+  same on every course. With **A30** the tab therefore reads
+  **`ห้องเรียน | DTE — Develyst The Education`** on every `/classroom/<id>`. Nobody may re-word,
+  expand, shorten or per-course-ify it (REQ-005 §Requirement 4); the per-course title stays
+  rejected (A35). **REQ-005 now has NOTHING open with the owner.**
+- **A38 — the `DTE Platform` body copy is replaced by the short `DTE`** — **`Q2=ข`** (owner,
+  2026-09-09, answering `requirements/REQ-006-replace-dte-platform-body-copy.md` §Open questions
+  **Q1**, whose option **(ข)** was *the short `DTE` everywhere*; (ก) the full A19 string and (ค) the
+  Thai `แพลตฟอร์ม DTE` are **rejected**). One replacement string, `DTE`, for every in-scope
+  occurrence — he named no per-place exception, so if a sentence does not read right with it that
+  is reported back to him, never patched by rewording the sentence (REQ-006 §Requirement 3).
+- **A39 — the `src/services/api.ts:1` source comment is EXCLUDED from that change** —
+  **`ไม่ต้องเอาคอมเมนต์`** (*don't include the comment* — owner, 2026-09-09, answering the second
+  half of the same REQ-006 **Q1** line, which asked whether the invisible source comment counts).
+  It is code, not user-visible; it **keeps** its `DTE Platform` wording and no agent edits it,
+  including "while I was in there". REQ-006's scope is therefore the **visible on-screen copy
+  only** — the six occurrences Sober reported **minus** this one; the exact in-scope list is still
+  enumerated from the code first (REQ-006 §Requirement 1 / AC 1), not carried over as a count.
+- **Still unanswered after this session:** REQ-002 Q2–Q7 · the DTE About-page Thai copy (A10) · the
+  `4013` port fix has a fact (A7) but still no REQ · the owner's own eyes on TASK-001, TASK-002,
+  on TASK-014's Footer / `/verify-email`, and on TASK-015's three unified tabs.
+  **REQ-004, REQ-005 and REQ-006 now have NOTHING open with him.**
+
+---
+
+## Environment fact — this machine's tooling (NOT owner-stated; Porter's judgement call)
+
+> Appended by Porter 2026-09-09, on Sober's routed recommendation in `inbox/PM.md`, in Fern's own
+> words. 🔴 **This is NOT an owner statement** — it is an observed, reproduced and repaired
+> behaviour of the tooling on this machine, which is exactly what this file's header admits as
+> "how the running system actually behaves". It is **not** a requirement and **not** a copy rule;
+> nobody may cite it as the owner's word. If the owner later contradicts it, his line wins.
+
+- **A40 — `sed -i` on this machine silently rewrites a whole file CRLF→LF, and `git diff` hides it**
+  (Fern, 2026-09-09, hit + caught + repaired in `tasks/TASK-018-replace-dte-platform-body-copy.md`
+  §Implementation Notes; routed to me by Sober, who also recorded it in
+  `specs/SPEC-005-replace-dte-platform-body-copy.md` §Decision 3). Cause as she found it:
+  `core.autocrlf=true` with no `.gitattributes`. It was detected by a **file-size delta** (`login`
+  fell 245 bytes instead of 9 = 236 × `\r` + 9) and repaired with `perl -i -pe 's/\n/\r\n/'` on
+  exactly the four files. Consequence for future work: a byte-exact edit here must pin **file size**
+  and **`tr -cd '\r' | wc -c` == `wc -l`**, not per-line byte lengths alone — Sober has already
+  changed his own TASK checklists to do so. No production, database or git write was involved.
+
+---
+
+## Owner's answer, 2026-09-09 — the scope of visible UI change during the antd migration
+
+> Appended by Porter 2026-09-09 **before the reply was sent**. Verbatim, in his own words, in
+> answer to the visual question Fern raised as `tasks/TASK-004-login-screen-migration.md`
+> §Questions **Q1** — a ruling the other six SPEC-001 screens will copy.
+
+- 🔴 ~~**A41 — during the antd migration the LOOK does not change; the only visible change is emoji → icons**~~
+  **STRUCK 2026-09-09 by Porter — WRONG READING, corrected by the owner himself. The correction is
+  A42 in the section below; read that, never this. Every line of A41 is kept verbatim underneath,
+  never deleted (PROTOCOL.md §SYSTEM-FACTS rule 3), as the record of the mistake — the mistake was
+  Porter's reading of "re UI", not anything the owner said.**
+  — **"re UI เอง และ แค่ เอา emojiออก ใช้icon"** (owner, 2026-09-09, verbatim, sent with the pace
+  nudge "ไปเลย ทำให้เสร็จได้แล้ว"). Read against TASK-004 §Questions Q1, which offered **(a)** accept
+  antd's control metrics as the new house look — inputs 50→40 px, the sky→cyan gradient submit
+  replaced by a flat antd primary, social buttons ≈50→40 px — or **(b)** preserve today's look:
+  **his answer is (b)**. The migration is a substrate change, not a re-skin; **REQ-001 §Out of
+  Scope "Visual redesign / rebranding" therefore stands unchanged and now has his word behind it,
+  not just Porter's reading.** The one visible change he does want is REQ-001 §Requirement 3, which
+  he restated here: **emoji out, icons in.**
+  🔴 **Porter states plainly what this fact does NOT decide:** *how* today's look is preserved is a
+  technical design call and is **Sober's alone** — Q1's option (b) sketches wrapper-level changes
+  (`size="large"` / a height / a gradient variant on `ui/`), but the owner named no mechanism and
+  Porter proposes none. Nor does this fact touch Q2, Q3 or Q4 of that TASK; they remain open with
+  Sober and are not answered by silence.
+- **Confidence, stated rather than hidden:** Porter reads "แค่" (*only*) as the operative word —
+  only the emoji change is wanted. He was told exactly this reading in Thai in the same reply, so
+  he can overturn it in one word if it is wrong.
+  > 🔴 **He did overturn it, in the very next message — see A42 below. The "confidence" bullet above
+  > is exactly why: the reading was told to him in Thai, and he corrected it. Nothing in this A41
+  > block is actionable any more.**
+
+---
+
+## Owner's CORRECTION, 2026-09-09 — A41 was misread: the NEW look stays and should get BETTER
+
+> Appended by Porter 2026-09-09 **before the reply was sent**. This is the owner correcting
+> **Porter's reading**, unprompted, in his own words. A41 above is struck, not deleted.
+
+- **A42 — "re UI" did NOT mean go back to the old look; it means make the NEW look BETTER, and only
+  take the emoji out in favour of icons** — **"re UI ไม่ได้หมายถึง ให้ ย้อนเป็น หน้าตาเดิม หมายถึงให้ทำ
+  หน้าตาใหม่ให้ดีขึ้น และ แค่ เอา emojiออก ใช้icon"** (owner, 2026-09-09, verbatim, sent with the pace
+  nudge "ไปเลย ทำให้เสร็จได้แล้ว"; the trailing `N=8` is dispatcher routing, not content, and is ignored).
+  What he settles here — his word, not Porter's reading:
+  1. **Reverting to today's / the legacy look is NOT what he asked for.** A41's "his answer is (b)"
+     is wrong. TASK-004 §Questions **Q1 option (b) is NOT his answer**, and a rework whose purpose
+     is visual restoration is not what he wants.
+  2. **The look MAY change, and he wants it changed for the better** — "ทำหน้าตาใหม่ให้ดีขึ้น".
+     The new appearance the antd substrate brought is not a defect to be undone.
+  3. **emoji → icons stands** (REQ-001 §Requirement 3) — he has now restated it three times.
+  🔴 **What A42 does NOT decide — stated rather than guessed:** *how far* "ให้ดีขึ้น" (*better*) goes.
+  Whether antd's own default appearance already satisfies "better", or whether he wants a deliberate
+  visual-improvement pass with something to look at first, is **not settled by this sentence**, and
+  Porter proposes nothing. Asked back to him as **REQ-001 §Questions Q7** — non-blocking, because
+  item 1 above (stop the restoration) is unambiguous and actionable on its own. Equally untouched:
+  **how** any of it is built is Sober's design call alone, and A42 answers none of TASK-004's Q2/Q3/Q4.
+  🔴 **Consequence Porter must state, read from the artefacts and not from a summary:** acting on the
+  struck A41, Sober returned TASK-004 as `REWORK` for visual restoration and wrote
+  `specs/SPEC-001-frontend-foundation.md` **§Decision 7** ("the `ui/` wrapper's DEFAULT look IS
+  today's look") — and **Fern has already RUN that rework**: `tasks/TASK-004-login-screen-migration.md`
+  is `REVIEW` with R1–R7 evidenced in §Rework Implementation Notes. So the restoration is already in
+  the code, not merely planned. Both the SPEC decision and the REWORK verdict are **Sober's files and
+  Sober's alone to reverse**; Porter routed A42 to him via `inbox/SA.md` and touched neither, nor any
+  code.
+
+---
+
+## Owner's answer to REQ-001 §Q7, 2026-09-09 — (ข): a deliberate visual pass, home page FIRST
+
+> Appended by Porter 2026-09-09 **before the reply was sent**. This closes the question A42 left
+> open and is the owner's own word, not Porter's reading.
+
+- **A43 — "ทำหน้าตาใหม่ให้ดีขึ้น" = a DELIBERATE visual-improvement pass (Q7 option ข), starting with
+  the HOME page then the COURSES page, shown to him before the rest follow; what "better" means to
+  him is SPACING and COLOUR, looking MODERN** — **"ข ทำ /หน้าแรกเลย และ หน้าคอร์สต่อ ให้ดูก่อน เน้นระยะห่าง
+  กับสีให้ดูโมเดิร์น"** (owner, 2026-09-09, verbatim). Read against REQ-001 §Questions **Q7**, which
+  offered **(ก)** antd's default appearance already IS the "better" he means, team stops at
+  emoji → icons — or **(ข)** a deliberate visual-improvement pass with one screen shown to him
+  first. What he settles:
+  1. **His answer is (ข).** antd's defaults on their own are NOT the finish line; the new look is
+     designed on purpose.
+  2. **He changed which screen goes first.** Q7's (ข) proposed `/login`; he did not take it. The
+     order he states is **the home page first (`/หน้าแรก`), the courses page second**, and he
+     **sees those before the remaining screens copy the result** ("ให้ดูก่อน").
+  3. **He gave the taste criteria Q7 asked him for, unprompted:** **ระยะห่าง (spacing) and สี
+     (colour)**, aiming at **โมเดิร์น (modern)**. These are his words and the only stated criteria —
+     nobody here adds "his taste" beyond them.
+  🔴 **What A43 does NOT decide — stated rather than guessed:**
+  - **Which page "หน้าคอร์ส" is** — the course LIST (`/courses`) or a course DETAIL page. Porter does
+    not pick; asked back as REQ-001 §Questions **Q8**, non-blocking because the first screen (the
+    home page) is unambiguous and can start now.
+  - **What happens to `/login` (TASK-004)** and the order of the remaining SPEC-001 screens. He named
+    a starting order, not a re-plan; **how the seven screens are sequenced and how any of this is
+    built stays Sober's design call alone**, and Porter proposes no mechanism.
+  - **A43 does not widen REQ-001 into a rebranding.** Requirement 3 (emoji → icons) is untouched and
+    still stands; the product surface is still out of scope.
+
+---
+
+## Owner's answers of 2026-09-09 (third round) — REQ-001 §Q8, REQ-001 §Q6, and ONE UNLABELLED word
+
+> Appended by Porter 2026-09-09 **before the reply was sent.** His whole message, verbatim, was
+> exactly one line: **`Q1=ก, Q2=ตัดลิงก์ทิ้ง, ผ่าน`** — answering a digest that put **five** labelled
+> items to him (its Q1 = which page is "หน้าคอร์ส"; Q2 = the `/forgot-password` 404; Q3 = REQ-003's
+> owner-eyes check; Q4 = REQ-006's owner-eyes check; Q5 = the Thai copy for `/about`) **and** asked
+> him to open the redesigned home page locally and say whether it passes. Digest numbering ≠ the REQ
+> question numbers; the mapping is written out under each fact below so nobody re-derives it.
+
+- **A44 — "หน้าคอร์ส" in A43 means the course LIST page (`/courses`), not a course detail page** —
+  **"Q1=ก"** (owner, 2026-09-09, verbatim), answering the digest's Q1 = `requirements/REQ-001-frontend-pattern-and-ui-foundation.md`
+  §Questions **Q8**, whose options were **(ก)** the course **list** page `/courses` · **(ข)** a course
+  **detail** page · **(ค)** both, list first. **His answer is (ก): the list page only.** So SPEC-006
+  Phase 2 = `/courses`, and a course **detail** page is **not** part of the visual pass he named.
+  🔴 **What A44 does NOT decide:** anything about **how** Phase 2 is built or **when** it is
+  sequenced against the remaining SPEC-001 screens — that stays Sober's design call alone, and
+  Porter proposes no mechanism. It also does not say a detail page is out of scope *forever*; it
+  says he did not put one in this pass, and nobody widens it for him.
+
+- **A45 — the dead `/forgot-password` link is to be REMOVED, not built** — **"Q2=ตัดลิงก์ทิ้ง"**
+  (owner, 2026-09-09, verbatim; *"cut the link out"*), answering the digest's Q2 =
+  `requirements/REQ-001…md` §Questions **Q6**, which offered **build the forgotten-password flow**
+  or **drop the link**. **He chose dropping it.** So: **no forgotten-password feature is being
+  built**, there is **no backend work** in this, and the change is the removal of the link that
+  `front/src/app/login/page.tsx:151` renders at `/forgot-password`. Per the framing of the question
+  he answered, this is its **own new requirement** — `requirements/REQ-007-remove-dead-forgot-password-link.md`
+  — and **not** a widening of REQ-001 (foundation, no product surface).
+  ⚠️ Still **UNVERIFIED** and carried, not laundered: nobody here may open the live site
+  (PROTOCOL.md §Environments), so the 404 remains Sober's read of the code, not an observed
+  response. That does not weaken A45 — he answered the question as asked.
+
+- **A46 ⚠️ AMBIGUOUS — the bare trailing "ผ่าน" is NOT attributed to anything, and stays
+  UNACTIONABLE until he says which item it covers.** He wrote **"ผ่าน"** (*"it passes"*) with **no
+  label**, after two labelled answers, while **four** pass/fail-shaped things were open with him at
+  once: **(1)** the redesigned **home page** he was asked to open locally (SPEC-006 Phase 1, the A43
+  "ให้ดูก่อน" gate); **(2)** the digest's **Q3** = REQ-003 §Questions **Q4**, his eyes on the four
+  removed routes + the Footer + `/verify-email` (REQ-003 **AC 7**); **(3)** the digest's **Q4** =
+  REQ-006 §Questions **Q1**, his eyes on the shortened `DTE` body copy (REQ-006 **AC 6**); **(4)**
+  the digest's **Q5**, the Thai copy for `/about` — which is not a pass/fail item at all and cannot
+  be what "ผ่าน" answers, but is also still unanswered.
+  🔴 **Porter did NOT pick one.** Reading a labelled "ผ่าน" onto an unlabelled one is exactly the
+  class of mistake A41 was (Porter's reading recorded as the owner's word, then struck by him). One
+  "ผ่าน" cannot be spent on three gates, and guessing wrong would mark a REQ `DELIVERED` on an
+  approval he never gave. **Consequence, stated not guessed:** REQ-003 stays `SPEC_DONE` (AC 7
+  open), REQ-006 stays `SPEC_DONE` (AC 6 open), and the SPEC-006 Phase-1 gate stays open-and-unmet.
+  Re-asked in Porter's reply of 2026-09-09 as three separately-labelled yes/no items; the moment he
+  labels it, the fact becomes A47+ and the affected REQs move in one hop.

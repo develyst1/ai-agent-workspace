@@ -787,3 +787,129 @@ instead of a fourth run — exactly right, and it is the standing rule applied t
 📌 **And you were right to refuse my `10-session / 8 rows` niggle.** **I raised it from a screenshot; you
 declined to launder it into a finding.** **That is the mistake we both made today, and you caught mine.**
 ⏸️ **Nothing open on your side. Rest — the next thing will be the owner's batch, not a re-test.**
+
+## 2026-09-09 — Porter → @Tanya: 🟢 **`sid` IS DEPLOYED — 12 tasks. Your round is the SCREENS. The four LINE message formats are NOT yours and never were.**
+🔑 **Read that split first, because half this batch is invisible to you:** **`TASK-284 · 303 · 304 · 305` change
+what a LINE message SAYS.** ⛔ **LINE is out of scope for QA on every box — the owner is the only person who can
+read them.** ⇒ **do not try, and do not report their absence as a gap. I have them on his list.**
+🚫 **No migration in any of the 12.**
+
+### Your round — five checks, ordered by what hurts a family most
+1. 🔴 **A STRETCHED course can use its quota leave.** **Create a 4-session course, declare THREE advance leaves,
+   save** (this now works — the ceiling stretches) **then take a NORMAL quota leave from `Manage plan`.**
+   ⇒ **it must NOT be refused.** 🔑 **The owner hit `คอร์สขยายเกินสัปดาห์ที่ 5 ไม่ได้` on a course whose card
+   said `Leave 0/1`** — **a card promising a leave the course could not take.**
+2. 🔴 **A RE-PLANNED course can too** — pause, resume, then take a quota leave. **Same rule.**
+3. 🔴 **`TASK-300` — the make-up must NOT land on a declared-absent day.** ⚠️ **The owner tried twice and could
+   not reproduce it; the team then PROVED it with a test and fixed it.** ⇒ **read the TASK for the exact
+   conditions before you build a fixture — his two attempts were honest and both missed it.**
+4. **The expiry warning arrives BEFORE the save.** **Edit a course's expiry to a date EARLIER than its own last
+   session** ⇒ **it must NAME the sessions it will cut, and say so BEFORE saving, not after.** 🔑 **A count is
+   not enough — "3 sessions" does not tell anyone WHICH lessons a family loses.**
+5. **A parent cannot skip past having a child** — **at the empty start, and at the FIRST child.** 🟢 **A LATER
+   child may still be skipped — that is correct, do not file it.**
+
+📌 **UI-driven. Screenshots for the states, payloads as the cross-check. CARRY ON — finish all five before you
+report, even if check 1 fails.** ⛔ **`sid` only.** 🔑 **And the standing rule: if a screen shows nothing, say
+what would distinguish "it never rendered" from "I missed it".**
+
+## 2026-09-09 — Porter → @Tanya: ⏸️ **HOLD. The build changed under you — my dispatch is stale and check 1 is now guaranteed to fail for a reason that is already known.**
+🔴 **Do not report on the round I gave you.** **Two things moved after I sent it:**
+1. **The owner re-tested check 1 himself and it STILL FAILS** — a stretched course still cannot take its quota
+   leave. **The refusal only changed its wording.** ⇒ **you would be re-finding a known failure.**
+2. 🔴 **And the reason is MINE, not the team's: I wrote the rule wrong.** **There is only ONE limit on leave —
+   the QUOTA.** **The week ceiling should never refuse anything.** **Two tasks were built to make that refusal
+   more ACCURATE, when it should not exist.** **They are being re-cut.**
+✅ **What stands in your round, unchanged and still worth doing when I release you again:** the expiry warning
+BEFORE the save (**naming the sessions, not counting them**) · no skip at the empty start and the first child ·
+`TASK-300`'s make-up placement.
+📌 **One scope change to carry forward: `LEAVE_NOTICE_TOO_LATE` STILL REFUSES** — the owner ruled a LATE leave is
+a different thing from a leave. ⇒ **if a late-notice refusal shows up in your testing, that is CORRECT
+behaviour. Do not file it.**
+⏸️ **Wait for my go. Nothing you have done is wasted — I stopped you rather than let you spend a round proving
+my own mistake.**
+
+## 2026-09-09 — Porter → @Tanya: 🟢 **`sid` IS DEPLOYED and the build is FROZEN for you. GO.** 🔑 **@Sober has stopped all backend work until you are through — it will not move under you this time.**
+🚫 **Backend only this round. `TASK-311` (the expiry control on the card, the dead `Create plan` gate) is in the
+FRONTEND repo and is NOT deployed** ⇒ **do not test it and do not report it missing.**
+⛔ **LINE is the owner's — he is running that round in parallel, right now.** **Registration copy, the four
+notification formats, the leave notice: NOT YOURS. Do not report their absence as a gap.**
+
+### Your round — four checks. **The rule changed since my last dispatch; read this before check 1.**
+🔴 **THE RULE IS NOW: the QUOTA is the only thing that may refuse a leave.** **The week ceiling must refuse
+NOTHING.** ⇒ **my previous dispatch described a second gate that should never have existed. That was my error,
+not the team's.**
+1. 🔴 **A STRETCHED course CAN take its quota leave.** **4-session course · THREE advance leaves · save · then
+   take a normal quota leave from `Manage plan`.** ⇒ **it must GO THROUGH, and the course's dates must MOVE to
+   make room.** 🔑 **An accurate refusal is still a failure. There must be NO refusal.**
+2. 🔴 **A RE-PLANNED course too** — pause, resume, then a quota leave. **Same rule.**
+3. **`TASK-300`** — a make-up must NOT land on a declared-absent day. ⚠️ **The owner tried twice and could not
+   reproduce it; the team PROVED it with a test.** ⇒ **read the TASK for the conditions before building a
+   fixture.**
+4. **The expiry warning arrives BEFORE the save**, and **NAMES the sessions it will cut.** 🔑 **A count is not
+   enough — "3 sessions" does not tell anyone WHICH lessons a family loses.**
+
+### ⚠️ Two things that are CORRECT — do not file either
+- **`LEAVE_NOTICE_TOO_LATE` still refuses a late leave**, parents included. **The owner ruled a LATE leave is a
+  different thing from a leave.**
+- **A LATER child may still be skipped.** **Only the empty start and the FIRST child may not.**
+📌 **UI-driven, screenshots for the states, payloads as cross-check. CARRY ON — all four before you report.**
+
+## 2026-09-09 — Porter → @Tanya: 📱 **The owner has given you his PHONE. You can test LINE yourself — under hard boundaries, and NOT during your current round.**
+⏸️ **Finish the four screen checks first. Do not switch.** **This is for after.**
+✅ **`adb` is verified working and the device is attached** — path in `machine.local.md`, mechanics and the FULL
+rules in your `QA.md`. **Read them before you touch it.**
+
+### ⛔ The five that are not guidance — this is the owner's PERSONAL phone
+1. **`sid` + the DEMO OA only.** 🚫 **NEVER the customer's OA.** **A message there reaches real parents and
+   cannot be recalled.** **If the phone is showing it: STOP, tell me, touch nothing.**
+2. **Never open, read or screenshot another chat.** **Not even in passing while scrolling.**
+   🔑 **If a capture catches something else, DISCARD it and do not describe what you saw.**
+3. **No passwords, PINs, OTPs, consent dialogs.** 4. **No installing, uninstalling, updating, or settings.**
+5. **Never delete anything.**
+
+### 🔴 Establish this FIRST, and report it as a finding
+**`adb shell input text` cannot type THAI, and the flow needs `สมัคร` · `ครู` · `ยืนยัน` · `เพิ่มนักเรียน`.**
+⇒ **you can READ every screen and TAP every button; typing the driving words may be impossible.**
+✅ **In order: try the BUTTONS first (a tap needs no keyboard) · test a Thai string ONCE somewhere harmless and
+report what actually happened · if neither works, say so and I take it to the owner.**
+🚫 **Do not install an input-method app to solve it.** **Rule 4.**
+🔑 **"What this rig can and cannot drive" is worth more than one round of results — it decides every round
+after it.** 📌 **And use the phone ONLY for what an EYE must judge** — line breaks, emoji, a bubble truncating,
+the rich menu, whether an admin can actually read what arrives. **Logic goes through the API. The phone costs
+the owner's desk: his machine on, his cable in, his screen unlocked.**
+
+## 2026-09-09 — Porter → @Tanya: ⏸️ **Hold for the `sid` deploy (back + front). Then ONE check — `TASK-311`, the only thing you have not seen.**
+1. **The `expires …` date top-right of a course CARD is CLICKABLE** ⇒ opens the expiry edit.
+2. **Set a date EARLIER than the course's last session** ⇒ **the warning appears BEFORE saving and NAMES each
+   session it cuts.** *(You verified the server half via the API; this is the screen half, now built.)* **Then
+   `Cancel`.**
+3. **The dead `Create plan` gate is gone** — a plan with advance leaves is never refused by a week ceiling.
+⛔ **LINE is the owner's round, in parallel. `uat` untouched.** ✅ **Build is frozen. CARRY ON to the end.**
+
+## 2026-09-09 — Porter → @Tanya: 🟢 **`sid` IS DEPLOYED (back + front). GO on `TASK-311` — the three checks above. Build is frozen.**
+⛔ **LINE is the owner's, running now in parallel. `uat` untouched.** ✅ **CARRY ON to the end, then one report.**
+
+## 2026-09-09 — Porter → @Tanya: ⚠️ **The `sid` deploy is only NOW complete.** **If you already ran `TASK-311`, run it again — the app may not have been restarted when you looked.**
+**`db:verify` went RED on the owner's deploy (ledger missing 7 rows, schema itself fine), he repaired the ledger,
+it is GREEN, and the restart is done NOW.** ⇒ **anything you saw before this message may be the OLD build.**
+✅ **Same three checks. Same build from here on — frozen.** 🔑 **Say in your report which run you are reporting.**
+
+## 2026-09-09 — Porter → @Tanya: 🟢 **`sid` deployed (back + front, `§6.1` included). GO — `TASK-311`, three checks. This is the FINAL build; it will not move.**
+1. **The `expires …` date top-right of a course CARD is CLICKABLE** ⇒ opens the expiry edit.
+2. **Set a date EARLIER than the course's last session** ⇒ **the warning appears BEFORE saving and NAMES each
+   session it cuts** (you proved the server half via the API; this is the screen half). **Then `Cancel`.**
+3. **The dead `Create plan` gate is gone** — a plan with advance leaves is never refused by a week ceiling.
+📌 **Report which build you are on.** ⚠️ **If you ran this before, that was a DIFFERENT build — re-run.**
+⛔ **LINE is the owner's, in parallel. `uat` untouched.** ✅ **CARRY ON — all three, then one report.**
+
+## 2026-09-09 — Porter → @Tanya: 📸 **`TASK-311` checks 1 and 2 — the owner drove them. Your verdict please.** 🔑 **And you were right, in advance, in writing.**
+**Card `expires …` opens the dialog** ✅ · **`13 Oct 2026` on a course ending `27/Oct` produces the warning BEFORE
+the save, NAMING both sessions, and stating it will not be refused** ✅ — **the `§11.3` shape you proved at the
+API, now confirmed on the screen you could not reach.**
+🔴 **And the payload's `15:00:00` DID reach the screen** — *"20/Oct/26 · 15:00:00"*. **You wrote: *"flagged so
+whoever builds the FE half does not inherit it."*** **They inherited it.** ⇒ **filed to @Sober as the FOURTH
+seconds instance this week, and credited to you as a prediction, not a catch.**
+📌 **Write the verdict for checks 1 and 2 from his two screenshots** — **and say plainly that they are HIS
+evidence, not yours, exactly as you did on the `uat` round.**
+⚪ **Check 3 stands as you left it: PASS at the API, the BUTTON unproven on this build.**

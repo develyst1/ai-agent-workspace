@@ -1,9 +1,7 @@
 # REQ-005: Unify the browser page titles across the whole site
 
-- Status: DRAFT — 2026-09-08, Porter. **Q1 is ANSWERED** — the owner chose the two-part form
-  (`Q2=ข`, `SYSTEM-FACTS.md` **A29**). **Still waiting on him for ONE line: the exact separator /
-  word order, and what `/` reads** (§Open questions **Q2**). Not `READY_FOR_SA` on purpose — a SPEC
-  cannot be written against a title string nobody has stated.
+- Status: **DELIVERED** — 2026-09-09, Porter. Acceptance-checked against all 6 AC; **all 6 MET**, evidence in `tasks/TASK-015/016/017` §Review — see §"Porter's acceptance check (2026-09-09)" at the end of this file. `DELIVERED` ≠ deployed (PROTOCOL §Statuses): the live site still serves the old titles until the owner ships it. Round 1–3 owner questions are all ANSWERED (A29/A30/A31/A34/A35/A37); nothing on this REQ is open with the owner.
+  The unified title is **`<page name> | DTE — Develyst The Education`** and **`/` stays exactly `DTE — Develyst The Education`** — owner-stated (A29/A30/A31), not inferred.
 - Priority: LOW — cosmetic copy on already-working pages. It blocks nothing and nothing blocks it;
   REQ-001 (frontend foundation) keeps its lane.
 - Requested: 2026-09-08 by the owner (develyst).
@@ -33,24 +31,31 @@ is closing on the scope it was written for.
 2. The routes and their current titles must be **enumerated from the code first, and the list
    written down**, before anything is edited — the same discipline REQ-004 §Requirement 3 imposed,
    for the same reason: the owner sees what is about to change on a live site.
-3. The unified form is **the owner's to state, not anyone's to derive** — see §Open questions Q1.
-   Until he answers, no enumeration is specced into edits and no title is changed.
+3. The unified form is **the owner's to state, not anyone's to derive** — and he has now stated it
+   in full (§Open questions Q1 + Q2; `SYSTEM-FACTS.md` **A29** shape, **A30** string, **A31** `/`):
+   every route reads **`<page name> | DTE — Develyst The Education`** — separator is the pipe `|`,
+   the site part is the **full** A19 string with its em dash (U+2014), never the short `DTE` — and
+   **`/` reads exactly `DTE — Develyst The Education`** with no page name of its own. No other
+   shape may be substituted, and nothing about the string is anyone's to re-derive.
 4. Where a route has no title of its own today, that must be reported as part of the enumeration,
    not silently given one.
 
 ## Acceptance Criteria
 
-- [ ] A written enumeration of every `front/` route and the exact title it renders today, produced
+- [x] A written enumeration of every `front/` route and the exact title it renders today, produced
       by a repeatable search over the repo on `develop` (command and its actual output recorded).
-- [ ] The unified title form is recorded verbatim from the owner's own words before any edit.
-- [ ] After the change, every enumerated route's title matches that form — confirmed **in a
+- [x] The unified title form is recorded verbatim from the owner's own words before any edit —
+      **done 2026-09-08**: `SYSTEM-FACTS.md` **A29** (two-part shape) + **A30** (separator and tail)
+      + **A31** (what `/` reads).
+- [x] After the change, every enumerated route's title matches that form — confirmed **in a
       browser**, route by route, not by reading the source. Anything not actually opened is written
       `UNVERIFIED` (there is no QA role here).
-- [ ] `front/` builds and every touched route still renders — the engineer's own command output.
-- [ ] `DTE — Develyst The Education` (A19) is not altered on `/` unless the owner's answer to
-      §Open questions **Q2.2** explicitly changes it.
-- [ ] Every title is `<page name><separator><site part>` per A29, with the separator and site part
-      exactly as the owner states them in **Q2.1** — no route shaped differently, none abbreviated.
+- [x] `front/` builds and every touched route still renders — the engineer's own command output.
+- [x] `/` still reads exactly `DTE — Develyst The Education` (A19) after the change — the owner
+      confirmed it stays unchanged (**A31**, `Q2=คงเดิม`), so altering it is a defect, not a choice.
+- [x] Every route other than `/` reads exactly `<page name> | DTE — Develyst The Education` (A30):
+      the pipe `|` as separator, the **full** A19 site part with its em dash (U+2014) — no route
+      shaped differently, none abbreviated to `DTE`, no route left on `… | DTE Platform`.
 
 ## Constraints
 
@@ -122,7 +127,97 @@ differs on every route depending on the answer. Two things, one line:
 ⚠️ Same rule as Q1: the SA Lead, the engineers and Porter may not settle either of these. Until they
 are answered, no enumeration is specced into edits and **no title is changed** (§Requirement 3).
 
+> **answer (owner, 2026-09-08) — BOTH parts. This REQ is now unblocked.**
+> **2.1 = `Q1=ข`** → option **(ข)**: separator is the **pipe `|`**, tail is the **full**
+> `DTE — Develyst The Education`, i.e. `ทักษะทั้งหมด | DTE — Develyst The Education` in place of
+> today's `ทักษะทั้งหมด | DTE Platform`. Em dash separator (ก) and short `DTE` tail (ค) are
+> **rejected**. Verbatim in `SYSTEM-FACTS.md` **A30**.
+> **2.2 = `Q2=คงเดิม`** (*keep it as it is*) → `/` **stays exactly** `DTE — Develyst The Education`
+> (A19): one part, no page name added. Verbatim in **A31**.
+> (His `Q1`/`Q2` are the digest's numbering, not this file's — this file's Q1 was answered in the
+> previous round as `Q2=ข`/A29. The mapping is written on each SYSTEM-FACTS line.)
+> **Nothing on REQ-005 is open with the owner; status → `READY_FOR_SA`.**
+
+## Open questions — round 3 (2026-09-09)
+
+**Q3 → the owner (asked 2026-09-09 by Porter, in Thai). BLOCKING Part B's fifth route ONLY.**
+He has now answered the Part B question in two halves (`SYSTEM-FACTS.md` **A34**, **A35**):
+
+- **The four names are stated and closed** — `/login` → `เข้าสู่ระบบ`, `/register` → `สมัครสมาชิก`,
+  `/teach` → `สอน`, `/verify-email` → `ยืนยันอีเมล` (**A34**, mapped positionally in the order the
+  question listed the four routes). Nothing about these four is open.
+- **`/classroom/[id]`: the rule is stated, the word is not.** `Q2=ชื่อกลาง` (**A35**) chooses the
+  branch — **one shared fixed name for every classroom** — and rejects the per-course title. But
+  "ชื่อกลาง" names the rule, not the word: it does not say what that shared name reads. REQ-005
+  §Requirement 4 forbids anyone here inventing it, so the fifth route stays unbuilt until he writes
+  the word. Candidates offered to him, his to pick or overwrite: **(ก)** `ห้องเรียน` · **(ข)**
+  `เรียน` · **(ค)** `บทเรียน` · **(ง)** his own word, written exactly as he wants it in the tab.
+
+⚠️ Not the SA Lead's, the engineers' or Porter's to settle. Until it is answered `/classroom/[id]`
+keeps reading `DTE — Develyst The Education` and no file for it is edited. The other four are
+unblocked and may be built now.
+
+> **answer (owner, 2026-09-09): (ก) — `Q1=ก`. This REQ is now fully unblocked.**
+> The shared page name for `/classroom/[id]` is **`ห้องเรียน`** — verbatim in `SYSTEM-FACTS.md`
+> **A37**. (ข) `เรียน` and (ค) `บทเรียน` are **rejected**. It is **one fixed name on every
+> classroom** — the branch **A35** already chose; the per-course title stays rejected and no
+> `generateMetadata` is introduced. With **A30** every `/classroom/<id>` tab reads
+> **`ห้องเรียน | DTE — Develyst The Education`**. Nobody may re-word, expand, shorten or
+> per-course-ify it (§Requirement 4). **Nothing on REQ-005 is open with the owner any more** — the
+> fifth Part B route is now stateable in a TASK exactly like the other four.
+
 ## Questions
 
-*(SA Lead asks here; Porter answers as `> answer: ...`)* — none yet. This REQ is not
-`READY_FOR_SA` until Q1 above is answered.
+*(SA Lead asks here; Porter answers as `> answer: ...`)*
+
+**Sober's `specs/SPEC-004-unify-page-titles.md` §Questions Q1 — ANSWERED here** (Porter may not
+write in `specs/`, so the answer lives in this REQ and Sober was pointed at it via `inbox/SA.md`):
+
+> **answer (Porter 2026-09-09, from the owner's own words):** four of the five are stated —
+> `/login` → **`เข้าสู่ระบบ`**, `/register` → **`สมัครสมาชิก`**, `/teach` → **`สอน`**,
+> `/verify-email` → **`ยืนยันอีเมล`** (`SYSTEM-FACTS.md` **A34**). Combined with **A30** each tab
+> reads `<name> | DTE — Develyst The Education`. **`/classroom/[id]` is HALF-answered**: **A35**
+> settles the rule — one shared fixed name for all classrooms, per-course title **rejected** — but
+> the word itself is unstated and is now **Q3 above**, with the owner. So Part B may be tasked for
+> **four** routes now, and the fifth stays out of it until Q3 comes back. Nobody invents that word.
+
+> **UPDATE (Porter 2026-09-09, same day, second round): Q3 is ANSWERED — SPEC-004 §Questions Q1 is
+> now fully closed.** The fifth route's word is the owner's own: `/classroom/[id]` → **`ห้องเรียน`**
+> (`SYSTEM-FACTS.md` **A37**), one shared fixed name, tab reads
+> `ห้องเรียน | DTE — Develyst The Education`. Part B may now be completed for **all five** routes.
+
+> **Sober's SPEC-004 §Questions Q2 (the 6 body-copy `DTE Platform` occurrences) — ANSWERED:** the
+> owner said **`เปลี่ยน`** = change them (`SYSTEM-FACTS.md` **A36**). By SPEC-004's own framing that
+> is **outside REQ-005**, so it does **not** widen this REQ or SPEC-004 — it is the new
+> `requirements/REQ-006-replace-dte-platform-body-copy.md` (`DRAFT`, blocked on what they change
+> *to*). Nothing in SPEC-004 or TASK-015 changes because of it.
+
+## Porter's acceptance check (2026-09-09)
+
+I checked the six Acceptance Criteria against the evidence already written in the TASK files. I ran
+nothing myself and touched no code — every line below points at output an engineer produced and
+Sober independently re-ran against the real repo. **All 6 AC are MET → REQ-005 is `DELIVERED`.**
+
+| AC | Verdict | Where the evidence is |
+|---|---|---|
+| 1 — written enumeration of every route + today's title, repeatable command + real output | **MET** | `tasks/TASK-015-unify-page-titles-front.md` §"Enumeration evidence": the `find`, the `grep -rn "title:"`, the `use client` list (the 5 routes with no title of their own — §Requirement 4's "report it, don't silently give it one"), `generateMetadata` = none, and the em-dash `od` dump. Produced **before** any edit. |
+| 2 — the unified form recorded verbatim from the owner before any edit | **MET** (ticked 2026-09-08) | `SYSTEM-FACTS.md` **A29** (two-part shape) + **A30** (pipe + full tail) + **A31** (`/` unchanged), plus **A34**/**A35**/**A37** for the five Part B page names. |
+| 3 — after the change every route's title matches, confirmed **in a browser**, route by route | **MET** | All **8** routes were actually opened in a real Chrome tab and read as `document.title` + the tab strip — TASK-015 §DoD 10 (`/`, `/about`, `/courses`), TASK-016 §DoD 12 (`/login`, `/register`, `/verify-email`, `/teach`), TASK-017 §DoD 14 (`/classroom/99`). Nothing was accepted from a source read. Two carries are written `UNVERIFIED` below, not laundered. |
+| 4 — `front/` builds and every touched route still renders | **MET** | `npm run build` **exit 0**, same **9** route entries, `/classroom/[id]` still `ƒ Dynamic`; `npx tsc --noEmit` **exit 0**. Run by Fern and re-run by Sober on his own servers (3019 / 3037) — TASK-017 §Review. |
+| 5 — `/` still reads exactly `DTE — Develyst The Education` (A19) | **MET** | The rendered `/` title's **pipe count is 0** and its bytes carry `e2 80 94`, re-checked at all three units (TASK-015 §DoD 7, TASK-016, TASK-017 §DoD 10). A31 never regressed — the one way this design could have failed silently. |
+| 6 — every other route reads exactly `<page name> \| DTE — Develyst The Education` | **MET** | All 7 non-`/` routes match character for character in Sober's own re-run (TASK-017 §Review + §Expected end state). The separator ` \| ` (`20 7c 20`) and the em dash are supplied once by TASK-015's `title.template`; `ห้องเรียน` was proved byte-identical (27 bytes) to the owner's own **A37** string, so it is his word and not a lookalike retype. No route is abbreviated to `DTE`, none is left on `… \| DTE Platform`. |
+
+### Still `UNVERIFIED` — carried to the owner, none of it a defect, none of it blocking
+
+1. **The live site.** Every check ran against a local dev server. `dte.develyst.online` still serves
+   the old titles until the owner deploys — `DELIVERED` is not `deployed`, and no agent goes near
+   production (PROTOCOL §Environments; `SYSTEM-FACTS.md` A23).
+2. **A *person's* eyes on the 8 tabs.** The browser in every unit was an automated Chrome. AC 3 asked
+   for a browser and got one; the owner's own look is still worth having and stays on the board's
+   owner-eyes row (non-blocking).
+3. **The classroom tab while authenticated.** The `withAuth` guard redirects, so nobody has watched
+   the tab *stay* on a classroom page with a session. The `<title>` is server-rendered so it is
+   unaffected in principle; anyone with a session opening a real course settles it.
+
+If his eyes later turn up something the automated browser missed, that is a new finding on a
+`DELIVERED` REQ — it comes back to me and I raise it; it does not retro-invalidate the evidence above.

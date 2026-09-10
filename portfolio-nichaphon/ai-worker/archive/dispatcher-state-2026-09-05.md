@@ -34,3 +34,10 @@ hop 3 | PM  | did: ran the REQ-002 delivery pass — ticked AC3 + AC7 (TEST-005)
 STOPPED hop 3/4 — condition 7 (ball_to HUMAN)
 Board: REQ-001 and REQ-002 both DELIVERED. No work waits for PM, SA, FE or QA. REQ-003 (portfolio content) is DRAFT-BLOCKED on Q20/Q21/Q22 — the only remaining front, and it is the owner's.
 Digest sent to human: REQ-002 closed 8/8; the whole site rebuild is done; REQ-003 is now the only thing left and it needs his facts.
+
+## RUN 2026-09-05-d — N=4 — started from: human says /portfolio still shows nothing + "I wrote all of these myself" (hygiene FAIL, housekeeping folded into hop 1)
+hop 1 | PM  | did: cleared both hygiene FAILs (rotated 2 runs, consolidated REQ-002 49.3->42.5KB, each archived verbatim and cmp-verified first) and recorded the third handover in REQ-003, filing the new sentence as Q27 instead of resolving it | ball_to: HUMAN | flags: /portfolio gap fully explained — no role has ever changed site content and nobody has read the 4 repos
+STOPPED hop 1/4 — condition 7 (ball_to HUMAN) + 2 (data request)
+Board: REQ-001 + REQ-002 DELIVERED. REQ-003 DRAFT-BLOCKED on Q20/Q21/Q22/Q27 — Q27 decides whether the next hop is a repo survey or just placing his own text.
+Digest sent to human: the /portfolio gap is expected, not a bug; one reply block answers everything.
+

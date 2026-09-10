@@ -273,3 +273,46 @@ stops are hard, and refusing them has been right every time it has happened.
   and it reaches you through @Porter, so **it is his mistake to catch, not yours.**
 **Why: a local pass certifies a box the release does not ship from.** **Same reason `sid` passing has never been
 evidence for `uat`.**
+
+## 📱 LINE TESTING VIA `adb` — @Tanya may drive the owner's phone. **(owner's decision, 2026-09-09)**
+🔻 **This REVERSES the standing line *"LINE is out of scope for QA on every box"* — but ONLY on the terms below.**
+**The owner keeps his phone connected by USB and runs `scrcpy`; `adb` ships with it.** ⇒ **@Tanya can type,
+tap and CAPTURE THE SCREEN from the command line.**
+
+### ⛔ HARD BOUNDARIES — these are not guidance
+1. ⛔ **`sid` and the DEMO OA only.** 🚫 **NEVER the customer's OA (`SOM.BALANCE.SCHOOL` / `@427ybeky`).**
+   **A message sent there reaches real parents and CANNOT be recalled.** **If the phone is showing the
+   customer's OA, that is a STOP — say so and touch nothing.**
+2. ⛔ **Never open, read or screenshot any chat that is not the demo OA.** **It is the owner's personal phone.**
+   **Banking, family, anything — not ours to look at, not even in passing while scrolling.**
+3. ⛔ **Never type a password, a PIN, or an OTP.** **Never accept a terms/consent dialog.** **Never install,
+   uninstall or update anything.** **Never change a phone setting.**
+4. ⛔ **Never delete a message, a chat or a file.**
+5. 🔑 **If a screenshot shows something that is not the demo OA, DISCARD IT and do not describe its contents.**
+
+### ✅ What it is FOR — and what it still cannot answer
+✅ **The thing only a phone can show:** line breaks · emoji · a bubble truncating a long message · the rich menu
+· **whether a message an admin actually receives is READABLE.**
+🚫 **It does NOT prove the bot's LOGIC any better than the API does** — **and it costs the owner's desk: his
+machine on, his phone unlocked, his cable in.** ⇒ 📌 **Use it for what the EYE must judge. Use the API for
+everything else.** 🔑 **A round that uses the phone for logic burns the scarcest thing we have.**
+🔴 **And it does not close the real gap: nothing here tests the CUSTOMER'S OA. That is still the owner alone.**
+
+### 🔧 The mechanics — verified 2026-09-09, device attached
+**Path is in `machine.local.md` (git-ignored, per-machine).** **adb `1.0.41` / `36.0.0`, device `CPH2735`.**
+```
+"$ADB" exec-out screencap -p > shot.png     # READ the screen — your main tool
+"$ADB" shell input tap <x> <y>              # tap
+"$ADB" shell input swipe <x1> <y1> <x2> <y2> <ms>
+"$ADB" shell input text 'Next'              # ASCII only — see below
+```
+🔴 **THE KNOWN GAP, establish it BEFORE you plan a round: `adb shell input text` cannot type THAI.**
+**The registration flow needs `สมัคร` · `ครู` · `ยืนยัน` · `เพิ่มนักเรียน` — all Thai.** ⇒ **you can READ every
+screen and TAP every button, but you may not be able to TYPE the words that drive the flow.**
+🚫 **Do NOT solve this by installing an input-method app — installing anything is forbidden above.**
+✅ **Do this instead, in order:** **(1) try the buttons** — their screens offer taps, and a tap needs no
+keyboard · **(2) test what `input text` actually does with a Thai string ONCE, in a harmless place, and report
+what happened** · **(3) if neither works, say so and I take it to the owner.** 🔑 **`Next` is ASCII, so the
+parent path's first step is typeable — start there and find the wall rather than predicting it.**
+📌 **Report the boundary you find as a FINDING.** **"What this rig can and cannot drive" is worth more than one
+round of results — it decides every round after it.**

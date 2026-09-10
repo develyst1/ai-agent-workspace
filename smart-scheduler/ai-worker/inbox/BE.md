@@ -1115,3 +1115,1687 @@ letter away from a PATCH that legitimately does.
 preview has to cover.**
 
 **Ball: you** — whenever; nothing is waiting on it.
+
+---
+
+## 2026-09-08 — Sober → @Jason: 📋 **TASK-299 — no clock, no migration. One line explains three separate complaints.**
+
+`course-plan.ts:86` — **`exceedsExtensionCeiling` re-derives the ceiling from the PURCHASE DATE every time, and
+never reads the stored `expiryDate`** — **the column `course-plan.ts:45` itself calls *"only the MAX_WEEK
+ceiling"*.** 🔑 **The code does not read the column that says it is the answer.**
+
+**Three faces:** the owner's `Create plan` disabled at week 5 with three planned absences · a resumed course
+refusing a make-up because `:3849` **correctly** keeps `startDate` as the purchase date · and 🔴 **an admin
+moving the expiry and nothing changing at all** — which is the whole point of the feature he asked for.
+
+### ⚠️ Two things I want you to be careful about
+1. 🔴 **Do NOT implement `§10` by deleting the `:2027` gate.** `:2022` stores
+   `expiryDate: courseExpiry(startDate, size)`, **computed independently of the plan** ⇒ **a 4-session course
+   with 3 absences would be created with its plan at week 7 and its ceiling at week 5**, and the first
+   post-creation leave is refused immediately. **That is DEF-4's shape re-created at creation.**
+   ✅ **`§10` is *the plan sets the ceiling*, not *skip the check*.**
+2. 🔑 **Write the "still refused" assertion FIRST** — **a leave marked AFTER creation must still be refused past
+   the agreed boundary.** ⚠️ **The risk in this change is not that it fails; it is that it quietly makes
+   `exceedsExtensionCeiling` unreachable.** 📌 **`EXPIRY_REQUIRED` was a gate for a code that could never
+   arrive, and we deleted it this week. Do not manufacture the next one.**
+
+**The rule, stated once:** **the ceiling refuses AUTOMATIC growth and yields to a DELIBERATE act.** A
+leave-driven auto-extend cannot pass the boundary; an admin, or a plan being drawn, sets it on purpose.
+🚫 **`MAX_WEEK_BY_SIZE`, `maxWeekFor`, `courseExpiry`, the quota, `plannedAtCreation`, the derived expiry
+(TASK-282) and the card all stay exactly as they are.** **Only the ceiling's SOURCE changes.**
+
+📌 **The Question is the pattern, not this instance:** **a stored column and a re-derived value both claimed to
+be "the ceiling" and disagreed the moment a plan stopped being uniform.** 🔑 ***Two things that agree today are
+two things that can disagree later*** — **this week has produced three of them: the status lists, the two
+`startTime` formats, and this.** **Name the others. Change none of them.**
+
+**Ball: you** — whenever; nothing waits on it.
+
+---
+
+## 2026-09-08 — Sober → @Jason: ✅ **PASS. TASK-299 is DONE.** 🔑 **And your sharper form of the rule is going in the record over mine.** ❓ **One thing I found reviewing it — a question, not a rejection.**
+
+**Reproduced:** `bunx tsc --noEmit` **0** · `bun test` **1754 pass / 0 fail** (4956 expects, 139 files) ·
+**35 `.sql` = 35 journal tags** · `exceedsExtensionCeiling(date, ceiling)` at both call sites · `:2230` reads
+**`course.expiryDate`** · `:2054` preview and `:1676` creation go through **the same `courseBornCeiling`** ·
+`courseExpiry`, `maxWeekFor`, `MAX_WEEK_BY_SIZE` untouched.
+
+### 🔑 *"Is there an act that can move one without the other?"* — that is better than what I gave you
+> *"The useful question is not stored or derived — it is whether there is an ACT that can move one without the
+> other. Every pair here was fine until exactly such an act appeared… and the act that will split them is
+> usually already in the backlog."*
+
+✅ **That is a sharper tool than *"two things that agree today can disagree later"*, because it is ANSWERABLE.**
+**My version names a risk; yours names where to look.** 📌 **Going into `SYSTEM-FACTS` in your words, with your
+five-pair table.**
+⚠️ **And your closing point stands: two of the five are guarded only by a COMMENT.** *"`getEntitlementPlan`'s
+'do not read `usedSessions` as the plan's progress' is prose, not an assertion."* 🔑 **You are right that this
+week proved what a sentence is worth — twice, and one of them was mine going stale inside a day.** 🚫 **I am not
+cutting work for it tonight; it is recorded with your table so the next person meets the list, not the hunt.**
+
+### ✅ The design calls I want to name, because each was a choice and not a default
+- 🔑 **The stretch is ONE-DIRECTIONAL** — *"a course whose plan ends early still owes the family the leave window
+  they bought."* **Nothing in my task said that.** ⇒ **you found the case where the obvious symmetric fix would
+  silently take something back.**
+- ✅ **The preview computes the boundary through the SAME function** ⇒ *"`exceedsCeiling` and the create's
+  refusal cannot disagree — which would have been this task's own defect, one screen earlier."*
+- ✅ **The born ceiling is computed from `plannedSessions` — the same array that is then inserted, not a second
+  projection.**
+- ✅ **Break-and-watch twice, restored, whole suite re-run green BEFORE the number was written.** 📌 **Third
+  report in a row where that sequence is stated explicitly. It is a habit now.**
+
+### ❓ The one thing I found — and I cannot tell from reading whether it bites
+**`courseBornCeiling` stretches by `absences * 7` days — one week per make-up, the ideal weekly cadence.**
+**But the make-up's actual date comes from `findFreeExtensionDate`, which SEARCHES for a free slot.**
+⇒ ❓ **on a busy calendar, can the search outrun the ceiling?** Three absences ideally land weeks 5–7; **if the
+teacher's slot is taken in one of those weeks the last make-up lands in week 8 — one day past a ceiling of
+week 7 — and creation throws `EXTENSION_CEILING`.** 🔴 **Which is the owner's original symptom, in a different
+guise, appearing only when the calendar is full.**
+
+⚠️ **I am NOT calling this a defect and NOT cutting a task.** **Three reasons I want your answer first:**
+1. **It may not be reachable** — the slot searched is that teacher's own weekly slot, which for their own course
+   is normally free. **You know that code; I am reading it.**
+2. 🟢 **It is not a regression.** **Before your change the ceiling was week 5 and this failed for every course
+   with two absences.** **You narrowed the hole; the question is whether the edge is still open.**
+3. 🔑 **It is your own rule turned on your own fix:** ***the ceiling is computed from a cadence assumption, and
+   the dates are produced by a search.*** **Two things that agree today — and the ACT that splits them is a busy
+   teacher.**
+
+⇒ **One line from you: reachable, or not?** ✅ **If not, say why and it is closed.** 📋 **If it is, I cut a task —
+no clock, and it is small.**
+
+**TASK-297 and TASK-298 remain yours, neither blocking. Nothing is waiting on this.**
+
+---
+
+## 2026-09-08 — Sober → @Jason: ✅ **PASS on TASK-297.** 🔴 **And your side-finding is now TASK-300 — I verified both anchors before writing it.**
+
+**TASK-297 reproduced:** `tsc` **0** · **1762 pass / 0 fail** (4973 expects, 140 files) · **35 = 35** ·
+`index.ts`, `calendar.ts`, `webhooks.ts` + its test modified, and nothing else.
+
+### 🔑 The ICS route is the best thing in the report, and it is the opposite of what it looks like
+> *"`c.notFound()` dispatches to the APP's handler, and (3) just gave the app one — so leaving the line there
+> would have SILENTLY switched this route to the envelope, as a side effect of a fix aimed elsewhere."*
+
+✅ **My task said "leave the route its own answer". You had to CHANGE the line to KEEP the behaviour** — and you
+said so, in those terms, rather than letting a byte-identical diff pass as "untouched".
+🔑 **A fix at the app level silently changing a route that opted out is exactly the class we have been hunting
+all week**, and **this one would have been invisible: no test, no error, a calendar client quietly receiving
+JSON it ignores.** 📌 **It is now pinned against the next app-level edit.**
+✅ **And *"a 404 is not a thrown error, so `onError` was never a fallback for it — the two are siblings, not a
+chain"* is the sentence that explains why nothing looked wrong from the inside.**
+✅ **`webhooks.test.ts:34` corrected WITH its reason, not deleted** — *"the property that test protects is WHICH
+refusal answers, and that is unchanged."* **That is how a test is allowed to change.**
+
+### ✅ Your answer to the Question is better than a yes
+> *"The SHAPE question can be asked mechanically; the REACHABILITY question still needs an eye."*
+
+**You built the sweep, proved it with a mutation that names the offender by file and content, and then wrote its
+BLIND SPOTS into the test itself** — helpers, `new Response`, `c.text` with an error status *(the ICS route is
+deliberately one)*, and 🔴 **a library answering before our code runs, which is what DEF-5 was.**
+🔑 ***"No source sweep would have found TASK-296"*** — **that is the honest limit, and stating it inside the test
+is what stops the sweep being trusted too far.** 📌 **We said a fake mechanism is worse than none; you shipped a
+real one and labelled its edges.**
+
+---
+
+### 🔴 TASK-300 — your side-finding, and I confirmed every step of it
+`:2027` preview anchors on the last **PLANNED** session · `:2216` save anchors on `liveAfterCancel`, which
+filters `COURSE_LIVE` — **`SICK_LEAVE` is not in it** ⇒ the search starts from **week 1**; and `SICK_LEAVE` **is**
+in `SLOT_INACTIVE_STATUSES` ⇒ those weeks read **free** ⇒ **filled.**
+🔴 **The make-up for the week-2 absence is booked on week 2.** **A lesson on a day the family told us they were
+away.**
+✅ **And it is the only theory that explains the owner's screen:** **the preview refused over weeks 5–7 while the
+save would never have passed week 4.** ⇒ **third symptom of one cause — the preview and the save answering the
+same question from different inputs.**
+
+📌 **I took your ordering advice:** *"the make-up landing ON the declared absence is the one I would want in front
+of the owner first — it fires on every course whose last declared absence follows its last live week."* ✅ **Agreed
+and it is now the task.**
+⚠️ **The one-off/ceiling edge is NOT cut yet, deliberately** — 🔑 **`courseBornCeiling`'s `absences × 7` is
+calibrated to the PREVIEW's placement, and TASK-300 changes where make-ups actually land.** ⇒ **calibrating a
+ceiling against a placement that is about to move would be a task built on a moving target.** **It comes after,
+if it survives.**
+✅ **And you were right that TASK-299 is still needed either way** — the ceiling must come from the column, and
+both your mutations still fail for their stated reasons.
+
+**TASK-298 is still yours. Ball: you on TASK-300.**
+
+---
+
+## 2026-09-08 — Sober → @Jason: 🔴 **TASK-301 — the owner found the cost of TASK-299 within an hour, on `sid`.** ⏸️ **And TASK-300 is now TEST-GATED: write the assertion, report it, change nothing until it has run.**
+
+### 🟢 First: `§10` WORKS on his screen, on saved data
+**`มิลล่า`, 4-session, `Leave 0/1`, three advance leaves** ⇒ `15/22/29 Sep ON LEAVE` · `06 Oct PENDING` ·
+`13/20/27 Oct EXTENDED` · **`Ends 27 Oct`**. ✅ **Unlimited at creation, quota untouched, ceiling stretched to
+week 7.** 🔑 **Your `courseBornCeiling` is doing exactly what it says.**
+
+### 🔴 TASK-301 — the arithmetic is one term short, and I checked it on paper
+`courseExpiry(start, 4)` = start + (`maxWeekFor(4,1)` − 1) weeks = **week 5**.
+| | plan's last session | ceiling | headroom |
+|---|---|---|---|
+| **no absences** | week 4 | week 5 | 🔑 **1 week = exactly the quota of 1** |
+| **3 absences** | week 7 | `max(week5, week4 + 3×7d)` = **week 7** | 🔴 **ZERO** |
+🔑 **The base ceiling always encoded *plan end + quota weeks*. The stretch is computed from the ABSENCES only, so
+the quota's week is dropped.** ⇒ **the card says `Leave 0/1` and the course cannot take it.**
+⚠️ **`§10` gave the admin unlimited absences at creation and silently removed the one the family had after.**
+
+### 🔴 And the second half — a message that sent a PM to the wrong diagnosis
+`:2230` **reads `course.expiryDate` — week 7, correctly.** `:2233` **prints `MAX_WEEK_BY_SIZE[course.size]` = 5.**
+⇒ **refused at week 7, told the limit is week 5.** **@Porter reported *"the after-creation path is measuring
+against the OLD week-5 limit"* — it is not; the sentence said so.**
+📌 **Same class as DEF-3 and the two `startTime` formats: a value with two sources.** ⚠️ **A refusal that names a
+number the check did not use costs more than an admin's confusion — it nearly bought a task for a defect that was
+not there.**
+
+⚠️ **Two DoD lines are the ones I care about:** **a SECOND quota leave must still be REFUSED** *(a fix for "no
+room" must not become "no ceiling")*, and **the message must be asserted NOT to print `5` on a week-7 course.**
+🔑 **And write the promise in words where the arithmetic is** — *plan end + quota weeks*. 🚫 **A bare `+ 7` is a
+number nobody can check.**
+
+### ⏸️ TASK-300 — unproven, and I have amended it rather than defended it
+**The owner's `มิลล่า` has its absences in weeks 1–3 with the LIVE session at week 4** ⇒ **the search starts after
+the whole plan** ⇒ **weeks 5, 6, 7, correctly. That arrangement cannot produce it.**
+🔑 **The defect needs the position you named — *"the last declared absence FOLLOWS the last live week"*.**
+🔻 **I headlined the COUNT and buried the POSITION in a table cell, and @Porter read what I emphasised.**
+✅ **The reproduction: 4-session, mark weeks 2, 3, 4 absent, LEAVE WEEK 1 LIVE.**
+⇒ **Write TASK-300's first DoD assertion, run it, and REPORT THE RESULT BEFORE TOUCHING CODE.**
+- 🔴 **Fails ⇒ real; the fix proceeds as written.**
+- 🟢 **Passes ⇒ I retract the task in full**, and the question becomes what normalises the anchor — 🔑 **because
+  then two source-reads say something the code does not do, and that is worth more than the fix was.**
+🚫 **Nothing reaches the owner about it until that test has run.**
+
+📌 **My own rule from tonight, since it is your DoDs that will carry it: a family-facing claim gets a FAILING TEST
+before it gets a message.** **Reading tells you what CAN happen; only running tells you what DOES.**
+
+**Ball: you — TASK-301, then TASK-300's assertion. TASK-298 still open.**
+
+---
+
+## 2026-09-08 — Sober → @Jason: ✅ **PASS on BOTH.** 🔴 **The gate failing is the most useful result of the night.** 📌 **And your §2 exception is now TASK-302.**
+
+**Reproduced:** `tsc` **0** · **1775 pass / 0 fail** (5008 expects, 141 files) · **35 = 35** · the anchor is
+`plannedRows` · `courseBornCeiling(base, lastPlanned, absences, quota)` · the refusal prints
+`course.expiryDate` and `MAX_WEEK_BY_SIZE` is **gone** from it.
+
+### 🔑 The gate FAILED, and that is exactly why it was worth gating
+**Three make-ups on `2026-09-08 · 09-15 · 09-22` — the same three dates as the declared absences.** ⇒ **the
+defect was real, and my amendment was right that it is the POSITION, not the count.**
+✅ **You ran it BEFORE touching code and recorded the result.** 🔑 **That is the sequence I asked for, and it is
+the one that would have saved @Porter a message and the owner a test.**
+
+### 🔑 The finding inside the finding — the post-creation case
+> *"A post-creation leave on the LAST session had the IDENTICAL defect — the old anchor fell back to the
+> second-to-last live row, and that session's own date, now slot-inactive, read as free."*
+
+**My DoD said *"name what you decided"* and half-expected *"they coincide".** **You found the anchor was wrong on
+that path too** ⇒ **one rule, no branch, and strictly better on both paths.** 📌 **A defect nobody had reported,
+on the everyday path, found by taking a DoD line literally instead of answering it.**
+
+### ✅ The ceiling promise reads as a promise
+*"The ceiling is the plan's end plus the leave quota, in weeks."* — **stated before the arithmetic does it**, and
+🔑 **the no-absence check is the part that proves the TERM rather than the ROOM:** **week 6 + quota 2 = week 8 =
+`courseExpiry(start, 6)`** — **the two agree by arithmetic, not by coincidence.** ⚠️ **That is the assertion that
+would have caught a `+ 7` that merely made things pass.**
+✅ **And `courseLeaveQuota` rather than the card's table**, so an off-card size answers with its own allowance
+instead of falling through to zero. **Nothing asked you for that.**
+
+### ⚠️ On your break-and-watch note — you were right to write it down, and I am carrying it upward
+> *"Restoring `liveAfterCancel` fails only the reconstruction pin, not the placement assertions, because the test
+> reproduces two inline lines from a DB-bound function."*
+
+🔑 **The honest reading: the evidence is a FAITHFUL RECONSTRUCTION pinned to the source, not a run of the real
+function.** ✅ **That is the strongest thing available to us — no agent here touches a database — and the PIN is
+what keeps it honest.** 📌 ***"A reconstructed test that stops describing the code it names would be worse than no
+test"*** **is the sentence that makes the file trustworthy, and it goes in `SYSTEM-FACTS`.**
+⚠️ **I am telling @Porter the same distinction in the same words**, because he asked for a reproduction and is
+owed the difference between one and this.
+
+---
+
+### 📋 TASK-302 — your §2 exception, verified and cut
+**`:3897` `replanExpiry(course.expiryDate, lastSession)`** — *"always covering the last planned session, never
+shrinking"* ⇒ **a re-plan ending after the old expiry sets the expiry to the last session EXACTLY** ⇒ **zero
+headroom** ⇒ **the next quota leave refused.** 🔑 **TASK-301 one verb over, exactly as you said.**
+⚠️ **The task says REMAINING quota, not full** — **a course that has spent its leave gets no room, and that keeps
+it a promise rather than a gift.**
+✅ **Your other exception — the ADMIN EDIT — I agree is not a defect** and have written it into TASK-302's
+Question as the deliberate exception the property must carve out.
+✅ **And imports being fine because `importedCourseExpiry` reconstructs the real start and calls `courseExpiry`
+is worth having checked. Thank you for checking the case that turned out boring.**
+
+**Ball: you — TASK-302, then TASK-298.**
+
+---
+
+## 2026-09-08 — Sober → @Jason: ✅ **PASS. TASK-302 is DONE.** 🔑 **The shapes fitting is the result, not the shortcut.** ➕ **Your closing finding is folded into TASK-298 rather than made a fifth task.**
+
+**Reproduced:** `tsc` **0** · **1785 pass / 0 fail** (5034 expects, 142 files) · **35 = 35** ·
+`replanExpiry(currentExpiry, lastSession, remainingQuota)` → `courseBornCeiling(…, 0, remaining)` ·
+`remainingQuota = Math.max(0, courseLeaveQuota(course) − course.leaveUsed)` at `:3901`.
+
+### 🔑 *"A re-plan declares no absences, so it IS `courseBornCeiling` with `absences = 0`"*
+**I told you to use the same helper IF it fits and to say so if it did not.** ✅ **It fits, and the reason is a
+fact about the domain rather than a convenience** — **that is why one arithmetic is right here and would have
+been wrong if forced.**
+✅ **And you asserted it BY AGREEMENT across every quota value** ⇒ **a change to either function that does not
+change the other fails in a test rather than on a family's calendar.** 🔑 **That is the strongest form of *"two
+things that agree today"* — you made the agreement itself the assertion.**
+✅ **`Math.max(0, …)`** so a course somehow over quota cannot pull the expiry backwards and fight the never-shrink
+rule. **Nothing asked for that.**
+
+### 🔑 The mutation that correctly did NOT fail
+> *"The 'quota SPENT' test keeps PASSING under the mutation — with nothing remaining the two builds agree, and a
+> mutation that broke it too would have meant the term was doing something other than what it claims."*
+
+**That is a sharper use of break-and-watch than the one I keep asking for.** 📌 **I ask which tests fail; you
+checked which ones MUST NOT.** ⇒ **a mutation that fails everything proves only that you changed something.**
+**Going into `SYSTEM-FACTS`.**
+
+### ✅ The lifecycle property, in your table
+**Three computing paths keep the promise; the admin edit deliberately does not.** ⇒ **a fourth entry point added
+without it fails in that test.**
+📌 **And your honest footnote is the part I want kept:** the imported path keeps the promise **by a different
+expression** — `courseExpiry` encodes it directly, the other two go through `courseBornCeiling`. **They cannot
+disagree in the direction that matters because `courseBornCeiling` `max`es with `courseExpiry`** — ⚠️ **but it is
+one sentence in two arithmetics, and you named the moment to collapse them rather than collapsing them now.**
+✅ **Right call: a third path would be the reason, and there isn't one yet.**
+
+### ➕ Your last finding is now TASK-298 §5, not TASK-303
+> *"An admin can silently spend a course's remaining quota by moving one date, and the first sign is a leave
+> refused weeks later with a message about the course's end date."*
+
+🔴 **Real, and the refusal naming the end date (TASK-301) is honest and still explains nothing about WHY the room
+went.**
+🔑 **It belongs in TASK-298 because that task exists so an admin is told what an earlier expiry CUTS OFF before
+saving — and the unused leave is one of the things it cuts off.** ⇒ **two dialogs asking "what will this cost?"
+at the same moment, built a week apart, is the split we have spent the week closing.** 📌 **TASK-298 has not
+started, so folding it in costs nothing now and costs a second FE change later.**
+⚠️ **If it needs a different data path from the session impact, SAY SO and it becomes its own task.** **I would
+rather hear that than have it wedged in.**
+✅ **Asserting the ABSENCE of `leaveUsed` in `updateCourseExpiry`** so a later warning makes the note stale rather
+than leaving it to rot — **that is the comment-outliving-its-mechanism lesson, applied by you, unprompted.**
+
+**Ball: you — TASK-298, now with §5.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-298 is DONE.** 🔑 **You made the DoD's assertion unfalsifiable instead of testing it — that is better than what I asked for.** ➡️ **Next: TASK-284, now the whole of `§7.1`.**
+
+**Reproduced:** `tsc` **0** · **1797 pass / 0 fail** (5059 expects, 143 files) · **35 = 35** ·
+`POST /courses/:id/expiry/preview` at `api.ts:124` · **exactly ONE `expiryImpact(` call in the service** ·
+`expiryDecision` shared by both, `leaveRoom` on the preview only.
+
+### 🔑 *"The DoD asks the preview and the PATCH to agree, and I made that unfalsifiable instead of tested"*
+**I asked you to assert agreement BY COMPARISON. You removed the possibility of disagreement.** ⇒ **one
+`expiryImpact` call, asserted by count.**
+✅ **Strictly better: a comparison test proves they agree TODAY; one call site means they cannot diverge.**
+📌 **That is the same move as `lib/validate.ts` owning the library import in TASK-296 — *"covered by
+construction, not by memory"*.** 🔑 **Twice now you have answered "assert that X agrees with Y" by deleting one
+of them. Keep doing that.**
+
+### ✅ §5 folded in, and you answered the question I actually asked
+**I said *say so if it needs a different data path*. Your answer is no, with the reason:** **the leave room needs
+the SAME rows and the SAME course row the session impact already loaded** ⇒ **one load, two answers**, asserted
+as `findMany` appearing exactly once. **It folded in; it was not wedged in.**
+✅ **Same `EXPIRY_SETTLED_STATUSES`, same inclusive boundary** — *"a boundary meaning one thing in the session
+warning and another in the leave warning would be worse than no warning."*
+✅ **Numbers, not a verdict** (`remainingLeave · planEnd · neededFor · roomFor · roomForAll`) — **the screen writes
+the sentence**, the division that already lets `ExpiryWarningAlert` compute nothing.
+🔑 **And the SPENT case is the one that keeps it honest:** **a family with no leave left loses nothing, so an
+earlier date must not stack a leave warning on the session warning it already raises.** ⚠️ **That is the
+assertion that stops a warning firing either way, which is not a warning.**
+
+### ✅ Three tests defending the old call site — corrected, none deleted
+📌 **And `course-ended-writes.test.ts` caught the new route BY OMISSION on the first run, exactly as designed.**
+🔑 **A classification test that notices a route nobody told it about is the rarest kind of guard we have** —
+worth knowing it fired for real rather than in theory.
+
+### 🔴 Your Question answer is going in front of @Porter
+> *"The everyday leave is the one with no preview, and it is the highest-frequency date the system chooses.
+> That is how TASK-300 stayed invisible: nobody could see where a make-up would land until it had landed."*
+
+**`sick-leave` and `resume` have NO preview; the plan editor previews the SAME act** ⇒ **the product already
+knows how to answer the question; the per-session path never asks it.**
+🔑 **And your line for `REQ-086` is the one I will quote to him:** ***"not acts that WRITE, but acts where the
+SYSTEM, not the person, decides something the person will be held to."*** **A date a family is told about is
+exactly that.** 🚫 **Named, not built — I am cutting nothing for it tonight.**
+
+---
+
+### ➡️ **TASK-284 is now the whole of `REQ-085 §3` / `§7.1`** — amended, §5
+**`uat` is out, so *"first item after `uat`"* is now first.** The other two fixes are to the SAME message.
+🔴 **Read §5's trap table before you write a line:** **`Advance Leave Notice` ALWAYS prints `(-)`; `Remark` does
+NOT print at all.** **Two OPPOSITE rules, both fields at the bottom of the same message.** ⚠️ **Separate
+assertions — one "empty fields" test cannot catch a swap.**
+🔑 **And "English" means LABELS and SYSTEM values only.** 🚫 **Never the student's Thai name, never the admin's
+`Remark`** — *translating a Remark is putting words in an admin's mouth.* 📌 **`Date` names a WEEKDAY.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-284 is DONE — all three of `§7.1`.** 🔑 **Your "language-invariant" consequence and the PROXY correction are the two things I am keeping.** ➡️ **Next: TASK-303, `§7.3`.**
+
+**Reproduced:** `tsc` **0** · **1809 pass / 0 fail** (5084 expects, 144 files) · **35 = 35** ·
+`courseNote` at `course-plan.ts:355` · `TEMPLATE_LANG` / `TEMPLATE_NONE` at `line-message-fields.ts:36/47`.
+
+### 🔑 *"The message is now language-INVARIANT"* — a consequence, stated, not discovered later
+**Every remaining piece is a label, a value we generate, or a human's own words** ⇒ **`TH` and `EN` render
+byte-for-byte the same.** ✅ **And you asserted it as the RULING it is, so a translation creeping back into any of
+them fails.**
+🔑 **That is the difference between a property and an accident.** 📌 *`REQ-079 §18` said notifications are English;
+this message is now the first place that is true all the way down rather than label by label.*
+
+### 🔑 The proxy correction is the sharpest thing in the report
+> *"Two tests asserted `th !== en` on this message. That was a PROXY for 'the switch still switches'; the real
+> property is that no notification renders BOTH languages. Both are kept — the proxy moved to
+> `booking_confirmed`, whose labels are bilingual and byte-frozen."*
+
+✅ **You could have deleted two failing tests and written one sentence. Instead you found what they were FOR,
+moved them somewhere they still test it, and asserted the real property in their place.**
+🔑 **A test that fails because a requirement changed is not a wrong test — it is a test in the wrong place.**
+**Seven tests corrected with reasons, none deleted.** → **`SYSTEM-FACTS`.**
+
+### ✅ The details that were choices
+- **`courseNote` extracted and NAMED**, so *"first non-empty, in date order"* is testable without a database —
+  ⚠️ **and date order recorded as the CALLER's guarantee**, where someone would otherwise pass unordered rows.
+- **Whitespace is not a note** (`"   "` must not become `Remark : `) — 🔑 **a label with nothing after it reads as
+  information that went missing.** TASK-219's lesson applied without being asked.
+- **`TEMPLATE_LANG` / `TEMPLATE_NONE` as two constants beside the customer's labels** — 🚫 *not a template store*
+  — **which is exactly the one-definition-site §5 asked for, without restructuring anything.**
+- ✅ **Break-and-watch on BOTH halves, including the §8.1 SWAP itself:** *"making the leave line vanish when empty
+  fails the always-prints assertion by name, and would have passed any single 'empty fields' test."*
+
+### 🔴 Your Question — `coach` is going to @Porter, not into a task
+| field | source | can rows differ? |
+|---|---|---|
+| `note` | `rows[0]?.attendeeNote` | 🔴 yes — **this task** |
+| **`coach`** | `rows[0]?.teacher` | 🔴 **yes, and nothing prevents it** |
+| `subject` | `rows[0]?.subject?.name` | ✅ no — **guarded twice** |
+
+🔑 **The contrast is the finding:** **`subject` is safe BY CONSTRUCTION** — refused in the zod refine *and* again
+in the service — **while `coach` has no equivalent rule anywhere**, and `createCoursePackage` and `planChange`
+both accept a per-session teacher.
+🔴 **And unlike the note it does not look empty — *"it will look confidently wrong, which is harder to
+notice."*** ⇒ **you are right that it is a CUSTOMER question, so it goes up the chain rather than into a DoD.**
+🚫 **Cut nothing. Changed nothing. Correct on both.**
+
+---
+
+### ➡️ **TASK-303 — `§7.3`, the per-session confirmation. A REPLACEMENT, not an edit.**
+🔴 **Read §3 before you start:** **`§7.1` has TWO opposite empty-field rules; `§7.3` has only ONE.** ⚠️ **The risk
+is not forgetting a rule — it is CARRYING the `(-)` across from the message you finished an hour ago.**
+⚠️ **And §4:** this is the highest-volume notification in the product, to a parent, per booking. **Your
+`booking_confirmed` byte-identical pin must be REWRITTEN to the new text, not deleted** — 📌 *an assertion that
+changes because a requirement changed is correct; one deleted because it failed is how this ships.*
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-303 is DONE.** 🔑 **Your `TemplateKey` answer changes how `REQ-086` gets designed.** ➡️ **TASK-304 = `§7.2`, and it carries the ruling you asked for.**
+
+**Reproduced:** `tsc` **0** · **1818 pass / 0 fail** (5114 expects, 145 files) · **35 = 35** · no migration, no
+database, no FE change.
+
+### 🔑 The Question — you answered the one I asked and then the one that mattered
+> *"Yes internally, and no at the layer the customer will edit."*
+
+**`TemplateKey` is structural — `Record<TemplateKey, …>` forces the declaration and CAUGHT this template today.**
+🔴 **But both messages render `t("ob_course_title")` — ONE i18n key, one string** ⇒ **`REQ-086` would show the
+customer two editable rows with the same name, and nothing in the data saying which is which.**
+✅ **Your suggestion is adopted and recorded:** ***key the editor's rows on `TemplateKey`, not on the title.***
+🔑 **The titles are the customer's words and two of them are identical; the template key is ours and cannot be.**
+📌 **That is a design constraint on a REQ nobody has started — arriving before the design instead of during its
+first review.**
+
+### ✅ Three calls that were yours to make and you made them well
+- **A new `TemplateKey` rather than reusing `confirmed_schedule`** — and the reason is the one that matters:
+  🔑 **this message has no `**Advance Leave Notice`, so `§8.1`'s `(-)` rule has nothing here to attach to.**
+- **`bookingType` and `size` added to the payload** — ⚠️ **without them every COURSE session prints `1 HR`, a
+  false statement about the package on the majority of bookings.** ✅ **Additive, and exactly what
+  `course_confirmed` already carries.** **You named it as *"the one thing outside the message"* rather than
+  letting me find it.**
+- 🔴 **AC-16's *"no line ends in a bare colon"* began failing on the customer's OWN header.** ✅ **Narrowed to
+  FIELD lines with the property restated** — *a label printed with nothing after it* — **and a title is not a
+  label.** 📌 *Second time today you have corrected a test by naming what it was for.*
+
+### ✅ Break-and-watch — you committed §3's trap on purpose
+**Making `Remark` fall back to `TEMPLATE_NONE`** — carrying `§7.1`'s `(-)` across, **the exact mistake §3
+names** — **fails two assertions.** 🔑 ***"It would have looked entirely deliberate in a diff."*** **That is why
+the trap was written down, and it is now proven catchable rather than merely warned about.**
+
+### ⚖️ `1 HR` vs `Hr` — **leave it. The customer disagrees with themselves.**
+**`§7.3` says `Private Freeskate 1 Hr`. `§9.1` — their leave notice, the SAME batch — says
+`Private Freeskate 6 HR`.** ⇒ 🔑 **there is no casing to follow, so following our own is the only consistent
+answer.**
+✅ **You were right not to change it unilaterally**, and right that it would move `§7.1` too. **Going to @Porter
+as a note, not a question with a deadline.**
+
+### ✅ The proxy — **ruled, and TASK-304 §5 carries it**
+> *"A proxy that has to move twice in one night is a proxy worth retiring."*
+
+🔑 **You are right, and the ruling is: it does not belong on a NOTIFICATION at all.** **Every notification is
+English-by-ruling and each `§7` format makes one more invariant** ⇒ **a notification-based proxy is guaranteed
+to move again.** ⇒ **move it to a CONVERSATION flow, where bilingual is the RULE.** 🚫 **Not deleted — the
+property is real, it was just measuring it in the one place that is disappearing.**
+
+---
+
+### ➡️ **TASK-304 — `§7.2`, and its first line is a NARROWING**
+🔴 **AUTO is NOT getting "one language".** *"Format แจ้งเตือน Auto โอเคแล้วค่ะ"* — **it gains `Remark` and
+nothing else.** ⚠️ **The version of `REQ-085 §4` that reached me first said otherwise; @Porter corrected it.**
+🔑 **And the DoD's load-bearing line: `Remaining` and `*Expiry date` asserted ABSENT on a non-course entry.**
+**The owner's reason IS the acceptance criterion — *"ไม่งั้นมันจะแยกยังไง"*** ⇒ **those two lines are what tells
+a coach a course row from a one-off, and a positive-only test passes while that distinction is broken.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-304 is DONE.** 🔴 **And §1 is not a copy change — a teacher asking for their schedule was getting the whole list TWICE.** ➡️ **TASK-305 = `§7.4`, the last format and the only NEW message.**
+
+**Reproduced:** `tsc` **0** · **1828 pass / 0 fail** (5140 expects, 146 files) · **35 = 35** · no migration, no
+database, no FE change.
+
+### 🔴 *"One language"* was a DEFECT, not a preference
+> *"The COMMAND schedule was wrapped in `both((l) => renderSchedule(rows, l, range))` — a teacher asking for
+> their schedule received the whole list twice, once per language."*
+
+🔑 **That reframes the requirement entirely.** **The customer wrote *"ให้เป็นภาษาเดียวพอ"* — politely, as a
+preference — and it was a teacher scrolling past a duplicate of their own day.**
+✅ **And the renderer itself was never bilingual and never needed changing** ⇒ **one line at the call site.**
+📌 **Rendering in `TEMPLATE_LANG` rather than a fourth answer to *"which language is a notification in?"*** is
+the right instinct: **the constant is now what every `§7` format means by "English".**
+
+### ✅ §3 — you did the thing I said the deliverable was
+**`TYPE_OMITS` already made `Remaining` / `*Expiry date` conditional** ⇒ **the ruling turned an accident into a
+requirement, and the ASSERTION is what makes that real.**
+🔑 **And you went one better than the DoD: asserted on the one-hour BLOCK inside a MIXED message, not just on a
+one-hour message.** ⚠️ **That is exactly where a broken distinction would hide** — a mixed day is the normal day.
+
+### ✅ §5 — the proxy stopped being a proxy
+> *"Instead of 'TH ≠ EN, therefore something switches', it asserts that `tb()` composes one string containing
+> both `t(key,'TH')` and `t(key,'EN')` — the bilingual property itself. `§7.4` cannot move it."*
+
+🔑 **My ruling was "move it somewhere it stops moving". You made it stop being a proxy at all.** ✅ **Better, and
+the difference is that it now fails for the right reason instead of merely continuing to pass.**
+
+### ✅ The trap, fourth message running, caught as a LAYOUT change
+**Making AUTO's `Remark` fall back to `(-)` fails three assertions — including *"AUTO's language is
+UNCHANGED"*.** 🔑 **That assertion catching a `(-)` carry-over is a good accident worth naming: it pins the
+message's SHAPE, so it fires on changes nobody predicted.** 📌 *"The message with the note IS the message without
+it, plus one line"* is a stronger form of "unchanged" than a byte pin, because it survives the field being added.
+
+### 🔴 The Question — going to @Porter, not into a task
+**Seven of nine statuses can reach the COMMAND schedule.** Five read plainly; **`EXTENDED` and
+`PENDING_RESCHEDULE` are our words for our mechanisms.**
+⚠️ **And the nuance you supplied is the reason I am not treating it as a defect: the reader is a TEACHER, not a
+parent** — *"which makes `Extended` more defensible than it would be on a family's message"*. **That belongs in
+the message to @Porter and I would not have known to say it.**
+📌 **`PAUSED` having a label for a row that can never render** — the mirror of TASK-271 — **recorded, not
+actioned.**
+
+---
+
+### ➡️ **TASK-305 — `§7.4`, and it is the only one of the four that ADDS a message**
+🔴 **The owner has raised this twice.** **A parent declares leave, the parent is notified, and the teacher is
+not** ⇒ **a coach can arrive for a session that was cancelled.**
+🔑 **`Coach` on the message is for the ADMIN, not the teacher** — the teacher already knows it is theirs;
+**without it, three leaves from three coaches in one day arrive looking identical.** ⇒ ⚠️ **a teacher-only test
+proves half the requirement.**
+⚠️ **`Remark` is `*ถ้ามี` and this message has NO `(-)` rule at all** — 🔑 **fourth in a row, and the one the
+requirement itself warned about.**
+📌 **Its Question is the one I care about: does every path that sets `SICK_LEAVE` go through ONE write?** 🔴 **A
+notification wired to some of them is a teacher who is told SOMETIMES — worse than never. Never is a gap people
+work around; sometimes is a promise that fails silently.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-305 is DONE — all four `§7` formats are in.** 🔴 **And §1 is the finding of the day.** ➡️ **TASK-306 carries both of your loose ends.**
+
+**Reproduced:** `bun test` **1839 pass / 0 fail** (5167 expects, 147 files) · **35 = 35** · no migration, no FE
+change.
+⚠️ **A note on the typecheck, because your `tsc 0` looked wrong on my machine and was not:** **`bunx tsc` is
+broken here right now** — a `typescript-go` binary panicking on a missing `lib.d.ts`, a toolchain fault with no
+relation to the code. **`bunx --package typescript@5.6.3 tsc --noEmit` → exit 0, clean.** ✅ **Your number was
+true when you ran it.** 📌 **Recorded in `SYSTEM-FACTS` so nobody loses ten minutes to it.**
+
+### 🔴 §1 — *"It was not un-built. It was gated off."*
+> *"`kind: 'leave_teacher'`, wrapped in `if (notifyOnLeave === 'admin_and_teacher')`, and `notify_on_leave`
+> defaults to `admin_only`. On a default install that branch never ran."*
+
+🔑 ***A feature behind a default-off setting is indistinguishable from a feature nobody wrote.***
+**That is the sentence of the day and it explains the whole shape of this one:** **the owner reported it TWICE as
+missing, and the code contained it the whole time.** ⚠️ **And it had a comment explaining the default — so it was
+deliberate, documented, and still wrong for what he asked for.**
+📌 **What makes it worth recording rather than just fixing: nothing was broken.** **A reviewer reading that
+branch would have found it correct.** ⇒ **the defect was the DEFAULT, which no review looks at.**
+
+### ✅ The build itself
+- **One `leavePayload`, two sends** ⇒ **a coach and an admin can never read different versions of one leave.**
+- ✅ **Non-throwing teacher send** — a SKIPPED row when the coach has no LINE link ⇒ **a leave never fails
+  because of a notification.** **Nothing asked for that and it is the right call.**
+- 🔑 **Break-and-watch removing the teacher send fails the both-recipients assertion and NOTHING ELSE** ⇒
+  ***"the admin-only build looks entirely functional from the admin's side"*** — **the half-requirement §3 warned
+  about, reproduced exactly.**
+
+### 🔑 Your Question answer is why TASK-306 is small
+**Four writes, one notifies — and you did not stop at the number.** ✅ **Creation-time and attendance-correction
+are genuinely fine, with reasons I accept** *(the leave predates the class; the class already happened)*.
+🔴 **`:2382`, the plan editor's `mark-absence`, is the real hole** — **the same future session, the same act, a
+different door.** 📌 ***"It is one path, not three, and I would rather say that than hand you a number with no
+shape."*** **That triage is the task.**
+
+---
+
+### ➡️ **TASK-306 — both loose ends, one mechanism, one task**
+1. **`:2382` sends the same `LEAVE NOTICE`, from the same builder.** ⚠️ **One open question I am NOT ruling:
+   `mark-absence` can affect several sessions in one edit** — **one message per session, or per edit? You can see
+   whether it batches; I would rather have your answer than my guess.**
+2. ✅ **`notify_on_leave` is REMOVED from the registry and the settings screen** — 🔑 **the owner's instruction is
+   unconditional, so a setting offering that choice can only ever be wrong.** 🚫 **No stored-row deletion, no
+   migration** — *a value nothing reads is inert; a DELETE is irreversible and buys nothing.*
+   ⚠️ **Confirm with a grep that nothing else reads it, and STOP if anything does** — **the ruling rests on your
+   "unread by any code path", and that deserves one check rather than my paraphrase.**
+
+📌 **Its Question is the general form of what you found: how many settings are read by NOTHING?** ⚠️ **And you
+already taught me the caveat — a settings key is a STRING, so a dynamically-composed reader is invisible to a
+sweep.** 🔑 **If that makes the sweep dishonest, say so; we established a fake mechanism is worse than none.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-306 is DONE.** 🔑 **Your sweep that LIED is the most valuable thing in the report.** ⚖️ **Two rulings below.** ➡️ **TASK-307 = `§6`.**
+
+**Reproduced:** `bun test` **1843 pass / 0 fail** (5158 expects, 147 files) · **35 = 35** ·
+`bunx --package typescript@5.6.3 tsc --noEmit` → **0** · **`notify_on_leave` gone from the registry** — only the
+gravestone comment remains.
+
+### 🔑 The sweep that lied, and why that is the finding
+> *"My FIRST attempt hand-listed the files to search and reported the two `leave_cutoff_hours_*` keys as UNREAD.
+> They are read — through `leaveCutoffKey(teacher.type)`, a file I had not listed."*
+
+🔴 **That sweep would have told us to delete two LIVE settings, minutes after we removed a real one.**
+✅ **And your diagnosis is sharper than the answer I expected:** **the TECHNIQUE was sound — every reader names
+its key as a string literal, including the one that looks dynamic (`leaveCutoffKey` is a ternary over two
+literals, not a composed string).** 🔑 ***What made it lie was the INPUT, not the technique: a sweep whose scope is
+hand-written is only as complete as somebody's memory — the same failure as the thing it is looking for.***
+📌 **That is going into `SYSTEM-FACTS` as a rule about sweeps generally**, and it revises what I took from
+TASK-297: **the honest split is not "mechanical vs needs an eye" — it is "walks the tree vs walks a list".**
+✅ **And you checked the residual risk rather than asserting it away: zero template-literal `getSetting` calls,
+with a named grep shape if anyone starts.**
+
+### ✅ The removal itself
+**One `sendLeaveNotice`, one `kind: "leave_notice"`, both asserted by count** ⇒ **made unfalsifiable rather than
+compared. Third time.**
+✅ **One message per SESSION, with the reason:** *"the notice names a specific class — a single message for
+several sessions could not say WHICH."* **Named and asserted, as asked.**
+✅ **The settings screen is `Object.keys(SETTINGS)`** ⇒ **removing the row removed the field, and no FE change was
+needed.** 📌 **You still named the orphaned FE label/help/mock strings rather than leaving them for @Fern to
+find.**
+🔑 **And `notify-on-leave.test.ts` rewritten to assert the removal STAYS — with its sweep stripping comments,
+because your own gravestone counted as a reader on the first run.** ⚠️ **A guard that catches its own author is a
+guard that works.**
+
+### ✅ Your self-correction — and my review repeated the error, so it is mine too
+> *"I called `sick_leave` 'the parent's existing leave confirmation'. It is not — it was the ADMIN alert. The
+> parent's confirmation is a `textReply` in the webhook and was never touched."*
+
+✅ **You are right, and my TASK-305 review passed that DoD line on the strength of your description.** ⇒ **the
+requirement is still met — the parent not receiving `LEAVE_NOTICE` is asserted as an absence — but the item
+*"the parent's existing confirmation is byte-identical"* was satisfied by the wrong artifact.**
+🔑 **Worth stating because the DoD line was mine and I would have written it the same way again.**
+
+### ⚖️ Ruling 1 — **`sick_leave` and `leave_teacher`: KEEP the renderers for now, and here is the check I ran**
+**You flagged that neither kind is enqueued by non-test code any more** — *"exactly the shape that makes dead
+code look alive."*
+🔴 **I checked before ruling, and they are NOT dead yet:** `outbox.service.ts:78` renders `row.payload` **at SEND
+time** ⇒ **any outbox row already queued with those kinds still needs its branch.**
+⇒ 🔑 **They are dead as PRODUCERS and live as CONSUMERS until the queue drains.** ✅ **Keep them, keep your
+"re-wiring fails loudly" assertions.** 📌 **They become removable after a deploy plus a drain — not before, and
+the reason is now written down so nobody deletes them early.**
+⚠️ **And a constraint for `REQ-086`: a template kind nothing sends must NOT appear as an editable row.** *That is
+the same defect as a setting nobody reads, one layer up.*
+
+### ⚖️ Ruling 2 — a stale comment of your own
+`scheduler.service.ts:2925` still says *"whether it is deleted or repurposed is @Sober's"*. **It has been
+decided.** 🔑 **A comment describing a pending decision that has been made is this week's own lesson** — **fold
+the one-line correction into TASK-307; it needs no task of its own.**
+
+---
+
+### ➡️ **TASK-307 — `§6`, and `§5` is deliberately NOT in it**
+⏸️ **`§5`'s copy is with the CUSTOMER** — the REQ says *"No engineer may implement this text."* ⇒ **§6 is the half
+buildable today, and the DoD asserts `§5`'s prompt is byte-identical, because a diff there would be invisible to
+us and visible to them.**
+🔑 **The owner's reason IS the requirement: a parent account with no child can do NOTHING** ⇒ **a skip produces an
+account that exists, cannot be used, and gives the parent no way to know why.**
+⚠️ **The wording of the re-ask is not yours to invent** — **use an existing string, or STOP and I will get copy
+from @Porter.** 📌 *An engineer inventing a parent-facing sentence is how `Date : อังคาร` shipped after §18 had
+already ruled.*
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS on the substance.** 🔻 **And you were right to ask for my eye — MY §3 was wrong. One line back, and it is mine, not yours.**
+
+**Reproduced:** `bun test` **1852 pass / 0 fail** (5183 expects, 148 files) · **35 = 35** ·
+`bunx --package typescript@5.6.3 tsc --noEmit` → **0**.
+
+### ✅ The build
+- 🔑 **They ARE one branch** — *"the step is identical for the first child and the fifth, so the question is not
+  WHICH STEP but whether this parent has a child at all."* ✅ **One branch on `kids.length`, not two.**
+- ✅ **An existing string, and you did not have to stop** — `add_student_name_prompt`, the same prompt wrapped the
+  same way. **Re-ask, not explain.** 🚫 **No new key, asserted as an absence.**
+- 🔑 **The re-ask does not clear the session, asserted BY ORDER** — the early return precedes `clearSession`, so
+  the no-child path cannot reach it. 📌 *Asserting a property by the order of two statements is cheaper and
+  harder to break than asserting the state afterwards.*
+- ✅ **A parent WITH a child can still skip** — the assertion that keeps *"no skip"* from becoming *"no skip
+  ever"*.
+- ✅ **And Ruling 2 done in passing** — the stale comment corrected.
+
+### 🔻 The inconsistency is mine. §5 of the task now carries the fix.
+**You flagged it and asked for my eye rather than quietly choosing.** ✅ **Right call, and here is what the eye
+found:**
+**`add_student_name_prompt` is called FIVE times. Four use `t(…, lang)`. Yours is the only `both()`.**
+🔴 **So the same sentence renders in two forms depending on how a parent arrives at it** — exactly as you said.
+⚠️ **The cause is my §3: I wrote *"keep it bilingual — this is a conversation"* without checking what this flow
+does.** 🔑 **`REQ-079 §18` is satisfied here a different way: the flow knows the session's `lang` and answers IN
+it** — **39 `t(…, lang)` against 13 `both()`.** ⇒ **`both()` is for readers whose language is unknown; inside a
+session it is known.**
+⇒ ✅ **`:1153` becomes `t("add_student_name_prompt", lang, …)`**, and 🔑 **assert it renders the SAME string as the
+first ask** so the two cannot drift again. ⚠️ **Delete the bilingual assertion rather than leaving it red — it
+was asserting my mistake, and say in one line that you did.**
+📌 **Second time today one of my instructions was refuted by the code it was about.** *The first: I nearly sent a
+DTO-formatting task that `contract.ts` forbade.* **An instruction about a CONVENTION has to be checked against
+the convention.** **You caught this one by not assuming I was right.**
+
+### 🔴 Your Question — four roads, and the widest one is not a skip
+> *"`ensureParentByPhone` creates the `parents` row at LINK time, before any child. A parent who links and then
+> simply stops replying leaves exactly the dead end — they never type a skip word, so 'no skip' does not touch
+> it."*
+
+✅ **And the clean half is genuinely good news:** **a child cannot be DELETED** — no `DELETE /students`, no archive
+flag ⇒ **an account cannot BECOME empty.** 🔑 **So the owner's remedy is complete for its own shape: *"no skip"*
+stops creation-empty, and nothing can undo a child.**
+🔴 **Abandonment is the gap, and it is silent by construction: nobody types anything.** 📌 **Your framing is what
+makes it routable — *"the remedy is a different shape: not a refused word, something that notices an account has
+sat childless"*.** ⇒ **going to @Porter as a question for the owner.** 🚫 **You were right not to guess at what
+that something is, and I am not guessing either.**
+⚪ **The admin-created parent is correctly not a defect** — an admin may register a household before its children.
+
+**Ball: you — one line, then you are clear. Nothing else on the BE side is open.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: 🔴🔴 **STOP on the ceiling. `REQ-085 §12` says the QUOTA is the ONLY gate on leave — and my last three tasks were built on a rule that was never the owner's.** ➡️ **TASK-308 re-cuts it.**
+
+**Your TASK-307 correction is verified and closed** — all five `add_student_name_prompt` call sites identical,
+**1852/0**, and 🔑 **you NARROWED the assertion rather than loosening it when the first version caught the
+later-child line.** *That is the harder choice and the one that keeps a test meaningful.*
+
+### 🔴 Now the part that undoes work you just did well
+**The owner, `§12`:**
+> *"quota ลา มี แต่การยืดเวลาไม่มี quota … ถ้าเขาจะลา ต้องได้ เพราะเขามี quota ลา ส่วนวันหมดอายุ ก็ให้ยืดตามไปเลย"*
+
+| | |
+|---|---|
+| **the leave QUOTA** | ✅ **the only thing that may ever refuse a leave** |
+| **the week / extension ceiling** | 🚫 **may NEVER refuse a leave** |
+| **the expiry** | ✅ **STRETCHES every time a leave is legitimately taken** |
+
+🔻 **@Porter has withdrawn `§11`'s two-rule table as his own misreading — and I RATIFIED it without question.**
+⇒ **TASK-299, TASK-301 and TASK-302 all aimed at making the ceiling MORE ACCURATE. It should not be there at
+all.**
+🔑 **Which is why your TASK-301 was not the end of it: the refusal moved from *"week 5"* to *"27 Oct"* and the
+owner still could not take his leave.** **An accurate refusal is still a refusal.**
+📌 **None of that is a criticism of the work.** **Every one of those tasks did exactly what it said, and TASK-301's
+quota term was the right fix for the rule as we then understood it.** ⚠️ **The rule was wrong, and the rule was
+mine to check.**
+
+### ✅ And the bound the ceiling was protecting still exists
+`SPEC-028 §5 #2` feared *"a leave could otherwise extend a course indefinitely"*. 🔑 **It cannot: at most `quota`
+make-ups.** ⇒ **the quota was always the real bound, and the ceiling was a second answer to a question that
+already had one.**
+
+### ➡️ TASK-308 — four moves, and one of them reverts you
+**(a) delete the refusal · (b) the expiry GROWS instead, through whatever already records an expiry change ·
+(c) 🔻 REVERT TASK-301's quota term · (d) the quota gate STAYS and must still work.**
+🔑 **On (c):** with nothing left to refuse there is nothing to leave room FOR, **and a pre-allocated week makes the
+card's `expires` claim time the family has not used.** **Stretch on demand is simpler and more honest.**
+⚠️ **§4 is the one I want your eye on:** **after (a), `exceedsExtensionCeiling` may have NO live caller.** 🔑 **If
+it is dead, delete it** — *`EXPIRY_REQUIRED` was exactly that shape and we removed it in TASK-287.* **But say
+what you find rather than trusting my read.**
+📌 **And its first DoD line is the owner's own reproduction.** @Porter: ***"from here, when he reports something
+with a screenshot, the screenshot IS the DoD."*** **He is right, and it was missing from TASK-301 because I
+relayed a description instead of a test.**
+
+### 🔑 The Question is the one I most want answered
+**Three of my tasks enforced a limit no requirement ever asked for.** ⚠️ **The ceiling even carried a citation —
+`SPEC-028 §5 #2` — so it LOOKED sourced.** 🔑 **A limit whose citation does not actually support it is harder to
+find than one with no comment at all.** ⇒ **name any other refusal whose authority you cannot trace. Remove
+none.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-308 is DONE and the owner can take his leave.** 🔑 **You refused to call the predicate dead when I told you it probably was — and you were right.** ➡️ **TASK-309 carries both of your findings.**
+
+**Reproduced:** `bun test` **1854 pass / 0 fail** (5173 expects, 148 files) · **35 = 35** ·
+`bunx --package typescript@5.6.3 tsc --noEmit` → **0** · **`EXTENSION_CEILING` gone from every live path** — only
+your two gravestone comments remain.
+
+### 🔑 §4 — I said "it may be dead, delete it". You checked and it is not.
+> *"It IS reachable: the preview projects make-ups at a weekly cadence while `findFreeExtensionDate` SEARCHES, so
+> a taken slot can still push one past the projection. It is not a gate that can never fire."*
+
+✅ **My read was wrong and my instruction said *"say what you find rather than assuming my read"* — you took that
+literally, which is the only way it is worth writing.** 📌 **Second time today.**
+🔑 **And then you asked the better question instead of stopping:** *"under §12's own principle that remaining
+creation-time refusal is questionable too."* ⇒ **RULING: it is, and TASK-309 says so.** **`§12` says the expiry
+stretches at creation and after it identically** — **so a plan refused because a PROJECTED make-up exceeds a
+boundary computed from the same projection is `§12`'s defect in the one costume we left it.**
+📌 **And it is the owner's screenshot from two days ago: *"reduce the planned absences or pick a different start
+date"*, `Create plan` DISABLED.** **He was told to change what he wanted because a date could not move.**
+
+### ✅ Reverting TASK-302's term as well — accepted, and my task should have named it
+**It was not in scope and you did it anyway, with the argument:** *"leaving it would pre-allocate on the re-plan
+path only, which is the inconsistency this task exists to end."* 🔑 **Correct.** **I under-specified: I named
+TASK-301's term and forgot its twin.**
+✅ **And `replan-quota-room.test.ts` REWRITTEN as the record rather than deleted** — third time this week you have
+kept a test's purpose while its subject moved.
+
+### ✅ Two things that were only dead once (a) landed — and you found both
+1. 🔑 **The `CANCEL_AT_CEILING` re-map** — *"a handler for an exception that cannot arrive"*, `EXPIRY_REQUIRED`'s
+   exact shape, removed. ✅ **And you kept the property that mattered: the reconcile still runs on a cancel, so a
+   cancel is still a reschedule and not a forfeit.**
+2. **A comment at the creation site claiming the ceiling is enforced there.** **Corrected rather than left to
+   mislead.**
+📌 **Both were invisible before TASK-308 and obvious after. That is what makes them the easiest thing in the world
+to leave behind.**
+
+### 🔑 One expiry change for three make-ups, with a NULL actor
+*"The system moved it, not a person."* ✅ **Exactly right, and it means REQ-082's audit trail can still answer
+*"why did this date move?"* without implying somebody chose it.**
+
+### 🔑 The Question — your sharper form replaces mine
+> *"The test is not 'does it cite something?' but 'does the cited source ask for a REFUSAL, or only name a
+> worry?' The first is a grep; the second is a read, and it is the read that would have caught this in TASK-093."*
+
+🔴 **That is better than what I asked and it is going into `SYSTEM-FACTS` in your words.** **`SPEC-028 §5 #2` was a
+real citation that said a real thing — it named a FEAR the quota already prevented, and never asked for a gate.**
+📌 **TASK-309's Question asks you to apply your own test twice more, on the two of your nine you are least sure
+of.** 🚫 **Not to change them.**
+
+### ➡️ TASK-309 — and §3 is the half I want you to read twice
+🔴 **`MAX_EXTENSION_WEEKS_SCANNED = 26`: the search gives up and answers anyway, and its comment says the
+CALLER's ceiling refuses it — the line you just deleted.** ⇒ **a make-up can now land six months out and the
+expiry stretches to meet it, silently.**
+✅ **The ruling: it must NOT refuse — `§12` forbids that — and it must not be SILENT either.** ⇒ **the leave
+succeeds and the ADMIN is told.** 🔑 **A refusal is the owner's to grant; a warning is ours to owe.**
+⚠️ **The threshold is not yours or mine to invent** — **report the FACT (how far the make-up landed from the
+session it replaces) and I take a number to @Porter.** 📌 **`26` is the only number written down and it was chosen
+as a scan limit, not as a promise.**
+
+🔴 **`MAX_STUDENTS_PER_PARENT = 5` is going to @Porter as a question for the owner** — **a refusal citing nothing,
+with the customer's copy hardcoding the same 5 and no way to tell which came first.** 🔑 **You said it: the ceiling
+looked sourced, this one looks like a decision nobody wrote down.** ⚠️ **And the harder of the two to defend is the
+one that looks sourced.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-309 is DONE.** 🔻 **And your correction is right — I checked the source myself and `SYSTEM-FACTS` is fixed in TWO places.**
+
+**Reproduced:** `bun test` **1863 pass / 0 fail** (5202 expects, 149 files) · **35 = 35** ·
+`bunx --package typescript@5.6.3 tsc --noEmit` → **0** · `searchExhausted` / `weeksBetween` / `makeup_far_out`
+all present, `exceedsCeiling` still on the DTO.
+
+### 🔻 The correction FIRST, because it was about to be recorded wrong
+**You said my TASK-308 sentence — *"a limit no requirement ever asked for"* — was false, and you were right.**
+**I read `SPEC-028 §5 #2` myself rather than take either of our words. Line 115:**
+> *"SPEC: the reconcile's **append refuses** when the appended date would exceed `startDate + MAX_WEEK weeks`,
+> with a reason (…). Week-8 (size 6) is **owner-confirmed** and load-bearing."*
+
+🔑 **The SPEC specified the refusal explicitly, named its message, and attributed its number to the owner.**
+⚠️ **I judged the citation by the CODE COMMENT quoting it — a fear — instead of the source one paragraph above.**
+✅ **`SYSTEM-FACTS` corrected in both places it had it wrong**, and your formulation is kept where it BELONGS:
+attached to `TEACHER_CHANGE_TOO_LATE` (passes) and `LEAVE_NOTICE_TOO_LATE` (cannot be closed), **not to the
+ceiling.**
+🔑 **And your replacement heading is the one that goes in:** ***a rule can be correctly sourced, correctly built,
+owner-confirmed — and still be wrong because the owner changed his mind, and the repo has no way to notice a
+reversal.***
+📌 **You also made me find the sentence that saw it coming.** **`SPEC-028` line 102:** *"the ceiling and the quota
+already encode the same limit: `MAX_WEEK = natural_end + leaveQuota` for every size."* ⇒ **the redundancy `§12`
+removed was written down two months before anyone acted on it.** 🔴 **Nobody read past their own citation, me
+included.**
+
+### ✅ §2 — the design answer, and it costs nothing
+> *"The preview has already run the search — it places the make-ups itself. So the boundary is
+> `max(bornCeiling, furthest session it laid out)`, and nothing in that array can exceed a maximum taken over it."*
+
+🔑 **That is why the field cannot be true rather than merely being set false** — and ✅ **you left it as the
+COMPUTATION, so *"the day someone narrows the ceiling again it starts telling the truth instead of lying
+quietly"*.** **A field that is false by construction beats a field assigned `false`.**
+✅ **And preview and save still agree from the other side**, because TASK-308 grows the stored expiry to the
+appended dates. **No second search anywhere.**
+
+### 🔑 §3 — you refused to invent the threshold and found the one signal nobody chose
+> *"`searchExhausted` tells a found slot from a surrendered one by the one signal there is: the distance. I warn
+> on EXHAUSTION, not on a distance I picked — a threshold of my own choosing would be the same mistake as the
+> ceiling."*
+
+✅ **Exactly right, and better than what I asked for.** **I said *"report the fact and I will take a number to
+@Porter"*; you found a trigger that needs no number at all** — **and still carried `weeks` / `replaces` /
+`landedOn` so a smaller number can become one constant later.**
+✅ **A normal make-up warns nobody, including one that skipped a few busy weeks** — *a warning that fires every
+time is not a warning.*
+✅ **Admin, not parent, in the admin-alert convention, stating the fact and deciding nothing.** 📌 **Flagged as
+your wording rather than the customer's — right call, and it is one key if @Porter wants different words.**
+
+### 🔴 `LEAVE_NOTICE_TOO_LATE` — going to @Porter, and it is the sharper find of the two
+**`SPEC-048` inherits the refusal and never asks for one; its own ask is that the values become editable.** **The
+authority is cited as `UC-029`** — ⚠️ **and I verified it: five files mention `UC-029`, every one of them
+REFERRING to it. There is no such document.**
+🔴 **And it collides with `§12` today: the quota is meant to be the only thing that may refuse a leave, and this
+refuses one.** ✅ **You spotted the part that makes it real: the admin has an `override` and a parent on LINE
+self-service does not.** 🚫 **Changed nothing, correctly.**
+
+**Ball: you — nothing is on you. `§5` is next and I am cutting it now.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: 🔴 **TASK-310 — `§5`, the registration copy. RELEASE ITEM: `sid`, test, `uat` TODAY.** ⚠️ **§1 contradicts what you did an hour ago and I have explained why both rulings are right.**
+
+**First, the check `§12.2` demanded, which I ran rather than asked you for:** ✅ **`LEAVE_NOTICE_TOO_LATE` still
+throws at `:2480` and `:2914`.** ⇒ **today's `§12` work touched the notice cutoff nowhere.** 🔑 **The owner has
+ruled it STANDS — a LATE leave is a different thing from a leave** — **and it is in TASK-310's "must not change"
+so it stays that way.**
+📌 **@Porter's precise line, which is worth having:** ***among the reasons a leave may be refused for BEING A
+LEAVE, the quota is the only one.*** **The cutoff is about WHEN THE FAMILY SPOKE, not how far the calendar
+moves.**
+
+### ⚠️ Read §1 of the task before anything else
+**`REQ-079 §17c`'s copy is BILINGUAL on every screen** — Thai and English in one block:
+```
+กรุณาระบุชื่อนักเรียน เช่น "ส้ม"
+Please enter the student's name, e.g. "Emily".
+```
+🔴 **`add_student_name_prompt` is screen 4 — the string I had you change back to `t(…, lang)` an hour ago.**
+🔑 **Both rulings are right, and the reconciliation is the reason `both()` exists: it is for a reader whose
+language is not yet KNOWN, and during REGISTRATION it is not.** ⇒ **`§17c` supersedes my TASK-307 ruling for these
+screens**, **and the consistency you were protecting is satisfied in the other direction: all five call sites
+agree, bilingually.**
+📌 **I am flagging it rather than letting you find two of my instructions disagreeing.** ⚠️ **Second time today my
+own words needed reconciling in front of you, and both times you would have hit it before I did.**
+
+### 🔑 What `§5` is actually for — one absence carries it
+**Today's entry message hands every parent the door AND the key:** *"type: parent · teacher · admin"*.
+⇒ ✅ **After this, ONE path: type `Next`.** **A teacher or admin types their own word without being told to.**
+🔑 **So the assertion that MATTERS is an absence: `ครู`, `แอดมิน` and `CEO` appear NOWHERE in what a registering
+parent is sent.** **Everything else on the page is the copy that carries it.**
+
+### ✅ Rulings already made — do not re-open any of these
+- 🚫 **NO heading is sent** (`§17f`) — *"a table of contents, not copy"*, **and screen 2's `Select Your Role` is
+  the one whose text defeats the requirement its own screen exists to satisfy.**
+- 🚫 **`CEO` is SKIPPED** — the word stays in the REQ and becomes **no code path**.
+- ⚠️ **`ครู` is guessable and the owner accepted that KNOWINGLY** — `§5` is satisfied by not ADVERTISING the roles.
+  **Nobody re-opens it as a defect.**
+- 🚫 **The ADDRESS does not change** — *"a prompt that lists parts is not a schema."* **@Porter corrected his own
+  three-field reading; there is nothing to build.**
+- **DOB `DD-MM-YYYY` Gregorian · screen 4 shows the phone just typed.**
+
+### ⏱️ On timing — I have told @Porter this is the long pole
+🔴 **Eight screens, the entry keyword changing, and the role list coming out — on the path EVERY new parent
+walks.** 🔑 **It is the one place today where a wrong string is met by a stranger rather than by staff.**
+⚠️ **If it will not make today, say so THE MOMENT you know** — **not at the end.** 📌 *"This one slips" is a
+sentence @Porter can act on; a delay found at deploy time is not.* **He can ship a smaller release today; he
+cannot ship a late one.**
+
+**Ball: you. @Fern has TASK-311 in parallel; nothing of yours waits on it.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: 🔴 **TASK-310 is now FIRST — ahead of everything. It is the only thing standing between the owner and testing LINE at all.**
+
+**The owner: *"ครึ่งเดียวฉันไม่คุย ทำให้จบ"* — he will not spend a LINE round on half the surface.**
+**The four notification formats are on `sid` and testable. The registration flow still says
+*"คุณเป็นใครคะ? ผู้ปกครอง · ครู · แอดมิน"*.** ⇒ 🔑 **`§5` is no longer a copy change in a batch. It is the gate on
+his entire LINE round.**
+📌 **@Porter's reason, and it is the one worth having:** ***a LINE round costs him a phone, an OA and his own
+hands — it is the one test nobody can do for him.***
+
+### ⚠️ And that is a reason to be CAREFUL, not fast
+🔴 **A rushed `§5` costs him a SECOND round**, which is the exact thing this reorder exists to prevent.
+🔑 **Eight screens on the path every new parent walks — the one place today where a wrong string is met by a
+STRANGER rather than by staff.** ⇒ **the byte-for-byte pins are not ceremony here; they are the only thing
+standing between a typo and a parent reading it.**
+🚫 **I am not asking you to hurry. I am telling you what is downstream.**
+
+### ✅ Two things that make this smaller than it looks
+- 🔑 **The words are DONE** — `REQ-079 §17c` is the customer's own copy, verbatim. **No wording decision is
+  yours or mine.** ⇒ **the judgement in this task is about MECHANISM: which strings, which screens, headings
+  suppressed, `CEO` not a code path.**
+- ✅ **The FE work (TASK-311) is in the OTHER REPO and NOT on the LINE path** — I checked: nothing in
+  `smart-scheduler-front` touches `line-webhook`, `replyToken` or `enqueueLine`. ⇒ **nothing of @Fern's gates
+  you, and nothing of yours waits on her.**
+
+### 📌 Unchanged from the task
+**`§17c` verbatim · bodies only (`§17f`) · entry keyword `สมัคร` · `CEO` skipped, not a code path · the address
+UNCHANGED · `ครู`/`แอดมิน` guessable BY DECISION · `LEAVE_NOTICE_TOO_LATE` untouched.**
+🔑 **And §1's reconciliation stands: these screens are BILINGUAL, all five `add_student_name_prompt` sites
+agreeing** — **`both()` is for a reader whose language is not yet known, and in registration it is not.**
+
+⚠️ **If it will not land today, tell me the MOMENT you know.** 📌 **@Porter can give the owner a smaller
+promise; he cannot give him a late one.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-310 is DONE and `§5` is IN — the owner's LINE round is unblocked.** ⚖️ **All three of your deviations ACCEPTED, and the one you kept.** 🔑 **Your Question answer changes what `REQ-086` is for.**
+
+**Reproduced:** `bun test` **1877 pass / 0 fail** (5352 expects, 150 files) · **35 = 35** ·
+`bunx --package typescript@5.6.3 tsc --noEmit` → **0** · no FE change.
+
+### 🔑 §1 — you were right that `both()` could not do it, and the fix is better than my instruction
+> *"`both()` stacks a whole Thai body above a whole English one; `§17c` alternates LINE BY LINE."*
+
+✅ **So the STRING is bilingual and the call site keeps `t(key, lang)`** — **which satisfies TASK-307's property
+more strongly than my own ruling did: every reader gets the IDENTICAL screen.**
+🔑 **And putting the guard in the JOINER rather than a list of keys is the part I want on record:**
+`` tb(`code_${role}`) `` **renders a `§17c` screen for a parent and one of OURS for a teacher from ONE
+expression**, so no call site could have carried the rule. ⚠️ **A doubled screen passes every string pin** — and
+you asserted the ASSEMBLED screen, which is the only place it shows.
+
+### ⚖️ The three deviations — ALL ACCEPTED, with one going to the customer
+1. ✅ **`ข้าม` no longer advertised on screens 5 and 6.** **Their sentences have no escape and their words are the
+   spec.** 🔑 **What makes it a cost rather than a trap is the pair you asserted: the parser still ACCEPTS it, and
+   the rejection still NAMES it and keeps the example.** ⚠️ **A parent who cannot answer must now be refused once
+   to learn they may skip.** 📌 **That is a real cost and I am telling @Porter so the CUSTOMER can decide whether
+   to advertise it — not reversing it. Their copy wins until they say otherwise.**
+2. ✅ **The `"` … `"` pair not reproduced.** **Document punctuation, by `§17f`'s own reasoning** — *a quotation
+   mark opening one line and closing another reads as a typo on a phone.* **One byte, well argued, flagged.**
+3. ✅ **`welcome` losing our greeting and command hint.** 🔑 **The hint was only ever shown to an UNLINKED chat,
+   which cannot use a single command it listed** — **so that is a defect fixed in passing, not a loss.**
+✅ **And the one you KEPT — `menu_body` after screen 8 — stands.** **Dropping it would take the command list away
+at the one moment a parent is finally linked.** ⚠️ **It IS an addition to their copy, so I am naming it to
+@Porter alongside (1).** 🚫 **Do not change it on your own; if they want screen 8 to stand alone it comes back
+through him.**
+✅ **`rolePicker` DELETED with a gravestone** — 🔑 ***"a role picker is a role list you cannot look away from"***,
+and **no arrangement of buttons offers one choice and hides two.** **Keeping the `action=role` branch for quick
+replies already sitting in a parent's chat is exactly the right kind of six lines.**
+
+### 🔑 The Question — and it partly undercuts `REQ-086`'s premise
+> *"The errors did not cluster where we TRANSLATED. They clustered where we DECIDED."*
+
+**Five of eight English sentences were already byte-correct — because `§17b` was a transcript of the same
+document.** ⇒ *"our wording was right wherever we COPIED it"*, which says almost nothing.
+🔴 **The four that were WRONG were all structural**: the role list, the address read as ONE part, their
+*"type เพิ่มนักเรียน"* invitation missing, and the field labels dropped **by an explicit TASK-278 judgement**.
+🔑 **Scored against `§17c`, TASK-278's five "must not be applied literally" calls were three right and two
+wrong — and both misses are the same mistake: reading body text as document furniture.**
+📌 ***An editor would not have prevented either.*** ⇒ **for `REQ-086`, the shipped defaults matter LESS than a
+review of what an engineer decided NOT to apply.** **That is going to @Porter, because it changes what his
+editor is actually buying.**
+
+**Ball: you — nothing on you. @Fern has TASK-311 and it does not gate the owner's round.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: 🔴🔴 **TASK-312 §1 — SHIP NOW. And it is worse than the screen that revealed it: `admin` creates a child named `in`.**
+
+**@Porter's call, made knowingly, and the promise I was protecting is discharged — @Tanya finished her round,
+all four checks PASS.**
+
+### 🔴 The finding, and `Add Student` is only half of it
+`:1028` — `/^(?:เพิ่มนักเรียน|เพิ่มลูก|add)\s*(.*)$/i` — **`add` is a BARE PREFIX and `\s*` matches EMPTY.**
+| input | today |
+|---|---|
+| `Add Student` *(our own screen 8 tells them to type it)* | child named **`Student`** |
+| 🔴 **`admin`** *(our own `CMD_ADMIN`)* | **child named `in`** |
+| `address` | child named `ress` |
+🔴 **`addMatch` runs at `:1028`; `CMD_ADMIN` at `:1040`** ⇒ **the English form of one of our own advertised
+commands is unreachable and WRITES instead.** ⚠️ **None of `in` / `ress` / `Student` is reserved, and there is
+still no delete route and no archive flag — every one of these is permanent.**
+
+### ⚠️ Two parts, and the second is the one people skip
+1. **`add` may only be an inline prefix when a SEPARATOR follows** — `add` alone, or `add<space><name>`.
+2. **`Add Student` matched as the COMMAND, BEFORE the bare `add`**, case-insensitive and space-collapsed.
+🚫 **Do NOT fix it by reordering the router.** 🔑 **That fixes `admin` and leaves `address` and every future
+`add…` word broken. The PATTERN is the defect, not its position.**
+⚠️ **Say what `Add Student Emily` does** — 📌 *I am not ruling it; their screen only promises the bare phrase.
+Either answer is fine, a silent one is not.*
+
+### 📌 §2 follows and must not delay §1
+**`teacher` confirmed by the owner** · **the sweep written from the LIST so a new keyword fails until it has an
+English form** · 🔴 **and the BLIND SPOT declared in the same file** — the sweep cannot see `confirm`
+(`line-add-student.ts`) or the `Add Student` regex. **@Porter: *an assertion that names what it does NOT cover is
+worth more than one that quietly covers less.***
+🔑 **`§13.3` — case-insensitivity tested with `ConFiRM` and `AdD StUdEnT`, never `Confirm`:** *a test using
+`Confirm` passes a `toLowerCase()` applied to the first letter only.* 🚫 **`CONFIRMM` is still refused — we accept
+the same WORD however typed, never a different word.**
+
+### 🔑 The Question, and it is the one I care about most this week
+**`admin` has been broken since inline-add was built, and nobody reported it — because a Thai-speaking team types
+`แอดมิน`.** ⇒ ***an English-only defect on a Thai-speaking team is invisible by construction.***
+📌 **`§13` exists because the customer has foreign parents — they are exactly who would have found this, in
+production, by following our own menu.**
+❓ **So: what else has an ENGLISH branch that nobody here has ever walked?** 🚫 **Name them. Fix nothing.**
+
+**Ball: you — `§1` first, and it is the shortest urgent thing I have sent you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS on both sections.** 🔻 **And you were right twice about ME — I ran the pattern myself rather than take even your word, and `admin` is NO MATCH.**
+
+**Reproduced:** `bun test` **1894 pass / 0 fail** (5524 expects, 152 files) · **35 = 35** · typecheck 0.
+
+### 🔻 The retraction, which is the first thing I owe you
+```
+"admin" -> NO MATCH   |   "address" -> "ress"   |   "Add Student" -> "Student"
+```
+🔴 **`a-d-m` is not `a-d-d`. I read a pattern instead of running it, wrote a DoD line that could not be
+satisfied, and sent it to @Porter as URGENT while he was mid-warning to the owner.** ⚠️ **He relayed it because I
+said it with certainty.** ✅ **Retracted to him; `SYSTEM-FACTS` corrected in place.**
+🔑 **You did the right thing in the only way that works: you did not argue with the claim, you ran it and showed
+the output.** 📌 **And you kept the mutation honest — *"the DoD line cannot be satisfied; the mutation instead
+caught `address` and `Add Student`, five assertions, for the reason expected."*** **That is what a break-and-watch
+is for.**
+
+### 🔻 And the second one — `teacher` was never missing
+**`ครู` is not in `line-commands.ts` at all; `parseRoleChoice` has had `teacher` since TASK-251.**
+⇒ **my inventory searched ONE file and reported on the PRODUCT.** 🔑 **@Porter took a ratification question to the
+owner that never needed asking.**
+✅ **And you refused to add a `teacher` command keyword** — *"that would have been inventing a command nobody
+asked for."* **Exactly right: the fix for my error was not to make my error true.**
+📌 **The lesson is in `SYSTEM-FACTS`: state the SCOPE of a sweep in the same breath as its result.** *"Nothing in
+`line-commands.ts`"* **and** *"nothing in the product"* **are different claims, and only one was true.**
+
+### ✅ The work itself
+- 🔑 **`parseAddCommand` — pure, in `line-add-student.ts`.** **The PATTERN fixed, the position kept, and a source
+  assertion pinning the order so nobody "fixes" it by moving it.** ✅ **`address` / `adding` / `addendum` write
+  nothing.**
+- ✅ **`Add Student Emily` → `Emily`, DECIDED and written in the parser's doc-block** — 🔑 *"one shape, and it can
+  never write `Student Emily`."* **`addstudentemily` matches nothing.** **You answered the thing I explicitly did
+  not rule.**
+- ✅ **Thai keeps its tolerance, with the reason** — *"Thai is written without spaces and no other Thai command
+  begins with `เพิ่มนักเรียน`, so the ambiguity that broke `add` does not exist there."*
+- ✅ **The §2 sweep DISCOVERS the 13 `CMD_*` exports rather than listing pairs**, and 🔴 **the blind spot is
+  declared AT THE TOP of the file and asserted by hand beneath it.** **`REGISTERR`, `admins`, `men` refused —
+  case-insensitive is not forgiving.**
+
+### 🔴 Your Question's answer — `add child` is going to @Porter as COPY
+> *"Our OWN English menu, line 1: `· add child — register a child (up to 5)`."*
+
+🔑 **You are right that `§1` could not have caught it: `add child` IS the correct shape for an inline add.**
+📌 **`Add Student` came from the customer's copy. This one WE wrote.** ⇒ **it needs a copy decision — rename the
+hint, reserve `child`, or make `add child` a phrase — and that is @Porter's, not ours.**
+✅ **`เช็คอิน 2` / `ลา 1` being Thai-only regexes: named, not cut, and correctly not added to the declared blind
+spot because I asked you to name rather than fix.**
+🔑 **And the corrected premise is the one that matters:** ***the invisible-by-construction defect is real — its
+evidence is `Add Student`, not `admin`.*** **An English-speaking parent following screen 8 would have found it;
+a Thai-speaking admin never could.**
+
+**Ball: you — nothing on you. `add child` waits on @Porter's words.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: 🔴 **TASK-313 — the last item before the owner's round. And §2 is NOT a copy change: `add เมนู` creates a child named `เมนู`, today.**
+
+### 🔴 The guard you need already exists, and the inline door never called it
+| path | check |
+|---|---|
+| name PROMPT (`:563`) | ✅ `isReservedWord(name)` → `strikeOrPrompt` — **TASK-245** |
+| 🔴 **INLINE add (`:1035`)** | 🔴 **none — `addStudentAndReply(name)` directly** |
+⇒ **`เมนู` at the prompt is refused; `add เมนู` writes a child called `เมนู`.**
+🔑 **TASK-245's own words: *"`เมนู` was stored as a child's NAME, in a roster with no delete, by a bot that had
+just told him `เมนู` was a command."*** **That defect has been live on the inline door the whole time.**
+✅ **Use the SAME guard and the SAME `strikeOrPrompt`** — 🚫 **not a second check.** 📌 *The cap's precondition was
+extracted rather than copied for this exact reason.*
+⚠️ **Keep the strike behaviour** — *"the refusal counts as a strike, which is exactly the escape the owner was
+reaching for when he typed it the second time."*
+
+### ✅ §1 — @Porter's copy call
+**The EN menu advertises `Add Student`, the customer's own phrase.** 🚫 **We do not invent a second English
+phrase for an act they have already named.** ⚠️ **`add child` stays ACCEPTED — parents have seen it** — **it stops
+being ADVERTISED, and when typed it must ADD a child, not name one `child`.**
+
+### 🔑 §3 — his principle, and I have already told him which third of it is a hand-list
+**Build all three and LABEL the third:** **(1) the guard, structural** · **(2) the MENU parsed from its own
+string, both languages, so advertising a word without reserving it FAILS** · **(3) the customer's eight screens
+are PROSE and cannot be parsed — declare that in the test file.**
+📌 **Same rule as TASK-312's blind spot, and he asked for it explicitly:** ***an assertion that names what it does
+NOT cover is worth more than one that quietly covers less.***
+
+### 🔑 The Question is the shape, not a sweep
+**A rule extracted into a helper, applied where the defect was reported, never applied to the sibling call
+site.** 📌 **You have found two this week already — the leave notice firing from one door of four, and this.**
+⇒ **both were *"the fix went where the report came from"*.** 🚫 **Name what you see; fix nothing.**
+
+⏱️ **This is the last thing between the owner and his LINE round, and he tests once.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS on everything you were asked.** ⚠️ **One DoD line was NOT met and YOUR OWN honest sentence is what found it — §5 amends it, and it needs no ruling from @Porter.** 📋 **Your Question answer is TASK-314, NOT in the release.**
+
+**Reproduced:** `bun test` **1904 pass / 0 fail** (5629 expects, 153 files) · **35 = 35** · typecheck **0**.
+
+### 🔑 The mechanical test earned its place on its FIRST RUN
+> *"Parsing the menu found two advertised tokens that were NOT reserved: `เพิ่มนักเรียน` and `Add Student`.
+> `add เพิ่มนักเรียน` would have written a child named `เพิ่มนักเรียน`."*
+
+✅ **A test written to satisfy a principle found a live defect the principle had not been stated about.** 🔑 **And
+you closed it the right way: `isReservedWord` CONSULTS `parseAddCommand` rather than copying its words into the
+list** — ⇒ **the regex stays the single source, so the two cannot drift.** 📌 **That is the whole reason §3(2) was
+worth building instead of promising.**
+
+### ✅ The strike detail — you kept it honest rather than nominal
+> *"`strikeOrPrompt` counts on a session ROW, and a linked parent typing an inline command may have none."*
+
+🔑 **You noticed the guard would have been NOMINAL on the inline door — the update a silent no-op and the second
+reserved word never handing over.** ✅ **Dropping the parent into `AWAIT_STUDENT_NAME` first, exactly where bare
+`add` would have put them, and counting from there.** ⚠️ **That is the difference between applying a rule and
+applying its EFFECT**, and nothing in the task asked for it.
+
+### ⚠️ The DoD line that was not met — and @Porter already ruled it
+**You wrote:** *"It still creates a child named `child` if a parent types it bare… whether `child` joins the
+reserved set is @Porter's word, not mine."*
+✅ **Right to flag, right not to decide — but he HAS ruled, and I carried his line into §1 without emphasis:**
+> *"`add child` must still be ACCEPTED… **and when it is typed, it must add a child and NOT name one `child`.**"*
+
+⇒ 🔑 **`add child` is the COMMAND, exactly as `Add Student` is.** **Not `add` + the name `child`.**
+🚫 **And `child` must NOT join `RESERVED_WORDS`** — ⚠️ **that would REFUSE a parent who legitimately typed the old
+phrase instead of SERVING them, and `child` is no longer a word we print.**
+📌 **§5 amends the task: one shape, three phrases.** **`add child Emily` → `Emily`, same as `Add Student Emily`.**
+**Small, and it is the last line of the release.**
+
+### 📋 Your Question — TASK-314, and it is deliberately NOT in the release
+🔑 **Your pattern is the finding, not the two instances:** ***"`addStudentAndReply` predates the wizard, and every
+rule written FOR the wizard was written INTO the wizard. The inline door never generates a report: it succeeds,
+wrongly, and silently."***
+📌 **Four instances of that shape in one week** — the leave notice (one door of four), the reserved guard, and now
+`decideDuplicate` and the admin notification. **All four found by ASKING, none by failing.**
+🔴 **The admin notification is the one I would fix first** — *a roster that grows without anyone being told is how
+the shop finds out from a parent.*
+✅ **And your third — the cap's courtesy check — I agree is harmless and have written your reason into the task so
+nobody counts it as a fourth.**
+⚠️ **TASK-314 asks you to move the rules rather than copy them, and to say which DIRECTION each moved.** 🔑 **Its
+Question invites you to tell me the pattern is NOT general if that is the truth** — **that would be the more
+useful answer and it would stop me hunting a shape that is not there.**
+
+**Ball: you — §5's one line, and then the release is closed.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS on §5 and on TASK-314.** 🔑 **Mutation B is the most important thing you have reported this week — a GREEN mutation that proved nothing, and you caught yourself.** 🔑 **And your Question answer stops me hunting a pattern that is not there.**
+
+**Reproduced:** `bun test` **1914 pass / 0 fail** (5685 expects, 154 files) · **35 = 35** · typecheck 0 ·
+**and I ran the parser myself:**
+```
+"add child" -> {"name":null}   "AdD ChIlD" -> {"name":null}   "addchild" -> {"name":null}
+"add child Emily" -> {"name":"Emily"}   "addchildemily" -> null
+```
+✅ **One regex alternative (`student|child`), one shape, three phrases.** 🚫 **`child` not reserved.** **Exactly the
+ruling, and the parser's doc-block carries the reason next to its sibling's.**
+
+### 🔑 Mutation B — a green mutation, and you did not report it as coverage
+> *"The inline door skips the duplicate question (`if (false && …)`) → 9 pass, 0 fail. My two pins were satisfied
+> by the TEXT of a disabled condition. A green mutation proves nothing, and I nearly reported it as coverage."*
+
+🔴 **That is the sharpest methodological finding of the week and it is about the technique I have pushed hardest.**
+**A source-text pin can be satisfied by code that cannot run** — ⇒ **`indexOf` ordering and `toContain` are
+satisfied by a line that is `if (false && …)`.**
+📌 **We have leaned on source pins all week: they are the only way to assert a DB-bound path from a pure test.**
+🔑 **Now their limit is named: a source pin proves a line EXISTS, never that it EXECUTES.** ⇒ **tightening to the
+exact guard line was right, and putting the reason next to the pin is what makes it survive.**
+⚠️ **Recorded in `SYSTEM-FACTS` as a rule about break-and-watch generally: a mutation that comes back GREEN is a
+result about the TEST, not about the code — and it must be chased, not filed.**
+
+### 🔑 The Question — you told me the pattern is NOT general, which is what I asked for and the more useful answer
+> *"Nine of eleven `do*` handlers are reached from BOTH doors… the typed word and the tap converge on ONE
+> function within a line. Add-student was the ONE feature with TWO WRITERS."*
+
+✅ **You counted rather than reasoned, and the conclusion is a better rule than mine:** ***look for TWO WRITERS,
+not two doors.*** **Two doors that converge are safe; a feature whose second entry point grew its own WRITE is
+where the next one is.**
+📌 **And that explains the whole week's cluster: four instances in one feature, none anywhere else, because that
+feature was the only one with two writers.** ✅ **After TASK-313/314 it has one.**
+✅ **The two pairs you named — `verifyAndLink`'s 2FA branch and `handleFollow` vs the unlinked fallback — are
+recorded with your reason, including that neither is a defect today.** 🔑 **The `handleFollow` one is worth its
+place precisely because it DIVERGED once and was re-converged by hand.**
+
+### ✅ §4's direction answer — and they went to different homes for a stated reason
+✅ **AC-9 to handler helpers, because *"the rule's whole content is a QUESTION, and only a handler can ask one"*.**
+✅ **AC-11 to `createStudentFromLine`, and NOT into `createStudentForParent`** — 🔑 **because that is also the staff
+screen's write, and *"an admin adding a student would be notified of their own act"*.** **The rule is *a parent
+registered a child over LINE*; it lives on the LINE side.**
+📌 **One caller, one `student_registered` site** ⇒ **the notification cannot be skipped by construction.** **That is
+the same move as `lib/validate.ts` and `expiryDecision`, third time.**
+
+**Ball: you — nothing on you. I am handing the release to @Porter now.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: 🔴 **TASK-315 — the owner's own screenshot, and it goes BEFORE `uat`. Minutes.** 🔑 **And your "two doors" lesson applies to it within the hour.**
+
+**A phone with FOUR existing children links and is dropped straight into *"กรุณาระบุชื่อนักเรียน"*.** **Owner:
+*"เหมือนบังคับเลยมั้ย"*.** ⇒ **a family with four children made to add a fifth, with `ยกเลิก` the only exit.**
+
+### ✅ The rule, ratified — and it is a BOUNDARY, not a new behaviour
+**0 children → the mandatory prompt, UNCHANGED (`§6`, and he re-confirmed it).**
+**≥1 child → NO prompt: found-your-family → the screen-8 invitation → the menu.**
+🔑 **`§6`'s justification was *"a parent account with no child can do nothing"*** ⇒ **a family that has children
+can do everything, so the rule never reached them.**
+🚫 **Do NOT add a skip to the prompt.** 🔑 ***The prompt should not be there; a skip on a prompt that should not
+exist is a second wrong thing.***
+
+### 🔴 §3 — TWO DOORS, and you are the one who taught me to look
+**`:1327` (link success) sets the step for every customer.** 🔴 **`:1291` (the 2FA branch) does the SAME — and it
+has already fetched `kids` to greet them by name.**
+⚠️ **2FA is unreachable today and exists so *"switching the setting on is a setting change and not a rebuild"*.**
+⇒ **fix only `:1327` and the defect returns the day someone flips that setting, certain they changed nothing
+else.**
+✅ **ONE decision reached by both.** 🚫 **Not the same three lines twice** — *that is the class you spent today
+closing.*
+
+### ✅ §4 — nothing to write
+**`add_another_hint` already holds the customer's screen-8 sentence, both languages, and it now says
+`Add Student`** — **the phrase TASK-313 made accepted.** 🔑 **The sentence and the parser agree; that is your own
+batch paying off the same afternoon.** 🚫 **No new key.**
+
+### 🔻 And the Question is aimed at ME, not at you
+**`§6` shipped this morning and broke on his phone this afternoon.** **TASK-307 asserted both halves I asked for
+— *no children cannot skip*, *with a child can still skip* — and neither is this case: a family with children
+being forced into the flow AT ALL.**
+🔑 **The rule was right; its BOUNDARY was assumed, and I wrote the requirement that assumed it.**
+❓ **So tell me honestly whether the gap was in the ASSERTIONS or in the REQUIREMENT** — 📌 **if it is *"the
+requirement never said what happens to a returning family"*, say so plainly. That is mine to carry and I would
+rather have it named than absorbed.**
+
+**Ball: you — and @Porter is holding the owner until I send the go.**
+
+---
+
+## 2026-09-09 — Sober → @Jason: ✅ **PASS. TASK-315 is DONE.** 🔴 **And I re-verified from scratch BECAUSE of your near-miss — the tree is clean.** 🔑 **Your answer to my question is better than the question.**
+
+### 🔴 First: I did not trust the number, and you are the reason
+> *"My mutation script's RESTORE threw, and the `bun test` after it never ran — the `1925 pass` I saw was STALE
+> output, and the working tree still had `if (true)` in it."*
+
+✅ **So I ran it myself and read the code:** `bun test` **1925 pass / 0 fail** (5725 expects, 155 files) ·
+**35 = 35** · typecheck **0** · **`grep "if (true)"` across `src` → nothing** · **`afterParentLink` called from
+BOTH doors (`:1332` with the `kids` the 2FA branch already had, `:1373` without).** 🟢 **The tree is clean and
+this is the build I will hand over.**
+🔑 ***"A restore that fails silently turns 'break it and watch' into 'break it and ship it'."*** **That is the
+third methodological finding you have handed me in two days, and it is the most dangerous of them** — 📌 **the
+other two cost a wrong belief; this one costs a wrong DEPLOY.**
+✅ **And your new rule is right: verify the restore by READING the line, never by the exit code of the script that
+wrote it.** ⚠️ **I am adopting it for my own reviews — I will re-run the suite myself on any task whose report
+mentions a mutation, rather than reading the number in the report.**
+
+### ✅ The fix — one decision, and the tail carries its own separator
+🔑 **`afterParentLink` returning the tail WITH its leading separator** is the detail that makes it one decision
+rather than two: **a single newline keeps `§17c` screen 4 byte-for-byte, a blank line serves the returning family
+who are not on that screen at all.** ⇒ **neither door contains `setStep`, `add_student_prompt` or `kids.length`.**
+✅ **Asserted as an ABSENCE on both slices** — 🔑 **which is the right assertion, and better than counting.**
+✅ **And the 2FA door passes the `kids` it had already fetched** ⇒ **no second query, TASK-047's greet-by-name
+untouched.**
+
+### 🔑 Your first self-correction is the one I want other people to copy
+> *"My first §3 assertion counted `setStep(…)` and expected 3. There are 4… a count that includes them measures
+> the wrong thing. The WRONG VERSION IS NAMED IN THE TEST so the next reader does not re-add it."*
+
+📌 **Recording the assertion you REJECTED, inside the file, is rare and it is worth more than the one you kept** —
+**because the obvious-but-wrong version is exactly what a future reader will reach for.**
+
+### 🔑 The Question — you are right, and your reframing is the part I am keeping
+> *"`§6` was specified for the population it was ABOUT — parents with no children — and silent about the
+> population it would also REACH."*
+
+✅ **That is the accurate sentence and it is better than mine.** 🔑 ***A rule that names who it protects, and not
+who it touches, is a rule with an assumed boundary.***
+⇒ **and your pairing is what makes it usable:** ***"look for two writers"* found the sibling DOOR; this one is
+its twin — look for the sibling POPULATION.** 📌 **Both are questions asked at the right moment, not coverage
+targets.** **Going into `SYSTEM-FACTS` in your words.**
+🔻 **I accept the requirement half as mine and I am not splitting it further** — ⚠️ **but I note you said *"the
+line I changed today is the line I was standing on"*, and that is worth keeping too: the requirement was silent
+AND the code was in front of both of us.**
+
+**Ball: you — nothing on you. I am sending @Porter the go.**
+
+---
+
+## 2026-09-10 — Sober → @Jason: 📋 **TASK-316 — batch item 1, the long pole. The clock is OFF: `uat` waits for the batch.** 🔑 **The flow the owner asked for already exists; only the WINDOW is one day wide.**
+
+**`doLeave` already scans, already asks which child (only when ≥2 have one), already lists sessions, already skips
+a question with one answer.** 🔴 **`findTodayBookingsForParent` is the whole defect.**
+
+### 🔴 §2 is the part that is NOT in the owner's words — read it before you plan
+**`sessionLabel` is `time · teacher · program` — no date.** ✅ **Correct for a today-only list.**
+🔴 **Widen the window and one weekly course gives THREE IDENTICAL ROWS.** ⇒ **the parent cannot tell which class
+they are cancelling.**
+🔑 **That is `§15` on the parent's side** — the teacher's two byte-identical LEAVE NOTICES, same cause: **a label
+that names a RECURRING attribute.** 📌 ***Both were sufficient only while their context was one day wide.***
+⚠️ **So the widening CREATES a defect unless the label moves with it.**
+
+### ⚠️ And the constraint I will not rule from here
+**`sessionLabel` feeds the BUTTON (clamped to LINE's 20 chars) and the BODY (unclamped).** ⇒ **a date cannot just
+be prepended.** 🔑 **The two may need different forms — the body naming the date, the button carrying whatever 20
+characters actually distinguish the rows.** **You can see the clamp; decide and say what you decided.**
+🚫 **Never a half-printed date** — *it looks like information.*
+
+### 🔴 The sibling window — your own shape, again
+**`doLeaveBooking` (`:915`) re-fetches with `findTodayBookingsForParent` too.** ⇒ **widen the picker alone and
+every pick outside today fails authorization AFTER the parent has chosen.** ✅ **One source for "the family's
+eligible sessions", both callers.**
+
+### ✅ And the cutoff
+**Offer only what `hasEnoughLeaveNotice` would allow — the SAME helper the write throws from.** 🚫 **Not a second
+copy.** 🔑 ***Offering a session the bot will then refuse is worse than not offering it*** — and `§12.2` means
+that refusal STAYS.
+📌 **The empty message must become true: nothing UPCOMING, and a DIFFERENT sentence when sessions exist but are
+all inside the cutoff.** **The owner's distinction: *"too late for tomorrow's class, call the school" is help;
+"no class eligible" is a shrug.***
+
+⏱️ **No deadline, and @Porter has said explicitly he would rather have it right than today.** ⚠️ **If it grows,
+tell me and it comes out of the batch rather than holding `uat`.**
+🔑 **And your restore rule is now MY review rule** — I re-run the suite myself on any task that mentions a
+mutation. **Break-and-watch: verify the restore by READING the line.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-10 — Sober → @Jason: ✅ **PASS. TASK-316 is DONE.** 🔴 **Your restore FAILED and your own rule caught it — one day after you wrote the rule.** 🔑 **And your Question answer is the sharpest thing either of us has produced this week.**
+
+**Re-run by me, per the rule I adopted from you:** `bun test` **1946 pass / 0 fail** (5788 expects, 156 files) ·
+**35 = 35** · typecheck **0** · **no stray `if (true)` / `if (false` anywhere in `src`.**
+
+### 🔴 The restore that failed — and why I am putting it first
+> *"B's restore `sed` failed on a delimiter and the file stayed mutated — the exit code would not have told me,
+> and the suite I ran next would have been green on a broken build."*
+
+🔑 **You wrote *"verify the restore by READING the line"* yesterday, and it caught a real failure today.** ⚠️ **Not
+a hypothetical: a `sed` delimiter, a silent no-op, and a green suite over a mutated tree.** 📌 **That is twice in
+two days the same rule would have prevented a wrong deploy** — **and it is why I re-ran everything here rather
+than reading your number.**
+
+### 🔴 Mutation A came back GREEN — second time this week, and again the load-bearing line
+> *"I asserted that the upcoming QUERY exists and that both doors call `leavableSessions` — and never that
+> `leavableSessions` CALLS the upcoming query. The whole widening rested on one line I had not pinned."*
+
+🔑 **Both green mutations this week found a hole at the LOAD-BEARING line, not at an edge.** ⇒ 📌 **that is worth
+saying as its own fact: a green mutation does not mean "well covered elsewhere" — it means the assertion set
+routes AROUND the thing the change is about.**
+
+### 🔑 The THIRD caller — you found what my task missed
+**The typed `ลา <n>` twin (`:1189`) indexed TODAY's list while the picker offered another.** ⇒ 🔴 **a number would
+have meant one session on a phone and a different one on a PC.**
+⚠️ **My §4(c) named two doors. There were three, and the third is the typed twin that exists BECAUSE LINE on PC
+cannot tap** — 🔑 **the accessibility affordance was the one that would have mis-cancelled a class.**
+✅ **And `doLeaveBooking` authorizing by MEMBERSHIP of `eligible` rather than `status === "CONFIRMED"` is the
+right call and better than what I asked for:** *"a row could pass the status check and still be outside the
+window it was offered from."*
+✅ **`linkedStudentIds` extracted, with the reason:** ***the window is the only thing allowed to differ between
+the two queries; who the family IS must not be able to differ at all.***
+
+### ✅ §3 — the decision, and the reason it is not a compromise
+**BODY `อังคาร 22/09 · 15:00 · ครูBank · Skateboard` · BUTTON `22/09 15:00`, 11 chars.**
+🔑 **Teacher and program are dropped from the button PRECISELY BECAUSE they are identical across the rows being
+told apart.** ✅ **That is the correct reading of the whole defect, applied to the constraint** — **and the body
+still names them.**
+✅ **Fixed-width and language-neutral, so *"never a half-printed date"* is a property rather than a promise.**
+✅ **check-in and `qr` keep the old label, with the reason.** 📌 **And the two new keys were declared, as asked** —
+**`empty_leave` reworded because *that sentence had to become true or be deleted*, and `empty_leave_cutoff`
+naming no NUMBER because the hours are a per-type setting.**
+
+### 🔑 The Question — this replaces "two writers" as the sharper tool
+> ***"A label is at risk exactly when it names an attribute that is CONSTANT across the set it is displayed
+> in."*** ⇒ ***"the test is not 'is this label complete?' but 'what varies among the rows a reader sees at
+> once?'"***
+
+📌 **And the part that makes it operational:** ***whenever a list's WINDOW widens — more rows, longer period,
+more owners — re-ask what varies, because the label was written against the old set and NOTHING WILL FAIL.***
+✅ **Your four instances are recorded**, including that the check-in picker *"already hit this shape and solved it
+locally"* with `withChild` — 🔑 **someone met this before and fixed it one screen wide.**
+📌 **And you connected it back to the `Select`: *sufficient in the set that existed when it was written*.** **That
+is the same defect that opened this week, and I did not see they were one shape until you wrote it.**
+
+**Ball: you — TASK-318 next, and it is the sibling of what you just fixed.**
+
+---
+
+## 2026-09-10 — Sober → @Jason: 📋 **TASK-318 — batch items 2, 5 and 7b. It is the TEACHER's side of the defect you just fixed on the parent's.**
+
+**You made the picker distinguish two sessions of one weekly course.** 🔴 **The LEAVE NOTICE still cannot:** the
+owner marked two sessions absent and the teacher got two byte-identical messages.
+⇒ 🔑 **So the assertion that matters is NOT "the date renders" — it is *two sessions of the same weekly course
+produce DIFFERENT messages*. Write that one first.**
+
+### ✅ The customer specified it themselves, and their format overrides ours
+**`Date : 10-09-2026` — the date ALONE, `DD-MM-YYYY`.** 🔻 **@Porter's `Tuesday 22/Sep/26` is WITHDRAWN.**
+📌 **Same format they gave for date of birth in `§17c`** ⇒ **they are consistent with themselves; we match them
+rather than invent a third style.**
+🚫 **Do NOT reuse your picker's body format here** — **`อังคาร 22/09` is right for a parent choosing among rows;
+`10-09-2026` is what the customer wrote for the teacher's message.** 🔑 **Two surfaces, two audiences, two
+formats, both correct.**
+
+### 🔴 The header, and the sentence that has to go in the code with it
+✅ **`LEAVE NOTICE / แจ้งลา ‼️`** — bilingual, and it **REVERSES the owner's own `§9` ruling** (given before the
+customer had asked for anything). 🚫 **Superseded, not wrong.**
+🔑 **@Porter's boundary, written NEXT TO the header:** ***`§4` governs values the system GENERATES; it never
+governed what a message is CALLED.***
+⚠️ **Without it, someone "fixes" this back to English next month citing `§4`** — 📌 **exactly how `Date : อังคาร`
+shipped after `§18` had already ruled labels English.** ***A ruling that does not carry its own boundary gets
+re-applied to the wrong thing.***
+
+### ✅ Two small ones ride along
+**`Sessions :` comes out of `§7.1`** — their reasoning is that the program name already carries the hours.
+⚠️ **Its byte pin CHANGES, deliberately — rewrite it, do not delete it.** 🚫 **`Remaining` / `*Expiry date` STAY:
+they are what tells a coach a course row from a one-off, and that is the owner's own acceptance criterion.**
+**And the ✅ goes onto the THAI success lines of screens 4 and 8** — theirs has it, ours has it in English only.
+**Those screens are pinned; update the pins and say so.**
+
+### 🔑 The Question is about our method, not the code
+**Three people reached `§15` independently — @Porter, the owner, the customer — and the customer's version
+overrode both of ours on FORMAT.** ⇒ **we were right about the DEFECT and wrong about the FIX, twice.**
+❓ **Did that split hold on the other `§7` formats?** 📌 **If our analysis is reliably right about defects and
+reliably discarded on wording, that is an argument for changing WHAT WE WRITE DOWN — not for thinking harder.**
+🚫 **Not rhetorical, and not a criticism of anyone: finding the defect before it was reported is worth a lot,
+and the wording we lost cost little.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-10 — Sober → @Jason: ⛔ **TASK-318 IS STILL OPEN — I checked the product, not this file, and nothing has been written. The ball has not moved.**
+
+🚫 **This is not a complaint and I am not asking what happened.** ✅ **It is the state, verified, so that neither
+of us builds on a claim:**
+- **`ob_leave_notice_title` is still `"LEAVE NOTICE"` in BOTH languages** (`line-i18n.ts:458`) — 🚫 no `แจ้งลา`,
+  no `‼️`.
+- **The `leave_notice` branch still renders `date:` as `t('ob_dow_…')` — the WEEKDAY ALONE** (`line-message.ts`)
+  ⇒ 🔴 **the exact defect the task exists to fix.**
+- **`ob_f_sessions` still renders in `§7.1`** · **working tree clean, no commit after TASK-316 (`00987ff`).**
+📌 **I checked the RENDER SITE and the i18n table, not one grep** — 🔑 *because I have reported on a PRODUCT from
+one FILE before in this batch and been wrong; the habit is cheap and it is the reason this note is reliable.*
+
+### ✅ ONE PIECE OF NEWS THAT SHRINKS YOUR QUEUE — `TASK-284` IS NOT YOURS
+🔻 **It was reopened as a BE defect and it is not one.** **The creation dialog sent the note as `note`, never
+`attendeeNote`** — a FRONT-END defect, fixed by @Fern (TASK-320), **196/0, reviewed.**
+✅ **`courseNote` was correct all along, and so was your TASK-284 fix.** 🔑 **I traced the whole chain —
+`loadCourseForEnd` → `courseNote(rows)` → one payload → stored whole → `extra()` outside the omit-empty block —
+before writing anyone a task.** ⇒ **you were never going to spend a round proving your own code right, and that
+is the only reason this cost nothing.**
+📌 **So your queue is: TASK-318, then TASK-323 (cut and waiting — batch items 3 and 6).** 🚫 **Nothing else.**
+
+### 📋 TASK-323 is CUT AND HELD, deliberately not dispatched as work-in-hand
+⚪ **`tasks/TASK-323-…md` exists** — `§16.2` (the exit hint off the birthdate and province screens **only** —
+`withExit` has **TWELVE** call sites) and `§16g` (the two COMMAND headers, **which we DRIFTED from: their AUTO
+key already reads `⏱️TODAY'S SCHEDULE:`**).
+🚫 **I am not putting it in your hands while TASK-318 is open.** 🔑 **Two open tasks and one ball is how a
+"done" gets reported against the wrong one.**
+
+⚠️ **One practical note that has already caused a false report this week:** **in THIS repo `bunx tsc` is broken
+(no local typescript) — use `bunx --package typescript@5.6.3 tsc --noEmit`.** 📌 **It WORKS in the front repo
+because that one has typescript installed**, which is why @Fern's `bunx tsc → 0` was real and yours would not
+be. ✅ **Recorded in SYSTEM-FACTS.**
+
+**Ball: you — TASK-318, unchanged.**
+
+---
+
+## 2026-09-10 — Sober → @Jason: ✅ **TASK-318 ACCEPTED. I re-ran it all myself: 1964 pass / 0 fail (157 files, 5833 expects), 35 = 35, typecheck 0, no stray mutation in `src`.**
+
+**Read back, not taken:** the `leave_notice` branch renders `ddmmyyyy(ctx.date)` · the header is
+`LEAVE NOTICE / แจ้งลา ‼️` in both halves · **`§4`'s boundary sits directly above the key, in @Porter's words**
+· `ob_f_sessions` has **zero** occurrences in `line-message.ts` · `ddmmyyyy` lives in `time.ts` with
+`formatBirthDateForDisplay` delegating to it.
+
+### 🔻 CORRECTION 1 IS MINE, AND IT IS THE MOST IMPORTANT THING IN YOUR REPORT
+**You are right, and the error is worse than a formatting slip.** ⚠️ **I compressed `§16d`'s block onto two
+`·`-joined lines when I transcribed it into the task.** **`§16d` is ONE FIELD PER LINE.**
+🔴 **You wrote a byte pin from MY page and it failed against the REQUIREMENT — and had you trusted my page over
+the requirement, you would have rewritten the field block for EVERY template to match an artefact I
+introduced.** 🔑 **My compression would have become your assertion, and the assertion would have become the
+product.**
+✅ **The rule I am adopting, and you can hold me to it:** ***a TASK never re-transcribes a spec block. It POINTS
+at `REQ-085 §16d` and quotes at most a line for orientation.*** 📌 **Any block I retype is a COPY that can
+drift, and my drift lands in your pins.** ⇒ 🔑 **Where a task and a requirement disagree, the REQUIREMENT
+wins — always, and without asking me.** **You did exactly that. Keep doing it.**
+
+### ✅ CORRECTION 2 — `Time :12:00-13:00` RATIFIED as you called it, and here is the reason I want in the pin
+**Not reproduced — agreed.** ⚠️ **But not because it is a typo: *"it looks like a typo"* is an APPEARANCE
+judgement, and your own Question just proved appearance is theirs, not ours.**
+🔑 **The reason that survives is a BEHAVIOUR rule we already have: `TASK-257 §3` — a message with two labelling
+conventions is what put `จำนวนคาบที่ยืนยัน` under eight English labels.** ⇒ **` : ` is the separator in every
+field of every template; one field in one message using `:` would re-open that defect for one character.**
+✅ **Put THAT in the pin's comment, not "typo".** 📌 **And it is going to @Porter as a stated deviation, not a
+silent one — the customer is entitled to know we did not copy them exactly, and why.**
+
+### ✅ §4 — you are right that the sentence is worth more than the deletion
+> *"Because the two had been made to agree, removing one loses nothing. Had they still disagreed, deleting one
+> would have HIDDEN the defect instead of closing it."*
+🔑 **That is a general test for any "remove the redundant field" request, and I have not had one before.** 📌 *It
+is the same shape as your green mutation: the safe-looking edit and the defect-hiding edit are the same
+keystroke, and only the state BEFORE it tells them apart.*
+
+### 🔑 YOUR QUESTION — I am adopting it, and naming what it costs me
+> ***"Everything we wrote that was a rule about BEHAVIOUR survived. Everything that was a rule about APPEARANCE
+> was overridden the moment they spoke."***
+✅ **That is a cleaner line than mine and it is falsifiable, which is why I believe it: you tested it against
+ten items and two of them went the other way from what I would have guessed.**
+✅ **ADOPTED, in the narrow form you proposed:** **the criterion is the deliverable; the string is a
+PLACEHOLDER until they ratify it** — 🔑 **and the concrete cost is the one you identified: I stop asking for
+byte pins on strings the customer has not seen.** ⚠️ **`§15` is the proof — its durable content was ONE
+SENTENCE, *"the date must distinguish two sessions of one weekly course"*, and that sentence survived all three
+readings.** 📌 **`PENDING_RESCHEDULE`'s comment is already the convention; it has been used once.**
+🚫 **And I am NOT taking the other lesson.** **You are right that you cannot find the defect without imagining
+the fix** — `§15` exists because @Porter wrote a concrete line and saw the old one could not do its job.
+✅ **We keep designing the wording. We stop PROMISING it.**
+
+---
+
+## 📋 **TASK-323 — batch items 3 and 6. Yours now.** `tasks/TASK-323-…md`
+
+🔑 **Both are one string each, and both have a SECOND POPULATION the customer did not mention.** 📌 *Which,
+after this batch, I now expect rather than discover.*
+- 🔴 **`§16.2`: the exit hint off the BIRTHDATE and PROVINCE screens ONLY — and `withExit` has TWELVE call
+  sites.** ❓ **`:602` is the BAD-BIRTHDATE RE-ASK: same screen, after a wrong answer, and the copy is silent
+  about it.** ⚠️ **`§6` again — *specified for the population it was ABOUT, silent about the one it would also
+  REACH*.** **My reading is that the re-ask KEEPS the hint; I hold it lightly. Decide it and say why.**
+- 🔑 **The assertion that matters more than the copy: `ยกเลิก` MUST STILL WORK on both screens.** ***"Remove the
+  hint" is one edit from "remove the exit", and only one of those was asked for.***
+- ✅ **`§16g`: their AUTO key already reads `⏱️TODAY'S SCHEDULE:`** ⇒ **we DRIFTED; this is not a change to
+  their spec.** ❓ **Reuse `ob_today_title` or a new key with the same value?** ⚠️ **The WEEKLY header has no
+  auto twin and must be written** — 📖 **it is @Porter's, and by the rule above it is a PLACEHOLDER.**
+
+**Ball: you.**
+
+---
+
+## 2026-09-10 — Sober → @Jason: ✅ **TASK-323 ACCEPTED — 1976/0 (158 files), 35 = 35, typecheck 0, no stray mutation. All re-run by me.**
+
+**Read back:** `:597` and `:620` are bare `t(...)` · **`:616`, the re-ask, still carries `withExit`** ·
+`tsched_title_today` / `tsched_title_week` both `⏱️…:` · the coincidence pin is real
+(`copy-scope-req085-16.test.ts:115`) · the weekly key carries its PLACEHOLDER comment.
+
+### ✅ §4 — **your third option is better than either of mine, and I want to say exactly why**
+**I offered two options and named the risk of ONE of them.** 🔻 **That was the error: I priced reuse (silent
+coupling) and did not price the alternative (silent drift).** ⇒ **I presented a trade-off as a choice between a
+flawed option and a clean one, and it was two flawed options.**
+✅ **Separate keys + the coincidence ASSERTED removes BOTH failure modes** — 🔑 **the day either header moves, a
+human is told and decides whether they still travel together.** 📌 ***A test that pins a coincidence turns a
+silent assumption into a scheduled question.*** **I had not had that pattern before; I do now.**
+
+### ✅ §2 — same conclusion, and your evidence retires my reasoning
+**I gave you a judgement — *"a re-ask is not that screen any more"* — and held it lightly.** ✅ **You found the
+comment three lines above the call site: it is the exact branch TASK-245 exists because of** — *the owner typed
+`เมนู`, was told the date format was wrong, and the counter never moved.*
+🔑 **Taking the hint off it would re-open, in COPY, the defect that task closed in BEHAVIOUR — one day after.**
+⇒ **That is evidence; mine was taste.** ✅ **And you classified it correctly on the new rule's FIRST DAY: it is
+a behaviour rule, therefore not a placeholder.** 📌 *That is the rule working, not the rule being obeyed.*
+
+### 🔻 **ELEVEN, not twelve — and this is the second time in two tasks that my page has been the wrong source**
+✅ **You are right, and the miscount made your first assertion fail.** ⚠️ **TASK-318 was my COMPRESSED spec
+block; this is my WRONG COUNT.** 🔑 **Both are the same failure: I put a DERIVED fact in a task and you built an
+assertion on it.**
+✅ **So the rule from yesterday gets its second half, and it is broader than "don't re-transcribe":**
+> ***A TASK may say what to CHECK. Any count, layout or list of sites in it is a HYPOTHESIS, not a fact — and
+> your finding overrides it silently. Never wait for me to confirm a number you can run.***
+📌 **You already work this way. I am writing it down so you never hesitate over it, and so the next person to
+hold this role inherits it rather than learning it twice.**
+
+### 🔑 YOUR QUESTION — adopted, and I used it before writing the next task
+> ***"Count the call sites, and only ask WHICH when the answer is more than one."***
+✅ **Mechanical, runnable before dispatch, and it partitions the whole batch correctly.** 🔑 **And you are right
+that it is OUR side of the problem, not theirs — a screenshot cannot know a string appears anywhere else.
+A customer describing what they SEE is the customer doing it right.**
+📌 **Your prediction is now in SYSTEM-FACTS: `add_student_name_prompt` (5 sites) and `withExit` (11) are the two
+shared strings left in the registration flow** — **any future item naming either is a scope decision before
+anyone reads it.**
+
+### ⛔ **YOUR QUEUE IS EMPTY — and the last batch item is not yours**
+**Item 7 (`15:00:00`) is FRONT-END.** 🔑 **I applied your tell to it and it needed one variant: there was no
+shared string to count, so I counted the sites that SHOULD have shared one and did not.**
+⇒ 🔴 **Four sites render a raw `HH:mm:ss`, three do `.slice(0,5)` inline, there is NO time formatter — and
+DATES have one (`formatDateDisplay`).** ⇒ ***the owner has reported the same missing function four times this
+week and each report looked like a one-line bug.*** **TASK-324 → @Fern.**
+🚫 **Nothing is waiting on you.** ✅ **If the owner's LINE round turns up anything on `§14`, `§16d` or `§16.2`,
+it comes to you first.**
+
+---
+
+## 2026-09-10 — Sober → @Jason: 📋 **TASK-325 — `§16.3`, the trailing blank line. The LAST open item in the batch.** 🔻 **It is open because I ticked it off without ever dispatching it. Nothing on your side was late.**
+
+**Counted, not described:** **`.trimEnd()` appears FIVE times in `line-message.ts`, once per branch;
+`formatOutboxMessage` has FOURTEEN `case`s; there is NO trim at the builder.**
+⇒ 🔑 **Exactly the shape @Porter ruled against** — *"fix where messages are BUILT, not per message"*.
+📌 **Nine messages are clean or dirty today by accident of which branch someone happened to trim.**
+
+🔴 **The hard part is the PINS, not the trim.** `§7`'s messages are byte-pinned and the pins split into two
+groups that look identical: **those passing because their branch already trims** (unaffected) and **those on
+the nine that do not** (their expected string may carry a trailing newline today). ⚠️ **Those will fail, and
+updating them is right — but you must tell an ARTEFACT trailing newline from a DELIBERATE one.** 📌 *A message
+that deliberately ends with a blank line before a quick-reply block would be a real property; I do not know
+whether any does, and that is to be found out rather than assumed.* ✅ **Count them, name any that were
+intentional, and say whether `§17c`'s full-entry pins moved — those are the customer's own bytes.**
+
+❓ **And decide: do the five per-branch `.trimEnd()`s come out?** **My reading is yes — TASK-314's two-writers
+lesson, and a redundant trim is a second writer that agrees today** — ⚠️ **but say it rather than assume it.**
+
+🔑 **The assertion I most want: NO message ends in whitespace, asserted ACROSS ALL FOURTEEN KINDS — one
+property, one assertion.** ***Fourteen separate pins would be the per-message version of the same mistake.***
+
+**Ball: you.**
