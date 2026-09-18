@@ -1,0 +1,21 @@
+name,active,price_group,???????
+Bike / Scooter / Balance Cruiser,TRUE,bike-skate,
+Surfskate,TRUE,bike-skate,Private SURFSKATE
+Freeskate,TRUE,bike-skate,Private FREESKATE
+Skateboard,TRUE,bike-skate,Private SKATEBOARD
+Inline Skate,TRUE,bike-skate,Private INLINE SKATE
+Onewheel E-Skate,TRUE,onewheel,Private ONEWHEEL E-SKATE 
+Balance Play (Private),TRUE,balance-private,
+Balance Play (Group),TRUE,balance-group,
+Bike,TRUE,bike-skate,Private BIKE
+Balance Cruiser,TRUE,bike-skate,Private CRUISER
+Balance Bike,TRUE,bike-skate,Private BALANCE BIKE 
+Scooter,TRUE,bike-skate,Private SCOOTER
+Inline Skate & Bike,TRUE,bike-skate,Private INLINE SKATE & BIKE
+Surfskate & Bike,TRUE,bike-skate,Private SURFSKATE & BIKE
+Surfskate & Inline Skate,TRUE,bike-skate,Private SURFSKATE & INLINESKATE
+Bike & Scooter,TRUE,bike-skate,Private BIKE & SCOOTER 
+Surfskate & Freeskate,TRUE,bike-skate,Private SURFSKATE & FREESKATE 
+Baby Skate,TRUE,bike-skate,Private BABY SKATE
+1st Trial,FALSE,,
+Surfskate & Skateboard,TRUE,bike-skate,Private SURFSKATE & SKATEBOARD 

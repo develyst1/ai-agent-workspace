@@ -988,3 +988,76 @@
   open), REQ-006 stays `SPEC_DONE` (AC 6 open), and the SPEC-006 Phase-1 gate stays open-and-unmet.
   Re-asked in Porter's reply of 2026-09-09 as three separately-labelled yes/no items; the moment he
   labels it, the fact becomes A47+ and the affected REQs move in one hop.
+
+
+## Owner's answers of 2026-09-13 — the six-item digest A–F (four answered, two not)
+
+> Appended by Porter 2026-09-13 **before the reply was sent.** His whole message, verbatim:
+> **`A=ผ่าน, D=ไม่ผ่าน เพราะ ตรง filter category ยังใช้งานไม่ได้ และ ไม่สวยพอ ,E=คิดเองและทำได้เลย
+> เดี๋ยวจะให้แก้เดี๋ยวบอกทีหลังเอง เอาอิโมจิออกด้วย, F=บอกตามจริง`** — answering a digest that put
+> **six** labelled items to him: **A** = the redesigned home page `/` (SPEC-006 Phase 1) · **B** =
+> REQ-003 §Questions Q4 (his eyes on the removals, AC 7) · **C** = REQ-006 §Questions Q1 (his eyes on
+> the `DTE` body copy, AC 6) · **D** = the redesigned `/courses` (SPEC-006 Phase 2) · **E** = the Thai
+> copy for `/about` · **F** = REQ-001 §Questions Q9 (the dead "resend verification email" path).
+> **He did not answer B or C** — nothing is read into that silence; both stay open and were re-asked.
+
+- **A47 — the redesigned home page `/` PASSES his eyes** — **"A=ผ่าน"** (owner, 2026-09-13, verbatim).
+  This is the labelled answer A46 was waiting for: the **A43 "ให้ดูก่อน" gate for SPEC-006 Phase 1 is
+  MET**. ⚠️ What it does NOT say: nothing about deployment (`DELIVERED` ≠ deployed, he ships), and
+  nothing about the two UNVERIFIED items carried in REQ-001 §"Owner's-eyes gates" — his pass is his
+  eyes on his screen, which is the only verification this project has. A46's "ผ่าน" stays unattributed;
+  it is A47 that spends the approval, not a re-reading of the older word.
+
+- **A48 — the redesigned `/courses` FAILS his eyes, for two stated reasons** — **"D=ไม่ผ่าน เพราะ ตรง
+  filter category ยังใช้งานไม่ได้ และ ไม่สวยพอ"** (owner, 2026-09-13, verbatim; *"fails, because the
+  category filter still does not work, and it is not pretty enough"*). So the **SPEC-006 Phase 2 gate is
+  NOT met** and Phase 3 (the remaining screens copying the result) stays gated on `/courses`.
+  **Reason 1 is a functional defect report** — the category filter on `/courses` does not work for him.
+  ⚠️ UNVERIFIED by the team: what he clicked, on which build, and what happened are not stated;
+  reproducing it is Sober's, and Porter asked him for the concrete steps in the same reply.
+  **Reason 2 is a visual verdict with no specifics** — "ไม่สวยพอ" names no element; his standing
+  criteria are A43's **spacing + colour, modern**. Porter asked what specifically, and **guesses
+  nothing** — nobody redesigns `/courses` on an unread mind. Which build he looked at (local `develop`
+  files vs. the live site) is also not stated and not assumed.
+
+- **A49 — the `/about` Thai copy is DELEGATED to the team, and the emoji go** — **"E=คิดเองและทำได้เลย
+  เดี๋ยวจะให้แก้เดี๋ยวบอกทีหลังเอง เอาอิโมจิออกด้วย"** (owner, 2026-09-13, verbatim; *"think it up
+  yourselves and just do it; I'll tell you what to fix later; take the emoji out too"*). This
+  **supersedes the ⚠️ in A10** ("not to be invented") for `/about` only: the team is now **authorised to
+  author** the About-page copy, he **reviews it afterwards** and will send corrections, and the page's
+  **emoji are to be removed** (18 on `front/src/app/about/page.tsx`, Porter's count 2026-09-13 —
+  `/about` had been left out of SPEC-001's migration list precisely because its copy was unsettled).
+  Homed as `requirements/REQ-008-about-page-copy-and-emoji.md`. ⚠️ Not stated: any deadline, and any
+  wording — the DTE name rules (A6, A22, A38) and the "no emoji" rule of REQ-001 still bind.
+
+- **A50 — an unverified user on `/login` is to be TOLD THE TRUTH** — **"F=บอกตามจริง"** (owner,
+  2026-09-13, verbatim; *"tell it as it is"*), answering REQ-001 §Questions **Q9**: an unverified-email
+  login attempt must say so — **not** today's generic "อีเมลหรือรหัสผ่านไม่ถูกต้อง" — and, as the question
+  offered, the resend is to be offered. Per the framing of that question it is its **own new
+  requirement**, `requirements/REQ-009-login-tell-unverified-user-the-truth.md`, not a widening of
+  REQ-001. ⚠️ Still UNVERIFIED and carried: that the branch is dead today is Sober's code read
+  (`AuthContext.tsx` `login()` l.83–85), not an observed login. ⚠️ Not stated: the exact wording,
+  and whether the backend already distinguishes the two cases — the second is Sober's to establish.
+
+---
+
+## Team finding — 2026-09-13 — the auth backend as it actually behaves (NOT owner-stated)
+
+> Appended by Porter 2026-09-13, from Sober's SPEC-009 §Findings F1–F3, routed via `inbox/PM.md`.
+> 🔴 **This is NOT an owner statement** — it is how the running code behaves, admitted here under
+> "how the running system actually behaves" so no later session re-discovers it or raises it twice.
+> Whether any of it is **deliberate** (a dev-phase setting) is **unknown and asked** (REQ-009 §Q1
+> G2–G4). Nobody may act on it as a requirement until the owner answers; his line wins.
+
+- **A51 — no verification email is ever sent by `back/`** (Sober's code read 2026-09-13; **run-confirmed**
+  by Fern on a real local stack, TASK-024 DoD 5a/6/8b, reviewed by Sober): there is no mailer —
+  `.env.example` lists `SMTP_*` but nothing reads them; `/auth/register` and `/auth/resend-verification`
+  only `console.log` a `[DEV] Verify token …` line, while the resend still answers `success:true` +
+  `ส่งลิงก์ยืนยันอีเมลแล้ว กรุณาตรวจสอบ inbox ของคุณ`. ⚠️ Local `develop` only; production is not
+  observed by anyone here (A4 says prod runs the tip of `develop`).
+- **A52 — ⚠️ code read, UNVERIFIED by run:** `back/src/db.ts:21` passes a camelCase transform that is
+  not an export of the installed `postgres` package, so rows stay `snake_case`. Consequences as read:
+  (b) `safeUser()` strips a key that does not exist, so **`password_hash` is returned** on login and
+  `/auth/profile` — security-shaped; (c) `/verify-email` reads a field that does not exist, so **the
+  verify link can never verify anyone**. With A51: **no self-registered user can become verified today**
+  except by a hand-flip of `users.is_email_verified`. Detail: `specs/SPEC-009-…md` §Findings F2/F3.

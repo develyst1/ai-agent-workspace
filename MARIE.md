@@ -85,6 +85,118 @@ only take effect at each role's **next** session start — say so in your report
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-09-18 — **New desk created: `pun-kub-fang`, MANUAL mode, in the possibility/smart-scheduler
+  shape — the first desk where OUR team is a guest in someone else's repo.** Owner's instruction:
+  *"งานเราคือ backend เป็นหลัก; front แตะแค่ตะเข็บ API"* · front `pun-kub-fang` exists (Next 16 +
+  antd 6 + Tailwind 4) with **another developer as its main owner** · back `pun-kub-fang-back`
+  greenfield, **Bun + Hono, ours entirely** · Porter PM/BA/PO (no UX-writer hat — the front's words
+  are theirs) · Sober · Jason (all of back) · **Fern as a GUEST in front** · Tanya (our work only,
+  local full, no dev server) · no production / real DB for anyone.
+  **Scaffolded fresh from the template** (not copied raw; inbox byte-copied from the template's clean
+  201-B files, not from a live desk — yesterday's lesson): ritual SYSTEM-FACTS → PROTOCOL + role →
+  board → inbox → today's log; `tests/` + `harness/`; `archive/`; state-only board with two Blocked
+  rows already true. **Three role files carry the additions the owner ordered:** `FE.md` — the
+  guest rule as a card: *edit exactly the files a TASK names, nothing else; replace `site.ts` imports
+  with API calls; never design/restyle/touch `sections/`; never switch branches; if a change needs an
+  unnamed file, STOP and ask* · `SA-Lead.md` — *the API contract is a PUBLIC artifact for an outside
+  developer: readable with zero workforce vocabulary, published as the OpenAPI Hono generates, "if
+  code and document disagree the code is wrong", a breaking change is a REQ; every Fern TASK carries a
+  closed file list; read the other developer's branch before every seam SPEC* · `QA.md` — *Tanya
+  judges our team's work only; the other developer's UI is an "Observation (not ours)" for the owner,
+  never a `TEST_FAILED`*. PROTOCOL adds a fifth forbidden pair: **nobody on the team talks to the
+  other developer — everything via the owner.**
+  🔴 **The as-built survey (read-only, `project-docs/as-built-survey-2026-09-18.md`, 10.5 KB) found
+  the fact that reshapes the whole job: the front makes NO network call at all.** No `fetch`, no
+  `.env`, no `NEXT_PUBLIC_*`. **Every piece of content is a static constant in `src/data/site.ts` —
+  3,899 lines, 148 KB, imported by 41 files.** The cart persists to `localStorage` and **submits
+  nowhere**; the chat is a **rule-based local script** (`fangAnswers.ts`), no AI, no backend. ⇒ our
+  API is not replacing a backend; it is the first one, the front has no seam for it yet, an order
+  flow would be NEW scope, and "wire the chat" would be new scope. The survey tables every `site.ts`
+  export → type as the resource model the API must serve, and flags the bilingual field naming as
+  **inconsistent** (`nameEn` / `labelEn` / `en` / `titleEn`) — a SPEC-001 decision, because it sets
+  how much of the front Fern must touch. **Branches:** `main` (tip 08-29, `wachi9142-cpu`, its only
+  commit) · `develop` +53 · `dong` = the owner's, develop + 3, checked out · `kf` identical tip to
+  develop · `D2` (`sss`, 09-07) **fully contained in develop, 37 behind — dormant, not diverged**.
+  `merge-workflow.sh` = the Develyst Robot sync (develop ↔ your branch, refuses on main/develop).
+  ⚠️ **Deliberately NOT inferred, filed as Q1–Q5 for the owner:** who the other developer is (git
+  shows `Develyst` 29 / `sss` 23 / `dev` 4 / `wachi9142-cpu` 1 — a commit count is not an identity),
+  which branch they work on, which branch our seam edits land on, whether anything is deployed, which
+  resource the API serves first, and mirror-vs-normalise for the field names.
+  **`SYSTEM-FACTS.md` seeded** with the owner's facts verbatim — including the name fact: **the parent
+  folder on disk is misspelled `pub-kub-fang`; the repos and the product are `pun-kub-fang`; the real
+  name is `pun-kub-fang`**, never "fix" the folder, never let `pub-` into a committed name.
+  **Verified:** `git status --porcelain` empty in both repos (nothing created, edited, deleted, no
+  branch switched, `merge-workflow.sh` never run) · no absolute path in any committed file · inbox
+  201 B ×5 · `machine.local.md` +2 rows + the typo warning (git-ignored) · README +1 row · **gate
+  `node check-hygiene.mjs pun-kub-fang` → PASS, 0 warnings.** No git run.
+  📌 **Template paid off on day two:** the possibility scaffold took a full session of reading; this
+  one took the template plus three role rewrites. The 09-17 promotion was the right call.
+  ⚠️ **Still Atlas's, still not done:** `SESSION-STARTERS.md` knows neither `possibility` nor
+  `pun-kub-fang`, and its Porter starter still calls the multi-hat shape *"smart-scheduler only"*.
+  Two desks in two days now use it. Flagged twice; his file.
+
+- 2026-09-17 — **New desk created: `possibility`, born in MANUAL mode, in the smart-scheduler
+  shape — and the proven rules promoted into `_templates/project` on the owner's go.**
+  Owner's instruction, verbatim scope: Porter as **PM/BA/PO/UX writer**, Sober, Jason, Fern,
+  **Tanya (QA — not a trial here; part of the desk from day one)**; three repos, all greenfield
+  (`possibility-back` → Jason · `possibility-front` → Fern · **`possibility-spec` = the owner's
+  requirement repo, read-only for every role**); **stack TBD — Sober proposes in SPEC-001**; QA
+  **local only, no dev server, no production**; scaffold fresh like `dte` (09-06), *"ไม่ copy ดิบ"*.
+  **Scaffolded fresh (nothing copied raw):** `PROTOCOL.md` with the ritual **1 SYSTEM-FACTS → 2
+  PROTOCOL + role → 3 board → 4 YOUR inbox (delete what you processed) → 5 today's log**, a
+  five-pair chain table with Tanya hanging off Porter, statuses incl. `IN_TEST/TEST_PASSED/
+  TEST_FAILED/NOT_TESTED`, a **greenfield rule** replacing the brownfield one ("every invented
+  rule becomes the product"), an Environments table that says **local only** and records that a
+  dev server / production **do not exist and are written here BEFORE anyone touches them** ·
+  `PM.md` (four hats, keeper-of-SYSTEM-FACTS, the owner's short-message + ball-at-the-end rules,
+  *"tier names are his exact words — never paraphrase"*) · `SA-Lead.md` (**first job = SPEC-001
+  stack proposal with options + one recommendation; working branch is part of that question —
+  repos sit on `main`, do not assume `develop`**) · `BE.md` / `FE.md` (*"build nothing before the
+  stack line exists in SYSTEM-FACTS — a framework nobody chose is a decision made by accident"*;
+  secrets never in the repo; throwaway scripts in `tests/harness/`) · `QA.md` (local full access,
+  the carry-on-vs-stop rule, **"the AI is the product — test what it says, not just that it
+  answers"**) · `board.md` state-only with two Blocked rows already true · `inbox/{PM,SA,BE,FE,QA}.md`
+  at **201 B each** · `tests/REGRESSION.md` + `tests/harness/` · `archive/` · `project-docs/`.
+  🔴 **`SYSTEM-FACTS.md` seeded before the first session** with the owner's three facts verbatim
+  (what Possibility is · the five tiers **Ordinary · Seeker · Raw Diamond · Visionary · The
+  Possibility** · *"manual step-by-step โดยเจตนา เพื่อคุมคุณภาพ"*) plus the read-only survey: three
+  repos with **one "Initial commit" each on `main` and a one-line README**. **And one thing NOT
+  written, on purpose: the tier definitions.** The owner said they live in `project-docs/tiers.md`;
+  **that file does not exist anywhere** (checked the workspace and all three repos). Recorded as
+  missing + owner-to-supply, with the board's first Blocked row pointing at it. Nobody guesses a
+  tier's meaning from its name.
+  🔧 **Procedure defect, Marie's own, caught and reversed before it landed:** the inbox files were
+  first byte-copied from `smart-scheduler/ai-worker/inbox/` on the assumption they were still the
+  201-B template — **they are not: PM 560 KB, SA 443 KB, BE 322 KB, QA 90 KB.** 1.4 MB of another
+  desk's live messages went into the new desk for about a minute. Rebuilt from `code-report`'s
+  clean 201-B files; QA derived by a 2-byte, offset-checked patch (the 09-04 lesson: never `sed`
+  these). ⚠️ **And that is a finding about smart-scheduler, not about this job:** its inbox
+  discipline has collapsed — the rule is "delete what you processed", the gate warns at 2 KB, and
+  the files are 100–280× over. Not touched today (the owner asked for the team to run, and this
+  is the possibility desk); **reported here for the next housekeeping conversation.**
+  **Template promoted (`_templates/project`), owner's go 2026-09-17 — the item left open in the
+  09-06 dte entry.** Old template archived verbatim first at `_templates/archive/project-pre-
+  2026-09-17/` (10 files, md5-identical, checked). New template = the possibility shape made
+  generic: `<project>` / `<back-repo>` / `<front-repo>` placeholders and 🔧 marks where a desk
+  differs; **5 roles with QA marked optional**, SYSTEM-FACTS section + ritual + inbox section +
+  Evidence section written to work with or without QA, `SYSTEM-FACTS.md` header (with the
+  instruction *"never leave it empty"*), `inbox/` ×5 at 201 B, `tests/REGRESSION.md` +
+  `tests/harness/`, `archive/`, `project-docs/`. **Proved, not asserted: a desk copied straight
+  from the new template passes `check-hygiene.mjs` with ZERO warnings** — the old template would
+  have opened with the knowledge-file WARN and no inbox.
+  **Also:** `machine.local.md` +3 rows (git-ignored, verified; a shell-escaping slip ate the
+  backslashes on first write and was fixed byte-exactly) · README project table +1 row and the
+  "Starting a new project" paragraph rewritten to match the new template (Marie's practice since
+  08-29; noting it because README is on Atlas's list) · no path leaked into any committed file.
+  **Gate: `node check-hygiene.mjs possibility` → PASS, 0 warnings.** No git run. Nothing in
+  `H:\possibility\*` created, edited or deleted — `git status --porcelain` on all three repos is
+  empty.
+  ⚠️ **Not done — Atlas's file, flagged for him:** `SESSION-STARTERS.md` does not know this desk.
+  Its Porter starter names the four-hat shape as *"smart-scheduler only (trial)"* — possibility
+  uses it too — and its Tanya section lists three projects, not four. Also, no starter mentions
+  `SYSTEM-FACTS.md` or the inbox; PROTOCOL self-corrects a role that starts from the old order,
+  so it is a wording lag, not a break.
+
 - 2026-09-06 — **New desk created: `dte`, born in dispatcher mode — and born with the three
   things `portfolio-nichaphon` had to learn the hard way.** Owner's instruction: open the desk,
   *"อย่า copy portfolio-nichaphon ดิบ ๆ"*. Scaffolded fresh (not copied): `PROTOCOL.md`, `PM.md`,

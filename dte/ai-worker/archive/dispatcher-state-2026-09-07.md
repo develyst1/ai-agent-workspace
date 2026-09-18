@@ -206,3 +206,21 @@ STOPPED hop 4/4 — condition 5 (hop budget reached)
 Digest sent (Thai): ชื่อแท็บครบทั้ง 8 หน้าแล้ว REQ-005 -> SPEC_DONE. REQ-003 ตรวจแล้ว AC1-5 ผ่าน เหลือตา owner.
 ค้างที่ owner: เปิด front/ ดู 3 อย่าง (redirect 4 path, Footer เหลือลิงก์เดียว, /verify-email ที่หายไปหนึ่งบล็อก).
 
+
+## RUN 2026-09-09-d — N=4 — started from: ไปเลย
+hop 1 | PM  | did: housekeeping — compacted 2 over-length board cells and swept 11 closed rows byte-verbatim into archive/board-closed.md (board 16.4KB -> 12.1KB); gate PASS | ball_to: PM | flags: none
+hop 2 | FE  | did: TASK-018 -> REVIEW: 5 literal DTE Platform -> DTE swaps in 4 files, per-line byte proof; caught sed -i silently converting CRLF->LF whole-file (git diff hid it) and restored it | ball_to: SA | flags: none; 1 UNVERIFIED (/teach renders only the auth shell unauthenticated)
+hop 3 | SA  | did: reviewed TASK-018 -> DONE (re-ran all 14 DoD with varied inputs), verified the CRLF repair (CR==LF, sizes minus exactly 9), corrected SPEC-005 Flow (a), REQ-006 -> SPEC_DONE | ball_to: PM | flags: none
+hop 4 | PM  | did: REQ-005 acceptance check — all 6 AC MET -> DELIVERED, 3 UNVERIFIED carried to the owner | ball_to: HUMAN | flags: 1 question (owner's eyes after deploy; classroom tab while logged in)
+STOPPED hop 4/4 — condition 5 (hop budget reached)
+Digest sent (Thai): REQ-005 DELIVERED (แท็บครบ 8 หน้า). REQ-006 แก้แล้ว 5 จุด รอ Porter ตรวจรับ.
+ค้างที่ owner: REQ-003 AC7 (เปิด front/ ดู redirect + Footer + /verify-email) และ copy หน้า /about.
+
+## RUN 2026-09-09-e — N=4 — started from: ไปเลย
+hop 1 | PM  | did: REQ-006 acceptance check — AC 1-5 MET, AC 6 (owner's eyes) not met so it stays SPEC_DONE; recorded the CRLF/sed environment fact as A40 marked NOT owner-stated | ball_to: HUMAN | flags: 2 questions, 1 low-confidence
+hop 2 | SA  | did: wrote TASK-019 — measure antd's shared-chunk cost compressed (gzip + Brotli) as an A/B on today's tree with antd left installed, hashed backup + restore proof for layout.tsx | ball_to: FE | flags: 1 low-confidence (compression settings bracket what the live server negotiates)
+hop 3 | FE  | did: TASK-019 -> REVIEW: antd shared-chunk cost measured compressed — raw +103192 B identical on all 9 routes, gzip +40.55 kB, Brotli +35.71 kB (~20-22% of gzip First Load JS); layout.tsx restore proved byte-exact and all 8 titles re-proved live | ball_to: SA | flags: 1 low-confidence (generated artefacts' byte identity UNVERIFIED)
+STOPPED hop 3/4 — condition 3 (low-confidence assumption)
+Digest sent (Thai): ตัวเลขจริงของ antd ออกแล้ว — gzip +40.55 kB ต่อทุกหน้า (~20-22% ของ First Load JS).
+Sober ต้อง review แล้วตัดสิน SPEC-001 Decision 6 ก่อนเริ่มย้ายหน้าจอ.
+

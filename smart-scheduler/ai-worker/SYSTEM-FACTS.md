@@ -46,8 +46,16 @@ the point of reading. A mass rename would rewrite history and prove nothing.
 | `month-reset` | **00:05 on the 1st** | `job_runs`, observed 09-01 |
 | `daily-digest` | **08:00** | **owner โด่ง's own choice, 2026-08-01**; `job_runs`, stable since 08-19 |
 | `daily-reminder` | **08:15** | **owner โด่ง's choice 08-28**; registered on both boxes, first self-firing 08:15:01 on 08-29 |
-| **`end-of-day`** | 🔴 **18:30** | **The OWNER changed it himself**, 2026-08-29 (was 23:30, dating from 2026-08-01, until 08-28) |
+| **`end-of-day`** | 🔴 **17:30** (was 18:30) | **The OWNER set 17:30, 2026-09-16, on customer request** (18:30 from 08-29; 23:30 before). A session is "in time" (ทัน / not-yet-cut) until this fires that day. |
 
+🔴 **SUPERSEDES the 18:30 paragraphs below (owner's ruling via Porter, 2026-09-18; code TASK-396): end-of-day = 17:30, and the job gates on START time.**
+- **Why 17:30 and not 18:30:** the team LEAVES at 17:30 and wants every class cut before they go — the trigger cannot move later.
+- **What the job does now:** today's run attends every unmarked CONFIRMED class whose **`start_time <= now`** (was `end_time <= now`). A 17:00–18:00 class IS attended at the 17:30 run because it has started; a class starting after 17:30 (none exists — `TIME_SLOTS` ends at 17:00) would wait for the next day. Past dates: every unmarked CONFIRMED, unchanged.
+- **This is a CONSCIOUS OVERRIDE of REQ-070's "never attend before the class ends"**, recorded in the code header with the owner's reason: staff are on-site and review before leaving. Do not report "attended before it ended" as a defect.
+- **The coupling to keep now:** *the trigger must stay at/after the last `TIME_SLOTS` START* (17:00 today; 17:30 clears it by 30 minutes). The old "+1 hour" rule in the paragraphs below is history. The gate has exactly two mirrors — `jobs.service.ts` (SQL) and `lib/auto-cut.ts` (pure, test-only) — both flipped together.
+- 📌 The 2026-09-16→18 episode: a 17:00 class not cut at 17:30 with a `job_runs` row present was **not a timezone bug** — the end-time gate skipped it correctly; the owner then chose start-based cutting over moving the trigger back to 18:30.
+
+📜 *History (18:30 era, 2026-08-29 → 09-16; end-time gate until 09-18) — kept verbatim, superseded above:*
 🔴 **`end-of-day` at 18:30 is DELIBERATE and CORRECT. It is not a defect and must never be reported as one.**
 **Why it is correct: the app only lets you book a teacher until 18:00** (owner, 2026-09-02) — so **18:30 is after
 the last session that can exist.** There is no window of sessions that the job can miss.
@@ -460,6 +468,8 @@ confirm batch and asked as a real question. **A quote in a log is only the owner
 
 ## The day-end trigger is an OS setting, and it is COUPLED to the bookable hours — Sober, 2026-09-05 (source read)
 
+📜 *Superseded 2026-09-18 (TASK-396): the gate is now START-based and the trigger is 17:30 — see the end-of-day block near the top. Kept verbatim as history; the "+1 hour" rule no longer applies (the rule is now: trigger ≥ last slot START).*
+
 **There is no `18:30` in the repo.** `grep` over `src/` and `scripts/` finds no `18:30` and no `23:30`.
 `runEndOfDayJob` gates **per booking** (`endTime <= now`); **18:30 is a Windows Task Scheduler trigger**, set by
 the owner on the server — which is why *"ฉันปรับเอง"* is correct and **no code change is owed by that ruling**.
@@ -481,6 +491,8 @@ every day being attended, and nobody would connect the two.
 no `bookingType` filter at all, and the revenue select names `OTHER` explicitly.
 
 ## 🔴 The day-end trigger and the bookable hours are COUPLED — and nothing enforces it (Sober, 2026-09-05)
+
+📜 *Superseded 2026-09-18 (TASK-396): the gate is now START-based and the trigger is 17:30 — see the end-of-day block near the top. Kept verbatim as history; the "+1 hour" rule no longer applies (the rule is now: trigger ≥ last slot START).*
 
 - **There is no `18:30` anywhere in the source.** Zero hits across `src/` and `scripts/` for `18:30` or `23:30`.
   **The time is a Windows Task Scheduler trigger — an OS setting outside the repo**, which is exactly why the
@@ -1003,7 +1015,10 @@ describing the code it names would be worse than no test."*
 ⚠️ **When reporting such a result upward, say which it is.** A reconstruction can reproduce a defect the real
 code does not have, if the reconstruction is wrong; **the pin is the only thing standing between those two.**
 
-### The ceiling promise, stated once: **plan end + remaining leave quota** (2026-09-08, TASK-301/302)
+### ⚠️ SUPERSEDED — the ceiling promise as it stood 2026-09-08 (TASK-301/302); the LIVE rule is the 2026-09-15 TASK-358 block below
+🔻 **Stale as written (rewritten by Sober 2026-09-16):** the four-argument `courseBornCeiling(base, lastPlanned, absences, quota)` and its `quota` term were REMOVED by TASK-308 (09-09); since TASK-358 the signature is `courseBornCeiling(base, lastPlanned, absences)` = `max(base, lastPlanned) + absences × 7d`, and since TASK-361/363 `absences` counts DISTINCT DECLARED POSITIONS, make-up rows included, with no cap. The "two paths do not keep the promise" paragraph is also historical: `replanExpiry` now calls the same function with `absences = 0` (a resume never moves the ceiling). Kept for the record of WHY the term was tried; do not cite as current.
+
+*Original text follows.*
 `courseBornCeiling(base, lastPlanned, absences, quota)` — the absences move the plan's END; the quota's weeks sit
 BEYOND it; still `max(base, …)` so a short plan keeps its full window. **Quota via `courseLeaveQuota`, so an
 off-card size answers with its own allowance instead of falling through to zero.**
@@ -2401,3 +2416,715 @@ notification with a Thai header is the one no parent ever sees.**
   ONLY**, with the reason (`line-course-view.ts` imports nothing from that file) and a line recording that
   *matching* was read as *shared*. 📌 **The sentence that caused @Sober's error now carries its own
   correction.**
+
+- 🔑 **A CLAIM THAT NAMES ITS ENFORCER is the only kind that survives** (@Fern, TASK-329). **The model already
+  in the repo: `dictionaries.ts:1` — *"`en` is the source of truth; `th` must mirror its shape exactly
+  (enforced by `const th: typeof en`)"*** — **and the enforcement is real.** ⇒ ***"Mirrors X" alone tells a
+  reader to trust and not check*** — which is exactly the state `contract.ts` was in when @Sober cited it
+  twice without opening the file it named. **Unenforced claims found and NAMED, not fixed:**
+  🔴 `AttendeeNoteInput.tsx:7` — **`ATTENDEE_NOTE_MAX = 200`, a NUMBER copied across repos** (matches the BE's
+  `.max(200)` today; drift means **staff are told the wrong maximum before the server refuses**) ·
+  🟡 `import-preview.ts:6` · 🟡 `leave.ts:32` (an ORDERING copied by hand — **TASK-188 exists because the FE
+  re-derived lifecycle**) · ⚪ the four mocks (least worrying — a mock's job is to imitate).
+- 🔴 **`type HhMm = string` — the alias was a LABEL, not a constraint.** Changing `ExpiryWarningSession.startTime`
+  from `HhMm | null` to `string | null` **widened nothing**: the compiler saw no difference either way.
+  🔑 ***Nothing tightens, nothing widens, and no guarantee is lost — because there was never a guarantee, only
+  a claim.*** *(TASK-329 §2)*
+- 🔴 **THE RAW-TIME COUNT WENT 4 → 6 → 9 → 11, and every miss after the first was ONE SHAPE:** **three
+  `value=` PROPS and five `t()` ARGUMENT KEYS.** ⇒ ***"We keep sweeping for a RENDER."*** 📌 **Twice the wrong
+  number was @Sober's and twice @Fern's — a METHOD problem, not carelessness.** ✅ **The durable answer is a
+  sweep by SHAPE: a `time:`-like key inside a `t()` argument object whose value is an unformatted DTO field.**
+  *(TASK-329 → TASK-339)*
+- 🔑 **@Fern's test for a client-computed figure** (TASK-292): ***the shape is not "a figure beside a button" —
+  it is "a figure describing a set the SERVER chooses."*** ⇒ **answerable in one question: *does the request
+  carry the set, or only an id?*** **`bulkConfirm` POSTs `{ ids }` ⇒ the client sends the set ⇒ it CANNOT
+  diverge; `dropLine` and `confirmCourse` name sets the server picks ⇒ both diverged.** 📌 **Predicts: any
+  `POST /x/:id/<verb>` whose screen states a count is a candidate; any `POST /x/<verb> { ids }` is not.**
+
+- 🔑 **A NEGATIVE CHECK MUST ASSERT BOTH DIRECTIONS** (@Fern, TASK-339): ***a check that finds nothing because
+  it is looking nowhere passes exactly as quietly as a clean tree.*** ⇒ **pin the FIXED sites too, so the
+  scanner cannot silently stop reaching the code.** 📌 **It is the TASK-326 *green-by-absence* failure mode
+  caught in a MECHANISM instead of in a review.** ⚠️ **OPEN (TASK-340's Question): how many of our other
+  "nothing is wrong" assertions can tell *nothing is wrong* from *I looked nowhere*?**
+- ✅ **AN UNNEEDED ALLOW-LIST ENTRY IS AS BAD AS AN UNEXPLAINED ONE.** @Sober named two sites that *"must say
+  why"*; **neither is a `t()` argument, so the sweep never sees them** ⇒ ***an entry for them would exempt
+  something the check cannot see.*** 📌 **TASK-322's rule cuts both ways.** *(TASK-339)*
+- 🔴 **DATES ARE IN MONEY'S STATE, NOT TIME'S** — **`formatDateDisplay` EXISTS and FIVE local formatters were
+  written beside it**: `fmtTime` (`AttentionContent:27`), `fmtDate` (`ImportBalanceModal:138`,
+  `SomContent:15`), `fmtDateTime` (`OverviewContent:58`, `SomContent:16`). *(Verified by @Sober.)*
+  🔻 **This CORRECTS TASK-324's write-up, where @Sober called dates the sibling that already had its
+  function** — ***they have one and do not use it.*** 🔑 **Worse than the time gap for @Fern's own reason:
+  with time there was no shared helper to ignore.**
+- 🔑 **THE LINE BETWEEN A DEFECT AND A DECISION, for duplicated formatting:** ***UNFORMATTED is a defect and
+  the SA dispatches it; DIFFERENTLY-formatted is a decision and the owner's.*** 📌 *That line is what stops a
+  finding becoming a tidy-up nobody asked for.* ⇒ **the four raw DTO dates in `t()` arguments → TASK-340; the
+  five local formatters → the owner, beside MONEY and `ATTENDEE_NOTE_MAX`, as ONE question:** ***may a surface
+  legitimately format the same kind of value differently — and if so, which?***
+- ⚠️ **A SCANNER THAT STRIPS COMMENTS BY DELETING THEM REPORTS THE WRONG LINE NUMBERS.** @Fern caught it before
+  reporting: comments are blanked to **equal-length whitespace** so offsets and newlines survive.
+  🔑 ***A sweep whose output cannot be looked up is worse than no sweep — it sends the next reader to the wrong
+  line and spends the trust that makes them check at all.*** *(TASK-339)*
+
+- 🔴 **`formatDateDisplay("—")` RENDERS `Invalid Date`.** It returns `""` only for a FALSY input, and an em
+  dash is truthy ⇒ `formatDateDisplay(booking?.date ?? "—")` hands `dayjs` an em dash. **@Sober's instruction
+  was *"route all four"*; the fourth could not be routed, and the no-booking case is branched BEFORE the call.**
+  🔑 ***An instruction that names a transformation must be checked against every value the site can hold — only
+  running it says so.*** *(TASK-340 — @Sober verified.)*
+- 🔑 **THE GUARD MUST BE OVER THE SAME REGION AS THE NEGATIVE** (@Fern, TASK-340 Question — the sharpened form
+  of *green by absence*): ***it is not "a negative needs a positive somewhere in the test".***
+  🔴 **`dialog-labels.test.ts:127` HAS three positives — on `modal`, the whole file, not on the `header` slice**
+  ⇒ ***it looks guarded and is not, and the three green assertions beside it are what make it look safe.***
+  ⚠️ **Four such assertions found, in three files.** 📌 **And one region is bounded by a COMMENT —
+  `expiry-warning.test.ts:71` slices to `indexOf("TASK-287 §1")`** ⇒ **a tidy-up that deletes a stale task
+  reference silently empties the region and the negatives stay green.** *(→ TASK-341)*
+- ✅ **A SWEEP ADDED BEFORE THE FIX PROVES ITSELF ON THE REAL DEFECT** — @Fern ran the date sweep against the
+  UNFIXED tree, so the demonstration is the defect itself rather than a mutation. 🔑 ***Better than break-it-
+  and-watch, because nothing had to be pretended.*** 📌 *And she checked bun's `+ Received + 6` against the
+  scanner rather than reporting six sites — **a count read from a diff renderer is not a count.***
+- 🔑 ***AN ALLOW-LIST ENTRY OUTLIVING ITS DEFECT IS THE SAME CLASS AS A COMMENT OUTLIVING ITS MECHANISM***
+  (@Fern, TASK-340): the known-open entry for `CancelBookingDialog:80` was **DELETED, not moved**, when the
+  site was fixed. ⚠️ **And the reason the site was fixed at all: `date:` and `time:` are the SAME `t()` call
+  one line apart** ⇒ ***formatting one and leaving the other is authoring the adjacent-lines defect we spent
+  three tasks removing.***
+- ⚠️ **`file:line` PINS ARE BRITTLE TO THE COMMENTS A FIX CARRIES** — three of @Fern's own assertions went red
+  for no reason but their own brittleness. ✅ **Identity is now FILE + EXPRESSION; the line survives only in a
+  `where` field for a human to look up.** 🔑 ***A pin a comment can break teaches the next person to delete
+  it.*** 📌 **And the two-directional guard earned itself again: the "formatted sites" pin went red because a
+  site had BECOME formatted — *a formatted site appearing is as much a change to the sweep's world as a raw
+  one.*** *(TASK-340)*
+
+- 🔴 **`grep -c` EXITS NON-ZERO WHEN THE COUNT IS 0.** An `&&`-chained demonstration therefore **short-circuits
+  at the count and the RESTORE STEP NEVER RUNS.** ✅ **Caught by the read-back and `git status` in the same
+  call.** 🔑 ***A restore behind `&&` is only as reliable as every command before it, and a COUNTING command is
+  exactly the kind that "fails" while succeeding.*** ⇒ ✅ **use `;` and verify by CHECKSUM, never by exit
+  code.** 📌 **THIRD distinct restore failure this week — `git checkout` reverting to the wrong target · a
+  `sed` delimiter failing silently · a short-circuited chain — and ALL THREE were caught by the READ-BACK,
+  none by the script that caused them.** *(TASK-341)*
+- ✅ **A REGION GUARD MUST FAIL ON *MISPLACED*, NOT ONLY ON *EMPTY*.** `expect(region.length).toBeGreaterThan(0)`
+  is the weakest acceptable form and @Fern declined it: her guards NAME what the region is
+  (`toContain("endCourse.resumeCreated")` for the re-plan summary). 🔑 ***The difference between "I read
+  something" and "I read the right thing."*** 📌 **And two assertions in DIFFERENT `it`s cannot borrow each
+  other's guard — each re-slices, so each needs its own.** *(TASK-341)*
+- ✅ **BOUND A TEST REGION BY THE STRUCTURE THE RULE IS ABOUT, and search the end anchor FROM the start index.**
+  `expiry-warning.test.ts`'s `panel` now runs `result ? (` → the `) : (` that closes that JSX branch, **found
+  from `panelStart`** — because `) : (` also appears earlier and a bare `indexOf` took the wrong boundary
+  silently. 🔑 ***A re-anchor that is wrong in a new way is not a fix.*** *(TASK-341 §3)*
+- 🔑 **REPORT PROSE NEEDS A DIFFERENT DISCIPLINE FROM CODE PROSE, NOT A LIGHTER ONE** (@Fern, TASK-341):
+  ***a code comment sits beside the thing it describes; a report describes a tree that has already moved on***
+  — **and the chain is longer: engineer → SA → PM → owner, each hop losing the tree.**
+  ✅ **The rule, adopted:** ***be exact about anything a reader can ACT ON or RE-QUOTE — a location, a number,
+  a verdict; be free with emphasis.*** 📌 ***"Closes with" is `file:line` for sentences*** — **state a location
+  the way the reader will LOOK IT UP.** ⚠️ **And her refusal of ceremony is what makes it keepable: *a report
+  that hedges every location becomes unreadable, and an unread report is worse than a loose one.***
+
+- ⛔ **THE CHAIN RULE (@Porter, 2026-09-11, and he was right):** **`TASK-336 → 337 → 338 → 339 → 340 → 341 →
+  342` — every link's source was the PREVIOUS LINK'S OWN QUESTION, and not one was chosen by the owner, the
+  customer, @Tanya or the PM.** 🔑 **The mechanism, named by @Sober: *a Question at the end of every task, and
+  every ANSWER treated as a dispatch.*** ⇒ ***the Questions are worth keeping; turning each one into the next
+  task is what made it unbounded.*** ⚠️ **A loop with no external input has no natural end, and each individual
+  step was defensible.** ✅ **Standing: when a Question produces work, it goes on a SIZED LIST for the owner to
+  cut — it does not become the next task.** 📌 *His `REQ-087 §4` is the precedent: he cut a sweep to "just the
+  notifications" in one line.*
+- 🔴 **@Sober treated NO MESSAGE as NO EVENT** — said *"waiting on @Tanya"* four times, having checked the
+  inbox and found nothing, while she had already reported. 🔑 ***The absence-of-evidence error, made about a
+  person instead of about code.*** ✅ **One line — *"has she reported?"* — costs nothing. ASK rather than
+  infer.** *(2026-09-11)*
+- 🔑 **THE RESTORE, in one sentence** (@Jason, TASK-342): ***all three failures this week were a restore
+  expressed as a STEP IN A CHAIN rather than as a GUARANTEED POSTCONDITION*** — *`git checkout`: the step ran
+  and restored the wrong thing · the `sed` delimiter: the step ran and did nothing · `grep -c`: the step never
+  ran at all.* 🔴 **And the correction that matters: *the read-back is not PROTECTING us, it is DETECTING for
+  us, and only afterwards. A detector that fires after the damage is a smoke alarm, not a guard.*** *(In
+  TASK-325 the human committed inside the window before any read-back ran.)*
+  ✅ **Spec for ONE helper, if the owner takes it:** **1. the restore runs in a `finally` — no exit code, no
+  `&&`, can skip it. 2. restore FROM BYTES THE HELPER ITSELF CAPTURED. 3. verify by CHECKSUM and exit
+  NON-ZERO on mismatch.** ⚠️ **Caveat that keeps it honest: *small enough to read in one screen and NO
+  OPTIONS — the moment it grows a `--no-restore` flag it is a chain again.***
+- ✅ **A TEST REGION FAILS SAFE OR IT CAN EMPTY, and the form tells you which** (@Jason, TASK-342):
+  **`X.slice(X.indexOf(A), …)` ⇒ anchor gone ⇒ `-1` ⇒ EMPTY ⇒ 🔴 can empty.**
+  **`X.slice(0, X.indexOf(A))` ⇒ anchor gone ⇒ the region GROWS and the negatives get STRICTER ⇒ ✅ fails
+  loudly.** 📌 **184 regions carry assertions; a script flagged 23; the VERIFIED number is 18 in 14 files.**
+  🔴 **Sharpest: `bookings-list-other:101` is anchored on `"if (f.q) {\n    const ors"` — A NEWLINE AND FOUR
+  SPACES OF INDENTATION; a formatter run empties it.** ⚠️ **The comment-bounded shape exists three times here
+  and all three are guarded — *by a positive somebody happened to write, not a rule anyone applied.***
+
+- ▶️ **`REQ-087 §6` — OWNER-CHOSEN, two items, NOT held for `uat`** (*"แก้เลยเหอะฉันว่าไม่น่ายาก"*):
+  **`§6a`** `Remaining` becomes **`9/10 sessions`** (voucher) and **`3/4 HR`** (course) — 🔑 ***the SHAPE is
+  unified and the unit made explicit; the UNIT is deliberately NOT unified, because a voucher sells sessions
+  and a course sells hours.*** 🔴 **`3 HR` does not say OF WHAT — a parent cannot tell 3-of-4 from 3-of-10.**
+  ✅ **PRECONDITION CHECKED: `remainingLabel(kind, remaining, total)` ALREADY TAKES `total` and both call sites
+  pass it** (`course-deduction.ts:97`, `jobs.service.ts:418`/`:420`) — **the course branch ignores it** ⇒
+  **one expression, not a data path.**
+  **`§6b`** `booking_confirmed` (`§7.3`) renders **`DD-MM-YYYY`** instead of the weekday.
+  🚫 **`§7.1` course-wide KEEPS the weekday — it reads `payload.weekday`, a DIFFERENT source, so it will not
+  follow by accident.** 🔑 ***`REQ-085 §15` still holds: WEEKDAY for a course, DATE for a session*** — **the
+  change makes the product consistent with that rule rather than breaking it.**
+  🔻 **`§6b` DEVIATES from the customer's `§7.3` and THE OWNER IS TELLING THEM, NOT ASKING** — 🚫 **not a
+  placeholder, not unsettled.** *(TASK-343)*
+- 📖 **`sessions` and the `n/N` shape are @PORTER'S WORDS, RATIFIED BY THE OWNER — not the customer's.**
+  ⇒ **stronger than a placeholder, weaker than `§16d`'s verbatim copy.** ✅ **Pinned as SHAPE + WORDS with the
+  attribution written beside them**, 🔑 **so if the customer later sends their own, the boundary is already
+  known.** 📌 *The `§16e` lesson: a ruling that does not carry its own boundary gets re-applied to the wrong
+  thing.*
+- ✅ **THE CORRECTED LOOP, made structural rather than promised:** **a task still ENDS in a Question — that is
+  where the findings come from — but the task states IN WRITING that the answer goes on the OWNER'S SIZED LIST,
+  not into the next task.** 🔑 ***The Questions were never the problem; treating every answer as a dispatch
+  was.*** *(TASK-343, after @Porter stopped the chain.)*
+
+- 🔴 **THE PRODUCT NOW SPEAKS THREE DATE FORMATS IN ITS MESSAGES:** **`08-09-2026`** (a SESSION — `§7.3`,
+  `§9.1`), **`Tuesday`** (a COURSE — `§7.1`), and 🔴 **`2026-09-08` — RAW ISO, in the DAILY SCHEDULE**
+  (`line-today-schedule.ts:91`, `date: dash(r.date)`). 🔑 ***`REQ-085 §15` explains two of them; nothing
+  explains the third*** — 📌 **and it is the only place a reader meets the machine's own format, in the message
+  a coach reads every morning.** ⚠️ **ON THE OWNER'S LIST as item 9 (XS, one line); NOT cut, because the chain
+  is stopped.** *(Found by @Jason, verified by @Sober, 2026-09-11.)*
+- 🔑 **THE SENTENCE UNDER THE WHOLE UNIT/FORMAT CLASS** (@Jason, TASK-343): ***every one of these was
+  introduced by somebody rendering a value correctly for the message they were looking at. A number with an
+  implied unit does not look wrong; it looks like a number.*** 📌 **`Remaining` has been wrong twice in one
+  week — `ครั้ง` in the value, then a missing denominator — and NEITHER was reported by the person who reads
+  it.**
+- ✅ **THE `finally` RESTORE PROVED ITSELF BY ACCIDENT, TWICE, ON ITS FIRST OUTING.** @Jason's mutation anchor
+  was wrong twice — **the second time because these checkouts are CRLF and he wrote a multi-line anchor with
+  `\n`** — ✅ **and both times the file was restored anyway.** 🔑 ***Under an `&&` chain that throw is exactly
+  the shape that left @Fern's file mutated*** ⇒ **the same failure, a third door, stopped by CONSTRUCTION
+  instead of by a read-back.** 📌 ***"Three failures in a week" is an argument; "the fix worked accidentally,
+  twice, on its first outing" is a demonstration.*** ⚠️ **Also banked: a multi-line source anchor written with
+  `\n` does not match on this checkout.**
+- ✅ **AN ASSERTION REVERSED BY A REQUIREMENT IS CORRECT — rewrite it WITH the reversal and its reason inside
+  the test.** `session-confirmed-req085`'s *"the calendar DATE appears NOWHERE"* now asserts the opposite.
+  📌 ***Deleting the test that failed is how the record is lost.*** **And a byte pin rewritten for the SECOND
+  time is *not a sign the pin is wrong; it is the pin doing its job, twice.*** *(TASK-343 — 14 pins in 8 files,
+  all rewritten, none deleted.)*
+- 📌 **`§6a` needed NO new i18n key, and the reasoning matters more than the conclusion:** **`HR` has always
+  been a bare English literal in `remainingLabel` because `REQ-085 §4` puts SYSTEM-GENERATED values in English
+  for everyone** ⇒ **`sessions` is the same kind of thing.** ⚠️ ***If it ever needs to be Thai, that is a `§4`
+  REVERSAL and a different conversation.***
+
+- ▶️ **`REQ-087 §7` — OWNER: *"เอา แก้ให้เป็น 08-09-2026 เหมือนกันทุกที่"*** ⇒ **every rendered DATE is
+  `DD-MM-YYYY`.** ✅ **@Porter's boundary, and it holds:** ***A WEEKDAY IS NOT A DATE — `§7.1`'s course-wide
+  `Date : Friday` STAYS.*** 🔑 **`REQ-085 §15` is the owner's own ruling and he re-affirmed it by keeping
+  `§7.1` out of `§6b`** ⇒ ***"every date is `DD-MM-YYYY`" is about FORMAT; it does not turn a weekday into a
+  date.***
+- 🔴 **A SECOND BOUNDARY THE PM'S SENTENCE DOES NOT COVER — OPEN with the owner (2026-09-11):** **two places
+  render `อังคาร 22/09`, a WEEKDAY PLUS A DATE FRAGMENT** — **`line-leave.ts:68`** (the `§14` LEAVE PICKER's
+  row) and **`line-schedule.ts:57`** (the teacher's weekly day HEADING).
+  ⚠️ **Neither is a weekday and neither is `DD-MM-YYYY`: it is a THIRD form, and it was CHOSEN** — **TASK-316
+  decided the picker deliberately and TASK-318 said `§16d`'s format must NOT be used there**
+  (***"two surfaces, two audiences, two formats, both right"***), **and @Sober ratified it.**
+  ⇒ 🔑 ***`ทุกที่` either REVERSES a ratified decision or does not reach them.*** 🚫 **Left untouched, with the
+  absence ASSERTED AND THE REASON IN THE TEST** — 📌 *so the next reader sees a pending question rather than an
+  oversight.* ⚠️ **The cost of the wider reading, if he takes it: a 10-character date inside a 20-character
+  quick-reply label is the constraint that shaped TASK-316's fix.**
+- 🔴 **RAW ISO DATES REACH READERS IN FIVE PLACES** *(candidate list, for the engineer to verify — @Sober's
+  counts have been wrong four times this batch)*: **`line-message.ts:367` `course_deduction` — LIVE, and the
+  message fixed twice on 09-11** · `:400` `booking_resumed` · `:439` `sick_leave` and `:449` `leave_teacher`
+  — ⚪ **both DEAD branches with no producer, fixed anyway** *(a dead branch rendering the wrong format is a
+  trap for whoever revives it)* · **`line-today-schedule.ts:91`**, the instance the owner saw. *(TASK-344)*
+- 🔑 **AN SA'S LIST IS A CANDIDATE LIST AND THE TASK SHOULD SAY SO.** ***"Treat every line as a place to look;
+  your number overrides mine, silently."*** 📌 *Said in the task rather than discovered in the report — after
+  four wrong counts in one batch: the compressed spec block, "twelve call sites", "a thirteen-wide class", and
+  "all four callers have the row".*
+
+- 🔴 **A RENDERED DATE DOES NOT ALWAYS LOOK LIKE `date:` IN SOURCE.** Three of TASK-344's EIGHT sites hid from
+  BOTH sweeps — @Sober's candidate list and @Jason's first pass were **the same list** — **because their date
+  is INTERPOLATED INTO A COMBINED VALUE** (a `Time` line, an `Old slot` line) **rather than assigned to a field
+  key.** 🔴 **One was LIVE: `teacher_assigned` / `teacher_unassigned` printed `2026-09-08 10:00-11:00` to a
+  TEACHER.** 📌 **It is @Fern's `t()`-argument finding again in a new disguise — three `value=` props, five
+  i18n keys, and now a template literal.** ⇒ 🔑 ***every sweep that greps a FIELD NAME walks past the values
+  built by interpolation.*** *(TASK-344 — found when a mutation sent him back through `ctx.date` by hand: the
+  second time this week a mutation found SCOPE rather than a bug.)*
+- 🔑 **@Jason's shortest statement of the whole class** (TASK-344 §4, his THIRD green mutation this month):
+  ***"I pinned the case I was thinking about instead of the case that breaks."*** **His `§15` guard rendered
+  `§7.1` with an EMPTY `ctx`, so the sweep's ternary fell back to the weekday and every assertion stayed
+  green** — ⚠️ **and the omitted case was the PRODUCTION one**, since a real `§7.1` message is enriched from the
+  booking the row points at. 📌 *It generalises past mutations — it is what four wrong counts were, too.*
+- 🚫 **A CHOKEPOINT FOR DATES WAS CONSIDERED AND REJECTED, with evidence.** `bookingContext` fails both TASK-330
+  tests — **`§7.1`'s weekday is COMPUTED from the ISO date**, and the context **cannot see which kind will
+  render** — and it is not even one point (`payload.to.date`, `TodayRow.date` bypass it).
+  🔴 **The line that settles it: `renderFieldBlock` *would have caught FIVE of the eight and missed exactly the
+  THREE that were hiding.*** ⇒ ***a chokepoint would have covered the sites that were easy to find and missed
+  the ones that were hard.*** ✅ **The only mechanism that makes it true BY CONSTRUCTION is a BRANDED type — an
+  `IsoDate` a message string cannot accept and a `DisplayDate` produced only by `ddmmyyyy`** — 📌 *TASK-333's
+  work pointed at one field.* ⚠️ **On the owner's list, sized; it touches every date in the product.**
+- ⚠️ **TWO OPEN BOUNDARY QUESTIONS on *"เหมือนกันทุกที่"*, to be asked in ONE message:**
+  **A — the `§14` LEAVE PICKER (`line-leave.ts:68`) and the weekly HEADING (`line-schedule.ts:57`)**, both
+  `อังคาร 22/09`, a weekday PLUS a date fragment ⇒ 🔴 **the wider reading REVERSES TASK-316**, and *a 10-char
+  date in a 20-char quick-reply label is the constraint that shaped it.*
+  **B — the DAILY DIGEST (`attention.ts:226`, `:348`), raw ISO in a label an ADMIN reads** ⇒ **two lines.**
+  ✅ **Both left UNTOUCHED with the absence asserted AND the reason in the test** — 🔑 *so whoever answers
+  changes those tests ON PURPOSE, and the next reader sees a pending question rather than an oversight.*
+- ✅ **A PIN WHOSE NUMBER MOVES IS THE PIN WORKING.** `no-placeholder-leak` asserted TWELVE `?? "-"`; three
+  became ternaries ⇒ **NINE**. 🔑 **The CLAIM was kept — *these branches are safe BY REPETITION, not by a
+  chokepoint* — and the new shape pinned.** 📌 ***"The number moving is that assertion working, not
+  breaking"*** — the opposite of the reflex to relax a pin that goes red. ⚠️ **And two stale `4/6 ครั้ง` test
+  INPUTS fell out two tasks after the word was removed, green because the test hard-codes them** — *third time
+  this week a stale value survived as a fixture or as prose.*
+
+- 🔴 **THREE SWEEPS, THREE UNDERCOUNTS (5 → 8 → 9+), ALL FOR ONE REASON:** ***we searched the SHAPE OF THE
+  SOURCE instead of the SHAPE OF THE OUTPUT.*** **The "ninth site" is at least FOUR:** `expiry` on
+  `course_deduction` (`line-message.ts:378`) **and** on `course_confirmed` (`:300`) · **`start` on
+  `course_confirmed` (`:298`) — never screenshotted** · 🔴 **`advanceLeave` (`:307`) — the declared-leave DATES,
+  `join(", ")`, RAW.**
+  🔻 **And it is NOT the leading `*` on `*Expiry date`, as @Porter wondered: `Start` has no asterisk and is
+  just as raw.** ⇒ 🔑 ***the variable is that we searched for a field NAMED `date` — `expiry`, `start` and
+  `advanceLeave` are dates that are not called one.*** *(TASK-345)*
+- ✅ **A CHECK OVER WHAT A MESSAGE EMITS IS CHEAP, because the harness exists.** **`no-placeholder-leak.test.ts`
+  (TASK-327) already renders ALL FOURTEEN KINDS from a probe payload** ⇒ **give every date field a distinctive
+  ISO value and assert the output contains no `\d{4}-\d{2}-\d{2}`.**
+  🔑 **The property that makes it robust rather than a fragile regex:** ***the probe CONTROLS every input, so
+  any ISO in the output came from US*** — **no false positive from a parent's typed `Remark`, because the probe
+  decides what the `Remark` says.** ✅ **And it satisfies the real requirement: *it can FAIL on a site it has
+  never been told about*** — `start` and `advanceLeave` are exactly that.
+  🚫 **AN EXEMPTION LIST IS FORBIDDEN — if a message legitimately needs a raw ISO, STOP and escalate:**
+  📌 ***an exemption list is how this check becomes the thing it replaced.***
+- 🔑 **A CHECK THAT FLAGS A PENDING DECISION IS NOT A FALSE POSITIVE — it is the decision becoming visible.**
+  The output check will flag `§7.1`'s weekday, the `§14` picker, the weekly heading and the admin digest.
+  ✅ **All are LEFT and asserted KNOWN-OPEN with their reasons** ⇒ **when the owner answers, the test changes
+  ON PURPOSE.** *(TASK-345 §4)*
+- 📌 **THE ORDER FOR ANY SWEEP-PLUS-FIX, now standing:** **1. build the check and run it on the UNFIXED tree —
+  *the demonstration is the DEFECT, not a mutation* (@Fern, TASK-340). 2. REPORT what it finds and how many,
+  BEFORE fixing — a size is a decision and it belongs to the PM. 3. fix. 4. EMPTY the probe and show the check
+  FAILS (@Fern, TASK-339).**
+
+- 🔑 **THE OUTPUT CHECK EXISTS AND PROVED ITSELF ON ITS FIRST RUN:** `no-iso-date-leak.test.ts` renders every
+  kind × both languages × both audiences **plus the daily schedule** from a probe whose every date is a
+  DISTINCT ISO value, and asserts the output holds no `\d{4}-\d{2}-\d{2}`. **Built FIRST, run on the UNFIXED
+  tree: FIVE sites — and the fifth was `line-today-schedule.ts:103`, a DIFFERENT FILE that never goes through
+  the message switch.** ***A sweep of `line-message.ts` could not have found it at any level of care; the
+  check found it because it reads OUTPUT.*** 📌 **Distinct probe values ⇒ a failure NAMES ITS OWN SOURCE.**
+  🚫 **No exemption list was needed and none was written.** *(TASK-345)*
+- 🔻 **THE DAILY DIGEST DOES NOT RENDER ITEM LABELS INTO A LINE MESSAGE.** `buildDigestMessage`
+  (`attention.ts:396`) emits `• <check label>: <count>` and a *"see the web app"* line; **the `${b.date}`
+  item labels go to the WEB APP.** ⚠️ **@Jason reported it as *"a label an ADMIN reads"* on TASK-344, corrected
+  himself on TASK-345, and @Sober had already relayed the first version to @Porter without opening the
+  function.** ✅ **Withdrawn from the owner's list.** 🔑 *The correction is asserted in the check file so it is
+  executable rather than a sentence.*
+- 🔑 ***"THE CHECK IS SILENT" AND "THE RULE IS SAFE" ARE DIFFERENT FACTS, AND ONLY ONE IS EVIDENCE.*** A weekday
+  holds no `YYYY-MM-DD`, so the ISO check could never flag `§7.1` — **its weekday is guarded by its OWN
+  assertion, not by the new check's silence.** *(@Jason, TASK-345 §4 — written into the test.)*
+- ⚠️ **"CHECKED BY NAME" MATCHES A FILENAME, NOT A PIN.** One of the ten `§17c` files was touched on a line that
+  is NOT a `§17c` pin (the file only cross-references `§17c` in a comment). ✅ **Reported as *file touched,
+  claim intact* rather than letting the method's answer stand.** 📌 *A method that reports its own miss is a
+  method; one that does not is a habit.*
+- ✅ **`dateField` (`line-message.ts:111`) = `fieldValue` then `ddmmyyyy` — the one guard, then the one
+  formatter.** 🚫 **NOT a second date function** — it formats nothing. **It exists because the same three lines
+  were about to appear at four sites, which is the *"applied five times in three days"* failure.** 📌 *The
+  doc-block names where a second FORMAT would go — a `§15` decision, not a helper.*
+- 🔑 **THE TEST FOR SOURCE-SHAPED vs OUTPUT-SHAPED CHECKS** (@Jason, TASK-345 §8): ***is the property visible
+  in the RENDERED STRING? If yes, a source check is a proxy and will undercount the way three date sweeps
+  did.*** **Candidates on the owner's list:** the Thai-in-a-generated-value rule (already failed twice the way
+  dates did — first pick) · the labelling convention (a pure output property, held in nine branches) ·
+  **"no message ends in whitespace" IS already an output check and is the one that has never come back.**
+  🚫 **NOT a candidate: the `?? "-"`-vs-omit rule — which of two correct answers the customer chose is not a
+  property of the string.**
+
+- 🔴 **THE OWNER'S OWN `§17g` EDIT (`baa6015`, 2026-09-11 21:38) COMMENTED OUT A LINE THAT DID TWO JOBS.**
+  `line-webhook.service.ts:1533` — `if (linked !== "customer") return send(… tb("welcome") …)` — **sent the
+  unsolicited welcome AND kept UNLINKED users out of the customer postback flow.** ⇒ **an unregistered parent
+  tapping `เช็คอิน` / `นักเรียน` on the rich menu now falls through to `doCheckin` / `doChildren` and is told
+  `empty_checkin` / `children_none` instead of being told to register.** *(Verified per landing by @Sober.)*
+  🚫 **Not a crash — a WRONG REPLY to an unregistered person, on the deployed tree.** ⚠️ **Also: the `follow`
+  dispatch is commented out, so `handleFollow` is dead code; and the suite is RED (2053/1) on a bilingual
+  source pin whose claim is now vacuous.** 🔑 **Fix-forward is one line — keep the guard, drop the send — and
+  it is the OWNER'S edit, so whether an engineer or he does it is @Porter's call.** 📌 ***A line that does two
+  jobs cannot be commented out to remove one of them.***
+- 🔑 **`REQ-088` (registration by LINK) SIZED, 2026-09-12: M (FE) + M (BE) · NO migration · ONE LIFF app on the
+  customer's console.** ***The LOGIC exists; the SURFACE does not.*** `verifyAndLink` (customer's "code" IS the
+  phone) · `bindFamilyLine` (the one guarantee: never re-bind to another family) · `createStudentFromLine`
+  (the ONE LINE-side writer) · `afterParentLink` (family-with-children ⇒ no forced add) · TASK-313/314's guards
+  — **all exist.** 🔴 **What does NOT exist: any LIFF / LINE Login code — zero hits.** ⇒ ***the page's one job
+  is to turn a tap into a `lineUserId`; from there it calls what the chat calls.***
+  ⚠️ **THE HONEST COST IS THE WRAPPING, NOT THE PAGE:** `verifyAndLink` and the wizard live inside the webhook
+  service wrapped in reply-tokens and session steps ⇒ **the page needs the DECISION without the REPLIES** —
+  the TASK-315 extraction, once more, for link/create. 🚫 **If the page grows its own copy of any rule it is
+  wrong** (one writer, two doors).
+- 📋 **WHAT THE CUSTOMER MUST DO FOR `REQ-088`** (their console, their action, same class as the webhook
+  URL): **1.** a LINE Login channel on the SAME provider as their Messaging API channel *(shared user IDs)* ·
+  **2.** a LIFF app on it — Endpoint = our `/register` page, size Full, scope `profile` · **3.** send us the
+  **LIFF ID** and the **Login channel ID** — *the channel ID is what lets the BE VERIFY the ID token; a page
+  that trusts the client about who it is would be TASK-047's failure by a new route.*
+- ✅ **`REQ-088` item 3, corrected by the owner (*"แอดมินส่งให้"*): ONE stable URL, pasted by an admin, NO
+  per-parent token.** 🔑 **The LIFF login identifies the parent, not the link** ⇒ **no token table, no expiry,
+  no "already used" — a whole class of cost removed.**
+- ⚠️ **What the CHAT does that the PAGE must handle differently:** **2FA (`line_parent_2fa`, OFF) exists on
+  the chat door only — the page MUST honour the same setting or it is a second door that ignores it** ·
+  `ยกเลิก` and 3-strike stuck detection are NOT needed (a form has a close button and no session) — **but the
+  page must not LEAVE a chat session step set** · `ข้าม` = optional fields · **the `§17c` screens need their
+  own copy on the page, and by rule it is a PLACEHOLDER until the customer sees it.**
+
+- ✅ **`§17g` GUARD RESTORED (TASK-346):** `line-webhook.service.ts:1543` — `if (linked !== "customer") return
+  send(… tb("welcome") …)` — **both jobs back: it GATES unlinked users out of the customer switch AND replies
+  with `§17c` screen 1's text, which is SOLICITED because they tapped.** 🚫 **`handleFollow` stays DEAD BY
+  RULING, KEPT BY DECISION** — *the customer's OA greeting is what made two voices; if they drop theirs, this is
+  the line that comes back* — with *"do not re-dispatch without a task"* asserted. 🔑 **The assertion that was
+  MISSING when the owner edited now exists: the guard over CODE-STRIPPED source, so his exact edit re-applied
+  fails three tests.** 📌 **The silent-gate reading of @Porter's "drop the send" was built as a mutation and
+  rejected: *an empty reply to a button reads as a broken bot* (AC-16's silencing is for STRAY text, not a
+  press).**
+- 🔴 **THE SUSPENDED-HOUSEHOLD REFUSAL (TASK-048) HAS THE `§17g` SHAPE AT TWO SITES, AND ITS PIN IS VACUOUS
+  ALREADY.** `handleMessage:1332` and the postback block below the guard are each a `return` that REPLIES and
+  GATES; **`line-menus-flows.test.ts:289` pins `isSuspendedLineParent(lineUserId)` over the RAW WHOLE FILE** ⇒
+  **comment out either site, or both, and it stays green.** 🔑 ***A refusal that is also a message: when the
+  message is the thing someone wants to change, the refusal is what they will accidentally remove.***
+  ⚠️ **On the owner's list — one test, ten lines. NOT fixed.** *(@Jason, TASK-346 §7 — 17 such lines sorted;
+  this is the only one where motive and shape both match.)*
+- 📜 **`REQ-088` CONTRACT (TASK-347 `§C0`–`§C5`), accepted 2026-09-12 — three principles:** **1. the server
+  returns CODES, the page renders WORDS — no `message`, no `lang`.** **2. the page never says who it is — every
+  call carries the LIFF ID TOKEN, `sub` is the `lineUserId`, and NO body carries a `lineUserId`/`parentId`/
+  `familyId`.** **3. every decision is the chat's, CALLED not copied.** 🔴 **`TOKEN_WRONG_CHANNEL` (`aud` ≠
+  `LINE_LOGIN_CHANNEL_ID`) is decoded LOCALLY before calling LINE and logged LOUDLY — trusted for nothing but
+  choosing the error code.** **Two env values from the customer's console: `LINE_LOGIN_CHANNEL_ID` (server
+  verifies against it) and `LIFF_ID` (page only); neither optional — absent channel ID ⇒ every call
+  `TOKEN_WRONG_CHANNEL`, never "skip verification".**
+  ✅ **Decisions: `/link` CREATES the parent for a new phone so `/create` is always *"add a child to MY
+  family"*** (the page's 4a/4b are the same two calls; `afterParentLink`'s decision is rendered from
+  `children.length`, not re-derived) · **`birthDate` is the customer's `DD-MM-YYYY` TEXT through the chat's
+  `parseBirthDate`, which REFUSES ISO on purpose** — one parser, one strictness; the page shows the date back
+  before submitting (TASK-277). 🔑 **The cap is asked FIRST (the chat's order); duplicate ⇒
+  `NAME_DUPLICATE_NEEDS_DETAIL` (AC-9, more detail never a rename); `LINE_BOUND_TO_OTHER_FAMILY` pre-checked
+  read-only on `lookup` and RE-CHECKED at the write.** 🚫 **No `GET`, no per-parent URL, no unbind (that is
+  `clearFamilyLine`, an admin's audited act), no teacher/admin role on this door.**
+
+- 🔑 **THE RULE FOR THE NEXT DOOR** (@Jason, TASK-347 §8, standing): ***every decision that BOTH doors need is
+  in one place (`line-register.service.ts`); every decision that is a property of the CHAT SURFACE — strikes,
+  steps, who-is-talking — stays in the webhook. Ask "does the new surface need this decision?", not "is it in
+  the webhook?"*** 📌 **The webhook is NOT "replies only" after the extraction — six decisions remain, each
+  with its reason:** the admin verify code (one door) · routing to the teacher claim · the two-strikes rule
+  (AC-19 — *a chat that hands over to a human after two failures is a property of the CHAT surface; a page can
+  be retried forever*) · `afterParentLink` (one FACT rendered on two sides) · the wizard's guard ORDER (held
+  EQUAL to the page's by assertion — *the seam is visible*) · the suspended-household refusal and
+  `detectLinkedRole` (who-is-talking; the page's answer is the token).
+- 🔴 **A PRE-EXISTING CHAT GAP, MIRRORED INTO THE PAGE BY RULE 1 AND NAMED:** *a LINE account already bound to
+  family A that enters a NEW phone creates an ORPHAN parent B carrying its id — `findOrCreateParentByPhone(phone,
+  { lineUserId })` with no `familyOfLineUser` check — and `familyOfLineUser` keeps answering A.* **@Jason had
+  added the guard, REMOVED it to match the chat, and recorded it in the code.** ⚠️ **On the owner's list (item
+  12): one check in `linkFamilyByPhone` gives the refusal to BOTH doors — and changes the chat.**
+- 🔴 **`parseBirthDate("")` IS A REFUSAL, NOT A SKIP — only the WORD `ข้าม` is.** A page create with an absent
+  birthdate must OMIT the field; a blank passed to the parser is `BIRTHDATE_INVALID`. *(Caught by a test before
+  the mutation stage on TASK-347; the trap is named in the file.)* 📌 **The page must not send `""` or
+  `YYYY-MM-DD`.**
+- ✅ **`REQ-088` BACK END (TASK-347): `POST /api/register/{lookup,link,create}` mounted BEFORE the JWT guard
+  beside `publicCheckin`; `lib/line-id-token.ts` verifies the LIFF ID token — `TOKEN_MISSING` 400 ·
+  `TOKEN_WRONG_CHANNEL` 401 (`aud` decoded LOCALLY, trusted for nothing but the error code, logged loudly) ·
+  `TOKEN_INVALID` 401 · `TOKEN_EXPIRED` 401; nine unit tests with an injected fake LINE, including *a token
+  with OUR `aud` that LINE refuses is INVALID* (keeps `decodeAud` from ever becoming the verifier) and *no
+  channel configured ⇒ every token WRONG_CHANNEL, LINE never called*.** **Env: `LINE_LOGIN_CHANNEL_ID`
+  (server) and `LIFF_ID` (page only), both the customer's, neither optional.** ✅ **The chat is BYTE-IDENTICAL:
+  every pre-existing reply pin green UNMODIFIED; two non-reply differences declared (a log prefix; `province`
+  written before `notifyAdmins`, no reader depends on it).**
+- 📌 **`afterParentLink`'s fact — *children ⇒ no forced add* — is the SOFTEST point of the extraction:** ONE
+  fact rendered on two sides (the chat advances the session; the page reads `children.length`), with nothing
+  beyond the type asserting they agree. **Owner's list item 13: `linkFamilyByPhone` returns `mustAddChild:
+  boolean` and both doors read it — one line.**
+
+- 🔴 **A NEXT.JS PAGE CAN ONLY SEE `NEXT_PUBLIC_*` ENV VARS.** The FE's LIFF id is **`NEXT_PUBLIC_LIFF_ID`**,
+  not `LIFF_ID` as TASK-347/348 first said — *a bare name would have been invisible on every environment,
+  forever, and the "not configured" message would have been the page's only path.* Same shape as
+  `NEXT_PUBLIC_API_URL`, which `/checkin` reads. ⚠️ **The BE's `.env.example` still names `LIFF_ID` "for the
+  page" — docs only (the BE never reads it), owner's list item 14.** *(@Fern, TASK-348 — the seventh
+  correction of @Sober's text this batch, and the first that would have shipped a page that never worked.)*
+- ✅ **`REQ-088` FRONT END (TASK-348): `/register` — public BY CONSTRUCTION (`proxy.ts` matches only
+  `/scheduler/:path*`), phase machine `liff → phone → found / found-2fa → linked → form → confirm → done`.**
+  🔑 **The page holds NO rule — asserted by ABSENCE on the page and the API module, PROVEN by mutation (a
+  client-side cap fails).** The one branch that looks like a rule, `children.length === 0 → form`, is `§6.1`'s
+  decision READ OFF THE RESPONSE and asserted by name. 🔑 **The ID TOKEN is the identity — `getProfile`,
+  `userId`, `parentId`, `familyId` absent from code, proven by mutation.** **The date: a masked `TextInput`
+  (no picker, no `type="date"`), echoed back on the confirm screen (TASK-277), OMITTED when blank, shown on
+  `done` as the SERVER's echo.** **`@line/liff@2.31.0` imported DYNAMICALLY so the admin bundle never carries
+  it.** **Copy: 21 verbatim from `§17c`/the chat (pinned byte-for-byte) · 2 adapted with the change named ·
+  2 borrowed from `/checkin` · 29 PLACEHOLDER tagged at their lines, pinned by FORM.**
+- ⚠️ **A LIFF PAGE YIELDS AN ID TOKEN ONLY INSIDE THE LINE APP, against a real LIFF ID and channel — there is
+  no mock for that boundary and none was faked.** ⇒ **`REQ-088` is proven only by @Tanya on a phone, on `sid`,
+  AFTER the customer's two values are set.** 📌 **The customer's console is the critical path, not us.**
+- 🔑 ***SHARE THE CREDENTIAL, NOT THE SHELL*** (@Fern, TASK-348 Question): `/checkin` and `/register` duplicate
+  ~15 lines (the `API_BASE` derivation — itself a copied value — a `Paper` wrapper, a loader view) against a
+  coupling where *a change to the shell for one page is a deploy of the other, on the two pages parents open
+  with no admin in front of them.* **They differ in the ONE thing that matters — a query token vs a LIFF
+  token — and a shell that abstracts that hides each page's security model.** ⇒ **when a third public page
+  arrives (likely `REQ-062`, leave by link), share `lib/register/liff.ts` — the CREDENTIAL module, already
+  page-free — not the chrome.**
+
+- 🟢 **`REQ-088` PROVEN INSIDE LINE on the owner's phone (2026-09-12): consent → phone → "Found your family"
+  (4 children) → link; and a NEW parent, "Gekko", added.** 🔑 **The LIFF boundary nobody could test from a
+  desk is tested.**
+- 🔴 **TWO LIFF SETUP FACTS, both got wrong first:** **1. the link parents tap is `https://liff.line.me/<LIFF_ID>`
+  — the endpoint URL lives ONLY in the LIFF app config; pasting the endpoint into a chat opens a plain in-app
+  browser with no LIFF context (`no-id-token`).** **2. scope must include `openid` — the ID TOKEN needs it;
+  `profile` alone yields a profile, not a token.** ⚠️ **@Sober wrote "scope `profile` — that yields the
+  `userId`" on the same day as a design that uses the TOKEN, without checking the two against each other; the
+  owner's phone found it.** *(Eighth correction of @Sober's text — the first found by the owner.)* ✅ **Both go
+  into `.env.example`'s comment (TASK-349) so the customer's instructions and the code agree in one place.**
+- 🔑 **`REQ-088 §7` — THE INSIGHT ONE LEVEL DOWN:** ***a parent who will not type `สมัคร` will not type
+  `08-09-2020` or an address ⇒ every field that can be a TAP should be a tap.*** 🚫 **STORED VALUES UNCHANGED —
+  the picker is ENTRY, not STORAGE:** `birthDate` stays `DD-MM-YYYY` text through the server's one parser;
+  `province` stays ONE free-text string, the three cascading picks JOINED in the customer's own order and
+  abbreviation (`พระโขนงเหนือ วัฒนา กทม`). **No migration; `§16e` stands.** ⚠️ **`§7b` is the first part of
+  `REQ-088` that is DATA rather than logic — the Thai administrative divisions, 77 / ~900 / ~7,000 — and it
+  must load ONLY on `/register`, dynamically, like `@line/liff`.** Labels follow the province: Bangkok
+  เขต/แขวง, elsewhere อำเภอ/ตำบล.
+- ✅ **`§7b`'s ESCAPE HATCH, decided by @Sober (2026-09-13): a `พิมพ์เอง / Type it instead` toggle revealing
+  the existing free-text field.** **Three paths, ONE stored shape:** pick all three ⇒ the joined string · type
+  it ⇒ the chat's field unchanged · leave it ⇒ skipped (`ข้าม` already allowed it). 🚫 **Not an "other" inside
+  the picker** — *it still needs a text box, and it invites a half-picked `กทม · other · other`.* 🚫 **Not
+  "just optional"** — *a parent who cannot find their sub-district and cannot type it leaves blank what they
+  wanted to give.*
+- 📌 **Two display fixes from the owner's screenshot (TASK-349):** children rendered `มิลล่า (มิลล่า)` — nickname
+  shown even when IDENTICAL to the name ⇒ **nickname only when it differs, matching the chat's screen 4** ·
+  **the primary button was TRUNCATED on a phone** (*"This is my family — link this LINE acc…"*) ⇒ @Porter's
+  `Link this LINE account`, **pinned by LENGTH bound, not bytes.**
+
+- 🔴 **`parents.province` HAS TWO WRITERS STORING TWO FORMS, AND THE SOM REPORT GROUPS BY IT.** **The admin's
+  `ParentFormModal` (SPEC-016) picks from `lib/people/th-provinces.ts` and stores the FULL name —
+  `กรุงเทพมหานคร`; the chat (REQ-079) and now the `/register` page store the customer's free-text line —
+  `พระโขนงเหนือ วัฒนา กทม` — into the SAME column (`line-register.service.ts:192`); and
+  `som-report.service.ts:120` groups demographics by `r.parent?.province`.** ⇒ ***a Bangkok family registered
+  by an admin and one registered from LINE land in two different buckets of the same report, and every LINE
+  family lands in a bucket of its own, one per sub-district string.*** 📌 **Pre-existing since REQ-079; found
+  by @Fern on TASK-349 by putting the two writers side by side; verified by @Sober.** ❓ **The OWNER'S decision,
+  item 17 at the TOP of the list: which form the column holds — the admin's full name, the chat's line, or TWO
+  columns.** ✅ **Guard added: the dataset's 77 names are pinned EQUAL to `TH_PROVINCES`, so the page can never
+  be the cause of a split.** ⚠️ **QA check with it: the admin form's `Select` fed a LINE-registered value not in
+  its 77 rows may render BLANK.**
+- 🔑 **A PICKER IS ENTRY, NOT A RULE — the line, drawn in code** (@Fern, TASK-349): ***it cannot produce
+  nonsense; it does not pre-validate anything.*** `toCustomerDate` is `split("-").reverse().join("-")` — **a
+  REORDER, not a parse; no `dayjs`, no `Date`, nothing that could say "invalid".** The Rule-1 absence was
+  RE-SCOPED ON PURPOSE: the page and `api.ts` still hold the FULL absence; `entry.ts` holds its own narrow one
+  (exactly one `split`, no `dayjs`/`Date`/`isNaN`/`throw`/`min|maxDate`), proven by a mutation that adds a
+  validation.
+- ✅ **THE THAI ADDRESS DATASET — `thai-address-universal@2.2.0`, ISC, PINNED EXACT** (*a dataset should not
+  float on a caret*): 77 provinces · 928 districts · 7,211 sub-districts (7,893 rows, one per postal code —
+  `พระโขนงเหนือ`'s two codes collapse to one row). **Measured from the build: 417,590 raw / 127,496 gz, five
+  chunks, loaded LAZILY only while the form is on screen in pick mode; imported in exactly ONE source file
+  (`entry.ts`) as `await import(...)`; the admin bundle asserted clean by source walk AND build graph.**
+  🔑 **Lookups by GEOCODE, never by name — `จอมทอง` is a district in BOTH Bangkok (`1035`) and Chiang Mai
+  (`5002`); `เฉลิมพระเกียรติ` is in FIVE provinces.** **Tier words keyed off geocode `10` (Bangkok ⇒ เขต/แขวง;
+  else อำเภอ/ตำบล) — the dataset carries no tier word.** ⚠️ **Honest cost: the geocode-keyed API also loads the
+  English names and the code table, ≈55 KB gz of the 127 — a build-time Thai-only slice would roughly halve
+  it (named, not built).** 📌 **If the dataset chunk cannot be fetched, the page drops to the typed field by
+  itself — an automatic hatch.**
+- 🔑 **THE PROVINCE ABBREVIATION RULE, DERIVED NOT FELT** (@Fern, TASK-349 §7b): ***the province is written the
+  way a parent writes it in a chat — its EVERYDAY name.*** **`กรุงเทพมหานคร` is the ONE province whose everyday
+  name is not its formal name (`กทม`); every other province's everyday name IS its formal name** — their
+  official abbreviations (`ชม.`, `ขก.`) are licence-plate/postal forms nobody types in an address. ⇒ **one row
+  in the table, and that is the finding.** `เชียงใหม่` ⇒ `ศรีภูมิ เมืองเชียงใหม่ เชียงใหม่`.
+- 📌 **A LENGTH BOUND CARRIES ITS DERIVATION:** the link button is pinned at **≤ 28 characters, both languages**,
+  because a Mantine `Button` inside a `max-w-sm` `Paper` at `p="xl"` has ~320 px for its label ≈ 28 characters
+  at 14 px before an ellipsis. *(The truncated sentence was 43.)* **A bound with its derivation beside it can
+  be recomputed when the layout changes.**
+- 📌 **WHERE A TYPE COULD BE A PICK** (@Fern's sweep of 21 `TextInput` labels, named not built): **the `OTHER`
+  booking title** (strongest — typed free every time, the same handful recur, and it BECOMES `displayName` per
+  AC-10) · `discount.reason` · the foreign `country` field (~250 rows, no cascade) · `badges.typeName`
+  (`Gold`/`gold`/`Gold ` splitting one badge into three). **NOT candidates:** names and nicknames (open sets),
+  prose notes, phones (an identity), the search boxes (already picks).
+
+- 🔴 **THE SAVED LANGUAGE PREFERENCE (`ss.lang` in `localStorage`) IS ONE KEY PER ORIGIN.** Before TASK-350, a
+  parent's TH/EN tap on `/register` would have written the ADMIN'S preference and an admin's choice would have
+  been the parent's default — on the same browser (*the owner testing the LIFF URL in Chrome on the phone he
+  runs the back office on*). ✅ **`/register` now mounts a NESTED `I18nProvider` with its own key
+  `ss.lang.register` — React context resolves to the nearest provider — and its own `DatesProvider`, so the
+  picker's month names follow the toggle, not the back office.** 🔑 **A device default is NEVER saved; only a
+  tap is** (`setLangIfUnset` reads storage at call time and returns if a saved value exists). *(TASK-350)*
+- 🔴 **LIVE: `/checkin` SHOWS ENGLISH TO A THAI PARENT BY DEFAULT.** It mounts under the ROOT provider
+  (`DEFAULT_LANG = "en"`, key `ss.lang`) with no scope of its own ⇒ **a Thai parent tapping the check-in link
+  sees English unless that browser happens to hold a saved ADMIN preference — and it READS the admin's
+  preference on a shared browser.** 🔑 **It does not need a TOGGLE (one screen reached from a message in their
+  own language); it needs the DEVICE DEFAULT — ten lines, the TASK-350 shape with `navigator.language`, since
+  `/checkin` is not LIFF.** ⚠️ **Owner's list item 18, the only LIVE item on it. Not cut — the chain is
+  stopped.** *(Found by @Fern's TASK-350 Question; verified by @Sober.)*
+- ✅ **`/register`'s TH/EN toggle is the admin header's own `LanguageToggle`** (two additive props, header
+  unchanged), **the first child of the page's `Stack`, present in every phase; it calls `setLang` and nothing
+  else** — `lang` appears exactly TWICE on the page (the destructure and the `DatesProvider` locale), no
+  `[lang]` effect, no `lang ===` branch. **The LINE app's language is read in `lib/register/locale.ts`, NOT in
+  `liff.ts`** — the credential module gained one export (`loadLiff`, so both modules share ONE SDK object) and
+  never calls `getLanguage`. **Tier words เขต/แขวง/อำเภอ/ตำบล stay Thai in both languages** — proper nouns on a
+  parent's own mail. *(TASK-350)*
+- 📝 **`/register`'s copy, by whose it is (TASK-350):** **21 VERBATIM** — both halves the customer's `§17c`/chat
+  words, nothing to ask · **2 ADAPTED** — one clause changed, one question each · **2 BORROWED** from
+  `/checkin` · **36 PLACEHOLDER PAIRS** — both halves @Porter's, except `FAMILY_FULL` (TH = the server's own
+  sentence), `foundConfirm` (EN @Porter's, TH @Fern's) and `typeInstead` (@Sober's pair). 🔑 **One customer
+  visit, a different question per set.**
+
+- 🔻 **REVERSED (2026-09-13): tier LABELS FOLLOW THE LANGUAGE; only the VALUES stay Thai.** EN mode showed
+  `Province · อำเภอ · ตำบล` — one English label over two Thai ones a foreign parent cannot read, above fields
+  they must fill. 🔑 **The "stay Thai" ruling (@Porter's, agreed by @Sober) was reasoning about VALUES —
+  `คลองสามวา` is a proper noun on their own mail — applied to LABELS.** ✅ **Now: EN `Province · District ·
+  Sub-district` (English loses the เขต/อำเภอ distinction — "District" covers both); TH `จังหวัด · เขต/อำเภอ ·
+  แขวง/ตำบล` with the Bangkok flip; VALUES Thai in both modes.** *(TASK-351 — TASK-350 §3's assertion rewritten
+  with the reversal inside.)* 📌 ***A rule about VALUES is not a rule about LABELS, even when both are on the
+  same line.***
+
+- 🔴 **THE CUSTOMER'S OWN `§17c` ENGLISH EXAMPLE INVITES A SECOND SPELLING INTO `parents.province`.** Screen 6's
+  EN half — *"Eg. Prakanueng Nuea, Wattana, BKK"* — is a LABEL whose example is a ROMANISED value: an English
+  parent who takes the hint types `Prakanueng Nuea, Wattana, BKK`, stored as-is, while the picker two taps away
+  stores `พระโขนงเหนือ วัฒนา กทม` for the same address — **two spellings of one place from ONE page, into the
+  column `som-report` groups by.** 📌 **Customer's verbatim text, pre-existing in the chat's EN half — not ours
+  to change.** ❓ **Owner's list item 19, BESIDE item 17 as the same decision:** the English hint should show the
+  value the way it is stored (Thai), or the field should say "in Thai". *(Found by @Fern, TASK-351.)*
+- 🔑 **THE SPLIT TO WALK A PAGE AGAINST: *a LABEL follows `lang`; a VALUE is what is stored.*** (@Fern,
+  TASK-351.) Month names in a picker are labels (follow `lang`; the value is digits) · `กทม` in a confirm line is
+  a value under a label (correct by the rule) · `(skipped)` is a label standing in a value slot (nothing
+  stored). **Walking every rendered string against that one split is the method, and it is reusable.**
+- ✅ **HOW A REVERSED ASSERTION IS REWRITTEN** (TASK-351, the model): **the test's NAME says *reversed by
+  TASK-nnn*; the comment above states the ruling that was wrong and WHY; the half that was RIGHT stays in the
+  same test; the half that was wrong is inverted; a count pin that moves NAMES each member and restates the
+  rule it protects** (*`lang` renders; nothing keyed on it sets state*). 📌 **A count pin that names its members
+  can be recomputed; one that just says "three" is the next stale claim.**
+
+- ✅ **`REQ-088 §9` — OWNER-RULED (2026-09-13): `parents.province` holds the PROVINCE ONLY (the admin form's
+  full name, `กรุงเทพมหานคร`); the address line — `พระโขนงเหนือ วัฒนา กทม`, joined or typed — goes into
+  `parents.note`, APPENDED, never overwritten.** *"เก็บจังหวัดลงจังหวัด และเอาจังหวัด อำเภอ ตำบล มาต่อกัน แล้วเซฟลง
+  note แทน"*. 🔑 **TYPED (the page's "Type it instead" AND the chat's screen 6) ⇒ `note` only, `province`
+  untouched — no guessing a province out of free text; a wrong bucket is worse than an empty one.** **The chat
+  changes BY CONSTRUCTION because it already calls the one writer (`createStudentFromLine`).** **No
+  migration.** *(TASK-352 BE / TASK-353 FE.)*
+- 🔴 **`REQ-088 §9.1` — EXISTING ROWS: THE OWNER MOVED THE ADDRESSES TO `note` HIMSELF AND IS LEAVING
+  `province` DIRTY ON PURPOSE.** *"ปล่อยจังหวัดพัง ให้เขาเจอ dashboard พัง แล้วให้เขาไปไล่แก้เอง (admin)"*
+  🔑 ***A visibly broken dashboard gets fixed by the admins who know the family's province; a silently empty
+  field never does.*** 🚫 **Do NOT write a cleanup. Do NOT file it as a defect. If anyone proposes a script to
+  "fix" those provinces, this is the answer.** ⚠️ **Consequence: the admin form's `Select` fed a non-province
+  value is the REPAIR PATH — it must let an admin PICK a real province over the dirty value and SAVE, not
+  blank or refuse.** *(Verified on the component in TASK-353.)*
+
+- 🔴 **A CONSEQUENCE OF `§9`: `parents.note` now GROWS by machine, and the admin form caps it at 500.**
+  `validation.ts:339` — the admin's parent write is `note: z.string().trim().max(500)`; `§9` makes the writer
+  APPEND an address on every registration with no cap ⇒ ***after enough registrations the admin cannot save
+  that parent at all — the existing note fails the admin's own validator on the next edit of anything on the
+  form.*** *(~180 chars after three page-registered children plus an allergy note; five re-registrations
+  reach 500.)* 🔑 **One line either way — raise the validator (recommended by @Jason and @Sober: *a form that
+  refuses to save what the system wrote is worse than a long note*) or cap the append with a named refusal
+  (which silently drops the address — the thing `§9.1` was chosen to avoid).** ❓ **The owner's pick; not cut.**
+- ✅ **"UNTOUCHED" IS THE KEY BEING ABSENT FROM THE PATCH, NOT `null`** (@Jason, TASK-352): a patch with
+  `province: null` would CLEAR a value an admin set — *the difference between untouched and
+  overwritten-with-nothing, and a `toMatchObject` hides it.* **`householdPatch(existingNote, {province,
+  address})` is a PURE function asserted with values, and the writer reads the ROW's current note — not the
+  row the chat loaded at the start of the wizard — so a staff note written mid-registration survives.**
+- ✅ **THE BE HOLDS THE 77 PROVINCES (`lib/thai-provinces.ts`, full forms) and refuses anything else with
+  `PROVINCE_UNKNOWN`, in the WRITER for every caller.** 🔑 **The FE's dataset pins equal to the BE's list, not
+  the reverse — the server is the source; the FE's list is its claim.** *(TASK-352)*
+- 📌 **`§9` reached the chat by ONE WORD at its call site** — `province:` → `address:`; the session draft key
+  keeps its name, the column changes. ***Both doors got `§9` from one edit to the writer — that is why "one
+  writer" was worth the fight.***
+- 🟡 **Named, rare, not proposed: the admin form OVERWRITES `note` wholesale on save** (`parent.service.ts:315`)
+  ⇒ an admin editing a parent while a registration appends will save their textarea's older text and the
+  appended address is gone — last-write-wins. *The machine's side is safe by construction.* **Nothing prints
+  `parents.note` on a LINE message.** *(TASK-352 §7)*
+
+- 🔴 **A MANTINE `Select` FED A VALUE NOT IN ITS `data` RENDERS BLANK, with the placeholder — the value lives
+  only in a hidden input.** ⇒ ***a bad stored value HIDDEN as "nothing set", the exact shape `§9.1` refuses.***
+  ✅ **The model fix (TASK-353): `provinceOptions(current)` in `lib/people/th-provinces.ts` — a current value not
+  in the 77 is put in FRONT of the list as `{ value, label: current, disabled: true }`; otherwise the 77 are
+  returned by reference.** **The dirty value is shown AS ITSELF, greyed, unpickable; the admin picks a real one
+  over it and saves; editing anything else re-sends the dirty value unchanged — nothing silently cleared.**
+  📌 **The visible value IS the warning — no button, no banner, no cleanup.**
+- 🔴 **THE SAME SHAPE EXISTS AT FOUR MORE `Select`s** (@Fern's sweep, TASK-353 — owner's list, ONE item):
+  **`startTime` over `TIME_SLOTS` seeded from a stored row** (`PlanModal`, `DropResumeDialog`) — TASK-295 fixed
+  `17:00:00`, but **a stored time OFF the grid (an imported `09:15`) still renders blank** · `teacherId` over
+  `bookableTeachers` (a teacher since made unbookable ⇒ empty; the admin cannot see who it WAS) · `subjectId`
+  over the teacher's `subjectOptions` (unlocked path) · `size` over `sizeOptions` (blank on purpose by a guard).
+  **Not the shape:** the nationality `SegmentedControl` COERCES a bad value into `none` — a different smell.
+  🔑 **`provinceOptions` is the model for all four.**
+- ✅ **`/register` sends two forms of one province on one request, each in the field that wants it:** `province`
+  = the dataset's `nameTh` (the admin list's spelling, `กรุงเทพมหานคร`) → the column that GROUPS; `address` = the
+  joined line with `กทม` → the note that READS. TYPED ⇒ `address` only. **The abbreviation reaching the column
+  (`everydayProvinceName` on the send) fails two tests.** `api.ts` gained one line and no rule. *(TASK-353)*
+- 📌 **A PIN ACROSS REPOS IS A CLAIM, and it should say so:** a test in the FE cannot read the BE's file (paths
+  are per-machine, `machine.local.md`) ⇒ the FE pins its dataset == `TH_PROVINCES`, with the comment stating
+  that `TH_PROVINCES` is this repo's CLAIM of the BE's `lib/thai-provinces.ts`, **checked equal by hand
+  (77 = 77) on 2026-09-13.** *The `contract.ts` rule applied to a list.*
+- ✅ **`parents.note` is rendered in exactly ONE place in the FE — the parent modal's `Textarea`, whole**; the
+  parents list renders name, phone and `province` (in full, no truncate — a dirty province shows on the card,
+  the owner's "broken dashboard" in the list too). **Nothing in the FE truncates, splits or parses the note.**
+  ⇒ 🔑 *the Textarea will SHOW a 600-character note the form then cannot SAVE — the 500-cap finding, from the
+  other side.* *(TASK-353)*
+
+- 🔴 **`/register`'s UNLINK IS FAMILY-WIDE — it is the admin's `Clear LINE link` by one more door.** `unlinkSelf`
+  → `clearParentLineLink(parentId, "line:<sub>")` → `clearFamilyLine`: **the atomic two-write clear and the
+  rich-menu unlink, and it clears EVERY LINE account the family holds, not only the one that tapped** — a
+  household with both parents linked (TASK-230) loses both. 🔑 **Not narrowed on purpose: "unlink my account"
+  would be a SECOND writer and a different task.** ⇒ **the page's copy must read *"this family's LINE
+  connection"*, never *"my phone"*; the warning shows a masked phone + a child COUNT so a parent can recognise
+  their family without a name.** ❓ **OPEN with the owner (2026-09-14): family-wide as built, or a per-account
+  unlink as a new task?** *(TASK-354)*
+- ✅ **ITEM 12 CLOSED IN THE ONE WRITER (TASK-354):** `linkFamilyByPhone` checks `familyOfLineUser` BEFORE any
+  parent row exists ⇒ **a bound account entering a phone that is not its family's — even a NEW phone — is
+  refused `LINE_BOUND_TO_OTHER_FAMILY`; no orphan parent can be created, on either door.** 🔑 **The CHAT changed
+  with it, named:** a linked parent typing `สมัคร` with another family's phone **used to get
+  `verify_parent_ok_new` plus an orphan row; now gets `verify_parent_other_family`** — the reply that has meant
+  exactly this since SPEC-071, no new key. Their own phone is still a no-op success on both doors.
+- ✅ **`POST /register/status`** ⇒ `{ linked: false }` | `{ linked: true, phone: "08x-xxx-xxxx", childCount }` —
+  **masked in the HOME, not the route (the raw phone never reaches it): the first TWO digits, every other `x`,
+  the customer's grouping; a non-standard phone masked ENTIRELY.** No names, no ids — TASK-047: a count, not a
+  list. Writes nothing. **`POST /register/unlink`** ⇒ `{ unlinked: true, cleared: n }` | `{ unlinked: false }`
+  (idempotent; the page proceeds to `lookup` either way). *(TASK-354)*
+- ✅ **The parent's note cap is 2000 on BOTH parent writes (`createParent.note`, `updateParent.note`); the other
+  six `max(500)`s in `validation.ts` are other fields and stay.** *Why 2000: the column is unbounded `text`, but
+  a human reads the note in a textarea — ~25 lines, room for ten appended addresses plus a staff note, still a
+  guard.* *(TASK-354)*
+- 🔑 **THE FRAME FOR THE OWNER'S LIST** (@Jason, TASK-354 §6): **items split into two KINDS — 🟢 FOUND BY USE
+  (the owner is currently the only test; each costs a report and a deploy) and ⚪ NEVER FOUND BY USE
+  (properties of the suite, the types, the tooling).** ***"The green class is where the OWNER is our QA; the
+  white class is where the SUITE is — and the suite is cheaper than him."*** ⚠️ ***"Never found by use" does
+  not mean "never found" — it means found by a PARENT, in production, as the first symptom of something else:
+  the worst finder there is.*** 📌 Item 12 was findable because a TEST had named it; the white items have no
+  test naming them yet, which is why they are on the list. **Green first (each one he finds costs trust); white
+  sized by what the suite would catch that he cannot.**
+
+- 🔑 **THE LANGUAGE RULE FOR A CUSTOMER PAGE** (@Fern, TASK-355, tested against every rendered string on
+  `/register` — 0 exceptions): ***what a parent must CHOOSE between follows the language; what merely
+  IDENTIFIES stays as stored.*** Tier labels and dropdown options are the frame and the choices ⇒ follow
+  `lang`; the confirm line, child names, the masked phone, the `DD-MM-YYYY` echo ⇒ as stored. **It would have
+  predicted both reversals (TASK-351 labels, TASK-355 options) and the one anomaly (the EN hint whose example is
+  a value).** ⚠️ **With the sentence that keeps it honest: *the rule is the DEFAULT and the screen is the TEST,
+  in that order; neither replaces the other* — because "values stay Thai" also sounded like a rule and was
+  wrong twice.** 📌 **The edge: when a choice's label and its stored value are the same string (a province
+  name), the screen shows the chosen language and stores the Thai — two forms of one thing, on purpose (`§9`
+  and `§10.2`).**
+- ✅ **`REQ-088 §10` LANDED (TASK-355): `/register`'s document title is `SOM SCHEDULE`** (page-level `metadata`;
+  the root's `Smart Scheduler` untouched — `/checkin` still shows it; @Fern's reading is that it should follow,
+  named not changed) · **EN mode shows the dataset's `nameEn` as option LABELS only — the pick is the geocode;
+  `pickedProvince`, the join and the confirm line read `nameTh`; the JOIN following the language fails four
+  tests** · **UNLINK is TWO taps** (a red outline, then a red `Alert` with "Yes, unlink the family" / "Keep the
+  link", the close path above), the copy family-wide (*"if another parent linked their LINE account too, theirs
+  is removed as well"*), the page branching on `st.linked` and nothing else, never masking, never holding a
+  full number, `StatusResult` = `phone` + `childCount` only.
+- ⚠️ **THE DATASET'S ENGLISH NAMES ARE ROMANISATIONS AND SOME ARE ROUGH** — `thai-address-universal`'s `nameEn`
+  gives `Khnong Tan Enue` for คลองตันเหนือ. **If an English spelling looks wrong on a screen, it is the dataset,
+  not a mapping error; a fix-up table or another dataset is a task.** *(Told @Porter before the owner's test so
+  it does not arrive as a defect.)* *(TASK-355)*
+
+- **2026-09-14 (REQ-088 §10.1):** both LINE-opened pages, `/register` AND `/checkin`, carry document title `SOM SCHEDULE` (page-level `metadata`); every other route keeps the root layout's `Smart Scheduler`. `/checkin` half = TASK-356.
+- **2026-09-14 (REQ-088 §10.3):** unlink is FAMILY-WIDE — accepted as built by the owner; no per-account unlink.
+
+### The born ceiling is the BASE plus the absent weeks — `REQ-089 item 2`, TASK-358 (2026-09-15)
+**Supersedes the TASK-301 block above** (*"stretched ceiling drops the quota's week"*). `courseBornCeiling` = `max(base, lastPlanned) + distinctAbsentWeeks × 7 days`, where `base = courseExpiry(start, size)` already holds the quota (size 6 ⇒ week 8). Kavya: size 6, 3 weeks advance leave ⇒ **week 11**, not week 9 (the last make-up). 0 leaves ⇒ unchanged. Never shrinks. `resumeCourse` reaches the same function via `replanExpiry(…, 0)` ⇒ a resume does not move the ceiling. ⚠️ **Courses created before 09-15 with `planned_at_creation` bookings carry the OLD, lower stored ceiling** — DATA REQUEST raised; `PATCH /courses/:id/expiry` is the per-course fix, the owner's call. 📌 The TASK-301/302 "ceiling promise" block still describes a four-argument signature with a `quota` term TASK-308 removed — stale, to rewrite on a quiet day.
+
+### How the owner deploys (owner, 2026-09-16) — build LOCALLY, zip, upload, `pm2 restart`
+> *"build ที่เครื่องนี้ เป็น file zip โยนไป server pm2 restart"*
+**No git pull or build happens on `sid`/`uat`.** The running code is whatever was in the LOCAL build output when it was zipped. ⇒ **"restart" alone re-runs the same zip; "deploy" = rebuild locally at the intended commit → new zip → upload → restart.** 🔑 **When a box emits an OLD formula after a "deploy", the first question is which commit the LOCAL checkout was at when the build ran, and whether the build output was refreshed before zipping** — not the server. (Item 2 of `REQ-089`, 09-16: `3680d00` was HEAD, the box still ran the old ceiling.) The untracked `.next.zip` in the FE repo root is this artifact, not a stray.
+
+- **2026-09-16 (REQ-089 §4.2):** advance leave at creation has NO cap — every previewed row (make-ups included) may be declared absent; the chain terminates (rows = size + declared positions that exist); a course with zero attended originals is a valid state (attention/history/reminder all correct). Advance leave is FREE (`leaveUsed` untouched). The only unbounded input is the request array — a fence of 104 proposed, owner's decision.
+- **2026-09-16 (REQ-089 item 3):** `DELETE /students/:id` is the ONE exception to "nothing is ever deleted" — history-free only (any course/booking/voucher row in any status refuses with `409 STUDENT_HAS_HISTORY`); suspension is the PARENT's and is ignored; audit = one server log line.
+- **2026-09-16 (REQ-089 item 8):** both resume doors take optional `teacherId`; absent ⇒ the LAST session's teacher (`rows.at(-1)`, owner's ruling). No server-side teacher↔subject rule on any door — owner HOLDS (never seen a wrong-subject booking); the FE picker is the only guard, by decision.
+- **2026-09-16 (REQ-089 item 4, read):** there is NO "teacher leave" fact in the data — a cancellation's `cancelReason` is `PROGRAM_CHANGED | CUSTOMER_CANCELLED | ADMIN_ERROR` and the calendar hides every `CANCELLED` row. "Show classes cancelled because the teacher took leave" needs a reason that says so first.
+- **2026-09-16 (REQ-089 §5):** item 4 is DISPLAY ONLY — `GET /calendar?includeCancelled=true` shows the `CANCELLED` rows (every reason; `PAUSED` stays hidden); no new cancel reason, no re-owe change. The "no teacher-leave fact" read above stands; the owner chose not to add one.
+- **2026-09-16 (REQ-089 §6):** teacher LINE on cancel/pause of a CONFIRMED class — per-session for single cancel/pause, ONE per course on drop; fields student·date·time·reason; house format is a hard constraint; copy is shown to the owner once before it ships.
+
+### Scope boundary — program/subject management belongs to the BACKOFFICE, not smart-scheduler (owner, 2026-09-17)
+The owner built the backoffice as the scalable hub other apps connect to via API — including creating revenue / deducting expenses. **A "rename/manage program" admin screen is NOT to be built in smart-scheduler**; such management lives in the backoffice. smart-scheduler renames via a one-time SQL the owner runs (REQ-090).
+- **2026-09-17 (REQ-091):** a rental is a ROW on a booking (`booking_rentals`, migration `0035`, 36 = 36); money posts ONLY through `recordRental` — on the paid press (`hours 1`, `refId = bookingId`) or once at course creation (`hours = size`, `refId = courseId`); five tiers (50/50/100/150/200; `rental-helmet-pads` is the 5th `bo.item`, added on a box by `sale:ensure-items`). The `R` chip: red unpaid, green paid; historic ledger-only rentals show nothing. A whole-course rental is DERIVED from its rows (no column); make-ups inherit through ONE `inheritCourseRental` called by both make-up writers (reconcile + sick-leave append); `resumeCourse`'s new rows do NOT inherit (named, not built). The daily reminder prints `Rental :` to both audiences; `rental_added_teacher` fires only for a same-day add after the reminder ran.
+- **2026-09-17 (writers of live course rows):** THREE — create/reconcile · the sick-leave append (`updateBookingStatus`, its own insert) · `resumeCourse` (`insertBooking`). Any fact a make-up must carry needs all of them (TASK-376 §8's table). A source pin on one function cannot see a second function.
+
+### uat migration is a ROUTINE two-run catch-up — do NOT panic (Porter, 2026-09-17)
+The `uat` DB ledger runs BEHIND `sid`; a uat release regularly shows MANY pending migrations at once (2026-09-17: 8 pending, 0028–0035, ledger at 0027). **This is normal, not a wrong-DB.** `db:preflight` refuses to apply them in one run because `0032_booking_paused_status` ADDS the `PAUSED` enum value that `0033_paused_slot_index` USES — a new enum value cannot be used in the same transaction it is added, and `drizzle-kit migrate` runs all pending in ONE transaction. **The preflight prints the exact fix; the uat release procedure is:**
+1. `bun run db:migrate:through 0032_booking_paused_status`
+2. `bun run db:migrate` (applies the rest + re-runs the check)
+3. `bun run sale:ensure-items` (if the release adds a sale item)
+4. restart; `db:verify` should equal the journal count.
+⚠️ `0033_paused_slot_index` is the ACCESS EXCLUSIVE closed-shop index rebuild on `bookings` — run when the shop is quiet. 🔻 **Porter's 2026-09-17 error: invented a wrong-DB theory (localhost host, .env mismatch) instead of reading this. Same server, same DB name, same `localhost` — the ledger simply runs behind. LOOK BACK before theorising.**
+- **2026-09-18 (REQ-092 RBAC, option C, all four stages built — SPEC-079):** `users` (`0036`) + `roles`/`role_permissions`/`users.role_id` (`0037`), 38 = 38. One shared login is GONE once a user exists; the first super admin is bootstrapped at FIRST LOGIN from `BOOTSTRAP_ADMIN_*` (8+ chars) only while `users` is empty. Keys are code constants: 12 `menu:*` + 46 `action:*` (labels TH/EN in `GET /permissions`); ONE `accessGuard` driven by `lib/route-access.ts` (menu then action; fails closed on an unmapped route; enumeration-pinned). A role is LIVE (effective = role ∪ own additive rows, one `UNION` read per request); a super admin has all; deleting a held role is refused with the count. `/me` + `/me/password` live at `/api/me` (NextAuth owns `/api/auth/*` on the FE host). Nothing reads `role` for authorization. Public LIFF/check-in/webhooks/ICS/internal routes are outside the table by design. The `uat` cutover procedure: SPEC-079 §5.
+- **2026-09-18 (REQ-094):** a make-up is born `EXTENDED`; `bulk-confirm` now confirms it like `PENDING`; the end-of-day auto-mark stays CONFIRMED-only (a job never attends an unconfirmed class).
+- **2026-09-18 (REQ-091 §14, migration `0038`):** `course_packages.rental_paid_upfront` (stored, not derived) and `rental_removed_at` (the marker — the inherit query honours it, so a later make-up does not re-inherit); `DELETE /courses/:id/rental` clears FUTURE live rows only, never touches the ledger; the course-confirm message prints `Rental :` to both audiences. 48 action keys (47 `bookings.course-rental`, 48 `people.student-archive`).
+- **2026-09-18 (REQ-093, migration `0039`):** a student is ARCHIVED, never deleted with history — `students.archived_at/archived_by`; refused while classes are ahead; hidden from every working read (pickers, eligible, parent-children reads incl. LIFF/webhook, attention) while history/reports/ledger still read them; creates for an archived id ⇒ `409 STUDENT_ARCHIVED`. Cutover migrations `0036`–`0039`, one run, verify 40.
+
+## The slot-holder rule is ONE predicate — and it was two until 2026-09-18 (Sober, TASK-397 read)
+- **Who holds a teacher's slot = `lib/slot-holder.ts`** (`status NOT IN (CANCELLED, PENDING_RESCHEDULE, SICK_LEAVE, PAUSED) AND group_id IS NULL`) — the index `bookings_teacher_slot_uq` and all four application reads (clash, additional-teacher, make-up/extension placement, the availability picker) take it from there. **Never restate the status list by hand** — that is exactly what broke: from TASK-260 (PAUSED, 2026-09) until TASK-397, the availability PICKER read a second list without PAUSED, so a paused session's slot showed as BOOKED while the system would accept a booking there. Fixed in passing by TASK-397; a PAUSED slot now shows free.
+- **A GROUP booking row holds the slot; its SEATS (children's sessions with `group_id`) hold none** — outside the index by the predicate. A seat draws no freelance hour (the group row draws one, like a lesson). The teacher swap on a group sends no message (no notice exists; the owner decides whether one is wanted).
+- **Migration `0041` rebuilt the index — closed shop** (ACCESS EXCLUSIVE, reads and writes) — the `0033` rule applies to the cutover minute. Cutover = `0036 … 0041`, verify 42.

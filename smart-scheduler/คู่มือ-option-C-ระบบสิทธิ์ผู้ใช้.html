@@ -1,0 +1,134 @@
+<title>คู่มือระบบสิทธิ์ผู้ใช้</title>
+<style>
+  :root{
+    --bg:#f4f6fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
+    --blue:#2563eb; --blue-soft:#eff4ff; --green:#15803d; --green-soft:#e9f7ef;
+    --amber:#b45309; --amber-soft:#fef6e7; --purple:#7c3aed; --red:#dc2626;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:"Segoe UI",Tahoma,system-ui,sans-serif;line-height:1.6;margin:0;padding:24px}
+  .wrap{max-width:900px;margin:0 auto}
+  h1{font-size:26px;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 24px}
+  h2{font-size:19px;margin:32px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--blue);display:inline-block}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .steps{counter-reset:s;list-style:none;padding:0;margin:0}
+  .steps li{counter-increment:s;position:relative;padding:8px 0 8px 40px;border-bottom:1px dashed var(--line)}
+  .steps li:last-child{border-bottom:0}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:8px;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;text-align:center;line-height:26px;font-weight:700;font-size:13px}
+  .mock{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0;font-size:13px}
+  .mock .bar{background:#111827;color:#fff;padding:8px 12px;font-weight:600;display:flex;justify-content:space-between}
+  .mock .body{padding:12px;background:#fbfcfe}
+  .row{display:flex;align-items:center;gap:8px;padding:7px 8px;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:0}
+  .grow{flex:1}
+  .btn{border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;border:1px solid transparent;white-space:nowrap}
+  .btn.b{background:var(--blue-soft);color:var(--blue);border-color:#cfe0ff}
+  .btn.g{background:var(--green-soft);color:var(--green)}
+  .btn.r{background:#fdeaea;color:var(--red)}
+  .btn.o{background:var(--amber-soft);color:var(--amber)}
+  .tag{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:600}
+  .tag.super{background:#efe7fd;color:var(--purple)}
+  .chk{display:flex;align-items:center;gap:6px;padding:4px 0}
+  .box{width:16px;height:16px;border:2px solid var(--blue);border-radius:4px;display:inline-block;position:relative;flex:none}
+  .box.on{background:var(--blue)}
+  .box.on::after{content:"✓";color:#fff;font-size:11px;position:absolute;left:2px;top:-3px}
+  .box.role{background:#c9b8f2;border-color:#c9b8f2}
+  .box.role::after{content:"▲";color:#4c1d95;font-size:9px;position:absolute;left:3px;top:0}
+  .lock{color:var(--muted);font-size:11px}
+  .grid-head,.grid-row{display:grid;grid-template-columns:130px repeat(4,1fr);font-size:12px}
+  .grid-head div,.grid-row div{padding:6px 8px;border:1px solid var(--line);text-align:center}
+  .grid-head div:first-child,.grid-row div:first-child{text-align:left;font-weight:600;background:#f8fafc}
+  .dot{font-size:14px}
+  .own{color:var(--blue)} .frole{color:var(--purple)} .sa{color:#9ca3af}
+  .note{background:var(--blue-soft);border-left:4px solid var(--blue);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13.5px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:8px}
+  .pill{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600;background:var(--blue-soft);color:var(--blue)}
+  .tiers{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .tier{flex:1;min-width:150px;border:1px solid var(--line);border-radius:10px;padding:12px;background:#fbfcfe}
+  .tier.pick{border-color:var(--purple);box-shadow:0 0 0 2px #efe7fd}
+  .tier .price{font-size:20px;font-weight:800;color:var(--purple)}
+</style>
+
+<div class="wrap">
+  <h1>ระบบสิทธิ์ผู้ใช้งาน (User Permission System)</h1>
+  <p class="sub">SOM SCHEDULE — คู่มือการใช้งานฉบับย่อ · Option C (กำหนดสิทธิ์เองรายคนเต็มรูปแบบ)</p>
+
+  <div class="note"><b>ระบบนี้ทำอะไร:</b> เดิมทุกคนใช้ login เดียวร่วมกัน — เห็นทุกเมนู แก้ได้ทุกอย่าง และระบบไม่รู้ว่าใครทำอะไร · ระบบใหม่ให้ <b>พนักงานแต่ละคนมี user ของตัวเอง</b> และ <b>ผู้ดูแลสูงสุด (Super Admin)</b> กำหนดได้ว่าใครเห็นเมนูไหน ทำอะไรได้บ้าง · ทุกการกระทำถูกบันทึกว่า “ใครทำ”</div>
+
+  <h2>ภาพรวม 3 หน้าจอ</h2>
+
+  <div class="card">
+    <b>1) หน้า Users — จัดการพนักงาน</b>
+    <p style="margin:6px 0;color:var(--muted);font-size:13.5px">สร้าง user, ตั้งรหัส, ปิด/เปิดการใช้งาน, กำหนด Role และติ๊กสิทธิ์รายคน</p>
+    <div class="mock">
+      <div class="bar"><span>SOM SCHEDULE · Users</span><span>+ เพิ่มผู้ใช้</span></div>
+      <div class="body">
+        <div class="row"><span class="grow"><b>admin</b> <span class="tag super">Super Admin</span></span><span style="color:var(--muted);font-size:12px">(คุณ)</span></div>
+        <div class="row"><span class="grow">ครูเอ๋ <span style="color:var(--muted);font-size:12px">· Role: หน้าร้าน</span></span><span class="btn b">แก้สิทธิ์</span><span class="btn o">รีเซ็ตรหัส</span><span class="btn r">ปิดใช้งาน</span></div>
+        <div class="row"><span class="grow">แอดมินบี <span style="color:var(--muted);font-size:12px">· Role: จองอย่างเดียว</span></span><span class="btn b">แก้สิทธิ์</span><span class="btn o">รีเซ็ตรหัส</span><span class="btn r">ปิดใช้งาน</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <b>2) หน้า Roles — สร้างชุดสิทธิ์ (Role)</b>
+    <p style="margin:6px 0;color:var(--muted);font-size:13.5px">Role คือ “ชุดสิทธิ์สำเร็จรูป” ตั้งครั้งเดียว เอาไปแปะให้พนักงานได้หลายคน · ติ๊กได้ทั้งระดับเมนู และระดับการกระทำ</p>
+    <div class="mock">
+      <div class="bar"><span>สร้าง Role: “หน้าร้าน”</span><span>บันทึก</span></div>
+      <div class="body" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div style="font-weight:600;margin-bottom:4px">เมนูที่เห็น</div>
+          <div class="chk"><span class="box on"></span> ตารางเรียน (Calendar)</div>
+          <div class="chk"><span class="box on"></span> การจอง (Bookings)</div>
+          <div class="chk"><span class="box"></span> รายงาน (Reports)</div>
+          <div class="chk"><span class="box"></span> ตั้งค่า (Settings)</div>
+        </div>
+        <div>
+          <div style="font-weight:600;margin-bottom:4px">สิ่งที่ทำได้</div>
+          <div class="chk"><span class="box on"></span> จองคาบเรียน</div>
+          <div class="chk"><span class="box on"></span> เช็คอิน / เปลี่ยนสถานะ</div>
+          <div class="chk"><span class="box"></span> ให้ส่วนลด</div>
+          <div class="chk"><span class="box"></span> ยกเว้นกฎแจ้งลาล่วงหน้า</div>
+        </div>
+      </div>
+    </div>
+    <div class="note">ติ๊ก <b>เมนู</b> = คนนั้นเห็นหน้านั้น · ติ๊ก <b>การกระทำ</b> = แก้/ทำรายการได้ · ถ้าให้เห็นเมนูแต่ไม่ติ๊กการกระทำ = <b>ดูได้อย่างเดียว แก้ไม่ได้</b></div>
+  </div>
+
+  <div class="card">
+    <b>3) หน้า Matrix — ดูภาพรวมสิทธิ์ทุกคน</b>
+    <p style="margin:6px 0;color:var(--muted);font-size:13.5px">เห็นในตารางเดียวว่าใครมีสิทธิ์อะไร — มาจาก Role (▲) หรือติ๊กเองรายคน (●)</p>
+    <div class="mock">
+      <div class="bar"><span>Matrix สิทธิ์</span><span>กรองตาม Role</span></div>
+      <div class="body">
+        <div class="grid-head"><div>ผู้ใช้</div><div>ตาราง</div><div>จอง</div><div>ส่วนลด</div><div>รายงาน</div></div>
+        <div class="grid-row"><div>admin <span class="tag super" style="font-size:9px">SA</span></div><div><span class="dot sa">●</span></div><div><span class="dot sa">●</span></div><div><span class="dot sa">●</span></div><div><span class="dot sa">●</span></div></div>
+        <div class="grid-row"><div>ครูเอ๋</div><div><span class="dot frole">▲</span></div><div><span class="dot frole">▲</span></div><div></div><div><span class="dot own">●</span></div></div>
+        <div class="grid-row"><div>แอดมินบี</div><div></div><div><span class="dot frole">▲</span></div><div></div><div></div></div>
+        <div class="legend"><span><span class="frole">▲</span> มาจาก Role</span><span><span class="own">●</span> ติ๊กเองรายคน</span><span><span class="sa">●</span> Super Admin (มีทุกสิทธิ์)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>เริ่มใช้งาน — 4 ขั้น</h2>
+  <div class="card">
+    <ol class="steps">
+      <li><b>เข้าระบบด้วย Super Admin</b> — ผู้ดูแลสูงสุดคนแรก (ตั้งไว้ตอนติดตั้ง) จะเห็นเมนู <b>Users</b> และ <b>Roles</b> เพิ่มมา</li>
+      <li><b>สร้าง Role</b> ที่หน้า Roles — เช่น “หน้าร้าน”, “จองอย่างเดียว”, “ดูอย่างเดียว/Support”, “Board” แล้วติ๊กเมนู + การกระทำของแต่ละ Role</li>
+      <li><b>สร้าง user ให้พนักงานแต่ละคน</b> ที่หน้า Users — ตั้ง username + รหัส แล้วเลือก Role ให้</li>
+      <li><b>เสร็จ</b> — พนักงาน login ด้วย user ตัวเอง เห็นเฉพาะเมนู/ปุ่มที่ได้รับสิทธิ์ · อยากปรับใครก็แก้ Role หรือติ๊กเพิ่มรายคน มีผลทันที</li>
+    </ol>
+  </div>
+
+  <h2>เกร็ดการใช้งาน</h2>
+  <div class="card" style="font-size:13.5px">
+    <p>• <b>แก้ Role ทีเดียว มีผลกับทุกคนที่ถือ Role นั้น</b> — ไม่ต้องไล่แก้รายคน</p>
+    <p>• <b>ติ๊กเพิ่มรายคนได้</b> — บางคนต้องการมากกว่า Role ปกติ ติ๊กเสริมเฉพาะคนนั้นได้ (แสดงเป็น ● ของตัวเอง)</p>
+    <p>• <b>ปิดพนักงานที่ลาออก</b> — กด “ปิดใช้งาน” แล้วเขา login ไม่ได้ทันที (ข้อมูล/ประวัติยังอยู่ครบ)</p>
+    <p>• <b>ลบ Role ที่มีคนใช้อยู่ไม่ได้</b> — ระบบเตือนว่ามีกี่คนถืออยู่ ให้ย้ายคนออกก่อน</p>
+    <p>• <b>ทุกการกระทำถูกบันทึกชื่อคนทำ</b> — ตรวจย้อนได้ว่าใครแก้/ลบ/จองอะไร</p>
+  </div>
+
+  <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:28px">SOM SCHEDULE · ระบบสิทธิ์ผู้ใช้ (Option C)</p>
+</div>

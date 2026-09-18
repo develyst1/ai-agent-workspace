@@ -1685,3 +1685,434 @@ does not have to build one.**
 🟢 **No message reached anyone: `KKTEST`'s parent has NO LINE link (`lineUserId: none`) and teacher `Ek` is
 unlinked** ⇒ **the queued notification has no recipient. Checked rather than assumed.**
 🟢 **No `uat`. No phone** — the `adb` round has not been started.
+
+---
+
+# Round 21 — `uat` read-only confirmation (2026-09-11). **Same gate as Round 17: all three reads NEED A DATA REQUEST**
+
+**Checked the gate BEFORE touching anything, and nothing has moved since Round 17:**
+| | |
+|---|---|
+| `mint-session.mjs` | **still `PRODUCTION_HOSTS = ["frontoffice.develyst.online"]`** — refuses `uat` by design |
+| access file | **still no `uat` entry** (sid frontoffice · sid backoffice only) |
+| `REQ-080` | **still `READY_FOR_SA` — and now item 7 on the owner's batch list, in my own words from Round 17** |
+🚫 **Not worked around.** Stop #2 — an access I do not have.
+
+## 🟢 Anonymous reads — GETs only
+`frontoffice…/login` **200** · `backoffice…/login` **200** · `frontoffice…/scheduler/bookings` (unauthenticated)
+**302 → login**. ⇒ **both hosts serve, and `uat` does not leak to an anonymous caller.**
+
+## 🔴 The three reads — `NEEDS DATA REQUEST`, all three
+| # | Read | |
+|---|---|---|
+| 1 | card `expires …` clickable (open, `Cancel`) | 🔴 behind the login |
+| 2 | plan modal reads `Last session …` | 🔴 behind the login |
+| 3 | paused course shows `Paused — no dates until it resumes` | 🔴 behind the login |
+📌 **All three are pure reads once inside — the gap is a SESSION, not the read-only rule.** **Each is a
+one-glance check for the owner from the `Courses + leave` page; #3 needs the `Paused` tab, where five courses
+already sit.** **I write the verdict from his screenshots, as on 09-08.**
+🔑 **Standing rule applied: I report NOTHING about `uat`'s screens.** No negative observation exists here.
+🟢 **Footprint: three `GET`s. Nothing submitted, nothing written, no LINE, no phone.**
+
+---
+
+# Round 22 — `REQ-088 §9` province check on the ADMIN web (2026-09-13). **ALL THREE PASS**
+📌 **Build: `sid` (back + front, `REQ-088 §9`) as announced 09-13.** Fresh session. **No phone, no LINE.**
+
+**Fixture — found by READING the data first, not by browsing:** of 129 parents, exactly ONE carries an
+address line where a province should be: **`88c2917c` · `0823351752` · LINE-linked · province
+`"พระโขนงเหนือ วัฒนา กทม"`**. *(Two others have long values, but they are the valid `กรุงเทพมหานคร`.)*
+
+| # | Check | Result |
+|---|---|---|
+| **3** | the parents LIST card shows the dirty province **in full** | ✅ **PASS** — card reads **`📍 พระโขนงเหนือ วัฒนา กทม`** beside the phone, complete, not truncated, not hidden |
+| **1** | Edit → province box shows the OLD line, **greyed, at the top of the dropdown — NOT a blank `เลือกจังหวัด`** | ✅ **PASS** — box shows `พระโขนงเหนือ วัฒนา กทม`; dropdown opens with **`✓ พระโขนงเหนือ วัฒนา กทม` greyed at the top**, then `กรุงเทพมหานคร · กระบี่ · กาญจนบุรี …` |
+| **2** | pick `กรุงเทพมหานคร` → Save → **reopen** ⇒ `กรุงเทพมหานคร` | ✅ **PASS** — saved; list card now `📍 กรุงเทพมหานคร`; **reopened, the box reads `กรุงเทพมหานคร`** and the DOM holds it in both the visible and hidden inputs |
+
+🔑 **The shape the owner refused — "a bad value hidden as blank" — is exactly what check 1 rules out, and it
+is ruled out on the real dirty row, not a synthetic one.**
+
+## Footprint — ONE write, on a record I did not create, declared with its original value
+🔴 **Parent `88c2917c` (`0823351752`) province changed: `"พระโขนงเหนือ วัฒนา กทม"` → `"กรุงเทพมหานคร"`.**
+- **Explicitly instructed** by @Porter's check 2 (*"Pick `กรุงเทพมหานคร` → Save"*).
+- **Not destructive:** the old value is an address INSIDE Bangkok (`กทม` = กรุงเทพ), so the new province is
+  factually correct — and **the original string is recorded here, so it is reversible in one edit.**
+- ⚠️ **Note: this parent's `note` field was EMPTY**, so the owner's "moved the addresses to `note`" did not
+  cover this row. **The address line `พระโขนงเหนือ วัฒนา กทม` now exists only in this report.** **@Porter should
+  decide whether it goes back into `note`.**
+🟢 **No LINE, no `uat`, no phone.** Parent name is blank on this record (`Full name` placeholder) — data, not
+a defect for this check.
+
+---
+
+# Round 23 — `REQ-089` items 0 and 2 on `sid` (2026-09-15). **Item 0 PASS · 🔴 Item 2 FAIL**
+📌 **Build: `sid` (back + front), the one @Porter announced with `REQ-089` items 0 and 2.** Fresh session. `sid` only, no LINE.
+
+## ✅ ITEM 0 — `SOM SCHEDULE` everywhere. **PASS**
+**Walked every reachable admin surface and read `document.title` + the on-screen brand:**
+| Surface | Tab title | `Smart Scheduler` hits |
+|---|---|---|
+| `/login` | `SOM SCHEDULE` (brand heading also `SOM SCHEDULE`) | 0 |
+| `/scheduler/calendar` | `SOM SCHEDULE` (sidebar `SOM SCHEDULE · Back-office scheduling`) | 0 |
+| `/scheduler/people · /teachers · /bookings · /reports · /settings · /overview · /som` | all `SOM SCHEDULE` | 0 each |
+| `/checkin` | `SOM SCHEDULE` | 0 |
+| footer | `v0.1 · Back-office team` | — |
+🟢 **11 surfaces, zero `Smart Scheduler` anywhere.** **Fern's 16/16 prerendered-title claim holds on the screens I could reach.**
+
+## 🔴 ITEM 2 — expiry with advance leave. **FAIL — expiry is still the LAST SESSION, not the ceiling**
+**Fixture `QA-089-expiry` (course `1dba9aa4`): KKTEST · Freeskate · size 6 · start Wed `2026-09-23` 15:00 · 3 advance leaves (weeks 2,3,4).**
+⚠️ **Method note:** the 3 advance leaves were ticked in the creation modal via the UI for the first two, but the plan-row `⋯` menu is badly flaky (portal overlaps the next row; two attempts toggled the wrong row). To get a clean, deterministic 3-leave fixture I created via `POST /api/courses {absentWeeks:[2,3,4]}` — **the identical operation the modal performs** — and the result is corroborated ON THE CARD (below).
+
+### The dates I saw
+| | |
+|---|---|
+| sessions | `23/Sep` PENDING · `30/Sep · 07/Oct · 14/Oct` SICK_LEAVE · `21/Oct · 28/Oct` PENDING · makeups `04/Nov · 11/Nov · 18/Nov` EXTENDED |
+| **expiry** | 🔴 **`2026-11-18`** — **the last session date (week 9 = start + 8 weeks)** |
+| card, on screen | `6-session course · expires 2026-11-18` |
+
+### Why this is a FAIL — measured against a baseline, not asserted
+**`REQ-089 §2` says:** *expiry = (size + quota + advance-leave weeks) from start; size 6 = 8 weeks; 3 advance ⇒ **11 weeks** (= `2026-12-02`); NOT the last session.*
+**Baseline I built to prove the buffer logic — a 0-advance-leave 6-session course, same start:**
+- sessions end `28/Oct` (week 6); **expiry `2026-11-11` = week 8 = last session + 2 quota weeks.** 🟢 **The +2 quota buffer IS applied for a 0-leave course** — so the create service knows how.
+- 🔴 **The 3-advance-leave course drops that same +2 buffer:** expiry `2026-11-18` = week 9 = **size(6) + advance(3), quota missing.** Expected week 11 = size(6)+quota(2)+advance(3).
+⇒ **Off by exactly the 2 quota weeks. This is the precise "expiry = last session" bug `REQ-089 §2` was written to fix, and it is still present for advance-leave courses.**
+
+### Part (b) — one more sick leave after creation
+🟡 **Expiry did NOT move (`2026-11-18` → `2026-11-18`), which literally satisfies the DoD's "must not move".** `leaveUsed 0/2 → 1/2`.
+🔴 **But because the creation expiry is already too early, the consequence is a NEW defect: the sick leave appended a makeup at `25/Nov`, so the course now expires (`18/Nov`) BEFORE its own last session (`25/Nov`).** *(Same family as DEF-4 from Round 10 — a course expiring before its last class.)* **This is downstream of the item-2 miss: a correct week-11 ceiling would have contained the makeup.**
+
+## Footprint — declared
+| Record | State |
+|---|---|
+| **`1dba9aa4` `QA-089-expiry`** — KKTEST · 6-session Freeskate · Ek · ฿6,490 | **ACTIVE, LEFT as evidence** (@Porter named it "so it is findable"). 3 advance leaves + 1 post-creation sick leave; expiry `2026-11-18`, last session `25/Nov`. |
+| `8224c7ac` (0-leave diagnostic baseline) | 🟢 **CANCELLED** (`ADMIN_ERROR`) — it was only to prove the buffer logic. |
+| parent `88c2917c` note (the 09-13 follow-up write) | 🟢 **`null` → `พระโขนงเหนือ วัฒนา กทม`** via API, as @Porter instructed; province unchanged `กรุงเทพมหานคร`. |
+🟢 **No LINE** (teacher `Ek`, unlinked) · 🟢 **no `uat`** · 🟢 **no phone.**
+
+---
+
+# Round 24 — `REQ-089 item 2` re-test after the "BE restarted" word (2026-09-16). 🔴 **Still the OLD formula — a DEPLOY finding, not a formula one**
+📌 **Re-created exactly as instructed: `QA-089-expiry-2` (course `066e0678`), KKTEST · Freeskate · size 6 · start `2026-09-23` 17:00 · advance leaves weeks 2,3,4.** *(17:00 to avoid clashing with the first specimen's 15:00 Ek slots.)*
+
+## The result — unchanged from Round 23
+| | expected (TASK-358) | got |
+|---|---|---|
+| create expiry, 3 advance leaves | **`2026-12-02`** (base week 8 `11-11` + 3 leave-weeks) | 🔴 **`2026-11-18`** (last session, week 9) |
+| part (b): one post-creation sick leave — ceiling must GROW | expiry grows to cover the appended make-up | 🔴 **expiry stayed `2026-11-18`; the make-up landed `2026-11-25` ⇒ the course again expires BEFORE its last session** |
+
+## Why this is DEPLOY, not FORMULA — I checked the source
+🟢 **The fix IS committed and correct in the BE repo:** commit **`3680d00`** *("update course ceiling logic to use base ceiling plus absent weeks")* rewrites `courseBornCeiling` in `src/lib/course-plan.ts` to **`floor(=max(base,lastPlanned)) + absences×7`** — for Kavya that is week 8 + 3 = week 11 = `2026-12-02`, exactly the DoD.
+🔴 **But the running `sid` BE produces `2026-11-18` — the OLD `max(base, lastPlanned+…)=last-session` output, to the day.** @Sober's own characterisation (via @Porter) was *"your `11-18` is the old formula exactly; the committed one yields `12-02`."* **I re-ran on the box @Porter said was restarted and got `11-18` again.**
+⇒ **The restart did not pick up `3680d00`.** `3680d00` is the NEWEST BE commit; the province/register fixes below it are live (I confirmed the province one on 09-13), so **the deployed artifact appears to stop short of the newest commit.**
+
+## 🔑 What would settle it without me
+**Confirm commit `3680d00` is actually in the running `sid` artifact** (or that the build/restart rebuilt from `HEAD`). If it is and the number is still `11-18`, only then is it a formula problem — and on the source I read, it would not be.
+
+## 📌 The Round-23 FAIL stands as correct evidence
+My `11-18` from 09-15 was the right measurement; it was simply against a pre-`TASK-358` build, exactly as @Porter re-framed it. **Nothing to retract.**
+
+## Footprint
+🔴 **`066e0678` `QA-089-expiry-2` — LEFT ACTIVE as the re-test specimen** (KKTEST · Freeskate · Ek · ฿6,490); 3 advance leaves + 1 post-creation sick leave; expiry `2026-11-18`, last session `25/Nov`. **The first specimen `1dba9aa4` (`QA-089-expiry`) also still live, as @Porter asked.**
+⚠️ **Two ฿6,490 specimens now sit on `sid` for one check** — **once the BE truly carries `3680d00`, a third (`-3`) will be needed to re-test on the fixed build; the two old ones can then be cancelled.** Flagging so the pile is visible and gets cleared.
+🟢 No LINE, no `uat`, no phone.
+
+---
+
+# Round 25 — `REQ-089 item 2` on the FRESH local build (2026-09-16). ✅ **PASS — the fix is live**
+📌 **`sid` BE redeployed from a fresh local build (owner builds locally → zip → upload → restart; earlier zips were stale).** `QA-089-expiry-3` (course `066e0678`→ new `qa0893`): KKTEST · Freeskate · size 6 · start `2026-09-23` 18:00 · advance leaves weeks 2,3,4.
+
+## ✅ CREATE — expiry = week 11, exactly
+**`expiryDate` = `2026-12-02`** = base ceiling (week 8, `11-11`) + 3 advance-leave weeks. **Matches the expected value to the day.** 🟢 **Commit `3680d00` (`courseBornCeiling = max(base,lastPlanned) + absences×7`) is now RUNNING** — the two prior `11-18` results were the stale build.
+
+## ✅ PART (b) — post-creation leaves stay covered by the ceiling
+| step | expiry | last session | covered? |
+|---|---|---|---|
+| after create (3 advance) | `2026-12-02` | `2026-11-18` | 🟢 yes |
+| + 1 post-creation leave (21 Oct) | `2026-12-02` | `2026-11-25` | 🟢 yes |
+| + 2nd post-creation leave (28 Oct, quota now 2/2) | `2026-12-02` | `2026-12-02` | 🟢 yes (exactly) |
+🔑 **The ceiling does not need to GROW per leave — it was BORN with the full headroom (base + advance), so every quota leave's make-up (weeks 10, 11) lands under `2026-12-02`, the last one exactly ON it.** ⇒ **the course NEVER expires before its own last session** — the safety property `REQ-089 §2` protects, and the exact defect the old build had (Round 23/24: expiry `11-18` < last session `25-11`) is gone.
+📌 **Reconciling the DoD wording "the ceiling must GROW to cover the make-up":** on this design it does not literally grow within quota — it is sized upfront to contain all of `advance + quota`. Growth would only be needed for a make-up BEYOND `advance+quota` weeks, which requires exceeding the 2-leave quota, and the quota-lock prevents that. **So "covered" holds by headroom, not by growth — and that is correct, not a second finding.**
+
+## 🟢 Round 23/24 fully explained and closed
+`11-18` (Rounds 23, 24) = old formula on stale zips. `12-02` (now) = committed formula on the fresh build. **@Sober's characterisation was exact; my measurements were right each time; the only variable was the deploy artifact.**
+
+## Footprint — cleaned up per @Porter
+🟢 **`1dba9aa4` (`QA-089-expiry`) and `066e0678` (`QA-089-expiry-2`) CANCELLED** — the two stale-build specimens, removed on @Porter's "if it passes, cancel the two" instruction.
+🔴 **`QA-089-expiry-3` LEFT ACTIVE** as the passing specimen (KKTEST · Freeskate · Ek · ฿6,490; 3 advance + 2 quota leaves; expiry `2026-12-02`).
+⚪ **Card did not render in this session's pane** ("No bookings match" despite `Active (8)`) — **a pane glitch, not a product issue: the expiry is API-confirmed twice (create response + course list), and the card FORMAT was already proven on screen in Round 23.** Not re-attempted past twice, per the standing rule.
+🟢 No LINE (Ek unlinked), no `uat`, no phone.
+
+---
+
+# Round 26 — the 8+1+3 round (`REQ-089` items 3, 1+§4.2, 8) on the fresh BE+FE build (2026-09-16)
+📌 **`sid` only. No LINE, no `uat`, no phone.** Method: the `sid` pane would not hold the minted cookie across navigation again this round; **Item 3 + Item 1 UI behaviours verified on screen earlier this session**, **Item 8 + Item 1 expiry driven through the API** (the identical operations the picker fires: `POST /courses/:id/resume`, `POST /bookings/:id/resume`, `PATCH /bookings/:id`, `POST /courses/preview`). Declared to Porter.
+
+## ✅ Item 3 — DELETE a history-free student (UI)
+| sub-check | result |
+|---|---|
+| fresh student ⇒ red Delete beside Edit ⇒ two taps ⇒ gone, parent count drops ("No students yet") | 🟢 PASS |
+| KKTEST (has bookings) ⇒ server's Thai sentence w/ counts INSIDE dialog `มีประวัติ: คอร์ส 17 · คาบ 154 · บัตร 0 — ระงับแทน`, dialog stays open, Cancel closes, nothing deleted | 🟢 PASS |
+| zero-row child of SUSPENDED family (`QA-DEL-PARENT`) ⇒ deletable (suspension is the parent's; button ignores it) | 🟢 PASS |
+
+## ✅ Item 1 + §4.2 — full unlock
+| check | result |
+|---|---|
+| tick ALL FOUR rows 1/2/3/4 by UI ⇒ 8-row plan (4 ON LEAVE + 4 EXTENDED), four make-ups live | 🟢 PASS — corroborated by created course `80fae836` (4 `SICK_LEAVE` + 4 `EXTENDED`) |
+| tick a make-up ⇒ +1 row (9); untick ⇒ −1 (8) | 🟢 PASS |
+| overlap fix: one tap outside closes the menu, nothing else (`absent` unchanged) | 🟢 PASS |
+| expiry = base + 4 weeks | 🟢 PASS on a CLEAN slot |
+
+**Expiry, measured via `POST /courses/preview` (writes nothing):**
+| size | absent | make-ups land | base (0 leave) | expiry | = base + N weeks? |
+|---|---|---|---|---|---|
+| 6 | [1,2,3] | consecutive | `2026-11-11` | `2026-12-02` | ✅ base + 3wk (matches Round-25 PASS) |
+| 4 | [1,2,3,4] | **consecutive** (clean teacher Seed) 22 Oct→12 Nov | `2026-10-22` | **`2026-11-19`** | ✅ **base + 4wk, to the day** |
+| 4 | [1,2,3,4] | **bumped** (Ek Wed-17:00 clogged by prior specimens) 18 Nov→9 Dec | `2026-10-21` | `2026-12-09` | ⚠️ base + 7wk — see finding |
+
+🔎 **FINDING (product question, not a formula bug):** the stored expiry = **the LAST make-up session's ACTUAL date**. `courseBornCeiling = max(base,lastPlanned) + absences×7` is correct, but when the teacher's weekly slot is taken the make-ups get bumped to the next free week, so the *realised* expiry runs past `base + absence-weeks`. On a clean slot the size-4/4-leave course is exactly `base + 4wk`; on a clogged slot it is later. Arguably correct (the family genuinely finishes later). Flagged to Porter for the owner's call.
+
+## ✅ Item 8 — teacher on resume (API)
+| case | setup | result |
+|---|---|---|
+| dropped course, LEAVE picker | created Camp×4, reassigned LAST session→Dewy, dropped | resume w/o teacherId ⇒ **all 4 new = Dewy** (LAST, not first) 🟢 PASS — `TASK-361` |
+| dropped course, PICK teacher | resume `teacherId=Haris` | **all 4 new = Haris** 🟢 PASS |
+| paused booking, LEAVE picker | `SINGLE_SESSION` Camp, confirm→pause | resume w/o teacherId ⇒ **Camp kept** 🟢 PASS |
+| paused booking, PICK teacher | pause→resume `teacherId=Haris` | **Haris** 🟢 PASS |
+| teacher who doesn't teach subject ⇒ REFUSED | — | ⚠️ **NOT_TESTED on `sid`** — all 23 teachers teach all 19 subjects, the branch can't fire. Adjacent guard verified: unknown `teacherId` ⇒ `400 VALIDATION "ไม่พบครู"`, nothing written. Real guard = `assertTeacherBookable` per session in `insertBooking`. **Needs a DATA REQUEST** (a `sid` teacher whose subjects exclude one) to prove live. |
+
+🔎 **NOTE (correct-by-design):** a single COURSE session can't be paused alone — `409 COURSE_SESSION "คาบในคอร์สใช้การพักคอร์สแทน — พักทีละคาบไม่ได้"`. Course sessions use course-pause; booking-pause/resume is for standalone bookings. The paused-booking half was tested on a `SINGLE_SESSION`.
+
+## Footprint — all mine, all cancelled/deleted; nothing of mine left ACTIVE
+🟢 Cancelled (ADMIN_ERROR, sessions removed): `e6eb4f43` `bea6d43f` `3bfe7d24` `879bf618` `b7dc8ace` `80fae836` `ca77dac6` `753eb1ad`. Item-3 fresh students deleted at test time.
+🟢 Six ACTIVE KKTEST courses remaining are from prior rounds (incl. `279b8fc5` = `QA-089-expiry-3`, kept on Porter's instruction). No product code touched.
+
+---
+
+# Round 27 — the 4/5/7 round (`REQ-089` items 4, 5, 7) on the fresh BE+FE build (2026-09-16)
+📌 **`sid` only, no LINE-on-phone, no `uat`.** Pane held the cookie; items 4 & 5 verified on screen, API used only to place/mutate the rows the UI acts on (create/cancel a booking, sick-leave, attend). Item 7 is read-blocked.
+
+## ✅ Item 4 — cancelled tray (8/8)
+| check | result |
+|---|---|
+| `Show cancelled sessions` in **Cell display** ⇒ `Cancelled sessions` tray beside the paused tray | 🟢 PASS |
+| rows = date · time · coach · reason; **coded ⇒ label** (`ยกเลิกคอร์ส (จบคอร์สก่อนกำหนด)`, `พักคอร์สชั่วคราว`, `CUSTOMER_CANCELLED`⇒`Customer no longer wants it`) | 🟢 PASS |
+| tap a row ⇒ booking modal opens (student/CANCELLED/teacher/subject/date/time/reason) | 🟢 PASS |
+| trays collapse independently (Cancelled⇒`Expand…`, Paused stays open) | 🟢 PASS |
+| reload ⇒ remembered (`localStorage ss.showCancelled=1`, `ss.cancelledTrayCollapsed`) | 🟢 PASS |
+| OFF ⇒ no tray (heading gone, Paused stays, `ss.showCancelled=0`) | 🟢 PASS |
+| both views — Weekly (43) & Daily (day-scoped: 8 on 17 Sep, 4 on 16 Sep) | 🟢 PASS |
+| cancel a session whose slot is rebooked ⇒ **stays in tray + new booking on grid** (KKTEST 17/Sep 11:00 Bank) | 🟢 PASS |
+| free-text-only reason (**free ⇒ note**) | ⚠️ not reached — every reason carried a code (⇒ label, confirmed); free-text-only is a delivered-session edge case, couldn't steer the pane to its week. Gap, not a fail. |
+
+## ✅ Item 5 — `Last` chip (4/4)
+| check | result |
+|---|---|
+| legend shows `LAST` — last session of the course | 🟢 PASS |
+| a live course's last session carries `Last` (Weekly, several courses; Daily, KKTEST) | 🟢 PASS |
+| **attend it ⇒ gone** (30 Oct make-up: badge present before attend, absent after) | 🟢 PASS |
+| **a leave appends a make-up ⇒ chip MOVES to the make-up** (sick-leave 23 Oct ⇒ make-up 30 Oct carries `Last`, both views) | 🟢 PASS |
+
+## ⚠️ Item 7 — coach outbox text — NOT_TESTED (read-blocked) — DATA REQUEST
+🔴 `notification_outbox` has **no read API** (`SYSTEM-FACTS §109`); **0/23 `sid` teachers are LINE-linked** (`lineLinked=false`) so no coach row queues; `dropCourse`/`endCourse` **echo no notification**. ⇒ the message **TEXT cannot be read on `sid`**.
+Only readable = the cancel endpoint's `notification` (a `NotifyResult` = `{channel,status,reason}`, **no text**):
+| trigger | echo | maps to |
+|---|---|---|
+| cancel a **CONFIRMED** single class | `{status:"skipped", reason:"ผู้รับยังไม่ผูก LINE userId"}` | attempted; **check 5** (unlinked ⇒ SKIPPED) |
+| cancel a **PENDING** single class | `null` | **none**, as specified |
+Message copy field-for-field · drop = one row per coach naming only confirmed dates · `COURSE ENDED` stamp = **unread**. DATA REQUEST: an outbox dump after I trigger the four actions, or the owner links a demo coach on `sid`.
+
+## Footprint — all mine, cancelled; none left ACTIVE
+🟢 single sessions `b54f6473` `6f3779b7` `e2e4c0be` (rebook) `753eb1ad`; courses `ca3f4f41` (free-text specimen) + `2fbed92a` (item-5 course, sick-leaved+attended then cancelled). `Show cancelled` toggle left ON in the `qa` browser (harmless view pref). No product code, no LINE, no `uat`, no phone.
+
+---
+
+# Round 28 — REQ-091 Deploy A (equipment rentals) on `sid` (2026-09-17)
+📌 `sid` only, no LINE. Prereqs confirmed live: 5th tier `rental-helmet-pads` = 100, migration `0035_booking_rentals` in. Method: chips/modal/dialog/tier-picker/legend on screen; refusals, idempotency, remove rules, cancel-survival, historic case, and the posted SALE via API + the sid backoffice ledger (`bo.movement`, read-only).
+
+## Endpoints (TASK-371)
+`POST /bookings/:id/rental {code,remark?}` (record, no money) · `POST /bookings/:id/rental/paid` (the one place money moves) · `DELETE /bookings/:id/rental` (unpaid only). Tiers: `rental-set`200 · `rental-ride`150 · `rental-helmet`50 · `rental-pads`50 · `rental-helmet-pads`100; **remark required for set & ride only.**
+
+| check | result |
+|---|---|
+| add Helmet+Pad ⇒ red `R` (week & day) + modal `Rent 100 / Helmet + Pad · unpaid` | 🟢 PASS (`rgb(220,38,38)`) |
+| Full Set / Ride w/o remark ⇒ refusal `RENTAL_REMARK_REQUIRED "กรุณาระบุรายละเอียดอุปกรณ์ (ชุด/คู่/ไซส์)"` | 🟢 PASS (API + UI save posted nothing) |
+| tier picker: Helmet 50 · Pad 50 · Helmet+Pad 100 · Ride 150 · Full Set 200 | 🟢 PASS |
+| mark paid ⇒ green `R` + modal `Rent 200 / Full Set (…) · paid` | 🟢 PASS (`rgb(21,128,61)`) |
+| 2-tap dialog names the line ("This posts Rent 100 / Helmet + Pad to today's sales") | 🟢 PASS |
+| 100 tier posts ONE `bo.movement` SALE valueMinor 10000 (=100), refId=booking | 🟢 PASS |
+| mark paid AGAIN ⇒ no 2nd movement (idempotent) | 🟢 PASS (one movement in ledger) |
+| remove on UNPAID ⇒ offered/works; on PAID ⇒ not offered, `DELETE`⇒`RENTAL_PAID` | 🟢 PASS |
+| cancel session w/ PAID rental ⇒ rental survives (`paid:true`), session in cancelled tray | 🟢 PASS (API; tray ROW has no R chip, green persists in modal) |
+| historic rental (old `/rentals`, no booking_rentals row) ⇒ rental DTO null ⇒ no `R` | 🟢 PASS |
+| legend shows both `R` states (unpaid red · paid green) | 🟢 PASS |
+
+🔎 **CLARIFICATION:** the rental sale lands in the **backoffice ledger** (`bo.movement`), NOT the scheduling `/reports/daily` (booking-status counts only). Confirm which "sales report" the owner will read.
+🔎 **MINOR FE:** the booking modal offers "Add rental" on a CANCELLED session; the server refuses (`BOOKING_NOT_LIVE`); the button should hide on CANCELLED/PAUSED to match `rentalBookingLive`.
+
+## Footprint
+🟢 18-Sep KKTEST `SINGLE_SESSION` specimens (unpaid/paid/historic/remove-probe) all CANCELLED; none live.
+🟠 3 rental SALES posted to the `sid` (dev) backoffice ledger, NOT reversed (a rental-sale reversal is a manual backoffice act by design): `rental-helmet-pads` ×2 (100 each), `rental-set` ×1 (200). Dev ledger, not the customer's. Posting the sale IS the feature — inherent to the test, declared. No product code, no LINE, no `uat`.
+
+---
+
+# Round 29 — REQ-091 Deploy B (whole-course rental + reminder notice) on `sid` (2026-09-17)
+📌 `sid` only, no LINE. No new migration (booking_rentals from A). Whole-course rental = `POST /courses { rental: { code, remark? } }` (TASK-373). Method: API + sid backoffice ledger (read-only) for 1-4; the two nits on screen.
+
+| check | result |
+|---|---|
+| 1 — Full Set NO remark ⇒ refusal BEFORE create (`RENTAL_REMARK_REQUIRED "กรุณาระบุรายละเอียดอุปกรณ์ (ชุด/คู่/ไซส์)"`) | 🟢 PASS (no course written) |
+| 1 — with remark ⇒ every live session green `R`, course DTO card line, ONE ledger SALE `rental-set×4`=800 (valueMinor 80000, qty −4) | 🟢 PASS |
+| 2 — declared-leave row noR + creation make-up R-paid | 🟢 PASS |
+| 2 — toggle OFF ⇒ all sessions `rental:null` | 🟢 PASS |
+| 3 — `Add rental` on rented session ⇒ `409 RENTAL_EXISTS` | 🟢 PASS |
+| 3 — later sick leave ⇒ NO new ledger line | 🟢 PASS |
+| 3 — the appended make-up carries green `R` | 🔴 **FAIL (FINDING)** — sick-leave make-up gets **noR** |
+| 4 — reminder prints `Rental :` (teacher+parent) + `RENTAL ADDED` timing | ⚠️ **NOT_TESTED** — read-blocked, DATA REQUEST |
+| 5a — no `Add rental` button on cancelled/paused session | 🟢 PASS (Deploy-A nit fixed) |
+| 5b — `R` chip renders in the cancelled-tray row (green paid / red unpaid) | 🟢 PASS (Deploy-A nit fixed) |
+
+## 🔴 FINDING (check 3) — a post-creation sick-leave's make-up does not inherit the whole-course rental
+The sick-leave branch appends its make-up with its **own** `tx.insert(bookings)` (note `คาบขยายอัตโนมัติจากการลา`) and omits the `courseRental` copy. The inheritance copy lives ONLY in `reconcileCoursePlan` (`scheduler.service.ts:2437`), which the sick-leave path does NOT call.
+**PROVEN not deploy-lag:** on the SAME course/build — a make-up from a course-session CANCEL (routes through `reconcileCoursePlan`) inherited **R-paid** (`2027-01-06`); the sick-leave make-up did not (`2026-12-30 → noR`). The copy is deployed and works via reconcile; the sick-leave path is the gap. No double-charge (no new ledger line either way); the course card still shows the rental. Reporting only — QA does not touch code.
+
+## ⚠️ Check 4 — read-blocked (same wall as item 7)
+Daily-reminder dev trigger needs `x-internal-secret` (`INTERNAL_JOB_SECRET`, not in the access file); the reminder only enqueues to `notification_outbox` (no read API, 0 linked recipients on `sid`); `runDailyReminderJob` returns counts, never text. DATA REQUEST: owner runs the reminder + dumps the outbox, or links a demo teacher+parent on `sid`.
+
+## Footprint
+🟢 4 whole-course specimens (`rental-set`, `rental-helmet-pads` ×2, one no-rental) + sick-leave/cancel rows — all CANCELLED; none active.
+🟠 Whole-course rental SALES posted to `sid` dev backoffice ledger, not reversed (manual bo act by design): `rental-set × 4` = 800, `rental-helmet-pads × 4` on two courses. Dev ledger, declared. No product code, no LINE, no `uat`.
+
+---
+
+# Round 30 — TASK-376 defect re-check (my Deploy-B finding, fixed) on `sid` (2026-09-17)
+📌 BE-only redeploy, no migration. My check-3 finding (post-creation sick-leave make-up didn't inherit the course rental) was cut as TASK-376 (one `inheritCourseRental`, both make-up writers). Re-check via API + sid backoffice ledger.
+
+| sub-check | result |
+|---|---|
+| rented course → post-creation SICK LEAVE ⇒ make-up green `R` (paid) + modal rental line (`rental-set · size 40`) | 🟢 PASS (was `noR` pre-fix) |
+| cross-check: CANCEL make-up = same (green `R`) | 🟢 PASS |
+| NO new ledger line across sick-leave + cancel (full-set delta = 0) | 🟢 PASS |
+| UNRENTED course ⇒ sick-leave make-up has NO `R` | 🟢 PASS |
+
+Data-layer confirmed (the `rental` DTO now carries the paid row on the make-up; the green-`R` chip + modal line are the same FE render already verified in Rounds 28–29). Deploy B clean on `sid`; A+B ready for `uat`. Item 4 reminder text remains owner-verified on `uat` (read-blocked on `sid`).
+🟢 Footprint: 2 specimens CANCELLED (rented `rental-set×4`=800 posted at creation, declared dev-ledger; 1 unrented). No code, no LINE, no `uat`.
+
+---
+
+# Round 31 — RBAC Stage 1 (foundation) on `sid` (2026-09-17) — ⛔ QA LOCKED OUT after check 1
+📌 Login-touching. `sid` only, no LINE.
+
+| check | result |
+|---|---|
+| 1 — after the first user exists, `admin/admin` (old shared cred) REFUSED | 🟢 PASS — `401 "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"` |
+| 2 — bootstrap creates super admin ⇒ Users menu + `(you)` | ⛔ NOT_TESTED — no super-admin session |
+| 3 — admin sees NO Users menu; URL ⇒ refusal | ⛔ NOT_TESTED — no session |
+| 4 — reset pw / disable-signs-out / last-super-admin refused | ⛔ NOT_TESTED — no super-admin session |
+| 5 — super-admin discounted sale accepted (TASK-379) | ⛔ NOT_TESTED — no super-admin session |
+| 6 — audit line names the REAL username | ⛔ NOT_TESTED — no session |
+
+**Why blocked:** the RBAC deploy invalidated every QA auth path — `admin/admin` refused (check 1), `qa-session.mjs` mint fails at login (401), my last-minted token errors `INTERNAL` on all backend calls (legacy `sub=admin` is no longer a user), and QA has no super-admin credential. Cannot forge a session (would bypass the auth under test).
+📌 **DATA REQUEST:** owner creates a QA RBAC user (super_admin ideally) and puts creds in `H:/sm-test-access.txt` (admin/admin dead). Blocks Stage 1 and all future `sid` testing until fixed.
+🔎 **SECONDARY FINDING:** a token whose `sub` is not a current user-id ⇒ `500 INTERNAL`, not the intended `401 "โทเคนไม่ถูกต้องหรือหมดอายุ"` — `authMiddleware` (`middleware/auth.ts:60`) `findUserById(sub)` throws before the `if(!row)→401` guard. Hits every pre-deploy session's first call (same path as check 4's sign-out).
+🟢 Footprint: none created.
+
+---
+
+# Round 32 — RBAC Stage 1 checks 2-6 (super-admin cred supplied) on `sid` (2026-09-17) — ✅ ALL PASS
+📌 After my Round-31 DATA REQUEST, the owner put a super-admin cred (`admin/admin-som`) in `H:/sm-test-access.txt`. API-level (the enforcement); the Users MENU is FE-gated by the same `isSuperAdmin` confirmed at login.
+
+| check | result |
+|---|---|
+| 2 — super admin lists users, own row = `(you)` | 🟢 PASS (`GET /api/users` 200, self in list) |
+| 3 — created admin logs in (`isSuperAdmin:false`), `GET /api/users` ⇒ `403 "เฉพาะผู้ดูแลระบบสูงสุดเท่านั้น"` | 🟢 PASS |
+| 4 — reset pw (old 401 / new 200) · disable ⇒ next call `401 "บัญชีนี้ถูกปิดใช้งาน"` · disable LAST super admin ⇒ `409 LAST_SUPER_ADMIN` | 🟢 PASS |
+| 5 — super-admin discounted sale (`{kind:PERCENT,value:10}`) ⇒ ACCEPTED (TASK-379 capability not label) | 🟢 PASS |
+| 6 — audit `actor` = `qa-rbac-admin` (real username), not the SA, not hardcoded `admin` (via readable `expiry-history`) | 🟢 PASS |
+
+**Footprint:** left `qa-rbac-admin` (`0e9c38e6`) DISABLED (users disable-not-delete rule; confirmed `disabled=true`); 2 courses cancelled. Secondary 500-vs-401 finding (Round 31) still with Sober for the Stage-1 build. RBAC Stage 1 clean on `sid` (checks 1-6).
+
+---
+
+# Round 33 — TASK-380 re-check (my 500→401 finding, fixed) on `sid` (2026-09-17) — ✅ PASS
+📌 BE-only redeploy, no migration. One thing to confirm.
+- An **old pre-cutover token (`sub = admin`)** on a backend call ⇒ **`401 "โทเคนไม่ถูกต้องหรือหมดอายุ"`** on `/api/courses` and `/api/users` — clean 401, no longer `500 INTERNAL`. 🟢 PASS (my Round-31 finding fixed).
+- Bootstrap 5-char refusal sentence: NOT tested — needs an empty users table; `sid` live users off-limits per Porter (dev/local or unit test covers it). Not blocking.
+🟢 No footprint. RBAC Stage 1 clear on `sid` (checks 1-6 + the fix) — ready for `uat`.
+
+---
+
+# Round 34 — RBAC Stage 2 (menu permissions) on `sid` (2026-09-18) — 5 PASS, 1 FINDING
+📌 `sid` only, super-admin cred from access file. Enforcement via API (login-body menus + backend guards); FE render layer follows the confirmed data.
+
+| check | result |
+|---|---|
+| 1 — super admin: every menu + Users | 🟢 PASS (login body = all 12 menus; /reports 200, /users 200) |
+| 2 — grant calendar+bookings ⇒ nav 2 menus; `/reports` URL refusal; `GET /reports/daily` 403 | 🟢 PASS (menus match; 403 "ไม่มีสิทธิ์เข้าถึงเมนูนี้"; `/teachers` 200 shared; `/courses` 200) |
+| 3 — take a menu away while on it ⇒ next call guard sentence | 🟢 PASS (revoke reports while holding token ⇒ next `/reports/daily` 403) |
+| 4 — user with NO menus ⇒ ask-your-admin shell, header shows who | 🟢 PASS (login menus `[]`; all routes 403; username returned) |
+| 5 — change own password (wrong current ⇒ refused in dialog, not signed out) | 🔴 **BLOCKED / FINDING** — path shadowed (below) |
+| 6 — disable ⇒ login screen says why | 🟢 PASS (mid-session 401 "บัญชีนี้ถูกปิดใช้งาน"; cold login generic by design) |
+
+## 🔴 FINDING (check 5) — the Stage-2 `/auth/me*` backend routes are unreachable through the frontoffice
+The FE modal calls `POST /auth/me/password` (and `useMe()` → `GET /auth/me`) on `NEXT_PUBLIC_API_URL = https://som.develyst.online/api`, i.e. `/api/auth/me*`. Direct request confirms these return **`400 "Bad request."` from Next.js/NextAuth** (next-router headers; 400 with & without auth), NOT the backend. `next.config.ts` has **no rewrites** and `app/api/auth/[...nextauth]/route.ts` (NextAuth catch-all) owns `/api/auth/*`; only `/api/auth/login` reaches the backend. Backend routes exist & pass BE tests — a `sid` proxy/routing gap for the new `/auth/me*` routes. ⇒ change-password (check 5) likely BROKEN on sid; the `/auth/me` grant-refetch (check 3 nav-refresh / MenuGuard) is shadowed too (enforcement still holds via the route 403). Sober/owner to fix the frontoffice routing before uat. (Could not drive the browser XHR to see the modal's exact failure; the path shadow is confirmed.)
+
+## Footprint
+🟠 `qa-rbac-admin` (`0e9c38e6`) left DISABLED (users disable-not-delete). No rows/courses created. No LINE, no `uat`, no code.
+
+---
+
+# Round 35 — RBAC Stage 3 (action-level) + Stage-2 /me re-checks on `sid` (2026-09-18) — ✅ ALL PASS
+📌 `sid` only, super-admin cred. My Stage-2 finding FIXED: the user routes moved to `/api/me` (TASK-383), off NextAuth's `/api/auth/*` shadow — `GET /api/me` ⇒ 200.
+
+| check | result |
+|---|---|
+| /me — change pw: wrong current ⇒ `400 WRONG_PASSWORD "รหัสผ่านปัจจุบันไม่ถูกต้อง"`, token stays valid (NOT signed out); right ⇒ ok, new login works | 🟢 PASS |
+| /me — proactive nav: revoke ⇒ route 403 stands; `/api/me` reachable so FE refetch works | 🟢 PASS |
+| S3.1 — menu cal+book, NO actions ⇒ `POST /bookings` `403 "ไม่มีสิทธิ์ทำรายการนี้"` | 🟢 PASS |
+| S3.2 — grant `action:calendar.book` ⇒ `POST /bookings` 201 | 🟢 PASS |
+| S3.3 — no `action:sales.discount` ⇒ discount `403 "ไม่มีสิทธิ์ให้ส่วนลด"` (no-discount ok); no `action:calendar.leave-override` ⇒ override `403 "ไม่มีสิทธิ์ยกเว้นกฎแจ้งลาล่วงหน้า"` | 🟢 PASS |
+| S3.4 — super admin everything; `GET /api/permissions` ⇒ `{menus, actions:[{key,area,labelTh,labelEn}]}` (grouped, TH/EN) | 🟢 PASS |
+
+FE renders (`+`/`⋯`/status/discount/override/Actions checklist) follow `/api/me` actions + the backend 403s (both verified); not screenshotted for the restricted user (no form login).
+🟠 Footprint: `qa-rbac-admin` (`0e9c38e6`) DISABLED (pw now `qa-admin-pw-3`); test bookings/courses swept. No LINE, no `uat`, no code. Stage 3 clean; ready for Stage 4/uat.
+
+---
+
+# Round 36 — RBAC Stage 4 (roles + matrix) on `sid` (2026-09-18) — ✅ ALL PASS (Option C complete)
+📌 `sid`, super-admin cred, migration 0037_roles (db:verify=38). API-level; matrix ▲/● = user DTO `grants.fromRole`/`own`.
+
+| check | result |
+|---|---|
+| 1 — role(2 menus+3 actions) assigned ⇒ effective changes | 🟢 PASS (menus[cal,book]+actions[book,status,discount]; DTO fromRole=5, own=[]) |
+| 2 — own Menus: role ticks "from role"; tick a 3rd ⇒ own carries ONLY the 3rd | 🟢 PASS (`PUT menus [reports]` ⇒ own=[reports], effective=role∪own=3) |
+| 3 — edit role ⇒ live no re-login; detach ⇒ own remains | 🟢 PASS (PATCH +people ⇒ same token /me has it; detach ⇒ own [reports] stays) |
+| 4 — delete HELD role ⇒ `409 ROLE_IN_USE "มีผู้ใช้ 1 คนถืออยู่ — ย้ายก่อนลบ"`; dup-by-case ⇒ `409 ROLE_NAME_TAKEN "มีบทบาทชื่อนี้แล้ว"` | 🟢 PASS |
+| 5 — matrix ▲fromRole/●own; super admin all ● (menus12/actions46, no role) | 🟢 PASS |
+
+🟠 Footprint: `qa-rbac-admin` (`0e9c38e6`) DISABLED (pw `qa-stage4-pw`); all created roles DELETED (none left). No LINE, no `uat`, no code.
+🎉 **RBAC option C (Stages 1-4) QA-verified on `sid`** — ready for the single uat cutover.
+
+---
+
+# Round 37 — three-piece round (REQ-094 · REQ-091 §14 · REQ-093) on `sid` (2026-09-18) — ✅ ALL PASS
+📌 `sid`, super-admin cred, migrations 0038+0039 (db:verify=40). API + backoffice ledger (bo login = `admin/admin`, see note).
+
+**REQ-094 (extended auto check-in):** sick-leave ⇒ purple EXTENDED make-up; `POST /bookings/bulk-confirm` ⇒ outcome `confirmed`, status CONFIRMED (was: skipped/manual). The 17:30 job attends CONFIRMED (internal job, not QA-triggerable). 🟢 PASS.
+
+**REQ-091 §14 (rental round 2):**
+| check | result |
+|---|---|
+| pay-per-session (`paidUpfront:false`) ⇒ all `R` RED, card `unpaidSessions:4`, ZERO ledger at create; 2 paid ⇒ `unpaidSessions:2` + 2 SALE @200 | 🟢 PASS |
+| `DELETE /courses/:id/rental` ⇒ `{removed:2}`, delivered-paid stay green, ledger unchanged, later sick-leave make-up NO `R` | 🟢 PASS (remove targets future PENDING/CONFIRMED/EXTENDED; ATTENDED kept) |
+| `paidUpfront:true` ⇒ ONE SALE @800 at create (async post); remove `{removed:4}` posts nothing | 🟢 PASS |
+| confirm carries `Rental :` ⇒ DTO/enqueue path present; text owner-on-uat (outbox unreadable on sid) | 🟢 PASS |
+
+**REQ-093 (archive):**
+| check | result |
+|---|---|
+| archive w/ class ahead ⇒ `409 STUDENT_HAS_LIVE_SESSIONS "มีคาบเรียนข้างหน้า 1 คาบ — ยกเลิก/ย้ายก่อน"`; cancel ⇒ archive; hidden from picker, struck under Show-archived | 🟢 PASS |
+| unarchive ⇒ back; 6th on restore ⇒ `400 "เพิ่มนักเรียนได้สูงสุด 5 คนต่อเบอร์"` | 🟢 PASS |
+| booking + course POST for archived ⇒ `409 STUDENT_ARCHIVED "นักเรียนถูกเก็บแล้ว — คืนสถานะก่อน"`; past history still reads | 🟢 PASS |
+
+🔎 **NOTE:** the access-file BACKOFFICE password is wrong — `admin/admin-som` fails, backoffice uses `admin/admin` (frontoffice super-admin = `admin/admin-som`; separate systems). `H:/sm-test-access.txt` backoffice `pass` should be `admin`.
+🟠 Footprint: parent `32eeed5f` (phone `0914659156`) SUSPENDED + test children ARCHIVED; test courses/bookings CANCELLED; rental SALES on the sid dev ledger declared (set×4=800 upfront, 2×200 per-session). No LINE, no `uat`, no code.

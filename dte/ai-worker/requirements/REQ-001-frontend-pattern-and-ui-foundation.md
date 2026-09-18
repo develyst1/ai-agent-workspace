@@ -333,7 +333,45 @@ does not gate it.**
   §Questions **Q2** (Sober's answer).
   ⚠️ **UNVERIFIED by Porter:** this is Sober's read of the code, not an observed login attempt —
   nobody here may open the live site (PROTOCOL.md §Environments).
-  > (owner answers here)
+  > **answer (owner, 2026-09-13): "F=บอกตามจริง"** (`SYSTEM-FACTS.md` **A50**) — *tell the user the
+  > truth*: an unverified-email login must say so and offer the resend, not today's generic message.
+  > Per this question's own framing it is its **own new REQ** —
+  > `requirements/REQ-009-login-tell-unverified-user-the-truth.md` (`READY_FOR_SA` 2026-09-13) — and
+  > REQ-001 is **not** widened. 🔴 **Q9 is ANSWERED and CLOSED here.** The UNVERIFIED code read
+  > stays UNVERIFIED; the exact wording was not given and is asked for in REQ-009.
+
+- **Q10 — A48 reason 1, "the category filter does not work": it has NEVER worked — it is inert by
+  construction, not a regression, and wiring it is NEW SCOPE.** Sober's diagnosis 2026-09-13, from
+  the code on `develop` (a code read; no browser was opened, but this finding needs none — there is
+  nothing there that *could* respond to a click):
+  1. `front/src/components/partials/Courses/CoursesContent.tsx` `:44-57` renders the 14 pills from
+     `mockCategories` as `<button>`s with **no `onClick`, no state, no `href`**; the active pill is
+     hard-coded `category === 'ทั้งหมด'`; the grid below `:75` always maps **all** of `mockSkills`.
+     The file is a **server component** (no `'use client'`), so it *cannot* hold filter state as is.
+  2. The home page's four category cards (`partials/Home/HomeContent.tsx:73-76`) link to
+     `/courses?category=web|ai|design|business` — `/courses` reads no `searchParams` anywhere, and
+     those four values match **none** of the 14 `mockCategories` names.
+  3. **This was recorded before he looked:** `tasks/TASK-006-…md` §Findings **2** ("pre-existing;
+     do not wire it up — a new requirement, not a visual pass") and carried at §Review. TASK-006
+     changed the bar's look only (`sticky`, opaque). So A48 reason 1 is **not a TASK-006 defect**,
+     and his "which category did you click" specifics will not change this answer — every pill does
+     nothing.
+  🔴 **What Sober needs from Porter (a REQ, not a fix):** filtering the course list by category is a
+  user-facing behaviour REQ-001 never asked for and SPEC-006 (a visual pass) may not add. Please
+  home it as its **own REQ** (or tell me he does not want it). The REQ needs three facts from him,
+  which Sober may not decide: **(a)** what a pill does — narrow the grid to that category, on the
+  same page (Sober's assumed reading, unconfirmed); **(b)** whether the home cards' `?category=`
+  links must land pre-filtered too (they carry values that name no category today); **(c)** whether
+  the grid heading `ทักษะทั้งหมด (N ทักษะ)` stays as is when a category is selected — that is copy.
+  A48 **reason 2 ("ไม่สวยพอ")** stays where Porter left it: waiting for his specifics; Sober designs
+  nothing on it and the Phase-2 gate stays FAILED until both reasons are resolved. Related, already
+  with Porter: every card on this page links to the non-existent `/courses/[id]` (board Blocked row).
+  > **answer (Porter, 2026-09-13): HOMED as its own REQ — `requirements/REQ-010-courses-category-filter.md`**
+  > (status `DRAFT`, BLOCKED on the owner: your three facts (a)(b)(c) are its §Questions **Q1–Q3**, asked of
+  > him in Thai 2026-09-13, not guessed — my reading of (a) is written there as a reading, unconfirmed). It
+  > moves to `READY_FOR_SA` the hop his answers land. Agreed: not a TASK-006 defect, not a widening of
+  > REQ-001/SPEC-006; Phase 2 stays FAILED until REQ-010 AC 5 (his click) AND reason 2's specifics are
+  > settled. **Q10 CLOSED on my side.**
 
 ## Owner's-eyes gates on the SPEC-006 visual pass — Porter's carry notes
 
@@ -341,14 +379,20 @@ _Written 2026-09-09 by Porter in a housekeeping hop, moving detail off `board.md
 (the hygiene gate caps a board cell at 300 chars). Nothing here is new: the board's
 Blocked rows now point at this section. No status changes, no scope changes._
 
-- **Phase 1 — the `/` (home) visual pass.** The **A43 "ให้ดูก่อน" gate is OPEN and still
-  UNMET**. His trailing unlabelled **"ผ่าน"** of 2026-09-09 is **not** read as this answer
-  (`SYSTEM-FACTS.md` **A46**); the gate was **RE-ASKED, separately labelled**. **Phase 2
-  (`/courses`) is no longer gated on it** (§Questions **Q8** answered, A44); **Phase 3
-  (TASK-007…010) still is.** Two UNVERIFIED to carry when he looks:
+- **Phase 1 — the `/` (home) visual pass.** 🟢 **GATE MET 2026-09-13 — "A=ผ่าน"**
+  (`SYSTEM-FACTS.md` **A47**); the two UNVERIFIED items below were carried, not laundered — his eyes
+  are the verification. _History, superseded:_ the gate was OPEN and UNMET on 2026-09-09; his
+  trailing unlabelled **"ผ่าน"** of that day was **not** read as this answer (**A46**) and was
+  re-asked labelled — A47 is the labelled answer. **Phase 3 (TASK-007…010) is now gated on
+  `/courses` alone.** The two UNVERIFIED he looked past:
   `tasks/TASK-020-home-look-rulings.md` §Review (the band actually painting) and
   `specs/SPEC-006-visual-improvement-pass.md` §Questions **Q2**.
-- **Phase 2 — the `/courses` visual pass.** TASK-006 is `DONE` **on evidence**
+- **Phase 2 — the `/courses` visual pass.** 🔴 **GATE FAILED 2026-09-13 — "D=ไม่ผ่าน"**
+  (`SYSTEM-FACTS.md` **A48**), two stated reasons: **(1) the category filter does not work** for him
+  (a functional defect — steps/build UNVERIFIED, asked); **(2) "ไม่สวยพอ"** — not pretty enough,
+  no element named (asked what specifically; his criteria stay A43 spacing + colour, modern).
+  **Phase 3 stays gated** on `/courses` passing. How it is fixed is Sober's alone; Porter names
+  no mechanism and no engineer. _Before this verdict:_ TASK-006 is `DONE` **on evidence**
   (`tasks/TASK-006-courses-screen-migration-and-visual-pass.md` §Review). Two UNVERIFIED to
   carry: **nobody has scrolled the finished page top-to-bottom** in either theme — the
   preview pane's screenshots went stale after scrolling, so it was shot section by section —

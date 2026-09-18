@@ -1,7 +1,8 @@
 # REQ-006: A `back/` service (Bun + Hono) that calls the owner's LLM gateway
-- Status: **READY_FOR_SA** — unblocked 2026-09-09 by the owner's answers to Q33 / Q34 / Q35 /
-  Q36 (recorded in §Owner decisions below). Q44 is answered too. Q43 keeps its default;
-  one NON-blocking call is new: Q49.
+- Status: **DELIVERED 2026-09-13 (Porter) — 6/6 acceptance criteria ticked**, see §Delivery. SPEC-006
+  DONE, TASK-022 + TASK-023 DONE; **3 of the 5 real calls spent, 2 unspent.** Not signed off, not
+  deployed (Q43 default: local only). Q49 ANSWERED 2026-09-13 (30 — recorded in REQ-007). Open for
+  the owner, non-blocking: SQ30 / SQ31 / SQ32 / SQ33 (SPEC-006 §Questions), Q43.
 - Priority: HIGH
 - Requested: 2026-09-09 by the owner (Nichaphon)
 - Deadline: none stated
@@ -97,21 +98,21 @@ provider ever being touched.
 
 ## Acceptance Criteria
 
-- [ ] AC-a: `back/` runs locally on Bun + Hono and answers a health check.
-- [ ] AC-b: A recorded, real gateway round-trip against **`https://ai.develyst.online`**
+- [x] AC-a: `back/` runs locally on Bun + Hono and answers a health check.
+- [x] AC-b: A recorded, real gateway round-trip against **`https://ai.develyst.online`**
       exists in the TASK — the request sent, the response received, the provider that
       answered, the token usage and the latency, with the date stated. **The running total of
       real calls spent is written down** and stays within the 5 the owner allowed.
-- [ ] AC-c: One internal operation covers "ask the gateway", and the four failure modes in
+- [x] AC-c: One internal operation covers "ask the gateway", and the four failure modes in
       R5 are each demonstrated or explicitly declared untestable.
-- [ ] AC-d: No key and no gateway URL reaches the browser bundle. **Provider *names* are
+- [x] AC-d: No key and no gateway URL reaches the browser bundle. **Provider *names* are
       deliberately exempt** — REQ-007 idea D (owner-approved) puts "answered by DeepSeek in
       812 ms" on the page on purpose; that is the demo. The **base URL** must still never
       appear, or the browser can be pointed straight at his open gateway.
-- [ ] AC-e: The repo-root `README.md` (already stale — it still claims NestJS + Prisma) is
+- [x] AC-e: The repo-root `README.md` (already stale — it still claims NestJS + Prisma) is
       not made *more* wrong by this REQ; what `back/` is gets written down where the next
       person will look.
-- [ ] AC-f: Nothing was deployed, no `pm2`, no ssh, no git write — the owner's hands only.
+- [x] AC-f: Nothing was deployed, no `pm2`, no ssh, no git write — the owner's hands only.
 
 ## Constraints
 
@@ -145,8 +146,11 @@ WebSocket (his Q37b), and a WebSocket does not survive a default nginx site — 
 connection-upgrade headers added to that location block. That is a five-line change he (or
 whoever holds the droplet) makes once; it is named here so it is not discovered at deploy time.
 
-**Q49 (NEW 2026-09-09, NON-blocking for THIS REQ, blocking for REQ-007's testing) — the
-second budget.** The 5 calls of Q36 are sized for this REQ, where one round-trip proves the
+**~~Q49~~ ANSWERED 2026-09-13 — his word `Q49=30`: the REQ-007 budget is 30 real calls.** Recorded
+in REQ-007 §Owner decisions, where the ledger that spends it lives (SPEC-007). Separate from this
+REQ's 5 (3 spent, 2 unspent — SQ31 still asks whether the provider-free `GET /` counted).
+Original text kept below.
+**Q49 (2026-09-09) — the second budget.** The 5 calls of Q36 are sized for this REQ, where one round-trip proves the
 contract. REQ-007 is a different order of magnitude: **one visitor question is three-plus
 calls**, so a single end-to-end test costs what a whole day of this REQ costs, and QA's
 acceptance round (an honest "not covered" answer, a failure picture, a phone check) needs
@@ -155,3 +159,36 @@ he needs to name one — Porter's suggestion, for a figure to react to rather th
 **30 calls ≈ 10 real questions.** Reminder of the free alternative he passed over in Q36:
 running his own gateway locally on :3009 costs nothing per call and would remove this
 question entirely.
+
+## Delivery — Porter (PM), 2026-09-13
+
+**REQ-006 is `DELIVERED`. All 6 acceptance criteria are ticked.** SPEC-006 `DONE`, TASK-022 +
+TASK-023 `DONE`, each reviewed by Sober with every DoD line re-run on his own machine with the
+gateway pinned to a dead port (zero real calls in either review). **Real calls spent: 3 of the 5
+the owner allowed (Q36), 2 unspent** — SPEC-006 §Call ledger.
+
+| AC | Evidence I read — and what I re-checked myself, read-only, 2026-09-13 |
+|---|---|
+| AC-a | `/health` 200 on Fern's run (TASK-022 §Implementation Notes) **and** on Sober's own run on a different port (TASK-022 §Review, again in TASK-023 §Review). Two independent runs; no QA eye — see decision 1. |
+| AC-b | TASK-023 §Implementation Notes: request 2026-09-13 13:17:26 +0700, response body verbatim (200, `deepseek` / `deepseek-flash`, usage 18/1/19, latency 568 ms, wall 989 ms), the log line, and the running total **3 / 5** in SPEC-006 §Call ledger row 3. Fired exactly once — "about to fire" line written before, follow-up after. |
+| AC-c | One operation, `askGateway()` (SPEC-006 D1). R5's four modes mapped test-by-test in TASK-023 step 6: unreachable + timeout demonstrated structurally on the stub; **quota + unknown-model stub-demonstrated only and declared not reproduced on production** — the "explicitly declared untestable" the AC allows. Sober checked the mapping against `ask.test.ts`. |
+| AC-d | Both greps empty on Fern's and Sober's runs. **Re-run by me:** `ai.develyst.online` in `front/.next` → none · in `front/src` → none · in `back/src` → `config.ts:48` only. No key exists anywhere in `back/` (no `.env*`, TASK-022). |
+| AC-e | **Re-run by me:** `git diff --stat 1dcc9b8 -- README.md` → empty (root README byte-identical to the human's last commit); `back/README.md` exists. The root README is still stale — not made more wrong; rewriting it is SQ33, his call. |
+| AC-f | **Re-run by me:** `git status --short` = `?? back/` only, branch `D1` at `1dcc9b8`. No deploy, no pm2, no ssh, no commit by any role. |
+
+**Three things I record rather than smooth over:**
+
+1. **No QA round was requested for this REQ — a PM decision, overrulable by the owner.** REQ-006
+   has no visible surface (nothing under `front/` changed — the AC-d greps and `git status` prove
+   it); every AC is either a file fact I re-read myself or a runtime fact Sober reproduced
+   independently of Fern; a third stub run would be a third copy of the same 18 green tests. The
+   one thing a QA leg could add that nobody has — a failure picture against the **real** gateway —
+   spends his money, which is not mine to spend. If he wants Tanya's eye on `back/`, one word does
+   it and it costs zero calls (`cd back && bun test` + the stub round-trip).
+2. **Two of his five calls are unspent** (ledger rows 4-5). Their disposition is his — fold them into
+   REQ-007's 30 (Q49, answered 2026-09-13) or leave them. **SQ31** (does the provider-free `GET /`
+   count as one of the 5? Sober counted it) stays open, non-blocking.
+3. **Not signed off, not deployed** (Q43 default: local only). Carried to him, none blocking:
+   **SQ30** (his readable gateway checkout is v1.0.0, production answers v1.1.0 — sync?) · **SQ32**
+   (~60 s worst-case wait when every provider fails; only the last provider's error is visible) ·
+   **SQ33** (rewrite the stale root README?) — SPEC-006 §Questions.

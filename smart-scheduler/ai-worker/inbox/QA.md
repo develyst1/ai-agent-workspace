@@ -935,3 +935,180 @@ under you.**
 📌 **Report which build.** ✅ **CARRY ON — all five, then ONE report.** 🚫 **`uat` untouched.**
 🔑 **And the standing rule: if a screen shows nothing, say what would distinguish "it never rendered" from "I
 missed it".**
+
+## 2026-09-11 — Porter → @Tanya: 🟢 **`uat` HAS BEEN LIVE SINCE THIS MORNING. READ-ONLY confirmation pass, then we are done.**
+⛔ **READ ONLY. Every write on `uat` is a DATA REQUEST — including a submission you expect to fail.**
+**Three reads:**
+1. **A course card's `expires …` date is clickable** (open, then `Cancel`).
+2. **The plan modal reads `Last session …`, not `Ends …`.**
+3. **A paused course shows `Paused — no dates until it resumes`.**
+🚫 **No LINE. No pause, no resume, no leave, no form submission.** ✅ **`NEEDS DATA REQUEST` is a correct answer
+for anything that would need a write.** **One report.**
+
+## 2026-09-12 — Porter → @Tanya: 📱 **`REQ-088` — registration by LINK. This is the `adb` round you were prepared for. Hold for the `sid` deploy; then it is yours, ON THE PHONE.**
+🔑 **This test cannot be done any other way: a LIFF page yields an ID token only INSIDE the LINE app, against a
+real LIFF ID.** **No mock exists and @Fern did not fake one.** ⇒ **the owner's phone, the DEMO OA, `sid`.**
+⛔ **All the `QA.md` phone boundaries apply — demo OA only, never the customer's, never another chat.**
+
+### The five checks — @Sober's, and they are the DoD
+1. **Open the link → phone → a KNOWN number** ⇒ the family's children are listed; **a tap links.**
+2. **A NEW number** ⇒ the 3-field form; DOB as `DD-MM-YYYY`; **the confirm screen ECHOES it**; done.
+3. **Leave the DOB BLANK** ⇒ **no `BIRTHDATE_INVALID`** — *the trap both engineers caught, one each side.*
+4. **A DUPLICATE child name** ⇒ the "more detail" hint; **resubmit works** — *AC-9, never a silent rename.*
+5. **(if the owner will allow it) remove `NEXT_PUBLIC_LIFF_ID`** ⇒ **a message, not a blank page.**
+📌 **The link: `https://som.develyst.online/register` — the owner pastes it into the demo OA chat, exactly as an
+admin would.** 🔑 **Tap it FROM the chat; that is the whole point of the feature.**
+⚠️ **English typing via `adb` works; Thai may not — the form's fields are typeable in English for names, and
+the DOB is digits.** **If a Thai name is needed, say so and the owner types it.**
+✅ **CARRY ON — all five, ONE report, screenshots of each state.** ⛔ **Nothing on `uat`.**
+
+## 2026-09-12 — Porter → @Tanya: 🟢 **`sid` deployed (back + front). GO — the phone round.** 📱 **Device check below; if it is not attached, STOP and say so.**
+**Ask the owner (through me) to paste `https://som.develyst.online/register` into the demo OA chat if it is not
+there yet — do not type it yourself into the phone.** ✅ **Five checks, one report.**
+
+## 2026-09-13 — Porter → @Tanya: 🟢 **`sid` deployed (back + front, `REQ-088 §9`). ONE screen check, on the ADMIN web — no phone, no LINE.**
+**Open a LINE-registered parent in the admin's parent form (People → Edit).**
+1. **The province box shows the OLD address line — greyed, at the top of the dropdown, NOT a blank box with
+   `เลือกจังหวัด`.** 🔑 **A blank box is a FAIL — it is the exact shape the owner refused ("a bad value hidden
+   as blank").**
+2. **Pick `กรุงเทพมหานคร` → Save → reopen ⇒ `กรุงเทพมหานคร`.**
+3. **The parents LIST card shows the dirty province in full** (his "broken dashboard").
+📌 **Which parents: any registered from LINE before today. The owner moved their addresses to `note`
+himself; the `province` column was left dirty ON PURPOSE (`REQ-088 §9.1`) — do not report it as a data
+defect.** ✅ **One report.** ⛔ **`sid` only.**
+
+## 2026-09-13 — Porter → @Tanya: ✅ **`§9` check accepted — all three PASS, footprint declared correctly.** One follow-up write, then the `adb` round as you planned.
+
+🔑 **Put the line back.** `88c2917c`'s address must not exist only in a report — the owner's ruling (`REQ-088 §9`) is that the address LIVES in `note`. **One write on `sid`: append `พระโขนงเหนือ วัฒนา กทม` to that parent's `note`** (it is empty, so the note becomes exactly that line). Report the before/after as you did. Nothing else on that row.
+📌 Your Check 2 stays valid as-is — the province is `กรุงเทพมหานคร`, which is correct for that address.
+📱 Then the `adb` round, device check first, stop if not attached — unchanged.
+
+## 2026-09-15 — Porter → @Tanya: 🔴 **`sid` deployed — `REQ-089` items 0 and 2. Two checks, UI only, `sid` only, no LINE.**
+1. **Item 0 — `SOM SCHEDULE` everywhere.** Walk every admin page you can reach: browser tab title, login page, header/brand, any footer. Report any surface still reading `Smart Scheduler`, with the page. (Fern claims 16/16 prerendered titles; you check the screen.)
+2. **Item 2 — expiry with advance leave.** Create ONE test course on `sid`: size 6, start on a Wednesday ≥ next week, tick advance leave on 3 sessions in the creation table. Expected: expiry = start + 10 weeks (week 11; 0 leaves ⇒ week 8). Then take ONE more sick leave on that course after creation ⇒ expiry must NOT move. Report the dates you saw. Name the course `QA-089-expiry` so it is findable.
+
+## 2026-09-16 — Porter → @Tanya: your item-2 FAIL is a **deploy** finding, not a formula one — the `sid` BE was running pre-TASK-358 code (Sober: your `11-18` is the old formula exactly; the committed one yields `12-02`). **Wait for my word that the BE is restarted, then re-create the same course (new name `QA-089-expiry-2`); leave the first as a specimen.** Expect `2026-12-02`. Then part (b) again: one post-creation leave — the ceiling must GROW to cover the appended make-up; if it does not, that is a second finding.
+
+## 2026-09-16 — Porter → @Tanya: ✅ **`sid` BE restarted — GO on the re-test above** (`QA-089-expiry-2`, expect `2026-12-02`; then one post-creation leave, ceiling must grow to cover its make-up).
+
+## 2026-09-16 — Porter → @Tanya: ✅ **`sid` BE redeployed from a FRESH local build (the owner builds locally → zip → upload → restart; the earlier zips were stale). GO on the third specimen `QA-089-expiry-3`** — same inputs, expect `2026-12-02`; then one post-creation leave, ceiling must grow to cover its make-up. If it passes, cancel `QA-089-expiry` and `-2`. If it is `11-18` again, stop and report — the third miss is no longer a deploy question.
+
+## 2026-09-16 — Porter → @Tanya: 📋 **Ready for you once the owner deploys `sid` (I'll say GO) — item 8, teacher on resume.** On `sid`, UI: resume a PAUSED booking and a DROPPED course, each TWICE — (a) WITHOUT touching the teacher picker ⇒ the OLD teacher stays on every new session; (b) WITH a different teacher picked ⇒ the NEW teacher on every session the resume writes. Try a teacher who does not teach the course's subject ⇒ must be REFUSED with the server's message (name it). No LINE, no `uat`.
+
+## 2026-09-16 — Porter → @Tanya: 📋 **The 8+1+3 round is built; I release GO the moment the owner deploys `sid`.** Three checks, UI, `sid` only, no LINE, no `uat`:
+1. **Item 3 (delete):** a fresh student ⇒ red Delete (beside Edit) ⇒ two taps ⇒ gone, parent's count drops. A student with ANY booking (a cancelled one counts) ⇒ the server's Thai sentence with counts appears INSIDE the dialog, dialog stays open, Cancel closes; nothing deleted. A child of a SUSPENDED family with zero rows ⇒ deletable.
+2. **Item 1 + §4.2 (full unlock):** size-4 course, tick ALL FOUR rows 1/2/3/4 by the UI ⇒ 8-row plan, four make-ups live, expiry = base + 4 weeks; tick a make-up ⇒ one more row; untick ⇒ it goes. One tap outside the row menu closes it and does nothing else (the overlap fix).
+3. **Item 8 (teacher on resume):** resume a dropped course whose LAST session had a different teacher ⇒ that teacher pre-selected; change it ⇒ new teacher on every new session; leave it ⇒ unchanged.
+Clean up your test students/courses (delete now works for the fresh ones). Report per item.
+
+## 2026-09-16 — Porter → @Tanya: ✅ **`sid` deployed (fresh BE + FE build) — GO on the three checks above** (item 3 delete · item 1 + §4.2 full unlock · item 8 teacher on resume). Report per item; clean up your test rows.
+
+## 2026-09-16 — Porter → @Tanya: 📋 **4/5/7 round built; GO the moment the owner deploys `sid`. UI + outbox rows only, `sid`, no LINE-on-phone (that is the owner's).**
+1. **Item 4 (cancelled tray):** `Show cancelled sessions` in the cell-display menu ⇒ a CANCELLED tray beside the paused one (both week & day), rows date·time·coach·reason (coded ⇒ label, free ⇒ note); tap opens the booking; OFF ⇒ no tray; reload ⇒ remembered; trays collapse independently. Cancel a session whose slot is then rebooked ⇒ it stays in the tray, the new booking on the grid.
+2. **Item 5 (`Last` chip):** a live course's last session carries `Last` in both views; attend it ⇒ gone; a leave that appends a make-up moves the chip to the make-up; legend shows it.
+3. **Item 7 (coach outbox — read the OUTBOX rows, do NOT check phones):** cancel a CONFIRMED single class ⇒ one row to its coach (`CLASS CANCELLED / ยกเลิกคาบ ‼️` with `Reason :`); a PENDING one ⇒ none; drop a course with mixed confirmed/pending ⇒ ONE row per coach naming only the confirmed dates; end a course ⇒ `COURSE ENDED` stamp; unlinked coach ⇒ a SKIPPED row. Verify the message TEXT matches the approved copy field-for-field.
+Clean up your rows.
+
+## 2026-09-16 — Porter → @Tanya: ✅ **`sid` deployed (fresh BE + FE) — GO on the 4/5/7 checks above** (cancelled tray · `Last` chip · item 7 outbox text). Report per item; clean up your rows.
+
+## 2026-09-17 — Porter → @Tanya: 📋 **REQ-091 Deploy A — GO once the owner confirms `sid` is migrated + `sale:ensure-items` run + restarted (I'll say GO). `sid` only, no LINE.**
+1. Add a rental on a live session ⇒ **red `R`** in week & day views + the line in the booking modal. Full Set / Ride only WITHOUT a remark ⇒ the server's refusal sentence.
+2. **Mark paid** (two taps, the dialog names the line it posts) ⇒ **green `R`**, and ONE rental line in that day's sales report (the `100` tier posts `rental-helmet-pads` at 100). Mark paid AGAIN ⇒ no second line (idempotent).
+3. Remove on an UNPAID row ⇒ offered; on a PAID row ⇒ NOT offered.
+4. Cancel a session that has a PAID rental ⇒ the row stays (green, in the cancelled tray).
+5. A rental posted BEFORE this deploy ⇒ **no `R`** (by ruling — historic rentals left alone).
+Report per item; clean up.
+
+## 2026-09-17 — Porter → @Tanya: ✅ **`sid` fully deployed AND migrated — GO on the REQ-091 Deploy A checks above.** Confirmed: `db:verify` = 36 witnesses (`0035_booking_rentals` in), `sale:ensure-items` created `rental-helmet-pads` 100. All prerequisites met. Report per item.
+
+## 2026-09-17 — Porter → @Tanya: 📋 **REQ-091 Deploy B — GO once the owner deploys `sid` (I'll confirm; NO new migration this time, but restart both). `sid` only, no LINE-on-phone (outbox rows only).**
+1. Create a course, toggle **Equipment rental for the whole course** ON, Full Set, NO remark ⇒ the refusal sentence before the course is created. With a remark ⇒ every live session shows **green `R`**, the course card shows the rental line, ONE `rental-set × size` line in the backoffice ledger.
+2. A declared-leave week at creation ⇒ NO `R` on that row; the make-up carries it. Toggle OFF ⇒ no rental on the wire.
+3. `Add rental` on a session of a rented course ⇒ `RENTAL_EXISTS`. A later sick leave ⇒ the appended make-up carries green `R`, NO new ledger line.
+4. Daily reminder (dev trigger) prints `Rental : …` for a rented session — to teacher AND parent. Add a rental on TODAY's session AFTER the reminder ran ⇒ one `RENTAL ADDED` teacher+parent row; before it ran ⇒ none.
+5. Re-confirm the two folded nits: no `Add rental` button on a cancelled/paused session; the `R` chip renders in the cancelled tray row.
+
+## 2026-09-17 — Porter → @Tanya: ✅ **`sid` deployed (Deploy B, no new migration — booking_rentals already exists from A; both restarted) — GO on the Deploy B checks above.** Report per item; clean up.
+
+## 2026-09-17 — Porter → @Tanya: 📋 **Defect fix (TASK-376) — a ONE-CASE re-check, GO once the owner redeploys BE on `sid` (BE-only, no migration; I'll confirm).** A rented whole-course → a post-creation SICK LEAVE within quota ⇒ the appended make-up shows **green `R`** + its modal rental line; cross-check a CANCEL make-up = same; an UNRENTED course's make-up ⇒ no `R`; NO new ledger line either way. That is the whole re-check — the rest of Deploy B already passed.
+
+## 2026-09-17 — Porter → @Tanya: ✅ **BE redeployed on `sid` — GO on the one-case re-check** (rented course → post-creation sick leave ⇒ make-up green `R` + line; cancel make-up same; unrented = no `R`; no new ledger line).
+
+## 2026-09-17 — Porter → @Tanya: 📋 **REQ-091 ACCEPTANCE re-confirm on `sid` — does the BUILT feature match the customer's message, point by point?** (Owner's ask; `sid` only, no LINE-on-phone — outbox rows/DTO for the notice.) Go through the customer's own words and tick each MATCH / MISMATCH, quoting what you see:
+**สิ่งที่ต้องการ (3):**
+1. **บันทึกการเช่าอุปกรณ์** — a rental is recorded (row + backoffice sale on paid). ✓?
+2. **เตือนแอดมินให้เก็บค่าเช่า** — the red `R` marks a recorded-but-unpaid rental on the schedule. ✓?
+3. **แจ้งเตือนคุณครู** — the teacher is notified a student is renting (reminder `Rental :` line + `RENTAL ADDED` — DTO/outbox enqueue, text is owner's phone check). ✓?
+**3 ประเภท:**
+1. **เช่าทั้งคอร์ส จ่ายครบแต่แรก** — course-creation rental ⇒ every session born PAID (green `R`), one ledger line. ✓?
+2. **เช่ารายครั้ง จ่ายหน้าร้าน** — per-session add ⇒ red `R`, mark paid ⇒ green. ✓?
+3. **เช่าบางครั้ง (ลืมเอาอุปกรณ์มา)** — same per-session path, one-off on the day. ✓?
+**ราคา (ตรงเป๊ะ?):** 50 Helmet or Pad Only · 100 Helmet + Pad · 150 Ride only · 200 Full Set — confirm the picker shows these exact labels+prices. **Full Set / inline ⇒ remark required**, and it prints like `Rent 200 / Full Set (inline skate size 18-19 CM)`. ✓?
+**หน้าตา:** whole-course 10h ⇒ 10 rentals recorded on the schedule · per-session ⇒ a box like `LAST` but `R`, **red = unpaid, green = paid after collecting**. ✓?
+Report a tidy MATCH/MISMATCH table against these; flag ANY wording/behaviour that differs from the customer's text. Clean up rows.
+
+## 2026-09-17 — Porter → @Tanya: 📋 **RBAC Stage 1 (foundation) — GO once the owner deploys `sid` + bootstraps the super admin (I'll confirm). `sid` only, no LINE. This touches LOGIN — test carefully.**
+1. After the first user exists, the OLD shared credentials are REFUSED.
+2. The bootstrap pair logs in ONCE and creates the super admin ⇒ `Users` menu appears, `(you)` on the row.
+3. Create an admin ⇒ they log in, see NO `Users` menu; hit the page by URL ⇒ one refusal sentence.
+4. Reset a password ⇒ old refused, new accepted. Disable a logged-in user ⇒ their next call signs them out. Try to disable the LAST super admin ⇒ refused.
+5. A discounted sale BY the super admin ⇒ accepted (the TASK-379 fix — capability not label).
+6. An audit line (e.g. delete a student) now names the REAL username, not `admin`.
+Report per item; do not create real staff accounts you can't remove — note any account left (users disable, not delete).
+
+## 2026-09-17 — Porter → @Tanya: ✅ **Stage 1 super admin bootstrapped OK on `sid` (owner is in, `Users` menu shows) — GO on the RBAC Stage 1 checks above.** (Login-touching; `sid` only.) The earlier failure was a too-short bootstrap password (min 8) surfacing as a generic error — now resolved. Report per item; accounts you create can only be DISABLED not deleted, so note any you leave.
+
+## 2026-09-17 — Porter → @Tanya: ✅ **The owner has put a SUPER ADMIN credential in `H:/sm-test-access.txt` (replacing the dead admin/admin) — GO on Stage 1 checks 2-6 using it.** Log in / mint with that credential and run: Users menu + `(you)` (2); create an admin ⇒ no Users menu, URL refusal (3); reset password / disable / last-super-admin refused (4); super-admin discounted sale accepted (5); audit names the real username (6). Report per item; disable (not delete) any account you create and note it.
+
+## 2026-09-17 — Porter → @Tanya: 📋 **Stage 1 re-check (TASK-380) — GO once the owner redeploys BE on `sid` (BE-only, no migration). `sid` only.** The one thing: an OLD token (`sub = admin`, pre-cutover) on any backend call ⇒ **`401 "โทเคนไม่ถูกต้องหรือหมดอายุ"`, NOT 500** (the finding you raised). The bootstrap-5-char refusal sentence you can confirm on a dev/local EMPTY table only — do NOT touch `sid`'s live users for it. Confirm the 401 and you're done; Stage 1 → uat.
+
+## 2026-09-17 — Porter → @Tanya: ✅ **BE redeployed on `sid` — GO on the TASK-380 re-check** (old `sub=admin` token ⇒ 401, not 500). Confirm the one thing; then Stage 1 is clear for uat.
+
+## 2026-09-18 — Porter → @Tanya: 📋 **RBAC Stage 2 (menu permissions) — GO on `sid` (no new migration; owner redeploys FE+BE — I'll confirm if not already up). Use the super-admin credential in the access file.**
+1. Super admin ⇒ every menu + `Users`.
+2. Give an admin `calendar` + `bookings` only ⇒ nav shows those two (the shared teachers list still loads inside the calendar); `/scheduler/reports` by URL ⇒ the refusal sentence + a door to a menu they have; `GET /api/reports/daily` ⇒ **403**.
+3. Take a menu away while they're on it ⇒ the next call shows the guard sentence.
+4. A user with NO menus ⇒ the "ask your admin" shell (header still shows who they are).
+5. Change own password (wrong current ⇒ refused IN the dialog, not signed out).
+6. Disable a user ⇒ their login screen says why.
+Report per item; disable (not delete) any account you make.
+
+## 2026-09-18 — Porter → @Tanya: ✅ **`sid` deployed (Stage 2, FE+BE, no migration) — GO on the Stage 2 checks above.**
+
+## 2026-09-18 — Porter → @Tanya: 📋 **RBAC Stage 3 (action-level) + the Stage-2 re-checks — GO once the owner deploys `sid` (FE+BE, no migration; I'll confirm). Super-admin cred in the access file.**
+**Stage 2 re-checks (the /me patch):** change own password — wrong current ⇒ the sentence IN the dialog, NOT signed out; right ⇒ next login works. Revoke a menu while the user is on it ⇒ the sentence on the next refused call (proactive nav).
+**Stage 3:**
+1. Admin with `calendar` menu, NO actions ⇒ sees the grid but NO `+`, no ⋯, no status buttons; `POST /api/bookings` by API ⇒ **403 "ไม่มีสิทธิ์ทำรายการนี้"**.
+2. Grant `action:calendar.book` ⇒ the `+` appears, the post succeeds.
+3. No `action:sales.discount` ⇒ the discount section is ABSENT + API "ไม่มีสิทธิ์ให้ส่วนลด"; the leave-override button ABSENT without `action:calendar.leave-override`.
+4. Super admin ⇒ everything. The `Actions` checklist groups by menu, TH/EN labels follow the language.
+Report per item; disable (not delete) accounts you make.
+
+## 2026-09-18 — Porter → @Tanya: ✅ **`sid` deployed (Stage 3 + /me patch, FE+BE, no migration) — GO on the Stage 3 + Stage-2 re-checks above.**
+
+## 2026-09-18 — Porter → @Tanya: 📋 **RBAC Stage 4 (roles + matrix) — GO once the owner deploys `sid` (migration 0037, db:verify=38; I'll confirm). Super-admin cred in the access file. This is the LAST stage of option C.**
+1. Create a role with 2 menus + 3 actions ⇒ assign to a user ⇒ their effective counts change.
+2. Open the user's `Menus` ⇒ the 2 greyed "from role"; tick a 3rd + save ⇒ `PUT …/menus` carries ONLY the 3rd (own row).
+3. Edit the ROLE (add a menu) ⇒ the user's next request has it (no re-login). Detach the role ⇒ own ticks remain.
+4. Delete a HELD role ⇒ `ROLE_IN_USE` with the count. Two roles differing only by case ⇒ `ROLE_NAME_TAKEN`.
+5. The matrix: ▲ for the role's keys, ● for the own one; super admin's row all grey ●.
+Report per item; disable (not delete) accounts, note any role left.
+
+## 2026-09-18 — Porter → @Tanya: ✅ **`sid` deployed + migrated (0037_roles, db:verify=38) — GO on the Stage 4 checks above.** Last stage of option C.
+
+## 2026-09-18 — Porter → @Tanya: 📋 **Three new pieces — GO once the owner deploys `sid` (migrate 0038+0039, db:verify=40; I'll confirm). Super-admin cred. `sid` only, LINE text is the owner's on uat.**
+**REQ-094 (extended auto check-in):** bulk-confirm a day that has a PURPLE make-up ⇒ it turns CONFIRMED; the 17:30 job then attends it (was: stayed manual).
+**REQ-091 §14 (rental round 2):**
+1. Create a rental course *Pay per session* ⇒ every `R` RED, card says `n to collect`, ZERO ledger lines; mark two paid ⇒ two ledger lines, `n-2 to collect`.
+2. *Remove from remaining sessions* ⇒ "removed from n", the two paid stay green, ledger UNCHANGED; a later sick leave ⇒ the make-up has NO `R` (marker honoured).
+3. *Paid upfront* course ⇒ one ledger line at creation; remove posts nothing.
+4. Course-confirm message carries `Rental :` (enqueue/DTO here; text is owner's on uat).
+**REQ-093 (archive):**
+1. Archive a child WITH a class ahead ⇒ refused with the count; cancel the class, archive ⇒ gone from the picker, the eligible list, the parent's LINE child list.
+2. *Show archived* ⇒ struck; Restore ⇒ back (a 6th child ⇒ the cap sentence).
+3. A booking/course/voucher POST for the archived id (old tab / API) ⇒ `409 STUDENT_ARCHIVED`. The child's past history still reads.
+Report per item; disable/archive (not delete) test data, note what's left.
+
+## 2026-09-18 — Porter → @Tanya: ✅ **`sid` deployed + migrated (0038+0039, db:verify=40) — GO on the three-piece round above** (REQ-094 · §14 · REQ-093).
+
+## 2026-09-18 — Porter → @Tanya: 📋 **TASK-396 (end-of-day START-based) — GO once the owner deploys BE on `sid` (BE-only, no migration; I'll confirm). `sid`.** A CONFIRMED **17:00** class at a run of **≥17:30** ⇒ **ATTENDED, quota −1, the deduction message enqueued** (before: skipped until it ended 18:00 / next day). A class already marked (check-in/leave) before the run ⇒ untouched. `runEndOfDayJob(<past date>)` still sweeps the whole date. Confirm the 17:00-attended-at-17:30 behaviour; note the value pin (17:00 due at 17:30; a 17:45-start not yet).

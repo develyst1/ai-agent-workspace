@@ -69,4 +69,28 @@ requirement**, never a widening of REQ-001, which is foundation work with no pro
   is actively watching. **One word from him overturns it.** Sequencing against SPEC-006 and the
   SPEC-001 screens is **Sober's design call**; Porter proposes no mechanism and names no engineer.
 
+- **Q1 — for the owner (asked in Thai 2026-09-13 by Porter): AC 3, his eyes on `/login`.** Look at
+  `/login` (both themes if he likes): the `ลืมรหัสผ่าน` link is gone, `จดจำฉัน` sits alone on its row,
+  nothing else moved. Reference: `tests/harness/login-AFTER-{light,dark}.png`. Answer `ผ่าน` /
+  `ไม่ผ่าน เพราะ …` with the label **REQ-007**. ⚠️ Also for his eyes only: the login itself
+  (wrong password → error banner; a real login → home) was verified **on a mocked backend only**
+  (TASK-022 DoD 7) — one real login on his side is what settles it; the change touched no submit code.
+
 (SA Lead adds questions here as new bullets; Porter answers as `> answer: ...`)
+
+## Porter's acceptance check (2026-09-13)
+
+Status stays **`SPEC_DONE`** — not `DELIVERED` — because AC 3 is his and unanswered.
+
+- **AC 1 MET on evidence** — `tasks/TASK-022-remove-forgot-password-link.md` §Implementation Notes /
+  §Review: repo-wide grep for `forgot-password|forgot|ลืมรหัสผ่าน` returns nothing (re-run by Sober),
+  DOM anchor count 0 in both themes. The only occurrence was `partials/Login/LoginContent.tsx:154-156`
+  (the REQ's `login/page.tsx:151` predates TASK-004's move — same link).
+- **AC 2 MET on evidence, with one UNVERIFIED carried** — deletion-only diff (1 file, 3 lines); build
+  and typecheck clean; BEFORE/AFTER geometry byte-equal. **DoD 7 (wrong-password banner + demo login)
+  passed on a mocked `/auth/login`** — no backend runs in the harness — so "still logs in exactly as
+  today" is UNVERIFIED against the real API; Fern and Sober both said so. What settles it: one real
+  login by the owner.
+- **AC 3 OPEN** — his eyes; asked as §Questions Q1 above. Porter looked at the light AFTER screenshot:
+  the row reads clean, nothing orphaned — but Porter's eyes are not the AC.
+- Nothing was built, and no forgotten-password flow exists — as he chose (A45). `DELIVERED` ≠ deployed.

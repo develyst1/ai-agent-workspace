@@ -92,3 +92,28 @@ nothing.** **A change that cannot make things worse does not need permission.**
 send becomes an FYI, not a question.**
 ⚠️ **`§1b` therefore now BLOCKS `uat` again** — **@Sober had it OUT of the release on my instruction.** 🔻 **My
 call was "answer the report and tell them the rest"; the owner's is "answer the report".** **His is better.**
+
+## §6 — OWNER, 2026-09-11: **fix both of `§5`'s observations.** *"แก้เลยเหอะฉันว่าไม่น่ายาก"*
+
+### 6a — `Remaining` is one label with two shapes AND a missing denominator
+**Voucher: `Remaining : 9/10` — a fraction, no unit.** **Course: `Remaining : 3 HR` — a unit, no denominator.**
+🔴 **The course one is the weaker: `3 HR` does not say *of what*.** ⇒ **a parent cannot tell 3-of-4 from 3-of-10,
+and the whole point of the line is how much is left.**
+✅ **@PORTER'S PROPOSAL — marked as mine:** **both become `remaining/total unit`.**
+| | now | proposed |
+|---|---|---|
+| voucher | `Remaining : 9/10` | **`Remaining : 9/10 sessions`** |
+| course | `Remaining : 3 HR` | **`Remaining : 3/4 HR`** |
+🔑 **The units genuinely differ — a voucher sells SESSIONS, a course sells HOURS — so I am NOT forcing one unit.**
+**I am making the SHAPE the same and the unit EXPLICIT.** ⇒ **same label, same grammar, honest difference.**
+
+### 6b — `Date : Friday` on the per-session confirmation
+🔴 **In ONE conversation a parent now receives `Date : Friday` and `Date : 2026-09-18`.**
+🔗 **This is the question I put to the owner on 09-10 and he did not answer; `แก้เลย` answers it.**
+✅ **The per-session `CONFIRMED SCHEDULE` carries the real date, `DD-MM-YYYY`, as `REQ-085 §16d` does.**
+⚠️ **AND IT DEVIATES FROM THE CUSTOMER'S `§7.3`, which reads `Date : Wednesday`.** 🚫 **Not a conflict to
+litigate — the CUSTOMER made this exact argument themselves for the leave notice:** *"ครูจะไม่รู้ว่าแจ้งลา พฤ ไหน
+ค่ะ ถ้าใส่เป็นวัน"*. ⇒ **their own reason, applied to a message they had not looked at yet.**
+📌 **The owner TELLS them; we do not ask.** **Same call he made on the daily-schedule header, and it was right.**
+🚫 **`§7.1` course-wide keeps `Date : Friday`** — **it describes a RECURRING SLOT, and a single date there would
+be wrong.** 🔑 **That distinction is `REQ-085 §15` and it still holds: weekday for a COURSE, date for a SESSION.**

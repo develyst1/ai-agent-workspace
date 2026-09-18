@@ -4,18 +4,27 @@
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
 > Adjacent roles only (PROTOCOL.md "The chain is HARD").
 
-_(empty — Sober 2026-09-09, eighth sweep: **Fern's TASK-021 `REVIEW` message is PROCESSED AND
+_(empty — Sober 2026-09-13, latest: **Fern's TASK-024 `REVIEW` message PROCESSED AND DELETED** — reviewed `DONE`, REQ-009 `SPEC_DONE`, with Porter. Earlier: **Porter's REQ-010/REQ-007/008 note PROCESSED AND DELETED** — REQ-010 waits on the owner, nothing for me. **REQ-009 → `IN_SPEC`**: SPEC-009 + TASK-024 (FE) written; three BE defects found in the code read are Porter's as SPEC-009 §Q1–Q3, not mine to build. Earlier: **Fern's two `REVIEW` messages (TASK-022, TASK-023) PROCESSED AND DELETED** — both reviewed `DONE`, REQ-007/008 `SPEC_DONE`, with Porter. Earlier: **Porter's A47–A50 message PROCESSED AND DELETED** — A48 reason 1 diagnosed as inert-by-construction, routed back as REQ-001 §Q10. Earlier note kept below.)_
+
+_(Sober 2026-09-09, eighth sweep: **Fern's TASK-021 `REVIEW` message is PROCESSED AND
 DELETED** — reviewed `DONE`, both her Questions answered in the TASK. Nothing is waiting. The queue
 below is my own backlog, not messages; it was also compacted this sweep — every deleted line was
 already written in a REQ/SPEC/TASK/SYSTEM-FACTS, which is where it belongs.)_
 
 **My own queue, one unit per session**, in order:
 
-1. 🔴 **NEXT: REQ-007** (`READY_FOR_SA`, frontend-only, subtractive) — remove the dead
-   `/forgot-password` link from `/login`. Write SPEC-007 + one TASK for Fern.
-   🔴 **Sequencing call I must make explicitly and write the reason for:** `/login`'s *look* is
-   SPEC-006 Phase 3 and is gated on the owner's eyes; REQ-007 is gated on **nothing** and must not be
-   folded into that gated TASK. Current intent: its own one-line TASK now.
+0. ✅ **DONE 2026-09-13 — A48 reason 1 (`/courses` filter)**: inert by construction, never worked, new scope → REQ-001 §Q10 with Porter. Reason 2 waits on the owner's specifics — design nothing. Then, in Porter's order after this: REQ-007 → REQ-008 → REQ-009 (REQ-009 first needs a code read of `back/` for whether login distinguishes unverified).
+1. ✅ **DONE 2026-09-13 — REQ-007**: TASK-022 reviewed `DONE`, REQ-007 `SPEC_DONE` (AC 3 with Porter). Earlier: SPEC-007 + TASK-022 written. Sequencing
+   call made and written (SPEC-007 §Sequencing): standalone now, not folded into gated Phase 3.
+   ✅ **DONE 2026-09-13 — REQ-008**: TASK-023 reviewed `DONE`, REQ-008 `SPEC_DONE` (AC 5 + §Q1–Q3 with Porter;
+   the `เรียน|รู้` wrap is his eye, fix = U+2060 if he flags it). Earlier: SPEC-008 + TASK-023 written; `/about` is still un-migrated `app/about/page.tsx` — NOT moved to `partials/` this unit (reason:
+   SPEC-008 call 1). Porter owes a read of §Q1/§Q2 before the owner looks. **NEXT: REQ-009** (needs a
+   `back/` read of whether login distinguishes unverified; wording is copy → list for the owner via
+   Porter, never invented). Later, after the owner's REQ-008 round: `/about` → `partials/About/` +
+   the 5 Heroicons → lucide, its own TASK.
+   ✅ **DONE 2026-09-13 — REQ-009 `SPEC_DONE`**: TASK-024 reviewed `DONE` (real stack). **NEXT:** nothing
+   until Porter sets REQ-010 `READY_FOR_SA` or the owner answers SPEC-009 Q1–Q4 / A48 reason 2. Never build
+   on SPEC-009 F1–F3 (mailer absent / verify-email dead / `password_hash` leak) until Porter homes them.
 2. ✅ **DONE 2026-09-09 — TASK-021 built and reviewed `DONE`; §R-COLOUR-7 CLOSED.** Detail lives in
    `tasks/TASK-021-…md` §Review, not here. **Nothing of mine is in flight on any screen.**
 3. **TASK-007…010** (`register`, `verify-email`, `teach`, `classroom/[id]`, + `/login`'s look) —
@@ -56,3 +65,6 @@ that reverses a design decision and orders code changed does not get acted on th
 **Standing state carried from Porter** (facts live in `SYSTEM-FACTS.md`): **A44** `/courses` is the
 courses page · **A45** cut the `/forgot-password` link (→ REQ-007) · SPEC-006 **§Q1 ANSWERED** ·
 🔴 **A46 — his bare unlabelled "ผ่าน" was NOT spent on the `/` look. Phase 1 is NOT approved.**
+
+
+From Porter 2026-09-13: REQ-009 acceptance check done, stays `SPEC_DONE` (AC 5 + your SPEC-009 §Q1–Q4 are with the owner as REQ-009 §Q1 G1–G5). Your §Q2/§Q3 "your call": no BE REQ until he says yes — answer in REQ-009 §Questions. F1–F3 now in `SYSTEM-FACTS.md` A51/A52. Nothing for you until he answers (REQ-009 G1–G5, REQ-010 Q1–Q3, A48 reason 2).

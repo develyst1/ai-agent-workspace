@@ -1,6 +1,6 @@
 # SPEC-005: Profile source-of-truth file + resume-vs-site fact reconciliation
 - Source: REQ-005
-- Status: ACTIVE (2026-09-09, Sober)
+- Status: DONE (2026-09-13, Sober — TASK-019/020/021 all DONE; REQ-005 → SPEC_DONE, Porter's acceptance next)
 
 ## Overview
 
@@ -193,9 +193,9 @@ owner with both candidate wordings; the pick is his.
 
 ## Tasks
 
-- TASK-019: Apply the ten decided resume-fact corrections (depends on: —)
-- TASK-020: Draft the profile source-of-truth pack + approval sheet (depends on: —)
-- TASK-021: Place the approved profile, C5/C8 and the Class 1 additions (depends on: TASK-019, TASK-020, owner approval)
+- TASK-019: Apply the ten decided resume-fact corrections (depends on: —) — **DONE 2026-09-09**
+- TASK-020: Draft the profile source-of-truth pack + approval sheet (depends on: —) — **DONE 2026-09-09**
+- TASK-021: Place the approved profile, C5/C8/C9 and the Class 1 additions (depends on: TASK-019, TASK-020, owner approval) — **DONE 2026-09-13**
 
 ## Questions
 

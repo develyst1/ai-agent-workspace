@@ -372,83 +372,7 @@ BACKOFFICE audience, deferred to the `REQ-BO` phase**, not a chat role · date �
 📌 **The method note worth keeping:** one word in a copy document — `CEO` — **was a whole subsystem in another
 phase.** They wrote copy, not scope. **Their documents are read for decisions, never transcribed.**
 
-## §17b — 🔻 THE CUSTOMER'S COPY, VERBATIM. Transcribed 2026-09-07 because §17 never held it.
-
-🔻 **My error, and it is the one this repo has a rule against.** I told @Sober *"their own 8-screen copy in §17 is
-the source text — use their English, not a translation of ours."* **§17 holds my ANALYSIS of that copy, with
-fragments quoted. It never held the strings.** He wrote a spec and a Definition-of-Done line pointing at §17
-**without opening it**, and @Jason found it **by trying to use it**.
-🔑 **@Jason's sentence, kept because it names the class:** *"a document that exists outside the repo doing work
-inside it."* ⇒ **That is our own rule from the other end — if a fact is not in a file in this repo, it does not
-exist — and I broke it while quoting it.**
-**Below is the literal text the owner relayed on 2026-09-06. Not summarised, not improved.**
-
-```
-1. เริ่มลงทะเบียน / Start Registration
-กรุณาพิมพ์ "สมัคร" เพื่อลงทะเบียนนักเรียนค่ะ
-Please type "register" to start.
-
-2. เลือกบทบาท / Select Your Role
-กรุณาพิมพ์ "Next" เพื่อเข้าใช้งานค่ะ
-Please type "Next" to continue.
-
-3. เบอร์โทรศัพท์ / Phone Number
-กรุณาพิมพ์เบอร์โทรศัพท์เพื่อดำเนินการลงทะเบียนค่ะ
-Please enter your phone number to continue.
-
-4. เพิ่มนักเรียน / Add a Student
-ลงทะเบียนผู้ปกครองสำเร็จแล้วค่ะ ✅
-Registration completed ✅
-
-เบอร์โทรศัพท์ / Phone: 082-503-1502
-
-กรุณาพิมพ์ชื่อนักเรียน เช่น "ส้ม"
-Please enter the student's name, e.g. "Emily".
-
-เพิ่มได้สูงสุด 5 คนต่อเบอร์โทรศัพท์
-You can add up to 5 students per phone number.
-
-5. วันเดือนปีเกิด / Date of Birth
-กรุณาพิมพ์วันเกิดของนักเรียนค่ะ
-Please enter the date of birth.
-
-6. จังหวัด / Province
-กรุณาพิมพ์จังหวัดที่อยู่ปัจจุบันค่ะ
-Please enter your current province.
-
-7. ตรวจสอบข้อมูล / Confirm Information
-กรุณาตรวจสอบข้อมูลก่อนบันทึกค่ะ
-Please check your information before saving.
-
-ชื่อ / Name: น้องส้ม
-วันเดือนปีเกิด / Date of Birth: 02.12.2024
-จังหวัด / Province: Bangkok
-
-ข้อมูลถูกต้องหรือไม่คะ?
-Is this information correct?
-
-กรุณาพิมพ์ "ยืนยัน" เพื่อบันทึก
-Please Type "Confirm" to save.
-
-พิมพ์ "ยกเลิก" เพื่อออกจากการลงทะเบียน
-Type "Cancel" to exit.
-
-8. เพิ่มนักเรียนสำเร็จ / Student Added Successfully
-เพิ่ม "น้องดีซี" สำเร็จแล้วค่ะ ✅
-"Nong DC" has been added successfully. ✅
-```
-
-### 🔴 Departures from this text that are already RULED — apply the copy, not these bits
-
-1. **Screen 2's `Next`** — **superseded.** `TASK-251` ships **quick-reply buttons with postback payloads**, which
-   is what killed their own `1/2/3` collision. **Their Thai/English framing of the step stays; the typed `Next`
-   does not.** *(Their staff keywords `ครู` · `แอดมิน` stand. `CEO` is a backoffice audience — §17.)*
-2. **Screen 5's date format** — **`วัน-เดือน-ปี` (`DD-MM-YYYY`)**, their day-first order with **our dash**, per
-   the owner 2026-09-06. **Their `02.12.2024` dots do not ship.**
-3. **The numbered lists in screens 4 and 5** were an **example of the list, not batch entry** (owner,
-   2026-09-06). **One student at a time, unchanged.**
-4. **Headings** (*"1. เริ่มลงทะเบียน / Start Registration"*) are **their section titles, not message text.**
-   **Do not send them.**
+## §17b — the customer's 2026-09-07 copy. 🔒 **SUPERSEDED by §17c (2026-09-08).** Verbatim text in `archive/REQ-079-2026-09-11-pre-consolidation.md` §17b.
 
 ## §19 — ✅ SWEEP OF THIS REQUIREMENT'S CLOSED RULINGS (Sober, 2026-09-07, TASK-279)
 
@@ -606,3 +530,21 @@ started anything, above a line that already says what to do.**
 option tells a parent both that roles exist AND that they were not offered a choice.**
 ✅ **Ruling: send the message bodies only.** ⚠️ **If the customer later says the headings ARE on-screen, screen 2
 still needs a different title, and that is a question I will put to them with this reasoning attached.**
+
+# §17g — CUSTOMER, 2026-09-11: **do NOT auto-send the *"กรุณาพิมพ์ สมัคร"* prompt. They will tell parents themselves.**
+> Owner: *"close it ลูกค้าบอก ลูกค้าไม่อยากได้คำแนะนำให้กดคำสั่งนี้ ลูกค้าบอก จะบอกลูกค้าให้กดเอง"*
+**Evidence — the owner's screenshot on the CUSTOMER'S OA (`SOM.BALANCE.SCHOOL`):** their own greeting fires
+(the price table, *"Our Program / Location / Summer Camp / Skate Product — Type 1/2/3/4"*, the linktree),
+**and then OUR bot fires `กรุณาพิมพ์ "สมัคร" เพื่อลงทะเบียนค่ะ / Please type "register" to start.` directly
+beneath it.** **Two voices in one greeting.**
+✅ **RULING: the bot does NOT send the `สมัคร` prompt on its own.** 🔑 **The KEYWORD stays — `สมัคร` /
+`register` still starts registration.** **Only the unsolicited PROMPT goes.**
+📌 **Why it is the right call and not just their preference: the customer already has a greeting with a menu
+(`1`–`4`), and our line arrives as a SECOND system talking over it.** ⇒ **the parent meets two bots. They want
+one — theirs — and to hand off to ours by telling the parent what to type.**
+⚠️ **Scope question for @Sober, not for the owner: WHICH trigger sends that prompt today?** **On FOLLOW? On any
+unrecognised first message? Both?** **The ruling is "never unsolicited"; the trigger list is engineering's.**
+🚫 **`§17c` screen 1's TEXT is unchanged** — it remains the correct reply when a parent DOES need the hint
+(e.g. types something the bot cannot place). **Only the automatic send is removed.**
+✅ **DONE by the OWNER himself, 2026-09-11 (*"ฉันแก้เองไปละ"*).** 🚫 **No task was cut.** ⚠️ **The team is told
+the tree moved by a non-engineer hand; the emit-check and vocabulary test are to be RE-RUN, not assumed.**

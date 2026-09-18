@@ -27,42 +27,18 @@
 > intake run opened): run **2026-09-05-d** appended verbatim to
 > `archive/dispatcher-state-2026-09-05.md` and `diff`-verified identical BEFORE this file
 > was cut. Runs 2026-09-05-e onward stay below (6 runs — at the limit).
-
-## RUN 2026-09-05-e — N=8 — started from: human answers Q27/Q20/Q21/Q22 — REQ-003 unblocked
-hop 1 | PM  | did: recorded Q20/Q21/Q22/Q27 verbatim, added R7 (every drafted line needs the owner's approval) + R9 (an unsourced field stays empty), and moved REQ-003 DRAFT-BLOCKED -> READY_FOR_SA | ball_to: SA | flags: Q22-b/Q28/Q29 non-blocking with written defaults; reading the 4 repos is now sanctioned read-only
-hop 2 | SA  | did: took REQ-003 to IN_SPEC and wrote SPEC-003 (content-only — two objects in projects.ts, no component or CSS), split at the R7 approval gate into TASK-016 (draft pack, cited per line) and TASK-017 (place approved text verbatim, BLOCKED) | ball_to: FE | flags: SQ14 (no screenshots ship — no image slot exists), SQ15 ("Nine projects" numeral), SQ16 (ordering + name tie-break)
-hop 3 | FE  | did: read the 4 pinned repos read-only in scratch + the 2 public sites, wrote the fully-cited DRAFT-001 pack, touched no code -> REVIEW | ball_to: SA | flags: all 4 SHAs matched the pinned table; zero uncited lines; zero dates/clients/metrics; FQ44-FQ46 for SA
-hop 4 | SA  | did: reviewed TASK-016 -> DONE with its own re-verification (10/10 cited lines spot-checked at 2 re-cloned pinned SHAs), answered FQ44-FQ46 so only 1 of 3 reaches the owner, reduced his decisions to a 4-line approval sheet with a default on every pick | ball_to: PM | flags: 1 low-confidence item — 2 of the 4 repos were not re-cloned, sampling declared
-hop 5 | PM  | did: relayed the REQ-003 draft pack to the owner at the R7 gate with the full drafted strings verbatim, recorded an explicitly EMPTY approval record in REQ-003 | ball_to: HUMAN | flags: 4 decisions, 3 of them a tick; TASK-017 stays BLOCKED and AC-g unticked until the owner's words are written in
-STOPPED hop 5/8 — condition 7 (ball_to HUMAN) — the R7 approval gate is the owner's by design
-Board: REQ-001 + REQ-002 DELIVERED; REQ-003 IN_SPEC with SPEC-003 ACTIVE, TASK-016 DONE, TASK-017 BLOCKED on the owner's approval.
-Digest sent to human: the full drafted text for both entries, 4 decisions.
-
-## RUN 2026-09-05-f — N=4 — started from: owner approval of the REQ-003 draft pack
-hop 1 | PM  | did: cleared 2 hygiene FAILs (2 runs rotated + 4 board cells shortened, all archived verbatim and verified first) and recorded the owner's verbatim "อนุมัติ" as the R7 approval record; AC-g ticked, TASK-017 unblocked on the board | ball_to: SA | flags: approved text is cited to DRAFT-001 rather than re-typed, so no second copy can drift
-hop 2 | SA  | did: re-checked the R7 record and both target files on disk, moved TASK-017 BLOCKED -> TODO with 5 pack-to-code mapping rulings so Fern needs no round-trip | ball_to: FE | flags: SQ17 — the repo is now checked out on branch D1 (not develop) with TASK-013/014/015 committed as c152314; branch choice is the owner's, so Fern edits the checked-out tree and switches nothing
-hop 3 | FE  | did: placed the two owner-approved entries in projects.ts (+52/-0, now 11) and changed the intro numeral to "Eleven"; 18/18 approved strings verified verbatim, tsc 0, build 0, 11 cards + both modals + both live links checked on the served build | ball_to: SA | flags: no screenshot of an open modal (same harness limit as SQ7/FQ35), declared not claimed; branch found = D1, zero git writes
-hop 4 | SA  | did: reviewed TASK-017 -> DONE by re-deriving every approved string from DRAFT-001 with its own parser and comparing against the evaluated module — 24/24 character-exact, 0 diffs; SPEC-003 DONE, REQ-003 SPEC_DONE | ball_to: PM | flags: modal pixels still uncaptured (a QA leg); SQ17 (branch D1) still the owner's
-STOPPED hop 4/4 — condition 5 (hop budget reached)
-Board: REQ-001 + REQ-002 DELIVERED; REQ-003 SPEC_DONE — the two projects are in the code, awaiting Porter's acceptance + a QA look.
-Digest sent to human: his two projects are on /portfolio, text character-identical to what he approved.
-
-## RUN 2026-09-05-g — N=4 — started from: ไปเลย (hygiene FAIL, housekeeping folded into hop 1)
-hop 1 | PM  | did: fixed the one hygiene FAIL and wrote the REQ-003 acceptance pass — 7/8 ticked, AC-d deliberately held open because the live-project link renders inside a modal only the engineer has ever seen | ball_to: QA | flags: requested exactly one picture-capturing round, and named what it did NOT ask for
-hop 2 | QA  | did: ran TEST-006 on a fresh local production build and CAPTURED /portfolio + both new modals as pictures at 1280 and 360, reading each live-project href off the DOM — TEST_PASSED 10/10, 0 defects | ball_to: PM | flags: QQ11 (the 2 files are now committed at ca5c097 on D1 — SQ17's premise moved), QQ12 (OBS-8)
-hop 3 | PM  | did: ticked AC-d on TEST-006 and set REQ-003 DELIVERED (8/8); answered QQ11 (ca5c097 is on develop and origin/develop, so SQ17's premise is settled) and QQ12; archived REQ-003 verbatim before consolidating it to clear the gate | ball_to: HUMAN | flags: REQ-003 sits ~150 bytes under the 45KB cap — the next writer must consolidate first
-STOPPED hop 3/4 — condition 7 (ball_to HUMAN) — all three REQs are DELIVERED and no role has work waiting
-Board: REQ-001, REQ-002, REQ-003 all DELIVERED. Nothing queued for PM, SA, FE or QA. Everything open is the owner's: sign-off, the deploy call, and the non-blocking carries.
-Digest sent to human: his two projects are live on /portfolio with pictures; the whole engagement is now waiting on him.
-
-## RUN 2026-09-05-h — N=4 — started from: human answers OBS-8 (raise the button) + Q28 (keep the nine)
-hop 1 | PM  | did: turned OBS-8 into REQ-004 (READY_FOR_SA — the live-link button must be visible without scrolling on phones) and closed Q28 as the owner's word, not a team default | ball_to: SA | flags: Q30/Q31/Q32 non-blocking with written defaults; REQ-003 is 53 bytes under the 45KB cap and must be consolidated before any further write
-hop 2 | SA  | did: specced REQ-004 and cut TASK-018 in one unit — a one-CSS-rule sticky footer, mechanism already proven by the same modal's sticky header; closed SQ17 | ball_to: FE | flags: SQ18 (the real scope is 7 modals, not 11 — four entries have no link), SQ19 (the pinned bar covers ~85px of phone reading area), SQ20
-hop 3 | FE  | did: implemented TASK-018 — pinned the modal footer (1 file, +15/-0); 7/7 linked buttons visible with zero scrolling at 360x740, desktop scrollHeight byte-identical, tsc 0, build 0 -> REVIEW | ball_to: SA | flags: FQ47 (spacing-lg is 24px not 20 — design unaffected because SA specified the token), FQ48 (5 of 7 actually moved; 2 never overflowed)
-hop 4 | SA  | did: reviewed TASK-018 -> DONE (scope, tsc, build and the BUILT css re-verified first-hand), corrected its own SPEC arithmetic from FQ47, raised SQ21; SPEC-004 DONE, REQ-004 SPEC_DONE | ball_to: PM | flags: every AC still unticked — they ask to be SEEN, and an implementer's own numbers never tick a "seen" AC
-STOPPED hop 4/4 — condition 5 (hop budget reached)
-Board: REQ-001/002/003 DELIVERED, REQ-004 SPEC_DONE awaiting Porter's acceptance + one QA picture round.
-Digest sent to human: the phone button is fixed and measured; the picture round is one hop away.
+> Rotated 2026-09-13 (PM housekeeping, 7th — gate said 8 runs > limit 6 after run
+> 2026-09-13-a opened): runs **2026-09-05-e** and **2026-09-05-f** appended verbatim to
+> `archive/dispatcher-state-2026-09-05.md` and `diff`-verified identical BEFORE this file
+> was cut. Runs 2026-09-05-g onward stay below (6 runs — at the limit).
+> Rotated 2026-09-13 (PM housekeeping, 8th — gate said 7 runs > limit 6 after run
+> 2026-09-13-b opened): run **2026-09-05-g** appended verbatim to
+> `archive/dispatcher-state-2026-09-05.md` and string-verified present BEFORE this file
+> was cut. Runs 2026-09-05-h onward stay below (6 runs — at the limit).
+> Rotated 2026-09-13 (PM housekeeping, 9th — gate said 7 runs > limit 6 after run
+> 2026-09-13-c opened): run **2026-09-05-h** appended verbatim to
+> `archive/dispatcher-state-2026-09-05.md` and string-verified present BEFORE this file
+> was cut. Runs 2026-09-05-i onward stay below (6 runs — at the limit).
 
 ## RUN 2026-09-05-i — N=4 — started from: ไปเลย (hygiene FAIL, housekeeping folded into hop 1)
 hop 1 | PM  | did: cleared both hygiene FAILs by sweeping 33 closed board rows + 2 runs into verified verbatim archives (board 22.4 -> 13.6KB) and ran the REQ-004 acceptance pass — AC-e/AC-f ticked on the diff, 5 held for pictures, TEST-007 requested | ball_to: QA | flags: re-homed 2 facts that lived only in swept cells before cutting
@@ -90,3 +66,43 @@ hop 8 | SA  | did: re-reviewed the rework with its own independent scan (22/22 f
 STOPPED hop 8/8 — condition 5 (hop budget reached)
 Board: REQ-005 IN_SPEC (TASK-019 + TASK-020 DONE, TASK-021 BLOCKED on the owner's approval); REQ-006 and REQ-007 still READY_FOR_SA and untouched. 0 of the owner's 5 gateway calls spent.
 Digest sent to human: 10 resume corrections are live in the code; the profile pack needs his approval; the gateway/AI work has not started.
+
+## RUN 2026-09-13-a — N=10 — started from: ไปเลย (hygiene FAIL, housekeeping folded into hop 1; REQ-006 leg next)
+hop 1 | PM  | did: cleared both hygiene FAILs (2 runs rotated, 7 board cells shortened, stale git row closed against a fresh read — D1=1dcc9b8, develop=ca5c097), gate PASS; put the REQ-005 6-line approval sheet to the owner with every proposed string | ball_to: HUMAN | flags: sheet blocks only TASK-021; REQ-006 is independent
+DISPATCHER DECISION: the approval sheet is carried to the end-of-run digest; continuing on the independent REQ-006 leg under the owner's N=10.
+hop 2 | SA  | did: consumed the REQ-006 leg — fired and recorded 2/5 real gateway calls (production is v1.1.0 vs the readable v1.0.0 checkout; POST /chat answered from deepseek-flash, a model in neither catalogue), wrote SPEC-006 + TASK-022 (scaffold, no call) + TASK-023 (the one paid call, gated) | ball_to: FE | flags: SQ31 — does a provider-free GET count against the 5? counted conservatively
+hop 3 | FE  | did: scaffolded back/ (Bun + Hono, 13 files: config, typed failure classifier, askGateway, /health + /ask, six-mode stub, 18 tests pass) with ZERO real calls -> REVIEW | ball_to: SA | flags: ledger still 2/5; FQ37/FQ38 non-blocking
+hop 4 | SA  | did: reviewed TASK-022 -> DONE (re-ran every DoD check with the URL pinned to a dead port, 18/18, own stub round-trip), answered FQ37 as TASK-023 step 0 and FQ38, unblocked TASK-023 | ball_to: FE | flags: ledger 2/5; TASK-023 will spend call #3 through back/
+hop 5 | FE  | did: TASK-023 — step 0 trim->400 (18/18), ledger row 3 appended BEFORE firing, one real call through back/ -> 200 deepseek/deepseek-flash 19 tokens 568ms; ledger 3/5; AC-d greps empty -> REVIEW | ball_to: SA | flags: no retry, exactly one call
+hop 6 | SA  | did: reviewed TASK-023 -> DONE (every DoD line re-run on a dead-port gateway, zero real calls), closed SPEC-006 DONE, REQ-006 -> SPEC_DONE | ball_to: PM (acceptance) / SA (REQ-007 leg next) | flags: ledger 3/5, rows 4-5 left to the owner
+hop 7 | SA  | did: consumed the REQ-007 leg — SPEC-007 ACTIVE (understand->match->answer chain, one askGateway per step, over a real Bun WebSocket; code-verified citations; off-topic stops after step 1; nothing stored) + TASK-024/025/026 TODO stub-only + TASK-027 BLOCKED on Q49 | ball_to: FE | flags: 0 real calls; SQ34-SQ37 to PM
+hop 8 | FE  | did: built TASK-024 on the stub — knowledge loader, generated PROJECTS.md from projects.ts (11 sections), the transport-free 3-step chain with code-built verbatim citations, fictional fixture profile, step-aware stub; 31/31 tests, tsc 0, zero real calls -> REVIEW | ball_to: SA | flags: FQ40 (CRLF drift on non-Windows), FQ41
+hop 9 | SA  | did: reviewed TASK-024 -> DONE (every DoD line re-run on a dead-port/stub gateway, 31/31, generator idempotent by sha256), answered FQ40 as a 2-line EOL-agnostic test fix in TASK-025 step 0, unblocked TASK-025 | ball_to: FE | flags: 0 real calls
+hop 10 | FE | did: built TASK-025 — a real GET /ws WebSocket over the chain (createBunWebSocket on the same Bun.serve, per-socket abort, close mid-chain cancels the in-flight fetch), 11 real-socket tests, ws-client CLI; 42/42, tsc 0, zero real calls -> REVIEW | ball_to: SA | flags: FQ42 (no done frame after busy/bad_request) for SA to flip if wanted
+STOPPED hop 10/10 — condition 5 (hop budget reached)
+Board: REQ-005 IN_SPEC (TASK-021 BLOCKED on the owner's approval sheet); REQ-006 SPEC_DONE awaiting PM acceptance; REQ-007 IN_SPEC — TASK-024 DONE, TASK-025 REVIEW, TASK-026 TODO gated, TASK-027 BLOCKED on Q49. Ledger 3/5 (REQ-006) + 0/? (REQ-007).
+Digest sent to human: the REQ-005 approval sheet (carried from hop 1), back/ built end to end incl. the real WebSocket, Q49 needed before any real chain run.
+
+## RUN 2026-09-13-b — N=10 — started from: owner approval of the REQ-005 sheet + Q49=30 (hygiene FAIL, housekeeping folded into hop 1)
+hop 1 | PM  | did: cleared 2 hygiene FAILs, recorded the REQ-005 sheet answers verbatim + resolved (SQ29 = two projects), Q49=30 into REQ-007, delivered REQ-006 6/6 (own read-only re-checks, no QA round by PM decision) | ball_to: SA | flags: REQ-006 DELIVERED
+hop 2 | SA  | did: reviewed TASK-025 -> DONE (42/42 on a dead-port pin, own stub run of all 9 frames, FQ42 accepted), opened the SPEC-007 ledger at 0/30, lifted TASK-021 to TODO with the owner's values pasted | ball_to: FE | flags: TASK-021 first, then TASK-026; both zero-call
+hop 3 | FE  | did: placed TASK-021 — PROFILE.md + citations diff-identical to the approved draft, 9 skill chips + C5/C8/C9 in five front/ files, back/ 42/42 with profile:true, front tsc 0 build 0 -> REVIEW | ball_to: SA | flags: 0 real calls; FQ45 non-blocking
+DISPATCHER DECISION: TASK-026 is startable and file-disjoint from TASK-021's review — giving Fern the next hop rather than waiting on SA.
+hop 4 | FE  | did: built TASK-026 — the Home "Ask the AI" section (chips, input, 3-row thinking timeline with provider/model/ms badges, answer + Sources links, failure panel) on the stub; tsc 0, build 0, happy/none/offtopic seen, 18 pictures -> REVIEW | ball_to: SA | flags: 0 real calls; Home hero untouched, fold unchanged at 360
+hop 5 | SA  | did: reviewed TASK-021 + TASK-026 as one unit, every DoD re-run -> both DONE; SPEC-005 DONE, REQ-005 SPEC_DONE; TASK-027 -> TODO with Runs A/B/C named and a 12-of-30 cap | ball_to: FE | flags: next hop spends real money
+hop 6 | FE  | did: TASK-027 — first REAL chain runs via ws-client, 7 calls (planned 7, 0 retries, ledger 7/30, rows written before each fire): Run A covered with 5 code-verified citations, Run B (Kubernetes) coverage:none with no invented claim, Run C (weather) stopped at step 1; every frame recorded verbatim -> REVIEW | ball_to: SA | flags: FQ50 — the leading "Yes." is a capability inference, put to SA not judged
+hop 7 | SA  | did: reviewed TASK-027 read-only — frames diff-identical to project-docs, re-traced every AI claim in Run A line-by-line against both knowledge files (nothing named that is not there), D6 re-run by script; TASK-027 DONE, SPEC-007 DONE, REQ-007 SPEC_DONE | ball_to: PM | flags: SQ38 (may the AI say "Yes." when every fact under it is on a line — default yes); AC-a browser picture UNVERIFIED by design
+hop 8 | PM  | did: acceptance passes — REQ-005 4/5 (AC-d held for pictures), REQ-007 4/8 (AC-a/d/e/h held for a real browser); requested TEST-008 (zero cost) + TEST-009 (real gateway, 1 question, cap 5) from Tanya, asked Sober for the ledger row | ball_to: QA (via SA for the ledger row) | flags: 4 owner questions, none blocking
+hop 9 | SA  | did: wrote SPEC-007 ledger rows 8-12 authorising TEST-009 (1 question, planned 3, hard cap 5, actuals PENDING); fired nothing, 7/30, 18 unallocated | ball_to: QA | flags: -
+hop 10 | QA | did: TEST-008 TEST_PASSED 24/24 zero cost (REQ-005 strings photographed, REQ-007 failure pictures) + TEST-009 TEST_PASSED — one real question in a real browser against the real gateway, calls=3 of planned 3, 3 steps with real deepseek-flash badges, 6/6 claims traced, nothing invented | ball_to: PM | flags: QQ14 — H8 hero fold margin now 0.41px over (spent by REQ-005's longer role/lead)
+STOPPED hop 10/10 — condition 5 (hop budget reached)
+Board: REQ-005 SPEC_DONE 4/5 + REQ-007 SPEC_DONE 4/8 both awaiting Porter's tick from TEST-008/009; REQ-006 DELIVERED. Ledger 7/30 pending Sober's actuals -> 10/30. All 7 SPEC-007 + 3 SPEC-005 + 2 SPEC-006 tasks DONE.
+Digest sent to human: the AI feature works end to end against his real gateway in a real browser — picture delivered.
+
+## RUN 2026-09-13-c — N=4 — started from: new requirement (back/ port 4014 via env; front/ port 3023 if locked) — hygiene FAIL, housekeeping folded into hop 1
+hop 1 | PM  | did: cleared 2 hygiene FAILs; REQ-005 DELIVERED 5/5 + REQ-007 DELIVERED 8/8 on TEST-008/009; relayed calls=3 to SA; wrote REQ-008 (back 4014 = R1 READY_FOR_SA; front 3023 = R2 held on Q54: front is locked in Docker but not in scripts) | ball_to: SA | flags: Q54 blocks R2 only
+hop 2 | SA  | did: filled SPEC-007 ledger (10/30, 20 unallocated), specced REQ-008 R1 as SPEC-008 + TASK-028 (code default 4014, env overrides, every local 3001 follows, fresh front build), R2 held on Q54 | ball_to: FE | flags: repo is clean at a294347 — the human committed back/ + front
+hop 3 | FE  | did: implemented all 6 TASK-028 edits (back default 4014 + guard test + ws-client + both READMEs + front constant), 45/45 tests, fresh front build, .env proof then deleted, zero real calls -> BLOCKED | ball_to: SA | flags: FQ53 — port 4014 is held by the HUMAN's own `bun run dev` (PID 16964, started 23:20 from his VS Code), which hot-reloaded onto 4014 when config.ts was saved; Fern would not kill, double-bind or send to it
+STOPPED hop 3/4 — the only unblock is the human's own process; an SA relay hop would add nothing
+Board: REQ-005/006/007 DELIVERED; REQ-008 IN_SPEC — TASK-028 BLOCKED on FQ53 (human), R2 held on Q54 (human). Ledger 10/30.
+Digest sent to human: stop or confirm PID 16964; Q54 for the front port.

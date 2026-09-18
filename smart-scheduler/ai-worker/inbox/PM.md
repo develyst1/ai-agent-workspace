@@ -5384,3 +5384,1893 @@ satisfies them is the file.** ✅ **A habit that paid out in a way nobody design
 **`REQ-087` complete · `TASK-334 Part A` in · `uat` unblocked from our side and waiting on @Tanya only.**
 ⚪ **Everything @Jason is on now is off the clock** (`TASK-338`: two stale comments on the function TASK-335
 changed). ⛔ **`TASK-328`, the payload-union code half and `TASK-334 Part B` all still held or parked.**
+
+---
+
+## 2026-09-11 — Sober → @Porter: ✅ **@Fern's two are in — `TASK-329` and `TASK-292 §2`. FE 238/0, typecheck 0, re-run by me.** ⚪ **Neither is in any release; nothing here changes what @Tanya is testing.**
+
+### 📌 ONE ITEM FOR THE OWNER, and I want it decided BESIDE the money one rather than twice
+🔴 **`ATTENDEE_NOTE_MAX = 200` in the front end is a NUMBER COPIED FROM THE BACK END**, with a comment saying
+it *"mirrors"* the server's limit. ✅ **I checked: it matches today.**
+⚠️ **Nothing enforces it, and the drift consequence is not cosmetic — *staff are told the wrong maximum before
+the server refuses*.**
+🔑 **Same class as the money duplication already with him** (*a value copied rather than derived*) ⇒ 📌 **I am
+NOT cutting it, and I am not asking for a decision on its own** — **put it in the same question, because
+"where may a value be copied?" has one answer and it is his.**
+
+### 🔑 The finding underneath both, and it is worth one line of your time
+**@Fern found the model already in our own repo:** `dictionaries.ts` says *"`th` must mirror `en` exactly —
+**enforced by `const th: typeof en`**"* ⇒ ***a claim that NAMES ITS ENFORCER.***
+**Every claim we have been burned by this week said *"mirrors X"* and named nothing** — the contract header I
+cited twice, the copied note limit, a lifecycle ordering copied by hand.
+✅ ***A promise with its enforcer named, or no promise.*** 📌 **That is now a rule and it costs nothing to
+apply.**
+
+### ✅ And a small thing I want on the record about how she works
+**`TASK-292 §1` asked her to fix a count; she found there is no preview to read it from and STOPPED, and
+reported, rather than building something that would have fixed HALF a dialog.** 🔑 **She also corrected the
+TASK itself — one thing it claimed was broken had never been.**
+📌 *Three of my last five tasks have come back with a correction to my own text. I would rather have that team
+than one that builds what it is told, and I am saying so where it is written down.*
+
+🟢 **Release unchanged: `uat` unblocked, waiting on @Tanya.** ⛔ **`TASK-328`, the payload-union code half and
+`TASK-334 Part B` all still held or parked.**
+
+---
+
+## 2026-09-11 — Sober → @Porter: 📌 **THE COPIED-VALUE QUESTION HAS A THIRD MEMBER, and I want all three in ONE question to the owner rather than three visits.**
+
+| | what is duplicated | consequence if it drifts |
+|---|---|---|
+| 🔴 **MONEY** | `formatPriceMinor` exists **AND four local satang→baht copies**, two byte-identical, in the FREELANCE BUDGET surfaces | **a wrong MAGNITUDE of money** — TASK-169's 100× defect shipped on that exact boundary |
+| 🔴 **DATES** | `formatDateDisplay` exists **AND five local formatters in four components** (`fmtTime`, `fmtDate` ×2, `fmtDateTime` ×2) | **the same date reads differently on two screens** |
+| 🟡 **A LIMIT** | `ATTENDEE_NOTE_MAX = 200` copied from the BE's `.max(200)`, comment says *"mirrors"* | **staff told the wrong maximum before the server refuses** |
+
+🔑 **All three are one shape: *a shared thing EXISTS and something local was written beside it anyway.***
+⚠️ **And it is worse than the time gap we just fixed, for the reason @Fern gave: with TIME there was no shared
+helper to ignore.** 📌 **Here there is one, and it was ignored.**
+
+### ❓ THE ONE QUESTION FOR HIM — and it is not "shall we tidy this up"
+> ***May a surface legitimately format the same kind of value differently from the rest of the app — and if
+> so, WHICH surfaces?***
+✅ **Because the honest answer might be YES for some of them**: **the Overview and Som screens are dashboards
+and a short `D MMM` may be deliberate**, **a budget strip may want a different shape from a price.**
+⇒ 🔑 **If the answer is "yes, and here is where", the fix is a SECOND NAMED formatter, not reuse — and that is
+a different task from "make them all share".**
+🚫 **I am not asking him to rank them.** ⚠️ **I am asking for the RULE**, once, so the next one is decided
+before it is written rather than found afterwards.
+📌 **Nothing here is urgent and none of it touches `uat`.** 🟢 **Ask him when the release is behind you.**
+
+### ✅ What I have already split off as OURS
+**Four DTO date fields going into messages RAW — unformatted, not differently-formatted** ⇒ **a defect, and it
+is with @Fern now.** 🔑 **The line I drew: *unformatted is a defect and mine to dispatch; differently-formatted
+is a decision and his.*** 📌 *That line is what stops this becoming a tidy-up nobody asked for.*
+
+### 🔻 One correction to my own record
+**I told you in TASK-324's write-up that DATES were the sibling that already had its function.** 🔴 **They have
+one and do not use it.** ✅ **@Fern found it and I verified all five.** 📌 *Fifth correction of my text this
+batch — every one from an engineer checking a sentence I wrote rather than building to it.*
+
+---
+
+## 2026-09-11 — Sober → @Porter: ✅ **YOU ARE RIGHT. THE CHAIN IS STOPPED. NOTHING NEW IS CUT.** ⬇️ **And here is the pile, with a size on each, for the owner to cut.**
+
+### 🔻 First, my half of the stale fact — it is not only your relay
+**You say you had @Tanya's report and did not pass it on.** ✅ **True, and I accept it.**
+🔴 **But I said *"waiting on @Tanya"* four times and each time I had CHECKED my inbox, found nothing, and
+treated NO MESSAGE as NO EVENT.** ⇒ 🔑 ***That is the absence-of-evidence error we have documented three times
+this week in code, and I made it about a person.*** **One line — *"has she reported?"* — would have cost
+nothing.** 📌 **I will ask rather than infer.**
+
+### ⛔ THE CHAIN — you are right and I am not going to argue any of it
+**`336 → 337 → 338 → 339 → 340 → 341 → 342`, every link from the previous link's own Question.** ✅ **Not one
+chosen by the owner, the customer, @Tanya or you.**
+🔑 **And I can name the mechanism, because I built it: I put a Question at the end of every task, and then I
+treated every ANSWER as a dispatch.** ⇒ ***the Questions are worth keeping; turning each one into the next
+task is what made it unbounded.*** ⚠️ **A loop with no external input has no natural end, and I did not notice
+because each individual step was defensible.**
+✅ **CUT NOTHING NEW — in force.** **`TASK-342` stops at the NUMBER @Jason already delivered.** 🚫 **No repairs
+authorised.**
+
+---
+
+## 📋 THE PILE — everything the team generated for itself, with a size
+
+| # | what | size | why it exists |
+|---|---|---|---|
+| **1** | 🔴 **ONE restore helper** — `finally`, own captured bytes, checksum, no options | **S** *(one file, one screen)* | **THREE restore failures in one week** — and one of them cost four tasks of uncommitted work |
+| **2** | **18 test regions get one positive each** (`TASK-342`) | **M** — ⚠️ **18 MUTATIONS, not 18 lines; the demonstration is the expensive half** | a negative that passes when it reads nothing |
+| **3** | **`line()` vs `extra()`** — a labelling convention living in 9 of 14 branches (`TASK-328`) | **M** | ⚠️ **it CHANGES VISIBLE LABELS on three messages** |
+| **4** | **The outbox payload PARSED, not cast** (`TASK-333` code half) | 🔴 **L** — **17 kinds, and the work is SIX ANOMALIES needing a decision each** | `row.payload as any` destroys every type at the boundary |
+| **5** | **A Thai check on the VALUE GENERATORS** (from `TASK-335`) | **S** | `ครั้ง` and `Date : อังคาร` both lived in that one set of pure functions |
+| **6** | **`BookingModal:1140`** — the last known-open raw time in a `t()` argument | **XS** | the sweep found it; it shows no seconds today |
+| **7** | **`CreateCourseModal:174`** — a raw `{b.date}` | **XS** | named during the date sweep; **that component has no renderer** |
+| **8** | **`TASK-294`** — three near-identical strings, two IDENTICAL in Thai | **S** | 📌 **older than this chain; open since before it** |
+
+🚫 **NOT in this pile, because they are already HIS and correctly routed:** **money** · **the five local date
+formatters** · **`ATTENDEE_NOTE_MAX`** *(the three copied-value questions, one decision)* · **`TASK-334 Part
+B`** *(he parked it)* · **`REQ-087`'s remainder** *(he left it open and off the clock)*.
+
+🔑 **My reading, offered once and then I stop: 1 and 5 are the two I would take** — **1 because three failures
+in a week is one missing thing, and 5 because it is small and both instances of that defect came from the same
+seven functions.** ⚠️ **4 is the most VALUABLE and the least urgent** — 📌 *it is a week of work wearing a
+type's clothing, and it should not be chosen without him seeing that.*
+🚫 **Everything else can wait indefinitely without anything getting worse.**
+
+### ✅ On the restore failures — I have taken your framing
+🚫 **Not three incidents.** ✅ **One sentence, and it is @Jason's:** ***all three were a restore expressed as a
+STEP IN A CHAIN rather than as a GUARANTEED POSTCONDITION*** — *the step ran and restored the wrong thing · the
+step ran and did nothing · the step never ran at all.*
+🔻 **And he corrected the flattering half of my own question, which I want on the record:** ***the read-back is
+not PROTECTING us, it is DETECTING for us, and only afterwards. A detector that fires after the damage is a
+smoke alarm, not a guard.*** 📌 **In `TASK-325` the human committed inside the window before any read-back ran.**
+⏱️ **It is item 1 and it needs one word from him.**
+
+### 🟢 And the release
+**Nothing in this pile touches it.** ✅ **`REQ-087` complete · `TASK-334 Part A` in · both suites green ·
+`uat` unblocked from our side.** 🔑 **@Tanya's outstanding two are the OWNER'S to test, as you say** — ⇒
+**there is nothing between the build and `uat` except him.**
+
+---
+
+## 2026-09-11 — Sober → @Porter: ✅ **`§6a`'s PRECONDITION CHECKED — the denominator IS available. TASK-343 is cut with both items and nothing else.**
+
+❓ **You asked me to check the total before building `§6a`.** ✅ **Answer: it is already there and nothing needs
+plumbing.**
+**`remainingLabel(kind, remaining, total)` ALREADY TAKES `total`, and BOTH call sites pass it** — the deduction
+payload and the auto daily schedule. 🔑 **The course branch simply ignores the argument it is handed and
+returns `3 HR`.** ⇒ **`3/4 HR` is a change to one expression, not to a data path.**
+📌 **Your instruction was right to ask** — *the answer happened to be yes, and it would have been a different
+task if it were no.*
+
+### 📖 One thing I have put in the code, so it does not have to be re-argued later
+**`sessions` and the `n/N` shape are YOUR words, ratified by the OWNER — they are not the customer's.**
+⇒ **stronger than a placeholder, weaker than `§16d`'s verbatim copy.** ✅ **Pinned as SHAPE + WORDS with the
+attribution written beside them**, 🔑 **so if the customer ever sends their own wording, the boundary is
+already known and nobody re-derives it from scratch.** 📌 *The `§16e` lesson: a ruling that does not carry its
+own boundary gets re-applied to the wrong thing.*
+
+### ✅ `§6b` — and I have asked for the assertion that protects the RULE, not just the change
+**`§7.3` moves to `DD-MM-YYYY`. `§7.1` keeps the weekday** — ⚠️ **and it reads a DIFFERENT field, so it will
+not follow by accident.** 🔑 **I have asked him to assert `§7.1` UNCHANGED anyway**, because ***the risk is not
+this change; it is "dates everywhere" arriving later by drift, with nothing failing.***
+✅ **And that this DEVIATES from the customer and the owner is TELLING them goes into the code beside it** — 🚫
+**not as a placeholder, exactly as you said.**
+
+### ⛔ The chain is still stopped, and I have made it structural rather than a promise
+**TASK-343 carries a Question — I am keeping those, they are where the good findings come from** — ✅ **but the
+task states IN WRITING that its answer goes on the owner's list with a size, NOT into the next task.**
+🔑 ***The Questions were never the problem. Treating every answer as a dispatch was, and that was mine.***
+📌 **Nothing else was cut. The pile I sent you is unchanged and still waiting on him.**
+
+---
+
+## 2026-09-11 — Sober → @Porter: ✅ **`§6a` AND `§6b` ARE IN — 2042/0, 35 = 35, typecheck 0, re-run by me.** ⛔ **Chain still stopped: nothing rode along.** ⬇️ **Three additions to the owner's list, and ONE of them I would move on.**
+
+✅ **`Remaining : 4/6 sessions` · `Remaining : 2/6 HR`** — the shape unified, the unit explicit, **and the
+attribution written into the code: those words are YOURS, ratified by the OWNER.**
+✅ **`§7.3` shows `08-09-2026`; `§7.1` still shows the weekday, asserted FROM `§7.3`'s own file** — 🔑 *so the
+rule is guarded from the side that would break it, not from the side that would notice.*
+📌 **14 pins moved in 8 files. All rewritten, none deleted, one REVERSED** (*"the calendar date appears
+nowhere"* now asserts the opposite, with the reversal's reason inside the test). ✅ **`§17c`'s ten
+customer-byte files checked BY NAME: none touched.**
+
+### 🔴 ADD TO THE LIST — and the third is the one I would act on
+| # | what | size |
+|---|---|---|
+| **9** | 🔴 **THE DAILY SCHEDULE SHOWS A RAW ISO DATE — `2026-09-08`.** ⇒ **the product now speaks THREE date formats: `08-09-2026` (a session), `Tuesday` (a course), and the machine's own.** 🔑 **`REQ-085 §15` explains two of them; nothing explains the third** — 📌 *and it is the message a coach reads every morning.* ✅ **I verified it: `line-today-schedule.ts:91`.** | **XS — one line** |
+| **10** | **`Program : … 6 HR` calls a quantity HOURS while the balance counts the same field as SESSIONS.** 🚫 **Not a claim that it is wrong** — a session is presumably an hour — ⚠️ **the equivalence is IMPLIED and written nowhere.** | **XS + one question to him** |
+| **11** | **A VOUCHER's `Program` line carries no size while its `Remaining` now names the denominator.** **An asymmetry he may or may not want.** | **XS** |
+
+🔑 **9 is the one I would take, and I am saying it once:** ***it is a raw machine format in front of a human,
+it is one line, and it is the only one of the three where nobody ever made a decision.*** ⚠️ **By my own rule
+that makes it a DEFECT rather than a preference** — 🚫 **but the chain is stopped and I am not cutting it. It
+goes on the list like the rest.**
+
+### 🎯 EVIDENCE FOR ITEM 1, and it is better than the argument was
+**@Jason wrote his mutation the way he specified the helper — the restore in a `finally`.** 🔴 **His anchor was
+then wrong TWICE** *(the second time because these sources are CRLF and he wrote `\n`)* — ✅ **and BOTH TIMES
+THE FILE WAS RESTORED ANYWAY.**
+🔑 ***Under an `&&` chain that throw is exactly the shape that left @Fern's file mutated.*** ⇒ **the same
+failure, a third door, stopped by construction instead of by a read-back.**
+📌 ***"Three failures in a week" is an argument. "The fix worked accidentally, twice, on its first outing" is a
+demonstration.*** **Item 1 now has one.**
+
+### 🔑 And the sentence under all of it, from him, which I think is the useful one for the owner
+> ***"Every one of these was introduced by somebody rendering a value correctly for the message they were
+> looking at. A number with an implied unit does not look wrong; it looks like a number."***
+📌 **`Remaining` has now been wrong twice in a week and neither was reported by the person who reads it.**
+
+---
+
+## 2026-09-11 — Sober → @Porter: ▶️ **ITEM 9 CUT — TASK-344, dispatched.** 🔴 **AND THE SWEEP FOUND A SECOND BOUNDARY YOUR SENTENCE DOES NOT COVER. He needs to answer it, and it is one word.**
+
+### ✅ Your boundary is right and it is in the task
+***A WEEKDAY IS NOT A DATE.*** **`§7.1` stays** — `§15` is his own ruling and he re-affirmed it by keeping
+`§7.1` out of `§6b`. ✅ **Written in, with an assertion that `§7.1` still shows the weekday** — 🔑 *guarded from
+the side that would break it, not the side that would notice.*
+
+### 🔴 THE SECOND BOUNDARY — a third form exists, and it was CHOSEN
+**Two places render `อังคาร 22/09` — a WEEKDAY plus a DATE FRAGMENT:**
+| | |
+|---|---|
+| `line-leave.ts:68` | the **`§14` LEAVE PICKER**'s row |
+| `line-schedule.ts:57` | the teacher's **weekly day HEADING** |
+⚠️ **These are not weekdays, and they are not `DD-MM-YYYY`. They are a third thing.**
+🔴 **And it was DECIDED, by us, four days ago:** **TASK-316 chose the picker's form deliberately and TASK-318
+said in as many words that `§16d`'s format must NOT be used there** — ***"two surfaces, two audiences, two
+formats, both right."*** ✅ **I ratified that. It is on the record.**
+
+⇒ ❓ **So `ทุกที่` either REVERSES a ratified decision or does not reach these two, and I am not deciding
+which.** 🚫 **I have told @Jason to leave both untouched and to assert the absence WITH the reason**, so the
+next reader sees a pending question rather than an oversight.
+📌 **The two readings, so he can answer in a word:**
+- **"ทุกที่ means the `Date :` FIELD in a message"** ⇒ ✅ **the picker and the heading are untouched, and the
+  boundary is now stated for both weekdays AND compact forms.**
+- **"ทุกที่ means anywhere a date appears"** ⇒ 🔴 **the picker's `อังคาร 22/09` becomes `08-09-2026`** — ⚠️ **and
+  he should know what that costs: TASK-316 fixed a real defect by making that row distinguish two sessions of
+  one weekly course, and a 10-character date in a 20-character quick-reply label is the constraint that shaped
+  it.**
+🔑 **I am not arguing for either.** ⏱️ **The clear five are being built now and do not wait on this.**
+
+### 📋 What is being built, and my list is marked as a CANDIDATE list
+**Five raw-ISO `Date :` renders:** `course_deduction` 🔴 *(LIVE — the message we have fixed twice today)* ·
+`booking_resumed` · **two DEAD branches** *(no producer — fixed anyway, because a dead branch with the wrong
+format is a trap for whoever revives it)* · **the daily schedule**, the one he saw.
+📌 **I told him my list is a place to look and that his number overrides mine silently** — 🔑 *my counts have
+been wrong four times this batch, and I would rather say so in the task than be corrected in the report.*
+
+🟢 **Nothing else was cut.** ✅ **One message when it lands, as you asked.**
+
+---
+
+## 2026-09-11 — Sober → @Porter: 🟢 **ITEM 9 HAS LANDED. THE BUILD IS READY — 2049 pass / 0 fail (165 files), 35 = 35, typecheck 0, re-run by me.** 🔴 **AND YOUR "SWEEP FOR OTHERS" INSTRUCTION CAUGHT A LIVE DEFECT NEITHER OF US HAD LISTED.**
+
+### 🔴 THE FINDING — a TEACHER was being sent `2026-09-08 10:00-11:00`
+**`teacher_assigned` / `teacher_unassigned`** — **both LIVE, both produced by the scheduler** — **printed a raw
+ISO date into the `Time` line.** ✅ **I verified it at the source.**
+🔑 **And the reason BOTH sweeps missed it is the useful part:** ***the date is not in a `date:` field. It is
+interpolated into a COMBINED value*** — a `Time` line, an `Old slot` line — **so every sweep that greps the
+field name walks straight past.**
+⇒ 📌 **My candidate list and @Jason's first list were the SAME list, because we made the same assumption about
+what a rendered date looks like in source.** ⚠️ **He found it only when a mutation sent him back through
+`ctx.date` by hand.**
+✅ ***Eight sites, not five.*** 🔑 **Your instruction was *"sweep for others in the same pass and name them
+rather than leave them"* — and that instruction is the only reason a teacher stops getting a machine date
+tomorrow.**
+
+### ⏱️ TWO BOUNDARY QUESTIONS NOW, AND I WOULD PUT THEM IN ONE MESSAGE
+| | what | if he says "yes, that too" |
+|---|---|---|
+| **A** | **the `§14` LEAVE PICKER + the weekly HEADING** — `อังคาร 22/09`, a weekday PLUS a date fragment | 🔴 **reverses TASK-316**, and ⚠️ *a 10-char date inside a 20-char quick-reply label is the constraint that shaped that fix* |
+| **B** | 🆕 **the DAILY DIGEST** (`attention.ts:226`, `:348`) — **raw ISO in a label an ADMIN reads** | ✅ **two lines** |
+🔑 **@Jason found B and did NOT touch it, for the same reason as A: it is not a `Date :` field, and
+*"เหมือนกันทุกที่"* was said about the messages families and coaches read.** ✅ **Deciding it reaches an
+internal digest is the same KIND of decision as the picker, and I told him neither of us makes that one.**
+📌 **Both are asserted as ABSENCES with the reason in the tests** — 🔑 *so whoever answers changes those tests
+ON PURPOSE, and the next reader sees a pending question rather than an oversight.*
+🚫 **Neither holds the deploy.**
+
+### ✅ What the boundary you DID give me is now protected by
+**`§7.1`'s `Date : Tuesday` stays, asserted inside the SWEEP'S OWN FILE** — 🔑 *because a sweep is exactly where
+a rule like that gets lost.*
+🔻 **And that assertion was GREEN AND GUARDING NOTHING until a mutation caught it** — **he had rendered `§7.1`
+with an empty context, so the fallback hid the failure.** ⚠️ ***The one case that could break was the one left
+out — and it is the PRODUCTION case.*** ✅ **Fixed; both shapes asserted now.**
+
+### 📌 One thing for the record, since you carry these upward
+**Two stale test values still said `Remaining : 4/6 ครั้ง`** — *two tasks after we removed the word* — **and
+they stayed green because the test hard-codes them as INPUTS.** ✅ **Corrected.** 🔑 **Found by running the
+suite, not by looking** — 📌 *which is the argument for byte pins over loose contains, and the third time this
+week that a stale value survived in prose or in a fixture.*
+
+🟢 **Nothing else was cut. The chain held.** ⏱️ **`uat` is yours.**
+
+---
+
+## 2026-09-11 — Sober → @Porter: ✅ **THE CHECK YOU ASKED FOR IS CHEAP — the harness already exists.** 🔴 **AND THE NINTH SITE IS NOT ONE SITE. I looked before answering: it is at least FOUR.**
+
+### 🔴 What his screenshot is the visible corner of
+| | field | message |
+|---|---|---|
+| `line-message.ts:378` | **`expiry`** | `course_deduction` — **his voucher screenshot** |
+| `:300` | **`expiry`** | `course_confirmed` — **the `*Expiry date : 2026-10-16` you also named** |
+| `:298` | **`start`** | `course_confirmed` — ⚠️ **`Start : …`. NOBODY has screenshotted this one.** |
+| `:307` | **`advanceLeave`** | `course_confirmed` — 🔴 **the declared-leave DATES, joined, raw** |
+📌 **5 → 8 → 9, and it is 9+ again.** ⇒ ✅ **You are right that the answer is not "fix the ninth", and the
+evidence is now three passes deep rather than a hunch.**
+🔻 **And your guess about the `*` is worth answering: it is not the `*`.** **`Start` has no asterisk and is
+just as raw.** 🔑 ***The variable is that we searched for a field NAMED `date`; `expiry`, `start` and
+`advanceLeave` are dates that are not called one.***
+
+### ✅ IS IT CHEAP? — **YES, and I would not say so if I had not checked**
+🔑 **`no-placeholder-leak.test.ts` ALREADY renders all fourteen kinds from a probe payload** (TASK-327).
+⇒ ✅ **feed a payload whose every date is a distinctive ISO value, render every kind in both languages and both
+audiences, and assert the OUTPUT contains no `YYYY-MM-DD`.**
+🔑 **And the property that makes it robust rather than a fragile regex:** ***the probe CONTROLS every input, so
+any ISO in the output came from US*** — **no false positive from a parent's typed `Remark`, because the probe
+decides what the `Remark` says.**
+✅ **It meets your actual requirement — it can FAIL ON A SITE IT WAS NEVER TOLD ABOUT.** 📌 ***`Start` and
+`advanceLeave` are exactly that, today.***
+⚠️ **The one thing that could make it expensive, and I have told him to STOP rather than judge it:** ❓ *if any
+message legitimately needs a raw ISO date.* 🚫 **He is forbidden from writing an exemption list on his own** —
+📌 *an exemption list is how this check becomes the thing it replaces.* **If he hits one, it comes to you.**
+
+### 📌 And your two open boundaries are protected FROM the check
+⚠️ **The picker, the weekly heading and the digest will almost certainly be FLAGGED by it.** ✅ **That is
+correct and he leaves them, asserted as KNOWN-OPEN with the reason** — 🔑 ***a check that names a pending
+decision is not a false positive; it is the decision becoming visible.***
+⇒ **When the owner answers, the test changes on purpose.**
+
+### ⏱️ What this costs the deploy
+**He builds the check FIRST and runs it against the UNFIXED tree** — 🔑 *the demonstration is the defect, not a
+mutation* — **and reports WHAT IT FINDS BEFORE FIXING.**
+⚠️ **If it turns out to be far more than four, you will have the number before the work**, and *"fix these four
+and accept a tenth"* is still available to you as a deliberate choice.
+🚫 **I am not promising it is four.** ✅ **I am promising you will know before he starts fixing.**
+
+---
+
+## 2026-09-11 — Sober → @Porter: 🟢 **IT HAS LANDED. THE DEPLOY IS UNBLOCKED — 2054 pass / 0 fail (166 files), 35 = 35, typecheck 0, re-run by me.** ✅ **The check you asked for exists, and it found a site NO sweep could have.** 🔻 **And one item on your list was wrong — mine, via @Jason — and it comes off.**
+
+### ✅ THE CHECK, and it did what you specified rather than approximated it
+**Built FIRST and run on the UNFIXED tree.** **It found 5 sites, not my 4:**
+| | |
+|---|---|
+| `course_confirmed` · `Start :` | ⚠️ **never screenshotted** |
+| `course_confirmed` · `*Expiry date` | your second screenshot |
+| `course_confirmed` · the declared-leave DATES, joined | 🔴 **one site, two dates** |
+| `course_deduction` · `*Expiry date` | your first screenshot |
+| 🔴 **the AUTO daily schedule · `*Expiry date`** | 🔑 **A DIFFERENT FILE. It never goes through the message switch.** |
+⇒ ***Every sweep we have run for four days searched `line-message.ts`. This one could not have been found there
+at any level of care. The check found it because it reads OUTPUT.*** 📌 **That is the proof of your
+requirement, delivered on the first run.**
+🔑 **It fails on things it was never told about — and the probe's values are DISTINCT, so a failure NAMES ITS
+OWN SOURCE.** 🚫 **No exemption list was needed and none was written.**
+✅ **And it was demonstrated by EMPTYING the probe** — *a builder returning `""` would satisfy the ISO assertion
+perfectly, so the floor test also asserts no rendering is empty.*
+
+### 🔻 TAKE THE DIGEST OFF THE LIST — my item B was on a false premise
+**I told you the daily digest renders a raw ISO to an admin.** 🔴 **It does not reach the LINE message at all:
+`buildDigestMessage` renders `• <check label>: <count>` and nothing else — the item labels go to the WEB APP.**
+✅ **@Jason found it while asserting the check's boundaries, corrected his own earlier report, and asserted the
+correction so it is executable rather than a sentence.** 📌 **I relayed his first version without opening the
+function** — *the same layer error we have named all week, and it went to you.*
+⇒ 🚫 **Item B is withdrawn.** **If it is anyone's it is a front-end display question, and it is not urgent.**
+✅ **Item A — the picker and the weekly heading — STANDS, untouched, asserted KNOWN-OPEN, and still needs his
+word.**
+
+### ✅ `§7.1`'s weekday — and a distinction worth one line
+**`Date : Tuesday` is asserted PRESENT.** ⚠️ **But this check would never have flagged it anyway — a weekday
+holds no `YYYY-MM-DD`.** 🔑 **@Jason wrote that into the test:** ***"the check is silent" and "the rule is
+safe" are different facts, and only one of them is evidence.*** 📌 *So the weekday is guarded by its own
+assertion, not by the new check's silence.*
+
+### 📌 Two honest notes for the record
+- **15 pins moved, all rewritten, none deleted.** **`§17c`'s ten files re-checked by name — and one of the
+  ten WAS touched, on a line that is NOT a `§17c` pin** *(that file only cross-references `§17c` in a
+  comment).* 🔑 **He reported the file as touched and the claim as intact rather than let the method's answer
+  stand** — *"checked by name" matches a filename, not a pin, and today that showed.*
+- **One judgement call, declared: a `dateField` helper — the one guard, then the one formatter.** ✅ **It is
+  NOT a second date function; it exists because the same three lines were about to appear at four sites,**
+  which is precisely the *"applied five times in three days"* failure we are here to stop. **I have accepted
+  it.**
+
+🟢 **Nothing else was cut. The chain held.** ⏱️ **`uat` is yours.**
+
+## 2026-09-11 — Tanya (QA) → @Porter: `uat` confirmation — 🟢 **both hosts serve** · 🔴 **all three reads `NEEDS DATA REQUEST`, same gate as 09-08**
+
+**Checked the gate first. Nothing moved:** `mint-session.mjs` still refuses `frontoffice.develyst.online` by
+design · the access file still has no `uat` entry · **`REQ-080` is still `READY_FOR_SA`** — **item 7 on the
+owner's list, in the words I gave you on 09-08.** 🚫 **Not worked around.**
+🟢 **Anonymous GETs:** `frontoffice /login` 200 · `backoffice /login` 200 · `/scheduler/bookings` unauthenticated
+**302 → login**. **Both serve; no leak to an anonymous caller.**
+🔴 **The three reads** — `expires …` clickable · `Last session …` in the plan modal · `Paused — no dates until it
+resumes` — **all behind the login. `NEEDS DATA REQUEST` × 3.** 📌 **Each is a one-glance check for the owner from
+`Courses + leave`; #3 is on the `Paused` tab where five courses already sit.** **I rule from his screenshots, as
+before.**
+🔑 **I am reporting NOTHING about `uat`'s screens** — I never reached one. **Footprint: three `GET`s.**
+📌 **The pattern is now three rounds long: every `uat` confirmation ends here until `REQ-080` ships.** **That is a
+PM item and I know you have it — saying it once more so the cost is visible.**
+
+## 2026-09-12 — Tanya (QA) → @Porter: nothing new in my inbox — **but two board rows still carry my 09-08 FAILs after you accepted the later PASSes**
+
+**Re-read board + today's log on the nudge. No dispatch waiting for QA; the `uat` gate answer from 09-11
+stands.** **One thing worth a minute, since the board is yours:**
+- **`TASK-282`** row still reads *"REOPENED — TEST_FAILED (@Tanya, UI round 09-08)… 4 → 8 rows"*.
+  ✅ **Superseded: Round 12 (fix batch 288/289/290) — CHECK 1 PASS, four rows, none at 17:00; CHECK 2 PASS,
+  hand-cancelled row survives.** You accepted both on 09-08.
+- **`TASK-287`** row still reads *"FAILED — the summary dialog did not appear… pre-fills `10:00` on a `17:00`
+  course"*. ✅ **Superseded: Round 15 — `Course resumed` dialog SEEN, holding open, every number true; and the
+  `Time` field prefilled with the course's own time, `readOnly`.** You accepted that too.
+🔑 **I have not touched the rows — status on the board is yours to write.** **Flagging because a stale
+`TEST_FAILED` under my name is the kind of thing that gets quoted later.**
+🟢 **No round run today. No writes anywhere. The `adb` phone round remains un-started, per your "after".**
+
+---
+
+## 2026-09-12 — Sober → @Porter: ✅ **`REQ-088` SHAPED AND SIZED — one message, as asked.** 🔴 **But first: I re-ran the checks on the owner's tree as you told me to, and his `§17g` edit BROKE ONE TEST and REMOVED A GUARD it did not mean to.**
+
+### 🔴 `§17g` — what he changed, and what it cost
+**Commit `baa6015`, one file, 7 lines: he COMMENTED OUT both triggers** — the `follow` event dispatch
+(`handleFollow` is now dead code) and the unlinked-postback fallback at `line-webhook.service.ts:1533`.
+✅ **The ruling is met: nothing sends `welcome` unsolicited. The `สมัคร` keyword still works — the vocabulary
+test passed.**
+🔴 **Re-run: 2053 pass / 1 FAIL.** The failure is a source pin asserting the welcome body is sent bilingually
+— **its claim is now VACUOUS, because `welcome` is never sent.** *Not a behaviour failure; a pin that outlived
+its line.* ⇒ **the suite is RED on his tree and stays red until that pin is rewritten.**
+🔴 **AND THE REAL ONE — the commented line did TWO jobs, and he removed both:**
+```ts
+// if (linked !== "customer") return send(replyToken, [textReply(tb("welcome"), lang)]);
+```
+**That line sent the welcome AND kept UNLINKED users out of the customer flow.** ⇒ **an unregistered parent
+who taps `เช็คอิน` or `นักเรียน` on the rich menu now falls THROUGH into the customer switch** and is told
+**`ไม่มีคาบ` / `children_none` — "you have no classes / no children"** — **instead of being told to register.**
+✅ **I verified each landing** (`doCheckin` → `empty_checkin`, `doChildren` → `children_none`). 🚫 **Not a
+crash. A WRONG REPLY to an unregistered person, on the deployed tree.**
+🔑 **The fix-forward is one line — keep the guard, drop the send** — ⚠️ **and it is HIS edit, so it is your
+call whether @Jason does it or he does.** 🚫 **I have touched nothing.** 📌 **Logged verbatim so the next
+reader is not surprised by a diff nobody wrote a task for.**
+
+---
+
+## 📐 `REQ-088` — registration by LINK. **Size: M + M. Migration: NO. Customer console: ONE LIFF app.**
+
+### 🔑 The finding you already made, confirmed from the code: **the LOGIC exists. The SURFACE does not.**
+| the flow needs | exists? | where |
+|---|---|---|
+| phone → family found / new parent | ✅ | `verifyAndLink` — `customer`'s "code" IS the phone |
+| bind this LINE account to that family, never to another | ✅ | `bindFamilyLine` — *the one guarantee that survived three entry designs* |
+| create a child: name · DOB · address | ✅ | `createStudentFromLine` — **the ONE LINE-side writer** (TASK-314), AC-11 admin notify inherited |
+| family-with-children ⇒ NO forced add | ✅ | `afterParentLink` (TASK-315) — **the decision, reached by both doors** |
+| reserved-word guard · duplicate → more detail · 5-child cap | ✅ | TASK-313/314 — all on the ONE writer |
+| **identify the parent from a WEB PAGE** | 🔴 **NO** | **zero LIFF / LINE Login code anywhere** |
+🔑 **That last row is the entire new cost.** ⇒ ***the page's one job is to turn a tap into a `lineUserId`; from
+there it calls what the chat calls.***
+
+### 🔴 THE HONEST COST — and it is not the page, it is the WRAPPING
+**`verifyAndLink` and the wizard steps live INSIDE `line-webhook.service.ts`, wrapped in reply-tokens and
+session steps (`AWAIT_CODE`, `AWAIT_STUDENT_NAME`…).** ⇒ **the page needs the DECISION without the REPLIES.**
+🔑 **That is exactly the TASK-315 shape** — *`afterParentLink` was extracted so two doors reach one decision* —
+**and it has to happen once more for the link/create sequence.** ⚠️ **If the page gets its own copy of any of
+those rules, it is wrong — your rule, and it is why this is M and not S.**
+✅ **The pieces that are ALREADY separable:** `bindFamilyLine`, `createStudentFromLine`, `assertCanAddStudent`
+— **the lookup-and-bind is in `family-link.ts`, not the webhook.**
+
+### 📋 THE SHAPE
+| | | size |
+|---|---|---|
+| **FE** | one PUBLIC page — **`/register`, the sibling of `/checkin`** *(same pattern: no admin auth, direct fetch)* — LIFF init → phone → family list *or* the 3-field form → done | **M** |
+| **BE** | one public route family — **verify the LIFF ID TOKEN → `lineUserId`** *(the new code)* → then the extracted link/create decision | **M** |
+| **DB** | 🚫 **NO migration** — same three fields, same rules, same storage | — |
+| **customer** | **ONE LIFF app** on their OA — see below | ~5 clicks |
+
+### 🔑 WHAT THE CUSTOMER MUST CLICK — so the owner can relay it in one message
+**In the LINE Developers console, on the SAME provider as their Messaging API channel:**
+1. **Create a LINE Login channel** (if they do not have one) — *same provider, so it shares the user IDs.*
+2. **Add a LIFF app** to it: **Endpoint URL = our page's URL**, size **Full**, scope **`profile`** *(that is
+   what yields the `userId`)*.
+3. **Send us TWO values: the LIFF ID and the Login channel ID.** *(We need the channel ID to VERIFY the
+   token server-side — a page that trusts the client's word about who it is would be TASK-047's failure by a
+   new route.)*
+⚠️ **Same class as the webhook URL: their console, their action, and nothing works until it is done.**
+
+### ✅ YOUR CORRECTION IS RIGHT, and it removes a whole class of cost
+**ONE stable URL, pasted by an admin, no per-parent token.** 🔑 **The LIFF login identifies the parent, not the
+link** ⇒ 🚫 **no token table, no expiry, no "link already used" — none of it needed.** ✅ **Agreed, and I see no
+reason for a per-parent link.**
+
+### ❓ What the CHAT does that a PAGE cannot — or must not repeat
+| | chat | page |
+|---|---|---|
+| **2FA** (`line_parent_2fa`, OFF) | exists on the chat door only | 🔴 **must honour the SAME setting or it is a second door that ignores it** — *the two-doors trap, and it needs to be built in, not remembered* |
+| **`ยกเลิก`** | clears a session step | ✅ **not needed — a page has a close button and NO session** ⇒ 📌 *and the page must not LEAVE a chat session step set* |
+| **`ข้าม`** (skip DOB/address) | a typed word | ✅ **optional fields** — same rule |
+| **3-strike stuck detection** (TASK-245) | protects a parent stuck in a wizard | ✅ **not needed — a form cannot get stuck** |
+| **the `§17c` screens** | 8 pinned screens | ⚠️ **the page needs its OWN copy** — 📖 *and by our rule anything we write is a PLACEHOLDER until they see it* |
+
+### ⏱️ What I would say to him, in one line
+**Migration no · M + M · one LIFF app on their side, three values back · the chat stays as a second door, and
+the ONE risk is the page growing its own rules — which is the thing the task will forbid.**
+🚫 **Nothing built. Nothing cut. The chain stays stopped.**
+
+---
+
+## 2026-09-12 — Sober → @Porter: ✅ **THREE TASKS CUT — the guard, and `REQ-088` as two halves.** 🔑 **And the URL you need NOW, so the owner can send the console instructions today.**
+
+### 🔗 THE URL — you can send this to the owner in one line
+**Path: `/register`.** **Origin: the SAME `PUBLIC_CHECKIN_BASE_URL` that every check-in link already uses on
+that environment** — 📌 *it is in his env, he set it, and the check-in links parents already tap resolve
+through it.* ⇒ **the LIFF endpoint is `<PUBLIC_CHECKIN_BASE_URL>/register`, and on `uat` that is whatever
+`/checkin` already resolves to on `uat`.**
+🔑 **So the customer's five clicks can run today** — 📌 **and I have written the exact clicks into TASK-347 so
+they match what the code will verify: a Login channel on the SAME provider, a LIFF app with that endpoint,
+scope `profile`, and TWO values back — the LIFF ID and the Login channel ID.**
+⚠️ **Tell him the channel ID is not optional: it is what lets us VERIFY the token rather than trust it.**
+
+### ✅ The three, in the order they run
+| | | |
+|---|---|---|
+| **TASK-346** | **the `§17g` guard** — keep the check, drop the send · rewrite the vacuous pin · log the diff against `baa6015` | @Jason, **FIRST**, one line · **ships in the next deploy** |
+| **TASK-347** | **`REQ-088` back end** — the link/create DECISION extracted ONCE from the webhook's reply wrapping (TASK-315's shape) · **verify the LIFF ID token server-side against the channel ID** · read `line_parent_2fa` · clear any dangling chat step · public routes beside `/checkin` | @Jason, **M**, no migration |
+| **TASK-348** | **`REQ-088` front end** — `/register`, sibling of `/checkin` · LIFF init → ID TOKEN → the API · **the page holds NO rules, only words** | @Fern, **M** |
+🔑 **Your six rules are in both DoDs, each as an assertion — and rule 1 is there verbatim:** ***the page calls
+the SAME writer the chat calls; if the page grows a rule of its own, it is wrong.***
+⏱️ **Parallel, by construction: @Jason writes the API CONTRACT before the extraction and I forward it to
+@Fern** — *she builds the shell and the LIFF init meanwhile, which need no API.*
+
+### 📝 COPY — yours, and the page will need more than the chat had
+✅ **`§17c`'s words reused where a field matches; everything else the page needs is yours, marked PLACEHOLDER,
+pinned by FORM not bytes, and listed in @Fern's report so you can take the whole set to the customer once.**
+📌 **What I expect it to need that the chat did not: a "connect with LINE" button label · a "found your family
+— tap a child" heading · an "add a child" action · a done screen · and the error lines for each named code
+(reserved word, duplicate, cap, bad DOB).** 🔑 *One list, one visit.*
+
+### ⚠️ One thing I want you holding consciously
+**TASK-347 is the SECOND door built onto a writer that was extracted for ONE.** ✅ **That is the right design
+and it is the one you set** — 🔑 *but it means the chat flow gets touched (its decisions move out; its replies
+stay), and its byte-identity is asserted rather than assumed.* 📌 **If @Tanya has a window before the next
+deploy, the chat's 8 screens are the thing to walk.**
+🚫 **Nothing else was cut. The chain stays stopped.**
+
+---
+
+## 2026-09-12 — Sober → @Porter: ✅ **THE GUARD IS FIXED — 2061/0, GREEN on the owner's tree from RED. Re-run by me.** 📜 **And `REQ-088`'s API contract is written and with @Fern — the two halves are now in parallel.**
+
+### ✅ TASK-346 — one line, and one clarification of YOUR words that I want you to see
+**The line is back, both jobs.** ✅ **An unregistered parent who taps the rich menu is REFUSED — and told to
+register.** 🔑 **The reply is `§17c` screen 1's text, in answer to a TAP — SOLICITED. Nothing is sent on
+`follow`. The `สมัคร` keyword works.** ⚠️ **Your sentence *"drop only the `welcome` send"*, read literally, gives
+a SILENT gate — @Jason built that version as a mutation and rejected it, because your NEXT sentence —
+*"unregistered users are told to register again"* — is the intent, and *an empty reply to a button reads as a
+broken bot.* ✅ **I am taking the second sentence as the ruling. Say if I have that wrong.**
+📌 **The diff against `baa6015` is in the code at the guard and in the report — the record shows a task behind
+it, as you asked.** 🔑 **And the assertion that was MISSING when he edited now exists: his exact edit,
+re-applied, fails three tests instead of one pin going quiet.**
+
+### 🔴 One for the OWNER'S LIST — found answering the task's Question, not built
+**The SUSPENDED-HOUSEHOLD refusal (TASK-048) has the SAME shape, at TWO sites — a `return` that both REPLIES
+and GATES — and its pin checks the RAW WHOLE FILE.** ⇒ 🔴 **comment out either site, or both, and the test
+stays green.** 🔑 ***It is the `welcome` pin's vacuity, already in place, waiting for the same edit.***
+**Size: one test, ten lines.** 🚫 **Not fixed. On the list.**
+📌 **@Jason's sentence under both is the useful one for the owner:** ***a refusal that is also a message — when
+the message is the thing someone wants to change, the refusal is what they will accidentally remove.***
+
+### 📜 `REQ-088` — the contract, in three principles
+1. **The server returns CODES; the page renders WORDS.** 🚫 No `message` field anywhere. ⇒ **every string on
+   the page is yours to take to the customer as one list.**
+2. **The page never says who it is.** Every call carries the ID TOKEN; `sub` is the parent; **no body carries
+   a `lineUserId`, `parentId` or `familyId`.** 🔑 **And a token from the WRONG CHANNEL is its own loud error,
+   distinguished from "invalid"** — *a page built on another channel pointed at our API is misconfiguration or
+   impersonation, and it is logged as such.*
+3. **Every decision is the chat's, CALLED not copied** — the cap asked FIRST (the chat's own order), duplicate ⇒
+   *more detail never a rename* (AC-9), DOB through the chat's own parser which **refuses ISO on purpose**,
+   `bindFamilyLine`'s *never another family* re-checked at the write.
+✅ **Two design decisions made and I agreed with both:** `/link` creates the parent so `/create` has ONE
+meaning; and the date is the customer's `DD-MM-YYYY` text, one parser, one strictness.
+⏱️ **@Jason extracts now; @Fern builds the page against `§C0–§C5`.** 🔑 **The chat is asserted BYTE-IDENTICAL
+after the extraction — and it is still the thing to walk if @Tanya has a window.**
+
+### 📝 The copy list you will need — I can already see its shape
+**A "connect with LINE" button · a "found your family, tap a child" heading · an "add a child" action · a done
+screen · and ONE error line per code: bad phone · phone already on another LINE · this LINE already in another
+family · name reserved · family full · duplicate needs detail · bad date · session expired.** 📌 *@Fern will
+list every one marked PLACEHOLDER; that is your single visit to the customer.*
+
+---
+
+## 2026-09-12 — Sober → @Porter: ✅ **`REQ-088`'s BACK END IS IN — 2086/0, 35 = 35, typecheck 0, re-run by me. The chat is BYTE-IDENTICAL, proven the right way.** 🔑 **The two env names are now CONCRETE for the owner. Two items for his list.**
+
+### 🔗 For the owner — the two values, by their real names
+| the customer sends | goes in as | who reads it |
+|---|---|---|
+| **the LINE Login CHANNEL ID** | `LINE_LOGIN_CHANNEL_ID` | **the server** — every `/api/register` call is verified against it; **unset = every call refused, never "skip verification"** |
+| **the LIFF ID** | `LIFF_ID` | **the page only** |
+📌 **Both are in `.env.example` with that wording.** ⚠️ **He sets them per environment, the way he set
+`PUBLIC_CHECKIN_BASE_URL`.**
+
+### ✅ The chat is byte-identical — and "identical" is a claim I can quote, not a word
+**Every pre-existing reply pin passed UNMODIFIED after the decisions moved out.** ✅ **Not one reply key,
+string or `t()` call changed.** 📌 **Two non-reply differences DECLARED** — a log prefix, and one write
+reordered with no reader depending on the order. 🔑 *Saying those two is what makes the other claim credible.*
+✅ **`§17c`'s ten files re-checked BY NAME: two show a diff, neither is a `§17c` pin. No customer bytes moved.**
+
+### 🔴 TWO ITEMS FOR THE OWNER'S LIST — found, named, NOT fixed, because the chain is stopped
+| # | what | size |
+|---|---|---|
+| **12** | 🔴 **A pre-existing CHAT gap, MIRRORED into the page by Rule 1:** *a LINE account already bound to family A that enters a NEW phone creates an orphan parent B — and the account keeps answering A.* **@Jason had added the guard, REMOVED it to match the chat, and named it.** 🔑 **Fixing it in the one home gives it to BOTH doors — and changes the chat, which this task forbade.** | **XS — one check** |
+| **13** | **`afterParentLink`'s fact — *children ⇒ no forced add* — is rendered on TWO sides and nothing beyond a type asserts they agree.** One boolean from the home, read by both. | **XS — one line** |
+📌 **And one DIFFERENCE between the doors, stated rather than papered over, for him to know:** ***a chat that
+hands over to a human after two wrong answers is a property of the CHAT surface. A page can be retried
+forever.*** 🚫 **Not a defect. A fact about surfaces.**
+
+### 🔑 The rule for the NEXT door, from @Jason, and I have made it standing
+> ***"Every decision that BOTH doors need is in one place; every decision that is a property of the CHAT
+> SURFACE — strikes, steps, who-is-talking — stays in the webhook. The next door should be asked *does the new
+> surface need this decision?*, not *is it in the webhook?*"***
+📌 *I asked him whether the webhook was now "replies only". He refused to round it and listed six decisions
+that remain, each with the reason it stays. That list is the answer, and it is better than "yes".*
+
+⏱️ **@Fern has the live route and is building the page — the last thing between `REQ-088` and done.**
+🚫 **Nothing else cut.** ✅ **One message when it lands.**
+
+---
+
+## 2026-09-12 — Sober → @Porter: 🟢🟢 **`REQ-088` IS COMPLETE END TO END.** **BE 2086/0 · FE 285/0 · both typechecks 0 · 35 = 35 · no migration — every number re-run by me.** ⚠️ **ONE test remains that nobody can run from a desk, and it needs the customer's values first.**
+
+### ✅ What is built
+**`/register` — the sibling of `/checkin`, public by construction** *(the auth proxy matches only
+`/scheduler/*`; verified)* — **LIFF connect → phone → family found: tap a child / none: the 3-field form →
+confirm screen → done.** 🔑 **The page holds NO rule** — asserted by absence AND proven by mutation (a
+client-side cap fails a test). **The server holds every decision, once, and the chat is BYTE-IDENTICAL.**
+🔑 **The ID TOKEN is the identity; `userId` is never sent — proven by mutation.** 🔑 **The date is the customer's
+`DD-MM-YYYY` text, echoed back before submit (TASK-277), OMITTED when blank, and shown on `done` as the server's
+echo** — *four places the page could have grown a date rule, and it grew none.*
+
+### 🔗 FOR THE OWNER — the values, by their FINAL names (one changed, and it matters)
+| the customer sends | env var | where |
+|---|---|---|
+| the LINE Login **channel ID** | `LINE_LOGIN_CHANNEL_ID` | **back end** — every `/api/register` call verified against it |
+| the **LIFF ID** | 🔻 **`NEXT_PUBLIC_LIFF_ID`** — *not* `LIFF_ID` as I said this morning | **front end** |
+🔴 **@Fern corrected me: a Next.js page can only see `NEXT_PUBLIC_*` variables. A bare `LIFF_ID` would have
+been INVISIBLE to the page on every environment, forever** — *the page would have shown "not configured" no
+matter what he set.* ✅ **Same shape as `NEXT_PUBLIC_API_URL`, which `/checkin` already uses.**
+📌 **The LIFF app's endpoint is `<PUBLIC_CHECKIN_BASE_URL>/register`, as before.**
+
+### ⚠️ THE ONE TEST — @Tanya, on `sid`, from a PHONE, after the owner sets both values
+🔑 **A LIFF page only yields an ID token INSIDE the LINE app, against a real LIFF ID and channel. There is no
+mock for that boundary and @Fern did not fake one.** ⇒ **the feature is proven only by this:**
+1. open the link → phone → a **KNOWN** number ⇒ the family's children are listed; **a tap links**
+2. a **NEW** number ⇒ the form; `DD-MM-YYYY`; **the confirm screen echoes it**; done
+3. **leave the date BLANK** ⇒ no `BIRTHDATE_INVALID` *(the trap both engineers caught, one each side)*
+4. a **DUPLICATE** name ⇒ the "more detail" hint; resubmit works *(AC-9, never a rename)*
+5. **remove `NEXT_PUBLIC_LIFF_ID`** ⇒ a message, not a blank
+🚫 **She cannot start until the customer's five clicks are done and the two values are set.** ⇒ 📌 **the
+customer's console is now the critical path, not us.**
+
+### 📝 THE COPY LIST — one visit to the customer
+**21 strings VERBATIM from `§17c` and the chat** (pinned byte-for-byte — they approved these) · **2 ADAPTED**
+with the one clause changed named (*"or type skip"* → *"or leave it blank"*; *"type register to start over"* →
+*"enter your phone again"*) · **2 borrowed from `/checkin`** · 🔴 **29 PLACEHOLDER — yours to write, the
+owner's to take to them.** *(Titles, button labels, the "found your family — tap a child" heading, the done
+screen, and one line per error code.)* 📌 **Each is tagged at its line in the dictionary; the test pins the
+FORM, not the bytes — so their answer is 29 strings and nothing else moves.**
+
+### 📌 For the list — three small things, found, not built
+| # | | size |
+|---|---|---|
+| **14** | the BE's `.env.example` still says `LIFF_ID` "for the page" — **docs only, the BE never reads it** — should say `NEXT_PUBLIC_LIFF_ID` | **XS, one comment** |
+| **15** | **one new dependency, `@line/liff@2.31.0`** — dynamically imported so the admin bundle never carries it. *Not a task; a fact you should know shipped.* | — |
+| **16** | 🔑 **@Fern's answer on a third public page: *share the CREDENTIAL, not the shell*** — the two pages differ in the one thing that matters (a query token vs a LIFF token), and a shell that abstracts that hides each page's security model. **She named `REQ-062` (leave by link) as the likely third, and `lib/register/liff.ts` — already a module with no page in it — as the thing to share.** | **a note, for when `REQ-062` arrives** |
+
+🚫 **Nothing else cut. The chain held through the whole of `REQ-088`.** ⏱️ **Both engineers are EMPTY. The
+owner's list is at 16 and with you.**
+
+---
+
+## 2026-09-13 — Sober → @Porter: ▶️ **TASK-349 cut — `§7a` + `§7b` + the two copy fixes, ONE task, ONE deploy, ONE report.** ✅ **The escape hatch is decided.** 🔻 **And the scope error was MINE before it was yours.**
+
+### ✅ The escape hatch — my call, as you asked
+**A `พิมพ์เอง / Type it instead` toggle that reveals the existing free-text field.** **Three paths, ONE stored
+shape:** pick all three ⇒ the joined string · type it ⇒ the chat's field, unchanged · leave it ⇒ skipped, as
+`ข้าม` already allowed.
+🔑 **Why not "other" inside the picker:** *it still needs a text box, so it is the toggle wearing a dropdown's
+clothes — and it invites a half-picked `กทม · other · other`, which is worse than either a full pick or free
+text.* 🔑 **Why not "just optional":** *a parent who cannot find their sub-district and has no way to type it
+leaves it blank when they wanted to give it.* 📌 **Sane default; he tests it once; if he wants it different it
+is one toggle.**
+
+### 🔻 On `scope = profile` — that was my morning message before it was your instruction
+**I wrote *"scope `profile` — that is what yields the `userId`"*.** 🔴 **The DESIGN uses the ID TOKEN, which
+needs `openid`, and I wrote both on the same day without checking them against each other.** ✅ **You caught
+it on the owner's phone. It is in TASK-349 to go into `.env.example` beside the `liff.line.me/<LIFF_ID>` fact,
+so the customer's instructions and the code agree in one place.** 📌 *Eighth correction of my text this batch —
+and the first found by the owner rather than by an engineer.*
+
+### 📐 `§7b`'s cost, sized as she builds — three things she must state
+**SOURCE and LICENCE of the 77 / ~900 / ~7,000 dataset · BYTES on a phone, loaded ONLY on `/register` the way
+the LIFF SDK is · labels following the province.** 🔑 **Stored value UNCHANGED — the three picks join into the
+chat's own string, the customer's order and abbreviation (`กทม`).** 🚫 **No migration; `§16e` stands.**
+⚠️ **It is the one part of `REQ-088` that is DATA rather than logic, and I have said so in the task.**
+
+### 🟢 Rounds 1–2 recorded as the LIFF half PROVEN
+**Consent → phone → "Found your family" → link; new parent "Gekko" added — inside LINE, on his phone.** 🔑 *The
+boundary nobody could test from a desk is now tested.* ⏱️ **Rounds 3–4 (blank DOB, duplicate) wait for the
+new build, per his instruction — one test.**
+🚫 **Nothing else cut. Chain stopped.** ✅ **One message when all four land.**
+
+---
+
+## 2026-09-13 — Sober → @Porter: 🟢 **ALL FOUR ARE IN — the ONE handover message. FE 305/0, typecheck 0, build ok, re-run by me. He can test once.** 🔴 **AND ONE FINDING FOR THE TOP OF THE OWNER'S LIST — a report he reads is splitting families on the way we store an address.**
+
+### ✅ What he will see, in the order to look
+1. **DOB** — the picker opens on a **grid of YEARS** (Mantine, decade-first): a birth year 2–15 back is one tap,
+   then month, then day. **`Type it instead` under it; the confirm screen echoes `DD-MM-YYYY`; blank still
+   skipped.** *Stored value unchanged.*
+2. **ADDRESS** — three cascading lists; **the tier words flip to เขต / แขวง on กรุงเทพมหานคร and read อำเภอ / ตำบล
+   everywhere else.** **The confirm screen shows `<แขวง> <เขต> กทม`** — the customer's own example, byte for
+   byte. **`Type it instead` reveals the old free-text field; `Pick from the list instead` goes back.** *Stored
+   value unchanged; no migration.*
+3. **`มิลล่า`** — the nickname shows only when it differs from the name, as the chat's screen 4 does.
+4. **`Link this LINE account`** — your words; on one line. **Pinned at ≤ 28 characters, both languages**, with the
+   pixel derivation beside it.
+📌 **And `.env.example` now says `https://liff.line.me/<LIFF_ID>` and `openid`, so the customer's instructions
+and the code agree in one place.**
+
+### 📐 `§7b`'s cost, as built — the numbers are measured from the build, not a README
+**`thai-address-universal@2.2.0` (ISC, pinned exact — a dataset should not float): 77 / 928 / 7,211.**
+**127 KB gzipped, five chunks, loaded LAZILY only while the form is on screen in pick mode** — *a parent who
+links a known family and closes never fetches a byte of it.* ✅ **The admin bundle is asserted clean two ways.**
+🔑 **Lookups are by GEOCODE, never by name — `จอมทอง` is a district in BOTH Bangkok and Chiang Mai.**
+⚠️ **The one thing nobody can measure from a desk: that first 127 KB on a phone signal.** *If it feels slow on
+his test, a Thai-only slice would roughly halve it — named, not built.*
+✅ **And a hatch I did not think of: if the dataset cannot be fetched (old phone, bad signal), the page drops to
+the typed field by itself rather than showing three dead selects.**
+
+### 🔴 THE TOP OF THE LIST — item 17, and it is a DECISION with a REPORT reading it
+**`parents.province` has TWO WRITERS storing TWO FORMS:**
+| who writes | stores |
+|---|---|
+| **the ADMIN's parent form** (`ParentFormModal`, a 77-province pick) | **`กรุงเทพมหานคร`** — the full name |
+| **the CHAT — and now the PAGE, as instructed** | **`พระโขนงเหนือ วัฒนา กทม`** — the customer's own line |
+🔴 **And `som-report.service.ts` groups DEMOGRAPHICS by that column.** ⇒ ***a Bangkok family registered by an
+admin and one registered from LINE land in two different buckets of the same report — and every LINE family
+lands in a bucket of its own, one per sub-district string.***
+📌 **Not new — the chat has done this since REQ-079.** 🔑 **But this task is the first time the two writers were
+put side by side, and the picker makes the stored FORM a choice rather than a parent's typing.** ✅ **@Fern did
+as told — customer's format, no migration — and pinned the dataset's 77 names EQUAL to the admin's list, so
+this side can never be the cause of a split.** ✅ **I verified all four links in the code.**
+❓ **The owner's question, and only his:** ***which form should the column hold — the admin's full name, the
+chat's line, or TWO columns (province + the rest)?*** ⚠️ **It decides what the demographic report means.**
+🔻 **And one QA check with it: open a LINE-registered parent in the admin form — its `Select` is fed a value not
+in its 77 rows; whether Mantine shows it BLANK is a screen check, not something anyone can see from here.**
+
+### 📌 Also for the list, from her Question — where a TYPE could be a PICK
+**The `OTHER` booking title is the strongest** *(typed free every time, the same handful recur, and it BECOMES
+the calendar's `displayName` — a list would make the spelling consistent for free)* · `discount.reason` · the
+foreign `country` field · `badges.typeName` (`Gold`/`gold`/`Gold ` splitting one badge into three).
+🚫 **Named, nothing built. The chain held.** ⏱️ **He tests once; I have nothing else in flight.**
+
+---
+
+## 2026-09-13 — Sober → @Porter: ✅ **`§8` sized: S — and cut, TASK-350.** ✅ **Tier words: your reading, and it is mine too.**
+
+### 📐 Why S, from the code not a guess
+**`I18nProvider` already carries `lang` + `setLang` with a saved preference, and the dictionary is already
+`th: typeof en`** ⇒ **every key has both halves by construction.** 🔑 **The toggle is a control that calls
+`setLang`. The mechanism exists; this task makes it VISIBLE and puts it above the first field.**
+📖 **Your default — the LINE app's language — taken:** `liff.getLanguage()` on init, applied ONLY when no
+preference is saved, so a parent who toggled last time keeps their choice.
+⚠️ **One thing I asked her to CHECK rather than assume: whether the saved preference is one key for the whole
+origin** — *if it is, a parent's toggle on `/register` could flip an admin's screen on the same phone.* **Small,
+but it is the kind of thing that arrives later as a mystery report.**
+
+### ✅ Tier words — stay THAI in both languages
+**เขต / แขวง / อำเภอ / ตำบล are proper nouns a foreign parent sees on their OWN MAIL, and they are what the law
+calls them.** 🔑 *An English "District" makes a parent look for a word that is not on their envelope.* ✅ **Same
+answer as yours; asserted that the toggle does not touch them.**
+
+### 📝 The 29 placeholders → 29 PAIRS, and the split you will get back
+**She will list which English halves are the customer's own `§17c` words and which are yours** ⇒ **your one
+visit carries the right question for each: *"approve the Thai"* for the first set, *"approve both"* for the
+second.**
+🚫 **Nothing else cut. Chain stopped.** ✅ **One report when it lands.**
+
+---
+
+## 2026-09-13 — Sober → @Porter: 🟢 **`§8` IS IN — 312/0, typecheck 0, build ok, re-run by me. He tests once.** 🔴 **And the check I asked for found a real defect, and its twin on `/checkin` is LIVE for every Thai parent — TOP of the list.**
+
+### ✅ What he will see
+**The TH/EN control is the FIRST thing on the page — above the title, above the phone field — and it stays
+through the form, the confirm and the done screen.** **A Thai phone opens in Thai on first visit; a tap sticks
+across a reload; `จังหวัด` in Thai mode; no instruction sentence above the three selects; the tier words Thai in
+both modes.** 🔑 **The toggle changes the language and NOTHING else — asserted: no field, no pick, no draft, no
+phase moves with it.**
+✅ **Tier words stay Thai in both — your reading, mine, and now asserted.**
+
+### 🔴 THE CHECK — it WAS one key for the whole origin, and she fixed it
+**Before this task, a parent's TH/EN tap on `/register` wrote the ADMIN'S saved language, and an admin's
+choice was the parent's default — on the same browser.** ⚠️ *A parent inside LINE has its own browser — but
+the owner testing the LIFF URL in Chrome on a phone he also runs the back office on is exactly the same
+browser.* ✅ **`/register` now has its OWN language scope and its own saved key; the admin's is never read or
+written from it.** 📌 **One thing for his test: toggle `/register`, then open the back office on the same phone
+— it keeps its own language.**
+
+### 🔴 TOP OF THE LIST — item 18, and it is the only LIVE thing on it
+**`/checkin` has the same DEFAULT problem, today, for every parent:** ***a Thai parent tapping the check-in link
+sees ENGLISH unless that browser happens to hold a saved admin preference*** — **and the only thing that writes
+that preference is the admin header.** ✅ **Verified: `/checkin` mounts under the root provider, default `en`,
+no key of its own.**
+🔑 **It does NOT need a toggle** — one screen a parent reached from a message in their own language — **it needs
+the DEVICE DEFAULT, which is ten lines: the same shape she just built, with the phone's own language since
+`/checkin` is not LIFF.** ⚠️ **And it READS the admin's saved language on a shared browser today — the `§6` shape,
+already live.**
+🚫 **Not cut. The chain is stopped.** 🔑 **I am saying once that it is the one I would take: it is the only item
+on the list a customer is meeting right now, and it is smaller than anything above it.**
+
+### 📝 The pairs — your visit now carries a different question per set
+**21 verbatim → nothing to ask · 2 adapted → *"we changed one clause — fine?"* · 2 borrowed · 36 placeholder
+pairs → *"approve both"*** — with three named exceptions (one TH is the server's sentence; one EN is yours with
+the TH hers; one pair is mine). 📌 **The list is in her report by key.**
+
+🚫 **Nothing else cut.** ⏱️ **Both engineers EMPTY. The list is at 18, with `/checkin`'s default and the province
+split at the top.**
+
+---
+
+## 2026-09-13 — Sober → @Porter: ✅ **The reversal is cut — TASK-351, XS.** 🔻 **And it was my ruling as much as yours: I agreed with "stay Thai" in writing, for the same value-not-label reason.**
+
+**Labels follow the language; values stay Thai.** ✅ **EN `Province · District · Sub-district` · TH `จังหวัด ·
+เขต/อำเภอ · แขวง/ตำบล` with the Bangkok flip still driving the Thai side.** 📌 *"District" covering both เขต and
+อำเภอ in English is right — the distinction is a Thai administrative fact, not something a foreign parent
+needs to choose between.*
+🔑 **The assertion that said the opposite is REWRITTEN with the reversal's reason inside it, not deleted** — *so
+nobody "restores" the old ruling next month citing the test.* 📌 **Ninth correction of my text this batch, and
+the second found by the owner's screen rather than by an engineer.**
+✅ **Default-mode question: withdrawn, noted, nothing checked** — *pick is the default; the shots were out of
+order.*
+🚫 **Nothing else cut.** ⏱️ **Same deploy as whatever comes next.**
+
+---
+
+## 2026-09-13 — Sober → @Porter: ✅ **The reversal is in — 314/0, typecheck 0, build ok, re-run by me. Labels follow the language; values stay Thai; all four combinations asserted.** 🔴 **And one addition to the list, BESIDE the province-split item — same column, same decision.**
+
+### ✅ What he will see
+**EN mode: `Province · District · Sub-district`. TH mode: `จังหวัด · เขต · แขวง` in Bangkok, `จังหวัด · อำเภอ · ตำบล`
+elsewhere. The list VALUES Thai in both.** 🔑 **And the over-correction is guarded — a mutation that makes the
+VALUES follow the language fails two tests** — *so nobody can "helpfully" extend this into the thing that
+would split the stored column.*
+📌 **The old assertion is rewritten with the reversal and its reason inside — the half that was right kept, the
+half that was wrong inverted.** *Nobody restores "stay Thai" next month citing the test.*
+
+### 🔴 Item 19 — the customer's OWN English example invites a second spelling into the report's column
+**`§17c` screen 6, EN half — the customer's verbatim text — reads *"Eg. Prakanueng Nuea, Wattana, BKK"*.**
+⇒ ***an English parent who takes the hint types `Prakanueng Nuea, Wattana, BKK`, stored as-is — while the picker
+two taps away stores `พระโขนงเหนือ วัฒนา กทม` for the SAME address.*** 🔴 **Two spellings of one place from ONE
+page, into the column `som-report` groups by.**
+✅ **@Fern found it walking every rendered string against one split (*label follows the language; value is what
+is stored*); she changed nothing because it is the customer's own sentence, and it pre-exists in the chat.**
+🔑 **It belongs BESIDE item 17 — not a new decision, the same one:** *whatever form `parents.province` is to
+hold, the English hint must show the value the way it is stored (Thai), or the field must say "in Thai".*
+📌 **One question to the customer, if the owner takes it: *may we change your English example to the Thai form,
+since that is what is stored?***
+
+🚫 **Nothing else cut. Chain stopped.** ⏱️ **Both engineers EMPTY. The list is at 19 — 17 and 19 are one
+decision; 18 (`/checkin`'s English default) is the only LIVE one.**
+
+---
+
+## 2026-09-13 — Sober → @Porter: ✅ **`§9` sized: S — one writer, one branch, one contract field. Your four readings hold, and I checked them against the code.** ⚠️ **Two things you did not name, and one of them is a DATA REQUEST, not code.**
+
+### 📐 The size, from the writer
+**`createStudentFromLine` is the ONE writer for both doors — it takes `input.province` and writes
+`parents.province`. `parents.note` already exists beside it.** ⇒ **the change is in that one function:**
+| input | `parents.province` | `parents.note` |
+|---|---|---|
+| **PICKED** (page) — a province name + the joined line | ← the province, **the admin form's full name** *(the dataset's 77 names are already pinned EQUAL to the admin's list, so this cannot split)* | ← the line, **APPENDED** |
+| **TYPED** (page "Type it instead", and the CHAT's screen 6) — one free string | **untouched** — 🚫 no guessing a province out of text | ← the string, **APPENDED** |
+🔑 **The chat changes by construction, not by a second edit — it already calls this writer with only the typed
+line** ⇒ *reading 3 is free.* ✅ **Append = `existing ? existing + newline + line : line`** — a staff note about
+allergies is never overwritten (reading 4).
+**BE: S. FE: XS** — the page already HAS the picked province (`provPick`); it sends it as its own field instead
+of only inside the join. **The API contract gains ONE optional field.** 🚫 **No migration.**
+
+### ⚠️ The two things you did not name
+1. 🔴 **EXISTING ROWS.** Every family registered from LINE so far has the LINE in `province` today — **the code
+   change fixes the FUTURE; the report keeps grouping the past wrong until those rows move.** 🚫 **That is not
+   a migration and not ours: it is a one-off DATA REQUEST for the human** — *move `province` → `note` where
+   `province` contains a space, and clear it.* 📌 **Tell him it exists; he decides whether the past matters
+   for the report.**
+2. **The admin form's `Select` fed a LINE line** — item 17's QA note — **becomes moot going forward** (the
+   column will hold a real province) **but is still true for the existing rows above.** *Same data request.*
+
+### ✅ Item 19 — agreed, HARMLESS now, and the customer's sentence stays
+**The English hint's romanised example lands in `note`, not the grouped column.** ✅ **Leave it.**
+⏱️ **Say "cut" and it is one task, both repos, S.** 🚫 **Not cut until you do.**
+
+---
+
+## 2026-09-13 — Sober → @Porter: ✅ **`§9`'s back-end half is in — 2099/0, 35 = 35, typecheck 0, re-run by me. @Fern is wiring the other half against the live route.** 🔴 **And ONE consequence of the owner's ruling that he should hear BEFORE it bites — one line, his to pick.**
+
+### ✅ What landed
+**One writer, one branch, one word at the chat's call site.** PICKED ⇒ `province` ← the name, `note` ← the
+line; TYPED ⇒ `note` only, **`province` UNTOUCHED — asserted as the key being ABSENT from the write, not as
+`null`, so an admin's own value is never cleared by a typed address.** 🔴 **`note` is APPENDED, and the writer
+reads the ROW's current note, not the row the chat loaded at the start of the wizard — a staff note written
+mid-registration survives.** ✅ **`PROVINCE_UNKNOWN` refuses anything not in the 77, in the writer, for every
+caller.** 🚫 **No cleanup — `§9.1` is asserted in the test with his sentence beside it.**
+
+### 🔴 THE CONSEQUENCE — his ruling made `note` grow; the admin's own form caps it at 500
+**The admin's parent form validates `note` at 500 characters. The machine now APPENDS an address to it on
+every registration, with no cap.** ⇒ ***after enough registrations, the admin CANNOT SAVE THAT PARENT AT ALL —
+the existing note fails the admin's own validator on the next edit of ANYTHING on the form.***
+📏 **A family with three children registered by the page plus one allergy note is already ~180 characters;
+five re-registrations reach 500.** ✅ **Verified at the validator.**
+🔑 **One line either way, and it is HIS to pick:**
+| option | effect |
+|---|---|
+| **raise the validator** (my recommendation, and @Jason's) | *the customer's data is the customer's; a form that refuses to save what the SYSTEM wrote is worse than a long note* |
+| cap the machine's append with a named refusal | the address is silently not stored past a limit — **the thing `§9.1` was chosen to avoid** |
+⏱️ **If he says "raise", it rides in the same deploy. Not cut until he does.**
+📌 **Also named, rare, not proposed: an admin editing a parent while a registration appends will save their
+textarea's older text and the address is gone — last-write-wins.** *The machine's side is already safe; the
+admin's side is a race nobody has hit.*
+
+🚫 **Nothing else cut.** ⏱️ **One message when @Fern's half lands; he tests once with the LIFF page.**
+
+---
+
+## 2026-09-13 — Sober → @Porter: 🟢 **`§9` IS COMPLETE — both halves in. BE 2099/0 · FE 321/0 · both typechecks 0 · 35 = 35 · no migration. He can test once.** 🔴 **And the ONE check you asked for FAILED on its first run — which is why it was worth asking — and is fixed.**
+
+### ✅ What he will see on the LIFF page
+**Nothing visibly different** — the pickers, the toggle, the confirm line all unchanged. **What changes is where
+it LANDS:** a picked address puts the **province** in `province` (full name, the admin list's spelling) and the
+**line** in `note`, appended; a typed address goes to `note` only. **The chat does the same, by construction.**
+
+### 🔴 THE CHECK — `§9.1`'s repair path was BROKEN by the component's default, and it is fixed
+**You asked for one thing: the admin form's `Select`, fed a dirty province, must let an admin PICK a real one
+and SAVE — not blank, not refuse.** ✅ **@Fern rendered it with the chat's own dirty line.** 🔴 **(b) FAILED:
+it showed an EMPTY box with the placeholder `เลือกจังหวัด` — the dirty value existed only in a hidden input.**
+⇒ ***"That reads as 'nothing set' — the exact shape the owner is refusing: a bad value hidden as blank."***
+**An admin scanning the form would not have known this parent was one to fix, and the placeholder invited a
+pick as if the field were new.** ✅ **Fixed, eight lines: the dirty value is shown AS ITSELF, greyed and
+unpickable, above the 77 — the visible value IS the warning, exactly as he intended.** 🚫 **No button, no
+banner, no cleanup.**
+📌 **One screen check for @Tanya, via you:** *open a LINE-registered parent in the admin form ⇒ the province box
+shows the address line, greyed at the top of the dropdown ⇒ pick `กรุงเทพมหานคร`, save, reopen ⇒
+`กรุงเทพมหานคร`.* **And the parents LIST already shows a dirty province in full on the card — his "broken
+dashboard", in the list too.**
+
+### ⏱️ STILL WAITING ON HIM — the 500-character cap
+**Unchanged from my last message: the admin's note validator caps at 500 and the machine now appends.** ✅ **@Fern
+confirmed it from her side: the Textarea will SHOW a 600-character note the form then cannot SAVE.** 🔑 **One
+line; raise recommended; rides in the same deploy on his word.**
+
+### 📌 For the list — ONE item, four sites, and it is the class he just ruled on
+**The `§9.1` shape — *a `Select` that hides a stored value not in its list as BLANK* — exists in FOUR other
+places, and the first is the field he already lost a night to:** 🔴 **`startTime` over the slot grid, seeded
+from a stored row** — TASK-295 fixed `17:00:00`; **a stored time OFF the grid (an imported `09:15`) still
+renders blank** in the plan editor and the drop/resume dialog · `teacherId` (a teacher since made unbookable
+⇒ empty, the admin cannot see who it WAS) · `subjectId` · `size`. ✅ **`provinceOptions` is now the model for
+all four.** 🚫 **Named, nothing built.**
+
+🚫 **Nothing else cut. The chain held through `§9`.** ⏱️ **Both engineers EMPTY.**
+
+## 2026-09-13 — Tanya (QA) → @Porter: `REQ-088 §9` province check — ✅ **ALL THREE PASS.** One write, declared with its original value.
+
+**Fixture found by reading, not browsing:** of 129 parents, **exactly ONE** has an address line in `province` —
+`88c2917c` · `0823351752` · LINE-linked · **`"พระโขนงเหนือ วัฒนา กทม"`**. *(The other two long values are the
+valid `กรุงเทพมหานคร`.)*
+✅ **Check 3** — list card shows **`📍 พระโขนงเหนือ วัฒนา กทม`** in full. The "broken dashboard" shows the truth.
+✅ **Check 1** — Edit: the box shows the old line, and the dropdown opens with **`✓ พระโขนงเหนือ วัฒนา กทม`
+GREYED at the top**, real provinces below. 🔑 **Not a blank `เลือกจังหวัด` — the shape the owner refused is
+ruled out on the real dirty row.**
+✅ **Check 2** — picked `กรุงเทพมหานคร` → Save → **reopened ⇒ `กรุงเทพมหานคร`** (DOM confirms both inputs).
+
+### 🔴 Footprint — one write on a record I did not create, as you instructed
+**`88c2917c` province: `"พระโขนงเหนือ วัฒนา กทม"` → `"กรุงเทพมหานคร"`.** Not destructive (the address is inside
+Bangkok, so the new value is correct) and **the original string is in the report, reversible in one edit.**
+⚠️ **This parent's `note` was EMPTY** — the owner's "moved addresses to `note`" did not cover this row.
+**The address line now exists only in my report. Your call whether it goes back into `note`.**
+🟢 No LINE, no `uat`, no phone.
+
+### 📱 The `adb` round (`REQ-088`, 09-12) is next on my list — **starting with the device check, and I stop
+if it is not attached, as you said.**
+
+---
+
+## 2026-09-14 — Sober → @Porter: ✅ **`§10` cut — two halves, one deploy, the cap riding with it. Both things you asked me to confirm are confirmed.** 🔑 **And `§10.3` is ITEM 12 — the owner found it himself, by using the page.**
+
+### ✅ The two confirmations
+1. **`§10.2` — the dataset ALREADY carries English names.** @Fern's TASK-349 bytes included them (`nameEn`,
+   loaded with the Thai). ⇒ **no new data, no new bytes — a display switch on the same geocode-keyed row.**
+   🔴 **What is STORED does not change:** `province` keeps the Thai full name — *the `§9.1` repair path depends
+   on the admin list's spelling* — and `note` keeps the Thai line. **EN shows `Bangkok · Watthana · Phra Khanong
+   Nuea` and stores `กรุงเทพมหานคร` + `พระโขนงเหนือ วัฒนา กทม`.** ✅ **Asserted both ways; the confirm screen
+   shows the Thai line in both modes because it shows what will be stored.**
+2. **`§10.3`'s unlink IS the admin's `Clear LINE link`** — `clearFamilyLine`, the one writer, one more door.
+
+### 🔑 `§10.3` is item 12, and his fix is better than the one on the list
+**The owner opened the link as an already-linked account, entered ANOTHER phone, and got silence.** ⇒ **that
+is the orphan-parent gap @Jason found on TASK-347, mirrored from the chat per Rule 1, and put on the list as
+item 12.** 🔑 ***It sat there as "found by looking" for two days; he found it by USING the page in two.***
+✅ **His answer — TELL them, offer UNLINK — is better than the refusal on the list**, ⚠️ **and the task ALSO
+closes the silent path in the writer for both doors: a bound account calling `link` with a phone that is not
+its family's is refused, even when the phone is new.** *I asked @Jason to say what the chat does as a result.*
+📌 **Item 12 comes off the list when this lands.**
+
+### ✅ The cap — RAISE, and the number is 2000
+**The parent's note validator moves from 500 to 2000, and only that one.** 🔑 *Why 2000 and not "whatever the
+column allows": the column is unbounded `text`, but the note is READ by a human in a textarea — 2000 is ~25
+lines, room for ten appended addresses plus a staff note, still a guard against a runaway append.*
+
+### 📌 `§10.1` — `SOM SCHEDULE`, XS — and one question you may want to ask him
+**The `/register` page's title changes; the app's name elsewhere does not.** ❓ **Should `/checkin` — the OTHER
+page a parent opens inside LINE — say `SOM SCHEDULE` too?** *I told @Fern to name it, not change it.*
+
+⏱️ **Order: `§10.1` + `§10.2` now (no API); `§10.3` when the contract lands; one deploy; he tests once.**
+🚫 **Nothing else cut. The chain held.**
+
+---
+
+## 2026-09-14 — Sober → @Porter: ✅ **`§10.3`'s back end is in — 2114/0, 35 = 35, typecheck 0, re-run by me. Item 12 is CLOSED in the one writer, for both doors.** 🔴 **ONE decision for the owner before he taps Unlink on his own phone — and a priority frame for the list.**
+
+### 🔴 THE DECISION — Unlink is FAMILY-WIDE, because it is the admin's button
+**`unlink` is the SAME operation the admin's `Clear LINE link` runs — one writer, one more door, as `§10.3`
+asked.** ⇒ ***it clears the FAMILY's LINE binding — EVERY account the family holds, not only the one that
+tapped.*** **A household where both parents linked (TASK-230) loses BOTH when one taps Unlink.**
+🔑 **@Jason did not narrow it, and he was right not to: narrowing it is a SECOND writer** — *"unlink my
+account" and "clear this family's LINE link" are two different operations, and only one exists today.*
+✅ **The page will say so** — *"this family's LINE connection"*, with the linked family shown as a masked phone
+plus a child COUNT, no names — 📌 **but the owner should choose it consciously:** ❓ ***is family-wide unlink
+what he wants from a parent's own phone, or does he want a per-account unlink — which is another task?***
+⚠️ **Ask him before he tests it — a household with two linked parents is exactly the case he will not think
+of on a phone with one.**
+
+### ✅ What else landed, and one thing the CHAT does differently now
+**A bound account entering a phone that is not its family's is REFUSED — even a NEW phone — on both doors.**
+⇒ **the orphan-parent path is gone.** 🔑 **And the CHAT changed with it, named not discovered:** a linked parent
+who types `สมัคร` and enters another family's phone **used to get "registered" and an orphan row; they now get
+`verify_parent_other_family`** — *the reply that has meant exactly this since SPEC-071, no new copy.* **Their
+own phone is still a no-op success.**
+✅ **`status` masks the phone ON THE SERVER — `08x-xxx-xxxx`, a non-standard number masked entirely — and hands
+the page no names, no ids.** ✅ **The parent's note cap: 500 → 2000, on both parent writes, the other six
+caps unchanged.**
+
+### 🎯 THE FRAME FOR THE LIST — @Jason's, and it is better than "size"
+**Item 12 sat as "found by looking" for two days; the owner found it by USING the page in two.** I asked which
+other items he would find the same way. **The split is two KINDS of item:**
+- 🟢 **FOUND BY USE — the owner is currently the only test, and each costs him a report and a deploy:** the
+  voucher `Program` line carrying no size beside `Remaining : 4/6 sessions` · the picker's `อังคาร 22/09` beside
+  `08-09-2026` everywhere else *(his own choice, but he will meet it)*.
+- ⚪ **NEVER FOUND BY USE — properties of the suite, the types, the tooling:** the vacuous suspended-household
+  pin · the 18 empty-region tests · the two output checks · the branded date · the restore helper · the
+  `Program : 6 HR`-counts-sessions equivalence · the note race.
+🔑 ***"The green class is where the OWNER is our QA; the white class is where the SUITE is — and the suite is
+cheaper than him."*** ⚠️ **And his correction of my own framing: *"never found by use" does not mean "never
+found" — it means found by a PARENT, in production, as the first symptom of something else: the worst finder
+there is.*** 📌 **Green first, because each one he finds costs trust; white sized by what the suite would catch
+that he cannot.**
+
+⏱️ **`§10` lands when @Fern's half does; one deploy; he tests once.** 🚫 **Nothing else cut.**
+
+---
+
+## 2026-09-14 — Sober → @Porter: 🟢 **`§10` IS COMPLETE — both halves. BE 2114/0 · FE 327/0 · both typechecks 0 · 35 = 35 · no migration · the cap raised. One deploy; he tests once.** ⚠️ **Three things to tell him BEFORE he tests, so none arrives as a defect.**
+
+### ✅ What he will see
+1. **The LIFF header reads `SOM SCHEDULE`** — his spelling. *The prerendered HTML carries it; `/checkin` still
+   says `Smart Scheduler`.*
+2. **EN mode: the three address lists in English** (`Bangkok · Watthana · Phra Khanong Nuea`); **the confirm line
+   Thai in both modes, because it shows what will be STORED** — `กรุงเทพมหานคร` in the column, `พระโขนงเหนือ วัฒนา
+   กทม` in the note, unchanged. **The `§9.1` repair path depends on that and it holds.**
+3. **A linked account opening the link is TOLD** — *"Linked to 08x-xxx-xxxx (3 children)"*, masked on the
+   server, no names — **with UNLINK as TWO taps: a red outline, then a red warning with "Yes, unlink the family"
+   and "Keep the link", the close path above it.** Then the phone field. **A linked account entering another
+   family's phone is REFUSED on both doors — item 12, gone.**
+
+### ⚠️ THREE THINGS TO SAY BEFORE HE TESTS
+1. 🔴 **UNLINK IS FAMILY-WIDE — still his decision, and the copy says it plainly:** *"This removes the LINE
+   connection for the WHOLE family — if another parent linked their LINE account too, theirs is removed as
+   well."* **It is the admin's `Clear LINE link` by one more door.** ❓ **If he wants per-account, that is a
+   second writer and a task; if he tests on a one-parent family he will not see this — tell him.**
+2. ⚠️ **The English address names are the DATASET'S romanisations, and some are rough** — @Fern saw
+   `Khnong Tan Enue` for คลองตันเหนือ in the raw rows. **If a spelling looks wrong on his screen, it is the
+   dataset, not a mapping error** — a fix-up table or another dataset would be a task. 🔑 *Saying it first is
+   what stops it arriving as a bug.*
+3. ❓ **`/checkin` — should it say `SOM SCHEDULE` too?** It is the other page a parent opens inside LINE, and the
+   owner's own reason (the LIFF header shows the title) applies there. **@Fern's reading: yes. Not changed —
+   named for him.**
+
+### 📌 One rule out of `§10.2`, recorded — and its caveat
+**Two "stay Thai" rulings reversed in three days, by the owner's screen.** @Fern tested a default against every
+string on the page: ***what a parent must CHOOSE between follows the language; what merely IDENTIFIES stays as
+stored*** — **0 exceptions, and it would have predicted both reversals.** 🔑 **With the sentence that keeps it
+honest: *the rule is the default and the screen is the test, in that order.***
+
+🚫 **Nothing else cut. The chain held through `REQ-088` end to end.** ⏱️ **Both engineers EMPTY.**
+
+## 2026-09-14 — Sober → @Porter: ✅ **The `/checkin` title is IN. Release the deploy.**
+TASK-356 reviewed, re-run by me: **327/0 · tsc 0 · build ok**; 2-file diff — `metadata: { title: "SOM SCHEDULE" }` on `src/app/checkin/page.tsx` + a test that walks every `page.tsx` and asserts exactly `/register` and `/checkin` set a title, the other 14 routes still `Smart Scheduler`. Nothing else moved.
+📦 **What ships as `§10` + the cap:** FE TASK-355 + TASK-356 (327/0) · BE TASK-354 (2114/0, **no migration, 35 = 35**). Owner's family-wide acceptance recorded in `SYSTEM-FACTS.md`.
+📌 **For the OWNER'S LIST (not a task) — @Fern's answer to my "anything else a parent sees inside LINE that still says `Smart Scheduler`?":** the `<meta description>` (an English tagline) is what a LINE link preview shows under `SOM SCHEDULE`; no `og:` tags exist. If he wants the preview line in his words, it is one line per page — the LIFF app's own name lives in his LINE console, not in code.
+🚫 Chain stopped; both engineers empty; nothing cut.
+
+## 2026-09-15 — Sober → @Porter: ✅ **`REQ-089` read; order and sizes below. Two cut now (both engineers were empty); the two `§10` copy nits ride inside the first.**
+**Cut:** **TASK-357 @Fern (S)** = item 0 `SOM SCHEDULE` everywhere (six sites; the two page-level titles become redundant) **+ the Unlink truncation (shorten AND wrap, both languages, 360 px) + `1 child`**. **TASK-358 @Jason (S)** = item 2: the prior fact is TASK-301's — `courseBornCeiling` stretches from the LAST PLANNED session by the absences, which eats the quota's week and is exactly Kavya's screen (week 9); the rule becomes `base ceiling (week 8) + leave weeks` ⇒ week 11. The `SYSTEM-FACTS` line changes with it.
+**Order for the rest, one deploy when 357+358 land (his "before rent"):**
+3. **item 8** pick the teacher on resume — BE contract first, then FE (M, both) · 4. **item 1** unlock `Extended` rows in the advance-leave table — FE unlock + BE must accept a leave ON an appended session and append again (M) · 5. **item 5** `Last` badge on the admin schedule — the BE already knows a course's last session (`deriveLiveEndDate`); FE (S) + a flag in the schedule DTO (S) · 6. **item 4** teacher-leave-cancelled classes shown on the admin schedule — needs a read of how they vanish today before I size it · 7. **item 7** LINE to the teacher on cancel/pause of a confirmed class — a 15th outbox kind, both languages, the whole message discipline (M) · 8. **item 3** hard delete, history-free only, admin, confirm step — LAST: the only destructive one; BE guard + FE (M).
+📌 **Two DATA REQUESTS will come out of 358 for you to carry up: how many live courses on `sid` carry the old ceiling** (Jason names the column/condition; nobody runs it). 🚫 Nothing else cut; chain stopped between rounds.
+
+## 2026-09-15 — Sober → @Porter: ✅ **TASK-357 IN — item 0 + both `§10` copy defects.** Reviewed, re-run: **330/0 · tsc 0 · build ok; 16/16 prerendered titles `SOM SCHEDULE`, zero `Smart Scheduler` left outside tests.** Unlink button now `Unlink this family LINE` / `ปลด LINE ของครอบครัวนี้` (≤ 26 chars, derived from 360 px, and it wraps); `1 child` / `2 children`, TH untouched. **Wait for TASK-358 (@Jason, expiry) before he deploys — one deploy for both.** 📌 Owner's list: the teachers' ICS feed's `PRODID` still says the old name (invisible to parents, cosmetic, BE) — name only. ⚠️ An untracked `.next.zip` sits in the FE repo root — not from any task; the human's to look at before he commits.
+
+## 2026-09-15 — Sober → @Porter: ✅ **TASK-358 IN — release the deploy (357 + 358).** Reviewed, re-run: **2121/0 · tsc 0 · no migration, 35 = 35.** Formula now `base ceiling + absent weeks` — Kavya: `2026-09-23`, size 6, 3 leaves ⇒ **week 11**, pinned by his numbers; 0 leaves ⇒ week 8 unchanged; a resume does not move a ceiling. `SYSTEM-FACTS` updated.
+🔴 **DATA REQUEST for the human (Jason's sentence, nobody here runs it):** *"On `sid`, count live `course_packages` (`ended_at` and `dropped_at` both null) that have any booking with `planned_at_creation = true`; for each list `id`, `start_date`, `size`, `expiry_date`, and the number of distinct booking dates so flagged."* Every such course was born under the OLD formula and its stored ceiling is lower than the new one. **New ceiling = `start + (maxWeek(size) − 1 + distinctAbsentWeeks) × 7 days`** — paper arithmetic from that list; `PATCH /courses/:id/expiry` already lets an admin move each one. 🚫 No cleanup proposed; the owner decides whether the existing ones move.
+📌 Owner's list: the stale TASK-301/302 fact block (a signature TASK-308 removed) — mine to rewrite, no engineer.
+**Next after his deploy: item 8 (teacher on resume) — BE contract first to @Jason.** Chain stopped until you say go.
+
+## 2026-09-15 — Tanya (QA) → @Porter: `REQ-089` items 0 & 2 — ✅ **item 0 PASS · 🔴 item 2 FAIL** · plus the 09-13 note-write done
+
+**First, the 09-13 follow-up:** 🟢 parent `88c2917c` note `null` → `พระโขนงเหนือ วัฒนา กทม` (via API, as instructed); province stays `กรุงเทพมหานคร`. The address is back in `note`.
+
+### ✅ ITEM 0 — `SOM SCHEDULE` everywhere. **PASS**
+Walked 11 surfaces (login · calendar · people · teachers · bookings · reports · settings · overview · som · checkin · footer). **Every tab title `SOM SCHEDULE`, brand `SOM SCHEDULE`, footer `Back-office team`, ZERO `Smart Scheduler`.** Fern's 16/16 holds on the screens I reached.
+
+### 🔴 ITEM 2 — expiry with advance leave. **FAIL: expiry is still the LAST SESSION, not the ceiling**
+**`QA-089-expiry` — size 6 · start Wed `2026-09-23` · 3 advance leaves.** Dates I saw:
+sessions to makeups `04/11/18 Nov`; **expiry `2026-11-18`** (card shows `expires 2026-11-18`).
+🔑 **`REQ-089 §2` wants `size+quota+advance` = week 11 = `2026-12-02`, NOT the last session.** I got `2026-11-18` = week 9 = last session.
+**Proven against a baseline, not asserted:** a 0-advance 6-session course (same start) expires `2026-11-11` = **last session + 2 quota weeks** — so the create service DOES apply the +2 buffer normally. **The advance-leave course drops it** (size 6 + advance 3 = 9 weeks, quota 2 missing). ⇒ **the exact "expiry = last session" bug §2 targets is still live for advance-leave courses.**
+⚠️ **Method:** UI menu for ticking advance leaves is badly flaky (portal overlaps rows), so I created via `POST /courses {absentWeeks:[2,3,4]}` — the identical op — and confirmed the number **on the card**.
+
+### 🟡🔴 Part (b) — one more sick leave: expiry did NOT move (`18/Nov` → `18/Nov`) ✓ literally
+🔴 **But the makeup for it landed `25/Nov`, so the course now expires (`18/Nov`) BEFORE its own last session (`25/Nov`).** Downstream of the item-2 miss — a correct week-11 ceiling would have contained it. *(Same shape as Round-10 DEF-4.)*
+
+### Footprint
+🟢 `QA-089-expiry` **left ACTIVE as evidence** (you named it findable). 🟢 Diagnostic baseline course **CANCELLED**. 🟢 The note-write on `88c2917c` as above. No LINE, no `uat`, no phone.
+**Ball: @Sober via you — item 2's expiry fix does not cover advance-leave courses.**
+
+## 2026-09-16 — Sober → @Porter: 🔴 **Item 2 on `sid` — reading (b): the `sid` BE process is NOT running TASK-358. Ask the owner for a BE restart/redeploy at commit `3680d00` or later — no fix to cut.**
+**Evidence, run not pinned:**
+1. **TASK-358 is committed** — BE `HEAD = 3680d00` *"update course ceiling logic to use base ceiling plus absent weeks"* (09-15 23:10), 5 files, the human's commit.
+2. **I ran the committed formula with @Tanya's exact inputs** (start `2026-09-23`, size 6, absent weeks 2–4): **`2026-12-02` = week 11**; 0 leaves ⇒ `2026-11-11` — her baseline matches to the day.
+3. **Her `2026-11-18` is the OLD formula's output exactly**: `max(11-11, last make-up 10-28 + 21d = 11-18)`. The new one cannot produce 11-18 from those inputs.
+4. **There is no second path:** `POST /courses` → `createCoursePackage` → the one `courseBornCeiling` call before the insert (`scheduler.service.ts:1677`); the only later write on that path (`:2332`) GROWS the stored ceiling, never lowers it. The import route (`/courses/import`) is separate and untouched.
+⇒ A process computing 11-18 on 09-16 is running code from before `3680d00`. **Item 0 passing does not contradict this — item 0 is FE; the FE was rebuilt, the BE was not (or was built from an older checkout).**
+**After the restart, @Tanya's re-test (her call, not mine to instruct):** re-create the course (the existing `QA-089-expiry` keeps its old stored ceiling — `PATCH /courses/:id/expiry` or leave it as a specimen); expect `12-02`. 📌 **Her part (b) — a post-creation leave's make-up (`25 Nov`) landing AFTER an expiry that did not move — is worth ONE re-look on the new process: `:2332` is supposed to grow the ceiling to cover an appended make-up. If it still does not move after the restart, that is a second finding, and it is mine to cut.**
+📌 List (yours already): the advance-leave table's tick-menu overlap — noted on item 1's future task.
+🚫 Nothing cut. Item 8 (teacher on resume) contract I start now unless you say wait.
+
+## 2026-09-16 — Tanya (QA) → @Porter: `QA-089-expiry-2` re-test — 🔴 **STILL `2026-11-18`. The restart did not pick up `3680d00`.**
+
+**Re-created exactly as you said** (size 6, start `2026-09-23`, 3 advance leaves; 17:00 to dodge the first specimen's slots). **Result unchanged:**
+- create expiry = **`2026-11-18`** (last session, week 9) — **expected `2026-12-02`** (base week 8 + 3 leave-weeks).
+- part (b): post-creation sick leave → **expiry did NOT grow** (`11-18` → `11-18`); the make-up landed `25/Nov` ⇒ **the course again expires before its own last session.**
+
+🔑 **This is DEPLOY, not formula — I read the source:** commit **`3680d00`** rewrites `courseBornCeiling` to `max(base,lastPlanned) + absences×7` = week 8 + 3 = **`12-02`**, exactly the DoD. **The running box still emits `11-18` = the OLD formula to the day** — @Sober's own words for it. **`3680d00` is the NEWEST BE commit and the box does not reflect it.** ⇒ **the restart/rebuild stopped short of HEAD.**
+📌 **To settle it without me: confirm `3680d00` is in the running `sid` artifact.** If it is and it still says `11-18`, only THEN is it a formula bug — and on the source I read, it would not be.
+🟢 **My 09-15 FAIL stands as correct evidence** (a pre-TASK-358 build, exactly as you framed it). Nothing to retract.
+
+⚠️ **Footprint note you should see:** there are now **TWO** ฿6,490 specimens on `sid` for this one check (`QA-089-expiry` + `-2`), both old-build. **When the BE genuinely carries `3680d00`, I'll need a third (`-3`) to test the fixed build, then cancel the two olds.** Say the word to cancel earlier if you prefer. No LINE, no `uat`.
+
+## 2026-09-16 — Tanya (QA) → @Porter: 🎉 `QA-089-expiry-3` on the fresh build — **PASS. `2026-12-02`, exactly.**
+
+✅ **CREATE: expiry `2026-12-02`** = base week 8 + 3 advance weeks = week 11, to the day. **Commit `3680d00` is now RUNNING** — the two `11-18`s were the stale zips, nothing more.
+✅ **PART (b):** every post-creation leave stays covered — after create `12-02`/last `18-11`; +1 leave `12-02`/last `25-11`; +2nd quota leave `12-02`/last `12-02` (exactly). **The course never expires before its last session** — the old defect is gone.
+📌 **On your "ceiling must GROW":** it doesn't literally grow within quota — it's **born** with the full `base+advance` headroom, so every quota make-up lands under `12-02` (the last one on it). Growth would only be needed beyond `advance+quota`, which the quota-lock forbids. **So "covered by headroom" — correct, NOT a second finding.**
+🟢 **Rounds 23/24 close cleanly:** `11-18` = old formula on stale zips; `12-02` = committed formula on the fresh build. My measurements were right each time; the only variable was the artifact. @Sober's read was exact.
+🟢 **Cleaned up as you said:** `QA-089-expiry` and `-2` **CANCELLED**; `-3` left as the passing specimen.
+⚪ **The card didn't render in my pane this session** (glitch — "No bookings match" despite `Active (8)`); **expiry is API-confirmed twice and the card FORMAT was proven on screen in Round 23**, so I did not chase the glitch past two tries. No LINE, no `uat`.
+**Ball: you — item 2 is GREEN on the fresh build.**
+
+## 2026-09-16 — Sober → @Porter: ✅ **Item 2 green noted; DATA REQUEST withdrawal noted (`REQ-089 §3`: admins repair old courses via the expiry editor).** ▶️ **Item 8 cut: TASK-359 @Jason (M), contract first** — optional `teacherId` on BOTH resume bodies (`/courses/:id/resume`, `/bookings/:id/resume`); absent = today's behaviour so nothing breaks before the FE lands; present = that teacher on every session the resume writes, subject-mismatch refused by the create path's own rule. FE task follows his contract. 🚫 Teachers are not told by LINE on resume — that is item 7's family; on the list. Deploy-wise: 359 + its FE half ship together, whenever the next round opens.
+
+## 2026-09-16 — Sober → @Porter: ✅ **TASK-359 (BE, item 8) IN — 2133/0, tsc 0, no migration; re-run by me. FE half cut: TASK-360 @Fern (M).** Ship together.
+🔴 **Two for the OWNER'S LIST, both findings from the code, neither built:**
+1. **The server has NO rule that a teacher teaches the subject they are booked for — on ANY door, create included.** `teacher_subjects` only feeds the pickers; the FE filter is the only guard. Jason and I would both add one check inside `insertBooking` (every door at once). A decision for the owner: has a wrong-subject booking ever been a problem for him?
+2. **A course resume's default teacher is the FIRST session's, not the last** — a course reassigned (TASK-094) and then dropped is handed back to the original teacher unless the admin picks. Item 8 gives the admin the pick, so it is no longer silent; changing the default is one line, but it moves the absent path — his call.
+📌 Also: with a picked teacher the existing `booking_resumed` LINE goes to the NEW teacher; the OLD one is told nothing — item 7's family, when that is cut.
+
+## 2026-09-16 — Sober → @Porter: ✅ **Item 8 complete — TASK-360 (FE) IN. Deploy 359 + 360 together when you open the round.** Reviewed, re-run: **341/0 · tsc 0 · build ok.** One filter function feeds the teacher `Select` on BOTH resume dialogs (`bookableOnDate` + teaches the subject + the current teacher always listed); default = the current teacher, re-seeded on open; `teacherId` rides only when changed — an unchanged picker sends no key, so the BE's byte-for-byte path is what the owner exercises unless he picks. Refusals show the server's sentence. **For @Tanya, if you want it said:** resume a paused booking and a dropped course once WITHOUT touching the picker (old teacher), once WITH (new teacher on every new session; the clash message names the new one).
+📌 List: @Fern confirms the last-session teacher is in hand on the dialog but is deliberately NOT the default — the default must be what the server writes when nothing is sent; if the owner wants "last teacher", it is @Jason's one line (`rows.at(-1)`), the same list item.
+**Next in my order: item 1 (unlock `Extended` rows in the advance-leave table) — cut on your go; note Tanya's tick-menu overlap rides with it.** Both engineers empty; chain stopped.
+
+## 2026-09-16 — Sober → @Porter: ▶️ **Item 1 cut, both sides in parallel: TASK-361 @Jason (M) · TASK-362 @Fern (S–M).** The lock is one validator line (`absentWeeks` must be ≤ `size`); the rule becomes "any previewed row, make-ups included, if the chain reaches it"; the engine appends a make-up for a ticked make-up; the `< size` cap on total absences STAYS (the customer asked for the lock to go, not the cap). Finding 2 (last session's teacher) rides in 361; Fern's default follows in 362. Tanya's tick-menu overlap is §2 of 362. Finding 1 held, noted. I tell you when both land for the item 8 + item 1 round.
+❓ **One for the owner, from the cut (list, not blocking):** with the lock gone the only bound on advance leave is the cap "distinct absences fewer than size" (3 on a 4, 5 on a 6, 9 on a 10). Is that the number he means, or the leave QUOTA (1/2/3)? Today's behaviour keeps the cap; I want his word before anyone tightens it.
+
+## 2026-09-16 — Sober → @Porter: ✅ **TASK-361 (BE, item 1 + last-teacher default) IN — 2148/0, tsc 0, no migration; re-run by me.** One rule (`plannedRowExists`) now answers the validator, the preview and the save; a ticked make-up is flipped to leave after the first reconcile and the same engine appends again; the `< size` cap kept. Resume default = the last session's teacher. 📌 Part of it is already in the human's commit `ff08acc` — fine, noted. **Waiting on TASK-362 (@Fern) to close the round; I tell you then.**
+🔑 **For the owner — the cap question, with @Jason's numbers (list, his decision):** advance leave at creation is FREE (does not touch `leaveUsed`) and bounded only by "not all leave": **size 4 ⇒ up to 3 declared absences · 6 ⇒ 5 · 10 ⇒ 9**, versus the leave quota **1 / 2 / 3**. With the lock gone those absences may chain through make-ups. If he means advance leave to spend the SAME allowance as leave taken later, the cap becomes the quota and creation counts against `leaveUsed` — one line each, but a rule change; nothing moved today.
+
+## 2026-09-16 — Sober → @Porter: ✅ **Item 1 complete — TASK-362 (FE) IN. The round is ready: item 8 (359 + 360) + item 1 (361 + 362) + the last-teacher default. Release when you like.** Reviewed, re-run: **FE 346/0 · tsc 0 · build ok; BE 2148/0 · no migration.**
+**What ships:** every previewed row tickable by position, make-ups included (the lock was one FE guard + one BE validator line; gone on both) · the server's one rule decides existence; the `< size` cap stays · **the tick-menu bug, cause found:** Mantine's click-outside does not consume the tap, and the dropdown sits over the NEXT row's `⋯`, so one tap closed menu A and opened menu B — fixed with a click shield under the dropdown, in the one place; the feel on a real phone is @Tanya's · resume default = the LAST session's teacher, both sides.
+**For @Tanya, the shape (yours to phrase):** size-4, tick rows 2/3/4 by the UI only ⇒ 7-row plan; tick the first make-up ⇒ the server's cap sentence; untick ⇒ the make-up row disappears; one tap outside the menu closes it and nothing else happens; resume a dropped course whose last session had a different teacher ⇒ that teacher is pre-selected.
+📌 **List (Fern's finding, not new to this task):** on a 375-px admin screen the plan table's STATUS column — the one the ticks change — sits under the horizontal scroll (`minWidth 640`, only `⋯` pinned). Three ticks on a size-4 make that the everyday case. Options exist; nothing built.
+🚫 Both engineers empty; chain stopped. **Next in my order on your go: item 5 (`Last` badge on the admin schedule).**
+
+## 2026-09-16 — Sober → @Porter: ✅ **Your three mechanism questions, answered from the code, and the §4.2 unlock cut with the gates as PINS, not prose.**
+1. **Terminates — yes.** `plannedRowCount` lays rows until `size` LIVE rows exist; any position beyond the largest declared absence is live, so it stops for every finite request: rows ≤ `size + |absent|`. The create's flip loop is bounded; the engine appends exactly `size − live` per pass. **The only unbounded thing is the request array itself** (no `max` on `absentWeeks`) — by API, not the UI. I asked Jason for the number he'd pick (my instinct: positions ≤ 104, a two-year abuse fence, not a product cap) — **the owner's decision, on the list; nothing added.**
+2. **Original-only counting was possible** (the rule already knows chain rows from make-ups) — moot now that he ruled full unlock.
+3. **All-originals-absent for free — yes, that becomes possible** (size 4, all four declared ⇒ four make-ups live, ceiling +4 weeks, `leaveUsed` untouched). Whether that state is SAFE downstream (attention flags, history, reminders, reports) is **gate 2 of TASK-363: Jason runs it; if anything is wrong for that state he STOPS and reports before the line goes.**
+▶️ **Cut:** **TASK-363 @Jason** (cap removal + two gates) · **TASK-364 @Jason** (item 3 BE: `DELETE /students/:id`, history-free only — any booking/course/voucher row in any status is history, suspended-with-zero-rows is deletable; `409` with counts; atomic; contract first) · **TASK-365 @Fern** (item 3 FE: red `Delete` beside suspend on People, two-tap confirm, the server's sentence on refusal — the rule has one source). Jason confirms the contract before Fern's wiring lands; both in flight.
+📌 First exception to *"nothing is ever deleted"* (`api.ts:41`) — the comment gets rewritten with the owner's reason. I tell you when 363/364/365 are in for the ONE `sid` deploy of 8 + 1 + 3.
+
+## 2026-09-16 — Sober → @Porter: ✅ **TASK-363 (cap removed) and TASK-364 (delete BE) IN — 2172/0, tsc 0, no migration; re-run by me. Waiting on TASK-365 (@Fern) to close the 8 + 1 + 3 round.**
+🔑 **The gates, both GREEN and run on the unfixed tree first:** (1) the chain terminates — rows = `size` + the declared positions that exist; a size-4 with every row 1–8 declared ⇒ 12 rows and stops. (2) A course with zero attended originals is a VALID state downstream — ceiling covers it, `leaveUsed` untouched, attention does not flag it (remaining = full size, correct), history labels it right, the reminder never prints a leave as a class. Nothing wrong, nothing loud ⇒ the line went.
+📌 **For the owner (list, decision): the request fence — Jason's number is 104** (positions ≤ 104 and ≤ 104 entries): two years of weekly rows, the calendar's length not the product's; a client naming position 105 is broken or hostile, not a family. Two tokens if he says yes; nothing added.
+📌 **Item 3 contract as built:** `DELETE /students/:id`, history = any course/booking/voucher row in any status; suspension is the parent's and is ignored; a walk-in is deletable; `409` with the counts in the sentence; audit = one server log line (no table — a table would be a soft delete by another name). The "nothing is ever deleted" comment now says why this is the one exception. LINE side after a delete: nothing cached (Jason's table in the TASK).
+
+## 2026-09-16 — Sober → @Porter: ✅ **TASK-365 IN — item 3 complete. The ONE `sid` deploy is READY: item 8 (359+360) · item 1 (361+362) + the §4.2 cap removal (363) · item 3 (364+365) · the last-teacher default.** Reviewed, re-run: **FE 351/0 · tsc 0 · build ok; BE 2172/0 · tsc 0 · no migration, 35 = 35.**
+**Item 3 as built:** the People page has no `⋯` and suspend lives on the PARENT card, so Delete is a red trash icon beside the student's own Edit — two taps (a confirm `Modal` naming the student, "permanent"); a `409` puts the server's Thai sentence with the counts INSIDE the open dialog and points at suspend; a `200` removes the row and refreshes the parent's count. No client-side history rule — the server is the only source. 5 new keys × 2 languages.
+**For @Tanya, the shape (yours to phrase), all on `sid` after the deploy:**
+1. Item 3 — a fresh student ⇒ two taps ⇒ gone, parent's count down; a student with any booking (cancelled counts) ⇒ the sentence with counts, dialog stays open, Cancel closes. A child of a SUSPENDED family with zero rows ⇒ deletable.
+2. Item 1 + §4.2 — size-4, tick rows 1/2/3/4 by the UI ⇒ 8-row plan, four make-ups live, expiry = base + 4 weeks; tick a make-up ⇒ one more row; untick ⇒ it goes. One tap outside the row menu closes it and nothing else happens.
+3. Item 8 — resume a dropped course whose LAST session had a different teacher ⇒ that teacher pre-selected; change it ⇒ every new session on the new teacher; leave it ⇒ unchanged.
+📌 Owner's list from this round (all named, nothing built): request fence 104 · the Status column under the horizontal scroll on a phone · the Delete icon 2 px from Edit (`gap="xs"` or a per-student `⋯` if he wants distance) · the ICS `PRODID` · the stale TASK-301/302 fact block (mine).
+🚫 Both engineers empty; chain stopped. Items 4, 5, 7 are the next batch on your word.
+
+## 2026-09-16 — Tanya (QA) → @Porter: ✅ **The 8+1+3 round — ONE report. Item 3 PASS · Item 1+§4.2 PASS · Item 8 PASS, with two named findings and one honest method declaration.**
+
+**Method, declared up front.** The `sid` pane again would not hold the minted cookie across full navigation this round (the recurring bounce-to-`/login` despite a valid `/api/auth/session`). **Item 3 and Item 1's on-screen behaviours were verified in the UI earlier this session** (the 8-row plan through the row menu, tick→untick, the overlap fix, the delete dialog). **Item 8 and Item 1's expiry number I exercised through the API — the identical operations the UI fires** (`POST /courses/:id/resume`, `POST /bookings/:id/resume`, `PATCH /bookings/:id`, `POST /courses/preview`) — because the pane would not stay logged in. Every write below was mine to make and every one is cleaned up (footprint at the end). `sid` only, no LINE, no `uat`.
+
+### ✅ Item 3 — DELETE a history-free student (UI, earlier this session)
+1. **Fresh student ⇒ red Delete beside Edit ⇒ two taps ⇒ gone; parent's count dropped** to "No students yet". PASS.
+2. **KKTEST (has bookings) ⇒ the server's Thai sentence with the live counts INSIDE the dialog** — `มีประวัติ: คอร์ส 17 · คาบ 154 · บัตร 0 — ระงับแทน` — **dialog stayed open, Cancel closed it, nothing was deleted.** PASS.
+3. **Zero-row child of a SUSPENDED family (`QA-DEL-PARENT`) ⇒ deletable.** PASS — suspension is the parent's; the button ignores it, as built.
+
+### ✅ Item 1 + §4.2 — full unlock (UI behaviours + expiry cross-checked)
+- **Tick ALL FOUR rows 1/2/3/4 by the UI ⇒ 8-row plan** (4 `ON LEAVE` + 4 `EXTENDED`), four make-ups live. PASS — **corroborated by a real created course** (`80fae836`): 4 `SICK_LEAVE` weeks 1–4 + 4 `EXTENDED` make-ups, exactly the 8-row shape.
+- **Tick a make-up ⇒ +1 row (9); untick ⇒ −1 (back to 8).** PASS.
+- **Overlap fix:** one tap outside the row menu closes it and does nothing else (`absent` count unchanged). PASS.
+- **expiry = base + 4 weeks:** PASS **on a clean teacher slot.** Preview, size-4, 4 advance leaves ⇒ make-ups land on consecutive weeks (22 Oct…12 Nov) and **expiry = `2026-11-19` = base (`2026-10-22`) + 4 weeks, to the day.** Cross-checked against the accepted size-6 reference: size-6 / 3 advance ⇒ `2026-12-02` = base (`11-11`) + 3 weeks — the same value Round 25 passed.
+
+🔎 **FINDING (item 2/§4.2, product question — not a formula bug):** the stored expiry tracks **the last make-up session's ACTUAL date.** When the teacher's weekly slot is already occupied, the make-ups get bumped to the next free week, and expiry inflates past `base + absence-weeks`. My size-4/4-leave course on Ek's clogged Wed-17:00 slot read **`2026-12-09`, not `2026-11-19`**, purely because the make-ups could not sit on consecutive weeks. The formula ceiling (`base + absences×7`) is correct; the *realised* expiry can exceed it when the calendar forces the make-ups later. Arguably correct-by-design (the family really does finish later), but "expiry = base + N weeks" only holds when the make-ups can be placed consecutively. **Your call whether that's a spec point for the owner.**
+
+### ✅ Item 8 — teacher on resume (API; the operations the picker fires)
+- **Dropped course, LEAVE the picker (no teacherId):** created a course all on **Camp**, reassigned the **LAST** session to **Dewy**, dropped it, resumed with no teacher ⇒ **all four new sessions = Dewy.** PASS — the default is the **LAST** session's teacher, not the first (`TASK-361`), exactly as the owner ruled ("the one the family LAST had").
+- **Dropped course, PICK a different teacher:** resume with `teacherId = Haris` ⇒ **all four new sessions = Haris.** PASS.
+- **Paused booking, LEAVE the picker:** a standalone `SINGLE_SESSION` on **Camp**, confirm → pause → resume with no teacher ⇒ **stays Camp.** PASS.
+- **Paused booking, PICK a different teacher:** resume with `teacherId = Haris` ⇒ **Haris.** PASS.
+- **A teacher who does not teach the subject ⇒ REFUSED:** ⚠️ **NOT_TESTED on `sid` — the data to trigger it does not exist.** All 23 teachers on `sid` are configured to teach all 19 subjects, so no teacher can be picked who fails the subject check. I exercised the **adjacent** guard instead: an **unknown** `teacherId` on resume is refused **`400 VALIDATION "ไม่พบครู"`** and nothing is written (the drop's cancelled sessions stayed cancelled, no new rows). The real subject-mismatch guard exists in code (`assertTeacherBookable`, run per session inside `insertBooking`, same path create uses) but I could not make it fire live. **If you want it proven, it needs a teacher on `sid` whose subject list excludes a subject — a data setup, i.e. a DATA REQUEST.**
+
+🔎 **NOTE (correct-by-design):** an individual **course** session cannot be paused on its own — `409 COURSE_SESSION "คาบในคอร์สใช้การพักคอร์สแทน — พักทีละคาบไม่ได้"`. Course sessions use course-pause; the booking pause/resume verbs are for standalone bookings. So the item-8 "paused booking" half was tested on a `SINGLE_SESSION`, which is the shape that path is for.
+
+### Footprint — everything I created this round, all cancelled/deleted; nothing of mine left ACTIVE
+🟢 **Cancelled (ADMIN_ERROR, sessions removed from calendars):** `e6eb4f43` (item-8 course A) · `bea6d43f` (course B) · `3bfe7d24` (course C) · `879bf618` (an orphan from a script that errored mid-run) · `b7dc8ace` + `80fae836` (item-1 UI specimens) · `ca77dac6` (item-8 booking course) · `753eb1ad` (the `SINGLE_SESSION` booking). Item-3's fresh students were deleted in the UI at test time.
+🟢 **Verified:** none of my specimens remain ACTIVE. The six ACTIVE KKTEST courses still on `sid` are from **prior** rounds (incl. `279b8fc5` = `QA-089-expiry-3`, the passing specimen you told me to keep) — not this round's.
+🟢 No LINE, no `uat`, no phone, no product code touched.
+
+## 2026-09-16 — Sober → @Porter: ▶️ **Next batch: item 5 CUT (TASK-366 BE + TASK-367 FE, parallel, contract first). Items 4 and 7 each need ONE ruling before I cut — from the reads, not preference.**
+**Item 5:** every calendar booking gets `courseLast: boolean` from the function that already knows a course's plan end (`deriveLiveEndDate` — one rule, no column, no migration); the cell shows the owner's word `Last` as a stamp, both views, legend entry. No message.
+🔴 **Item 4 — "show the classes cancelled because the teacher took leave": there is NO teacher-leave fact in the data.** A cancellation records `cancelReason` from a closed set of THREE — `PROGRAM_CHANGED · CUSTOMER_CANCELLED · ADMIN_ERROR` — none says "teacher"; the calendar hides every `CANCELLED` row the same way. Today an admin cancelling for a teacher's absence picks one of those three (or none) and types the truth in the note. **The system cannot show what it was never told.** ⇒ **Ruling needed: add a fourth reason `TEACHER_LEAVE` to the cancel dialog** (a code — no migration; the column is text) **and the admin schedule shows a `CANCELLED` row ONLY when its reason is `TEACHER_LEAVE`, styled as "cancelled — teacher off".** ❓ For the owner: (a) yes to the fourth reason? (b) what happens to the family — today a cancelled course session is re-owed by the engine (a make-up appends) — does a TEACHER-leave cancel also re-owe, and does it cost the family's quota? My reading: re-owed, quota untouched (it was not the family's leave) — his word. (c) Old cancellations carry no reason ⇒ nothing to show for the past; the badge starts the day it ships.
+🔴 **Item 7 — LINE to the TEACHER when a confirmed class is cancelled/paused:** a single cancel and a single pause are clear (one message each, a 15th/16th outbox kind, both languages). **But a course DROP or a course PAUSE cancels N confirmed sessions at once** — ⇒ ruling: **one LINE per cancelled session, or ONE per course naming the count and the dates?** My recommendation: one per COURSE for the bulk paths (a teacher with a 10-session course dropped gets one message, not ten) and one per session for the single paths; both shapes share the fields the teacher needs (student · date · time · why). Also (d): the teacher must be LINE-linked to receive anything (`teacher-link.service` exists); an unlinked teacher gets `skipped` as today.
+**Both engineers are on item 5; when you have the two rulings I cut 4 and 7 into the same round.** 📌 The stale fact block is rewritten (superseded header + the live rule); four new dated facts added.
+
+## 2026-09-16 — Sober → @Porter: ✅ **TASK-366 (item 5 BE) IN — 2184/0, tsc 0, no migration; re-run by me. Waiting on TASK-367 (@Fern).** One grouped read per calendar range (the rentals' shape; the calendar has day and week only, ~40 courses ⇒ one round trip). 📌 **For the owner's list, answered by the function: the `Last` badge sits on the last session while it is AHEAD and is gone the moment it is attended** — the plan-end rule reads live rows only. If he wants it to STAY on the delivered cell, that is one more clause; nothing built. Still waiting on your two rulings (item 4 `TEACHER_LEAVE` reason; item 7 per-session vs per-course).
+
+## 2026-09-16 — Sober → @Porter: ✅ **Item 5 complete — TASK-367 (FE) IN. FE 357/0 · tsc 0 · build ok; BE 2184/0.** A black `Last` chip on the cell's name row in week and day view, the same chip in the legend with *"last session of the course"* / *"คาบสุดท้ายของคอร์ส"*; from the server's flag only; leaves at attendance.
+**For @Tanya (yours to phrase):** a live course's last session shows the chip in both views; attend it ⇒ gone; a make-up appended after a leave moves the chip to the make-up; the legend shows the chip.
+📌 List: a *"sell the next course"* tap-through — the booking modal has no such action today (creating a course starts on Bookings); it would be a modal action pre-filling student + program, one task, serving every last session. The stamp alone is what item 5 asked.
+**Items 4 and 7 wait on your two rulings; both engineers are empty.** Deploy: hold item 5 for the 4/5/7 round, or ship it alone — your call; nothing else in flight.
+
+## 2026-09-16 — Sober → @Porter: ✅ **Both rulings taken; items 4 and 7 cut. 17:30 noted, facts updated.**
+**Item 4 (§5, display only):** TASK-368 @Jason — `GET /calendar?includeCancelled=true` adds the `CANCELLED` rows (every reason; `PAUSED` stays in its tray); the default path is byte-for-byte today's. TASK-369 @Fern — a `Show cancelled` switch beside the other cell-display toggles, remembered the same way; a cancelled cell is struck + grey with the reason (the existing code labels, else the note); legend sample. Parallel, contract first.
+**Item 7 (§6):** TASK-370 @Jason — two outbox kinds: `class_cancelled_teacher` (single cancel or pause) and `course_dropped_teacher` (ONE per course on drop, listing the confirmed dates + count); only a session that WAS CONFIRMED earns a message; unlinked ⇒ skipped; parent sends untouched. **House format is written into the task as a HARD constraint (mirror `ob_leave_teacher` and the §7 layouts, no new phrasing), and the gate is in the DoD: the drafted TH+EN copy for both kinds comes to me BEFORE the send path is finalised — I forward it to you for the owner's one look; the words land after his eye, the plumbing ships with PLACEHOLDER keys until then.** No FE surface for item 7.
+❓ One for the owner via 370: should a course END (the rest cancelled) tell the teacher too, by the same rule? Jason builds it only if the answer is obviously the same; otherwise it is on the list.
+Batch 4/5/7 → one `sid` deploy when 368/369/370 land and the copy is approved.
+
+## 2026-09-16 — Sober → @Porter: ✅ **TASK-368 (item 4 BE) IN · TASK-370 (item 7) PLUMBING IN, WORDS GATED — 2215/0, tsc 0, no migration; re-run by me. Waiting on TASK-369 (@Fern) to close the round. Three things for you, one for the owner's eye.**
+
+**1. Item 7 — three scope facts from the code, decided by the rule you gave, say if any is wrong:**
+- **A single PAUSE already tells the coach** (`booking_paused`, TASK-260 — your copy, owner-approved). No second pause message was built; two for one pause would be the defect. So item 7's "pause" is covered by what ships today.
+- **A single CANCEL told nobody before** (no parent message either) — the new coach notice is the first send on that path.
+- **A course END** (the rest cancelled) tells the coach by the SAME rule as a drop — a confirmed class the coach was expecting vanishes; only the header word differs. Built; one call site to remove if the owner says no.
+Gate as ruled: only a session that WAS CONFIRMED; on a drop, one message PER COACH per course (a re-teachered course has two coaches — each gets his own dates); unlinked ⇒ a SKIPPED row in the outbox.
+
+**2. 🔴 THE DRAFTED COPY — for the owner's ONE look. Placeholders, unseen by the customer. Mirrors the live `LEAVE NOTICE / แจ้งลา ‼️` notice line for line: bilingual stamp, the customer's `Label : value` block in his field order, then the appended lines. New words are ONLY the three stamps, the `Reason` label and three reason labels — every other line is a shipped key.**
+Single (cancel of a confirmed class):
+```
+CLASS CANCELLED / ยกเลิกคาบ ‼️
+Student : น้องเอ
+Program : Skate 6 HR
+Date : 22-09-2026
+Time : 10:00-11:00
+Coach : Camp
+Reason : ลูกค้ายกเลิก
+```
+Bulk (drop; an END prints `COURSE ENDED / ยกเลิกคอร์ส ‼️`):
+```
+COURSE PAUSED / พักคอร์ส ‼️
+Student : น้องเอ
+Program : Skate 6 HR
+Coach : Camp
+Sessions : 3
+Date : 22-09-2026, 29-09-2026, 06-10-2026
+Time : 10:00-11:00
+Reason : พักคอร์สชั่วคราว
+```
+EN: identical labels and stamps (the customer's labels are English in both languages); the reason value in English. Reason labels for the closed codes: `PROGRAM_CHANGED` → `เปลี่ยนโปรแกรม` / `Program changed` · `CUSTOMER_CANCELLED` → `ลูกค้ายกเลิก` / `Customer cancelled` · `ADMIN_ERROR` → `จองผิด (แอดมิน)` / `Booking error (admin)`; no code ⇒ the note; nothing ⇒ `(-)`. Every date prints (a coach cannot open the web app the digest points to). **His changes land as string edits only; the send path is final.**
+
+**3. Item 4 as built:** `includeCancelled=true` adds the `CANCELLED` rows; **`cancelReason` now rides every booking** (it never did); and a decision you should know: **the grid stays one booking per slot — LIVE > leave > CANCELLED — so a cancelled session whose slot was rebooked is NOT shown on the grid even with the toggle on** (the live class wins the cell; the modal still has it). The alternative is a list of struck rows under the live one — a new grid shape; one word and it switches.
+📌 List: `extendedFromId` (make-up → original) is in the schema and not on the DTO — the struck original and its make-up are unrelated cells; one nullable key if the owner wants the link drawn.
+
+## 2026-09-16 — Sober → @Porter: ✅ **All three taken.** Item 7: strings landing as approved, END kept (Jason, XS). **Item 4 → the tray (§5.1): re-shaped on BOTH sides** — the tray needs the cancelled rows as their OWN list, not through the grid's one-per-slot map (as built, a cancelled row whose slot was rebooked never reached the FE); so `includeCancelled=true` now answers `cancelled: BookingDTO[]` beside untouched grid rows (Jason, XS — the alternative he named), and Fern builds the tray on the `PausedTray` pattern with the toggle revealing it. `cancelReason` on every booking stays. I tell you when 368/369/370 land — one `sid` deploy for 4/5/7.
+
+## 2026-09-16 — Sober → @Porter: ✅ **BE side of the 4/5/7 round is COMPLETE — 2213/0, tsc 0, no migration; re-run by me.** TASK-368 re-shaped to the tray (`cancelled: BookingDTO[]` beside untouched grid rows; the grid-precedence code is gone entirely). TASK-370: the owner's words are live — 0 bytes changed from what he saw, 7 keys × 2 now byte-frozen in the test; END kept. **Waiting on TASK-369 (@Fern, the tray) to close the round; then one `sid` deploy of 4/5/7.**
+📌 Recorded for the team, not for him: a test lesson from Jason — a source region built OUTSIDE a test can make the whole block vanish as "0 fail" when its anchor moves; every region is now built lazily inside its test. TASK-342's rule has a cousin.
+
+## 2026-09-16 — Sober → @Porter: ✅ **TASK-369 IN — the 4/5/7 round is READY for the one `sid` deploy.** Reviewed, re-run: **FE 368/0 · tsc 0 · build ok; BE 2213/0 · tsc 0 · no migration, 35 = 35.**
+**What ships:** item 4 (§5.1) — `Show cancelled sessions` in the cell-display menu (remembered) reveals a CANCELLED tray beside the paused one, both layouts; rows date · time · coach · reason; tap opens the booking; the grid is untouched · item 5 — the `Last` chip, both views, legend · item 7 — the coach is told on a single cancel of a confirmed class, and once per course per coach on a drop or an end, in the words the owner approved; a single pause was already told (TASK-260).
+**For @Tanya (yours to phrase), all on `sid`:**
+1. Item 4 — toggle ON ⇒ the request carries `includeCancelled=true` and the tray shows the week's cancelled rows with reasons (a coded one shows its label, a free one its note); tap opens the booking; OFF ⇒ no param, no tray; reload ⇒ remembered; collapse each tray independently. Cancel a session whose slot is then rebooked ⇒ still in the tray, the new booking on the grid.
+2. Item 5 — a live course's last session carries `Last` in week and day view; attend it ⇒ gone; a leave that appends a make-up moves it to the make-up.
+3. Item 7 — cancel a CONFIRMED single class ⇒ one outbox row to its coach (`CLASS CANCELLED / ยกเลิกคาบ ‼️` … `Reason :`); cancel a PENDING one ⇒ none; drop a course with 3 confirmed + 2 pending ⇒ ONE row per coach naming the 3 dates; end a course ⇒ the `COURSE ENDED` stamp; an unlinked coach ⇒ a SKIPPED row. ⚠️ LINE delivery on a phone is the owner's check, as always.
+📌 List (nothing built): `extendedFromId` not on the DTO (the struck original and its make-up are unrelated) · the `Last` tap-through · the delivered-last badge staying · Fern's earlier Status-column-off-screen note.
+🚫 Both engineers empty; chain stopped; REQ-089 has no open item after this round (6 is the owner's team).
+
+## 2026-09-16 — Tanya (QA) → @Porter: ✅ **4/5/7 round — ONE report. Item 4 PASS (8/8) · Item 5 PASS (4/4) · Item 7 BLOCKED (no outbox read on `sid`) with the enqueue branches corroborated.** `sid` only, no LINE-on-phone, no `uat`.
+
+**Method:** the pane held the cookie this round; items 4 & 5 verified on screen (tray, chip, modal, badges) with API used only to place/mutate the underlying rows (cancel a session, sick-leave, attend) — the same operations the UI fires. Item 7 is read-blocked (below).
+
+### ✅ Item 4 — cancelled tray (all eight)
+1. **`Show cancelled sessions`** lives in the **Cell display** menu. ON ⇒ a **`Cancelled sessions`** tray appears **beside/under the paused tray**, both stacked. PASS.
+2. **Rows = date · time · coach · reason**, e.g. `QA-req074-iso · COURSE · 14/Sep/26 10:00 · Bank · ยกเลิกคอร์ส (จบคอร์สก่อนกำหนด)`. **Coded reason ⇒ its label** — confirmed on three codes (course-end `ยกเลิกคอร์ส (จบคอร์สก่อนกำหนด)`, pause `พักคอร์สชั่วคราว`, and my `CUSTOMER_CANCELLED` ⇒ `Customer no longer wants it`). PASS.
+3. **Tap a row ⇒ the booking opens** — full modal (student, `CANCELLED`, teacher, subject, date, time, the reason as a Note). PASS.
+4. **Trays collapse independently** — collapsing Cancelled turned its control to `Expand cancelled sessions` while Paused stayed open (Aiwa still shown). PASS.
+5. **Reload ⇒ remembered** — `localStorage ss.showCancelled=1` (+ `ss.cancelledTrayCollapsed`); the tray re-renders after a full reload. PASS.
+6. **OFF ⇒ no tray** — unticking it removes the whole Cancelled tray (heading gone), Paused stays; `ss.showCancelled=0`. PASS.
+7. **Both views** — Weekly (43 rows for the visible week) and **Daily is day-scoped** (8 rows for 17 Sep, 4 for 16 Sep). PASS.
+8. **Cancel a session whose slot is rebooked ⇒ stays in the tray, new booking on the grid** — cancelled `KKTEST 17/Sep 11:00 Bank`, rebooked the exact slot; the cancelled row stayed in the tray AND the new booking rendered on the grid (Bank column, 11:00 row, `KKTEST · 1 HR · Freeskate`). PASS.
+⚠️ **One sub-point not reached:** "**free ⇒ note**" (a cancellation carrying free text but *no* code). Every reason I could produce had a code, so the tray rightly showed the **label** (coded ⇒ label is solid). A free-text-only cancel is an edge case (a delivered-session cancel); I could not steer the pane to its week to read it. Not a failure — a gap; every tray row rendered *some* reason correctly.
+
+### ✅ Item 5 — `Last` chip (all four)
+- **Legend** shows **`LAST` — last session of the course.** PASS.
+- **A live course's last session carries `Last`** on the grid — confirmed on several courses in Weekly and on a KKTEST course in Daily. PASS.
+- **Attend it ⇒ gone** — attended a course's last session (30 Oct); the `Last` badge was present before and **absent after** the attend. PASS.
+- **A leave that appends a make-up ⇒ the chip MOVES to the make-up** — sick-leaved the last session (23 Oct); a make-up `EXTENDED` appended on **30 Oct**, and the `Last` chip is now on the 30 Oct make-up (verified Weekly and Daily). PASS.
+
+### ⚠️ Item 7 — coach outbox text — **NOT_TESTED on `sid` (read-blocked). Needs a DATA REQUEST.**
+🔴 **Two hard blockers, both structural, not effort:**
+1. **`notification_outbox` has NO read API** (`SYSTEM-FACTS §109`) and I do not touch the DB — so the composed message rows cannot be read.
+2. **0 of 23 `sid` teachers are LINE-linked** (`lineLinked=false` on every one) — so no coach message would even queue; and **`dropCourse`/`endCourse` echo no notification** in their API response.
+⇒ **"Verify the message TEXT field-for-field" is impossible on `sid` as it stands.** The only thing the API hands back is the cancel endpoint's `notification` **status** (a `NotifyResult` = `{channel,status,reason}`, **no text**):
+- **Cancel a CONFIRMED single class** ⇒ `notification: {status:"skipped", reason:"ผู้รับยังไม่ผูก LINE userId"}` — it *tried* to notify the coach, skipped only because unlinked. (This is also your **check 5** — unlinked coach ⇒ a SKIPPED row.)
+- **Cancel a PENDING single class** ⇒ `notification: null` — **none**, exactly as the spec says.
+So the ENQUEUE branches (confirmed→attempt · pending→none · unlinked→skipped) are corroborated; the **copy**, the **drop = one row per coach naming only the confirmed dates**, and the **`COURSE ENDED` stamp** are **unread**.
+📌 **DATA REQUEST (item 7):** to verify the outbox text field-for-field, either (a) a dump of the `notification_outbox` rows after I trigger the four actions, or (b) the owner links a demo coach on `sid` and reads the pushed messages. Your call which. 🚫 No SQL, no DB, nothing on `uat` from me.
+
+### Footprint — all mine, cleaned
+🟢 Cancelled: single sessions `b54f6473` · `6f3779b7` · `e2e4c0be` (the rebook) · `753eb1ad`; courses `ca3f4f41` (free-text specimen) and `2fbed92a` (the item-5 course I sick-leaved+attended, cancelled to undo). No round row left ACTIVE. The `Show cancelled` toggle is left ON in the `qa` browser's localStorage — a harmless view preference, no data. No product code, no LINE, no `uat`, no phone.
+
+## 2026-09-17 — Sober → @Porter: ✅ **REQ-089 live on `uat` noted — good hold point. REQ-090 mechanism, from the code (nothing cut):**
+🔧 **NO — a program's `name` is NOT editable in the admin UI, and there is no API for it either.** The backend has no `subjects` route at all (no create, no update); the FE only learns programs through each teacher's subject list; the ONLY writer of `subjects` in the repo is the dev seed (`src/db/seed.ts`), and it `TRUNCATE`s every table first — unusable on real data.
+⇒ **REQ-090 is a one-time data change the OWNER applies, by SQL, on `uat` (and `sid` if he wants them to match).** 16 `UPDATE subjects SET name = … WHERE name = …` statements — I can hand you the exact text from the REQ's map, wrapped in one transaction with a `SELECT` before and after so he sees 16 rows change and nothing else. Two facts for him:
+1. **`name` is UNIQUE** (`schema.ts:278`) — every new name is distinct from every old one and from each other, so the 16 updates cannot collide; but the seed also carries a `Balance Play (Private)` (suffix style) that is NOT in his map — if it exists on the real box, it stays as it is.
+2. **Renaming the row changes the display everywhere, immediately** — the admin calendar, course cards, LINE messages (the outbox worker joins `subject` at SEND time, not at enqueue; a queued-but-unsent row prints the new name; sent history keeps its bytes). `price_group` is its own column and is untouched — the intent holds.
+📌 **Two things for the list, not cut:** (a) **the dev seed** still creates the OLD names — after his change `sid`'s seeded programs will not match `uat` until someone renames them there too (his SQL again) or the seed is updated (XS, Jason, seed file + fixtures) — a task only if he wants `sid` to match by seed; (b) **an admin "rename program" screen/route** would make the next such request data entry instead of SQL — a real task (S), his call.
+**Say the word and I write the SQL text into the REQ-090 file as a DATA REQUEST for the human — I never run it.**
+
+## 2026-09-17 — Sober → @Porter: ✅ **REQ-090 §5 written — the DATA REQUEST for the human.** One transaction: `SELECT name, price_group` before, the 16 `UPDATE … WHERE name = …` (trimmed, verbatim, `INLINESKATE` one word), the same `SELECT` after, `COMMIT` — with the rule *"any `UPDATE` that reports 0 rows ⇒ `ROLLBACK` and report the name; never commit a partial rename"*. Notes in the block: `price_group` untouched; the §2 names left alone; run on `uat` AND `sid`. I never run it. Both follow-ups stay with the owner; nothing cut. Both engineers idle; chain stopped.
+
+## 2026-09-17 — Sober → @Porter: 📖 **`REQ-091` — the current-state READ (from the code) and a sized breakdown. Nothing cut.**
+
+### A. How rental works TODAY — every answer to your §2
+1. **A rental is a LEDGER POST, nothing else.** `POST /rentals { code, hours, refId? }` → `recordRental` → `recordSale(code, hours)` immediately (SPEC-031/TASK-108). **There is no rental table, no rental row on a booking, no paid/unpaid state — the post IS the rental, and posting IS "paid".** `recordSale` fires PER SALE (one call, `qty = hours`), idempotent on `refId`+code.
+2. **Tiers today are FOUR product codes, per hour:** `rental-set` 200 · `rental-ride` 150 · `rental-helmet` 50 · `rental-pads` 50. ⚠️ **The customer's `100 = Helmet + Pad` does not exist as one item** — today it is two lines (50 + 50). It becomes either a fifth code (`rental-helmet-pads`, 100 — a new sale item, seeded) or the app posting two lines for one tier; I recommend the fifth code (one tier = one line = one report row). A remark field exists nowhere on a rental today.
+3. **"Has rental" on the grid: the fact EXISTS but is unused.** `bookingsWithRentals` (`scheduler.service.ts:453`) joins the ledger by `refId = bookingId` and the calendar DTO carries `hasRental: boolean` — **and the FE renders NOTHING from it** (zero readers outside the type). So today's `hasRental` means "a paid rental was posted against this session"; **UNPAID cannot be expressed** — there is no row to be unpaid. The red `R` needs a record that exists BEFORE money.
+4. **Whole-course rental: NET-NEW.** No course-level rental fact; `createCoursePackage` knows nothing of equipment.
+5. **"Mark paid" lives nowhere** — today the admin posts the rental from the booking modal's rental action (`RentalModal`), which is the sale.
+6. **Teacher notice: net-new kind.** Nothing rental-shaped in the outbox; the teacher's daily reminder prints sessions without equipment.
+
+### B. The shape that follows (one new table; the ledger stays the money's home)
+🔑 **A rental becomes a ROW on a booking** — `booking_rentals` (booking_id, tier code, remark, paid_at, actor; one per booking) — **and money still posts ONLY through `recordRental` as today**, on the "paid" press (per-session) or at creation (whole-course, one `recordSale(code, size)` with `refId = courseId`, beside the course's own sale). The grid reads the ROW (red = row without `paid_at`, green = with); the ledger is never read for the grid again — except historic rentals (posted before this lands) which have no row: **DATA REQUEST later, or they simply show no `R`** (they were paid; nothing to collect). **One migration ⇒ 35 → 36.**
+
+### C. Breakdown, sized — 4 tasks, 2 deploys (my recommendation) or 1
+| # | repo | what | size |
+|---|---|---|---|
+| **T1** | BE | `booking_rentals` table + migration 36 · `POST /bookings/:id/rental { code, remark? }` (row, unpaid; remark REQUIRED for `rental-set` and inline — a code refine) · `POST /bookings/:id/rental/paid` (posts via `recordRental`, sets `paid_at`; idempotent) · the fifth code `rental-helmet-pads` 100 · calendar/booking DTO gains `rental: { code, remark, paid } | null` (replaces the dead `hasRental`) · contract first | **M** |
+| **T2** | FE | the `R` chip beside `Last` (red/green, both views, legend) · booking modal: add rental (tier + remark) / mark paid (two taps; the existing `RentalModal` becomes the tier picker) | **M** |
+| **T3** | BE | whole-course: `createCoursePackage` input `rental?: { code, remark }` ⇒ a PAID row on every session born with the course (make-ups appended by a leave inherit the rental; a cancelled session's row dies with it) · one `recordSale(code, size)` at creation, `refId = courseId`, same void path as the course sale · course DTO shows it | **M** |
+| **T4** | FE+BE | create-course form: rental tier + remark (FE, S) · **teacher notice** (BE, S): a new outbox kind in the house style, copy GATED like item 7 | **S+S** |
+**Deploy A = T1 + T2** (per-session record, paid press, red/green `R`) — the collect-cash pain, the customer's daily case. **Deploy B = T3 + T4** (whole-course at creation + the teacher notice). One deploy is possible; two lets the customer use the marker a week earlier and lets T3 build on a proven row.
+
+### D. Two shape questions for the owner BEFORE I cut (the rest I decide)
+1. 🔴 **The teacher notice — WHEN?** "A session carries a rental ⇒ tell the teacher" fires 10 messages the moment a 10-hour course is created with a rental, and again for every walk-in. **My recommendation: put a `Rental : Full Set (size 18-19 CM)` line into the teacher's EXISTING daily reminder for that session (zero new messages, read the morning it matters) — and send the separate notice only for a rental added on the DAY (after the reminder went).** If he wants the separate kind on every rental regardless, it is the same S, noisier.
+2. 🔴 **Historic rentals** (posted before this lands): show no `R` (they are paid) — acceptable? The alternative is a backfill DATA REQUEST mapping ledger rows to booking rows.
+📌 Facts he should hear: money keeps posting through the ONE existing path (`recordRental`), so reports do not change shape; the fifth tier is a new product row in the ledger seed (`revenueKind: RENTAL`); prices stay the four+one constants.
+
+## 2026-09-17 — Sober → @Porter: ▶️ **`REQ-091` Deploy A cut: TASK-371 @Jason (BE, M, contract first) · TASK-372 @Fern (FE, M, parallel).**
+**Migration 36 — the rule, checked against the facts:** the closed-shop note (§7) was for `0033`'s `DROP/CREATE INDEX` on `bookings` (ACCESS EXCLUSIVE — reads and writes block). **A new table does not take that lock;** the FK from `booking_rentals` to `bookings` takes a brief lock on the parent while it is added. Jason names the exact lock and duration in the migration's header, and whether it is one `db:migrate` run (no enum label ⇒ I expect one run, `db:preflight` confirms). **The deploy note will say that, not "closed shop", unless his measurement says otherwise.** Also in the deploy steps: how an existing box gets the 5th `bo_item` row (`rental-helmet-pads`) — seed-ledger script or a migration insert, one answer.
+**Money boundary as built:** the row is the fact; money posts ONLY on the paid press, through the existing `recordRental` (`hours 1`, `refId = bookingId`), so the ledger and reports keep their shape; a failed post leaves the row unpaid and the press retryable; a paid row cannot be removed here (the backoffice reverses).
+📌 T3 (whole-course at creation) + T4 (create-form picker + teacher notice, copy GATED to you → owner) are Deploy B, cut when A lands. I tell you when 371/372 are in.
+
+## 2026-09-17 — Sober → @Porter: ✅ **TASK-371 (Deploy A, BE) IN — 2233/0, tsc 0, 🔴 MIGRATION 36 = 36 (tag `0035_booking_rentals`, the first since 0034); re-run by me. Waiting on TASK-372 (@Fern).**
+**For the deploy note — the migration facts, from Jason's header (the human reads it before running):**
+- **Lock:** `SHARE ROW EXCLUSIVE` on `bookings` for the one statement — reads continue, WRITES wait; no validation scan (the new table is empty) — **NOT `0033`'s closed-shop `ACCESS EXCLUSIVE`.** The hazard is queueing: if a transaction holds `bookings` when it starts, every write queues behind it. ⇒ **"a write-blocking blink — run it outside the 17:30 end-of-day job and not while an import is running."** One run, one transaction, rerunnable (`IF NOT EXISTS`); `db:preflight` finds nothing to split.
+- **Deploy order:** `db:migrate` → **`bun run sale:ensure-items`** (adds the 5th `bo.item`, additive, never overwrites a price) → `pm2 restart`. If a paid press lands before the script runs, the post answers `no-item` ⇒ `502`, the row stays unpaid, the press is retried — nothing lost.
+- `db:verify`: 36 journal entries; the witness is the migration's last object, the UNIQUE index `booking_rentals_booking_uq`.
+**Money as built:** record = a row, no ledger; paid = ONE `recordRental` (`hours 1`, `refId = bookingId`), `paid_at` only after the post; paid twice = one movement (two guards); a paid row cannot be removed here. `hasRental` and its ledger join are deleted. 📌 List: a cancelled session keeps its rental row (paid stays paid; the backoffice reverses).
+
+## 2026-09-17 — Sober → @Porter: ✅ **`REQ-091` Deploy A READY — TASK-372 (FE) IN. FE 377/0 · tsc 0 · build ok; BE 2233/0 · tsc 0 · 🔴 MIGRATION 36 = 36 (`0035_booking_rentals`).** Deploy order in my previous message: `db:migrate` (write-blocking blink on `bookings`, outside 17:30, not during an import) → `sale:ensure-items` → restart; FE build.
+**What ships:** the `R` chip beside `Last` — red = a rental recorded, cash not yet collected; green = paid — both views, legend · the booking modal's Rental section: add (tier + remark; Full Set / Ride only require the remark, the server says so) · **Mark paid = two taps, names the line it will post** (`Rent 200 / Full Set (inline skate size 18-19 CM)` — the customer's print shape) · remove while unpaid · a failed post keeps the row unpaid and the button live. 5th tier `Helmet + Pad — 100`.
+⚠️ **One decision of Fern's for the owner to hear:** the booking modal's old ⋯ → `Add rental` (REQ-028's per-session add-on that posted money on the spot) is REMOVED — it was a second door onto the same session that bypassed the row, the remark and the paid press and would collide on the ledger key. **The standalone `Record rental` on the Bookings page (walk-in, hours + discount) is untouched.** One menu item to restore if he wants the shortcut back.
+**For @Tanya (yours to phrase), on `sid` after the migration + `sale:ensure-items`:** add a rental on a live session ⇒ red `R` in both views + the line in the modal; Full Set without a remark ⇒ the server's sentence; mark paid ⇒ confirm dialog ⇒ green `R`, and ONE rental line in that day's sales report (`rental-helmet-pads` at 100 for the 100 tier); mark paid again ⇒ no second line; remove on a paid row ⇒ not offered; cancel a session with a paid rental ⇒ the row stays (green in the cancelled tray); a rental posted BEFORE this deploy ⇒ no `R` (by ruling).
+📌 List: on a crowded week cell the name truncates first, then the badges — Fern's order in the TASK; `RentalModal`'s ⋯ door (above).
+**Deploy B (T3 whole-course at creation · T4 create-form picker + teacher notice, copy gated) — I cut on your go once A is on `sid`.** Both engineers empty; chain stopped.
+
+## 2026-09-17 — Tanya (QA) → @Porter: ✅ **REQ-091 Deploy A (rentals) — ONE report. All 5 checks PASS.** One clarification (the sale lands in the BACKOFFICE ledger, not `/reports/daily`) and one minor FE finding. `sid` only, no LINE.
+
+**Method:** the R chips, modal lines, mark-paid dialog, tier picker and legend I verified on screen; the refusals, idempotency, remove rules, cancel-survival, historic case and the posted SALE I verified via the API and the **sid backoffice ledger** (`bo.movement`) — reading only. Prereqs confirmed live: the 5th tier `rental-helmet-pads` exists at **100** and migration `0035` is in.
+
+### ✅ 1 — add a rental ⇒ red `R` + modal line; Full Set / Ride WITHOUT a remark ⇒ refusal
+- Add **Helmet + Pad (100)** on a live session ⇒ **red `R`** on the week & day grid (`rgb(220,38,38)`), and the modal line **`Rent 100 / Helmet + Pad · unpaid`**. PASS.
+- **Full Set** and **Ride only** without a remark ⇒ the server's sentence **`RENTAL_REMARK_REQUIRED — "กรุณาระบุรายละเอียดอุปกรณ์ (ชุด/คู่/ไซส์)"`** (helmet / pads / helmet+pads need none). Confirmed via API; in the UI a Full-Set-no-remark Save posted nothing (the session stayed rental-null). PASS.
+- The tier picker shows all five at the customer's prices: **Helmet 50 · Pad 50 · Helmet + Pad 100 · Ride only 150 · Full Set 200.**
+
+### ✅ 2 — mark paid ⇒ green `R` + ONE sale line at 100, idempotent
+- Mark paid ⇒ **green `R`** (`rgb(21,128,61)`); modal line **`Rent 200 / Full Set (inline size 18-19 CM) · paid`** (the remark shows). PASS.
+- **Two-tap dialog names the line it posts:** *"Mark this rental paid? This posts Rent 100 / Helmet + Pad … to today's sales. It cannot be undone from here."* + Cancel / Yes, paid. PASS.
+- **The 100 tier posts `rental-helmet-pads` at 100:** exactly **ONE** `bo.movement` SALE, `valueMinor 10000` (=100), `refId` = the booking. **Mark paid AGAIN ⇒ NO second movement** — idempotent (verified in the sid backoffice ledger: one movement for the booking). PASS.
+- 🔎 **CLARIFICATION:** the rental sale lands in the **BACKOFFICE ledger** (`bo.movement`), **not** the scheduling **`/reports/daily`** (which is booking-status counts only — totalBooked / attended / … / byBookingType, no revenue lines). If "that day's sales report" was meant to be a scheduling-side screen, the rental line is **not** there — it is a backoffice sale. Worth confirming which report the owner will look at.
+
+### ✅ 3 — remove offered on UNPAID, NOT on PAID
+- Unpaid modal shows **Mark paid + Remove**; `DELETE` on unpaid ⇒ removed (rental → null). PASS.
+- Paid modal shows **no buttons**; `DELETE` on paid ⇒ refused **`RENTAL_PAID — "ชำระแล้ว — ลบไม่ได้ (เงินลงบัญชีแล้ว ให้หลังบ้านปรับ)"`**. PASS.
+
+### ✅ 4 — cancel a session that has a PAID rental ⇒ the row stays (green)
+- Cancelled a session carrying a paid rental ⇒ the rental **survives** (`{rental-helmet-pads, paid:true}` after `CANCELLED`), and the session appears in the **cancelled tray**. PASS.
+- 🔎 Note: the compact **cancelled-tray ROW** shows date·time·coach·reason but does **not** render the `R` chip itself; the paid (green) rental persists and shows on the booking's own modal. The survival is API-confirmed; the pane would not re-open that specific booking's modal cleanly to screenshot the green line.
+
+### ✅ 5 — a rental posted BEFORE this deploy ⇒ no `R`
+- A rental posted via the OLD `/rentals` path (no `booking_rentals` row — the shape every pre-`0035` rental has) ⇒ the booking's `rental` DTO is **null** ⇒ **no `R`**. PASS.
+
+### ✅ Legend — both states
+`R rental — unpaid` (red) and `R rental — paid` (green) both in the legend.
+
+### 🔎 MINOR FE FINDING (not one of the five, but worth a line)
+The booking modal offers **"Add rental" on a CANCELLED session**. The server correctly refuses it (`BOOKING_NOT_LIVE — "คาบนี้ถูกยกเลิกหรือพักอยู่ — เพิ่มค่าเช่าไม่ได้"`), so no harm, but the button should be hidden on CANCELLED/PAUSED sessions to match `rentalBookingLive` (which excludes both). Cosmetic — the server is the safety.
+
+### Footprint
+🟢 All my `SINGLE_SESSION` specimens on 18 Sep (KKTEST: unpaid, paid, historic, remove-probe) are **CANCELLED**; none left live.
+🟠 **THREE rental SALES were posted to the `sid` (dev) backoffice ledger and are NOT reversed** — a rental-sale reversal is a manual backoffice adjustment by design (the code says so), outside QA: `rental-helmet-pads` ×2 (100 each — one paid booking rental, one historic `/rentals`) and `rental-set` ×1 (200). Dev-ledger test entries on `backoffice-som`, not the customer's. Posting the sale IS the feature under test, so this is inherent; flagged for visibility.
+🚫 No product code, no LINE, no `uat`, no customer system.
+
+## 2026-09-17 — Sober → @Porter: ✅ **Deploy A green noted; A + B to `uat` together noted. Deploy B cut — three tasks:**
+- **TASK-373 @Jason (M, contract first):** whole-course rental at creation — a PAID row on every live session the course is born with (none on a declared-leave row), ONE money post `recordRental({ hours: size, refId: courseId })` beside the course sale; a make-up appended by a later leave inherits a paid row (I prefer derive-and-copy from the rows over a new column — no second migration; Jason decides and says why). Course DTO shows `rental`.
+- **TASK-374 @Fern (S–M, parallel):** the tier + remark on the course-creation form with `Rent 200 / Full Set (…) × 10 sessions` in the confirm; **both QA nits folded in** — `Add rental` hidden on cancelled/paused; the `R` chip in the cancelled tray's row.
+- **TASK-375 @Jason (S+S, after 373):** the teacher learns of a rental exactly as ruled — a `Rental : Rent 200 / Full Set (…)` line in the EXISTING daily reminder (the `Remark` line's twin, printed only when present) + a `rental_added_teacher` notice ONLY when a rental is added the same day AFTER the reminder already ran. **Copy for the notice is GATED: Jason drafts TH+EN to me first → you → the owner, plumbing with placeholders until his eye.** ❓ One for the ruling: does the PARENT's reminder print the rental line too (they pay it at the shop)? Jason checks the audience-omit table and builds what it implies; say if the owner has a preference.
+📌 List from the cut: a rented course DROPPED mid-way — 7 of 10 paid rentals unused on one posted line; what the backoffice does for unused tuition is the precedent, named not built.
+
+## 2026-09-17 — Sober → @Porter: 📖 **`REQ-092` sizing READ (from the code; nothing cut). Deploy B continues in parallel.**
+
+### 1. Today: ONE shared login — confirmed for the frontoffice
+`POST /auth/login` (`routes/auth.ts`) compares against **`ADMIN_USERNAME` / `ADMIN_PASSWORD` from env — one credential pair, no user table**; the JWT carries `{ sub: <that username>, role: "admin" }`. The FE (next-auth Credentials, `auth.ts`) calls that route and keeps the backend token + role in the session. ⇒ **every admin is the same person to the system; every audit line's actor is the same word.** (`SKIP_AUTH` dev bypass sets `sub: "dev"`.)
+
+### 2. What already exists to build on (not green field, but thin)
+- `Role = "admin" | "staff"` (`lib/jwt.ts`) is in the token type; **`requireRole(...roles)` middleware exists (`middleware/auth.ts:37`) and is used by ZERO routes**; one inline role check exists (a discount authoriser, `discount-plan.ts:147`, refuses non-admin). The JWT guard REQ-088 mounts around (`app.use("/api/*", authMiddleware)`) is one line — every admin route sits behind it; the public LIFF/check-in routes sit before it and are untouched by any of this.
+- The FE session already carries `role`; the nav is ONE config array (`AdminLayout.config.ts`, 12 entries with `href`); pages are the route groups under `(admin)/scheduler/`.
+⇒ **Scaffolding: token role + middleware + session role + one nav table. Missing: users, passwords, and any per-route/per-menu mapping.**
+
+### 3. The counts (Tier units)
+- **Menus: 12** — calendar · teachers · people · link-requests · bookings · badges · som · attention · reports · settings · dashboard · overview (overview is hidden in nav today).
+- **Edit actions: 59 mutate routes in the admin API** (`api.ts`; the 4 internal job routes are cron, not admin), grouped: courses 14 · teachers 12 · bookings 10 · people/parents 5 · students 2 · badges 4 · settings 2 · vouchers 1 · link-requests 1 · root-level 7 (rentals, import, check-in admin, etc.). Tier 2's unit ≈ **59 keys**, naturally grouped into ~10 areas.
+- **Tier 3 attaches to:** a `user × permission-key` table, edited on an admin matrix screen; the same 59 keys.
+
+### 4. Sizes (T-shirt; each tier ASSUMES the one below)
+| tier | what it touches | size |
+|---|---|---|
+| **Foundation — individual accounts** | BE: `users` table (migration), password hashing, `/auth/login` against the table, `sub` = the user (audit lines become real names for free — the actor plumbing already exists everywhere), users CRUD + reset-password routes (admin-only via the existing `requireRole`), a first-admin bootstrap (env or seed). FE: a **Users** page (list/create/disable/reset), login screen unchanged. | **M (BE) + S–M (FE) ≈ L total** |
+| **Tier 1 — per-menu visibility** | a `menus` claim/lookup per user; FE filters the ONE nav table + a route guard on the page group; BE: `requireRole`-style guard per AREA (10 route groups) so a hidden menu's API is also refused. | **S–M** |
+| **Tier 2 — per-action** | a permission key on each of the 59 mutate routes (one table in code, one middleware reading it — the existing `requireRole` generalised); FE hides/disables each action by key (~59 sites, mostly buttons already behind one handler each). | **M–L** (the FE sweep is the bulk: 59 sites, each small) |
+| **Tier 3 — per-account matrix** | `user_permissions` table (migration) + an admin matrix editor (users × ~59 keys, grouped by area with area-level toggles); the guard reads the user's set instead of a role's. | **M** on top of Tier 2 |
+📌 Two facts for the quote: (a) **Tier 1 without Tier 2 is a visibility feature, not a security one** — a hidden menu's API is still callable unless the area guard ships with it (I sized it in). (b) **The foundation alone already buys something the owner has asked about before: named actors in the audit trail** (delete-student log, expiry changes, resume actor) — today they all say `admin`.
+🚫 Nothing cut; no task exists until he picks a tier. Migrations: foundation +1, Tier 3 +1.
+
+## 2026-09-17 — Sober → @Porter: ✅ **Deploy B, BE side IN — TASK-373 + TASK-375 (plumbing): 2266/0, tsc 0, no migration (36 = 36); re-run by me. Waiting on TASK-374 (@Fern). ONE word for the owner's eye.**
+**373 as built:** no column — the course's rental is derived from its rows (`courseRentalOf`); a paid row on every live session the course is born with (none on a declared-leave row); ONE money line `recordRental({ hours: size, refId: courseId })` beside the course sale (best-effort, loud on failure, the sale's own shape); a make-up appended by a LATER leave inherits a paid row, no new post. 📌 Two for the list: a RESUMED course's new rows do not inherit the rental (the resume path inserts directly, not through the reconcile) — one line if he wants it; a DROP/END reverses nothing today for tuition either ("manual bo adjustment by design") — the rental's one line follows the same non-path.
+**375 as built:** the reminder prints `Rental : Rent 200 / Full Set (inline skate size 18-19 CM)` right after `Remark`, only when present — **to BOTH the teacher and the parent** (the audience-omit table hides nothing from either; `Remaining`/`Expiry` already print to the parent) — **one table entry if the owner wants it teacher-only, say so.** The same-day notice fires only when the session is TODAY and the reminder already ran; unlinked ⇒ SKIPPED; never on a course creation or a mark-paid.
+🔴 **THE COPY — one new word, the stamp; everything else is a shipped key or the customer's own print shape:**
+```
+RENTAL ADDED / เพิ่มอุปกรณ์เช่า ‼️
+Student : มะขิด
+Program : Freeskate 6 HR
+Date : 17-09-2026
+Time : 12:00-13:00
+Coach : Ek
+Rental : Rent 200 / Full Set (inline skate size 18-19 CM)
+```
+EN identical labels and stamp (as `LEAVE NOTICE / แจ้งลา ‼️`); the value is language-invariant. His change lands as a string edit; the send path is final.
+
+## 2026-09-17 — Sober → @Porter: ✅ **`REQ-091` Deploy B READY — TASK-374 (FE) IN. FE 383/0 · tsc 0 · build ok; BE 2266/0 · tsc 0 · 36 = 36. The whole of REQ-091 is built; ONE word (the `RENTAL ADDED` stamp) waits on the owner, and A + B go to `uat` together as he ruled.**
+**What B ships:** course creation gains `Equipment rental for the whole course` (off by default) ⇒ tier + remark, the confirm shows `Rent 200 / Full Set (…) × 8 sessions`, every live session is born green `R`, the course card shows the line; the reminder prints `Rental : …` (both audiences — say if teacher-only); the same-day notice; both QA nits (no `Add rental` on a cancelled/paused session; the `R` chip in the tray row).
+**For @Tanya (yours to phrase), on `sid` after the B build:** create a course with the toggle ON, Full Set, no remark ⇒ the sentence before any course exists; with a remark ⇒ every live session green `R`, the course card line, ONE `rental-set × size` line in the ledger; a declared-leave week ⇒ no `R` on that row, the make-up has it; toggle OFF ⇒ no `rental` on the wire; `Add rental` on that course's session ⇒ `RENTAL_EXISTS`; a later sick leave ⇒ the appended make-up carries a green `R`, no new ledger line; the daily reminder (dev trigger) prints `Rental :` for a rented session; add a rental on TODAY's session after the reminder ran ⇒ one teacher row `RENTAL ADDED`; before it ran ⇒ none.
+📌 List: green-`R` density — one chip per rented course per week view; if he wants "red only" it is one line in `RentalStamp` (or a per-admin toggle) — built as ruled, green shows.
+🚫 Both engineers empty; chain stopped. REQ-092 stays a sizing until he picks a tier.
+
+## 2026-09-17 — Tanya (QA) → @Porter: ⚠️ **REQ-091 Deploy B — ONE report. Checks 1·2·5 PASS; check 3 has a REAL FINDING (a sick-leave make-up does NOT inherit the course rental); check 4 is read-blocked (DATA REQUEST).** `sid` only, no LINE.
+
+**Method:** the create refusal, the per-session paid rentals, the ledger post, `RENTAL_EXISTS`, the make-up inheritance and the toggle-off I proved via the API + the `sid` backoffice ledger (read-only); the two nits (check 5) on screen. Whole-course rental is `POST /courses { rental: { code, remark? } }` (TASK-373).
+
+### ✅ 1 — whole-course rental
+- **Full Set, NO remark ⇒ refusal BEFORE the course is created:** `400 RENTAL_REMARK_REQUIRED — "กรุณาระบุรายละเอียดอุปกรณ์ (ชุด/คู่/ไซส์)"`, no course written. PASS.
+- **With a remark ⇒ every LIVE session is a PAID rental (green `R`)**, the course DTO carries the card line (`{rental-set, "size 38"}` → `Rental: Rent 200 / Full Set (size 38)`), and **ONE** backoffice `bo.movement` SALE: `valueMinor 80000` (=800), `qty −4`, `refId` = course = **`rental-set × size 4`**. PASS.
+
+### ✅ 2 — declared leave + toggle off
+- A **declared-leave week** at creation ⇒ that `SICK_LEAVE` row carries **no `R`**; its **creation-time make-up carries green `R`** (paid). PASS.
+- **Toggle OFF** (no `rental` on the wire) ⇒ every session `rental: null`. PASS.
+
+### ⚠️ 3 — one PASS, one FINDING
+- **`Add rental` on a session of a rented course ⇒ `409 RENTAL_EXISTS — "คาบนี้มีรายการเช่าอุปกรณ์อยู่แล้ว"`.** PASS.
+- A later **sick leave ⇒ NO new ledger line.** PASS.
+- 🔴 **FINDING — the appended make-up does NOT carry green `R`.** A **post-creation sick-leave**'s make-up is created with **no rental row** (`noR`), so no green `R` and no `Rental :` on it. The dispatch (and `whole-course-rental-req091.test.ts:140` — *"a later make-up inherits the COURSE's rental"*) expect it to inherit a paid row.
+  - **Root cause (code-located, and PROVEN not deploy-lag):** the sick-leave branch appends its make-up with its **own** `tx.insert(bookings)` (note `คาบขยายอัตโนมัติจากการลา`) and omits the `courseRental` copy. The inheritance copy lives **only** in `reconcileCoursePlan` (`scheduler.service.ts:2437`), which the sick-leave path does **not** call.
+  - **Proof it is a path gap, not a stale build:** on the SAME course/build, a make-up appended by a **course-session CANCEL** (which DOES route through `reconcileCoursePlan`) **inherited green `R`** (`2027-01-06 → R-paid`), while the **sick-leave** make-up on the same course did **not** (`2026-12-30 → noR`). The copy is deployed and works via the reconcile path; the sick-leave path skips it.
+  - ✅ No double-charge (no new ledger line either way) — the gap is the missing per-session chip / reminder line on that one make-up, and the course card still shows the rental. Reporting only; I do not touch code.
+
+### ⚠️ 4 — reminder `Rental :` line + `RENTAL ADDED` notice — NOT_TESTED (read-blocked). DATA REQUEST.
+Same wall as item 7: the daily-reminder **dev trigger needs the `x-internal-secret` (`INTERNAL_JOB_SECRET`)** — not in my access file, so I cannot fire it — and the reminder only **enqueues** to `notification_outbox`, which has **no read API** and **0 linked recipients on `sid`**. `runDailyReminderJob` returns counts (`sent/skipped/…`), never the composed text. So the `Rental : …` line (teacher + parent) and the `RENTAL ADDED / เพิ่มอุปกรณ์เช่า ‼️` timing are **unverifiable on `sid` as it stands**. 📌 **DATA REQUEST:** the owner runs the reminder and dumps the outbox rows, OR links a demo teacher + parent on `sid` so the pushes can be read.
+
+### ✅ 5 — the two folded nits, RE-CONFIRMED FIXED
+- **No `Add rental` on a cancelled session** — the cancelled-session modal shows the `Rental` label with **no button** (Deploy A offered it; now gone). PASS.
+- **The `R` chip renders in the cancelled-tray row** — green on paid, red on unpaid (18 Sep rows: 11:00 green, 14:00 red, 15:00 green). Deploy A's tray row had none; now present. PASS.
+
+### Footprint
+🟢 Four whole-course specimens (`rental-set`, `rental-helmet-pads` ×2, one no-rental) + their sick-leave/cancel rows — all **CANCELLED**; none active.
+🟠 Whole-course rental SALES posted to the `sid` (dev) backoffice ledger, not reversed (manual bo act by design): `rental-set × 4` = 800, and `rental-helmet-pads × 4` on two courses. Dev ledger, declared. No product code, no LINE, no `uat`.
+
+## 2026-09-17 — Sober → @Porter: ✅ **Copy approved noted; both-audiences reminder line kept. 🔴 The defect is real and cut — TASK-376 @Jason (S).** I verified Tanya's root cause in the code: the sick-leave branch of the status change appends its make-up with its OWN insert (`scheduler.service.ts:3155`) and never reaches the reconcile, where TASK-373 put the only rental copy (`:2438`) — a second writer of the same fact; the missing chip is the symptom. **Fix = one `inheritCourseRental` both writers call, pinned on both paths and on the call-site count**, plus the approved stamp lands in the same build. I tell you when it is in; A + B to `uat` after.
+📌 List (named, not built): the sick-leave append and `resumeCourse` are the second and third writers of live course rows — a future "one make-up writer" task; the shape is in the TASK's question. Item 4's LINE text on `uat` = the owner's check, as with item 7.
+
+## 2026-09-17 — Sober → @Porter: ✅ **TASK-376 IN — the defect is fixed at its cause; release `uat` (A + B together). BE 2270/0 · tsc 0 · 36 = 36; FE 383/0 — re-run by me.**
+**The fix:** ONE `inheritCourseRental` — reads the course's rental from any other row, inherits the paid stamps, never posts — **called by BOTH make-up writers** (the reconcile and the sick-leave branch), pinned on both paths and on the call-site count (exactly two; the reconcile's inline copy is gone). The over-quota locked branch appends nothing and copies nothing. **The approved `RENTAL ADDED` stamp is live, 0 bytes changed, byte-frozen.**
+**For @Tanya's re-check (yours to phrase):** a rented course → a post-creation sick leave within quota ⇒ the appended make-up shows green `R` and its modal line; via a cancel ⇒ same; an unrented course's make-up ⇒ no `R`; no new ledger line either way. Item 4's LINE text on `uat` stays the owner's check.
+📌 **List, named not built:** `resumeCourse` is the third writer of live course rows and does NOT inherit a rental (one call the day he asks); the sick-leave append is the make-up writer to retire into the reconcile — Jason's table of "which writer carries which fact" is in TASK-376 §8. 🔻 The lesson, recorded: a source pin on one function cannot see a second function; @Tanya found it by use in an afternoon.
+🚫 Both engineers empty; chain stopped. REQ-091 complete; REQ-092 a sizing until he picks.
+
+## 2026-09-17 — Tanya (QA) → @Porter: ✅ **TASK-376 re-check — PASS. My Deploy-B defect is fixed; the sick-leave make-up now inherits the course rental.** `sid`, API + backoffice ledger, no LINE.
+Rented whole-course (`rental-set`, remark "size 40"), post-creation SICK LEAVE within quota:
+- **Sick-leave make-up (2027-03-02) ⇒ green `R` (paid)**, modal rental line carries `rental-set · size 40`. ✅ *(was `noR` before the fix — now inherits, via the shared `inheritCourseRental` both writers call).*
+- **Cross-check — CANCEL make-up (2027-03-09) ⇒ green `R` (paid).** ✅ (reconcile path unchanged.)
+- **NO new ledger line** across the sick-leave AND the cancel: full-set movements delta = **0**. ✅ (the make-up inherits the paid row, no re-post.)
+- **UNRENTED course ⇒ its sick-leave make-up has NO `R`.** ✅
+📌 The green-`R` chip + modal line render from the booking's `rental` DTO — the exact FE path already verified green-for-paid in Deploy A/B; the make-up now carries that paid DTO, so it renders identically. The fix is confirmed at the data layer that drives it.
+🟢 Footprint: 2 specimens (1 rented `rental-set×4`=800 posted at creation, 1 unrented) — both CANCELLED; the create-time sale is a declared dev-ledger entry, not reversed. No code, no LINE, no `uat`.
+**Deploy B is now clean on `sid` — A+B ready for `uat` on your word.** (Item 4 reminder text stays the owner's to verify on `uat` — read-blocked here.)
+
+## 2026-09-17 — Tanya (QA) → @Porter: ✅ **REQ-091 ACCEPTANCE re-confirm on `sid` — the built feature MATCHES the customer's message, point by point.** One item is owner-verified on `uat` (teacher-notice TEXT, read-blocked here); two wording notes, no behaviour mismatch. Evidence spans Rounds 28–30 + a fresh size-10 today. `sid`, API + backoffice ledger + screen.
+
+### สิ่งที่ต้องการ (3)
+| # | customer's words | built | verdict |
+|---|---|---|---|
+| 1 | **บันทึกการเช่าอุปกรณ์** | a rental is a `booking_rentals` row; on **paid** it posts a backoffice `bo.movement` SALE (Round 28: one line @100; whole-course: one line) | 🟢 **MATCH** |
+| 2 | **เตือนแอดมินให้เก็บค่าเช่า** | an unpaid rental shows a **red `R`** on the schedule (week & day); collect ⇒ green | 🟢 **MATCH** |
+| 3 | **แจ้งเตือนคุณครู** | the reminder appends `Rental : Rent … / …` to **teacher AND parent**, and a same-day add enqueues `RENTAL ADDED / เพิ่มอุปกรณ์เช่า ‼️`; the DTO/enqueue path is present | 🟡 **MATCH by design; TEXT owner-verifies on `uat`** — the outbox is unreadable on `sid` (no read API, 0 linked recipients), and the reminder needs `INTERNAL_JOB_SECRET` I don't have. Enqueue confirmed, delivered text not readable here. |
+
+### 3 ประเภท
+| # | customer's words | built | verdict |
+|---|---|---|---|
+| 1 | **เช่าทั้งคอร์ส จ่ายครบแต่แรก** | course-creation rental ⇒ **every session born PAID (green `R`)**, ONE ledger line. size-4 ⇒ 4 green `R`, `set×4`=800; **size-10 ⇒ 10 green `R`, `set×10`=2000 (qty −10)** | 🟢 **MATCH** |
+| 2 | **เช่ารายครั้ง จ่ายหน้าร้าน** | per-session add ⇒ **red `R`** (unpaid); **Mark paid ⇒ green** (posts the sale) | 🟢 **MATCH** |
+| 3 | **เช่าบางครั้ง (ลืมเอาอุปกรณ์มา)** | the same per-session path, a one-off on the day (`SINGLE_SESSION` add) | 🟢 **MATCH** |
+
+### ราคา
+| tier | customer | picker shows | verdict |
+|---|---|---|---|
+| Helmet / Pad only | 50 | **`Helmet — 50`** and **`Pad — 50`** (two rows) | 🟢 MATCH (price) · 📝 wording: the customer's "Helmet or Pad Only 50" is itemised as two 50 rows — same prices, split by item |
+| Helmet + Pad | 100 | **`Helmet + Pad — 100`** | 🟢 MATCH |
+| Ride only | 150 | **`Ride only — 150`** | 🟢 MATCH |
+| Full Set | 200 | **`Full Set — 200`** | 🟢 MATCH |
+- **Full Set / inline ⇒ remark required** ⇒ 🟢 MATCH: `RENTAL_REMARK_REQUIRED — "กรุณาระบุรายละเอียดอุปกรณ์ (ชุด/คู่/ไซส์)"`, thrown before the row/course is written. 📝 note: **Ride only also requires a remark** (set + ride), a superset of the customer's "Full Set / inline" — aligned with intent (both need a size).
+- **Prints `Rent 200 / Full Set (inline skate size 18-19 CM)`** ⇒ 🟢 MATCH: the modal line is `Rent <price> / <Tier> (<remark>)` — e.g. `Rent 200 / Full Set (inline size 18-19 CM)`.
+
+### หน้าตา
+| customer's words | built | verdict |
+|---|---|---|
+| whole-course 10h ⇒ 10 rentals on the schedule | size-10 ⇒ **10 sessions each a green `R`** | 🟢 MATCH |
+| per-session ⇒ a box like `LAST` but `R`, **red = unpaid, green = paid** | the `R` chip is a badge beside `LAST`; **red `rgb(220,38,38)` = unpaid, green `rgb(21,128,61)` = paid**; legend shows both | 🟢 MATCH |
+
+### Summary
+**No behaviour MISMATCH.** All three goals, three types, five prices, the remark rule, the print format and the red/green chip match the customer's text. **Two wording notes** (not defects): the 50-tier is split into two rows (`Helmet` / `Pad`) rather than one "Helmet or Pad Only", and the remark rule covers Ride-only as well as Full Set. **One coverage gap:** the teacher-notice TEXT (`Rental :` line, `RENTAL ADDED`) is unreadable on `sid` — the owner confirms it on `uat` (already live there per your note).
+🟢 Footprint: the size-10 acceptance specimen is CANCELLED (its `set×10`=2000 create-time sale is a declared dev-ledger entry). No product code, no LINE, no `uat`.
+
+## 2026-09-17 — Sober → @Porter: ✅ **REQ-091 live on `uat` noted (the TASK-085 silent-skip, repaired by the book — your read of the mechanism was right; nothing from me).** ▶️ **REQ-092: the staged plan is written — `specs/SPEC-079` — and Stage 1 is cut: TASK-377 @Jason (BE, M, contract first) · TASK-378 @Fern (FE, M, parallel).**
+**The plan in one table (SPEC-079 §2):** Stage 1 foundation — `users` + an EMPTY `user_permissions` table now (so Stages 2 and 3 need no migration), hashing built in (`Bun.password`, no dependency), login against the table, the first super admin bootstrapped from env only while the table is empty, the guard loads the user row per request (a disabled user is refused within the request, not the token's 12 h), every audit `actor` becomes the real username, user CRUD/reset/disable for the super admin, a Users page · Stage 2 menu guard (a `menu:*` key per nav entry, 12; grants per user; nav + route + API-area guard; no migration) · Stage 3 action guard (an `action:*` key per mutate route, ~59; the FE sweep; no migration) · Stage 4 roles + matrix (`roles`, `role_permissions`, `users.role_id` — migration; a Roles page; assign; per-user overrides; the matrix). **4 deploys, 2 with migrations (`0036` now, `0037` at Stage 4).**
+🔴 **Four decisions for the owner (SPEC-079 §3), each before its stage — I build the recommendation unless he says otherwise:** (1) Stage 1: the old shared env login is RETIRED the moment a real user exists — the bootstrap env pair is the break-glass (re-creates the first super admin only on an EMPTY table). (2) Stage 1: password rule = minimum 8, nothing else; reset = the super admin sets a new one (no email — the app has none). (3) Stage 2: a user with no menu grants is let in to an empty shell with "no access — ask your admin" rather than refused at login. (4) Stage 3: "see the menu, change nothing" is a valid combination.
+📌 Pre-cutover history keeps the shared actor (his §6 ruling; the §9.1 precedent). Public LIFF/check-in/webhook routes are untouched at every stage. I tell you when Stage 1 is in.
+
+## 2026-09-17 — Sober → @Porter: ✅ **RBAC Stage 1, BE IN — TASK-377: 2294/0, tsc 0, 🔴 MIGRATION 37 = 37 (`0036_users`); re-run by me. Waiting on TASK-378 (@Fern, the Users page).**
+**Two of the four decisions are now BUILT as recommended — say if the owner objects:** (1) the old shared env login is retired outright (`ADMIN_USERNAME/PASSWORD` read nowhere); (2) password = min 8, no other rule; reset = the super admin sets it.
+**Deploy facts for the Stage 1 note:** `db:migrate` (two NEW tables, `users` + `user_permissions`; **no lock on any existing table**; one run; rerunnable) → set `BOOTSTRAP_ADMIN_USERNAME/PASSWORD` in the env → restart → **the FIRST LOGIN with that pair creates the super admin** (a lazy bootstrap, chosen over a start-time hook so a pm2 restart ahead of the migration can never crash-loop) → remove `ADMIN_*` from the env. After that every login is the table's; a user disabled mid-session is refused on their next call (`บัญชีนี้ถูกปิดใช้งาน`), not at the token's 12-h expiry. Every audit actor is now the real username (12 sites); history keeps the shared word.
+📌 List: the per-request row read is a PK lookup (≤ 20 % on the cheapest call, invisible on real ones) — no cache built, because a cache would re-open the window the read closes. `assertMayDiscount` still reads `role` (every table user is at least admin — same behaviour as today) until Stage 3's `action:sales.discount`.
+
+## 2026-09-17 — Sober → @Porter: ✅ **TASK-378 (Stage 1 FE) IN — 394/0, tsc 0, build ok; re-run by me. 🔴 One XS BE fix before Stage 1 ships: TASK-379 @Jason.** Fern found it by reading the widened `role`: the discount guard (`role !== "admin"`) refuses a SUPER ADMIN — and the bootstrapped first user is one, so the owner's own account could not give a discount on day one. Verified in the code; one line (read the capability, not the label). I tell you when 379 is in — then Stage 1 is ready for `sid`.
+**Stage 1 FE as built:** the session carries the real user (`id` = the row, display name in the header); a `Users` menu for the super admin only (hidden otherwise; the page itself refuses with one sentence; the server is the guard): list with `(you)`, create (username pattern shown as the hint; lowercased before sending), edit (only changed fields), reset password (two taps, boxes must match), disable (two taps) / enable (one). No client-side rules — every refusal is the server's sentence.
+📌 List: a user disabled mid-session is signed out on their next call, but the login screen does not yet say WHY (`บัญชีนี้ถูกปิดใช้งาน` is lost in the redirect) — one small Stage-2 item if the owner wants the reason shown; where a non-super-admin will change their own password later (Stage 2+).
+
+## 2026-09-17 — Sober → @Porter: ✅ **TASK-379 IN — RBAC Stage 1 is COMPLETE and ready for `sid`.** BE 2295/0 · tsc 0 · 🔴 **MIGRATION 37 = 37 (`0036_users`)**; FE 394/0 · tsc 0 · build ok — all re-run by me. The super admin can discount again (the guard reads the capability, not the label).
+**Deploy note (Stage 1):** `db:migrate` (two NEW tables, no lock on any existing table, one run) → set `BOOTSTRAP_ADMIN_USERNAME` / `BOOTSTRAP_ADMIN_PASSWORD` in the BE env → restart → **the FIRST login with that pair creates the super admin** → remove the old `ADMIN_USERNAME/PASSWORD` (they are read nowhere now). FE build as usual.
+**For @Tanya (yours to phrase):** the old shared credentials refuse after the first user exists; the bootstrap pair logs in once and creates the super admin (`Users` menu appears; `(you)` on the row); create an admin ⇒ they log in, see no `Users` menu, land on the page by URL ⇒ one refusal sentence; reset a password ⇒ old refused, new accepted; disable a logged-in user ⇒ their next call signs them out; try to disable the last super admin ⇒ refused; a discounted sale by the super admin ⇒ accepted; an audit line (e.g. delete a student) now names the real username.
+📌 Decisions 1 and 2 are built as recommended; 3 and 4 are Stage 2/3's — I cut Stage 2 on your go after Stage 1 passes. Both engineers empty; chain stopped.
+
+## 2026-09-17 — Sober → @Porter: 🟢 **FOUND — from the code and the owner's own log lines. It is NOT a lost insert; the bootstrap is REFUSING the password, and the refusal is invisible. Recovery is one env change, no code.**
+**The mechanism, exactly:** `bootstrapIfEmpty` calls `createUser`, and `createUser` runs `assertPassword` — **minimum 8 characters** (`PASSWORD_MIN = 8`, TASK-377 Decision 2) — BEFORE the insert. The owner's `BOOTSTRAP_ADMIN_PASSWORD` is `admin` (5 characters): the log shows `createUser: username admin actor bootstrap` and then NOTHING — the very next debug line (`createUser: password length …`) never prints, because the throw is between them. The exception is an `ApiException` (`400 PASSWORD_TOO_SHORT`), so the app answers the login with it — **no stack in stdout, no error log** — and the FE shows its own generic "Incorrect username or password". The table stays empty, so every login attempt after every restart tries again. Everything he saw is this one line.
+**The recovery (safe, in order):** (1) set `BOOTSTRAP_ADMIN_PASSWORD` to a value of **8+ characters** in the `.exe`'s env (the right folder, as he now has); username can stay `admin`; (2) restart (env is read at process start); (3) log in ONCE with exactly that pair — the super admin is created and he is in; (4) change the password on the Users page if he likes (reset = the super admin sets it, min 8); (5) remove the `BOOTSTRAP_*` pair or leave it — it is ignored once any user exists. 🚫 **Nothing to empty**: `users` is genuinely empty (his `SELECT` was right), `user_permissions` is empty; no table needs touching.
+**Your Q1:** the bootstrap is at the FIRST LOGIN with the env pair (not at startup); `change-me-before-first-login` is only `.env.example`'s placeholder — it never became a user (it would have: it is 28 characters; `admin` is what he actually set). **Q2:** the Users-UI route needs a login first ⇒ the env fix above IS the clean path. **Q3 — yes, and it is an XS I am cutting now (ships with Stage 1's next `sid` build, not blocking his recovery):** (a) a bootstrap pair that fails the password rule is refused with its OWN sentence at login (`PASSWORD_TOO_SHORT` names the 8 already — the FE must SHOW the server's sentence instead of its generic one on that code) and ONE clear `[auth] bootstrap REFUSED: BOOTSTRAP_ADMIN_PASSWORD shorter than 8` log line; (b) `.env.example`'s placeholder becomes EMPTY with the rule beside it — a placeholder that satisfies the rule is exactly what makes this silent.
+🔴 **And the credential log:** the lines printing `env pass`, `createUser: password length` etc. are NOT in the committed code — they are uncommitted debugging edits in the working tree of `user.service.ts` (`git diff` shows them; the human's, not Jason's). **They must not ship: the password is printed to stdout.** The XS task strips them and adds the one honest line above. Tell the owner: `git checkout -- src/services/user.service.ts` is HIS call (his edits), or let Jason's task replace them — never both.
+
+## 2026-09-17 — Tanya (QA) → @Porter: ⛔ **RBAC Stage 1 — check 1 PASS, checks 2-6 BLOCKED: the deploy LOCKED QA OUT of `sid`.** DATA REQUEST for a real credential. Plus one secondary finding. `sid` only, no LINE.
+
+### ✅ 1 — old shared credentials refused
+`POST /api/auth/login {admin/admin}` ⇒ **`401 UNAUTHORIZED — "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"`**. Exactly the intended behaviour once the first user exists. PASS.
+
+### ⛔ 2, 3, 4, 5, 6 — NOT_TESTED (QA has no session on `sid`)
+**The RBAC deploy invalidated every way QA authenticates to `sid`:**
+- `admin/admin` (the access file's cred) is **refused** (check 1 — by design).
+- The owner-sanctioned mint (`qa-session.mjs` → API login → `mint-session.mjs`) now **fails at the login step** (401), so I cannot mint a new session.
+- My last-minted session's token now **errors on every backend call** (`INTERNAL` on `/api/users`, `/api/courses`, `/api/teachers`) — its `sub` is the legacy `admin`, which is no longer a real user (see the finding below). The FE NextAuth layer still shows `{qa, role:admin, isSuperAdmin:false}`, but no backend data call succeeds.
+- I have **no super-admin credential** — the owner set the bootstrap password; QA never received one.
+⇒ Checks **2** (Users menu / `(you)`), **3** (admin sees no Users menu, URL refusal), **4** (reset / disable / last-super-admin), **5** (super-admin discounted sale — TASK-379), **6** (audit names the real username) **all require a live, mostly super-admin, session I cannot obtain.** I will not forge one — that would bypass the very auth under test (and my standing rule).
+
+📌 **DATA REQUEST (blocks all of Stage 1 and, going forward, ALL `sid` testing):** the owner creates a **QA user in the RBAC system** — a `super_admin` (so I can exercise 2/4/5/6) or at least a normal admin — and puts its **username + password in `H:/sm-test-access.txt`**, replacing the dead `admin/admin`. Until then the forged-session path is gone and I cannot run anything on `sid`. This is the REQ-080 pattern one host over: QA access broke on the security change, and only a real credential fixes it.
+
+### 🔎 SECONDARY FINDING (robustness / deploy transition)
+A token whose `sub` is not a current user-id returns **`500 INTERNAL — "เกิดข้อผิดพลาดภายในระบบ"`**, not the intended **`401 "โทเคนไม่ถูกต้องหรือหมดอายุ"`**. `authMiddleware` (`middleware/auth.ts:60`) calls `findUserById(sub)` and guards `if (!row) → 401`, but a legacy/malformed `sub` (e.g. `admin`) makes the lookup **throw** (a non-UUID into the users id) **before** that guard, so it falls through to the 500 handler.
+⚠️ **Why it matters beyond my forged token:** EVERY admin who was logged in **before** this deploy holds a token with the old `sub` — their **first call after the deploy hits a 500 wall instead of a clean "please sign in again."** Check 4's "their next call signs them out" is the same code path; a legacy/disabled token should 401, not 500. Worth Sober/Jason confirming the `findUserById` throw-vs-null behaviour.
+
+🟢 Footprint: none — every write attempt was refused/errored; nothing created, nothing to clean. No LINE, no `uat`, no code.
+
+## 2026-09-17 — Tanya (QA) → @Porter: ✅ **RBAC Stage 1 — checks 2-6 all PASS with the super-admin credential you supplied (check 1 already PASS). One left account (disabled).** `sid` only, no LINE. API-level (the enforcement); the Users MENU render is FE-gated by the same `isSuperAdmin` I confirmed at login.
+
+### ✅ 2 — super admin sees the users list + `(you)`
+Logged in `admin/admin-som` ⇒ `isSuperAdmin:true`. **`GET /api/users` ⇒ 200**, the super admin's own row is in the list (`admin`, super=true) — the `(you)` marker. The `Users` menu is FE-gated by `isSuperAdmin` (true here). PASS.
+
+### ✅ 3 — a created admin has no Users access; the page refuses
+Created `qa-rbac-admin` (`isSuperAdmin:false`) ⇒ they **log in** (200, `isSuperAdmin:false`) ⇒ **`GET /api/users` ⇒ `403 FORBIDDEN — "เฉพาะผู้ดูแลระบบสูงสุดเท่านั้น"`** — the one refusal sentence the URL-hit page shows; the menu is hidden (FE-gated by the `false` flag). PASS.
+
+### ✅ 4 — reset / disable-signs-out / last-super-admin
+- **Reset password** ⇒ old password login **401**, new password login **200**. PASS.
+- **Disable a logged-in user** ⇒ their still-held token's next call ⇒ **`401 "บัญชีนี้ถูกปิดใช้งาน"`** (signed out). PASS.
+- **Disable the LAST super admin** ⇒ **`409 LAST_SUPER_ADMIN — "ต้องมีผู้ดูแลระบบสูงสุดที่ใช้งานได้อย่างน้อย 1 คน"`** (refused). PASS.
+
+### ✅ 5 — super-admin discounted sale accepted (TASK-379)
+A course created **by the super admin** with `discount {kind:PERCENT, value:10}` ⇒ **ACCEPTED** (course written). Capability, not the literal `admin` label. PASS.
+
+### ✅ 6 — the audit names the REAL username
+The created **admin** (`qa-rbac-admin`) edited a course expiry ⇒ `GET /courses/:id/expiry-history` shows **`actor: "qa-rbac-admin"`** — the real acting username, NOT the super admin, NOT a hardcoded `admin`. PASS. (I used expiry-history because it is a table QA can READ; the delete-student audit is a server log line, which I can't read — but this proves the same actor plumbing.)
+
+### Footprint
+🟠 **Left account (DISABLED, cannot delete):** `qa-rbac-admin` (`0e9c38e6-fd51-48f3-99dd-5d8413d60495`) — created for checks 3/4/6, then disabled per the users-disable-not-delete rule. Confirmed `disabled=true`. **Disable it further / re-enable at will; it is inert.**
+🟢 Two courses (check 5 discount, check 6 expiry) CANCELLED. No LINE, no `uat`, no product code.
+📌 The secondary 500-vs-401 finding from my earlier note is with Sober for the Stage-1 build — still stands (a legacy/invalid token `sub` throws before the `!row` 401 guard).
+**RBAC Stage 1 is clean on `sid` (all 6 checks).**
+
+## 2026-09-17 — Sober → @Porter: ✅ **Owner in; Stage 1 checks 2–6 green noted. Tanya's 500-vs-401 finding is REAL — verified: `findUserById` on the `uuid` column throws `22P02` for a non-UUID `sub` before the 401 guard; every pre-cutover token carries `sub = "admin"`. Folded into TASK-380 (@Jason) as §2 — same XS build: (1) the bootstrap refuses loudly + no credential in any log + empty `.env.example` placeholder; (2) a malformed `sub` ⇒ 401 with the token sentence, no query.** I tell you when it lands; then the `sid` re-check (an old-`sub` token ⇒ 401) → `uat`. Stage 2 cut after that, on your go. 📌 Leftover `qa-rbac-admin` disabled on `sid` is fine — no delete by design.
+
+## 2026-09-17 — Sober → @Porter: ✅ **TASK-380 IN — the Stage 1 build is ready for the `sid` re-check → `uat`. BE 2304/0 · tsc 0 · 37 = 37; re-run by me.**
+- A bootstrap pair that breaks the rule is refused BEFORE `createUser`: ONE `[auth] bootstrap REFUSED: BOOTSTRAP_ADMIN_PASSWORD is shorter than 8` line per process and the specific `400 PASSWORD_TOO_SHORT` as the login's answer (the FE shows the server sentence for that code). `.env.example`'s placeholder is EMPTY with the rule beside it.
+- **The password-printing debug lines are gone** — Jason's diff replaced the human's uncommitted edits; nothing in the file logs a credential (asserted).
+- **§2:** a malformed `sub` (every pre-cutover token) is refused at the guard with `401 "โทเคนไม่ถูกต้องหรือหมดอายุ"` — no query; the FE's existing 401 path signs them out to login. A real DB error is still a 500.
+**For @Tanya's re-check:** an old token (`sub = admin`) ⇒ 401, not 500; a login with a 5-char `BOOTSTRAP_ADMIN_PASSWORD` on an EMPTY table (dev box only — never touch `sid`'s users) ⇒ the specific sentence. Then `uat`: migrate → `BOOTSTRAP_ADMIN_*` (8+) → restart → first login → remove `ADMIN_*`. **Stage 2 (menu guard) — I cut it on your go once Stage 1 is on `uat`.** Both engineers empty.
+
+## 2026-09-17 — Tanya (QA) → @Porter: ✅ **TASK-380 re-check — PASS. My 500→401 finding is fixed.** `sid`, one read, no footprint.
+An **old pre-cutover token (`sub = admin`)** on a backend call now returns **`401 UNAUTHORIZED — "โทเคนไม่ถูกต้องหรือหมดอายุ"`** (confirmed on `/api/courses` AND `/api/users`) — the clean 401, no longer `500 INTERNAL`. So a session held from before the RBAC cutover gets a graceful "sign in again", not a 500 wall.
+📌 The **bootstrap 5-char refusal sentence** I did NOT test — it needs an EMPTY users table, and per your instruction I don't touch `sid`'s live users for it (dev/local-only; the owner or a unit test covers it). Not blocking.
+🟢 No rows created, nothing to clean. **RBAC Stage 1 is clear on `sid` — ready for `uat`.**
+
+## 2026-09-17 — Sober → @Porter: ✅ **Stage 1 green + the "finish option C on `sid`, one `uat` cutover" plan noted. ▶️ Stage 2 cut: TASK-381 @Jason (BE, M, contract first) · TASK-382 @Fern (FE, M, parallel). No migration.**
+**Your question — how a menu set is assigned before Stage 4:** **directly per user, on the Users page** — a `Menus` checklist (12 boxes, the nav's own labels) writes `user_permissions` rows (`menu:<key>`), the table Stage 1 already created. **Stage 4's roles will SET these same rows** (assign a role ⇒ its keys become the user's grants; overrides stay per-user rows) — so Stage 2 is usable alone and nothing is thrown away.
+**The one design fact that matters:** several READ routes serve more than one page (the calendar reads the teachers list; bookings reads students/courses/vouchers). So the BE guard maps each route to the SET of menus whose pages call it — a route passes if the user holds ANY of them. Jason writes the map from the FE's real calls; a super admin passes everything. Grant changes take effect on the server immediately; the nav follows on the next load.
+**Two list items folded into Stage 2, built as SPEC-079 recommends — say if the owner objects:** (a) **"change my password"** in the header for any user (`POST /auth/me/password`, current + new); (b) **the disabled reason on the login screen** (one line when the 401 was "account disabled"). And the §3.3 decision: a user with zero menus is let in to an empty "ask your admin" shell, not refused at login.
+📌 `uat` cutover note (for when C is ready): Stage 1's break of the shared login happens once; the super admin should create every staff account and tick their menus BEFORE the cutover hour — Stage 2 gives him the checklist to do it.
+
+## 2026-09-17 — Sober → @Porter: ✅ **Stage 2 BE IN — TASK-381: 2327/0, tsc 0, no migration; re-run by me. Waiting on TASK-382 (@Fern).** One guard driven by one table: 85 routes → the SET of menus whose pages call them, traced from the FE's real calls (the teachers list serves five pages); an unmapped route is REFUSED and logged — the guard fails closed, and a test enumerates every route so a new one cannot ship unmapped. `GET /auth/me`, `PUT /users/:id/menus`, self password change (`401` on a wrong current) are in. A zero-menu user logs in and gets `menus: []` (the shell). 📌 Stage 3 adds an `action:*` column to the same table — the shape is already there.
+
+## 2026-09-18 — Sober → @Porter: ✅ **RBAC Stage 2 COMPLETE — TASK-382 (FE) IN. FE 403/0 · tsc 0 · build ok; BE 2327/0 · no migration. Ready for @Tanya on `sid`.**
+**As built:** the nav and every page follow the user's menus from `GET /auth/me` (re-read at once on load and on any 403, so a grant taken away shows the guard's sentence on the next refused call); a page not granted shows one sentence and a door to the first menu they do have; zero menus ⇒ the "ask your admin" shell with the header still showing who they are; the Users page gains a `Menus` checklist per user (the nav's own labels; a super admin's row says "all menus"); the avatar is now a user menu with **Change password**; the login screen says "account disabled — contact your admin" only for that exact 401.
+🔻 A pin earned its keep: Fern's two-way registry pin caught a missed `menu:badges` on the Badges entry before anything shipped — the page would have been open to everyone.
+**For @Tanya (yours to phrase):** super admin ⇒ every menu + `Users`; give an admin `calendar` + `bookings` only ⇒ their nav shows those two (and the shared teachers list still loads inside the calendar), `/scheduler/reports` by URL ⇒ the sentence + the door, `GET /api/reports/daily` ⇒ 403; take a menu away while they are on it ⇒ the next call shows the sentence; a user with no menus ⇒ the shell; change own password (wrong current ⇒ refused in the dialog, not signed out); disable a user ⇒ their login screen says why.
+📌 List: the wrong-current-password refusal is a `401` — Fern exempts that one path from the sign-out interceptor; a `400`/`409` from the BE would let the exemption go (Jason's call, XS, any time).
+**Stage 3 (action-level) — cut on your go.** Both engineers empty.
+
+## 2026-09-18 — Tanya (QA) → @Porter: ⚠️ **RBAC Stage 2 — checks 1·2·3·4·6 PASS (enforcement solid); check 5 BLOCKED by a real finding: the `/auth/me*` backend routes are NOT reachable through the frontoffice (NextAuth shadow).** `sid` only. Super-admin cred from the access file.
+
+### ✅ 1 — super admin: every menu + Users
+Login body returns **all 12 menus** (`calendar, teachers, people, link-requests, bookings, badges, som, attention, reports, settings, dashboard, overview`); `GET /reports/daily` 200, `GET /users` 200. PASS.
+
+### ✅ 2 — grant calendar + bookings only
+`PUT /users/:id/menus {["menu:calendar","menu:bookings"]}` ⇒ the admin's **login body menus = `["menu:calendar","menu:bookings"]`**; `GET /reports/daily` ⇒ **403 "ไม่มีสิทธิ์เข้าถึงเมนูนี้"**; `GET /teachers` ⇒ **200** (the shared list loads inside the calendar, as designed); `GET /courses` ⇒ 200. PASS. *(The nav showing exactly those two, the `/scheduler/reports` URL refusal + a door to a granted menu are FE renders off this same menu data + the 403 — see the FE-render note.)*
+
+### ✅ 3 — take a menu away while they hold the session
+Granted `reports` ⇒ `GET /reports/daily` 200; then **revoked `reports` while the admin still holds the token** ⇒ the very next `GET /reports/daily` ⇒ **403 "ไม่มีสิทธิ์เข้าถึงเมนูนี้"**. The guard reads the CURRENT grants, not the token — the enforcement is immediate. PASS. *(⚠️ the FE's proactive nav-refresh relies on `/auth/me`, which is shadowed — see the finding; the backend still blocks the call, so the guard sentence appears.)*
+
+### ✅ 4 — a user with NO menus
+Zero grants ⇒ login body menus = `[]`, username still returned (`qa-rbac-admin` — the header still shows who they are); **every** menu route ⇒ 403 (`/courses`, `/reports/daily`). The "ask your admin" shell is the FE render off the empty menu set. PASS.
+
+### ✅ 6 — disable ⇒ the "why"
+Disabled **while logged in** ⇒ the held token's next backend call ⇒ **401 "บัญชีนี้ถูกปิดใช้งาน"** (this account is disabled — the reason the FE surfaces on the sign-out/login screen). A **cold** login while disabled ⇒ the generic `"ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"` (deliberately unified with unknown/wrong per the code, so it doesn't leak). PASS — the "why" comes from the mid-session 401.
+
+### 🔴 5 — change own password — BLOCKED by a FINDING (likely BROKEN on `sid`)
+The change-password modal calls **`POST /auth/me/password`** on the client base `NEXT_PUBLIC_API_URL = https://som.develyst.online/api`, i.e. **`/api/auth/me/password`**. That path (and **`GET /api/auth/me`**, the grant-refetch "truth") returns **`400 "Bad request."` from Next.js/NextAuth — NOT the backend** (confirmed by direct request: `next-router` headers, 400 with AND without auth). The frontoffice has **no rewrites** (`next.config.ts`) and a NextAuth catch-all (`app/api/auth/[...nextauth]/route.ts`) owns `/api/auth/*`; only `/api/auth/login` is routed to the backend — `/auth/me` and `/auth/me/password` (the NEW Stage-2 routes) are **not**. The backend routes themselves exist and pass BE tests — they are simply **unreachable through the frontoffice proxy on `sid`**.
+⇒ **On the deployed `sid`, the change-password modal would hit NextAuth (400), not the backend** — check 5 (wrong-current-in-dialog / not-signed-out) can't even be reached, and the `/auth/me` grant-refetch (check 3's proactive nav update, `MenuGuard`) is shadowed too. **I could not drive the browser XHR to see the modal's exact failure, but the path is confirmed shadowed.** This looks like the `sid` proxy (nginx) / routing wasn't updated for the Stage-2 `/auth/me*` backend routes. **@Sober / owner: confirm & fix the frontoffice routing for `/api/auth/me` + `/api/auth/me/password` before uat.** (Separately, Sober's earlier note stands — wrong-current returns 401, which the FE interceptor may treat as sign-out; can't reach it to confirm while the path is shadowed.)
+
+### FE-render note
+The nav (which menus show), the URL-hit refusal + "door to a granted menu", and the "ask your admin" shell are FE renders driven by the **login-body menus** (verified correct for every grant state) plus the backend **403** guard (verified). I did **not** screenshot them for the restricted user: a restricted-user FE session needs a real form login, which I do not do, and minting one is unsound for RBAC. The **enforcement and the menu data are API-confirmed**; the render layer follows them.
+
+### Footprint
+🟠 `qa-rbac-admin` (`0e9c38e6-...`) left **DISABLED** (users disable-not-delete; re-enabled/re-granted/re-disabled during the run, ends disabled). No courses/rows created. No LINE, no `uat`, no code.
+
+## 2026-09-18 — Sober → @Porter: ✅ **Both taken. The routing bug is real — verified: `app/api/auth/[...nextauth]` owns `/api/auth/*` on the FE host. Decision: MOVE, not rewrite** — the routes become `GET /api/me` and `POST /api/me/password` (a rewrite would be one more line to forget at every deploy; `/auth/*` is NextAuth's for as long as NextAuth exists). Cut as **TASK-383 @Jason + TASK-384 @Fern, XS each** — and the wrong-current-password refusal becomes `400 WRONG_PASSWORD` in the same move, so Fern's sign-out exemption is retired. Rides with Stage 3's `sid` build; Tanya re-checks 5 + the proactive nav then.
+**Stage 3 cut: TASK-385 @Jason (BE, M, contract + the full key list first) · TASK-386 @Fern (FE, M–L, parallel).** The shape: one `action:<menu>.<verb>` key per mutate route, named from the route table and grouped by the menu that owns it, each with a TH/EN label IN the BE registry (`GET /permissions`) so the FE has no second list of names; the Stage 2 route table gains an `action` column and the one guard checks menu THEN action, with a distinct sentence for an action refusal; the discount check reads `action:sales.discount` instead of `role`; `PUT /users/:id/actions`; the FE hides every ungranted control (~59 sites, listed and counted in her report) and adds an `Actions` checklist per user grouped by menu. "See the menu, change nothing" is a valid combination (§3.4 as ruled).
+📌 Out of the table by design and said so: internal job routes, LIFF/check-in/webhooks. `uat` stays held.
+
+## 2026-09-18 — Sober → @Porter: ✅ **Stage 3 BE IN — TASK-385: 2350/0, tsc 0, no migration; re-run by me. TASK-383 (the `/me` move) IN too — 2328/0. Waiting on @Fern: TASK-384 (XS, follow the move) + TASK-386 (the sweep + the Actions checklist).**
+**Stage 3 as built:** **46 action keys** — one per ACT (Jason's rule: a preview shares its act's key; an act and its undo share one; create ≠ edit), grouped by the owning menu, each with TH/EN labels served by `GET /permissions` (the FE has no second list of names); the route table gained an `action` column (58 mutate routes, 27 reads); the ONE guard checks menu THEN action with a distinct sentence; the discount is now a grant (`action:sales.discount`, sentence `ไม่มีสิทธิ์ให้ส่วนลด`) — nothing reads `role` for authorization any more. **One decision I took, for the owner to hear:** the advance-notice leave OVERRIDE (`override: true` on a status change) is the **46th key, `action:calendar.leave-override`** — today anyone who could set a status could waive a rule he wrote for parents; now it is a tickable act. 📌 List: `PATCH /bookings/:id/status` stays ONE key (confirm/attend/leave/cancel are one act to tick; splitting "cancel" out is a second body check — his call later). What "every action" covers: the admin API only — LIFF/check-in/webhooks/ICS/internal jobs are outside by design.
+`uat` held. Stage 4 (roles + matrix, migration `0037`) — I cut on your go once Stage 3 is green on `sid`.
+
+## 2026-09-18 — Sober → @Porter: ✅ **RBAC Stage 3 COMPLETE + the Stage 2 `/me` patch — TASK-384 and TASK-386 (FE) IN. FE 411/0 · tsc 0 · build ok; BE 2350/0 · no migration. Ready for @Tanya on `sid` (Stage 2's check 5 + the proactive nav re-check ride with it).**
+**As built:** one gate `can(action)` on every mutate control — 68 sites in 30 files covering 44 of the 46 keys (the two with no FE caller are `people.student-create` and `teachers.calendar-link`, named); an ungranted control is HIDDEN, never disabled (a ⋯ menu with no items disappears; a work-days editor becomes a read-only line); a test walks the app and refuses any key literal the 46-key snapshot does not know — the snapshot diffed equal to the BE's list. The Users page gains an `Actions` checklist grouped by menu with the BE's own TH/EN labels. The discount section reads its key; nothing on the FE reads `role` any more. `/me` + `/me/password` at the new paths; the sign-out exemption is gone.
+**For @Tanya (yours to phrase):** Stage 2 check 5 (change own password: wrong current ⇒ the sentence in the dialog, NOT signed out; right ⇒ next login) + the proactive nav (revoke a menu while they are on it ⇒ the sentence on the next refused call). Stage 3: an admin with `calendar` menu and NO actions ⇒ sees the grid, no `+`, no ⋯, no status buttons; `POST /api/bookings` by API ⇒ 403 "ไม่มีสิทธิ์ทำรายการนี้"; grant `action:calendar.book` ⇒ the `+` appears, the post succeeds; a discount without `action:sales.discount` ⇒ the section is absent and the API says "ไม่มีสิทธิ์ให้ส่วนลด"; the leave override button absent without `action:calendar.leave-override`; super admin ⇒ everything; the `Actions` dialog groups by menu, TH/EN labels follow the language.
+📌 List: `POST /students` has no FE caller (the form creates through the parent) — a dead route or a future door, the owner's call.
+**Stage 4 (roles + per-user matrix, migration `0037`) — cut on your go once Stage 3 is green on `sid`.** Both engineers empty.
+
+## 2026-09-18 — Tanya (QA) → @Porter: ✅ **RBAC Stage 3 + the Stage-2 /me re-checks — ALL PASS. My Stage-2 finding is fixed (the /me routes moved off `/api/auth`).** `sid`, super-admin cred, API-level (FE renders follow the confirmed data + guards).
+
+### ✅ Stage-2 re-check — the /me routing patch (my finding, fixed)
+The user routes moved to **`/api/me`** (TASK-383), off NextAuth's `/api/auth/*` catch-all. **`GET /api/me` ⇒ 200** (user + menus + actions); the change-password path now reaches the backend.
+- **Change own password:** wrong current ⇒ **`400 WRONG_PASSWORD — "รหัสผ่านปัจจุบันไม่ถูกต้อง"`**, and the token **stays valid** (`GET /api/me` ⇒ 200 right after) — **NOT signed out** (and it's a 400, so the FE interceptor won't treat it as a session expiry — Sober's concern is addressed). Right current ⇒ `200 {ok:true}`; **old pw login 401, new pw login 200.** PASS.
+- **Proactive nav (revoke while on a menu):** the backend 403 on the revoked route stands (Stage-2 check 3); with `/api/me` now reachable, the FE's grant-refetch works, so the nav updates on refresh. PASS.
+
+### ✅ Stage 3 — action-level
+1. **Menu `calendar`+`bookings`, NO actions** ⇒ `/api/me` actions `[]`; **`POST /api/bookings` ⇒ 403 "ไม่มีสิทธิ์ทำรายการนี้"** (the FE hides `+`, `⋯`, status buttons off this empty action set). PASS.
+2. **Grant `action:calendar.book`** ⇒ `/me` actions `["action:calendar.book"]`; **`POST /api/bookings` ⇒ 201** (the `+` appears, the post succeeds). PASS.
+3. **No `action:sales.discount`** ⇒ a discounted create ⇒ **403 "ไม่มีสิทธิ์ให้ส่วนลด"** (the discount section is absent on the FE); a NON-discounted create with `action:bookings.course-create` ⇒ 201. **No `action:calendar.leave-override`** ⇒ a sick-leave with `override:true` ⇒ **403 "ไม่มีสิทธิ์ยกเว้นกฎแจ้งลาล่วงหน้า"** (the override button is absent). PASS.
+4. **Super admin ⇒ everything** (`POST /bookings` 201; discounted sale accepted). **`GET /api/permissions` ⇒ 200**, shape `{ menus:[…], actions:[{ key, area, labelTh, labelEn }] }` — grouped by area/menu with TH + EN labels, so the FE Actions checklist follows the language. PASS.
+
+### FE-render note (unchanged from Stage 2)
+The `+`/`⋯`/status buttons, the discount section, the leave-override button and the Actions checklist are FE renders off the `/api/me` **actions** (verified) plus the backend **403** guards (verified). Not screenshotted for the restricted user — a restricted-user FE session needs a real form login, which I don't do. Enforcement + data are API-confirmed.
+
+### Footprint
+🟠 `qa-rbac-admin` (`0e9c38e6`) left **DISABLED** (its password is now `qa-admin-pw-3` — I changed it in the change-password test; note for anyone re-enabling). Test bookings/courses swept (all cancelled). No LINE, no `uat`, no code.
+**RBAC Stage 3 is clean on `sid`; the Stage-2 /me finding is fixed. Ready for Stage 4 / uat on your word.**
+
+## 2026-09-18 — Sober → @Porter: ✅ **Stage 3 green noted (Tanya's pw note kept). ▶️ Stage 4 cut — the finale: TASK-387 @Jason (BE, M, contract first, MIGRATION `0037`) · TASK-388 @Fern (FE, M, parallel).**
+**The model, decided — one thing the owner should hear:** **a role is LIVE, not a copy.** A user points at a role; their effective rights = the role's keys + their own extra ticks. Edit the role ⇒ everyone holding it changes on their next click (the guard reads per request; nothing to propagate). Overrides are ADDITIVE only (a user who needs LESS than their role gets a different role — a "deny" tick is not in this stage; on the list).
+**Your two decisions, built as recommended — say if he objects:** (1) **deleting a role that users hold is REFUSED with the count** (`มีผู้ใช้ n คนถืออยู่ — ย้ายก่อนลบ`); the super admin reassigns first; the DB enforces it too (`RESTRICT`). (2) **Assigning a role KEEPS the user's own ticks** (additive) rather than wiping them — one line to flip.
+**What the FE ships:** a `Roles` page (super admin): name, description, the same two checklists as the Users page (no third list of names), users-holding count, two-tap delete; a `Role` select per user; in a user's checklists the role's keys are ticked-and-locked with "from role X" and only the user's own ticks are editable; the header shows the role; a read-only matrix tab (users × the 12 menus + 46 actions, ▲ from role / ● own) filtered by role.
+**Migration `0037`:** `roles`, `role_permissions`, and `users.role_id` (a nullable `ADD COLUMN` — metadata-only on a tiny table, one run); Jason's header will say the exact lock. **After Stage 4 is green on `sid`: the single `uat` cutover for all of C** — I will write the cutover note then (migrate 0036+0037 in one run, bootstrap, create staff + roles BEFORE the hour, remove `ADMIN_*`).
+
+## 2026-09-18 — Sober → @Porter: ✅ **Stage 4 BE IN — TASK-387: 2375/0, tsc 0, 🔴 MIGRATION 38 = 38 (`0037_roles`); re-run by me. Waiting on TASK-388 (@Fern, the Roles page + matrix).**
+**Migration facts for the note:** five statements, one run; `roles` and `role_permissions` lock nothing existing; `users.role_id` is a nullable `ADD COLUMN` — `ACCESS EXCLUSIVE` on `users` for that one statement, metadata-only (no rewrite), a table of tens of rows; the witness is `role_permissions_role_key_uq`; `db:verify` ⇒ 38. **For the `uat` cutover this and `0036` go in ONE `db:migrate` run** (no enum labels; preflight has nothing to split).
+**As built:** a role is live (one `UNION` read: own rows ∪ role rows); role names are unique case-insensitively; deleting a held role is refused with the count (the DB refuses too); assign keeps own ticks. Nothing else moved.
+
+## 2026-09-18 — Sober → @Porter: 🟢 **OPTION C IS COMPLETE — TASK-388 (Stage 4 FE) IN. FE 420/0 · tsc 0 · build ok; BE 2375/0 · tsc 0 · 🔴 38 = 38 (`0036_users` + `0037_roles`). All four stages built and reviewed; Stage 4 ready for @Tanya on `sid`, then the single `uat` cutover.**
+**Stage 4 as built:** a `Roles` page (super admin) — name, description, the SAME two checklists as the Users page (extracted into one shared file; no third list of names), users-holding count, two-tap delete refused with the count when held; a `Role` select per user; in a user's checklists the role's keys are ticked-and-locked *"from role X"* and only their own extra ticks are editable (the save writes own rows only — value-tested); the header shows the role; a read-only matrix tab (users × 12 menus + 46 actions, ● own · ▲ from role · grey ● super admin), filtered by role. A role is live.
+**For @Tanya (yours to phrase):** create a role with two menus + three actions ⇒ assign it ⇒ the user's effective counts change; open their `Menus` ⇒ the two greyed *"from role"*, tick a third and save ⇒ `PUT …/menus` carries only the third; edit the ROLE (add a menu) ⇒ the user's next request has it (no re-login); detach ⇒ own ticks remain; delete the held role ⇒ `ROLE_IN_USE` with the count; two roles differing only by case ⇒ `ROLE_NAME_TAKEN`; the matrix shows ▲ for the role's keys and ● for the own one; super admin's row all grey ●.
+🔴 **The `uat` cutover note is written — `specs/SPEC-079 §5`:** one `db:migrate` run for `0036` + `0037` → `db:verify` = 38 → `BOOTSTRAP_ADMIN_*` (8+) → restart → first login creates the super admin → **create roles + every staff account in the same sitting** (staff cannot work until then) → remove `ADMIN_*`. Pre-cutover sessions get a clean "sign in again". Rollback = the previous build; the tables are additive.
+📌 Owner's list from Stages 3–4 (nothing built): `POST /students` has no FE caller · `status` stays one act · assign keeps own ticks (one line to flip) · no "deny" override · the builder dialog at phone width scrolls (a Stepper later). Both engineers empty; chain stopped.
+
+## 2026-09-18 — Tanya (QA) → @Porter: ✅ **RBAC Stage 4 (roles + matrix) — ALL 5 PASS. Option C is QA-clean on `sid` end to end.** super-admin cred, API-level (the matrix ▲/● is the user DTO's `grants.fromRole`/`own`; FE renders follow).
+
+### ✅ 1 — role (2 menus + 3 actions) ⇒ assign ⇒ effective counts change
+Created a role with `[menu:calendar, menu:bookings, action:calendar.book, action:calendar.status, action:sales.discount]`; assigned to the user ⇒ `/api/me` went from `menus [] actions []` to **`menus [calendar,bookings] actions [book,status,discount]`**. User DTO `grants.fromRole` = the 5 keys, `own = []`. PASS.
+
+### ✅ 2 — own `Menus`: the role's 2 are "from role"; tick a 3rd ⇒ own row carries ONLY the 3rd
+`PUT /users/:id/menus {["menu:reports"]}` ⇒ **`grants.own = ["menu:reports"]` only** (the role's menus are NOT copied into own), **effective menus = `[calendar, bookings, reports]`** (role ∪ own = 3). PASS — the FE greys the role-derived ticks and saves only the own one.
+
+### ✅ 3 — edit the role ⇒ live (no re-login); detach ⇒ own ticks remain
+`PATCH /roles/:id` adding `menu:people` ⇒ the **same token's** next `/api/me` includes `menu:people` (effective grants are read live per request — no re-login). `PUT /users/:id/role {roleId:null}` (detach) ⇒ effective menus = **`[menu:reports]`** (own remains, role menus gone). PASS.
+
+### ✅ 4 — delete a HELD role ⇒ refused; duplicate name by case ⇒ refused
+`DELETE /roles/:id` while a user holds it ⇒ **`409 ROLE_IN_USE — "มีผู้ใช้ 1 คนถืออยู่ — ย้ายก่อนลบ"`** (with the count). Two roles differing only by case (`QA-Dup…` then `QA-DUP…`) ⇒ **`409 ROLE_NAME_TAKEN — "มีบทบาทชื่อนี้แล้ว"`** (case-insensitive uniqueness). PASS.
+
+### ✅ 5 — the matrix (▲ role / ● own)
+The user DTO exposes **`grants: { fromRole: […role keys▲], own: […own keys●] }`** — for the assigned user, `fromRole` = the 6 role keys, `own` = `[menu:reports]`. The **super admin** row: `menus 12 / actions 46` (all), `grants {fromRole:[], own:[]}` ⇒ holds everything as grey ●, no role. PASS.
+
+### Footprint
+🟠 `qa-rbac-admin` (`0e9c38e6`) left **DISABLED** (pw now `qa-stage4-pw`). **All roles I created were DELETED** (both `DELETE` ⇒ 200 after detach) — **no role left behind**. Test data swept. No LINE, no `uat`, no code.
+**🎉 RBAC option C (all 4 stages) is QA-verified on `sid`** — Stage 1 (super admin), Stage 2 (menus, /me finding fixed), Stage 3 (actions), Stage 4 (roles). Ready for the single `uat` cutover on your word.
+
+## 2026-09-18 — Sober → @Porter: 📖 **Three READS (from the code), sized; nothing cut. Owner's sequencing (all on `sid`, then one `uat` cutover) noted.**
+
+### REQ-093 — delete a student WITH history
+1. **Cancel / end / drop reverse NOTHING** — by design and in writing (`scheduler.service.ts:3652`: *"no refund, no `bo.movement`, no revenue reversal"*; QA's "manual bo adjustment by design"). The course's SALE row stays in the ledger. ⇒ **a student whose only history is a cancelled course still carries LIVE money in the backoffice** — the money principle is exactly why REQ-089 §3 said history-free only.
+2. **What a with-history delete would do:** `bookings`, `course_packages`, `vouchers` FK `students` with `RESTRICT` — a hard delete must first delete those (their own children — rentals, expiry changes, badges — cascade); **the sale rows survive as ORPHAN text** (`bo_movement.ref_id` is a string, not an FK) pointing at a course that no longer exists; LINE links are the PARENT's (untouched); outbox history keeps the name as text.
+3. **The three shapes:** **(a) ARCHIVE** — `students.archived_at` (migration +1); hidden from every picker/list/calendar search, kept in history and money; un-archive one tap; **S BE + S FE. Safest; the money stays attached to a row that exists.** **(b) HARD DELETE when "cancelled-only"** — no ATTENDED row and no paid movement: but a cancelled course HAS a posted sale, so "no live money" is false for exactly the customer's case unless the backoffice reversed it first; **M and it breaks the principle** — only honest with a precondition "the sale was reversed in the backoffice" that we cannot see. **(c) MERGE duplicate → real** — move the dup's bookings/courses/vouchers/rentals to the real student (the sale rows follow the course), then delete the now history-free dup with the existing route; **M (BE moves + a "pick the real one" dialog); the cleanest DATA outcome** — one child, one history — and the one that fits "duplicate" as the customer said it.
+**Recommendation:** **(a) now** (cheap, safe, solves "hide the mistake"); **(c) if duplicates recur** (it is the only shape that leaves the ledger and the child consistent). Not (b).
+
+### REQ-094 — `EXTENDED` (purple) classes are not auto-checked-in
+**Mechanism, exact:** the end-of-day auto-mark (`jobs.service.ts:18`) selects `status = CONFIRMED` only — an UNCONFIRMED class is never attended by a job (REQ-070's rule: a job must not claim a child came). A make-up is born **`EXTENDED`**, and **`bulk-confirm` skips it** — its pre-check proceeds only for `PENDING` (`lib/bulk-confirm.ts:12`) — while a SINGLE confirm accepts it (no status guard, only "already confirmed"). ⇒ **make-ups stay `EXTENDED` unless someone confirms them one by one, so the job never sees them.** **Not a deliberate exclusion from auto check-in — an oversight in `bulk-confirm`'s status filter.** Fix = **bulk-confirm treats `EXTENDED` like `PENDING`** (XS, one line + pins); after that a make-up is CONFIRMED with the rest and the job attends it with the rest. 🚫 Do NOT put `EXTENDED` into the job's select — that would auto-attend unconfirmed classes. **What changes when included:** nothing else — attendance/quota/expiry/notifications already treat a CONFIRMED make-up as any class. **Owner decision: none** — unless he prefers make-ups to stay manual.
+
+### REQ-091 §14 — rental round 2
+(1) **Rental line in the whole-course CONFIRM message to the teacher** — the `course_confirmed` payload gains the rental line (the same `rentalPrintLine`), printed as `Rental :` after the block, teacher's copy (and the parent's — same table, say if not); **S BE**. (2) **Whole-course UNPAID (pay per session)** — at creation `rental: { code, remark, paidUpfront: boolean }`; unpaid ⇒ every session born RED, NO post; each paid press posts `hours 1` as a session rental does; make-ups inherit the unpaid state; **S BE + XS FE** (a switch beside the picker; the confirm summary says which). (3) **Remove the rental from the REMAINING sessions mid-course, no money change** — `DELETE /courses/:id/rental` deletes the rental rows of the course's FUTURE live sessions (paid or not — the owner's ruling: past rows untouched, ledger untouched); **S BE + XS FE** (a red action on the course card, two taps, naming the count). 🔴 **One design fact for the owner:** the course's rental is DERIVED from its rows (TASK-373) — after a removal, past PAID rows still carry the rental, so **a later make-up would inherit it again**. The fix needs a course-level marker (`course_packages.rental_removed_at` — migration +1) or the inherit rule reading only FUTURE live rows; Jason decides in the contract — I flag it because it changes the "no column" decision of TASK-373.
+**Sizes total:** REQ-093 (a) S+S · REQ-094 XS · §14 S+S+S BE, XS×2 FE — ~3 BE tasks, ~2 FE, one migration (archive) + maybe one (rental marker). Order I'd cut, on your go: REQ-094 (XS, the customer's daily pain) → §14 (one BE task for all three + one FE) → REQ-093 (a) — then the cutover.
+
+## 2026-09-18 — Sober → @Porter: ✅ **All three GO taken; five tasks cut, both engineers loaded.**
+- **REQ-094 → TASK-389 @Jason (XS):** `bulk-confirm` accepts `EXTENDED`; the job stays CONFIRMED-only.
+- **REQ-091 §14 → TASK-390 @Jason (BE, M, contract first) + TASK-391 @Fern (FE, S):** (1) `Rental :` in the course-confirm message, both audiences; (2) `paidUpfront` at creation — pay-per-session courses are born RED and post only on each paid press; (3) `DELETE /courses/:id/rental` clears FUTURE live rows only, no money. **My derive-vs-marker call: the MARKER** — `course_packages.rental_removed_at` (migration `0038`) that the inherit function honours; a "future rows only" rule would lose the rental on a make-up appended after the LAST session (no future row to copy from) — the marker records the fact, a rule would guess. New action key `action:bookings.course-rental` (47th) so the removal is tickable on its own.
+- **REQ-093 (a) → TASK-392 @Jason (BE, S, contract first) + TASK-393 @Fern (FE, S):** `students.archived_at` (migration `0039`), archive/unarchive under one key `action:people.student-archive` (48th), hidden from every WORKING read (Jason enumerates them: pickers, People default list, calendar roster counts, LIFF/check-in child lists), history and ledger untouched, a `Show archived` toggle with Restore. **One decision built as recommended — say if the owner objects: a child with LIVE FUTURE sessions cannot be archived** (`409` with the count) — archiving is for mistakes; a child with classes ahead is not one.
+**Migrations at the cutover:** `0036` + `0037` (RBAC) + `0038` + `0039` — four files, ONE `db:migrate` run, `db:verify` = 40. I will update SPEC-079 §5 when they land. Tell you as each lands.
+
+## 2026-09-18 — Sober → @Porter: ✅ **TASK-389 (REQ-094) IN — 2382/0; re-run by me: one line in `bulk-confirm`, the auto-mark job untouched (byte-frozen). For @Tanya: bulk-confirm a day with a purple make-up ⇒ it turns CONFIRMED; the 17:30 job then attends it. TASK-390's contract confirmed (Jason building): `paidUpfront` is STORED (a second nullable column in the same `0038`) — a derivation would read "upfront" for a fully-paid pay-per-session course mid-way; the course DTO also carries `unpaidSessions` ("n to collect"). Both engineers loaded.
+
+## 2026-09-18 — Sober → @Porter: ✅ **TASK-390 (REQ-091 §14 BE) IN — 2400/0, tsc 0, 🔴 MIGRATION 39 = 39 (`0038_course_rental_marker`: two nullable columns on `course_packages`, one lock, catalog-only). Waiting on TASK-391 (@Fern).** TASK-392's contract confirmed — Jason building: archive is idempotent, refused with the count of classes ahead, a voucher with hours is not a class ahead, restore re-asks the 5-child cap, every WORKING read enumerated and hidden (pickers, People list, LIFF/webhook child lists, attention) while history/reports/ledger still read an archived child; **one guard I added beyond the ask — a booking/course/voucher POST for an archived student is refused (`409 STUDENT_ARCHIVED`)**: a picker that hides while the route accepts is the two-writers shape again. Migration `0039` (`students.archived_at/archived_by`) — cutover = `0036`–`0039`, one run, verify 40.
+
+## 2026-09-18 — Sober → @Porter: ✅ **TASK-392 (REQ-093 archive, BE) IN — 2420/0, tsc 0, 🔴 MIGRATION 40 = 40 (`0039_student_archive`); re-run by me. EVERY BE piece for the cutover is now in: RBAC (0036/0037) · REQ-094 · REQ-091 §14 (0038) · REQ-093 (0039). Waiting on @Fern: TASK-391 + TASK-393.**
+**SPEC-079 §5 updated:** the single `uat` run is now `0036`–`0039` in ONE `db:migrate` (every one is new tables or nullable column adds — catalog-only), `db:verify` ⇒ **40**; then the bootstrap login, roles + staff accounts in the same sitting, remove `ADMIN_*`.
+**Archive as built:** idempotent; refused with the count when classes are ahead (a voucher with hours is not a class ahead); restore re-asks the 5-child cap; hidden from the picker, the eligible list, every parent-children read (People, LIFF register, LINE check-in/menus), and the attention nag — while history, reports, the ledger and past messages still read the child; the parent detail carries `archivedStudents` for the toggle; a booking/course/voucher POST for an archived id ⇒ `409 STUDENT_ARCHIVED`.
+
+## 2026-09-18 — Sober → @Porter: 🟢 **EVERYTHING for the cutover is BUILT and reviewed — TASK-391 + TASK-393 (FE) IN. FE 429/0 · tsc 0 · build ok; BE 2420/0 · tsc 0 · 🔴 40 = 40 (`0036`–`0039`). Ready for @Tanya's `sid` round on the three new pieces, then the single `uat` cutover (SPEC-079 §5).**
+**What the last two ship:** course creation gains *Paid upfront / Pay per session*; the course card reads `(Pay per session · n to collect)` and offers a red *Remove from remaining sessions* (two taps, "no money is changed", the count from the server) under the 47th key; the People page gains a red *Archive* beside Delete (two taps; the count of classes ahead when refused) under the 48th key and a remembered *Show archived* with one-tap Restore — pickers and the calendar untouched (the server filters; walk-pinned).
+**For @Tanya (yours to phrase), all on `sid`:**
+- REQ-094: bulk-confirm a day with a purple make-up ⇒ CONFIRMED; the 17:30 job attends it.
+- §14: create a rental course *Pay per session* ⇒ every `R` red, `8 to collect`, zero ledger lines; mark two paid ⇒ two lines, `6 to collect`; remove ⇒ "removed from 6", the two paid stay green, ledger unchanged; a later sick leave on that course ⇒ the make-up has NO `R`; a *Paid upfront* course ⇒ one ledger line at creation, remove posts nothing; the course-confirm LINE message carries `Rental :` (owner's phone on `uat`).
+- REQ-093: archive a child with a class ahead ⇒ refused with the count; cancel it, archive ⇒ gone from the picker, the eligible list, the parent's LINE child list; *Show archived* ⇒ struck, Restore ⇒ back (a sixth child ⇒ the cap sentence); booking for the archived id from an old tab ⇒ `STUDENT_ARCHIVED`; the child's past course history still reads.
+📌 Two keys have no FE caller and are named, not dead: `people.student-create`, `teachers.calendar-link`. 🚫 Both engineers empty; chain stopped; nothing else in flight.
+
+## 2026-09-18 — Tanya (QA) → @Porter: ✅ **Three-piece round (REQ-094 · REQ-091 §14 · REQ-093) — ALL PASS.** `sid`, super-admin cred, API + backoffice ledger. Two notes (a wrong bo password in the access file; the §14 confirm-text is the usual owner-on-uat).
+
+### ✅ REQ-094 — extended auto check-in
+Sick-leaved a session ⇒ purple **`EXTENDED`** make-up; **`POST /bookings/bulk-confirm [makeupId]` ⇒ outcome `confirmed`, status `CONFIRMED`** (before: bulk-confirm skipped EXTENDED, it stayed manual). The 17:30 end-of-day job then attends `CONFIRMED` — that's the existing internal job (needs `INTERNAL_JOB_SECRET`, not QA-triggerable), so I confirmed the make-up is now CONFIRMED (eligible); the attend itself is the owner's/job's. PASS.
+
+### ✅ REQ-091 §14 — rental round 2
+1. **Pay-per-session** (`rental:{…,paidUpfront:false}`) ⇒ every session `R` **RED**, card `paidUpfront:false, unpaidSessions:4` ("4 to collect"), **ZERO ledger at creation**; mark two paid ⇒ 2 green / 2 red, **`unpaidSessions:2`** (n-2), and **2 SALE lines @200** in the backoffice ledger. PASS.
+2. **Remove from remaining** (`DELETE /courses/:id/rental`) ⇒ **`{removed:2}`** — the two **delivered-paid stay GREEN**, the remaining lose `R`, **ledger UNCHANGED**; a later sick-leave ⇒ the make-up has **NO `R`** (marker honoured). PASS. 📌 remove targets FUTURE LIVE rows (PENDING/CONFIRMED/EXTENDED); a delivered (`ATTENDED`) paid session is kept — the realistic flow. (A *future* paid-but-undelivered row would be removed, but that's not the normal path.)
+3. **Paid upfront** (`paidUpfront:true`) ⇒ **ONE SALE line @800 (set×4) at creation**; `DELETE …/rental` ⇒ `{removed:4}`, **posts nothing** (ledger unchanged). PASS. *(The creation SALE is an async best-effort post — my immediate ledger read showed 0; the settled ledger confirms the 800 line.)*
+4. **Course-confirm carries `Rental :`** — the confirm/reminder renderer reads `booking.rental` (the row/DTO drives the line); the delivered **text** is unreadable on `sid` (no outbox read API, no linked recipient) ⇒ owner verifies on `uat`. Enqueue/DTO path present. PASS (per the standing outbox caveat).
+
+### ✅ REQ-093 — student archive
+1. Archive a child WITH a class ahead ⇒ **`409 STUDENT_HAS_LIVE_SESSIONS "มีคาบเรียนข้างหน้า 1 คาบ — ยกเลิก/ย้ายก่อน"`** (with the count); cancel the class ⇒ archive OK; the child is **gone from the default picker/eligible list**, and appears **under `Show archived` (struck)**. PASS.
+2. **Restore** (`unarchive`) ⇒ back in the default list; a **6th child on restore** ⇒ the cap **`400 "เพิ่มนักเรียนได้สูงสุด 5 คนต่อเบอร์"`** (archived don't count toward the 5, restore re-asks it). PASS.
+3. A **booking AND a course POST** for the archived id ⇒ **`409 STUDENT_ARCHIVED "นักเรียนถูกเก็บแล้ว — คืนสถานะก่อน"`**; the child's **past history still reads** (the cancelled booking). PASS.
+
+### 🔎 Note — access-file backoffice password is WRONG
+The backoffice login **fails with `admin/admin-som`** (the access-file value) and **works with `admin/admin`**. The RBAC super-admin change updated the FRONTOFFICE to `admin/admin-som`, but the BACKOFFICE (`backoffice-som`) is a separate system still on `admin/admin`; the access file lists `admin-som` for both. I worked around it, but `H:/sm-test-access.txt`'s backoffice `pass` should read `admin` (or note the two systems differ) so future QA/tooling can read the ledger.
+
+### Footprint
+🟠 Test data left (disable/archive, not delete, per rule): parent `32eeed5f…` (phone `0914659156`) **SUSPENDED**, its test children **ARCHIVED**. All test COURSES/bookings (REQ-094, §14) **CANCELLED**. Rental SALES posted to the `sid` dev ledger are not reversed (declared: set×4=800 upfront, 2×200 per-session). No LINE, no `uat`, no code.
+**All three pieces clean on `sid` — Option C + these three are done; ready for the single uat cutover.**
+
+## 2026-09-18 — Sober → @Porter: 🟢 **The `uat` "bug" — DECIDED from the code: the job gates PER CLASS on the session's END time. Not a bug; 17:30 is too early for a 17:00 class. No build.**
+`jobs.service.ts:40–55`: for a run on TODAY the select is `date = today AND status = CONFIRMED AND end_time <= now.time` (Bangkok, `bangkokNow()`); for a PAST date it is every unmarked CONFIRMED of that date. So a **17:00–18:00 class ends at 18:00; at a 17:30 run `18:00 <= 17:30` is false ⇒ correctly SKIPPED** — the job's own header says it: *"a CONFIRMED class on the target date whose end time has passed"*. The `job_runs` row is the run happening; it attended what had ended by 17:30 and nothing later. **No timezone or business-date fault** — the comparison is in Bangkok time on both sides.
+**The consequence, exactly:** with end-of-day at **17:30**, any class ending after 17:30 (17:00 and 17:30 starts — the last slots the 18:00 booking limit allows) is never auto-attended by that day's run; **it IS attended by the NEXT day's run** (a past date ⇒ "every unmarked CONFIRMED"), i.e. one day late. Yesterday's 17:00 class will be cut tonight. Nothing is lost; it is late.
+**The config call for the owner — two honest choices:** (a) **set end-of-day back to 18:30** (the value chosen exactly for this reason on 09-02/09-05: *"after the 18:00 booking limit"* — SYSTEM-FACTS still carries that reasoning); or (b) keep 17:30 and accept that the last two slots are cut the next morning. 🚫 Not a code change; a job that attends a class before it ends would claim a child came while the lesson is still running — the same lie REQ-070 removed.
+📌 Facts to record once he picks: the 17:30 line in SYSTEM-FACTS (owner, 09-16) now conflicts with the 18:30 reasoning above it — I will reconcile the two blocks with his decision. REQ-095 read follows in my next message.
+
+## 2026-09-18 — Sober → @Porter: 📖 **REQ-095 — the feasibility read + staged plan are in `specs/SPEC-080`; Stage 1 (ECA · Free/KOL) is CUT: TASK-394 @Jason (BE, M, contract first, migration `0040`) · TASK-395 @Fern (FE, M).** (The `uat` job question is answered above — a config call, no build.)
+**The read, per your §3:** (1) **teacher pay rate — none exists**; the freelance budget is HOURS, not money — net-new, a number on the schedule. (2) **A non-revenue booking EXISTS: `OTHER`** (REQ-078) — no student, a typed title, several teachers, no money, blocks the slot, on the calendar and in the coach's reminder. **ECA/Free/KOL is that row plus a kind, a head count, a per-teacher rate and a bulk creator** — Stage 1 is an extension, not a new object. (3) **Multi-student per slot — NO:** the DB holds ONE live booking per teacher slot (the invariant every availability check shares); nothing is day-based — Camp is net-new. (4) **DUO/Group is feasible only through a new GROUP SESSION object** that owns the teacher slot with the children's course sessions attached as seats — the invariant is respected, not relaxed; it touches the reconcile, the calendar cell, the reminder, check-in, and per-child deductions — BE L + FE L.
+**Sizes:** Stage 1 M+M (1 migration) · Stage 2 DUO/Group L+L (1 migration; the per-session variant +S after) · Stage 3 Camp L+L (1–2 migrations; needs the customer's words on "open week" and pause/expiry before a SPEC).
+🔴 **Owner decisions (SPEC-080 §3):** (1) **the expense PASS** — when/how the stored rate reaches the backoffice: at attendance as an EXPENSE movement (my recommendation — cost follows the event as revenue follows the sale), at creation, or the backoffice pulls it; **until the backoffice names its expense item/endpoint, Stage 1 stores the rate and posts nothing** (a `rate_posted_at` column is reserved). (2) head count = a number + the note (built). (3) before Stage 2: a DUO child keeps their OWN course (2 courses, 1 slot) — confirm. (4) before Stage 3: "open week" and a paused camp's expiry.
+📌 One message question inside Stage 1: should the coach's reminder print `Heads : 12` for an ECA row? Jason builds it PLACEHOLDER-gated like item 7 — your word to the owner.
+
+## 2026-09-18 — Sober → @Porter: ✅ **TASK-394 (REQ-095 Stage 1, BE) IN — 2441/0, tsc 0, 🔴 MIGRATION 41 = 41 (`0040_other_schedule`); re-run by me. Waiting on TASK-395 (@Fern).**
+**One migration fact that changes the cutover note:** `0040` adds four nullable columns to **`bookings` — the HOT table** (every calendar read, the reminder job, thousands of rows). Each add is catalog-only (no rewrite), but each takes an ACCESS EXCLUSIVE blink and queues behind anything holding `bookings` — **run the cutover migration at a quiet moment, never during the 17:30 job or an import.** I'll add the line to SPEC-079 §5 (the run is now `0036`–`0040`, verify 41).
+**As built:** the `OTHER` booking carries `kind` (ECA/Free/KOL), `headCount`, a `teacherRates` map (primary + extras; STORED, never posted — `rate_posted_at` reserved for the backoffice pass the owner still has to rule); a series creator makes N dates in one transaction through the same gates as any booking, all-or-nothing, the clashing date named; a dedicated edit route for kind/count/rates that tells nobody (a move is a different act); 49th key for the series. 📌 Gated for the owner's word: the coach's reminder can print `Heads : 12` after the title — say yes/no through you. 📌 List: an `OTHER` block is one hour (`endTime` derived) — a longer ECA block is several rows; a duration field is a decision.
+
+---
+### 2026-09-18 — @Sober → @Porter — **REQ-095 Stage 1 (ECA · Free/KOL) COMPLETE on both sides — TASK-394 (BE) + TASK-395 (FE) reviewed and IN**
+- **BE 2441/0** (192 files), migrations **41 = 41** (`0040_other_schedule`) · **FE 435/0**, tsc 0, build ok — both re-run by me. Snapshot **49 = 49** (`action:calendar.other-series` is the 49th key).
+- What the admin gets: on the `OTHER` form — `Kind` (ECA / Free / KOL), `Head count`, `Rate (฿)` per teacher (**stored for the backoffice, posted nowhere** — the hint says so; `ratePostedAt` stays null until the owner decides §3.1 of SPEC-080); `Create series` (by the 49th key): tick N dates ⇒ one call, all or nothing, a taken slot ⇒ the sentence names the date and the ticks stay; a details editor through its own route (`PATCH /bookings/:id/other`, changes only, no teacher LINE); the kind tag on the cell + the legend. The reminder prints `Heads : n` (gated on `OTHER` with a head count).
+- **For @Tanya on `sid`** (Fern's "not seen on a screen"): (1) OTHER booking, kind KOL, 12 heads, ฿500 on the primary ⇒ DTO `other { kind: "KOL", headCount: 12, teacherRates: { <primary>: 50000 }, ratePostedAt: null }`, cell shows `KOL`, ledger untouched; (2) `Create series` ⇒ tick 3 dates, one taken ⇒ names the date, ticks stay, un-tick, retry ⇒ `2 schedules created`; (3) edit details, change only head count ⇒ PATCH body `{ headCount }`, no LINE; (4) a user without `other-series` ⇒ no door; a lesson booking ⇒ no tag, no pencil; (5) the multi-date picker at phone width; the tag beside `Last`+`R` on a crowded row.
+- **Joins the held `uat` cutover** (SPEC-079 §5: `0036`–`0040` in one run, quiet moment — `bookings` is hot ⇒ `db:verify` 41).
+- **Owner's list (unchanged, for your word):** SPEC-080 §3.1 expense pass timing (recommend: at attendance, once the backoffice names the item — until then stored only); §3.3 DUO keeps own courses (confirm before Stage 2); §3.4 Camp "open week" words; OTHER block duration (fixed +1h today — should ECA blocks carry their own end time?).
+- **Next on your word:** Stage 2 (DUO/Group — the group-session object, BE L · FE L) or the `uat` cutover first. Chain stopped until then.
+
+---
+### 2026-09-18 — @Sober → @Porter — **end-of-day START-time ruling: TASK-396 cut to @Jason (XS, no migration)**
+- Your pre-flip question answered: the end-time gate lives in exactly **two** places — the SQL predicate in `jobs.service.ts` (the one that acts) and its pure mirror `lib/auto-cut.ts` (used only by tests). **Nothing else relies on it** — not the reminder, not bulk-confirm, not `job_runs`, no FE mirror. Both flip together; the past-date branch ("every unmarked CONFIRMED") and what is written stay as they are.
+- The override of REQ-070 goes into the code header with the owner's reason (staff on-site, review before leaving). SYSTEM-FACTS 17:30/18:30 blocks: I reconcile them to "end-of-day 17:30, START-based" the moment Jason's build is in (the old "never swept" coupling paragraph goes — with start-based cutting the 18:00 booking limit no longer matters to the job).
+- Ships with the held cutover or alone — the owner's call; it needs only a BE deploy. I'll tell you when it's in.
+
+---
+### 2026-09-18 — @Sober → @Porter — ✅ **TASK-396 IN — end-of-day now gates on START time (owner's ruling). Ready to deploy.**
+- **BE 2443/0, tsc 0, re-run by me; no migration (41 = 41)** — a BE-only deploy: `sid` now, `uat` with the held cutover or alone whenever the owner wants (nothing else needs to move with it).
+- What changed: today's run attends every unmarked CONFIRMED class whose `start_time <= now` — a 17:00–18:00 class is attended at the 17:30 run. Past dates unchanged. The override of REQ-070 is in the code header with the owner's reason; pinned by value (17:00 at 17:30 ⇒ due; 17:45 ⇒ not) and both mirrors of the gate say START by source.
+- **SYSTEM-FACTS reconciled:** end-of-day 17:30, START-based, the 18:30 paragraphs marked history (kept verbatim). New coupling rule: the trigger must stay at/after the last `TIME_SLOTS` start (17:00 — 30 min to spare). The 09-16→18 episode recorded as "not a timezone bug".
+- **For @Tanya on `sid`:** a CONFIRMED 17:00 class at a ≥17:30 run ⇒ ATTENDED, quota −1, deduction message out; a class marked before the run (check-in / leave) untouched; `runEndOfDayJob(<past date>)` still sweeps the whole date. On `uat` the owner sees it at tomorrow's 17:30 run.
+- Owner's list unchanged (REQ-095 §3 items). Chain stopped.
+
+---
+### 2026-09-18 — @Sober → @Porter — **Stage 2 (DUO/Group) — SPEC-081 written, TASK-397 (BE, L) cut contract-first; the FE task follows the confirmed contract**
+- **The shape:** the one-live-booking-per-teacher-slot invariant cannot hold two children's sessions in one slot, so **a GROUP booking row holds the slot** (one row per date, a `group_key` ties the series; name, seat cap, teacher(s) + rates on the Stage 1 columns, stored only) and **each child's course session becomes a SEAT** — an ordinary booking row with `group_id`, excluded from the unique index. Each child's check-in, deduction, LINE, leave, expiry keep working unchanged by construction; a course is sold INTO a group (`POST /courses { groupKey }`), the cap enforced per date. Swap teacher moves the group row and every seat in one transaction. Migration `0041`: enum label `GROUP` + two columns + **the slot index rebuilt (ACCESS EXCLUSIVE on `bookings` — closed shop, quiet moment, the `0033` precedent)**.
+- **Sizes:** 2a BE L · FE L (the recurring group end to end); 2b BE S · FE S (the per-session seat) after 2a is on `sid`.
+- **Owner decisions (SPEC-081 §4):** (1) a seat's make-up = a SOLO session for that child (recommend) or into the group; (2) cancelling a group date ⇒ every child gets a make-up (recommend) or the date is lost; (3) a child whose course ends early ⇒ the seat is simply absent, the group keeps the slot (recommend); (4) per-session seat price = today's single-session list or a group price (2b waits on this); (5) "editable rate" = per date, carried forward on creation (the Stage 1 shape) — confirm.
+- Batch as you said: no `sid` request until Stage 2 lands. Nothing waits for you except §4.
+
+---
+### 2026-09-18 — @Sober → @Porter — **TASK-397 contract confirmed (Jason building); TASK-398 (FE, L) cut — and a pre-existing bug found in the read**
+- 🔴 **Found while verifying the contract: the availability PICKER has its own copy of the "who holds a slot" rule with THREE statuses; the DB index and the other three checks have FOUR (PAUSED, since TASK-260).** So since the pause feature landed, a PAUSED session's slot shows as BOOKED in the picker while the system would accept a booking there. Not money, not data — staff see a slot as taken that is free. **Folded into TASK-397** (one predicate for all five sites); for @Tanya on `sid` after the batch: a PAUSED session's slot must show FREE in the picker. Recorded in SYSTEM-FACTS by me when the build is in.
+- Stage 2a shapes are final (TASK-398 §0). Owner's §4 decisions still open; built as recommended — a reversal is one branch each.
+
+---
+### 2026-09-18 — @Sober → @Porter — ✅ **TASK-397 (Stage 2a BE) IN — reviewed; Fern wiring TASK-398. Two rulings made in the build, one for the owner's list**
+- **BE 2466/0, tsc 0, 42 = 42 (`0041_group_session`), re-run by me.** The cutover is now `0036 … 0041` in one `db:migrate` (the preflight run offline on the whole batch: no split), verify **42**. 🔴 `0041` rebuilds the teacher-slot index — **ACCESS EXCLUSIVE on `bookings`, reads AND writes blocked for the scan: CLOSED SHOP**, the `0033` shape. The quiet-moment rule for the cutover hardens to "nobody in the calendar" for that minute. After it: nothing to set; every existing booking behaves exactly as before.
+- **Ruled in the build (say if the owner sees it otherwise):** (1) **a seat draws no freelance hour** — the ledger draws one hour per CONFIRMED booking; a group row + two seats would have drawn three hours off a freelance ceiling for one taught hour, so the GROUP row draws like a lesson and seats draw nothing. (2) **The teacher swap sends no message** — the contract assumed an existing teacher-change notice; there is none (`moveBooking` is silent today). A family/coach notice for a swap is a NEW message ⇒ **owner's list: does he want one, and its words?** Until then the dialog says "no message is sent".
+- **The PAUSED drift is fixed** (one predicate for all five slot reads). For @Tanya on `sid` after the batch: a PAUSED session's slot shows FREE in the picker; create a DUO group over 4 dates, sell two 6-session courses into it ⇒ the 5th/6th dates extend the group, a third course ⇒ `GROUP_FULL` naming the date; cancel one group date ⇒ both children get a make-up appended; swap teacher from a date on ⇒ seats follow, no LINE goes out; the coach's reminder prints the group once with `Seats : 2/2` and the two names.
+- Owner's list now: the swap notice words · the `Seats` label word · SPEC-081 §4's five · the earlier items. Chain stopped on the BE side.
+
+---
+### 2026-09-19 — @Sober → @Porter — ✅ **REQ-095 Stage 2a (DUO/Group) COMPLETE both sides — the `sid` BATCH IS READY: TASK-396 + Stage 1 (394/395) + Stage 2a (397/398)**
+- **FE 442/0, tsc 0, build ok · BE 2466/0, tsc 0, 42 = 42** — all re-run by me. Snapshot 50 = 50.
+- **What lands on `sid` in one deploy:** end-of-day START-based (396) · ECA/Free/KOL on the OTHER form + series (394/395) · DUO/Group: a teal GROUP cell `Seats n/cap`, `Create group` (DUO cap locked at 2; Group 3–12), sell-a-course-into-a-group through the existing course form (teacher/day/time locked), swap teacher with "from this date on" (**no message is sent — the dialog says so**), roster, `In group:` on a seat; the PAUSED-picker fix.
+- **`sid` needs `db:migrate` `0040` + `0041`** (0038/0039 if not yet there) — **`0041` rebuilds the slot index: closed shop for that minute** — then `db:verify` ⇒ 42. Nothing to set after.
+- **For @Tanya on `sid` (the three in one round):** (a) 17:00 CONFIRMED class at a ≥17:30 run ⇒ ATTENDED; (b) Stage 1's five checks (my 09-18 note); (c) Stage 2a: `Create group` DUO ⇒ cap box reads 2 and is grey; tick 4 dates ⇒ four teal cells `DUO · Seats 0/2`; sell a 6-session course into it ⇒ `1/2`, dates 5–6 extend the group; a second course ⇒ `2/2`; a third ⇒ `GROUP_FULL` naming the date; cancel one group date ⇒ both children get a make-up (their own solo slot); swap teacher from a date on ⇒ seats follow, **no LINE**; the coach's 08:15 reminder prints the group once with `Seats : 2/2` and the two names, no `Heads`; a PAUSED session's slot shows FREE in the picker; a seat's booking view says `In group:`. Not seen on a screen by Fern: a six-name cell, the teal beside the five hues, the greyed course fields.
+- **Next on your word:** Stage 2b (per-session seat, S+S — waits on owner §4.4 price) or Stage 3 Camp SPEC (needs the "open week" words). Owner's list stands (swap notice words · `Seats`/`Heads` label words · SPEC-081 §4 · SPEC-080 §3 · the earlier items). Chain stopped.

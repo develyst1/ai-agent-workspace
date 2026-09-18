@@ -7,23 +7,6 @@
 _(no runs yet — desk opened 2026-09-06. First run starts when the owner gives
 Porter a requirement, or says "ไปเลย".)_
 
-## RUN 2026-09-09-d — N=4 — started from: ไปเลย
-hop 1 | PM  | did: housekeeping — compacted 2 over-length board cells and swept 11 closed rows byte-verbatim into archive/board-closed.md (board 16.4KB -> 12.1KB); gate PASS | ball_to: PM | flags: none
-hop 2 | FE  | did: TASK-018 -> REVIEW: 5 literal DTE Platform -> DTE swaps in 4 files, per-line byte proof; caught sed -i silently converting CRLF->LF whole-file (git diff hid it) and restored it | ball_to: SA | flags: none; 1 UNVERIFIED (/teach renders only the auth shell unauthenticated)
-hop 3 | SA  | did: reviewed TASK-018 -> DONE (re-ran all 14 DoD with varied inputs), verified the CRLF repair (CR==LF, sizes minus exactly 9), corrected SPEC-005 Flow (a), REQ-006 -> SPEC_DONE | ball_to: PM | flags: none
-hop 4 | PM  | did: REQ-005 acceptance check — all 6 AC MET -> DELIVERED, 3 UNVERIFIED carried to the owner | ball_to: HUMAN | flags: 1 question (owner's eyes after deploy; classroom tab while logged in)
-STOPPED hop 4/4 — condition 5 (hop budget reached)
-Digest sent (Thai): REQ-005 DELIVERED (แท็บครบ 8 หน้า). REQ-006 แก้แล้ว 5 จุด รอ Porter ตรวจรับ.
-ค้างที่ owner: REQ-003 AC7 (เปิด front/ ดู redirect + Footer + /verify-email) และ copy หน้า /about.
-
-## RUN 2026-09-09-e — N=4 — started from: ไปเลย
-hop 1 | PM  | did: REQ-006 acceptance check — AC 1-5 MET, AC 6 (owner's eyes) not met so it stays SPEC_DONE; recorded the CRLF/sed environment fact as A40 marked NOT owner-stated | ball_to: HUMAN | flags: 2 questions, 1 low-confidence
-hop 2 | SA  | did: wrote TASK-019 — measure antd's shared-chunk cost compressed (gzip + Brotli) as an A/B on today's tree with antd left installed, hashed backup + restore proof for layout.tsx | ball_to: FE | flags: 1 low-confidence (compression settings bracket what the live server negotiates)
-hop 3 | FE  | did: TASK-019 -> REVIEW: antd shared-chunk cost measured compressed — raw +103192 B identical on all 9 routes, gzip +40.55 kB, Brotli +35.71 kB (~20-22% of gzip First Load JS); layout.tsx restore proved byte-exact and all 8 titles re-proved live | ball_to: SA | flags: 1 low-confidence (generated artefacts' byte identity UNVERIFIED)
-STOPPED hop 3/4 — condition 3 (low-confidence assumption)
-Digest sent (Thai): ตัวเลขจริงของ antd ออกแล้ว — gzip +40.55 kB ต่อทุกหน้า (~20-22% ของ First Load JS).
-Sober ต้อง review แล้วตัดสิน SPEC-001 Decision 6 ก่อนเริ่มย้ายหน้าจอ.
-
 ## RUN 2026-09-09-f — N=4 — started from: ไปเลย
 hop 1 | SA  | did: reviewed TASK-019 -> DONE (re-produced every number himself), closed SPEC-001 Decision 6 — antd provider STAYS in the root layout, route-group split rejected, with a two-condition re-open trigger | ball_to: SA | flags: 1 low-confidence (his judgement that Navbar/Footer will want antd later)
 hop 2 | SA  | did: wrote TASK-004 (/login screen migration, SPEC-001's reference screen): partials split, ui/ wrappers + new ui/Checkbox, alert() -> antd message via a locally mounted App; found the no-emoji harness misses U+23F3 | ball_to: FE | flags: 2 low-confidence (unwired checkbox swap; App component={false} renders no wrapper — Fern must verify)
@@ -66,3 +49,24 @@ hop 8 | SA  | did: reviewed TASK-021 -> DONE (re-ran 6 of 10 DoD, recomputed all
 STOPPED hop 8/8 — condition 5 (hop budget reached)
 Digest sent (Thai): สองหน้าพร้อมให้ owner ดูแล้ว — / และ /courses. ปุ่มหลักธีมสว่างเข้มขึ้นทุกหน้าโดยตั้งใจ (ธีมมืดไม่ขยับ).
 เตือนก่อนกด: /courses/[id] ไม่มีอยู่จริง คลิกการ์ดคอร์สแล้ว 404.
+
+## RUN 2026-09-13-a — N=8 — started from: answers (A pass / D fail: filter dead + not pretty / E team writes /about copy + de-emoji / F tell the truth)
+hop 1 | PM  | did: recorded A47-A50 (/ passed; /courses failed — filter dead + not pretty; team may write /about copy itself; login must tell unverified users the truth), opened REQ-008 + REQ-009 READY_FOR_SA, closed REQ-001 Q9 | ball_to: SA | flags: 4 questions (B, C, D1, D2), 1 low-confidence
+hop 2 | SA  | did: diagnosed the /courses filter — inert by construction (14 <button>s with no onClick, server component, active pill hard-coded), pre-existing; wiring it is new scope -> REQ-001 Q10 for Porter | ball_to: PM | flags: 1 low-confidence; questions for the owner (what a pill does, pre-filtered landing, heading copy)
+hop 3 | SA  | did: REQ-007 -> IN_SPEC: SPEC-007 + TASK-022 (3-line deletion of the dead /forgot-password link, found at its real home in partials/Login/LoginContent.tsx) | ball_to: FE | flags: 1 low-confidence (row geometry unchanged — measured in DoD, not asserted)
+hop 4 | SA  | did: REQ-008 -> IN_SPEC: SPEC-008 drafts the /about copy verbatim (25 rows sourced to DTE.md), emoji -> lucide map, unsourced numbers block dropped; TASK-023 TODO for Fern behind TASK-022 | ball_to: FE | flags: 1 low-confidence (dropping the unsourced numbers is a copy judgement — flagged to Porter)
+hop 5 | FE  | did: TASK-022 -> REVIEW: 3-line deletion of the dead /forgot-password link, geometry byte-identical before/after in both themes, screenshots saved for the owner | ball_to: SA | flags: none
+hop 6 | FE  | did: TASK-023 -> REVIEW: /about copy pasted verbatim from SPEC-008, 10 emoji -> lucide, 8 emoji deleted, unsourced numbers section removed; emoji baseline 110 -> 93 | ball_to: SA | flags: none; the Thai hero sentence wraps mid-word at 1280px (Chrome line-breaking, observation for the owner)
+hop 7 | SA  | did: reviewed TASK-022 + TASK-023 -> both DONE; REQ-007 + REQ-008 -> SPEC_DONE; ruled the (c) is not an emoji (his own DoD wording), carried the mid-word Thai wrap to the owner's eye | ball_to: PM | flags: none
+hop 8 | PM  | did: homed the never-worked /courses filter as REQ-010 (DRAFT, 3 owner facts needed), acceptance checks for REQ-007 + REQ-008 (both held at SPEC_DONE for the owner's eyes) | ball_to: HUMAN | flags: 7 questions, 2 low-confidence
+STOPPED hop 8/8 — condition 5 (hop budget reached)
+Digest sent (Thai): / ผ่านแล้ว. /about เขียนใหม่เสร็จรอ owner ดู. ลิงก์ลืมรหัสผ่านตัดแล้ว. filter /courses ไม่เคยทำงานเลย -> REQ-010 รอ 3 ข้อจาก owner.
+ค้าง: REQ-007/008 ผ่านไหม, REQ-010 Q1-Q3, "ไม่สวยพอ" ตรงไหน, REQ-003 + REQ-006 ยังไม่ตอบ.
+
+## RUN 2026-09-13-b — N=8 — started from: N=8 (bare, treated as ไปเลย)
+hop 1 | SA  | did: REQ-009 -> IN_SPEC (FE-only: back/ already returns 403 + requiresEmailVerification, the frontend discards it twice); SPEC-009 + TASK-024 for Fern | ball_to: FE | flags: 4 questions for the owner via Porter — 3 are backend defects found by reading: no mailer at all, password_hash returned in login/profile responses, /verify-email can never verify anyone (toCamelCase is not a postgres@3.4.9 export)
+hop 2 | FE  | did: TASK-024 -> REVIEW: login now surfaces the backend's 403 unverified answer with a working resend; verified on a REAL local back/ against her own throwaway Postgres cluster (torn down after) | ball_to: SA | flags: none
+hop 3 | SA  | did: reviewed TASK-024 -> DONE (re-ran diff/grep/tsc, real-stack evidence accepted), REQ-009 -> SPEC_DONE; F1 now RUN-confirmed: no email is ever sent, so the resend's "sent" message is a live untruth | ball_to: PM | flags: none
+hop 4 | PM  | did: REQ-009 acceptance — AC 1-4 MET, held at SPEC_DONE because the resend toast says "sent" while no email is ever sent; recorded A51/A52 (not owner-stated); wrote the full owner digest G1-G5 | ball_to: HUMAN | flags: 10 questions, 1 data request
+STOPPED hop 4/8 — conditions 1 + 2 + 7 (pipeline blocked on the owner; every role's queue is empty)
+Digest sent (Thai): งานทั้งหมดที่ทำได้โดยไม่ต้องรอ owner หมดแล้ว. เรื่องแรง: password_hash ถูกส่งถึง browser, /verify-email ยืนยันใครไม่ได้, ไม่มีระบบส่งเมล.

@@ -3,21 +3,11 @@
 > Delivery channel. Senders APPEND `From <role> <date>: <what> — see <file>` (1-3 lines).
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
 
-_(empty — Porter's **three** messages of 2026-09-05 were read, acted on and **DELETED 2026-09-05 by
-Tanya**. Nothing dropped. (1) QQ11 + QQ12 answered / REQ-003 `DELIVERED` — **FYI**, no action.
-(2) REQ-004 opened from OBS-8 + Q28 `เก็บไว้` — **FYI**, with the heads-up that REGRESSION **P2**'s
-OBS-8 note would go wrong the day REQ-004 shipped: it has, and **I rewrote it** (my file) and added
-**P3**; REGRESSION is now **27 checks, 26 PASS**. (3) The **TEST-007 brief** ran in full: verdict
-`TEST_PASSED`, **12/12, 0 defects** — 11 modals at 360x740, both new at 1280x900, the AC-g counts and
-the **SQ19 pair** (bar measured **89px**), with SQ21 independently reproduced (**5 of 7 moved**). The
-four things deliberately not asked for — the string re-derivation, the coverage re-audit, a full
-REGRESSION re-run, and any judgement of the look — were **not** run. Everything it settles lives in
-tests/TEST-007-req004-pinned-footer-picture-round.md, with board rows + REGRESSION updated and the
-reply in inbox/PM.md. **QQ13 (where OBS-9 goes) is with Porter. Nothing is waiting for QA.**)_
-
-From Porter (PM) 2026-09-05: **QQ13 ANSWERED — OBS-9 rides WITH the SQ19 pictures, as one question
-to the owner**, not on its own line like OBS-8 (OBS-9 *is* SQ19's answer; same "one fact, one owner,
-one question" rule I used for QQ9). **TEST-007 accepted as written: all five held AC ticked, REQ-004
-is `DELIVERED`** (7/7) — nothing is being re-run and nothing comes back to you. Thank you for
-declaring the served-build surface and for handing me SQ21's honest number unprompted.
-— see requirements/REQ-004-portfolio-modal-live-link-button-on-phones.md §Delivery
+_(empty — every message up to 2026-09-13 has been read, acted on and **DELETED by Tanya**.
+Last processed 2026-09-13: Porter's QQ13 answer of 2026-09-05 (FYI, TEST-007 accepted, REQ-004
+`DELIVERED`) and Porter's two 2026-09-13 briefs — **TEST-008** (zero cost) and **TEST-009** (real
+gateway, gated on the SPEC-007 ledger row, which Sober had written). Both ran the same session:
+TEST-008 `TEST_PASSED` 24/24, 0 defects; TEST-009 `TEST_PASSED`, `calls=3` on one press. Reply in
+inbox/PM.md; detail in tests/TEST-008-req005-strings-and-req007-stub-pictures.md and
+tests/TEST-009-req007-real-gateway-in-a-real-browser.md. **Nothing is waiting for QA.**)_
+From Porter (PM) 2026-09-13: FYI — TEST-008 + TEST-009 both accepted as written; REQ-005 (5/5) + REQ-007 (8/8) DELIVERED on them; `calls=3` relayed to Sober. **QQ14 answered** in tests/TEST-008-…md §Questions (your PASS stands; the margin pick → owner as Q52). OBS-11..16 routed (REQ-005 / REQ-007 §Delivery). Nothing waits for QA until REQ-008 (local ports: `back/` 4014) reaches a spec — a short zero-cost re-run will follow then.

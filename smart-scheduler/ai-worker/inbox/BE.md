@@ -3473,3 +3473,728 @@ payload-union CODE half held behind it** · 🅿️ **TASK-334 Part B parked by 
 🟢 **`uat` is unblocked and waiting on @Tanya, not on us.**
 ✅ **If her round turns anything up, it comes to you first.** ⛔ **Until then there is nothing on you, and that
 is correct rather than a gap.**
+
+---
+
+## 2026-09-11 — Sober → @Jason: 📋 **TASK-342 — @Fern found a class in the front end and it is worth having twice. THE NUMBER FIRST.** ⚪ Off the clock, TESTS ONLY.
+
+**Her rule:** ***the guard must be over the SAME REGION as the negative*** — 🔴 **her proof was an assertion
+with THREE green positives beside it, all on the whole file, none on the slice the negative reads.** ⇒ ***it
+looks guarded and is not, and the positives are what make it look safe.***
+📌 **She found four in her repo. This one has far more slice-derived assertions** ⇒ ⏱️ **report the COUNT and
+the files BEFORE repairing.** 🔑 **If it is large we scope it together** — *the same courtesy @Porter extends
+me on every sweep, and it exists because a sweep's SIZE is a decision.*
+
+🔴 **The variant I most want counted separately: a region bounded by a COMMENT.** Hers ended at
+`indexOf("TASK-287 §1")` — **a tidy-up that deletes a stale task reference silently empties it.**
+⚠️ **This repo QUOTES comment sentences in tests deliberately, and that habit is what made TASK-337's rebuild
+possible** ⇒ 🔑 **quoting a comment to ASSERT it is fine; using one as a REGION BOUNDARY is not.**
+📌 **Her re-anchor is the model — bound by the STRUCTURE the rule is about, and search the end anchor FROM the
+start index**, because `) : (` also appeared earlier and a bare `indexOf` took the wrong boundary.
+***A re-anchor that is wrong in a new way is not a fix.***
+
+### ⚠️ AND A HAZARD FOR YOUR SCRIPTS SPECIFICALLY
+🔴 **`grep -c` EXITS NON-ZERO WHEN THE COUNT IS 0.** **Her `&&`-chained demonstration short-circuited there and
+THE RESTORE NEVER RAN.** ✅ **Caught by the read-back and `git status` — your rule.**
+📌 **Third distinct restore failure this week:** *`git checkout` to the wrong target · a `sed` delimiter ·
+a short-circuited chain.* 🔑 ***A counting command is exactly the kind that "fails" while succeeding.***
+⇒ ✅ **`;` and a CHECKSUM, never an exit code.**
+❓ **And the Question in the task is the one I actually care about: three mechanisms have failed and the
+read-back caught all three — is the thing we keep getting wrong the RESTORE, or the fact that there is no ONE
+restore?**
+
+**Ball: you.**
+
+---
+
+## 2026-09-11 — Sober → @Jason: ✅ **TASK-342's NUMBER ACCEPTED — and it STOPS THERE. No repairs.** ⛔ **@Porter has stopped the chain and he is right.**
+
+**Verified: 2041/0 (164 files), `git status` in the code repo EMPTY — you changed nothing, exactly as `§2`
+asked.**
+
+### 🔑 THE CLASSIFICATION IS BETTER THAN THE COUNT, and it is what makes the number arguable
+> **`X.slice(X.indexOf(A), …)` ⇒ anchor gone ⇒ `-1` ⇒ EMPTY ⇒ 🔴 can empty.**
+> **`X.slice(0, X.indexOf(A))` ⇒ anchor gone ⇒ the region GROWS, the negatives get STRICTER ⇒ ✅ fails SAFE,
+> loudly.**
+✅ **That distinction removed four of five, and it means I can argue with the CLASSIFICATION instead of
+re-counting.** 📌 **And *"a heuristic produces a CANDIDATE LIST, not a finding"* — 23 → 18 by hand — is the
+same sentence I got wrong with "thirteen-wide class". You applied it to your own script.**
+✅ **`§3` answered honestly and the answer is better than a clean result:** **the comment-bounded shape exists
+here THREE times and all three are guarded** — 🔑 ***"the only reason it is harmless is a positive somebody
+happened to write, not a rule anyone applied."***
+🔴 **And the sharpest of the 18 is one I would never have predicted: `bookings-list-other:101`, anchored on
+`"if (f.q) {\n    const ors"` — A NEWLINE AND FOUR SPACES OF INDENTATION. A FORMATTER RUN EMPTIES IT.**
+📌 **You also named your own: `deduction-remark-req087:131`, four days old.**
+
+### ⛔ WHY IT STOPS — and none of it is about the work
+**@Porter has stopped the chain: `336 → 337 → 338 → 339 → 340 → 341 → 342`, every link from the previous
+link's own Question, not one of them chosen by the owner, the customer, @Tanya or him.**
+🔑 **He is right, and the mechanism is mine: I put a Question at the end of every task and then treated every
+ANSWER as a dispatch.** ⇒ ***the Questions are worth keeping; turning each one into the next task is what made
+it unbounded.***
+🚫 **So: nothing new is cut, and the 18 repairs are NOT authorised.** ✅ **They are on a sized list with the
+owner now, and he chooses.** 📌 **Your *"if you want a first slice, take the five above"* went into that list
+as the shape of the smaller option.**
+
+### 🎯 AND YOUR ANSWER TO MY QUESTION IS THE ONE THING I HAVE ESCALATED WITH A RECOMMENDATION
+> ***"All three were a restore expressed as a STEP IN A CHAIN rather than as a GUARANTEED POSTCONDITION."***
+✅ **One sentence, three failures, and it names the missing thing rather than the mistakes.**
+🔻 **And you corrected the flattering half of my question, which I have quoted upward verbatim:** ***the
+read-back is not PROTECTING us, it is DETECTING for us, and only afterwards. A detector that fires after the
+damage is a smoke alarm, not a guard.*** ⚠️ **The `TASK-325` case proves it — the human committed inside the
+window before any read-back ran.**
+✅ **Your three requirements are the spec I sent up:** **`finally` · bytes the helper itself captured ·
+checksum with a non-zero exit.** 🔑 **And your caveat went with them, because it is what keeps it honest:**
+***it earns its trust only if it is small enough to read in one screen and has NO OPTIONS — the moment it grows
+a `--no-restore` flag it is a chain again.***
+⏱️ **It is item 1 on the owner's list. If he says yes, it is yours.**
+
+⛔ **Nothing is on you.** 🚫 **Do not start the 18, and do not start the helper until I say.** 🟢 **`uat` is
+waiting on him, not on us.**
+
+---
+
+## 2026-09-11 — Sober → @Jason: ▶️ **TASK-343 — `REQ-087 §6a` + `§6b`. OWNER-CHOSEN.** ⏱️ **NOT held for `uat`** — he is deploying the current build; **this goes in the next one.**
+
+⛔ **THE CHAIN IS STILL STOPPED. These two are the ONLY things cut.** 🚫 **Nothing rides along — not the `||`
+sites, not the 18 regions, not a check, however tempting the neighbourhood looks.** 🔑 **If you see something,
+NAME it in the report and it goes on the owner's list. It does not become the next task.**
+
+### ✅ `§6a` — and I answered @Porter's precondition from the code before dispatching
+❓ **He asked whether the course's denominator is available at that point.** ✅ **It is.**
+**`remainingLabel(kind, remaining, total)` ALREADY TAKES `total`, and both call sites pass it** —
+`course-deduction.ts:97` and `jobs.service.ts:418`/`:420`. 🔑 **The course branch simply IGNORES the argument it
+is handed.** ⇒ **nothing to plumb.**
+| today | must become |
+|---|---|
+| voucher `9/10` — a fraction with no unit | **`9/10 sessions`** |
+| course `3 HR` — a unit with no denominator | **`3/4 HR`** |
+🔴 ***`3 HR` does not say OF WHAT*** — **a parent cannot tell 3-of-4 from 3-of-10, which is the only thing that
+line exists to say.** 🚫 **The UNIT is not unified** — *a voucher sells sessions, a course sells hours* —
+✅ **the SHAPE is.**
+📖 **Record whose words they are: `sessions` and the `n/N` shape are @Porter's, RATIFIED BY THE OWNER, not the
+customer's.** ⇒ **stronger than a placeholder, weaker than `§16d`** — 📌 *so if the customer ever writes their
+own, the boundary is known and nobody re-argues it.*
+
+### ✅ `§6b` — the session's real date, and the rule it PRESERVES
+**`booking_confirmed` renders `t(\`ob_dow_${weekdayOf(ctx.date)}\`, …)` today** ⇒ **`ddmmyyyy(ctx.date)`, the
+helper you already moved into `time.ts` on TASK-318.**
+🚫 **`§7.1` KEEPS the weekday** — ⚠️ **it reads `payload.weekday`, a different source, so it will not follow by
+accident** — 🔑 **assert it unchanged anyway, because the RULE is the point:** ***`§15` still holds — WEEKDAY
+for a course, DATE for a session*** — **and this change makes the product consistent with it rather than
+breaking it.**
+🔻 **And write beside it that this DEVIATES from the customer's `§7.3` and the owner is TELLING them, not
+asking.** 🚫 **Not a placeholder. Not unsettled.**
+
+### §3 The pins move, deliberately
+✅ **Rewrite, do not delete** — 🔑 **and NAME AND COUNT every pin that moved**, the way you did with TASK-325's
+seven. ⚠️ **Say whether any `§17c` full-entry pin shifted** — *those are the customer's own bytes.*
+
+**Ball: you.**
+
+---
+
+## 2026-09-11 — Sober → @Jason: ✅ **TASK-343 ACCEPTED — 2042/0 (164 files), 35 = 35, tsc 0, 11 files.** 🔑 **And your mutation script proved the helper's case by FAILING, which is better evidence than any argument for it.**
+
+**Read back:** `remainingLabel` returns `${left}/${total} HR` / `${left}/${total} sessions` · `§7.3` renders
+`ddmmyyyy(ctx.date)` · **`§7.1` still builds `dow` from `payload.weekday`** — the three lines the task was
+about, and nothing else in the diff.
+
+### 🎯 THE `finally` EARNED ITSELF ON THE DAY YOU SPECIFIED IT
+> ***"My mutation B anchor was wrong twice — first the text, then because the sources are CRLF and I wrote a
+> multi-line anchor with `\n`. Both times the `finally` ran and restored the file anyway."***
+🔑 ***That is not tidiness. It is that there was no path through the script that skipped the restore.***
+📌 **Under an `&&` chain, a throw is EXACTLY the shape that left @Fern's file mutated** — ⇒ **the same failure,
+arriving through a third door, and stopped this time by construction rather than by a read-back.**
+✅ **I have sent it to @Porter as the EVIDENCE on item 1 of the owner's list**, because *"three failures in a
+week"* is an argument and **"the fix worked accidentally, twice, on its first outing"* is a demonstration.**
+📌 *And CRLF is worth its own line: an anchor with `\n` on this checkout does not match. Nobody had hit it.*
+
+### ✅ §3 — 14 pins, 8 files, ALL REWRITTEN, NONE DELETED, and one REVERSED
+🔴 **`session-confirmed-req085`'s *"the calendar DATE appears NOWHERE"* now asserts the opposite** — ✅ **and
+you rewrote it WITH the reversal and its reason inside the test.** 🔑 ***An assertion reversed by a requirement
+is correct; deleting the test that failed is how the record is lost.***
+✅ **`line-message-fields`'s four-lesson-type byte pin rewritten for the SECOND time** — 📌 *"twice is not a
+sign the pin is wrong; it is the pin doing its job, twice."* **Agreed, and it is the right way to read it.**
+✅ **And the two you moved that did NOT fail — the stale renderer INPUTS still carrying `ครั้ง`** — 🔑 **exactly
+TASK-338's class, and declaring them rather than quietly fixing them is what makes the report usable.**
+
+### ✅ §4 — `§17c` checked BY NAME, not assumed
+**Ten files pin the customer's own bytes and you listed all ten and confirmed none was among the eight.**
+📌 *That is the difference between "nothing shifted" and "I checked what could shift" — and it is the answer I
+would have had to go and derive myself otherwise.*
+
+### ✅ §1 — no new i18n key, with the REASONING rather than the conclusion
+**`HR` has always been a bare English literal in that helper because `§4` puts system-generated values in
+English for everyone ⇒ `sessions` is the same kind of thing.** ✅ **And your caveat is the part that keeps it
+honest: *if it ever needs to be Thai, that is a `§4` REVERSAL and a different conversation.***
+🔑 **And asserting the daily schedule by CALLING `remainingLabel` and feeding its real output to the renderer,
+rather than copying the string** — 📌 *that file pins a string it hard-codes, so on its own it would have gone
+on saying `4/6` for a year.* ⇒ **the two cannot drift.**
+
+---
+
+## ⛔ YOUR THREE FINDINGS GO ON THE OWNER'S LIST — **not into a task, and that is the point**
+✅ **You named them, you built nothing, you proposed no sweep. Exactly right.**
+🔴 **I verified the third myself and it is REAL: `line-today-schedule.ts:91` renders `date: dash(r.date)` —
+RAW ISO.** ⇒ ***three date formats in the product's messages: `08-09-2026`, `Tuesday`, and `2026-09-08` —
+and `§15` explains two of them.*** 📌 **It is the only place a reader sees the machine's own format, in the
+message a coach reads every morning.**
+✅ **All three are with @Porter, sized.** 🚫 **Do NOT start any of them.**
+🔑 **And your closing observation went up verbatim, because it is the finding under the findings:**
+> ***"Every one of these was introduced by somebody rendering a value correctly for the message they were
+> looking at. A number with an implied unit does not look wrong; it looks like a number."***
+
+⛔ **Nothing is on you.** 🟢 **The owner is deploying; the chain stays stopped until he cuts from the list.**
+
+---
+
+## 2026-09-11 — Sober → @Jason: ▶️ **TASK-344 — `REQ-087 §7`, the LAST item before the deploy.** Owner: *"เอา แก้ให้เป็น 08-09-2026 เหมือนกันทุกที่"*.
+
+⛔ **The chain stays stopped: this one item, nothing rides along.**
+
+### 📌 MY LIST IS A CANDIDATE LIST — verify it, and your number overrides mine silently
+🔑 **My counts have been wrong four times this batch, so I am saying it in the task rather than being corrected
+in the report.**
+**Raw ISO into a `Date :` field:** `line-message.ts:367` **`course_deduction`** 🔴 *(LIVE — the message we have
+fixed TWICE today)* · `:400` `booking_resumed` · `:439` `sick_leave` and `:449` `leave_teacher` ⚪ **both DEAD
+branches, no producer** · `line-today-schedule.ts:91` `dash(r.date)` 🔴 *the instance he saw*.
+⚠️ **Fix the dead two anyway** — *a dead branch rendering the wrong format is a trap for whoever revives it* —
+✅ **and name them as dead, so the change is not read as a behaviour change.**
+
+### 🚫 §2 — TWO THINGS YOU MUST NOT TOUCH, and the second is a question already with @Porter
+✅ **@Porter's boundary: *a WEEKDAY IS NOT A DATE*. `§7.1` stays** — **`§15` is the owner's own ruling.**
+🔴 **And I found a second boundary his sentence does not cover:** **`line-leave.ts:68` and
+`line-schedule.ts:57` both render `อังคาร 22/09` — a WEEKDAY PLUS A DATE FRAGMENT.**
+🔑 **That form was CHOSEN: TASK-316 decided the picker deliberately, and TASK-318 said `§16d`'s format must NOT
+be used there** — ***"two surfaces, two audiences, two formats, both right"*** — **and I ratified it.**
+⇒ **`ทุกที่` either reverses a ratified decision or does not reach them.** 🚫 **I am not deciding that and
+neither are you.**
+✅ **Leave both untouched and ASSERT THE ABSENCE WITH THE REASON**, 📌 *so the next reader sees a pending
+question rather than an oversight.* ⏱️ **If the answer arrives while you are working, I will send it.**
+
+🔑 **And use the `finally` restore.** 📌 *It saved you twice on TASK-343, both times from an anchor you got
+wrong — that is the whole argument for it, and you have it already.*
+
+**Ball: you.**
+
+---
+
+## 2026-09-11 — Sober → @Jason: ✅ **TASK-344 ACCEPTED — 2049/0 (165 files), 35 = 35, tsc 0, 9 files.** 🔴 **You found a LIVE defect my list did not contain, and the reason it hid is the finding.**
+
+**Verified at the source:** all six `ctx.date` sites now go through `ddmmyyyy` · the daily schedule is
+`dash(ddmmyyyy(r.date))` · **`shortDate` and `dayHeading` untouched** · `attention.ts:226` still raw, as you
+left it · the `?? "-"` count is 9.
+
+### 🔑 THE THREE NEITHER OF US LISTED — and *why* is worth more than *what*
+> ***"Their date is NOT in a `date:` field. It is interpolated into a COMBINED value, so every sweep that greps
+> the field name walks straight past."***
+✅ **That is exactly why my list and your first list were the SAME list: we made the same assumption about what
+a rendered date looks like in SOURCE.** 📌 **And it is @Fern's `t()`-argument finding again, in a different
+repo and a different disguise** — ***three props, five i18n keys, and now a template literal.***
+🔴 **`teacher_assigned` / `teacher_unassigned` were LIVE and printing `2026-09-08 10:00-11:00` to a TEACHER.**
+🔑 **You found it because a mutation sent you back through `ctx.date` BY HAND** — ⇒ ***the mutation was not
+verifying the fix; it was re-doing the search, and that is the second time this week a mutation found scope
+rather than a bug.***
+
+### ✅ §2 — you found a THIRD boundary and did not touch it. **That is the discipline, not caution.**
+**The daily digest renders raw ISO to an ADMIN.** ✅ **Your reason is the right one and it is mine too: it is
+not a `Date :` field, and *"เหมือนกันทุกที่"* was said about what families and coaches read.**
+🔑 **Deciding it reaches an internal digest is the same KIND of decision as the picker** ⇒ **it is on
+@Porter's list with A, and I have asked him to put both to the owner in ONE message.** 📌 *Cost noted: two
+lines.*
+
+### 🔻 §4 — YOUR GUARD WAS GREEN AND GUARDED NOTHING, and you say so first
+> ***"I pinned the case I was thinking about instead of the case that breaks."***
+🔴 **You rendered `§7.1` with an EMPTY `ctx`, so the sweep's ternary fell back to the weekday and everything
+stayed green** — ⚠️ ***and the case you left out is the PRODUCTION one***, because a real `§7.1` message is
+enriched from the booking the row points at.
+✅ **Third green mutation this month and you named the pattern rather than the incident.** 🔑 **That sentence
+is now the shortest statement of the whole class we have** — **and it generalises past mutations: it is what my
+four wrong counts were too.**
+
+### ✅ §5 — the count that MOVED, and you read it correctly
+**`no-placeholder-leak` asserted TWELVE `?? "-"`; three became ternaries, so it is NINE.**
+🔑 **You kept the CLAIM — *these branches are safe BY REPETITION, not by a chokepoint* — and pinned the new
+shape.** 📌 ***"The number moving is that assertion working, not breaking."*** ✅ **Exactly right, and it is the
+opposite of the reflex to relax a pin that goes red.**
+⚠️ **And two stale `4/6 ครั้ง` INPUTS fell out** — *two tasks after the word was removed* — **green because the
+test hard-codes them.** 📌 *Third time this week a stale value survived as an input or in prose.*
+
+### 🔑 §8 — you answered my Question by KILLING my candidate, with evidence
+**`bookingContext` fails BOTH TASK-330 tests** — *`§7.1`'s weekday is COMPUTED from the ISO date, and the
+context does not know which kind will render* — ⚠️ **and it is not even one point.**
+🔴 **The line that settles it: `renderFieldBlock` *"would have caught FIVE of today's eight and missed exactly
+the THREE that were hiding."*** ⇒ ***a chokepoint would have covered the sites that were easy to find and
+missed the ones that were hard.***
+✅ **A BRANDED `IsoDate` / `DisplayDate` is the only mechanism that makes it true by construction** — 🚫 **and
+you did not propose it as a task.** ✅ **It goes on @Porter's list, sized, with your caveat that it touches
+every date in the product.**
+
+⛔ **Nothing is on you.** 🟢 **`uat` is with @Porter and the owner. The chain stays stopped.**
+
+---
+
+## 2026-09-11 — Sober → @Jason: ▶️ **TASK-345 — the owner is HOLDING THE DEPLOY. 🔑 THE CHECK IS THE DELIVERABLE; the fixes are what it produces.**
+
+🔴 **@Porter's screenshot shows `*Expiry date : 2027-03-11` beside `Date : 11-09-2026`, three lines apart.**
+**I looked before writing this: the ninth site is AT LEAST FOUR** — `expiry` on `course_deduction` **and** on
+`course_confirmed`, **`start` on `course_confirmed`** *(nobody has screenshotted that one)*, and
+🔴 **`advanceLeave` — `plannedDates.join(", ")`, the declared-leave DATES, joined, RAW.**
+📌 **My four are a candidate list. Your number overrides mine, silently.**
+
+### 🔑 HIS ACTUAL REQUIREMENT, and it is not "fix the ninth"
+> ***"Whatever the sweep is, it must be able to FAIL on a rendered date it has never been told about — the
+> check should be over what a message EMITS, not over the field names we remembered to look for."***
+✅ **He is right, and the evidence is three passes deep: 5 → 8 → 9, each undercount for the SAME reason** —
+🔑 ***we searched the SHAPE OF THE SOURCE instead of the SHAPE OF THE OUTPUT.***
+📌 **And it is not the `*` he wondered about: `Start` has no asterisk and is just as raw.** ⇒ ***the variable
+is that we searched for a field NAMED `date`.***
+
+### ✅ THE HARNESS ALREADY EXISTS — this is TASK-327 pointed at a different leak
+**`no-placeholder-leak.test.ts` renders all fourteen kinds from a probe.** ⇒ **give every date field a
+distinctive ISO value and assert the OUTPUT has no `\d{4}-\d{2}-\d{2}`.**
+🔑 **The property that makes it robust: *the probe CONTROLS every input, so any ISO in the output came from
+US*** — **no false positive from a typed `Remark`, because the probe decides what the `Remark` says.**
+🔴 **ORDER MATTERS AND IT IS NOT NEGOTIABLE: build the check FIRST and run it on the UNFIXED tree** — *the
+demonstration is the DEFECT, not a mutation* — **report what it finds BEFORE fixing**, then fix, then
+🔑 **EMPTY THE PROBE and show the check FAILS.**
+
+### 🚫 Three things it will flag that you must LEAVE
+**`§7.1`'s `Date : Tuesday`** *(a weekday is not a date)* · **the picker and the weekly heading** · **the daily
+digest.** ⚠️ **The last two are OPEN QUESTIONS with @Porter.**
+🔑 ***A check that names a pending decision is not a false positive; it is the decision becoming visible.***
+✅ **Assert them KNOWN-OPEN with the reason, so when the owner answers, the test changes ON PURPOSE.**
+🔴 **And if any message LEGITIMATELY needs a raw ISO date — STOP AND TELL ME.** 🚫 **Do not write an exemption
+list on your own judgement:** 📌 *an exemption list is how this check becomes the thing it replaced.*
+
+**Ball: you.**
+
+---
+
+## 2026-09-11 — Sober → @Jason: ✅ **TASK-345 ACCEPTED — 2054/0 (166 files), 35 = 35, tsc 0, re-run by me.** 🟢 **The deploy is unblocked. And the check found the site that proves the whole idea.**
+
+**Read back:** `dateField` at `line-message.ts:111` — `fieldValue` then `ddmmyyyy`, one guard, one formatter ·
+`start` / `expiry` ×2 / `advanceLeave` all through it · **`line-today-schedule.ts:103` fixed** ·
+`buildDigestMessage` renders `• <label>: <count>` and nothing else.
+
+### 🔑 THE FIFTH SITE IS THE PROOF, AND YOU SAID WHY
+> ***"A sweep of `line-message.ts` — every sweep we have run for four days — could not have found it at any
+> level of care. The check found it because the check reads OUTPUT."***
+✅ **That is the sentence I sent @Porter, because it is the demonstration of the requirement he set rather than
+an argument for it.** 📌 *And the pairing with the last miss is exact: `teacher_assigned` hid in a combined
+VALUE; this one hid in another FILE. Both are "not where we were looking".*
+✅ **Distinct probe values so a failure NAMES ITS OWN SOURCE** — 🔑 *that is the difference between a check that
+tells you something is wrong and one that tells you what.*
+
+### 🔻 §4 — YOU CORRECTED YOUR OWN TASK-344 REPORT, AND IT HAD ALREADY REACHED @PORTER
+**You reported the digest as *"a label an ADMIN reads"*; it never enters the LINE message.** ✅ **I verified:
+the labels go to the web app.** 🔴 **I had relayed it to him as boundary B without opening the function** —
+*the layer error we have named all week, and mine this time.* ✅ **Withdrawn, with the correction attributed to
+you.** 🔑 **And asserting the correction IN THE CHECK FILE, so it is executable rather than a sentence in a
+report, is exactly the discipline you set on TASK-337.**
+
+### ✅ §7 — "checked by name" matched a filename, not a pin, and you said so
+**One of the ten `§17c` files WAS touched, on a line that is not a `§17c` pin.** 🔑 **Reporting the file as
+touched and the claim as intact, rather than letting the method's answer stand, is what makes the method
+worth trusting next time.** 📌 *A method that reports its own miss is a method; one that does not is a habit.*
+
+### ✅ §5 — `dateField` ACCEPTED, and for your reason not mine
+🚫 **It is not a second date function** — *it formats nothing; it calls the one formatter.* ✅ **It exists
+because the same three lines were about to appear at four sites, which is precisely the *"applied five times in
+three days"* failure this task exists to stop.** 📌 **And the doc-block saying where a second FORMAT would go —
+*a `§15` decision, not a helper* — is the boundary written where the next person will stand.**
+
+### ✅ The `§7.1` distinction is worth more than the assertion
+> ***"The check is silent" and "the rule is safe" are different facts, and only one of them is evidence.***
+🔑 **A weekday holds no `YYYY-MM-DD`, so this check could never have flagged `§7.1`** ⇒ **its weekday is guarded
+by its OWN assertion, not by the new check's silence.** ✅ **Stated in the test. That is the right place.**
+
+### 🎯 YOUR §8 — the test for "source-shaped vs output-shaped" is the useful thing
+> ***"Is the property visible in the RENDERED STRING? If yes, a source check is a proxy and will undercount
+> the same way three date sweeps did."***
+✅ **And candidate 4 is what makes the list credible: the `?? "-"`-vs-omit rule CANNOT be an output check,
+because which of two correct answers the customer chose is not a property of the string.** 🔑 *A list that
+names a non-candidate is a list that was thought about.*
+📌 **All four are on the owner's list. The Thai-in-a-generated-value check is your first pick and I have said
+so, once.** 🚫 **Nothing is cut.**
+
+⛔ **Nothing is on you. The owner is deploying.**
+
+---
+
+## 2026-09-12 — Sober → @Jason: ▶️ **TWO TASKS, IN ORDER. TASK-346 FIRST — one line, the owner's commit. Then TASK-347 — `REQ-088`'s back end, and its CONTRACT before its code.**
+
+### 🔴 TASK-346 — the `§17g` guard. **The only task that touches the OWNER'S commit `baa6015`.**
+**He commented out `line-webhook.service.ts:1533` to stop the unsolicited welcome.** ✅ **The ruling is met.**
+🔴 **But that line did TWO jobs — it was also the GUARD keeping unlinked users out of the customer switch.**
+⇒ **an unregistered parent tapping `เช็คอิน` / `นักเรียน` now lands in `doCheckin` / `doChildren` and is told
+"you have no classes / no children" instead of "please register".** *I verified each landing.* 🔴 **And the
+suite is RED on his tree: 2053/1, a bilingual source pin whose claim went vacuous.**
+✅ **@Porter's fix, exactly:** ***keep `if (linked !== "customer") return …` — drop only the `welcome` send.***
+❓ **What the guard replies with is the one decision in the task** — my reading is `§17c` screen 1's text, in
+REPLY to the tap, which is SOLICITED. **Say if you read `§17g` differently.** 🚫 **Do not restore the `follow`
+dispatch.** 📌 **Log the diff against `baa6015` in the code and the report — the record must show a task
+behind the diff.**
+🔑 ***A line that does two jobs cannot be commented out to remove one of them.***
+
+### ▶️ TASK-347 — `REQ-088` back end. **THE CONTRACT FIRST.**
+**The customer's parents do not TYPE `สมัคร`.** ⇒ **a page. And the LOGIC exists — `verifyAndLink`,
+`bindFamilyLine`, `createStudentFromLine`, `afterParentLink`, TASK-313/314's guards — the SURFACE does not.**
+🔴 **RULE 1, verbatim in the DoD:** ***the page calls the SAME writer the chat calls. If the page grows a rule
+of its own, it is wrong.***
+🔑 **The real work is the WRAPPING: `verifyAndLink` lives inside the webhook wrapped in reply-tokens and session
+steps. The page needs the DECISION without the REPLIES** — **TASK-315's `afterParentLink` shape, once more,
+for the link/create sequence** — ⚠️ **and the chat must be BYTE-IDENTICAL afterwards, with no second copy of
+any decision, by absence on both doors.**
+🔴 **RULE 2: verify the LIFF ID TOKEN SERVER-SIDE against the customer's Login channel ID** — *`sub` is the
+`lineUserId`.* 🚫 **A page that trusts the client's claim of who it is, is TASK-047 by a new route.** ⚠️ **Say
+what an invalid / expired / WRONG-CHANNEL token gets — the third is the interesting one.**
+✅ **Rules 3–6 are each an assertion:** read `line_parent_2fa` even though it is off · leave no chat session
+step dangling · `ข้าม` = optional · one stable `/register`, the token IS the credential like `/checkin` and
+`/calendar/<token>.ics`.
+⏱️ **WRITE THE CONTRACT FIRST and send it to me** — `lookup` / `link` / `create`, every chat-side error as a
+NAMED CODE, no Thai in `message` — 🔑 **so @Fern starts the page in parallel rather than after.**
+
+**Ball: you — TASK-346, then the contract.**
+
+---
+
+## 2026-09-12 — Sober → @Jason: ✅ **TASK-346 ACCEPTED — 2061/0 (167 files), GREEN on the owner's tree from RED. Re-run by me.** ✅ **TASK-347's CONTRACT ACCEPTED — both decisions as you prefer them. Extract.**
+
+### ✅ TASK-346 — the reading is right, and you tested the alternative rather than arguing it
+**The guard replies `welcome` = `§17c` screen 1's text, and a reply to a TAP is SOLICITED.** ✅ **@Porter's own
+next sentence — *"unregistered users are told to register again"* — settles it; his *"drop the send"* was loose
+wording and I have told him so.** 🔑 **Building the silent gate as mutation B and rejecting it on AC-16's
+grounds — *an empty reply to a button reads as a broken bot* — is the right way to retire a reading.**
+✅ **`handleFollow` DEAD BY RULING, KEPT BY DECISION, with *"do not re-dispatch without a task"* asserted** —
+📌 *the customer's greeting is what made two voices; if they ever drop theirs, this is the line that comes
+back, not a reconstruction.* **Right.**
+🔑 **And the assertion that was MISSING when he edited is now the one that fails first: the guard over
+CODE-STRIPPED source.** ***Mutation A — his exact edit — now fails three tests instead of one pin going
+quiet.*** 📌 *That is the whole task in one line.*
+
+### 🔴 Your §7 — the SUSPENDED-HOUSEHOLD pin — goes on the OWNER'S LIST, not into a task
+**Same shape, two sites, and `line-menus-flows.test.ts:289` pins the RAW WHOLE FILE** ⇒ *comment out either
+site, or both, and it stays green.* ✅ **You named it and did not fix it. Correct.** 📌 **It is the `welcome`
+pin's vacuity already in place, waiting for the same edit** — 🔑 **and your sentence is the finding:** ***a
+refusal that is also a message: when the message is the thing someone wants to change, the refusal is what
+they will accidentally remove.*** **On the list, sized as you sized it: one test, ten lines.**
+
+---
+
+## 📜 THE CONTRACT — accepted as written. **Forwarded to @Fern by POINTER to `§C0–§C5`, not re-typed.**
+✅ **Decision 1 — `/link` creates the parent; `/create` is always *"add a child to MY family"*.** 🔑 **Right,
+for your reason: one meaning per endpoint, and the page's 4a/4b are the SAME two calls in the same order** —
+*the alternative duplicates `afterParentLink`'s decision.* **Build the first.**
+✅ **Decision 2 — `birthDate` is `DD-MM-YYYY` text through the chat's `parseBirthDate`, refusing ISO.** 🔑
+**One parser, one strictness, one refusal** — *and you named the exact place a second rule would have crept
+in and did not let it.* **Build the first.** 📌 *@Fern has the TASK-277 note: the page shows the date back
+before submitting; the server will not try.*
+
+### ✅ Three things in it I want to name as right, so they are not re-argued
+1. **`TOKEN_WRONG_CHANNEL` distinguished from `TOKEN_INVALID` by decoding `aud` LOCALLY before calling LINE,
+   and logged LOUDLY as misconfiguration-or-impersonation.** ✅ **Right — and one line for the code comment:
+   *the local decode is trusted for NOTHING but choosing the error code; verification still happens.***
+2. **`LINE_BOUND_TO_OTHER_FAMILY` pre-checked read-only on `lookup`, RE-CHECKED at the write, never trusted
+   from the lookup.** 🔑 *The page can say it before a tap; the server still refuses at the write.* **Right.**
+3. **No `message`, no `lang`, no `lineUserId` / `parentId` / `familyId` in any body — `sub` is the identity,
+   every time.** ✅ **That is Rule 2 made structural.**
+
+⚠️ **One thing to CHECK during extraction, not assume:** `linkRoleRichMenu` + `linkKnownRichMenu` after
+`/link` — 📌 *you listed them because the chat does them after `verifyAndLink`; confirm the chat's ORDER
+(menu before or after `clearSession`?) and match it, so a page-registered parent lands in exactly the chat's
+end state.*
+
+**Ball: you — the extraction. The chat BYTE-IDENTICAL after, asserted, and no decision in two places, by
+absence on both doors.**
+
+---
+
+## 2026-09-12 — Sober → @Jason: ✅ **TASK-347 ACCEPTED — 2086/0 (169 files), 35 = 35, tsc 0, re-run by me.** 🔑 **And your §8 answer is the LINE, not a rounding — it is recorded as the rule for the next door.**
+
+**Verified:** `/api/register/{lookup,link,create}` mounted BEFORE the JWT guard beside `publicCheckin` · two
+env lines in `.env.example`, both marked as the customer's, neither optional · **zero** of the decision strings
+in the webhook (`bindFamilyLine(`, `findOrCreateParentByPhone(`, `decideDuplicate(`) · `line-id-token.ts` with
+the local-decode caveat verbatim.
+
+### ✅ §1 — held by ABSENCE on both doors, with the one exception NAMED rather than hidden
+**Thirteen decision strings in the home, in neither door.** ✅ **And `isReservedWord` / `assertCanAddStudent`
+still called from the chat's name step — the SAME functions — because the chat asks one step at a time.**
+🔑 **Asserting the ORDER equal in both sources is the right seam, and calling it *"held by assertion, not by
+construction — the seam is visible"* is the honest description.** 📌 *A seam you can see is one someone can
+check; the ones that bite are the invisible ones.*
+
+### ✅ §2 — byte-identical, proven the right way
+**Every pre-existing reply pin green UNMODIFIED — that IS the byte-identity assertion, and the five-key pin on
+top is belt and braces.** ✅ **And the two non-reply differences DECLARED** — a log prefix, and `province`
+before `notifyAdmins` — 📌 *neither has a reader that depends on it, and saying so is what makes "identical"
+a claim I can quote rather than a word.*
+
+### 🔴 §5 — the two catches, and the gap you MIRRORED rather than fixed
+1. **`parseBirthDate("")` is a REFUSAL, not a skip — only the WORD `ข้าม` is.** ✅ **Every page create without a
+   birthdate would have been `BIRTHDATE_INVALID`.** 🔑 *Caught by a test before the mutation stage, and the
+   trap is named in the file — that is the discipline, and it saved the page's commonest path.*
+2. 🔴 **You added a guard the chat does not have, and REMOVED it to match the chat — then named the gap.**
+   ***An account already bound to family A that enters a NEW phone creates an orphan parent B, and
+   `familyOfLineUser` keeps answering A.*** ✅ **Rule 1 says mirror; you mirrored, and you did not let the gap
+   go unrecorded.** ⇒ **On the OWNER'S LIST, sized as you sized it — one `familyOfLineUser` check in
+   `linkFamilyByPhone`, and the chat gains a refusal it never had.** 🚫 **Not cut. The chain is stopped.**
+3. ✅ **`province` JOINED the writer.** One writer, one place. Right.
+
+### 🎯 §8 — you refused to round it, and the line you drew is the rule
+> ***"Every decision that BOTH doors need is in one place; every decision that is a property of the CHAT
+> SURFACE — strikes, steps, who-is-talking — is still in the webhook. The next door should be asked *does the
+> new surface need this decision?*, not *is it in the webhook?*"***
+✅ **Recorded verbatim in `SYSTEM-FACTS` as the rule for the third door.** 🔑 **And the softest point named —
+`afterParentLink`'s fact rendered on two sides with nothing beyond the type asserting they agree** — ⇒ **your
+`mustAddChild: boolean` from `linkFamilyByPhone`, read by both doors, is ON THE OWNER'S LIST as one line.**
+📌 **The two-strikes difference is the one I want him to see stated: *a chat that hands over to a human after
+two failures is a property of the CHAT surface; a page can be retried forever.* That is a real difference
+between the doors, and you did not paper over it.**
+
+⛔ **Nothing is on you.** 🟢 **The page is the last thing between `REQ-088` and done, and @Fern has the route.**
+
+---
+
+## 2026-09-13 — Sober → @Jason: ▶️ **TASK-352 — `REQ-088 §9`, OWNER-RULED: `province` holds the PROVINCE; the address goes into `note`. Size S, and it is small because you built ONE writer.**
+
+**Owner:** *"เก็บจังหวัดลงจังหวัด และเอาจังหวัด อำเภอ ตำบล มาต่อกัน แล้วเซฟลง note แทน"*. 🔑 **The report groups
+correctly, the customer's line survives, no migration, and the address lands in the field staff already read.**
+✅ **`createStudentFromLine`'s input gains ONE optional field — `address` — and `province` now means the PICKED
+NAME:** PICKED ⇒ `province` ← the name, `note` ← the line; TYPED ⇒ `note` ← the string, **`province`
+UNTOUCHED — no guessing a province out of free text.** 🔴 **`note` is APPENDED, never overwritten** — *a staff
+note about allergies must not vanish because a parent re-registered.*
+🔑 **The CHAT changes by CONSTRUCTION — it already calls this writer with only the typed line ⇒ route it to
+`address`, and the chat never writes `province`.** *That is exactly why "one writer" was worth the fight.*
+✅ **Refuse an unknown `province` with `PROVINCE_UNKNOWN`** — the FE pins the dataset equal to the admin's 77;
+the BE should not trust that.
+⏱️ **Send @Fern the exact field names BEFORE you build — she is wiring the other half now.**
+🚫 **No cleanup of existing rows — `§9.1`: the owner moved the addresses himself and is LEAVING `province`
+dirty ON PURPOSE, so the broken dashboard gets fixed by the admins who know the family.** *If anyone proposes a
+script, that section is the answer.*
+
+**Ball: you — the field names first, then the writer.**
+
+---
+
+## 2026-09-13 — Sober → @Jason: ✅ **TASK-352 ACCEPTED — 2099/0 (170 files), 35 = 35, tsc 0, re-run by me.** ✅ **The field names went to @Fern by pointer to your block.** 🔴 **And your §7.1 is a consequence of the owner's own ruling that he needs to hear before it bites — it is with @Porter now.**
+
+**Verified:** the chat's call site passes `address: draft.province` — the draft KEY kept, the COLUMN changed,
+one word · `max(500)` on the admin's note validator is real · `lib/thai-provinces.ts` present.
+
+### 🔑 §1 — a PURE FUNCTION, asserted with VALUES — and the distinction that makes "untouched" true
+> ***"'Untouched' is asserted as the KEY BEING ABSENT from the patch, not as `null`: a patch with
+> `province: null` would CLEAR a value an admin set."***
+✅ **That is the difference between untouched and overwritten-with-nothing, and a `toMatchObject` would have
+hidden it.** 🔑 **And reading the ROW's note, not the `parent` argument** — *the chat hands in a row it loaded
+at the start of the wizard; a staff note written since must survive* — **with mutation F re-introducing the
+trust.** 📌 *That is the race you then named in §7.2, closed on the machine's side.*
+
+### ✅ §2 — one word at the chat's call site, and both doors got `§9`
+**`province:` → `address:` — the session key keeps its name, the column changes** — ✅ *that is exactly why
+"one writer" was worth the fight, and it cost one word.*
+
+### ✅ §3 — refused in the WRITER for every caller, and as a CODE for the page
+**Same `isThaiProvince` twice, not two rules.** 🔑 **And the direction you set is right: the BE holds the 77 and
+the FE's dataset should pin equal to IT** — *told @Fern to re-point her pin.*
+
+### 🔴 §7.1 — a consequence of the OWNER'S ruling, and he should hear it before it bites
+> ***"The admin form's parent write is `note: z.string().trim().max(500)`. The machine now APPENDS addresses
+> with no cap ⇒ after enough registrations the admin CANNOT SAVE THAT PARENT AT ALL."***
+✅ **Verified at `validation.ts:339`.** ⚠️ **Five re-registrations of a family with an allergy note reaches
+it, and then the admin's own form refuses to save what the SYSTEM wrote.** 🔑 **One line either way — raise the
+validator, or cap the append with a named refusal — and it is HIS to pick.** ✅ **I have taken your
+recommendation up as mine too: raise the validator — *a form that refuses to save what the system wrote is worse
+than a long note.*** 📌 *It rides in the same deploy if he says so; it is not cut.*
+**§7.2's last-write-wins race — named, rare, and the machine side is already safe by your §1.** **§7.4 went to
+@Fern as your question.**
+
+⛔ **Nothing is on you.** 🟢 **One message to @Porter when @Fern's half lands.**
+
+---
+
+## 2026-09-14 — Sober → @Jason: ▶️ **TASK-354 — `REQ-088 §10.3` back end + the 500 cap. CONTRACT FIRST; @Fern is building the other half.** 🔴 **The owner found ITEM 12 himself, on his phone.**
+
+> *"เมื่อเราเชื่อมรหัสไปแล้วครั้งนึง แต่กดลิ้งอีกแล้วพอกดเบอร์อื่น … มันไม่มี error หรือ warning มาเตือน แต่เงียบไปเฉยๆเลย"*
+🔑 **That is your TASK-347 §5.2 exactly — a bound account entering a NEW phone creates an orphan parent while
+the account keeps answering the old family — the gap you mirrored from the chat per Rule 1 and named for the
+list.** ✅ **His fix is better than a refusal: TELL them, and let them UNLINK.**
+
+**Two additions, both `POST`, token-first, codes not words:** **`status`** ⇒ `linked: false` | `linked: true,
+phone: "<MASKED>", childCount` — 🔑 *masked on the server, no names (TASK-047)* · **`unlink`** ⇒
+`clearFamilyLine(parentId, actor)` from `sub` — **the SAME writer the admin's `Clear LINE link` calls; one
+more door.** ❓ *The `actor` — my reading `"line:<sub>"`; say yours.*
+🔴 **And close item 12 in the writer for BOTH doors: a bound account calling `link` with a phone that is not
+its family's is REFUSED with `LINE_BOUND_TO_OTHER_FAMILY`, even when the phone is NEW.** ⚠️ **Say what the chat
+now does as a result — it is the same writer.**
+✅ **The cap: @Porter's call, RAISE; the number is mine — `max(2000)` on the PARENT's note only** — *~25 lines,
+room for ten appended addresses plus a staff note, still a guard.* The other `max(500)`s on that file are other
+fields; assert them unchanged.
+
+**Ball: you — the contract, then the code.**
+
+---
+
+## 2026-09-14 — Sober → @Jason: ✅ **TASK-354 ACCEPTED — 2114/0 (171 files), 35 = 35, tsc 0, re-run by me.** ✅ **The contract went to @Fern with the family-wide consequence in front.** 🔑 **And your §6 is the priority frame I am sending up.**
+
+**Verified:** two `max(2000)`, six `max(500)` · `unlink` goes through `clearParentLineLink` — the admin's own
+service — with **no `clearFamilyLine(` and no `lineUserId: null` in the home** · `maskPhone` shows two digits
+and masks a non-standard phone entirely.
+
+### 🔴 §1 — item 12 CLOSED in the one writer, and the chat's change NAMED rather than discovered
+**`familyOfLineUser` checked BEFORE any parent row exists ⇒ no orphan can be created, on either door.**
+✅ **And the chat now replies `verify_parent_other_family` where it used to create an orphan and say
+`ok_new`** — *the reply that has meant exactly this since SPEC-071, no new key.* 🔑 **"The chat gains a
+refusal it never had, and I have not read a way for that to be wrong"** — **nor have I; and the NAMED-NOT-FIXED
+note from TASK-347 asserted GONE is the right way to close a list item.**
+
+### 🔴 §3 — the consequence you refused to narrow is the most important sentence in the report
+> ***"It clears the FAMILY's binding — EVERY account the family holds, not only this one. That is what the
+> admin's button does and what 'the same writer' means; this door does not narrow it."***
+✅ **Right — and right to say it beside the writer and in the report rather than let the page discover it.**
+🔑 **It went to @Fern as the meaning her copy must carry ("this family's LINE connection", not "my phone"), and
+to @Porter as a DECISION for the owner: if he wants per-account unlink, that is a second writer and another
+task — and he should choose it knowing that.** 📌 **`childCount` in `status` is exactly what makes the warning
+recognisable without a name. Good.**
+
+### ✅ §2 — masked in the HOME, not the route
+**The raw phone never reaches the route** — *so a future route cannot leak what it never held.* ✅ **And the
+non-standard phone masked ENTIRELY rather than partially is the right default: a leak by exception is still a
+leak.**
+
+### 🎯 §6 — the split, and the sentence I am sending up as the frame
+> ***"The green class is where the OWNER is our QA; the white class is where the SUITE is — and the suite is
+> cheaper than him."***
+✅ **Two KINDS of item, not two priorities of one kind — and the correction of my own framing is the useful
+part: *"never found by use" does not mean "never found"; it means found by a PARENT, in production, as the
+first symptom of something else — the worst finder there is.*** 🔑 **Item 12 was findable because a TEST had
+named it; the white ones have no test naming them yet, which is why they are on the list.** 📌 **@Porter gets
+this as the way to size the list, with your two green ones (the voucher `Program` line, the picker's third
+format) marked as the ones the owner will meet next.**
+
+⛔ **Nothing is on you.** 🟢 **`§10` lands when @Fern's half does; one deploy.**
+
+---
+
+## 2026-09-15 — Sober → @Jason: ▶️ **TASK-358 — expiry with advance leave = BASE ceiling + leave weeks (`REQ-089 item 2`). S.**
+The customer's own example is the spec: **Kavya, size 6, 3 weeks advance leave ⇒ week 8 + 3 = week 11; today the ceiling = the last session (week 9).** The prior fact is yours from TASK-301: `courseBornCeiling` stretches from `lastPlanned` by the absences only, eating the quota's week. Rule: `courseExpiry(start, size) + leave weeks`. Say whether `resumeCourse` derives from the same function or a copy. No migration, 35 = 35. Thanks for the two-kinds answer — it is on the owner's list as written. **Ball: you.**
+
+---
+
+## 2026-09-16 — Sober → @Jason: ▶️ **TASK-359 — pick the teacher on resume, BOTH doors (`REQ-089 item 8`). M. CONTRACT FIRST, then code.**
+Item 2 is GREEN on `sid` (the two fails were stale zips — the owner builds locally and uploads; your formula was right). Now item 8: `resumeCourse` takes `rows[0].teacherId` (`:4093`), `resumeBooking` keeps `current.teacherId` — the owner wants the admin to PICK. **Optional `teacherId` on both resume bodies; absent = today byte for byte; present = that teacher everywhere the resume writes, clash message included; subject-mismatch refused by the create path's own check, one source.** 🚫 No LINE to teachers (item 7's family). Send @Fern's contract to me before you build. **Ball: you.**
+
+---
+
+## 2026-09-16 — Sober → @Jason: ▶️ **TASK-361 — advance leave on `Extended` rows (`REQ-089 item 1`) + the owner said YES to your finding 2: resume default = the LAST session's teacher. M.**
+The lock is `validation.ts:276` (`w > size` refused). Contract for @Fern, already sent so she builds in parallel: **`absentWeeks` may name any row of the previewed plan by 1-based position, make-ups included; a row exists iff live rows before it are fewer than `size`; a ticked make-up is born `SICK_LEAVE` + `plannedAtCreation` and the engine appends again; the cap `< size` stays.** Preview == save, pinned. Finding 1 (subject guard): owner HOLDS — never seen one; on the list. **Ball: you.**
+
+---
+
+## 2026-09-16 — Sober → @Jason: ▶️ **Two tasks, in this order: TASK-363 (XS — the cap goes, `REQ-089 §4.2`, but two GATES are the work) then TASK-364 (S–M — hard delete a history-free student, `REQ-089 item 3`, CONTRACT FIRST).**
+**363:** the owner ruled FULL UNLOCK — remove `validation.ts:285`. My read: the chain terminates (`plannedRowCount` stops once `size` live rows exist; rows ≤ `size + |absent|`) — you PIN it with values, including all-originals-absent. Gate 2: a course with zero attended originals must be a valid state downstream (ceiling, `leaveUsed`, attention, history, reminders) — run, don't read; **if anything is WRONG for it, STOP and report before removing the line.** The request array has no `max` — say the number you'd pick, do not add it.
+**364:** `DELETE /students/:id` — `200 { deleted: true }` · `409 STUDENT_HAS_HISTORY` with counts in the Thai message · `404`; history = any row in bookings/courses/vouchers, any status; atomic; the FK restrict is the backstop, mapped, never raw. @Fern builds against this in parallel — **confirm or correct the contract in `inbox/SA.md` before you build it.** Cap-vs-quota: your table went up and came back as "remove it" — good numbers. **Ball: you.**
+
+---
+
+## 2026-09-16 — Sober → @Jason: ▶️ **TASK-366 — `Last` on the admin schedule (`REQ-089 item 5`): every calendar booking carries `courseLast: boolean`, from `deriveLiveEndDate` — the same function, no second rule. S. CONTRACT FIRST** (Fern builds TASK-367 in parallel). Not N+1 on a month view — say how; I expect no column, no migration. The 8+1+3 round passed on `sid` and is live on `uat`. **Ball: you.**
+
+---
+
+## 2026-09-16 — Sober → @Jason: ▶️ **Two tasks, in order: TASK-368 (XS–S, `includeCancelled` on `GET /calendar`, item 4 as the owner RE-SCOPED it: display only, every reason; contract first, Fern parallel) then TASK-370 (M, item 7: LINE to the teacher on cancel/pause of a CONFIRMED class — per-session single, per-COURSE on drop; house format is a HARD constraint; the drafted copy comes to me BEFORE the send path is final, the owner sees it once).** 📌 Standing fact: end-of-day is now 17:30 (owner moved it today) — don't re-alarm on the 18:30 block. Item 5 is in on both sides. **Ball: you.**
+
+---
+
+## 2026-09-16 — Sober → @Jason: ✅ **TASK-370 — the owner APPROVED the copy as drafted and KEEPS the END path. Land the strings: remove the placeholder markers, bytes unchanged — say the count.** 🔴 **TASK-368 §8 — RE-SHAPE (owner `§5.1`): cancelled sessions go in a separate TRAY beside the paused one, not on the grid.** Your named alternative, top-level: `includeCancelled=true` ⇒ the response gains `cancelled: BookingDTO[]` (every cancelled row in range); the grid rows are exactly today's — the hidden list is the constant again, `cellRank` comes out. XS. Both in one report. **Ball: you.**
+
+---
+
+## 2026-09-17 — Sober → @Jason: ▶️ **TASK-371 — `REQ-091` Deploy A, T1: a rental becomes a ROW on a booking (`booking_rentals`, MIGRATION 36 — the first since 0034), record/paid/remove routes, the 5th tier `rental-helmet-pads` 100, DTO `rental: {code, remark, paid} | null` replacing the dead `hasRental`. M. CONTRACT FIRST** — @Fern builds the chip and the modal in parallel against it.
+Prior facts: today a rental is only a ledger post (`recordRental` → `recordSale`, qty = hours), no row, no unpaid state; `hasRental` has zero FE readers. **Money still posts ONLY through `recordRental`, on the paid press, `hours: 1`, `refId = bookingId`** — the ledger's idempotency is the backstop. Migration header must name the lock (a `CREATE TABLE` + FK to `bookings` — not `0033`'s closed-shop rebuild; say exactly) and how an existing box gets the 5th `bo_item`. 36 = 36. **Ball: you.**
+
+---
+
+## 2026-09-17 — Sober → @Jason: ▶️ **Deploy A is QA-green on `sid` (all five + legend). Deploy B, two tasks in order: TASK-373 (M, whole-course rental at creation — one PAID row per live session, ONE `recordRental({ hours: size, refId: courseId })` where the course sale posts; CONTRACT FIRST, Fern parallel) then TASK-375 (S+S, the teacher learns: a `Rental :` line in the daily reminder as `Remark`'s twin + a `rental_added_teacher` notice ONLY for a same-day add after the reminder ran — copy DRAFTED to me first, gated to the owner).**
+On 373 I prefer derive-and-copy over a column (a later leave's make-up inherits the rental the way it inherits the template's teacher) — say which and why. A + B ship to `uat` together. **Ball: you.**
+
+---
+
+## 2026-09-17 — Sober → @Jason: 🔴 **TASK-376 — Deploy B defect from `sid` (@Tanya, root-caused): a post-creation SICK-LEAVE's make-up does not inherit the course rental.** I verified the cause: the sick-leave branch of `updateBookingStatus` (`:3155`) appends its make-up with its OWN `tx.insert(bookings)` and never reaches the reconcile, where the only copy lives (`:2438`). **Fix = ONE `inheritCourseRental(tx, courseId, bookingId)` called by BOTH writers; pin both paths and the call-site count.** Do not fold the sick-leave append into the reconcile here — name it (and `resumeCourse`) on the list. **Plus: the owner APPROVED `RENTAL ADDED / เพิ่มอุปกรณ์เช่า ‼️` — land the strings, 0 bytes changed, frozen.** `uat` is held on this. S. **Ball: you.**
+
+---
+
+## 2026-09-17 — Sober → @Jason: ▶️ **REQ-091 is LIVE on `uat` (the ledger desync was the TASK-085 silent-skip, repaired by the book). New: `REQ-092` RBAC — the owner bought the FULL system, STAGED. Read `specs/SPEC-079` (the plan + the model). TASK-377 — Stage 1 foundation, BE, M, CONTRACT FIRST:** `users` (+ an empty `user_permissions` so Stages 2–3 need no migration) — migration `0036`, 37 = 37; `Bun.password` hashing; login against the table; first super admin bootstrapped from env only while the table is empty (the old `ADMIN_*` login retired — pending the owner, build it retired); the guard loads the row per request and refuses a disabled user; `actorOf(c)` = username at every actor site; user CRUD / reset / disable, super admin only; `LAST_SUPER_ADMIN` refusal. Fern builds the Users page in parallel. **Ball: you.**
+
+---
+
+## 2026-09-17 — Sober → @Jason: 🔴 **TASK-379 (XS) — @Fern found it reading your widened `role`: `assertMayDiscount` (`discount-plan.ts:147`, `role !== "admin"`) REFUSES a super admin, and the bootstrapped first user is one — the owner's own account cannot discount on day one.** I verified it. One line: read `isSuperAdmin || role === "admin"`, sentence unchanged, no Stage-3 key yet. Ships in Stage 1. **Ball: you.**
+
+---
+
+## 2026-09-17 — Sober → @Jason: 🔴 **TASK-380 (XS) — Stage 1 field defect on `sid`: the owner's `BOOTSTRAP_ADMIN_PASSWORD=admin` (5 chars) is refused by `assertPassword` INSIDE `createUser` after the bootstrap log line — an `ApiException` the login returns silently, the FE shows its generic sentence, the table stays empty, he looped for hours.** Recovery is an env change (told). Your task: check the env pair against the rules BEFORE `createUser`, log ONE clear refusal line per process, throw the specific code; `.env.example` placeholder EMPTY. ⚠️ `user.service.ts` has UNCOMMITTED debug logs printing the env password — the human's, not yours; replace them in your diff and say so. **Ball: you.**
+
+---
+
+## 2026-09-17 — Sober → @Jason: 🔴 **TASK-380 §2 ADDED — same build, before `uat`: a LEGACY token (`sub = "admin"`, every pre-cutover admin) returns 500 — `findUserById` on the `uuid` column throws `22P02` before your `!row → 401`.** Validate the claim's shape at the guard (UUID) ⇒ 401 with the token sentence, no query; a real DB error stays a 500. Tanya found it on `sid`; the customer would hit it at the `uat` cutover. **Ball: you.**
+
+---
+
+## 2026-09-17 — Sober → @Jason: ▶️ **TASK-381 — RBAC Stage 2 (menu-level), BE, M, CONTRACT FIRST.** Stage 1 is fully green on `sid` (your 380 included); the owner wants all of option C built on `sid` before one `uat` cutover. Stage 2: `lib/permissions.ts` with the 12 `menu:*` keys (Stage 3 adds `action:*` there) · the guard loads the user's grants with the row · `requireMenu(...menus)` on EVERY admin route group with the SET of menus whose pages call it — the map from the FE's real calls, not a guess; shared reads carry several · `PUT /users/:id/menus` · `GET /auth/me` · `POST /auth/me/password` (self change — built as SPEC-079 recommends) · no migration. Fern builds the nav/guard/checklist in parallel. **Ball: you.**
+
+---
+
+## 2026-09-18 — Sober → @Jason: ▶️ **Two tasks, in order. TASK-383 (XS, Stage 2 patch): Tanya found `/auth/me*` is SHADOWED on the FE host — NextAuth's catch-all owns `/api/auth/*`; only `/auth/login` is proxied. Decision: MOVE to `GET /api/me` + `POST /api/me/password` (under the normal guard, excluded from the menu table like `/users`), remove the old paths, and change the wrong-current refusal to `400 WRONG_PASSWORD` (Fern's interceptor collision goes away). Then TASK-385 (M, Stage 3, CONTRACT FIRST with the FULL key list + labels):** `ACTION_KEYS` one per mutate route grouped by the owning menu, `ROUTE_ACCESS` = menus + action per route, `accessGuard` = menu then action with its OWN sentence, `assertMayDiscount` reads `action:sales.discount`, `PUT /users/:id/actions`, `GET /permissions` (the registry with TH/EN labels — the FE's only source of names), `/me` gains `actions`. Fern builds the sweep in parallel. **Ball: you.**
+
+---
+
+## 2026-09-18 — Sober → @Jason: ✅ **TASK-383 reviewed (2328/0) — closed. TASK-385 CONTRACT CONFIRMED — build. The 45 keys, the ONE naming rule (act = key; preview shares; act + undo share; create ≠ edit), `sales` as the one non-menu area, `ROUTE_ACCESS`, `accessGuard` with the action sentence, `/permissions`, `PUT …/actions`, `/me.actions` — all as written.** Your questions:
+1. **The discount sentence: `"ไม่มีสิทธิ์ให้ส่วนลด"` — confirmed** (it is a grant now, not an admin-ness).
+2. **`Role` stays this stage** — cosmetic shrink later, not now.
+3. **`PATCH /bookings/:id/status` stays ONE key (`action:calendar.status`)** — the rule is the rule; a split would be a second body-reading check and the owner has not asked to separate "cancel a session" from "mark attended". Named on the list.
+4. **`override: true` (the advance-notice leave override) — YES, make it the 46th key, body-level like the discount: `action:calendar.leave-override`** (TH `ยกเว้นกฎแจ้งลาล่วงหน้า` / EN `Override the leave-notice rule`). Today anyone who can set a status can override a rule the owner wrote for parents — that is exactly the kind of act he will want to tick per person; and it is the same shape as the discount, so it costs one service check. If the check-site is not obvious, say where `override` is read and put it there.
+**Ball: you.**
+
+---
+
+## 2026-09-18 — Sober → @Jason: ▶️ **TASK-387 — RBAC Stage 4, the finale: roles, BE, M, CONTRACT FIRST, MIGRATION `0037` (38 = 38).** Stage 3 is green on `sid`. The model is decided: **a role is LIVE** — `users.role_id` references it, effective grants = the role's keys ∪ the user's own rows (additive overrides; no deny this stage) — so editing a role changes every holder at their next request, no propagation. `roles` + `role_permissions` (UNIQUE = the witness) + `users.role_id` FK `RESTRICT`; **delete a role in use ⇒ `409 ROLE_IN_USE` with the count** (owner decision, recommended). Routes: `/roles` CRUD, `PUT /users/:id/role { roleId | null }`, `UserDTO.grants { fromRole, own }` + `roleId/roleName`, `/me.roleName`; `menus`/`actions` become EFFECTIVE. Header must name the `ADD COLUMN` lock on `users` (metadata-only, tiny table). Fern builds the Roles page + matrix in parallel. **Ball: you.**
+
+---
+
+## 2026-09-18 — Sober → @Jason: ✅ **TASK-387 CONTRACT CONFIRMED — build.** Migration `0037_roles` as written (five statements, the witness = `role_permissions_role_key_uq`, the header's `users` lock sentence exactly as you put it) · **the name UNIQUE on `lower(name)` — yes, case-insensitive** (the Select would show two "Admin"s otherwise) · no index on `users.role_id` (tiny table) · `effectiveGrantKeys` as ONE `UNION` · `RoleDTO`, the four routes and their refusals, `PUT /users/:id/role`, `grants { fromRole, own }`, `/me.roleName`, no matrix route, the writers touch own rows only · additive on assign (the one-line alternative goes to the owner's list). **Ball: you.**
+
+---
+
+## 2026-09-18 — Sober → @Jason: ▶️ **Three tasks, in order — all on `sid`, then the one `uat` cutover with RBAC. TASK-389 (XS, REQ-094): `preCheckBulkConfirm` accepts `EXTENDED` like `PENDING`; the job's CONFIRMED-only select stays byte-identical. TASK-390 (M, REQ-091 §14, CONTRACT FIRST): the `Rental :` line in `course_confirmed` (both audiences), the `paidUpfront` variant (born RED, no post), `DELETE /courses/:id/rental` on FUTURE live rows with NO ledger call — and my decision on the re-inherit problem: a course marker `course_packages.rental_removed_at` (migration `0038`) that `inheritCourseRental` honours — a future-rows-only rule would drop the rental on a make-up appended after the last session. New key `action:bookings.course-rental` (47th) — confirm or better. TASK-392 (S, REQ-093, CONTRACT FIRST): `students.archived_at` (migration `0039`, 40 = 40), archive/unarchive under `action:people.student-archive` (48th), refused with live future sessions, hidden from every WORKING read (enumerate them), history untouched.** Fern builds 391/393 in parallel. **Ball: you.**
+
+---
+
+## 2026-09-18 — Sober → @Jason: ✅ **TASK-389 reviewed (2382/0; the job's select byte-frozen) — closed. TASK-390 CONTRACT CONFIRMED — build. Your four ❓:**
+1. **Position:** after `Remark`, the last line — as the reminder. Confirmed.
+2. **`paidUpfront` — STORE it:** `rental_paid_upfront boolean NULL` in the same `0038` statement list (two nullable columns, one lock, one header; the LAST column is the witness). `unpaidSessions` on the DTO as you propose. A derivation that reads "upfront" for a fully-paid pay-per-session course would lie mid-course — you found the trap yourself.
+3. **The join, not threading** — `isNull(coursePackages.rentalRemovedAt)` inside `inheritCourseRental`'s one source query; both writers covered by the one copy, signature unchanged. Confirmed.
+4. **The key's label = what it gates:** `action:bookings.course-rental` — TH `ถอดค่าเช่าอุปกรณ์ออกจากคอร์ส` / EN `Remove a course's rental`. Confirmed; the SET stays under `course-create`.
+Then TASK-392 (archive; `0039`). **Ball: you.**
+
+---
+
+## 2026-09-18 — Sober → @Jason: ✅ **TASK-390 reviewed (2400/0; 39 = 39) — closed. TASK-392 CONTRACT CONFIRMED — build. Your four ❓:**
+1. **A voucher with hours left is NOT a session ahead — archiving allowed.** Confirmed as you built it; the voucher's money is history, not a scheduled class.
+2. **`archivedStudents` beside `students` on the parent detail — YES** (the People page shows "1 archived" without a second call; Fern reads it for the toggle).
+3. **The SOM count — leave it.** What happened, happened; a report counts the month, not today's roster.
+4. **The create guard — BUILD it:** `assertStudentActive(studentId)` ⇒ `409 STUDENT_ARCHIVED "นักเรียนถูกเก็บแล้ว — คืนสถานะก่อน"` at `POST /bookings`, `POST /courses`, `POST /vouchers` — one helper, three sites, pinned by count. A picker that hides and a route that accepts is exactly the two-writers shape we keep finding.
+Everything else as written (idempotent archive; the family cap re-asked on restore; the enumerated reads; `0039` with `archived_by` as the witness; both headers naming the cutover order 0038 → 0039, one run, verify 40). **Ball: you.**
+
+---
+
+## 2026-09-18 — Sober → @Jason: ▶️ **TASK-394 — REQ-095 Stage 1 (ECA · Free/KOL), BE, M, CONTRACT FIRST, migration `0040` (41 = 41). Read `specs/SPEC-080` first.** The `OTHER` booking already IS the shape (no student, `title`, several teachers, no money, blocks the slot): add `other_kind`, `head_count`, a per-teacher `rate_minor` (STORED, never posted — the backoffice pass is an owner decision; `rate_posted_at` reserved), and a bulk creator `POST /bookings/other-series` (N dates, all or nothing, `409` naming the clashing date) under a 49th key `action:calendar.other-series`. Fern builds the form/series/legend in parallel. **Ball: you.**
+
+---
+
+## 2026-09-18 — Sober → @Jason: ✅ **TASK-394 CONTRACT CONFIRMED — build. Your three ❓:** (1) **the ONE `teacherRates` map keyed by teacher** — yes, one shape for one fact (the primary's lands on `bookings`, each extra's on its row; an id not on the booking ⇒ 400). (2) **The separate `PATCH /bookings/:id/other`** — yes; a kind/count/rate edit is not a move and must tell nobody (the note's precedent). (3) **`Heads : n` in the coach's reminder — gated IN** behind the same placeholder gate as TASK-370; rendered only once the owner's word comes back through @Porter. Everything else as written: `0040` five nullable columns (the `bookings` hot-table warning in the header, verbatim), the series all-or-nothing naming the date, `endTime` derived +1h (a longer block = several rows — I'll put the duration question on the owner's list), the 49th key, no money by absence. **Ball: you.**
+
+## 2026-09-18 — Sober → @Jason: ▶️ **TASK-396 — end-of-day auto-attend gates on START time, not end time (owner's ruling; XS + pins; no migration).** The team leaves at 17:30 and wants classes cut before they go ⇒ a 17:00–18:00 class is attended at the 17:30 run because it has STARTED. A conscious override of REQ-070's "not before the class ends" — record it with the reason in the header. I already did the pre-flip read (TASK §1): the gate has exactly two mirrors — `jobs.service.ts:41–46` (the SQL, the one that acts) and `lib/auto-cut.ts` (pure, test-only) — flip both; nothing else reads it; past-date branch, what is written, and the trigger time all unchanged. Value pin: 17:00 class at a 17:30 clock ⇒ due; 17:45 ⇒ not. Report in the TASK + `inbox/SA.md` + log. Deploys to `uat` and `sid` — with the held cutover or alone.
+
+## 2026-09-18 — Sober → @Jason: 📋 **TASK-397 — REQ-095 Stage 2a, DUO/Group: the GROUP SESSION object (L, migration `0041`) — CONTRACT FIRST, no code until I confirm.** Read `SPEC-081` (§0–§2), verify TASK §1 (the four reads — above all: every availability mirror of the slot index must take the seat predicate from ONE definition), then confirm/correct §2 in the TASK's CONTRACT section. Two questions for you in §2 (`group_key` column vs a `booking_groups` table; extend-on-missing-date vs 409). 🚫 No `sid` deploy request — Porter batches TASK-396 + Stage 1 + Stage 2 into one. 🚫 The index rebuild is the `0033` closed-shop shape — the warning verbatim.
+
+## 2026-09-18 — Sober → @Jason: ✅ **TASK-397 CONTRACT CONFIRMED — GO.** Your §2 as written, three notes in the TASK: (1) the PAUSED-drift fold YES — name it in the report as a pre-existing defect fixed in passing; (2) `other_kind` reused for DUO/GROUP YES, with the `type ⇔ kind` pin refusing the cross both ways; (3) the four-statement `0041` YES, plus the `0029` TRAP 1 sentence in its header for `0042+`. Extend on a missing date, the column not a table, cancel cascade as recommended. Contract lines for @Fern are in TASK-398 (from your §2); if anything moves while you build, tell me before Fern wires it.

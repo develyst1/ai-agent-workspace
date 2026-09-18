@@ -22,7 +22,11 @@ and the `/services` desktop eye) and `tests/harness/test003-2026-09-05.cjs` (the
 and every project modal's live link, on a build output) and
 `tests/harness/test007-2026-09-05.cjs` (P2 across all 7 linked entries + P3, the
 pinned modal footer, on a build output — it reloads the page before every modal
-so no reading is stale).
+so no reading is stale) and `tests/harness/test008-2026-09-13.cjs` (H8–H12, A1 — the
+REQ-005 strings by exact text on `/` + `/about`, and every Ask-section state on the
+**stub**; modes `strings | f1 | happy | none | fold | h8 | f2 | f3`) and
+`tests/harness/test009-2026-09-13.cjs` (the ONE real-gateway press — **never run it as a
+regression**; it spends the owner's calls and needs a ledger row first).
 The harness prints observations; the verdict always comes from what was seen.
 
 **Serving a build (S11):** clear `front/.next` first, `npm run build`, then serve
@@ -85,7 +89,17 @@ reading (2026-09-05):**
 | H5 | No client-facing string on Home is new or altered except the quotes — check every visible text node against the last pre-REQ baseline (R4) | **2026-09-05 NOT_TESTED** — the baseline this check needs does not exist anywhere QA may read. Unrunnable as written until one is supplied or it is rewritten; see TEST-004 QQ7. **This check stays `NOT_TESTED` and is NOT rewritten by QA** — whether the gap is closed at all is the owner's **Q25** (Porter, QQ8 2026-09-05); capturing a baseline now would close it by default |
 | H6 | **Reduced motion**: with `prefers-reduced-motion: reduce`, `document.getAnimations()` is empty at first paint, two settled frames are identical, **and the hero is fully visible** (not stuck at the animation's start state). Always run the `no-preference` control too — a check that cannot detect motion proves nothing | 2026-09-05 PASS — `reduce` 0 animations + hero `opacity:1`/`transform:none`; control `no-preference` 1 (`HomeHero_rise`) |
 | H7 | **Skip link by keyboard**: Tab once → "Skip to content" with a visible focus ring; Enter → `#main`; **the next Tab lands inside `<main>`**. `activeElement` staying on `<body>` is not a failure — the next Tab is the check. **Do not click the page first** — a click moves the sequential-focus start point and the first Tab then lands on the wrong element | 2026-09-05 PASS |
-| H8 | Hero renders its full set at 360x740 above the fold: name, nickname/role, lead, both CTAs, hero quote | **2026-09-05 PASS** — all six above the fold with 49px to spare: name 167–256, role 268–293, lead 309–520, CTA 1 544–588, CTA 2 "Get in touch" 600–644, quote 664–691 (fold 740). **DEF-2 closed**, see TEST-005 case 1 |
+| H8 | Hero renders its full set at 360x740 above the fold: name, nickname/role, lead, both CTAs, hero quote | **2026-09-13 PASS — with ZERO margin (QQ14 open):** name 165–253, role **263–317 (two lines since REQ-005)**, lead **332–569 (9 lines)**, CTA 1 593–637, CTA 2 649–693, quote **713.41–740.41** on a 740 fold — glyphs legible, the line box 0.41px past. The 49px margin of 2026-09-05 was spent by REQ-005's longer role + lead, not by REQ-007. One more wrapped line in the hero fails this. See TEST-008 B8 / OBS-13. (2026-09-05: 664–691, 49px spare; DEF-2 closed, TEST-005 case 1) |
+| H9 | **REQ-005 strings on `/`** (owner-decided, REQ-005 §Owner decisions): role line `AI Engineer / Senior Software Engineer` (hero + footer; header too at ≥48em), footer `© 2026`, lead contains `in about three weeks`, stat `4 / Years experience`; **absent**: `two weeks`, `Three years`, `Solutions`, `Chatuchak`, and `2025` in the footer. Read `body.innerText` after a full scroll, at 1280 and 360 | **2026-09-13 PASS** — TEST-008 A1–A5, A13–A14 |
+| H10 | **Ask section (REQ-007) is placed below the hero and changes nothing above it:** hero bottom = `section:has(#ask-heading)` top at scrollTop 0 (360 and 1280); `main` order hero → Ask → stats → Expertise; `scrollWidth ≤ innerWidth` in idle / running / answered / failed states at 360; two starter chips, both present | **2026-09-13 PASS** — 788.41 = 788.41 (360), 901 = 901 (1280); TEST-008 B6–B7 |
+| H11 | **Ask section's three honest failures, on the stub only — never the real gateway:** (1) `back/` down → all three steps `Interrupted`, `The assistant could not be reached.`; (2) `back/` up, gateway dead → `The AI gateway could not be reached.`, `back/` log `fail kind=unreachable at_step=1 calls=0`; (3) `back/` killed mid-chain → step 1 keeps its badge, 2–3 `Interrupted`, `The connection dropped before the answer was finished.`, **0 answer blocks on screen**. Each with `Try again` + About / Portfolio / Contact links, hero + footer intact. Recipe: TEST-008 §B (stub 3999, `GATEWAY_BASE_URL` pinned, `KNOWLEDGE_DIR=test/fixtures/knowledge`) | **2026-09-13 PASS** — TEST-008 B1–B3, both sizes |
+| H12 | **Ask section's stub happy path + `stub:none`:** `stub:slow` → step badges land in order (`deepseek · deepseek-flash · 636 ms` from the canned body), answer, `Sources` = `/about` Skills + `/portfolio` YodBarber (2 links; the stub's third excerpt is D6-dropped); `stub:none` → the not-covered hint `Ask directly` → `/contact`. **The real gateway is NEVER part of a regression run** — every real question is a ledger row on Sober's word via Porter (SPEC-007 §Call ledger) | **2026-09-13 PASS** — TEST-008 B4–B5; real-gateway picture once, TEST-009 (`calls=3`) |
+
+## About (`/about`) — added by REQ-005
+
+| # | Check | Last run |
+|---|-------|----------|
+| A1 | **REQ-005 strings on `/about`** (owner-decided): `<h1>` `Four years of shipping the thing nobody there had shipped before`; GFAI `AI & Robotics Developer` + `In about three weeks I delivered…`; ICM `Senior / Staff Software Engineer` at `ICM Smart Solution Co., Ltd.`; certificate issuer `ICM Smart Solution`; values line `a robotic kiosk prototype in about three weeks`; the nine chips `DeepSeek`, `Kimi`, `xAI`, `Text-to-SQL / schema grounding`, `MQTT`, `Go Gin`, `SQLite`, `nginx`, `pm2` + `Generative AI (Gemini, OpenAI)` unchanged; **absent** `two weeks`, `Three years`, `Solutions`, `Chatuchak` (the four certificate-year `2025` captions are pre-existing content, not the footer — OBS-12; the Employee Survival certificate PNG itself reads "ICM Smart Solutions Co.,Ltd." — an image, not a string) | **2026-09-13 PASS** — TEST-008 A6–A14, both sizes |
 
 ## Portfolio (`/portfolio`) — added by REQ-003
 
@@ -105,7 +119,7 @@ reading (2026-09-05):**
 - The 1px band along the top edge at scroll 0 (contrast step 1.15–1.43:1). Item
   **B**, measured, the owner's judgment.
 - `/contact` required-field asterisks at 4.37:1. Item **F**, a scope question.
-- Footer reads `© 2025`; predates REQ-001, TEST-001 Q1 open with Porter.
+- ~~Footer reads `© 2025`; predates REQ-001, TEST-001 Q1 open with Porter.~~ **Closed 2026-09-13:** REQ-005 C8 made it `© 2026` (constant, no auto-year — SQ25); seen in TEST-008 A3. Re-check when the year changes: the owner chose a constant.
 - `/blog` post titles are not links and `/blog/[slug]` does not exist —
   pre-existing gap, explicitly out of scope.
 - A `next dev` warning about `scroll-behavior: smooth` on route transitions. A

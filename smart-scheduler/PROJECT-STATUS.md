@@ -4,7 +4,7 @@
 > Resume: `git pull` → `ai-worker/PROTOCOL.md` + your role file → this + `ai-worker/board.md` → **the newest
 > `ai-worker/log/*.md`** → act on your role's ball.
 >
-> 🔵 **Last updated: 2026-09-05** by Porter (PM). **START AT the `🔵 RESUME HERE — 2026-09-05` section at the END of this file** — it carries the live state, who is waiting on what, and the process lessons. Everything above it is history in date order. 🔴 **2026-09-05 changed the environment: the bot now runs on the CUSTOMER’S real LINE OA.** Read that section before acting on anything LINE.
+> 🔵 **Last updated: 2026-09-16** by Porter (PM). **START AT the `🔵 RESUME HERE — 2026-09-16` section at the END of this file** — it carries the live state, who is waiting on what, and the process lessons. Everything above it is history in date order. 🔴 **2026-09-05 changed the environment: the bot now runs on the CUSTOMER’S real LINE OA.** Read that section before acting on anything LINE.
 
 ---
 
@@ -384,3 +384,134 @@ stored ids cleared.** Clean run.
 - **`REQ-079` §15's wording pass must NOT ship as written** — it points parents at buttons that are gone.
 - **Tanya's "6 ACs need re-validating on the customer's OA" is suspended**, not resolved: there is nothing to
   validate there until a re-publish.
+
+---
+
+# 🔵 RESUME HERE — 2026-09-13 (Porter). ⛔ **SUPERSEDED by the 2026-09-16 section at the END of this file — read that first; this is kept for history.**
+
+## Where the product IS
+- 🟢 **`uat` (the customer's box, `frontoffice.develyst.online`) was deployed 2026-09-11 morning** with the
+  whole `REQ-085` batch, `REQ-087 §1/§5/§6` (voucher notifications), the date sweep (`TASK-344/345`), and
+  `TASK-346`. **The customer has been using it since.** `sid` is ahead of `uat` by everything in `REQ-088`.
+- 🟢 **`sid` holds `REQ-088` (registration by LINK) end to end** — `/register`, LIFF, DOB picker, cascading
+  address, TH/EN toggle, English tier labels. **Owner-tested on his phone, all passing.** `§9` (province → note)
+  was cut 09-13 and is with @Jason; **not yet deployed.**
+- 🔴 **`REQ-088` is NOT on `uat`.** It needs the CUSTOMER to create a LINE Login channel + LIFF app on THEIR
+  provider (owner says they have granted him the rights and it is prepared) and two values set in `uat`'s env:
+  `LINE_LOGIN_CHANNEL_ID` (BE) · `NEXT_PUBLIC_LIFF_ID` (FE — the prefix is mandatory). **The link an admin
+  pastes is `https://liff.line.me/<LIFF_ID>`, NOT the page URL.** Scope must include `openid` AND `profile`.
+- ✅ **35 `.sql` = 35 journal tags on every deploy this week. NO migration has shipped since `0034`.**
+
+## The rulings that must not be re-derived (all in the REQ files, verbatim)
+| ruling | where |
+|---|---|
+| **The QUOTA is the only thing that may refuse a leave; the dates move.** A LATE leave is a different thing (`LEAVE_NOTICE_TOO_LATE` stands). | `REQ-085 §12` `§12.2` |
+| **Weekday for a COURSE message, DATE for a SESSION message; every rendered date is `DD-MM-YYYY`.** | `REQ-085 §15` `§16d`, `TASK-344` |
+| **`Advance Leave Notice` ALWAYS prints (`-` when empty); `Remark` NEVER prints when empty.** | `REQ-085 §8.1` |
+| **"English only" means LABELS and SYSTEM values — never a student's name, never the admin's `Remark`.** | `REQ-085 §8.2` |
+| **The LEAVE NOTICE header is bilingual `LEAVE NOTICE / แจ้งลา ‼️`; `§4` governs values the system GENERATES, never what a message is CALLED.** | `REQ-085 §16e` |
+| **Registration copy = the customer's words, verbatim; none of their 8 headings is sent; CEO skipped; role words `ครู`/`แอดมิน` (guessable — a DECISION).** | `REQ-079 §17c–f` |
+| **The bot never auto-sends the `สมัคร` prompt** (the owner edited this himself, commit `baa6015`; the lost guard was restored in `TASK-346`). | `REQ-079 §17g` |
+| **Every command keyword works in Thai AND English, case-insensitively; a word the product PRINTS can never become a child's name.** | `REQ-085 §13` `TASK-313` |
+| **`parents.province` = the province only; the full address → `parents.note`, APPENDED. Typed → note only, province empty. The chat uses the same writer.** | `REQ-088 §9` |
+| **Existing dirty `province` rows are LEFT dirty ON PURPOSE** — the admins fix them from the broken dashboard. Do not script a cleanup. | `REQ-088 §9.1` |
+| **The `/register` page holds NO rule; the server holds every decision once; the chat is a second door to the same writer.** | `REQ-088 §3`, `TASK-347/348` |
+| **`REQ-086` (the customer edits the message WORDS) is LAST by the owner's order; `SPEC-078` is written; the four `NOT`s stand.** | `REQ-086`, `SPEC-078` |
+| **QA never tests on `local`.** `sid` is the only test surface; `uat` is READ-ONLY for QA. | `PROTOCOL.md`, `QA.md` |
+| **@Tanya may drive the owner's phone via `adb`** — demo OA on `sid` only, never the customer's, never another chat. Path in `machine.local.md`. | `QA.md` |
+
+## What is OPEN — and who holds it
+| what | holder | state |
+|---|---|---|
+| **`REQ-088 §9`** province→note | @Jason | 🔵 cut 09-13, S, not deployed |
+| **`REQ-088` to `uat`** | owner + customer | needs the customer's LIFF app on their provider + 2 env values on `uat` |
+| **`REQ-088` copy** — 36 placeholder PAIRS + 2 adapted | **@Porter → owner → customer** | list is in @Fern's TASK-348/349 reports by key; 21 verbatim need nothing |
+| **`/checkin` shows ENGLISH to Thai parents by default** (item 18) | owner has NOT decided; he asked to defer it | LIVE on `uat`; 10 lines; @Sober recommends taking it |
+| **`REQ-080`** — QA cannot hold a session on `uat` | owner has NOT decided | **cost three `uat` rounds**; binary: ship it, or accept `uat` verification is always his |
+| **`TASK-334 Part B`** — two admin alerts render a meaningless line | 🅿️ PARKED by owner | *"ช่างมัน ลูกค้าไม่ได้ทัก"* |
+| **`REQ-087` remainder** — vouchers beyond notifications | open, off clock | owner scoped `uat` to notifications only |
+| **`REQ-085 §16.1`** — `Private` in the program name | LAST by owner | blocked on a question we cannot yet phrase (is `Private` a name or a category; are there group classes?) |
+| **The self-generated pile (items 1–19)** | owner decides | **@Sober recommends 1** (one restore helper — three restore failures in a week) **and 5** (a Thai check on value generators). Item 4 is a week of work. |
+| **The customer's admin phrase / parent-only LINE account** | owner | `§7.4`'s audience rule (teacher+admin, NOT parent) is UNVERIFIED — the owner's account is both roles |
+
+## The standing lessons of this fortnight — read before acting, they cost real rounds
+1. **A source pin proves a line EXISTS, never that it EXECUTES.** `TASK-284` was reported DONE twice and was not.
+2. **The screen beats the code.** Five times the owner's screenshot overturned a source-read (`§1`, `TASK-300`,
+   `TASK-301`, the `HH:mm:ss` prefill, the address-as-three-fields). **When he sends a screenshot, it is the DoD.**
+3. **Look for TWO WRITERS, not two doors** (@Jason) — and its twin: **look for the SIBLING POPULATION** (a rule
+   that names who it protects and not who it touches has an assumed boundary).
+4. **Fitting is not evidence.** @Porter read structure into the owner's prose five times; every reading fitted.
+5. **"No message" ≠ "no event."** Both @Sober and @Porter held work on silence that a one-line check would have
+   ended.
+6. **A self-generated task chain has no natural end.** Every task closing with a Question that becomes a task
+   ran for a day while a finished release sat. **The chain is STOPPED; the pile goes to the owner with sizes.**
+7. **Never release QA on the word "deployed" — release on `db:verify` ✅ + restart.** Three times a tester was
+   released onto a build that moved.
+8. **LINE mobile and LINE desktop render differently; nobody on the team has a phone.** Verified-on-desktop is
+   verified for CONTENT, not APPEARANCE.
+9. **A restore expressed as a step in a chain is not a restore** — three different failures in one week.
+
+## Next expected moves
+1. `§9` lands → owner deploys `sid` → owner re-tests `/register` once (province in `province`, address in `note`).
+2. **The owner will hand @Porter his OLD customer-facing LINE note to rewrite** — that is the immediate next task.
+3. Then: `/checkin` default (item 18) and `REQ-080` — both need one word from him.
+4. `REQ-088` to `uat` when the customer's LIFF values arrive.
+
+---
+
+# 🔵 RESUME HERE — 2026-09-16 (Porter, before session close). **Supersedes the 2026-09-13 section.**
+
+## Where the product IS
+- 🟢 **`uat` (`frontoffice.develyst.online`) is CURRENT** — `REQ-088` (link registration) AND the whole `REQ-089`
+  customer batch are LIVE on the customer's box, deployed 2026-09-16. `sid` and `uat` are level.
+- ✅ **`REQ-088` shipped** (link registration end to end + `§10`: `SOM SCHEDULE` title on `/register` and
+  `/checkin`, English address dropdowns in EN mode, already-linked warning + family-wide UNLINK, note cap 2000).
+- ✅ **`REQ-089` — the customer's "before rent/other" batch — DONE, all 9 items** (verbatim in the REQ file):
+  0 app name `SOM SCHEDULE` everywhere · 1 `Extended` rows unlockable **+ §4.2 FULL UNLOCK (leave every session,
+  no cap)** · 2 expiry = base ceiling + advance-leave weeks (Kavya 6/3 ⇒ week 11) · 3 hard DELETE for a
+  history-free student (the product's FIRST delete) · 4 a separate CANCELLED tray on the admin calendar
+  (toggle) · 5 a `Last` chip on a course's last session · 7 LINE to the COACH on cancel/pause/drop/END of a
+  confirmed class · 8 pick the teacher on resume (default = LAST session's teacher). **Item 6 (colours) is the
+  OWNER'S OWN front-end team — never ours.**
+- ✅ **35 `.sql` = 35 journal tags — still NO migration since `0034`.** The whole fortnight shipped without one.
+- 🔑 **How the owner deploys (SYSTEM-FACTS): build LOCALLY → zip → upload → `pm2 restart`.** No pull/build on the
+  server. A "restart" re-runs the SAME zip — a stale zip cost two QA rounds on `REQ-089 §2`. "Deploy" =
+  rebuild locally at the intended commit, fresh output, re-zip, upload, restart. The `.next.zip` in the FE repo
+  root is this artifact, not a stray.
+- 🔴 **`end-of-day` is now 17:30** (owner moved it from 18:30 on 09-16, customer request). The old
+  "18:30-is-correct" block in SYSTEM-FACTS is superseded.
+
+## What is OPEN — nothing is dispatched; all of it is the owner's to pick
+| what | holder | note |
+|---|---|---|
+| **`REQ-089 §6` item 7 — the COACH message TEXT** | owner (phone) | logic QA-passed on `sid` (confirmed⇒attempt · pending⇒none · unlinked⇒skipped); copy was owner-approved + byte-frozen in TASK-370's test. Only the on-phone render is unverified — no `sid` coach is LINE-linked. His check on `uat`. Edits are string-only. |
+| **Polish list (named, nothing built)** | owner picks | Status column scrolls off a 375px phone (ticking 3–4 leaves is now everyday) · Delete icon 2px from Edit (mis-tap risk) · `Last` chip leaves at attendance (keep on delivered cell?) · `Last` tap-through to sell the next course · API fence at position 104 · ICS `PRODID` still the old name · `extendedFromId` not on the DTO (link a struck cancel to its make-up) |
+| **Older parked list — the 09-08 "OWNER'S NEXT BATCH" (board §)** | owner | items like the English toast header, `TASK-294` (`ยังไม่มีคาบ` two meanings), `REQ-080` (QA cannot READ `uat`). **NOT reconciled against what shipped — needs a per-item code check before trusting it.** |
+| **`REQ-080`** — QA cannot hold a `uat` session | owner (undecided) | cost three `uat` rounds; binary: ship the narrowed guard, or accept `uat` verification is always the owner's. |
+| **`REQ-086`** — the customer edits the message WORDS themselves | LAST by owner | `SPEC-078` written; the four `NOT`s stand. |
+| **Subject guard on the server** (`REQ-089` finding 1) | owner: HELD | no wrong-subject booking ever reported; FE filter stays the only guard by decision. |
+
+## The rulings that must not be re-derived (verbatim in the REQ files)
+Everything in the 2026-09-13 table above STILL HOLDS. Added this round:
+| ruling | where |
+|---|---|
+| **Advance leave at creation is FULLY unlocked — every session leaveable, NO cap; it stays FREE (no quota).** The `< size` cap is gone. Chain terminates; a zero-original-attendance course is a valid state. | `REQ-089 §4.2` |
+| **Course expiry with advance leave = base ceiling + advance-leave weeks** (not the last session). | `REQ-089 §2`, `TASK-358` |
+| **Student DELETE exists but ONLY for a history-free student** (no course/booking/voucher in any status); one with history is suspend-only; `409` with counts. The product's one exception to "nothing is deleted". | `REQ-089 §3`, `TASK-364/365` |
+| **Item 4 is a separate CANCELLED tray (like the paused tray), toggle-revealed, DISPLAY ONLY — no new cancel reason, no money/re-owe change.** | `REQ-089 §5.1` |
+| **Coach notify: per-SESSION for a single cancel; ONE per course per coach on drop/END; only a CONFIRMED session earns it; unlinked ⇒ skipped. STYLE mirrors the existing outbox formats (owner's hard rule); copy comes to the owner before the send path is final.** | `REQ-089 §6`, `§6.1/§6.2` |
+| **Resume default teacher = the LAST session's, not the first; the admin picks to override.** | `REQ-089 §8`, `TASK-361` |
+| **`end-of-day` = 17:30** (owner, 09-16). A session is "in time" until it fires. | SYSTEM-FACTS |
+
+## The standing lessons — the 2026-09-13 list (1–9) all still hold. One reinforced this session:
+- **"Deployed" is not "the new build is running."** The owner builds locally and zips; a plain restart serves the
+  old zip. Twice on `REQ-089 §2` a QA FAIL was a stale artifact, not a formula bug — Sober and Tanya each read
+  the source and pinned it to the deploy before anyone "fixed" working code. **When a box emits old behaviour
+  after a deploy, the first question is which commit the LOCAL build came from, then rebuild-zip-upload — not a
+  code change.**
+
+## Next expected moves
+1. Nothing is in flight; both engineers idle; the chain is stopped. **Do not dispatch — wait for the owner.**
+2. The owner may verify item 7's coach message on `uat` (a linked coach) and hand back string edits.
+3. Otherwise he picks from the polish list, reconciles the 09-08 parked batch, or brings new customer work.
+4. `REQ-086` (customer-edits-the-words) is the known LAST big item, on his order.

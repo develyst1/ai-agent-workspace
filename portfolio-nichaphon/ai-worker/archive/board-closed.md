@@ -61,3 +61,11 @@
 | ~~**QQ11 + QQ12**~~ — **BOTH ANSWERED 2026-09-05, Porter** | — (nothing) | QQ11: git state re-read, SQ17 answered by that state (row above), no role committed. QQ12: **OBS-8 goes to the owner alone, NOT with SQ13** — see requirements/REQ-003-portfolio-content-refresh.md §TEST-006 intake |
 | ~~**REQ-003 OBS-8**~~ — **ANSWERED 2026-09-05 by the owner: `ยกปุ่มขึ้น`** (raise the button) | — (nothing) | He picked the "raise it" option he was offered, so it becomes work, not an observation: **REQ-004** (now `IN_SPEC`, row above) carries the measurements (360x740: button top y=1255 / y=1293, modal fold ~703). Q30/Q31/Q32 opened there, all non-blocking — see requirements/REQ-004-portfolio-modal-live-link-button-on-phones.md |
 | ~~TEST-002 DEF-1 / SQ10~~ — CLEARED 2026-09-04 | — (nothing) | Owner answered `SQ10=รวมใน REQ-002`: the repair ships inside REQ-002, no separate defect REQ. TASK-012 unblocked — see requirements/REQ-002-whole-site-step-up-five-routes.md §Questions DEF-1 |
+
+## Blocked / waiting — rows that closed, swept 2026-09-13 (1)
+
+> Closed by Porter 2026-09-13: the fact the row asked for was written into the board §Project info git bullet on 2026-09-13 (git re-read: `D1` = `origin/D1` = `1dcc9b8`, `develop` = `ca5c097`, diverged). Row below is byte-verbatim from the board.
+
+| Item | Waiting on | Question (short) |
+|------|-----------|------------------|
+| **Git state on the board is stale — verified 2026-09-09 by SA, one line for Porter** | Porter (PM) | The §Project info bullet says team work sits at `ca5c097` on `D1` = `develop` and that TASK-018's file is unstaged. Neither still holds: the human committed TASK-018 as **`6c17609`**, and **`D1` = `origin/D1` = `6c17609` while `develop` = `ca5c097`** — the branches have diverged. SA read git but will not rewrite Porter's bullet |

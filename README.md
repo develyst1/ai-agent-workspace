@@ -77,8 +77,16 @@ all three open and ping each one when the board shows work waiting for it.
 
 ## Starting a new project
 
-Copy the `_templates/project` folder to a new `<project-name>/` folder,
-then edit the team names in the role files if you want different personas.
+Copy the `_templates/project` folder to a new `<project-name>/` folder, then
+fill every 🔧 mark (project name, repos, stack, environments, mode) and delete
+the roles the desk does not have. **Seed `ai-worker/SYSTEM-FACTS.md` before the
+team's first session** — with what the owner said and a read-only survey of the
+repos — and register the repo paths in `machine.local.md`. Finish with
+`node check-hygiene.mjs <project-name>`; a fresh copy of the template passes
+with zero warnings. (Since 2026-09-17 the template ships with `SYSTEM-FACTS.md`,
+`inbox/`, `tests/` + `tests/harness/`, `QA.md` and `FE.md` — a new desk is born
+with the rules older desks had to learn.) Opening a desk is Marie's job
+(`MARIE.md`); ask her rather than copying another desk raw.
 
 ## Projects
 
@@ -94,3 +102,5 @@ then edit the team names in the role files if you want different personas.
 | `portfolio-nichaphon` | Personal portfolio / freelance-services site for Nichaphon Sayvav (`portfolio.develyst.online`) — Next.js 15 + Mantine 8, frontend only, single repo `portfolio-nichaphon-web`. **Dispatcher-run** | Porter (PM), Sober (SA Lead), Fern (FE) — no BE, no QA |
 | `dte` | **DTE — "Disrupt Thai Education"**: online learning platform with a per-course AI Teacher, live at `dte.develyst.online`. **Brownfield, real users.** Single repo `dte` = `back/` (Bun + ElysiaJS + PostgreSQL, raw SQL, no ORM) + `front/` (Next.js 15 + React 19 + Tailwind); AI via the `develyst-ai` gateway. **Dispatcher-run**, branch `develop`. Born 2026-09-06 with `SYSTEM-FACTS.md` + `inbox/` + `tests/` | Porter (PM), Sober (SA Lead), Jason (BE — `back/`), Fern (FE — `front/`) — no QA |
 | `layout-pattern-app` | Electron + React + TS + Konva desktop app for photo pattern / collage templates (Layout Designer + Use Template). **Dispatcher-run**, single greenfield repo at `H:\layout-pattern-app\layout-pattern-app` | Porter (PM), Sober (SA Lead), Jason (BE — Electron/main), Fern (FE — renderer) |
+| `possibility` | Freelance / innovation platform — a user says what they want, the AI analyses feasibility, social impact and interest; five user tiers. **Greenfield, MANUAL mode**, three repos (`possibility-back`, `possibility-front`, `possibility-spec` = the owner's requirement repo). Stack TBD (SPEC-001). | Porter (PM/BA/PO/UX writer), Sober (SA Lead), Jason (BE), Fern (FE), Tanya (QA) |
+| `pun-kub-fang` | ปั่นกับฟ่าง — smoothie/drinks shop. **The front exists and belongs to another developer**; our team builds the **backend** (`pun-kub-fang-back`, Bun + Hono, greenfield) and touches the front only at the API seam. **MANUAL mode.** ⚠️ parent folder on disk is misspelled `pub-` | Porter (PM/BA/PO), Sober (SA — public API contract), Jason (BE), Fern (FE, guest), Tanya (QA) |
