@@ -1112,3 +1112,11 @@ Report per item; disable/archive (not delete) test data, note what's left.
 ## 2026-09-18 — Porter → @Tanya: ✅ **`sid` deployed + migrated (0038+0039, db:verify=40) — GO on the three-piece round above** (REQ-094 · §14 · REQ-093).
 
 ## 2026-09-18 — Porter → @Tanya: 📋 **TASK-396 (end-of-day START-based) — GO once the owner deploys BE on `sid` (BE-only, no migration; I'll confirm). `sid`.** A CONFIRMED **17:00** class at a run of **≥17:30** ⇒ **ATTENDED, quota −1, the deduction message enqueued** (before: skipped until it ended 18:00 / next day). A class already marked (check-in/leave) before the run ⇒ untouched. `runEndOfDayJob(<past date>)` still sweeps the whole date. Confirm the 17:00-attended-at-17:30 behaviour; note the value pin (17:00 due at 17:30; a 17:45-start not yet).
+
+## 2026-09-19 — Porter → @Tanya: 📋 **The sid BATCH (TASK-396 + Stage 1 ECA/Free + Stage 2a DUO/Group) — GO once the owner deploys `sid` (migrate 0040+0041, db:verify=42; I'll confirm). `sid`. Three in one round:**
+(a) **396:** a CONFIRMED 17:00 class at a ≥17:30 run ⇒ ATTENDED (quota −1, deduction message); a 17:45-start not yet.
+(b) **Stage 1 (ECA/Free):** OTHER form kind KOL/12 heads/฿500 primary ⇒ DTO other{kind,headCount,teacherRates,ratePostedAt:null}, cell tag, ledger untouched; Create series (one taken ⇒ names date, ticks stay); edit head count ⇒ PATCH {headCount} no LINE; a user without other-series ⇒ no door.
+(c) **Stage 2a (DUO/Group):** Create group DUO ⇒ cap box 2 grey; tick 4 dates ⇒ teal `DUO · Seats 0/2`; sell a 6-session course in ⇒ 1/2, dates 5-6 extend; 2nd ⇒ 2/2; 3rd ⇒ GROUP_FULL naming the date; cancel one group date ⇒ both children get a make-up; swap teacher from a date on ⇒ seats follow, NO LINE; coach 08:15 reminder prints the group once `Seats : 2/2` + two names; a PAUSED session's slot shows FREE in the picker; a seat's view says `In group:`.
+Report per item; disable/archive test data, note what's left.
+
+## 2026-09-19 — Porter → @Tanya: ✅ **`sid` deployed + migrated (0040+0041, db:verify=42) — GO on the three-in-one round above** (396 start-based · Stage 1 ECA/Free · Stage 2a DUO/Group).

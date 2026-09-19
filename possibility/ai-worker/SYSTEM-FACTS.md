@@ -154,3 +154,22 @@ Sober's SPEC-001 recommendations were overridden line by line. These are the fac
 - **D8 Environments: NO local backend database. The team develops AND tests against the PostgreSQL on the owner's SIT server** — connection given by the owner as `DATABASE_URL` (postgres user, host + password given in chat 09-18; **the value is NOT written in any committed file** — the owner puts it in `.env` himself). Database name `possibility_db`. (owner, 09-18: *"no local Backend we use this postgres in server SIT for test and development"*)
   - **The team creates `.env.example` (variable names, no values) in each repo; the owner fills `.env`.** (owner, 09-18: *"create env i will config it for use"*)
   - ⇒ **Environments table changes: SIT database = shared dev+test DB, team may read/write (it is the working DB). It is NOT production.** Nothing else on SIT (app hosting, deploy) is stated. Deploy is the owner's, on request.
+- **D3 correction (owner, 2026-09-19: *"Ant Design"*): Frontend UI library is Ant Design, via the skill `nextjs-antd-pattern` (the `nextjs-pattern-generator` family). Not Mantine.** Settles SPEC-001 Q-1.
+- **DR-4 done: the owner filled `possibility-back/.env` on the dev machine.** (owner, 2026-09-19: *"env เสร็จ"*)
+
+## AI analysis pipeline (owner, 2026-09-19)
+
+- **AI provider + model must be selectable PER STEP / per process — never one locked `AI_PROVIDER`/`AI_MODEL` for everything.** (owner, 09-19, verbatim: *"ai provider + model แยกใช้ แล้วแต่ flow กับ process ได้ ไม่ควรมา lock ตัวเดียวแบบนี้"*)
+- **The analysis of one idea may call the AI several times (the owner said "maybe 5"), as a chain of steps:** (owner, 09-19, verbatim list)
+  1. *"วิเคราะห์ว่าที่ลูกค้าพิมพ์มาพยายามสื่ออะไร"* — what is the customer actually trying to say / asking for.
+  2. *"เป้าหมายลูกค้าชัดมั้ย"* — is the customer's goal clear.
+  3. *"ลูกค้าต้องการไปทำเรื่องดีมีประโยชน์ต่อโลก ต่อมนุษย์มั้ย"* — does the customer want to do something good for the world / humanity.
+  4. *"เทียบกับข้อมูลของบริษัทเรา ตรงโจทย์ที่เราชอบหรือเปล่า"* — compare against OUR company's data: is it the kind of work we like.
+  5. *"สรุปทุกข้อรวมกัน แล้วให้คะแนน เพื่อนำไปทำ user tier"* — summarise all steps and give the scores that feed the user tier.
+- ⚠️ **"ข้อมูลของบริษัทเรา" (our company's data / what work we like) for step 4 — does not exist anywhere yet.** DATA REQUEST to the owner.
+- ⚠️ **How steps 1–4 map onto the three shown axes (feasibility / impact / interestingness) — the owner said step 5 "gives the scores"; the axes and 0–100 / lowest-score rule (09-18) still stand unless he changes them.** Porter's reading, to be confirmed by him.
+- **The 5-step list is a HYPOTHETICAL flow — an example. The team may modify and improve it.** (owner, 2026-09-19, verbatim: *"นี่คือ flow สมมุตินะ เอาไปแก้ไขปรับปรุงได้"*) ⇒ Sober designs the actual chain in SPEC-003; the owner approves via Porter.
+- **Each step uses its own model, and its own `max_tokens` and `temperature`, chosen per step for what that step needs.** (owner, 09-19, verbatim: *"แต่ละขั้นตอนก็ใช้ model ไม่เหมือนกัน แล้วแต่ข้อและความเหมาะสม max token และ temperature ก็ไม่เท่ากัน"*)
+- **DR-5 DEFERRED by the owner: "company data" for the compare step is decided WHEN that step is actually designed — ask again then, not now.** (owner, 2026-09-19, verbatim: *"ไว้ตอนทำวางโฟลตรงนี้ค่อยมาขอ … ไว้ค่อยคิดน่า"*). His candidate ideas (NOT decisions): (a) classify which of our system types the idea falls into — *"ERP, CRM, SaaS, IoT, AI, Web App, Mobile บลาๆ"*; (b) compare against *"thesis บริษัทเรา"* (the company's thesis — does not exist as a document yet). Sober may design the chain assuming this input is a configurable text/list supplied later.
+- **DR-2 done: the owner has a Google OAuth client ID and has put `GOOGLE_CLIENT_ID` into `possibility-back/.env`.** (owner, 2026-09-19: *"มีแล้ว ใส่ใน .env แล้ว"*). The FE (`NEXT_PUBLIC_GOOGLE_CLIENT_ID` or equivalent) will need the same public value — the owner fills the front `.env` when Fern's `.env.example` exists.
+- **APPROVED: SPEC-003 §Chain as designed by Sober** (5 steps understand → goalClarity → goodForWorld → companyFit → synthesis; fixed JSON outputs; axis mapping feasibility←S2, impact←S3, interestingness←S4; default models gpt-4o-mini / gpt-4o-mini / gemini-2.5-flash / gpt-4o / gpt-4o in `config/ai-steps.json`; `config/company-reference.md` placeholder until the owner writes it). (owner, 2026-09-19: *"โอเค"*)

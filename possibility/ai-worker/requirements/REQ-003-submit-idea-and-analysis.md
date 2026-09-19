@@ -1,5 +1,5 @@
 # REQ-003: Submit an idea and see the AI analysis
-- Status: READY_FOR_SA
+- Status: READY_FOR_SA (v2 2026-09-19; DR-5 deferred by the owner to SPEC-003 design time)
 - Priority: HIGH
 - Requested: 2026-09-17 by the owner
 - Deadline: none
@@ -24,6 +24,24 @@ three 0–100 scores, the tier (REQ-001), a short reason, and the discount.
    user sees W-6 with a retry.
 7. The AI judges the idea only: it must not produce content unrelated to the three
    axes, and must not reveal the score thresholds.
+8. **(owner, 2026-09-19) The analysis is a CHAIN of AI calls, not one call.** Steps, in
+   the owner's words (SYSTEM-FACTS §AI analysis pipeline):
+   1. What is the customer actually trying to say / ask for.
+   2. Is the customer's goal clear.
+   3. Does the customer want to do something good for the world / humanity.
+   4. Compare against our company's data — is this the kind of work we like.
+   5. Summarise steps 1–4 and produce the scores that feed the tier (REQ-001).
+   **This list is the owner's EXAMPLE, not a fixed spec** (owner, 09-19: *"flow สมมุติ
+   เอาไปแก้ไขปรับปรุงได้"*): Sober designs the actual steps in SPEC-003; the owner approves
+   the step list via Porter before build. The intermediate outputs of every step are
+   saved with the idea (for the owner's admin view, REQ-004, and for Tanya) but only the
+   final result (scores + reason) is shown to the user.
+9. **(owner, 2026-09-19) Every step has its OWN configuration: provider, model,
+   `max_tokens`, `temperature`** — chosen per step for what that step needs; never one
+   locked setting for the whole product. Changing any of these must not require a code
+   change.
+10. The compare step needs reference data about our company — DEFERRED by the owner to
+    design time (SYSTEM-FACTS); treat it as configuration supplied later. See §Questions DR-5.
 
 ## Acceptance Criteria
 - [ ] AC-1 — **Given** a signed-in user **When** they type a valid idea and submit **Then** after the loading state a result appears with three integer scores each 0–100, a tier name from REQ-001, the matching discount, and a non-empty reason.
@@ -35,6 +53,9 @@ three 0–100 scores, the tier (REQ-001), a short reason, and the discount.
 - [ ] AC-7 — negative: the AI call fails (Tanya simulates by cutting the AI key/network) → W-6 is shown, no idea is saved, retry re-sends the same text.
 - [ ] AC-8 — **Given** UI language English **When** an idea is analysed **Then** the reason is in English; in Thai → Thai.
 - [ ] AC-9 — regression: REQ-001 AC-4/AC-5 — the user tier updates only upward after a result.
+- [ ] AC-10 — **Given** an analysed idea **When** the owner opens it on the admin page (REQ-004) or Tanya inspects the saved record **Then** the outputs of steps 1–4 and the final scores are all present for that idea.
+- [ ] AC-11 — **Given** the per-step model configuration **When** the model for one step is changed in configuration (no code change) and a new idea is analysed **Then** that step's saved output records the new provider/model and the other steps are unchanged.
+- [ ] AC-12 — negative: any one step failing → the whole analysis fails per AC-7 (nothing saved, W-6, retry).
 
 ## User-facing wording (Porter as UX writer)
 - W-1 box placeholder: "เล่าไอเดียที่คุณอยากให้เราทำ — อยากได้อะไร เพื่อใคร ทำไม" / "Tell us the idea you want us to build — what, for whom, and why."
@@ -55,3 +76,5 @@ three 0–100 scores, the tier (REQ-001), a short reason, and the discount.
 - Editing or deleting an idea. Re-analysing the same idea. Sharing results publicly.
 
 ## Questions
+- Porter 2026-09-19 — **DR-5:** company reference data for the compare step. Owner deferred it (09-19): candidates are a system-type list (ERP/CRM/SaaS/IoT/AI/Web/Mobile…) or a company thesis text. Sober re-raises it in SPEC-003 when the chain design is ready.
+- Porter 2026-09-19 — to confirm with the owner: step 5 still outputs the three 0–100 axes (feasibility / impact on society / interestingness) with the lowest-score → tier rule of REQ-001. Assumed yes until he says otherwise.

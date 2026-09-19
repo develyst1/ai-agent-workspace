@@ -1,11 +1,11 @@
 # TASK-004: FE — Google sign-in button, AuthContext, header, guard
 - Source: SPEC-002
 - Owner: FE (Fern)
-- Status: BLOCKED (waiting: TASK-002 scaffold, itself waiting on SPEC-001 Q-1)
+- Status: TODO (start after TASK-002 is REVIEW-ready; TASK-003 endpoints are built)
 - Depends on: TASK-002; TASK-003 endpoints reachable at `NEXT_PUBLIC_API_BASE_URL`
 
 ## What to do
-Do not start until Sober sets this `TODO`.
+Start once TASK-002 is in REVIEW. UI components: Ant Design (Q-1 settled).
 1. `services/auth.service.ts` + `hooks/useAuth.ts` over `POST /auth/google`, `GET /auth/me`, `POST /auth/logout` (SPEC-002 §API; `withCredentials` from TASK-002's api-main).
 2. `context/AuthContext.tsx`: loads `/auth/me` on mount; exposes `{ user, status: 'loading'|'signedOut'|'signedIn', signOut }`.
 3. `components/common/GoogleSignInButton.tsx`: loads `https://accounts.google.com/gsi/client`, `initialize` with `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, `renderButton` with `locale` = current UI lang and text per REQ-002 W-1; on `credential` → `POST /auth/google`; on dismiss/error → set a `cancelled` flag that shows REQ-002 W-3 on the landing page.

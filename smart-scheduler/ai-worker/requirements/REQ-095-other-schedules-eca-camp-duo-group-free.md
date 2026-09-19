@@ -48,3 +48,33 @@ Does a teacher PAY RATE exist today? any NON-REVENUE booking (reserve a slot, no
 - **§3.3 DUO/Group = each child keeps their OWN course** (Khwan's example: each bought 10 Hr) — they are GROUPED into one shared recurring slot; each child's attendance deducts THEIR OWN course entitlement. A per-SESSION (รายครั้ง) variant also exists. Teacher mostly fixed but swappable; per-teacher editable rate.
 - **§3.1 teacher rate = STORED ONLY for now** (`ratePostedAt` null); NOT posted to the backoffice yet — the backoffice expense pass is a separate later piece. Matches the money-in-backoffice lock (§4.1).
 - Deploy: TASK-396 (start-based) + Stage 1 (ECA/Free) + Stage 2 (DUO/Group) go to `sid` in ONE deploy once Stage 2 lands.
+
+## §6 — Stage 2b + Stage 3 answers (customer, 2026-09-19)
+### DUO / Group pricing (§4.4)
+- **DUO:** 1hr **1,900** (per-session) · 4hr **6,800** (1,700/hr) · 6hr **9,360** (1,560/hr) · 10hr **14,200** (1,420/hr).
+- **GROUP (Balance Play, 4+):** 1hr **1,090** · 6hr **5,290** (882/hr) · 10hr **7,790** (779/hr).
+- Payment: normally book + prepay (a course); **per-session (รายครั้ง) = the 1hr price (DUO 1,900 / Group 1,090), WALK-IN pay at the shop.**
+- 🔑 Teacher ค่าสอน (expense) = backoffice (§4.1 lock). STUDENT revenue (these prices) — DUO/Group are "conditions = Private in all" ⇒ posts in smart-scheduler like Private; @Sober confirms the products/prices exist or are net-new (e.g. a DUO product).
+### Camp credit model (§3.4)
+- The **admin creates/opens each camp WEEK** themselves; the next open week may NOT be adjacent.
+- Unused days ⇒ **a day CREDIT held in the system, like a PAUSED course; NO expiry.**
+- A child with leftover days enrolls them into ANY future OPEN camp week (admin-opened).
+- ⇒ Camp = a DAY-BASED package; cut by day; leftover = paused credit (no expiry); credit applied to a future admin-opened camp week.
+
+## §7 — Camp prices (customer flyer, 2026-09-19)
+Balance Camp, ages 5-15, Mon-Fri 10:00-15:00, SOM BALANCE SCHOOL fl.4 BRAVO BKK.
+| package | price | half-day units |
+|---|---|---|
+| Full day / Full week | 11,500 (Early bird 10,500, sign up 1 month ahead) | 10 |
+| Half day / Full week | 5,900 | 5 |
+| Full day / Daily | 2,600/day | 2/day |
+| Half day / Daily | 1,300/day | 1/day |
+Half-day = 1 unit; full day = 2 units; week packages carry a small package discount. ⇒ 4 camp bo.item products. Early bird (10,500) pending: a DISCOUNT at sale vs admin enters price. Confirms SPEC-082 half-day-unit accounting.
+
+## §8 — OWNER decisions, 2026-09-19 ("เอาตามแนะนำ") — all as recommended
+1. ✅ **DUO/Group price follows the GROUP the course is sold into, not the subject** (`resolvePriceGroup` takes the group kind; solo = subject as today).
+2. ✅ Camp accounting = HALF-DAY units (half = 1, full = 2).
+3. ✅ A camp is INFORMATIONAL on the teachers' hourly slots in 3a (does not hard-block).
+4. ✅ Camp no-show = CONSUMED, same as a session.
+5. ✅ Early bird (10,500 ← 11,500) = a DISCOUNT at sale via the existing discount mechanism (admin applies it for 1-month-advance signup), NOT a separate product.
+Camp prices (§7) locked. GO Stage 2b + Stage 3a.

@@ -1,7 +1,7 @@
 # TASK-003: BE — users table + Google sign-in endpoints + session middleware
 - Source: SPEC-002
 - Owner: BE (Jason)
-- Status: REVIEW
+- Status: BLOCKED (waiting: Sober → Porter → owner — database `possibility_db` does not exist on the SIT server; see §Questions Q-2)
 - Depends on: TASK-001
 
 ## What to do
@@ -80,7 +80,26 @@ verified payload: { sub: "11111111-…", iat, exp } exp-iat(s)= 604800
 
 DoD: 400 ✔ · 401 garbage ✔ (count=0 UNVERIFIED) · /me 401 ✔ · logout 204 + clearing cookie ✔ · grep ✔ · migration apply UNVERIFIED (DR-4) · real-token happy path UNVERIFIED (DR-2 + DR-4).
 
+**Proof run (Jason, 2026-09-19 10:20, owner's `.env` present — values never printed):**
+```
+$ sed -n 's/^([A-Z_]*)=.*//p' .env      # keys only
+DATABASE_URL SESSION_SECRET GOOGLE_CLIENT_ID ADMIN_EMAIL AI_GATEWAY_URL AI_PROVIDER AI_MODEL FRONTEND_ORIGIN PORT
+$ git status --short                       # empty — .env is ignored (owner has committed the scaffold: 16b17cc)
+$ bun --env-file=.env run db:migrate
+Using 'postgres' driver for database querying
+[⣯] applying migrations...error: script "db:migrate" exited with code 1
+$ bun --env-file=.env run <connect-check>   # postgres client, select current_database()
+ERROR: 3D000 database "possibility_db" does not exist
+```
+→ migration NOT applied; DB DoD lines still UNVERIFIED — blocked on Q-2 below.
+
 ## Questions
+- **Q-2 DATA REQUEST @Sober (Jason, 2026-09-19 10:25):** with the owner's `.env` in place, `bun --env-file=.env run db:migrate` fails; a direct connect shows `ERROR 3D000: database "possibility_db" does not exist` on the SIT server (the connection itself works — host/credentials are right). I did NOT run `CREATE DATABASE` — creating a database on the owner's server is beyond "read/write the working DB" (SPEC-001 §D8). Need one of: (a) the owner creates `possibility_db` (`CREATE DATABASE possibility_db;` as the postgres user), or (b) written authorisation for me to run that one statement. Then I rerun the migration + DoD lines. Also: the real-token happy path needs a Google ID token that only a human sign-in in a browser produces — I cannot obtain one myself; propose Tanya proves it end-to-end via the FE once TASK-004 lands, or the owner pastes a token to Sober. Until then that line stays UNVERIFIED.
 - **Q-1 @Sober (Jason, 2026-09-19):** migration file is `drizzle/0000_users.sql` (drizzle-kit's numbering) instead of `0001_users.sql` — acceptable, or do you want SPEC-002 §Data Model's filename amended? Not blocking.
+  > answer (Sober, 2026-09-19): `0000_users.sql` is fine — keep drizzle-kit's numbering, never rename by hand. SPEC-002 §Data Model amended to `drizzle/0000_users.sql`.
 
 ## Review
+**Review (Sober, 2026-09-19 00:20) — code accepted, no REWORK; status BLOCKED until the owner-gated proof lands.**
+Read every file, not the notes: `schema.ts` + `0000_users.sql` match SPEC-002 §Data Model exactly (CHECK on the five exact strings, UNIQUE google_sub/email, timestamptz) · `session.ts` cookie flags/7-day exp/HS256 per §API, `requireAdmin` → 404 per §Flow 9 · `services/auth.ts` verifies audience + `email_verified`, upserts on `google_sub`, leaves `tier` alone on return, `display_name = email` fallback · `routes/auth.ts` codes/bodies match §API, DTO is the single snake→camel point, token never logged · mounted at `/api/v1/auth` · `google-auth-library` exact-pinned.
+Noted, not rework: (1) `readSession` passes the JWT `sub` straight to a uuid column — unreachable without the secret, acceptable. (2) A returning Google account whose new email collides with another row's `email` would hit the UNIQUE constraint and surface as 500 — extreme edge, log it if it ever appears; no change now.
+**What turns this DONE** (Jason re-opens to REVIEW after `.env` lands): `bun --env-file=.env run db:migrate` output + `users` exists with zero rows; garbage-token → count still zero; and, once DR-2 is in `.env`, the real-token happy path (200 + Set-Cookie, `/me` 200, second sign-in count unchanged). Everything else in the DoD is evidenced.

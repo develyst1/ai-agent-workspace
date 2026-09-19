@@ -7274,3 +7274,37 @@ The backoffice login **fails with `admin/admin-som`** (the access-file value) an
 - **`sid` needs `db:migrate` `0040` + `0041`** (0038/0039 if not yet there) — **`0041` rebuilds the slot index: closed shop for that minute** — then `db:verify` ⇒ 42. Nothing to set after.
 - **For @Tanya on `sid` (the three in one round):** (a) 17:00 CONFIRMED class at a ≥17:30 run ⇒ ATTENDED; (b) Stage 1's five checks (my 09-18 note); (c) Stage 2a: `Create group` DUO ⇒ cap box reads 2 and is grey; tick 4 dates ⇒ four teal cells `DUO · Seats 0/2`; sell a 6-session course into it ⇒ `1/2`, dates 5–6 extend the group; a second course ⇒ `2/2`; a third ⇒ `GROUP_FULL` naming the date; cancel one group date ⇒ both children get a make-up (their own solo slot); swap teacher from a date on ⇒ seats follow, **no LINE**; the coach's 08:15 reminder prints the group once with `Seats : 2/2` and the two names, no `Heads`; a PAUSED session's slot shows FREE in the picker; a seat's booking view says `In group:`. Not seen on a screen by Fern: a six-name cell, the teal beside the five hues, the greyed course fields.
 - **Next on your word:** Stage 2b (per-session seat, S+S — waits on owner §4.4 price) or Stage 3 Camp SPEC (needs the "open week" words). Owner's list stands (swap notice words · `Seats`/`Heads` label words · SPEC-081 §4 · SPEC-080 §3 · the earlier items). Chain stopped.
+
+## 2026-09-19 — Tanya (QA) → @Porter: 🟡 **The sid batch (TASK-396 · Stage 1 ECA/Free · Stage 2a DUO/Group) — Stage 1 & 2a PASS; TASK-396 BLOCKED (internal job unreachable).** `sid`, super-admin cred, API-level.
+
+### ⛔ (a) TASK-396 — end-of-day START-based — NOT_TESTED (blocked)
+The end-of-day job (`POST /api/internal/jobs/end-of-day`) is **404 through the frontoffice** (internal routes aren't proxied) and is `x-internal-secret`-gated — I have no `INTERNAL_JOB_SECRET`, so I **cannot trigger it**. The start-based gate is in `jobs.service.ts` (the gate is START not end), but reading code isn't testing. 📌 **DATA REQUEST:** the owner runs `runEndOfDayJob(<date>)` at a ≥17:30 clock with a CONFIRMED 17:00 class, OR a unit test covers it. Same class as the reminder-job/outbox blockers. (The 17:45-start-not-yet value pin likewise needs the job.)
+
+### ✅ (b) Stage 1 (ECA/Free OTHER)
+1. OTHER booking (KOL, 12 heads, ฿500 primary) ⇒ DTO **`other:{kind:"KOL", headCount:12, teacherRates:{<teacher>:50000}, ratePostedAt:null}`**, `bookingType:OTHER`, cell tag; **ledger untouched** (OTHER posts no sale at creation). PASS.
+2. **Create series** (`POST /bookings/other-series`, 3 dates) ⇒ `created:3`, one row per date; a **taken date** ⇒ **`409 SLOT_TAKEN "วันที่ 2028-08-08 ครูไม่ว่าง — ไม่ได้สร้างรายการใด …"`** (names the date, all-or-nothing, ticks stay). PASS.
+3. **Edit head count** ⇒ `PATCH /bookings/:id/other {headCount}` 12→20, **no LINE** (OTHER is silent). PASS.
+4. A user **without `action:calendar.other-series`** ⇒ `POST /bookings/other-series` ⇒ **`403 "ไม่มีสิทธิ์ทำรายการนี้"`** (no door); same for `group-series`. PASS.
+
+### ✅ (c) Stage 2a (DUO/Group course-based) — core
+1. **Create DUO group** (`POST /bookings/group-series`, `groupKind:DUO`, `seatCap:2`, 4 dates) ⇒ four GROUP rows, **DUO Seats 0/2**; **`seatCap:3` on DUO ⇒ 400** (locked to 2). PASS.
+2. **Sell a 6-session course IN** (`POST /courses {groupKey}`) ⇒ the group **extends from 4 → 6 dates** (sessions 5-6 append); seat count 1/2. PASS.
+3. **2nd course ⇒ 2/2**; **3rd ⇒ `409 GROUP_FULL "วันที่ 2028-11-01 กลุ่มเต็ม (2/2)"`** (names the date). PASS.
+4. **Cancel one GROUP date** ⇒ **both children (courses) each get a make-up** (re-owed). PASS.
+5. **Swap teacher from a date on** (`PATCH /bookings/:id/group-teacher {teacherId, fromHereOn}`) ⇒ 200, **`notification: none` (NO LINE)**, seats follow; correctly **refuses** a teacher who doesn't work that day. PASS.
+6. 🔎 **Seat "In group:"** — a course sold in takes a seat, but **seats are HIDDEN from the calendar list by design** ("the GROUP row is the cell"); the `In group:` label is a FE render on the seat's OWN view. The seat/group linkage is confirmed by the seat-count/GROUP_FULL logic; I could not read the seat's group facts via the bookings list. FE-detail — noted, not separately screenshotted.
+7. 🔎 **PAUSED session slot ⇒ FREE in the picker** — a slot-picker FE detail; NOT separately exercised (noted).
+8. **Coach 08:15 reminder `Seats : 2/2` + two names** — the enqueue/DTO path exists; the delivered **text is unreadable on `sid`** (no outbox read API, no linked coach) ⇒ owner verifies on `uat`.
+
+### Footprint
+🟢 All test GROUP/OTHER/course rows CANCELLED (swept 16 GROUP · 4 OTHER · 2 courses; **none left live**). `qa-rbac-admin` left DISABLED. OTHER posts no sale (ledger untouched); any group/rental ledger entries declared before. No LINE, no `uat`, no code.
+**Stage 1 & 2a clean on `sid`; TASK-396 needs the owner's job run (or uat).**
+
+---
+### 2026-09-19 — @Sober → @Porter — **(1) DUO/Group products: Group EXISTS and matches; DUO is NET-NEW — one gap to settle before 2b. (2) Camp SPEC-082 written with sizes — not cut.**
+**(1) The catalogue (`lib/sale-items.ts`, the owner's card, VAT-incl):**
+- ✅ **Group = the existing `balance-group` price group: 1h **1,090** · 6 = **5,290** · 10 = **7,790** — exactly your numbers.** A course sold into a Group group already posts these when its subject maps to `balance-group`. Nothing to add.
+- 🔴 **DUO does not exist** — no price group, no items. Net-new: a `balance-duo` group with **1h 1,900 · 4 = 6,800 · 6 = 9,360 · 10 = 14,200** (a 4-size, which the card supports), four `bo.item` rows added by `sale:ensure-items` (additive; a deploy step, like the helmet tier), and DUO joins the voucher-excluded groups like both Balance groups.
+- **The gap that is a design point, not a price:** today the price group comes from the SUBJECT (`subjects.price_group`). A DUO course and a Group course use the same Balance subject — so **the GROUP's kind must decide the price**: a course sold into a DUO group ⇒ `balance-duo`, into a Group group ⇒ `balance-group`, solo ⇒ the subject's group as today. One change in `resolvePriceGroup` (takes the group kind), pinned. **Confirm with the owner: "DUO/Group price follows the group the course is sold into, not the subject."** If yes, Stage 2b = the DUO price group + this rule + the per-session seat (`SINGLE_SESSION` + `groupId`, posts `session-balance-duo` 1,900 / `session-balance-group` 1,090, walk-in) — **BE S+S · FE S.** I cut it on your word.
+**(2) Camp — `SPEC-082`:** three net-new tables (`camp_weeks` the admin opens · `camp_packages` = the child's DAY entitlement in half-day UNITS with **no expiry column at all** · `camp_days` one row per child per date, PLANNED reserves / ATTENDED consumes / cancelled releases); the day cut rides the end-of-day job (start-based); the sale posts once at purchase; a Camp menu (weeks → per-day roster · a child's credit) + a student card + a calendar day banner. **Sizes: 3a BE L · FE L (one migration `0042`, 4 new keys, 4 new items); 3b BE M · FE S** (reminders/words, QR, optional per-day revenue). **Eight decisions in §4 before 3a is cut** — the blocking ones: the four camp PRICES; half-day accounting (one currency in half-day units — recommend); whether a camp blocks the teachers' hourly slots (recommend: informational in 3a); the no-show rule (recommend: consumed, same as sessions).
+- Noted your `uat` cutover report — everything through Stage 2a is live; the ledger-behind pattern is in SYSTEM-FACTS. Chain stopped; nothing builds until (1)'s confirmation.

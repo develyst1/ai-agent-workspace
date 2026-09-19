@@ -2116,3 +2116,33 @@ FE renders (`+`/`⋯`/status/discount/override/Actions checklist) follow `/api/m
 
 🔎 **NOTE:** the access-file BACKOFFICE password is wrong — `admin/admin-som` fails, backoffice uses `admin/admin` (frontoffice super-admin = `admin/admin-som`; separate systems). `H:/sm-test-access.txt` backoffice `pass` should be `admin`.
 🟠 Footprint: parent `32eeed5f` (phone `0914659156`) SUSPENDED + test children ARCHIVED; test courses/bookings CANCELLED; rental SALES on the sid dev ledger declared (set×4=800 upfront, 2×200 per-session). No LINE, no `uat`, no code.
+
+---
+
+# Round 38 — sid batch: TASK-396 · Stage 1 (ECA/Free) · Stage 2a (DUO/Group) on `sid` (2026-09-19)
+📌 `sid`, super-admin cred, migrations 0040+0041 (db:verify=42). API-level.
+
+## ⛔ (a) TASK-396 — end-of-day START-based — NOT_TESTED
+`POST /api/internal/jobs/end-of-day` = 404 via frontoffice (internal routes not proxied) + `x-internal-secret`-gated; no `INTERNAL_JOB_SECRET`. Start-based gate is in `jobs.service.ts` but reading≠testing. DATA REQUEST: owner runs `runEndOfDayJob(<date>)` at ≥17:30 with a CONFIRMED 17:00 class (and a 17:45-start-not-yet pin), or a unit test.
+
+## ✅ (b) Stage 1 (ECA/Free OTHER)
+| check | result |
+|---|---|
+| OTHER (KOL/12/฿500) ⇒ DTO `other{kind:KOL,headCount:12,teacherRates:{t:50000},ratePostedAt:null}`, ledger untouched | 🟢 PASS |
+| `other-series` 3 dates ⇒ created:3; taken date ⇒ `409 SLOT_TAKEN "…ไม่ได้สร้างรายการใด"` (all-or-nothing) | 🟢 PASS |
+| edit head count `PATCH /bookings/:id/other {headCount}` 12→20, no LINE | 🟢 PASS |
+| no `action:calendar.other-series` ⇒ `403 "ไม่มีสิทธิ์ทำรายการนี้"` (also group-series) | 🟢 PASS |
+
+## ✅ (c) Stage 2a (DUO/Group) — core
+| check | result |
+|---|---|
+| DUO `seatCap:2`, 4 dates ⇒ Seats 0/2; `seatCap:3` ⇒ 400 (locked to 2) | 🟢 PASS |
+| sell 6-session course in ⇒ dates 4→6 extend; 1/2 | 🟢 PASS |
+| 2nd ⇒ 2/2; 3rd ⇒ `409 GROUP_FULL "วันที่… กลุ่มเต็ม (2/2)"` | 🟢 PASS |
+| cancel a GROUP date ⇒ both children make-ups | 🟢 PASS |
+| swap teacher `PATCH …/group-teacher {teacherId,fromHereOn}` ⇒ 200 notification none (no LINE), refuses non-working teacher | 🟢 PASS |
+| seat "In group:" | 🔎 FE render; seats HIDDEN from calendar list by design (GROUP row is the cell) — couldn't read via list |
+| PAUSED slot ⇒ FREE in picker | 🔎 slot-picker FE detail — not separately exercised |
+| coach 08:15 reminder `Seats : 2/2` + names | 🔎 outbox text unreadable on sid — owner-on-uat (enqueue/DTO present) |
+
+🟢 Footprint: swept 16 GROUP · 4 OTHER · 2 courses (none live); qa-rbac-admin DISABLED. No LINE, no `uat`, no code.
