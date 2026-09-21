@@ -25,6 +25,7 @@ The owner wants the product usable in Thai and English, switchable by the user.
 
 ## User-facing wording (Porter as UX writer)
 - Switch labels: "TH" / "EN".
+- App title (Porter 2026-09-21, answers TASK-002 Q-1): the brand name **"Possibility"** in BOTH languages — never transliterated to Thai.
 
 ## Constraints
 - No third language.

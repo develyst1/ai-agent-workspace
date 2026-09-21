@@ -36,12 +36,13 @@ Rules that make it deterministic enough to test:
 {
   "understand":   { "provider": "openai", "model": "gpt-4o-mini",      "maxTokens": 500, "temperature": 0.2 },
   "goalClarity":  { "provider": "openai", "model": "gpt-4o-mini",      "maxTokens": 400, "temperature": 0.2 },
-  "goodForWorld": { "provider": "gemini", "model": "gemini-2.5-flash", "maxTokens": 400, "temperature": 0.3 },
+  "goodForWorld": { "provider": "openai", "model": "gpt-4o-mini",      "maxTokens": 400, "temperature": 0.3 },
   "companyFit":   { "provider": "openai", "model": "gpt-4o",           "maxTokens": 400, "temperature": 0.2 },
   "synthesis":    { "provider": "openai", "model": "gpt-4o",           "maxTokens": 600, "temperature": 0.2 }
 }
 ```
   Rationale (Sober, reversible): cheap/fast models for the comprehension steps; the strongest available model for the two judgement steps; low temperature everywhere because we parse JSON. Providers/models must be ones the gateway lists (`GET /models`); the config loader rejects unknown keys and validates the four fields at startup.
+  **Amendment 2026-09-19 (TASK-005 Q-1):** `goodForWorld` was `gemini/gemini-2.5-flash`; the owner's gateway currently gets `403 PERMISSION_DENIED` from Google for every gemini call, so the default is `openai/gpt-4o-mini` (proven in TASK-005). When the owner fixes Gemini on the gateway he may switch it back by editing the JSON — no code change. Reported to the owner via Porter as gateway issue G-1.
 
 - **Gateway call** (`src/lib/ai-gateway.ts`, the only caller): `POST {AI_GATEWAY_URL}/chat` with `{ provider, model, max_tokens, temperature, messages:[{role:"system",content},{role:"user",content}] }`, 30 s timeout per call. Response `data.content` → strip ``` fences → `JSON.parse` → zod schema of the step. On network error, `success:false`, non-JSON, or schema failure: **one retry of that step**, then abort the chain with the failing step key in the error message (`AI_FAILED: step goodForWorld`). Total chain budget 120 s.
 
@@ -124,7 +125,7 @@ Edge cases: gateway returns 200 with `success:false` → treated as failure; JSO
 
 ## Non-functional
 - Timeouts: 30 s per gateway call, 120 s per request; the FE shows W-4 the whole time.
-- Config: `config/ai-steps.json` + `config/company-reference.md` are read once at startup and validated (unknown provider/model vs `GET /models` → startup error naming the step). Changing them = restart, no code change (AC-11).
+- Config: `config/ai-steps.json` + `config/company-reference.md` are read once at startup and validated. **Startup rule (amended 2026-09-19, TASK-005 Q-2):** if `GET /models` answers, an unknown provider/model is a startup error naming the step; if the gateway is **unreachable** at startup, log one WARN line and start anyway (the request path will then fail with 502 `AI_FAILED`, which is exactly what AC-7 tests). Changing config = restart, no code change (AC-11).
 - `.env.example` loses `AI_PROVIDER`/`AI_MODEL`, gains optional `AI_STEPS_CONFIG`, `COMPANY_REFERENCE_PATH`.
 - Tanya's AC-7: point `AI_GATEWAY_URL` at an unreachable port in `.env` and submit.
 

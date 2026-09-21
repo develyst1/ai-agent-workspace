@@ -33,10 +33,10 @@
 
 | Id | Title | Priority | Status (date, owner, pointer) | Ball |
 |----|-------|----------|-------------------------------|------|
-| REQ-001 | User tiers — definitions, discounts, score→tier rule | HIGH | IN_SPEC — 2026-09-19, Sober, `specs/SPEC-004-user-tier-display.md` (computation in SPEC-003; TASK-007 FE) | Fern (after 004) |
-| REQ-002 | Sign in with Google | HIGH | IN_SPEC — 2026-09-19, `specs/SPEC-002-google-sign-in.md`; TASK-003 proof + TASK-002/004 FE now unblocked | Jason (003 proof) · Fern (002) |
-| REQ-003 | Submit an idea and see the AI analysis | HIGH | IN_SPEC — 2026-09-19, chain APPROVED by owner, `specs/SPEC-003-idea-analysis-chain.md`; TASK-005 BE / TASK-006 FE | Jason (TASK-005) |
-| REQ-004 | Hire request + owner's admin page | HIGH | READY_FOR_SA — 2026-09-18, Porter, queued after REQ-001, `requirements/REQ-004-hire-request-and-admin.md` | Sober |
+| REQ-001 | User tiers — definitions, discounts, score→tier rule | HIGH | IN_SPEC — 2026-09-20, TASK-007 FE TODO, `specs/SPEC-004-user-tier-display.md` | Fern (007) |
+| REQ-002 | Sign in with Google | HIGH | TEST_PASSED — 2026-09-21, Tanya, 18 PASS / 0 FAIL / 0 defects incl. the owner's real Google run; Q-3 (W-3 after cancel, best-effort) for Porter before DELIVERED, `tests/TEST-001-google-sign-in.md` | Porter |
+| REQ-003 | Submit an idea and see the AI analysis | HIGH | IN_SPEC — 2026-09-20, BE done; TASK-006 FE TODO (after 007), `specs/SPEC-003-idea-analysis-chain.md` | Fern (006) |
+| REQ-004 | Hire request + owner's admin page | HIGH | IN_SPEC — 2026-09-20, BE done (TASK-008); waiting FE TASK-009, `specs/SPEC-005-hire-request-and-admin.md` | Fern (after 006) |
 | REQ-005 | Bilingual UI TH/EN with switch | MEDIUM | READY_FOR_SA — 2026-09-18, Porter, queued last, `requirements/REQ-005-bilingual-ui.md` | Sober |
 
 ## Tasks
@@ -44,17 +44,20 @@
 | Id | Title | Source SPEC | Status (date, owner, pointer) | Owner | Depends on |
 |----|-------|-------------|-------------------------------|-------|------------|
 | TASK-001 | Scaffold `possibility-back` (Bun+Hono+Drizzle, health route) | SPEC-001 | DONE — 2026-09-19, Sober review in `tasks/TASK-001-scaffold-back.md` §Review (db:ok UNVERIFIED → TASK-003) | Jason | — |
-| TASK-002 | Scaffold `possibility-front` (Next.js 16 + Ant Design) | SPEC-001 | TODO — 2026-09-19, Sober, `tasks/TASK-002-scaffold-front.md` | Fern | — |
-| TASK-003 | BE users table + Google auth endpoints + session middleware | SPEC-002 | BLOCKED — 2026-09-19, Jason: `possibility_db` does not exist on SIT (Q-2, DATA REQUEST via Sober), `tasks/TASK-003-be-google-auth.md` | Jason | TASK-001 ✓ |
-| TASK-004 | FE Google button, AuthContext, header, guard | SPEC-002 | TODO — 2026-09-19, after TASK-002, `tasks/TASK-004-fe-google-sign-in.md` | Fern | TASK-002, TASK-003 |
-| TASK-005 | BE ideas + 5-step AI chain + tier + endpoints | SPEC-003 | IN_PROGRESS — 2026-09-19, Jason (code; DB apply waits on TASK-003 Q-2), `tasks/TASK-005-be-idea-analysis-chain.md` | Jason | TASK-003 |
-| TASK-006 | FE idea box, result page, My ideas | SPEC-003 | BLOCKED — 2026-09-19, waiting TASK-004 + TASK-005, `tasks/TASK-006-fe-idea-and-result.md` | Fern | TASK-004, TASK-005 |
-| TASK-007 | FE header tier badge + /me profile | SPEC-004 | BLOCKED — 2026-09-19, waiting TASK-004, `tasks/TASK-007-fe-tier-badge-and-profile.md` | Fern | TASK-004 |
+| TASK-002 | Scaffold `possibility-front` (Next.js 16 + Ant Design) | SPEC-001 | DONE — 2026-09-20, Sober review in `tasks/TASK-002-scaffold-front.md` §Review | Fern | — |
+| TASK-003 | BE users table + Google auth endpoints + session middleware | SPEC-002 | DONE — 2026-09-20, Sober review in `tasks/TASK-003-be-google-auth.md` §Review (real-token line → Tanya via FE) | Jason | TASK-001 ✓ |
+| TASK-004 | FE Google button, AuthContext, header, guard | SPEC-002 | DONE — 2026-09-20, Sober review in `tasks/TASK-004-fe-google-sign-in.md` §Review (real Google flow → Tanya after DR-7) | Fern | TASK-002 ✓, TASK-003 ✓ |
+| TASK-005 | BE ideas + 5-step AI chain + tier + endpoints | SPEC-003 | DONE — 2026-09-20, Sober review in `tasks/TASK-005-be-idea-analysis-chain.md` §Review (admin-200 line → Tanya/owner via FE) | Jason | TASK-003 ✓ |
+| TASK-006 | FE idea box, result page, My ideas | SPEC-003 | TODO — 2026-09-20, after TASK-007 (+ security re-pin item 0), `tasks/TASK-006-fe-idea-and-result.md` | Fern | TASK-004 ✓, TASK-005 ✓ |
+| TASK-007 | FE header tier badge + /me profile | SPEC-004 | TODO — 2026-09-20, Sober, `tasks/TASK-007-fe-tier-badge-and-profile.md` | Fern | TASK-004 ✓ |
+| TASK-008 | BE hire_requests + hire endpoint + admin list/PATCH | SPEC-005 | DONE — 2026-09-20, Sober review in `tasks/TASK-008-be-hire-request-and-admin.md` §Review (real-owner admin cookie → Tanya via FE) | Jason | TASK-005 ✓ |
+| TASK-009 | FE hire button + /admin page | SPEC-005 | BLOCKED — 2026-09-19, waiting TASK-006 + TASK-008, `tasks/TASK-009-fe-hire-button-and-admin-page.md` | Fern | TASK-006, TASK-008 |
 
 ## QA / Tests
 
 | REQ | TEST | Status (date, pointer) | Verdict |
 |-----|------|------------------------|---------|
+| REQ-002 | TEST-001 | TEST_PASSED — 2026-09-21, `tests/TEST-001-google-sign-in.md` | TEST_PASSED — 0 defects; W-3-after-cancel unobserved (non-blocking per SPEC-002 §Flow 8), Q-3 to Porter |
 
 ## Blocked / waiting
 

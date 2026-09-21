@@ -50,7 +50,7 @@ possibility-back/
 ```
 
 ## Frontend layout (D3, binding for TASK-002 once Q-1 is answered)
-The `nextjs-antd-pattern` skill as written (Q-1 settled: Ant Design): `app/ · components/{ui,common,layout,partials} · hooks/ · services/ · lib/api/ · types/ · context/`; `api-main.ts → service → hook (React Query) → partial`; `@/*` alias; thin server pages → `"use client"` Content components. Exact pinned versions per the skill's lockset (`next 16.2.9 · react 19.2.7 · react-dom 19.2.7 · @tanstack/react-query 5.101.0 · axios 1.17.0 · typescript 6.0.3`) plus `antd 6.4.3`. i18n: a plain TH/EN dictionary in `lib/i18n/` with a `lang` cookie (REQ-005 R3); no third-party i18n lib.
+The `nextjs-antd-pattern` skill as written (Q-1 settled: Ant Design): `app/ · components/{ui,common,layout,partials} · hooks/ · services/ · lib/api/ · types/ · context/`; `api-main.ts → service → hook (React Query) → partial`; `@/*` alias; thin server pages → `"use client"` Content components. Exact pinned versions per the skill's lockset (`next 16.2.9 · react 19.2.7 · react-dom 19.2.7 · @tanstack/react-query 5.101.0 · axios 1.17.0 · typescript 6.0.3`) plus `antd 6.4.3`. **Security patches (amended 2026-09-20):** a patch/minor bump of `next` or `axios` within the same major to clear an `npm audit` advisory is Sober-approved and recorded in the TASK that does it; `antd`/`react` bumps still follow the skill. i18n: a plain TH/EN dictionary in `lib/i18n/` with a `lang` cookie (REQ-005 R3); no third-party i18n lib.
 
 ## Risks recorded (not blockers)
 - R-1 The gateway has **no authentication** as documented. Anyone who finds the URL can spend the owner's provider credits. Our BE will not fix that; noted for the owner.

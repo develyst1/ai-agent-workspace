@@ -1,5 +1,5 @@
 # REQ-002: Sign in with Google
-- Status: READY_FOR_SA
+- Status: TEST_PASSED (Tanya, 2026-09-21 — `tests/TEST-001-google-sign-in.md`; one non-blocking gap, Q-3 there)
 - Priority: HIGH
 - Requested: 2026-09-18 by the owner
 - Deadline: none

@@ -1,7 +1,7 @@
 # TASK-007: FE — header tier badge + `/me` profile page
 - Source: SPEC-004
 - Owner: FE (Fern)
-- Status: BLOCKED (waiting: TASK-004)
+- Status: TODO (2026-09-20 — TASK-004 DONE; do this before TASK-006)
 - Depends on: TASK-004 (AuthContext, header)
 
 ## What to do

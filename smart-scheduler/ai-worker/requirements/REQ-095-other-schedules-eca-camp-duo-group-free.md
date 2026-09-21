@@ -78,3 +78,46 @@ Half-day = 1 unit; full day = 2 units; week packages carry a small package disco
 4. ✅ Camp no-show = CONSUMED, same as a session.
 5. ✅ Early bird (10,500 ← 11,500) = a DISCOUNT at sale via the existing discount mechanism (admin applies it for 1-month-advance signup), NOT a separate product.
 Camp prices (§7) locked. GO Stage 2b + Stage 3a.
+
+## §9 — Stage 3b scope, owner 2026-09-19: items 1,2,3 (NOT 4)
+1. **Camp LINE reminder** — the day's camp notified to PARENT + TEACHER (like the daily reminder); house format; COPY GATED to owner before the send path.
+2. **Undo an attended camp day** — admin reverses an accidentally-marked-attended day, RETURNS the day credit; NO money change (sale posted once at purchase).
+3. **Camp check-in QR** — same pattern as the session QR.
+🚫 (4) per-day revenue NOT wanted — revenue stays once-at-purchase.
+
+## §10 — Stage 3b copy + decisions, owner 2026-09-19
+- 🔑 **Label is `Students`, NEVER `Kids`** — a customer may be a teen/adult; use the app's existing term. Teacher: `Students : 8 (Full 5 · AM 2 · PM 1)` + names beneath (≤12, +n, like the group Seats block). Parent keeps `Student :`.
+- **Timing: 08:15** (same run). Sober's other rulings stand (QR dies 23:59, scan-other-day refused, no CRM points, undo needs 3-200 char reason).
+
+## §11 — CORRECTION 2026-09-20: Camp MUST appear on the teacher schedule grid (not just a banner)
+Owner sent me back to the source. The requirement is explicit: Camp is a SCHEDULE that BOOKS teachers — teachers ROTATE ("มีการสลับครูตลอด สามารถย้ายไปมาได้"), cut by day, "ตารางจะอยู่ในสัปดาห์นั้นๆ"; and the ECA/Camp intent "จองตารางครู... ฟิกตารางเหมือนคอร์สไพรเวท แต่ 1 คลาสเรียนได้หลายคน". Stage 3a built Camp as a top DAY BANNER + `§8.3 informational on teacher slots` — that is TOO WEAK and does not match: the customer ("ลง camp ขึ้นตาราง schedule กดตรงไหน") expects the camp ON the teacher grid. **Fix: a camp day renders as a BLOCK in the assigned teacher's column at the camp time (e.g. 10:00-15:00), with a teacher assigned per day, SWAPPABLE day-to-day; cut by day.** (Whether it hard-blocks the slot or overlays is the §8.3 nuance — but it must be VISIBLE on the grid, not a banner only.) §8.3 is superseded. PM's §8.3 recommendation was the miss.
+
+## §12 — OWNER decisions on camp-on-grid (SPEC-085), 2026-09-20 — all as recommended
+1. ✅ Camp HARD-BLOCKS the teacher's slot (real `OTHER`/`CAMP` rows, no double-book).
+2. ✅ One camp block per day = the camp window, default **10:00–15:00**, EDITABLE when opening the week; the kids' AM/PM is the package's, not the teacher block's.
+3. ✅ Default teachers = the week's teacher list; a day with no teacher ⇒ no block.
+4. ✅ A lesson already inside the window when assigning the camp ⇒ REFUSED, naming the clash (camp does not overwrite).
+GO: build camp-on-grid (SPEC-085 A + B).
+
+## §13 — DUO RE-SPEC by the customer, 2026-09-20 (analyze before any rework — owner: don't decide solo)
+Customer (Khwan): DUO being bundled with Group confused everyone. DUO restated: **exactly like a Private course in EVERY way, except the ค่าสอน (coach rate) is EDITABLE and NOT tied to each teacher's hourly rate. Two kids use the SAME course.** Proposed UX: on New course, a **Private / DUO** tab; DUO ⇒ a rate box appears; the class's rate = the entered value; on Move-session to another teacher, the DUO rate is still editable (for a full-time coach with no hourly rate). Fix day/time/teacher; leave + expiry = Private.
+⚠️ **Contradiction to resolve:** "2 คนใช้คอร์สเดียวกัน" (ONE shared entitlement) vs the earlier example "ซื้อ Balance Group คนละ 10 Hr" (TWO entitlements). Attendance/quota/deduction are per-student today.
+What we BUILT (Stage 2a): a group-session OBJECT — TWO separate courses grouped, seat cap 2, teal cell, sell-course-into-group, per-teacher rate stored for backoffice. Differs from the re-spec in UX (group flow vs New-course toggle), entitlement (2 courses vs "same"), and the rate surface. **@Sober analyses + @Tanya tests before a rework decision; discuss 3-way.** GROUP (many kids) not re-specced — presumably stays the group object.
+
+### §13.1 — CONTRADICTION RESOLVED by the customer, 2026-09-20 (owner asked her directly)
+Owner forwarded my A/B question. Customer answered **"B ค่ะ ต้องมาเรียนพร้อมกัน ทุกคาบค่ะ"** then, when owner pinned it down, confirmed **"1 คอร์ส 2 คน"** and apologised for the earlier "คนละคอร์ส" confusion. ⇒ **DUO = ONE shared course/entitlement for two kids** (shared hours/leave/expiry pool), fixed day/time/teacher, editable ค่าสอน. This CONTRADICTS the current build (TWO linked courses) — it is a **rework**, not a tweak. Sober+Tanya's converged finding was that the current model is 2-linked-courses; that model is now superseded by the customer's B ruling. **FINAL CONFIRM 2026-09-21:** owner asked her the concrete consequence verbatim ("1 คอร์ส 2 คน = ชั่วโมง/โควตาลา/วันหมดอายุ ก้อนเดียวร่วมกัน, คนนึงลา = ตัดจากก้อนรวมของทั้งคู่ ใช่ไหม") → customer **"ใช่ค่ะ"**. Locked. Dispatched to @Sober to spec the DUO-as-one-course rework.
+### §13.2 — LOCKED SPEC for Sober (DUO rework)
+1. **Entitlement = ONE course/one row for two kids** (not two linked courses). Shared hours pool, shared leave quota, shared expiry. Any kid's leave/attendance deducts the shared pool.
+2. **Two children attached to the one DUO course** (both names on it); both must attend the same class every session (fixed day/time/teacher — like Private). Customer's own "easy way" (2026-09-21): create it as **ONE Private course carrying both kids' names inline** — e.g. course = "คราม & พราว", Private inline — one record, two students on it.
+3. **Coach rate (ค่าสอน) editable** — a rate box on the course; not tied to the teacher's hourly rate; stays editable after a Move-session/teacher swap (for full-time coaches with no hourly rate).
+4. **Creation UX:** New-course page gets a **Private / DUO** toggle; DUO ⇒ reveal the rate box + second-child picker.
+5. Migrate/replace the current Stage-2a "group of 2 linked courses" DUO. GROUP (3+ kids) is out of scope of this ruling — leave as the group object unless the customer re-specs.
+7. **SHARED-POOL LEAVE RULE — customer confirmed 2026-09-21:** either family's leave cancels that session for BOTH kids; one shared make-up carries both; cannot let one attend alone (one course/one session). Green-lit build + deploy.
+6. **Customer's concrete examples (2026-09-21):** (a) course "Duo Inline Skate 10 Hr" — students "น้องคราม & พราว"; (b) course "Duo Surfskate 10 Hr" — students "น้องอัยลี่ & นลิน". ONE course, 10 Hr SHARED pool, TWO kids on it. Use as canonical acceptance examples. Customer restated: *"ถ้าการแยกคนจะทำให้ระบบงง แต่จริงๆคือเป็น 1 คอร์สที่มีน้อง 2 คน ถ้าออกแบบให้เป็น 2 คนได้จะดี"* — i.e. the DESIGN goal is exactly "one course record holding two students," and she's fine however the internal model achieves that as long as it presents as one course.
+
+### §13.3 — RATE MODEL CORRECTION (customer, 2026-09-21) — per-session override, NOT course-wide
+Customer (Khwan): ค่าสอน is edited **per class/session**, not for the whole course at once. Example verbatim: *"ทั้งคอร์ส ครู A ค่าสอน 7 บาท; ถ้าสัปดาห์นี้ครู A ลา ครู B สอนแทน ค่าสอนจะกลายเป็น 3 บาท แค่ 1 สัปดาห์"*.
+- **Wanted model:** a COURSE DEFAULT rate (e.g. 7) that applies to all sessions, PLUS a per-SESSION override (e.g. 3 for the one substitute week) that does NOT change the course default.
+- **Current build (SPEC-087):** the Move-session rate box is labelled "changes the **course's** rate" and `PATCH /bookings/:id {classRateMinor}` rewrites the course-level `classRateMinor` — i.e. it changes EVERY session, not just that week. **This DIVERGES from the customer's intent.**
+- Applies to the DUO coach-rate box AND the Move-session (substitute) rate box on any course carrying a coach rate.
+- **⇒ Sober to analyse + size:** store a per-session rate on the booking (override) distinct from the course default; the session popup edits the SESSION only (that week); the course card edits the DEFAULT. Freelance/sale/report reads take the effective rate = session override ?? course default. Decide whether this HOLDS the `uat` deploy or ships as a fast-follow.

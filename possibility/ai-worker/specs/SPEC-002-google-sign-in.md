@@ -63,7 +63,7 @@ Existing rows: none (greenfield). Upsert key is `google_sub`; on a returning use
 5. BE signs `{ sub: user.id }` with `SESSION_SECRET` (HS256, exp 7 d), sets the cookie, returns `User`.
 6. FE stores `User` in `AuthContext` (from the response, and on every load via `GET /auth/me`), shows name + email + W-2 sign-out in the header.
 7. Sign-out: FE `POST /auth/logout`, clears context, routes to landing (REQ-002 AC-4).
-8. Guarded pages (idea box and everything personal, REQ-002 R2): if `/auth/me` is 401 → show landing with the button and message W-3 **only when arriving from a cancelled/denied Google flow** (GIS `error`/dismissed callback), otherwise no message (AC-1 shows just the button, AC-5 shows W-3).
+8. Guarded pages (idea box and everything personal, REQ-002 R2): if `/auth/me` is 401 → show landing with the button and message W-3 **only when arriving from a cancelled/denied Google flow**, otherwise no message (AC-1 shows just the button, AC-5 shows W-3). *Amended 2026-09-20 (TASK-004 Q-1): GIS exposes no cancel callback for the rendered button, so "cancelled" is detected best-effort (focus returns, no credential within 1.5 s) or from a BE 401. W-3 on a plain first visit is a defect; a missed W-3 after a real cancel is a known limitation.*
 9. `requireUser` middleware (BE): reads cookie → verifies JWT → loads user → `c.set('user')`; 401 `NOT_SIGNED_IN` otherwise. `requireAdmin` = `requireUser` + `isAdmin` else **404 `NOT_FOUND`** (REQ-004 R4 wording — never 403, so the admin path is not discoverable).
 
 Edge cases: expired cookie → 401 → FE treats as signed out. Token for a different `aud` → 401. Same Google account twice → one row (unique `google_sub`). Google account without `name` → `display_name = email`.

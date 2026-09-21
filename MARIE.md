@@ -85,6 +85,41 @@ only take effect at each role's **next** session start — say so in your report
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-09-20 — **New desk created: `safe-goods`, MANUAL mode — the FIRST desk opened from the
+  promoted `_templates/project`, and the first real test of it.** Owner's instruction: three
+  greenfield repos (`safe-goods-back` · `safe-goods-front` · `safe-goods-spec` = his requirement
+  repo), the template's five roles as-is, stack TBD for Sober's SPEC-001, Tanya local-full with
+  no dev server, *"ไม่มี production · ห้ามแตะ DB จริง"*, and one owner fact to seed: he works
+  manual step-by-step, on purpose, to control quality.
+  **Template verdict: it works, with one procedure lesson.** `cp -r _templates/project safe-goods`
+  → 21 files; a `grep` for `<project>` / `<back-repo>` / `<front-repo>` / 🔧 / `TEMPLATE` listed
+  **every** spot to fill (the marks did their job — nothing was missed by reading). One node
+  script filled all placeholders and 🔧 sections in six files with the possibility-proven
+  wording; `SYSTEM-FACTS.md` and the board's first Blocked rows written by hand. Residual
+  `grep` for placeholders: **zero**. `grep -rln possibility safe-goods`: **zero** — no other
+  desk's text leaked. Gate: **PASS, 0 warnings, first run.** Total time a fraction of the
+  possibility scaffold (09-17) — the promotion paid for itself on desk three.
+  🔧 **Procedure lesson — a fill script must be idempotent.** The first run threw on a
+  non-strict placeholder AFTER it had already written `PROTOCOL.md`; the rerun then failed
+  because PROTOCOL's 🔧 anchors were gone. Fixed by re-copying that one file from the template
+  and rerunning. **Next time: make placeholder replacement optional per file from the start,
+  and treat "anchor missing" as "already filled" for 🔧 marks — or run per-file.** Also the
+  third heredoc-with-JS failure this month; **write scripts with the Write tool, run with node.**
+  🔴 **`SYSTEM-FACTS.md` seeded with exactly what the owner said and NOTHING about the
+  product** — because he said nothing about it. *"safe-goods"* is the only clue, `safe-goods-spec`
+  holds a one-line README, and **the name is not inferred into a description**. Written as
+  ⚠️ NOT STATED + Q1, the board's first Blocked row, and the README row says so in bold. Porter's
+  first job is to ask *"what is this?"* before writing any REQ. Also seeded: repos' true state
+  (1 commit each, `main`, one-line README — read-only), stack TBD, branch undecided, local-only,
+  the five roles, and his manual-by-design rule verbatim.
+  **Verified:** `git status --porcelain` empty in all three repos · inbox 201 B ×5 (from the
+  template's clean files) · 0 absolute paths in committed files · `machine.local.md` +3 rows
+  (git-ignored) · README project table +1 row · gate PASS.
+  ⚠️ **Third desk in four days; `SESSION-STARTERS.md` still knows none of them** (possibility,
+  pun-kub-fang, safe-goods) and still calls the multi-hat Porter *"smart-scheduler only"*. Atlas's
+  file — flagged a third time. The starters Marie hands the owner in chat are doing that file's
+  job by hand.
+
 - 2026-09-18 — **New desk created: `pun-kub-fang`, MANUAL mode, in the possibility/smart-scheduler
   shape — the first desk where OUR team is a guest in someone else's repo.** Owner's instruction:
   *"งานเราคือ backend เป็นหลัก; front แตะแค่ตะเข็บ API"* · front `pun-kub-fang` exists (Next 16 +

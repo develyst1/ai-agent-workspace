@@ -4,7 +4,7 @@
 > Resume: `git pull` → `ai-worker/PROTOCOL.md` + your role file → this + `ai-worker/board.md` → **the newest
 > `ai-worker/log/*.md`** → act on your role's ball.
 >
-> 🔵 **Last updated: 2026-09-16** by Porter (PM). **START AT the `🔵 RESUME HERE — 2026-09-16` section at the END of this file** — it carries the live state, who is waiting on what, and the process lessons. Everything above it is history in date order. 🔴 **2026-09-05 changed the environment: the bot now runs on the CUSTOMER’S real LINE OA.** Read that section before acting on anything LINE.
+> 🔵 **Last updated: 2026-09-19** by Porter (PM). **START AT the `🔵 RESUME HERE — 2026-09-19` section at the END of this file** — it carries the live state, who is waiting on what, and the process lessons. Everything above it is history in date order. 🔴 **2026-09-05 changed the environment: the bot now runs on the CUSTOMER’S real LINE OA.** Read that section before acting on anything LINE.
 
 ---
 
@@ -459,7 +459,7 @@ stored ids cleared.** Clean run.
 
 ---
 
-# 🔵 RESUME HERE — 2026-09-16 (Porter, before session close). **Supersedes the 2026-09-13 section.**
+# 🔵 RESUME HERE — 2026-09-16 (Porter). ⛔ **SUPERSEDED by the 2026-09-19 section at the END — read that first.**
 
 ## Where the product IS
 - 🟢 **`uat` (`frontoffice.develyst.online`) is CURRENT** — `REQ-088` (link registration) AND the whole `REQ-089`
@@ -515,3 +515,52 @@ Everything in the 2026-09-13 table above STILL HOLDS. Added this round:
 2. The owner may verify item 7's coach message on `uat` (a linked coach) and hand back string edits.
 3. Otherwise he picks from the polish list, reconciles the 09-08 parked batch, or brings new customer work.
 4. `REQ-086` (customer-edits-the-words) is the known LAST big item, on his order.
+
+---
+
+# 🔵 RESUME HERE — 2026-09-19 (Porter). **Supersedes 2026-09-16.**
+
+## Where the product IS
+- 🟢 **`uat` (customer box) cutover happened 2026-09-19** — RBAC option C (individual logins) + REQ-093 archive + REQ-094 extended auto-checkin + REQ-091 §14 rental round-2 + TASK-396 (end-of-day START-based) + REQ-095 Other **Stage 1 (ECA/Free) & Stage 2a (DUO/Group)** all went live (migrations 0036–0041, verify 42; a TASK-085 ledger-skip was seed-ledger-repaired). The shared `admin/admin` login is DEAD on uat; super admin `admin` bootstrapped; **staff accounts must be created in the Users page or they cannot log in.**
+- 🟢 **`sid` is AHEAD: REQ-095 COMPLETE (Stages 1, 2a, 2b, 3b + Camp 3a) + REQ-096, all QA-clean** (migrations to 44). **A SECOND uat deploy is the owner's for TONIGHT 2026-09-19** to bring uat level: migrate `0042`+`0043` (seed-ledger if it drifts → verify 44), `sale:ensure-items` (+8: 4 DUO + 4 camp), grant `menu:camp`+`camp.*`+`calendar.group-series` to roles, flip the `ส่งแจ้งเตือน LINE วันแคมป์ (08:15)` setting if wanted.
+- ⚠️ **The uat ledger runs BEHIND and every multi-migration deploy hits the TASK-085 silent-skip** — the fix is always: `db:seed-ledger` (dry-run→`--apply`) → `db:migrate` → `db:verify`. Schema witnesses are always right; only the ledger rows need seeding. Sober has a permanent-fix task on the list.
+
+## The big feature that shipped this stretch — RBAC (option C, sold at ฿2,900)
+Individual logins; a **super admin** creates users + roles; per-user + per-role **menu (12)** and **action (54 keys)** permissions; a role builder + per-user matrix. Bootstrap: `BOOTSTRAP_ADMIN_USERNAME`/`PASSWORD` (**8+ chars**, in the RUNNING `.exe`'s env at `frontoffice\back`) → first login creates the super admin. Old history keeps its shared actor; new actions carry the real user. Every route fails-closed behind the guard.
+
+## REQ-095 "Other" — the four types, as built
+- **ECA / Free-KOL:** reserve a teacher slot + writable label + head count + Note; NO course, NO revenue; teacher rate STORED (backoffice owns the money, `ratePostedAt` null).
+- **DUO/Group:** each child keeps their OWN course, grouped into one recurring slot; DUO cap 2, Group 3–12; per-session walk-in at the 1h tier (**DUO 1,900 / Group 1,090**); **price follows the GROUP KIND** (`balance-duo` net-new: 1,900/6,800/9,360/14,200); teacher swappable; teacher rate → backoffice.
+- **Camp:** day-based "Balance camp"; half-day UNITS (half 1/full 2); **unused days = a paused CREDIT, NO expiry**; admin opens each week; credit redeemed into any future open week; 4 products (11,500/5,900/2,600/1,300, early bird 10,500 = a typed ฿1,000 discount); undo-attended returns credit (needs a 3–200 char reason); a camp QR (dies 23:59 of its date); an 08:15 camp LINE reminder (label **`Students` never `Kids`**, off until the setting is flipped).
+
+## The rulings that must not be re-derived (all in the REQ files verbatim)
+Everything in the 2026-09-16 table still holds. Added:
+| ruling | where |
+|---|---|
+| **Money/expense (teacher pay) lives in the BACKOFFICE; smart-scheduler stores the rate on the schedule, posts nothing** | `REQ-095 §4.1` |
+| **DUO/Group price follows the GROUP the course is sold into, not the subject** | `REQ-095 §8` |
+| **Camp: half-day units, credit/pause with NO expiry, admin-opened weeks, no-show consumed, early bird = a sale discount** | `REQ-095 §8/§9` |
+| **Program/subject management (rename, etc.) belongs to the BACKOFFICE, not smart-scheduler** | SYSTEM-FACTS 2026-09-17 |
+| **end-of-day (17:30) gates on START time not END** (owner override of REQ-070: staff on-site leave 17:30) | `REQ-094 §2`, SYSTEM-FACTS |
+| **The 08:15 reminder is CONFIRMED-only** (PENDING and EXTENDED both excluded) | `REQ-096` |
+| **Student DELETE = history-free only; a with-history student is ARCHIVED (hidden, history/ledger kept, no expiry)** | `REQ-093` |
+| **The owner (โด่ง/Develyst) is MALE — address him ครับ, never คะ** | memory `owner-dong-male` |
+
+## What is OPEN — who holds it
+| what | holder | note |
+|---|---|---|
+| **Tonight's 2nd uat deploy** (0042/0043 + camp) | owner | brings uat level with sid; steps above |
+| **Post-uat checks tomorrow AM** | owner | REQ-096 (no PENDING in the 08:15 reminder); TASK-396 (17:00 cut at 17:30); rental/group/camp LINE text; create staff accounts + remove old `ADMIN_*` |
+| **QA can't run internal jobs / read outbox on `sid`** | owner | a QA `INTERNAL_JOB_SECRET` (or one owner job-run) would let QA verify reminders/end-of-day/ledger on sid — recurring gap across TASK-396, REQ-096, camp reminder, 2b ledger |
+| **The TASK-085 ledger-skip permanent fix** | @Sober (listed) | recurs every multi-migration deploy |
+| **The ledger DUMP (DATA REQUEST)** | owner | Sober asked for old-formula/old-rental counts more than once; the owner has mostly said "leave the old ones" |
+| **`REQ-086`** (customer edits message words) | LAST by owner | `SPEC-078` written |
+
+## Standing lessons (2026-09-16 list all hold). Reinforced:
+- **"Deployed" ≠ "the new build/schema is running":** the owner builds locally→zip→`pm2 restart`; a plain restart serves the old zip; the running `.exe` (`frontoffice\back`) reads its OWN env, not the repo folder you ran a command from. Verify the DB the `.exe` uses, and `db:verify` before releasing QA.
+- **The uat ledger silent-skip (TASK-085) is now expected on big deploys — seed-ledger repair, don't panic** (Porter's 2026-09-17 wrong-DB panic recorded as an error).
+
+## Next moves
+1. Owner deploys uat tonight (2nd batch) → tomorrow's AM checks.
+2. `REQ-086` is the known last big item, on his order.
+3. Nothing is dispatched; both engineers idle; chain stopped.

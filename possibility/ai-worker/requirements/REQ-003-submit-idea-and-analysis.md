@@ -67,6 +67,7 @@ three 0–100 scores, the tier (REQ-001), a short reason, and the discount.
 - Reason heading: "เหตุผลจาก AI" / "Why the AI thinks so"
 - W-6 failure: "วิเคราะห์ไม่สำเร็จ ลองอีกครั้ง" / "Analysis failed — please try again." · button "ลองอีกครั้ง" / "Try again"
 - List: "ไอเดียของฉัน" / "My ideas" · empty state: "ยังไม่มีไอเดีย — เริ่มเล่าไอเดียแรกของคุณ" / "No ideas yet — tell us your first one."
+- W-7 page heading for the idea box (`/ideas/new`) (Porter 2026-09-21): "เล่าไอเดียของคุณ" / "Tell us your idea"
 
 ## Constraints
 - Signed-in only (REQ-002). Which AI model/provider is Sober's call in SPEC-001, subject to the owner's approval via Porter.
