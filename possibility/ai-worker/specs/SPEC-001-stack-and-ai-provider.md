@@ -50,7 +50,7 @@ possibility-back/
 ```
 
 ## Frontend layout (D3, binding for TASK-002 once Q-1 is answered)
-The `nextjs-antd-pattern` skill as written (Q-1 settled: Ant Design): `app/ · components/{ui,common,layout,partials} · hooks/ · services/ · lib/api/ · types/ · context/`; `api-main.ts → service → hook (React Query) → partial`; `@/*` alias; thin server pages → `"use client"` Content components. Exact pinned versions per the skill's lockset (`next 16.2.9 · react 19.2.7 · react-dom 19.2.7 · @tanstack/react-query 5.101.0 · axios 1.17.0 · typescript 6.0.3`) plus `antd 6.4.3`. **Security patches (amended 2026-09-20):** a patch/minor bump of `next` or `axios` within the same major to clear an `npm audit` advisory is Sober-approved and recorded in the TASK that does it; `antd`/`react` bumps still follow the skill. i18n: a plain TH/EN dictionary in `lib/i18n/` with a `lang` cookie (REQ-005 R3); no third-party i18n lib.
+The `nextjs-antd-pattern` skill as written (Q-1 settled: Ant Design): `app/ · components/{ui,common,layout,partials} · hooks/ · services/ · lib/api/ · types/ · context/`; `api-main.ts → service → hook (React Query) → partial`; `@/*` alias; thin server pages → `"use client"` Content components. Exact pinned versions per the skill's lockset (`next 16.2.9 · react 19.2.7 · react-dom 19.2.7 · @tanstack/react-query 5.101.0 · axios 1.17.0 · typescript 6.0.3`) plus `antd 6.4.3`. **Security patches (amended 2026-09-20):** a patch/minor bump of `next` or `axios` within the same major to clear an `npm audit` advisory is Sober-approved and recorded in the TASK that does it; `antd`/`react` bumps still follow the skill. i18n: a plain TH/EN dictionary in `lib/i18n/` with a `lang` cookie (REQ-005 R3); no third-party i18n lib. **Note (2026-09-21, TASK-006):** pins now `next 16.3.5` · `axios 1.20.0` (security re-pin, audit 0); `next.config.ts` sets `agentRules: false` because Next ≥16.3 otherwise writes `AGENTS.md`/`CLAUDE.md` into the repo on `next dev`.
 
 ## Risks recorded (not blockers)
 - R-1 The gateway has **no authentication** as documented. Anyone who finds the URL can spend the owner's provider credits. Our BE will not fix that; noted for the owner.
@@ -69,3 +69,17 @@ The `nextjs-antd-pattern` skill as written (Q-1 settled: Ant Design): `app/ · c
 - 2026-09-18 v1 (DRAFT): Sober proposed NestJS · Postgres+Prisma · Next.js+Mantine · Anthropic `claude-opus-5` · BE-owned Google auth · REST camelCase · `develop` branch · Docker Postgres.
 - 2026-09-18 v2 (ACTIVE): owner overrode D1–D4, D7, D8; accepted D5, D6. DR-1 (Anthropic key) and DR-3 (Docker) void.
 - 2026-09-19 v3: D3 → Ant Design (owner); D4a/D4b → per-step AI configuration (owner rule, SPEC-003 design); Q-1, DR-2, DR-4 closed.
+
+## SIT deploy checklist (added 2026-09-22 — Porter's request after the first SIT deploy; the owner deploys)
+Everything that differs from local. Values are the owner's; names are ours.
+| Where | Setting | SIT value / rule |
+|---|---|---|
+| Google Cloud OAuth client | Authorised JavaScript origins | `https://possibility.develyst.online` (done 2026-09-21 — this was the sign-in failure) |
+| FE build (`possibility-front/.env.local` **at build time**) | `NEXT_PUBLIC_API_BASE_URL` | the public URL the browser reaches the API on — **recommended: same host, `https://possibility.develyst.online/api/v1` reverse-proxied to the BE port**, so the session cookie is first-party and CORS is moot |
+| FE build | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | same public client id as local |
+| BE (`possibility-back/.env`) | `FRONTEND_ORIGIN` | `https://possibility.develyst.online` |
+| BE | `NODE_ENV` | `production` → cookie gets `Secure` (required over https) |
+| BE | `DATABASE_URL`, `SESSION_SECRET`, `GOOGLE_CLIENT_ID`, `ADMIN_EMAIL`, `AI_GATEWAY_URL` | as local; a **different `SESSION_SECRET`** on SIT is fine and expected (QA-minted local cookies will not work there — by design) |
+| BE | `PORT` | whatever the proxy forwards to |
+| If the API is on a **different host** than the FE | cookie | must become `SameSite=None; Secure` and CORS must allow the FE origin with credentials — avoid by proxying under the same host (row 2) |
+**DR-8 confirmed (owner, 2026-09-22):** the API on SIT is `https://possibility.develyst.online/api/v1` — same host; the cookie stays `SameSite=Lax`, no CORS concern.

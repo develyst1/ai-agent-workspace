@@ -121,3 +121,17 @@ Customer (Khwan): ค่าสอน is edited **per class/session**, not for th
 - **Current build (SPEC-087):** the Move-session rate box is labelled "changes the **course's** rate" and `PATCH /bookings/:id {classRateMinor}` rewrites the course-level `classRateMinor` — i.e. it changes EVERY session, not just that week. **This DIVERGES from the customer's intent.**
 - Applies to the DUO coach-rate box AND the Move-session (substitute) rate box on any course carrying a coach rate.
 - **⇒ Sober to analyse + size:** store a per-session rate on the booking (override) distinct from the course default; the session popup edits the SESSION only (that week); the course card edits the DEFAULT. Freelance/sale/report reads take the effective rate = session override ?? course default. Decide whether this HOLDS the `uat` deploy or ships as a fast-follow.
+
+### §13.4 — DUO New-course UI tweaks (customer, 2026-09-22)
+1. **Toggle label:** drop "(two kids)" → the tab reads just **DUO** (currently "DUO (two kids)").
+2. **Add two DUO programs:** **"Duo INLINE SKATE"** and **"Duo SURFSKATE"** (selectable in the Program dropdown for a DUO course).
+3. **Filter the Program dropdown when DUO is selected** ⇒ show ONLY programs whose name starts with **"Duo"** (Duo-prefixed activities only; Private stays the full list).
+⇒ @Sober: FE label change; the Program filter (name starts-with "Duo" under the DUO toggle); and how the two "Duo …" programs get created (net-new subjects — is that a seed here or a backoffice subject-mgmt task per the SYSTEM-FACTS scope line?). Size; fold into the current REQ-095/102 batch if cheap.
+
+### §13.4a — OWNER refinement 2026-09-22: separate by TYPE, not by the word
+Owner: give the subject a **TYPE / category** (e.g. a `kind`/`category` flag marking a subject as DUO) and filter the DUO Program dropdown by that TYPE — **NOT** by the name starting with "Duo". "แยก type น่าจะดูดีกว่า แยกโดยคำ." The two DUO subjects (Duo INLINE SKATE / Duo SURFSKATE) may be **seeded here for now**; in the FUTURE the customer wants to create these themselves, likely on the **backoffice** side (they carry price/money). So: add a subject type field + tag the two seeded DUO subjects with it + filter the DUO picker by type. Supersedes §13.4 point 3's name-prefix filter.
+
+### §13.4b — owner rulings 2026-09-22 (SPEC-089, "เอาตามนั้น")
+1. Hide DUO-kind subjects from the PRIVATE dropdown too (Private lists only PRIVATE-kind). YES.
+2. Server REFUSES a DUO course on a non-DUO subject. YES.
+Model: `subjects.kind` (PRIVATE default | DUO, closed set) separate from `price_group`; seed the two DUO subjects; FE filters by kind. Migration 0050.

@@ -150,6 +150,18 @@ copy tweak — write it as such. **The tier names are the owner's exact words**
   limit: it is a fact only when the owner states it. Reading it off a draft or
   guessing from the name is a guess wearing a fact's clothes — ask him.
 
+## Housekeeping — you do one bounded thing, Marie does the rest
+
+- You may **shorten an over-long board cell into a pointer** at the file that
+  already holds the detail. That is the whole of your housekeeping mandate.
+- **Moving content between files is Marie's alone** — compaction, sweeping closed
+  rows, rotating `dispatcher-state.md`, consolidating a REQ, archiving. Never
+  board → `SYSTEM-FACTS.md`. The knowledge file is exempt from *size*, never from
+  *shape*.
+- A hygiene FAIL goes to the human verbatim: *"hygiene FAIL — เรียก Marie ก่อน"*.
+
+**Marie is not on your chain — you cannot call her; you tell the owner to.**
+
 ## REQ template
 
 ```markdown

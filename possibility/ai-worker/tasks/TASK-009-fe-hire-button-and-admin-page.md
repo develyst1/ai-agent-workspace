@@ -1,11 +1,12 @@
 # TASK-009: FE — hire button on result page + `/admin` hire-requests page
 - Source: SPEC-005
 - Owner: FE (Fern)
-- Status: BLOCKED (waiting: TASK-006, TASK-008)
+- Status: IN_PROGRESS (2026-09-23, Fern; was TODO 2026-09-21)
 - Depends on: TASK-006, TASK-008
 
 ## What to do
-Read SPEC-005 §API/§Flow first. Start when Sober sets this TODO.
+Read SPEC-005 §API/§Flow first. Build on the TASK-013 dark theme (SPEC-008 §Pages 4 hire slot, §8 admin).
+0. **Lazy-load the email auth block** on the landing (`next/dynamic`, below the fold) — TASK-013 Q-1 (c); paste the Lighthouse mobile score after.
 1. `services/hire-requests.service.ts` + hooks: `useCreateHireRequest(ideaId)`, `useAdminHireRequests()`, `useSetContacted()`.
 2. Result page: replace TASK-006's placeholder slot — W-1 button (REQ-004 wording) when `!idea.hireRequested`; on 201 **or** 409 show W-2 once (interpolate `{email}` from `AuthContext.user.email`, `{discount}` = `{discountPercentAtRequest}%`) then W-3 disabled; invalidate the idea query.
 3. `app/admin/page.tsx`: rendered only when `user.isAdmin`; otherwise the app's not-found page (never a "forbidden"). **No link to it anywhere in the UI** (REQ-004 AC-6). Ant Design `Table`: date `DD/MMM/YY HH:mm`, name, email, idea preview (120 chars) with expand row → full text, three scores (`tabular-nums`), idea tier, user tier at request + discount, contacted state with a toggle (`Switch` or button) → PATCH → row refresh. Empty state per REQ-004 wording. Optional: "steps" drawer via `GET /admin/ideas/:id/steps`.

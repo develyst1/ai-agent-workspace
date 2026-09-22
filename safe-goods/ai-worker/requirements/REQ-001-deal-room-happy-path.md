@@ -1,5 +1,5 @@
 # REQ-001: Deal room — happy path (open → pay → deliver → release)
-- Status: SPEC_DONE
+- Status: DELIVERED (2026-09-21, Porter — TEST_PASSED round 2; NOT_TESTED: clipboard text, Enter-to-submit, phone viewport)
 - Priority: HIGH
 - Requested: 2026-09-20 by the owner
 - Deadline: none
@@ -168,3 +168,17 @@ Site name: **เว็บกลาง** (never "safe-goods" on screen).
 | Section headings | ไทม์ไลน์ · คำแนะนำ · หลักฐานการส่งของ |
 | Empty: parcel queue / payout queue | ไม่มีพัสดุรอยืนยัน / ไม่มีรายการรอโอนเงิน |
 | Auto-release result | ปล่อยเงินอัตโนมัติแล้ว {N} ห้อง · N=0: ไม่มีห้องที่ครบกำหนด |
+
+## Rework from TEST-001 (Porter, 2026-09-21 — TEST_FAILED, detail in `tests/TEST-001-deal-room-happy-path.md` §Defects)
+Attribution: DEF-1..5 are the result of **Porter's Thai copy arriving after the FE was built** (Q-E/Q-G answered 09-21 after TASK-006..009 were DONE) — the mistake is late UX copy, not engineering. Now that the strings exist, the screens must match them.
+- **R-1 (DEF-1)** admin auto-release result must read `ปล่อยเงินอัตโนมัติแล้ว {N} ห้อง` / `ไม่มีห้องที่ครบกำหนด` — no `released: N`.
+- **R-2 (DEF-2)** parcel queue / payout queue empty states: `ไม่มีพัสดุรอยืนยัน` / `ไม่มีรายการรอโอนเงิน`.
+- **R-3 (DEF-3)** new-room form shows visible labels `รายละเอียดสินค้า` and `ราคา (บาท)`.
+- **R-4 (DEF-4)** logout and copy-link are icon **+ text** (`ออกจากระบบ`, `คัดลอกลิงก์` → `คัดลอกแล้ว` for 2 s); aria-labels in Thai.
+- **R-5 (DEF-5)** room page headings `ไทม์ไลน์` / `คำแนะนำ` / `หลักฐานการส่งของ`; `(คุณ)` after the viewer's own name on the party card; register form shows field messages `กรุณากรอกข้อมูลนี้` / `รูปแบบอีเมลไม่ถูกต้อง` / `รหัสผ่านต้องมี 8–72 ตัวอักษร` on blur/submit (not only a disabled button).
+- **R-6 (Tanya Q-1, Porter's ruling)** countdown rounds **up** to the next whole hour: right after delivery it reads `ใน 3 วัน 0 ชั่วโมง`; last hour reads `ใน 0 วัน 1 ชั่วโมง`; never shows a value below the true remaining time. AC-15 wording stands ("3 วัน").
+- **R-7 (Tanya Q-2 / O-1, Porter's ruling — small scope add)** `ยกเลิกห้อง` asks for confirmation first: dialog text **ยกเลิกห้องนี้? อีกฝ่ายจะเห็นว่าห้องถูกยกเลิก และห้องนี้จะใช้ต่อไม่ได้** · buttons **ยืนยันยกเลิก** / **กลับ**. Adds AC-12b: **Given** a room with no confirmed payment **When** a party presses "ยกเลิกห้อง" and then "กลับ" **Then** nothing changes.
+- **R-8 (Tanya O-3)** price input with a non-integer (e.g. 10.5) shows `กรุณาระบุราคาเป็นจำนวนเต็มบาท` and no preview.
+- Not rework: O-2 (admin countdown line — REQ-002 will cover admin's room view), O-4 (remainder rule works as specified).
+
+New/updated ACs for re-test: AC-24 (all strings above on screen), AC-12b, AC-15 (countdown reads 3 วัน 0 ชั่วโมง right after delivery).

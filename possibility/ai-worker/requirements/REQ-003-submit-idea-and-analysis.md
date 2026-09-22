@@ -1,5 +1,5 @@
 # REQ-003: Submit an idea and see the AI analysis
-- Status: READY_FOR_SA (v2 2026-09-19; DR-5 deferred by the owner to SPEC-003 design time)
+- Status: DELIVERED (Porter 2026-09-22 — TEST_PASSED in `tests/TEST-003-submit-idea-and-analysis.md`; AC-7/12 NOT_TESTED-on-SIT, local evidence accepted)
 - Priority: HIGH
 - Requested: 2026-09-17 by the owner
 - Deadline: none
@@ -68,6 +68,8 @@ three 0–100 scores, the tier (REQ-001), a short reason, and the discount.
 - W-6 failure: "วิเคราะห์ไม่สำเร็จ ลองอีกครั้ง" / "Analysis failed — please try again." · button "ลองอีกครั้ง" / "Try again"
 - List: "ไอเดียของฉัน" / "My ideas" · empty state: "ยังไม่มีไอเดีย — เริ่มเล่าไอเดียแรกของคุณ" / "No ideas yet — tell us your first one."
 - W-7 page heading for the idea box (`/ideas/new`) (Porter 2026-09-21): "เล่าไอเดียของคุณ" / "Tell us your idea"
+- W-8 not-found page (Porter 2026-09-21): title "ไม่พบหน้านี้" / "Page not found" · body "หน้าที่คุณเปิดไม่มีอยู่ หรือไม่ใช่ของคุณ" / "This page does not exist, or is not yours." · link "กลับไปหน้าไอเดียของฉัน" / "Back to my ideas" (→ /ideas).
+- W-9 date format (Porter 2026-09-21): TH `21 ก.ย. 2026` (Thai month abbreviations, CE year — no พ.ศ.) · EN `21 Sep 2026`. Same rule on every page (My ideas, /me, admin).
 
 ## Constraints
 - Signed-in only (REQ-002). Which AI model/provider is Sober's call in SPEC-001, subject to the owner's approval via Porter.

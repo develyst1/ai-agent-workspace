@@ -1,5 +1,5 @@
 # REQ-001: User tiers — definitions, discounts, and the score → tier rule
-- Status: READY_FOR_SA
+- Status: DELIVERED (Porter 2026-09-22 — TEST_PASSED in `tests/TEST-002-user-tiers.md`; AC-7 NOT_TESTED-on-SIT, local evidence accepted)
 - Priority: HIGH
 - Requested: 2026-09-17 by the owner
 - Deadline: none

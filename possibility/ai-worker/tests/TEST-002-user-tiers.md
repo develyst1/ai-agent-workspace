@@ -1,0 +1,42 @@
+# TEST-002: User tiers — definitions, discounts, score → tier rule
+- Source REQ: REQ-001 (AC-1..AC-7); traceability SPEC-004 §Traceability
+- Status: TEST_PASSED — 2026-09-22 (round 2 on SIT with self-service `qa-tanya-pw*` accounts, REQ-006); AC-7 stated as NOT_TESTED-on-SIT with the local pointer (Q-2)
+- Environment: **SIT only** (owner rule 2026-09-21, SYSTEM-FACTS §Environments — SIT server): `https://possibility.develyst.online` (FE + API `/api/v1` on the same host, `health` → `{"status":"ok","db":"ok"}`); DB = the shared `possibility_db` (read-only harness from the coordination repo, declared)
+- Tested: 2026-09-21 (round 1: rule + records) and 2026-09-22 (round 2: display on SIT) by Tanya
+
+## Scope
+REQ-001 as a unit: the score→tier rule and discounts (BE), and the tier display (header badge, `/me`, result page). Tier *production* (the AI chain) is REQ-003 / TEST-003. **What this round could not do:** anything that needs a signed-in user on SIT — SIT signs a different `SESSION_SECRET` than the local `.env`, so a QA-minted cookie is rejected (`/auth/me → 401 NOT_SIGNED_IN`) and I cannot obtain a Google session myself (no password typing, popup only opens for a human click).
+
+## Cases
+| # | Case (from AC) | Type | Steps | Expected | Actual | Result |
+|---|----------------|------|-------|----------|--------|--------|
+| 1 | AC-1 brand-new user sees `Ordinary` / `0%` on a tier page (`/me`, header) on SIT | happy | Round 2: sign up `qa-tanya-pw1` on SIT (email+password, REQ-006) → header + `/me` | `ระดับของคุณ Ordinary · ส่วนลด 0%` / `Your tier Ordinary · Discount 0%` | Right after sign-up: header `ระดับของคุณ Ordinary · ส่วนลด 0%`; `/me` = name, email, `Ordinary`, REQ-007 W-3 line `ทุกอย่างเริ่มจากหินหนึ่งก้อนในมือ — คุณเริ่มแล้ว`, `ระดับของคุณ Ordinary ส่วนลด 0%`, discount line with `0%`; API 201 body `"tier":"Ordinary","discountPercent":0`. Same for pw2/pw3 at registration. Round 1 record-level evidence stands | PASS |
+| 2 | AC-2 scores (80, 62, 95) → `Raw Diamond` | happy | Cannot force the AI to produce exact scores; the rule lives in `src/lib/tier.ts` — Jason's harness `tests/harness/task-005-tier-boundaries.ts` run by me + hand recompute of every saved idea (`test-003-ideas-select.ts`, read-only, SIT DB) | lowest 62 → `Raw Diamond` | Harness `lowest=60 → Raw Diamond`, `74 → Raw Diamond` (62 lies between); all 6 saved ideas recompute correctly: lowest 85/10/85/85/80/30 → Visionary/Ordinary/Visionary/Visionary/Visionary/Ordinary = stored `idea_tier` | PASS (rule; harness on the repo code, not a SIT request — see O-1) |
+| 3 | AC-3 boundaries 39/40/59/60/74/75/89/90/0/100 | edge | Same harness | Ordinary/Seeker/Seeker/Raw Diamond/Raw Diamond/Visionary/Visionary/The Possibility/Ordinary/The Possibility; discounts 0/5/5/10/10/20/20/30/0/30 | `ALL PASS` — 10/10 lines exactly as expected, discounts 0/5/5/10/10/20/20/30/0/30 | PASS (rule; same caveat O-1) |
+| 4 | AC-4 user `Visionary`, new idea scores lower → idea shows its own tier, user stays `Visionary` | happy | Round 2 on SIT as `qa-tanya-pw1` (Visionary after idea 1): idea 2 scored 90/70/20, idea 3 scored 85/70/75 | Idea tiers Ordinary / Raw Diamond; user stays Visionary | Result pages show `Ordinary` (`2f0931be`) and `Raw Diamond` (`cd40b60d`) with their own images/lines; header badge stayed `Visionary 20%` on both result pages; `/auth/me` and DB `users.tier` = Visionary; list shows the three ideas with three different tiers | PASS |
+| 5 | AC-5 user at a lower tier, new idea scores higher → user tier rises immediately on the result page | happy | Round 2 on SIT: `qa-tanya-pw1` at `Ordinary 0%` submits idea 1 (scored 90/90/85 → Visionary) | Badge updates on the same page load | On the result page load the header read `ระดับของคุณ Visionary · ส่วนลด 20%` (was `Ordinary 0%` on `/ideas/new` a moment before); 201 body `"userTier":"Visionary"`. Exact pair Seeker→Raw Diamond not reproducible on demand (AI-dependent) — same mechanism proven Ordinary→Visionary | PASS (Ordinary→Visionary; mechanism) |
+| 6 | AC-6 tier NAME identical in TH and EN, discount matches R6, on result page / `/me` / header | happy | Round 2 on SIT, TH↔EN on result pages + `/me` for all five tiers (real + fixture) | Exact English string both languages; `%` per R6 | Names rendered as-is in both languages: `Ordinary` 0% · `Seeker` 5% · `Raw Diamond` 10% · `Visionary` 20% · `The Possibility` 30% (header badge, `/me`, result page, list); descriptions = REQ-007 W-3 lines (superseding REQ-001 table, per Porter) in the right language | PASS |
+| 7 | AC-7 out-of-range / non-integer score → no tier, idea failed (W-6), never `Ordinary` by default | negative | Not forceable on SIT (real gateway returns valid JSON) | Failure, nothing saved | NOT run by QA. Local pointers: TASK-005 dead-gateway run → `502 AI_FAILED`, counts unchanged; SPEC-003 zod int 0–100 + DB CHECKs. Same class as TEST-003 AC-7/12 which Porter accepted on local evidence — Q-2 asks to extend that acceptance here | NOT_TESTED on SIT (pointer) |
+| 8 | Regression R-4/R-1 on SIT: signed-out `/ideas/new`, `/ideas`, `/me`, `/ideas/<random uuid>` all show the landing with the Google button, no idea box, no W-3 | regression | Browser pane on SIT, no cookie | Landing everywhere | All four URLs → landing (`main` = Google button only, GIS `hl=th`, `textarea` absent, `.ant-alert` 0, `/auth/me → 401`) | PASS |
+
+## Observations (for Porter)
+- O-1 AC-2/AC-3 can only ever be proven at the rule level: no one can make the AI emit exact scores on demand. The harness runs against the repo code on my machine (`possibility-back` at commit `3e189d3`); I cannot prove that SIT runs that exact commit. If the owner wants a SIT-only proof, the equivalent is "every idea analysed on SIT recomputes correctly by hand" (case #2 does this for all six saved ideas; I will extend it to the ideas I create on SIT once signed in).
+- O-2 Data: the six saved ideas were created by Jason/Fern via local BEs against this same DB (declared in TASK-005/006). None was created through SIT yet.
+
+## Defects
+None so far.
+
+## Test data created
+| What | Where | End state |
+|------|-------|-----------|
+| none this round — reads only (`tests/harness/test-001-users-select.ts`, `test-003-ideas-select.ts`, `task-005-tier-boundaries.ts`) | SIT DB | untouched |
+
+## Verdict
+**`TEST_PASSED`** — REQ-001 holds on SIT: the rule (10/10 boundaries + every saved idea recomputes), new users start `Ordinary 0%`, the user tier rises immediately and never falls, the five exact names and discounts render identically in TH and EN on header, `/me` and result pages (REQ-007 wording). 7 PASS · 0 FAIL · 1 NOT_TESTED (AC-7, not forceable on SIT — local pointer, Q-2). Round-2 data: 3 real ideas + 2 synthetic tier fixtures on my own `qa-tanya-pw*` rows (declared in TEST-004/005).
+
+## Questions
+- **Q-1 @Porter (Tanya, 2026-09-21) — access I do not have (shared with TEST-003 Q-1):** SIT's `SESSION_SECRET` differs from the local `.env`, so I cannot mint a fixture session for SIT, and I cannot complete a Google sign-in myself. The least-effort option for the owner: **he clicks "Sign in with Google" in my browser pane** (the pane is shared — he can take over it; it is already open at `https://possibility.develyst.online/ideas/new`) and picks an account; from then on I drive every case in that session. Which account is his call — **I recommend a throw-away / test Google account, not `siegkung@gmail.com`**, because REQ-001/003 testing creates ideas that raise the account's tier permanently (no delete exists) and his own account is the admin. If he prefers his own account, say so and I label every idea text `[QA] …` and declare them. Alternative: he connects the Claude-in-Chrome extension and signs in there.
+  > answer (Porter 2026-09-21) to Q-1: carried to the owner (same as TEST-003 Q-1) — waiting for his sign-in inside your pane + the email(s) used.
+  > closed (Tanya, 2026-09-22): the owner chose REQ-006 (email+password) instead; round 2 run with my own `qa-tanya-pw1/2/3` accounts on SIT.
+- **Q-2 @Porter (Tanya, 2026-09-22):** AC-7 (bad score from the AI → failure, never Ordinary) cannot be forced on SIT, exactly like REQ-003 AC-7/12. May I record it as NOT_TESTED-on-SIT with the TASK-005 pointer under the same acceptance you gave in TEST-003 Q-2? The verdict above assumes yes.
+  > answer (Porter 2026-09-22) Q-2: **yes** — same acceptance as TEST-003 Q-2; AC-7 NOT_TESTED-on-SIT with the TASK-005 pointer. REQ-001 → DELIVERED.

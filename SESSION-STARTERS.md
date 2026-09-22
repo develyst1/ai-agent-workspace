@@ -28,6 +28,12 @@ session always loads the latest rules; memory lives in files, not in the chat).
 อ่าน MARIE.md — <งาน เช่น housekeeping code-report / migrate smart-scheduler>
 ```
 
+## Otto — Release & Platform Engineer (workspace-level, see OTTO.md)
+
+```
+อ่าน OTTO.md — <งาน เช่น ขึ้นโปรเจกต์ใหม่ ABC / ตรวจ cert>
+```
+
 > The per-role starters below still work for opening a single role manually —
 > both modes share the same files, so they can be mixed freely.
 

@@ -4,6 +4,7 @@
 // Exit 0 = PASS, exit 1 = FAIL (dispatcher must run a housekeeping hop first).
 // Owned by Marie (MARIE.md). Thresholds agreed with the human 2026-08-25;
 // v3 (knowledge file, active-team inbox, log-date rules) approved 2026-09-04.
+// v4 (knowledge SHAPE, inbox FAIL, boot budget) — Atlas ORDER 6, owner's go 2026-09-23.
 
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -31,7 +32,14 @@ const LIMITS = {
   inboxMsg: 2 * KB,        // a single inbox file (should be near-empty)
   boardClosedWarn: 10,     // closed rows tolerated on the live board before a nudge
   boardClosedFail: 30,     // closed rows that force a sweep to archive/board-closed.md
+  bootWarn: 60 * KB,       // one role's startup read (knowledge+PROTOCOL+role+board+its inbox)
+  bootFail: 120 * KB,      // same read, escalated
 };
+
+// Which files a single role actually reads to start a session, per PROTOCOL.md's
+// startup ritual. The inbox name is the ROLE name, not the role FILE name:
+// the SA Lead reads SA-Lead.md and inbox/SA.md.
+const ROLE_FILES = { PM: "PM.md", SA: "SA-Lead.md", BE: "BE.md", FE: "FE.md", QA: "QA.md" };
 
 // The project's Knowledge file: what the owner has already said and how the running
 // system behaves. First match wins; the first name is the canonical one.
@@ -41,6 +49,12 @@ const KNOWLEDGE_FILES = ["SYSTEM-FACTS.md", "FACTS.md", "KNOWLEDGE.md"];
 // construction — every line carries who said it and when — so "it got big" is the
 // rule working, not the rule being broken. Trimming it would delete the provenance
 // that makes it trustworthy, which is the one thing it exists to hold.
+//
+// ⚠️ Exempt from SIZE is not exempt from SHAPE (ORDER 6, 2026-09-23). Exempting a file
+// from the gate entirely turned it into the cheapest place to hide the mess: at
+// smart-scheduler a PM moved two board dumps into SYSTEM-FACTS.md to make the board gate
+// pass, and the knowledge file reached 323KB. A role is measured on making the gate pass;
+// only Marie is measured on keeping the shape. See the MOVED-FROM check in section 6.
 const NEVER_COMPACT = new Set(KNOWLEDGE_FILES);
 
 const fails = [], warns = [];
@@ -149,7 +163,12 @@ const inboxDir = join(AW, "inbox");
 if (existsSync(inboxDir)) {
   for (const f of readdirSync(inboxDir)) {
     const s = size(join(inboxDir, f));
-    if (s > LIMITS.inboxMsg) warns.push(`inbox/${f} ${fmt(s)} — messages piling up unread?`);
+    // FAIL for an active team, WARN for a dormant one. An inbox is a QUEUE: a message is
+    // deleted the moment it is processed. A 834KB queue (smart-scheduler, 2026-09-23) is
+    // not a busy team, it is a second log that nobody is draining — and every session of
+    // that role pays to read it. Dormant projects keep the WARN: nothing is arriving.
+    if (s > LIMITS.inboxMsg)
+      (active ? fails : warns).push(`inbox/${f} ${fmt(s)} > ${fmt(LIMITS.inboxMsg)} — an inbox is a queue, not a log (delete what you processed; escalate what you cannot)`);
   }
 } else if (active) {
   // FAIL only for a team that is actually working. A dormant project has no messages to
@@ -173,6 +192,31 @@ if (!knowledgeFile) {
   const referenced = existsSync(protoPath) && readFileSync(protoPath, "utf8").includes(knowledgeFile);
   if (!referenced)
     fails.push(`${knowledgeFile} exists but PROTOCOL.md never points at it — an unreachable memory file is worse than none (it looks solved)`);
+
+  // SHAPE, not size. A knowledge file holds facts — what the owner said, how the running
+  // system behaves. It is not an overflow tank for a board that failed the size gate.
+  // Both markers below are what the offending dumps actually look like in the wild.
+  const kText = readFileSync(join(AW, knowledgeFile), "utf8");
+  const moved = kText.split("\n").filter((l) => /⬅️\s*MOVED FROM|^#{1,6}\s.*MOVED FROM .*board/i.test(l));
+  if (moved.length)
+    fails.push(`${knowledgeFile} contains ${moved.length} "MOVED FROM" dump heading(s) — the knowledge file is exempt from SIZE, not from SHAPE; moving content between files is Marie's alone (report the FAIL to the human: "เรียก Marie")`);
+}
+
+// 7) the boot budget — what ONE role pays to read before it does any work.
+// Not a context-window test: k3 holds 1M tokens and this would fit. It is a COST and
+// CORRECTNESS test. Every session pays this read on every vendor's bill, and a knowledge
+// file full of superseded, duplicated statements makes any model confidently wrong —
+// "it fits" is not "it is read honestly" (owner supplied the vendor facts, 2026-09-23).
+{
+  const shared = size(join(AW, "PROTOCOL.md")) + size(boardPath) + (knowledgeFile ? size(join(AW, knowledgeFile)) : 0);
+  for (const [role, roleFile] of Object.entries(ROLE_FILES)) {
+    const rolePath = join(AW, roleFile);
+    if (!existsSync(rolePath)) continue;   // role not staffed on this project
+    const boot = shared + size(rolePath) + size(join(AW, "inbox", `${role}.md`));
+    const detail = `${role} boot read ${fmt(boot)} (PROTOCOL+board+${knowledgeFile ?? "no knowledge file"}+${roleFile}+inbox/${role}.md)`;
+    if (boot > LIMITS.bootFail) fails.push(`🔴 ${detail} > ${fmt(LIMITS.bootFail)} — paid on every session, on every vendor's bill`);
+    else if (boot > LIMITS.bootWarn) warns.push(`${detail} > ${fmt(LIMITS.bootWarn)}`);
+  }
 }
 
 for (const w of warns) console.log(`WARN  ${w}`);

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://kimi.com/schemas/kimi.plugin.schema.json",
+  "name": "ai-workforce-roles",
+  "version": "1.0.0",
+  "description": "Role identities for the AI workforce in the ai-agent-workplace workspace. Each skill is a thin trigger that establishes one role and points at that role's charter in the repo — the charter is the source of truth, never this plugin.",
+  "keywords": ["workforce", "roles", "fero", "tanya", "frontend", "qa"],
+  "author": "Atlas (ai-agent-workplace)",
+  "license": "Proprietary",
+  "skills": [
+    "./fero/",
+    "./tanya/"
+  ],
+  "interface": {
+    "displayName": "AI Workforce Roles",
+    "shortDescription": "Fero (Frontend) and Tanya (QA) role identities for the ai-agent-workplace workspace",
+    "longDescription": "Installs two identity-trigger skills. Each one only fires when the owner explicitly opens a session as that role, then makes the agent read the role's charter from the workspace repo before doing anything. The skills deliberately carry no rules of their own, so the charter never has a second copy to drift from.",
+    "developerName": "Atlas"
+  }
+}

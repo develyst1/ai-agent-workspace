@@ -1,5 +1,5 @@
 # REQ-002: Sign in with Google
-- Status: TEST_PASSED (Tanya, 2026-09-21 — `tests/TEST-001-google-sign-in.md`; one non-blocking gap, Q-3 there)
+- Status: DELIVERED (Porter, 2026-09-21 — TEST_PASSED in `tests/TEST-001-google-sign-in.md`; AC-5 W-3-on-cancel recorded as best-effort gap)
 - Priority: HIGH
 - Requested: 2026-09-18 by the owner
 - Deadline: none
@@ -21,11 +21,11 @@ contact them about a hire. The owner chose Google as the only sign-in method.
 
 ## Acceptance Criteria
 - [ ] AC-1 — **Given** a visitor not signed in **When** they open the idea page **Then** they are taken to sign-in with the Google button; no idea box is shown.
-- [ ] AC-2 — **Given** a Google account that has never signed in **When** it signs in **Then** a user exists with tier `Ordinary`, and the header shows that account's name and email.
+- [ ] AC-2 — **Given** a Google account that has never signed in **When** it signs in **Then** a user exists with tier `Ordinary`, and the header shows that account's name and email (**note 2026-09-22, Porter: on phone width the header shows the name only; email is on /me — accepted, TEST-004 Q-2**).
 - [ ] AC-3 — **Given** a returning user **When** they sign in again **Then** no second user record is created and their previous ideas and tier are shown.
 - [ ] AC-4 — **Given** a signed-in user **When** they press sign out **Then** the next visit to the idea page shows sign-in again.
-- [ ] AC-5 — negative: cancelling the Google popup / denying consent returns to the landing page with message W-3 and no user is created.
-- [ ] AC-6 — negative: there is no page or form that accepts an email + password.
+- [x] AC-5 — negative: cancelling the Google popup / denying consent returns to the landing page and no user is created. **Amended 2026-09-21 (Porter, in the open):** showing W-3 on cancel is best-effort only — Google Identity Services gives no cancel signal (SPEC-002 §Flow 8); observed 2026-09-21: W-3 not shown after a real dismiss. W-3 must still never appear on a plain visit (TEST-001 #13).
+- ~~AC-6 — negative: there is no page or form that accepts an email + password.~~ **Struck 2026-09-22 (Porter): the owner added email+password login as a real feature (REQ-006). Google stays the prominent option.**
 
 ## User-facing wording (Porter as UX writer)
 - W-1 button: "เข้าสู่ระบบด้วย Google" / "Sign in with Google"

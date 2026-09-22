@@ -246,3 +246,72 @@ verified against a spec nobody had ever checked with the person who pays.
 
 Still standing: no agent resolves the ~247 behavioural contradictions (§3) — those
 are unrelated to identity and remain the owner's, one at a time.
+
+### Exempting a file from the gate makes it the dump (2026-09-23 — my own rule backfired)
+
+On 2026-09-02 I wrote, into `check-hygiene.mjs` via Marie: *"Never compact the
+knowledge file: exempt it from every size rule, by name."* Twenty-one days later
+`smart-scheduler`'s `SYSTEM-FACTS.md` is **323 KB / 3,158 lines**, carrying two
+sections headed verbatim `## ⬅️ MOVED FROM board.md (hygiene: board was 44KB >
+40KB). VERBATIM, nothing dropped.` — and `log/2026-09-09.md` names the author:
+**Porter, doing his own housekeeping.** The inboxes went the same way:
+`inbox/PM.md` **834 KB**, `inbox/SA.md` **644 KB** — WARN only, so no teeth.
+A fresh PM's startup read is now **≈1.25 MB**.
+
+Three lessons, in order of how much they cost:
+
+1. **A gate creates a gradient.** Whatever it measures gets pushed to wherever it
+   does not. Exempting a file by name does not protect that file — it elects it.
+   The knowledge file may stay exempt from **size**; it must never be exempt from
+   **shape** (a `MOVED FROM board` heading inside it is now a FAIL).
+2. **Never give the cleanup job to the role the gate is grading.** A role's
+   incentive is to make the gate pass, and moving content to an unmeasured file is
+   always the cheapest way. `DISPATCHER.md` had literally instructed this:
+   *"gate FAIL → spend one hop waking PM for housekeeping."* Fixed 2026-09-23 —
+   a role may only shorten a cell into a pointer; **moving content between files
+   is Marie's alone**, and a FAIL is reported to the human as *"เรียก Marie"*.
+3. **A role that no role can reach will not be used.** Marie is on no chain: only
+   the human can call her, and nothing ever told him to. The owner asked *"am I
+   using Marie wrong?"* — he was not. The system never routed to her, and in
+   dispatcher mode it explicitly routed around her. **Designing a role without
+   designing its call path is designing a role that does not exist.**
+
+### Otto, and what a shared server changes (2026-09-23)
+
+New workspace-level role: **`OTTO.md`** — Release & Platform Engineer, knowledge
+tier `SERVER-FACTS.md` (the owner's own read-only survey). One Windows box holds
+**26 live apps, 20 domains, 20 certs, 24 databases, 3 cores, 20.7 GB free**.
+
+I first argued against putting an agent on deploy at all, citing "irreversible =
+human only". **That was wrong, and the owner corrected me**: that rule exists to
+stop PM/SA nagging him about git commits, and what he actually wanted was
+**provisioning** (folder · port · pm2 · nginx · cert · DNS) — patterned, repeatable,
+verifiable work he was *already* doing with an unnamed Claude session. Naming it
+and giving it a charter makes an existing practice safer; refusing makes nothing
+safer. **Check what the human is already doing before objecting on principle.**
+
+The real risk on a shared box is never the project being worked on — it is the
+**neighbours**: a bad `conf.d` file fails `nginx -t` and takes **all 20 domains**
+down at once; a port collision kills the new app; `pm2 save` under the wrong
+PM2_HOME loses everyone after a reboot. So Otto's boundary is not "don't touch"
+but **"touch only what you created"**, plus `nginx -t` before every reload and a
+`.bak` before every edit.
+
+Largest latent risk found: the pm2 **Windows service is Stopped** while 26 apps run
+from a daemon; uptime 55 days; **nobody has proven a reboot brings the customers'
+apps back.**
+
+### Multi-vendor (2026-09-23 — in progress)
+
+Quota is the binding constraint, so FE (renamed **Fero**, male) and **Tanya** (QA)
+move to **KIMI Code**; Otto and Marie stay on Claude for now. Evidence FE is the
+right first move: the last 8 log days at smart-scheduler are **36 entries, 100 % FE**.
+
+The architecture already allows it — *files are the channel, not a vendor*. What
+must change: charters become **self-contained** (`FE.md` is 3.3 KB and leans on
+23 KB of PROTOCOL plus whatever Claude infers for free), wording becomes
+vendor-neutral ("Claude Desktop sessions" is in PROTOCOL today), and the **startup
+read must fit a smaller context** — which is why the 1.25 MB boot cost above is a
+blocker for the migration, not a tidiness complaint. Marie moves last: after the
+cleanup, she is called *more* often, and during the transition she is the one who
+verifies the new vendor's work.

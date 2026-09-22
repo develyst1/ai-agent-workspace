@@ -53,37 +53,234 @@ logged didn't happen.
 > of memory". Delete an order from this section only after its line is in the
 > Operations log below. Nothing here overrides your Hard boundaries.
 
-> **STATUS 2026-09-04: ALL FIVE ORDERS ARE DONE. This section is empty.**
-> ORDER 1 · 2 · 3 (extract, park AND merge) · 4 · 5 all have lines in the Operations log below.
-> Outstanding work is not an order. The 45 open contradictions in
-> `smart-scheduler/ai-worker/SYSTEM-FACTS-CONTRADICTIONS.md` were **triaged by who can answer them**
-> after the owner rightly refused the pile: **15 are answerable from the source (Sober) · 9 from the
-> current state of a box (Tanya) · 3 are likely superseded (Porter) · 11 are process items for Atlas
-> or the team · only 7 are genuinely his.**
-> **Current state: 6 answered by the owner (C-04, C-05, C-08, C-11, C-22, C-31) · 39 unanswered.**
-> Of his 7, five are answered; C-31 he answered on top. ⇒ **2 owner questions left, and the rest
-> belong to the team, not to him.** Counts live in the contradictions file's own Ledger — check there,
-> not here, before quoting a number.
-> Triage sheet: `order5-curated/triage.md` in scratch — **not durable, park it if it is still wanted.**
+> **STATUS 2026-09-23: ORDERS 6–8 BELOW ARE OPEN.** (Orders 1–5 from 2026-09-02/04 are
+> done — their lines are in the Operations log.)
 
-### Sequencing and session hygiene for these orders
+### ORDER 6 — close the loophole that ate the Knowledge tier (owner's go, 2026-09-23)
 
-> **STATUS 2026-09-04 (final): nothing below is still pending.** All five orders
-> landed the same day — 1, 2, 4 and 5 in full, and ORDER 3 through all three of
-> its stages (extract → park → merge). Atlas released ORDER 4 to run ahead of
-> ORDER 3's merge rather than wait on the identity ruling, so the 1→2→3→4
-> sequencing rule below was overtaken by his instruction and is kept only as the
-> record of how it was originally planned.
+**What happened, measured 2026-09-23 at `smart-scheduler`:** `SYSTEM-FACTS.md` is
+**323 KB / 3,158 lines**; `inbox/PM.md` **834 KB**, `inbox/SA.md` **644 KB**,
+`inbox/QA.md` **128 KB** (threshold 2 KB, WARN only); `board.md` 56 KB, gate FAIL.
+The knowledge file contains two sections headed verbatim
+`## ⬅️ MOVED FROM board.md (hygiene: board was 44KB > 40KB). VERBATIM, nothing dropped.`
+and `log/2026-09-09.md` shows who did it: **Porter, himself** —
+*"🧹 Board hygiene: 48.8KB → 25.9KB … `## Project info` moved VERBATIM to SYSTEM-FACTS."*
 
-Do them in order 1 → 2 → 3 → 4 (ORDER 3 needs somewhere to put what it finds;
-ORDER 4 would red-line everything if it landed first).
-**Before ORDER 1: the owner closes his open Porter session** — it holds a stale
-copy of PROTOCOL.md/PM.md in context and writes the same files (same reason the
-08-31 SPLIT waited). Jason/Fern/Tanya sessions may finish the unit they are
-holding first; the edits are additive and do not break work in flight. New rules
-only take effect at each role's **next** session start — say so in your report.
+**Root cause is a rule Atlas wrote on 2026-09-02:** *"Never compact the knowledge
+file: exempt it from every size rule, by name."* Exempting a file from the gate
+turns it into the cheapest place to hide the mess. A role is measured on **making
+the gate pass**; only Marie is measured on **keeping the shape**.
+
+**Your own hands — `check-hygiene.mjs`:**
+1. **FAIL** when a knowledge file contains a heading matching `MOVED FROM .*board`
+   (or any `⬅️ MOVED FROM`). The knowledge file stays exempt from *size* — it must
+   not be exempt from *shape*.
+2. **FAIL** (not WARN) when any `inbox/*.md` exceeds the threshold, for an active
+   project. An inbox is a queue; a 834 KB queue is a second log and means nobody
+   is deleting what they processed.
+3. Add a **WARN at 60 KB / FAIL at 120 KB** on the *total* startup read
+   (knowledge + PROTOCOL + role file + board + that role's inbox).
+   ⚠️ **Revised 2026-09-23 (owner supplied the fact):** KIMI K3 has a **1M-token
+   context** (K2.7 Code Highspeed 256k), so this threshold is **no longer a
+   migration blocker** — it never was about fitting. Keep it anyway, for the two
+   reasons that do not depend on window size: **every session pays this read, on
+   every vendor's bill**, and **a 323 KB knowledge file full of superseded and
+   duplicated statements makes any model confidently wrong.** Treat a FAIL here as
+   a cost-and-correctness signal, not a boot failure.
+4. Re-run the blast-radius check across every project before and after, as usual,
+   and report which projects change verdict (several will; that is the point).
+
+**Via each project's spawned PM — `PROTOCOL.md` + `PM.md`, every project that has them:**
+5. State the new division plainly, in the words `DISPATCHER.md` now uses: a role
+   may **shorten an over-long board cell into a pointer** and nothing else;
+   **moving content between files is Marie's alone**; a hygiene FAIL is reported
+   to the human as *"เรียก Marie"*, never self-served.
+6. `PM.md`: Porter's housekeeping section (if any) is replaced by the same rule
+   plus the sentence **"Marie is not on your chain — you cannot call her; you tell
+   the owner to."**
+
+**Then, as a separate operation:** smart-scheduler's actual cleanup —
+board 56 KB → state-only, the three inboxes drained (processed messages deleted,
+anything unprocessed left in place and reported), and **`SYSTEM-FACTS.md` split**:
+the real knowledge (~25 KB) stays; the two `MOVED FROM board.md` dumps and the
+parked history go to `archive/` verbatim. Archive before touching anything, as always.
+
+### ORDER 7 — install Otto (owner's go, 2026-09-23)
+
+A new workspace-level role exists: **`OTTO.md`** — Release & Platform Engineer,
+written by Atlas from the owner's own read-only server survey, which is now
+`SERVER-FACTS.md` at the workspace root (Otto's knowledge tier, append-only).
+
+Your part:
+1. Add Otto to `README.md`'s "Workspace-level identities" line (Atlas · Marie · Otto)
+   and add a starter to `SESSION-STARTERS.md`:
+   `อ่าน OTTO.md — <งาน เช่น ขึ้นโปรเจกต์ใหม่ ABC / ตรวจ cert>`.
+2. Add to `CLAUDE.md`'s "Workspace-level identities" section — **owner's explicit
+   written instruction required, as always for that file; he gave it for Otto on
+   2026-09-23. Quote this line as the authority.**
+3. Do **not** put Otto inside any project's chain. He is reached by the human
+   directly, or by the SA Lead for a release — and every release still passes the
+   project's own PM+QA gate.
+
+### ORDER 8 — the multi-vendor move is coming; make the charters portable
+
+**VENDOR FACTS — supplied by the owner 2026-09-23, read before designing anything:**
+
+- **Context is not a constraint, and neither is cost.** `k3` = up to **1M tokens**;
+  `k3-256k`, `kimi-for-coding` (K2.8) and `kimi-for-coding-highspeed` (K2.7) are
+  **256K**. Set per model in `~/.kimi-code/config.toml` (`max_context_size`).
+  K3 does burn roughly **2x** the quota of a 256k model — recorded as a fact, not
+  as advice, because **the owner is on the Kimi Pro plan** and told us so on
+  2026-09-23: *"kimi 3 ไม่ใช่ปัญหา รันได้ชิลๆ"*.
+  ⇒ **Run Fero and Tanya on K3 (1M)** — they are the two heavy roles.
+  One caveat that survives the bigger window: **"it fits" is not "it is read
+  honestly."** A 323 KB knowledge file full of superseded statements still makes a
+  model confidently wrong, so ORDER 6's cleanup keeps every bit of its value.
+- **Auto-compact:** when context nears full, Kimi Code silently summarises the
+  conversation history. Harmless here *because* the files are the memory — but it
+  makes a long session lossy, so the existing rule **"one coherent unit of work per
+  session, then stop"** is now a vendor requirement, not just good hygiene.
+- **`AGENTS.md` is read automatically every session** (injected into the system
+  prompt, like `CLAUDE.md`), **including one per subdirectory**, with a file watcher
+  that reloads on edit. Also available: `[identity]` in config (names the agent),
+  its own `SYSTEM.md`, and skills in `.kimi-code/skills/`.
+  ⇒ **Charters do not have to be pasted.** See the wiring below.
+
+**The wiring — Atlas design, and the genuinely new part:**
+
+`AGENTS.md` is injected for *every* agent in that directory, so it cannot say
+"you are Fero" — Tanya may open a session in the same place. Split it:
+
+| File | Holds | Why |
+|---|---|---|
+| `<workspace>/AGENTS.md` | vendor-neutral shared rules: amnesia-first, the hard chain, paths via `machine.local.md`, git is the owner's, files are the only channel | true for every role, every project |
+| `<workspace>/<project>/AGENTS.md` | that project's pointers: where `ai-worker/` is, repos by logical name, the startup ritual order | subdirectory support loads it automatically when working in that project |
+| role identity (Fero / Tanya) | the session starter, `[identity]`, or one entry per role in `.kimi-code/skills/` | the only per-role channel that does not leak into another role's session |
+
+⚠️ **Settle with the owner before installing:** Kimi Code should be opened with the
+**workspace** as its working directory — then `AGENTS.md` subdirectory loading lines
+up with the project folders, and code repos are reached through `machine.local.md`
+exactly as every role already does. If he prefers to open it inside the code repo,
+the entire wiring above inverts. Ask first.
+
+**Fero's charter is written:** `_templates/roles/FERO.md` (181 lines, 9.5 KB,
+self-contained — works pasted **or** installed as `ai-worker/FE.md`). Tanya-portable
+is next; Otto is already written.
+
+The owner has bought **KIMI Code** and will run **FE (renamed "Fero", male) and QA
+(Tanya)** on it, because Claude quota is the binding constraint. Evidence it is the
+right pick: in the last 8 log days at smart-scheduler, **36 entries, 100 % FE** —
+frontend is the entire recent burn.
+
+Nothing in the architecture blocks this (files are the channel, not a vendor), but
+three things must change, and they are prerequisites, not follow-ups:
+1. **Charters must be self-contained.** `FE.md` is 3.3 KB and leans on 23 KB of
+   PROTOCOL plus whatever Claude infers. A different model infers differently.
+2. **Vendor-neutral wording** — `PROTOCOL.md` still says "Claude Desktop sessions".
+3. **The boot budget from ORDER 6 item 3** must actually pass, or the new vendor
+   cannot start a session at all.
+
+Atlas drafts the charters (Fero is written: `_templates/roles/FERO.md`; Tanya-portable
+next; Otto is already written); you install and verify them.
+⚠️ **Revised 2026-09-23:** the old line here said *"do not start before ORDER 6's
+cleanup lands"*. With a 1M context that dependency is **lifted — ORDER 8 may run in
+parallel with ORDER 6.** The cleanup is still worth doing first where it is cheap,
+but it no longer gates the migration.
+
+
+### ORDER 9 — the companion files, and the discipline that was living off-repo (2026-09-23)
+
+Atlas has written five more files. Install them with ORDER 8.
+
+| File | For | Install as |
+|---|---|---|
+| `_templates/roles/FERO.md` | FE | `<project>/ai-worker/FE.md` (rename Fern -> Fero, male) |
+| `_templates/roles/FERO-DESIGN.md` | FE | `<project>/ai-worker/FE-DESIGN.md`, referenced from FE.md section 7 |
+| `_templates/roles/TANYA.md` | QA | `<project>/ai-worker/QA.md` |
+| `_templates/roles/TANYA-PLAYWRIGHT.md` | QA | `<project>/ai-worker/QA-PLAYWRIGHT.md`, referenced from QA.md section 5 |
+| `AGENTS-DISCIPLINE.md` (workspace root) | **every role** | already at the root — add it to each `PROTOCOL.md` startup ritual, one line |
+
+🔴 **The finding behind `AGENTS-DISCIPLINE.md`, and why it is not optional.**
+A real part of how the roles behave came from the owner's **personal,
+machine-local** assistant config (an always-invoke-first rule plus a
+which-technique-when table). `grep` for any of it across every role file,
+`PROTOCOL.md` and the workspace `CLAUDE.md` returns **zero**. It worked, and it was
+invisible — and it would have disappeared the moment a role moved to another AI
+vendor, with the work getting quietly worse and nothing to point at. **Behaviour
+that is not in the repo is not part of the system**, however well it has been
+working. It is in the repo now.
+
+🔴 **Owner's ruling, 2026-09-23: Tanya is Playwright-only.** `claude-in-chrome`
+(driving the owner's real Chrome) was one of her two evidence paths and does not
+exist outside Claude. The trade is accepted deliberately: a committed harness is
+re-runnable, a live browser session is not. A case Playwright genuinely cannot
+reach is `NOT_TESTED` with the reason, escalated to Porter — never substituted with
+a code read. `QA-PLAYWRIGHT.md` carries the method, distilled from her own rounds:
+real Chrome channel, the local+mock "enough for layout, NOT enough for behaviour"
+declaration, harnesses at `tests/harness/<env>-<subject>.mjs` with nothing written
+into the product repo, the 1600/1280/768/375 standing widths, and the lesson that
+has caught the most defects — **a Playwright trial click passes where a human
+cannot reach, because `scrollIntoViewIfNeeded` scrolls an `overflow:hidden`
+container programmatically; the hit-test and the screenshot are the truth.**
+
+**When installing:** `FERO.md` and `TANYA.md` are byte-identical across projects
+except for `<PROJECT>`, the repo names in FERO section 2, and the environment table
+in TANYA section 3. Keep them that way — a per-project edit to a shared charter is
+how they drift apart.
 
 ## Operations log (append one line per operation, newest first)
+
+- 2026-09-23 — **ORDER 7 DONE: Otto is installed as the third workspace-level identity.**
+  Marie's own hands, three files: `README.md` (identities line now Atlas · Marie · Otto, with
+  `SERVER-FACTS.md` named as his knowledge tier), `SESSION-STARTERS.md` (new starter
+  `อ่าน OTTO.md — <งาน เช่น ขึ้นโปรเจกต์ใหม่ ABC / ตรวจ cert>`, placed after Marie's), and
+  `CLAUDE.md` ("Two standing identities" → "Three", plus Otto's bullet). The `CLAUDE.md` edit
+  carries its authority inline, as that file requires: *"Added 2026-09-23 on the owner's
+  explicit written instruction, recorded in `MARIE.md` → Pending orders → ORDER 7."*
+  Otto is deliberately **not** in any project chain — the bullet says so, and says a release
+  still passes that project's own PM+QA gate.
+
+- 2026-09-23 — **ORDER 6 items 1–6 DONE. The knowledge-file loophole is closed, and the gate
+  now measures the thing the loophole exploited.**
+  **`check-hygiene.mjs` v4** (Marie's own hands, three new checks):
+  (1) a knowledge file containing a `⬅️ MOVED FROM` / `MOVED FROM …board` heading is now a
+  **FAIL** — exempt from *size*, never from *shape*; (2) an over-threshold `inbox/*.md` is a
+  **FAIL** for an active project (WARN stays for dormant ones) — an inbox is a queue, and a
+  834 KB queue is a second log; (3) a **boot-budget** check per staffed role (knowledge +
+  PROTOCOL + role file + board + that role's inbox) at **WARN 60 KB / FAIL 120 KB**. Per the
+  revised order this is a **cost-and-correctness** signal, not a context-window one — k3 holds
+  1M tokens and it would fit; the point is that every session pays this read on every vendor's
+  bill, and a knowledge file full of superseded statements makes any model confidently wrong.
+  **Blast radius, measured across all 13 projects before and after.** Four change verdict or
+  gain new lines: **smart-scheduler** FAIL(3) → **FAIL(13)** — all four inboxes (PM 834 KB,
+  SA 644 KB, BE 351 KB, QA 128 KB), both `MOVED FROM` dumps in `SYSTEM-FACTS.md`, and all five
+  roles' boot reads (PM 1,246 KB, SA 1,052 KB, BE 749 KB, QA 543 KB, FE 397 KB — against a
+  120 KB gate); **dte** FAIL(1) → **FAIL(6)** (inbox/SA 6.7 KB + four boot reads ~133–141 KB —
+  a project nobody had flagged); **possibility** PASS(2) → **PASS(7)**, all five roles in the
+  60 KB WARN band; **did-api-center-c#** gains three boot WARNs. The other nine are unchanged.
+  That the two projects with the worst numbers were *both* previously green is the finding.
+  **Rules text (items 5–6), via each project's spawned PM — all 13 projects, not just the
+  active ones.** `PROTOCOL.md` gets a `## Hygiene & file surgery` section in `DISPATCHER.md`'s
+  own words (a role may shorten an over-long board cell into a pointer and nothing else;
+  moving content between files is Marie's alone; a FAIL is reported to the human as
+  *"เรียก Marie"*, never self-served), and `PM.md` gets the same rule plus the sentence
+  **"Marie is not on your chain — you cannot call her; you tell the owner to."**
+  **Verified by Marie, not taken on report:** 13/13 have all three edits; the inserted blocks
+  are **byte-identical across all 13** (md5 `adb75396` / `c6f3ec26`) — ORDER 9's anti-drift
+  rule applied to rules text too; and a 30-minute mtime sweep confirms the PMs touched
+  **only** `PROTOCOL.md` and `PM.md` — no board, no log, no inbox, no REQ/SPEC/TASK.
+  ⚠️ **Still open under ORDER 6: smart-scheduler's actual cleanup** (board 56 KB → state-only,
+  the four inboxes drained, `SYSTEM-FACTS.md` split). Separate operation, separate log line.
+
+- 2026-09-23 — **ORDER 9, the `AGENTS-DISCIPLINE.md` line: DONE for all 13 projects** (done in
+  the same spawned-PM pass as ORDER 6 items 5–6, so it cost one hop instead of two). Every
+  `PROTOCOL.md` startup ritual now has a numbered step reading `AGENTS-DISCIPLINE.md` at the
+  workspace root, inserted directly after "read PROTOCOL.md and your own role file" with the
+  remaining steps renumbered. This is the discipline that was living in the owner's personal,
+  machine-local assistant config and returned **zero** on a `grep` of the repo — it is in the
+  repo now, and on every role's startup path. The rest of ORDER 9 (installing `FERO.md`,
+  `FERO-DESIGN.md`, `TANYA.md`, `TANYA-PLAYWRIGHT.md`) travels with ORDER 8 and is **blocked
+  on the owner's answer** about Kimi Code's working directory — see the ORDER 8 note.
 
 - 2026-09-20 — **New desk created: `safe-goods`, MANUAL mode — the FIRST desk opened from the
   promoted `_templates/project`, and the first real test of it.** Owner's instruction: three

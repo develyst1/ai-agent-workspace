@@ -33,11 +33,13 @@
 
 | Id | Title | Priority | Status (date, owner, pointer) | Ball |
 |----|-------|----------|-------------------------------|------|
-| REQ-001 | User tiers — definitions, discounts, score→tier rule | HIGH | IN_SPEC — 2026-09-20, TASK-007 FE TODO, `specs/SPEC-004-user-tier-display.md` | Fern (007) |
-| REQ-002 | Sign in with Google | HIGH | TEST_PASSED — 2026-09-21, Tanya, 18 PASS / 0 FAIL / 0 defects incl. the owner's real Google run; Q-3 (W-3 after cancel, best-effort) for Porter before DELIVERED, `tests/TEST-001-google-sign-in.md` | Porter |
-| REQ-003 | Submit an idea and see the AI analysis | HIGH | IN_SPEC — 2026-09-20, BE done; TASK-006 FE TODO (after 007), `specs/SPEC-003-idea-analysis-chain.md` | Fern (006) |
-| REQ-004 | Hire request + owner's admin page | HIGH | IN_SPEC — 2026-09-20, BE done (TASK-008); waiting FE TASK-009, `specs/SPEC-005-hire-request-and-admin.md` | Fern (after 006) |
-| REQ-005 | Bilingual UI TH/EN with switch | MEDIUM | READY_FOR_SA — 2026-09-18, Porter, queued last, `requirements/REQ-005-bilingual-ui.md` | Sober |
+| REQ-001 | User tiers — definitions, discounts, score→tier rule | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED in `tests/TEST-002-user-tiers.md` (AC-7 NOT_TESTED-on-SIT, local evidence) | — |
+| REQ-002 | Sign in with Google | HIGH | DELIVERED — 2026-09-21, Porter; TEST_PASSED 18/0/0 in `tests/TEST-001-google-sign-in.md`; AC-5 W-3-on-cancel amended to best-effort (gap recorded) | — |
+| REQ-003 | Submit an idea and see the AI analysis | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED in `tests/TEST-003-submit-idea-and-analysis.md` (AC-7/12 NOT_TESTED-on-SIT, local evidence) | — |
+| REQ-004 | Hire request + owner's admin page | HIGH | IN_SPEC — 2026-09-21, BE done; TASK-009 FE TODO, `specs/SPEC-005-hire-request-and-admin.md` | Fern (009) |
+| REQ-005 | Bilingual UI TH/EN with switch | MEDIUM | IN_SPEC — 2026-09-21, Sober, `specs/SPEC-006-bilingual-ui.md` (rules already built to; TASK-010 sweep after TASK-009) | Fern (after 009) |
+| REQ-006 | Email + password sign-up/sign-in (Google stays prominent) | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED round 2 in `tests/TEST-004-email-password-login.md` | — |
+| REQ-007 | Visual redesign — "you are the possibility" (dark theme, tier imagery, new tier wording) | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED round 2 in `tests/TEST-005-visual-redesign.md` | — |
 
 ## Tasks
 
@@ -48,16 +50,25 @@
 | TASK-003 | BE users table + Google auth endpoints + session middleware | SPEC-002 | DONE — 2026-09-20, Sober review in `tasks/TASK-003-be-google-auth.md` §Review (real-token line → Tanya via FE) | Jason | TASK-001 ✓ |
 | TASK-004 | FE Google button, AuthContext, header, guard | SPEC-002 | DONE — 2026-09-20, Sober review in `tasks/TASK-004-fe-google-sign-in.md` §Review (real Google flow → Tanya after DR-7) | Fern | TASK-002 ✓, TASK-003 ✓ |
 | TASK-005 | BE ideas + 5-step AI chain + tier + endpoints | SPEC-003 | DONE — 2026-09-20, Sober review in `tasks/TASK-005-be-idea-analysis-chain.md` §Review (admin-200 line → Tanya/owner via FE) | Jason | TASK-003 ✓ |
-| TASK-006 | FE idea box, result page, My ideas | SPEC-003 | TODO — 2026-09-20, after TASK-007 (+ security re-pin item 0), `tasks/TASK-006-fe-idea-and-result.md` | Fern | TASK-004 ✓, TASK-005 ✓ |
-| TASK-007 | FE header tier badge + /me profile | SPEC-004 | TODO — 2026-09-20, Sober, `tasks/TASK-007-fe-tier-badge-and-profile.md` | Fern | TASK-004 ✓ |
+| TASK-006 | FE idea box, result page, My ideas | SPEC-003 | DONE — 2026-09-21, Sober review in `tasks/TASK-006-fe-idea-and-result.md` §Review | Fern | TASK-004 ✓, TASK-005 ✓ |
+| TASK-007 | FE header tier badge + /me profile | SPEC-004 | DONE — 2026-09-21, Sober review in `tasks/TASK-007-fe-tier-badge-and-profile.md` §Review | Fern | TASK-004 ✓ |
 | TASK-008 | BE hire_requests + hire endpoint + admin list/PATCH | SPEC-005 | DONE — 2026-09-20, Sober review in `tasks/TASK-008-be-hire-request-and-admin.md` §Review (real-owner admin cookie → Tanya via FE) | Jason | TASK-005 ✓ |
-| TASK-009 | FE hire button + /admin page | SPEC-005 | BLOCKED — 2026-09-19, waiting TASK-006 + TASK-008, `tasks/TASK-009-fe-hire-button-and-admin-page.md` | Fern | TASK-006, TASK-008 |
+| TASK-009 | FE hire button + /admin page | SPEC-005 | IN_PROGRESS — 2026-09-23, Fern, `tasks/TASK-009-fe-hire-button-and-admin-page.md` | Fern | TASK-014 ✓ |
+| TASK-010 | FE bilingual sweep + i18n guard script | SPEC-006 | BLOCKED — 2026-09-21, waiting TASK-009, `tasks/TASK-010-fe-bilingual-sweep.md` | Fern | TASK-009 |
+| TASK-011 | BE email+password register/login (same session) | SPEC-007 | DONE — 2026-09-22, Sober review in `tasks/TASK-011-be-email-password-login.md` §Review | Jason | — |
+| TASK-012 | FE email sign-in/sign-up block under Google | SPEC-007 | DONE — 2026-09-22, Sober review in `tasks/TASK-012-fe-email-password-forms.md` §Review (Enter-to-submit → Tanya) | Fern | TASK-011 ✓ |
+| TASK-013 | FE visual redesign (dark theme, imagery, result order, W-3 lines, W-8/W-9) | SPEC-008 | DONE — 2026-09-22, Sober review in `tasks/TASK-013-fe-visual-redesign.md` §Review (3 tier images → Tanya via fixtures) | Fern | — |
+| TASK-014 | FE fix DEF-1 (error Alert contrast) + DEF-2 (Thai hero break) | SPEC-008 | DONE — 2026-09-22, Sober review in `tasks/TASK-014-fe-fix-def1-def2.md` §Review (14.16:1 measured) | Fern | — |
 
 ## QA / Tests
 
 | REQ | TEST | Status (date, pointer) | Verdict |
 |-----|------|------------------------|---------|
-| REQ-002 | TEST-001 | TEST_PASSED — 2026-09-21, `tests/TEST-001-google-sign-in.md` | TEST_PASSED — 0 defects; W-3-after-cancel unobserved (non-blocking per SPEC-002 §Flow 8), Q-3 to Porter |
+| REQ-002 | TEST-001 | TEST_PASSED — 2026-09-21, `tests/TEST-001-google-sign-in.md` | TEST_PASSED — 0 defects; W-3-on-cancel observed not shown, AC-5 amended (gap recorded); REQ DELIVERED |
+| REQ-001 | TEST-002 | TEST_PASSED — 2026-09-22, `tests/TEST-002-user-tiers.md` | TEST_PASSED — 7 PASS / 0 FAIL; AC-7 NOT_TESTED-on-SIT (local pointer, Q-2 to Porter) |
+| REQ-003 | TEST-003 | TEST_PASSED — 2026-09-22, `tests/TEST-003-submit-idea-and-analysis.md` | TEST_PASSED — 10 PASS / 0 FAIL; AC-7/12 NOT_TESTED-on-SIT (accepted); W-6 Alert re-tokened by TASK-014 (not re-triggered) |
+| REQ-006 | TEST-004 | TEST_PASSED — 2026-09-22 round 2, `tests/TEST-004-email-password-login.md` | TEST_PASSED — DEF-1 fixed (14.16:1); gaps stated (hire half → TASK-009, SIT logs on Jason's grep) |
+| REQ-007 | TEST-005 | TEST_PASSED — 2026-09-22 round 2, `tests/TEST-005-visual-redesign.md` | TEST_PASSED — DEF-1 + DEF-2 fixed; observation: GIS button now light theme (not an AC) |
 
 ## Blocked / waiting
 

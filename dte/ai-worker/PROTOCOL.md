@@ -122,14 +122,17 @@ work into one file, so this is a hard rule:
    running system behaves. **Never re-derive these from logs.**
 2. Read `PROTOCOL.md` (this file) and your own role file, including its
    "Hard boundaries" card.
-3. Read `board.md` — the single source of truth for what is in flight.
-4. Read **`inbox/<YOUR-ROLE>.md`** — read it **first** among your messages, act
+3. Read **`AGENTS-DISCIPLINE.md`** (workspace root) — the working discipline every
+   role and every AI vendor follows: think before you code, evidence before
+   assertion, which technique for which situation.
+4. Read `board.md` — the single source of truth for what is in flight.
+5. Read **`inbox/<YOUR-ROLE>.md`** — read it **first** among your messages, act
    on what it points to, then **delete what you processed**. An empty inbox
    means nothing is waiting for you.
-5. Settle TODAY (see "Date discipline"), then read `log/<TODAY>.md` (create it
+6. Settle TODAY (see "Date discipline"), then read `log/<TODAY>.md` (create it
    if missing). The most recent previous log is **not** mandatory reading — read
    it only when your inbox or the board points you at it.
-6. Then do the work waiting for your role.
+7. Then do the work waiting for your role.
 
 ## Session shutdown ritual (before you finish any session)
 
@@ -155,6 +158,25 @@ a busy log scrolls away unread, which is exactly how work gets lost.
 - Adjacent roles only, per the chain table. An inbox is not a way around it.
 - Keep it small. A single inbox file above ~2 KB means messages are piling up
   unread — say so instead of adding another one.
+
+## Hygiene & file surgery — what a role may do, and what only Marie may do
+
+The gate is `node check-hygiene.mjs <project>`, run from the workspace root.
+
+- A role may do **exactly one** bounded thing: **shorten an over-long board cell
+  into a pointer** at the file that already holds the detail.
+- **A role may never move content from one file into another** — not board →
+  `SYSTEM-FACTS.md`, not board → REQ, not anywhere. Everything that moves content
+  between files (compaction, sweeping closed rows, rotating `dispatcher-state.md`,
+  consolidating a REQ, archiving) is **Marie's alone**.
+- A hygiene **FAIL is reported to the human**, with the FAIL lines quoted
+  verbatim: *"hygiene FAIL — เรียก Marie ก่อน"*. Never self-served.
+
+Why the rule is this hard: the gate measured `board.md`, so at one project the
+content was simply moved into the one file the gate could not measure — the gate
+went green while the knowledge file reached 323 KB. **A role's incentive is to
+make the gate pass; only Marie's is to keep the shape.** The knowledge file is
+exempt from *size*, never from *shape*.
 
 ## File discipline — every fact is written ONCE
 

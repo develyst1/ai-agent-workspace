@@ -2428,3 +2428,80 @@ DUO default ฿7 ⇒ `{eff700,ovr null,def700}` all. Override s0=฿3 ⇒ s0 `{e
 Demo OA, fresh DUO (KKTEST + Prao), confirm AFTER the deploy ⇒ delivered notice "📅 CONFIRMED SCHEDULE · Student : KKTEST" — ONE name, not "KKTEST & Prao". Notice-builder path not updated (separate from the DTO displayName). SPEC-087 not met on LINE messages. Do not close; back to Sober. (Leave notice not re-captured — bot correctly refused a leave inside the start cut-off; Round-54 leave was single-name.)
 
 Footprint: demo LINE cleared/free, course cancelled, family archived, device authorized, bo browser read-only. No uat/code.
+
+---
+
+# Round 56 — TASK-425 LINE notice both-names re-capture (gate)
+Date 2026-09-21 · demo OA. Fresh DUO KKTEST + Prao, Prao family LINE-linked, all post-deploy.
+
+- ✅ 📅 CONFIRMED SCHEDULE → `Student : KKTEST & Prao`
+- ✅ 💡 COURSE DEDUCTION → `KKTEST & Prao … Remaining : 3/4 HR` (both names + one shared deduction)
+- ✅ ❌ CLASS CANCELLED (admin cancel + sick-leave) → `KKTEST & Prao … ระบบเพิ่มคาบชดเชยให้แล้ว`
+- ✅ make-up 📅 CONFIRMED SCHEDULE → `KKTEST & Prao`
+⇒ Round-55 defect (confirm showed one name) CLOSED. Notice-builder names both children on confirm/deduction/cancel/make-up.
+- 🟠 Not captured (same builder): LIFF check-in screen (webview; deduction it fires = both names ✅), coach "my schedule" reply (needs teacher LINE).
+- Footprint: demo LINE cleared, course cancelled, family archived, device authorized. No uat/code.
+
+---
+
+# Round 57 — REQ-101 (ECA Manage plan) + REQ-102 (money mask/leak)
+Date 2026-09-22 · `sid` (verify 50) · super-admin cred.
+
+## ⭐ REQ-102 money mask — PASS (incl. leak)
+Real budget on a throwaway freelance teacher. super-admin ⇒ figures visible; role w/o `teachers.budget-view` ⇒ `hourlyRate/budgetMinor/remainingMinor/reorderMinor` all NULL, booleans stay; with key ⇒ visible; ⭐ LINKED teacher acct + budget-view role ⇒ `GET /teachers` figures STILL null (scoped masked regardless of grants — leak closed).
+
+## REQ-101 ECA Manage plan — PASS
+create 201; `GET /other-series/:key` ⇒ title/kind ECA/heads 12/time 14:00; confirm-all `{confirmed:4}`; add teacher `fromDate` ⇒ future A+B, earlier untouched (03-08/15 Ek, 03-22/29 Ek+Haris); remove `{removed:2}`; swap to busy ⇒ 409 SLOT_TAKEN naming date + rollback; add colliding date ⇒ 409 DATE_EXISTS; cancel-all WITHOUT key 58 ⇒ 403 FORBIDDEN, WITH key 58 ⇒ 200 `{cancelled:4}`.
+
+## Not tested (FE / owner-gated)
+Manage-plan toast, row→modal, Series-in-range header, k-attended-kept count, pre-backfill rows (12 keys/29 rows deployed), ADDED/REMOVED coach LINE notices (owner bytes; offer demo-OA capture).
+
+Footprint: throwaway FL teacher archived, ECA cancel-all'd, busy-test booking cancelled, roles deleted/users disabled, 0 live swept. No uat/code.
+
+---
+
+# Round 58 — coach LINE notices (demo OA, pre-uat)
+Date 2026-09-22 · demo OA. Linked teacher Toth to demo LINE; ECA series QA-ECA-notice (Ek primary, 3 dates 05/12/19-04-2027).
+
+- ✅ ADD teacher ⇒ **📅 เพิ่มตารางสอน (ADDED)** delivered: `รายการ: QA-ECA-notice · Time: 14:00-15:00 · 05/12/19-04-2027` (DD-MM-YYYY).
+- ✅ REMOVE teacher ⇒ **❌ นำออกจากตารางสอน (REMOVED)** delivered, same block.
+- 🟠 CANCEL-ALL ⇒ 200 `cancelled:3` but NO coach bubble arrived ⇒ cancel-all notice bytes not baked (Sober pending). Noted, not failed (per Porter).
+Delivery + shape confirmed for ADDED/REMOVED (no silent wrong-text path). TEXT = owner's read.
+Footprint: Toth LINE unlinked, ECA cancel-all'd, 0 live, 0 pending reqs, device authorized. No uat/code.
+
+---
+
+# Round 59 — big batch (verify 52): §13.4a · key59 · REQ-103 · course-slot-free · (LINE blocked)
+Date 2026-09-22 · sid.
+
+- ✅ §13.4a: DUO on non-DUO subj → 400 NOT_A_DUO_SUBJECT; DUO on DUO subj → 201 kind DUO; Private on DUO subj → 400 DUO_SUBJECT.
+- ✅ key59 (bookings.coach-rate, isolated all-keys-except-59): no-key → rate null, PATCH classRateMinor 403, DUO create no-rate 201, DUO create with-rate 403; with-key → rate {eff50000} visible, PATCH 200; teacherRates masked too.
+- ✅ REQ-103 whole-voucher cancel: preview removedSessions:1; cancel 200 → future draw CANCELLED, used kept(1), frozen(4), ENDED; new draw → 409 VOUCHER_ENDED. (confirm-future-voucher one-off 500 not reproduced.)
+- ✅ whole-course cancel FREES slots: re-book same teacher/date/time → 201.
+- (R57 green: key57 budget+leak, key58 cancel-all, manage-read 200/no-502.)
+- 🔴 LINE captures (cancel-all bubble + reassignment pair) BLOCKED: phone screen locked (lock screen w/ personal notifs, discarded; no PIN/swipe). Owner unlock + reopen demo OA → capture. ADDED/REMOVED already green (R58).
+- Footprint: 0 live, test teachers archived, roles/users cleaned. No uat/code.
+
+---
+
+# Round 60 — REQ-104 gap (verify 53): GROUP + CAMP
+Date 2026-09-22 · sid.
+
+- ✅ GROUP confirm-whole-group ⇒ 200 {confirmed:6}, child course 6 sessions CONFIRMED.
+- ✅ GROUP cancel-all (key 58) ⇒ 200 {cancelled:6, seatsCancelled:6, familiesTold:6}. [familiesTold:6 w/ 1 family = per-seat — flag semantic.]
+- ✅ CAMP day rate key-59: super PATCH teacherRates 200; no-key → teacherRates null + PATCH 403.
+- 🔴 FINDING: camp week create INCLUDING today ⇒ 500 INTERNAL (future week ⇒ 201). Likely unhandled clash (should be 409). Sober/Jason to check camp-week-create clash path.
+- 🟠 camp scan Remaining:X/10 days BLOCKED (today-week 500s; future-day scan correctly 409 CAMP_DAY_NOT_TODAY).
+- 🟠 weekly digest + 17:30 CAMP CREDIT + family/coach LINE delivery = job/push-ceiling (owner/on-phone).
+Footprint: 13 group bookings swept, camp weeks closed, roles/users cleaned. No uat/code.
+
+---
+
+# Round 61 — TASK-445 re-check (verify 53): camp-500 fix, cancel-all de-dupe, camp scan
+Date 2026-09-22 · sid.
+
+- ✅ Camp-week over BUSY coach ⇒ 409 SLOT_TAKEN naming date·hour·coach ("2026-09-22 11:00 ครูHaris มีคาบแล้ว — ไม่ได้บันทึกอะไร"), no week (was 500). Free-coach today-week ⇒ 201.
+- ✅ Group cancel-all de-dupe: one child/six rows ⇒ householdsTold:1, familyNotices:6, cancelled:6, seatsCancelled:6.
+- ✅ Camp scan (today) ⇒ 200 {status:ATTENDED, credit:{remainingDays:9, totalDays:10}} = Remaining 9/10 days; 2nd scan ⇒ already:true.
+- Push-ceiling (not gate): weekly digest, 17:30 CAMP CREDIT, cancel/reassign bubbles — demo-OA push throttle; ADDED/REMOVED green R58.
+- sid API/logic CLEAN for Khwan customer-UAT. Footprint: camp weeks closed, test teachers archived, group cancel-all'd, 0 live. No uat/code.

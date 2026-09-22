@@ -49,8 +49,9 @@ All coordination state lives in each project's `ai-worker/` folder:
 | Start | Role starters in `SESSION-STARTERS.md` | `อ่าน DISPATCHER.md แล้วรัน <project>` |
 
 Both modes read and write the same `ai-worker/` files, so nothing migrates
-when you switch. Workspace-level identities: **Atlas** (`ATLAS.md`, architect)
-and **Marie** (`MARIE.md`, workflow operations).
+when you switch. Workspace-level identities: **Atlas** (`ATLAS.md`, architect),
+**Marie** (`MARIE.md`, workflow operations) and **Otto** (`OTTO.md`, release &
+platform — the shared server, knowledge in `SERVER-FACTS.md`).
 
 ## How to run a work session (manual mode)
 

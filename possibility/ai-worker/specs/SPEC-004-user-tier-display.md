@@ -24,11 +24,11 @@ computes discounts, it only labels them.
 No change. (`users.tier` from SPEC-002; upward-only update in SPEC-003 §Flow 4.)
 
 ## Flow / UI
-1. **Header tier badge** (every signed-in page): `Your tier` / `ระดับของคุณ` + the exact tier
+1. **Header tier badge** (every signed-in page; *amended 2026-09-21: hidden below 600 px viewport width — the badge is then read on `/me`*): `Your tier` / `ระดับของคุณ` + the exact tier
    string + `Discount {n}%` / `ส่วนลด {n}%` (REQ-001 §wording). Source: `AuthContext.user`.
    Refreshes from the `userTier` returned by `POST /ideas` (SPEC-003) so AC-5 is immediate.
 2. **Profile page `/me`** (guarded): display name, email, the tier badge, the tier's one-line
-   description in the UI language (REQ-001 table), and the "My ideas" link. Keep it small — it
+   description in the UI language (REQ-001 table — **superseded 2026-09-22 by REQ-007 W-3 tier lines, same keys, TASK-013**), and the "My ideas" link. Keep it small — it
    exists so REQ-001 AC-1/AC-6 have a stable page to test on.
 3. Tier names are rendered from the BE string as-is — no dictionary key for tier names exists
    in `lib/i18n/` (that is how AC-6 "never translated" is enforced, not by review).

@@ -121,7 +121,7 @@ Existing rows: none. `users.tier` is updated in the same transaction (see Flow 8
 4. Transaction: insert `ideas`; insert 5 `idea_steps`; `UPDATE users SET tier = <ideaTier> WHERE id = me AND rank(tier) < rank(ideaTier)` (upward only, REQ-001 R5).
 5. Return 201 with `Idea` + the user's resulting `userTier` (re-read after the update).
 6. Log one line per analysis: `idea.id`, `user.id`, per-step `provider/model/latencyMs`, final scores. Never log the idea text.
-Edge cases: gateway returns 200 with `success:false` → treated as failure; JSON with extra keys → accepted (zod `.strip()`); integers as `"80"` strings → rejected (REQ-001 AC-7 wants failure, not coercion); `lang` mismatch in `reason` is not machine-checked (Tanya's AC-8 by eye).
+Signed-in `/` redirects to `/ideas/new` (amended 2026-09-21, TASK-006 Q-1). Edge cases: gateway returns 200 with `success:false` → treated as failure; JSON with extra keys → accepted (zod `.strip()`); integers as `"80"` strings → rejected (REQ-001 AC-7 wants failure, not coercion); `lang` mismatch in `reason` is not machine-checked (Tanya's AC-8 by eye).
 
 ## Non-functional
 - Timeouts: 30 s per gateway call, 120 s per request; the FE shows W-4 the whole time.

@@ -1,6 +1,6 @@
 # SPEC-001: Deal room — happy path (foundation + open → pay → deliver → release)
 - Source: REQ-001 (`requirements/REQ-001-deal-room-happy-path.md`)
-- Status: DONE (2026-09-21 — all nine TASKs DONE; REQ-001 SPEC_DONE, awaiting Tanya via Porter)
+- Status: DONE (2026-09-21 — TASK-001..010 DONE; REQ-001 SPEC_DONE, re-test by Tanya via Porter)
 - Author: Sober (SA), 2026-09-20
 
 ## Overview
@@ -350,7 +350,7 @@ source (React Query invalidates `["room", code]`).
 - **Versions pinned exact** (no `^`/`~`) in both repos — FE uses the lockset in the
   `nextjs-antd-pattern` skill verbatim; BE pins whatever exact versions `bun add` resolves
   and records them in TASK-001 Implementation Notes.
-- **Frontend working method (owner, 2026-09-21 — `SYSTEM-FACTS.md` §Frontend working method, mandatory for every FE TASK):** Fern **must invoke the `frontend-design` and `impeccable` skills** for every screen; the house `nextjs-antd-pattern` skill supplies the **project structure and the way Ant Design is wired in only** — it is not a visual template. Ant Design stands (Q11, Q14). The UI is designed fresh and beautiful for เว็บกลาง — a raw AntD-template look is a defect, not a delivery. Evidence per FE TASK: the skills invoked (say so in Implementation Notes) and screenshots.
+- **Frontend working method (owner, 2026-09-21 — `SYSTEM-FACTS.md` §Frontend working method, mandatory for every FE TASK):** Fern **must invoke `impeccable`** for every screen (`frontend-design` only if/when installed — owner Q15, 2026-09-21; the "fresh, not template" bar stands); the house `nextjs-antd-pattern` skill supplies the **project structure and the way Ant Design is wired in only** — it is not a visual template. Ant Design stands (Q11, Q14). The UI is designed fresh and beautiful for เว็บกลาง — a raw AntD-template look is a defect, not a delivery. Evidence per FE TASK: the skills invoked (say so in Implementation Notes) and screenshots.
 - **Thai is FE-only.** All wire strings are codes/English; every visible string comes
   from `constant/text/th.ts` = REQ-001 §User-facing wording verbatim (AC-23/24).
 - **Timezone:** BE stores/sends UTC; FE renders in the browser's zone with dayjs.
@@ -373,6 +373,7 @@ their evidence is a screen talking to the real API.
 - TASK-007: FE open room + join — open-room form with live fee preview, share link, join page, "my rooms" — owner: FE (depends on: TASK-006, TASK-003)
 - TASK-008: FE room page — status, guidance, credit, timeline, buyer / seller actions, countdown, read-only when closed — owner: FE (depends on: TASK-007, TASK-005)
 - TASK-009: FE admin — slip queue confirm / reject, parcel arrived, payout, fee settings, auto-release trigger — owner: FE (depends on: TASK-008)
+- TASK-010: FE rework from TEST-001 — R-1..R-8 (copy on screen, countdown rounds up, cancel confirm + AC-12b, non-integer price) — owner: FE (depends on: —)
 
 ## Questions
 
@@ -413,3 +414,9 @@ their evidence is a screen talking to the real API.
   > answer (Porter, 2026-09-21) Q-H: noted — REQ-002 will require the admin to see all evidence and slips inside the room.
   > answer (Porter, 2026-09-21) Q-F: taken to the owner (SYSTEM-FACTS Q15). Until he answers, `impeccable` + Sober's "fresh, not template" review stands as the bar; no rework triggered by this question.
   > answer (Porter, 2026-09-21) Q-F: owner chose (ข) — `impeccable` alone satisfies the mandate (SYSTEM-FACTS Q15). No re-run of TASK-006..009. Please drop the `frontend-design` line from the FE DoD template for future TASKs.
+
+## Rework rulings (Sober, 2026-09-21, from TEST-001 → REQ-001 §Rework)
+- **Countdown (R-6):** `remainingHours = ceil(remainingMs / 3 600 000)`; `d = floor(h / 24)`, `h = h % 24`. The BE's `autoReleaseAt` is unchanged; this is FE rendering only.
+- **Cancel confirm (R-7, AC-12b):** FE-only dialog before `POST /rooms/{code}/cancel`; the BE contract does not change.
+- **Non-integer price (R-8):** FE-only validation (`Number.isInteger`), mirrors the BE's `VALIDATION_ERROR` message.
+- All of R-1..R-8 touch `safe-goods-front` only → one TASK (TASK-010). No BE change.

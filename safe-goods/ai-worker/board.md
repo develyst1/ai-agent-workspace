@@ -19,7 +19,7 @@
 - Stack: **decided by the owner 2026-09-20** — Bun+Hono · Next.js+Ant Design · branch `main`;
   see `SYSTEM-FACTS.md` §Stack. SPEC-001 applies it.
 - Mode: **manual** — one session per role, the owner nudges.
-- Environments: **local only.** No dev server yet. No production, no real DB.
+- Environments: **local (engineers) · dev PostgreSQL · SIT `https://klang.develyst.online/` (owner deploys, Tanya tests there)**. No production.
 - Team: Porter (PM / BA / PO / UX writer) · Sober (SA) · Jason (BE) · Fern (FE) · Tanya (QA)
 - Read first: `SYSTEM-FACTS.md`, then `PROTOCOL.md` + your role file, then this
   board, then your inbox, then today's log.
@@ -31,7 +31,7 @@
 
 | Id | Title | Priority | Status (date, owner, pointer) | Ball |
 |----|-------|----------|-------------------------------|------|
-| REQ-001 | Deal room — happy path | HIGH | SPEC_DONE (2026-09-21) — handed to Tanya by Porter; `requirements/REQ-001-deal-room-happy-path.md` | Tanya (TEST-001) |
+| REQ-002 | Run on PostgreSQL (replace SQLite) | HIGH | SPEC_DONE (2026-09-21) — deployed to SIT by the owner; handed to Tanya for TEST-002 on SIT | Tanya (TEST-002) |
 
 ## Tasks
 
@@ -42,6 +42,7 @@
 
 | REQ | TEST | Status (date, pointer) | Verdict |
 |-----|------|------------------------|---------|
+| REQ-001 | TEST-001 | TEST_PASSED (2026-09-21, round 2) — `tests/TEST-001-deal-room-happy-path.md`; REQ DELIVERED | TEST_PASSED — NOT_TESTED: clipboard, Enter-to-submit, phone |
 
 ## Blocked / waiting
 

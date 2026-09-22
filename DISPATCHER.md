@@ -41,9 +41,10 @@ The canonical way the human opens you is one line: **"อ่าน DISPATCHER.md
 
 1. **Run the hygiene gate:** `node check-hygiene.mjs <project>` (or `bun`) from
    the workspace root. This is a command you execute, not a file you read.
-   - **FAIL** → your first hop MUST be a PM housekeeping hop (fix exactly the
-     FAIL lines; archive verbatim first, per the file-discipline rules). No
-     other work is dispatched until the gate passes.
+   - **FAIL** → **you do not dispatch, and you do not order a housekeeping
+     hop.** File surgery is Marie's job, not a role's (see "Who cleans up"
+     below). Stop, and tell the human in your check-in: *"hygiene FAIL —
+     เรียก Marie ก่อน"* with the FAIL lines quoted verbatim.
 2. Read `ai-worker/dispatcher-state.md` (resume an unfinished run from the
    files if the previous session died mid-run) + `board.md` + today's log.
 3. **Check in with the human before dispatching** — 3–5 Thai lines: last run
@@ -90,14 +91,29 @@ re-spawning itself.
 - Two roles both have work waiting → prefer the one on the **critical path** as
   the PM's latest log entry states it; if unclear, PM first.
 - **Hygiene gate FAIL** (from `check-hygiene.mjs`, run at session start and
-  after any run that touched many files) → before dispatching anything else,
-  spend one hop waking **PM for housekeeping**: fix exactly the FAIL lines —
-  compact `board.md` to state-only, rotate `dispatcher-state.md` down to the
-  last 5 runs (older runs verbatim into `archive/dispatcher-state-<date>.md`),
-  consolidate any flagged REQ file (fold answered Q&A into the requirement
-  text, keep requirement numbering stable, original verbatim into archive/).
-  Always archive before compacting; never drop a fact that exists nowhere
-  else. This hop counts against N. Re-run the script after; it must PASS.
+  after any run that touched many files) → **stop the run and hand it to the
+  human: Marie cleans up, not a role.** Quote the FAIL lines in the digest.
+  A PM hop may do exactly one bounded thing and nothing more: **shorten an
+  over-long board cell into a pointer** at the file that already holds the
+  detail. **A role may never move content from one file into another** — not
+  board → knowledge file, not board → REQ, not anywhere. That is file surgery,
+  it is Marie's alone, and it is how the knowledge file at one project reached
+  323KB: the gate measured `board.md`, so the content was moved to the one file
+  the gate could not measure, and the gate went green. **A role's incentive is
+  to make the gate pass; only Marie's is to keep the shape.**
+
+### Who cleans up — and who must never
+
+| Situation | Who |
+|---|---|
+| Over-long board **cell** → shorten to a pointer | PM, in one bounded hop |
+| Anything that **moves content between files** (compaction, sweeping closed rows, rotating dispatcher-state, consolidating a REQ, archiving) | **Marie only** — the human calls her (`อ่าน MARIE.md — housekeeping <project>`) |
+| Deciding a rule or a threshold should change | Atlas designs, Marie implements, the human approves |
+
+Marie is not on any chain: **no role can reach her, only the human can.** So a
+gate FAIL must arrive as a line in the human's digest, or nobody will ever call
+her — and the role that was told to "fix the FAIL lines" will fix them the
+cheapest way, which is to move the mess somewhere unmeasured.
 
 ### STOP CONDITIONS — any one of these ends the run with a digest
 
