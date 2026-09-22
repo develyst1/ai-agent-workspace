@@ -53,10 +53,25 @@ logged didn't happen.
 > of memory". Delete an order from this section only after its line is in the
 > Operations log below. Nothing here overrides your Hard boundaries.
 
-> **STATUS 2026-09-23: ORDERS 6–8 BELOW ARE OPEN.** (Orders 1–5 from 2026-09-02/04 are
-> done — their lines are in the Operations log.)
+> **STATUS 2026-09-23, end of Marie's run — READ THIS BEFORE THE ORDERS BELOW.**
+> - **ORDER 6 — DONE, all of it** (gate v4 · rules text in all 13 projects · smart-scheduler's
+>   cleanup). Two things came OUT of it and are open: 🔴 the **board line-1 corruption**, whose
+>   *cause* is still live and whose lost REQ-085…104 statuses are parked for the owner, and
+>   ⚠️ the **boot-budget vs never-compact collision**, which is **Atlas's to resolve**.
+> - **ORDER 7 — DONE, all of it.** Otto is installed in `README.md`, `SESSION-STARTERS.md`
+>   and `CLAUDE.md`.
+> - **ORDER 8 / ORDER 9 — PARTLY DONE, and the blocking question is ANSWERED.** The owner
+>   settled it 2026-09-23: **Kimi Code opens with the WORKSPACE ROOT as its working directory**,
+>   so Atlas's `AGENTS.md` wiring stands as designed (it does not invert). He also scoped the
+>   charter install: **smart-scheduler only, for now.** `AGENTS-DISCIPLINE.md` is already on
+>   every project's startup path (all 13). What remains: repeat the per-project `AGENTS.md` and
+>   the charter install at the other projects, when he says so.
+>
+> Orders 6 and 7 are kept below rather than deleted — their lines are in the Operations log,
+> so they are **finished; do not re-run them**. Atlas's rationale stays because it is the
+> reasoning behind rules that are now live, not a to-do list.
 
-### ORDER 6 — close the loophole that ate the Knowledge tier (owner's go, 2026-09-23)
+### ORDER 6 — ✅ DONE 2026-09-23 — close the loophole that ate the Knowledge tier
 
 **What happened, measured 2026-09-23 at `smart-scheduler`:** `SYSTEM-FACTS.md` is
 **323 KB / 3,158 lines**; `inbox/PM.md` **834 KB**, `inbox/SA.md` **644 KB**,
@@ -105,7 +120,7 @@ anything unprocessed left in place and reported), and **`SYSTEM-FACTS.md` split*
 the real knowledge (~25 KB) stays; the two `MOVED FROM board.md` dumps and the
 parked history go to `archive/` verbatim. Archive before touching anything, as always.
 
-### ORDER 7 — install Otto (owner's go, 2026-09-23)
+### ORDER 7 — ✅ DONE 2026-09-23 — install Otto
 
 A new workspace-level role exists: **`OTTO.md`** — Release & Platform Engineer,
 written by Atlas from the owner's own read-only server survey, which is now
@@ -157,11 +172,13 @@ Your part:
 | `<workspace>/<project>/AGENTS.md` | that project's pointers: where `ai-worker/` is, repos by logical name, the startup ritual order | subdirectory support loads it automatically when working in that project |
 | role identity (Fero / Tanya) | the session starter, `[identity]`, or one entry per role in `.kimi-code/skills/` | the only per-role channel that does not leak into another role's session |
 
-⚠️ **Settle with the owner before installing:** Kimi Code should be opened with the
-**workspace** as its working directory — then `AGENTS.md` subdirectory loading lines
-up with the project folders, and code repos are reached through `machine.local.md`
-exactly as every role already does. If he prefers to open it inside the code repo,
-the entire wiring above inverts. Ask first.
+✅ **SETTLED 2026-09-23 — the owner chose the WORKSPACE ROOT.** Kimi Code opens with the
+**workspace** as its working directory, so `AGENTS.md` subdirectory loading lines up with the
+project folders and code repos are reached through `machine.local.md`, exactly as every role
+already does. **The wiring above stands as designed — it does not invert.**
+Installed so far: `<workspace>/AGENTS.md` (Atlas wrote it) and `smart-scheduler/AGENTS.md`
+(Marie, 2026-09-23 — pointers only, no rule restated, with the explicit warning that the file
+cannot tell a reader which role they are). The other projects get theirs when the owner says so.
 
 **Fero's charter is written:** `_templates/roles/FERO.md` (181 lines, 9.5 KB,
 self-contained — works pasted **or** installed as `ai-worker/FE.md`). Tanya-portable
@@ -188,7 +205,12 @@ parallel with ORDER 6.** The cleanup is still worth doing first where it is chea
 but it no longer gates the migration.
 
 
-### ORDER 9 — the companion files, and the discipline that was living off-repo (2026-09-23)
+### ORDER 9 — ⏳ PARTLY DONE 2026-09-23 — the companion files, and the discipline that was living off-repo
+
+> **Done:** `AGENTS-DISCIPLINE.md` is on the startup path of **all 13 projects**, and the four
+> charters are installed at **smart-scheduler** (owner's scope). **Open:** the other projects,
+> when the owner says so — plus **two template defects and one unmet prerequisite that came out
+> of the install; all three are in the Operations log and need Atlas or the owner, not me.**
 
 Atlas has written five more files. Install them with ORDER 8.
 
@@ -210,17 +232,26 @@ vendor, with the work getting quietly worse and nothing to point at. **Behaviour
 that is not in the repo is not part of the system**, however well it has been
 working. It is in the repo now.
 
-🔴 **Owner's ruling, 2026-09-23: Tanya is Playwright-only.** `claude-in-chrome`
-(driving the owner's real Chrome) was one of her two evidence paths and does not
-exist outside Claude. The trade is accepted deliberately: a committed harness is
-re-runnable, a live browser session is not. A case Playwright genuinely cannot
-reach is `NOT_TESTED` with the reason, escalated to Porter — never substituted with
-a code read. `QA-PLAYWRIGHT.md` carries the method, distilled from her own rounds:
-real Chrome channel, the local+mock "enough for layout, NOT enough for behaviour"
-declaration, harnesses at `tests/harness/<env>-<subject>.mjs` with nothing written
-into the product repo, the 1600/1280/768/375 standing widths, and the lesson that
-has caught the most defects — **a Playwright trial click passes where a human
-cannot reach, because `scrollIntoViewIfNeeded` scrolls an `overflow:hidden`
+🔴 **Owner's ruling, 2026-09-23 (final wording — an earlier draft of this order said
+"Playwright-only"; that was written before we found `kimi-webbridge` and it is
+superseded): Tanya works PLAYWRIGHT FIRST. The real browser is an ESCALATION.**
+Kimi Code ships `kimi-webbridge`, which drives the owner's real Chrome with his
+logged-in sessions — so she is not without a real browser; she is choosing not to
+reach for it. Playwright is the default because a committed harness is re-runnable
+and a live session is not. The real browser is allowed **only** when Playwright
+genuinely cannot reach the case (a third-party login, a device-only interaction),
+**and only after she says what she is about to do, why Playwright cannot do it, and
+gets Porter's go.** The reason is not ceremony: through his sessions she can reach
+the customer's system **as him**, and nothing technical stops a write there — her
+read-only rule becomes the only guard that exists. If neither path reaches a case
+it is `NOT_TESTED` with the reason, escalated to Porter — never a code read.
+`QA-PLAYWRIGHT.md` §0 carries this ruling and the rest of the method, distilled
+from her own rounds: real Chrome channel, the local+mock "enough for layout, NOT
+enough for behaviour" declaration, harnesses at `tests/harness/<env>-<subject>.mjs`
+with nothing written into the product repo, the 1600/1280/768/375 standing widths,
+and the lesson that has caught the most defects — **a Playwright trial click passes
+where a human cannot reach, because `scrollIntoViewIfNeeded` scrolls an
+`overflow:hidden`
 container programmatically; the hit-test and the screenshot are the truth.**
 
 **When installing:** `FERO.md` and `TANYA.md` are byte-identical across projects
@@ -228,7 +259,320 @@ except for `<PROJECT>`, the repo names in FERO section 2, and the environment ta
 in TANYA section 3. Keep them that way — a per-project edit to a shared charter is
 how they drift apart.
 
+
+### ORDER 10 — what already happened on 2026-09-23, before you start
+
+Read this so you do not re-derive it or contradict it.
+
+- **The first project on Kimi is `possibility`, not `smart-scheduler`.**
+  smart-scheduler was only ever the reference example. Install the new charters
+  **into `possibility` first**, then the rest.
+- **The Kimi side already works, and it was proved by a real task.** A Kimi session
+  opened at `H:\` as *"You are Fero, project possibility"* completed **TASK-009**
+  end to end: found the workspace, read `machine.local.md` before touching any code
+  repo, ran the startup ritual, picked the TODO whose dependency was met,
+  implemented it, produced **7 screenshots** (TH/EN before-after, 375 px,
+  non-admin not-found), reported `tsc --noEmit` clean · `npm run build` clean ·
+  Lighthouse 74 against a 71-74 baseline, **emptied `inbox/FE.md`**, wrote a
+  12-line log, and handed the ball to `@Sober` via `inbox/SA.md`. Chain intact —
+  it never addressed Porter or the owner directly.
+  🔑 **And it did the hard thing right:** it marked `/admin`-as-owner **UNVERIFIED**
+  instead of claiming a pass, and it **refused to invent the admin table's column
+  wording** — provisional dictionary keys, flagged as a question for Porter, swap
+  reduced to a dictionary edit. That is the behaviour the charter exists to
+  protect, and it happened on the **old 4.6 KB `FE.md`**, before yours was installed.
+- **What made it work is `H:\AGENTS.md`** (drive root, outside the workspace, not
+  in git). The first attempt failed badly: the agent read `project possibility` as
+  the code folder `H:\possibility\`, found no charter, and concluded *"there is no
+  role definition, so I follow your instructions directly"* — inventing its own
+  authority. The fix, now in that file: the eight role names, the rule that
+  **"project <name>" always means the workspace folder, never the drive-root
+  folder of the same name**, and **charter not found = STOP, never improvise.**
+  ⚠️ It is per-machine and un-versioned. **Treat it as part of the system**: if the
+  owner moves machines, it must be recreated, or every Kimi role loses its way in.
+- **The role skills are installed** as a local Kimi plugin `ai-workforce-roles`
+  (`~/.kimi-code/plugins/managed/`, `source: local-path`), built from
+  `_templates/kimi-skills/`. ⚠️ Kimi **copies** the plugin — editing
+  `_templates/kimi-skills/*/SKILL.md` does **not** reach the installed copy until
+  `/plugins install` is run again. The charters are read live from the repo, so
+  only the thin triggers have this problem. **Keep the SKILL.md files frozen.**
+- **`FERO.md` gained §6b** (footprint) because the run exposed the gap: proving a
+  screen works means creating accounts and records, and nothing told an engineer to
+  clean up or declare them. Clean up before `REVIEW`, declare in
+  `## Implementation Notes`, never touch data you did not create, name test data so
+  it is obviously test data, never against real users or the customer's system.
+
+
+### ORDER 11 — ✅ DONE 2026-09-23 (both projects installed; see Operations log) — Atlas fixed all three things your smart-scheduler install found
+
+> **Marie's result, 2026-09-23.** All four charters re-installed at **smart-scheduler** and
+> installed at **`possibility`**; all three fixes verified live; every file diffed against its
+> template. `possibility` gate **PASS**. Three things came out of it, none of them mine to fix:
+> **(a)** a **third template defect** of the same family — `TANYA.md` §3's blockquote still opens
+> with an installer-addressed sentence *outside* the deletable note, so every installer must
+> delete it by hand; **(b)** `<project>` survives in the charter **body** (§4b/§3b headings, the
+> harness path) and the installer note does not list it — I substituted it in both projects, same
+> rule, and it should become substitution 3 in the note; **(c)** 🔴 a **three-way supersession
+> contradiction** in `possibility`'s `SYSTEM-FACTS.md` **and** `PROTOCOL.md` that made *me*
+> confidently wrong twice in one hour — see the log. Needs its own order.
+
+You reported them, they were mine, they are done. **Re-install the four charters at
+smart-scheduler from the corrected templates** (archive the current ones verbatim
+first, as always), then install at **`possibility`** — the owner's first Kimi project.
+
+**1. Templates now link FORWARD to their companions.** `FERO.md` section 7 opens with
+*"Read `FE-DESIGN.md` in this same folder before writing any UI code"*; `TANYA.md`
+section 5 opens with *"Read `QA-PLAYWRIGHT.md` before your first UI round"*.
+⇒ **The PM must NOT hand-write a pointer blockquote any more.** The wording is in the
+template, once, so every install gets the identical sentence. Your diff should show
+that hand-written block **gone**.
+
+**2. The installer note can no longer survive substitution.** Both templates now open
+with a blockquote headed **"INSTALLER NOTE — DELETE THIS WHOLE BLOCKQUOTE WHEN
+INSTALLING"**, and the placeholder is the token **`PROJ_NAME`** — which reads as an
+obvious placeholder even if one is ever missed, unlike `<PROJECT>`. `grep -c PROJECT`
+on both templates returns **0**. The note also lists the *only* permitted
+substitutions, so "what else did the installer change?" stops being a question.
+
+**3. 🔑 Your biggest find — "charters must be self-contained" — is now met.** You were
+right and the diagnosis was exact: a fresh non-Claude model told *"set it
+`IN_PROGRESS`"* had nothing telling it what to edit. Both charters gained a section:
+- `FERO.md` **section 4b — "The files, and what the words mean"**: the `ai-worker/`
+  file table with what is read-only vs writable for FE, **a real board row shown
+  verbatim** with the one-line-per-cell rule, the TASK status graph
+  (`TODO → IN_PROGRESS → REVIEW → DONE | REWORK`, `BLOCKED` anywhere), **who may set
+  what** (he sets `IN_PROGRESS`/`REVIEW`/`BLOCKED` on his own TASKs only; only Sober
+  sets `DONE`/`REWORK`; REQ rows are never his), and the three TASK sections with
+  their owners (`## Review` is Sober's — read on REWORK, never edited).
+- `TANYA.md` **section 3b — same shape for QA**: the file table including
+  `tests/harness/` and `project-docs/qa-<date>/`, both status graphs, and the line
+  that matters — **she owns exactly four words** (`IN_TEST`, `TEST_PASSED`,
+  `TEST_FAILED`, `NOT_TESTED`), sets nothing else, never moves a TASK, never sets
+  `DELIVERED`.
+
+`PROTOCOL.md` stays a required read — the ritual already says so — but neither
+charter now *depends* on it to be actionable.
+
+**Also corrected, and it changes a rule you were about to install:** ORDER 9's
+"Tanya is Playwright-only" is **superseded** — see the corrected paragraph in ORDER 9.
+It is **Playwright FIRST, real browser as an escalation with Porter's go.**
+
+**🔴 OWNER'S DECISION on the Fern → Fero rename, 2026-09-23: "ปล่อยไว้" — LEAVE IT.**
+He was asked whether to rename across `SYSTEM-FACTS.md`, `board.md`, `PROTOCOL.md`'s
+team table and the logs. He said leave it. **Recorded here so nobody re-raises it as
+an oversight** — the same way the backoffice-gap decision is recorded. It is a risk
+accepted with the facts on the table: the four installed charters say Fero, and
+everything else still says Fern. **Do not start a rename operation. Do not "tidy" a
+Fern into a Fero while doing something else.** If it must change, it goes back to him.
+
+**The one cheap mitigation, and it is NOT the rename he declined** — do this with the
+install: append **one line** to each affected project's `SYSTEM-FACTS.md`:
+`Fern and Fero are the SAME role (Frontend Engineer). Renamed 2026-09-23, owner's
+decision; older files, board rows and logs still say Fern. Do not rename them.`
+That turns a confusing name into a settled fact at the exact place every role reads
+first — one line, no archive, no sweep. **If the owner would rather have nothing at
+all, skip it; he has already been told this line exists.**
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-09-23 — **ORDER 11 — `possibility` installed: the owner's first Kimi project now has all
+  four corrected charters. Gate PASS. And the run produced the most important finding of the day,
+  by catching MARIE herself being wrong — twice, from the same file.**
+  Live-session check first (the Kimi Fero session had written until 04:28): 17 minutes idle,
+  confirmed finished, then proceed. **A charter must never be swapped under a running session.**
+  Archived `FE.md` (4,613 B) and `QA.md` (8,433 B) verbatim; `FE-DESIGN.md` and `QA-PLAYWRIGHT.md`
+  are first-time installs here. Installed: `FE.md` 4,613→**13,194** · `FE-DESIGN.md` **5,138**
+  (byte-identical to template) · `QA.md` 8,433→**15,479** · `QA-PLAYWRIGHT.md` **7,732**.
+  **Marie's own diff against the templates:** 25 / 0 / 32 / 2 lines, all declared substitutions;
+  `grep` for `PROJ_NAME` / `<project>` / `<PROJECT>` / `INSTALLER NOTE` / `Companion file:` = **0**
+  on all four; no `sid`/`uat` invented (the 3 grep hits are substrings of "residual", "situation",
+  "signed"). QA-is-not-a-trial confirmed clean. **Gate: PASS (6 warnings)** — possibility's boot
+  reads are 62–72 KB against a 60 KB WARN, nowhere near the 120 KB FAIL. A healthy desk.
+  🔴 **THE FINDING — and it is a rule problem, not a person problem.**
+  Preparing this install, I read `possibility/ai-worker/SYSTEM-FACTS.md` top-down, hit
+  `## Repos and environments` (line 67) and briefed the PM with it: *"stack NOT decided · don't
+  assume `develop` · local only, no dev server, no production."* **Every word of that was dead.**
+  The owner overrode it on 09-18. I caught it myself and sent a correction with the 09-18 facts
+  (Bun+Hono · PG18 · Next.js + Ant Design · SIT database · owner controls git).
+  **Then the PM caught that MY CORRECTION WAS ALSO SUPERSEDED.** 09-18 D8 says SIT is a *database*;
+  **09-21 says the SIT server hosts the deployed app and `tanya ทดสอบบน server sit เท่านั้น` — Tanya
+  tests ONLY on SIT, never on local.** Had he installed what I directed, the QA charter would have
+  told Tanya that local is her environment — **the exact thing the owner forbade in his own words.**
+  He refused it, wrote reality, and said so plainly. **That is the charter working: he had the
+  authority to push back on Marie and used it. Recorded as correct, not as a deviation.**
+  **The measured shape of the problem — a THREE-way contradiction, all in present tense, no strike,
+  no forward pointer:** environments are stated as "local only, no dev server" (09-17, line 80),
+  "SIT is the database" (09-18 D8), and "SIT hosts the app and is the only place QA may test"
+  (09-21, line 184) — **68+ lines apart, under different headings, and the earlier ones do not
+  point forward.** Also stale in that section: *"no engineer scaffolds, installs, or picks
+  anything"* (an active prohibition, while the app is built and deployed) and *"three repos, all
+  greenfield, one commit each."*
+  ⚠️ **And it is not one file.** `possibility/ai-worker/PROTOCOL.md` (lines ~369-374) carries the
+  same dead 09-17 table — *"A dev server: **does not exist yet**"*, and *"Local … full — this is
+  where all evidence comes from"*, which flatly contradicts the owner's 09-21 sentence. **Both
+  files are in every role's startup ritual, so the 09-17 position is asserted twice, at boot, to
+  every role, on every vendor.** Fixing one would not close it.
+  📌 **The lesson, for Atlas and the owner, and it is ORDER 6's lesson arriving from the other
+  direction:** the knowledge file's own convention is *"strike it and write the correction under
+  it — do not delete."* That was honoured for individual bullets (the Mantine→Ant Design
+  correction, the NextAuth line) and **not** for a whole section. **A superseded section with no
+  strike is worse than a big file — it is a booby trap that reads as current.** It made the
+  workspace's own housekeeping steward confidently wrong twice inside one hour. This is precisely
+  what ORDER 8 warned: *"it fits" is not "it is read honestly."*
+  **I did not fix it** — a knowledge file is append-only and this is a supersession sweep across
+  two boot-critical files, which is its own operation with its own archive. **Recommending a new
+  order; needs the owner's go.** Step 6's one Fern/Fero line was appended as instructed, and
+  nothing was renamed.
+
+- 2026-09-23 — **ORDER 11 — smart-scheduler re-installed from the corrected templates. All three
+  of Atlas's fixes verified present in the live charters, and a THIRD defect of the same family
+  found in the process.**
+  Archived all four verbatim first (`*-2026-09-23b-pre-order11.md`, sizes matched). Installed:
+  `FE.md` 9,801→13,405 B · `FE-DESIGN.md` 5,138 (byte-identical to its template) · `QA.md`
+  13,455→14,860 B · `QA-PLAYWRIGHT.md` 7,736.
+  **Marie diffed all four against the templates herself:** 33 / 0 / 28 / 2 changed lines, and
+  **every single line is a declared substitution.** `grep` for `PROJ_NAME` / `<project>` /
+  `<PROJECT>` / `INSTALLER NOTE` / `Companion file:` returns **0** across all four.
+  ✅ **Fix 1 confirmed working:** the PM-written companion blockquotes from this morning's install
+  (`> **Companion file: ...**`, old `FE.md` 144–146 and `QA.md` 121–124) are **gone**, replaced by
+  the template's own wording — so the two installs no longer diverge on a sentence a PM invented.
+  ✅ **Fix 2 confirmed:** installer notes deleted whole; nothing addressed to the installer ships.
+  ✅ **Fix 3 confirmed:** `FE.md` §4b and `QA.md` §3b are present in the live files.
+  ⚠️ **Marie's own ruling, declared not silent: `<project>` also had to be substituted.** Three
+  body occurrences (`FE.md` §4b heading, `QA.md` §3b heading, `QA-PLAYWRIGHT.md`'s harness path)
+  sit OUTSIDE the installer note, and the note's "exactly these substitutions and no others" does
+  not list them. Leaving them would ship a placeholder into the very sections whose whole purpose
+  is telling a fresh model where things are. **I substituted them and applied the same rule to
+  both projects so they cannot drift apart. The installer note should list this as substitution 3.**
+  🔴 **THIRD TEMPLATE DEFECT, same family as the first two — for Atlas.** `TANYA.md` §3's
+  blockquote opens with *"Fill in this project's real environment names when installing."* — an
+  instruction to the installer living **outside** the deletable INSTALLER NOTE, and false the
+  moment the names are filled in. Porter deleted that one sentence and left the rest byte-identical;
+  **I confirm the deletion was right** (Atlas's own rule: zero installer-addressed lines in a live
+  charter) **and the fix belongs in the template, not in each install** — otherwise every installer
+  decides for himself, which is precisely the drift ORDER 11 set out to end. The
+  "absence of a technical guard is NOT permission" paragraph is untouched.
+  Step 6 done: the one Fern/Fero line appended to `SYSTEM-FACTS.md` (317,194→317,406 B), under a
+  dated heading, no `MOVED FROM`, nothing else changed. **No rename attempted — owner said ปล่อยไว้.**
+  Gate: unchanged at 5 boot-read FAILs, all of them `SYSTEM-FACTS.md`'s 310 KB. This install moved
+  them by +3.5 KB (FE) / +1.4 KB (QA) / +0.2 KB (all). **The boot-budget collision is still
+  Atlas's to resolve and nothing here touches it.**
+
+- 2026-09-23 — 🔴 **FINDING, not an operation: `H:\AGENTS.md` is load-bearing and has NO
+  recovery path.** ORDER 10 tells me to "treat it as part of the system" — I read it, and it
+  is. It is the file that stops a Kimi role concluding *"there is no role definition, so I
+  follow your instructions directly"*; it names the eight roles, pins the workspace path, and
+  carries the rule that **`project <name>` always means the workspace folder, never the
+  drive-root folder of the same name**. 5,879 bytes, bilingual, written 2026-09-23 04:07.
+  **The gap: it is outside the repo, outside git, and nothing committed records its contents.**
+  `machine.local.md` does not mention it. So the day the owner moves machines, **every Kimi
+  role loses its way in, and there is nothing to point at** — which is the exact failure
+  `AGENTS-DISCIPLINE.md` was created to end ("behaviour that is not in the repo is not part of
+  the system"), reproduced one level up. Its content is machine-independent apart from the
+  `H:\` drive letter, so a committed master at `_templates/machine/AGENTS-drive-root.md` would
+  close it completely.
+  **I did not write it.** `_templates/` is mine only *with the owner's approval*, and
+  `machine.local.md` is not on my writable list at all. **Asked; awaiting his go.** Recording
+  it here so that if this session dies the finding does not die with it.
+
+- 2026-09-23 — **ORDER 8 + ORDER 9 installed at smart-scheduler — and the install is what proved
+  the charters are NOT yet ready for another vendor.**
+  **The blocking question is closed.** The owner ruled: **Kimi Code opens with the workspace root
+  as its working directory** ⇒ Atlas's `AGENTS.md` wiring stands, it does not invert. Scope:
+  **smart-scheduler only, for now.** Marie's own hands: `smart-scheduler/AGENTS.md` (pointers
+  only — where `ai-worker/` is, repos by logical name, the startup ritual order — restating no
+  rule, and carrying the warning Atlas identified: *this file cannot tell you who you are*,
+  because Fero and Tanya both load it).
+  **Via the spawned PM:** `FERO.md`→`FE.md` (3,284→9,801 B), `FERO-DESIGN.md`→`FE-DESIGN.md`,
+  `TANYA.md`→`QA.md` (22,132→13,455 B), `TANYA-PLAYWRIGHT.md`→`QA-PLAYWRIGHT.md`; both old
+  charters archived verbatim first. `PROTOCOL.md`'s one vendor string fixed — *"separate Claude
+  Desktop sessions"* → *"separate AI sessions"*; a grep for claude/anthropic/gpt/kimi/desktop
+  across it now returns **0**. TANYA §3's environment table was a placeholder and was filled to
+  this project's reality (`sid` ours / `uat` the customer's, READ-ONLY, every write a DATA
+  REQUEST) — the access asymmetry wording itself untouched.
+  **Marie diffed every installed file against its template** rather than trusting the report:
+  8 / 4 / 19 / 8 changed lines, and every one is either a declared substitution or the companion
+  blockquote below. Zero silent drift.
+  🔴 **TWO TEMPLATE DEFECTS FOUND BY INSTALLING — they guarantee drift on the NEXT install, so
+  they are the real find here. Both need the owner's go before I touch `_templates/`:**
+  1. **The templates never link forward to their companions.** `FERO.md` §7 does not name
+     `FERO-DESIGN.md`; `TANYA.md` §5 does not name `TANYA-PLAYWRIGHT.md`. The links run
+     companion→charter only. The PM had to hand-write a pointer blockquote into both installed
+     files — meaning **every future install invents its own wording**, which is exactly the
+     drift ORDER 9 says to prevent. Fix belongs in the template, once.
+  2. **`<PROJECT>` appears inside the installer note itself**, so substitution turns it into
+     *"replace `smart-scheduler` and fill the environment table"* — instructions addressed to
+     nobody, shipped in the live charter. The note should be worded so it survives substitution
+     (or be stripped on install).
+  🔴 **ORDER 8 prerequisite 1 — "charters must be self-contained" — IS NOT MET. Reported
+  plainly, because shipping this to a different model quietly is how the work gets worse with
+  nothing to point at.** Both charters' §0 still send the reader to `PROTOCOL.md`. `FE.md` is the
+  weak one: it uses `TODO / REWORK / IN_PROGRESS / REVIEW / BLOCKED / DONE` and the TASK sections
+  `## Implementation Notes` / `## Questions` / `## Review` **without defining any of them**, and
+  never says where TASK files live or what a board row looks like — a fresh non-Claude model told
+  *"set it `IN_PROGRESS`"* does not know what to edit. `QA.md` is close (its §9 TEST template makes
+  its output self-contained) but still needs `PROTOCOL.md` for the board states and the file tree.
+  **This is Atlas's to fix — he drafts charters, I install them.** Either each charter gains a
+  short "file layout + status vocabulary" section, or the rule is honestly restated as
+  *"`PROTOCOL.md` is a required second read"*, which is what the ritual already implies.
+  ⚠️ **The Fern→Fero rename is NOT complete workspace-wide.** The four installed files are
+  internally consistent (zero "Fern"), but `SYSTEM-FACTS.md`, `board.md`, `PROTOCOL.md`'s team
+  table and every log still say **Fern** — so a fresh Fero session will read a board that names
+  someone else. Not hunted down: a rename across the knowledge file and the logs is its own
+  operation with its own archive, and it needs the owner's word first.
+
+- 2026-09-23 — **ORDER 6's separate operation DONE: smart-scheduler's cleanup, run as THREE bounded
+  spawned-PM hops in parallel (inboxes · knowledge file · board), each archiving verbatim first.**
+  **Inboxes: 2,004,745 bytes → 2,862.** PM 854 KB→1,436 B · SA 660 KB→474 · BE 360 KB→478 ·
+  QA 131 KB→474 (FE was already healthy at 288 B and is the shape the others were rebuilt to).
+  Every byte is in `archive/inbox-<ROLE>-2026-09-23-pre-drain.md`. Porter kept **one** message —
+  @Sober's 09-22 note that *"a group cancel-all cancels each child's SEAT with the session-cancel
+  semantics — say if she expects otherwise"*, an owner confirm he could not prove was ever
+  answered, and the batch shipped without it. **He marked it undetermined and kept it, which is
+  the rule working:** keeping a live message costs four lines, dropping one costs a defect.
+  **`SYSTEM-FACTS.md`: both `⬅️ MOVED FROM board.md` dumps unwrapped, 323,056 → 317,194 bytes.**
+  The interesting result is how LITTLE left: of 105 sections in the two dumps, **103 were durable
+  facts and stayed.** Region 1 (51 sections) was 100 % genuine engineering findings — `Select`
+  renders EMPTY on an out-of-options value, `zValidator` is off the `app.onError` path,
+  `SICK_LEAVE` is one state with six prices. Only 7.3 KB was true board residue (stale per-REQ/DEF
+  QA status from 09-06→09-08, plus two pointer stubs that had travelled into the very file they
+  pointed at) → `archive/SYSTEM-FACTS-2026-09-23-board-residue.md`. **So Atlas's "~25 KB of real
+  knowledge" estimate was wrong by an order of magnitude — the file is big because it is genuinely
+  full, not because it is full of board scrap.** Loss proof was total, not sampled: 60 removed
+  lines, every one accounted for in the residue archive or in the 3 deliberate wrapper lines.
+  Porter flagged one section he would not split — `🚦 DEPLOY RULES (standing)`, where deploy-status
+  prose has irreplaceable facts welded into it (`sale:ensure-items` inserts-only, the
+  `ACCESS EXCLUSIVE` lock on the bookings index rebuild, the two-command migration split). **He
+  left it and asked rather than rewriting a fact to fit a rule. Correct.** Open for Atlas.
+  **Board: 57,328 → 22,368 bytes**, 36 closed rows swept verbatim to `archive/board-closed.md`,
+  38 over-long cells → 0 **without truncating one of them** (all 38 sat inside the swept rows, so
+  they left whole). All three board FAILs cleared.
+  🔴 **AND THE OPERATION FOUND A LIVE DEFECT NOBODY HAD SEEN — this is the real value of the run.**
+  `board.md` line 1 was a single 4,764-char line: ~148 status fragments run together with the
+  file's own title buried at the end. Git dates it between **09-11 (clean, 25 chars)** and
+  **09-19 (1,786)**, then 2,493 → 4,311 → 4,764. **It is not a one-off: every board edit since has
+  appended more status to line 1 instead of into the row, so the write path that causes it is
+  still live.** Cost, measured not guessed: all 38 distinct fragments are **orphans — not one
+  appears anywhere else on the board**, and `requirements/` holds 20 files **REQ-085…REQ-104 with
+  no row at all** in the Requirements table. Those fragments are the only surviving record of
+  their 09-16→09-20 status. Two more casualties of the same family: an orphaned row-tail with no
+  ID (@Jason's TASK-325 sweep, commit `0d91b4d`) and `TASK-437`'s missing Source cell.
+  **Porter invented nothing back** — raw fragments in `archive/board-2026-09-23-corrupt-line1.md`,
+  the three gaps written up in `archive/board-2026-09-23-parked-notes.md`, **for the owner to
+  re-attach.** ⚠️ Fixing line 1 does not fix the cause; the next board edit may start rebuilding it.
+  **Marie's own verification, not taken on report:** all four inbox archives and both board/facts
+  archives match the byte sizes **she measured herself before the run** (854,046 · 659,810 ·
+  359,914 · 130,975 · 57,328 · 323,056) — so the archives are provably the verbatim pre-state;
+  `grep -c '^## ⬅️ MOVED FROM' SYSTEM-FACTS.md` = **0**; seven durable facts spot-checked present;
+  board line 1 is now the title alone. Also **resolved in passing:** `machine.local.md` recorded
+  that smart-scheduler's board hard-coded `H:\scheduler` in Project info, "queued for the next
+  housekeeping run" — a `grep` for `H:\` across board + SYSTEM-FACTS now returns **nothing**.
+  ⚠️ **What did NOT clear, and should not have: the boot-budget FAIL** (PM 375.8 KB, QA 377.6 KB,
+  SA 369.8, BE 359.2, FE 359.0 — gate 120 KB). It is `SYSTEM-FACTS.md` at 317 KB, and that file is
+  exempt from SIZE by design. **This is a genuine collision between two rules Atlas wrote, and it
+  is his to resolve, not mine to paper over:** ORDER 6 item 3 measures a total that ORDER 6 item 1
+  forbids compacting. The gate is now saying something true and unactionable by any role — which
+  is the failure mode the gate itself was written to prevent. **Escalated to Atlas, via the owner.**
 
 - 2026-09-23 — **ORDER 7 DONE: Otto is installed as the third workspace-level identity.**
   Marie's own hands, three files: `README.md` (identities line now Atlas · Marie · Otto, with

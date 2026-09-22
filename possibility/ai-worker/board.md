@@ -36,7 +36,7 @@
 | REQ-001 | User tiers — definitions, discounts, score→tier rule | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED in `tests/TEST-002-user-tiers.md` (AC-7 NOT_TESTED-on-SIT, local evidence) | — |
 | REQ-002 | Sign in with Google | HIGH | DELIVERED — 2026-09-21, Porter; TEST_PASSED 18/0/0 in `tests/TEST-001-google-sign-in.md`; AC-5 W-3-on-cancel amended to best-effort (gap recorded) | — |
 | REQ-003 | Submit an idea and see the AI analysis | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED in `tests/TEST-003-submit-idea-and-analysis.md` (AC-7/12 NOT_TESTED-on-SIT, local evidence) | — |
-| REQ-004 | Hire request + owner's admin page | HIGH | IN_SPEC — 2026-09-21, BE done; TASK-009 FE TODO, `specs/SPEC-005-hire-request-and-admin.md` | Fern (009) |
+| REQ-004 | Hire request + owner's admin page | HIGH | IN_SPEC — 2026-09-21, BE done; TASK-009 FE REVIEW 2026-09-23, `specs/SPEC-005-hire-request-and-admin.md` | Sober (009 review) |
 | REQ-005 | Bilingual UI TH/EN with switch | MEDIUM | IN_SPEC — 2026-09-21, Sober, `specs/SPEC-006-bilingual-ui.md` (rules already built to; TASK-010 sweep after TASK-009) | Fern (after 009) |
 | REQ-006 | Email + password sign-up/sign-in (Google stays prominent) | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED round 2 in `tests/TEST-004-email-password-login.md` | — |
 | REQ-007 | Visual redesign — "you are the possibility" (dark theme, tier imagery, new tier wording) | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED round 2 in `tests/TEST-005-visual-redesign.md` | — |
@@ -53,7 +53,7 @@
 | TASK-006 | FE idea box, result page, My ideas | SPEC-003 | DONE — 2026-09-21, Sober review in `tasks/TASK-006-fe-idea-and-result.md` §Review | Fern | TASK-004 ✓, TASK-005 ✓ |
 | TASK-007 | FE header tier badge + /me profile | SPEC-004 | DONE — 2026-09-21, Sober review in `tasks/TASK-007-fe-tier-badge-and-profile.md` §Review | Fern | TASK-004 ✓ |
 | TASK-008 | BE hire_requests + hire endpoint + admin list/PATCH | SPEC-005 | DONE — 2026-09-20, Sober review in `tasks/TASK-008-be-hire-request-and-admin.md` §Review (real-owner admin cookie → Tanya via FE) | Jason | TASK-005 ✓ |
-| TASK-009 | FE hire button + /admin page | SPEC-005 | IN_PROGRESS — 2026-09-23, Fern, `tasks/TASK-009-fe-hire-button-and-admin-page.md` | Fern | TASK-014 ✓ |
+| TASK-009 | FE hire button + /admin page | SPEC-005 | REVIEW — 2026-09-23, Fern, evidence + Q-1/Q-2 in `tasks/TASK-009-fe-hire-button-and-admin-page.md` §Notes (admin-as-owner UNVERIFIED) | Fern | TASK-014 ✓ |
 | TASK-010 | FE bilingual sweep + i18n guard script | SPEC-006 | BLOCKED — 2026-09-21, waiting TASK-009, `tasks/TASK-010-fe-bilingual-sweep.md` | Fern | TASK-009 |
 | TASK-011 | BE email+password register/login (same session) | SPEC-007 | DONE — 2026-09-22, Sober review in `tasks/TASK-011-be-email-password-login.md` §Review | Jason | — |
 | TASK-012 | FE email sign-in/sign-up block under Google | SPEC-007 | DONE — 2026-09-22, Sober review in `tasks/TASK-012-fe-email-password-forms.md` §Review (Enter-to-submit → Tanya) | Fern | TASK-011 ✓ |

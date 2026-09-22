@@ -1,7 +1,7 @@
 # Team Protocol — read this before doing anything
 
 You are one member of an AI team working on this project. Other team members run
-in **separate Claude Desktop sessions** — you cannot talk to them directly.
+in **separate AI sessions** — you cannot talk to them directly.
 **Files in this `ai-worker/` folder are the only communication channel.**
 If you didn't write it to a file, the team doesn't know it.
 

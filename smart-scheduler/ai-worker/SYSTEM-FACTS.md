@@ -3102,3 +3102,6 @@ Post the RBAC/FE deploy, one user (Khwan) got a broken page / Bad Gateway while 
 
 ## 2026-09-22 — 🔴 Never READ on a transaction after a statement in it FAILED (TASK-445)
 A pg unique-index clash (`23505`) inside `db.transaction` ABORTS the tx; any further query on that tx — even a harmless `findFirst` for a nickname to build the 409 sentence — answers `25P02 current transaction is aborted` and surfaces as a **500**, hiding the clean 409 that was already built. Rule: load every name/fact the error message needs BEFORE the write loop; a `catch` inside a tx touches memory only. The camp-week create (`syncCampDayRows`) hit this on every coach clash (not a today rule); `swapGroupTeacher`'s 23505 mapping reads nothing — the shape to copy.
+
+### 2026-09-23 — Fern and Fero are the same role
+Fern and Fero are the SAME role (Frontend Engineer). Renamed 2026-09-23, owner's decision; older files, board rows and logs still say Fern. Do not rename them.

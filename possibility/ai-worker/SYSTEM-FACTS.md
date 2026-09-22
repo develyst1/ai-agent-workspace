@@ -215,3 +215,14 @@ Sober's SPEC-001 recommendations were overridden line by line. These are the fac
 - **Observed 2026-09-22 (Fern, TASK-014): the Thai hero headline W-1 carries an invisible zero-width space after "คุณคือ" as the only wrap point.** If W-1 wording changes, the hint must be re-placed.
 - **TASK-014 fix (DEF-1/DEF-2) redeployed to SIT by the owner, 2026-09-22** (FE only).
 - **REQ-006 and REQ-007 DELIVERED 2026-09-22 (Tanya TEST_PASSED round 2 on SIT).** Observation for the owner: the Google button now renders in Google's white/light theme (GIS controls it); Tanya flagged it as look-only, not a defect.
+
+## Role naming (owner, 2026-09-23)
+
+- Fern and Fero are the SAME role (Frontend Engineer). Renamed 2026-09-23, owner's decision; older files, board rows and logs still say Fern. Do not rename them.
+- **Owner accepts the white Google button (2026-09-23: *"ok"*), but says the EXPERIENCE of using the site is still not beautiful enough** (*"การใช้งานยังไม่สวยงามเท่าไหร่เลย"*) — look was fixed, the flow/feel of using it was not. He also asked how he himself is supposed to try it out. ⇒ Porter gave him a walkthrough on SIT 09-23 and will turn his reactions into a REQ.
+
+## Visual direction v2 (owner, 2026-09-23) — supersedes §Visual design of 09-22
+
+- **The owner rejects the REQ-007 result: *"ไม่สวยเลย redesign UI มาใหม่เลยดีกว่า"*.** The photographic tier/hero images are to be **taken OUT** — he judges that dropping them in did not work (*"เอาพวกรูปออกไปดีกว่า ฉันว่าเอาไปทำแล้วไม่เวิร์คเลย"*).
+- **New order of work he set:** the FE designs the UI FIRST without photos; **then**, where an image is genuinely needed, the need travels FE → Sober → Porter, Porter writes the prompt, **the owner generates the image** and sends it back. (*"ถ้าให้ [Fern] ทำ UI มาก่อน แล้วขอรูปผ่าน sober มาหานาย ส่ง prompt ให้ฉัน เจนรูปใหม่ให้ที่อยากได้ดีกว่า น่าจะมีความเข้ากันได้มากกว่า"*) Images must fit a finished design, not the design be built around stock renders.
+- The purpose and feeling (SYSTEM-FACTS §Purpose, §Visual design "feeling" lines) still stand — only the image-first approach is dropped.
