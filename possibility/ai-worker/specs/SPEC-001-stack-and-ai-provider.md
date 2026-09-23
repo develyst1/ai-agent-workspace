@@ -86,3 +86,12 @@ Everything that differs from local. Values are the owner's; names are ours.
 | BE | `PORT` | whatever the proxy forwards to |
 | If the API is on a **different host** than the FE | cookie | must become `SameSite=None; Secure` and CORS must allow the FE origin with credentials — avoid by proxying under the same host (row 2) |
 **DR-8 confirmed (owner, 2026-09-22):** the API on SIT is `https://possibility.develyst.online/api/v1` — same host; the cookie stays `SameSite=Lax`, no CORS concern.
+
+### Deploy lesson, 2026-09-23 (SIT sign-in outage after the `ADMIN_EMAILS` swap)
+An `.env` edit is a deploy, and the BE **exits at startup** on bad config (missing var, empty `ADMIN_EMAILS`, unusable AI config). A crash loop looks identical from outside: every request 502, including `/api/v1/health`. So:
+1. **After any `.env` change, the first check is the BE process log's first line, not the website.** The reason is printed there by name (`FATAL STARTUP: … ADMIN_EMAILS`, TASK-017); the site cannot tell you why.
+2. **`/api/v1/health` is the second check** — `{"status":"ok"}` means the process is up and the DB answers; `degraded` means it is up with a bad AI config (TASK-017); **502 means the process is not running at all** and only the log explains it.
+3. **One variable changed at a time**, and never both the old and the new name half-present: `ADMIN_EMAILS` wins, `ADMIN_EMAIL` is the fallback, empty values on both = exit.
+4. **`bun run doctor`** (TASK-017) is the one command to run on the server after a config change: PASS/FAIL per check, names only, never values — safe to paste back to the team.
+5. Config values are never echoed to a terminal, a log or a chat. If one is, say so immediately (Jason did, 2026-09-23 — that is the expected behaviour, not a fault).
+- **Deploy cadence (owner, 2026-09-23):** BE and FE ship **together in one deploy**, not separately. Consequence to hold in mind: a finished BE fix can sit unshipped while FE work completes, so anything that makes the *running* SIT safer (like TASK-017's `FATAL STARTUP` line) only protects SIT from the moment of the next combined deploy — until then the deployed build is whatever was last shipped.

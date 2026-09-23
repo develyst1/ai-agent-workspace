@@ -1,5 +1,5 @@
 # REQ-004: "Interested in hiring" request and the owner's admin page
-- Status: READY_FOR_SA
+- Status: DELIVERED (Porter 2026-09-23 — TEST_PASSED in `tests/TEST-006-hire-request-and-admin.md`; admin copy folded into the next FE task; empty-state copy NOT_TESTED)
 - Priority: HIGH
 - Requested: 2026-09-18 by the owner
 - Deadline: none

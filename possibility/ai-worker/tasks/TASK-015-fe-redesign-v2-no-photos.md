@@ -1,7 +1,7 @@
 # TASK-015: FE — redesign v2: remove photographs, build the stage system
 - Source: SPEC-009 (REQ-008)
 - Owner: FE (Fern)
-- Status: TODO — priority over TASK-010
+- Status: IN_PROGRESS (2026-09-23, Fern)
 - Depends on: TASK-009 (DONE)
 
 ## What to do

@@ -126,6 +126,7 @@ Signed-in `/` redirects to `/ideas/new` (amended 2026-09-21, TASK-006 Q-1). Edge
 ## Non-functional
 - Timeouts: 30 s per gateway call, 120 s per request; the FE shows W-4 the whole time.
 - Config: `config/ai-steps.json` + `config/company-reference.md` are read once at startup and validated. **Startup rule (amended 2026-09-19, TASK-005 Q-2):** if `GET /models` answers, an unknown provider/model is a startup error naming the step; if the gateway is **unreachable** at startup, log one WARN line and start anyway (the request path will then fail with 502 `AI_FAILED`, which is exactly what AC-7 tests). Changing config = restart, no code change (AC-11).
+  **Amended 2026-09-23 (TASK-017 Q-2):** the two gateway failures are no longer treated alike. *Cannot connect* (network error / timeout) → WARN, start, `/health` stays `ok` (the gateway may be briefly down). *Answered but not the gateway* (non-2xx on `/models`, or a body that is not the model map) → that is a wrong `AI_GATEWAY_URL`, so WARN, start, and `/health` reports **`degraded`** with the HTTP code. Neither exits. A config that is reachable but names a model the gateway does not offer also reports `degraded` (TASK-017 item 3). Rationale: "health ok while every analysis fails" is a shape nobody should have to chase.
 - `.env.example` loses `AI_PROVIDER`/`AI_MODEL`, gains optional `AI_STEPS_CONFIG`, `COMPANY_REFERENCE_PATH`.
 - Tanya's AC-7: point `AI_GATEWAY_URL` at an unreachable port in `.env` and submit.
 
