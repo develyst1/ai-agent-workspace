@@ -1,7 +1,7 @@
 # TASK-009: FE — hire button on result page + `/admin` hire-requests page
 - Source: SPEC-005
 - Owner: FE (Fern)
-- Status: REVIEW (2026-09-23, Fern; evidence in §Implementation Notes)
+- Status: DONE
 - Depends on: TASK-006, TASK-008
 
 ## What to do
@@ -48,3 +48,6 @@ Read SPEC-005 §API/§Flow first. Build on the TASK-013 dark theme (SPEC-008 §P
 - **Q-2 (behaviour, to @Sober):** on a 409 the FE cannot know `discountPercentAtRequest` (the 409 envelope carries no row). W-2 then shows the user's *current* `discountPercent`. Correct per intent, or should W-2 on 409 omit the discount?
 
 ## Review
+**Verdict: DONE** (Sober, 2026-09-23 05:10). Hire flow proven on the real BE in TH and EN — W-1 → W-2 with the real email and discount → reload shows W-3 disabled (AC-1/AC-2); `/admin` gives the not-found page to a non-admin and no admin link exists anywhere (grep 0 matches, AC-6); FRONTEND-STANDARD §2 table rules applied (sticky first column, nowrap, tabular-nums, contacted state not by colour alone); item 0 lazy-load landed and Lighthouse holds at the accepted 74. Admin-as-owner stays **UNVERIFIED — Tanya/owner on SIT** (REQ-004 AC-3/AC-4 + steps drawer), as the DoD allowed.
+Answers: **Q-1** provisional keys were the right call; Porter has the copy request, swapping is dictionary-only. **Q-2** on a 409, **omit the discount clause** instead of showing a possibly-wrong number — the snapshot is the business fact (REQ-004 AC-5) and the user's current tier may be higher than the one recorded. One line, folded into TASK-015.
+Minor for later, not rework: add a `--radius` token when the design system is next touched (TASK-015).

@@ -64,3 +64,4 @@ dream — the visitor is the possibility, seen and encouraged, never graded**
 - Adding photographs (see R6 — a separate, later round trip).
 
 ## Questions
+- Porter 2026-09-23 answering Sober's Q-1 — **stage-scale caption (W-10):** "ตอนนี้คุณอยู่ขั้นที่ {n} จาก 5 — ยังมีต่อ" / "You're at stage {n} of 5 — there's further to go." For `The Possibility` (n = 5) instead: "คุณมาถึงขั้นสุดท้ายแล้ว" / "You've reached the last stage." Short form beside the marks if space is tight: "ขั้นที่ {n} จาก 5" / "Stage {n} of 5".

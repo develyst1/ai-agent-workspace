@@ -46,7 +46,10 @@ possibility-back/
   src/lib/session.ts      # sign/verify cookie JWT, requireUser / requireAdmin middleware
   drizzle/                # SQL migrations
   config/ai-steps.json    # per-step provider/model/maxTokens/temperature (SPEC-003)
-  .env.example            # DATABASE_URL, SESSION_SECRET, GOOGLE_CLIENT_ID, ADMIN_EMAIL, AI_GATEWAY_URL, AI_STEPS_CONFIG (optional), FRONTEND_ORIGIN, PORT
+  .env.example            # DATABASE_URL, SESSION_SECRET, GOOGLE_CLIENT_ID, ADMIN_EMAILS (comma-separated; SPEC-005 §Amendment), AI_GATEWAY_URL, AI_STEPS_CONFIG (optional), COMPANY_REFERENCE_PATH (optional), FRONTEND_ORIGIN, PORT
+```
+**Ports (amended 2026-09-23, TASK-016 Q-2):** the BE listens on `.env` `PORT`; **4000 is only the default when the var is absent** — on the dev machine it has been 4019. Every role reads `PORT` (or the SIT URL) and never assumes 4000. The FE dev server is `3000` unless taken.
+```
 ```
 
 ## Frontend layout (D3, binding for TASK-002 once Q-1 is answered)

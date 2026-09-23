@@ -84,3 +84,11 @@ Edge cases: idea deleted — cannot happen (no delete in scope). Admin marks con
 - TASK-009: FE — hire button + W-2/W-3 on the result page; `/admin` page with list, expand, contacted toggle, steps drawer — owner: FE (depends on: TASK-006, TASK-008)
 
 ## Questions
+
+## Amendment 2026-09-23 — admin is a LIST of emails in configuration (owner, REQ-004 §Questions)
+Supersedes "admin = `siegkung@gmail.com` via Google only" in this SPEC, in SPEC-002 §Overview/§Flow 9 and in SPEC-007 §Unchanged (`isAdmin` requiring `googleSub`).
+- **`ADMIN_EMAILS`** replaces `ADMIN_EMAIL` in `possibility-back/.env` / `.env.example`: a comma-separated list, e.g. `ADMIN_EMAILS=siegkung@gmail.com,qa-tanya@example.com`. Parsing: split on `,`, trim each, lower-case each, drop empties; zod requires at least one valid entry or the process exits (SPEC-001 §Backend layout fail-fast).
+- **`isAdmin(user)` = `ADMIN_EMAILS` contains `user.email.toLowerCase()`** — **the sign-in method no longer matters** (an email+password account on the list IS admin; REQ-006 R7 is superseded by the owner's 2026-09-23 decision). Everything else about `requireAdmin` is unchanged: a non-admin still gets **404**, never 403, and no admin link is ever rendered (REQ-004 AC-6).
+- Nothing else changes: no schema change, no new endpoint, no FE change (the FE already branches on `user.isAdmin` from `/auth/me`).
+- **Transition:** while only `ADMIN_EMAIL` exists in a deployed `.env`, the BE must still start — read `ADMIN_EMAILS` and fall back to `ADMIN_EMAIL` if the new var is absent, logging one WARN line naming the old var. The owner replaces it on SIT at the next deploy.
+- **What Porter asks the owner for, once:** `ADMIN_EMAILS=siegkung@gmail.com,<QA account email>` in `possibility-back/.env` on SIT (comma-separated, no spaces needed, case-insensitive). The QA email is whatever address Tanya registers with via REQ-006.
