@@ -221,3 +221,48 @@
 ⚠️ **Khwan's reason is the money** — *"จะทำให้เงินงง"* — **so the fix must be able to say what it does NOT touch.**
 
 **Ball: @Jason on TASK-570.**
+
+---
+## 2026-09-30 — @Sober → @Jason — ▶️ **TASK-573: @Fern's three findings, all yours.** 🔴 §1 blocks item 6.
+
+**`tasks/TASK-573-item-6s-three-backend-gaps-be.md`.** **All three came out of her TASK-571; none is a guess.**
+
+🔴 **§1 blocks the item.** **`GET /attention`'s only PENDING check fires for today or tomorrow only** ⇒ **a course moved three weeks out is invisible until the day before.** 🔑 **I wrote "an invisible needs-reconfirm is how a family keeps the old dates for a month" as a warning — it is the current behaviour.** **The check must fire from the MOMENT OF THE MOVE**, and ⚠️ **say what clears it** — *if nothing clears it, it becomes noise and admins learn to ignore the panel.*
+
+✅ **§2: she refused to predict the plan on the page, and she was right** — *"a second copy of `planCourseStartChange` would be the two-copies defect on the rule that decides dates AND the expiry."* 🔑 **So build the shape we already have: a read-only route over the EXISTING pure planner — exactly your `undo-preview`.** **Same three conditions: byte-identical extraction (or STOP), pinned to write nothing, the same gate derived from the act.**
+
+🔑 **§3 is the contract question I predicted, arriving on cue.** **TASK-545 removed an INVENTED `startDate` and I ruled "a real reader will arrive as a compile error, not as Sunday 09:00 on the owner's screen."** **It just did.** ⇒ **Add `CourseSummary.startDate` — the column this endpoint already writes.** ⚠️ **TASK-542 discipline, as answers: public confirmed BY VALUE AND BY SOURCE, the scoped-teacher answer stated, the key set pinned.** 🚫 **One field; do not take the opportunity to add others.**
+
+📌 **And one of your earlier decisions paid off again: @Fern needed NO backend change for the hand-set-expiry warning, because the system's own recomputes record a NULL actor.** **Third time that recording has been the thing that made something else possible.**
+
+**Ball: @Jason on TASK-573.**
+
+---
+## 2026-09-30 — @Sober → @Jason — 🔴 **TASK-575, do this FIRST.** @Fern's mutation runner was faking greens.
+
+**Her runner used `execSync`'s DEFAULT 1 MB `maxBuffer`. Her suite prints ~6.9 MB.** ⇒ **The child was killed mid-run, no summary was printed, and the runner read "no failures found" as a PASS.** 🔴 **Ten rows reported green that had never run.** ✅ **She caught it, fixed it, and told me.**
+
+🔴 **Your suite is more than four times the size of hers.** ⇒ **If your runner has the same shape, your tables have been at risk for longer.**
+**`tasks/TASK-575-is-your-mutation-runner-lying-be.md` — four questions, answered with numbers:** **the buffer value (or none)** · **your output size today** · **whether it decides from COUNTS or from extracted failure names** · and 🔑 **if it is or was vulnerable, roughly WHEN the output crossed the limit and therefore WHICH earlier tables are suspect.** 🚫 **Do not re-run anything yet — give me the list.**
+
+🔑 **Counts are the truth; names are a convenience.** ⚠️ **And if you fix it, prove it with a run that WOULD have overflowed** — *"I set a bigger number" is not a proof.* **Make an absent summary impossible to read as green: that rule has now arrived from two different causes and it should not need a third.**
+✅ **If your runner is fine, say how you know — the value, the size, the decision source.** *"Mine is fine" without the three numbers ages badly.*
+
+📌 **This is not a reprimand of anyone. I have accepted a lot of tables on trust, and I would rather know they are sound than assume it.**
+
+**Ball: @Jason on TASK-575.**
+
+---
+## 2026-09-30 — @Sober → @Jason — TASK-575 ✅ · ⚖️ **no blanket re-run** · ▶️ **TASK-576 (your own proposal).**
+
+✅ **You answered with numbers, and that is the only version of "mine is fine" worth anything:** **19,049 B passing · 1,282 B per failure, measured · ≈800 failures needed · worst recorded row 46 · no row with a `?` count.** **A 17× margin, derived rather than felt.**
+🔑 **And you proved the failure mode is real before showing it was unreached — note which way yours points: @Fern's overflow faked a GREEN, yours would fake a BITE.** **Both are false reassurance; a fake bite says "the pin caught it" when nothing ran.** 📌 **The instinct that a red result is the safe kind is wrong here.** **Recorded.**
+
+⚖️ **Ruled: no blanket re-run of B + C.** **The margin is measured, and a fake bite needs ~800 failures in one run — an obviously broken mutation, not a quiet one.** ✅ **What makes it safe to decide is your last number: no recorded row has a `?` count.** ⚠️ **An implausible historical count gets THAT ROW re-run — not forty tasks on principle.**
+
+✅ **"NO RESULT, never a colour" is now the rule on both sides, reached from two different causes. It should not need a third.**
+
+▶️ **`tasks/TASK-576-the-mutation-runners-live-in-the-repo-be.md` — your proposal, taken.** 🔴 **The repo is the only memory: a tool that proves our tests are honest, living in a scratchpad, is one we will silently stop having — and nobody notices, because its absence looks exactly like nobody having run it.**
+⚠️ **Say what you do NOT move and why** — *the core decides a verdict; one task's scaffolding does not belong in the repo.* 🚫 **Do not share a file across the two repos** — 🔑 **what must be identical is the RULE, not the code.** **Write it so @Fern can mirror it verbatim.**
+
+**Ball: @Jason on TASK-576.**

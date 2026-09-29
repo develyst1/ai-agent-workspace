@@ -74,4 +74,36 @@
 
 ---
 
+## 10 · Item 6 — the attention card for a moved course (ADMIN panel + the LINE digest's count) 📋 DRAFT
+**Where / When:** an admin moved a confirmed course's start date and has not re-confirmed it yet, shown from that moment.
+**Now (draft):** *"คอร์สที่เลื่อนวันเริ่มแล้ว รอยืนยันใหม่"* / *"Courses with a moved start date, awaiting re-confirmation"*
+**Promises:** each line is `<new start> · <child> · <sessions pending>` on the panel. The morning digest shows only the COUNT (no names).
+**It goes away when:** the course is confirmed (or every session one by one), or it ends or is paused.
+
+---
+
+## 11 · Item 6 — the preview before the move (ADMIN dialog) 📋 DRAFT (Fern, TASK-574)
+**Where / When:** an admin opens *Move the start date*, picks a date, and presses **"Check what would change"** — the server answers with the plan it *would* carry out, and writes nothing.
+**Now (draft), five strings:**
+- *"ปัจจุบัน {current} — คาบแรกจะย้ายไปวันใหม่ คาบถัดไปเลื่อนตามสัปดาห์ละคาบ"* / *"Currently {current}. The first session moves to the new date; the rest follow week by week."*
+- *"ดูว่าจะเปลี่ยนอะไร"* / *"Check what would change"* — the preview button, deliberately **not** "Confirm" or "Save".
+- *"จะย้าย {n} คาบ:"* / *"{n} sessions would move:"* — **would**, not will.
+- *"{from} → {to}"* — one row per session that actually moves.
+- 🔑 *"ระบบจะตรวจอีกครั้งเมื่อกดยืนยัน จึงยังมีสิทธิ์ปฏิเสธได้"* / *"The server checks again when you confirm, so it may still refuse."*
+**Promises:** pressing the preview button changes nothing on the course · the rows are the **server's own** list, not a page calculation · the commit button stays shut until a preview exists · a refusal after a clean preview is an ordinary outcome, not a contradiction.
+🔑 **The last sentence is TASK-547's approved Undo-preview caveat, word for word and on purpose** — the two screens must not read as two different products. ⚠️ **If it is reworded here it must be reworded there too;** a test pins the two as EQUAL and will fail if they drift.
+📌 **One retired:** `startUnknown` (the em dash's label) is **deleted** — `CourseSummary.startDate` is real now, so the card shows the date.
+
+---
+
+## 12 · Item 6 — the attention card, my wording vs §10's ⚠️ **TWO DRAFTS FOR ONE ROW — please pick one**
+**Where / When:** the same admin-panel row as **§10 above** (filed for the BE side). I did not see §10 before I drafted, and the two do not say the same thing.
+- **§10's draft:** *"คอร์สที่เลื่อนวันเริ่มแล้ว รอยืนยันใหม่"* / *"Courses with a moved start date, awaiting re-confirmation"*
+- **Mine, in the code now:** *"คอร์สที่เลื่อนแล้วแต่ยังไม่ได้ยืนยันใหม่ (ลูกค้ายังถือตารางเดิม)"* / *"Courses moved but not re-confirmed (the family still has the old dates)"*
+🔑 **Why mine is longer on purpose:** TASK-574 asked me to check that this card and the dialog's own warning **do not contradict each other**, and the only way I can prove agreement is **shared words**. The dialog's warning says the family and the coach *still hold the OLD dates* (**ตารางเดิม**) and names **Confirm course** (**ยืนยันคอร์ส**) as the act that ends it. **Mine repeats "ตารางเดิม" / "old dates"; §10's draft does not.**
+⚠️ **So: §10 as written is not wrong — it is just silent about the consequence,** and a test of mine now asserts the two warnings share those words. **If §10's shorter wording is the one you want, say so and I will move the agreement pin** (the shared word becomes *ยืนยันใหม่ / re-confirm* instead) — 🚫 **I will not weaken the pin on my own.**
+📌 *Two warnings describing one state differently teach an admin to trust neither — that is the whole reason this entry exists.*
+
+---
+
 ## Waiting to be added this round

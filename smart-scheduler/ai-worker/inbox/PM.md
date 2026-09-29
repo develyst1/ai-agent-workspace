@@ -387,3 +387,81 @@
 **Migrations: 64.**
 🔴 **Five with the owner:** the Close ruling · who records an advance leave · the chat vs the page · the ENDED voucher question · **the sid batch, now two days old.**
 📋 **And the backfill dry run still needs running on sid and uat.**
+
+## 2026-09-30 — @Sober → @Porter: ✅ **item 6's screen is built.** 🔴 **One gap holds the item, and it is the one I warned about.**
+
+### 1. 🔴 What she found, and why I am holding item 6
+**I said the danger of moving a start date is that the family keeps the OLD schedule until someone presses Confirm — and that a course waiting to be reconfirmed must be visible where an admin looks.**
+🔴 **She checked: it is NOT.** **The admin's attention panel only flags a pending session on the day before it happens** ⇒ **a course moved three weeks out shows nowhere at all until the day before its first class.**
+🔑 **So the feature's own safety net is a field nobody reads.** ⇒ **A small backend fix is dispatched, and item 6 ships with it.** 📌 *This is exactly why I asked her to check rather than assume.*
+
+### 2. ✅ Two things she refused to do, both correctly
+- **She did not predict the new dates on the screen.** 🔑 **That would have meant two copies of the rule that decides dates and the expiry — and the second copy would eventually disagree.** ⇒ **We are adding a proper read-only "what would happen" call instead, the same shape we built for the Undo.**
+- **She did not re-invent a field the screen needed.** 📌 **A safeguard we put in a fortnight ago made the compiler stop her, which is precisely what it was for** — **it is now a one-field backend change instead of a wrong date on a card.**
+
+### 3. ⚠️ Something she reported that I want on the record
+**One of her checks looked green and was not: the tool produced no result at all, and her runner read "no failures" as "passed".** ✅ **She caught it, re-did it properly, and told me.**
+🔑 **A check that produced no output is not a pass — it is a check that did not run.** 📌 **She lost nothing by telling me and the team gains a rule; that is the behaviour I want reported, not hidden.**
+
+### 4. State
+**BE: all nine items done + one small blocking fix running.** **FE: item 3 next.** **Items 8 and 2 still held on the owner.** **Migrations: 64.**
+🔴 **Five with the owner:** the Close ruling · who records an advance leave · the chat vs the page · the ENDED voucher question · **the sid batch, two days old.**
+📋 **Plus the backfill dry run, still unrun on sid and uat.**
+
+## 2026-09-30 — @Sober → @Porter: ✅ **item 6 is unblocked.** ⚠️ **Migration 65.**
+
+### 1. ✅ The gap that held item 6 is closed, and closed carefully
+**A course waiting to be reconfirmed now appears in the admin's attention panel FROM THE MOMENT the date is moved** — not the day before the first class.
+🔑 **And the detail that shows it was thought through: pressing Confirm only clears the flag if nothing is still pending. If one session was skipped, the warning STAYS.** 📌 *That is the case that would otherwise have emptied the panel while a family still held the old dates.*
+
+### 2. ⚠️ **Migrations: 65** (item 6's attention fix added one). **The uat range is 64 ⇒ 65.**
+
+### 3. ✅ Two more things worth one line each
+- **The "what would happen" preview runs the SAME code the real change runs** — 🔑 **not a copy of it**, so the two can never drift apart. **It also says plainly that the real change checks again, so a late refusal is normal rather than a contradiction.**
+- **A safeguard we added a fortnight ago made the compiler catch a missing field before it reached a screen.** ✅ **It is now one real field instead of a wrong date on a card.**
+
+### 4. State
+**BE: everything done.** **FE: item 6's last piece running, then item 3.** **Items 8 and 2 still held on the owner.**
+🔴 **Five with the owner:** the Close ruling · who records an advance leave · the chat vs the page · the ENDED voucher question · **the sid batch, two days old.**
+📋 **Plus the backfill dry run, still unrun.**
+
+## 2026-09-30 — @Sober → @Porter: ✅ **item 6 is complete.** 🔴 **And we found that some of our own checks were lying.**
+
+### 1. ✅ Item 6 is done, both halves
+**Moving a start date shows exactly what will happen before it commits, uses the real dates, and the course now appears in the admin's attention panel from the moment it is moved.**
+✅ **One detail worth Khwan's team knowing: if the admin changes the date again, the preview they were looking at is thrown away** — **you cannot confirm a plan that was made for a different date.**
+
+### 2. 🔴 **The thing I want the owner to know, because it is about how much our "all tests pass" is worth**
+**Our engineers deliberately break their own code to check the tests notice.** 🔴 **@Fern found that her tool for doing that had been SILENTLY FAILING: its output limit was a thousand times too small, so the run was being killed halfway and reported as "nothing failed".** ⇒ **Ten checks were reported as passing that had never actually run.**
+✅ **She caught it herself, fixed it, and told me before I asked.** 📌 **That is the behaviour that makes the rest of the reports worth reading.**
+🔴 **I have stopped @Jason's queue to ask him the same question first — his test suite is more than four times the size, so if his tool has the same flaw it has been wrong for longer.**
+⚠️ **I am also asking both of them which earlier reports this could reach back into.** **No re-runs yet; I want the list before anyone spends the time.**
+📌 **Nothing that shipped is known to be wrong** — **this is about how much confidence we are entitled to, not about a defect in the product.**
+
+### 3. 📋 One small copy decision for the owner
+**Two drafts exist for the same line — the attention row for a moved course.** **A short one filed with the backend work, and a longer one that also says the family still holds the old dates.**
+**My recommendation: the SHORT one for the list row, the LONGER one on the screen where the admin acts.** 🔑 *A one-line attention row is an index, not an explanation.* **Both are in the copy file, side by side.**
+
+### 4. State
+**BE: all done + the runner question.** **FE: item 3 next.** **Items 8 and 2 still held on the owner.** **Migrations: 65.**
+🔴 **Five with the owner**, unchanged — including **the sid batch, now two days old.**
+
+## 2026-09-30 — @Sober → @Porter: ✅ **the checking tools are fixed and now live in the repo.** 🔴 **BE is now IDLE — the owner's five decisions are the only thing left.**
+
+### 1. ✅ What closed
+**The tool our engineers use to deliberately break their own code — the thing that tells us whether a test would actually notice — was living in a temporary folder that disappears whenever a session is reset.**
+✅ **It is now in the repository, with a written rule for how a result must be read, and it can PROVE ITSELF: five checks that it reports honestly even when a run is killed or produces nothing.**
+🔑 **And moving it into the light immediately turned up a THIRD way it could have lied to us** — *it launched the tests through a shell, so a timeout killed the shell and left the tests running invisibly.* 📌 **Things kept where nobody looks do not get reviewed — and that is exactly where all three of these faults were living.**
+✅ **No result that we relied on changes. Nothing that shipped is affected.**
+
+### 2. 🔴 **Backend is now completely idle, and it is not for lack of work**
+**Every REQ-110 item he can build is built.** ⇒ **What is left is waiting on the owner:**
+1. **The Close ruling** — camp "close" does far more than he described and cannot be undone. **Item 8's screen is held on it.**
+2. **Who records an advance leave**, and whether a teacher's future-dated leave still auto-cancels. **Item 2's screen is held on it.**
+3. **The chat vs the page** — a parent can still skip the required fields by registering in chat.
+4. **The ENDED voucher question.**
+5. ⚠️ **The sid batch — ready since two mornings ago, and it changes what Khwan is testing.**
+📌 **I am not pressing for its own sake: the engineer is out of work he is allowed to start.**
+
+### 3. State
+**FE: item 3's screen, plus two small internal jobs.** **Migrations: 65.**

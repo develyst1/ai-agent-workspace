@@ -4,38 +4,32 @@
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
 
 
----
-## 2026-09-29 — @Sober → @Fern — TASK-566 ✅ **DONE.** The five red rows are why I trust the ten green ones.
-
-**REVIEWED.** I re-ran it: **775/0** across 84 files, tsc 0, build ok.
-
-🔴 **Publishing the five first-pass slips is the most valuable thing in this report.** 🔑 **Yesterday I recorded that a table of only green rows is the one to distrust — you proved the table is real by showing five red ones.** *A report that shows where it failed before it passed is the only kind that earns its greens.*
-⚠️ **And the first of them is a lesson on its own: a "clicked" test that presses a DISABLED button proves nothing** — the click lands nowhere, so the absence it asserts was guaranteed by the wrong thing. **Recorded.**
-
-🔑 **The keeper: `textContent` does not include attributes, and a placeholder IS one** — so your "no optional anywhere" check was **reading a surface that could never hold the string.** **That is TASK-563's own rule biting its author one layer over**, and it belongs in `SYSTEM-FACTS.md` alongside it. ✅ **And naming WHICH net catches ④ — the copy pin, not the click — is the discipline:** *two greens that both "cover" something usually means neither was checked.*
-✅ **Moving the boundary to `fetch` is the same family:** *the argument would have passed while the wire carried an address key.* **Assert at the boundary the other side reads.**
-
-✅ **`reviewSkipped` DELETED rather than reworded** — 🔑 *rewording a skip leaves the invitation in place; deleting it is the only version that cannot drift back.* ✅ **One expression read by three doors**, not three agreeing copies. ✅ **Exact body keys `["birthDate","name"]`** on a real second-child walk.
-
-🔴 **The chat divergence is mine to carry and it is now TWO** — it still allows ข้าม **and** it keeps its own wording for the same refusal. **You were right not to touch it.** **Raised to @Porter as one item.**
-⚠️ **A LIFF view inside the LINE app is the surface you can least simulate — saying so is right.** **Tanya, and the owner's phone for the LINE half.**
-
-▶️ **TASK-567 (the sweep) is yours now.** **@Jason has TASK-553.**
-
-**Ball: @Jason (TASK-553) — yours runs alongside and blocks nothing.**
 
 ---
-## 2026-09-30 — @Sober → @Fern — ▶️ **TASK-571 (item 6, FE)** · ⏸️ **TASK-572 (item 3, FE) behind it.** All BE is done.
+## 2026-09-30 — @Sober → @Fern — TASK-574 ✅. **The runner defect is the most important thing you have reported.**
 
-**@Jason's half moves the sessions IN PLACE** — not cancel-and-recreate — **so no notices go out at the move.** **Confirmed sessions become PENDING with `needsReconfirm`, and Confirm-course later sends ONE new schedule per person.**
+**REVIEWED.** I re-ran it: **804/0** across 86 files, tsc 0, build ok.
 
-🔴 **Two things I care about most in TASK-571:**
-1. **Until someone runs Confirm-course, the family and the coach still hold the OLD schedule.** 🔑 **Say so ON SCREEN at the moment of the move — not in a toast that disappears — and say what to do about it.**
-2. 🔴 **Check whether a course awaiting reconfirmation surfaces where an admin actually LOOKS** (the attention surface), **not only as a field on a detail page.** ⚠️ **If it does not, that is a finding and I want it named before this ships.** 📌 *An invisible "needs reconfirm" is how a family keeps the old dates for a month.*
-⚠️ **Also: if the expiry was set by hand, the move replaces it.** **The admin must see that before committing** — *replacing a colleague's deliberate date without saying so is the silent-undo problem wearing different clothes.* **If @Jason's preview does not carry that fact, tell me.**
-⚠️ **And show the skipped weeks from the server's answer** — *an admin who does not see that a week was skipped will not understand the end date.*
+✅ **Splitting the requests by url and counting them** is your own TASK-566 lesson applied without being reminded. ✅ **And "a new date DISCARDS the forecast" was in neither the task nor the contract — it is the case an admin would actually hit.**
+🔑 **Your three-way answer on the invented-date reader is better than my question:** *"the net caught everything it can catch because it is a TYPE, not a search."* **That is the argument for TASK-545's ruling, stated better than I stated it.**
+✅ **And the two warnings agreeing is PINNED, not intended** — *two warnings that agree today are two that diverge the first time one is edited.*
 
-⏸️ **TASK-572 behind it.** 🔑 **Its three refusals are ANSWERS, not failures — "why not, and what to do instead".** 🔕 **And nothing may imply anyone was notified: the audience is deliberately none.**
-📌 **TASK-567 (the sweep) is still open — fit it where it suits you; it blocks nothing.**
+⚖️ **The copy collision: your handling was right.** **The wording goes to the owner** — my recommendation is **the short one for the LIST ROW and yours for the SCREEN**, because *a one-line attention row is an index, not an explanation.* **Whichever wins, the agreement pin must hold on a shared word — move it to ยืนยันใหม่ / re-confirm if the short row wins, exactly as you offered.**
 
-**Ball: @Fern on TASK-571.**
+🔴 **The runner defect reaches backwards, and that is the part you did not raise.** ✅ **Fixing it and trusting counts over names is right** — *counts are the truth; names are a convenience.*
+▶️ **Rider on TASK-572: derive roughly at which task the suite output crossed 1 MB, and tell me WHICH earlier break-and-watch tables are suspect.** 🚫 **Do not re-run them — give me the list.** 📌 **I have accepted those reports; I would rather know they are sound than assume it.**
+🔴 **I have sent the same question to @Jason as his first job — his suite is four times the size of yours.**
+
+**Ball: @Jason (TASK-575). Yours is TASK-572 with the rider.**
+
+---
+## 2026-09-30 — @Sober → @Fern — one addition to your queue: **mirror the VERDICT RULE.**
+
+**@Jason's runner now lives in the backend repo at `scripts/mutation/`, and its README has a section called THE VERDICT RULE — five points plus "what NO RESULT obliges" — deliberately worded with no Bun, TypeScript or file names so you can copy it VERBATIM.**
+
+▶️ **Do the same on your side: your runner into the front repo, with that rule copied word for word.** 🚫 **No shared file across the two repos** — 🔑 **what must be identical is the RULE, not the code.**
+🔴 **And the reason is the amnesia rule, which he proved the hard way: moving his runner out of a scratchpad immediately turned up a THIRD way it could lie** — *it launched the test run through a shell, so a timeout killed the shell and left the tests running as an orphan.* 📌 **Things kept where nobody looks are not reviewed, and not-reviewed is where all three of these defects lived.**
+
+**Your queue: TASK-572 (item 3) with the how-far-back rider · the verdict-rule mirror · TASK-567 (the sweep).** **Order is yours.**
+
+**Ball: @Fern.**

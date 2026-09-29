@@ -3392,3 +3392,24 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 ## A rule whose reason has evaporated gets a NEW reason or goes (2026-09-30, TASK-569)
 **NOT STARTED ⇒ 409 was justified by "the first booking would overwrite it". TASK-569 removed that.** ✅ **The rule STAYS, on a different reason: before the first booking the expiry is a sale-day placeholder, so a person's date FREEZES it and can end EARLIER than the normal count** — 🔑 **"an extension that shortens".** **The dead reason was replaced in the doc.**
 🔑 **The discipline: when a rule's reason dies, do not delete the rule and do not keep it silently — find out whether it still has one.**
+
+## A mutation run that prints NO SUMMARY is not a green (2026-09-30, TASK-571)
+**A mutation removed the only focusable element from a modal; Mantine's `use-focus-trap` dumped a whole document, the run produced no summary at all, and the runner read that as a PASS.**
+🔑 **No summary is not "nothing failed" — it is a run that did not happen.** ✅ **Break-and-watch must treat an absent summary as INCONCLUSIVE and say so**, and the pin must be re-placed until the mutation actually bites.
+📌 **Related trap: a dead branch keeps its `t(...)` calls, so a copy-key pin still passes — only the block's OWN condition catches it.**
+
+## `execSync`'s default 1 MB maxBuffer FAKES a pass (2026-09-30, TASK-574)
+🔴 **A ~6.9 MB suite output against the 1 MB default kills the child mid-run, so NO summary line is ever printed — and a runner that looks for failures finds none.** ⇒ **Ten mutation rows reported green that had never run.**
+✅ **Set it explicitly (256 MB), and TRUST THE COUNTS, not extracted failure names** — one row was labelled "slipped" while the counts plainly read `1 fail`. 🔑 **Counts are the truth; names are a convenience.**
+📌 **Second cause, same rule as TASK-571's R6: the lesson is not about focus traps, it is about ABSENCE.** 🔑 **A run that prints no summary is not a green — it is a run that did not happen.**
+⚠️ **This reaches BACKWARDS: any break-and-watch table produced while the suite output exceeded the limit is suspect.**
+
+## A value shown in two places needs TWO pins (2026-09-30, TASK-574)
+**Restoring a removed em-dash placeholder PASSED, because the CARD was pinned and the DIALOG'S HINT was not.** 🔑 **"The feature works" gets checked wherever the author happened to look.**
+✅ **Pin at the source, and pin every surface that shows the value.**
+
+## A faked verdict points EITHER way — a false BITE is as dangerous as a false pass (2026-09-30, TASK-575)
+**@Fern's overflow made a killed run read as a PASS. @Jason's families B and C would read the same killed run as a BITE** — *proven on a real >1 MiB fixture: a run where every test passes is reported as BITES.*
+🔑 **Both are false REASSURANCE: a fake bite says "the pin caught it" when nothing ran.** 📌 **The instinct that a red result is the safe kind is wrong here.**
+✅ **BE numbers (measured, 2026-09-30): the passing suite prints 19,049 B; 1,282 B per failure; the limit needs ≈800 failures in one run; the worst recorded row is 46.** ⇒ **17× margin, so no historical BE table is suspect from overflow.** ⚠️ **An implausible historical failure count is the only trigger to re-run one row.**
+✅ **The rule both runners now hold: the verdict comes ONLY from parsed counts — BITES / SURVIVED / NO RESULT [reason]; a timeout is not a bite; an absent summary is never a colour.**

@@ -277,3 +277,73 @@ From @Jason 2026-09-30: ✅ **TASK-570 built. NO migration (64 stays).** **3624 
 - 🚫 **Not touched:** the sale, any deduction, the counters, the rows' identities / rentals / rates. **Only dates, CONFIRMED → PENDING, holds, and the course's start / weekday / expiry + record.**
 - ⚠️ **A hand-edited expiry is replaced by the recompute** (recorded), per "recomputed normally". Say if a person's date should survive, as in TASK-569.
 - ⛔ Only you mark this DONE. **This was the round's last BE item.**
+
+## 2026-09-30 — @Fern → @Sober: ✅ **TASK-571 done — the start-date move.** 796/0 across 86 files (was 775/84) · tsc 0 · build ok · **9 mutations: 8 bite + 1 re-pinned** — see the TASK report §0–§6. **Three findings you asked for, all named.**
+🔴 **1 — the reconfirm state does NOT surface where an admin looks.** Derived: the FE panel renders whatever `GET /attention` sends (no list of its own); the BE has **11 checks** and the only PENDING one fires **only for today or tomorrow** ⇒ **a course moved three weeks out is invisible until the day before its first session.** 📌 **The fix is a BE check — a 12th, or widening that window. Not mine, not built.**
+🔴 **2 — there is NO preview route.** `skippedForLeave` exists only in the committing answer. 🚫 I did not predict the plan on the page: **a second copy of `planCourseStartChange` would be the two-copies defect on the rule that decides dates and the expiry.** The dialog states what is true of EVERY move before, and renders the skipped weeks from the server's answer after. 📌 One read-only route over the existing pure planner closes it — **your call.**
+🔴 **3 — TASK-545's compile error arrived, exactly as designed.** `CoursePackageView` has no `startDate` (I removed the invented one). 🚫 Not derived, not re-placeheld: an em dash on the card, and the new date from the answer. 📌 **One field closes it: `CourseSummary.startDate`**, whose column this endpoint already writes.
+✅ **The stale-schedule window is the FIRST warning, before the commit AND after, and it says what to do.** ⚠️ **The hand-set-expiry warning needed no BE change** — the history already distinguishes them, because **the system's own recomputes record a `null` actor.** 🚫 Two guards, refusals verbatim, course untouched, the server's rule not re-implemented.
+⚠️ **R6 was INCONCLUSIVE before it was green and I would rather you heard it from me:** with the reconfirm Alert gone the modal had no focusable element, **Mantine's `use-focus-trap` dumped a whole document and the run produced no summary** — my runner read that as a pass. Re-pinned at the source (a dead branch keeps the `t(...)` calls, so only the block's own condition catches it) and it bites. 🔑 **A mutation run that prints no summary is not a green — it is a run that did not happen.** For SYSTEM-FACTS if you want it.
+⚠️ Declared: `expiry-preview.test.ts` sliced to the FIRST `</CourseDetailRow>` in the file — fine only while expiry was the first row; now the NEXT one, meaning unchanged. 📋 15 drafts both languages for `COPY-REVIEW-2026-09-29.md`; code not held. ⏸️ **TASK-572 and TASK-567 still mine.** 🚫 No BE change · no deploy request.
+
+From @Jason 2026-09-30: 📌 **TASK-573: migration `0064_course_reconfirm_needed` now EXISTS** (hand-numbered; journal idx 64; one nullable column on `course_packages`). **uat range 64 ⇒ 65.** Build continues; the full report follows.
+
+From @Jason 2026-09-30: ✅ **TASK-573: all three built. Migration `0064_course_reconfirm_needed` (uat 64 ⇒ 65, told earlier).** **3634 / 0 normally, and 3× unreachable, 0 failed queries · tsc 0 · 65 = 65 · nine mutations bite** (**the check not firing on a fresh move**, **the preview writing**, **the field leaking to a public answer**, a date window, never clears, confirm doesn't clear, every unconfirmed course shown, the preview's own plan, a second field).
+- **§1: a 12th check, not a wider window** (widening would show every unconfirmed session of the coming weeks).
+  - **The move WRITES `reconfirm_needed_since`** (only when it un-confirmed something).
+  - The card shows **from that moment** while sessions are pending.
+  - 🔑 **Clears:** Confirm-course (when nothing's left pending; a skipped session keeps it), confirming one by one (count → 0), ended / paused.
+  - **The digest shows the COUNT only** (REQ-020's named list unchanged). Heading DRAFT in COPY-REVIEW §10.
+- **§2: the act's OWN plan, lifted verbatim into `planStartChange`,** called by both.
+  - Writes nothing (pinned, and driven through a read-only exec); the same gate (pinned equal); the same refusals.
+  - ⚠️ **A forecast: the act still checks other-booking clashes and each date's teacher gate** ⇒ `forecast: true` on the answer.
+- **§3: `CourseSummary.startDate`, one field, required in `CourseLike` (the compile error is the guard).**
+  - Public check-in allow-list unchanged, by value and by source; the chat builds its own fields.
+  - **A scoped teacher sees it on their own rows** (harmless; stated).
+  - Key set pinned (16).
+- ⛔ Only you mark this DONE.
+
+## 2026-09-30 — @Fern → @Sober: ✅ **TASK-574 reported — item 6 uses the preview, the real date and the reconfirm signal.** **804/0 across 86 files** (was 796), 5942 `expect()` calls · tsc 0 · `bun run build` ok · **10 mutations, all bite** (1 slipped then re-pinned, 2 re-run alone) — full detail in the TASK report §0–§7. ⛔ Only you mark this DONE.
+✅ **§0 front repo re-read FIRST and said** — the preview route, `CourseSummary.startDate` and the 12th check were all @Jason's; 🚫 items 4/9/11 untouched.
+✅ **The preview is a SEPARATE act.** "Check what would change" renders **the server's own plan** — moving rows, expiry from → to, skipped weeks, reconfirm count. 🚫 **Nothing computed on the page**, and it is pinned **BY ABSENCE**: the module may not contain `today`, `new Date`, `dayjs`, `addWeek` or `+ 7`. The only rule I wrote over the answer is "show the rows that actually move".
+🔑 **`forecast: true` reaches the admin in TASK-547's OWN sentence, word for word — and a test pins the two strings `toBe`-EQUAL in both languages.** ⇒ *They cannot drift into two products without a red test.* The button says "would change", the header "**would** move"; a post-preview refusal is an ordinary outcome, clicked, verbatim, with the commit shut.
+✅ **Clicked, 9 tests: no commit before confirm — the button is disabled AND a pre-request return blocks, asserted as ZERO requests to the COMMIT url** (a clicked test that presses a disabled button proves nothing, so I split the requests by url and counted them). **A refused preview BLOCKS**, and **a new date DISCARDS the forecast** — you cannot confirm a plan made for a different date.
+✅ **The em dash is gone, the real `startDate` is shown, `startUnknown` is deleted.**
+⚠️ **Your question, answered rather than asserted — there was only ever ONE invented-date reader, proved three ways:** (1) the literal-free pin on `dtoToCourseView` means no second invented date can exist in the mapper; (2) 🔑 **`weekday` and `startTime` are STILL omitted from `CoursePackageView`, so the compiler forbids a reader** — there is no silent second reader, only a future compile error, which is the design; (3) a tree-wide em-dash sweep turned up only placeholders for fields that **are** genuinely nullable. 📌 *The net caught everything it can catch because it is a TYPE, not a search — that is the whole argument for fixing the type rather than the contract.*
+✅ **The two warnings do NOT contradict, and the agreement is PINNED, not intended:** both say the family still holds the **OLD dates** (**ตารางเดิม**) and both name **Confirm course** (**ยืนยันคอร์ส**); a test asserts both phrases in both strings in both languages.
+⚠️ **But a collision I will not resolve on my own: `COPY-REVIEW-2026-09-29.md` §10 already carries a SHORTER draft for that same attention row** (*"Courses with a moved start date, awaiting re-confirmation"*), filed for the BE side — I had not seen it. **It is not wrong; it is silent about the consequence and it lacks the words my pin needs.** I filed **§12** with both wordings side by side for the owner. 🚫 **I did not weaken the pin to fit it and I did not overwrite §10.** If the shorter wording wins, say so and I will move the agreement pin to the shared word *ยืนยันใหม่ / re-confirm*.
+🔴 **One slip, self-caught and worth the space:** restoring the em-dash string passed **804/0**, because I had pinned the **card** for the real date and not the **dialog's hint** — so the hint could quietly regress while the card still looked right. Re-pinned at the source. 📌 *A value shown in two places needs two pins, because "the feature works" gets checked wherever I happened to look.*
+⚠️ **And a RUNNER defect I would rather you heard from me, because it faked TEN greens:** my first full pass returned every row inconclusive-or-slipped, and the cause was not the code — **`execSync`'s default 1 MB `maxBuffer` against a ~6.9 MB suite output killed the child mid-run, so no summary line was ever printed.** 🔑 **This is TASK-571's R6 lesson arriving with a completely different cause: a run that prints no summary is not a green — it is a run that did not happen.** Fixed (256 MB), and the runner now **trusts the counts rather than extracting failure names** — one row was mislabelled "slipped" while the counts plainly read `1 fail`. **Two keepers for SYSTEM-FACTS if you want them: the buffer limit is a SILENT failure that looks exactly like a pass, and counts are the truth while names are a convenience.**
+📋 **6 drafts filed into COPY-REVIEW §11–§12** (5 preview strings + the card, both languages, shape-pinned, `DRAFT (Fern, TASK-574)`), **1 retired.** 🚫 Code not held.
+⚠️ **Not proven by me:** CSS, focus order and a real tap · **the preview route's own correctness is yours/@Jason's** — I assert only that I render its answer and compute nothing. 🚫 No SQL, no environment, no BE change asked for, **no deploy request**, git read only.
+⏸️ **Next unless you redirect me: TASK-572 (item 3), then TASK-567.**
+
+From @Jason 2026-09-30: ✅ **TASK-575: the same default, YES (no `maxBuffer` in all 103 runners ⇒ 1 MiB), but my output never came near it ⇒ NO table suspect from overflow.** Nothing re-run.
+- **Numbers:**
+  - the full suite passing = **19,049 B** (Bun prints only failures);
+  - **1,282 B per failure** (measured) ⇒ the limit needs ≈ **800 failures in one run**;
+  - **the worst recorded row = 46 failures ≈ 59 KB**;
+  - no recorded row has a `?` count.
+- **Decision source:** every family reads COUNTS (never names), but what a MISSING summary becomes differs:
+  - A ⇒ "? fail" (visible);
+  - **B ⇒ BITES if any `error:`**;
+  - 🔴 **C (TASK-465…503) ⇒ BITES via SIGTERM**, and an overflow kills with SIGTERM;
+  - D ⇒ a false survivor (safe).
+- 🔴 **Proven on a real >1 MiB fixture:** family C reads a run where **EVERY test PASSES** as **BITES**. The fake bite is real; my runs just never reached it.
+- **If you want certainty over evidence: re-run families B + C (TASK-385…503) with the new runner.** Your call.
+- **Fix:** `runner-core575.mjs` (512 MiB; verdict ONLY from parsed counts ⇒ BITES / SURVIVED / **NO RESULT [reason]**; a timeout is no longer a bite) + `mut575.mjs`.
+  - **Proven:** it parses the 2,097,951-byte run correctly, and a forced overflow ⇒ "NO RESULT", never a colour.
+- ⚠️ **Amnesia: all runners live in my session scratchpad, not the repo.** Propose moving them into the backend repo (`scripts/mutation/`). Your call.
+
+From @Jason 2026-09-30: ✅ **TASK-576: the runner is in the repo, `scripts/mutation/`** (`verdict.ts`, the ONE decision + the ONE way to run; `run.ts`, the driver; `prove.ts`; `README.md`) + `mutation:run` / `mutation:prove`.
+- **Suite count UNCHANGED 3634 / 0 both ways** · tsc 0 (src + the new scripts on their own) · 65 = 65.
+- 🔑 **THE VERDICT RULE is the README's section of that name**, five points + "what NO RESULT obliges", **worded with no Bun / TS / file names so @Fern can mirror it VERBATIM.** No shared file.
+- **Not moved:** the ~100 per-task runners (one task's scaffolding each; their mutations live in the TASK reports), and **deliberately their decision rules** (the defects the rule ends).
+- **Proven from the new home:**
+  - `mutation:prove` 5 / 5 (>1 MiB fail ⇒ BITES · >1 MiB pass ⇒ SURVIVED · overflow / killed / no output ⇒ NO RESULT [reason]);
+  - `mutation:run` on a real set: a TASK-573 row ⇒ BITES, a comment-only edit ⇒ SURVIVED ⚠, restores byte-identical, CHECKSUM identical.
+- 🔴 **Found while moving it: the old runners ran `bun` through a SHELL, so on Windows a time-limit kill killed the shell and left the tests running as an orphan.**
+  - Fixed: `bun` is spawned directly.
+  - It matters only for a HUNG run, and no recorded row is one ⇒ no table changes.
+  - One orphan from my own shell-based proof still holds a throwaway temp dir (no repo file); I didn't kill processes.
+- ⛔ Only you mark this DONE.
