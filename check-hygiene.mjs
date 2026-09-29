@@ -5,6 +5,7 @@
 // Owned by Marie (MARIE.md). Thresholds agreed with the human 2026-08-25;
 // v3 (knowledge file, active-team inbox, log-date rules) approved 2026-09-04.
 // v4 (knowledge SHAPE, inbox FAIL, boot budget) — Atlas ORDER 6, owner's go 2026-09-23.
+// v5 (FAILURES.md route, RESUME-HERE.md, REQ→TASK coverage) — ORDER 12+13, owner 2026-09-28.
 
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -34,6 +35,10 @@ const LIMITS = {
   boardClosedFail: 30,     // closed rows that force a sweep to archive/board-closed.md
   bootWarn: 60 * KB,       // one role's startup read (knowledge+PROTOCOL+role+board+its inbox)
   bootFail: 120 * KB,      // same read, escalated
+  failuresNewFail: 10,     // unreviewed FAILURES.md entries before the gate stops the team
+  resumeWarn: 8 * KB,      // RESUME-HERE.md — it is a page, not a log
+  resumeFail: 20 * KB,     // same, escalated
+  resumeStaleDays: 2,      // RESUME-HERE.md older than the newest log by more than N days
 };
 
 // Which files a single role actually reads to start a session, per PROTOCOL.md's
@@ -111,6 +116,21 @@ if (boardSize) {
     fails.push(`board.md carries ${closedRows} closed rows > ${LIMITS.boardClosedFail} at ${fmt(boardSize)} (sweep DONE/DELIVERED rows to archive/board-closed.md)`);
   else if (closedRows > LIMITS.boardClosedWarn)
     warns.push(`board.md carries ${closedRows} closed rows (sweep them to archive/board-closed.md before they pile up)`);
+
+  // REQ -> TASK coverage (ORDER 12.3 ⑥, from Porter's own failure report). A REQ that is
+  // past SPEC_DONE but names no TASK id has nothing carrying it; that is how the Undo item
+  // shipped "done" and unusable TWICE, because only the BE half was ever cut.
+  // Deliberately narrow: this flags a MISSING LINK, which is a fact. It does NOT try to
+  // infer BE-vs-FE completeness from prose — that is Sober's judgement, and a gate that
+  // guesses gets ignored, which costs more than the check is worth.
+  const POST_SPEC = /^(SPEC_DONE|READY_FOR_(BE|FE|DEV)|IN_PROGRESS|IN_DEV|IN_TEST|TEST_PASSED|TEST_FAILED|QA[_ ]|DELIVERED|DONE|CODE ACCEPTED)/i;
+  const uncovered = readFileSync(boardPath, "utf8").split("\n")
+    .filter((l) => /^\|\s*REQ-/.test(l))
+    .filter((l) => POST_SPEC.test((l.split("|")[4] || "").replace(/[*`]/g, "").replace(/^[^A-Za-z]+/, "")))
+    .filter((l) => !/TASK-\d/.test(l))
+    .map((l) => (l.split("|")[1] || "").trim());
+  if (uncovered.length)
+    warns.push(`board.md: ${uncovered.length} REQ row(s) past SPEC_DONE naming no TASK id (${uncovered.slice(0, 6).join(", ")}${uncovered.length > 6 ? ", …" : ""}) — nothing is carrying them; @SA to link or split`);
 }
 
 // 2) dispatcher-state.md — size + run count
@@ -202,7 +222,79 @@ if (!knowledgeFile) {
     fails.push(`${knowledgeFile} contains ${moved.length} "MOVED FROM" dump heading(s) — the knowledge file is exempt from SIZE, not from SHAPE; moving content between files is Marie's alone (report the FAIL to the human: "เรียก Marie")`);
 }
 
-// 7) the boot budget — what ONE role pays to read before it does any work.
+// 7) FAILURES.md — the workforce's own defect log, and the ROUTE that reaches Atlas.
+// Roles cannot call Atlas; only the owner can. So nobody has to remember to escalate:
+// the gate counts unreviewed entries and prints them where the owner already looks.
+// A role may only add an entry and set `Status: NEW`; only Atlas changes a status.
+// Exempt from SIZE (append-only, like the knowledge file) — NEVER from SHAPE. We have
+// already learned, twice, what a file exempt from the gate turns into (ORDER 6).
+{
+  const fPath = join(AW, "FAILURES.md");
+  if (existsSync(fPath)) {
+    const text = readFileSync(fPath, "utf8");
+    const lines = text.split("\n");
+    const newIds = [];
+    let currentId = null;
+    for (const l of lines) {
+      const h = /^##\s+(F-\d+)\b/.exec(l);
+      if (h) { currentId = h[1]; continue; }
+      // Consume the FIRST Status line of each entry, whatever it says, then stop looking.
+      // Otherwise an entry that quotes the word "Status: NEW" in its body (describing an
+      // earlier state) would be counted as unreviewed — a gate that miscounts gets ignored.
+      if (currentId && /^\s*[-*]?\s*\**Status\b/i.test(l.replace(/\*\*/g, "*"))) {
+        if (/^\s*[-*]?\s*\**Status:?\**\s*:?\s*NEW\s*$/i.test(l.replace(/\*\*/g, "*"))) newIds.push(currentId);
+        currentId = null;
+      }
+    }
+    if (newIds.length >= LIMITS.failuresNewFail)
+      fails.push(`🔴 FAILURES.md: ${newIds.length} unreviewed (${newIds.slice(0, 8).join(", ")}${newIds.length > 8 ? ", …" : ""}) — the team is decaying faster than it is being repaired; stop shipping features on top and เรียก Atlas`);
+    else if (newIds.length > 0)
+      warns.push(`FAILURES.md: ${newIds.length} unreviewed (${newIds.join(", ")}) — เรียก Atlas`);
+
+    const fMoved = lines.filter((l) => /⬅️\s*MOVED FROM|^#{1,6}\s.*MOVED FROM .*board/i.test(l));
+    if (fMoved.length)
+      fails.push(`FAILURES.md contains ${fMoved.length} "MOVED FROM" dump heading(s) — it is exempt from SIZE, not from SHAPE`);
+  } else if (active) {
+    warns.push(`no FAILURES.md and this project is ACTIVE — the team has nowhere to record its own defects, so they repeat (template: _templates/project/ai-worker/FAILURES.md)`);
+  }
+}
+
+// 8) RESUME-HERE.md — what a COLD session reads to know where the project is.
+// The previous attempt (PROJECT-STATUS.md) died of three things, and all three are
+// checked here rather than left to a prose rule that decayed exactly once already:
+// it was appended to instead of replaced, it sat outside ai-worker/ where nothing
+// measured it, and nothing pointed at it. A memory file nothing measures is not memory.
+{
+  const rPath = join(AW, "RESUME-HERE.md");
+  if (existsSync(rPath)) {
+    const rSize = size(rPath);
+    if (rSize > LIMITS.resumeFail) fails.push(`RESUME-HERE.md ${fmt(rSize)} > ${fmt(LIMITS.resumeFail)} — it is a page, not a log; it is REPLACED each session, never appended to`);
+    else if (rSize > LIMITS.resumeWarn) warns.push(`RESUME-HERE.md ${fmt(rSize)} > ${fmt(LIMITS.resumeWarn)} (one page: what is live, what it waits on, from whom)`);
+
+    // The append disease, detectable by shape — exactly like MOVED FROM in ORDER 6.
+    // A snapshot that is appended to is no longer a snapshot.
+    const snapHeads = readFileSync(rPath, "utf8").split("\n")
+      .filter((l) => /^#{1,6}\s/.test(l) && /RESUME HERE|Where we are/i.test(l)).length;
+    if (snapHeads > 1)
+      fails.push(`RESUME-HERE.md has ${snapHeads} "RESUME HERE"/"Where we are" headings — it is being APPENDED to. It is a snapshot: replace it, never stack it (that is what killed PROJECT-STATUS.md)`);
+
+    // Staleness is measured against the LOG DATE, never mtime — a fresh checkout
+    // restamps every file, and the owner moves between machines constantly.
+    if (newestLogDate) {
+      const rDate = new Date(statSync(rPath).mtime);
+      const rIso = `${rDate.getFullYear()}-${String(rDate.getMonth() + 1).padStart(2, "0")}-${String(rDate.getDate()).padStart(2, "0")}`;
+      const behind = daysSince(newestLogDate) === null ? 0 : Math.round((Date.parse(`${newestLogDate}T00:00:00`) - Date.parse(`${rIso}T00:00:00`)) / 86400000);
+      if (behind > LIMITS.resumeStaleDays)
+        fails.push(`RESUME-HERE.md is ${behind} day(s) behind the newest log (${newestLogDate}) — a cold session would read a stale situation and look lost. PM rewrites it before ending any session`);
+      else if (behind > 0)
+        warns.push(`RESUME-HERE.md is ${behind} day(s) behind the newest log (${newestLogDate}) — the team moved and the situation file did not`);
+    }
+  } else if (active) {
+    warns.push(`no RESUME-HERE.md and this project is ACTIVE — a cold PM session has nothing telling it where the project is (template: _templates/project/ai-worker/RESUME-HERE.md)`);
+  }
+}
+
+// 9) the boot budget — what ONE role pays to read before it does any work.
 // Not a context-window test: k3 holds 1M tokens and this would fit. It is a COST and
 // CORRECTNESS test. Every session pays this read on every vendor's bill, and a knowledge
 // file full of superseded, duplicated statements makes any model confidently wrong —

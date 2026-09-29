@@ -2505,3 +2505,17 @@ Date 2026-09-22 · sid.
 - ✅ Camp scan (today) ⇒ 200 {status:ATTENDED, credit:{remainingDays:9, totalDays:10}} = Remaining 9/10 days; 2nd scan ⇒ already:true.
 - Push-ceiling (not gate): weekly digest, 17:30 CAMP CREDIT, cancel/reassign bubbles — demo-OA push throttle; ADDED/REMOVED green R58.
 - sid API/logic CLEAN for Khwan customer-UAT. Footprint: camp weeks closed, test teachers archived, group cancel-all'd, 0 live. No uat/code.
+
+---
+
+# Round 62 — REQ-105 language-toggle→blue-menu repro (deployed build TASK-446..451)
+Date 2026-09-23 · demo OA (owner-authorized phone).
+
+- block/unblock → orange TH unlinked menu (เข้าใช้ระบบ/คุยกับแอดมิน).
+- เข้าใช้ระบบ → 0900000092 → "Registration completed/Found your family" → orange TH linked 6-cell.
+- 🔴 tap ภาษา/ช่วยเหลือ (TH→EN) → "Switched to English" → OLD BLUE EN menu (Check-in/Leave/My children/Add child/Language/Help).
+- 🔴 tap Language (EN→TH) → "เปลี่ยนเป็นไทย" → BLUE TH menu — STILL blue, not orange.
+- ⇒ turns blue at 1st toggle, stays blue; toggle path still links stale/old menu ids (deploy did NOT fix).
+- Re-checks: bot replies to every landed msg (no silence); garbage-string + phone-without-login un-captured (phone-tap flakiness / need unlinked) — flag re-run.
+- Push items blocked: OA quota exhausted until 1 Oct (Porter confirmed = the earlier "push ceiling").
+- Footprint: demo LINE left linked 0900000092 w/ blue menu for owner; no customer/phone-settings/uat/code.

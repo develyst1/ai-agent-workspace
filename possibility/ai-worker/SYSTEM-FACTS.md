@@ -237,3 +237,21 @@ Sober's SPEC-001 recommendations were overridden line by line. These are the fac
 - **SIT outage fixed by the owner 2026-09-23** (*"fix done try again"*); he did not say what it was — cause unrecorded.
 - **SIT outage cause (Sober/Jason, reproduced locally 2026-09-23 without SIT access): a missing / mistyped / quoted / empty `ADMIN_EMAILS` made the backend exit at startup → crash loop → uniform 502.** A QUOTED value is the nastier sibling: the process starts fine but nobody is admin. Fixed in TASK-017 + TASK-018: quote-tolerant parsing, one `FATAL STARTUP: <which var>` line on every exit path, a bad AI gateway URL now shows `/health` "degraded" instead of a healthy-looking site, and `bun run doctor` prints PASS/FAIL per check (names and counts only, never values).
 - **Owner's deploy preference (2026-09-23): the BE fix (TASK-017/018) waits and ships TOGETHER with the new UI design (TASK-015), in one deploy.** (*"ไว้ deploy พร้อม new design UI"*). ⇒ Porter batches deploy asks: one "ready to deploy" message when both sides are DONE, not one per task.
+
+## Visual direction v3 — the image loop (owner, 2026-09-25) — supersedes v2's "no photos"
+
+- **The combined BE + redesign-v2 deploy is on SIT (owner, 09-25) and he rejects the look again: *"deploy แล้ว ยังห่วยเหมือนเดิม"*.** REQ-008 is NOT accepted. Two redesigns (REQ-007 photos-first, REQ-008 no-photos) have now failed his eye.
+- **His instruction, verbatim (09-25): *"จงแก้ UI ทั้งหมดใหม่ แล้วระหว่างแก้ ให้ frontend request รูปได้ โดยให้ FE อธิบายมาให้ SA และให้นายทำความเข้าใจ และคิด prompt gen image ให้ฉันไปเจนจาก grok ด้วย แล้วฉันจะส่งกลับมาให้ใหม่ เพื่อให้ส่งกลับไปถึง FE นำไปแปะอย่างลงตัว"*.**
+  - Redo the WHOLE UI again.
+  - **During** the redesign, FE may request images: FE describes the need → Sober → Porter understands it and writes the Grok prompt → owner generates → owner sends the image back → Porter → Sober → FE places it so it fits.
+  - Unlike v2, images are welcome and are part of the design loop, not an afterthought; the design is built around slots the FE defines.
+
+## Visual references the owner finds beautiful (owner, 2026-09-26) — answer to SPEC-010 Q-1
+
+- **https://taskforge-saas.webflow.io/ · https://flowlink-um.webflow.io/ · https://corexa-template.webflow.io/** (owner, 09-26, sent as his answer to "name 1–2 things you find beautiful"). These are the owner's own taste references — the redesign is judged against them. Porter's reading of what they share is written separately below and is NOT the owner's word.
+- **What the references mean (owner, 2026-09-26, verbatim): *"ฉันยกให้เห็นภาพเฉยๆ ว่าของที่พวกนายสร้างมา มันห่างจากพวกนี้เกินไป ไม่ต้องลอกพวกนี้ 100% แต่ทำอะไรให้มันมีคุณค่า มีความน่าสนใจเท่าพวกนี้ด้วย — สี, animation, รูปที่เอาไปใช้ความเข้ากัน"*.** ⇒ The three sites are a QUALITY BAR, not a template: don't copy them; match their level of value and interest in **colour, animation, and how well the images fit**. Our two builds were "too far" below that bar.
+- He did not answer SPEC-010 Q-2 (3-directions first) or Q-3 (colours to avoid). Porter's reading, 09-26: no colour is ruled out; the method (directions preview vs. full build) is left to Sober as long as the owner sees the look before Tanya tests (REQ-009 AC-1).
+- **Reference study (Fern, measured 2026-09-26, TASK-020): of the owner's three references, two are dark and one is light ⇒ "dark" was never his bar; discipline was** — one dominant accent on a quiet field, ~3:1 display-to-body type with tight tracking, alternating section rhythm with hairlines, drawn imagery, constant short confident motion. (Team finding, not the owner's words.)
+- **Preview route `/preview/directions` built (TASK-020): the result page in three directions — A quiet luminous (dark), B warm editorial (light/cream, serif, a letter), C cinematic (full-bleed image).** Fern + Sober recommend **B**. C's quality depends on images not yet made.
+- **Owner deployed the `/preview/directions` route to SIT and CHOSE DIRECTION B — warm editorial (light/cream, serif, the result as a letter)** (owner, 2026-09-26: *"deploy แล้ว เลือก B"*). A and C are dropped; only IMG-002 gets generated.
+- **Direction B (TASK-021) deployed to SIT by the owner, 2026-09-26** (*"deploy แล้ว"*). His look verdict (REQ-009 AC-1) not given yet.

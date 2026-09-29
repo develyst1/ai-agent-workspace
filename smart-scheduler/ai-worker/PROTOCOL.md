@@ -99,18 +99,27 @@ work into one file, so this is a hard rule:
 
 1. Read `SYSTEM-FACTS.md` and `OWNER-LIST.md` — what the owner has already told
    us and how the running system behaves. **Never re-derive these from logs.**
-2. Read `PROTOCOL.md` (this file) and your own role file.
-3. Read **`AGENTS-DISCIPLINE.md`** (workspace root) — the working discipline every
+2. **PM and SA Lead only:** read **`RESUME-HERE.md`** — the one-page snapshot of
+   where the project is right now. The PM verifies it against the board and
+   today's log and reports any disagreement to the owner; the SA Lead only
+   reads it. Engineers and the tester skip this step — their context travels
+   with their TASK.
+3. Read `PROTOCOL.md` (this file) and your own role file.
+4. Read **`AGENTS-DISCIPLINE.md`** (workspace root) — the working discipline every
    role and every AI vendor follows: think before you code, evidence before
    assertion, which technique for which situation.
-4. Read `board.md` — this is the single source of truth for what's in flight.
-5. Read `ai-worker/inbox/<YOUR-ROLE>.md` — read it **first** among your messages,
+5. Read `board.md` — this is the single source of truth for what's in flight.
+6. Read `ai-worker/inbox/<YOUR-ROLE>.md` — read it **first** among your messages,
    act on it, then **delete what you processed**. An empty inbox means nothing is
    waiting for you.
-6. Settle TODAY (see "Date discipline"), then read `log/<TODAY>.md` (create it if
+7. Read the **last 5 entries** of **`FAILURES.md`** — this team's own defect log.
+   Reading your team's recent failures at session start is how a fresh session
+   inherits the lesson instead of repeating it. **The last 5 entries, not the
+   file.**
+8. Settle TODAY (see "Date discipline"), then read `log/<TODAY>.md` (create it if
    missing). The most recent previous log is **not** mandatory reading — read it
    only when your inbox or the board points you at it.
-7. Then do the work waiting for your role.
+9. Then do the work waiting for your role.
 
 ## Session shutdown ritual (before you finish any session)
 

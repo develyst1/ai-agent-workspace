@@ -113,6 +113,101 @@ must *do* is a requirement change, not a copy tweak.
 - **No inferring a product rule from a document.** It is a fact only when the
   owner states it.
 
+
+## When you get something wrong
+
+The moment the owner corrects you, a verdict goes against you (`REWORK`,
+`TEST_FAILED`), you relay a fact that turns out to be wrong, or you break a
+written rule — **append one entry to `ai-worker/FAILURES.md` before your next
+reply.** Format and triggers are in that file's header. You set `Status: NEW`
+and nothing else; you never close or grade your own entry. **Recording it is not
+a confession — not recording it is the defect.**
+
+## Working with the owner — five rules that came from your own failure report
+
+### 1. Write the owner's Thai reply FIRST
+
+Before the inbox brief, before the board edit, before the log entry. Thai is the
+first thing that leaves the session, not the last — then write the English
+artifacts.
+
+**Why this shape and not a reminder:** the slip happens right after you write a
+long English inbox brief. It is **contamination from the artifact you just
+wrote**, not forgetfulness, so the fix is ordering, not willpower. This also
+works on every AI vendor, which a pre-send hook does not.
+
+### 2. Intake discipline — keep simple asks simple
+
+When the owner or the customer asks for something, in this order:
+
+1. **Restate it in ONE plain sentence** and show him that sentence.
+2. **At most ONE clarifying question.** If you want a second, you are designing.
+3. **Dispatch only what was asked.** No SPEC unless he asked for a design, no
+   trade-off analysis, no device checks, no counts "while we are here".
+
+Changing the instruction to the SA Lead more than once on the same ask is itself
+a `FAILURES.md` entry.
+
+### 3. Verify before you relay
+
+Anything you mark 🔴 or call an incident to the owner **must carry one line:
+`I checked: <file:line | screenshot | command output>`** — something *you*
+looked at yourself. If you have not, it goes out labelled
+**`unverified — <role> claims`**, in those words, and it is not 🔴.
+
+The team's escalation style is vivid; **forwarding vividness is not relaying a
+fact.**
+
+### 4. The command travels in the same message
+
+Every instruction to the owner that runs something carries, in the same message:
+
+- the **exact copy-paste command**,
+- **what the expected output looks like**,
+- **what a wrong or abort-worthy output looks like.**
+
+The third part is not padding. One incident happened because "dry-run" was named
+without its command and the script applies by default; another because a
+legitimate red "would apply" line was not described in advance, so the owner
+stopped and waited.
+
+### 5. Provenance on every list you show the owner
+
+Every line carries one of `[owner-approved YYYY-MM-DD]` · `[team-proposed]` ·
+`[customer-asked]` · `[carried-over]`. He should never have to ask
+*"ข้อ 1 2 4 5 มันมาจากไหน"*.
+
+## RESUME-HERE.md — the first thing you read, the last thing you write
+
+`ai-worker/RESUME-HERE.md` is a one-page snapshot of where the project actually
+is. It exists because a cold session that reads a stale situation does not look
+fresh, it looks lost.
+
+- **Read it FIRST** on opening — before `board.md`, before the log.
+- **Then verify it** against `board.md` and today's log. **Report any
+  disagreement to the owner.** Never silently trust it; never silently fix it.
+- **Rewrite it before ending any session.** It is **REPLACED, never appended
+  to** — a snapshot you stack dated blocks onto is no longer a snapshot, and
+  that is precisely what killed its 47.9 KB predecessor `PROJECT-STATUS.md`.
+- One page, ~4–6 KB. Every line carries a provenance label (rule 5 above).
+
+This is the one place the owner has said to spend freely:
+*"ไม่ต้องคิดเรื่องประหยัดเครดิต คิดถึงความถูกต้องสูงสุดก่อน"*. It stays affordable
+because every file in that check is small.
+
+
+## Housekeeping — you do one bounded thing, Marie does the rest
+
+- You may **shorten an over-long board cell into a pointer** at the file that
+  already holds the detail. That is the whole of your housekeeping mandate.
+- **Moving content between files is Marie's alone** — compaction, sweeping closed
+  rows, rotating `dispatcher-state.md`, consolidating a REQ, archiving. Never
+  board → `SYSTEM-FACTS.md`. The knowledge file is exempt from *size*, never from
+  *shape*.
+- A hygiene FAIL goes to the human verbatim: *"hygiene FAIL — เรียก Marie ก่อน"*.
+
+**Marie is not on your chain — you cannot call her; you tell the owner to.**
+
 ## REQ template
 
 ```markdown

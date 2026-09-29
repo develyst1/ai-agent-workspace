@@ -1,5 +1,5 @@
 # REQ-008: UI redesign v2 — design first, no photographs
-- Status: READY_FOR_SA
+- Status: REJECTED by the owner 2026-09-25 ("ยังห่วยเหมือนเดิม") after SIT deploy — superseded by REQ-009; not tested, not DELIVERED
 - Priority: HIGH (the owner rejected the REQ-007 result; this replaces its look)
 - Requested: 2026-09-23 by the owner
 - Deadline: none

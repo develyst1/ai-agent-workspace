@@ -373,7 +373,582 @@ That turns a confusing name into a settled fact at the exact place every role re
 first — one line, no archive, no sweep. **If the owner would rather have nothing at
 all, skip it; he has already been told this line exists.**
 
+
+### ORDER 12 — ✅ DONE 2026-09-29 (12.1–12.5; see Operations log) — the self-report channel, and Porter's seven asks
+
+**Origin:** the owner ordered Porter (smart-scheduler) to write up his own failures
+2026-09-23 → 09-28. He did, honestly:
+`smart-scheduler/ai-worker/REPORT-porter-pm-failures-2026-09-28.md` — 8 patterns,
+4 root causes, 7 requested fixes. **Read it before executing this order.** Then the
+owner asked for something wider: *"ฉันอยากให้นายมีช่องในการแจ้งรายงานความผิดพลาดตนเอง
+ของแต่ละตัวที่ทำงาน"* — a standing channel, for every role, not one report.
+
+#### 12.1 — Install `FAILURES.md` (the channel)
+
+Template written: `_templates/project/ai-worker/FAILURES.md`. Install it in
+**every project that has a live team** (smart-scheduler and possibility first).
+
+It is the workforce's own defect log — not product bugs. Append-only, never
+compacted, `F-NNN` numbering per project. **A role may only add an entry and set
+`Status: NEW`; only Atlas changes a status.** Six mandatory triggers (owner
+correction · REWORK/TEST_FAILED · routing violation · a relayed fact that was wrong
+· an incomplete instruction to the owner · any written rule broken, even once).
+
+🔑 **The route is the part that matters, and it is the Marie lesson again.** Roles
+cannot reach Atlas — only the owner can. So **`check-hygiene.mjs` counts
+`Status: NEW` entries and prints them**, where the owner reads the gate anyway:
+
+- `0` → silent.
+- `1+` → **WARN**: `FAILURES.md: N unreviewed (F-003, F-004) — เรียก Atlas`.
+- `10+` → **FAIL**. Ten unreviewed workforce defects means the team is decaying
+  faster than it is being repaired, and shipping more features on top is the wrong
+  move. (Threshold is yours to tune with the owner.)
+
+**Exempt `FAILURES.md` from every size rule** — same treatment as the knowledge
+file — **but NOT from shape**: FAIL if it contains a `MOVED FROM` heading, exactly
+as ORDER 6 did. We already learned what an exempt file becomes.
+
+#### 12.2 — Add the trigger to every role charter
+
+Via each project's spawned PM, add a short section to `PM.md`, `SA-Lead.md`,
+`BE.md`, `FE.md`, `QA.md` — **identical wording in all five**, so it cannot drift:
+
+> ## When you get something wrong
+> The moment the owner corrects you, a verdict goes against you (`REWORK`,
+> `TEST_FAILED`), you relay a fact that turns out to be wrong, or you break a
+> written rule — **append one entry to `ai-worker/FAILURES.md` before your next
+> reply.** Format and triggers are in that file's header. You set `Status: NEW`
+> and nothing else; you never close or grade your own entry. **Recording it is not
+> a confession — not recording it is the defect.**
+
+Also add `FAILURES.md` to the startup ritual read list in `PROTOCOL.md` — reading
+your own team's recent failures at session start is how a fresh session inherits
+the lesson instead of repeating it. **Cap it: the last 5 entries, not the file.**
+
+#### 12.3 — Porter's seven asks: Atlas's triage
+
+He asked for seven. **Five as asked, one differently, one is blocked by something
+else.** Install these in `PM.md` (smart-scheduler first; the generic ones go to
+`_templates/project/ai-worker/PM.md` too).
+
+**① The Thai-language rule — DIFFERENTLY, and this is the important change.**
+He asked for a pre-send hook. A hook only exists on one vendor, and the roles now
+run on two. His own diagnosis is the better lever: *"the slip happens right after I
+write a long English inbox brief."* It is **contamination from the artifact he just
+wrote**, not forgetfulness. So invert the order:
+
+> **Write the owner's Thai reply FIRST — before the inbox brief, before the board
+> edit, before the log entry.** Thai is the first thing that leaves the session,
+> not the last. Then write the English artifacts.
+
+That works on every vendor and removes the cause instead of catching the symptom.
+**In addition**, for Claude sessions, the owner may add a `Stop` hook in
+`settings.json` that flags a reply which is mostly Latin script — belt and braces,
+his call, not required.
+
+**② Intake discipline for asks — AS ASKED.** Matches his own standing memory
+*"Keep simple asks simple"*. Into `PM.md` verbatim:
+
+> When the owner or the customer asks for something, in this order:
+> 1. **Restate it in ONE plain sentence** and show him that sentence.
+> 2. **At most ONE clarifying question.** If you want a second, you are designing.
+> 3. **Dispatch only what was asked.** No SPEC unless he asked for a design, no
+>    trade-off analysis, no device checks, no counts "while we are here".
+>
+> Changing the instruction to Sober more than once on the same ask is itself a
+> `FAILURES.md` entry.
+
+**③ Verify before relay — AS ASKED, and it is the highest-value one.**
+
+> Anything you mark 🔴 or call an incident to the owner **must carry one line:
+> `I checked: <file:line | screenshot | command output>`** — something *you*
+> looked at yourself. If you have not, it goes out labelled
+> **`unverified — <role> claims`**, in those words, and it is not 🔴.
+> The team's escalation style is vivid; **forwarding vividness is not relaying a
+> fact.**
+
+**④ The command in the same message — AS ASKED, plus one part he left out.**
+
+> Every instruction to the owner that runs something carries, in the same message:
+> the **exact copy-paste command**, **what the expected output looks like**, and
+> **what a wrong/abort-worthy output looks like.**
+
+The third part is not padding — the Extender incident happened because "dry-run"
+was named without its command and the script applies by default. And the runbook
+incident happened because a legitimate red "would apply" was not described in
+advance, so the owner stopped and waited.
+
+**⑤ Provenance on every list shown to the owner — AS ASKED.** Every line carries
+one of `[owner-approved YYYY-MM-DD]` · `[team-proposed]` · `[customer-asked]` ·
+`[carried-over]`. He should never have to ask *"ข้อ 1 2 4 5 มันมาจากไหน"*.
+
+**⑥ REQ→TASK coverage check — AS ASKED, your tooling, keep it narrow.**
+In `check-hygiene.mjs`: a REQ row whose status is past `SPEC_DONE` and which
+**names no TASK id** is a WARN. That alone would have caught the Undo item, which
+shipped "done" and unusable **twice** because only the BE task was cut.
+Do **not** try to infer BE-vs-FE completeness from text — that is a judgement, and
+a gate that guesses gets ignored. Flag the missing link, let Sober judge.
+
+**⑦ An "owner-settled" section in SYSTEM-FACTS — RIGHT, BUT BLOCKED, and the
+blockage is itself the cause.** Porter is told to read the knowledge file before
+asking the owner anything. At smart-scheduler that file is **317 KB**, and every
+role's boot read is **363–384 KB against a 120 KB gate — the project is FAIL
+right now.** A file that large is not read; it is skimmed. **So "stop re-asking"
+cannot be enforced until the split lands.** Do the split first; then add the
+section (who runs `.env`, tests-on-`sid` is the design, where credentials live,
+no coach uses a web account). **Report this dependency to the owner rather than
+installing ⑦ into a file nobody can read.**
+
+#### 12.4 — Seed the first entries
+
+Porter's report is evidence, not a log. When `FAILURES.md` lands at
+smart-scheduler, have the spawned PM **transcribe his eight patterns (A–H) as
+`F-001` … `F-008`, `Status: NEW`**, each pointing back at
+`REPORT-porter-pm-failures-2026-09-28.md` and its dated log entries. Keep the
+report file as the archive; do not delete it, do not compact it.
+
+Then the gate will say `8 unreviewed — เรียก Atlas`, which is exactly right: they
+are recorded, they are visible, and they are waiting for a fix rather than for
+somebody to remember.
+
+
+#### 12.5 — Split `smart-scheduler/ai-worker/SYSTEM-FACTS.md` (owner's go, 2026-09-28)
+
+Do this **in the same run** as 12.1–12.4 — the owner asked for them together, and
+this file is the root cause behind several of Porter's patterns (he is told to read
+it before asking the owner anything, and it cannot be read).
+
+**Measured 2026-09-28: 317 KB · 3,256 lines · 61 sections.** Every role's boot read
+is **363–384 KB against a 120 KB FAIL gate** — the project is FAIL for all five roles.
+
+🔑 **It is not diffusely large. Four sections are 75 % of it:**
+
+| Lines | Section | What it actually is |
+|---|---|---|
+| **1,242** | `📱 LINE MOBILE AND LINE DESKTOP DO NOT RENDER IDENTICALLY (2026-09-10)` | an investigation transcript. The **fact** is a few lines; the rest is how it was found |
+| **534** | `Project info` | the block Porter moved out of `board.md` on 09-09 — the `MOVED FROM` incident |
+| **503** | `✅ SOLVED 2026-09-08 — ecosystem.cjs hard-coded the demo LINE credentials on uat` | a closed investigation |
+| **175** | `🅿️ PARKED — LINE inbound stopped working…` | the same incident's earlier half, now solved |
+
+**The procedure — via the spawned PM, as always:**
+
+1. **Archive verbatim first:** `archive/SYSTEM-FACTS-2026-09-28-pre-split.md`, byte-size
+   verified against the original before anything is touched.
+2. **Take a snapshot before the run** — every `## ` heading, in order, with its line
+   count. You will diff against it afterwards. **A subagent's "nothing was dropped"
+   claim is not evidence; you learned that on 2026-08-30.**
+3. **For each of the four: distil the FACT, archive the INVESTIGATION.**
+   Move the body to `archive/SYSTEM-FACTS-2026-09-28-investigations.md` verbatim, and
+   leave in `SYSTEM-FACTS.md` a short entry in the file's existing format — the settled
+   fact, who established it, the date, **and a pointer to the archived detail**.
+   *Example shape, not wording to copy:* “LINE mobile and desktop do not render our
+   messages identically — verify on mobile, a desktop pass proves nothing (owner,
+   2026-09-10). Full investigation: `archive/…-investigations.md §LINE render`.”
+4. **`Project info` does not belong in the knowledge file at all.** It is board
+   context. Put the durable part back as a short block at the top of `board.md`
+   (state/pointers only, cells within the size rule) and archive the rest.
+5. **A `SUPERSEDES` pair is one fact, not two.** Where a later section supersedes an
+   earlier one, keep the current statement and move the superseded text to the archive
+   with its date. **Never delete it** — the dated pair is how a reader knows the rule
+   changed rather than that someone was wrong.
+6. **Leave the other 57 sections alone.** They are short and they are facts. This is a
+   removal of transcripts, not a rewrite of the knowledge file.
+7. **Verify:** re-run the heading snapshot; every heading either still exists or is
+   present verbatim in an archive file; no fact exists in neither place; `grep -c` on
+   the ids/dates you snapshotted matches.
+
+**Target, and the honest ceiling.** Aim for `SYSTEM-FACTS.md` **≤ 50 KB**. That puts
+QA's boot read at roughly **115 KB — under the 120 KB FAIL**, and the project ships
+green again.
+⚠️ **It will still WARN at 60 KB, and that is expected — do not over-cut chasing it.**
+The rest of the boot read is `PROTOCOL.md` **24.5 KB** + `board.md` **24.4 KB** +
+the charter **~15 KB** = **65 KB before the knowledge file is even opened.** Those two
+are the next constraint and they are their own operations. **Say so in your report;
+do not quietly shave facts to hit a number the other files make unreachable.**
+
+**Then re-run the gate for every role and report the five boot numbers.** Repeat the
+split for any other project the gate FAILs on — but only after smart-scheduler is done
+and verified, one project at a time.
+
+
+### ORDER 13 — ✅ DONE 2026-09-29 (see Operations log) — a cold PM session must know where the project is
+
+Do this in the same run as ORDER 12 — it touches the same files.
+
+**The owner's complaint, in his words:** he has no confidence clearing a PM session,
+because a fresh Porter forgets the current situation and "looks stupid".
+
+**The artifact already exists and it died.** `smart-scheduler/PROJECT-STATUS.md`
+contains a section headed `# 🔵 RESUME HERE — state as of 2026-09-04 (Porter,
+written for a cold session)`. Porter built the right thing. Then:
+
+| What killed it | Evidence | The disease, which we have met before |
+|---|---|---|
+| **Appended instead of replaced** | it stacks `Where we are — 08-29`, `— 08-30`, `RESUME HERE 09-04` | a snapshot that is appended to is no longer a snapshot — state/narrative mixing, **third time** |
+| **Nothing measured it** | it sits at the project root, **outside `ai-worker/`**, where `check-hygiene.mjs` never looks → **47.9 KB** | an un-gated file becomes the dump, **second time** |
+| **Not on the startup path** | `PROTOCOL.md` never names it; only `PM.md` and `OWNER-LIST.md` do | a memory file nothing points at is not memory, **second time** |
+
+**The number that explains the owner's experience: last modified 2026-09-19, newest
+log 2026-09-28 — nine days stale.** A cold Porter was reading a nine-day-old
+situation. He was not being stupid; he was reading the wrong file, faithfully.
+
+#### What to do
+
+1. **Move it into `ai-worker/` as `RESUME-HERE.md`.** Archive the current 47.9 KB
+   file verbatim to `archive/PROJECT-STATUS-2026-09-28-pre-split.md` first; the
+   durable *facts* inside it go to `SYSTEM-FACTS.md` (they are knowledge), and only
+   the current situation survives into the new file. Leave a one-line pointer at the
+   old path so nothing that references it breaks.
+2. **It is REPLACED, never appended.** Aim for ~4–6 KB, one page. Contents:
+   - what we are in the middle of — the 1–3 threads that are actually live
+   - what each is waiting on, and **from whom**
+   - what the owner decided recently that is not yet in a REQ
+   - what becomes urgent, and when
+   - **what we already tried that did not work** (so the next session does not retry it)
+   - the open questions with the owner
+   Each line carries the provenance label from ORDER 12.3 ⑤.
+3. **`PM.md`:** Porter **rewrites `RESUME-HERE.md` before ending any session**, and
+   **reads it first** on opening — before the board, before the log.
+   On opening he also **verifies it against `board.md` and today's log, and reports
+   any disagreement to the owner** rather than silently trusting or silently fixing.
+   This is the one place the owner has said to spend freely: *"ไม่ต้องคิดเรื่องประหยัด
+   เครดิต คิดถึงความถูกต้องสูงสุดก่อน"*. It stays affordable because every file in
+   that check is small.
+4. **`SA-Lead.md`:** Sober **reads** it at startup. He does not write it.
+5. **`BE.md` / `FE.md` / `QA.md`: no change.** Owner's explicit ranking — PM is the
+   role that must not fail, SA second, and for the engineers and the tester
+   *"เก็บแค่สกิลก็พอ"*. Their work arrives as a self-contained TASK or AC. **Do not
+   add a memory chore to a role whose context already travels with its work.**
+6. **`PROTOCOL.md`:** `RESUME-HERE.md` becomes **step 2** of the startup ritual for
+   PM and SA (after the knowledge file), named explicitly.
+7. **🔑 `check-hygiene.mjs` — the part that makes this survive.** A prose rule to
+   "remember to write it" is exactly the kind that decayed here. Add:
+   - **WARN** when `RESUME-HERE.md`'s mtime is older than the newest `log/*.md` date
+     — the team moved and the situation file did not.
+   - **FAIL** when it is more than **2 days** older than the newest log.
+   - **WARN** over **8 KB** — it is a page, not a log. **FAIL** over 20 KB.
+   - **FAIL** if it contains more than one `RESUME HERE` / `Where we are` heading —
+     that is the append disease returning, detectable by shape exactly like
+     `MOVED FROM` in ORDER 6.
+   Thresholds are yours to tune with the owner.
+8. **Template:** add `RESUME-HERE.md` (with the section headings and the
+   replace-never-append rule in its header) to `_templates/project/ai-worker/`, and
+   the two charter changes to the template `PM.md` / `SA-Lead.md`, so new desks are
+   born with it.
+
+**Do NOT touch `CLAUDE.md`.** This is a PM-and-SA rule; it belongs in the narrowest
+file that covers the roles who need it. The owner asked about this directly and that
+was the answer.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-09-29 — **BOTH APPROVALS EXECUTED: `_templates/project` now carries every rule the live
+  projects carry, and `H:\AGENTS.md` finally has a recovery path. The mould matches the copies.**
+  Owner's go, 2026-09-29, for the two items I had flagged and deliberately not done.
+  **① ORDER 6 + ORDER 9 lifted into the template.** I did **not** retype the text — I extracted
+  the blocks from a live project (`safe-goods`) so identity is guaranteed by construction, then
+  verified: the template's `## Hygiene & file surgery` block is md5 **`adb75396`** and the
+  `## Housekeeping … Marie is not on your chain` block is **`c6f3ec26`** — **exactly the two
+  values I verified across all 13 projects on 2026-09-23.** The `AGENTS-DISCIPLINE.md` step went
+  into the startup ritual in the same position the projects use (after PROTOCOL + role file), and
+  the ritual renumbered clean to **1–9** with no duplicate or skip.
+  ⇒ **A desk created tomorrow is now born with everything: the chain, the hygiene division, the
+  discipline file, `FAILURES.md`, `RESUME-HERE.md`.** Until today it would have been born missing
+  three rules that all 13 existing desks have had since 09-23.
+  **② `_templates/machine/AGENTS-drive-root.md` created** — the master copy of the drive-root
+  file that stops a Kimi role concluding *"there is no role definition, so I follow your
+  instructions directly"* and inventing its own authority. **Copied programmatically from the live
+  `H:\AGENTS.md`, not transcribed**, and verified: `diff` of the template body against the live
+  file is **empty**, so the master cannot have drifted at birth. The installer header says where
+  it goes, that every `H:\` must become the new machine's drive letter, why it exists (the real
+  failure it prevented), and that the two copies must be kept in step.
+  📌 **Both items are the same lesson, and it is the one this whole day keeps repeating:
+  a fix that reaches the instances and not the mould is a fix with an expiry date.** ORDER 6 and 9
+  were rolled to 13 projects and not to the template. The drive-root file worked perfectly and
+  existed nowhere that survives a machine change. Neither was noticed until something forced a
+  look. **Worth a standing habit: after any roll-out, ask what the NEXT project inherits.**
+
+- 2026-09-29 — 🔴🔴 **BOARD REPAIRED — and the investigation found something far worse than
+  "rows above the title": FOR SIX DAYS, NOT ONE ROW ENTERED THE BOARD'S TABLE. The loss was
+  TOTAL, not intermittent, and nobody noticed.**
+  **I verified the decisive measurement myself with git, because it is the kind of claim that
+  must not be taken on report:** the last committed board (`f2b04c8`, 2026-09-23 — my own
+  post-repair state) has a highest id in the `## Tasks` table of **TASK-328**. The working tree
+  below the title today: **TASK-328.** Identical. Meanwhile the orphan block above the title held
+  **TASK-446 → TASK-556**, whose TASK files are dated 09-23 19:39 → 09-29 04:27, with **no id
+  appearing in both places.** So this was not stray duplicates — it was **100 % of six days of
+  board state, written to a place nothing reads.**
+  **Onset is exact:** TASK-446 is stamped 2026-09-23 19:39, hours after my repair. **The very
+  first board write after the repair went above the title.**
+  **The two shapes are one defect.** Porter pulled line 1 of the pre-repair commits: 09-19 =
+  1,980 chars, 09-19 = 2,776, 09-21 = 4,765 — and in all three the `# Board` title is *absent
+  from line 1*. The writer was always anchoring at the head of the file; before my repair its
+  payload carried no trailing newline so it *fused* into line 1, and after the repair it stacks
+  cleanly above the title. **Same write path, same anchor, different rendering — which is exactly
+  why repairing line 1 could not have helped, as I wrote on 09-23 and as is now proven.**
+  **Ruled out, with evidence:** not per-role (BE and FE rows interleave throughout); not a
+  malformed template (**106 of 112 rows have the correct 5-column Tasks shape** — the writer
+  builds a valid row and then mis-places it); not instructed (no prepend or newest-first rule
+  exists in `PROTOCOL.md`, `PM.md` or `SA-Lead.md`, and `check-hygiene.mjs` is the only script
+  that mentions the board and it never writes). ⇒ **the row is built correctly then written with
+  a file-start anchor instead of a `## Tasks` anchor, and nothing ever reads the file back to
+  confirm it landed.** Rows arrive in per-session batches of 3–17, sometimes at the head and
+  sometimes at the end of the orphan block — **the only invariant is that the batch never lands
+  inside the table.** Three rows also show concatenation damage at the row boundary
+  (TASK-546 and TASK-552 lost their assignee cell; TASK-555 has a duplicated `| @Fern |`).
+  **Repair, all verified by me:** `board.md` **174,496 → 28,538 B**, rows 245 → 133, over-long
+  cells **127 → 0**, closed rows 104 → 3. Pre-compaction archive is **174,496 B — byte-identical
+  to my own measurement**. The 112 orphan rows are verbatim in
+  `archive/board-2026-09-29-orphan-rows.md` (`diff` empty), and all 104 swept rows verified
+  present in `archive/board-closed.md` (I spot-checked six ids: swept ones present in the archive
+  and absent from the live board, and TASK-500 correctly still live).
+  **Cells truncated: ZERO** — every one of the 127 over-long cells was an orphan-block cell and
+  went to the archive whole. For the 8 rows re-homed live, he parked **each row's full original
+  verbatim** rather than trusting the TASK file to hold the SA's review prose, so nothing in them
+  exists in only one place. **Two rows he refused to close on a guess and flagged for the owner:
+  TASK-500 (`PRELOAD REVERTED`, never closed) and TASK-518 (`REOPENED as TASK-531`, and 531 has
+  since closed but 518 was never re-closed).**
+  🔑 **And he caught himself before asserting something false** — he nearly wrote a standing
+  warning that TASK-329→445 had no row anywhere, checked all 117 ids first, found every one
+  present in the 09-23 sweep, and wrote the verified statement instead of the alarm. **That is
+  BLOCK B rule 3 working on the day it was installed.**
+  ⚠️ **THE WRITE PATH IS STILL BROKEN. Nothing any role is allowed to touch can fix it.** This is
+  the second recording of this defect and the first measurement of its true cost. **Unless the
+  write mechanism gains a read-back check, the next session starts stacking again.** Escalated to
+  Atlas and the owner as the single highest-priority item in this workspace.
+
+- 2026-09-29 — **`SYSTEM-FACTS.md` RE-PARENTED at smart-scheduler — and for the first time a
+  housekeeping operation is PROVEN lossless instead of asserted lossless.**
+  **The method is the point and I want it reused.** A re-parent moves headings and changes their
+  level; it must not alter one byte of fact content. So the invariant is: *the multiset of all
+  non-heading, non-blank lines is identical before and after.* I had Porter produce it, and then
+  **I ran it myself from the archive, with my own commands, not his files: 2,780 lines before,
+  2,780 after, `diff` EMPTY.** Archive `SYSTEM-FACTS-2026-09-29-pre-reparent.md` is 359,261 B —
+  my own last measurement. **On 2026-08-30 we learned a subagent's "nothing was dropped" is not
+  evidence. This is what evidence looks like, and it is cheap. Use it on every structural move.**
+  **Result:** `## ` sections 75 → **138**, `### ` 114 → **59**, bytes 359,261 → 361,161 — **+1,900,
+  all of it the new top note and one pointer.** Nothing was cut to flatter a number, and the file
+  is not meant to shrink; this operation bought findability.
+  ✅ 🔴 **The live deploy risk is closed, and it was fixed first as instructed.**
+  `🚦 DEPLOY RULES (standing)` and `🔴 MIGRATION CHECK — before every single deploy. No exceptions.`
+  were filed under `## 🅿️ PARKED → 🔻 SUPERSEDED`. Both are now top-level `## ` sections beside
+  `## Platform, migration and deploy discipline`, with a pointer left behind explaining that they
+  were **never superseded** — they were swept there by end-of-file appending.
+  **Seven subject umbrellas created** (deploy & environments · QA access and the phone/LINE rig ·
+  FE rendering patterns · leave and what it costs · course expiry and the extension ceiling ·
+  copy and wording · LINE commands and reserved words), each grouping blocks whose **own heading
+  text** names the subject — no inference.
+  🔑 **And the restraint is the best part of this report.** For **52 blocks** the subject was not
+  unambiguous. He did not invent buckets: he **promoted each to its own top-level `## ` in place**,
+  keeping its dated title — which removes the false parent without making a guess. He explicitly
+  **considered and rejected** a `## Testing & verification discipline` umbrella because too many of
+  those blocks are half-discipline, half-domain, and sorting them by title would be exactly the
+  guess I told him not to make. Likewise the **1,177-line `REQ-085 §4` stream**: promoted to its
+  own section, **not split**, because its interior is 1,176 flat bullets with zero internal
+  structure and every split would mean inventing headings. **Both are honest leftovers, named for
+  whoever does the content-aware pass — not silent ones.**
+  **Zero headings renamed.** Every change is a level change or an addition. And the new first
+  section states the rule that stops the recurrence: a fact goes under the `## ` for its SUBJECT,
+  never appended blindly to end-of-file, because whatever `## ` is last silently becomes its parent
+  — written as heading lines on purpose so the invariant stays provably empty.
+  ⚠️ One correction to my own brief: I described the Fern/Fero block as 217 lines. That was its
+  **span** before this run; the facts I listed as buried under it now live in the QA and LINE
+  groups, and the block itself is 3 lines. My span-vs-body confusion again — the same error that
+  made ORDER 12.5's premise wrong. **Measure bodies, not spans.**
+
+- 2026-09-29 — **SECOND inbox drain at smart-scheduler: 1,006,994 → 8,754 bytes. And it produced
+  the mechanical explanation for why the FIRST drain lasted six days. This is the finding.**
+  Archives verified by me against **my own pre-run measurements**: PM 373,216 · SA 345,084 ·
+  BE 241,160 · QA 45,755 — exact, so the archives are provably the verbatim pre-state.
+  After: PM **512** · SA **2,686** · BE **2,399** · QA **1,378** (FE was already healthy at 1,779).
+  🔑 **THE SMOKING GUN, and I verified it myself rather than take it on report.** The 09-23 drain
+  left the line `*(empty — nothing waiting)*` in `inbox/SA.md`. **That marker is still there, at
+  line 10 — with 114 messages appended underneath it.** `inbox/QA.md`: marker at line 6, **40
+  messages underneath.** For six days, five roles appended past a line that said the queue was
+  empty, and not one of them removed it or noticed.
+  ⇒ **The drain was invisible to the senders.** They do not read the inbox they write to; they
+  append to the end of it. So housekeeping the file cannot survive contact with the workflow —
+  **the fix has to be at the write, not at the cleanup.** Zero evidence of any deletion since
+  09-23: every single day 09-23→09-29 is fully present with no gaps.
+  📌 **Second mechanism: the entries are not hand-offs.** The header specifies 1–3 lines (~150 B).
+  Measured: **PM 2,248 B/msg · SA 3,027 · BE 3,014 · QA 1,143 — fifteen to twenty times the spec.**
+  They are full reports with evidence pasted inline (test counts, migration tallies, `tsc` output),
+  and — the damning part — **an SA entry restates the owner's REQ-110 §4 rulings inline while its
+  own second line cites the REQ file that already holds them.** The inbox is duplicating a file it
+  is simultaneously pointing at. That is the same disease as the board→knowledge-file dump: content
+  copied instead of referenced.
+  ⚠️ **Two inboxes are still over the 2 KB gate — SA 2,686 and BE 2,399 — and Porter deliberately
+  did NOT trim them.** The genuinely-waiting messages are themselves oversized (the BE one is a
+  single 1,700 B multi-section review). Trimming would have meant editing another role's words to
+  pass a byte check. **Correctness beat the gate, and he said so instead of hiding it. Correct.**
+  ✅ **My arithmetic from this morning is confirmed to the kilobyte:** I predicted that draining
+  the inboxes alone would leave the PM boot read at **~571 KB**. It is **570.1 KB**. The board at
+  170.4 KB is now the dominant term in all five boot reads, exactly as computed.
+  **Honest method caveat Porter volunteered:** he read each file's head cluster and last 14 blocks
+  and judged them against `RESUME-HERE.md`, `board.md` and today's log; the 09-24→09-28 middles of
+  PM/SA/BE were not read block-by-block because they do not fit. Everything is in the archives.
+  **His one-sentence verdict, which I endorse and am escalating:** this is a **tool** problem, not
+  a rule or a habit — the rule is printed at the top of every one of these files and was ignored
+  for six straight days by five roles. Enforcement has to move to the write path.
+
+- 2026-09-29 — **ORDER 13 DONE at smart-scheduler — and the old situation file turns out to have
+  been actively misleading, not merely stale. The list of what it got wrong is the evidence.**
+  `PROJECT-STATUS.md` (47,874 B) archived verbatim — **I verified the archive is byte-identical
+  to the size I measured myself before the run.** Durable facts recovered into `SYSTEM-FACTS.md`
+  under **three NEW `## ` headings** (not appended under whatever was last — the rule I learned
+  an hour earlier, applied); duplicates of facts already recorded were **dropped rather than
+  restated**, which is the right instinct: a duplicated fact is two facts that will drift apart.
+  `smart-scheduler/ai-worker/RESUME-HERE.md` written: **6,357 B, exactly one "RESUME HERE"
+  heading** (gate-checked for both), three live threads, provenance on every line. The old path
+  left as a 531-byte pointer so nothing referencing it breaks. The `no RESUME-HERE.md` WARN is
+  gone and **no RESUME-HERE size/staleness/duplicate-heading warning appeared.**
+  🔴 **What the ten-day-old file was telling a cold Porter, all of it false today:** that the
+  `uat` cutover was "the owner's for TONIGHT" (last deployed 09-26, now **five migrations
+  behind** sid); that sid was at migration 44 (it is at **62**); that **"nothing is dispatched,
+  both engineers idle, the chain is stopped"** — asserted in two separate dated blocks — while
+  TASK-551→556 all ran on 09-28/29; that `REQ-086` was "the known LAST big item", superseded by
+  an entire customer-feedback stream (REQ-104…110) the file has never heard of; that `end-of-day`
+  at **18:30** is correct, when it has been **17:30 since 09-16**; that `REQ-088` is not on `uat`
+  (shipped 09-16); and that QA cannot test LINE, when Tanya now drives the demo phone by `adb`.
+  **The owner said a fresh Porter "looks stupid". He was reading this, faithfully.** That is not
+  a memory problem, it is a file problem, and it is now measured by the gate.
+  🔴 **CORRECTION — I gave the owner a wrong number earlier today and it skewed my own priority
+  list. Recording it rather than quietly fixing it.** I repeated a subagent's line that
+  `SYSTEM-FACTS.md` is "the third contributor" to the boot read. **I have now computed it
+  myself and it is wrong.** PM's 934 KB read is `inbox/PM.md` **373,216** ·
+  `SYSTEM-FACTS.md` **359,261** · `board.md` **174,496** · `PROTOCOL.md` 25,049 · `PM.md` 24,504.
+  So the knowledge file is **second for PM and FIRST for all four other roles** (their inboxes
+  are smaller than it). The lesson is mine and it is the same one that bit me on `possibility`
+  six days ago: **I relayed an arithmetic claim I had not run.** BLOCK B rule 3 — *"I checked:"*
+  — now binds Porter; it should bind me first.
+  📌 **The corrected arithmetic, which changes the recommendation.** Fixing the inboxes alone
+  leaves PM at **~571 KB**. Inboxes **and** the board still leaves PM at **~423 KB** — still 3.5×
+  the gate. Only all three together land it near **122 KB**, which is *still marginally over the
+  120 KB FAIL*. ⇒ **There is no single operation that makes this project green, and the 120 KB
+  threshold may not be reachable for a project this mature. That is a question for Atlas** —
+  either the threshold is wrong, or the boot file set is (a role does not need the whole board
+  and the whole knowledge file to start work). **Escalated with the numbers, not with a verdict.**
+
+- 2026-09-29 — **ORDER 12.1–12.4 DONE at smart-scheduler: the workforce now has a defect log,
+  and — the part that matters — a ROUTE that reaches Atlas without anyone remembering to.**
+  `FAILURES.md` installed byte-identical to the template. BLOCK A ("When you get something
+  wrong") in all five charters; BLOCK B (Porter's five owner-facing rules) and BLOCK C
+  (`RESUME-HERE.md`) in `PM.md`. `PROTOCOL.md`'s startup ritual renumbered to 9 consecutive
+  steps with `RESUME-HERE.md` as step 2 (PM/SA only) and **the last 5 entries** of `FAILURES.md`
+  as step 7 — capped deliberately: reading the file would recreate the problem it records.
+  **Verified by me, not on report:** BLOCK A is md5 `16bc7aa5…` in **all five project charters
+  AND all five templates — ten files, one block, zero drift.** Every charter grew by exactly
+  473 bytes, which is the block plus one newline; no per-file editing happened.
+  **Porter's eight patterns seeded as F-001…F-008, all `Status: NEW`**, and the gate now prints
+  `FAILURES.md: 8 unreviewed (F-008 … F-001) — เรียก Atlas`. **The route works.** Six of the
+  eight honestly record `Rule involved: NONE — no rule covered it` rather than stretching a rule
+  to fit — a `NONE` tells Atlas where the system has no coverage, which an invented rule hides.
+  `REPORT-porter-pm-failures-2026-09-28.md` untouched at md5 `24827379…`, as the archive.
+  🔑 **The counter guard earned itself on day one.** Before trusting my own code I unit-tested
+  the `Status: NEW` parser against synthetic entries and found it would double-count an entry
+  whose body merely *quotes* "Status: NEW"; I tightened it to consume the first Status line of
+  each entry whatever it says. In the live file there are **9** `## F-` headings and the gate
+  counts **8** — it correctly ignores the `## F-NNN` example inside the template header. Porter
+  spotted and reported the 9-vs-8 independently. **A gate that miscounts is a gate people learn
+  to ignore, which costs more than the check is worth.**
+  ⚠️ **My own omission, caught by Porter and now fixed:** my brief named only BLOCK A for the
+  five charters, so `SA-Lead.md` never got BLOCK D (Sober *reads* `RESUME-HERE.md`, never writes
+  it) even though ORDER 13.4 requires it and the template already carries it. **He installed
+  exactly what he was told and flagged the gap instead of filling it silently — the correct
+  behaviour, and I told him so.** Follow-up hop sent.
+  **Porter's ask ⑦ is deferred, not dropped, and he confirmed he understands why** — and the
+  reason has now changed: it is no longer the split that blocks it (see the entry below).
+
+- 2026-09-29 — **ORDER 12.5 DONE — and its PREMISE WAS WRONG. The knowledge file is not 74 %
+  transcript; it is 74 % good facts filed under the wrong heading. Porter refused the target
+  rather than delete facts to hit it, and he was right.**
+  Atlas's table (and my own snapshot, which agreed with it) measured the four big sections as
+  **heading-to-heading spans**. Porter measured the `##` **bodies** and they are 1–4 KB each.
+  **I verified this myself rather than take it on report:** the largest `##` body in the file is
+  **2.5 KB**, against spans of 1,243 / 535 / 504 / 176 lines. The bulk is **114 dated `###`
+  blocks appended under whichever `##` heading happened to be last when someone wrote.**
+  ⇒ Only ~10 KB of the file was real transcript. He removed that, archived it verbatim, and
+  **stopped** — because re-parenting 127 KB of facts on his own reading of where they belong is
+  exactly the guess the procedure told him not to make. `SYSTEM-FACTS.md` 359,975 → 357,053 B.
+  **The ≤ 50 KB target was never reachable by this procedure, and he said so instead of shaving
+  facts to hit a number.** That is the right failure to report.
+  🔑 **THE MECHANISM, demonstrated — and the demonstration is my own mistake.** On 2026-09-23 I
+  had the PM append the one-line Fern/Fero note under a dated heading at end-of-file. That
+  heading is now **217 lines long.** Everything the team has learned since — the QA login
+  location on `sid`, DEF-2 and DEF-3, the mutation-testing "pin the EFFECT" rule, where the
+  scheduled-job triggers live — is filed in the knowledge file under the heading
+  **"Fern and Fero are the same role"**. Appending at EOF makes your heading the last one, and
+  every later append lands beneath it. **This is the same disease that made me confidently wrong
+  on `possibility` six days ago**: the file's structure states something untrue, and structure
+  is read as meaning. A reader looking for the QA login has no reason to open a section about
+  role naming.
+  ⚠️ **Two standing rules are now stranded under a heading that reads "SUPERSEDED":**
+  `### 🚦 DEPLOY RULES (standing)` and `### 🔴 MIGRATION CHECK — before every single deploy.
+  No exceptions.` both sit under `## 🅿️ PARKED → 🔻 SUPERSEDED`. **They are not superseded.**
+  Porter left them in place rather than move them unasked and flagged it; I confirm that call.
+  This is a live correctness risk for the next deploy and belongs at the front of the
+  re-parenting operation.
+  **Verified by me, not taken on report:** `archive/SYSTEM-FACTS-2026-09-28-pre-split.md` is
+  **359,975 B / 3,322 lines — byte-for-byte my own pre-run measurement**, so the archive is
+  provably the verbatim pre-state; `## ` heading count **72 before, 72 after**, matching my
+  independent snapshot; the two removed sections are present verbatim in
+  `archive/SYSTEM-FACTS-2026-09-28-investigations.md`; the restored `Project context` block went
+  into `board.md` **after** the title with every cell under 300 chars (he caught one at 328 and
+  split it), and he did **not** touch the 112 orphan rows above the title.
+  📌 **And the gate arithmetic corrects Atlas's ⑦ dependency.** `SYSTEM-FACTS.md` is the **third**
+  contributor to the boot read, not the first: PM's 932 KB is `inbox/PM.md` **364.5 KB** +
+  `board.md` **170.4 KB** + the knowledge file. **Even at zero bytes the PM boot read is ~575 KB
+  — still 4.8× the gate.** So the split alone was never going to make this project green, and
+  ⑦ ("stop re-asking the owner") is not unblocked by it. **The inbox drain and the board repair
+  are where the gate actually moves.**
+
+- 2026-09-29 — ⚠️ **FINDING: `_templates/project` never received ORDER 6's or ORDER 9's rules,
+  so the NEXT desk would be born without them.** Found while installing ORDER 12/13 into the
+  template. `grep` on `_templates/project/ai-worker/` returns **0** for all three:
+  the `## Hygiene & file surgery` section (ORDER 6 item 5), **"Marie is not on your chain — you
+  cannot call her; you tell the owner to"** in `PM.md` (ORDER 6 item 6), and the
+  `AGENTS-DISCIPLINE.md` startup step (ORDER 9).
+  On 2026-09-23 I rolled those to **all 13 existing projects** and verified them byte-identical —
+  but the roll-out went to the projects, not to the template behind them. `safe-goods` (born from
+  this template 09-20) has them only because it existed in time to be swept. **A desk created
+  tomorrow would not.** This is the same class as everything else today: the fix reached the
+  instances and not the mould.
+  **Not done — this is rule promotion, and my charter says that happens "with the human's go,
+  never silently."** ORDER 12/13 authorised template edits for ORDER 12/13's content only.
+  **Asked; awaiting his go** to lift the three older blocks in as well. One bounded operation,
+  the text already exists and is already proven in 13 projects.
+
+- 2026-09-29 — 🔴🔴 **THE FINDING OF THIS RUN, and it outranks everything I installed today:
+  the 2026-09-23 cleanup lasted SIX DAYS. Housekeeping is not working as a control.**
+  Measured by me at smart-scheduler this morning, against my own post-cleanup numbers from 09-23:
+
+  | File | 09-23 after cleanup | 09-29 | Factor |
+  |---|---|---|---|
+  | `board.md` | 22,368 B | **172,054 B** | **×7.7** |
+  | the four inboxes, together | 2,862 B | **1,006,994 B** | **×352** |
+  | `SYSTEM-FACTS.md` | 317,194 B | 359,975 B | +42.8 KB |
+  | PM boot read | 375.8 KB | **928.1 KB** | ×2.5 |
+
+  Six working days (logs exist for 09-23 → 09-29, so the team worked every one of them).
+  **The inboxes are the loudest number: 2.8 KB → 1.0 MB.** They were drained to a queue and
+  are a second log again. `inbox/PM.md` alone is 373 KB.
+  🔴 **And the board defect I flagged on 09-23 has RECURRED, in a new form.** Then: 148 status
+  fragments concatenated into line 1. Now: **112 table rows sitting ABOVE the `# Board —
+  smart-scheduler` title, which has been pushed to line 113.** I wrote on 09-23 that *"fixing
+  line 1 does not fix the cause; the next board edit may start rebuilding it."* **It did.**
+  Same write path, same damage, different shape. This is now twice-observed and it is the
+  single highest-value thing left unfixed in this workspace.
+  📌 **What this means, stated plainly because it is uncomfortable.** ORDER 6 gave the gate real
+  teeth and I verified them working. The gate has been FAILing smart-scheduler on 12 counts and
+  **the team kept working straight through it.** So the control is not the gate — the gate is a
+  *report*. Nothing stops work, and Marie is only ever called after the damage. **A cleanup that
+  must be re-run weekly by hand is not a fix; it is a subscription.** The gate should either
+  block dispatch, or the roles should be made unable to produce the growth in the first place
+  (an inbox that is deleted on read; a board writer that cannot prepend).
+  **I did not act on this** — it is a design question, and design is Atlas's. ORDER 12 and 13
+  were the owner's instruction for today and I executed them as written. **Escalated to Atlas,
+  via the owner, as the top item.** Recorded here the moment I measured it, so the number
+  survives this session even if nothing else does.
 
 - 2026-09-23 — **ORDER 11 — `possibility` installed: the owner's first Kimi project now has all
   four corrected charters. Gate PASS. And the run produced the most important finding of the day,

@@ -40,7 +40,8 @@
 | REQ-005 | Bilingual UI TH/EN with switch | MEDIUM | IN_SPEC — 2026-09-21, Sober, `specs/SPEC-006-bilingual-ui.md` (rules already built to; TASK-010 sweep after TASK-009) | Fern (after 009) |
 | REQ-006 | Email + password sign-up/sign-in (Google stays prominent) | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED round 2 in `tests/TEST-004-email-password-login.md` | — |
 | REQ-007 | Visual redesign — "you are the possibility" (dark theme, tier imagery, new tier wording) | HIGH | DELIVERED — 2026-09-22, Porter; TEST_PASSED round 2 in `tests/TEST-005-visual-redesign.md` | — |
-| REQ-008 | UI redesign v2 — design first, no photographs | HIGH | IN_SPEC — 2026-09-23, Sober, `specs/SPEC-009-ui-redesign-v2.md`; TASK-015 FE TODO (stage marks replace the photos) | Fern (015) |
+| REQ-008 | UI redesign v2 — design first, no photographs | HIGH | REJECTED — 2026-09-25 by the owner (look); superseded by REQ-009. Work not wasted: TASK-015 code is the base and its stage system carries forward | — |
+| REQ-009 | UI redesign v3 — redo everything, with an image-request loop | HIGH | SPEC_DONE — 2026-09-26, Sober; B live on every page, IMG-002 placed; **ready to deploy** → AC-1 is the owner’s look verdict, then Tanya | Porter → owner (deploy + judge) → Tanya |
 
 ## Tasks
 
@@ -55,11 +56,14 @@
 | TASK-007 | FE header tier badge + /me profile | SPEC-004 | DONE — 2026-09-21, Sober review in `tasks/TASK-007-fe-tier-badge-and-profile.md` §Review | Fern | TASK-004 ✓ |
 | TASK-008 | BE hire_requests + hire endpoint + admin list/PATCH | SPEC-005 | DONE — 2026-09-20, Sober review in `tasks/TASK-008-be-hire-request-and-admin.md` §Review (real-owner admin cookie → Tanya via FE) | Jason | TASK-005 ✓ |
 | TASK-009 | FE hire button + /admin page | SPEC-005 | DONE — 2026-09-23, Sober review in `tasks/TASK-009-fe-hire-button-and-admin-page.md` §Review (admin-as-owner → Tanya on SIT) | Fern | TASK-006 ✓, TASK-008 ✓ |
-| TASK-010 | FE bilingual sweep + i18n guard script | SPEC-006 | BLOCKED — 2026-09-23, after TASK-015 (pages change again), `tasks/TASK-010-fe-bilingual-sweep.md` | Fern | TASK-015 |
-| TASK-015 | FE redesign v2: remove photos, StageMark + StageScale + the light | SPEC-009 | IN_PROGRESS — 2026-09-23, Fern, `tasks/TASK-015-fe-redesign-v2-no-photos.md` | Fern | TASK-009 ✓ |
+| TASK-010 | FE bilingual sweep + i18n guard script | SPEC-006 | TODO — 2026-09-26, next FE task after the B rollout is accepted, `tasks/TASK-010-fe-bilingual-sweep.md` | Fern | TASK-021 ✓ |
+| TASK-019 | FE message when sign-in cannot reach the server (W-11) | TASK-015 observation | DONE — 2026-09-26, Sober review in `tasks/TASK-019-fe-network-failure-message.md` §Review (Google-callback branch → Tanya on SIT) | Fern | — |
+| TASK-020 | FE reference study + result page in 3 directions + IMG batch | SPEC-010 | DONE — 2026-09-26, Sober review in `tasks/TASK-020-fe-three-directions-preview.md` §Review; **ready to deploy (preview route)**; Fern recommends B | Fern | — |
+| TASK-021 | FE apply direction B to every page + place IMG-002 | SPEC-010 | DONE — 2026-09-26, Sober review in `tasks/TASK-021-fe-apply-chosen-direction.md` §Review; **ready to deploy** | Fern | TASK-020 ✓ |
+| TASK-015 | FE redesign v2: remove photos, StageMark + StageScale + the light | SPEC-009 | DONE — 2026-09-23, Sober review in `tasks/TASK-015-fe-redesign-v2-no-photos.md` §Review (loading + admin copy → Tanya on SIT) | Fern | TASK-009 ✓ |
 | TASK-016 | BE admin = ADMIN_EMAILS list (any sign-in method) | SPEC-005 §Amendment | DONE — 2026-09-23, Sober review in `tasks/TASK-016-be-admin-email-list.md` §Review | Jason | — |
 | TASK-017 | BE startup diagnosability + `/health` degraded + `bun run doctor` | SIT incident 2026-09-23 | DONE — 2026-09-23, Sober review in `tasks/TASK-017-be-startup-diagnosability.md` §Review | Jason | — |
-| TASK-018 | BE quote-tolerant ADMIN_EMAILS + honest gateway health | TASK-017 Q-1/Q-2 | DONE — 2026-09-23, Sober review in `tasks/TASK-018-be-config-hardening.md` §Review; deploy HELD by the owner to ship with TASK-015 in one deploy | Jason | TASK-017 ✓ |
+| TASK-018 | BE quote-tolerant ADMIN_EMAILS + honest gateway health | TASK-017 Q-1/Q-2 | DONE — 2026-09-23, Sober review; **live on SIT 2026-09-25** with TASK-017 in the combined deploy | Jason | TASK-017 ✓ |
 | TASK-011 | BE email+password register/login (same session) | SPEC-007 | DONE — 2026-09-22, Sober review in `tasks/TASK-011-be-email-password-login.md` §Review | Jason | — |
 | TASK-012 | FE email sign-in/sign-up block under Google | SPEC-007 | DONE — 2026-09-22, Sober review in `tasks/TASK-012-fe-email-password-forms.md` §Review (Enter-to-submit → Tanya) | Fern | TASK-011 ✓ |
 | TASK-013 | FE visual redesign (dark theme, imagery, result order, W-3 lines, W-8/W-9) | SPEC-008 | DONE — 2026-09-22, Sober review in `tasks/TASK-013-fe-visual-redesign.md` §Review (3 tier images → Tanya via fixtures) | Fern | — |
@@ -80,6 +84,5 @@
 
 | Item | Waiting on | Since | Pointer |
 |------|-----------|-------|---------|
-| SIT runs the OLD BE until the combined deploy (owner: one deploy, BE+FE together) — the TASK-017/018 fixes are built but not live; a config change on SIT can still crash-loop silently | the owner (one deploy after TASK-015), via Porter | 2026-09-23 | `tasks/TASK-018-be-config-hardening.md` §Review |
 | ~~DR-9~~ closed 2026-09-23 — the owner declines the password rotation and accepts the risk; the string is in no file (Porter searched) | — | 2026-09-23 | `tasks/TASK-016-be-admin-email-list.md` §Questions Q-1 |
 | DR-5 company reference text (`config/company-reference.md`) — placeholder used until supplied | the owner, via Porter | 2026-09-19 | `specs/SPEC-003-idea-analysis-chain.md` §Chain |

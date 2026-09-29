@@ -82,7 +82,7 @@ The current UI is a plain form. It must become an experience that makes the visi
 - Tier names are the owner's exact words; never translated.
 
 ## Out of Scope
-- Animation beyond the loading breathe; marketing pages; logo design; admin page styling
+- ~~Animation beyond the loading breathe~~ (lifted 2026-09-26 by REQ-009 — animation is expected); marketing pages; logo design; admin page styling
   (functional dark theme is enough).
 
 ## Questions

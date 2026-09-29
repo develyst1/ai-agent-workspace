@@ -1,6 +1,6 @@
 // Throwaway (tests/harness spirit): measure text/background contrast of the rendered error
 // alert from a cropped screenshot. Text pixels = brightest cluster; background = mode color.
-const { PNG } = require("/tmp/pngtools/node_modules/pngjs");
+const { PNG } = require("C:/Users/KUYDONG/AppData/Local/Temp/pngtools/node_modules/pngjs");
 const fs = require("fs");
 
 const png = PNG.sync.read(fs.readFileSync(process.argv[2]));

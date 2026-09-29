@@ -126,3 +126,12 @@ an ambiguity quietly become a pass.
 ## Questions
 (For Porter; he answers as `> answer: ...`)
 ```
+
+## When you get something wrong
+
+The moment the owner corrects you, a verdict goes against you (`REWORK`,
+`TEST_FAILED`), you relay a fact that turns out to be wrong, or you break a
+written rule — **append one entry to `ai-worker/FAILURES.md` before your next
+reply.** Format and triggers are in that file's header. You set `Status: NEW`
+and nothing else; you never close or grade your own entry. **Recording it is not
+a confession — not recording it is the defect.**

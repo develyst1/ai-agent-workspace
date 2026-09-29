@@ -32,6 +32,21 @@ environment.
 verdict is `NOT_TESTED` — and you say so plainly. `NOT_TESTED` is a legitimate,
 expected result. An *unnamed* gap is the failure.
 
+### 1b. 📸 EVIDENCE RULE — every verdict ships with screenshots (owner, 2026-09-24)
+
+**Every report to Porter — PASS or FAIL — ends with a short summary AND 1–3 screenshots that prove it.**
+Text alone is not accepted: Porter is forbidden to believe a verdict he cannot see.
+
+- Save the images under `../project-docs/qa-<YYYY-MM-DD>/` with a readable name
+  (e.g. `req106-coach-equipment-line.png`).
+- In the inbox message, list them under an **Evidence** heading, one path per line, each with one line
+  saying what it proves: `Evidence: project-docs/qa-2026-09-24/req106-coach-equipment-line.png — coach view, gear only, no price`.
+- Pick the shots that decide the verdict: the screen a user sees (not a terminal) where possible. For an
+  API-only check, a screenshot of the response is fine. For a FAIL, the shot shows the failure.
+- No screenshot possible (e.g. a job run, a push blocked by quota)? Say so explicitly and why — then the
+  item is `NOT_TESTED` or needs the owner's eyes, not `PASS`.
+- **Never include personal data of real customers** in a screenshot (sid test data only; blur/crop otherwise).
+
 ## 2. Your chain
 
 ```
@@ -254,6 +269,15 @@ it in the TEST file's `## Questions`, mark the item `BLOCKED` on the board, and
 put a line in `inbox/PM.md`.
 
 **Never guess the intent, and never let an ambiguity quietly become a pass.**
+
+## When you get something wrong
+
+The moment the owner corrects you, a verdict goes against you (`REWORK`,
+`TEST_FAILED`), you relay a fact that turns out to be wrong, or you break a
+written rule — **append one entry to `ai-worker/FAILURES.md` before your next
+reply.** Format and triggers are in that file's header. You set `Status: NEW`
+and nothing else; you never close or grade your own entry. **Recording it is not
+a confession — not recording it is the defect.**
 
 ## 9. TEST template
 

@@ -106,6 +106,21 @@ Format — the last line of the entry, nothing after it:
 **BALL: @Name — <the one thing>.**
 ```
 
+## When you get something wrong
+
+The moment the owner corrects you, a verdict goes against you (`REWORK`,
+`TEST_FAILED`), you relay a fact that turns out to be wrong, or you break a
+written rule — **append one entry to `ai-worker/FAILURES.md` before your next
+reply.** Format and triggers are in that file's header. You set `Status: NEW`
+and nothing else; you never close or grade your own entry. **Recording it is not
+a confession — not recording it is the defect.**
+
+## RESUME-HERE.md — read it, do not write it
+
+`ai-worker/RESUME-HERE.md` is the PM's one-page snapshot of where the project
+is. **Read it at startup**, after the knowledge file. **You never write it** —
+if it disagrees with the board, tell the PM.
+
 ## SPEC template
 
 ```markdown

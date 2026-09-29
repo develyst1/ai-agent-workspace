@@ -21,7 +21,27 @@
 > residue went to `archive/SYSTEM-FACTS-2026-09-23-board-residue.md`. **This file is exempt from
 > SIZE, never from SHAPE — a board that fails its gate is never emptied into here.**
 
+> 🧹 **Transcripts removed 2026-09-28 (Marie ORDER 12.5, owner-approved; executed by Porter). Nothing deleted:**
+> pre-split file `archive/SYSTEM-FACTS-2026-09-28-pre-split.md` (verbatim, 359,975 B, md5 `1c8375c3…`). Three
+> section BODIES were distilled here and archived verbatim to
+> `archive/SYSTEM-FACTS-2026-09-28-investigations.md`: §PARKED LINE inbound · §SOLVED ecosystem.cjs · §Project
+> info. `Project info` went back to `board.md`, where it belongs.
+>
+> 🔴 **WHAT THE PASS ACTUALLY FOUND, and the next person needs it:** the "four huge sections" are **not four
+> transcripts.** Measured heading-to-heading they are 74% of the file — but each `##` BODY is only 1–4 KB. The
+> bulk is **130+ dated `###` facts that were appended under whichever `##` heading happened to be LAST at the
+> time.** 127 KB of TASK-318/323/324/325 engineering lessons sit under `## 📱 LINE MOBILE…`, which is about
+> rendering. ⇒ **the `##` headings here do not describe what is under them.** Re-parenting those `###` blocks is
+> a separate operation; **it was NOT done, because moving facts on a guess is worse than a big file.**
+
 ---
+
+## 🧭 HOW THIS FILE IS ORGANISED — read this before you add a fact
+###### Facts are grouped by SUBJECT. Every `## ` heading names the subject of everything underneath it.
+###### 🔴 A NEW FACT GOES UNDER THE `## ` SECTION FOR ITS SUBJECT — never appended blindly to the end of the file.
+###### End-of-file appending is what broke this file: whatever `## ` heading happened to be LAST silently became the parent of everything written after it. That is how `🚦 DEPLOY RULES` and `🔴 MIGRATION CHECK` ended up filed under `🅿️ PARKED → 🔻 SUPERSEDED`, and how 100+ engineering facts ended up under a heading about LINE rendering.
+###### If no existing section fits, create a NEW `## ` section named for the subject. A dated `## ` of its own is always better than a wrong parent.
+###### Re-parented 2026-09-29 (Marie re-parent operation, executed by Porter). Verbatim pre-operation copy: `archive/SYSTEM-FACTS-2026-09-29-pre-reparent.md` (359,261 B, md5 `2fb216b551c37aea68792741904803ce`). NOT ONE BYTE of fact content was changed — only heading levels and block order. Proof: `archive/verify-before-2026-09-29.txt` vs `archive/verify-after-2026-09-29.txt` diff clean.
 
 ## 🔴 WHO IS WHO — settled by the owner, 2026-09-04
 
@@ -236,6 +256,130 @@ person who can run it.**
 - 🔴 **Every seed/repair/reconcile script is PER DATABASE — having run one on `uat` proves nothing about `sid`; the boxes have been found empty, drifted and correct** (Sober, 2026-08-22). **Example:** after a new price, `sale:ensure-items` must run on THAT box or the booking is accepted and the revenue never posts — **only the ledger tells them apart; the screen looks right either way** (Jason/Sober, 2026-08-23).
 - **No source on either server: build LOCAL → copy → `pm2 restart` there** (owner โด่ง, 2026-08-03). **Restart BE (`:4006`) then FE (`:3016`) in the SAME sitting, then confirm FROM THE SCREEN, not the deploy command** (Porter, 2026-08-28).
 
+## 🚦 DEPLOY RULES (standing)
+
+> 🔴 **PENDING DEPLOY (REQ-079 + TASK-225).** Items 1–2 cleared 09-05; item 5 frozen; **item 6 added 09-06 and it is live money.**
+> 1. ✅ **DONE 09-05 (owner).** `0030` + `0031` applied on `sid`; `db:verify` ✅ — journal 32 · **32 witnessed**.
+> 2. ✅ **DONE 09-05 (owner).** All six menus published; `unknown-TH` is the account default, `known-TH` links per user. **Both states confirmed ON A PHONE** — menu A on a fresh follow (13:47), menu B after linking (13:53). 🔴 The one dead cell is **DEF-9 / TASK-248**, not a publish fault.
+> 3. **2FA cannot be switched on at all** until the owner answers how the six digits reach the parent — there is no SMS, and LINE cannot verify LINE.
+> 4. ✅ **Trigger fired** (the menus now exist on the OA) ⇒ `NAME_TO_KEY` is folded into **TASK-249 §4**. No longer a loose deploy item.
+> 5. 🧊 **FROZEN 09-05 — do NOT run.** The server now points at the **CUSTOMER'S OA**, and a LINE userId is scoped to the provider ⇒ the stored ids may match nothing there. @Porter has three unknowns open (which box holds the token · are `family_line_links` rows still valid · which OA). **Unfreeze only when he answers.** Original note: the backfill, and it is the owner's. Families linked **before** the 09-05 publish never had `linkKnownRichMenu` run for menus that did not exist. **Two wrong populations:** an **old** per-user link still resolves to the **old parent menu** (those menus still exist on the channel — the 01:23 screenshot), and **no** per-user link now shows **unknown**. **Neither shows menu B.** A one-off re-link runs against real customer chats ⇒ **deploy action, owner's call.** @Sober cuts a script task only if he asks for one.
+> 6. 🔴 **`bun run sale:ensure-items` — OWED ON EVERY BOX SINCE TASK-225, and this is the AC-5 defect (added 09-06 by @Sober).** TASK-225 added the `other-booking` INCOME bucket to `SALE_ITEMS`; `sale:ensure-items` **only ever INSERTS what is missing**, so until it runs on a box, **every typed-amount อื่นๆ booking auto-attends and posts NOTHING** — `postOtherBookingSale` logs *"NOT POSTED — no bo.item for external_ref='other-booking'"* and returns false. 📌 **TASK-225 stated this deploy step twice, in its own file, and it never reached this block** — which is the block anyone actually reads. That is rule 4 below, missed by me. **Order per box: `db:migrate` → `db:verify` ✅ → `sale:ensure-items` → restart.** ✅ **Recovery after seeding is safe:** re-run the day-end for the affected date — the auto-attend touches only `CONFIRMED`, and revenue posts on `rev:<bookingId>` which is idempotent (a duplicate returns `skipped: "duplicate"`, plus a 23505 fallback), so nothing double-posts.
+> 7. 🔴 **REQ-076's index rebuild — run it when the shop is CLOSED (added 09-06).** `0032` adds the `PAUSED` enum label; `0033` drops and recreates `bookings_teacher_slot_uq`. **`DROP INDEX` + `CREATE UNIQUE INDEX` take ACCESS EXCLUSIVE on `bookings`: reads AND writes block.** ⚠️ **The build itself is ~100–300 ms (budget 2 s) — that is NOT the risk.** If any transaction is holding the table when it starts, the `DROP` queues behind it **and everything else queues behind the DROP.** 🚫 `CREATE INDEX CONCURRENTLY` is unavailable — it cannot run in a transaction and every migration does. ⇒ **the note says "closed shop", never "it takes 300 ms".** (Jason's measurement, Sober 09-06.)
+> 8. 🔴 **THE MIGRATIONS GO IN TWO RUNS — the commands, literally (added 09-06 after `sid` failed; TASK-266 landed).** `drizzle-kit migrate` applies **every pending migration in ONE transaction**, and `0033` uses the `PAUSED` label `0032` adds ⇒ a single `db:migrate` fails the whole batch. ✅ **`db:migrate` now REFUSES it up front** (`db:preflight`) and prints the split. **Type these two, in order, each ending in its own verify:**
+>    ```
+>    bun run db:migrate:through 0032_booking_paused_status
+>    bun run db:migrate
+>    ```
+>    ⚠️ **What a failure would leave behind — say this to the owner, it is not "nothing".** Run 1 **commits**, so the batch is no longer atomic: if run 2 fails, the `'PAUSED'` enum label stays. ✅ It is **inert** (no index, no column, no code reads it until `0033`), `0032` is `ADD VALUE IF NOT EXISTS` so run 1 is safe to repeat, and **re-running `db:migrate` recovers** — `db:verify` names what is missing. 🟢 On `sid` (before the fix) the whole batch rolled back and left nothing; **that guarantee is what the split trades away, deliberately.**
+>    🔴 **Separately, and not about `uat`: a FRESH database is broken today.** All 35 are pending from empty, so migrate-from-scratch fails at **`0002`** — `0001` adds `PENDING_RESCHEDULE` and `0002` uses it. **Thirty-one migrations old, never noticed because they were applied a few at a time.** A rebuilt dev box or `db:reset` needs the same split, chained (`through 0001…` → `db:migrate` → `through 0032…` → `db:migrate`). The preflight prints it.
+
+1. **`bun run db:migrate`** in the repo owning the schema, **before** restarting anything; then **`bun run db:verify`
+   — BLOCKING, do not restart until it prints ✅.** `db:migrate` can report success and exit 0 having applied
+   **nothing** (TASK-085/086) — that took the customer's calendar down on both boxes on 08-24. If `db:verify` is
+   red: `db:seed-ledger` (dry-run) → read → `--apply` → `db:migrate` → `db:verify` ✅.
+2. Deploy `smart-scheduler-back` (:4006) → `pm2 restart`, then `smart-scheduler-front` (:3016) **in the same
+   sitting**; `backoffice-back` (:4010) + `backoffice-front` (:3018) follow, order free (TASK-083/084).
+3. 🟠 **Never ship a new server-side gate without the screen that opens it.** Completeness ≠ order. Canonical pairs:
+   **TASK-075 + 076** (backend alone means nobody can link at all) · **TASK-077 + 078** · **TASK-079 + 080**.
+4. **PENDING DEPLOY discipline:** add a line here **the moment a task is DONE**, not at deploy time — a stale
+   manifest has bitten us three times.
+5. **The old Dashboard nav entry stays gone** (TASK-082 — hidden, not deleted).
+6. 🔴 **A DEPLOY TOOL MUST HAVE A MODE THAT CAN BE RUN WITHOUT THE THING IT IS RISKY AGAINST — and that mode must be RUN in the task, not read.** (Added 2026-09-06 by @Sober, after `db:migrate:through` failed on its first real use with `Cannot find module 'drizzle-kit'`.) **The engineers cannot reach a database or an OA; the only person who can is the owner, at deploy time, on the night.** ⇒ a tool whose whole job is to be executed can pass `tsc`, pass 1553 tests, pass review, and **have never been executed once** — which is exactly what happened. 📌 **Same shape as `publishRichMenus` being a silent no-op for weeks and @Fern's layout checks landing on someone else: a gap in *who can exercise what*, not in anyone's care.** ⇒ **every deploy tool ships with a dry-run / `--plan` that does everything except the irreversible step, and the TASK's DoD says "you ran it, paste the output".** ✅ `line:remove-menus` already had this (TASK-250 §2, *"the dry-run is the deliverable, not a courtesy"*) — **the precedent existed and was not applied to the next tool.**
+
+
+## 🔴 MIGRATION CHECK — before every single deploy. No exceptions.
+
+> **"No migration" is a CLAIM, not a state. It expires the moment another task lands. Nobody may write or repeat it
+> without re-counting the migration files at that moment.**
+
+On 08-01 the site went down because this board said *"no DB migration in this batch"* — true when written, then
+**TASK-066 added `0005_bo_item_external_ref`** and nobody updated the line. The check, no DB access needed: count
+`drizzle/*.sql` in each backend repo against the `"tag"` count in its `drizzle/meta/_journal.json`. **They must be
+equal** — a `.sql` missing from the journal is **silently skipped** (TASK-042). Then compare the newest file with
+what is applied on the server; a newer one means **this batch HAS a migration**. `db:migrate` applies schema
+migrations; `migrate:bo` only moves DATA `ops.*` → `bo.*` — **not** interchangeable.
+**Never accept "the command said success" — load the page and confirm.**
+
+> 📦 The 08-01/02 batch manifest, its outage post-mortems and the rest of rule 3's pairs are archived verbatim in
+> `archive/board-2026-08-29-pre-compaction.md`: TASK-054 · TASK-050 · **TASK-070 + TASK-071** (breaking response
+> shape) · TASK-064 · TASK-068 · TASK-055 · TASK-076 · **TASK-058 + TASK-059** (a `400` nobody can see is a Save
+> button that silently does nothing — the defect the owner failed REQ-019 acceptance on).
+
+🔴 **Acceptance that must not be skipped when the digest ships — REQ-023:** open `/scheduler/attention` **before**
+registering the 08:00 task (it must show the red *"digest has never run"* warning), register it, then confirm a real
+timestamp. Without those three distinct states, "quiet" and "dead" look identical.
+
+
+## 🚀 Deploy & environments — further standing facts
+
+### ⚠️ ENVIRONMENTS — exactly TWO servers. Read before any deploy talk.
+
+| | `sid` — where we build | `uat` — the customer's system |
+|---|---|---|
+| frontoffice | `som.develyst.online` | `frontoffice.develyst.online` |
+| backoffice | `backoffice-som.develyst.online` | `backoffice.develyst.online` |
+| who touches it | the team verifies here | **owner only** — the team never runs anything against it |
+
+- **No third environment** (owner, REQ-042, 08-16): `frontoffice.develyst.online` = the owner's **UAT** = what older
+  artifacts call "production". **Stop writing "prod".** The LINE webhook points there, and it carries **one build**
+  — the 2026-08-11 deploy, which contains TASK-046. **One-directional: build → verify on `sid` → deploy to `uat`.**
+- 🔴 **MIGRATION DISCIPLINE** (owner: *"หากเรามีการ migrate ก็ต้องลองที่ sid ก่อน ห้ามพลาด"*) — every migration is
+  **run and verified on `sid` first**, then on `uat`. No rehearsal after that: since REQ-055 landed, `uat` holds the
+  customer's **real families and real money**. `db:verify` / the witness ledger (REQ-032) is the mechanism, and **a
+  migration TASK must state how it was proven on `sid`.**
+- 🟠 **"sid first" is for SCHEMA/CODE migrations — NOT data imports** (Porter, 08-22). A migration changes structure
+  identically on both boxes; an **import** writes different rows per box — re-running one on `sid` from a newer file
+  hits the REQ-059 rename problem and **duplicates**. ⇒ **the run target is whichever box lacks the rows; say so in
+  the TASK.**
+- ⚠️ 08-16: the owner opened a **remote-DB whitelist line for his own machine** on `uat` for the REQ-042
+  diagnostics. **It must be closed and verified closed when the LINE work is done.** Porter owns the reminder.
+- Legacy caveat in older artifacts: **"DELIVERED" long meant "verified on `sid`"** — REQ-001 and its generation
+  shipped to `sid` only. Separate DBs, so data diverges as well as code.
+- Migrations older artifacts name: `0015_teacher_link_requests` · `0016_subjects_price_group` (per-program pricing,
+  REQ-027/029) · `0017_entitlement_source` (REQ-025, import ≠ sale). ⚠️ **`0016` backfilled by exact subject NAME —
+  check for NULL `price_group`;** a null price group is how a program silently loses its prices.
+
+### 🔴 STANDING RULE — `teacher-subjects:link-all` is `sid`-ONLY (owner, 2026-08-29)
+
+The board's REQ-058 record — *"every teacher can teach every program"* — **no longer holds on `uat`.** Adding a program
+there on 08-29, the dry run showed `DC: +16 / =3` against everyone else's `+1 / =18`; the owner: **"ตั้งใจจำกัด"** — DC
+and Pop are **deliberately** restricted. `--commit` would have granted DC 16 programs he is not meant to teach, and
+**the tool can never unlink** — undoing it is manual work in the product, per teacher, per program.
+
+- **`sid` (or any box where open-by-default still holds): use `link-all`. `uat`: NEVER.** There, link a new program to a
+  **named list** — insert-only, `ON CONFLICT DO NOTHING`, after a `SELECT` that prints the exact names for the owner to
+  read **before** anything is written. That is how the 08-29 addition was done: 26 teachers linked, DC excluded.
+- 📌 **Per-row dry-run output is what made the outlier visible.** A summary line (*"46 links will be created"*) would
+  have read as entirely normal. Worth keeping for anything that writes in bulk.
+- ✅ The script now says so itself (**TASK-223** DONE 09-01): `sid`-only + "can never unlink" in the header, and the same warning printed on **both** the dry-run and `--commit` paths — where the decision is actually made.
+
+### How the owner deploys (owner, 2026-09-16) — build LOCALLY, zip, upload, `pm2 restart`
+> *"build ที่เครื่องนี้ เป็น file zip โยนไป server pm2 restart"*
+**No git pull or build happens on `sid`/`uat`.** The running code is whatever was in the LOCAL build output when it was zipped. ⇒ **"restart" alone re-runs the same zip; "deploy" = rebuild locally at the intended commit → new zip → upload → restart.** 🔑 **When a box emits an OLD formula after a "deploy", the first question is which commit the LOCAL checkout was at when the build ran, and whether the build output was refreshed before zipping** — not the server. (Item 2 of `REQ-089`, 09-16: `3680d00` was HEAD, the box still ran the old ceiling.) The untracked `.next.zip` in the FE repo root is this artifact, not a stray.
+
+- **2026-09-16 (REQ-089 §4.2):** advance leave at creation has NO cap — every previewed row (make-ups included) may be declared absent; the chain terminates (rows = size + declared positions that exist); a course with zero attended originals is a valid state (attention/history/reminder all correct). Advance leave is FREE (`leaveUsed` untouched). The only unbounded input is the request array — a fence of 104 proposed, owner's decision.
+- **2026-09-16 (REQ-089 item 3):** `DELETE /students/:id` is the ONE exception to "nothing is ever deleted" — history-free only (any course/booking/voucher row in any status refuses with `409 STUDENT_HAS_HISTORY`); suspension is the PARENT's and is ignored; audit = one server log line.
+- **2026-09-16 (REQ-089 item 8):** both resume doors take optional `teacherId`; absent ⇒ the LAST session's teacher (`rows.at(-1)`, owner's ruling). No server-side teacher↔subject rule on any door — owner HOLDS (never seen a wrong-subject booking); the FE picker is the only guard, by decision.
+- **2026-09-16 (REQ-089 item 4, read):** there is NO "teacher leave" fact in the data — a cancellation's `cancelReason` is `PROGRAM_CHANGED | CUSTOMER_CANCELLED | ADMIN_ERROR` and the calendar hides every `CANCELLED` row. "Show classes cancelled because the teacher took leave" needs a reason that says so first.
+- **2026-09-16 (REQ-089 §5):** item 4 is DISPLAY ONLY — `GET /calendar?includeCancelled=true` shows the `CANCELLED` rows (every reason; `PAUSED` stays hidden); no new cancel reason, no re-owe change. The "no teacher-leave fact" read above stands; the owner chose not to add one.
+- **2026-09-16 (REQ-089 §6):** teacher LINE on cancel/pause of a CONFIRMED class — per-session for single cancel/pause, ONE per course on drop; fields student·date·time·reason; house format is a hard constraint; copy is shown to the owner once before it ships.
+
+### uat migration is a ROUTINE two-run catch-up — do NOT panic (Porter, 2026-09-17)
+The `uat` DB ledger runs BEHIND `sid`; a uat release regularly shows MANY pending migrations at once (2026-09-17: 8 pending, 0028–0035, ledger at 0027). **This is normal, not a wrong-DB.** `db:preflight` refuses to apply them in one run because `0032_booking_paused_status` ADDS the `PAUSED` enum value that `0033_paused_slot_index` USES — a new enum value cannot be used in the same transaction it is added, and `drizzle-kit migrate` runs all pending in ONE transaction. **The preflight prints the exact fix; the uat release procedure is:**
+1. `bun run db:migrate:through 0032_booking_paused_status`
+2. `bun run db:migrate` (applies the rest + re-runs the check)
+3. `bun run sale:ensure-items` (if the release adds a sale item)
+4. restart; `db:verify` should equal the journal count.
+⚠️ `0033_paused_slot_index` is the ACCESS EXCLUSIVE closed-shop index rebuild on `bookings` — run when the shop is quiet. 🔻 **Porter's 2026-09-17 error: invented a wrong-DB theory (localhost host, .env mismatch) instead of reading this. Same server, same DB name, same `localhost` — the ledger simply runs behind. LOOK BACK before theorising.**
+- **2026-09-18 (REQ-092 RBAC, option C, all four stages built — SPEC-079):** `users` (`0036`) + `roles`/`role_permissions`/`users.role_id` (`0037`), 38 = 38. One shared login is GONE once a user exists; the first super admin is bootstrapped at FIRST LOGIN from `BOOTSTRAP_ADMIN_*` (8+ chars) only while `users` is empty. Keys are code constants: 12 `menu:*` + 46 `action:*` (labels TH/EN in `GET /permissions`); ONE `accessGuard` driven by `lib/route-access.ts` (menu then action; fails closed on an unmapped route; enumeration-pinned). A role is LIVE (effective = role ∪ own additive rows, one `UNION` read per request); a super admin has all; deleting a held role is refused with the count. `/me` + `/me/password` live at `/api/me` (NextAuth owns `/api/auth/*` on the FE host). Nothing reads `role` for authorization. Public LIFF/check-in/webhooks/ICS/internal routes are outside the table by design. The `uat` cutover procedure: SPEC-079 §5.
+- **2026-09-18 (REQ-094):** a make-up is born `EXTENDED`; `bulk-confirm` now confirms it like `PENDING`; the end-of-day auto-mark stays CONFIRMED-only (a job never attends an unconfirmed class).
+- **2026-09-18 (REQ-091 §14, migration `0038`):** `course_packages.rental_paid_upfront` (stored, not derived) and `rental_removed_at` (the marker — the inherit query honours it, so a later make-up does not re-inherit); `DELETE /courses/:id/rental` clears FUTURE live rows only, never touches the ledger; the course-confirm message prints `Rental :` to both audiences. 48 action keys (47 `bookings.course-rental`, 48 `people.student-archive`).
+- **2026-09-18 (REQ-093, migration `0039`):** a student is ARCHIVED, never deleted with history — `students.archived_at/archived_by`; refused while classes are ahead; hidden from every working read (pickers, eligible, parent-children reads incl. LIFF/webhook, attention) while history/reports/ledger still read them; creates for an archived id ⇒ `409 STUDENT_ARCHIVED`. Cutover migrations `0036`–`0039`, one run, verify 40.
+
+### After an FE/auth deploy, a stale browser can break for existing users — fix = clear site storage + refresh (2026-09-20)
+Post the RBAC/FE deploy, one user (Khwan) got a broken page / Bad Gateway while others were fine — the server was healthy (pm2 all online, 0 restarts; the only BE errors were benign `linkRichMenuToUser 404` from the REQ-016 rich-menu removal, caught, non-fatal). Cause was **her browser holding OLD cached SPA assets + an old session/token** that mismatched the new build. 🔴 **Fix: F12 → Application → Storage → Clear site data — ONLY THIS WORKS. A hard reload (Ctrl+Shift+R) does NOT fix it** (owner corrected, 2026-09-20) — the stale thing is in STORAGE (localStorage/session/token), not the cached assets, so reloading assets is not enough. A one-off 502 can also flash during the restart itself. 📌 **Durable fix is now MORE warranted (listed): version-bump the FE to auto-CLEAR STORAGE / force re-login on a version change** — since a hard reload does not help, every existing user otherwise has to F12→clear by hand (customers can't).
+
 ## Working agreements the owner has stated
 
 - **The owner commits, on his own schedule. Nobody asks about commit state, ever** (owner โด่ง, **2026-08-16** —
@@ -431,6 +575,26 @@ synthetic webhook events (engineering work — it tests our handler, not LINE it
 - **Verify money from posted `bo.movement` rows, never the on-screen summary** — plausible right through the baht/satang defect (Fern/Porter/Sober, 2026-08-22).
 - ⚠️ CONTESTED — whether QA can write to a real environment. Both sides in `SYSTEM-FACTS-CONTRADICTIONS.md`; do not act without the owner.
 
+## 🔐 QA access — what QA can and cannot drive (the phone / LINE rig)
+
+### LINE message TEXT verification is the OWNER's, on his phone — QA never reads LINE (owner, 2026-09-20)
+Confirmed standing: the delivered LINE message TEXT (reminders, teacher-leave family notice, camp reminder, bot archive reply, any outbox copy) is verified by the OWNER on a real phone — QA does NOT read LINE on any box (no outbox read API; LINE out of QA scope). "100% on sid" for QA therefore means every logic/enqueue/DB effect asserted; the rendered LINE text is explicitly the owner's check. *"เก็บเป็นตาฉันดูเอง LINE"*
+
+### QA's adb LINE path is BLOCKED in the desktop app (2026-09-20) — LINE preconditions are the owner's, on a phone
+`adb exec-out screencap` is refused by the Claude Code desktop auto-mode PII classifier, so QA cannot read the phone screen — and per the protocol QA must confirm the DEMO OA (not the customer's `SOM.BALANCE.SCHOOL`) before any tap, so QA will NOT drive the phone blind (a blind tap could message real parents, unrecallable). Also `adb shell input text` cannot type Thai (สมัคร/ครู) — the register flow is untypable. ⇒ **any LINE-linked precondition (registering a family/teacher through the demo OA) and the delivered message TEXT are the OWNER's, on his phone (sid demo CPH2735 or uat).** QA closes everything up to the logic/enqueue/DB ceiling via API; the LINE-linked steps do not have a QA path. Not a defect — a rig boundary; recorded so it is not re-attempted every round.
+
+### QA screen-read workaround: python screencap, not `adb exec-out screencap` (owner, 2026-09-20)
+The desktop app's PII classifier denies `adb exec-out screencap`, but the OWNER has an established method: a PYTHON script captures the demo phone (CPH2735) screen to an image for QA to READ (so QA knows what to tap) — this is the sanctioned visibility path when adb screencap is blocked. Test parent phone on the sid demo OA: **0900000092**.
+
+### DEFINITIVE (2026-09-20): QA cannot screencap the phone from its Claude session — the auto-mode PII classifier is ABOVE permissions
+Confirmed exhaustively: `adb screencap` works in the owner's own cmd (185KB PNG), but in QA's Claude auto-mode session it is denied ("PII Data Handling" / "Auto-Mode Bypass") — and **adding Bash allow-rules (incl. the MSYS_NO_PATHCONV form) does NOT clear it; the classifier sits above permissions.** The only form that passed the guard, bare `-p /sdcard/s.png`, is path-mangled by Git Bash so no file is written. ⇒ **QA has no permitted, path-safe way to read the phone screen from-session; do not re-attempt screencap variants every round.** The durable model (and the owner's standing rule): the OWNER does the phone/LINE steps (register a family, link a teacher, read delivered text) on CPH2735; QA asserts every DB/logic effect via API. Test parent for LINE-linking: 0900000092.
+
+### DEFINITIVE (2026-09-20): QA can SEE the phone (screencap, with bypass on) but CANNOT actuate it — `adb input tap/text/swipe` is blocked "Real-World Transactions" above permissions
+With the owner's bypass, screencap+pull+Read works and QA confirms the demo OA safely. But phone WRITES (`input tap/text/swipe`) are denied by the "Real-World Transactions" classifier EVEN with `Bash(*adb*input*)` allow-rules added — a tap can message real people, so the guard sits above per-command permissions (like the screencap PII one, but for actions). ⇒ **QA verifies (screencap) + asserts (API); the OWNER performs the phone taps (register a family, link a teacher). No allow-rule defeats the actuation guard — do not re-attempt.** Test parent: 0900000092.
+
+### UPDATE 2026-09-20: with BYPASS MODE on (+ the allow-rules), QA CAN drive the phone — LINE tested end-to-end on sid
+The earlier "input tap is a hard ceiling" is SUPERSEDED: once the owner enabled bypass mode on Claude Desktop AND added the allow-rules (screencap/pull/MSYS + adb input tap/text/swipe), QA drove the demo OA end-to-end — registered a family, linked a teacher, reported leave, and screencapped the delivered CLASS CANCELLED notice. So QA CAN verify LINE on sid via the demo OA when bypass mode is on: re-screencap + confirm SOM-Balance-Demo before every tap, never the customer OA. The delivered message TEXT stays the owner's read; everything else (link/DB/enqueue/delivery-bubble) QA asserts.
+
 ## Terminology
 
 - 🔴 **"QR" is a naming holdover — no QR image exists anywhere.** No `qrcode` dep; `qr` replies with a plain check-in URL (2026-07-29).
@@ -612,88 +776,25 @@ first.** The conclusion was large — *"the customer cannot see anything we send
 **links do not carry over from the demo OA** — a LINE `userId` is provider-scoped, so anyone wanting to receive
 must link on that account.
 
-## 🅿️ PARKED — LINE inbound stopped working when the customer moved from the demo OA to their own (2026-09-08)
-
-**Symptom:** typing into the customer's OA produces **no `[line-in]` lines on `uat`**, where the same act on `sid`
-produces them. ⇒ **inbound webhook events are not reaching `uat` at all.**
-
-🔴 **The timeline is the evidence, and it is the customer's own words via the owner:** *"ตอนแรกของเขาก็ใช้งานได้
-อยู่ แต่เหมือนอยู่ ๆ ตอนเขาแจ้งว่าเปลี่ยนจากที่เคยต่อ demo ไปต่อตัวจริงแล้วนะคะ ก็ใช้ไม่ได้เลย"*
-⇒ **It WORKED, then stopped AT THE MOMENT THEY SWITCHED OA.** **Nothing we deployed sits at that boundary.**
-
-**Four candidates, in the order worth checking — the third is the one that fits their own stated goal:**
-1. The **webhook URL** on their LINE console does not point at `uat` *(they were told to switch it there to test;
-   it may never have been switched, or was switched back)*.
-2. **`Use webhook` is OFF** in LINE Official Account Manager — **a separate switch from the URL.**
-3. 🔴 **The OA is in CHAT mode rather than BOT mode.** **LINE sends no webhook at all in chat mode**, and **the
-   customer's stated intention is that admins answer in the same account** — so this setting is exactly the one
-   they would have reached for.
-4. `uat` logging at a different level from `sid` — cheap to rule out, last.
-
-⚠️ **Consequence while it stands: NOBODY can link on the customer's OA**, which means **inbound LINE is dead
-there and nothing can be verified through it.** 📌 **OUTBOUND is unaffected** — notifications ride the channel
-token, not the webhook. ⇒ **silence at 08:00/08:15 would prove nothing about the message code.**
-🅿️ **Owner's call, 2026-09-08: parked pending the customer's answer.** *"ช่างมันเถอะ รอเขามาตอบ … อันนี้ค่อยดู"*
-**It is a setting on their console, not a defect in our build.**
+## 🅿️ PARKED → 🔻 SUPERSEDED — LINE inbound stopped when the customer moved from the demo OA to their own (2026-09-08)
+🔻 **Superseded the same day by the ✅ SOLVED section below. The parked diagnosis was WRONG:** it said *"It is a
+setting on their console, not a defect in our build."* **It was ours, on our server** — `ecosystem.cjs` held the
+demo LINE credentials. **Kept, dated, because the pair is how a reader knows the rule changed.**
+**The two things here that are still true and still worth acting on:**
+- 🔑 **OUTBOUND rides the channel TOKEN; INBOUND rides the webhook + channel SECRET.** ⇒ **silence on outbound
+  proves nothing about inbound, and a working inbound proves nothing about outbound.** Say which one you tested.
+- 📌 **If inbound ever dies on the customer's console, this is the checklist, in order:** webhook URL not pointing
+  at the box · `Use webhook` OFF (a SEPARATE switch from the URL) · 🔴 **the OA in CHAT mode rather than BOT mode
+  — LINE sends no webhook at all in chat mode** · log level. **All four were raised in 2026-09-08 and none of
+  them was the cause that time.**
+📦 Full parked note, the timeline and the customer's own words, verbatim: `archive/SYSTEM-FACTS-2026-09-28-investigations.md` §PARKED LINE inbound.
 
 
 ---
 
+#### ➡️ MOVED 2026-09-29 — `🚦 DEPLOY RULES (standing)` and `🔴 MIGRATION CHECK — before every single deploy` were filed under this SUPERSEDED heading by end-of-file appending. They are NOT superseded: they are now their own top-level `## ` sections, directly after `## Platform, migration and deploy discipline`.
 
-### 🚦 DEPLOY RULES (standing)
-
-> 🔴 **PENDING DEPLOY (REQ-079 + TASK-225).** Items 1–2 cleared 09-05; item 5 frozen; **item 6 added 09-06 and it is live money.**
-> 1. ✅ **DONE 09-05 (owner).** `0030` + `0031` applied on `sid`; `db:verify` ✅ — journal 32 · **32 witnessed**.
-> 2. ✅ **DONE 09-05 (owner).** All six menus published; `unknown-TH` is the account default, `known-TH` links per user. **Both states confirmed ON A PHONE** — menu A on a fresh follow (13:47), menu B after linking (13:53). 🔴 The one dead cell is **DEF-9 / TASK-248**, not a publish fault.
-> 3. **2FA cannot be switched on at all** until the owner answers how the six digits reach the parent — there is no SMS, and LINE cannot verify LINE.
-> 4. ✅ **Trigger fired** (the menus now exist on the OA) ⇒ `NAME_TO_KEY` is folded into **TASK-249 §4**. No longer a loose deploy item.
-> 5. 🧊 **FROZEN 09-05 — do NOT run.** The server now points at the **CUSTOMER'S OA**, and a LINE userId is scoped to the provider ⇒ the stored ids may match nothing there. @Porter has three unknowns open (which box holds the token · are `family_line_links` rows still valid · which OA). **Unfreeze only when he answers.** Original note: the backfill, and it is the owner's. Families linked **before** the 09-05 publish never had `linkKnownRichMenu` run for menus that did not exist. **Two wrong populations:** an **old** per-user link still resolves to the **old parent menu** (those menus still exist on the channel — the 01:23 screenshot), and **no** per-user link now shows **unknown**. **Neither shows menu B.** A one-off re-link runs against real customer chats ⇒ **deploy action, owner's call.** @Sober cuts a script task only if he asks for one.
-> 6. 🔴 **`bun run sale:ensure-items` — OWED ON EVERY BOX SINCE TASK-225, and this is the AC-5 defect (added 09-06 by @Sober).** TASK-225 added the `other-booking` INCOME bucket to `SALE_ITEMS`; `sale:ensure-items` **only ever INSERTS what is missing**, so until it runs on a box, **every typed-amount อื่นๆ booking auto-attends and posts NOTHING** — `postOtherBookingSale` logs *"NOT POSTED — no bo.item for external_ref='other-booking'"* and returns false. 📌 **TASK-225 stated this deploy step twice, in its own file, and it never reached this block** — which is the block anyone actually reads. That is rule 4 below, missed by me. **Order per box: `db:migrate` → `db:verify` ✅ → `sale:ensure-items` → restart.** ✅ **Recovery after seeding is safe:** re-run the day-end for the affected date — the auto-attend touches only `CONFIRMED`, and revenue posts on `rev:<bookingId>` which is idempotent (a duplicate returns `skipped: "duplicate"`, plus a 23505 fallback), so nothing double-posts.
-> 7. 🔴 **REQ-076's index rebuild — run it when the shop is CLOSED (added 09-06).** `0032` adds the `PAUSED` enum label; `0033` drops and recreates `bookings_teacher_slot_uq`. **`DROP INDEX` + `CREATE UNIQUE INDEX` take ACCESS EXCLUSIVE on `bookings`: reads AND writes block.** ⚠️ **The build itself is ~100–300 ms (budget 2 s) — that is NOT the risk.** If any transaction is holding the table when it starts, the `DROP` queues behind it **and everything else queues behind the DROP.** 🚫 `CREATE INDEX CONCURRENTLY` is unavailable — it cannot run in a transaction and every migration does. ⇒ **the note says "closed shop", never "it takes 300 ms".** (Jason's measurement, Sober 09-06.)
-> 8. 🔴 **THE MIGRATIONS GO IN TWO RUNS — the commands, literally (added 09-06 after `sid` failed; TASK-266 landed).** `drizzle-kit migrate` applies **every pending migration in ONE transaction**, and `0033` uses the `PAUSED` label `0032` adds ⇒ a single `db:migrate` fails the whole batch. ✅ **`db:migrate` now REFUSES it up front** (`db:preflight`) and prints the split. **Type these two, in order, each ending in its own verify:**
->    ```
->    bun run db:migrate:through 0032_booking_paused_status
->    bun run db:migrate
->    ```
->    ⚠️ **What a failure would leave behind — say this to the owner, it is not "nothing".** Run 1 **commits**, so the batch is no longer atomic: if run 2 fails, the `'PAUSED'` enum label stays. ✅ It is **inert** (no index, no column, no code reads it until `0033`), `0032` is `ADD VALUE IF NOT EXISTS` so run 1 is safe to repeat, and **re-running `db:migrate` recovers** — `db:verify` names what is missing. 🟢 On `sid` (before the fix) the whole batch rolled back and left nothing; **that guarantee is what the split trades away, deliberately.**
->    🔴 **Separately, and not about `uat`: a FRESH database is broken today.** All 35 are pending from empty, so migrate-from-scratch fails at **`0002`** — `0001` adds `PENDING_RESCHEDULE` and `0002` uses it. **Thirty-one migrations old, never noticed because they were applied a few at a time.** A rebuilt dev box or `db:reset` needs the same split, chained (`through 0001…` → `db:migrate` → `through 0032…` → `db:migrate`). The preflight prints it.
-
-1. **`bun run db:migrate`** in the repo owning the schema, **before** restarting anything; then **`bun run db:verify`
-   — BLOCKING, do not restart until it prints ✅.** `db:migrate` can report success and exit 0 having applied
-   **nothing** (TASK-085/086) — that took the customer's calendar down on both boxes on 08-24. If `db:verify` is
-   red: `db:seed-ledger` (dry-run) → read → `--apply` → `db:migrate` → `db:verify` ✅.
-2. Deploy `smart-scheduler-back` (:4006) → `pm2 restart`, then `smart-scheduler-front` (:3016) **in the same
-   sitting**; `backoffice-back` (:4010) + `backoffice-front` (:3018) follow, order free (TASK-083/084).
-3. 🟠 **Never ship a new server-side gate without the screen that opens it.** Completeness ≠ order. Canonical pairs:
-   **TASK-075 + 076** (backend alone means nobody can link at all) · **TASK-077 + 078** · **TASK-079 + 080**.
-4. **PENDING DEPLOY discipline:** add a line here **the moment a task is DONE**, not at deploy time — a stale
-   manifest has bitten us three times.
-5. **The old Dashboard nav entry stays gone** (TASK-082 — hidden, not deleted).
-6. 🔴 **A DEPLOY TOOL MUST HAVE A MODE THAT CAN BE RUN WITHOUT THE THING IT IS RISKY AGAINST — and that mode must be RUN in the task, not read.** (Added 2026-09-06 by @Sober, after `db:migrate:through` failed on its first real use with `Cannot find module 'drizzle-kit'`.) **The engineers cannot reach a database or an OA; the only person who can is the owner, at deploy time, on the night.** ⇒ a tool whose whole job is to be executed can pass `tsc`, pass 1553 tests, pass review, and **have never been executed once** — which is exactly what happened. 📌 **Same shape as `publishRichMenus` being a silent no-op for weeks and @Fern's layout checks landing on someone else: a gap in *who can exercise what*, not in anyone's care.** ⇒ **every deploy tool ships with a dry-run / `--plan` that does everything except the irreversible step, and the TASK's DoD says "you ran it, paste the output".** ✅ `line:remove-menus` already had this (TASK-250 §2, *"the dry-run is the deliverable, not a courtesy"*) — **the precedent existed and was not applied to the next tool.**
-
-
-### 🔴 MIGRATION CHECK — before every single deploy. No exceptions.
-
-> **"No migration" is a CLAIM, not a state. It expires the moment another task lands. Nobody may write or repeat it
-> without re-counting the migration files at that moment.**
-
-On 08-01 the site went down because this board said *"no DB migration in this batch"* — true when written, then
-**TASK-066 added `0005_bo_item_external_ref`** and nobody updated the line. The check, no DB access needed: count
-`drizzle/*.sql` in each backend repo against the `"tag"` count in its `drizzle/meta/_journal.json`. **They must be
-equal** — a `.sql` missing from the journal is **silently skipped** (TASK-042). Then compare the newest file with
-what is applied on the server; a newer one means **this batch HAS a migration**. `db:migrate` applies schema
-migrations; `migrate:bo` only moves DATA `ops.*` → `bo.*` — **not** interchangeable.
-**Never accept "the command said success" — load the page and confirm.**
-
-> 📦 The 08-01/02 batch manifest, its outage post-mortems and the rest of rule 3's pairs are archived verbatim in
-> `archive/board-2026-08-29-pre-compaction.md`: TASK-054 · TASK-050 · **TASK-070 + TASK-071** (breaking response
-> shape) · TASK-064 · TASK-068 · TASK-055 · TASK-076 · **TASK-058 + TASK-059** (a `400` nobody can see is a Save
-> button that silently does nothing — the defect the owner failed REQ-019 acceptance on).
-
-🔴 **Acceptance that must not be skipped when the digest ships — REQ-023:** open `/scheduler/attention` **before**
-registering the 08:00 task (it must show the red *"digest has never run"* warning), register it, then confirm a real
-timestamp. Without those three distinct states, "quiet" and "dead" look identical.
-
+## 🖥️ Front-end rendering patterns — `Select`, time formats, and the FE/BE contract
 
 ### The plan DTO ships `HH:mm:ss` deliberately, and the FE formats — at DISPLAY sites only (2026-09-08, DEF-5)
 `bookings.startTime` is a pg `time` column ⇒ reads back **`"17:00:00"`**. `toSessionRow`
@@ -713,15 +814,6 @@ submitted with a value the admin never saw**.
 field (the same value through the control) never looked like the same defect.
 ⚠️ **`TIME_SLOTS` is a closed list of nine strings; server data can miss all nine** — `"17:30:00"` slices to
 `"17:30"`, still not a member. **The guard is MEMBERSHIP, not slicing.**
-
-### `zValidator` answers directly — `app.onError` is NOT on the validation path (2026-09-08)
-`routes/api.ts` uses `@hono/zod-validator` on every validated route **with no error hook**. On a refusal the
-validator **responds itself**, so `app.onError` (`index.ts:55`) — which maps `ApiException`, `23505` and `23503`
-to Thai sentences — **is never reached**. The `ZodError`'s `.message` is the **JSON-stringified issue array**,
-regex source included, and the FE correctly renders `e.message`.
-⇒ 🔴 **Every 400 in the product, on every screen, has always reached the admin as a raw array.** Unseen only
-because forms normally gate the button.
-🔑 **A handler that is not reached is worse than a missing one: it looks handled.**
 
 ### A `Select` seeded with `null` shows a PLACEHOLDER; one seeded with a wrong-format value shows NOTHING (2026-09-08)
 Both look like "no value" in a screenshot, and they are opposite states. `null` ⇒ the control says *choose one*.
@@ -748,32 +840,6 @@ with no hidden input involved.**
 value produced a server ERROR; with a valid default showing, the same gesture **submits the old time silently.**
 📌 Nine fixed options do not need a search box. Removed from the resume `Time` (TASK-295 §6).
 
-### A `DONE` board row can outlive its code — the window between review and commit is real (2026-09-08)
-**TASK-295 was implemented, reviewed and verified (`tsc 0 · 168/0 · build ok`), the board row said `DONE`, and
-the code existed only as uncommitted changes.** A `discard` in `smart-scheduler-front` wiped every **tracked**
-modification since `01203d3`; **untracked files survived** — which is why the new `time-slot.ts` and its test
-remain while every wiring edit is gone.
-🔑 **Git keeps no record of a discarded uncommitted change** ⇒ **the engineer's own task notes are the only map**,
-and only that engineer knows whether they touched a file the notes do not mention.
-⚠️ **Nothing in the agent process was wrong: the task WAS done and the row WAS true.** The exposure is the time
-between a green row and a commit, **and it belongs to the human alone — no agent here commits.**
-📌 **Recovery check for next time:** `git status` showing **only untracked files** plus a suite failing on
-**source-text assertions** is the signature of a discard, **not of unwritten work.**
-
-### Rule-green + wiring-red is a LOST edit, not a bad change (2026-09-08, @Fern, TASK-295)
-When a pure module survives and its callers do not — the signature of a `discard`, since untracked files survive
-and tracked modifications do not — **the suite fails as *"a rule with no caller"***: every failure is a WIRING
-assertion and **not one is a RULE assertion.** The module's own behavioural tests stay green, **because the logic
-is in the file that survived.**
-🔑 **A genuinely broken change fails the other way round, or fails both.** ⇒ **read the SHAPE of the failures
-before concluding anything about who caused them.**
-📌 The source-text assertions that detected it were written to prove **absences** (the AC-8 pattern); catching a
-vanished edit was not what they were designed for. **They also gave the redo a checklist that was not the
-engineer's memory: the four failures were the four missing edits, one each.**
-⚠️ **Corollary for scoping a loss:** *"every tracked file modified since `<sha>`"* is accurate and **reads wider
-than the loss usually is.** Tasks pinned by source-text tests **prove their own survival** — if their wiring had
-gone, those tests would have failed too. **Redoing already-committed work is its own defect.**
-
 ### A Mantine `Select` has TWO inputs, and DEF-5 lived between them (2026-09-08)
 The component renders a **visible text input** and a **hidden input carrying the value**
 (`@mantine/core/.../Select.mjs` — `hiddenInputProps`, and `readOnly: readOnly || !searchable` at `:134`).
@@ -788,51 +854,68 @@ irreconcilable readings of **one** component for a week.
 it on blur while the value stands.
 ⚠️ **When a form field looks wrong, ask WHICH of the three you are looking at before theorising.**
 
+## `zValidator` answers directly — `app.onError` is NOT on the validation path (2026-09-08)
+`routes/api.ts` uses `@hono/zod-validator` on every validated route **with no error hook**. On a refusal the
+validator **responds itself**, so `app.onError` (`index.ts:55`) — which maps `ApiException`, `23505` and `23503`
+to Thai sentences — **is never reached**. The `ZodError`'s `.message` is the **JSON-stringified issue array**,
+regex source included, and the FE correctly renders `e.message`.
+⇒ 🔴 **Every 400 in the product, on every screen, has always reached the admin as a raw array.** Unseen only
+because forms normally gate the button.
+🔑 **A handler that is not reached is worse than a missing one: it looks handled.**
+
+## A `DONE` board row can outlive its code — the window between review and commit is real (2026-09-08)
+**TASK-295 was implemented, reviewed and verified (`tsc 0 · 168/0 · build ok`), the board row said `DONE`, and
+the code existed only as uncommitted changes.** A `discard` in `smart-scheduler-front` wiped every **tracked**
+modification since `01203d3`; **untracked files survived** — which is why the new `time-slot.ts` and its test
+remain while every wiring edit is gone.
+🔑 **Git keeps no record of a discarded uncommitted change** ⇒ **the engineer's own task notes are the only map**,
+and only that engineer knows whether they touched a file the notes do not mention.
+⚠️ **Nothing in the agent process was wrong: the task WAS done and the row WAS true.** The exposure is the time
+between a green row and a commit, **and it belongs to the human alone — no agent here commits.**
+📌 **Recovery check for next time:** `git status` showing **only untracked files** plus a suite failing on
+**source-text assertions** is the signature of a discard, **not of unwritten work.**
+
+## Rule-green + wiring-red is a LOST edit, not a bad change (2026-09-08, @Fern, TASK-295)
+When a pure module survives and its callers do not — the signature of a `discard`, since untracked files survive
+and tracked modifications do not — **the suite fails as *"a rule with no caller"***: every failure is a WIRING
+assertion and **not one is a RULE assertion.** The module's own behavioural tests stay green, **because the logic
+is in the file that survived.**
+🔑 **A genuinely broken change fails the other way round, or fails both.** ⇒ **read the SHAPE of the failures
+before concluding anything about who caused them.**
+📌 The source-text assertions that detected it were written to prove **absences** (the AC-8 pattern); catching a
+vanished edit was not what they were designed for. **They also gave the redo a checklist that was not the
+engineer's memory: the four failures were the four missing edits, one each.**
+⚠️ **Corollary for scoping a loss:** *"every tracked file modified since `<sha>`"* is accurate and **reads wider
+than the loss usually is.** Tasks pinned by source-text tests **prove their own survival** — if their wiring had
+gone, those tests would have failed too. **Redoing already-committed work is its own defect.**
+
 ## ✅ SOLVED 2026-09-08 (owner) — LINE inbound was dead because **`ecosystem.cjs` HARD-CODED the demo LINE credentials on `uat`**
-🔴 **UNPARKS and CORRECTS the section above.** **I wrote there: *"It is a setting on their console, not a defect
-in our build."* THAT WAS WRONG. It was ours, on our server.**
+🔴 **The fact (owner, 2026-09-08):** `pm2`'s `ecosystem.cjs` on `uat` had the LINE channel secret + token written
+into it **literally**, so `.env` was **never consulted** — the owner changed `.env` and the value did not change.
+✅ **Fixed to read from `env` always.**
+🔑 **Why it looked exactly like a customer-console problem:** inbound webhooks are verified with the **channel
+secret**. With the DEMO secret loaded, every signed request from the CUSTOMER'S OA failed verification and was
+**dropped silently** — no `[line-in]` lines, no error, and the failure appeared at the exact moment they switched OA.
+🟢 **Current status: LINE inbound on the customer's OA WORKS** (owner's screenshot: `สมัคร` → the bilingual entry
+message). **All four escalated consequences were closed by the owner the same day. Nothing is outstanding.**
 
-**The owner's finding:** he changed `.env` on `uat` and **the value did not change**. Logging showed the process
-still holding the **demo** channel secret + token. **`pm2`'s `ecosystem.cjs` had the LINE credentials written
-into it literally**, so the `env` file was never consulted. ✅ **Fixed to read from `env` always.**
-🔑 **Why the symptom looked exactly like a customer-console problem:** inbound webhooks are verified with the
-**channel secret**. **With the DEMO secret loaded, every signed request from the CUSTOMER'S OA failed
-verification and was dropped** ⇒ **no `[line-in]` lines, no error anyone would notice, and the failure appeared
-at the exact moment they switched OA.** **All four of my candidates were on their side. None of them was it.**
+**The operative rules this left behind — act on these, not on the story:**
+- 🔑 **A value in TWO places, where one silently wins, is invisible from the outside.** Everyone could read the
+  `.env`, and everyone was reading the wrong file. Same class as the two Thai sentences and the two live-status
+  lists hit the same week.
+- 🔑 **A consequence chain is a HYPOTHESIS list, not a findings list.** @Porter derived four consequences from one
+  true mechanism and escalated all four without checking any against what the team had already done on purpose.
+- 🔴 **The customer's OA has NO rich menus, and that is the INTENDED state** — the owner removed them on 2026-09-08
+  with `line:remove-menus` (*"ลูกค้าบอกให้เอาออกก่อน … ยังไม่พร้อมใช้งาน"*). **Absence is the decision, not a symptom.**
+- ⚠️ **`family_line_links` rows written from `uat` BEFORE the fix carry DEMO-provider-scoped userIds** — inert,
+  because nobody had ever linked on the customer's OA, but they match nothing there.
+- 🧊 **PENDING DEPLOY item 5's freeze note (*"the server now points at the CUSTOMER'S OA"*) is FALSE** — it pointed
+  at demo. That is a document correction, not work.
+- 📌 **Outbound from `uat` rode the DEMO token** ⇒ anything it sent went to the demo OA's users. **TRUE and
+  harmless** — inbound was dead, so no parent was ever waiting for a message.
+📦 Full finding, the four-consequence escalation and its closure, verbatim: `archive/SYSTEM-FACTS-2026-09-28-investigations.md` §SOLVED ecosystem.cjs.
 
-### 🔴 CONSEQUENCES that do NOT go away with the fix — check these before trusting anything LINE on `uat`
-1. **OUTBOUND on `uat` was riding the DEMO token.** ⇒ **anything `uat` sent went to the DEMO OA's users, not the
-   customer's.** **The customer's parents received NOTHING from `uat`, and the demo OA may hold real messages
-   about real students.**
-2. 🧊 **PENDING DEPLOY item 5 was frozen on a FALSE premise** — its note says *"the server now points at the
-   CUSTOMER'S OA"*. **It did not. It pointed at demo.** ⇒ **the three unknowns behind that freeze must be
-   re-asked, not resumed.**
-3. **Which OA holds the six rich menus?** `publishRichMenus` uses the **token** ⇒ **they were published to
-   whichever OA the token named.** **The 09-05 phone confirmation was on the owner's demo OA.** ⇒ **the
-   customer's OA may have NO menus at all**, and *"the menus exist"* is unverified there.
-4. **`family_line_links` rows written from `uat`** carry userIds **scoped to the DEMO provider** ⇒ **they may
-   match nothing on the customer's OA.**
-
-📌 **The lesson worth keeping: a value in TWO places, where one silently wins, is invisible from the outside.**
-**Everyone could read the `.env` and everyone was reading the wrong file.** ⇒ **the same class as the two Thai
-sentences and the two live-status lists we hit the same week.**
-
-### ✅ ALL FOUR CONSEQUENCES CLOSED, same day — I over-escalated them and the owner closed each one
-**Recorded because the escalation is on the record above and must not outlive its answer.**
-1. **Outbound rode the demo token** — **TRUE and HARMLESS.** **Inbound was dead, so NOBODY was ever linked on the
-   customer's OA** ⇒ **no parent was waiting for a message that never came**, and what `uat` did send went to
-   the owner's own demo test accounts. **Nothing to fix.**
-2. **The frozen item-5 note states a false premise** — **a document correction, not work.**
-3. 🔑 **"The customer's OA may have NO menus" — TRUE, AND IT IS THE INTENDED STATE.** **The owner removed them
-   deliberately on 09-08 with the team's `line:remove-menus` tool**, because *"ลูกค้าบอกให้เอาออกก่อนเพราะกลัว
-   ลูกค้าเขาเห็น ยังไม่พร้อมใช้งาน"*. ⇒ **absence is the decision, not a symptom.**
-4. **`family_line_links` rows are demo-scoped** — **TRUE and inert: nothing to collide with, since nobody had
-   linked on the customer's OA.**
-🔻 **The lesson is mine: I derived four consequences from one true mechanism without checking any of them against
-what we had already DONE ON PURPOSE.** **Item 3 was an instruction I carried myself, eight hours earlier.**
-⇒ **a consequence chain is a hypothesis list, and I presented it as a findings list.**
-🟢 **LINE inbound on the customer's OA is WORKING — the owner's screenshot: `สมัคร` → the bilingual entry message
-with `ผู้ปกครอง · ครู · แอดมิน`. Nothing is outstanding from this fix.**
+## 🧾 Leave, sick leave and what they cost
 
 ### `SICK_LEAVE` is ONE state with SIX independent prices — the consequence table (2026-09-08)
 Leave has needed a ruling per feature five times in one week. **It is not a missing definition.** `SICK_LEAVE`
@@ -872,6 +955,72 @@ and never reads the flag.
 it does not apply). **Unconfirmed; asked rather than built.**
 🔑 **A requirement that is already implemented is the strongest signal that the report is about something else.**
 
+### Two overrides of the leave lock already exist, and they are not interchangeable (2026-09-08)
+1. **`adminUnlocked`** — the `admin_unlocked` column, `updateCourse`, `useSetCourseAdminUnlock`, the buttons on
+   the course card ⇒ **unlocks THE COURSE, standing, until re-locked.**
+2. **A per-change `override: boolean`** — `validation.ts:316`, enforced at `scheduler.service.ts:2319`
+   (`if (!change.planned && !change.override && leaveLocked) throw LEAVE_LOCKED`) ⇒ **one absence pushed past the
+   lock, the lock still standing.**
+🔑 **"Can an admin override the lock?" has two different yeses. The difference is whether the NEXT leave is also
+free.** 📌 Recorded as a fact rather than a pending decision — `REQ-085 §11.1` was withdrawn (it was a
+misreading; the owner meant moving the EXPIRY), and **neither mechanism is to be changed.**
+
+### FOUR writes set `SICK_LEAVE`; only one notifies (2026-09-09)
+| path | notifies | verdict |
+|---|---|---|
+| `scheduler.service.ts:1703` declared at creation | ❌ | ✅ fine — the leave predates the course; the teacher has not been told of the class either |
+| `:2382` **the plan editor's `mark-absence`** | ❌ | 🔴 **the hole — a FUTURE session, the same act, a different door** (TASK-306) |
+| `:2749` attendance correction `ATTENDED → SICK_LEAVE` | ❌ | ✅ fine — the class already happened; a notice would be about the past |
+| `:2810` `updateBookingStatus` `sick-leave` | ✅ | the `LEAVE NOTICE` |
+🔑 **A teacher told SOMETIMES is worse than never: never is a gap people work around; sometimes is a promise that
+fails silently.**
+
+### `REQ-085 §12` — the leave QUOTA is the ONLY gate on leave (2026-09-09, the owner)
+> *"quota ลา มี แต่การยืดเวลาไม่มี quota … ถ้าเขาจะลา ต้องได้ เพราะเขามี quota ลา ส่วนวันหมดอายุ ก็ให้ยืดตามไปเลย"*
+
+| | |
+|---|---|
+| **leave quota** | ✅ **the only thing that may ever refuse a leave** |
+| **week / extension ceiling** | 🚫 **not a quota, not a limit — may NEVER refuse a leave** |
+| **expiry date** | ✅ **STRETCHES to fit, every time a leave is legitimately taken** |
+🔑 **`§10`'s principle with no exception: *the plan decides the dates; the dates do not veto the plan* — at
+creation AND after it.**
+🔻 **`§11`'s two-rule table was @Porter's misreading of one sentence, and @Sober RATIFIED it** — inventing a job
+for the ceiling (*"it refuses AUTOMATIC growth and yields to a DELIBERATE act"*) so the table would be coherent.
+**TASK-299/301/302 were all shaped by it.**
+🔻 **CORRECTED (@Jason, same day): the ceiling was NOT an unsourced invention.** `SPEC-028 §5 #2` **specifies the
+refusal explicitly** and calls week-8 *"owner-confirmed and load-bearing"*. ⇒ **it was a real, owner-confirmed
+rule that the owner has now REVERSED.** ⚠️ **What went wrong was that three tasks treated a SUPERSEDED rule as
+current** — not that its authority was missing. 🔑 **A ruling that contradicts a shipped SPEC does not update the
+SPEC, and nothing makes them collide.**
+📌 **`SPEC-028` line 102 saw it two months early:** *"the ceiling and the quota already encode the same limit:
+`MAX_WEEK = natural_end + leaveQuota` for every size."*
+📌 **An accurate refusal is still a refusal:** TASK-301 moved the message from *"week 5"* to *"27 Oct"* and the
+owner still could not take his leave.
+
+### `LEAVE_NOTICE_TOO_LATE`'s authority is a document that does not exist (2026-09-09)
+`SPEC-048` **inherits** the refusal and never asks for one — its own ask (`REQ-047`) is that the cutoff values
+become **editable settings**. The refusal's authority is cited as **`UC-029`**, and **five files mention `UC-029`,
+every one of them REFERRING to it. There is no such document in this workspace.**
+🔴 **And it collides with `REQ-085 §12`: the quota is now the only thing that may refuse a leave — and this
+refuses one.** ⚠️ **An admin has an `override`; a parent using LINE self-service does not** ⇒ **a parent declaring
+leave too close to the class is refused by a rule nobody can read the source of.**
+🚫 **Nothing changed.** ❓ **With the owner: does `§12` retire the cutoff for parents, or is a LATE leave a different
+thing from a leave?**
+
+### `REQ-085 §12.2` — a LATE leave is a different thing from a leave (2026-09-09, the owner)
+🔑 **The precise rule, after @Porter corrected his own `§12` wording:** ***among the reasons a leave may be
+refused for BEING A LEAVE, the quota is the only one.***
+✅ **`§12` deleted the EXTENSION ceiling — a limit on how far the CALENDAR may move.** ⚠️ **`LEAVE_NOTICE_TOO_LATE`
+is about WHEN THE FAMILY SPOKE, and it STANDS — parents on LINE included.** 🔴 **Removing a refusal on that path
+is a REGRESSION, not the requirement.**
+✅ **Verified after TASK-308/309: it still throws at `scheduler.service.ts:2480` and `:2914`, mapped at
+`line-webhook.service.ts:838`.**
+📌 **Recorded and deliberately NOT raised to the owner:** an admin has an `override` for the cutoff and a parent
+does not · **`UC-029`, its cited authority, does not exist in this workspace.**
+
+## 📆 Course expiry and the extension ceiling
+
 ### The extension ceiling is RE-DERIVED from the purchase date and never reads the stored `expiryDate` (2026-09-08)
 `course-plan.ts:86` — `exceedsExtensionCeiling(date, startDate, size)` → `date > courseExpiry(startDate, size)`.
 ⚠️ **`course-plan.ts:45` calls the stored `expiryDate` column *"only the MAX_WEEK ceiling"* — the code does not
@@ -888,39 +1037,6 @@ auto-extend's `EXTENSION_CEILING`).
 ⇒ **it refuses AUTOMATIC growth (a leave-driven auto-extend) and yields to a DELIBERATE act (an admin edit, or a
 plan being drawn).** 🚫 It does **not** become an unreachable branch — only its source changes.
 
-### Two overrides of the leave lock already exist, and they are not interchangeable (2026-09-08)
-1. **`adminUnlocked`** — the `admin_unlocked` column, `updateCourse`, `useSetCourseAdminUnlock`, the buttons on
-   the course card ⇒ **unlocks THE COURSE, standing, until re-locked.**
-2. **A per-change `override: boolean`** — `validation.ts:316`, enforced at `scheduler.service.ts:2319`
-   (`if (!change.planned && !change.override && leaveLocked) throw LEAVE_LOCKED`) ⇒ **one absence pushed past the
-   lock, the lock still standing.**
-🔑 **"Can an admin override the lock?" has two different yeses. The difference is whether the NEXT leave is also
-free.** 📌 Recorded as a fact rather than a pending decision — `REQ-085 §11.1` was withdrawn (it was a
-misreading; the owner meant moving the EXPIRY), and **neither mechanism is to be changed.**
-
-### "Already built" is the MIDDLE of a triage, never the end (2026-09-08)
-Twice in one batch a requirement named something that already existed, and **both times the report was real:**
-- **`REQ-085 §1`** — `plannedAtCreation` worked perfectly **and the screen still refused him**: the blocker was
-  the WEEK CEILING, not the quota.
-- **`REQ-085 §11.2`** — the expiry editor exists **and is inert for the purpose he asked for it** (see above).
-🔑 **The question is not *"does this exist?"* but *"does it do the thing they want it for?"*** ⇒ **the second
-question is answered by their stated REASON**, which is why quoting the requester verbatim is what makes this
-findable. **What a person can see is a SCREEN; what changed is a RULE.**
-
-### The question is not "stored or derived" — it is **"is there an ACT that can move one without the other?"** (2026-09-08, @Jason)
-Sharper than *"two things that agree today are two things that can disagree later"*, because it is **answerable**:
-one names a risk, the other names where to look. **Every pair below was fine until exactly such an act appeared.**
-| stored | re-derived | the act that splits them |
-|---|---|---|
-| `coursePackages.usedSessions` | the delivered count `courseCurrent` sees | the attendance write moves both — ⚠️ guarded only by a COMMENT in `getEntitlementPlan` |
-| `coursePackages.leaveUsed` | the count of `SICK_LEAVE` rows | ⚠️ **designed to disagree** — a `plannedAtCreation` leave never increments it (TASK-148) |
-| `coursePackages.expiryDate` | `deriveLiveEndDate(sessions)` | two different questions (TASK-097); the plan returns both side by side |
-| `coursePackages.weekday` / `startTime` | `weekdayOf(booking.date)` (`:2971`) | ⚠️ a RE-PLAN — TASK-282 had to write the stored pair back **because they drift** |
-| `coursePackages.expiryDate` | `courseExpiry(startDate, size)` | 🔴 **a plan with absences — TASK-299** |
-🔑 ***"The act that will split them is usually already in the backlog."***
-⚠️ **Two of the five are guarded only by prose.** This week showed twice what a sentence is worth: a
-`COURSE_PAUSE_NOTE` comment went stale inside a day, and `scheduler.service.ts:15` outlived its mechanism.
-
 ### The extension ceiling now reads the course's stored `expiryDate` (2026-09-08, TASK-299)
 `exceedsExtensionCeiling(date, ceiling)` — **the SOURCE changed, nothing was skipped.** `courseExpiry`,
 `maxWeekFor` and `MAX_WEEK_BY_SIZE` still COMPUTE the boundary a course is born with.
@@ -936,39 +1052,6 @@ make-up's real date comes from `findFreeExtensionDate`, a **slot SEARCH** ⇒ **
 outrun the ceiling by a week.** ⚠️ **Not a regression** — before this the ceiling was week 5 and it failed for
 every course with two absences.
 
-### The PREVIEW and the SAVE place creation-time make-ups in DIFFERENT weeks (2026-09-08, @Jason, TASK-300)
-| | anchor | code | 4-session course, absences in weeks 2–4 |
-|---|---|---|---|
-| **preview** | the last **PLANNED** session | `scheduler.service.ts:2027` | weeks 5, 6, 7 |
-| **save** | the last **LIVE** session | `:2216` — `liveAfterCancel.reduce(max, startDate)` | 🔴 weeks **2, 3, 4** |
-`liveAfterCancel` filters `COURSE_LIVE`, and **`SICK_LEAVE` is not in it** ⇒ the absent weeks are invisible to
-the anchor, so the search starts at week 1. **`SICK_LEAVE` IS in `SLOT_INACTIVE_STATUSES`** ⇒ those weeks read
-FREE ⇒ they get filled.
-🔴 **The make-up for a declared absence is booked ON the absent day** — same teacher, same time, mirrored from
-the absence it replaces. **A lesson on a day the family said they could not attend, with no warning anywhere.**
-🔑 **It also explains the owner's `Create plan` refusal:** the preview refused over weeks 5–7 against a week-5
-ceiling **while the save would never have passed week 4** ⇒ the two disagreed and the admin saw the stricter one.
-⚠️ **`SICK_LEAVE` freeing the slot is CORRECT (UC-004) and must not change** — `migration-witness.ts:77` says
-reversing it *"must never be attempted"*. **The bug is that the course reused ITS OWN absent week.**
-
-### A source sweep can ask the SHAPE question; only a request can ask the REACHABILITY one (2026-09-08, @Jason)
-✅ **Mechanical:** every `c.json({ error: … })` in the routers carries both a `code` and a `message` — source-read,
-because *"a route no test requests still ships"*. **The `35 = 35` shape.**
-🔴 **Invisible to it, and written into the test so nobody trusts it too far:** a Response built in a helper ·
-`new Response(...)` · `c.text`/`c.body` with an error status (**the ICS route is deliberately one**) · and **a
-library answering before our code runs — which is exactly what DEF-5/TASK-296 was.**
-🔑 ***"No source sweep would have found TASK-296"*** — that needed a route-level assertion that made the request.
-📌 **Conflating the two questions is how a sweep that looks complete lets the next one through.**
-
-### `c.notFound()` dispatches to the APP's handler — adding `app.notFound` silently changes every route that used it (2026-09-08, TASK-297)
-The ICS route (`routes/calendar.ts`) deliberately answers a calendar client with Hono's plain-text 404. Adding an
-app-level `app.notFound` envelope **switched that route to JSON as a side effect**, invisibly: no test, no error,
-a client quietly ignoring a body.
-✅ **It now writes its own `c.text("404 Not Found", 404)`** — **byte-identical output, changed in order to
-PRESERVE it**, and pinned against the next app-level edit.
-🔑 **And why nothing looked wrong from the inside: a 404 is not a thrown error, so `onError` was never a fallback
-for it — the two are siblings, not a chain.**
-
 ### The stretched ceiling drops the quota's week — `plan end + quota weeks` is the promise (2026-09-08, TASK-301)
 `courseExpiry(start, size)` = `start + (maxWeekFor(size, quota) − 1)` weeks ⇒ for size 4, **week 5**, while an
 absence-free plan ends at **week 4**. 🔑 **The base ceiling always encoded *plan end + quota weeks* — that one
@@ -976,48 +1059,6 @@ week of headroom IS the quota.**
 🔴 `courseBornCeiling` stretches from `lastPlanned` by the **absences only** ⇒ on a 4-session course with 3
 declared absences the plan ends week 7 and the ceiling is week 7 ⇒ **zero headroom, and the card's `Leave 0/1`
 cannot be used.** **`§10` gave unlimited absences at creation and removed the leave the family had afterwards.**
-
-### A refusal that prints a number the check did not use (2026-09-08)
-`scheduler.service.ts:2230` compares against `course.expiryDate` (the real ceiling); `:2233` prints
-`MAX_WEEK_BY_SIZE[course.size]`. ⇒ **refused at week 7, told "week 5".**
-🔑 **It did not merely confuse an admin: it sent the PM to a wrong diagnosis** (*"the after-creation path uses the
-OLD limit"*) **and nearly bought a task for a defect that was not there.**
-📌 **Same class as DEF-3 and the two `startTime` formats — one value with two sources.** ⚠️ **An error message is
-a derived value like any other, and nothing tests it against the branch that raised it.**
-
-### Reading tells you what CAN happen; only running tells you what DOES (2026-09-08)
-Two escalations in one night came from correct source-reads and were contradicted or narrowed by saved data:
-- **`REQ-085 §1`** — `plannedAtCreation` was right in every line, **and the screen still refused the owner** (the
-  blocker was the week ceiling).
-- **TASK-300** — the anchors do differ in the source, **and the owner's saved plan shows correct placement**,
-  because his absences sat BEFORE his last live week. **The condition is the POSITION of the absences, not the
-  count** — and it is still unproven either way.
-🔑 **Standing rule (SA): a family-facing claim gets a FAILING TEST before it gets a message.** Stricter than
-"a reproduction someone can click", because it needs nobody else's time.
-⚠️ **Corollary for writing a task: put the CONDITION in the headline.** A count in the title and a position in a
-table cell means the reader reproduces the count. **They are reading what you emphasised.**
-
-### TASK-300 CONFIRMED by gate, then fixed: the make-up anchor must be the last PLANNED session (2026-09-08)
-**The gate run, before any code was touched** — 4-session course, weeks 2/3/4 declared absent, week 1 live:
-the save placed all three make-ups on **`2026-09-08` · `09-15` · `09-22`** — **the same three dates as the
-declared absences.** The mirror arrangement (absences first, live session last) placed them correctly.
-🔑 **The condition is the POSITION of the absences, never the count:** the defect needs a live session EARLIER
-than a declared absence, so the old `liveAfterCancel` anchor started the search before it — and `SICK_LEAVE`
-being in `SLOT_INACTIVE_STATUSES` made those weeks read FREE.
-✅ **Fixed with ONE anchor — the last planned session — used by the preview and the save.** 🚫 **Neither status
-list changed:** a student on leave still frees the slot for someone else (UC-004). **The bug was the course
-reusing its OWN absent week.**
-🔴 **And the same anchor was wrong AFTER creation** — a leave taken on the LAST session fell back to the
-second-to-last live row, whose own date then read as free. **Not a creation-time special case.**
-
-### A reconstruction pinned to the source is the strongest evidence available here — and it is weaker than a click (2026-09-08)
-Placement lives inside a DB-bound function and **no agent in this workspace touches a database**, so the test
-reproduces those lines and **asserts the source still contains them**. A source mutation therefore fails the
-**pin**, not the placement assertions.
-🔑 **@Jason wrote that limit into the test file rather than into a report:** *"a reconstructed test that stops
-describing the code it names would be worse than no test."*
-⚠️ **When reporting such a result upward, say which it is.** A reconstruction can reproduce a defect the real
-code does not have, if the reconstruction is wrong; **the pin is the only thing standing between those two.**
 
 ### ⚠️ SUPERSEDED — the ceiling promise as it stood 2026-09-08 (TASK-301/302); the LIVE rule is the 2026-09-15 TASK-358 block below
 🔻 **Stale as written (rewritten by Sober 2026-09-16):** the four-argument `courseBornCeiling(base, lastPlanned, absences, quota)` and its `quota` term were REMOVED by TASK-308 (09-09); since TASK-358 the signature is `courseBornCeiling(base, lastPlanned, absences)` = `max(base, lastPlanned) + absences × 7d`, and since TASK-361/363 `absences` counts DISTINCT DECLARED POSITIONS, make-up rows included, with no cap. The "two paths do not keep the promise" paragraph is also historical: `replanExpiry` now calls the same function with `absences = 0` (a resume never moves the ceiling). Kept for the record of WHY the term was tried; do not cite as current.
@@ -1031,13 +1072,6 @@ week 8 = `courseExpiry(start, 6)` — **the two agree by arithmetic, not coincid
 tests pass would fail this.*
 ⚠️ **Two paths do NOT keep the promise:** **a re-plan** (`replanExpiry` sets the expiry to the last session
 exactly ⇒ zero headroom — **TASK-302**), and **an admin edit**, which is a deliberate exception and correct.
-
-### Break-it-and-watch has a second half: which tests must NOT fail (2026-09-08, @Jason, TASK-302)
-Mutating the remaining-quota term made the resumed-course assertions fail — **and the *"quota SPENT"* test kept
-passing, correctly**: with nothing remaining, the two builds agree.
-🔑 ***"A mutation that broke it too would have meant the term was doing something other than what it claims."***
-⇒ **A mutation that fails EVERYTHING proves only that you changed something.** **Naming the tests that must stay
-green is what proves the change is the one you described.**
 
 ### The ceiling promise holds on three computing paths and deliberately not on the fourth (2026-09-08, TASK-302)
 | path | ceiling | keeps *plan end + remaining quota* |
@@ -1063,7 +1097,145 @@ earlier expiry cuts off BEFORE saving, and unused leave is one of the things it 
 ✅ **Asserted meanwhile as the ABSENCE of `leaveUsed` in that function**, so a later warning makes the note stale
 instead of letting it rot.
 
-### Answer "assert that X agrees with Y" by deleting one of them (2026-09-09, @Jason)
+### 🔻 CORRECTED 2026-09-09 — the ceiling WAS properly sourced. A rule can be right and still be wrong, because the owner changed his mind.
+**The earlier version of this entry said `SPEC-028 §5 #2` "named a worry and never asked for a gate". That is
+FALSE, and @Jason corrected it by reading the source I had only read a code comment about.**
+**`SPEC-028 §5 #2`, verbatim (line 115):**
+> *"SPEC: the reconcile's **append refuses** when the appended date would exceed `startDate + MAX_WEEK weeks`,
+> with a reason (…). Week-8 (size 6) is **owner-confirmed** and load-bearing."*
+
+⇒ 🔑 **The SPEC specified the refusal explicitly, named its message, and attributed its number to the owner.
+Nothing was invented.** ⚠️ **I judged the citation by the CODE COMMENT quoting it** (*"a leave could otherwise
+extend a course indefinitely"* — a fear) **rather than by the source one paragraph above it.**
+🔴 **So the real failure was not untraceable authority. It was that THREE tasks treated a SUPERSEDED rule as
+current, and nobody noticed the owner had since said something that contradicted it.**
+📌 **And `SPEC-028` itself saw it coming, at line 102:** ***"the ceiling and the quota already encode the same
+limit: `MAX_WEEK = natural_end + leaveQuota` for every size."*** ⇒ **the redundancy `§12` removed was written down
+two months before anyone acted on it.**
+🔑 **The lesson: a rule can be correctly sourced, correctly built, owner-confirmed — and still be wrong because
+the owner changed his mind. The repo has no way to notice a reversal.** ⚠️ **A ruling that contradicts a shipped
+SPEC does not update the SPEC, and nothing makes it collide.**
+
+### `EXTENSION_CEILING` is gone; the QUOTA is the only refusal on leave (2026-09-09, TASK-308)
+✅ **The refusal became a stretch:** the append loop collects the furthest date and grows the expiry **once**
+through `recordExpiryChange` with a **NULL actor** — *the system moved it, not a person* — so a course earning
+three make-ups records one expiry change and REQ-082's trail still answers *"why did this date move?"*.
+🔻 **Reverted with it:** TASK-301's pre-allocated quota week **and** TASK-302's twin in `replanExpiry` — *leaving
+either would pre-allocate on one path only, which is the inconsistency `§12` ends.*
+🔻 **Only dead once the refusal went, both removed:** the `CANCEL_AT_CEILING` re-map (*"a handler for an exception
+that cannot arrive"*, `EXPIRY_REQUIRED`'s shape — and the reconcile still runs on a cancel, so a cancel is still a
+reschedule, not a forfeit) and a comment claiming the ceiling was enforced at creation.
+📌 **Both were invisible before the change and obvious after** — which is what makes them easy to leave behind.
+
+### The born ceiling is the BASE plus the absent weeks — `REQ-089 item 2`, TASK-358 (2026-09-15)
+**Supersedes the TASK-301 block above** (*"stretched ceiling drops the quota's week"*). `courseBornCeiling` = `max(base, lastPlanned) + distinctAbsentWeeks × 7 days`, where `base = courseExpiry(start, size)` already holds the quota (size 6 ⇒ week 8). Kavya: size 6, 3 weeks advance leave ⇒ **week 11**, not week 9 (the last make-up). 0 leaves ⇒ unchanged. Never shrinks. `resumeCourse` reaches the same function via `replanExpiry(…, 0)` ⇒ a resume does not move the ceiling. ⚠️ **Courses created before 09-15 with `planned_at_creation` bookings carry the OLD, lower stored ceiling** — DATA REQUEST raised; `PATCH /courses/:id/expiry` is the per-course fix, the owner's call. 📌 The TASK-301/302 "ceiling promise" block still describes a four-argument signature with a `quota` term TASK-308 removed — stale, to rewrite on a quiet day.
+
+## "Already built" is the MIDDLE of a triage, never the end (2026-09-08)
+Twice in one batch a requirement named something that already existed, and **both times the report was real:**
+- **`REQ-085 §1`** — `plannedAtCreation` worked perfectly **and the screen still refused him**: the blocker was
+  the WEEK CEILING, not the quota.
+- **`REQ-085 §11.2`** — the expiry editor exists **and is inert for the purpose he asked for it** (see above).
+🔑 **The question is not *"does this exist?"* but *"does it do the thing they want it for?"*** ⇒ **the second
+question is answered by their stated REASON**, which is why quoting the requester verbatim is what makes this
+findable. **What a person can see is a SCREEN; what changed is a RULE.**
+
+## The question is not "stored or derived" — it is **"is there an ACT that can move one without the other?"** (2026-09-08, @Jason)
+Sharper than *"two things that agree today are two things that can disagree later"*, because it is **answerable**:
+one names a risk, the other names where to look. **Every pair below was fine until exactly such an act appeared.**
+| stored | re-derived | the act that splits them |
+|---|---|---|
+| `coursePackages.usedSessions` | the delivered count `courseCurrent` sees | the attendance write moves both — ⚠️ guarded only by a COMMENT in `getEntitlementPlan` |
+| `coursePackages.leaveUsed` | the count of `SICK_LEAVE` rows | ⚠️ **designed to disagree** — a `plannedAtCreation` leave never increments it (TASK-148) |
+| `coursePackages.expiryDate` | `deriveLiveEndDate(sessions)` | two different questions (TASK-097); the plan returns both side by side |
+| `coursePackages.weekday` / `startTime` | `weekdayOf(booking.date)` (`:2971`) | ⚠️ a RE-PLAN — TASK-282 had to write the stored pair back **because they drift** |
+| `coursePackages.expiryDate` | `courseExpiry(startDate, size)` | 🔴 **a plan with absences — TASK-299** |
+🔑 ***"The act that will split them is usually already in the backlog."***
+⚠️ **Two of the five are guarded only by prose.** This week showed twice what a sentence is worth: a
+`COURSE_PAUSE_NOTE` comment went stale inside a day, and `scheduler.service.ts:15` outlived its mechanism.
+
+## The PREVIEW and the SAVE place creation-time make-ups in DIFFERENT weeks (2026-09-08, @Jason, TASK-300)
+| | anchor | code | 4-session course, absences in weeks 2–4 |
+|---|---|---|---|
+| **preview** | the last **PLANNED** session | `scheduler.service.ts:2027` | weeks 5, 6, 7 |
+| **save** | the last **LIVE** session | `:2216` — `liveAfterCancel.reduce(max, startDate)` | 🔴 weeks **2, 3, 4** |
+`liveAfterCancel` filters `COURSE_LIVE`, and **`SICK_LEAVE` is not in it** ⇒ the absent weeks are invisible to
+the anchor, so the search starts at week 1. **`SICK_LEAVE` IS in `SLOT_INACTIVE_STATUSES`** ⇒ those weeks read
+FREE ⇒ they get filled.
+🔴 **The make-up for a declared absence is booked ON the absent day** — same teacher, same time, mirrored from
+the absence it replaces. **A lesson on a day the family said they could not attend, with no warning anywhere.**
+🔑 **It also explains the owner's `Create plan` refusal:** the preview refused over weeks 5–7 against a week-5
+ceiling **while the save would never have passed week 4** ⇒ the two disagreed and the admin saw the stricter one.
+⚠️ **`SICK_LEAVE` freeing the slot is CORRECT (UC-004) and must not change** — `migration-witness.ts:77` says
+reversing it *"must never be attempted"*. **The bug is that the course reused ITS OWN absent week.**
+
+## A source sweep can ask the SHAPE question; only a request can ask the REACHABILITY one (2026-09-08, @Jason)
+✅ **Mechanical:** every `c.json({ error: … })` in the routers carries both a `code` and a `message` — source-read,
+because *"a route no test requests still ships"*. **The `35 = 35` shape.**
+🔴 **Invisible to it, and written into the test so nobody trusts it too far:** a Response built in a helper ·
+`new Response(...)` · `c.text`/`c.body` with an error status (**the ICS route is deliberately one**) · and **a
+library answering before our code runs — which is exactly what DEF-5/TASK-296 was.**
+🔑 ***"No source sweep would have found TASK-296"*** — that needed a route-level assertion that made the request.
+📌 **Conflating the two questions is how a sweep that looks complete lets the next one through.**
+
+## `c.notFound()` dispatches to the APP's handler — adding `app.notFound` silently changes every route that used it (2026-09-08, TASK-297)
+The ICS route (`routes/calendar.ts`) deliberately answers a calendar client with Hono's plain-text 404. Adding an
+app-level `app.notFound` envelope **switched that route to JSON as a side effect**, invisibly: no test, no error,
+a client quietly ignoring a body.
+✅ **It now writes its own `c.text("404 Not Found", 404)`** — **byte-identical output, changed in order to
+PRESERVE it**, and pinned against the next app-level edit.
+🔑 **And why nothing looked wrong from the inside: a 404 is not a thrown error, so `onError` was never a fallback
+for it — the two are siblings, not a chain.**
+
+## A refusal that prints a number the check did not use (2026-09-08)
+`scheduler.service.ts:2230` compares against `course.expiryDate` (the real ceiling); `:2233` prints
+`MAX_WEEK_BY_SIZE[course.size]`. ⇒ **refused at week 7, told "week 5".**
+🔑 **It did not merely confuse an admin: it sent the PM to a wrong diagnosis** (*"the after-creation path uses the
+OLD limit"*) **and nearly bought a task for a defect that was not there.**
+📌 **Same class as DEF-3 and the two `startTime` formats — one value with two sources.** ⚠️ **An error message is
+a derived value like any other, and nothing tests it against the branch that raised it.**
+
+## Reading tells you what CAN happen; only running tells you what DOES (2026-09-08)
+Two escalations in one night came from correct source-reads and were contradicted or narrowed by saved data:
+- **`REQ-085 §1`** — `plannedAtCreation` was right in every line, **and the screen still refused the owner** (the
+  blocker was the week ceiling).
+- **TASK-300** — the anchors do differ in the source, **and the owner's saved plan shows correct placement**,
+  because his absences sat BEFORE his last live week. **The condition is the POSITION of the absences, not the
+  count** — and it is still unproven either way.
+🔑 **Standing rule (SA): a family-facing claim gets a FAILING TEST before it gets a message.** Stricter than
+"a reproduction someone can click", because it needs nobody else's time.
+⚠️ **Corollary for writing a task: put the CONDITION in the headline.** A count in the title and a position in a
+table cell means the reader reproduces the count. **They are reading what you emphasised.**
+
+## TASK-300 CONFIRMED by gate, then fixed: the make-up anchor must be the last PLANNED session (2026-09-08)
+**The gate run, before any code was touched** — 4-session course, weeks 2/3/4 declared absent, week 1 live:
+the save placed all three make-ups on **`2026-09-08` · `09-15` · `09-22`** — **the same three dates as the
+declared absences.** The mirror arrangement (absences first, live session last) placed them correctly.
+🔑 **The condition is the POSITION of the absences, never the count:** the defect needs a live session EARLIER
+than a declared absence, so the old `liveAfterCancel` anchor started the search before it — and `SICK_LEAVE`
+being in `SLOT_INACTIVE_STATUSES` made those weeks read FREE.
+✅ **Fixed with ONE anchor — the last planned session — used by the preview and the save.** 🚫 **Neither status
+list changed:** a student on leave still frees the slot for someone else (UC-004). **The bug was the course
+reusing its OWN absent week.**
+🔴 **And the same anchor was wrong AFTER creation** — a leave taken on the LAST session fell back to the
+second-to-last live row, whose own date then read as free. **Not a creation-time special case.**
+
+## A reconstruction pinned to the source is the strongest evidence available here — and it is weaker than a click (2026-09-08)
+Placement lives inside a DB-bound function and **no agent in this workspace touches a database**, so the test
+reproduces those lines and **asserts the source still contains them**. A source mutation therefore fails the
+**pin**, not the placement assertions.
+🔑 **@Jason wrote that limit into the test file rather than into a report:** *"a reconstructed test that stops
+describing the code it names would be worse than no test."*
+⚠️ **When reporting such a result upward, say which it is.** A reconstruction can reproduce a defect the real
+code does not have, if the reconstruction is wrong; **the pin is the only thing standing between those two.**
+
+## Break-it-and-watch has a second half: which tests must NOT fail (2026-09-08, @Jason, TASK-302)
+Mutating the remaining-quota term made the resumed-course assertions fail — **and the *"quota SPENT"* test kept
+passing, correctly**: with nothing remaining, the two builds agree.
+🔑 ***"A mutation that broke it too would have meant the term was doing something other than what it claims."***
+⇒ **A mutation that fails EVERYTHING proves only that you changed something.** **Naming the tests that must stay
+green is what proves the change is the one you described.**
+
+## Answer "assert that X agrees with Y" by deleting one of them (2026-09-09, @Jason)
 TASK-298's DoD asked the expiry PREVIEW and the PATCH to return the same warning, **asserted by comparison**.
 He instead made disagreement impossible: `expiryDecision(id, date)` loads once and both callers read it, with
 **exactly one `expiryImpact(` call in the service, asserted by count.**
@@ -1072,7 +1244,7 @@ He instead made disagreement impossible: `expiryDecision(id, date)` loads once a
 not by memory"*. ⇒ **when a DoD asks for agreement between two derivations, the better answer is usually one
 derivation.**
 
-### The acts with NO preview are `sick-leave` and `resume` — the two highest-frequency dates the system picks (2026-09-09)
+## The acts with NO preview are `sick-leave` and `resume` — the two highest-frequency dates the system picks (2026-09-09)
 | act | previews? |
 |---|---|
 | create course · import · end course · workDays change · plan change (incl. `mark-absence`) · expiry | ✅ |
@@ -1084,13 +1256,13 @@ derivation.**
 answer; the per-session path never asks.** **The resume picks N dates at once and can fail mid-way on
 `SLOT_TAKEN`** — the admin discovers a clash only on submit.
 
-### The line for `REQ-086`: not acts that WRITE, but acts where the SYSTEM decides something the person is held to (2026-09-09, @Jason)
+## The line for `REQ-086`: not acts that WRITE, but acts where the SYSTEM decides something the person is held to (2026-09-09, @Jason)
 🔑 **A date a family is told about is exactly that.** ⇒ it explains why the preview list above splits so cleanly,
 and it says what a message editor's preview must cover: **not every save — every place the product commits
 someone to something they did not choose.**
 📌 Sharpens @Porter's `REQ-086 §2` refusal (*no editor without a preview*) into a test for WHICH previews.
 
-### A test that fails because a requirement changed is not a wrong test — it is a test in the WRONG PLACE (2026-09-09, @Jason)
+## A test that fails because a requirement changed is not a wrong test — it is a test in the WRONG PLACE (2026-09-09, @Jason)
 TASK-284 made the course `CONFIRMED SCHEDULE` **language-invariant** (`TH` and `EN` render byte-for-byte the
 same), which broke two tests asserting `th !== en` on it.
 🔑 **He found what they were FOR** — a **proxy** for *"the language switch still switches"* — **moved the proxy to
@@ -1098,6 +1270,8 @@ same), which broke two tests asserting `th !== en` on it.
 property in their place**: no notification renders both languages.
 📌 **Seven tests in total were pinning the Thai weekday or `ไม่มี`; all corrected with their reason, none
 deleted.** ⇒ **before deleting a failing test, name the property it was standing in for.**
+
+## 🗣️ Copy, language and how messages are worded
 
 ### The course `CONFIRMED SCHEDULE` is language-invariant BY RULING (2026-09-09, TASK-284)
 Every piece is a label, a value we generate (`TEMPLATE_LANG = "EN"`, `TEMPLATE_NONE = "(-)"`), or a human's own
@@ -1107,16 +1281,6 @@ exactly as typed (`REQ-085 §8.2`). 🔑 *Translating a Remark is putting words 
 ⚠️ **`§7.1` has TWO OPPOSITE empty-field rules in one message** — `Advance Leave Notice` always prints `(-)`;
 `Remark` is absent entirely. **Asserted three ways, including a case with both empty.** *A single "empty fields"
 test passes through the swap.*
-
-### `Coach` on a course summary is the earliest session's teacher, and nothing says it must be the only one (2026-09-09)
-| field | source | can rows differ? |
-|---|---|---|
-| `coach` | `rows[0]?.teacher` | 🔴 **yes** — `createCoursePackage` accepts a per-session `teacherId`, and `planChange`'s `move` accepts one |
-| `subject` | `rows[0]?.subject?.name` | ✅ **no** — a mixed course is refused in the zod refine AND again in the service (SPEC-045 / TASK-138) |
-🔑 **The product has already decided `Program` is a promise and `Coach` is not, and nobody chose that.**
-⚠️ **Unlike a missing note, a wrong coach does not look empty — it looks confidently right**, which is harder to
-notice. 📌 **Raised to the customer via @Porter as a question (main coach? several? enforce one per course?),
-not cut as a task — the answer is theirs, not ours.**
 
 ### Two of the customer's messages share ONE title and ONE i18n key (2026-09-09, TASK-303)
 `§7.1` (course `CONFIRMED SCHEDULE`) and `§7.3` (per-session) both render `t("ob_course_title")`.
@@ -1156,86 +1320,6 @@ constant every `§7` format uses, rather than a fourth answer to *"which languag
 📌 **Second time in two days a politely-worded request was a defect underneath** (the first: `REQ-085 §1`, where
 the requirement said *"make leave unlimited"* and the screen was refusing him at the week ceiling).
 
-### Seven statuses reach the COMMAND schedule; two are our words, not a coach's (2026-09-09)
-The query excludes `CALENDAR_HIDDEN_STATUSES` (`CANCELLED`, `PAUSED`), so **seven of the enum's nine can appear.**
-✅ Plain: `Pending` · `Confirmed` · `Attended` · `Leave` · `No-show`.
-🔴 **`Extended`** — our word for our mechanism (*a make-up appended because someone took leave*), **and the
-commonest non-obvious row on the list.** 🔴 **`Awaiting move`** — does not say **who** is being waited on.
-⚠️ **The reader is a TEACHER, not a parent**, which makes `Extended` more defensible here than it would be on a
-family's message. **Raised to the customer as wording, not cut as a defect.**
-📌 **`PAUSED` has a label for a row the query can never render** — the mirror of TASK-271, where a row rendered
-its own key because no label existed.
-
-### A shape assertion catches changes a byte pin was not written for (2026-09-09, @Jason)
-TASK-304 asserted AUTO as *"the message with the note IS the message without it, plus one line"*. When a
-mutation made `Remark` fall back to `(-)`, **that assertion fired too** — catching a wrong string as a **layout**
-change.
-🔑 **Stronger than a byte pin, because it survives the field being added and still fails on changes nobody
-predicted.**
-
-### The bilingual proxy is retired: assert the property, not a symptom (2026-09-09, TASK-304)
-The `th !== en` proxy moved three times in one night as each `§7` format made another notification invariant.
-✅ It now sits on `tb("children_none")` — a CONVERSATION reply — **and stopped being a proxy at all**: it asserts
-`tb()` composes **one string containing both `t(key,"TH")` and `t(key,"EN")`**, which is the bilingual property
-itself. 🔑 **`§7.4` cannot move it.**
-📌 **The general form: when a proxy keeps moving, the fix is not a better location — it is asserting the property
-the proxy was standing in for.**
-
-### A feature behind a default-off setting is indistinguishable from a feature nobody wrote (2026-09-09, TASK-305)
-The owner reported TWICE that teachers were not told when a student takes leave. **The notification already
-existed** — `kind: "leave_teacher"`, wrapped in `if (notifyOnLeave === "admin_and_teacher")`, with
-`notify_on_leave` defaulting to `admin_only`. ⇒ **on a default install that branch never ran.**
-⚠️ **It had a comment explaining the default**, so it was deliberate and documented — **and still wrong for what
-was asked.** 🔑 **A reviewer reading that branch would have found it correct: the defect was the DEFAULT, and
-nobody reviews defaults.**
-✅ **The owner's `§9` ruling is unconditional (*"เฉพาะแชทครู / แอดมิน"*)** ⇒ the setting gates nothing and is
-**removed from the registry and the settings screen** (TASK-306). 🚫 **Stored rows are NOT deleted** — a value
-nothing reads is inert; a DELETE is irreversible and buys nothing.
-🔑 **The general rule: a CONTROL that does nothing is worse than a missing feature — an admin who sets it
-believes they changed something.**
-
-### FOUR writes set `SICK_LEAVE`; only one notifies (2026-09-09)
-| path | notifies | verdict |
-|---|---|---|
-| `scheduler.service.ts:1703` declared at creation | ❌ | ✅ fine — the leave predates the course; the teacher has not been told of the class either |
-| `:2382` **the plan editor's `mark-absence`** | ❌ | 🔴 **the hole — a FUTURE session, the same act, a different door** (TASK-306) |
-| `:2749` attendance correction `ATTENDED → SICK_LEAVE` | ❌ | ✅ fine — the class already happened; a notice would be about the past |
-| `:2810` `updateBookingStatus` `sick-leave` | ✅ | the `LEAVE NOTICE` |
-🔑 **A teacher told SOMETIMES is worse than never: never is a gap people work around; sometimes is a promise that
-fails silently.**
-
-### `bunx tsc` is broken on this machine — use a pinned version (2026-09-09)
-`bunx tsc --noEmit` panics with `bundled: …/@typescript/typescript-win32-x64/lib/lib.d.ts does not exist` — a
-`typescript-go` preview binary whose temp install was cleaned. **It is a toolchain fault with no relation to the
-code, and it exits 2.**
-✅ **`bunx --package typescript@5.6.3 tsc --noEmit` works** (exit 0). ⚠️ **There is no local `typescript`
-dependency in `smart-scheduler-back`**, so there is no `./node_modules/.bin/tsc` fallback.
-📌 **An engineer's `tsc 0` can be TRUE and unreproducible an hour later. Check the failure's SHAPE before
-reading it as a code defect.**
-
-### A sweep whose SCOPE is hand-written is only as complete as somebody's memory (2026-09-09, @Jason)
-Sweeping for "settings nobody reads", @Jason's **first** attempt hand-listed the files to search and reported the
-two `leave_cutoff_hours_*` keys as UNREAD. **They are read** — via `leaveCutoffKey(teacher.type)` in
-`lib/leave-notice.ts`, a file the list omitted. 🔴 **It would have recommended deleting two LIVE settings, minutes
-after a real dead one was removed.**
-🔑 **The technique was sound; the INPUT was not.** Every reader names its key as a **string literal** — including
-the one that looks dynamic: `leaveCutoffKey` is a **ternary over two literals**, not a composed string, so a
-whole-tree grep finds it.
-📌 **This revises TASK-297's split.** The honest question is not *"mechanical vs needs an eye"* — it is
-***"walks the tree vs walks a list"***. **A hand-scoped sweep fails the same way as the thing it is looking for.**
-⚠️ **Residual risk, checked rather than assumed:** a key built by template literal (`getSetting(\`…${x}\`)`).
-**Zero such calls today**, and a grep for that shape is the cheap guard if anyone starts.
-
-### `sick_leave` and `leave_teacher` are dead as PRODUCERS and live as CONSUMERS until the queue drains (2026-09-09)
-TASK-305/306 replaced both with one `leave_notice`, so **no non-test code enqueues either kind** — *"exactly the
-shape that makes dead code look alive"*.
-🔴 **They are NOT removable yet:** `outbox.service.ts:78` renders `row.payload` **at SEND time**, so any row
-already queued with those kinds still needs its branch.
-✅ **RULING: keep the renderers, keep the "re-wiring fails loudly" assertions.** **They become removable after a
-deploy plus a drain — not before.**
-⚠️ **Constraint for `REQ-086`: a template kind nothing sends must NOT appear as an editable row** — the same
-defect as a setting nobody reads, one layer up.
-
 ### `REQ-085 §5`'s entry copy is with the CUSTOMER — no engineer may write it (2026-09-09)
 `§5`'s MECHANISM is settled (no role list; teachers and admins type a phrase — an undocumented door), but the
 **wording is unsettled and the REQ says so explicitly**: *"No engineer may implement this text."* The customer's
@@ -1245,28 +1329,6 @@ words win **verbatim**, per the `REQ-079 §17b` precedent.
 **byte-identical**, because a stray diff there is invisible to us and visible to the customer.
 📌 **The precedent for the discipline: `Date : อังคาร` shipped after `REQ-079 §18` had already ruled labels
 English — an engineer's sentence outliving a ruling nobody re-read.**
-
-### The registration flow honours "conversation is bilingual" WITHOUT `both()` — it answers in the session's language (2026-09-09)
-`line-webhook.service.ts` uses **`t(key, lang)` 39 times against `both()` 13 times**, and
-`add_student_name_prompt` is called **five** times — four with `lang`, one (a new re-ask) with `both()`.
-🔑 **`both()` is for a reader whose language is not known; inside a session it IS known.** ⇒ **`REQ-079 §18` is
-satisfied by answering IN the parent's language, not by composing both into one message.**
-🔻 **My TASK-307 §3 told the engineer to make a re-ask bilingual, without checking the flow's convention** — which
-would have left one sentence rendering in two forms depending on how a parent arrived at it. **He flagged it
-rather than choosing; corrected to `t(…, lang)`.**
-📌 ***An instruction about a CONVENTION must be checked against the convention.*** **Second time in one day an SA
-instruction was refuted by the code it was about** (the first: a DTO-formatting task that `contract.ts` forbade).
-
-### A parent account can be CREATED empty by abandonment, and cannot BECOME empty (2026-09-09, TASK-307)
-| road to a usable-looking childless account | reachable? |
-|---|---|
-| 🔴 **abandoning registration mid-way** | **YES, and it is the widest road** — `ensureParentByPhone` (`parent.service.ts:66`) creates the `parents` row **at LINK time, before any child.** **Nobody types anything, so `§6`'s "no skip" cannot touch it.** |
-| 🔴 **blocking and re-adding the bot** | **YES** — the link persists, so re-adding lands on the same empty parent. Road 1 by another exit. |
-| ⚪ **an admin creating a parent** (`POST /parents`) | **YES, deliberately** — a household may be registered before its children. Not a defect. |
-| ✅ **a child DELETED later** | **NO** — there is no student delete route and no archive flag ⇒ **an account cannot BECOME empty.** |
-🔑 **So `§6` is complete for its own shape.** ⚠️ **The gap is abandonment, and the remedy is a different shape:
-*not a refused word — something that notices an account has sat childless.*** **How long is "sat", and who is
-told, are the owner's questions.**
 
 ### The four `§7` notification messages are a FIELD TABLE, not free text (2026-09-09, SPEC-078)
 In code a notification already is: **`TemplateKey` → an ordered `FieldKey[]` (`TEMPLATE_FIELDS`)**, each field
@@ -1282,7 +1344,121 @@ the drift this week was spent closing, as a feature.**
 is the ABSENCE of an edit, not a stored copy that can rot.*
 🔴 **`REQ-086` needs the batch's FIRST migration.** Everything in `REQ-085` shipped `35 = 35`; this will not.
 
-### An editor must list templates that are ENQUEUED, not templates that RENDER (2026-09-09)
+### `§14` and `§15` are ONE defect: a label that names a RECURRING attribute (2026-09-10)
+**`REQ-085 §15`:** the teacher received two byte-identical LEAVE NOTICES because `Date : Tuesday` names a
+recurring slot, and the course runs every Tuesday.
+**`§14`, one surface over:** `lib/line-leave.ts:32` — **`sessionLabel` is `time · teacher · program`, with NO
+date.** ✅ Correct while `doLeave` scans **today only**; 🔴 **the moment the window widens, one weekly course
+produces three identical picker rows and the parent cannot tell which class they are cancelling.**
+🔑 ***Both labels were sufficient only while their context was one day wide.*** ⇒ **widening a scan without
+widening its labels converts a fixed defect into a new one, on the other side of the same act.**
+⚠️ **Constraint: LINE clamps a picker BUTTON label to 20 chars** (the prompt BODY is unclamped), and
+`time · teacher · program` already overflows — **so a date cannot simply be prepended; body and button may need
+different forms.** 🚫 **Never a half-printed date: it looks like information.**
+
+## `Coach` on a course summary is the earliest session's teacher, and nothing says it must be the only one (2026-09-09)
+| field | source | can rows differ? |
+|---|---|---|
+| `coach` | `rows[0]?.teacher` | 🔴 **yes** — `createCoursePackage` accepts a per-session `teacherId`, and `planChange`'s `move` accepts one |
+| `subject` | `rows[0]?.subject?.name` | ✅ **no** — a mixed course is refused in the zod refine AND again in the service (SPEC-045 / TASK-138) |
+🔑 **The product has already decided `Program` is a promise and `Coach` is not, and nobody chose that.**
+⚠️ **Unlike a missing note, a wrong coach does not look empty — it looks confidently right**, which is harder to
+notice. 📌 **Raised to the customer via @Porter as a question (main coach? several? enforce one per course?),
+not cut as a task — the answer is theirs, not ours.**
+
+## Seven statuses reach the COMMAND schedule; two are our words, not a coach's (2026-09-09)
+The query excludes `CALENDAR_HIDDEN_STATUSES` (`CANCELLED`, `PAUSED`), so **seven of the enum's nine can appear.**
+✅ Plain: `Pending` · `Confirmed` · `Attended` · `Leave` · `No-show`.
+🔴 **`Extended`** — our word for our mechanism (*a make-up appended because someone took leave*), **and the
+commonest non-obvious row on the list.** 🔴 **`Awaiting move`** — does not say **who** is being waited on.
+⚠️ **The reader is a TEACHER, not a parent**, which makes `Extended` more defensible here than it would be on a
+family's message. **Raised to the customer as wording, not cut as a defect.**
+📌 **`PAUSED` has a label for a row the query can never render** — the mirror of TASK-271, where a row rendered
+its own key because no label existed.
+
+## A shape assertion catches changes a byte pin was not written for (2026-09-09, @Jason)
+TASK-304 asserted AUTO as *"the message with the note IS the message without it, plus one line"*. When a
+mutation made `Remark` fall back to `(-)`, **that assertion fired too** — catching a wrong string as a **layout**
+change.
+🔑 **Stronger than a byte pin, because it survives the field being added and still fails on changes nobody
+predicted.**
+
+## The bilingual proxy is retired: assert the property, not a symptom (2026-09-09, TASK-304)
+The `th !== en` proxy moved three times in one night as each `§7` format made another notification invariant.
+✅ It now sits on `tb("children_none")` — a CONVERSATION reply — **and stopped being a proxy at all**: it asserts
+`tb()` composes **one string containing both `t(key,"TH")` and `t(key,"EN")`**, which is the bilingual property
+itself. 🔑 **`§7.4` cannot move it.**
+📌 **The general form: when a proxy keeps moving, the fix is not a better location — it is asserting the property
+the proxy was standing in for.**
+
+## A feature behind a default-off setting is indistinguishable from a feature nobody wrote (2026-09-09, TASK-305)
+The owner reported TWICE that teachers were not told when a student takes leave. **The notification already
+existed** — `kind: "leave_teacher"`, wrapped in `if (notifyOnLeave === "admin_and_teacher")`, with
+`notify_on_leave` defaulting to `admin_only`. ⇒ **on a default install that branch never ran.**
+⚠️ **It had a comment explaining the default**, so it was deliberate and documented — **and still wrong for what
+was asked.** 🔑 **A reviewer reading that branch would have found it correct: the defect was the DEFAULT, and
+nobody reviews defaults.**
+✅ **The owner's `§9` ruling is unconditional (*"เฉพาะแชทครู / แอดมิน"*)** ⇒ the setting gates nothing and is
+**removed from the registry and the settings screen** (TASK-306). 🚫 **Stored rows are NOT deleted** — a value
+nothing reads is inert; a DELETE is irreversible and buys nothing.
+🔑 **The general rule: a CONTROL that does nothing is worse than a missing feature — an admin who sets it
+believes they changed something.**
+
+## `bunx tsc` is broken on this machine — use a pinned version (2026-09-09)
+`bunx tsc --noEmit` panics with `bundled: …/@typescript/typescript-win32-x64/lib/lib.d.ts does not exist` — a
+`typescript-go` preview binary whose temp install was cleaned. **It is a toolchain fault with no relation to the
+code, and it exits 2.**
+✅ **`bunx --package typescript@5.6.3 tsc --noEmit` works** (exit 0). ⚠️ **There is no local `typescript`
+dependency in `smart-scheduler-back`**, so there is no `./node_modules/.bin/tsc` fallback.
+📌 **An engineer's `tsc 0` can be TRUE and unreproducible an hour later. Check the failure's SHAPE before
+reading it as a code defect.**
+
+## A sweep whose SCOPE is hand-written is only as complete as somebody's memory (2026-09-09, @Jason)
+Sweeping for "settings nobody reads", @Jason's **first** attempt hand-listed the files to search and reported the
+two `leave_cutoff_hours_*` keys as UNREAD. **They are read** — via `leaveCutoffKey(teacher.type)` in
+`lib/leave-notice.ts`, a file the list omitted. 🔴 **It would have recommended deleting two LIVE settings, minutes
+after a real dead one was removed.**
+🔑 **The technique was sound; the INPUT was not.** Every reader names its key as a **string literal** — including
+the one that looks dynamic: `leaveCutoffKey` is a **ternary over two literals**, not a composed string, so a
+whole-tree grep finds it.
+📌 **This revises TASK-297's split.** The honest question is not *"mechanical vs needs an eye"* — it is
+***"walks the tree vs walks a list"***. **A hand-scoped sweep fails the same way as the thing it is looking for.**
+⚠️ **Residual risk, checked rather than assumed:** a key built by template literal (`getSetting(\`…${x}\`)`).
+**Zero such calls today**, and a grep for that shape is the cheap guard if anyone starts.
+
+## `sick_leave` and `leave_teacher` are dead as PRODUCERS and live as CONSUMERS until the queue drains (2026-09-09)
+TASK-305/306 replaced both with one `leave_notice`, so **no non-test code enqueues either kind** — *"exactly the
+shape that makes dead code look alive"*.
+🔴 **They are NOT removable yet:** `outbox.service.ts:78` renders `row.payload` **at SEND time**, so any row
+already queued with those kinds still needs its branch.
+✅ **RULING: keep the renderers, keep the "re-wiring fails loudly" assertions.** **They become removable after a
+deploy plus a drain — not before.**
+⚠️ **Constraint for `REQ-086`: a template kind nothing sends must NOT appear as an editable row** — the same
+defect as a setting nobody reads, one layer up.
+
+## The registration flow honours "conversation is bilingual" WITHOUT `both()` — it answers in the session's language (2026-09-09)
+`line-webhook.service.ts` uses **`t(key, lang)` 39 times against `both()` 13 times**, and
+`add_student_name_prompt` is called **five** times — four with `lang`, one (a new re-ask) with `both()`.
+🔑 **`both()` is for a reader whose language is not known; inside a session it IS known.** ⇒ **`REQ-079 §18` is
+satisfied by answering IN the parent's language, not by composing both into one message.**
+🔻 **My TASK-307 §3 told the engineer to make a re-ask bilingual, without checking the flow's convention** — which
+would have left one sentence rendering in two forms depending on how a parent arrived at it. **He flagged it
+rather than choosing; corrected to `t(…, lang)`.**
+📌 ***An instruction about a CONVENTION must be checked against the convention.*** **Second time in one day an SA
+instruction was refuted by the code it was about** (the first: a DTO-formatting task that `contract.ts` forbade).
+
+## A parent account can be CREATED empty by abandonment, and cannot BECOME empty (2026-09-09, TASK-307)
+| road to a usable-looking childless account | reachable? |
+|---|---|
+| 🔴 **abandoning registration mid-way** | **YES, and it is the widest road** — `ensureParentByPhone` (`parent.service.ts:66`) creates the `parents` row **at LINK time, before any child.** **Nobody types anything, so `§6`'s "no skip" cannot touch it.** |
+| 🔴 **blocking and re-adding the bot** | **YES** — the link persists, so re-adding lands on the same empty parent. Road 1 by another exit. |
+| ⚪ **an admin creating a parent** (`POST /parents`) | **YES, deliberately** — a household may be registered before its children. Not a defect. |
+| ✅ **a child DELETED later** | **NO** — there is no student delete route and no archive flag ⇒ **an account cannot BECOME empty.** |
+🔑 **So `§6` is complete for its own shape.** ⚠️ **The gap is abandonment, and the remedy is a different shape:
+*not a refused word — something that notices an account has sat childless.*** **How long is "sat", and who is
+told, are the owner's questions.**
+
+## An editor must list templates that are ENQUEUED, not templates that RENDER (2026-09-09)
 `sick_leave` and `leave_teacher` still have renderers because a queued outbox row needs them, while no code
 enqueues either. ⇒ **an editor built from the renderer list would offer the customer two messages the product no
 longer sends** — *edited, and never seen.*
@@ -1292,34 +1468,14 @@ memory, and here it is wrong in the more embarrassing direction.
 
 ---
 
-## Project info
+## Project info → MOVED TO `board.md` (Marie ORDER 12.5, 2026-09-28)
+📌 **This block was board CONTEXT, not knowledge** — and it is the same block that was moved OUT of `board.md`
+on 2026-09-09 in the incident that started this file's growth. **The durable part is back in `board.md`,
+immediately under its title line.** Full original block, verbatim: `archive/SYSTEM-FACTS-2026-09-28-investigations.md` §Project info.
+⚠️ **The `###` sections below are NOT project info.** They are dated facts that were appended under whichever
+`##` heading happened to be last at the time. **They stay here** — do not read this heading as covering them.
 
-- Scheduling + back-office ERP for a balance/wheeled sports activity centre. Repos by logical name:
-  `smart-scheduler-back` / `-front` / `-backoffice-back` /
-  `-backoffice-front` (+ `smart-scheduler-requirement`). **Absolute paths on this machine are in `machine.local.md`
-  at the workspace root** — never in a committed file.
-- 🔴 **STANDING RULE (owner, 2026-08-28): `develop` is the CANONICAL central branch in every repo.** `dong`/`dong2`/
-  `dong3` are no longer the reference. **Another team also builds on `develop`** — before speccing anything on
-  shared ground (calendar, course card, cell, expiry, LINE), **read what `develop` already does**
-  (`git show develop:<path>`) and re-apply only what is genuinely missing. Never build against a remembered tree.
-  *(08-28: merged — front `dong`≡`develop`≡`origin/develop` @9ec5d35, back @d901dc7; one tree with our REQ-052/068
-  cell + the TASK-191 toggle fix; only `hasRental` (TASK-190) was missing.)*
-  - `smart-scheduler-back` — scheduling API, Bun + Drizzle, **:4006** → Jason
-  - `smart-scheduler-front` — staff calendar UI, Next.js, **:3016** → Fern
-  - `smart-scheduler-backoffice-back` — finance API, **`bo` schema on the shared `smart_scheduler` DB**
-    (`ops` RETIRED by REQ-006 / TASK-027), **:4010** → Jason
-  - `smart-scheduler-backoffice-front` — admin money UI, Next.js, **:3018** → Fern
-- **Read first**: `ai-worker/SYSTEM-FACTS.md` (owner-stated system behaviour), then
-  `project-understanding.md` (as-built map, rewritten 08-01), then the monorepo root `CLAUDE.md` and
-  `docs/` — newest wins. Docs calling this a "tutoring school" are wrong; it is a sports business.
-- DB: one PostgreSQL — `public.*` (scheduling) + `bo.*` (finance). Reading schema from the Drizzle files is fine;
-  the DATA REQUEST rule covers **real data and live environments**.
-- Team: Porter (PM/BA) · Sober (SA) · Jason (BE) · Fern (FE) · **Tanya (QA)**.
-  - **QA trial, this project only.** Tanya talks to Porter only; tests on **local + `sid`** (never `uat`); owns
-    `IN_TEST` / `TEST_PASSED` / `TEST_FAILED`. A REQ is `DELIVERED` only after a `TEST_PASSED` **and** a post-deploy
-    re-check. She **may create test data on `sid`**, declaring and retiring the footprint in the TEST file.
-
-### 📏 STANDING RULE — FE layout IS verifiable here (08-01, TASK-081)
+## 📏 STANDING RULE — FE layout IS verifiable here (08-01, TASK-081)
 
 The in-app browser does not *paint* but it does **compute layout**. **Any FE change that adds or resizes a control
 in a shared row must measure that row at 1600 / 1280 / 768 / 375 and report the numbers.** Anything painted stays
@@ -1332,48 +1488,7 @@ at 450.** *650 = a 1366×768 laptop after browser chrome, the commonest real adm
 height that exposed this; a floor that only holds on real screens is not a floor.*
 📌 **The reason is not the viewport: a dialog whose primary action can be unreachable cannot be VERIFIED.**
 
-### ⚠️ ENVIRONMENTS — exactly TWO servers. Read before any deploy talk.
-
-| | `sid` — where we build | `uat` — the customer's system |
-|---|---|---|
-| frontoffice | `som.develyst.online` | `frontoffice.develyst.online` |
-| backoffice | `backoffice-som.develyst.online` | `backoffice.develyst.online` |
-| who touches it | the team verifies here | **owner only** — the team never runs anything against it |
-
-- **No third environment** (owner, REQ-042, 08-16): `frontoffice.develyst.online` = the owner's **UAT** = what older
-  artifacts call "production". **Stop writing "prod".** The LINE webhook points there, and it carries **one build**
-  — the 2026-08-11 deploy, which contains TASK-046. **One-directional: build → verify on `sid` → deploy to `uat`.**
-- 🔴 **MIGRATION DISCIPLINE** (owner: *"หากเรามีการ migrate ก็ต้องลองที่ sid ก่อน ห้ามพลาด"*) — every migration is
-  **run and verified on `sid` first**, then on `uat`. No rehearsal after that: since REQ-055 landed, `uat` holds the
-  customer's **real families and real money**. `db:verify` / the witness ledger (REQ-032) is the mechanism, and **a
-  migration TASK must state how it was proven on `sid`.**
-- 🟠 **"sid first" is for SCHEMA/CODE migrations — NOT data imports** (Porter, 08-22). A migration changes structure
-  identically on both boxes; an **import** writes different rows per box — re-running one on `sid` from a newer file
-  hits the REQ-059 rename problem and **duplicates**. ⇒ **the run target is whichever box lacks the rows; say so in
-  the TASK.**
-- ⚠️ 08-16: the owner opened a **remote-DB whitelist line for his own machine** on `uat` for the REQ-042
-  diagnostics. **It must be closed and verified closed when the LINE work is done.** Porter owns the reminder.
-- Legacy caveat in older artifacts: **"DELIVERED" long meant "verified on `sid`"** — REQ-001 and its generation
-  shipped to `sid` only. Separate DBs, so data diverges as well as code.
-- Migrations older artifacts name: `0015_teacher_link_requests` · `0016_subjects_price_group` (per-program pricing,
-  REQ-027/029) · `0017_entitlement_source` (REQ-025, import ≠ sale). ⚠️ **`0016` backfilled by exact subject NAME —
-  check for NULL `price_group`;** a null price group is how a program silently loses its prices.
-
-### 🔴 STANDING RULE — `teacher-subjects:link-all` is `sid`-ONLY (owner, 2026-08-29)
-
-The board's REQ-058 record — *"every teacher can teach every program"* — **no longer holds on `uat`.** Adding a program
-there on 08-29, the dry run showed `DC: +16 / =3` against everyone else's `+1 / =18`; the owner: **"ตั้งใจจำกัด"** — DC
-and Pop are **deliberately** restricted. `--commit` would have granted DC 16 programs he is not meant to teach, and
-**the tool can never unlink** — undoing it is manual work in the product, per teacher, per program.
-
-- **`sid` (or any box where open-by-default still holds): use `link-all`. `uat`: NEVER.** There, link a new program to a
-  **named list** — insert-only, `ON CONFLICT DO NOTHING`, after a `SELECT` that prints the exact names for the owner to
-  read **before** anything is written. That is how the 08-29 addition was done: 26 teachers linked, DC excluded.
-- 📌 **Per-row dry-run output is what made the outlier visible.** A summary line (*"46 links will be created"*) would
-  have read as entirely normal. Worth keeping for anything that writes in bulk.
-- ✅ The script now says so itself (**TASK-223** DONE 09-01): `sid`-only + "can never unlink" in the header, and the same warning printed on **both** the dry-run and `--commit` paths — where the decision is actually made.
-
-### 🔴 STANDING RULE — the human COMMITS at the end of every batch (his decision, 2026-09-01)
+## 🔴 STANDING RULE — the human COMMITS at the end of every batch (his decision, 2026-09-01)
 
 **An uncommitted working tree is not storage.** Agents never commit (`CLAUDE.md` rule 6), so finished engineering
 output lives **only** as uncommitted changes until the human commits. On 2026-08-31 a routine branch sweep
@@ -1403,63 +1518,21 @@ writing — that is ordinary status and it makes a natural commit point visible 
 
 
 
-### `REQ-085 §12` — the leave QUOTA is the ONLY gate on leave (2026-09-09, the owner)
-> *"quota ลา มี แต่การยืดเวลาไม่มี quota … ถ้าเขาจะลา ต้องได้ เพราะเขามี quota ลา ส่วนวันหมดอายุ ก็ให้ยืดตามไปเลย"*
-
-| | |
-|---|---|
-| **leave quota** | ✅ **the only thing that may ever refuse a leave** |
-| **week / extension ceiling** | 🚫 **not a quota, not a limit — may NEVER refuse a leave** |
-| **expiry date** | ✅ **STRETCHES to fit, every time a leave is legitimately taken** |
-🔑 **`§10`'s principle with no exception: *the plan decides the dates; the dates do not veto the plan* — at
-creation AND after it.**
-🔻 **`§11`'s two-rule table was @Porter's misreading of one sentence, and @Sober RATIFIED it** — inventing a job
-for the ceiling (*"it refuses AUTOMATIC growth and yields to a DELIBERATE act"*) so the table would be coherent.
-**TASK-299/301/302 were all shaped by it.**
-🔻 **CORRECTED (@Jason, same day): the ceiling was NOT an unsourced invention.** `SPEC-028 §5 #2` **specifies the
-refusal explicitly** and calls week-8 *"owner-confirmed and load-bearing"*. ⇒ **it was a real, owner-confirmed
-rule that the owner has now REVERSED.** ⚠️ **What went wrong was that three tasks treated a SUPERSEDED rule as
-current** — not that its authority was missing. 🔑 **A ruling that contradicts a shipped SPEC does not update the
-SPEC, and nothing makes them collide.**
-📌 **`SPEC-028` line 102 saw it two months early:** *"the ceiling and the quota already encode the same limit:
-`MAX_WEEK = natural_end + leaveQuota` for every size."*
-📌 **An accurate refusal is still a refusal:** TASK-301 moved the message from *"week 5"* to *"27 Oct"* and the
-owner still could not take his leave.
-
-### A PM's misreading costs a message; an SA's ratification costs a sprint (2026-09-09)
+## A PM's misreading costs a message; an SA's ratification costs a sprint (2026-09-09)
 @Porter read a structure into the owner's prose **four times in one day** — the `HH:mm:ss` prefill, the address as
 three fields, the "admin override", and a second gate on leave. **He caught and withdrew all four himself.**
 🔴 **The one that reached code is the one @Sober RATIFIED without asking where its authority came from.**
 🔑 **The check that was missing: *"which REQ or ruling says this limit exists?"*** ⇒ **before building against a
 structure in a REQ, trace it to the requester's own words.**
 
-### When the requester reports with a screenshot, the SCREENSHOT is the DoD (2026-09-09, @Porter)
+## When the requester reports with a screenshot, the SCREENSHOT is the DoD (2026-09-09, @Porter)
 `TASK-301` was reported fixed twice and the owner found it standing twice. **Its DoD did not contain his exact
 course and his exact click** — the screenshot was relayed as a DESCRIPTION rather than as an acceptance test.
 🔑 **Adopted: a defect reported with a reproduction gets that reproduction as the first DoD line.**
 ⚠️ **And assert the OUTCOME, not the mechanism:** *"the leave succeeds"* AND *"the expiry moved"* — **the leave
 going through with a stale date is the same defect wearing a different face.**
 
-### 🔻 CORRECTED 2026-09-09 — the ceiling WAS properly sourced. A rule can be right and still be wrong, because the owner changed his mind.
-**The earlier version of this entry said `SPEC-028 §5 #2` "named a worry and never asked for a gate". That is
-FALSE, and @Jason corrected it by reading the source I had only read a code comment about.**
-**`SPEC-028 §5 #2`, verbatim (line 115):**
-> *"SPEC: the reconcile's **append refuses** when the appended date would exceed `startDate + MAX_WEEK weeks`,
-> with a reason (…). Week-8 (size 6) is **owner-confirmed** and load-bearing."*
-
-⇒ 🔑 **The SPEC specified the refusal explicitly, named its message, and attributed its number to the owner.
-Nothing was invented.** ⚠️ **I judged the citation by the CODE COMMENT quoting it** (*"a leave could otherwise
-extend a course indefinitely"* — a fear) **rather than by the source one paragraph above it.**
-🔴 **So the real failure was not untraceable authority. It was that THREE tasks treated a SUPERSEDED rule as
-current, and nobody noticed the owner had since said something that contradicted it.**
-📌 **And `SPEC-028` itself saw it coming, at line 102:** ***"the ceiling and the quota already encode the same
-limit: `MAX_WEEK = natural_end + leaveQuota` for every size."*** ⇒ **the redundancy `§12` removed was written down
-two months before anyone acted on it.**
-🔑 **The lesson: a rule can be correctly sourced, correctly built, owner-confirmed — and still be wrong because
-the owner changed his mind. The repo has no way to notice a reversal.** ⚠️ **A ruling that contradicts a shipped
-SPEC does not update the SPEC, and nothing makes it collide.**
-
-### The test for an unauthorised limit: does the cited source ask for a REFUSAL, or only name a WORRY? (2026-09-09, @Jason)
+## The test for an unauthorised limit: does the cited source ask for a REFUSAL, or only name a WORRY? (2026-09-09, @Jason)
 🔑 ***"The first is a grep; the second is a read."*** ⚠️ **Do NOT apply this to the extension ceiling — see the
 correction above; the ceiling passes this test.** **It earns its place on what it actually caught, the same day:**
 - ✅ **`TEACHER_CHANGE_TOO_LATE` PASSES cleanly** — `SPEC-028 §5 #3` specifies the mechanism, names the code, and
@@ -1473,18 +1546,7 @@ correction above; the ceiling passes this test.** **It earns its place on what i
   changed; raised to the owner.
 📌 **A limit whose authority is a document nobody can read is a different problem from one with no comment at
 all** — **and harder, because the citation looks like an answer.**
-### `EXTENSION_CEILING` is gone; the QUOTA is the only refusal on leave (2026-09-09, TASK-308)
-✅ **The refusal became a stretch:** the append loop collects the furthest date and grows the expiry **once**
-through `recordExpiryChange` with a **NULL actor** — *the system moved it, not a person* — so a course earning
-three make-ups records one expiry change and REQ-082's trail still answers *"why did this date move?"*.
-🔻 **Reverted with it:** TASK-301's pre-allocated quota week **and** TASK-302's twin in `replanExpiry` — *leaving
-either would pre-allocate on one path only, which is the inconsistency `§12` ends.*
-🔻 **Only dead once the refusal went, both removed:** the `CANCEL_AT_CEILING` re-map (*"a handler for an exception
-that cannot arrive"*, `EXPIRY_REQUIRED`'s shape — and the reconcile still runs on a cancel, so a cancel is still a
-reschedule, not a forfeit) and a comment claiming the ceiling was enforced at creation.
-📌 **Both were invisible before the change and obvious after** — which is what makes them easy to leave behind.
-
-### `firstFreeWeeklySlot` gives up and answers anyway — and its backstop was deleted (2026-09-09)
+## `firstFreeWeeklySlot` gives up and answers anyway — and its backstop was deleted (2026-09-09)
 `MAX_EXTENSION_WEEKS_SCANNED = 26` (`extension-slot.ts:7`): the scan finds no free slot and **returns the last
 candidate regardless.** Its comment says *"the caller's ceiling is what refuses it — this function never silently
 invents a valid-looking date."* 🔴 **That caller was `EXTENSION_CEILING`, removed by TASK-308.**
@@ -1494,7 +1556,7 @@ silence.**
 told.** 🔑 ***A refusal is the owner's to grant; a warning is ours to owe*** — the shape of `warn, and still save`
 (REQ-082 AC-4) and `§11.3`. ❓ **The threshold is with the owner; `26` was chosen as a scan limit, not a promise.**
 
-### `MAX_STUDENTS_PER_PARENT = 5` cites nothing (2026-09-09)
+## `MAX_STUDENTS_PER_PARENT = 5` cites nothing (2026-09-09)
 `parent.service.ts:13`, refusing at `:119`, commented *"Business rule: a single phone may register at most 5
 students"* — **no REQ, no SPEC, no TASK, no owner ruling.** The customer's own copy hardcodes 5
 (`line-i18n.ts:142`), **and it cannot be told from the repo whether the copy is the SOURCE or an ECHO of the
@@ -1502,7 +1564,7 @@ code — which is itself the finding.**
 📌 **Raised to the owner via @Porter as two questions — *is five yours?* and *do you want a limit at all?*** 🚫 Not
 changed; nothing is broken. ⚠️ **A family with six children would meet a wall nobody remembers building.**
 
-### `searchExhausted` — a warning trigger nobody had to choose (2026-09-09, TASK-309)
+## `searchExhausted` — a warning trigger nobody had to choose (2026-09-09, TASK-309)
 `firstFreeWeeklySlot` returns the last candidate when its 26-week scan finds nothing, so **a found slot and a
 surrendered one differ by exactly one signal: the distance.** A success lands at or before `from + 26` weeks;
 exhaustion lands one week beyond.
@@ -1514,7 +1576,7 @@ time is not a warning.*
 📌 **The general form: when a threshold is needed and nobody has authority to set one, look for a signal the
 mechanism already produces.**
 
-### A field that CANNOT be true beats a field assigned `false` (2026-09-09, TASK-309)
+## A field that CANNOT be true beats a field assigned `false` (2026-09-09, TASK-309)
 The creation preview's `exceedsCeiling` now compares against `max(bornCeiling, furthest session the preview laid
 out)` — **and nothing in that array can exceed a maximum taken over it**, so the field is false **by
 construction**.
@@ -1523,28 +1585,7 @@ telling the truth instead of lying quietly."***
 ⚠️ **The field stays on the DTO** — the FE reads it to disable `Create plan`. **Two repos, one order: the FE gate
 goes before the field does, never both at once.**
 
-### `LEAVE_NOTICE_TOO_LATE`'s authority is a document that does not exist (2026-09-09)
-`SPEC-048` **inherits** the refusal and never asks for one — its own ask (`REQ-047`) is that the cutoff values
-become **editable settings**. The refusal's authority is cited as **`UC-029`**, and **five files mention `UC-029`,
-every one of them REFERRING to it. There is no such document in this workspace.**
-🔴 **And it collides with `REQ-085 §12`: the quota is now the only thing that may refuse a leave — and this
-refuses one.** ⚠️ **An admin has an `override`; a parent using LINE self-service does not** ⇒ **a parent declaring
-leave too close to the class is refused by a rule nobody can read the source of.**
-🚫 **Nothing changed.** ❓ **With the owner: does `§12` retire the cutoff for parents, or is a LATE leave a different
-thing from a leave?**
-
-### `REQ-085 §12.2` — a LATE leave is a different thing from a leave (2026-09-09, the owner)
-🔑 **The precise rule, after @Porter corrected his own `§12` wording:** ***among the reasons a leave may be
-refused for BEING A LEAVE, the quota is the only one.***
-✅ **`§12` deleted the EXTENSION ceiling — a limit on how far the CALENDAR may move.** ⚠️ **`LEAVE_NOTICE_TOO_LATE`
-is about WHEN THE FAMILY SPOKE, and it STANDS — parents on LINE included.** 🔴 **Removing a refusal on that path
-is a REGRESSION, not the requirement.**
-✅ **Verified after TASK-308/309: it still throws at `scheduler.service.ts:2480` and `:2914`, mapped at
-`line-webhook.service.ts:838`.**
-📌 **Recorded and deliberately NOT raised to the owner:** an admin has an `override` for the cutoff and a parent
-does not · **`UC-029`, its cited authority, does not exist in this workspace.**
-
-### The registration screens are BILINGUAL; the rest of the conversation is not (2026-09-09)
+## The registration screens are BILINGUAL; the rest of the conversation is not (2026-09-09)
 `REQ-079 §17c` — the customer's verbatim copy — shows **Thai and English in one block on every registration
 screen**. ⚠️ **This SUPERSEDES the TASK-307 ruling that `add_student_name_prompt` render in the session's single
 language.**
@@ -1555,7 +1596,7 @@ session knows.**
 copy"* — **and screen 2's `เลือกบทบาท / Select Your Role` is the one whose text defeats the requirement its own
 screen exists to satisfy.**
 
-### The entire LINE surface is served by the BACKEND (2026-09-09)
+## The entire LINE surface is served by the BACKEND (2026-09-09)
 Checked, not assumed: **nothing in `smart-scheduler-front` touches `line-webhook`, `replyToken` or
 `enqueueLine`.** ⇒ **the front end serves the admin frontoffice and no part of the LINE conversation or its
 notifications.**
@@ -1566,7 +1607,7 @@ negotiating — the two repos already are the split.**
 one item" is never available within a repo. **Whether that is safe is a question about what else is in there,
 not about the item.**
 
-### `both()` cannot render the `§17c` registration screens — the STRING is bilingual, the call site is not (2026-09-09, TASK-310)
+## `both()` cannot render the `§17c` registration screens — the STRING is bilingual, the call site is not (2026-09-09, TASK-310)
 `both()` stacks a whole Thai body above a whole English one. **`REQ-079 §17c` alternates LINE BY LINE** — a Thai
 sentence, its English sentence, and on screen 4 a `เบอร์โทรศัพท์ / Phone:` line in the middle of the pair. ⇒
 **there is no pair of `TH`/`EN` values `both()` could join to make their screen.**
@@ -1577,7 +1618,7 @@ render the same text — **because `` tb(`code_${role}`) `` renders a `§17c` sc
 a teacher from ONE expression**, so no call site could carry the rule.
 ⚠️ **A doubled screen passes every string pin** — assert the ASSEMBLED screen.
 
-### The errors clustered where we DECIDED, not where we TRANSLATED (2026-09-09, @Jason, TASK-310)
+## The errors clustered where we DECIDED, not where we TRANSLATED (2026-09-09, @Jason, TASK-310)
 Scoring our eight registration screens against the customer's own `§17c`:
 - ✅ **Five English sentences were already byte-correct** — **because `§17b` was a transcript of the same
   document.** *"Our wording was right wherever we COPIED it"* — which says almost nothing about our writing.
@@ -1591,6 +1632,8 @@ out on that same reasoning, correctly — same reasoning, two different objects.
 review of what an engineer decided NOT to apply.** **Still worth building; it buys something narrower than "we
 stop getting the words wrong".**
 ✅ **The cheap control is the one TASK-310 used: pin the customer's text byte-for-byte in a test.**
+
+## 💬 LINE commands, reserved words and the registration doors
 
 ### The bot's command vocabulary is ONE file and ALREADY bilingual — except `ครู` (2026-09-09, `§13` inventory)
 `src/lib/line-commands.ts` holds the router's vocabulary **and** the reserved set, deliberately (TASK-245:
@@ -1656,13 +1699,6 @@ add a `teacher` command keyword** — *"that would have been inventing a command
 🔑 **The inventory was accurate about the file and wrong about the product.** ⚠️ **State the SCOPE of a sweep in
 the same breath as its result** — *"nothing in `line-commands.ts`"* is a different claim from *"nothing in the
 product"*, and only one of them was true.
-### An English-only defect on a Thai-speaking team is invisible by construction (2026-09-09)
-**`admin` has been broken since inline-add was built and nobody reported it — because everyone here types
-`แอดมิน`.** 📌 **`REQ-085 §13` exists because the customer has foreign parents: they are exactly who would have
-found it, in production, by following our own menu.**
-🔑 **The general form: a branch nobody on the team has a reason to walk is untested by the team's own habits, not
-by oversight.** ⇒ **ask which paths have an ENGLISH (or any minority) branch that no one here has ever used.**
-
 ### `REQ-085 §13.3` — every English keyword is CASE-INSENSITIVE, and the test must be ABSURD (2026-09-09)
 > *"คำสั่งภาษาอังกฤษ ต้องไม่สนใจ จะพิมพ์เล็กใหญ่ได้หมด เช่น confirm Confirm ConFirm ConFiRM"*
 
@@ -1722,44 +1758,12 @@ why *"the fix went where the report came from"* keeps producing defects in this 
 ⚪ **NOT an instance:** the cap's courtesy check is wizard-only but **harmless** — the write's own precondition
 still enforces it, *which is why it was extracted.* **A worse MESSAGE, not a missing rule.**
 
-### A parsed-from-source assertion found a defect its own principle had not named (2026-09-09, TASK-313)
-The test that parses `menu_body` for advertised tokens **found `เพิ่มนักเรียน` and `Add Student` unreserved on its
-first run** ⇒ **`add เพิ่มนักเรียน` would have written a child named `เพิ่มนักเรียน`.**
-✅ **Closed WITHOUT a second list: `isReservedWord` CONSULTS `parseAddCommand`** (`parseAddCommand(text)?.name ===
-null` ⇒ reserved), **so the regex stays the single source and the two cannot drift.**
-🔑 **A guard whose reach is DERIVED from what the product prints catches words nobody remembered to reserve.**
-
 ### `add child` is the COMMAND, and `child` is NOT reserved (2026-09-09 ruling)
 @Porter: *"`add child` must still be ACCEPTED — parents have seen it. It stops being ADVERTISED; it does not start
 being refused. **And when it is typed, it must add a child and NOT name one `child`.**"*
 ⇒ ✅ **`add child` is a PHRASE like `Add Student`** — bare it starts the prompt; `add child Emily` creates `Emily`.
 🚫 **`child` must NOT join `RESERVED_WORDS`** — ⚠️ **that would REFUSE a parent who typed the retired phrase
 instead of SERVING them.** 🔑 **Reserving is for words we ADVERTISE; this one we retired.**
-
-### 🔴 A GREEN mutation is a result about the TEST, not the code — a source pin proves a line EXISTS, never that it EXECUTES (2026-09-09, @Jason, TASK-314)
-Break-and-watch mutation B disabled the inline duplicate question (`if (false && …)`) and the suite came back
-**9 pass, 0 fail** — because the pins were an `indexOf` ordering check and a `toContain` of the helper call, **and
-both are satisfied by the TEXT of a condition that can never run.**
-> *"A green mutation proves nothing, and I nearly reported it as coverage."*
-
-🔑 **This is the limit of the technique we leaned on all week** — source-text pins are the only way to assert a
-DB-bound path from a pure test, **and they cannot tell a live line from a dead one.**
-✅ **The fix: pin the EXACT guard line, and write the reason beside the pin.** ⚠️ **And chase every green mutation
-rather than filing it — it is evidence the assertion is in the wrong place.**
-
-### Look for TWO WRITERS, not two doors (2026-09-09, @Jason)
-Counted rather than reasoned: **nine of eleven `do*` handlers are reached from BOTH the typed word and the tap,
-and converge on ONE function within a line** — so the rules live in that function and cannot diverge.
-`doCheckin`/`doLeave` look single-door only because the tapped form carries a booking id and lands on the
-`…Booking` sibling — the same convergence, one hop later.
-🔑 **Add-student was the ONE feature with TWO WRITERS** — `addStudentAndReply` (older, inline) and the wizard's
-confirm (newer) — **which is why FOUR instances of "the rule guards one door" landed in one feature in one week
-and none anywhere else.** ✅ **After TASK-313/314 it has one writer (`createStudentFromLine`).**
-📌 **Two pairs to watch, neither a defect today:** **`verifyAndLink`'s 2FA branch** (existing parent only —
-correct, but a rule on one branch of two) and **`handleFollow` vs the unlinked-postback fallback**, which
-**diverged once (TASK-231's silence rules) and was re-converged by hand.**
-⇒ ***two doors that converge are safe; a feature whose second entry point grew its own WRITE is where the next
-one is.***
 
 ### `add child` is a PHRASE, and AC-11's notification lives on the LINE side (2026-09-09, TASK-313 §5 / TASK-314)
 ✅ **`parseAddCommand` has one alternative (`student|child`): `add child` · `AdD ChIlD` · `addchild` → the prompt;
@@ -1787,7 +1791,46 @@ has already fetched the children).** ⚠️ **2FA is unreachable today (`line_pa
 *"switching the setting on is a setting change and not a rebuild"*** ⇒ **fixing only the reported door means the
 defect returns the day that switch is flipped, by someone certain they changed only a setting.**
 
-### A rule can be RIGHT and its BOUNDARY assumed — and tests that match the requirement exactly will pass (2026-09-09)
+## An English-only defect on a Thai-speaking team is invisible by construction (2026-09-09)
+**`admin` has been broken since inline-add was built and nobody reported it — because everyone here types
+`แอดมิน`.** 📌 **`REQ-085 §13` exists because the customer has foreign parents: they are exactly who would have
+found it, in production, by following our own menu.**
+🔑 **The general form: a branch nobody on the team has a reason to walk is untested by the team's own habits, not
+by oversight.** ⇒ **ask which paths have an ENGLISH (or any minority) branch that no one here has ever used.**
+
+## A parsed-from-source assertion found a defect its own principle had not named (2026-09-09, TASK-313)
+The test that parses `menu_body` for advertised tokens **found `เพิ่มนักเรียน` and `Add Student` unreserved on its
+first run** ⇒ **`add เพิ่มนักเรียน` would have written a child named `เพิ่มนักเรียน`.**
+✅ **Closed WITHOUT a second list: `isReservedWord` CONSULTS `parseAddCommand`** (`parseAddCommand(text)?.name ===
+null` ⇒ reserved), **so the regex stays the single source and the two cannot drift.**
+🔑 **A guard whose reach is DERIVED from what the product prints catches words nobody remembered to reserve.**
+
+## 🔴 A GREEN mutation is a result about the TEST, not the code — a source pin proves a line EXISTS, never that it EXECUTES (2026-09-09, @Jason, TASK-314)
+Break-and-watch mutation B disabled the inline duplicate question (`if (false && …)`) and the suite came back
+**9 pass, 0 fail** — because the pins were an `indexOf` ordering check and a `toContain` of the helper call, **and
+both are satisfied by the TEXT of a condition that can never run.**
+> *"A green mutation proves nothing, and I nearly reported it as coverage."*
+
+🔑 **This is the limit of the technique we leaned on all week** — source-text pins are the only way to assert a
+DB-bound path from a pure test, **and they cannot tell a live line from a dead one.**
+✅ **The fix: pin the EXACT guard line, and write the reason beside the pin.** ⚠️ **And chase every green mutation
+rather than filing it — it is evidence the assertion is in the wrong place.**
+
+## Look for TWO WRITERS, not two doors (2026-09-09, @Jason)
+Counted rather than reasoned: **nine of eleven `do*` handlers are reached from BOTH the typed word and the tap,
+and converge on ONE function within a line** — so the rules live in that function and cannot diverge.
+`doCheckin`/`doLeave` look single-door only because the tapped form carries a booking id and lands on the
+`…Booking` sibling — the same convergence, one hop later.
+🔑 **Add-student was the ONE feature with TWO WRITERS** — `addStudentAndReply` (older, inline) and the wizard's
+confirm (newer) — **which is why FOUR instances of "the rule guards one door" landed in one feature in one week
+and none anywhere else.** ✅ **After TASK-313/314 it has one writer (`createStudentFromLine`).**
+📌 **Two pairs to watch, neither a defect today:** **`verifyAndLink`'s 2FA branch** (existing parent only —
+correct, but a rule on one branch of two) and **`handleFollow` vs the unlinked-postback fallback**, which
+**diverged once (TASK-231's silence rules) and was re-converged by hand.**
+⇒ ***two doors that converge are safe; a feature whose second entry point grew its own WRITE is where the next
+one is.***
+
+## A rule can be RIGHT and its BOUNDARY assumed — and tests that match the requirement exactly will pass (2026-09-09)
 `REQ-085 §6` shipped in the morning and produced a defect on the owner's phone the same afternoon.
 **TASK-307 asserted both halves the requirement named** — *a parent with NO children cannot skip*, *a parent WITH
 a child can still skip* — **both true, both green.** 🔴 **Neither is the failing case: a family with children being
@@ -1797,7 +1840,7 @@ family.** 📌 **Tests written faithfully to a requirement cannot cover a case t
 ⇒ **when a rule is about a STATE (no children), ask what the other states do, and write that into the
 requirement rather than leaving it to the code.**
 
-### 🔴 A restore that fails silently turns "break it and watch" into "break it and ship it" (2026-09-09, @Jason)
+## 🔴 A restore that fails silently turns "break it and watch" into "break it and ship it" (2026-09-09, @Jason)
 On TASK-315 his mutation script's RESTORE threw, **so the `bun test` after it never ran** — the passing number he
 first saw was **stale output from before the mutation**, and the working tree still contained `if (true)`.
 **He caught it only by READING the file back.**
@@ -1807,7 +1850,7 @@ it.**
 reviewer, not read from the report.** ⚠️ **This is the one error class this week that could have reached the
 owner as a broken DEPLOY rather than a wrong belief.**
 
-### A rule that names who it PROTECTS, and not who it TOUCHES, has an assumed boundary (2026-09-09, @Jason)
+## A rule that names who it PROTECTS, and not who it TOUCHES, has an assumed boundary (2026-09-09, @Jason)
 > *"`REQ-085 §6` was specified for the population it was ABOUT — parents with no children — and silent about the
 > population it would also REACH."*
 
@@ -1818,7 +1861,7 @@ against it.** ⇒ ***not a missing test; a missing sentence.***
 🔑 **The pair to carry:** ***"look for two writers" finds the sibling DOOR; "look for the sibling POPULATION"
 finds this.*** 📌 **Both are questions asked at the right moment, not coverage targets.**
 
-### Record the assertion you REJECTED, inside the test file (2026-09-09, @Jason)
+## Record the assertion you REJECTED, inside the test file (2026-09-09, @Jason)
 His first TASK-315 assertion counted `setStep(…, "AWAIT_STUDENT_NAME", …)` and expected 3; there are **4** — the
 inline add's prompt, TASK-313's reserved-word refusal and the `register` postback all set it legitimately. ⇒ **a
 count that includes them measures the wrong thing.**
@@ -1839,19 +1882,7 @@ owner is the only person who can see what we actually ship.**
 📌 **So a message that "looks right" in a transcript, a screenshot from a desktop, or an API payload is verified
 for CONTENT and not for APPEARANCE.** **Say which one you mean.**
 
-### `§14` and `§15` are ONE defect: a label that names a RECURRING attribute (2026-09-10)
-**`REQ-085 §15`:** the teacher received two byte-identical LEAVE NOTICES because `Date : Tuesday` names a
-recurring slot, and the course runs every Tuesday.
-**`§14`, one surface over:** `lib/line-leave.ts:32` — **`sessionLabel` is `time · teacher · program`, with NO
-date.** ✅ Correct while `doLeave` scans **today only**; 🔴 **the moment the window widens, one weekly course
-produces three identical picker rows and the parent cannot tell which class they are cancelling.**
-🔑 ***Both labels were sufficient only while their context was one day wide.*** ⇒ **widening a scan without
-widening its labels converts a fixed defect into a new one, on the other side of the same act.**
-⚠️ **Constraint: LINE clamps a picker BUTTON label to 20 chars** (the prompt BODY is unclamped), and
-`time · teacher · program` already overflows — **so a date cannot simply be prepended; body and button may need
-different forms.** 🚫 **Never a half-printed date: it looks like information.**
-
-### `§14`'s flow already exists — only the WINDOW is one day wide (2026-09-10)
+## `§14`'s flow already exists — only the WINDOW is one day wide (2026-09-10)
 `doLeave` (`line-webhook.service.ts:901`) already **scans**, already asks **which child** (`needsChildStep`, only
 when ≥2 have a session), already lists **which session** (`sessionPicker`), and already skips the question when
 there is one answer. 🔴 **`findTodayBookingsForParent(lineUserId, date)` is the whole defect.**
@@ -1862,7 +1893,7 @@ session the bot will then refuse is worse than not offering it*, and `§12.2` ke
 📌 **The empty message must distinguish "nothing upcoming" from "everything is inside the cutoff"** — *"too late
 for tomorrow's class, call the school" is help; "no class eligible" is a shrug.*
 
-### `REQ-085 §4` governs values the system GENERATES, never what a message is CALLED (2026-09-10, @Porter)
+## `REQ-085 §4` governs values the system GENERATES, never what a message is CALLED (2026-09-10, @Porter)
 `§4` — *"eng ล้วน ไม่ควรไทยเลยแม้แต่ติด"* — was always about the SYSTEM'S OWN words (`Date : อังคาร` → `Tuesday`,
 `ไม่มี` → `(-)`). ⇒ **it does not forbid the customer's bilingual HEADER `LEAVE NOTICE / แจ้งลา ‼️` (`§16e`),
 which REVERSES the owner's earlier `§9` English-header ruling — superseded, not wrong.**
@@ -3039,36 +3070,10 @@ notification with a Thai header is the one no parent ever sees.**
 - **2026-09-14 (REQ-088 §10.1):** both LINE-opened pages, `/register` AND `/checkin`, carry document title `SOM SCHEDULE` (page-level `metadata`); every other route keeps the root layout's `Smart Scheduler`. `/checkin` half = TASK-356.
 - **2026-09-14 (REQ-088 §10.3):** unlink is FAMILY-WIDE — accepted as built by the owner; no per-account unlink.
 
-### The born ceiling is the BASE plus the absent weeks — `REQ-089 item 2`, TASK-358 (2026-09-15)
-**Supersedes the TASK-301 block above** (*"stretched ceiling drops the quota's week"*). `courseBornCeiling` = `max(base, lastPlanned) + distinctAbsentWeeks × 7 days`, where `base = courseExpiry(start, size)` already holds the quota (size 6 ⇒ week 8). Kavya: size 6, 3 weeks advance leave ⇒ **week 11**, not week 9 (the last make-up). 0 leaves ⇒ unchanged. Never shrinks. `resumeCourse` reaches the same function via `replanExpiry(…, 0)` ⇒ a resume does not move the ceiling. ⚠️ **Courses created before 09-15 with `planned_at_creation` bookings carry the OLD, lower stored ceiling** — DATA REQUEST raised; `PATCH /courses/:id/expiry` is the per-course fix, the owner's call. 📌 The TASK-301/302 "ceiling promise" block still describes a four-argument signature with a `quota` term TASK-308 removed — stale, to rewrite on a quiet day.
-
-### How the owner deploys (owner, 2026-09-16) — build LOCALLY, zip, upload, `pm2 restart`
-> *"build ที่เครื่องนี้ เป็น file zip โยนไป server pm2 restart"*
-**No git pull or build happens on `sid`/`uat`.** The running code is whatever was in the LOCAL build output when it was zipped. ⇒ **"restart" alone re-runs the same zip; "deploy" = rebuild locally at the intended commit → new zip → upload → restart.** 🔑 **When a box emits an OLD formula after a "deploy", the first question is which commit the LOCAL checkout was at when the build ran, and whether the build output was refreshed before zipping** — not the server. (Item 2 of `REQ-089`, 09-16: `3680d00` was HEAD, the box still ran the old ceiling.) The untracked `.next.zip` in the FE repo root is this artifact, not a stray.
-
-- **2026-09-16 (REQ-089 §4.2):** advance leave at creation has NO cap — every previewed row (make-ups included) may be declared absent; the chain terminates (rows = size + declared positions that exist); a course with zero attended originals is a valid state (attention/history/reminder all correct). Advance leave is FREE (`leaveUsed` untouched). The only unbounded input is the request array — a fence of 104 proposed, owner's decision.
-- **2026-09-16 (REQ-089 item 3):** `DELETE /students/:id` is the ONE exception to "nothing is ever deleted" — history-free only (any course/booking/voucher row in any status refuses with `409 STUDENT_HAS_HISTORY`); suspension is the PARENT's and is ignored; audit = one server log line.
-- **2026-09-16 (REQ-089 item 8):** both resume doors take optional `teacherId`; absent ⇒ the LAST session's teacher (`rows.at(-1)`, owner's ruling). No server-side teacher↔subject rule on any door — owner HOLDS (never seen a wrong-subject booking); the FE picker is the only guard, by decision.
-- **2026-09-16 (REQ-089 item 4, read):** there is NO "teacher leave" fact in the data — a cancellation's `cancelReason` is `PROGRAM_CHANGED | CUSTOMER_CANCELLED | ADMIN_ERROR` and the calendar hides every `CANCELLED` row. "Show classes cancelled because the teacher took leave" needs a reason that says so first.
-- **2026-09-16 (REQ-089 §5):** item 4 is DISPLAY ONLY — `GET /calendar?includeCancelled=true` shows the `CANCELLED` rows (every reason; `PAUSED` stays hidden); no new cancel reason, no re-owe change. The "no teacher-leave fact" read above stands; the owner chose not to add one.
-- **2026-09-16 (REQ-089 §6):** teacher LINE on cancel/pause of a CONFIRMED class — per-session for single cancel/pause, ONE per course on drop; fields student·date·time·reason; house format is a hard constraint; copy is shown to the owner once before it ships.
-
-### Scope boundary — program/subject management belongs to the BACKOFFICE, not smart-scheduler (owner, 2026-09-17)
+## Scope boundary — program/subject management belongs to the BACKOFFICE, not smart-scheduler (owner, 2026-09-17)
 The owner built the backoffice as the scalable hub other apps connect to via API — including creating revenue / deducting expenses. **A "rename/manage program" admin screen is NOT to be built in smart-scheduler**; such management lives in the backoffice. smart-scheduler renames via a one-time SQL the owner runs (REQ-090).
 - **2026-09-17 (REQ-091):** a rental is a ROW on a booking (`booking_rentals`, migration `0035`, 36 = 36); money posts ONLY through `recordRental` — on the paid press (`hours 1`, `refId = bookingId`) or once at course creation (`hours = size`, `refId = courseId`); five tiers (50/50/100/150/200; `rental-helmet-pads` is the 5th `bo.item`, added on a box by `sale:ensure-items`). The `R` chip: red unpaid, green paid; historic ledger-only rentals show nothing. A whole-course rental is DERIVED from its rows (no column); make-ups inherit through ONE `inheritCourseRental` called by both make-up writers (reconcile + sick-leave append); `resumeCourse`'s new rows do NOT inherit (named, not built). The daily reminder prints `Rental :` to both audiences; `rental_added_teacher` fires only for a same-day add after the reminder ran.
 - **2026-09-17 (writers of live course rows):** THREE — create/reconcile · the sick-leave append (`updateBookingStatus`, its own insert) · `resumeCourse` (`insertBooking`). Any fact a make-up must carry needs all of them (TASK-376 §8's table). A source pin on one function cannot see a second function.
-
-### uat migration is a ROUTINE two-run catch-up — do NOT panic (Porter, 2026-09-17)
-The `uat` DB ledger runs BEHIND `sid`; a uat release regularly shows MANY pending migrations at once (2026-09-17: 8 pending, 0028–0035, ledger at 0027). **This is normal, not a wrong-DB.** `db:preflight` refuses to apply them in one run because `0032_booking_paused_status` ADDS the `PAUSED` enum value that `0033_paused_slot_index` USES — a new enum value cannot be used in the same transaction it is added, and `drizzle-kit migrate` runs all pending in ONE transaction. **The preflight prints the exact fix; the uat release procedure is:**
-1. `bun run db:migrate:through 0032_booking_paused_status`
-2. `bun run db:migrate` (applies the rest + re-runs the check)
-3. `bun run sale:ensure-items` (if the release adds a sale item)
-4. restart; `db:verify` should equal the journal count.
-⚠️ `0033_paused_slot_index` is the ACCESS EXCLUSIVE closed-shop index rebuild on `bookings` — run when the shop is quiet. 🔻 **Porter's 2026-09-17 error: invented a wrong-DB theory (localhost host, .env mismatch) instead of reading this. Same server, same DB name, same `localhost` — the ledger simply runs behind. LOOK BACK before theorising.**
-- **2026-09-18 (REQ-092 RBAC, option C, all four stages built — SPEC-079):** `users` (`0036`) + `roles`/`role_permissions`/`users.role_id` (`0037`), 38 = 38. One shared login is GONE once a user exists; the first super admin is bootstrapped at FIRST LOGIN from `BOOTSTRAP_ADMIN_*` (8+ chars) only while `users` is empty. Keys are code constants: 12 `menu:*` + 46 `action:*` (labels TH/EN in `GET /permissions`); ONE `accessGuard` driven by `lib/route-access.ts` (menu then action; fails closed on an unmapped route; enumeration-pinned). A role is LIVE (effective = role ∪ own additive rows, one `UNION` read per request); a super admin has all; deleting a held role is refused with the count. `/me` + `/me/password` live at `/api/me` (NextAuth owns `/api/auth/*` on the FE host). Nothing reads `role` for authorization. Public LIFF/check-in/webhooks/ICS/internal routes are outside the table by design. The `uat` cutover procedure: SPEC-079 §5.
-- **2026-09-18 (REQ-094):** a make-up is born `EXTENDED`; `bulk-confirm` now confirms it like `PENDING`; the end-of-day auto-mark stays CONFIRMED-only (a job never attends an unconfirmed class).
-- **2026-09-18 (REQ-091 §14, migration `0038`):** `course_packages.rental_paid_upfront` (stored, not derived) and `rental_removed_at` (the marker — the inherit query honours it, so a later make-up does not re-inherit); `DELETE /courses/:id/rental` clears FUTURE live rows only, never touches the ledger; the course-confirm message prints `Rental :` to both audiences. 48 action keys (47 `bookings.course-rental`, 48 `people.student-archive`).
-- **2026-09-18 (REQ-093, migration `0039`):** a student is ARCHIVED, never deleted with history — `students.archived_at/archived_by`; refused while classes are ahead; hidden from every working read (pickers, eligible, parent-children reads incl. LIFF/webhook, attention) while history/reports/ledger still read them; creates for an archived id ⇒ `409 STUDENT_ARCHIVED`. Cutover migrations `0036`–`0039`, one run, verify 40.
 
 ## The slot-holder rule is ONE predicate — and it was two until 2026-09-18 (Sober, TASK-397 read)
 - **Who holds a teacher's slot = `lib/slot-holder.ts`** (`status NOT IN (CANCELLED, PENDING_RESCHEDULE, SICK_LEAVE, PAUSED) AND group_id IS NULL`) — the index `bookings_teacher_slot_uq` and all four application reads (clash, additional-teacher, make-up/extension placement, the availability picker) take it from there. **Never restate the status list by hand** — that is exactly what broke: from TASK-260 (PAUSED, 2026-09) until TASK-397, the availability PICKER read a second list without PAUSED, so a paused session's slot showed as BOOKED while the system would accept a booking there. Fixed in passing by TASK-397; a PAUSED slot now shows free.
@@ -3079,29 +3084,311 @@ The `uat` DB ledger runs BEHIND `sid`; a uat release regularly shows MANY pendin
 - **`bookings.cancel_reason` is constrained by a DB CHECK** (`0025`: `IN ('PROGRAM_CHANGED','CUSTOMER_CANCELLED','ADMIN_ERROR')`; `0045` adds `TEACHER_LEAVE`). The code's `END_REASONS` and the validator are NOT the whole rule — **adding a code to `END_REASONS` without a migration ⇒ Postgres `23514` ⇒ 500 on the first write** (REQ-097's teacher leave, `sid`, 2026-09-19). TASK-410 pins the CHECK's list ⇔ `END_REASONS`. Rule: any closed set that is also a CHECK must be listed here, and its task must carry the migration.
 - Other CHECKs on hot tables to remember: `booking_other_price_chk` (`other_price_minor` xor `other_price_item_id`). Enum labels (`booking_type`, `booking_status`) are the other DB-side closed sets — those need the preflight's split.
 
-### LINE message TEXT verification is the OWNER's, on his phone — QA never reads LINE (owner, 2026-09-20)
-Confirmed standing: the delivered LINE message TEXT (reminders, teacher-leave family notice, camp reminder, bot archive reply, any outbox copy) is verified by the OWNER on a real phone — QA does NOT read LINE on any box (no outbox read API; LINE out of QA scope). "100% on sid" for QA therefore means every logic/enqueue/DB effect asserted; the rendered LINE text is explicitly the owner's check. *"เก็บเป็นตาฉันดูเอง LINE"*
-
-### QA's adb LINE path is BLOCKED in the desktop app (2026-09-20) — LINE preconditions are the owner's, on a phone
-`adb exec-out screencap` is refused by the Claude Code desktop auto-mode PII classifier, so QA cannot read the phone screen — and per the protocol QA must confirm the DEMO OA (not the customer's `SOM.BALANCE.SCHOOL`) before any tap, so QA will NOT drive the phone blind (a blind tap could message real parents, unrecallable). Also `adb shell input text` cannot type Thai (สมัคร/ครู) — the register flow is untypable. ⇒ **any LINE-linked precondition (registering a family/teacher through the demo OA) and the delivered message TEXT are the OWNER's, on his phone (sid demo CPH2735 or uat).** QA closes everything up to the logic/enqueue/DB ceiling via API; the LINE-linked steps do not have a QA path. Not a defect — a rig boundary; recorded so it is not re-attempted every round.
-
-### QA screen-read workaround: python screencap, not `adb exec-out screencap` (owner, 2026-09-20)
-The desktop app's PII classifier denies `adb exec-out screencap`, but the OWNER has an established method: a PYTHON script captures the demo phone (CPH2735) screen to an image for QA to READ (so QA knows what to tap) — this is the sanctioned visibility path when adb screencap is blocked. Test parent phone on the sid demo OA: **0900000092**.
-
-### DEFINITIVE (2026-09-20): QA cannot screencap the phone from its Claude session — the auto-mode PII classifier is ABOVE permissions
-Confirmed exhaustively: `adb screencap` works in the owner's own cmd (185KB PNG), but in QA's Claude auto-mode session it is denied ("PII Data Handling" / "Auto-Mode Bypass") — and **adding Bash allow-rules (incl. the MSYS_NO_PATHCONV form) does NOT clear it; the classifier sits above permissions.** The only form that passed the guard, bare `-p /sdcard/s.png`, is path-mangled by Git Bash so no file is written. ⇒ **QA has no permitted, path-safe way to read the phone screen from-session; do not re-attempt screencap variants every round.** The durable model (and the owner's standing rule): the OWNER does the phone/LINE steps (register a family, link a teacher, read delivered text) on CPH2735; QA asserts every DB/logic effect via API. Test parent for LINE-linking: 0900000092.
-
-### DEFINITIVE (2026-09-20): QA can SEE the phone (screencap, with bypass on) but CANNOT actuate it — `adb input tap/text/swipe` is blocked "Real-World Transactions" above permissions
-With the owner's bypass, screencap+pull+Read works and QA confirms the demo OA safely. But phone WRITES (`input tap/text/swipe`) are denied by the "Real-World Transactions" classifier EVEN with `Bash(*adb*input*)` allow-rules added — a tap can message real people, so the guard sits above per-command permissions (like the screencap PII one, but for actions). ⇒ **QA verifies (screencap) + asserts (API); the OWNER performs the phone taps (register a family, link a teacher). No allow-rule defeats the actuation guard — do not re-attempt.** Test parent: 0900000092.
-
-### UPDATE 2026-09-20: with BYPASS MODE on (+ the allow-rules), QA CAN drive the phone — LINE tested end-to-end on sid
-The earlier "input tap is a hard ceiling" is SUPERSEDED: once the owner enabled bypass mode on Claude Desktop AND added the allow-rules (screencap/pull/MSYS + adb input tap/text/swipe), QA drove the demo OA end-to-end — registered a family, linked a teacher, reported leave, and screencapped the delivered CLASS CANCELLED notice. So QA CAN verify LINE on sid via the demo OA when bypass mode is on: re-screencap + confirm SOM-Balance-Demo before every tap, never the customer OA. The delivered message TEXT stays the owner's read; everything else (link/DB/enqueue/delivery-bubble) QA asserts.
-
-### After an FE/auth deploy, a stale browser can break for existing users — fix = clear site storage + refresh (2026-09-20)
-Post the RBAC/FE deploy, one user (Khwan) got a broken page / Bad Gateway while others were fine — the server was healthy (pm2 all online, 0 restarts; the only BE errors were benign `linkRichMenuToUser 404` from the REQ-016 rich-menu removal, caught, non-fatal). Cause was **her browser holding OLD cached SPA assets + an old session/token** that mismatched the new build. 🔴 **Fix: F12 → Application → Storage → Clear site data — ONLY THIS WORKS. A hard reload (Ctrl+Shift+R) does NOT fix it** (owner corrected, 2026-09-20) — the stale thing is in STORAGE (localStorage/session/token), not the cached assets, so reloading assets is not enough. A one-off 502 can also flash during the restart itself. 📌 **Durable fix is now MORE warranted (listed): version-bump the FE to auto-CLEAR STORAGE / force re-login on a version change** — since a hard reload does not help, every existing user otherwise has to F12→clear by hand (customers can't).
-
 ## 2026-09-22 — 🔴 Never READ on a transaction after a statement in it FAILED (TASK-445)
 A pg unique-index clash (`23505`) inside `db.transaction` ABORTS the tx; any further query on that tx — even a harmless `findFirst` for a nickname to build the 409 sentence — answers `25P02 current transaction is aborted` and surfaces as a **500**, hiding the clean 409 that was already built. Rule: load every name/fact the error message needs BEFORE the write loop; a `catch` inside a tx touches memory only. The camp-week create (`syncCampDayRows`) hit this on every coach clash (not a today rule); `swapGroupTeacher`'s 23505 mapping reads nothing — the shape to copy.
 
-### 2026-09-23 — Fern and Fero are the same role
+## 2026-09-23 — Fern and Fero are the same role
 Fern and Fero are the SAME role (Frontend Engineer). Renamed 2026-09-23, owner's decision; older files, board rows and logs still say Fern. Do not rename them.
+
+## 2026-09-23 — 🔒 Writing to a LINE OA needs the account NAMED, not just printed (TASK-448)
+A local `.env` pointing at the customer's real OA made `line:relink-menus` report on **`SOM.BALANCE.SCHOOL (@427ybeky)`** — 201 real people — while everyone believed it was the demo. Nothing was written (dry run), but the printed header was the only guard and a header can be skimmed. Rule now enforced in code: every script that WRITES to the Messaging API (`line:publish-menus`, `line:remove-menus --apply`, `line:relink-menus --apply`, `line:push`) calls `guardOaWriteOrExit()` before its first write — the operator must pass `--account @xxxx`, it must match the token's real account (`GET /v2/bot/info`) AND be in `LINE_OA_WRITE_ALLOW`; an unreadable identity, a missing `--account`, a mismatch or an empty allow-list all REFUSE with both names printed. A scan test fails the suite if a new OA-writing script skips it. Read-only tools are unguarded and print the account they read.
+
+## 2026-09-23 — 🔴 A guard must read the STORE THE CONSTRAINT IS ON, and read it before anything writes (TASK-449)
+The phone link died three times on `23505 parents_line_user_id_uq` and the webhook swallowed it, so the parent got silence. Cause: `linkFamilyByPhone` calls `bindFamilyLine` (which INSERTS `family_line_links`) **before** `linkParentLine`, whose guard asked `familyOfLineUser` — a router that reads the LINKS table first and `parents.line_user_id` only as a fallback. The insert therefore made the guard answer "this parent holds it" while a DIFFERENT parent still held the id in the COLUMN the unique index is on. **The guard was blinded by a write made three lines earlier, and attempt 1 blinded attempts 2 and 3.** Rules now in code: `holdersOfLineUser` answers "who holds this id" from BOTH stores in one read and is used before any write; `familyOfLineUser` keeps its links-first precedence for ROUTING only (two questions, two readers); the `23505` is caught and mapped to the same refusal, because a race beats any pre-check. And: **no webhook event may end in silence because something threw** — the dispatcher's catch replies with a generic bilingual sentence (never a language lookup inside a failure) and still logs.
+
+## 2026-09-23 — 🔑 A break-and-watch must compare the TEST COUNT, not just `fail = 0` (TASK-450)
+Two mutations in TASK-450 first reported as "PASSED" (the mutation slipped past the suite). They had not: the mutated file no longer LOADED, so the test file that imports it never ran — 22 passes, zero failures, and the pin that would have caught it was never executed. **Rule: every mutation run compares the clean baseline's TEST COUNT as well as its failures; fewer tests than baseline is a BITE, not a pass.** Same class as the ledger/census lessons — an absent check and a satisfied check look identical unless the absence is itself asserted.
+
+## 2026-09-24 — 🔑 Three rules from the slot-yield migration (TASK-453)
+1. **A partial index's predicate lives in THREE places** — the migration's SQL, the schema's `.where`, and the code mirror (`slotHolderWhere`). They are pinned EQUAL by rendering the schema through `getTableConfig` + `PgDialect` (never by reading source text) and rendering the mirror with its params substituted, all normalised — **with a guard on the normaliser itself**, so the pin cannot pass by collapsing every string to the same thing.
+2. **When a migration's last act is an index REBUILD, the witness is the PREDICATE, not a column and not the index's existence.** Both columns land before the rebuild, so a column probe passes on a file that stopped half way; the index existed before and after, so existence proves nothing (0007/0033/0041's lesson, one step further).
+3. **Prefer "the check IS the act":** un-yielding a group row re-enters the unique index, so a collision is a `23505` that rolls the transaction back — rather than reading first and hoping nothing changed in between.
+
+## 2026-09-24 — 📵 The demo OA's push quota is exhaustible, and a silent test proves nothing while it is (Porter/Tanya, REQ-105 §7c)
+`notification_outbox` on `sid`, 09-23: **63 rows × `429 You have reached your monthly limit`** plus 3 × `400 Failed to send messages`. That is LINE's FREE push quota on the demo OA, spent by a heavy QA day — it was Tanya's "push ceiling" all along. **Rule: before concluding "the notice did not fire", read the outbox rows' `error` (since TASK-450 the run line prints LINE's own sentence).** A delivery check on the demo OA needs quota to be meaningful; a REPLY (to an inbound message) does not consume push quota, a push does.
+
+## 2026-09-24 — 🔗 Clearing a family's LINE link clears both stores — but only for the parent you NAME (TASK-449 follow-up)
+`clearFamilyLine` deletes `family_line_links` AND nulls the legacy `parents.line_user_id` in one transaction, and both staff doors (clear-link, archive-parent) use it — so the door has never been the leak. What it does not do, by design, is ask *"does any OTHER parent hold this LINE id?"*. That is how an id kept sitting on parent `62e9562a` while Khwan linked against a different parent and hit `23505` three times. Since TASK-449 the bind asks that question across both stores before writing, so the case ends in a sentence rather than silence.
+
+## 2026-09-24 — 🔴 A migration that DROPS an object must re-point any witness that probes it — in the same task (TASK-459)
+`0052` created `camp_week_day_rates`; its witness probed that table. `0053` (TASK-454) merged the table away and dropped it — correctly. But the ledger seeder trusts the witness to decide "has this migration run", so on a fully-migrated `sid` it read `found=false`, called **0052 not-applied**, and proposed applying it — which would have RE-CREATED the retired table and undone the merge. The owner stopped at the dry run.
+**The rules now in code:** (1) a witness whose object the current schema no longer declares must be marked **inherited** from the migration that superseded it — `0002`'s shape (*own effect no longer observable*), including the ⚠️ that re-running it would REGRESS the later one; (2) a test walks the witness table and fails if any witness probes an object the schema does not declare and is not marked inherited; (3) **the task that drops the object re-points the witness — not a later cleanup.**
+⚠️ Cause on our side: the SA confirmed the merge without asking *whose witness that table was*. The question to ask of any DROP: **does anything prove a past migration by looking at this?**
+
+## 2026-09-24 — 🔑 A pin that matches TEXT is satisfied by code that does nothing (TASK-450 · 458 · 460)
+Three times in one week a mutation "passed" because the pin was looking at the wrong thing:
+- **TASK-450** — the mutated file stopped LOADING, so the test never ran: 22 passes, zero failures, nothing executed. ⇒ every break-and-watch now compares the clean baseline's TEST COUNT; fewer tests than baseline is a BITE.
+- **TASK-458** — *"the course rate is never cleared"* was pinned on a SOURCE LITERAL, so a `null` reaching the save through a cast left the suite green. ⇒ pin the CALL, not the source.
+- **TASK-460** — the sweep pin matched `delete(lineWebhookEvents)`; the mutation kept that text and removed the `await`. `void db.delete(...)` greps identically and sweeps nothing. ⇒ the pin requires the awaited call AND the row count.
+**The rule: pin the EFFECT a user or the next run can observe — a rendered string, a call with its arguments, a row count — never the presence of a line of code.** An absent check and a satisfied check look identical unless the absence is itself asserted.
+
+## 2026-09-24 — 🔑 A census sweep across many files is a code change, not a chore (TASK-460)
+Renumbering the migration-count pins swept `toBe(55)` → `toBe(56)` across 37 files and rewrote one that meant **55 minutes** in an unrelated auto-cut test. The suite caught it; the author reverted and audited every other hit. **Read each hit before writing it, and check the sweep's report against what the number MEANS.** A wrong green pin planted this way stays invisible for months.
+
+- **QA login on `sid` (recorded 2026-09-24 after a wasted round):** `project-docs/sm-test-access.txt` (admin/admin) is **STALE since the RBAC deploy (2026-09-18)** — the users table retired it. The owner gave a super-admin credential after Round 31 (TEST-066); its per-machine location is in `machine.local.md` → "smart-scheduler QA credentials". Never ask the owner for a sid login again without checking there first.
+
+- **Scheduled-job triggers live IN THE CODE REPO** (recorded 2026-09-24, after Porter sent the owner to hand-make files): repo `smart-scheduler-back`, folder `sm-jobs/` — one `.ps1` per job (daily-digest, daily-reminder, end-of-day, month-reset, weekly-teacher-digest, + group-series-extender once Sober adds it). The owner copies them to the box and registers them in Task Scheduler. **Before telling the owner how to deploy a job, check `sm-jobs/` first; a new job must ship its `.ps1` there in the same task.** The old `DEPLOY-scheduled-tasks-windows.md` (hand-written `C:\sm-jobs\…` files) predates this folder.
+
+## 2026-09-24 — 📦 A new scheduled job is not done until its `sm-jobs/*.ps1` trigger ships WITH it (TASK-461)
+The owner deploys jobs by copying a one-file PowerShell trigger from this repo's **`sm-jobs/`** (`daily-digest`, `daily-reminder`, `end-of-day`, `month-reset`, `weekly-teacher-digest`) to the box. TASK-456 shipped the job, the internal route and the script but **no trigger**, so there was nothing to deploy and the owner hand-wrote one. **Rule: a task that adds `POST /internal/jobs/<name>` adds `sm-jobs/<name>.ps1` in the same task**, in the siblings' exact shape — and a test walks BOTH directions (a route with no trigger is undeployable; a trigger pointing at a renamed route fails silently on the box every night for ever). ⚠️ SA note: the convention was visible in `sm-jobs/` and the TASK text asked for "an exe + a registration" instead — **read how the thing is actually deployed before describing it.**
+
+## 2026-09-24 — 🔑 Two more harness rules, and a detached-promise trap (TASK-462)
+1. **A mutation must test the bug someone would actually write.** TASK-462's mutation G "passed" — because the mutation itself was wrong (it counted complete series only once the budget was full, a bug nobody would write). Rewritten to the real inversion, it bit. *A mutation that tests an imaginary bug proves nothing, in either direction.*
+2. **A job with two doors needs both checked.** TASK-461's rule walks `sm-jobs/*.ps1` ⇄ `/internal/jobs/:name`. The extender also has a **bun exe** (`scripts/*.ts`) calling the same route, and it was still sending `{}` after the body changed — it would have reported a plan nightly and created nothing, **with a green exit code**.
+3. 🔴 **`void p.finally(fn)` is not fire-and-forget: `.finally` returns a promise that REJECTS when `p` does** — an unhandled rejection no caller can catch, which ends a Bun/Node process. Use `void p.then(fn, fn)` when the point is "run this either way and swallow". This was live in the per-chat queue for three tasks, a path from "the database hiccuped" to "the API vanished" — introduced by the change that was fixing exactly that class of silence.
+4. **`unhandledRejection` ⇒ log and keep serving; `uncaughtException` ⇒ log and `exit(1)`** (state is unknown after a synchronous throw; never `exit(0)` — a supervisor reads it as a clean stop).
+
+## 2026-09-24 — 🔴 Two lists of "the same fields" will drift, and an exclusion BY NAME loses to the next route (TASK-463)
+**DEF-3, a real coach-pay leak found by QA:** the coach-rate READ mask named three fields (`rate`, `classRateMinor`, `teacherRates`) while the WRITE check named four (plus `rateMinor`). TASK-454 then added a fourth read surface — the camp day's `teachers[].rateMinor` — and nothing added it to the mask, so a `menu:camp` user without key 59 read every coach's pay. ⚠️ TASK-434 had pinned *"no DTO carries `rateMinor`"* **by absence**, and that pin stopped covering the thing it was written for without anyone noticing. **Rules: one declared set of "this is a coach-rate field", derived into both uses; and a walk that fails when any DTO surface emits a rate-shaped field the mask does not know — the next new rate field must fail the suite the day it is written, not the day someone reads a colleague's pay.**
+**DEF-2:** `uuid-params` excluded `:key` and `:date` **by NAME** because `:key` was a settings key — then the series routes named a uuid `:key`, so the guard skipped exactly the params that needed it and a malformed one reached Postgres (500). **An exclusion by name is a bet that no future route uses that name differently; we lost it in two weeks. Decide by ROUTE, not by param name.**
+⚠️ SA note: both defects passed my review. The question I did not ask of TASK-454 was *does this new field go through the mask?* — the same shape as the witness miss on the same task.
+
+## 2026-09-24 — 🔴 The fourth time this week: a pin matched the LAYOUT, not the output (TASK-463)
+TASK-434 pinned "no DTO carries `rateMinor`" with a regex anchored to the START of a line. TASK-454 wrote that key in the middle of a one-line object literal — the regex walked past it, and a `menu:camp` user without key 59 read every coach's pay until QA found it. **The pin was never removed and never scoped away; it stopped matching the day someone formatted the code differently.**
+With TASK-450 (a mutated file stopped LOADING, so the test never ran), TASK-458 (pinned on a source literal, not the call) and TASK-460 (matched the TEXT `delete(...)` while the mutation dropped the `await`): **pin what the API emits or what a user sees — never the shape of a line of source.** And when a walk finds one name, ask for the SECOND of the same shape: this one also found `teacherRateMinor`, unmasked, one careless reader away from the same leak.
+
+## 2026-09-24 — 📌 What is on `uat` is a LOG fact, not a memory fact (SA correction)
+I told Porter that keys 57/59 were not on `uat` yet. **Wrong** — `log/2026-09-22.md` records "WHOLE BATCH (REQ-094…104) LIVE ON uat — 2026-09-23": migrated to **53**, `ensure-subjects --apply` (2 DUO subjects), backfill 0, weekly digest registered Mon 08:15, **grants 57/58/59 + Teacher role**, camp reminder off, pm2 restarted. What is NOT on `uat` is only what came after: TASK-446…463 (including TASK-463's camp `rateMinor` fix and REQ-105's per-coach camp table).
+**Rule: before stating what a live environment has, READ the log entry for that deploy.** The repo is the memory (CLAUDE.md); a deployment claim from recollection is exactly the kind of "as discussed before" the workspace forbids — and stated to the PM it becomes a wrong answer to the customer.
+
+## 2026-09-25 — 🔴 `NaN` in a STRING comparison is an infinite loop, not a wrong answer (TASK-465, and the likely cause of the `sid` incident)
+`weeklyDatesToCreate` walks `for (d = …; d <= horizon; d = addDays(d, 7))` — a **string** compare. When the horizon was `"NaN-NaN-NaN"` (a resolved-setting object passed to `Number()`), `"2026-11-13" <= "NaN-NaN-NaN"` is **`true`** (digits sort before `N`) **for every date, for ever**: 360,756 iterations in 300 ms, into the year 8940, growing an array synchronously on the event loop.
+- On a box with **no** series: a green zero — which is all `uat` showed.
+- On a box **with** a live series: the call **never returns** — no HTTP response at all, and memory grows until something kills the process. **That matches the `sid` incident** (connection closed with no response + the shared Postgres cluster into recovery = an OOM kill on a 30-app box). Not proven from the repo; Otto's OOM/Postgres line would settle it.
+**Rules:** (1) a loop bounded by a **string** compare must validate the bound's SHAPE before looping, **inside the loop's own function** — a caller's check does not protect the next caller; (2) bounds applied *after* a function returns (`maxDates`, `maxSeries`) protect nothing if that function may not return; (3) 🔑 **a resolved setting now REFUSES coercion** — `Symbol.toPrimitive` throws, so `Number(obj)`/`+obj`/`` `${obj}` `` fail loudly on the first run instead of producing a plausible `NaN` three calls later; (4) ⚠️ a synchronous infinite loop cannot be caught by a per-test timeout (the timer never gets the thread) — only the runner's outer timeout sees it.
+📌 SA note: TASK-462 §1.1 said "the work IS bounded — the loop's bound is a string compare against the horizon", and I signed it. **The bound held only while the horizon was a date.** Reading a comparison is not reading a loop.
+
+## 2026-09-25 — 🔑 Two more harness rules, from the extender's cancelled-date fix (TASK-466)
+1. **A wrong `BASELINE` can MANUFACTURE a bite.** A run with `BASELINE=60` against a 51-test set reported mutation B as caught; B had actually passed. The baseline must be the clean run of **that** set — this is the mirror of the 09-24 rule (a mutation that never ran reports as a pass): too low hides failures, too high invents them.
+2. **A spy that ignores its arguments cannot see a change to those arguments.** Every extender fixture fakes `findMany` and drops its `where`, so adding a status filter **at the database** was invisible to all of them — the defect's other door. The pin now runs the real `where` callback against recording operators and asserts what it asks for.
+📌 And the sentence worth remembering about why this sat unseen: *the full suite stayed green through the fix before any new test existed — every older fixture had live rows only.* **The fixtures agreed with the bug.**
+
+## `bookings.checkin_source` holds TWO kinds of fact — a channel and a person (Sober, 2026-09-25, TASK-481)
+The column stores `shopfront-qr` · `checkin-qr` · `end-of-day` **and, for a staff attend, the admin's USERNAME** (`actorOf`). Camp's `marked_by` is the same. **Any rule written for one kind is wrong for the other** — which is how a "show the provenance" task became a privacy question. Until it is split into a channel column + an actor column (next round, with Undo, which needs both anyway): **a scoped teacher reads `null`** on `/bookings` and `/calendar`, and the admin chip renders `shopfront-qr` only.
+
+## ABSENT is terminal to every SCAN, but not to an ADMIN (Sober, 2026-09-25, TASK-480)
+`campScanOutcome` refuses to overturn a coach-recorded `ABSENT` — for the roster QR and the shop-front QR alike (the bot has **no** camp scan path; there are **two** callers of `checkinCampByToken`, not three). **`ABSENT → ATTENDED` stays legal through `assertDayTransition` / `markDay`**, because a coach who marked the wrong child must be able to correct it. The rule is *who* may overturn a human's judgement, so it lives in the scan rule and nowhere else. 🔇 It went unseen because `consumes()` is true for ABSENT and ATTENDED alike ⇒ **the flip moved zero units, so nothing on any money report looked wrong.**
+
+## Migration `when` values are hand-assigned `1783…`, and that is load-bearing (Sober, 2026-09-26, TASK-494)
+Drizzle decides what to apply by comparing **one number — the newest `created_at` in the ledger — against each migration's `when`**, never by hash. Our journal's `when` values are a hand-assigned series (`1783000000000`+, `0056` = `…052`, `0057` = `…053`).
+**Measured by the owner, 09-26:** `sid` 97 rows / 97 distinct hashes, `uat` 78 / 78, both with `min 1782154751279` and **`max 1783000000052`**. ⇒ the surplus rows are **pre-split history with REAL timestamps, all BELOW our series**, so there is **no silent-skip hazard on either box**, and no duplicates anywhere.
+🔴 **The safety is an accident of the numbering, not a property of the tooling.** One migration generated with drizzle's default `Date.now()` lands at `1790…` and **every migration after it is skipped in silence, exit 0** (the TASK-085 failure mode). TASK-494 pins strictly-increasing `when`s inside our series.
+
+## `every` vs `any` changes the EMPTY case (Sober, 2026-09-26, TASK-489)
+`every` over an empty list is **vacuously true**. Swapping `anyHouseholdSuspended` for `everyHouseholdSuspended` without `if (!studentIds.length) return false;` would have turned *"a walk-in with no parent is never blocked"* into **"a walk-in is always blocked"**. The empty case is the one nobody writes a fixture for.
+
+## DUO suspension: refuse only when EVERY household is suspended (Sober, 2026-09-26, TASK-489)
+Owner ruling 3. A DUO is **one booking row, two children, one shared token, no per-child attendance or credit**, so "refuse only the suspended family" cannot mean checking in one child and not the other. The public `/checkin` door cannot know who is asking (the token is the row's), and the old "any household" rule told family A *"your account is suspended"* — **false about A and a disclosure about B**. Consequences the owner accepted as information: the class is delivered to both; a suspended family with the desk QR can check the shared row in; **CRM points are not withheld on suspension anywhere** (pinned by value, so a future ruling makes that pin fail on purpose).
+
+## `db:generate` must be `--custom`, and the `when` must be renumbered (Jason via Sober, 2026-09-26, TASK-494/495)
+Two facts that were not written down anywhere:
+1. **`drizzle-kit generate` hardcodes `when: +new Date()`**, which lands above our whole hand-assigned `1783…` series. Drizzle applies by comparing **one number** (the ledger's newest `created_at`) against each `when`, never by hash ⇒ one such migration **silently skips every migration after it, exit 0**. TASK-495's wrapper renumbers the newest entry; TASK-494's test catches a hand-edited journal or a bad merge.
+2. 🔴 **`drizzle/meta` holds snapshots only for `0000`–`0003`**, so a **diff-mode** `db:generate` would try to **re-create every migration from `0004` on**. **`--custom` is the mode this repo works in.**
+Also: **drizzle-kit can error and still exit 0** — a tool that edits the journal must survive the upstream failure that looks like success.
+
+## A comment untrue about its own line is the same defect as a column name untrue about its contents (Sober, 2026-09-26)
+TASK-488 existed because `checkin_source` held a channel *and* a person. TASK-492 shipped a new RBAC key whose trailing comment described its **neighbour** and said the opposite of what the key means. **Both are read as fact by the next person.** When a line is inserted beside another, the comment that followed the old line is part of what moved.
+
+## 🔴 A middleware guard only protects the routes registered AFTER it (Jason via Sober, 2026-09-26, TASK-499)
+`src/index.ts` registers the **public** routes (`publicCheckin` at `:71`, the ICS calendar, `publicRegister`) **before** `authMiddleware`, `accessGuard`, `uuidParamGuard` and **`coachRateMask`** (`:80`–`:84`). Hono runs handlers in registration order ⇒ **none of those guards has ever applied to a public route.** The coach-rate mask (key 59, TASK-431) was therefore absent from exactly the doors with no login.
+**What that exposed, measured by a real request through the root app:** the public check-in answered with the whole 33-key `toBookingDTO` — **the coach's `rate`**, `discount.actor` (an admin's username), the staff `note`, the course's internals, `teacher.type`, and the CRM fields.
+🔑 **The fix is an ALLOW-list, not a deny-list:** the admin DTO grows every round, so a deny-list makes each new field public by default. Public check-in answers carry only `date`, `startTime`, `endTime`, `student.name`, `subject.name`, `teacher.nickname` (+ `already`, `crmAwarded`, `remaining` at the top level) — every field the pages actually read.
+📌 **Any guard expressed as middleware needs a pin that checks its promise where it does not run.** `COACH_RATE_FIELDS` is now asserted against the public doors' output.
+
+## The test suite runs against `sid` — BY DESIGN (Jason via Sober, 2026-09-26, TASK-500; ⏹️ owner ruling below)
+**Bun auto-loads `.env` into every `bun test` run**, and the tests' own `process.env.DATABASE_URL ??= "…localhost…"` **cannot override a value that is already set**. The back repo's `.env` on this machine points at **`154.197.124.206:5432 / smart_scheduler`** (the same host as `.env.sid`) and carries a **real `LINE_CHANNEL_ACCESS_TOKEN`**, which also starts the outbox worker on import.
+⇒ **44 tests in 16 files make real database calls on every full run**, and the intermittent ~10 017 ms failure was a **connection wait, not a flake**. Files: the LINE dispatcher and root-app auth paths (`middleware/auth`, the `req105`/`req107`/`req108`/`req109` service tests, `routes/envelope-reachability`).
+🚫 **Superseded:** the SA proposed a `bunfig.toml` preload forcing a dead local port and blank credentials, and paused his own suite runs. **The owner ruled that setup is intended** (see below), so **the preload is NOT built** — it would break what he wants — and the suite is run normally.
+✅ **The one guard that IS wanted (TASK-503): refuse to run the suite when `.env` points at the UAT database or the real OA (`@427ybeky`).** Testing against the customer's box must be impossible; testing against `sid` is not.
+✅ Mocking a test that was meant to be a unit test is **ordinary work** where it is flaky or slow — not an incident.
+📌 **The SA's mistake, kept because it is the useful part: "never touch a real database" is a rule about the CUSTOMER'S environments.** `sid` is the test box. Reading the rule at its widest and escalating before asking which environments it covers cost the owner a decision he should not have had to make.
+
+- 🔴 **Tests running against `sid` is BY DESIGN** (owner โด่ง, 2026-09-26: "เทสบน sid นั่นแหละ ถูกแล้ว"). The back repo's local `.env` pointing at the sid database and the demo OA token is the intended test setup. It is **not** a leak and **not** a rule breach. Do not escalate it again.
+  - The one boundary that still holds: **never run the suite while `.env` holds uat values**. The owner switches `.env` to uat only for a uat deploy and switches it back afterwards.
+
+## A "this test proves nothing" finding needs a CONTROL (Sober, 2026-09-26, TASK-507)
+**A claim that an assertion is vacuous is itself a claim, and it can be wrong.** The only way to know is to **break the thing the assertion supposedly guards and watch the old line pass.** TASK-507 did that three times (`A0`, `G0`, `H0`) and the old lines sat green each time. **From now on: every "this test wasn't doing anything" report carries a control run.**
+**Shapes that cannot fail, found so far:** `not.toBe` against a value the expression cannot produce (`status).not.toBe(401 + 1000)` — both refusals are 401, so a status can never separate them) · `expect(calls.where).toBeDefined()` (any `where` passes, including one matching every row) · a function compared with **itself** (`expect(f(x)).toBe(f(x))`).
+✅ **Not every vacuous-looking line is a defect:** `course-status:189` is vacuous **by design** — it exists to give an `@ts-expect-error` somewhere to live, and `tsc` is what enforces it.
+
+## A list is a memory; a derivation is a fact (Sober, 2026-09-27)
+Every time this round replaced a written list with something derived from the source, **the derivation immediately found what the list had missed**:
+- migration `when` values → the journal read directly (TASK-494) — found that `drizzle-kit generate` makes the hazard on **every** run;
+- the visible session statuses → a typed table over the **real enum** (TASK-486) — found **EXTENDED missing from every Monday digest**;
+- the unguarded routes → derived from `index.ts` (TASK-501) — found the root-mounted `/openapi.json` pair;
+- the read-modify-write counters → a scan over every `.set({…})` (TASK-496) — found a **third** counter, `camp_packages.used_units`;
+- the coach-message producers → derived by scanning for `recipientType: "teacher"` (TASK-512) — found **four** primary-only senders after the previous task had called the list complete.
+🔑 **So: when a task needs "all the places that X", derive them and make the derived set EQUAL a classified set.** A new one then fails the suite until someone decides how it should behave — **a decision forced at the moment of writing**, not a rule to remember. And **keep an exceptions class**: a pin that cannot express a legitimate exception gets deleted.
+
+## 🔴 A class can be MOVED and nobody is told (Jason via Sober, 2026-09-27, TASK-512 §3)
+`moveBooking` and the plan editor's `edit` update the booking **in place** (same id, new date/time). ⇒ **no cancel notice, no confirm notice, and no message to the coach, the family or an admin.** The only send on that path is `sendTeacherReassigned`, and only when the **teacher** changes. `PENDING_RESCHEDULE` exists as a status **nothing writes**, and `reschedule_requested` has a renderer with **no producer**.
+**A coach learns passively or not at all:** the ICS feed, the next daily reminder **if it is sent after the move**, or the Monday digest ⇒ **a same-day move made after that morning's reminder reaches them through nothing.**
+⏸️ **With the owner (2026-09-27): should a move be announced, to whom, in what words?** Nothing built.
+- **`sid` pm2 (`som-back`) runs the backend entry directly.** Verified on 2026-09-27, the first deploy after TASK-505 (the outbox worker starts only when the app is the process entry): the log showed `[outbox] LINE worker started (every 15s)`. Do not ask the owner for this line again on sid. uat still needs the same one-time look on its first deploy after TASK-505.
+
+## 🔴 `mock.module` is global to the test PROCESS — always spread the real module (Fern via Sober, 2026-09-27, TASK-532)
+A `mock.module` that returns **only the members the current file needs** **silently deletes the rest for every other file in the same test process.** Found within an hour of adding the FE's DOM harness: two unrelated suites failed with *"Export named 'useResolveClashMove' not found"*, **pointing at the innocent files rather than at the mock.**
+✅ **FE rule: every `mock.module` spreads the real module and replaces one member**, with the reason beside it.
+🔨 **BE rule (TASK-533, stricter): NO `mock.module` at all, except a NAMED exception carrying its reason** — the repo has **zero** calls, `spyOn` has served every case for months, and the trap is process-global. A scan over `src` + `scripts` enforces it, **pins "zero today" so the first one is a visible act**, fails a stale exception, and is **proven on samples so a green scan over zero calls is not vacuous.**
+📌 **The BE had already learned this once (TASK-072 removed its mocks) and recorded it in FIVE COMMENTS — it took an FE discovery months later to turn it into a check. A fact in five comments is not a rule.**
+
+## A control is proven by CLICKING it (Sober, 2026-09-27, TASK-531/532)
+"The API works" is not "the feature exists" (TASK-492 shipped an endpoint with no screen); **"the component renders" is not "the button works"** (TASK-518 shipped a control whose dialog was mounted inside `<Menu.Dropdown>`, so the click that opened it unmounted it — **no dialog, no request, no error**).
+✅ **The FE now has a DOM harness** (`happy-dom` + testing-library, via `bunfig.toml` → `test/dom-preload.ts`), so for a **control** the proof is: **real click ⇒ the dialog found on screen ⇒ real confirm ⇒ the request asserted at the fetch boundary**, plus a refused act showing the server's sentence with no success.
+🚫 **A `.dom.test.tsx` is for a CONTROL** — something pressed that is irreversible or expensive (money, a message to a family, an undo) — **never labels, layout or copy counts.** A harness used to assert that text is centred is slow, brittle, deleted within a month, **and takes the rule with it.**
+⚠️ **Still outside any DOM harness:** the real browser's CSS, focus, z-index, and a phone's tap. **"Clicked" must not come to mean "seen".**
+- **No coach uses a web (frontoffice) account as of 2026-09-28** (owner โด่ง). Do not count or check this; coaches use LINE only. A coach-facing web link means the shop must create their web user first.
+
+## DOM-harness facts that cost an afternoon each (Fern via Sober, 2026-09-28, TASK-539)
+1. 🔴 **Bun does not auto-clean between tests.** A render **leaks into the next test**, and **the failure then names the WRONG test** — the one that inherited the DOM, not the one that left it. **Clean up explicitly.**
+2. 🔴 **A Mantine modal's shell and title SURVIVE a close transition that happy-dom never finishes** ⇒ **a title can never prove a close.** **Probe inside the conditional (`{target && …}`)**, not on the modal's chrome.
+⚠️ **Still outside any DOM harness:** the real browser's CSS, focus, z-index, and a phone's tap. **"Clicked" must not come to mean "seen".**
+
+## Admin rights on a LINE account: no permission key, on purpose (Jason + Fern via Sober, 2026-09-28, TASK-538/539)
+**Listing and removing LINE admins is gated by `isSuperAdmin`, not by an action key** — **a key is grantable, so the power would become delegable.** 🔑 **And a 61st key would have been worse than no key: a granted non-super-admin would see a button that always 403s** (TASK-518's rule — *a control that cannot succeed invites a person to try and then tells them no*). **No super admin ⇒ no panel, and the list is never fetched.** `ACTION_KEYS` stays **60**.
+📌 **Removal order matters and is deliberate: the id comes off the admin list FIRST, then the menu** — so **the notices stop even if the menu update fails** (`menuSettled: false`, warned on screen). **A rollback would leave a stranger's phone receiving other families' children.**
+⚠️ **With ZERO LINE admins, admin notices go to nobody, and nobody can re-link until the new admin code is set.** ⭐ **Order: new code → real admins re-link → remove the unknowns.**
+
+## A GET carries an action key in exactly ONE place (2026-09-28, TASK-546)
+**Rule (TASK-385, pinned twice): no GET carries an action key.** **Exception, named and reasoned: `GET /bookings/:id/undo-preview`.**
+🔑 **The rule exists so a READ is never gated by a grantable power. This GET is a preview of a privileged ACT, and its gate is the ACT's gate** — ONE `UNDO_ACCESS` value and ONE `assertMayUndo` on both routes, derived, not re-typed.
+⇒ **The alternative was a second, re-typed guard — the drift the shared gate exists to prevent.** **Every other read still carries none; the exception is pinned to the Undo's own entry.**
+
+## A preview is a forecast, not a guarantee (2026-09-28, TASK-546)
+**`undoBooking` = `planUndo` + writes; the preview IS `planUndo`, read-only** ⇒ the dialog and the act cannot disagree **because they are the same reads**, not an agreeing copy.
+⚠️ **But `UNDO_PLAN_WOULD_CHANGE` is decided AFTER the act's writes** ⇒ **the act can refuse a preview that said ok.** **The act stays authoritative; no caller may skip or disable a failure path because a preview passed**, and any screen must word a post-click refusal so it is not a contradiction.
+📌 **Not closed deliberately:** moving the balance check before the writes would change the act (whose being untouched was the whole value), and a rollback dry run takes write locks for a dialog.
+
+## Copy: approval covers what was SHOWN, and value pins ADD to shape pins (2026-09-28, TASK-549/550)
+🔑 **An owner's "approved" covers exactly the strings he was shown.** **TASK-549: `COPY-REVIEW-2026-09-28.md` §D listed 10 of the LINE-admin page's 17 strings, so "ผ่านหมด" left 8 unapproved** — they stay drafts, **and a mutation that sneaks one into the approved list bites.** ⇒ **Nobody may read silence as approval; the boundary of an approval is enforced, not remembered.**
+**When copy becomes final, the value pin is ADDED and the shape pin is KEPT:**
+- **a reword that keeps the promise fails ONLY the value pin ⇒ a conversation;**
+- **a reword that breaks the promise fails the SHAPE pin ⇒ a defect.**
+✅ **The reasons stay in the comments and are themselves pinned** — *approved does not mean unexplained.* **Pin templates, never a rendered example.**
+📌 **The right proof that copy matches: compare the APPROVED DOCUMENT against the strings THROUGH `t()`** (TASK-550: 4/4) — that tests the template, the lookup and the language, not a constant.
+
+## Removing a wrong rule that is covering a gap exposes the gap, at the rule's full scale (2026-09-29, TASK-552)
+**`planCourseMoves` counted a leave as matched if ANY row pointed at it, including a CANCELLED one.** The rule is wrong — **but two writers ANSWER a leave WITHOUT linking**, and the wrong rule was covering for them:
+1. **pause → resume** re-lays owed sessions **unlinked**;
+2. **an admin insert** filling a leave's gap answers it **unlinked** (the reconcile trims the leave's make-up).
+🔑 **So "a cancelled make-up is not a make-up" is only safe ONCE EVERY ANSWER CARRIES ITS LINK.** Shipping the one-line fix first **moves D7 (a forecast saying "no make-up" and an Undo refusing) onto every paused or inserted course.**
+⇒ **Order: writers link → backfill → then the planner line** (TASK-553). **TASK-552 (B) closes the walked path by making the re-owe INHERIT the cancelled row's own `extended_from_id`** — 🚫 **never a date match or "the most recent leave", and an absent link stays absent.**
+📌 **The general rule: before removing a rule, derive what has been resting on it. A wrong rule live for months usually has something resting on it.**
+
+## Never read the event inside a state updater — and the rule is enforced, not documented (2026-09-29, TASK-554)
+🔴 **`onChange={(e) => setX((prev) => e.currentTarget.checked ? … : …)}` crashes**: React may run the updater after the event is released, so `currentTarget` is null. 🔑 **The eager `dispatchSetState` path makes the FIRST interaction work and defers the SECOND into the render phase** ⇒ *"the first tick survives, the second dies"* — which is why it passes review and reaches production.
+**Read the value eagerly in the handler body.** 🚫 **NOT `e.currentTarget?.checked`** — *that stops the crash and records the wrong thing silently, which on a public shop-front page is worse than falling over.*
+📌 **TASK-237 (REQ-078 DEF-1/DEF-5) diagnosed this and wrote the mechanism into a comment. It came back nineteen tasks later on a PUBLIC page.** ⇒ 🔑 **We did not lack the knowledge; we lacked a test.** **Now enforced repo-wide by `lib/ui/event-in-updater.test.ts`** (comments stripped, the failure names the file, the optional-chain rescue refused).
+🔑 **The general rule: a defect written down in prose is not prevented. If a class of bug is worth a comment, it is worth a check that fails.**
+
+## A writer that does not RECORD what it did is a class of defect here (2026-09-29, TASK-552/553/556)
+**Three found in three days, all the same shape — a write happens and nothing records that it happened, so a later reader cannot tell "nothing" from "unknown":**
+1. **pause → resume** re-lays owed sessions **without linking** them to the leave they answer (TASK-553);
+2. **an admin insert** filling a leave's gap answers it **unlinked** (TASK-553);
+3. **`repair-course-expiry.ts` (FIX-007)** moves an expiry **without `recordExpiryChange`**, and can be re-run (TASK-556) — as did **every stretch/edit before migration 0034**, which was never backfilled.
+🔑 **The consequence is always the same: an ABSENT record gets read as EVIDENCE OF ABSENCE.** *`extendedFromId === null` read as "no make-up"; `latest === null` read as "never moved".*
+⇒ **Before treating a null as evidence, derive whether every writer of that fact records it** — and **if one does not, the null means "unknown", not "no".**
+📌 **The SA made this exact error twice in one week** (TASK-552 and TASK-556): *ruling on a rule without ruling on the state of the data the rule reads.*
+
+## The Undo's expiry refusal (D8) is COMMON, not an edge case (2026-09-29, TASK-556)
+**The born ceiling = plan end + quota weeks** ⇒ **the make-up of a course's LAST in-quota leave lands EXACTLY on the born expiry, with no stretch and therefore no change record.**
+⇒ **`UNDO_EXPIRY_UNRECOVERABLE` fires for EVERY size-4 course's leave**, the 2nd leave of a size-6 and the 3rd of a size-10. 📌 **It stayed invisible because TASK-492's fixture happened to carry a system change record**, so the born-ceiling shape was never tested.
+✅ **It fails safe** (it refuses and asks for a human) — but **"the commonest leave cannot be undone" is not shippable.**
+
+## The migration table does NOT record when a migration was applied (2026-09-29, TASK-556)
+🔴 **Drizzle writes `created_at` = the JOURNAL'S `when`** — our hand-assigned synthetic series value (0034's is `2026-07-02`) — **not the moment the migration ran.** ⇒ **It is IDENTICAL on sid, uat and production.**
+🚫 **Never use it to answer "when did THIS box get feature X".** 🔑 *It reads like per-box evidence and is a constant in disguise* — **the SA ruled exactly this mistake in TASK-556 and the engineer caught it before code.**
+✅ **To date a capability on a box, record a marker** (`COALESCE(the earliest row the capability itself wrote, now())`) — 🔑 **write the fact down rather than deriving it from an absence**, because an empty table cannot distinguish *"nothing happened yet"* from *"we were not recording yet"*.
+
+## `repair-course-expiry.ts` (FIX-007) is RETIRED (2026-09-29, TASK-556)
+🔴 **A re-run resets native expiries to `courseExpiry(start, size)` — EARLIER than the born ceiling — discarding every recorded stretch and admin move, with no record.** ⚠️ **Its header still claims "idempotent", which is stale and would be believed.**
+**It ran `--commit` on both boxes on 2026-08-28 (traced), and both runs precede migration 0034.** ✅ **It cannot produce the silently-late expiry shape** (it writes a make-up-independent value); **only a pre-recording stretch, edit or resume can.**
+⇒ **Retired as a REFUSING STUB that explains and points at TASK-556** — 📌 *a script that vanishes gets rewritten from memory by whoever needed it; one that refuses and explains does not.*
+
+## What does NOT travel between machines (2026-09-29, recovered from `PROJECT-STATUS.md` before it was retired)
+
+Recovered verbatim in meaning from the 2026-08 header of `PROJECT-STATUS.md` (Porter); kept because it is the
+only place this was written and the owner changes machines constantly.
+
+- 🔴 **The `.env` in each repo root is NOT in git.** On a fresh machine it is copied by hand or **nothing
+  connects** — and because the `.env` is also what decides whether you are pointed at `sid` or `uat`, a machine
+  with no `.env` and a machine with the wrong `.env` fail differently and neither says so.
+- 🔴 **QA's access file (`project-docs/sm-test-access.txt`) does not travel either**, and the repo paths live only
+  in `machine.local.md` at the workspace root (git-ignored).
+- 🔴 **The server job scripts (`C:\sm-jobs\*.ps1`) live ON EACH SERVER**, never on the dev box — so nothing you do
+  on a dev machine can show you what is scheduled on either box.
+- 📌 **First command on a new machine: `bun run db:verify` in `smart-scheduler-back`.** Not green ⇒ either the
+  wrong box or the ledger needs `db:seed-ledger`. (Porter, 2026-08-30.)
+- 📌 A machine-local `.claude/memory/` does not travel and is not a source of truth. **The repo is the memory.**
+
+## Fitting is not evidence (2026-09-13, @Porter — recovered from `PROJECT-STATUS.md`)
+
+🔴 **@Porter read structure into the owner's prose five times in one fortnight, and every reading FITTED.**
+A reading that fits the words is not a finding about what he meant — it is a hypothesis, and it must be asked.
+🔑 Its twin, from the same fortnight: **"no message" ≠ "no event"** — both @Sober and @Porter held live work on
+silence that a one-line check would have ended.
+
+## A self-generated task chain has no natural end (2026-09-13, @Sober + @Porter — recovered from `PROJECT-STATUS.md`)
+
+🔴 **Every task that closes with a Question which becomes the next task will run forever.** One such chain ran for
+a day while a finished release sat undeployed. ⇒ **A self-generated chain is STOPPED deliberately, and the
+remaining pile goes to the owner WITH SIZES so he picks** — the team does not pick for him by continuing.
+
+- **Palm's items are hands-off (owner, 2026-09-29):**
+  - Palm is the owner's friend, a human developer who maintains the front repo, outside the team chain.
+  - Any item the owner says Palm does, the team SKIPS entirely: no build, no review, no test, unless the owner asks.
+  - Palm's commits reach the front repo through the owner's git, so re-read current front-repo state before any FE task.
+
+## A green FE suite is a statement about the REPO, not about one engineer's change (2026-09-29)
+**Palm (outside the chain) commits to the front repo through the owner's git.** ⇒ **When the SA re-runs the FE suite to verify a report, the result covers whatever is in the repo at that moment — which may include work nobody on the team wrote.**
+🔑 **So: re-read the front repo's state before cutting or reviewing an FE task**, and **when a count does not match an engineer's report, that is a question about the repo before it is a question about the engineer.**
+📌 **The same care applies to the counts we pin** (suite totals, file counts): they can move without any of our tasks moving them.
+
+## 🚫 No agent runs a git command that WRITES (2026-09-29, TASK-557)
+**Git is the human's, alone.** ⚠️ **That is not only "never commit": never run `checkout`, `restore`, `stash`, `clean` or `reset` on a file either.** ✅ **Reading git state for analysis is fine; anything that CHANGES a file is not.**
+📌 **An engineer discarded her own uncommitted edits with `git checkout <file>` while verifying a pin, self-reported it, and restored them.** 🔑 **The reason the rule is absolute is bigger than the lost work: the OWNER works in these repos, and an outside developer now commits to the front repo — a discard does not know whose uncommitted work it is destroying.**
+✅ **The replacement, and it is the engineer's own: verify pins through the break-and-watch harness, which restores from memory. Never through git.**
+
+## A break-and-watch table with only green rows is LESS trustworthy (2026-09-29, TASK-555)
+**A mutation slipped: gutting a pin's own equality failed nothing — 🔑 a pin cannot pin itself.** ⚖️ **Ruled: no third holder.** *The only cheap one would assert that the assertion exists, which raises the count and not the confidence.* ✅ **The mitigation that counts: the EVENT is guarded twice, from two files and two tasks — the thing we care about is held, the guard's own text is not, and that is an acceptable floor.**
+🔑 **The rule: a reported slip is EVIDENCE the table is real.** **An engineer who reports a green row where a mutation should have bitten is making the report worth more, not less** — and a table that is always all-green is the one to distrust.
+
+## `user.type` does not drive Mantine's `NumberInput` under happy-dom (2026-09-29, TASK-559)
+🔴 **A typing test can PASS while the handler is gutted:** the input shows the characters, **nothing is stored.** **Found by a mutation that emptied the handler and still went green.**
+✅ **Use `fireEvent.change`, and ASSERT THE SAVE** — the request or the state, never only what is on screen.
+🔑 **"A box that shows what you typed and forgets it is the same class of lie as a clipped one."**
+⚠️ **Treat any existing DOM test that types into an input and asserts only the screen as SUSPECT until it asserts an outcome.**
+
+## happy-dom has no layout engine — pixels are never proven here (2026-09-29, TASK-559)
+**Width, clipping, overflow, focus rings and z-index cannot be answered by our DOM tests.** ✅ **What CAN be proven is that a control exists, is reachable, and that its value LANDS in the request.**
+🔑 **A layout fix therefore always ends with a named human check** — the page, the device, the width, and the exact question. 📌 *Naming what the harness cannot do is worth more than another green test.*
+
+## Assert the KEY SET of a request body, not a subset match (2026-09-29, TASK-564)
+**`expect(body).toEqual({...})` passes a body that carries BOTH scope keys** — *the exact shape the server refuses with a 400.*
+✅ **Assert `Object.keys(body).sort()` exactly.** 🔑 **A test that proves what is PRESENT cannot prove what is ABSENT**, and on these doors the absence is the contract: **exactly one scope key may ride.**
+📌 **The same reasoning as the allow-list pins on public answers, and as `DROPPED_TOP` being deliberately empty: what must NOT be there needs its own assertion.**
+
+## When a screen-only assertion is a false-green — the rule, not the list (2026-09-29, TASK-563)
+🔑 **A screen-only assertion is a false-green EXACTLY when the control keeps its own display state.**
+🔴 **Can lie:** `NumberInput` (proved by mutation, TASK-559) and, by construction, `PinInput` · `Autocomplete` · `TagsInput`.
+✅ **Cannot lie:** a controlled native `Checkbox` · `Radio` · `TextInput` · `Textarea`.
+📌 **Corollary: `checked` assertions on a controlled checkbox are state assertions wearing a DOM coat** — settled by construction, so they need no defence. 🔑 **Knowing which greens need no defence is worth as much as knowing which ones do.**
+⚠️ **Undecided by construction, so break-it-and-watch is the only answer:** `Select` · `MultiSelect` · `DatePickerInput`. **No test asserts one screen-only today.**
+✅ **Survey (whole tree, not just `*.dom.test.tsx`): 3 typing sites, ONE false-green, already fixed.** **One gap left: `shopfront-checkin`'s `toList` asserts an outcome but not the VALUE (XS).**
+
+## Assert against a surface that CAN hold the value, at the boundary the other side reads (2026-09-29, TASK-566)
+🔴 **`textContent` does not include ATTRIBUTES, and a placeholder is an attribute** ⇒ a "no `optional` anywhere on screen" check was **reading a surface that could never hold the string**, and was green for a reason unrelated to the truth. ✅ **Read `placeholder` / `aria-label` / `title`, and pin the words in a copy test too.**
+🔴 **And assert at the boundary the OTHER SIDE reads:** asserting the argument handed to a client wrapper passed while **the wire carried an `address` key**, because the wrapper's literal always sets `address: undefined`. ✅ **Move the assertion to `fetch`.**
+🔑 **Both are TASK-563's rule one layer over: an assertion against the wrong surface is a false-green.** 📌 **And name WHICH net catches a given claim — two greens that both "cover" something usually means neither was checked.**
+
+## A "clicked" test that presses a DISABLED button proves nothing (2026-09-29, TASK-566)
+**The click lands nowhere, so the absence the test asserts was guaranteed by the wrong thing.** 🔑 **Assert that no request went out AND that the guard behind the button refuses** — the two-guard rule from TASK-564, applied to the test rather than the code.
+
+## The one deliberate exception to "a no-op is not a change" (2026-09-30, TASK-569)
+**When the voucher first-booking re-count YIELDS to a person's recorded extension, it writes a RECORDED NO-OP** (from = to, actor NULL).
+🔑 **Because "no record" was meaning two different things — "it skipped" and "it never ran" — and that exact ambiguity is what made D8 and TASK-553 expensive.** ⇒ **One rare row is cheap for keeping them apart.**
+✅ **Declared as an exception in its own doc rather than widening the rule.** 📌 *A rule with a named exception stays usable; a rule quietly bent stops being a rule.*
+
+## A rule whose reason has evaporated gets a NEW reason or goes (2026-09-30, TASK-569)
+**NOT STARTED ⇒ 409 was justified by "the first booking would overwrite it". TASK-569 removed that.** ✅ **The rule STAYS, on a different reason: before the first booking the expiry is a sale-day placeholder, so a person's date FREEZES it and can end EARLIER than the normal count** — 🔑 **"an extension that shortens".** **The dead reason was replaced in the doc.**
+🔑 **The discipline: when a rule's reason dies, do not delete the rule and do not keep it silently — find out whether it still has one.**

@@ -315,3 +315,48 @@ read must fit a smaller context** — which is why the 1.25 MB boot cost above i
 blocker for the migration, not a tidiness complaint. Marie moves last: after the
 cleanup, she is called *more* often, and during the transition she is the one who
 verifies the new vendor's work.
+
+### The workforce needs its own defect log (2026-09-28)
+
+The owner ordered Porter (smart-scheduler) to write up his own failures. He did —
+`REPORT-porter-pm-failures-2026-09-28.md`, 8 patterns, honest, unsoftened, and his
+own root cause #1 quotes my principle back at me: *a rule that is only prose will
+decay*. Then the owner asked for the general thing: **a standing channel where
+every role reports its own defects.**
+
+**The design: `<project>/ai-worker/FAILURES.md`** — append-only, `F-NNN`, one entry
+per incident, written **before the next reply**. Six non-optional triggers (owner
+correction · REWORK/TEST_FAILED · routing violation · a relayed fact that was wrong
+· an incomplete instruction to the owner · any written rule broken). A role may
+only add an entry and set `NEW`; **only Atlas changes a status.**
+
+**What makes it not-a-diary is the route**, and it is the Marie lesson a second
+time: *no role can reach Atlas — only the owner can.* So the gate does the calling:
+`check-hygiene.mjs` counts `Status: NEW` and prints `N unreviewed — เรียก Atlas`
+in output the owner already reads. 10+ unreviewed is a FAIL, because a team
+decaying faster than it is repaired should not be shipping more features.
+
+**Three things this report taught me about the roles themselves:**
+
+1. **A role cannot fix its own decay — it can only notice and record.** Porter
+   listed seven fixes and said plainly he cannot enforce any of them on himself.
+   That is the correct division: the role notices, Atlas designs, Marie installs.
+   Any design that asks a role to police itself is a prose rule wearing a costume.
+2. **Contamination beats forgetfulness as an explanation.** He broke the
+   Thai-to-owner rule 7+ times, and diagnosed it exactly: it happens right after
+   writing a long English brief. The fix is not a reminder or a hook — it is
+   **order of operations**: write the owner's Thai reply FIRST, before any English
+   artifact. Remove the cause; do not catch the symptom. (A hook also only exists
+   on one vendor, and the roles now run on two.)
+3. **Relay-by-default is a PM failure mode with a cheap fix.** He forwarded the
+   team's vividness — 🔴 and "incident" — before checking. The rule now: anything
+   marked 🔴 to the owner carries `I checked: <file:line | screenshot | output>`,
+   something he looked at himself, or it goes out labelled `unverified — <role>
+   claims`. **Forwarding vividness is not relaying a fact.**
+
+**And one causal link worth keeping:** he was told to read the knowledge file
+before asking the owner anything, to stop re-asking settled questions. At
+smart-scheduler that file is **317 KB** and every role's boot read is **363–384 KB
+against a 120 KB gate.** A file that size is skimmed, not read. **Some of what
+looks like a role being careless is a file being unreadable** — check the boot cost
+before blaming the behaviour.
