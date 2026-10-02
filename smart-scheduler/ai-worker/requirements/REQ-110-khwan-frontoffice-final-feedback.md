@@ -106,3 +106,42 @@ Remaining: 0 / 0.5 days
   3. then TASK-553, which item 6 depends on;
   4. then 3 → 6.
 - **Draft copy goes to the owner in ONE review file:** the gaining-coach notice (item 5), the duplicate-name warning (item 10), and any other new wording.
+
+## 10. Owner ruling, 2026-09-30 (F-C): "ตามแนะนำ บังคับครบ"
+- **Item 10:** the address requires **province, district AND sub-district**. Province alone must not pass.
+- The chat path (ruling 4) follows the same rule.
+
+## 11. Owner rulings, 2026-09-30 ("1-2 ตามแนะนำ")
+1. **Cover without the rate permission: NOT allowed.** A one-session cover requires the rate permission. The screen tells an admin without it that the permission is needed.
+2. **Advance-leave LINE notice to admins: not now.** The calendar blocked-day strip is enough. Revisit only if Khwan says it is not.
+- **Told, not objected to:**
+  - address names are shown in Thai in both languages, because the English source data is garbled;
+  - closed camp weeks show on the calendar strip, marked as closed, on days with children.
+
+## 12. Owner ruling, 2026-10-01 (chat address)
+- In the LINE **chat**, district and sub-district stay **free text**. No picker, and the backend does not take on Thailand's address dataset.
+- The **form** keeps its dropdowns. Both doors still require all three parts (province + district + sub-district), and the server still validates the province.
+
+## 13. Khwan, 2026-10-01 — a NEW ask (intake, next round unless the owner folds it in)
+**Her question:** what does `empty_leave_cutoff` mean?
+- *"คาบที่เหลือใกล้ถึงเวลาเรียนแล้ว แจ้งลาผ่านบอทไม่ทันค่ะ กรุณาติดต่อแอดมิน / Your upcoming classes are too close to their start time to cancel here. Please contact the admin."*
+- **Porter's answer, from the code** (`lib/line-i18n.ts:281`, `lib/leave-notice.ts`): the parent HAS upcoming classes, but each is inside the leave cut-off, so the bot cannot take the leave. The cut-off is a Settings value, `leave_cutoff_hours_fulltime` (FULL_TIME + PART_TIME) and `leave_cutoff_hours_freelance`. It deliberately names no number, because the number is a setting staff can change.
+
+**Her two asks:**
+1. **Every parent refusal — anything a parent cannot do themselves, or the system does not allow — ends with the same line:**
+   ```
+   แอดมินจะช่วย support ให้นะคะ
+   Our Admin Team will assist you here.
+   ```
+2. **An admin is notified when that happens**, so someone can step in.
+
+**Porter's notes for sizing:**
+- (1) is copy plus a rule covering every parent-facing refusal. It needs a derived list of those refusals.
+- (2) is a NEW notification: who receives it, by what route (LINE, or the Needs-attention panel), and how it avoids becoming noise, since a refusal can repeat.
+
+## 14. CLOSED, 2026-10-02
+All 12 items are live on uat and the owner has told Khwan.
+- **Ours (9):** 1, 2, 3, 5, 6, 7, 8, 10, 12.
+- **Palm's (3):** 4, 9, 11 — merged into the front repo by the owner on 2026-10-02.
+- **Still open, separately:** Khwan's §13 asks (one "the admin will help" line on every parent refusal, and an admin notification) — the owner put them in the NEXT round.
+- **Not part of this REQ:** her three pre-deploy questions (the Daily report count, the Freelance budget rows, and the parent whose check-in showed "no class today"), with Sober to diagnose.

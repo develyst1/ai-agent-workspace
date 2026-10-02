@@ -74,7 +74,13 @@
 
 ---
 
-## 10 · Item 6 — the attention card for a moved course (ADMIN panel + the LINE digest's count) 📋 DRAFT
+## 10 · Item 6 — the attention card for a moved course (ADMIN panel + the LINE digest's count) ⛔ **SUPERSEDED BY §12 (owner, 2026-10-01)**
+> 🚫 **Do not use this wording.** The owner ruled *"12 เอาแบบยาว"* — **§12's longer wording wins on the ADMIN panel**, because it carries the words the move dialog's own warning uses (**ตารางเดิม / old dates**) and this draft does not.
+> 📌 **Kept, not deleted:** *a superseded draft that vanishes reads as an oversight; one marked superseded reads as a decision.* ✅ **It is still worth reading** — the `<new start> · <child> · <sessions pending>` line shape and the "count only in the digest" promise below are UNCHANGED by the ruling, which touched the heading sentence alone.
+> ⚠️ **The heading sentence still lives in the BACKEND** (`line-i18n.ts`, the LINE digest) — **@Jason's, not mine.** Derived and reported in TASK-602; 🚫 I did not touch it.
+> ✅ **DONE — @Jason, TASK-603 (2026-10-01):** the backend's digest heading now carries **§12's sentence**, so the admin panel (the FE dictionary) and the LINE digest say the same thing. 🚫 **Nothing renumbered, nothing deleted.**
+> 🔑 **Unchanged, and pinned so:** the `<new start> · <child> · <sessions pending>` line shape, and **the digest carries the COUNT only — no names** (asserted in both languages, with the items handed in on purpose).
+> 📌 **The fit question @Sober raised, answered with numbers:** as a digest line (`• <heading>: <n>`) §12's wording is **69 Thai / 76 English characters**; the longest already shipping there, `orphaned_sessions`, is **55 Thai / 78 English** — also long, also with a parenthetical. ⇒ **the English is SHORTER than one already in the same digest**, so it is within precedent and 🚫 **no STOP was needed.**
 **Where / When:** an admin moved a confirmed course's start date and has not re-confirmed it yet, shown from that moment.
 **Now (draft):** *"คอร์สที่เลื่อนวันเริ่มแล้ว รอยืนยันใหม่"* / *"Courses with a moved start date, awaiting re-confirmation"*
 **Promises:** each line is `<new start> · <child> · <sessions pending>` on the panel. The morning digest shows only the COUNT (no names).
@@ -96,7 +102,8 @@
 
 ---
 
-## 12 · Item 6 — the attention card, my wording vs §10's ⚠️ **TWO DRAFTS FOR ONE ROW — please pick one**
+## 12 · Item 6 — the attention card, my wording vs §10's ✅ **APPROVED — the LONG wording (owner, 2026-10-01)**
+> ⚖️ **Ruled: *"12 เอาแบบยาว"*.** This wording stands on the ADMIN panel, **§10's is superseded**, and 🔑 **the agreement pin on the shared words *ตารางเดิม / old dates* STAYS** — the ruling settled WHICH wording carries the claim, never whether the two surfaces must agree.
 **Where / When:** the same admin-panel row as **§10 above** (filed for the BE side). I did not see §10 before I drafted, and the two do not say the same thing.
 - **§10's draft:** *"คอร์สที่เลื่อนวันเริ่มแล้ว รอยืนยันใหม่"* / *"Courses with a moved start date, awaiting re-confirmation"*
 - **Mine, in the code now:** *"คอร์สที่เลื่อนแล้วแต่ยังไม่ได้ยืนยันใหม่ (ลูกค้ายังถือตารางเดิม)"* / *"Courses moved but not re-confirmed (the family still has the old dates)"*
@@ -106,4 +113,219 @@
 
 ---
 
+## 13 · Item 3 — extending a voucher's expiry (ADMIN dialog) 📋 DRAFT (Fern, TASK-572)
+**Where / When:** an admin presses **ต่ออายุ / Extend expiry** on a voucher row and picks a date. The server is asked what that date would change **before** anything is saved.
+**Now (draft), seven strings:**
+- *"ต่ออายุ"* / *"Extend expiry"* — the row's button.
+- *"วันหมดอายุวอยเชอร์ — {student}"* / *"Voucher expiry — {student}"*
+- *"แก้วันหมดอายุวอยเชอร์แล้ว"* / *"Voucher expiry updated"* — the toast.
+- 🔴 *"วันหมดอายุนี้เลื่อนไม่ได้ — เพราะว่า"* / *"This expiry cannot move — here is why"* — **the heading above a REFUSAL.** ⚠️ Deliberately not "ผิดพลาด / Error" and not "บันทึกไม่ได้": *the admin asked a question and this is the answer.*
+- *"วอยเชอร์นี้ถูกยกเลิกแล้ว ชั่วโมงจึงหายไปแล้ว การเลื่อนวันจะเปลี่ยนแค่ข้อความบนหน้าจอ — ถ้าต้องการคืนชั่วโมงให้สร้างวอยเชอร์ใบใหม่"* / *"The voucher was cancelled, so its hours are already gone; a later date would change only what this screen says. To give hours back, create a new voucher."*
+- *"อายุนับจากการจองครั้งแรก จึงยังไม่มีอะไรให้ต่อ — จองคาบแรกก่อน แล้ววันหมดอายุจะนับตามคาบนั้น (ถ้าตั้งวันเองตอนนี้จะเป็นการตรึงวันชั่วคราวจากวันขาย และอาจทำให้หมดอายุเร็วขึ้น)"* / *"Validity is counted from the first booking, so there is nothing to extend yet — book the first session and the expiry follows it. (A date set now would freeze the sale-day placeholder and could end the voucher EARLIER.)"*
+- *"วันที่นี้เร็วกว่าวันเดิม — เป็นการลดอายุ ไม่ใช่ต่ออายุ"* / *"This date is EARLIER than the current one — it shortens the voucher instead of extending it."*
+- 🔕 *"การแก้ครั้งนี้ไม่มีการแจ้งใคร ลูกค้าจะเห็นวันใหม่ในข้อความหักชั่วโมงหรือข้อความเตือนครั้งถัดไป"* / *"Nobody is told by this change. The family sees the new date on their next deduction notice or reminder."*
+
+**Promises:** the two refusals are the **server's own sentences**, shown word for word, with the "what to do instead" line added underneath — 🚫 never replacing it, and 🚫 an unfamiliar refusal gets **no** suggestion at all. The date is not saved until Save is pressed. A warning about sessions falling outside the new date **does not block the save** (the course's rule, unchanged). An earlier date is allowed and named.
+**It goes away when:** the admin picks a different date (each date gets its own answer) or closes the dialog.
+🔑 **The "before you save" sentences are NOT new** — this dialog renders the **course** expiry edit's own `expiry.previewTitle / previewCuts / previewClear / previewNotSaved`, deliberately: *one question, one wording, two entitlements.* ⚠️ So a change to those words changes both screens.
+⚠️ **EXPIRED is extendable and that is the point of the feature; ENDED and NOT-STARTED are the two refusals.** The button is hidden on an ENDED voucher, so in practice an admin meets the ENDED sentence only in a race (two tabs).
+📌 **Nothing here says a notice was sent, and the audience line says the opposite on purpose** — a test now fails if any string in this block acquires the words *notified / แจ้งลูกค้า / ส่งข้อความ*.
+
+---
+
+## 14 · Item 8 — the camp week's Close / Take bookings again / Delete (ADMIN) 📋 DRAFT (Fern, TASK-586)
+**Where / When:** the Camp page's week list, and the calendar's day banner. **The owner ruled what Close means: it stops NEW bookings and nothing else** — existing bookings stay, the coaches keep their sessions, both reminders keep going, the per-day swap still works, and the week still charges because its days still run.
+🔴 **Two existing strings CHANGE, because they over-claimed:**
+- **Was** *"ปิดแล้ว"* / *"Closed"* → **Now:** *"ปิดรับจองใหม่"* / *"Closed to new bookings"* — ⚠️ *"ปิดแล้ว" reads as "the camp is off", and an admin who reads it that way tells a parent the wrong thing.*
+- **Was** *"ปิดสัปดาห์ {name} แล้ว — วางแผนวันใหม่เข้าไม่ได้อีก"* / *"Week {name} closed — no new days can be planned into it"* → **Now:** *"สัปดาห์ {name} ปิดรับจองใหม่แล้ว การจองเดิมยังอยู่ทั้งหมด — น้องยังเรียนตามวันเดิม ครูยังสอนคาบเดิม และข้อความเตือนยังส่งตามปกติ เปิดรับจองอีกครั้งได้ทุกเมื่อ"* / *"Week {name} is closed to NEW bookings. Everything already booked carries on — the children keep their days, the coaches keep their sessions, and the reminders still go out. You can take bookings again at any time."*
+**And the button:** *"ปิด"* / *"Close"* → *"ปิดรับจองใหม่"* / *"Stop new bookings"* — **the button says what it does, not what it sounds like.**
+**Six new strings:**
+- *"เปิดรับจองอีกครั้ง"* / *"Take bookings again"* — 🔑 **the way back, which did not exist: a week could be closed and never reopened from this screen.** The server restores it **exactly**, so the words do not hedge.
+- *"ลบ"* / *"Delete"* · *"ลบสัปดาห์ {name}?"* / *"Delete week {name}?"* · *"ลบสัปดาห์นี้"* / *"Delete the week"* · *"ลบสัปดาห์ {name} แล้ว"* / *"Week {name} deleted"*
+- *"จะลบสัปดาห์นี้และวันทั้งหมดในสัปดาห์ ทำได้เฉพาะเมื่อยังไม่มีการจอง — ถ้ามี ระบบจะบอกจำนวน และเลือกปิดรับจองใหม่แทนได้"* / *"This removes the week and its days. It only works while nothing is booked — if anything is, we will say how many and you can stop new bookings instead."*
+
+**Promises:** Close is reversible and says so · a closed week keeps every booking, coach, reminder and charge · Delete works only while nothing is booked, **and the SERVER checks at the moment of the act**, so a week that gained a booking while the dialog was open is refused with **its own sentence** (which already says how many and points at Close) — 🚫 shown verbatim, never replaced.
+**It goes away when:** the week is reopened (the chip and the button swap back), or the week is deleted.
+⚠️ **A behaviour change the owner should know about:** the calendar's day banner **used to hide closed weeks**. It no longer does — **a closed week appears on days that have children, marked *ปิดรับจองใหม่*** — because those children are at camp and those coaches are booked, and the banner is the only thing on that screen that says camp is running. 🚫 A closed week with nobody in it is still hidden.
+📌 **No new words for the refusals: every one is the server's own sentence.**
+
+---
+
+## 15 · Item 2 — the teacher's ADVANCE leave (TEACHER, server sentences) 📋 DRAFT (Jason, TASK-582)
+**Where / When:** a linked teacher reports leave for a day **after today**. That day is now **blocked for new bookings** with them, its classes are **listed**, and **nothing is cancelled** (the owner, 2026-09-30). Today or an earlier day still cancels, as before.
+**Three new server sentences, Thai only (the server's refusals are Thai):**
+- *"ลาล่วงหน้าเป็นการปิดทั้งวัน — ไม่ต้องเลือกคาบ คาบที่มีอยู่แล้วจะแสดงให้แอดมินจัดการ"*: the teacher ticked some classes on a FUTURE day. An advance leave is the whole day, and ticks choose classes to *cancel*, which this act never does.
+- *"ไม่พบวันลาล่วงหน้านี้"*: lifting a day that isn't recorded (or was already lifted).
+- *"ลาล่วงหน้าได้เฉพาะวันหลังจากวันนี้"*: a defence the screen should never show (the server routes today and earlier days to the old cancel before this can fire).
+**Promises:** nothing is cancelled and nobody is told; lifting the day restores nothing and cancels nothing.
+⚠️ **Open (not wording):** "listed for the admin", but today the list goes back to the **teacher** who recorded it. There is no admin view yet (see TASK-582 §6).
+
+---
+
+## 16 · Item 2 — an ADMIN notice when a teacher records an advance leave 📋 DRAFT — ⚠️ **PROPOSAL, NOT BUILT: the owner decides whether to send it at all** (Jason, TASK-587)
+**Why it is a question, not a restoration:** the old leave act (a cancel) told the **families** and the class's **other coaches**, and **never the admins**. So a notice to admins would be **new**. The words are here so the owner can say yes or no in one step.
+**Who:** admins only (the linked LINE admin accounts). 🚫 **Never the family:** their class is still going ahead.
+**Recorded** (the point is "you have classes to handle", not "someone is off"):
+- TH: *"🗓️ ครู{ชื่อเล่น} ลาล่วงหน้าวันที่ {DD-MM-YYYY} — มีคาบในวันนั้น {n} คาบ ต้องจัดการเอง (ระบบไม่ได้ยกเลิก)"*
+- EN: *"🗓️ Teacher {nickname} is on leave on {DD-MM-YYYY} — {n} class(es) that day need handling (nothing was cancelled)"*
+- With **0** classes: the same sentence with *0*, so the admin knows the day is simply blocked. (Or no message at all on a 0 day, if the owner prefers.)
+**Lifted:** ⚖️ if the first message is sent, **the lift must send its counterpart**, or admins act on a day that is no longer blocked:
+- TH: *"🗓️ ครู{ชื่อเล่น} ยกเลิกการลาวันที่ {DD-MM-YYYY} — วันนั้นรับจองกับครูได้ตามปกติ"*
+- EN: *"🗓️ Teacher {nickname} withdrew their leave for {DD-MM-YYYY} — bookings with them are open again that day"*
+
+---
+
+## 17 · Item 10 / ruling 4 — the LINE CHAT registration matches the page (PARENT-facing) 📋 DRAFT (Jason, TASK-583)
+**Where / When:** a parent registers a child by typing in the LINE chat (not the page).
+- **The duplicate-name sentence is now §8's, in the chat too, from ONE source.** The chat's own key (`add_dup_detail`) now holds §8's wording, and the page's refusal carries that same key's text. ⇒ **Approving §8 approves both doors; editing it edits both.**
+- **Changed (a deletion only):** the bad-birthday reply loses its escape.
+  - **Was** *"… เช่น 02-12-2024 หรือพิมพ์ ข้าม"* / *"… e.g. 02-12-2024, or type skip."*
+  - **Now** *"… เช่น 02-12-2024"* / *"… e.g. 02-12-2024."*
+- **Removed:** *"พิมพ์ชื่อคนถัดไป หรือพิมพ์ "ข้าม" เพื่อจบ"* / *"Type the next name, or "skip" to finish"*. Its only sender (a child written from a name alone) is gone.
+- **No new sentence for a refused skip:** a parent who types ข้าม at the birthday or address is asked the SAME question again (the customer's own prompt). Two refusals bring a person, as everywhere else.
+- **One new server sentence, which no screen should show:** *"กรุณาระบุวันเกิดของนักเรียน"*, the writer's own floor.
+
+---
+
+## 18 · F-C + D11(a) — the LINE CHAT asks the address in THREE questions; a new family is saved with its first child 📋 DRAFT (Jason, TASK-590)
+**Where / When:** a parent registers a child by typing in the LINE chat. **Replaces** the customer's one-line screen 6 (*"กรุณาระบุ เขต แขวง จังหวัด …"*), because one typed line cannot be three checked parts (the owner's F-C ruling).
+- 🔻 **TASK-594 §2 — all three are now ONE bilingual string each** (they replace a §17c screen, and a one-language question between two bilingual ones is what Tanya read as "Thai-only"):
+- *"กรุณาระบุจังหวัดค่ะ เช่น กรุงเทพมหานคร / Please enter your province, e.g. Bangkok"* (both halves in one message)
+- *"ไม่พบจังหวัดนี้ค่ะ กรุณาพิมพ์ชื่อจังหวัดเต็ม เช่น เชียงใหม่ หรือ กรุงเทพมหานคร"* / *"We could not find that province. Please type its full name, e.g. เชียงใหม่ or กรุงเทพมหานคร"* (`กทม`, `กรุงเทพ`, "จังหวัด…" are understood)
+- *"กรุณาระบุอำเภอ/เขต เช่น วัฒนา"* / *"Please enter your district, e.g. Watthana"*
+- *"กรุณาระบุตำบล/แขวง เช่น พระโขนงเหนือ"* / *"Please enter your sub-district, e.g. Phra Khanong Nuea"*
+- On the summary, when the address is already on file: *"{province} (ที่อยู่เดิมของครอบครัว)"* / *"(the address we have on file)"*
+- **Rare:** the phone was registered by someone else between the phone step and the save: *"เบอร์นี้เพิ่งถูกลงทะเบียนไว้แล้วค่ะ ยังไม่ได้บันทึกนักเรียน กรุณาพิมพ์ "สมัคร" แล้วใส่เบอร์อีกครั้ง"* / *"This phone number was just registered. The student was not saved — please type "Register" and enter the number again."*
+- **Server floor (no screen should show it):** *"ที่อยู่ต้องมีจังหวัด อำเภอ/เขต และตำบล/แขวง"*.
+**Promise it does NOT make:** the district is not checked against the province. We check that all three are given and the province is real.
+
+---
+
+## 19 · Item 2 — the SCREEN for reporting leave on a future date (TEACHER-facing) 📋 DRAFT (Fern, TASK-588)
+📌 **The screen half of §15 above** — @Jason filed the SERVER sentences there; these are the words the dialog itself says. 🚫 No refusal is reworded here: his sentences are shown verbatim.
+**Where / When:** a linked teacher opens *Report leave* and picks a date **after today**. The server records the day, **lists its existing classes, and cancels nothing.** Today and the past keep the old screen and the old words exactly.
+**Now (draft), eight strings:**
+- **Before the act** — *"วันที่เลือกเป็นวันในอนาคต การลาจะปิดรับจองใหม่ทั้งวัน — ไม่ต้องเลือกคาบ เพราะคาบที่จองไว้แล้วจะไม่ถูกยกเลิก"* / *"This date is in the future, so reporting leave blocks the whole day for new bookings. There is nothing to tick: classes already booked are not cancelled."*
+- **The button** — *"ปิดรับจองวันนี้"* / *"Block this day"* (⚠️ **not** *"ลา 2 คาบ"* — there is no count to promise).
+- **After the act** — *"{date} — บันทึกวันลาของคุณแล้ว"* / *"{date} — you are recorded as away"* · *"จะไม่มีการจองคาบใหม่กับคุณในวันนั้น"* / *"No new class can be booked with you that day."* · *"มีคาบที่จองไว้แล้ว {n} คาบในวันนั้น แอดมินจะจัดการให้ทีละคาบ:"* / *"{n} class(es) are already booked that day. An admin will handle them by hand:"* · *"วันนั้นยังไม่มีคาบที่จองกับคุณ"* / *"Nothing is booked with you that day."* · *"วันนี้มีบันทึกวันลาอยู่แล้ว ระบบใช้บันทึกเดิม"* / *"This day was already on record; the first entry stands."*
+- 🔴 **The clause that matters** — *"ยังไม่มีการยกเลิกคาบใด คาบเหล่านั้นยังอยู่ในตารางและยังไม่ได้แจ้งผู้ปกครอง — กรุณาถือว่าคาบยังสอนตามปกติจนกว่าแอดมินจะแจ้งเปลี่ยนแปลง"* / *"NOTHING HAS BEEN CANCELLED. Those classes are still on the schedule and the families have not been told — please treat them as going ahead until an admin tells you otherwise."*
+
+**Promises:** the day stops taking NEW bookings · the classes already there are **untouched**, and **nobody has been told** · the teacher is asked to keep teaching them until an admin says otherwise · reporting the same day twice is not an error and changes nothing.
+🔑 **Why the last clause is written in that order and not softened:** ⚠️ **a teacher who believes their classes were cancelled will not turn up** — and on this path nothing was cancelled. *The sentence has to be unmissable and it has to come before any reassurance.*
+📌 **On a future date there is NO list of classes to tick at all** — not a greyed one. A tick there would mean *"cancel this one"*, and the server refuses a body that carries them **in its own sentence** (📋 @Jason's `§15` draft: *"ลาล่วงหน้าเป็นการปิดทั้งวัน — ไม่ต้องเลือกคาบ…"*), which the screen shows verbatim if it is ever reached.
+⚠️ **Today's words are unchanged** — *"{n} คาบ"*, the families-told line and the make-up line are all still the old act's, because the old act still runs for today and the past.
+
+---
+
+## 20 · Item 2 — the ADMIN's marker for a coach's blocked day (ADMIN, on the calendar) 📋 DRAFT (Fern, TASK-589)
+**Where / When:** the calendar, above the grid, in **both** the day and the week view — wherever an admin already looks at that date. It appears for each recorded leave day in view. 🚫 **It is not a control:** nothing can be pressed, cancelled or moved from it.
+**Now (draft), two strings:**
+- **A day with classes** — *"{name} ลา — มี {n} คาบต้องจัดการ"* / *"{name} is away — {n} class(es) to handle"*
+- **A day with none** — *"{name} ลา — ไม่มีคาบในวันนั้น"* / *"{name} is away — nothing booked"*
+
+**Promises:** the coach named is the one who is away · the number is the count of classes **the server lists on that day** (not a guess) · **nothing has been cancelled or moved** — the classes are still on the schedule for an admin to handle by hand.
+🔑 **Why two sentences and not one:** ⚠️ *a marker that only says "blocked" sends an admin hunting for the classes; one that says "3 classes" tells them there is work.* And an empty day is a different fact — **it is the answer to "can I book this coach here?"**, which is why it still shows.
+🚫 **The word "ยกเลิก / cancelled" must never appear in either sentence** — nothing on that day is cancelled, and a pinned test fails if it ever does.
+⚠️ **A teacher never sees this** — it is the admin's read, and the server refuses it for a linked teacher.
+
+---
+
+## §T-591 · F-C + D11(a) — the PAGE's half: three address parts, and the legacy ask 📋 DRAFT (Fern, TASK-591)
+📌 **The page half of §18** (@Jason's chat questions and server sentences). 🚫 **No refusal is reworded here** — the duplicate-name sentence now comes **from the server** in both languages, and the page keeps no copy of it.
+**Where / When:** the `/register` page's child form. The owner ruled the address is **province + district + sub-district**; the page sends the three picked names and the server builds the stored line.
+**Two existing strings CHANGE:**
+- *"กรุณาเลือกจังหวัดและใส่ที่อยู่ (ถามครั้งเดียวต่อครอบครัว)"* → *"กรุณาเลือกจังหวัด อำเภอ/เขต และตำบล/แขวง (ถามครั้งเดียวต่อครอบครัว)"* / *"Please choose the province, the district and the sub-district (we only ask once per family)."*
+**Five new strings:**
+- 🔑 *"ยังขาด{missing}ค่ะ"* / *"We still need {missing}."* — **`ADDRESS_INCOMPLETE`, and it NAMES the part.** ⚠️ *"You need the sub-district" is a different sentence from "that is wrong", and only one of them tells a parent what to do.*
+- the part names, used inside that sentence: *"จังหวัด"* / *"the province"* · *"อำเภอ/เขต"* / *"the district"* · *"ตำบล/แขวง"* / *"the sub-district"*
+- *"เบอร์นี้เพิ่งถูกลงทะเบียนไปแล้ว กรุณาใส่เบอร์อีกครั้งเพื่อเข้าร่วมครอบครัวนั้นค่ะ"* / *"That number has just been registered. Please enter it again to join that family."* — **`PHONE_NOW_REGISTERED`**: somebody registered that number between our check and this save. ⚠️ **Worded as a fact, not as the parent's mistake.**
+- ⚠️ **The legacy ask** — *"ตอนนี้เราเก็บที่อยู่เป็นสามส่วน (จังหวัด อำเภอ/เขต ตำบล/แขวง) รบกวนเลือกให้ด้วยค่ะ ถามครั้งเดียวเท่านั้น"* / *"We keep addresses in three parts now (province, district, sub-district). Could you pick yours? We only ask once."*
+
+**Promises:** two parts do not submit — the page stops it before the request · the missing part is named · the address is asked **once per household** · **a family we already know is ASKED, never blocked** · nothing is created until the child is accepted, so a rejected child leaves the parent exactly as they were.
+🔑 **Why the legacy sentence is worded that way:** ⚠️ **it must not read as *"we lost your address"*** — what they gave us was valid when they gave it, and we are asking because we keep it differently now. 🚫 **It is shown ONLY to a family we already know** (a brand-new one has never been asked, so "again" would be a lie on their first screen) — pinned.
+⚠️ **Two things the words must NOT claim** (both pinned): the server checks **three non-empty parts and a real province** — 🚫 **it does NOT check that the district belongs to the province**, so nothing here may say "that district is not in that province"; and 🚫 **the page no longer offers a typed address at all** (a typed line has no province, so it could only produce a body the server refuses).
+
+---
+
+## §T-592 · Item 5 — a COVER requires the rate permission, and the screen says so 📋 DRAFT (Fern, TASK-592)
+📌 **The owner ruled option (a)** — reworded from the drafts held back in TASK-577 for exactly this answer. ✅ **The server already refuses this** (TASK-584 put the existing guard on the door), so this sentence is **the screen catching up with a rule that is already true.**
+**Where / When:** the series *Swap the primary* dialog, the moment an admin chooses **“this session only”** (a cover) **without** the coach-rate permission. The rate box appears in its place for an admin who has the permission.
+**Now (draft), one string:**
+- *"การสอนแทนจะจ่ายตามค่าสอนของครูที่มาแทน จึงต้องมีสิทธิ์แก้ค่าสอนครู — บัญชีนี้ยังไม่มีสิทธิ์นี้ กรุณาให้แอดมินที่มีสิทธิ์ทำให้ หรือขอสิทธิ์เพิ่ม"* / *"A cover is paid at the covering coach's rate, so it needs the coach-rate permission. You do not have it — ask an admin who does, or ask for the permission."*
+
+**Promises:** the door is **visible and explained**, 🚫 **not hidden and not dead** — *a control that does nothing is the dead end this whole round was spent removing* · nothing is sent while the permission is missing · **an admin WITH the permission sees exactly what they saw before** (the rate box), and this added no restriction for them · the **whole-series** swap and the **add-a-coach** door are untouched, because no rate is involved in either.
+🔑 **Three things the sentence deliberately does:** it names **the PERMISSION** (🚫 not the coach — they are fine; 🚫 not the rate — it is not wrong), it says **why** the permission is needed (the cover is paid at the covering coach's rate), and it says **what to do next** — *a reason with no next step is a dead end with a caption.*
+⚠️ **It never says the cover is impossible** — only that this account cannot do it.
+
+---
+
+## §T-593 · Nit 2 — a sentence NOBODY EDITED became false ⛔ DELETION (Fern, TASK-593)
+⚠️ **Nothing new to approve — one clause is GONE**, and it is filed here so Khwan sees it left on purpose rather than by accident.
+**Where / When:** the register page's *already linked* line, directly above the **Add a child** button.
+**Was:** *"ผูกกับเบอร์ {phone} (นักเรียน {n} คน) ไม่ต้องทำอะไรเพิ่มค่ะ"* / *"Linked to {phone} ({n} children). Nothing more to do here."*
+**Now:** *"ผูกกับเบอร์ {phone} (นักเรียน {n} คน)"* / *"Linked to {phone} ({n} children)."* — and the one-child English form keeps its own sentence (*"(1 child)"*).
+
+🔑 **Why:** TASK-580 put an **Add a child** button underneath that line. ⇒ *"Nothing more to do here"* sat on top of the one thing there now is to do. 📌 **Nobody edited the sentence; a change elsewhere made it wrong** — the same family as the rendered comments in D12.
+**Promises:** the line still says **who the account is linked to and how many children are on it** · 🚫 it no longer tells a parent to stop · the 1-vs-many English split and the single Thai sentence are unchanged, and both are pinned against the clause returning.
+
+---
+## 19b · ✅ APPROVED & SHIPPED — Item 10, the phone step's sentence (Jason, TASK-594 §1 → built in TASK-601)
+📌 **Numbering note: there are two §19 blocks** — @Fern's leave screen above and this one. **This is 19b**; nothing is renumbered, so neither report's references break.
+✅ **The owner approved it as drafted (2026-10-01): a NEW phone gets the new sentence; an EXISTING phone keeps Khwan's own words.** **Shipped in TASK-601.**
+- **NEW phone** (`verify_parent_ok_new`) — now reads: *"รับเบอร์แล้วค่ะ ✅ เบอร์โทรศัพท์ / Phone: {phone}"* / *"ลงทะเบียนจะเสร็จสมบูรณ์เมื่อเพิ่มนักเรียนคนแรกค่ะ / Your registration is complete once you add your first student."*
+- **EXISTING phone** (`verify_parent_ok_existing`) — unchanged, the customer's own: *"ผูกบัญชีผู้ปกครองสำเร็จ ✅"* / *"Registration completed ✅"*.
+- 🔴 **Consequence, declared:** §17c **screen 4a's exact sentence is now carried by NO key** — it only ever rendered on the new-phone step, where it had become false. **Asserted, so the retirement is visible rather than noticed later.**
+
+### The original draft, as it went up
+
+**Where / When:** the LINE chat, immediately after a parent types a phone number that we do NOT know.
+🔴 **Why it must change:** since TASK-590 a new family is created only when its FIRST CHILD is confirmed, in one transaction. At the phone step **nothing is written** — no parent, no LINE link. **The screen says the opposite**, and Tanya (holding our own spec) reported it as *"the chat links the parent at the PHONE step"*. 🔑 **The behaviour is right; the sentence is not.**
+⚠️ **The SAME sentence is also used when the phone IS known** (`verify_parent_ok_existing`) — where the account really is linked at once. **One sentence, two opposite states.**
+- **Now (the customer's §17c screen 4, unchanged):** *"ลงทะเบียนผู้ปกครองสำเร็จแล้วค่ะ ✅ / Registration completed ✅ / เบอร์โทรศัพท์ Phone: {phone}"*
+- **📋 DRAFT for a NEW phone** (`verify_parent_ok_new`) — it should say we have the number and the registration finishes with the first child: *"รับเบอร์แล้วค่ะ ✅ เบอร์โทรศัพท์ / Phone: {phone}\nลงทะเบียนจะเสร็จสมบูรณ์เมื่อเพิ่มนักเรียนคนแรกค่ะ / Your registration is complete once you add your first student."*
+- **🚫 An EXISTING phone keeps the customer's sentence** (`verify_parent_ok_existing`): there, the account IS linked at that moment and the words are true.
+**Promise it must NOT make:** that anything is saved before the first child is confirmed.
+📌 **Not changed by me:** it is the customer's own copy. The code is correct today; only the words are pending.
+
+---
+
+## §T-595 · The teacher's leave dialog — one line MOVED, one Thai word CORRECTED (Fern, TASK-595)
+⚠️ **Nothing to approve in the English. One Thai word changed, and one sentence now shows on fewer screens.**
+**Where / When:** the teacher's *report my leave* dialog, which serves **two acts** — leave for **today** (classes are cancelled and families told) and leave for a **future** date (the day is blocked; 🚫 nothing is cancelled).
+
+**1. The same-day warning is now shown only on the TODAY act — the words are unchanged.**
+- *"ผู้ปกครองของคาบที่ติ๊กจะได้รับแจ้ง และระบบจะเพิ่มคาบชดเชยให้"* / *"Families of the ticked sessions will be told; their make-ups are added by the system."*
+- 🔑 **Why:** on a future date nothing is cancelled and nobody is told, so the sentence sat **directly under a hint saying the opposite.** ⇒ it is not reworded, it is simply not shown there.
+
+**2. `noSessions` — one Thai word: "ในวันนี้" → "ในวันนั้น".**
+- Was *"ไม่มีคาบของคุณในวันนี้"* (**today**) while its own English reads *"No sessions of yours on this day."*
+- 🔑 **Why:** this line is shown for **whatever date is chosen**, including a past one ⇒ the Thai named the wrong day and the two languages did not make the same statement.
+
+**Promises:** today's teacher still reads the warning they need · a teacher taking leave in advance is never told a family was informed · the Thai and the English say the same thing on every date.
+
+---
 ## Waiting to be added this round
+
+---
+
+# 📌 SECTION NUMBERING — rule from 2026-09-30 (@Sober)
+🔴 **@Fern and @Jason collided here twice in one hour: two §17s and two §18s**, because **the number is chosen by whoever writes last.**
+⚖️ **From now on a section is numbered BY ITS TASK: `§T-589`, `§T-590`.**
+🔑 **Collision-free by construction, no coordination needed, and self-documenting — any string traces to the task that made it.**
+🚫 **Not "one role owns the file": that adds a hop and a queue through the SA, who is already the bottleneck.**
+✅ **Existing numbered sections stay as they are. The rule starts now.**
+
+---
+
+# ⛔ §16 — the advance-leave admin notice: **DECLINED FOR NOW** (owner, 2026-09-30)
+**The owner ruled NOT now.** ✅ **The calendar strip stands** — an admin can already SEE a blocked day and how many classes are on it.
+📌 **The wording stays here, unchanged, so that a later yes costs nothing.** 🚫 **Do not build it. Do not delete it.**
+🔑 **This is what "the cheap half first" was for: he answered knowing what already exists rather than in the abstract.**
+
+---
+
+# ✅ OWNER DECISIONS, 2026-10-01 — "19 ตามนั้น 12 เอาแบบยาว"
+- **§19 APPROVED as drafted.** A NEW phone gets *"รับเบอร์แล้วค่ะ ✅ … ลงทะเบียนจะเสร็จสมบูรณ์เมื่อเพิ่มนักเรียนคนแรกค่ะ / Your registration is complete once you add your first student."* An EXISTING phone keeps the customer's own sentence.
+- **§12: the LONGER wording wins** — *"คอร์สที่เลื่อนแล้วแต่ยังไม่ได้ยืนยันใหม่ (ลูกค้ายังถือตารางเดิม)" / "Courses moved but not re-confirmed (the family still has the old dates)"*. The agreement pin on the shared words **ตารางเดิม / old dates** STAYS. §10's shorter draft is superseded.
+- **All other sections are approved as drafted** (Porter checked them against the owner's standing rulings; nothing contradicts one).
+- **§16 (an admin notice when a teacher records an advance leave) remains DECLINED for now** — the calendar marker stands. The draft stays for a later yes.

@@ -108,3 +108,35 @@ Verified by me: **796 pass / 0 fail** across 86 files · tsc 0 · build ok. **Th
 **With the reconfirm Alert gone the modal had no focusable element, Mantine's focus trap dumped a document, THE RUN PRODUCED NO SUMMARY, and her runner read that as a pass.**
 🔑 **"A mutation run that prints no summary is not a green — it is a run that did not happen."** ✅ **Re-pinned at the source and it bites.** 📌 **Recorded in `SYSTEM-FACTS.md`.** *Telling me about an inconclusive-then-green row is worth more than the row.*
 ✅ Declared: `expiry-preview.test.ts`'s slice moved to the NEXT `</CourseDetailRow>`, meaning unchanged. 📋 **15 drafts filed; code not held.**
+
+---
+
+# 🔁 RE-RUN of §5 — @Fern, 2026-09-30, on @Sober's ruling
+
+**Why:** the original table was produced by the runner I later found broken (`REPORT-fe-mutation-capture-audit-2026-09-30.md`): a 1 MiB capture against a suite that prints ~6.9 MB. 🔑 **Not one of those nine rows recorded a COUNT, so by the verdict rule all nine were NO RESULT, not just R6.** @Sober: *"they came from the runner you later found broken — the doubt is specific and nine rows is cheap."*
+**How:** `scripts/mutation/` **in the repo** (TASK-572), `scripts/mutation/task-571-rerun.json`, against `course-start.test.ts` · `change-start-date.dom.test.tsx` · `approved-copy.test.ts` · `expiry-preview.test.ts`. **BASELINE measured and clean: 48 pass / 0 fail — and 6,164,003 B printed by that GREEN run.** Restores checked per mutation; **`CHECKSUM identical`** at the end.
+⚠️ **Two mutations are worded for the CURRENT code, which TASK-574 changed** (the commit now needs a forecast): **R7's guard is `if (!startDate || !forecast) return;`** rather than TASK-571's `if (!startDate) return;`. **The rule each row attacks is the same one.**
+
+| # | mutation | verdict (counts, bytes) |
+|---|---|---|
+| R1 | 🔴 the stale-schedule warning dropped | ✅ **BITES** 45/3 · 6,206,345 B |
+| R2 | the warning stops saying what to do | ✅ **BITES** 45/3 · 6,184,845 B |
+| R3 | the hand-set-expiry warning never shown | ✅ **BITES** 46/2 · 6,190,715 B |
+| R4 | a **system** recompute read as a person's date | ⚠️ **NO RESULT [KILLED]** on that set · **467,964,809 B** — ✅ **BITES 19/1 on `course-start.test.ts` alone** (972 B) |
+| R5 | 🔴 the skipped weeks predicted instead of read | ✅ **BITES** 46/2 · 6,197,735 B |
+| R6 | the reconfirm block disappears | ✅ **BITES** 46/2 · 6,199,592 B |
+| R7 | 🔴 the pre-request guard removed | ✅ **BITES** 47/1 · 6,173,057 B |
+| R8 | the door offered on a course with a taught session | ✅ **BITES** 47/1 · 6,165,391 B |
+| R9 | 🔴 a refusal swallowed and success claimed | ✅ **BITES** 47/1 · 6,179,393 B |
+
+✅ **All nine rules are pinned.** Eight proved on the full set; **R4 proved on the file that holds its pin**, which is where the rule lives.
+
+## 🔴 R4 is a THIRD way a runner can lie, and it is new
+**The mutation makes the DOM run never finish.** Measured, bounded, restored: with R4 applied, `change-start-date.dom.test.tsx` alone printed **21,531,688 B in 45 s** and was killed — **only 12 of those were focus-trap dumps**; the rest is React's `react-stack-top-frame` error, repeating without end. At the runner's 600 s limit that reached **467,964,809 B — 91% of the 512 MiB capture.**
+🔑 **So this is neither of the two causes we have met.** TASK-574 was a big-but-FINITE output truncated by a small buffer. TASK-571's R6 was one library dump drowning a summary. **This one produces no summary because the run does not END.** ⚠️ **And note how close the two reasons came to swapping places:** a longer time limit would have turned `KILLED` into `OUTPUT OVERFLOW`. **Both are NO RESULT, which is exactly why the rule names the reason instead of choosing a colour.**
+📌 **What my OLD runner would have said about this row: "nothing failed" — a pass.** @Jason's old one would have read the SIGTERM as a bite. **The same run, two opposite lies, and the rule refuses both.**
+⚠️ **This is a MUTANT's behaviour, not the product's** — the real `expirySetByHand` is unchanged and the suite is green. 🚫 I did not chase the loop's mechanism further: it would be debugging code that does not exist.
+
+## 📌 What the re-run settles
+✅ **The rules of TASK-571 hold** — the stale-schedule sentence, its what-to-do, the hand-set-expiry warning and **its actor-NULL distinction**, the read-not-predicted skipped weeks, the reconfirm window, the pre-request guard, the door, and the verbatim refusal.
+🔴 **What does not come back is the ORIGINAL table.** It was nine ticks with no counts behind them, and the honest record is that it proved nothing until today. 📌 *A verdict is the counts; a tick is a decoration someone else has to trust.*

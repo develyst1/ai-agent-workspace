@@ -25,6 +25,8 @@ Everything earlier is sound — measured, not assumed.**
 | that one file alone | 9, all passing | **6,164,017** |
 | every other file, measured one by one | 85 files | **99 – 563 B each** |
 
+**Measured before the runner was added to the repo; the suite is 812 across 87 files now, and re-measured after: 6,934,642 B — the same 12 dumps.**
+
 **One file is 99.99% of the output, and none of it is our code:** Mantine's `use-focus-trap` cannot find a focusable element in
 the modal under happy-dom and **prints the whole DOM node — ~513 KB, twelve times in nine tests.**
 📌 **That file was created in TASK-571 and extended in TASK-574. Before it existed the entire suite printed well under a
@@ -75,4 +77,4 @@ browser; happy-dom gives elements no layout, so Mantine's focusable test fails. 
 those modals are opened by a click after mount; mine mounts with `opened` already true, so the trap runs on the first render.**
 ⇒ **Options, none of them mine to choose:** leave it (the runner now captures 512 MiB and prints each run's size), silence that
 one warning in `test/dom-preload.ts` (⚠️ which would hide it for every future test too), or mount the dialog closed and open it
-with a click. 📌 **Worth deciding, because it costs every FE run ~18 s and it is the only reason this defect could ever bite.**
+with a click. 📌 **Worth deciding, because it is the only reason this defect could ever bite** — and it costs real time: the same suite runs in **14.9 s** without that file and **16.5–32.9 s** with it (measured twice; the spread is the printing itself).

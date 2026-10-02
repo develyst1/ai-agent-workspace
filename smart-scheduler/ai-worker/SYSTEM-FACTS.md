@@ -3413,3 +3413,194 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 🔑 **Both are false REASSURANCE: a fake bite says "the pin caught it" when nothing ran.** 📌 **The instinct that a red result is the safe kind is wrong here.**
 ✅ **BE numbers (measured, 2026-09-30): the passing suite prints 19,049 B; 1,282 B per failure; the limit needs ≈800 failures in one run; the worst recorded row is 46.** ⇒ **17× margin, so no historical BE table is suspect from overflow.** ⚠️ **An implausible historical failure count is the only trigger to re-run one row.**
 ✅ **The rule both runners now hold: the verdict comes ONLY from parsed counts — BITES / SURVIVED / NO RESULT [reason]; a timeout is not a bite; an absent summary is never a colour.**
+
+## A comment does not have to be EDITED to become false — it only has to be MOVED (2026-09-30, TASK-572)
+**Inserting a function BETWEEN a doc comment and the function it documented orphaned three comments across two repos' files** — **the worst had become a lie: *"There is no preview route"* sat directly above `previewCourseStart`.**
+✅ **Self-caught and re-attached.** 🔑 **When you insert code, check what is directly ABOVE the insertion point**, and ⚠️ **a stale line gets re-pointed at the task that made it stale, not deleted.**
+📌 **Corollary: a known-wrong comment inherited from HEAD is still fixed, declared. Leaving it because it was someone else's is how the next person inherits it.**
+
+## A check written against a defect can CONTAIN the defect (2026-09-30, TASK-567)
+🔴 **The sweep built to catch "asserts only the screen" ACCEPTED `expect(patches.length).toBeGreaterThan(0)`** ⇒ **the row the task existed for SURVIVED its first version.**
+🔑 **"Something was sent" cannot tell a landed value from a lost one — that is the entire defect, and the check was blind to it.**
+✅ **The rule now: the proof must reach INTO what the other side received** (`body` · `payload` · `args`), **and `document.body` is renamed away before matching — it is the screen wearing the boundary's word.**
+📌 **Only mutating the CHECK finds this. Three survivors in one pass shared one cause: an assertion placed ADJACENT to its claim rather than on it.**
+
+## A sweep that matches nothing is a green that means nothing (2026-09-30, TASK-567)
+✅ **Say how many files a repo-wide check applies to TODAY, and PIN that in-scope list** — *so it cannot go quietly vacuous when the code moves.*
+✅ **A file that does not qualify is OUT OF SCOPE WITH A REASON, never excused.**
+⚠️ **And watch the direction of a fix: a sweep that starts INVENTING offenders is more dangerous than one that misses them** — 🔑 **a false alarm is how a check gets switched off.**
+
+## A pin proves what the code DOES — it cannot tell you that what it does is useless (2026-09-30, TASK-577)
+🔴 **A test asserting *"this door offers no rate box"* PASSED for weeks while every save it described returned 400 on sid.**
+🔑 **The pin was faithful to the code, and the code was wrong.** ⇒ **A confident pin on a broken path is how a defect survives a green suite.**
+✅ **So: when a customer reports a dead end, read the pins that cover it FIRST — one of them is probably describing the dead end approvingly.**
+
+## A body WIDER than its type is how a required field goes missing (2026-09-30, TASK-577)
+**`swapOtherSeriesTeacher`'s type named only `fromDate` while the door had been sending `onDate` since TASK-564.** 🔑 **The compiler cannot object to a field it was never told about** ⇒ **a required field can be absent with no compile error anywhere.**
+✅ **Type the body exactly, and pin the KEY SET** (TASK-564) — *what must not be there needs its own assertion.*
+
+## A fourth way a mutation run yields no counts: the RUNNER crashes (2026-09-30, TASK-577)
+**Bun exited `0xC0000409` (then 9) with 122 bytes and no summary** — not a timeout, not an overflow, not a signal. ✅ **NO RESULT, never a colour, held unprompted.**
+✅ **The verdict now NAMES THE EXIT STATUS:** *"NO SUMMARY" sends the reader looking for a missing print; "exited 0xC0000409" sends them to the crash.*
+🔑 ***A rule whose only proof is a run that can crash is a rule with no proof on the days it crashes*** ⇒ **pin the rule as a UNIT where it lives, not only through the DOM run.**
+
+## A mutation that does not COMPILE proves nothing (2026-09-30, TASK-580)
+🔴 **A mutation that deleted an `if` and left a dangling `else` scored 82 pass / 2 fail — a BITE by the counts rule — while the file had merely failed to LOAD.** ✅ **Rewritten as a dead condition: 91/2, with the TESTS failing.**
+🔑 **Counts are still the truth (TASK-575), but a non-compiling mutation is a VOID run inside that rule:** **a bite only counts when the tests fail, not when the file cannot load.**
+✅ **Prefer a mutation that changes a VALUE or a CONDITION over one that deletes a line.**
+
+## A guard whose DETECTOR is shallower than the body it guards lies about its coverage (2026-09-30, TASK-584/585)
+🔴 **Two gaps found by DERIVING every rate writer** (every JSON body in all 100 routes, schemas walked at every depth ⇒ **14 writers, 12 with key 59**):
+1. **`PATCH /other-series/:key/teacher` had NO rate guard at all** — the UI merely hid the field.
+2. 🔴 **`PATCH /camp/weeks/:id/days/:date` CALLS the guard, but the detector reads TOP-LEVEL fields only, so `teachers[].rateMinor` passed without key 59.**
+🔑 **The second is worse: a missing guard is visible, a shallow one is not — a reader sees the call and concludes the door is covered.**
+✅ **Rules:** **an unenforced key is a key that lies** · **enforce first and relax by decision, never the reverse** · **derive the detector from the SCHEMAS, not from a list of known nestings** · **pin BOTH directions — the false-positive half is what gets a guard switched off.**
+📌 **`PUT /teachers/:id/budget` has no key 59 BY DESIGN (key 57's hourly rate, pinned by TASK-434) — the right kind of exception: named, with its own key and its own pin, not an absence.**
+
+## A pin that can be satisfied by a STYLESHEET is not a copy pin (2026-09-30, TASK-586)
+🔴 **A check for *"nothing here says cancelled / hidden / off"* read `document.body.textContent`, which includes Mantine's INJECTED STYLESHEET — `.mantine-hidden-from-xs` matched "hidden".**
+✅ **Assert copy against the DICTIONARIES (both languages), not against the rendered document.**
+🔑 **Same family as TASK-567's `document.body` finding: the surface being asserted was not the surface that holds the claim.** 📌 **`document.body.textContent` carries class names, injected styles and anything else the framework writes — it is not "what the user reads".**
+
+## A clicked test cannot tell "CANNOT" from "did not happen to" (2026-09-30, TASK-588)
+🔴 **A mutation allowing `sessionIds` to ride on an advance leave SURVIVED — because with the chooser absent, the default set is empty and the field was omitted anyway.**
+🔑 **The click proved the field was missing; the RULE is that it may not be sent.** ⇒ **Those are different claims, and only the second is the contract.**
+✅ **Prove a "cannot" as a UNIT over several inputs** (a strict subset, an empty set, everything) — *the click proves the screen, the unit proves the rule.*
+
+## A fixture that AGREES WITH ITSELF cannot tell two sources apart (2026-09-30, TASK-588)
+🔴 **A mutation reading the wrong source SURVIVED because the server's answer and the page's own calendar both held the same booking at the same time.**
+✅ **Make the two sources DISAGREE on purpose in the fixture** — then reading the wrong one is visible.
+📌 **Also from that pass: a mutation that edits UNREACHABLE code proves nothing** — the same family as TASK-580's non-compiling mutation. **And a DOM mutant that HANGS is a NO RESULT: crash (TASK-577), overflow (TASK-575), hang (TASK-588) — three causes, one rule, and the answer each time is to pin the rule at the source.**
+
+## Copy-review sections are numbered BY TASK (`§T-589`) (2026-09-30, TASK-589)
+🔴 **Two engineers appending to the same copy file collided twice in one hour — two §17s and two §18s — because the next number is chosen by whoever writes last.**
+⚖️ **Rule: number a section by its TASK id.** 🔑 **Collision-free by construction, needs no coordination, and self-documenting: any string traces to the task that made it.**
+🚫 **Rejected: "one role owns the file" — it adds a hop and a queue through the SA.** 📌 **Same principle as the rest of this fortnight: remove the shared mutable thing rather than schedule access to it.**
+
+## Do not re-sort what the server already ordered (2026-09-30, TASK-589)
+**A `localeCompare` re-sort on the page put บี before เอ and DISAGREED with the order the server sent.**
+🔑 ***"The server already answers date-then-coach; a second ordering here is a second opinion about a question that has an answer."*** ✅ **Filter and shape; assert the SERVER's order.**
+📌 **Related: a hook a scoped session may not call is gated with `enabled`, never a caught 403** — *a catch would still have sent it, and the console would carry a refusal on every render.*
+
+## Half a rule is not a rule (2026-09-30, TASK-591)
+🔴 **Two mutations survived because the tests proved only one side:** one rule said *"never again"* and **no test ever added a SECOND child**; another proved a sentence **APPEARS** for a legacy family and never that it is **ABSENT** for a new one.
+🔑 **A rule with two halves needs two assertions.** ✅ **Ask of every pin: what is the case where this must NOT happen, and is it written down?**
+
+## Assert the IDENTITY of a refusal, not its wording (2026-09-30, TASK-591)
+✅ **The refusal box carries `data-failure={code}`** ⇒ **a test names WHICH refusal it reads.** 🔑 **The wording is the owner's and will change; the code is ours and will not.**
+📌 **Also: query a control BY POSITION when the label carries decoration** — Mantine puts the required asterisk inside the label, and two page strings began with "Province", so a label query matched prose as well as the control.
+
+## An identity a test asserts must not depend on execution order (2026-09-30, TASK-592)
+🔴 **`mock.module` is GLOBAL TO THE PROCESS**, so an identity WITHOUT a permission cannot live in a file that mocks the permission hook to grant everything.
+✅ **Give that identity ITS OWN FILE.** 🚫 **Not a mutable mock** — 🔑 ***"a test whose identity depends on execution order is not a test of an identity."***
+📌 **The same process-global fact the backend has a standing rule about (`mock.module`: none except a named exception), met from the front-end side.**
+
+- **Tanya may create QA accounts on sid herself** (owner, 2026-10-01). She uses the sid super admin → Users, and may create QA users and roles, e.g. a no-rate admin, or a coach web account linked to a QA teacher record.
+  - sid only, never uat.
+  - Passwords go only in the git-ignored credential file named in `machine.local.md`.
+  - Porter must not route "need a login" requests to the owner for sid.
+
+## A defence can have a SHAPE-SHAPED HOLE (2026-10-01, TASK-593)
+🔴 **Developer comments rendered as page text on a PARENT-facing form, and nothing caught it.** **The reason: the register pins STRIP COMMENTS before matching (`codeOf`)** ⇒ **a comment that had become TEXT was invisible to exactly the tests that read that file.** **The DOM tests read named things — a label, a box, a button — never the strip between two fields.** ✅ **`tsc` and the build are right to be silent: JSX text is valid JSX.**
+🔑 **The very step that makes those pins robust is what blinded them to this class.** ⇒ **When something reaches a customer, ask what the guarding check DELIBERATELY IGNORES.**
+📌 **Cause: TASK-591 MOVED two valid comments into JSX children.** 🔑 **A comment does not have to be edited to become false — it only has to be moved; here it did not become false, it became VISIBLE.**
+✅ **Enforced by `jsx-text-comments.test.ts`, reading the PARSED TREE** — 🚫 **not a regex: a marker above a JSX element, in a string or in JSDoc is all correct, and *a check that fires on correct code is turned off within a week*.**
+
+## A key may be STORED; a sentence may not (2026-10-01, TASK-593)
+**A refusal's sentence was captured at answer time in one language, so it stayed English after the page switched to ไทย.** ✅ **Store the CODE and choose the language at RENDER.** 🔑 **Everything else on that page already went through `t(…)` — one captured sentence is a class, not a typo.**
+
+## The `--tests` list is part of the mutation run (2026-10-01, TASK-593)
+🔴 **A mutation scored a survival because the pin that would have caught it lived in a file the run never listed.** 🔑 ***"A mutation aimed at a file nobody runs is a green that means nothing."***
+📌 **And its sibling: *a field verified BY EYE is not a field pinned — a nit fixed without a pin is a nit that comes back.***
+
+## A SOURCE pin on a CALL SITE proves the call, not the answer (2026-10-01, TASK-594)
+🔴 **Third instance this fortnight.** **A camp count was pooled across weeks sharing a date, and its pin only asserted that the call was made — so any derivation would have passed.** ✅ **Replaced by a VALUE test where the two candidate meanings DISAGREE (1 and 6, never 7/7).**
+🔑 **Sibling rules already recorded: *a pin proves what the code DOES, not that what it does is useful* (TASK-577) and *a fixture that agrees with itself cannot tell two sources apart* (TASK-588).**
+✅ **Ask of any source pin: could a wrong implementation satisfy it?**
+
+## "Identical in TH and EN" PASSES a Thai-only string (2026-10-01, TASK-594)
+🔴 **A check asserting a bilingual screen's two halves match is satisfied when BOTH are the same wrong language.** ✅ **Require BOTH SCRIPTS**, not equality.
+📌 **The pattern it protects, derived and pinned: a §17c SCREEN is bilingual; everything else answers in the session's known language — and the 9 per-language keys are ALL refusals or the menu, pinned AS A LIST so a tenth cannot appear quietly.**
+
+## Roles and the keys they hold are DATA, not code (2026-10-01, from Tanya's sid finding)
+🔴 **sid's shared Teacher role had `menu:calendar` but NOT `action:calendar.teacher-leave`, so a coach on it could not record leave at all.**
+✅ **The key exists and has since TASK-406** (*"the link is the identity, the key is the door"*) — **but NOTHING in the code grants a key to a role.** ⇒ **Which roles hold which keys is a row an admin edits, per box.**
+🔑 **So: a feature gated by a key that NO ROLE HOLDS is a feature nobody has** — **and nothing tells us which keys are unreachable on a given box.** ⚠️ **With sixty keys, this recurs for every new one.**
+✅ **Per box it must be CHECKED, never assumed** — it is a READ on the roles screen, not SQL. 📌 **Proposed next round: a small admin read, "keys held by no role".**
+
+## A leave UNDO never tells the family — structurally (recorded 2026-10-01)
+**Undoing a leave cancels the make-up and tells ONLY the coaches.** 🔑 **The owner's "never the family" is not a condition on that path — there is no family sender on it at all, and it is pinned both ways.**
+📌 **So a missing family push after an undo is usually NO PUSH BEING DUE.** ✅ **Ask which act it was (an undo, or an admin cancelling a make-up) before asking for data** — *one question to the tester can dissolve a data request.*
+
+## An assertion whose FAILURE MESSAGE cannot be read is an assertion that cannot report (2026-10-01, TASK-595)
+🔴 **`expect(node).toBeNull()` makes the runner print the RECEIVED value, and a happy-dom element serializes its WHOLE document graph (~307 MB)** ⇒ **the run is killed and the verdict is NO RESULT, not a red.**
+🔑 **And it is invisible until it matters: a PASSING run prints nothing, so the trap only appears on the day the assertion fails** — *exactly when the test is needed.*
+✅ **Make every "not there" check read a COUNT (`1` vs `0`), or anything whose failure prints small.** ⚠️ **The question is what the failure PRINTS, not which matcher is used.**
+📌 **Sixth NO RESULT of this stretch, and the FIRST whose cause was an ASSERTION rather than the tool** — overflow · hang · crash · crash · crash · unreadable-message.
+
+## One dialog, two acts: a string that belongs to only one of them (2026-10-01, TASK-595)
+**Three instances in one fortnight:** **TASK-547** (a body written for every leave, shown for leaves it did not describe) · **TASK-588** (a chooser written for a cancel, offered where nothing is cancelled) · **TASK-595** (a same-day warning shown on a future date).
+🔑 **One shape, and it is NOT sweepable: *"does this sentence still mean the same thing on the other branch?"* needs judgement per dialog.**
+✅ **But the SET is derivable — dialogs whose body or controls branch on a mode, a date or a type.** ⇒ **Derive the set, then review each.** 📌 **Queued as TASK-597; an audit whose output is a list, not a fix.**
+
+## Prose does not execute — even FIRST-HAND prose (2026-10-01, TASK-596)
+📌 **The strongest evidence we have produced for the standing rule.** **`line-admins.dom.test.tsx:77` already carried a note IN THE AUTHOR'S OWN HAND** describing the `toBeNull()`-on-a-DOM-node trap — *"turned one red assertion into an eight-minute run"* — **and 38 instances stood everywhere else.**
+🔑 **A rule written down by the person who learned it, in the file where it hurt, still did not hold.** ⇒ **It is not about memory or care.**
+📌 **Fourth time this fortnight a rule had to become a check: TASK-554 (event-in-updater) · TASK-567 (masked inputs) · TASK-593 (JSX text comments) · TASK-596 (unreadable failures).** ✅ **If a class of defect is worth a comment, it is worth a check that fails.**
+
+## A guard with no FIXTURE is a guard nothing is asking about (2026-10-01, TASK-596)
+🔴 **A check's escape hatch survived being deleted — because every real use went through a HELPER, so the escape was never what kept those assertions safe.** **The behaviour it protected had NO FIXTURE at all.**
+✅ **Every branch of a check needs a case that EXERCISES it**, including the branches that exist to say "do not flag this". 🔑 **A check is as much about what it must NOT flag as about what it must** — *and the must-not half is the half that gets a check switched off.*
+
+## The admin notice recipient is ONE box-level list — empty means a total blackout (2026-10-01)
+**`notifyAdmins` and the role detection read exactly one thing: an `app_settings` row holding a LIST of LINE user ids.** **It is written by a person typing the admin code in LINE, and by the Remove button on the LINE-links page.** ⇒ **DATA, per box. No deploy creates it.**
+✅ **An empty list writes ONE visible `SKIPPED — "no admin recipient configured"` outbox row** (TASK-152, added after this fault was found live on sid: *"zero outbox rows — no send and no trace that a send was due"*). 🔑 **The system is loud; what is missing is anyone reading the outbox.**
+🔑 **Audience fragility differs: ADMIN is the only audience with a SINGLE box-level switch** (empty ⇒ nobody, ever). **Teacher and parent notices hang off each PERSON's own link** ⇒ **a per-person miss, visible per row, never box-wide.** 📌 **Keep the two apart: "nobody can ever receive this" is not "this person did not."**
+⚠️ **Two instances of the same class in two days — a feature deployed, green, and reaching nobody because a per-box list is empty: the uat Teacher role's missing key, and this.** ⇒ **TASK-600 proposes the one read that answers it.**
+
+## A pin written to preserve a FINDING must be retired by the fix that answers it (2026-10-01, TASK-601)
+📌 **The author's own pin from TASK-594 recorded a defect as TODAY'S FACT — and still said so after the defect was fixed.**
+🔑 **A finding-pin has a LIFETIME: it exists to stop a fact being lost before it is acted on, and the act that answers it must take it down.** ⚠️ **Otherwise the suite asserts the bug.**
+🔴 **Scale of it here: the false sentence had been pinned FOUR times** (`customer-english` · screen 4a byte-for-byte · screen 4 assembled · the ✅ pin) ⇒ **not four mistakes, but ONE sentence that four people each took as the specification.** 🔑 **A pin is a statement of intent, and intent copied four times is very hard to dislodge.**
+✅ **And when a customer sentence is RETIRED, assert that no key carries it** — *a retired sentence that simply disappears is indistinguishable from one we lost.*
+
+## An APPROVED copy section is never renumbered (2026-10-01, TASK-601)
+**Two `§19` blocks exist after the by-task numbering rule came in.** ✅ **The approved one was marked `§19b`, and nothing was renumbered.**
+🔑 **The owner's approval references the NUMBER** ⇒ **renumbering an approved section silently detaches his decision from the thing he decided.** **A suffix is the honest minimal fix.** 📌 **The by-task rule (`§T-601`) stands for NEW sections; this is its legacy edge.**
+
+## A bilingual assertion is satisfied by ONE language unless BOTH are counted (2026-10-01, TASK-602)
+🔴 **Two instances, two engineers, one week:**
+1. **TASK-594:** *"identical in TH and EN"* **PASSES a Thai-only string** — an equality between two languages holds when both are the same wrong language.
+2. **TASK-602:** a marker pin used `toContain("✅ APPROVED (owner …, §12")`, **and the THAI line carries the same prefix** ⇒ **deleting the ENGLISH marker left the assertion satisfied BY THE OTHER LANGUAGE.**
+🔑 ***"One source standing in for another is the bug the agreement pin exists to catch — and I had written it into the pin itself."***
+✅ **COUNT both, or require both scripts.** 🚫 **Never `toContain` on a string two languages share.**
+
+## `ANCHOR AMBIGUOUS ⇒ NOT RUN` is the runner being CORRECT (2026-10-01, TASK-602)
+**A mutation whose anchor matched more than one line came back NOT RUN.** 🔑 **An ambiguous anchor is the runner refusing to guess which line was meant — and that is exactly what it should do.**
+📌 **Seventh distinct non-verdict of this stretch, and the FIRST that is the tool being right rather than failing** (overflow · hang · crash · crash · crash · unreadable message · ambiguous anchor). 🔑 **NO RESULT must be reachable ON PURPOSE, not only by accident** — that is what makes it a verdict rather than an excuse.
+
+- **FE baseline before Palm's merge (2026-10-02):** `smart-scheduler-front` branch `dong`, commit **6224445** ("Update language dictionaries and test cases…", 2026-10-01). This is the exact code Tanya verified on sid and that went to uat. Anything the owner merges from Palm lands on top of it, so `git diff 6224445..HEAD` is the whole of what came in.
+
+## On the front repo, `tsc` and `build` are the inventory — the suite is NOT (2026-10-02, TASK-605)
+🔴 **After a merge dropped one identifier, the test suite passed 921/0 on a tree that COULD NOT BUILD.** **The runner strips types, so a missing name is invisible to it.**
+🔑 **So after any merge or restore: run `tsc` and `build`, and treat THEIR output as the inventory of what was dropped.** 🚫 **"Tests pass" is not an answer to "did the merge lose anything".**
+✅ **A cheap second measurement that worked: count our own task markers in `src` at the baseline and after** (549 → 549), **and list the files that differ from the baseline** (nine, all in the other developer's area). ⇒ **Evidence that nothing else was lost, rather than a reassurance.**
+📌 **Cause worth remembering: the same destructure had TWO independent additions, one per branch. A conflict resolved "with his side" keeps his and silently drops ours, while our TYPE and our USAGE both survive** — *so the only witness is the compiler.*
+
+## A declared prop that is never READ is legal TypeScript — the feature is simply absent (2026-10-02, TASK-605)
+🔑 **Only OPTIONAL props can be dropped in silence.** **A required prop left out at a call site is a type error, so the build shouts.** ⇒ **The risk set is the optional props, and it is DERIVABLE rather than searchable.**
+🔴 **Worse than a dropped destructure: a prop the caller passes and the component never reads.** **Nothing fails, nothing is logged, the feature is just gone.** 📌 ***That is the shape of the Palm merge minus the one accident — the surviving usage — that made it loud.*** **Had the usage been dropped too, the build would have been clean and the feature missing.**
+✅ **Enforced by `props-wired.test.ts`, reading the parsed tree** (a prop named in a comment is not wiring), **with `unwired-on-purpose` written IN the file — a decision, not a silence.**
+⚖️ **It binds the other developer's files too, deliberately: it constrains nobody today, a "whose prop is whose" list would rot, the escape hatch is one visible line, and it protects HIS work from OUR merges as much as the reverse.**
+
+## A dead control is worse than a missing marker (2026-10-02, TASK-605)
+🔴 **`onSelectCamp` was wired at BOTH call sites and pinned at NEITHER** — the tests asserted what the grids DO with it, never that the page hands it over. ⇒ **Dropping it compiles, passes, and leaves a camp block that opens nothing.**
+🔑 ***"The marker's absence hides a fact; the dead control invites a click and answers it with silence."***
+✅ **Pin wiring with a COUNT of the call sites** — *so one surviving call site cannot cover for the other.*
+
+## `REQ-BO-001…006` are TITLES, not documents (2026-10-02)
+🔴 **No `REQ-BO-00x` file exists anywhere in this workspace and none ever has.** **What exists is `OWNER-LIST.md` §2: six one-line Thai titles with the owner's 08-23 sizing.**
+⇒ 🔑 **"Are the REQ-BO files still accurate?" has no answer — there is nothing to be out of date. The gap is that there are no specs.**
+✅ **The backoffice requirements that DO exist are on OUR numbering, and all three are from JULY:** **`REQ-002` admin auth — DELIVERED · `REQ-006` universal item model — DESIGN APPROVED, NOT BUILT · `REQ-014` revenue by activity + access control — READY_FOR_SA.** ⚠️ **Everything we shipped since (permission keys, per-session coach rates, camp money, the leave machinery) came after them** ⇒ **those three can be audited against today's system; the six titles cannot.**
+📌 **The owner's own dependency reasoning is already recorded in `OWNER-LIST.md`:** **BO-002 last (a dashboard reads what the others create) · BO-004 after BO-003 (salary is computed from the ceiling) · BO-005 needs a stable frontoffice · BO-006 is REQ-009's twin and its reason enum and service path already exist.**
+🔑 **So the first decision is not the ORDER — he has that right — it is WHO WRITES THE SIX REQUIREMENTS.** **Until one exists there is nothing to review, size honestly, or cut.** 🚫 **A size without a requirement is a guess with a number on it.**

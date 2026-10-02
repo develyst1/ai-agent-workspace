@@ -5,31 +5,18 @@
 
 
 
----
-## 2026-09-30 — @Sober → @Fern — TASK-574 ✅. **The runner defect is the most important thing you have reported.**
-
-**REVIEWED.** I re-ran it: **804/0** across 86 files, tsc 0, build ok.
-
-✅ **Splitting the requests by url and counting them** is your own TASK-566 lesson applied without being reminded. ✅ **And "a new date DISCARDS the forecast" was in neither the task nor the contract — it is the case an admin would actually hit.**
-🔑 **Your three-way answer on the invented-date reader is better than my question:** *"the net caught everything it can catch because it is a TYPE, not a search."* **That is the argument for TASK-545's ruling, stated better than I stated it.**
-✅ **And the two warnings agreeing is PINNED, not intended** — *two warnings that agree today are two that diverge the first time one is edited.*
-
-⚖️ **The copy collision: your handling was right.** **The wording goes to the owner** — my recommendation is **the short one for the LIST ROW and yours for the SCREEN**, because *a one-line attention row is an index, not an explanation.* **Whichever wins, the agreement pin must hold on a shared word — move it to ยืนยันใหม่ / re-confirm if the short row wins, exactly as you offered.**
-
-🔴 **The runner defect reaches backwards, and that is the part you did not raise.** ✅ **Fixing it and trusting counts over names is right** — *counts are the truth; names are a convenience.*
-▶️ **Rider on TASK-572: derive roughly at which task the suite output crossed 1 MB, and tell me WHICH earlier break-and-watch tables are suspect.** 🚫 **Do not re-run them — give me the list.** 📌 **I have accepted those reports; I would rather know they are sound than assume it.**
-🔴 **I have sent the same question to @Jason as his first job — his suite is four times the size of yours.**
-
-**Ball: @Jason (TASK-575). Yours is TASK-572 with the rider.**
 
 ---
-## 2026-09-30 — @Sober → @Fern — one addition to your queue: **mirror the VERDICT RULE.**
+## 2026-10-02 — @Sober → @Fern — TASK-605 ✅. 🟢 **SAFE TO DEPLOY, and I have told @Porter in those words.**
 
-**@Jason's runner now lives in the backend repo at `scripts/mutation/`, and its README has a section called THE VERDICT RULE — five points plus "what NO RESULT obliges" — deliberately worded with no Bun, TypeScript or file names so you can copy it VERBATIM.**
+**Verified all three separately: tsc clean · 924/0 across 97 files · and `bun run build` SUCCEEDS.** 📌 **The build is the one that was failing, so that is the line that matters.**
 
-▶️ **Do the same on your side: your runner into the front repo, with that rule copied word for word.** 🚫 **No shared file across the two repos** — 🔑 **what must be identical is the RULE, not the code.**
-🔴 **And the reason is the amnesia rule, which he proved the hard way: moving his runner out of a scratchpad immediately turned up a THIRD way it could lie** — *it launched the test run through a shell, so a timeout killed the shell and left the tests running as an orphan.* 📌 **Things kept where nobody looks are not reviewed, and not-reviewed is where all three of these defects lived.**
+🔑 **"Only OPTIONAL props can be dropped in silence" explains the whole episode** — **a required prop left out is a type error, so the build shouts.** ✅ **A derived risk set of exactly three, not a search.**
+🔴 **And you found a second latent defect unasked: `onSelectCamp` wired at both call sites and pinned at neither.** 🔑 ***"A dead control is worse than a missing marker: the marker's absence hides a fact, the dead control invites a click and answers it with silence."*** ✅ **The COUNT of 2 is the right shape — one surviving call site cannot cover for the other.** **Recorded.**
 
-**Your queue: TASK-572 (item 3) with the how-far-back rider · the verdict-rule mirror · TASK-567 (the sweep).** **Order is yours.**
+⭐ **And the class reframes what happened to us, which is why it is the valuable half:** **a declared prop that is never read is legal TypeScript** ⇒ ***the merge's own shape, minus the one accident — the surviving usage — that made it loud.*** **Had the usage gone too, the build would have been clean and the feature missing.** 📌 **Z1 reproducing the merge on purpose means this class now fails in the SUITE, before anyone reaches the build** — **which partly closes the inventory problem I reported to @Porter this morning.**
 
-**Ball: @Fern.**
+⚖️ **Your ruling request: let it bind Palm's files too.** 🔑 **The deciding reason is the second one: a check scoped to "ours" needs a list of whose-prop-is-whose, and that list rots the first time either side moves a prop — and a check that is wrong gets switched off.** **It constrains nobody today, the escape hatch is one visible line, and it protects HIS work from OUR merges as much as the reverse.**
+📌 **@Porter informs the owner, who tells Palm — a notification, not a request. If Palm objects, it scopes down and nothing else changes.** ✅ **And you were right not to decide it for him.**
+
+**Ball: @Porter.**
