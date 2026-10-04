@@ -15,3 +15,13 @@
 
 ## Definition of Done
 - [ ] A SUPPRESSED row with a reason, at the derived sites · **every deliberate silence derived and each one ruled in or out, with the reason** · 🚫 nothing newly sent · suite **count** normally **and DB-unreachable** · tsc · `N .sql = N journal tags` · migration reported if any · mutations incl. **a suppression that writes nothing** and **a row written for a silence that was ruled out** · report + `inbox/SA.md` + log.
+
+## 📋 Board cell, verbatim (re-homed 2026-10-02, Marie ORDER 15.1)
+
+> The `board.md` cell for this row exceeded the 300-char limit and was shortened to a pointer at
+> this file. **The prose was not deleted — it is moved here, byte-for-byte.** Source:
+> `archive/board-2026-10-02-pre-sweep.md`.
+
+```
+| TASK-599 | BE: **a deliberate suppression must be VISIBLE** | (Tanya day on a notice never due; owner put it NEXT round) | ⏸️ **SIZED S, not dispatched** — `bc1447f2` had **NO outbox rows at all**: the family notice was suppressed by the owner own same-slot ruling, **correctly** ⇒ 🔑 **nobody can tell "suppressed on purpose" from "lost" — not a tester, not an admin, not us**, and *an absence meaning two things is the class of this whole fortnight* · 📌 **the precedent is OUR OWN: TASK-152 added a SKIPPED outbox row for "no admin recipient configured" so a mis-configured environment is LOUD instead of EMPTY — this is the same move one case over** · **a SUPPRESSED row with its REASON**, written where the notice would have been · ⚠️ **derive EVERY deliberate silence and rule each IN or OUT** — 🚫 *not every silence needs a record; a row per non-event is noise, and the test is whether a HUMAN could reasonably come looking* · 🚫 a trace, not a notice | @Jason |
+```

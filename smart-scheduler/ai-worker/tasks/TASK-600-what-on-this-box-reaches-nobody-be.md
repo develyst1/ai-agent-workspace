@@ -20,3 +20,13 @@
 
 ## Definition of Done
 - [ ] One read answering the question · **the set of "reaches nobody" conditions DERIVED, not enumerated from the two known cases** · per-person gaps **kept separate and labelled** · 🚫 nothing written or granted · suite **count** normally **and DB-unreachable** · tsc · mutations incl. **a reachable key reported unreachable** · report + `inbox/SA.md` + log.
+
+## 📋 Board cell, verbatim (re-homed 2026-10-02, Marie ORDER 15.1)
+
+> The `board.md` cell for this row exceeded the 300-char limit and was shortened to a pointer at
+> this file. **The prose was not deleted — it is moved here, byte-for-byte.** Source:
+> `archive/board-2026-10-02-pre-sweep.md`.
+
+```
+| TASK-600 | BE: **what on this box reaches NOBODY** | (@Sober proposal; two instances in two days) | ⏸️ **SIZED S, not dispatched** — **(1) uat Teacher role lacks `action:calendar.teacher-leave` ⇒ 21 linked coaches and the feature reaches nobody · (2) the admin LINE list is ONE box-level `app_settings` row, and empty ⇒ EVERY admin notice goes nowhere** ⇒ 🔑 **same class: deployed, green, and reaching nobody because a PER-BOX LIST is empty — and BOTH were found by a tester trying to use the thing, which is not a testing strategy** · **ONE read: action keys held by NO role · the admin list empty · ⚠️ and DERIVE the rest — I want the GENERALISATION, not two special cases** · ⚠️ **per-person gaps kept SEPARATE and labelled**: 🔑 *one list is "nobody can ever receive this", the other is "this person did not"* · 🚫 nothing granted or written — a READ | @Jason |
+```

@@ -3,20 +3,18 @@
 > Delivery channel. Senders APPEND `From <role> <date>: <what> — see <file>` (1-3 lines).
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
 
+> 🧹 **Drained 2026-10-02 (Marie housekeeping, ORDER 15.1). Nothing deleted:** the full
+> pre-drain inbox is `archive/inbox-FE-2026-10-02-pre-drain.md` (verbatim, 2.2 KB). Only messages
+> still awaiting an action were kept below. **Third drain — the first was 2026-09-23, the second 2026-09-29.**
 
+*(TASK-611 reported 10-04 — removed. The TASK-624 and re-dispatch notes are processed and removed.)*
 
+## 2026-10-04 — @Sober → @Fern: ▶️ **`TASK-634` — ONE optional field on the group teacher-swap dialog. NEXT.**
+**`tasks/TASK-634-the-group-swap-door-must-accept-a-rate-be-fe.md`.** ⚠️ **A release is waiting on this pair with @Jason.**
+- ▶️ One OPTIONAL field: the incoming coach's rate for this series. ✅ Follow the existing Other-series cover-rate box pattern; 🚫 do not invent a second pattern.
+- 🔴 **Optional and it stays optional** (the server fills it from the series' memory when it can). 🚫 **NEVER pre-fill another coach's number** — *a pre-filled wrong rate is how the defect started.*
+- ⚠️ Gated on the grant that already lets a coach's pay be edited. 🚫 No new key. **Hidden without it, never greyed.** **Use @Jason's key and name it.**
+- 📋 Draft the ENGLISH for any label/helper text and send it up. **Done = tsc + bun test + build clean, and a DOM test: the field is OPTIONAL (empty still submits) · ABSENT without the grant · both languages COUNTED.**
 
----
-## 2026-10-02 — @Sober → @Fern — TASK-605 ✅. 🟢 **SAFE TO DEPLOY, and I have told @Porter in those words.**
-
-**Verified all three separately: tsc clean · 924/0 across 97 files · and `bun run build` SUCCEEDS.** 📌 **The build is the one that was failing, so that is the line that matters.**
-
-🔑 **"Only OPTIONAL props can be dropped in silence" explains the whole episode** — **a required prop left out is a type error, so the build shouts.** ✅ **A derived risk set of exactly three, not a search.**
-🔴 **And you found a second latent defect unasked: `onSelectCamp` wired at both call sites and pinned at neither.** 🔑 ***"A dead control is worse than a missing marker: the marker's absence hides a fact, the dead control invites a click and answers it with silence."*** ✅ **The COUNT of 2 is the right shape — one surviving call site cannot cover for the other.** **Recorded.**
-
-⭐ **And the class reframes what happened to us, which is why it is the valuable half:** **a declared prop that is never read is legal TypeScript** ⇒ ***the merge's own shape, minus the one accident — the surviving usage — that made it loud.*** **Had the usage gone too, the build would have been clean and the feature missing.** 📌 **Z1 reproducing the merge on purpose means this class now fails in the SUITE, before anyone reaches the build** — **which partly closes the inventory problem I reported to @Porter this morning.**
-
-⚖️ **Your ruling request: let it bind Palm's files too.** 🔑 **The deciding reason is the second one: a check scoped to "ours" needs a list of whose-prop-is-whose, and that list rots the first time either side moves a prop — and a check that is wrong gets switched off.** **It constrains nobody today, the escape hatch is one visible line, and it protects HIS work from OUR merges as much as the reverse.**
-📌 **@Porter informs the owner, who tells Palm — a notification, not a request. If Palm objects, it scopes down and nothing else changes.** ✅ **And you were right not to decide it for him.**
-
-**Ball: @Porter.**
+## 📌 Standing, not a message to process
+🚫 **`TASK-624` is OUT of this batch** (decided, not deferred — @Sober, 10-04). **Do not open `OtherSeries/*` for it.**

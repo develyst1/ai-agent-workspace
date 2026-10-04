@@ -229,6 +229,14 @@ person who can run it.**
 - **A LINE refusal with no `catch` makes the bot go SILENT** — the parent gets no reply; catch and render every LINE-path refusal (Jason/Sober 08-17).
 - **Only TWO admin-digest checks may name a person**: unconfirmed bookings and teachers with no LINE link. Everything else is a bare count — never a name, phone, DOB or child's name in a chat log (Sober 08-01).
 
+
+### A new outbox kind must be added to the message inventory script — it refuses to run without it (Silver, 2026-10-03, TASK-620)
+- **`scripts/inventory-line-messages.ts`** (back repo) produces the customer's list of every LINE message (REQ-111 A).
+  - It parses every `case "…":` in `buildOutboxMessage` (`src/lib/line-message.ts`) and **throws** `renderer kinds not in the inventory: …` if one is missing from its hand-written `KINDS` list.
+- ⇒ **Whoever adds a notification kind also adds a `KINDS` row** (the audiences, a fake fixture, and a one-line "when it is sent"), then re-runs the script.
+  - A thrown run is the guard working, not a broken script.
+- 📌 **First caught 2026-10-03:** TASK-608 added `teacher_leave_recorded` / `teacher_leave_lifted`, which made the workbook generated on 10-02 stale before it reached the owner.
+
 ## Telling the two boxes apart
 
 - `SELECT count(*) FROM course_packages` — **`uat` ≈ 201 · `sid` two digits** (32 on 09-01, and growing as QA
@@ -3205,6 +3213,9 @@ TASK-488 existed because `checkin_source` held a channel *and* a person. TASK-49
 
 - 🔴 **Tests running against `sid` is BY DESIGN** (owner โด่ง, 2026-09-26: "เทสบน sid นั่นแหละ ถูกแล้ว"). The back repo's local `.env` pointing at the sid database and the demo OA token is the intended test setup. It is **not** a leak and **not** a rule breach. Do not escalate it again.
   - The one boundary that still holds: **never run the suite while `.env` holds uat values**. The owner switches `.env` to uat only for a uat deploy and switches it back afterwards.
+  - ⚠️ **2026-10-02 (Bob, TASK-607): `.env` held uat values on this machine after the uat release, and the guard refused the run as designed.** **`bun --env-file=.env.sid test …` runs the suite against `sid` WITHOUT touching `.env`** (Bun then loads only the named file; the guard reads `process.env` and passes). 🚫 Do not edit or copy over `.env` to get a run — the owner may be running the uat BE from it.
+  - 🔻 **SUPERSEDED 2026-10-04 (Bob, on the owner's ruling — see the section "🔴 OWNER RULING 2026-10-04 — engineers do NOT verify against sid"):** the `--env-file=.env.sid` advice above is **withdrawn**. An engineer never runs the suite against `sid`; the suite runs with the database pointed at nothing. Kept, not deleted, so the next reader sees what we used to do and why we stopped.
+  - ⚠️ **Same run: `teacher-schedule-req109.test.ts` "the REASON sits beside the English strings" fails on THIS checkout, unrelated to any change** — it `toContain`s a multi-line string with `\n`, and `src/lib/teacher-schedule.ts` is checked out CRLF (`core.autocrlf=true`). A full-suite "1 fail" here is that pin, not your diff — check its name before reading it as yours.
 
 ## A "this test proves nothing" finding needs a CONTROL (Sober, 2026-09-26, TASK-507)
 **A claim that an assertion is vacuous is itself a claim, and it can be wrong.** The only way to know is to **break the thing the assertion supposedly guards and watch the old line pass.** TASK-507 did that three times (`A0`, `G0`, `H0`) and the old lines sat green each time. **From now on: every "this test wasn't doing anything" report carries a control run.**
@@ -3604,3 +3615,272 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 ✅ **The backoffice requirements that DO exist are on OUR numbering, and all three are from JULY:** **`REQ-002` admin auth — DELIVERED · `REQ-006` universal item model — DESIGN APPROVED, NOT BUILT · `REQ-014` revenue by activity + access control — READY_FOR_SA.** ⚠️ **Everything we shipped since (permission keys, per-session coach rates, camp money, the leave machinery) came after them** ⇒ **those three can be audited against today's system; the six titles cannot.**
 📌 **The owner's own dependency reasoning is already recorded in `OWNER-LIST.md`:** **BO-002 last (a dashboard reads what the others create) · BO-004 after BO-003 (salary is computed from the ceiling) · BO-005 needs a stable frontoffice · BO-006 is REQ-009's twin and its reason enum and service path already exist.**
 🔑 **So the first decision is not the ORDER — he has that right — it is WHO WRITES THE SIX REQUIREMENTS.** **Until one exists there is nothing to review, size honestly, or cut.** 🚫 **A size without a requirement is a guess with a number on it.**
+
+## `UNDO_LEAVE_CHARGE_UNKNOWN` is a CLOSED, SHRINKING set — and a downstream symptom (2026-10-02, REQ-111 G)
+**It fires only when ALL FOUR hold: no recorded charge (⇒ the leave predates migration 0058) · the row is COURSE-backed · not declared at creation · AND no LINKED make-up.**
+🔑 **The last condition makes it far narrower than "every old leave": a course leave normally appends a make-up, and a LINKED make-up answers the question by itself.** ⇒ **Only a pre-0058 course leave whose make-up is UNLINKED can be "unknown".**
+📌 **And we know why a make-up would be unlinked — it is the TASK-552/553 class** (the planner matching a leave against any pointing row; pause→resume and admin-insert answering a leave without recording which one). ⇒ **G is a DOWNSTREAM SYMPTOM, not a separate defect.**
+✅ **The count needs NO new query: TASK-553's backfill DRY RUN already returns linked · ambiguous · n/a, and its "cannot tell" figure is the upper bound.**
+✅ **The set is CLOSED AND SHRINKING — every leave since 0058 records the fact, so it can only affect old rows and never grows.** 🔑 **And the refusal is the SAFE behaviour: a guess would silently give a family a leave they already spent, or take one they still have.**
+
+## Team split (2026-10-02): two SA teams, claimed file areas
+**Team A — @Sober with @Jason (BE) and @Fern (FE). Team B — Silver with Bob and Fanta.** 🚫 **The two SAs never message each other: anything cross-team goes through @Porter, and shared findings go in this file.**
+**@Sober's claim: the LEAVE & TEACHER machinery** — back `scheduler.service.ts`, `lib/leave-*`, the leave / teacher-leave paths in `line-webhook.service.ts` and their routes; front the booking detail, leave and teacher-change dialogs under `partials/Schedule/`.
+⚠️ **Known boundary trap, found at once: the ECA teacher-change door is NOT under `partials/Schedule/`** — **it is `TeacherDialog`, mounted from `OtherSeriesModal` under `partials/OtherSeries/`.** ⇒ **Any ECA teacher-change work touches a file outside Team A's claim; STOP and ask @Porter rather than reaching.**
+
+## The front claim's `partials/Schedule/` does not exist — the boundary runs THROUGH `Calendar/` (2026-10-02)
+🔴 **Team A's front claim names "the booking detail, leave and teacher-change dialogs under `partials/Schedule/`". There is no such directory.**
+**Where those things actually live:** **the booking detail AND the leave dialog ⇒ `partials/Calendar/Modal/BookingModal.tsx`** · **the teacher-change dialog ⇒ `partials/OtherSeries/`** (confirmed Team A's).
+🔑 **So the boundary runs THROUGH `Calendar/`, not between directories** — **Team B owns `Calendar/CalendarContent.tsx` and `lib/scheduler/teacher-scope.ts` in the same batch.** ⇒ **That is the shape that produces an accidental reach, and a claim stated against a non-existent path cannot prevent one.**
+📌 **And the first casualty: an admin's natural entry point for recording a teacher's leave is the blocked-day marker (`LeaveDayBanner`, `useLeaveDays`) — which is inside Team B's `CalendarContent.tsx`.** ⇒ **Any claim must be restated against REAL paths before front work starts.**
+
+## "Primary teacher" is not a flag on a list of people — it is a DIFFERENT STORAGE LOCATION (2026-10-02)
+🔑 **A session stores its PRIMARY teacher in `bookings.teacher_id` (rate: `bookings.teacher_rate_minor`) and every OTHER teacher as a row in `booking_teachers` (rate: that row's own `rate_minor`).**
+⇒ **Any act phrased as "do X to a teacher on this session" has TWO implementations, chosen by which location that teacher occupies.** **A swap of the primary is an UPDATE of a column; a swap of a non-primary is a DELETE + INSERT on another table.** 📌 *That is why REQ-111 item E is S and not XS, and why it must not be written as one more branch inside the row loop.*
+✅ **The READ side is already unified and should stay that way: `ratesOf` merges both into one teacher→rate map, `seriesRateOf` looks a teacher up in both, `teachersOfBooking` is the same shape.** 🔴 **The WRITE side is not unified, and the guarantee is weaker there: the slot index constrains `bookings.teacher_id` ONLY — a `booking_teachers` teacher is kept out of two places at once by an APPLICATION check that two racing requests can both pass.** ⇒ **Say so whenever that path is used; do not let a reader assume the database is holding it.**
+
+## A "from here on" teacher swap moves the teacher and LEAVES THE RATE BEHIND (2026-10-02)
+🔴 **The per-session (`onDate`) swap writes the incoming teacher's rate and refuses when it cannot find one. The from-this-date-on swap writes the teacher and does NOT touch `teacher_rate_minor`.** ⇒ **the new teacher is paid at the OLD teacher's stored rate, silently, on every row it moves.**
+🔑 **The owner's ruling — "the cover is paid at the COVERING teacher's rate" — therefore holds for ONE session and NOT for the rest-of-series case.** ⚠️ **It is money, and it is wrong in one direction.** 📌 **Board row TASK-613.** *A scope option that changes WHICH rows are written can also change WHICH COLUMNS are written — check both before calling two scopes "the same act with a different range."*
+
+## One human event, four notification kinds (2026-10-02)
+⚠️ **"Who is teaching this session changed" enqueues `teacher_unassigned` + `teacher_assigned` down the SWAP path, and `other_teacher_added` / `other_teacher_removed` down the ADD/REMOVE path.**
+⇒ 🔑 **Widening or re-routing one of those acts silently changes which words the coaches receive.** **Check the message kind whenever an act's path changes, not only its effect.** 📌 **Board row TASK-614; it is also one of the duplicates the REQ-111 notification inventory will surface.**
+
+## A scoped read answers for the CALLER — it cannot stand in for a subject the caller chose (2026-10-02)
+🔑 **`GET /calendar` returns only the caller's own sessions, by design.** ⇒ **A screen that lets an ADMIN act on ANOTHER person cannot reuse it to list that person's day: it will show the ADMIN's day under the other person's name.**
+🔴 **That is not a cosmetic mismatch when the screen's next button CANCELS.** ⇒ **Either the act's own answer carries the list, or there is an explicitly scoped read.** 📌 **Why TASK-611's admin door is FUTURE-DATES-ONLY — the future branch needs no list.** *When a screen gains a SUBJECT, re-ask every read on it whose data it actually returns.*
+
+## The calendar grids are pinned from OUTSIDE the calendar claim (2026-10-02, Fanta, TASK-622)
+- `smart-scheduler-front/src/lib/rbac/action-gate.test.ts:98-99` pins exact source strings in both grids: `!canBook ? (` in `CalendarGrid.tsx` and `{canBook && mayBook && (` in `CalendarWeekGrid.tsx`. Pins on the grids also live in `lib/camp/grid.test.ts` and `lib/ui/props-wired.test.ts`. ⇒ **A team that owns the grids does not own every test that reads them.** Rewording a `+` gate goes red in a file outside the claim. TASK-622 kept those lines byte-identical (it folded leave into `canBook`) rather than edit the pin.
+
+## 🔴 TWO routers resolve every request, and they pick OPPOSITE matches — a `:param` sibling SWALLOWS a literal route (2026-10-03)
+🔑 **Hono dispatches to the FIRST matching route. `accessGuard` (`middleware/auth.ts`) computes its `ROUTE_ACCESS` key from `[...c.req.matchedRoutes].reverse().find(...)` — the LAST match.**
+⇒ 🔴 **Registering `POST /teachers/:id/leave` AFTER `POST /teachers/me/leave` means the handler is still the `me` one, but the PERMISSION CHECK is the `:id` one.** **`POST /teachers/:id/leave` is correctly absent from `TEACHER_ALLOWED`, so a linked teacher is refused `403 SCOPE_TEACHER` on their OWN door and the handler is never reached.** **Caught by the suite on TASK-608; it would have revoked a feature live on uat for 21 linked coaches.**
+🚫 **Re-ordering is NOT the fix** — it flips which handler Hono dispatches to, trading a guard bug for a handler bug.
+✅ **The fix is not to create a wildcard sibling of a literal at all** — give the second door its own noun (e.g. the admin act under `teacher-leave-days`, where the admin's READ already lives).
+📌 **And `TEACHER_ALLOWED` / `ROUTE_ACCESS` are keyed by the string the GUARD computes, never the string written in the router** ⇒ **a pin that reads the table proves nothing; it must go THROUGH the guard.**
+⚠️ **`uuid-params` matches by pattern too, which is why the same shadowing turns a `403` identity refusal into a `400` shape refusal.** *When a refusal changes from "who you are" to "what you sent", the route resolution moved.*
+
+## The DB-unreachable run is available in ANY `.env` state — it is never blocked (2026-10-03)
+🔑 **The TASK-503 guard refuses the suite when `.env` names the customer's system. Pointing `DATABASE_URL` at an unreachable host AND blanking `LINE_OA_WRITE_ALLOW`, `LIFF_ID` and `LINE_LOGIN_CHANNEL_ID` satisfies the guard legitimately: the environment then genuinely is not the customer's, which is the guard's whole purpose.** ✅ **Empty `LINE_OA_WRITE_ALLOW` ⇒ nothing is writable (`oa-guard.ts`) — allow-list, not deny-list, doing its job.**
+🚫 **Passing SID credentials on the command line WOULD be slipping past** — it makes the suite hit a real database while `.env` says another. **Pointing at NOTHING is the opposite act.**
+⇒ **An engineer blocked by the env guard still owes the DB-unreachable run and every source-derived check.** 📌 *On TASK-608 that run alone produced 21 findings, one of them a live-feature regression, with `.env` untouched and the owner's uat session undisturbed.*
+
+## A source-region pin ANCHORED ON A DECLARATION dies when the declaration changes shape (2026-10-03)
+🔴 **`reportOwnLeave` became `export const reportOwnLeave = (...)` — a one-line delegation. A pin anchored on `export async function reportOwnLeave(` now THROWS `region start missing`, so every assertion after it in that file does not run.**
+⇒ 🔑 **NO RESULT. Never a pass, and not a failure.** ⚠️ **Worse: it was the file guarding the SHIPPED teacher door, so the pins that would have independently caught the route shadowing were silenced by the same change that caused it.**
+📌 **Anchor a region on something that survives a refactor into a delegation, and write IN the pin what it is anchored to and why that anchor is stable.** *A pin that cannot speak is worse than one that is red: red gets fixed.*
+
+## Both teams' uncommitted work shares ONE back-repo working tree (2026-10-03)
+⚠️ **Team A's and Team B's in-progress edits sit in the same checkout, so any suite run mixes them and neither engineer can get a clean verdict on their own change.** 📌 **On TASK-608 I had to check attribution before naming failures as Jason's — @Bob's TASK-607 edits were in the same tree. None of the 21 was his, but the check was necessary, not optional.**
+⇒ 🔑 **Attribute a failure to a change before reporting it, by reading what the failure NAMES — not by who reported last.** **Any rule about the shared tree belongs to @Porter; recorded here so both SAs have it without messaging each other.**
+
+## 🔴 A silent anchor can start LYING, not just stop speaking (2026-10-03, @Jason's finding — it supersedes the weaker rule)
+**A source-region pin takes a START anchor and an END anchor. When the START goes missing the pin THROWS (`region start missing`) — loud, and the file stops. 🔴 When the END goes missing, `indexOf` returns `-1` and the slice runs to END OF FILE: the pin then still runs, still asserts, and FAILS FOR A REASON UNRELATED TO ITS CLAIM.**
+⇒ 🔑 **A red that means nothing costs MORE than a green that means nothing, because somebody chases it.** 📌 **Found on `booking-undo-req108` while re-anchoring the four pins TASK-608 silenced.**
+✅ **So: anchor a region on the ACT, give the pin a reason in its own text, and make a missing END as loud as a missing START.** *A check must fail only for the thing it claims.*
+
+## ✅ The shadowing pin, and the one property that makes a sweep worth anything (2026-10-03)
+**`admin-records-teacher-leave-task608.test.ts` derives every route path from the table, compares SEGMENT BY SEGMENT with `:param` matching anything (🚫 not a segment COUNT, which would wrongly flag `/teachers/:id/budget`), and asserts no wildcard route shadows a `/teachers/me/` literal.**
+⭐ **And then it asserts THE CHECK CAN SEE THE DEFECT, using the path that actually shipped:** `expect(literals.some((l) => shadows("/teachers/:id/leave", l))).toBe(true)`.
+⇒ 🔑 **Every repo-wide sweep owes that second assertion.** *A sweep that matches nothing is a green that means nothing; a sweep that cannot be shown to match a KNOWN defect is the same thing with extra confidence.*
+📌 **It guards the `/teachers/me/` literals only. The CLASS — no `ROUTE_ACCESS` pattern may shadow any other — is `TASK-615`, and this `shadows` function is its template.**
+⚠️ **Prove route permissions THROUGH THE ROOT APP. Reading `TEACHER_ALLOWED` is belt-and-braces; the guard computes its own key, so only a request through the guard proves anything.**
+
+## ⚠️ `core.autocrlf=true` here: a pin fails only when its EXPECTED LITERAL spans a newline (2026-10-03)
+**Files on disk are CRLF; `HEAD` is LF. A naked `readFileSync` in a test is therefore CRLF text.**
+🔑 **That is harmless until an expectation's own literal CONTAINS `\n` — then `toContain` cannot match, although the text is present and identical.** ✅ **43 test files in the back repo already normalise with `.replace(/\r\n/g, "\n")`: the convention exists and is the norm.**
+🚫 **So the rule is NOT "any test comparing raw bytes fails here"** — that is too wide and sends people hunting. ⇒ **The rule is: when a source-reading pin's expected string spans a line break, normalise the file first.** 📌 **One such file was missed (`teacher-schedule-req109.test.ts`, TASK-486) and is red for this reason alone, independent of any batch.** 🚫 **Never "fix" it with a `.gitattributes` change — that rewrites working copies repo-wide to solve one assertion.**
+
+## An ENTRY whose classification is right and whose REASON is absent (2026-10-03)
+**In `course-ended-writes.test.ts` the coach's leave DELETE carries its reason (*"lifts a leave-day row only; no booking is touched"*); the POST beside it carries none — yet the POST's today/past branch DOES cancel bookings, so its `"unrelated"` is true for a reason that is written nowhere.**
+⇒ 🔑 **A classification without its reason is one refactor away from being wrong AND unchallenged** — the next reader has nothing to test the entry against. 📌 **Also the answer to "does a new caller need a new ruling?": when the ACT is unchanged and only the CALLER is new, the new door INHERITS the existing classification and there is nothing to rule on.** *Withdraw a question that has dissolved rather than spend the owner's attention on it.*
+
+## 🔴 The mutation RUNNER is in the repo; the mutation SETS are not — the same failure, one level up (2026-10-03)
+**TASK-576 put the runner in the repo on the stated reason that *a tool kept in a session scratchpad is a tool we silently stop having, and its absence looks exactly like nobody having run it.*** 🔴 **The `mutations.json` sets were left in the scratchpad.** ⇒ **"9/9 bite", "10/10 bite" cannot be re-run by the SA, by the engineer next month, or on another machine. Those numbers were being accepted on trust.**
+▶️ **Rule: the mutation SET is a file in the repo beside the test it proves, and every report NAMES the test set it was run against.** ✅ **A named SUBSET is correct and expected — the runner refuses a dirty baseline (rule 4), so a repo with one known-red test can only be mutated against a subset.** 🚫 **But a subset nobody can see is a number, not evidence.**
+🔑 **Generalise it: when a tool is preserved because its absence is invisible, its OUTPUT is invisible in exactly the same way.** *Preserve the evidence on the same reasoning that preserved the tool.*
+
+## The suite needs NO database — so the two runs prove opposite things and neither substitutes (2026-10-03)
+**`3748 of 3749` tests pass with `DATABASE_URL` pointed at an unreachable host, there are no `skipIf`s anywhere in the suite, and no skip count is printed.** ⇒ 🔑 **a run against a reachable database cannot exercise MORE than the unreachable run already did.**
+⚠️ **It is still not redundant, and this is the ONLY thing it can tell us: it can reveal a test that passes BECAUSE the database is absent** — one asserting a fallback that would fail once a connection succeeds. ⇒ **both runs are owed; neither replaces the other.**
+🔴 **And the live run carries a risk the unreachable one cannot: KHWAN TESTS ON SID.** **If any test opens a real connection and writes, we write into the environment the customer is using.** **The evidence says the suite never connects; "the evidence says" is not "we established".** ⇒ **the live run is scheduled by @Porter in a window, never taken by an engineer or an SA on their own judgement.**
+📌 **Driving a new door END TO END against a real database is a QA exercise (Tanya, through @Porter) — it is NOT a suite run, and calling it "the live-DB layer" hid that for two days.**
+
+## Free pre-start absences and charged leaves are TWO independent ceilings of the same size (2026-10-03)
+**TASK-609: `leaveUsed` is never incremented for a declared day (both write sites are guarded by the charge), and the pre-start cap counts only declared rows.** ⇒ **a course may declare up to its quota in FREE days before it starts AND still take its full quota of charged leaves afterwards — up to TWICE the quota in total absences.**
+⚠️ **Not only across the boundary: `courseNotStarted` is satisfied by a course that already carries a FUTURE CHARGED leave, so an unstarted course can hold charged leaves and then declare its full free set.** **The two counts never see each other.**
+✅ **It is the better reading and it stands** — 🔑 **a shared pool would make a declared day DEFERRED, not free, contradicting the owner's own word.** 📌 **But the owner said "capped at the quota the customer bought", SINGULAR, so the CONSEQUENCE was sent to him as a statement, not a question.** *When an implementation is right and its consequence is bigger than the words that authorised it, report the number — do not re-open the decision.*
+⚠️ **Open leak, to be ruled deliberately: `declared` counts rows whose status is `SICK_LEAVE`, so a declared day later CANCELLED stops counting and the cap can be reset by cancelling and re-declaring.**
+
+## Read the line WITH the comment above it (2026-10-03 — my own error, twice in a week)
+🔴 **I reported a classification entry as missing its reason. The reason was in the comment immediately above the entry.** 🔴 **And a day earlier I read a census going red and asserted WHICH name caused it instead of checking.**
+🔑 **Same shape both times: a line read without its context, reported as a gap.** ⇒ **Before reporting an absence in source, read the surrounding block — and prefer "I could not find X; where is it?" to "X is missing."** 📌 *An absence is the easiest thing to be confidently wrong about, and it is the claim engineers can most cheaply disprove.*
+
+## ⚠️ TWO SAs allocate TASK numbers from ONE board and may not message each other (2026-10-03)
+🔴 **@Bob and @Sober both took `TASK-623`: the board's highest was 622 when it was read, and 623–628 existed by the time four tasks were written.** ✅ **Resolved by Team A renumbering its own (item E's back half ⇒ `TASK-629`); 🚫 nothing of Team B's touched.**
+🔑 **Reading the board's maximum is not an allocation — it is a read, and two readers get the same answer.** ⇒ **Ask @Porter for number BLOCKS per team (e.g. A 630–659, B 660–689), so neither SA has to read the board to pick a number.**
+📌 **And the board is the record; an inbox note is only a notification. When the two disagree, the board wins.**
+⚠️ **Second-order gain: reading the colliding row revealed that Team B's `TASK-623` is BLOCKED on "Team A's FINAL owner-approved copy"** ⇒ **part of the other team's idle time was waiting on OUR COPY, not our code, and the copy could go to the owner ahead of the batch.** 🔑 *A collision is also a reason to read the other team's rows, which the no-contact rule otherwise discourages.*
+
+## The Daily report's numbers come mostly from `/calendar`, and camp counts as COACH-HOURS (Silver, 2026-10-04, read in code)
+- **Where the figures come from:**
+  - Front `getDailyReport` calls **both** `/reports/daily` and `/calendar` (front `src/services/scheduler.service.ts:1055-1061`).
+  - `enrichDailyReport` (`:1016-1053`) computes Total booked, Attended, Confirmed, Pending and the type/teacher rows **from the calendar bookings.** Only On leave and Cancelled come from the backend report.
+  - ⇒ Reading back `getDailyReport` alone explains almost nothing on the screen.
+- **How camp is counted:**
+  - A camp block writes one `bookings` row **per coach per hour** (type `OTHER`, kind CAMP, CONFIRMED; back `camp.service.ts:280`).
+  - **The end-of-day auto-attend marks them ATTENDED** (`jobs.service.ts:83-88`), with no camp exclusion.
+  - The children's attendance is in `camp_days`, which the report does not read.
+  - ⇒ **Attended includes camp coach-hours, not camp children.** That is Khwan's 17 vs 19 (2026-09-28): 9 private lessons + 8 coach-hours, against her 10 + 9.
+- **The type rows cover 4 of 6 types** (OTHER and GROUP have none), and **Total booked counts every status except CANCELLED.**
+
+## The parent's leave and check-in windows are two doors with DIFFERENT acts (Silver, 2026-10-04, read in code)
+- **Both windows are CONFIRMED-only:** `findTodayBookingsForParent` and `findUpcomingBookingsForParent` (`checkin.service.ts:154-180`).
+- **Check-in:** the act **also** refuses anything not CONFIRMED (`checkinByToken`, `checkin.service.ts:108-110`), so its window already equals its act.
+- **Leave:** the act, the `sick-leave` branch of `updateBookingStatus` (`scheduler.service.ts:3983-3998`), has **no status allow-list.** Only the cut-off guards it, so it would take leave on a CANCELLED or NO_SHOW row.
+- ⇒ **"Window = act" fixes leave and does nothing for check-in.** Showing unconfirmed classes at check-in is a change to the act itself.
+
+## A digit anywhere in a student search adds a phone match (Silver, 2026-10-04, F5)
+- `studentSearchConditionsOn` (`parent.service.ts:642-650`) adds `phone ILIKE '%<digits>%'` whenever the query holds **any** digit.
+- So `Ari3y` matches every parent whose phone contains a 3.
+- Shared by bookings, students, courses, vouchers and the eligibility picker.
+
+- **Where testing happens — owner's ruling, 2026-10-04. This settles it; do not re-open it.**
+  - 🚫 **No local stack, and nobody proposes one again.** The owner's reason: it becomes a SECOND migration target to keep in step, and that costs more than it saves.
+  - 🚫 **Engineers do NOT test against `sid`.** An engineer's runs are the ones that need no reachable database. **Anything that needs a live database is NOT the engineer's to run** — it leaves their definition of done.
+  - ✅ **That verification belongs to QA.** **Tanya is a SENIOR TESTER, not a clicker: her remit is the FULL test** — **every API route**, **the web screens**, **the phone**, and **LINE OA** — on `sid`.
+  - ✅ **Nobody needs a window on `sid` and nobody asks the owner for one.** Khwan uses `sid` to help US; the three of them do not have to tiptoe around each other.
+  - ⇒ **An SA must not hold a batch waiting for an engineer's live-DB run.** The equivalent proof is QA's, after the deploy.
+
+## ✅ The mutation sets are FILED, and the rule is now verifiable by anyone (2026-10-04 — closing TASK-627)
+**`src/lib/admin-records-teacher-leave-task608.mutations.json` (H1–H9) and `src/lib/pre-start-declared-absence-task609.mutations.json` (F1–F11).** **Each set carries its OWN test list; the runner accepts `{ tests, mutations }` as well as a bare array, `--tests` still wins when given, and a set with NO list anywhere is REFUSED rather than guessed at** — *a guessed test set produces a verdict about something nobody chose.*
+✅ **Re-run by @Sober, not the author: `F1…F11` all BITE (baseline 113) and `H1…H9` all BITE (baseline 108), restores byte-identical, CHECKSUM identical, no NO RESULT.** 🔑 **Yesterday those numbers were trust; today they are a command anyone can type.**
+⭐ **`H7` is the near-miss made permanent: it puts the admin door back on `/teachers/:id/leave`, the wildcard sibling that revoked the coach's own door — and it bites.** 🔑 *That is what a near miss should become: a failure you can summon on demand.*
+✅ **THE VERDICT RULE in `scripts/mutation/README.md` is byte-for-byte intact** — the input was widened, the JUDGEMENT untouched. 🔑 **Check that distinction whenever a runner is changed.**
+⭐ **And the retired README bullet survives only as a QUOTE inside the correction that supersedes it.** 🔑 **A deleted rule looks like it was never there; a quoted one tells the next reader what we used to believe and why we stopped.**
+
+## 🔴 A FILED mutation set can rot the same way a pin can — so the sets have their own check (2026-10-04)
+**`src/lib/mutation-sets-task627.test.ts` checks EVERY filed set: each `from` anchor resolves in the source EXACTLY ONCE (🚫 not zero, 🚫 not twice), every named test file exists, the set names the test it proves, and no mutation is a no-op.** 🚫 **It does not re-run mutations — it proves the recorded verdicts are still RE-RUNNABLE, which is the whole point of filing them.**
+🔑 **Filing the evidence only HALF-fixes it: a set whose anchor no longer matches is a silent lie — the same class as a lost region END, which did not stop speaking but started lying.** ⇒ **"Exactly once" is the load-bearing half; `>= 1` would pass on an anchor that now matches two places and mutates the wrong one.**
+📌 **It earned its place on day one: `TASK-609` §3 rotted F10's anchor the same day it was written.** *A meta-check that catches a defect on its first day is load-bearing, not scaffolding.*
+
+## The cap counts DECLARATIONS MADE, not declarations standing — and the flag must not be cleared (2026-10-04)
+**TASK-609 §3: the pre-start cap counts `plannedAtCreation` ALONE; the `status === "SICK_LEAVE"` term is gone.** 🔑 **A limit that cancel-and-re-declare can reset is decorative.**
+⚠️ **Known, pinned cost: a declaration TAKEN BACK still consumes one of the cap.** 🔴 **It must NOT be "fixed" by clearing `plannedAtCreation` on the Undo:** **`leaveChargeOf` returns `"free"` off that flag BEFORE it falls through to the make-up test, so clearing it makes an already-refunded row answer `"charged"` (make-up linked) or `"unknown"` (not)** ⇒ **it would RE-OPEN `UNDO_LEAVE_CHARGE_UNKNOWN` — a set recorded as closed and shrinking — on rows we have already acted on.**
+▶️ **If a withdrawn declaration should return to the pool, the design is a SEPARATE "withdrawn" marker, never clearing the flag (`TASK-630`).** 📌 **Recorded so nobody re-derives it under time pressure.** 🔑 *A flag that answers a question about the PAST cannot be reused to change a count about the PRESENT.*
+
+## 🔴 OWNER RULING 2026-10-04 — **engineers do NOT verify against `sid`. Live-database verification is QA's. This SUPERSEDES the entry above it.**
+**The owner's ruling, in substance:**
+- 🚫 **No local stack.** **It becomes a second migration target to keep in step, and he will not pay that cost.**
+- 🚫 **Engineers do not test against `sid`.** ✅ **That verification is QA's.**
+- ✅ **@Tanya is a SENIOR TESTER and her remit is the FULL test: every API route, the web screens, the phone, and the LINE OA.** ⇒ **a QA hand-off must lead with the API ROUTES, not only the screens.**
+- ✅ **Nobody needs a WINDOW on `sid`.** **Khwan is using it to help us; the three of them need not tiptoe around each other.**
+
+🔴 **SUPERSEDED, and quoted so the next reader knows what we used to believe:** the entry above once said the live run was *"scheduled by @Porter in a window, never taken by an engineer or an SA on their own judgement"*. **The window part is now FALSE.** ✅ **What survives from it: the suite needs NO database — 3763 of 3763 pass with it pointed at nothing, there are no `skipIf`s and no skip count** ⇒ 🔑 **the no-DB run is now the ONLY suite run there is, not a second opinion on a live one.**
+📌 **@Porter withdrew his own window request in his own words: "that was me carrying a constraint the owner does not have."** 🔑 *A constraint nobody imposed is the most expensive kind, because nobody is there to lift it.*
+
+### ⇒ The engineer's standing verification set, final — THREE things
+1. **`tsc --noEmit` clean.** 2. **The suite with the database pointed at nothing — counts, never a colour.** 3. **The mutation set, FILED beside its test and naming its test list** (the runner already points the database at nothing by design).
+✅ **A task is CLOSED on that proof.** 🚫 **Nothing is "owed" for want of a reachable database.** ⚠️ **What only a real database, a real screen or a real phone can answer goes to QA as a written line — including the thing the live suite would have caught: a test that passes BECAUSE the database is absent.**
+🔴 **And a naming lesson, mine:** **I called a QA exercise "the live-DB layer" for two days, which made it look like an engineering debt the BE owed.** ⇒ 🔑 **Name a gap by WHO CAN CLOSE IT, not by the resource it lacks** — *"the live-DB layer" sounds like something an engineer can get; "QA's live verification" names the person.*
+
+## A promise inside a refusal is the easiest copy to write and never check (2026-10-04)
+🔴 **`DECLARED_ABSENCE_CAP`'s message ends *"…หรือปลดล็อกโดยแอดมิน"* — but there is NO unlock on that path.** **`adminUnlocked` gates the POST-start `leaveLocked` rule; the pre-start cap does not consult it, and the code is right not to.** ⇒ **the refusal offers a remedy that does not exist.**
+🔑 **How it surfaced: writing down what the RIGHT ANSWER LOOKS LIKE, case by case, for a QA hand-off.** ⇒ **A refusal's REMEDY CLAUSE is a factual claim about the system and must be checked like any other** — *the error path is where copy goes unread, and a remedy is the one part a user will actually try.*
+📌 **Whenever a refusal tells someone what to DO, verify that the thing can be done, by them, on that path.**
+
+## 🔴 A write assertion that does not read the WHERE is an assertion about the VERB (2026-10-04 — @Jason's, from a mutation that SURVIVED)
+**`E5` broke the scoping of a DELETE so that EVERY extra teacher on the row was removed, not just the outgoing one — and the first version of the check SURVIVED it**, because the harness recorded **that a delete happened** and nothing about **who it named.**
+⇒ 🔑 **Assert the bound parameters of the condition, not the fact that the statement ran.** ✅ **The fix also pins a BYSTANDER as untouched** — *the only way to prove a write was scoped is to name something it must not have reached.*
+📌 **Same family: a refusal test in the same file PASSED ON THE WRONG REFUSAL — `RATE_REQUIRED` is also a `400` and was thrown earlier.** ⇒ **assert the SENTENCE, not the status code.** 🔑 **A code is not a sentence, and two refusals sharing a code share nothing else.**
+
+## 🔴 A rule that says "ask X" is wrong when X's return type cannot carry the answer (2026-10-04 — @Sober's error, @Jason overruled it correctly)
+**I instructed that `teachersOfBooking` was "the only thing that may answer" whether a teacher is the primary or an extra. It cannot: it returns ids and FLATTENS the primary and the extras into one list — the very distinction TASK-629 exists for.**
+🔑 **Two questions were collapsed into one:**
+- **"WHO is on this session?"** ⇒ `teachersOfBooking`, and it must remain the only answer to that.
+- **"WHERE does this teacher live on it?"** ⇒ **its own answer (`locationOf`), in one place**, because the first question's answer deliberately destroys that information.
+⇒ **Before naming the single source of truth for a question, check that its RETURN TYPE can express the answer.** 📌 *An engineer who pushes back with the reason rather than complying is doing the job; a "one source of truth" rule that cannot carry the distinction produces two sources under one name.*
+⚠️ **And the case that proves it is `E3`: a series where the same coach is PRIMARY on one date and an EXTRA on another.** **Deciding per row would write BOTH changes.** 🔑 **"Decide it once" was asked for tidiness; the real reason is that deciding twice is WRONG.**
+
+## Widening a shipped response to say what the caller already knows is a contract change smuggled in beside a feature (2026-10-04 — @Jason's)
+**He added `swapped: "primary" | "extra"` to the swap's answer and took it back out:** **two shipped pins assert that object exactly, and the front end already knows the answer — it sent that teacher as `from`.**
+⇒ 🔑 **A new field in an existing response is a decision, not a side effect.** **If a caller wants it, that is asked for and ruled on.**
+
+## Naming a thing inside a refusal: use the ONE name rule, and check it EXISTS before concluding it does not (2026-10-04)
+**`booking-undo.ts` already names a session in a refusal with `displayNameOf(holder) || "คาบอื่น"`, and the code calls it *"the ONE name rule"*.** ⇒ **`{course}` in the `§T-G` reword renders as `displayNameOf(row)`, same fallback.** 🚫 **No new course label.**
+🔑 **Why not programme-and-size: it does not DISTINGUISH** — two children on the same programme and size produce the same string, so a list of refusals says nothing. **What identifies a course to the reader is WHOSE it is.**
+⚠️ **And the honest limit, stated to the owner rather than hidden: a course in this system HAS NO NAME.** **The approved sentence says it names the course; the closest TRUE thing we can print is whose course it is.**
+📌 **The EN half does NOT ship — decided from the file: every refusal in `booking-undo.ts` is Thai only and the block's own comment says they are written "in the admin's language (the codebase's Thai)".** 🔑 *An engineer who stops rather than invent a convention is right; finding the convention that already exists is the SA's job, not his.*
+
+## 🔴 A pin can PASS FOR A DIFFERENT REASON than it was written for, and nothing reports it (2026-10-04 — @Jason's, the third distinct "green that means nothing")
+**Two pins in `other-series-req101`:**
+1. **The from-here-on swap pin ASSERTED THE DEFECT** — `{ teacherId: T3 }` with no rate. 🔑 **A pin written while the behaviour was wrong records the wrongness as the contract.**
+2. 🔴 **Its neighbour, `from: T2 ⇒ 400`, had been passing for a DIFFERENT REASON than it was written for ever since TASK-629 shipped:** **T2 is a legitimate extra-teacher swap now, and the `400` it was meeting was `RATE_REQUIRED`, not the refusal the pin was about.** ⇒ **green, meaningless, invisible for a day, and only the NEXT change exposed it.**
+▶️ **RULE (@Jason's words): every pin you widen past must be re-read for WHAT IT IS NOW PROVING, not only for whether it is green.**
+🔑 **This is the third distinct green-that-means-nothing we have found, and the FIRST that needed no tooling to catch — only the discipline of re-reading.** 📌 **Companion rule, same day: a code is not a sentence — two refusals sharing a `400` share nothing else, so assert the SENTENCE.**
+
+## The fix is FEWER rules, not one more — a rule resolved in TWO PLACES is one edit from being two rules (2026-10-04)
+**TASK-625 did not add a rate resolution; it REMOVED one.** **TASK-629 had left the extra path resolving its own rate beside the per-session one, and that asymmetry was the same defect in miniature.** ✅ **`seriesRateOf(` and `RATE_REQUIRED(` now appear exactly once each in the act, proven as an ABSENCE.**
+📌 **@Sober's miss, recorded: reviewing TASK-629 he checked that no second RATE RULE existed and missed that a second RESOLUTION SITE did.** 🔑 **Checking for a duplicate RULE is not checking for a duplicate CALL** — *ask for the count of call sites, not the count of rules.*
+
+## 🔴 A candidate list for a defect that is OPEN ON ANOTHER PATH is a MISLEADING report, not an incomplete one (2026-10-04)
+**TASK-625 closed the rate defect on the OTHER-series swap and produced a read-only candidate list for the owner.** **@Jason then found the SAME defect live on `swapGroupTeacher` (the GROUP path), which TASK-625 does not touch.**
+🔑 **Handing the owner that list while the second path still writes new rows says *"here is what a CLOSED problem cost"* when the truth is *"here is part of what an OPEN problem is still costing."*** ⇒ **We would have built the misreading ourselves.**
+▶️ **So: close every path of a defect BEFORE its numbers go up, or send the numbers with a warning that halves their value.** ⭐ **Closing was cheaper than caveating** (`TASK-632`, cut the same day, onto the last day of the gate). 📌 *Adding work to your own gate beats shipping a report that misleads.*
+
+## A read-only count for the owner is a CEILING and a CANDIDATE LIST, never a count (2026-10-04)
+**The only durable trace of a teacher change is `notification_outbox` (the swap's own pair carries the `booking_id`, nothing prunes that table, and on a row with `other_series_key` the series swap is its only writer).**
+**The query returns every series row a swap ever touched, each flagged twice: is this rate one the CURRENT coach is paid elsewhere in the series · is it one SOMEBODY ELSE is paid.** **`own=0,other=1` strongest · `own=1` almost certainly fine · both-0 unknowable · both-1 the defect cost nothing even if it happened.**
+🚫 **What it cannot tell anyone, and all of it goes IN FRONT of the owner rather than buried:** **intent is not recorded — a deliberate price and the defect are byte-identical** · **only the LAST coach is known, so a twice-swapped row hides the rate's real owner** · **a per-session swap leaves the SAME trace and was always correct, so the list includes rows never at risk** · **a series where everyone is paid the same hides it, harmlessly.**
+🔑 **"We cannot tell from the data" is a real answer the owner can act on; a guess he mistakes for a count is not.** 🚫 **Nobody runs it — not the engineer, not the SA.**
+
+## A RELOCATED mutation keeps its id, and BOTH files say where it went (2026-10-04)
+**`E7`/`E8` moved from TASK-629's set into TASK-625's, because the rule they attacked (the extra path's own rate resolution) no longer exists as a separate thing** — **and a mutation filed against a rule that is gone cannot bite for its stated reason.**
+✅ **Correct move. ▶️ But the old TASK report still says "14", so the id must not change and both files must carry the note.** 🔑 **The filed set is the record; a TASK report is a snapshot of the day it was written.**
+⭐ **And the set-integrity check earned its keep a second time: `R7`'s anchor matched TWICE in `validation.ts` (`.refine(oneScope, ONE_SCOPE);` is also another body's last line) before the set was ever run.** 🔑 **"Exactly once" catching a real second match twice in one week is the whole argument for it.**
+
+- **Leave quota by course size (verified in code 2026-10-04, `lib/leave.ts`):** `LEAVE_QUOTA_BY_SIZE` — **4 sessions ⇒ 1 leave · 6 ⇒ 2 · 10 ⇒ 3**. **`maxWeek = size + quota`** (4+1=5 · 6+2=8 · 10+3=13). An off-card imported course carries its own stored quota, and the stored one wins. 📌 **Recorded because Porter put an invented "10 ⇒ 2" into a draft to the customer and the owner caught it. Never state a product number to a customer without reading it.**
+
+## 🔴 A green suite after a behaviour CHANGE means either nothing cared, or nothing was WATCHING (2026-10-04 — @Jason's, the fourth green-that-means-nothing)
+**TASK-632 changed what the group swap writes, and NOTHING in the suite broke. The finding was not the fix — it was that no existing test pinned the group swap's rate at all: the wrong write was simply UNOBSERVED.** 🔑 **That is how it stayed wrong while its twin on the other path was found by reading.**
+▶️ **OBLIGATION: when a change you expected to break something breaks nothing, find out WHICH of the two it was BEFORE you report the green.** 📌 **Fourth distinct green-that-means-nothing this week, and the first where the right question was asked before anyone was misled.**
+
+## 🔴 A refusal with NO ANSWER is not an improvement — check the route-around EXISTS before accepting a refusal (2026-10-04)
+**TASK-632 correctly refused a group swap it could not price, pricing the incoming coach from `seriesRateOf` over the whole group key.** 🔴 **But there is NO per-coach standard rate anywhere in this system** — **`freelance_budgets.rate_minor` is the freelance CEILING's drawdown, not a coaching rate, and nothing reads it here.**
+⇒ **A coach NEW to that series can never be priced, and "new to this series" is exactly what a COVER IS.** ⇒ 🔴 **the fix traded a silent money defect for a HARD BLOCK on the ordinary operation: before it the swap worked and paid wrongly; after it the admin has nothing to type.**
+🔑 **"Paying the wrong coach silently is worse than a refusal an admin must route around" is right about the refusal and wrong when there IS no route around.** ⇒ **Before accepting a refusal as the safe answer, name the route-around and verify it exists.** ✅ **`TASK-634`: the door accepts an optional rate, exactly as the other path already does, and `TASK-632` does not ship without it.**
+
+## A column that IS read cannot be dismissed as safe — make the ABSENCE the pinned answer instead (2026-10-04)
+**Asked to prove a seat's `teacher_rate_minor` was unread and therefore safe, @Jason found it IS read (`rateFacts` is non-null only for a `COURSE_PACKAGE` row, and `toBookingDTO` puts it on every DTO) — and refused the easy answer.**
+⇒ ▶️ **The seat write deliberately carries NO rate, the reason is at the line, and the absence is pinned by value (every seat write is exactly `{ teacherId }`).** 🔑 **A group swap must not answer a product question as a side effect** — whether changing a coach should clear a CHILD's course override is `TASK-633`, and one answer must cover the plan edit, the Move popup and the seat together.
+📌 **The rate LOOKUP must span the whole key, not the slice being moved** — *a coach paid on a past date of this group would otherwise be refused as unknown.* 🔑 **Ask what the READ should span rather than assuming it matches the WRITE.**
+
+- **Gate reports name the people, not only the tasks (Porter, 2026-10-04).** Every SA gate report to the PM must list **each engineer, what they hold, and the date of their last report.** 📌 **Written after `TASK-611` sat unstarted for two days inside a gate the PM had accepted: the gate was a list of TASKS, so a silent engineer was invisible until the SA read the repo. A reset session remembers nothing, so silence is the normal case and must be checked for, not waited on.**
+
+## 🔴 STANDING RULE (@Porter, 2026-10-04) — every gate report NAMES EACH ENGINEER, what they hold, and the DATE OF THEIR LAST REPORT
+**Set after `TASK-611` was found unstarted two days after dispatch — by READING THE REPO, not by a report arriving.**
+⇒ **"No report in two days" becomes VISIBLE instead of discovered.**
+🔑 **Why it was a hole on both sides: a list of TASKS reads as progress; a list of PEOPLE reads as capacity, and only one of those tells you whether a date is real.** 📌 **@Porter set the gate on a list of tasks and never asked who was holding them; the SA reported the gate as a list four times in a week and never named the two pairs of hands it was in.**
+▶️ **And the column must be a fact the SA CHECKED, not one he was told: re-read the code repo's working state before every gate report, not only when something smells wrong.**
+⚠️ **A silent engineer is the normal case here, not a fault — a reset session remembers nothing, and the repo is the only memory.** ⇒ **Re-dispatch assuming they remember NOTHING: ask for a one-line status FIRST, repeat the file claim in full, and restate every decision they must not re-ask.**
+
+## "Inert until its screen lands" — inert on the SCREEN is not sealed at the DOOR, and the two must not be blurred (2026-10-04)
+**`TASK-629`'s widened swap ships with no front-end change. Confirmed unreachable from the product by TWO single-site facts:** **there is exactly ONE Swap entry point (rendered beside the PRIMARY's name; each extra gets only *Remove*, and the click carries no teacher id)** and **exactly ONE body builder with ONE caller, which hands the series' PRIMARY in as the teacher going out.**
+⚠️ **But the ROUTE still accepts a non-primary caller who crafts a request by hand.** 🔑 **That is a working feature answering correctly, not a defect leaking — there is no state it can reach that the FE task will not reach deliberately.** ⇒ ✅ **Call it inert; 🚫 do not call it sealed.**
+🚫 **No test was added to pin the inertness.** 🔑 **It would be a pin deleted within a week, and a pin written to be deleted teaches the next reader that pins are disposable.** ✅ **What makes it safe is that both facts are SINGLE-SITE, and the FE task changes both on purpose.**
+
+- **Ask the customer BEFORE the owner rules, on anything about how the shop actually works (Porter, 2026-10-04).** When a question is about the customer's own operation — quotas, reasons, who does what, what counts as whose fault — **Porter asks Khwan first and brings the owner her answer with the options**, instead of having the owner rule and then checking with her.
+  📌 **Written after two reversals in one week on work that was already built and verified** — REQ-110 F's pre-start cap, and the leave-quota model. **Both times we answered on her behalf, she answered differently, and a verified task had to be re-opened.**
+  ⚠️ **It does not apply to decisions that are the owner's alone** — money, security, what we will and will not build, and anything about his own servers.
+
+## 🔴 The course EXPIRY is DERIVED FROM the leave quota — they are not two independent controls (2026-10-04)
+**`maxWeekFor(size, quota) = size + quota`, and `courseExpiry(startDate, size)` is built from it.** ⇒ **a course is valid for *its sessions plus its leave quota*, in weeks.**
+🔑 **So "abolish the leave counter and use the expiry as the only control" is self-referential: delete the quota and the expiry formula loses a term.** ⇒ **Before sizing any such request, establish whether the number STAYS as a validity window (a RENAME — small) or something else must newly decide validity (a product decision — large).** 📌 *One question decides small vs large; ask it rather than size both.*
+⚠️ **And the cascade if the counter goes: `leaveCharged` has no subject, so `UNDO_LEAVE_CHARGE_UNKNOWN` DISSOLVES entirely** — the refusal class the customer complained about on live uat. **`adminUnlocked` becomes vestigial.** **13 files mention the counter and most only REPORT it** ⇒ 🔑 **the REPORTING is the risk, not the rule: a screen still showing "2 of 4 leaves used" after the rule is gone is worse than one that never showed it.**
+
+## ⚠️ `makeup_far_out` fires on SEARCH EXHAUSTED, not on crossing the course expiry (2026-10-04)
+**The admin notice when a make-up lands a long way out is triggered by the make-up search being exhausted — deliberately, because any fixed distance would be a number we invented.** 🔴 **It is NOT "the make-up passed the course expiry".**
+⇒ **The two overlap and are not the same: a make-up can land past the expiry without exhausting the search, and the search can exhaust without the expiry being crossed.**
+📌 **Khwan asked for "notify the admin, like now" believing they were the same thing.** 🔑 **When a customer says "like it does now", check what "now" actually triggers on before agreeing** — *agreement on a word is not agreement on a rule.*

@@ -72,6 +72,20 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-009 — 2026-10-04 — SA Lead Team B (Silver) — A message of mine to Porter carried the wrong TASK number (629 for 623)
+- **Status:** NEW
+- **What happened:**
+  - My 10-03 line in `inbox/PM.md` ("GO taken. TASK-6xx (Bob, XS script) is cut and BLOCKED…") reads `TASK-629`. Bob's task is `TASK-623`, and `TASK-629` is Team A's item E back half.
+  - **CERTAIN:** my own log entry of the same session (`log/2026-10-03.md`, "TASK-623 cut BLOCKED"), the task file and the board row all say 623.
+  - **INFERRED, not proven:** I wrote 623, and the line was changed afterwards by the other SA's "renumbered mine to TASK-629 **everywhere**" sweep in the same collision (`log/2026-10-03.md`). That sweep was a text replace that could not tell his 623 from ours.
+  - Either way, the record under my name was wrong, and I did not catch it.
+- **Rule involved:** `NONE — no rule covered it` for the cause. Two SAs drew TASK numbers from one shared sequence by reading the board. Porter's TASK number blocks (board, 2026-10-04) now close that.
+  - For the second half: a bulk rename across shared files has no rule that limits it to the renamer's own lines.
+- **How it was caught:** by Porter, a day later, reading my message against the board.
+- **Cost:** none yet. Nobody acted on 629 as Bob's. The risk was an engineer or QA treating Team A's 629 as Team B's.
+- **Evidence:** `inbox/PM.md` (my 10-03 line, now corrected in place with a marker) · `log/2026-10-03.md` (my entry, 623) · board `## TASK number blocks`.
+
+
 ## F-008 — 2026-09-28 — PM (Porter) — Hinted on a team-visible REQ line at an item the owner ordered kept private
 - **Status:** NEW
 - **What happened:** The owner ordered one item (a single ECA confirm bubble) kept off all team lists. When I wrote REQ-109 I added a team-visible line hinting that a "related item is held privately". I removed it within the same turn, but writing it at all shows I had not internalised "off the list" as "not even mentioned".

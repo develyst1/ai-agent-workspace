@@ -8,74 +8,89 @@
 > check it against `board.md` + today's log and **report any disagreement to the owner** — never silently trust
 > it, never silently fix it. Provenance on every line.
 
-**Written:** 2026-09-29 by Porter (PM) · **Newest log at the time:** `log/2026-09-29.md`
+**Written:** 2026-10-02 by Porter (PM) · **Newest log at the time:** `log/2026-10-02.md`
+*(Previous snapshot was 2026-09-29 and three days stale; this replaces it entirely.)*
 
 ## What we are in the middle of
 
-1. **The D7/D8 round is through sid QA and is now the CUSTOMER's to test on `sid`.** `[owner-approved 2026-09-29]`
-   Deployed to `sid` 09-29: TASK-551 (same-slot make-up suppression) · TASK-552 (B) (a re-owe inherits only the
-   cancelled make-up's own link) · TASK-554 (shop-QR 2nd-tick crash) · TASK-556 (migration `0061`, the expiry
-   marker row). `sid` is at **migration 62, ledger 102, verify green**. Tanya: D7 ✅ on a real phone, D8 ✅ fixed,
-   smoke ✅. **Flow from here: Khwan tests on `sid` → then `uat`.** `uat` is still at **57 and needs 58–62.**
-2. **REQ-110 — Khwan's 12-item final front-office feedback — is in intake, SIZING ONLY.** `[customer-asked 2026-09-29]`
-   The owner dispatched items **1–6, 8, 9, 11 to @Sober for sizes, no build** `[owner-approved 2026-09-29]`.
-   Items **7, 10 and 12 the owner has asked Khwan himself**; they are not with us.
-3. **Scope for the current round is FROZEN by the owner** `[owner-approved 2026-09-29]` — D7 + same-slot
-   suppression only. Everything else named this week (F5 digit-search, copy nits, the gaining coach) is next round.
+1. 🏁 **The REQ-110 round is CLOSED and LIVE on `uat`.** `[owner-approved 2026-10-02]`
+   All 12 of Khwan's items are done; the owner has told her so. `uat` is migrated (**65/65 green, 8 applied**),
+   the code is up, `[outbox] LINE worker started (every 15s)` confirmed. Both data gates passed: Khwan is linked
+   as an admin on the real OA, and the Teacher role holds `action:calendar.teacher-leave` with 21 coaches on it.
+   Palm's front-end branch is merged, the one identifier it dropped is restored (TASK-605), and Tanya smoked both
+   `sid` and `uat`. `[team-proposed 2026-10-02]`
+2. ▶️ **REQ-111 — a NEW front-office round from Khwan — is in intake, ANALYSE/SIZE ONLY.** `[customer-asked 2026-10-02]`
+   Intake is **closed** (owner: *"หมดละเท่านี้"*). **Eight items, A–H**: A the full notification-message inventory ·
+   B "Confirm results" prints raw booking UUIDs instead of student names on CONFIRMED rows · C an admin records a
+   teacher's leave · D a blocked day must be visible on the GRID itself · E the ECA teacher change is the WRONG
+   act (she wants a SWAP, not a second teacher) · F a not-yet-started course takes a planned absence without
+   spending quota · G the `uat` `LEAVE_CHARGE_UNKNOWN` scale · H the freelance rows move behind the coach-pay
+   permission (owner ruled option ข). **Sober owes ONE sizing message for all of them — except G, which comes
+   ahead of it because it is live.** `[owner-approved 2026-10-02]`
+3. ⏸️ **The BACKOFFICE phase is PAUSED** — the customer asked for the front office to be finished first.
+   `[customer-asked 2026-10-02]` 🔴 **Sober's finding stands and changes the first decision there: there are NO
+   `REQ-BO-001…006` files and never have been** — what exists is six one-line Thai titles in `OWNER-LIST.md` §2.
+   Our own `REQ-002` (DELIVERED), `REQ-006` (IN_SPEC) and `REQ-014` (READY_FOR_SA) are all from July.
+   **The owner's one decision when the phase opens: who writes the six requirements, and in what form.**
+   `[team-proposed 2026-10-02]`
+4. 🆕 **This project now runs TWO parallel teams** (ORDER 14, owner's go 2026-10-02): **Team A** Sober · Jason ·
+   Fern, **Team B** Silver · Bob · Fanta. **Porter and Tanya are NOT duplicated** — one PM, one QA, both serving
+   both teams. **No batch is claimed yet** (`board.md` → `## Batch claims`), so Team B has no pile and has not
+   started. 🔴 **Splitting and claiming the next batch is Porter's named job and must happen BEFORE either team
+   starts.** `[owner-approved 2026-10-02]`
 
 ## What each thread is waiting on, and from whom
 
 | Thread | Waiting on | Since | What unblocks it |
 |---|---|---|---|
-| D7/D8 round → `uat` | **Khwan** (customer), via the owner | 2026-09-29 | her run on `sid`; then the owner deploys `uat` with migrations 58–62 |
-| REQ-110 sizing | **@Sober** (items 1–6, 8, 9, 11) | 2026-09-29 | his sizes back to @Porter — sizes only, nothing is dispatched to build |
-| REQ-110 items 7, 10, 12 | **Khwan**, asked by the owner directly | 2026-09-29 | her answers |
-| TASK-555 (the 8 §D2 LINE-admin strings) | **@Porter — HELD deliberately** | 2026-09-29 | the next round opening; the copy is already owner-approved 09-28 |
-| TASK-553 (make-up link backfill) | **parked by @Sober** | 2026-09-29 | the round closing; order is writers-link → dry-run backfill → the planner line |
-| Old-course expiry refusal wording | **nobody — `NOT_TESTED`** | 2026-09-29 | no live pre-cutoff course exists on `sid` to open; Tanya scanned read-only |
+| REQ-111 item G — `LEAVE_CHARGE_UNKNOWN` on live `uat` | **@Sober** | 2026-10-02 | his answer: the mechanism, the SCALE (a read-only query if he needs one), whether it decays, and whether an admin can actually do anything. **Nothing is said to Khwan until (2) is answered.** |
+| REQ-111 A–F + H sizing | **@Sober** | 2026-10-02 | ONE sizing message for all of them. Build nothing. |
+| Khwan's three diagnoses (Daily report · freelance rows · "no class today") | **@Porter → the owner** | 2026-10-02 | Sober answered all three; Porter relays them to the owner in one message. **The freelance-rows one is an OWNER DECISION, not a defect** (TASK-607). |
+| Rich menus on the real OA | **the owner or Khwan** | 2026-10-02 | a 1-minute phone check — Tanya cannot see it read-only. Open her item 4. |
+| The next batch split + file-area claim | **@Porter** | 2026-10-02 | the owner's next batch; no team starts without a claim line on the board. |
+| Team B's first pile | **@Silver, @Bob, @Fanta — idle, onboarded, standing by** | 2026-10-02 | Porter handing Silver a pile in one message. |
 
 ## Decided recently, not yet in a REQ
 
-- **Retire `repair-course-expiry.ts` (FIX-007) to a refusing stub** — a re-run would shorten expiries and erase
-  recorded stretches/admin moves, unrecorded. `[owner-approved 2026-09-29]` (recorded in SYSTEM-FACTS + TASK-556.)
-- **`lib/expiry-repair-plan.ts` + its test are to be retired too**, on the condition that any unique reasoning is
-  lifted into the stub or SYSTEM-FACTS first — *delete the code, keep the knowledge*. `[team-proposed 2026-09-29]`
-- **A make-up cancel that re-plans onto the SAME date+time sends NO family notice**; a different date/time still
-  notifies. `[owner-approved 2026-09-28]`
-- **The coach who GAINS a re-added class is told in neither case** — declared, accepted, deferred to next round.
-  `[team-proposed 2026-09-28]`
-- **The sid/uat admin password was changed by the owner on the web and he updated the credential file himself**
-  (09-29). Not a deploy defect. **No password ever travels through an inbox.** `[owner-approved 2026-09-29]`
+- **The freelance-budget rows move BEHIND the coach-pay permission** (owner's option ข). `[owner-approved 2026-10-02]`
+- **Anything Palm does, we skip entirely** — items 4, 9 and 11 are not ours. `[owner-approved 2026-09-29]`
+- **The chat address stays FREE TEXT** — no picker, no address dataset. `[owner-approved 2026-10-01]`
+- **`props-wired.test.ts` pins prop wiring by source and binds Palm's props too** (Sober's ruling; the owner is
+  TOLD, not asked). `[team-proposed 2026-10-02]`
+- **One shared knowledge file.** `SYSTEM-FACTS.md` serves both teams; a second one is drift. `[owner-approved 2026-10-02]`
 
 ## What becomes urgent, and when
 
-- **`uat` is five migrations behind `sid` (58–62).** Every multi-migration `uat` deploy has hit the TASK-085 silent
-  ledger skip: `db:seed-ledger` dry-run → read it → `--apply` → `db:migrate` → `db:verify`. `[carried-over]`
-- **The demo OA's monthly LINE push quota resets 1 Oct.** Until it does, a silent push on `sid` proves nothing —
-  read `notification_outbox.error` before calling a notice broken. `[carried-over]`
-- **Fixture course `47be0cc9` is kept on `sid` as the D8 repro** until @Sober releases it. `[team-proposed 2026-09-29]`
+- 🔴 **`LEAVE_CHARGE_UNKNOWN` is being hit by the customer on LIVE `uat` today.** If Porter's unverified reading is
+  right, it is not a defect but it refuses **essentially every leave that predates today's deploy**. `[carried-over]`
+- 🔴 **The board's line-1 defect is UNFIXED.** Rows keep landing **above** the `# Board` title instead of in the
+  `## Tasks` table: 112 of them on 09-29, **11 more by 10-02**. **Check that your row went INTO the table.**
+  `[carried-over]`
+- ⚠️ **`SYSTEM-FACTS.md` is 398 KB and the project cannot pass the gate until it is split** (Marie ORDER 12.5, still
+  owed). **Both teams are reading a knowledge file too large to read honestly.** `[carried-over]`
+- **Keep on `sid` until released:** the two QA accounts, the phone linked to QA parent `0899990763`, and fixture
+  course `47be0cc9` (until @Sober releases it). `[team-proposed 2026-10-02]`
 
 ## What we already tried that did NOT work
 
-- **The shop-QR crash was TASK-237 returning, nineteen tasks later.** A comment in `lib/scheduler/other-booking.ts`
-  already described the exact shape and why it survives review. **We lacked a TEST, not knowledge** — Fern added a
-  repo-wide sweep (`lib/ui/event-in-updater.test.ts`). 🚫 `e.currentTarget?.checked` is NOT the fix: it stops the
-  crash and silently records the wrong child. `[team-proposed 2026-09-29]`
-- **"Read the applied time of a migration from the DB" is not possible** — Drizzle stores the journal's synthetic
-  `when`, identical on every box. A constant disguised as evidence; caught before code. `[team-proposed 2026-09-29]`
-- **"A cancelled make-up is not a make-up" as a one-line planner rule was wrong** — pause→resume and admin inserts
-  answer a leave without linking, so the line would have moved D7 onto every paused or inserted course. Shipped as
-  (B) instead: inherit the cancelled row's OWN link; an absent link **stays absent and is said, not invented**.
-  `[team-proposed 2026-09-29]`
-- **A render-only test passes on the broken tick** — the first tick always works. Prove a control by CLICKING it.
-  `[carried-over]`
-- **Yesterday's "clean" D8 forecast was the bug, not the baseline.** `[team-proposed 2026-09-29]`
+- **A test suite can be green on a tree that cannot BUILD.** After Palm's merge: 921/0 passing, `tsc` 1 error,
+  `bun run build` failing. 🔑 *Check the three gates separately.* `[team-proposed 2026-10-02]`
+- **Only OPTIONAL props can be dropped in silence** — a required one left out is a type error, so the build shouts.
+  The merge dropped `closedWeeks`; `onSelectCamp` was wired at both call sites and pinned at neither.
+  `[team-proposed 2026-10-02]`
+- **`toContain` on a string BOTH languages share is not a pin** — deleting the English marker left the assertion
+  satisfied by the Thai one. **Count both languages, or require both scripts.** `[team-proposed 2026-10-01]`
+- **"No CONFIRMED class today" is TRUE and USELESS** — sessions are born PENDING, so a child who has a class is told
+  there is none. An honest sentence that reads as a lie. `[team-proposed 2026-10-02]`
 
 ## Open questions with the owner
 
-- **Q5–Q7** (read-only counts behind TASK-556) were sent up and **have been run by nobody**; they are optional and
-  block nothing. `[team-proposed 2026-09-29]`
-- **Copy nit for the next round:** the `LEAVE_CHARGE_UNKNOWN` / `MAKEUP_CHAIN` refusals end in a bare
-  *"กรุณาแก้ไขด้วยตนเอง"*. `[team-proposed 2026-09-29]`
-- **REQ-086** (the customer edits the message words) remains the known LAST big item, on his order; `SPEC-078`
-  written. `[carried-over]`
+- **Who sees the freelance drawn/refunded rows?** `GET /courses/:id/history` is gated on `menu:bookings` only, **not**
+  the coach-pay key ⇒ an admin barred from a coach's RATE can see that coach's hours. **His call, not ours** (TASK-607).
+  `[team-proposed 2026-10-02]`
+- **Who writes the six backoffice requirements, and in what form?** Until one exists there is nothing to size.
+  `[team-proposed 2026-10-02]`
+- **The copy nit, now overdue:** `LEAVE_CHARGE_UNKNOWN` / `MAKEUP_CHAIN` end in a bare *"กรุณาแก้ไขด้วยตนเอง"* with no
+  what and no where. It is now in front of the customer. `[carried-over]`
+- **REQ-086** (the customer edits the message words) remains the known LAST big item; `SPEC-078` written. REQ-111 item
+  A may make it cheaper or redundant — Sober to say which. `[carried-over]`

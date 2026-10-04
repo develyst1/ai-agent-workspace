@@ -304,6 +304,23 @@
 **Promises:** today's teacher still reads the warning they need · a teacher taking leave in advance is never told a family was informed · the Thai and the English say the same thing on every date.
 
 ---
+## T-608 · REQ-111 C — an ADMIN recorded (or removed) a teacher's leave day: the notice to the TEACHER 📋 DRAFT (Jason, TASK-608)
+**Where / When:** a LINE message to the teacher, the moment an admin blocks — or unblocks — one of their days. 🚫 **Only when someone ELSE does it:** a teacher who records their own leave is told nothing, because they already know.
+🔑 **Why it exists:** *a day blocked on someone's behalf is a change to THEIR week, and they must not learn it from an empty calendar.*
+**Recorded — four lines:**
+- *"🗓️ แอดมินบันทึกวันลาของคุณแล้ว"* / *"🗓️ An admin recorded a leave day for you"*
+- *"Date: 21-10-2026"* (the one date helper, `DD-MM-YYYY`)
+- *"วันนั้นจะไม่มีการจองคาบใหม่กับคุณ"* / *"No new class can be booked with you that day."*
+- 🔴 **the line that matters, and only when classes are on that day** — *"คาบที่จองไว้แล้ว {n} คาบยังอยู่ในตารางและยังไม่ได้ยกเลิก — กรุณาถือว่าสอนตามปกติจนกว่าแอดมินจะแจ้ง"* / *"The {n} class(es) already booked that day are unchanged and NOT cancelled — please treat them as going ahead until an admin tells you otherwise."*
+- *"บันทึกโดย: {admin}"* / *"Recorded by: {admin}"*
+**Removed — three lines:** the title *"🗓️ แอดมินยกเลิกวันลาของคุณแล้ว"* / *"🗓️ An admin removed your leave day"* · the date · *"วันนั้นรับจองคาบกับคุณได้ตามปกติแล้ว"* / *"Bookings with you are open again that day."*
+⚖️ **The removal notice is sent deliberately:** *a notice with no counterpart leaves a teacher believing a day is still blocked.* **Pinned.**
+**Promises:** the day stops taking NEW bookings · **the classes already there are untouched and nobody else was told** · the teacher keeps teaching them until an admin says otherwise.
+🚫 **Audience: the teacher, and nobody else.** **No family and no other coach** — nothing was cancelled, and a family hearing *"teacher X is away"* about a class still going ahead is the defect closed in TASK-587. **Pinned by recipient TYPE, not by one absent name.**
+📌 **Recorded twice ⇒ no second notice** (the first record stands), so an admin repeating themselves does not ping the teacher again.
+
+---
+
 ## Waiting to be added this round
 
 ---
@@ -329,3 +346,77 @@
 - **§12: the LONGER wording wins** — *"คอร์สที่เลื่อนแล้วแต่ยังไม่ได้ยืนยันใหม่ (ลูกค้ายังถือตารางเดิม)" / "Courses moved but not re-confirmed (the family still has the old dates)"*. The agreement pin on the shared words **ตารางเดิม / old dates** STAYS. §10's shorter draft is superseded.
 - **All other sections are approved as drafted** (Porter checked them against the owner's standing rulings; nothing contradicts one).
 - **§16 (an admin notice when a teacher records an advance leave) remains DECLINED for now** — the calendar marker stands. The draft stays for a later yes.
+
+---
+
+# §T-G — the "we do not know if this leave used quota" refusal 📋 DRAFT (@Sober, approved shape, owner 2026-10-02)
+**Where / When:** an admin presses Undo on a leave recorded **before we started recording whether a leave spends quota** — and the system refuses rather than guessing.
+**Was:** *"ระบบไม่ทราบว่าการลานี้ใช้โควตาลาหรือไม่ (ลาก่อนมีการบันทึก) — กรุณาแก้ไขด้วยตนเอง"*
+**Now (draft):**
+**TH:** ย้อนการลานี้ไม่ได้ เพราะเป็นการลาที่บันทึกไว้ก่อนระบบจะเก็บว่าใช้โควตาหรือไม่ — คอร์ส {course} วันที่ {date} · กรุณาเปิดคอร์สนี้แล้วตรวจว่ามีคาบชดเชยของวันนี้อยู่หรือไม่ ถ้ามี แปลว่าการลานี้ใช้โควตาไปแล้ว แล้วแก้ไขด้วยตนเอง
+**EN:** This leave cannot be undone: it was recorded before the system kept track of whether a leave uses quota — course {course}, {date} · Open the course and check whether a make-up exists for that date. If it does, this leave already used quota. Then adjust it by hand.
+**Promises:** 🔑 **nothing about what the quota IS** — it says we do not know, **names the course and the date**, and **names the one thing to look at.**
+📌 **Why it changed:** the old sentence was honest and useless — *"fix it by hand"* without saying **what to check**. 🔑 **A refusal that names the next action costs one sentence.**
+⚠️ **And the shape is pinned, not the words:** it must **NOT** claim a quota value, it **MUST** carry the course and the date, and it **MUST** name the make-up check. **The owner can rewrite every word.**
+📌 **Scale, for his information:** this can only affect leaves taken **before migration 0058**, **and only those whose make-up is not linked.** **The set is closed and shrinking — every leave since then records the fact.**
+
+---
+
+# ✅ OWNER APPROVAL, 2026-10-04 — "1 ผ่านหมด"
+- **`T-608` APPROVED as drafted** — both notices (recorded / removed), all lines, the conditional "classes already booked are unchanged" line, and the audience pin (the teacher alone; no family, no other coach).
+- **`§T-G` APPROVED as drafted** — the reworded `LEAVE_CHARGE_UNKNOWN` refusal, naming the course, the date and the make-up check, and still claiming nothing about the quota.
+⇒ **Both are FINAL.** Team B's workbook rebuild (TASK-623) is unblocked.
+
+---
+
+# T-629 · REQ-111 E — swapping a NON-PRIMARY teacher: the "that teacher is not on this session" refusal 📋 DRAFT (Jason, TASK-629)
+**Where / When:** an admin swaps teacher A out for teacher B on an Other-series session, "from this session on", and **A is not on one of the later sessions** — so the call is refused and nothing is kept.
+**New (there was no wording for this: before TASK-629 only the primary could be swapped):**
+**TH:** วันที่ {date} ครูคนนี้ไม่ได้อยู่ในตารางของวันนี้
+**Promises:** 🔑 **it names the DATE that disagreed**, so the admin knows which session broke the run — not merely that something did.
+📌 **The primary path's existing sentence is UNCHANGED, word for word:** *"วันที่ {date} ครูคนแรกไม่ใช่คนที่ระบุ"* (TASK-428's). ⚠️ **It is now reachable only when the named teacher is on the row in NO location at all** — in which case it is true but incomplete ("the first teacher is not the one you named" when in fact *nobody* on that session is). 🔑 **Worth a look: one sentence could serve both cases.** 🚫 **I did not touch it — an existing refusal's words are not mine to improve inside a feature task.**
+⚠️ **Nothing else in this task has new words.** The rate refusal is TASK-562's `RATE_REQUIRED`, unchanged; the clash is the shipped `SLOT_TAKEN` sentence, unchanged; `ALREADY_ON_ROW` unchanged.
+
+---
+
+# 📋 @Sober's copy rulings, 2026-10-04 — **three, all drafts, all to @Porter before anything ships**
+
+## §T-G-RENDER — **what `{course}` renders as, and whether the EN half ships** (answering @Jason's STOP)
+🔑 **@Jason stopped rather than invent a course label inside a refusal the owner had already approved the words of. That was right.** ⚠️ **But the convention he looked for DOES exist — two refusals above his, in the same file.**
+**`UNDO_SLOT_TAKEN` already names a session in a refusal with `displayNameOf(holder) || "คาบอื่น"`, and the code calls it *"the ONE name rule"*.**
+
+▶️ **RULING: `{course}` renders as `displayNameOf(row)`, with the same fallback.** 🚫 **No new course label, no new naming convention.**
+- **Why not a program-and-size label (e.g. "FREESKATE 10"): it does not DISTINGUISH.** **Two children on the same programme and size produce the same string**, so an admin reading a list of refusals learns nothing. 🔑 **What identifies a course to the person reading is WHOSE it is.**
+- ✅ **Cost: the Undo's existing booking query already loads `course` and `voucher`; it needs `student` and `coStudent` added to the SAME `with`.** 🚫 **No second query.** **@Jason's ten-minute estimate stands.**
+- ⚠️ **HONEST FLAG for @Porter to put to the owner in one line:** **this renders a CHILD'S NAME, not a course's name.** **The approved sentence says it names the course; the closest TRUE thing this system can say is whose course it is.** 🚫 **Not a blocker** — *the old wording is live meanwhile, which is honest and useless.* **Ship it; correct it if he says otherwise.**
+
+▶️ **RULING: the EN half does NOT ship.** 🚫 **Thai only.**
+🔑 **Decided from the file, not from preference: every refusal in `booking-undo.ts` is Thai only, and the block's own comment says they are written *"in the admin's language (the codebase's Thai)"*.** ⇒ **An English half here would be the only one of its kind.** 📌 **The admin reads Thai; Tanya reads Thai.**
+
+## §T-609-CAP — **the at-cap refusal promises an unlock that does not exist** 🔴 REPLACES the shipped draft
+**Live now:** *"คอร์สนี้ประกาศวันหยุดล่วงหน้าครบแล้ว {declared}/{quota} วัน — เริ่มเรียนก่อน แล้วจึงแจ้งลาตามปกติ **หรือปลดล็อกโดยแอดมิน**"*
+🔴 **There is no unlock on that path.** **`adminUnlocked` gates the POST-start timing rule; the pre-start cap does not consult it — and @Jason's answer to my question is that it should not, because the cap is not a lock on an act, it is the SIZE OF WHAT THE CUSTOMER BOUGHT.** ⇒ **the sentence sends an admin looking for a button that is not there.**
+
+**NEW (TH):** **คอร์สนี้ประกาศวันหยุดล่วงหน้าครบตามโควตาลาที่ซื้อไว้แล้ว {declared}/{quota} วัน — ถ้าต้องการมากกว่านี้ ต้องแก้โควตาลาของคอร์สก่อน หรือเริ่มเรียนแล้วจึงแจ้งลาตามปกติ**
+**Promises:** ✅ **the COUNT, as before** · ✅ **that the limit IS the quota the customer bought — not an arbitrary cap** · ✅ **the ONE honest lever: change the course's leave quota** — 🔑 *one number, visible on the course, which keeps the cap and the allowance the same fact* · ✅ **the existing alternative (start the course, then take an ordinary leave)**.
+🚫 **Claims no unlock.** 🚫 **Claims nothing about how many leaves remain afterwards** — *that is the twice-the-allowance consequence already with the owner, and a refusal is not where it should be explained.*
+**Pinned by SHAPE:** **must carry `{declared}` and `{quota}` · must name the course's leave quota as the lever · must NOT contain the word ปลดล็อก.**
+
+## §T-629-MERGE — **two sentences for one fact** 🔴 touches a SHIPPED refusal, so it needs the owner
+📌 **@Jason flagged this and refused to change it inside a feature task. That was the right call and I am taking it.**
+**After TASK-629 the shipped primary sentence — *"วันที่ {date} ครูคนแรกไม่ใช่คนที่ระบุ"* (TASK-428) — is reachable ONLY when the named teacher is on that session in NO location at all.** ⇒ 🔴 **It is then TRUE but misleading: it says "the first teacher is not the one you named" when the real fact is that NOBODY on that session is.**
+▶️ **Draft: ONE sentence for both cases** — **วันที่ {date} ครูที่ระบุไม่ได้อยู่ในตารางของวันนั้น**
+🔑 **Why one and not two: from the admin's side the two cases are the same fact — the person you named is not on that session — and the distinction between "not the primary" and "not on it at all" is ours, not theirs.** ⚠️ **It replaces a sentence that has shipped, which is why it goes to the owner rather than straight in.** 🚫 **Until he rules, both sentences stay as they are.**
+
+# ✅ OWNER DECISIONS, 2026-10-04 (second set)
+- **`§T-629-MERGE` APPROVED.** The two refusals merge into ONE sentence: **the teacher you named is not on this session.** ⚠️ **It REPLACES a sentence that has already shipped**, and the owner ruled it knowing that. 🔑 **His reason, as Porter put it to him: the distinction between "not the main teacher" and "not on it at all" is ours, not the admin's.**
+- **`§T-609-CAP` APPROVED** as reworded: it names the count, names the course's leave quota as the lever, and **promises no "unlock" button**, because none exists. 🔴 **The live sentence promising an unlock goes.**
+- **`§T-G-RENDER`** — noted as information, not an approval: the placeholder prints the **CHILD'S NAME**, because a course in this system has no name.
+
+---
+
+# ✅ OWNER APPROVED, 2026-10-04 (via @Porter) — the last two copy items of the REQ-111 batch
+- **`§T-609-CAP` APPROVED as reworded** — it names the count, names the course's leave quota as the lever, and 🚫 promises no unlock. ⭐ **@Jason's point is why it reads properly: the cap is the SIZE OF WHAT THE CUSTOMER BOUGHT, not a lock on an action.**
+- **`§T-629-MERGE` APPROVED** — one sentence for both cases: *the teacher you named is not on this session.* 🔴 **He ruled it knowing it REPLACES a sentence already live** (TASK-428's).
+- **`§T-G-RENDER` noted, not blocked** — the owner knows it prints the CHILD's name and why; the flag reached him as information and came back without objection.
+⇒ **All three are FINAL. Cut to @Jason as `TASK-635`.** 📌 **Nothing in the REQ-111 batch is now waiting on copy.**

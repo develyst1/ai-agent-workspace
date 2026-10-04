@@ -145,3 +145,9 @@ All 12 items are live on uat and the owner has told Khwan.
 - **Palm's (3):** 4, 9, 11 — merged into the front repo by the owner on 2026-10-02.
 - **Still open, separately:** Khwan's §13 asks (one "the admin will help" line on every parent refusal, and an admin notification) — the owner put them in the NEXT round.
 - **Not part of this REQ:** her three pre-deploy questions (the Daily report count, the Freelance budget rows, and the parent whose check-in showed "no class today"), with Sober to diagnose.
+
+## 15. 🔴 REVERSAL of §6.3 — owner, 2026-10-04: "ข ยกเลิกการจำกัด"
+**Free pre-start absences are NOT capped.** A course that has not started accepts planned absences **without limit and without spending leave quota**.
+- **This REPLACES the 10-02 ruling** that capped them at the quota the customer bought.
+- **Reason:** Khwan's 10-04 answer — she wants them unlimited and believes they already are. **Shipping the cap would have been a regression in her eyes.**
+- ⚠️ **`TASK-609` was BUILT AND VERIFIED to the capped rule and is in the current batch.** **It changes before the batch ships.**

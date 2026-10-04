@@ -31,6 +31,7 @@ const LIMITS = {
   reqFile: 45 * KB,        // any single requirements/ file
   taskFile: 60 * KB,       // any single tasks/ file (DONE tasks are cold; warn-only)
   inboxMsg: 2 * KB,        // a single inbox file (should be near-empty)
+  inboxMsgLines: 5,        // ONE message inside it (the rule says 1-3; 5 is the hard limit)
   boardClosedWarn: 10,     // closed rows tolerated on the live board before a nudge
   boardClosedFail: 30,     // closed rows that force a sweep to archive/board-closed.md
   bootWarn: 60 * KB,       // one role's startup read (knowledge+PROTOCOL+role+board+its inbox)
@@ -44,7 +45,14 @@ const LIMITS = {
 // Which files a single role actually reads to start a session, per PROTOCOL.md's
 // startup ritual. The inbox name is the ROLE name, not the role FILE name:
 // the SA Lead reads SA-Lead.md and inbox/SA.md.
-const ROLE_FILES = { PM: "PM.md", SA: "SA-Lead.md", BE: "BE.md", FE: "FE.md", QA: "QA.md" };
+const ROLE_FILES = {
+  PM: "PM.md", SA: "SA-Lead.md", BE: "BE.md", FE: "FE.md", QA: "QA.md",
+  // Team B — smart-scheduler only (Atlas ORDER 14, owner's go 2026-10-02). A project
+  // without these files skips them, so this costs the other 12 desks nothing. They are
+  // here because a role the gate does not know is a role whose boot cost nobody pays
+  // attention to — which is exactly how the first boot budget was blown.
+  "SA-B": "SA-Lead-B.md", "BE-B": "BE-B.md", "FE-B": "FE-B.md",
+};
 
 // The project's Knowledge file: what the owner has already said and how the running
 // system behaves. First match wins; the first name is the canonical one.
@@ -65,6 +73,10 @@ const NEVER_COMPACT = new Set(KNOWLEDGE_FILES);
 const fails = [], warns = [];
 const size = (p) => (existsSync(p) ? statSync(p).size : 0);
 const fmt = (n) => `${(n / KB).toFixed(1)}KB`;
+// Split on newlines without caring whether a file was saved LF or CRLF. These files are
+// edited on more than one machine, and a check that silently stops matching on one of
+// them is worse than no check: it reports PASS on a file it never looked at.
+const NL = /\r?\n/;
 
 // TODAY, in LOCAL time. NOT `toISOString()` — that is UTC, and on a UTC+7 machine it
 // reports YESTERDAY between 00:00 and 07:00 local. Found 2026-09-04: the gate was
@@ -90,11 +102,29 @@ const boardPath = join(AW, "board.md");
 const boardSize = size(boardPath);
 if (boardSize > LIMITS.board) fails.push(`board.md ${fmt(boardSize)} > ${fmt(LIMITS.board)}`);
 if (boardSize) {
-  const longCells = readFileSync(boardPath, "utf8").split("\n")
-    .filter((l) => l.trim().startsWith("|"))
-    .flatMap((l) => l.split("|"))
-    .filter((c) => c.length > LIMITS.cell).length;
-  if (longCells > 0) fails.push(`board.md has ${longCells} table cell(s) > ${LIMITS.cell} chars (evidence belongs in the TASK/REQ file)`);
+  // ORDER 15.3 item 2 (owner's go 2026-10-02): the COUNT alone made this a HUNT. The
+  // board grew 5.7x in four days with this FAIL showing the whole time, because "55
+  // cells somewhere" is not an instruction — it is a search you do before you can start.
+  // Naming the rows turns it into one edit. A gate you can act on in a minute gets acted
+  // on; one that opens with a hunt gets deferred, and then it is the GATE that looks
+  // unreasonable rather than the board.
+  const longCellRows = [];
+  let longCells = 0;
+  for (const l of readFileSync(boardPath, "utf8").split(NL)) {
+    if (!l.trim().startsWith("|")) continue;
+    const over = l.split("|").filter((c) => c.length > LIMITS.cell).length;
+    if (!over) continue;
+    longCells += over;
+    const id = /\b((?:REQ|TASK|DEF)-\d+)/.exec(l);
+    longCellRows.push(id ? id[1] : "(row with no id)");
+  }
+  if (longCells > 0) {
+    const rows = [...new Set(longCellRows)];
+    fails.push(
+      `board.md has ${longCells} table cell(s) > ${LIMITS.cell} chars in ${rows.length} row(s) ` +
+      `(${rows.slice(0, 12).join(", ")}${rows.length > 12 ? `, +${rows.length - 12} more` : ""}) ` +
+      `— evidence belongs in the TASK/REQ file; the cell keeps a pointer`);
+  }
 
   // Closed rows (DONE / DELIVERED / CODE ACCEPTED) belong in archive/board-closed.md,
   // not on the live board. They never shrink, so a board that keeps them grows
@@ -189,6 +219,53 @@ if (existsSync(inboxDir)) {
     // that role pays to read it. Dormant projects keep the WARN: nothing is arriving.
     if (s > LIMITS.inboxMsg)
       (active ? fails : warns).push(`inbox/${f} ${fmt(s)} > ${fmt(LIMITS.inboxMsg)} — an inbox is a queue, not a log (delete what you processed; escalate what you cannot)`);
+
+    // ORDER 15.3 item 1 (owner's go 2026-10-02) — measure the MESSAGE, not the file.
+    // The file-size rule above catches the symptom about a week late. By then the habit
+    // has written 94 messages in 3 days (smart-scheduler inbox/SA.md, 181.7KB) and every
+    // session of that role is paying to read them. A message over 5 lines is a BRIEF, and
+    // a brief in an inbox is a brief written in the wrong file: the message says WHAT and
+    // WHERE, the REQ/TASK/SPEC it points at says the rest. This rule fires the same day.
+    //
+    // A message starts at a `##` heading and runs to the next one, counting the heading
+    // and every non-blank line under it. The file preamble (title + the delivery-channel
+    // note + any drain note) sits above the first heading and is deliberately not
+    // measured: it is the rules, not a message.
+    //
+    // ⚠️ `###` is NOT a boundary, and getting that wrong is how the first version of this
+    // check lied on the day it shipped. The inbox convention puts `###` SUBSECTIONS inside
+    // a message, so treating them as separate messages split one 60-line brief into eight
+    // innocent-looking blocks — the check under-reported the exact behaviour it exists to
+    // catch, and named "2. ✅ What DOES exist for the" as a sender. A six-subsection
+    // message is the clearest possible case of a brief in the wrong file; it must count
+    // as one long message, because that is what it is.
+    const blocks = [];
+    let cur = null;
+    for (const raw of readFileSync(join(inboxDir, f), "utf8").split(NL)) {
+      if (/^##\s+\S/.test(raw)) { if (cur) blocks.push(cur); cur = { head: raw, lines: 1 }; continue; }
+      if (cur && raw.trim()) cur.lines++;
+    }
+    if (cur) blocks.push(cur);
+    const tooLong = blocks.filter((b) => b.lines > LIMITS.inboxMsgLines);
+    if (tooLong.length) {
+      // Name the SENDER: the fix belongs with whoever is writing briefs into a queue, and
+      // a rule nobody is named by is a rule nobody owns. The sender is whatever stands to
+      // the LEFT of the arrow — "@Porter → @Sober" and "Tanya (QA) → @Porter" are both in
+      // use, so taking the first `@` in the line would have blamed the RECIPIENT half the
+      // time. Accusing the wrong role is worse than naming nobody.
+      const who = [...new Set(tooLong.map((b) => {
+        const left = b.head.replace(/^#+\s*/, "").split(/→|->/)[0];
+        const m = /@([A-Za-z][A-Za-z-]*)/.exec(left);
+        if (m) return `@${m[1]}`;
+        const plain = left.replace(/^[\d:\s—–-]+/, "").trim().slice(0, 24);
+        return plain || "(sender not named)";
+      }))];
+      (active ? fails : warns).push(
+        `inbox/${f}: ${tooLong.length} message(s) over ${LIMITS.inboxMsgLines} lines ` +
+        `(longest ${Math.max(...tooLong.map((b) => b.lines))}) from ` +
+        `${who.slice(0, 6).join(", ")}${who.length > 6 ? ", …" : ""} — a message is 1-3 lines ` +
+        `saying WHAT and WHERE; the brief belongs in the REQ/TASK/SPEC it points at`);
+    }
   }
 } else if (active) {
   // FAIL only for a team that is actually working. A dormant project has no messages to

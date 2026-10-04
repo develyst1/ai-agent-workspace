@@ -14,3 +14,13 @@
 
 ## Definition of Done
 - [ ] Approved markers retired, **reasons kept** · name-pins **updated, not deleted**, with any changed meaning stated · 🔑 **the uncovered markers derived and named, with why** · ⭐ the check extended, or a stated reason it cannot be · suite **count** · tsc · build ok · Break-and-watch, CHECKSUM · report + `inbox/SA.md` + log.
+
+## 📋 Board cell, verbatim (re-homed 2026-10-02, Marie ORDER 15.1)
+
+> The `board.md` cell for this row exceeded the 300-char limit and was shortened to a pointer at
+> this file. **The prose was not deleted — it is moved here, byte-for-byte.** Source:
+> `archive/board-2026-10-02-pre-sweep.md`.
+
+```
+| TASK-604 | FE: **the 27 remaining DRAFT markers** | (@Fern flag in TASK-602; SA queued it) | ⏸️ **QUEUED, not in this batch** — the owner ruling said *"all other sections approved as drafted"* and **27 `📝 DRAFT (Fern, …)` markers still stand, several pinned BY NAME** · 🔑 **not urgent, by her own reasoning: the markers UNDERSTATE what he approved, which is the safe direction to be wrong in** · **retire the approved ones and KEEP THE REASONS** (*approved does not mean unexplained*) · ⚠️ **name-pins UPDATED, not deleted**, and any changed meaning stated · ⚠️ **derive which markers his ruling does NOT cover** (a string never in front of him STAYS) and name what was left and why · ⭐ **and the real deliverable may be the CHECK: a marker must name its task, and no marker above an APPROVED key** — say whether extending TASK-549 check closes the class for good | @Fern |
+```

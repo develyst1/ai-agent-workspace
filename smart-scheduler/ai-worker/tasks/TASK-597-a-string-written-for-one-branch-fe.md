@@ -14,3 +14,13 @@
 
 ## Definition of Done
 - [ ] The two-act dialog set **derived, with the method stated** · per dialog, the one-branch strings named and their current reach stated · 🚫 **nothing fixed** · suite **count unchanged and said so** · report + `inbox/SA.md` + log.
+
+## 📋 Board cell, verbatim (re-homed 2026-10-02, Marie ORDER 15.1)
+
+> The `board.md` cell for this row exceeded the 300-char limit and was shortened to a pointer at
+> this file. **The prose was not deleted — it is moved here, byte-for-byte.** Source:
+> `archive/board-2026-10-02-pre-sweep.md`.
+
+```
+| TASK-597 | FE: **a string written for one branch, rendered on another** | (@Fern offer in TASK-595; SA queued it) | ⏸️ **NEXT ROUND — on the board so it does not evaporate, 🚫 not dispatched** · **three instances, one shape: TASK-547 (a body for every leave), TASK-588 (a chooser where nothing is cancelled), TASK-595 (a same-day warning on a future date)** · 🔑 **NOT a sweep: *"does this sentence still mean the same thing on the other branch?"* needs judgement per dialog, so the output is a LIST** · ✅ **but the SET is derivable — dialogs whose body or controls branch on a mode, a date or a type — and that is the valuable half** · 🚫 **fix nothing**: *a survey that fixes as it goes stops being a survey* (her own TASK-567 rule) | @Fern |
+```

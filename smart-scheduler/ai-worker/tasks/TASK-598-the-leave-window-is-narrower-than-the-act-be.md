@@ -24,3 +24,21 @@
 
 ## Definition of Done
 - [ ] The act's accepted set **DERIVED and named, with where it is decided** · the window made that set **from one place** · ⚠️ **the act's own set questioned, and STOPPED if it is wrong** · both empty-state sentences pinned against the new set · suite **count** normally **and DB-unreachable** · tsc · `N .sql = N journal tags` · mutations incl. **the window narrower than the act again** and **the window wider than the act** · report + `inbox/SA.md` + log.
+
+## §4 ➕ ADDENDUM 2026-10-02 — Tanya's "no class today" is THE SAME ROOT, one door over
+
+> Re-homed from `board.md` by Porter on 2026-10-02 under Marie's ORDER 15.1, **before** the board
+> cell was shortened to a pointer. The board cell held this text and nothing else did.
+> Source of the prose: `archive/board-2026-10-02-pre-sweep.md` line 212 (verbatim below).
+
+➕ **10-02: Tanya "no class today" is THE SAME ROOT, one door over** — `findTodayBookingsForParent` is **CONFIRMED-only** and course sessions are **born PENDING** ⇒ **a child who HAS a class today, unconfirmed, is told there is none**; 🔑 **and the message is literally honest ("no CONFIRMED class today") — the system said something TRUE and USELESS, which is why it reads as a lie to a parent who knows** ⇒ ✅ **fix BOTH windows here, under the same rule: the window must EQUAL what the ACT accepts, derived from one place** — *fixing it twice is how they drift apart again*
+
+## 📋 Board cell, verbatim (re-homed 2026-10-02, Marie ORDER 15.1)
+
+> The `board.md` cell for this row exceeded the 300-char limit and was shortened to a pointer at
+> this file. **The prose was not deleted — it is moved here, byte-for-byte.** Source:
+> `archive/board-2026-10-02-pre-sweep.md`.
+
+```
+| TASK-598 | BE: **the LINE leave window is NARROWER than the act** (+ Tanya "no class today") | (Khwan + Tanya, via @Porter; diagnosed by @Sober) | ⏸️ **SIZED S/M, NOT DISPATCHED** · ➕ **10-02: Tanya "no class today" is THE SAME ROOT, one door over** — `findTodayBookingsForParent` is **CONFIRMED-only** and course sessions are **born PENDING** ⇒ **a child who HAS a class today, unconfirmed, is told there is none**; 🔑 **and the message is literally honest ("no CONFIRMED class today") — the system said something TRUE and USELESS, which is why it reads as a lie to a parent who knows** ⇒ ✅ **fix BOTH windows here, under the same rule: the window must EQUAL what the ACT accepts, derived from one place** — *fixing it twice is how they drift apart again* | @Jason |
+```

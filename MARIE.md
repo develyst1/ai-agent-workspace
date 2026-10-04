@@ -640,7 +640,324 @@ situation. He was not being stupid; he was reading the wrong file, faithfully.
 file that covers the roles who need it. The owner asked about this directly and that
 was the answer.
 
+
+### ORDER 14 — ✅ DONE 2026-10-02 (see Operations log) — smart-scheduler goes to TWO parallel teams (owner's go, 2026-10-02)
+
+**The problem, in the owner's words:** one bug runs PM→SA→BE→SA→BE→SA→BE…, each hop
+needs him to poke the next session, each poke costs 10–30 minutes of calendar, and
+**a simple bug takes four or five hours** — not because anyone is slow, but because
+every hop is serial and he is the clock.
+
+🔑 **Atlas measured the wrong thing first and the owner corrected it.** I counted
+throughput (Sober wrote 92% of log entries, engineers had 4 TODO) and concluded the
+SA was the bottleneck and more engineers would not help. **Wrong.** The bottleneck is
+**hops × wall-clock**, and his nudges are **parallel** — he can poke six sessions in
+the time it takes to poke one, while the AI work overlaps. So a second team really
+does halve elapsed time. **Recorded because the reasoning error is instructive: in
+manual mode, measuring work-done tells you nothing about time-taken.**
+
+#### 14.1 — The second team
+
+| | Team A (existing) | **Team B (new)** |
+|---|---|---|
+| SA Lead | Sober | **Silver** |
+| Backend | Jason | **Bob** |
+| Frontend | Fern/Fero | **Fanta** |
+
+Porter (PM) and Tanya (QA) stay **single, serving both teams.** Do not duplicate them.
+The owner's one voice to the customer, and one verdict authority, are worth more than
+the parallelism a second PM would buy.
+
+Create `SA-Lead-B.md` / `BE-B.md` / `FE-B.md` — **byte-identical to the Team A
+charters except the role names and the team's engineer/SA pairings.** Do not improve
+them while copying; a drifted twin charter is worse than no twin.
+
+#### 14.2 — The chain, with two teams
+
+```
+            Human  ↔  Porter (PM)  ↔  Tanya (QA)
+                      ↓         ↓
+                   Sober      Silver
+                   ↓   ↓      ↓    ↓
+                Jason Fern   Bob  Fanta
+```
+
+- Each engineer still has **exactly one SA**. Bob and Fanta answer to Silver only;
+  Jason and Fern to Sober only.
+- 🔴 **The two SAs never message each other.** That edge does not exist, and adding it
+  would create two build orders and a coordination cycle.
+  - A **discovery** (how something works, a gotcha, a settled fact) goes into
+    `SYSTEM-FACTS.md` — a file, read by everyone, **zero hops**.
+  - A **decision** that affects both teams goes up to Porter, who owns it.
+- Tanya still talks only to Porter, for both teams.
+
+#### 14.3 — Porter splits the work, and it is now a named job
+
+When a batch arrives (e.g. ten bugs), Porter:
+
+1. **Sizes each item** roughly — large / medium / small.
+2. **Splits the batch into two piles of comparable weight**, not equal count
+   (the owner's example: "ใหญ่ 3 เล็ก 2" per team).
+3. **🔴 Claims a file area per team, on the board, before either team starts.**
+   Two teams editing the same files is the one failure mode that costs more than it
+   saves. The claim is written as a board line per batch:
+   `Batch 2026-10-02: Team A → back/src/routes/line* · front/src/components/calendar* ·
+   Team B → back/src/routes/billing* · front/src/components/money*`
+4. **An item that spans both claimed areas is NOT split** — it goes to one team whole.
+5. Items are handed to each SA as a **whole pile, in one message**, never one at a time.
+
+#### 14.4 — Cut the hops per item (do this even if the second team is delayed)
+
+Two teams halve the elapsed time. **These four rules cut what each item costs in the
+first place**, and they matter more with two teams, not less. Add them to
+`SA-Lead.md`, `BE.md`, `FE.md` (both teams' copies) and `PROTOCOL.md`.
+
+1. **Ask everything at once.** A role that has questions sends **all of them in one
+   message**, never one at a time and never "and one more thing" afterwards.
+   *Tanya already has this rule (`QA.md` §6) and it works — the SA and the engineers
+   never got it.* Discovering a second question after sending the first is normal;
+   holding the message until you have finished looking is the discipline.
+2. **Cut the whole batch at once.** When Porter hands an SA a pile, the SA writes
+   **every TASK in that pile before waking an engineer** — not one TASK, then another
+   after the first is reviewed. The engineer should be able to work for hours without
+   coming back.
+3. **Review in batches.** An engineer submits **3 finished TASKs at once** (or the
+   whole pile, whichever comes first) rather than one per round trip. The SA reviews
+   them in one pass. A blocked TASK does not hold the others: mark it and move on.
+4. 🔴 **Engineers decide what the user cannot see.** The current "never guess" rule
+   turns *every* ambiguity into a hop, which is the loop the owner is paying for.
+   Split it:
+   - **Ask** — anything a user or the owner would notice: wording, behaviour, scope,
+     a business rule, a visible state, anything irreversible.
+   - **Decide and declare** — anything internal: variable and file names, where a
+     helper lives, which of two equivalent implementations, test structure, ordering
+     of internal steps. **Write the decision in `## Implementation Notes` with one
+     line of reasoning**; the SA can overturn it at review, which costs nothing
+     because the work is already done.
+
+   The rule that tells the two apart: **"would the owner's answer change what the user
+   sees?"** If no, it was never his question.
+
+#### 14.5 — Shared knowledge: the owner asked for it and it already exists
+
+He asked for "ความรู้กลาง" so the two teams do not redo each other's work. **That is
+`SYSTEM-FACTS.md`, already built, already on every role's startup path.** Do not
+create a second file for it.
+
+Make it explicit in both SA charters and both engineer charters:
+
+> **Anything you discover about how the system behaves goes into `SYSTEM-FACTS.md`
+> the moment you learn it — before your next reply.** The other team reads the same
+> file. A fact written there costs zero hops; the same fact discovered twice costs a
+> day.
+
+#### 14.6 — The two limits to watch, and what to do when they bite
+
+Tell the owner these in the report; they are the signals that this design is at its
+edge — **not reasons to delay it now:**
+
+1. **File collisions.** If the teams start waiting on each other's files, the batch
+   split (14.3 step 3) is too coarse — Porter claims smaller areas, or gives one team
+   the whole surface.
+2. **Porter saturates.** He is one PM holding two teams plus the owner plus Tanya.
+   **When he becomes the thing everything waits for, that is the signal for a second
+   PM — and not before.** One voice to the owner is worth more than the parallelism a
+   second PM would buy; split it only when the evidence says to.
+
+#### 14.7 — Housekeeping
+
+- `PROTOCOL.md`: team table, the two-team chain diagram, the no-SA-to-SA rule, the
+  four hop rules, and the batch/claim procedure.
+- `board.md`: a `## Batch claims` section (state only, one line per active batch).
+- `SESSION-STARTERS.md`: starters for **Silver**, **Bob**, **Fanta** — copies of the
+  SA/BE/FE starters with the names and the Team B pairing changed.
+- `machine.local.md`: unchanged — same four repos, both teams.
+- Gate: re-run `check-hygiene.mjs smart-scheduler` after; report the numbers.
+
+**Do not roll this to other projects.** It is smart-scheduler only until the owner
+says otherwise; no other desk has the volume to need it.
+
+
+### ORDER 15 — ✅ 15.1–15.3 DONE 2026-10-02 · ⏳ 15.4 re-measure owed ≈2026-10-09 (see Operations log) — Team B starts NOW, on a FAILing project. Make it survive. (owner's go, 2026-10-02)
+
+**The owner needs Team B immediately.** Atlas advised waiting one cleanup round; the
+owner has a reason to go now, and that is his call. **This order is how it works
+anyway — not a re-argument.** Do these in one run, before the first Team B session.
+
+**The state Team B is starting from, measured 2026-10-02:** gate **FAIL ×17**.
+`inbox/SA.md` **181.7 KB** · `inbox/PM.md` **148.3 KB** · `board.md` **140.9 KB** ·
+`SYSTEM-FACTS.md` **398 KB** · SA boot read **755 KB**. Three days earlier you had
+drained the inboxes to ~9 KB and the board was 24 KB. **It did not fail to get
+cleaned — it is being produced faster than it is cleaned**, roughly 115 KB/day, and
+a second team doubles the rate.
+
+#### 15.1 — The cheap half of the cleanup, now (hours, not days)
+
+Do **not** attempt the `SYSTEM-FACTS.md` split in this run. Do the two that are
+mechanical and that you have already done twice:
+
+1. **Drain all inboxes** (archive verbatim, keep only messages still awaiting an
+   action). ~350 KB recovered.
+2. **Sweep the board** — closed rows to `archive/board-closed.md`, over-long cells to
+   pointers. It was 24 KB on 09-28 and is 140.9 KB now; that growth is rows that
+   finished and never left.
+
+Expected result: boot read ~755 KB → **~450 KB**. Still FAIL. **Say so plainly in
+your report** — this is a halving, not a fix.
+
+#### 15.2 — Team B boots clean, and that is the advantage
+
+`inbox/SA-B.md`, `inbox/BE-B.md`, `inbox/FE-B.md` are **empty today**. Keep them that
+way by rule, not by luck — see 15.3. Team B carries no message backlog at all, so
+their boot is the shared files only.
+
+**Do not give Team B a private knowledge file.** `SYSTEM-FACTS.md` stays the single
+shared one even at 398 KB. Two knowledge files is drift, and drift between two teams
+is the one failure that makes parallelism worse than serial work.
+
+#### 15.3 — The production rules ship WITH Team B, not after
+
+Team A learned a habit the files cannot survive; **Team B must be born without it.**
+Put these in all six engineer/SA charters and `PROTOCOL.md`, and enforce the first
+two in `check-hygiene.mjs`:
+
+1. 🔴 **An inbox message is 1–3 lines. Hard limit 5.** The rule is already written at
+   the top of every inbox file and it decayed completely: `inbox/SA.md` holds **94
+   messages in 3 days**, most of them full briefs. **New gate rule: FAIL on any
+   single message block over 5 lines, and name the sender in the message.** Measuring
+   the file total was not enough — it catches the symptom after a week; this catches
+   the behaviour on the same day.
+   > The message says *what* and *where*. The brief lives in the REQ/TASK/SPEC file
+   > it points at. If you are explaining in the inbox, you are writing in the wrong file.
+2. **A board cell stays ≤300 chars** — the rule exists; the board grew 5.7× in four
+   days, so it is not being enforced on write. Keep the existing FAIL, and **add the
+   offending row ids to the message** so the fix is one edit, not a hunt.
+3. **Delete what you processed.** An inbox you read and did not empty is a log.
+4. The four hop-reduction rules from ORDER 14.4 apply to **both** teams from day one.
+
+#### 15.4 — What stays broken, named so nobody thinks it is handled
+
+- **`SYSTEM-FACTS.md` 398 KB** — every session on both teams pays it. The split
+  (ORDER 12.5) is still owed. Until then the project cannot pass the gate, and
+  **both teams are reading a knowledge file too large to read honestly** — which is
+  how a role becomes confidently wrong.
+- **Report the boot numbers for all seven roles** after 15.1 and again a week after
+  Team B starts. If the rate has doubled as predicted, that measurement is what the
+  owner needs in order to decide between a real cleanup and fewer sessions.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-02 — **ORDER 15.1 + 15.3 DONE at smart-scheduler. Gate FAIL 17 → 12, SA boot read
+  755 KB → 485 KB. 15.4 is NOT done and is not mine to do.** Owner's go in ORDER 15 (2026-10-02).
+  In-project work by **Porter spawned as a subagent**; the gate is mine. ⚠️ **His session was
+  STOPPED by the owner mid-run, before he reported** — so every number below is one I measured
+  myself afterwards, on the files, not a claim I was handed. **He had in fact finished all five
+  steps; the kill landed on his report, not on his work** (mtimes: board 22:32 · charters 22:34 ·
+  log 22:36 · RESUME-HERE 22:37, and nothing is half-written).
+  **Drained 5 inboxes · swept the board · 15.3's rules into 7 files · RESUME-HERE current.**
+  Live inboxes now: PM 9.3 KB (68 messages → 3 kept) · SA 13.3 KB (59 → 6) · BE 0.5 KB (35 → 0) ·
+  FE 0.5 KB (1 → 0) · QA 1.0 KB (20 → 1). Board **140.9 KB → 30.7 KB**; the size, over-long-cell
+  and closed-row FAILs are **all gone**, and the orphan rows are out of the head of the file —
+  line 1 is `# Board — smart-scheduler` again.
+  ✅ **PROVEN LOSSLESS, BY ME, TWO WAYS.** ① Every `(REQ|TASK|DEF)-n` id in the 140,891 B
+  pre-sweep archive — 257 of them — is still present in the live board or an archive: **the
+  set difference is EMPTY.** ② Every `##` message heading kept in each live inbox is found
+  verbatim in that inbox's pre-drain archive: **0 unaccounted for, across all five.**
+  🔑 **And the cheapest check turned out to be the strongest: the five drain archives are
+  186,054 · 151,888 · 60,516 · 19,789 · 2,284 B — which are exactly the 181.7 · 148.3 · 59.1 ·
+  19.3 · 2.2 KB the gate measured BEFORE the run, and the board archive is 140,891 B against a
+  measured 140.9 KB.** *A pre-measurement taken for a report became the proof that nothing was
+  truncated before it was archived. Worth doing on purpose next time: measure first, and the
+  measurement becomes evidence.*
+  🔴 **I extended `check-hygiene.mjs` for 15.3 items 1 and 2 — the owner has not seen this.**
+  ① **The inbox rule now measures the MESSAGE, not the file**: FAIL on any message over 5 lines,
+  naming the sender. ② **Board over-long cells now name their row ids** — before, the FAIL said
+  "55 cells" and stayed up for four days while the board grew 5.7×, because *a gate that opens
+  with a hunt gets deferred, and then the GATE is what looks unreasonable.* ③ Added an `NL`
+  helper so every check reads LF and CRLF alike — these files are edited on more than one
+  machine. Verified no collateral damage: `safe-goods`/`code-report`/`possibility` still PASS,
+  `dte`/`manager-gold` unchanged, and `dte`'s cell FAIL now names `REQ-009`.
+  🔴 **MY OWN CHECK SHIPPED A LIE AND I CAUGHT IT ON THE FIRST REAL FILE.** v1 treated `###` as
+  a message boundary. The inbox convention puts `###` SUBSECTIONS inside a message, so a single
+  27-line brief was split into eight innocent blocks: it reported *"longest 7"* when the truth
+  was **27**, and printed *"from 2. ✅ What DOES exist for the"* as a sender. **The check
+  under-reported the exact behaviour it exists to catch, and it did so in the safe direction —
+  which is the direction nobody notices.** Fixed (`##` only), re-measured: PM longest **27**,
+  SA longest **20**. 📌 *This is the TASK-567 lesson arriving at my desk: a check written
+  against a defect can contain the defect, and only running it on the real file finds it.*
+  Also fixed: the sender was read as the first `@` in the heading, which names the RECIPIENT
+  in `Tanya (QA) → @Porter`. **Now read from the left of the arrow** — *accusing the wrong role
+  is worse than naming nobody.*
+  📌 **THE FINDING, and it is about the drain, not the drainer: the new rule bit the hand that
+  had just cleaned.** Porter drained 183 messages down to 10 **on the same day the 5-line rule
+  went in**, and 8 of the 10 he KEPT are over the limit — one at 27 lines. 🔑 **He was not
+  careless; he was obeying the older, stronger instruction "when unsure, KEEP", and what he kept
+  was briefs.** ⇒ *Draining is not the fix. The inboxes refilled to 350 KB in three days after
+  the last drain because the thing being deleted was never the thing being produced.* **This is
+  the first time we can see the production habit and the cleanup habit in the same measurement.**
+  **Gate FAIL 17 → 12.** Gone: board size · board cells · board closed rows · stale RESUME-HERE ·
+  BE/FE/QA inbox size. **Boot reads, all 8 roles** (ORDER 15.4 says "seven" — there are **eight**
+  since ORDER 14; counted and corrected): PM **487.7** · SA **485.2** · BE **461.6** · FE **471.4**
+  · QA **469.2** · SA-B **472.1** · BE-B **461.3** · FE-B **471.1** KB. **Against 755 KB before.**
+  ⚠️ **SAY IT PLAINLY, AS 15.1 ORDERS: THIS IS A HALVING, NOT A FIX. Every role still fails the
+  120 KB budget by about 4×, and the reason is one file.** `SYSTEM-FACTS.md` is **398 KB** and is
+  now **~85 % of every single boot read on both teams.** The two mechanical cleanups are spent;
+  there is nothing cheap left. 🔑 **Team B can start — nothing blocks it — but it starts paying
+  471 KB a session from its first message, and ORDER 15.4's own words are that both teams are
+  reading a knowledge file too large to read honestly.** ⇒ **The ORDER 12.5 split is now the only
+  lever left, and it is Atlas's.**
+  ⏳ **NOT DONE, deliberately: ORDER 15.4's second half** — re-measure all 8 boot reads **one week
+  after Team B starts** (≈ 2026-10-09). *That measurement is the whole point of 15.4: if the
+  115 KB/day production rate doubled as predicted, it is what the owner needs to choose between a
+  real cleanup and fewer sessions. It cannot be faked today and must not be quietly dropped.*
+  ⚠️ **Still broken, named so nobody thinks it is handled:** the **board write path** — rows are
+  still written above the title by a mechanism no role may touch, and it has now been repaired
+  twice without being fixed; `SYSTEM-FACTS.md` 398 KB; 8 unreviewed `FAILURES.md` entries.
+
+- 2026-10-02 — **ORDER 14 INSTALLED at smart-scheduler: the project now has TWO parallel teams
+  under one Porter and one Tanya.** Owner's go recorded in ORDER 14 itself (2026-10-02). In-project
+  files written by **Porter spawned as a subagent**, as my scope requires; I wrote only the two
+  workspace-root files and verified everything myself afterwards.
+  **Created (6):** `SA-Lead-B.md` 296 · `BE-B.md` 104 · `FE-B.md` 303 (Silver · Bob · Fanta) and
+  the three empty inboxes `inbox/SA-B.md` · `inbox/BE-B.md` · `inbox/FE-B.md`.
+  **Changed (8):** `SA-Lead.md` `BE.md` `FE.md` (+38 each) · `PROTOCOL.md` +105/−7 · `PM.md` +39 ·
+  `board.md` +9 (`## Batch claims`) · `log/2026-10-02.md` +14 · plus my `SESSION-STARTERS.md`
+  +71/−3 and `check-hygiene.mjs` +8/−1. **The only 10 deleted lines in the whole run are rewrites,
+  not losses:** PROTOCOL's 7-line team table gained a `Team` column, and Porter's starter gained
+  Silver. Everything else is additive; nothing was compacted, so nothing needed archiving.
+  ✅ **VERIFIED BY ME, not taken from the report.** I reverse-substituted each twin
+  (Silver→Sober · Bob→Jason · Fanta→Fern/Fero · the `-B` inbox and self-file paths) and diffed it
+  against its original: **SA-Lead-B and BE-B are 0-diff; FE-B differs on exactly 6 lines, all of
+  them the Fero→Fanta rename my reversal could not undo plus the one pronoun line.** The
+  14.4 + 14.5 block is md5 **`5d33a9224f`** in **all six charters AND in PROTOCOL.md** — one text,
+  seven files, byte-identical, so a twin cannot drift from its original on the rules that matter.
+  🔑 **The pronoun is the ONE deliberate non-name change: Fero is "He/him", Fanta is "They/them"**
+  — nobody has told us Fanta's, and inventing one is not a copy. Stated here because ORDER 14.1
+  says *byte-identical except the names* and this is the single place I went past it.
+  ⚠️ **Four Team-A names kept inside SA-Lead-B's quoted RECORDS, on purpose** (`@Jason` found the
+  two misses · `@Jason` got TASK-295 · `@Fern` was wrongly accused of a false pass · the message
+  sat in `inbox/SA.md`). 🔑 *A rule gets renamed; an event does not. Renaming the 2026-09-08
+  misdiagnosis would accuse Fanta of something that never happened* — and Porter split that same
+  section correctly: the heading (a standing rule) says `inbox/SA-B.md`, the evidence line below
+  it still says `inbox/SA.md`.
+  🔴 **I extended `check-hygiene.mjs` myself — the one thing in this run the owner has not seen.**
+  `ROLE_FILES` now knows `SA-B`/`BE-B`/`FE-B`; a project without those files skips them, so the
+  other 12 desks are untouched (`safe-goods` still PASS). **This is not a threshold change, it is
+  the gate keeping up with reality: a role the gate does not know is a role whose boot cost nobody
+  is watching, which is exactly how the first boot budget was blown.** Revert it in one line if
+  the owner disagrees.
+  **Gate: FAIL (14) before → FAIL (17) after. All 17 are pre-existing debt; ORDER 14 added none
+  of them — and that is the finding.** The three new FAILs are `SA-B` 573.9KB · `BE-B` 563.1KB ·
+  `FE-B` 573.0KB boot reads, driven **entirely** by `board.md` 137.6KB + `SYSTEM-FACTS.md` 398KB,
+  which the twins merely read. 🔑 **The second team did not create a cost — it MULTIPLIED one we
+  already had: the same unpaid boot debt is now billed on 8 sessions instead of 5, and ORDER 14
+  exists to run MORE sessions in parallel.** 📌 **This is Atlas's open "boot budget vs
+  never-compact collision" arriving with a price tag attached** — before this it was an argument;
+  it is now 3 × 570KB per round. ⚠️ **Recommendation to the owner, NOT acted on:** a board sweep
+  (44 closed rows, 55 oversized cells) and an inbox drain before the first two-team batch runs.
+  ⚠️ **Still outstanding, untouched by me and pre-existing:** the board's line-1 corruption (the
+  TASK rows still sit ABOVE the `# Board` title), `RESUME-HERE.md` 3 days stale, and the 8
+  unreviewed FAILURES entries.
 
 - 2026-09-29 — **BOTH APPROVALS EXECUTED: `_templates/project` now carries every rule the live
   projects carry, and `H:\AGENTS.md` finally has a recovery path. The mould matches the copies.**

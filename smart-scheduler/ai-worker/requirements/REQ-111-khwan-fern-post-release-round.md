@@ -70,3 +70,34 @@ The round's items are final:
 - **F** a not-yet-started course takes a planned absence without spending quota
 - **G** `LEAVE_CHARGE_UNKNOWN` on uat — Khwan's Undo refusal; scale unknown, with Sober
 - **H** the freelance-budget rows move behind the coach-pay permission (owner ruled, option ข)
+
+## 6. Owner rulings, 2026-10-02 ("1-6 ตามแนะนำ")
+1. **C — an admin-recorded teacher leave NOTIFIES the teacher.** It is a change to their week, and it matches his earlier ruling that a coach who gains a class is told.
+2. **C — NO new permission key.** Any admin who can already edit the schedule may do it. 🔑 *A new key has to be granted on every box and on every role, and a key no role holds is a feature nobody has.*
+3. **F — free pre-start absences are CAPPED at the leave quota the customer bought.** Declaring days before the course starts does not create unlimited free leave.
+4. **A — Fern's list covers BOTH:** the push notifications the system sends by itself as the main sheet, and the bot's chat replies as a second sheet.
+5. **A — delivered as a SPREADSHEET**, with a free column beside each message for her revision. The owner reviews it before it reaches her.
+6. **H — the freelance rows go behind `action:teachers.budget-view`.** ⚠️ **Consequence accepted: nobody holds that key today, so Khwan's own admin login stops seeing those rows until it is granted.** **Granting it to her is a step in the deploy note.**
+
+**Also approved (Porter's recommendation, G):** the `LEAVE_CHARGE_UNKNOWN` refusal is reworded to name the course, the leave's date and what to check. Copy is Team A's this batch.
+
+## 7. Item E — Khwan's answer, 2026-10-02 (with a screen recording)
+**She used control 1: `Swap`.** Her words:
+```
+แบบแรก swap
+swap ได้แค่ครูที่เป็น primary ค่ะ
+ต้องการให้เลือกคนอื่นได้ค่ะ แล้วจะตรงที่ต้องการใช้งานเลยค่ะ
+```
+⇒ 🔑 **Swap only ever operates on the series' PRIMARY teacher. She wants to choose WHICH teacher is being swapped out** — any teacher on that session, not only the primary.
+✅ **And her own verdict: with that one change, the control does exactly what she needs.** ⇒ **E is a widening of an existing control, NOT the rebuild we feared.**
+- **Evidence:** a screen recording the owner holds (`Recording 2026-10-02 231249.mp4`, not copied into the repo).
+
+## 8. Owner rulings, 2026-10-03
+- **E — GO.** Build the Swap widening (choose WHICH teacher is swapped out, not only the primary).
+- **I — the "from here on" swap rate, FOLDED INTO THIS ROUND.** A swap made "from this date onwards" currently pays the NEW teacher at the OLD teacher's rate. The owner's standing ruling is the covering teacher's rate; it holds for one session and NOT for the rest-of-series case. 🔑 **It is money, and wrong in one direction.**
+- **A — the workbook goes to Fern** (`project-docs/req111-message-inventory/REQ-111-message-inventory-DRAFT-for-owner-review.xlsx`).
+- **`.env` is back on sid** (owner, 2026-10-03).
+
+## 9. Item A DELIVERED, 2026-10-04
+The owner sent Fern `REQ-111-message-inventory-DRAFT-v2-2026-10-04-for-owner-review.xlsx` — 44 notifications (including the two approved leave notices) and 169 bot replies, TH and EN side by side, with a free column for her revision.
+⚠️ **Her revisions come back as a COPY round, not as a build item.** 🔑 **And any batch that adds or changes a notification makes this workbook stale** — that is REQ-086's argument, which the owner has not yet ruled on.

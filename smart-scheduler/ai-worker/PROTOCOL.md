@@ -7,13 +7,42 @@ If you didn't write it to a file, the team doesn't know it.
 
 ## The team
 
-| Role | Name | Talks to | Writes |
-|------|------|----------|--------|
-| Project Manager / BA | Porter | The human (stakeholder) + SA Lead + Tester | `requirements/REQ-*.md` |
-| SA Lead | Sober | PM + BE/FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
-| Backend Engineer | Jason | SA Lead | code + updates in `tasks/TASK-*.md` |
-| Frontend Engineer | Fern | SA Lead | code + updates in `tasks/TASK-*.md` |
-| Senior Tester (QA) | Tanya | PM | `tests/TEST-*.md`, `tests/REGRESSION.md` |
+| Role | Name | Team | Talks to | Writes |
+|------|------|------|----------|--------|
+| Project Manager / BA | Porter | both | The human (stakeholder) + SA Lead + Tester | `requirements/REQ-*.md` |
+| SA Lead | Sober | **Team A** | PM + BE/FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
+| Backend Engineer | Jason | **Team A** | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Frontend Engineer | Fern | **Team A** | SA Lead | code + updates in `tasks/TASK-*.md` |
+| SA Lead | Silver | **Team B** | PM + BE/FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
+| Backend Engineer | Bob | **Team B** | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Frontend Engineer | Fanta | **Team B** | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Senior Tester (QA) | Tanya | both | PM | `tests/TEST-*.md`, `tests/REGRESSION.md` |
+
+**Porter (PM) and Tanya (QA) are single, and serve both teams.** They are not
+duplicated: the owner's one voice to the customer, and one verdict authority, are
+worth more than the parallelism a second PM would buy. Team B's charters are
+`SA-Lead-B.md` (Silver) · `BE-B.md` (Bob) · `FE-B.md` (Fanta); their inboxes are
+`inbox/SA-B.md` · `inbox/BE-B.md` · `inbox/FE-B.md`.
+
+### The chain with two teams (ORDER 14.2, owner's go 2026-10-02)
+
+```
+            Human  ↔  Porter (PM)  ↔  Tanya (QA)
+                      ↓         ↓
+                   Sober      Silver
+                   ↓   ↓      ↓    ↓
+                Jason Fern   Bob  Fanta
+```
+
+- **Each engineer has exactly one SA.** Bob and Fanta answer to Silver only;
+  Jason and Fern to Sober only. An engineer never takes work from the other SA.
+- 🔴 **The two SAs never message each other.** Sober and Silver do not `@` each
+  other, do not coordinate directly, and that edge does not exist — adding it
+  would create two build orders and a coordination cycle.
+  - A **discovery** (how something works, a gotcha, a settled fact) goes into
+    `SYSTEM-FACTS.md` — a file, read by everyone, **zero hops**.
+  - A **decision** that affects both teams goes up to Porter, who owns it.
+- **Tanya still talks only to Porter, for both teams.**
 
 Chain of command: **Human → PM → SA Lead → BE/FE**, and results flow back up the
 same chain — with the **Tester hanging off the PM** (Human ↔ PM ↔ Tester), so
@@ -35,6 +64,9 @@ Only these pairs may communicate, in either direction:
 | Porter (PM) ↔ Tanya (QA) | REQ files, TEST files, board, log `@` |
 | Sober (SA) ↔ Jason (BE) | SPEC/TASK files, board, log `@` |
 | Sober (SA) ↔ Fern (FE) | SPEC/TASK files, board, log `@` |
+| Porter (PM) ↔ Silver (SA, Team B) | REQ files, board, log `@` |
+| Silver (SA) ↔ Bob (BE, Team B) | SPEC/TASK files, board, log `@` |
+| Silver (SA) ↔ Fanta (FE, Team B) | SPEC/TASK files, board, log `@` |
 
 **Every other pair is forbidden.** Concretely:
 
@@ -51,6 +83,15 @@ Only these pairs may communicate, in either direction:
 - Jason ↔ Fern don't coordinate directly either — Sober designs the contract
   between their TASKs (`Depends on:`, API shapes in the SPEC). If an FE/BE
   contract doesn't match reality, that's a question to `@Sober`.
+- 🔴 **Sober ↔ Silver is FORBIDDEN — the two SAs never message each other.**
+  No `@`, no relay, no "just syncing". A **discovery** goes into `SYSTEM-FACTS.md`
+  (zero hops, both teams read it); a **cross-team decision** goes up to `@Porter`,
+  who owns it. Two SAs talking = two build orders.
+- 🔴 **No cross-team engineer hop.** Bob and Fanta have exactly one SA (Silver);
+  Jason and Fern have exactly one SA (Sober). An engineer never `@`s the other
+  team's SA or the other team's engineers; Bob ↔ Jason and Fern ↔ Fanta are
+  forbidden pairs like any other.
+- Tanya (QA) serves **both** teams and still talks only to Porter.
 - The human gives business content only to Porter. (Bare nudges — "ไปเลย",
   "continue" — are allowed to anyone; see Nudges below.)
 
@@ -398,3 +439,104 @@ release does not ship from, and buys nothing.**
 @Porter relayed it to the owner and to @Tanya **without testing it against the boundary he had enforced five
 times that same night.** **The owner caught it.** 🔻 **The failure was not the engineering answer — it was the PM
 passing an engineering answer through as an evidence decision.**
+
+## Two teams — how a batch is split and claimed (ORDER 14.3, owner's go 2026-10-02)
+
+When a batch arrives (e.g. ten bugs), **Porter** does this, and it is a named PM
+job, not an improvisation:
+
+1. **Sizes each item** roughly — large / medium / small.
+2. **Splits the batch into two piles of comparable weight**, not equal count
+   (the owner's example: "ใหญ่ 3 เล็ก 2" per team).
+3. **🔴 Claims a file area per team, on the board, before either team starts.**
+   Two teams editing the same files is the one failure mode that costs more than it
+   saves. The claim is written as a board line per batch, in `## Batch claims`:
+   `Batch 2026-10-02: Team A → back/src/routes/line* · front/src/components/calendar* ·
+   Team B → back/src/routes/billing* · front/src/components/money*`
+4. **An item that spans both claimed areas is NOT split** — it goes to one team whole.
+5. Items are handed to each SA as a **whole pile, in one message**, never one at a time.
+
+**If the teams start waiting on each other's files**, the split in step 3 is too
+coarse: Porter claims smaller areas, or gives one team the whole surface.
+
+## 🔴 Cut the hops — four rules (ORDER 14.4, owner's go 2026-10-02)
+
+Two teams halve the elapsed time. **These four rules cut what each item costs in the
+first place**, and they matter more with two teams, not less.
+
+1. **Ask everything at once.** A role that has questions sends **all of them in one
+   message**, never one at a time and never "and one more thing" afterwards.
+   *Tanya already has this rule (`QA.md` §6) and it works — the SA and the engineers
+   never got it.* Discovering a second question after sending the first is normal;
+   holding the message until you have finished looking is the discipline.
+2. **Cut the whole batch at once.** When Porter hands an SA a pile, the SA writes
+   **every TASK in that pile before waking an engineer** — not one TASK, then another
+   after the first is reviewed. The engineer should be able to work for hours without
+   coming back.
+3. **Review in batches.** An engineer submits **3 finished TASKs at once** (or the
+   whole pile, whichever comes first) rather than one per round trip. The SA reviews
+   them in one pass. A blocked TASK does not hold the others: mark it and move on.
+4. 🔴 **Engineers decide what the user cannot see.** The current "never guess" rule
+   turns *every* ambiguity into a hop, which is the loop the owner is paying for.
+   Split it:
+   - **Ask** — anything a user or the owner would notice: wording, behaviour, scope,
+     a business rule, a visible state, anything irreversible.
+   - **Decide and declare** — anything internal: variable and file names, where a
+     helper lives, which of two equivalent implementations, test structure, ordering
+     of internal steps. **Write the decision in `## Implementation Notes` with one
+     line of reasoning**; the SA can overturn it at review, which costs nothing
+     because the work is already done.
+
+   The rule that tells the two apart: **"would the owner's answer change what the user
+   sees?"** If no, it was never his question.
+
+## 🔴 Shared knowledge — one file, zero hops (ORDER 14.5, owner's go 2026-10-02)
+
+> **Anything you discover about how the system behaves goes into `SYSTEM-FACTS.md`
+> the moment you learn it — before your next reply.** The other team reads the same
+> file. A fact written there costs zero hops; the same fact discovered twice costs a
+> day.
+
+## 🔴 Production rules — so the files survive two teams (ORDER 15.3, owner's go 2026-10-02)
+
+**Team A learned a habit the files cannot survive; Team B must be born without it.** These three
+rules are about how much you WRITE, not about what you do, and they ship with Team B rather than
+after it. 📌 **The measured state on 2026-10-02:** `inbox/SA.md` **181.7 KB** · `inbox/PM.md`
+**148.3 KB** · `board.md` **140.9 KB** · the SA boot read **755 KB**. Three days earlier the inboxes
+had been drained to ~9 KB and the board was 24 KB. 🔑 **It did not fail to get cleaned — it is being
+produced faster than it is cleaned**, and a second team doubles the rate.
+
+### 1. 🔴 An inbox message is 1–3 lines. **Hard limit 5.** And it NAMES ITS SENDER.
+
+> The message says *what* and *where*. The brief lives in the REQ/TASK/SPEC file
+> it points at. If you are explaining in the inbox, you are writing in the wrong file.
+
+The rule was already written at the top of every inbox file and it decayed completely: `inbox/SA.md`
+held **94 messages in 3 days**, most of them full briefs.
+🔴 **The gate now FAILs on any single message block over 5 lines** — not on the file's total size.
+**So this is enforced on the day it happens, not after a week.** 📌 *Measuring the file total catches
+the symptom; measuring the message catches the behaviour.*
+**Every message names its sender** (`From <role> <date>: <what> — see <file>`), so a drain never has
+to guess who is still waiting.
+
+### 2. A board cell stays **≤300 characters** — enforced ON WRITE, not at cleanup.
+
+The rule already exists; the board grew **5.7× in four days**, so it is plainly not being enforced
+when the row is written. **A cell is ID · title · status · owner · pointer.** Evidence, reasoning and
+history go in the `tasks/TASK-*.md`, `requirements/REQ-*.md` or `log/` file the cell points at.
+The gate FAILs on an over-long cell **and names the offending row ids**, so the fix is one edit
+rather than a hunt. ⚠️ **Shortening your own over-long cell to a pointer is the one bounded piece of
+housekeeping any role may do** (`PROTOCOL.md` → Hygiene & file surgery) — **but only after the prose
+exists in the file you are pointing at.**
+
+### 3. Delete what you processed. **An inbox you read and did not empty is a log.**
+
+Read your inbox first, act, then **delete the messages you acted on** — in the same session, not
+"later". 🔑 *An inbox is a delivery channel, not a record.* The record is the TASK/REQ/log file the
+message pointed at, and that file is where anyone looks for history.
+
+### 4. The four hop-reduction rules apply to BOTH teams from day one.
+
+📌 Already installed above as **`## 🔴 Cut the hops — four rules (ORDER 14.4)`** — ask everything at
+once · cut the whole batch at once · review in batches · engineers decide what the user cannot see.
+**Nothing is added here; ORDER 15.3 item 4 only confirms it binds Team B from its first session.**

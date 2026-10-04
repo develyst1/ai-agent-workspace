@@ -256,3 +256,85 @@ put it there.**
 📌 *And the rule I nearly minted from it — "break-and-watch owes a restore rule" — would have been a standing
 process change founded on an event that never happened.* **A wrong diagnosis does not stop at the message; it
 becomes a rule.**
+
+## 🔴 Cut the hops — four rules (ORDER 14.4, owner's go 2026-10-02)
+
+Two teams halve the elapsed time. **These four rules cut what each item costs in the
+first place**, and they matter more with two teams, not less.
+
+1. **Ask everything at once.** A role that has questions sends **all of them in one
+   message**, never one at a time and never "and one more thing" afterwards.
+   *Tanya already has this rule (`QA.md` §6) and it works — the SA and the engineers
+   never got it.* Discovering a second question after sending the first is normal;
+   holding the message until you have finished looking is the discipline.
+2. **Cut the whole batch at once.** When Porter hands an SA a pile, the SA writes
+   **every TASK in that pile before waking an engineer** — not one TASK, then another
+   after the first is reviewed. The engineer should be able to work for hours without
+   coming back.
+3. **Review in batches.** An engineer submits **3 finished TASKs at once** (or the
+   whole pile, whichever comes first) rather than one per round trip. The SA reviews
+   them in one pass. A blocked TASK does not hold the others: mark it and move on.
+4. 🔴 **Engineers decide what the user cannot see.** The current "never guess" rule
+   turns *every* ambiguity into a hop, which is the loop the owner is paying for.
+   Split it:
+   - **Ask** — anything a user or the owner would notice: wording, behaviour, scope,
+     a business rule, a visible state, anything irreversible.
+   - **Decide and declare** — anything internal: variable and file names, where a
+     helper lives, which of two equivalent implementations, test structure, ordering
+     of internal steps. **Write the decision in `## Implementation Notes` with one
+     line of reasoning**; the SA can overturn it at review, which costs nothing
+     because the work is already done.
+
+   The rule that tells the two apart: **"would the owner's answer change what the user
+   sees?"** If no, it was never his question.
+
+## 🔴 Shared knowledge — one file, zero hops (ORDER 14.5, owner's go 2026-10-02)
+
+> **Anything you discover about how the system behaves goes into `SYSTEM-FACTS.md`
+> the moment you learn it — before your next reply.** The other team reads the same
+> file. A fact written there costs zero hops; the same fact discovered twice costs a
+> day.
+
+## 🔴 Production rules — so the files survive two teams (ORDER 15.3, owner's go 2026-10-02)
+
+**Team A learned a habit the files cannot survive; Team B must be born without it.** These three
+rules are about how much you WRITE, not about what you do, and they ship with Team B rather than
+after it. 📌 **The measured state on 2026-10-02:** `inbox/SA.md` **181.7 KB** · `inbox/PM.md`
+**148.3 KB** · `board.md` **140.9 KB** · the SA boot read **755 KB**. Three days earlier the inboxes
+had been drained to ~9 KB and the board was 24 KB. 🔑 **It did not fail to get cleaned — it is being
+produced faster than it is cleaned**, and a second team doubles the rate.
+
+### 1. 🔴 An inbox message is 1–3 lines. **Hard limit 5.** And it NAMES ITS SENDER.
+
+> The message says *what* and *where*. The brief lives in the REQ/TASK/SPEC file
+> it points at. If you are explaining in the inbox, you are writing in the wrong file.
+
+The rule was already written at the top of every inbox file and it decayed completely: `inbox/SA.md`
+held **94 messages in 3 days**, most of them full briefs.
+🔴 **The gate now FAILs on any single message block over 5 lines** — not on the file's total size.
+**So this is enforced on the day it happens, not after a week.** 📌 *Measuring the file total catches
+the symptom; measuring the message catches the behaviour.*
+**Every message names its sender** (`From <role> <date>: <what> — see <file>`), so a drain never has
+to guess who is still waiting.
+
+### 2. A board cell stays **≤300 characters** — enforced ON WRITE, not at cleanup.
+
+The rule already exists; the board grew **5.7× in four days**, so it is plainly not being enforced
+when the row is written. **A cell is ID · title · status · owner · pointer.** Evidence, reasoning and
+history go in the `tasks/TASK-*.md`, `requirements/REQ-*.md` or `log/` file the cell points at.
+The gate FAILs on an over-long cell **and names the offending row ids**, so the fix is one edit
+rather than a hunt. ⚠️ **Shortening your own over-long cell to a pointer is the one bounded piece of
+housekeeping any role may do** (`PROTOCOL.md` → Hygiene & file surgery) — **but only after the prose
+exists in the file you are pointing at.**
+
+### 3. Delete what you processed. **An inbox you read and did not empty is a log.**
+
+Read your inbox first, act, then **delete the messages you acted on** — in the same session, not
+"later". 🔑 *An inbox is a delivery channel, not a record.* The record is the TASK/REQ/log file the
+message pointed at, and that file is where anyone looks for history.
+
+### 4. The four hop-reduction rules apply to BOTH teams from day one.
+
+📌 Already installed above as **`## 🔴 Cut the hops — four rules (ORDER 14.4)`** — ask everything at
+once · cut the whole batch at once · review in batches · engineers decide what the user cannot see.
+**Nothing is added here; ORDER 15.3 item 4 only confirms it binds Team B from its first session.**

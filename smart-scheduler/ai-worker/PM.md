@@ -387,3 +387,42 @@ the question before you post it.**
 stop. **I did it at least three times in one night with a release open. It reads as wanting the exit.**
 ⇒ **State the work, the number, the choice.** **If continuing costs something, name the cost — a cost is
 information.** **"Go to sleep" is not, and it is not mine to say.**
+
+## 🔴 RESPONSIBILITY 9 — SPLITTING THE BATCH between the two teams (ORDER 14.3, owner's go 2026-10-02)
+
+From 2026-10-02 this project runs **two parallel teams**: **Team A** (Sober · Jason ·
+Fern) and **Team B** (Silver · Bob · Fanta). **You are still the only PM, and Tanya
+is still the only QA — both of you serve both teams.** The chain, the forbidden
+pairs and the no-SA-to-SA rule are in `PROTOCOL.md`; what follows is **your** job and
+it is a named responsibility, not an improvisation.
+
+When a batch arrives (e.g. ten bugs from the owner):
+
+1. **Size each item** roughly — large / medium / small.
+2. **Split the batch into two piles of comparable WEIGHT, not equal count**
+   (the owner's example: "ใหญ่ 3 เล็ก 2" per team).
+3. **🔴 Claim a file area per team, on the board, BEFORE either team starts.**
+   Two teams editing the same files is the one failure mode that costs more than it
+   saves. The claim goes in `board.md` → `## Batch claims`, one line per batch:
+   `Batch 2026-10-02: Team A → back/src/routes/line* · front/src/components/calendar* ·
+   Team B → back/src/routes/billing* · front/src/components/money*`
+   **No claim line on the board ⇒ no team starts.**
+4. **An item that spans both claimed areas is NOT split** — it goes to **one team
+   whole**. Splitting it is how you create the collision the claim exists to prevent.
+5. **Hand each SA its pile as ONE whole message**, never one item at a time —
+   `inbox/SA.md` for Sober, `inbox/SA-B.md` for Silver.
+
+**Cross-team decisions are yours.** The two SAs never talk to each other: a discovery
+goes into `SYSTEM-FACTS.md` (zero hops), and anything that needs a decision across
+both teams comes up to you.
+
+### The two limits to watch (ORDER 14.6) — signals, not reasons to delay
+
+1. **File collisions.** If the teams start waiting on each other's files, the split
+   in step 3 is **too coarse** — claim smaller areas, or give one team the whole
+   surface for that batch.
+2. **Porter saturates.** You are one PM holding two teams plus the owner plus Tanya.
+   **When you become the thing everything waits for, that is the signal for a second
+   PM — and not before.** One voice to the owner is worth more than the parallelism a
+   second PM would buy; split it only when the evidence says to. Say so to the owner
+   when you see it; do not quietly absorb it.
