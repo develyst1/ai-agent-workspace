@@ -845,7 +845,185 @@ two in `check-hygiene.mjs`:
   Team B starts. If the rate has doubled as predicted, that measurement is what the
   owner needs in order to decide between a real cleanup and fewer sessions.
 
+
+### ORDER 16 — ✅ ① DONE 2026-10-05 (gate v6) · ⏳ ② templates + sweep · ⏳ ③ startup-ritual line — answers to Marie's harness-console report (owner's go, 2026-10-05)
+
+**① `check-hygiene.mjs --json` — YES, build it first, before Fern starts.**
+You were right to stop and ask. Without it the only ways to build the screen are
+scraping the gate's printed text or writing a second parser, and both are the thing
+the charter forbids — they go quiet and then contradict the gate the first time a rule
+changes. **The gate is the API; it has to exist before anything renders it.**
+Emit the checks it already prints **plus the raw numbers**: per-file sizes, boot read
+per role, `RESUME-HERE` staleness in days, closed-row counts, inbox message lengths
+with the sender named, and the board's owner column (the console needs "who holds the
+ball"). Keep the human-readable output byte-identical — `--json` is an addition, never
+a rewrite.
+
+**② Both template defects — fix them, with this as the go.**
+- `_templates/project/.../tests/REGRESSION.md` says *"Regression checklist —
+  possibility"*. Another desk's name shipped as the placeholder, so `dte`,
+  `safe-goods` and every desk born since carries it. Fix the template **and** sweep the
+  desks that already took it.
+- The inbox 5-line rule: the gate has enforced it on every project since 10-02 and
+  `_templates/.../inbox/*.md` never taught it. **A rule enforced where it is not
+  written is the worst shape a rule can have** — people meet it as a failure instead of
+  as an instruction. Put it in the template inbox header, in the same words the gate
+  uses.
+
+**③ Your point 4 is the important one, and the correction is mine to make.**
+You flagged that smart-scheduler went FAIL 12 → 19 in three days right after your
+cleanup, and that **v1 of the console does not fix that either — it only makes it
+visible.** Correct. A detector is not a cure, and my plan implied more than it should.
+
+**The actual cure, and it is small — order it now:** the gate must run inside a ritual
+someone performs anyway. Add to `PROTOCOL.md`'s startup ritual, every role, every
+project:
+
+> Run `node check-hygiene.mjs <project>` from the workspace root as part of your
+> startup, and put its **one-line RESULT** at the top of your log entry for this
+> session. If it FAILs, say so to whoever you report to and **do not start a second
+> unit of work** until the owner has been told.
+
+That turns the gate from something read when the owner remembers into something seen
+**eight times a day**, by the people producing the growth. It costs one command per
+session and it is the only lever that touches the production rate rather than the
+pile.
+
+**Not ordered, deliberately:** nothing that makes a role delete or compact on its own.
+File surgery stays yours. The ritual reports; it never repairs.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-05 — **ORDER 16 ① DONE: `check-hygiene.mjs --json` / `--list` shipped (gate v6), and
+  harness-console's Q-5 (a)(b)(c) are answered IN THE TOOL, not in prose.** Owner's go,
+  ORDER 16 ① + his instruction to fold in REQ-001 §Questions Q-5. **② and ③ are NOT done** —
+  see the bottom of this entry; they were not in today's ask and I am not quietly carrying them.
+  **The property that mattered most, and I proved it before anything else: the human output is
+  BYTE-IDENTICAL on all 14 desks, exit codes included.** Method: kept the pre-change gate beside
+  the new one *inside the workspace* (so `WS` resolves the same), ran both over
+  `--list`, compared stdout+stderr+exit per project. ⚠️ **My first attempt at this check was
+  WRONG and said all 14 DIFFERED** — I had run the old copy from a temp directory, where it
+  resolved every project against the temp path and reported "no ai-worker". *A comparison
+  harness can fail in the direction that looks like a real regression; the tell was that the
+  "old" side was identical nonsense for all 14.*
+  **Q-5 (a) — error vs FAIL.** `ok` says whether the gate **RAN**; `result` says what it
+  **FOUND**. Both shapes go to **stdout as JSON**, so the console never parses stderr. Exit codes
+  unchanged (0 PASS / 1 FAIL / 2 could-not-run). 🔑 *Exit 2 is not a worse FAIL — 0 and 1 are a
+  verdict, 2 is the ABSENCE of one, and a screen that renders "could not read this desk" as
+  "this desk is failing" is lying about a desk nobody has looked at.*
+  **Q-5 (b) — the project list is its OWN call**, `--list [--json]`. One project per run, so a
+  desk that cannot be read **fails alone instead of taking the whole screen down with it** —
+  which a single all-projects call structurally cannot do.
+  **Q-5 (c) — `schema: 1` + `gate: "v6"`.** `schema` is what a reader branches on; the version
+  string is for humans.
+  **Everything ORDER 16 ① listed is in there, recorded AT THE POINT each check computes it —
+  never recomputed for the JSON** (per-file sizes with their limits, boot read per role,
+  `RESUME-HERE` staleness in days, closed-row counts, inbox message lengths **with the sender
+  named**, plus board rows with who holds the ball). 🔑 *Two computations of the same number is
+  precisely how a reader and the gate begin to disagree — the thing `--json` exists to prevent.
+  If I had recomputed these in the printer I would have built the second parser inside the
+  gate itself.*
+  🔴 **TESTING ON THREE REAL DESKS FOUND TWO DEFECTS IN MY OWN OUTPUT, AND ONE WAS SEVERE.**
+  SPEC-001 §2 demanded real output from a PASS, a FAIL and a desk with a non-empty inbox before
+  the contract is filled in. It earned its place immediately:
+  ① **`boardRows: 147, withBall: 0` on smart-scheduler.** I had matched only `Ball`/`Owner` —
+  the template's words. **The live desks spell that column SIX ways**: `Owner of next step`,
+  `Assignee`, `Ball`, `Owner`, `Tester`, `Next step · tasks`. I only know that because I read
+  all 14 boards instead of trusting the mould. ⇒ 🔑 **A console rendering "nobody holds the
+  ball" on the busiest project in the workspace is worse than one rendering nothing** — it is a
+  confident answer that is false. Fixed, and `ballColumn` now names **which** header each value
+  came from, so the UI can show provenance rather than pretend `Assignee` and `Owner of next
+  step` are the same promise. Coverage now: 114/147 on smart-scheduler, and the 33 misses are
+  honest nulls (see below).
+  ② **An unguarded `hdr.findIndex` THREW and took the WHOLE GATE DOWN on three desks** —
+  `api-linkage2`, `did-api-center-c#`, `smart-scheduler` — because those boards contain table
+  rows with **no header above them**. 📌 **That is the board-write defect, still live, still
+  unfixed, reaching out and breaking a new tool on the three desks that need it most.** ⇒ 🔑
+  ***A lens must not crash on the mess it exists to show.*** Guarded; those 33 ball-less rows on
+  smart-scheduler are exactly the header-less orphans, and reporting them as `null` rather than
+  guessing is the correct answer.
+  ⚠️ **Also fixed on principle: the JSON now has a STABLE SHAPE.** Scalars initialise to `null`
+  instead of being absent when a check did not apply (caught on `dte`, where
+  `resumeBehindDays` simply vanished). *An absent key forces the reader to tell "not measured"
+  from "measured zero" by guessing — and it guesses wrong on the quiet desks, the ones nobody
+  is watching.*
+  **One deliberate human-output change, declared:** the usage line now names the new flags. It
+  is an error path, not a check line, and a usage string that hides half the interface is just
+  a wrong usage string.
+  ⏭️ **I did NOT touch the harness-console desk.** The team is blocked on this and I could have
+  written the answers into REQ-001/SPEC-001 myself — **that is Porter's and Sober's file, and
+  my charter is explicit that in-project writes go through the spawned PM.** The owner is told;
+  the tool exists; Sober fills SPEC-001 §2 from the real output, which is what his own §2 says
+  to do. **Tempting ≠ mine.**
+  🔴 **STILL OWED FROM ORDER 16, and both are ordered, not optional:** **②** the two template
+  defects (`REGRESSION.md` carrying the name *"possibility"*, and the inbox 5-line rule the gate
+  enforces everywhere but the template never teaches) **plus the sweep of the desks already born
+  with them**; **③** the startup-ritual line that makes every role run the gate and put its
+  RESULT at the top of its log entry. 📌 *③ is the one that touches the production rate rather
+  than the pile — and smart-scheduler proved the point again while I worked: FAIL 12 on 10-02,
+  **FAIL 20 today**, inboxes back to 155 KB / 169 KB, boot read back to 806 KB. **The cleanup I
+  finished three days ago is entirely undone.*** ⚠️ Worth the owner hearing plainly: **at this
+  rate, cleaning is spending; only ③ is investing.**
+
+- 2026-10-04/05 — **NEW DESK OPENED: `harness-console`, dispatcher mode, three roles. Gate
+  PASS with ZERO warnings — the first desk I have opened that starts clean.** Owner's
+  instruction 2026-10-04 (direct, not an Atlas order). Scaffolded **fresh from
+  `_templates/project`**, never copied from a live desk.
+  **Shape:** Porter (PM) · Sober (SA) · Fern (FE). **No BE, no QA** — `BE.md`, `QA.md` and
+  their inboxes removed, and `PROTOCOL.md`/`PM.md`/`SA-Lead.md`/`FE.md` rewritten so **no
+  rule assumes a role that does not exist**: the chain is a straight line, the REQ ladder
+  drops `IN_TEST`/`TEST_PASSED`, and `DELIVERED` is named as **the owner's word, not the
+  team's**. 🔑 *Deleting a charter is the easy half; the hard half is the dozen sentences
+  elsewhere that quietly still expect it — a desk that says "no QA" in one place and
+  "only Tanya may declare a pass" in another has no rule at all, it has a coin flip.*
+  **Seeded `SYSTEM-FACTS.md` BEFORE the first session**, from the owner's own words plus a
+  read-only survey: v1 = **read + run, writes nothing** · the **no-second-store**
+  architectural rule *with the three times this workspace has already paid for breaking it*
+  · stack · local-only environments · and the workspace path taken from `machine.local.md`
+  at run time. **Repo survey (read-only, by me):** `harness-console-front` is one commit
+  `ec34c62`, branch `main`, a one-line README and a `.gitignore` — **genuinely empty.**
+  **`machine.local.md`: two rows, and the second is a new KIND of row.** Every other row is
+  a repo a role writes code in; `ai-agent-workspace` is a repo a *product reads at run
+  time* — it is the data. 🔑 *Recorded there anyway, with the reason written next to it,
+  because the rule does not change: an absolute path never enters a committed file, and a
+  hard-coded `H:\…` in that app is a defect on the owner's next machine.*
+  🔴 **TWO THINGS I REFUSED TO LET THE TEAM DO, written into the charters rather than left
+  to judgement.** ① **`check-hygiene.mjs --json` does not exist, is MINE, and must not be
+  worked around.** The plan's whole design is *the gate is the API*; a team blocked on a
+  missing flag will scrape the printed output instead, **and that recreates the second
+  parser the design exists to avoid — silently, and it only disagrees with the gate the
+  first time a rule changes.** So it is forbidden in `SA-Lead.md` and `FE.md` by name.
+  ② **v1 writes NOTHING, anywhere in the workspace it reads** — not a cache, not a marker
+  file, not a test fixture. *Those are 13 teams' live files and some lines in them are the
+  only copy of a decision; a read-only lens cannot corrupt what it looks at, and the moment
+  it can write, every bug in it becomes a workspace-integrity bug.*
+  ⚠️ **FINDING — the mould is dirty again, the same failure as 2026-09-29.**
+  `_templates/project/ai-worker/tests/REGRESSION.md` line 1 reads **"Regression checklist —
+  possibility"**: another desk's NAME, not a `<project>` placeholder, so **every desk born
+  from this template inherits it** (`dte`, `safe-goods` and this one all did). I fixed the
+  copy in `harness-console`; 🔴 **I have NOT touched the template — that needs the owner's
+  go** (scope item 4, "never silently"). 📌 *Third time this lesson has arrived: a fix that
+  reaches the instances and not the mould has an expiry date — and this one went the other
+  way, a defect in the mould reaching every instance.*
+  ⚠️ **Second template gap, and this one I caused:** the gate now FAILs on any inbox message
+  over 5 lines **on every project** (ORDER 15.3, installed 2026-10-02), but
+  `_templates/project/ai-worker/inbox/*.md` **does not teach the rule.** A new desk is born
+  subject to a rule its own files never state. I wrote the rule into `harness-console`'s
+  three inboxes; **the template fix is the owner's call, with the REGRESSION one.**
+  **Also:** `README.md` map row added · `RESUME-HERE.md` written by me and **labelled as
+  mine, because there has been no PM session** — Porter rewrites it at the end of his first.
+  **Gate: `harness-console` PASS, 0 warnings.** No collateral damage: `safe-goods`,
+  `code-report`, `possibility` still PASS; `dte`, `manager-gold` unchanged.
+  📌 **UNASKED-FOR MEASUREMENT, and it is the business case for the thing being built:
+  `smart-scheduler` is FAIL 12 → FAIL 19 in the three days since I cleaned it.** That is
+  `CONSOLE-PLAN.md`'s first row — *"nobody runs the gate"* — **happening again, in the open,
+  while the gate sat there correct and unread.** 🔑 *The product's justification reproduced
+  itself during the week the desk for it was being opened. Worth saying to the owner plainly:
+  the refill rate is the problem, and v1 does not fix it either — it only makes it visible
+  without him having to ask.*
+  🔴 **BALL: the owner.** Nothing dispatches until he gives the first requirement —
+  `CONSOLE-PLAN.md` is design input, not a requirement — and decides whether I add
+  `--json` before Fern starts.
 
 - 2026-10-02 — **ORDER 15.1 + 15.3 DONE at smart-scheduler. Gate FAIL 17 → 12, SA boot read
   755 KB → 485 KB. 15.4 is NOT done and is not mine to do.** Owner's go in ORDER 15 (2026-10-02).

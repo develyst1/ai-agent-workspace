@@ -871,6 +871,12 @@ regex source included, and the FE correctly renders `e.message`.
 because forms normally gate the button.
 🔑 **A handler that is not reached is worse than a missing one: it looks handled.**
 
+
+## A new student's phone is `phone` on the booking acts and `parentPhone` on `POST /students` — and zod drops the wrong one SILENTLY (Bob, 2026-10-04, TASK-644)
+⚠️ **The inline student on `createBooking` / `createCoursePackage` / `createVoucher` (and the two imports) carries the parent phone as `student.phone`. `POST /students` calls the same fact `parentPhone`.** zod strips an unknown key without a word, so a body with the wrong name simply has NO phone.
+📌 **Found because `validation.test.ts`'s fixture had sent `{ name, parentPhone }` to `createCoursePackage` since TASK-138:** it was a phoneless new student all along, and it was green only because the phone was optional. TASK-644 made it required and the fixture went red. `StudentSelect` (front) sends `phone` correctly.
+🔑 **Since TASK-644, the three booking acts refuse a new student without a phone-shaped (≥ 9 digits) `student.phone`; the two imports do not.** The refusal is ONE issue at `student.phone`, and it travels in the 400's **`details`**. Its `message` is the generic sentence, per the section above.
+📌 **The phone rules now live in `src/lib/phone.ts`** (`normalizePhone`, `isPhoneShaped`; pure, no DB). `parent.service.ts` re-exports them, so old imports still work.
 ## A `DONE` board row can outlive its code — the window between review and commit is real (2026-09-08)
 **TASK-295 was implemented, reviewed and verified (`tsc 0 · 168/0 · build ok`), the board row said `DONE`, and
 the code existed only as uncommitted changes.** A `discard` in `smart-scheduler-front` wiped every **tracked**
@@ -4137,3 +4143,26 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 
 ## 🔑 A mutation aimed at the WRONG line survives for a reason unrelated to the tests (2026-10-04 — @Jason's)
 **`W7` edited `MAX_WEEK_BY_SIZE`, which the rule does not read (the map is derived FROM the quota table). It survived while claiming to change the rule.** ⇒ **Before reading a survivor as a gap, confirm the mutated line is actually on the path.** *(Second this week, after a no-op mutation.)*
+
+## ⚖️ A test whose SUBJECT and FILE belong to different teams belongs to the FILE's team — and is in the wrong place (2026-10-04, @Porter's rule)
+**`teacher-scope.test.ts` pins Team A's leave dialog but sits beside Team B's `teacher-scope.ts`.** **TASK-638 assigns it by location ⇒ Team B's.** **Two careful readers still read the rule two ways — the exact failure TASK-638 was meant to end.**
+▶️ **Rule: the FILE's team owns it — AND the mismatch is a defect in the test's placement, to be FIXED (move the pins beside their subject), not argued.** 📌 **`TASK-653`.**
+
+## 🔑 A deploy note for the customer's environment must warn about numbers that will CHANGE because they were WRONG (2026-10-04)
+**The course card's week label had been wrong on uat for admin-extended courses all along. Fixing it changes numbers the customer has already seen.** ⇒ **The uat note says so in a sentence written to be read BEFORE she looks, with an example and the evidence that the new number is the true one.**
+🔑 *A number that changes after a fix looks identical to a number that broke; the difference is whether someone was told why.* **And a rollback reverses it — say that too.**
+
+## 🔑 A rule can be written in several PLACES even when it is one rule — find them all before saying "one change" (2026-10-04)
+**REQ-113's "live only" lived in the date helper, in the badge check's own status filter, AND in the database read that never fetched delivered rows.** **Fixing only the date helper would have changed nothing on screen.** ▶️ **Trace every filter on the path from the database to the screen, not just the function with the obvious name.**
+
+## 🔑 A compile error finds every reader the compiler can see; a COMMENT is a reader it cannot (2026-10-04)
+**TASK-645 renamed the badge helpers and the compiler surfaced every code reader. The comment on the `courseLast` DTO field, in another file, still described the old rule ("no second rule") — the opposite of the fix.** ▶️ **After a rename or a rule change, grep for the OLD name and the OLD claim too; comments and docs do not fail to compile.**
+
+## The two repos' mutation runners read DIFFERENT set formats (2026-10-04, Fanta, TASK-662)
+- **Back** (`scripts/mutation/run.ts`): a plain list OR an object `{ tests, mutations }`. Bob's `*-task644.mutations.json` uses the object, carrying its own test list.
+- **Front** (`scripts/mutation/run.ts:66`): a **plain list only**. An object set crashes it, so a front set must be a list with `--tests` passed on the command line.
+- **Front sweep with a pinned list:** `src/lib/ui/masked-input-assert.test.ts:162` pins the exact DOM tests whose screen holds a `NumberInput` and that type. **A new clicked test on any screen with a `NumberInput` turns it red even when it satisfies the rule.** The list needs one line per new file, and that file sits outside most claims.
+
+## Front tests: a `mock.module` lasts for the WHOLE run — test the real `client.ts` by its own specifier (2026-10-05, Fanta, TASK-662)
+- 18 DOM tests `mock.module("@/lib/api/client")`, and Bun keeps a module mock for every file that runs after. A test that imports `@/lib/api/client` or `./client` therefore gets whichever stand-in loaded last. **Seen: 10/10 alone, 0/10 in the full suite.**
+- Fix: import it by a query-suffixed specifier, `await import("./client.ts?<tag>")`. That is a separate, unmocked instance of the same source, and mutations to the file still reach it (TASK-662 C1–C4 bite).

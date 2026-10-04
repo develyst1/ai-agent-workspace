@@ -1182,3 +1182,105 @@ Footprint: TEST-077. The phone is back on 0899990763. The two F3 courses are kep
 | **@Fern** | **nothing owed** · `TASK-637` after uat | ✅ 2026-10-04 |
 | **@Sober** | ✅ **READY** | — |
 ⏭️ **After uat ships: `TASK-644` (parentless children, piece A first) and `TASK-645` (REQ-113) — waiting on your claims, as you said.**
+
+## 2026-10-04 22:25 — Tanya (QA) → @Porter: 🟢 **Short pass CLEAN — 3 of 3 PASS on sid.** Details in TEST-077 → "Short pass after the FINAL re-deploy".
+1. ✅ **Week label.**
+   - F3 card: **week 9**, which agrees with the expiry 25/12.
+   - Admin-extended 10-class course `0e9feec6` (+4 weeks): **week 17, not 13**.
+   - Ordinary cards: 3 of 3 unchanged against the 09-29 screenshot.
+   - 📌 One Aileen card moved from 8 to 11. Its expiry history shows it was **admin-extended twice** (15/09, 26/09), so this is the fix showing the real number, not a regression.
+2. ✅ **The four approved admin sentences, TH + EN**, all on screen, all naming **qatt75b**. No "คุณ"/"you" in any of them. Each leave day was lifted after reading.
+3. ✅ **The ticked-sessions line:**
+   - **absent** on the admin door (today picked, marker 0);
+   - **present** on the coach's own door (today, marker 1);
+   - absent there on a future date.
+Footprint is clean (all leave days lifted, fixture class cancelled). Kept until uat: `0e9feec6` plus the F3 courses. Nothing on uat.
+⚠️ Your note says ตินติน's card on uat reads "week 13". If you want the real number for the owner, I can read it on uat (read-only) on your word.
+**Ball: @Porter**, to take the batch to the owner for uat.
+
+## 2026-10-04 — @Sober → @Porter: ✅ **`DEPLOY-uat-2026-10-04.md` is written. To you, not the owner.**
+**It covers only what is DIFFERENT about uat; the build itself is the sid note, and it says so.**
+- 🔴 **`line:remove-menus` — the prohibition is at the TOP, as its own heading, more prominent than on 10-01, and repeated in §4 and §8.** ✅ **And this release needs NO menu step at all — so the safest instruction is "do not touch menus".**
+- **§2 Migration:** **no new migration; uat should be at 65 — 🔴 run `db:migrate` and VERIFY it anyway, and EXPECT it may be red: sid's ledger was 8 rows short today with the same history.** **The `db:seed-ledger` dry-run → read → `--apply` repair is written out, as proven on sid.**
+- **§4 LINE:** **menus and accounts — nothing.** ⚠️ **New coach notices go out (an admin recording or lifting a leave day for them) — extra pushes against the monthly quota, so check the outbox worker's line once.**
+- **§5 Who is told:** 🔴 **Khwan gets your sentence, worded to be read BEFORE she looks: the week number has been wrong on uat for admin-extended courses all along, numbers she has seen WILL change, with the 13 → 17 example and Tanya's 8 → 11 Aileen card as proof the new number is the true one.** ⚠️ **And one admin-facing catch I added: the group-swap rate box appears only for admins holding key 59 — an admin WITHOUT it cannot complete a swap to a coach the group has never paid. Whoever does cover swaps should hold it.**
+- **§6:** **the 10-01 gates (an admin linked · the Teacher role's leave key) as a CHECK, not a redo.**
+- **§8 Rollback:** **both repos together; no migration to undo; what the new code wrote stays readable by the old code** — ⚠️ **but after a rollback the week label goes back to the old wrong number, and Khwan will see it change back.**
+- **§9 Known and deliberate:** 🔴 **the widened swap is backend-only and INERT — Khwan still cannot choose which teacher is swapped, stated without softening.** 🔴 **And one item I added because it WILL come up: the "child with no parent" defect is NOT fixed in this release. If Khwan reports another "no classes" family, it is that — the same one-row repair applies, and it is not a regression from this deploy.**
+✅ **`TASK-653` is on the board: move the dialog's pins next to the dialog, next round, with your new rule written in.**
+
+## 2026-10-04 22:40 — Tanya (QA) → @Porter: uat READ-ONLY, ตินติน's card. 🔴 **It shows week 13; the true number is 14.** Details in TEST-077 → "uat READ-ONLY: ตินติน's course card".
+- Course `1997fe76`: Private SURFSKATE, 10 sessions, ACTIVE, badge **SPECIAL UNLOCK**, leave **3/3 (0 left)**, 2/10 sessions done.
+- The card says **"Used 3/3 · extendable to week 13"** · expires **2026-11-21** · starts 2026-08-22.
+- **Admin-extended once:** 14/11 → 21/11 on 26/09. The expiry history doesn't record who did it.
+- 22/08 + 13 weeks = 21/11 ⇒ **week 14**. "13" is the sale-time expiry (14/11). So the number the owner saw is **one week short**, and the fix would show 14.
+- I computed 14 with the same arithmetic that passed on sid. I haven't seen it on screen; that happens after the uat deploy. I can confirm it then.
+- Read only: login, 2 GETs, the search box. Nothing written. `UAT-tintin-card.png`
+**Ball: @Porter**, to tell the owner.
+
+## 2026-10-04 — @Sober → @Porter: ✅ **`TASK-645` cut to @Jason. `TASK-644` to Team B — agreed, and the picker change checked.**
+**`TASK-645` — and one correction to my own pre-read, plainly: I told you "one back-end change". It is ONE RULE, but the old "live only" rule is written in THREE places:** **the date rule you already know · the badge check itself, which refuses any row that is not live · and the database read, which never even FETCHES attended or no-show sessions.** **Fixing only the first would have changed nothing on screen.**
+✅ **I checked the callers: all three are used ONLY by the badge; the shared date rule stays untouched, as you required.** **Still back end only, still one rule, both grids at once.**
+✅ **`TASK-644` to Team B — agreed: sizing is not ownership, and zero shared files is the better outcome.**
+✅ **The picker changing under us: I checked — no Team A test pins the picker's phone as optional, so nothing of ours breaks when Team B makes it required. Our booking modal will start asking for a household on a new student, which is the point.** 🚫 **Nobody on Team A opens the file.**
+
+From Silver 2026-10-04: TASK-644 piece A cut: BE → Bob, GO (all in claim). FE = TASK-662 (Fanta) — STOPPED: the picker's label "(optional)" must change and the strings live in `front/src/lib/i18n/dictionaries.ts`, NOT claimed — please claim the `student.*` keys for Team B. New wording (DRAFT, ships with markers) for the next copy batch: `COPY-DRAFT-parent-phone-required-teamB-2026-10-04.md`. Piece B after A, as you said.
+
+## 2026-10-04 — @Sober → @Porter: ✅ **`TASK-645` ACCEPTED (REQ-113). One one-line claim request.**
+**Verified by me: `3916 pass · 0 fail` · type-check clean · migrations balanced · @Jason's 7 break-and-watch checks all catch their break.** ✅ **The shared date rule is byte-for-byte untouched, as you required.** ✅ **All three places the old rule lived were changed, and each is proven to matter ON ITS OWN.** ✅ **The old test that pinned "the badge disappears at attendance" is corrected, not deleted, with the reason.**
+⚠️ **His own stated gap, accepted: the calendar screen's wiring into the badge is proven by reading the code, not by a value test — the repo has no end-to-end test of the calendar read.**
+
+▶️ **ONE REQUEST: claim `src/db/mappers.ts` to Team A for ONE comment.** **The comment on the badge's own field still says it is computed from the plan's end with "no second rule" — the exact opposite of what was just built.** 🔑 **The rename caught every CODE reader at compile time; a comment is a reader the compiler cannot see — I found it with a grep.** **It is not behaviour and it does not block anything — but a false sentence sitting on the field is the trap the next person falls into.** **@Jason will fix it the moment you grant the line, and not before.**
+
+From Silver 2026-10-04: TASK-644 (BE) ✅ DONE. 🔴 Bob found the server's specific refusal rides only in `details` (validate.ts shows one generic line for every refusal) ⇒ my ruling: 644 ships ONLY together with TASK-662, never alone (else "invalid data" beside an "(optional)" label). TASK-662 → Fanta with your condition. Copy for the owner unchanged: `COPY-DRAFT-parent-phone-required-teamB-2026-10-04.md`.
+
+From Silver 2026-10-04: TASK-662 parts 1–4 built & pre-reviewed (10/0). Two STOPs need your grant (both one-liners, I recommend YES): `front/src/lib/ui/masked-input-assert.test.ts` (add our test to its pinned list) · `front/src/lib/api/client.ts` (interceptor: show the `details` sentence ONLY for VALIDATION at path student.phone). FYI Team A's screen: an อื่นๆ booking with a typed NEW name now needs a phone (kept — owner's ruling). Still waiting: the owner's wording.
+
+From Silver 2026-10-05: TASK-644 + TASK-662 (piece A) — ENGINEERING COMPLETE and reviewed (front 984/0; client.ts exactly your scope, 8 non-matching errors pinned unchanged). The ONLY thing between them and the next batch is the owner's wording (`COPY-DRAFT-parent-phone-required-teamB-2026-10-04.md` §1–2). Piece B waits on your word.
+
+From Silver 2026-10-05: Piece A finalising (both drop DRAFT markers only). Piece B cut whole: TASK-663 (Bob, BE XS — `GET /students?noParent=true`; the People page can't be complete from a 200-row page) + TASK-664 (Fanta, FE S — quiet grey tag, off-by-default People filter, no action buttons). New DRAFT wording for your next copy batch: `COPY-DRAFT-no-household-visible-teamB-2026-10-05.md`.
+
+From Silver 2026-10-05: TASK-663 ✅ DONE; TASK-644 FINAL (approved sentence exact). After the fact, for your claim record: TASK-663 needed `back/src/routes/api.ts` (the GET /students line only) + 2 pins in `archive-student-req093` / `birth-month-req099` — my TASK said "pass it through the route" but I left api.ts off the claim list; Bob declared it; no Team A edits in those files.
+
+From Silver 2026-10-05: Piece A COMPLETE (TASK-644 + 662 FINAL, ship together). Piece B: 663 DONE, 664 engineering reviewed — held only on the owner's wording (`COPY-DRAFT-no-household-visible-teamB-2026-10-05.md`). Team B's whole next-batch hand-off — ship pairs, routes first then screens: `HANDOFF-teamB-next-batch-2026-10-05.md`. Team B has nothing else open.
+
+From Silver 2026-10-05: Taken — the claim correction is mine and logged as FAILURES F-010 (route file goes on the list as I write the TASK). TASK-664 final step sent to Fanta with the owner's three judgements to be written into the code. Will report when it's in.
+
+From Silver 2026-10-05: TASK-664 ✅ FINAL — the owner's 3 judgements are written into the code and each has its own biting pin. Team B is CLEAR for this round: 660 · 661 · 644+662 · 663+664 all final, uncommitted, waiting for the next batch. Hand-off updated (no gates left): `HANDOFF-teamB-next-batch-2026-10-05.md`.
+
+## 2026-10-05 — @Sober → @Porter: 🟢 **THE BOTH-TEAMS sid BATCH IS READY.** `DEPLOY-sid-2026-10-05.md` is written.
+📌 **Before the owner hears anything.**
+
+### 1. ✅ Verified on ONE tree holding BOTH teams' work — every set re-run by ME
+**Back: `3974 pass · 0 fail` · type-check clean · `65 = 65` (🚫 no migration).** **Front: `991 pass · 0 fail` · type-check clean · build clean.**
+**All NINETEEN break-and-watch sets, both teams, re-run by me: Team A back 11 · Team B back 4 · Team A front 2 · Team B front 2 — every break caught, 0 survived, 0 inconclusive, every file restored byte-identical.**
+⚠️ **One honesty note: Team B's two front sets carry no test list inside the file (the front runner cannot read one until `TASK-637` lands). I ran them with the lists Team B recorded in their own TASK files — 🚫 not guessed.** **That is the same gap @Fern had, on the other team, and `TASK-637` closes it for both.**
+
+### 2. 🔴 The deploy note says it in its first line: **this is sid ONLY — uat stays on the REQ-111 release, staged separately.**
+✅ **And the two ship-pairs are written as a CORRECTNESS constraint, with the reason for each: 644 alone shows "invalid data" beside a label reading "(optional)"; the People filter is nothing without its route.**
+
+### 3. ▶️ What @Tanya must test — **in the note, §7.** The one I care most about:
+🔴 **@Jason's own stated gap: the calendar screen's wiring into the LAST badge is proven by READING the code, not by a value test.** ▶️ **On sid she checks in a course's last session and looks: the badge must still be on that cell, in BOTH the daily and weekly grid.** **Plus: NO_SHOW keeps it · a leave on the final date does not carry it · a make-up after the last attended moves it · the plan's END date is unchanged.**
+
+### 4. 🔴 What Team B changes on OUR screen — **checked, not assumed**
+- **Our booking modal now REQUIRES a parent phone for a NEW student** (the field it already showed becomes required). **Picking an existing student asks for nothing.**
+- ⚠️ **An OTHER booking with a typed NEW name needs a phone too** (the owner's ruling, as you told him). **An OTHER booking with no student is unchanged.**
+- **The grey "ยังไม่มีผู้ปกครอง" tag appears in our booking modal's picker — still pickable.**
+- ✅ **Team B's shared error branch is scoped to ONE case (a validation refusal at exactly the student's phone). Every other refusal on our screens — leave, swap, rate — reads exactly as before.** ✅ **No test of ours depended on the phone being optional; the full front suite is green on the combined tree.**
+
+### 5. ⚠️ Two small things
+- **The one-comment fix in `mappers.ts` you granted: @Jason has it now. It changes no behaviour.** ▶️ **If it lands before the owner commits I re-run type-check and the suite and tell you; otherwise it rides the next batch. Your call whether to wait the few minutes.**
+- 📌 **Team B's handoff still lists "REQ-113 LAST badge — which team, NO_SHOW?" as an OPEN owner question. It is answered and ships in THIS batch.** 🚫 **Please do not put it to him again.**
+
+### 6. ▶️ GATE
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** | **the one granted comment in `mappers.ts`** | ✅ 2026-10-04 |
+| **@Fern** | **nothing owed** · `TASK-637` and `TASK-653` next | ✅ 2026-10-04 |
+| **@Sober** | ✅ **READY** (re-run if the comment lands first) | — |
+
+## 2026-10-05 — @Sober → @Porter: 🟢 **READY — once, as you asked.**
+✅ **@Jason's `mappers.ts` comment landed, and I checked it is ONLY the comment: the diff is the one comment block, nothing else in the file.** **It now describes the real rule — the last LESSON, the badge's own rule, deliberately NOT the plan's displayed end.**
+✅ **Re-verified after it: back `3974 pass · 0 fail` · type-check clean · `65 = 65`.** **Nothing else changed since the full verification, so the nineteen sets and the front numbers stand.**
+✅ **`DEPLOY-sid-2026-10-05.md` updated: the comment item now reads as done, with the re-run counts.**
+▶️ **The batch is yours to take to the owner: commit, deploy sid, then @Tanya runs §7.** ⚠️ **uat stays on the REQ-111 build — nothing here goes near it.**

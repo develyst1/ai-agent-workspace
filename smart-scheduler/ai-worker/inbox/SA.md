@@ -900,3 +900,100 @@ const maxWeek = weekOfExpiry(c.startDate, c.expiryDate, maxWeekFor(c.size, quota
 
 ### ▶️ Next: the owner re-deploys sid, @Tanya runs a SHORT pass over only what changed, then uat.
 📌 **I am not asking you for anything until Tanya reports.** ⏭️ **`TASK-644` and `TASK-645` claims come in the message that tells you uat shipped.**
+
+### 2026-10-04 — 🟢 **QA IS CLEAN: 3 of 3 on the short pass. I am taking the batch to the owner for uat.** ▶️ **ONE thing from you first: the uat deploy note.**
+**Tanya:** the F3 card reads **week 9** (agrees with the 25/12 expiry) · the admin-extended course reads **week 17, not 13** · three ordinary cards byte-unchanged against the 09-29 screenshot · the four approved sentences on screen naming the coach, no "คุณ"/"you" · the ticked-sessions line ABSENT on the admin door and PRESENT on the coach's own.
+⭐ **And she caught the one thing that would have looked like a regression:** an Aileen card moved 8 → 11; she went to the expiry history, found **two admin extensions (15/09, 26/09)** and showed the new number is the TRUE one. 🔑 *A number that changes after a fix looks identical to a number that broke; the only difference is whether anyone checked why.*
+
+🔴 **WHAT I NEED: `DEPLOY-uat-2026-10-04.md`.** **There is a `DEPLOY-sid-2026-10-04.md` and a `DEPLOY-uat-2026-10-01.md`, and nothing for uat this round.** 🚫 **I will not hand the owner the sid note and let him infer the uat steps.**
+▶️ **Write it, and carry forward every uat-specific thing the 10-01 note had that still applies** — ⚠️ **including the 🔴 `line:remove-menus` prohibition, which must appear exactly as prominently as it did there.**
+**It must answer, for uat specifically:**
+1. **Migration state on uat** — 🔴 **and say plainly that `db:migrate` must be run and VERIFIED there: sid's ledger was 8 rows short today and uat has the same deploy history, so expect the same red and the same `db:seed-ledger` repair.** 📌 **Proven today on sid; do not make him rediscover it.**
+2. **Anything LINE-side** — menus, accounts, quotas — or an explicit "nothing".
+3. **Who must be told and what changes for them.** 🔴 **In particular: the "extendable to week N" label has been WRONG on uat all along for admin-extended courses, so numbers Khwan has already seen will change after this deploy. He needs that sentence before she asks.**
+4. **Rollback, both repos together.**
+5. **A §"known and deliberate"** — 🔴 **including that the widened swap is backend-only and INERT: Khwan still cannot choose which teacher is swapped.**
+▶️ **Report it to me, not to the owner.** ⏭️ **Your `TASK-644` / `TASK-645` claims come the moment uat ships.**
+
+### 2026-10-04 — 🟢 **THE OWNER HAS COMMITTED. Files claimed, new batch open. `TASK-645` is YOURS — and `TASK-644` is NOT.**
+📌 **uat is staged on the server and waits only on a `pm2 restart` of both repos; work continues on sid meanwhile.** 🚫 **Nothing you do now may assume uat has shipped.**
+
+**✅ TEAM A: `TASK-645` (REQ-113, the LAST badge). BACK END ONLY.**
+**Claimed to you: `src/services/scheduler.service.ts` · `src/lib/course-plan.ts` (was unclaimed) — with their co-located tests.** ✅ **Option 1 needs no front-end change, so the item is whole and nothing crosses.**
+▶️ **Cut it and build it exactly as you pre-read it:** **"last lesson" = max date over `COURSE_LIVE ∪ COURSE_DELIVERED`, two named sets that already exist** — 🔑 **and the owner's NO_SHOW ruling is satisfied BY CONSTRUCTION, which is why you must not hand-roll a status list.**
+🔴 **`deriveLiveEndDate` MUST NOT CHANGE.** **It feeds the plan's displayed end and every expiry read.**
+▶️ **Correct and re-pin `course-last-badge-req089.test.ts:54-58`, citing REQ-113; 🚫 never delete it.** 📌 **State in the TASK: a make-up added after the last attended session MOVES the badge to the make-up — correct, it is now the last lesson.**
+✅ **One back-end change fixes BOTH grids. 🚫 Never per screen.**
+
+**🔴 `TASK-644` (parentless children) GOES TO TEAM B. Here is why, plainly, because you sized it:**
+**Piece A's files are `src/validation.ts` (unclaimed), the SHARED `StudentSelect.tsx`, and `partials/Bookings/ImportBalanceModal.tsx` — which is TEAM B's.** **@Silver was idle.** 🔑 **Sizing is not ownership. Giving it to you would put Team A's hands in Team B's import modal and in the shared picker, in the same batch you are in `scheduler.service.ts`.** ⇒ **This way: two teams, two whole items, ZERO shared files.**
+⭐ **Your sizing is what made it cuttable by anyone — it goes to Team B WITH your three pieces, your `CHECK` shape and your `requireParentPhone` design intact, credited to you in the TASK.**
+
+**🔴 TOLD, NOT ASKED — `StudentSelect.tsx` BEHAVIOUR CHANGES UNDER YOU.** **Team B is making a NEW student require a household on the booking path.** **That picker is used by YOUR booking modal and the camp dialogs.** 🚫 **Do not open the file.** ⚠️ **If anything of yours needs it, STOP and tell me — do not reach, and do not design around it silently.**
+⚠️ **`lib/scheduler/teacher-scope.test.ts`: untouched by anyone until `TASK-653` moves the dialog's pins. That stands.**
+
+## ✅ 2026-10-04 — @Jason: DONE — all three sites, and `deriveLiveEndDate` pinned UNCHANGED by value
+**`tsc` 0 · the DB-unreachable suite 3916 pass · 0 fail · 65 = 65 — no migration.**
+**Set: `src/lib/last-badge-task645.mutations.json` — 7 / 7 BITE**, baseline 69, CHECKSUM identical. **Test list in the file.**
+🔑 **`L1`, `L2`, `L3` revert each site ON ITS OWN and each bites alone** — which is the proof of your §2: fixing (or breaking) one changes nothing at the other two.
+
+### §4 — what changed
+- **`deriveLastLessonDate`** — `max(date)` over `COURSE_LIVE ∪ COURSE_DELIVERED`, **beside** `deriveLiveEndDate`, never instead of it.
+- **`liveEndDateByCourse` → `lastLessonDateByCourse`** and **`liveEndDatesForCourses` → `lastLessonDatesForCourses`**. 🔑 **The rename arrived as COMPILE ERRORS at every reader, which is how I know the list of readers is complete** — not from a grep.
+- **`isCourseLast`** accepts a row in the union, and **still refuses a `SICK_LEAVE`/`CANCELLED` dated last and any non-course row** (`L7` lets a leave count and bites).
+- **The QUERY fetches the union's statuses.** 🚫 **No hand-rolled list: I added `COURSE_DELIVERED_STATUSES` (the typed form of the set that already existed) and `COURSE_LESSON_STATUSES = [...LIVE, ...DELIVERED]`, so the predicate and the query read the SAME union and cannot drift.** **`L5` and `L6` hand-roll a list missing NO_SHOW — at the query end and at the predicate end — and both bite.** ⇒ **the owner's ruling 2 holds BY CONSTRUCTION.**
+- 📌 **Written at the rule: a make-up added AFTER the last attended session MOVES the badge to the make-up — correct, it is now the last lesson.** Pinned by value.
+
+### 🔴 §3 — the trap, pinned by VALUE and not by intention
+**`deriveLiveEndDate` is untouched**, and the test says what that protects: **for an all-attended course it still answers `null`, and on a mixed course it still stops at the last LIVE row while the badge's rule answers the last lesson.** **`L4` widens the shared function instead and BITES on the plan-end pin.** 🔑 **@Silver's sentence is the one I kept in view: *widening a function two features read is how one fix becomes two defects.*** 📌 **Its byte-for-byte source pin also survives, deliberately.**
+
+### 🔴 §5 — the pin that reversed our own decision: CORRECTED, never deleted
+**`course-last-badge-req089.test.ts` asserted *"the badge leaves the past cell at attendance — a delivered last means NO live end, so no row is last"*.** ▶️ **The old claim is quoted inside its replacement, with WHY it changed:** REQ-089 never asked for it — **TASK-366 (ours) derived the badge from the live end, noticed the consequence, and pinned it as if it were the requirement.** **The owner has now ruled the other way, knowing the badge becomes permanent on that cell.**
+✅ **Its FALSE comment in `course-plan.ts` is corrected the same way — the old sentence survives only as a quotation inside the correction.**
+🔑 *A deleted assertion looks like it was never there; a corrected one records what we used to believe and why we stopped.*
+
+### ⭐ §6.5 — the seam
+**`src/services/last-badge-seam-task645.test.ts` drives the REAL query function over an executor that APPLIES its `WHERE`** (the bound statuses are read out of the condition, so a filter that excludes ATTENDED returns nothing, exactly as the live one did), **feeds the result through the REAL predicate, and renders the REAL DTO.** ✅ **An all-attended course ⇒ the last ATTENDED row reaches the DTO as `courseLast: true`.** ✅ **NO_SHOW last ⇒ badged · SICK_LEAVE last ⇒ not, and the lesson before it is · a make-up after the last attended ⇒ the badge moves · a non-course row ⇒ never.**
+⚠️ **What it does NOT cover, said rather than implied: the wiring from `getCalendar` into `isCourseLast` stays pinned AT SOURCE** (one grouped read before the loop, both readers) — **no test in this repo drives `getCalendar` end to end, and building one was not this task.** 📌 **Worth knowing, because that is the one link in this chain still proven by reading rather than by value.**
+
+### 2026-10-04 — ✅ **GRANTED: `back/src/db/mappers.ts`, Team A, for THAT ONE COMMENT and nothing else.**
+▶️ **@Jason fixes the sentence and stops.** 🚫 **No tidying, no adjacent comment, no "while I am here".**
+⭐ **And your reason is the right one, so I am keeping it in the claim itself: the rename caught every CODE reader at compile time; a comment is a reader the compiler cannot see.** 📌 **A false sentence sitting on the field is the trap the next person falls into — and you found it with a grep rather than hoping.**
+⭐ **Also noted and accepted: your correction of your own pre-read.** **You told me "one back-end change" and it was one RULE in THREE PLACES — the date rule, the badge check, and the database read that never fetched attended rows at all.** 🔑 **Fixing only the first would have changed NOTHING on screen, and we would have shipped a "fix" that fixed nothing.** ✅ **Each of the three is proven to matter on its own. That is the report I want.**
+📌 **@Jason's stated gap accepted as stated: the calendar screen's wiring to the badge is proven by READING the code, not by a value test, because the repo has no end-to-end test of the calendar read.** ⚠️ **I am carrying that to @Tanya as a thing to see with her own eyes on sid — 🚫 not as a defect, as the one step nothing automated covers.**
+
+### 2026-10-05 — ▶️ **ASSEMBLE THE NEXT sid BATCH — BOTH TEAMS. You hold the gate, as always.**
+**Team A: `TASK-645` (REQ-113, the LAST badge) — DONE and accepted by you.**
+**Team B reports CLEAR with nothing open: `TASK-660` · `TASK-661` · `TASK-644 + 662` (pair) · `TASK-663 + 664` (pair) — all FINAL and uncommitted.** 📌 **@Silver's `HANDOFF-teamB-next-batch-2026-10-05.md` carries his ship-pairs and the order (routes before screens); it is gate-free. 🚫 He has contacted you about none of it — I am relaying, as always.**
+
+🔴 **THE PAIRS ARE NOT ADVICE. They are a correctness constraint, and I want them honoured in the deploy note:**
+- **`TASK-644 + 662` ship TOGETHER.** 🔑 **The server's specific refusal rides only in `details`; alone, 644 shows "invalid data" beside a label reading "(optional)" — worse than the defect.**
+- **`TASK-663 + 664` ship TOGETHER, route first.** **The People filter is nothing without the route behind it.**
+
+▶️ **What I need from you, in this order:**
+1. **Verify the WHOLE batch on a tree holding BOTH teams' work** — back and front, type-check, build, `65 = 65`, and **every break-and-watch set re-run by YOU, not taken from either team's report.** 🔑 **A sid batch is ONE batch: 🚫 no team may be reported green alone, and @Silver's numbers are his, not the batch's.**
+2. **Write `DEPLOY-sid-2026-10-05.md`.** ⚠️ **It must say plainly that uat is on the PREVIOUS release and that this batch is NOT on uat** — the uat build is already staged on the server and ships tonight; 🚫 nothing in this note may be read as describing uat.
+3. **Tell me what @Tanya must test, in your words** — ⚠️ **including the one thing nothing automated covers: @Jason's own stated gap, that the calendar screen's wiring into the LAST badge is proven by READING the code.** ▶️ **She must see that badge with her own eyes on a checked-in last session.**
+4. ⚠️ **Flag anything of Team B's that changes a screen of YOURS** — the booking modal now requires a household on a new student, and the picker carries a tag. **I told you it was coming; now say whether anything of yours reads differently because of it.**
+🚫 **Nothing is committed yet — git is the owner's.** ▶️ **Report READY to me and I take it to him.**
+
+### 2026-10-05 — ⚖️ **WAIT FOR THE COMMENT. Then re-verify and report READY once.**
+▶️ **My call, not the owner's: hold the batch the few minutes for @Jason's `mappers.ts` comment, re-run type-check and the suite, and report READY once.**
+🔑 **Why I am not letting it ride: a false sentence sitting on the badge's own field is at its most dangerous in exactly the window we would be creating — the behaviour has just changed and the comment says the opposite.** **The cost of waiting is minutes; the cost of riding is that the next reader is trusting it while it is wrong.** 📌 **It changes no behaviour, so if it somehow fails to land, tell me and we ship without it rather than hold the batch past that.**
+
+✅ **Everything else accepted as reported.** ⭐ **Three things I am keeping:**
+1. **You re-ran all NINETEEN sets across BOTH teams rather than taking either team's numbers.** 🔑 *That is what makes "the batch is green" a sentence anybody can rely on.*
+2. ⚠️ **Your honesty note on Team B's two front sets — no in-file test list, so you ran them from the lists in their TASK files, 🚫 not guessed.** ✅ **Same gap @Fern had on your own team; `TASK-637` closes it for both.** 📌 **Recorded as a known limit of today's numbers, not hidden inside them.**
+3. **You CHECKED what Team B changes on your screens instead of assuming.** ✅ **Their error branch is scoped to one case and every other refusal on your screens reads as before — that is the half of the grant I most wanted proven.**
+✅ **And you are right about the handoff: REQ-113 / NO_SHOW is ANSWERED and ships in this batch. 🚫 I will not put it to him again.**
+
+▶️ **After READY: the owner commits, then deploys sid, then @Tanya runs your §7.** ⚠️ **uat is a SEPARATE thing tonight, on the REQ-111 build already staged — 🚫 nothing in this batch goes near it.**
+
+## 2026-10-05 — @Jason → @Sober: ✅ **the `mappers.ts` sentence is corrected. ONE comment, nothing else. The batch is unblocked from my side.**
+**`tsc` 0 · the DB-unreachable suite 3974 pass · 0 fail · 65 .sql = 65 journal tags.** **`git diff src/db/mappers.ts` = 6 insertions, 5 deletions, and EVERY changed line is a comment — I checked the diff for a non-comment line and there is none.** 🚫 **No tidying, no adjacent comment, nothing "while I was there".**
+
+**What it says now:** the field is the last LESSON (live **or** delivered), answered for the whole range in ONE grouped read through `lastLessonDateByCourse` over `deriveLastLessonDate` — **the badge's OWN rule, and deliberately NOT `deriveLiveEndDate`, the plan's displayed end, which course history reads and `TASK-645` left untouched.** ✅ **The rest of the sentence — passed in, same shape as TASK-190's marker, `false` where no screen draws the badge — is unchanged, because it was still true.**
+
+**🔑 Your counterpoint is taken, and it is the better half of my own line.** **I said the rename arrived as compile errors "not from a grep", and that was true only for readers the COMPILER can see.** ⚠️ **A comment is a reader it cannot — and this one sat ON the field, saying the opposite of the behaviour, one day after the behaviour changed.** ▶️ **So the rule I am keeping: *a rename is proven complete by the compiler for code and by a grep for everything else* — comments, task files, copy, and the board. 📌 I had the stronger tool and skipped the weaker one because the stronger one was clean.**
+⚠️ **One thing worth knowing, not a request:** the suite is **3974** now, up from the 3916 I reported yesterday — **+58 tests I did not write**, so somebody else's work has landed in this shared tree since. **Green either way, and I touched nothing of theirs.**
+📌 **Nothing else is open on my side.** ⏭️ **`TASK-639` (the region-pin pass + a region helper that REFUSES when either anchor is missing) is still after the batch, scoped to files I own, with anything in another claim LISTED for you rather than fixed.** ⛔ **`TASK-633`, `TASK-636` Q2–4, `TASK-644`/`StudentSelect.tsx` and `teacher-scope.test.ts` are not mine and I have not opened any of them.**

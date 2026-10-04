@@ -1,21 +1,63 @@
 #!/usr/bin/env node
 // check-hygiene.mjs — machine-enforced coordination-file discipline.
-// Usage: node check-hygiene.mjs <project-folder-name>   (or bun check-hygiene.mjs ...)
-// Exit 0 = PASS, exit 1 = FAIL (dispatcher must run a housekeeping hop first).
+// Usage: node check-hygiene.mjs <project-folder-name> [--json]   (or bun ...)
+//        node check-hygiene.mjs --list [--json]        every project with an ai-worker/
+// Exit 0 = PASS, exit 1 = FAIL (dispatcher must run a housekeeping hop first),
+// exit 2 = the gate could NOT RUN. 🔑 Exit 2 is not a worse FAIL, it is a different
+// thing: 0/1 are a verdict, 2 is the absence of one. Under --json that distinction is
+// `ok` (did it run) vs `result` (what it found), so a reader never infers it from the
+// exit code alone and never has to parse stderr.
 // Owned by Marie (MARIE.md). Thresholds agreed with the human 2026-08-25;
 // v3 (knowledge file, active-team inbox, log-date rules) approved 2026-09-04.
 // v4 (knowledge SHAPE, inbox FAIL, boot budget) — Atlas ORDER 6, owner's go 2026-09-23.
 // v5 (FAILURES.md route, RESUME-HERE.md, REQ→TASK coverage) — ORDER 12+13, owner 2026-09-28.
+// v6 (--json / --list, so the gate can BE the API for harness-console) — ORDER 16 ①,
+//    owner's go 2026-10-05. The human output above is unchanged, byte for byte, and that
+//    was verified across all 14 desks including exit codes before this shipped.
 
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const WS = dirname(fileURLToPath(import.meta.url));
-const project = process.argv[2];
-if (!project) { console.error("usage: check-hygiene.mjs <project>"); process.exit(2); }
+// ─── `--json` / `--list` (ORDER 16 ①, owner's go 2026-10-05) ────────────────────────
+// An ADDITION, never a rewrite: the human output below is unchanged, byte for byte.
+// --json only picks a different PRINTER at the very end; it re-runs and re-decides
+// nothing. harness-console renders this instead of parsing markdown, so there is one
+// source of truth for what the rules are — when a rule changes, both change together.
+const argv = process.argv.slice(2);
+const JSON_MODE = argv.includes("--json");
+const LIST_MODE = argv.includes("--list");
+const SCHEMA = 1;          // Q-5(c): bump when a field changes meaning or disappears.
+const GATE_VERSION = "v6"; // human-facing; SCHEMA is what a reader branches on.
+
+// Q-5(a): a gate ERROR IS NOT A FAIL, and a reader must never have to tell them apart
+// by exit code alone. `ok` says whether the gate RAN; `result` says what it FOUND.
+// Under --json both go to STDOUT as JSON, so nothing has to parse stderr. Exit codes
+// are unchanged: 0 = PASS, 1 = FAIL, 2 = the gate could not run.
+const die = (code, message) => {
+  if (JSON_MODE) console.log(JSON.stringify({ schema: SCHEMA, gate: GATE_VERSION, ok: false, error: { code, message } }, null, 2));
+  else console.error(message);
+  process.exit(2);
+};
+
+// Q-5(b): the project list is its OWN call. One project per run means a desk that
+// cannot be read fails alone, instead of taking the whole screen down with it.
+if (LIST_MODE) {
+  const names = readdirSync(WS, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && !e.name.startsWith(".") && !e.name.startsWith("_"))
+    .map((e) => e.name)
+    .filter((n) => existsSync(join(WS, n, "ai-worker")))
+    .sort();
+  if (JSON_MODE) console.log(JSON.stringify({ schema: SCHEMA, gate: GATE_VERSION, ok: true, generatedAt: new Date().toISOString(), projects: names }, null, 2));
+  else for (const n of names) console.log(n);
+  process.exit(0);
+}
+
+const project = argv.find((a) => !a.startsWith("--"));
+if (!project) die("NO_PROJECT", "usage: check-hygiene.mjs <project> [--json]  |  check-hygiene.mjs --list [--json]");
 const AW = join(WS, project, "ai-worker");
-if (!existsSync(AW)) { console.error(`no ai-worker at ${AW}`); process.exit(2); }
+if (!existsSync(AW)) die("NO_AI_WORKER", `no ai-worker at ${AW}`);
 
 const KB = 1024;
 const LIMITS = {
@@ -71,6 +113,21 @@ const KNOWLEDGE_FILES = ["SYSTEM-FACTS.md", "FACTS.md", "KNOWLEDGE.md"];
 const NEVER_COMPACT = new Set(KNOWLEDGE_FILES);
 
 const fails = [], warns = [];
+// Raw numbers for `--json`, recorded AT THE POINT each check computes them (ORDER 16 ①).
+// Never recomputed afterwards: a second computation of the same number is how a reader
+// and the gate begin to disagree, which is the whole reason this flag exists instead of
+// a markdown parser in the UI.
+// Every scalar starts as null so the SHAPE is the same on every project. A key that is
+// simply absent when a check did not apply forces the reader to tell "not measured" from
+// "measured zero" by guessing, and it will guess wrong on the quiet projects — the ones
+// nobody is watching. Stable shape is half of what makes this a contract.
+const metrics = {
+  files: [], roles: [], inbox: [], boardRows: [],
+  boardLongCells: null, boardLongCellRows: [], boardClosedRows: null, reqRowsWithoutTask: [],
+  dispatcherRuns: null, today: null, newestLogDate: null, daysSinceNewestLog: null,
+  active: null, logLongEntries: null, knowledgeFile: null, failuresUnreviewed: null,
+  resumeSnapshotHeadings: null, resumeBehindDays: null,
+};
 const size = (p) => (existsSync(p) ? statSync(p).size : 0);
 const fmt = (n) => `${(n / KB).toFixed(1)}KB`;
 // Split on newlines without caring whether a file was saved LF or CRLF. These files are
@@ -100,6 +157,7 @@ const active = newestLogDate !== null && daysSince(newestLogDate) <= LIMITS.acti
 // 1) board.md — size + cell length
 const boardPath = join(AW, "board.md");
 const boardSize = size(boardPath);
+metrics.files.push({ name: "board.md", bytes: boardSize, limitBytes: LIMITS.board });
 if (boardSize > LIMITS.board) fails.push(`board.md ${fmt(boardSize)} > ${fmt(LIMITS.board)}`);
 if (boardSize) {
   // ORDER 15.3 item 2 (owner's go 2026-10-02): the COUNT alone made this a HUNT. The
@@ -118,6 +176,8 @@ if (boardSize) {
     const id = /\b((?:REQ|TASK|DEF)-\d+)/.exec(l);
     longCellRows.push(id ? id[1] : "(row with no id)");
   }
+  metrics.boardLongCells = longCells;
+  metrics.boardLongCellRows = [...new Set(longCellRows)];
   if (longCells > 0) {
     const rows = [...new Set(longCellRows)];
     fails.push(
@@ -138,6 +198,7 @@ if (boardSize) {
       const status = (l.split("|")[4] || "").replace(/[*`]/g, "").replace(/^[^A-Za-z]+/, "");
       return /^(DONE|DELIVERED|CODE ACCEPTED)\b/i.test(status);
     }).length;
+  metrics.boardClosedRows = closedRows;
   // Proportionate on purpose: piling up closed rows only BLOCKS once the board is
   // actually running out of room (>60% of the size gate). Below that it is a nudge,
   // not a stop — a small board carrying old rows is on the wrong trajectory, not in
@@ -159,16 +220,70 @@ if (boardSize) {
     .filter((l) => POST_SPEC.test((l.split("|")[4] || "").replace(/[*`]/g, "").replace(/^[^A-Za-z]+/, "")))
     .filter((l) => !/TASK-\d/.test(l))
     .map((l) => (l.split("|")[1] || "").trim());
+  metrics.reqRowsWithoutTask = uncovered;
   if (uncovered.length)
     warns.push(`board.md: ${uncovered.length} REQ row(s) past SPEC_DONE naming no TASK id (${uncovered.slice(0, 6).join(", ")}${uncovered.length > 6 ? ", …" : ""}) — nothing is carrying them; @SA to link or split`);
+
+  // WHO HOLDS THE BALL (harness-console REQ-001 C-2). Read the COLUMN HEADER, never a
+  // fixed index: the desks do not agree on column order, and a hard-coded position
+  // reports the WRONG PERSON silently the first time someone inserts a column. Rows
+  // are emitted as they stand — the gate does not decide what a status means.
+  {
+    const rows = [];
+    let hdr = null;
+    for (const raw of readFileSync(boardPath, "utf8").split(NL)) {
+      const line = raw.trim();
+      if (!line.startsWith("|")) { hdr = null; continue; }
+      const cells = line.split("|").slice(1, -1).map((c) => c.trim());
+      if (!cells.length) continue;
+      if (cells.every((c) => /^:?-{2,}:?$/.test(c))) continue;              // separator row
+      const low = cells.map((c) => c.replace(/[*`]/g, "").toLowerCase());
+      if (low[0] === "id" || low[0] === "item" || low[0] === "req") { hdr = low; continue; }
+      if (!/^(REQ|TASK|DEF)-\d/.test(cells[0].replace(/[*`]/g, "").trim())) continue;
+      const pick = (names) => {
+        if (!hdr) return null;
+        for (const n of names) {
+          const i = hdr.findIndex((h) => h === n || h.startsWith(`${n} (`));
+          if (i >= 0 && cells[i]) return cells[i];
+        }
+        return null;
+      };
+      // "Who holds the ball" is spelled SIX different ways across the live desks, and I
+      // only know that because I read all 14 boards instead of assuming the template's
+      // word. Matching only "Ball"/"Owner" returned null for every row on smart-scheduler
+      // — 147 rows, silently empty, and a screen that renders "nobody holds the ball" on
+      // the busiest project in the workspace is worse than a screen that renders nothing.
+      const BALL_HEADERS = ["ball", "assignee", "owner", "owner of next step", "next step · tasks", "tester"];
+      // `hdr` is null for a row that has NO header above it — which is not hypothetical:
+      // smart-scheduler's write path has been stacking header-less rows above the board
+      // title for weeks. An unguarded read here threw and took the WHOLE gate down, on
+      // the three desks that need it most. A lens must not crash on the mess it exists
+      // to show.
+      const bi = hdr ? hdr.findIndex((h) => BALL_HEADERS.includes(h)) : -1;
+      rows.push({
+        id: cells[0].replace(/[*`]/g, "").trim(),
+        title: pick(["title"]),
+        status: pick(["status"]),
+        // ballColumn names WHICH header this came from. The vocabulary is not agreed
+        // across desks, so the console can show its provenance instead of pretending
+        // "Assignee" and "Owner of next step" are the same promise. null means this
+        // board has no such column — an honest absence, not a wrong name.
+        ball: bi >= 0 && cells[bi] ? cells[bi] : null,
+        ballColumn: bi >= 0 ? hdr[bi] : null,
+      });
+    }
+    metrics.boardRows = rows;
+  }
 }
 
 // 2) dispatcher-state.md — size + run count
 const dsPath = join(AW, "dispatcher-state.md");
 const dsSize = size(dsPath);
+metrics.files.push({ name: "dispatcher-state.md", bytes: dsSize, limitBytes: LIMITS.dispatcherState });
 if (dsSize > LIMITS.dispatcherState) fails.push(`dispatcher-state.md ${fmt(dsSize)} > ${fmt(LIMITS.dispatcherState)}`);
 if (dsSize) {
   const runs = (readFileSync(dsPath, "utf8").match(/^## RUN /gm) || []).length;
+  metrics.dispatcherRuns = runs;
   if (runs > LIMITS.dispatcherRuns) fails.push(`dispatcher-state.md holds ${runs} runs > ${LIMITS.dispatcherRuns} (rotate old runs to archive/)`);
 }
 
@@ -176,6 +291,11 @@ if (dsSize) {
 const logPath = join(AW, "log", `${today}.md`);
 const logExists = existsSync(logPath);
 const logSize = size(logPath);
+metrics.today = today;
+metrics.newestLogDate = newestLogDate;
+metrics.daysSinceNewestLog = newestLogDate ? daysSince(newestLogDate) : null;
+metrics.active = active;
+metrics.files.push({ name: `log/${today}.md`, bytes: logSize, exists: logExists, warnBytes: LIMITS.logToday, limitBytes: null });
 
 // A MISSING today's log used to score size 0 and sail through silently — which is exactly
 // how this workspace misfiled its log by date four times in five days without the gate
@@ -194,6 +314,7 @@ else if (logSize > LIMITS.logToday)
 if (logSize) {
   const entries = readFileSync(logPath, "utf8").split(/^## /m).slice(1);
   const long = entries.filter((e) => e.split("\n").length > LIMITS.logEntryLines).length;
+  metrics.logLongEntries = long;
   if (long > 0) warns.push(`log/${today}.md has ${long} entr(ies) > ${LIMITS.logEntryLines} lines (rule: <=15 — point at files instead of retelling)`);
 }
 
@@ -247,6 +368,14 @@ if (existsSync(inboxDir)) {
     }
     if (cur) blocks.push(cur);
     const tooLong = blocks.filter((b) => b.lines > LIMITS.inboxMsgLines);
+    // Recorded here, from the SAME blocks the check just measured — never re-split for
+    // the JSON. Two splitters is how a reader and the gate start disagreeing.
+    metrics.inbox.push({
+      name: `inbox/${f}`, bytes: s, limitBytes: LIMITS.inboxMsg,
+      messages: blocks.length, maxLines: blocks.reduce((m, b) => Math.max(m, b.lines), 0),
+      overLong: tooLong.map((b) => ({ lines: b.lines, heading: b.head.replace(/^#+\s*/, "").slice(0, 160) })),
+    });
+    metrics.files.push({ name: `inbox/${f}`, bytes: s, limitBytes: LIMITS.inboxMsg });
     if (tooLong.length) {
       // Name the SENDER: the fix belongs with whoever is writing briefs into a queue, and
       // a rule nobody is named by is a rule nobody owns. The sender is whatever stands to
@@ -282,6 +411,8 @@ if (existsSync(inboxDir)) {
 // from the logs anyway. smart-scheduler proved the cost — "QA cannot test LINE" was
 // written down and lost five separate times before it was finally recorded.
 const knowledgeFile = KNOWLEDGE_FILES.find((f) => existsSync(join(AW, f)));
+metrics.knowledgeFile = knowledgeFile ?? null;
+if (knowledgeFile) metrics.files.push({ name: knowledgeFile, bytes: size(join(AW, knowledgeFile)), limitBytes: null, exempt: "size (append-only knowledge)" });
 if (!knowledgeFile) {
   warns.push(`no ${KNOWLEDGE_FILES[0]} — owner-stated facts have nowhere to live but the logs, where they scroll away`);
 } else {
@@ -323,6 +454,8 @@ if (!knowledgeFile) {
         currentId = null;
       }
     }
+    metrics.failuresUnreviewed = newIds;
+    metrics.files.push({ name: "FAILURES.md", bytes: size(fPath), limitBytes: null, exempt: "size (append-only)" });
     if (newIds.length >= LIMITS.failuresNewFail)
       fails.push(`🔴 FAILURES.md: ${newIds.length} unreviewed (${newIds.slice(0, 8).join(", ")}${newIds.length > 8 ? ", …" : ""}) — the team is decaying faster than it is being repaired; stop shipping features on top and เรียก Atlas`);
     else if (newIds.length > 0)
@@ -345,6 +478,7 @@ if (!knowledgeFile) {
   const rPath = join(AW, "RESUME-HERE.md");
   if (existsSync(rPath)) {
     const rSize = size(rPath);
+    metrics.files.push({ name: "RESUME-HERE.md", bytes: rSize, warnBytes: LIMITS.resumeWarn, limitBytes: LIMITS.resumeFail });
     if (rSize > LIMITS.resumeFail) fails.push(`RESUME-HERE.md ${fmt(rSize)} > ${fmt(LIMITS.resumeFail)} — it is a page, not a log; it is REPLACED each session, never appended to`);
     else if (rSize > LIMITS.resumeWarn) warns.push(`RESUME-HERE.md ${fmt(rSize)} > ${fmt(LIMITS.resumeWarn)} (one page: what is live, what it waits on, from whom)`);
 
@@ -352,6 +486,7 @@ if (!knowledgeFile) {
     // A snapshot that is appended to is no longer a snapshot.
     const snapHeads = readFileSync(rPath, "utf8").split("\n")
       .filter((l) => /^#{1,6}\s/.test(l) && /RESUME HERE|Where we are/i.test(l)).length;
+    metrics.resumeSnapshotHeadings = snapHeads;
     if (snapHeads > 1)
       fails.push(`RESUME-HERE.md has ${snapHeads} "RESUME HERE"/"Where we are" headings — it is being APPENDED to. It is a snapshot: replace it, never stack it (that is what killed PROJECT-STATUS.md)`);
 
@@ -361,6 +496,7 @@ if (!knowledgeFile) {
       const rDate = new Date(statSync(rPath).mtime);
       const rIso = `${rDate.getFullYear()}-${String(rDate.getMonth() + 1).padStart(2, "0")}-${String(rDate.getDate()).padStart(2, "0")}`;
       const behind = daysSince(newestLogDate) === null ? 0 : Math.round((Date.parse(`${newestLogDate}T00:00:00`) - Date.parse(`${rIso}T00:00:00`)) / 86400000);
+      metrics.resumeBehindDays = behind;
       if (behind > LIMITS.resumeStaleDays)
         fails.push(`RESUME-HERE.md is ${behind} day(s) behind the newest log (${newestLogDate}) — a cold session would read a stale situation and look lost. PM rewrites it before ending any session`);
       else if (behind > 0)
@@ -382,10 +518,35 @@ if (!knowledgeFile) {
     const rolePath = join(AW, roleFile);
     if (!existsSync(rolePath)) continue;   // role not staffed on this project
     const boot = shared + size(rolePath) + size(join(AW, "inbox", `${role}.md`));
+    metrics.roles.push({ role, roleFile, inbox: `inbox/${role}.md`, bytes: boot, warnBytes: LIMITS.bootWarn, limitBytes: LIMITS.bootFail });
     const detail = `${role} boot read ${fmt(boot)} (PROTOCOL+board+${knowledgeFile ?? "no knowledge file"}+${roleFile}+inbox/${role}.md)`;
     if (boot > LIMITS.bootFail) fails.push(`🔴 ${detail} > ${fmt(LIMITS.bootFail)} — paid on every session, on every vendor's bill`);
     else if (boot > LIMITS.bootWarn) warns.push(`${detail} > ${fmt(LIMITS.bootWarn)}`);
   }
+}
+
+// ─── the two printers. Everything above produced the SAME fails/warns/metrics either
+// way; only the rendering differs, which is what keeps --json from drifting from the
+// text an owner reads.
+if (JSON_MODE) {
+  // Worst-first, in the gate's own order within each severity (REQ-001 C-2). The
+  // console shows the top N of this array and must not re-rank or invent lines.
+  const checks = [
+    ...fails.map((text) => ({ severity: "fail", text })),
+    ...warns.map((text) => ({ severity: "warn", text })),
+  ];
+  console.log(JSON.stringify({
+    schema: SCHEMA,
+    gate: GATE_VERSION,
+    ok: true,                               // the gate RAN; see `result` for what it found
+    generatedAt: new Date().toISOString(),
+    project,
+    result: fails.length ? "FAIL" : "PASS",
+    counts: { fail: fails.length, warn: warns.length },
+    checks,
+    ...metrics,
+  }, null, 2));
+  process.exit(fails.length ? 1 : 0);
 }
 
 for (const w of warns) console.log(`WARN  ${w}`);

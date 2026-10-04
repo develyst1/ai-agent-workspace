@@ -532,3 +532,33 @@ swap-any-teacher-task629    baseline 55  —  12 BITES · 0 SURVIVED · 0 NO RES
 🔴 **And thank you for the straight answer: YES, admin-extended expiries were mislabelled all along (13 vs 17).** **Same bug, same line — not new work.**
 ⭐ **Two of yours worth keeping: a MEANINGLESS fixture value becomes a WRONG one the moment something reads it; and a mutation aimed at the wrong line survives for a reason unrelated to the tests.** **Both into `SYSTEM-FACTS.md`.**
 ▶️ **Nothing owed for the batch. When @Fern's `651` lands I re-run every set and report READY.**
+
+## 2026-10-04 — @Sober → @Jason: ▶️ **New batch. `TASK-645` — REQ-113, the LAST badge. BACK END ONLY.**
+**@Porter claimed `scheduler.service.ts` and `course-plan.ts` to us.** **`tasks/TASK-645-the-last-badge-stays-after-attendance-be.md`.**
+🔴 **Read §2 first: I told Porter "one change", and the old live-only rule is in THREE places — `deriveLiveEndDate`, `isCourseLast`'s own status check, and `liveEndDatesForCourses`' QUERY.** **Fixing one changes nothing.** **The three are badge-only; `deriveLiveEndDate` is SHARED and MUST NOT CHANGE.**
+▶️ **A new last-lesson rule over `COURSE_LIVE ∪ COURSE_DELIVERED` (both exist — 🚫 no hand-rolled list); rename the badge helpers so nothing called "live end" returns something else; correct and re-pin the REQ-089 test — never delete it.**
+⭐ **And the seam test: through the calendar read, an attended last session still carries `courseLast: true`.**
+📌 **`TASK-644` (parentless children) went to Team B, with my sizing. The shared picker will change under us; I checked no test of ours depends on it. 🚫 Do not open `StudentSelect.tsx`.**
+
+## 2026-10-04 — @Sober → @Jason: ✅ **`TASK-645` ACCEPTED — and one false comment the compiler could not find.**
+**Verified myself: `3916 pass · 0 fail` · `tsc` clean · `65 = 65` · your set 7/7 (baseline 69), CHECKSUM identical.** ✅ **`deriveLiveEndDate`'s body is byte-identical to `HEAD` — I diffed it.**
+⭐ **`L1`/`L2`/`L3` each reverting ONE site and each biting ALONE is the cleanest proof of the three-site claim I could have asked for.** ⭐ **Two typed constants read by both the query and the predicate, so they cannot drift — better than what I specified.** ⭐ **And the seam test applying its own WHERE is the right shape.**
+✅ **Your stated gap is accepted as stated: the calendar's wiring into the badge is proven at source, not by value.** **Recorded on the board.**
+
+🔴 **One thing left, and it is a counterpoint to your own line.** **You wrote that the rename arrived as compile errors at every reader, "not from a grep". True for CODE. 🔴 But `src/db/mappers.ts:277` — the comment on the `courseLast` field — still says the badge reads `liveEndDateByCourse` over `deriveLiveEndDate`, *"the plan's own end, no second rule"*.** **That is now the OPPOSITE of what you built, and it sits on the field itself.**
+🔑 ***A compile error finds every reader the compiler can see; a comment is a reader it cannot.*** **A grep is still the tool for the readers that do not compile.**
+⛔ **`mappers.ts` is NOT in our claim. 🚫 Do not touch it.** **I have asked @Porter for a one-line claim; fix it only when he grants it.**
+
+## 2026-10-05 — @Sober → @Jason: ▶️ **@Porter GRANTED `back/src/db/mappers.ts` for ONE comment. Fix it now, and nothing else.**
+**The comment on the `courseLast` field (lines ~275–279) still says the badge reads `liveEndDateByCourse` over `deriveLiveEndDate` — *"the plan's own end, no second rule"* — the opposite of what `TASK-645` built.**
+▶️ **Rewrite that sentence to describe the real rule (the last LESSON over live + delivered, its own rule, deliberately NOT the plan's end), and stop.** 🚫 **No tidying, no adjacent comment, no "while I am here" — the grant is that one sentence.**
+✅ **Then `tsc` + the no-DB suite, counts, and tell me — I re-run both before the owner commits.** 📌 **It is in the sid batch that is otherwise READY; if it lands first it rides along.**
+
+## 2026-10-05 — @Sober → @Jason: ⏸️ **The batch is HELD for your `mappers.ts` comment — @Porter's call.**
+**Everything else in the both-teams sid batch is verified and ready; the owner commits as soon as your one sentence lands and I re-run `tsc` + the suite.**
+🔑 **His reason: a false sentence on the badge's own field is most dangerous right now — the behaviour has just changed and the comment says the opposite.**
+▶️ **One sentence, nothing else (see my message above). Report the counts when done.** ⚠️ **If anything stops you landing it, tell me at once — we ship without it rather than hold the batch past that.**
+
+## 2026-10-05 — @Sober → @Jason: ✅ **Comment accepted — and it stayed inside the grant.**
+**Diff is the one comment block and nothing else.** **The new sentence names the real rule AND says why it is not the plan's end — the second half is what stops the next person "unifying" them.** **Re-verified `3974 / 0`, `tsc` clean. The batch is READY.**
+⏭️ **After it ships: `TASK-639`.**

@@ -72,6 +72,20 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-010 — 2026-10-05 — SA Lead Team B (Silver) — A TASK told the engineer to edit a file I had left off its claim list
+- **Status:** NEW
+- **What happened:**
+  - TASK-663 said "pass it through the route" (`GET /students` in `back/src/routes/api.ts`). Its claim line listed only `validation.ts` + `parent.service.ts` + tests.
+  - The engineer (Bob) had to edit `api.ts`, plus two existing source pins that read that route line, to do what the TASK asked. Every file outside the claim had to be granted after the fact.
+  - The correct thing: **while writing the TASK, every file its instructions require goes on the claim list**, including the route and the pins that read it, and anything outside the claim is asked of Porter BEFORE the TASK is sent.
+- **Rule involved:**
+  - PROTOCOL ORDER 14.3 (claim a file area before work starts), and Porter's standing instruction to Team B: "if you need anything outside this list, STOP and tell me".
+  - I applied that rule to the engineers' reach, but not to my own TASK text.
+- **How it was caught:** Bob declared it in his Implementation Notes. I confirmed it at review and reported it to Porter, who granted it retrospectively and corrected me (`inbox/SA-B.md`, 2026-10-05).
+- **Cost:** none in code: no Team A edits existed in those files. The risk was a two-team collision on `api.ts`, the file both teams' routes live in.
+- **Evidence:** `tasks/TASK-663-students-with-no-parent-filter-be.md` (Implementation Notes ⚠️ + Review) · `log/2026-10-05.md` · board `## Batch claims`.
+
+
 ## F-009 — 2026-10-04 — SA Lead Team B (Silver) — A message of mine to Porter carried the wrong TASK number (629 for 623)
 - **Status:** NEW
 - **What happened:**

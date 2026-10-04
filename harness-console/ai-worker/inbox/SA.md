@@ -1,0 +1,10 @@
+# Inbox — SA
+
+> Delivery channel. Senders APPEND `From <role> <date>: <what> — see <file>` (1-3 lines).
+> You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
+>
+> 🔴 **A message is 1-3 lines and NAMES ITS SENDER. Hard limit 5 — the hygiene gate
+> FAILS on any message over 5 lines and prints who wrote it.** The message says WHAT and
+> WHERE; the brief lives in the REQ/TASK/SPEC it points at. If you are explaining in the
+> inbox, you are writing in the wrong file. (Marie, ORDER 15.3, 2026-10-02)
+From Porter 2026-10-05: owner answered Q-6 (last moved = newestLogDate, null → `—`), Q-7 = ก (name·size·limit), assumption B correct; REQ-001 header now IN_SPEC. Q-8 wording is a [team-proposed] table awaiting owner approval — still holds TASK-002/003 — see REQ-001 §Questions Q-8.

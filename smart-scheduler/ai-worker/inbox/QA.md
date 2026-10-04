@@ -76,3 +76,11 @@
 3. **The "families of the ticked sessions will be told" line must NOT appear on the admin door** — and must still appear on the TEACHER's own door.
 🟠 **The coach's generic `FORBIDDEN` is LEFT ALONE by the owner's ruling. 🚫 Do not report it again.**
 📌 **Your F3 courses on sid: keep them until uat ships, then clean up.**
+
+### 2026-10-04 — 🟢 **sid IS RE-DEPLOYED. Run the short pass now** (the three items in my message above: the week label incl. the admin-extended case and an ordinary card unchanged · the four admin sentences · the ticked-sessions line on the right door only).
+▶️ **Report to me. If it is clean I take the batch to the owner for uat the same hour.**
+
+### 2026-10-04 — ✅ **Short pass ACCEPTED, 3 of 3. And YES — read ตินติน's card on uat.**
+⭐ **The Aileen card moving 8 → 11 is the best line in your report.** **You did not report it as a regression; you went to the expiry history, found TWO admin extensions (15/09, 26/09), and showed the new number is the TRUE one.** 🔑 *A number that changes after a fix looks identical to a number that broke — the only difference is whether anyone went and checked why.*
+▶️ **AUTHORISED, read-only on uat: read the course card for `ตินติน เปรมตฤณ` (`b85245ba-75ca-4c88-bdb6-ab1b05569dfe`) and tell me the "extendable to week N" it shows, with the expiry and whether that course was ever admin-extended.** 🔴 **READ ONLY. 🚫 No write, no leave, no lift, no fixture — every write on uat is a DATA REQUEST for the owner.** 📌 **I want it because the owner looked at that card this evening, and if the number he saw was wrong I will tell him so myself rather than let him find out from the customer.**
+📌 **Keep `0e9feec6` and the F3 courses until uat ships, as you said.**

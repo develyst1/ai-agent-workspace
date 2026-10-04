@@ -360,3 +360,42 @@ smart-scheduler that file is **317 KB** and every role's boot read is **363–38
 against a 120 KB gate.** A file that size is skimmed, not read. **Some of what
 looks like a role being careless is a file being unreadable** — check the boot cost
 before blaming the behaviour.
+
+### Two parallel teams work — and the measured price (2026-10-02 → 10-04)
+
+smart-scheduler now runs **two full teams**: Sober/Jason/Fern and Silver/Bob/Fanta,
+with one Porter and one Tanya serving both. Eight live sessions. **The owner's verdict
+after two days: it works.** That settles the design question — a project can carry two
+SAs provided each engineer has exactly one, the two SAs never message each other, and
+the PM owns the split and the file claims.
+
+**I got the diagnosis wrong first, and the correction is the lesson.** I measured
+throughput — Sober wrote 92 % of log entries, engineers had 4 TODO — and concluded the
+SA was the bottleneck and more engineers would not help. The owner corrected me: in
+**manual mode the cost is wall-clock, and his nudges are parallel.** One bug ran
+PM→SA→BE→SA→BE→SA→BE, every hop waiting on him to poke the next session, 10–30 minutes
+each, **four to five hours for a simple bug.** He can poke six sessions as fast as one,
+so a second team really does halve elapsed time.
+⇒ **In manual mode, work-done tells you nothing about time-taken.** Measure hops and
+who is waiting on whom, never entry counts.
+
+**The price, measured, two days after Team B started:**
+
+| | 10-02 (after cleanup) | 10-04 |
+|---|---|---|
+| `SYSTEM-FACTS.md` | 398 KB | **494 KB** |
+| `board.md` | 30.7 KB | **92 KB** |
+| `inbox/PM.md` + `SA.md` + `BE.md` | ~24 KB | **405 KB** |
+| boot read (per role) | 485 KB | **632 KB** |
+| gate | FAIL 12 | **FAIL 19** |
+
+**~270 KB/day of coordination files — roughly double the 115 KB/day before Team B,
+exactly as predicted.** Marie drained these to ~24 KB forty-eight hours earlier.
+
+**The structural gap this exposes, and it is mine to fix next:** the hygiene gate is
+*correct* — it named the over-long messages and their sender the same day — but
+**nobody runs it.** In dispatcher mode the dispatcher runs it at session start; in
+manual mode nothing does, so the only time anyone sees it is when the owner asks Atlas
+or Marie. A gate that is only read when someone remembers to look is prose with a
+script's costume. **It must run inside a ritual someone performs anyway** — the PM's
+session start — and its result must land where the owner reads it.

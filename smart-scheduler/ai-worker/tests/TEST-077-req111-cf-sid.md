@@ -96,3 +96,31 @@
 - ✅ 29/10 leave days for qatt75b and qatt75 lifted. Leave days left in range: Kwan 04/10 only (real, untouched).
 - ✅ The phone is back on parent 0899990763 (qatt75 LINE unlinked).
 - Kept: course `f6c9b1e5` (F3 re-test), along with `a795c3cd` and `18386706`. Cancel on your word.
+
+### Short pass after the FINAL re-deploy (TASK-650 / TASK-651) · 10-04 22:18–22:25 · sid only
+| Item | Verdict | Evidence |
+|---|---|---|
+| **1a** Week label, F3 case (course `f6c9b1e5`, quota 1, 4 declarations) | ✅ **PASS** | The card reads *"ใช้ไป 0/1 · ขยายได้ถึงสัปดาห์ที่ 9"*, start 2026-10-30, *"หมดอายุ 2026-12-25"*. 30/10 + 8 weeks = 25/12, so the expiry falls in **week 9** and the label agrees. It read "week 5" before the fix. `SP-1a-f3-card.png` |
+| **1b** Week label, ADMIN-EXTENDED expiry (Jason's case) | ✅ **PASS** | New course `0e9feec6` (qakid3 / qatt75, 10 classes, Mon from 02/11, quota 3). Expiry at sale 2027-01-25 (maxWeek 13). Admin `PATCH /courses/:id/expiry {2027-02-22}` (+4 weeks) ⇒ `200`. The card reads *"ใช้ไป 0/3 · ขยายได้ถึงสัปดาห์ที่ 17"*: **17, not 13**. `SP-1b-admin-extended-card.png` |
+| **1c** An ORDINARY card is unchanged (compared with the first Aileen cards in `qa-2026-09-29/SMOKE-2-bookings-list.png`) | ✅ **PASS** | Private SURFSKATE: week 8, expiry 16/11 (same as on 09-29). INLINE: week 8, expiry 08/11 (same). DUO 10: week 13, expiry 09/01/27 (same). 📌 **One card CHANGED, and the change is the fix itself, not a regression:** Aileen's 6-class Bike/Scooter `0d40ff84` read week 8 on 09-29 and reads **week 11** now. `GET /courses/0d40ff84/expiry-history` shows **two admin extensions**: 20/10 → 03/11 on 15/09, and 03/11 → 10/11 on 26/09. Start 01/09 + 10 weeks = 10/11 ⇒ week 11. On 09-29 it was already an admin-extended course showing the capped "week 8". `SP-1c-ordinary-cards.png` |
+| **2** The admin leave RESULT names the coach, in the four approved sentences, TH + EN | ✅ **PASS**, all 4 × 2 languages | Teachers → QA Teacher 075B → *บันทึกวันลาล่วงหน้า* (title guard on). I used a date with a class (22/10, with fixture class `18761024` at 10:00) and dates without one (21/10, 29/10). Each was recorded, read, then lifted (`DELETE` ⇒ 200 every time). On screen, word for word: **TH** *"2026-10-22 — บันทึกวันลาของ qatt75b แล้ว"* · *"จะไม่มีการจองคาบใหม่กับ qatt75b ในวันนั้น"* · *"มีคาบที่จองกับ qatt75b ไว้แล้ว 1 คาบในวันนั้น:"* (with 10:00 – 11:00) · (no-class day) *"วันนั้นยังไม่มีคาบที่จองกับ qatt75b"*. **EN** *"2026-10-22 — leave recorded for qatt75b"* · *"No new class can be booked with qatt75b that day."* · *"1 class(es) already booked with qatt75b that day:"* · *"Nothing is booked with qatt75b that day."* All 4 match the approved dictionary strings exactly. **No "คุณ" / "you" in any of the four.** The told line still reads *"ระบบยังไม่ได้แจ้ง qatt75b…"* (unlinked, as for F2). `SP-2-th-21/22/29.png`, `SP-2-en-21/22/29.png` |
+| **3a** The "families of the ticked sessions" line is ABSENT on the ADMIN door | ✅ **PASS** | Admin door, qatt75b, **today 04/10** picked: no *"ผู้ปกครองของคาบที่ติ๊กจะได้รับแจ้ง…"*, and the `[data-leave-cancel-warning]` count is **0**. The door shows its own refusal (*"ประตูนี้ใช้บันทึกวันลาล่วงหน้าเท่านั้น…"*, *"เลือกวันหลังจากวันนี้"*). `SP-3a-admin-door-today.png` |
+| **3b** …and still PRESENT on the TEACHER's own door | ✅ **PASS** | qa-coach-qatt75 → calendar → *แจ้งลาสอน*, default date **today 04/10**: *"ผู้ปกครองของคาบที่ติ๊กจะได้รับแจ้ง และระบบจะเพิ่มคาบชดเชยให้"* is **present**, marker count **1**. Bonus: the same door on a future date (29/10) shows it **absent** (count 0), so the TASK-595 rule still holds. Read only; closed with ยกเลิก, nothing submitted. `SP-3b-coach-door-today.png` |
+
+**Short-pass footprint:**
+- ✅ Leave days for qatt75b on 21/10, 22/10 and 29/10 (×2 each, TH + EN) were all lifted with `200`. Nothing was recorded by the coach door.
+- ✅ Fixture class `18761024` (qakid3 / qatt75b, 22/10 10:00) cancelled (`reasonCode ADMIN_ERROR`) ⇒ CANCELLED. The first cancel without a `reasonCode` got `400`, as the 1-HR rule requires.
+- **Kept until uat ships:** course `0e9feec6` (admin-extended case), together with the F3 courses `f6c9b1e5`, `a795c3cd` and `18386706`.
+- No phone, no LINE re-link, nothing on uat.
+
+### uat READ-ONLY: ตินติน's course card (Porter authorised 10-04) · 22:40
+| What | Value |
+|---|---|
+| Course | `1997fe76` · ตินติน เปรมตฤณ (`b85245ba`) · Private SURFSKATE · 10-session · ACTIVE · badge **SPECIAL UNLOCK** · 2/10 sessions · leave 3/3 (0 left) |
+| Card label on uat (old code) | **"Used 3/3 · extendable to week 13"** |
+| Expiry on the card | **2026-11-21** |
+| Admin-extended? | **Yes, once.** `GET /courses/1997fe76/expiry-history`: **2026-11-14 → 2026-11-21 on 2026-09-26** (actor not recorded: `null`) |
+| Start | 2026-08-22 |
+| The true week | 22/08 + 13 weeks = 21/11, so the expiry falls in **week 14**. At sale it was 14/11 = week 13, which is what the label still shows. Same arithmetic as the sid cases the fix passed (`0e9feec6` 02/11→22/02 = week 17; `f6c9b1e5` 30/10→25/12 = week 9). |
+| Verdict | 🔴 **The uat card is wrong by ONE week: it shows 13; the real number is 14.** The fix (TASK-650) would show 14. This is computed, not seen on the fixed code; it is seen only once uat is deployed. |
+Read only: login, two GETs, the search box. Nothing clicked or written. `UAT-tintin-card.png`
