@@ -3884,3 +3884,256 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 **The admin notice when a make-up lands a long way out is triggered by the make-up search being exhausted — deliberately, because any fixed distance would be a number we invented.** 🔴 **It is NOT "the make-up passed the course expiry".**
 ⇒ **The two overlap and are not the same: a make-up can land past the expiry without exhausting the search, and the search can exhaust without the expiry being crossed.**
 📌 **Khwan asked for "notify the admin, like now" believing they were the same thing.** 🔑 **When a customer says "like it does now", check what "now" actually triggers on before agreeing** — *agreement on a word is not agreement on a rule.*
+
+## 🔴 A defect INVISIBLE while a second guard holds is a defect waiting for that guard to move (2026-10-04 — @Fern's, learned from a mutation)
+**TASK-611's admin door is future-dates-only in TWO layers: the session chooser is NOT RENDERED, and the calendar read is NOT MADE (`enabled: !onBehalf`).** 🔴 **The mutation that removed the FIRST layer SURVIVED — the shell rendered empty, because the disabled read had no rows to give it.**
+⇒ **Both layers are now asserted separately.** 🔑 **When two guards cover one rule, a mutation must be written against EACH, or the pair reports as one.**
+⭐ **And the better reason for the second layer, in her words: *a request whose answer must never be shown should not be made.***
+
+## 🔴 The screen's LABEL and the request's ID are two different claims (2026-10-04 — @Fern's)
+**A mutation that replaced the teacher's id with a CONSTANT SURVIVED**, because the dialog's title renders the teacher's NAME — **so the screen still read correctly while the request named the wrong person.**
+⇒ ▶️ **The test now drives the act from the row and asserts the BODY: `teacherId` is the row's id, and neither the name nor the nickname appears in the body at all.**
+🔑 **When a screen's whole argument is "the subject cannot be got wrong", assert the WIRE, never the title.**
+
+## 🔴 A message must not assert an act that may not have happened (2026-10-04 — found reviewing TASK-611)
+**The admin screen rendered *"{name} has been told about this day"* on `subject &&` — i.e. on every admin use — and never read `teacherNotified`.** **An UNLINKED coach produces a SKIPPED row and no message**, so the sentence was false exactly when it mattered.
+🔑 **It is the same error as the line beside it that was RIGHT: the *nothing has been cancelled* warning exists because *an admin who believes the families were told will not phone them* — and the next line made that same admin believe the COACH was told.** ⇒ **Same consequence, same reader, the call does not get made.**
+▶️ **Read the COUNT from the ANSWER; never re-derive "it was sent" from "which door was used", and pin BY VALUE that a count of `0` does not produce the told line.** 📌 *Every "X has been told" string owes a second string for when X has not.*
+
+## ⚠️ A mutation set whose TEST LIST lives on the command line cannot be re-run by anyone else (2026-10-04 — the front repo, two ways)
+**The front runner takes `--tests` on the command line and its sets are bare arrays.** 🔴 **Consequence one: two of TASK-611's mutations SURVIVED their first run because the denied-key file was missing from the list — the second time in a fortnight.** 🔴 **Consequence two: verifying "14/14" required GUESSING the author's list; until the guess landed, the number was unverifiable by anybody but her.**
+✅ **The back repo fixed this (a set may be `{ tests, mutations }`; `--tests` still wins; a set with no list anywhere is REFUSED).** 🔑 **The fix existed and had not crossed repos** — *a tool fix is not done when one repo has it.* 📌 **`TASK-637` ports it.** ⚠️ **Keep each repo's own file layout; the property that matters is that the set is in the repo and carries its list, not where it sits.**
+🚫 **Never invent a list for an old set after the fact** — *a list invented after the fact is worse than an absent one: it reads as evidence.*
+
+- **Mutation sets are FILES in the repo, both teams (Porter's rule, 2026-10-04).** A mutation set is committed beside the test it proves, named `*.mutations.json`, and **every report that quotes a mutation score names the set it ran against.**
+  📌 **Origin: @Sober found that the mutation RUNNER was in the repo but the SETS were not — so "9/9 bite" could not be re-run by anyone else, on any other machine, ever. Team A adopted the file convention; @Bob asked whether Team B should too. One convention, both teams, so a number means the same thing whoever reports it.**
+
+## 🔑 A rule learned on ONE line does not travel to the NEXT line by itself (2026-10-04 — @Fern's, on her own defect)
+**She wrote the admin's *nothing has been cancelled* warning for an explicit reason — *an admin who believes the families were told will not phone them* — and then wrote the very next line as if the notice were a property of the DOOR rather than an outcome of the ACT.**
+⇒ 🔑 **The rule was right; it was applied to one sentence and not to the one beside it.** 📌 **When a reason is written for one string, walk every string in that same block and ask whether the same reason applies.**
+
+## THREE states, because there are three facts: told · not told · not known (2026-10-04)
+**`>0` ⇒ "X has been told." · `0` ⇒ "X has NOT been told — here is WHY and WHO must act." · ABSENT ⇒ say NOTHING about the notice at all.**
+🔑 ***"We were not told whether it went" and "it did not go" are different facts, and only one of them is safe to print.***
+⚠️ **And the fourth pin, the one nobody asks for: the caller's OWN door must show NEITHER sentence whatever the count says** — **this server sends `0` on that door, so without that pin a teacher reporting their own leave is told "you have not been told".**
+📌 **The server always includes `teacherNotified`** ⇒ **ABSENT means exactly one thing in practice: a FRONT END newer than its SERVER — the deploy window where FE lands before BE.** 🔑 **Say which window a defensive branch protects; a reader who knows will not delete it as paranoia.**
+
+## 🔴 A BAN is not a CONTRAST — a file-wide sweep can delete a TRUE promise to protect against a false one (2026-10-04 — @Jason's)
+**His first "no unlock" check banned the word ปลดล็อก from the whole service and FAILED ON CORRECT CODE: it is used rightly in four places, including `LEAVE_LOCKED`, where an admin unlock genuinely exists.**
+🔑 **The claim was never "this word is forbidden" — it is: the refusal for a cap that CANNOT be unlocked must not offer one, and the refusal for a rule that CAN must keep offering one.** ⇒ **Both halves must be asserted.** 📌 *Before writing a file-wide negative, find the places where the thing you are banning is TRUE.*
+
+## 🔴 A lost START anchor gives an EMPTY slice; a lost END anchor runs to EOF. Both PASS. Neither REPORTS. (2026-10-04)
+**`indexOf('conflict("DECLARED_ABSENCE_CAP"')` returned `-1` once the sentence wrapped onto two lines, and `slice(-1, …)` quietly returned `""`** ⇒ **every "the sentence contains…" assertion passed on nothing.** **Caught by its author, four days after he wrote the rule it breaks.**
+▶️ **Check the anchor BEFORE slicing on it — in every region pin.** 🔑 **Two mechanisms, one lesson: *a silent anchor does not stop speaking; it starts lying.***
+⚠️ **And a THIRD way a pin can be wrong, found the same day: two pins broke merely because a `throw` wrapped onto two lines.** 🔑 **A pin that breaks when a line wraps was never testing what it said it was testing** — narrow it to the claim (the code raised), not the layout.
+
+## 🔑 Clearing a value IS editing it — a gate that asks "is the field PRESENT" lets a CLEAR through (2026-10-04)
+**TASK-634 widened two doors to accept an optional `rateMinor`. The coach-rate gate reads the BODY and returns early when the body edits no rate** — ✅ **and `rateMinor: null` COUNTS as an edit.**
+🔑 **A permission gate must ask "is this field being WRITTEN", not "is this field SET".** ⇒ **Otherwise the one operation it most needs to stop — wiping a number — is the one it waves through.**
+📌 **Proven BY VALUE at both doors (with a rate ⇒ privileged, without ⇒ not), and the gate runs BEFORE the service, pinned by order.** 🔑 **Widening a door's INPUT must be shown not to widen its AUDIENCE, and shown by value rather than argued.**
+
+## ⚠️ State the BOUNDARY of your own verification, or it is worth nothing (2026-10-04 — @Sober, on himself)
+**Accepting TASK-634's back half, one mutation set was NOT re-run (the run was interrupted).** ⇒ **That set's result is accepted ON THE ENGINEER'S EVIDENCE, and the acceptance says so in as many words.**
+🔑 **"Verified" with no boundary is exactly what the SA keeps refusing from engineers; it is worth nothing applied only to them.** ✅ **And nothing is lost BECAUSE the set is filed and named** — **the re-run is a command anyone can type, not a favour to ask.** 📌 *That is what TASK-627 bought: a gap in verification is now a scheduling detail instead of a permanent hole.*
+
+## 🔴 A hand-written test list is the failure mode — even when it is written down ON PURPOSE (2026-10-04)
+**@Fern parked `task-634`'s test list in a file DELIBERATELY, to avoid the two list mistakes of the previous fortnight.** 🔴 **The parked list was still short: run the set with it and `R8` SURVIVES — and `R8` is the exact mutation whose survival made her write the missing test file.** ✅ **With the right list, 11/11.**
+⇒ 🔑 **Writing the list out by hand IS the failure mode; filing it by hand only moves the mistake into the repo.** ▶️ **The set must carry a list that is CHECKED (every named file exists AND the set runs green against it), not typed.**
+📌 **It was caught ONLY because the set is a named file the SA can re-run** — *the argument for filing sets, making itself.* ⚠️ **And note what it is NOT: her code was proven. The RECORD of how to prove it was not.**
+
+## 🔴 A guard can be REAL and UNASKED — find the one case where it is live, or delete it (2026-10-04 — @Fern's)
+**`R8` dropped the permission check from a request-body builder and SURVIVED: a hidden field can never be filled, so the typed value is always empty when the key is gone.** ⇒ **the guard was real and nothing was asking about it.**
+⭐ **The live case is not exotic: THE GRANT IS REVOKED WHILE THE DIALOG IS OPEN** — permission data is live, the field vanishes, **and the number already typed is still in component state.** ⇒ **a test drives type → revoke → re-render → submit: no rate rides, and the act still goes.** 🔑 ***Losing the key costs the RATE, not the ACT.***
+📌 **Its own file, because the IDENTITY CHANGES there** — *the transition is the subject of the test, not an accident of ordering.* ⇒ **When a mutation survives, the choice is: delete the guard as dead, or write the case where it is live. 🚫 Never leave it unasked.**
+
+## 🔴 "Is this still the wording the owner approved?" is answered for SOME strings, by accident (2026-10-04)
+**A one-line fix-up script corrected an insertion's ANCHOR and not its PAYLOAD (`String.replace` takes the first occurrence only), silently replacing an APPROVED, SHIPPED sentence in BOTH languages with invented wording.**
+✅ **Caught within the minute by a copy pin that happened to exist on that string — in somebody else's feature.** 🔴 **Nothing in anyone's process would have caught it otherwise.**
+⇒ **Which approved strings are protected is an accident of who wrote a test that day.** 📌 **`TASK-640` asks whether every owner-approved string should be pinned.**
+✅ **Adopted immediately regardless: 🚫 NO bulk string-replace on `dictionaries.ts`, ever** — **a script that edits approved copy must NAME every string it intends to touch.**
+
+## 🔴 A UNIQUE index guarantees each SPELLING is unique — not each PERSON (2026-10-04)
+**`normalizePhone` strips non-digits and NOTHING else — no country-code handling. `findParentByPhone` then matches EXACTLY, and `parents_phone_uq` is unique on the STRING.**
+⇒ 🔴 **`0925874986` and `66925874986` are two DIFFERENT, equally legal, equally unique parent rows for ONE human.** **A family created under one spelling and a parent linking under the other produces a SECOND parent row with the LINE id on it and NO children.**
+🔑 **And `students.parent_id` is a single column: a child belongs to EXACTLY ONE parent row, with no co-parent** ⇒ **resolving to any other row means that parent sees nothing, on every door, forever.**
+⚠️ **The failure is SILENT by construction: nothing errors, nothing is logged, and the parent simply reads "you have no classes".** ⇒ **Every household entered in one shape and typed in another is in this state and is invisible to us.**
+📌 **Whenever a human identifier is a free-text key: canonicalise on WRITE and on every LOOKUP, and never let a uniqueness constraint stand in for identity.**
+
+## 🔴 TWO stores for one link, FIRST-WINS precedence — right for routing, wrong for identity (2026-10-04)
+**A LINE id lives in `family_line_links` AND in `parents.line_user_id`. `familyOfLineUser` reads the links TABLE first and stops; only if it finds nothing does it read the column.**
+⇒ **A link row pointing at a childless parent row BEATS the column on the parent who actually holds the children — silently.** 📌 **The code's own comment records this precedence causing exactly this class of fault once already (`23505` on the next write, and the customer got silence).**
+🔑 **When one fact has two homes, every reader must declare whether it wants FIRST-WINS (routing) or ALL-HOLDERS (identity, guards, diagnosis)** — *and the two must not be the same function.*
+
+## 📌 Both doors stop BEFORE they look at a booking (2026-10-04)
+**`linkedStudentIds` returns `[]` when the LINE id resolves to no parent, or that parent has no live children — and `findTodayBookingsForParent` / `findUpcomingBookingsForParent` both return immediately on `[]`.**
+⇒ 🔑 **"The sessions are CONFIRMED" and "you have no upcoming classes" are CONSISTENT, not contradictory.** ⚠️ **Which is why the CONFIRMED-only window was the wrong explanation for this symptom, twice — once by @Porter, once by @Sober.**
+▶️ **When a list is empty, find out which STEP emptied it before explaining the contents of the list.**
+
+## 🔴 The BOOKING path creates a child WITH NO PARENT — one line, silently, and the booking lands on it (2026-10-04)
+**`students.parent_id` is NULLABLE (no `.notNull()`), so a parentless child is a state the system PERMITS.** 🔴 **And `resolveStudentId` on the booking path writes it: an inline NEW student with NO PHONE is inserted with `parentId: null` — no refusal, no warning, nothing logged.** ⚠️ **The comment above it describes only the happy path.** 🔑 *The null branch was never decided; it was DEFAULTED.*
+🔴 **The SAME CALL then attaches the booking** ⇒ **the course and its sessions land on the unreachable child BY CONSTRUCTION — not by bad luck.**
+✅ **And nothing NULLS a parent later: the student edit writes a six-field allow-list excluding `parentId`, and no other site touches the column.** ⇒ 🔑 **a parentless child is BORN parentless** ⇒ **there is no nulling bug to hunt; the fix is at CREATION, and existing rows need RE-PARENTING, not repair.**
+⚠️ **Consequence: that child is unreachable by EVERY parent-facing door — check-in, leave, My Course, every notice — and nothing anywhere says so.** 📌 **It also skips `assertCanAddStudent`, the household child-count guard the admin path enforces.**
+🔑 **General rule: when a foreign key is nullable, find the branch that writes the null and ask whether anybody DECIDED it. A default is not a decision.**
+
+## 📌 Say "tell me at once if none of my explanations is right" — and mean it (2026-10-04)
+**Three explanations were offered for a live customer defect, each certain in its mechanism and each WRONG for this case.** **The diagnosis also named the query outcome that would mean all three were wrong, and asked to hear it immediately.**
+⇒ **The owner ran one query, the answer came back, and the real cause was found the same hour.** 🔑 **Being publicly wrong on three and corrected in an hour beats being privately right on one in a week.**
+▶️ **Every diagnosis that offers candidate causes owes: the observation that would REFUTE all of them, and an explicit request to be told.**
+
+## 🔑 Repair REACHABILITY (ours, broken). 🚫 Do NOT repair IDENTITY (theirs). (2026-10-04)
+**Two student records share a name; one is parentless and holds the live course. The obvious "fix" is to merge them.** 🔴 **But "(V)" is the CUSTOMER'S naming convention — two records for one child may be routine, so "same name ⇒ duplicate" is a GUESS about their filing, not a fact about our data.**
+⇒ ⭐ **Attach the parentless record to the parent: ONE write, ONE column, reversible, and it ends the harm today.** 🚫 **Merging ASSERTS an identity we cannot verify; if wrong it merges two real children and their attendance history becomes a lie.**
+🔑 **A repair that can be wrong about WHO SOMEBODY IS must not be the first repair.**
+✅ **And the attach makes a later merge SAFER, not harder: afterwards both records hang off the SAME parent, so the merge is a move WITHIN one family instead of ACROSS two.** ⇒ **the attach is the first STEP of the merge, not an alternative to it.**
+⚠️ **If a merge is ever chosen, SIX places move in one transaction or none:** `bookings.student_id` + `co_student_id` · `course_packages.student_id` + `co_student_id` · `vouchers.student_id` · `camp_packages.student_id` (**NOT NULL — repoint only**) · **plus a DECISION about `crm_points`/`crm_level`, which live on the STUDENT row.** ✅ **NOT the outbox (keyed on `booking_id`), NOT notices already sent.** 🔑 *A half-moved child is worse than a duplicated one: nothing would say which half is real.*
+
+## A guard that EXISTS on the other door is not a missing guard (2026-10-04)
+**`POST /students` — the admin's add-a-child door — REFUSES a body with neither `parentId` nor `parentPhone`.** 🔴 **`resolveStudentId`, on the booking path, writes `parentId: null` without a word.**
+⇒ 🔑 **The door DESIGNED to create children enforces a parent; the door that creates them as a side effect does not.** 📌 **And no screen can repair it afterwards: the student edit writes a six-field allow-list that excludes `parentId`.**
+⇒ **When one door enforces an invariant, find every OTHER path that creates the same row — a side-effect creator is where invariants go to die.**
+
+## A one-row repair against live data owes its GUARD and its NON-fixes (2026-10-04)
+**`UPDATE students SET parent_id = … WHERE id = … AND parent_id IS NULL`.** 🔑 **The `AND parent_id IS NULL` is not politeness: without it, a re-run with a stale id moves a child who already has a family.** ✅ **`UPDATE 1` expected; `UPDATE 0` means somebody already set it — STOP and re-read the row.**
+▶️ **And every such statement owes an explicit list of what it does NOT fix.** **Here: it does not merge the records (the parent will see two children of that name) · it does not move CRM points · it does not stop recurrence · it gives nobody a screen.** ✅ **And what it does NOT need to touch, which is the point: bookings, the course and the outbox** — **every parent-facing door resolves parent → children → bookings, so attaching the parent fixes every door at once.**
+⚠️ **State the human consequence too: the family will immediately receive notices they have never received, possibly a reminder for the next session.** 🔑 **Correct behaviour arriving late still reads as a burst of messages out of nowhere — one sentence of warning turns it from alarming into reassuring.**
+
+## 🔴 The front end ALREADY KNOWS which children are unreachable — it has the fact and does not use it (2026-10-04)
+**The booking dropdown (`searchStudents`) does a LEFT JOIN from the child to the parent**, so a parentless child is **INCLUDED with the phone simply null** — **and the row it returns already carries `parentId`.**
+⇒ 🔑 **Marking or excluding an unreachable child is NOT a pipeline, a query or a new field. It is a marker on data already on the screen.** 📌 **That is the cost of `TASK-642`'s (c).**
+⚠️ **And the state is not merely unlabelled, it is UNLISTED: the People page lists children BY PARENT, so a parentless child is invisible on the ONE screen staff would use to find it.** ⇒ **It exists only inside bookings and the schedule, where its course card reads perfectly ordinary.**
+🔑 **The difference between a reachable and an unreachable child WAS already on screen — as the ABSENCE of a phone — and nobody was ever told to read a blank as a warning.** ⇒ **It is not "the staff should have checked"; there was nothing to check against.**
+🚫 **Nothing to chase in the ordering: a parentless child appearing FIRST is plain alphabetical order, not a sorting defect.**
+
+## When the customer confirms an identity, say exactly WHICH objection it retires (2026-10-04)
+**Four objections stood against merging two student records: not reversible · the harm is urgent and the smaller fix ends it today · 🔴 we cannot assert who somebody IS · and the CRM points need a decision nobody has made.**
+**Khwan then confirmed the two records are one child.** ⇒ ✅ **That retires the THIRD objection and only the third: the merge is now a decision the owner CAN make — it was never one we could make for him.**
+🔑 **The ruling did not change, because three reasons still stood.** 📌 **Name which objection moved rather than re-deciding from scratch** — *a confirmation that answers one of four reasons is not an argument for reversing the other three.*
+
+## 🔴 A mutation whose SUBJECT is deliberately removed must be RETIRED or INVERTED — never left to "survive" (2026-10-04)
+**When a rule is removed on purpose (the TASK-609 pre-start cap), the mutations that pinned it lose their subject.** **Left in the set, they now SURVIVE — and a survivor that is supposed to survive is indistinguishable from one that is not.** 🔑 **@Porter: *a set that silently stops biting because the behaviour it pinned is gone looks identical to a set that broke.***
+▶️ **So, per mutation: KEEP (subject intact, must still bite) · RETIRE (subject gone — remove it, keep the id, write WHY and WHEN in the file) · INVERT (the defect it described is now the INTENDED behaviour — pin the new rule, and add a mutation that reinstates the old one, which must BITE).**
+⭐ **Inverting is the valuable one: a limit the customer disowned, quietly reintroduced, is now the defect.**
+⚠️ **Same for pins of removed copy: assert the string is GONE, do not merely stop asserting it is there.** 🔑 *An absent check and a check for absence are different things.*
+
+## ⚠️ Removing a LIMIT can expose an unbounded quantity — prove the number (2026-10-04)
+**`courseBornCeiling` sets a course's expiry to the BASE ceiling PLUS the weeks declared absent (the customer's Kavya rule: 8 + 3 = 11).** **With the pre-start cap removed, every declared pre-start absence now extends validity by a week, WITHOUT LIMIT.** ✅ **That is the customer's own model ("the expiry is the only control"), not a defect.**
+🔑 **But removing a limit is exactly when an unbounded loop shows itself** ⇒ **prove it BY VALUE (more absences than the quota ⇒ expiry stretched by exactly that many weeks, make-ups inside it) rather than reasoning that it must be fine.**
+
+## 🔑 Prefer a CHECK that forbids exactly the defect over a NOT NULL that forbids more (2026-10-04)
+**A live, bookable child with no parent is the defect. Plain `students.parent_id NOT NULL` forbids MORE than that: an ARCHIVED row still holds the null, so every junk or abandoned record would need an INVENTED family — a lie written into the data to satisfy a constraint.**
+⭐ **`CHECK (parent_id IS NOT NULL OR archived_at IS NOT NULL)` forbids exactly the defect and nothing else** — **a live child must have a family; an archived one need not.** ⇒ **junk can simply be ARCHIVED (an owner decision per row), never deleted, never given a fake family.**
+🔴 **Order: the app-level refusal ships FIRST, the constraint LAST** — **constraint before the refusal ⇒ the database turns an ordinary booking into a 500; constraint before every environment is swept ⇒ the migration fails mid-deploy.**
+
+## 🔴 A fix in a SHARED component crosses the team boundary even when the bug is "ours" (2026-10-04)
+**`components/common/StudentSelect.tsx` is used by BOTH teams' screens** — Team B's `partials/Bookings/*` (New course, plan, voucher, IMPORT) and Team A's booking modal, plus the camp dialogs.
+⇒ **Fix the SHARED component, never per screen** (*per-screen fixes are how two screens end up with two rules*) — **and because it changes the OTHER team's screens' behaviour, @Porter claims it to ONE team and tells the other.** 📌 **The screen in the customer's own screenshot was the other team's.**
+
+## ⚖️ OWNER RULE (2026-10-04): when one SA genuinely needs something from the other, @Porter SAYS SO IN THOSE WORDS
+**Owner, verbatim:** *"ถ้างานมันต้องถามกันจริงๆ อ่ะ นายก็ควร บอกฉันชัดๆ ว่า เขาฝากถาม ฉันจะได้ไปบอก sober ให้"*
+🔑 **The no-contact rule between the two SAs was never meant to hide the fact that a question exists.** **It governs WHO CARRIES a question, not whether the owner is told there is one.**
+▶️ **So, whenever a cross-SA need is real, @Porter reports it to the owner as: "⟨SA⟩ is asking ⟨the other SA⟩ ⟨this⟩" — naming BOTH sides and the question** — instead of quietly relaying it and presenting only the outcome. **The owner may then carry it himself; that is faster than a Porter round-trip and it is his call to make, not Porter's.**
+⚠️ **What this does NOT change:** 🚫 **the two SAs still never message each other**, and 🚫 **@Porter does not stop relaying** — the owner gains the OPTION, he is not handed the job.
+🔴 **And the failure it corrects, from the same day:** **@Porter held @Bob on a question he had sent to @Sober, and reported it to the owner as "Team B is waiting".** **The owner read that as Silver waiting on Sober — a chain that does not exist.** ⇒ 📌 **Reporting a block WITHOUT naming who is actually asked makes the org chart look wrong.** 🔑 *"Team B is waiting" names a symptom; "Silver is asking Sober X" names a fact the owner can act on.*
+
+## 🔴 THE CUSTOMER USES A STUDENT RECORD AS A LABEL, NOT ONLY AS A PERSON (2026-10-04, confirmed by Khwan)
+**`ISB (ECA)` is not a child.** **Khwan:** *"ที่ทีมงานสร้างผิดใส่เป็นชื่อเด็กไปค่ะ แต่จริงๆมันคือ Title เฉยๆค่ะ เป็นรายการตัวแทนคลาส ECA ของโรงเรียนค่ะ"* — **staff typed a CLASS TITLE into the student field to stand for a school's ECA slot, and booked a confirmed session against it.**
+⇒ 🔑 **"Every student must have a parent" is NOT a statement anyone can make about this data.** **A rule that refuses a parentless student refuses a workflow they use today.** 🚫 **And such a row must never be given a parent: there is no family, and inventing one is worse than the defect.**
+⭐ **@Sober's `CHECK (parent_id IS NOT NULL OR archived_at IS NOT NULL)` was designed before this was known and SURVIVES it** — the title row is disposed of by ARCHIVING, which the constraint permits. 📌 *Evidence that "a LIVE child must have a family" was the right shape, and a plain NOT NULL was not.*
+⚠️ **Open PRODUCT question, owner's, not ours: is the title row misuse to be replaced by a real ECA-slot concept, or legitimate and owed a "not a person" flag?** 🚫 **Neither is a defect anybody may assert.**
+
+## 📌 A customer can SEE this defect and still not report it (2026-10-04)
+**Khwan had noticed `ตินติน เปรมตฤณ` missing from People the previous day and did not raise it** — *"เมื่อวานที่ทีมมาแจ้งขวัญลืมบอกพี่โด่งค่ะ"*. **She read it as the student's data having disappeared.**
+🔑 **So "no further complaints" is not evidence of no further cases.** ⇒ **Sizing this class of defect by customer reports UNDER-COUNTS it; only a sweep of the data gives a number.**
+
+## 🔴 A lost SUBJECT is a retirement; a lost ANCHOR is a re-anchor — and in a report that prints only a number they look identical (2026-10-04 — @Jason's)
+**Removing the TASK-609 cap, two mutations (F5, F6) kept their SUBJECT — what they test still exists — but lost their ANCHOR: the helper now RETURNS the predicate instead of branching on it, so the text they hooked into was gone.** ⇒ **They needed RE-POINTING, not retiring.**
+🔑 **A table of what each mutation PINS is only half the prediction; the other half is what each one ANCHORS ON — and that half breaks first, because it is about code shape, not behaviour.**
+▶️ **When a change lands in a file that mutation sets anchor into, re-run EVERY set that anchors there, not only the one for the task.** **"The anchors still resolve" (the integrity test) is not "the mutations still bite" (only a re-run).**
+⭐ **The set-integrity test caught it BEFORE the run — its third catch in a week, making it the cheapest thing we own that has paid for itself the most.**
+
+## 📌 A count that goes DOWN on purpose must say so in the same place the count is read (2026-10-04)
+**`task-609` went from 11 to 7 mutations: four RETIRED with the rule they tested, one INVERTED into the new rule.** ⇒ **The deploy note states WHY beside the number** — *fewer, all meaningful, not fewer because something broke.*
+🔑 **A falling coverage number with no explanation reads as lost coverage, and the explanation belongs where the number is read, not in a TASK file nobody opens.**
+
+## ⚖️ OWNER RULE (2026-10-04): find what the CUSTOMER can do themselves before costing the team anything
+**Owner, verbatim:** *"เห้ย เราต้องช่วยอะไรอีก เราไม่ช่วยเขาเยอะขนาดนั้นนะ หา ทางที่เขาทำเองได้มากที่สุดได้มั้ย"*
+🔴 **The failure that earned it:** Khwan asked to delete the duplicate `Ari Khosla (V)`; it holds a LIVE voucher (**6 of 15 hours left, expires 2027-05-25, source `IMPORT`**) and 3 past sessions, so deleting it would cost the family paid hours. **@Porter's answer was to offer @Sober a multi-table merge design.** ⇒ ⚠️ **That is engineering spent on TIDINESS, proposed before anyone asked what the customer actually wanted.**
+✅ **What the customer actually wanted was in her own words — *"คุณแม่จะได้ไม่งง"*.** **She wanted the mother not to be confused, not the row removed.** ⇒ ⭐ **RENAMING the two records on the People page — which she can do herself, today, with the pencil she already has — answers it completely, moves no data, risks nothing, and is reversible.**
+🔑 **The rule: before routing a customer request to the team, state what the customer can already do with the screens they have.** **Read the request for the OUTCOME they want, not the ACTION they proposed.** 📌 **And when the problem expires on its own — this voucher ends in 8 months, after which the row can simply be archived — say so: a problem with a date on it may not need a fix at all.**
+
+## ⚖️ OWNER RULE (2026-10-04): @Porter ends EVERY reply to the owner with who holds the ball
+**Owner:** *"ตอนตอบฉันแบบนี้ นายควรแปะลงท้ายด้วยว่าส่งบอลไปไหน"*
+🔑 **The owner coordinates agents he cannot watch working.** **Without that line he has to re-derive who is waiting on whom** — and the same day he misread "Team B is waiting" as Silver waiting on Sober, a chain that does not exist.
+▶️ **Format: one short last line — 🏀 ball is with ⟨PERSON⟩ — ⟨what they are doing⟩.** **Name the PERSON (Sober · Silver · Tanya · Khwan · the owner · Porter), never a team.** **If nothing is pending, say that explicitly.**
+
+## 🔑 Before adding a concept, check whether the workaround is standing in for one that EXISTS (2026-10-04)
+**Staff created a STUDENT named `ISB (ECA)` — a class title, not a child — and booked a confirmed session against it.** **The concept they needed already exists: an `OTHER` booking takes NO student, a free-text `otherTitle`, and `otherKind = ECA`** (`lib/other-kind.ts`: `ECA · FREE · KOL`).
+⇒ **A "not a person" flag on students would REBUILD OTHER/ECA inside the student table.** ⭐ **The useful question is not "misuse or legitimate?" but "WHY did staff not use the existing feature?"** — **if it lacks something they needed, THAT is the gap; if it was simply unknown, the fix costs nothing.**
+✅ **And a constraint shaped as "a LIVE child must have a parent" absorbed this surprise unchanged: the title row is ARCHIVED, which it permits.** 🔑 *A constraint that forbids exactly the defect survives facts it was not designed for; one that forbids more does not.*
+
+## ⚠️ "No further complaints" is not evidence of no further cases (2026-10-04)
+**A third parentless household surfaced that the customer had SEEN — missing from People — and not reported.** ⇒ **Complaints undercount a silent defect by construction: the affected family sees "no classes", not an error.** 🔑 **Only a sweep count is a number.** ▶️ **So the half of a fix that SURFACES existing cases matters as much as the half that stops new ones — stopping new ones never finds the old.**
+
+## The `LAST` badge's rule is a UNION of two sets that already exist (2026-10-04 — REQ-113 pre-read)
+**`deriveLiveEndDate` = max(date) over `COURSE_LIVE` = `{PENDING, CONFIRMED, EXTENDED}`, so an ATTENDED last session drops out and the badge vanishes at check-in.** 🔴 **It must NOT be widened: it also feeds the PLAN's displayed end and course history.**
+✅ **`COURSE_DELIVERED` already exists as exactly `{ATTENDED, NO_SHOW}`** ⇒ **"last lesson" = max date over `COURSE_LIVE ∪ COURSE_DELIVERED` — no new status list.** 🔑 **The owner's ruling that a NO_SHOW keeps the badge is satisfied by construction.** *A rule built from a union of existing definitions cannot drift from them; a rule with its own list can.*
+
+## 📉 When an answer makes the work smaller, SAY the new number (2026-10-04)
+**Khwan confirmed a suspected product gap (a class title stored as a student) was a one-off MISTAKE.** ⇒ **The sizing fell: an M-sized option retired, an exception branch removed, a constraint term removed.**
+▶️ **Report the decrease explicitly, beside what did NOT shrink** — *a number that quietly stays the same after its reason disappears reads as padding.* 🔑 **And ask "why did they do it this way?" before designing for either reading: one question to the customer retired an M.**
+
+## 🔴 An EXEMPTION to a rule can make that rule's DATABASE constraint impossible (2026-10-04)
+**The planned constraint said "a LIVE child must have a parent". The owner then exempted IMPORTS, which may create exactly a live child with no parent.** ⇒ **The constraint would refuse what the policy now permits.**
+🔑 **When a policy gains an exception, re-check every place that ENFORCES the policy — especially the database, which cannot hear about exceptions it was not told.** ⇒ **Either the constraint goes (the policy no longer holds the rule, so the DB must not assert it) or it gains a marker whose only job is to let the rule coexist with its own exception.**
+
+## 🔑 ONE rule, enforced by the SERVER per ACT; a shared component only MIRRORS it, with a safe default (2026-10-04)
+**Import vs booking are different ACTS with different schemas already — that is where the difference belongs, not in which screen a shared picker finds itself on.**
+▶️ **The picker gets ONE explicit prop (`requireParentPhone`) defaulting to the SAFE value, so a new caller fails CLOSED without anyone remembering; only the one exempt caller overrides it.** 🚫 **A component that sniffs its caller is how two rules become three.** ✅ **If the mirror is ever wrong, the server still refuses.**
+⚠️ **Evidence the risk is real: the shared picker already misbehaves for one caller — the camp-sale dialog offers "create a new student" but sends only an id.**
+
+## ⚖️ Couple the thing that actually depends — not the whole piece (2026-10-04)
+**"A and B no longer ship independently" was half right: the EXEMPTION depends on B (an unreachable import is only acceptable if B makes it findable), but Piece A does not — A alone closes one path and leaves the other exactly as open as before, so it is never worse than the status quo.**
+🔑 **Before coupling two deliveries, ask whether shipping the first ALONE could ever be worse than today. If not, coupling only delays a strict improvement.**
+
+## 🔴 A proof of the FUNCTION is not a proof of the PATH — check which one you were handed (2026-10-04 — QA F3)
+**`courseBornCeiling` was proven to stretch the expiry by exactly the declared absences. True — of the function.** **The TASK-609 declaration path never CALLS it, so on the live box the expiry did not move and make-ups landed past it.**
+🔑 **The SA asked for a PATH-level proof, received a FUNCTION-level one, re-ran its mutation counts, and accepted the substitution.** ⇒ **He verified that the proof was HONEST, not that it proved the CLAIM.**
+▶️ **When a claim is about behaviour ("a declared day stretches the expiry"), the evidence must drive the real entry point. A test named for the behaviour that exercises only a helper is how this got through.**
+
+## 🔴 A LIMIT can be silently LOAD-BEARING for something else — find what it holds up before removing it (2026-10-04)
+**The pre-start cap was removed as "a deletion, free today". It was not free: the base expiry carries the quota's weeks as slack, so a cap of `quota` declared days made the missing expiry-stretch INVISIBLE — every make-up fitted.** **Removing the cap exposed the gap at `quota + 1`.**
+▶️ **Before deleting a constraint, ask: what invariant ELSEWHERE is only true because this one bounds it?** 🔑 *A removal is only "free" if nothing was leaning on it.*
+
+## 🔴 A field verified for SHAPE on one side and for MEANING on the other has been verified by nobody (2026-10-04 — QA F2)
+**`teacherNotified` was a hard-coded `1`: the function discarded the queue's own QUEUED/SKIPPED result.** **The back-end test asserted the SKIPPED row existed; the front-end test fed a mocked `0`; the SA checked the field was a number with the right name.**
+⇒ **Each side tested its own idea of the contract; the SEAM was never tested.** ▶️ **For every cross-repo field whose VALUE drives behaviour, one test must cross the seam: the real server answer, fed to the shape the screen reads.**
+
+## 🔴 A rule enforced only by the SCREEN leaves the door open behind it (2026-10-04 — QA F1)
+**"Admin leave is future-only" lived in the dialog alone; the server, built as "a second caller of the same act", accepted today and CANCELLED the day's classes and NOTIFIED the families — irreversibly — on a direct API call.**
+▶️ **A refusal that protects against an irreversible act belongs at the SERVER, at the DOOR that needs it — and never inside a shared act whose other caller must keep the behaviour.** 🔑 **And QA lines, deploy notes and tasks must state the same rule; when they disagree, the one describing the server is the one that will be built.**
+
+## 🔑 A census answers the question you ask it; it cannot tell you a path is MISSING from the list (2026-10-04 — @Jason's)
+**A test counted every call site of `courseBornCeiling` correctly, all week. The pre-start declaration path was not one of them — and nothing asked why it should have been.** ⇒ **A census proves the list is accurate, never that it is complete.**
+▶️ **When a rule must apply on every path that does X, enumerate the paths that do X first, and check each is on the census — not the reverse.**
+
+## ⭐ Two rules can produce ONE observable number — pin the term where it IS distinguishable, and say why (2026-10-04 — @Jason's)
+**Mutation `declared = 1` survived every value assertion on the real path, because the make-up chain (each declaration appends a make-up a week after the last row) yields the same expiry as the declared-weeks term in every reachable scenario.**
+✅ **Correct response: do not invent an unreachable scenario to force them apart, and do not drop the mutation — pin the term at its own line, and write in the test that the two are indistinguishable at path level and WHY.** 🔑 *A survivor with a stated reason is knowledge; a survivor without one is a gap.*
+
+## 🔑 A mutation that changes NOTHING is indistinguishable from a gap in the tests (2026-10-04 — @Jason's)
+**`1 && await notify(…)` is a no-op as a mutation — it "survived", not because the tests were weak but because nothing was broken.** ▶️ **Before reading a survivor as a gap, confirm the mutation actually changes behaviour.**
+
+## 🔴 When a rule changes, find EVERY reader of the old rule — a label is a reader too (2026-10-04)
+**TASK-646 made a declared pre-start day stretch the expiry. The course card's "ขยายได้ถึงสัปดาห์ที่ N" kept computing `size + quota` — the old, capped rule — because `maxWeek` is derived from size and quota, never from the stored expiry.** ⇒ **Right dates, wrong label, on the exact screen the customer was about to inspect.**
+▶️ **Derive a displayed fact from the stored fact it describes, not from a parallel formula that used to agree with it.** 🔑 *A number on screen that disagrees with the system's behaviour is a defect wearing copy's clothes.*
+
+## 🔑 Before "fixing a message", find out WHY that message is the one shown (2026-10-04)
+**A linked coach calling the admin leave door got a generic `FORBIDDEN` instead of the teacher-scope sentence.** **Not copy: the global guard checks MENU and ACTION before SCOPE, deliberately (TASK-406), and a coach lacks `menu:bookings`.** ⇒ **Changing the sentence means reordering the guard every request passes — a blast radius far beyond the two doors.**
+**Likewise "the ticked sessions line on a door with no ticks" was a DISPLAY CONDITION, not wording.** ▶️ **Trace why a string appears before rewriting it; often the right fix is where, not what.**
+
+## 🔑 A MEANINGLESS fixture value becomes a WRONG one the moment something starts reading it (2026-10-04 — @Jason's)
+**A shared test fixture carried an arbitrary `expiryDate`. Harmless while nothing read it; misleading the moment `maxWeek` began deriving from it.** ▶️ **Give fixture values the meaning the real rule would give them, with the reason written beside them.**
+
+## 🔑 A mutation aimed at the WRONG line survives for a reason unrelated to the tests (2026-10-04 — @Jason's)
+**`W7` edited `MAX_WEEK_BY_SIZE`, which the rule does not read (the map is derived FROM the quota table). It survived while claiming to change the rule.** ⇒ **Before reading a survivor as a gap, confirm the mutated line is actually on the path.** *(Second this week, after a no-op mutation.)*

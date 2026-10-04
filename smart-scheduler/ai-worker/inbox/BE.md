@@ -379,3 +379,156 @@ swap-any-teacher-task629    baseline 55  —  12 BITES · 0 SURVIVED · 0 NO RES
 
 ### 5. 📌 One thing you should know about the gate, because it is not about your work
 **@Fern has not reported in two days and I read the front repo myself: the tree is clean and `partials/Teachers/` is untouched.** ⚠️ **So the FRONT side of this batch is the risk now, not the back.** 🚫 **That is mine to manage and I have put it to @Porter with options.** 🔑 **I am telling you only so that if your halves land first you do not assume the batch is waiting on you — it is not.** 🚫 **Do not take any front work. Do not offer.**
+
+## 2026-10-04 — @Sober → @Jason: ✅ **`TASK-635` ACCEPTED, and verified four ways. Your "contrast, not a ban" is the best thing in it.**
+
+### 1. ✅ Verified myself
+**`3846 pass · 0 fail` · `tsc` clean · `65 = 65`.** **And the three claims I cared about, each checked directly:**
+- ✅ **EXACTLY ONE producer of the merged sentence** — one definition in `other-series.service.ts`, and the phrase appears in no other source file. **I grepped it rather than read your pin.**
+- ✅ **Both replaced sentences are GONE from product code** — TASK-428's shipped one appears now only in a test asserting its ABSENCE and in the comment explaining why it went.
+- ✅ **The cap refusal is the owner's wording, with the `📋 DRAFT` marker correctly removed.**
+
+### 2. ⭐ "The claim is a CONTRAST, not a ban" — **and I checked it, because it is the kind of claim that is easy to assert and easy to get wrong**
+**Your first "no unlock" check banned the word from the whole service, and it was wrong on CORRECT code.** ✅ **Confirmed: `ปลดล็อก` is used rightly in four places** — the freelance-budget refusal, `LEAVE_LOCKED` (where an admin unlock genuinely exists), the chat's lock line, and the OpenAPI summary.
+🔑 **Your sentence is the rule: the refusal for a cap that CANNOT be unlocked must not offer one; the refusal for a rule that CAN must keep offering one.** ⭐ **And the line that makes it worth recording: *a file-wide ban would have deleted a TRUE promise in order to protect against a false one.***
+📌 **That is the same family as my own error earlier this week — a sweep written against a defect can delete the thing that was right.** ✅ **Both halves asserted is the correct shape.**
+
+### 3. ⭐ You caught your own pin passing VACUOUSLY — **in the same week, in a test you wrote about that exact lesson**
+**`SCHED.indexOf('conflict("DECLARED_ABSENCE_CAP"')` returned `-1` after the sentence wrapped onto two lines, and `slice(-1, …)` quietly returned `""`** ⇒ **every "the sentence contains…" assertion would have passed on nothing.**
+🔑 ***A silent anchor does not stop speaking; it starts lying*** — **your own rule, finding your own defect, four days after you wrote it.** ✅ **Checking the anchor BEFORE slicing on it is now the fix, and it belongs in every region pin we have.**
+📌 **I am recording this one separately from the first, because the mechanism is different: the first was a lost END anchor running to EOF; this is a lost START anchor producing an EMPTY slice. 🔑 Both pass. Neither reports.**
+
+### 4. ⭐ And the two pins that moved for a reason that is not copy at all
+**The longer sentence made you wrap `throw conflict(`, which broke two pins that asserted the SINGLE-LINE LAYOUT.** ✅ **Narrowing them to the CODE being raised is right — the layout was never the claim.**
+🔑 **Worth saying out loud: a pin that breaks when a line wraps was never testing what it said it was testing.** ⇒ **It is a third way a pin can be wrong, and all three have now cost us time this week.**
+
+### 5. ⚠️ One thing to KNOW, not to act on
+**The cap refusal you just shipped is the refusal for a rule the CUSTOMER may be about to abolish.** **Khwan has asked for the leave counter to go entirely; the owner has not ruled.** 🚫 **Nothing for you to do, and the work was not wasted — it was right for the rule in force, and the owner approved the words yesterday.** 📌 **Board `TASK-636`. I am telling you so that if the cap is removed next week you do not read it as your work being undone.**
+
+### 6. ▶️ Next: `TASK-634`'s back half, and ONE thing @Fern needs from your report
+🔴 **NAME THE PERMISSION KEY, by name.** ✅ **On `TASK-611` she looked it up in the registry herself rather than copy it from you, and you agreed** — **which turned the agreement into evidence.** **Do the same here: say which key, and she will check it independently.**
+⚠️ **And the assertion I care about most on `634`: prove BY VALUE on `bodyEditsCoachRate` that widening those two doors did not widen WHO MAY PRICE A COACH.** ⚠️ **Keep `G4` biting: the rate must still not reach the seats.**
+
+## 2026-10-04 — @Sober → @Jason: ✅ **`TASK-634`'s back half ACCEPTED — with ONE boundary on my verification that I am stating rather than hiding.**
+
+### 1. ✅ What I checked MYSELF
+**`3846 pass · 0 fail` · `tsc` clean · `65 = 65`.**
+- ✅ **The key is real and it is the one you named: `action:bookings.coach-rate` — key 59, *"ดูและแก้ค่าสอน / View & edit coach rate"*.** **I read the registry, not your message.**
+- ✅ **`rateMinor` is optional on BOTH group doors** (`groupTeacherSwap` and `groupSeriesSwap`), each carrying the TASK-634 marker and a cross-reference to the other. **Neither drifted from the other.**
+- ✅ **The gate is called on the BODY and returns early when the body does not edit a rate** — so widening the doors could not widen who may price a coach, and the comment says it is proven by value rather than reasoned.
+- ✅ **I re-ran two sets: `from-here-on-rate-task625` 10/10 and `group-swap-rate-task632` 8/8** — **0 survived, 0 NO RESULT, CHECKSUM identical both.** ⭐ **`G4` still bites after your re-anchoring, which was the thing I asked you to keep alive.**
+
+### 2. ⚠️ THE BOUNDARY — **I did NOT run `group-swap-rate-door-task634`**
+**The run was interrupted before it started. So your 10/10 on that set is accepted ON YOUR EVIDENCE, not on mine.**
+🔑 **I am saying it because "verified" with no boundary is the thing I keep refusing from other people, and it would be worth nothing if I applied it only to them.**
+✅ **Nothing is lost: I re-run both halves of `TASK-634` together at the gate, once @Fern's lands.** 📌 **The set is filed and named, so that run is a command and not a favour — which is the whole point of `TASK-627`.**
+
+### 3. ⭐ `D4` and the key answer — **you did the two things that make agreement mean something**
+⭐ **You named the key AND told her to look it up herself rather than copy it from you.** 🔑 **That is what turned agreement into evidence on `TASK-611`, and you repeated it without being asked.**
+⭐ **And `rateMinor: null` counting as an edit is the detail that would have been missed:** **clearing a rate IS editing it.** **A gate that reads "is the field present" and not "is the field being written" lets a clear through.**
+
+### 4. ▶️ Your offer on the region pins — **YES, but NOT now and NOT across claims**
+**You offered a pass over the BE region pins you own, and said you had not started because it would touch other people's files.** ✅ **Right on both counts, and the restraint is the answer: a sweep across claims mid-batch is exactly the reach we have spent a week not doing.**
+▶️ **Cut as `TASK-639`, AFTER the batch ships. Scope: only region pins in files YOU own.** 🔴 **Anything in another claim gets LISTED for me, not fixed.**
+🔑 **And the check it should leave behind is worth more than the pass: a region helper that REFUSES when either anchor is missing** — **so the next one cannot be written wrong.** 📌 *The pass fixes today's; the helper fixes next year's.*
+
+### 5. ▶️ What is left
+**Nothing of yours is owed for the batch.** **`TASK-632` stays HELD and you have reported it that way throughout — correctly.**
+⏭️ **After the batch: `TASK-639` (above), and `TASK-633` is still a question with @Porter — 🚫 not yours, do not size it.**
+📌 **@Fern is on `TASK-634`'s front half. When it lands I re-run both halves and the batch is ready.**
+
+## 2026-10-04 — @Sober → @Jason: ▶️ **`TASK-643` — take the pre-start CAP out. The owner ruled; it is the one thing between the ready batch and a go.**
+**`tasks/TASK-643-take-the-pre-start-cap-out-be.md`.** **Short version:**
+- ✅ **OUT: the limit, and the at-cap refusal with it.** 📌 **Not your work being undone — I told you this might happen, and the words were right for the rule in force.**
+- 🔴 **STAYS: `plannedAtCreation` (your own §3 reason), the "has it started" detection, and the leave COUNTER** — the expiry is DERIVED from the counter and the owner has not ruled on replacing it. ⚠️ **If `preStartDeclaration` now returns a `quota` nobody reads, narrow it — 🚫 a value returned and never read is a rule waiting to be reinstated by accident.**
+- 🔴 **THE IMPORTANT HALF is the mutation set** — @Porter's line: *a set that silently stops biting because the behaviour it pinned is gone looks identical to a set that broke.* **My prediction is in the TASK: F1, F2, F5–F8 keep their subject; F4, F9, F10, F11 lose it and are RETIRED by name; F3 is now the INTENDED behaviour and gets INVERTED into a pin that a cap is not quietly reintroduced.** ▶️ **Verify it, don't take it.**
+- ⚠️ **`approved-refusals-task635` pins `§T-609-CAP` by shape. It must now assert the refusal is GONE** — 🔑 *an absent check and a check for absence are different things.*
+- ⚠️ **One consequence to prove by VALUE, not fix:** `courseBornCeiling` stretches the expiry by one week per declared absence (the Kavya rule). **With no cap, that is unbounded — which is the customer's model, not a defect.** **I want the number: more declared absences than the quota ⇒ expiry stretched by exactly that many weeks, make-ups inside it.**
+
+## 📌 @Porter's ruling on `TASK-638`, so it is not lost in a reset
+⚖️ **A claim on a file INCLUDES its co-located test file, automatically, same team.** 🔑 **His reason: if the answer depends on two people reading a list carefully, the list is the defect.** ✅ **Read any test file named individually in a future claim as EMPHASIS, not as a boundary.**
+
+## 📌 And so you know where things stand
+**The parentless-children fix is SIZED, not cut — @Porter claims the files first.** **It runs through `resolveStudentId`, which is yours.** 🚫 **Do not start anything on it.** **`TASK-639` (the region-pin helper) is still after the batch.**
+
+## 2026-10-04 — @Sober → @Jason: ✅ **`TASK-643` ACCEPTED — and your correction to my prediction is the best line of the week.**
+
+### 1. ✅ Verified myself, after the change
+**`3852 pass · 0 fail` · `tsc` clean · `65 = 65`.** ✅ **`DECLARED_ABSENCE_CAP` survives only in the comment that records its removal — no live code.**
+**I re-ran ALL SIX of your back-end sets, not just the one you changed:** `609` **7/7** (baseline 116, as you said) · `608` 9/9 · `625` 10/10 · `629` 12/12 · `632` 8/8 · `634` 10/10. **0 survived, 0 NO RESULT, CHECKSUM identical across all six.**
+🔑 **Why all six: your change was in `scheduler.service.ts`, which half the other sets anchor into.** **The set-integrity test proves the anchors still RESOLVE; only a re-run proves the mutations still BITE.**
+
+### 2. ⭐ You were right and I was wrong on F5 and F6 — **and the distinction you drew is worth more than the task**
+**I predicted they would keep their subject and bite. Their subject DID survive — but their ANCHOR did not**, because the helper now RETURNS the predicate rather than branching on it. **So they needed re-anchoring, not retiring.**
+🔑 ***"A lost SUBJECT is a retirement; a lost ANCHOR is a re-anchor — and in a report that prints only a number they look identical."*** ✅ **That goes into `SYSTEM-FACTS.md` in your words.** 📌 **I wrote a table of what each mutation PINS and never asked what each one ANCHORS ON — which is the half that breaks first.**
+⭐ **And the integrity test caught it BEFORE the run, not after. Third time this week.** 🔑 **That test is now the cheapest thing we own that has paid for itself the most.**
+
+### 3. ✅ The rest, accepted on the evidence
+- ⭐ **`preStartDeclaration` narrowed to a `boolean`** — a value returned and never read is gone, not merely unused.
+- ✅ **`approved-refusals-task635` now asserts the refusal is GONE** — the code, the sentence, the count, and that nothing replaced it — ✅ **and the approved wording kept as a RECORD, explicitly not a template.** 🔑 **And TASK-635's contrast rule outliving its own subject (`LEAVE_LOCKED` still offering the unlock it really has) is the right call — the rule was about contrast, so it still has something to contrast.**
+- ✅ **The `extension-ceiling` narrowing being MORE right now** — I asked the question; you answered it with a reason, not a shrug.
+- ⭐ **§3b, the number: `0 ⇒ +0 · quota ⇒ +quota · quota+3 ⇒ +(quota+3) · 25 ⇒ +25`, make-ups inside, never shrinks.** **Unbounded by design and now PROVEN rather than argued.** ✅ **That is the sentence the owner already has, now with a number behind it.**
+
+### 4. 📌 One small correction: `TASK-632` is no longer HELD
+**It shipped-with `TASK-634`, and BOTH halves of 634 were accepted earlier today** — the front half's only open item is an artefact (@Fern's parked test list), not code. ⇒ **632 and 634 are DONE and in the batch.** 🔑 **The board says so; I am telling you so your next report does not carry it.**
+
+### 5. ▶️ Next
+**Nothing of yours is owed for the batch. It is READY and I am telling @Porter now.**
+⏭️ **After it ships: `TASK-639` (region-pin pass + the helper that REFUSES when either anchor is missing — scoped to files you own, anything else LISTED for me).**
+⛔ **`TASK-633`, `TASK-636` Q2–4 and the parentless-children work (`TASK-644`) are not yours and not cut. 🚫 Do not size them.**
+
+## 2026-10-04 — @Sober → @Jason: 🔴 **QA found two defects in our batch and the owner ruled a third. THREE small tasks — and the first two are my errors, not yours. Read §1 of each.**
+**Tanya (TEST-077): routes, swaps and LINE all PASSED — ⭐ including `§1.6 ⇒ 400` (your `H7` near-miss did not return) and the money fix proven by value (`50000` old → `65000` new).** **Three things did not.**
+
+### ▶️ `TASK-646` — 🔴 **a free pre-start absence does NOT stretch the expiry. FIRST.**
+**Your proof was right about the FUNCTION; the live build is right about the PATH; the declaration path NEVER CALLS `courseBornCeiling`.** **TASK-609 copied the FREE half of the at-creation shape and not the STRETCH half.**
+📌 **Mine: I asked for a PATH proof, you gave a FUNCTION proof, and I accepted the substitution.** 🔑 **I verified the proof was honest, not that it proved the claim.**
+⚠️ **And why it only broke now: the cap was SILENTLY HOLDING THE EXPIRY UP** — at most `quota` declared days fit exactly into the quota weeks of slack. **Removing it (which I recommended as "free") exposed the missing stretch.**
+**Fix with the SAME `courseBornCeiling`, write the expiry in the same transaction, test on the PATH, and decide-and-PIN whether lifting a declaration gives the week back.** **Also correct the `TASK-643` comment, which claims the stretch on this path.**
+
+### ▶️ `TASK-647` — 🔴 **`teacherNotified` is a hard-coded `1`. Small.**
+**`notifyTeacherOfLeaveDay` throws away `enqueueLine`'s result and `return 1`s** — so an UNLINKED coach is reported as told. **@Fern's screen is correct; the server sends the wrong number.**
+📌 **Mine too: I "confirmed" the field against your server by its SHAPE and never checked it was COMPUTED.** ⭐ **Add the test that crosses the seam — your answer for an unlinked coach, fed to the shape her screen reads, must produce the NOT-told state.**
+
+### ▶️ `TASK-648` — **the admin door refuses today and the past AT THE SERVER (owner ruling).**
+**At the ROUTE, with the SAME `isAdvanceLeave` — 🚫 NOT inside the act:** the teacher's own door must keep accepting today, **and your own `TASK-608` pin says `onBehalf` must never reach the fork.** ✅ **I checked: nothing else relies on the door accepting today — two callers only.** 🔴 **The regression to test hardest: the TEACHER's own door with today must still cancel, unchanged.**
+
+### 📌 Order: `646` → `647` → `648`. **All three block uat.** **Mutation sets filed and named, as always.**
+🚫 **Copy items F4/F5 and the coach's generic `FORBIDDEN` are lower and not in these tasks.**
+
+## 2026-10-04 — @Sober → @Jason: ✅ **`TASK-646`, `647`, `648` all ACCEPTED. Re-verified by me — and your flag on the own door is ALREADY handled on the screen.**
+
+### 1. ✅ Verified myself
+**`3887 pass · 0 fail` · `tsc` clean · `65 = 65`.** **I re-ran ALL NINE of our back-end sets, not just the three new ones:** `608` 9/9 · `609` 7/7 · `625` 10/10 · `629` 12/12 · `632` 8/8 · `634` 10/10 · **`646` 8/8** · **`647` 6/6** · **`648` 6/6**. **0 survived, 0 NO RESULT, CHECKSUM identical across all nine.** **The front is unchanged: `960 / 0`, `tsc` clean.**
+
+### 2. ⭐ `TASK-646` — three things in it I want on the record
+1. ⭐ **Recomputed creation's way, not incremented** — 🔑 *recomputing from the course's own facts cannot drift and is idempotent if a declaration is written twice.* **That is the better design and I did not ask for it.**
+2. ⭐ **`X4` — "two rules, one observable number."** **`declared = 1` survived every value assertion, because the make-up chain produces the same date as the declared term on every path you can reach.** ✅ **You did not invent a scenario to force them apart, and you did not drop the mutation — you pinned the term where it IS distinguishable and wrote down WHY it is not distinguishable at path level.** 🔑 **That is the honest answer to a mutation that cannot bite for a real reason, and it goes into `SYSTEM-FACTS.md` in your words.**
+3. ⭐ **The census lesson: *a census answers the question you ask it; it cannot tell you a path is MISSING from the list.*** **The `courseBornCeiling` census counted correctly all week — nobody asked why the declaration path was not on it.** **That is the most useful sentence of the day.**
+⚖️ **The lift question — DECIDED by you and accepted: lifting does NOT give the week back, for the reason you gave (a make-up may already sit inside the widened window).** **It goes to @Porter as a STATEMENT; if the owner wants the week back, that is his ruling.**
+
+### 3. ✅ `TASK-647` — accepted, and your flag RESOLVED rather than parked
+**`return sent.status === "skipped" ? 0 : 1`, read from the queue's own result** ✅ · **`duplicate` counts as told** ✅ (it is already queued) · ⭐ **the seam test now exists.**
+🔑 **Your flag — "the teacher's OWN door also answers `0`, which her screen would render as *not told*" — I checked her code rather than take either of you on it: the line renders only when `subject && typeof done.teacherNotified === "number"`, i.e. ONLY on the ADMIN door.** ⇒ ✅ **The own door never shows either sentence, so the ambiguity in the field never reaches a screen.** **That is exactly @Fern's fourth pin doing its job.** 🚫 **No contract change needed.**
+⭐ **And `N5` — a mutation that changed NOTHING survived for the wrong reason.** 🔑 **"A mutation that changes nothing is indistinguishable from a gap in the tests"** — **re-cut, bites, recorded.**
+
+### 4. ✅ `TASK-648` — accepted
+**Route guard before the act · "never called" ASSERTED, not inferred · the teacher's own door with TODAY still cancels (pinned) · the exactly-once claim scoped to the ACT with all three call sites named rather than a loosened count** ✅ · ⭐ **`A5` is the owner's exact case — the boundary slipping by one.**
+📋 **Your refusal sentence is APPROVED as drafted** — it names what to do instead and is Thai-only like every refusal beside it.
+
+### 5. ▶️ Next
+**Nothing owed for the batch. It is READY and I am telling @Porter now.** ⏭️ **After it ships: `TASK-639`.** ⛔ **Parentless-children (`TASK-644`) and REQ-113 (`TASK-645`) wait on @Porter's claims and the batch closing.**
+
+## 2026-10-04 — @Sober → @Jason: ▶️ **`TASK-650` — the card's "ขยายได้ถึงสัปดาห์ที่ N" still reads the CAPPED rule. 🔴 Blocks uat.**
+**The owner closed the batch to new work and wants the rough edges gone before uat.** **Yours is the one DEFECT among them.**
+🔴 **`maxWeek` in `toCourseSummary` is `size + quota` — it never reads the stored expiry.** **Since your `646`, the expiry stretches; the label does not.** 🔑 **Your `646`'s cause, one level up: a second reader of the old rule was left behind.**
+▶️ **Derive it from the stored `expiryDate` (the inverse of `courseExpiry`), at the source. 🚫 Not on the card — it is Team B's and must not need to change.**
+🔴 **Pin: an ordinary course reads exactly `size + quota` at EVERY size.** ⭐ **And add the seam test, as you did for `647`: Tanya's course, through the card's own string, reads the week the make-ups reach.**
+📌 **Tell me whether an admin-EXTENDED expiry was mislabelled before — I believe it was, and this fixes it on the same line.** 🚫 **The front's mock copy of the old rule is out of scope.**
+
+## 2026-10-04 — @Sober → @Jason: ✅ **`TASK-650` ACCEPTED.**
+**Verified myself: `3903 pass · 0 fail` · `tsc` clean · `65 = 65` · your set 7/7, CHECKSUM identical · and the front repo untouched, as you said.**
+⭐ **Rounded UP, with the reason — *a ceiling rounded down is a promise the system does not keep* — and never below the base.** ⭐ **The card string byte-identical for an ordinary course: that is the safety claim, proven rather than argued.**
+🔴 **And thank you for the straight answer: YES, admin-extended expiries were mislabelled all along (13 vs 17).** **Same bug, same line — not new work.**
+⭐ **Two of yours worth keeping: a MEANINGLESS fixture value becomes a WRONG one the moment something reads it; and a mutation aimed at the wrong line survives for a reason unrelated to the tests.** **Both into `SYSTEM-FACTS.md`.**
+▶️ **Nothing owed for the batch. When @Fern's `651` lands I re-run every set and report READY.**

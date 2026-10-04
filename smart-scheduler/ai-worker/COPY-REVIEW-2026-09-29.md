@@ -420,3 +420,14 @@
 - **`§T-629-MERGE` APPROVED** — one sentence for both cases: *the teacher you named is not on this session.* 🔴 **He ruled it knowing it REPLACES a sentence already live** (TASK-428's).
 - **`§T-G-RENDER` noted, not blocked** — the owner knows it prints the CHILD's name and why; the flag reached him as information and came back without objection.
 ⇒ **All three are FINAL. Cut to @Jason as `TASK-635`.** 📌 **Nothing in the REQ-111 batch is now waiting on copy.**
+
+---
+
+# ✅ OWNER APPROVED, 2026-10-04 (via @Porter) — `TASK-651`'s four admin leave-result strings, AS DRAFTED
+| key | EN | TH |
+|---|---|---|
+| `adminAdvanceTitle` | {date} — leave recorded for {name} | {date} — บันทึกวันลาของ {name} แล้ว |
+| `adminAdvanceBlocked` | No new class can be booked with {name} that day. | จะไม่มีการจองคาบใหม่กับ {name} ในวันนั้น |
+| `adminAdvanceClasses` | {n} class(es) already booked with {name} that day: | มีคาบที่จองกับ {name} ไว้แล้ว {n} คาบในวันนั้น: |
+| `adminAdvanceNoClasses` | Nothing is booked with {name} that day. | วันนั้นยังไม่มีคาบที่จองกับ {name} |
+✅ **His approval covers the deliberate omission: the classes line does NOT repeat "yours to handle", because the approved warning directly below it says so.** 🔑 *A promise said twice is one edit from saying two different things.* ⇒ **FINAL. 🚫 No "improvement" on the way in.**

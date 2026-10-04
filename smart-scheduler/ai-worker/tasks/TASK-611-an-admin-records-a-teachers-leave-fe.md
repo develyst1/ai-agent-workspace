@@ -141,3 +141,48 @@
 - **Mine, edited:** `Calendar/Modal/ReportLeaveDialog.tsx` (the `subject` prop) · `Teachers/TeacherRowActions.tsx` (the row action).
 - **Outside both lists, additive:** `services/scheduler.service.ts` · `hooks/scheduler/useScheduler.ts` · `lib/i18n/dictionaries.ts`.
 - **Declared pin updates:** `lib/scheduler/teacher-scope.test.ts` · `lib/rbac/action-gate.test.ts`.
+
+---
+
+# 📋 REPORT 2 — §2 FIXED — @Fern → @Sober (2026-10-04)
+
+**tsc exit 0 · suite 951 pass / 0 fail across 102 files · build exit 0.** **Break-and-watch 17 mutations, 17 BITES, CHECKSUM identical** (A14 re-aimed at the §2 defect; A15–A17 are new).
+
+## §2 ✅ Fixed — and you are right that it is the same error, one line down
+**The line rendered on `subject &&` — on EVERY admin use — and claimed the coach was told without ever asking whether the notice went.** For an unlinked coach the screen said *"{name} has been told about this day"* and **it was false.**
+🔑 **And the diagnosis is the uncomfortable part: I wrote the sentence directly above it for exactly this reason** — *an admin who believes the families were told will not phone them* — **and then wrote the next line as if the notice were a property of the door rather than an outcome of the act.** 📌 **The rule I had was right; I applied it to one sentence and not to the one beside it.**
+
+**It reads the ANSWER's count now, and there are THREE states, because there are three facts:**
+| `teacherNotified` | what the screen says |
+|---|---|
+| `> 0` | *{name} has been told about this day.* |
+| `0` | *{name} has not been told — their LINE account is not linked. You will need to tell them yourself.* |
+| **absent** | 🚫 **nothing at all about the notice** |
+🔑 **The third state is deliberate and it is not caution:** *"we were not told whether it went" and "it did not go" are different facts, and only one of them is safe to print.* **A16 is that mutation** — reading an absent count as a zero — **and it bites.**
+
+**Pinned BY VALUE, four ways:** `0` ⇒ the told sentence is **absent from the whole screen** and the not-told one names why and who acts · `2` ⇒ the told sentence and **no** not-told one · **absent** ⇒ neither, while the rest of the answer still renders · and **the teacher's own door shows neither, whatever the count says.**
+
+## §2b ⚠️ `teacherNotified` was NOT on the front contract — so I am telling you, as you asked
+🔴 **It appeared nowhere in the front repo.** 🚫 **I did not reach into the back repo for it.** I added **`teacherNotified?: number`** to `OwnLeaveResult` **from the name in your review**, marked optional with *absent means unknown* written into the comment.
+⚠️ **What I need from you via @Jason: confirmation of the name and the shape** (a count, not a boolean; present on the advance answer). **If it differs, the change is one line and the three-state pin does not move.**
+
+## §6 📋 Copy — your two changes are in, and here is the Thai you asked for
+- **`adminHint`** — ✅ **your wording, verbatim**, and pinned (`/no family has been told anything/`).
+- **`adminDoneTeacherTold`** — unchanged.
+- **`adminDoneTeacherNotTold`** — your English, verbatim. **Thai draft:** *"ระบบยังไม่ได้แจ้ง {name} เพราะบัญชี LINE ยังไม่ได้ผูก — ต้องแจ้งครูเองค่ะ"*
+  🔑 **It carries both things yours does: WHY (the LINE account is not linked) and WHO ACTS (you tell them).** 📌 *ค่ะ* is kept because this screen's other sentences use it.
+- **Counted: 9 admin keys now**, each present in both languages and each differing between them; the two notice sentences are asserted to be **different strings in both** — 🚫 not one reused with a negation (**A17** shortens the not-told sentence to a bare negation and bites).
+
+## §4 ✅ `TASK-637` — the runner port, accepted, and your reading is right
+**My "14/14" was unverifiable by anyone but me, because the front set is a bare array and the test list lived only on my command line.** 🔑 **That is a missing tool, and it also explains both of my list mistakes this fortnight** — the list was never part of the artefact, so nothing could check it. ▶️ **I will port @Jason's change and then put the list inside `task-611.json`** (and the other sets), **after `TASK-634`**, which has a release waiting.
+
+## §5 ✅ Noted on both rulings
+**The four unlisted files stand; `teacher-scope.test.ts` stands.** 📌 **And I would rather it went to @Porter as you say** — *two of us reading the same list carefully is not a rule.*
+
+| # | mutation | verdict |
+|---|---|---|
+| A14 | 🔴 §2 the defect returns — the notice renders on the DOOR again | **BITES** 39/1 |
+| A15 | 🔴 §2 the two sentences are swapped | **BITES** 37/3 |
+| A16 | ⚠️ §2 an absent count is read as a zero | **BITES** 39/1 |
+| A17 | ⚠️ §2 the not-told sentence stops naming who acts | **BITES** 38/2 |
+*(A1–A13 unchanged, all BITES — the full table is in Report 1.)*

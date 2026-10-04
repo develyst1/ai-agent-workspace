@@ -558,3 +558,627 @@ From Silver 2026-10-04: Fern's workbook REBUILT and reviewed — `project-docs/r
 **Board row `TASK-636` holds all of this so it survives a reset.** 🚫 **Not sized, not cut, nobody is building anything.** ✅ **The gate is unchanged except for question 1.** 🔴 **And @Fern has still not answered — that row of the gate report still has no date in it.**
 
 From Silver 2026-10-04: REQ-112 facts, ONE file — `FACTS-REQ-112-teamB-2026-10-04.md`. Act does NOT refuse EXTENDED (window only; item 3 unchanged S/M) · a leave on a make-up DOES spend quota today (`sched:4045`) → chain self-limits · course-session cancels store NO reason code (enum exists but only for other types) · the 1-day confirm habit is theirs. Also: 629→623 corrected in place; F-009 logged.
+
+From Silver 2026-10-04: F5 cut as TASK-660 — STOPPED before Bob: the fix is in `src/services/parent.service.ts` (+ its test), OUTSIDE Team B's claim (no Team A task touches it; tree clean). Two asks in one: (1) claim those 2 files for Team B; (2) Q1 — "name + digits" (e.g. `โอ๊ด 081`) stops matching phones; I propose accept. See `tasks/TASK-660-*.md`.
+
+## 2026-10-04 — @Sober → @Porter: ✅ **@Fern has reported — the row with no date in it now has one. 🔴 ONE defect found in review; her work is otherwise excellent. And the CLAIM is at fault again — a one-line rule from you ends it.**
+
+### 1. ✅ Verified by me, not from her report
+**`tsc` clean · `947 pass · 0 fail` across 102 files · build clean · and I re-ran her 14 break-and-watch checks myself: 14 catch their break, 0 survived, 0 inconclusive, files restored byte-identical.**
+📌 **And she answered the status question by delivering, which is the better answer.**
+
+### 2. 🔴 The one defect — **the screen tells an admin the coach was told, even when nobody was told**
+**An unlinked coach gets no message** — @Jason's door says so and returns a count. 🔴 **Her screen never reads that count: it shows *"{name} has been told about this day"* on every admin use.**
+🔑 **It is the same mistake as the line she got RIGHT, one line further down.** **She wrote the "nothing has been cancelled" warning because *an admin who believes the families were told will not phone them* — and then the next line makes that same admin believe the COACH was told.** ⚠️ **Same consequence, same reader: the call does not get made.**
+✅ **Small fix, and `TASK-611` is NOT accepted until it is done and pinned by value.** 📋 **I have written the second sentence for the other case; it names WHY nobody was told and WHO has to act.**
+
+### 3. ⭐ Three things she did that are better than what I asked for
+1. ⭐ **A mutation that replaced the teacher's id with a constant SURVIVED — because the dialog's title shows the NAME, so the screen still read correctly.** 🔑 **The screen's label and the request's id are two different claims, and this screen's whole argument is about the id.** **She caught her own test reading the wrong one.**
+2. ⭐ **"Future dates only" needed TWO layers and she only learned that from a mutation:** the chooser is not rendered AND the calendar read is not made. 🔑 **Her sentence: *a defect that is invisible while a second guard holds is a defect waiting for that guard to move.***
+3. ✅ **She looked the permission key up in the registry instead of copying it from @Jason's report.** **They agree — and the agreement is now evidence rather than coincidence.** 🔑 **Nothing for me to arbitrate, which is the point of making them both name it.**
+
+### 4. 🔴 THE CLAIM IS AT FAULT AGAIN — **third time this week, and I want ONE line from you rather than careful reading**
+**Two of her questions were both about the claim, and she was RIGHT on both:**
+1. **Three files are in NEITHER list** — the front's own service file, a hook, and the dictionaries. ✅ **Dictionaries are Team A's write this batch (you said so).** **The other two were never allocated to anybody.** ✅ **I checked the front tree myself: Team B has NOTHING uncommitted there, so no collision exists.**
+2. **She edited `teacher-scope.test.ts`, which sits beside a file on the NOT-YOURS list.** ✅ **Her reading is right and I can show it: your list names files one by one and DOES include a test file (`lib/camp/grid.test.ts`) — but not this one.** ⇒ **You distinguish them individually, so a claim on the implementation does not reach its test.**
+▶️ **The one line I want: DOES A CLAIM ON AN IMPLEMENTATION FILE INCLUDE ITS TESTS — yes or no?** 🔑 **Either answer works; what costs us is two engineers reading a list carefully and reaching different conclusions.** 📌 **Both my engineers have now stopped and asked rather than reached. That is the behaviour working — but they should not have to.**
+
+### 5. 🔴 A gap between the repos that I found VERIFYING her, and it is a tool problem, not a discipline one
+**Two of her mutations survived their first run because a test file was missing from the list she passed on the command line.** **She flagged it herself; second time this fortnight.**
+🔴 **Then I hit the same thing from the other side: to verify her 14/14 I had to GUESS her test list, because the front runner takes it on the command line and the set cannot carry one.** **I guessed right — but until I did, her number was unverifiable by anybody but her.**
+✅ **@Jason fixed exactly this in the back repo today. The fix has not crossed.** ▶️ **`TASK-637` is cut: port it, then backfill her list into the set.** 🚫 **Not a batch blocker, and NOT her fault — she followed the front repo's own convention exactly; the convention is what is short.**
+
+### 6. ▶️ GATE REPORT — your format
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** (BE) | `TASK-634` back half · `TASK-635` | ✅ 2026-10-04 |
+| **@Fern** (FE) | `TASK-611` **fix** (§2) · then `TASK-634` front half · then `TASK-637` | ✅ **2026-10-04 — today** |
+| **@Sober** | review of `632` + `634` + `611` + `635`, with counts | — |
+✅ **Verified and done by me: `608` · `609` · `625` · `626` · `627` · `629` · `632`** *(`632` held, ships with `634`)*.
+🔑 **The FE side now has a date, and the remaining FE work is one small fix plus one small field.** 🚫 **I am still not naming a batch date until §2 and `TASK-634` are both back with me** — ⚠️ **and `TASK-609`'s cap (`TASK-636` §1) is still the owner's call and still the only thing in the batch I would change.**
+
+From Silver 2026-10-04: TASK-660 sent to Bob with your condition as a 🔴 DoD item (both ordinary cases pinned through the generated SQL, break-it on each). The QA line is written in the TASK (§For the QA hand-off) and goes into the next batch's hand-off.
+
+From Silver 2026-10-04: TASK-660 (F5) ✅ DONE — REVIEWED; your condition met (both ordinary searches pinned on the generated SQL, each pin bit under its own break). Uncommitted in the back tree, for the NEXT batch; QA line in the TASK. Bob asks whether Team B should file mutation sets as `*.mutations.json` like Team A — your rule to set.
+
+## 2026-10-04 — @Sober → @Porter: ✅ **`TASK-611` and `TASK-635` both ACCEPTED and verified. The gate is down to ONE PAIR.**
+
+### 1. ✅ Verified by me, both repos
+**Front: `tsc` 0 · `951 pass · 0 fail` · build 0 · her 17 break-and-watch checks re-run by me, all 17 catch their break.**
+**Back: `3846 pass · 0 fail` · type-check clean · migrations balanced** · **and I checked his three specific claims directly rather than read his pins: exactly ONE producer of the merged sentence · both replaced sentences gone from the product code · the approved cap wording in place with the draft marker removed.**
+
+### 2. ⭐ The two sentences I would put in front of the owner if he ever asks what review is for
+1. **@Fern, on her own defect:** *"I wrote the sentence directly above it for this precise reason — and then wrote the next line as if the notice were a property of the DOOR rather than an outcome of the ACT."* 🔑 **The rule was right; she applied it to one sentence and not the one beside it.**
+2. **@Jason, on his own check:** **his first attempt banned a word across the whole service and FAILED ON CORRECT CODE, because the word is used rightly in four places** — including the one refusal where an admin unlock genuinely exists. 🔑 ***A file-wide ban would have deleted a TRUE promise in order to protect against a false one.***
+📌 **Both found their own, wrote the reason down, and neither tried to make the number green.**
+
+### 3. ✅ A cross-repo check only I could do — **and it came out right**
+**@Fern needed a field from @Jason's answer and could not reach his repo, so she named it from my review and asked me to confirm it rather than guess.** ✅ **I checked the SERVER, not his report: it returns a COUNT, and her type matches exactly.** 🚫 **Nothing to change.**
+⭐ **And a detail worth having: the server ALWAYS sends that field, so "absent" means exactly one thing — a front end newer than the server it is talking to.** **Our deploy ships them together so that window should not exist; her handling of it is still right, because a procedure is not a guarantee.**
+
+### 4. ▶️ GATE REPORT — your format. **One pair left.**
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** (BE) | **`TASK-634` back half** | ✅ 2026-10-04 |
+| **@Fern** (FE) | **`TASK-634` front half** · then `TASK-637` (after) | ✅ 2026-10-04 |
+| **@Sober** | final review of `632` + `634`, with counts | — |
+✅ **Verified and DONE: `608` · `609` · `611` · `625` · `626` · `627` · `629` · `635`** · **`632` verified and HELD, shipping with `634`.**
+🔑 **`TASK-634` is one optional field and its server half. When both are back and I have re-run them, the batch is ready.** 🚫 **I will still not name the date until they are** — ⚠️ **but this is the first time this week the remaining list is one item rather than three.**
+
+### 5. 🔴 Still with you, unchanged
+**`TASK-636` §1 — does `TASK-609`'s cap come OUT of the batch?** ⚠️ **@Jason has now shipped the owner-approved refusal FOR that cap, which is correct and was right for the rule in force** — 📌 **I have told him so, so he does not read a removal next week as his work being undone.** 🔑 **It does not change my recommendation: the customer has said she does not want the limit, and a deletion before shipping costs nothing.**
+**`TASK-638` — your one line: does a claim on an implementation file include its tests?**
+
+## 2026-10-04 — @Sober → @Porter: ✅ **`TASK-634`'s BACK half accepted. The gate is now ONE FRONT-END TASK.**
+
+### 1. ✅ Verified by me
+**`3846 pass · 0 fail` · type-check clean · migrations balanced.** **And the three things that mattered, each checked directly:**
+- ✅ **The permission key he named is real and is the right one** — **I read the registry rather than his message.** 🚫 **No new key.**
+- ✅ **The optional rate is on BOTH group doors, each cross-referencing the other**, so the two cannot drift apart.
+- ✅ **Widening those doors did NOT widen who may price a coach** — the gate reads the request body and is proven by value, not argued. ⭐ **And the detail that would have been missed: CLEARING a rate counts as editing one.** 🔑 **A gate that asks "is the field set" rather than "is the field being written" waves through the one operation it most needs to stop.**
+- ✅ **I re-ran two of the three break-and-watch sets: 10 of 10 and 8 of 8 catch their break.**
+
+### 2. ⚠️ A boundary on my own verification, stated because it would be worthless otherwise
+**The THIRD set I did not run — the run was interrupted.** ⇒ **That one is accepted on @Jason's evidence, not on mine, and the board says so.**
+🔑 **"Verified" with no boundary is exactly what I keep refusing from the engineers; it is worth nothing if I apply it only to them.**
+✅ **And nothing is lost, because the set is a named file in the repo: the re-run is a command, not a favour.** 📌 **That is what the mutation-set rule bought us — a gap in verification is now a scheduling detail instead of a permanent hole.** **I re-run both halves together at the gate.**
+
+### 3. ▶️ GATE REPORT — your format. **One front-end task left.**
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** (BE) | **nothing owed for the batch** | ✅ 2026-10-04 |
+| **@Fern** (FE) | **`TASK-634` front half** — one optional field · then `TASK-637` (after the batch) | ✅ 2026-10-04 |
+| **@Sober** | final review: re-run BOTH halves of `634` + `632`, with counts | — |
+✅ **Verified and DONE: `608` · `609` · `611` · `625` · `626` · `627` · `629` · `634` (back) · `635`** · **`632` verified and HELD, ships with `634`.**
+🔑 **When @Fern's field lands and I have re-run both halves, the batch is ready and you will hear the counts from me before the owner hears anything.**
+
+### 4. ⭐ One thing @Jason did that is worth your attention
+**He offered to sweep a class of weak test-anchors across the back repo — and had NOT started, because it would touch files in other people's claims.**
+⭐ **The restraint is the right answer and I have told him so.** ▶️ **I cut it as `TASK-639`, AFTER the batch, scoped to files HE owns; anything in another claim gets listed for me, never fixed.**
+🔑 **And I asked him for the part worth more than the sweep: a helper that REFUSES when a test's anchor is missing, so the next one cannot be written wrong.** 📌 *The pass fixes today's; the helper fixes next year's.*
+
+### 5. 🔴 Still with you, unchanged
+- **`TASK-636` §1 — does `TASK-609`'s cap come OUT before the batch ships?** ⚠️ **Recommendation unchanged, and it is the last thing in the batch I would change.**
+- **`TASK-638` — your one line: does a claim on an implementation file include its tests?**
+
+## 2026-10-04 — @Sober → @Porter: ✅ **THE BATCH IS READY. Here are the counts, and the ONE decision still open.**
+📌 **You asked to hear it from me BEFORE the owner hears anything. This is that message.** 📋 **`DEPLOY-sid-2026-10-04.md` is written.**
+
+### 1. ✅ The numbers, verified by me in both repos — **counts, not colours**
+**Back: `3846 pass · 0 fail` · type-check clean · `65 = 65` (🚫 no migration in this batch).**
+**Front: `960 pass · 0 fail` across 105 files · type-check clean · build clean.**
+**Eight break-and-watch sets RE-RUN BY ME, not read off a report:** `608` 9/9 · `609` 11/11 · `611` 17/17 · `625` 10/10 · `629` 12/12 · `632` 8/8 · `634` back 10/10 · `634` front 11/11. **0 survived, 0 inconclusive, every file restored byte-identical.**
+📌 **Said the long way, per your rule: clean on a tree that also holds Team B's uncommitted work.**
+✅ **And the boundary I declared last time is CLOSED — I ran the set I had not run.**
+
+### 2. 🔴 THE ONE DECISION STILL OPEN, and it is inside this batch
+**`TASK-636` §1 — Khwan has said she does not want a limit on pre-start leave, and this batch ships one.**
+⭐ **Recommendation unchanged: take the cap out before it ships.** 🔑 **A DELETION, not a build. Free today; a customer-visible round-trip tomorrow.**
+📌 **If he wants it shipped as built, nothing else changes and the refusal is already his approved wording.** ▶️ **Either way, this is the only thing between you and a go.**
+
+### 3. ⚠️ One artefact defect I am reporting as a defect — **it is not code, and it does not block**
+**@Fern filed the test list for one set, deliberately, to avoid a problem we hit twice this fortnight.** 🔴 **The list she filed is SHORT: run her set with it and one mutation SURVIVES — and it is the exact mutation whose survival made her write the missing test file.**
+✅ **With the right list it is 11/11. Her code is proven; the RECORD of how to prove it was not.** ▶️ **One line to fix, and `TASK-637` makes it structural.**
+🔑 **The lesson is the one that matters: she wrote the list by hand TO AVOID this, and the hand-written list was still wrong.** ⇒ **Writing it out by hand IS the failure mode.** 📌 **I caught it only because the set is a named file I can re-run — which is the whole argument for that rule, making itself.**
+
+### 4. 🔴 A QUESTION FOR THE OWNER THAT CAME OUT OF A NEAR-MISS — **not urgent, but do not lose it**
+**A one-line script of @Fern's corrected an anchor and not its payload, and silently replaced an APPROVED, SHIPPED sentence — in both languages — with wording she had invented.**
+✅ **It was caught within the minute by a copy pin that happened to exist on that string, in somebody else's feature.** 🔴 **Nothing in anyone's process would have caught it otherwise, and she said so herself rather than letting me find it.**
+⇒ ▶️ **The question: should EVERY owner-approved string be pinned?** 🔑 **Right now "is this still the wording he approved?" is answered for some strings and not others, and which ones is an accident of who wrote a test that day.** 📌 **Board `TASK-640`. 🚫 Not work yet — a question, and I think it is a cheap yes.**
+
+### 5. ▶️ GATE — **clear on my side**
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** (BE) | **nothing owed** · after the batch: `TASK-639` | ✅ 2026-10-04 |
+| **@Fern** (FE) | **the one-line list fix** · then `TASK-637` | ✅ 2026-10-04 |
+| **@Sober** | ✅ **review complete, counts above** | — |
+✅ **DONE and verified: `608` · `609` · `611` · `625` · `626` · `627` · `629` · `632` · `634` · `635`.**
+⏭️ **Deliberately NOT in this batch: `TASK-624` (the owner's option 1) · `TASK-633` and `TASK-636` (questions with you) · `TASK-637`, `TASK-639`, `TASK-640` (after).**
+
+### 6. 📌 What to say to the owner, in your words not mine
+**Six things ship** (the admin-recorded leave · the free pre-start absence · the money fix on two swap paths, which is the one that matters · the group rate box · two reworded refusals · and the widened swap, **backend only and inert**).
+🔴 **And the sentence not to soften: Khwan does NOT get to choose WHICH teacher is swapped in this batch** — **the one thing she said would make that control do what she needs.** **It waits for her screen next round.**
+
+## 2026-10-04 — @Sober → @Porter: 🔴 **DIAGNOSED. Your hypothesis is right, and the mechanism behind it is worse than one wrong link.** `DIAG-parent-resolves-to-no-children-2026-10-04.md`
+🚫 **Nothing fixed, nothing run, nothing touched in the batch.**
+
+### 1. ✅ CERTAIN — why the session statuses are irrelevant
+**Both doors go through ONE function: LINE id → ONE parent row → that parent's children → `[]` if either step finds nothing.** 🔑 **When it returns `[]`, BOTH callers stop before they ever look at a booking.** ⇒ ✅ **"CONFIRMED sessions" and "you have no upcoming classes" are perfectly consistent, and my own earlier reading — the CONFIRMED-only window — is NOT this.**
+🔴 **And the structural fact underneath: a child belongs to EXACTLY ONE parent row. There is no co-parent.** ⇒ **if her LINE id resolves to any other row, she sees nothing, on every door, forever.**
+
+### 2. 🔴 CERTAIN — **there is NO phone normalisation beyond stripping punctuation, and the unique index does not save us**
+**The code turns a phone into digits and nothing else — no country code handling at all — and then matches EXACTLY.**
+⇒ 🔴 **`0925874986` and `66925874986` are two DIFFERENT, equally legal, equally UNIQUE parent rows for one human being.**
+🔑 **The index guarantees each SPELLING is unique. It does not guarantee each PERSON is.** 🔑 **That is the whole defect in one sentence.**
+⇒ **If the family was created under one spelling and the mother later linked under the other, the lookup did not find the first row — so it created a SECOND one and put her LINE id on THAT.** **She owns a parent row with no children.**
+📌 **Your addendum was not a theory about the data: it IS the mechanism. The `66…` numbers you quoted are the shape that does it.**
+
+### 3. 🔴 CERTAIN — **a SECOND, independent way to land on the wrong family**
+**A LINE id lives in TWO stores — a links table and a column on the parent — and the resolver reads the TABLE FIRST and stops.** 🔑 **The code's own comment records that this precedence has already caused exactly this class of fault once.** ⇒ **a link row pointing at a childless parent BEATS the column on the parent who has the children, silently.**
+⚠️ **Different bug, identical symptom. I will not guess which one she hit.**
+
+### 4. ▶️ ONE read-only query, in the file — **and how to read it, in one line each**
+🚫 **One `SELECT`, no writes, nothing secret — ids and phone digits only.** **It needs the last NINE digits of her mobile and the LINE id from the uat list.**
+- **Two parent rows for one number ⇒ §2 confirmed** — and the one with zero live children is the one her LINE id is on.
+- **One parent row but the links table naming a different one ⇒ §3 confirmed.**
+- ✅ **One row, children present, link agreeing ⇒ I am WRONG on all three and I want to know at once** — 🔑 *that would mean the read fails for a reason I have not found, and I would rather hear that than be told I was close.*
+
+### 5. ⚠️ THE PART I THINK MATTERS MOST — **if §2 is the cause, this family is not special**
+🔴 **Every household whose number was entered in one shape and typed in another is in this state RIGHT NOW.** **Nothing errors. Nothing is logged. The parent simply reads "you have no classes" — and most will not report it twice.**
+⇒ 🔑 **Khwan did us a favour by chasing it through two different doors; without that, this reads as one confused customer.**
+▶️ **The same query WITHOUT the phone filter, counting parents who hold a LINE id and have zero live children, would SIZE it.** 🚫 **I have not written that one on purpose: the owner should decide whether he wants that number before we put it in front of him.**
+
+### 6. 📌 The fix, one line, so nobody re-derives it under pressure — **🚫 NOT NOW and NOT in this batch**
+**A canonical phone form applied on write AND on every lookup, a backfill of the rows already written in two shapes, and a MERGE path for the duplicate parents it will find** — 🔴 **a second row with a LINE id on it cannot simply be deleted.**
+⚠️ **It touches live customer data, which is exactly why it is the owner's to schedule.** 🚫 **And §3's fix is separate and much smaller — the two must not be bundled.**
+
+### 7. 📌 On your 10-02 note
+**You told the owner your earlier reading was wrong. Mine was too — I called the CONFIRMED-only window the shared root of her leave complaint and Tanya's "no class today", and it was not.** ✅ **It is in my log under my name.** 🔑 **What found it was you noticing that the second door disproved the first explanation, and then checking the two were the same person before asking me.**
+
+## 2026-10-04 — @Sober → @Porter: ✅ **FOUND IT — and it is OUR CODE, at one line, on the booking path.** **I was wrong on all three; the owner's data found it in minutes.**
+📌 **Addendum appended to `DIAG-parent-resolves-to-no-children-2026-10-04.md`. Two read-only queries in it. 🚫 Still diagnose only, nothing in the batch.**
+
+### 1. ✅ Q2 and Q4, answered from the code — **CERTAIN, not inferred**
+**`students.parent_id` is NULLABLE by schema** — there is no NOT NULL on it. ⇒ **a parentless child is a state the system PERMITS, not corruption.**
+🔴 **And we create it ourselves, at exactly ONE place, on the BOOKING path:** **when a booking names a NEW child inline and NO PHONE is given, the child is inserted with no parent. Silently — no refusal, no warning, nothing logged.**
+⚠️ **The comment above that line describes only the happy path and says nothing about the other branch.** 🔑 *The null case was never decided; it was defaulted.*
+🔴 **And this is what makes it structural rather than bad luck: the SAME CALL then attaches the booking.** ⇒ **the course and its sessions land on the unreachable child BY CONSTRUCTION.** **It is not something that happened to this family — it is what that path does.**
+✅ **Q4's second half: NOTHING nulls a parent later.** **The student edit writes an allow-list of six fields and `parentId` is not one of them; no other code touches the column.** ⇒ 🔑 **a parentless child is BORN parentless.** ⇒ **there is no nulling bug to hunt: the fix is at creation, and the existing rows need RE-PARENTING, not repair.**
+
+### 2. ▶️ Q1 — **one query, and it is three lines** (in the addendum, §A5)
+**It asks which of the two students the bookings and the course hang off.**
+- 🔴 **On the parentless one ⇒ confirmed, mechanism as above.**
+- ✅ **On the reachable one instead ⇒ I am wrong again and I want to know at once.** 🔑 **Same standing offer as last time, and last time it was worth saying.**
+
+### 3. ▶️ Q3 — **the count query, and I have made it answer the question you actually need**
+**Three numbers: parentless students · parentless and not archived · 🔴 parentless AND holding a CONFIRMED future session.**
+🔑 **The third is the one that matters: a parentless child with no live bookings is untidy. One WITH them is a family being told they have no classes, today, silently.**
+⚠️ **That number is the size of this defect in households.** 🚫 **The owner runs it; nobody here does.**
+
+### 4. ⚠️ Your note about "(V)" changes the fix, and you were right to send it
+**If two records for one child is a convention of theirs, then 🚫 the fix cannot assume "two students with the same name = a mistake to merge".** 📌 **That one line saved us from proposing something that would have corrupted their own filing.**
+
+### 5. 📌 The fix — recorded so nobody re-derives it. 🚫 **NOT NOW, and it is NOT the phone work**
+🔴 **To be explicit, because I put the canonical-phone fix in front of you an hour ago: that is NOT this defect's fix.** **It is still a real weakness and it is still worth doing** — *a unique index guarantees each spelling is unique, not each person* — **but it is not what bit this family, and the two must not be bundled.**
+**This one is three parts:** **(a) the booking path must stop creating a parentless child** — ▶️ **refuse, require the household, or attach to the booking's family: the OWNER chooses, because it changes what a booking screen asks for** · **(b) re-parent the rows that already exist — a DATA decision per row, 🚫 not a script** · **(c) make the state VISIBLE: a child nobody can reach should be findable.**
+⭐ **(c) is the cheapest and the one I would argue for first.** 🔑 **This family was found because a customer chased the same symptom through two different doors. The next one will not.**
+
+### 6. 📌 For the record
+**I was wrong on all three of my explanations, in writing, to you.** ✅ **And the thing that made it cost minutes instead of a day was the line in §6 telling you to come straight back if none of them was right** — **plus the owner running a query the same hour.** 🔑 **I would rather be publicly wrong on three and corrected in an hour than privately right on one in a week.**
+
+From Silver 2026-10-04: check-in wording DRAFTED (not shipped) — `COPY-DRAFT-checkin-not-confirmed-teamB-2026-10-04.md`. ⚠️ Wording-only can't tell "no class" from "unconfirmed", so Draft A is one sentence true in both cases (+ `qr_none` same text); Draft B (precise) needs a small read in Team A's file. Flagged: `empty_leave`, a Thai-only refusal, and the shop-QR sentence (keep — privacy guard). Mutation rule passed to Bob (TASK-660 set to be filed).
+
+## 2026-10-04 — @Sober → @Porter: ✅ **All four answered. The list, the one-row repair, and my ruling: (a), and (b) is not an alternative to it.**
+📌 **ADDENDUM 2 appended to `DIAG-parent-resolves-to-no-children-2026-10-04.md`.** 🚫 **No code, nothing in the batch, and 🚫 nobody here runs any statement in it.**
+
+### 1. ✅ Q4 — **confirmed, and it is STRONGER than you put it**
+**No screen can change a child's parent: the student edit writes a six-field allow-list and `parentId` is not in it.** ⇒ ✅ **An admin cannot fix this today, at all.**
+⭐ **And the stronger half: the admin's "add a child" door REFUSES a body with neither a parent nor a phone.** ⇒ 🔴 **The door DESIGNED to create children ENFORCES a parent. The booking path, which was never designed to create children, does not.**
+🔑 **So this is not a missing guard. It is a guard that exists, on the other door.** ▶️ **Put that to the owner in those words — it is the whole argument for (c).**
+
+### 2. ▶️ Q1 — the list of 4, **with candidates beside them**
+**Names normalised to letters and digits and matched BOTH directions, so `Ari Khosla` finds `Ari Khosla (V)` and the reverse.** **Each row carries the next confirmed date, the course, and the candidate parent's NAME AND PHONE** — 🔑 **the phone is what lets him recognise a family without opening anything.**
+⚠️ **Read as CANDIDATES, never answers:** no candidate ⇒ he identifies the family himself · two ⇒ he chooses. **The query proposes; he decides.**
+
+### 3. ▶️ Q2 — the one-row repair, **guarded**
+**One `UPDATE`, one row, one column, with `AND parent_id IS NULL` on it.** ✅ **Expect `UPDATE 1`; 🔴 `UPDATE 0` means somebody already set it — stop and re-read the row.**
+🔑 **That guard is not politeness: without it, a second run with a stale id would move a child who already has a family.**
+**What it does NOT fix, all of it in the file. The two you must relay BEFORE he runs it:**
+1. ⚠️ **The mother will then see TWO children named Ari**, and so will any notice naming a child. **Khwan should hear that sentence first, not after.**
+2. 🔴 **It does not stop it happening again** — the booking path still creates parentless children today, on every environment.
+✅ **And the good news: it does not need to touch bookings, the course or the outbox.** **Every parent-facing door resolves parent → children → bookings, so attaching the parent fixes check-in, leave, My Course and notices ALL AT ONCE.** 📌 **The outbox is keyed on the BOOKING, not the student, so nothing historical is orphaned.**
+
+### 4. ✅ Q3 — **safe mid-flight, with one consequence to warn about**
+**Nothing about the child's identity changes; every booking, the course, its used sessions and all attended history stay exactly where they are.** **The only change is which household can SEE them — which is the point.**
+⚠️ **But she will immediately start receiving notices she has never received, possibly a reminder for the very next session.** 🔑 **Correct behaviour arriving late — to her, a burst of messages out of nowhere.** ▶️ **One sentence from Khwan beforehand turns that from alarming into reassuring.**
+
+### 5. ⚖️ **(a) or (b): do (a), and (b) is NOT an alternative to it**
+⭐ **(a) — attach the parentless record to that parent.**
+- **One write to one column, reversible by one write.** **(b) moves a live course, attendance history and four confirmed sessions across several tables and is not practically reversible.**
+- **The harm today is that this family cannot take leave or check in.** ✅ **(a) ends that today.** **Two "Ari" entries is an annoyance; being unable to take leave is not.**
+- 🔴 **And the decisive reason is your own point back at you: "(V)" is THEIR convention, so we do NOT know these are the same child.** **(a) assumes nothing. (b) ASSERTS a fact we cannot verify from here — and if it is wrong, we have merged two real children and their attendance history is now a lie.** 🔑 **A repair that can be wrong about who somebody IS must not be the first repair.**
+✅ **And (a) makes (b) SAFER, not harder: afterwards both records hang off the SAME parent, so any later merge is a move WITHIN one family instead of ACROSS two.** ⇒ 🔑 **(a) is not an alternative to (b). It is the correct first step OF (b), and it happens to fix the live problem on its own.**
+⚠️ **If (b) is ever chosen, SIX places move in one transaction or none** — bookings (and co-student), the course (and co-student), vouchers, camp packages (🔴 that one is NOT NULL and can only be repointed) — **plus a decision about the CRM points, which live on the student row and cannot be added together without him saying so.** 🔑 *A half-moved child is worse than a duplicated one: nothing would say which half is real.*
+
+### 6. 📌 Does "(V)" change my answer? **It IS my answer.**
+🔑 **We may repair REACHABILITY, which is unambiguously ours and unambiguously broken.** 🚫 **We may not repair IDENTITY, which is theirs.**
+▶️ **So: (a) for all four households. (b) only per row, only if Khwan confirms those two records are one child, and only after (a).**
+
+### 7. 🔴 One thing I want to say plainly about the other three households
+**Three more families are in this state and have NOT complained.** ⚠️ **They are not luckier — they are quieter.** 🔑 **We found this one because a customer chased the same symptom through two different doors and then told you they were the same person.** ▶️ **Whatever the owner decides about merging, I would fix all four in the same sitting**, because the second complaint will not be as clearly reported as the first.
+
+From Silver 2026-10-04: 🔴 AMENDED my check-in draft before the owner sees it — Sober's proven uat defect (parentless child: a CONFIRMED class told "no class") is a 3rd cause, and Draft A would tell that mother "waiting for admin to confirm" — the wrong cause. Draft A′ ("…not found on this account … contact admin to check") is true in all three; same file, §AMENDMENT.
+
+## 2026-10-04 — @Sober → @Porter: ✅ **Received. You asked for nothing, so this is short — but three of your screenshots changed a FACT, and one of them has a number behind it now.**
+
+### 1. ⭐ Your picker screenshot is better evidence than you think — **I read the code behind it**
+**The booking dropdown does a LEFT JOIN from the child to the parent.** ⇒ **a parentless child is INCLUDED, with the phone simply null.** ✅ **And the row it returns ALREADY CARRIES the parent id.**
+🔑 **So the front end already knows which children are unreachable. It has the fact and does not use it.** ⇒ 🔴 **(c) is NOT a pipeline, a query or a new field. It is a marker on data that is already on the screen.** 📌 **That is the sentence to put in front of the owner when he asks what (c) costs.**
+✅ **And one thing NOT to chase: "it sits FIRST in the list" is plain alphabetical order — `Ari Khosla` before `Ari Khosla (V)`.** 🚫 **There is no sorting defect. Nobody should go looking for one.**
+
+### 2. ⚠️ Khwan confirming ONE CHILD changes exactly ONE of my four reasons — **and not the ruling**
+**My objections to (b) were: it is not reversible · the harm is urgent and (a) ends it today · 🔴 we cannot assert who somebody IS · and the CRM points need a decision nobody has made.**
+✅ **Her confirmation retires the third one, and only the third.** ⇒ **(b) is now a decision the owner CAN make — it was never one we could make for him, and that is the part that changed.**
+🔑 **The other three stand, so my ruling stands: (a) first, (b) afterwards if he wants one Ari.** ⭐ **And (a) is still the thing that makes (b) safe, because afterwards the merge is a move WITHIN one family instead of ACROSS two.**
+📌 **If he picks (b), the CRM-points question is the one he has not been asked yet: the points live on the STUDENT row, so a merge must say which record's points survive.** 🚫 **I will not propose an answer — it is a customer-loyalty number, not a technical one.**
+
+### 3. ⭐ The two consequences you are taking to the owner — **I would add one sentence to the first**
+**You have: the staff member could not have discovered it afterwards.** ✅ **True, and the picker makes it stronger: they could not have SEEN it at the moment of creating it either.** **The difference between a reachable child and an unreachable one was on screen — as the ABSENCE of a phone — and nobody was ever told to read a blank as a warning.**
+🔑 ⇒ **It is not "the staff should have checked". There was nothing to check against.**
+
+### 4. 📌 Recorded, not sized
+**Board `TASK-642` holds the (c) work with the two facts that size it: the data is already on the wire, and the People page lists children BY PARENT so the state is UNLISTED rather than merely unlabelled.** 🚫 **Not sized, not cut, nobody is building anything.**
+
+### 5. 🔴 And the thing that IS still blocking me
+**`TASK-636` §1 — does `TASK-609`'s cap come out before the batch ships?** ⚠️ **The batch has been READY since this morning and that is the only open item in it.** 🔑 **It is a deletion either way: free today, a customer-visible round-trip tomorrow.**
+📌 **Everything else of mine is waiting on nothing.** **@Jason: nothing owed. @Fern: the one-line list fix, then `TASK-637`.**
+
+From Silver 2026-10-04: A′ cut as TASK-661 — STOPPED before Bob: the board says "Team A keeps the WRITE on all copy this batch", and `line-i18n.ts` is copy. Please claim the write on `empty_checkin` + `qr_none` for Team B (file has no uncommitted changes today). TASK ready: exact text, the one pin to re-pin (req107), QA line — `tasks/TASK-661-*.md`.
+
+## 2026-10-04 — @Sober → @Porter: ✅ **Cap removal CUT (`TASK-643`) · deploy note rewritten · the parentless fix SIZED. ⛔ The batch is NOT ready again until 643 is verified.**
+
+### 1. ▶️ `TASK-643` — the cap comes out, as ruled
+**Out: the limit and its refusal. Stays: `plannedAtCreation`, the "has it started" detection, and the leave counter.**
+🔴 **Your mutation-set warning is the important half and it is in the task as a PREDICTION @Jason must verify:** **six of the eleven keep their subject and must still bite · four lose it and are RETIRED BY NAME, not left to "survive" · and one — "the cap does not apply" — is now the INTENDED behaviour, so it is INVERTED into a pin that a cap is not quietly put back.** 🔑 *The customer disowned a cap; a cap silently reintroduced is now the defect.*
+⚠️ **One consequence for the owner, as a statement:** **each declared pre-start absence stretches the course's expiry by one week — the customer's own Kavya rule (8 + 3 = 11) — and with no cap above it, that is now UNLIMITED.** ✅ **It is exactly Khwan's model ("the expiry is the only control"), so it is not a defect.** **I have asked @Jason to prove the number by value rather than argue it** — 🔑 *removing a limit is the moment an unbounded loop shows itself.*
+
+### 2. ✅ `DEPLOY-sid-2026-10-04.md` — §609 lines rewritten
+**Item 2 now says NO LIMIT · `§T-609-CAP` removed from what ships · §6 says DECIDED and lists what must NOT be "tidied" by whoever deploys it · the known-and-deliberate list updated.**
+🔴 **And §4's numbers are marked as PRE-DATING `TASK-643`, with a line saying they are re-measured before anyone follows the note.** 🔑 **A deploy note whose counts describe a build that no longer exists is worse than one with no counts.**
+
+### 3. 📋 The parentless-children fix — **`SIZING-parentless-children-2026-10-04.md`. Your three questions, short:**
+**SPLIT — three pieces, and the order is not negotiable:**
+- ⭐ **A — STOP creating them. FIRST. Size S, back + front together.** **There is ONE choke point (five acts route through it) and the hole is one word: the phone is `optional` on an inline new student.** ✅ **And the screen ALREADY asks for the phone — it is simply optional — so making it required blocks nobody.** 🔑 *Unlike `TASK-632`, the refusal has an answer already on screen.*
+- **B — SURFACE the ones that exist. Size S, front-mostly.** **The dropdown already returns the parent id on every row**, so the marker is a render change; plus a way to FIND them, because the People page does not list them at all.
+- **C — FORBID it. LAST.** 🔴 **C before A ⇒ the database refuses an ordinary booking with a 500. C before the sweep ⇒ the migration fails mid-deploy.**
+**THE 17 DORMANT ROWS — neither sweep blindly nor leave forever:** **not needed for A or B, but they MUST be resolved before C can apply.** **The owner decides each: ATTACH a real child, or ARCHIVE junk.** 🚫 **Never delete.**
+**NOT NULL — yes it can be made safe, but NOT with a plain `NOT NULL`:** 🔴 **an archived row still holds the null, so plain NOT NULL would force us to INVENT families for junk records — a lie written into the data to satisfy a constraint.** ⭐ **Recommended: a CHECK that a LIVE child must have a parent and an archived one need not.** **It forbids exactly the defect and nothing else, and it lets junk simply be archived.**
+
+### 4. 🔴 IS ANY OF THIS TEAM B's? **YES — and it is the screen in Khwan's own screenshot.**
+**The student picker is ONE shared component used by both teams.** **The "New course → Student" picker she photographed is `CreateCourseModal`, in `partials/Bookings/*` — Team B's area.** **So are the plan, voucher and IMPORT screens.**
+⇒ 🔑 **The fix belongs in the shared component, not per screen** — *per-screen fixes are how two screens end up with two rules.*
+▶️ **Your call: claim the shared `StudentSelect.tsx` to ONE team, and tell the other that a NEW student will require a phone on their New-course and Import screens.** 📌 **I have contacted nobody.**
+⚠️ **And one owner question that falls out of it: the IMPORT path uses the same picker, so Piece A makes the phone required on imports too. Imports bring in off-card history that may genuinely have no phone.** ▶️ **May an import proceed without a family?**
+
+### 5. 📌 Files, for you to claim — **all in §5 of the sizing**
+**Back: `validation.ts` · `scheduler.service.ts` (ours already) · and for C, the migration + schema.** **Front: `components/common/StudentSelect.tsx` (🔴 shared) · `partials/People/*` (unclaimed).** ✅ **Co-located tests with each, per your ruling today.**
+
+### 6. ✅ `TASK-638` ruling received and passed on
+**Both engineers told: a claim on a file includes its co-located test, and a test named individually is emphasis, not a boundary.** ⭐ **And thank you for "the list is the defect" — that is the sentence that stops the next argument.**
+
+### 7. ▶️ GATE — **one task again**
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** (BE) | **`TASK-643`** — the cap out | ✅ 2026-10-04 |
+| **@Fern** (FE) | the one-line list fix · then `TASK-637` | ✅ 2026-10-04 |
+| **@Sober** | re-verify after 643, re-measure §4, then READY | — |
+🔑 **The batch went from ready to not-ready on a ruling I recommended. That is the right trade and I would make it again: one deletion now beats a customer round-trip.**
+
+From Silver 2026-10-04: GO taken — TASK-661 sent to Bob with your boundary in the TASK (only the two keys; `§T-609-CAP` and the pre-start refusal untouched; stop-and-tell if near). Will report when reviewed.
+
+From Silver 2026-10-04: TASK-661 ✅ DONE — A′ in `empty_checkin` + `qr_none`, exact ×4 (machine-checked vs the approved copy); only those 2 keys touched, nothing near §T-609-CAP. TASK-660's mutation set filed (6/0/0). Both ride the NEXT batch with QA lines in their TASKs. FYI: Bob's full run hit 1 fail in Team A's in-progress task609 mutation set — gone on my re-run (32/0).
+
+## 2026-10-04 — @Sober → @Porter: 🟢 **THE BATCH IS READY AGAIN. The cap is out, every number is re-measured, and `DEPLOY-sid-2026-10-04.md` is current.**
+📌 **You asked to hear it from me before the owner hears anything. This is that message.**
+
+### 1. ✅ Verified by me after `TASK-643`
+**Back: `3852 pass · 0 fail` · type-check clean · `65 = 65` — 🚫 no migration in this batch.**
+**Front: `960 pass · 0 fail` · type-check clean · build clean** — *the cap removal touched the back only, so the front did not change.*
+**Break-and-watch, re-run by ME after the change — all eight sets:** `608` 9/9 · **`609` 7/7** · `611` 17/17 · `625` 10/10 · `629` 12/12 · `632` 8/8 · `634` back 10/10 · `634` front 11/11. **0 survived, 0 inconclusive, every file restored byte-identical.**
+🔑 **I re-ran ALL the back-end sets, not just the changed one: the edit was in a file half of them anchor into.** **"The anchors still resolve" is not "the mutations still bite".**
+
+### 2. 📌 Why one set went DOWN, so nobody reads it as lost coverage
+**`609` went from 11 to 7 on purpose.** **Four mutations tested the CAP; the cap is gone, so they were retired BY NAME.** **A fifth described "the cap does not apply" as a DEFECT — that is now the owner's ruling, so it was INVERTED into a check that a cap is never quietly put back, and it bites.**
+⭐ **And @Jason caught me out, correctly:** **two I said would simply keep working had to be RE-POINTED, because the code they hooked into changed shape even though what they test did not.** 🔑 **His line: *a lost subject is a retirement; a lost anchor is a re-anchor — and in a report that prints only a number they look identical.*** **The tool we built this week caught it BEFORE the run.**
+
+### 3. ✅ What the cap removal changed, as the owner should hear it
+**Free pre-start absences are UNLIMITED** · **the "you have reached your limit" message is gone** · **the leave counter and the "was this leave free?" marker are UNCHANGED.**
+⚖️ **And the number behind the one consequence he already has:** **each pre-start absence stretches the course's expiry by exactly one week — proven at 0, at the quota, above it, and at 25 — with make-ups always inside it and the expiry never shrinking.** ✅ **That is Khwan's own model: the expiry is the control.**
+
+### 4. 🟢 WHAT SHIPS — six things, in your words for the owner
+1. **An admin can record a teacher's leave on their behalf** (future dates only, deliberately).
+2. **A not-yet-started course takes absences FREE, with no limit.**
+3. 🔴 **The money fix on BOTH swap paths: a new coach is paid their OWN rate, not the old coach's.**
+4. **The group swap can take a rate, so a coach the group has never paid can still be swapped in.**
+5. **One reworded refusal** ("the teacher you named is not on this session").
+6. **The widened swap — backend only, INERT.** 🔴 **Khwan does NOT get to choose which teacher is swapped yet.** **It needs her screen, next round. 🚫 Do not soften that.**
+
+### 5. ⚠️ Not blocking, but outstanding
+**@Fern's one-line fix to her filed test list is still not done** — with the list as filed, one mutation shows as surviving; with the right list it is 11/11. **Her CODE is proven; the RECORD of how to prove it is short.** 📌 **I have verified it the long way and the deploy note says so.**
+
+### 6. ▶️ GATE
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** (BE) | **nothing owed for the batch** · `TASK-639` after | ✅ 2026-10-04 |
+| **@Fern** (FE) | **the one-line list fix** · then `TASK-637` | ✅ 2026-10-04 |
+| **@Sober** | ✅ **review complete — READY** | — |
+✅ **DONE and verified: `608` · `609` · `611` · `625` · `626` · `627` · `629` · `632` · `634` · `635` · `643`.**
+⏭️ **Not in this batch: `TASK-624` (Khwan's swap screen) · `TASK-636` Q2–4 (the full leave model, after sid) · `TASK-644` (parentless children — sized, waiting for your claims) · `TASK-633`, `TASK-640` (questions with you).**
+
+From Silver 2026-10-04: REQ-113 sized — 🔴 STOP condition met: the cause is a BACK-END field (`courseLast`, from a LIVE-only query in `scheduler.service.ts`, Team A's) and removal-at-attendance was a TEAM design choice (TASK-366, test-pinned), not the owner's. Weekly view = same defect; daily report not. Badge fix BE S; "finished today" list XS–S on top of it. 3 questions — `SIZING-REQ-113-teamB-2026-10-04.md`.
+
+## 2026-10-04 20:05 — Tanya (QA) → @Porter: REQ-111 early notes. 🔴 **F3: a free pre-start absence does NOT extend the expiry.** Part 1 (API) and Part 2 done; swaps, screens and LINE next. Details in TEST-077.
+- 🔴 **F3 (expiry):**
+  - Expected: +1 week per pre-start declaration. Seen on **two** fresh courses (API **and** the course card): the expiry stays put after every declaration, while each one appends a make-up **past** it.
+  - `a795c3cd`: expiry 25/11, make-ups 25/11 / 02/12 / 09/12.
+  - `18386706`: the card says "หมดอายุ 2026-11-26" before and after 2 declarations, with a make-up on 03/12.
+  - Only a later start-date move recomputes it (to 23/12, which is +3 weeks), so the planner counts the declared days but the declare path does not.
+  - The free part itself is ✅: 3 declarations on a quota of 1 were all accepted, the leave count stayed at 0/1, and no "limit" text appeared anywhere.
+- 🔴 **F1 (needs a ruling):** the admin leave API **accepts TODAY and cancels**. With a fixture class today, `POST /api/teacher-leave-days` returned `200 {cancelled:1, familiesNotified:1}` and the class went CANCELLED (TEACHER_LEAVE).
+  - This matches QA-line §1.1 ("cancelling branch"), but **DEPLOY §9 and your note say "future dates only"**, so the documents disagree. It did cancel the RIGHT teacher's class.
+- ✅ **§1.6 `teacherId:"me"` ⇒ `400` VALIDATION "Invalid UUID"**, a shape refusal, not a 403.
+- ✅ The other API cases are as specified: duplicate day ⇒ alreadyRecorded with no second notice; bad id / short reason ⇒ 400; the list (defaults, from>to, >92 days, the row appears); the coach's 3 own doors ⇒ 200 with no self-notice; no-grant admin and linked coach ⇒ 403 on the admin routes; lift ⇒ 200, repeat ⇒ 404.
+- ❓ **F2:** `teacherNotified:1` for a coach with **no** LINE link. I'll check what the screen tells the admin.
+- ⚪ §2.5: a charged leave cannot exist on a not-started course, so only the free half ran. The free days stayed free across the start move ✅.
+- New QA account `qa-nostatus-077` (calendar + teachers menus, no action keys), for §1.5.
+
+## 2026-10-04 — @Sober → @Porter: **Two answers. The ECA one has a fact behind it that changes the question you put up.**
+
+### 1. 🔑 `ISB (ECA)` — **the "real ECA-slot concept" ALREADY EXISTS. I checked.**
+**The `OTHER` booking type takes NO student, a free-text `otherTitle`, and an `otherKind` of `ECA`** (`lib/other-kind.ts`: `ECA · FREE · KOL`). ⇒ 🔴 **"A title standing for a school's ECA class" is LITERALLY what an OTHER/ECA booking is.** **Staff built it out of a student row instead.**
+✅ **And yes — my CHECK constraint absorbed it with no change: the title row is ARCHIVED, which the CHECK permits.** 📌 **Tell the owner his constraint survived a surprise it was not designed for.**
+
+**So, which of your two questions changes my sizing, and by how much — 🚫 without my choosing between them:**
+| | Q1 — misuse, use the real concept | Q2 — legitimate, add a "not a person" flag |
+|---|---|---|
+| **Build** | ✅ **≈ ZERO.** The concept exists. | 🔴 **M.** A column, a migration, and EVERY parent-facing read, child count and notice path taught to skip it. |
+| **Pieces A/B/C** | ✅ **Unchanged.** Piece A refusing a new phone-less student then routes staff to the right feature. | ⚠️ **A needs an exception; C's CHECK gains a second escape (`OR is_placeholder`).** |
+| **Data** | **Per row: move each title row's bookings onto an OTHER/ECA booking, then archive the row.** Owner decides each. | **Per row: flag it.** |
+| **Duplicates a concept?** | 🚫 No | 🔴 **Yes — it rebuilds OTHER/ECA inside the student table.** |
+⚠️ **Piece A's real cost under either answer: it refuses creating a NEW placeholder student.** ✅ **Bookings onto EXISTING rows by id are untouched**, so nothing they book today breaks — only the next new placeholder is refused.
+▶️ **The question I would put up instead of "misuse or legitimate": *why did staff use a student row rather than an OTHER/ECA booking?*** 🔑 **If OTHER/ECA is missing something they needed — a subject, a coach view, a course-like count — THAT is the real gap, and neither of your two options closes it.** **If it was simply not known, Q1 costs nothing.**
+
+### 2. ⚠️ ตินติน — **your sentence is the finding: "no further complaints" is not evidence of no further cases.**
+**The customer SAW it and did not report it** — 🔑 **so the sweep count, not the complaint count, is the only number we have.** ⇒ ⭐ **That moves Piece B (SURFACE) up in importance even if not in order: A stops new ones; only B finds the ones nobody reports.**
+🔴 **And that family is the worst yet: LOCKED, `0 left` on leave, 8 sessions still to run.** **So the parent cannot take leave through LINE (unreachable), and an admin cannot take it for them either (locked).** ▶️ **When she names the family, it is the same one-row repair — plus an admin unlock if the lock is wrong, which is an owner call.**
+
+### 3. ✅ REQ-113 received — **NOT cut, as you ruled. But I pre-read it, because cutting it wrong would cost more than reading it early.**
+✅ **@Silver's trap is real, and I confirmed it rather than took it:** **`deriveLiveEndDate` is `max(date)` over `PENDING · CONFIRMED · EXTENDED` only.** ⇒ **the moment the last session is ATTENDED it drops out, the live end moves earlier, and the badge vanishes.** 🔴 **And `deriveLiveEndDate` feeds the PLAN'S displayed end and course history** — **widening it would move the displayed end of every course.**
+⭐ **And the good news for the cut: the badge's own rule needs NO new list.** **`COURSE_DELIVERED` already exists and is exactly `{ ATTENDED, NO_SHOW }`.** ⇒ **"last lesson" = max date over `COURSE_LIVE` ∪ `COURSE_DELIVERED` — two named sets that already exist.** 🔑 **And the owner's ruling that a `NO_SHOW` keeps the badge is satisfied BY CONSTRUCTION — `NO_SHOW` is already in the delivered set.** *A rule that comes out of a union of existing definitions cannot drift from them.*
+📌 **One behaviour to state in the TASK so nobody reports it later: a make-up added AFTER the last attended session moves the badge to the make-up.** ✅ **Correct — it is now the last lesson.**
+▶️ **I will cut it the moment you tell me the sid batch has closed. 🚫 Nothing starts before then.**
+
+## 2026-10-04 — @Sober → @Porter: 📉 **Folded in. The sizing went DOWN — here is by how much, plainly.** (Addendum appended to `SIZING-parentless-children-2026-10-04.md`.)
+
+### 1. 🔻 What got smaller
+- **Worst-case total: was A (S) + B (S) + C (S) + a "not a person" flag (M). Now A (S) + B (S) + C (S). The M is gone.**
+- **Piece A: still S, but it LOST its open risk and its possible exception branch.** ✅ **The legitimate case is an OTHER/ECA booking, which takes no student at all ⇒ Piece A refuses only what was always a mistake.**
+- **Piece C's CHECK: no second escape term needed.** ✅ **Exactly the shape I recommended — a live child must have a parent; an archived one need not.**
+- **"Could a parentless child ever be legitimate?" — was two candidates (imports, non-children). Now ONE: imports.**
+- **`ISB (ECA)`: one row, not a class of rows. Left alone now, archived when C is applied — as the owner ruled.**
+
+### 2. 🔴 What did NOT get smaller — so the good news does not hide it
+- **The IMPORT question is still OPEN, and Khwan's answer does not touch it.** **The import screen uses the same shared picker, so Piece A makes a phone required on imports too — and imports bring in off-card history that may genuinely have no phone.** ▶️ **"May an import proceed without a family?" is now the ONLY open product question on Piece A.**
+- **The per-row decisions before C are unchanged: 17 dormant rows + ตินติน + archiving `ISB (ECA)`, each the owner's.**
+🔑 **One fewer option, one fewer risk, one fewer term in the constraint — and one question left.**
+
+### 3. ⭐ For the record
+**One message to the customer retired an M-sized option.** 🔑 **"Why did staff do it this way?" is cheaper than designing for either answer — and it is the question I would ask first next time.**
+🚫 **Nothing started; the sid batch is still open.**
+
+## 2026-10-04 — @Sober → @Porter: ⚖️ **Final split. Three things you asked for — and one consequence of the ruling that nobody has said yet.** (Addendum 2 in `SIZING-parentless-children-2026-10-04.md`.)
+
+### 1. 🔴 THE RULING RETIRES PIECE C AS DESIGNED — **please put this to the owner, it is his**
+**C's database rule says "a LIVE child must have a parent". The exemption now PERMITS an import to create exactly that — a live child with no parent.** ⇒ **Under C, those imports would FAIL at the database.**
+**His two options:**
+- ⭐ **Retire C.** 🔑 **The policy no longer holds the rule, so the database must not assert it. He chose VISIBILITY over PROHIBITION; Piece B becomes the permanent control.** ✅ **And it shrinks again: the 17 dormant rows were only a prerequisite of C — retire C and their clean-up becomes optional, not a gate.**
+- **Rebuild C with a marker** ("created by import without a family") — **M**, and 🔴 **a new concept whose only job is to let a rule coexist with its own exception.**
+
+### 2. ⚖️ "A and B no longer ship independently" — **I partly disagree, plainly, before the cut**
+✅ **Agree: the EXEMPTION depends on B. If B slips, revisit the exemption.**
+🔴 **Disagree: Piece A does not.** **A alone closes the booking path and leaves the import path EXACTLY as open as today — so it is strictly better than the status quo and never worse.** **And the booking path is where the case we actually traced (Ari) came from.**
+⇒ ▶️ **Ship A first; B follows; what is coupled to B is the exemption, not A.** 🔑 *Holding A for B keeps open the path that produced the known case and buys no safety.* **If you still want them coupled, say so and I will cut them as one; I would rather you overrule this knowing the cost.**
+
+### 3. 🔑 How I distinguish import from booking — **ONE rule, on the SERVER, per ACT**
+**The five acts already have five schemas.** ⇒ **two student input shapes, chosen by the ACT: strict (phone required on a new student) for booking, new course and new voucher; the existing optional one for the two imports.**
+✅ **The server is the authority. The picker only MIRRORS it with ONE explicit prop, `requireParentPhone`, defaulting to TRUE.** 🔑 **A new caller is safe without anyone remembering — it fails CLOSED.** **Only the import modal passes `false`, and it calls exactly the two import acts, so screen and server line up 1:1.**
+🚫 **The component never asks which screen it is on.** **If the prop were ever wrong, the server still refuses on the booking path.** ⇒ **One rule, mirrored — not three.**
+⚠️ **Proof the worry is real: the shared picker ALREADY misbehaves for one caller.** **The camp-sale dialog offers "create a new student" but sends only an id, which a new student does not have.** 📌 **Not in scope; recorded because it is exactly the problem you named.**
+
+### 4. 📋 FILES TO CLAIM
+**Piece A (S):** back `src/validation.ts` · front `components/common/StudentSelect.tsx` (🔴 shared) · front `partials/Bookings/ImportBalanceModal.tsx` — 🔴 **TEAM B's file, ONE line** (`requireParentPhone={false}`).
+**Piece B (S):** `StudentSelect.tsx` (the marker) · `partials/People/*` (a way to find them).
+**Piece C:** ⛔ **retired as designed, pending the owner.**
+✅ **Every other caller of the picker needs no change — the safe default does the work.**
+🚫 **Nothing starts; the sid batch is still open.** ▶️ **Claim the files and I cut A when it closes.**
+
+## 2026-10-04 19:55 — Tanya (QA) → @Porter: REQ-111 done on sid — API ✅ (§1.6 = 400) · swaps ✅ · LINE ✅ · 🔴 **F2 + F3**, plus F1 to rule on. Details in TEST-077.
+**🔴 Two to fix:**
+- **F2 — the admin is told an UNLINKED coach "has been told".**
+  - The API returns `teacherNotified:1` for coaches with **no** LINE link (qatt75b, Bank), so the result screen says **"ระบบแจ้ง qatt75b เรื่องวันลานี้แล้ว" / "qatt75b has been told about this day."**
+  - The not-told sentence ("…ต้องแจ้งครูเองค่ะ") never appears. DEPLOY §9 says the screen must not claim it. The admin then won't phone the coach.
+  - For a LINKED coach (qatt75, checked on the phone) `1` is true and the notices arrive.
+- **F3 — a free pre-start absence does NOT extend the expiry** (already sent at 20:05). It's on 2 fresh courses, API and course card; the make-ups land past the expiry.
+**🔴 One to rule on — F1:** the admin leave API **accepts today/past and cancels** that day's classes (`cancelled:1, familiesNotified:1` on a fixture). The QA line §1.1 says that's right; DEPLOY §9 and your note say "future only". The dialog refuses today; the API does not.
+**🟠 Copy:**
+- **F4:** the admin's result reads as if to the teacher ("บันทึกวันลาของคุณแล้ว / you are recorded as away… with you").
+- **F5:** with today picked in the admin dialog, the old line "ผู้ปกครองของคาบที่ติ๊กจะได้รับแจ้ง… / Families of the ticked sessions will be told…" shows, but this door has no ticks.
+- The coach on the admin POST/DELETE gets a generic `FORBIDDEN`, not the `SCOPE_TEACHER` wording.
+**✅ Passed:**
+- §1.6 `teacherId:"me"` ⇒ **400** "Invalid UUID".
+- Every other route case.
+- The coach's own 3 doors ⇒ 200, with no self-notice.
+- The no-grant control is **absent**, not grey; no new permission key.
+- Future date ⇒ no session chooser; today is refused in the dialog with the alternative named; **"NOTHING HAS BEEN CANCELLED"** shows on screen (TH + EN).
+- Free pre-start absences: 3 on a quota of 1, all accepted, leave stays 0/1, no limit text.
+- The start-date move keeps free days free.
+- **Group** swap to a never-paid coach: no rate ⇒ **400 RATE_REQUIRED, nothing moved**; with a rate ⇒ **200 moved 2**.
+- **ECA** from-here-on swap: **16/10 = 50000 (old) · 23/10 and 30/10 = 65000 (new coach)**, so every moved date was re-rated.
+- **LINE** (the phone temporarily linked as qatt75): "แอดมินบันทึกวันลาของคุณแล้ว…" and "แอดมินยกเลิกวันลาของคุณแล้ว…" both arrived.
+**⚪ Couldn't run:**
+- §2.5's charged half: a charged leave can't exist on an unstarted course.
+- The EN rendering of the two LINE notices.
+**⚠️ My mistake (declared):** a wrong-row match made my screen script record an advance leave for **Bank** on 21/10. I lifted it within minutes. Nothing was cancelled, no family was told, and Bank has no LINE link, so nobody received anything.
+**DATA REQUEST #7** (read-only, sid). The group rows don't expose their per-row rate to me:
+```sql
+SELECT id, date, teacher_id, teacher_rate_minor, status FROM bookings
+WHERE id IN ('4d404ee1-a894-4135-a7e7-ed2bdd88eb3e','0b4d14c5-d05d-4b8f-8bef-ab410ff8251a','b5c45287-6059-4b65-a730-bdb787c6483c') ORDER BY date;
+```
+Expect 15/10 qatt75 **50000** · 22/10 and 29/10 qatt75b **70000** (now CANCELLED by my cleanup; the rate fields remain).
+Footprint: TEST-077. The phone is back on 0899990763. The two F3 courses are kept as live examples.
+
+## 2026-10-04 — @Sober → @Porter: 🔴 **F2 and F3 reconciled, with causes. Both are mine — and F3 has a second cause I owe you separately.** ⛔ **The batch is NOT ready. Nothing to uat.**
+
+### 1. 🔴 F3 — **WHICH is wrong: NEITHER the proof NOR the live build. The thing between them.**
+- ✅ **The proof was right about the FUNCTION:** `courseBornCeiling` stretches by exactly the number of absences — at 0, the quota, above it, 25.
+- ✅ **The live build is right about the PATH:** **declaring a free pre-start day NEVER CALLS that function and never writes the expiry.** **It appends a make-up after the last session and leaves the expiry where it was.**
+⇒ 🔑 **`TASK-609` copied HALF of the at-creation shape — the FREE half — and not the STRETCH half.** **The function is called at creation, at a start-date change and at a re-plan. 🚫 Not here.**
+📌 **Whose error — MINE: I asked @Jason for a PATH-level proof ("more declared days than the quota ⇒ the expiry stretched by that many weeks"). He answered at the FUNCTION level. I re-ran his counts and accepted the substitution without noticing it.** 🔑 **I verified the proof was HONEST. I did not verify it proved the CLAIM.** **And I then quoted it to you as evidence that the owner's model holds. That is the sentence you are right to have stopped on.**
+
+### 2. 🔴 F3's SECOND cause, and it is the one that hurts — **the cap was silently holding the expiry up**
+**The base expiry already carries the quota's weeks as slack.** ⇒ **With the cap, at most `quota` declared days ⇒ at most `quota` make-ups ⇒ they fit EXACTLY inside that slack.** **The missing stretch was INVISIBLE while the cap existed.**
+⇒ 🔴 **Removing the cap removed the only thing making the gap harmless.** **I recommended that removal as "a deletion, free today". It was not free: the cap was load-bearing, and I did not look for what it was holding up.**
+⚠️ **You named the consequence exactly: unlimited free absences + a FIXED expiry ⇒ a family declares days off and LOSES sessions they paid for — worse than the cap.**
+✅ **Nothing reached a customer: the batch never went to uat.** **Tanya's test courses on sid can simply be re-created.**
+▶️ **Fix (`TASK-646`): the declaration path stretches the expiry with the SAME function, in the same transaction, tested on the PATH this time.** ⚠️ **One sub-question it surfaces, which I have told @Jason to answer from the code and PIN rather than leave to chance — and which may need the owner: if a family LIFTS a declared day, do they get the week BACK?** **The function never shrinks, so today the answer would be "no".** 📌 **I will bring you the code's answer; if it needs a ruling, you will have it as a question with a recommendation.**
+
+### 3. 🔴 F2 — **the server sends a hard-coded `1`**
+**`notifyTeacherOfLeaveDay` throws away the queue's own result — which already says QUEUED or SKIPPED — and returns the constant `1`.** ⇒ **an unlinked coach is reported as told.** ✅ **@Fern's screen is correct, as you suspected; the server is wrong.**
+📌 **Why every check passed — mine again: @Jason's test asserted the SKIPPED row EXISTED; @Fern's test fed the screen a mocked `0`.** **Each half was tested against its OWN idea of the contract; the SEAM was never tested.** 🔴 **And when I "checked the field against the server", I checked it was a NUMBER with the right NAME — its SHAPE, not whether it was COMPUTED.** 🔑 *A field verified for shape on one side and for meaning on the other has been verified by nobody.*
+▶️ **`TASK-647`: return what actually happened, read from the queue's own result, on BOTH the record and the lift — plus the test that did not exist: the server's answer for an unlinked coach, fed to the screen's shape, must produce the NOT-told state.**
+
+### 4. ⚖️ F1 — **your ruling, cut as `TASK-648`, and your two questions answered**
+**Where:** 🔴 **at the ADMIN ROUTE, using the SAME `isAdvanceLeave` predicate — 🚫 NOT inside the shared act.** **The teacher's own door shares that act and must keep accepting today (a coach's legitimate same-day cancel), and `TASK-608`'s own pin forbids "who is acting" from ever reaching the fork.**
+✅ **Does anything else rely on the API accepting today? I checked: NO. The act has exactly two callers — the teacher's own route and the admin route. No job, no internal caller.**
+📌 **And the QA line `§1.1` — that error is MINE, not yours.** **`TASK-608` (mine) gave the admin door the whole act; `TASK-611` (mine) made "future only" a rule of the DIALOG alone.** **The QA line faithfully described the server I specified; `DEPLOY §9` described the screen. Both were mine and they disagreed.** ✅ **`§1.1` is CORRECTED to your ruling, with the old text kept, quoted, and whose error it was.** 🔑 **And this is exactly your sentence: a screen-only rule is what produced this gap — and I wrote that rule.**
+
+### 5. 🟠 Copy items — **recorded, not cut, and I am asking you whether they block**
+**F4 (the admin's result reads as if addressed to the teacher) · F5 (a "ticked sessions" line on a door with no ticks) · the coach's generic `FORBIDDEN` instead of the scope wording.** **None changes behaviour.** ▶️ **My view: they do not block uat; they go with @Fern's next pass.** **Say if you want them in this batch.**
+
+### 6. ▶️ GATE
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** | **`646` → `647` → `648`** — all three block uat | ✅ 2026-10-04 |
+| **@Fern** | the one-line list fix · then `TASK-637` | ✅ 2026-10-04 |
+| **@Sober** | re-verify all three ON THE PATH, re-measure the deploy note, then READY | — |
+⭐ **Tanya's run is what this week was for: the routes, the swaps, LINE, `§1.6` and the money fix all passed — and the two things that did not were things only a real box could show.** **And she declared her own wrong-row error before anyone found it.**
+
+## 2026-10-04 — @Sober → @Porter: 🟢 **ALL THREE QA DEFECTS FIXED AND RE-VERIFIED. THE BATCH IS READY.** `DEPLOY-sid-2026-10-04.md` is current.
+📌 **Before the owner hears anything, as you asked.**
+
+### 1. ✅ Verified by me — counts, not colours
+**Back: `3887 pass · 0 fail` · type-check clean · `65 = 65` (🚫 no migration).** **Front: `960 pass · 0 fail` · type-check clean — unchanged by these fixes.** 📌 **Long way: on a tree that also holds Team B's uncommitted work.**
+**I re-ran ALL NINE of our back-end break-and-watch sets, not just the three new ones:** `608` 9/9 · `609` 7/7 · `625` 10/10 · `629` 12/12 · `632` 8/8 · `634` 10/10 · **`646` 8/8 · `647` 6/6 · `648` 6/6.** **0 survived, 0 inconclusive, every file restored byte-identical.**
+
+### 2. ✅ What each fix now does — **in the owner's terms**
+- **F3 (`646`): a free pre-start absence now STRETCHES the course's expiry by one week — proven on the REAL path this time, on Tanya's own case (quota + 3 days ⇒ + 3 weeks, every make-up inside).** 🔑 **The family can no longer lose a session they paid for.**
+- **F2 (`647`): an unlinked coach is now reported as NOT told** — the admin sees "you will need to tell them yourself". ✅ **Including the test that crosses from the server to the screen, which is the one that did not exist.**
+- **F1 (`648`): the admin door now REFUSES today and the past AT THE SERVER**, before anything is cancelled. 🔴 **A teacher's own same-day cancel is unchanged.**
+
+### 3. ⚖️ ONE STATEMENT for the owner — **not a question, but he may want to rule**
+**If a family LIFTS a free pre-start day they declared, they do NOT get the week back.** 🔑 **Reason: the expiry is a promise they have already been shown, and a make-up may already have been placed inside the widened window — shrinking could strand a session they are holding.** ✅ **That is the safe default and it is pinned.** ⚠️ **If he wants a lift to reclaim the week, that is a ruling, and it would need its own rule for the stranded make-up.**
+
+### 4. 📌 One thing from @Jason worth keeping, because it explains how F3 hid for a week
+**A count of where the expiry-stretching rule is used was correct all week. Nobody asked why the declaration path was NOT on the list.** 🔑 ***A census answers the question you ask it; it cannot tell you a path is missing.*** **That, plus my accepting a proof of the helper as a proof of the behaviour, is how F3 got through. Both are now written into the tests.**
+
+### 5. ▶️ GATE
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** (BE) | **nothing owed** · `TASK-639` after the batch | ✅ 2026-10-04 |
+| **@Fern** (FE) | **the one-line list fix** (still outstanding, not blocking) · then `TASK-637` | ✅ 2026-10-04 |
+| **@Sober** | ✅ **READY** | — |
+✅ **DONE and verified: `608` · `609` · `611` · `625` · `626` · `627` · `629` · `632` · `634` · `635` · `643` · `646` · `647` · `648`.**
+⏭️ **After the batch closes: `TASK-645` (REQ-113, the LAST badge) and `TASK-644` piece A (parentless children) — both wait on you closing sid and claiming the files.** **`TASK-649` (copy) with Fern's next pass, per your call.**
+
+## 2026-10-04 21:05 — Tanya (QA) → @Porter: the three fixes re-tested on sid — **F1 ✅ · F3 ✅ · F2 ✅.** Details in TEST-077 → "Re-test of the three fixes".
+- **F1** ✅: admin `POST /teacher-leave-days` with **today** ⇒ **400** "บันทึกวันลาแทนครูได้เฉพาะวันถัดไปเป็นต้นไป — ถ้าต้องการยกเลิกคาบของวันนี้ กรุณาจัดการรายคาบในปฏิทิน". My fixture class stayed **CONFIRMED**, no day was recorded, and past ⇒ the same 400. A **coach's own** same-day leave still cancels (200, cancelled 1).
+- **F3** ✅: fresh course, quota 1, **4** declarations. The expiry went **27/11 → 04/12 → 11/12 → 18/12 → 25/12** (+1 week each), and every make-up stayed **inside** it (last 18/12). The card reads "หมดอายุ 2026-12-25"; the leave count stayed 0/1.
+  - Note: quota + 3 = 4 declarations = **+4 weeks**, not +3 as the brief said. That's consistent with the rule.
+  - 🟠 The card still says "ขยายได้ถึงสัปดาห์ที่ 5" while the make-ups reach week 8 (copy only).
+- **F2** ✅:
+  - Unlinked **qatt75b** ⇒ "ระบบยังไม่ได้แจ้ง qatt75b เพราะบัญชี LINE ยังไม่ได้ผูก — ต้องแจ้งครูเองค่ะ".
+  - Linked **qatt75** (the phone temporarily linked) ⇒ "ระบบแจ้ง qatt75 เรื่องวันลานี้แล้ว", **and** the record and lift notices both arrived on the phone.
+- Footprint: test classes cancelled, all my leave days lifted, the phone back on QA parent 0899990763. Kept: the F3 courses (`f6c9b1e5`, `a795c3cd`, `18386706`) until you say.
+**From QA: the batch is clear for the owner / uat.**
+
+## 2026-10-04 — @Sober → @Porter: ▶️ **The five, traced and cut. Two of them are not what they looked like — and item 4 comes back to you as a QUESTION, as you asked.**
+
+### 1. 🔴 Item 1 (the week label) — **CUT as `TASK-650` (@Jason). A DEFECT, as you said, and it is `TASK-646`'s cause one level up.**
+**The card's "ขยายได้ถึงสัปดาห์ที่ N" is computed on the SERVER as `size + quota` — the capped rule — and never reads the stored expiry.** ⇒ **When the expiry rule changed, a second reader of the OLD rule was left behind.**
+▶️ **Fixed at the SOURCE: the label derives from the course's own stored expiry.** 🚫 **The card itself (Team B's file) needs NO change — it already prints what the server sends.**
+✅ **Pinned: an ordinary course still reads exactly `size + quota` at every size.** ⭐ **And the same line makes the label honest for an admin-EXTENDED expiry too, which I believe it was not before — @Jason will confirm.**
+📌 **A second, offline-only copy of the old rule exists in the front's mock service.** **Not touched — you closed the batch to new work. Recorded.**
+
+### 2. 🔴 Item 3 (F5, the "ticked sessions" line) — **NOT copy: it is a DISPLAY CONDITION. No new words needed.**
+**It appears when an admin picks TODAY on the admin door — which has no ticks and now refuses today anyway.** ▶️ **It moves to the teacher's own door only (`TASK-651`, @Fern).** 🔑 **The sentence is right where it belongs; it was appearing in the wrong place.**
+
+### 3. 📋 Item 2 (F4) — **FOUR strings, not one. DRAFTS for the owner.**
+**The admin's result reuses four sentences written for the TEACHER: the title, "no new class can be booked with YOU", "an admin will handle them" (on the admin's own screen), and "nothing is booked with YOU".**
+| | EN | TH |
+|---|---|---|
+| **title** | **{date} — leave recorded for {name}** | **{date} — บันทึกวันลาของ {name} แล้ว** |
+| **blocked** | **No new class can be booked with {name} that day.** | **จะไม่มีการจองคาบใหม่กับ {name} ในวันนั้น** |
+| **classes** | **{n} class(es) already booked with {name} that day:** | **มีคาบที่จองกับ {name} ไว้แล้ว {n} คาบในวันนั้น:** |
+| **no classes** | **Nothing is booked with {name} that day.** | **วันนั้นยังไม่มีคาบที่จองกับ {name}** |
+🔑 **The classes line deliberately does NOT repeat "yours to handle" — the already-approved warning directly below says it, and a promise said twice is one edit from saying two different things.**
+✅ **@Fern builds them now, marked DRAFT; 🚫 nothing ships until you bring them back approved.** ⇒ **The owner's approval is the only wait on this item.**
+
+### 4. ⚖️ Item 4 (the coach's generic FORBIDDEN) — 🔴 **NOT copy. It is the GLOBAL permission guard's ORDER, and changing it has a blast radius beyond these two doors.**
+**A coach holds the calendar menu but NOT the bookings menu, and the admin doors require both.** ⇒ **the guard refuses on the MENU check and stops — before it ever reaches the "teacher accounts can only…" check.** **That order is DELIBERATE (`TASK-406`): the teacher-scope sentence is meant for a door the role WOULD allow and the link forbids.**
+**Three ways to make the coach see the teacher sentence:**
+- **(a) Move the teacher-scope check FIRST for linked accounts — on EVERY route.** ✅ **For a coach it is the TRUE reason everywhere, and it still fails closed with a 403.** 🔴 **But it changes the sentence on every route a coach cannot reach, reverses a deliberate decision, and touches the guard every request passes through — in a batch you have closed.**
+- **(b) Special-case these two doors.** 🚫 **That is how one rule becomes two.**
+- ⭐ **(c) Leave it for this batch.** 🔑 **No coach can reach these doors from ANY screen — the control is hidden without the key. The generic refusal is seen only by someone hand-crafting a request, as Tanya did. It refuses correctly, with the right status.**
+▶️ **My recommendation: (c) now, and (a) as its own item next round if the owner wants the sentence everywhere.** ⚠️ **You told me to bring anything with blast radius as a QUESTION rather than fold it in — this is that question. His call.**
+
+### 5. ✅ Item 5 — **in `TASK-651`, FIRST**, @Fern's one-line fix to her filed test list.
+
+### 6. ▶️ GATE
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** | **`TASK-650`** — the week label at the source | ✅ 2026-10-04 |
+| **@Fern** | **`TASK-651`** — list fix FIRST · the F5 condition · the four admin strings (DRAFT) | ✅ 2026-10-04 |
+| **@Sober** | verify both · the drafts back from you · your ruling on item 4 | — |
+🚫 **Nothing else enters: `TASK-644` and `TASK-645` stay next round, as the owner ruled.**
+
+## 2026-10-04 — @Sober → @Porter: ✅ **Both rulings absorbed.**
+- ✅ **The four strings are recorded as FINAL in `COPY-REVIEW-2026-09-29.md` and @Fern is told: drop the DRAFT marker, ship them, 🚫 no wording changes on the way in.**
+- ✅ **Item 4 = (c).** **Option (a) is on the board as `TASK-652` — recorded with the reasoning on both sides, 🚫 not sized, not started — so it survives without anyone reopening it casually.**
+▶️ **Both engineers are working. When `TASK-650` and `TASK-651` come back I verify both, re-measure the deploy note, and report READY to you — before the owner hears anything.** 🚫 **Nothing else enters.**
+
+## 2026-10-04 — @Sober → @Porter: 🟢 **THE BATCH IS READY — FINAL. The owner's whole list is cleared.** `DEPLOY-sid-2026-10-04.md` is current.
+📌 **Before the owner hears anything, as always.**
+
+### 1. ✅ Verified by me, every set re-run at the end
+**Back: `3903 pass · 0 fail` · type-check clean · `65 = 65` (🚫 no migration).** **Front: `964 pass · 0 fail` · type-check clean · build clean.** 📌 **On a tree that also holds Team B's uncommitted work.**
+**All TWELVE break-and-watch sets re-run by me:** back `608` 9/9 · `609` 7/7 · `625` 10/10 · `629` 12/12 · `632` 8/8 · `634` 10/10 · `646` 8/8 · `647` 6/6 · `648` 6/6 · **`650` 7/7** · front **`611` 24/24** · **`634` 11/11 — run from the list FILED in the repo, so @Fern's outstanding item is closed.** **0 survived, 0 inconclusive, every file restored byte-identical.**
+
+### 2. ✅ The five, done
+1. **The week label (`TASK-650`) now reads the real expiry.** 🔴 **And @Jason confirmed what I suspected: it had been wrong for admin-EXTENDED expiries ALL ALONG — a 10-session course extended by 4 weeks read "week 13" when it ran to week 17.** **Same bug, fixed on the same line.** ✅ **An ordinary course's card is byte-identical to before.**
+2. **The admin's leave result speaks to the admin — the owner's four sentences, shipped verbatim (`TASK-651`).**
+3. **The "ticked sessions" warning no longer appears on the admin door** — a display condition, no new words.
+4. **The coach's generic refusal — LEFT, by the owner's ruling** (`TASK-652` records option (a) for next round).
+5. **@Fern's filed test list — complete, and proven by running FROM the file.**
+
+### 3. ⚖️ ONE claim question — **not a blocker, no collision today**
+**@Fern edited `lib/scheduler/teacher-scope.test.ts`, reading your `TASK-638` ruling as making it hers.** ⚠️ **I read it the other way: your rule sends a test WITH its implementation file, and `teacher-scope.ts` is Team B's this batch.**
+🔑 **But the file is genuinely awkward: its SUBJECT is OUR dialog (it pins the leave dialog's hooks and copy count) while its LOCATION follows Team B's file.** ✅ **Team B has nothing uncommitted near it, so nothing collided.**
+⭐ **Recommendation: let her edits stand for this batch; next round, move the dialog's pins into the DIALOG's own test, so location and subject agree and your rule decides it without anyone reading carefully.** ▶️ **Your call. I have told her to leave that file alone until you answer.**
+
+### 4. ▶️ GATE — **clear**
+| Who | In hand | Last report |
+|---|---|---|
+| **@Jason** | **nothing owed** · `TASK-639` after uat | ✅ 2026-10-04 |
+| **@Fern** | **nothing owed** · `TASK-637` after uat | ✅ 2026-10-04 |
+| **@Sober** | ✅ **READY** | — |
+⏭️ **After uat ships: `TASK-644` (parentless children, piece A first) and `TASK-645` (REQ-113) — waiting on your claims, as you said.**
