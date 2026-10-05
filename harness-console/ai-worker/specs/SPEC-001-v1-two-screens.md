@@ -1,7 +1,7 @@
 # SPEC-001: v1 — two read-only screens fed by the gate
 - Source: REQ-001
-- Status: ACTIVE — §2 data contract filled 2026-10-05 from the gate's real `--json` output (gate v6, `schema: 1`). TASK-001 created. TASK-002/003 wait on REQ-001 Q-6..Q-8 (display questions, not contract questions); TASK-004 follows them.
-- Written: 2026-10-05 by Sober (SA). Updated 2026-10-05 00:55 (Sober): §2 filled; Q-3/Q-4/AC-7 answers folded in.
+- Status: DONE — TASK-001..004 all DONE (reviews in each TASK §Review); REQ-001 → SPEC_DONE 2026-10-05 21:47 (Sober). §2 data contract from the gate's real `--json` output (gate v6, `schema: 1`).
+- Written: 2026-10-05 by Sober (SA). Updated 2026-10-05 00:55 (Sober): §2 filled; Q-3/Q-4/AC-7 folded in. Updated 2026-10-05 03:05 (Sober): Q-6/Q-7/Q-8 + assumption B folded in (§1.4, §1.5, §2.3); `RESUME-HERE.md` row-match exception to the AC-9 search (§Non-functional); TASK-002/003/004 created. Updated 2026-10-05 08:10 (Sober): Q-9 answered yes/yes — matches §1.4/§1.5, no design change. Updated 2026-10-05 21:18 (Sober, TASK-002 review D-8): the refresh component is on every render state of both pages (§1.3, §1.4). Only an error card is unlinked (§1.3). Updated 2026-10-05 21:30 (Sober, TASK-003 Q-F3): §2.3 `boardRows[].title`/`status` are `string|null`.
 
 ## Overview
 
@@ -29,8 +29,9 @@ in the workspace.
 ### 1.1 Configuration — where the workspace is (REQ-001 §7, AC-7)
 
 - **One setting: `HARNESS_WORKSPACE_PATH`**, in `harness-console-front/.env.local`
-  (git-ignored). The owner copies the value from the `ai-agent-workspace` row of the
-  workspace-root `machine.local.md`. The console **does not read `machine.local.md`**.
+  (git-ignored). The value is copied from the `ai-agent-workspace` row of the
+  workspace-root `machine.local.md` — **Fern may create this file herself** (owner "ข ได้",
+  2026-10-05, `SYSTEM-FACTS.md`). The console **does not read `machine.local.md`**.
 - Read **at request time** (`process.env.HARNESS_WORKSPACE_PATH`), never at build time,
   never with a default value in code.
 - Valid only if: set, non-empty, the folder exists, and `<path>/check-hygiene.mjs`
@@ -90,21 +91,63 @@ fails → `not-json` · `schema !== 1` → `schema` · `ok === false` → `gate`
 - Both pages `export const dynamic = "force-dynamic"`.
 - **Refresh (AC-5):** a client component calls `router.refresh()` every 60 000 ms and
   shows `Updated <HH:MM:SS> · refreshes every 60 s` (server render time, local clock).
-  No API route, no polling endpoint.
-- Card click → `/p/<project>`. Nothing else is a link (click-to-open-file is Out of Scope).
+  No API route, no polling endpoint. **It renders in every state of both pages:** the AC-7
+  message, list failure, gate error and success (REQ-001 item 5: refresh with no touch, so a
+  failure screen recovers by itself; 2026-10-05 21:18).
+- Success-card click → `/p/<project>`. An error card is not a link (TASK-002 Q-F2). Nothing
+  else is a link (click-to-open-file is Out of Scope).
 - **Every string the gate supplies is rendered verbatim as plain text** — no markdown
   rendering (board cells contain `**…**` and backticks; they show as typed), no
   translation, no trimming, no re-ordering. Every other visible string comes **only**
   from the REQ-001 wording table.
 
-### 1.4 Gate-error text (AC-6) — owner-approved 2026-10-05 (Q-4)
+### 1.4 Gate-error text (AC-6) — owner-approved 2026-10-05 (Q-4, Q-8 (d)(e))
 
-| `RunError.kind` | Card text |
+One function maps a `RunError` to its `<reason>`; every error text is built from it.
+
+| `RunError.kind` | `<reason>` |
 |---|---|
-| `gate` | `Gate error — <error.message>` |
-| `timeout` | `Gate error — no answer after 15 s` |
-| `not-json` | `Gate error — output was not JSON` |
-| `schema`, `spawn`, and a failed `listProjects()` | **no approved text — REQ-001 Q-8** |
+| `gate` | `<error.message>` verbatim |
+| `timeout` | `no answer after 15 s` |
+| `not-json` | `output was not JSON` |
+| `schema` | `gate version not supported` |
+| `spawn` | `could not start the gate` |
+
+- Card (or Project page) whose `runGate` failed: `Gate error — <reason>`. On the Project
+  page it replaces the three sections (the run gave none of their data).
+- `listProjects()` failed (either page): the page shows only
+  `Could not list projects — <reason>` plus the refresh hint (§1.3) — no title, no cards — and
+  runs no per-project gate.
+
+### 1.5 Display rules — owner-approved 2026-10-05 (Q-6, Q-7, Q-8, assumption B)
+
+Source of every text: REQ-001 wording table + §Questions Q-8 table. Empty value anywhere = `—`.
+
+**Card (`/`):** `project` · badge = `result` verbatim · `checks.slice(0, 3)` (each rendered
+as a Gate line, below) · `Last moved: <newestLogDate>`, or `Last moved: —` when `null`.
+
+**Project page (`/p/[project]`):** heading = `project` + `result` badge; then sections:
+
+- **`Gate`** — every `checks[]` item in gate order: `FAIL` / `WARN` (= `severity`
+  upper-cased — the gate's own printed word) then `text` verbatim. `checks` empty →
+  `No lines from the gate.`
+- **`File health`** — one row per `files[]` item, gate order. Columns `File` · `Size` ·
+  `Limit` · `Days behind`. No per-file verdict, no colour judgement, no `bytes > limit`
+  comparison anywhere (Q-7 ก — verdicts are the `Gate` lines).
+  - `File` = `name` verbatim.
+  - `Size` = `not found` when `exists === false`; else `fmt(bytes)`.
+  - `Limit` = `exempt — <exempt>` when `exempt` is present; else `—` when `limitBytes`
+    is `null`; else `fmt(limitBytes)`. `warnBytes` is not displayed (not in the approved
+    columns) — e.g. the `log/<date>.md` row shows `Limit` `—`.
+  - `Days behind` = on the row whose `name === "RESUME-HERE.md"` only: `resumeBehindDays`,
+    or `—` when `null`. Every other row: empty cell, no text.
+  - `fmt(n)` = `` `${(n / 1024).toFixed(1)}KB` `` — copied from the gate
+    (`check-hygiene.mjs` line 132, `const fmt`), so `94701` → `92.5KB`, `40960` → `40.0KB`,
+    `214` → `0.2KB`. Display formatting, owner-confirmed (Q-8 assumption A).
+- **`Ball`** — one row per `boardRows[]` item, gate order (= board order). Columns `Id` ·
+  `Title` · `Status` · `Ball`, values verbatim as plain text (`**`, backticks shown as
+  typed); `ball: null` → `—`. `ballColumn` is not displayed. `boardRows` empty →
+  `No board rows.`
 
 ## 2. Data contract — `check-hygiene.mjs --json`, `schema: 1` (gate v6)
 
@@ -136,10 +179,10 @@ No `project` field here — take the name from the call. Codes seen: `NO_PROJECT
 | `result` | `"PASS"` \| `"FAIL"` | card badge, project page |
 | `counts.fail`, `counts.warn` | number | not displayed in v1 |
 | `checks[]` | `{ severity: "fail" \| "warn", text: string }`, **already worst-first** (all fails, then all warns, gate order) | card: `checks.slice(0, 3)`; project `Gate` section: all, in order |
-| `files[]` | `{ name, bytes, limitBytes: number\|null, warnBytes?: number, exists?: boolean, exempt?: string }` — `warnBytes`/`exists`/`exempt` appear only on some rows | `File health` table (columns: Q-7, Q-8) |
-| `resumeBehindDays` | number \| null | staleness, on the `RESUME-HERE.md` row only |
-| `newestLogDate` | `"YYYY-MM-DD"` \| null (dte: `2026-09-13`) | **candidate** for `Last moved:` — Q-6 |
-| `boardRows[]` | `{ id, title, status, ball: string\|null, ballColumn: string\|null }` — 147 rows / 33 `ball: null` on smart-scheduler | `Ball` section — Q-8 (assumption B) |
+| `files[]` | `{ name, bytes, limitBytes: number\|null, warnBytes?: number, exists?: boolean, exempt?: string }` — `warnBytes`/`exists`/`exempt` appear only on some rows (re-checked 03:05: `exempt` = `"size (append-only knowledge)"` / `"size (append-only)"`) | `File health` table (§1.5) |
+| `resumeBehindDays` | number \| null | `Days behind`, `RESUME-HERE.md` row only (§1.5) |
+| `newestLogDate` | `"YYYY-MM-DD"` \| null (dte: `2026-09-13`) | `Last moved:` — owner-approved Q-6 |
+| `boardRows[]` | `{ id: string, title: string\|null, status: string\|null, ball: string\|null, ballColumn: string\|null }` — 147 rows / 33 `ball: null` on smart-scheduler; `title`/`status` are `null` on header-less board rows (32 on smart-scheduler, 2026-10-05, TASK-003 Q-F3) → shown as `—` | `Ball` section (§1.5) — assumption B owner-approved |
 
 Mapping to REQ-001:
 
@@ -148,10 +191,10 @@ Mapping to REQ-001:
 | project list | `--list` → `projects` | order kept |
 | PASS / FAIL | `result` | |
 | worst ≤ 3 lines | `checks.slice(0, 3)[].text` | AC-2: `checks` is `[]` on a clean PASS ⇒ nothing shown; AC-3: no padding. A PASS with warnings shows its warn lines (they are what the gate gave). |
-| last-moved date | `newestLogDate`? | 🔴 **not decided — Q-6.** The gate has no field named "last moved". |
-| every gate line | `checks[]` | severity shown as the gate's word (`fail` / `warn`) — wording Q-8 |
-| file health | `files[]` (+ `resumeBehindDays`) | 🔴 **the gate gives size and limits but no per-file verdict — Q-7.** The console must not compute `bytes > limitBytes` (REQ-001 §4). |
-| who holds the ball | `boardRows[]` | assumption B (Q-8): a table of every row — `id`, `title`, `status`, `ball` — verbatim |
+| last-moved date | `newestLogDate` | `null` → `Last moved: —` (Q-6) |
+| every gate line | `checks[]` | `FAIL` / `WARN` + text (Q-8 c) |
+| file health | `files[]` (+ `resumeBehindDays`) | name · size · limit only; the console never computes `bytes > limitBytes` (Q-7 ก, REQ-001 §4) |
+| who holds the ball | `boardRows[]` | every row — `id`, `title`, `status`, `ball` — verbatim (assumption B) |
 
 ## Data Model
 
@@ -175,17 +218,29 @@ browser ──(every 60 s: router.refresh)──▶ Next.js server render
   `grep -rnE "readFile|readdir|createReadStream|board\.md|inbox|RESUME-HERE|FAILURES|SYSTEM-FACTS|log/" src/` → no hits.
   ⚠️ `File health` will show the gate's own file names (`inbox/SA.md`…) — they come from
   JSON at run time and must never be literals in `src/`, or the second search fails.
-- ⚠️ **AC-8 snapshot confound:** other desks' sessions write to the workspace at any
-  time. Snapshot while no session is active, or attribute every changed file.
+  **One known, allowed hit (Sober, 2026-10-05 03:05):** §1.5 puts `resumeBehindDays` on
+  the row whose `name === "RESUME-HERE.md"`, and the gate gives no other way to find that
+  row. That string lives as **one named constant in one file**, used only for that
+  equality test against JSON — it opens nothing. The evidence states the second search's
+  output as exactly that one line; any other hit is a defect.
+- **AC-8 snapshot:** the owner runs no other workspace-writing session during it (owner
+  "ง งด session อื่น", 2026-10-05). Fern's own session must also write nothing in the
+  workspace between the two snapshots (Implementation Notes are written after), and the
+  snapshot output goes to the OS temp folder or stdout — never inside the workspace.
+- **Proving AC-5 / AC-6 without touching a live desk:** a state change or an error is
+  produced in a **fixture workspace in the OS temp folder** (a copy of `check-hygiene.mjs`
+  + a minimal fake desk, or a fake gate script), built by a script in
+  `ai-worker/tests/harness/`, with `HARNESS_WORKSPACE_PATH` pointed at it. Never by
+  editing a real desk.
 - **No absolute path** in any committed file. Local only (C-3).
 - Load: ≤ 15 gate runs per refresh, ~0.3 s each, capped at 4 in parallel.
 
 ## Tasks (owner: FE/Fern for every one)
 
 - **TASK-001** — scaffold + config + AC-7 + gate runner + refresh shell — `TODO`, depends on: none. `tasks/TASK-001-scaffold-config-gate-runner.md`
-- TASK-002 — Workspace screen: cards, error card (AC-1, 2, 3, 5, 6) — **not created**: waits on Q-6 (last moved) + Q-8 (error texts) — depends on TASK-001
-- TASK-003 — Project screen: Gate · File health · Ball (AC-4, 5) — **not created**: waits on Q-7 + Q-8 — depends on TASK-001
-- TASK-004 — read-only + single-source evidence (AC-8, AC-9), snapshot script in `ai-worker/tests/harness/` — created with TASK-002/003 — depends on TASK-002, TASK-003
+- **TASK-002** — Workspace screen: cards, error card, list failure (AC-1, 2, 3, 5, 6) — `TODO`, depends on: TASK-001. `tasks/TASK-002-workspace-screen-cards.md`
+- **TASK-003** — Project screen: Gate · File health · Ball (AC-4, 5) — `TODO`, depends on: TASK-001 (may run after or alongside TASK-002). `tasks/TASK-003-project-screen.md`
+- **TASK-004** — read-only + single-source evidence (AC-8, AC-9) — `TODO`, depends on: TASK-002, TASK-003. `tasks/TASK-004-read-only-single-source-evidence.md`
 - AC-10 (human output byte-identical) — Marie verified it on all 14 desks (`MARIE.md`, 2026-10-05); the owner's eyes remain the check. No TASK.
 
 ## Questions
@@ -194,4 +249,7 @@ browser ──(every 60 s: router.refresh)──▶ Next.js server render
 
 - Q-3, Q-4 — answered 2026-10-05, folded into §1.1 and §1.4.
 - Q-5 — answered by Marie **in the tool** (gate v6): (a) `ok` vs `result`, JSON on stdout for both; (b) `--list`; (c) `schema: 1`. Folded into §1.2 and §2.
-- Q-6, Q-7, Q-8 — open, see REQ-001 §Questions.
+- Q-6, Q-7, Q-8, assumption B — answered 2026-10-05, folded into §1.4, §1.5, §2.3.
+- Q-9 — answered 2026-10-05 08:03 (owner: yes/yes, REQ-001 §Questions Q-9): card lines carry
+  `FAIL` / `WARN` (§1.5); a failed Project page shows `Gate error — <reason>` (§1.4). Both
+  were already designed that way, so nothing changes. No open questions remain.

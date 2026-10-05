@@ -27,25 +27,23 @@
 > than one "RESUME HERE" heading fails, and being more than 2 days behind the
 > newest log fails.
 
-**Written:** 2026-10-05 01:15 by Porter (PM), fifth PM session · **Newest log at the time:** `log/2026-10-05.md`
+**Written:** 2026-10-05 22:03 by Porter (PM), ninth PM session · **Newest log at the time:** `log/2026-10-05.md`
 
 ## What we are in the middle of
 
-- **REQ-001 — v1, two read-only screens** (overview cards + project page), data ONLY from `check-hygiene.mjs --json` (exists since gate v6), refresh 60 s, writes nothing. IN_SPEC; SPEC-001 ACTIVE; TASK-001 (scaffold + config + gate runner) is Fern's. `[owner-approved 2026-10-05]`
-- TASK-002/003 (the two screens) are not created yet — Sober holds them for the Q-8 wording. `[team-proposed]`
+- **Nothing open.** REQ-001 (v1, two read-only screens) is **DELIVERED** — owner: "Q1=DELIVERED" (`SYSTEM-FACTS.md`). `[owner-approved 2026-10-05]`
+- TASK-001..004 DONE, SPEC-001 DONE. The UNVERIFIED list he accepted stays in `requirements/REQ-001-v1-two-screens.md` §SPEC_DONE report. `[owner-approved 2026-10-05]`
+- D-16 (untracked `AGENTS.md` / `CLAUDE.md` in `harness-console-front`): owner said "ignore" — no role acts. `[owner-approved 2026-10-05]`
 
 ## What each thread is waiting on, and from whom
 
 | Thread | Waiting on | Since | What unblocks it |
 |---|---|---|---|
-| Q-8 wording (team-proposed table, REQ-001 §Questions Q-8) | **the owner** | 2026-10-05 | one-shot approve or correct the table |
-| Hygiene FAIL: `dispatcher-state.md` 7 runs > 6 | **the owner → Marie** | 2026-10-05 01:15 | Marie rotates old runs (not a PM hop) |
-| Fold Q-6 / Q-7 / assumption B into SPEC-001 | **Sober** | 2026-10-05 | pointer in `inbox/SA.md` |
-| TASK-001 | **Fern** (via Sober) | 2026-10-05 | `tasks/TASK-001-…` |
+| The next requirement (v1 extras, or anything else) | **owner** | 2026-10-05 22:03 | he states it; Porter writes the REQ |
 
 ## Decided recently, not yet in a REQ
 
-- *(nothing — Q-6, Q-7, B are in REQ-001 and `SYSTEM-FACTS.md`)* `[owner-approved 2026-10-05]`
+- *(nothing)* `[owner-approved 2026-10-05]`
 
 ## What becomes urgent, and when
 
@@ -59,5 +57,4 @@
 
 ## Open questions with the owner
 
-- Approve the Q-8 wording table (REQ-001 §Questions Q-8). `[team-proposed]`
-- Out of REQ-001 until he adds them: mode on card, FAILURES NEW, click→open file, call-Marie button. `[owner-approved 2026-10-05]`
+- None pending. Out of REQ-001 until he adds them: mode on card, FAILURES NEW, click→open file, call-Marie button. v2/v3 stay out of scope. `[owner-approved 2026-10-05]`

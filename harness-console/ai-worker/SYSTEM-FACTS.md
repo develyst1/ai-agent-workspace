@@ -156,3 +156,24 @@
 - **The file-health table shows name · size · limit only — no per-file verdict**; the PASS/WARN/FAIL judgements stay in the `Gate` section as the gate's lines — Q-7 *"ก"*. Nothing is asked of Marie for this. (owner, 2026-10-05)
 - **"Who holds the ball" = every board row the gate returns (`id` · `title` · `status` · `ball`), verbatim, in board order** — Sober's assumption B, *"สมมติฐาน B ถูก"*. (owner, 2026-10-05)
 - **Q-8 wording: the owner asked Porter to propose it** — *"Q-8 ให้ Porter เสนอ"*. The proposal is `[team-proposed]` in REQ-001 §Q-8 and is NOT approved until he says so. (owner, 2026-10-05)
+
+## Owner's answers on Q-8 and the run permissions (owner, 2026-10-05) — verbatim: *"Q-8 ได้, สมมติฐาน A B ถูก"* and *"ก ได้, ข ได้, ค ได้, ง งด session อื่น, N=20 ไปเลย"*
+
+- **The whole Q-8 wording table in REQ-001 §Questions Q-8 is approved as proposed** — *"Q-8 ได้"*. (owner, 2026-10-05)
+- **Showing sizes in the gate's own style (e.g. `91.6KB`) is display formatting, not the console deciding what the gate decides** — Porter's assumption A, *"ถูก"*. (owner, 2026-10-05)
+- **The two empty-section texts nobody asked for (`No lines from the gate.` · `No board rows.`) stay in** — Porter's assumption B (that they were added unasked), *"ถูก"*, given together with "Q-8 ได้" approving the whole table. (owner, 2026-10-05)
+- **Fern may create `.env.local` (git-ignored) in `harness-console-front` herself, with `HARNESS_WORKSPACE_PATH` copied from `machine.local.md`**, instead of the owner doing it — *"ข ได้"*. The absolute path still lives only in `machine.local.md` and that git-ignored file, never in a committed file. (owner, 2026-10-05)
+- **Fern may run `npm install`** in `harness-console-front` (downloads Next.js 16 / React 19 / antd v6 from the npm registry) — *"ค ได้"*. (owner, 2026-10-05)
+- **During TASK-004's read-only snapshot test (AC-8) the owner runs no other session that writes to the workspace** — *"ง งด session อื่น"*. It answers the AC-8 snapshot confound in SPEC-001 §evidence. (owner, 2026-10-05)
+- *"ก ได้"* and *"N=20"* are dispatcher settings for run 2026-10-05-h only — nothing for the team (recorded in `dispatcher-state.md`). (owner, 2026-10-05)
+
+## Owner's answer to Q-9 (owner, 2026-10-05) — verbatim: *"Q-9 ใช่/ใช่, สมมติฐาน A ถูก, ไปเลย"*
+
+- **The ≤3 worst lines on an overview card carry the gate's `FAIL` / `WARN` label**, same as the `Gate` section — Q-9 (a) *"ใช่"*, and Sober's assumption A *"ถูก"*. (owner, 2026-10-05)
+- **A Project page whose gate run failed shows `Gate error — <reason>` (the card's approved text) in place of its three sections** — Q-9 (b) *"ใช่"*. (owner, 2026-10-05)
+- *"ข้อยกเว้น non-blocking ได้"* in the same message is a dispatcher-only setting for this run — nothing for the team. (owner, 2026-10-05)
+
+## Owner's acceptance of REQ-001 and the D-16 call (owner, 2026-10-05) — verbatim: *"Q1=DELIVERED, Q2=ignore, ไปเลย"*
+
+- **REQ-001 (v1, two read-only screens) is DELIVERED** — Q1 *"DELIVERED"*, answering *"ดูรายการ UNVERIFIED ใน REQ-001 §SPEC_DONE report แล้ว — รับ REQ-001 เป็น DELIVERED หรือมีจุดต้องแก้?"*. Accepted with the UNVERIFIED list in REQ-001 §SPEC_DONE report as it stands; no defects raised. (owner, 2026-10-05)
+- **D-16: the untracked `AGENTS.md` / `CLAUDE.md` that `next dev` created in `harness-console-front` — "ignore"** — Q2 *"ignore"* (options were commit / delete / ignore). No role acts on those two files; git is the owner's. (owner, 2026-10-05)

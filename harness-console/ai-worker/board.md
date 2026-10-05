@@ -29,16 +29,13 @@
 
 | Id | Title | Priority | Status (date, owner, pointer) | Ball |
 |----|-------|----------|-------------------------------|------|
-| REQ-001 | v1 — two read-only screens fed by the gate | HIGH | IN_SPEC 2026-10-05, Sober — Q-6/Q-7/B answered; Q-8 wording proposed, awaiting owner, `REQ-001 §Questions` | Fern (TASK-001) · Sober (fold Q-6/Q-7/B) · owner (approve Q-8) |
 
 ## Tasks
 
 | Id | Title | Source SPEC | Status (date, owner, pointer) | Owner | Depends on |
 |----|-------|-------------|-------------------------------|-------|------------|
-| TASK-001 | scaffold + config + AC-7 + gate runner + refresh shell | SPEC-001 | TODO 2026-10-05, Sober, `tasks/TASK-001-scaffold-config-gate-runner.md` | FE (Fern) | none |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Since | Pointer |
 |------|-----------|-------|---------|
-| REQ-001 Q-8 wording (team-proposed table) — holds TASK-002/003 | owner (approve) | 2026-10-05 | `REQ-001` §Questions Q-8 |

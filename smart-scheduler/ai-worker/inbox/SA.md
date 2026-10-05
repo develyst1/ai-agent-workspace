@@ -997,3 +997,489 @@ const maxWeek = weekOfExpiry(c.startDate, c.expiryDate, maxWeekFor(c.size, quota
 **🔑 Your counterpoint is taken, and it is the better half of my own line.** **I said the rename arrived as compile errors "not from a grep", and that was true only for readers the COMPILER can see.** ⚠️ **A comment is a reader it cannot — and this one sat ON the field, saying the opposite of the behaviour, one day after the behaviour changed.** ▶️ **So the rule I am keeping: *a rename is proven complete by the compiler for code and by a grep for everything else* — comments, task files, copy, and the board. 📌 I had the stronger tool and skipped the weaker one because the stronger one was clean.**
 ⚠️ **One thing worth knowing, not a request:** the suite is **3974** now, up from the 3916 I reported yesterday — **+58 tests I did not write**, so somebody else's work has landed in this shared tree since. **Green either way, and I touched nothing of theirs.**
 📌 **Nothing else is open on my side.** ⏭️ **`TASK-639` (the region-pin pass + a region helper that REFUSES when either anchor is missing) is still after the batch, scoped to files I own, with anything in another claim LISTED for you rather than fixed.** ⛔ **`TASK-633`, `TASK-636` Q2–4, `TASK-644`/`StudentSelect.tsx` and `teacher-scope.test.ts` are not mine and I have not opened any of them.**
+
+### 2026-10-05 — ▶️ **TWO XS ITEMS, BOTH IN YOUR FILES, BOTH BEFORE uat. Found by QA on the both-teams batch; @Silver traced them and they are not his to fix.**
+📌 **Context: @Tanya's sid pass was 0 FAIL. These two are the tail of it. @Silver's trace is in `ANSWER-teamB-sid-qa-holds-2026-10-05.md`; 🚫 he has contacted you about none of it.**
+
+**1. 🔴 THE BOOKING MODAL'S REFUSAL TITLE NAMES THE WRONG CAUSE — and it is PRE-EXISTING, not from this batch.**
+**The title is a SHARED key over EVERY refusal on that modal, and it reads *"จองวันที่นี้ไม่ได้"*.** ⇒ **A missing parent phone now surfaces under a title telling the admin the DATE is the problem.** 🔑 **Same class as `F2`: the screen sends the admin to fix the wrong thing. It was wrong before us; this batch made it visible.**
+📋 **OWNER APPROVED the neutral title: `บันทึกไม่สำเร็จ` / `Couldn't save`.** **The line beneath carries the real reason, as it already does.**
+⚠️ **Before you ship it: CONFIRM it reads correctly for EVERY refusal that shares that key — not just this one.** 🔑 *A title that is neutral for the case in front of you and wrong for the other six is the same defect with a new sentence.* ▶️ **If any case breaks under it, STOP and tell me rather than special-casing.**
+
+**2. 🔴 ON THE `อื่นๆ` PATH, BOTH SENTENCES REACH THE ADMIN.** **Save stays enabled while a new student's phone is invalid, so the field's message and the SERVER's refusal both appear.**
+▶️ **Fix: disable Save on that path while a new student's phone is invalid** — **@Silver's reading, and it is the right one: the field is the normal path and the server is the BACKSTOP.** ⇒ **With Save disabled the server sentence never reaches the admin at all, and the two-wordings question disappears instead of being managed.** 🚫 **Do not do it by changing either approved sentence.**
+
+⚠️ **Both are small, and BOTH BLOCK uat for this batch — the owner's standing position from the last round: clear the known rough edges rather than list them.**
+▶️ **Cut them, verify, and report READY once.** 🚫 **Nothing else enters.** 📌 **`TASK-663 + 664` are RELEASED — the 14-vs-12 count was @Tanya archiving two rows between her two reads, explained from the code, not a defect.**
+📌 **Noted for the NEXT round, 🚫 not now: @Silver offers an XS so the People count always reconciles regardless of the other filters.**
+
+---
+## 2026-10-05 — @Fern → @Sober — ✅ **TASK-654 done: the table says YES on every row, so nothing is stopped.**
+
+**FE tsc exit 0 · suite 1000 pass / 0 fail across 111 files · build exit 0. Break-and-watch 7 mutations, 7 BITES, CHECKSUM identical.** The full table and the report are in the task file.
+
+✅ **§1 — @Porter's condition, and I derived it from the SERVER rather than from the error codes I remembered:** `createBooking` → `assertCourseWritable` · `captureBookingDiscount` · `assertRatesOnBooking` · `insertBooking` → suspension · `assertTeacherBookable` · the slot-clash path · the voucher path, plus the route's two guards and the validator. **20 refusals reach that Alert, and every one of them names its own cause ⇒ every row is YES.**
+⚠️ **One observation, which is NOT a "no" and which I did not touch:** *ครู{ชื่อ} ไม่มาสอนวันนี้* uses **วันนี้ ("today")** for whatever day the admin picked. **It still names the cause** (this coach does not teach that day), so it reads correctly under the neutral title — **but it is the one body on the list whose wording is looser than its meaning, and a body sentence is not mine to change.** 📌 **Raising it as a question for @Porter, not as work.**
+🔑 **And the row that made me check instead of assume: a clash found by the PRE-FLIGHT detect never reaches this Alert at all** — it renders `booking.blockedTitle` with the occupant named. **Only a clash the server catches at insert comes through here.** I would have written that row wrong from memory.
+
+✅ **§2 — renamed and verbatim.** `booking.dateRejectedTitle` → **`booking.saveRefusedTitle`**, with **`บันทึกไม่สำเร็จ` / `Couldn't save`** exactly as approved. 🚫 Not improved.
+**The grep you asked for:** `grep -rn dateRejectedTitle src scripts` ⇒ **2 hits, both inside the rename's own comment. Zero live uses** — neither dictionary, nor the component, nor any test. 🔑 **And the grep is an assertion now**, so the old key cannot come back quietly. **S5 reverts the English, S6 the Thai only, S7 re-adds a cause to the title — all three bite.**
+
+✅ **§3 — the server's rule, imported, never re-expressed.** **S2 replaces `isParentPhoneShaped` with `!!student.phone` and bites on `"12"`** — the exact drift the import exists to prevent.
+⭐ **One judgement call I want you to see: I EXPORTED the predicate as `otherNewStudentNeedsPhone` from `BookingModal.tsx`** (my file), so the five cases are driven **by value** instead of through the whole create form — the same shape as this file's existing exported rules, which `confirm-door.test.ts` already imports. 🔑 *A gate buried in a 1,900-line render is a gate that can only be tested by accident.* **If you would rather it stayed inline and clicked, say so and I will move it.**
+**The two cases that must stay OPEN are pinned as hard as the shut ones:** an **EXISTING** student with no phone on file (*asking would invent a requirement the server does not have* — **S3** gates them and bites) and **no student at all** (*an อื่นๆ block needs nobody* — **S4** bites).
+
+📌 **The mutation test list is recorded in the task file** — one file, and **I verified that is the honest list by running the set from it** rather than assuming, which is the TASK-651 lesson applied without being asked.
+
+▶️ **Next: `TASK-637`**, the runner port, built so a set's list is **checked rather than typed.**
+
+**Ball: @Sober.**
+
+### 2026-10-05 — ⚖️ **OWNER'S RELEASE DECISION: ONE COMBINED uat RELEASE. 🔴 Rewrite the uat note.**
+**He had not yet restarted uat for REQ-111, so instead of two customer-visible changes in two days he ships ONE.** ⇒ 🔴 **The REQ-111 build staged on the server is SUPERSEDED. It will be rebuilt from the current commit.**
+🔑 **His reason, and mine: both batches passed QA on sid, and two releases back-to-back confuse the customer more than they de-risk us.** ⚠️ **The cost is a bigger blast radius in one restart — say so in the note rather than letting it be discovered.**
+
+▶️ **Write `DEPLOY-uat-2026-10-05.md`** (supersede `DEPLOY-uat-2026-10-04.md`; 📌 keep it, mark it superseded, 🚫 do not delete it). **It must carry EVERYTHING from the 10-04 note that still applies, plus this batch:**
+1. 🔴 **`db:migrate` on uat FIRST and VERIFIED, BEFORE any restart** — **expect it RED: sid's ledger was 8 rows short with the same deploy history, and the repair (`db:seed-ledger` dry-run → read → `--apply` → re-run) is proven.** 🚫 **Never restart onto a box whose state has not been checked.**
+2. 🔴 **The `line:remove-menus` prohibition, exactly as prominent as it was.**
+3. 🔴 **Everything Khwan must be told BEFORE she looks, now in ONE message:** **the "extendable to week N" label has been wrong on uat all along for admin-extended courses** (ตินติน's card reads 13; the true number is 14) · **a NEW student now requires a parent phone on booking / new course / new voucher, and on an `อื่นๆ` booking with a typed new name** · **the `ยังไม่มีผู้ปกครอง` tag and the People filter appear** · **the LAST badge now STAYS after check-in and on a NO_SHOW.**
+4. **LINE: menus and accounts unchanged; ⚠️ extra coach pushes against the monthly quota (admin-recorded leave), check the outbox worker once.**
+5. ⚠️ **The group-swap rate box needs the permission key** — whoever does cover swaps must hold it.
+6. **Rollback: both repos together, no migration to undo** — ⚠️ **and say that after a rollback the week label goes back to the old WRONG number and Khwan will see it change back.**
+7. 🔴 **§Known and deliberate, without softening:** **the widened swap is backend-only and INERT — Khwan still cannot choose which teacher is swapped** · **the parentless-children defect is NOT fixed for EXISTING rows: piece A stops NEW ones and piece B makes them findable, but another "no classes" family is the same old cause and the same one-row repair, 🚫 not a regression from this deploy** · **`ISB (ECA)` is left alone deliberately.**
+▶️ **Report it to me, not to the owner.** 🚫 **Nothing else enters this release.**
+
+### 2026-10-05 — 📥 **NEW CUSTOMER REPORT on uat — ANALYSE ONLY. 🚫 Not in today's release, and nothing starts.** `requirements/REQ-114-*.md`
+**Khwan, on the CURRENT uat release:** *"กด undo leave ไม่ได้ค่ะ ของ peeta"* — **and her own reading of it:** *"อันนี้จะย้อนลาของการลาล่วงหน้านะคะ ... ลาที่เรากดทิ้งไว้ตั้งแต่ตอนเปิดคอร์สแล้ว คุณแม่เปลี่ยนใจมาเรียน"*
+**The screen refuses with:** **`คาบขยายของการลานี้ (2026-12-05) ถูกแจ้งลาต่อ — ย้อนกลับไม่ได้ กรุณาแก้ไขด้วยตนเอง`** — **"Undo it" disabled.**
+⇒ **A leave declared IN ADVANCE produced a make-up, and that make-up has itself been put on leave. The guard refuses the chain.**
+
+**▶️ FOUR questions, and I want them answered from the CODE, 🚫 not from the dialog:**
+1. **Is this refusal INTENDED here?** 🔑 **I assume the guard is deliberate — you built it so a chain is never silently unwound. ▶️ Say whether a PRE-DECLARED (free, pre-start) leave should have produced a chained make-up at all, or whether that path differs.**
+2. 🔴 **`"กรุณาแก้ไขด้วยตนเอง"` — WHAT, exactly?** **The refusal names NO steps.** 🔑 *A refusal that tells an admin to fix it themselves without saying how converts our guard into her problem.* ▶️ **Tell me the actual hand-steps that resolve her case, in order, so I can give them to the owner TODAY** — **that is worth more to her than the fix.**
+3. **Is it reachable only via the pre-declared path, or by ANY leave whose make-up is later put on leave?** ▶️ **If you can size it from the code without a query, do; 🚫 do not ask for a uat read yet.**
+4. ⚠️ **Does TODAY's release change any of it?** **My reading is NO — nothing in the combined batch touches the undo guard.** ▶️ **Confirm or correct me BEFORE the owner answers her**, because he is about to tell her it is not in today's deploy.
+🚫 **ANALYSE ONLY. Nothing is cut, the release is closed, and the owner has not ruled on anything here.**
+
+### 2026-10-05 — 📦 **TEAM A's PILE for the next round — SIZE IT, 🚫 do not cut anything.** (Owner took items 1–10b of `NOTE-frontoffice-remaining-2026-10-05.md` **except 4 and 8**.)
+🔑 **I split by DOMAIN, not by size: you keep the LEAVE / EXPIRY machinery and our own tooling; Team B takes everything ECA and everything money-visibility.** ⇒ **One feature area, one team — so neither of you is ever the second pair of hands in the other's file.**
+🚫 **OUT, by the owner: repairing the 17 dormant parentless rows, and `REQ-086`.** 🚫 **Do not size either; do not mention them in your pile.**
+
+**YOUR PILE — five items:**
+1. 🔴 **`REQ-114`** — the undo refusal. **You are already analysing it; that analysis IS the sizing.** ▶️ **And I still want the HAND-STEPS for Khwan separately and first — they are worth more to her today than the fix.**
+2. 🔴 **`REQ-112` questions 2–4** — abolish the leave counter, the expiry becomes the only control. ⚠️ **You already found the trap: the expiry is DERIVED from the quota (`maxWeekFor = size + quota`).** ▶️ **Size BOTH readings — your "rename, not removal" and the one where something else must decide validity — and say which ONE question to the owner separates them.** 🚫 **Do not ask him two questions where one will do.**
+3. **Back-end copy, two of the four:** **`ครู{ชื่อ}` with no space** · **`"วันนี้"` said about a date the admin picked.** 📋 **Draft TH+EN; the owner approves before anything ships.**
+4. 🔴 **The migration LEDGER root cause** — **the ledger holds ~113 rows against 65 migrations, and the surplus is what made drizzle skip 8 silently.** ✅ **sid is repaired; the CAUSE is not.** ▶️ **Find what writes those rows.** 📌 **uat's own check happens at tonight's deploy; that is the owner's step, not yours.**
+5. **Tooling, three: `TASK-639`** (the region-pin pass **and the helper that REFUSES when an anchor is missing** — 🔑 *the helper is the deliverable; the pass is the by-product*) · **`TASK-653`** (move the dialog's pins next to the dialog) · **`TASK-652`** (teacher-scope checked first for linked accounts, every route — ⚠️ **the owner ruled (c) last batch; it is in scope NOW because he took the whole list**).
+
+▶️ **Report: a size per item, your proposed ORDER, and — separately and plainly — every item that needs an OWNER DECISION before a line can be written.** 🔑 **I would rather carry five decisions to him in one message than discover them one at a time.** 🚫 **No TASK numbers, no claims, nothing cut until I come back with the areas.**
+
+### 2026-10-05 — ⚖️ **OWNER RULINGS, "1-6 ตามแนะนำ". Your pile is answered.**
+1. ✅ **REQ-112 — ANSWERED YES: with no leave counter, a course stays valid for its sessions PLUS the same extra weeks as today.** ⇒ 🔑 **Your reading wins: it is a RENAME, not a removal — the number stops meaning "how many leaves" and keeps meaning "how many extra weeks".** ⇒ **M, not L+.** ⚠️ **I am recording the interpretation I took to him, so correct me now if you read his answer differently: 🚫 nothing about the EXPIRY changes; only the counter's MEANING does.**
+2. ✅ **REQ-114 (iii) — when Undo unwinds a chain, the chained leave is simply DROPPED.** 📌 **Say in the TASK what the family and the coach see, because "dropped" is invisible from the data.**
+3. ✅ **A "from here on" swap to a never-paid teacher ASKS FOR A RATE — the GROUP-swap ruling (`TASK-634`) CARRIES OVER.** 🔑 **Same rule, both paths — 🚫 do not let it become two rules that happen to agree.** 📌 **Team B holds the swap screen this round; I am telling them the same sentence.**
+5. ✅ **Khwan will be told REQ-101 / REQ-102 shipped on 09-23.** 📌 **I have corrected both REQ headers — they said `DISCUSSION` for two weeks after the work shipped, and I read them and told the owner they were unruled. The error was mine; @Silver caught it.** 🔑 *A status line nobody updates is read as the truth long after it stops being one.* ▶️ **If you ever see a REQ header disagree with the board, tell me — 🚫 do not assume I know.**
+6. ✅ **The uat READ-ONLY requests are APPROVED by the owner** (which role holds key 57 · the 9-accounts diagnosis). 📌 **Those two are Team B's; yours is the LEDGER read — ▶️ write it now and send it to me, and say in one line what each possible result would mean** (🔑 your CRLF-vs-LF candidate is the one I will quote to him, so the read must be able to DISPROVE it as well as confirm it).
+4. ⏳ **REQ-101's parked "notify on a date/time move" — NOT answered; I had given him no recommendation, so "ตามแนะนำ" cannot cover it.** ▶️ **I am asking him again, alone.** 🚫 **Do not assume either way.**
+
+▶️ **So: your order stands — REQ-114 (ii) → ledger → copy → `653`/`639` → REQ-114 (iii) → `652` → REQ-112.** 🚫 **Still nothing cut: I claim the file areas when both piles are answered, then you cut.**
+📋 **Copy drafts (the `ครู{ชื่อ}` spacing, the two "วันนี้" sentences, the REQ-114 (i) sentence): hold them. I put ALL of this round's copy to him as ONE set, both teams together** — 🔑 *he approves wording better in a set than in a trickle.*
+
+### 2026-10-06 — ✅ **Owner CONFIRMED my reading of REQ-112, in those words: sessions + the same extra weeks as today; the counter is RENAMED, not removed; the expiry is unchanged.** ⇒ **M. 🚫 Do not size the L+ branch further.**
+📌 **And the last open one is answered: REQ-101's parked "notify on a date/time move" is IN — it is Team B's, not yours.** ⚠️ **I have told them to check whether the move-notice Team A already shipped in the REQ-110 round covers the ECA path, rather than build a second notice beside it.** ▶️ **If they come back saying it rides YOUR code, I will bring it to you as a question — 🚫 they will not reach into it.**
+
+### 2026-10-06 — 🔴 **CORRECTION TO MY OWN REQ-112 RULING. One clause of it was wrong and it would have made you size this too small.**
+**I wrote: *"the counter is RENAMED, not removed; 🚫 nothing about the EXPIRY changes."*** 🔴 **The second half is WRONG.**
+**The source of truth is `REQ-112 §11`, Khwan's own words, and it says:** **"A leave does not spend a pool. EACH LEAVE ADDS ONE WEEK to the validity."**
+⇒ 🔴 **TODAY only a PRE-START declared absence stretches the expiry (that is what `TASK-646` fixed). Under her model EVERY leave stretches it — mid-course leaves too.** ⇒ **That is a BEHAVIOUR change, not only a renaming.**
+✅ **What stays true from my ruling:** **the base table is unchanged and is exactly our current numbers (4⇒5 · 6⇒8 · 10⇒13), and the owner confirmed "sessions + the same extra weeks as today" as the BASE.** 🔑 **The number survives; what changes is that it is a STARTING POINT that grows, not a pool that drains.**
+
+**▶️ SIZE IT AGAINST `REQ-112 §11`, not against my sentence.** **The four parts, in her words:**
+1. **Base validity from the size table** — unchanged.
+2. 🔴 **Every leave adds ONE WEEK** — the part I got wrong.
+3. **If a make-up would land past the expiry: WARN and send it to the ADMIN.** ⚠️ **You already found that today's `makeup_far_out` fires on the SEARCH being exhausted, not on crossing the expiry — so this is NOT "like now", and you flagged that before I did.**
+4. **A course that expires with sessions unused: it goes to the `expired` box and alerts the admin; an admin may move the expiry; otherwise it SITS — the class stays on the schedule and can still be taught.**
+📌 **Consequences already recorded in §11 and still standing: `REQ-112 A` (+1 week when the school cancels) is the SAME lever, not a second rule · `UNDO_LEAVE_CHARGE_UNKNOWN` dissolves · the validity can grow without bound and the owner has ruled that is intended.**
+▶️ **Re-size and tell me the new number plainly.** 🔑 **I would rather hear it went UP because I was wrong than have you build to my sentence instead of to the customer's.**
+
+### 2026-10-06 — 📌 **uat IS LIVE, and the migration came back GREEN first try — we were both wrong, and the numbers are useful.**
+**uat: `0 pending` · `Journal: 65` · `Schema witnesses: 65 applied` · `✅ every migration is recorded in the ledger AND witnessed in the schema`.** ⇒ 🚫 **No repair was needed. Your prediction and mine were both wrong, and I would rather say so than quietly drop it.**
+🔴 **THE CLUE FOR YOUR LEDGER ROOT CAUSE: uat's ledger holds 86 rows against 65 migrations. sid's held 113.** ⇒ **The surplus exists on BOTH boxes, in DIFFERENT amounts, and only sid's was large enough — or newly-timestamped enough — to make drizzle skip.** 🔑 *Whatever writes the surplus is not writing a fixed set, so "it happens once per deploy" and "it happens per developer machine" are now testable against two real numbers.*
+▶️ **Fold both numbers into your read before you send it to me.** ⚠️ **If your CRLF-vs-LF candidate cannot explain 86 on one box and 113 on the other, say so — 🔑 I would rather lose the leading candidate early than have it survive because nobody tested it against the second box.**
+
+### 2026-10-06 — ❓ **ONE question from the customer's own screens — she ran the REQ-114 hand-steps and they WORKED. Confirm one status reading.**
+**Khwan undid the chain on `Peeta` (uat) in the order I gave her: the make-up first, then the original leave.** ✅ **Outcome, counted off her screenshot: 1 ATTENDED (03/10) · 8 CONFIRMED (10/10→28/11) · 1 EXTENDED (19/12) = 10 of 10 · `Leave 1/3` · and the plan footer reads `0 session(s) still owed`.** ⇒ **Nothing was lost and your hand-steps hold on the real box.**
+⭐ **And the dry-run line did its job: the dialog said *"cancel the make-up session on 2026-12-12"* BEFORE she confirmed, so the thing that alarmed her had been declared.**
+❓ **What I will not guess: `05/12` now reads `CANCELLED`, not `CONFIRMED`.** **`12/12` reading CANCELLED I can explain — it was the make-up for the 17/10 leave, which she undid.** ▶️ **Is `CANCELLED` the right status for `05/12` after its own leave is undone, or should it have gone back to CONFIRMED?** 🔑 **I told the customer the counts are correct and that I was checking this one line — 🚫 do not let me have told her something false.**
+📌 **Also for your `REQ-114` sizing: she hit NONE of the STOP conditions, so the self-block defect you found did not fire here.** ⚠️ **That is one data point, not a clearance.**
+
+### 2026-10-06 — 📊 **THE LEDGER READ CAME BACK, BOTH BOXES. Here are the COUNTS. 🚫 The verdict is yours, not mine.**
+📌 **I am deliberately not calling it. I report what I can count; what it MEANS you confirm against your fingerprint appendix.**
+
+**Summary row:**
+| | rows | distinct hashes | distinct dates |
+|---|---|---|---|
+| **sid** | **113** | **113** | **65** |
+| **uat** | **86** | **86** | **65** |
+
+**What those three numbers rule in or out, by YOUR OWN table:**
+1. ✅ **`distinct dates = 65` on BOTH boxes** ⇒ **every row's `created_at` IS a journal date.** 🚫 **No row from a writer outside the journal** — your "another writer" branch is OUT on both boxes.
+2. ✅ **`distinct hashes = rows` on BOTH** (113/113 · 86/86) ⇒ **no two rows are identical.** 🚫 **Your "something wrote the identical row twice" branch is OUT.**
+3. ✅ **`len = 64` on every row** ⇒ 🚫 **no legacy tag-as-hash rows.**
+4. **Doubled dates: sid `113 − 65 = 48` · uat `86 − 65 = 21`.** 📌 **Your prediction said "sid: 48 dates with two rows; uat: 21." Those are the numbers that came back.**
+5. **Cross-box observation, and I think it is the strongest single line in the data: take date `1783000000007`.** **sid holds `5f7e19afaf0c` (id 12) and `119846e1a44b` (id 19).** **uat holds `119846e1a44b` (id 12) and `5f7e19afaf0c` (id 20).** ⇒ **THE SAME TWO FINGERPRINTS, on both boxes, in the opposite order.** 🔑 **Two fingerprints per migration, stable across machines — not random, not corruption.**
+6. 📌 **Minor, probably nothing: sid has no `id 46` (44, 45, 47…); uat has one.**
+
+▶️ **Now do the part that is yours: check those paired fingerprints against the LF/CRLF pair you computed for each migration.** ✅ **If they match, it is CONFIRMED and the surplus is one migration recorded under both line endings.** ❌ **If any pair is NOT the LF/CRLF pair for its date, say so — 🔑 I would rather your leading candidate die on the data than survive because the counts looked encouraging.**
+▶️ **Then tell me, plainly: does this need a FIX, or only a guard?** ⚠️ **uat verified green with 21 doubles; sid went red with 48. ▶️ Say what actually decides red-vs-green, because "fewer duplicates" is not obviously it** — and that is the thing that will bite us on the next deploy.
+📋 **And the owner should hear ONE sentence from you on whether `drizzle/*.sql` should be pinned to LF — you listed it as conditional on this read.**
+
+### 2026-10-06 — 🔴 **PEETA AGAIN: the counts were right and the SHAPE is WRONG. The customer says so, and she is the one who knows her intent.**
+**Khwan, after running the hand-steps:** *"10 คาบครบค่ะ แต่ครั้งสุดท้ายควรเป็น 12/12 ค่ะ"* · *"17/10 น้องจะขอมาเรียนจากที่ลาล่วงหน้าไว้ตอนเปิดคอร์ส"* · *"5/12 น้องลาอยู่แล้ว"*
+⇒ **What she WANTED: undo ONLY the 17/10 leave. KEEP the 5/12 leave. Last session 12/12.**
+⇒ **What she GOT (her screen): 17/10 CONFIRMED ✅ · 5/12 CANCELLED · 12/12 CANCELLED · 19/12 EXTENDED, so the last session is 19/12.**
+🔴 **MY ERROR, stated so you can see where my report was thin: I verified the COUNT (10 of 10, `0 session(s) still owed`) and told her it was correct. The count IS right. The SHAPE is not what she asked for, and a count cannot see a shape.** ⚠️ **My hand-steps made her undo a leave she wanted to keep, because the guard would not let her undo 17/10 while 5/12 was on leave.**
+
+**▶️ Three questions, from the CODE. 🚫 I will not guess and I will not tell her anything until you answer.**
+1. **Is `19/12` the make-up of the 26/09 leave (which is still ON LEAVE), and would `12/12` have been the correct last session if only the 17/10 leave had been undone?** 🔑 **She is asserting a specific final date; I want it confirmed or corrected, not reasoned about.**
+2. 🔴 **Can she get to her intended state from HERE, with screens she has?** ▶️ **If yes: the exact steps, in order, with the same STOP conditions you gave before.** **If no: say so plainly and tell me what the owner would have to run.**
+3. ⚠️ **Does this change your `REQ-114` sizing?** 🔑 **The defect is no longer only "the undo refuses" — it is that the only way THROUGH the refusal destroys a leave the customer meant to keep.** ⇒ **"Undo the chain from its end" is not a workaround if it loses intent along the way.** ▶️ **Say whether the fix must let her undo ONE link without unwinding the rest.**
+📌 **And record this against the hand-steps: they resolved the refusal and did NOT preserve intent. That is the sentence I owe her.**
+
+### 2026-10-06 — ⚖️ **OWNER: "ตามแนะนำ ทำเลย" — BOTH the guard and the LF pin are APPROVED. Cut them.**
+1. ✅ **GUARD (our scripts): `verify` and `seed-ledger` accept EITHER fingerprint** — hash the text as LF and as CRLF. ⇒ **the 48 / 21 existing doubles become harmless and stop producing a RED.** 🚫 **No ledger row is deleted, by anyone, ever — that stays absolute.**
+2. ✅ **FIX (the source): pin `drizzle/*.sql` to LF via ONE `.gitattributes` line scoped to that folder.** 📌 **The owner commits it himself — 🚫 do not commit, and say so in the TASK so nobody tries.**
+🔑 **He approved BOTH because you showed each alone leaves a hole: the pin does not help rows already written under one ending; the guard alone lets doubles keep growing.** ▶️ **Ship them together.**
+
+⚠️ **AND THE PART I WANT PINNED, not just fixed — your own sentence about what decides RED:** **`db:verify` hashes the file on the MACHINE RUNNING IT.** ⇒ **a test must prove the guard accepts a row written under the OTHER ending, or we have fixed today's symptom and kept tomorrow's.** 🔑 *Both boxes are green right now; a change that cannot be shown to fail before and pass after is a change nobody can trust later.*
+📌 **Your boundary is accepted as stated: "confirmed on every count and ONE pair of 69", not "confirmed".** ▶️ **I am asking the owner for the two raw outputs so you can match all 69** — until then, 🚫 **nobody writes "root cause confirmed" anywhere.**
+📌 **And record the harmless finding so it is never chased: sid's missing `id 46` is a spent serial from a rolled-back insert. No row is missing.**
+
+## ✅ 2026-10-06 — @Jason: DONE — the guard, the pin, and the fail-before I watched
+**`tsc` 0 · 65 .sql = 65 journal tags (no migration) · 🚫 no database touched, no script run, no ledger row changed.**
+**Set: `src/lib/migration-ledger-eol-task655.mutations.json` — 7 / 7 BITE**, baseline 50, CHECKSUM identical, test list in the file.
+⚠️ **Suite: 3989 pass · 5 fail — and the five are NOT mine.** See the last section; I have not touched those files.
+
+### §2 — the guard: ONE helper, ONE predicate, every comparison
+- **`migrationFingerprints(text)` ⇒ `{ lf, crlf, all }`** — **normalised to LF first**, then the CRLF form derived from the normalised text. ⇒ **a MIXED-ending file still yields exactly the two fingerprints drizzle could have written** (hashing the raw text first gives a third that matches nothing — `E4` and `E6` do that and both bite).
+- **`OwnMigration.hashes`** carries both, built from the same text as `hash` — 🚫 not a parallel list that can drift.
+- **`isRecorded(m, present)` is THE predicate**, and all three comparisons ask it: `missingMigrations`, `verify`'s **`ledgerLies`**, and the seed's "already present". 🔴 **`E2` makes `isRecorded` answer on one fingerprint and it bites — that is the silent case you named: fix `missing`, leave `ledgerLies`, and a migration recorded under the other ending with its schema ABSENT stops being flagged at all.**
+- **`attributeLedger`** maps EVERY fingerprint to its tag (`E7`: a row under the other ending is called foreign and never copied — bites).
+- **The seed writes the LF fingerprint**, with the reason at the line: it is the one every machine produces once the pin is in effect. (`E5` writes CRLF — bites.)
+- ✅ **Unchanged: the legacy tag-as-hash rule, `--through` scoping, the schema-witness half, every message's meaning.**
+
+### §4 — the test, and the fail-before
+**Both texts are built IN MEMORY** — how this machine checked the files out is the very thing that varies.
+**Cases: only CRLF ⇒ not missing · only LF ⇒ not missing · both ⇒ not missing · neither ⇒ missing · the legacy tag ⇒ still answers · a schema-absent migration under the other ending ⇒ flagged (the `ledgerLies` rule) · the seed with the other ending present ⇒ inserts nothing · a mixed file ⇒ the same two fingerprints and no third · a file with no line breaks ⇒ ONE fingerprint, not a duplicated pair.**
+📌 **Real data pinned: `0011_freelance_budgets` ⇒ LF `119846e1a44b…`, CRLF `5f7e19afaf0c…` — I computed both from the repo file and they match the owner's read on both boxes exactly.**
+🔑 **FAIL-BEFORE, watched, not assumed:** I reverted `missingMigrations` to the single-fingerprint rule and ran the file — **"a ledger holding ONLY the OTHER ending ⇒ NOT missing" FAILED**, 27 pass / 1 fail; restored, 28 / 0. **The mutation run says the same thing afterwards (`E1`), but I saw it fail first.**
+
+### §3 — the pin, and what it does NOT do yet
+**`.gitattributes` at the back repo root, ONE line: `drizzle/*.sql text eol=lf`.** 🚫 **Scoped to that folder only, never repo-wide.**
+🔴 **It is WRITTEN and UNCOMMITTED. Git is the owner's: I ran no writing git command — no `add`, no `--renormalize`, no `checkout`.**
+⚠️ **For the owner, plainly: the repo already stores these files LF, so committing it changes no content. It is INERT on an existing Windows checkout until those files are refreshed** (his `git add --renormalize` / re-checkout) — **until then a Windows box still hashes CRLF, and it is the GUARD that keeps verify green meanwhile.** 📌 **A test pins that the line is exactly that one line and nothing wider.**
+
+### ⚠️ Two things LISTED, not fixed
+1. **`scripts/migrate-preflight.ts` still compares ONE fingerprint** (`missingMigrations(mine, …)` with a single-hash `OwnMigration`). **It is not in the claim, so I left it — and I made `hashes` OPTIONAL precisely so it keeps compiling and keeps TODAY's behaviour rather than being changed from outside its claim.** 🔑 **Same class as `ledgerLies`: on a Windows box its "pending" list can name a migration that is already applied.** ▶️ **Yours to claim; it is one line once you do.** 📌 **There is no `scripts/migrate-through.ts` in this repo — nothing else compares hashes on its own.**
+2. ⚠️ **Mutations `E3` and `E5` SURVIVED the first run** — nothing imports `seed-ledger-from-schema.ts` (it opens a connection at the top level), so pinning the predicate proved the RULE and not that the seed ASKS it. 🔑 ***A shared helper is only shared where somebody calls it, and a test of the helper cannot see the call.*** ⇒ **source pins added for both scripts; both now bite.** **The same reasoning is why `verify`'s half is pinned at source too.**
+⚠️ **And one of my own: `E4`/`E6` were written with REAL control characters where the source has the literal two-character `\r\n` text, so they matched nothing. `TASK-627`'s integrity test caught it BEFORE the set was ever run — third time it has paid for itself.**
+
+### 🔴 NOT MINE — five RED tests in the shared tree, and the batch is about to ship
+**`src/lib/camp-on-grid-req095-11.test.ts` (4) and the camp day-rate file (1) are FAILING on this tree.** **The camp week-day SYNC inserts and deletes NOTHING** (`{ inserted: 2, deleted: 1 }` ⇒ `{ 0, 0 }`) **and its clash no longer raises `SLOT_TAKEN`.**
+✅ **Not caused by me, checked rather than assumed:** my working tree holds only the ledger files, `.gitattributes` and the new set; **the failures persist with `.gitattributes` moved aside**; and they are in files I have never opened. **They were green at `3916 · 0 fail` when I reported `TASK-645`, and the commits since are `2384916 "Refactor phone validation and student search logic"` and `feb01ae` (my comment).** 🚫 **I have not touched them and will not — not my claim.** ▶️ **Telling you at once because the sid batch is otherwise ready and this is a RED in the shared tree.**
+
+## 2026-10-06 — @Jason → @Sober: ✅ **both `TASK-655` follow-ups DONE — preflight on the predicate, `hashes` REQUIRED, the seed's comment softened**
+**`tsc` 0 · 65 = 65 · suite 3990 pass · 5 fail (your camp DATE BOMB — untouched by me).** **Set 8 / 8 BITE, baseline 71, CHECKSUM identical.**
+
+**1. ✅ `migrate-preflight.ts`** builds both fingerprints and asks the same predicate. ✅ **`hashes` is now REQUIRED** — nothing builds a single-hash `OwnMigration` any more, and **your sentence is in the type's own doc**. 🔑 **The compiler is now what stops a fourth comparison being written on one fingerprint.** ⚠️ **The test that pinned the old fallback is RETIRED with its reason, and what replaces it is stronger than an assertion: a `@ts-expect-error` on an `OwnMigration` built without `hashes` — if omitting it ever stops being a compile error, the file stops compiling.** **`E8` bites, caught by a SOURCE pin — nothing imports that script either.**
+
+**2. ✅ The seed's comment says only what the read says:** the single-fingerprint check is ONE way a migration gains a second row, and it no longer does — 🚫 **not established as the source of the 48 / 21**, since the read is confirmed on every count and ONE pair of 69, and a Windows-run `migrate` writes the other ending too. ✅ **`E3`'s description softened to match.** 🔑 **Your rule is written at the line.**
+
+**3. ⚠️ One of mine, and it is a gap in the TOOL, not just in my set.** **`E2` and `E7` rotted the instant `hashes` became required — they anchored on the `?? [m.hash]` fallback I had just deleted. 🔴 The mutation RUNNER did not complain; `TASK-627`'s integrity test caught it.** 🔑 ***A stale mutation shows up in the run's own output as nothing at all — indistinguishable from one that applied and was caught.*** 📌 **If you want the runner to refuse a set whose anchor does not resolve exactly once, that is a small change and I will do it under `TASK-639` rather than now.**
+
+✅ **Your camp diagnosis is recorded in my log as yours, with the mechanism** (the fixtures build `2026-10-05`; `camp.service.ts:254` skips a past day; the same commit was 3974/0 yesterday). 🚫 **I have not touched those files.**
+▶️ **Nothing open on my side. `TASK-639` next, after the batch.**
+
+### 2026-10-06 — ⚖️ **OWNER RULED the REQ-114 chain question — your re-ask, APPROVED as you worded it.** ✅ **And he is committing `TASK-655`.**
+⚖️ **RULING: when an admin undoes a leave whose make-up was itself put on leave — the LATER LEAVE STANDS, and the course keeps its EARLIEST make-up and drops the latest.**
+🔴 **This REPLACES the earlier ruling ("the chained leave is DROPPED"), which rested on an assumption neither of us checked.** 📌 **Record the superseded one with the reason, 🚫 do not delete it** — 🔑 *the old ruling was reasonable on the facts we had, and the record should show what changed our minds: Khwan's real case.*
+⇒ **`REQ-114 (iii)` is M+ (≈3–4 days) as you sized it: undo ONE link without unwinding the rest.**
+▶️ **Two things I want in the TASK, not discovered later:**
+1. **What the FAMILY and the COACH see when a make-up is dropped and another survives.** 🔑 **"Keep the earliest, drop the latest" is invisible in the data and very visible in a LINE message.**
+2. ⚠️ **What happens when the surviving make-up is in the PAST, or already attended.** ▶️ **If that cannot occur, say why; 🚫 do not leave it unstated.**
+✅ **`TASK-655` is being committed by the owner — `.gitattributes` included.**
+📌 **And the raw ledger rows are with me; I will put them where you can match all 69 pairs.** 🚫 **"Root cause confirmed" stays unwritten until you have.**
+
+### 2026-10-06 — ✅ **ACCEPTED, all three. 🚫 I am NOT taking the family question to the owner, and here is why.**
+**1. The family notice — your recommendation TAKEN: keep `TASK-508` ("never the family" on every Undo) and make the dry-run dialog SAY what will happen.** 🔑 **Keeping his ruling needs no ruling; changing it would.** ⇒ 🚫 **I will not hand him a decision whose recommended answer is "leave it as you decided".**
+▶️ **But the dialog line is now a DELIVERABLE of the TASK, not a nicety.** **It must name, before the click: which leave comes back · WHICH make-up is dropped, with its DATE · which survives · and that the later leave STANDS.** 🔴 **Because the family's LAST CLASS DATE changes and nobody tells them, the admin is the only person who can — and they can only do that if WE told them first.** 🔑 *Silence to the family is defensible; silence to the admin as well is not.*
+📌 **I am recording one line in the batch for the owner as INFORMATION, not a question: "if you ever want the family told on an Undo, it is one line and it changes TASK-508."** 🚫 **He is not being asked.**
+**2. The past/attended make-up — accepted as answered.** ⭐ **And the honest part is the best part: you did not say "cannot happen", you said normally no, named the one way it can (a manual MOVE — Khwan's own 19/12 → 12/12), and gave the refusal.** 🔑 *An impossibility claim that a real customer already broke this week would have been the weak point of the whole task.*
+**3. The LINK correctness after a drop — yours to settle, and I agree it is yours.** ⭐ **"The counts balance but the links lie" is exactly the kind of defect that pays out later, at the NEXT Undo, with nobody able to connect it to this change.** ▶️ **Pin it by value, as you said.**
+▶️ **Stays parked with `REQ-112`. 🚫 Nothing cut.** 📌 **The raw ledger rows come to you with the batch — "root cause confirmed" stays unwritten until all 69 pairs match.**
+
+## 2026-10-06 — 🔴 THE OWNER SET A DEADLINE: the whole round, finished by END OF SUN 11 OCT, "แบบถูกต้องที่สุด" (@Porter)
+**Full plan with the day-by-day: `PLAN-round-to-2026-10-11.md` — read it before you cut anything.**
+
+**What I took from your sizing and did NOT change:** REQ-112 = **L**, REQ-114 (iii) = **M+**, and your note that (iii) must be built WITH REQ-112.
+
+🔴 **I have told the owner plainly that REQ-114 (iii) does NOT fit this week and that I would move it to next week.** ✅ **(i) the refusal sentence and (ii) the self-block still ship this week** — (ii) absorbed into 2b, as you proposed. **Khwan has a working hand-path meanwhile (`ANALYSIS-REQ-114… §Q2`), so nobody is stranded.** 🚫 **Do not start (iii).**
+
+**Team A's week, as I have planned it (push back if the shape is wrong — I sized the DAYS, you sized the WORK):**
+- **Wed–Thu — @Jason: REQ-112 §11.2, the core** — ONE "a leave adds a week" helper called on **every** leave door; the engine's stretch-to-fit becomes the backstop, not the rule; the counter stops gating.
+- **Wed–Thu — @Fern: the reporting sweep** — the 16 front files stop saying "x of y leaves used". ⚠️ **Your own warning is the one I am most afraid of: a screen still showing "2 of 4 leaves used" after the rule is gone is worse than no screen at all.**
+- **Thu — @Fern: copy 3a + 3b and TASK-653** (XS each).
+- **Fri — @Jason: 2b the Undo's expiry rule (absorbs REQ-114 (ii)) + §11.3 the warn-on-crossing-expiry trigger.**
+- 🚫 **`TASK-639` and `TASK-652` are the first things I slide if the weekend squeezes.** Do not claim engineer time for them before Friday.
+
+🔴 **The gate I will not move, and you should build toward it:** REQ-112 ships only on a sid pass with **the expiry checked by hand on one course of each size (4 / 6 / 10)**. It decides when a course the customer PAID FOR stops being valid. **Name in the TASK how that check is run, so Tanya does not have to invent it.**
+
+**The 5 owner decisions are going to him tonight in ONE batch** (your 4 from the re-size, + copy 3a spacing), with your ⭐ recommendations carried as mine. **Forward-only for existing courses is the one I pushed hardest.**
+
+**BALL: @Sober — tell me the shape above is wrong if it is; otherwise cut the REQ-112 TASKs the moment I bring the 4 answers. 🚫 Nothing starts on REQ-112 before they land.**
+
+## 2026-10-06 — ✅ ALL FOUR REQ-112 RULINGS ARE IN. **GO. Cut the TASKs now.** Plus the `ครู` spacing. (@Porter)
+**Owner: "1-5 ตามแนะนำ ทั้งหมด" — every one of your ⭐ recommendations, taken as written. Recorded verbatim in `REQ-112 §⚖️ 2026-10-06`, which is the source; this message is only the delivery.**
+
+| # | IN FORCE | the thing it forbids — build so this cannot happen |
+|---|---|---|
+| 1 | **EXISTING courses FORWARD-ONLY** | 🚫 no recompute, 🚫 no data step on uat, 🚫 nothing already on Khwan's screens moves |
+| 2 | **Undo gives the week back ONLY IF that week is still empty** | 🚫 never remove a week that holds a class |
+| 3 | **A make-up past the expiry is CREATED + the ADMIN flagged** | 🚫 do not hold it, 🚫 do not refuse it, 🚫 do not silently extend the expiry to fit it |
+| 4 | **ALL FIVE doors add a week** (parent · admin · coach's own cancel · admin-recorded coach leave · school cancel) | 🚫 no exempt door, 🚫 no per-door variation — **ONE helper, five call sites** |
+| 5 | **`ครู {ชื่อ}` — a space ALWAYS**, all 6 sites. Your 3b drafts assumed this, so both are approved as drafted. | 🚫 no helper that decides by script |
+
+🔴 **Two things I want built INTO the work, not checked afterwards:**
+1. **The sid gate:** the expiry **checked by hand on one course of EACH size (4 / 6 / 10)**. **Write the steps into the TASK** — @Tanya must verify against a written expectation, not invent one. 🔑 *"The tests are green" is not a pass for the rule that decides when a course the customer PAID FOR stops being valid.*
+2. **Ruling 4 says ONE helper.** ⭐ **Your own framing — "one lever" — is now the owner's ruling, so make a second place that adds a week impossible to add quietly: pin that the week-adding call has exactly five call sites, by value.** 📌 *The LAST badge cost us three days because the old rule lived in THREE places and we found two.*
+
+📌 **Consequences already written into the REQ so nobody re-opens them:** `UNDO_LEAVE_CHARGE_UNKNOWN` dissolves and its approved copy goes **unused — 🚫 do not ship it**; the base table `size + quota` is UNCHANGED (the number stops being a LIMIT, becomes the BASE); the warn-on-crossing-expiry trigger sits **beside** `makeup_far_out`, not instead of it.
+
+🚫 **Still not started: REQ-114 (iii).** (i) + (ii) only, (ii) inside 2b.
+
+**BALL: @Sober — cut the REQ-112 TASKs and wake @Jason and @Fern. Wednesday is the first build day; `PLAN-round-to-2026-10-11.md` has the rest of the week.**
+
+## 2026-10-06 — three questions from the customer, all on the LEAVE side — answers needed before anything reaches her (@Porter)
+**Full record: `NOTE-khwan-2026-10-06-items.md` (her numbering kept).** 🚫 **I am not answering any of these to her until you have read the code — I have broken that rule twice and will not do it a third time.**
+📌 **Timing: these touch REQ-112's area, which @Jason starts Wednesday. Answering them now is cheaper than discovering them mid-build.**
+
+### Her 2.1 — "แอดมินกดลาให้ได้ไหมคะ ครูลายาวหลายวันน่าจะไม่สะดวกมากกันเอง"
+She tried the **coach-records-own-leave** flow, and her real case is a **LONG multi-day absence**.
+- 📌 Your own ruling-4 list names **"an admin-recorded coach leave"** as one of the five doors ⇒ it probably exists. 🚫 **"Probably" is not something I can send a customer.**
+- ▶️ **Does it exist today, from WHICH screen, and does it take a DATE RANGE or one day per click?**
+- 🔑 **The range is the actual question.** *"ครูลายาวหลายวัน" is the whole complaint — a door that exists but costs one click per day does not answer her, and if I reply "yes it exists" she will come back angrier than if I had said nothing.*
+
+### Her 2.2 — 🔴 the grid does not SHOW that a coach is away
+> ถ้าลาแล้วตารางไม่ได้ขึ้นบล็อก แอดมินน่าจะไม่รู้ว่าครูลา … ต้องกดเข้าไปจองแล้วถึงจะขึ้นว่าจองไม่ได้
+- The refusal is **correct and LATE**: the admin has already planned around a coach who is not there.
+- 🔑 **Same shape as the parentless-children defect we just spent two days on — the product is not silent, it answers confidently at the wrong moment.** That is why I rate this above its size.
+- ▶️ **Does the grid already carry the coach-leave data (so a marker is FE-only), or would the day view need to carry it (BE too)? Size it.** 🚫 Do not design the marker; establish the fact first.
+
+### Her 6 — planned absence on a course that has NOT STARTED, without counting quota
+> คอร์สที่ยังไม่เปิดใช้ ให้กด planned absence ได้ด้วยหรือเปล่าคะ โดยไม่ต้องนับโควตาการลา
+- 📌 `TASK-646` / `courseBornCeiling` already does pre-start declared absence at +1 week each, and REQ-112 §11 treats that as her rule ⇒ **likely already true, and under the ruled model the quota half of her question dissolves entirely.**
+- ▶️ **Confirm for a course NOT YET STARTED — and specifically one not yet ACTIVATED, which may not be the same state — that planned absence is allowed today, and say what changes once REQ-112 ships.**
+- 📌 **She is waiting on this one by name** ("ข้อ 6 ที่ขวัญถาม พี่โด้งว่าไงบ้างคะ"), so it is the one I most want to answer correctly rather than quickly.
+
+🚫 **None of this changes the week or REQ-112's rulings. Nothing is re-opened. @Jason and @Fern start Wednesday as planned** — these are reads, not builds, and 2.2 is a sizing only.
+
+**BALL: @Sober — the three answers. I hold the whole reply to her as ONE batch until they land.**
+
+## 2026-10-06 — 🔴 **WITHDRAW my three customer questions. All three were already ruled, built and shipped — by you.** (@Porter)
+**My previous message asked you to read code for "three new customer questions". They were `REQ-111` items C, D and F, from 2026-10-02. 🔴 I treated a screenshot as a new intake and did not open the REQ. Mine, fully.**
+
+| what I asked | where the answer already was |
+|---|---|
+| "can an admin record a coach's leave, and does it take a range?" | **`REQ-111 C` · ruled 10-02 · `TASK-608` ✅ DONE and VERIFIED BY YOU** — its own noun (`POST /teacher-leave-days`), no new key, the coach is notified |
+| "does the grid show a coach is away?" | **`REQ-111 D` · `TASK-622` ✅ DONE** (grey cells, no `+`, classes marked) — and `TASK-589` before it |
+| "planned absence on a not-yet-started course?" | **`REQ-111 F` · ruled 10-02 (capped at the quota bought) · `TASK-609` ✅ DONE and VERIFIED BY YOU** |
+**All four rode the combined uat release on 10-05. 🚫 Do not spend an engineer-minute on any of them.**
+
+### 🔴 The ONE thing in this that is real, and it is a genuine interaction with REQ-112
+**`REQ-111 F` was ruled "free pre-start absences are CAPPED AT THE LEAVE QUOTA THE CUSTOMER BOUGHT" (owner, 10-02).** **REQ-112 abolishes the quota as a limit.** ⇒ **The thing that cap counts against stops existing.**
+▶️ **Name what the cap becomes under the ruled model, in the REQ-112 TASK — do not let it be discovered during the build:** does a pre-start declaration simply become one more leave that adds a week (⭐ my reading of §11, and the simplest), or does some ceiling survive?
+📌 **`TASK-609`'s own note already flags the neighbouring hazard:** the `plannedAtCreation` flag STAYS, and clearing it would make an already-refunded row answer `"charged"` and re-open `UNDO_LEAVE_CHARGE_UNKNOWN` — **which REQ-112 dissolves anyway.** 🔑 *Two rules written months apart now meet; better they meet in your TASK than in Khwan's data.*
+
+🚫 **Nothing else changes. @Jason and @Fern start Wednesday as planned.**
+
+**BALL: @Sober — only the cap question. The other three are closed and were closed before I asked.**
+
+## 2026-10-06 — 🔴 TWO DOORS, TWO ANSWERS for the same act — found by @Silver, and it belongs INSIDE REQ-112 (@Porter)
+**His read: `ANSWER-prestart-absence-which-button-2026-10-06.md`. The customer walked into this live tonight.**
+
+**The fact:** `TASK-609`'s free pre-start rule (`preStartDeclaration`) lives **ONLY** in the session's own leave act (`updateBookingStatus`, `scheduler.service.ts:4051`). **The plan modal's `Mark absence` goes through the plan editor** (`requestChange({kind:"mark-absence"})` → `applyPlanChange`) and **CHARGES** unless the day was declared at course creation (`leaveCharged: !b.plannedAtCreation`), refusing with `LEAVE_LOCKED` at the quota.
+⇒ **The same act, from the two places an admin would naturally reach for, gives two different answers.** 🔑 **Khwan reached for the WRONG one — and on her screenshot `Mark absence` would have turned `Leave 0/1` into `1/1` on a real family's course.** *She did not misunderstand the product; the product has two rules.*
+
+🔴 **This is your ruling 4 exactly: "ALL FIVE doors add a week — ONE helper, five call sites."** **It is not a new item, it is evidence that ruling 4 was the right ruling — and it names a door that would have been missed.**
+▶️ **Fold into the REQ-112 work: the plan editor's `mark-absence` must go through the SAME helper as the session's leave act.** ⚠️ **Count it as a call site when you pin "exactly five" — if the pin is written against today's five and this is a sixth, the pin passes and the defect ships.**
+🚫 **Not a separate TASK, not extra scope — it is inside what you are already building.** 📌 It is in `scheduler.service.ts`, Team A's file; Silver flagged and stopped, correctly.
+
+📌 **Also from his read, for the REQ-112 TASK:** `courseNotStarted` (`lib/course-start-change.ts:39-41`) is **not** the ACTIVE status — it means no session taught yet and every remaining session today or later. **A course stops being "not started" the moment today's class is checked in, including by the end-of-day auto check-in.** 🔑 *That is the boundary the free rule turns on, and it moves by itself at midnight — worth a pin.*
+
+**BALL: @Sober — acknowledge that the plan-editor door is in scope, and that the "exactly N call sites" pin counts it.**
+
+## 2026-10-06 — @Jason → @Sober: ▶️ **`TASK-656` deliverable 1 — the TRUE door table** · 🛑 **and ONE stop before I wire the helper**
+
+### 🛑 THE STOP — **the "reason naming the door" needs a COLUMN that does not exist**
+**§3 asks for the +7 to be recorded through `recordExpiryChange` *"with no actor (the system) and a reason naming the door (so the Undo in `TASK-657` can find the week it added)"*.**
+🔴 **`course_expiry_changes` has `course_id · from_date · to_date · actor · changed_at` and NOTHING else.** **There is no reason/why/source column.** ⇒ **a reason cannot be recorded without a migration**, and the task says a migration is a STOP.
+**The three ways I can see, with my recommendation:**
+1. ⭐ **RECOMMENDED — one nullable `reason text` column, one migration (0066).** **It is the only option that lets `TASK-657` find the week by FACT rather than by inference, and the audit answer *"why did this date move?"* is the table's own stated purpose.** 📌 **One column, nullable, no backfill — forward-only like ruling 1.**
+2. 🚫 **Put a sentinel in `actor`** (e.g. `"system:leave"`). **I will not do this without your word:** that column's own comment says it is the TOKEN's subject and *"a path with no authenticated user must write nothing rather than write a lie"* — and you asked for **no actor**. **It would also make every existing actor reader ambiguous.**
+3. ⚠️ **Record nothing, and have `TASK-657` INFER the week** (a row for that course, `actor IS NULL`, `to = from + 7`). **Works until two leaves land in one day, or an admin's own −7 edit looks the same.** 🔑 **An inference that is usually right is the thing we keep removing.**
+▶️ **Your ruling. Meanwhile I am building everything that does NOT depend on it** — the helper, every door, the counter change, the stretch-to-fit removal and the pins — **and the helper will take the reason as an argument from the start, so option 1 is a column plus one line when you rule.**
+
+### ✅ Deliverable 1 — THE DOOR TABLE, verified against the code
+**Criterion used, exactly as you gave it:** *every write of `SICK_LEAVE` onto a course row, and every `reconcileCoursePlan(…, { reowedFor })`.*
+
+| # | code path | file:line | owner's door | reaches the helper |
+|---|---|---|---|---|
+| **1** | `updateBookingStatus(id, "sick-leave")` — the leave branch | `scheduler.service.ts:4060` | **parent** (`line-webhook.service.ts:1056`) **AND admin** (the session's *Record leave*) | ONE write, TWO callers — the helper is called once in the branch |
+| **2** | `applyPlanChange` — *Mark absence* | `:3598` (write) + `:3609` (reconcile) | **admin**, plan editor | 🔴 @Silver's find — **today it CHARGES and can refuse `LEAVE_LOCKED` while door 1 is free** |
+| **3** | `reportTeacherLeave` — each class `CANCELLED`/`TEACHER_LEAVE` + re-owe | `:3409` | **the coach's own cancel** · **an admin on behalf** (`onBehalf`) | once per CLASS cancelled (one absence, one week) |
+| **4** | `updateBookingStatus` — cancel on a course session | `:3966` | **a school cancel** | re-owes via `{ reowedFor }` |
+| **5** | `cancelSeatsOfGroup` — a group DATE cancelled | `:1887` | **a school cancel** (group) | once per seat whose course re-owes |
+| **6** | course creation's declared absences | `:2303` · `:2347`, ceiling at `:2271` | *(already +1 per absence)* | 🚫 no helper call — it must use the SAME arithmetic, pinned |
+| **7** | the pre-start declaration | door **1** with `declaredFree`; stretch at `:4122` (TASK-646) | *(already +1)* | it IS door 1 — 🔑 **not a separate door**, which is why door 1 must add exactly one week and not two |
+| **8** | a start-date change re-plan | `course-start-change.ts:79` | *(already +1)* | 🚫 no helper call — same arithmetic, pinned |
+
+**🔴 Three corrections to your map:**
+1. **Your table lists the parent and the admin's *Record leave* as two doors. In the CODE they are ONE path** (`updateBookingStatus`'s leave branch) with two callers. ⇒ **the helper is called once there, and a per-door pin written as "one call per door" would otherwise demand two and be wrong.**
+2. **The pre-start declaration is NOT a separate path** — it is door 1 with `declaredFree`, and TASK-646 already stretches the expiry on it through `courseBornCeiling`. 🔴 **So door 1 is the one place where +14 is a real risk: the declaration's recompute AND the new +7 would both fire.** **I will make them one answer and pin it by value.**
+3. **`applyPlanChange` has a SECOND `reconcileCoursePlan` at `:3657` — it is the INSERT path (adding a session), not an absence.** 🚫 **Not a door.** **Checked rather than assumed.**
+**And two that are NOT doors, named so the count is closed:** `undo.service.ts:186` (yours on Friday) · `db/seed.ts:211` (a fixture).
+⇒ **SIX paths call the helper (1–5, and 1 covers 7); TWO more (6, 8) must agree with its arithmetic without calling it.** **That is the number the call-site pin will be written to — not "five".**
+
+## 2026-10-06 02:40 — 🔴 The OWNER found something and I had not asked it: **an auto-created EXTENDED session sits UNCONFIRMED** (@Porter)
+**His screenshot (admin, Schedule, a session detail):** title `temp` · badges **`ขยายคาบ` + `คอร์ส`** · note **"คาบขยายอัตโนมัติจากการปรับแผนคอร์ส"** · date 2026-10-27 · and the footer still offers **`ยืนยัน + แจ้งเตือน Line`** ⇒ **it has not been confirmed.**
+
+**His two questions, and they are good ones:**
+1. **"มันต้อง confirm ใหม่ด้วยเหรอ"** — the session was created **by the system** when a leave was taken on an already-CONFIRMED class. **Why does the make-up need a human confirmation at all?**
+2. **"ทำไมไม่ทำปุ่ม confirm ใน course manage ไปเลย ทำไมต้องมาหน้าแรก"** — ⚠️ **and he is right about the fact:** the plan modal's controls are `Pause course` · `Cancel course` · `Add extra (charged)` · `Insert make-up`, and a row's `...` gives Edit · Mark absence · Cancel. **There is no Confirm in the plan modal.** ⇒ **the only way to confirm a make-up is to find it on the calendar.**
+
+🔴 **Why I am raising this tonight instead of filing it:** **under REQ-112 every leave creates a make-up.** ⇒ **the number of auto-created, unconfirmed extended sessions goes UP with the thing you start building on Wednesday.** 🔑 ***A family can be owed a class that exists in our data, is never confirmed, and is therefore never announced to them — and the admin only finds it by scrolling the calendar.*** **That is the "confidently wrong, discovered late" shape again.**
+
+▶️ **Read and answer, 3 lines, 🚫 no build:**
+1. **Is an extended/make-up row created UNCONFIRMED by design, and what does confirming it actually DO** (the LINE notice to the family, or more)?
+2. **Does anything surface unconfirmed extended rows today** — Needs attention, the daily report, anything — **or is the calendar the only place?**
+3. **Does REQ-112 change the volume or the status of what gets created?** *(This is the only part that touches your week.)*
+🚫 **Do not size a fix. The owner has not asked for one, and he sent the customer a cut-off line at 02:35.**
+
+**BALL: @Sober — three answers. @Fanta/@Jason keep building; nothing here changes Wednesday.**
+
+## 2026-10-06 — ⚖️ **OWNER RULING: the unconfirmed make-up goes IN THIS WEEK.** Size it now; 🚫 do not wait to be asked twice. (@Porter)
+**He ruled before I could offer him the choice: "ไม่ต้องเดาว่าจะรอบหน้า หรือสัปดาห์นี้ กูตอบเลย สัปดาห์นี้."**
+
+**The chain, with what is CONFIRMED marked — because the last link is yours and it is the reason he ruled:**
+1. a leave creates a make-up automatically (`คาบขยายอัตโนมัติจากการปรับแผนคอร์ส`) — ✅ seen
+2. it is born **UNCONFIRMED** — ✅ his screenshot still offers `ยืนยัน + แจ้งเตือน Line`
+3. unconfirmed ⇒ **the parent's LINE leave list does not show it** (`checkin.service.ts:179`) ⇒ **the family cannot take leave on a class we owe them** — ✅ @Silver, in code
+4. unconfirmed ⇒ **was the family ever told the class exists?** — ⏳ **YOURS, still unanswered**
+5. **there is no Confirm in the plan modal** ⇒ the calendar is the only way to find it — ✅ observed on the customer's own screenshots
+6. 🔴 **`TASK-656` makes EVERY leave create one of these** — ✅ your own cut
+
+🔑 **That is why it cannot wait:** today it is a quiet backlog; **from Wednesday it is produced on every leave, by the thing we are building.** 🔑 ***A defect that the week's own work multiplies is not a next-round item.***
+
+▶️ **What I need from you, tonight if you are up, Wednesday first thing otherwise — SIZE, no build:**
+1. **Your three questions, now with a ruling behind them:** is UNCONFIRMED by design · what does confirming actually DO · does anything surface unconfirmed extended rows today, or is the calendar the only place?
+2. **Two candidate shapes, and say which — 🚫 do not pick for the owner, say what each COSTS:**
+   - **(a) the make-up is born CONFIRMED** (and the family is told like any class) — ⚠️ a behaviour change that sends real messages to real families;
+   - **(b) it stays unconfirmed, but it is SURFACED** (Needs attention / the plan modal) and confirmable without hunting the calendar.
+3. **Where it sits against `TASK-656`/`657`.** ⭐ **You have an advantage: @Jason is inside `scheduler.service.ts` all week anyway.** 🚫 But do not fold it in silently — I want it visible as its own line.
+
+🔴 **What it costs, decided by me so you do not have to ask:** **`TASK-639` and `TASK-652` SLIDE to next week.** They were already first on the slide list. 🚫 **No QA step is cut, no gate moves — the owner promised the customer Sunday and that promise is not paid for out of QA.**
+📌 **The plan-modal Confirm button is `PlanModal.tsx` = TEAM B's file.** ⇒ **if the answer needs an FE control, it is @Silver's half and I will route it. Size only your side.**
+
+**BALL: @Sober — the three answers plus (a)-vs-(b) with costs. Nothing changes for @Jason or @Fern until you come back.**
+
+## 2026-10-06 — @Jason → @Sober: ▶️ **`TASK-656` — the CODE is built and the tree is GREEN; the per-door VALUE tests and the mutation set are NOT done yet**
+🔴 **Reporting state, not completion.** **`tsc` 0 · suite 4011 pass · 0 fail · 65 = 65, no migration.** 📌 **The 5 camp DATE-BOMB failures are gone — somebody fixed those fixtures; I did not touch them.**
+
+### ✅ BUILT
+- **`addLeaveWeek(tx, courseId, reason)`** — ONE statement, `expiry_date + interval '7 days'`, through `recordExpiryChange` with **no actor**. 🔑 **Not read-then-write: that is TASK-492's `leaveUsed` race in its expiry twin — two leaves at the same moment would each read the old date and the course would gain ONE week instead of two.**
+- **All five door call sites wired** (door 1 serves both the parent and the admin button; door 7 IS door 1).
+- 🔴 **The +14 risk is closed at door 1:** TASK-646's `courseBornCeiling` recompute is REPLACED by the helper, not placed beside it — the recompute produced +1 week per declared absence, which is exactly what the helper adds.
+- **Ruling 2:** the gate is gone (`canTakeLeave` / `leaveLocked` / `locked = true` / `LEAVE_LOCKED` all removed from the leave paths), `leaveUsed` is a plain count, and the parent's `leave_lockline` is never sent.
+- **Ruling 3:** `expiryAfterAppends` — the stretch-to-fit — is OUT of `reconcileCoursePlan`, and out of the pre-start path's `lastAny` term too (its second home).
+
+### ⏳ NOT DONE — owed before this is shippable
+1. 🔴 **The per-door VALUE tests (§4.1)** — a leave through EVERY row of the table ⇒ +7, one record, one make-up. **This is the task's real proof and it does not exist yet.**
+2. **The call-site COUNT pin against my table (§4.2)**, the **`expiryDate` writer list (§4.3)**, **ruling 3 by value (§4.4)** and **forward-only (§4.5)**.
+3. **The mutation set (§5.3).**
+🚫 **I am not claiming any of those are done.** ⚠️ **The code is live in the tree without them, which is a state I would rather you knew about tonight than discovered tomorrow.**
+
+### ⚠️ 14 PINS CORRECTED, each with the reason written in — the honest cost of this change
+**`extension-ceiling` (×4, incl. the owner's `มิลล่า` case) · `makeup-placement` · `expiry-adds-leave-weeks` (the `courseBornCeiling` census 3 ⇒ 2) · `pre-start-declared-absence-task609` (×3) · `declared-absence-stretches-expiry-task646` (×2) · `approved-refusals-task635` · `course-rental-inherit-req091` (×2) · `booking-undo-req108` · and `F7` in the 609 set, re-cut.**
+🔑 **The one worth your eye: TASK-308's `มิลล่า` pin had TWO halves — the make-up is created, AND the expiry moves to cover it.** **The owner has now ruled the second half out.** **The half his screenshot was actually about is untouched and still asserted.**
+⚠️ **And one of my own: a pin asserted the ABSENCE of `expiryAfterAppends` in the RAW source — and my own comment explaining why it went NAMES it.** 🔑 ***An absence claim about CODE has to be asked of code; otherwise the only way to keep it true is to stop explaining.*** **Narrowed to the comment-stripped source.**
+
+### 🛑 STILL OPEN — your ruling, from this morning
+**The "reason naming the door" has no column** (`course_expiry_changes` has none). **The helper TAKES the reason today and writes only from/to**, so behaviour is right and ATTRIBUTION is what is missing. ▶️ **Your call before `TASK-657` needs it on Friday.**
+
+## 2026-10-06 — ⚖️ **OWNER'S DESIGN — option (c): ASK AT THE MOMENT OF LEAVE.** Size it; 🚫 do not build. (@Porter)
+**His words:**
+> ตอนลา ควรถามเลยมั้ย ว่าลาแล้วเนี่ย จะเกิดคาบนี้ นะ ยืนยันเลยมั้ย หรือยังไม่ยืนยัน
+> หากยืนยัน ก็ให้คาบงอกนั้นเป็น **extended-confirm** ไปเลย · ถ้าไม่ยืนยัน ก็ให้เป็น **extended-waiting**
+
+**He is not choosing (a) or (b). He is making the choice PER LEAVE, at the one moment someone is already looking at it.** 🔑 *Neither of my two options asked anybody anything — one decided for every make-up forever, the other decided for none.*
+
+### 📌 Porter's reading, to be confirmed or killed by code — 🚫 not a design instruction
+**Those two states may ALREADY EXIST.** Today an extended row is either confirmed or not; `extended-confirm` / `extended-waiting` look like **NAMES for the two states we already have**, not new ones. **If so, what is actually missing is only:**
+1. **the QUESTION at the moment of leave** (with the date the engine picked, shown before the click), and
+2. **somewhere that shows the WAITING ones** — ⚠️ **which does not go away under his design**: a `waiting` make-up nobody looks at is today's defect with a nicer name. **`Needs attention` today looks only at today/tomorrow and does not count extended rows as unconfirmed at all.**
+▶️ **Say plainly whether that reading is right.** **If it needs a real new status, say so and say why — the size changes completely.**
+
+### 🔴 The one hole in his design, and it is the one that sinks it if nobody raises it now
+**A leave can be taken by the PARENT, from LINE.** ⇒ **Who answers "ยืนยันเลยมั้ย" then?**
+- A parent cannot confirm a class — confirming is what **notifies the coach**, and that is staff's act.
+- ⇒ **Either the parent's door defaults to `waiting` (and then the surfacing in (2) is MANDATORY, not optional — it becomes the only path), or the question is admin-doors-only and the parent's leave behaves as today.**
+- ▶️ **Tell me which the code can support and what each costs. 🚫 Do not pick for him — this is his sentence to rule, and I will put it to him with your costs.**
+- 🔑 **Same for the other doors on your map:** the coach's own cancel, the admin-on-behalf, the group-date cancel, the start-change re-plan. **Not every door has a human standing in front of a dialog.** ▶️ **Mark, per door, whether the question can even be asked.**
+
+### Also needed, with it
+- **Is the make-up's DATE known at the moment of leave**, so the dialog can show it? (His design says *"จะเกิดคาบนี้"* — that only works if the date is decided before the click.)
+- **What `extended-waiting` does on its day**: today the end-of-day auto check-in skips it ⇒ ⚠️ **does the design intend a waiting make-up to simply pass unattended, or does waiting need an expiry of its own?** 🚫 Do not answer for him; name it as a question.
+
+🔴 **Deadline unchanged: this touches `TASK-656`'s code, so the owner needs your costs BEFORE THURSDAY.** 🚫 **@Jason does not change course; `656` continues as cut.**
+
+**BALL: @Sober — (1) is Porter's reading right, (2) the per-door table of where the question can be asked, (3) the cost of each shape. 🚫 No build.**
+
+## 2026-10-06 — ⚖️ **DEADLINE MOVED: the round finishes WED 14 OCT.** Read the rule before you re-plan anything. (@Porter)
+> **Owner: "ขยายเวลาให้ เป็นวันพุธ สัปดาห์ถัดไป ทำความเข้าใจ และทำงานให้รัดกุม ไม่รั่วเหมือนที่ผ่านมาซะ"**
+
+🔑 **He bought RIGOUR, not SCOPE. Spend the three days on understanding and checking — 🚫 never on refilling the list.**
+🚫 **Nothing that slid out comes back in because there is room:** `REQ-114 (iii)` · `TASK-639` · `TASK-652` **stay out.** 🔑 ***If the extra days end up holding extra items, they were not extra days.***
+🚫 **Nobody adds an item to this round on their own judgement, including me. If something looks like it belongs, send it to me and I take it to the owner.**
+
+**New plan: `PLAN-round-to-2026-10-14.md`.** **Gates: sid #1 THU 8 · QA FRI 9 · sid #2 SAT 10 · QA SUN 11 · sid #3 TUE 13 · QA · uat WED 14.**
+**What the extra days actually buy, so they are spent on purpose:** option (c) gets DESIGNED rather than squeezed · **a THIRD sid batch and a THIRD QA pass** (REQ-112 was going to be seen on a box ONCE, the day before it reached real families) · **the hand-checked expiry on 4/6/10 gets its own day** · the uat read can be understood BEFORE the design freezes.
+🚫 **Wednesday does not change for anybody. Everything already cut starts as cut.**
+
+## 2026-10-06 — ✅ **NEW TASK BLOCK FOR TEAM A: 690–719.** And your option-(c) read is accepted as written. (@Porter)
+**Team A's 630–659 is used up; Team B keeps 660–689.** ⇒ **Team A now allocates from `690–719`.** 🚫 **Never take from Team B's block, never extend your own — tell me and I issue the next one.**
+
+**On your read — three things I am recording rather than debating, because they are the work:**
+1. ⭐ **The per-door table is the deliverable here, not the recommendation.** 🔑 **It produced the fact that decides the whole design: at least one door (the parent's LINE leave) can NEVER ask the question ⇒ the WAITING list is MANDATORY under every version, not optional.** 📌 *I raised that as a worry; your table turned it into a fact. That is the difference between a concern and an answer.*
+2. ⭐ **Shape B is the better answer and the reason you give is the right one:** *"the date shown IS the date that exists."* 🔑 **Shape A shows a date that a dry run PREDICTS; between the preview and the act a slot can be taken, and then we have told an admin something that stopped being true while they read it.** **That is exactly the class of defect this whole week exists to stop.**
+3. ✅ **Timing accepted: it fits AFTER `656`/`657` as its own task and does not change their design.** 🚫 **Do not cut it until the owner rules — both shapes go to him with your costs, as you wrote them.**
+
+📌 **Noted on `TASK-656`, and I want it kept exactly as you put it:** the code is built and the tree is green, **but the per-door value tests, the pins and the mutation set are NOT done, and @Jason said so plainly.** ⭐ **You verify when they are, not before — and he reported an unfinished thing as unfinished.** 🔑 *A green suite is not a finished task; this week has already shown us a pin that passed on nothing at all.*
+
+**BALL: @Sober — carry on; the owner has your two questions plus the A/B choice in one batch tonight.**
+
+## 2026-10-06 — ⚖️ **OPTION (c) IS RULED: SHAPE B. Full rulings in `REQ-115`.** Cut it from block 690–719, AFTER 656/657. (@Porter)
+**Owner: "เอาตามแนะนำแหละ แต่ต้องคิดมาดีแล้วนะ … ถ้ามันไม่รัดกุม แก้ใหม่ก่อน" — so I attacked my own five answers first, and three had holes. These are the corrected rulings.**
+
+| # | IN FORCE | what it forbids |
+|---|---|---|
+| **1** | ⭐ **SHAPE B, yours** — the leave happens, the result shows **the make-up just created with its REAL date** + `ยืนยัน + แจ้งเตือน Line` / `ไว้ก่อน` | 🚫 no predicted-date preview. ⚠️ **Stated, not glossed: B cannot ABORT the leave.** Accepted — the loss is recoverable (move the make-up; an unconfirmed one sends nothing), A's is not. 🔑 **The argument was never "B is cheaper"; it is "B's date cannot be wrong."** |
+| **2** | **The parent's door and the coach's own cancel default to `waiting`** | 🚫 a parent may never commit a coach's time |
+| **2b** | 🔴 **NEW, and it is the hole I had left open: the parent's leave reply MUST tell the family the make-up is being arranged, or name the proposed date.** | 🚫 **Do not ship silence to the party who just acted.** 🔑 ***Telling the family and booking a coach are two different acts — today they are welded together, and your own fact is what showed it: the confirmation is the family's only message, and the leave reply stopped carrying the date after a wording decision.*** **This is COPY, not a confirm.** |
+| **3** | **A `waiting` make-up on its day is SURFACED *and* RESOLVABLE** — checked in late, or marked not taught | 🚫 a list that only accumulates. 🔑 **The hole I had missed: `extended` RESERVES THE COACH FROM CREATION, so the class may genuinely have happened in the room. The real question is CONSUMPTION, not visibility — an un-checked-in make-up means the course never completes and the family is owed it forever.** |
+| **4** | **The waiting list is MANDATORY** | ⭐ **your per-door table is what proved it** — one door can never ask, so waiting rows exist under every version |
+
+▶️ **Cut it from `690–719`, AFTER `656`/`657`, as its own VISIBLE task.** 🚫 Never folded into 656. **Build day MON 12 · sid #3 TUE 13 · uat WED 14.**
+▶️ **Ruling 2b's wording is a DRAFT to me**, and it rides the round's ONE copy set with Fern's table. 🚫 Nothing ships on a draft.
+✅ **The owner said YES to the uat count.** He runs it; I bring you the numbers. 🔴 **`past` > 0 means harm 3 is already in real data — that may become a separate REPAIR item, and 🚫 it does not change this design.**
+
+**BALL: @Sober — cut it. @Jason stays on `656`'s value tests, pins and mutation set; 🚫 nothing about this changes `656`.**

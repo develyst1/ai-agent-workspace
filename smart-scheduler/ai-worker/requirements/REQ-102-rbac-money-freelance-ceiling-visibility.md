@@ -1,6 +1,6 @@
 # REQ-102 — RBAC: permission to view money figures + Freelance salary ceiling
 
-**Source:** customer (Khwan) via owner, 2026-09-21. **Status: DISCUSSION — recorded; feasibility read requested from @Sober; owner rulings pending.**
+**Source:** customer (Khwan) via owner, 2026-09-21. **Status: ✅ SHIPPED TO uat 2026-09-23.** 🔴 **CORRECTED 2026-10-05 by @Porter — this header said DISCUSSION for two weeks after the work had shipped, and it made a delivered REQ look like an unanswered customer ask. The rulings are in §4–§8 below; `TASK-426`…`435` are DONE; QA passed on sid 09-22; keys 57/58/59 are on uat.** 🔑 *A status line nobody updates is read as the truth long after it stops being one.*
 
 ## §1 — the ask (verbatim intent)
 "ทำสิทธิ์ ในการมองตัวเลขเงิน เพดานเงินเดือน Freelance" — a **permission (RBAC) that controls who can SEE money figures**, including the **Freelance salary ceiling** (`freelance_budgets` / the freelance ceiling feature, REQ-009 lineage). i.e. money numbers should be hideable from users who lack the permission.

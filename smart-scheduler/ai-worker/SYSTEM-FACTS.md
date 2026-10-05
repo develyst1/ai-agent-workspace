@@ -4166,3 +4166,57 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 ## Front tests: a `mock.module` lasts for the WHOLE run — test the real `client.ts` by its own specifier (2026-10-05, Fanta, TASK-662)
 - 18 DOM tests `mock.module("@/lib/api/client")`, and Bun keeps a module mock for every file that runs after. A test that imports `@/lib/api/client` or `./client` therefore gets whichever stand-in loaded last. **Seen: 10/10 alone, 0/10 in the full suite.**
 - Fix: import it by a query-suffixed specifier, `await import("./client.ts?<tag>")`. That is a separate, unmocked instance of the same source, and mutations to the file still reach it (TASK-662 C1–C4 bite).
+
+## 🔴 OWNER RULE (2026-10-06): @Porter does NOT send the customer a CAUSE before the SA confirms it from code
+**Owner, verbatim:** *"ไอควายเอ้ย อย่าให้มีอีก เป็นครั้งที่สอง บอกฉันแจ้งขวัญไวไป"*
+**The two incidents:** **(1)** Porter told him to send @Fern the message workbook while `TASK-608` was still adding two notifications — he had to unsend it. **(2)** Porter drafted a customer explanation of the leave chain (*"12/12 was the make-up for the 17/10 leave"*) from screenshots, before @Sober had read the code. **@Sober's answer swapped it: 05/12 was the make-up of the 17/10 leave; 12/12 was the make-up of 05/12's.**
+🔑 **THE LINE, and it is a clean one:**
+- ✅ **What @Porter can COUNT or QUOTE from the customer's own screen is his to send** — *10 of 10 sessions · `Leave 1/3` · `0 session(s) still owed`*. **That half was correct both times.**
+- 🚫 **WHY the system behaved that way is NOT his** — it is reading code he has never opened. **It waits for the SA, every time, with no exception for "it is obvious".**
+▶️ **If the customer is waiting, send the countable half NOW and say the reason is being checked.** 🔑 *An answer that is half as complete and entirely true beats a complete one that has to be taken back.*
+⚠️ **And the cost is not embarrassment — it is the customer's reasoning.** **Khwan is actively redesigning the leave model with us; a wrong mechanism in her head steers the next decision she makes.**
+
+## 🔑 Migration ledger: ONE migration, TWO fingerprints — by line ending (2026-10-06, @Sober, confirmed by the owner's read on sid + uat)
+- **The ledger hash is sha256 of the `.sql` TEXT. The repo stores `drizzle/*.sql` LF; a Windows checkout (`core.autocrlf=true`) has CRLF** ⇒ each migration has an LF and a CRLF fingerprint (appendix in `DATA-REQUEST-ledger-read-2026-10-06.md`). Read 10-06: sid 113 rows / uat 86, 65 dates on both, no identical rows, pair for `0011` = its LF/CRLF pair on both boxes.
+- **`db:verify` is GREEN iff every migration has a row in the RUNNING machine's ending.** A migration recorded only in the other ending reads MISSING ⇒ RED. **`seed-ledger` repairs by adding the other ending ⇒ every repair adds doubles.**
+- 🔴 **It never makes drizzle skip or re-apply: drizzle decides by the newest `created_at`, and both rows of a pair share a date.** A RED of this kind is ledger-only, never missing schema.
+- **Remedy (sized XS each, pending): verify/seed accept EITHER fingerprint (guard) + pin `drizzle/*.sql` to LF (fix, owner's `.gitattributes` decision). Both are needed.**
+
+
+## 🔴 Test DATE BOMBS: a literal date passed to code that compares with TODAY (2026-10-06, @Sober)
+- **Seen:** three camp test files built their day as `"2026-10-05"`; `camp.service.ts:254` skips a past day (`d.date < bangkokNow().date`). **On 10-06 five tests went red with no code change** (same commit was green the day before).
+- **Rule:** **a fixture date that reaches code reading `bangkokNow()` / today must be RELATIVE to today (or the clock passed in)** — never a literal. **A literal date in a test is fine ONLY when the code under test never asks what day it is.**
+- **Review check:** when a test's subject reads the clock, grep its fixtures for `"20\d\d-` literals.
+
+## 🔴 OWNER RULE (2026-10-06): ACKNOWLEDGE, then BATCH — @Porter does not answer the customer item by item
+**Owner, verbatim:** *"อย่าตอบกลับ ว่าเสร็จแล้วๆ ทำแล้วๆ หรือ ตอบกลับเขาตลอดๆ ให้ตัดจบไปบ้าง ว่า 'note ไว้ละครับ' แล้วมึงก็ไปเดินงานหลัก แล้ว ส่ง พร้อมกับที่เขา แจ้ง ตู้ม ทีเดียว"*
+**What earned it:** one evening, Khwan's reports were answered one at a time — a fix, a confirmation, an explanation, each inviting the next message. **The thread never closed, the owner relayed all night, and both teams were interrupted per item instead of running a batch.**
+▶️ **The rule: acknowledge and STOP.** **"note ไว้ละครับ" / "รับเรื่องแล้วครับ" — 🚫 no fix, 🚫 no explanation, 🚫 no progress update.** **Then go back to the main pipeline, collect the answers, and deliver them in ONE message when the work is actually done.**
+🔑 **Five "fixed it" messages buy less than one complete delivery, and each one costs an interruption at both ends.**
+⚠️ **The only things worth breaking the batch for:** **the customer is BLOCKED right now and a hand-step unblocks them**, or **they are about to act on something FALSE.** 🚫 **Everything else waits for the batch.**
+**➕ 2026-10-06, the same rule made concrete: the owner CLOSES LINE and opens it only to deliver finished work.** *"ฉันปิดไลน์ละ รอเปิดแค่ตอนส่งงานจบงานอย่างเดียว"*
+⇒ 🚫 **@Porter does not ask him to relay ANYTHING to the customer until a batch is finished** — **no questions, no acknowledgements, no progress.** **If something genuinely cannot wait** (the customer is blocked, or acting on something false) **@Porter says so explicitly and says why it cannot wait.** 🔑 *Every draft handed to him is a request to re-enter a conversation he has deliberately left.*
+
+## 2026-10-06 — 🔴 A screenshot of a customer thread is NOT an intake. **Open the REQ before you believe it is new.** (@Porter, after doing the opposite)
+**What happened:** the owner forwarded two LINE screenshots of Khwan's thread. **Porter recorded all six items as NEW, wrote a note, stopped @Fanta mid-task, and asked @Sober for three code-reads.** **Every single item was `REQ-111` A–F — intake 2026-10-02, closed the same day, ruled 10-02/10-03, and all but one SHIPPED to uat on 10-05. Khwan was REMINDING about one item; the owner capped the thread so Porter could read it.**
+
+**Three distinct failures, worth separating because the fixes differ:**
+1. **Treating a screenshot as an arrival.** A customer re-sends, reminds and quotes. 🔑 ***The date on a message is not the date of the requirement.***
+2. **Misreading one word and building on it.** "ครั้งต่อ ๆ ไป" read as "ครั้งนี้" ⇒ an invented "per-session vs per-series" conflict ⇒ a false STOP on a correctly-sized task. 🔑 ***When one word decides whether a teammate's work is right or wrong, go back to the source text — do not re-type it from memory.***
+3. **Recording "ITEMS 3 AND 4 ARE MISSING" when she had written "(เข้าใจแล้ว)".** 🔑 *Being careful in the wrong direction is still being wrong: it manufactured an open question against the customer's own closure.*
+
+### The rule, for every role
+▶️ **Before recording ANY customer item as new: grep the requirements folder for a distinctive phrase from it.** One command. **If it lands in a REQ, you are reading history — go and read what was ruled and what shipped.**
+▶️ **Before stopping a teammate's work on the strength of a customer sentence: re-read that sentence IN THE REQ, not in the image.**
+📌 **Cost this time:** a false stop on one engineer, three redundant reads asked of the SA who had built those very features, and an hour of two teams' uncertainty — **against one `grep`.**
+
+### ✅ The part that justifies keeping the episode
+**It surfaced a real collision nobody had seen:** `REQ-111 F` capped free pre-start absences **at the leave quota the customer bought** — **and `REQ-112` abolishes the quota.** ⇒ **the thing the cap counts against stops existing.** 🔑 *Two rules written four days apart now meet; the only question is whether they meet in a TASK or in the customer's data.*
+
+## 2026-10-06 — 🔴 When a term means different things to us and to the customer, state the OBSERVABLE CONDITION, not the label (owner's catch)
+**Trigger:** Khwan asked whether "คอร์สที่ยังไม่เปิดใช้" can take a free pre-start absence. **Our code's term is `courseNotStarted` = no session taught yet AND every remaining session today or later** — a condition that **expires by itself** when tonight's auto check-in runs. **Her "ยังไม่เปิดใช้" is a word about the course's state in HER business**, and her own screen carries a separate `Already in progress` control, so she has her own vocabulary for it.
+**The owner, before anyone sent anything:** *"คำว่า 'คอร์สที่ยังไม่เปิดใช้' ของพวกเรา กับ ขวัญ คนละโลกกันชัวร์เลย."*
+🔑 ***Agreeing on a sentence is not agreeing on a set.*** Both sides can answer "yes" about "a not-yet-started course" and mean different courses — and nobody discovers it until a real family's leave is spent.
+
+▶️ **The rule, for replies AND for product copy:** when a term is ours, never hand it back to the customer as if it were shared. **Say the condition they can check on their own screen** — *"as long as no session on this course has been checked in yet"* — which is true under every reading of the disputed word.
+📌 **Third instance of the same shape in one week:** `REQ-101/102` read as unruled because a header said `DISCUSSION`; the week label printed the size's floor rather than the real expiry; and this. **All three are a NAME that two readers filled in differently.**

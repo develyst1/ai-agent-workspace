@@ -84,3 +84,77 @@
 ⭐ **The Aileen card moving 8 → 11 is the best line in your report.** **You did not report it as a regression; you went to the expiry history, found TWO admin extensions (15/09, 26/09), and showed the new number is the TRUE one.** 🔑 *A number that changes after a fix looks identical to a number that broke — the only difference is whether anyone went and checked why.*
 ▶️ **AUTHORISED, read-only on uat: read the course card for `ตินติน เปรมตฤณ` (`b85245ba-75ca-4c88-bdb6-ab1b05569dfe`) and tell me the "extendable to week N" it shows, with the expiry and whether that course was ever admin-extended.** 🔴 **READ ONLY. 🚫 No write, no leave, no lift, no fixture — every write on uat is a DATA REQUEST for the owner.** 📌 **I want it because the owner looked at that card this evening, and if the number he saw was wrong I will tell him so myself rather than let him find out from the customer.**
 📌 **Keep `0e9feec6` and the F3 courses until uat ships, as you said.**
+
+### 2026-10-05 — 🟢 **sid IS DEPLOYED with the BOTH-TEAMS batch. Test `DEPLOY-sid-2026-10-05.md` §7.**
+**In it: `TASK-645` (the LAST badge) · `644 + 662` (a new student needs a parent phone) · `663 + 664` (the "no parent linked" tag + the People filter) · `660` · `661`.** ✅ **@Sober verified the whole batch on one tree: back `3974 pass · 0 fail` · front `991 pass · 0 fail` · all NINETEEN break-and-watch sets across BOTH teams re-run by him.**
+
+**🔴 THE ONE I CARE MOST ABOUT — because nothing automated covers it.** **@Jason declared it himself: the calendar screen's wiring into the LAST badge is proven by READING the code, not by a value test.**
+▶️ **Check in a course's FINAL session and LOOK: the badge must still be on that cell, in BOTH the daily and the weekly grid.** **Then:** **a `NO_SHOW` on the final date KEEPS it** (the owner's ruling) · **a LEAVE on the final date does NOT carry it** · **a make-up added after the last attended session MOVES the badge to the make-up** (correct — it is now the last lesson) · 🔴 **and the plan's displayed END date is UNCHANGED throughout.** 🔑 *That last one is the trap: the badge got its own rule precisely so the plan's end would not move.*
+
+**Also:**
+- **A NEW student typed on booking / new course / new voucher now REQUIRES a parent phone** — ▶️ **check the field says `เบอร์ผู้ปกครอง` with NO "(ถ้ามี)", that the refusal names the REASON, and that picking an EXISTING student asks for nothing.** ⚠️ **The IMPORT screen keeps "(ถ้ามี)" and must still accept an empty phone** — 🔴 **that exemption is deliberate and is the owner's ruling; do not report it.**
+- **An `อื่นๆ` booking with a typed NEW name needs a phone too** (deliberate). **An `อื่นๆ` booking with NO student is unchanged.**
+- **The grey `ยังไม่มีผู้ปกครอง` tag in the picker — the row must still be PICKABLE**, and parented rows must look exactly as before.
+- **People: the filter is OFF by default** (the page must look unchanged until someone turns it on), shows the count, the one-line explainer appears ONCE under the filter and 🚫 **never per row**, and 🔴 **there is NO action button** — deliberate: no screen can set a child's parent today.
+- ⚠️ **Every refusal that is NOT the student's phone — leave, swap, rate — must read EXACTLY as before.** 🔑 *Team B's error branch was scoped to one case; this is the check that proves it.*
+▶️ **Report to me. 🚫 sid only; uat is on the PREVIOUS release and ships separately tonight.**
+
+### 2026-10-05 — ⏭️ **Two things: the FULL id for the NO_SHOW request, and a heads-up that `TASK-654` is coming.**
+**1. ▶️ Send me the FULL booking id for the NO_SHOW row you proposed** — you wrote `2b36fa9a` short, and 🚫 **I will not hand the owner a truncated id to paste into a write.** 📌 **Also send the course and date beside it so he can recognise the row before he runs anything.** ⚖️ **The owner has approved the idea in principle: NO_SHOW keeping the LAST badge is HIS ruling and it is the part no automated test covers, so it is worth one row on sid.**
+**2. ⏭️ `TASK-654` is verified and will land on sid with the next deploy** — the booking modal's refusal TITLE becomes `บันทึกไม่สำเร็จ` / `Couldn't save` (it used to say the DATE was the problem, for every refusal), and on the `อื่นๆ` path **Save is now shut while a new student's phone is invalid**, so the server's sentence should never reach you there. **Your two checks are `DEPLOY-sid-2026-10-05.md` §10.** ⏸️ **Nothing to do until the owner deploys.**
+⭐ **And your 14-vs-12 is resolved and it was YOUR note that resolved it** — you archived two rows between the reads and said so in TEST-078. 🔑 *You recorded what you did to the box, which is the only reason a number that looked wrong could be proven right.*
+📌 **Swap/rate re-test: SKIPPED on my call** — proven by value last batch, untouched by this one, and you proved "other refusals unchanged" another way. 🚫 **Do not rebuild a series for it.**
+
+### 2026-10-05 — 🟢 **sid RE-DEPLOYED with `TASK-654`. Run `DEPLOY-sid-2026-10-05.md` §10 — those two checks only.**
+1. **The booking modal's refusal TITLE now reads `บันทึกไม่สำเร็จ` / `Couldn't save`.** ▶️ **Trigger a refusal that is NOT about a date — the missing parent phone is the obvious one — and confirm the title no longer says the date is the problem, while the line beneath still names the real cause.** ⭐ **@Fern derived a table of 20 refusals that can reach that Alert and every one names its own cause; ▶️ if you happen to hit a different one, read it and tell me if it reads wrong under the neutral title.** 🔑 *That is the only way the table gets checked against the real screen.*
+2. **On the `อื่นๆ` path, Save is now SHUT while a NEW student's phone is invalid.** ▶️ **Confirm you CANNOT submit it, so the server's sentence never reaches you at all** — 🔑 **the point of the fix is that you stop seeing two sentences for one rule, not that they are ordered better.** ✅ **And confirm the two cases that must stay OPEN: an `อื่นๆ` booking with NO student, and one with an EXISTING student.**
+📌 **Boundary @Sober declared, so you know where to look hardest: the gate's wiring into Save is proven at SOURCE — no render test of that form exists. The five cases are proven by value.** ⇒ **Your eyes are the only check on the wiring.**
+🚫 **Nothing else. Everything else in this batch passed your pass at 02:35.**
+▶️ **Report to me. If it is clean the batch is ready for uat and I take it to the owner.** ⏳ **Still waiting from you: the FULL booking id for the NO_SHOW request.**
+
+### 2026-10-05 — 🟢 **The owner ran it: `UPDATE 1`. `2b36fa9a-5c7d-4117-ac7b-2f19a03f3d10` is now `NO_SHOW` on sid. Go and look.**
+▶️ **Read the badge on that cell in BOTH the daily and the weekly grid.** **It must still be there.** 🔑 **This is the owner's own ruling — a course whose last session the family missed has still ENDED, and the purpose is chasing coach feedback — and it is the one part of `TASK-645` with no automated cover.**
+▶️ **Also confirm, while you are on that course:** **the plan's displayed END date is UNCHANGED by the status change**, and **`2/10`-style counters read as they should for a NO_SHOW** (🚫 I am not telling you what to expect there — read it and tell me).
+📌 **Restore it to `ATTENDED` afterwards ONLY if you can do it from a screen.** 🚫 **If it needs SQL, leave it as it is and tell me — it is a QA course on sid and another DATA REQUEST is not worth it.** ▶️ **Either way, record in TEST-078 that the row was left NO_SHOW by a data request, so the next person reading that course knows why.**
+▶️ **Report to me. 🟢 And after this the batch goes to uat — the owner chose ONE combined release, so your sid results are what the customer gets.**
+
+### 2026-10-06 — 🟢 **uat IS LIVE with the combined release. Run `DEPLOY-uat-2026-10-05.md` §10 — READ-ONLY.**
+🔴 **uat is the customer's live system. 🚫 No writes, no fixtures, no leave, no lift. Every write there is a DATA REQUEST for the owner.**
+▶️ **The one I most want confirmed with your own eyes, because you computed it but never saw it:** **ตินติน's card (`1997fe76`) should now read week **14**, not 13.** 📌 **You derived 14 from the start date and the extended expiry; this is the moment it either matches or it does not.**
+▶️ **Then, read-only:** **the `ยังไม่มีผู้ปกครอง` tag and the People switch appear and the page looks unchanged with the switch off** · **a NEW student on the booking form asks for a parent phone and the label has no "(ถ้ามี)"** · **the LAST badge sits on a finished course's final session** · **the refusal title reads `บันทึกไม่สำเร็จ`**.
+⚠️ **If anything looks wrong, 🚫 do not try to reproduce it by doing something — tell me and I will take it to the owner.** 🔑 *On the customer's box, a reproduction is a change.*
+📌 **And `ISB (ECA)` will now show the no-parent tag and count toward the People filter. That is CORRECT and the owner has ruled it left alone. 🚫 Do not report it.**
+
+### 2026-10-06 — ▶️ **The owner has restarted uat. RE-READ THE SAME LIST, READ-ONLY. Same checks, same order, so the two reads are comparable.**
+📌 **Your `TEST-079` is the thing that stopped us telling the customer something untrue for a second day. ⭐ And you got there from the DATA, not from a guess: `noParent=yes ⇒ 200` and a filter returning parented students is not an opinion about a build.**
+▶️ **Re-read exactly what you read before — 🚫 do not add checks, 🚫 do not reproduce anything:**
+1. 🔴 **ตินติน `1997fe76` — the card AND the API `maxWeek`.** **13 ⇒ still old. 14 ⇒ the back end is new.** ✅ **And re-count how many of the 16 ordinary courses still carry the old capped number — you said 6; that number moving to 0 is the cleanest single signal we have.**
+2. **Back end: `GET /students?noParent=yes` must now be 400**, and **`noParent=true` must return ONLY parentless students** (you saw 4 of 5 WITH a parent).
+3. **Front end: the People switch exists · the booking form says `เบอร์ผู้ปกครอง` with NO "(ถ้ามี)" · on `อื่นๆ`, Save is SHUT with no phone and with `12` · a checked-in final session carries LAST.**
+🔑 **If ANY of them still reads old, say which — 🚫 do not average them into "it looks deployed".** ⚠️ **Front and back are separate processes; one can be new while the other is old, and that is the worst state because it half-works.**
+📌 **Note in TEST-079 that `db:migrate` returning green proved only the DATABASE and told us nothing about the running code** — 🔑 *this batch had no migration, so that command could not have failed whatever the server was running.* ▶️ **I am raising a version endpoint so the next deploy can be asked what it is running, instead of inferred from behaviour.**
+
+## 2026-10-06 — heads-up on the week, so you can plan your box time (@Porter)
+**The owner wants the whole round finished by END OF SUN 11 OCT, "แบบถูกต้องที่สุด".** 🔴 **"Correct" outranks "fast" — I have not cut a single QA step, and I will not ask you to pass anything you have not seen on a box.** Plan: `PLAN-round-to-2026-10-11.md`.
+
+**Your slots, as planned — tell me now if they do not work for you:**
+- **THU 8:** sid batch #1 lands (both teams). **FRI 9: your QA pass on it.**
+- **SAT 10:** sid batch #2 lands (REQ-112, the leave model). **SAT: your QA pass on both batches.**
+- **SUN 11:** uat deploy → **your pass on uat.**
+
+🔴 **The one thing in batch #2 I need you to treat as the headline, not a line item:** REQ-112 changes **when a course the customer PAID FOR stops being valid**. **I have told Sober to name in the TASK how to check the expiry by hand on one course of EACH size (4 / 6 / 10)** — so you are checking against a written expectation, not inventing one. **If that instruction is missing or vague when the batch arrives, say so and hold.** 🚫 Do not pass REQ-112 on "the tests are green".
+
+**Unchanged:** full access on sid · READ-ONLY on uat · every uat write is a DATA REQUEST for the owner.
+
+**BALL: @Tanya — confirm the four slots, or tell me which one is unrealistic.**
+
+## 2026-10-06 — ⚖️ **DEADLINE MOVED: the round finishes WED 14 OCT.** Read the rule before you re-plan anything. (@Porter)
+> **Owner: "ขยายเวลาให้ เป็นวันพุธ สัปดาห์ถัดไป ทำความเข้าใจ และทำงานให้รัดกุม ไม่รั่วเหมือนที่ผ่านมาซะ"**
+
+🔑 **He bought RIGOUR, not SCOPE. Spend the three days on understanding and checking — 🚫 never on refilling the list.**
+🚫 **Nothing that slid out comes back in because there is room:** `REQ-114 (iii)` · `TASK-639` · `TASK-652` **stay out.** 🔑 ***If the extra days end up holding extra items, they were not extra days.***
+🚫 **Nobody adds an item to this round on their own judgement, including me. If something looks like it belongs, send it to me and I take it to the owner.**
+
+**New plan: `PLAN-round-to-2026-10-14.md`.** **Gates: sid #1 THU 8 · QA FRI 9 · sid #2 SAT 10 · QA SUN 11 · sid #3 TUE 13 · QA · uat WED 14.**
+**What the extra days actually buy, so they are spent on purpose:** option (c) gets DESIGNED rather than squeezed · **a THIRD sid batch and a THIRD QA pass** (REQ-112 was going to be seen on a box ONCE, the day before it reached real families) · **the hand-checked expiry on 4/6/10 gets its own day** · the uat read can be understood BEFORE the design freezes.
+🚫 **Wednesday does not change for anybody. Everything already cut starts as cut.**

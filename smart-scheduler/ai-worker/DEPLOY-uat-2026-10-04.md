@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED 2026-10-05 by `DEPLOY-uat-2026-10-05.md` — the owner ships ONE combined uat release (REQ-111 + the both-teams batch). The REQ-111 build staged on the server is NOT to be started. 🚫 Do not follow this note; it is kept as the record.**
+
 # DEPLOY — uat — 2026-10-04 (the REQ-111 batch)
 **Written by @Sober for @Porter.** 🔴 **This is the REAL OA (`@427ybeky`) and REAL families.** **Read it in order; the order is the instruction.**
 ✅ **What ships is exactly what passed on sid: QA clean 3 of 3 on the short pass (TEST-077 + re-test).** **The full record of the build is `DEPLOY-sid-2026-10-04.md`; this note is only what is DIFFERENT about doing it on uat.**

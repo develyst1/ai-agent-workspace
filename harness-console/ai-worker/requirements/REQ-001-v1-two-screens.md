@@ -1,5 +1,5 @@
 # REQ-001: v1 — two read-only screens fed by the gate
-- Status: IN_SPEC
+- Status: DELIVERED (2026-10-05 22:03, owner's word "Q1=DELIVERED" — SYSTEM-FACTS.md; accepted with the UNVERIFIED list in §SPEC_DONE report as it stands)
 - Priority: HIGH
 - Requested: 2026-10-05 by the owner
 - Deadline: none (the owner's own measure: does it change his week within two weeks of use — `SYSTEM-FACTS.md`)
@@ -80,6 +80,27 @@ Owner's words (2026-10-05, verbatim):
   still prints exactly what it printed before, for every project. *(Marie's change,
   listed here so the owner checks it; the team does not touch the gate.)*
 
+## SPEC_DONE report — what a command proved vs what is UNVERIFIED (Porter, 2026-10-05 21:47)
+
+Built ≠ working. Source of every line: the TASK §Implementation Notes / §Review named. No QA on this desk.
+
+**Proved by a command (real workspace unless "fixture"):**
+- AC-1 — 14 cards = `check-hygiene.mjs --list --json` (14 projects, same order); values checked vs CLI on harness-console, smart-scheduler, pun-kub-fang (TASK-002 §Review).
+- AC-2 — harness-console PASS, no lines on card (TASK-002). AC-3 — < 3 lines: **fixture only**, no real desk has 1–2 lines today (TASK-002).
+- AC-4 — project page cell-by-cell vs `--json` by `task-003-compare.mjs`: smart-scheduler 23 lines · 14/14 files · 148/148 ball rows; harness-console; pun-kub-fang (TASK-003 §Review, re-run by Sober).
+- AC-5 — 60 s refresh with no click, timestamps on both pages (TASK-001, TASK-004); a PASS→FAIL change on disk shown on **fixture only** (the workspace may not be written).
+- AC-6 — runner returns all five error kinds (TASK-001); on screen only `not-json` was rendered (fixture).
+- AC-7 — unset / missing / no-gate cases → the approved text (TASK-001).
+- AC-8 — real workspace, 3859 = 3859 files, `diff` empty over ≥ 2 refreshes of `/` and `/p/smart-scheduler`; positive control proves the snapshot sees writes (TASK-004 §Review).
+- AC-9 — both searches: search 1 no hits; search 2 only the allowed `RESUME-HERE.md` constant. **I checked:** re-ran both in `harness-console-front` 2026-10-05 21:47 → same output.
+
+**UNVERIFIED — needs the owner's eyes:**
+- Layout and colour of `/` and `/p/smart-scheduler` (148 rows) — the only screenshot was in a dark-themed pane.
+- Error kinds `gate` / `timeout` / `schema` / `spawn` rendered on a card or page (same code path as `not-json`, not rendered).
+- 13 of 14 project pages not opened during AC-8 (same route; Sober accepted).
+- AC-10 (gate human output unchanged) — verified by Marie on all 14 desks (`MARIE.md` 2026-10-05), not by this team.
+- FYI, not a defect (D-16, TASK-004 §Review): `next dev` created untracked `AGENTS.md` / `CLAUDE.md` in `harness-console-front` (outside the workspace) — commit / delete / ignore is the owner's git call. **I checked:** `git status --short` there → `?? AGENTS.md`, `?? CLAUDE.md`.
+
 ## User-facing wording (Porter as UX writer) — `[owner-approved 2026-10-05]` (Q-1: English)
 
 The owner is the only user. Labels in English (owner, 2026-10-05), matching the gate's own
@@ -97,6 +118,7 @@ words (PASS / FAIL and the gate lines are shown verbatim, never translated).
 | Project page sections | `Gate` · `File health` · `Ball` |
 | Workspace path missing / no gate there (AC-7) | `Workspace path not found — check HARNESS_WORKSPACE_PATH in .env.local` — *owner-approved 2026-10-05 (Q-3 "ข"; exact text confirmed "AC-7 ได้")* |
 | Refresh hint | `Updated <HH:MM:SS> · refreshes every 60 s` |
+| File health / Ball headers, empty values, severity labels, `schema`/`spawn` errors, list failure, empty sections | the Q-8 table in §Questions Q-8 — *owner-approved 2026-10-05 ("Q-8 ได้")* |
 
 Anything the gate supplies (lines, file names, role names) is shown as the gate
 wrote it. Fern invents no other visible text; a string not in this table comes
@@ -157,7 +179,9 @@ autonomy dial, editing rules), any write to the workspace, any second store.
   > answer (owner, 2026-10-05, assumption B): *"สมมติฐาน B ถูก"* — `Ball` = every board row the gate returns (`id` · `title` · `status` · `ball`), verbatim, board order.
   > answer (owner, 2026-10-05, Q-8): *"Q-8 ให้ Porter เสนอ"* — proposal below, **`[team-proposed]`, NOT approved yet**; asked the owner for one-shot approval. TASK-002/003 wait for it.
 
-  **Q-8 proposal `[team-proposed 2026-10-05]` — awaiting the owner.** Principle: where the gate already has a word, reuse it (its printed output says `FAIL` / `WARN` and sizes like `91.6KB`); every empty value is `—`, the mark the owner chose for Q-6.
+  > answer (owner, 2026-10-05, later): *"Q-8 ได้, สมมติฐาน A B ถูก"* — the **whole table below is approved as proposed**, including rows (f). Assumption A (sizes in the gate's style `91.6KB` = display formatting) and B (the two (f) texts were added unasked) are confirmed. TASK-002/003 no longer wait on wording.
+
+  **Q-8 table `[owner-approved 2026-10-05]`** (proposed by Porter, approved "Q-8 ได้"). Principle: where the gate already has a word, reuse it (its printed output says `FAIL` / `WARN` and sizes like `91.6KB`); every empty value is `—`, the mark the owner chose for Q-6.
 
   | # | Where | Proposed text |
   |---|---|---|
@@ -173,3 +197,6 @@ autonomy dial, editing rules), any write to the workspace, any second store.
   | (e) | page text when the project list itself fails | `Could not list projects — <reason>`; `<reason>` = the same text a card shows after `Gate error — ` (gate message · `no answer after 15 s` · `output was not JSON` · `gate version not supported` · `could not start the gate`) |
   | (f) | `Gate` section when the gate gave no lines (clean PASS) — *not asked; closes a gap* | `No lines from the gate.` |
   | (f) | `Ball` section when the gate returned no board rows — *not asked; closes a gap* | `No board rows.` |
+
+- Q-9 (Sober → Porter, 2026-10-05, **non-blocking** — display, no new string): two places the approved tables do not say outright. (a) The ≤3 worst lines on a **card** — do they carry the `FAIL` / `WARN` label the Q-8 (c) row gives `Gate` lines? (b) When one project's gate run fails, the **Project page** — does it show the card's approved `Gate error — <reason>` in place of its three sections? SPEC-001 §1.4/§1.5 build **both as "yes"** so TASK-002/003 are not held; a "no" is a one-line change. Detail: SPEC-001 §1.4, §1.5.
+  > answer (owner, 2026-10-05 08:03): *"Q-9 ใช่/ใช่, สมมติฐาน A ถูก"* — (a) **yes**: the ≤3 worst lines on a card carry the `FAIL` / `WARN` label, as in `Gate`; (b) **yes**: a Project page whose gate run failed shows `Gate error — <reason>` in place of its three sections. Sober's assumption A (card lines carry the label) confirmed. SPEC-001 §1.4/§1.5 already build both — nothing to change. No open questions remain on REQ-001.

@@ -894,6 +894,116 @@ File surgery stays yours. The ritual reports; it never repairs.
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-10-05 (late) — **HOUSEKEEPING harness-console #2: board swept (v1 shipped) + dispatcher-state
+  rotated a SECOND time the same day. Gate PASS throughout — this one was run BEFORE anything
+  broke.** Owner called it; executed by **Porter spawned as a subagent**; verified by me.
+  🔑 **Worth noting on its own: the gate was PASSING when he called it.** `dispatcher-state` sat on
+  **exactly 6 runs = the limit**, and run `k`'s own digest had written *"next run header hits the
+  6-run limit"*. *Every other housekeeping line in this log starts with a FAIL. This one starts
+  with a forecast — the cheapest one there is, because a rotation done early costs the same as a
+  rotation done late and does not block a dispatch while it happens.*
+  **Done:** `board.md` 3003 → **1940 B** (REQ-001 DELIVERED + TASK-001..004 DONE swept into a
+  newly created `archive/board-closed.md`) · `dispatcher-state.md` 6084 B / 6 runs → **3473 B /
+  2 runs** (j, k kept in full). Three new archives, incl. `-pre-rotation-2.md` so this morning's
+  `-pre-rotation.md` was not overwritten.
+  ✅ **VERIFIED AGAINST FINGERPRINTS I TOOK BEFORE SPAWNING HIM** — board `017e4c30…`/3003 B,
+  dispatcher `3c9f4b03…`/6084 B: **both archives match exactly**, this morning's archive is
+  untouched at 4510 B / `4631d324…`, and all five swept rows are **present in `board-closed.md`
+  and absent from the live board** (checked both directions, per id). 📌 *Pre-fingerprinting is
+  now the habit on this desk and it has paid twice; it converts a subagent's report from a claim
+  into something I can falsify in one command.*
+  🔎 **The check I added after THIS MORNING's near-miss ran again, and he actually ran it rather
+  than concluding it.** The rotated runs carried three `Owner override, THIS RUN ONLY` lines and a
+  hop marked `CUT OFF (API error)`. He verified: the `OUTSTANDING — cleared` line was true (run
+  `h` hop 1 records the delivery, cross-checked in `SYSTEM-FACTS.md`); no override was meant to
+  persist (**run `k`'s own header says `previous run's overrides NOT carried`**); and the cut-off
+  hop was finished (run `i` hop 4, with a matching "Re-verification" section in TASK-001).
+  🔴 **And it caught a live item: "commit front repo".** Run `j` left it in a digest, run `k`
+  answered the two other questions and never mentioned it, and **no file records it as done.** His
+  reasoning is the right one: *git is the owner's alone, so no agent could have closed it* ⇒ it
+  cannot be inferred done from silence. Run `j` is one of the two kept, so it stays visible.
+  **Carried to the owner; not chased.**
+  ⚖️ **He deviated from my order once, correctly, and said so.** I specified `board-closed.md` with
+  "a table whose header matches the board's" — the board has **two** tables with different headers.
+  He made two sections instead of one. 🔑 *Forcing five rows of two shapes under one header is
+  damaging the rows to tidy the file.* Endorsed.
+  🔧 **MY OWN OPERATION FALSIFIED A LINE, AND THAT IS THE ENTRY'S REAL LESSON.** After the sweep,
+  `RESUME-HERE.md` still carried `| Closed rows (REQ-001, TASK-001..004) still on the board |
+  owner → Marie | … |` — a thread waiting on me that I had just finished. He flagged it and left
+  it alone, which was right under the constraints I gave him; I then sent him back for that one
+  row and nothing else (3459 → 3273 B, one `## ` section count and the single `# RESUME HERE`
+  heading unchanged, no log append, no PM rewrite, `**Written:** … ninth PM session` stamp left
+  alone — *bumping it would have claimed a session that did not happen*).
+  📌 **THE RULE, now stated so it outlives this entry: A HOUSEKEEPING OPERATION OWNS THE LINES IT
+  FALSIFIES.** *A line does not stop being a lie because it was accurate when it was written.* This
+  is the **second time in one day** I have had to apply it — this morning it was my own "No run has
+  happened yet" header. ⚠️ **It belongs in my own procedure, not just in this log: after any
+  compaction or sweep, re-read what POINTS AT the thing I moved.** A size gate can see a file
+  grow; **nothing in the gate can see a sentence become false**, and `RESUME-HERE`'s staleness
+  check measures mtime against the newest log — it would have reported this file as perfectly
+  fresh while it told a cold session to wait for me.
+  💬 **Porter named the cause in his own words and it is worth keeping:** he read "touch only these
+  files" as a boundary on **scope**, when the line it protected had been made false **by his own
+  hand**; next time he will report *"my operation falsified X — correct it?"* rather than *"X is
+  stale"*. *That is the difference between reporting a condition and reporting a consequence.*
+  ⚠️ **Also recorded, tension not papered over:** `dispatcher-state.md` says *"No role writes
+  here"* and Porter is a role. During a housekeeping hop he is **my hands, not the PM**, and the
+  dispatcher's exclusivity holds for ordinary runs. He flagged it instead of silently resolving
+  it. **Making that explicit in the files is MINE and is not yet done.**
+  **Gate: PASS** (board 1.9 KB · dispatcher-state 3.4 KB · log 21.1 KB), run by me after the
+  correction. ⚠️ **Watch item: today's log is 21.1 KB against a 40 KB limit — over half, in one
+  day.** Not a breach (logs are append-only by design, WARN not FAIL) but at this desk's current
+  rate it reaches the ceiling on its own.
+  ⏳ **Still owed, untouched today: ORDER 16 ② (template defects + sweep of the desks already born
+  with them) and ③ (the startup-ritual gate line).**
+
+- 2026-10-05 — **HOUSEKEEPING harness-console: `dispatcher-state.md` rotated, 7 runs → 2.
+  Gate FAIL (1) → PASS. And the thing that was actually at risk was not a run.** Owner called
+  it ("7 runs > 6"); executed by **Porter spawned as a subagent**; verified by me afterwards.
+  🔴 **THE REAL FINDING, caught by reading the file before ordering the rotation: the LAST LINE
+  of that file was an owner's answer that had never reached the PM** —
+  `PENDING owner answer (not yet delivered to PM): "Q-8 ได้, สมมติฐาน A B ถูก"`. The previous
+  run stopped on the gate FAIL *before* it could deliver it, so the answer was parked in the
+  one file the rotation was about to empty. **A clean rotation — archive the old runs, leave a
+  tidy stub — would have filed the owner's own words into `archive/` and the next dispatcher
+  session would never have delivered them.** Nothing else in the repo recorded that line.
+  🔑 ***"7 runs > 6" reads like a counting job, and the thing that nearly went missing was not a
+  run — it was one live instruction that happened to be sitting at the bottom.*** 📌 **This is
+  the whole argument for why file surgery is Marie's and not a role's, in one line**, and it is
+  worth quoting the next time someone asks why a size gate cannot just be auto-fixed: *the gate
+  measures the pile; only a reader can tell which line in the pile is still alive.*
+  **Done:** whole file archived verbatim → `archive/dispatcher-state-2026-10-05-pre-rotation.md`;
+  live file = header + runs **f** and **g** in full + the pending answer under its own
+  `## 🔴 OUTSTANDING` heading. 4510 B → 1827 B.
+  ✅ **VERIFIED BY ME, against a fingerprint I took BEFORE spawning him** — md5
+  **`4631d324250444c7c1bcd6f83012f9c7`**, 4510 B, 7 runs. The archive's md5 and byte count match
+  mine **exactly**. 🔑 *Fingerprinting before delegating is cheap and it converts the subagent's
+  report from a claim into something checkable; "nothing was lost" measured only by the person
+  who did the cutting is not evidence (2026-08-30).* I also checked the other direction: **every
+  non-blank line of the live file exists byte-verbatim in the archive except the four lines of
+  the new header block** — so the kept runs were extracted, not retyped.
+  ⚖️ **Porter's one judgement call, and I am endorsing it:** the pending line was literally
+  inside RUN -g's block, and my instruction said to keep -g "verbatim, every line". He kept the
+  line byte-verbatim but lifted it OUT from under -g into its own red heading. **That is better
+  than what I asked for** — buried as the last line of a run that is marked `STOPPED`, it reads
+  as history; the one property it needed was being impossible to scroll past. He also checked
+  the gate counts runs by `^## RUN ` before adding a heading, so the new heading cannot be
+  miscounted as an eighth run. *He reported it as a deviation rather than quietly doing it,
+  which is the behaviour that makes the deviation safe.*
+  ⚠️ **Also corrected in passing: a false sentence I wrote myself.** The header still said
+  **"No run has happened yet"** — true when I opened the desk 2026-10-04, false after seven
+  runs. Replaced with the true count and a pointer to the archive. 🔑 *A line does not stop
+  being a lie because it was accurate when written; a cold session reads it as current, which
+  is the entire reason this workspace has a RESUME-HERE staleness gate.*
+  **Gate: FAIL (1) → PASS** (board 2.4 KB · dispatcher-state 1.8 KB · today's log 7.6 KB), run by
+  me, not taken from his report. Scope confirmed clean via `git status`: exactly three paths
+  touched — the state file, the new archive, today's log. No board, no REQ, no SPEC, no charter.
+  🔴 **BALL: the owner.** The pending answer is **still undelivered on purpose** — delivering it
+  is the next dispatcher run's hop, not a housekeeping step, and Porter correctly refused to
+  route it. **Next dispatch picks it up from the `## 🔴 OUTSTANDING` block.**
+  ⏳ **Unchanged and still owed: ORDER 16 ② (template defects + sweep) and ③ (the startup-ritual
+  gate line).** Nothing today touched either.
+
 - 2026-10-05 — **ORDER 16 ① DONE: `check-hygiene.mjs --json` / `--list` shipped (gate v6), and
   harness-console's Q-5 (a)(b)(c) are answered IN THE TOOL, not in prose.** Owner's go,
   ORDER 16 ① + his instruction to fold in REQ-001 §Questions Q-5. **② and ③ are NOT done** —

@@ -68,3 +68,10 @@ bun run db:migrate
 - **Imports may still create a student with no parent** — the owner's exemption; **Piece B's tag and People switch are what make those findable.**
 - ✅ **The comment on the badge's DTO field (`src/db/mappers.ts`) now describes the REAL rule** — the last LESSON, its own rule, deliberately NOT the plan's displayed end. **Landed before commit, comment-only, and re-verified: back `3974 pass · 0 fail`, type-check clean, `65 = 65`.**
 - 📌 **Team B's handoff still lists "REQ-113 LAST badge — which team, NO_SHOW?" as an open owner question. 🔴 It is ANSWERED and SHIPPED here (Team A, NO_SHOW keeps it). 🚫 Do not put it to the owner again.**
+
+## 10. ➕ ADDENDUM 2026-10-05 — `TASK-654` (FRONT ONLY), QA's two booking-modal holds — 🔴 **must ride with this batch before uat**
+- **What changes:** the booking modal's refusal title now reads **`บันทึกไม่สำเร็จ` / `Couldn't save`** (owner-approved) over every Save refusal — the body beneath still names the cause · **on the อื่นๆ tab, Save stays shut while a NEW student's parent phone is not phone-shaped** (no student, or an existing student: unchanged).
+- **No back-end change, no migration, no new key.** **Front only ⇒ a front redeploy; 🚫 it does not break either ship-pair.**
+- ✅ **Re-run by @Sober:** front `tsc` 0 · `1000 pass · 0 fail` (111 files) · build 0 · set `654` **7/7 BITE**, CHECKSUM identical, both edited files restored byte-identical. **Back unchanged from §5.**
+- 📌 **Boundary:** the gate's WIRING into Save is pinned at source (the modal has no render test); its five cases are pinned by value.
+- ▶️ **@Tanya, on sid:** อื่นๆ tab, type a new name — no phone ⇒ Save disabled · `12` ⇒ disabled · a real number ⇒ enabled · an existing student ⇒ enabled · no student ⇒ enabled. **Then force any server refusal on a lesson tab (e.g. a coach's leave day) ⇒ the title reads `บันทึกไม่สำเร็จ` and the body names the cause.**

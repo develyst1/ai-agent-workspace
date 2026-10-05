@@ -118,3 +118,24 @@
 
 ## 12. Owner ruling, 2026-10-04 — **sizing waits**
 **"เก็บไว้ประเมินหลังขึ้น sid เสร็จ".** 🚫 **Nobody sizes or builds the leave-model change until the current batch is on `sid`.** **The requirement is complete and recorded (§11); it is not forgotten and it is not in flight.**
+
+---
+
+## ⚖️ 2026-10-06 — OWNER RULINGS, all four. **REQ-112 IS A GO.** (recorded by @Porter, owner: "1-5 ตามแนะนำ ทั้งหมด")
+**These are IN FORCE and are what Sober builds against. 🚫 No agent may soften or re-interpret them; only the owner changes them, in writing, here.**
+
+| # | RULING — IN FORCE | what it forbids |
+|---|---|---|
+| **1** | **EXISTING courses are FORWARD-ONLY.** The new rule applies to leaves taken from the ship date on. **Expiry dates already on Khwan's screens are NOT recomputed.** | 🚫 No data step on uat · 🚫 nothing live moves silently · 🚫 no back-fill "to make it consistent" |
+| **2** | **Undoing a leave takes its week back ONLY IF that week is still empty.** If a make-up (or any class) sits in that week, the week STAYS. | 🚫 Never remove a week that holds a class · 🚫 never let the expiry only ever grow when the week is genuinely free |
+| **3** | **A make-up that lands past the expiry is CREATED, and the ADMIN is flagged.** Her §11.4 stands: "เรียนได้ ตารางยังอยู่" — nothing is lost while the admin decides. | 🚫 Do not hold the make-up back · 🚫 do not refuse it · 🚫 do not extend the expiry silently to make it fit |
+| **4** | **ALL FIVE leave doors add a week:** parent · admin · the coach's own cancel · an admin-recorded coach leave · a school cancel (REQ-112 A's lever). | 🚫 No door is exempt · 🚫 no per-door variation — ONE helper, called in five places |
+
+### 🔴 The gate this ships through — @Porter, not negotiable by a team
+**sid pass requires the expiry CHECKED BY HAND on at least one course of EACH size (4 / 6 / 10).** **The TASK must state how that check is run**, so @Tanya verifies against a written expectation instead of inventing one. 🔑 *This decides when a course the customer PAID FOR stops being valid — "the tests are green" is not a pass for that.*
+
+### 📌 Consequences the rulings lock in, written here so nobody re-litigates them
+- **`UNDO_LEAVE_CHARGE_UNKNOWN` dissolves** and `leaveCharged` loses its subject — the already-approved refusal copy for it becomes **unused**, not wrong. 🚫 Do not ship it.
+- **Validity can grow without bound** (owner already ruled that intended, 10-05) — ruling 2 is the only thing that ever gives a week back.
+- **The base table is UNCHANGED:** `maxWeekFor(size, quota) = size + quota` ⇒ 4⇒5 · 6⇒8 · 10⇒13. **Her table, today's numbers.** The number stops being a LIMIT and becomes only the BASE.
+- **The warn-on-crossing-expiry trigger is NEW and sits BESIDE the existing exhaustion notice (`makeup_far_out`), not instead of it.** 🔑 *Khwan said "เตือนเหมือนตอนนี้" — but today's notice fires when the SEARCH runs out, not when the expiry is crossed. Those are two different events, and she pictured the second.*

@@ -1,6 +1,6 @@
 # REQ-101 — ECA: Manage-plan page + whole-course confirm + edit/move/remove notify + cancel-all
 
-**Source:** customer (Khwan) via owner, 2026-09-21. **Status: DISCUSSION — recorded verbatim; feasibility read requested from @Sober; owner rulings pending.**
+**Source:** customer (Khwan) via owner, 2026-09-21. **Status: ✅ SHIPPED TO uat 2026-09-23.** 🔴 **CORRECTED 2026-10-05 by @Porter — this header said DISCUSSION for two weeks after the work had shipped, and it made a delivered REQ look like an unanswered customer ask. The rulings are in §4–§7 below; `TASK-426`…`435` are DONE; QA passed on sid 09-22; keys 57/58/59 are on uat.** 🔑 *A status line nobody updates is read as the truth long after it stops being one.*
 
 ## §1 — the asks (verbatim intent)
 1. **Add a "Manage plan" page for ECA**, like camp / course have. (ECA today = the Stage-1 "Other" schedule; there's no dedicated manage-plan surface.)
