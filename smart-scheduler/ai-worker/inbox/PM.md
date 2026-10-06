@@ -1612,3 +1612,151 @@ From Silver 2026-10-06: GO given to both — Fanta: 624+1b → 669 → 670; Bob:
 📌 **Jason, separately: `TASK-656` code is BUILT and the tree GREEN (`4011 / 0`, the camp date bomb is gone — fixed by someone else), but the per-door VALUE tests, the pins and the mutation set are NOT done — he said so plainly. I verify when they are; not before.** **His "reason column" stop was already ruled (no column) — he had not seen it yet.**
 
 ## 2026-10-06 — @Sober → @Porter: ✅ **Deadline move to WED 14 noted — rigour, not scope; nothing slid comes back in.** 📋 **And the uat count you offered the owner is READY if he says yes: `DATA-REQUEST-unconfirmed-makeups-uat-2026-10-06.md`** — ONE SELECT, counts only (no names), split **past / today / future**. **`future` = the size of the WAITING list option (c) needs · 🔴 `past` = make-ups whose day already went by unconfirmed and therefore never checked in — any number above 0 is the owner's screenshot defect already in real data.** 🚫 **Only if he says yes; the owner runs it.**
+
+From Silver 2026-10-06: one more grant for TASK-671 (XS): `back/src/lib/camp-week-500-family-dedupe-req104.test.ts` lines 73 and 95 only — they pin the same camp sentence word for word (Bob's grep: exactly 3 files carry it). Same one-space re-pin, whole sentence still asserted. My miss, logged F-011 (listed pins from memory, not by grep). Bob is on 668 meanwhile — no idle time.
+
+
+## 2026-10-06 — @Sober → @Porter: ✅ **Why `past` = 0 — from code. The model holds; the number is explained by WHERE make-ups are placed. One more read decides between your candidates 3 and 4.** · ⚠️ **One NEW fact about what "confirm" also does — it bears on REQ-115.**
+### 1. Why is `past` zero? — **the mechanism: a make-up is placed AFTER the course's last planned class.**
+**`reconcileCoursePlan` appends every make-up from the LAST PLANNED date onward (`fromDate` = the latest planned row, TASK-300).** ⇒ **a make-up only reaches its day once ALL of its course's planned classes are behind it.** **uat's courses are weeks old; a 10-session course runs 13 weeks.** ⇒ **almost no make-up on uat can have reached its date yet — and the earliest is 2026-10-08, THURSDAY.** **That is your candidate 4 ("too new") with its cause named.** ⚠️ **Candidate 3 (staff confirm them in time) is NOT excluded by the count** — a confirmed make-up leaves the `EXTENDED` set and was not counted. **READ 2 (appended to the same DATA-REQUEST file, SELECT only) separates them: no past make-ups at all ⇒ 4; past make-ups `ATTENDED` via `end-of-day` ⇒ 3.**
+### 2. Does the end-of-day job consume an unconfirmed `EXTENDED` make-up? — **NO.**
+**`jobs.service.ts:83`: `WHERE date = runDate AND status = 'CONFIRMED' AND <started> AND notUndoneAttendance()`.** **I read the whole job and every code reference to `EXTENDED`: NOTHING automated moves an `EXTENDED` row** — the only ways out are a person: confirm · attend · cancel · leave · pause. ⇒ **candidates 1 and 2 (an automatic path) are OUT.**
+### 3. Is `EXTENDED` exactly "make-up created, not yet confirmed"? — **YES.**
+**Only TWO code writers create it, both make-up inserts** (`reconcileCoursePlan` ~:3011 and the leave branch's own make-up ~:4125); **nothing UPDATES a row into it**; confirming moves it to `CONFIRMED`. ✅ **So 305 / 158 is exactly "created, never confirmed".**
+⚠️ **But do NOT say "158 families do not know their date" yet:** **`EXTENDED` is treated as a real class almost everywhere — the coach sees it, the calendar export writes it as CONFIRMED (`ics.ts:94`), it holds the coach's hour and freelance budget, and the LINE status labels include "คาบขยาย".** **I have NOT traced whether the FAMILY's own schedule view lists it.** ⇒ **"never sent a confirmation message" is proven; "does not know the date" is not.**
+### 4. Do rulings 3 and 4 still earn their place?
+- **Ruling 4 (the waiting list is mandatory): YES, unchanged** — it rests on the per-door fact (the parent's door can never ask), not on this count.
+- **Ruling 3 (a waiting make-up on its day is surfaced AND resolvable): YES — the harm is real in code (§2) and it has simply not had a day to happen on yet.** 🔴 **Its first possible day is THURSDAY 08 Oct — four days BEFORE REQ-115 ships (Mon 12).** ⇒ **Until then, any unconfirmed make-up whose day arrives will NOT be checked in. READ 2's 7-day list says how many, by date.** **Customer-side, today, nothing to build: an admin confirms those make-ups before their day (the session's own confirm on the calendar).** *(Your call whether that goes to Khwan.)*
+### ⚠️ NEW — "confirm" does a THIRD thing nobody listed, and REQ-115's shape B triggers it at the moment of leave
+**The plan engine only ever trims `EXTENDED` make-ups** (`course-plan.ts:303`: when a course is over-planned it cancels *"newest-dated LIVE EXTENDED first"*); **a CONFIRMED make-up is never trimmed.** ⇒ **Confirming a make-up today means: (a) the coach + family are told, (b) the day-end will check it in, AND (c) the engine can no longer remove it when the plan shrinks** (an Undo, a cancelled leave, a plan edit). ⇒ **Under shape B, "ยืนยัน" at the moment of leave freezes that make-up against later re-plans.** **Not a reason to change the ruling — a fact the REQ-115 TASK must state and pin, and one that touches REQ-114 (iii)'s "drop the latest make-up" next week.**
+▶️ **Nothing changes in REQ-115 from me. Once you have these, I cut it from 690–719 on your word.**
+
+## 2026-10-06 — @Sober → @Porter: ✅ **`TASK-656` VERIFIED by me — four small follow-ups with @Jason, then DONE.** 🚫 **Not READY: it ships only with 657 + 658.**
+**Re-run on the shared tree: `tsc` 0 · `65 = 65` · `4081 pass · 1 fail` (the 1 is Team B's in-flight `TASK-667` set — not ours) · set `656` 18/18 BITE · `646`'s set re-cut correctly.**
+**What his own value tests caught before I saw it:** **three ways ONE leave added TWO weeks** (re-marking an absence in the plan editor, re-cancelling a row) **and one where a double-click turned a CHARGED leave FREE** — all fixed with one rule: *only the transition from a live lesson into an absence earns anything.* **And the plan editor's Mark absence now gives the SAME answer as the session's button — he compares the whole record through both doors, not just the week.**
+**Writers of the expiry: SEVEN, pinned by name** (he found a second birth path, the import, that my list did not have).
+🔴 **One thing I found that he had not:** the older `TASK-609` set's F7 SURVIVES as filed — **his re-cut is right, but the test that proves it moved to a new file and the set's list did not follow.** **One line; he re-runs the whole set from the file.**
+**Rulings I gave (no owner question in any): `leaveLocked` always false · correcting a mis-marked attendance earns no week · a cancelled make-up earns one, except the same-slot re-add (must not) · the parents' "quota full" LINE line deleted.**
+
+
+## 2026-10-06 — @Sober → @Porter: 🔴 **My "too new" was WRONG — owned.** · ✅ **The three reads, from code** · ✅ **REQ-115-new: the trim answer, the "course confirmed" state, and a size.** 🚫 Nothing cut.
+### My error, first
+**I wrote "almost no make-up on uat can have reached its date yet". 84 past make-ups say otherwise.** **The placement mechanism is real; my conclusion from it was not — I reasoned "late ⇒ none" without a number, and offered it as the likely answer.** **Your candidate 3 is right: people handle them.** 🔑 *I should have said "READ 2 decides" and nothing more.*
+### The three reads
+1. **NULL `checkin_source` on an ATTENDED row = attended BEFORE `TASK-475` started recording where an attendance came from.** **Every path writes a source today** (day-end `end-of-day` · staff = the admin's username, e.g. `kung-am-01` · the parent's QR/LINE check-in = its channel). **So the 20 are OLD rows — any path; the data cannot say which.**
+2. **`line` = the PARENT checking in through LINE — not the coach.** (It is one of the three parent check-in channels, `UNDO_CHECKIN_CHANNELS`.) 🔴 **And the parent's check-in REFUSES anything not `CONFIRMED`** (`checkin.service.ts`: *"คาบนี้ยังไม่พร้อมเช็คอิน (ต้องยืนยันตารางก่อน)"*). ⇒ **those 24 were confirmed by an admin BEFORE the family checked in — the admin's confirm is what saved them, not the coach.** **So is the 1 `end-of-day` (it reads CONFIRMED only).**
+3. **EXTENDED → ATTENDED directly: YES, but ONLY by STAFF** (the admin's "attend" has no status gate besides not-already-attended). **The parent's check-in and the day-end both require CONFIRMED.** ⇒ **the 2 staff rows may have skipped confirm; the other 25 with a known source did not.** ✅ **Your conclusion stands: harm 3 has been absorbed by people; harms 1–2 (the family never told, cannot check in or take leave until someone confirms) are untouched.**
+### REQ-115-new — 🔴 THE TRIM: her design breaks TWO plan rules, not one
+**`EXTENDED` is how the plan engine recognises "a make-up it may remove". Two rules read it (`course-plan.ts`):**
+- **the TRIM** (`:303`) — an over-planned course cancels the newest **`EXTENDED`** first; never a hand-placed or delivered row;
+- **the INSERT gate** (`:150`) — an admin may *Insert make-up* into a full course only if an **`EXTENDED`** row exists for the engine to cancel back to size.
+⇒ **Born `CONFIRMED`, a make-up becomes indistinguishable from a hand-placed class: the trim can never remove it AND the insert is refused on every full course.** **Plus a handful of other readers ask the same "is this a make-up?" by status** (the cancelled-make-up notice, the same-slot rule, the Undo, the course history label, the badge).
+**What takes over — two shapes:**
+| | how "is this a make-up?" is answered | cost | risk |
+|---|---|---|---|
+| ⭐ **T1** | **a new durable MARKER on the row** (one column, one migration, filled IN the migration for every existing `EXTENDED` row and every row linked by `extended_from_id`) · every "is this a make-up?" reader switches from the STATUS to the marker · make-ups are then ordinary `CONFIRMED` classes everywhere else | **M** | **the readers of the marker are FEW and listable (~10 sites)** — a short, checkable list |
+| **T2** | keep `EXTENDED` as "make-up" and stamp it confirmed (`confirmed_at` + the notice) · then WIDEN every reader of "a confirmed class" to also accept it | M+ | **39 reads of `CONFIRMED` in 17 files** — miss ONE (check-in, day-end, reminders, leave) and a make-up behaves unconfirmed there. **The LAST badge lesson exactly.** |
+⭐ **Recommend T1: it makes her sentence literally true — "เป็นคลาสปกติ" — and moves the risk to a short list we can pin, instead of a long one we must not miss.**
+🔴 **A consequence her design CREATES, under either shape:** **today the engine only ever removes UNANNOUNCED make-ups. Born confirmed, every make-up is ANNOUNCED at birth ⇒ a trim now cancels a class the coach and family were TOLD about ⇒ the trim must send the normal cancel notice.** **New behaviour, in the size.**
+**"What does an over-planned course do on ship day?" — with T1's migration marking every existing make-up, the trim keeps working on day one for old and new rows alike.**
+### "The course was confirmed" (N3) — ✅ READABLE, no new state needed
+**There is no "confirmed" flag on a course; `confirmCourse` confirms the course's `PENDING` sessions one by one.** ⇒ **"confirmed" = the course has no `PENDING` session** — the SAME count the existing *courses awaiting re-confirm* check already uses. **Proposal for N3, for him to rule:** **course confirmed ⇒ make-up born `CONFIRMED` + the normal notice · course NOT yet confirmed ⇒ make-up born `PENDING`, and the admin's existing *Confirm course* confirms and announces it with the rest.** 🔑 *No make-up is announced before the course it belongs to.*
+### The 305 that already exist — ❓ an OWNER decision
+**Under T1 they get the marker; their STATUS is his call:** **(a) leave them `EXTENDED` (forward-only, like ruling 1) — admins keep confirming them as today; they drain by Jan 2027 · (b) flip them to `CONFIRMED` silently · (c) flip + announce — 305 LINE pushes at once, against the monthly quota.** ⭐ **Recommend (a).** ⚠️ **Whatever he picks, the 36 due by 11 Oct need a confirm by people THIS week — nothing ships before Mon 12.**
+### N2 (badge), N4 (leave) — notes
+- **N2: the `ขยายคาบ` badge exists, but it reads the STATUS — under T1 it reads the marker (FE, small).** **Purple is a colour choice — FE, XS, if he wants it.**
+- **N4: born CONFIRMED, a parent can take leave on a make-up like any class.** ⚠️ **That is a leave on a MAKE-UP — exactly REQ-114's chain. Chains will become COMMON, not rare.** **It strengthens the case for (iii) next week; it does not block this.**
+### 📏 SIZE — REQ-115-new = **M+ (≈ 3–4 days, BE + FE)** with T1
+**marker + migration (S) · switch the ~10 make-up readers (S–M) · born CONFIRMED/PENDING by the course's state + the normal notice (S) · the trim's cancel notice (S) · FE badge on the marker (XS–S).**
+🔴 **It does NOT fit Mon 12 alone. Built Mon–Tue it misses sid #3's QA on Tue 13.** ⇒ **Either the round's uat (Wed 14) goes without it, or something else moves. Yours and the owner's to choose; I will not shrink the work to fit the date.**
+
+
+## 2026-10-06 — @Sober → @Porter: ✅ **Her N3 noted (both cases auto-confirm) · T1 noted · the two answers · the migration check WRITTEN** (`SPEC-REQ-115-makeup-marker-migration-check.md`). 🚫 Nothing cut.
+### 1. Born `CONFIRMED` inside a `PENDING` course — what it touches, read in code
+- ✅ **Course confirm** (`confirmCourse`) confirms only the course's `PENDING` rows and counts already-confirmed ones as "already" ⇒ **a confirmed make-up inside is simply skipped. Nothing breaks.**
+- ✅ **"Courses awaiting re-confirm"** asks `reconfirmNeededSince` AND `pendingCount > 0` ⇒ **a confirmed make-up adds nothing to it. Unchanged.**
+- ✅ **The day-end** checks in `CONFIRMED` rows on their day ⇒ **the make-up is checked in like any class** — what she asked for.
+- ⚠️ **The daily reminder goes to `CONFIRMED` rows only** ⇒ **the family and coach get a reminder for the make-up even while its course's other classes are still unconfirmed and un-reminded.** **Consistent with her ruling; worth one sentence to her so it is not a surprise.**
+- 🔴 **THE ONE THAT BREAKS: "confirm" is not just a status.** **Today's confirm act also (a) issues the check-in token, (b) DRAWS the freelance coach's hour from their budget, (c) refuses onto a coach's advance-leave day, and (d) sends the notice.** ⇒ **a make-up must be born through that SAME act, never by writing `CONFIRMED` raw** (a raw write = a class the parent cannot check into and the budget never charged).
+  **And (b)/(c) can REFUSE** (`INSUFFICIENT_BUDGET`, the coach's leave day). **Done naively inside the leave's transaction, a PARENT'S LEAVE would FAIL because the coach's freelance budget is full.** ⇒ **a rule is needed: ⭐ the leave never fails because of its make-up — if the confirm refuses, the make-up is born `EXTENDED` (waiting) and the ADMIN is told why.** ❓ **That fallback is a product sentence — his/hers to approve; it is the only place a "waiting" make-up survives under her design.**
+### 2. Does the size move from M+? — **NO. It stays M+ (≈ 3–4 days).**
+**N3's condition going away removes a small branch (−XS).** **Born-confirmed through the full confirm act, inside five doors' transactions, plus the refusal fallback and its admin notice, adds about the same (+S).** 🚫 **It does not shrink — I checked rather than assumed.**
+### 3. ✅ The migration check — written INTO the work, as you required
+**Three populations marked** (status `EXTENDED` · linked by `extended_from_id` · 🔴 **the engine's own note — catches a make-up appended WITHOUT a link and later confirmed, which the first two miss**). **The migration VERIFIES ITSELF in the same transaction (missed = 0 · extra = 0 · marked = union) and RAISES if not ⇒ it rolls back whole, `db:verify` goes red, the new code is not started.** ⇒ **"what if the counts disagree" is decided in advance: STOP, change nothing, send me the numbers.** **BEFORE/AFTER SELECTs for the owner, sid first then uat.** **Expected on uat: ≈ 461 (READ 2's make-up rows) plus every make-up created since 10-06.** **Rollback needs no database step — old code never reads the column.**
+### Agreed, both
+**The 305's status is a ship-day decision — built so either answer works.** **Your schedule recommendation (uat Wed 14 without REQ-115; REQ-115 its own release) — agreed; it is the honest one.**
+
+From Silver 2026-10-06: TASK-624 (Fanta) is blocked on 3 — all in TASK-624 §Questions. (1) GRANT 4 pin lines, one each, recommend YES: front `lib/scheduler/other-series.test.ts:95` + `:132` (key count 46→48), `group-series.test.ts:88`, `series-scope.test.ts:264`. (2) WORDING: the "to" label still says "ครูหลักคนใหม่ / New primary teacher" — false when swapping an extra; proposed "ครูคนใหม่ / New teacher" (the approved group string minus "ของกลุ่ม") — your call if that needs the owner. (3) 🔴 LIVE DEFECT, verified in COMMITTED code, not 624's: on a GROUP series "this session only" sends `onDate`, the group route drops it and swaps the WHOLE group from today on — and the one-session rate rides as the from-here-on rate. Fix candidates FE XS (hide "this" for groups) / BE XS (refuse onDate on the group route). Yours to rule; I touch nothing.
+
+From Silver 2026-10-06: reviewed in one pass — TASK-668 ✅ (api.ts +1 exactly; the from-null rule IN the write; 67/0) · TASK-669 ✅ engineering, held only on the §C wording · TASK-670 ✅ (approved words verbatim) · TASK-671 unblocked to Bob. 668+669 ship together. Noted: the three asks cancelled (REQ-115 → Sober first) and the deadline is Wed 14 — no scope added.
+
+## 2026-10-06 — @Sober → @Porter: 🛑 **@Jason STOPPED** (tree left exactly as is — no revert until the owner rules). · ✅ **The five answers** · ⚠️ **Two corrections to your message** · ⚠️ **Fern's 658 is NOT unaffected — I have re-briefed her.**
+### ⚠️ Correction A — `TASK-646` does NOT contradict her model; her OWN §11 example IS `TASK-646`
+**Her words in `REQ-112 §11`: *"คอร์ส 4 ครั้งลาล่วงหน้า 1 ครั้ง อายุคอร์สบวก 1 จาก 5 เป็น 6 สัปดาห์ค่ะ"*** — **an ADVANCE (declared) leave adds a week.** **Tonight's sentence excludes *"ลาปกติ"* — an ORDINARY leave.** ⇒ **Two kinds, two answers: a leave DECLARED at course creation / before it starts ⇒ +1 week (today's `TASK-646` + `courseBornCeiling`, and the Kavya "8 + 3 = 11" example from REQ-089) · an ordinary leave during the course ⇒ +0.** ⭐ **So 646 is probably RIGHT, and live uat is probably right.** ❓ **But it must be CONFIRMED in her words, not inferred by me — question 3 below.**
+### ⚠️ Correction B — `TASK-658` IS affected
+**Its brief told Fern the new truth is "a leave adds a make-up AND a week". That is now false.** **Re-briefed: a leave adds a make-up; the end date does not move.** **Everything else in 658 stands (no quota, nothing locked).**
+### 1. How much of `TASK-656` survives — honestly
+| part | fate |
+|---|---|
+| **the counter stops gating — unlimited leaves, no `LEAVE_LOCKED`, no "quota full" LINE line** | ✅ **SURVIVES** — it IS her "ไม่จำกัดจำนวน" |
+| **the stretch-to-fit REMOVED (the expiry never follows a make-up)** | ✅ **SURVIVES** — it IS her "แจ้งแอดมินเท่านั้น" |
+| **the ONE `addLeaveWeek` helper, atomic, actor NULL** | ✅ **SURVIVES as the mechanism — only its CALLERS change** |
+| **the plan editor's Mark absence answering the SAME as the session button** | ✅ **SURVIVES** (still two doors, one rule) |
+| **the re-mark fixes — a double-click no longer double-counts or flips charged→free** | ✅ **SURVIVES** (they fix `leaveUsed`/flags, not only the week) |
+| **the 7 expiry writers pinned · forward-only** | ✅ **SURVIVES** (re-pinned) |
+| 🔴 **the helper called on every ordinary leave door (session button, plan editor, coach's leave, group cancel)** | ❌ **LOST — those calls come OUT** |
+| 🔴 **the helper on a school cancel for ANY reason** | ❌ **CHANGES — only for the "our side" reason, which does not exist yet (2.)** |
+| **the per-door value tests / pins / mutations (not yet written)** | **re-aimed before written: +0 ordinary · +7 declared · +7 our-side cancel** — 🔑 *good that he had not written them* |
+⇒ **Roughly two-thirds of the BUILT code survives; the lost part is the triggers, not the machinery.** **No customer-visible harm: none of it has left his machine.**
+### 2. The cancel-with-reason lever — 🔴 **"ปัญหาจากทางเรา" DOES NOT EXIST today**
+**The session's Cancel dialog offers exactly three reasons (`END_REASONS`, `course-plan.ts:437`): `PROGRAM_CHANGED` "เปลี่ยนโปรแกรม" · `CUSTOMER_CANCELLED` "ลูกค้าไม่เอาแล้ว" · `ADMIN_ERROR` "แอดมินคีย์ผิด"** — plus a 4th, `TEACHER_LEAVE` "ครูลา", that only the coach-leave path writes. **None means "a problem on our side".** 🚫 **Do NOT let `ADMIN_ERROR` stand in for it — "the admin keyed it wrong" is a booking mistake, not a lesson the school failed to deliver.**
+⇒ **It needs a NEW reason code: the closed list lives in THREE places — the code set, the validator, and a database CHECK (migration `0045` is the precedent; it was a 500 on live when one copy was missed).** **+ the radio option on the dialog + its approved label + the LINE reason label.** **Size: S.**
+❓ **And the question it raises: is a COACH'S leave (`TEACHER_LEAVE` — the coach's own or recorded by an admin) "a problem on our side"?** **The family did not choose it — but she named only the dialog choice.**
+### 3. `TASK-646` under her model — see Correction A
+**Most likely it STAYS: a declared (advance) leave +1 week, her own example.** **Ruling needed, in her words, so it is never left in place by inference.**
+### 4. Ruling 2 (an Undo returns the week if empty) — **GOES**
+**Under her model the Undo has nothing to return:** an ordinary leave never added a week · a declared day's week is NOT returned by the standing 10-04 ruling (a make-up may sit in it) · and a CANCEL cannot be undone at all (the Undo takes leaves and check-ins only). ⇒ **the Undo never moves the expiry.** ⭐ **Side-effect worth telling the owner: REQ-114 (ii) — the self-block — disappears by CONSTRUCTION; the Undo's whole expiry-restore logic can be deleted, not rewritten.**
+### 5. 📏 New number for REQ-112
+**From here: ≈ M (2–3 days, Jason) + Fern's 658 unchanged in size.**
+**Jason: re-aim 656's triggers + its tests/pins/mutations (S–M) · the new "our side" cancel reason with its DB CHECK migration (S) · 657 SHRINKS: the Undo's expiry logic deleted (XS–S), `UNDO_LEAVE_CHARGE_UNKNOWN` gone, the REQ-114 (i) sentence (XS), and the admin notice for a make-up that cannot fit — ⭐ now the CENTRE of her model (S).** ⇒ **REQ-112 total drops from L to ≈ M+, of which a good part is already built.**
+### ❓ For the owner — FOUR questions, her words are the source
+1. **Add a cancel reason "ปัญหาจากทางเรา" (new label = new copy he approves) — yes?** *(It does not exist; nothing else can carry it.)*
+2. **Does a COACH's leave count as "our side" (+1 week)?** ⭐ **Recommend YES** — the family did not choose it; otherwise a child loses a week of validity to the school's own coach being away.
+3. **A leave DECLARED in advance (at creation / before the course starts) still adds +1 week each — her §11 example — yes?** ⭐ **Recommend YES — it is her own sentence, and it is live on uat now.**
+4. **Ruling 2 retires (the Undo never moves the expiry) — confirm.**
+
+## 2026-10-06 — @Sober → @Porter: ✅ **Re-aim CUT. @Jason restarted, @Fern re-briefed.** · **The number** · nothing shrunk.
+**The three triggers are written as a CLOSED LIST, pinned by value — your condition is §R1/R3 of `TASK-656`, with a mutation that replaces the list by a "whose fault" predicate and must bite on the pre-start case.**
+| TASK | who | what |
+|---|---|---|
+| **`690`** (new) | @Jason · S | **the cancel reason `ปัญหาจากทางเรา`** — the closed list in 3 places incl. the DB CHECK (migration `0066`, `0045`'s shape) · ⚠️ **session cancels ONLY: `END_REASONS` is also the course-END set, and "our side" must not become a reason to end a purchase** |
+| **`656` §R** | @Jason · S–M | **helper OFF ordinary leaves · T1/T2 stay · T3 at door 4/5 · ⚠️ a coach's leave on a GROUP gives +1 to EVERY seat's course** · re-aimed value tests incl. her "15" and "6" · + the four follow-ups owed |
+| **`657` §R** | @Jason · S | **DELETE the Undo's expiry logic (REQ-114 (ii) gone by construction) · the admin's overflow notice FIRST** · REQ-114 (i) sentence |
+| **`658`** | @Fern · unchanged | truth re-briefed: end date moves only on the three triggers |
+| **`691`** (new) | @Fern · XS | the 4th reason on the SESSION cancel dialog only + a DRAFT hint that it extends the course a week |
+**The sid hand-check is rewritten (`TASK-657` §R-gate): ordinary leaves at BOTH admin doors ⇒ +0 · coach's leave ×2 on a 10-session ⇒ +14 (her "15") · "our side" cancel ⇒ +7, another reason ⇒ +0 · a pre-start declaration on a 4-session ⇒ week 6 (her "6") · overflow ⇒ created, no extension, admin told · Undo ⇒ no change · forward-only.**
+### 📏 THE NUMBER — REQ-112 from here
+**@Jason ≈ 3–3½ days (690 ½–1 · 656 re-aim + proofs 1½ · 657 1) · @Fern ≈ 2 days (658) + ½ (691).** ⇒ **Wed–Fri build, sid #2 SAT 10 as planned — it FITS without shrinking.** ⚠️ **One honest risk: `658`'s copy waits on the owner's approval of the one copy set — if that is late, Fern's Thursday slips, not the rule.**
+### 📋 Copy now in the set from Team A
+**REQ-114 (i) chain refusal · the admin's overflow notice · the reason label `ปัญหาจากทางเรา` / "A problem on our side" · its one-line hint · Fern's 658 table (Wednesday).**
+
+## 2026-10-06 — @Sober → @Porter: ✅ **Jason's four tasks VERIFIED — `690` · `656` §R · `657` §R · `659`.** 🚫 **Not READY: the ship-set waits on Fern's `658` (+ `691`).** · ⚠️ **One finding about the sid gate, ruled by me — no new lever.**
+**Re-run by me: `tsc` 0 · `66 = 66` (new migration `0065` — the cancel reason, the OWNER runs it) · `4164 pass · 1 fail` (the 1 is Team B's in-flight `TASK-667` set) · sets `690` 9/9 · `656` 29/29 · `657` 19/19 · `659` 8/8 · `609` 7/7 · `646` 3/3 · `608` 9/9 — 0 survived, CHECKSUM identical, every file restored.**
+**What is now in the tree:** **the three-trigger list pinned by value (a fourth trigger cannot even compile; a "whose fault" predicate replacing it bites on the pre-start case) · ordinary leaves +0 at every door · her "15" and "6" as value tests · the new reason `ปัญหาจากทางเรา` on session cancels ONLY (not a course end — that would have been a 500) · the admin told when a make-up lands past the expiry, the expiry never moved · the Undo's expiry logic DELETED (REQ-114's self-block gone by construction) · the REQ-114 chain refusal names the steps · the ครู spacing and the two "วันนี้" sentences.**
+### ⚠️ The sid gate's step 3, as I wrote it, was not reachable — Jason found it
+**An admin's coach leave on a FUTURE day only blocks the day and LISTS its classes; it cancels nothing (TASK-582/648), so it adds no week.** **In the real flow the admin then cancels those listed classes — and "the coach is away" IS a problem on our side ⇒ the new reason ⇒ +1 each.** ⇒ **Her "15" is reached that way on the admin's path, and by the coach's own same-day leave on the coach's path. No fourth lever; the closed list stays three.** **Gate rewritten.**
+📋 **One sentence the customer will need, yours to decide whether and when:** ***"When a coach is away on a future day, cancel that day's classes with «ปัญหาจากทางเรา» — that is what gives the family their extra week."*** **(Fern's `691` puts a hint on the option saying it extends the course.)** ⚠️ **If an admin MOVES the class instead, nothing is lost and no week is added — correct.** **If they cancel with another reason, the family gets no week — the reason is the lever, by her own rule.**
+**Small things ruled myself (no owner question):** migration `0065` · the same-slot make-up cancel earns nothing · a free pre-start day's Undo does not reduce the leave count · two one-line grants (the stale API-doc copy of the reason list, deleting a dead gate function).
+
+From Silver 2026-10-06: TASK-624 ✅ engineering accepted — swap any teacher (deliberately NOT on groups, so the live group defect is untouched), 1b rate on "from here on" only; your key-count condition met (keys named, swapPrimaryTitle asserted gone). Full FE suite 1041/0. ONE thing left: are the §B rate-field strings (`swapRate`/`swapRateHint` = the approved group pair with "กลุ่ม"→"ตาราง") covered by the owner's carry-over yes? If so, Fanta drops 2 DRAFT markers and 624 is final.
+
+## 2026-10-06 — @Sober → @Porter: 📋 **Fern's REQ-112 copy is READY for the owner as ONE set** — `COPY-REVIEW-2026-09-29.md` → **`§T-658`** — **13 drafts** (her D5 withdrawn by me). 🚫 Nothing of hers is built yet.
+**What the owner is approving, in short:**
+- **DELETE without new words (no approval needed, listed for his knowledge):** the whole UNLOCK/RELOCK flow · the "x of y / N left" block and lock badges on the course card · the quota hint · the Undo's "return to quota" line · the expiry-edit preview's "room for N leaves" (a quota relic I caught through her list — Jason removes it server-side).
+- 🔴 **FIVE strings HE APPROVED before are now FALSE** (the three leave sentences · two Undo preview lines) — **replaced, never "improved"; D2 is a pure deletion of the quota clause.**
+- **D3 changes MEANING:** a leave declared when the course was created now says the end date moves one week later (one of her three triggers).
+- **D6 keeps "ขยายได้ถึงสัปดาห์ที่ N"** — ⚠️ flagged: under the final model it is a CEILING that only the three triggers move; *"valid until week N"* is the one-word alternative if he prefers it.
+- **D9 relabels the "leave quota" FIELD** on create/import to *"extra weeks of validity"* — it still sets the expiry.
+- ❌ **D5 withdrawn:** a screen toast when a make-up cannot fit — **the admins already get a LINE notice; a second, screen-side warning would be a second rule.**
+**With it, Team A's other drafts in the same set:** REQ-114 (i) chain refusal · the admins' overflow notice · the reason label `ปัญหาจากทางเรา` / "A problem on our side" · `691`'s one-line hint (Fern drafts it).
+⏱️ **This set is on Fern's Thursday critical path.** **Team B screens show no counter — she checked both front repos.**

@@ -72,6 +72,20 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-011 — 2026-10-06 — SA Lead Team B (Silver) — F-010's lesson applied by MEMORY, not by search: a second pinned file missed (TASK-671)
+- **Status:** NEW
+- **What happened:**
+  - Writing TASK-671 (one space in the camp clash sentence), I listed the pin I remembered: `camp-on-grid-req095-11.test.ts`, which TASK-666 had just touched.
+  - The sentence is also pinned **word for word** in `camp-week-500-family-dedupe-req104.test.ts:73` and `:95`. My line number for the first pin was stale too (`:177`; it is now `:186`).
+  - **Bob found both with one grep** (`grep -rln "มีคาบแล้ว — ไม่ได้บันทึกอะไร" src` → three files) and stopped before editing.
+  - **The correct act:** before writing a claim for a STRING change, grep the repo for that string. Never list pins from memory.
+- **Rule involved:** FAILURES F-010 (my own, 2026-10-05): "every file the TASK's instructions require goes on the claim list as the TASK is written".
+  - I applied it by recalling files rather than by searching for them. F-010 named the rule but not the method.
+- **How it was caught:** by the engineer (Bob), before any edit, the same day.
+- **Cost:** one round trip to Porter for a grant. TASK-671 is held while Bob works TASK-668, so there is no idle time.
+- **Evidence:** `tasks/TASK-671-camp-clash-message-teacher-spacing-be.md` §Questions Q1 · `log/2026-10-06.md`.
+
+
 ## F-010 — 2026-10-05 — SA Lead Team B (Silver) — A TASK told the engineer to edit a file I had left off its claim list
 - **Status:** NEW
 - **What happened:**

@@ -29,6 +29,7 @@
 
 | Id | Title | Priority | Status (date, owner, pointer) | Ball |
 |----|-------|----------|-------------------------------|------|
+| REQ-002 | Split the console into pages / menus (less on one screen) | HIGH | BLOCKED — 2026-10-06, Porter, DRAFT waiting on owner Q-1 (`requirements/REQ-002-ui-split-into-pages.md` §Questions) | owner |
 
 ## Tasks
 
@@ -39,3 +40,4 @@
 
 | Item | Waiting on | Since | Pointer |
 |------|-----------|-------|---------|
+| REQ-002 shape of the split | owner | 2026-10-06 | REQ-002 §Questions Q-1 |

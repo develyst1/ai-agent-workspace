@@ -321,6 +321,32 @@
 
 ---
 
+## §T-658 · REQ-112 — leaves have no quota any more: the false strings, REPLACED as ONE SET 📋 DRAFT (Fern, TASK-658) · 📅 = mentions the end date
+⚠️ **For the owner, via @Porter, as one set.** Many of these replace strings he **already approved** (09-28) — they are not "improved", they are **false now** because the rule they described is gone. 🔑 **Where a sentence only existed to talk about the quota or the lock, the proposal is DELETE, not a rewrite.** Deletions need no copy and are listed in the inventory table in `tasks/TASK-658-…md`.
+**The model every draft is written against:** a leave adds a make-up session in the next free week · **the course's end date does not change** — except three cases that add one week each (an absence declared before the course starts · a coach's leave · a class the school cancels for its own reason) · there is no leave quota and nothing is ever locked.
+
+| # | where / when | **Now (draft) — TH** | **EN** |
+|---|---|---|---|
+| **D1** 📅 `confirmAction.leaveMsg` | the leave dialog on a course-backed session | **คาบนี้จะถูกบันทึกเป็นการลา และเพิ่มคาบชดเชยในสัปดาห์ถัดไปที่ว่างให้ วันสิ้นสุดคอร์สไม่เปลี่ยน** | *This session is recorded as leave and a make-up session is added in the next free week. The course's end date does not change.* |
+| **D2** `confirmAction.leaveMsgNoCourse` *(approved → pure deletion)* | a session with no course behind it | **คาบนี้จะถูกบันทึกเป็นการลา คาบนี้ไม่มีคอร์สอยู่เบื้องหลัง จึงไม่มีคาบชดเชย ระบบจะแจ้งครูและแอดมิน** | *This session is recorded as leave. There is no course behind it, so no make-up session is added. The coach and the admins are told.* |
+| **D3** 📅 `confirmAction.leaveMsgCourseDeclared` *(approved)* | a leave declared when the course was created | **คาบนี้จะถูกบันทึกเป็นการลา เป็นการลาที่แจ้งไว้ตั้งแต่สร้างคอร์ส จึงเพิ่มคาบชดเชยต่อท้ายให้ และวันสิ้นสุดคอร์สเลื่อนออกไป 1 สัปดาห์ ระบบจะแจ้งครูและแอดมิน** | *This session is recorded as leave. It was declared when the course was created, so a make-up session is added and the course's end date moves one week later. The coach and the admins are told.* |
+| **D4** `booking.leaveExtendedDesc` | the toast after a leave | **เพิ่มคาบเรียนชดเชยแล้วในวันที่ {date}** | *A make-up session was added on {date}* |
+| **D5** 📅 **NEW** (needs the server's shape — see inventory §I) | the toast when a leave is saved but the make-up **cannot fit** | **บันทึกลาแล้ว แต่ไม่มีที่ว่างสำหรับคาบชดเชยก่อนคอร์สสิ้นสุด จึงยังไม่ได้เพิ่มคาบชดเชย — กรุณาจัดการเอง** | *Leave saved, but no make-up session fits before the course ends, so none was added — please handle it by hand.* |
+| **D6** 📅 `course.usage` | the course card, under the progress ring | **ขยายได้ถึงสัปดาห์ที่ {week}** | *Extendable to week {week}* |
+| **D7** 📅 `course.sizeOption` | the size picker on *Create course* | **{size} ครั้ง (ขยายถึงสัปดาห์ที่ {week})** | *{size} sessions (extend to week {week})* |
+| **D8** 📅 `course.infoAlert` | the blue line on *Create course* | **ระบบจะสร้างคาบรายสัปดาห์ตามวัน-เวลาเริ่มต้น · ขยายได้ถึงสัปดาห์ที่ {week}** | *Weekly sessions are generated from the start date/time · extend to week {week}* |
+| **D9** 📅 `importBalance.leaveQuota` + `…Hint` — **RELABEL, the field stays** | *Import balance*, off-card courses | label **สัปดาห์ที่ขยายได้เพิ่ม** · hint **แพ็กเกจนี้ใช้ได้นานกว่าจำนวนคาบกี่สัปดาห์ — ขนาดตามการ์ดราคามีค่าของตัวเองอยู่แล้ว** | label *Extra weeks of validity* · hint *How many weeks beyond the course size this package stays valid — the price-card sizes bring their own* |
+| **D10** `plan.insertHint` | the plan editor's *Insert make-up* | **เลื่อนคาบที่ค้างเข้ามาในแผน (ไม่คิดเงิน)** | *Reschedule an owed session into the plan (no charge).* |
+| **D11** 📅 `plan.extraHint` | the plan editor's *extra session* | **ขายคาบเดี่ยวแบบคิดเงิน ไม่กระทบจำนวนคาบหรือวันจบคอร์ส** | *A charged single-session sale. Doesn't change the course size or end date.* |
+| **D12** `history.sumLeave` *(EN only; TH unchanged)* | the course history summary | *(TH stays **ลาไป**)* | *Leaves taken* |
+| **D13** `undo.previewNothingElse` *(approved)* | the Undo preview, when there is nothing else | **ไม่มีผลอื่นตามมา — ไม่มีคาบชดเชยที่ต้องยกเลิก** | *Nothing else follows — no make-up is cancelled.* |
+| **D14** ⚖️ `undo.attendanceMsg` · `checkinMsg` · `leaveMsg` *(TH word only; `leaveMsg` approved)* — **owner's call, low priority** | the Undo dialog bodies | **…คืนคาบเข้า<u>ยอดคงเหลือ</u>ของลูกค้า…** *(was* โควตา *— the EN already says "balance")* | *(unchanged)* |
+
+🔑 **Why D6 keeps "extendable":** it is your instruction, and under the final model it stays a true ceiling — the three cases that add a week still extend a course up to it. ⚠️ **If the owner would rather the card say "valid until week N" now that ordinary leaves do not move the end date, that is a one-word change and the test does not move.**
+🚫 **Nothing here is built.** Thursday builds only what comes back approved; if any row is still pending Thursday night **the old false string does NOT stay — I tell @Sober and we decide together.**
+
+---
+
 ## Waiting to be added this round
 
 ---

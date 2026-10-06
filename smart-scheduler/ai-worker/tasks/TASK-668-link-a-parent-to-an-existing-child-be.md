@@ -1,9 +1,6 @@
 # TASK-668 — link a parent to a child that has none (BE) — BE, S
 - Source: owner "ให้ประเมินเรื่องผูกผู้ปกครองเลย" → sized in `SIZING-link-a-parent-teamB-2026-10-06.md` · Porter's plan (Wed–Thu)
-- Status: REVIEW (Bob, 2026-10-06) — ▶️ **GO (Porter, 2026-10-06): claims granted and the key reuse decided (his call: YES, `people.parent-students`).**
-  - 🔴 **`routes/api.ts` is a shared spine: ONE line, for `POST /students/:id/parent`, and nothing else in that file.** If the work wants a second line, STOP and tell me.
-  - 🔴 **`scheduler.service.ts` is Team A's all week** (Jason is rewriting it for REQ-112). Nothing of this TASK enters it.
-  - Wording: build against `COPY-DRAFT-teamB-week-to-10-11-2026-10-06.md` §C (DRAFT). Swap in the approved words when they land.
+- Status: DONE (reviewed by Silver, 2026-10-06) · 🔴 ships ONLY with TASK-669
 - Repo: `smart-scheduler-back` · Assignee: @Bob · From: @Silver (2026-10-06)
 - 🔴 **Ships ONLY with its FE, TASK-669.** It must not go to sid alone, because nobody could reach it.
 - **Claim:**
@@ -147,3 +144,9 @@ CHECKSUM identical
   - Why `"unrelated"`: the act writes `students.parent_id` only; no booking, course or voucher row moves (the same verdict as `POST /parents/:id/students` and the archive routes).
 
 ## Review
+**Silver, 2026-10-06 — ✅ DONE. 🔴 Ships ONLY with TASK-669.**
+- **Scope:** `api.ts` **+1 line exactly** (Porter's condition) · `route-access.ts` +1 on the EXISTING `people.parent-students` key · `parent.service.ts` · `validation.ts` · one census line in `course-ended-writes.test.ts`, named before editing as the claim asked. `scheduler.service.ts` is untouched.
+- **The rule is IN the write:** `.update(students)…where(and(eq(students.id, …), isNull(students.parentId)))…returning`, and zero rows ⇒ 409. The dry run is advisory only and writes nothing. No "from" anywhere.
+- **Reused guards:** `assertParentActive`, then `assertCanAddStudent`, in the pinned order. No notice is sent.
+- **`dryRun` on the same route instead of a GET is accepted, and it was the right call:** it respects the one-line `api.ts` grant, and the "upcoming" set is the server's own `ARCHIVE_BLOCKING_STATUSES`, so the confirm and the archive refusal cannot disagree.
+- **Re-run by me, no database:** task668 + course-ended-writes + parent.service → **67 / 0**; `tsc` 0. ⚠️ The tree also holds Team A's work.

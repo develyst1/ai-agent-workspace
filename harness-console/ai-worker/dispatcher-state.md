@@ -30,3 +30,7 @@ STOPPED hop 8/20 — condition 7 (ball_to HUMAN) + 1. Digest: REQ-001 SPEC_DONE 
 ## RUN 2026-10-05-k — N=4 — started from: answers ("Q1=DELIVERED, Q2=ignore, ไปเลย") — gate PASS at start; previous run's overrides NOT carried
 hop 1 | PM  | did: REQ-001 → DELIVERED on owner's word; D-16 recorded as leave untracked | ball_to: HUMAN | flags: 1 low assumption
 STOPPED hop 1/4 — condition 7 (ball_to HUMAN, pipeline done) + 3. Digest: REQ-001 DELIVERED; "ignore" read as leave untracked (low); next: new requirement or Marie sweep (6 runs held — next run header hits the 6-run limit).
+
+## RUN 2026-10-06-a — N=4 — started from: new requirement (UI overload → split pages/menu) — gate PASS (1 warn: no log/2026-10-06.md yet)
+hop 1 | PM  | did: REQ-002 DRAFT (UI split, team-proposed nav), F-001 logged | ball_to: HUMAN | flags: 1 question, 1 low assumption
+STOPPED hop 1/4 — conditions 1, 3, 7. Digest: REQ-002 Q-1 (accept proposed split? overview too dense too?).

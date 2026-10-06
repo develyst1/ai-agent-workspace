@@ -27,34 +27,36 @@
 > than one "RESUME HERE" heading fails, and being more than 2 days behind the
 > newest log fails.
 
-**Written:** 2026-10-05 22:03 by Porter (PM), ninth PM session · **Newest log at the time:** `log/2026-10-05.md`
+**Written:** 2026-10-06 03:26 by Porter (PM), tenth PM session · **Newest log at the time:** `log/2026-10-06.md`
 
 ## What we are in the middle of
 
-- **Nothing open.** REQ-001 (v1, two read-only screens) is **DELIVERED** — owner: "Q1=DELIVERED" (`SYSTEM-FACTS.md`). `[owner-approved 2026-10-05]`
-- TASK-001..004 DONE, SPEC-001 DONE. The UNVERIFIED list he accepted stays in `requirements/REQ-001-v1-two-screens.md` §SPEC_DONE report. `[owner-approved 2026-10-05]`
-- D-16 (untracked `AGENTS.md` / `CLAUDE.md` in `harness-console-front`): owner said "ignore" — no role acts. `[owner-approved 2026-10-05]`
+- **REQ-002 — split the console into pages / menus**, DRAFT. Owner: *"UI ขยะมาก ข้อมูลมากเกินไปรวดเดียว ... แยกหน้า แยกเมนูได้มั้ย"*. `[owner-approved 2026-10-06]` (the ask itself)
+- Porter's proposed shape (side menu `Workspace` + projects; project page as `Gate` / `File health` / `Ball`, one at a time; overview unchanged) is **not approved** — REQ-002 Q-1. `[team-proposed]`
+- REQ-001 stays DELIVERED; its ACs become REQ-002's regression ACs. `[owner-approved 2026-10-05]`
 
 ## What each thread is waiting on, and from whom
 
 | Thread | Waiting on | Since | What unblocks it |
 |---|---|---|---|
-| The next requirement (v1 extras, or anything else) | **owner** | 2026-10-05 22:03 | he states it; Porter writes the REQ |
+| REQ-002 shape of the split | **owner** | 2026-10-06 03:25 | answer to Q-1; then Porter writes full ACs and hands to Sober |
 
 ## Decided recently, not yet in a REQ
 
-- *(nothing)* `[owner-approved 2026-10-05]`
+- *(nothing)* `[carried-over]`
 
 ## What becomes urgent, and when
 
-- The owner's own measure: if the console has not changed how his week feels within two weeks of use, v2/v3 are not worth building. A judgement, not a deadline. `[owner-approved 2026-10-04]`
+- The owner's own measure: if the console has not changed how his week feels within two weeks of use, v2/v3 are not worth building. REQ-002 is the first sign it is not yet usable. `[owner-approved 2026-10-04]`
 - Nothing deployed; no customer commitment. `[owner-approved 2026-10-04]`
 
 ## What we already tried that did NOT work
 
-- Before gate v6, `--json` was silently ignored (exit 0 on plain text) — "it ran" proved nothing. `[team-proposed]` (Porter checked 2026-10-05)
+- REQ-001 ACs covered data correctness only, no usability — owner found the UI unusable (F-001). `[team-proposed]`
+- Before gate v6, `--json` was silently ignored (exit 0 on plain text). `[team-proposed]`
 - A second store of state has drifted in this workspace three times; a proposal that adds one is refused, not sized. `[carried-over]`
 
 ## Open questions with the owner
 
-- None pending. Out of REQ-001 until he adds them: mode on card, FAILURES NEW, click→open file, call-Marie button. v2/v3 stay out of scope. `[owner-approved 2026-10-05]`
+- REQ-002 Q-1 — is the proposed split right, or is the overview too heavy too? `[team-proposed]`
+- Still out until he adds them: mode on card, FAILURES NEW, click→open file, call-Marie button; v2/v3. `[owner-approved 2026-10-05]`

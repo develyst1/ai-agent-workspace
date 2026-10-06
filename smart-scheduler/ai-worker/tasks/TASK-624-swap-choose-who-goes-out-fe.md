@@ -42,7 +42,7 @@
 - Full Team B instructions follow when the claims land (Wed morning).
 
 ## ▶️ TEAM B INSTRUCTIONS (Silver, 2026-10-06): @Fanta, Wed–Thu · FE S + S · ships as ONE (624 + 1b)
-**Status:** BLOCKED (waiting: @Silver — Q1 four pins outside the claim · Q2 the new-coach label still says "primary" · Q3 a finding on GROUP series) — Fanta, 2026-10-06. **Everything inside the claim is built and green; held with `📋 DRAFT wording` on the two rate strings.** — ▶️ **GO (Porter, 2026-10-06): every claim below is GRANTED.**
+**Status:** REVIEWED — engineering accepted by Silver (2026-10-06); ⛔ held ONLY on the §B rate-field wording (`swapRate`/`swapRateHint`, DRAFT)
 **Claim** (asked in `PLAN-teamB-response-2026-10-06.md`):
 - `partials/OtherSeries/*` ✅;
 - `src/lib/scheduler/series-scope.ts` ✅;
@@ -146,5 +146,58 @@ All three at once.
   3. `src/lib/scheduler/other-series.test.ts:132` pins the key count `Object.keys(en).length).toBe(46)`. New: **48** (−`swapPrimaryTitle`, +`swapTeacherTitle`, +`swapRate`, +`swapRateHint`), with a TASK-624 note in the file's style.
   - 🚫 What I did NOT do: keep the old pinned text alive by shadowing a `series` object with a fake primary, or by keeping `swapPrimaryTitle` as a dead key. Both would make the pins pass while no longer protecting anything.
   - May I make those four edits?
+  > answer (Silver): **Correctly stopped, and right NOT to shadow `series` or keep a dead key.** All four lines are asked of Porter, recommending YES exactly as you wrote them. 🚫 Do not edit them until he grants.
 - **Q2 — user-visible wording (STOP, not mine to write):** the "to" picker's label is `otherSeries.swapTo`: TH **"ครูหลักคนใหม่"** / EN **"New primary teacher"**. **Swapping an extra now shows that label above the picker, and it is false** (the new coach is not the primary). It is not in `COPY-DRAFT-teamB-week-to-10-11` §A–§B. I left it **unchanged**. Needed: a TH + EN pair. If the owner is happy with something neutral, the group dialog already uses *"ครูคนใหม่ของกลุ่ม" / "New coach for the group"* (`booking.swapTo`-style) as a model, so *"ครูคนใหม่" / "New teacher"* would be the minimal shape, but that is a suggestion, not a string I will ship.
+  > answer (Silver): **Correctly stopped.** I proposed *"ครูคนใหม่ / New teacher"* to Porter (the approved group string minus "ของกลุ่ม"). He decides whether it needs the owner. Leave `swapTo` unchanged until he answers.
 - **Q3 — a FINDING on GROUP series, NOT in this TASK and NOT changed (flag, not take):** on a GROUP series the dialog still offers the scope chooser. Picking **"This session only"** sends `{ to, onDate }`, but the group's route validator is `groupSeriesSwap = z.object({ to, fromDate?, rateMinor? })` (`back/src/validation.ts:707`, not strict) and `swapGroupSeriesTeacher` uses `input.fromDate ?? today()` (`back/src/services/other-series.service.ts:363-370`). So `onDate` is **stripped, and the swap moves the group from today onward**, while the admin chose one session. That is the same class as Khwan's earlier complaint (a teacher change that silently rewrote every remaining session). I have **not** verified it end to end against a running server (no local stack); this is from reading both sides. Out of this TASK's scope either way. Who should look?
+  > answer (Silver, 2026-10-06): **Verified in the COMMITTED code, so it is live today, not something 624 introduces.** The scope chooser shows for every swap (HEAD `OtherSeriesDialogs.tsx:213-219`). On a group, `onDate` is stripped by `groupSeriesSwap` (back `validation.ts:714`), and `swapGroupSeriesTeacher` moves from `today()` on (`other-series.service.ts:366`). The one-session `rateOnCover` also rides as a from-here-on rate. **Raised to Porter as a defect; 🚫 do not change it in this TASK.** Excellent catch, and right to flag rather than take.
+
+### ▶️ Q1–Q3 RULED (Porter, 2026-10-06), relayed by Silver: UNBLOCKED
+- **Q1 ✅ GRANTED, the four lines, one each:** `other-series.test.ts:95` · `other-series.test.ts:132` · `group-series.test.ts:88` · `series-scope.test.ts:264`.
+  - **Condition:** each still asserts the SAME CLAIM, not merely passes.
+  - 🔴 **The key-count line especially:** if 46→48 is right, **NAME the two new keys in that test** (`swapTeacherTitle`, `swapRate`, `swapRateHint`; and assert `swapPrimaryTitle` is gone), not just the count. A count edited every time it fails has stopped testing anything.
+- **Q2 ✅ APPROVED by Porter:** `swapTo` becomes **`ครูคนใหม่` / `New teacher`**. It corrects a string that 624 makes false (the approved group string minus "ของกลุ่ม").
+  - **No owner round, so ship it WITHOUT a DRAFT marker,** with a comment naming Porter's approval. He lists it to the owner as a line he can veto.
+- **Q3:** the GROUP "this session only" defect goes to the OWNER tonight (Porter recommends fixing it at the server first). 🚫 **Nothing on it in this TASK.** Do not hide the control here either; that waits for the ruling.
+
+
+### Round 2 — Q1 + Q2 granted and done (Fanta, 2026-10-06)
+**Q1 — the four lines, one each, each still asserting its claim:**
+```
+other-series.test.ts:95   withoutRates({ ...swapBody(seriesRef, series.teacherId, to), ...scoped, ...rateOnCover }, canRate)
+                       →  withoutRates({ ...swapBody(seriesRef, from, to), ...scoped, ...rateOnCover, ...rateOnRest }, canRate)
+                          + ONE added assertion so "who goes out" stays pinned: expect(dialogs).toContain("const from = teacherId ?? series.teacherId;")
+group-series.test.ts:88   the same literal → the same new text (its claim, the GROUP body is swapBody's { to } alone, is still pinned by value at :36-37)
+series-scope.test.ts:264  swapBody(seriesRef, series.teacherId, to) → swapBody(seriesRef, from, to)
+other-series.test.ts:132  .toBe(46) → .toBe(48), AND the keys are NAMED (Porter's condition):
+                          for swapTeacherTitle · swapRate · swapRateHint: non-empty in en AND th
+                          "swapPrimaryTitle" in en / in th → false   (the one that stopped being true is asserted GONE)
+```
+Each carries a `🔻 TASK-624 (granted by Porter, 10-06)` note in the file's style; the comments that said "`from` is the primary" were amended, not left false. No other line in any of the three files changed.
+
+**Q2 — the label:** `otherSeries.swapTo` is now TH **"ครูคนใหม่"** / EN **"New teacher"**, with a comment naming Porter's approval and the old text, **no DRAFT marker**. Read on the REAL dialog for an extra (the label shows "New teacher" and never "primary"), and pinned by value in both languages. A new mutation (S11) restores the stale text and bites.
+
+**Q3:** untouched, as ruled. The scope chooser and the group door are exactly as they were.
+
+**Re-run:**
+- `bunx tsc --noEmit` exit 0 · `bun run build` exit 0.
+- **Full `bun test`: 1041 pass / 0 fail across 116 files** (it was 1017/4; the 4 were exactly these pins).
+- OtherSeries/*: **28 pass / 0 fail**. Mutation set `swap-any-teacher-task624`, now **11/11 BITES** (S1–S10 as above + S11), checksum identical; command unchanged.
+- `git status`: in addition to the `OtherSeries/*`, `series-scope.ts` and dictionary files above, exactly the three pin files you granted. Nothing committed.
+
+**Held for the release:** `swapRate` / `swapRateHint` carry `📋 DRAFT wording` (Porter has not confirmed §B is covered). When he does, I drop the two markers and send the diff, as with TASK-662/664.
+
+## Review (Team B)
+**Silver, 2026-10-06 — ✅ ENGINEERING ACCEPTED. Held ONLY on the two §B strings (`swapRate` / `swapRateHint`, DRAFT) until Porter confirms they are covered.**
+- **Part 1, swap ANY teacher:**
+  - the same Swap door now sits beside every extra, carrying that teacher's id;
+  - the dialog uses `from = teacherId ?? series.teacherId` everywhere (the body, the title, the outcome).
+  - ⭐ **Deliberately NOT on a GROUP** (`!isGroup`): its route has no `from` and would swap the wrong person. That is right, and it keeps the live group defect (Q3) exactly as it was, untouched until the owner rules.
+- **Part 2, 1b:**
+  - the optional rest-of-series rate rides only when `mode === "swap" && scope === "rest" && canRate`, through the same `withoutRates` filter;
+  - the cover's required box is unchanged;
+  - the stale `series-scope.ts` comment is corrected, with the reason.
+- **Q1:** the four granted lines keep their claims. The key-count line **names** the three new keys in both languages and asserts `swapPrimaryTitle` is gone (Porter's condition). The extra assertion keeping the `from` rule pinned is a good touch.
+- **Q2:** "ครูคนใหม่ / New teacher" ships without a DRAFT marker, with Porter's approval named. Mutation S11 bites on the stale text.
+- **Re-run by me:** OtherSeries/* + the three pin files → **64 / 0**. 🔑 **Full front suite → 1041 / 0.** The front suite is fully green again.
+- **When Porter confirms §B:** drop the two DRAFT markers, re-run, and send me that diff. Then 624 is FINAL.

@@ -15,3 +15,13 @@
 
 ## 2. ✅ Done means
 **`tsc` · suite with COUNTS · value pins of all seven strings exactly as above · a grep in the report: no `ครู${` left in your files.** **Mutations: one site without the space (BITES) · "วันนี้" restored in either sentence (BITES).**
+
+## ✅ 2026-10-06 (night) — @Jason: `TASK-659` DONE — five spaces, two «วันนี้» sentences, 8 / 8 bite
+**`tsc` 0 · DB-unreachable suite 4164 pass · 1 fail (TASK-667's own mutation set — Team B, not mine) · `66 .sql = 66 journal tags`.** **Set: `src/lib/copy-kru-space-task659.mutations.json` — 8 / 8 BITE**, baseline 35, CHECKSUM identical, test list in the file.
+- **3a — a space after `ครู`, five sites, no helper:** `slot-clash.ts` · `teacher-leave.ts` · `scheduler.service.ts` ×3 (archived · not a working day · no freelance budget). **Grep in my three files for `ครู${`: ZERO matches** (also asserted by a test over the CODE, comments excluded).
+- **3b — the two sentences, verbatim:** `ครู ${nickname} ไม่ได้สอนวัน{weekdayTh} — กรุณาเลือกครูอื่นหรือวันอื่น` and `ครู ${teacherName} ลาวันที่ ${date} — เพิ่มคาบกับครูในวันนั้นไม่ได้ กรุณาเลือกครูอื่นหรือวันอื่น`. **`{weekdayTh}` comes from the codebase's EXISTING weekday names — `ob_dow_0..6` through `t()`, the same ones `line-leave.ts` renders — no second table** (asserted: seven keys, none added; `D3` hard-codes it and bites). By value: Mon 2026-10-12 → «จันทร์» · Wed 10-14 → «พุธ» · Sun 10-18 → «อาทิตย์» (index 0).
+- **Pins moved, each to the approved string, not loosened:** `slot-clash.test`, `additional-teacher-clash.test`, `teacher-leave-day-task561.test` ×2, `booking-undo-req108.test` (the Undo's refusal names the coach). The freelance-no-budget string is pinned from the code (its branch needs a database read).
+- 🚫 **`camp.service.ts:284` NOT touched** — asserted in the test (it still carries the old spelling until Team B routes the approved rule), so @Porter's routing is visible if it is forgotten.
+- Mutations: `S1–S5` each drops ONE site's space and bites ALONE · `D1`/`D2` restore «วันนี้» in either sentence and bite · `D3` hard-coded weekday bites.
+
+▶️ **Ball: Sober verifies 659. Nothing queued behind it on my side except `TASK-639` (after the batch) — and your a/b answer on 657's gate step 3.**

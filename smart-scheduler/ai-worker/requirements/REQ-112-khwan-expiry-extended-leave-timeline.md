@@ -139,3 +139,61 @@
 - **Validity can grow without bound** (owner already ruled that intended, 10-05) — ruling 2 is the only thing that ever gives a week back.
 - **The base table is UNCHANGED:** `maxWeekFor(size, quota) = size + quota` ⇒ 4⇒5 · 6⇒8 · 10⇒13. **Her table, today's numbers.** The number stops being a LIMIT and becomes only the BASE.
 - **The warn-on-crossing-expiry trigger is NEW and sits BESIDE the existing exhaustion notice (`makeup_far_out`), not instead of it.** 🔑 *Khwan said "เตือนเหมือนตอนนี้" — but today's notice fires when the SEARCH runs out, not when the expiry is crossed. Those are two different events, and she pictured the second.*
+
+---
+
+# 🔴 2026-10-06 — §11 WAS MIS-RESTATED BY @Porter. **The customer's model, CONFIRMED BY HER IN WRITING.**
+🚫 **The rulings of 2026-10-06 above ("every leave adds a week", all five doors) were made on Porter's restatement and are VOID. Kept, not deleted.**
+🔑 ***Everything downstream — @Sober's M→L re-size, the owner's rulings, @Jason's built `TASK-656` — was built on one sentence Porter wrote, which nothing downstream could tell apart from the customer's own words.***
+
+## THE RULE, IN HER WORDS — this is what gets quoted from here on, never a restatement
+```
+ไม่จำกัดจำนวน
+- ลาได้ไม่จำกัดภายในอายุคอร์ส และงอกไปสัปดาห์ถัดไปปกติค่ะ
+
+ที่ขยายอายุคอร์สอัตโนมัติ 1 สัปดาห์ คือการที่เรากด cancel คลาส แล้วเลือก ปัญหาจากทางเรา
+ถึงจะเพิ่มให้นะคะ ถ้าลาปกติไม่เพิ่มให้นะคะ
+```
+**And, asked what happens when a make-up cannot fit inside the unchanged validity:**
+```
+แจ้งแอดมินเท่านั้นค่ะ ที่เหลือเราจะจัดการเองว่าจะยืดอายุคอร์สให้ไหมค่ะ
+```
+✅ **She confirmed the corrected restatement with "ถูกต้องค่ะ" (03:54).** 🔑 *Confirmed by HER, before anything is ruled — the rule that this failure produced, applied to the failure itself.*
+
+## What the model actually is
+| event | effect on the course expiry |
+|---|---|
+| **an ordinary leave** (the family's reason), any number of them | 🔴 **NONE.** Unlimited **inside the existing validity**; the make-up goes to the next week as usual |
+| **a class WE cancel, reason = "ปัญหาจากทางเรา"** | **+1 week, automatic** |
+| **a make-up that cannot fit inside the validity** | 🔴 **NOTIFY THE ADMIN AND STOP.** **The school decides by hand whether to extend.** 🚫 **The system never extends for this.** |
+🔑 **The lever is not "a leave" — it is WHOSE FAULT the missed class was.** **A commercial rule, not a scheduling one.** 📌 *It is also why a REASON enum exists on cancel at all.*
+🔑 **And her answer to the overflow case is the smallest possible one: tell a person, change nothing.** ⭐ *She chose a notification over an automatic rule — the opposite of what we had designed for her.*
+
+## ▶️ Consequences to be re-ruled by the owner (🚫 nothing is assumed settled)
+- **The "+1 week on every leave door" helper — GONE.** The only automatic +1 week is the our-fault cancel.
+- **Ruling 2 (an Undo gives the week back if empty)** — it was about leave-granted weeks, which no longer exist. **Does it survive for our-fault cancels?**
+- **Ruling 1 (forward-only)** — far less consequential now; almost nothing moves.
+- **`TASK-646` (pre-start declared absence, +1 week each) is LIVE ON uat and contradicts this model.** 🔴 **Must be ruled explicitly: does it stay, or go?**
+- **What SURVIVES unchanged:** the leave counter stops gating (unlimited leaves) · the screens stop reporting "x of y leaves used" · the admin notice, which is now the CENTRE of the design rather than a side-effect.
+
+## ✅ 2026-10-06 — THE CUSTOMER SETTLED THE LAST TWO **WITH NUMBERS, NOT WORDS**
+**Asked as consequences, exactly as the new rule requires (🚫 never as a rule, 🚫 never answerable with a bare "ถูกต้องค่ะ"):**
+| case put to her | her answer |
+|---|---|
+| 10-session course, 13 weeks, **the COACH is away twice** (not the family) → 15 weeks or still 13? | **"15 ค่ะ"** |
+| 4-session course, 5 weeks, **one absence DECLARED before the course starts** → 6 weeks or still 5? | **"6 ค่ะ"** |
+⭐ **She could not answer either with a yes. She had to pick a number, and a number reads one way only.** 🔑 *This is the method that should have been used on §11 four days ago.*
+
+## ⚖️ THE COMPLETE MODEL — ruled, and every line traceable to her own words or her own number
+| event | effect on the course expiry | source |
+|---|---|---|
+| **an ordinary leave during the course** (the family's reason), any number | 🔴 **+0** | her words, 10-06 |
+| **an absence DECLARED before the course starts** | **+1 week each** | her §11 example · her "6 ค่ะ" |
+| **a COACH's leave** (their own, or recorded by an admin) | **+1 week each** | her "15 ค่ะ" |
+| **a class WE cancel with reason `ปัญหาจากทางเรา`** | **+1 week** | her words, 10-06 |
+| **a make-up that cannot fit inside the validity** | 🔴 **NOTIFY THE ADMIN AND STOP** — a person decides | her words, 10-06 |
+
+## 🔴 A WARNING FOR WHOEVER BUILDS THIS — the triggers do NOT reduce to a principle
+**It is tempting to write the rule as *"+1 week whenever the family did not choose to miss the class"*. ⚠️ THAT RULE IS WRONG: a pre-start declared absence IS the family's choice and it still adds a week.**
+⇒ **The trigger list is EXPLICIT and CLOSED — three entries, no derivation.** 🚫 **Never implement it as a predicate over "whose fault"; a future reader who derives it will get the pre-start case backwards.** **Pin the three by value.**
+🔑 *This is the same failure that produced the whole night: a tidy summary standing in for a list the customer actually gave.*

@@ -71,3 +71,11 @@ where the owner sees them. When he is ready he opens Atlas with
 ---
 
 <!-- newest entry goes directly below this line -->
+
+## F-001 — 2026-10-06 — Porter (PM) — REQ-001 specified data correctness only; the delivered UI was unusable to the owner
+- **Status:** NEW
+- **What happened:** REQ-001's ACs checked only that every value matched the gate; nothing said how much one screen may show or how the owner moves between parts. It was delivered 2026-10-05 with "layout" on the UNVERIFIED list. On 2026-10-06 the owner called the UI "ขยะมาก ข้อมูลมากเกินไปรวดเดียว ... คนใช้ไม่ไหว" and asked for it to be split into pages/menus (now REQ-002).
+- **Rule involved:** NONE — no rule covered it (PM.md asks for testable ACs and unhappy paths, nothing on the usability / information load of a screen).
+- **How it was caught:** the owner, on first real use, one day after DELIVERED.
+- **Cost:** a second REQ and a rework round on two delivered screens.
+- **Evidence:** `requirements/REQ-002-ui-split-into-pages.md` §Problem; `requirements/REQ-001-v1-two-screens.md` §SPEC_DONE report (UNVERIFIED: layout).

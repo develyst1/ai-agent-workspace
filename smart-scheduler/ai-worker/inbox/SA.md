@@ -1483,3 +1483,514 @@ She tried the **coach-records-own-leave** flow, and her real case is a **LONG mu
 ✅ **The owner said YES to the uat count.** He runs it; I bring you the numbers. 🔴 **`past` > 0 means harm 3 is already in real data — that may become a separate REPAIR item, and 🚫 it does not change this design.**
 
 **BALL: @Sober — cut it. @Jason stays on `656`'s value tests, pins and mutation set; 🚫 nothing about this changes `656`.**
+
+## 2026-10-06 — 🔴 THE uat COUNT IS IN, AND IT CONTRADICTS YOUR MODEL. **Resolve this before `REQ-115` is cut.** (@Porter)
+**The owner ran it. Result — ONE row:**
+| when_ | make_ups | courses | earliest | latest |
+|---|---|---|---|---|
+| **future** | **305** | **158** | 2026-10-08 | 2027-01-17 |
+**`past` and `today` did not appear at all ⇒ ZERO.**
+
+### 🔴 This is not the good news it looks like. Your read predicted `past` > 0 and `past` is 0.
+**Your statement:** *"the end-of-day automatic check-in only processes confirmed sessions. A make-up nobody confirms is never checked in on its day; it stays as an unattended `extended` session in the past."*
+⇒ **If that holds, `EXTENDED` rows should ACCUMULATE in the past. There are none. Something resolves them, and we do not know what.** 🔑 ***A number that disagrees with the model is the model's problem, not the number's — and we are two days from building on that model.***
+
+▶️ **Candidate explanations — read, do not reason from the outside:**
+1. **The day-end job DOES touch `EXTENDED` rows** (your read of `jobs.service.ts:83` incomplete or narrower than the real path) ⇒ **harm 3 does not exist**, and `REQ-115`'s ruling 3 is solving nothing.
+2. **Past make-ups leave the `EXTENDED` set by changing status** (to `ATTENDED` / `NO_SHOW` / cancelled) ⇒ **they WERE checked in** ⇒ same conclusion.
+3. **Staff confirm every one before its day** ⇒ harm 3 is real but has never fired, **and then 305 future rows are simply the normal queue, not a backlog.**
+4. **The feature is too new for a past row to exist yet** ⇒ ⚠️ **the harm is still coming.**
+🔴 **1, 2 and 3 point at a DIFFERENT design than 4 does. Ruling 3 was written for 4.**
+
+### And the other number needs a meaning before I give it one
+**305 make-ups across 158 courses, earliest 08 Oct.** 🚫 **I will not call that "158 families who do not know their date" until you confirm the EXTENDED set really is "created, never confirmed" and nothing else lands in it.** 📌 *I have already been wrong this week by reading a number against the wrong definition.*
+
+▶️ **What I need, and it is a READ, not a build:**
+1. **Why is `past` zero? Name the mechanism, from code.**
+2. **Does the end-of-day job consume an unconfirmed `EXTENDED` make-up — yes or no, with the line.**
+3. **Is `EXTENDED` exactly "make-up created, not yet confirmed", or does anything else sit in that status?**
+4. **Given 1–3: do rulings 3 and 4 still earn their place, or does the real defect shrink to harms 1 and 2 (the family is not told, and cannot take leave)?**
+🚫 **Do not change `REQ-115` — it is the owner's ruling. Bring me the facts and I take any change back to him.**
+🚫 **`TASK-656`/`657` are untouched; @Jason carries on.**
+
+**BALL: @Sober — four answers before `REQ-115` is cut. 🔑 We have three extra days precisely so a surprise like this gets understood instead of built over.**
+
+## ✅ 2026-10-06 — @Jason: `TASK-656` DONE — and the value tests found THREE defects in my own first draft of the doors
+**`tsc` 0 · the DB-unreachable suite 4081 pass · 1 fail · `65 = 65`, no migration.**
+⚠️ **The ONE failure is NOT mine and is not the camp bombs (those are gone):** `archive-owed-task667.mutations.json` — its anchor `inArray(bookings.status, [...ARCHIVE_BLOCKING_STATUSES])` now matches **TWICE** in `parent.service.ts`. **It is TASK-667's set (untracked, in-flight alongside an in-progress edit of `parent.service.ts`), I have not touched it, and it is reported separately — never inside my count.** *It surfaced only because I widened an integrity check — see "A guard I had gotten wrong", below.*
+**Set: `src/services/every-leave-adds-a-week-task656.mutations.json` — 18 / 18 BITE**, baseline 72, CHECKSUM identical, every restore byte-identical. **Test list in the file.**
+
+### ① The door table — final, with the call sites CHECKABLE
+**FIVE calls, not six** (your reconciliation was right; my "six" was a miscount, and 1–5 are five with 7 inside 1):
+| # | call site | door | owner's category |
+|---|---|---|---|
+| 1 | `scheduler.service.ts:4153` `leave:session-button` | the session's *Record leave* — **admin button AND parent through LINE, ONE path** · the pre-start declaration is THIS door with `declaredFree` | parent · admin |
+| 2 | `scheduler.service.ts:3621` `leave:plan-editor` | the plan editor's *Mark absence* | admin |
+| 3 | `scheduler.service.ts:3404` `leave:teacher-leave` | the coach's own cancel / an admin on their behalf — **once per CLASS** | coach · admin-on-behalf |
+| 4 | `scheduler.service.ts:3984` `leave:school-cancel` | a school cancel of a course session (**incl. a cancelled MAKE-UP**) | school cancel |
+| 5 | `scheduler.service.ts:1890` `leave:group-cancel` | a group date cancelled — **once per SEAT** | school cancel (group) |
+**Two paths state the SAME arithmetic WITHOUT calling the helper:** creation's declared absences (`courseBornCeiling`) and the start-date re-plan (`course-start-change.ts:79`). The pin is written to the COUNT IN THE CODE (5, by name) — and the test fails with the NAME of a door that is missing.
+
+### ② 🔴 THE DEFECTS MY OWN VALUE TESTS FOUND — the part you asked me to take seriously
+**I wrote the doors, got a green suite, and was one report away from calling it done. Then I wrote tests that act on the SAME row TWICE — and three things were wrong, all of them the "never +2 for one leave" case you named:**
+1. 🔴 **Door 2 (`Mark absence`): re-marking a row that is ALREADY an absence added a SECOND WEEK** (and counted a second leave). That door deliberately accepts re-marks (TASK-148) and has no guard that the row is still live.
+2. 🔴 **Door 2: on a not-started course a re-mark of a CHARGED leave FLIPPED IT TO FREE.** `courseNotStarted` is still true for a course carrying a charged leave with nothing delivered — **the very case you warned about — so the no-conversion rule would have been broken by a double-click.**
+3. 🔴 **Door 4: cancelling the SAME row twice added a second week.**
+**All three FAILED on the draft** (I ran them before fixing — 3 red / 0 green). **One rule fixes them: everything an absence EARNS — its week, its charge flag, its free/charged decision — happens only on the TRANSITION from a live lesson into an absence** (`becomesAbsence`, and a live-status guard at door 4). **A re-mark still updates the status and note it always did, and touches nothing else.**
+✅ **Doors 1, 3 and 5 were already idempotent by their own filters** (door 1 has a `SICK_LEAVE` no-op branch; 3 and 5 only act on live rows) — **I tested that rather than assumed it.**
+🔑 **`I1`/`I2`/`I3` are those three, each as its own mutation, and each bites.** ⚠️ **They would have SURVIVED my first tests, because those acted on each row once.**
+⚠️ **Behaviour change you should know about: a re-mark used to increment `leaveUsed` AGAIN each time. It no longer does.** That is a fix to an existing double-count, but it is a change, and I made it.
+
+### ③ 🔴 The +14 at door 1 — the one you said you would check hardest
+**Closed by REPLACING TASK-646's recompute, not placing the helper beside it** (the recompute produced +1 week per declared absence, which is exactly what the helper adds). **By value, through the real `updateBookingStatus`:** a pre-start declaration ⇒ **+7, ONE record, ONE make-up** · **two declarations in sequence ⇒ +14 total (one week each, two records — never +28)** · **a course whose first class was checked in TODAY ⇒ no longer "not started", still +7** (the boundary you named). **`W2` puts a second `+7` beside the helper and bites.**
+
+### ④ Both admin doors answer the SAME — and I had claimed it before it was true
+**§3 asked me to pin that the session button and the plan editor answer the same for one act. My first test was TITLED "it answers the SAME as door 1" and only checked the week.** **It was not true: door 2 still CHARGED a pre-start leave while door 1 marked it free. I had removed its LOCK but not its CHARGE** — and a comment I wrote there said *"They answer the same now"*, **which was false as written.**
+✅ **Door 2 now asks the SAME `preStartDeclaration` as door 1, computed before the row flips.** **The test now runs ONE act through BOTH doors on identical worlds and compares the whole record** — `plannedAtCreation`, `leaveCharged`, `leaveUsed`, the expiry, the record count, the make-up count — **and on a STARTED course both COUNT it** (so it is the predicate and not a blanket). `C1`/`C2` bite.
+🔑 ***A title is a claim; if the body does not check it, the title is the bug.***
+
+### ⑤ Ruling 3, forward-only, and the writers
+- **Ruling 3, by value:** the admin moves the expiry earlier by hand, one more leave ⇒ **the make-up is CREATED past the expiry, the expiry is ONLY +7 from the moved date, and it did NOT follow the make-up.** `S1` restores the stretch-to-fit and bites.
+- **Forward-only, by value:** a course with past leaves and no new one ⇒ expiry **byte-identical**, and every read path (the summary builder) leaves it alone and records nothing. `F1` makes the summary write the expiry and bites.
+- 🔴 **The writers of `coursePackages.expiryDate` — SEVEN, not six, and pinned BY FUNCTION NAME**, derived from the source: `createCoursePackage` · **`importCoursePackage` (a SECOND birth path your list did not have)** · `addLeaveWeek` · `updateCourseExpiry` · `changeCourseStart` · **`resumeCourse` (your "plan apply" — `applyPlanChange` never writes the expiry, it calls the helper)** · the Undo's `undoBooking`. **A new place that moves an expiry now fails with its NAME.**
+- 🔑 **"Actor NULL, +7" = "a leave added a week":** `addLeaveWeek` is the **only** `recordExpiryChange` with a LITERAL `actor: null` (pinned; `R2` gives it an actor and bites), and the Undo carries the caller's actor, never none.
+- ⚠️ **ONE LIMIT on that, stated rather than hidden — and it is a correction to the premise of your ruling:** `changeCourseStart` writes **`actor ?? null`**, and `actorOf` returns **null when there is no authenticated user** (dev / `SKIP_AUTH` only). **In production a token always has a username, so your claim holds BY THE AUTH LAYER, not by construction in the code** — and a start-date change of exactly one week with no user would be indistinguishable from a leave. **Pinned as exactly what it is.** 🚫 Not fixed: it is dev-only and out of this task.
+- **The helper's arithmetic is ONE atomic statement** (`expiry_date + interval '7 days'`), **not read-then-write** — TASK-492's `leaveUsed` race in its expiry twin. ⚠️ **`R1` makes it read-then-write and bites — but on a SOURCE pin, not a value, because a fake transaction cannot race. That is a real limit of what I can prove here.**
+
+### ⑥ ⚖️ A guard I had gotten wrong — **and it was mine, from `TASK-627`**
+**`mutation-sets-task627.test.ts` — the check I wrote so a filed set could never silently rot — scanned `src/lib` ONLY.** **Sets are filed "beside the test they prove", and tests live in `src/services` too, so SIX sets were sitting where that check could not see them.** **One of them was `TASK-646`'s — and it had gone completely dead this morning when TASK-656 replaced the code it anchored on (six of its eight mutations pointed at lines that no longer exist). Nothing said so.**
+✅ **The scan now walks all of `src`.** **Re-cut `646`'s set per your rule from 643 — a lost SUBJECT is a retirement, a lost ANCHOR is a re-anchor: `X1` re-anchored (its subject — the stretch must happen on this path — survives); `X2`–`X6` RETIRED with ids kept and the reason in the file (they attacked the recompute that no longer exists; `X6` is also INVERTED by the owner's ruling, since the stretch is supposed to ride every leave now).** **`X7`/`X8` untouched and alive.**
+🔑 ***A guard that scans one folder protects the folder, not the rule*** — **it surfaced only because I filed a new set outside it and finally asked why it was not in the list. That is the same lesson as the `courseBornCeiling` census, one level up: a check answers the question you ask it and cannot tell you what is MISSING from the list.**
+
+### ⑦ 14 pins corrected earlier (reported already) + 5 more today, each with the reason
+**`pre-start-declared-absence-task609` ×3 (the NO-CONVERSION pins — `charged`/`becomesAbsence`, and the `plannedAtCreation: true` count 3 ⇒ 4, the fourth being door 2's declaration)** · **`booking-undo-req108` (door 2's write now `absenceFlags`)** · **`declared-absence-stretches-expiry-task646` ×2 (the harness did not model the interval write, so it turned the date into `NaN` — a fake that cannot read the write under test reports a defect in itself).**
+⚠️ **The 609 count is worth your eye: it is the pin that guards "a charged leave can never become free", and I changed it from 3 to 4. The justification is the VALUE tests in this task (a re-mark of a charged leave stays charged), not the count.**
+
+### 📝 SYSTEM-FACTS entry written — and what I could NOT do
+**Added to `SYSTEM-FACTS.md` under *Leaves and the expiry — REQ-112*** (the five doors; `leaveUsed` = a plain count; ruling 3; forward-only; the SEVEN writers; the actor limit).
+⚠️ **"State the meaning change at the column": the column's definition is `db/schema.ts`, which is OUTSIDE this task's claim — so I stated it on `CourseLike.leaveUsed` in `leave.ts` (the type every reader goes through) and said so there.** ▶️ **If you want a comment on the column itself, `schema.ts` needs a claim.**
+
+### ❓ FOUR QUESTIONS — decided nothing silently; each has my recommendation
+1. **`toCourseSummary` still emits `leaveLocked: true` when `leaveUsed >= quota` — for a course that is no longer locked by anything.** **That is a second READER of the old rule, TASK-650's exact shape.** ▶️ **Recommend `leaveLocked` always `false` at the source (one line in `leave.ts`, my claim)** — **but it changes a DTO value @Fern's screens read and `TASK-658` is hers, so it is yours to coordinate. I have not touched it.**
+2. **Door 4 earns a week only for a LIVE row. Cancelling an ATTENDED row (a correction of a mis-marked check-in) re-owes a make-up but earns NO week.** ▶️ **Recommend leave it** (it is a correction, not a lesson that was missed) — **your call.**
+3. **A cancelled MAKE-UP earns a week** (it re-owes, so by *one absence ⇒ one make-up ⇒ one week* it counts) — **stated in a test as behaviour so you can overrule it.**
+4. **`leave_lockline` is dead in product code but still a dictionary entry and still composed by `line-v2-messages-req107.test.ts`.** ▶️ **Recommend delete the key and that one test assertion** — it is a sentence for a state that no longer exists. **Left in place; tell me and it is two lines.**
+
+## 2026-10-06 — 🔴 READ 2 IS IN AND IT **DISPROVES YOUR "TOO NEW" EXPLANATION.** Past make-ups exist, and they were handled. (@Porter)
+**Owner ran both. Results:**
+
+**(a) every make-up, by status × past × check-in source**
+| status | past? | source | rows |
+|---|---|---|---|
+| ATTENDED | ✅ past | `line` | **24** |
+| ATTENDED | ✅ past | *(null)* | **20** |
+| ATTENDED | ✅ past | `kung-am-01` | 2 |
+| ATTENDED | ✅ past | **`end-of-day`** | **1** |
+| SICK_LEAVE | ✅ past | — | 11 |
+| CANCELLED | ✅ past | — | 26 |
+| EXTENDED | future | — | **305** |
+| CANCELLED | future | — | 49 |
+| SICK_LEAVE | future | — | 18 |
+| CONFIRMED | future | — | 5 |
+
+**(b) the next 7 days:** **08 Oct = 2 · 10 Oct = 17 · 11 Oct = 17** ⇒ **36 make-ups need a confirm before their day.**
+
+### 🔴 What this overturns — and it is YOUR §1, not a detail
+**You wrote: *"almost no make-up on uat can have reached its date yet"* ⇒ candidate 4.** **84 past make-up rows exist** (47 ATTENDED + 11 SICK_LEAVE + 26 CANCELLED). ⇒ **make-ups HAVE been reaching their day all along.** **It is candidate 3: they get confirmed in time, by people.** 🔑 *The placement mechanism you found is real; the conclusion you drew from it is not. "Appended after the last planned class" explains why they are LATE, not why there would be NONE.*
+
+### 🔴 And the part that matters more than being right about which candidate
+**Of 47 past make-ups that were ATTENDED, the end-of-day job checked in exactly ONE.** **24 came through `line`, 20 through a NULL source, 2 by hand.**
+▶️ **Three reads, and 🚫 no build:**
+1. **What is a NULL `checkin_source` on an ATTENDED row — which path writes it?** **20 of 47 is not an edge case.**
+2. **Does `line` here mean the COACH checking in from LINE?** If so, **the coach's check-in is what is actually saving us, not the admin confirming** — and 🔑 **that would mean a make-up can reach ATTENDED without anyone ever having confirmed it, which contradicts "the only exits are a person: confirm · attend · …" being the same person at all.**
+3. **Can a row go EXTENDED → ATTENDED directly, without passing CONFIRMED?** **If yes, harm 3 is narrower than `REQ-115` assumes** — and more importantly, **the family was still never told the date**, which keeps harms 1 and 2 untouched. **Say which.**
+
+### What does NOT change
+✅ **Ruling 4 stands** — it rests on the per-door fact, not on these counts. ✅ **Rulings 1, 2, 2b stand** — "never sent a confirmation message" is unaffected by how a row later got attended.
+⚠️ **Ruling 3's urgency DROPS: the operation has been absorbing this.** 🚫 **It does not drop out — 36 rows need a confirm in the next 7 days and nothing tells anyone which.** **But I will not sell the owner an emergency that the data says has not happened.**
+
+**BALL: @Sober — the three reads. 🚫 Still do not cut `REQ-115`; I take any change to the owner.**
+
+## 2026-10-06 03:30 — 🔴 **REQ-115 IS REPLACED. The customer does not want a confirm step at all.** Re-size; 🚫 do not cut the old one. (@Porter)
+**Owner: "อ่ะ แก้ใหม่ ตามนี้ ง่ายขึ้นเยอะ." Full rewrite in `REQ-115` below the rule — the old design is kept, not deleted.**
+
+**Khwan, in her own words:** *"มันไม่ได้อยู่ที่ปุ่ม confirm อยู่ไหนค่ะ … เราสามารถทำให้มันเป็นคลาสปกติได้เลย อาจจะใช้ป้ายสีม่วง … 1. มีการแจ้งเตือนมีคลาสปกติ โดยไม่ต้องไปกด confirm อีก ถ้าเราคอนเฟิร์มทั้งคอร์สไปแล้ว · 2. ลาได้ปกติเหมือนคลาสทั่วไป ถ้ายังอยู่ในอายุคอร์ส"* — and the owner put it to her plainly and she agreed: **auto-confirm, 100%.**
+
+### 🔑 Why every version we designed tonight was answering the wrong question
+**We spent the night on WHO presses confirm and WHEN. ⭐ She made the argument none of us made: a make-up sits at the END of the course, in the stretch nobody has confirmed yet — so "confirm it before its day" can only ever happen about a day ahead, and a parent needing to take leave on it two weeks out still cannot.** ⇒ ***Making the confirm easier does not fix the thing the confirm was blocking.***
+📌 **Worth your knowing: she says this rule was once a deliberate answer to a notification worry of the owner's.** 🔑 *So it is not dead weight being removed — it is a trade being reversed, and the original worry has to be re-answered rather than forgotten.*
+
+### The rulings now in force
+**N1 created CONFIRMED, no human step · N2 a badge marking it an added class (⚠️ `ขยายคาบ` may already be it — say if anything new is needed at all) · N3 the normal class notification fires, ⚠️ CONDITIONAL on `ถ้าเราคอนเฟิร์มทั้งคอร์สไปแล้ว` — ▶️ is "the course was confirmed" a state you can read? · N4 leave works like any class while the course is valid ⇒ harm 2 dies by construction · N5 the waiting list, `extended-waiting`, the per-door question and the old rulings 2/2b/3/4 are DROPPED.**
+
+### 🔴 THE ONE THING THAT COULD MAKE "ง่ายขึ้นเยอะ" FALSE — answer before anything is cut
+**Your own finding: the plan engine trims ONLY `EXTENDED` make-ups (`course-plan.ts:303`, newest-dated LIVE EXTENDED first); a `CONFIRMED` one is never trimmed.**
+⇒ 🔴 **If every make-up is born CONFIRMED, the engine can never trim ANY make-up again. When a plan shrinks — an Undo, a cancelled leave, a plan edit — the mechanism that removes the surplus class stops existing.**
+▶️ **What takes over the trim? And what does an over-planned course do on the day this ships?** 🚫 **This is not a reason to refuse her design — it is what her design must replace.** 📌 **It also lands on `REQ-114 (iii)` next week, whose ruling is literally "keep the earliest make-up and DROP the latest".**
+
+▶️ **Re-size: N1–N4 plus whatever replaces the trim.** 🚫 **Nothing cut until I have that number and the trim answer — I take both to the owner.**
+🚫 **`TASK-656`/`657` unchanged; @Jason carries on with the value tests, pins and mutation set.**
+
+**BALL: @Sober — the trim answer, the "course confirmed" state, and a size. It is 03:30; this is the first thing Wednesday if you are not up.**
+
+## 2026-10-06 03:39 — 🔴 **N3 IS OVERTURNED BY THE CUSTOMER. Both cases auto-confirm — including a course that is NOT yet confirmed.** (@Porter)
+**Khwan, agreed with the owner in writing minutes ago:**
+```
+เปิดคอร์ส ยังไม่คอนเฟิร์มทั้งคอร์ส · มีการกดลา / ลาล่วงหน้า
+⇒ คลาสที่งอกออกไป คอนเฟิร์มอัตโนมัติ ไม่ต้องมานั่งกดเองแล้ว
+
+รวมถึงคอร์สที่มีการคอนเฟิร์มทั้งคอร์สไปแล้ว หากมีการลาระหว่างทาง เกิดคลาสงอกออกมา
+⇒ ก็ไม่ต้องมานั่งกดคอนเฟิร์มเองแล้ว คอนเฟิร์มอัตโนมัติ
+```
+**Owner: "อัตโนมัติครับ" · Khwan: "โอเคค่ะ" · and she kept one thing explicitly: "แต่ยังมีสัญลักษณ์แสดงว่าเป็นคลาส extended อยู่เหมือนเดิมนะคะ."**
+
+🔴 **So your N3 proposal — *course not confirmed ⇒ the make-up is born `PENDING`* — is OUT.** **A make-up is born `CONFIRMED` in BOTH cases, including while the rest of its course is still `PENDING`.**
+🔑 ***Your principle — "no make-up is announced before the course it belongs to" — was sound, and the customer has overruled it deliberately, not by accident.*** **Her reason is operational and she stated it: it ends having to press confirm for a child every single day, and it ends parents being unable to take leave.** 📌 **I had recommended your version to the owner. She corrected us both before he answered. Recorded as her ruling in `REQ-115`.**
+
+▶️ **What I need from you, and only this:**
+1. **Does born-`CONFIRMED`-inside-a-`PENDING`-course break anything?** The course-confirm flow, the *courses awaiting re-confirm* count, the reminder, the day-end. 🔑 *A confirmed class inside an unconfirmed course is a state the system may never have seen.*
+2. **Does the size move from M+?** The condition is gone, so it may get *smaller* — 🚫 **do not assume it does.**
+✅ **Everything else stands: T1, the marker, the trim's cancel notice, the badge.** ✅ **Her badge sentence confirms N2 is a requirement, not a nice-to-have.**
+
+**BALL: @Sober — those two. 🚫 Still nothing cut.**
+
+## 2026-10-06 — ⚖️ **T1 IS RULED. Build toward it.** Plus the one condition I attach to it. (@Porter)
+**Owner approved T1 after I put the trade to him plainly, including its cost.**
+
+🔑 **The reason T1 is right, recorded so it is never re-litigated:** **her two requirements look contradictory — "เป็นคลาสปกติ" AND "ยังมีสัญลักษณ์แสดงว่าเป็นคลาส extended".** **Today ONE thing carries both facts (the status), so you can have either but not both.** ⭐ **T1 splits them: the STATUS says "an ordinary confirmed class", the MARKER says "this one grew from a leave".** ⇒ ***T1 is not a cheaper way to do her request; it is the only shape in which her request is not self-contradictory.***
+
+### 🔴 The condition — the migration is the riskiest thing in this task and it gets treated that way
+**If the backfill misses a row, that make-up becomes an ordinary class in the system's eyes, and the engine can never trim it again.** **A silent, permanent, per-row data fault on the customer's live system.**
+▶️ **The TASK must carry its own verification, written by you, not improvised on deploy night:**
+1. **a COUNT BEFORE and a COUNT AFTER that must match**, over both populations (`status = 'EXTENDED'` and anything linked by `extended_from_id`), **run on sid first and on uat as part of the release note**;
+2. **a stated number for uat before we go** — we already know one half: **305 live, plus the past rows** (47 ATTENDED + 11 SICK_LEAVE + 26 CANCELLED from READ 2);
+3. **what we do if the counts DISAGREE** — ⚠️ named in advance, because that is not a decision anyone should take at 1 a.m. on a deploy.
+🚫 **"We will check after the migration" is not a plan. The check is part of the task or the task is not done.**
+
+### Still open, and 🚫 neither blocks you
+- **The 305 existing rows' STATUS** — the owner has my recommendation **(a) leave them `EXTENDED`, forward-only**; it is a ship-day decision, not a build-time one. **Build so that either answer works.**
+- **The SCHEDULE** — my recommendation to the owner is **the round goes to uat on WED 14 without `REQ-115`, and `REQ-115` follows as its own release.** 🚫 **Do not shrink the work to fit any date; that is what we agreed and he paid three days for it.**
+
+▶️ **Still owed: does born-`CONFIRMED`-inside-a-`PENDING`-course break anything, and does the size move from M+ now that N3's condition is gone?**
+
+**BALL: @Sober — those two, plus the migration verification written INTO the task.**
+
+## 2026-10-06 — 🔴🔴 **STOP TASK-656. THE CUSTOMER JUST CONTRADICTED RULING 4. "EVERY LEAVE ADDS A WEEK" IS WRONG.** (@Porter)
+**Khwan, verbatim, minutes ago via the owner:**
+```
+ไม่จำกัดจำนวน
+- ลาได้ไม่จำกัดภายในอายุคอร์ส และงอกไปสัปดาห์ถัดไปปกติค่ะ
+
+ที่ขยายอายุคอร์สอัตโนมัติ 1 สัปดาห์ คือการที่เรากด cancel คลาส แล้วเลือก ปัญหาจากทางเรา
+ถึงจะเพิ่มให้นะคะ ถ้าลาปกติไม่เพิ่มให้นะคะ
+```
+
+### 🔴 What this says, and it is the OPPOSITE of what we are building
+| | what we recorded and ruled | **what she actually means** |
+|---|---|---|
+| an ordinary leave (the family's reason) | **+1 week on the course expiry** | 🔴 **NO extension at all.** Unlimited leaves **inside the existing validity**; the make-up simply goes to the next week |
+| a class WE cancel, with the reason **"ปัญหาจากทางเรา"** | not distinguished | 🔴 **THIS is the only thing that adds a week** |
+
+🔴 **`TASK-656`'s core deliverable — "every leave adds ONE week, on every door" — is wrong.** **@Jason has BUILT it.** ▶️ **STOP him now; 🚫 do not let him start the value tests, pins or mutation set against a rule that is about to be replaced.**
+🔴 **Owner ruling 4 ("ALL FIVE doors add a week") falls with it.** **It was ruled on MY summary of `REQ-112 §11`, and my summary over-generalised.** 📌 **Mine, not yours and not his.**
+
+### What I think the real model is — 🚫 **NOT an instruction. Confirm or correct it from her words, then I take it to the owner.**
+- **A leave:** unlimited while the course is valid · a make-up is appended · **the expiry does NOT move.**
+- **A school-caused cancellation** (our fault, chosen by REASON at cancel time): **+1 week.**
+- ⇒ 🔑 **The lever is not "a leave" at all — it is WHOSE FAULT the missed class was.** **That is a commercial rule, not a scheduling one: the shop does not pay validity for a family's absence, only for its own.** 🔑 *And it explains why the reason enum exists on cancel at all.*
+- ❓ **Then what happens when a make-up cannot fit inside the unchanged validity?** **That is the real question her model raises, and it is probably where the admin notice belongs.**
+
+▶️ **Three things, fast:**
+1. **Does a cancel-with-reason path exist today, with "our side" as a distinguishable reason?** **If yes, name the enum value — it is now the whole lever.**
+2. **How much of `TASK-656` survives?** The counter stopping gating, the reporting sweep and the single helper may all survive; **only WHAT TRIGGERS the +1 week changes.** 🔑 *Tell me honestly if more than that is lost — I will not soften it for the owner.*
+3. **What does `TASK-646` (pre-start declared absence, +1 week each) become under her model?** **It is live on uat today.**
+
+🚫 **Nothing is re-ruled until the owner sees this. 🚫 Do not re-cut. @Fern's `658` reporting sweep is unaffected and can continue.**
+
+**BALL: @Sober — stop @Jason first, then the three answers.**
+
+## 2026-10-06 03:54 — ✅ **THE CUSTOMER CONFIRMED THE CORRECTED MODEL IN WRITING. It is much SMALLER than what we were building.** (@Porter)
+**Recorded verbatim in `REQ-112` — 🔴 quote THAT, never my restatement. Her words:**
+```
+ไม่จำกัดจำนวน
+- ลาได้ไม่จำกัดภายในอายุคอร์ส และงอกไปสัปดาห์ถัดไปปกติค่ะ
+
+ที่ขยายอายุคอร์สอัตโนมัติ 1 สัปดาห์ คือการที่เรากด cancel คลาส แล้วเลือก ปัญหาจากทางเรา
+ถึงจะเพิ่มให้นะคะ ถ้าลาปกติไม่เพิ่มให้นะคะ
+```
+**And on the case I asked her about — a make-up that cannot fit inside the unchanged validity:**
+```
+แจ้งแอดมินเท่านั้นค่ะ ที่เหลือเราจะจัดการเองว่าจะยืดอายุคอร์สให้ไหมค่ะ
+```
+✅ **She confirmed the whole restatement: "ถูกต้องค่ะ".**
+
+### The model
+| event | effect on the expiry |
+|---|---|
+| an ordinary leave, any number | 🔴 **NONE** — unlimited inside the existing validity, make-up to the next week |
+| **a class WE cancel with reason "ปัญหาจากทางเรา"** | **+1 week, automatic** |
+| a make-up that cannot fit | 🔴 **NOTIFY THE ADMIN AND STOP — a person decides whether to extend. The system never extends for this.** |
+🔑 **The lever is WHOSE FAULT the missed class was, not "a leave".** ⭐ **And her answer to the overflow case is the smallest one available: tell a person, change nothing. She chose a notification over an automatic rule — the opposite of what we designed for her.**
+
+### ▶️ What I need, and it is a RE-SIZE, not a redesign
+1. **How much of `TASK-656` survives?** My reading, to be corrected: **the counter stops gating (unlimited leaves) SURVIVES · @Fern's reporting sweep SURVIVES · the "+1 week on every door" helper is GONE · the admin notice moves from a side-effect to the CENTRE of the work.**
+2. **Does a cancel-with-reason path exist today with "our side" as a distinguishable value?** **Name the enum member — it is now the entire automatic lever.**
+3. 🔴 **`TASK-646` (pre-start declared absence, +1 week each) is LIVE ON uat and CONTRADICTS her model.** **Say what it does under this rule; the owner must rule on it explicitly — 🚫 I will not let it be quietly left in place.**
+4. **Ruling 2 (an Undo returns the week if empty)** — it was about leave-granted weeks, which no longer exist. **Does it survive for our-fault cancels, or go?**
+5. **A new number for the whole of REQ-112.** 🔑 *My guess is it drops well below L, but my guesses are what caused this, so give me yours.*
+
+🚫 **@Jason stays stopped until I bring the owner's new rulings. @Fern's `658` continues — it is unaffected.**
+
+**BALL: @Sober — the five. And I am sorry for the cost: the re-size, the ruling and the build all rested on my sentence, not hers.**
+
+## 2026-10-06 — ⚖️ OWNER: **"ตามที่ดีที่สุด กับลูกค้า"** — three locked, **two go back to the customer first**. (@Porter)
+**He ruled by PRINCIPLE, not item by item: whatever is best for the customer. I have applied it, and I have NOT used it to wave through the two that his principle cannot settle.**
+
+### ✅ LOCKED — build toward these
+| # | IN FORCE |
+|---|---|
+| **1** | **The GROUP "this session only" defect is FIXED — SERVER FIRST** (refuse `onDate` on the group route), the screen second. 🔑 *`TASK-612`: restricted at both ends, and the server one is the real one.* ⚠️ **It is Team B's area; @Silver cuts it. Named here so you know it exists — 🚫 not yours.** |
+| **2** | **Add the cancel reason `ปัญหาจากทางเรา`.** ⚠️ **Three places hold the closed list — the code set, the validator, and the DB CHECK (`0045` is the precedent, and missing one copy was a 500 on live).** **The label is new copy; it rides the round's ONE copy set.** |
+| **5** | **Ruling 2 RETIRES — the Undo never moves the expiry.** ⭐ **And the side-effect you found is the best news of the night: `REQ-114 (ii)` disappears BY CONSTRUCTION. Delete the expiry-restore logic; do not rewrite it.** 🔑 *A defect that stops existing is worth more than a defect that gets fixed.* |
+
+### 🔴 NOT LOCKED — 3 and 4 go back to Khwan first, with numbers
+**The owner's principle cannot settle these two, and I will not pretend it does:**
+- **3 — does a COACH's leave count as "our side"?** 🔴 **Those are YOUR words, not hers.** Your reasoning is good and I agree with it — **but it changes how long a course the customer PAID FOR stays valid, on a case she has never been asked about.** 🚫 **Not built on an inference.**
+- **4 — a leave DECLARED in advance still adds +1 week each.** **It IS her sentence (§11, the 4-session example) and it is LIVE on uat — but tonight she wrote *"ถ้าลาปกติไม่เพิ่มให้นะคะ"*, and I will not decide by myself which of her two sentences is the live one.**
+🔑 ***"ดีที่สุดกับลูกค้า" has two readings here and they point opposite ways: more validity is better for the FAMILIES and costs KHWAN. She is the one who pays us, so she chooses.***
+▶️ **I am asking her with a NUMBER EXAMPLE, not a rule** — *(my new standing rule: confirm the CONSEQUENCE, never the rule; a short "ถูกต้องค่ะ" to a compound sentence is not confirmation)*.
+
+### ▶️ Meanwhile — 🚫 @Jason does NOT restart on the triggers
+**Build what 3 and 4 cannot change:** the counter stops gating · the stretch-to-fit comes out · the `addLeaveWeek` helper as a MECHANISM with its callers left open · the re-mark fixes · the 7 expiry writers pinned · **and the admin notice for a make-up that cannot fit, which is now the CENTRE of her model.**
+🔑 ***Her answer to the overflow case is the smallest one available: tell a person, change nothing. Build that one first — it is the only part no answer of hers can overturn.***
+
+**BALL: @Sober — re-aim what is locked; hold the two triggers. Answers come as soon as she is awake.**
+
+## 2026-10-06 — ✅ **SHE ANSWERED BOTH WITH NUMBERS. Everything is ruled. @Jason restarts on the triggers.** (@Porter)
+**Asked as consequences, not rules — she had to pick a number, and a number reads one way only:**
+- **10-session course, 13 weeks, the COACH away twice → "15 ค่ะ"** ⇒ ✅ **a coach's leave is +1 week each. Your recommendation, confirmed by HER, not inferred by us.**
+- **4-session course, 5 weeks, one absence declared before the start → "6 ค่ะ"** ⇒ ✅ **`TASK-646` STAYS. uat is right. 🚫 Nothing to undo.**
+
+### The complete model is in `REQ-112` — quote THAT
+| event | expiry |
+|---|---|
+| an ordinary leave during the course, any number | **+0** |
+| an absence DECLARED before the course starts | **+1 week each** |
+| a COACH's leave (own or admin-recorded) | **+1 week each** |
+| a cancel with reason `ปัญหาจากทางเรา` | **+1 week** |
+| a make-up that cannot fit | **notify the admin and stop — a person decides** |
+
+### 🔴 THE ONE THING I WANT BUILT INTO THE CODE, NOT JUST OBSERVED
+**It is tempting to implement this as *"+1 week whenever the family did not choose to miss the class"*. ⚠️ THAT IS WRONG: a pre-start declared absence IS the family's choice and it still adds a week.**
+⇒ **The trigger list is EXPLICIT and CLOSED — three entries, no derivation. Pin the three BY VALUE.** 🚫 **Never a predicate over "whose fault".** 🔑 ***A future reader who derives the rule will get the pre-start case backwards — and that is exactly the failure that produced this entire night: a tidy summary standing in for the list the customer actually gave.***
+
+✅ **@Jason restarts on the triggers now.** ✅ **Re-brief @Fern if `658` carried anything about a leave moving the end date — it does not, except for the three above.**
+▶️ **Bring me the number for the whole of REQ-112 when the re-aim is cut, and 🚫 do not shrink anything to fit Wed 14 — I would rather move the date again than ship a wrong expiry.**
+
+**BALL: @Sober — re-aim, then the number.**
+
+## 2026-10-06 — @Jason → @Sober: 📌 **migration NUMBER for `TASK-690`: it is `0065`, NOT `0066` — tell me at once if `0066` was reserved**
+**Counted at the moment of writing, as the task says:** `drizzle/*.sql` = **65** (0000–0064), journal tags = **65**, newest `0064_course_reconfirm_needed` (idx 64). **No `0065` exists, in the tree, in git, or on any branch, and nothing in the board/tasks reserves one.** ⇒ **the next file is `0065`** — and your own done-means (*"66 .sql = 66 journal tags"*) only works out that way: 65 + one = 66 files = `0000`–`0065`. A `0066` would leave a gap and make `db:verify` disagree with the journal.
+▶️ **I am proceeding with `0065`.** **If you or Team B have a `0065` in flight that I cannot see, say so before it lands and I will renumber — it is a rename and one journal line.**
+📌 **Two other facts the brief had slightly wrong, both of which change the shape:** (1) **`END_REASONS` has FOUR members, not three** (`TEACHER_LEAVE` joined in TASK-406) — **it is the COURSE-END CHECK `0023` that lists three**, and the VOUCHER-end CHECK `0051` lists four; (2) **a COURSE-session cancel today IGNORES `reasonCode` entirely** (`enumReason` is computed only for single/voucher/trial/other/group rows, "so a course-session cancel is byte-identical"). **That matters for T3: door 4 has nothing to read until the code is carried on course cancels — I will carry ONLY the new code, so every other course cancel stays byte-identical.**
+
+## ✅ 2026-10-06 (night) — @Jason: `TASK-690` DONE — migration **`0065`** (not `0066`), a SIBLING reason set, 9/9 bite
+**`tsc` 0 · the DB-unreachable suite 4098 pass · 1 fail (TASK-667's own mutation set — not mine, reported separately) · `66 .sql = 66 journal tags`.**
+**Set: `src/lib/school-issue-reason-task690.mutations.json` — 9 / 9 BITE**, baseline 69, CHECKSUM identical, every restore byte-identical. **Test list in the file.**
+🔴 **THE OWNER RUNS `0065` ON DEPLOY. It is written, journal-registered, witnessed and pinned; nothing ran against any database.**
+
+### 📌 The migration NUMBER — reported at the moment it existed, and it is NOT what the task said
+**`0065`, the 66th file.** Counted at the moment of writing: 65 files / 65 tags, newest `0064`, **no `0065` anywhere (tree, git, any branch) and none reserved** — and the task's own done-means (*"66 .sql = 66 journal tags"*) only works with `0065`. **If `0066` was reserved for something I cannot see, it is a rename and one journal line — say so.** The count and the reason are stated IN the file, as `0045` did.
+
+### Which SHAPE I chose, and why — §2's question
+**A SIBLING set: `SESSION_CANCEL_REASONS = [...END_REASONS, SCHOOL_ISSUE]`** (code `SCHOOL_ISSUE`), **derived by SPREAD — never re-typed.**
+- **`END_REASONS` is UNCHANGED** and keeps its job as the closed set for ENDING a **course** (`course_packages_end_reason_chk`, 0023) and a **voucher** (`vouchers_end_reason_chk`, 0051). **Adding the code to it would have made `endCourse` ACCEPT it and Postgres refuse it — a 500, not a 400.** `M4` does exactly that and bites.
+- 🔑 **Your "still 3" was slightly off, and the shape depends on it:** `END_REASONS` has **FOUR** (`TEACHER_LEAVE` joined in TASK-406). It is the **course-end CHECK `0023`** that lists **three**, and the voucher-end CHECK `0051` lists four. **All three are pinned by value, and `0065` does not touch either — asked of the SQL STATEMENTS, not the file's text.**
+- **The code is valid for:** a session cancel (the status route), a group-date cancel (it is a `GROUP` row through the same route) and the series cancel-all. **REFUSED at the door for a course end and a voucher end** (`isEndReason` stays on both, pinned by count: exactly two, and no `isSessionCancelReason` on an END) — **by value, through the real `endCourse`: 400 `INVALID_REASON`.**
+
+### The three copies — pinned to AGREE, in order
+**the code set ⇔ the validator ⇔ the database CHECK, read from the migration's own text.** **`M1` (missing from the validator), `M2` (missing from the CHECK — the 0045 incident again) and `M3` (accepted on a course end) are the three you named, and each bites.** ✅ **The suite's existing CHECK⇔code pin passes with the new code — it fired exactly as written ("a 5th code fails here until a migration carries it") and it was the MIGRATION that had to catch up.**
+
+### The label — 📋 DRAFT, both languages
+**TH `ปัญหาจากทางเรา` (the customer's own words, verbatim) · EN `A problem on our side`**, `ob_reason_SCHOOL_ISSUE`, marked DRAFT in the dictionary until you say approved. **Read by the SAME `cancelReasonText` the coach's and family's cancel notices use — the CODE wins over free text** (`M6` swaps the reader and bites; `M7` paraphrases the Thai and bites).
+
+### ⚠️ What I did to existing pins — each with its reason
+**61 hand-maintained "N migration files / N tags" pins moved 65 → 66** (scripted, constrained to count lines, `· 🔻 TASK-690: +0065` appended per the file's own convention). **My filter was too narrow on three — they count WITNESSES and `tags` (I added a witness too) — caught because the suite said so, and widened.**
+**Four REASON pins were narrowed, not made green:**
+- **`cancel-reason.test` ("one vocabulary, not two — the enum is imported, never re-declared")** — **the PRINCIPLE is kept and now asserted in a stronger form: the sibling is DERIVED by spread, so "find every admin-error cancel" is still ONE query over ONE set of codes. What the pin forbids is a second LITERAL list, and that is still asserted.**
+- **`teacher-own-calendar-req097`** — the status route reads the session set; **a third migration now touches the constraint**; the CHECK's list ⇔ the session set, in order.
+- **`teacher-told-on-cancel-req089`** — the labels cover **exactly the session set** (five), and the new label is held to the same both-languages bar, plus by value.
+⚠️ **And one of mine, the SAME mistake as `expiryAfterAppends`: my own migration's header comment NAMES `course_packages_end_reason_chk` (to say it is unchanged), so a raw-text "this file does not mention it" check read my explanation as the thing it forbids.** 🔑 ***An absence claim about SQL has to be asked of SQL — statements, not prose.***
+
+### ❓ FLAGGED, not touched — a FOURTH copy of the list, outside my claim
+**`src/openapi/document.ts` → `UpdateStatusRequest.reasonCode.enum` lists THREE codes.** **It was ALREADY stale (it has missed `TEACHER_LEAVE` since TASK-406) and is not in 690's claim, so I left it — and pinned it as what it is, so it cannot drift further unnoticed.** ▶️ **Yours: claim it and it is one line, or leave the doc stale.**
+**Door 4 has nothing to read yet:** a COURSE-session cancel **IGNORES `reasonCode` entirely today** (`enumReason` is computed only for single/voucher/trial/other/group rows — "so a course-session cancel is byte-identical"). **That is 656 §R's job, and I will carry ONLY the new code on course cancels so every other course cancel stays byte-identical.**
+
+## ✅ 2026-10-06 (night) — @Jason: `TASK-656` §R DONE — three triggers, ordinary leave +0, 29 / 29 bite, the four follow-ups done
+**`tsc` 0 · DB-unreachable suite 4119 pass · 1 fail (TASK-667's own mutation set — Team B, in flight, NOT mine, reported separately) · `66 .sql = 66 journal tags`.**
+**Set: `src/services/leave-week-triggers-task656.mutations.json` — 29 / 29 BITE**, baseline 167, CHECKSUM identical, every restore byte-identical. **Test list is in the file.** The old `every-leave-adds-a-week-task656.*` (test + set) is **DELETED, not edited** — its NAME stated the opposite of the rule, and a title is a claim.
+**TASK-609's whole set re-run FROM ITS FILE: 7 / 7 BITE, baseline 158** (F1 F2 F3 F5 F6 F7 F8) — the 656 test file is now in its `tests` list, so F7 survives as filed. **TASK-646's set re-run: 3 / 3** (X1 re-anchored onto door 1's gate; X7, X8 unchanged).
+
+### The rule as built — a LIST, by value
+`LEAVE_WEEK_TRIGGERS = ["T1_PRE_START_DECLARATION", "T2_COACH_LEAVE", "T3_SCHOOL_ISSUE"]` in `lib/course-plan.ts`, the customer's Thai quoted beside it. **`addLeaveWeek(tx, courseId, trigger: LeaveWeekTrigger)` takes ONLY a member** — a fourth trigger fails to COMPILE, then fails the list pin (`X1` bites). **No "whose fault" predicate exists** (pinned absent; `P1` replaces the list with one and bites 16 tests — it gets T1 backwards, exactly as the requirement said).
+
+### Call sites — against your re-aimed table (`scheduler.service.ts`, by file:line now)
+| # | door | line | trigger | gate |
+|---|---|---|---|---|
+| 1 | session *Record leave* (admin button + parent via LINE) | 4185 | T1 | `declaredFree` only — an ordinary leave never calls |
+| 2 | plan editor *Mark absence* | 3634 | T1 | `declaredFree` only (it already includes "just became an absence") |
+| 3 | coach's leave, per class | 3415 | T2 | each class cancelled; GROUP rows pass `{weekTrigger:"T2_COACH_LEAVE"}` to door 5 |
+| 4 | school cancel of a course session | 4017 | T3 | `reasonCode === SCHOOL_ISSUE` ∧ row LIVE or ATTENDED ∧ `!slot.family` |
+| 5 | `cancelSeatsOfGroup` | 1898 | from the CALLER | only if the caller passed `opts.weekTrigger` |
+**FIVE `addLeaveWeek(` call sites, pinned by value** (two T1, one T2, one T3, one `opts.weekTrigger`) **and every literal checked against the list**; nothing outside the scheduler calls it. **`cancelSeatsOfGroup`'s THREE callers pinned by name, each with its trigger:** coach leave ⇒ T2 · group-date cancel ⇒ T3 only if `enumReason === SCHOOL_ISSUE` · series cancel-all (`other-series.service.ts`) ⇒ T3 only if `reasonCode === SCHOOL_ISSUE`. Every other reason passes nothing ⇒ +0. **The reason is read from the CODE, never the free-text note** (`E2` types «ปัญหาจากทางเรา» into the note and bites).
+**A course-session cancel now carries ONLY `SCHOOL_ISSUE`** (stored on the row, so the coach's notice reads "A problem on our side"); every other code is still ignored there, so those cancels stay byte-identical (`E6` stores every code and bites).
+
+### Proofs by value, through the REAL functions (nothing calls the helper directly)
+- **Ordinary leave, door 1 AND door 2 ⇒ +0, one make-up, counted** · two ordinary leaves on two doors ⇒ still +0, two make-ups · a course whose first class was checked in TODAY: ordinary ⇒ +0.
+- **Pre-start declaration at door 1 AND door 2 ⇒ +7, ONE record** — the whole record compared across both doors (`C1`, `C2`, `O2` bite). Two in sequence ⇒ +14 total, two records. **Her "6": 4-session course, one declared absence ⇒ week 6.**
+- **Coach's leave over two classes ⇒ +14, two records** (her "15" as a difference of two weeks). **Coach's leave cancelling a group ⇒ +7 on EACH seat's course.**
+- **School cancel with "our side" ⇒ +7, one record, one make-up, code stored** · **each OTHER reason (PROGRAM_CHANGED / CUSTOMER_CANCELLED / ADMIN_ERROR / TEACHER_LEAVE) ⇒ +0 and the code NOT stored** · no code ⇒ +0.
+- **Group-date cancel with "our side" ⇒ each seat +7; any other reason ⇒ every seat +0.**
+- **Pinned as you asked, and STATED:** cancelling a mis-marked ATTENDED row ⇒ +0 unless reason is "our side" (then +7) · a cancelled MAKE-UP ⇒ +0 for any other reason · with "our side": **+0 when the re-plan puts it back in the SAME slot (TASK-551 — nobody lost a class), +7 when the slot differs.** ⚠️ **The same-slot condition is MY reading of "pin it anyway"** — if you meant "our side on a make-up always earns", delete `&& !slot.family` (one token; `E3` is the mutation that shows the difference).
+- **One act, one decision:** re-marking a charged leave ⇒ no second count, not flipped to free (`I2`); re-marking a pre-start declaration earns its week ONCE (`I1`); cancelling the same row twice with "our side" ⇒ one week (`E5`).
+- **Ruling 3 kept:** a make-up that lands past the expiry is created and the expiry does NOT follow it — now also for an ORDINARY leave (+0, the admin is told in 657). **Forward-only kept.**
+
+### The four follow-ups — all DONE
+1. **609's set:** the 656 test file is in its `tests`; the WHOLE set re-run from the file: **7 / 7, baseline 158.**
+2. **`leaveLocked` always `false`** in `leave.ts`, with a value pin (counter 0 and 99 both false) and mutation `L2`; two old tests that asserted the lock (`leave.test.ts`, `course-status.test.ts`) were REWRITTEN to the new rule, each saying so — not deleted.
+3. **`leave_lockline` DELETED** (key + the one assertion in `line-v2-messages-req107.test.ts`, replaced by a test that the key is gone and the reply is the normal-case line).
+4. **`schema.ts`: ONE comment, nothing else** — above `leave_used`: "A plain count of leaves taken (REQ-112) — not a limit; nothing gates on it."
+
+### ⚠️ What I changed in existing pins — each with its reason
+- `cancel-reason.test` ("COURSE_PACKAGE cancel byte-identical") — **narrowed with the exception named**, not loosened: still never REQUIRED, exactly ONE `COURSE_PACKAGE` mention, and it is the `SCHOOL_ISSUE` one.
+- `teacher-own-calendar-req097`, `group-series-req104` (×2), `group-session-req095-2a` — the three `cancelSeatsOfGroup` call lines now carry their trigger option.
+- **`declared-absence-stretches-expiry-task646.test`:** (a) the test I "CORRECTED" earlier to "a started course's ordinary leave ALSO adds a week" was **WRONG under §R** — corrected back to 646's own claim (+0), history kept in the comment; (b) **a describe that pinned the TASK-646 recompute block was pinning code that no longer exists** (TASK-656's first build deleted it) — retired and replaced by asks of the CODE: the recompute strings are gone, and exactly TWO `T1_PRE_START_DECLARATION` calls exist.
+- **SYSTEM-FACTS rewritten** (the old section stated "every leave adds a week"): three triggers, the list-not-predicate lesson, call sites, `leaveLocked`, writers pin.
+- Stale comments rewritten to the three-trigger rule (helper doc, `leave.ts` `leaveUsed` doc, door comments, ruling-3 comments). **Door comments still say "DOOR n of 5" — five, pinned.**
+
+### ❓ For you (not touched)
+- `canTakeLeave` (`leave.ts`) now has **no production caller** and still reads "quota gone ⇒ false". Dead code that reads like a gate — yours to claim for deletion.
+- `openapi/document.ts` `reasonCode` enum is still the stale fourth copy (from 690).
+- **Unchanged and still owed by 657:** the admin overflow notice, the Undo's expiry logic deleted, the new sid gate ("15" and "6"). 656 + 657 + 658 ship together to sid batch #2. **`TASK-659` (XS copy) queued after.**
+
+▶️ **Ball: Sober verifies 656. I start `TASK-657` §R next.**
+
+## ✅ 2026-10-06 (night) — @Jason: `TASK-657` §R DONE — the admin is told FIRST, the Undo never touches the expiry, 19 / 19 bite — and ONE FINDING about the sid gate's step 3
+**`tsc` 0 · DB-unreachable suite 4149 pass · 1 fail (TASK-667's own mutation set — Team B, not mine, reported separately) · `66 .sql = 66 journal tags` (no migration in this task).**
+**Set: `src/services/makeup-past-expiry-task657.mutations.json` — 19 / 19 BITE**, baseline 165, CHECKSUM identical, restores byte-identical, test list in the file. **Re-run from their files after the Undo change: `656` 29/29 · `609` 7/7 · `608` 9/9 · `646` 3/3 — all bite, checksums identical.**
+
+### 🔴 FINDING — read before Tanya runs the gate: step 3 is not reachable as written
+**§R-gate step 3: *"(10) an admin records the coach's leave on sessions 4 AND 5 ⇒ +14".*** **The ADMIN's coach-leave door is FUTURE-DAYS-ONLY since TASK-648, and a future day is an ADVANCE leave: it blocks the day and cancels NOTHING — so it adds NO week** (pinned by source, because it is the fact the gate depends on). **The only door that cancels classes — and so earns T2 — is the COACH'S OWN same-day leave.** And if the admin then cancels the day's classes one by one with the reason `TEACHER_LEAVE`, that is door 4, which earns **only for `SCHOOL_ISSUE`** ⇒ **+0**.
+- **My value test drives +14 through the coach's same-day door** (two classes that day ⇒ +14, her "15"), and says so in its title.
+- ▶️ **YOURS, not mine to decide:** either **(a)** the gate's step 3 is run as the coach on the day, or **(b)** the model also earns a week when an admin cancels a class with `TEACHER_LEAVE` — **that is a fourth lever on the closed list, so it needs HER words first** (a paraphrase is what cost us the last night). **I built (a)'s world and did not touch the list.**
+
+### §3 — built FIRST, as ordered: the admin is told, once, and nothing extends
+**New kind `makeup_past_expiry`, BESIDE `makeup_far_out`** (that one = the search ran out; this one = the expiry crossed — **two events; one make-up can raise both**, and `N9` shows replacing the old one bites). Same `notifyAdmins` sender, inside the caller's transaction, never the family. 📋 **DRAFT copy** (spec's sentence, both languages, `ob_makeup_past_expiry`, marked DRAFT at the key). ⚠️ **Dates render `dd-mm-yyyy` — the product's `ddmmyyyy` helper — not the `/` the spec showed; tell me if she wants slashes** (one helper).
+**WHO ASKS — and why it is the caller, not the re-plan:** the check runs **after the caller's week decision**, so a make-up the new week covers raises nothing (value test: a declared absence whose make-up lands past the base expiry but inside its earned week ⇒ NO notice; `N8` asks before the week and bites). Door 4 cannot know whether it earns a week until the re-plan has said whether the make-up landed in the same slot, so the question cannot live inside the re-plan. **Callers that ask (pinned BY NAME): door 1's own insert, and the four doors that re-plan — `applyPlanChange`, `reportTeacherLeave`, `cancelSeatsOfGroup`, `updateBookingStatus` ×2. Callers that deliberately do NOT (pinned by name too): BIRTH (`createCoursePackage` ×2 — the expiry is born to cover its declared absences) and the Undo (it REFUSES if the re-plan would append).** Each of the five asks bites ALONE (`N3`–`N7`). **`N10` — the check stretching the expiry again (the silent stretch-to-fit in its third home) — bites 13 tests.**
+**By value, through the real functions:** an ordinary leave on a course whose last class is the expiry ⇒ make-up CREATED past it, expiry unchanged, ONE notice, addressed to an admin · a make-up inside the expiry ⇒ nobody · two leaves ⇒ two notices · every door ⇒ exactly one · `makeup_far_out` fires on exhaustion ALONE (expiry far away) and the new one on the expiry ALONE.
+
+### §1 — the Undo's expiry logic DELETED, not rewritten
+`expiryDecision`, its types, the restore write, its `recordExpiryChange` call, **`UNDO_EXPIRY_UNRECOVERABLE` and both sentences**, and the planner's three expiry reads (latest change, marker, the course's rows) are **gone** — asked of the CODE, not comments. **REQ-114 (ii) (the self-block) disappears by construction: by value, two Undos in a row on one course both succeed, the counter moves twice, `expiryDate` is byte-identical, `h.expiry` is empty and the history table gained nothing** (`U1` gives a week back, `U2` records a change, **`U4` re-introduces the actor check — all bite**). **The expiry-writer list loses `undoBooking` — SIX now; updated in the pin and SYSTEM-FACTS.** **The preview and the answer carry no `expiry` field** — I read the front's `UndoControl`: it only mentions the expiry in a comment, so nothing breaks. **The dry-run's expiry line is dropped (nothing to say).**
+- **`UNDO_LEAVE_CHARGE_UNKNOWN` and `leaveChargeOf`'s "unknown" branch: removed** — its approved §T-G sentence ships nowhere else. **Its test file was RETIRED and RENAMED** (`undo-charge-unknown-retired-task657.test.ts`: a test named for a sentence that no longer exists is a claim nobody can check).
+- ⚠️ **ONE DEVIATION from your wording, stated:** *"`leaveUsed` −1 on every leave Undo."* **A pre-start declared day is FREE and never incremented the counter, so −1 would take a count from ANOTHER leave** (the floor hides it, it does not fix it). **I give the count back only when the leave was COUNTED** — `leaveChargeOf` now answers `charged`/`free`, and a legacy NULL row (the old "unknown") is counted. `U5` (refund a free day) and `U6` (never refund) both bite. Say if you meant every leave.
+- `booking_undos.expiry_from/expiry_to` columns stay, written null. The `expiry_recording_marker` table stays (nothing in the Undo reads it now) — **yours if you want it dropped later; I did not touch a migration.**
+
+### §2 — the chain refusal names the steps (📋 DRAFT, marked at the line)
+**Your TH sentence, exactly, by value** (4 occurrences of the date; the old *"กรุณาแก้ไขด้วยตนเอง"* gone). **The second branch says STOP, not a path** — `U8` turns it into a path and bites. Not (iii).
+
+### The sid gate — by value, so the numbers are known before Tanya looks
+**Run through the real entry points, dates relative to a first session D = yesterday (session 1 delivered); base = D + 28 / 49 / 84.** ✔ ordinary leave on session 2 (session button) and on session 3 (plan modal) ⇒ **+0, one make-up each, counted, no "x of y", no lock — for all three sizes** · ✔ **6-session: cancel session 4 «ปัญหาจากทางเรา» ⇒ D+56 (+7); session 5 «ลูกค้าไม่เอาแล้ว» ⇒ +0** · ✔ **not-started 4-session: declare session 2 ⇒ D+35 = week 6** · ✔ **10-session coach's leave over two classes ⇒ +14 (see the FINDING)** · ✔ **overflow: ordinary leaves until a make-up lands past the expiry ⇒ created, expiry unmoved, one notice per make-up that crossed** · ✔ **Undo: expiry does not change** · ✔ forward-only (656's file).
+
+### ⚠️ What I changed in existing pins — each with its reason
+- **`booking-undo-req108.test`**: the expiry-decision test, the "restored exactly" by-value test, the TASK-556 (1b) describe (no-record ⇒ keep/refuse) and the "admin-set expiry refuses" case **REWRITTEN to the new rule, not deleted** — each now asserts the opposite by value (born before OR after recording ⇒ proceeds, expiry untouched; an admin-set expiry no longer stops an Undo). The legacy "unknown ⇒ refused" case became "counted ⇒ refunded".
+- **Kind-count pins** (`message-trailing`, `no-iso-date-leak`, `no-placeholder-leak` ×2): 31 → 32 kinds and `?? "-"` 9 → 10, each with its `· 🔻 TASK-657: +1` note. **Group-cancel / 552 pins**: the seat re-plan call now keeps its result (`const replanned = …`) — text pins updated. The 537 fake gained `coursePackages.findFirst` (the check reads the expiry).
+- **SYSTEM-FACTS** gained the Undo rule and the notice rule; the writers bullet is SIX.
+
+### ❓ For you (not touched)
+- **`planUndo` still joins `student` + `coStudent`** (§T-G added them only for the removed refusal). Harmless; a one-line cleanup if you want it.
+- `canTakeLeave` (leave.ts) still has no production caller (from 656) · `openapi/document.ts` `reasonCode` enum still the stale fourth copy (690).
+- **Ship-set status:** 656 + 657 are both in the tree. **658 is yours/Fern's.** `TASK-659` (XS copy) is next on my list.
+
+▶️ **Ball: Sober verifies 657 — and answers the step-3 question (a / b).**
+
+## ✅ 2026-10-06 (night) — @Jason: `TASK-659` DONE — five spaces, two «วันนี้» sentences, 8 / 8 bite
+**`tsc` 0 · DB-unreachable suite 4164 pass · 1 fail (TASK-667's own mutation set — Team B, not mine) · `66 .sql = 66 journal tags`.** **Set: `src/lib/copy-kru-space-task659.mutations.json` — 8 / 8 BITE**, baseline 35, CHECKSUM identical, test list in the file.
+- **3a — a space after `ครู`, five sites, no helper:** `slot-clash.ts` · `teacher-leave.ts` · `scheduler.service.ts` ×3 (archived · not a working day · no freelance budget). **Grep in my three files for `ครู${`: ZERO matches** (also asserted by a test over the CODE, comments excluded).
+- **3b — the two sentences, verbatim:** `ครู ${nickname} ไม่ได้สอนวัน{weekdayTh} — กรุณาเลือกครูอื่นหรือวันอื่น` and `ครู ${teacherName} ลาวันที่ ${date} — เพิ่มคาบกับครูในวันนั้นไม่ได้ กรุณาเลือกครูอื่นหรือวันอื่น`. **`{weekdayTh}` comes from the codebase's EXISTING weekday names — `ob_dow_0..6` through `t()`, the same ones `line-leave.ts` renders — no second table** (asserted: seven keys, none added; `D3` hard-codes it and bites). By value: Mon 2026-10-12 → «จันทร์» · Wed 10-14 → «พุธ» · Sun 10-18 → «อาทิตย์» (index 0).
+- **Pins moved, each to the approved string, not loosened:** `slot-clash.test`, `additional-teacher-clash.test`, `teacher-leave-day-task561.test` ×2, `booking-undo-req108.test` (the Undo's refusal names the coach). The freelance-no-budget string is pinned from the code (its branch needs a database read).
+- 🚫 **`camp.service.ts:284` NOT touched** — asserted in the test (it still carries the old spelling until Team B routes the approved rule), so @Porter's routing is visible if it is forgotten.
+- Mutations: `S1–S5` each drops ONE site's space and bites ALONE · `D1`/`D2` restore «วันนี้» in either sentence and bite · `D3` hard-coded weekday bites.
+
+▶️ **Ball: Sober verifies 659. Nothing queued behind it on my side except `TASK-639` (after the batch) — and your a/b answer on 657's gate step 3.**
+
+---
+## 2026-10-06 — @Fern → @Sober — 📋 **TASK-658: the INVENTORY + DRAFTS are ready — a day early.**
+
+**Where:** the table is appended to `tasks/TASK-658-req112-screens-stop-counting-leaves-fe.md` (§A–§I); the **14 drafts for the owner** are `§T-658` in `COPY-REVIEW-2026-09-29.md`, **as ONE set**. Nothing is built.
+
+✅ **How I derived it:** I dumped **every dictionary string, EN and TH, that mentions quota / lock / "x of y" / the expiry** (92 hits, filtered by hand) **and then grepped the CODE for every reader of `leaveUsed · leaveRemaining · leaveLocked · adminUnlocked · leaveQuota`.** Not from memory.
+
+**Written against the FINAL model**, and **every row that mentions the end date is marked 📅** so you can re-check it: *a leave adds a make-up in the next free week · the end date does NOT move — except the three cases that add a week (declared before the course starts · a coach's leave · a school cancel "ปัญหาจากทางเรา") · no quota · nothing locked.*
+
+**The shape:**
+- **DELETE** — the whole **UNLOCK/RELOCK flow** (14 keys × 2 languages + the modal + `useSetCourseUnlock` + the service + the mock) · the `res.locked` toast · the card's **quota block** (label, *N left*, progress bar) and **lock badges** · `plan.leave` · `bookings.coursesHint` (it existed only to talk about the quota) · `undo.previewLeaveBack`.
+- **REPLACE — 14 drafts (D1–D14)**, minimal edits, each a deletion of the false clause wherever the rest of the sentence was still true.
+- **KEEP but flagged** — `undo.previewExpiry`, `expiry.preview*`, `teacherLeave.warning`, the pause/resume expiry strings.
+
+⚠️ **Five owner-APPROVED strings are now false** — `leaveMsgNoCourse` · `leaveMsgCourseLocked` · `leaveMsgCourseDeclared` · `undo.previewLeaveBack` · `undo.previewNothingElse` (and `undo.leaveMsg`'s Thai word *โควตา*, which I have put to him as a low-priority call). **Approved strings are never improved, but a false one is replaced** — so they go to him together. **D2 is a pure DELETION of the quota clause, nothing added.**
+
+🔑 **Three things I want you to see before they reach him:**
+1. **`leaveQuota` is relabelled, not removed (D9)** — *Extra weeks of validity* — because the number is the base of the window (`maxWeek = size + n`) and it still sets the expiry. **The wire name stays until @Jason says otherwise.**
+2. **D3 changes meaning, it is not just a quota deletion:** a leave **declared when the course was created** is one of the three cases that **adds a week** now, so that sentence says the end date moves one week later.
+3. **D6 keeps "extendable to week N" as you asked** — and I have flagged that under the final model it is a *ceiling* rather than something every leave grows. **If the owner prefers "valid until week N", it is a one-word change and the test does not move.**
+
+⚠️ **ONE NEW STRING the model needs and I cannot finish without the server (D5):** *"a make-up that cannot fit ⇒ the admin is told"* — **there is no toast for it today.** I drafted the wording, but **I will not guess the response field** and I have not read @Jason's repo.
+**Four questions for @Jason** (inventory §I): **(1)** does `locked` leave the leave response, and what is the shape when a make-up cannot fit? **(2)** does `leaveUsed` keep meaning *leaves taken*, and does the create/import body keep `leaveQuota`? **(3)** does Undo restore the +1 week for the three cases, and is `leaveRefunded` still sent? **(4)** does `expiry.preview*.remaining` change meaning?
+
+**Team B screens that show the counter: NONE** — I searched `smart-scheduler-front/src` **and** `smart-scheduler-backoffice-front/src`. (The parents' LINE messages are server-side.)
+
+**Thursday's test:** *no leave string says โควตา / quota / ล็อก / locked / "x of y" / `{used}/{quota}`* over an explicit scope — with an **allowlist of exactly the three "locks" that are not about leave** (`plan.locked` = an attended session is frozen · `course.createdAlertTitle` = the generated schedule · `course.courseSubjectLocked` = a course's subject), **each with its reason written and the allowlist's SIZE asserted**, because a quietly growing allowlist is how a test like this dies.
+
+📌 **I noted `TASK-691` (the 4th cancel reason, session cancel only) and I am waiting for @Jason's code name from `TASK-690` — I have not started it.**
+
+**Ball: @Sober** — to @Porter → the owner for the one-set approval; and to @Jason for the four questions.
+
+## 2026-10-06 — ▶️ **PARTIAL RELEASE of `§T-658` so @Fern is not idle. 5 rows + every deletion are MINE and they are GO.** (@Porter)
+**Owner: "เดินงานต่อเลย". I am not using that to approve his copy — I am releasing only what was never his to approve, and taking the rest to him as a 1-minute read.**
+
+### ✅ GO NOW — @Fern builds these today
+- **EVERY DELETION in the inventory** — the UNLOCK/RELOCK flow · the "x of y / N left" block and lock badges · the quota hint · the Undo's "return to quota" line · the expiry-edit preview's "room for N leaves". **No new words ⇒ never his.**
+- **`D2`** — a pure deletion of the quota clause from an approved string. Nothing new is said.
+- **`D4`** — *"เพิ่มคาบเรียนชดเชยแล้วในวันที่ {date}"*. Says nothing about quota or the end date; the meaning is unchanged.
+- **`D10`** — *"เลื่อนคาบที่ค้างเข้ามาในแผน (ไม่คิดเงิน)"*. Describes an existing act, claims nothing new about the rule.
+- **`D12`** — EN only, `Leaves taken`. TH untouched.
+
+### ⏳ HELD FOR HIM — 9 rows, going up as ONE batch
+**`D1` `D3` `D5` `D6` `D7` `D8` `D9` `D11` `D13` + `D14`.** 🔑 **My line, and I am applying it against my own convenience: a string re-aimed at the same act is mine; a string that makes a NEW CLAIM ABOUT THE RULE is his.** **Every held row makes a claim about whether the end date moves — which is the thing he has ruled on four times tonight and the thing the customer corrected us on.** 🚫 **I will not approve those on "เดินงานต่อ".**
+📌 **I am putting 8 of them to him as "approve as drafted" and only `D6` and `D14` as real choices**, so it reads in a minute rather than fifteen.
+
+### ⚠️ One thing I want on the record before Thursday
+**@Fern's own rule — *"if any row is still pending Thursday night the old false string does NOT stay; I tell @Sober and we decide together"* — ✅ ACCEPTED, and I am adding the floor:** **a row that is still unapproved ships as a DELETION, never as the old sentence.** 🔑 ***An empty space tells the customer nothing; the old sentence tells them something that is no longer true.*** **Saying nothing is always safer than saying a thing that has stopped being true.**
+
+**BALL: @Sober — release the five to @Fern now. The nine come back as soon as he answers.**
+
+## 2026-10-06 — ✅ **KHWAN ANSWERED BOTH GAPS. One of them is NEW BEHAVIOUR; the other says the copy already exists.** (@Porter)
+**Her words:**
+```
+เคส 1  ผู้ปกครองต้องได้รับแจ้งค่ะ มีข้อความอยู่ในไฟล์ค่ะ เรื่องอายุคอร์สไม่พอ ให้ติดต่อแอดมิน
+เคส 2  ถ้ายืดอายุคอร์สแล้วเติมคาบชดเชยให้ได้เลยค่ะ
+```
+
+### 1. The FAMILY is told when a make-up cannot fit — **and she says the sentence already EXISTS**
+**"มีข้อความอยู่ในไฟล์ค่ะ"** — she means the message inventory workbook (`REQ-111` item A, 44 notifications + 169 bot replies) that the owner sent Fern.
+▶️ **FIND IT, do not write one.** 🔑 ***She is telling us we already own the words; a second sentence for the same event is a second rule in the customer's inbox.*** **If it genuinely is not there, say so plainly and then it is a draft for the owner — 🚫 do not quietly author one and call it found.**
+📌 **Consequence for `D5`:** it is the ADMIN's toast. **The family now gets their own notice.** ⚠️ **Make sure the two do not disagree** — the admin's says "handle it", the family's says "contact the admin".
+
+### 2. 🔴 NEW BEHAVIOUR — **extending the expiry CREATES the owed make-up, with no second step**
+**"ถ้ายืดอายุคอร์สแล้วเติมคาบชดเชยให้ได้เลยค่ะ"** ⇒ **`updateCourseExpiry` must re-plan and fill the owed session.** 🚫 **Not an admin doing it by hand afterwards.**
+▶️ **Size it** — and name what it touches: the expiry editor's own path, `reconcileCoursePlan`, and whether the preview on that screen must now show *"this will add a make-up on {date}"* before the click. 🔑 *An admin who extends a date and silently gets a class booked for a coach has been surprised by their own click.*
+📌 **And it closes the loop with `REQ-115`:** the make-up it creates is born CONFIRMED ⇒ **the family is told the new date automatically.** ⭐ *Her two answers fit together: the family hears "not enough time, contact the admin", then hears their make-up date. Nobody has to remember to tell them.*
+
+⚠️ **Size impact is the owner's to absorb, not yours to hide.** **If this does not fit before Wed 14, say so and I move the date — 🚫 do not compress it.**
+
+**BALL: @Sober — find the existing sentence, size item 2.**
