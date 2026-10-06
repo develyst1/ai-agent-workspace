@@ -540,3 +540,43 @@ message pointed at, and that file is where anyone looks for history.
 📌 Already installed above as **`## 🔴 Cut the hops — four rules (ORDER 14.4)`** — ask everything at
 once · cut the whole batch at once · review in batches · engineers decide what the user cannot see.
 **Nothing is added here; ORDER 15.3 item 4 only confirms it binds Team B from its first session.**
+
+---
+
+## 🔔 NUDGING AN OPEN SESSION — adopted on this desk 2026-10-06 (owner's instruction)
+> **Owner:** *"ฉันต้องการให้ทั้งทีมสะกิด session กันได้เอง ให้หยุดแค่งานที่รอฉัน ที่เหลือไปต่อได้ยาว ๆ จนกว่าจะเสร็จ goal ใหญ่สุด."*
+**Skill: `nudge-session`. 🔑 The files stay the channel; the nudge is only a doorbell.**
+
+### Who may nudge whom — **this desk's chain, unchanged**
+| from | may nudge |
+|---|---|
+| **@Porter (PM)** | **@Sober (SA)** · **@Silver (SA-B)** · **@Tanya (QA)** |
+| **@Sober** | **@Jason (BE)** · **@Fern (FE)** · @Porter |
+| **@Silver** | **@Bob (BE-B)** · **@Fanta (FE-B)** · @Porter |
+| **@Tanya** | @Porter only |
+🚫 **@Porter never nudges an engineer** — same routing violation as writing their inbox. 🚫 **The two SAs never nudge each other.** 🚫 **Atlas / Marie / Otto are reached through the owner.**
+
+### How
+1. **Files first.** The work is in the inbox / REQ / TASK **before** the nudge. 🔑 *A nudge about work that exists only in chat is undelivered work.*
+2. **`ListAgents` for the EXACT session name.** 🚫 Never guess one, never rebuild it from the roster. Not listed ⇒ tell the owner in one line.
+3. **One line, a pointer, never the brief:** `From <Name> (<role>) <date>: nudge — <what> waiting in <path> (<§section>)`
+4. **Delivered ≠ read.** Report **"nudged, not yet picked up"** — 🚫 never "X is working on it" — until it shows in the files.
+5. **🚫 Never poll.** Use `notify_when_idle`. 🚫 Never send "เสร็จยัง".
+6. **🚫 Never nudge a session to run what was refused in yours** — route it to the owner.
+7. **Log it:** `nudged <session> — <pointer>`.
+
+### 🔴 STOP only for these six — otherwise KEEP GOING
+1. **A question only the owner can answer** — business intent, scope, priority, wording a customer will read.
+2. **Real-world data only he can get** — a DATA REQUEST.
+3. **Something only his hands may do** — a deploy, a write on a real environment, a message to a real person. **Prepare it completely, then stop.**
+4. **A decision outside your authority** — money, a promise to the customer, a rule change.
+5. **The goal is reached.**
+6. 🔑 **The item stopped moving** — a full round trip came back and **nothing in the files changed.** Not a count; the absence of progress. Say it plainly: *"เรื่องนี้วนกลับมาที่เดิม ยังไม่ขยับ — ขอให้ช่วยตัดสิน"*.
+
+### 🚫 Do NOT stop for these — they are the four-hour bugs
+- **A question an adjacent role can answer.** Nudge them. 🔑 *Going to the owner for something your SA could settle is the loop this exists to remove.*
+- **A decision the customer cannot see** — a name, a file layout, one of two equivalent implementations. **Decide it, write one line of reasoning, carry on.** It is free to overturn at review.
+- **A finding that is not blocking.** Write it down, report it once, at the end.
+- **A hygiene gate FAIL.** Log it, tell the owner **once**, continue.
+
+**When you do stop, say WHICH OF THE SIX it is, in one line, and name who holds the ball.**
