@@ -101,3 +101,91 @@
 2. **`leaveUsed`:** does it keep meaning *leaves taken*? **`leaveQuota`:** does the wire name stay for the create/import body?
 3. **Undo:** does it restore the +1 week for the three cases (E4), and is `leaveRefunded` still sent (E1)?
 4. **`expiry.preview*.remaining`:** does it change meaning (F)?
+
+---
+
+# 📋 BUILD REPORT — @Fern → @Sober (2026-10-06) — **TASK-658 DONE: no screen says quota, locked or "x of y" about a leave.**
+
+**Front repo re-read first, and the tree was CLEAN (nothing uncommitted of anyone's) before I started.** The **owner's approval is recorded** in `COPY-REVIEW §T-658` ("ตามแนะนำ", line 461) — checked before reporting, as you asked. **D6 and D14 built as chosen.** 🚫 **No string was "improved" on the way in.**
+
+## §3.1 The three gates, separately
+| gate | result |
+|---|---|
+| **`tsc --noEmit`** | ✅ **exit 0** |
+| **`bun test`** | ✅ **1053 pass / 0 fail across 117 files**, and **0 "unhandled error between tests"** (see §5 for why I count that) |
+| **`bun run build`** | ✅ **exit 0** |
+**Break-and-watch: 17 mutations, 17 BITES, 0 SURVIVED, 0 NO RESULT, 0 ANCHOR, baseline 94 clean, CHECKSUM identical.**
+
+## §3.2 The grep, stated — and the test that keeps it true
+- **A test over the WHOLE dictionary, both languages, not a scope list:** `src/lib/i18n/leave-copy-no-quota.test.ts`. It bans *quota · locked · unlock · relock · `{quota}` · `{used}/{quota}`* and, in Thai, *โควตา · ปลดล็อก · ล็อก* — **with the Thai lookbehinds that make it honest**: ล็อก is also *แคตตาล็อก* (catalogue) and *บล็อก* (block), and a ban that cried wolf on those would be switched off within a week (**Q16 removes the lookbehind and bites**).
+- **The allowlist is FOUR, not the three I estimated, and the derivation is why:** `plan.locked` (an attended session is frozen) · `course.createdAlertTitle` (*schedule locked* on a new course) · **`voucher.infoAlert` and `bookings.vouchersHint`** (*vouchers don't lock a teacher or time* — about what a voucher IS). **Each has a written reason, each is asserted to STILL match the ban (a stale entry fails), and the SIZE is asserted** (**Q17** adds a fifth and bites) — *a quietly growing allowlist is how a ban like this dies.*
+- **Grep of CODE** (`src`, non-test, comments excluded) for *โควตา · leave quota · ปลดล็อก · unlock* outside the dictionary: **0 hits** — nothing is hard-coded past `t()`.
+- **Self-proving:** the ban is run on fixtures (it catches *Leave quota*, *ลาเกินโควตา*, *Unlock (admin)*, *ปลดล็อก (แอดมิน)*, *`{used}/{quota}`* and does NOT catch *แคตตาล็อก*, *บล็อกของวันแล้ว*, *blocked*), so "zero hits" cannot mean "the regex is broken" (**Q15** blinds the Thai regex and bites).
+
+## §2 What was built
+**DELETED (no copy needed, all in `COPY-REVIEW §T-658`'s GO):** the whole **UNLOCK/RELOCK flow** — 14 dictionary keys × 2 languages, the confirm `Modal`, `useSetCourseAdminUnlock`, `setCourseAdminUnlock` (service + mock) · the card's **quota block** (label, *N left*, progress bar, colour) and **lock/special-unlock badges** · the `locked` toast and its two keys · `plan.leave` and its summary line · `bookings.coursesHint` (the layout keeps the buttons on the right) · **`undo.previewLeaveBack` and `undo.previewExpiry`** · **the expiry-edit preview's *"room for N leaves"*** (`expiry.previewLeaveOk/Tight`, the display, the `ExpiryLeaveRoom` type, the mock) — **the half that is still TRUE (`expiryWarning`, the sessions a date would fall outside) stays.**
+**REPLACED, exactly as approved (both languages):** D1 `leaveMsg` · D2 `leaveMsgNoCourse` (a pure deletion of its quota clause) · D3 `leaveMsgCourseDeclared` (now says the end date moves one week) · D4 `leaveExtendedDesc` · **D6 `course.usage` = *Valid until week {week}* / *ใช้ได้ถึงสัปดาห์ที่ {week}*** · D7 `sizeOption` · D8 `infoAlert` · D9 the import field · D10 · D11 · D12 (EN only) · D13 · **D14 (โควตา → ยอดคงเหลือ in the three Undo bodies)**.
+**Code:** the leave dialog has **THREE bodies, not four** (the locked one is gone with its constant, its mapper fact `courseLeaveLocked` and its type field) · `leave.ts` has no quota arithmetic, no lock, **no `canTakeLeave`** · `leaveRemaining` / `leaveLocked` / `adminUnlocked` are gone from every type a screen reads (`contract.ts` keeps `locked?` and the Undo's `leaveRefunded?` / `expiry?` **optional and unread**, because the server still sends them) · **`LEAVE_QUOTA_BY_SIZE` → `EXTRA_WEEKS_BY_SIZE`** (it stopped being a quota; the wire name `leaveQuota` is unchanged) · the import field's **dictionary KEYS were renamed too** (`importBalance.leaveQuota` → `extraWeeks`) — *a key that still says "quota" is a lie for the next reader.*
+**Not built, by your ruling:** D5 (the screen toast for "a make-up cannot fit") — the admins get a LINE notice and a refused leave arrives as the server's own sentence.
+
+## §4 🔑 The finding that is NOT a quota string: the field that must survive
+**`leaveQuota` on the import form is relabelled, NOT removed — and nothing in the suite would have noticed if it had been.** The wire-name pin checks that keys the form sends reach the service; it cannot see a key the form STOPPED sending. So I added a pin asserting it **three ways** (rendered with the new label · sent at **both** call sites, preview and commit · forwarded by the service). **Q4 and Q5 each remove one site and each bites.** *A tidy-up that deleted "the quota field" would have silently broken every off-card import.*
+
+## §5 ⚠️ A module-level import error silently DROPS a whole file — and I nearly reported green over one
+`leave-claim.test.ts` imported `LEAVE_MSG_COURSE_LOCKED`, which no longer exists. **That does not fail a test — it deletes every test in the file**, printing one *"unhandled error between tests"* line and a count that is merely lower. 🔑 **I caught it only because I read the log rather than the summary.** I rewrote the file: **17 tests before, 17 after** (counted on the file, `git show HEAD:` vs now) — the lock's seven tests became the pins that it STAYS gone. **The report now states `unhandled-between-tests: 0` for exactly this reason**, and it is the second time this has hidden a file from me (TASK-593).
+
+## §6 Declared pin updates — every one with its reason in the file
+| file | what moved | why |
+|---|---|---|
+| `approved-copy.test.ts` | 31 → **28 rows**; 3 rows deleted (`leaveMsgCourseLocked`, `previewLeaveBack`, `previewExpiry`); 4 re-approved by value (D2 D3 D13 D14); the 09-28 marker count ≥3 → ≥2 and the new `§T-658` marker count ≥10 | the model under them changed; the pin's claim (the owner's words, by value) is unchanged |
+| `leave-claim.test.ts` | rewritten, **17 → 17** | the lock is gone; its tests became absence pins |
+| `undo-preview.test.ts` | nine keys → seven; the three-fact line test → *one* line + *no line for `leaveRefunded`/`expiry`*; `previewNothingElse(ok({leaveRefunded:true}))` false → **true** | no quota to return; the Undo never moves the end date |
+| `undo-control.test.ts` | `undo` keys 21 → **19**; the REQ-073 `leaveMsg` byte-pin → D1 by value | two forecast lines deleted; the old sentence is false |
+| `undo-control.dom.test.tsx` | the clicked forecast: server sends all three facts, **only the make-up renders**, the other two asserted ABSENT **by count** | same |
+| `expiry-preview.test.ts` | *"the leave verdict is the server's boolean"* → *"nothing about a leave count is read"*; *"the SPENT case renders no leave line"* → *"there is no leave line at all"* | `leaveRoom` is gone from the server and the screen |
+| `mapper-drops.test.ts` | course drops 17 → 15, total 28 → 26, summary fields 19 → 16; `leaveLocked` read asserted **false** | the two lock-recomputation drops left with the lock |
+| `course-rental.test.ts`, `duo.test.ts` | stale fixture fields removed | the fields no longer exist |
+📌 **Under @Porter's TASK-638 rule a co-located test comes with its file — and I did NOT touch `teacher-scope.test.ts` (frozen until TASK-653).**
+
+## §7 ⚠️ For you — four things, none blocking
+1. **Files outside the 16-file list that I touched, because your inventory said to:** `Bookings/BookingsContent.tsx` (the `coursesHint` delete) · `Bookings/CreateCourseModal.tsx` (the size option and the blue line) · `Bookings/EditExpiryDialog.tsx` (the `leaveRoom` display) · `hooks/scheduler/useScheduler.ts` (the unlock hook) · `lib/scheduler/undo-preview.ts`. **The tree was clean when I started, so there is no uncommitted collision — but if Team B holds any of them this batch, say so and I will hand it over.**
+2. **A SERVER sentence still says quota:** the Undo's *`UNDO_LEAVE_CHARGE_UNKNOWN`* refusal (§T-G, owner-approved 10-04) reads *"…ไม่ทราบว่าการลานี้ใช้โควตาลาหรือไม่…"* — it is the server's, the screen shows it verbatim, and my dictionary test cannot see it. **It may be exactly right for a pre-migration leave, or it may be the last quota sentence in the product — that is a question for @Jason/@Porter, not for me to rewrite.**
+3. **The card shows the server's week as sent.** I read `maxWeek` and nothing else, so **a card whose expiry was moved earlier now says the earlier week — which is what the owner's *"valid until"* requires.** (The *offline/mock* `toCourseView` still uses the base-window table; that is demo data only.) 📌 **Nothing in my sentences promises a make-up past the end date or a held make-up — asserted by test over the leave strings.**
+4. **Honest limit of the ban:** it reads the dictionary and the code for the **words**; it cannot know that a *sentence* has become false for a reason that is not a word (the way D3 changed meaning while keeping its words' shape). That is what the by-value approved set is for.
+
+## Mutation test list (recorded here until TASK-637 lets the set carry it)
+```
+src/lib/i18n/leave-copy-no-quota.test.ts
+src/lib/i18n/approved-copy.test.ts
+src/lib/scheduler/leave-claim.test.ts
+src/lib/scheduler/undo-preview.test.ts
+src/lib/scheduler/undo-control.test.ts
+src/components/common/undo-control.dom.test.tsx
+src/lib/scheduler/expiry-preview.test.ts
+src/lib/api/mapper-drops.test.ts
+```
+📌 **Eight files, and I derived them rather than typed them:** each mutation in `scripts/mutation/task-658.json` was assigned to the file that holds its pin, **and Q7/Q8 (restoring a deleted key's call site) only bite because of the *deleted-keys* pin in `leave-copy-no-quota.test.ts`, which first SURVIVED and is why that pin exists.**
+
+| # | mutation | verdict |
+|---|---|---|
+| Q1 | 🔴 the card's *"Used {used}/{quota}"* is restored | **BITES** 92/2 |
+| Q2 | 🔴 the unlock control returns (its icon with it) | **BITES** 93/1 |
+| Q3 | 🔴 a leave claim says it *uses a leave* again | **BITES** 90/4 |
+| Q4 | 🔴 the import PREVIEW stops sending `leaveQuota` | **BITES** 93/1 |
+| Q5 | 🔴 the import COMMIT stops sending `leaveQuota` | **BITES** 93/1 |
+| Q6 | 🔴 the `locked` toast is restored | **BITES** 92/2 |
+| Q7 | 🔴 the plan's *"Leave {used}/{quota}"* is restored | **BITES** 93/1 |
+| Q8 | ⚠️ the list hint about the quota/lock returns | **BITES** 93/1 |
+| Q9 | 🔴 the Undo forecast says *return the leave to the quota* | **BITES** 90/4 |
+| Q10 | 🔴 the expiry preview renders the leave-room line | **BITES** 90/4 |
+| Q11 | ⚠️ D6 overwritten with the draft it replaced | **BITES** 93/1 |
+| Q12 | 🔴 D3 stops saying the end date moves | **BITES** 91/3 |
+| Q13 | ⚠️ a lock fact is carried on a booking row | **BITES** 92/2 |
+| Q14 | 🔴 `canTakeLeave` is re-exported | **BITES** 93/1 |
+| Q15 | 🔴 the Thai ban goes blind | **BITES** 92/2 |
+| Q16 | ⚠️ the ban cries wolf on *catalogue* | **BITES** 92/2 |
+| Q17 | ⚠️ the allowlist grows by one | **BITES** 93/1 |
+
+## Files
+- **Edited (28):** the card, list, create/import/plan/history screens, `BookingModal`, `EditExpiryDialog`, `leave.ts`, `leave-claim.ts`, `undo-preview.ts`, mappers, service + mock + data, hook, both type files, the dictionary, and 11 test files (§6).
+- **New:** `src/lib/i18n/leave-copy-no-quota.test.ts` (11 tests: the ban, the allowlist, the approved set by value, the code sweep, the import-field pin, the deleted-keys pin) · `scripts/mutation/task-658.json` (Q1–Q17).

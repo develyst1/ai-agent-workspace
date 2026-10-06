@@ -197,3 +197,53 @@
 **It is tempting to write the rule as *"+1 week whenever the family did not choose to miss the class"*. ⚠️ THAT RULE IS WRONG: a pre-start declared absence IS the family's choice and it still adds a week.**
 ⇒ **The trigger list is EXPLICIT and CLOSED — three entries, no derivation.** 🚫 **Never implement it as a predicate over "whose fault"; a future reader who derives it will get the pre-start case backwards.** **Pin the three by value.**
 🔑 *This is the same failure that produced the whole night: a tidy summary standing in for a list the customer actually gave.*
+
+## ⚖️ 2026-10-06 — **RULING 3 IS REVERSED. The date moves instead.** (owner: *"เลื่อนวัน ทำให้ตรงที่ลูกค้าขอ"*)
+🚫 **SUPERSEDED — kept, not deleted:** *"A make-up that lands past the expiry is CREATED, and the ADMIN is flagged."* **It rested on @Porter quoting her §11.4 — a sentence she spoke about a COURSE THAT EXPIRES WITH SESSIONS UNUSED, not about a make-up that lands past the expiry. She answered those two cases on consecutive lines, separately.**
+
+### ✅ IN FORCE — what she asked for, in her own words, four times over two days
+| | |
+|---|---|
+| **the make-up is HELD, not booked** | *"ก็เด้งมาที่แอดมินให้จัดการ"* (§11.2) · *"แจ้งแอดมินเท่านั้นค่ะ ที่เหลือเราจะจัดการเองว่าจะยืดอายุคอร์สให้ไหม"* (10-06) |
+| **the ADMIN is told** | *"แจ้งแอดมินเท่านั้น"* |
+| **the FAMILY is told** | *"ผู้ปกครองต้องได้รับแจ้งค่ะ … เรื่องอายุคอร์สไม่พอ ให้ติดต่อแอดมิน"* — ▶️ **her exact sentence is still being asked for; 🚫 nobody writes one meanwhile** |
+| **extending the expiry BOOKS the held make-up, with no second step** | *"ถ้ายืดอายุคอร์สแล้วเติมคาบชดเชยให้ได้เลยค่ะ"* |
+| the course meanwhile | **stays short — "N still owed" is what shows it** |
+📌 **Under `REQ-115` the class that extension creates is born CONFIRMED ⇒ the family hears its date automatically.** ⭐ **Her two answers close the loop between them: "not enough validity, contact us" → then the date. Nobody has to remember to tell the family.**
+
+### The price, stated before it was chosen, and chosen anyway
+**M (≈2–3 days BE + ½ FE). It RE-OPENS verified work (`657`'s overflow path) and the expiry editor must RE-PLAN on save, which it deliberately does not do today (REQ-082 AC-3) — with a preview saying *"this will add a make-up on {date}"* before the click.** 🔑 *An admin who extends a date and silently gets a coach booked has been surprised by their own click.*
+⚖️ **The owner moved the deadline rather than ship what we built.** 🔑 ***We had already spent one night undoing a rule built on one sentence of mine; shipping a second one knowingly would have been doing it on purpose.***
+
+## ⚖️ 2026-10-06 — **THE LEAVE IS REFUSED, not held. Her own sentence, found in her own edited workbook.** (owner: *"ตามแนะนำ แอดมินโดนด้วย"*)
+**Her words — `message-inventory-KHWAN-EDITS-2026-10-06.xlsx`, sent 11:43:**
+```
+TH: ไม่สามารถแจ้งลาได้ เนื่องจากวันหมดอายุไม่เพียงพอค่ะ กรุณาติดต่อแอดมินค่ะ
+EN: Leave request unavailable because there is not enough time before the course expiry date. Please contact Admin.
+```
+🔑 **It refuses the leave. It does not hold a make-up.** ⇒ **"held" never existed in her model; we invented it twice — first as "created past the expiry" (my §11.4 misquote), then as "held" (my reading of her later answers).** 📌 *Third model, and the first one that is hers in her own words.*
+📌 **Why nobody found it until now: she was not pointing at the workbook the owner SENT her. She was pointing at HER OWN EDITED COPY**, which reached us at 11:43 today. 🔑 *"It's already in the file" was true — about a file we did not have.*
+
+### ⚖️ IN FORCE — which doors refuse
+| door | refuses? |
+|---|---|
+| **the PARENT's LINE leave** | ✅ **her sentence, verbatim** |
+| **the ADMIN's Record leave · the plan editor's Mark absence** | ✅ **YES — owner ruled.** Admin wording names the fix: 📋 *"อายุคอร์สไม่พอสำหรับคาบชดเชย — ขยายวันหมดอายุก่อน แล้วค่อยบันทึกลา"* |
+| **a pre-start declared absence** | ✅ yes — but only if it still does not fit **after** its +1 week |
+| **a COACH's leave · a school cancel "our side"** | 🚫 **NEVER** — *a coach's absence cannot be "refused"; the class is lost whatever we answer.* They add their week; if the make-up still cannot fit, it is **created and the admin told** (`657` as built). |
+🔑 **The owner's reason for the admin row, which is the rule of this whole round:** ***"parent refused, admin allowed" is two rules for one act*** — and the admin is not stuck: they extend the expiry, then record.
+🚫 **SUPERSEDED, kept:** "the make-up is HELD" · the expiry editor re-planning on save · the preview of held dates. **`TASK-693` is DROPPED; `TASK-692` shrinks M → S.**
+
+### ❓ One consequence still to confirm with her, in the next batch
+***"พอแอดมินยืดอายุคอร์สแล้ว แอดมินบันทึกลาให้ครอบครัวอีกที (หรือผู้ปกครองกดลาใหม่) แล้วคาบชดเชยจะขึ้นทันที — ถูกต้องไหมครับ"*** 🔑 *Her "ยืดอายุคอร์สแล้วเติมคาบชดเชยให้ได้เลย" now means this, and it is an inference until she says so.*
+
+## ✅ 2026-10-06 23:17 — **THE REFUSAL RULE IS CONFIRMED BY THE CUSTOMER, IN NUMBERS, ON HER SMALLEST COURSE**
+**Put to her as a consequence, never as a rule:** *"คอร์ส 4 ครั้ง อายุ 5 สัปดาห์ · ลาครั้งที่ 1 ลงสัปดาห์ที่ 5 ✅ · ลาครั้งที่ 2 ต้องไปสัปดาห์ที่ 6 เลยอายุคอร์ส ⇒ ระบบจะไม่ให้ลา"* ⇒ **"คอร์ส 4 ครั้งลาได้จริง ๆ แค่ 1 ครั้ง — โอเคไหม หรืออยากให้เป็นแบบอื่น"**
+⚠️ **She first answered the LETTER "ข" while her sentence described "ก":** *"ยังไงก็ให้ลาแค่ในอายุคอร์สค่ะ ถ้าจะให้ลาเพิ่มจะมีการคุยกันและขยายอายุคอร์สก่อนค่ะ"*. **Asked once more, naming the mismatch:** ✅ **"ก ค่ะ ขวัญพิมพ์ผิดค่ะ"**
+⇒ ✅ **IN FORCE, confirmed: a 4-session course takes ONE ordinary leave; the second is refused until an admin extends.** **`TASK-692` is correct as built. 🚫 Nothing changes.**
+
+### 🔑 Why this one exchange is the method of the whole round
+1. **The question was a CONSEQUENCE with numbers, so "ถูกต้องค่ะ" could not answer it.** *The same rule stated abstractly had been agreed and then contradicted three times.*
+2. **Her first reply still disagreed with itself** — the letter said one thing, the sentence another. 🔑 ***A customer can be wrong about their own answer; the words beat the letter, and only asking settles which.***
+3. **Naming the mismatch out loud cost one line and she corrected it herself in one minute.** 🚫 *Reading "ข" literally would have re-opened a built model; reading it as "ก" silently would have shipped an unconfirmed rule on a real family's course.*
+📌 **It also cleared the gate standing in front of `uat`.** 🔑 *`sid` never needed it — `sid` is where we find out whether it works; `uat` is where the customer's families live.*

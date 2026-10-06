@@ -158,3 +158,62 @@
 **New plan: `PLAN-round-to-2026-10-14.md`.** **Gates: sid #1 THU 8 · QA FRI 9 · sid #2 SAT 10 · QA SUN 11 · sid #3 TUE 13 · QA · uat WED 14.**
 **What the extra days actually buy, so they are spent on purpose:** option (c) gets DESIGNED rather than squeezed · **a THIRD sid batch and a THIRD QA pass** (REQ-112 was going to be seen on a box ONCE, the day before it reached real families) · **the hand-checked expiry on 4/6/10 gets its own day** · the uat read can be understood BEFORE the design freezes.
 🚫 **Wednesday does not change for anybody. Everything already cut starts as cut.**
+
+## 2026-10-06 — 🔔 **YOU CAN NUDGE ME DIRECTLY NOW. Please do.** (@Porter)
+⚖️ **Owner today:** *"ฉันต้องการให้ทั้งทีมสะกิด session กันได้เอง ให้หยุดแค่งานที่รอฉัน"* — and, naming you specifically: ***"QA ก็สะกิดนายได้"***.
+**Skill `nudge-session`, adopted into `PROTOCOL.md` with this desk's chain. @Porter ↔ @Tanya is a TWO-WAY doorbell.**
+
+▶️ **Nudge me — do not wait to be asked — whenever:**
+- **a QA pass is finished** (pass or fail), 🔑 *especially a FAIL: a defect sitting in a file nobody has opened is a defect we have not found yet;*
+- **a batch arrives without the check you need** — your own standing instruction on `REQ-112`: if the hand-check steps for the expiry on 4 / 6 / 10 are missing or vague, **say so and HOLD. Nudge me the moment you see it, not after you have worked around it;**
+- **you are blocked on a box, an account or a window.**
+
+**Mechanics:** files first (`TEST-*` / your inbox), then **one line, a pointer, never the brief** — `From Tanya (QA) <date>: nudge — <what> waiting in <path>`. **`ListAgents` for my EXACT session name; 🚫 never guess one.** 🚫 **Never poll me; use `notify_when_idle`.**
+
+🚫 **Unchanged and hard: you nudge @Porter only.** 🚫 Never an SA, never an engineer — the chain is Human ↔ PM ↔ QA. **A nudge that skips me is the same routing violation as writing their inbox.**
+🚫 **And unchanged: full access on sid · READ-ONLY on uat · every uat write is a DATA REQUEST for the owner.**
+
+📌 **Your slots moved with the deadline — the round now finishes WED 14 OCT** (`PLAN-round-to-2026-10-14.md`): **sid #1 THU 8 → QA FRI 9 · sid #2 SAT 10 → QA SUN 11 (the hand-checked expiry) · sid #3 TUE 13 → QA · uat WED 14.** ⭐ **Three passes instead of two, with a fix round between — that is what the extra days bought, and REQ-112 is the reason.**
+⚠️ **One real limit: a nudge to a session in a different permission mode is HELD, not delivered.** 🚫 Do not resend while held; fall back to the files and say it was held.
+
+**BALL: @Tanya — confirm the four slots, and nudge me from now on instead of waiting.**
+
+## 2026-10-06 — ⚖️ **OWNER: "เลื่อนวัน ทำให้ตรงที่ลูกค้าขอ" — RULING 3 REVERSED, the date moves.** (@Porter)
+**New target: FRI 16 OCT** *(was Wed 14; @Sober confirms or corrects it with his re-cut — 🚫 I am not inventing a date and holding anyone to it)*.
+
+**IN FORCE, from her own words four times over two days:** **a make-up that cannot fit is HELD, not booked** · **the admin is told** · **the family is told ("อายุคอร์สไม่พอ ให้ติดต่อแอดมิน" — her exact sentence still being asked for, 🚫 nobody writes one meanwhile)** · **extending the expiry BOOKS the held make-up with no second step** · **the course stays short meanwhile and "N still owed" is what shows it.**
+🚫 **SUPERSEDED: "created past the expiry and the admin flagged".** 📌 **It rested on me quoting her §11.4 — a sentence she spoke about a COURSE THAT EXPIRES WITH SESSIONS UNUSED, not about a make-up landing past the expiry. She answered the two cases on consecutive lines, separately. Mine.**
+
+🔑 **Why he moved the date instead of shipping what we built, and I want this understood rather than just obeyed:** ***we had already spent one night undoing a rule built on one sentence of mine. Shipping a second one knowingly would have been doing it on purpose.*** 🚫 **So: nobody compresses this to fit a date. If it needs longer, say so and the date moves again.**
+🚫 **No other scope comes back in because the date moved** — `REQ-114 (iii)`, `TASK-639`, `TASK-652` stay out. 🔑 *If the extra days end up holding extra items, they were not extra days.*
+
+## 2026-10-06 — 🟢 **sid batch #2 IS ON THE BOX. Both repos restarted (owner confirmed). Please start.** (@Porter)
+**Deploy note: `DEPLOY-sid-2026-10-06.md`. ONE tree, BOTH teams. Migration `0065` applied: journal 66 · ledger 114 rows · verify GREEN.**
+**Numbers as shipped: back `4202 / 0` · front `1064 / 0` · tsc + build clean · Team A's twelve break-and-watch sets re-run 134/134.**
+
+### 🔴 THE GATE — `TASK-657` §R-gate, the LATEST table (the one marked "REWRITTEN AGAIN … for TASK-692")
+⚠️ **Use the latest table only. The gate was rewritten TWICE as the customer corrected us — an older copy tests a rule that no longer exists.**
+**What it must prove, and these are the CUSTOMER's own numbers, not ours:**
+| check | expected |
+|---|---|
+| a coach away twice, 10-session course (13 weeks) | **15 weeks** — her "15 ค่ะ" |
+| one absence declared before the course starts, 4-session course (5 weeks) | **6 weeks** — her "6 ค่ะ" |
+| 🔴 **a 4-session course: the FIRST ordinary leave** | accepted, make-up in week 5 |
+| 🔴 **the SECOND ordinary leave** | **REFUSED** — *"ไม่สามารถแจ้งลาได้ เนื่องจากวันหมดอายุไม่เพียงพอค่ะ กรุณาติดต่อแอดมินค่ะ"* (the parent's door) and the admin wording at the admin doors |
+| **then an admin extends the expiry, and the leave is recorded again** | it works |
+| 🔴 **an EXISTING course** | **its expiry does NOT move** — forward-only |
+🔑 **Check the expiry BY HAND on one course of EACH size (4 / 6 / 10).** 🚫 **"The tests are green" is not a pass for this** — it decides when a course the customer PAID FOR stops being valid, and the rule changed three times this week.
+
+### ⚠️ Known and deliberate — 🚫 do NOT report these as faults
+- **A 4-session course takes ONE ordinary leave.** (The customer confirmed it in numbers, 23:17.)
+- **Some course cards now show a LOWER week than before** — we removed a floor that showed the size's base window even when the real expiry was earlier. **The card was lying; it now reads the stored expiry.**
+- **Existing courses are not recomputed.**
+- **`TASK-673`** (the group swap SCREEN) **is NOT in this batch** — only the server refusal (`672`) is. **A "this session only" swap on a GROUP is refused at the server; the screen may still offer it.**
+
+### Also in this batch, from Team B
+`665`+`667` (archive + restore, and the refusal counting owed classes) · `668`+`669` (**link a parent** — the confirm shows the family's existing children and the child's upcoming sessions, and says the link cannot be undone) · `670` (completed/expired wording, legend) · `671` (`ครู ` spacing in camp) · `672` · `624` (swap ANY teacher + the rate field).
+
+🚫 **Unchanged: full access on sid · READ-ONLY on uat · every uat write is a DATA REQUEST for the owner.** 🚫 **Headless browser — no visible pop-ups; they block the owner.**
+▶️ **Nudge me directly when you are done, pass or fail** — 🔑 **especially a FAIL: a defect sitting in a file nobody has opened is a defect we have not found yet.**
+
+**BALL: @Tanya — the gate, then nudge me.**

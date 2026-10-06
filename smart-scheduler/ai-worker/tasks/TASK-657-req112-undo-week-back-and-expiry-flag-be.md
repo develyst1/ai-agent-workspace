@@ -106,3 +106,24 @@
 | **3a** | the admin records the coach's leave on the dates of sessions 4 AND 5 (Teachers page, future days) | **+0** — the day is blocked, the two classes are LISTED, nothing cancelled |
 | **3b** | the admin CANCELS session 4 and session 5, each with reason **ปัญหาจากทางเรา** | **+14 ⇒ 2027-01-20** (her "15 weeks") · two make-ups |
 | *(3c, if a coach account is linked on sid)* | the coach records their OWN leave on the day, same-day | **+7 per class cancelled** (T2) |
+
+
+## ⚖️ 2026-10-06 — @Sober: §3 SUPERSEDED by `TASK-692` — owner reversed ruling 3: a make-up that cannot fit is HELD (not created); admin + family told once; extending the expiry books it. The notice code built here is RE-AIMED there.
+
+---
+### 🔁 §R-gate — REWRITTEN AGAIN 2026-10-06 by @Sober for `TASK-692` (a family leave with no room is REFUSED). **This table REPLACES the earlier §R-gate tables and the 3a/3b addendum.**
+**Fresh courses on sid, first session D. Example D = Wed 2026-10-14. Base expiry = D + 28 / 49 / 84 (4 / 6 / 10 sessions) = room for 1 / 2 / 3 make-ups.**
+| step | action | 4-session (base 2026-11-11) | 6-session (base 2026-12-02) | 10-session (base 2027-01-06) |
+|---|---|---|---|---|
+| 1 | ORDINARY leave on session 2 — the session's **Record leave** | ✅ booked · expiry **2026-11-11** (+0) · make-up in week 5 | ✅ booked · 2026-12-02 (+0) | ✅ booked · 2027-01-06 (+0) |
+| 2 | ORDINARY leave on session 3 — the plan modal's **Mark absence** | 🔴 **REFUSED** with **"อายุคอร์สไม่พอสำหรับคาบชดเชย — ขยายวันหมดอายุก่อน แล้วค่อยบันทึกลา"** · **NOTHING written** (session 3 still confirmed, no make-up, no count, expiry unchanged) · **no admin notice** | ✅ booked · 2026-12-02 (+0) | ✅ booked · 2027-01-06 (+0) |
+| 2b | *(4)* the admin EXTENDS the expiry by a week, then repeats step 2 | ✅ **booked** · make-up in week 6 | — | — |
+| 3a | *(10)* admin records the coach's leave on the dates of sessions 4 and 5 (future days) | — | — | **+0** — day blocked, 2 classes LISTED, nothing cancelled |
+| 3b | *(10)* admin CANCELS sessions 4 and 5 with **ปัญหาจากทางเรา** | — | — | **+14 ⇒ 2027-01-20** (her "15") · 2 make-ups booked |
+| 4 | *(6)* CANCEL session 4 with **ปัญหาจากทางเรา** | — | **+7 ⇒ 2026-12-09** · make-up booked | — |
+| 5 | *(6)* CANCEL session 5 with **ลูกค้าไม่เอาแล้ว** (no room left) | — | **+0** · ⚠️ **NOT refused (a cancel never is): the make-up is CREATED past the expiry and the ADMIN is told (`makeup_past_expiry`)** | — |
+**Separate fresh 4-session course NOT YET STARTED: declare session 2 absent ⇒ +7 ⇒ expiry D+35 = week 6 (her "6") · make-up booked.**
+**The PARENT's door, once (needs a linked parent on sid; else the owner on uat):** a parent's LINE leave on a course with no room ⇒ **her sentence verbatim — "ไม่สามารถแจ้งลาได้ เนื่องจากวันหมดอายุไม่เพียงพอค่ะ กรุณาติดต่อแอดมินค่ะ"** · nothing written · **the admins get ONE notice.**
+**Undo, once:** undo step 1's leave ⇒ the expiry does NOT change.
+**Forward-only, once:** an EXISTING sid course, untouched ⇒ expiry byte-identical before and after the deploy.
+**At every step:** no "x of y" · no lock · the card's week = the stored expiry's week.

@@ -580,3 +580,19 @@ once · cut the whole batch at once · review in batches · engineers decide wha
 - **A hygiene gate FAIL.** Log it, tell the owner **once**, continue.
 
 **When you do stop, say WHICH OF THE SIX it is, in one line, and name who holds the ball.**
+
+### 🔴 CORRECTION, same day — **nudging is BOTH WAYS along every link, not a dispatch downwards**
+⚖️ **Owner, 2026-10-06:** *"เห้ย ไม่ใช่แค่ SA สะกิด engineer นะ engineer ต้องสะกิดกลับได้ด้วย เผื่อทำงานร่วมกันยาว ๆ แบบ teamwork."*
+🔴 **The table above was written one-directionally. That was wrong.** **Every allowed pair in the chain is a TWO-WAY doorbell.**
+
+| link | both directions |
+|---|---|
+| **@Porter ↔ @Sober** | ✅ |
+| **@Porter ↔ @Silver** | ✅ |
+| **@Porter ↔ @Tanya** | ✅ |
+| **@Sober ↔ @Jason** · **@Sober ↔ @Fern** | ✅ |
+| **@Silver ↔ @Bob** · **@Silver ↔ @Fanta** | ✅ |
+
+🔑 **An engineer who finishes a piece RINGS THE SA BACK — they do not sit waiting to be checked on.** **An engineer who hits a question their SA can answer RINGS THE SA — they do not stop and wait.** 🔑 ***A doorbell that only rings downward is a dispatch queue; a doorbell that rings both ways is teamwork, which is what this is for.***
+🚫 **Unchanged, and these are the hard parts:** engineers never nudge @Porter or the other team · the two SAs never nudge each other · @Porter never nudges an engineer. **Two-way applies ALONG the chain, never ACROSS it.**
+📌 **The same six STOP reasons bind an engineer as bind an SA** — and for an engineer, *"a question an adjacent role can answer"* means **their SA**, who is one nudge away.

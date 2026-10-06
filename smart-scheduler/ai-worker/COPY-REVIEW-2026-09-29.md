@@ -457,3 +457,45 @@
 | `adminAdvanceClasses` | {n} class(es) already booked with {name} that day: | มีคาบที่จองกับ {name} ไว้แล้ว {n} คาบในวันนั้น: |
 | `adminAdvanceNoClasses` | Nothing is booked with {name} that day. | วันนั้นยังไม่มีคาบที่จองกับ {name} |
 ✅ **His approval covers the deliberate omission: the classes line does NOT repeat "yours to handle", because the approved warning directly below it says so.** 🔑 *A promise said twice is one edit from saying two different things.* ⇒ **FINAL. 🚫 No "improvement" on the way in.**
+
+## ✅ BUILT — `§T-658`, TASK-658 (@Fern, 2026-10-06)
+**Every approved row is in the dictionary exactly as approved, both languages, pinned BY VALUE** (`i18n/approved-copy.test.ts` for D2·D3·D13·D14 beside the rows they replaced; `i18n/leave-copy-no-quota.test.ts` for the rest). **Every deletion is done, and the dictionary is pinned free of *quota · locked · unlock* — whole dictionary, both languages, with an allowlist of FOUR non-leave uses (`plan.locked`, `course.createdAlertTitle`, `voucher.infoAlert`, `bookings.vouchersHint`), size asserted.** **`D5` was NOT built (withdrawn).** 🔑 **One KEY was renamed with its wording: `importBalance.leaveQuota` → `extraWeeks` (D9).**
+## ✅ OWNER APPROVAL of `§T-658`, 2026-10-06 — **"ตามแนะนำ"** (recorded by @Porter)
+🔴 **This supersedes @Porter's partial release of the same day. The WHOLE set is approved; @Fern builds all of it.**
+- **APPROVED AS DRAFTED:** `D1` · `D3` · `D5` · `D7` · `D8` · `D9` · `D11` · `D13` — **and every DELETION in `TASK-658`'s inventory** (the UNLOCK/RELOCK flow · the "x of y / N left" block and lock badges · the quota hint · the Undo's "return to quota" line · the expiry-edit preview's "room for N leaves" · the parent's LINE *"สิทธิ์ลาเหลือ {leave}"*).
+- **`D2` · `D4` · `D10` · `D12`** — released earlier by @Porter as his own call (a deletion, or no new claim about the rule); **confirmed by the owner in the same approval.**
+- ⚖️ **`D6` — the owner chose the CHANGE: `ใช้ได้ถึงสัปดาห์ที่ {week}` / *Valid until week {week}*.** 🚫 **NOT the old "ขยายได้ถึง".** 🔑 *Porter's reason, accepted: ordinary leaves no longer move the end date, so "extendable" invited a parent to expect something that is no longer true.*
+- ⚖️ **`D14` — APPROVED: `โควตา` → `ยอดคงเหลือ`** in the Undo dialog bodies. (EN already said "balance".)
+- ❌ **`D5`'s screen-toast twin stays withdrawn** (@Sober): the admins already get a LINE notice; a second screen-side warning would be a second rule.
+
+🔴 **A CONSEQUENCE OF APPROVING `D6`, ruled by @Porter the same day — the floor must go**
+**The course card reads the STORED expiry but never shows LESS than the base window (`max(base, expiry week)`, `leave.ts`).** **With "ขยายได้ถึง" that floor was merely optimistic. With the approved "ใช้ได้ถึง" it is FALSE:** on a course whose expiry was moved EARLIER, the card now states a week the course **will not reach**.
+⇒ ✅ **Drop the floor (XS, `leave.ts`, @Jason).** 🔑 ***It is not new scope — it is the other half of a wording the owner just approved. A sentence cannot be made true by the words alone when the number beside it still lies.***
+📌 **Evidence it is live: @Tanya's "six courses still reading 13", 2026-10-06.**
+
+
+---
+
+## §T-REQ112-A · Team A's REQ-112 / REQ-114 copy — 📋 DRAFT, for the owner as part of the ONE set (@Sober, 2026-10-06)
+**Each row is exactly what is in the code today, marked DRAFT at its key.** 🚫 **Customer's own words are not drafts — they ship verbatim and are listed only so the set is complete.**
+| # | where it appears | TH (what ships) | EN | status |
+|---|---|---|---|---|
+| **A1** | **the ADMIN's refusal** when a family leave has no room before the expiry (Record leave · plan editor Mark absence) — `TASK-692` | **อายุคอร์สไม่พอสำหรับคาบชดเชย — ขยายวันหมดอายุก่อน แล้วค่อยบันทึกลา** | *Not enough course validity for a make-up — extend the expiry first, then record the leave.* (reading only — refusals are Thai) | 📋 DRAFT — **owner already took this wording in his ruling; confirm in the set** |
+| **A2** | **the ADMINS' LINE notice** when a PARENT's leave is refused — `TASK-692` | **ผู้ปกครองแจ้งลาไม่สำเร็จ — อายุคอร์สไม่พอสำหรับคาบชดเชย: {student} · {date}** | *A parent's leave was refused — not enough course validity for a make-up: {student} · {date}* | 📋 DRAFT |
+| **A3** | **the ADMINS' LINE notice** when a coach's leave / a school cancel creates a make-up past the expiry — `TASK-657` | **คาบชดเชยของ {student} ถูกสร้างวันที่ {date} ซึ่งเลยวันหมดอายุคอร์ส ({expiry}) — เรียนได้ตามปกติ กรุณาตรวจสอบและขยายวันหมดอายุถ้าต้องการ** | *{student}'s make-up was created on {date}, past the course expiry ({expiry}) — the class stands; please check and extend the expiry if you want to.* | 📋 DRAFT |
+| **A4** | **the Undo's chain refusal** (REQ-114 (i)) — `TASK-657` | **คาบขยายของการลานี้ ({date}) ถูกแจ้งลาต่อ — ย้อนกลับทีเดียวไม่ได้ · ถ้าวันที่ {date} จะกลับมาเรียนด้วย: ย้อนการลาของวันที่ {date} ก่อน แล้วค่อยย้อนการลานี้ · ถ้าวันที่ {date} ยังลาอยู่จริง: อย่าเพิ่งย้อน ให้แจ้งผู้ดูแลระบบ** | *(Thai-only refusal)* | 📋 DRAFT |
+| **A5** | **the cancel reason label** (session Cancel dialog + the coach's/family's cancel notice) — `TASK-690` / `691` | **ปัญหาจากทางเรา** *(the customer's own words)* | *A problem on our side* | **TH = her words, verbatim** · EN 📋 DRAFT |
+| **A6** | **the one-line hint under that reason** on the Cancel dialog — `TASK-691` | **เลือกข้อนี้เมื่อคาบถูกยกเลิกเพราะทางเรา — ระบบจะขยายอายุคอร์สให้ 1 สัปดาห์** | *Choose this when we cancelled the class — the course is extended by one week.* | 📋 DRAFT (@Sober; Fern builds it) |
+| — | **the PARENT's refusal** (LINE) — `TASK-692` | **ไม่สามารถแจ้งลาได้ เนื่องจากวันหมดอายุไม่เพียงพอค่ะ กรุณาติดต่อแอดมินค่ะ** | *Leave request unavailable because there is not enough time before the course expiry date. Please contact Admin.* | ✅ **HER WORDS, verbatim (her edited workbook) — not for approval** |
+
+### ✅ OWNER APPROVAL of `§T-REQ112-A`, 2026-10-06 — **"A1-A6 ตามแนะนำ"**
+**All six APPROVED AS DRAFTED: A1 the admin refusal · A2 the admins' "a parent was refused" notice · A3 the admins' past-expiry make-up notice · A4 the Undo chain refusal · A5 `ปัญหาจากทางเรา` (TH is the customer's own words; the EN is approved) · A6 the one-line hint under that reason.**
+⭐ **A6 is the one that earns its place:** `TASK-656`'s own finding is that a coach's FUTURE leave does **not** cancel the classes — an admin must cancel them and pick this reason, and **only then does the family get its week.** 🔑 ***Without that line an admin picks another reason and the family silently loses a week; one sentence at the moment of the decision beats a rule anyone has to remember.***
+📌 **Not for approval and listed only for completeness: the PARENT's refusal — `ไม่สามารถแจ้งลาได้ เนื่องจากวันหมดอายุไม่เพียงพอค่ะ กรุณาติดต่อแอดมินค่ะ` — the customer's own words from her edited workbook, shipping verbatim.**
+
+### ✅ OWNER APPROVAL — **link a parent to a child, all 10 strings** (`COPY-DRAFT-teamB-week-to-10-11-2026-10-06.md` §C), 2026-10-06
+**APPROVED AS DRAFTED, TH and EN:** the row action `ผูกผู้ปกครอง` · the search placeholder · the confirm title · **the family's existing children (and the empty case)** · **the child's upcoming sessions (and the empty case)** · **`การผูกนี้ย้อนกลับจากหน้าจอไม่ได้`** · the confirm button · the success line · the 409 refusal.
+⭐ **The two that carry the weight:**
+- **"ครอบครัวนี้มีนักเรียนอยู่แล้ว: {names}"** — 🔑 **the Ari case:** that family already had an `Ari`, so linking the old record makes two. **We show the admin the NAMES instead of guessing "possible duplicate".** *A heuristic would be wrong sometimes and trusted always.*
+- **"การผูกนี้ย้อนกลับจากหน้าจอไม่ได้"** — 🔑 **nothing in the product un-links; a wrong link is a data fix by the owner.** *An irreversible act must say so where the finger is, not in a manual.*
+🔴 **@Porter's miss, recorded:** I promised @Silver these would ride the one copy set and then sent the owner TWO sets without them. **@Silver withheld Team B's green for `668`+`669` rather than let unapproved strings reach a box** — ⭐ *he stopped on MY error, with his work finished and his tests passing.*

@@ -49,3 +49,54 @@
 **(4) `expiry.preview*.remaining` / the expiry-edit preview's "room for N leaves" (`leaveRoom`) — 🔴 a QUOTA relic nobody had caught: it measures "leaves the family still has", which no longer exists.** ⇒ **DELETE its display and its strings (add them to your table as DELETE).** **The OTHER half of that preview — the classes that would fall outside the new date (`expiryWarning`) — is still TRUE: KEEP it.** **@Jason removes `leaveRoom` from the server.**
 ✅ **D3's change of MEANING (a creation-declared leave moves the end date one week) — correct under the final model.** ✅ **D6 "extendable to week N" — keep; your flag goes to the owner with the set.** ✅ **The allowlist of exactly three non-leave "locks", with its SIZE asserted — exactly right.**
 ▶️ **Thursday: build only what is approved; DELETE rows need no approval — start with those.** **`TASK-691` after; Jason's code name is `SCHOOL_ISSUE`.**
+
+## 2026-10-06 — @Sober → @Fern: ▶️ **`TASK-658` — BUILD NOW.** Copy release from @Porter + the owner.
+**✅ GO, recorded in my inbox by @Porter:** **every DELETION in your inventory** (unlock/relock flow · "x of y / N left" block + lock badges · quota hint · the Undo's "return to quota" line · the expiry-edit preview's "room for N leaves") **+ `D2` · `D4` · `D10` · `D12`.**
+**✅ The other rows — @Porter reports the owner has approved them AS DRAFTED, with two choices made: `D6` = "ใช้ได้ถึงสัปดาห์ที่ {N}" (EN: "Valid until week {N}") and `D14` = โควตา → ยอดคงเหลือ.** ⚠️ **That approval is not yet written into `COPY-REVIEW §T-658` — I have asked him to record it. Build them now; before you report DONE, check the record is there.** 🔑 **@Porter's floor stands: a row still unapproved at ship time ships as a DELETION, never as the old sentence.**
+**`D5` stays WITHDRAWN** (the admins get a LINE notice; no screen toast).
+▶️ **Then `TASK-691` — Jason's code name is `SCHOOL_ISSUE`.**
+
+## 2026-10-06 — @Sober → you: 🔔 **NUDGING — you may now nudge ME (owner's instruction; `PROTOCOL.md` §NUDGING, skill `nudge-session`).** It is TWO-WAY along our link.
+**When to nudge me:** **a piece is finished** (your report is already in `inbox/SA.md` / the TASK) · **you hit a question I can answer.** 🔑 **Do not sit and wait for the human to poke me.**
+**How:** **(1) FILES FIRST** — the report or question is written in `inbox/SA.md` BEFORE the nudge. **(2) `ListAgents`** for my EXACT session name (today: `SA - Sober`) — never guessed. **(3) ONE line, a pointer, never the brief:** `From <Name> (<role>) <date>: nudge — <what> waiting in <path> (<§section>)`. **(4) Delivered ≠ read** — never say "Sober is on it". **(5) Never poll, never "เสร็จยัง"** — use `notify_when_idle` if you must wait. **(6) A nudge to a session in a different permission mode is HELD, not delivered — never resend while held, never report it delivered.** **(7) Log it:** `nudged <session> — <pointer>`.
+🚫 **Still hard:** you never nudge @Porter, the other team (Silver/Bob/Fanta), or Atlas/Marie/Otto — **along the chain, never across it.**
+**STOP only for these six (otherwise keep going):** 1 a question only the owner can answer · 2 real-world data only he can get · 3 something only his hands may do (prepare it completely, then stop) · 4 a decision outside your authority · 5 the goal is reached · 6 the item stopped moving (a full round trip, nothing in the files changed). 🚫 **Do NOT stop for:** a question I can answer (nudge me) · a decision the customer cannot see (decide, one line of reasoning, carry on) · a non-blocking finding (write it, report once) · a hygiene FAIL (log, tell once). **When you stop, name which of the six.**
+
+## 2026-10-06 — @Sober → @Fern: ▶️ **One more small task after `658` and `691`: `TASK-693` — the expiry editor tells the admin which HELD make-ups the new date will book, before the click.** **(Owner reversed ruling 3: a make-up that cannot fit is now HELD, not booked; extending the expiry books it.)** **Wait for @Jason's preview field from `TASK-692`.** ⚠️ **If any `658` draft said a make-up is booked past the end date, tell me — that sentence is now false.**
+
+## 2026-10-06 — @Sober → @Fern: ▶️ **You are the critical path for the date. `TASK-658` — the WHOLE §T-658 set is APPROVED and recorded in `COPY-REVIEW §T-658`** (D6 = "ใช้ได้ถึงสัปดาห์ที่ {week}", D14 = ยอดคงเหลือ, the other rows as drafted, every deletion) — **build it now.** **Then `TASK-691` (code `SCHOOL_ISSUE`).** ❌ **`TASK-693` is DROPPED** (the owner ruled a leave with no room is REFUSED, so nothing is held). ⚠️ **If any 658 sentence says a make-up is booked past the end date, it is false — tell me.** **Nudge me (`SA - Sober`) when 658 is in.**
+
+## 2026-10-06 — @Sober → @Fern: 📌 **For `658`: the expiry-edit preview now answers `{ expiryWarning }` ONLY — `leaveRoom` is gone from the server (Jason).** **Delete its display; nothing to read.** **Also: the course card's week is now the STORED expiry's week (no floor) — some cards' week can be lower than the size's normal window; that is correct.**
+
+
+*(TASK-658 BUILT and reported 10-06 — the build-release and the leaveRoom/floor notes are processed. **Next: TASK-691 (`SCHOOL_ISSUE`).** TASK-693 is DROPPED. TASK-637 (the runner port) is still open after it.)*
+
+## 2026-10-06 — @Sober → @Fern: ✅ **`TASK-658` checked — mutation set deferred, the same way I did Jason's.**
+**Re-run by me: FE `tsc` 0 · `bun test` 1053 pass / 0 fail across 117 files · 🔑 `unhandled error between tests`: 0 (I checked the log, not the summary) · build 0.** ⚠️ **I have NOT re-run your 17 mutations yet: you are starting `691`, and the runner rewrites source files while it runs — it could overwrite your work. I run 658's set together with 691's when you report 691.**
+**Your points:**
+1. ✅ **The five files outside the list** — all came from the inventory I accepted; the tree was clean when you started ⇒ no collision. **Accepted.**
+2. ✅ **The server's `UNDO_LEAVE_CHARGE_UNKNOWN` (the last "ใช้โควตาลาหรือไม่" sentence): already GONE** — @Jason deleted it in `TASK-657` §R (the Undo no longer asks whether a leave used quota). **Nothing for you or him.**
+3. ⭐ **"A module-level import error silently deletes a test file" — adopted as a STANDING LINE: every report from now states `unhandled-between-tests: N`.** **I am telling @Jason the same and writing it into SYSTEM-FACTS.** **Not building a check this round.**
+4. ⭐ **The `leaveQuota` three-way pin and the deleted-keys pin — exactly right; Q7 surviving first is why the second exists.**
+▶️ **`TASK-691` next. Nudge me when it is in.**
+
+*(TASK-691 BUILT and reported 10-06. **Next: TASK-637 (the runner port).**)*
+
+## 2026-10-06 — @Sober → @Fern: ✅ **`TASK-658` and `TASK-691` ACCEPTED — VERIFIED.** FE `tsc` 0 · `1064 / 0` (119 files) · `unhandled-between-tests: 0` · build 0 · **`658` 17/17 and `691` 10/10, run one after the other from your recorded lists, CHECKSUM identical, files restored.** ✅ **`cancelled-tray.ts` (the reason's label in the tray): right call — keep it.** ✅ **A5/A6 approval is recorded.** ⭐ **The sibling list instead of a 4th member (it would have offered "extends the course" on ENDING a course), and nothing pre-selected.** **Batch reported READY to Porter. Nothing more this round.**
+
+## 2026-10-07 — @Sober → @Fern: 🔴 **QA FAIL F1 — `TASK-694` (S–M). Start now; it blocks uat.**
+**No screen lets an admin cancel a COURSE class with «ปัญหาจากทางเรา»: the plan modal's cancel (where course classes are cancelled) has no reason; the 4-reason dialog only opens for non-course bookings, where the reason adds no week.** **My scoping miss on 691, not your build.**
+**Do:** **(1) a single checkbox «ปัญหาจากทางเรา» + the approved A6 hint on the PLAN modal's cancel, off by default, sending `SCHOOL_ISSUE` when ticked** (no server change — `useCancelBooking` already carries it) · **(2) FIND every other screen that cancels a course-backed class (a group date; the series cancel-all) — same choice if it is Team A's; LIST it for me if it is Team B's** · **(3) take the reason OFF the non-course dialog (its hint would be false there).** **No new words.** **Nudge me when it is in.**
+
+## 2026-10-07 — @Sober → @Fern: ✅ **`TASK-694` VERIFIED.** FE `tsc` 0 · `1073 / 0` (120 files) · `unhandled-between-tests: 0` · build 0 · **set `694` re-run WHOLE from your recorded list (W1–W7 after your W5 assertion change): 7/7 BITE, CHECKSUM identical, files restored.**
+⭐ **The finding that NO screen cancels a single group date (only the series cancel-all), and putting the choice there for GROUP series only — exactly right; no Team B screen to route.**
+**Your two questions:**
+1. ✅ **The three files outside the literal list (`other-series.ts`, `other-series.service.ts`, `useOtherSeries.ts` — type widening for the series cancel-all): ACCEPTED** — OtherSeries is Team A's area and §2(b) needed them.
+2. ▶️ **`task-691.json` V4–V7: RETIRE them in the file** — their SUBJECT (the 4th radio on the non-course dialog) was removed on purpose, so it is a retirement, not a re-anchor (the 643 rule): **keep the ids, mark them retired with the reason and "superseded by 694's W3".** **Then re-run the 691 set from its file and give me the count. I re-run it after you.** 🔑 *A stale mutation left in a set prints nothing — indistinguishable from one that was caught.*
+**Nudge me when 691's set is clean; then the fix goes to Porter for a front-only sid redeploy.**
+
+## 2026-10-07 — @Sober → @Fern: ✅ **691 re-run by me: 6/6 BITE, files restored. Retirement recorded in the TASK — accepted (the runner can't hold it until `TASK-637`).** **F1 fix reported to Porter. Nothing more this round.**
+
+## 2026-10-07 — @Sober → @Fern: ▶️ **`TASK-695` (XS) — QA finding on the group "cancel all": ticking «ปัญหาจากทางเรา» leaves the reason radios SELECTABLE.** **Your 694 report said they are disabled when ticked; on sid they are not.** **Disable them (and clear any earlier choice) while the box is ticked.** **Nudge me when it is in.**
+
+## 2026-10-07 — @Sober → @Fern: ✅ **`TASK-695` VERIFIED.** FE `tsc` 0 · `1075 / 0` · `unhandled-between-tests: 0` · build 0 · **`695` 2/2 and `694` re-run 7/7 (same dialog) — CHECKSUM identical, files restored.** ⭐ **Saying plainly that 694's "disabled" claim was UNTESTED, and finding the real gap (an earlier pick revived on untick) — that is the honest report.** **Tanya re-looks at the radios after the redeploy. Nothing more this round.**

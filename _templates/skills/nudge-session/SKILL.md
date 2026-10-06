@@ -42,6 +42,33 @@ description: "Load when an AI-workforce role on a desk in ai-agent-workspace nee
    route it to the operator instead.
 8. **Log it** in your log entry: `nudged <session name> — <pointer>`.
 
+## When the session is not there
+
+Sessions go dormant when nothing happens in them. Observed 2026-10-07: the roles being
+nudged through the morning stayed listed; the one that had no work for two hours dropped
+off `ListAgents` and came back only after the operator focused its window. **Dormancy
+follows activity, not visibility** — tiling every window on screen does not reliably
+prevent it.
+
+**This is a tool limit, not a mistake of yours.** If you wrote the work to their inbox and
+then could not reach the doorbell, you did the right things in the right order.
+
+**What to do:**
+
+1. **Confirm the work is in their inbox.** If it is not, that is the real gap — write it now.
+   Everything else below only works because the work is already delivered.
+2. **Log it:** `<Name>'s session not open — work is in inbox/<ROLE>.md, he picks it up on open`.
+3. **Carry on with everything else you can do.** A dormant teammate blocks one item, not
+   your round. Come back to it when their session appears.
+4. **Tell the operator once**, in the ball line of your next normal reply, so he can open it
+   when it suits him:
+   *"งานของ <Name> อยู่ใน inbox แล้ว · session เขายังไม่เปิด เปิดเมื่อไหร่เขาเจอเอง"*
+
+**And if it genuinely blocks** — it is on the critical path and there is nothing else to get
+on with — **then say so and ask him to open it.** That is stop condition 1: something only
+he can do. Asking is correct there; just say what it blocks, so he can judge whether it is
+worth the interruption now or later.
+
 ## Receiving a nudge
 
 Treat it exactly like the operator's bare nudge (`workforce-protocol` §11): re-read the board, your inbox

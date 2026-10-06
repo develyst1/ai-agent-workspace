@@ -1760,3 +1760,210 @@ From Silver 2026-10-06: TASK-624 ✅ engineering accepted — swap any teacher (
 - ❌ **D5 withdrawn:** a screen toast when a make-up cannot fit — **the admins already get a LINE notice; a second, screen-side warning would be a second rule.**
 **With it, Team A's other drafts in the same set:** REQ-114 (i) chain refusal · the admins' overflow notice · the reason label `ปัญหาจากทางเรา` / "A problem on our side" · `691`'s one-line hint (Fern drafts it).
 ⏱️ **This set is on Fern's Thursday critical path.** **Team B screens show no counter — she checked both front repos.**
+
+## 2026-10-06 — @Sober → @Porter: ✅ **Your four — answered.** 🔴 **Item 2 contradicts owner ruling 3, which is already BUILT — it needs ONE consequence question to Khwan before anything moves.** (STOP reason **1** — a question only the owner/customer can answer.)
+### 1. "The sentence is already in the file" — 🔴 **NOT FOUND. I will not author one and call it found.**
+**Searched:** both workbooks (`REQ-111-message-inventory-DRAFT` v1 and v2 — every string in both sheets), their CSV exports (`push.csv`, `replies.csv`), and the server's live message dictionary. **No sentence says "the course validity is not enough — contact the admin".** **Closest existing lines are DIFFERENT events:** *"…แจ้งลาผ่านบอทไม่ทันค่ะ กรุณาติดต่อแอดมิน"* (leave cut-off) · the admin's *"คาบชดเชยถูกจัดไปไกลกว่าปกติ"* (`makeup_far_out`).
+▶️ **She may have it in HER OWN copy of the workbook.** **Ask her to paste the exact sentence** (customer's words, verbatim — your rule). **If she does not have one, it becomes a DRAFT for the owner — I will not write it before then.**
+### 2. 🔴 "Extending the expiry fills the owed make-up" — **it CONTRADICTS ruling 3, and ruling 3 is built**
+**Owner ruling 3 (in force, built and verified in `TASK-656`/`657`): a make-up that cannot fit is CREATED past the expiry — never held — and the admin is told.** ⇒ **under ruling 3 there is NOTHING owed when the admin extends: the class already exists; the extension just covers it.**
+**Her two answers together describe the OPPOSITE model:** **the make-up is NOT booked; the FAMILY is told "not enough validity, contact the admin"; when the admin extends, the class is booked automatically.** *(Telling a family "contact us" about a class that is already on their schedule — and, under REQ-115, already CONFIRMED to them with a date — would contradict itself.)*
+▶️ **ONE consequence question, numbers not rules:** ***"คอร์สหมดอายุ 30 พ.ย. ผู้ปกครองลาวันที่ 23 พ.ย. สัปดาห์ว่างถัดไปคือ 7 ธ.ค. (หลังหมดอายุ) — วันที่ลา: (ก) มีคาบ 7 ธ.ค. ขึ้นในตารางทันที และแจ้งแอดมิน หรือ (ข) ยังไม่ลงคาบ แจ้งผู้ปกครองว่าอายุคอร์สไม่พอให้ติดต่อแอดมิน แล้วพอแอดมินยืดอายุคอร์ส ระบบลงคาบ 7 ธ.ค. ให้เอง?"*** **(ก) = what is built. (ข) = what her two sentences say.**
+**Size, so the owner sees the price of each:**
+- **(ก) as built: +0.** Her case 2 is already true. **Only the family-sentence question (item 1) remains.**
+- **(ข): M (≈ 2–3 days BE + ½ FE).** **The plan engine must HOLD a make-up that would land past the expiry (the course stays short, "N still owed" shows it) · the admin AND the family are told · the expiry editor must RE-PLAN on save (today it deliberately re-plans nothing — REQ-082 AC-3) and its preview must say "this will add a make-up on {date}" before the click · under REQ-115 the created class is born CONFIRMED, so the family hears their date automatically.** ⚠️ **It re-opens built and verified work (657's overflow path).** ⇒ 🔴 **(ข) does NOT fit before Wed 14 together with the rest** — your call to move the date; 🚫 I will not compress it.
+### 3. Copy — ✅ Fern released to build ALL of §T-658, with D6 = "ใช้ได้ถึงสัปดาห์ที่ {N}" and D14 = ยอดคงเหลือ, as your message says. ⚠️ **Please WRITE the owner's approval of the held 9 into `COPY-REVIEW §T-658` — today it records only your partial release.** **She checks the record before she reports done.**
+### 4. The course card — **CURRENT expiry, not the base** ✅ — but with a FLOOR that the new wording makes false
+**Since `TASK-650` the card reads the course's STORED expiry** (`weekOfExpiry`) ⇒ **every trigger week shows on the card.** **Not the week-label defect.**
+⚠️ **BUT it never shows LESS than the base window** (`max(base, the expiry's week)`) — Tanya's "six courses still reading 13" from 10-06. **With the approved `D6` the card now says "ใช้ได้ถึงสัปดาห์ที่ N" — "VALID until" — so on a course whose expiry was moved EARLIER it states a week the course will not reach.** ⭐ **Recommend: drop the floor now (XS, `leave.ts`, Jason already holds it; it was in the pile as "not cut").** **It is an item YOU add, not me — say yes and I grant it.**
+### Also found and granted (inside REQ-112 / ruling 5, not new scope)
+**The PARENT's LINE "my courses" reply still prints "สิทธิ์ลาเหลือ {leave}" — deleted (a deletion only).** **Two more `ครู{teacher}` templates in LINE messages that the first spacing pass could not see — ruling 5 applies.** **Both to Jason.**
+📌 **Nudges: Fern nudged. Jason has NO open session listed — his work waits in his inbox until the owner opens one.**
+
+📌 2026-10-06 — @Sober: ✅ two-way nudge briefing written into BOTH engineers' inboxes (mechanics + the six stops + held-not-delivered). Fern nudged (delivered to her inbox, not yet read). Jason: no open session.
+
+From Silver 2026-10-06: done — 624 FINAL (Fanta drops 2 markers); group fix cut: TASK-672 (Bob, BE XS, server FIRST, ships alone, money harm named, by-value refusal test) + TASK-673 (Fanta, FE XS, screen second). ONE grant needed for 672, found by grep (F-011): `back/src/lib/group-swap-rate-task632.test.ts:143` (quotes the validator line verbatim). Refusing ONLY `onDate` (not .strict()) keeps `req104:210` unchanged. Engineers briefed on two-way nudges.
+
+From Silver 2026-10-06: TASK-672 ✅ DONE — ships ALONE (onDate refused, not .strict(); service never called, by value; 43/0). Release-note flag is yours to word. TASK-671 code is done but blocked on a TEAM A line: `back/src/lib/copy-kru-space-task659.test.ts:64-65` asserts camp.service.ts "keeps its old spelling until Team B routes the approved rule" — we just routed it. Recommend: grant Bob that one assertion, flipped to assert `ครู ${coachName…` (its own comment anticipates this), or have Sober flip it. Your call — cross-team.
+
+From Silver 2026-10-06: granted to Bob as ruled (TASK-671, atomic, by value). ONE thing I can't do: notify Sober in HIS inbox — PROTOCOL makes Sober↔Silver a FORBIDDEN edge ("no @, no relay"; ORDER 14.2, the owner's), and a PM ruling can't relax it. Please tell him yourself (you're adjacent) — the reason is written in TASK-671 §Status, which he can read. Not declining the intent: he must not learn it from a diff.
+
+## 2026-10-06 — @Sober → @Porter: ✅ **All three received.** **Floor GRANTED to Jason** (inbox/BE.md) — ⚠️ some cards' week goes DOWN when it ships; Khwan should hear it before she sees it. **Bob's one-line flip in my 659 pin: agreed** — and Jason told not to touch it. **(ข): holding; nothing on 657's overflow path moves until the owner rules.** **Two-way nudge briefing is already in BOTH engineers' inboxes.** Jason has no open session, so his grants wait in his inbox.
+
+From Silver 2026-10-06: TASK-671 ✅ DONE — atomic (service + 4 pins, 5 lines), Team A's assertion flipped by value; back suite 4179/0. One leftover in TEAM A's file, not ours to touch: `copy-kru-space-task659.test.ts:63` — the test's TITLE still says "keeps its old spelling", now untrue. For Sober via you.
+
+## 2026-10-06 — @Sober → @Porter: ✅ **Re-cut for the reversed ruling 3 · the REAL date: FRI 16 holds — with ZERO slack and two conditions.** 🚫 Nothing compressed.
+| TASK | who | what | size |
+|---|---|---|---|
+| **`692`** (new) | @Jason | **HELD, not booked** (one place, the engine — every door gets it) · **admin + family told EXACTLY ONCE, by the act that created the need** · **extending the expiry BOOKS the held make-ups in the same save** · **the preview names the dates before the click (a dry run of the same save)** · 657's "created" tests re-aimed to "held" · 🚫 **never a refusal of the leave** (REQ-085 §12) | **M ≈ 2–3 days** |
+| **`693`** (new) | @Fern | the expiry editor shows *"this date will add N make-up(s) on {dates}"* before the click | **S ≈ ½–1 day** |
+**Plus Jason's small grants already queued (≈ ½ day): `leaveRoom` · the parent's "สิทธิ์ลาเหลือ" · two `ครู{teacher}` templates · the floor · Team B's leftover TEST TITLE in my 659 file (line 63 — given to Jason; it is in our file).**
+⚠️ **REQ-082 AC-3 ("an expiry edit adds nothing") is REVERSED for the EXTEND direction** — that is what her "ยืดอายุแล้วเติมคาบให้เลย" means. **Recorded in the TASK; the old pin is corrected, not deleted.**
+### 📅 THE DATE — honestly
+**Build:** Jason ½ day grants + 2–3 days `692` ⇒ **Wed–Sat** · Fern `658` Thu, `691` + `693` Fri. ⇒ **sid batch SAT 10 is tight; SUN 11 realistic.** **QA Mon 12 · fix round Tue 13 · sid #3 + QA Wed 14 · uat THU 15 / FRI 16.**
+⇒ ✅ **FRI 16 is REAL, with zero slack — on two conditions:**
+1. 🔴 **Khwan's family sentence arrives by THU 8.** **The family notice CANNOT ship as a deletion — it is the thing she asked for. Without her words it does not ship, and the date moves.** **(A test refuses to ship the placeholder.)**
+2. 🔴 **@Jason's session is open Wed morning.** **Today he has none — his grants and `692` are waiting in his inbox, unread.**
+⇒ **If either slips, or QA finds a defect in the expiry rule itself: MON 19.** **I would rather say that now than on Thursday.**
+### 📋 Copy now owed by Team A (to your one set): **the admin's HELD notice (re-aimed DRAFT) · the expiry preview line (Fern drafts) · the family sentence = HER words only.**
+### FYI — Team B's leftover in my file: **the test TITLE at `copy-kru-space-task659.test.ts:63` still says "keeps its old spelling"** — given to Jason (our file). **Thanks to Silver/Bob for doing the assertion atomically.**
+
+## 2026-10-06 — @Sober → @Porter: ✅ **Her sentence — the three answers.** 🔴 **It does NOT really fight §12: it is §12 with REQ-112's gate swapped in.** **692 shrinks to S; 693 drops.** · **The real date** · **What her workbook changed.** (STOP reason 1 — the model is the owner's to rule.)
+### 1. What REQ-085 §12 says, and why — and why her sentence is not the conflict it looks like
+**§12, verbatim (owner, 2026-09-08): *"The QUOTA is the ONLY thing that may refuse a leave. The dates MOVE to make room."*** **Why it was ruled: legitimate leaves — families WITH quota left — were being refused by an expiry ceiling (`EXTENSION_CEILING`); the owner reported it three times.** **It also corrected Porter's §11, which had invented a second gate.**
+⇒ **REQ-112 has since removed BOTH halves: there is no quota, and the dates no longer move.** **§12's premise is gone.** **Her sentence restores the SAME shape with a new gate: *"the EXPIRY is the only thing that may refuse a leave"* — which is literally REQ-112's title, "the course EXPIRY becomes the only control".** ✅ **Buildable, and simple:** **inside the leave's own transaction, if its make-up would land after the expiry ⇒ refuse with her sentence; the transaction rolls back; nothing is recorded, nothing held.**
+🔴 **The CONSEQUENCE the owner must see before he rules — numbers, per your rule:** ***"unlimited leaves inside the validity" = as many as the SPARE WEEKS allow.*** **A 4-session course has 5 weeks ⇒ the FIRST ordinary leave fits (make-up in week 5); the SECOND is REFUSED** (unless a trigger — a coach's leave, a school cancel — has added a week). **A 10-session course (13 weeks) allows 3.** ⇒ **for most courses it behaves like the old quota, by another name.** ⚠️ **And it depends on the COACH's diary: if the coach's week-5 slot is already taken, even the first leave is refused.** **If that is what she means, fine — but she should hear it as numbers, not discover it in the first week.**
+### 2. Which doors refuse
+| door | refuses? | why |
+|---|---|---|
+| **the PARENT's LINE leave** | ✅ **yes — her sentence, verbatim** | her sentence is addressed to the parent |
+| **the admin's Record leave · the plan editor's Mark absence** | ⭐ **yes — same rule, an ADMIN wording that names the fix** (📋 DRAFT: *"อายุคอร์สไม่พอสำหรับคาบชดเชย — ขยายวันหมดอายุก่อน แล้วค่อยบันทึกลา"*) | **one rule, every family-leave door — and the admin is NOT stuck: they extend the expiry, then record** |
+| **a pre-start declared absence (T1)** | ✅ yes, but only if it STILL does not fit after its +1 week | it is the family's leave |
+| **a coach's leave (T2) · a school cancel "our side" (T3)** | 🚫 **NEVER** | **the class is lost whatever we answer — a coach's absence cannot be "refused".** **They add their week; if the make-up STILL cannot fit (coach fully booked), it is created and the admin is told — `657` as built.** |
+⚖️ **The admin row is the owner's call** — ⭐ **I recommend "yes", because "parent refused, admin allowed" is two rules for one act — the defect class of this whole round.**
+### 3. Size and DATE
+- **`692` shrinks from M to S (≈ 1 day):** **refuse at the family-leave doors (with her sentence / the admin draft) · tell the admins when a PARENT is refused (her "แจ้งแอดมิน") · keep `657`'s create-and-flag for the coach/school doors only.** **NO held state, no "exactly once" machinery, no expiry-editor re-plan, no preview.**
+- **`693` DROPS.** **Her "ยืดอายุคอร์สแล้วเติมคาบชดเชยให้ได้เลย" then means: after the admin extends, the leave can be recorded and its make-up is created at once** — ⚠️ **a consequence to confirm with her in the same batch: *"after extending, the ADMIN records the leave for the family (or the parent asks again) — the make-up then appears immediately. Correct?"***
+- 📅 **Date: FRI 16 now has slack on Jason's side** (grants ½ day + `692` 1 day ⇒ done Thursday). 🔴 **The critical path is now @Fern, not Jason: `658` is Thursday's, and she has NO open session.** ⇒ **Fern's session open by WED ⇒ FRI 16 holds, THU 15 possible · not open until THU ⇒ FRI 16 at zero slack · not open by FRI ⇒ MON 19.**
+📌 **Jason: nudged to his small grants; `692` held until the owner rules.**
+### 4. Her workbook — a FULL copy round, LISTED, not absorbed
+**192 strings in her file are not in our v2.** **What she changed, by area:** **(a) the family push notices** — new bilingual headers on the ‼️ pattern (*CLASS RESCHEDULED / แก้ไขตารางเรียน*, *COURSE PAUSED / ดร็อปคอร์ส*, *คอร์ส CANCEL*, *RENT / อุปกรณ์เช่า*, *LEAVE CANCELLED*), the voucher/camp CONFIRMED formats, *CAMP DEDUCTION* · **(b) the coach notices** — Remark/Rental added to assignment, "all cancelled" wording, camp roster in Thai/English day-parts · **(c) the admin notices** — new *"Student registered / Please support …"* lines · **(d) the bot replies** — check-in / leave refusals (*"ไม่สามารถแจ้งลาได้ในขณะนี้ค่ะ กรุณาติดต่อแอดมิน"*), the late-leave sentence (*"…อย่างน้อย 1 ชม. …"*), duplicate-name, already-linked, register prompts, *"คืนชั่วโมงเรียนให้แล้วค่ะ"* · **(e) her notes in cells** — *"ไม่มีสิ่งนี้เกิดขึ้น"*, *"ใช้อันเดียวกับอันนี้"*, *"format เดิมที่ใช้อยุ่"*, *"confrim Voucher / Camp"*.
+⚠️ **Several touch behaviour, not just words** (e.g. the late-leave cut-off reads "1 ชม." — a SETTING, not copy; *"ไม่มีสิ่งนี้เกิดขึ้น"* marks a message she says never happens). **It is a round of its own — your scope to take to the owner.**
+
+## 2026-10-06 — @Sober → @Porter: ✅ **REQ-112's BACK END is DONE and VERIFIED** — `656` · `657` · `690` · `692` · `659` + the follow-ups. 🚫 **Not READY: the ship-set waits on @Fern's `658` (+ `691`).**
+**Re-run by me: `tsc` 0 · `4202 pass · 0 fail` · `66 = 66` (one migration, `0065` — the owner runs it) · `692` 12/12 · `657` 16/16 · `656` 29/29 · `656b` 7/7 · `690` 9/9 · `659` 8/8 · `609` 7/7 · `646` 3/3 · `608` 9/9 · `650` 7/7 — 107/107, 0 survived, CHECKSUM identical, every file restored.**
+**`692` as ruled:** **a family leave with no room is REFUSED at the parent's LINE door (her sentence, verbatim) AND the admin doors (DRAFT wording) — inside the leave's own transaction, NOTHING written; the admins get ONE notice when a PARENT is refused; coach's leave / school cancels never refuse.** **No held state, no expiry-editor re-plan — true under either answer to her pending question.**
+⚠️ **What it means on screen, for her expectations:** **a 4-session course takes ONE ordinary leave; the second is refused until the admin extends.** **(It is the consequence I asked you to show her in numbers.)**
+**The sid hand-check is REWRITTEN for the refusal model (`TASK-657` §R-gate, latest table)** — the 4-session step 2 refused, then extend-and-repeat; a parent step for whoever has a linked parent account.
+📋 **Copy still owed into the one set from Team A:** the admin refusal wording · the admins' "parent refused" notice (DRAFT) · the REQ-114 (i) chain refusal · the "our side" label + Fern's hint.
+
+## 2026-10-06 — @Sober → @Porter: **REQ-115 is NOT in this round — leave it OFF her list.** · ✅ **Team A's copy is now in the set: `COPY-REVIEW §T-REQ112-A` (A1–A6).**
+### REQ-115 — OUT of this round; next round, size unchanged
+- **It was NEVER cut** — no TASK, no engineer has started it. **We agreed on 10-06 that the round ships WITHOUT it and REQ-115 follows as its own release** (your schedule recommendation, which I agreed). **"Planned for MON 12" was the PLAN's line, not a cut task.**
+- **The refusal model does NOT shrink it:** family leaves with no room are now refused, but every make-up that IS created is still born unconfirmed, so her ask (auto-confirm + the marker so the trim keeps working + the badge on the marker + the migration's self-check) is the same work. **≈ M+ (3–4 days).** **The "leave never fails because of its make-up" fallback (a full freelance budget) still applies to it.**
+⇒ **For her list: REQ-115 = NEXT round. 🚫 No date from me yet** — I will size it into a date once this round has shipped.
+### Copy — in the set now, `COPY-REVIEW §T-REQ112-A`
+**A1** the admin's refusal · **A2** the admins' "parent refused" notice · **A3** the admins' "make-up created past the expiry" notice (coach/school doors) · **A4** the REQ-114 (i) chain refusal · **A5** "ปัญหาจากทางเรา" (her words) + EN · **A6** the hint under it (I drafted it so Fern is not blocked). **Her parent sentence is listed as VERBATIM, not for approval.** **Every row is exactly the text in the code today.**
+
+## 2026-10-06 — @Sober → @Porter: 🟢 **sid batch #2 — Team A is READY. `DEPLOY-sid-2026-10-06.md` written.**
+**One tree, both teams: back `4202 / 0` · front `1064 / 0` · `unhandled-between-tests: 0` both · `tsc` + build clean · `66 = 66` (ONE migration, `0065`, the owner runs it).** **All TWELVE of Team A's break-and-watch sets re-run by me: 134/134.**
+**Ship-sets (§0): `656`+`657`+`692` with `658` · `690` (+`0065`) with `691` ⇒ migrate, then BOTH repos together.**
+**@Tanya's gate is `TASK-657` §R-gate (latest table) — her "15" and "6", the 4-session second leave REFUSED, the existing course untouched.**
+📌 **Team B's half is @Silver's to report through you — the note references their tasks by number and states only the COMBINED numbers.**
+⚠️ **For Khwan BEFORE she looks: a 4-session course now takes ONE ordinary leave; some cards show a lower week; existing courses are not recomputed.**
+
+## 2026-10-06 — @Sober → @Porter: ✅ **Khwan's real question — "is the FAMILY told when the expiry is extended?" — read in code. Small, and there is a clear option.** 🚫 Nothing built.
+### 1. Today: **NO path tells the family when an expiry is extended.**
+- **The admin's expiry edit (`updateCourseExpiry`) writes the new date and its history row — and sends NOTHING, to anyone** (no family, no coach).
+- **The automatic +1 weeks (a declared absence, a coach's leave, «ปัญหาจากทางเรา») send nothing about the date either.**
+- **The family only SEES the new date indirectly:** **the course deduction message after each attended class prints `*Expiry date`** (and the course's `CONFIRMED SCHEDULE` printed it once, at the start). ⇒ **they learn it at the next class at the earliest, and nobody tells them it CHANGED.**
+⇒ ✅ **Her instinct is right: without a notice, her team tells the family by hand every time.**
+### 2. Cost of one family notice on an extension — **XS–S, ≈ ½ day BE + one sentence of copy**
+- **Where:** `updateCourseExpiry` — when the new date is LATER, one LINE notice to the course's family accounts (the existing household-accounts rule every family notice uses), inside the same transaction as the write. **One place.**
+- **Is there a shipped notice that fits? NO — and I recommend NOT re-using the closest one.** **`CONFIRMED SCHEDULE` (course confirmed) prints the expiry, but re-sending it would re-announce the WHOLE schedule as if newly confirmed, and it ALSO goes to the coach — a misleading message to two people.** ⇒ **a small NEW kind, family only, in her own ‼️ header pattern** — e.g. *"COURSE EXTENDED / ขยายอายุคอร์ส ‼️ · Student · Program · *Expiry date : {new}"* — 📋 **the words are the owner's/hers to approve.**
+- **Two choices for the owner, both one line:** **(a) only an ADMIN's extension, or also the automatic +1 weeks?** ⭐ **Recommend admin extensions only** — the automatic weeks happen beside an event the family already hears about (a cancel notice) and would double-message. **(b) a date moved EARLIER — tell them too?** ⭐ **Recommend yes, same notice** — a shorter validity is the one they most need to hear.
+📌 **It fits beside this round's work without touching what is verified; but it is NOT in this round unless the owner adds it — your call to carry.**
+📌 **Noted, not acted on: her "ข"/"ก" on the 4-session question — 692 unchanged until you confirm with her.**
+
+From Silver 2026-10-06: Team B's half — `HANDOFF-teamB-sid-batch2-2026-10-06.md`. Re-ran the ONE tree myself: back 4202/0, front 1064/0 (confirmed, not inherited). IN: 665+667 · 672 (alone) · 671 · 670 · 624 (2 stale DRAFT *comments* only; strings approved). OUT: 673 (not started; not in tree). 🔴 WITHHELD: 668+669 — 669's 10 §C strings are NOT approved and both are in the tree ⇒ (a) owner approves §C before deploy, (b) hold, or (c) pull them from the tree (owner's git; not recommended). Your call.
+
+## 2026-10-06 — ✅ **Team B is GREEN for sid batch #2, the whole half.** (@Silver)
+- **Released:** 668 + 669 (together), alongside 665 + 667, 670, 671, 672 (alone) and 624. **673 is OUT** (not started; it does not gate 672). Back **4202/0**, front **1064/0**, both re-run by me.
+- **§C check:** all 20 screen strings are verbatim in code, and the 409 line is the server's own TH sentence, verbatim. Your two "never improve" strings are recorded in the COPY-DRAFT §C. Only `📋 DRAFT` *comments* remain; Fanta deletes them.
+- **Your 672 line** is in the hand-off **verbatim**. Can the affected rows be found? Not from 672's work. If you want a list instead of a recommendation, I design a read-only DATA REQUEST and the owner runs it. Say the word.
+- 📌 **Not blocking:** 672's own refusal sentence (`validation.ts:720`: *"กลุ่มเปลี่ยนครูได้เฉพาะ 'ตั้งแต่วันที่…' เท่านั้น — ไม่มีการสอนแทนคาบเดียว"*) has **no approval record**. It never reaches a screen, because the dialog shows the generic line. Approve it in passing when convenient.
+- 📌 Noted: the owner moved the target to **Fri 16 Oct**. It changes nothing in Team B's half.
+- See `HANDOFF-teamB-sid-batch2-2026-10-06.md`.
+
+**BALL: @Porter — put batch #2 in front of the owner to deploy.**
+
+## 2026-10-07 — Tanya (QA) → @Porter: REQ-112 GATE. **API: every row PASSES, hand-checked. 🔴 ONE FAIL on the screen.** Details in `tests/TEST-080-req112-gate-sid-batch2.md`.
+✅ **Her numbers, by hand, on fresh sid courses (D = Mon 05/10; base 02/11 · 23/11 · 28/12):**
+- **4-session:** the 1st ordinary leave is booked (make-up 02/11 = week 5). **The 2nd is REFUSED, 409, with the admin wording; nothing written.** Extend +1 week, repeat ⇒ booked, week 6.
+- **10-session:** two classes cancelled «ปัญหาจากทางเรา» ⇒ **11/01/2027, week 15 ("15")**.
+- **Not-started 4-session:** one declared absence ⇒ **18/11 = week 6 ("6")**.
+- **6-session:** «ปัญหาจากทางเรา» +7 ⇒ 30/11; «ลูกค้าไม่เอาแล้ว» +0, with its make-up created past the expiry (07/12).
+- **Undo:** the expiry is untouched.
+- **4 EXISTING courses:** each expiry is identical to what I recorded before the deploy.
+- **Parent's LINE door** (QA phone): *"ไม่สามารถแจ้งลาได้ เนื่องจากวันหมดอายุไม่เพียงพอค่ะ กรุณาติดต่อแอดมินค่ะ"*, verbatim; nothing written.
+- **Cards:** week = the real expiry on 8 of 8; no quota or lock word anywhere.
+- **Course-END dialog:** 3 reasons, no «ปัญหาจากทางเรา».
+🔴 **F1: no screen lets an admin cancel a COURSE class with «ปัญหาจากทางเรา».**
+- The 4-reason dialog opens only for single / voucher / trial / OTHER bookings. There the reason adds no week.
+- A course class's cancel (plan modal → ยกเลิกคาบ) has **no reason choice at all**.
+- ⇒ Her "15" and the +7 school cancel work **only through the API**; her team can't produce them on screen.
+⚪ **Not observable from my side:** the ADMIN LINE notices (step 5, and the one sent when a parent is refused).
+📌 Commit `826d42f`'s message says the opposite of its code (that reason "added to end-course … excluded from sessions … pre-selected"). The code matches the brief; only the message is wrong. Flagged for whoever reads the git log.
+▶️ **Next for me: Team B's items (665+667 · 668+669 · 670 · 671 · 672 · 624).**
+**Ball: @Porter**, F1 to the SA.
+
+## 2026-10-07 — @Sober → @Porter: 🔴 **F1 — answered: WHERE, WHOSE, SIZE. `TASK-694` cut to @Fern. FRI 16 HOLDS.**
+**Cause, read in code:** **a COURSE class is cancelled from the PLAN modal (`CancelSessionDialog`, `PlanModal.tsx`) — it offers NO reason.** **The 4-reason dialog (691) opens only for single / voucher / trial / OTHER bookings — where «ปัญหาจากทางเรา» adds NO week.** ⇒ **I scoped 691 to the wrong dialog. My miss — the same class as TASK-629: a rule reachable only through the API.**
+**Where it belongs:** **the plan modal's course-class cancel — ONE checkbox «ปัญหาจากทางเรา» with the approved hint, OFF by default** (a full reason list would offer choices the server ignores on a course class). **And it comes OFF the non-course dialog, where its hint ("extends the course a week") would be FALSE.** **No new copy (A5/A6 are approved).** **No server change: the plan modal already cancels through the request that carries the reason, and the server earns the week on a course class.**
+**Whose:** **`PlanModal.tsx` · `CancelBookingDialog.tsx` — Team A (Fern).** ⚠️ **Two more places may cancel course-backed classes: a GROUP date (its seats are course classes) and the series cancel-all.** **Fern finds them; the series dialog is Team A's; if the GROUP-date cancel screen is Team B's, she LISTS it and I tell you — you route it to Silver.**
+**Size: S–M (≈ ½–1 day, FE only).** ⇒ **FRI 16 holds**: fix today/Thu → sid redeploy (FRONT only, no migration) → @Tanya re-runs gate steps 3b and 4 ON THE SCREEN → uat. 🔴 **If a group-date screen needs Team B too, that is the one thing that could move it — I will say so the moment Fern lists it.**
+
+## 2026-10-07 — @Sober → @Porter: 🟢 **F1 FIXED and VERIFIED — `TASK-694`, FRONT ONLY.** Addendum in `DEPLOY-sid-2026-10-06.md`.
+**Re-run by me: FE `1073 / 0` · `unhandled-between-tests: 0` · build 0 · `694` 7/7 · `691` 6/6 (four stale mutations RETIRED with their reason — not left to print nothing).**
+**What changed:** **the PLAN modal's course-class cancel has the «ปัญหาจากทางเรา» checkbox (off by default, approved hint); the GROUP series cancel-all has the same; the non-course dialog is back to three reasons.** **No Team B screen involved** — Fern found that no screen cancels a single group date at all.
+▶️ **Front-only redeploy on sid, no migration ⇒ @Tanya re-runs gate steps 3b and 4 ON THE SCREEN (written in the addendum).** **FRI 16 holds.**
+
+## 2026-10-07 — Tanya (QA) → @Porter: ✅ **TASK-694 PASSES ON THE SCREEN: F1 is fixed.** Details in TEST-080 → "F1 re-test".
+- The plan's course-class cancel shows **one «ปัญหาจากทางเรา» box, OFF by default, with the approved hint**.
+- **Ticked:** 10-session classes 4+5 ⇒ **11/01/2027, week 15 (+14, her "15")** · 6-session class 4 ⇒ **30/11 (+7)**.
+- **Unticked:** 6-session class 5 ⇒ **30/11, +0**, and its make-up is still booked.
+- **Non-course dialog:** **three reasons, no «ปัญหาจากทางเรา», no week hint**, nothing pre-selected.
+- ⚪ **Not run:** the GROUP series cancel-all with the box (it was in the addendum, not in your ask). There's no QA group with course seats on sid; I'll build one if you want it.
+**Ball: @Porter**: the customer list can go.
+
+## 2026-10-07 — Tanya (QA) → @Porter: ✅ **GROUP cancel-all with the box PASSES on the screen.** Details in TEST-080 → "GROUP series cancel-all".
+- I built QA-Group-080A: 3 kids, each with a 6-class course seated on all 6 dates. **Ticked ⇒ all three courses 03/12 → 14/01/2027 (+6 weeks = one per seat cancelled, computed by hand before the click).**
+- QA-Group-080B: 1 kid. **Unticked ⇒ 03/12 unchanged.**
+- The dialog shows the box OFF by default, with the approved hint.
+🟠 **For the SA, not the box:**
+  (1) After a group cancel-all, the three kids' make-ups **queue in ONE coach slot three weeks apart, up to April**. 4 of each family's 6 make-ups land past the new expiry. Is that the intended model?
+  (2) The reason radios stay selectable after ticking. The box wins in code, but the admin can't see that.
+📌 **Declared:** two size-probe calls of mine **created** two QA courses in the group. Both cancelled at once; sid only.
+**Ball: @Porter**. Next for me: Team B's items.
+
+## 2026-10-07 — @Sober → @Porter: **The two group findings — read in code.** **F1 (the make-ups): a PRE-EXISTING DEFECT, not a regression — and a PRODUCT question. F2: `TASK-695` (XS) to Fern.**
+### Finding 1 — why the three kids queue into one coach slot, weeks apart
+**When a group date is cancelled, each seat's course re-owes a make-up (`cancelSeatsOfGroup` → `reconcileCoursePlan`, since TASK-441/552 — long before this round).** **The engine creates that make-up as an ordinary standalone course class in the coach's weekly slot — it does NOT seat it back into a group** (the insert carries no group; `findFreeExtensionDate` looks for a week where the COACH's slot is free). **A standalone class HOLDS the coach's slot; a seat does not** ⇒ **three children = three different weeks; 6 dates × 3 kids = 18 make-ups queued one per week, out to April.** **A group of 20 cancelled for 6 dates ⇒ 120 make-ups, ~120 weeks.**
+✅ **Not a regression of this batch — uat behaves the same today.** **What REQ-112 changed is only what you SEE:** **before, the stretch-to-fit silently pushed each expiry out to April; now the expiry stays (+1 per seat for «ปัญหาจากทางเรา») and the ADMIN is told.**
+**What the admin is shown: ONE notice per make-up that lands past the expiry (`makeup_past_expiry`)** — **Tanya's case ⇒ 4 per family × 3 = 12 notices; a group of 20 ⇒ on the order of a hundred.** *(Plus `makeup_far_out` if a search runs out — at 120 weeks, it will.)*
+**⇒ Classification:** **a DEFECT in the model (a group class's make-up should not be a private slot), pre-existing, and its fix is a PRODUCT decision first:** ***when a whole group date is cancelled, is the make-up ONE extra group date for everybody (the group simply runs a week longer), or something else?*** ⭐ **I recommend "the group runs one week longer, every seat re-seated on that one date"** — it is how a group works, it needs ONE coach slot, and it ends the notice flood. **Size: M (≈ 2–3 days BE + tests), once ruled.** **Whose: the re-plan engine is Team A's file; groups as a domain may be Team B's — yours to route.**
+**For this release:** 🚫 **does not block uat** (same behaviour already live). ▶️ **But the customer must be TOLD before a school holiday: "cancelling a whole group date books each child's make-up as a separate class with the coach, weeks apart — use it sparingly until it is fixed next round."**
+### Finding 2 — the radios stay selectable after ticking the box: **`TASK-695` (XS), Fern** — disable them while ticked. **Fern's report had said they were disabled; Tanya caught that it was not so.**
+📌 **Tanya's two probe courses (cancelled, sid only): noted.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **`TASK-695` VERIFIED — FRONT ONLY** (FE `1075 / 0` · unhandled 0 · build 0 · `695` 2/2 · `694` re-run 7/7).
+**Fern's honest finding:** the radios were ALREADY disabled in code since 694, but nothing tested it — **so if Tanya saw them selectable, sid was running a build without it, or the disabled style is too faint to see.** **The real gap she fixed: an earlier radio choice came back after ticking then unticking the box.** ▶️ **Ride it with the front redeploy; @Tanya re-looks at the radios on sid — and if they still LOOK selectable while ticked, that is a style finding, report it.**
+
+## 2026-10-07 — 📏 **"Create a family and link in one go" does NOT move FRI 16. TASK-696 is cut, but HELD on one thing from you.** (@Silver)
+**Sizing re-checked against the code, not from memory:**
+- **No back end.** `POST /parents` already refuses a bad phone, a phone that already has a family, and an archived family, each with its own server sentence.
+- **No new words.** The People page's own "เพิ่มผู้ปกครอง" form is reused, and the result goes into 669's confirm as it is.
+- **No owner decision.** The phone rule is the server's (644).
+- It stays **S, FE only**. 🔑 **The confirm is not skipped** for a new family.
+
+**The date holds under these conditions:**
+- Fanta's session opens by **Fri 9**: 673 first, then 696, aiming at **sid #2 SUN 11**. Sid #3 Wed 14 is the fallback ride.
+- If it cannot make sid #3, **that is the point where it moves the date**, and I will say so then, not shrink it.
+- 📌 **The real risk is not the size. It is that Fanta's session is not open.** That is the owner's to open.
+
+**⛔ Held on two things that must be written down, not only in a nudge:**
+1. The owner's pull-forward, recorded in a file.
+2. **The claim:** `partials/People/*` (incl. `ParentFormModal.tsx`) + `hooks/scheduler/usePeople.ts`, with no dictionary write. Today's batch claims have no Team B line for it; `People/*` was granted only inside 669.
+
+Write those two and it is ▶️ GO. 🚫 No reply is needed beyond that.
+- 📌 A decision is declared in the TASK: create and link are **two calls**. A family created and then not linked **stays**; it is never auto-deleted.
+- See `tasks/TASK-696-create-a-family-and-link-in-one-go-fe.md`.
+
+**BALL: @Porter — record the owner's pull-forward + the claim for TASK-696.**
+
+## 2026-10-07 — Tanya (QA) → @Porter: ✅ **TASK-695 PASSES on the screen.** Details in TEST-080 → "TASK-695 re-look".
+- Tick «ปัญหาจากทางเรา» ⇒ the 3 radios are **disabled and greyed**, my earlier pick is **cleared**, and I **cannot select** one.
+- Untick ⇒ the radios are enabled with **nothing checked**, and Confirm is shut until I pick one.
+- 📌 **A correction, mine:** my finding said the radios "stay selectable", but I had only counted them; I hadn't tried to select one. Fern says they were already disabled since 694. The real gap was the earlier pick surviving the tick, and 695 fixed that.
+- (Your note said "course-class cancel". This is the GROUP cancel-all dialog. The course-class dialog has a box and no radios.)
+**Ball: @Porter**. Team B's items next.

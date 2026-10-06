@@ -1,6 +1,6 @@
 # TASK-669 — link a parent from the no-parent list (FE) — FE, S–M
 - Source: `SIZING-link-a-parent-teamB-2026-10-06.md` · Porter's plan (Thu–Fri) · the BE is TASK-668
-- Status: REVIEWED — engineering accepted by Silver (2026-10-06); ⛔ held ONLY on the owner wording (§C) · 🔴 ships ONLY with TASK-668
+- Status: DONE — FINAL (Silver, 2026-10-07): DRAFT markers off, no string changed
 - Repo: `smart-scheduler-front` · Assignee: @Fanta · From: @Silver (2026-10-06)
 - 🔴 **Ships ONLY with TASK-668.**
 - **Claim:**
@@ -106,3 +106,24 @@ None for this TASK.
 - **All 5 declared decisions are accepted.** The preview as its own `useQuery` key with `gcTime 0` is a careful touch: a stale preview after a link would have lied.
 - **Re-run by me:** People/* + 670's files → **27 / 0**. The 10 link strings carry the DRAFT marker.
 - **When the wording is approved:** swap in any differing words, drop the markers, re-run, and send me that diff.
+
+**Silver, 2026-10-06 — ✅ §C APPROVED by the owner (via Porter, recorded in `COPY-REVIEW`). RELEASED with 668 into sid batch #2.**
+- Machine-checked: **all 20 screen strings are verbatim** in `dictionaries.ts`, so no word needs swapping. The 409 row is the server's own sentence (`parent.service.ts`), verbatim in TH.
+- Only the two `📋 DRAFT` **comments** remain (`dictionaries.ts` ~1684 / ~3616). Fanta deletes them with no string change, re-runs, and sends me the diff.
+
+### Final step done (Fanta, 2026-10-07)
+- **The 4 DRAFT comments in `dictionaries.ts` (EN + TH × TASK-624 §B and TASK-669 §C): only the marker lines changed.** The `📋 DRAFT` sentence became the approval note, as on TASK-662/664, so the provenance stays. **Zero string lines changed** (`git diff -U0` filtered to non-comment lines = 0):
+```
+- // 🔴 TASK-624 (1b) — 📋 DRAFT wording (Silver, COPY-DRAFT-…§B; not yet confirmed as covered).
++ // 🔴 TASK-624 (1b) — ✅ covered by the owner's approval (Silver, 2026-10-06; COPY-DRAFT-…§B).
+- // 🔴 TASK-669 — 📋 DRAFT wording (Silver, COPY-DRAFT-…§C; not yet approved). Reused, not new:
++ // 🔴 TASK-669 — ✅ owner-APPROVED 2026-10-06, all 10 as drafted (COPY-DRAFT-…§C). Reused, not new:
+- // 🔴 TASK-624 (1b) — 📋 DRAFT wording (see the EN block).        (TH block)
++ // 🔴 TASK-624 (1b) — ✅ covered by the owner's approval (see the EN block).
+- // 🔴 TASK-669 — 📋 DRAFT wording (see the EN block).             (TH block)
++ // 🔴 TASK-669 — ✅ owner-APPROVED 2026-10-06 (see the EN block).
+```
+- The 4 `📋 DRAFT` markers still in the file are TASK-566's, not mine.
+- **Re-run:** `bunx tsc --noEmit` exit 0 · **full `bun test` 1075 pass / 0 fail across 120 files**. Nothing committed.
+
+**Silver, 2026-10-07 — ✅ FINAL. The DRAFT comments are off.** Re-checked by me: no `📋 DRAFT` marker left for 624/669 (only TASK-566's, not ours, untouched). The approved strings are verbatim (§B 4/4, §C 20/20 screen strings). People + OtherSeries → **47 / 0**. Fanta's full suite 1075/0, tsc 0.

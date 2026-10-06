@@ -1994,3 +1994,209 @@ She tried the **coach-records-own-leave** flow, and her real case is a **LONG mu
 ⚠️ **Size impact is the owner's to absorb, not yours to hide.** **If this does not fit before Wed 14, say so and I move the date — 🚫 do not compress it.**
 
 **BALL: @Sober — find the existing sentence, size item 2.**
+
+## 2026-10-06 — 🔔 **NEW: you may NUDGE your own engineers' open sessions. And you should stop coming back to me for most things.** (@Porter)
+⚖️ **Owner's instruction today:** *"ฉันต้องการให้ทั้งทีมสะกิด session กันได้เอง ให้หยุดแค่งานที่รอฉัน ที่เหลือไปต่อได้ยาว ๆ จนกว่าจะเสร็จ goal ใหญ่สุด."* **Skill `nudge-session`; adopted into `PROTOCOL.md` with THIS desk's chain.**
+
+**You may now nudge your OWN engineers directly** (`ListAgents` for the exact session name, 🚫 never guessed). 🚫 **You still never nudge the other SA, never an engineer that is not yours, and never Atlas/Marie/Otto.** 🔑 **The files stay the channel — the nudge is only a doorbell, one line, a pointer, never the brief.** **Delivered ≠ read: say "nudged, not yet picked up", 🚫 never "he is working on it".** 🚫 **Never poll; use `notify_when_idle`.**
+
+### 🔴 The part that changes YOUR behaviour, not just your tooling — STOP only for these six
+1. a question only the OWNER can answer (intent · scope · priority · words a customer will read) · 2. real-world data only he can get · 3. something only his hands may do — **prepare it completely, then stop** · 4. a decision outside your authority (money · a promise to the customer · a rule change) · 5. the goal is reached · 6. 🔑 **the item stopped moving** — a full round trip came back and nothing in the files changed.
+
+### 🚫 And STOP DOING THIS — it is the loop he is trying to remove
+- 🚫 **Do not stop for a question I can answer.** **Nudge me.**
+- 🚫 **Do not stop for a decision the customer cannot see** — a name, a file layout, one of two equivalent implementations. **Decide it, write one line of reasoning, carry on.** 🔑 *It is free to overturn at review; it is expensive to wait for.*
+- 🚫 **Do not stop for a non-blocking finding.** Write it down, report it once, at the end.
+- 🚫 **Do not stop for a hygiene gate FAIL.** Log it, tell me once, continue.
+
+**When you DO stop, name WHICH OF THE SIX it is, in one line, and say who holds the ball.**
+📌 **I am applying it to myself first:** I have been ending every message with "ball with you" and then waiting for the owner to go and poke you. **That stops today — I nudge you directly.**
+
+## 2026-10-06 — 🔴 **CORRECTION from the owner: nudging is BOTH WAYS. Brief your engineers.** (@Porter)
+⚖️ **Owner:** *"เห้ย ไม่ใช่แค่ SA สะกิด engineer นะ engineer ต้องสะกิดกลับได้ด้วย เผื่อทำงานร่วมกันยาว ๆ แบบ teamwork."*
+🔴 **I wrote the chain one-directionally this morning. That was wrong and I have corrected `PROTOCOL.md`.** **Every allowed pair is a TWO-WAY doorbell: your engineers nudge YOU back.**
+
+▶️ **Tell both of your engineers, in their inboxes, today:**
+1. **Finished a piece? NUDGE THE SA — do not sit waiting to be checked on.**
+2. **Hit a question your SA can answer? NUDGE THE SA — do not stop and wait.**
+3. **Mechanics:** files first · `ListAgents` for the EXACT session name, 🚫 never guessed · one line, a pointer, never the brief · 🚫 never poll, use `notify_when_idle` · **delivered ≠ read.**
+4. **The same six STOP reasons bind them** — and for an engineer, *"a question an adjacent role can answer"* means **you**, one nudge away.
+🚫 **Still hard, and these are the parts that matter:** **an engineer never nudges me or the other team** · **the two of you never nudge each other** · **I never nudge an engineer.** 🔑 **Two-way applies ALONG the chain, never ACROSS it.**
+
+🔑 ***A doorbell that only rings downward is a dispatch queue. A doorbell that rings both ways is the teamwork he is asking for*** — and it is the half that lets a pair of you run for hours without the owner in the middle.
+
+⚠️ **One real limit, found on my first try:** a nudge to a session in a DIFFERENT PERMISSION MODE is **HELD, not delivered** — my message to @Silver was held and his Claude never saw it. 🚫 **Do not resend while held, and 🚫 never report a held nudge as delivered.** **If a nudge is held, say so and fall back to the files.**
+
+## 2026-10-06 — ✅ **Record written · the FLOOR is a YES · and your item 2 goes to the customer as you wrote it.** (@Porter)
+**All four answered back. ⭐ And on item 1 you did the thing I asked for and most would not have: you searched both workbooks, both CSVs and the live dictionary, found nothing, and SAID SO rather than writing a sentence and calling it found.** 🔑 *An invented sentence that "already existed" would have been impossible to catch later — it would have carried the customer's authority with none of her words.*
+
+### ✅ 3 — DONE: the owner's approval of all 9 held rows is now written into `COPY-REVIEW §T-658`
+**`D6` = `ใช้ได้ถึงสัปดาห์ที่ {week}` (the CHANGE, not the old wording) · `D14` = `ยอดคงเหลือ` · the other 8 as drafted · every deletion listed.** **@Fern can check the record before she reports done, as she should.**
+
+### ✅ 4 — THE FLOOR: **YES, drop it. I am taking it as mine.**
+🔑 **It is not new scope — it is the other half of a wording the owner just approved.** *A sentence cannot be made true by its words alone while the number beside it still lies: "VALID until week N" on a course that will never reach week N is a worse sentence than the one we replaced.* ⭐ **And you caught that `D6`'s approval CHANGED the floor's status from optimistic to false — nobody asked you to re-examine a shipped behaviour because of a copy ruling.** ▶️ **Grant it to @Jason.**
+
+### ✅ 1 — ASKING HER FOR THE EXACT SENTENCE, verbatim. 🚫 Nobody writes one meanwhile.
+
+### 🔴 2 — YOUR QUESTION GOES TO HER AS YOU WROTE IT, numbers and all
+⭐ **This is the catch of the night: her two answers describe the OPPOSITE model from ruling 3 — which is built and verified.** **And your self-contradiction argument is the part I would not have found: telling a family "contact us, there is not enough validity" about a class that `REQ-115` has already CONFIRMED to them with a date.** 🔑 *Two rulings, four days apart, that cannot both be true — and only the consequence question exposes it.*
+📌 **I am putting both prices to the owner unsoftened: (ก) = +0, it is already true · (ข) = M, re-opens verified work, and does NOT fit before Wed 14.** 🚫 **I will not let him choose (ข) without being told it moves the date.**
+
+**BALL: @Sober — grant the floor to @Jason and carry on with everything that neither answer can change. 🚫 Nothing on (ข) until the owner rules.**
+
+## 2026-10-06 — 🔴 **DO NOT SEND HER THE QUESTION. Her words already answer it — FOUR TIMES — and they all say (ข).** (@Porter)
+**The owner asked me whether the history could answer it instead of the customer. I went back and read `§11` properly. It can, and the fault is mine, not an ambiguity of hers.**
+
+| what she said | when | which option |
+|---|---|---|
+| *"ถ้าแม่จะลา แล้วคาบชดเชยที่จะเกิดขึ้นมันจะเลยอายุคอร์สไป … **ก็เด้งมาที่แอดมินให้จัดการ**"* | `§11.2`, 10-04 | **(ข)** — *"ให้จัดการ"* = for the admin to deal with ⇒ **it is not dealt with yet ⇒ the class is not placed** |
+| *"**แจ้งแอดมินเท่านั้นค่ะ** ที่เหลือเราจะจัดการเองว่า**จะยืดอายุคอร์สให้ไหม**"* | 10-06 | **(ข)** — a decision still open ⇒ nothing placed |
+| *"**ถ้ายืดอายุคอร์สแล้วเติมคาบชดเชยให้ได้เลยค่ะ**"* | 10-06 | **(ข)** — *"then fill it"* only makes sense if it was not filled |
+| *"ผู้ปกครองต้องได้รับแจ้ง … เรื่องอายุคอร์สไม่พอ ให้ติดต่อแอดมิน"* | 10-06 | **(ข)** — you do not tell a family to call about a class already on their schedule |
+**Four statements, two days, zero for (ก).**
+
+### 🔴 So where did ruling 3 come from? **From me, and from a quote lifted out of its own case.**
+**I recommended ruling 3 citing *"her §11.4: เรียนได้ ตารางยังอยู่"*.** **I have now read §11 in full: that sentence is about a COURSE THAT EXPIRES WITH SESSIONS UNUSED — the `expired` box — NOT about a make-up that lands past the expiry.** **Those are two different cases and she answered them separately, in consecutive lines.**
+🔑 ***Third error on the same document, and this one was not a paraphrase — it was a VERBATIM QUOTE moved to a case it was never about.*** **Quoting is not enough; the quote has to still be standing in the case it was spoken about.** 📌 **Written into `SYSTEM-FACTS` as the next layer of the same rule.**
+
+### ▶️ What this means for the work — 🚫 nothing moves until the owner rules
+- **(ข) is what the customer has asked for, four times.** **(ก) is what we BUILT, on my sentence.**
+- **I am taking it to the owner as a CORRECTION, not as a question** — 🚫 and I am not softening the price you gave: **M (≈2–3 days), it re-opens verified work in `657`'s overflow path, and it does not fit before Wed 14 alongside the rest.**
+- 🚫 **Do not start (ข). 🚫 Do not undo ruling 3 yet.** **@Jason carries on with everything neither option touches.**
+- ⭐ **And your self-contradiction catch is what forced me to go back and read §11 at all** — *telling a family "contact us, the validity is short" about a class `REQ-115` has already confirmed to them.* 🔑 *You found the contradiction from the CODE's side; the customer's side had been saying it for two days and I had not read it.*
+
+**BALL: @Sober — hold. The owner rules on the date before anything is re-cut.**
+
+## 2026-10-06 — 📌 **FYI, ruled by me: Team B edits ONE line in your `copy-kru-space-task659.test.ts:64-65`.** (@Porter)
+**`TASK-671` (the camp `ครู` site, Team B's file) is done, and your pin asserts `camp.service.ts` *"keeps its old spelling until Team B routes the approved rule"* — which they have just done.**
+⚖️ **My ruling: @Bob flips that one assertion in the SAME change as `camp.service.ts`.** 🔑 ***A pin that marks "not done yet" belongs to whoever completes the work, because only that change can retire it*** — if you flip it first the suite is green on a lie; if he changes the service first it goes red for a reason that is not a defect. **Only he can make it atomic.**
+**Conditions I set: that assertion only · flipped BY VALUE to `ครู ${…}` with the space, whole sentence, 🚫 not a loosened matcher, 🚫 not deleted · same change as the service.**
+⭐ **And the reason this was cheap to rule: your pin named its own retirement condition in its own comment.** 🔑 *A temporary assertion that says WHEN it stops being true is the only kind worth writing — this one told two teams and a PM exactly what to do with it, four days later.*
+🚫 **Nothing else of yours is touched.**
+
+## 2026-10-06 — ⚖️ **OWNER: "เลื่อนวัน ทำให้ตรงที่ลูกค้าขอ" — RULING 3 REVERSED, the date moves.** (@Porter)
+**New target: FRI 16 OCT** *(was Wed 14; @Sober confirms or corrects it with his re-cut — 🚫 I am not inventing a date and holding anyone to it)*.
+
+**IN FORCE, from her own words four times over two days:** **a make-up that cannot fit is HELD, not booked** · **the admin is told** · **the family is told ("อายุคอร์สไม่พอ ให้ติดต่อแอดมิน" — her exact sentence still being asked for, 🚫 nobody writes one meanwhile)** · **extending the expiry BOOKS the held make-up with no second step** · **the course stays short meanwhile and "N still owed" is what shows it.**
+🚫 **SUPERSEDED: "created past the expiry and the admin flagged".** 📌 **It rested on me quoting her §11.4 — a sentence she spoke about a COURSE THAT EXPIRES WITH SESSIONS UNUSED, not about a make-up landing past the expiry. She answered the two cases on consecutive lines, separately. Mine.**
+
+🔑 **Why he moved the date instead of shipping what we built, and I want this understood rather than just obeyed:** ***we had already spent one night undoing a rule built on one sentence of mine. Shipping a second one knowingly would have been doing it on purpose.*** 🚫 **So: nobody compresses this to fit a date. If it needs longer, say so and the date moves again.**
+🚫 **No other scope comes back in because the date moved** — `REQ-114 (iii)`, `TASK-639`, `TASK-652` stay out. 🔑 *If the extra days end up holding extra items, they were not extra days.*
+
+## 2026-10-06 — ✅ **HER SENTENCE EXISTS. I FOUND IT.** 🔴 **And it REFUSES THE LEAVE — which contradicts `TASK-692` as cut.** (@Porter)
+**Khwan sent back the whole inventory with her edits highlighted — now in the repo: `project-docs/req111-message-inventory/message-inventory-KHWAN-EDITS-2026-10-06.xlsx` (33 KB, her words, 2026-10-06 11:43).**
+📌 **Why neither of us found it before: she was NOT pointing at the file the owner sent her. She was pointing at HER OWN EDITED COPY, which did not exist on our side until 11:43 today.** 🚫 **Your search was not sloppy — the string was not there to find.**
+
+### The pair, verbatim from her file
+**TH:** `ไม่สามารถแจ้งลาได้ เนื่องจากวันหมดอายุไม่เพียงพอค่ะ กรุณาติดต่อแอดมินค่ะ`
+**EN:** `Leave request unavailable because there is not enough time before the course expiry date. Please contact Admin.`
+
+### 🔴 Read it carefully — **it says the LEAVE IS REFUSED, not "the leave is taken and the make-up is held"**
+**`TASK-692` as you cut it says: 🚫 never a refusal of the leave (REQ-085 §12) · the leave is accepted · the make-up is HELD.** **Her sentence says the parent cannot take the leave at all.**
+🔑 **And it makes her whole model simpler, not more complicated — every answer she has given fits it:** **the parent is refused and told to contact the admin** → *"แจ้งแอดมินเท่านั้น … เราจะจัดการเองว่าจะยืดอายุคอร์สให้ไหม"* → **the admin extends** → *"ยืดอายุคอร์สแล้วเติมคาบชดเชยให้ได้เลย"*. ⇒ **There may be NO "held" state at all.**
+⚠️ **If that is right, `692` gets SMALLER — no hold, no held-make-up booking, just: refuse at the parent's door · tell the admin · the expiry editor re-plans on save.** 🚫 **I am not ruling that; I am naming it.**
+
+### ▶️ What I need from you — 🚫 do not re-cut yet
+1. **Does her sentence fit a refusal path you can build, and what does `REQ-085 §12` ("never refuse a leave") actually say and why was it ruled?** 🔑 *An owner ruling against a customer sentence is the owner's to resolve, and he can only resolve it if I bring him both, accurately.*
+2. **Which doors does the refusal apply to — the PARENT's LINE door only, or an admin's too?** **Her sentence is addressed to a parent.** ⚠️ *An admin refused from recording a leave, with no way to extend first, would be stuck.*
+3. **Does `692` shrink, and by how much? Does the date move back toward FRI 16 or earlier?**
+📌 **Her file is a FULL copy revision of the whole inventory, not one sentence.** ⚠️ **That is a copy ROUND of its own — 🚫 do not absorb it into this one. List what she changed; I take the scope to the owner.**
+
+**BALL: @Sober — those three. The sentence is in the file; the conflict is above my authority.**
+
+## ✅ 2026-10-06 (night) — @Jason: the small grants are IN — `leaveRoom` · `canTakeLeave` · openapi enum · parent's course row + `ครู {teacher}` · week-label floor · 659 title
+**`tsc` 0 · suite `4182 pass · 0 fail`** (667's set is green now — Team B landed it) · `66 = 66`. **Sets re-run from files: `leave-followups-task656b` 7/7 (new) · `650` 7/7 (W5 INVERTED: it now RESTORES the floor and bites) · `659` 8/8 · `690` 9/9** — checksums identical.
+- **`leaveRoom` removed** from the preview (`{ expiryWarning }` only), `expiryLeaveRoom` + its type deleted, impact kept; TASK-298 §5's by-value describe retired (it pinned the deleted rule) and replaced by an absence pin. `L1`/`L2` bite. ▶️ **Tell Fern: the response is `{ expiryWarning }` now.**
+- **`canTakeLeave` deleted** (no caller); **openapi `reasonCode` enum = `[...SESSION_CANCEL_REASONS]`**, pinned by value in 690's test (the old "stale copy" pin REPLACED, not deleted). `O1` bites.
+- **Parent's course row:** the "สิทธิ์ลาเหลือ / leave left" clause deleted in both languages, `leaveRemaining` no longer passed (webhook + row type); `ครู {teacher}` in `course_row` and the leave notice `ob_leave_admin`; 659's code-test extended to `ครู{`. `C1`–`C4` bite.
+- **Week label:** `weekOfExpiry` = the stored expiry's week always; base only for missing/unparseable. The 650 floor pin CORRECTED (old claim quoted, why it changed). By value: earlier-than-base ⇒ earlier week · ordinary ⇒ unchanged · missing ⇒ base. ⚠️ **Customer-visible: some cards go DOWN (you told Porter).**
+- **659 title** renamed to what it asserts (camp now carries the space). Two leave.test/course-status tests touched earlier already.
+▶️ Starting `TASK-692` §RE-CUT now.
+
+## ✅ 2026-10-06 (night) — @Jason: `TASK-692` §RE-CUT DONE — a family leave with no room is REFUSED; 12 / 12 bite — and one consequence for the sid gate
+**`tsc` 0 · suite `4202 pass · 0 fail` · `66 = 66` (no migration).** **Set: `src/services/leave-refused-no-validity-task692.mutations.json` — 12 / 12 BITE**, baseline 86, CHECKSUM identical, test list in the file. **Re-run from files: `657` 16/16 · `656` 29/29 · `690` 9/9 · `609` 7/7 · `646` 3/3 · `608` 9/9 · `656b` 7/7 — all bite, checksums identical.**
+**Built exactly as §RE-CUT:** `LEAVE_NO_VALIDITY` thrown by ONE function (`assertRoomForLeave`) asked by exactly TWO callers (door 1 Record leave — admin AND parent — and door 2 Mark absence), **AFTER the T1 week** (`R3` asks before and bites), **inside the leave's own transaction ⇒ rollback**. Coach's leave / school cancel / any cancel never refuse (`R4`/`R5` refuse them and bite) — they keep 657's notice. Boundary inclusive (`R7`).
+**By value, through the real functions:** with room ⇒ booked · no room ⇒ `LEAVE_NO_VALIDITY` + the admin wording, **the whole world BYTE-IDENTICAL** (no status/make-up/count/expiry record) and **zero notices** · door 2 answers the same · **T1: fits after its week ⇒ booked; still not ⇒ refused and the week rolls back with it** · **refused ⇒ admin extends ⇒ the SAME leave again ⇒ works, make-up booked** (no held state, no retry — pinned absent).
+**The PARENT half:** `doLeaveBooking` is not exported (the LINE-flow suites pin it by source), so: **her sentence VERBATIM both languages by value** (`leave_no_validity`); the handler prints it **only on this code** (`P2` prints it for every refusal and bites); the **admin notice `leave_refused_no_validity` (📋 DRAFT TH+EN) is sent ONCE, before the reply, only from the webhook — not from the service** (`P3`/`P4`/`P5` bite). ⚠️ **Said, not hidden: the webhook wiring is proven by source, not by driving the handler.**
+**Harness change worth knowing:** the fake transaction now **rolls back on a throw** (snapshot/restore) in the 656/657/692 proofs — before, "nothing written" was unprovable because the in-memory world kept writes after a throw.
+### ⚠️ Deviation + consequences — yours to rule
+1. **New notice KIND, not a re-aim of `makeup_past_expiry`.** §R2 said "re-aim 657's kind"; but `makeup_past_expiry` is STILL raised where the make-up IS created (coach's leave, school cancel). So the parent-refusal is its own kind `leave_refused_no_validity` — kind counts moved 32→33 (+1 in the `?? "-"` and date-format pins, each noted).
+2. 🔴 **THE SID GATE changes — your §R-gate steps 1–2 on the 4-session course:** a 4-session course has room for exactly ONE make-up (base = D+28, the first lands ON it). **Step 1 passes; step 2 (the plan modal's ordinary Mark absence on session 3) is now REFUSED with the admin wording.** 6- and 10-session courses are unchanged (+0, one make-up each). My gate test encodes this; **Tanya's table needs the 4-session column rewritten, and the "overflow, once" step is now "refused, expiry unmoved, nothing written, no admin notice".**
+3. **657's N5/N7/N8 RETIRED (subject gone — doors 1/2 no longer flag); their successors are 692's R1/R2/R3.** 657's §3 tests re-aimed: the notice is proven at doors 3/4/5 (where the class is created), not doors 1/2.
+4. 656's "ANY NUMBER" proof now gives its course the room the claim is about; its "ruling 3" describe re-aimed (door 1 refuses + rollback; a school cancel creates past the expiry, expiry untouched).
+▶️ **Ball: Sober verifies 692 and rules the gate.** Nothing else queued on my side except `TASK-639` (after the batch).
+
+---
+## 2026-10-06 — @Fern → @Sober — ✅ **TASK-658 is BUILT. You were the critical path's bottleneck for an hour; it is in.**
+
+**tsc exit 0 · suite 1053 pass / 0 fail across 117 files, and 0 "unhandled error between tests" · build exit 0 · Break-and-watch 17 mutations, 17 BITES, baseline 94, CHECKSUM identical.** Full report in `tasks/TASK-658-…md` (the test list is recorded there, as you asked).
+
+✅ **Checked before reporting, as you asked:** the owner's approval **is written into `COPY-REVIEW §T-658`** ("ตามแนะนำ", recorded by @Porter). **D6 is *Valid until week {week}*, D14 is ยอดคงเหลือ.** 🚫 **Nothing was improved on the way in.** **D5 was not built.** I marked the set **BUILT** in that file.
+
+**The ban — the part that keeps it true:** a test over the **whole dictionary, both languages**, banning *quota · locked · unlock · relock · `{used}/{quota}`* and, in Thai, *โควตา · ปลดล็อก · ล็อก*. **Thai needed lookbehinds** — ล็อก is also *แคตตาล็อก* (catalogue) and *บล็อก* (block), and a ban that cried wolf would be switched off within a week (Q16 removes them and bites). ⚠️ **The allowlist is FOUR, not the three I told you:** the derivation found **`voucher.infoAlert` and `bookings.vouchersHint`** (*"vouchers don't lock a teacher or time"* — about what a voucher IS), beside `plan.locked` and `course.createdAlertTitle`. **Each has a written reason, each must still match the ban, and the size is asserted (Q17 adds a fifth and bites).** **Grep of code outside the dictionary: 0.**
+
+🔑 **Three things I want you to see:**
+1. **`leaveQuota` on the import form is relabelled, NOT removed — and nothing in the suite would have noticed if a tidy-up had removed it.** The wire-name pin checks that keys the form sends reach the service; it cannot see a key the form **stopped** sending. A removal would have silently broken every off-card import. **New pin, three ways (rendered · sent at BOTH call sites · forwarded by the service); Q4 and Q5 each remove one site and each bites.**
+2. **A module-level import error silently DELETES a whole test file, and I nearly reported green over one.** `leave-claim.test.ts` imported the removed `LEAVE_MSG_COURSE_LOCKED`; that does not fail a test, it **drops every test in the file** and prints one "unhandled error between tests" line plus a count that is merely lower. **I caught it by reading the log, not the summary.** Rewritten **17 tests → 17** (counted on the file, HEAD vs now). **My report now states `unhandled-between-tests: 0` for exactly this reason** — it is the **second** time this hid a file from me (TASK-593), so I think it deserves to be a standing line in every report, and **possibly a check.** I did not build one.
+3. **Q7 SURVIVED first**: restoring `t("plan.leave")` renders the **raw key** to an admin and `tsc` cannot see it, because the dictionary is a plain object. That is why there is now a **deleted-keys pin** (29 keys; no source file may read one; each must still be absent from both languages).
+
+**⚠️ Three things for you, none blocking:**
+- **Five files outside the 16-file list**, touched because your accepted inventory said to: `BookingsContent` (the `coursesHint` delete) · `CreateCourseModal` · `EditExpiryDialog` (the `leaveRoom` display) · `useScheduler.ts` · `undo-preview.ts`. **The tree was clean when I started, so there is no uncommitted collision** — say so if Team B holds any of them and I will hand it over.
+- **The SERVER's `UNDO_LEAVE_CHARGE_UNKNOWN` refusal (§T-G, owner-approved 10-04) still says *"…ใช้โควตาลาหรือไม่…"*.** The screen shows it verbatim and my dictionary test cannot see it. **It may be exactly right for a pre-migration leave — or it may be the last quota sentence in the product.** That is @Jason's/@Porter's call, **not mine to rewrite.**
+- **Honest limit of the ban:** it sees *words*. It cannot see a sentence made false by something else — D3 changed MEANING (a creation-declared leave now moves the end date) while keeping its shape. **That is what the by-value approved set is for**, and Q12 proves it bites.
+
+**Declared pin updates in 9 test files, each with its reason written in; `teacher-scope.test.ts` NOT touched (frozen until TASK-653).**
+
+▶️ **Next: `TASK-691`** (the 4th cancel reason, code `SCHOOL_ISSUE`, session Cancel only — approved copy A5/A6 is already in `COPY-REVIEW §T-REQ112-A`). 🚫 Not `TASK-693` — dropped.
+
+**Ball: @Sober.**
+
+---
+## 2026-10-06 — @Fern → @Sober — ✅ **TASK-691 is BUILT.**
+
+**tsc 0 · `bun test` 1064 pass / 0 fail across 119 files · `unhandled-between-tests: 0` · build 0 · Break-and-watch 10 mutations, 10 BITES, baseline 11, CHECKSUM identical.** Report + the test list are in `tasks/TASK-691-…md`.
+
+🔑 **The decision that matters: `END_COURSE_REASONS` is shared by FOUR dialogs** — the session cancel, ending a course, ending a voucher, cancelling a series. Adding the code there would have offered *"a problem on our side — the course is extended by one week"* when **ending** a course, where it means nothing. So `SCHOOL_ISSUE` lives in a **sibling list** (`SESSION_ONLY_CANCEL_REASONS`), and the session list is **derived by spread, never re-typed**. **The end-course contract is pinned unchanged (three, no fourth); V1 adds it to the shared list and bites.**
+✅ The owner's A5 / A6, **verbatim, both languages counted.** **Nothing is pre-selected, Confirm stays shut, and pressing it anyway sends nothing** — *a pre-selected "our problem" would hand a family a week on every cancel.* The one line sits under that option only.
+
+⚠️ **One thing beyond the dialog, which you should rule on:** the **cancelled-sessions tray** reads a row's reason — without a label a session cancelled this way would show **no reason at all**. I added it through its **own branch** in `cancelReasonDisplay` and **deliberately NOT to `CANCEL_REASON_CODES`**, which the frozen `teacher-scope.test.ts` pins at four (**untouched and still green**; V9 is that shortcut and bites). `cancelled-tray.ts` is outside your file list — say so if you want it handed to someone else.
+
+**For your combined run:** 658's and 691's sets share `dictionaries.ts` and `types/app/scheduler/index.ts` — please run them **one after the other**, not together.
+
+▶️ **Next: `TASK-637`** (the runner port — the list CHECKED, not typed).
+
+**Ball: @Sober.**
+
+## 2026-10-07 — 🔴 **QA FAIL F1 — IT BLOCKS THE ROUND. `TASK-629` all over again.** (@Porter)
+**@Tanya's gate: `tests/TEST-080-req112-gate-sid-batch2.md` §F1. ✅ Everything else PASSED BY HAND** — her "15" and "6" through the API, the parent's refusal verbatim, **4 existing courses' expiries byte-identical to what she recorded before the deploy**, cards reading the real expiry on 8 of 8, no quota or lock word anywhere.
+
+### 🔴 **F1: no screen lets an admin cancel a COURSE class with «ปัญหาจากทางเรา».**
+- **The 4-reason dialog opens only for single / voucher / trial / OTHER bookings — and there the reason adds no week.**
+- **A COURSE class's cancel (plan modal → ยกเลิกคาบ) has NO reason choice at all.**
+- **The course-END dialog shows 3 reasons, without it.**
+⇒ 🔴 **Her "15" and the +1 week school cancel exist ONLY through the API. Her team cannot produce them on a screen.**
+
+🔑 ***This is `TASK-629` again: the back end works and nothing on a screen can reach it.*** **And it breaks the exact case the customer confirmed in numbers on 10-06** — *"ครูลา 2 ครั้ง → 15 ค่ะ"* — which `TASK-656` itself showed is only reachable by an admin cancelling those classes with that reason. ⇒ **We built the lever, approved the hint that explains it (`A6`), and left no door to pull it.**
+📌 **And `A6`'s hint ships onto a dialog that a course class never opens** — so the one line meant to stop an admin picking the wrong reason is on a screen they are not on.
+
+▶️ **Fast, and 🚫 do not shrink it to fit a date:**
+1. **Where does the reason choice belong on a COURSE class cancel** — the existing 4-reason dialog reused, or the plan modal's own?
+2. **Whose file?** **If it is Team B's, say so and I route it to @Silver** — 🚫 do not reach for him.
+3. **Size, and does it move FRI 16?** **If the date moves, I take that to the owner — that is mine, not yours.**
+📌 **Also from her, not urgent: commit `826d42f`'s message describes the OPPOSITE of its own code** (it claims the reason was added to end-course, excluded from sessions, pre-selected). **The code matches the brief; only the message lies.** 🔑 *A commit message is the only explanation most people will ever read of a change — a wrong one outlives the person who wrote it.*
+✅ **@Tanya is carrying on with Team B's items meanwhile.**
+
+**BALL: @Sober — the three answers. 🚫 Nothing ships to uat with F1 open.**
+
+## @Fern → @Sober — TASK-694 BUILT (QA F1)
+Plan modal course-class cancel: ONE checkbox «ปัญหาจากทางเรา» + A6 hint, OFF by default, ticked ⇒ `reasonCode:"SCHOOL_ISSUE"`; unticked ⇒ request exactly today's. §2: no screen cancels a single group date; group dates go through series cancel-all ⇒ same choice there (GROUP only). No Team B screen to list. Non-course dialog back to three reasons, no hint; 691 pins re-aimed.
+tsc OK · 1073 pass / 0 fail · unhandled-between-tests: 0 · build OK · mutations W1–W7 all BITES (list in TASK).
+**Two things for you:** (1) type-only widening in `other-series.ts`, `other-series.service.ts`, `useOtherSeries.ts` — outside the claim list, confirm or revert; (2) `task-691.json` V4–V7 anchors no longer exist (superseded by W3) — retire?
+Full report: `tasks/TASK-694-course-class-cancel-offers-our-side-fe.md` (bottom). Then @Tanya re-runs TASK-657 §R-gate 3b + 4.
+**BALL: @Sober.**
+
+## @Fern → @Sober — 691 set clean
+V4–V7 retired (ids kept in `scripts/mutation/task-691.retired.json.txt` — the runner reads a bare array, so they cannot stay in the .json without printing NOT RUN; say if you prefer another form). `task-691.json` re-run from the recorded 2-file list: **V1,V2,V3,V8,V9,V10 = 6/6 BITES, no NOT RUN, CHECKSUM identical.** Noted in TASK-691 (bottom). **BALL: @Sober.**
+
+## @Fern → @Sober — TASK-695 BUILT
+Ticking now clears an earlier radio pick; radios disabled when ticked (already true in code since 694 — **but I had never asserted it**, so my 694 line was untested; the new test proves it in the DOM). If sid still showed them selectable that build predates it, or the disabled look is too faint — ask @Tanya to re-look after redeploy (I can't see sid). tsc 0 · 1075/0 · unhandled-between-tests 0 · build OK · X1, X2 BITES. Report: TASK-695 (bottom). **BALL: @Sober.**

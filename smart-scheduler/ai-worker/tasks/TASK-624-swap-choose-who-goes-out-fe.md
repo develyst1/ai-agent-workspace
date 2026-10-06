@@ -42,7 +42,7 @@
 - Full Team B instructions follow when the claims land (Wed morning).
 
 ## ▶️ TEAM B INSTRUCTIONS (Silver, 2026-10-06): @Fanta, Wed–Thu · FE S + S · ships as ONE (624 + 1b)
-**Status:** REVIEWED — engineering accepted by Silver (2026-10-06); ⛔ held ONLY on the §B rate-field wording (`swapRate`/`swapRateHint`, DRAFT)
+**Status:** DONE — FINAL (Silver, 2026-10-07): DRAFT markers off, no string changed
 **Claim** (asked in `PLAN-teamB-response-2026-10-06.md`):
 - `partials/OtherSeries/*` ✅;
 - `src/lib/scheduler/series-scope.ts` ✅;
@@ -201,3 +201,21 @@ Each carries a `🔻 TASK-624 (granted by Porter, 10-06)` note in the file's sty
 - **Q2:** "ครูคนใหม่ / New teacher" ships without a DRAFT marker, with Porter's approval named. Mutation S11 bites on the stale text.
 - **Re-run by me:** OtherSeries/* + the three pin files → **64 / 0**. 🔑 **Full front suite → 1041 / 0.** The front suite is fully green again.
 - **When Porter confirms §B:** drop the two DRAFT markers, re-run, and send me that diff. Then 624 is FINAL.
+- ✅ **FINAL (Porter, 2026-10-06): §B is covered** (the approved group pair re-aimed at the same act). @Fanta: drop the two `📋 DRAFT wording` markers on `swapRate` / `swapRateHint` only, with no string change, re-run, and nudge me with the diff.
+
+### Final step done (Fanta, 2026-10-07)
+- **The 4 DRAFT comments in `dictionaries.ts` (EN + TH × TASK-624 §B and TASK-669 §C): only the marker lines changed.** The `📋 DRAFT` sentence became the approval note, as on TASK-662/664, so the provenance stays. **Zero string lines changed** (`git diff -U0` filtered to non-comment lines = 0):
+```
+- // 🔴 TASK-624 (1b) — 📋 DRAFT wording (Silver, COPY-DRAFT-…§B; not yet confirmed as covered).
++ // 🔴 TASK-624 (1b) — ✅ covered by the owner's approval (Silver, 2026-10-06; COPY-DRAFT-…§B).
+- // 🔴 TASK-669 — 📋 DRAFT wording (Silver, COPY-DRAFT-…§C; not yet approved). Reused, not new:
++ // 🔴 TASK-669 — ✅ owner-APPROVED 2026-10-06, all 10 as drafted (COPY-DRAFT-…§C). Reused, not new:
+- // 🔴 TASK-624 (1b) — 📋 DRAFT wording (see the EN block).        (TH block)
++ // 🔴 TASK-624 (1b) — ✅ covered by the owner's approval (see the EN block).
+- // 🔴 TASK-669 — 📋 DRAFT wording (see the EN block).             (TH block)
++ // 🔴 TASK-669 — ✅ owner-APPROVED 2026-10-06 (see the EN block).
+```
+- The 4 `📋 DRAFT` markers still in the file are TASK-566's, not mine.
+- **Re-run:** `bunx tsc --noEmit` exit 0 · **full `bun test` 1075 pass / 0 fail across 120 files**. Nothing committed.
+
+**Silver, 2026-10-07 — ✅ FINAL. The DRAFT comments are off.** Re-checked by me: no `📋 DRAFT` marker left for 624/669 (only TASK-566's, not ours, untouched). The approved strings are verbatim (§B 4/4, §C 20/20 screen strings). People + OtherSeries → **47 / 0**. Fanta's full suite 1075/0, tsc 0.

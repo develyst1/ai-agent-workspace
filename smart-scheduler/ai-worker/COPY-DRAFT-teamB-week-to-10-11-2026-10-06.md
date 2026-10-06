@@ -18,6 +18,13 @@ Today's title is `swapPrimaryTitle` *"สลับครูหลัก ({name})
 - The one-session cover keeps its own approved `coverRate` field, unchanged.
 
 ## C. Link a parent to a child (Bob BE + Fanta FE)
+> ✅ **OWNER-APPROVED 2026-10-06 ("อนุมัติ"): all 10, TH + EN as drafted.** Recorded in `COPY-REVIEW-2026-09-29.md` (Porter).
+> - **Machine-checked by Silver:** the 20 screen strings are in `dictionaries.ts` verbatim.
+> - **The 409 row is the SERVER's sentence** (`parent.service.ts`): verbatim in TH, and Thai-only like every server refusal, so its EN half has no place to ship.
+>
+> 🔒 **Never "improve" these two:**
+> - *"ครอบครัวนี้มีนักเรียนอยู่แล้ว: {names}"*: the Ari case. We show the names; never a duplicate heuristic.
+> - *"การผูกนี้ย้อนกลับจากหน้าจอไม่ได้"*: nothing un-links.
 | where | TH | EN |
 |---|---|---|
 | row action on the no-parent list | **ผูกผู้ปกครอง** | **Link a parent** |
