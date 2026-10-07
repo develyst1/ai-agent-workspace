@@ -1967,3 +1967,336 @@ Write those two and it is ▶️ GO. 🚫 No reply is needed beyond that.
 - 📌 **A correction, mine:** my finding said the radios "stay selectable", but I had only counted them; I hadn't tried to select one. Fern says they were already disabled since 694. The real gap was the earlier pick surviving the tick, and 695 fixed that.
 - (Your note said "course-class cancel". This is the GROUP cancel-all dialog. The course-class dialog has a box and no radios.)
 **Ball: @Porter**. Team B's items next.
+
+## 2026-10-07 — ✅ **TASK-673 DONE: the group swap dialog no longer offers "this session only".** (@Silver)
+- **Release:** it rides the **NEXT deploy**, since batch #2 is already on sid. It is the screen half of the already-live 672. No new words.
+- 🔴 **For the owner's next commit:** the front tree now ALSO holds **TASK-696 IN PROGRESS** (`People/LinkParentDialog.tsx`, `ParentFormModal.tsx`).
+  - **Commit 673 alone** (`partials/OtherSeries/*`, 3 files), **or wait until I mark 696 DONE.**
+  - 🚫 Never commit the People files while 696 is open.
+- **For QA:** a GROUP's Manage plan → Swap ⇒ no scope question, the date reads "From date". An ECA swap still asks both.
+
+**BALL: @Porter — carry 673 into the next deploy and the commit caution to the owner.**
+
+## 2026-10-07 — 🔑 **CLAIM request for TASK-696: ONE number in `src/lib/rbac/action-gate.test.ts`.** (@Silver)
+- **The edit:** `:69` `expect(sites.length).toBe(109)` → **110**, with a TASK-696 note. Nothing else.
+- **Why it moves:** 696's create button is a new gated door, asked as a literal so the sweep counts it, as the TASK requires. Hiding it to keep 109 would defeat the pin.
+- **Safe to grant:** the file is clean and committed, no open TASK (Team A's or ours) names it, and the same file was granted "+1 door" for 669.
+- **Everything else in 696 is accepted:** People 25/0, set 6/6, the half-done case pinned by value as you asked. Full suite 1084/1, and the 1 is this pin.
+
+**BALL: @Porter — grant (or refuse) `action-gate.test.ts` for that one number.**
+
+## 2026-10-07 — 🔑 **One more line for TASK-696, and it is my miss (F-012): `action-gate.test.ts:70`, 39 → 40.** (@Silver)
+- **What's needed:**
+  - `:69` is done exactly as you granted: 110, the door named inline, the 669 note kept.
+  - Once it passes, the next assertion in the same test runs: `:70`, the count of distinct gate FILES, goes 39 → 40. `LinkParentDialog.tsx` is the first gate in that file.
+  - **I should have run past `:69` before asking.** I had even suspected it.
+- **The grant asked:** `:70` ONLY, `39 → 40`, plus `+ LinkParentDialog (TASK-696)` in that line's existing file-list comment.
+- **Your naming condition is already met:** `:69`'s new assertion names `People/LinkParentDialog.tsx`, so no second assertion is needed.
+- Fanta has touched nothing outside your grant. Full suite is 1084/1, and the 1 is `:70`.
+
+**BALL: @Porter — grant (or refuse) `action-gate.test.ts:70`.**
+
+## 2026-10-07 — ✅ `:70` released to Fanta. The XS is on the pile. No third count of the same population. (@Silver)
+- **The XS:** `SIZING-teamB-next-round-pile-2026-10-05.md` §7, "each count in `action-gate.test.ts` gets a named inventory".
+- **Your F-012 reclassification** is recorded inside the F-012 entry. My own lesson stays beside it: run past the first red before asking.
+- **The third-count check:** only `:69`/`:70` count the same population (gate sites).
+  - The file also has three more **bare** counts: `:51` keys 60 · `:166` users strings 63 · `:171` rbac strings 4.
+  - Each counts a **different** population, so none is a hidden tripwire behind another. I listed them in §7 as optional, cheap to include.
+  - ⇒ Still a tidy-up, not "worth doing properly".
+
+**BALL: @Fanta — `:70`; then I close 696.**
+
+## 2026-10-07 — ✅ **TASK-696 DONE. With 673, Team B's next deploy is ready.** (@Silver)
+- **Re-run by me:** the full front suite **1085 / 0**. Sets: 696's flow 6/6, the action-gate pin 3/3. ⭐ One mutation shows only the NAME catches a door under the wrong key: your condition earned its place.
+- **What it does:** People → no-parent list → ผูกผู้ปกครอง → **เพิ่มผู้ปกครอง** (the existing form) → the confirm for the new family → Link. No new words, no back end.
+  - Half-done case: create OK + link refused ⇒ "บันทึกผู้ปกครองแล้ว", the dialog stays on that family's confirm, the server's sentence shows, and a retry links the SAME family.
+- **For the owner's next commit (front only), the whole uncommitted tree is now 673 + 696, both DONE:**
+  - 673: `partials/OtherSeries/OtherSeriesDialogs.tsx`, `series-scope.dom.test.tsx`, `group-swap-scope-task673.mutations.json`;
+  - 696: `partials/People/LinkParentDialog.tsx`, `ParentFormModal.tsx`, `link-parent-create-task696.dom.test.tsx` + `.mutations.json`, `lib/rbac/action-gate.test.ts`, `action-gate-task696.mutations.json`;
+  - plus `lib/i18n/dictionaries.ts` (the 624/669 DRAFT comments removed, no string changed).
+  - ⇒ **My earlier caution is lifted:** nothing half-built is left in the tree.
+- **For QA (Tanya):**
+  - 673: a GROUP's Swap shows no scope question; an ECA Swap still asks both.
+  - 696: the flow above with a NEW phone, plus a phone that already has a family ⇒ "เบอร์นี้มีผู้ปกครองในระบบแล้ว", and nothing is linked.
+- **Release-note flag (yours to word):** from the next event on, a linked family's LINE receives notices for that child.
+
+**BALL: @Porter — carry 673 + 696 to the owner for the next deploy.**
+
+## 2026-10-07 — Tanya (QA) → @Porter: ✅ **TASK-673 and TASK-696 PASS on the screen.** Details in `tests/TEST-081-task673-696-sid.md`.
+- **673:** a GROUP's Swap shows **no scope question** and the date reads **"ตั้งแต่วันที่"**. An ECA Swap still asks **both** scopes.
+- **696 A (new phone):** created ⇒ straight to the confirm (not skipped) ⇒ linked. The child has the new family.
+- **696 B (existing phone):** **"เบอร์นี้มีผู้ปกครองในระบบแล้ว"**, nothing created or linked.
+- **696 C (forced: create OK, link refused):** the dialog stays on the confirm for THAT new family and shows the server's sentence. The family stays. No bare "failed".
+🟠 Two reads for your judgement:
+  (1) In C the "บันทึกผู้ปกครองแล้ว" toast has faded when the refusal appears; the confirm title naming the new family is what tells the admin the create happened.
+  (2) Before a coach is picked, the group swap's rate label reads "ค่าสอนของ สำหรับตารางนี้", with the name blank.
+📌 Footprint: to force C, I linked QA Link 080 C to the QA parent family by API (QA only, irreversible from screen).
+**Ball: @Porter**. Team B's batch items are next.
+
+## 2026-10-07 — Your two rulings from TEST-081: (1) cut as XS · (2) yes, the refusal's shape can carry the sentence. (@Silver)
+📌 **Both rulings reached me only in your nudge. Please put them in a file** (your TEST-081 verdict or the log). I've quoted them in TASK-697 and my log meanwhile.
+
+**(1) The dangling rate label ⇒ `TASK-697`, XS, FE only, no new words, rides the next deploy.**
+- **Cause:** since 673, a group swap fixes the scope on mount, so the rate box shows before a coach is picked. The label is `name(to ?? "")`, blank.
+- **The same pattern** exists on the ECA one-session cover rate, so the same fix covers both: show each rate box only once a coach is chosen.
+- Nothing submittable changes, because Save is already shut without a coach. GO to Fanta.
+
+**(2) "Both halves" in the refusal: ✅ the shape CAN carry it.**
+- The link refusal is a **persistent red Alert inside the dialog** (`LinkParentDialog.tsx:116`), not a toast. It stays until the admin acts.
+- The dialog **knows it created this family itself** (`onCreated`), so it can add one line above the server's reason **only in that case**. A family picked from search shows exactly what it shows today.
+- **Three things the owner's sentence must allow for:**
+  - **`{name}` can be EMPTY.** A family's name is optional (`createParent`: `name` nullish), so the draft needs a fallback (the phone), or a shape without the name.
+  - **The child:** your draft says "น้อง". The dialog has the child's name, so `{child}` is available if the owner wants it. The literal "น้อง" also works.
+  - **Which refusals:** the same line should cover a refusal on the dry run AND on the link itself, whenever the family was created in this dialog.
+- **Size once approved: XS FE** (one conditional line + a by-value test). It is in our own claim (`People/*`) plus one dictionary key, and that key write needs your grant at that time.
+
+**BALL: @Porter — the owner's wording for the "both halves" line (with the empty-name case), and the rulings on file.**
+
+## 2026-10-07 — 🔑 **Claim request for TASK-697: ONE line, `src/lib/scheduler/series-scope.test.ts:227`. My miss (F-013).** (@Silver)
+- **The edit:**
+  - `expect(dialogs).toContain("{needRate && canRate && (")` → `"{needRate && canRate && to && ("`, with a TASK-697 note.
+  - Same claim kept ("an admin WITH the key is unchanged"). The only new narrowing is "before a coach is chosen", when Save is shut anyway.
+  - It is **text, not a count**, so it names exactly what it holds.
+- **Proved complete by running, not reading (F-012's lesson):**
+  - all 5 tests that read this dialog's source → 48 / 1, and the 1 is `:227`;
+  - every later `expect` in the same `it()` already matches the source.
+  - ⇒ **One line, and it is the only one.**
+- **Safe to grant:** the file is clean and committed; no open TASK of either team names it; Team B pinned it for 624/673.
+- **F-013 is the 4th of one class in 3 days** (a TASK cut without grepping the tests for the text it changes). I've flagged it for Atlas with a one-step checklist fix.
+
+**BALL: @Porter — grant (or refuse) `series-scope.test.ts:227` for TASK-697.**
+
+## 2026-10-07 — ✅ Your order change is accepted. `:227` released to Fanta. (@Silver)
+- **No collision with our process.** It is what Fanta and Bob already do at their end; now it is also the official order. Written as standing practice in `inbox/FE-B.md` and `inbox/BE-B.md`.
+- **One wrinkle kept, from F-012:** a red `expect` hides every later `expect` in the same `it()`. ⇒ The list that comes back also includes those later expects, **read** against the source. Reading edits nothing.
+- **Recorded in FAILURES:**
+  - your reclassification is inside F-013 and covers F-011/012/013;
+  - my pre-cut grep checklist for Atlas is marked superseded by your order.
+- I keep the instinct you kept: one line, asked, never assumed.
+
+**BALL: @Fanta — `:227`, then I close 697.**
+
+## 2026-10-07 — ✅ TASK-697 DONE · TASK-698 cut (the "both halves" line) · ❓ ONE thing: the EN line. (@Silver)
+- **697:** re-run by me, the full front suite **1088 / 0**, set 2/2. It rides the next deploy.
+  - Files: `OtherSeries/OtherSeriesDialogs.tsx`, `series-scope.dom.test.tsx`, `swap-rate-after-coach-task697.mutations.json`, `lib/scheduler/series-scope.test.ts`.
+- **698:** cut as you sized it (XS FE, one conditional line + by-value tests), with your claim (People/* + the one key). GO to Fanta.
+  - It covers the dry run AND the link; a searched family stays unchanged (pinned).
+  - **The test asserts the phone and the child are IN the sentence.** Mutations also bite on the name instead of the phone, and on "น้อง" instead of the child.
+- ❓ **The EN line is not in the approval record** (`COPY-REVIEW:504` has TH only), and the dictionary is EN + TH. My draft, shipped `📋 DRAFT` until approved:
+  > **`The family with phone {phone} was created, but {child} is not linked yet.`**
+  - Approve it (or give the owner's words) and 698 ships whole. Without it, 698 waits; nothing unapproved reaches a screen.
+
+**BALL: @Porter — the EN line for 698.**
+
+## 2026-10-07 — @Sober → @Porter: **extension notice CUT — `TASK-699` to @Jason, ≈ ½ day; the DRAFT sentence for the owner**
+✅ **Cut as ruled:** one notice in `updateCourseExpiry` (the admin's expiry edit), same transaction, family accounts only (a DUO course reaches both households once), **a NEW kind `course_expiry_changed`** — 🚫 not CONFIRMED SCHEDULE, 🚫 no coach, 🚫 not the automatic +1 weeks. **Size: ½ day holds** (one writer, one message kind, one key; no migration, no FE). Does not touch FRI 16.
+### 📋 DRAFT — ONE sentence, and it reads correctly BOTH ways
+- **TH:** `แจ้งเปลี่ยนวันหมดอายุคอร์สค่ะ: คอร์ส {program} ของ {student} ใช้ได้ถึงวันที่ {to} (จากเดิม {from}) หากมีข้อสงสัย กรุณาติดต่อแอดมินค่ะ`
+- **EN:** `Course expiry date changed: {student}'s {program} course is now valid until {to} (previously {from}). Please contact Admin if you have any questions.`
+🔑 **Why one sentence works:** it carries no direction word — it states the NEW date and the OLD one side by side, so "longer" and "shorter" both read true. **If the owner wants the direction SAID** ("ขยาย" / "เลื่อนให้เร็วขึ้น"), **it is two sentences** — say so and I write both.
+### ⚖️ Two calls of mine inside the ruling — overturn freely
+1. **An ENDED course is not told** (no classes left; a validity date would mislead). **A DROPPED (paused) course IS told** — that is when an admin extends before resuming.
+2. **The start-date change and the resume** also move the expiry, but as a by-product of a re-plan, not an admin's expiry edit ⇒ **outside the ruling, untouched**; Jason reports in one line whether the family hears anything on those paths today.
+### ⚠️ Number blocks — Team B is inside Team A's block
+**`TASK-696`, `697`, `698` are Team B's (Fanta's FE work) but sit in Team A's block `690–719`.** I took **`699`** and did not touch theirs. 🔑 *Two readers of one block is exactly the 623 collision the blocks were made to stop.* ▶️ **Please give @Silver a fresh block and mark `696–698` as Team B's on the board's block line**, so neither SA reads the board to pick a number again.
+**BALL: @Porter — the draft sentence to the owner; the block fix to @Silver.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **TASK-699 VERIFIED — BACK ONLY — the family notice on an admin's expiry change**
+**Re-run by me:** `tsc` 0 · DB-unreachable `4224 pass · 0 fail` (323 files) · `unhandled-between-tests: 0` · `66 = 66` (no migration) · break-and-watch **10/10 BITE** (no-op sent · ENDED sent · earlier date not told · sent from the automatic week · to the coach · outside the transaction · CONFIRMED SCHEDULE re-used · Thai paraphrased · paused course not told · admins told), CHECKSUM identical, files restored. **Boundary of my check:** code and tests only — no LINE message has been rendered on a real phone.
+**Your one-liner answered:** the family hears **nothing** today when an admin changes a course's START date or RESUMES it (both also move the expiry). Outside the ruling, left alone — **if the owner wants those told too, it is a small follow-up; say so.**
+⛔ **It ships only when the owner approves the DRAFT sentence** (previous section). Then it rides the next back deploy; no migration, no front change. **For @Tanya then:** edit a course's expiry later and earlier on a course with a linked parent ⇒ one message each, new and old dates both shown; the same edit on a finished course ⇒ nothing.
+**BALL: @Porter — the draft sentence to the owner.**
+
+## 2026-10-07 — ✅ **TASK-698 DONE. With 697, Team B's next deploy is ready (front only).** (@Silver)
+- **698:** after a create, every refusal (the dry run's and the link's) shows *"สร้างครอบครัวเบอร์ {phone} แล้ว แต่ยังผูก {child} ไม่สำเร็จ"* first, then the server's reason. A searched family gets the reason only.
+  - TH and EN are verbatim to `COPY-REVIEW`. The tests assert the phone and the child are IN the sentence, as you asked.
+- **Re-run by me:** the full front suite **1095 / 0**; sets 698 6/6, 696 6/6, 669 10/10 (two older sets re-anchored to the same claims).
+- **The whole uncommitted front tree is now 697 + 698, both DONE:**
+  - 697: `OtherSeries/OtherSeriesDialogs.tsx`, `series-scope.dom.test.tsx`, `swap-rate-after-coach-task697.mutations.json`, `lib/scheduler/series-scope.test.ts`;
+  - 698: `People/LinkParentDialog.tsx`, `link-refusal-halves-task698.dom.test.tsx` + `.mutations.json`, `link-parent-task669.mutations.json`, `link-parent-create-task696.mutations.json`, `lib/i18n/dictionaries.ts`.
+- **For QA (Tanya):**
+  - 697: a GROUP Swap shows no rate box until a coach is picked.
+  - 698: force case C ⇒ the red box names that phone and that child; a searched family ⇒ the reason only.
+
+**BALL: @Porter — carry 697 + 698 to the owner for the next deploy.**
+
+## 2026-10-07 — @Sober → @Porter: 🔴 **YES — `TASK-699` can SEND its unapproved sentence from sid. Not by itself; on one admin action.**
+**Boundary first:** I cannot see sid. I read the back repo: **`TASK-699` is committed by the owner (`b700f5b`, the repo's HEAD, nothing uncommitted)** ⇒ **if he deployed HEAD, it is live.** Please have him confirm the deployed commit if that matters to the record.
+### 1. What is on the box
+The two strings **exactly as drafted** (TH `แจ้งเปลี่ยนวันหมดอายุคอร์สค่ะ: คอร์ส {program} ของ {student} ใช้ได้ถึงวันที่ {to} (จากเดิม {from}) หากมีข้อสงสัย กรุณาติดต่อแอดมินค่ะ` / EN as in my DRAFT section), **marked 📋 DRAFT in a code comment only** — the comment does not stop anything.
+### 2. 🔴 Can it fire? **Yes.**
+- **Trigger: an admin SAVES a new expiry on a course** (the expiry editor). **Nothing automatic sends it** — no job, no leave, no cancel, no +1 week.
+- **Reach:** the family's linked LINE accounts. **sid's outbox worker runs every 15 s, and sid shares ONE LINE channel with uat** (SYSTEM-FACTS) ⇒ **a linked family on sid receives it on their phone.** A family with no linked account gets one SKIPPED outbox row and nothing is sent.
+- ⚠️ **The gate itself contains that action:** `TASK-657` §R-gate **step 2b ("extend and repeat")** is an admin expiry edit. Tanya's earlier run was before 699 was deployed; **the re-run you asked for is steps 3b/4 (cancels), which do NOT trigger it.**
+### ▶️ My recommendation (yours / the owner's to rule)
+1. **sid, now:** **no expiry edit on a course whose child has a linked parent until the words are approved.** An edit on an UNLINKED test child is safe and useful (one SKIPPED row proves the notice is raised).
+2. **uat:** **699 must not reach uat on unapproved words.** Either the owner approves the sentence before FRI 16, or the uat release leaves `b700f5b` out — **that is the owner's git, not ours; no agent touches it.**
+### 3. Anything else in this BE deploy waiting on an approval? **No — for Team A's content.**
+**Between the batch-#2 back end (`fc2338f`, TASK-692) and HEAD there is ONE commit: `b700f5b` (699).** Every other new string of the round is owner-approved: **A2** (the admins' "a parent was refused"), **A3** (the admins' past-expiry make-up), **A5** «ปัญหาจากทางเรา» / "A problem on our side" — *"A1-A6 ตามแนะนำ"* (`COPY-REVIEW-2026-09-29.md:491`), and the parent's refusal is her own words. ⚠️ **Their code comments still SAY "DRAFT" — stale markers, not unapproved words;** I flip them through Jason when 699's words are approved (one XS pass, no behaviour). 📌 **One older string, not new in this deploy:** `mc_title` (TASK-537, 09-28) carries a "NOT approved" comment; its words are identical to the APPROVED cancel title. Listed so it is not discovered on Friday. 🚫 **Team B's strings are @Silver's to answer — I did not read his.**
+**BALL: @Porter — rule the sid hold; the sentence (or leaving 699 out of uat) with the owner.**
+
+## 2026-10-07 — @Sober → @Porter: **marker pass CUT (`TASK-699` §2, @Jason) — and it is WIDER than four, so read what you may assert**
+✅ Your four (A2, A3, A5, `mc_title`) are in, plus the other round strings (699 itself, A1, A4). **`mc_title`'s comment will say what is true:** *words identical to the owner-APPROVED `cl_title`; marker retired on your ruling* — 🚫 not "owner-approved", because he never approved that key on its own.
+### 🔴 I grepped the WHOLE back end first: **24 markers, not 4.**
+- **+12 more are stale Team A markers too** — the REQ-110 round's `§3` (cover with no rate), `§15` (advance-leave server sentences), `§17/§18` (LINE registration). **All approved 2026-10-01: "All other sections are approved as drafted" (`COPY-REVIEW-2026-09-29.md:370`).** ⇒ **in the same pass.** 🔑 **Rule I added: a marker is flipped ONLY if the code string equals the approved text byte-for-byte; a mismatch is listed to me, not fixed.**
+- **2 are Team B's — @Silver's, not touched:** `parent.service.ts:285` (`STUDENT_ALREADY_HAS_PARENT` — its §C set WAS approved 10-06 ⇒ stale) · `validation.ts:719` (`GROUP_SWAP_NO_SINGLE_SESSION`, TASK-673) — **I find NO approval for it in `COPY-REVIEW` or the Team B draft** ⇒ possibly a genuinely unapproved string; it is a backstop the screen no longer reaches after 673, so no person should see it. **Please ask @Silver.**
+### 🔴 And the FRONT: **53 markers, all in `dictionaries.ts`, both teams' rows mixed — NOT audited.**
+⇒ **What the uat note may assert, once Jason confirms:** *"no stale approval marker on the BACK END's Team A strings."* 🚫 **NOT "none in the release"** — the front's 53 and Team B's two are unchecked. **If you want the release-wide line, the front audit is an S pass for @Fern (Team A's rows, same byte rule) + the same for Team B via @Silver — your call whether before FRI 16.**
+**Jason's one-line confirmation will reach you through me.** **BALL: @Jason (the pass) · @Porter (Silver's two; whether the front audit runs now).**
+
+## 2026-10-07 — The two Team B markers, checked from the source files. (@Silver)
+**(1) `STUDENT_ALREADY_HAS_PARENT` (`parent.service.ts`) — stale, byte-equal ⇒ flip.**
+- The code string equals the approved §C row **byte for byte** (188 = 188 bytes, compared by machine against `COPY-DRAFT` §C, which `COPY-REVIEW` approved on 10-06).
+- The flip is a back-end comment edit ⇒ cut as **`TASK-720`** for Bob (the first number from our 720 block), comment only, under Sober's rule: Bob re-checks the bytes himself, and any mismatch is listed, never fixed.
+- ⚠️ **Bob's session is not open**, so it waits for him. It is cosmetic and gates nothing.
+
+**(2) `GROUP_SWAP_NO_SINGLE_SESSION` (`validation.ts`) — ❌ NEVER APPROVED. Not flipped. It's yours to take to the owner.**
+- 📌 **Correction: it is TASK-672's string, not 673's.**
+- **Origin: the words are mine.** I wrote them into TASK-672 §1 (`:22`) and never put them in a copy draft. I flagged it to you on 10-06 as "approve in passing", and it slipped.
+- **Exact text, as in the code:** *"กลุ่มเปลี่ยนครูได้เฉพาะ 'ตั้งแต่วันที่…' เท่านั้น — ไม่มีการสอนแทนคาบเดียว"*. It is TH-only, like every server refusal.
+- **Who can see it today (checked in the code, not remembered):**
+  - The screen no longer sends `onDate` on a group (673).
+  - **Even if it did fire, the screen would show the generic VALIDATION line, not this sentence:** the front lifts `details` ONLY for the student-phone issue (`client.ts:47-48`).
+  - ⇒ It reaches **only a raw API caller**. Your "nobody can" holds for the screen today. It would surface the day someone widens that interceptor.
+- **When the owner rules:** the words land in code via a TASK from our block, and the marker flips under the same byte rule.
+
+**BALL: @Porter — take (2)'s words to the owner. (1) waits only for Bob's session.**
+
+## 2026-10-07 — The EXACT current string of `GROUP_SWAP_NO_SINGLE_SESSION`, copied from the code by machine (not retyped). (@Silver)
+- **Source:** `smart-scheduler-back` `src/validation.ts:720`, read 2026-10-07.
+- **TH, verbatim:**
+  > กลุ่มเปลี่ยนครูได้เฉพาะ 'ตั้งแต่วันที่…' เท่านั้น — ไม่มีการสอนแทนคาบเดียว
+- **EN: there is none.** The constant is TH-only, like every server refusal. Grep of `src` for the constant and for an English twin: no EN version exists. ⇒ If the owner wants EN, it would be NEW words, not a carried translation.
+- ⛔ **The marker stays** until he answers. Noted: your policy question (an API-only backstop ships with engineer wording, listed but not approved) is his.
+
+**BALL: @Porter — the words and the policy question to the owner.**
+
+## 2026-10-07 — @Sober → @Porter: 🔴 **ONE question before `b700f5b` is called uat-cleared: WHICH Thai sentence did the owner see?**
+@Jason's marker pass (16 back-end labels flipped, each byte-checked; `tsc` 0 · `4224 pass · 0 fail` · `unhandled-between-tests: 0` — his run) found that **the TH you recorded as approved is NOT the TH I drafted and that is in the code:**
+| | TH |
+|---|---|
+| **recorded as APPROVED** (`COPY-REVIEW-2026-09-29.md:516`) | `วันหมดอายุคอร์สเปลี่ยนแล้ว — คอร์ส {program} ของ {student} ใช้ได้ถึง {to} (เดิม {from}) หากมีข้อสงสัยกรุณาติดต่อแอดมิน` |
+| **my draft = the CODE in `b700f5b`** (`inbox/PM.md`, my 699 section) | `แจ้งเปลี่ยนวันหมดอายุคอร์สค่ะ: คอร์ส {program} ของ {student} ใช้ได้ถึงวันที่ {to} (จากเดิม {from}) หากมีข้อสงสัย กรุณาติดต่อแอดมินค่ะ` |
+**EN: identical.** The `:516` sentence appears in **no other file** — not my draft, not the log. **And your nudge said "ships as drafted".** ⇒ **one of the two is wrong, and only you know which the owner saw.**
+- **He saw `:516`** ⇒ that is the approved string; **@Jason switches the TH (one string + one mutation anchor), I re-verify, then `b700f5b`+fix is uat-clear.**
+- **He saw my draft** ⇒ **the code is right; correct `:516` in COPY-REVIEW** to the sentence he saw, and `b700f5b` stands as cleared.
+🚫 **Until you answer, the uat note must NOT say 699's words are approved** — the code and the record disagree. 🔑 *If we switch on the record and the record is wrong, we ship words nobody saw — the exact thing this pass exists to stop.* (The sid hold you lifted is unaffected: either sentence is harmless there.)
+### The other four the pass did NOT flip — older strings, live since 10-01 / 10-04
+1. **The three LINE address prompts** (`add_addr_province/district/subdistrict_prompt`) — **code adds `ค่ะ` and joins TH/EN with a newline; the approved §18 text has no `ค่ะ` on two of them and a ` / ` join.** 2. **`add_addr_on_file`** — code `ที่อยู่เดิมของครอบครัว / on file`, approved `(ที่อยู่เดิมของครอบครัว)` / `(the address we have on file)`. ⇒ **Shipped ≠ approved, parent-facing.** ▶️ **Owner's pick: (a) align the code to what he approved (XS, my recommendation — *approved strings are not improved*), or (b) approve what is live.** Not urgent; both live since 10-01.
+3. **`add_birthdate_bad`** — the approval covered only the CHANGE (the deleted "or type skip"), and that part matches. **My ruling: flip it, saying exactly that** (@Jason).
+4. 🔴 **`ADMIN_LEAVE_FUTURE_ONLY`** (`บันทึกวันลาแทนครูได้เฉพาะวันถัดไปเป็นต้นไป — …`, TASK-648) — **never sent up for approval. MY MISS:** TASK-648 said *"copy is mine"* and I never put it in a set. Admin-only, a server backstop (an admin recording a coach's leave for TODAY), live on sid since 10-04. ▶️ **Into the next copy set; its DRAFT label stays — it is true.**
+**Still with @Silver (via you):** `parent.service.ts:285`, `validation.ts:719`. **Front's 53: unaudited.**
+⇒ **What the uat note may say NOW:** *"Back end, Team A: every approval label is true — 16 flipped to approved, 6 still say DRAFT because they are not (yet) approved as written."* 
+**BALL: @Porter — which sentence the owner saw.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ hold acknowledged — and 🔴 **CORRECT the uat-note numbers: MY "16 / 6" WAS WRONG**
+**699 stays HELD on your word; no code changes until you bring the owner's pick.** If he picks the draft: you correct `COPY-REVIEW:516`, Jason flips the one label, and I re-verify. If he keeps yours: Jason switches the one Thai string + `N8`'s anchor, and I re-run the set.
+**The pass is finished (#4 flipped since).** **Re-run by me: `tsc` 0 · `4224 pass · 0 fail` · `unhandled-between-tests: 0`.** I read the diff: **comments, test names and their marker pins ONLY — no string, no behaviour.**
+⚠️ **My earlier "6 still DRAFT" miscounted (Jason left 5 unflipped, not 6).** **The true numbers, from a fresh grep:**
+> **Back end, Team A: 17 labels flipped to APPROVED (each byte-checked); 4 still say DRAFT because they are not approved as written** — 699's expiry notice (pending the owner's pick), the LINE address prompts, the "address on file" line, and the admin's leave-today refusal (TASK-648, never sent up — my miss). **Team B's 2 and the front's 53 are not covered.**
+**Please write THAT line into the uat note, not my earlier one.** 🔑 *A count I gave you an hour ago is still a count I have to stand behind.*
+**BALL: @Porter — the owner's pick on 699's Thai.**
+
+## 2026-10-07 04:35 — Tanya (QA) → @Porter: **697 ✅ · 698 ✅ (TH + EN) · 699: behaviour ✅, 🔴 WORDING is the DRAFT.** Details in TEST-081 → "Follow-ups".
+- **697:** before a coach is picked there's **no rate label**; after picking, *"ค่าสอนของ Bank สำหรับตารางนี้"*.
+- **698:**
+  - TH *"สร้างครอบครัวเบอร์ 0899990813 แล้ว แต่ยังผูก QA Link 080 D ไม่สำเร็จ"*;
+  - EN *"The family with phone 0899990816 was created, but QA Link 080 G is not linked yet."*;
+  - real phone and real name in both, plus the server's reason, which stays TH on the EN screen.
+- **699 on the QA phone:**
+  - later ⇒ ONE message;
+  - earlier ⇒ ONE message, same sentence, reads fine;
+  - an automatic +1 week from a «ปัญหาจากทางเรา» cancel ⇒ only the cancel notice, **no double-tell**;
+  - **paused** ⇒ notified;
+  - **ended** ⇒ nothing. Note: the expiry edit is still accepted on an ended course.
+  🔴 **The sentence the family receives is the DRAFT** (*"แจ้งเปลี่ยนวันหมดอายุคอร์สค่ะ: … ใช้ได้ถึงวันที่ … (จากเดิม …)"*), **not** the approved *"วันหมดอายุคอร์สเปลี่ยนแล้ว — … ใช้ได้ถึง … (เดิม …)"*. Sober had flagged it in TASK-699; I've now seen it on the phone. **It needs the code fix before uat.**
+📌 **Declared:**
+  - two runs of mine didn't test 698 (an overlay blocked my language click; a forcing call was refused because the QA family hit **5 children**);
+  - QA Link 080 C/D/E now sit in the QA parent family (irreversible from screen).
+**Ball: @Porter**: 699's wording to the SA. Team B's items next for me.
+
+## 2026-10-07 — @Sober → @Porter: **all five rulings CUT**
+- **(1) 699** — hold lifted ✓; **`TASK-700` §1 flips its label to APPROVED, citing your correction (`COPY-REVIEW:525`); no string change.**
+- **(2) `GROUP_SWAP_NO_SINGLE_SESSION`** — Silver's ✓, not touched.
+- **(3) the new rule** — applied on Team A's side: **`ADMIN_LEAVE_FUTURE_ONLY` (TASK-648) gets the "engineer wording — listed, not approved" label** (no screen sends today's date: the dialog is future-only, `TASK-611`); Fern applies it in the front audit only where she can SHOW no screen reaches the row.
+- **(4) front audit** — **`TASK-701` to @Fern (S, before FRI 16)**: Team A's rows of the 53, byte-for-byte, mismatches LISTED to me → you; Team B's rows by line number only, for @Silver.
+- **(5) align** — **`TASK-700` §2 to @Jason (XS).** ⚠️ **It is THREE strings, not four:** the **province** prompt's words already equal the approved ones. **Changes:** district and sub-district prompts drop `ค่ะ` (the approved text has none) · `add_addr_on_file` → `(ที่อยู่เดิมของครอบครัว) / (the address we have on file)`.
+  ⚖️ **My reading, overturn freely:** COPY-REVIEW's ` / ` between TH and EN is the document's notation for a pair, not an approved character ⇒ **the prompts keep their newline**, like every bilingual §17c screen. 📌 **Note for the owner:** the approved province prompt carries `ค่ะ` and the other two do not — so after alignment the three questions in one chat differ in politeness. **That is what he approved; if he wants all three with `ค่ะ`, it is a new approval, not our fix.**
+**uat note:** your line stands (17 flipped, 4 still DRAFT) **until 700 lands** — then it becomes **"back end, Team A: every label true; only Team B's two remain"**, and I will confirm that in one line.
+**BALL: @Jason (700) · @Fern (701).**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **TASK-700 VERIFIED — the line for the uat note**
+> **Back end, Team A: every approval label is now true. Only Team B's two remain (`parent.service.ts:285`, `validation.ts:719` — @Silver's).** The front's labels: `TASK-701` (Fern) + Silver's half, running.
+**Re-run by me:** `tsc` 0 · DB-unreachable `4232 pass · 0 fail` (324 files) · `unhandled-between-tests: 0` · `66 = 66`. **Broke it by hand and watched:** `ค่ะ` put back on the district prompt ⇒ the new pin fails (7/1); the old bracket wrapper put back ⇒ the suite fails (4231/1). Both restored.
+**What changed for a family in the LINE registration chat:** the district and sub-district questions lose `ค่ะ`; a family whose address is on file now sees **`กทม (ที่อยู่เดิมของครอบครัว) / (the address we have on file)`** — the approved `{province} (…)` form. ✅ **Jason's one line outside his claim (`line-webhook.service.ts:661`, dropping the code's own brackets so they do not double) — ACCEPTED: without it the approved words would render `((…))`.**
+📌 Rides the next back deploy; no migration. **For the owner on a phone (not Tanya — LINE text is his check):** register a child in the chat for a family with an address on file and read that line once.
+**BALL: @Porter.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **TASK-701 VERIFIED — front labels, Team A: 25 flipped, 0 mismatches, 23 still DRAFT because they have NO recorded approval**
+**Re-run by me:** FE `tsc` 0 · `1095 pass · 0 fail` (122 files) · `unhandled-between-tests: 0` · build 0 · **the diff of `dictionaries.ts` is comments only** (checked: no string line changed) + 4 marker pins re-aimed. **Spot-checked 3 of her matches against COPY-REVIEW myself** (`bulkSelectAll` §1, `newStartHintCurrent` §11, `markerAway` §20) — TH and EN equal.
+### Line for the uat note (front)
+> **Front, Team A: every label that says APPROVED is true (25 flipped, each byte-checked); 0 strings differ from their approval; 23 labels still say DRAFT because those strings have NO recorded owner approval — they are live and listed.** Team B's 5 lines are false hits (a `COPY-DRAFT-…` filename inside an "owner-approved" comment) — @Silver's to confirm.
+### 🔴 The list that matters — Team A screen strings LIVE with no recorded approval (the owner's list, not a fix list)
+Full table: `tasks/TASK-701-front-approval-marker-audit-fe.md` (bottom). In short: the discount-entry errors · the attendee-note hint · **the admin's record-leave dialog (`TASK-611`, 10 keys — only MY ruling exists, never the owner's; my miss, like TASK-648)** · the cover-rate field and hint (577) · the "this session or from here on" screen strings (564) · move-this-only (564) · **the change-start-date dialog (571, 14 keys — §11 approved only five of its strings)** · the group swap rate (634) · the registration page's "address on file" · one EN line with no quoted approval (593).
+⚠️ **None can be "aligned" — there is nothing approved to align to. No refusal among them is unreachable** (Fern traced each to a screen), so the new rule does not apply.
+▶️ **My recommendation:** **ONE "approve what is live" copy set to the owner, assembled by me from Fern's table** — Thai and English side by side, each with where it shows. **Not a blocker for FRI 16** (they have been live for days to weeks and nobody has objected), but they should not stay unlisted. **Say "assemble it" and I do; say when.**
+**BALL: @Porter — whether and when the "approve what is live" set goes to the owner.**
+
+## 2026-10-07 — @Sober → @Porter: 📋 **the set is ASSEMBLED — `COPY-SET-live-unread-2026-10-07.md` — held for you to send AFTER uat**
+✅ **No pushback on the timing** — your reasons hold; nothing in the list is a defect that hurts a family before Friday.
+**Built as you asked:** your reframe is its header, word for word in substance ("47 sentences already in front of Khwan's team and families that NOBODY has read … some may be wrong — finding that is the point"). TH and EN side by side, each group with WHERE it shows and WHY it is unapproved. **Every string was extracted from the code by script, not retyped** — what the owner reads is what the screen shows.
+### ⚠️ Two counts of yours I did NOT build to
+1. **"23" is the number of DRAFT LABELS, not sentences.** One label covers a whole dialog. **The owner has 47 sentences to read** (9 groups) + 1 listed back-end refusal. The set says so in its footer.
+2. **TASK-571's change-start-date dialog: 14 never approved, not 9.** The dialog has 19 strings; **the 5 approved ones are TASK-574's preview inside it (§11)**; the other **14** — including the warning that nobody is told by the move — were never in any set. **Marked in the set as THE LARGEST GAP, with the five named so nobody mistakes the dialog for covered.**
+### Marked as MINE, as you asked
+**L3 — TASK-611's dialog (14 strings, not 10: the result lines count too)** · **L10 — TASK-648's refusal**, listed under your new rule, not for approval.
+### One thing worth his eye first
+**L8 is the only PARENT-facing group** (the registration page's "we already have your address on file"). **L9's two halves disagree:** EN says "(1 child)", TH carries `{n} คน`.
+**uat note:** your line as you wrote it — unsoftened. ✅
+**BALL: @Porter — the uat release; then this set to the owner.**
+
+## 2026-10-07 — Tanya (QA) → @Porter: **Team B estimate: YES, done by THU 8 evening, with margin.** Real numbers below.
+**Unchecked as a pass:** all six items. What I touched on the way:
+- 669: the link flow ran ×7 through 696/698, but only with an EMPTY family and no upcoming classes. The confirm showing a family's EXISTING children and the child's upcoming sessions is NOT seen yet.
+- 624: the swap dialogs read, rate field seen. No swap executed.
+- 671: the Team A spacing fix seen, the camp site not.
+
+| item | what I'll do | est. |
+|---|---|---|
+| 665+667 | archive/restore from the no-parent list; the archive REFUSED while the record still owes classes (count named) | 45 min |
+| 668+669 | link with a family that HAS children + a child WITH upcoming classes; a refusal; the irreversible line | 30 min |
+| 670 | completed / expired wording + the legend (incl. the NO-SHOW entry I flagged on 10-05) | 30 min |
+| 671 | the camp clash message, `ครู {name}` spacing | 20 min |
+| 672 | the server refuses a GROUP "this session only" swap (`onDate`), API; the screen no longer offers it (seen in 673) | 15 min |
+| 624 | swap ANY teacher + the rate field, executed on a QA series, the amount checked by value | 45 min |
+| **total** | | **≈ 3–4 h**, fixtures included |
+
+**Off your list, but I want them before Friday:**
+1. **699's wording fix**, once deployed: one admin expiry edit on the QA phone (≈10 min). 🔴 This one gates uat. The family currently gets the DRAFT.
+2. **A 30-min sid smoke after the LAST deploy before uat:** the REQ-112 gate's 3 headline numbers by API ("15", "6", the 4-session refusal) and one F1 box-ticked cancel on screen. Several front/back redeploys have landed since my gate pass; I want the final build seen, not assumed.
+3. **Friday on uat:** the read-only pass after the deploy (≈1 h), same shape as TEST-079.
+
+**Risk to the estimate:** only a FAIL. A defect found Thursday needs a fix + redeploy + re-check; that's the one thing that could push Friday, and I'll nudge you the moment I see one. Not counted, as you said: the 47 sentences, the make-up queue.
+**Ball: @Porter**: the date decision. I start Team B now.
+
+## 2026-10-07 — @Sober → @Porter: **the real numbers — round 1 (FRI 9) and round 2 (WED 14)**
+
+### (1) Round 1, Friday 9 — **Team A's CODE is done and verified. What is left is NOT only QA and the deploy — three small things, two of them the owner's:**
+| # | what | whose | size |
+|---|---|---|---|
+| a | **Uncommitted work in both repos:** back **14 files** (the `TASK-699` §2 label pass + `TASK-700`), front **5 files** (`TASK-701`). **All verified by me** (back 4232/0, front 1095/0, unhandled 0, build 0). **They must be committed.** | **owner (git)** | minutes |
+| b | 🔴 **`TASK-700` changes WORDS a parent sees** (two address questions lose `ค่ะ`; the on-file line changes) ⇒ **sid FIRST, then the owner reads that one line on his phone, then uat.** The label passes (699 §2, 701) are comments only — zero risk. ▶️ **If 700 is not through sid by Thursday, it rides round 2 — later, not shrunk.** | owner (deploy + phone) | one sid redeploy + one look |
+| c | **The uat deploy note for round 1** — content, migration `0065` + the ledger check, ship-sets, known-and-deliberate list (incl. **the group make-ups queueing weekly — pre-existing, your owner ruling still pending**, and **REQ-115 NOT in it: make-ups are still born unconfirmed**). | **@Sober** | ≈ 1 h, **written the moment the owner says the commits are in** (it must name what is actually committed) |
+✅ **Everything else of Team A's in round 1 is through the sid gate:** REQ-112 (TEST-080, F1 fixed by 694 — PASS on screen), 695 PASS, 699 live on sid and approved. **Team B's half is @Silver's.**
+
+### (2) Round 2, Wednesday 14 — 🔴 **NEITHER fits by the 14th. Said plainly.**
+**You are right: they cannot run in parallel.** Both are Jason's back end, and worse, **both rewrite the same rows** — REQ-115 changes what a make-up IS (a marker, born CONFIRMED); (iii) decides which make-up SURVIVES an undone chain. Two people in that code at once is the 623 collision in a worse place.
+**The arithmetic (working days):** Thu 8 · Fri 9 · Mon 12 · Tue 13 → uat Wed 14. Each is **M+ ≈ 3–4 days of build**. Add **my verification (½ day)** and **a sid deploy + Tanya's gate (≥ 1 day)** — and REQ-115 also needs **the owner's SELECT counts before/after on sid** and its own migration rehearsal. ⇒ **Earliest honest uat for either: Thu 15 – Fri 16.** 🚫 **Fitting the 14th would mean cutting a QA step or the migration's self-check — which is what he ruled out.**
+
+### ▶️ I would take **REQ-115**, and start it tomorrow. Why:
+1. **It is costing the customer every day.** On uat (READ 1, 10-06): **305 future make-ups on 158 courses are unconfirmed** — the family cannot check in to them and the day-end auto-attend skips them, so every one is confirmed by hand or goes unrecorded. (iii) has a **working path today**: the chain refusal (A4, owner-approved) names the exact steps.
+2. **(iii) should be built ON REQ-115's marker.** "Keep the earliest make-up, drop the latest" has to know which rows ARE make-ups. Build (iii) first and it hard-codes today's guess (P1/P2/P3) a second time — the guess REQ-115's migration exists to replace with a fact.
+3. **REQ-115 has the longer road to uat** (its own release, your condition, which I agree with; a migration rehearsal on sid; the owner's counts) ⇒ **it is the one to start first**, and (iii) follows it into round 3.
+⚠️ **The 305 is from 10-06 and will be stale** — the spec already has the owner re-read the counts before the migration. 📌 **If the owner prefers (iii), it is the same arithmetic — it also lands Thu 15 at the earliest.**
+⇒ **Round 2 on Wed 14 carries whatever else is ready** (`TASK-700` if it missed Friday; Team B's). **REQ-115 ships alone after it, ceiling Fri 16, earlier if the gate passes earlier.**
+**BALL: @Porter — the owner's yes to REQ-115-first (then I cut it to Jason tomorrow morning from `SPEC-REQ-115`), and his commits for round 1.**

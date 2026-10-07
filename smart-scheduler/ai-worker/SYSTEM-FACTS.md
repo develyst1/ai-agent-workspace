@@ -4253,3 +4253,57 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 ## 🔴 Bun: a test FILE that fails to load DROPS every test in it — read the log, not the summary (2026-10-06, @Fern via @Sober)
 - **An error at module load** (e.g. importing an export that was removed) **does not fail a test: it skips the whole file**, prints one `unhandled error between tests` line, and the `pass` count is merely LOWER. **"0 fail" can sit on top of a deleted file.**
 - **Rule: every engineer report and every SA verification states `unhandled-between-tests: N` from the log** (grep the full output). **N > 0 is a failure, whatever the summary says.**
+
+## Front tests: `@/lib/ui/notify` is mocked by three dom tests for the whole run — assert on what `notify` was CALLED with (2026-10-07, Fanta, TASK-696)
+- `extend-voucher-expiry`, `camp-week-lifecycle` and `line-admins` `mock.module("@/lib/ui/notify")` with a collector, and Bun keeps a mock for every file after. A test that asserts "the success toast is on screen" (via `<Notifications />`) therefore **passes alone and fails in the full suite**: seen 3 of 6, TASK-696.
+- Fix: mock `notify` in the test itself with a collector and assert on `{ title, description }` — the same proof, and it cannot leak. Same family as the `@/lib/api/client` note (2026-10-05); the component also needs the SAME `ApiClientError` class the error was built from (`mock.module(..., { ...real, ApiClientError: RealClass })`) or its `instanceof` check drops the server's sentence.
+
+## 2026-10-07 — Family notice on a course expiry change (`TASK-699`)
+- **Only the ADMIN's expiry edit (`updateCourseExpiry`) tells the family**, kind `course_expiry_changed {courseId, from, to}`, inside the write's transaction, via `householdLineUserIds` + `enqueueParentCopies` (no account ⇒ one skipped row). **Longer and shorter: the same notice.**
+- **Never told:** the automatic +1 weeks (`addLeaveWeek` T1/T2/T3 — they ride an event the family already hears) · a no-op (`from === to`) · an ENDED course · the coach/admins. **Not covered (outside the ruling):** `changeCourseStart`, `resumeCourse`, voucher expiry edits.
+- Words: DRAFT until owner-approved (see `inbox/PM.md` 2026-10-07).
+
+## 2026-10-07 — 🔴 **F-011 · F-012 · F-013 · F-014 are ONE failure: a fact taken from a NEARBY artefact instead of its SOURCE**
+**Four failures logged by @Silver in one day, each filed as his own carelessness. They share a single root.**
+| # | the fact he needed | where he took it from | the source it should have come from |
+|---|---|---|---|
+| F-011 | which test lines pin a sentence | **memory** | `grep` |
+| F-012 | which counts a change breaks | **a prediction before the work ran** | the suite, run |
+| F-013 | same | same | same |
+| F-014 | the next TASK number | **`ls tasks \| tail`** | **the board's block line** |
+🔑 ***Every one of these is a fact derived from something that happened to be nearby and usually agrees — until the moment it does not.*** **A folder listing usually gives the next free number. Memory usually lists the right pins. A prediction is usually right.** 🔑 **"Usually right" is the most expensive kind of wrong, because nobody checks it.**
+
+### The rule, for every role
+▶️ **Name the SOURCE OF TRUTH for the fact you need, and take it from there — even when something closer agrees.**
+- the next TASK number → **the board's block line.** 🚫 never the `tasks/` folder.
+- which pins break → **run the suite.** 🚫 never predict, 🚫 never recall.
+- what the customer wants → **their own words, quoted.** 🚫 never a restatement, including your own.
+- what is deployed → **the box.** 🚫 never a green suite.
+📌 **And the same day, @Porter made the mirror of F-014: he issued the block AND approved all three out-of-block numbers, four times, without reading the line he had written himself.** ⇒ 🔑 ***A rule that only works while the person who wrote it remembers it is not a rule; the check has to live where the act happens.***
+
+## 2026-10-07 — ⚖️ **A refusal no screen can reach ships with ENGINEER wording — listed, not approved** (owner ruling)
+**Trigger:** `GROUP_SWAP_NO_SINGLE_SESSION` carried a "not approved" marker and had genuinely never been approved. **@Silver established from the code, not from memory, who could see it:** the screen no longer sends `onDate` on a group (`TASK-673`), and even if it did the front lifts `details` only for the student-phone case ⇒ **it reaches a raw API caller alone.**
+⚖️ **RULE, both teams:** **a refusal that NO screen can reach ships with the engineer's words, recorded in the copy review as LISTED, not approved.** 🔴 **The day any screen CAN reach it, it returns to the approval queue — that is the condition, and without it this becomes a back door for words nobody read.**
+🔑 **Why:** *every one of these was costing the owner a decision at 3 a.m. about a sentence no human being can see. One rule clears all of them and every future one.*
+⚠️ **"No screen reaches it" is established by READING THE CODE PATH, never by assuming.** 🔑 ***"Nobody should see it" and "nobody can see it" are different claims, and only the second one earns this rule.***
+
+## 2026-10-07 — 🔴 **An approval record must be VERBATIM. @Porter recorded his own rewrite three times in one day.**
+**On `TASK-699` he rewrote the SA's drafted sentence while presenting it to the owner — dropped both `ค่ะ` from a PARENT-facing message, changed the opening and two words — then recorded his rewrite as the approved string.** **The code held the real draft, so the record and the shipped message disagreed.**
+📌 **Caught TWICE, independently, inside an hour: @Sober by diffing the record against the code; @Tanya by reading the message a LINE account actually received on sid.**
+🔑 ***The approval record is the only place a string is ever checked against anything. A paraphrase there is not a typo — it is the check itself being wrong.***
+▶️ **Rule: a string being put to the owner is COPIED, machine-to-machine, from the draft or the code — never retyped, never tidied, never re-punctuated.** **If it needs改善, say so as a separate proposal; 🚫 do not improve it on the way past.**
+📌 **Same root as `REQ-112 §11` and the `§11.4` quote lifted out of its case — three in one day, all "my sentence standing in for someone else's".**
+
+## 2026-10-07 — ⚖️ **A DEADLINE IS A CEILING, NOT A TARGET. Finishing earlier is better.** (owner)
+> **"เราคือทีมที่มีแผน มีเวลาจำกัด … แต่การทำให้เสร็จ การขึ้น deploy เรายิ่งทำได้เร็วกว่า dead line ยิ่งดี · เพราะงั้นเราไม่จำเป็นต้องทำให้เครื่องยนต์เราเย็นลง ถ้าเราสามารถรวบทำแม่งหมด ส่งศุกร์นี้ตู้มเดียวได้ ทำแม่งเลย … แต่เราแค่ต้องคุยกัน"**
+🔴 **This CORRECTS how @Porter had been working.** **He had been treating "next round" as a parking lot and deferring work to protect a release date** — slid items stayed slid *because* there was a date, and the date became a reason not to finish.
+⚖️ **IN FORCE:** **the deadline is the LATEST acceptable, not the plan.** **If the work can be bundled and shipped sooner, bundle it and ship it.** 🚫 **Do not cool the engine to respect a date that was never a target.**
+⚠️ **The condition he attached, and it is the whole safety of this:** ***"แต่เราแค่ต้องคุยกัน"*** — **pulling work forward is a CONVERSATION with him, never Porter's own decision.** 📌 *Which is the same boundary as `ORDER`-style scope: nobody adds to a round on their own judgement, including the PM.*
+🔑 **And it is not a licence to cram:** **the rules that bought the extra days still bind** — no QA step cut, no uat deploy without a sid pass, no team green alone, and 🚫 **nothing shrunk to fit a date.** *"Faster if we can" and "shrink it to fit" are opposite instructions.*
+📌 **Style flexes per case.** **He said plainly this is not every case: "ไม่ใช่ทุกเคส นายต้องเข้าใจ การทำงาน มันพลิกสไตล์ได้บ้าง."** ⇒ 🚫 **Never carry a previous round's cadence into a new one as if it were a rule.**
+
+## 2026-10-07 — ⚖️ **Mistakes are acceptable; unawareness is not. Report BOTH kinds to Atlas, continuously.** (owner)
+> **"เรื่องความแม่นยำ ที่ทำให้งานมันเยอะ กินโทเคน ฉันไม่มีปัญหาเลย คนเราสามารถพลาดกันได้ แต่เราต้องพัฒนาตัวเองตลอด และต้องมีความรู้ตัวว่าตัวเองพลาดอะไร … ระหว่างทางเราเข้าใจผิดได้ แต่ต้องไม่ตื่นตระหนก ตื่นตูม ต้องเข้าใจและค่อย ๆ แก้ไขให้เข้าตาม Goal"**
+⚖️ **Standing duty, every role:** **write to Atlas BOTH the things done precisely (the ones the owner praised) AND the things one judges to be one's own failures.** 🚫 **Not a post-mortem at the end — continuously.**
+🔑 **The thing he values is not the absence of error; it is that the role can still NAME its own error while the work is running.** 🔑 *And the pairing matters: a report carrying only wins biases the person designing the system; one carrying only failures hides what is worth copying.*
+🚫 **Do not panic at a mid-course misunderstanding.** **Understand it, correct toward the Goal, keep moving.**

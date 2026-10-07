@@ -154,3 +154,17 @@
 - **Size: 0 code.** Nothing new to build, and no new wording (the `class_moved_*` notices are shipped copy).
 - **The one thing the owner may mean, and only he can say:** if he expects ECA *families* to hear about moves, those children would first have to be **on the ECA rows as students**. That is a change to how ECA is booked, not a notice.
   - ▶️ **Question for him:** "ECA moves already notify the coaches, and any family whose child is on the row. Do your ECA classes carry the children's names, or should we treat 'coaches are told' as done?"
+
+## 7. `action-gate.test.ts`: every count gets a NAMED inventory · **FE XS · test-only, no product change** (added 2026-10-07, @Porter's ask, from F-012)
+- **The defect is in the file, not in a person** (Porter's reclassification of F-012):
+  - `:69` (`sites.length`, 110) and `:70` (distinct site FILES, 39) count **the same population at two levels**, and neither names what it holds.
+  - One new gate breaks both, and `:70` only shows once `:69` is fixed: a tripwire with no label.
+- **Build:**
+  - replace each bare count with a named inventory (the list of `file → key` sites, and the list of files), so adding a gate breaks **ONE** assertion that says what changed;
+  - keep the "asked as a literal" sweep exactly as strict.
+- **Other bare counts in the same file** (checked 2026-10-07; each counts a DIFFERENT population, so none is a hidden second tripwire):
+  - `:51` `KEYS.length` 60;
+  - `:166` `users` dictionary 63;
+  - `:171` `rbac` dictionary 4.
+  - The same treatment is cheap; include them if Porter wants. `:61` already names the unused keys, which is the pattern to copy.
+- 📌 **If a THIRD count of the SAME population turns up while in there, tell Porter** (it stops being a tidy-up).

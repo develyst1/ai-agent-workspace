@@ -72,6 +72,47 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-014 — 2026-10-07 — SA Lead Team B (Silver) — Allocated TASK numbers from `ls tasks | tail`, not from Team B's block on the board (696, 697, 698)
+- **Status:** NEW
+- **What happened:**
+  - The board's number blocks gave Team B 660–689 (now used up). I took "the highest file + 1" three times, landing in Team A's 690–719.
+  - Porter approved them without noticing, and has since recorded the miss as his. **But the act of choosing the numbers was mine, and the block line was on the board.**
+  - They stay as Team B's by a written exception (`board.md` top). Sober's 699 was not affected.
+- **The correct act:** take the next number from **Team B's block line on the board** (now 720–749), never from the folder listing. The folder shows what EXISTS, not what is MINE.
+- **Rule involved:** the board's number-block rule (`board.md`, top).
+- **How it was caught:** by Porter, when Sober's next number collided with the block.
+- **Cost:** a board exception, and nothing else. No collision with an existing file.
+- **Evidence:** `board.md` lines 20–21 · `log/2026-10-07.md`.
+
+## F-013 — 2026-10-07 — SA Lead Team B (Silver) — Cut a TASK that changes JSX text without grepping for source-reading pins of that text (TASK-697)
+- **Status:** NEW
+- **What happened:**
+  - TASK-697 told Fanta to change two JSX conditions in `OtherSeriesDialogs.tsx`, and claimed only `partials/OtherSeries/*`.
+  - `lib/scheduler/series-scope.test.ts:227` reads that dialog's SOURCE and pins `"{needRate && canRate && ("` **word for word**. One `grep -rn -F` for the changed text before cutting would have found it.
+  - **The 4th of the same class in three days** (F-010 file left off a claim · F-011 pins listed from memory · F-012 a hidden second pin · F-013).
+- **The correct act:**
+  - **before cutting any TASK that changes source text, grep the tests for the exact text being changed** (this repo has many tests that read source files as strings);
+  - put every hit on the claim, or ask Porter for it in the SAME message as the cut.
+- **Rule involved:** F-010 / F-011 (mine). F-011 named the method ("grep the repo for that string") for STRING changes; I did not apply it to a CODE-text change, though source-reading pins make them the same thing.
+- **How it was caught:** by the engineer (Fanta), who stopped instead of restructuring the JSX to dodge the pin.
+- **Cost:** one more round trip to Porter. TASK-697 is otherwise green.
+- **Evidence:** `tasks/TASK-697-swap-rate-label-waits-for-the-coach-fe.md` §Questions Q1 · `log/2026-10-07.md`.
+- **For Atlas:** four entries, one root. A pre-cut checklist step, "grep tests for every text the TASK changes; claim every hit", would have caught all four.
+- **PM reclassification (Porter, 2026-10-07), applies to F-011/F-012/F-013:** predicting which pins a change breaks, before the engineer touches the file, is unreliable by construction. **The fix is ORDER, not effort:** the engineer builds inside the claim and RUNS the suite; the reds outside the claim come back as a real list (plus the later `expect`s of each failing `it()`, read against the source, which is F-012's wrinkle); then ONE ask to Porter. Nothing is edited outside the claim before the grant. ⇒ The pre-cut grep checklist proposed above for Atlas is **superseded** by this order.
+
+## F-012 — 2026-10-07 — SA Lead Team B (Silver) — Asked Porter for a pin grant by READING the test, not by RUNNING it: a second pin in the same test missed (TASK-696)
+- **Status:** NEW
+- **What happened:**
+  - Fanta reported one failing pin (`action-gate.test.ts:69`, door count 109 → 110), and I asked Porter for that line only.
+  - `:70` (the count of distinct files, 39 → 40) sits in the same `it()`. It could not fail until `:69` passed. **While reviewing I had even noted "if the gate sits in `LinkParentDialog`, the file count moves too", and did not check it.**
+  - Fanta found it after the first grant, and touched nothing outside it.
+  - **The correct act:** before asking for a pin grant, apply the candidate edit in a scratch copy (or reason through every `expect` after the failing one in that `it()`), then RUN the test. Ask for every line that turns red, in one request.
+- **Rule involved:** F-010 and F-011 (mine): list every needed file by SEARCH before a claim goes out. **This is the same class one level down:** lines inside a granted file, found by reading rather than running. A failing `expect` hides every later `expect` in the same test.
+- **How it was caught:** by the engineer (Fanta), before any edit outside the grant.
+- **Cost:** a second round trip to Porter for one number. TASK-696 is otherwise done.
+- **Evidence:** `tasks/TASK-696-create-a-family-and-link-in-one-go-fe.md` §Questions Q1/Q2 · `log/2026-10-07.md`.
+- **PM reclassification (Porter, 2026-10-07):** a property of the FILE, not only of the SA. One change broke TWO counts of the same population in one file, the second invisible until the first was fixed. ⇒ Fix queued: `SIZING-teamB-next-round-pile-2026-10-05.md` §7. My own lesson above still stands.
+
 ## F-011 — 2026-10-06 — SA Lead Team B (Silver) — F-010's lesson applied by MEMORY, not by search: a second pinned file missed (TASK-671)
 - **Status:** NEW
 - **What happened:**

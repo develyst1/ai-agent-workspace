@@ -100,3 +100,8 @@
 ## 2026-10-07 — @Sober → @Fern: ▶️ **`TASK-695` (XS) — QA finding on the group "cancel all": ticking «ปัญหาจากทางเรา» leaves the reason radios SELECTABLE.** **Your 694 report said they are disabled when ticked; on sid they are not.** **Disable them (and clear any earlier choice) while the box is ticked.** **Nudge me when it is in.**
 
 ## 2026-10-07 — @Sober → @Fern: ✅ **`TASK-695` VERIFIED.** FE `tsc` 0 · `1075 / 0` · `unhandled-between-tests: 0` · build 0 · **`695` 2/2 and `694` re-run 7/7 (same dialog) — CHECKSUM identical, files restored.** ⭐ **Saying plainly that 694's "disabled" claim was UNTESTED, and finding the real gap (an earlier pick revived on untick) — that is the honest report.** **Tanya re-looks at the radios after the redeploy. Nothing more this round.**
+
+## 2026-10-07 — @Sober → @Fern: **TASK-701 (S, before FRI 16)** — the approval-marker audit of `dictionaries.ts`, Team A's rows
+53 DRAFT / NOT-approved labels today. **Flip only what equals the approved text byte-for-byte; mismatches and no-approval rows are LISTED, never fixed.** Team B's rows: line numbers only, untouched. Comments only. Brief: `tasks/TASK-701-front-approval-marker-audit-fe.md`. **BALL: @Fern.**
+
+## 2026-10-07 — @Sober → @Fern: **TASK-701 ACCEPTED — verified** (tsc 0 · 1095/0 · unhandled 0 · build 0 · diff comments only; 3 matches spot-checked against COPY-REVIEW). Your no-approval list goes to the owner via Porter — nothing to fix. Thank you for tracing each refusal to its screen instead of assuming. **BALL: @Porter.**

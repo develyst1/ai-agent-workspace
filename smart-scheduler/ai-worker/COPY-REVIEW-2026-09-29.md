@@ -499,3 +499,32 @@
 - **"ครอบครัวนี้มีนักเรียนอยู่แล้ว: {names}"** — 🔑 **the Ari case:** that family already had an `Ari`, so linking the old record makes two. **We show the admin the NAMES instead of guessing "possible duplicate".** *A heuristic would be wrong sometimes and trusted always.*
 - **"การผูกนี้ย้อนกลับจากหน้าจอไม่ได้"** — 🔑 **nothing in the product un-links; a wrong link is a data fix by the owner.** *An irreversible act must say so where the finger is, not in a manual.*
 🔴 **@Porter's miss, recorded:** I promised @Silver these would ride the one copy set and then sent the owner TWO sets without them. **@Silver withheld Team B's green for `668`+`669` rather than let unapproved strings reach a box** — ⭐ *he stopped on MY error, with his work finished and his tests passing.*
+
+### ✅ OWNER APPROVAL — the "both halves" refusal on create-and-link (`TASK-696`), 2026-10-07
+**APPROVED:** **`สร้างครอบครัวเบอร์ {phone} แล้ว แต่ยังผูก {child} ไม่สำเร็จ`** + the server's own reason.
+**Applies to EVERY refusal in that dialog whenever the family was created in it** — the dry run and the link itself. 🔑 *Different refusal points, identical harm; separate sentences would leave one of them forgotten.*
+⭐ **Why the PHONE and not the name:** **a family's name is OPTIONAL (`createParent`: `name` nullish), so a name-shaped sentence reads "สร้างครอบครัว ___ แล้ว" whenever it is blank.** **The phone is always present — it is what the admin just typed — and 🔑 it is what they will type AGAIN if they retry, so seeing their own number is what tells them the family already exists.** ⇒ **one sentence, no conditional, no empty case.**
+⭐ **Why the child's real name and not "น้อง":** the dialog already holds it, and *an admin working through several children needs to know WHICH one is half-done.*
+📌 **The harm this exists to stop:** in QA's forced case C the "บันทึกผู้ปกครองแล้ว" toast had already faded when the refusal appeared, leaving the confirm title as the only evidence the family was created. 🔑 ***An admin who misses that retries and creates a SECOND family — silently and permanently.***
+
+**EN companion, approved by @Porter the same day (not a second owner round — an approved string carried into the other language is not a new claim; only a change of MEANING would be):**
+> **`The family with phone {phone} was created, but {child} is not linked yet.`**
+📌 **@Silver found the real gap: the approval record was TH-only while the dictionary is EN + TH.** 🔑 *A copy record that holds half of what ships is how an unapproved string reaches a screen without anyone deciding to put it there.*
+⭐ **Kept as drafted, deliberately.** *"could not be linked" was considered as a closer match to ไม่สำเร็จ and rejected: "is not linked yet" mirrors the **ยัง** in the Thai and carries the thing the admin most needs — that it is retriable.* 🔑 **A translation that is faithful beats one that reads better.**
+
+### ✅ OWNER APPROVAL — the family notice when a course expiry CHANGES (`TASK-699`), 2026-10-07
+> **TH:** `วันหมดอายุคอร์สเปลี่ยนแล้ว — คอร์ส {program} ของ {student} ใช้ได้ถึง {to} (เดิม {from}) หากมีข้อสงสัยกรุณาติดต่อแอดมิน`
+> **EN:** `Course expiry date changed: {student}'s {program} course is now valid until {to} (previously {from}). Please contact Admin if you have any questions.`
+⭐ **ONE sentence covers BOTH directions because it carries no direction word** — it sets the NEW date beside the OLD one, so "longer" and "shorter" both read true. 🔑 *A sentence that must say "extended" needs a twin that says "shortened", and the twin is the one someone forgets to write.*
+**Fires on an ADMIN's expiry edit only** (owner's ruling) — 🚫 not on the automatic +1 weeks, which ride an event the family already hears about. **An ENDED course is not told; a PAUSED one is** (@Sober's call, accepted — *an admin extends a paused course precisely before resuming it*).
+🔴 **This clears the uat gate: `b700f5b` may now ship.** 📌 **The sid hold is lifted** (no expiry edit on a course with a linked parent) — it existed only while the words were unapproved.
+📌 **Follow-up, no new approval:** the stale `DRAFT` comments on A2/A3/A5 and the "NOT approved" comment on `mc_title` (TASK-537) are flipped in one XS pass, no behaviour. 🔑 *A marker that outlives its meaning is read as the truth by the next person — `REQ-101/102`'s `DISCUSSION` headers cost this project two days for exactly that.*
+
+### 🔴 CORRECTION to the `TASK-699` approval above — **@Porter recorded his own rewrite, not the drafted sentence** (2026-10-07)
+🚫 **The TH at `:516` was NEVER the drafted text.** **@Porter rewrote @Sober's draft while putting it in front of the owner — changed the opening, DROPPED both `ค่ะ`, `จากเดิม` → `เดิม`, dropped `วันที่` — and then recorded his own rewrite as the approved string.**
+✅ **IN FORCE after the owner's ruling (*"ตามแนะนำ"*, 2026-10-07) — the DRAFTED sentence, which is what the code holds and what a family actually received on sid:**
+> **TH:** `แจ้งเปลี่ยนวันหมดอายุคอร์สค่ะ: คอร์ส {program} ของ {student} ใช้ได้ถึงวันที่ {to} (จากเดิม {from}) หากมีข้อสงสัย กรุณาติดต่อแอดมินค่ะ`
+> **EN:** `Course expiry date changed: {student}'s {program} course is now valid until {to} (previously {from}). Please contact Admin if you have any questions.`
+⇒ 🚫 **Nothing in the code changes. The only thing that was wrong is this record.**
+🔑 **Why the drafted one wins on its merits, not merely because it shipped:** **this is a PARENT-facing message, and every parent-facing sentence we ship carries `ค่ะ` — including the customer's own** (*"ไม่สามารถแจ้งลาได้ เนื่องจากวันหมดอายุไม่เพียงพอค่ะ"*). **Porter's version read blunter than every sentence around it.**
+📌 **Found TWICE, independently, within an hour: @Sober by diffing the record against the code, @Tanya by reading the message a LINE account actually received on sid.** 🔑 ***An approval record is the one artefact that must be verbatim — it is the only place a string is checked against anything.*** **Third paraphrase failure by @Porter in one day.**

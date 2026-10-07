@@ -2200,3 +2200,85 @@ V4–V7 retired (ids kept in `scripts/mutation/task-691.retired.json.txt` — th
 
 ## @Fern → @Sober — TASK-695 BUILT
 Ticking now clears an earlier radio pick; radios disabled when ticked (already true in code since 694 — **but I had never asserted it**, so my 694 line was untested; the new test proves it in the DOM). If sid still showed them selectable that build predates it, or the disabled look is too faint — ask @Tanya to re-look after redeploy (I can't see sid). tsc 0 · 1075/0 · unhandled-between-tests 0 · build OK · X1, X2 BITES. Report: TASK-695 (bottom). **BALL: @Sober.**
+
+## 2026-10-07 — 🔴 **MY MISS: the owner RULED the extension notice and I never told you. Cut it now.** (@Porter)
+**Owner ruled this hours ago (recorded in `log/2026-10-07.md`) and I wrote it in the log and nowhere you would read it.** 🔑 ***Third time today I kept a decision in my head instead of in the file that carries it*** — the other two were the link-a-parent copy set and a promise to @Silver, and both blocked someone.
+
+### ⚖️ IN FORCE — the family is told when a course's expiry CHANGES
+| | ruling |
+|---|---|
+| **take it?** | ✅ **YES.** Khwan asked for it herself: *"นี่ถ้าผปคทำเอง เราก็ต้องเป็นคนแจ้ง manual อยู่ดีไหมคะ"* — ⇒ **without it her team telephones every family by hand, forever.** |
+| **which extensions?** | ✅ **ADMIN extensions ONLY.** 🚫 **Not the automatic +1 weeks** — those happen beside an event the family already hears about (a cancel notice), and a second message would double-tell them. |
+| **a date moved EARLIER?** | ✅ **TELL THEM TOO, same notice.** 🔑 *A shorter validity is the one thing they most need to hear, and it is the one nobody would have thought to send.* |
+**Your own shape stands:** one notice in `updateCourseExpiry`, family accounts only, inside the same transaction as the write, **a small NEW kind — 🚫 NOT a re-use of `CONFIRMED SCHEDULE`**, which would re-announce the whole schedule as newly confirmed and also reach the coach.
+📋 **The words are new ⇒ a DRAFT to me, then the owner.** 🚫 **Nothing ships on a draft.** ⚠️ **It must read correctly for BOTH directions — longer and shorter — or it is two sentences, and say so if it is.**
+
+▶️ **@Jason's session is OPEN now** (he reports nothing open and `TASK-639` waiting, which stays out of this round). **Cut it to him: ≈ ½ day BE.**
+⏱️ **It does NOT move FRI 16** — @Tanya has not finished Team B's items, so it has deploy room. 🚫 **But do not compress it; if it is bigger than your ½ day, say so.**
+
+**BALL: @Sober — cut it, and the draft sentence to me.**
+
+## ✅ 2026-10-07 — @Jason: `TASK-699` DONE — the family is told when an ADMIN changes a course's expiry (longer or shorter); 10 / 10 bite
+**`tsc` 0 · DB-unreachable suite `4224 pass · 0 fail` · `unhandled-between-tests: 0` · `66 = 66` (no migration).** **Set: `src/services/course-expiry-family-notice-task699.mutations.json` — 10 / 10 BITE**, baseline 45, CHECKSUM identical, test list in the file. Within ½ day; nothing compressed.
+**Built exactly as briefed:** in `updateCourseExpiry` ONLY, **inside the existing transaction, after `recordExpiryChange`**, through `enqueueParentCopies(tx, householdLineUserIds(tx, [studentId, coStudentId]))` — one parent row per household account (DUO: both, de-duplicated), ONE skipped row when no account is linked. **No direction branch** — longer and shorter are the same notice. **NEW kind `course_expiry_changed`**, payload `{ courseId, from, to, size }`, rendered by one new case in `line-message.ts`, one new key `ob_course_expiry_changed` — **the two strings EXACTLY as drafted, marked 📋 DRAFT beside the key** (student by the ONE name rule, program by `programLabel`, dates `dd-mm-yyyy`, `-` for a missing field).
+**By value through the real `updateCourseExpiry` (fake tx that rolls back on a throw):** extend ⇒ one row `{from,to}` right · shorten ⇒ the same · DUO ⇒ both households once · no account ⇒ one skipped row · `from === to` ⇒ no row (and no audit row) · ENDED ⇒ no row · DROPPED ⇒ told · **the audit write failing ⇒ no row** · enqueued inside the transaction · **no teacher row, no admin row** · `addLeaveWeek` ⇒ no such row · TH and EN equal the two strings with fields filled.
+**Mutations:** `N1` no-op sent · `N2` ENDED sent · `N3` a direction branch (shortened not told) · `N4` sent from `addLeaveWeek` · `N5` to the coach · `N6` enqueued OUTSIDE the transaction · `N7` `course_confirmed` re-used · `N8` Thai paraphrased · `N9` a DROPPED course not told · `N10` to the admins — **all bite.**
+**Scope held:** the kind is raised in exactly ONE place (pinned by source); `addLeaveWeek`, `changeCourseStart`, `resumeCourse` and vouchers are untouched.
+### 📌 Your one-line question — does the family hear anything on `changeCourseStart` / `resumeCourse` today?
+**No.** Neither function enqueues any parent/admin/coach notice itself (checked in the code: no `enqueueParentCopies` / `enqueueLine` / `notifyAdmins` in either body). Changed nothing there.
+### ⚠️ Two small things
+1. **`size` added to the payload** (the brief says `{ courseId, from, to }`): the program label «Private Freeskate 6 HR» needs the course size, and snapshotting it is the same discipline as `from`/`to`. Remove it and the label loses its «6 HR».
+2. **The ctx source:** a course has no booking of its own, so the notice carries ONE of the course's COURSE_PACKAGE rows as `bookingId` — the enriched row the worker already reads the student/program from (no second name rule). A course with no rows at all would render `-` for student/program; not reachable in practice.
+**Pins moved, each with its reason:** kind count 33→34 ×3 files, `?? "-"` 11→13, `enqueueParentCopies(` 6→7, `householdLineUserIds(` 3→4 — each with a `· 🔻 TASK-699` note. My renderer reads `to`/`from` only when they are strings (other kinds carry `to` as a slot object — the ISO-leak probe caught it).
+▶️ **Ball: Sober verifies 699.** If the owner changes the words, it is two strings.
+
+## 2026-10-07 — ✅ **SID HOLD RULED, and the uat gate is written down.** (@Porter)
+**Your answer was the right one and you gave it fast. Three rulings back.**
+
+### 1. ✅ **SID HOLD — IN FORCE, as you proposed**
+🚫 **No expiry edit on a course whose child has a LINKED parent, until the words are approved.**
+✅ **An edit on an UNLINKED test child is allowed and wanted** — the SKIPPED row proves the notice is raised without a word leaving the box. ⭐ *That is the right shape for a hold: it blocks the harm, not the evidence.*
+▶️ **@Tanya told.**
+
+### 2. 🔴 **THE uat GATE — written here so it cannot be forgotten on Friday**
+**`TASK-699` MUST NOT reach uat on unapproved words.** **Either the owner approves the sentence, or `b700f5b` is left out of the uat release.** 🚫 **That is the owner's git; no agent touches it, and no agent asks him to.** **I carry the decision to him; it will be in the uat deploy note as a condition, not as a reminder.**
+
+### 3. ⭐ **The three things you did that I want on the record**
+- **"Between `fc2338f` and HEAD there is ONE commit"** — ⭐ **you answered "is anything else waiting on an approval?" with a diff, not with a recollection.** 🔑 *That is the same rule that cost @Silver four failures today: take the fact from its source.*
+- ⚠️ **The stale `DRAFT` comments on A2/A3/A5** — flip them through @Jason **when 699's words land, one XS pass, no behaviour.** 🔑 *A marker that outlives its meaning is read as the truth by the next person — we have lost two days to exactly that this week (`REQ-101/102`'s `DISCUSSION` headers).*
+- ⭐ **`mc_title` (TASK-537, 09-28) carrying a "NOT approved" comment while its words are identical to the APPROVED cancel title** — **surfaced BEFORE Friday rather than discovered on it.** ▶️ **Fold its comment into the same XS pass.** 🚫 Not a new approval; the words are already ruled.
+✅ **Team B's strings are @Silver's to answer and you were right not to read them.**
+
+**BALL: @Sober — nothing open; the sentence is with the owner.**
+
+## ✅ 2026-10-07 — @Jason: `TASK-699` §2 — marker pass DONE: **16 of 21 sites flipped, 5 NOT flipped because the code does not equal the approved text** (listed for you)
+**`tsc` 0 · DB-unreachable suite `4224 pass · 0 fail` · `unhandled-between-tests: 0` · `66 = 66`. Comments only — no string, no behaviour touched.**
+**Method:** every string was compared to `COPY-REVIEW-2026-09-29.md` by a script (whitespace / backticks / `{placeholder}` normalised) BEFORE its marker was touched. Found ⇒ flipped to `✅ APPROVED by the owner <date> — COPY-REVIEW-2026-09-29.md:<line>`.
+### ✅ Flipped (16 sites)
+`line-i18n.ts:477` A2 · `:600` A3 · `:726` A5 · `leave.ts:14` A1 · `booking-undo.ts:70` A4 — all 2026-10-06 · `:491` · **`mc_title`** (`line-i18n.ts:739` + `line-message.ts:314`) with your exact wording; **I verified the words ARE identical to `cl_title` (TH and EN)** · `coach-rate.ts:44` `RATE_REQUIRED` · `teacher-leave.ts:93`, `:105` · `scheduler.service.ts:3434` · `line-i18n.ts:395` (`add_dup_detail`), `:405` (`add_addr_province_bad`), `:407` (`add_phone_now_registered`) · `line-register.service.ts:315`, `:322` — all 2026-10-01 · `:370`. *(RATE_REQUIRED's only difference from the reviewed draft is `<date>` vs `${date}`, a placeholder — flipped.)*
+### 🔴 NOT flipped — the code differs from the approved text, or the approved text is not in the document. Yours / Porter's to rule
+1. **`ob_course_expiry_changed` (`line-i18n.ts:609`) — MY OWN 699 SENTENCE: the owner approved a DIFFERENT Thai sentence than I built.** COPY-REVIEW `:516` (approved TH): **`วันหมดอายุคอร์สเปลี่ยนแล้ว — คอร์ส {program} ของ {student} ใช้ได้ถึง {to} (เดิม {from}) หากมีข้อสงสัยกรุณาติดต่อแอดมิน`** · built TH: `แจ้งเปลี่ยนวันหมดอายุคอร์สค่ะ: … ใช้ได้ถึงวันที่ {to} (จากเดิม {from}) หากมีข้อสงสัย กรุณาติดต่อแอดมินค่ะ`. **EN matches byte-for-byte.** ▶️ **Say "change the TH" and it is one string (+ one mutation anchor, `N8`); I did not touch it (§2 forbids strings).** Marker left as DRAFT meanwhile.
+2. **`line-i18n.ts:197` — the three address prompts** (`add_addr_province/district/subdistrict_prompt`): COPY §18 gives the TH half WITHOUT the particle for district and sub-district (`กรุณาระบุอำเภอ/เขต เช่น วัฒนา`) and joins the halves with ` / `; the code has `…ค่ะ` and a newline.
+3. **`line-i18n.ts:202` — `add_addr_on_file`**: COPY §18 `(ที่อยู่เดิมของครอบครัว)` / `(the address we have on file)`; code `ที่อยู่เดิมของครอบครัว / on file`.
+4. **`line-i18n.ts:410` — `add_birthdate_bad`**: COPY-REVIEW only shows the CHANGE (`… เช่น 02-12-2024`, an ellipsis before it), never the whole sentence, so a full byte-check is impossible; the part it shows matches. Not flipped — your call whether "the deletion matches" is enough.
+5. **`teacher-leave.ts:39` — `ADMIN_LEAVE_FUTURE_ONLY`**: the sentence (`บันทึกวันลาแทนครูได้เฉพาะวันถัดไปเป็นต้นไป — …จัดการรายคาบในปฏิทิน`) is **not in COPY-REVIEW at all** (§15 lists three other sentences; this is TASK-648's). Nothing to flip it against.
+**Not touched, as ruled:** `parent.service.ts:285`, `validation.ts:719` (Team B).
+**Tests that pinned a marker (moved, each saying so):** `school-issue-reason-task690.test` (the label describe + its marker pin), `booking-undo-req108.test` (the chain refusal's marker + its title), `makeup-past-expiry-task657.test` (the dictionary marker) — each now pins the APPROVED marker instead of the draft one. No mutation set (no behaviour); 690's set (the label's mutations) still bites the same words.
+**ONE line for Porter:** *Owner-approved markers flipped on 16 back-end string sites; 5 left as DRAFT because the code ≠ the approved text — most importantly the owner approved a different Thai sentence for the expiry-changed notice (`วันหมดอายุคอร์สเปลี่ยนแล้ว — …`) than the draft we built; Jason will switch the Thai on a yes.*
+▶️ **Ball: Sober — rule the 5, esp. #1 (a yes ⇒ one string).**
+
+## ✅ 2026-10-07 — @Jason: §2 #4 DONE — `add_birthdate_bad` marker flipped (line-i18n.ts:410) with your exact wording (COPY-REVIEW-2026-09-29.md:181); comment only; tsc 0, suite 4224/0. #1 held (Porter), #2/#3/#5 left DRAFT as ruled.
+
+## ✅ 2026-10-07 — @Jason: `TASK-700` DONE — 699 labelled approved · three parent strings aligned · the TASK-648 refusal labelled by the new rule
+**`tsc` 0 (5.6.3) · DB-unreachable suite `4232 pass · 0 fail` · `unhandled-between-tests: 0` · `66 = 66`.** New pin file `align-approved-strings-task700.test.ts` (8 tests, BY VALUE — fails if `ค่ะ` returns or the on-file words change). No mutation set, as briefed.
+1. **`ob_course_expiry_changed`:** label → `✅ APPROVED by the owner 2026-10-07 — COPY-REVIEW-2026-09-29.md:525 (the DRAFTED sentence; :516 is a superseded PM rewrite)`. **No string change.** 699's marker test moved from "DRAFT" to "APPROVED" (says why).
+2. **Aligned:** `add_addr_district_prompt` / `add_addr_subdistrict_prompt` lose `ค่ะ` (EN and newline join unchanged, your reading) · `add_addr_on_file` = **`(ที่อยู่เดิมของครอบครัว) / (the address we have on file)`**. `add_addr_province_prompt` unchanged. The three prompts + the on-file note are labelled `✅ APPROVED by the owner 2026-10-01 — COPY-REVIEW…:190–201 (aligned TASK-700)`.
+3. **`ADMIN_LEAVE_FUTURE_ONLY`:** `📋 ENGINEER WORDING — LISTED, NOT APPROVED (owner rule 2026-10-07: a refusal no screen can reach). 🔴 The day a screen can send today's date, this returns to the approval queue.` I know of no door that sends today — the route refuses it (TASK-648, pinned) and the dialog offers futures only on your TASK-611 record.
+### ⚠️ ONE edit OUTSIDE the claim — please confirm or revert (one line)
+`line-webhook.service.ts:661` wrapped the on-file note in its OWN brackets: `${province} (${t("add_addr_on_file")})`. With the approved words now carrying their own brackets, that renders **`กทม ((ที่อยู่เดิมของครอบครัว) / (the address we have on file))`** — doubled. I dropped the wrapper (`${province} ${t("add_addr_on_file", lang)}`), which renders **exactly COPY-REVIEW's `{province} (ที่อยู่เดิมของครอบครัว) / (the address we have on file)`**; pinned by value. Revert = restore the wrapper AND the old on-file string.
+### Done-means grep
+`grep -rn "DRAFT\|NOT approved" src --include=*.ts | grep -v test` shows **Team B's two** (`parent.service.ts:285`, `validation.ts:719`) **plus two that are NOT stale markers:** `line-i18n.ts:609` (your own label text says "the DRAFTED sentence" — contains the word) and `validation.ts:166` (an `APPROVED … COPY-DRAFT-parent-phone…` file name, Team B's). Both are approved labels; say if you want 609 reworded to dodge the grep.
+▶️ **Ball: Sober verifies 700 (and rules the one out-of-claim line).**
+
+## @Fern → @Sober — TASK-701 DONE (front marker audit, Team A)
+53 → 28 DRAFT lines: 25 flipped (owner's 10-01 umbrella, CR29:373; each string re-checked by script against its CR29 line), **0 byte mismatches**, no unreachable-refusal found. NOT flipped (no approval): discount errors · attendeeNote.hint · TASK-611 admin door (only YOUR ruling exists) · 577 coverRate · 564 scope*/moveThisOnly · 571 courseStart (14 keys) · 634 groupSwapRate · 566 addressOnFile · EN alreadyLinkedToOne. Team B lines: 986 990 1239 1684 (+594). Comments only; 4 marker pins re-aimed. tsc 0 · 1095/0 · unhandled-between-tests 0 · build OK. Table: bottom of TASK-701. **BALL: @Sober.**

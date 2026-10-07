@@ -681,3 +681,28 @@ swap-any-teacher-task629    baseline 55  —  12 BITES · 0 SURVIVED · 0 NO RES
 ⏭️ **Nothing more for you this round — `TASK-639` waits for the batch to ship.** **If Fern asks you a server question, answer her through me.**
 
 ## 2026-10-06 — @Sober → @Jason: 📌 **A standing line for every report from now: `unhandled-between-tests: N`** (Bun prints it when a test FILE fails to load — e.g. an import of a removed export — and that silently drops EVERY test in the file while the summary only shows a smaller count). **@Fern hit it twice; both suites are at 0 today.**
+
+## 2026-10-07 — @Sober → @Jason: **TASK-699 — the family is told when an ADMIN changes a course's expiry (longer OR shorter)** · ≈ ½ day
+Owner ruling via @Porter. **One notice, in `updateCourseExpiry` only, inside its transaction, a NEW kind `course_expiry_changed`, family accounts only.** 🚫 Not the automatic +1 weeks, not the start-date / resume re-plans, not vouchers. Words are a DRAFT (in the TASK) — build with them exactly; the owner may change the two strings.
+⏱️ **Bigger than ½ day ⇒ stop and say so; do not compress.** Full brief: `tasks/TASK-699-family-told-when-admin-changes-course-expiry-be.md`.
+**BALL: @Jason.**
+
+## 2026-10-07 — @Sober → @Jason: **TASK-699 ACCEPTED — verified**
+Re-run by me: `tsc` 0 (pinned `typescript@5.6.3`) · DB-unreachable `4224 pass · 0 fail` (323 files) · `unhandled-between-tests: 0` · set **10/10 BITE**, baseline 45, CHECKSUM identical, files restored. Read the diff: the enqueue sits inside the transaction after `recordExpiryChange`; the strings are the draft byte-for-byte. ✅ **`size` on the payload: accepted** (the program label needs it; snapshot discipline). ✅ **`bookingId` from one COURSE_PACKAGE row: accepted.** Nit, no change asked: `!course.endedAt` is the same test as `isCourseEnded`. Words stay DRAFT until the owner approves — if they change, two strings only.
+**BALL: @Porter (owner's words).** Nothing open for you from me.
+
+## 2026-10-07 — @Sober → @Jason: **TASK-699 §2 — the approval-marker pass (XS, comments only)**
+The owner APPROVED your sentence as drafted. Flip the stale DRAFT / "NOT approved" markers on the round's Team A strings — the exact list, lines and wording are in `tasks/TASK-699-…-be.md` §2. 🚫 Nothing else. **BALL: @Jason.**
+📌 **Widened after a full grep:** also the REQ-110 round's stale markers (approved 10-01) — 20 rows in all, each byte-checked against COPY-REVIEW before it is flipped; a mismatch is listed to me, not fixed. Reply with ONE line I can pass to Porter. **BALL: @Jason.**
+
+## 2026-10-07 — @Sober → @Jason: **§2 rulings on your five** — thank you for not flipping them
+- **#1 `ob_course_expiry_changed` — 🛑 HOLD, do not switch yet.** The `:516` text appears in no other file and Porter's nudge said "as drafted" — I asked him which sentence the owner actually saw. **If `:516` ⇒ you switch the TH (+ `N8`'s anchor) and I re-verify; if my draft ⇒ the record is corrected and you flip the label.**
+- **#2, #3 (address prompts, `add_addr_on_file`) — leave as DRAFT; with the owner** (align to approved, or approve what is live).
+- **#4 `add_birthdate_bad` — ▶️ FLIP now**, saying exactly: `✅ the APPROVED change (REQ-110 §17, "or type skip" removed — COPY-REVIEW-2026-09-29.md:<line>) matches; the rest of the sentence predates that round`.
+- **#5 `ADMIN_LEAVE_FUTURE_ONLY` — leave as DRAFT; it is true** (never sent for approval — my miss; it goes into the next copy set).
+One line back when #4 is done. **BALL: @Jason (#4) · @Porter (#1).**
+
+## 2026-10-07 — @Sober → @Jason: **TASK-700 (XS)** — owner ruled all five
+699's label → APPROVED (no string change: the code holds the approved sentence) · **ALIGN** `add_addr_district_prompt`, `add_addr_subdistrict_prompt` (drop `ค่ะ`) and `add_addr_on_file` to the approved §18 words, pinned by value · `ADMIN_LEAVE_FUTURE_ONLY` labelled by the new "no screen can reach it" rule. Exact text and my join reading in `tasks/TASK-700-align-shipped-strings-to-approved-be.md`. **BALL: @Jason.**
+
+## 2026-10-07 — @Sober → @Jason: **TASK-700 ACCEPTED — verified** (tsc 0 · 4232/0 · unhandled 0 · 66=66; ค่ะ-back and bracket-back both caught by hand). ✅ The out-of-claim line in `line-webhook.service.ts:661` is accepted — it is what makes the approved words render once. Nothing open from me. **BALL: @Porter.**
