@@ -892,6 +892,70 @@ pile.
 **Not ordered, deliberately:** nothing that makes a role delete or compact on its own.
 File surgery stays yours. The ritual reports; it never repairs.
 
+
+### ORDER 17 — Atlas's FAILURES review, and what it produced (owner's go, 2026-10-07)
+
+**Reviewed:** all 27 entries in `smart-scheduler/ai-worker/FAILURES.md` (13 → 27 in two days).
+Atlas writes nothing inside `ai-worker/`, so **every status change below is yours**, via that
+desk's spawned PM.
+
+#### 17.1 — The structural finding, which is bigger than any entry
+
+| Reporter | Entries |
+|---|---|
+| Porter (PM) | **21** |
+| Silver (SA-B) | **6** |
+| Sober · Jason · Fern · Bob · Fanta · Tanya | **0** |
+
+**Six of eight roles have never written a line**, and F-027 shows even Porter under-reports
+(twelve of his own recorded in logs and REQs, not in `FAILURES.md`, for two days).
+The channel works where it is used. **Do not read "no entries" as "no failures."**
+Tell the owner this plainly; it is the one thing on this list he cannot infer from the file.
+
+#### 17.2 — Install four skills and one rule (new, written by Atlas)
+
+| File | Fixes | Load it in |
+|---|---|---|
+| `_templates/skills/verify-before-relay.md` **(written 10-06, never installed)** | F-002 · 024 · 025 · 026 | PM, SA |
+| `_templates/skills/check-by-running-not-reading.md` | F-011 · 012 · 013 · 014 | SA, BE, FE |
+| `_templates/skills/quote-dont-paraphrase.md` | F-015 · 016 · 018 | PM, BA |
+| `_templates/skills/write-it-now.md` | F-021 · 027 | every role |
+| `_templates/rules/attribution.md` — **a hard boundary, not a skill** | F-022 · 023 | every charter's boundaries card **and** `workforce-protocol` |
+
+The four skills follow the shape proven by `FE-DESIGN.md` and `QA-PLAYWRIGHT.md`: one line
+of principle, the real incident with its real cost, how to do it, a test to run before
+sending, and what the skill is **not**. They name no desk and no person — check that is
+still true after you install them.
+
+#### 17.3 — Statuses to set
+
+- **`FIXED` — the fix already exists and shipped:** F-001 (Thai-first ordering), F-003,
+  F-005 (intake discipline), F-006 (provenance labels), F-007 (REQ→TASK coverage rule),
+  F-020 (bare SQL). Name the change in the status line.
+- **`FIXED` on install:** F-002, 024, 025, 026 · F-011–014 · F-015, 016, 018 · F-021, 027 ·
+  F-022, 023 — each pointing at the skill or rule that now covers it.
+- **`ATLAS-REVIEWED` and left open:** F-017 (the SA↔SA edge the PM instructed) — the rule
+  already existed and was broken once. That is a slip, not a gap; nothing to design.
+  F-008 likewise.
+- **F-019 — leave it OPEN until 17.4 lands.** It is the only entry with no fix yet.
+
+#### 17.4 — 🔴 F-019 needs a guard, not a rule
+
+> *"Deleted 331 of 335 lines of `board.md` with an awk rewrite whose end pattern never matched."*
+
+`workforce-protocol` §7 "Editing files safely" already exists and did not prevent this.
+**A role must not be able to rewrite a coordination file whole.** Design the cheapest guard
+that actually bites and bring it to the owner before installing — candidates: forbid
+whole-file rewrites of `board.md` / `SYSTEM-FACTS.md` / `FAILURES.md` outright (edits are
+targeted, or they go through you); or require a line-count check before and after, with a
+drop over a threshold refusing. **Prose did not hold here, so do not answer it with prose.**
+
+#### 17.5 — Spread
+
+Install at **smart-scheduler first**. The skills are generic: once they survive there, add
+them to `_templates/project` so new desks are born with them, and to any desk with a live
+team. `harness-console` has 3 unreviewed entries of its own — read them when you are there.
+
 ## Operations log (append one line per operation, newest first)
 
 - 2026-10-05 (late) — **HOUSEKEEPING harness-console #2: board swept (v1 shipped) + dispatcher-state
