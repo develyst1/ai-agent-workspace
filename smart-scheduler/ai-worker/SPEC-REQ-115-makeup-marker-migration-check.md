@@ -40,3 +40,6 @@ FROM bookings WHERE booking_type = 'COURSE_PACKAGE';
 
 ## 5. Rollback
 **The column is new, nullable / default false, and read only by the new code.** ⇒ **rolling the CODE back needs no database step** — old code never reads it. 🚫 **No down-migration on a live box.**
+
+---
+## 🔻 2026-10-07 — CORRECTED in `TASK-702` §2a (the TASK is in force, not this §1): P3 must include the leave writer's note; P4 added for trimmed/undone make-ups whose note was overwritten; the expected number (§4) is STALE — it now comes from the owner's step-0 read the day before release.

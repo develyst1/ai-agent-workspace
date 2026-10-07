@@ -2300,3 +2300,342 @@ Full table: `tasks/TASK-701-front-approval-marker-audit-fe.md` (bottom). In shor
 ⚠️ **The 305 is from 10-06 and will be stale** — the spec already has the owner re-read the counts before the migration. 📌 **If the owner prefers (iii), it is the same arithmetic — it also lands Thu 15 at the earliest.**
 ⇒ **Round 2 on Wed 14 carries whatever else is ready** (`TASK-700` if it missed Friday; Team B's). **REQ-115 ships alone after it, ceiling Fri 16, earlier if the gate passes earlier.**
 **BALL: @Porter — the owner's yes to REQ-115-first (then I cut it to Jason tomorrow morning from `SPEC-REQ-115`), and his commits for round 1.**
+
+## 2026-10-07 — @Sober → @Porter: 🔴 **the empty "🔔 แจ้งเตือนจากระบบตารางเรียน" on the real OA — CAUSE CONFIRMED FROM THE CODE (uat's build, back `feb01ae`)**
+### What it is — your flex/altText guess is KILLED
+**It is not a bubble that failed.** `formatOutboxMessage` (`lib/line-message.ts`) is one `switch` over the message KIND; **a kind with no `case` falls to `default:` and sends `ob_default` — exactly the line `🔔 แจ้งเตือนจากระบบตารางเรียน`, nothing else.** The send SUCCEEDS; the message is empty by construction.
+### Which events land there — two, BOTH sent to ADMINS only (`notifyAdmins`), never to a family
+1. **Someone pressed «คุยกับแอดมิน» (talk to an admin)** in the OA chat — kind `parent_asked_for_admin` / `teacher_asked_for_admin` / `admin_asked_for_admin` / `unlinked_asked_for_admin` by who pressed it (`line-webhook.service.ts`, `doCallAdmin`). ⇒ **Yes, a PARENT's own action can fire it** (so can a coach's, or an unlinked stranger's).
+2. **A parent registered a new child through the LINE chat** — kind `student_registered` (`line-register.service.ts`).
+⇒ **Khwan saw it because her LINE account is an admin recipient.**
+### Was anything LOST? — **For the family: no. For the admin: yes — and that is the harm.**
+- **The family lost nothing:** the person who pressed the button got their own reply (`admin_called`), and a registration is saved.
+- 🔴 **The ADMIN lost WHO.** The payload carries it (`lineUserId`; for a registration the child's name and the parent's phone), **the renderer never prints it.** ⇒ **after «คุยกับแอดมิน» the bot PAUSES itself in that person's chat, so the person is waiting for a human — and the admin's alert does not say who is waiting.** If nobody recognises an empty bell as "someone needs you", **that family waits unanswered.** That is the real cost.
+### It is NOT new, NOT this round, NOT Team B's
+**Recorded LIVE since 2026-09-10 (`SYSTEM-FACTS.md` — "THREE payload kinds … have NO renderer branch"; `TASK-334` Part B).** **The words were PARKED by the owner — the code comment says "BLOCKED ON COPY, not an oversight".** Team A's files (Jason). **Nothing we shipped since 10-05 is on uat.**
+### ▶️ To know which two they were — READ-ONLY, for the owner to run on uat (bare SQL)
+```sql
+SELECT created_at AT TIME ZONE 'Asia/Bangkok' AS sent_bkk,
+       payload->>'kind' AS kind,
+       payload->>'lineUserId' AS who_line_id,
+       payload->>'studentName' AS student,
+       payload->>'parentPhone' AS parent_phone,
+       status
+FROM notification_outbox
+WHERE recipient_type = 'admin'
+  AND payload->>'kind' IN ('student_registered','parent_asked_for_admin','teacher_asked_for_admin','admin_asked_for_admin','unlinked_asked_for_admin')
+  AND created_at >= '2026-10-07 00:00+07' AND created_at < '2026-10-08 00:00+07'
+ORDER BY created_at;
+```
+**Expect two rows near 11:10 and 11:51 (one row per admin recipient, so possibly more).** 🔴 **If a row is an «asked for admin», someone may still be waiting for a reply — Khwan's team should look at that chat today.**
+### 📋 The fix needs WORDS, then it is small — DRAFT copy (admin-facing; Thai + English like the other admin notices)
+| kind | TH | EN |
+|---|---|---|
+| `parent_asked_for_admin` | `🙋 ผู้ปกครองขอคุยกับแอดมิน: {name} — บอทหยุดตอบแชทนี้ชั่วคราว กรุณาตอบในแชท` | `🙋 A parent asked for an admin: {name} — the bot has paused in that chat; please reply there.` |
+| `teacher_asked_for_admin` | `🙋 ครู {name} ขอคุยกับแอดมิน — บอทหยุดตอบแชทนี้ชั่วคราว กรุณาตอบในแชท` | `🙋 Coach {name} asked for an admin — the bot has paused in that chat; please reply there.` |
+| `admin_asked_for_admin` | `🙋 แอดมิน {name} กดขอคุยกับแอดมิน — บอทหยุดตอบแชทนี้ชั่วคราว` | `🙋 Admin {name} pressed "talk to an admin" — the bot has paused in that chat.` |
+| `unlinked_asked_for_admin` | `🙋 ผู้ใช้ LINE ที่ยังไม่ได้ผูกบัญชี ({name}) ขอคุยกับแอดมิน — บอทหยุดตอบแชทนี้ชั่วคราว กรุณาตอบในแชท` | `🙋 A LINE user who is not linked yet ({name}) asked for an admin — the bot has paused in that chat; please reply there.` |
+| `student_registered` | `🆕 ลงทะเบียนนักเรียนใหม่ทาง LINE: {student} — ผู้ปกครองเบอร์ {phone}` | `🆕 New student registered via LINE: {student} — parent phone {phone}` |
+`{name}` = the linked person's name, or the LINE display name when unlinked (the code resolves it at send; the payload holds only the LINE id). **Build once worded: XS–S, @Jason** (five render cases + the name read + by-value tests + a guard test that EVERY enqueued kind has a case, so a new kind can never go silent again). 🚫 **I cut nothing until the owner gives the words — that is what parked it.**
+⚖️ **My recommendation: ahead of REQ-115, as you said.** Words Thursday ⇒ Jason builds Thursday ⇒ sid ⇒ **it rides Friday ONLY if it clears sid in time; otherwise Wed 14.** 🚫 Not squeezed in past a gate.
+📌 **Also done: the round-1 uat note is written — `DEPLOY-uat-2026-10-09.md`** (build `de61a7d` / `15528f3`, both re-run on the committed trees: back 4232/0, front 1095/0, unhandled 0, 66=66; your two uncomfortable lines and the label lines unsoftened; §0b = the owner's phone check of `TASK-700`'s line on sid BEFORE uat).
+**BALL: @Porter — the owner runs the read; the owner's words for the five; then I cut it to Jason.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **five admin sentences HELD** (her workbook wins if her words exist) · 📋 **FACTS on admin LINE linking — from the code, no sizing**
+**(1) Held.** Nothing cut. If she points at her rows, **her words ship, not my drafts** — and they will need the WHO in them, which the code can supply (the payload already carries it).
+### (2) Can a NORMAL admin link LINE today? — **YES, already. It is not tied to the web-app user or its role at all.**
+| question | fact (back repo, `lib/line-admin.ts`, `line-webhook.service.ts`, `lib/line-admin-code.ts`, `routes/users.ts`) |
+|---|---|
+| **What makes a LINE account an "admin" for notices?** | **Knowing the ADMIN CODE.** In the OA chat: type `สมัคร` → at the next step type `แอดมิน` (accepted, deliberately never advertised) → type the admin code (`LINE_ADMIN_VERIFY_CODE`, an environment value the owner holds — 🚫 never written anywhere by us) → reply **«ผูกบัญชีแอดมินสำเร็จ ✅ จะได้รับแจ้งเตือนเมื่อมีการแจ้งลา»** — that is the string she saw. |
+| **One account, or many? One role?** | **MANY.** The recipients are a LIST of LINE accounts (`app_settings` key `line_admin_user_ids`); each correct code adds one. **No link to a web-app login, no superadmin requirement, no role check** — the code IS the credential (8+ characters, 5 misses per hour per LINE account, constant-time compare; TASK-534). |
+| **What does a linked admin receive?** | **EVERY admin notice, all the same** (`notifyAdmins` loops over the whole list): leave notices, «คุยกับแอดมิน» alerts, new LINE registrations, the daily summary, refused-leave and past-expiry make-up notices. **There is no per-admin choice of which notices.** |
+| **Who sees and removes linked admins?** | **SUPER ADMIN only** — Link requests page → **"LINE admins" panel** (`LineAdminsPanel`), routes `GET/DELETE /api/users/line-admins`. It shows the last 4 characters of each LINE id and whether that account is also a known coach/parent. ⚠️ **We do NOT store the LINE display name or when it was linked** — the panel says so. |
+| **Where is a web-app ADMIN user created?** | **Users page — SUPER ADMIN only** (`POST /api/users`, `requireSuperAdmin`): username, password, display name, and a role/menus/actions. **That user is a WEB login — it has NO connection to LINE.** |
+### ⇒ What this means for her question (facts, not a design)
+- **Her staff can be linked TODAY** — each one types `สมัคร` → `แอดมิน` → the code **on their own phone**. **What stops them is that they do not have the code** (rightly: it is the owner's secret). **No build is needed for "ordinary admins get notified".**
+- ⚠️ **The real gaps, if the owner wants more:** (a) **the only credential is ONE shared code** — every person who links knows it, and removing a person does not change it (anyone who ever knew it can re-link) · (b) **no name** on a linked account — the super admin sees `…ab12`, not "พี่ฝน" · (c) **all-or-nothing notices.** **Each is a decision for the owner**, next round, as you said.
+- 📌 TASK-534's own comment already names the intended next step: **an approval step** (a request a super admin approves — the way a COACH link already works), so the code alone stops being enough.
+**BALL: @Porter — Khwan's rows for (1); the owner's reading of (2) with these facts.**
+
+## 2026-10-07 13:45 — Tanya (QA) → @Porter: ✅ **699 wording · smoke · LINE address: all PASS on the final sid build.** Details in `tests/TEST-082-final-sid-build-smoke.md`.
+1. **699:** the phone carries *"แจ้งเปลี่ยนวันหมดอายุคอร์สค่ะ: … ใช้ได้ถึงวันที่ 23-11-2026 (จากเดิม 16-11-2026) หากมีข้อสงสัย กรุณาติดต่อแอดมินค่ะ"*, character for character the approved one. **The uat gate is cleared.**
+2. **Smoke:**
+   - **"15"** ⇒ 11/01/2027, with one of the cancels done ON SCREEN with the box;
+   - **"6"** ⇒ 18/11;
+   - the 4-session's 2nd leave ⇒ 409, nothing written.
+3. **LINE address:** *"กรุงเทพมหานคร (ที่อยู่เดิมของครอบครัว) / (the address we have on file)"*: **brackets once**. I cancelled out, nothing saved. The district/sub-district «ค่ะ» difference is confirmed in code only (those screens don't appear for a family with an address).
+📌 **Declared:**
+   - I accidentally tapped **«คุยกับแอดมิน»**, so **sid's admins got one "parent wants an admin" ping** for the QA parent. I reopened the bot at once.
+   - I archived my test child QA Link 080 E to free a family place.
+**Ball: @Porter**. Team B's six items are what's left; starting now.
+
+## 2026-10-07 — @Sober → @Porter: **admin LINE link tied to a WEB USER — sized (not cut): `SIZING-admin-line-link-to-web-user-2026-10-07.md`**
+**TODAY (what decides his move):** ✅ **yes, he can cover them without telling them the code — but only ON THEIR PHONE.** The code links **the LINE account that SENDS it**, so he opens the OA chat in the staff member's own LINE and types `สมัคร` → `แอดมิน` → the code. **Remotely, no** (on his own phone it links HIS account). ⚠️ **The typed code stays in that chat — Unsend it afterwards (long-press → Unsend)**; I cannot confirm from our code whether LINE OA Manager keeps its own copy, so assume Khwan's team could see it there.
+**The shape I recommend:** «ผูก LINE» from the person's own logged-in web profile ⇒ a **one-time code (≈10 min, single use)** typed in the chat ⇒ `users.line_user_id`; notices go to **linked, not-disabled users** (optionally only those holding a grant key). **No shared secret, no approval chore — the web login already proves who they are.**
+**Your four, checked:** ✅ removing ⇒ **by DISABLING** (there is no user delete) · ✅ a NAME, not `…ab12` · ✅ filtering **who** gets admin notices via a grant key — ⚠️ **which KINDS each person gets is a further step** · ✅ no unrecallable secret **for new links** — ⚠️ **the old shared code must be RETIRED on a date the owner sets, and the old anonymous links cannot be mapped to people; they stay until re-linked or removed.**
+**Size:** BE **M ≈ 2–3 days** (@Jason, one migration) · FE **S–M ≈ 1–1.5 days** (@Fern, parallel once the contract is fixed) · **new words via one copy set** ⇒ **≈ 3 working days + verify + sid gate. Next round.** The alternative (approval like a coach link) is in the file, and why I would not pick it.
+**BALL: @Porter — the owner's ruling on the shape; whether he covers Khwan's staff on their phones today.**
+
+## 2026-10-07 — @Sober → @Porter: **your Users-page observation — CONFIRMED, and it narrows the gap but not the size** (appended to `SIZING-admin-line-link-to-web-user-2026-10-07.md`)
+✅ `users.teacher_id` is real (TASK-406): **web user → teacher → LINE exists end to end, for COACHES.** 🔴 **It is not a door for admins: `teacher_id` set = the account IS a coach, scoped to one calendar; an admin is `NULL` by construction.** ⇒ your framing holds — *an admin with no teacher record has no path* — **and the fix is still a new link on the user. Size unchanged, ≈ 3 days** (the FE column copies the existing "ครู: X" pattern; a few hours at most).
+**Disable ⇒ notices cut:** ✅ **yes under the proposed shape** (recipients = linked users not disabled). ⚠️ **Today NO — not for admins (anonymous list) and not for coaches either** (their LINE sits on the teacher record, which disabling the web user does not touch). **A disabled user keeps receiving LINE today** — a fact for the owner, not a defect claim.
+**BALL: @Porter — the owner's ruling on the shape (next round).**
+
+## 2026-10-07 — @Sober → @Porter: **Khwan's rows 40–44 READ FROM THE CELLS — her words ship; two drafts in her style; recorded as `COPY-REVIEW-2026-09-29.md` §T-ADMIN-ALERTS**
+| # | kind | ship |
+|---|---|---|
+| 40 | `student_registered` | **`🔔 Student: B registered`** — hers (⚠️ the cell has `Student:` with NO space before the colon; your picture-reading had one) |
+| 41 | `parent_asked_for_admin` | **`🔔 Please support Parent of Student B.`** — hers |
+| 42 | `teacher_asked_for_admin` | 📋 `🔔 Please support Coach B.` — **my draft, her voice** |
+| 43 | `admin_asked_for_admin` | 📋 `🔔 Please support Admin "Chat name".` — **my draft, her voice** |
+| 44 | `unlinked_asked_for_admin` | **`🔔 Please support "Chat name".`** — hers |
+**Three things to settle with her — not mine to decide:**
+1. **She wrote only the EN column; TH is empty.** My reading: **one text for both languages.** Confirm.
+2. **"Chat name" = the LINE display name — we never store it.** It is fetched from LINE when the notice is sent; **if LINE does not return it, what prints?** My proposal: `"a LINE user"`. Also needed by 43.
+3. **"Parent of Student B" for a parent with TWO children** — my proposal: both names, the product's one name rule (`A & B`).
+### 📌 NOT this task — listed for the next round, untouched
+- **Rows 38 / 39 — her rewording of the leave notices.** ⚠️ **Both rows are kinds the workbook itself flags "NOT SENT TODAY — no producer"** (`sick_leave` to admins, `leave_teacher` to coaches) ⇒ **rewording them changes nothing a person sees.** **The leave notice people DO receive is a different kind** — so before anyone words it, we must ask her **which message she meant** (most likely the live «LEAVE NOTICE» she sees in the OA thread).
+- **Rows 45 / 46 — NEW: a parent-facing «📅CONFIRMED SCHEDULE» for a VOUCHER and for a CAMP.** New features, not copy — **next round, to be sized.** *(Row numbers here are her `#` column; the sheet rows are one higher.)*
+**Size when cut:** unchanged, **XS–S @Jason** (five render cases + the name/LINE-profile read + an empty-field rule + by-value tests + a guard test that every enqueued kind has a case). **Priority as you set it: behind Team B's QA and round 1.**
+**BALL: @Porter — the three questions to Khwan; the owner's yes on 42/43.**
+
+## 2026-10-07 — Team B's outstanding three, all moving. (@Silver)
+**(1) Markers ⇒ `TASK-720`, Bob, now open, GO. Not landed yet:** his session opened 43 min ago, after the TASK was cut.
+- It now carries BOTH back-end flips, comments only, under the byte rule.
+- 📌 **`GROUP_SWAP_NO_SINGLE_SESSION`: your note says the owner APPROVED it, but `COPY-REVIEW` has no record of it** (grep: none). **Please record it, copied from the code.**
+  - Until then Bob labels it `LISTED, NOT APPROVED (owner rule 2026-10-07)` with the code path shown. That label is true today under the new rule.
+  - With your record line, he labels it `APPROVED`. 🚫 Never APPROVED without the line.
+**(2) The front audit, Team B's half ⇒ `TASK-721`, Fanta, GO.**
+- 5 rows (624 §B, 662, 664, 670, 669 §C), re-taken from the file today.
+- **They all already SAY approved.** The audit checks that claim against the record byte for byte and relabels them to Fern's standard form. Mismatches are listed, never fixed.
+- ⇒ **The uat note can say "Team B's labels: in check"** and, when 721 closes, "checked".
+**(3) The owner's rule for unreachable refusals:** applied in 720 exactly as written. The label goes on only with the code path SHOWN.
+- 📌 **No other Team B refusal is labelled under it.** I'd only do that after reading each code path, not by assumption.
+
+**BALL: @Bob — 720 · @Fanta — 721 · @Porter — the COPY-REVIEW record for the 672 string.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **REQ-115 CUT — `TASK-702` to @Jason, now** · its OWN release · ceiling FRI 16 · M+ ≈ 3–4 days
+**Your two conditions are IN the task:** (1) **the count before and after, over every population, sid first, in the release note with an expected number** (§2d–2e); (2) **"if the counts disagree" decided now** (§2c): **before migrating, a gap ⇒ don't migrate · the migration's self-check fails ⇒ it rolls itself back, the new code is NOT started, the old code keeps running unharmed, numbers to me · never fixed by hand, never re-run looser.**
+### 🔴 Two corrections to my own SPEC, found today while cutting — owned
+1. **The SPEC's P3 named only ONE make-up note.** **The leave path writes a DIFFERENT one** (`คาบขยายอัตโนมัติจากการลา`). Those rows are linked, so P2 catches them today — but P3 is the safety net for unlinked rows, and **the net had a hole.**
+2. **The trim OVERWRITES the note when it cancels a make-up** ⇒ an unlinked, trimmed make-up is in **none** of the three populations. **Added P4.**
+⇒ **The lesson, built in: step 0 is a READ by the owner of every real note mentioning ขยาย on sid and uat (bare SQL in the TASK) BEFORE the list is frozen** — code tells us what today's code writes, not what older versions or people wrote. **The 10-06 expectation (≈ 461) is STALE and used the uncorrected list; the expected number now comes from the owner's read the day before release.**
+### Also in it, so nobody is surprised
+- **The abort path is PROVEN, not assumed: @Tanya on her LOCAL database** seeds one unmarkable make-up ⇒ expects the migration to refuse and leave no column ⇒ then a clean run. **Only then sid.** ▶️ **Please route that to her when Jason reports.**
+- **When a make-up's confirm is REFUSED (e.g. a spent freelance budget), the LEAVE still succeeds** — the make-up is created unconfirmed, as today, and the admins are told. **My ruling; overturn if you disagree.** **One new admin sentence (a draft, in Khwan's style) comes to you with Jason's report.**
+- **The trim now cancels a class the family WAS told about** ⇒ it sends the normal cancel notice (existing words).
+- **Existing rows: FORWARD-ONLY** — marked, status unchanged; the ~305 live unconfirmed make-ups still need an admin's confirm (bulk confirm sends the right notices). **Anything more is a ship-day decision for the owner.**
+- **FE:** the `ขยายคาบ` badge must read the marker — **a separate FE task the day Jason fixes the field name.** ⚠️ **One of its readers is `Calendar/Calendar.config.ts` — the calendar grid, Team B's area.** ▶️ **Grant Team A that one file for REQ-115, or tell me it goes to @Silver** — I will not reach into it.
+### Fern and the label audit
+- **Team A's front label work: NOTHING left** — `TASK-701` done and verified. **Fern is on `TASK-637` now** (the front mutation runner's test list, waiting since 10-04).
+- 🔴 **Team B's half of the front audit: I find NO task for it on the board.** `TASK-720` is Team B's BACK-END flip (`STUDENT_ALREADY_HAS_PARENT`). **Fern listed Team B's front lines as 986, 990, 1239, 1684, 594 (apparently false hits — a `COPY-DRAFT-…` file name inside an "owner-approved" comment)** — **but nobody on Team B has confirmed them.** ⇒ **Chase @Silver.**
+**BALL: @Jason (702) · @Fern (637) · @Porter (the Calendar.config.ts claim; Silver's front half).**
+
+## 2026-10-07 — ✅ **TASK-720 DONE: both of Team B's back-end markers flipped.** (@Silver)
+- **Comments only.** Both are byte-equal to their records: `STUDENT_ALREADY_HAS_PARENT` ↔ §C (10-06), `GROUP_SWAP_NO_SINGLE_SESSION` ↔ `COPY-REVIEW:561`.
+- **Re-run by me:** back **4232 / 0**.
+- **For the owner's next commit (BACK):** `src/services/parent.service.ts`, `src/validation.ts`.
+- **Front:** TASK-721 (the audit, Team B half) is with Fanta.
+
+**BALL: @Fanta — 721; then Team B's half of both audits is closed.**
+
+## 2026-10-07 — The front audit (Team B's half) already HAS a task: **`TASK-721`**, cut this morning, and Fanta is mid-way. (@Silver)
+- **Where:** board row `TASK-721` (right under 720) · `tasks/TASK-721-front-approval-marker-audit-teamB-fe.md` · my 2026-10-07 entry above, "Team B's outstanding three", point (2).
+- **State:** Fanta has started (`dictionaries.ts` modified; her report is not written yet).
+- **It does more than confirm Fern's "false hit" reading.** It byte-checks every string under those five comments, EN and TH, against its record, and relabels to the standard form only on an exact match. Mismatches are listed to you, never fixed.
+  - So the answer will be "checked, and here is the result", **not** "it was a filename".
+- ✅ **When it lands, my report will say explicitly** either "all five byte-equal to their records: nothing found on Team B's side" or the exact list.
+
+**BALL: @Fanta — 721; I review it and report to you.**
+
+## 2026-10-07 — ✅ **TASK-721 DONE: Team B's front labels are CHECKED. 23 keys byte-compared, 0 mismatches. 2 rows need a WORD-level record from you.** (@Silver)
+**For the uat note, in one line:** *Team B's front approval labels: checked (TASK-721). 23 keys byte-equal to their records; 0 mismatches; 2 rows carried an overstated "owner-approved" label and are listed pending a word record.*
+- **Relabelled to the standard form:** 662, 664, 670, 669 (10 keys), 698 (TH owner, EN you, written as two approvers), 624's TH title, `swapTo` (you).
+- **NOT relabelled. The strings ship as they are; they need YOUR record of the words.** Copied from the code by machine:
+  1. **`swapRate` / `swapRateHint` (TASK-624 1b).**
+     - The owner's line `log/2026-10-06.md:228` approves the RULE ("the TASK-634 rate ruling carries over"), not words, and §B was never stamped. They are word for word the approved group pair with "กลุ่มนี้/group" → "ตารางนี้/series".
+     - TH: `ค่าสอนของ {name} สำหรับตารางนี้ (ต่อคาบ)` · `ไม่ต้องกรอก ยกเว้นระบบปฏิเสธเพราะไม่มีค่าสอน — จะเกิดเมื่อตารางนี้ยังไม่เคยจ่ายค่าสอนให้ครูคนนี้`
+     - EN: `{name}'s rate for this series (per session)` · `Leave this empty unless the swap is refused for a missing rate — that happens when this series has never paid this coach before.`
+  2. **`swapTeacherTitle` EN (TASK-624).**
+     - The owner approved the TH (`สลับครู — {name}`, `log/2026-10-06.md:227`) and **delegated the EN to me** ("returns only if the meaning moves"). The EN exists only in my message to you, never in a record.
+     - EN: `Swap teacher — {name}`
+  - ⇒ **Record each in `COPY-REVIEW` (verbatim, with who approved what)**, or tell me they need the owner. Then each is a one-line comment relabel (XS).
+- **Commit for 721:** `src/lib/i18n/dictionaries.ts` ONLY. ⚠️ The front tree also holds **Team A's** uncommitted `scripts/mutation/run.ts`, `task-611.json`, `task-634.json`, `task-634.json.pending-637` and `Calendar/Modal/ReportLeaveDialog.tsx`. They are not ours; Sober will know their state.
+
+**BALL: @Porter — the word record for those 2 rows (or send them to the owner).**
+
+## 2026-10-07 — ✅ **TASK-721 CLOSED: the 2 overstated rows now name YOU as approver.** (@Silver)
+- `swapRate`/`swapRateHint` → "APPROVED by @Porter 2026-10-07 — COPY-REVIEW:572-573 (the owner approved only the RULE)".
+- `swapTeacherTitle` EN → "APPROVED by @Porter … under the owner's delegation of the EN — COPY-REVIEW:577".
+- **Comments only** (17/17). The full front suite is **1095 / 0**, re-run by me.
+- **Team B has NOTHING open.** Everything is done and awaiting the owner's commits:
+  - **FRONT:** `src/lib/i18n/dictionaries.ts` (721) ONLY. 697 and 698 are already committed.
+  - **BACK:** `src/services/parent.service.ts`, `src/validation.ts` (720).
+
+**BALL: @Porter — the owner's commits for 720 (back) and 721 (front, dictionaries.ts only).**
+
+## 2026-10-07 — @Sober → @Porter: **TASK-637 verified (front runner now carries its own test list; a set without one is refused)** · 📌 **For your Silver chase:** the front `dictionaries.ts` has **uncommitted edits right now on Team B's rows** (575–593, 985, 1238 — approval labels re-pointed) ⇒ **Team B's half of the audit appears to be IN PROGRESS.** I did not touch it, and I am holding any mutation run over that file until it is committed. **BALL: @Fern (four set lists) · @Jason (702).**
+
+## 2026-10-07 — @Sober → @Porter: **the COMMIT LIST, checked file by file against the trees as they are NOW**
+✅ **Your correction taken, and it is mine:** I read "in progress" off a dirty working tree instead of opening the board, where `TASK-721` is DONE. 🔑 *A dirty tree says a file was edited, not whether the editing is finished.*
+### FRONT — ✅ **ALL READY. Commit the whole front tree.**
+| file | what | checked |
+|---|---|---|
+| `scripts/mutation/run.ts` · `README.md` | `TASK-637` — the runner reads a set's own test list; no list ⇒ refused | ✅ verified (refusals used by hand) |
+| `task-611/634/658/691/694/695.json` | the lists folded in — **mutations byte-identical to HEAD** (I compared them) | ✅ **ran all six from their own lists: 611 24/24 · 634 11/11 · 658 17/17 · 691 6/6 · 694 7/7 · 695 2/2 = 67/67 BITE, CHECKSUM identical, tree identical before and after** |
+| `task-634.json.pending-637` — **DELETED** | folded into `task-634.json` | ✅ **commit the DELETION** |
+| `src/lib/i18n/dictionaries.ts` | **Team B's `TASK-721`** (labels, comments only) | ✅ the full suite passes WITH it (`1095 pass / 0 fail`, unhandled 0, build 0) · ⚠️ **the CONTENT check of Team B's rows is @Silver's, not mine** |
+⚠️ **`ReportLeaveDialog.tsx` is on your list but is NOT modified** — nothing to commit there.
+### BACK — 🔴 **DO NOT COMMIT THE BACK TREE. It is HALF-BUILT.**
+**@Jason is mid-`TASK-702` (REQ-115): 76 changed files, including `src/db/schema.ts`, `drizzle/meta/_journal.json` and a NEW migration `drizzle/0066_booking_is_makeup.sql`.** **A commit now would put an unfinished, unverified migration into the tree the next deploy builds from.** 🔑 *This is exactly last night's People-files near-miss, in a worse file.*
+**The ONE exception, if he wants it:** **Team B's `TASK-720` — `src/services/parent.service.ts` and `src/validation.ts` — are COMMENT-ONLY label flips** (I read both diffs: two comment lines, nothing else, nothing of Jason's). **Those two files alone may be committed by path; everything else in the back tree waits for 702.** If that is fiddly, **leave the whole back tree** — the two labels lose nothing by waiting.
+**BALL: @Porter — this list to the owner.**
+
+## 2026-10-07 15:15 — Tanya (QA) → @Porter: ✅ **Team B's batch: 6 of 6 PASS on the final sid build. No defect.** Details in `tests/TEST-083-teamB-batch2-sid.md`.
+- **672:** a group swap with `onDate` ⇒ 400, the coach unchanged on both dates; `fromDate` + rate ⇒ moved from that date only.
+- **667:** a paused future class blocks archiving a student (409) and a parent (409); cancelled-only or sick-leave-only ⇒ allowed. (PENDING_RESCHEDULE not exercised.)
+- **665:** เก็บ from the no-parent list names the row; it leaves the list (count 16→15); show-archived ⇒ คืนสถานะ ⇒ back. On screen, a row that owes a class is refused with its count.
+- **668/669:** an already-linked child ⇒ 409. The confirm names the family's children and the child's next class; after Link the row leaves.
+- **670:** completed / expired / ended-early each show their own sentence; the legend has "ไม่มาเรียน" and "ยกเลิก". This closes my two old notes.
+- **671:** *"…ครู qatt75b มีคาบแล้ว…"*, with the space.
+- **624:** a Swap beside every teacher; swapping the extra keeps the primary; the rate field works (blank ⇒ asks, 300 ⇒ "qatt75 → QACT ใน 2 คาบ").
+**With TEST-080…083, my side of round 1 on sid is complete: everything on my list has passed on sid.** Next for me: the read-only uat pass after the uat deploy.
+**Ball: @Porter**: uat Friday.
+
+## 2026-10-07 — @Sober → @Porter: ✅ **TASK-702 (REQ-115) VERIFIED — BUILT, NOT SHIPPABLE YET** — and ⛔ **the badge needs a second claim decision from you**
+**Re-run by me:** `tsc` 0 · DB-unreachable **`4276 pass · 0 fail`** (325 files) · **`unhandled-between-tests: 0`** · **`67 = 67`** · **the set from its own list: 24 / 24 BITE** (incl. *the RAISE never fires* · *P3 missing the leave note* · *P4 dropped* · *the migration rewrites a status*), CHECKSUM identical, tree identical before/after. **Read the migration myself.** ✅ **And checked the one thing the whole safety story rests on:** this repo's `db:migrate` is `drizzle-kit migrate`, and the installed drizzle (`0.45.2`) runs **all pending statements AND the ledger row inside ONE transaction** ⇒ **a RAISE really does leave no column, no marks, no ledger row.** *(Tanya's local proof confirms it on a real database.)*
+### Rulings
+1. ✅ **Jason's 4th check (`suspect`: a `ขยาย` note in no population ⇒ refuse) — ACCEPTED, and it exposes a flaw in MY spec:** my three checks used **the same condition as the backfill itself**, so they could never disagree — **they checked the UPDATE against itself.** `suspect` is the only check that looks at rows the backfill did NOT match. **Without it, Tanya's abort proof would have had nothing to trip.** Its cost — a harmless typed note containing `ขยาย` would stop the deploy — is exactly what **the owner's step-0 read finds first**; if it finds one, **I amend the list by that exact note, before release — never loosen the check at deploy time.**
+2. ✅ **Make-ups created WITH the course (pre-declared absences) are also born CONFIRMED — KEEP as built.** Her 03:39 words cover it literally: *"เปิดคอร์ส ยังไม่คอนเฟิร์มทั้งคอร์ส · มีการกดลา / ลาล่วงหน้า ⇒ คลาสที่งอกออกไป คอนเฟิร์มอัตโนมัติ"*. ⚠️ **The consequence, for you to confirm WITH HER (not the rule — the consequence):** **a family whose course is OPENED with a declared absence gets ONE "confirmed class" message for the make-up's date at creation — before the rest of their schedule is confirmed.** If she does not want that, it is one option on one call.
+### 📋 The admin sentence (§3b — a make-up's confirm was REFUSED, the leave still went through) — **redrafted in Khwan's voice**, to the owner like 42/43
+> **`🔔 Make-up not confirmed: Student B · {date} ({reason}). Please confirm.`**
+`{reason}` = the system's own refusal sentence (e.g. the budget one). **One text, both languages — pending her Q1 answer, same as 40–44.** *(Jason's longer Thai/English draft is in his report; I replaced it to match her lines, as you asked for 42/43.)*
+### What still stands between it and uat — in this order, no step skipped
+1. **@Tanya — the abort proof on her LOCAL database** (§2f): seed a make-up with an unlisted `ขยาย` note ⇒ the migration refuses, **no column** ⇒ remove it ⇒ a clean run, green. ▶️ **Yours to route now — the build exists.**
+2. **The owner — step 0 on sid AND uat** (bare SQL, in `TASK-702` §2a / `src/lib/makeup-marker.ts`): every real `ขยาย` note with its count. **A note we did not list ⇒ STOP, it comes to me.**
+3. **sid:** migrate with the before/after counts (§2d) → @Tanya's gate on screen.
+4. **My release note** — its own release; the expected number from the owner's uat read the day before.
+### ⚠️ COMMIT — careful, because of FRIDAY
+**The back tree now holds 702, complete and verified (plus Team B's two TASK-720 comment files).** **Round 1's uat note says build from `de61a7d` — NOT `HEAD`.** ⇒ **My recommendation: commit 702 AFTER round 1 is on uat.** If the owner commits sooner, **round 1 MUST be built from `de61a7d` by name**, or an ungated migration rides into Friday's release.
+### ⛔ The BADGE — your carve-out rule triggers
+**The «ขยายคาบ» badge is NOT in `Calendar.config.ts`** (that file is only the LEGEND list). **It is a STATUS label drawn by `components/common/BookingBadges.tsx`** — a SHARED component used on the calendar grid AND in Team A's plan/booking dialogs. Born CONFIRMED, a make-up now shows as "confirmed" and **loses its badge unless `BookingBadges` reads `isMakeup`.** ⇒ **By your rule I stop and ask:** **(a)** grant Team A **`BookingBadges.tsx` + `Calendar.config.ts`** for REQ-115 (my recommendation — the same badge appears in Team A's dialogs and the plan preview, `CreatePlanFlow`, which is Team A's), or **(b)** route the whole badge to @Silver. **Size S either way; no new words** (the approved `ขยายคาบ` / `Extended` label is reused).
+**BALL: @Porter — route Tanya's local proof; the owner's step 0; her answer on the creation-time message; the badge claim (a or b).**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **`TASK-703` (the badge, Team A's half) CUT to @Fern** — ⛔ **and the GRID half triggers your rule again: it is Team B's files**
+**Cut within your grant:** `BookingBadges.tsx` + `Calendar.config.ts`, plus Team A's own dialogs, the plan PREVIEW (`CreatePlanFlow`) and the types. **No new words** (the approved «ขยายคาบ» label is reused). **Ships with 702.**
+### ⛔ But the badge Khwan actually LOOKS at is on the GRID — and the grid is Team B's
+**The calendar CELL colours a make-up purple from its STATUS** (`Calendar/calendar-status.ts`, drawn by `CalendarGrid.tsx` and `CalendarWeekGrid.tsx`; explained by `CalendarLegendBar.tsx`). **Born CONFIRMED, a make-up turns the CONFIRMED colour on the grid** — and her words were *"อาจจะใช้ป้ายสีม่วงได้เพื่อแสดงว่าเป็นคลาสที่งอกออกมา"* ⇒ **the purple mark on the grid IS her requirement.** The bookings list (`BookingsTable.tsx`) draws the status chip too.
+⇒ **That is 4–5 more Team B files — beyond your bounded grant, so I stopped and did not hand them to Fern.** ▶️ **Your call:** **(a)** route the GRID half to @Silver as **a ship-set with 702 + 703** (Fern's `BookingBadges` gives them a one-prop way to draw it) — **my recommendation, because it is Team B's drawing code and a real piece of design: how a make-up looks on a cell when its status colour is now CONFIRMED** · **(b)** extend Team A's grant to those files.
+🔴 **Either way: 702 must NOT ship before the grid half is ready** — otherwise every make-up on the grid silently stops looking like one the day it ships.
+**BALL: @Fern (703) · @Porter (the grid half: a or b).**
+
+## 2026-10-07 — Tanya (QA) → @Porter: ⛔ **TASK-702 §2f: BLOCKED before any step. NOTHING was run.** The owner has to give me a LOCAL database.
+**What I found:**
+- 🔴 **The back repo's default `.env` points `DATABASE_URL` at `154.197.124.206:5432/smart_scheduler`, i.e. THE SERVER, not this machine.** Run as-is, `bun run db:migrate` (which is `drizzle-kit migrate`) would migrate **the server's** database. **I did not run it.** It's worth telling everyone who runs `db:migrate` "locally" from that repo.
+- This machine **does** have a local PostgreSQL 18 (listening on 5432). But **no connection for it is recorded anywhere** I may look (not `machine.local.md`, not the credential file). I won't guess one, and I won't edit `.env`.
+- The migration itself looks right for the proof: `0066` carries a 4th check, **`suspect`** (a course row whose note mentions ขยาย and is in no population), so the seeded row should trigger the RAISE. That's what I'll prove once I have a box.
+**What I need from the owner (a write on his machine, so his):**
+1. A **local** database for QA on this machine (e.g. `smart_scheduler_qa` on `localhost:5432`), and its connection string put in a **git-ignored** env file, e.g. `smart-scheduler-back/.env.qa-local`. Its **path** goes in `machine.local.md` (path only, no password in any committed file).
+2. Then it's all mine on that local DB:
+   - migrate it through `0065` (`db:migrate:through`);
+   - seed one course with a make-up whose note mentions ขยาย but isn't in P3/P4;
+   - run `0066` ⇒ expect the RAISE with `suspect=1` and **no `is_makeup` column**;
+   - remove the row and re-run ⇒ green.
+   - Every command will run with `DATABASE_URL` from that file, checked to say `localhost` before anything runs.
+📌 **Declared, my slip:** a grep on the credential file's `#` lines printed **4 QA sid test-login passwords** (qa-teach-97103, qa-norate-076, qa-coach-qatt75, qa-nostatus-077) into my session output. In no file, no message, sid-only QA accounts. If you want them rotated, that's the owner's call.
+**Ball: @Porter → owner**: the local DB. ⏱ Once it exists, the proof is ~30 min.
+
+## 2026-10-07 — @Sober → @Porter: **Khwan's question — does the live LEAVE NOTICE say WHO/HOW the leave was reported? — from the code**
+**Short answer: NO, it does not print it — but the system ALREADY KNOWS it on every notice. So printing it is a WORDING/LAYOUT change to an existing message, not a new fact we would have to start collecting.**
+| | fact (back repo) |
+|---|---|
+| **The live message** | kind `leave_notice` — title **`LEAVE NOTICE / แจ้งลา ‼️`**, then Student · Program · Date · Time · Coach, then the note if any. **Sent to the ADMINS and to EVERY coach of the class. Never the parent** (they made the leave and already get their own reply). |
+| **Does it say who / how?** | 🚫 **No line for it.** |
+| **Does the system know?** | ✅ **Yes — every leave notice already carries `via` = `"line"` (the parent reported it in LINE) or `"staff"` (an admin recorded it — the plan editor, or the admin's own leave button).** It is simply not printed. |
+| **Where her "แจ้งโดย LINE / report via LINE" came from** | Rows 38/39 were the OLD `sick_leave` message, **which has no sender any more** — and it DID end with `— แจ้งโดย {LINE / ระบบ}`. **So she is asking for a line the old, retired message had and the live one lost.** |
+⇒ **What it would be:** **one added line on the live LEAVE NOTICE**, e.g. "reported by: LINE / admin" — **the data exists; the WORDS are new and the layout is HER house format** (the customer's own Student/Program/Date/Time block), so it is **her and the owner's wording to approve.** **Build: XS** (one line in one renderer + by-value tests) once worded. 🚫 **No words drafted, as you asked.**
+⚠️ **One fact so nobody is surprised later:** `"line"` vs `"staff"` is decided from the leave's recorded reason text (`includes("LINE")`) — it is right for the doors that exist today; **I would pin it by test before printing it to customers**, because printing a guess as a fact is worse than not printing it.
+### Her other answers — recorded; the five admin notices are STILL HELD
+✅ **Q1 one text for both languages · ✅ Q3 two children ⇒ both names (`A & B`).** ⏸️ **Q2 (the empty-name fallback) still open** — she asked what "Chat name" vs "a LINE user" means; you are explaining. **I cut the admin-notice task the moment Q2 lands.** **Rows 38/39 withdrawn** — noted.
+**BALL: @Porter — her answer on Q2 and on whether she wants the "reported by" line.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ grid to Silver, ship-set noted in both TASKs · **`TASK-703` size: S ≈ ½ day (Fern)** · the field Silver needs: **`isMakeup: boolean`** on `BookingDTO` and `PlanSessionRow` (always a boolean; a make-up is now born CONFIRMED, so the mark must read `isMakeup`, never `status === "EXTENDED"`; legacy unconfirmed make-ups are BOTH `EXTENDED` and marked). **Team A path to sid:** 703 built + my verification ≈ tomorrow; 702 verified; then Tanya's local abort proof + the owner's step 0 — **the combined date is set by the slowest of those and Silver's part.** **BALL: @Fern (703) · @Porter (Silver's size → the combined date).**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **sid IS a valid place for the abort proof — no ruling reversal needed.** (Task NOT changed, as you asked.)
+✅ **Tanya stopping was exactly right** — the default `.env` points at the server; a "local" run would have been a run against a real box.
+### Why sid is sound — your reasoning, checked against the code
+1. **A REFUSED migration leaves NOTHING on sid.** I checked this today: this repo's `db:migrate` is `drizzle-kit migrate`, and the installed drizzle (`0.45.2`) runs **every pending statement AND the ledger row in ONE transaction** ⇒ the RAISE takes the column, the marks and the ledger row back with it. **The only thing left is the test note she planted — which she removes the same way she planted it.**
+2. **She can plant it WITHOUT SQL.** `PATCH /api/bookings/:id` accepts `note` (the same route the app uses) ⇒ she sets a note containing `ขยาย` on one of HER OWN test course's classes, and clears it after. **No DATA REQUEST, no hand SQL.**
+3. **The proof does not need a small database.** It checks two facts by READ-ONLY query: **"does `bookings.is_makeup` exist?" (must be NO after the refusal)** and **"is there a ledger row for `0066`?" (must be NO)** — the size of the table is irrelevant. *(I write both reads for the owner when you route it.)*
+4. **If it wrongly SUCCEEDS** (the one bad outcome): sid gains the column, marks and a ledger row. **Recoverable — sid is ours** — but **only by hand SQL on sid (drop the column, delete the ledger row) = a DATA REQUEST the OWNER runs**, then a corrected migration. ⇒ **That named rollback goes into the task.** It is also the most informative failure we could have: it means the safety check does not work, found on the rehearsal box and not on Khwan's.
+### Four conditions, so it stays a proof and not a gamble
+- **ORDER: the owner's step-0 read on sid FIRST** (real notes), **then** she plants the test note — otherwise the read reports her note as real data.
+- **The OWNER runs `db:migrate` on sid** (as always — no agent and no QA runs migrations on a server), **with 702's code checked out there** ⇒ **this waits for 702's commit, i.e. AFTER round 1 is on uat** (the commit-timing rule stands).
+- **Expected output, written down before the run:** `RAISE … suspect=1 …` + **no column + no `0066` ledger row** ⇒ she clears the note ⇒ the owner migrates again ⇒ **green, with the §2d before/after counts** — **which IS the real sid migration.** So the proof costs one extra `db:migrate`, not a separate rehearsal.
+- **The old code keeps running on sid throughout** (it never reads the column) — nothing for her other tests to notice.
+⇒ **No local stack, no new machine, the 2026-10-04 ruling stands.** ▶️ **Say go and I rewrite `TASK-702` §2f to this, with the two reads and the named rollback.**
+**BALL: @Porter — go / no-go on sid for §2f.**
+
+## 2026-10-07 — 📏 REQ-115, Team B's half ⇒ **`TASK-722`, size S (front only). About a day of Fanta's work once 703's badge shape exists.** (@Silver)
+- **What it is:** our 5 files (the day grid, the week grid, `calendar-status.ts`, the legend bar, the bookings list) colour each cell by STATUS today, and EXTENDED is the purple. Once a make-up is born CONFIRMED, its cell turns the confirmed colour and **the make-up vanishes.**
+  - 722 keeps the **real status colour** and adds 703's purple **ขยายคาบ badge**, fed `isMakeup`. Same component, no new words, no new colour.
+- **No owner question needed.** The customer's own words in REQ-115 decide it: *"ทำให้มันเป็นคลาสปกติ … อาจจะใช้ป้ายสีม่วง"* = a purple **badge**, not a purple fill (N2, a requirement).
+- **Your ask is in the TASK, in writing:**
+  - the mark reads `isMakeup`, NEVER the status;
+  - a by-value test proves **CONFIRMED + `isMakeup: true` ⇒ the mark shows**;
+  - a mutation that reads `status === "EXTENDED"` must bite on that test.
+- **Field:** `isMakeup: boolean`, taken from `TASK-702:78` (it was already written there; matches what you relayed).
+- **The only dependency: 703's badge shape.** ⇒ **Real date = 703's REVIEW + about 1 day.** At your "703 ≈ half a day", they pair comfortably.
+- **Ship-set recorded in the TASK and the board:** 702 + 703 + 722 together, never alone, NOT round 1.
+- ⚠️ **Bulk-confirm stays on the STATUS on purpose** (it asks "unconfirmed?", not "make-up?"), and it is pinned in 722.
+- 📌 Correction: my nudge a few minutes ago pointed at this before the file existed (a shell write failed). It exists now.
+
+**BALL: @Fern via Sober — 703's badge shape; then Fanta builds 722.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **`TASK-702` §2f REWRITTEN for sid** — your three kept exactly (step 0 FIRST; the expected output written BEFORE the run; the second green migrate IS the real sid migration) **+ your line: the recovery SQL is PREPARED in the task now** — `DROP COLUMN IF EXISTS is_makeup` + delete the `0066` ledger row by its journal timestamp (`1783000000062`, which covers either line-ending hash), **one transaction, sid ONLY, never uat**, with the two read-only checks (column exists? ledger row exists?) before and after. **Planting is via the app's own `PATCH /api/bookings/:id` note** — no SQL. Board updated; the stale "local" lines in the task are marked superseded. **BALL: @Porter — sequencing unchanged: round 1 on uat → commit 702 → §2f on sid.**
+
+## 2026-10-07 — @Sober → @Porter: **the "a LINE user" fallback — facts only, and one thing I could NOT confirm**
+### (1) When does LINE return no name? — ⚠️ **NOT CONFIRMED, so please do not give her a condition yet**
+- **Our code never asks LINE for a person's name today** (no profile call anywhere in the back repo) — the name read is NEW work inside the admin-alert task.
+- **The condition lives in LINE's own documentation, and I could not read that section** (LINE's API reference did not load the "Get profile" part for me). **My belief — that it fails only for a person who BLOCKED the OA or never added it as a friend — is MEMORY, not a source.** 🚫 By your rule I will not hand you that as fact.
+▶️ **How we make it a fact instead:** **when the alert task is built, @Tanya checks it on sid with a test LINE account** — press «คุยกับแอดมิน» normally, then again after blocking the OA — and we tell Khwan **what we SAW**, not what we believe.
+### (2) What ELSE do we hold, when the name is missing? — **less than you hoped; said straight**
+| we hold | can an ADMIN act on it? |
+|---|---|
+| **the full LINE user id** (`U…`, 33 chars; the panel shows its last 4) | 🚫 **No** — LINE's own chat screen does not show that id to admins, so it locates nothing they can see. |
+| **the TIME the person pressed** (the alert's own send time) | ⚠️ **Partly** — they can look at the chat that wrote at that minute. Weak, but real. |
+| **the bot is MUTED in that chat** (`line_link_sessions.muted_until`) | 🚫 Not visible to admins anywhere in our app today. |
+| **an unfinished registration** (`line_link_sessions.draft`) — **sometimes holds the phone number or child's name they typed** | ✅ **When present, a real locator** — but only for someone who started registering in the last 30 minutes (the draft expires). |
+| a deep link that opens that chat | 🚫 **None that I know of from our code** — and I have no source that LINE offers one by user id. |
+⇒ **Honest answer for her: there is no reliable locator today.** The best the fallback can carry is **the time, plus the phone/child name IF the person was mid-registration.** **Making it a real locator** (e.g. our own list of "people waiting for an admin", with the time and whatever we know) **would be a design — not asked for, so not drafted.**
+### ✅ What I would tell her (yours to word)
+**Her criticism is right, and it is not an argument about frequency: a fallback that names nobody IS the empty bell, smaller.** **We do not yet know how often it fires — we will measure it on sid when it is built — and if it fires, today we can only add the time.**
+**BALL: @Porter — her call: ship with "a LINE user" + the time, or ask for the "people waiting" list as a next-round item.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **TASK-703 VERIFIED (front, Team A half of the badge)** — and the exact hand-over for @Silver
+**Re-run by me:** FE `tsc` 0 · **`1104 pass · 0 fail`** (123 files) · **`unhandled-between-tests: 0`** · build 0 · **the set from its own list (TASK-637 shape): 6/6 BITE**, CHECKSUM identical, tree identical before/after.
+**What Team A now provides:** a make-up keeps its REAL status chip and GAINS «ขยายคาบ» beside it (same approved label — no new words) in the plan modal, booking modal, leave dialog and the plan PREVIEW; ordinary classes unchanged.
+### ▶️ For @Silver (Team B's grid task — the ship-set's third piece), from Fern's report:
+- **The field:** `isMakeup: boolean` on `BookingDTO` (front `Booking.isMakeup`, read as `=== true`).
+- **The tool:** `StatusChip` takes a prop **`isMakeup`**; a separate **`MakeupChip`** is exported from `components/common/BookingBadges.tsx`.
+- **Where Team B adopts it:** `Bookings/BookingsTable.tsx:400` (one prop) · the GRID cells (`Calendar/calendar-status.ts`, `CalendarGrid.tsx`, `CalendarWeekGrid.tsx` — they draw status WITHOUT the chip, so they need the field + `MakeupChip`, or their own purple mark: **her words were a purple mark on the class**) · `CalendarLegendBar.tsx`.
+🔴 **Until that lands, a CONFIRMED make-up has NO mark on the grid or the bookings list** ⇒ the ship-set you hold (702 + 703 + Team B grid) stands.
+⚠️ **Commit timing:** the FRONT tree now holds 703 — **same rule as 702: commit AFTER round 1 is on uat; round 1's front builds from `15528f3` by name.**
+**BALL: @Porter → @Silver (the grid piece).**
+
+## 2026-10-07 — ✅ **TASK-722 DONE. Team B's half of the REQ-115 ship-set is ready.** (@Silver)
+- The day grid, the week grid and the bookings list show a make-up with its **real status colour + 703's own «ขยายคาบ» chip**, read from `isMakeup`. No new words, no new colour, one way to draw it.
+- **Your case, proven by value:**
+  - CONFIRMED + `isMakeup` ⇒ the mark, in all three places;
+  - **an EXTENDED cell with the marker false ⇒ NO mark** (it reads the marker, never the status);
+  - a mutation that reads the status bites.
+- Bulk confirm still asks the STATUS (a confirmed make-up is not tickable), pinned.
+- **Re-run by me:** the full front suite **1118 / 0**, set 10/10.
+- 👁️ **For Tanya, the one thing no test sees:** a marked cell is ONE LINE TALLER. On sid, look at a short WEEK-grid slot holding a make-up: no clipping or overlap.
+- **Ship-set:** 702 + 703 + 722 together, NOT round 1. Front commits wait until round 1 is on uat, as you said. The file list is in TASK-722 §Review.
+
+**BALL: @Porter — the REQ-115 ship-set (702 + 703 + 722) is complete on our side; yours to schedule.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **§0b is SATISFIED by Tanya's TEST-082 §3 — note amended** (`DEPLOY-uat-2026-10-09.md` §0b)
+**No, I did not want his eyes for a reason of my own.** §0b said "the owner, on a phone" only because SYSTEM-FACTS still carried the rule that LINE checks are never Tanya's — **the rule the owner has since changed.** Her §3 is exactly the check §0b asked for (the on-file line, brackets once, on the final sid build, with a screenshot). **The one thing she saw in code only** — the district / sub-district questions losing `ค่ะ` — is stated in the note as a boundary, not a blocker. **I also recorded in SYSTEM-FACTS that LINE checks may now be hers**, so the next note does not repeat the stale instruction. 🔑 *The stale instruction was mine first: I wrote a check into a deploy note from a rule I did not re-read.* **Nothing in §0b holds the release now.**
+**BALL: @Porter — round 1 to uat.**

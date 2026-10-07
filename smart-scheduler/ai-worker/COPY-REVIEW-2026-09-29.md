@@ -528,3 +528,55 @@
 ⇒ 🚫 **Nothing in the code changes. The only thing that was wrong is this record.**
 🔑 **Why the drafted one wins on its merits, not merely because it shipped:** **this is a PARENT-facing message, and every parent-facing sentence we ship carries `ค่ะ` — including the customer's own** (*"ไม่สามารถแจ้งลาได้ เนื่องจากวันหมดอายุไม่เพียงพอค่ะ"*). **Porter's version read blunter than every sentence around it.**
 📌 **Found TWICE, independently, within an hour: @Sober by diffing the record against the code, @Tanya by reading the message a LINE account actually received on sid.** 🔑 ***An approval record is the one artefact that must be verbatim — it is the only place a string is checked against anything.*** **Third paraphrase failure by @Porter in one day.**
+
+---
+## §T-ADMIN-ALERTS · the five admin notices that today render ONLY `🔔 แจ้งเตือนจากระบบตารางเรียน` (@Sober, 2026-10-07)
+**Where / When:** ADMIN LINE notices (`notifyAdmins`) — a family registers a child through LINE; someone presses «คุยกับแอดมิน». **Today they print the bare default title — the admin cannot see WHO** (live since 09-10, `TASK-334` Part B, parked on copy).
+**Source: Khwan's edited workbook, `project-docs/req111-message-inventory/message-inventory-KHWAN-EDITS-2026-10-06.xlsx`, sheet "Notifications (push)", her revision column (EN), READ FROM THE CELLS.** She wrote ONE text per row (EN column only, TH revision empty) — terse and English-shaped.
+| # | kind | text | status |
+|---|---|---|---|
+| **40** | `student_registered` | `🔔 Student: B registered` | **the CUSTOMER's own words — verbatim** |
+| **41** | `parent_asked_for_admin` | `🔔 Please support Parent of Student B.` | **the CUSTOMER's own words — verbatim** |
+| **42** | `teacher_asked_for_admin` | `🔔 Please support Coach B.` | 📋 **DRAFT (@Sober), in her style** — she left it blank |
+| **43** | `admin_asked_for_admin` | `🔔 Please support Admin "Chat name".` | 📋 **DRAFT (@Sober), in her style** — she left it blank |
+| **44** | `unlinked_asked_for_admin` | `🔔 Please support "Chat name".` | **the CUSTOMER's own words — verbatim** |
+**Her sample values, as fields:** `B` (row 40) = the child's name · `Student B` (41) = the parent's child — ⚠️ **a parent with two children: the ONE name rule's `A & B`** · `Coach B` (42) = the coach's nickname (her own form in row 38) · `"Chat name"` (43/44) = **the LINE display name — ⚠️ we never store it; it is read from LINE at send time, and if that read fails the field must have a rule** (proposal: `"a LINE user"`).
+⚖️ **Two readings of mine, for @Porter to confirm with her (not decided by me):** (1) **one text for BOTH languages** — she wrote EN only and left TH empty; (2) **the sample `Student: B` keeps her colon-without-space** — an approved string is not "improved".
+🔁 **SUPERSEDES** my five longer Thai/English drafts of 2026-10-07 (`inbox/PM.md`) — hers ship where she wrote one.
+
+### ✅ The five admin notices (the empty-bell fix) — 2026-10-07
+🔴 **THREE OF THE FIVE ARE THE CUSTOMER'S OWN WORDS**, from her edited workbook, `notifications push` rows 40–44 — **she had written them, marked all five "NO WORDING YET" herself, and we did not know until she pointed at the rows.**
+| row | kind | ships |
+|---|---|---|
+| 40 | `student_registered` | **`🔔 Student: B registered`** — hers (no space after the colon, as she wrote it) |
+| 41 | `parent_asked_for_admin` | **`🔔 Please support Parent of Student B.`** — hers |
+| 42 | `teacher_asked_for_admin` | **`🔔 Please support Coach B.`** — ✅ **OWNER APPROVED** (@Sober's draft, written in HER voice) |
+| 43 | `admin_asked_for_admin` | **`🔔 Please support Admin "Chat name".`** — ✅ **OWNER APPROVED** (same) |
+| 44 | `unlinked_asked_for_admin` | **`🔔 Please support "Chat name".`** — hers |
+🚫 **@Sober's five earlier Thai drafts are SUPERSEDED.** 🔑 ***Hers are terse and English-shaped; two long Thai sentences dropped into the middle of them would have read like a different system.*** **The drafts for 42/43 were written to match her voice, not ours — that is why they were approvable.**
+📌 **Four questions are with her** (one text for both languages? · what prints when LINE returns no display name? · a parent with two children? · and rows 38/39, where she reworded two messages the system NEVER SENDS — so she probably meant the live «LEAVE NOTICE», which we will not assume for her).
+🔑 **The lesson, twice in two days:** *"มีข้อความอยู่ในไฟล์ค่ะ" was true both times — about a file we did not have, and then about rows we had not read.* ⇒ **Before drafting copy for a customer who maintains her own wording file: ASK WHICH ROW.**
+
+### ✅ OWNER APPROVAL — `GROUP_SWAP_NO_SINGLE_SESSION` (`TASK-672`), 2026-10-07 — **recorded LATE; @Porter's gap**
+> **TH (ships as it stands):** `กลุ่มเปลี่ยนครูได้เฉพาะ 'ตั้งแต่วันที่…' เท่านั้น — ไม่มีการสอนแทนคาบเดียว`
+> **EN: none exists** — server refusals are Thai-only. **If the owner ever wants an EN, it is NEW words, not a carried translation.**
+**Provenance:** the owner's *"ตามแนะนำ"* on @Porter's five-item batch, where item 2 was *"ข้อความ «กลุ่มเปลี่ยนครูได้เฉพาะ 'ตั้งแต่วันที่…'» — ผ่านตามที่เป็น"*. **It was approved in chat and never written here.**
+🔴 **@Porter's gap, and the FOURTH of the same kind today** (the link-a-parent §C set · a promise to @Silver · the `TASK-699` ruling · this). 🔑 ***Every one was a decision I kept in chat instead of in the file that carries it — and every one blocked somebody.***
+⭐ **It was caught because @Silver would not flip a marker on my word: he went to the RECORD and found nothing.** 🔑 ***That is the whole value of the record — it outranks the PM's memory, including when the PM is right.*** **Had he taken my word, a live string would carry an "approved" label with no approval behind it, and the next audit would have believed the label.**
+📌 **Porter's rule, now applied without exception: the approval is written into `COPY-REVIEW` in the same action as telling the SA — never afterwards.**
+
+### ✅ @PORTER'S OWN APPROVALS, recorded LATE — `TASK-624` 1b and the swap title's EN (2026-10-07)
+🔴 **Both were ruled by me in a message to @Silver and never written here.** **@Fanta's audit (`TASK-721`) found both rows carrying an overstated "owner-approved" label with no record behind it.** 🔑 ***An "owner-approved" label on something the PM approved is not a small inaccuracy — it borrows the owner's authority for a decision he never made.***
+
+**1. `swapRate` / `swapRateHint` (`TASK-624` 1b) — APPROVED BY @PORTER.** *(Copied from the code by machine, not retyped.)*
+> **TH:** `ค่าสอนของ {name} สำหรับตารางนี้ (ต่อคาบ)` · `ไม่ต้องกรอก ยกเว้นระบบปฏิเสธเพราะไม่มีค่าสอน — จะเกิดเมื่อตารางนี้ยังไม่เคยจ่ายค่าสอนให้ครูคนนี้`
+> **EN:** `{name}'s rate for this series (per session)` · `Leave this empty unless the swap is refused for a missing rate — that happens when this series has never paid this coach before.`
+**Basis:** they are **word for word the APPROVED group pair** with `กลุ่มนี้/group` → `ตารางนี้/series`. **The owner approved the RULE** that TASK-634's rate ruling carries over (`log/2026-10-06.md:228`); **the words are the same words pointed at the same act in a different container ⇒ mine by the line I set.** 🚫 **Label them "approved by Porter", never "owner-approved".**
+
+**2. `swapTeacherTitle` EN (`TASK-624`) — APPROVED BY @PORTER, under the owner's explicit delegation.**
+> **EN:** `Swap teacher — {name}`
+**Basis:** the owner approved the TH `สลับครู — {name}` (`log/2026-10-06.md:227`) and **delegated the EN to the SA, returning to him only if the MEANING moves.** It did not.
+
+📌 **FIFTH instance today of the same gap** — a decision made in a message and not written into the record. 🔑 *The audit existed to find stale labels; it found instead that two labels were OVERSTATED, which no one was looking for.* ⇒ **A label must name its real approver. "Approved" is not one state.**
+
+**§T-ADMIN-ALERTS — Khwan 2026-10-07 (via @Porter):** ✅ ONE text for both languages ("ใช่ค่ะ ใช้เหมือนกันทั้งสองภาษาค่ะ") · ✅ a parent with two children ⇒ BOTH names, the one name rule `A & B` ("อยากให้ขึ้นสองคนเลยค่ะ") · ⏸️ the empty display-name fallback still open · rows 38/39 WITHDRAWN ("ถ้าเป็นตัวเดียวกับ Leave notice ไม่ต้องแก้ค่ะ").
