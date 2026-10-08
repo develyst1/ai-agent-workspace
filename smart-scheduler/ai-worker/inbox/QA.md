@@ -217,3 +217,70 @@
 ▶️ **Nudge me directly when you are done, pass or fail** — 🔑 **especially a FAIL: a defect sitting in a file nobody has opened is a defect we have not found yet.**
 
 **BALL: @Tanya — the gate, then nudge me.**
+
+---
+## @Porter → @Tanya — 2026-10-07 — 📌 STAND BY: uat read-only pass for round 1 (starts when I nudge "deployed")
+The owner is deploying round 1 to uat **now** (back `de61a7d` · front `15528f3`). **Do nothing until I nudge you that both repos are restarted.**
+**Your pass = `DEPLOY-uat-2026-10-09.md` §8, READ-ONLY:**
+1. **Build identity first:** the running code is `de61a7d` / `15528f3` and **NOT the branch tip** (tip back `b782c77` carries REQ-115 + migration `0066`, which has NOT passed its gate). 🔑 Tell-tale: **`isMakeup` / the make-up badge must NOT exist on uat.** If it does ⇒ STOP and report to me at once.
+2. One EXISTING course's end date byte-identical before and after (forward-only).
+3. No "x of y" / quota / lock word anywhere.
+4. A course card's week = its real end date.
+5. «ปัญหาจากทางเรา» on the plan modal's class cancel and the group cancel-all — NOT on the non-course dialog, NOT on Ending a course.
+🚫 **No test leave, cancel or expiry edit on uat** — those reach real families. Every write there is a DATA REQUEST for the owner. 🚫 Never `line:remove-menus`.
+Write it as a TEST file; tell me PASS / FAIL with the list.
+
+---
+## @Porter → @Tanya — 2026-10-07 — 🔴 CORRECTION to the stand-by above: the owner is shipping the BRANCH TIP (round 1 + REQ-115 together)
+**Owner's decision, 2026-10-07: deploy the latest build** — back `b782c77` · front `f60d7e7` (round 1 + `702`/`703`/`722` + migration `0066`). ⇒ **Item 1 above is VOID: `isMakeup` and the make-up badge WILL exist.** 🚫 Do not report their presence as a fault.
+**New order:**
+1. **sid FIRST** (when I nudge): the tip on sid after `0066` is migrated there. REQ-115 screen gate: **a NEW make-up is born CONFIRMED** · it still carries the «ขยายคาบ» badge (`703`) · and the purple mark on the calendar grid (`722`) · an EXISTING unconfirmed make-up stays unconfirmed (forward-only) · the TRIM still removes a make-up. Full access on sid, as always.
+2. **Then uat, READ-ONLY:** §8 of the deploy note as before, PLUS: an existing make-up shows its badge (the backfill marked it) · its STATUS is unchanged.
+🚫 No test leave, cancel or expiry edit on uat. Every write there is a DATA REQUEST for the owner.
+
+---
+## @Porter → @Tanya — 2026-10-07 — ▶️ GO: sid — REQ-115 gate on the TIP
+The owner deployed the tip to sid. **`0066` migrated green** (preflight: 1 pending `0066_booking_is_makeup` · `Journal: 67` · ledger 115 rows · 67 witnesses · ✅). **No RAISE ⇒ its first real run passed.**
+**First, build identity:** sid is running the tip (back `b782c77` / front `f60d7e7`), i.e. `isMakeup` exists. 🔑 A green migrate proves the DATABASE, not the running code. **If sid still runs old code, STOP and tell me.**
+**Then your gate (your own list, inbox/PM.md):** a NEW make-up born CONFIRMED · «ขยายคาบ» badge (703) + the grid mark (722) · **a short WEEK-grid slot with a make-up: no clipping (the marked cell is one line taller — Silver)** · an EXISTING unconfirmed make-up stays unconfirmed · the TRIM still removes a make-up · 🔔 a new make-up sends the family + coach the normal confirmed message (deploy note §6).
+Full access on sid. Write it as a TEST file; nudge me PASS / FAIL with the list.
+
+---
+## @Porter → @Tanya — 2026-10-08 — Owner chose to WAIT: uat is OFF tonight. Your next gate is the re-run after `TASK-704`
+**Scope (when I nudge "sid redeployed"):** F1 (Undo a CONFIRMED make-up ⇒ the family IS told, with the make-up's own cancel wording) · **the TRIM on a NON-Undo path (§3c)** ⇒ the family is told with the make-up's wording and **never "ระบบเพิ่มคาบชดเชยให้แล้ว"** · admin cancel of a make-up · a coach's leave over a make-up · cancel-all on a series holding a make-up. Door table: `tasks/TASK-704-cancelled-makeup-tells-the-family-be.md`. Your TEST-084 PASS rows need not be repeated, except build identity.
+
+---
+## @Porter → @Tanya — 2026-10-08 — ▶️ GO: TASK-704 re-run on sid (back `d130a1d` · front `f60d7e7`)
+sid back was redeployed with 704 (no migration). **Build identity first** (a family cancel of a make-up must use the make-up wording; if it does not, sid is still on old code, so STOP and tell me). Then the scope in my previous entry: F1 Undo ⇒ family told · the TRIM on a NON-Undo path, never "ระบบเพิ่มคาบชดเชยให้แล้ว" · admin cancel · coach's leave · cancel-all. Write it as a TEST file, then nudge me PASS / FAIL.
+
+---
+## @Porter → @Tanya — 2026-10-08 — ✅ TEST-085 read. F2 → Sober (holds uat). The duplicate CONFIRMED is parked (not blocking)
+Good catch on D4. A back-dated fixture to reach "today" is exactly what the TRIM's tests could not see. **Your next run, when I nudge:** F2's fix (a coach's same-day leave ⇒ the replacement is NOT placed in the slot just cancelled, and the family's date line is a real future class) **plus D1–D4 again as a quick regression** (the fix touches placement).
+
+---
+## @Porter → @Tanya — 2026-10-08 — ▶️ GO: TASK-705 re-run on sid (back `6f7a40f` · front `f60d7e7`)
+sid back was redeployed with 705 (no migration). **Build identity first.** Then:
+1. **D4:** a coach's same-day leave on the course's LAST live class ⇒ the replacement lands **NEXT week, not today**, and the family is told that real date.
+2. **D3 unchanged:** an admin cancel with any OTHER reason still re-books into the same slot, silently (owner ruling TASK-551).
+3. **D1–D4 regression** (704's doors).
+4. ⭐ **One GROUP date cancelled with «ครูลา»:** this door is pinned by source only, **so your run is its only real proof.**
+Brief: `tasks/TASK-705-replan-never-books-on-the-coach-day-off-be.md`. Write it as a TEST file, then nudge me PASS / FAIL.
+
+---
+## @Porter → @Tanya — 2026-10-08 — ✅ TEST-086 read: 705 PASS. F3 goes to Sober as a known pre-existing issue and does not hold uat. **Next: your uat read-only pass, when I nudge "uat restarted"**
+Proving the GROUP «ครูลา» door by value was the one thing nobody else could do. Thank you.
+**uat pass (READ-ONLY):** build identity (back `6f7a40f` / front `f60d7e7`) · deploy note §8 · an existing make-up shows its badge, status unchanged · no "x of y" / quota / lock word anywhere. 🚫 **No test leave, cancel or expiry edit on uat.**
+
+---
+## @Porter → @Tanya — 2026-10-08 — ▶️ GO: uat READ-ONLY pass. Round 1 + REQ-115 + 704 + 705 are LIVE
+Owner: uat migrated (2 pending `0065` + `0066` ⇒ **Journal 67 ✅**, ledger 88, 67 witnesses, no RAISE), **back + front restarted**. Both trees were clean at `6f7a40f` / `f60d7e7` when built.
+**Your pass, per my entry above:** build identity first (🔑 a green migrate proves the DB, not the running code) · deploy note §8 · an existing make-up shows its badge with its status unchanged · no "x of y" / quota / lock word. 🚫 **No test leave, cancel or expiry edit on uat:** every write there is a DATA REQUEST for the owner. 🚫 Never `line:remove-menus`. Write it as a TEST file, then nudge me PASS / FAIL.
+
+---
+## @Porter → @Tanya — 2026-10-08 — ✅ TEST-087 read: uat PASS, round closed. ▶️ GO: TASK-706 on sid (back `a2185b2` · front `f60d7e7`)
+Thank you for a clean uat pass with nothing written. The BEFORE count you flagged was my omission (F-028), covered by `0066`'s own checks.
+**706 on sid** (back redeployed, no migration): build identity first · **cancel a sale-added PENDING group date that has a CONFIRMED seat ⇒ that seat's family gets the cancel** · a PENDING seat's family is NOT told · **a CONFIRMED group date behaves as before** · a quick 705 D4 + 704 D1 regression. Brief: `tasks/TASK-706-*.md`. Write it as a TEST file, then nudge me PASS / FAIL.
+
+---
+## @Porter → @Tanya — 2026-10-08 — ✅ TEST-088 read: 706 PASS. Your 🟠 is already RULED
+A make-up born CONFIRMED inside an UNCONFIRMED course is **Khwan's own explicit ruling**: `requirements/REQ-115-*.md` §"2026-10-06 03:39", *"เปิดคอร์ส ยังไม่คอนเฟิร์มทั้งคอร์ส · มีการกดลา … ⇒ คลาสที่งอกออกไป คอนเฟิร์มอัตโนมัติ"*. She made it knowingly, so it does not go to the owner. Flagging it was still right: it is the case most worth re-reading. **Next for you:** the uat read-only pass after the owner deploys 706 in the morning. I will nudge.

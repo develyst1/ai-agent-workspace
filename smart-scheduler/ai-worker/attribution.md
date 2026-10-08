@@ -4,7 +4,7 @@
 > boundaries card and in `workforce-protocol`. It is not optional and it is not a matter
 > of judgement.
 >
-> **Origin:** `FAILURES` F-022 and F-023 on a desk, 2026-10-07 — the PM labelled
+> **Origin:** `FAILURES` F-022 and F-023 at smart-scheduler, 2026-10-07 — the PM labelled
 > two of his own approvals `owner-approved`, and recorded his own rewrite of a sentence as
 > the approved text.
 

@@ -13,7 +13,7 @@ else's claim, or go look.
 
 ## Why this is a skill and not a rule
 
-No rule was broken in F-002 — the entry says `Rule involved: NONE`. the PM was being
+No rule was broken in F-002 — the entry says `Rule involved: NONE`. Porter was being
 helpful and fast, and everything he passed on came from a real source: the owner's own
 sentence, a teammate's report, a screenshot. **Speed and good faith are exactly the
 conditions under which this failure happens**, which is why a rule forbidding it would
@@ -23,7 +23,7 @@ not have helped. It is a habit of checking, not a line in a charter.
 
 | Shape | F-002's real example | What it costs |
 |---|---|---|
-| **Inferring a fact from the owner's shorthand** | from the owner's shorthand equating two host names he concluded the real OA's LIFF pointed at `sid`, and wrote it into a REQ, a runbook and a day of warnings. The console showed it had been right all along. | a wrong fact propagated into three documents |
+| **Inferring a fact from the owner's shorthand** | from *"= sid = som.develyst"* he concluded the real OA's LIFF pointed at `sid`, and wrote it into a REQ, a runbook and a day of warnings. The console showed it had been right all along. | a wrong fact propagated into three documents |
 | **Reading a value off a picture** | a "misspelling" `เซ็คอิน` read off a LINE-font screenshot; the code was correct | a defect reported that never existed |
 | **Forwarding a teammate's claim at full confidence** | relayed QA's *"no uat entry"*; the owner had already supplied the credentials and the entry existed | the owner asked to solve a problem that was not there |
 
@@ -35,9 +35,9 @@ a picture and a colleague are all *evidence about* a fact — none of them is th
 **Before any fact leaves you upward or sideways, answer: "what did I open?"**
 
 - If the answer is a file, a line, a command's output, a console page you loaded —
-  state the fact, **and name what you opened**: `I checked: <file>:<line>`.
+  state the fact, **and name what you opened**: `I checked: ecosystem.cjs:14`.
 - If the answer is "someone told me" or "I saw it in a screenshot" — **it goes out as a
-  claim, in these words**: `unverified — @QA reports …` / `from the screenshot, to be
+  claim, in these words**: `unverified — @Tanya reports …` / `from the screenshot, to be
   confirmed`. It is **not** 🔴, and it is not written into a REQ, a runbook or a spec.
 - If it would take two minutes to check and the fact matters — **check it.** The
   two minutes are always cheaper than the unwinding.
@@ -48,7 +48,7 @@ Settings QR panel" that was the login page). To state a value, open the thing th
 holds it.
 
 **The owner's shorthand is an instruction, not a specification.** When he writes
-something like `= <env> = <host>` he is pointing, not defining. Point back at what you found and
+`= sid = som.develyst` he is pointing, not defining. Point back at what you found and
 let him confirm: *"ที่ตรวจเจอคือ X — ตรงกับที่หมายถึงไหมครับ"*.
 
 ## The test, before you press send

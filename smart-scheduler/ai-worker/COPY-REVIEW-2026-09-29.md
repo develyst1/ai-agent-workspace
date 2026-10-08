@@ -580,3 +580,11 @@
 📌 **FIFTH instance today of the same gap** — a decision made in a message and not written into the record. 🔑 *The audit existed to find stale labels; it found instead that two labels were OVERSTATED, which no one was looking for.* ⇒ **A label must name its real approver. "Approved" is not one state.**
 
 **§T-ADMIN-ALERTS — Khwan 2026-10-07 (via @Porter):** ✅ ONE text for both languages ("ใช่ค่ะ ใช้เหมือนกันทั้งสองภาษาค่ะ") · ✅ a parent with two children ⇒ BOTH names, the one name rule `A & B` ("อยากให้ขึ้นสองคนเลยค่ะ") · ⏸️ the empty display-name fallback still open · rows 38/39 WITHDRAWN ("ถ้าเป็นตัวเดียวกับ Leave notice ไม่ต้องแก้ค่ะ").
+
+### ✅ OWNER APPROVAL — the admins' notice when a make-up's confirm is REFUSED (`makeup_not_confirmed`, `TASK-702`, REQ-115), 2026-10-07
+**Owner, verbatim:** *"อนุมัติข้อความแจ้งแอดมิน"* — given after Porter showed him the TH string below and recommended approving it as it stands.
+**Approved text = @Jason's draft as it is in code (`src/lib/line-i18n.ts`, key `ob_makeup_not_confirmed`), byte for byte:**
+- TH: `🔔 คาบชดเชยของ {student} วันที่ {date} ยังไม่ได้ยืนยัน ({reason}) — กรุณายืนยันคาบนี้`
+- EN: `🔔 Make-up for {student} on {date} is NOT confirmed ({reason}) — please confirm it.`
+📌 **The owner was shown the TH line only.** The EN is its companion as drafted. 🚫 **Sober's redraft is NOT what was approved.**
+📌 **The code's comment still reads "📋 DRAFT".** That is a stale label, not unapproved text. It ships tonight as built, and the label flip goes to @Sober for the next round.

@@ -72,10 +72,18 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-028 — 2026-10-08 — PM (Porter) — Gave the owner the uat migration steps without the deploy note's BEFORE count (§2a)
+- **Status:** NEW
+- **What happened:** `DEPLOY-uat-2026-10-09.md` §2a asked the owner for two reads before migrating: the `ขยาย` step-0 read, and a BEFORE count of make-up rows (≈ 461), with §2b's AFTER count to match. I wrote my own short list for the owner and carried only step 0. So the BEFORE count was never taken, and it cannot be taken now.
+- **Rule involved:** the deploy note's own header: "Read it in order; the order is the instruction." It is also F-004's pattern: an incomplete instruction to the owner.
+- **How it was caught:** by Tanya, after the release. Her uat pass listed "the BEFORE vs AFTER marker count is the owner's SQL" as not hers. Only then did I re-read §2a.
+- **Cost:** none to the data. `0066` checks itself in the same transaction (`missed` 0, `extra` 0, `marked` = `expected`), and it applied with no RAISE, which is a stronger check than a count taken by hand. **The cost is the habit:** I summarised a gate document instead of pointing the owner at it, and a summary drops steps silently.
+- **Evidence:** `log/2026-10-08.md` · `tests/TEST-087-uat-round1-req115-readonly.md` · my uat step list in chat (step 0 + migrate only).
+
 > **F-015 → F-027 were written LATE, all on 2026-10-07 (Porter).** Every one of them was caught and recorded in the log or a REQ on the day — but none reached this file "before the next reply" as §"When you MUST write" says. The owner asked whether Atlas had anything pending; counting this file is how I found the gap. **The lateness itself is the meta-entry, F-027.**
 
 ## F-027 — 2026-10-07 — PM (Porter) — Recorded 12 of my own failures in logs and REQs but not in FAILURES.md, for two days
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `write-it-now.md` installed on this desk and pointed at from all eight charters (ORDER 17.2)
 - **What happened:** From 10-06 to 10-07 I made the failures F-015 → F-026. I wrote each one down honestly — in `log/`, `SYSTEM-FACTS.md`, the REQs and two reports to Atlas — but never here, the one file the hygiene gate counts. So the gate showed 14 unreviewed when the true number was 26.
 - **Rule involved:** this file, "Write **before your next reply**, not at session end." Also `SYSTEM-FACTS.md` 2026-10-07 — "Report BOTH kinds to Atlas, continuously."
 - **How it was caught:** by myself, only because the owner asked "does Atlas have anything pending from us".
@@ -83,7 +91,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** this file before and after this edit (220 lines before).
 
 ## F-026 — 2026-10-07 — PM (Porter) — Claimed the user↔teacher link would make REQ-115's badge cheaper, without checking whom the link covers
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `verify-before-relay.md` installed on this desk and pointed at from PM.md and both SA charters (ORDER 17.2)
 - **What happened:** I told the owner the existing `users.teacher_id` link would shorten the admin-LINE work. Sober confirmed the link exists for COACHES only; an admin has `teacher_id` NULL by construction. The size stayed as it was.
 - **Rule involved:** `SYSTEM-FACTS.md` — counts are mine, causality is the SA's (never explain cause before the SA confirms).
 - **How it was caught:** by Sober, on reading the code.
@@ -91,7 +99,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `log/2026-10-07.md:141`.
 
 ## F-025 — 2026-10-07 — PM (Porter) — Kept telling the owner to read the LINE address line after Tanya had already passed it — three times
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `verify-before-relay.md` installed on this desk and pointed at from PM.md and both SA charters (ORDER 17.2)
 - **What happened:** §0b of `DEPLOY-uat-2026-10-09.md` asked the owner to check the address line on his phone. Tanya's TEST-082 §3 had already done it on his machine. I listed it as "waiting on the owner" three times.
 - **Rule involved:** `NONE — no rule covered it` directly. The gate came from a stale "LINE checks are never QA's" rule, and I read it as still true.
 - **How it was caught:** by the owner — *"tanya ก็ดูผ่านเครื่องฉันได้นะ"*.
@@ -99,7 +107,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `log/2026-10-07.md:198`.
 
 ## F-024 — 2026-10-07 — PM (Porter) — Relayed "no task exists" from Sober without opening the board; TASK-721 was on it
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `verify-before-relay.md` installed on this desk and pointed at from PM.md and both SA charters (ORDER 17.2)
 - **What happened:** I passed on that Team B had no front-audit task and asked for one. TASK-721 was already cut and Fanta was half-way through it.
 - **Rule involved:** `CLAUDE.md` rule 3 — "re-read board.md … your chat memory of them is stale"; F-002's pattern (relaying unverified facts).
 - **How it was caught:** by Silver.
@@ -107,7 +115,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `log/2026-10-07.md:157`.
 
 ## F-023 — 2026-10-07 — PM (Porter) — Labelled two approvals "owner-approved" when I had made them myself (TASK-624)
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — hard-boundary rule `attribution.md` installed on this desk and in all eight charters' boundaries cards (ORDER 17.2)
 - **What happened:** Two TASK-624 strings were approved by me on the basis that they are word for word an approved pair. The record said "owner-approved".
 - **Rule involved:** `COPY-REVIEW-2026-09-29.md` — an approval record must say who approved, verbatim.
 - **How it was caught:** by the marker audit (TASK-700/701/720/721).
@@ -115,7 +123,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `COPY-REVIEW-2026-09-29.md` ~line 574 (now relabelled "approved by Porter").
 
 ## F-022 — 2026-10-07 — PM (Porter) — Recorded my own rewrite of TASK-699's sentence as the approved text
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — hard-boundary rule `attribution.md` installed on this desk and in all eight charters' boundaries cards (ORDER 17.2)
 - **What happened:** The owner approved a parent-facing sentence. In `COPY-REVIEW` I wrote my own version of it, which dropped both `ค่ะ`. The owner had chosen Sober's drafted sentence, so the code was right and only my record was wrong.
 - **Rule involved:** `SYSTEM-FACTS.md` 2026-10-07 — an approval record must be VERBATIM.
 - **How it was caught:** twice, independently (Sober and Silver).
@@ -123,7 +131,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `COPY-REVIEW-2026-09-29.md:515` and the correction at `:523`.
 
 ## F-021 — 2026-10-06/07 — PM (Porter) — Kept copy decisions in chat and promised to record them later — five times
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `write-it-now.md` installed on this desk and pointed at from all eight charters (ORDER 17.2)
 - **What happened:** The link-a-parent §C set, a promise to Silver, the TASK-699 ruling and two more: each was approved or ruled in chat, told to an SA, and written into `COPY-REVIEW` only later or after someone asked.
 - **Rule involved:** `CLAUDE.md` amnesia-first rule 2 — "Write durable facts to their home file THE MOMENT you learn them."
 - **How it was caught:** by Silver asking for the record, and by myself on the fourth time.
@@ -147,7 +155,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `log/2026-10-06.md:771-777`.
 
 ## F-018 — 2026-10-06 — PM (Porter) — Applied Khwan's §11.4 answer to the wrong question
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `quote-dont-paraphrase.md` installed on this desk and pointed at from PM.md (ORDER 17.2)
 - **What happened:** Her "เรียนได้ ตารางยังอยู่" answered a course expiring with sessions unused. I used it to rule on a make-up landing past expiry, a different question she had answered differently on the next line. The history answered it four times, and all four said the other option.
 - **Rule involved:** the memory rule "quote the customer, never paraphrase" (machine-local) plus `SYSTEM-FACTS.md` F-011→F-014 class: a fact taken from a NEARBY artefact instead of its SOURCE.
 - **How it was caught:** by the owner — *"คำตอบแล้วที่แล้ว และ ประวัติคุยขวัญที่ผ่านๆมา ไม่ได้ช่วยให้ตอบได้เลยเหรอ"*.
@@ -155,7 +163,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `log/2026-10-06.md:747` · `requirements/REQ-112-*.md`.
 
 ## F-017 — 2026-10-06 — PM (Porter) — Instructed Silver to message Sober directly (SA↔SA, a forbidden edge)
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-10-07 — the rule already existed and was broken once. That is a slip, not a gap; nothing to design. Left open.
 - **What happened:** I told Silver to tell Sober something himself. Silver refused and came back to me.
 - **Rule involved:** `PROTOCOL.md` — the two SAs never message each other; everything cross-team goes through Porter.
 - **How it was caught:** by Silver.
@@ -163,7 +171,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `log/2026-10-06.md:716`.
 
 ## F-016 — 2026-10-06 — PM (Porter) — Misread "ครั้งต่อ ๆ ไป" as "ครั้งนี้" and stopped a correctly sized task
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `quote-dont-paraphrase.md` installed on this desk and pointed at from PM.md (ORDER 17.2)
 - **What happened:** I misread one word in Khwan's text, invented a "per-session vs per-series" conflict, and STOPPED TASK-624. I withdrew it within the hour.
 - **Rule involved:** the memory rule "quote the customer, never paraphrase".
 - **How it was caught:** by myself, on re-reading her exact words.
@@ -171,7 +179,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `log/2026-10-06.md:252` · `SYSTEM-FACTS.md:4205`.
 
 ## F-015 — 2026-10-06 — PM (Porter) — Restated Khwan's §11 as "every leave adds one week"; an SA re-size, four rulings and a BUILT task rested on it
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `quote-dont-paraphrase.md` installed on this desk and pointed at from PM.md (ORDER 17.2)
 - **What happened:** I wrote her model down as "every leave adds a week". It was wrong: an ordinary leave adds nothing. Only three explicit triggers add a week, and a make-up that cannot fit means the leave is refused. Sober re-sized REQ-112 (M→L) on my sentence, and TASK-656 was built on it. I also treated a forwarded screenshot set as a new intake when it was REQ-111 A–F, already shipped on 10-05 (the owner: *"เห้ยไม่ใช่ 6 ข้อนี่มันตั้งนานแล้ว"*).
 - **Rule involved:** `NONE` at the time. Since adopted: quote the customer and never paraphrase; confirm the consequences in numbers, not the rule; a screenshot is not an intake.
 - **How it was caught:** by Khwan's own numbers ("15 ค่ะ" / "6 ค่ะ"), after the build.
@@ -179,7 +187,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `log/2026-10-06.md:10,16,237,380` · `requirements/REQ-112-*.md` (the voided rulings kept) · `REPORT-porter-to-atlas-2026-10-06-customer-conversation.md`.
 
 ## F-014 — 2026-10-07 — SA Lead Team B (Silver) — Allocated TASK numbers from `ls tasks | tail`, not from Team B's block on the board (696, 697, 698)
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `check-by-running-not-reading.md` installed on this desk and pointed at from both SA, both BE, both FE and the QA charters (ORDER 17.2)
 - **What happened:**
   - The board's number blocks gave Team B 660–689 (now used up). I took "the highest file + 1" three times, landing in Team A's 690–719.
   - Porter approved them without noticing, and has since recorded the miss as his. **But the act of choosing the numbers was mine, and the block line was on the board.**
@@ -191,7 +199,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `board.md` lines 20–21 · `log/2026-10-07.md`.
 
 ## F-013 — 2026-10-07 — SA Lead Team B (Silver) — Cut a TASK that changes JSX text without grepping for source-reading pins of that text (TASK-697)
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `check-by-running-not-reading.md` installed on this desk and pointed at from both SA, both BE, both FE and the QA charters (ORDER 17.2)
 - **What happened:**
   - TASK-697 told Fanta to change two JSX conditions in `OtherSeriesDialogs.tsx`, and claimed only `partials/OtherSeries/*`.
   - `lib/scheduler/series-scope.test.ts:227` reads that dialog's SOURCE and pins `"{needRate && canRate && ("` **word for word**. One `grep -rn -F` for the changed text before cutting would have found it.
@@ -207,7 +215,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **PM reclassification (Porter, 2026-10-07), applies to F-011/F-012/F-013:** predicting which pins a change breaks, before the engineer touches the file, is unreliable by construction. **The fix is ORDER, not effort:** the engineer builds inside the claim and RUNS the suite; the reds outside the claim come back as a real list (plus the later `expect`s of each failing `it()`, read against the source, which is F-012's wrinkle); then ONE ask to Porter. Nothing is edited outside the claim before the grant. ⇒ The pre-cut grep checklist proposed above for Atlas is **superseded** by this order.
 
 ## F-012 — 2026-10-07 — SA Lead Team B (Silver) — Asked Porter for a pin grant by READING the test, not by RUNNING it: a second pin in the same test missed (TASK-696)
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `check-by-running-not-reading.md` installed on this desk and pointed at from both SA, both BE, both FE and the QA charters (ORDER 17.2)
 - **What happened:**
   - Fanta reported one failing pin (`action-gate.test.ts:69`, door count 109 → 110), and I asked Porter for that line only.
   - `:70` (the count of distinct files, 39 → 40) sits in the same `it()`. It could not fail until `:69` passed. **While reviewing I had even noted "if the gate sits in `LinkParentDialog`, the file count moves too", and did not check it.**
@@ -220,7 +228,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **PM reclassification (Porter, 2026-10-07):** a property of the FILE, not only of the SA. One change broke TWO counts of the same population in one file, the second invisible until the first was fixed. ⇒ Fix queued: `SIZING-teamB-next-round-pile-2026-10-05.md` §7. My own lesson above still stands.
 
 ## F-011 — 2026-10-06 — SA Lead Team B (Silver) — F-010's lesson applied by MEMORY, not by search: a second pinned file missed (TASK-671)
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `check-by-running-not-reading.md` installed on this desk and pointed at from both SA, both BE, both FE and the QA charters (ORDER 17.2)
 - **What happened:**
   - Writing TASK-671 (one space in the camp clash sentence), I listed the pin I remembered: `camp-on-grid-req095-11.test.ts`, which TASK-666 had just touched.
   - The sentence is also pinned **word for word** in `camp-week-500-family-dedupe-req104.test.ts:73` and `:95`. My line number for the first pin was stale too (`:177`; it is now `:186`).
@@ -262,7 +270,7 @@ where the owner sees them. When he is ready he opens Atlas with
 
 
 ## F-008 — 2026-09-28 — PM (Porter) — Hinted on a team-visible REQ line at an item the owner ordered kept private
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-10-07 — the rule already existed and was broken once. That is a slip, not a gap; nothing to design. Left open.
 - **What happened:** The owner ordered one item (a single ECA confirm bubble) kept off all team lists. When I wrote REQ-109 I added a team-visible line hinting that a "related item is held privately". I removed it within the same turn, but writing it at all shows I had not internalised "off the list" as "not even mentioned".
 - **Rule involved:** `NONE — no rule covered it` in any repo file. The owner's order existed only as a direct instruction and a machine-local memory note, not as a written workspace or project rule.
 - **How it was caught:** By myself, within the same turn — before anyone else read it, but after it had been written.
@@ -270,7 +278,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `REPORT-porter-pm-failures-2026-09-28.md` §1.H; the removed line in REQ-109.
 
 ## F-007 — 2026-09-28 — PM (Porter) — No coverage check that each approved item has a task on every side it needs
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — ORDER 12.3 ⑥ check-hygiene.mjs WARNs on a REQ row past SPEC_DONE that names no TASK id (verified firing on this desk 2026-10-07)
 - **What happened:** The owner approved "Undo leave / check-in" on 09-25/26. Sober sized it as BE M–L plus FE M but cut only the BE task. I tracked the round by item name, not by "does each REQ item have a TASK on each side". The feature was reported done and was unusable on screen twice — first with no UI at all, then with a UI that did nothing. Tanya found both. It is Sober's miss, but a PM-level coverage check would have caught the first one.
 - **Rule involved:** `NONE — no rule covered it`. Nothing checks that each approved REQ line maps to a BE task and an FE task where both are needed.
 - **How it was caught:** By Tanya (QA), twice, after the work had already been reported finished — as late as it can be caught before the owner sees it.
@@ -278,7 +286,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `REPORT-porter-pm-failures-2026-09-28.md` §1.G; `log/2026-09-25.md`, `log/2026-09-26.md`, `log/2026-09-27.md`, `log/2026-09-28.md`.
 
 ## F-006 — 2026-09-28 — PM (Porter) — Showed the owner a list without saying where each item came from
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — ORDER 12.3 ⑤ provenance labels: every line shown to the owner carries [owner-approved YYYY-MM-DD] · [team-proposed] · [customer-asked] · [carried-over] (PM.md)
 - **What happened:** I presented the next-round list to the owner as one approved list. Items 4–6 (camp ABSENT headline, source-column split, ledger root cause) were team proposals that had never been put to him. He had to ask *"ข้อ 1 2 4 5 มันมาจากไหน"*. Separately I asked him about the coach notice on an Undo as if it were a new question; he had implied it long ago — *"ทำไมมาถามเอาตอนนี้ เราน่าจะทำจบไปเป็นเดือนๆละ"*.
 - **Rule involved:** `NONE — no rule covered it`. No rule required a provenance label on lists shown to the owner.
 - **How it was caught:** By the owner, at the moment he read the list.
@@ -286,7 +294,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `REPORT-porter-pm-failures-2026-09-28.md` §1.F; `log/2026-09-27.md`, `log/2026-09-28.md`.
 
 ## F-005 — 2026-09-26 — PM (Porter) — Asked the owner questions already answered, or not his to carry
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — ORDER 12.3 ② intake discipline (PM.md), plus "ask once, completely" in the shared desk mechanics
 - **What happened:** I asked for a Tanya sid login that already existed (09-24) and for her uat access, which already existed (09-26). I asked him to confirm the `[outbox] LINE worker started` line — *"มันก็แจ้งแบบนี้ตลอดอยู่แล้ว"*. I asked when he switched `.env` to uat — *"ถ้ามีแค่ฉันรันคำสั่ง เลิกมีปัญหาได้แล้ว"*. I asked how many coaches have web accounts — *"ครูยังไม่ใช้สักคน ไม่ต้องโง่ไปเช็ค"*.
 - **Rule involved:** `NONE — no rule covered it`. There is no "owner-settled" section to read before asking, and the knowledge file is too large to read, so nothing stops the re-ask.
 - **How it was caught:** By the owner, each time, with visible irritation.
@@ -302,7 +310,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `REPORT-porter-pm-failures-2026-09-28.md` §1.D; `log/2026-09-25.md`.
 
 ## F-003 — 2026-09-28 — PM (Porter) — Over-escalated a non-incident and turned a one-line ask into a project
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — ORDER 12.3 ② intake discipline: restate the ask in ONE sentence, at most ONE clarifying question, dispatch only what was asked (PM.md)
 - **What happened:** On 09-26 Sober raised "tests hit a live DB" as a rule breach; I amplified it with a "uat window" theory and pushed it to the owner as a 🔴🔴🔴 incident. His design is that sid IS the test box — *"ปัญญาอ่อน เทสบน sid นั่นแหละ ถูกแล้ว"*. On 09-27→28 Khwan asked *"กดแล้วส่งลิงก์หน้าเว็บเราให้แทน"*; I dispatched SPEC-095 (a token page, login-vs-token trade-offs, a device check), then a coach-account count, then a Users-page check, and flip-flopped the instruction to Sober three times. The actual ask was: link to the existing web app, and the coach logs in — *"เรื่องง่ายๆ ทำไมต้องทำให้มันยาก"*.
 - **Rule involved:** `NONE — no rule covered it`. There was no intake rule requiring a one-sentence restatement, a single clarifying question, and dispatch of only what was asked.
 - **How it was caught:** By the owner, both times, after the escalation and the spec had already gone out.
@@ -310,7 +318,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `REPORT-porter-pm-failures-2026-09-28.md` §1.C; `log/2026-09-26.md`, `log/2026-09-27.md`, `log/2026-09-28.md`, `inbox/SA.md`.
 
 ## F-002 — 2026-09-26 — PM (Porter) — Stated and relayed facts I had not verified myself
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — skill `verify-before-relay.md` installed on this desk and pointed at from PM.md and both SA charters (ORDER 17.2)
 - **What happened:** From the owner's line "= sid = som.develyst" I asserted that the real OA's LIFF pointed at sid, and carried that into REQ-107, the runbook and several warnings for a day; the console screenshot showed it had been correct all along — *"เห็นนายเพ้อเรื่องเหี้ยนี่มาสักพักละ"*. I also relayed a "misspelling" `เซ็คอิน` read off a LINE-font screenshot (the code was correct), and relayed Tanya's claim "no uat entry" to the owner although he had already provided the uat credentials and the entry existed. A fourth case — an admin screenshot claimed to be the Settings QR panel that was actually the login page — I caught myself, but only on the second look.
 - **Rule involved:** `NONE — no rule covered it` for facts relayed to the owner. The nearest written rule, `PM.md` *"I am the answer, not the relay"* (2026-09-08), governs questions leaving the team, not facts I pass upward.
 - **How it was caught:** By the owner, a day late in the LIFF case; by the owner again on the uat credentials.
@@ -318,7 +326,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `REPORT-porter-pm-failures-2026-09-28.md` §1.B; `log/2026-09-25.md`, `log/2026-09-26.md`, `inbox/QA.md`, `inbox/PM.md`.
 
 ## F-001 — 2026-09-27 — PM (Porter) — Replied to the owner in English, seven or more times
-- **Status:** NEW
+- **Status:** FIXED 2026-10-07 — ORDER 12.3 ① : the owner's Thai reply is written FIRST, before any English artifact (PM.md §1 "Write the owner's Thai reply FIRST")
 - **What happened:** The rule is "PM ↔ human in Thai". I replied to the owner in English on 09-23 (twice), 09-24 (twice), 09-26 and 09-27 (twice). The slip happens right after I write a long English inbox brief or read an English report — the next chat reply comes out in English.
 - **Rule involved:** `PM.md` → `## Language`: *"Everything you say TO the human is in Thai"*; workspace `CLAUDE.md`: *"PM ↔ human in Thai; everything else in English."*
 - **How it was caught:** By the owner, every single time — *"เป็นควยไรกับภาษาไทยวะ"*, *"thai please"*.

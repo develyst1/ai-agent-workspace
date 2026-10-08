@@ -157,3 +157,6 @@ No FE. **The ROLLBACK is proven by @Tanya on her local database (§2f), not here
 
 ---
 🔻 **2026-10-07 — §2f REWRITTEN for sid on @Porter's GO** (no local database: the owner's "no local stack" ruling of 2026-10-04 STANDS). **Every "local abort proof" above this line is SUPERSEDED by §2f** — owner's step 0 FIRST → Tanya plants one note via the API → expected output written before the run → R1/R2 reads → clear the note → the second green run IS the real sid migration · the recovery SQL for a wrong success is PREPARED in §2f (sid only, never uat).
+
+---
+📌 **2026-10-07 — next round (NOT tonight):** `makeup_not_confirmed` was APPROVED by the owner as Jason's code text (`COPY-REVIEW-2026-09-29.md` last section) — **flip its code comment from DRAFT to APPROVED** (comments only; `line-i18n.ts:615`, `scheduler.service.ts:3901`). sid: `0066` migrated GREEN (Journal 67); step 0 = 0 rows on sid AND uat.

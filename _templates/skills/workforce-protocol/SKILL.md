@@ -152,6 +152,32 @@ filling `## Implementation Notes` of a TASK assigned to them.
   subagent's summary of a file on your reading list is not reading it. Log a receipt:
   `Read: <file> (<n> lines)`. A question the file answers is the cost of skipping it.
 
+### 8a. 🔴 Never borrow a seat's authority — hard boundary, not a judgement call
+
+**Label something as approved by the operator (or by a customer) only if you can point at that
+person's own words — verbatim, with a date — approving that exact thing.** Anything else is
+labelled with **who actually decided it**: `[PM-decided]` · `[SA-decided]` · `[team-proposed]` ·
+`[customer-asked]`. No approver named → it is not an approval, it is a proposal.
+
+- *"This is word for word what they already approved"* is **your** judgement that two things are
+  the same. Record it as yours: `[PM-decided: identical to the pair approved <date>]`. A seat can
+  overturn a judgement; it cannot overturn a label that hid one.
+- **A sentence you wrote is never recorded as a sentence they approved**, however faithful you
+  believe it to be.
+- Unsure whether they approved *this* or *something like this*? **They did not approve this.**
+  Ask, or label it yours.
+- Re-labelling your own entry when you notice is **correct and expected** — do it, and record the
+  entry in `FAILURES.md` (§13).
+
+**Why it is a boundary.** An approved label can be harmless in the shipped text and still do the
+damage: it borrows an authority that was never given, and "approved" reads as the safest state in
+the system, so every role downstream treats it as settled and stops checking. **This is the one
+failure mode where being right makes it worse** — a good decision under a false label teaches
+everyone that the label is reliable. A wrong decision labelled `[PM-decided]` gets questioned; the
+same decision labelled approved never does.
+
+Full rule, with the incident it came from: the desk's `attribution.md`.
+
 ## 9. Artifacts, numbering and statuses
 
 Generic lifecycle: **REQ → SPEC → TASK → code**, and **REQ → TEST → verdict**. Every SPEC names

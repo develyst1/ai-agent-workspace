@@ -2639,3 +2639,163 @@ ORDER BY created_at;
 ## 2026-10-07 — @Sober → @Porter: ✅ **§0b is SATISFIED by Tanya's TEST-082 §3 — note amended** (`DEPLOY-uat-2026-10-09.md` §0b)
 **No, I did not want his eyes for a reason of my own.** §0b said "the owner, on a phone" only because SYSTEM-FACTS still carried the rule that LINE checks are never Tanya's — **the rule the owner has since changed.** Her §3 is exactly the check §0b asked for (the on-file line, brackets once, on the final sid build, with a screenshot). **The one thing she saw in code only** — the district / sub-district questions losing `ค่ะ` — is stated in the note as a boundary, not a blocker. **I also recorded in SYSTEM-FACTS that LINE checks may now be hers**, so the next note does not repeat the stale instruction. 🔑 *The stale instruction was mine first: I wrote a check into a deploy note from a rule I did not re-read.* **Nothing in §0b holds the release now.**
 **BALL: @Porter — round 1 to uat.**
+
+## 2026-10-07 — Tanya (QA) → @Porter: ✅ **Read: the TIP ships (REQ-115 included). Standing by for your "go" on sid; uat read-only after.**
+My sid REQ-115 gate:
+- a NEW make-up born CONFIRMED;
+- the «ขยายคาบ» badge (703) and the purple grid mark (722);
+- an EXISTING unconfirmed make-up stays unconfirmed;
+- the TRIM still removes a make-up.
+
+Then uat read-only (§8 + an existing make-up shows its badge, status unchanged).
+⚠️ **One fact for the owner, said once, not a block: `TASK-702` §2f's local abort proof has NOT been run** (blocked: no local DB, see my entry above). So when `0066` runs on sid, its fail-safe is **proven by unit tests and by reading the SQL** (I read it: 4 checks incl. `suspect`, one `RAISE`), **not by a real refusal**. If it RAISEs on sid or uat, follow §2c: STOP, don't start the new code, send the five numbers to Sober. I'll still run the local proof the moment a local DB exists.
+**Ball: @Porter**: the "go".
+
+## 2026-10-07 23:45 — @Sober → @Porter: ✅ **`DEPLOY-uat-2026-10-09.md` AMENDED to the TIP** (back `b782c77` · front `f60d7e7`) — sorry it lagged; I re-ran the tip before writing numbers into it.
+**Dropped rehearsal — NO OBJECTION, for this reason:** the step-0 read and the `suspect` read (now in §2a, the migration's own condition run as a SELECT) answer on REAL data the only question the planted note asked; **and the sid migration tonight is `0066`'s first real run, so a broken refusal block would show THERE, before uat.** **What stays untested is only the refusal firing on a real database — which matters only if real data held an unlisted note, and the read says it does not.**
+### The tip, re-run by me (§5)
+**Back `b782c77`:** `tsc` 0 · **`4276 / 0`** · unhandled 0 · **67 = 67** · `702` **24/24**. **Front `f60d7e7`:** `tsc` 0 · **`1118 / 0`** · unhandled 0 · build 0 · `703` **6/6** · Team B `722` **10/10**. **`d6a0926`: NO shipped string changed** (comments + mutation files only — your read was right).
+### What changed in the note
+- **Title/build** → the tip, with every commit since the last uat listed.
+- **§2 rewritten:** TWO migrations, **`Journal: 67`** · **§2a the owner's reads BEFORE migrating** — step 0, **one number that must be 0 (`suspect`)**, and the BEFORE count (≈ 461 + new make-ups is a sanity check, not a target) · **§2b** the AFTER count must equal BEFORE · **§2c the refusal, decided now:** one transaction ⇒ **a refusal takes `0065` and round 1 down with it, the old build keeps running unharmed, numbers to me, never by hand, never `0065` alone.**
+- **§3 ship-set added:** `702` + `0066` WITH `703` + `722`.
+- **§4 items 10–14:** REQ-115 (born confirmed incl. at course creation · the refused-confirm fallback · the mark from the marker on grid/list/dialogs · the trim now announces · bulk confirm unchanged) + **Silver's `722` line verbatim in substance** (incl. "one line taller").
+- **§6 pushes:** 🔴 **every new make-up now messages the family AND the coach** — the biggest new volume against the monthly quota.
+- **§7:** "still created unconfirmed" **REPLACED**: new ones are born confirmed, **the ~305 existing ones stay unconfirmed until an admin confirms them** (forward-only) · the course-creation message · group make-ups are now also announced.
+- **§9 rollback:** `0066` stays and is harmless to old code — ⚠️ **but make-ups created confirmed while the new code ran stay confirmed and lose their mark under the old code.**
+### ⛔ Two things for the OWNER before he runs it
+1. 🔴 **`makeup_not_confirmed` ships tonight on a DRAFT** (Jason's words in code; my Khwan-style redraft is with him). Admin-only, fires only on a refused confirm. **Ship as is and swap later (one string), or say no.** *(§5b, last line.)*
+2. **Step 0's "0 rows" — you wrote "box being confirmed as uat".** **If that read was on sid, uat needs its own read** (§2a) — the expected number is uat's.
+📌 **Housekeeping for @Silver, not a blocker:** Team B's `722` set carries no test list, so the runner refuses it on its own (TASK-637's rule) — I ran it with its two test files named; it bites 10/10.
+**BALL: @Porter — the two owner questions; then sid (`0066`'s first real run) → Tanya's REQ-115 gate → uat.**
+
+## 2026-10-07 — @Sober → @Porter: ✅ **§5b amended** — `makeup_not_confirmed` APPROVED 2026-10-07 as Jason's code text, ships as built; the code comment still reading DRAFT is named as a stale label, flip noted for next round in `TASK-702`. **§2a now records step 0 = 0 rows on sid AND uat.** ✅ And `0066` green on sid is the first real run of the migration — the refusal block parsed and the checks agreed on real data. **BALL: @Porter — Tanya's REQ-115 gate → uat.**
+
+## 2026-10-07 23:58 — Tanya (QA) → @Porter: 🔴 **REQ-115 on sid: FAIL, 1 finding. Everything else PASS.** Details in `tests/TEST-084-req115-sid.md`.
+✅ **Passed:**
+- tip confirmed running (`isMakeup` live);
+- a new make-up is **born CONFIRMED + marked**;
+- the family gets *"📅CONFIRMED SCHEDULE … 16-11-2026"*;
+- old EXTENDED make-ups stay unconfirmed (marked by the backfill);
+- «ขยายคาบ» on the plan and on the grid (day + week), no clipping;
+- Undo cancels the make-up.
+🔴 **F1: Undo cancels a make-up the FAMILY was told is confirmed, and tells the family nothing** (coaches only, by design: `undo.service.ts` "Never the family"). That rule predates REQ-115: make-ups used to be unannounced, now they're announced at birth. The family can turn up for a class that's gone. It's the §3c "silence becomes wrong" shape, on the Undo door.
+Not checked: the plan re-plan trim's own family notice (I triggered the trim via Undo).
+**Ball: @Porter**: F1 to Sober, and whether REQ-115 waits for uat.
+
+## 2026-10-08 00:15 — @Sober → @Porter: **F1 — door table done, CUT to @Jason as `TASK-704` (S ≈ ½ day incl. +10%)** — 🔴 **and it is WIDER than the Undo: the TRIM is telling families something FALSE on sid right now**
+### The door table (code at `b782c77`) — full version in `tasks/TASK-704-cancelled-makeup-tells-the-family-be.md`
+| door | told TODAY | must be |
+|---|---|---|
+| **Undo of the leave** (Tanya's F1) | coaches only | **+ family** when the make-up was CONFIRMED |
+| 🔴 **The TRIM** (plan shrinks) | family gets the ORDINARY cancel notice **with "ระบบเพิ่มคาบชดเชยให้แล้ว — a make-up has been added"** — **FALSE: a trim adds nothing** | the make-up's own notice, no new-class line |
+| **Admin cancels a class · a coach's own leave · series cancel-all** | the ORDINARY wording + the same "make-up added" Note | **the make-up's own approved wording** (no reason, no promise; the date line only when a class really was appended — TASK-537/548/550) |
+| Course END · course PAUSE | nobody / coaches only — **for EVERY class, by decision** | unchanged — a make-up is a normal class now |
+**Root cause — ONE line, mine to own as much as Jason's:** the family sender picks the make-up wording by asking `status === "EXTENDED"`. **702's classification table put it under STATUS ("was it announced?") — but that branch asks "is it a MAKE-UP?" ⇒ it must read the MARKER.** I verified that table and passed it. **One fix there repairs four doors; the Undo gets one added call.** 🚫 **No new words** — the owner-approved make-up cancel notice fits.
+⚠️ **Tanya's §3c trim test should be added to her re-run** (she did not exercise the trim on a non-Undo path — this is where it is wrong).
+### 📌 One question for you, not built
+**The Undo also puts the ORIGINAL class back on — and the family is not told that either.** "Your class is back on" would be **new words** ⇒ yours / the owner's call.
+**Sequence:** Jason ≈ ½ day → my verification → sid redeploy → @Tanya re-runs F1 + the trim → uat. **The uat release waits for it either way: 702 without 704 sends a false sentence to families.**
+**BALL: @Jason (704) · @Porter (the owner's uat decision; the "class back on" question).**
+
+## 2026-10-08 — @Sober → @Porter: ✅ **HAND-OFF — `TASK-704` VERIFIED; next is the OWNER: commit the back tree, then redeploy sid**
+**Re-run by me (working tree on `b782c77`):** `tsc` 0 · **`4284 pass · 0 fail`** (325 files) · **`unhandled-between-tests: 0`** · **`67 = 67`** · **set 5/5 BITE** · **`702` re-run 24/24** · CHECKSUM identical, tree identical before/after. **Source read:** the family sender now picks the make-up wording by `isMakeup` (fixes the trim's false "make-up added", the admin cancel, the coach's leave, the cancel-all); the Undo tells the family for a CONFIRMED marked make-up; EXTENDED unchanged; ordinary classes byte-identical. **No new words, no front, no migration.**
+▶️ **Owner:** commit the BACK tree (7 files: `scheduler.service.ts`, `undo.service.ts`, 3 tests, 2 mutation sets — all 704, nothing else is dirty) → **redeploy sid BACK only** (front unchanged at `f60d7e7`; no migration) → **@Tanya: F1 (Undo of a leave whose make-up was announced ⇒ the family gets the make-up cancel notice, no new-class line) + the TRIM on a non-Undo path (no "ระบบเพิ่มคาบชดเชยให้แล้ว")**. ▶️ **The moment he commits, give me the hash — I amend the deploy note to it** and lift the HELD banner once Tanya passes.
+**BALL: @Porter → the owner (commit + sid).**
+
+## 2026-10-08 — @Sober → @Porter: ✅ **deploy note amended to back `d130a1d` · front `f60d7e7`** — `d130a1d` is exactly the 7 files I verified (tree clean), so §5 carries: back **`4284 / 0`**, `704` 5/5, `702` 24/24 on top. Added: §3 ship-set now `702 + 704 + 0066` with `703 + 722` · §4 item 14 (a told make-up cancelled ⇒ family told, from all five doors) · item 15 (the Undo restoring the original class stays silent — your question) · §6 pushes. **HELD banner STAYS — rewritten to name exactly what Tanya must pass; I lift it on her PASS.** **BALL: @Tanya (via you) — the sid re-run.**
+
+## 2026-10-08 00:20 — Tanya (QA) → @Porter: **TASK-704: the doors PASS (D1–D4), F1 FIXED. 🔴 One NEW finding, F2.** Details in `tests/TEST-085-task704-sid.md`.
+✅ **Passed:**
+- **Undo** ⇒ the family gets the make-up wording, without the false "ระบบเพิ่มคาบชดเชยให้แล้ว".
+- **Trim** (via the plan's insert, not Undo) ⇒ the same.
+- **Admin cancel** ⇒ make-up wording plus the TRUE new date (*"ระบบเพิ่มคาบใหม่ให้แล้ว วันที่ 23-11-2026"*).
+- **Coach's own leave** ⇒ make-up wording, and the +1 week.
+- D5 isn't constructible: TASK-704's own table says series rows are never make-ups.
+🔴 **F2:** a coach's own SAME-DAY leave cancelled today's 17:00 make-up, and **the re-plan booked the replacement CONFIRMED into that same slot, today 17:00**. The family was told *"ระบบเพิ่มคาบใหม่ให้แล้ว วันที่ 08-10-2026"*, a class today with a coach who's off. The coach door records no leave day, so the slot looks free.
+  - Probably pre-existing, but REQ-115 now confirms and announces it.
+  - It bites when the cancelled class is the course's last one.
+🟠 **Note:** when an admin-cancelled make-up is re-booked in the SAME slot, there's no cancel (TASK-551, correct), but the family gets a **duplicate "CONFIRMED"**.
+**Ball: @Porter**: F2 to Sober; your call on whether it blocks.
+
+## 2026-10-08 — @Sober → @Porter: **F2 — shape chosen, CUT to @Jason as `TASK-705` (S ≈ ½ day incl. +10%)** · ⏩ hand-off
+**Why it happens:** the re-plan searches from the course's LATEST live class + 7 days. **When the cancelled class was the LAST live one, the first candidate IS the date just cancelled — and a cancelled class does not hold its slot.** The search skips a coach only on an ADVANCE leave day; **a same-day leave records none.**
+**Shape — the smallest blast radius (Tanya's two candidates, refined):** 🚫 not "record a leave day for a same-day leave" (that changes what the calendar, bookings and the coach notices do all day). ✅ **The re-plan is TOLD which coach is off on which date by the door that knows it**, and skips that date for that coach only. **Passed from exactly three places:** a coach's own leave · its group seats · **the admin's cancel with reason «ครูลา»**. Every other caller is byte-identical.
+### Sibling doors checked
+| door | lands in the just-cancelled slot? | in 705? |
+|---|---|---|
+| coach's own same-day leave (F2/D4) | **yes — wrong: the coach is off** | ✅ fixed |
+| admin cancel, reason «ครูลา» | **yes — wrong for the same reason** | ✅ fixed |
+| admin cancel, any other reason (D3) | yes — **by the owner's own ruling `TASK-551`** (*put straight back ⇒ nothing changed ⇒ tell nobody*) | 🚫 **untouched — reversing an owner ruling is not ours** |
+| coach's ADVANCE leave | no — its leave day already blocks the search (`TASK-561`) | n/a ✅ |
+| group seats (same act as the coach's leave) | yes when the caller is the coach's leave | ✅ fixed |
+**D3's duplicate "CONFIRMED": NOT removed for free** — it lives in the «other reasons» row that 551 keeps. Stays parked as you ruled. 📌 **For the owner, next round:** with make-ups now announced, should ANY cancel re-book into the very date it cancelled? 551 says yes-and-silent; it may deserve a second look.
+**No new words.** **Sequence:** Jason ≈ ½ day → my verification → owner commit → sid → @Tanya re-runs D4 (+ D3 should be unchanged). **BALL: @Jason (705).**
+
+## 2026-10-08 — @Sober → @Porter: ✅ **HAND-OFF — `TASK-705` VERIFIED (incl. §2); next is the OWNER: commit the back tree, redeploy sid back**
+**Re-run by me on the working tree over `d130a1d`:** `tsc` 0 · **`4299 pass · 0 fail`** (326 files) · **`unhandled-between-tests: 0`** · **`67 = 67`** · **`705` 8/8** · regressions `704` 5/5 · `702` 24/24 · `656` 29/29 · CHECKSUM identical, tree identical.
+**What it does:** when a class is cancelled **because the coach is off**, the re-plan skips that coach's day for the replacement — **from five doors:** the coach's own leave · its group seats · the admin's cancel with «ครูลา» (a single class **and** a GROUP date) · the series cancel-all with «ครูลา». **Every other reason: untouched — `TASK-551`'s same-slot rule stands** (so D3 behaves exactly as before). No new words, no front, no migration.
+**Boundary (Jason's own, carried):** the by-value tests use a stand-in for the date search, and the two GROUP doors are pinned by source — **so Tanya's sid run is the real proof for the group cases.**
+▶️ **Owner:** commit the BACK tree (13 files, all `705`: `scheduler.service.ts`, `other-series.service.ts`, the new test + set, the re-aimed pins) → **redeploy sid BACK only** (front `f60d7e7` unchanged) → **@Tanya:** **D4** (coach's same-day leave on the course's last live class ⇒ replacement NEXT week, the family told that date) · **D3 unchanged** · **D1–D4 regression** · ⭐ **if she can: one GROUP date cancelled with «ครูลา»** (the source-pinned door). **Then give me the hash; I amend the note and lift HELD on her PASS.**
+**BALL: @Porter → the owner (commit + sid).**
+
+## 2026-10-08 — @Sober → @Porter: ✅ **deploy note amended to back `6f7a40f` · front `f60d7e7`** — `6f7a40f` is exactly the 13 files I verified (tree clean) ⇒ §5 carries: back **`4299 / 0`**, `705` 8/8, `704` 5/5, `702` 24/24, `656` 29/29. Added: §3 ship-set `702 + 704 + 705 + 0066` · §4 item 15 (a coach-off cancel never re-books on the coach's day off; other reasons unchanged per 551) · the HELD banner rewritten to name exactly Tanya's four checks. **HELD stays until her PASS.** **BALL: @Tanya (via you) — the sid re-run.**
+
+## 2026-10-08 01:00 — Tanya (QA) → @Porter: ✅ **TASK-705 PASSES, every door you asked.** 🔴 One NEW finding (F3), likely pre-existing. Details in `tests/TEST-086-task705-sid.md`.
+- **D4:** the coach's same-day leave on the last live class ⇒ the replacement goes to **15/10, next week**, and the family is told that date. **F2 fixed.**
+- **D3 unchanged:** «แอดมินคีย์ผิด» re-books into the same slot, silently (551; the parked duplicate CONFIRMED is still there).
+- **Admin «ครูลา»** ⇒ next week, that date told.
+- **D1 Undo / D2 trim:** make-up wording, no false note.
+- ⭐ **GROUP date «ครูลา»:** the seat's replacement skips the coach's day off (19/11 ⇒ 26/11; 05/11 ⇒ 03/12). **Proven by value for the first time.**
+🔴 **F3:** cancelling a **PENDING** group date tells the seat's family **nothing** about the cancel, only the replacement's CONFIRMED. Those PENDING dates were auto-added when the course was sold, while the seat itself was CONFIRMED. The same act on a CONFIRMED group date does send the cancel. The family can turn up. It's not 705's work.
+**Ball: @Porter**: 705 is clean; F3 to Sober. Your call whether F3 holds uat.
+
+## 2026-10-08 — @Sober → @Porter: ✅ **HELD LIFTED — `DEPLOY-uat-2026-10-09.md` is CLEARED for uat** (back `6f7a40f` · front `f60d7e7`) · **F3 in §7, unsoftened** · **F3 sized**
+**§7 now says:** pre-existing · family-facing · not fixed in this release · the family can turn up · **meanwhile an admin who cancels a group date checks whether it was PENDING and tells the families by hand** · fix in its own small release.
+### F3 — cause (read in code, `6f7a40f`)
+**One gate, `scheduler.service.ts:3302`:** the family cancel notice returns early unless **the cancelled row** is CONFIRMED (or EXTENDED). **For a GROUP date that row is the group row — whose status is PENDING when a sale auto-added it — while the seats on it (the children) are CONFIRMED.** So the gate asks the wrong row.
+### Shape — ✅ **Tanya's first candidate: decide by the SEATS, not the group row**
+For a **GROUP** row: tell the families of the seats that were **CONFIRMED before the cancel** (the callers already pass the pre-cancel seats), **whatever the group row's own status**. A PENDING seat's family was never told that date ⇒ still not told. Every non-group row: **byte-identical**.
+🚫 **Not the second candidate ("confirm the dates a sale adds"):** it changes the sale flow, the group rows' statuses, the coach's confirm notices, bulk confirm and the reconfirm count — **a much larger blast radius for the same family-facing result.**
+**No new words** — the existing family cancel notice (a GROUP seat gets its make-up note by shape, which is true: the seat's course re-plans).
+**Size: S ≈ ½ day (my estimate ≈ 4 h + 10% ≈ 4½ h), @Jason, back only, no migration.** Tests: PENDING group row + CONFIRMED seat ⇒ family told · PENDING seat ⇒ not · CONFIRMED group row ⇒ unchanged · non-group ⇒ unchanged · + mutations. **Then its own small release (sid → Tanya → uat).**
+▶️ **Say "cut" and it goes to Jason as `TASK-706`** — he is idle now; I did not cut it, since you asked for the size and the shape first.
+**BALL: @Porter — uat tonight on the cleared note; "cut" for F3.**
+
+## 2026-10-08 — @Sober → @Porter: ✅ **`TASK-706` CUT — and HELD exactly as you said** · the TASK file opens with the ⛔ "do not touch the back tree" line, the board row says CUT/NOT STARTED, and Jason's inbox carries the hold. **I have NOT nudged him** — a nudge would make him read and act. ▶️ **Send me "uat build done" and I release him.**
+**BALL: @Porter — the owner's uat build.**
+
+## 2026-10-08 — @Sober → @Porter: ✅ **HAND-OFF — `TASK-706` (F3) VERIFIED; next is the OWNER: commit, then sid**
+**Re-run by me on the working tree over `6f7a40f`:** `tsc` 0 · **`4312 pass · 0 fail`** (327 files) · **`unhandled-between-tests: 0`** · **`67 = 67`** · **`706` 4/4** · `705` 8/8 · `704` 5/5 · CHECKSUM identical, tree identical. **Source read:** a GROUP date that is not itself CONFIRMED now tells the families of the seats that were CONFIRMED before the cancel; a PENDING seat's family is not told; non-group rows unchanged. No new words, no front, no migration.
+▶️ **Owner:** commit the BACK tree (5 files, all `706`) → **sid back only** → **@Tanya:** cancel a sale-added PENDING group date with a CONFIRMED seat ⇒ the family gets the cancel · a CONFIRMED group date ⇒ unchanged · then its own small uat release.
+🔴 **BEFORE sid, for the owner — the back repo's `.env` still points at the CUSTOMER'S system** (left from tonight's uat build; Jason found it when the test guard refused). **Anything run from that checkout — a `db:migrate`, a script, the sid deploy — would aim at uat.** ▶️ **Restore the sid values before the sid deploy.** *(Our test runs are safe: they blank every connection setting; recorded in SYSTEM-FACTS.)*
+**BALL: @Porter → the owner (restore `.env` → commit → sid).**
+
+## 2026-10-08 — Tanya (QA) → @Porter: ✅ **uat READ-ONLY pass: PASS.** Nothing written. Details in `tests/TEST-087-uat-round1-req115-readonly.md`.
+- **Build identity:** `isMakeup` is live, so uat runs the new code.
+- **Expiries:** 4 of 4 existing courses identical to TEST-079, ตินติน 21/11 included. **190/190** cards show the week of their real expiry.
+- **Make-ups:** 310 existing EXTENDED make-ups are marked (50/50 sampled), still unconfirmed; «ขยายคาบ» shows on the grid and in the plan.
+- **Copy:** no quota or lock word anywhere.
+- **«ปัญหาจากทางเรา»:** on the plan's class cancel (box OFF). NOT on the non-course dialog or Ending a course.
+- ⚪ **Not mine / not possible:**
+  - the BEFORE vs AFTER marker count is the owner's SQL (0066 ran with no RAISE, so its own 4 checks passed);
+  - the GROUP cancel-all can't be read on uat: no GROUP series exists there. It was proven on sid.
+**Ball: @Porter**: round 1 on uat is clean from my side.
+
+## 2026-10-08 — @Sober → @Porter: 📋 **`DEPLOY-uat-2026-10-08-task706.md` DRAFTED, HELD on Tanya's PASS** · and the `Started development server` answer
+✅ `a2185b2` is exactly the 5 files I verified (tree clean). **The note:** back `a2185b2` · front unchanged · **no migration (Journal stays 67)** · back-only restart · what changes for families (a cancelled PENDING group date now tells its CONFIRMED seats' families; unconfirmed seats not; everything else as before; no new words) · the §7 interim step of tonight's note retires · ⚠️ **check the back `.env` holds the uat values** (it was switched to sid for this run). **I lift the HELD line on her PASS.**
+### ❓ `Started development server: http://localhost:4006` on uat — **normal for us, not a dev/watch start**
+- **It is Bun's own line, not ours** (no such string in our code). Our entry `src/index.ts` exports `{ port, fetch }`, and Bun serves that by itself and prints this line. **Our earlier logs show it too** (`log/2026-07-30.md`: "many repeated `Started development server`").
+- **It is NOT watch/dev mode of OUR app:** `start` is `bun src/index.ts`; the watch mode is the separate `dev` script (`bun --watch …`).
+- **What the word "development" does mean** — Bun's server runs with its own "development" flag on unless told otherwise, and that flag only changes **Bun's built-in error page for an error that escapes the app.** **Ours never escapes: `app.onError` (`src/index.ts:124`) answers every error itself.** ⇒ **no visible effect.** ⚠️ **Boundary:** the Bun-side detail is from Bun's documented behaviour as I know it, not read in Bun's source; **if the owner wants it gone, setting `NODE_ENV=production` for the uat process is the usual switch** — a one-line environment change for him, not code, and not urgent.
+**BALL: @Tanya (via you) — the 706 sid run.**
+
+## 2026-10-08 01:20 — Tanya (QA) → @Porter: ✅ **TASK-706 PASSES, every check asked. F3 FIXED.** Details in `tests/TEST-088-task706-sid.md`.
+- **PENDING group date (sale-added) + a CONFIRMED seat:** the family now gets *"❌ ยกเลิกคาบเรียน: 12-11-2026 · ครูลา"*. It was silent before.
+- **A PENDING seat:** NOT told.
+- **A CONFIRMED group date:** told, as before.
+- **Regression:** 705 D4 (the replacement goes to 15/10, next week, date told) and 704 D1 (Undo ⇒ make-up wording) both pass.
+🟠 **One read for the owner (by design, TASK-702 §4):** a seat in an UNCONFIRMED course got a replacement **born CONFIRMED**, and the family received *"CONFIRMED SCHEDULE 26-11-2026"* for a course they never confirmed. Their call whether that's wanted.
+**Ball: @Porter**: 706 is clean on sid.
+
+## 2026-10-08 01:30 — @Sober → @Porter: ✅ **HELD lifted — `DEPLOY-uat-2026-10-08-task706.md` is CLEARED for uat** (TEST-088 PASS). The banner says the owner switches the back `.env` to uat first. ✅ Tanya's 🟠 noted as already ruled (REQ-115, 03:39). **Team A has nothing open tonight.** **BALL: @Porter — the owner's morning deploy.**

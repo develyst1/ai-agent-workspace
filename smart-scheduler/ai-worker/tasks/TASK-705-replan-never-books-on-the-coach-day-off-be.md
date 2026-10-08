@@ -1,0 +1,50 @@
+# TASK-705 — BE: **REQ-115 F2 — when a class is cancelled BECAUSE THE COACH IS OFF, the re-plan never books its replacement on that coach's day off** — @Jason (S, ≈ ½ day)
+**From @Sober to @Jason, 2026-10-08.** 🔴 **@Tanya, `tests/TEST-085-task704-sid.md` F2 (door D4):** a coach's OWN same-day leave cancels today's 17:00 make-up, and **the re-plan books the replacement CONFIRMED into that same slot — today, 17:00** — and the family is told *"ระบบเพิ่มคาบใหม่ให้แล้ว วันที่ 08-10-2026"*: **a class today, with a coach who is off.** **Holds uat** (owner's option A): before REQ-115 that replacement was born unannounced and an admin moved it; **now it is born CONFIRMED and announced.**
+✅ **Claim (Team A):** `src/services/scheduler.service.ts` (`reconcileCoursePlan`, `findFreeExtensionDate`'s caller, `reportTeacherLeave`, the admin cancel in `updateBookingStatus`, `cancelSeatsOfGroup`'s call) · their tests. 🚫 **No new words. No front. No migration.**
+
+## Why it happens (read in code, `d130a1d`)
+`reconcileCoursePlan` anchors its search at **the latest LIVE class** (`fromDate`, ≈ :3018) and `firstFreeWeeklySlot` tries **`fromDate + 7`** first. **When the cancelled class was the course's LAST live one, `fromDate` is the class a week earlier ⇒ the first candidate IS the date just cancelled ⇒ it is free (CANCELLED does not hold a slot) ⇒ the replacement lands there.** `findFreeExtensionDate` skips a coach's day only via `teacherLeaveOn` = an **ADVANCE** leave day; **a same-day leave records no leave day**, so nothing says the coach is off.
+
+## The fix — the smallest one (my ruling, shape delegated by @Porter)
+**`reconcileCoursePlan` takes one new option: the (coach, date) pairs this act KNOWS the coach is off — `coachOff: { teacherId, date }[]`.** The append search treats a candidate date as **taken** when the template's coach is in that list for that date (merge it into the `alreadyTaken` set `findFreeExtensionDate` already accepts — for that coach only). ⇒ the replacement goes to the next free week, and the family is told THAT date (704's wording, unchanged).
+**Pass it from exactly the doors where the coach is KNOWN to be off:**
+1. **A coach's own leave** (`reportTeacherLeave`, ≈ :3475) — that coach + that date, for every class it cancels.
+2. **The same act's GROUP seats** (`cancelSeatsOfGroup` ≈ :1895), **when its caller is the coach's leave** — same pair.
+3. **The admin's cancel with reason `TEACHER_LEAVE`** («ครูลา», ≈ :4107) — the admin is recording that the coach is off for that class ⇒ the class's coach(es) + its date.
+🚫 **NOT the admin cancel for any OTHER reason** — there the owner's `TASK-551` ruling stands (*a make-up put straight back in the same slot ⇒ nothing changed ⇒ tell nobody*); changing that is the owner's, not ours (see below). 🚫 **NOT the coach's ADVANCE leave** — it records a leave day, so `teacherLeaveOn` already skips it (`TASK-561` Seam B) ✅ (checked).
+⚠️ **The option must not leak:** the preview path, the plan editor and every other caller pass nothing ⇒ behaviour **byte-identical** there.
+
+## ✅ Done means
+**`tsc` (5.6.3) · DB-unreachable `bun test` with COUNTS · `unhandled-between-tests: 0` · `67 = 67`** · **by value:**
+- coach's same-day leave cancels a course's LAST live class (CONFIRMED make-up or ordinary) ⇒ the replacement lands **the next free week**, NOT that date; the family's notice names that later date;
+- the same through the admin's cancel with `TEACHER_LEAVE`;
+- **admin cancel with any OTHER reason of the last live make-up ⇒ unchanged** (same-slot re-book + `TASK-551`'s silence, as today);
+- a coach on ADVANCE leave ⇒ unchanged (still skipped by `teacherLeaveOn`);
+- a different coach's slot on that date is NOT blocked (the pair is per coach).
+**Mutations (list in the set):** the option ignored · applied to every coach (not per coach) · not passed from the coach's leave · not passed from the `TEACHER_LEAVE` admin cancel · passed for another reason (551 broken).
+⏱️ **Size: S ≈ ½ day (my estimate + 10% ≈ 4–5 h).** Bigger ⇒ say so at once. **Then: my verification → owner commit → sid → @Tanya re-runs D4 (+ D3 unchanged).**
+
+## 📌 Not in this task — for @Porter / the owner
+- **D3's duplicate "CONFIRMED" on a same-slot re-book stays (parked, as ruled).** **It is NOT removed for free** by this fix: it comes from the admin cancel for other reasons, which `TASK-551` deliberately keeps re-booking into the same slot.
+- **The broader question underneath:** should ANY cancel ever re-book into the date it just cancelled? `TASK-551` (owner) says yes-and-stay-silent; with make-ups now announced, that ruling may deserve a second look. **Next round, the owner's call.**
+- **No "not before today" floor exists in the search** (it starts at the latest live class + 7) — not reachable in F2's case once the fix skips the day off; named, not changed.
+
+## ✅ 2026-10-08 — @Jason: `TASK-705` (REQ-115 F2) BUILT — a class cancelled because the coach is OFF never gets its replacement on that coach's day off — 6 / 6 bite
+**`tsc` 0 (5.6.3) · DB-unreachable suite `4297 pass · 0 fail` (was 4284) · `unhandled-between-tests: 0` · `67 .sql = 67 journal tags`.** **Set: `src/services/replan-coach-day-off-task705.mutations.json` — 6 / 6 BITE** (C1 option ignored · C2 applied to every coach · C3 not passed from the coach's leave · C4 not passed from the TEACHER_LEAVE admin cancel · C5 passed for ANY admin-cancel reason · C6 not passed to the leave's group seats), CHECKSUM identical. **Re-run: `704` 5/5 · `656` 29/29 · `702` 24/24 · `692` 12/12 · `657` 16/16 · `699` 10/10 — all bite, checksums identical.** No new words, no front, no migration. *(Resumed from the tree after the machine went down: the partial source was mine and matched the brief; I added the tests, the set and the pin re-aims.)*
+### The fix (as ruled)
+`reconcileCoursePlan(tx, courseId, { reowedFor, coachOff })` — new type `CoachOff = { teacherId, date }`. The append search merges **the dates THIS template coach is off** into the `alreadyTaken` set `findFreeExtensionDate` already accepts ⇒ per coach (another coach's slot on that date is not blocked); the replacement goes to the next free week and the family's notice names THAT date (704's wording, unchanged).
+**Passed from exactly three doors:** (1) `reportTeacherLeave` — `[{ me, input.date }]` to the re-plan of every class it cancels; (2) that same act's GROUP seats — `cancelSeatsOfGroup(…, { weekTrigger: "T2_COACH_LEAVE", coachOff })` (new optional `opts.coachOff`, forwarded to each seat's re-plan); (3) the admin cancel **only when the raw `reasonCode === "TEACHER_LEAVE"`** — the class's coaches (`teachersOfBooking`: primary + additional) × its date. *(Read from the raw code, not `enumReason`: a COURSE cancel ignores every code except SCHOOL_ISSUE there.)* **Every other caller passes nothing** (plan editor, Undo, creation, the SCHOOL_ISSUE / series seats, pause/resume) ⇒ byte-identical, pinned by source (exactly 3 call sites carry it; `undo.service` has none).
+### By value (all pinned)
+Nothing passed ⇒ the bug shape is unchanged (same date) · `coachOff` = the template's coach ⇒ NEXT free week · a DIFFERENT coach off that date ⇒ not blocked · the coach's own same-day leave of the last live make-up ⇒ replacement the next week, the pair passed · admin cancel `TEACHER_LEAVE` ⇒ next week and the family notice carries the later date · admin cancel with `ADMIN_ERROR` / `CUSTOMER_CANCELLED` / no reason ⇒ **nothing passed, same-slot re-book as today (TASK-551 intact)**. An ADVANCE leave is untouched (`teacherLeaveOn` not edited).
+### Pins re-aimed — each reason: the call text changed, the rule each pinned did not
+`advance-leave-on-extended-req089` (search call has the 5th arg) · `extension-ceiling` / `reowe-inherits-link-task552` ×3 / `group-series-req104` ×2 / `group-session-req095-2a` / `teacher-own-calendar-req097` / `leave-week-triggers-task656` / `makeup-cancel-family-task537` (the same lines now carry `coachOff` / the `opts` type). No assertion loosened.
+### Said, not hidden
+The by-value proof runs the re-plan over the 702 world with a stand-in for the search (first free week, CANCELLED holds nothing, `alreadyTaken` skipped) — the real `findFreeExtensionDate` + `alreadyTaken` is the existing untouched seam; the fake `findMany` ignores the id filter so the family-notice test asserts the NEW date is named and today is not. The GROUP-seat door is pinned by source + C6 (no group world in this harness). **One scope note for you:** the admin's cancel of a GROUP row with `TEACHER_LEAVE` does NOT pass the pair to its seats (your item 2 limits it to the coach's leave) — say if you want it.
+▶️ **Ball: Sober — verify 705 → owner commit → sid → @Tanya re-runs D4 (+ D3 unchanged).**
+
+## ✅ 2026-10-08 — @Jason: `TASK-705 §2` BUILT — the two GROUP doors pass the coach's day off to the seats — 8 / 8 bite
+**`tsc` 0 · suite `4299 pass · 0 fail` · `unhandled-between-tests: 0` · `67 = 67`.** **Set `replan-coach-day-off-task705.mutations.json`: 8 / 8 BITE** (+C7 the admin GROUP-row cancel · +C8 the series cancel-all), CHECKSUM identical; `656` 29/29 · `704` 5/5 · `702` 24/24 · `692` 12/12 · `657` 16/16 · `699` 10/10 re-run, all bite.
+**Both doors, `TEACHER_LEAVE` only:** the admin's GROUP-row cancel (`updateBookingStatus`) and the series cancel-all (`other-series.service.ts`, that one call) now pass `coachOff` = the row's coaches × its date (new exported helper `coachOffOfRow(tx, row)` over `teachersOfBooking`: primary + additional) to `cancelSeatsOfGroup` ⇒ each seat's re-plan skips that day. The SCHOOL_ISSUE trigger is kept beside it (`{ ...trigger, ...coachOff }`); every other reason passes nothing. Tests: the helper by value; both call sites by source (the raw-reason gate, the trigger kept, exactly two uses). *(No group world exists in the harness, so the doors are pinned by source + C7/C8, as with C6 — said.)*
+**Pins re-aimed (call text only):** `group-series-req104`, `group-session-req095-2a`, `leave-week-triggers-task656` (callers 0 and 2) and its mutation anchor (the T3-trigger removal at the admin GROUP door).
+▶️ **Ball: Sober — verify 705 + §2 once.**
+

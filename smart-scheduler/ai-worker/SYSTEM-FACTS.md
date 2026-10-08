@@ -4321,3 +4321,14 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 
 ## 2026-10-07 — ⚖️ **LINE-on-a-phone checks MAY be QA's now** (owner, via @Porter) — supersedes the routing rule above ("a LINE-on-a-phone check is never assigned to @Tanya")
 **@Tanya runs LINE checks on the OWNER's machine** (first done: `TEST-082` §3, the registration address line). ⇒ a LINE-text check no longer needs the owner's own eyes **unless a task says why**. 🚫 Her rules do not change: she never messages real people, and every write on uat is still a DATA REQUEST.
+
+## 2026-10-08 — 🔴 The back repo's `.env` can point at the CUSTOMER'S system (the owner builds uat from his working tree) — the safe test run must blank MORE than the database
+**Bun loads `.env` into every `bun test` and every mutation run.** After the uat build of 2026-10-08 the back `.env` held the customer's settings; the test guard (`test-env-guard.ts`) refused, as designed. ⇒ **The DB-unreachable run is now:** `DATABASE_URL="postgres://x:y@127.0.0.1:1/test" LINE_OA_WRITE_ALLOW="" LIFF_ID="1234567890-s" LINE_LOGIN_CHANNEL_ID="1234567890" LINE_CHANNEL_ACCESS_TOKEN="" LINE_CHANNEL_SECRET="dummy-test-secret" LINE_ADMIN_VERIFY_CODE="" OPS_API_URL="" SERVICE_TOKEN="" INTERNAL_JOB_SECRET="" bun test`. ⚠️ **`LINE_CHANNEL_SECRET` must be a DUMMY, not empty:** empty makes the webhook route answer 401 and two webhook tests fail (seen 2026-10-08, @Sober). 🚫 **Never print `.env` values** — read key NAMES only.
+
+## 2026-10-08 — 🔔 Session mechanics for `/nudge-session`: OBSERVED, not documented anywhere else (Porter)
+- **A session in the sidebar is not reachable by `ListAgents` until it has RUN.** Clicking it is not enough. **Typing one message into it starts it.** That is the owner's step when a role is missing.
+- **A nudge to a session in a DIFFERENT permission mode is HELD, not delivered.** The tool says so. 🚫 Never resend while it is held, and never report it as delivered. **Fix: the owner sets equal permission modes** (done 2026-10-07).
+- **A restarted session keeps the NAME and remembers NOTHING.** After any crash, the state comes from the files and the git tree. Tell the SA the state **before** asking anyone to work, and an engineer resumes from the tree (read the diff first).
+- **An idle notice is not "done".** It can be the end of an OLDER turn. Check the time of the recipient's last file write before acting on it.
+- **"Sent, not yet read" until a file changes.** Delivered ≠ read.
+- Full write-up for Atlas: `REPORT-porter-to-atlas-2026-10-08-sessions-that-drop.md` (workspace root).

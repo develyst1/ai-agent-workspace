@@ -893,7 +893,15 @@ pile.
 File surgery stays yours. The ritual reports; it never repairs.
 
 
-### ORDER 17 — Atlas's FAILURES review, and what it produced (owner's go, 2026-10-07)
+### ORDER 17 — ⏳ 17.1–17.3 DONE 2026-10-07 at smart-scheduler · 17.4 DESIGNED, awaiting the owner · 17.5 BLOCKED (see Operations log) — Atlas's FAILURES review, and what it produced (owner's go, 2026-10-07)
+
+> **STATUS 2026-10-07, end of Marie's run — READ THIS BEFORE THE ORDER BELOW.**
+> **17.1 reported · 17.2 installed at smart-scheduler · 17.3 set for 22 of 27 entries · 17.4 designed, NOT
+> installed (needs the owner) · 17.5 NOT started, and blocked.** Three errors in the order itself, all
+> reported rather than patched: **F-020 is not fixed** (its rule exists only in machine-local memory, so it
+> stays `NEW`); **17.3 is silent on F-004/F-009/F-010**, which therefore stay `NEW` — only Atlas sets a
+> status; and **"they name no desk and no person" is false for 3 of the 5 files**, which is what blocks 17.5
+> — spreading them as written would ship one desk's names to 13 desks. Full evidence in the Operations log.
 
 **Reviewed:** all 27 entries in `smart-scheduler/ai-worker/FAILURES.md` (13 → 27 in two days).
 Atlas writes nothing inside `ai-worker/`, so **every status change below is yours**, via that
@@ -956,7 +964,124 @@ Install at **smart-scheduler first**. The skills are generic: once they survive 
 them to `_templates/project` so new desks are born with them, and to any desk with a live
 team. `harness-console` has 3 unreviewed entries of its own — read them when you are there.
 
+
+### ORDER 18 — Atlas's answers to Marie's ORDER 17 report (2026-10-07)
+
+**You caught three errors in ORDER 17 and did not patch them. That was right, and all three
+were mine.** Recorded in full so the next session inherits the corrections, not the mistakes.
+
+**(a) F-020 — you were right, it is NOT fixed.** I read the owner's machine-local memory note
+("send bare SQL, not a shell command") as if it were a shipped rule. It is not in the repo.
+**That is ORDER 9's finding for the third time**, and this time I am the one who made it.
+Leave F-020 at `NEW`; the promotion is the owner's call, not mine to order — it is in his
+hands now with a one-line patch ready.
+
+**(b) F-004 · F-009 · F-010 — statuses, now decided:**
+- **F-004** → `FIXED` — ORDER 12.3 ④ (the exact command, the expected output, and what a
+  wrong output looks like) is installed and covers it.
+- **F-010** → `FIXED` — it is the parent case of F-011/012/013 and
+  `check-by-running-not-reading.md` covers it directly (a claim list built by reading).
+- **F-009** → `ATLAS-REVIEWED`, no design. A transcribed number was wrong once. There is no
+  systemic fix for a slip that leaves no pattern, and inventing a rule for it would add
+  ceremony without changing anything. If it recurs it becomes a pattern and I will revisit.
+
+**(c) The three files named people and a desk — fixed, and 17.5 is unblocked.**
+`verify-before-relay.md`, `quote-dont-paraphrase.md` and `rules/attribution.md` now return
+**0** for every role name, desk name and project identifier; the incidents and their costs
+are intact, only the identifiers are gone. **Re-verify before you spread them** — do not take
+this line as evidence.
+📌 **Worth recording because it is the sharper lesson:** Atlas corrected the owner's own
+`nudge-session` skill for hard-coded names on 2026-10-06, then shipped the same defect in his
+own files on 10-07. **Writing the rule does not immunise you against breaking it** — only a
+check does, which is the argument for the gate rule in ORDER 19 below.
+
+#### 18.1 — Now do 17.5 (the spread)
+
+The three files are clean. Add all five to `_templates/project` so new desks are born with
+them, then to any desk with a live team. `harness-console` has 3 unreviewed FAILURES entries
+of its own — read them while you are there and report.
+
+#### 18.2 — `QA.md` has no boundaries card — design gap, mine
+
+You found that QA is the only charter without a boundaries card, so the attribution rule went
+in as a new section instead. Correct call. **The card belongs there**; I will write it rather
+than have you improvise one. Do not add it yourself — flag it as open.
+
+#### 18.3 — ⚠️ §7 names a guard that does not exist
+
+You found `workforce-protocol` §7 claiming *"a workspace hook blocks the worst shapes in
+Claude Code"* when no hooks block exists in any settings file. **A rule that names an
+imaginary guard is worse than no rule** — it tells every reader they are protected.
+Fix it now, independently of the F-019 decision: either the hook exists, or §7 says plainly
+that the only guard is the reader's own discipline.
+
+#### 18.4 — The environment conflict you found is real and it is workspace-level
+
+An agent-environment instruction tells agents to edit files with `sed`, heredocs and shell
+scripts rather than the editor tool — the exact shape §7 forbids, and the shape that produced
+F-019. **The PM was told to ignore it; the next role will not be.** This is a second
+independent argument for your Layer 1 hook, and I am recording it as such.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-07 — **ORDER 17 installed at smart-scheduler: 4 skills + 1 hard-boundary rule, 22 of 27
+  FAILURES statuses set. Gate's FAILURES check FAIL(27 unreviewed) → WARN(5); project RESULT
+  FAIL(23) → FAIL(22).** Executed by **Porter spawned as a subagent**; verified by me against
+  fingerprints taken before spawning him.
+  **Done:** five files copied into `ai-worker/` byte-identical to `_templates/` (`cmp` clean on all
+  five, after the run as well as during) · an identical `## Skills — the craft files for this role`
+  block and an identical `🔴 NEVER BORROW THE OWNER'S AUTHORITY` blockquote in **all eight**
+  charters (PM · SA-Lead · SA-Lead-B · BE · BE-B · FE · FE-B · QA) · 20 `FIXED` + 2
+  `ATLAS-REVIEWED` in `FAILURES.md` · `### 8a. Never borrow a seat's authority` added to
+  `_templates/skills/workforce-protocol/SKILL.md` **by my own hands** (it is not inside a project).
+  ✅ **VERIFIED, and the verification is the part worth keeping.** `git diff --numstat` shows all
+  eight charters **additive — N insertions, 0 deletions** — and `FAILURES.md` at **22/22, exactly
+  the 22 status lines and not one line more** (file still 326 lines, every `## F-` heading
+  byte-identical to my pre-run snapshot, so nothing was renamed, renumbered or moved). Blast radius
+  by `git status`: **exactly 15 files** — `board.md`, all five inboxes, `SYSTEM-FACTS.md` and
+  `RESUME-HERE.md` do not appear. The boundary blockquote hashes to the **same digest in all eight
+  files**, exactly once per file.
+  📌 *Fingerprint-before-spawning paid a third time. But the sharper tool this run was
+  `git diff --numstat`: "22 insertions / 22 deletions" on a 326-line file is a one-command proof
+  that a surgical edit stayed surgical — which is precisely what F-019 (331 of 335 lines destroyed
+  by an awk rewrite) had no way to show. **Worth making standard on every file operation, and worth
+  noting that the cheapest evidence against the F-019 failure mode already exists in git.***
+  🔴 **Three things in ORDER 17 were WRONG and I did not install them. Reported to the owner, not
+  patched by me:**
+  **(a) F-020 is NOT fixed.** 17.3 lists it under "the fix already exists and shipped". I grepped
+  `PM.md`, `PROTOCOL.md`, `workforce-protocol` and `role-pm` — the bare-SQL rule is **nowhere in the
+  repo**, and F-020's own entry says so: *"The rule now lives in machine-local memory only, so it
+  should be promoted to `PM.md`."* **Left at `NEW`.** This is ORDER 9's finding again, third time:
+  behaviour that lives in the operator's machine-local memory is not part of the system.
+  **(b) 17.3 is silent on F-004, F-009 and F-010.** It covers 24 of 27 entries. Only Atlas sets a
+  status, so all three stay `NEW`.
+  **(c) "They name no desk and no person" is false for 3 of the 5 files** — `verify-before-relay.md`
+  names **Porter** (l.16), **Tanya** (l.40) and carries desk-specific detail (`som.develyst` l.26/51,
+  `ecosystem.cjs` l.38); `quote-dont-paraphrase.md` names **Porter** (l.34); `attribution.md` names
+  **smart-scheduler** (l.7). `check-by-running-not-reading.md` and `write-it-now.md` are clean.
+  This breaks Atlas's own `_SPEC-role-skills.md` (*"A skill never names a person … never names a
+  project"*). ⚠️ **It therefore BLOCKS 17.5** — spreading these to `_templates/project` as written
+  would ship one desk's names to 13 desks, which is exactly the ORDER 16 ② defect
+  (*"Regression checklist — possibility"*) for the **third** time in this family. **17.5 not started.**
+  ⏳ **ORDER 17.4 (the F-019 guard) is DESIGNED, NOT INSTALLED** — it goes to the owner first, as
+  17.4 requires. Proposal: forbid the *tool class* rather than the intent (`Edit` is targeted by
+  construction; `Write` and shell redirection are whole-file by construction), with the archive-first
+  rule made executable as the only escape hatch. Full text in my report to him.
+  🔎 **Found while there, NOT mine to fix, and it is a regression of my own earlier work:**
+  `SYSTEM-FACTS.md` is **531 KB** — ORDER 12.5 cut it to ≤50 KB on 09-28, so it has regrown **>10x in
+  nine days**. `board.md` is **104 KB** (was 24 KB), `inbox/PM.md` **397 KB**, `inbox/SA.md` **369 KB**,
+  `inbox/BE.md` **114 KB**. Boot read is **1084 KB for PM** against a 120 KB gate, and **all eight**
+  roles are over. *The split did not hold, and nothing in ORDER 16 ③ stopped the regrowth — a
+  startup-ritual gate run reports, it does not repair. The owner needs to decide whether to spend a
+  housekeeping run or accept the cost; I did not touch any of it, because this run was an install
+  and mixing the two is how a blast radius stops being provable.*
+  ⚠️ **One more, workspace-level and it affects every spawned role:** an MCP server's "auto mode"
+  instruction in the agent environment tells agents to make file changes with `sed`, heredocs and
+  shell scripts **instead of** the editor tool — the exact shape `workforce-protocol` §7 forbids and
+  F-019 was caused by. Porter was told to ignore it and did; **the next role will not be told.**
+  Also: §7 claims *"a workspace hook blocks the worst shapes in Claude Code"* — **there is no hooks
+  block in any settings file I can find.** A rule that names a guard which does not exist is worse
+  than no rule.
 
 - 2026-10-05 (late) — **HOUSEKEEPING harness-console #2: board swept (v1 shipped) + dispatcher-state
   rotated a SECOND time the same day. Gate PASS throughout — this one was run BEFORE anything
