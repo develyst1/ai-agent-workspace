@@ -4332,3 +4332,14 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 - **An idle notice is not "done".** It can be the end of an OLDER turn. Check the time of the recipient's last file write before acting on it.
 - **"Sent, not yet read" until a file changes.** Delivered ≠ read.
 - Full write-up for Atlas: `REPORT-porter-to-atlas-2026-10-08-sessions-that-drop.md` (workspace root).
+
+## 2026-10-08 — 🔴 sid and uat databases share ONE NAME: `smart_scheduler` (hosts differ: sid 154.197.124.206 · uat 154.197.124.29 — from `.env.sid` / `.env.uat`, name and host only)
+⇒ **`current_database()` does not prove which environment a read ran on.** Prove it with `inet_server_addr()` and a data marker (sid holds the QA families: `students.name LIKE 'QAChat%'` > 0). Found when uat reads came back impossibly empty (REQ-116, @Sober).
+
+## 2026-10-08 — 🔁 **Reproduce the customer's EXACT situation first, then prove the fix on that same situation** (owner, standing rule)
+**Owner, verbatim:** *"เราจะไม่ลดการเทสลง เราเพิ่มการ "ตามหาsituation เดียวกันกับลูกค้าให้เจอจริงๆ ก่อน prove ว่าแก้แล้ว""* · and on REQ-116: *"เทสที่ sid ก่อน เพื่อดูทำถูก situation … แล้วค่อยเอาขึ้น แล้วค่อย หาย จบ"*.
+1. **Tester, step 0, on the OLD build on sid:** rebuild the customer's data state and click until **her symptom appears**, then record **REPRODUCED** (with a screenshot) or **NOT REPRODUCED**. 🔑 Not reproduced is a FINDING, not a pass.
+2. **Then the fix goes on sid, and the SAME recipe runs unchanged.** A pass on a different situation does not count.
+3. **PM:** write the reproduction recipe from the customer's words and screenshots at intake. 🚫 Do not spend the owner's SQL on production data before the situation is reproduced, unless the data changes WHAT to fix.
+4. **Nothing is removed.** Every existing gate stays. This step goes in front of them.
+Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-the-customers-situation-first.md` (workspace root).

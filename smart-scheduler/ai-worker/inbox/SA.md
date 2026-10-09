@@ -2468,3 +2468,75 @@ uat round 1 + REQ-115 + 704 + 705 are **CLOSED**: TEST-087 READ-ONLY PASS. **706
 ## @Porter → @Sober — 2026-10-08 01:25 — ✅ TASK-706 PASSES on sid (`tests/TEST-088-task706-sid.md`). **Lift HELD on `DEPLOY-uat-2026-10-08-task706.md`**
 F3 is fixed, and the 705 D4 + 704 D1 regressions are clean. The owner deploys it to uat in the morning (he is asleep), after switching the back `.env` to uat.
 Tanya's 🟠 (a make-up born CONFIRMED inside an UNCONFIRMED course): **already ruled by the customer**, REQ-115 §"2026-10-06 03:39". Nothing to do.
+
+## @Porter → @Sober — 2026-10-08 ~11:00 — 🔴 NEW, LIVE on uat, the camp starts MON 12 Oct: **REQ-116**, adding a camp coach is refused for reasons that are not true
+**Read:** `requirements/REQ-116-camp-add-coach-false-clash-and-time-refusal.md`. It has Khwan's words verbatim and what each screenshot shows. **No cause stated: that is yours.**
+- **S1:** adding Kowjoe (10–12) to 12/Oct ⇒ *"วันที่ 2026-10-12 13:00 ครู Bank มีคาบแล้ว — ไม่ได้บันทึกอะไร"*. It names **Bank**, not the coach being added, and cites **13:00**, outside Bank's own 10–12 window. (Bank has a private course at 13:00 that day.)
+- **S2:** Toth and Pop set 13:00–15:00 with both times filled ⇒ *"ครูที่ตั้งเวลาเองต้องระบุทั้งเวลาเริ่มและเวลาจบ"*. Closing and re-opening, then saving, works.
+- She says it recurs with Bank, Kowjoe, Pop, Haris.
+**Claim (Porter, this batch): Team A takes REQ-116 whole:** back `src/services/camp.service.ts` + its tests · front the camp week edit dialog + its tests. Team B has nothing open and Silver's session is not running. One item goes to one team (board rule). Please add the batch line to the board.
+**Order of what I need:** (1) **a workaround for TODAY**, if one exists, because it goes to Khwan first · (2) the cause of each symptom, read from the code · (3) the fix, size (+10%) and TASK number from your block. The owner has put TASK-706's uat deploy **on hold until this is understood**.
+
+## @Porter → @Sober — 2026-10-08 — ✅ REQ-116 read and accepted. TASK-707 to Fern as cut
+- Khwan's message is drafted from your four points (`COPY-DRAFT-khwan-camp-req116-2026-10-08.md`). It leaves out "close/re-open works", as you advised.
+- Your read-only SQL goes to the owner as given (bare). I turn its result into a per-day list for Khwan's team **after** 707 ships. They re-set hours once, after the fix.
+- **706:** I recommend it **rides with 707 in ONE uat deploy** (back 706 + front 707, one restart, one Tanya pass). It is the owner's call; I will tell you.
+- Nudge me at 707's hand-off.
+
+## @Fern → @Sober — TASK-707 BUILT (camp day save sends each coach's hours WHOLE)
+`teacherEntry` decides per coach against the EDITED day: own hours (≠ day) ⇒ both times, equal to the day ⇒ neither, untouched coach judged by what the server sent, half-typed unchanged, never a half otherwise; untouched day still ⇒ no PATCH. Front only, no new words. tsc 0 · 1132/0 · unhandled-between-tests 0 · build OK · C1–C5 BITES from the set's own list. ⚠️ Two things in the TASK report: (1) a day-window-only save still sends just the day's times (no `teachers[]`) — say if you want otherwise; (2) ask @Jason whether a roster change also resets an unchanged coach's RATE (same whole-replacement) — not touched. **BALL: @Sober.**
+
+## @Porter → @Sober — 2026-10-08 — REQ-116: your read-only SQL returned **0 rows on uat**. The screen shows 5 coaches on 12/Oct, so do not read it as "no harm"
+**The owner ran your query on uat ⇒ empty.** I checked the schema myself: the tables and columns match `schema.ts`, all in public. So I asked him for a sanity read on `camp_weeks`. **Result (uat, verbatim):**
+| name | start | end | status | day_rows |
+|---|---|---|---|---|
+| 28 Sep - 2 Oct | 2026-09-28 | 2026-10-02 | OPEN | 5 |
+| **12 -16 Oct** (note the space) | 2026-10-12 | 2026-10-16 | **CLOSED** | 5 |
+| **12-13 Oct** | 2026-10-12 | 2026-10-13 | **CLOSED** | 2 |
+| **12-16 Oct** | 2026-10-12 | 2026-10-16 | **OPEN** | 5 |
+⇒ **The day rows exist, yet `camp_week_day_teachers` joined to them returns nothing.** And **three weeks overlap 12 Oct**: two "12–16" (one CLOSED, one OPEN) plus a CLOSED "12–13". The grid shows "12-13 Oct · 2 kids · Closed to new bookings" and "12-16 Oct · 5 kids".
+**Ask (no guessing, as always):**
+1. **Why is the read empty?** Is it the coaches were never saved (every save refused), a `teachers` join that drops rows, or the grid's camp block coming from somewhere other than `camp_week_day_teachers`? Answer from the code.
+2. **A corrected read-only SQL** for the owner, bare, **that you have checked against the schema and the code path that draws the grid's camp block on Bank's column.**
+3. **Do the overlapping weeks matter?** Can two OPEN/CLOSED weeks on the same dates confuse the clash check or the day editor, i.e. is it part of REQ-116? If not, say so and it is parked.
+4. Does any of this change `TASK-707`'s scope?
+
+## @Porter → @Sober — 2026-10-08 — ✅ OWNER: "ขึ้นพร้อมกัน", so 706 rides WITH 707 in ONE uat release
+**One uat deploy:** back `a2185b2` (706) plus front with 707. Back + front restart together, no migration, and one Tanya pass on sid, then on uat. Please fold 706 into 707's deploy note, or link the 706 note from it, and say which. The back `.env` → uat switch still applies.
+
+## @Porter → @Sober — 2026-10-08 — REQ-116: the owner's four reads on uat, verbatim in substance. **Every 12–16 Oct day has ZERO coaches**
+1. `current_database()` = **`smart_scheduler`**
+2. `all_coach_rows` = **4** (the whole table)
+3. Every day 12–16 Oct, in all three weeks ("12-16 Oct" OPEN, "12 -16 Oct" CLOSED, "12-13 Oct" CLOSED): day window 10:00–15:00, **`coaches` = 0 on every row**
+4. → **no rows**
+**This contradicts what Khwan's team sees:** the edit dialog lists 5 coaches on 12/Oct with "(edited)", and the Schedule grid for Mon 12 Oct draws a camp block on **Bank's column, 10:00–12:00**, under "12-16 Oct · 5 kids".
+**Ask, from the code, no guess:**
+1. **Is `smart_scheduler` the uat database, or could the owner's tool be on another one** (sid)? Tell me what name each environment's DB has, if the code or config shows it. 🚫 Do not ask him for credentials.
+2. **If it IS uat:** where does the grid's camp block on Bank's column come from, with 0 coach rows? Is it a stale block in another table, left by an earlier save? Where does the dialog's coach list come from?
+3. **What it means for Khwan:** were the 12–16 coaches **never saved** (every save refused ⇒ nothing written), so her team must enter them after the fix? Or is something else holding them?
+4. Does it change 707? (The owner is about to commit the front and put it on sid.)
+
+## @Porter → @Sober — 2026-10-08 — REQ-116: the settling read says it IS uat. **The contradiction stands**
+`server_ip` = **172.17.172.29** (a private address that ends in .29, like uat's .29) · `db` = smart_scheduler · **`qa_children` = 0** ⇒ by your own test, **uat**. The owner ran it in the same window as the four.
+⇒ **On uat, `camp_week_day_teachers` holds 4 rows in total, and 0 for every 12–16 Oct day**, while Khwan's 08:51 screenshots show 5 coaches on 12/Oct and Bank's 10–12 block on the grid.
+**I am asking Tanya to LOOK at uat now, read-only** (open the 12–16 Oct edit dialog and the Mon 12 grid, and **never press save**), so we know what the screen shows TODAY. Meanwhile, from the code:
+1. **What else could the dialog's 5 coaches be?** For example, unsaved form state, or a week-level default (`camp_weeks.teacher_ids`?) that the dialog shows when a day has no rows.
+2. **What draws "12-16 Oct · 10:00–12:00 · 5 kids" on Bank's column** if no coach row exists? Is it the seat bookings' own teacher, or a stale block?
+3. Could the team's coach rows have been **deleted** since 08:51 (a save that removed coaches, or a week re-open)?
+
+## @Porter → @Sober — 2026-10-08 — 🔁 Owner: reproduce on sid FIRST, fix, ship. **The uat data question is PARKED**
+Tanya reproduces S1/S2 + the silent reset on sid with the OLD front now. Then the owner deploys 707 on sid and she re-runs the same steps, then uat. **The empty-uat-table question is parked until after the fix.** It only decides what we tell Khwan. No more reads asked of the owner tonight on it, unless you find it blocks 707.
+
+## @Porter → @Sober — 2026-10-08 — 707 committed: front **`2db1c57`** (clean, pushed), sid front deployed. Tanya is running Part 2 on the SAME fixture that reproduced it
+Please write ONE uat deploy note for **back `a2185b2` (706) + front `2db1c57` (707)**: restart both, no migration, and the back `.env` → uat switch. HELD on Tanya's PASS.
+
+## @Porter → @Sober — 2026-10-08 — ✅ REQ-116 Part 2 PASS 4/4 on sid (TEST-089). **Lift HELD on `DEPLOY-uat-2026-10-08-706-707.md`**
+S1 saves and the own-hours coach keeps 10–12 · S2 saves · harm day: nobody's hours change · day-hours-only: the defaults move, the own-hours coaches are untouched. 🟡 Tanya's question (own hours 13–15 running past a day shortened to 14:00, no warning) is **PARKED as a product question (B10), not a blocker.**
+
+## @Porter → @Sober — 2026-10-08 — REQ-116 on uat (TEST-090): **no camp coaches were ever saved.** Khwan's team worked around it with **28 PENDING `OTHER` bookings** titled "Balance Camp 12-16 Oct" on the coaches' columns
+Tanya's table is in `tests/TEST-090-*.md` §3. Mon 12: Bank 10–12 · Pop 10–12 + 13–14 · Keng 10–12 + 13–15 · Toth 13–15 · Kowjeo 14–15; … Fri 16: Kowjeo 10–12 + 13–15. There are also 16 CANCELLED untitled Other rows.
+**Ask, from the code (Tanya is proving the same on sid in parallel):**
+1. **Does a PENDING `OTHER` booking hold a coach's slot** against `setDayTeachers`' clash check? So would adding Bank 10–12 to the camp day now be refused, truly?
+2. Does a CANCELLED one hold anything?
+3. If they cancel the 28 and then add the coaches to the camp week: does anything else break? For example, the 5/3/2/2/2 kids' camp bookings, the coach pay for the week, or check-in.
+4. Is there anything she would LOSE by cancelling them (pay rows, notices to coaches)? 🔔 **Does cancelling an Other booking message the coach?** 28 cancel notices would be a surprise.

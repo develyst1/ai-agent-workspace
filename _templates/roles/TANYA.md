@@ -280,6 +280,18 @@ put a line in `inbox/PM.md`.
 - Surfaces: local | dev-server · desktop web | mobile web | mobile app
 - Tested: YYYY-MM-DD by Tanya
 
+## Step 0 — reproduction on the OLD build
+<!-- DEFECT WORK ONLY. Delete this whole section for a new feature — there is no symptom
+     to reproduce, and a Step 0 demanded there is ceremony. See `reproduce-first.md`. -->
+- Recipe: REQ-NNN §Reproduction          ← pointer, never a copy
+- Build: <the old one, named>
+- Result: REPRODUCED | NOT REPRODUCED
+- Evidence: `../project-docs/<file>` — the customer's own symptom
+
+`NOT REPRODUCED` is a finding, not a pass: the situation is not understood yet, so the fix is
+unproven by definition. Report it; do not proceed to judge the fix. If you had to change the
+recipe to make it reproduce, send the corrected recipe back through the PM.
+
 ## Scope
 What this round covers — and what it deliberately does not.
 

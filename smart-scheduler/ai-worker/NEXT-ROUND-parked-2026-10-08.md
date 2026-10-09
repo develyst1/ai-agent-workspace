@@ -20,6 +20,7 @@ Written after round 1 + REQ-115 + 704 + 705 went live on uat (TEST-087 PASS). **
 | B6 | **"เล่นไม้แข็ง"**: strict data entry with an "ยังไม่ระบุ" escape and a findable list for admins | `NOTE-owner-direction-strict-data-2026-10-07.md` |
 | B7 | **Khwan's 192-string workbook**, incl. rows 45/46 (Voucher/Camp CONFIRMED SCHEDULE) and the "1 ชม." cut-off setting | `project-docs/req111-message-inventory/message-inventory-KHWAN-EDITS-2026-10-06.xlsx` |
 | B8 | REQ-114 (iii) | `requirements/REQ-114-*.md` · `ANALYSIS-REQ-114-undo-chain-2026-10-05.md` |
+| B10 | **Camp: a coach's own hours may run past a SHORTENED day end, with no warning** | TEST-089 §Part 2 🟡 · product question |
 | B9 | *(optional)* `NODE_ENV=production` for the uat process, to silence Bun's "development server" line | env only, no visible effect today · Sober, `inbox/PM.md` 2026-10-08 |
 
 ## C. Team hygiene — no owner decision needed

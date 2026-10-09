@@ -13,6 +13,21 @@ fill Actual/Result as you run. If the desk's own template differs, the desk wins
 - Surfaces: local | deployed · desktop web | mobile web | app (device/simulator)
 - Tested: YYYY-MM-DD by <Name>
 
+## Step 0 — reproduction on the OLD build
+<!-- DEFECT WORK ONLY. Delete this whole section for a new feature — there is no symptom
+     to reproduce, and a Step 0 demanded there is ceremony. See the `reproduce-first` skill. -->
+- Recipe: REQ-NNN §Reproduction          ← pointer, never a copy
+- Build: <the old one, named>
+- Result: REPRODUCED | NOT REPRODUCED
+- Evidence: `<path>` — the reporter's own symptom, not a similar one
+
+`NOT REPRODUCED` is a finding, not a pass: the situation is not understood yet, so the fix is
+unproven by definition. Report it; do not proceed to judge the fix. If you had to change the
+recipe to make it reproduce, send the corrected recipe back through the PM — that is a finding
+about the requirement, not a test detail. If reproduction is genuinely impossible, say exactly
+what is missing and the fix ships labelled `UNPROVEN — could not reproduce`; impossible must
+never quietly become `PASS`.
+
 ## Scope
 What this round covers — and what it deliberately does not, and why (risk call, no access, out of AC).
 Boundary of the verdict: the files/branch the TASKs named.

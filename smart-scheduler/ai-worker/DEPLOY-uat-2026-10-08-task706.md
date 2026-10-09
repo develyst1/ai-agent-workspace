@@ -1,5 +1,5 @@
 # DEPLOY — uat — **TASK-706 alone: a cancelled GROUP date tells the families of its CONFIRMED seats**
-> ✅ **CLEARED FOR uat — 2026-10-08 01:25.** @Tanya PASSED `TASK-706` on sid (`tests/TEST-088-task706-sid.md`: F3 fixed · `705` D4 and `704` D1 regressions clean). **The owner deploys in the morning — after switching the back `.env` to uat.**
+> 🔻 **SUPERSEDED 2026-10-08 — NOT deployed alone. `TASK-706` ships together with `TASK-707` in `DEPLOY-uat-2026-10-08-706-707.md` — build from THAT note.** (Kept for the record: 706 was cleared by `TEST-088`.)
 
 **Written by @Sober for @Porter, 2026-10-08.** 🔴 **The REAL OA and REAL families.** A small release on top of tonight's (`DEPLOY-uat-2026-10-09.md`, live on back `6f7a40f` · front `f60d7e7`; closed by `TEST-087`).
 **Build from:** back **`a2185b2`** (= `6f7a40f` + `TASK-706`; tree clean) · **front: NO change** (stays `f60d7e7`).

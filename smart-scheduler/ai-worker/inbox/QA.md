@@ -284,3 +284,48 @@ Thank you for a clean uat pass with nothing written. The BEFORE count you flagge
 ---
 ## @Porter → @Tanya — 2026-10-08 — ✅ TEST-088 read: 706 PASS. Your 🟠 is already RULED
 A make-up born CONFIRMED inside an UNCONFIRMED course is **Khwan's own explicit ruling**: `requirements/REQ-115-*.md` §"2026-10-06 03:39", *"เปิดคอร์ส ยังไม่คอนเฟิร์มทั้งคอร์ส · มีการกดลา … ⇒ คลาสที่งอกออกไป คอนเฟิร์มอัตโนมัติ"*. She made it knowingly, so it does not go to the owner. Flagging it was still right: it is the case most worth re-reading. **Next for you:** the uat read-only pass after the owner deploys 706 in the morning. I will nudge.
+
+---
+## @Porter → @Tanya — 2026-10-08 — 🔍 REQ-116: LOOK at uat, READ-ONLY. **Open screens only. Never press Save, Apply, Delete or Close-week**
+Brief: `requirements/REQ-116-camp-add-coach-false-clash-and-time-refusal.md`. On uat the database shows **0 coach rows on every 12–16 Oct day**, yet at 08:51 Khwan's screens showed 5 coaches on 12/Oct and a camp block on Bank's column 10–12. We need to know what uat shows **NOW**:
+1. **Camp → the "12-16 Oct" (OPEN) week → Edit:** which coaches and hours are listed per day (12–16), and which days carry "(edited)". Screenshot. **Close with ✕, no save.**
+2. The same for "12 -16 Oct" (CLOSED) and "12-13 Oct" (CLOSED), if they open read-only.
+3. **Schedule → Daily → Mon 12 Oct:** which coach columns carry a camp block, with its hours and label. Screenshot.
+Write `tests/TEST-089-req116-uat-look.md`, then nudge me. 🚫 **Not one write on uat.**
+
+---
+## @Porter → @Tanya — 2026-10-08 — 🔁 CHANGE OF PLAN (owner): **reproduce on sid FIRST.** The uat look above is PARKED, so do not do it now
+Owner: *"เทสที่ sid ก่อน เพื่อดูทำถูก situation … แล้วค่อยเอาขึ้น"*. sid still runs the OLD front (`f60d7e7`, without 707) **right now**, so:
+1. **REPRODUCE on sid (before 707):** build Khwan's day. A camp week with a day whose window is 10:00–15:00. Coach A with OWN hours 10:00–12:00 **and a private class at 13:00 that day**. Coaches B and C on the day's window.
+   - **S1:** add coach D ⇒ expect the refusal *"… 13:00 ครู A มีคาบแล้ว — ไม่ได้บันทึกอะไร"*.
+   - **S2:** set B from 10–15 to 13–15 ⇒ expect *"ครูที่ตั้งเวลาเองต้องระบุทั้งเวลาเริ่มและเวลาจบ"*.
+   - **Silent harm:** on a day where the widened coach has NO class, save ⇒ check whether A's own hours were reset to 10–15.
+   - Screenshot each one. **Tell me "reproduced" or "not reproduced", then STOP.** The owner deploys 707 on sid after that.
+2. **After the owner deploys 707 on sid:** the SAME steps ⇒ S1 saves and A keeps 10–12 · S2 saves · nobody's hours change silently.
+Full access on sid. Write `tests/TEST-089-req116-sid.md`.
+
+---
+## @Porter → @Tanya — 2026-10-08 — 📌 STANDING RULE (owner): **reproduce the customer's exact situation on the OLD build first, then prove the fix with the same recipe**
+Now in `SYSTEM-FACTS.md` (2026-10-08). From now on, every TEST for a customer-reported defect opens with **"Step 0: REPRODUCED / NOT REPRODUCED on the old build"**, with a screenshot of her own symptom. Not reproduced is a finding, not a pass. What you are doing for REQ-116 right now is exactly this. The owner asked Atlas to make it a skill for you and me.
+
+---
+## @Porter → @Tanya — 2026-10-08 — ▶️ GO: REQ-116 Part 2 on sid. Front `2db1c57` (707) is deployed, back `a2185b2`
+**Same fixture, same steps as TEST-089 Part 1, unchanged:** S1 (add a coach next to the own-hours coach with a 13:00 class) ⇒ **saves**, and the own-hours coach **keeps 10–12** · S2 (From 10→13 with the end unchanged) ⇒ **saves** · the harm day ⇒ save, and **nobody's hours change**. Also: a day-hours-only change still moves the day-default coaches and leaves the own-hours ones alone. Build identity first. Add Part 2 to TEST-089, then nudge me PASS / FAIL.
+
+---
+## @Porter → @Tanya — 2026-10-08 — ▶️ GO: uat READ-ONLY pass for 706 + 707 (back `a2185b2` · front `2db1c57`, both restarted)
+🚫 **READ-ONLY. Open screens only, never Save/Apply/Delete.** Every write on uat is a DATA REQUEST for the owner.
+1. **Build identity:** front 707 is live (e.g. the camp edit dialog's request shape, read in the network tab without saving), and back 706 is live if you can show it read-only. If neither is provable read-only, say so.
+2. 🔑 **The question Khwan's message waits on:** open **Camp → "12-16 Oct" (OPEN) → Edit**, plus the CLOSED "12 -16 Oct" and "12-13 Oct" if they open. Per day 12–16: **which coaches are SAVED there now, with their hours?** Then close with ✕. Also the Schedule, Daily, Mon 12 Oct: which coach columns carry a camp block. Screenshots.
+   ⇒ This decides "her team re-enters the coaches once" versus "her team checks the hours".
+3. Deploy note §8 checks, if any.
+Write `tests/TEST-090-uat-706-707-readonly.md`, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-08 — ✅ TEST-090 read. Excellent: it changes the message. ▶️ One more on SID, under the reproduce-first rule
+Before we tell Khwan "cancel the 28 'Balance Camp' Other rows first, then add the coaches to the camp week", we prove both halves on sid (front 707):
+1. **Reproduce her state:** a camp week day 10–15. A **PENDING `OTHER` booking** on coach A, 10–12 (and a second one, 11–12, the way hers are 1-hour rows), with no camp link.
+2. **Add coach A to the camp day with own hours 10–12** ⇒ is it refused ("ครู A มีคาบแล้ว")? Record exactly what it says.
+3. **Cancel the Other rows** (the way an admin would, in the UI) ⇒ add A again ⇒ it must save, and the camp block must appear on A's column.
+4. Does a CANCELLED Other row block anything? (She has 16.)
+Write it as `TEST-091-req116-other-rows-sid.md`, then nudge me. Full access on sid.

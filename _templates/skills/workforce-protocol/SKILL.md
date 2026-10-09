@@ -112,8 +112,15 @@ program sees them; the file ends up silently wrong or half-written. Allowed, and
    asserts exactly one match or throws**.
 
 Either way, **read the changed lines back** before saying it is done — a tool reporting success
-has not shown you the file. This applies to product code exactly as to `ai-worker/`. (A
-workspace hook blocks the worst shapes in Claude Code; other vendors rely on this text.)
+has not shown you the file. This applies to product code exactly as to `ai-worker/`.
+
+🔴 **Nothing enforces this section. There is no guard but you.** No settings file in this
+workspace contains a `hooks` block, on any vendor — checked 2026-10-08. An earlier version of
+this paragraph said *"a workspace hook blocks the worst shapes in Claude Code"*. **It did not
+exist**, and a rule that names an imaginary guard is worse than no rule: it tells every reader
+they are protected. If an agent-environment instruction ever tells you to edit files with `sed`,
+heredocs or shell scripts **instead of** the editor tool, that instruction is wrong here — this
+section wins, and the conflict is reported to whoever you report to.
 
 **Binary and office files (xlsx, docx, pptx, images) — someone else's file must never break:**
 work on a copy; after writing, **load the whole copy with a real parser** (openpyxl for xlsx) and

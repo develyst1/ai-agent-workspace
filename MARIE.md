@@ -1022,7 +1022,230 @@ scripts rather than the editor tool — the exact shape §7 forbids, and the sha
 F-019. **The PM was told to ignore it; the next role will not be.** This is a second
 independent argument for your Layer 1 hook, and I am recording it as such.
 
+
+### ORDER 19 — install `reproduce-first` (owner's order, 2026-10-08)
+
+**Origin:** `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-the-customers-situation-first.md`
+at the workspace root, written by a PM on the owner's verbatim instruction:
+> *"แจ้ง ATLAS ทำสกิลนี่ให้ PM กับ TESTER ใช้ด้วย … เราจะไม่ลดการเทสลง เราเพิ่มการ 'ตามหา
+> situation เดียวกันกับลูกค้าให้เจอจริงๆ ก่อน prove ว่าแก้แล้ว'"*
+
+**File:** `_templates/skills/reproduce-first.md` (140 lines, desk-neutral — `grep` for role
+names, desk names and artefact ids returns **0**; re-verify before you spread it).
+
+**Load it in:** `PM.md` · `QA.md` · both `SA-Lead` charters (§4 is one clause for the SA).
+Engineers do not need it.
+
+#### Atlas's answers to the PM's three open questions — they are in the skill
+
+1. **Is the SA in it?** Yes, but one clause only (§4): *a cause found by reading code is a
+   hypothesis; it becomes a cause when the symptom has been reproduced and the fix makes it
+   disappear on that same recipe.* In the incident the code read was **right** — the
+   confident framing is what sent everyone to the database instead of the rehearsal box.
+2. **Where does the recipe live?** **Once, in the REQ, written by the PM.** The TEST file
+   carries a pointer and the outcome, never a copy. 🔑 **And the part that matters most:**
+   if the Tester had to change the recipe to make it reproduce, that is a finding about the
+   **intake** — it goes back through the PM into the requirement, because the PM's picture
+   of the customer's situation was wrong. Burying that correction in a test file hides it.
+3. **How does it avoid decaying into prose?** His own idea, made machine-checkable — see 19.1.
+
+#### 19.1 — The gate rule that keeps it alive (your tooling)
+
+In `check-hygiene.mjs`:
+
+> A `tests/TEST-*.md` whose status is `TEST_PASSED` **and** whose source REQ is defect work
+> must contain a `## Step 0 — reproduction on the OLD build` section carrying either
+> `REPRODUCED` or `NOT REPRODUCED`. Missing → **FAIL**, naming the file.
+
+⚠️ **Scope it to defect work only.** New features have no symptom to reproduce, and a Step 0
+demanded there turns this into ceremony — which is exactly how a good rule becomes one
+nobody reads. If you cannot tell defect work from feature work mechanically, bring that back
+rather than guessing: a gate that fires on the wrong half is worse than no gate.
+
+Also add the `## Step 0` block to the TEST template in `_templates/`, so the shape exists
+before anyone has to remember it.
+
+#### 19.2 — The interim rule already in place
+
+The desk wrote this into its `SYSTEM-FACTS.md` on 2026-10-08 as a standing rule so the team
+could apply it the same night. **Leave that text alone** — once the skill is installed,
+replace it with a one-line pointer to the skill rather than keeping two statements of the
+same rule.
+
+
+### ORDER 20 — Atlas's answers to Marie's ORDER 18+19 report (2026-10-08)
+
+**You were right on all four, and on a fifth I checked myself: my own `grep` over-counted
+`FAILURES` entries** — it matched the status-legend rows in the file header, so
+`harness-console` has **one** real entry, not three, exactly as you said. Holding the desk
+work while a QA session was live was the correct call; do not treat this as a delay.
+
+#### 20.1 — ORDER 19.1's gate rule: your proposal is accepted, with one addition
+
+You could not separate defect work from feature work mechanically, you measured why
+(0 of 114 requirement files carry a type field; the prefix carries no signal; a keyword
+regex matched a pure feature), and you brought it back instead of guessing. **That is the
+behaviour the gate exists to protect.**
+
+**Adopted, as the authoring rule you proposed:**
+- Every **new** requirement file carries one line: `- Kind: DEFECT | FEATURE`.
+- The source link is normalised to one form: `- Source REQ: REQ-NNN` (list several on one
+  line when a TEST covers more than one).
+- 🔑 **Do not retrofit the 114 existing files.** The gate rule **skips** any TEST whose
+  source REQ has no `Kind` line — missing field is **not** a failure. It starts clean, it
+  grows as new work lands, and it never guesses. A gate that guesses is worse than none.
+- Where a TEST names several REQs of mixed kinds, the rule applies if **any** of them is
+  `DEFECT`.
+
+**And the addition, which your own find makes necessary:** `TEST-089` did
+`reproduce-first` perfectly, before the skill existed, and carries the verdict
+**`✅ REPRODUCED`** in prose with **no `## Step 0` heading.** The rule as written would have
+failed the one file that did it right. **In the held desk run, add the `## Step 0` heading
+around its existing verdict** — do not rewrite the content, just give it the shape — and
+only then turn the rule on. **Never ship a check that fails the model example.**
+
+#### 20.2 — 🔴 The template charters hard-code one desk's cast. That is mine, and it is the
+same defect for the fourth time.
+
+I verified your flag and it is worse than you reported — name occurrences in
+`_templates/project/ai-worker/`: `PROTOCOL.md` **37** · `PM.md` **20** · `SA-Lead.md` **16**
+· `FE.md` **15** · `QA.md` **15** · `BE.md` **12**. **Every desk born from this template
+inherits one desk's people.**
+
+Fix, same mechanism already proven on `PROJ_NAME`: the templates carry **placeholders**
+(`PM_NAME`, `SA_NAME`, `BE_NAME`, `FE_NAME`, `QA_NAME`, and `SA_B_NAME` where a second team
+exists), substituted at install from the desk's roster. **Do not start this inside the held
+run** — it is its own operation, it touches every template charter, and it deserves its own
+archive and its own blast-radius proof. Bring me a plan; do not improvise the substitution
+list.
+
+#### 20.3 — F-028 (which I had not seen): `FIXED`, and it sharpens an existing rule
+
+> *"Gave the owner the uat migration steps without the deploy note's BEFORE count."*
+
+It is the same shape as F-004 — an instruction to the owner missing the part that lets him
+tell success from failure. **Two occurrences is a pattern, not a slip**, and the common
+element is precise: **the BEFORE reading.**
+
+Add one clause to ORDER 12.3 ④'s rule, in `PM.md` and in `workforce-protocol`:
+
+> **Any instruction that changes state carries the BEFORE reading the owner should take
+> first** — the count, the row, the version, whatever the AFTER will be compared against.
+> Without it he cannot prove the change did what it claimed, only that it ran.
+
+Set F-028 → `FIXED` once that clause is in, naming it.
+
+#### 20.4 — Residuals I am leaving alone, deliberately
+
+- The four lines carrying one desk's environment words (`sid`, `uat`, `LIFF`, `OA`) are
+  **incident narrative**, and one of them sits inside the owner's verbatim Thai quote.
+  **Leave them.** A quote that has been tidied is no longer evidence, and stripping the
+  narrative turns the skill into a platitude. Desk *names* and *people* were the defect;
+  the story is the value.
+- `harness-console` F-001 (a UI information-load gap, `Rule involved: NONE`): **do not count
+  it closed by the spread.** No skill covers it. I will read it and decide separately.
+- `QA.md`'s missing boundaries card is desk-only, since the template has one. Fold the card
+  into the held run: give the desk's `QA.md` the same `## Hard boundaries` shape the template
+  uses, and move the attribution boundary into it from `### 1c`.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-08 — **ORDER 18 + 19: the WORKSPACE-LEVEL half is DONE and verified; the IN-DESK half is
+  HELD because a role session is live.** By my own hands only — `_templates/` and the gate are mine;
+  nothing inside any project's `ai-worker/` was touched, and no PM was spawned.
+  🔴 **WHY HELD:** `QA - Tanya` (smart-scheduler) was **running, last activity 23 seconds before I
+  checked**. ORDER 19 edits `QA.md` — her own charter, which she is reading right now — and
+  `inbox/QA.md` + today's log are already modified in the working tree. Spawning Porter to edit that
+  desk would have put two writers on one desk. Charter says wait; I waited and asked.
+  **① RE-VERIFIED Atlas's generalisation myself, did not take his word (ORDER 18 c).** Six files
+  (`verify-before-relay` · `quote-dont-paraphrase` · `check-by-running-not-reading` · `write-it-now` ·
+  `rules/attribution` · `reproduce-first`): **person names 0 · desk/project names 0 · artefact ids 0.**
+  The four identifiers that blocked 17.5 (Porter l.16/l.34, Tanya l.40, smart-scheduler l.7) are gone.
+  ⚠️ **Residual, reported not patched:** 4 lines still carry ONE desk's environment/platform
+  vocabulary — `verify-before-relay.md` l.26/27/28 (`sid`, `uat`, `LIFF`, `OA`, LINE-font) and
+  `reproduce-first.md` l.27 (`sid`, **inside the owner's verbatim Thai quote**). Judged NOT a blocker:
+  they are incident narrative, which Atlas said to keep intact, and the quote cannot be edited without
+  falsifying it — the skill that sits beside it teaches exactly that. Flagged for Atlas's call.
+  **② ORDER 18.3 — the imaginary guard is GONE.** Verified independently first: **no `"hooks"` key in
+  any settings file** (`.claude/settings.local.json` is the only workspace one; neither user settings
+  file has it). `workforce-protocol` §7 now says plainly that **nothing enforces the section** and names
+  the agent-environment conflict from 18.4 (an instruction telling agents to edit with `sed`/heredocs)
+  as wrong here, with §7 winning. Diff **9 insertions / 2 deletions**, 16 `## ` headings unchanged.
+  📌 The old sentence survives only inside quotation marks, labelled false — the correction is the record.
+  **③ ORDER 18.1 / 17.5 — the SPREAD into `_templates/project`, done.** Six craft files copied in,
+  **`cmp` clean against the canonical `_templates/skills/` + `_templates/rules/` sources, all six.**
+  All five template charters (PM · SA-Lead · BE · FE · QA) wired: one `## Skills` block each with the
+  per-role table, and the `NEVER BORROW THE OWNER'S AUTHORITY` blockquote in each boundaries card.
+  ✅ **Blockquote digest `bb8a468e7281a72821c06076ec674fe4` in all 5 templates AND all 8 desk charters
+  — 13 files, one digest, exactly once per file.**
+  **④ ORDER 19 — skill file + the `## Step 0` shape installed at template level.** `reproduce-first.md`
+  into `_templates/project/ai-worker/` and routed from PM (writes the recipe), SA (§4 clause only) and
+  QA (Step 0 before judging the fix). The `## Step 0 — reproduction on the OLD build` block added to
+  **all three** TEST templates (`project/ai-worker/QA.md`, `skills/role-qa/references/test-template.md`,
+  `roles/TANYA.md`), each carrying a `DEFECT WORK ONLY — delete for a feature` comment so the shape
+  cannot become ceremony.
+  ✅ **VERIFIED.** Blast radius by `git status`: **exactly 8 modified + 7 untracked, every one under
+  `_templates/`.** No project `ai-worker/`, no board, no inbox, no `SYSTEM-FACTS.md`, no charter at any
+  desk, no `check-hygiene.mjs`. `git diff --numstat`: **22/0 · 22/0 · 24/0 · 36/0 · 24/0 · 12/0 · 15/0**
+  — purely additive on seven of the eight; only §7 deletes (9/2), intentionally. Gate re-run after:
+  `--list` enumerates all 14 desks, harness-console **exit 0**, no verdict moved.
+  🔴 **ORDER 19.1's GATE RULE IS NOT INSTALLED — I cannot tell defect work from feature work
+  mechanically, which is the case 19.1 told me to bring back rather than guess. Measured, not assumed:**
+  **(a)** No machine-readable type field exists — `grep` for `Type|Kind|Category|Class` across **114**
+  requirement files returns **0**. **(b)** The filename prefix carries no signal: **113 of 114 are
+  `REQ-`, one is `FIX-`** — and REQ-083/REQ-084 are *titled* as the owner's own `FIX-008`/`FIX-009`
+  while filed as `REQ-`. **(c)** Title keyword matching misfires in the direction Atlas warned about:
+  my defect regex matched **8** REQ titles, and REQ-037 (*"Add a one-time EXTRA session … does NOT use
+  the course quota"*) is a pure **feature**. **(d)** 🔑 **The worst of it is the link, not the
+  classification: a TEST file does not resolve to one REQ.** `TEST-REQ030-BATCH` names **four** source
+  REQs of mixed kinds; `TEST-PROD` names about seven and is a smoke set. The field name itself varies —
+  `- Source REQ:` · `- Source REQs:` · `- Source:`. *So "whose source REQ is defect work" has no single
+  value to classify, let alone a classifiable one. A gate built on this fires on the wrong half by
+  construction.* **Proposal carried to the owner, NOT installed: the missing input is a declared field**
+  — one `- Kind: DEFECT | FEATURE` line in the REQ, written by the PM, plus one normalised
+  `- Source REQ:` form in the TEST file. Then the gate is a two-line lookup that never guesses. That is
+  an authoring rule, so it is Atlas's or the owner's to order, not mine to invent.
+  🔑 **AND THE DESK HANDED ME THE DECIDING EVIDENCE WHILE I WAS WRITING THIS.** `tests/TEST-089-req116-sid.md`
+  appeared at 21:40, mid-run: *"REQ-116 reproduced on sid, before TASK-707 (old front `f60d7e7`)"* —
+  **Verdict ✅ REPRODUCED**, part 2 held for the deploy. That is `reproduce-first` performed **exactly
+  right**, by the Tester, on the owner's own instruction, *before the skill was installed anywhere.*
+  **It carries no `## Step 0` heading** — the result sits in a `**Verdict:**` line. The rule as 19.1
+  words it keys on that heading, so **it would FAIL the model example** the moment part 2 turns the
+  status to `TEST_PASSED`. *A gate that fires on the one file that did the thing properly would teach
+  the desk that the rule is noise.* **The shape has to exist in the template first (it does now, as of
+  this run) and be used for a while before any gate may demand it.** Sequencing, not a veto.
+  🔎 **FOUND WHILE VERIFYING — three corrections to the orders, reported not patched:**
+  **(a) `harness-console` has ONE unreviewed entry, not three.** Both 17.5 and 18.1 say three; the gate
+  says `1 unreviewed (F-001)` and the file only reaches F-001. **And the spread will not close it:**
+  F-001 is *"REQ-001 specified data correctness only; the delivered UI was unusable"* — `Rule involved:
+  NONE`, an information-load gap no one of the six skills covers. Closest lever is `FRONTEND-STANDARD.md`
+  / the `impeccable` route, not these. **Do not count it as fixed on install.**
+  **(b) `F-028` exists and Atlas has never seen it** — 2026-10-08, PM, *"gave the owner the uat
+  migration steps without the deploy note's BEFORE count"*. smart-scheduler's real NEW count is **6**
+  (F-004, F-009, F-010, F-019, F-020, F-028), so ORDER 18's three decisions leave **three** open, not two.
+  **(c) ORDER 18.2's gap is DESK-ONLY — the template is already right.** The desk's `QA.md` carries the
+  rule as `### 1c` with no boundaries card, but `_templates/project/ai-worker/QA.md` **has** a
+  `## Hard boundaries — check this card before every message you write` card (I put the blockquote
+  inside it). So when Atlas writes the card it is a one-desk edit, not a template defect. **I did not
+  improvise one, per 18.2.**
+  ⚠️ **ALSO FOUND, mine to flag only:** the **desk's three copies are now STALE** — `cmp` says
+  smart-scheduler's `verify-before-relay.md`, `quote-dont-paraphrase.md` and `attribution.md` still
+  differ from the templates, and `grep` confirms they still carry **Porter** (l.16, l.34), **Tanya**
+  (l.40) and **smart-scheduler** (l.7). The generalised versions never reached the desk. *A refresh of
+  those three is part of the held in-desk operation — and it is the reason to re-copy rather than
+  re-edit.* Separately: `_templates/project/ai-worker/*.md` hard-code **Porter / Sober / Jason / Fern /
+  Tanya** in their boundary tables, so every desk born from this template inherits one desk's names —
+  the same family as ORDER 16 ② and the 17.5 blocker. **Not fixed; it is a design call, not an install.**
+  ⏳ **HELD, needs the owner's word that the desk is quiet (then one spawned-PM run each):**
+  statuses F-004 → `FIXED`, F-010 → `FIXED`, F-009 → `ATLAS-REVIEWED` · refresh the three stale desk
+  copies · `reproduce-first.md` + its routing into the desk's `PM.md`, `QA.md`, `SA-Lead.md`,
+  `SA-Lead-B.md` · ORDER 19.2's one-line pointer replacing the interim `SYSTEM-FACTS.md` text ·
+  all six files + wiring at `harness-console`.
+  ⏳ **NOT MINE, unchanged:** F-019 guard (owner) · F-020 promotion (owner) · `QA.md` boundaries card
+  (Atlas) · 19.1's gate rule (blocked on the declared-field decision above).
+  🔴 **STILL TRUE AND UNTOUCHED FROM 10-07:** smart-scheduler's `board.md` is **107 KB** with 44
+  over-long cells, and the boot read is far over the 120 KB gate. *This run was an install; I did not
+  mix housekeeping into it, for the same reason as last time — a blast radius stops being provable.*
 
 - 2026-10-07 — **ORDER 17 installed at smart-scheduler: 4 skills + 1 hard-boundary rule, 22 of 27
   FAILURES statuses set. Gate's FAILURES check FAIL(27 unreviewed) → WARN(5); project RESULT
