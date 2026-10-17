@@ -331,3 +331,40 @@ Adding the inventory line is the designed process. I've asked Porter for a **sta
 - **The guard edit is RIGHT:** with no teacher picked yet on the calendar's new entry, `!subject` would show the teacher's "families will be told" warning on an admin screen, which is TASK-651 F5's defect. **One token in the pin's string, nothing else.**
 - **One more bite (condition):** add to your 818 set the guard reverted to `!subject`. It must fail a test that opens the **calendar entry** (admin, no teacher picked, today) and asserts the cancel warning is absent.
 - Then run the set and report the table, plus tsc · `bun test` · build · unhandled · `git status` · the DRAFT table. Nudge me.
+
+---
+## @Sober → @Fern — 2026-10-17 — ✅ TASK-818 VERIFIED (1217/0 · set 27/27 · build 0 · pin edits exact). ▶️ GO TASK-820
+- **The back is ready for 820:** TASK-819 is VERIFIED.
+  - `GET /teacher-leave-days` items carry `rangeId` and classes with child (+ DUO co-child) · program · title · inCourse · status · booking id;
+  - `?teacherId`, past window;
+  - `DELETE /teacher-leave-ranges/:id` (future days only; `kept` days reported; one LINE);
+  - the per-day lift also accepts `menu:teachers`.
+- **`LeaveDayBanner.tsx`** is granted to Team A; mount the panel in our files (`CalendarContent.tsx` stays untouched).
+- **"Open"** opens the existing booking modal; nothing is bulk-changed from the panel.
+- **The approved 814 copy** for Cancel, verbatim. **New wording = a DRAFT table** (incl. "cancel all future days" for a range).
+- **Your notes:** the family count goes to the owner as a question; the mock range answer is fine.
+- Nudge me when green.
+
+---
+## @Sober → @Fern — 2026-10-17 — ✅ TASK-820 VERIFIED (1237/0 · set 20/20 · build 0). Step 1: re-aim TASK-589's pin. Step 2: ▶️ GO TASK-821
+1. **TASK-589 pin** (`leave-days.test.ts` "it is NOT a control"). Ruled at the bottom of TASK-820:
+   - re-aim it to the truth: the chip opens the leave; the panel holds no booking write, only the two leave lifts;
+   - retitle it;
+   - add a set mutation (a booking-cancel call added to the panel) that bites it.
+   - Report it with 821.
+2. **TASK-821**: the "Teacher leave" list on the Teachers page (back ready: `?teacherId`, past window, `rangeId`, `menu:teachers` on the list and BOTH lifts). Clicking a leave opens 820's panel; the panel's "See all teacher leave →" links here.
+   - New wording = a DRAFT table. Inventory line for any new gate.
+   - Nudge me when green. **That closes Phase 1's front.**
+
+---
+## @Sober → @Fern — 2026-10-17 — ▶️ GO: flip the Phase 1 DRAFT markers to APPROVED (front), re-run your sets, then FREEZE
+- **Approved verbatim** by the owner (*"อนุมัติทั้งหมด 31 วัน A"*), recorded in `COPY-REVIEW-2026-09-29.md` (10-17): **every string exactly as drafted**, **31 days**, **P7 = A** (no family count).
+- **Flip ONLY the REQ-123 Phase 1 DRAFT markers** (the comments / flags you added in 815–821) to *"✅ APPROVED by the owner 2026-10-17 (REQ-123 Phase 1), COPY-REVIEW-2026-09-29.md, verbatim"*. **No word changes.**
+  - 🚫 **Other, older DRAFT markers in the repo** (camp, voucher, parent notices…) are NOT ours tonight. Leave them exactly as they are.
+- **Re-aim each set mutation that guarded a DRAFT marker** so it now guards the APPROVED marker / the approved text (e.g. "the approved marker is dropped" or "the text differs from the approved one"). It must still bite.
+- **Re-run every set you own on the final tree + the full suite**, and report:
+  - counts · `unhandled-between-tests` · each set's N/N;
+  - **`git status --short -uall` in full** (I build the owner's commit list from it).
+- 🧊 **After you report: FREEZE.** Save nothing in your repo until I say "unfrozen" (the owner commits next).
+- Yours: the DRAFT keys of 816 (3) · 818 (10) · 820 (6) · 821 (7) in `dictionaries.ts`, in both languages, + any marker comment. Sets 814 · 816 · 818 · 820 · 821 (incl. T17-style "marker dropped" mutations, re-aimed to the approved marker).
+- Then also `npx tsc --noEmit` + `bun run build`.

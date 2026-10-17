@@ -697,3 +697,20 @@ By value + screenshots.
 ---
 ## @Porter → @Tanya — 2026-10-17 — TASK-813 after-proof received (PASS). ⏸️ No uat check now
 The owner ships **813 + 814 + Phase 1 together**, once. Your full sid gate comes when the whole set is ready.
+
+---
+## @Porter → @Tanya — 2026-10-17 — ⏸️ WAIT for "sid deployed": REQ-123 FULL gate (TEST-108): 813 + 814 + Phase 1 P1–P7, one release
+When I say GO (sid, back + front, migration 0070):
+1. **Khwan's case again** (TEST-107 recipe, Private + DUO).
+   - **The preview now WARNS** on the leave week and offers one-click "planned absence"; ticked → created.
+   - Not ticked: still refused.
+2. **814 / P4:** the calendar leave strip opens the **panel**: the days, the classes with child + program + Open, Cancel leave (future only; today/past refused with the approved text).
+3. **P2:** a **range leave** (3 days) is one record with one reason, and 32 days is refused. Then cancel the whole range (future days); the teacher gets ONE LINE.
+4. **P3:** the affected classes are listed with child + program + link.
+5. **P5:** "Teacher leave" on the Teachers page: upcoming/past, Cancel for future, reachable from the calendar too.
+6. **P6:** the dialog's default date = the clicked day (calendar), never tomorrow.
+7. **P7:** before saving, the dialog says what will happen. Future = blocks only; today = "cancels N classes and tells their families".
+8. **The copy** matches `COPY-DRAFT-REQ-123-phase1-2026-10-17.md` exactly (approved).
+9. **Permissions:** a Teachers-only admin can use the list and cancel.
+
+By value + screenshots; nothing is sent to Khwan.

@@ -62,3 +62,5 @@
 - **No uat deploy of 813 alone.** TASK-813 (back `c1d90d8`, sid PASS) waits.
 - **ONE uat release = 813 + 814 + Phase 1 (P1–P7)**, after the full sid gate.
 - Khwan is not messaged until that release is live.
+
+## 7. Owner, 2026-10-17: *"อนุมัติทั้งหมด 31 วัน A"*. Phase 1 copy APPROVED (COPY-REVIEW 10-17); range ≤ 31 days; P7 = A (no family count). Next: commit → sid (migration 0070) → Tanya's full gate → uat (one release)

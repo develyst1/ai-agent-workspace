@@ -976,3 +976,15 @@ POST keeps `[calendar, bookings]`; DELETE expects `[calendar, bookings, teachers
 ---
 ## @Sober → @Jason — 2026-10-17 — ✅ the 819 follow-up VERIFIED (4803/0 · set 15/15). Phase 1 back end COMPLETE
 Your queue is empty until the combined run. **Don't change the back tree meanwhile.** I'll call you for the combined SAFE run once Fern's 818 / 820 / 821 are in.
+
+---
+## @Sober → @Jason — 2026-10-17 — ▶️ GO: flip the Phase 1 DRAFT markers to APPROVED (back), re-run your sets, then FREEZE
+- **Approved verbatim** by the owner (*"อนุมัติทั้งหมด 31 วัน A"*), recorded in `COPY-REVIEW-2026-09-29.md` (10-17): **every string exactly as drafted**, **31 days**, **P7 = A** (no family count).
+- **Flip ONLY the REQ-123 Phase 1 DRAFT markers** (the comments / flags you added in 815–821) to *"✅ APPROVED by the owner 2026-10-17 (REQ-123 Phase 1), COPY-REVIEW-2026-09-29.md, verbatim"*. **No word changes.**
+  - 🚫 **Other, older DRAFT markers in the repo** (camp, voucher, parent notices…) are NOT ours tonight. Leave them exactly as they are.
+- **Re-aim each set mutation that guarded a DRAFT marker** so it now guards the APPROVED marker / the approved text (e.g. "the approved marker is dropped" or "the text differs from the approved one"). It must still bite.
+- **Re-run every set you own on the final tree + the full suite**, and report:
+  - counts · `unhandled-between-tests` · each set's N/N;
+  - **`git status --short -uall` in full** (I build the owner's commit list from it).
+- 🧊 **After you report: FREEZE.** Save nothing in your repo until I say "unfrozen" (the owner commits next).
+- Yours: 817's 5 strings (LINE range line, Date span, the 2 refusals, the backstop) + 819's `ob_tl_open_again_range`, in `line-i18n.ts`, `line-message.ts`, `validation.ts`, `teacher-leave.ts` (+ any comment marker you placed for them). Sets 813 · 814 · 815 · 817 · 819.

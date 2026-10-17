@@ -620,3 +620,8 @@
 | toast (told) | ยกเลิกวันลาแล้ว — แจ้งครูทาง LINE แล้ว | Leave cancelled — the teacher was told on LINE |
 | toast (not told) | ยกเลิกวันลาแล้ว — ครูยังไม่ได้เชื่อม LINE กรุณาแจ้งครูเอง | Leave cancelled — the teacher has no LINE link, please tell them yourself |
 | refusal (today/past) | ยกเลิกได้เฉพาะวันลาล่วงหน้า (วันถัดไปเป็นต้นไป) — วันลาของวันนี้หรือวันที่ผ่านมาแล้วยกเลิกไม่ได้ | Only a future leave day can be cancelled. Today's or a past leave can't be cancelled |
+
+## 2026-10-17 — APPROVED by the owner: REQ-123 Phase 1, every string in `COPY-DRAFT-REQ-123-phase1-2026-10-17.md` (TASK-817 ×5 · 816 ×3 · 818 ×10 · 819 ×1 · 820 ×6 · 821 ×7), verbatim *"อนุมัติทั้งหมด 31 วัน A"*
+- **The range limit: 31 days** (as drafted).
+- **P7 = A:** `willCancel` says "tells their families" **with no number** (as drafted).
+- The approved wording is the draft file's TH/EN columns, unchanged. **Nothing is reworded.**

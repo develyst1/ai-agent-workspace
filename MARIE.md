@@ -1150,6 +1150,62 @@ Set F-028 → `FIXED` once that clause is in, naming it.
 
 ## Operations log (append one line per operation, newest first)
 
+- 2026-10-17 — **`nudge-session` SKILL INSTALL: Porter's diagnosis CONFIRMED, but I did NOT install
+  it, and I was right not to — the install target is a SYNCED store fed from the owner's claude.ai
+  account. He is updating it at source instead. 🔴 AS OF THIS ENTRY THE SYNC HAS NOT LANDED.**
+  **How it arrived, which is itself a finding:** @Porter (smart-scheduler PM) messaged me
+  **directly**, cross-session. `PM.md` says *"Marie is not on your chain — you cannot call her;
+  you tell the owner to."* ⇒ **a routing violation.** I answered rather than bouncing it (the
+  content was good and the owner was visibly waiting) **and told him to send the next one through
+  the owner.** 🔑 *Quietly accepting a skipped hop is how the rule stops existing for everyone —
+  the cost of flagging it is one sentence; the cost of not flagging it is the chain.*
+  ✅ **His claim verified with my own commands, not from his report:** template
+  `_templates/skills/nudge-session/SKILL.md` = **3** × `list_sessions`; the installed copy
+  (`~/.claude/skills/synced/…/nudge-session/SKILL.md`) = **0**, 6781 B, mtime **2026-10-07**. So
+  every role has been reading the old *"Not listed → tell the operator"* route, which hands the
+  ball to the owner whenever a session is merely stopped. **That is a real cause of the thing he is
+  complaining about.**
+  🔴 **WHAT PORTER COULD NOT SEE, AND WHY THIS WAS NOT A COPY-A-FILE JOB.** The installed copy is
+  not in a local plugin folder — it is in `skills/synced/<uuid>_<uuid>/`, whose `manifest.json`
+  carries `pendingClaims` against the owner's account. **Those files are pulled down from
+  claude.ai.** A hand-edit there survives only until the next sync. 🔑 ***For THIS bug that is the
+  worst available outcome: nudges start working, later stop again, and nobody connects it to a
+  sync. A fix that can silently revert is not a fix, it is a trap with a delay on it.*** ⇒ I put
+  the options to the owner instead of writing the file. **He chose: update at source on claude.ai.**
+  ⚠️ **STATE RIGHT NOW, measured after he said "อัปไปแล้ว": the local copy is UNCHANGED** — still
+  6781 B, 0 × `list_sessions`, mtime 2026-10-07, and the `manifest.json` is also still 10-07.
+  **The roles are still loading the old skill.** The ball is on the sync, not on me; there is
+  nothing I can do locally that is not the trap above. *Said plainly because "the owner uploaded
+  it" and "the team has it" are two different facts, and only the second one stops the nudges
+  breaking.*
+  🔴 **AND A VERSION RACE THE OWNER NEEDS TO KNOW ABOUT, found because I measured the same file
+  twice an hour apart.** When I first checked, the template was **9542 B (mtime 20:44)**. By the
+  time he answered it was **15527 B (mtime 21:34)** — **Atlas had meanwhile added the
+  paused-sends/relay rules**, i.e. Porter's item 2, the other half of the same report
+  (`## When YOUR OWN sends are paused`, `### When BOTH ends are paused — the relay queue`).
+  ⇒ **If his upload happened before 21:34 he uploaded the 9542 B version, and claude.ai now holds
+  a copy that is already behind the repo.** 📌 *Two people fixing two halves of one report, in
+  parallel, with a manual upload in the middle — the upload is a snapshot, and a snapshot taken
+  mid-edit is stale the moment it lands. Worth a standing habit: before uploading a template,
+  check its mtime against what you last read.*
+  🔎 **Third copy investigated, NOT deleted** (owner asked what to do with it; my answer is below
+  and it is not "remove it"). `H:\ai-agent-workplace\skills\skills\nudge-session\SKILL.md` —
+  3425 B, 0 × `list_sessions`, 2026-10-06. **Nothing loads it:** no settings file, no plugin
+  config, no `AGENTS.md`/`CLAUDE.md` references it, and it is not a git repo. It sits beside
+  `__MACOSX` resource-fork folders and a full set of role skills (`role-pm`, `role-sa`, …) ⇒ **it
+  is an unzipped UPLOAD BUNDLE, an artifact of an earlier upload, not an install.**
+  ⚠️ **But it is exactly the thing that can undo today's work: it is a plausible-looking folder to
+  re-zip and upload.** Doing so would push the **10-06** skill over the good one and the nudges
+  would break again with no apparent cause. 🔑 *The danger of a stale copy is rarely that something
+  reads it — it is that a human mistakes it for the master.* ⇒ **Recommendation to the owner, not
+  acted on: upload only ever from `_templates/skills/…`, and let me mark that bundle folder
+  SUPERSEDED (a one-line note inside it) rather than delete it.**
+  **Nothing was written to any skill store, any charter, or any desk in this operation.** My only
+  writes: this entry, and a reply to Porter.
+  🔴 **BALL: the owner** — (1) confirm the upload carried the **21:34** template, not the 20:44 one;
+  (2) get the sync to land, then I confirm with the same grep (installed must read **3**);
+  (3) say whether I may mark the `H:\ai-agent-workplace\skills\` bundle SUPERSEDED.
+
 - 2026-10-08 — **ORDER 18 + 19: the WORKSPACE-LEVEL half is DONE and verified; the IN-DESK half is
   HELD because a role session is live.** By my own hands only — `_templates/` and the gate are mine;
   nothing inside any project's `ai-worker/` was touched, and no PM was spawned.

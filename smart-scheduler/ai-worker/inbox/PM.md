@@ -5175,3 +5175,45 @@ Full brief: `tasks/TASK-814-admin-cancel-future-advance-leave-be-fe.md`.
   - **both still assert the status key**, the pin's real point;
   - comment `🔻 TASK-819 follow-up`. Nothing else in the file.
 - **My ruling:** right on substance. Jason HOLDs that file for your grant; the rest is green (4,800 / that 1).
+
+---
+## @Sober → @Porter — 2026-10-17 — ✅ REQ-123 ONE RELEASE (813 + 814 + Phase 1 P1–P7): BUILT and VERIFIED in one combined run. Two things wait for the owner: the COPY, then the commit
+### The combined run (my own, clean copies of both whole trees)
+| | result |
+|---|---|
+| **back** (`c1d90d8` = 813 committed + 63 changed files) | tsc 0 · SAFE suite **4,803 / 0**, 354 files · unhandled 0 · **migrations 71 = journal 71** |
+| back sets | 813 **8/8** · 814 **7/7** · 815 **6/6** · 817 **13/13** · 819 **15/15**: 0 survivors |
+| **front** (`d1d0a99` + 34 changed files) | tsc 0 · `bun test` **1,257 / 0**, 138 files · unhandled 0 · **build 0** |
+| front sets | 814 **10/10** · 816 **11/11** · 818 **27/27** · 820 **22/22** · 821 **16/16**: 0 survivors |
+
+### 1 · COPY: ONE table for the owner
+`COPY-DRAFT-REQ-123-phase1-2026-10-17.md`: **all new strings of 817 · 816 · 818 · 819 · 820 · 821, TH/EN**. TASK-814's copy is already approved. **Two decisions inside it:**
+- **(a)** the 31-day limit on one leave;
+- **(b) P7:** "tells their families" with no number (**A**), or the exact family count (**B**, a small back-end addition ≈ 0.3 d).
+
+**Nothing is committed before the copy is approved:** the strings are in the code marked DRAFT, so a changed word is a small swap + my re-check, not a second commit.
+
+### 2 · Then the commit → sid → Tanya → uat
+- **The owner commits both trees as they stand** after the copy round. I give the exact file lists then: **back 63 files** (incl. migration `0070`, the journal, 38 count-pin tests) · **front 34 files**.
+- **sid deploy:** back + front together. **Migration `0070`** (one nullable column, rerunnable). No env, no script, no menu step.
+- **Tanya's full gate:**
+  - the 813 recipe again (Private + DUO);
+  - 814 cancel (a future day; a past/today refusal);
+  - **P1** the preview warning + one-click absence;
+  - **P2** a range (one LINE; days already there are skipped);
+  - **P3/P4** the calendar chip → panel → Open → the booking modal; Cancel one / all future;
+  - **P5** the Teachers-page list, upcoming/past;
+  - **P6** the default date (calendar day / empty);
+  - **P7** the before-save summary.
+- **Then uat**, with my deploy note (0070, both apps).
+
+**Not proven by anyone yet:** all of it against a real DB and a real browser. That is sid, with Tanya.
+
+---
+## @Sober → @Porter — 2026-10-17 — ✅ REQ-123 release READY for the owner's commit: `DEPLOY-REQ-123-teacher-leave-release-2026-10-17.md`
+- **Exact commit lists** (back 63 · front 34), taken by me after the freeze.
+- **The final verify** after the approval flip: back **4,808 / 0** + 5 sets · front **1,257 / 0** + build + 5 sets. 0 survivors.
+- **Deploy:** sid first, both apps, **migration 0070 → journal 71** (one nullable column, rerunnable), no env/script/menu step.
+- **Tanya's full gate** listed by P.
+- **Jason's flip also caught a real bug in his own code:** the range validation swallowed the owner's two approved refusals into «Invalid input». It is fixed and covered by tests.
+- 🧊 **Jason and Fern are FROZEN** until the owner has committed. Tell me when he has, and I unfreeze them.

@@ -3545,3 +3545,68 @@ Owner, verbatim: *"ฉันต้องบอกready มันถึงงา�
 - corrections go to the inbox first.
 
 Test before ringing: *"would this bell change what they do in the next minute?"*
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ the owner APPROVED all Phase 1 copy, verbatim *"อนุมัติทั้งหมด 31 วัน A"*
+- Every string as drafted · **31 days** · **P7 = A** (no family count). Recorded in `COPY-REVIEW-2026-09-29.md` (10-17).
+- Flip the DRAFT markers to approved (no word changes), re-run the sets that guard them, and give me **the exact commit file lists, back and front**, plus **the deploy note** (migration **0070**, journal **71**, sid first, then uat, both apps).
+- Then I hand it to the owner. **Freeze both engineers after the flip**, until the owner commits.
+
+---
+## ✅ 2026-10-17 — Jason (BE) → @Sober: Phase 1 markers flipped to APPROVED, sets re-run, FULL git status below. 🧊 FREEZING now.
+**Flipped (comments only, no word changes), verbatim marker «✅ APPROVED by the owner 2026-10-17 (REQ-123 Phase 1), COPY-REVIEW-2026-09-29.md, verbatim»:** `line-i18n.ts` (`ob_tl_blocked_range` TASK-817 · `ob_tl_open_again_range` TASK-819) · `line-message.ts` (the range Date-span/«those days» comment) · `teacher-leave.ts` (the writer backstop `ช่วงวันลาไม่ถูกต้อง`; and the 31-day constant now «owner-approved 2026-10-17», no longer «a draft limit») · `validation.ts` (the two refusals + «31 วัน A») · the 817 test title. Older DRAFT markers (camp/voucher/parent: line-i18n 762/764 …) left exactly as they are.
+**Mutations re-aimed/added so the APPROVED text and marker are guarded:** 817 set **F14** (a refusal text differs) · **F15** (backstop text differs) · **F16** (the APPROVED marker turned back into DRAFT) · 819 set **G16** (approved Thai of the range open-again line differs) · **G17** (its marker back to DRAFT) · 814's D6 already guarded the approved lift text. New verbatim pins: both refusals, the backstop, the open-again-range line, "no Phase-1 DRAFT marker left".
+### ⚠️ One real defect found and fixed while pinning the approved refusals (in my 817 claim, `validation.ts`)
+`adminTeacherLeaveBody` was a **`z.union`** of the range and single schemas. In zod 4 a union reports ONE generic `Invalid input`, so **the owner's two approved refusal sentences would never have reached the admin** (my earlier test passed only because it read inside the union). It is now **one object + `superRefine` + `transform`** (same accepted bodies, same parsed output `{teacherId, date: from, to, reason}` for a range / the single-day shape unchanged, ambiguous bodies still 400). A root-app test now proves the 400's `details[].message` carries «วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่ม» and «ลาล่วงหน้าได้ไม่เกิน 31 วันต่อครั้ง». F8/F9/F10 re-aimed to the new schema text.
+**Sets on the final tree (every one CHECKSUM identical):** 813 **8/8** · 814 **7/7** · 815 **6/6** · 817 **16/16** · 819 **17/17**.
+**tsc 0 · SAFE suite 4,808 pass / 0 fail, 354 files · unhandled-between-tests 0 · migrations 71 = 71.**
+**`git status --short -uall` (back) — 63 lines, also saved verbatim as `smart-scheduler/ai-worker/GIT-STATUS-back-phase1-2026-10-17.txt`:**
+- ` M` non-test (13): `drizzle/meta/_journal.json` · `src/db/schema.ts` · `src/lib/line-i18n.ts` · `src/lib/line-message.ts` · `src/lib/migration-witness.ts` · `src/lib/route-access.ts` · `src/lib/teacher-leave.ts` · `src/routes/api.ts` · `src/services/scheduler.service.ts` · `src/types/contract.ts` · `src/validation.ts` (11 — plus the two below are tests) 
+- ` M` test files (41): the 38 count-pin files (70→71) + `admin-leave-future-only-task648` · `admin-records-teacher-leave-task608` · `teacher-leave-admin-list-task587` · `teacher-leave-day-task561` · `course-ended-writes` · `subject-kind-req095-13-4a` (805's, if not yet committed) — exactly the list in the file.
+- `??` (9): `drizzle/0070_teacher_leave_range.sql` · `admin-lift-leave-future-only-task814.{test.ts,mutations.json}` · `leave-range-task817.{…}` · `leave-list-detail-task819.{…}` · `preview-flags-leave-week-task815.{…}`.
+*(Counts in this list are my reading of the file; the file is the authority — please build the commit list from it.)*
+🧊 **FROZEN: I save nothing in `smart-scheduler-back` until you write «unfrozen» in `inbox/BE.md`.**
+
+---
+## ✅ @Fern → @Sober — 2026-10-17 — Phase 1 copy flipped DRAFT → APPROVED (no word changed). Re-run complete. 🧊 FROZEN.
+- **Flipped (front):** the marker comment of the DRAFT keys in `dictionaries.ts`, both languages — **816 (3) · 818 (10) · 820 (6) · 821 (7)** — now `✅ APPROVED by the owner 2026-10-17 (REQ-123 Phase 1, TASK-8xx), COPY-REVIEW-2026-09-29.md, verbatim.` / `✅ อนุมัติโดยเจ้าของ 2026-10-17 (REQ-123 Phase 1, TASK-8xx) — COPY-REVIEW-2026-09-29.md — ตามต้นฉบับทุกตัวอักษร`; the "DRAFT words" line in `LiftRangeConfirm.tsx`; one stale word in my own declared comment in `teacher-scope.test.ts` (§6, "TEN DRAFT keys" → "TEN keys … APPROVED"). **Every key's text is untouched.** Older DRAFT markers elsewhere (camp, voucher, parent notices, the TASK-611 / leave-claim ones) left exactly as they were.
+- **Tests / sets re-aimed:** my four marker assertions now count the APPROVED marker once per language (816 · 818 · 820 · 821); the "marker dropped" mutation of each set now drops the APPROVED marker (818 H6 · 820 P19 · 821 T17, + a new **816 W12**). All bite.
+- **Results on the final tree:** `tsc` 0 · `bun test` **1257 pass / 0 fail** (138 files; teacher-scope re-run after the one comment word: 15/0) · `bun run build` exit 0 · `unhandled-between-tests: 0` · **sets: 814 10/10 · 816 12/12 · 818 27/27 · 820 22/22 · 821 16/16**, every CHECKSUM identical.
+- **`git status --short -uall` (front, 34 files):**
+```
+ M src/components/partials/Bookings/CreatePlanFlow.tsx
+ M src/components/partials/Calendar/CalendarHeader.tsx
+ M src/components/partials/Calendar/LeaveDayBanner.tsx
+ M src/components/partials/Calendar/Modal/ReportLeaveDialog.tsx
+ M src/components/partials/Teachers/TeacherRowActions.tsx
+ M src/components/partials/Teachers/TeachersContent.tsx
+ M src/components/partials/Teachers/teacher-leave-row.dom.test.tsx
+ M src/hooks/scheduler/useScheduler.ts
+ M src/lib/i18n/dictionaries.ts
+ M src/lib/rbac/action-gate.test.ts
+ M src/lib/scheduler/leave-days.test.ts
+ M src/lib/scheduler/teacher-scope.test.ts
+ M src/services/scheduler.service.ts
+ M src/types/api/contract.ts
+ M src/types/app/scheduler/index.ts
+?? scripts/mutation/task-814.json
+?? scripts/mutation/task-816.json
+?? scripts/mutation/task-818.json
+?? scripts/mutation/task-820.json
+?? scripts/mutation/task-821.json
+?? src/components/partials/Bookings/LeaveWeekNotice.tsx
+?? src/components/partials/Bookings/leave-week-notice-task816.dom.test.tsx
+?? src/components/partials/Calendar/CancelLeaveButton.tsx
+?? src/components/partials/Calendar/LeaveChip.tsx
+?? src/components/partials/Calendar/LeaveClassOpener.tsx
+?? src/components/partials/Calendar/LeaveDayPanel.tsx
+?? src/components/partials/Calendar/LiftLeaveConfirm.tsx
+?? src/components/partials/Calendar/LiftRangeConfirm.tsx
+?? src/components/partials/Calendar/Modal/LeaveTeacherPick.tsx
+?? src/components/partials/Calendar/Modal/leave-range-task818.dom.test.tsx
+?? src/components/partials/Calendar/leave-panel-task820.dom.test.tsx
+?? src/components/partials/Calendar/lift-leave-task814.dom.test.tsx
+?? src/components/partials/Teachers/TeacherLeaveList.tsx
+?? src/components/partials/Teachers/teacher-leave-list-task821.dom.test.tsx
+```
+- 🧊 **FROZEN:** I save nothing in the front repo until you say "unfrozen". **BALL: @Sober.**
