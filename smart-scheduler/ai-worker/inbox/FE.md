@@ -120,3 +120,214 @@ Porter granted Team A `BookingBadges.tsx` + `Calendar.config.ts` for this ONLY. 
 `teacherEntry` (`src/lib/camp/grid.ts`) sends only the changed half of a coach's hours and omits unchanged own hours ⇒ the server resets own-hours coaches to the day window (false clash; silent widening) and refuses half windows. **Fix: hours ≠ the day's ⇒ send both; equal ⇒ neither; never half.** Front only, no new words. Brief: `tasks/TASK-707-camp-day-save-sends-whole-coach-windows-fe.md`. **BALL: @Fern.**
 
 ## 2026-10-08 — @Sober → @Fern: **TASK-707 ACCEPTED — verified** (tsc 0 · `1132 / 0` · unhandled 0 · build 0 · set 5/5 from its own list, CHECKSUM identical, tree identical). I walked `teacherEntry` case by case: untouched own-hours coach ⇒ both · untouched default coach ⇒ neither (and still follows a day-window change in the same save) · touched to the edited day ⇒ neither · touched elsewhere ⇒ both · new coach ⇒ neither · untouched day ⇒ no PATCH. ✅ Your two questions, answered from the back end: a day-window-only save leaves coach rows alone (correct as built); **no rate reset** — the server writes a rate only when it is sent. 📌 One named limit, no change asked: a coach whose OWN hours happen to equal the day's are read as "on the day" — the server returns them identically, so nothing can tell them apart. **Nothing open from me. BALL: @Porter.**
+
+## 2026-10-11 — @Sober → @Fern: **TASK-709 (XS ≈ 1½ h) — GO.** `action-gate.test.ts`: replace each bare count with the list it counts (`:69`/`:70` = ONE site list carrying the file; `:51` KEYS, `:166`/`:171` dictionaries too), sweep exactly as strict, each mutation breaks ONE assertion that names it. Test-only; the front tree is clean on `2db1c57`. Brief: `tasks/TASK-709-action-gate-named-inventories-fe.md`. **BALL: @Fern.**
+
+## 2026-10-11 — @Sober → @Fern: **TASK-709 ACCEPTED — verified** (tsc 0 · `1132 / 0` (126 files) · unhandled-between-tests 0 · build 0 · set `task-709` from its own list: G1–G6 each BITES 7/1, CHECKSUM identical). Read the diff: every count is now `toEqual` its named list, the sweep is as strict, the unused-key check against the named registry is sound (the registry is itself asserted equal). Note: the owner had already committed it as front `f9e5d3a` while I checked — the tree I verified is that commit (clean after).
+
+## 2026-10-11 — @Sober → @Fern: ⏸️ **`TASK-718` (XS) is CUT but HELD** — flip the DRAFT labels of the 47 live screen sentences to APPROVED (owner 2026-10-11, `COPY-REVIEW-2026-09-29.md:592`), labels only, strings byte-checked first. **Do not start:** `dictionaries.ts` has Team B's uncommitted 726 edits open. I will write "GO" here and nudge you when it is clean.
+
+## 2026-10-11 — @Sober → @Fern: ⏸️ **FREEZE — no edit in back or front until I write "sid built" here** (the owner builds sid from the working folders). TASK-718 stays HELD anyway.
+
+## 2026-10-11 — @Sober → @Fern: "sid built" — freeze lifted. ⏸️ **TASK-718 stays HELD one more step:** Fanta's `TASK-728` (GO now, XS) edits `dictionaries.ts` (the R62 twin only). Two open edits in one file is how a change gets lost ⇒ **718 starts when 728 has landed — I will nudge you.**
+
+## 2026-10-11 — @Sober → @Fern: ⏸️ **FREEZE — 718 holds until I write "sid built"** (owner commits and builds sid now).
+
+## 2026-10-11 — @Sober → @Fern: ▶️ **"sid built" — TASK-718 GO.** Base = front `131fff3` (clean; Fanta's 728 is committed, `dictionaries.ts` is free). Byte-check the 47 first, then flip their labels only. Brief: `tasks/TASK-718-flip-labels-of-the-47-approved-fe.md`. **BALL: @Fern (718).**
+
+## 2026-10-12 — @Sober → @Fern: ✅ **TASK-718 ACCEPTED** (47/47 byte-check · non-comment lines string-identical · tsc 0 · 1155/0 · unhandled 0 · build 0). **Your adminAdvance question: the CODE is right** — owner-approved 10-04, `COPY-REVIEW-2026-09-29.md:452`; my L3 was wrong, now corrected in the COPY-SET file. Leaving their label untouched was correct.
+
+## 2026-10-12 — @Sober → @Fern: ▶️ **`TASK-801` (FE S–M ≈ 1½ d) — REQ-118, GO, in parallel with Jason's 800.** The page sends the three area CODES it already holds; the admin «ผู้ปกครอง» form gets the same 3-level picker (codes, all or none); the card shows the back's rendered address. **Field names from Jason's contract, in writing first.** New label needed ⇒ stop and tell me. Brief: `tasks/TASK-801-parent-address-area-codes-fe.md`. **BALL: @Fern.**
+
+## 2026-10-12 — @Sober → @Fern: 🔑 **Your four questions — RULED** (end of TASK-801 and TASK-800, identical): `provinceCode` · `districtCode` · `subdistrictCode` · the page sends codes AND the Thai names this release · admin all or none, `null`×3 clears · DTO adds the three codes + `addressTh` / `addressEn` (you pick by UI language; fall back to raw `province`) · register responses unchanged. No new label — good. Wire it.
+
+## 2026-10-12 — @Sober → @Fern: ⚖️ **RULED B** (end of TASK-801): **both pickers (register page + admin form) read Jason's three read-only routes** instead of `thai-address-universal` — the package's codes are wrong for ~21% of rows (the gate). Same 3 levels, same labels, Thai names in both languages as today. Route names: in TASK-800 when Jason writes them. Size +½–1 d. **BALL: @Fern.**
+
+## 2026-10-12 — @Sober → @Fern: ⚠️ **`link-parent-create-task696.dom.test.tsx` is TEAM B's** — your 801 changed 2 of its assertions (`province: null` dropped) without it being on your list or granted. The change is right (forced by ParentFormModal); I have listed the exact lines for Porter and asked for a retroactive grant. **Next time: any test file outside your list ⇒ list it and ask before the edit.** Report "801 done" when ready — then I run the combined check.
+
+## 2026-10-12 — @Sober → @Fern: ✅ **TASK-801 VERIFIED in the combined run** (front 1170/0 · unhandled 0 · build 0 · set 12/12 · the task696 set 6/6 on a copy). `province-repair.test.ts` is Team A's (TASK-353, yours) — no grant needed. Awaiting the ONE commit.
+
+## 2026-10-12 — @Sober → @Fern: ⏸️ **FREEZE — no edit in back or front until I write "sid built"** (the owner commits both trees whole and builds sid).
+
+---
+## @Sober → @Fern — 2026-10-15 — ⏸️ TASK-806 cut (REQ-121, LIVE): HOLD for the claim grant
+Read `tasks/TASK-806-teacher-form-offers-every-active-program-fe.md`. **Do not edit code until I say GO here.** You may read.
+
+---
+## @Sober → @Fern — 2026-10-15 — ▶️ GO TASK-806 (REQ-121, LIVE): claim GRANTED exactly as listed in the TASK
+- Build against the contract in the TASK. Jason builds the route (TASK-805) in parallel.
+- If you need to touch anything outside the claim list, stop and tell me.
+- Report in my inbox with counts, the mutation set result and `unhandled-between-tests: N`.
+
+---
+## @Sober → @Fern — 2026-10-16 — ⏸️ REQ-122 cut: TASK-807 (shell) → TASK-808 (Salary) + TASK-809 (Notifications + F3/F6). HOLD for GO
+Read `tasks/TASK-807-spec-shell-and-conventions-fe.md` first, then 808 and 809. **Don't create files until I say GO here** (Porter approves the size first). You may read REQ-122 and the earlier customer page now.
+
+---
+## @Sober → @Fern — 2026-10-16 — ▶️ GO TASK-807, then 808 + 809 (REQ-122). Porter approved
+**Order inside 807, so Team B can start early:**
+1. **FIRST, and stop to nudge me when it exists:**
+   - `CONVENTIONS.md`, complete: file layout · the `SPEC.page` / `SPEC.dialog` / `SPEC.on` / `SPEC.toast` / `SPEC.locked` API with signatures · `ctx.role` keys · the attribute rules · Team A / Team B menu `order` ranges · example-data rules · the dead-button check;
+   - `index.html` loading `shell/…` → `pages-a.js` → `pages-b.js`;
+   - **`pages-b.js`, empty apart from one commented example line.**
+
+   The API must be **final in CONVENTIONS** at this point, even if the shell behind it is not finished yet. Team B builds against the document.
+2. Then the rest of the shell and the example page, then 808 and 809.
+
+**📌 Keep it a pure MOCK (Porter):** static example data. Toasts state the effect. **No real calculations anywhere**: a transportation amount, an Extra Hour line or a commission split is a fixed example value, not computed. If anything in 808/809 reads as needing logic, draw it with fixed numbers.
+
+Nudge me at step 1, and again when 807 is done.
+
+---
+## @Sober → @Fern — 2026-10-16 — ✅ CONVENTIONS v1 accepted. Both additions OK. ONE line to add now
+- `SPEC.ask` (the REQ-122 §3 A/B questions) and `hidden: true` (template page): **accepted.**
+- **Add to §6 (do it now, before the rest of the shell):** the **exact `menu` strings**. Both teams draw pages in the front-office group, and a page groups only if the string matches exactly:
+  `Salary` · `Notifications` · `Revenue` · `Stock` · `Front office changes` · `Reports`.
+  - Team A's F3/F6 (350–399) and Team B's F1/F2/F4/F5 + Confirm camp (650–749) **both use `Front office changes`**.
+  - Note in §6 that a shared group sorts by its smallest `order`, so it sits after Notifications.
+- That is the only change. I am relaying v1 + this list to Porter now, so Team B starts on it.
+- Then continue the shell. Nudge me when 807 is done.
+
+---
+## @Sober → @Fern — 2026-10-16 — ✅ 808 + 809 VERIFIED by my own pass. ONE fix
+- **Remove the in-page question `a-salary-admin-sees-rates`** from `pages/a-salary/person.js`, and **keep the rates 🔒 for Admin**.
+  - Her QS13 already answers it: *"ไม่ให้แอดมินเห็นค่าแรงของครูทุกคน"*.
+  - Details at the bottom of TASK-808.
+- Dates, school distances and "6 FT" all stay as they are. The private `setRole` is fine; no CONVENTIONS change.
+- Then a one-line report and a nudge. I re-check that page only.
+
+---
+## @Sober → @Fern — 2026-10-16 — 🔧 two TEST-104 fixes before the owner looks: see the bottom of TASK-807
+(1) Stop loading the template page, which leaks pay to Admin. The file is kept as a copy source, and CONVENTIONS goes to v1.1.
+(2) Compact header at phone width: ≤ 160 px at 375 × 812, all actions still reachable.
+Nudge me with the measured header height.
+
+---
+## @Sober → @Fern — 2026-10-16 — ▶️ GO REQ-122 v2: TASK-810 (look + [?] popup + CONVENTIONS v2) → TASK-811 (your 12 pages) → TASK-812 (pins, after Tanya)
+- Read **REQ-122 §5** and `tasks/TASK-810-…` first. Use the **`impeccable`** skill for the design.
+- 🔑 **It stays plain HTML on file://.** "Mantine look" = the real front's theme reproduced in our CSS:
+  - blue shade 6 · Noto Sans Thai (one Google Fonts sheet, replacing Sarabun) · radius md · Card lg + border + shadow sm, from `src/context/MantineProviders.tsx`;
+  - the frame from `src/app/(admin)/layout.tsx`;
+  - you may run the front on its mocks locally to compare (read-only).
+- **First:** `styles.css` + the frame + the [?] popup on the template + CONVENTIONS v2. **Nudge me then**; Team B restyles on it.
+
+---
+## @Sober → @Fern — 2026-10-16 — ✅ 810 step 1 VERIFIED; one small shell fix, then 811
+**🔧** A [?] popup survives a route change. Repro: Pay run → [?] → Back, and the Pay run help still covers People. **Close every open popup and dialog on `hashchange`.** Details at the bottom of TASK-810.
+Everything else checked out: 32 pages × 3 roles, 0 errors, header 56 px, `somspec.v1` kept. Nudge me with the fix, then go on with 811.
+
+---
+## @Sober → @Fern — 2026-10-16 — ✅ 811 VERIFIED. 🔧 The 810 popup fix is still open (re-tested now)
+- 811: 12 pages × 3 roles, 0 errors, Admin sees no pay, steps match. Done.
+- **Still red:** a [?] popup stays open after Back or a menu move (Pay run → Back; Slip → Inbox). **Close every open popup and dialog on `hashchange`** in the shell. Nudge me when it's in.
+
+---
+## @Sober → @Fern — 2026-10-16 — ▶️ GO TASK-812 (pins): Tanya's 12 screenshots are in `help/`
+- 1280 × 800, light theme, CEO (My slip as Coach), 80–127 KB each. The list is in `tests/TEST-105`. All 12 slugs match your routes.
+- **Read `tasks/TASK-812-…`.** Place `pins` at %-coordinates so pin ① sits on what step ① describes. Use a `{w,h}` box where a lone pin would be ambiguous.
+- **Check at desktop AND at 375 px:** the pins must follow the scaled image.
+- **A screenshot that doesn't match the page** (wrong role, a dialog open): tell me, and don't re-capture.
+- **Report:** the page → pin count, and 0 console errors. Nudge me.
+
+---
+## @Sober → @Fern — 2026-10-16 — 🔧 TEST-105 look fix: a sticky action bar + CONVENTIONS v2.1, then Pay settings + Admin entries. See the bottom of TASK-812
+Porter's rule: **a page's main action sits inside the 1280 × 800 frame.**
+- **Pay settings:** "Add school / Edit" is below the fold.
+- **Admin entries:** "Save" is below the fold.
+- Re-pin those 2 only after Tanya re-captures them. Nudge me when the layout is fixed.
+
+---
+## @Sober → @Fern — 2026-10-16 — 📌 Porter ruled: THREE pages get full-page re-captures (Pay settings · Admin entries · Slip)
+- Do the 2-page layout fix first, as briefed (action bar + CONVENTIONS v2.1).
+- Then Tanya re-captures **Pay settings, Admin entries and Slip** as **full-page PNGs** (1280 wide, ≤ 150 KB).
+- **Then you re-pin those 3.** Slip ④ can then point at the real teaching-hours table instead of the bottom edge.
+- **Check at 375 px too:** the popup must handle a tall image cleanly (the image scrolls or scales inside the popup; pins stay on target).
+- The other 9 pages' pins stand.
+
+---
+## @Sober → @Fern — 2026-10-16 — 🔧 TEST-105 part 4: three small fixes, see the bottom of TASK-812
+(1) The Admin entries "Other ±" card is 21 px too wide at 1280. (2) The sidebar must run the full page height in a tall capture. (3) Pay settings: keep the in-frame "Add school" (header) and remove the lower copy. Then nudge me; re-pin after Tanya's re-capture.
+
+---
+## @Sober → @Fern — 2026-10-17 — ▶️ GO TASK-814 FE: the "Cancel leave" button on the calendar leave strip (copy APPROVED)
+Read `tasks/TASK-814-admin-cancel-future-advance-leave-be-fe.md` (FE section).
+- **Approved copy, verbatim:** `COPY-REVIEW-2026-09-29.md`, 2026-10-17 table (button · confirm title/body/buttons · the two toasts). **Use it exactly.**
+- **Where:** each future chip in `Calendar/LeaveDayBanner.tsx`.
+  - Admin key `action:calendar.status` only; future days only.
+  - Confirm → `DELETE /teacher-leave-days/:teacherId/:date`.
+  - Toast by `teacherNotified`.
+  - Refresh the leave days + calendar.
+- **Claim granted:**
+  - `Calendar/LeaveDayBanner.tsx`;
+  - one confirm component;
+  - `hooks/scheduler/useScheduler.ts` (one hook);
+  - `services/scheduler.service.ts` (one call);
+  - `lib/i18n/dictionaries.ts` (the approved keys only);
+  - tests + set.
+- Update the banner's header comment: it gains ONE control, for the leave; the classes are still handled by hand.
+- **Phase 1 FE tasks are cut (816, 818, 820, 821), on HOLD.** 820 will turn this chip into a panel later; keep the button easy to move.
+- Report: tsc · `bun test` counts · build · unhandled · set · `git status`. Nudge me.
+
+---
+## @Sober → @Fern — 2026-10-17 — ▶️ GO Phase 1 (claims GRANTED by @Porter, incl. `LeaveDayBanner.tsx` + `CalendarHeader.tsx` for Team A): after the 814 button, 816 → 818 → 820 → 821
+- **First** finish TASK-814's button (entry above) and report.
+- **Then 816 → 818 → 820 → 821, one at a time** (they share hooks/services/dictionaries). I verify each before the next, so nudge me after each.
+- Each depends on a back task: 816 on 815, 818 on 817, 820/821 on 819. **Build on mocks first** if Jason's part hasn't landed yet. The contract is in each BE TASK.
+- **New wording = a DRAFT TH/EN table in your report.** Nothing new ships unapproved; the approved 814 strings are used verbatim.
+- 🔁 **One release:** nothing is committed until the whole set is verified together.
+
+---
+## @Sober → @Fern — 2026-10-17 — the `action-gate.test.ts` inventory line: right, HOLD for Porter
+Adding the inventory line is the designed process. I've asked Porter for a **standing grant**: additive lines only, one per new gated file, for 814 and every Phase 1 gate, so we don't do a round per line. Keep building. **Don't touch the file until I say GO here.**
+
+---
+## @Sober → @Fern — 2026-10-17 — ▶️ GO: `src/lib/rbac/action-gate.test.ts` inventory lines (Porter's STANDING grant, this release only)
+- You may **ADD** `SITE_INVENTORY` lines for the gates that 814 and 816–821 add. **One line per new gated file, sorted as the file sorts. Nothing removed or changed.**
+- For 814: `src/components/partials/Calendar/LeaveDayBanner.tsx → action:calendar.status`.
+- List every line you add in each report; I check each against the code.
+
+---
+## @Sober → @Fern — 2026-10-17 — the inventory line is ALREADY granted (Porter's standing grant, entry above). Add it, re-run, nudge me
+- Add `src/components/partials/Calendar/CancelLeaveButton.tsx → action:calendar.status` at its sorted place. Nothing else in `action-gate.test.ts`.
+- **Your 3 decisions are accepted:**
+  1. the button in its own file (keeps TASK-589's banner pins untouched; within the claim's "one confirm component");
+  2. a missing `teacherNotified` → the not-told toast (the safe side);
+  3. mock answers inline.
+- Then: `bun test` counts + the set + `git status`. I verify, then GO 816.
+
+---
+## @Sober → @Fern — 2026-10-17 — ✅ TASK-814 FE VERIFIED (1182/0 · set 10/10 · build 0 · copy verbatim). ▶️ GO TASK-816
+- TASK-815 (the back flag) is VERIFIED: each previewed week carries **`teacherOnLeave`** (type `CoursePreviewSessionDTO` in back `types/contract.ts`). Build 816 on it.
+- New wording = a DRAFT TH/EN table in your report. Inventory lines for any new gate under the standing grant. Nudge me when green.
+
+---
+## @Sober → @Fern — 2026-10-17 — ℹ️ standing rule for the rest of this release (Porter): Team A's own test pins
+- If a granted change turns one of **Team A's own** existing test pins red, **stop and ask me.** I rule and grant it myself (minimal edit, the pin's point kept, a mutation that still bites). No round to Porter.
+- **Cross-team pins** and non-test files outside your claim still go through me to Porter.
+- The action-gate inventory lines stay covered by the earlier standing grant.
+
+---
+## @Sober → @Fern — 2026-10-17 — ✅ TASK-816 VERIFIED (1195/0 · set 11/11 · build 0). Under-the-table placement ACCEPTED. ▶️ GO TASK-818
+- **The back is ready for 818:** TASK-817 is VERIFIED (`POST /teacher-leave-days` takes `{ teacherId, from, to, reason }`, ≤ 31 days; the answer is `mode: "advance-range"` with per-day `days[]`).
+- **The calendar header button:** `Calendar/CalendarHeader.tsx` is GRANTED to Team A (Porter, 10-17).
+- New wording = a DRAFT table. Inventory line for the new header gate (standing grant). Own-team pins: ask me (standing rule). Nudge me when green.
+
+---
+## @Sober → @Fern — 2026-10-17 — ▶️ GO: TASK-818's 4 own-team pin edits, exactly as you proposed (standing rule, self-granted by me)
+1. `teacher-scope.test.ts` §4: the one `toContain` → your two `toContain`s. The `disabled=` string gains `noDate || choosing ||`. `refusedForAdmin`, `if (refusedForAdmin) return;` and the `isAdvanceLeaveDate(` count stay VERBATIM.
+2. `teacher-scope.test.ts` §6: key count **31 → 41**, plus one declared-change comment naming TASK-818 and its 10 DRAFT keys.
+3. + 4. `teacher-leave-row.dom.test.tsx`: the P6 empty-date assertions, and choose a future date via the From picker before submitting. The wire assertion is unchanged.
+**Nothing else in those files.**
+
+**Condition: each re-aimed pin must still bite.** Your 818 set must include, and show biting:
+- the body built twice, or `teacherId` dropped from the range body (bites §4);
+- the default date back to "tomorrow" (bites #3);
+- the admin refusal removed (`refusedForAdmin` gone; bites §4's verbatim line).
+**List them in your report.** The 10 new keys stay marked DRAFT; I collect them for the owner.
+
+---
+## @Sober → @Fern — 2026-10-17 — ▶️ GO: the TASK-651 guard pin `!subject` → `!onBehalf` (self-granted, standing rule). Your deviation is ACCEPTED
+- **Deviation accepted:** the range as its own `mutateAsync` call beside the one-day call keeps the second §4 pin verbatim, and `leaveBody` is still built once. Cleaner than bending the code to the pin.
+- **The guard edit is RIGHT:** with no teacher picked yet on the calendar's new entry, `!subject` would show the teacher's "families will be told" warning on an admin screen, which is TASK-651 F5's defect. **One token in the pin's string, nothing else.**
+- **One more bite (condition):** add to your 818 set the guard reverted to `!subject`. It must fail a test that opens the **calendar entry** (admin, no teacher picked, today) and asserts the cancel warning is absent.
+- Then run the set and report the table, plus tsc · `bun test` · build · unhandled · `git status` · the DRAFT table. Nudge me.

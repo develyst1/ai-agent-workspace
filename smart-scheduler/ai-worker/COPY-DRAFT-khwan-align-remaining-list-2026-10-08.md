@@ -1,5 +1,5 @@
 # COPY DRAFT — to Khwan: aligning her "what's left" list — @Porter, 2026-10-08
-Status: DRAFT for the owner. **Owner's instruction:** *"daily report บอกเธอว่าทำสัปดาห์หน้า · และพยายามจับให้ตรงกันก่อน ถามเธอ เธอหมายถึงอะไร บอกเธอ ว่าอันไหนขึ้นไปแล้วบ้าง"*. Item 5's screenshots come from the owner.
+Status: ✅ SENT by the owner ("ส่งแล้ว", logged 2026-10-11). **Owner's instruction:** *"daily report บอกเธอว่าทำสัปดาห์หน้า · และพยายามจับให้ตรงกันก่อน ถามเธอ เธอหมายถึงอะไร บอกเธอ ว่าอันไหนขึ้นไปแล้วบ้าง"*. Item 5's screenshots come from the owner.
 **Facts from:** `NOTE-khwan-remaining-list-vs-ours-2026-10-08.md` (each row checked against a file). UI labels read from `dictionaries.ts` (TH): `บันทึกวันลาล่วงหน้า` · `นักเรียนที่ยังไม่มีผู้ปกครอง` · `ผูกผู้ปกครอง`.
 🚫 **No date promised except the Daily report's "next week"** (the owner's own). Wording/admin notices: "next round", no date.
 

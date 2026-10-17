@@ -1,0 +1,207 @@
+# REQ-118 — English area-name check of thai-geography.json (@Sober, 2026-10-12, read-only)
+# (C) CERTAIN: an English name that is ALSO another place's English name (different Thai) in the SAME province — at least one of each pair is wrong. The 'also the EN of' column names the other carrier; WHICH of the two is wrong is NOT decided by this check.
+# Count: 30 lines over 8,441 places (77 provinces · 928 districts · 7,436 sub-districts). Not exhaustive: a wrong name that collides with nothing is not caught (e.g. most of 380102–380109).
+dist	1413	บางซ้าย	EN="Bang Sai"	(also the EN of บางไทร)
+dist	3117	โนนสุวรรณ	EN="Non Din Daeng"	(also the EN of โนนดินแดง)
+dist	3805	ปากคาด	EN="Pak Khat"	(also the EN of เซกา)
+dist	4106	หนองหาน	EN="Nong Saeng"	(also the EN of หนองแสง)
+dist	4904	ดงหลวง	EN="Don Tan"	(also the EN of ดอนตาล)
+dist	5401	เมืองแพร่	EN="Mueang Phrae"	(also the EN of ร้องกวาง)
+dist	8419	วิภาวดี	EN="Chai Buri"	(also the EN of ชัยบุรี)
+dist	9603	บาเจาะ	EN="Tak Bai"	(also the EN of ตากใบ)
+sub	141208	บ้านโพธิ์	EN="Ban Pho"	(also the EN of บ้านโพ)
+sub	141301	บางซ้าย	EN="Bang Sai"	(also the EN of บางไทร)
+sub	331018	หนองห้าง	EN="Nong Hang"	(also the EN of หนองฮาง)
+sub	380101	บึงกาฬ	EN="Seka"	(also the EN of เซกา)
+sub	380406	น้ำจั้น	EN="Na Dong"	(also the EN of นาดง)
+sub	380407	ท่าสะอาด	EN="Tha Sa-At"	(also the EN of นาสวรรค์)
+sub	380408	หนองทุ่ม	EN="Nong Thum"	(also the EN of ไคสี)
+sub	380409	โสกก่าม	EN="Sok Kam"	(also the EN of ชัยพร)
+sub	380501	ปากคาด	EN="Bueng Khong Long"	(also the EN of บึงโขงหลง)
+sub	380503	นากั้ง	EN="Dong Bang"	(also the EN of ดงบัง)
+sub	380602	โพธิ์หมากแข้ง	EN="Pho Mak Khaeng"	(also the EN of หนองยอง)
+sub	380604	ท่าดอกคำ	EN="Tha Dok Kham"	(also the EN of โนนศิลา)
+sub	411106	บ้านจันทน์	EN="Ban Chan"	(also the EN of บ้านจั่น)
+sub	440805	นาสีนวล	EN="Na Si Nuan"	(also the EN of นาสีนวน)
+sub	450709	อุ่มเม่า	EN="Um Mao"	(also the EN of อุ่มเม้า)
+sub	471213	พันนา	EN="Phan Na"	(also the EN of พรรณา)
+sub	480609	นาขาม	EN="Nakham"	(also the EN of นาคำ)
+sub	500911	แม่ข่า	EN="Mae Kha"	(also the EN of แม่คะ)
+sub	501106	บ้านโป่ง	EN="Ban Pong"	(also the EN of บ้านปง)
+sub	570412	ศรีดอนไชย	EN="Si Don Chai"	(also the EN of ศรีดอนชัย)
+sub	730514	ลำพญา	EN="Lam Phaya"	(also the EN of ลำพยา)
+sub	961104	สากอ	EN="Sako"	(also the EN of ซากอ)
+
+# (B) NOISY signal, for reference only: the picker package's own TH→EN (itself garbled) vs ours, similarity < 0.5 — 172 rows, mostly false alarms.
+subdistrict	100101	พระบรมมหาราชวัง	dataset="Phra Borom Maha Ratchawang"	picker="Phnapnmmanatang"	sim=0.48
+subdistrict	100202	วชิรพยาบาล	dataset="Wachira Phayaban"	picker="Wtinpapan"	sim=0.40
+subdistrict	100502	อนุสาวรีย์	dataset="Anusawari"	picker="Nutaoni"	sim=0.44
+subdistrict	100801	ป้อมปราบ	dataset="Pom Prap"	picker="Pom Prap Sattru Phai"	sim=0.41
+subdistrict	110401	ตลาด	dataset="Talat"	picker="Tnat Phnu"	sim=0.25
+subdistrict	141503	มหาราช	dataset="Maharat"	picker="Phnapnmmanatang"	sim=0.27
+subdistrict	141605	สองห้อง	dataset="Song Hong"	picker="Thungtongong"	sim=0.42
+subdistrict	170201	สิงห์	dataset="Sing"	picker="Khnong Chaokun Sing"	sim=0.24
+subdistrict	170302	บางระจัน	dataset="Bang Rachan"	picker="Khai Bangnatan"	sim=0.46
+subdistrict	200404	โป่ง	dataset="Pong"	picker="Pong Nam Ron"	sim=0.40
+subdistrict	210202	พลา	dataset="Phla"	picker="Phlapphla"	sim=0.44
+subdistrict	220101	ตลาด	dataset="Talat"	picker="Tnat Phnu"	sim=0.25
+subdistrict	220202	บ่อ	dataset="Bo"	picker="Bo Phloi"	sim=0.29
+subdistrict	250110	ไม้เค็ด	dataset="Mai Khet"	picker="Mai"	sim=0.43
+subdistrict	250204	นนทรี	dataset="Nonsi"	picker="Chong Nntni"	sim=0.30
+subdistrict	250304	ทุ่งโพธิ์	dataset="Thung Pho"	picker="Nikm Thungpo Thane"	sim=0.44
+subdistrict	300122	ตลาด	dataset="Talat"	picker="Tnat Phnu"	sim=0.25
+subdistrict	300805	ตะเคียน	dataset="Takhian"	picker="Takian Thong"	sim=0.45
+subdistrict	301002	ใหม่	dataset="Mai"	picker="Wang Mai"	sim=0.43
+subdistrict	301407	ดอน	dataset="Don"	picker="Don Mueang"	sim=0.33
+subdistrict	301409	ตูม	dataset="Tum"	picker="Nong Tum"	sim=0.43
+subdistrict	301609	ตะโก	dataset="Tako"	picker="Tako Thong"	sim=0.44
+subdistrict	301704	สาหร่าย	dataset="Sarai"	picker="Nong Salai"	sim=0.44
+subdistrict	310118	สองห้อง	dataset="Song Hong"	picker="Thungtongong"	sim=0.42
+subdistrict	311102	นิคม	dataset="Nikhom"	picker="Senanikm"	sim=0.25
+subdistrict	311112	สะแก	dataset="Sakae"	picker="Kham Sakaesaeng"	sim=0.36
+subdistrict	312304	ถาวร	dataset="Thawon"	picker="Thawon Watthana"	sim=0.43
+subdistrict	320113	สวาย	dataset="Sawat"	picker="Thap Sawai"	sim=0.44
+subdistrict	320120	ราม	dataset="Ram"	picker="Khao Khram"	sim=0.33
+subdistrict	320306	บะ	dataset="Ba"	picker="Lubo Sawo"	sim=0.25
+subdistrict	320605	ด่าน	dataset="Dan"	picker="Sala Dan"	sim=0.43
+subdistrict	320610	ตะเคียน	dataset="Takhian"	picker="Takian Thong"	sim=0.45
+subdistrict	320703	แก	dataset="Kae"	picker="Kaeng Sian"	sim=0.33
+subdistrict	320904	ยาง	dataset="Yang"	picker="Khlong Yang"	sim=0.40
+subdistrict	321006	ดม	dataset="Dom"	picker="Din Udom"	sim=0.43
+subdistrict	321703	โนน	dataset="Non"	picker="Non Sila Loeng"	sim=0.25
+subdistrict	330104	ซำ	dataset="Sam"	picker="Sam Sung"	sim=0.43
+subdistrict	330118	ทุ่ม	dataset="Thum"	picker="Krathum Rai"	sim=0.40
+subdistrict	330123	โพธิ์	dataset="Pho"	picker="Huai Pho"	sim=0.43
+subdistrict	330304	ยาง	dataset="Yang"	picker="Khlong Yang"	sim=0.40
+subdistrict	330313	ดู่	dataset="Du"	picker="Nong Pradu"	sim=0.22
+subdistrict	330408	รุง	dataset="Rung"	picker="Bangkok"	sim=0.29
+subdistrict	330513	ตะเคียน	dataset="Takhian"	picker="Takian Thong"	sim=0.45
+subdistrict	330517	โคกเพชร	dataset="Khok Phet"	picker="Khok Phet Phatthana"	sim=0.47
+subdistrict	330702	กู่	dataset="Ku"	picker="Ku Suan Taeng"	sim=0.18
+subdistrict	330704	ตูม	dataset="Tum"	picker="Nong Tum"	sim=0.43
+subdistrict	330705	สมอ	dataset="Samo"	picker="Thung Samo"	sim=0.44
+subdistrict	330708	ดู่	dataset="Du"	picker="Nong Pradu"	sim=0.22
+subdistrict	330709	สวาย	dataset="Sawat"	picker="Thap Sawai"	sim=0.44
+subdistrict	330801	สิ	dataset="Si"	picker="Sin Pun"	sim=0.33
+subdistrict	330803	พราน	dataset="Phran"	picker="Khnong Bang Phnan"	sim=0.27
+subdistrict	330805	ไพร	dataset="Phrai"	picker="Phrai Nok Yung"	sim=0.42
+subdistrict	330907	ด่าน	dataset="Dan"	picker="Sala Dan"	sim=0.43
+subdistrict	330908	ดู่	dataset="Du"	picker="Nong Pradu"	sim=0.22
+subdistrict	331014	แต้	dataset="Tae"	picker="Nong Ta Taem"	sim=0.30
+subdistrict	331015	แข้	dataset="Khae"	picker="Pho Mak Khaeng"	sim=0.33
+subdistrict	331302	บก	dataset="Bok"	picker="Wang Tabaek"	sim=0.20
+subdistrict	331303	โพธิ์	dataset="Pho"	picker="Huai Pho"	sim=0.43
+subdistrict	331404	ตูม	dataset="Tum"	picker="Nong Tum"	sim=0.43
+subdistrict	331506	คูบ	dataset="Khup"	picker="Khu Bang Luang"	sim=0.25
+subdistrict	331704	ละลม	dataset="Lalom"	picker="Lalom Mai Phatthana"	sim=0.29
+subdistrict	332101	โดด	dataset="Dot"	picker="Bang Luang Dot"	sim=0.25
+subdistrict	340204	วาริน	dataset="Warin"	picker="Warin Chamrap"	sim=0.42
+subdistrict	340903	ยาง	dataset="Yang"	picker="Khlong Yang"	sim=0.40
+subdistrict	341103	เกษม	dataset="Kasem"	picker="Chantnketm"	sim=0.30
+subdistrict	341406	เตย	dataset="Toei"	picker="Khlong Toei"	sim=0.40
+subdistrict	342208	บอน	dataset="Bon"	picker="Bang Bon"	sim=0.43
+subdistrict	343204	สว่าง	dataset="Sawang"	picker="Wong Sang"	sim=0.38
+subdistrict	350110	สิงห์	dataset="Sing"	picker="Khnong Chaokun Sing"	sim=0.24
+subdistrict	370304	ลือ	dataset="Lue"	picker="Song Plueai"	sim=0.30
+subdistrict	370305	ห้วย	dataset="Huai"	picker="Huai Nam Khao"	sim=0.36
+subdistrict	370401	พนา	dataset="Phana"	picker="Pho Nang Dam Tok"	sim=0.38
+subdistrict	370701	อำนาจ	dataset="Amnat"	picker="Amnat Charoen"	sim=0.42
+subdistrict	380101	บึงกาฬ	dataset="Seka"	picker="Bueng Kan"	sim=0.38
+subdistrict	380102	โนนสมบูรณ์	dataset="Sang "	picker="Non Sombun"	sim=0.11
+subdistrict	380103	โนนสว่าง	dataset="Tha Kok Daeng"	picker="Non Sawang"	sim=0.27
+subdistrict	380104	หอคำ	dataset="Ban Tong"	picker="Ho Kham"	sim=0.00
+subdistrict	380105	หนองเลิง	dataset="Pong Hai"	picker="Nong Loeng"	sim=0.33
+subdistrict	380106	โคกก่อง	dataset="Nam Chan"	picker="Khok Kong"	sim=0.13
+subdistrict	380107	นาสวรรค์	dataset="Tha Sa-At"	picker="Na Sawan"	sim=0.43
+subdistrict	380108	ไคสี	dataset="Nong Thum"	picker="Kai Si"	sim=0.00
+subdistrict	380109	ชัยพร	dataset="Sok Kam"	picker="Chaiyaphon"	sim=0.10
+subdistrict	380301	โซ่	dataset="So"	picker="So Phisai"	sim=0.25
+subdistrict	380401	เซกา	dataset="Pak Khat"	picker="Seka"	sim=0.29
+subdistrict	380402	ซาง	dataset="Nong Yong"	picker="Sang"	sim=0.25
+subdistrict	380403	ท่ากกแดง	dataset="Na Kang"	picker="Tha Kok Daeng"	sim=0.45
+subdistrict	380404	บ้านต้อง	dataset="Non Sila"	picker="Ban Tong"	sim=0.14
+subdistrict	380405	ป่งไฮ	dataset="Som Sanuk"	picker="Pong Hai"	sim=0.13
+subdistrict	380406	น้ำจั้น	dataset="Na Dong"	picker="Nam Chan"	sim=0.29
+subdistrict	380501	ปากคาด	dataset="Bueng Khong Long"	picker="Pak Khat"	sim=0.14
+subdistrict	380502	หนองยอง	dataset="Pho Mak Khaeng"	picker="Nong Yong"	sim=0.25
+subdistrict	380504	โนนศิลา	dataset="Tha Dok Kham"	picker="Non Sila Loeng"	sim=0.00
+subdistrict	390110	ลำภู	dataset="Lamphu"	picker="Bang Lam Phu Lang"	sim=0.43
+subdistrict	400114	ศิลา	dataset="Sila"	picker="Non Sila Loeng"	sim=0.33
+subdistrict	420508	โป่ง	dataset="Pong"	picker="Pong Nam Ron"	sim=0.40
+subdistrict	430201	ท่าบ่อ	dataset="Tha Bo"	picker="Tha Bo Songkham"	sim=0.38
+subdistrict	440101	ตลาด	dataset="Talat"	picker="Tnat Phnu"	sim=0.25
+subdistrict	440102	เขวา	dataset="Khewa"	picker="Khwao Yai"	sim=0.38
+subdistrict	440305	แพง	dataset="Phaeng"	picker="Kamphaeng Phet"	sim=0.46
+subdistrict	440616	ยาง	dataset="Yang"	picker="Khlong Yang"	sim=0.40
+subdistrict	450704	สว่าง	dataset="Sawang"	picker="Wong Sang"	sim=0.38
+subdistrict	460102	เหนือ	dataset="Nuea"	picker="Khlong Thom Nuea"	sim=0.29
+subdistrict	460905	นิคม	dataset="Nikhom"	picker="Senanikm"	sim=0.25
+subdistrict	461301	สมเด็จ	dataset="Somdet"	picker="Smtet Chaopnaa"	sim=0.23
+subdistrict	470408	สว่าง	dataset="Sawang"	picker="Wong Sang"	sim=0.38
+subdistrict	471101	อากาศ	dataset="Akat"	picker="Phrong Akat"	sim=0.40
+subdistrict	480601	เรณู	dataset="Renu"	picker="Renu Nakhon"	sim=0.40
+subdistrict	490304	เหล่าหมี	dataset="Lao Mi"	picker="Ena Mi"	sim=0.40
+subdistrict	510401	ลี้	dataset="Li"	picker="Non Nam Kliang"	sim=0.17
+subdistrict	510405	ก้อ	dataset="Ko"	picker="Kon Kaeo"	sim=0.29
+subdistrict	520106	ชมพู	dataset="Chomphu"	picker="Thung Chmpu"	sim=0.30
+subdistrict	530504	สองห้อง	dataset="Song Hong"	picker="Thungtongong"	sim=0.42
+subdistrict	540204	ร้องเข็ม	dataset="Si Narong"	picker="Rong Khem"	sim=0.13
+subdistrict	540207	ทุ่งศรี	dataset="Rong Khem"	picker="Thung Si Thong"	sim=0.25
+subdistrict	550102	บ่อ	dataset="Bo"	picker="Bo Phloi"	sim=0.29
+subdistrict	550601	ริม	dataset="Rim"	picker="Tha Krasoem"	sim=0.20
+subdistrict	550604	ยม	dataset="Yom"	picker="Lak Liam"	sim=0.14
+subdistrict	550902	เปือ	dataset="Puea"	picker="Song Pueai"	sim=0.44
+subdistrict	551303	ยอด	dataset="Yot"	picker="Tnat Yot"	sim=0.43
+subdistrict	560203	ลอ	dataset="Lo"	picker="Khlong Thom"	sim=0.20
+subdistrict	560403	สระ	dataset="Sa"	picker="Sa Long Ruea"	sim=0.20
+subdistrict	560601	ปง	dataset="Pong"	picker="Pong Sanuk"	sim=0.44
+subdistrict	570703	แม่คำ	dataset="Mae Kham"	picker="Dan Mae Kam Man"	sim=0.42
+subdistrict	571302	ปอ	dataset="Po"	picker="Phu Po"	sim=0.40
+subdistrict	571401	ต้า	dataset="Ta"	picker="Mae Tan"	sim=0.33
+subdistrict	610407	ทุ่งโพ	dataset="Thung Pho"	picker="Nikm Thungpo Thane"	sim=0.44
+subdistrict	640401	กง	dataset="Kong"	picker="Yot Kaeng"	sim=0.38
+subdistrict	640801	ศรีนคร	dataset="Si Nakhon"	picker="Srinagarindra"	sim=0.38
+subdistrict	650901	ชมพู	dataset="Chomphu"	picker="Thung Chmpu"	sim=0.30
+subdistrict	660406	ทุ่งโพธิ์	dataset="Thung Pho"	picker="Nikm Thungpo Thane"	sim=0.44
+subdistrict	660506	ภูมิ	dataset="Phum"	picker="Thong Pha Phumi"	sim=0.31
+subdistrict	670405	ศิลา	dataset="Sila"	picker="Non Sila Loeng"	sim=0.33
+subdistrict	710203	สิงห์	dataset="Sing"	picker="Khnong Chaokun Sing"	sim=0.24
+subdistrict	720409	จรเข้ใหญ่	dataset="Chorakhe Yai"	picker="Sinta Chon Khe Ain"	sim=0.40
+subdistrict	760604	ตำหรุ	dataset="Tamru"	picker="Khlong Tamru"	sim=0.45
+subdistrict	801904	ทุ่งโพธิ์	dataset="Thung Pho"	picker="Nikm Thungpo Thane"	sim=0.44
+subdistrict	820302	ท่านา	dataset="Tha Na"	picker="Tha Nang Naeo"	sim=0.45
+subdistrict	820304	เหล	dataset="Le"	picker="Lao Yai"	sim=0.17
+subdistrict	840101	ตลาด	dataset="Talat"	picker="Tnat Phnu"	sim=0.25
+subdistrict	840605	ทุ่ง	dataset="Thung"	picker="Thung Sai Thong"	sim=0.38
+subdistrict	860306	ปากคลอง	dataset="Pak Khlong"	picker="Pakknong Phati Chenin"	sim=0.32
+subdistrict	860803	ตะโก	dataset="Tako"	picker="Tako Thong"	sim=0.44
+subdistrict	900311	คู	dataset="Khu"	picker="Khuha Sawan"	sim=0.30
+subdistrict	910403	สาคร	dataset="Sakhon"	picker="Hang Nam Sakon"	sim=0.33
+subdistrict	940404	ดอน	dataset="Don"	picker="Don Mueang"	sim=0.33
+subdistrict	940502	ถนน	dataset="Thanon"	picker="Thnn Nkn Chai Sni"	sim=0.29
+subdistrict	940710	แป้น	dataset="Paen"	picker="Nong Tok Paen"	sim=0.36
+subdistrict	940901	ตะโละ	dataset="Talo"	picker="Ta Lo Due Ra Man"	sim=0.33
+subdistrict	941007	วัด	dataset="Wat"	picker="Wat Kana"	sim=0.43
+subdistrict	960102	ลำภู	dataset="Lamphu"	picker="Bang Lam Phu Lang"	sim=0.43
+subdistrict	960509	เฉลิม	dataset="Chaloem"	picker="Chaloem Phra Kiat"	sim=0.47
+subdistrict	960603	เรียง	dataset="Riang"	picker="Bueng Na Riang"	sim=0.42
+district	1415	มหาราช	dataset="Maha Rat"	picker="Phnapnmmanatang"	sim=0.27
+district	1702	บางระจัน	dataset="Bang Rachan"	picker="Khai Bangnatan"	sim=0.46
+district	3004	คง	dataset="Khong"	picker="Nong Ta Khong"	sim=0.45
+district	3117	โนนสุวรรณ	dataset="Non Din Daeng"	picker="Non Suwan"	sim=0.45
+district	3704	พนา	dataset="Phana"	picker="Pho Nang Dam Tok"	sim=0.38
+district	4008	อุบลรัตน์	dataset="Ubolratana"	picker="Upnnat"	sim=0.30
+district	4302	ท่าบ่อ	dataset="Tha Bo"	picker="Tha Bo Songkham"	sim=0.38
+district	4613	สมเด็จ	dataset="Somdet"	picker="Smtet Chaopnaa"	sim=0.23
+district	5104	ลี้	dataset="Li"	picker="Non Nam Kliang"	sim=0.17
+district	5402	ร้องกวาง	dataset="Mueang Phrae"	picker="Rong Kwang"	sim=0.18
+district	5403	ลอง	dataset="Long"	picker="Khlong Thom"	sim=0.40
+district	5606	ปง	dataset="Pong"	picker="Pong Sanuk"	sim=0.44
+district	5705	พาน	dataset="Phan"	picker="Ban Phan Thom"	sim=0.36
+district	6408	ศรีนคร	dataset="Si Nakhon"	picker="Srinagarindra"	sim=0.38
+district	8419	วิภาวดี	dataset="Chai Buri"	picker="Vibhavadi"	sim=0.22
+district	9506	รามัน	dataset="Raman"	picker="Ta Lo Due Ra Man"	sim=0.42
+district	9603	บาเจาะ	dataset="Tak Bai"	picker="Bacho"	sim=0.17
+province	42	เลย	dataset="Loei"	picker="San Pu Loei"	sim=0.44
+province	63	ตาก	dataset="Tak"	picker="Nong Tak Ya"	sim=0.33
+province	76	เพชรบุรี	dataset="Phetchaburi"	picker="Thnn Phetnpuni"	sim=0.31

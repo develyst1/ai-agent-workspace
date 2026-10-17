@@ -588,3 +588,35 @@
 - EN: `🔔 Make-up for {student} on {date} is NOT confirmed ({reason}) — please confirm it.`
 📌 **The owner was shown the TH line only.** The EN is its companion as drafted. 🚫 **Sober's redraft is NOT what was approved.**
 📌 **The code's comment still reads "📋 DRAFT".** That is a stale label, not unapproved text. It ships tonight as built, and the label flip goes to @Sober for the next round.
+
+### ✅ OWNER APPROVAL 2026-10-11, "ชุด 1 อนุมัติทั้งหมด" (set 1, approved in full)
+**Owner, verbatim:** *"ชุด 1 อนุมัติทั้งหมด"*, given after Porter showed him items 1–5 below in one message (the TH of each line; the EN companions as drafted).
+**1. `TASK-711`: the FAMILY is told "class on again" after a leave Undo** (Sober's draft, `inbox/PM.md` 2026-10-11 "Item 2"):
+- TH: `✅ มีคาบเรียนตามเดิม:⏎Student : …⏎Program : …⏎Date : …⏎Time : …⏎Note : ยกเลิกการลาแล้ว เรียนคาบนี้ตามปกติค่ะ`
+- EN: `✅ CLASS ON AGAIN:⏎Student : …⏎Program : …⏎Date : …⏎Time : …⏎Note : Leave cancelled. This class goes ahead as scheduled.`
+**2. `TASK-712`: camp refusal, a coach's own hours outside the day's hours. Refused at BOTH ends.** Thai only, like every server refusal:
+- TH: `วันที่ {date} ครู {coach} ตั้งเวลา {start}-{end} อยู่นอกเวลาของวัน ({dayStart}-{dayEnd}) — ไม่ได้บันทึกอะไร`
+**3. `TASK-726`: the web screens for linking an admin's LINE to their web user: 12 lines, TH + EN, verbatim from `COPY-DRAFT-admin-line-link-teamB-2026-10-11.md` (lines 12–22 of that file).**
+**4. Khwan's workbook, the owner's part** (`COPY-SET-khwan-workbook-2026-10-11.md`):
+- **(a) all 24 rows: her words as they are.**
+- **(c) the 47 live, never-approved screen sentences: APPROVED AS THEY STAND**, byte for byte as in front `2db1c57` (the set's own re-check).
+- **The house-rule rows:** P26 times with a COLON (`10:00`) · P18 `Remark`/`Rental` printed only when non-empty · R38 the doubled `ที่สามารถ` removed · **R35 the approved A′ stays** (hers is not taken) · **R147 her words with the number from the SETTING** (`อย่างน้อย {cutoffHours} ชม.` / `at least {cutoffHours} hour(s)`).
+- **Still OPEN, waiting on Khwan:** P11 · P33/P34 · R48 · R58 · D1 (row 45) · D2 (row 46) · P43/P44 (the empty-name fallback). Nothing in these rows is built until she answers.
+**5. Sober's two boundary rulings, accepted:** the series CANCEL-ALL of a group stays as today (`TASK-713`) · the «ขยายคาบ» badge shows on the extra group row (`TASK-716`).
+
+### ✅ OWNER APPROVAL 2026-10-12, *"อนุมัติทั้ง 3"* (all three, as shown to him in one message)
+1. **`TASK-729`, the P43/P44 fallback when LINE gives no display name:** `ผู้ใช้ LINE` + ` · HH:mm` (the press time, Bangkok). Same text in TH and EN (`aa_chat_fallback`). The normal case prints the chat name.
+2. **`TASK-730`, D1, the family's confirm when a VOUCHER is sold:** her row-45 layout, verbatim: `📅CONFIRMED SCHEDULE:⏎Student : …⏎Program : …⏎*Expiry date : {n} Months⏎Remark : …` (Remark only when the sale's note is non-empty; months per her 2026-10-12 answer).
+3. **`TASK-735`, D2, the family's confirm when a CAMP is booked or changed:** her row-46 layout, verbatim: `📅CONFIRMED SCHEDULE:⏎Student : …⏎Program : {package sale name}⏎Date : … - …⏎Time : …⏎Remark : …`, with the hours per ฟีน 2026-10-12 (10:00-12:00 · 13:00-15:00 · 10:00-15:00, colon). Re-sent on an edit. **The last day cancelled ⇒ the already-approved `❌ ยกเลิกคาบเรียน:` / `❌ CLASS CANCELLED:`.**
+(**`TASK-736` P26** was covered by set 1: her text + the colon house rule.)
+
+## 2026-10-17 — APPROVED by the owner: TASK-814 "cancel a future advance leave" (TH/EN), verbatim *"อนุมัติข้อความ"*
+| where | TH | EN |
+|---|---|---|
+| button | ยกเลิกวันลา | Cancel leave |
+| confirm title | ยกเลิกวันลาของครู {name} วันที่ {date}? | Cancel {name}'s leave on {date}? |
+| confirm body | วันนั้นจะกลับมาจองคาบกับครูได้ตามปกติ คาบที่มีอยู่แล้วไม่มีอะไรเปลี่ยน และระบบจะแจ้งครูทาง LINE | That day opens for bookings with this teacher again. Existing classes don't change. The teacher is told on LINE. |
+| confirm buttons | ยกเลิกวันลา · ไม่ยกเลิก | Cancel leave · Keep leave |
+| toast (told) | ยกเลิกวันลาแล้ว — แจ้งครูทาง LINE แล้ว | Leave cancelled — the teacher was told on LINE |
+| toast (not told) | ยกเลิกวันลาแล้ว — ครูยังไม่ได้เชื่อม LINE กรุณาแจ้งครูเอง | Leave cancelled — the teacher has no LINE link, please tell them yourself |
+| refusal (today/past) | ยกเลิกได้เฉพาะวันลาล่วงหน้า (วันถัดไปเป็นต้นไป) — วันลาของวันนี้หรือวันที่ผ่านมาแล้วยกเลิกไม่ได้ | Only a future leave day can be cancelled. Today's or a past leave can't be cancelled |

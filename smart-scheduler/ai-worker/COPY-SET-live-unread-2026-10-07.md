@@ -123,3 +123,7 @@
 
 ---
 **Count: 47 screen strings in 9 groups (L1–L9) + 1 listed back-end refusal (L10).** ⚠️ *"23" in the audit counts DRAFT LABELS in the file, not strings — one label can cover a whole dialog. 47 is the number of sentences to read.*
+
+---
+## ⚠️ CORRECTION — @Sober, 2026-10-12 (found by @Fern in TASK-718)
+**L3 was wrong about four of its 14 keys.** `teacherLeave.adminAdvanceTitle` · `adminAdvanceBlocked` · `adminAdvanceClasses` · `adminAdvanceNoClasses` **were already OWNER-APPROVED on 2026-10-04** — `COPY-REVIEW-2026-09-29.md:452` ("TASK-651's four admin leave-result strings, AS DRAFTED"). The code's label said so; this file did not. ⇒ **The set held 43 never-approved sentences + 4 already approved, not 47 never-approved.** The owner's 2026-10-11 approval of all 47 changes nothing for those four; their original 10-04 label stands.

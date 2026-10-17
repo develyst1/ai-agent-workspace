@@ -150,3 +150,47 @@
 - **Q3, check-in:** **NO**, a parent may not check in to an unconfirmed class. It is the **XS wording** branch, and the act does not change. The new wording is the owner's to approve.
 - **Q4, REQ-086:** start with the notification **titles and labels** (M + M). The bot's replies come in a later pass.
 - **The settled next-round list:** the help line on parent refusals · the CONFIRMED-only parent window · REQ-086 (titles and labels) · F5. REQ-112 A and B are held by Porter. The facts are in `FACTS-REQ-112-teamB-2026-10-04.md`.
+
+
+## ADDENDUM 2026-10-11 — §1 Daily report RE-CHECKED against today's code (@Silver, for Porter's brief)
+**Code read today:** front `2db1c57`, back `a2185b2`. Read-only; nothing run against any database.
+
+### Still true (unchanged since 10-04) — the cause stands
+- **Front builds the numbers from `/calendar`, not from the report** (`scheduler.service.ts:1037-1083`). Only On leave and Cancelled come from `/reports/daily`.
+- **Front type rows are still 4** (`:1030-1035`), with 6 types in the enum. OTHER and GROUP still have no row.
+- **Front "Total booked"** still counts everything except CANCELLED (`:1042-1044`).
+- **Back `/reports/daily` is still unscoped** (`routes/api.ts:312-313`).
+- 🔑 **Camp is still COACH-HOURS:** one `bookings` row per coach per hour, `OTHER`, `CONFIRMED` (`camp.service.ts:280`).
+  - **The end-of-day job still auto-attends every CONFIRMED row**, with no camp exclusion (`jobs.service.ts:~83-88`).
+  - The children's camp attendance is still only in `camp_days` (`cutCampDays`, `jobs.service.ts:137`).
+- ⇒ **17 = 9 private + 8 camp coach-hours, while she counts 9 children: still the cause.**
+
+### Changed since 10-04
+1. 🔑 **REQ-115 is in the back code** (`is_makeup`, commit `b782c77`). A make-up is now born **CONFIRMED** ⇒ auto-ATTENDED at day end ⇒ it **now counts in Attended**, where an `EXTENDED` one never did.
+   - It moves her numbers **toward** her own count (a child who came to a make-up came). The report has no make-up notion and needs none.
+   - ⚠️ But a reproduction on an OLD date mixes both regimes. Compare like with like.
+2. **Camp coach-hours (TASK-707) are FRONT-only** (how a camp day's hours are saved). The row shape (per coach per hour) is unchanged. The coach-hour COUNT for a day can differ from before; the cause cannot.
+3. **Status and type enums are unchanged** (`schema.ts`: 6 types, 8 statuses). REQ-112 did not add a leave status, so On leave = `SICK_LEAVE` as before.
+4. **Two more readers of the back function**, both unchanged: the end-of-day job (`jobs.service.ts:248`) and the SOM dashboard (`som-report.service.ts:39`). Whatever the back function returns, they show.
+
+### Size: still **M (FE + BE)**
+- **BE (~60-90 lines + tests; there are no report tests today):**
+  - `getDailyReport` (`scheduler.service.ts:966-988`) gains `camp: { childrenAttended, childrenPlanned }` from `camp_days` for the date (one row per package per date; count ATTENDED);
+  - camp coach-hour rows (`otherKind = CAMP`) are taken OUT of the private totals;
+  - the route is scoped.
+- **FE (~40-70 lines + 3-5 tests):** the report rows are built from the back's split (not re-counted from `/calendar` with a different rule); all 6 types or an "Other / Group" row; camp in its own row; "On leave" kept out of "Booked". The mock `scheduler.mock.service.ts` changes too.
+- 🚫 **Unchanged, as on 10-04:** camp rows keep being auto-attended (coach pay and history depend on it).
+
+### Q1 (Porter's recommendation: camp = the CHILDREN who attended, in its OWN row) — ✅ agreed, with ONE condition
+- **The camp coach-hour rows must LEAVE "Total booked" and "Attended"** when the children's row is added. Otherwise the day shows 8 coach-hours AND 9 children, double-counting the camp: worse than today.
+- **And one source:** the back computes the split once, so the screen, the end-of-day LINE report and the SOM dashboard cannot disagree.
+  - ▶️ **Owner sub-question, one line:** "Do the end-of-day report and the SOM dashboard change the same way?" Recommended: yes.
+
+### Reproduce first (SYSTEM-FACTS 2026-10-08) — the sid fixture
+- 🚫 **The future camp weeks do NOT work:** QA-116 (`f17d1a7d`, 26-27 Oct) and QA-091 (`39ccb0a9`, 28 Oct). Her number only exists **after the end-of-day job** has auto-attended the coach-hour rows.
+- ✅ **Candidates on sid, past and day-end already run** (sid runs the 18:05 day-end, TEST-075):
+  - **27 Sep 2026, camp day `QA-Camp-075`** (TEST-075:122, campkid2 checked in);
+  - **30 Sep 2026, `QA-Camp-076`** (qatt75's block, TEST-076:196).
+  - **Step 0 for Tanya:** open the Daily report for each date as admin, "All teachers". Write down Attended vs (private lessons attended + camp CHILDREN who came). **REPRODUCED** = Attended exceeds that by the coach-hour rows.
+  - I cannot see sid's data, so which date shows it is hers to find.
+- **Fallback recipe, if neither shows it:** today, one camp day with **2 coaches × 2 hours** + **3 children** marked ATTENDED by staff + **1 private lesson** attended. After the day-end, the Daily report should read **Attended 5** (1 + 4 coach-hours) where the true count is **4** (1 + 3 children). Note the camp week id in the TEST file.

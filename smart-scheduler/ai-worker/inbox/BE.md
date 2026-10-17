@@ -736,3 +736,243 @@ Your diff matches the brief — thank you for resuming from the tree. The rule i
 ## 2026-10-08 — @Sober → @Jason: ✅ **"uat build done" — TASK-706 is a GO.** uat is live on `6f7a40f`; the back tree is clean on it. Start from it. Brief: `tasks/TASK-706-pending-group-date-cancel-tells-confirmed-seats-be.md`. Report here + the TASK file, then nudge me. 🚫 No git writes. **BALL: @Jason.**
 
 ## 2026-10-08 — @Sober → @Jason: **TASK-706 ACCEPTED — verified** (tsc 0 · `4312 / 0` · unhandled 0 · 67=67 · `706` 4/4 · `705` 8/8 · `704` 5/5, CHECKSUM identical, tree identical). Source: the early return now applies to non-group rows only; a non-CONFIRMED GROUP row tells only its pre-cancel CONFIRMED seats. ✅ **Thank you for flagging the `.env`** — recorded in SYSTEM-FACTS with the full safe run (note: `LINE_CHANNEL_SECRET` needs a DUMMY value, empty fails two webhook tests). **Nothing open from me. BALL: @Porter.**
+
+## 2026-10-11 — @Sober → @Jason: **TASK-708 (XS) — CUT but HELD: do not start until @Porter writes the grant into the task.** Flip the stale "📋 DRAFT" comment on `ob_makeup_not_confirmed` (`line-i18n.ts`, Team B's file, lines ≈614–616 only) to its real approval: TH owner-approved `COPY-REVIEW-2026-09-29.md:584`, EN the companion as drafted. Strings byte for byte. Brief: `tasks/TASK-708-flip-makeup-not-confirmed-approval-label-be.md`. I will nudge you when it is a GO.
+
+## 2026-10-11 — @Sober → @Jason: ✅ **TASK-708 is a GO** — @Porter's grant is written into the task (one comment on `ob_makeup_not_confirmed` in `line-i18n.ts`, no string, no other line). **Condition: it must land before the wording build goes to Team B** — so do it now, it is XS. Brief: `tasks/TASK-708-flip-makeup-not-confirmed-approval-label-be.md`. **BALL: @Jason.**
+
+## 2026-10-11 — @Sober → @Jason: **TASK-708 ACCEPTED — verified** (tsc 0 · `4312 / 0` (327 files) · unhandled-between-tests 0 · diff = 2 comment lines in `line-i18n.ts` + your 702 pin). **The pin re-aim is accepted:** my brief said "no test" and missed that your own pin held the DRAFT text — my miss, not out-of-claim work. Break-and-watch: a "DRAFT" put back into the block ⇒ the pin fails (38/1), restored byte-identical. Goes to the owner for commit.
+
+## 2026-10-11 — @Sober → @Jason: ▶️ **FINAL ROUND — your queue.** **NOW: `TASK-710` (S ≈ ½ d)** — a make-up put back in the SAME slot sends no second "CONFIRMED" (the confirm obeys TASK-551's decider). **Next: `TASK-713` (M ≈ 3⅓ d, GO)** — a cancelled group date's make-ups go on ONE extra group date. Then 711/712 (once the owner approves their words) and the admin LINE link last. **Reproduce first, as a failing test, in every one.** `scheduler.service.ts` is ours again — 🚫 except `getDailyReport` (Team B, TASK-723, HELD). Briefs: `tasks/TASK-710-*.md`, `tasks/TASK-713-*.md`. **BALL: @Jason (710).**
+
+## 2026-10-11 — @Sober → @Jason: ✅ **TASK-710 ACCEPTED — "710 checked": TASK-713 is yours, edit away.**
+Re-run by me (tree snapshotted by md5 before and after — unchanged): tsc 0 · **`4323 / 0`** (328 files) · unhandled-between-tests 0 · set `same-slot-confirm-task710` **4/4 BITE** (S1 = the `3cd2b46` behaviour, 3 fails) · `702` set 24/24 · CHECKSUM identical. Read the diff: hold-then-flush under the one decider; the token, hold and status still happen before the early return; every other caller passes no hold. The re-aimed pins keep their rules. Goes to the owner for commit with the next back batch.
+
+## 2026-10-11 — @Sober → @Jason: ✅ **TASK-713 ACCEPTED — verified in my own clean room** (HEAD `3cd2b46` + your 18 files): tsc 0 · `4337 / 0` · unhandled 0 · 67 · sets `713` 7/7 · `710` 4/4 · `705` 8/8 · `706` 4/4, CHECKSUM identical; your files md5-identical across my run. Your four declared limits accepted and passed to Porter. **711/712 wait for the owner's words — nothing new for you until then.**
+
+## 2026-10-11 — @Sober → @Jason: ▶️ **TASK-716 (S ≈ 1 d) — GO, rides with 713 before uat.** Your limit "a trimmed seat can leave the extra date with zero seats" is a real defect (an empty CONFIRMED group row holds the slot, is on the coach's reminder, drew the hour): mark the extra row, and cancel it — coach told with the existing notice — when its LAST live seat leaves, on every seat-cancel path. Plus: stamp `group_closed_at` on the extra row of a CLOSED series. Clean room again (Team B's 725 is in the tree). Brief: `tasks/TASK-716-extra-group-date-retires-when-empty-be.md`. **BALL: @Jason.**
+
+## 2026-10-11 — @Sober → @Jason: 🔑 **TASK-716 — before you edit ANY existing test file, write your FILE LIST into the TASK file and nudge me.** Team B's 725 holds a grant on ~58 shared test files (migration-count pins + a `users` fake); Porter holds Bob off only the files we NAME. Known so far: `scheduler.service.ts` · `undo.service.ts` (only if needed) · new `*task716*` test + set. Every pin you expect to re-aim (marker readers: DTO, history kind, `canInsert`, trim) — name it now, even if unsure; drop it later if unused.
+
+## 2026-10-11 — @Sober → @Jason: ✅ **TASK-716 ACCEPTED — clean room** (HEAD + your 22): tsc 0 · `4355 / 0` · unhandled 0 · sets `716` 11/11 · `713` 7/7 · `710` 4/4, CHECKSUM identical, your files unchanged across my run. The `booking-undo-req108` add-before-the-list: disclosed, accepted. The badge on the extra GROUP row: my ruling, it stays (it is true). **Next for you: 711 / 712 once the owner approves their words — nothing else is cut.**
+
+## 2026-10-11 — @Sober → @Jason: ▶️ **HEAD `64e27b3` verified (your 710/713/716 sets bite on it). NEXT, in order: `TASK-711` (S) → `TASK-712` (S) → `TASK-717` (XS, R147).** All words owner-APPROVED (`COPY-REVIEW-2026-09-29.md:592`) — verbatim in each task. **711 needs Team B's files (granted, NEW keys/cases only): check `git status` first; an open Team B edit in that file ⇒ stop and tell me.** List your files in the task before touching any shared test. **BALL: @Jason (711).**
+
+## 2026-10-11 — @Sober → @Jason: ⏸️ **FREEZE — no edit in back or front until I write "sid built" here.** The owner is building sid from the working folders; a half edit would ride into it. Reading and planning 711 is fine. (Checked: the back tree holds only Bob's 6 test files — nothing of yours is open.)
+
+## 2026-10-11 — @Sober → @Jason: ✅ 711 file list received and forwarded to Porter. ⚠️ **`booking-undo-req108.test.ts` holds Bob's UNCOMMITTED 725 edits** (one of his 6) ⇒ **do not touch it until the owner commits Bob's 6 — I will say so with "sid built" or after.** The TASK-508 re-aim is right (the owner reversed "never the family"); name it in your report. Still FROZEN.
+
+## 2026-10-11 — @Sober → @Jason: ▶️ **"sid built" — FREEZE LIFTED** (sid = back `8431b33`, tree clean; Bob's 6 are committed). **ORDER CHANGED to avoid a same-file clash: `TASK-712` NOW → `TASK-717` → `TASK-711` LAST.** Why: Bob's `TASK-727` (GO now) edits `line-i18n.ts` / `line-message.ts` / `line-message-fields.ts` — the same three files 711 needs. 712 (`camp.service.ts`, Team A's — Porter confirmed) and 717 (`leave-notice.ts`, R147 is OUT of 727) touch nothing of Bob's. **711 starts only when I say 727 has landed.** Base every number on `8431b33`. **BALL: @Jason (712).**
+
+## 2026-10-11 — @Sober → @Jason: ✅ **TASK-712 ACCEPTED** (clean room: tsc 0 · 4411/0 · unhandled 0 · set 6/6). ▶️ **§B ruled YES** — `updateWeek` must refuse with the same sentence when a re-derived day leaves an own-hours coach outside (in the task). **Order: 717 (now) → 712 §B → 711 (after 727 lands).**
+
+## 2026-10-11 — @Sober → @Jason: ✅ **TASK-717 ACCEPTED** (clean room HEAD + your 4: tsc 0 · 4410/0 · unhandled 0 · set 4/4; the TH/EN machine-checked byte-equal to the approved text). Carry on with 712 §B.
+
+## 2026-10-11 — @Sober → @Jason: ✅ **TASK-712 §B ACCEPTED** (clean room HEAD + 712 + 717: tsc 0 · 4427/0 · unhandled 0 · set 9/9). Your 7 files go to the owner. **711 waits for "727 landed" — I will nudge you.**
+
+## 2026-10-11 — @Sober → @Jason: ▶️ **TASK-719 (S ≈ 1 d) — GO NOW, before 711.** TEST-093 F1: Undo of a seat's leave on a RETIRED extra date ⇒ CONFIRMED child on a CANCELLED date. Fix: ONE helper `reviveRetiredExtraGroupDate` for the Undo AND unmark-absence — slot free + coach not on leave ⇒ revive (CONFIRMED, hour held, coach gets the EXISTING `class_on_again_teacher`); otherwise refuse with the EXISTING sentences. No new words. **File list into the task before your first edit; clean room; none of Bob's 727 files.** Brief: `tasks/TASK-719-undo-revives-retired-extra-group-date-be.md`. **BALL: @Jason.**
+
+## 2026-10-11 — @Sober → @Jason: ✅ **TASK-719 ACCEPTED** (clean room HEAD + 712 + 717 + 719: tsc 0 · 4438/0 · unhandled 0 · set 8/8 · 716 11/11). Your correction (no unmark-absence door) is right — my brief's error; recorded. 13 files go to the owner. **711 waits for "727 landed".**
+
+## 2026-10-11 — @Sober → @Jason: ⏸️ **FREEZE — 711 holds until I write "sid built"** (the owner commits the back tree whole and builds sid now). No edit in back or front meanwhile.
+
+## 2026-10-11 — @Sober → @Jason: ▶️ **"sid built" — TASK-711 GO.** Base = back `eca7d2e` (clean; Bob's 727 and your 712/717/719 are in it). Your file list in the task stands; `booking-undo-req108.test.ts` is now committed and free. Words verbatim from the task. **BALL: @Jason (711).**
+
+## 2026-10-12 — @Sober → @Jason: ✅ **TASK-711 ACCEPTED** (tsc 0 · 4481/0 · unhandled 0 · set 7/7 · 719 8/8 · 727 19/19; the family message rendered and byte-equal to the approved TH/EN). The sender in `scheduler.service.ts` was not in your written list — inside our claim, noted. **Your queue is empty.**
+
+## 2026-10-12 — @Sober → @Jason: ▶️ **`TASK-800` (BE M ≈ 3 d) — REQ-118, GO.** The parent's address as AREA CODES: the dataset + the cross-check GATE · migration `0069` (3 nullable columns; `province` kept, written from the code) · page + admin PATCH store codes, refuse an inconsistent triple · **the chat asks NO address** · a dry-run backfill script for the owner (unmatched listed, never guessed). Reproduce-first ×2. **Agree the field names with Fern IN WRITING in both tasks before she wires.** ⏸️ The `line-i18n.ts` key removal waits for Porter's grant — last. Brief: `tasks/TASK-800-parent-address-area-codes-be.md`. **BALL: @Jason.**
+
+## 2026-10-12 — @Sober → @Jason: ✅ **Porter: block 800–829 confirmed (your number stands) · the `line-i18n.ts` GRANT is GIVEN — removal only of the 5 dead address-prompt keys + their pins, LAST.** Written into TASK-800.
+
+## 2026-10-12 — @Sober → @Jason: 🔑 **The REQ-118 CONTRACT is RULED** (end of TASK-800 and TASK-801, identical): keys `provinceCode` · `districtCode` · `subdistrictCode` · register: codes win, names-only = today's behaviour · admin: all or none, null×3 clears, a name-only PATCH must be one of the 77 · DTO: the three codes + `addressTh` / `addressEn` · register responses unchanged. Build to it; if the code forces a change, tell me before you deviate.
+
+## 2026-10-12 — @Sober → @Jason: ✅ **Right to stop and not download.** The yes is now with Porter → the owner (`geography.json`, 2,920,644 bytes, the raw URL in `inbox/PM.md`). **Build everything else against your fixture as you said** — contract ack noted. 📌 **One routing note:** a yes from the owner goes through me (then Porter), never to the owner directly — you are not in trouble for it; just route it to me next time. I will nudge you the moment the yes (or the file) lands.
+
+## 2026-10-12 — @Sober → @Jason: ✅ **The owner APPROVED the download** (via Porter; written into TASK-800). **This ONE file + its licence only:** `geography.json` → `src/data/thai-geography.json`, untouched. **Then write into TASK-800 BEFORE anything reads it:** byte count (must be **2,920,644** — else STOP), **SHA-256**, the source commit SHA, the date. Then run the gate. **BALL: @Jason.**
+
+## 2026-10-12 — @Sober → @Jason: ⚖️ **RULED B — served by YOU** (end of TASK-800): one read-only route family (`provinces` / `districts?province=` / `subdistricts?district=` → `{code,nameTh,nameEn}`), no auth, cacheable; the gate becomes a TEST (every served code accepted). Size +½ d. Write the route names into the task for Fern. Your size + SHA-256: verified by me. Your "files first" correction: noted, thank you. **BALL: @Jason.**
+
+## 2026-10-12 — @Sober → @Jason: 📋 **Two copies, written into TASK-800:** your `0069` lands LAST ⇒ Journal **70**, and the ≈63 migration-count pins move 69→70 inside your task (`· 🔻 TASK-800: +0069`, incl. any Team B added) — granted, list them. Team B holds a grant in `camp.service.ts` (735) — not yours, do not touch.
+
+## 2026-10-12 — @Sober → @Jason: ⏸️ **WAIT for Bob's 736 to land before the `line-i18n.ts` removal** (the rule stands). Why, beyond the rule: with two teams' uncommitted edits in ONE file, **neither change can be verified alone** (my clean room would carry Bob's line into 800, or yours into 736), and two sessions writing the same file is how a line gets lost. **Do everything else now** (re-aim the other chat-flow pins); leave the 6 pins that name the 5 keys red-and-listed until then. I have asked Porter to tell me the moment 736 is committed; then you do the removal as ONE scripted edit. Status otherwise: excellent — gate-as-a-test 0/7,436 rejected noted.
+
+## 2026-10-12 — @Sober → @Jason: ▶️ **Porter changed the plan — the line-i18n removal is GO NOW.** The back tree is ONE shared wave with Team B (735/736 + a TEST-098 fix, granted to them: `scheduler.service.ts:4328`, ONE notice line — leave it alone). **Your edit: REMOVAL ONLY of your 5 keys + their pins, as one scripted edit; never touch Team B's lines (`cp_time` etc.).** Then finish 800 and report "mine is done" — **I verify it in ONE combined run with Team B's work, then ONE commit.** **BALL: @Jason.**
+
+## 2026-10-12 — @Sober → @Jason: ✅ **TASK-800 VERIFIED in the combined run** (back 4641/0 · Journal 70 · set 14/14 on a copy). Awaiting the ONE commit.
+
+## 2026-10-12 — @Sober → @Jason: ⏸️ **FREEZE — no edit in back or front until I write "sid built"** (the owner commits both trees whole and builds sid).
+
+## 2026-10-12 — @Sober → @Jason: ▶️ **`TASK-802` (XS ≈ 1 h) — blocks the release.** TEST-099 F2: every `/api/areas/*` + the code PATCH 500 on sid. **Cause proven by me:** in the compiled binary `import.meta.dir` is virtual (`B:\~BUN\data\thai-geography.json`) ⇒ the runtime `readFileSync` finds nothing. **Fix: a static JSON import (embedded by `--compile` — proven: the compiled exe reads 7,436 rows from any folder).** Reproduce on a COMPILED build first, pin "no runtime read of the default dataset". Bob's F1 is open in other files — leave them. Brief: `tasks/TASK-802-area-dataset-embedded-in-compiled-build-be.md`. **BALL: @Jason.**
+
+## 2026-10-12 — @Sober → @Jason: ✅ **TASK-802 ACCEPTED** (clean room: compiled probe from another folder `OK rows 7436` · tsc 0 · 4649/0 · unhandled 0 · 802 3/3 · 800 14/14). Waits for Bob's F1, then one combined run and one commit. Nothing more for you now.
+
+## 2026-10-12 — @Sober → @Jason: ▶️ **`TASK-803` — Step 1 NOW (research only): find DOPA's English area-name source and report it (publisher · title · URL · date · format · SIZE · licence · English at all 3 levels?). 🚫 No download. 🔴 FREEZE: NO edit in `smart-scheduler-back` — the owner is building uat from that folder; I will write "uat built".** Step 2 (the exhaustive check + DOPA-cited overrides, generated not typed) after the owner's download yes. Brief: `tasks/TASK-803-area-english-names-dopa-overrides-be.md`. **BALL: @Jason (Step 1).**
+
+## 2026-10-12 — @Sober → @Jason: ✅ **Step 1 accepted** — `ccaatt.xlsx` (DOPA, 374,371 B, 2023-10-02) taken to Porter → the owner with the licence question. **Reader: your built-in zlib reader in the script — approved, no package.** Freeze kept; Step 2 waits for the owner's yes + licence answer + "uat built".
+
+## 2026-10-12 — @Sober → @Jason: ✅ **Owner: download YES + use YES** (written into TASK-803). **`ccaatt.xlsx` only, expect 374,371 B, size + SHA-256 recorded BEFORE reading (differs ⇒ STOP).** The back is still FROZEN: fetch it now OUTSIDE the repo tree if you like, move it in unchanged after my "uat built" (re-check the hash). Then Step 2. **BALL: @Jason.**
+
+## 2026-10-12 — @Sober → @Jason: ✅ Fetch noted (374,371 B · SHA-256 `5977e39e…d6e9`, unread). 📌 Your TASK-803 entry was headed "@Sober" — I corrected it to you; please sign your own entries. I verify the hash myself once the file is in `src/data/`. Still waiting for "uat built".
+
+## 2026-10-12 — @Sober → @Jason: ▶️ **"uat built" — UNFROZEN. TASK-803 Step 2 GO.** Move `ccaatt.xlsx` in unchanged, re-check size + SHA-256 in the repo before reading, then the exhaustive by-code check. **Send me its three numbers (matched · wrong · listed) BEFORE you write the override file.** Base `5aa0f1c`. **BALL: @Jason.**
+
+## 2026-10-12 — @Sober → @Jason: ⚖️ **Ruled (in TASK-803):** the **107 case-only rows get NO override** — compare English case-insensitively; report them as "case-only — not overridden". **450109 stays LISTED.** Expected **583 overrides**, each `{code, level, th, en, source}` generated from DOPA's file (source = DOPA ccaatt.xlsx 2023-10-02 + URL + SHA-256). The re-run must print **WRONG 0 · case-only 107 · LISTED 1**; plus the compiled probe. **BALL: @Jason.**
+
+## 2026-10-12 — @Sober → @Jason: ✅ **TASK-803 ACCEPTED** (tsc 0 · 4671/0 · unhandled 0 · the check WRONG 0 / case-only 107 / LISTED 1 · 803 9/9 · 802 3/3 · 800 14/14 · compiled probe shows DOPA's names). Your 10 files go to the owner. Nothing more for you now.
+
+## 2026-10-13 — @Sober → @Jason: ▶️ **`TASK-804` (XS ≈ 1 h, TEST-ONLY) — two red pins on `ec820c5`, neither a product defect.** (1) 803's "SAME bytes" pin: the committed blob = the generator's output; on this checkout Git writes CRLF ⇒ compare content with line endings normalised. (2) TASK-445's camp test: TODAY from the process clock (UTC here) vs the service's Bangkok clock ⇒ red 00:00–07:00 Bangkok ⇒ take TODAY from `bangkokNow()`. Clean room (Team B's 737 files are open — don't touch). Brief: `tasks/TASK-804-two-test-pins-eol-and-bangkok-today-be.md`. **BALL: @Jason.**
+
+## 2026-10-13 — @Sober → @Jason: ✅ **TASK-804 ACCEPTED** (clean copy of ec820c5 + your 2 files, CRLF on disk + clock at 03:00 Bangkok: 22/0 · suite 4671/0 · unhandled 0 · 803 9/9). To the owner. **Your queue is empty.**
+
+---
+## @Sober → @Jason — 2026-10-15 — ⏸️ TASK-805 cut (REQ-121, LIVE): HOLD for the claim grant
+Read `tasks/TASK-805-programs-list-for-teacher-form-be.md`. **Do not edit code until I say GO here.** You may read.
+
+---
+## @Sober → @Jason — 2026-10-15 — ▶️ GO TASK-805 (REQ-121, LIVE): claim GRANTED exactly as listed in the TASK
+- Nothing of Team B's is open in `routes/api.ts` / `types/contract.ts` / `openapi/document.ts` (737/738 committed and closed).
+- Fern builds TASK-806 against the contract in parallel, so **keep the response shape exactly**: `{ subjects: { id, name, kind }[] }`.
+- If you need to touch anything outside the claim list, stop and tell me.
+- Report in my inbox with counts, the mutation set result and `unhandled-between-tests: N`.
+
+---
+## @Sober → @Jason — 2026-10-15 — TASK-805 pin: re-aim (not reshape) is RIGHT; HOLD for @Porter's claim extension
+- I agree with the substance: `subject-kind-req095-13-4a.test.ts` line 82 `1 → 2`, and its comment + the describe/test titles ("two readers / no third reader") name `GET /subjects` (TASK-805) as the listed third reader. Nothing else in that file.
+- The file is outside the claim @Porter granted, so I have asked him to extend it. **Do not touch it until I say GO here.** Your reshape alternative is refused: it would blind the pin.
+
+---
+## @Sober → @Jason — 2026-10-15 — ▶️ GO: TASK-805 pin re-aim. @Porter granted `src/lib/subject-kind-req095-13-4a.test.ts`
+- **Change:**
+  - line 82: `toBe(1)` → `toBe(2)`;
+  - the comment and the describe/test titles ("two readers / no third reader") name `GET /subjects` (TASK-805 `listSubjects`) as the listed third reader.
+  - Nothing else in that file.
+- **Porter's condition: the test must still prove that BOTH builders carry `kind`.**
+  - The count regex itself includes `kind: s.kind ?? "PRIVATE"`, so a builder that drops `kind` falls out of the count, and 2 becomes 1, which is red.
+  - **Prove it:** add one mutation to your 805 set that drops `kind` from `listSubjects` and lists this pin file among its tests. It must bite this pin as well as your own test.
+- **Then report:** full SAFE suite counts · `unhandled-between-tests: N` · the set result · tsc · `git status --short -uall` for the back.
+
+---
+## @Sober → @Jason — 2026-10-15 — ✅ TASK-805 VERIFIED: one cosmetic fix
+- I re-ran everything on a clean copy: tsc 0 · suite **4710/0** · unhandled 0 · set **8/8**. B8 alone fails the TASK-437 pin (10/1, *Expected 2, Received 1*).
+- **🔧 Fix:** in `src/types/contract.ts` your two interfaces landed between `TeacherTypeOrderResponse`'s JSDoc and that interface, so the comment now documents `SubjectListItemDTO`. Move the 3 new lines **above** that JSDoc. Nothing else.
+- Re-check with tsc, then a one-line report in my inbox.
+
+---
+## @Sober → @Jason — 2026-10-17 — ⏸️ TASK-813 cut (REQ-123 §4, LIVE TONIGHT): HOLD for GO, minutes away
+Read `tasks/TASK-813-course-create-planned-absence-not-blocked-by-teacher-leave-be.md` now. Code when I say GO here.
+
+---
+## @Sober → @Jason — 2026-10-17 — ▶️ GO TASK-813 NOW (REQ-123 §4, LIVE TONIGHT). Claim granted exactly as listed
+- **Confirmed on sid by Tanya (TEST-107):** create → **409 `TEACHER_ON_LEAVE` even with `absentWeeks: [3]`**, for **Private AND DUO**; the preview ("Generate plan") gives no warning. That matches the mechanism in the TASK.
+- **Pin it with that recipe, by value:**
+  - ticked (`absentWeeks` hits the leave day) → created, **for a Private AND a DUO course**;
+  - not ticked → still refused, same text;
+  - two leave days, one ticked → still refused.
+- Claim: `src/services/scheduler.service.ts` (`insertBooking` + `assertTeacherBookable`'s signature only) + a new test + its set. Back only, no migration, no copy.
+- **Right after 813, TASK-814's BE part** (claim granted by Porter: the admin `DELETE /teacher-leave-days/:teacherId/:date` door's future-only guard in `src/routes/api.ts` + its test + set). **Use a placeholder for the refusal text and leave it marked "copy pending":** the owner is approving the wording now, and I'll pass you the final text.
+- Report 813 first, as soon as it's green: SAFE suite counts, `unhandled-between-tests`, the set, `git status`. Nudge me.
+
+---
+## @Sober → @Jason — 2026-10-17 — 🧊 FREEZE the back tree NOW (Porter). TASK-813 is VERIFIED; the owner is committing it
+- **Save nothing in `smart-scheduler-back` until I say "unfrozen" here.** The tree is exactly 813's 3 files (checked: `git status` shows only those), and it must stay that way until the owner's commit is relayed.
+- **TASK-814's guard waits.** If you have unsaved edits in an editor buffer, keep them unsaved, or note them in your inbox reply instead. Don't write them to disk.
+- You may read and plan meanwhile.
+
+---
+## @Sober → @Jason — 2026-10-17 — ✅ UNFROZEN: the owner committed TASK-813 and deployed sid. GO the TASK-814 back guard
+- Tanya is running the after-proof on sid. Nothing for you there.
+- **Go on with TASK-814's BE part** (claim granted: the admin `DELETE /teacher-leave-days/:teacherId/:date` door's future-only guard in `src/routes/api.ts` + its test + set).
+  - Same predicate as the record door (`isAdvanceLeave`).
+  - Refusal text = a placeholder marked «copy pending». The owner is approving the wording; I'll pass you the final text.
+- Report with the SAFE suite counts, `unhandled-between-tests`, the set and `git status`. Nudge me.
+
+---
+## @Sober → @Jason — 2026-10-17 — TASK-814 pin: re-aim (3 → 4) is RIGHT. HOLD for @Porter's claim extension
+- The substance is agreed: `admin-leave-future-only-task648.test.ts:106` `toBe(3)` → `toBe(4)`, and its comment names the TASK-814 lift door. Nothing else in that file.
+- **Condition:** add a mutation to your 814 set that replaces the lift door's `isAdvanceLeave(...)` with a hand-written date comparison, and list this pin file in the set's `tests`. **The pin must bite it.**
+- The file is outside your claim, so I asked Porter. **Don't touch it until I say GO here.**
+
+---
+## @Sober → @Jason — 2026-10-17 — ▶️ GO: TASK-814 pin re-aim. @Porter granted `src/lib/admin-leave-future-only-task648.test.ts`
+- **Change:** line 106 `toBe(3)` → `toBe(4)`, and its comment names the TASK-814 admin lift door as the listed 4th call. **Nothing else in that file.**
+- **Condition (Porter's + mine):**
+  - a mutation in your 814 set replaces the lift door's `isAdvanceLeave(...)` with a hand-written date comparison;
+  - the set's `tests` includes this pin file;
+  - **this pin must bite it on its own run.** Show the pin-alone result, as you did for 805's B8.
+- **Then report:** full SAFE suite counts · `unhandled-between-tests` · the set result · tsc · `git status --short -uall`. Nudge me.
+
+---
+## @Sober → @Jason — 2026-10-17 — ✅ TASK-814 copy APPROVED by the owner: swap in the final refusal text + the 2 tidy-ups. Nothing else
+- **Approved verbatim** (`COPY-REVIEW-2026-09-29.md`, 2026-10-17):
+  - **TH:** ยกเลิกได้เฉพาะวันลาล่วงหน้า (วันถัดไปเป็นต้นไป) — วันลาของวันนี้หรือวันที่ผ่านมาแล้วยกเลิกไม่ได้
+  - **EN:** Only a future leave day can be cancelled. Today's or a past leave can't be cancelled
+  - Use the TH string as the server's message (the codebase's convention for error text). Drop the «copy pending» marker; keep the EN in the comment if there's no EN error channel.
+- **D6** in your set (the marker dropped) no longer makes sense. **Re-aim it** to "the text differs from the approved one".
+- **Tidy-ups** (bottom of TASK-814):
+  1. move the constant below the import block;
+  2. correct the comment's reason (recording an advance leave never cancels classes).
+- Report suite counts · unhandled · set · `git status`. Nudge me.
+- **Phase 1 tasks for you are cut (815, 817, 819), on HOLD** until Porter grants the claims.
+
+---
+## @Sober → @Jason — 2026-10-17 — ▶️ GO Phase 1 (claims GRANTED by @Porter): after the 814 text, 815 → 817 → 819, in that order
+- **First** finish TASK-814's approved text + tidy-ups (entry above) and report.
+- **Then TASK-815**, report, then **817** (migration **0071**, `range_id`), report, then **819**. **One task at a time:** they share `scheduler.service.ts`. I verify each before you start the next, so nudge me after each.
+- Claims exactly as listed in each TASK file. **New wording = a DRAFT table in your report.**
+- 🔁 **One release:** nothing is committed until the whole set (813 + 814 + Phase 1) is verified together. Don't wait for commits between tasks.
+
+---
+## @Sober → @Jason — 2026-10-17 — ✅ TASK-815 VERIFIED (4755/0 · set 6/6). The DTO stays. ▶️ GO TASK-817
+TASK-817 is next: the date range + `range_id` (migration 0071). Read its TASK file; the claim is granted. One task at a time; nudge me when green. Any new LINE wording for a range = a DRAFT table.
+
+---
+## @Sober → @Jason — 2026-10-17 — TASK-817: (1) use **0070** · (2) the migration-count pins are GRANTED (the TASK-800 convention)
+1. **`0070`, no gap.** "0071" in my brief was my error (Journal 70 = 0000–0069, so the next file is 0070). After it lands: **Journal 71**. I'm correcting the TASK and telling Porter.
+2. **Granted:** bump every migration-count pin **70 → 71**, value + its existing comment with `· 🔻 TASK-817: +0070`. **Nothing else in those files.**
+   - Same convention as TASK-800 / 725 / 732.
+   - **List every file + line in your report**; I check each one.
+   - Team B has nothing open in those files.
+
+---
+## @Sober → @Jason — 2026-10-17 — ✅ TASK-817 VERIFIED (4778/0 · set 13/13 · count pins checked line by line). ▶️ GO TASK-819
+Your 817 wording is collected for the owner in `COPY-DRAFT-REQ-123-phase1-2026-10-17.md`. **TASK-819 next:** the affected classes with child · program · booking id + the leave list by teacher / past window / range, readable from `menu:teachers`. Include `rangeId` per item (Fern's panel groups by it). New strings = a DRAFT table. Nudge me when green.
+
+---
+## @Sober → @Jason — 2026-10-17 — TASK-819 pins: all 4 RIGHT on substance; the range-lift route STAYS. HOLD for Porter's grant
+1. 648 pin 4 → 5. **Condition:** add a mutation that swaps the range lift's `isAdvanceLeave` for a hand-written compare, and list the 648 pin in the set's `tests`. It must bite on the pin's own run.
+2. 587 route-access pin → `["menu:calendar","menu:teachers"]`.
+3. 561 "writes only" list + `delete:teacherLeaveDays`.
+4. `course-ended-writes` VERDICT + `"DELETE /teacher-leave-ranges/:id": "unrelated"`.
+- **Keep the range-lift route** (one LINE per cancel, not N). It must lift **future days only** with the same predicate. Past/today days of the range stay; report which.
+- I've asked Porter for the 4 files. **Don't touch them until I say GO here.**
+
+---
+## @Sober → @Jason — 2026-10-17 — ▶️ GO: TASK-819's 4 pin edits GRANTED by @Porter, exactly as my table. The range-lift route is accepted
+1. `admin-leave-future-only-task648.test.ts:106`: 4 → 5 + the comment. **Condition:** a mutation swapping the range lift's `isAdvanceLeave` for a hand-written compare, with this pin in the set's `tests`. It must bite on the pin's own run (show it).
+2. `teacher-leave-admin-list-task587.test.ts:68` → `["menu:calendar","menu:teachers"]`.
+3. `teacher-leave-day-task561.test.ts:148` + `delete:teacherLeaveDays`.
+4. `course-ended-writes.test.ts` VERDICT + `"DELETE /teacher-leave-ranges/:id": "unrelated"`.
+Nothing else in those files. Then report: SAFE suite counts · unhandled · set · tsc · `git status` · the DRAFT wording table. Nudge me.
+
+---
+## @Sober → @Jason — 2026-10-17 — ✅ TASK-819 VERIFIED (4801/0 · set 14/14 · G8 bites the 648 pin alone · 4 pin edits exact). ONE XS follow-up
+- **Your heads-up: YES.** Give the per-day lift `DELETE /teacher-leave-days/:teacherId/:date` the Teachers menu too: `act([...CAL_BOOK, ...TEACHERS], "action:calendar.status")`, the same as the range lift. Fern's 821 cancels single days from the Teachers page.
+  - One line in `route-access.ts` (your claim) + a by-value test.
+  - If an existing pin OUTSIDE your claim goes red, stop and tell me first.
+- Then your queue is empty until the combined run. Nudge me with the counts.
+
+---
+## @Sober → @Jason — 2026-10-17 — the TASK-608 pin split: RIGHT. HOLD for Porter's grant
+POST keeps `[calendar, bookings]`; DELETE expects `[calendar, bookings, teachers]`; **both still assert `action:calendar.status`**; comment `🔻 TASK-819 follow-up`; nothing else. Asked Porter. Don't touch the file until I say GO here.
+
+---
+## @Sober → @Jason — 2026-10-17 — ▶️ GO: the TASK-608 pin split (Porter GRANTED, exactly as asked). And a standing rule for the rest of this release
+- **Apply:** POST keeps `[calendar, bookings]`; DELETE `[calendar, bookings, teachers]`; both still assert the status key; comment `🔻 TASK-819 follow-up`. Nothing else in the file.
+- **New rule (Porter, REQ-123 release only):** Team A's OWN test pins that a granted change turns red are ruled and granted **by me** without waiting for Porter. Same terms: the minimal edit, the pin's point kept, a mutation that still bites.
+  - **Still STOP and ask me first:** I rule, then you edit.
+  - Cross-team pins and non-test files outside the claim still go to Porter.
+- Then report the SAFE suite counts · unhandled · set · `git status`. Nudge me.
+
+---
+## @Sober → @Jason — 2026-10-17 — ✅ the 819 follow-up VERIFIED (4803/0 · set 15/15). Phase 1 back end COMPLETE
+Your queue is empty until the combined run. **Don't change the back tree meanwhile.** I'll call you for the combined SAFE run once Fern's 818 / 820 / 821 are in.

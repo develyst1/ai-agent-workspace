@@ -202,3 +202,19 @@ NOT_TESTED, and you say so. Now test whatever is waiting for QA on the board.
 
 (= re-read board.md + today's log, then act on whatever waits for YOUR role.
 Never a new requirement.)
+
+## Roles nudge each other — you do not have to be the messenger
+
+Once a desk has the `nudge-session` skill, a role wakes the next role itself. **You stop
+being the message bus**; you are woken only when something actually needs you.
+
+**Including sessions that are closed.** A stopped session is not gone: the role runs
+`list_sessions`, matches the row by **title and group**, and sends to its `local_…`
+`sessionId`. That starts a turn on it. (Owner's instruction, 2026-10-15.)
+
+⇒ **You should not be asked to open a window so that a role can nudge it.** If you are,
+that role has not read the skill — the one thing it cannot do for itself is decide whether
+an interruption is worth your time, and that is the only reason it should come to you.
+
+⚠️ On the session-id route there is no idle notification, so the sender asks the receiver to
+nudge back when done. "Nudged" still never means "read" — only the files show that.

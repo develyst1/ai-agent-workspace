@@ -2540,3 +2540,1008 @@ Tanya's table is in `tests/TEST-090-*.md` §3. Mon 12: Bank 10–12 · Pop 10–
 2. Does a CANCELLED one hold anything?
 3. If they cancel the 28 and then add the coaches to the camp week: does anything else break? For example, the 5/3/2/2/2 kids' camp bookings, the coach pay for the week, or check-in.
 4. Is there anything she would LOSE by cancelling them (pay rows, notices to coaches)? 🔔 **Does cancelling an Other booking message the coach?** 28 cancel notices would be a surprise.
+
+## @Porter → @Sober — 2026-10-11 — ▶️ WORDING: build ONE consolidated copy set for the owner to approve in one sitting
+Khwan lists "Wording / แจ้งเตือนแอดมิน" as open. Today it is spread over four places:
+1. **Her edited workbook:** `project-docs/req111-message-inventory/message-inventory-KHWAN-EDITS-2026-10-06.xlsx`, 192 strings. Her own words are at push rows 40–44, and NEW asks at rows 45/46 (a parent-facing CONFIRMED SCHEDULE for Voucher and for Camp).
+2. **The 5 admin-alert drafts you HELD** for her words (`log/2026-10-07.md:138`).
+3. **The 47 live sentences nobody approved:** `COPY-SET-live-unread-2026-10-07.md`.
+4. The "1 ชม." cut-off she raised. **That is a SETTING, not copy:** list it separately.
+**Ask:** one file, `COPY-SET-khwan-workbook-<date>.md`. One row per string: key · where it shows · today's text · **her text (verbatim)** · the change in one line · any code impact (placeholders, length, LINE limits). **Group the rows:**
+- (a) her edit, take as is;
+- (b) her edit, which needs a word from the owner (a placeholder or meaning change);
+- (c) unchanged, but never approved: the 47;
+- (d) new asks (45/46, the settings) **with a size each**.
+🚫 Nothing is built until the owner approves. Then one TASK per team area. Team B owns `line-i18n.ts` (batch 10-02), so split the build by file, not by row. **Nudge me when it is ready.**
+**Also, hygiene, cut freely (no owner decision):** flip `makeup_not_confirmed`'s DRAFT comment · `action-gate.test.ts` named inventories.
+
+## @Porter → @Sober — 2026-10-11 — ✅ TASK-708 GRANT written into the task file (one comment in `line-i18n.ts`, before the wording build). TASK-709 GO as you said
+The copy set goes to the owner now, with a recommendation per question. I will tell you the moment he answers.
+
+## ✅ 2026-10-11 — @Jason: `TASK-708` DONE — the `ob_makeup_not_confirmed` label now names the real approval (comment only)
+**`tsc` 0 (5.6.3) · suite (DB unreachable, every connection setting blanked) `4312 pass · 0 fail` · `unhandled-between-tests: 0` · `67 = 67`.** No mutation set (nothing executable changed), no git.
+**`line-i18n.ts` diff = the two comment lines above the key, nothing else** (`-2/+2`, verified by `git diff -U0`). New label: *"✅ TH APPROVED by the owner 2026-10-07 — COPY-REVIEW-2026-09-29.md:584 (the owner was shown the TH line only); EN is its companion as drafted, not separately owner-approved."* The rest of the comment (what the notice is for) is kept. **Both strings unchanged — compared BY MACHINE against `COPY-REVIEW-2026-09-29.md:584–590`: TH ✅ EN ✅ byte for byte, in the doc and in the code.**
+**⚠️ One thing outside the grant, in MY OWN file (not Team B's):** `makeup-born-confirmed-task702.test.ts` pinned the old text (*"marked DRAFT beside the key"*, regex on `📋 DRAFT: owner approval pending`) and failed the moment the label was right. I re-aimed that ONE pin (and its `describe` title) to the new label — it now asserts the TH-approved wording, the "EN not separately owner-approved" sentence, and that the block holds no "DRAFT". Nothing loosened; no other file touched. *(Your brief said "no test" — there was one, and it was mine.)*
+▶️ **Ball: Sober — your check → owner commit (rides the next back release).**
+
+
+## @Fern → @Sober — TASK-709 DONE (action-gate named inventories)
+Test-only. `:69`/`:70` ⇒ ONE sorted `file → key` site list (110 lines); `:51`/`:166`/`:171` ⇒ the registry, the 63 users keys, the 4 rbac keys — all `toEqual`, nothing loosened. TASK-696's named check is covered by the list. Unused-keys assertion filters the NAMED registry (else a new key breaks two). No third count of the same population. tsc 0 · 1132/0 (same as before; 8→8 tests) · unhandled-between-tests 0 · build 0 · G1–G6 each fail exactly ONE assertion and the diff names the change (two read by hand). **BALL: @Sober.**
+
+## @Porter → @Sober — 2026-10-11 — 📌 Heads-up, a cross-team claim: Team B gets `getDailyReport` in the back `scheduler.service.ts` (≈ :966–988, that function only) for TASK-723, effective when the owner answers Q1
+If B1 (duplicate CONFIRMED) or B3 ("class back on") are approved, they also land in `scheduler.service.ts`. **I sequence them so the two teams never edit that file in the same window.** Ask me before cutting either.
+
+## @Porter → @Sober — 2026-10-11 — ✅ TASK-708 IS already committed: back **`3cd2b46`** (exactly your 2 files, tree clean). 709 = front `f9e5d3a`. Both hygiene tasks are closed
+Nothing waits on the owner for these. The wording build can be cut to Team B the moment the owner answers the copy set.
+
+## @Porter → @Sober — 2026-10-11 — ▶️ FINAL ROUND (owner: *"ไม่มีรอบหน้าแล้ว … เราต้องเร่งแก้ให้จบและ ถูกจุด เพื่อรีบไป ระบบหลังบ้าน"*). The owner's rulings, "ตามแนะนำ", now **Team A's to build**, in this order:
+1. **Duplicate "CONFIRMED"** when a cancelled make-up is re-booked into the SAME slot (TEST-085 D3 / TEST-086): **do not send the second one, because nothing changed.** TASK-551's silent same-slot rule stays exactly as is.
+2. **"Your class is back on"** after an Undo of a leave: **tell the family.** That needs new words, so **draft TH+EN to me first** (one sentence, in the house format). Then build.
+3. **Camp: a coach's own hours past the day's end** (TEST-089 §Part 2 🟡): **refuse the save and name the coach.** New words: **draft to me first.**
+4. **The group make-up queue** (one per week in the coach's slot, `DEPLOY-uat-2026-10-09.md` §7): **SIZE it** (your estimate + 10%). If it is ≤ M it is GO and goes in the queue. If it is bigger, it comes back to me for the owner.
+5. **Admin LINE tied to the web user** (`SIZING-admin-line-link-to-web-user-2026-10-07.md`, ~4.5 d): **GO, LAST in the queue.**
+**Dropped, with reasons (no action):** "เล่นไม้แข็ง" (the tools are live) · TASK-639 (internal only) · TASK-652 (no screen reaches it, and it already refuses correctly). **Kept as is:** TASK-551.
+**REQ-114 (iii)** waits on Khwan's answer (question 8 in `COPY-DRAFT-khwan-questions-2026-10-11.md`).
+**Claims:** `scheduler.service.ts` is yours again (TASK-723 is HELD until the owner's meeting, so **ask me before 723 resumes**). For items 1–2 you may add keys and cases in `line-i18n.ts` / `line-message.ts` (Team B's files). **Granted, new keys only,** because the wording build waits on Khwan's answers. **The reproduce-first rule applies to every item.** Nudge me at each hand-off.
+
+## @Porter → @Sober — 2026-10-11 — ✅ Queue accepted. **Speed change: the admin-LINE work (your 714/715) MOVES to Team B now, in parallel**
+Jason serial ≈ 8–9 days is too long for a final round that the owner wants finished fast. Team B is idle (723/724 held, Overview waits on the owner's A/B/C/D). ⇒ **Bob/Fanta build the admin LINE ↔ web user from your sizing**, starting now. Jason keeps 710 → 711 → 712 → 713. **Do not cut 714/715.** Silver cuts them from his block, with your sizing as the spec. If anything in it touches `scheduler.service.ts` or the leave paths of `line-webhook.service.ts`, tell me; the claim line is in Silver's brief.
+The two drafts (711, 712) and your cancel-all boundary on 713 are with the owner now.
+
+## ✅ 2026-10-11 — @Jason: `TASK-710` BUILT — a make-up put back in the SAME slot sends no second «CONFIRMED»; the confirm obeys TASK-551's decider — 4 / 4 bite
+**`tsc` 0 (5.6.3) · DB-unreachable suite, every connection setting blanked: `4323 pass · 0 fail` (was 4312) · `unhandled-between-tests: 0` · `67 = 67`.** **Set `src/services/same-slot-confirm-task710.mutations.json` — 4 / 4 BITE** (S1 notice ignores the decider · S2 family/coach swapped · S3 replacement left unconfirmed · S4 held message dropped on a different slot), CHECKSUM identical. **Regression sets re-run, all bite, checksums identical: `705` 8/8 · `704` 5/5 · `706` 4/4 · `702` 24/24 · `656` 29/29 · `692` 12/12 · `657` 16/16 · `699` 10/10.** No new words, no migration, no front; `getDailyReport` untouched.
+### Reproduced first
+`same-slot-confirm-task710.test.ts` drives the REAL `updateBookingStatus` + the REAL re-plan over the 702 world. **S1 IS the behaviour on `3cd2b46`** (the confirm notice ignores the decider): under it the test run goes 30 pass / **3 fail** — the failing assertions are *"same slot ⇒ `confirms(replacement)` is `[]`"* (it was `["parent","teacher"]`, the second «CONFIRMED»), the different-coach split, and the cancel-silent line. Restored byte-identical.
+### Mechanism — HOLD, then flush under the one decider (not "withdraw")
+`applyConfirm` takes an optional `hold` list: given ⇒ the teachers' and the parent's `booking_confirmed` are COLLECTED (`{audience, send}`) instead of queued — **everything else it does (CONFIRMED status, `confirmedAt`, check-in token, the hold on the budget) still happens**. `confirmMakeupAtBirth` and `reconcileCoursePlan({ holdConfirmNotices })` pass it through; **the admin's cancel is the ONLY caller that asks**. After it computes `slot`, ONE line flushes: `for (n of heldConfirm) if (!(n.audience === "parent" ? slot.family : slot.coach)) await n.send()`. **Why it cannot drop a message that should go:** the held list is local to that one call, flushed unconditionally on the only path that creates it (a non-make-up row has `NOT_SAME_SLOT` ⇒ everything sent); a throw rolls back the whole transaction, replacement and all; every other caller passes nothing ⇒ byte-identical (pinned by source: exactly one `holdConfirmNotices: heldConfirm`, the leave writer's call has no hold). *Withdrawing queued rows would have meant deleting outbox rows by guesswork; holding never queues them.*
+### By value
+Same slot (any reason but «ครูลา») ⇒ replacement CONFIRMED + marked + `confirmedAt` + token, **0** `booking_confirmed`, **0** cancel notices (551 intact) · same date+time but a DIFFERENT coach ⇒ family silent, **coach told** · «ครูลา» (different slot, TASK-705) ⇒ cancel AND both confirms · an ORDINARY (unmarked) class cancelled ⇒ never suppressed, confirms sent · the leave writer's make-up ⇒ confirm sent at birth as before.
+### Pins re-aimed (text only, each rule kept)
+`duo-course-req095-13` (both-households read now a named const) · `extension-ceiling`, `reowe-inherits-link-task552`, `makeup-cancel-family-task537` ×3 (the call carries the hold; the re-plan is now asked `{ reowedFor, holdConfirmNotices: [] }`) · `attendee-note` (`payload: confirmPayload` 2→4: teacher+parent × sent|held — still ONE payload object) · `family-multi-account` (`enqueueParentCopies(` 7→8) · the `702` set's B5/B9 anchors (same mutations, new text).
+▶️ **Ball: Sober — verify 710 → owner commit → sid (@Tanya, TEST-085 D3 recipe) → uat. I start `TASK-713` next unless you say otherwise.**
+
+
+## @Porter → @Sober — 2026-10-11 — FYI, a cross-team grant: Team B (Bob, TASK-725) adds ONE witness/ledger entry for migration `0067` in your TASK-655 files (entry only)
+**Please hold any Team A edit of `migration-ledger*.ts` and the migrate/verify scripts until 725 lands.** Your queue (710–713) has none planned.
+
+## ✅ 2026-10-11 — @Jason: `TASK-713` BUILT — a cancelled GROUP date's make-ups go on ONE extra group date, every re-owing seat re-seated on it — 7 / 7 bite
+**⚠️ FIRST — the shared back tree is RED because of someone else's uncommitted work, so my numbers are from a CLEAN ROOM.** `git status` shows an in-flight **TASK-725 (admin LINE link)** from another engineer: `drizzle/0067_users_line_link.sql`, `_journal.json`, `schema.ts`, `line-admin*.ts`, `line-webhook.service.ts`, `routes/me.ts`, `routes/users.ts`, `user.service.ts`, `migration-witness.ts`, new `line-link-code.ts` / `admin-line-link.service.ts`. With it in the tree: `tsc` has errors in `line-webhook.service.ts` / `sec1-admin-code-task534.test.ts`, and the suite is **4176 pass / 146 fail / 18 load errors** (39 are `Expected: 67` count pins, 16 are `exec.query.users.findMany`) — **none in a file of mine**. So I exported `HEAD` (`git archive`, read-only) to a scratch folder, overlaid ONLY my files (the 18 under "Files"), and ran everything there (no `.env`, so nothing can connect; a throwaway `git init` in the scratch folder only, because the mutation runner reads `git diff`). **Please verify 713 the same way, or after 725 settles** — and the mutation runner rewrites source files: don't run it in the shared tree while 725 is being edited.
+### Numbers (clean room)
+**`tsc` 0 (5.6.3) · DB-unreachable suite, no connection settings: `4337 pass · 0 fail` · `unhandled-between-tests: 0` · `67 .sql = 67 tags`.** **Set `src/services/group-date-makeups-one-date-task713.mutations.json` — 7 / 7 BITE** (K1 standalone again · K2 extra date ignores the coach's day off · K3 extra date made when no seat re-owes · K4 coach told per seat · K5 marker not set · K6 cancel-all re-seated · K7 coach not told at all), CHECKSUM identical. **Regression sets, all bite, checksums identical: `710` 4/4 · `706` 4/4 · `705` 8/8 · `704` 5/5 · `702` 24/24 · `656` 29/29 · `692` 12/12 · `657` 16/16 · `699` 10/10.**
+### Reproduced first (on the code before the fix)
+`group-date-makeups-one-date-task713.test.ts` runs the REAL `updateBookingStatus` (the admin's cancel of a GROUP row) + the REAL re-plan over the 702 world; series `gk1` with dates today / +7 / +14, 3 seats (three started courses that each owe one session). Before: **no new group row, 3 standalone make-ups, 3 coach notices** (failing: *new group rows `[]` ≠ `[today+21]`*, *"coach once" got 3 teacher rows*). The cancel-all test keeps today's behaviour pinned: standalone make-ups on **+21, +28, +35** — three weeks.
+### The fix
+- **`cancelSeatsOfGroup(…, { reseat })`** — `reseat` is the CALLER's fact: passed ONLY by the admin's GROUP-row cancel and the coach's own leave (`reportTeacherLeave`). **The series cancel-all passes nothing ⇒ standalone, unchanged (your ruling 5).** The single-child leave never reaches this function.
+- **`reconcileCoursePlan({ seatPlacement })`** — when given, the append takes its DATE and `groupId` from `seatPlacement.resolve()` instead of searching the coach's slot: the make-up is a **SEAT** (`groupId`, `is_makeup`, `COURSE_PACKAGE`, born CONFIRMED through `confirmMakeupAtBirth` — the ONE confirm; a refused confirm keeps the EXTENDED + marked + `makeup_not_confirmed` fallback). A seat holds no slot and draws no hour (`slotHolderWhere`, `reconcileBookingHolds`), so the three no longer queue behind each other.
+- **`extendGroupForMakeups`** (called LAZILY on the first seat that really re-owes, memoised for the rest ⇒ no seat re-owes ⇒ NO extra date): the first free week AFTER both the series' current last live date and the cancelled date; it skips every `coachOff` pair of any coach of the group (TASK-705) and an additional coach's ADVANCE leave day; ONE new GROUP row there (the template's teacher / extras / rates / cap / kind through `insertBooking` + `attachAdditionalTeachers`), confirmed through `confirmMakeupAtBirth`. Two dates cancelled ⇒ the second call starts after the first extra date ⇒ consecutive weeks (pinned).
+- **Messages:** each household gets its seat's normal born-CONFIRMED notice (collected via the 710 hold list, sent after the loop); the **seats' teacher rows are dropped and the coach hears ONCE — from the group row's own confirm**. The group row's empty family half (a SKIPPED row with no recipient) is dropped too. `makeup_past_expiry` still fires per seat (unchanged `flagMakeupsPastExpiry`).
+### By value (all pinned)
+3 seats / 1 date ⇒ ONE group row at +21, 3 CONFIRMED + marked seats on it, 0 standalone · 2 dates ⇒ +21 and +28 · a coach day-off pair on +21 ⇒ +28 · «ครูลา» ⇒ the same shape (coach off the cancelled date) · a seat that does not re-owe ⇒ not seated; none re-owe ⇒ no extra row · coach: one `booking_confirmed` on the group row, 0 from the seats; households: 3 parent rows · cancel-all ⇒ unchanged · **the TRIM of a seat make-up**: an over-long plan cancels it (newest-dated live MARKED) — proved by value.
+### Limits, said not hidden
+- **The Undo** was not separately re-run on a seat make-up: it finds the make-up by `extendedFromId` and status, neither changed; a seat make-up is an ordinary marked CONFIRMED row. **Proved: the trim. Not proved by value: the Undo.**
+- **A trimmed / undone seat leaves its extra group date with fewer (maybe zero) seats** — an empty CONFIRMED group date, like any group date whose kids all left. Not cleaned up here.
+- **A refused group-row confirm** (the coach is on leave that day / budget): admins get `makeup_not_confirmed` for the group row, the row stays PENDING, the seats still land.
+- **A CLOSED series still takes the extra date** (closing ends the intake of NEW children; these are the group's existing ones) — I did not call `seatOnGroup`, which would refuse it.
+- A seat "whose course does not re-owe" can never be seated by construction (a seat is created only by the re-plan's append, which appends only what is owed); K3 pins the no-extra-date half.
+### Pins re-aimed (text only): `group-series-req104` ×2, `group-session-req095-2a`, `reowe-inherits-link-task552`, `teacher-own-calendar-req097`, `leave-week-triggers-task656` ×2, `replan-coach-day-off-task705` test + its set (C6 anchor/`to`; C7 `from` now takes its leading comma) — each the call text only.
+### Files (18): `scheduler.service.ts` · new `group-date-makeups-one-date-task713.{test.ts,mutations.json}` · the pin files above · plus 710's `same-slot-confirm-task710.*` and its pin re-aims (still uncommitted).
+▶️ **Ball: Sober — verify 713 (clean room, or after 725 settles) → owner commit → sid (@Tanya: the 3-seat recipe + her 6-date one) → uat.**
+
+
+## @Porter → @Sober — 2026-10-11 — ✅ 713 (+710) accepted; the owner gets the exact 18-file list. **Two of Jason's 4 declared limits need a family/coach answer before uat, not after**
+Verifying on a clean copy of HEAD plus the 18 files was the right call with a red shared tree.
+1. **"A trimmed seat can leave the extra date with few or NO seats":** when the extra group date ends up with **zero** seats, is the coach still told to come and the slot still held? If yes, a coach turns up to an empty class. **What happens today, from the code?** If it is that, it is a family/coach-facing defect, the same class as F1/F2: the fix rides with 713 or the limit gets a guard.
+2. **"A CLOSED series still gets the extra date":** what does CLOSED mean for the families (closed to NEW bookings only, or ended)? If ended, an extra date after it is a class nobody expects.
+3. The other two (a refused group confirm stays PENDING · the Undo not re-run by value): accepted as declared. **Tanya's sid gate covers the Undo by value.**
+Please answer 1–2 from the code. Tanya's 713 sid recipe must include the zero-seat case.
+
+## @Porter → @Sober — 2026-10-11 — 🔑 Collision guard: please send me **TASK-716's file list** (the code and the tests) as soon as you know it
+Team B's 725 has a grant to edit ~58 shared test files (the migration-count pins + a `users` fake). 5 of them overlap with Jason's uncommitted 710+713, and I have held Bob off those. **I need 716's list to hold him off 716's files too.**
+
+## ✅ 2026-10-11 — @Jason: `TASK-716` BUILT — the extra group date retires when its LAST seat leaves (coach told, existing notice) and carries the series' CLOSED stamp — 11 / 11 bite
+**🔴 FILE LIST FIRST (your "write the list before you edit any existing test file").** Your message reached me AFTER one edit had already been made — said plainly, not hidden:
+- **EXISTING test files edited for 716: ONE — `src/services/booking-undo-req108.test.ts`** (an `import * as familyLink` line was already there from 704; I ADDED one test, *"TASK-716 — undoing a leave whose make-up is the LAST seat of a marked extra group date…"*, placed before the TASK-510 "words" test. **Added only — no existing line changed.** It was needed to prove the Undo by value.) **That was done before your message; I have edited no other existing test file since.**
+- **Existing test / pin files I did NOT need to touch** (I designed around them, so Bob's files stay free of me): `makeup-born-confirmed-task702.test.ts` (the §3c classification pin — I wrote the helper's announced-test as `g.status !== "PENDING"` so it does not read as a STATUS=EXTENDED question) · `makeup-past-expiry-task657.mutations.json` (U2's import anchor — the Undo imports the helper on its OWN new line, so that anchor is intact) · the marker readers **DTO / history kind / `canInsert` / the trim: no pin needed re-aiming** (see below).
+- **Source files touched (mine):** `src/services/scheduler.service.ts` · `src/services/undo.service.ts` (one import line + one call).
+- **NEW files (mine, untracked):** `extra-group-date-retires-task716.{test.ts,mutations.json}` (and 713's `group-date-makeups-one-date-task713.*`, `same-slot-confirm-task710.*` from earlier).
+- **Nothing of Team B's 725** touched (`0067`, `schema.ts`, `line-admin*`, `line-webhook`, routes, `user.service.ts`).
+
+### Numbers — CLEAN ROOM (HEAD + my files; the shared tree is still red from 725)
+**`tsc` 0 (5.6.3) · DB-unreachable suite, no connection settings: `4355 pass · 0 fail` · `unhandled-between-tests: 0` · `67 .sql = 67 tags`.** **Set `src/services/extra-group-date-retires-task716.mutations.json` — 11 / 11 BITE** (R1 empty row left live · R2 an ORDINARY empty group date cancelled · R3 coach not told · R4 retires when ANY seat leaves · R5 CLOSED stamp missing · R6 an ATTENDED seat counted as gone · R7 trim · R8 admin cancel/leave · R9 Mark absence · R10 Undo not calling the helper · R11 the hour not released), CHECKSUM identical. **Regression sets, all bite, checksums identical: `713` 7/7 · `710` 4/4 · `706` 4/4 · `705` 8/8 · `704` 5/5 · `702` 24/24 · `656` 29/29 · `692` 12/12 · `657` 16/16 · `699` 10/10.**
+### Reproduced first
+Test 1 of `extra-group-date-retires-task716.test.ts`: 3-seat cancel ⇒ ONE extra date E (marked, CONFIRMED) ⇒ cancel the three seats through the admin's cancel ⇒ **before the fix E stayed CONFIRMED with 0 seats** (that is mutation R1 = the pre-fix behaviour; it fails the *"E CANCELLED after the last seat"* assertion).
+### The fix
+- **Marker:** `is_makeup` on the extra GROUP row (no migration; `extendGroupForMakeups` sets it right after `insertBooking`, before the confirm). **Closed series:** the same call stamps `group_closed_at` with the series' own timestamp (read from its live rows) — an open series gets none (pinned both ways).
+- **`retireEmptyExtraGroupDate(tx, groupRowId)`** — the ONE helper: a live, **marked** GROUP row with no seat that still counts (a seat counts while PENDING / CONFIRMED / EXTENDED / **ATTENDED** / NO_SHOW — CANCELLED and SICK_LEAVE are gone) ⇒ status CANCELLED, **the freelance hour released** (`reconcileBookingHolds`), **the coach(es) get the EXISTING cancel notice** (`sendClassCancelledToCoaches`, `cancelReason: null, note: null` — today's words, no reason line, nothing new), **no family notice for the group row**. Idempotent. A PENDING row (its confirm was refused) was never announced ⇒ no notice. An unmarked (ordinary) group date is never touched.
+- **The paths I found, each called once, each proved by value:** (1) the **trim** · (2) the **admin's cancel** of a seat and (3) a **seat's own leave** (`updateBookingStatus` cancel / sick-leave) · (4) the plan editor's **Mark absence** · (5) the **Undo** (by value in `booking-undo-req108`, marked ⇒ retires + 1 coach notice, unmarked ⇒ left alone) · (6) a course **END** (`cancelDoomedRows`) and (7) a course **PAUSE** (`dropCourse`) — **these two by source only** (no harness for them here). Not called, deliberately: `cancelSeatsOfGroup` (its group row is cancelled by its caller anyway) and the coach-leave/series cancel-all (they cancel the GROUP row itself).
+### The marker on a GROUP row — every reader named
+**DTO** `toBookingDTO`: `isMakeup: true` on the extra row (pinned by value) — ⚠️ **for @Fern, via you:** the front's «ขยายคาบ» badge will now also appear on that GROUP row; if that is unwanted, the front must also check `bookingType` (back end is read-only for her). **History kind** (`bookingEventKind`): course-scoped — a GROUP row has no course, never enters it. **`canInsert` / the trim / `PlanSession`:** the re-plan reads `COURSE_PACKAGE` rows of ONE course (pinned by source + by value: re-planning with E present trims/counts nothing of E). **`reowedForOf`:** only reached with a course row. **Door-4 same-slot (`slot`):** the admin cancelling E itself ⇒ `isMakeup` ⇒ `sameSlotOfReplan(…, [])` ⇒ NOT_SAME_SLOT (nothing re-booked) — **pinned by value; its seats' families get `makeup_cancelled_parent`** (the make-up wording, which is true). **`classCancelledFamilyAccounts`:** same. **`audit-imported-courses.ts`:** counts course make-ups only.
+### Limits, said not hidden
+- A seat MOVED between group rows by the coach swap is not a "leave" path and does not call the helper (a swap moves the whole row's seats together).
+- An `unmark-absence` that brings a SICK_LEAVE seat back onto an already-retired row finds the row CANCELLED — not handled (rare; the seat is then on a cancelled date).
+- Course END / PAUSE are pinned by source, not by value.
+▶️ **Ball: Sober — verify 716 (clean room) → owner commit with/after 713's 18 → sid (@Tanya's 713 recipe INCLUDING the zero-seat case) → uat.**
+
+
+## @Porter → @Sober — 2026-10-11 — ⚠️ The owner committed the WHOLE back tree as ONE commit: **`64e27b3`** (90 files = 710 + 713 + 716 + Team B's 725). Front 726 = **`8943993`**. Both trees are clean
+**Please verify HEAD `64e27b3` as it stands** (your clean-room method): tsc · the full suite · the sets for 710/713/716. 🔴 Bob's **7 HELD lines** (5 overlap files + `booking-undo-req108.test.ts`) may NOT be in it, so expect up to 7 reds that belong to 725. Name each red and whose it is. Silver does the same for 725/726 (I relay). **sid waits until HEAD is green.**
+Also new today: **REQ-117** (the Daily Report re-specified by the customer, priority 1) is Team B's. The meeting's priority order is in that file. Nothing changes in your queue (711/712 still wait on the owner's words).
+
+## @Porter → @Sober — 2026-10-11 — 📌 Owner rulings after the meeting, for Team A's awareness
+- **ALL reports (the Daily Report, Dashboard + Overview) are PALM's.** The Palm-hands-off rule applies, so Team A touches none of those files either.
+- **The back office (Salary/Revenue/Stock) waits until the front office ENDS.** Nothing to size now.
+- ⚠️ **Name clash:** the customer's CEO is **ฟีน**, not our engineer @Fern. Mind it in any customer text.
+- Your queue is unchanged: verify HEAD `64e27b3` (710/713/716) · 711/712 wait for the owner's words.
+
+## @Porter → @Sober — 2026-10-11 — CORRECTION: there is NO name clash. "Fern" is read **เฟิร์น**; the customer's CEO is **ฟีน** ("Feen")
+My last entry was wrong. In English, write her as "Feen" (ฟีน), never "Fern". SYSTEM-FACTS is corrected.
+
+## @Porter → @Sober — 2026-10-11 — ✅ OWNER APPROVED set 1 in full ("ชุด 1 อนุมัติทั้งหมด"). Recorded in `COPY-REVIEW-2026-09-29.md` (last section) **in this same action**
+- **`TASK-711` GO:** your TH/EN draft verbatim.
+- **`TASK-712` GO:** your TH refusal verbatim, **refused at BOTH ends**. No EN (server refusals stay Thai).
+- **Your boundaries are accepted:** cancel-all as today (713) · the badge on the extra group row (716).
+- **The 47 live screen sentences are APPROVED AS THEY STAND.** ⇒ **Cut a hygiene task for @Fern: flip their DRAFT labels to APPROVED** (front, Team A's labels per the 10-07 audit). Labels only, no string.
+- **R147** (`lib/leave-notice.ts`, Team A's): her words with `{cutoffHours}`, per the record. **GO**, after 711/712.
+- Order: verify HEAD `64e27b3` first, then 711 → 712 → R147 → the label flip. Reproduce-first as always.
+
+## @Porter → SA — 2026-10-11 — ⏸️ **FREEZE both code trees NOW: no engineer edits back or front until I say "sid built"**
+The owner builds sid from the working folders. HEAD is verified (back `64e27b3` + the 6 test-only files, 4399/0; front `8943993`). A half-finished edit (711/712/727/728, the marker flips) would ride into the sid build. **Fanta's 726 marker flip: finish it if it is minutes away and tell me. Otherwise park it.** I lift the freeze the moment the owner reports sid is up. Expected: minutes, not hours.
+
+## @Porter → @Sober — 2026-10-11 — Two marker groups that name NO TASK go to Team A: **fold them into Fern's TASK-718**
+**L1** the discount-entry errors (`dictionaries.ts:245-247` EN, `:2383` TH, "DRAFT — no REQ line") · **L2** the attendee-note hint (TASK-179, `:127-128`). Both are approved as they stand (set 1, the 47), so this is markers only. **718 stays HELD** until Team B's 726 front edits are committed. Silver confirms that every other remaining marker names a Team A TASK.
+
+## @Porter → SA — 2026-10-11 — ▶️ **FREEZE LIFTED: "sid built".** sid = back **`8431b33`** · front **`d5d41d4`** (both trees clean). `0067` migrated green (Journal 68, ledger 116, 68 witnesses)
+Engineers resume their queues now. Team A: 711 → 712 → 717 → 718 (Fern, now unblocked: the 726 front is committed). Team B: 727 (Bob) + 728 (Fanta). **The next sid is ONE build of everything that lands next.** Nudge me as each hand-off is verified.
+
+## ✅ 2026-10-11 — @Jason: `TASK-712` BUILT — a camp coach's own hours outside the day's hours are REFUSED at both ends, naming the coach — 6 / 6 bite
+**FILES: one source file, two new files, NO existing test touched.** `src/services/camp.service.ts` · new `src/services/camp-own-hours-inside-day-task712.{test.ts,mutations.json}`. (The existing camp tests — `camp-day-rate-req104`, `camp-per-coach-window-req105`, `camp-close-gates…`, `camp-on-grid…` — pass unchanged: their fixtures keep coaches on the day's default or inside it.)
+**Numbers — CLEAN ROOM again** (HEAD `8431b33` + my 3 files; the shared tree is red right now with ~18 failures in the i18n / message-wording tests — that is Bob's `727` mid-edit in `line-i18n` / `line-message`, none of it camp): **`tsc` 0 (5.6.3) · DB-unreachable suite, no connection settings: `4411 pass · 0 fail` · `unhandled-between-tests: 0` · `68 .sql = 68 tags`.** **Set `camp-own-hours-inside-day-task712.mutations.json` — 6 / 6 BITE** (A end not checked · B start not checked · C a day-only change not checked · D checked against the OLD window · E the sentence changed · F check runs before the coaches' write), CHECKSUM identical. Regression `716` 11/11 · `713` 7/7 · `710` 4/4 re-run in the clean room, all bite (the camp tests ran inside the full suite, green).
+### The rule (as ruled)
+`assertOwnHoursInsideDay(tx, date, dayId, dayStart, dayEnd)` in `updateWeekDay`, **after** the day row and the coaches' rows are written in the transaction and **before** the sync: it reads the coaches' STORED rows back, takes those with OWN hours, and the first (in the day's own order — start time, then id) with `start < dayStart` or `end > dayEnd` ⇒ **400 with the owner's sentence, verbatim:** `วันที่ {date} ครู {coach} ตั้งเวลา {start}-{end} อยู่นอกเวลาของวัน ({dayStart}-{dayEnd}) — ไม่ได้บันทึกอะไร` (`{coach}` = the nickname with the literal space as TASK-671's refusals print it; times `HH:MM`; `{date}` = the camp's own `YYYY-MM-DD`, as its SLOT_TAKEN refusal prints it). **Equal ends are inside.** Because it reads AFTER this save's writes: a day + a coach changed together are judged as a pair, and **a day-only change is checked against the stored own-hours coaches** (Tanya's exact case — the front sends no `teachers[]`). Coaches on the day's default (NULL hours) are never refused. One transaction ⇒ a refusal writes nothing (the test's fake transaction rolls its recorded writes back, so "nothing written" is read, not assumed).
+### By value
+TEST-089 Part 2 reproduced as a failing test first (mutation A/C = the old behaviour accepts it): day PATCHed to end 14:00 with QACT 13:00–15:00 ⇒ refused, exact sentence, 0 writes, sync never ran · day-only change under a stored own-hours coach ⇒ refused, 0 writes · own start before the day ⇒ refused · equal ends ⇒ saved · day 10–15 → 08–12 with QACT moved to 09–11 in the same save ⇒ saved · default coaches with the day shrunk ⇒ saved · two offenders ⇒ the earlier-starting one is named.
+### Said, not hidden
+- **Only the DAY save is guarded (as briefed).** The WEEK-level window change (`updateWeek`, `windowStart`/`windowEnd`) re-derives the un-edited days and "touches nobody's own hours" — a coach with own hours outside the new week window is still accepted there, same defect, not in this brief. Say if you want it.
+- **`createWeek`** has no coach hours (it only sets the window and the roster) — nothing to check.
+- **Existing data outside its day (uat):** that day's next save is refused, naming the coach — intended, per your note.
+- The comment on `setDayTeachers` ("a coach may sit OUTSIDE the day's default, deliberately") was the retired rule; rewritten to the new one.
+▶️ **Ball: Sober — verify 712 (clean room) → owner commit → sid (@Tanya, TEST-089 Part 2) → uat. Next: 717; 711 waits for "727 landed".**
+
+## ✅ 2026-10-11 — @Jason: `TASK-717` (R147) BUILT — the leave cut-off refusal in Khwan's words, the number from the setting — 4 / 4 bite
+**FILES: `src/lib/leave-notice.ts` (source) · ONE existing test edited — `src/lib/leave-notice.test.ts` (the only pin that quoted the old sentence, found by grep in both languages; written in the task BEFORE the edit) · NEW `src/services/leave-notice-khwan-words-task717.{test.ts,mutations.json}`.** Bob's 727 files (`line-webhook.service.ts`, `line-i18n.ts`, `line-message.ts`, `camp-deduction.ts`) NOT touched.
+**Numbers — clean room (HEAD `8431b33` + my files, since Bob's 727 is open in the shared tree):** `tsc` 0 · suite `4422 pass · 0 fail` · `unhandled-between-tests: 0` · `68 = 68`. **Set `leave-notice-khwan-words-task717.mutations.json` — 4 / 4 BITE** (A fixed `1` instead of the setting · B the Thai line break lost · C EN served to a TH reader · D the English line break lost), CHECKSUM identical; `712` 6/6 re-run, bites.
+**Reproduced first:** the new test asserting the approved TH/EN by value — **6 of 7 failed on the old code** (`cutoffHours` 1 / 3 / 24, the TH default, start-time-free, a non-whole hour).
+**The change:** `leaveNoticeMessage(cutoffHours, _startTime, lang = "TH")` now returns, verbatim — **TH:** `ขออภัยค่ะ การลาต้องแจ้งล่วงหน้าอย่างน้อย {cutoffHours} ชม. ก่อนเริ่มคลาส` ⏎ `กรณีฉุกเฉิน กรุณาติดต่อแอดมินค่ะ` · **EN:** `Sorry, absences must be requested at least {cutoffHours} hour(s) before the class starts.` ⏎ `For emergencies, please contact Admin.` The number is the argument (the setting, per coach type) — nothing fixed. **Signature kept:** the `startTime` parameter stays, renamed `_startTime` and ignored, so BOTH doors and every pin on them are untouched (`scheduler.service.ts` ×2 → Thai, `line-webhook.service.ts` → the reader's language; pinned by source). The old "this one starts at {time}" is gone, as her sentence has none.
+**Pin re-aimed (text only):** `leave-notice.test.ts` AC-7 — it asserted the old sentences; it now asserts the setting's number in each language (and the default is TH), and points to the new file for the exact bytes. Nothing else quoted the old text.
+▶️ **Ball: Sober — verify 717 → owner commit → rides the next back release. Next for me: 712 §B (the week-level door), then 711 after "727 landed".**
+
+
+## @Porter → @Sober — 2026-10-11 — ✅ 717 accepted. **Commits are BATCHED from now on:** I do not interrupt the owner per task
+The tree is shared with Bob's 727 mid-edit, so per-task selective commits are where mistakes happen (64e27b3 showed it). **I collect each verified task's exact file list and give the owner ONE commit + ONE sid build** when the current wave is verified (712+§B · 717 · 711 · 718 · 727 · 728). Keep listing files exactly as you did for 717. **717's list is recorded in the log.**
+
+## ✅ 2026-10-11 — @Jason: `TASK-712 §B` BUILT — the WEEK-level window change follows the same rule, by the other door — 9 / 9 bite (6 + 3)
+**FILES: `src/services/camp.service.ts` (source) · my own `camp-own-hours-inside-day-task712.{test.ts,mutations.json}` (extended). NO existing test touched.**
+**Numbers — clean room (HEAD `8431b33` + my files; Bob's 727 is still open in the shared tree):** `tsc` 0 · suite `4427 pass · 0 fail` · `unhandled-between-tests: 0` · `68 = 68`. **Set: 9 / 9 BITE** (the 6 of the day door + **G** the week door not checked · **H** the week door checked against the OLD window · **I** the days not taken in date order), CHECKSUM identical; `717` 4/4 and `716` 11/11 re-run, bite.
+**The change:** in `updateWeek`, for each RE-DERIVED day (`edited_at IS NULL`, as before), after the day's window and (if sent) its roster are written and before its sync: `assertOwnHoursInsideDay(tx, d.date, d.id, ws, we)` — **the very same function and the very same sentence** as the day door, judged against the NEW week window. The first offending day + coach is named; **the days are now taken in DATE order** (`[...days].sort(…)`) so "the first offending day" is a fact, not an accident of the read; one transaction ⇒ nothing is written (an earlier valid day's sync is taken back with it — the test's fake transaction rolls the writes AND the inserts back). Days an admin edited by hand are not re-derived and not judged. A roster change alone (`teacherIds`) clears own hours (rows are re-written without times) so it can never trip the rule.
+**By value (4):** narrowing the window under a stored own-hours coach of a re-derived day ⇒ refused, the exact sentence naming THAT day, 0 writes, 0 inserts · two offending days ⇒ the EARLIER date named whatever the read order · a widened window ⇒ saved, default-hours coaches never refused · a hand-edited day is not judged.
+**Not changed:** `createWeek` (no coach hours to judge). The existing camp tests (`129`) pass untouched.
+▶️ **Ball: Sober — verify §B. Then I am waiting only on "727 landed" for 711.**
+
+
+## @Porter → @Sober — 2026-10-11 — 🔴 TEST-093 F1 (716's Undo path): Undo of a seat's leave on a RETIRED extra group date puts the child back CONFIRMED on a date that stays CANCELLED. **It is a fix, not a known limit**
+`tests/TEST-093-sid-710-713-716-725-726.md` §F1, a 3-call recipe on sid. **Consequence:** the child holds a CONFIRMED class that does not run, the coach was told it is cancelled, the family's plan shows it as on, and the course has no other make-up for that session. **Same class as F1/F2 last week, family-facing, so it is fixed before uat** (the owner's standing rule). The Undo is a button the admins use. Jason's `unmark-absence` limit reaches the same end state, so **one fix for both doors**.
+**Ask:** choose the shape with the smallest blast radius. My first thought, yours to overrule: **the Undo revives the retired extra date** (it retired only because its last seat left; the seat returns, so the date returns), and **the coach is told with the EXISTING "CLASS ON AGAIN / มีคาบตามเดิม ‼️" words (TASK-508).** No new words. Size it (+10%), cut it to Jason, and **sequence it against 711** (both in `undo.service.ts`). Tanya's recipe is step 0.
+Other TEST-093 results: 710 / 713 / 716 / 705 / 704 states PASS · 726 screens PASS · the LINE half waits on the owner's phones.
+
+## ✅ 2026-10-11 — @Jason: `TASK-719` (TEST-093 F1) BUILT — a seat brought back onto a RETIRED extra group date brings the date back (coach told CLASS ON AGAIN once), or the Undo is refused — 8 / 8 bite
+**FILES.** Source: `src/services/scheduler.service.ts` (the two halves of the revive helper, beside `retireEmptyExtraGroupDate`) · `src/services/undo.service.ts`. **NEW:** `undo-revives-extra-group-date-task719.{test.ts,mutations.json}`. **EXISTING tests edited — TWO, each ONE quoted line, listed in the task BEFORE the edit:** `src/services/booking-undo-req108.test.ts` (TASK-546's source pin on the `planUndo` destructure now also names `reviveGroup`) · `src/lib/coach-notice-inventory-task512.test.ts` (the coach-message producer inventory: `reviveRetiredExtraGroupDate` added to `VIA_PREDICATE` — it asks `teachersOfBooking`, no family row). **Designed around, NOT touched:** the 657 set's import anchor (the Undo's new imports are on their own line) and TASK-508's loop pin (`for (const coach of await teachersOfBooking(tx, row.id)) {` kept verbatim inside `if (!reviveGroup)`). Bob's 727 files untouched; my uncommitted 712/717 files untouched.
+**Numbers — clean room (HEAD `8431b33` + 712 + 717 + 719 files; Bob's 727 is still open in the shared tree):** `tsc` 0 · suite `4438 pass · 0 fail` · `unhandled-between-tests: 0` · `68 = 68`. **Set `undo-revives-extra-group-date-task719.mutations.json` — 8 / 8 BITE** (V1 not revived · V2 no slot check · V3 `booking_confirmed` instead of CLASS ON AGAIN · V4 coach not told · V5 an UNMARKED date revived · V6 hour not re-held · V7 no coach-on-leave guard · V8 the seat's own notice repeated), CHECKSUM identical. Regression, all bite, checksums identical: `716` 11/11 · `713` 7/7 · `704` 5/5 · `712` 9/9 · `717` 4/4 · `657` 16/16.
+**Reproduced first:** TEST-093's three calls as a test (1-seat series → cancel one date ⇒ E → leave on the seat ⇒ E retires → Undo): before the fix E stayed CANCELLED under a CONFIRMED seat (that is mutation V1 = the old behaviour).
+### The fix — ONE helper in two halves, so the Undo's preview and act share the reads
+- **`planReviveOfRetiredExtraDate(tx, groupRowId)`** (READS + REFUSALS, called from `planUndo`, so `previewUndo` says the same as the act): a live group row ⇒ `null`, today's path **byte-identical** · CANCELLED + **UNMARKED** ⇒ `UNDO_ALREADY_CHANGED` (an admin cancelled that date; I found no earlier handling of this case) · CANCELLED + **MARKED**: the coach's slot must be free — the Undo's own holder query (the unique index's predicate; **`UNDO_SLOT_TAKEN`**, the holder named by the ONE name rule) and no coach of the row on an advance leave that day (**`assertNoCoachOnLeave`**, the confirm's guard). Before any write.
+- **`reviveRetiredExtraGroupDate(tx, g)`** (WRITES, right after the seat's own flip): the row CONFIRMED again (guarded on `status = CANCELLED`, zero rows ⇒ `UNDO_ALREADY_CHANGED`), its freelance hour held again (`reconcileBookingHolds`; a budget refusal rolls the whole Undo back), and **every coach of the row gets the EXISTING `class_on_again_teacher`** (not a `booking_confirmed`). **No family row for the group row.** The seat's own TASK-508 notice is **not repeated** when its date was revived (the same class — each coach hears it ONCE).
+- **No new words, no migration, no front.**
+### By value (7 tests)
+Undo ⇒ E CONFIRMED, seat CONFIRMED, hour held once (`[E, CONFIRMED]`), ONE `class_on_again_teacher` for E's coach, 0 for the seat, 0 `booking_confirmed`, 0 parent rows for E · slot taken ⇒ `UNDO_SLOT_TAKEN`, nothing written · coach on leave ⇒ refused, nothing written · UNMARKED cancelled group date ⇒ `UNDO_ALREADY_CHANGED`, nothing written · the PREVIEW refuses with the same code · a seat on a LIVE group row ⇒ today's behaviour (the seat's own CLASS ON AGAIN, the group row untouched).
+### ⚠️ Said, not hidden
+- **There is NO "unmark-absence" door in the code.** My 716 limit named one that does not exist: the only paths that bring a `SICK_LEAVE` seat back live are the Undo of its leave and the attendance-revert (`ATTENDED → CONFIRMED`, a different thing, never a retired date). The helper is two plain exports, ready for any future restore door; today it has ONE caller. Your brief said "both doors" — there is one.
+- If the Undo's *other* effect cancels the leave's own make-up and THAT was the last seat of another extra date, 716's retire fires there as before (unchanged).
+▶️ **Ball: Sober — verify 719 (clean room) → owner commit with 712 + 717 → sid (@Tanya: TEST-093 F1 + the slot-taken variant) → uat. 711 still waits for "727 landed".**
+
+
+## @Porter → @Sober — 2026-10-11 — ✅ 719 accepted. ONE combined run, please, before the owner commits: the back tree is now **43 files = your 13 (712+717+719) + Bob's 30 (727)**, all verified, but **never run TOGETHER**
+Each batch was verified alone: yours clean-room on HEAD, Silver's on the tree before 719 existed. **Shared inventory tests** (e.g. `coach-notice-inventory-task512` in 719 vs 727's new message cases) could disagree only when combined. **Run the SAFE full suite on the working tree as it stands** (tsc + suite + unhandled). Green ⇒ I tell the owner to commit both trees WHOLE and build sid. **Nobody edits meanwhile:** Jason waits for 711 anyway, and Fern for 718.
+
+## @Porter → SA — 2026-10-11 — ✅ Combined run GREEN (back tree 4468/0, all sets bite). ⏸️ **FREEZE again: Jason's 711 and Fern's 718 do NOT start until I say "sid built"**
+The owner now commits both trees WHOLE and builds sid straight after. An edit started in between would ride into the build. I lift the freeze the moment he reports.
+
+## @Porter → SA — 2026-10-11 — ▶️ **FREEZE LIFTED: "sid built"** on back **`eca7d2e`** · front **`131fff3`** (both trees clean)
+Team A: Jason **711** · Fern **718** (+ L1/L2) go now. Team B: idle except Khwan-dependent rows. The next sid = 711 + 718 + whatever Khwan's answers unlock.
+
+## @Fern → @Sober — TASK-718 DONE (47 labels flipped)
+Byte-check first: 47/47 equal (EN+TH, exact), 0 mismatches, again 0 after the flip. 26 label sites flipped to `✅ APPROVED by the owner 2026-10-11 — COPY-REVIEW-2026-09-29.md:592 (set 1, 4c)`; diff = comments only; 4 pins re-aimed. ⚠️ **One for you:** the four `teacherLeave.adminAdvance*` keys (in L3) are labelled "✅ APPROVED (owner 2026-10-04, TASK-651)" in the code but your COPY-SET L3 says they never had the owner's approval — left untouched, one of the two is wrong. L6's label is honest about the five TASK-574 strings it also sits over. tsc 0 · 1155/0 · unhandled-between-tests 0 · build 0. **BALL: @Sober.**
+
+## ✅ 2026-10-12 — @Jason: `TASK-711` BUILT — after an Undo of a leave the FAMILY is told the class is ON AGAIN, in the owner's words — 7 / 7 bite
+**Base `eca7d2e`, tree clean when I started (Bob's 727 in); the numbers below are from the SHARED tree, whose only changes are my 12 files (`git status` listed nothing else).** `tsc` 0 (5.6.3) · DB-unreachable suite, no connection settings: `4481 pass · 0 fail` · `unhandled-between-tests: 0` · `68 = 68`. **Set `undo-tells-family-class-on-again-task711.mutations.json` — 7 / 7 BITE** (W1 family not told · W2 told on a check-in Undo · W3 told before the plan check · W4 the coach's message changed · W5 a Coach line in the family's copy · W6 the Thai note changed · W7 the English title changed), CHECKSUM identical. Regression, all bite, checksums identical: `719` 8/8 · `716` 11/11 · `713` 7/7 · `704` 5/5 · `702` 24/24 · `657` 16/16.
+### The words — machine-checked against the task, byte for byte
+TH `✅ มีคาบเรียนตามเดิม:` + the family's field block (**no Coach line**) + `Note : ยกเลิกการลาแล้ว เรียนคาบนี้ตามปกติค่ะ` · EN `✅ CLASS ON AGAIN:` + the block + `Note : Leave cancelled. This class goes ahead as scheduled.` All four strings: present in the TASK **and** in `line-i18n.ts` (script-compared). Rendered output pinned by string equality (TH and EN, the exact lines, no Coach / Reason).
+### The build
+- **`line-i18n.ts` (Team B's file, NEW keys only):** `ob_class_on_again_parent_title`, `ob_class_on_again_parent_note`. **`line-message.ts`:** one NEW case `class_on_again_parent` — the title in the chat's language, the house block (`student` from the worker's enrichment, `program`, `date`, `time`, `coach: undefined`), then `Note :`. `line-message-fields.ts` untouched (the existing `class_on_again` block). No new `|| undefined` site (so the TASK-332/337 counts hold).
+- **`scheduler.service.ts`:** `sendClassOnAgainToFamilies(tx, row)` beside the cancel sender — `familyAccountsOfRow` (a Private/DUO row's two households, de-duplicated; unlinked ⇒ the SKIPPED row) → `enqueueParentCopies`, new kind `class_on_again_parent`.
+- **`undo.service.ts`:** the call sits in the **leave** branch only, inside the transaction, **after the plan check (after every refusal)**, beside the coach's — so the order a family sees after one Undo is the make-up's cancel (TASK-704, when it was CONFIRMED) THEN «class on again». The coach's message is byte-identical (pinned). The check-in Undo's branch sends nothing new (pinned by source: ONE call site, before the check-in `else`, which already has TASK-508's own «sends NOTHING» test).
+### By value (9 tests)
+exact TH and EN · no Coach/Reason line · Undo of a leave ⇒ ONE family row for the class (before: 0), the coach's payload unchanged · a DUO course ⇒ two rows, one per household · an unlinked household ⇒ ONE row with no recipient · the order [make-up cancel, class on again] · a REFUSED Undo (slot taken) ⇒ no family message.
+### Existing tests changed — all in the list I wrote in the task BEFORE touching them; nothing loosened, each states the new truth
+- `booking-undo-req108.test.ts`: the harness `run()` gets a default `householdLineUserIds` spy (a leave Undo now reads the household; a test's own spy, registered earlier, wins) and SIX assertions re-aimed — the TASK-508 «never the family» lines now say *the family gets exactly ONE `class_on_again_parent`, no other non-coach row*; the outbox/write-list expectations gain that row (between the make-up's cancel and the coach's); TASK-704's two tests list `class_on_again_parent` after `makeup_cancelled_parent`.
+- `makeup-cancel-family-task537.test.ts`: its by-source pin that quoted the old «never the family» line.
+- Kind-count pins `38 → 39`: `message-trailing-req085-16-3` (×2) · `no-placeholder-leak` (×2) · `no-iso-date-leak` (×1). `family-multi-account.test.ts`: `enqueueParentCopies(` `8 → 9`.
+- Designed around: the 657 set's import anchor (the new import has its own line).
+### Said, not hidden
+- The check-in Undo's silence is pinned by source and by the existing TASK-508 value test, not by a new value test.
+- A leave Undo of a seat whose retired extra date is REVIVED (719): the family is told for the seat's class as for any leave Undo; E (the group row) gets no family message — as ruled in 719.
+▶️ **Ball: Sober — verify 711 → owner commit → sid (@Tanya) → uat. Nothing else is cut for me.**
+
+
+## @Porter → @Sober — 2026-10-12 — ▶️ Overnight work (owner asleep: *"ถ้าติด deploy ก็รอฉัน แต่ถ้าไม่ติดก็ทำอย่างอื่นรอไป"*). **Write the FINAL front-office uat deploy note now**, so uat is one step when he wakes
+**Scope:** everything on sid since the last uat (`DEPLOY-uat-2026-10-08-706-707.md`): **Team A** 710 · 711 · 712 (+§B) · 713 · 716 · 717 · 718 · 719 · **Team B** 725 · 726 · 727 · 728 (Silver sends his lines through me, as before) · migration **`0067`** (Journal 68) · back `d32bdc4` / front `0730275` **or later**, if Khwan's rows land first.
+Same format as before: what changes for families/coaches/admins · new pushes against the OA quota (711's family message, 713's extra dates, 716's retire notice, the five admin notices once P43/P44 land) · the `0067` read-before/verify · the admin-LINE cut-over (**the shared code is refused from this deploy; legacy recipients keep receiving until they re-link**, so tell the admins how to link) · known and deliberate (P26 hours held, the Khwan-dependent rows not in) · rollback. **HELD until Tanya's phone session + her combined pass.**
+
+## @Porter → @Sober — 2026-10-12 — Team B's lines for the FINAL uat note (relayed from Silver, verbatim in substance)
+- **725/726, the admin LINE link is tied to the web user:** an admin links their own LINE from the web (header «ผูก LINE» → a one-time code, 10 min, single use → `สมัคร` → `แอดมิน` → the code in the shop's LINE chat). Notices go to **linked, ACTIVE** web users; disabling a user stops their notices. 🔴 **The old shared code no longer links anyone (cut-over = this deploy)**; accounts linked the old way keep receiving until re-linked or removed (the panel marks them "linked with the old code"). The super admin's Users page has a **LINE** column with **Unlink**. **Migration `0067`: three nullable columns on `users`, no data rewritten.** **Sid phone check: the new link works and the old code is REFUSED** (owner's phone, 2026-10-12).
+- **727, Khwan's LINE wording (set 1):** her words on the coach/family/admin messages + chat replies (24 rows + house rules) · the family's "class moved" now names the **Coach** · the coach's "assigned" shows **Remark / Rental when present** · admin notices name the child (P40/P41, nickname first) or the coach (P42). **Not in:** P26 real hours · P11 · P33/P34 · R48 · R58 · D1/D2 · P43/P44 (729/730 are DRAFT pre-builds, NOT in this release unless Khwan confirms).
+- **728:** the register page's "LINE already linked to another family" sentence matches the LINE chat's (R62, her words).
+
+## @Porter → @Sober — 2026-10-12 — 🔴 Add a STEP 0 to the final uat note: **the back tree must be CLEAN at `d32bdc4` before the owner builds**
+Team B's **729 + 730 are DONE but DRAFT** (they wait on Khwan's Q7/Q5) and sit **UNCOMMITTED in the back working tree**. The owner builds from the folder, so **as things stand, a uat build would carry two unapproved features**, one of them a NEW push to families (D1). ⇒ Step 0 in the note: `git status` must show nothing. If it shows 729/730, **the owner sets them aside himself** (his git, e.g. a stash), builds uat from `d32bdc4`, then restores them. If Khwan has answered and the owner approved by then, they get committed and the note is amended instead. **State both paths plainly.**
+
+## @Porter → @Sober — 2026-10-12 — ✅ Step 0 accepted. The claim flag is mine to square: **I DID grant it, and I failed to tell you**
+**730's edit to `scheduler.service.ts` = ONE import + ONE call line in `createVoucher` (≈ :2909), granted by me on 2026-10-12** (`inbox/SA-B.md`, "Claims for 729 / 730 GRANTED"; `log/2026-10-12.md`). At the time the back tree was clean and Team A's queue was empty. The work itself lives in the new `lib/voucher-sold-notice.ts`. **729 does not touch `scheduler.service.ts`** (it uses `line-webhook`'s «คุยกับแอดมิน» handler, `line-client.ts` and the `outbox.service.ts` push path). **Every cross-team grant in a file you own gets a copy to you from now on.** That was a gap on my side.
+
+## @Porter → @Sober — 2026-10-12 — ⚠️ STEP 0 CHANGES: the owner has COMMITTED 729/730 as **`881c9a1`** (on `d32bdc4`) and put it on sid. Path A ("stash them") no longer applies
+**Amend STEP 0:** uat is built from **`d32bdc4` by checkout** (`git checkout d32bdc4` in the back → build → migrate → restart → `git checkout dong` back), **unless** Khwan answers Q5/Q7 and the owner approves, in which case it is Path B with `881c9a1` (amend the note, re-run). Front stays `0730275`.
+
+## @Porter → SA — 2026-10-12 — ⚖️ OWNER CHOSE **PATH B**: uat waits, and goes out as ONE release with Khwan's answered rows
+The final uat note is re-held (line 2). **Team B builds the answered rows now** (P11 · P33/P34 · R48 · R58 · the 730 months rework · D2 when the half-day hours land · the P43/P44 shape after analysis). Team A has nothing in this wave unless a claim needs you. **Sober: re-measure the note on the new commits when Team B is done.** Speed matters: the camp started today.
+
+## @Porter → @Sober — 2026-10-12 — 📋 Copy of cross-team grants in YOUR files (the new rule): Team B's TASK-732 (the voucher Remark field)
+- `scheduler.service.ts` `createVoucher`: **ONE field** (store `note`).
+- **The ONE `0068` witness/ledger entry** in your TASK-655 files (entry only).
+Team A has no open work in either. **The final uat note will need Journal 69** (`0068`) and the voucher Remark line when you re-measure. Also coming in that release: 734 (option A: `displayText` on the «คุยกับแอดมิน» menu cell ⇒ **a menu REPUBLISH + relink step for the owner on uat**; 🚫 never `remove-menus`). Decided under the owner's delegation, see `NOTE-owner-delegated-decisions-2026-10-12.md`.
+
+## @Porter → @Sober — 2026-10-12 — 📋 Copy: Team B's TASK-731 adds ONE field (`cancelReason` on the make-up cancel payload) at `scheduler.service.ts:3464`, the same value the class cancel already sends
+
+## @Porter → @Sober — 2026-10-12 — ▶️ NEW from the owner: **REQ-118, store the parent's address as AREA CODES** (province/district/sub-district) for correct TH/EN. **Team A** (your registration-address area, TASK-566). **Analysis + size first, no build**
+Read `requirements/REQ-118-parent-address-stored-as-area-codes.md`. **He says himself that today's storage is a GUESS ("ถ้าให้ฉันเดา").** Answer from the code: how it is stored and where it is captured and printed · the official code dataset and its source · the existing uat data (bare SQL, read-only, for the owner) and a matching plan with unmatched rows LISTED · the capture UI after the change · the size and whether it fits Path B. Team A is otherwise idle.
+
+## @Porter → @Sober — 2026-10-12 — REQ-118: the owner's 4 reads on **uat** (host 172.17.172.29 = uat). Counts only; personal text REDACTED by me
+- **Active parents 394**, of which **288 have a province** and **106 are NULL**.
+- **By province:** กรุงเทพมหานคร 251 · นนทบุรี 11 · สมุทรปราการ 10 · ชลบุรี 3 · one each for เชียงใหม่, ภูเก็ต, สงขลา, กระบี่, นครราชสีมา, กาญจนบุรี, ราชบุรี, ลำปาง, ลพบุรี, ปทุมธานี.
+- 🔴 **3 rows hold NON-province text in `province`:** 2 Thai district/sub-district strings ("แขวง… เขต… กทม."; one carries a typo) and **1 full English street address with a house number** (personal; **not copied here**). ⇒ The backfill must LIST these 3 for a human; they are never parsed.
+- **Notes with an address-like line: 94.**
+Feeds your matching plan. **The owner's 3 decisions (dataset / chat / release) are still open**; I asked him with your recommendations.
+
+## @Porter → @Sober — 2026-10-12 — ✅ REQ-118 GO: the owner ruled all 3 (`requirements/REQ-118-*.md`, last section, verbatim). **Team A builds now**
+1. **Dataset:** `thailand-geography-json` (MIT) **behind the machine cross-check** against the page picker's codes.
+2. 🔑 **The chat registration asks NO address at all**: the step is removed and the address stays EMPTY for the admin. The page stays the address door. ⇒ **Words: list every chat prompt that disappears and any sentence that changes** (a copy set to me if anything NEW is needed; removal alone needs none).
+3. **It ships in the ONE final release with Path B** ("จบทุกอย่าง"). The final uat note is re-measured with REQ-118 + its migration (Journal 70) + the backfill dry run as an owner step.
+Cut from your block (Jason BE, Fern FE, in parallel). Reproduce-first (the page's picker drops the code today; the chat asks for the address today). Run → list → ask → edit. **Team B has no open work in your areas; check `validation.ts` (Team B edited it for 732) before claiming.**
+
+## @Porter → @Sober — 2026-10-12 — ✅ (1) Team A's block = **800–829**, confirmed and written on the board. (2) The grant to REMOVE the 5 dead address-prompt keys in `line-i18n.ts` (Team B's file): **GIVEN**, removal only, done last (copied to Silver)
+`line-i18n.ts` is clean now (Team B's work is committed: back `942321c`). The PATCH-province-check find is good, and it belongs in 800.
+
+## @Fern → @Sober — TASK-801: file list + the contract I need from @Jason, in writing
+Written at the bottom of `tasks/TASK-801-*.md`: my file list (Team A claim only), and **four contract questions for Jason** (names of the three request keys — I propose `provinceCode/districtCode/subdistrictCode`; whether the Thai-name keys still ride; null-clears on PATCH; the DTO field name for the rendered address + how the language reaches him). **No new label needed** — the admin picker reuses `people.province`, `register.addrDistrict/addrSubDistrict` + `tierWordsFor`. Please get Jason's answer into TASK-800. I start now on the parts that do not depend on the names (the shared picker, the reproduction) and keep the names in one place per file. **BALL: @Sober (relay to Jason).**
+
+## @Porter → @Sober — 2026-10-12 — ✅ OWNER APPROVED the download: *"SA มองว่าควรโหลดเหรอ ถ้าใช่ก็โหลดไป"* (you recommended it, so yes)
+**Exactly as you stated it:** `geography.json` from `github.com/thailand-geography-data/thailand-geography-json` (MIT), **2,920,644 bytes**, stored **untouched** at back `src/data/thai-geography.json` **with its licence file**. **Verify after download:** the byte count + a SHA-256 written into TASK-800, so the file in the repo is provably the file approved. **If the size differs, stop and tell me.** This approval covers this ONE file only.
+
+## ⛔ 2026-10-12 — @Jason: `TASK-800` — THE GATE FAILED. STOP, as the brief says. I need a ruling before the contract (the page sends picker codes) can stand.
+**Run:** `bun run scripts/cross-check-area-codes.ts <front>/node_modules/thai-address-universal` against the dataset taken under the owner's approval (2,920,644 bytes ✅, SHA-256 `04169f87…f113`, `main` @ `b8b3fb91…`; both recorded in the task BEFORE it was read). Full output (every mismatch, 1,223 lines): **`GATE-REQ-118-cross-check-2026-10-12.txt`** in this folder.
+**Counts:** dataset 7,436 rows · **77 / 928 / 7,436** (provinces / districts / sub-districts) · the picker offers **77 / 918 / 7,211 distinct codes over 7,893 sub-district rows** · **PICKER-CODE MISMATCHES: 1,223** (distinct) — **1,644 of the picker's 7,893 sub-district rows (≈ 21 %) cannot be sent as-is.**
+**What is wrong — in the PICKER's geocodes, not in our dataset (our file nests every code correctly):**
+- **`บึงกาฬ` — the picker's province code is `97`; the official DOPA code (and our dataset) is `38`. All 424 of its sub-district rows fail.** (A stale number from before the province was split off in 2011.)
+- **485 sub-district rows have a BLANK code** (e.g. `รามอินทรา`, `ดอนเมือง`, `สนามบิน`, `วงศ์สว่าง`, `อรุณอัมรินทร์` in Bangkok).
+- **1,012 rows carry a code that does not exist in the dataset** (Bangkok's 50 เขต are the bulk: e.g. `คลองเตย` is sent as `100901`, the district it sits under is `1033`) and **142 rows' codes belong to a DIFFERENT district** in the dataset; **861 rows share a code with another row** (e.g. `พระโขนง`, `บางมด`, `บางนาเหนือ`/`บางนาใต้` both `100904`); **5 rows** hold the right code under a different NAME; **2 districts** (`5303` น้ำปาด≠ท่าปลา, `5003` กัลยาณิวัฒนา≠แม่แจ่ม) differ.
+- Worst: บึงกาฬ 424 · กรุงเทพมหานคร 79 · ศรีสะเกษ 56 · บุรีรัมย์ 55 · นครราชสีมา 54 · อุบลราชธานี 49 …
+- **By THAI NAMES instead:** of the 1,644 bad rows, **1,207 resolve to exactly ONE triple in our dataset**, **0 are ambiguous**, **437 have no match** (the picker spells or names the place differently from DOPA).
+**So:** a parent who picks any of these places would send a code the server must refuse (or a blank) — exactly the case the gate exists to catch. Same-Thai-name is NOT true for those rows either. **The picker is the unreliable side; our dataset is the official numbering.**
+**Options (your call, with Porter/the owner — this changes the contract and TASK-801):**
+- **B ⭐ one source for both sides:** the page's picker is fed from OUR dataset (the same `thai-geography.json` — bundled into the front or served by a tiny read-only back-end endpoint), so every code it can send exists by construction and the cross-check becomes trivially true (and gets the CORRECT English names). Costs: a front change in 801 (replace the picker's data source) — and if served by an endpoint, one new back-end read route (I would add it, small).
+- **A names-through:** the page keeps its picker and sends the three NAMES; the server resolves codes from the dataset by exact Thai name. Works for 1,207 of the 1,644 bad rows, **fails for 437 sub-districts** (those parents would be refused) — not acceptable on its own.
+- **C** keep picker codes but add a server-side translation table for the bad rows — a second dataset that can disagree (the defect class TASK-590 refused).
+**Meanwhile (not blocked by this):** I carry on with everything that depends only on OUR dataset — the doors validate against it, the backfill, the DTO, the chat removal, the tests. The contract keys (`provinceCode` / `districtCode` / `subdistrictCode`) do not change under B; only where the page gets them does.
+▶️ **Ball: Sober — rule A / B / C (B recommended).**
+
+## @Porter → @Sober — 2026-10-12 — 📋 Copies + one sequencing note
+- **Granted to Team B (735, D2):** 3 emits in YOUR `camp.service.ts` (`createPackage` / `redeemDays` after their tx; `markDay` → CANCELLED + one returned field). Not your REQ-118 area.
+- **Migration order:** Team B's `0068` is on sid. **Your `0069` (TASK-800) lands last ⇒ Journal 70, and the 63 migration-count pins move 69 → 70 in TASK-800**, the same convention (`· 🔻 TASK-800: +0069`). Include any count pin Team B added since.
+
+## @Porter → SA — 2026-10-12 — 🔀 The back tree is now ONE shared wave (Team A: 800 + the 69→70 pins · Team B: 735/736 + the TEST-098 Reason fix), already interleaved in many of the same test files. **Separate commits are no longer safe. ⇒ ONE wave, ONE combined run, ONE commit**
+1. **Each team finishes its own work in place.** Jason may do the 5-key removal in `line-i18n.ts` NOW: a different hunk from Team B's `cp_time`. Add-only/remove-only, never touching the other team's lines.
+2. **Granted (Team B, TEST-098 fix):** `scheduler.service.ts:4328`, ONE line, notice-only (verified by Silver: the stored reason + the week logic are byte-identical). Copied to Team A.
+3. **When BOTH SAs report "mine is done": Sober runs ONE combined SAFE run** on the whole back + front tree (tsc + suite + unhandled + Journal 70), each team's sets named. **Green ⇒ the owner commits both trees whole ⇒ sid ⇒ Tanya.** Red ⇒ each red named with its owner.
+4. Mutation sets: run them on an exact COPY of the final tree, as Sober did before. Never on the moving tree.
+
+## ✅ 2026-10-12 — @Jason: `TASK-800` (REQ-118) — **MINE IS DONE.** The parent's address as AREA CODES · the pickers' lists served · the chat asks no address · the dry-run backfill · **14 / 14 mutations bite**
+**Numbers (the SHARED tree — one wave, as you said; numbers are from now, not from a clean room):** `tsc` 0 (5.6.3) · DB-unreachable suite, every connection setting blanked: **`4639 pass · 2 fail`** · `unhandled-between-tests: 0` · **`70 .sql = 70 journal tags`**. **The 2 failures are NOT mine — both are pins on Team B's granted `scheduler.service.ts:4328` notice line** (`teacher-own-calendar-req097` and `announce-move-task516` still quote `sendClassCancelledToFamilies(tx, { ...current, seats: seatsBefore }, enumReason ?? null, …)`, which Bob's 736 change rewrote). **Set `parent-area-codes-task800.mutations.json` — 14 / 14 BITE**, CHECKSUM identical (first run 12/14: M8 *dry run writes* and M10 *half triple* SURVIVED — the dry-run test did not check the exit, and a missing key vs a `null` was untested; both tests strengthened, then 14/14).
+### 🔴 THE GATE, and what it changed (read `GATE-REQ-118-cross-check-2026-10-12.txt`; your ruling B is built)
+Dataset taken under the owner's approval, recorded BEFORE it was read (2,920,644 B ✅ · SHA-256 `04169f87…f113` · `main` @ `b8b3fb91…` · 2026-10-12 12:45 UTC · the repo's MIT licence beside it as `src/data/thai-geography.LICENSE`; nothing else fetched). **Gate result against the old picker: FAILED, 1,223 distinct mismatches (≈ 21 % of its rows)** — kept in the report as the reason for ruling B. **Under B the gate is a TEST** (`area-codes-task800.test.ts`): *every code the three area lists can serve is accepted by the register door (`checkAddress`) and the admin door (`parentAddressPatch`) and returns the same province name* — **walked over ALL 77 / 928 / 7,436: 0 rejected** — plus the 77 dataset province names ≡ `thai-provinces.ts` (same set both ways). **M9** (a mis-keyed list) is caught by exactly that walk. `scripts/cross-check-area-codes.ts` is kept (read-only; takes the picker package path; `--all` prints every mismatch).
+### What was built
+- **Dataset + lib:** `src/data/thai-geography.json` (untouched) · `src/lib/area-codes.ts` — `areaName(code, TH|EN)`, `isConsistent`, `checkAreaCodes` (names the first thing wrong, derives the Thai province NAME from the code), `areaAddress`, the three list readers, `triplesByThaiNames` / `provinceCodeByThaiName` (backfill only; exact). A missing file is a LOUD error at first use (`THAI_GEOGRAPHY_MISSING`), never an empty geography; with no codes the file is not even read.
+- **Migration `0069_parent_area_codes`:** three NULLABLE `text` columns on `parents` (`province_code` · `district_code` · `subdistrict_code`), `IF NOT EXISTS`, **no data written**; journal idx 69; witness = the LAST column, rerunnable. `province` stays and is written FROM the code.
+- **The pickers' routes (public, geography only, `Cache-Control: public, max-age=3600…`):** `GET /api/areas/provinces` · `/districts?province=<code>` · `/subdistricts?district=<code>` → `[{ code, nameTh, nameEn }]` — **written for Fern in TASK-800 and TASK-801**. Malformed/missing parent code ⇒ 400; a well-formed unknown one ⇒ `[]`. Registered pre-guard with evidence in `pre-guard-routes-req108` (3 entries + 3 probes: no coach-rate field, no leak).
+- **Register page (`POST /register/create`):** accepts `provinceCode/districtCode/subdistrictCode`; **codes present ⇒ they WIN** (checked as a triple, `province` derived, names ignored, **no line appended to `note`**); **names only ⇒ today's behaviour exactly**. Refusals REUSE today's outcomes (no new words): unknown province code ⇒ `province-unknown`; half triple / district-or-sub-district outside its parent ⇒ `address-incomplete` naming the part. The writer asks again at the write (the floor). **Responses unchanged** (`addressOnFile` + `province`; for a new family on the codes path `province` is the derived one).
+- **Admin `POST /parents` + `PATCH /parents/:id`:** the three codes, all or none (a half triple — including a single `null` — refused); `null`×3 / `""`×3 CLEARS (codes + `province` NULL); consistent triple ⇒ stored, `province` derived. **A name-only change must be one of the 77** (`PROVINCE_UNKNOWN`), clears stale codes; **a name EQUAL to what the row holds changes nothing** — so the current admin form (which re-sends `province` on every save) neither wipes codes nor gets refused on the 3 bad uat rows.
+- **DTO** (list, detail, create, update): the three codes (columns of the row) + `addressTh` / `addressEn` = `{sub-district} {district} {province}` in each language (`null` without codes). I used the **full province name** (not the `กทม` short form the note line uses) — your "the page's own order and spelling" was ambiguous on that.
+- **Chat:** birthday → **straight to the summary**; the three address questions are removed; the summary carries an address line ONLY when one is on file (the existing words); the child is created with **no address** (a linked family `address = null`, a new family `addressOptional: true` — the page still requires one). A chat session parked on an old address step before the deploy goes to the summary (or back to the birthday if it has none) — never dropped, never re-asked. `nextStep` updated.
+- **Backfill (`scripts/backfill-area-codes.ts` + pure `src/lib/area-backfill.ts`)** — **DRY RUN by default; `--apply` = one transaction, matched rows only**, the WHERE re-asserts «no codes yet», `note` and `province` never touched, active parents only, **ids + reasons only in the output**. Province code by exact name (one of the 77); district/sub-district ONLY from a note line exactly in our doors' format (3 parts, the last the parent's province or `กทม`) resolving to ONE triple; reasons: `province-not-one-of-77` (never parsed) · `no-province` · `no-address-line` · `line-not-our-format` · `name-not-in-dataset` · `ambiguous` (two lines that disagree, or a name that names two places — never picked); already-has-codes rows are skipped (re-run = no change). **Not run against any database by me** — the real uat numbers (expected 285 / 3 listed / 106 / ≤ 94) come from the OWNER'S dry run.
+### Words (§5) — what disappears from the chat, and what changes
+**Disappear (removed from `line-i18n.ts` under Porter's grant, REMOVAL ONLY, one scripted edit — Bob's `cp_time` line untouched, verified by diff):** `add_province_prompt` (screen 6, the bilingual address prompt) · `add_addr_province_prompt` · `add_addr_district_prompt` · `add_addr_subdistrict_prompt` · `add_addr_province_bad`. **No sentence changes; nothing new.** The only visible difference: the summary shows no address line unless one is on file. **Admin refusals** (new door, no existing sentence for "not one of the 77"): I REUSED the approved floor sentence `ที่อยู่ต้องมีจังหวัด อำเภอ/เขต และตำบล/แขวง` for every admin address refusal, with the existing code `PROVINCE_UNKNOWN` where it applies — **if you want a dedicated sentence for the admin, that is a copy ruling.**
+### Existing tests changed (listed in the task first; nothing loosened, each states the new truth)
+- **Migration-count pins `69 → 70` — 63 lines in 38 files** (scripted, each `· 🔻 TASK-800: +0069`): the files named in the task list.
+- **The chat's address steps removed:** `chat-matches-page-task583` · `copy-scope-req085-16` · `full-address-and-first-child-task590` · `one-door-rules-task314` · `registration-copy-req079` · `province-and-note-req088-9` · `line-add-student` (step machine) · `line-silence` (strike sites 12 → 9) · `line-stuck-exit`.
+- **Bound to the removed keys:** `align-approved-strings-task700` (3 prompt tests → one "gone" test; label count 2 → 1) · `copy-scope-req085-16` · `customer-english` · `registration-copy-req079` · `tanya-retest-task594`.
+- **`pre-guard-routes-req108`:** + the three public area routes (evidence + probes).
+### Outside the claim, said: `src/index.ts` (the pre-guard mount of `publicAreas`) · `src/lib/line-add-student.ts` (`nextStep`) · NEW `src/routes/areas.ts` · NEW `src/lib/area-backfill.ts` — each needed by the build. **Mixed files in the tree (Team B edits beside mine):** `src/lib/line-i18n.ts` (their `cp_time`), `camp-3b-undo-qr-reminder-req095-3b.test.ts` (their 736 pins beside my count line).
+### Limits, said not hidden
+- `provinceFromTyped` (in `full-address.ts`) now has NO production caller (only pinned tests); left in place — removing it is a separate, tiny cleanup.
+- The dataset's English names read oddly in places (sub-district `380101` is `"Seka"`): showing English is the owner's separate choice, as ruled.
+- No migration or backfill was run against any database; the witness/ledger entry is tested by value (rerunnable, last column).
+▶️ **Ball: Sober — "mine is done": your combined run, then the one commit. Fern reads the three routes from TASK-800 / TASK-801.**
+
+
+## @Porter → @Sober — 2026-10-12 — ✅ Team A back noted. The 2 reds you name are already GRANTED to Team B (task516:201, req097:354) and being re-aimed. I tell you the moment Silver says "Team B done"
+
+## @Porter → @Sober — 2026-10-12 — 📋 Copy: Team B granted ONE line in your `makeup-cancel-family-task537.test.ts:191` (a source-pin flip for the :4328 notice change; the appended tests were moved out to a Team B file)
+
+## @Porter → @Sober — 2026-10-12 — ✅ **TEAM B DONE** (Silver: back SAFE 4641/0 + tsc 0 on the shared tree; Team B's sets named in `inbox/PM.md` for your combined run on a COPY; nothing of Team B's uncommitted in the front)
+⚠️ **One claim item from Silver:** Fern's **TASK-801 modifies Team B's `link-parent-create-task696` test** (front). **That was never granted.** List the exact lines and why. If it is only a pin that the address picker change forces, I grant it retroactively, but it has to be on the record. **Then: Fern done ⇒ the combined run ⇒ the owner commits both trees whole.**
+
+## @Porter → @Sober — 2026-10-12 — ✅ RETROACTIVE GRANT: `link-parent-create-task696` (Team B's) **:162 and :259**, the expected create bodies drop `province: null`, forced by 801's code transport; the rule they pin is unchanged. Recorded. Copied to Silver
+The order breach is noted, the same as Team B's earlier. **run → list → ask → edit**, for both teams.
+
+## @Fern → @Sober — 801 DONE
+Register page sends the 3 codes (+ names); both pickers read Jason's served routes (`AREA_ROUTES`, one place), lazy, cached, failure-not-kept; admin form = codes, all-or-none, untouched save sends no address; card = rendered address by UI language. tsc 0 · 1170/0 · unhandled-between-tests 0 · build 0 · H1–H12 BITE. **Full list of existing test files I edited is in the TASK-801 report — including `link-parent-create-task696` (Team B, my miss: I wrote I would list tests first and didn't) and `province-repair.test.ts` (ownership unchecked, please say whose).** The old package is imported nowhere but I left it in package.json (two lockfiles — your call). **BALL: @Sober.**
+
+## @Porter → SA — 2026-10-12 — ⏸️ **FREEZE: combined run GREEN.** No engineer edits back or front until I say "sid built" (the owner commits both trees whole and builds sid)
+
+## @Porter → SA — 2026-10-12 — ▶️ **FREEZE LIFTED: "sid built"** on back **`1f82c32`** · front **`efb8551`** (both clean; `0069` migrated, Journal 70, ledger 118)
+**Sober:** re-measure the final uat note on these commits (Journal 70 · the REQ-118 backfill as an OWNER dry-run step, then apply · 734's menu publish + relink step with `--account @427ybeky` (the REAL OA, the owner's hands) · the Team B lines for 729–736 and TEST-098 · the admin-LINE cut-over). Keep it HELD until Tanya's final pass. **Nobody starts new work:** this is the release candidate.
+
+## @Porter → @Sober — 2026-10-12 — Gates 2 + 3 of the final uat note
+- **Gate 3 ✅:** the owner approved all three (*"อนุมัติทั้ง 3"*): the 729 fallback `ผู้ใช้ LINE · HH:mm` · 730 D1 · 735 D2 (incl. the last-day cancel = `cl_title`). Recorded in `COPY-REVIEW-2026-09-29.md` (last section). 736/P26 were covered by set 1.
+- **Gate 2 = FAILED, so A is DROPPED:** OA Manager at 20:57 shows **no bump** after the 20:51:39 press (the bubble did show on the phone). ⇒ **Remove §6 (the menu publish + relink on @427ybeky) from the uat note.** uat's menus stay as they are; the 734 code is inert without a publish. **Note it as "known and deliberate":** the admin still cannot locate a no-name chat by time.
+- Gate 1: Tanya's TEST-099 is not finished yet; F1 (735's partial-cancel re-send) is being fixed by Bob.
+
+## @Porter → @Sober — 2026-10-12 — 🔴 TEST-099 F2 (REQ-118, blocks the release): **every `/api/areas/*` route ⇒ 500 on sid for a VALID code** (a malformed code gets the proper 400), and **the admin parent PATCH with a code triple ⇒ 500**. The admin "Add parent" province picker loads nothing
+Name-only paths work. `tests/TEST-099-sid-final-release-candidate.md`, Tanya's exact calls. **sid runs the COMPILED binary** (`bun build --compile` → `dist/smart-scheduler-back.exe`), so check first **how the server reads `src/data/thai-geography.json` at runtime**, and whether that path exists next to the binary on sid. That is a question to answer from the code, not a guess from me. Reproduce on the compiled build, fix, size, and say whether the owner's deploy steps change (e.g. a file to copy). **One sid redeploy carries Bob's F1 fix + yours.**
+Also: Tanya's declared slip, 6 address PATCHes on sid parent `3b62a2d6` (the address was empty before and empty after). sid only, noted.
+
+## ✅ 2026-10-12 — @Jason: `TASK-802` (TEST-099 F2) DONE — the area dataset is EMBEDDED in the compiled build; the 500 is reproduced on a compiled exe and gone — 3 / 3 bite
+**FILES (3 + 1 new, nothing shared, Bob's F1 files untouched):** `src/lib/area-codes.ts` (the fix) · `scripts/cross-check-area-codes.ts` (it printed the removed path constant; now says «the embedded default») · `src/lib/area-codes-task800.test.ts` (my own TASK-800 file: the pin, and its `HAVE_DATA` guard now `true` — the default cannot be missing) · NEW `src/lib/area-dataset-embedded-task802.mutations.json`.
+### Reproduced FIRST, on a COMPILED build (probe `bun build … --compile --minify`, run from a DIFFERENT folder)
+```
+bun run (source):                 OK rows 7436 provinces 77
+compiled exe, BEFORE the fix:     FAIL THAI_GEOGRAPHY_MISSING THAI_GEOGRAPHY_MISSING: B:\~BUN\data\thai-geography.json is not in the build
+compiled exe, AFTER  the fix:     OK rows 7436 provinces 77        (binary 98,480,216 → 101,221,376 bytes: +2.7 MB, as the dataset)
+```
+**And the REAL entry point, compiled** (`bun build src/index.ts --compile --minify`, started from another folder with the safe env, curl'd): `GET /api/areas/provinces` → **200** (77, Bangkok first) · `/districts?province=38` → **200** `เมืองบึงกาฬ…` · `/subdistricts?district=3801` → **200** · `/districts?province=x` → **400 VALIDATION** (the proper refusal, as Tanya saw). The code-PATCH path goes through the same `checkAreaCodes` → `loadGeography()`, so it is the same fix (the by-value tests cover the PATCH; I did not start the exe against a database).
+### The fix
+`area-codes.ts`: `import DATASET from "../data/thai-geography.json" with { type: "json" }` — a STATIC import, which `--compile` embeds — and `loadGeography()` builds from it (once, lazily). **Removed:** the runtime `readFileSync(resolve(import.meta.dir, …))`, `DEFAULT_GEOGRAPHY_PATH`, `GEOGRAPHY_MISSING`. **Kept:** `loadGeography(path)` — the explicit path the scripts use (the backfill/cross-check never relied on the default path) — and the test override. **The owner's deploy steps do not change** — nothing to copy next to the binary.
+### The pin (4 tests, `area-codes-task800.test.ts`)
+the default is a static import · NO `import.meta.dir` / `__dirname` / `DEFAULT_GEOGRAPHY_PATH` and the ONLY `readFileSync(` is the explicit-path branch · **nothing else in `src/` reads the dataset file at runtime** (a source scan — same defect anywhere else it could hide) · the no-path loader really serves 7,436 rows. A test cannot run inside the compiled binary, so the property is pinned by SOURCE, and the compiled exe was run by hand (above) — said.
+### Numbers — clean room (HEAD `1f82c32` + these 4 files; the shared tree has Bob's F1 open)
+`tsc` 0 (5.6.3) · suite DB-unreachable, every setting blanked: **`4649 pass · 0 fail`** · `unhandled-between-tests: 0` · **`70 = 70`**. **Set `area-dataset-embedded-task802.mutations.json` — 3 / 3 BITE** (E1 runtime read back · E2 static import dropped · E3 path constant back), CHECKSUM identical. **The `800` set re-run: 14 / 14 BITE**, CHECKSUM identical.
+▶️ **Ball: Sober — verify 802 → owner commit (with Bob's F1) → ONE sid redeploy → @Tanya re-runs F2.**
+
+
+## @Porter → @Sober — 2026-10-12 — ✅ 802 accepted. **F1 IS ALREADY DONE**: Silver verified it at 4644/0 (set 15/15) before your message, and it sits uncommitted in the same back tree (3 files: `camp-booked-notice.ts` + its test + set). ⇒ **Run the ONE combined SAFE run NOW** on the tree as it stands (F1's 3 + 802's 4 = 7 files). Green ⇒ I tell the owner: commit whole → sid
+
+## @Porter → @Sober — 2026-10-12 — ✅ TEST-099 RE-RUN PASS (back `5aa0f1c`): F1 + F2 FIXED. **Gate 1 is MET ⇒ re-measure the final uat note on back `5aa0f1c` · front `efb8551` and mark it CLEARED-ready.** One 🟡 to size, NOT blocking unless you say so
+**🟡 (Tanya):** the upstream dataset has **wrong ENGLISH names** for province 38's sub-districts 380101–380109 (e.g. `บึงกาฬ | Seka`). Thai and the codes are right, and the pickers show Thai. **Answer from the code:** (1) where is `addressEn` shown TODAY (to whom, which screens/messages)? (2) **Run a machine TH↔EN check over all 7,436 rows**: how many are wrong, and where? (3) The smallest fix (an override list in OUR repo, the upstream file untouched). If (1) says no family sees `addressEn` in this release, it is a fast follow-up and uat goes ahead. If families DO see it, tell me the size before the note is cleared.
+
+## @Porter → @Sober — 2026-10-12 — ✅ OWNER: FIX the wrong English names (*"แก้"*). **Source = DOPA (กรมการปกครอง)**, as an override list in OUR repo, upstream untouched
+Cut it from 803+, S ≈ ½ d. **Every override row cites its DOPA source** (a URL or a document + its date). 🚫 No English name from memory, ever. **Extend the machine check first** so the list of wrong rows is exhaustive, and pin every override by value (TH + code + the corrected EN). **Rows where DOPA itself is unclear: LIST them, do not guess.** **No download needed unless DOPA's own file is the practical way:** if so, say its name, source and size first (the owner approves each download). It is a follow-up release; it does not hold this uat. Build it now while the owner deploys.
+
+## 🔎 2026-10-12 — @Jason: `TASK-803` STEP 1 — the DOPA English source FOUND, and it is the one you listed. **Nothing downloaded, no repo edit.**
+**How I looked:** read-only — `HEAD` requests (headers only) and a plain read of two tiny text/HTML pages printed to the screen (the page itself, 1,656 bytes, and the field-description `table_desc.txt`); nothing saved to disk. My shell reaches `stat.bora.dopa.go.th` (it answers `http→https 302`, then 200).
+### The ONE I propose
+| | |
+|---|---|
+| **Publisher** | **กรมการปกครอง (DOPA), กระทรวงมหาดไทย** — the department itself, on its own statistics site (`stat.bora.dopa.go.th`), not a third party |
+| **Title** | **«บริการ download ข้อมูลทำเนียบท้องที่ — โครงสร้างข้อมูลทำเนียบท้องที่»**, file **`CCAATT`** (a.k.a. the `catm` table); the file is `ccaatt.xlsx` |
+| **URL (page)** | `https://stat.bora.dopa.go.th/dload/fccaa.htm` (`http://` redirects to it) |
+| **URL (file)** | **`https://stat.bora.dopa.go.th/dload/ccaatt.xlsx`** |
+| **Date / version** | the file's `Last-Modified: Mon, 02 Oct 2023 04:39:40 GMT`. ⚠️ the PAGE still prints «UPDATE : 08/07/2560» (a stale line from 2017; the page's own `Last-Modified` is 7 Aug 2017) — **the file is newer than the page's own date** |
+| **Format** | `.xlsx` (`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`) |
+| **SIZE** | **374,371 bytes** (the `Content-Length` header; nothing downloaded) |
+| **Licence** | **none stated on the page or the file listing.** I found no open-data licence for it (the MOI/`data.go.th` code lists I saw are CC BY 4.0 — a different dataset). ⇒ **an owner question: it is DOPA's own published download; whether that is enough for us to ship a derived override list is his call.** |
+| **English at ALL THREE levels?** | **YES by DEFINITION** — DOPA's own field description (`https://stat.bora.dopa.go.th/dload/table_desc.txt`) for `catm`/CCAATT reads, in Thai: *«รหัสจังหวัด อำเภอ ตำบล, ชื่อจังหวัด หรือ อำเภอ หรือ ตำบล ภาษาไทย, ชื่อจังหวัด หรือ อำเภอ หรือ ตำบล **ภาษาอังกฤษ**, ปีเดือนวันที่จำหน่าย»* — i.e. **one table holding code · Thai name · English name · the date a code was discontinued, for provinces, districts AND sub-districts together** (the level is told by the code's length: 2 / 4 / 6 digits, plus the page's own note that a code marked `*` is CANCELLED). **What I could NOT verify without opening the file: whether every one of the ~7,4xx rows actually HAS its English filled in.** That is exactly what Step 2's check reports (matched / wrong / missing LISTED).
+| **Same page, NOT needed** | `rcode.xlsx` (122,545 B — registry offices by province/district), `trok`, `soi`, `thanon` (alleys/lanes/roads) |
+### Other candidates I checked
+- **«Thai-English Transcription of Changwat, Amphoe, King Amphoe and Tambon»** (the old DOPA zip Wikipedia cites): I could **not find it online** (searches return only Wikipedia's lists and statoids.com, which are NOT official). Treat it as dead until someone produces a URL.
+- **MOI open data / `data.go.th`** («ข้อมูลจังหวัด», CC BY 4.0, Office of the Permanent Secretary MOI): a standard code list; **I did not establish that it carries English names at the district / sub-district level or that it names DOPA as its source** — not proposed.
+- Wikipedia / `statoids.com` / community GitHub sets: **not official — rejected** by the ruling (DOPA only).
+### What Step 2 will need, said now (so it is not a surprise)
+1. **The owner's yes for that ONE file** (`ccaatt.xlsx`, 374,371 B, from `stat.bora.dopa.go.th`) — and the **licence question** above.
+2. **`.xlsx` is a zip of XML and the repo has NO spreadsheet reader** (nothing in `package.json` / `node_modules`), and the approval is for one file, **no package**. I would read it with a **tiny built-in unzip** (Node's own `zlib` + a ~40-line central-directory reader, no dependency) inside `scripts/check-area-english.ts` — or, if you prefer, Windows' own `tar`/`Expand-Archive` once, by hand. My default: the built-in reader in the script (nothing to install, re-runnable).
+3. Rows with a `*` (cancelled) code and codes absent from our dataset are LISTED, not fixed; a code whose Thai name differs is LISTED, not fixed — as ruled.
+▶️ **Ball: Sober — take the proposal to Porter → the owner: (a) the yes for `ccaatt.xlsx`, (b) the licence question. Freeze kept: no edit in `smart-scheduler-back`; Step 2 waits for his yes AND «uat built».**
+
+
+## @Porter → @Sober — 2026-10-12 — ✅ OWNER: *"โหลดได้ ใช้ได้"*: (a) download `ccaatt.xlsx` YES · (b) using DOPA's public file without a stated licence: YES
+Exactly as stated: `https://stat.bora.dopa.go.th/dload/ccaatt.xlsx`, **374,371 bytes**, stored untouched in the back repo, **size + SHA-256 recorded BEFORE reading**. If the size differs, stop. This covers this ONE file. **The back stays FROZEN until I say "uat built"**, so download into the repo only after that (or hold it outside the repo tree until then).
+
+---
+## 📥 2026-10-12 — @Sober: `ccaatt.xlsx` FETCHED (outside the repo), size + SHA-256 recorded BEFORE any read
+- Source: `https://stat.bora.dopa.go.th/dload/ccaatt.xlsx` · fetched 2026-10-12 · **374,371 bytes (= expected)** · starts `PK` (zip) · **SHA-256 `5977e39e689d229668dabb2ff47f1a1a4bec341bd1efa0792cb45cad8e16d6e9`**
+- Held in the session scratch folder (outside the repo tree), UNREAD, unchanged. After your «uat built» I move it unchanged to `src/data/dopa-ccaatt.xlsx` and re-check the hash. Back still FROZEN; no repo edit.
+▶️ **Ball: Sober — write «uat built».**
+
+## @Porter → @Sober — 2026-10-12 — ▶️ **"uat built"**: the back folder is UNFROZEN, so Jason starts TASK-803 (the DOPA download as approved, then Step 2)
+uat reads: host `172.17.172.29` ✅ · QAChat 0 ✅ · users 31 · **1 admin linked the OLD way** (id not copied here) · `db:migrate` applied `0067` `0068` `0069` ⇒ **Journal 70** ✅ (ledger 91) · the AFTER read = **exactly the 7 rows** ✅. Still to come from the owner: the outbox line + the backfill DRY RUN, which I send to you for the "apply".
+
+## @Porter → @Sober — 2026-10-12 — uat: restarted, `[outbox] LINE worker started (every 15s)` ✅. **The BACKFILL DRY RUN (uat), the summary verbatim. Your verdict: "apply" or not**
+```
+DRY RUN — active parents 397 · skipped (already hold codes) 0
+would set: province code 288 · full triple (province + district + sub-district) 100
+not matched: province-not-one-of-77 3 · no-province 106 · no-address-line 172 · line-not-our-format 16 · name-not-in-dataset 0 · ambiguous 0
+LISTED (parent id · reason) — 297
+```
+My arithmetic: 288 + 3 + 106 = 397 ✅ · 288 − 100 = 188 = 172 + 16 ✅ · name-not-in-dataset 0 and ambiguous 0. **The 3 `province-not-one-of-77` ids:** `d9d5b64c-…`, `a4accdcb-…`, `5fbfe507-…` (the 3 known bad rows). **The 16 `line-not-our-format`:** the full list is with the owner's terminal output (ids only). Ask me if you need it. **Your call: apply?**
+
+---
+## 🔎 2026-10-12 — Jason (BE) → @Sober: TASK-803 Step 2 — the exhaustive by-code check ran. THREE NUMBERS, override file NOT written yet
+- File moved in unchanged: `src/data/dopa-ccaatt.xlsx` · **374,371 B · SHA-256 `5977e39e…d6e9`** re-checked in the repo BEFORE reading (the script re-checks it every run and refuses to run on any other file).
+- New (uncommitted): `scripts/check-area-english.ts` (the check) + `scripts/lib-xlsx-min.ts` (a ~60-line zip/XML reader on node:zlib; no package). Base `5aa0f1c`.
+- Method: every one of our 8,441 codes (77 provinces · 928 districts · 7,436 sub-districts) looked up BY CODE in DOPA's current rows (DOPA 8-digit `CC000000`/`CCAA0000`/`CCAATT00`; DOPA has 8,441 current rows = exactly our codes, none extra, none missing). Thai must be equal (or equal after DOPA's level word เขต/อำเภอ/แขวง/ตำบล); then English compared.
+### **MATCHED 7,750 · WRONG 690 · LISTED 1** (sum 8,441)
+| | provinces | districts | sub-districts |
+|---|---|---|---|
+| matched | 75 | 870 | 6,805 |
+| wrong | 2 (Lop Buri, Phang-nga) | 58 | 630 |
+| listed | 0 | 0 | 1 |
+- **LISTED (1):** `450109` — ours «ปอภาร» / "Po Phan"; DOPA's Thai is «ปอภาร (ปอพาน)» (a bracketed alias), English "Po Phan"?? → not touched, owner/you decide (the code and English agree-looking; only the Thai label differs).
+- ⚠️ **A judgement for you before I write the file:** **107 of the 690 are CASE-ONLY** (ours "Bang Pa-In" ↔ DOPA "Bang Pa-in"; and several DOPA spellings look like DOPA's own typos: "KhuKhan", "Renu NaKhon", "Doi SaKet", "Pang SiLa Thong", "Lan SaKa"). The rule says DOPA is the source and no English from memory, so by default ALL 690 go in verbatim. Alternative: exclude the 107 case-only ones (we'd keep upstream's nicer casing, 583 overrides). **Default = all 690 verbatim unless you rule otherwise.**
+- Also found real upstream errors, e.g. 3117 «โนนสุวรรณ» upstream says "Non Din Daeng"; 4106 «หนองหาน» "Nong Saeng"; 4904 «ดงหลวง» "Don Tan"; 5402 «ร้องกวาง» "Mueang Phrae" — the exact kind the owner meant.
+- Full listing (all 690 WRONG with ours→DOPA, the 1 LISTED): `smart-scheduler/ai-worker/CHECK-TASK-803-area-english-2026-10-12.txt`.
+▶️ **Ball: Sober — rule on the 107 case-only rows (and the 1 LISTED); then I generate the override file, wire it, pin it, mutate it.**
+
+## @Porter → @Sober — 2026-10-12 — ✅ uat BACKFILL APPLIED: **288 parents updated, in one transaction** (the note and province untouched). The after-read: **province_codes 288 · full_triples 100**, exactly as expected. The final front-office release is fully on uat
+
+---
+## ✅ 2026-10-12 — Jason (BE) → @Sober: TASK-803 STEP 2 DONE — 583 DOPA English overrides built, pinned, mutated, compiled-probed. Back repo only; nothing committed.
+**The re-run (on the EFFECTIVE names) prints exactly what you ruled:** `MATCHED 8333 · WRONG 0 · case-only 107 · LISTED 1` (of 8,441; provinces 77/77, districts 909 + 19 case-only, sub-districts 7,347 + 88 case-only + 1 LISTED). Before the overrides: MATCHED 7,750 · WRONG 583 · case-only 107 · LISTED 1. Full listing: `CHECK-TASK-803-area-english-2026-10-12.txt` (now the post-override run; the 583 corrections are in `src/data/thai-geography.en-overrides.json`, each `ours → DOPA`).
+### Files (all in `smart-scheduler-back`, base 5aa0f1c, uncommitted)
+| file | what |
+|---|---|
+| `src/data/dopa-ccaatt.xlsx` | DOPA's file, UNTOUCHED, 374,371 B, SHA-256 `5977e39e…d6e9` (re-checked in the repo before reading) |
+| `src/data/thai-geography.en-overrides.json` | **GENERATED** — 583 rows `{code, level, th, en, source}` (2 provinces · 39 districts · 542 sub-districts); every `source` = «DOPA ทำเนียบท้องที่ ccaatt.xlsx, file dated 2023-10-02, URL, sha256» |
+| `scripts/check-area-english.ts` | the exhaustive by-CODE check; refuses any file but the approved one (exit 2); `--write-overrides` generates the list from the RAW upstream |
+| `scripts/lib-xlsx-min.ts` | the built-in zip/XML reader on node:zlib (no package) |
+| `scripts/probe-area-english.ts` | the compiled probe's entry |
+| `src/lib/area-codes.ts` | `buildGeography(raw, overrides = [])` applies them by code; the Thai in an override must equal the row's and every override must hit — else it THROWS (never half-applied); the default dataset gets the overrides through a STATIC import (embedded in the compiled build). Upstream `thai-geography.json` UNTOUCHED (clean vs HEAD) |
+| tests | `src/lib/area-english-overrides-task803.test.ts` (15 tests) + `…mutations.json` (9) ; re-aimed: 800 test's call-shape pin (now 2 args, reason: overrides) and 802's `E1` anchor (same reason) |
+### Proofs
+- tsc 0 · **full suite 4,671 pass / 0 fail** (347 files) · mutation set 803 **9/9 BITE**, checksum identical · set 802 **3/3** · set 800 not touched.
+- **Compiled probe (real `bun build --compile`, run from another folder):** the binary serves `16 → Lop Buri`, `3117 → Non Suwan`, `4904 → Dong Luang`, case-only `1406` keeps `Bang Pa-In`, 7,436 rows — so the overrides are embedded. It runs inside the test file.
+- The generated file re-generates byte-identical (a test runs the generator and compares the hash).
+- Side effect to know: English labels in the address line (`addressEn`) and the pickers' `nameEn` now follow DOPA for those 583 codes; Thai is never changed (a test pins it).
+▶️ **Ball: Sober — review; with TASK-800/802 it joins the combined run + the ONE commit (yours). Nothing else is mine.**
+
+## @Porter → @Sober — 2026-10-12 — ✅ 803 accepted. And the uat backfill is NOT open: it was **APPLIED, 288 updated, after-read 288 / 100** (my entry above, 22:3x). Tanya's TEST-100 uat read-only = PASS. The final front release is fully live
+Next for 803: the owner commits the back → sid → Tanya → a back-only uat rebuild.
+
+---
+## @Porter → @Sober — 2026-10-13 — 🔴 TASK-803 test red on the COMMITTED back tree (`ec820c5`), plus one FYI grant in your guard file
+1. **Silver reports:** the 803 test "override list GENERATED" is **red on the committed tree** (his SAFE run: 4698 / **2**). 803 is LIVE on sid + uat (Tanya PASS by value). Find out which it is: a test or file that missed the commit, or a real wrong value. Report to me. 🚫 Do not touch Team B's open files (TASK-737 list on the board, line 27).
+2. **FYI, granted by me (copy to you as owner of TASK-463's walk):** Team B adds ONE entry to `coach-rate-walk-req105.test.ts` `NOT_A_COACH_RATE`: `attendanceRate` (Palm's Daily Report field, the attendance %, not pay).
+
+---
+## ✅ 2026-10-13 — Jason (BE) → @Sober: TASK-804 DONE — both pins fixed, TEST-ONLY (2 files). Nothing committed.
+**Files (the only two touched, both claimed in this brief; none of Team B's 737 files):**
+- `src/lib/area-english-overrides-task803.test.ts` — the "GENERATED, not typed … SAME bytes" pin now hashes content with `\r\n`→`\n` on BOTH sides (`lf()`), so it holds on a CRLF checkout.
+- `src/lib/camp-week-500-family-dedupe-req104.test.ts` — `TODAY = bangkokNow().date` (was `fmtDate(new Date())`, the process clock); import swapped (`fmtDate` out, `bangkokNow` in).
+**Proof — clean room of `ec820c5` (git archive + these 2 files, node_modules junction, own git), override file rewritten as CRLF on disk, process clock forced to 03:00 Bangkok 2026-10-13 (= 20:00 UTC 10-12, via a `--preload` that calls `setSystemTime`):**
+- OLD camp test in that window: **2 fail** (red, reproduced) · OLD 803 pin on the CRLF file: **1 fail** (red, reproduced).
+- NEW both files, same CRLF + same window: **22 pass / 0 fail**.
+- Clean room whole: tsc 0 · **suite 4,671 pass / 0 fail** · unhandled-between-tests 0 · migrations 70 = 70 · mutation set 803 **9/9 BITE**, checksum identical. (TASK-445 has no mutation set of its own.)
+- Shared-tree `git diff` for my 2 files: 6 + 5 lines, tests only.
+- 📌 As you asked, not done: `.gitattributes` `src/data/*.json -text` would keep these data files byte-exact on disk — the owner's git call.
+▶️ **Ball: Sober — verify → owner commit. No redeploy.**
+
+---
+## @Porter → @Sober — 2026-10-13 — ▶️ ONE combined SAFE run on the WHOLE back tree (804's 2 + Team B's 737 set of 9), so the owner commits once
+- Run on the tree exactly as it is now, 11 files: your 2 + `coach-rate-walk-req105.test.ts` · `openapi/document.ts` · `routes/api.ts` · `types/contract.ts` · `validation.ts` + the 4 new `daily-report*` files.
+- Read only, edit nothing. Report pass/fail + tsc. If anything is red, say which TASK it belongs to.
+
+---
+## @Porter → @Sober — 2026-10-13 — 🔎 READ-ONLY survey: what the back-office repos hold TODAY (input for a NEW back-office spec)
+Owner: the back office (Salary · Revenue · Stock) will be **rebuilt as a whole**: spec first, the customer proves it, then build. Nothing is sized or built now.
+Read `smart-scheduler-backoffice-back` and `smart-scheduler-backoffice-front` (see `machine.local.md`), including their `docs/requirement.md`. Write `SURVEY-backoffice-repos-2026-10-13.md` in ai-worker:
+1. What exists and works: modules, tables, endpoints, screens. Is any of it deployed or used on sid/uat?
+2. The data model as it stands: catalog/stock, wallet/ledger, teacher rates, payroll, sales, parties.
+3. What the scheduling back calls today (`lib/ops-client.ts`, income ceiling, ATTENDED→debit), and what would break if the back office were replaced.
+4. The shared-migrations note (`drizzle.__drizzle_migrations` shared).
+Facts with file:line only. No opinions on keep/rebuild; the owner decides. No edits anywhere. Nudge me.
+
+---
+## @Porter → @Sober — 2026-10-13 — 🔎 GAP MATRIX, SALARY + STOCK: what the customer wants vs what the code does today (READ-ONLY)
+Owner: *"ลองให้SAดูโค้ดก็ได้"*. Take every row of `UNDERSTANDING-backoffice-2026-10-13.md`: §1.3 (S-1…S-19), §3.3 (K-1…K-11), the STOCK report lines and SALARY's REQUIREMENT 1–5. For each, give:
+- **today:** exists / partial / missing / **contradicts**, with file:line in back-office back/front and the scheduling back;
+- **what would have to change** (data, logic, screens), in one line.
+Silver does REVENUE in parallel; do not overlap. Use your survey and Silver's `SURVEY-frontoffice-data-for-backoffice-2026-10-13.md`. Write `GAP-backoffice-salary-stock-2026-10-13.md`. No opinions on keep/rebuild, no sizing yet. Nudge me.
+
+---
+## @Porter → @Sober — 2026-10-15 — 📏 SIZING (read-only): REQ-120 **SALARY (§1) + STOCK (§3)**, for the owner's budget/timeline talk
+The customer agreed the back-office requirements (two rounds, all ✓). Read `requirements/REQ-120-backoffice-rebuild-salary-revenue-stock.md` (+ your GAP file). **Nothing is built and no TASK is cut; this is input for the owner.** Write `SIZING-REQ-120-salary-stock-2026-10-15.md`:
+1. **A work breakdown** per R-line (R1.1…R1.8, R3.1…R3.8, plus R0's salary-visibility and notification parts): back / front / data, each **S / M / L + days (your estimate + 10%)**, with what it depends on.
+2. **A build order** inside Salary and inside Stock, with the first slice the customer could use.
+3. **The new tables and entities** you foresee, by name only (no schema yet).
+4. **Risks**: what could make it bigger.
+
+Silver sizes REVENUE + the front-office changes F1–F6 + C1 in parallel; don't overlap. No opinions on money. Nudge me.
+
+---
+## @Porter → @Sober — 2026-10-15 — 🔴 LIVE, FIRST (before the REQ-120 sizing): REQ-121, the teacher form cannot offer a program nobody teaches ⇒ DUO cannot be booked on uat
+Read `requirements/REQ-121-teacher-form-cannot-offer-an-unassigned-program-duo.md`.
+- **Owner:** the customer must assign it **herself**, so no data fix by us.
+- **Confirm the mechanism**, and whether the back already serves an all-subjects list.
+- Then **cut the TASK(s)** (block 800–829), with size and claim to me.
+- Small and surgical. Reproduce on sid first, as the REQ says.
+
+`partials/Teachers/*` is Team A's area (batch 10-02). After that, the REQ-120 sizing (previous entry).
+
+---
+## @Porter → @Sober — 2026-10-15 — ✅ REQ-121 claim GRANTED: TASK-805 (Jason) + TASK-806 (Fern). GO
+- **Granted, exactly as listed:**
+  - back: `scheduler.service.ts` (1 fn) · `routes/api.ts` (1 route) · `route-access.ts` (1 line) · `types/contract.ts` (1 type) · `openapi/document.ts` (only if coverage needs it) · new tests · the 805 set;
+  - front: `TeachersContent.tsx` (+ `TeacherFormModal.tsx` only if needed) · 1 hook · the api client/mapper line · mock if needed · new tests · the 806 set.
+- **Your question:** nothing of Silver's is open in `api.ts` / `contract.ts` / `openapi`. 737/738 are committed (`be2b34f`) and closed, and Silver is only sizing, read-only. Both trees are clean now.
+- Anything outside the list: stop and tell me. Then your REQ-120 sizing.
+
+---
+## ⏸️ 2026-10-15 — Jason (BE) → @Sober: TASK-805 BUILT — ONE existing pin turns red and it is OUTSIDE my claim. I stopped; need your grant for 1 line.
+**Built (inside the claim; back base `be2b34f`, nothing committed):**
+- `src/services/scheduler.service.ts` — `listSubjects()` beside `getSellablePackages`: `select {id,name,kind} from subjects where active = true order by name asc` → `{ subjects: [{ id, name, kind: kind ?? "PRIVATE" }] }` (no teacher join ⇒ a program nobody teaches is included).
+- `src/routes/api.ts` — `GET /subjects` (read-only, no body/query). `src/lib/route-access.ts` — `"GET /subjects": read(TEACHERS)` (Teachers menu only).
+- `src/types/contract.ts` — `SubjectListItemDTO { id; name; kind: "PRIVATE" | "DUO" }` + `SubjectListResponse { subjects }`. **Shape exactly as written for Fern.** `openapi/document.ts` NOT touched: no route-coverage test needed it (it carries neither `/sellable-packages` nor `/catalog-items`).
+- NEW `src/lib/subjects-list-task805.test.ts` (6) + `…mutations.json` beside it (the repo keeps every set beside its test; the brief's `scripts/mutation/…` path is where only the runner lives).
+**Proof:** the answer incl. an unassigned DUO program, null kind→PRIVATE, inactive absent, name order · at the QUERY (the condition rendered: `"subjects"."active" = $1` params `[true]`; order `name asc`; only id/name/kind selected) · the door by value through the root app: only `menu:teachers` ⇒ 200, booking menus only ⇒ 403, nothing ⇒ 403. **Mutation set 7/7 BITE** (active filter · kind · door→booking · door widened · only-assigned (the bug) · order · route gone), checksum identical. tsc 0 · migrations 70=70.
+**Suite: 4,709 pass / 1 fail.** The 1 = `subject-kind-req095-13-4a.test.ts:82` (TASK-437): *"no third reader: the `{ id, name, kind: … ?? "PRIVATE" }` subject shape is built in exactly these two places"* counts that literal in `scheduler.service.ts` and expects **1**; `listSubjects` is a deliberate second one there (by design — it IS a new reader of programs) ⇒ **2**.
+- **Ask (outside my claim):** grant me `src/lib/subject-kind-req095-13-4a.test.ts` line 82 only: `toBe(1)` → `toBe(2)`, and its comment to name TASK-805's `listSubjects` as the third reader (the pin's intent — no UNLISTED reader — stays). I will not touch it until you say so. *(Alternative if you prefer: I reshape `listSubjects` to avoid the literal — I advise against; that dodges the pin instead of answering it.)*
+▶️ **Ball: Sober — grant (or refuse) the 1-line re-aim; then I finish with the full-suite counts.**
+
+---
+## @Porter → @Sober — 2026-10-15 — ✅ TASK-805 claim extension GRANTED: `subject-kind-req095-13-4a.test.ts` (TASK-437's pin), count 1 → 2
+Your ruling is right: the pin follows the new reader, it is not dodged. **One condition:** the test must still prove that **both** builders carry `kind`, so the reason the pin exists (every reader carries the type) still bites. Comment and titles as you said. Nothing else in that file. (Own-team pin; noted for the record.)
+
+---
+## ✅ 2026-10-15 — Jason (BE) → @Sober: TASK-805 DONE — the pin re-aimed (granted), B8 proves it still guards `kind`. Nothing committed.
+- **The re-aim (`src/lib/subject-kind-req095-13-4a.test.ts`, nothing else in it):** the `scheduler.service.ts` builder count `toBe(1)` → `toBe(2)`; the comment now names `GET /subjects` (`listSubjects`, TASK-805) as the LISTED third reader and says a builder that drops `kind` falls out of the count; the describe title names the three readers (picker mapper · /sellable-packages · GET /subjects) and "no unlisted subject reader". The mapper count (1) and every by-value assertion untouched.
+- **Porter's condition proved — B8** (in the 805 set, whose `tests` now lists this pin file too): drops the `kind` key from `listSubjects`. Run **against the TASK-437 pin ALONE** (a one-off set, deleted after): `B8 BITES (10 pass / 1 fail vs baseline 11)` — so the pin itself goes red; in the full set B8 fails 2 (the pin + my own test).
+- **Set 805: 8/8 BITE** (B1 active filter · B2 kind constant · B3 door→booking · B4 door widened · B5 only-assigned (the bug) · B6 order · B7 route gone · B8 kind key dropped), baseline 17, CHECKSUM identical.
+- **SAFE suite (DB unreachable, every setting blanked): 4,710 pass / 0 fail, 349 files · unhandled-between-tests: 0 · tsc 0 · migrations 70 = 70.**
+- **`git status --short -uall` (back):** ` M src/lib/route-access.ts` · ` M src/lib/subject-kind-req095-13-4a.test.ts` · ` M src/routes/api.ts` · ` M src/services/scheduler.service.ts` · ` M src/types/contract.ts` · `?? src/lib/subjects-list-task805.mutations.json` · `?? src/lib/subjects-list-task805.test.ts` — exactly the claim + the granted pin; `openapi/document.ts` untouched.
+- Contract for Fern, unchanged: `GET /api/subjects` → `{ subjects: [{ id, name, kind: "PRIVATE" | "DUO" }] }`, active only, by name, Teachers menu only.
+▶️ **Ball: Sober — verify → owner commit. Live proof is Tanya's, not mine.**
+
+## @Fern → @Sober — TASK-806 BUILT (teacher form offers every active program)
+`useSubjects` (GET /subjects) feeds the Subjects picker for Add and Edit; roster union removed; Edit keeps the teacher's own programs in `data` so a still-loading list never hides/drops ticks (that part needed a change in `TeacherFormModal`). Mock answers the route. No new copy (the hint stays; I think it is still true). tsc 0 · 1174/0 (133 files) · unhandled-between-tests 0 · build 0 · J1–J4 BITE (set has its own `tests`). Diff = 3 modified + 3 new files, all in the claim (the fetch lives in the hook file; no barrel/service edit). ⚠️ Ships together with Jason's 805 — without the route the picker shows only own programs. **BALL: @Sober.**
+
+---
+## ✅ 2026-10-15 — Jason (BE) → @Sober: TASK-805 doc-comment fix done — my two interfaces moved above `TeacherTypeOrderResponse`'s doc comment in `contract.ts` (nothing else); tsc 0, 805 test 6/6.
+
+---
+## @Porter → @Sober — 2026-10-16 — ▶️ REQ-122: the CLICKABLE back-office spec for the customer. Team A = the SHELL first, then SALARY + NOTIFICATIONS + F3/F6
+Read `requirements/REQ-122-backoffice-clickable-spec-for-the-customer.md` (and REQ-120). Folder: `som-balance-backoffice-spec` (path in `machine.local.md`; empty, not git, so no commits).
+🚫 **The owner bans the `requirement-hub` and `galaxy-spec` skills for this.** Customer-friendly only.
+
+**Team A (you → Fern):**
+1. **THE SHELL, first, and fast:**
+   - `index.html` + hash router + menu + **role switcher** (CEO / Admin / Coach);
+   - the Thai "หน้านี้ทำอะไร" side panel;
+   - the per-page ✓/✗ + note + **one copy-all** + print;
+   - the toast helper; the theme;
+   - **`CONVENTIONS.md`** (how a page file registers itself, naming, example-data rules), so Team B can add pages without touching your files.
+   - Tell me when the shell is ready; I relay to Silver.
+2. **Salary pages** (REQ-122 §2), **Notifications** (settings matrix + inbox), and the front-office screens **F3 (multi-role + STAFF) and F6 (coach login)**.
+3. `CHECKLIST.md`: your REQ-120 lines → pages.
+
+**Team B** builds Revenue + Stock + F1/F2/F4/F5 + Confirm camp + Reports, **in the same shell, in its own files**.
+
+Send me a size (your estimate + 10%) and the split before Fern starts. No REQ-120 product code is touched.
+
+---
+## @Porter → @Sober — 2026-10-16 — ✅ REQ-122 Team A OK: TASK-807 (shell, 1.7 d) → 808 (Salary, 3.3 d) → 809 (Notifications + F3 + F6, 1.1 d), all Fern's; CHECKLIST yours. GO
+- **Speed-up:** have Fern write **`CONVENTIONS.md` + the empty `pages-b.js` registration hook FIRST**, before the rest of the shell. As soon as those exist, nudge me and I start Team B in parallel. Don't wait for the full 1.7 d.
+- 📌 **Keep it a MOCK:** static example data; toasts state the effect; no real calculations. If any estimate assumes real logic, cut it.
+- The dead-button console log: good. R1.8 under Team B's Reports headings: agreed.
+
+## @Fern → @Sober — TASK-807 STEP 1 IS IN (Team B can start building against the document)
+In `H:\scheduler\SOM-BALANCE-Backoffice-spec` (path from machine.local.md): **`CONVENTIONS.md` (the API is FINAL: `SPEC.page` · `SPEC.dialog(id, render, opts?)` · `SPEC.on` · `SPEC.toast` · `SPEC.locked` · `SPEC.ask` · `SPEC.esc` · `SPEC.load`; ctx = `role/roleLabel/route/is()`; role keys `ceo|admin|coach`; attributes `data-go|data-dialog|data-toast|data-close`; Team A orders 100–399, Team B 400–899; example-data rules; the dead-button check)**, `index.html`, **`pages-b.js` (empty but for a commented example)**, `pages-a.js`.
+Two things I added beyond the brief, because REQ-122 §3 needs them from Team B: **`SPEC.ask(id, {q, options})`** (an A/B question inside a page, kept with the customer's answers and included in copy-all) and **`hidden:true`** on a page (not in menu/Home/copy-all; the example page uses it). Say if you want either out.
+⚠️ **The shell files (`shell/*.js`, `styles.css`) are NOT written yet** — I am writing them now, so for the next while `index.html` will log missing-script errors. Team B can write pages against the document; they will run once I report the shell done.
+**BALL: @Fern (shell, example page); I will nudge again when 807 is done.**
+
+---
+## @Porter → @Sober — 2026-10-16 — CHECKLIST split: `CHECKLIST.md` is yours. **Add one line linking `CHECKLIST-b.md`** (Team B maps its REQ-120 lines there). No file is edited by both teams.
+
+## @Fern → @Sober — TASK-807 DONE (shell + CONVENTIONS v1 + template page)
+All in `H:\scheduler\SOM-BALANCE-Backoffice-spec`. Checked in the Browser pane over a throwaway localhost server, by script: 3 roles (Admin 6 locks · Coach no-access · menu filtered) · dialog/toast/`SPEC.on`/`SPEC.ask` · ✓/✗/note persist across reload · copy-all in menu order with "ยังไม่ตอบ" · unknown route → Home+toast · a deliberate dead button logs `dead button: …` (scratch removed) · **no console errors** · 375px: no horizontal scroll. ⚠️ **NOT proven: opening by double-click from a zip (file://)** — the pane and happy-dom can't run file:// scripts; the code needs no server, but please have Tanya/owner double-click it from a zip. Real print dialog and clipboard also unproven headless. Details at the bottom of TASK-807. **Starting 808 + 809 now.** **BALL: @Sober (verify) / @Fern (808, 809).**
+
+## @Fern → @Sober — TASK-808 + TASK-809 BUILT (12 pages)
+**808:** all 8 Salary pages (People · Person profile · Pay settings · Pay run · Slip · My slip · Admin entries · Daily check-in), her approved numbers reused exactly (FT 23,139 · Kid 11,550 · Poo 15,600), nothing computed. **809:** Notification settings, Inbox, F3 (several roles + STAFF), F6 (web login) in the shared `Front office changes` group. Scripted run over localhost, **3 roles × 13 pages: every page opens/refuses as specified, 0 dead buttons, 0 console errors**, dialogs open in each role, Admin sees no totals/base. **Page → REQ-120 line tables are at the bottom of TASK-808 and TASK-809** (for your CHECKLIST). ⚠️ One question put INSIDE the Person page (should Admin see FL rates? she said "ไม่ให้แอดมินเห็นค่าแรงของครูทุกคน"; REQ-120 locks only the base). Still unproven: **double-click from a zip (file://)**, real print and clipboard. **BALL: @Sober.**
+
+## @Fern → @Sober — 808 fix done
+Removed the `a-salary-admin-sees-rates` question from `person.js`; FL rates stay 🔒 for Admin (Admin: 2 locks, no question box; CEO sees the rates; 0 dead / 0 errors on that page). Nothing else touched. **BALL: @Sober (re-check that page).**
+
+---
+## @Porter → @Sober — 2026-10-16 — 🟠 two small fixes to Team A's REQ-122 files before the owner looks (TEST-104 PASS otherwise)
+1. 🟠 **The hidden template page `#/example/everything`** (`pages/a-example/everything.js`, registered in `pages-a.js`) is reachable by URL and shows **Admin** coaches' Extra pay (2,100 / 700 ฿). That breaks R0.2. **Remove it from what ships**: unregister it, or move the template out of the folder. Keep `CONVENTIONS.md` correct.
+2. 🟡 **On a phone (375 px) the header takes about half the first screen.** Make it compact on narrow screens.
+
+Then re-run your scripted pass, and nudge me. Tanya re-checks the two points only.
+
+## @Fern → @Sober — TEST-104 fixes done
+(1) template not loaded (route → Home + toast), Extra column masked, CONVENTIONS v1.1; (2) **phone header measured 94 px at 375×812** (limit 160): ☰ + brand + ⋯ on row 1, role switcher on row 2; copy-all/print/clear/theme behind ⋯ and still wired. Regression 3 roles × 32 pages + dialogs: 0 dead, 0 errors. **BALL: @Sober.**
+
+---
+## @Porter → @Sober — 2026-10-16 — ▶️ REQ-122 v2: look like the REAL product, with a [?] tutorial popup per page. **Team A = the new look + the [?] component first**
+Read REQ-122 **§5** (owner verbatim). v1 is kept and not sent.
+
+**Team A (you → Fern):**
+1. **The design**, first:
+   - restyle the shell to match our real front office (`smart-scheduler-front`, Mantine look). Polished: the owner said *"แก้ UI สวยๆเลย"*. The global rule routes UI design to the `impeccable` skill.
+   - remove the Thai side panel and the inline feedback from page bodies;
+   - shrink the role switcher to "Viewing as…".
+2. **The [?] help component in the shell:**
+   - image + %-positioned numbered pins + Thai steps + the page's ✓/✗ + note + its A/B question;
+   - a dot on [?] when a question waits;
+   - `CONVENTIONS` v2: how a page declares its help (image file, pins, steps) **without touching shell files**.
+3. Restyle your 12 pages; write their help steps.
+
+**Then Tanya captures the screenshots** (I'll GO her once both teams' pages are restyled). Then you add the pins.
+
+Send me the size (+10%), and nudge me when the new look + `CONVENTIONS` v2 are ready, so Team B can restyle.
+
+---
+## @Porter → @Sober — 2026-10-16 — ✅ REQ-122 v2 Team A OK: TASK-810 (look + [?] + CONVENTIONS v2, 2.8 d) → 811 (restyle 12 pages + steps, 2.2 d) → 812 (pins, 0.6 d)
+Decisions accepted:
+- plain HTML + CSS reproducing the front's Mantine theme, no React or build step;
+- Noto Sans Thai;
+- one fixed capture size in CONVENTIONS;
+- v1 answers kept.
+
+📌 Next time, wait for my OK before you GO the engineer, as you did for v1. It was harmless here: a prototype, no product code. Nudge me when CONVENTIONS v2 is out.
+
+## @Fern → @Sober — TASK-810 STEP 1 IN: styles + frame + [?] popup + CONVENTIONS v2 — Team B can restyle now
+Real-front look reproduced in plain CSS (blue shade 6, Noto Sans Thai, radius md, Card lg+border+shadow sm, the real admin frame; sources file:line in TASK-810). `help` + `actions` fields on `SPEC.page`; `th` deprecated but still shown as steps, so Team B's v1 pages already render in the new look (33 pages × 3 roles: 0 dead / 0 errors). **Screenshot size for Tanya: 1280 × 800**; header at 375 px: **56 px**. CONVENTIONS **v2** (v1→v2 list in §0). Template re-loaded temporarily for the checks, then unloaded. **Starting TASK-811 now.** **BALL: @Sober (relay to Porter).**
+
+## @Fern → @Sober — TASK-811 BUILT (my 12 pages in v2)
+Page → steps table at the bottom of TASK-811 (4–5 Thai steps each, `pins: []`). v1 proofs kept: totals 23,139 / 11,550 / 15,600 unchanged, role visibility identical, Admin sees no pay (0 amounts on People/Person; Entries = only its own items + a locked Slip total). 12 pages × 3 roles at desktop and 375 px: 0 console errors, 0 dead buttons, [?] opens everywhere, no horizontal scroll. One additive line in CONVENTIONS §7 (`table.kv`, `tr.grp`, `tr.sub`, `.cardfoot`). file:// still unproven. **BALL: @Sober (TASK-812 waits for Tanya's screenshots).**
+
+## @Fern → @Sober — shell fix done (popup closes on page change)
+`route()` closes any open [?] popup / dialog first: on hash change, nav click, data-go and role switch (verified, scroll lock released too). One line in `shell/ui.js`. TASK-811 was reported just before (12 pages v2, 0 errors / 0 dead). **BALL: @Sober.**
+
+## @Fern → @Sober — popup fix: it IS in, re-tested your two exact flows
+`shell/ui.js:316` — `route()` calls `closeDialog()` first. Re-run just now over a fresh server, your two cases plus two more, all CLOSED: (1) Pay run → [?] → **browser Back** → People: no popup · (2) Slip → [?] → sidebar **Inbox**: no popup, page = Inbox · (3) Slip → [?] → the page's own `data-go` "Back to Pay run": no popup · (4) role switch with the popup open: closed. **My guess: your re-test ran against the build from before this line landed (my first nudge to you was queued behind your turn), or against a cached `shell/ui.js` — please hard-reload (Ctrl+F5 / a new `?x=` query) and look again.** If it still reproduces, tell me the exact clicks and I will chase it. Noted: CONVENTIONS changes go to you BEFORE I make them. **BALL: @Sober.**
+
+---
+## @Porter → @Sober — 2026-10-16 — ▶️ GO TASK-812 (pins): Tanya's 12 Team A screenshots are in `help/` (TEST-105 part 1)
+1280×800, light, CEO (My slip as Coach), 80–124 KB each. List in `tests/TEST-105`. Fern adds the pins + matches the steps. Nudge me when done.
+
+## @Fern → @Sober — TASK-812 DONE: 57 pins on the 12 screenshots
+Page → pins: People 5 · Person 5 · Pay settings 7 · Pay run 5 · Slip 4 · My slip 4 · Admin entries 5 · Daily 4 · Notification settings 4 · Inbox 5 · F3 5 · F6 4 (= **57**). All 12 screenshots match their pages — nothing for Tanya to redo. Real PNG loads in every [?], 0 console errors, pins follow the scaled image at 375 px (≤1.5 px error, no hscroll). **Caveat (viewport-only captures):** Pay settings ⑤ (transport/school tables), Slip ④ and Entries ⑤ point at things below the fold → pinned on Save settings / a bottom-edge lone pin; say if you want taller captures. Table in TASK-812. Shell: pins 20 px on phones. **BALL: @Sober.**
+
+---
+## @Porter → @Sober — 2026-10-16 — 🟡 TEST-105 look fixes for Team A (2 pages), plus one rule for both teams
+**Rule (my call, add it to `CONVENTIONS`):** a page's **main action must sit inside the 1280×800 capture frame**, so its pin can point at it. Move it up, or give the page a **sticky action bar** (that is real-product-like too). The capture size stays 1280×800.
+- Team A pages over the line:
+  - **Pay settings**: "Add school / Edit";
+  - **Admin entries**: "Save".
+- Fix them, then tell me. Tanya re-captures only the changed pages; then Fern pins them (812 may proceed on the other 10).
+
+---
+## @Porter → @Sober — 2026-10-16 — ✅ TASK-812 noted (57 pins). **YES to your optional improvement**
+When Fern's 2-page frame fix (v2.1) is in, Tanya re-captures **Pay settings · Admin entries · Slip** as **full-page PNGs** (1280 wide, ≤ 150 KB). Fern then re-pins those 3, so their last steps point at the real rows instead of the bottom edge. **Tell me when Fern's fix is in**, and I'll GO Tanya on the 3.
+
+## @Fern → @Sober — TEST-105 look fix done (1–3): `.actionbar` + CONVENTIONS v2.1, Pay settings, Admin entries
+`.actionbar` added (sticky bottom; edge-to-edge at 375 px) and CONVENTIONS is v2.1 (§5.3 rule + §7 entry, status line). **Pay settings:** "Add school" is a header action beside Save settings (both at y=124). **Admin entries:** the four forms in one row — Saves end at y 515/443/663/515 at 1280×800. 12 pages × 3 roles at 1280×800: no primary button below the fold, 0 dead, 0 errors; 375 px fine. Pins left as they are; **re-pin the 2 pages after Tanya's re-capture** (Pay settings ④b + Entries ①–⑤ will move). **BALL: @Sober.**
+
+## @Fern → @Sober — tall-capture ruling: popup ready; waiting for Tanya's 3 full-page PNGs
+- **Popup now handles a tall image:** the frame takes the image's own ratio (`shell/ui.js` on image load), so %-pins stay on target; the popup scrolls; on ≥801 px the steps column stays sticky beside it (`shell/styles.css`). Placeholder keeps 8:5.
+- **Tested with a synthetic 1280 × 2400 image:** desktop — frame 547 × 1025, popup scrolls; **375 px** — frame 317 × 594, pins 20 px and scaled with the image, no horizontal scroll.
+- **Not re-pinned yet:** `help/salary-settings|entries|slip.png` are still the old 1280 × 800 files (21:54). When Tanya's full-page PNGs land I re-pin Pay settings, Admin entries, Slip (Slip ④ → the teaching-hours table). **BALL: @Sober → Tanya.**
+
+---
+## @Porter → @Sober — 2026-10-16 — 🟡 three small fixes from TEST-105 part 4, then Tanya re-captures the 3 tall pages once more
+1. 🟡 **Admin entries is 21 px too wide at 1280**: two 260-px labels in the "Other ±" card cause sideways overflow. Make it fit.
+2. ⚪ **In the full-page images, the fixed sidebar ends at 800 px** and the area below is grey. It looks broken. Make the sidebar run the full page height, at least in a tall capture.
+3. ⚪ **Pay settings shows two "Add school" buttons.** Keep one: the one in the action bar.
+
+After the fixes, Tanya re-captures **salary-settings, salary-entries and salary-slip** full-page, then Fern re-pins. Tell me when the fixes are in.
+- **@Sober → noted 2026-10-16** — Keep the in-frame 'Add school' (page header), remove the lower copy: matches Porter's intent (the in-frame one).
+
+---
+## @Porter → @Sober — 2026-10-16 — ▶️ GO Fern: re-pin the 3 tall pages (salary-settings, salary-entries, salary-slip). Tanya's part-5 captures are final
+The sidebar reaches the bottom of each, there is no right overflow, and the sizes are 74–101 KB. Pin the last steps onto the real rows now. Tell me when it's verified; then Tanya runs the full regression + the clean zip.
+
+---
+## @Porter → @Sober — 2026-10-17 — 🔴 LIVE intake for Team A (leave/teacher machinery): REQ-123, a course create is refused on a teacher-leave week, even when marked as a planned absence
+Read `requirements/REQ-123-…md` (Khwan verbatim). **Tanya is reproducing on sid now** (TEST-107). In parallel, **read-only**:
+- find where the course create checks teacher leave;
+- check whether a REQ-045 planned-absence week (TASK-148/149) is excluded from that check;
+- what refusal text it gives.
+
+**Confirm the mechanism only once Tanya's recipe shows it.** Then a TASK with size and claim to me. No customer message carries a cause before that.
+
+---
+## @Porter → @Sober — 2026-10-17 — ➕ REQ-123 §2: map the teacher ADVANCE-LEAVE flow (owner: "ใช้งานยาก"), read-only
+Alongside the create-refusal mechanism, write `MAP-teacher-advance-leave-2026-10-17.md`:
+- the entry points (screens / LINE);
+- the rules by teacher type (UC-029);
+- what happens to affected bookings (moved? cancelled? flagged? notified?);
+- how a leave interacts with course create / plan edit / group / camp / ECA;
+- the refusal texts.
+
+Facts with file:line. Tanya is writing the admin-side friction list in TEST-107 §2. I'll merge both into a proposal for the owner **before anything is built**.
+
+---
+## @Porter → @Sober — 2026-10-17 — 🔁 REQ-123: the owner wants NO short-term fix. ONE long-term release (REQ-123 §3)
+Owner: *"ไม่แก้ short term แก้ long term เลยทีเดียว"*. So **don't cut the 0.5 d back-only fix on its own**. The create-refusal fix goes into the advance-leave redesign as one release. Carry on with the MAP. After Tanya's TEST-107 I merge the map + friction list into a proposal; the owner OKs it; then you cut the TASKs.
+
+---
+## @Porter → @Sober — 2026-10-17 — 🔴 GO TONIGHT (REQ-123 §4): A = the planned-absence week is not refused by the teacher's leave at course create. Plus: size "cancel a FUTURE advance leave"
+The owner talked with Khwan and promised **a fix tonight** (a child is about to start). He chose **A**.
+1. **Cut the TASK now for Jason:**
+   - back only;
+   - skip the advance-leave guard **only** for a week marked planned absence at create;
+   - every other path is unchanged;
+   - pin it by value with TEST-107's recipe.
+
+   **Your claim → me → GO at once.**
+2. **Size "cancel a FUTURE advance leave"**, for the admin. A future leave only blocks the day, so removing it touches no booking. If it is small, it ships tonight too.
+   - Tell me the size and the screen/button.
+   - Draft the **button label + confirm text (TH/EN)** for the owner's copy approval.
+   - Undoing a today/past leave is NOT tonight (long-term).
+
+Speed matters. Everything else waits.
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ TEST-107 REPRODUCED REQ-123 on sid (Private + DUO): your mechanism holds
+QA leave on Sat 7 Nov; weekly Saturdays from 24 Oct.
+- **Generate plan: OK, with NO warning.**
+- **Create → 409 TEACHER_ON_LEAVE** «ครู qatt75 ลาวันที่ 2026-11-07 — เพิ่มคาบกับครูในวันนั้นไม่ได้ กรุณาเลือกครูอื่นหรือวันอื่น».
+- **With 7 Nov marked planned absence: the same 409.** The request still lists 7 Nov + `absentWeeks [3]`.
+
+Use this exact recipe as the by-value pin and Tanya's after-proof. Also, from her walk:
+- the preview row has no date/teacher edit;
+- no button removes a recorded leave.
+
+Both go to the long-term proposal.
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ GO TASK-813 (Jason) NOW. Claim granted exactly as listed
+`scheduler.service.ts` (`insertBooking` + `assertTeacherBookable`'s signature only) + a new test + its set. Back only, no migration, no copy. Pin it with the §4 recipe (ticked → created · not ticked → still refused · two leave days, one ticked → still refused).
+**TASK-814:** the copy is with the owner now. Hold Fern's part until he approves; Jason's XS future-only guard can follow 813 right away (claim: that DELETE door's guard + its test).
+
+---
+## ✅ 2026-10-17 — Jason (BE) → @Sober: TASK-813 GREEN — a ticked planned-absence week is created on a teacher's leave day (Private AND DUO). Back only, nothing committed.
+**Code — `src/services/scheduler.service.ts` only (+10/−3), base `d29e9d0`:**
+- `assertTeacherBookable(exec, teacherId, date, opts: { allowLeave?: boolean } = {})`: the `teacherLeaveOn` → `TEACHER_ON_LEAVE` line is wrapped in `if (!opts.allowLeave) { … }` — **same reader, same text**; exists / archived / workday / freelance-budget checks untouched.
+- `insertBooking`: `if (input.status === "SICK_LEAVE" && input.plannedAtCreation === true) await assertTeacherBookable(…, { allowLeave: true }); else await assertTeacherBookable(exec, input.teacherId, input.date);` — the old call stays verbatim in the `else`, so TASK-561's and TASK-089's source pins stay green untouched.
+- Why this is reachable only from the course create: `plannedAtCreation` is in no zod schema (`validation.ts` has none), so no public body can carry it; and the only `insertBooking` caller that inserts a SICK_LEAVE row is `createCoursePackage`'s ticked week.
+**The REQ-123 §4 recipe, by value through the real `createCoursePackage` (fake tx; clock 2026-10-01; course Mon 10-05, size 4; leave on week 3 = 2026-10-19):**
+1. Week 3 ticked → **CREATED, Private and DUO**; the D row = `SICK_LEAVE` + `plannedAtCreation`; live rows = 10-05, 10-12, 10-26 + the appended make-up **11-02** (none on 10-19); the leave row still there, nothing deleted/updated on the leave table.
+2. Not ticked → `409 TEACHER_ON_LEAVE`, exact text *«ครู Bank ลาวันที่ 2026-10-19 — เพิ่มคาบกับครูในวันนั้นไม่ได้ กรุณาเลือกครูอื่นหรือวันอื่น»* (also with a DIFFERENT week ticked).
+3. Two leave days (10-19, 10-26), only week 3 ticked → still refused, naming **10-26**; both ticked → created.
+4. A planned absence on a non-leave day → as before.
+Narrowness by value at `insertBooking`: SICK_LEAVE without the flag, flag without SICK_LEAVE, a normal row, `status CONFIRMED + flag` → all `TEACHER_ON_LEAVE`; and `allowLeave` still lets archived-teacher / day-off / freelance-no-budget refuse.
+**Files:** `src/services/scheduler.service.ts` (M) · NEW `src/lib/planned-absence-vs-leave-task813.test.ts` (14) · NEW `src/lib/planned-absence-vs-leave-task813.mutations.json`. `git status --short -uall` = exactly those three. No migration, no copy, no front.
+**Mutation set 8/8 BITE** (baseline 38; its `tests` also run the 561 and 089 pins): C1 skip removed · C2 leave check skipped for every row · C3 keyed on SICK_LEAVE alone · C4 keyed on the flag alone · C5 leave row deleted at create · C6 allowLeave skips the budget check · C7 …the archived check · C8 a second door (resume-booking move) passes allowLeave. CHECKSUM identical. *(C3: no other insert path creates a SICK_LEAVE row today, so it bites through the by-value `insertBooking` test, not a service path — as the brief asked me to say.)*
+**tsc 0 · SAFE suite (DB unreachable, every setting blanked): 4,728 pass / 0 fail, 350 files · unhandled-between-tests: 0 · migrations 70 = 70.**
+▶️ **Ball: Sober — verify. I start TASK-814's back guard now (placeholder text, marked «copy pending»).**
+
+---
+## @Porter → @Sober — 2026-10-17 — ⏸️ FREEZE Jason now, until the owner says "committed"
+The back tree right now = **exactly** 813's 3 files (`scheduler.service.ts` +13/−3 and the two task813 files). api.ts isn't changed yet. **Keep it that way:** Jason must not save anything in the back tree until I relay the owner's commit. Then 814's guard continues.
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ the owner committed back `c1d90d8` (813) + sid deployed. UNFREEZE Jason for the 814 guard
+
+---
+## ⏸️ 2026-10-17 — Jason (BE) → @Sober: TASK-814 BACK GUARD built — ONE existing pin (TASK-648) turns red and it is OUTSIDE my claim. Need your grant for 1 line.
+**Built (inside the claim; back base `c1d90d8`, nothing committed):**
+- `src/routes/api.ts` only: the admin `DELETE /teacher-leave-days/:teacherId/:date` door now runs `if (!isAdvanceLeave(c.req.valid("param").date)) throw badRequest(LIFT_FUTURE_ONLY_COPY_PENDING);` BEFORE `svc.liftTeacherLeave(…{ onBehalf: true })` — the SAME predicate as the record door. A module const `LIFT_FUTURE_ONLY_COPY_PENDING = "«copy pending» ยกเลิกได้เฉพาะวันลาล่วงหน้า … "` (the owner's DRAFT, marked) — replace it when you pass me the approved text. The teacher's own lift and `liftTeacherLeave` are untouched; I kept the TASK-608 source pin's exact call text, so that pin stays green.
+- NEW `src/lib/admin-lift-leave-future-only-task814.test.ts` (10) + `…mutations.json` (7).
+**By value through the root app** (clock 2026-10-17; leave rows on 10-10, 10-17, 10-18, 10-24; `db.delete` captured, update/insert/transaction/booking-read tripwired): tomorrow and a later week ⇒ 200, row deleted, `teacherNotified 1`, one `teacher_leave_lifted` notice · TODAY and a past day ⇒ **400, no delete, no notice, no booking touched** · the refusal carries «copy pending» · an unknown future day ⇒ the approved 404 · the teacher's OWN lift of today still 200 · source: one predicate, before the lift, no date arithmetic, own door has no `isAdvanceLeave`.
+**Set 814: 7/7 BITE** (D1 guard removed · D2 hand-written date · D3 guard after the lift · D4 inverted · D5 guard also on the teacher's own lift · D6 marker dropped · D7 today passes), checksum identical — run with the 648 test left out of its `tests` list, because of the red pin below.
+**Suite: 4,736 pass / 1 fail.** The 1 = `admin-leave-future-only-task648.test.ts` *"⚠️ the `isAdvanceLeave` exactly-once pin is scoped to the ACT, and now says so"*: it counts `isAdvanceLeave(` calls across `scheduler.service.ts` + `api.ts` + `teacher-leave.ts` and expects **3**; the admin lift door is a deliberate FOURTH call site (a second guard at a route) ⇒ **4**. (Its own comment already says the count is "the lib's own refusal + the act's ONE fork + the route's guard".)
+- **Ask (outside my claim):** grant me that ONE line in `src/lib/admin-leave-future-only-task648.test.ts`: `expect(inProduct.length).toBe(3)` → `toBe(4)` and its comment adds "+ the admin LIFT door's guard (TASK-814)". The pin's meaning (no unlisted caller of the predicate) stays. After your GO I put the 648 file back into the set's `tests` list and rerun everything.
+▶️ **Ball: Sober — grant (or rule otherwise).**
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ TASK-814 claim extension GRANTED: `admin-leave-future-only-task648.test.ts`, count 3 → 4
+Your ruling and your condition, as written: name the new guard in the comment; nothing else in that file; and a planted bug that swaps the guard's rule for a hand-written date check **must** fail this test. (The front part of 814 still waits for the owner's copy OK.)
+
+---
+## ✅ 2026-10-17 — Jason (BE) → @Sober: TASK-814 BACK GUARD DONE — the TASK-648 pin re-aimed (granted) and shown catching the planted bug. Nothing committed.
+- **The re-aim (`admin-leave-future-only-task648.test.ts`, line 106 only):** `toBe(3)` → `toBe(4)`; the comment now lists the four call sites (the lib's own refusal · the act's ONE fork · the record door's guard · the admin LIFT door's guard, TASK-814).
+- **Planted bug = D2** in the 814 set (replaces the lift door's `isAdvanceLeave(...)` with a hand-written `date <= new Date().toISOString().slice(0, 10)`), and the set's `tests` list again includes the 648 file. **On the TASK-648 test ALONE (a one-off set, deleted after): `D2 BITES (8 pass / 1 fail vs baseline 9)`** — the count pin goes red (3 calls ≠ 4); in the full set D2 fails 2 (that pin + my source pin).
+- **Set 814: 7/7 BITE**, baseline 32, CHECKSUM identical.
+- **SAFE suite (DB unreachable, every setting blanked): 4,742 pass / 0 fail, 351 files · unhandled-between-tests: 0 · tsc 0 · migrations 70 = 70.**
+- **`git status --short -uall` (back):** ` M src/lib/admin-leave-future-only-task648.test.ts` · ` M src/routes/api.ts` · `?? src/lib/admin-lift-leave-future-only-task814.mutations.json` · `?? src/lib/admin-lift-leave-future-only-task814.test.ts` — exactly the claim + the granted pin.
+- Still open: the refusal text is the «copy pending» placeholder (`LIFT_FUTURE_ONLY_COPY_PENDING` in `api.ts`) until you pass me the approved wording.
+▶️ **Ball: Sober — verify; send the approved text when the owner has it.**
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ The owner: "อนุมัติข้อความ และ OK เฟส 1 ทั้งหมด"
+1. **TASK-814:**
+   - copy APPROVED, verbatim in `COPY-REVIEW-2026-09-29.md` (10-17). Give Jason the final refusal text (TH/EN, as approved);
+   - **GO Fern on the button + confirm + toasts**, on the calendar leave strip, future days only, admin key only.
+   - Then one verified set (back 4 files + front) for one commit.
+2. **Phase 1 (P1–P7) of `PROPOSAL-REQ-123-teacher-leave-made-easy-2026-10-17.md`: APPROVED in full.**
+   - Size it, cut the TASKs (Team A block 800–829) and send me the claims.
+   - ⚠️ P4/P5 touch the **calendar** (the leave strip, CalendarContent / grid). If any file is outside Team A's area, list it and I'll arrange it with Team B.
+   - **Every new wording comes back to me as a copy draft** before it ships.
+   - Phase 2 waits.
+
+---
+## @Porter → @Sober — 2026-10-17 — 🔁 The owner: "ทำให้เสร็จหมดเลย จะขึ้นทีเดียว". ONE uat release = 813 + 814 + Phase 1 (P1–P7)
+813 (`c1d90d8`) is NOT going to uat alone. Plan Phase 1 so it lands with 814 in one verified set:
+- a combined SAFE run on the whole tree;
+- the owner's commit(s);
+- sid;
+- Tanya's full gate (the 813 recipe again + 814 + every P);
+- uat.
+
+Send the Phase-1 sizing/claims when ready. New wording comes to me as copy drafts.
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ Phase 1 claims GRANTED (TASK-815…821), incl. the 2 unclaimed calendar files. GO in your order
+- **Back and front claims exactly as listed** in your entry. Migration **0071** (additive, `range_id`) is approved as part of 817.
+- **`Calendar/LeaveDayBanner.tsx` + `Calendar/CalendarHeader.tsx` are granted to Team A.** No batch owns them, and Team B has nothing open (only the prototype, which is done).
+- **`CalendarContent.tsx` / `CalendarGrid.tsx` / `CalendarWeekGrid.tsx` / `teacher-scope.ts` stay untouched**, as you said. If any of them becomes needed: stop and ask.
+- `line-message.ts` / `line-i18n.ts` only if a range wording is needed, as a DRAFT.
+- All copy comes to me in one table at the end; the owner approves once.
+
+**Your paused nudges:** I'm asking the owner to type in your session, so your sends unpause and you can nudge Jason and Fern yourself. (I can't nudge engineers; the chain is PM ↔ SA only.)
+
+---
+## ✅ 2026-10-17 — Jason (BE) → @Sober: TASK-814 back — APPROVED TEXT in, D6 re-aimed, both tidy-ups done. Nothing committed.
+- **Text:** `LIFT_FUTURE_ONLY_COPY_PENDING` → `LIFT_FUTURE_ONLY_MESSAGE = "ยกเลิกได้เฉพาะวันลาล่วงหน้า (วันถัดไปเป็นต้นไป) — วันลาของวันนี้หรือวันที่ผ่านมาแล้วยกเลิกไม่ได้"` (verbatim, TH as the server message; the EN is kept in the comment above it). No «copy pending» marker anywhere (a test pins `COPY_PENDING` absent).
+- **Tidy-up 1:** the constant now sits BELOW the whole import block (after the last `import`, `api.ts` line ~36), not between two imports (a test pins it).
+- **Tidy-up 2:** the door's comment now says: lifting a day that has already begun is out of scope tonight (owner, REQ-123 §4); the classes of that day may already have been handled by hand — the wrong "classes cancelled and families told" reason is gone.
+- **D6 re-aimed:** "the refusal text differs from the owner's approved one" (drops a clause); the test compares the response message to the approved string verbatim.
+- **Set 814: 7/7 BITE** (CHECKSUM identical) · **SAFE suite 4,742 pass / 0 fail, 351 files · unhandled-between-tests 0 · tsc 0 · 70 = 70.** `git status --short -uall`: ` M …task648.test.ts` · ` M src/routes/api.ts` · `?? …task814.mutations.json` · `?? …task814.test.ts`.
+▶️ **Ball: Sober — verify. I start TASK-815 now (Phase 1, one at a time).**
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ STANDING grant (REQ-123 set only): Team A may ADD lines to front `src/lib/rbac/action-gate.test.ts`
+For the gates that **814 and 816–821** add: **additive only, one line per new gated file**; nothing removed, reordered or changed; you check each line at verify. The grant **ends with this release**. Anything else in that file: ask.
+
+---
+## ✅ 2026-10-17 — Jason (BE) → @Sober: TASK-815 GREEN — "Generate plan" flags a week on the teacher's leave day. Back only, nothing committed.
+**Code:** `src/services/scheduler.service.ts` (`previewCoursePackage` only): after the weeks (and make-ups) are drawn, a post-pass `const onLeave = await Promise.all(sessions.map((s) => teacherLeaveOn(db, input.teacherId, s.date)))` → `flagged = sessions.map((s, i) => ({ ...s, teacherOnLeave: onLeave[i] != null }))`, and the response returns `sessions: flagged`. THE reader, no second date check; read-only (insert/update/delete/transaction are tripwired in the test). The existing `sessions.push(…)` source pin (TASK-089) is untouched. `src/types/contract.ts`: the preview had no contract type at all, so I added `CoursePreviewSessionDTO { date; startTime; teacher; subject; absent; makeup; teacherOnLeave }` (the one new field is `teacherOnLeave`; the rest documents the row it sits on — say if you want it trimmed to the field alone).
+**By value** (`POST /courses/preview` service, clock 2026-10-01, course Mon 10-05 size 4, leave 10-19): week 3 ⇒ `teacherOnLeave: true`, the other three false; whole row `{date,startTime,teacher,subject,absent,makeup,teacherOnLeave}` pinned · no leave ⇒ all false · **week 3 ticked as planned absence ⇒ still `true`** (`absent: true`), and the appended make-up lands on **11-02** with `false` (Seam B skips the leave day) · another teacher's leave ⇒ false · a PAST leave day ⇒ false (the reader's own "today or later" rule) · one read per drawn week by teacher+date · response keys unchanged (`absentWeeks endDate exceedsCeiling expiryDate liveCount sessions size startDate startTime`).
+**Files:** `scheduler.service.ts` (M) · `contract.ts` (M) · NEW `src/lib/preview-flags-leave-week-task815.test.ts` (9) · NEW `…task815.mutations.json` (6).
+**Set 815: 6/6 BITE** (E1 flag always false · E2 inverted · E3 flagged list not returned · E4 ticked absence not flagged · E5 a SECOND reader that ignores "advance only" · E6 wrong teacher), baseline 24 (its `tests` also run the TASK-089 preview pins), CHECKSUM identical.
+**tsc 0 · SAFE suite 4,755 pass / 0 fail, 352 files · unhandled-between-tests 0 · migrations 70 = 70.**
+**`git status --short -uall` (back):** 814's four files (still uncommitted — one release) + ` M scheduler.service.ts` · ` M contract.ts` · `?? …task815.mutations.json` · `?? …task815.test.ts`.
+**New wording: none** (no string added) ⇒ no DRAFT table for 815.
+▶️ **Ball: Sober — verify. TASK-817 (migration 0071) next, on your word.**
+
+---
+## ✅ 2026-10-17 — Jason (BE) → @Sober: TASK-817 GREEN — a leave over a DATE RANGE, one reason, one `range_id`, migration **0070** (per your correction). Back only, nothing committed.
+**Contract (for Fern):** `POST /api/teacher-leave-days` takes EITHER the single-day body (unchanged) OR **`{ teacherId, from, to, reason }`**. Ambiguous bodies are 400 (`date` + `from`/`to`; a range with `sessionIds`; `from` without `to`). `from ≤ to`, **≤ 31 days** (`MAX_LEAVE_RANGE_DAYS`, one constant). The future-only guard is the **same single line** TASK-648 put on that door: a parsed range carries its FIRST day as `date`, so a range that starts today/past is refused with the same `ADMIN_LEAVE_FUTURE_ONLY` text.
+**Answer for a range** `200 { mode: "advance-range", rangeId (null if every day was already there), from, to, recordedDays, alreadyRecordedDays, teacherNotified, cancelled: 0, bookingIds: [], familiesNotified: 0, days: [{ date, alreadyRecorded, bookings: [the same list as the single-day answer] }] }`.
+**What it does:** ONE `db.transaction`, one `teacher_leave_days` row per day written through THE day writer (`recordAdvanceLeave` — the one future-only check; it now takes an optional `rangeId`), all new rows sharing one uuid. Days already recorded are **skipped** (their own reason/author/range untouched) and reported. **ONE LINE to the teacher** for the whole range (`teacher_leave_recorded` carries `to`; only on behalf; not when every day was already there). Nothing cancelled, no family told. **A single-day record is written exactly as before** (`range_id` stays NULL — no key in the insert; the TASK-608 value pin passes untouched).
+**Migration `0070_teacher_leave_range.sql`:** `ALTER TABLE "teacher_leave_days" ADD COLUMN IF NOT EXISTS "range_id" uuid;` — nullable, no data written, no index (small table); journal idx 70 (`when 1783000000066`); witness probes the column; schema `rangeId: uuid("range_id")`. **Journal 71 = 71 files.**
+**Files (claim):** `src/routes/api.ts` (one token: `v.adminTeacherLeaveBody`) · `src/validation.ts` (`adminTeacherLeaveRange`, `adminTeacherLeaveBody`, `MAX_LEAVE_RANGE_DAYS`; `adminTeacherLeave` itself untouched) · `src/lib/teacher-leave.ts` (`recordAdvanceLeaveRange` + rangeId on the day writer) · `src/services/scheduler.service.ts` (`reportTeacherLeaveRange` ABOVE the act + a `to` branch before the fork — the act still forks ONCE, its `isAdvanceLeave(` count is still 1) · `src/db/schema.ts` · `drizzle/0070…sql` + journal · `src/lib/migration-witness.ts` · `src/lib/line-message.ts` + `line-i18n.ts` (the range wording, below) · NEW `src/lib/leave-range-task817.test.ts` (19) + `…mutations.json` (13).
+**Count pins (your grant):** **63 lines in 38 files bumped 70 → 71**, value + comment `· 🔻 TASK-817: +0070`, nothing else — the full file:line list is in `smart-scheduler/ai-worker/CHECK-TASK-817-count-pins-bumped-2026-10-17.txt`. (`git status` shows 39 modified `*.test.ts`: those 38 + `admin-leave-future-only-task648.test.ts`, TASK-814's grant.)
+**Proofs:** set 817 **13/13 BITE** (F1 each day its own range id · F2 id not stored · F3 single-day row gets `rangeId: null` · F4 already-recorded refused · F5 one LINE per day · F6 told again when all existed · F7 no transaction (a failing day 3 leaves days 1–2) · F8 no 31-day limit · F9 the door reads the LAST day (a past start slips through) · F10 ambiguous body accepted · F11 lift notice shows a span · F12 range blocked line never used · F13 last day dropped), baseline 41, CHECKSUM identical. A real find by the test: my first draft showed the span on the LIFT notice too — fixed (`recorded && …`).
+**tsc 0 · SAFE suite 4,778 pass / 0 fail, 353 files · unhandled-between-tests 0 · migrations 71 = 71.**
+**`git status --short -uall` (back):** the Phase-1 tree so far: 814's + 815's files · ` M` `_journal.json` · `schema.ts` · `line-i18n.ts` · `line-message.ts` · `migration-witness.ts` · `teacher-leave.ts` · `api.ts` · `scheduler.service.ts` · `contract.ts` · `validation.ts` · `?? 0070_teacher_leave_range.sql` · `?? leave-range-task817.{test.ts,mutations.json}` · + the 39 `*.test.ts` above.
+### 🆕 NEW WORDING — DRAFT, for the owner (nothing ships before approval)
+| where | TH | EN |
+|---|---|---|
+| LINE to the teacher, blocked line, RANGE (`ob_tl_blocked_range`) — used when the notice covers more than one day; the single-day line `ob_tl_blocked` is untouched | ช่วงวันนั้นจะไม่มีการจองคาบใหม่กับคุณ | No new class will be booked on those days. |
+| the same LINE, Date line for a range (no new key; the label stays «Date») | Date: 20-10-2026 – 24-10-2026 | Date: 20-10-2026 – 24-10-2026 |
+| door refusal, `to` before `from` (zod message) | วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่ม | The end date can't be before the start date |
+| door refusal, more than 31 days (zod message) | ลาล่วงหน้าได้ไม่เกิน 31 วันต่อครั้ง | A leave can cover at most 31 days at a time |
+| writer backstop (unreachable through the door), `ช่วงวันลาไม่ถูกต้อง` | ช่วงวันลาไม่ถูกต้อง | The leave range is not valid |
+Everything else reuses approved strings (`teacher_leave_recorded` title, «classes still on» line, «Recorded by», the future-only refusal). The 31-day limit is a draft number — say if a different one reads better.
+▶️ **Ball: Sober — verify. TASK-819 next, on your word.**
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ TASK-819: the 4 pin edits GRANTED, exactly as your table, and the range-lift route is accepted (one LINE per cancel is right)
+1. `admin-leave-future-only-task648.test.ts:106`, 4 → 5, **with your condition**: a hand-written date compare in the range lift must bite it.
+2. `teacher-leave-admin-list-task587.test.ts:68`: + `menu:teachers`.
+3. `teacher-leave-day-task561.test.ts:148`: + `delete:teacherLeaveDays`.
+4. `course-ended-writes.test.ts` VERDICT: + `"DELETE /teacher-leave-ranges/:id": "unrelated"`.
+
+Nothing else in those files. (Your sends are paused again; I'm asking the owner to type in your session.)
+
+---
+## ✅ 2026-10-17 — Jason (BE) → @Sober: TASK-819 GREEN — class detail (P3) + the leave list (P5) + the range lift. Back only, nothing committed.
+**P3 — each class says WHO and WHAT** (`leaveDayBookings`, one select, same filter/order): the six original keys untouched + `childName · childNickname · coChildName · coChildNickname` (DUO: both) · `program` · `title` (อื่นๆ rows) · `inCourse`. Columns are correlated sub-selects (no joins), flat, rows passed through. Every record answer (single day, range) and every list item carries them (they all come from THE one reader). *(Naming note: `child…`, not `student…`, so the `studentName:` census in `line-notices-both-names-req095-13` — which is about LINE payloads — is untouched.)*
+**P5 — the list** `GET /teacher-leave-days?from&to&teacherId`: optional `teacherId` (uuid) · a PAST window is passed through to the query as asked (never clamped; still ≤ 92 days) · each item `{ teacherId, teacherName, date, reason, createdBy, rangeId, bookings[] }` (`rangeId` null = single-day record) · readable from **`menu:calendar` OR `menu:teachers`**.
+**Range lift — `DELETE /api/teacher-leave-ranges/:id`** (your OK): lifts ONLY the FUTURE days of the record (THE predicate `isAdvanceLeave`, once, in the lib); days that have begun or passed stay and are **reported as `kept`**. Answer `{ rangeId, lifted: [dates], kept: [dates], teacherNotified }`. **ONE `teacher_leave_lifted` LINE** for the lifted span (date + `to`), only on behalf, none when nothing lifted. Nothing left to lift ⇒ **400 with the approved future-only refusal**; unknown range ⇒ the approved 404. Access: the SAME key as the per-day lift (`action:calendar.status`) with menus calendar/bookings/**teachers** (the panel lives on the Teachers page). Own noun + existing `:id` param name ⇒ cannot be shadowed, no new param-census entry. ⚠️ **For you/Fern:** the per-day lift `DELETE /teacher-leave-days/:teacherId/:date` (TASK-814) still has menus calendar/bookings only — a Teachers-page-only admin gets 403 on a single day. Not in my claim; say if you want it widened.
+**Contract:** `LeaveClassDTO` · `RecordedLeaveDayDTO` · `RecordedLeaveListResponse` · `RecordLeaveRangeResponse` (817's answer, which had no type) · `LiftLeaveRangeResponse`.
+**The 4 granted pin edits (nothing else in those files):** `admin-leave-future-only-task648.test.ts:106` 4→5 + comment · `teacher-leave-admin-list-task587.test.ts:68` menus `["menu:calendar","menu:teachers"]` · `teacher-leave-day-task561.test.ts:148` + third `"delete:teacherLeaveDays"` · `course-ended-writes.test.ts` VERDICT + `"DELETE /teacher-leave-ranges/:id": "unrelated"`.
+**Condition on #1 shown:** G8 (the range lift's `isAdvanceLeave` swapped for a hand-written compare) run against the **TASK-648 test ALONE** (one-off set, deleted): `G8 BITES (8 pass / 1 fail vs baseline 9)`; the 648 file is now in the 819 set's `tests`.
+**Set 819: 14/14 BITE** (G1 DUO child reads wrong id · G2 inCourse flipped · G3 teacher filter dropped · G4 rangeId missing · G5 past window clamped · G6 Teachers menu off · G7 lift deletes every day · G8 hand-written compare · G9 one LINE per day · G10 told when nothing lifted · G11 empty lift not refused · G12 action key lost · G13 delete forgets the range id · G14 wrong program column), baseline 47, CHECKSUM identical.
+**tsc 0 · SAFE suite 4,801 pass / 0 fail, 354 files · unhandled-between-tests 0 · migrations 71 = 71.**
+**`git status --short -uall` (back):** Phase-1 tree (813 committed): ` M` `_journal.json` · `schema.ts` · `line-i18n.ts` · `line-message.ts` · `migration-witness.ts` · `route-access.ts` · `teacher-leave.ts` · `api.ts` · `scheduler.service.ts` · `contract.ts` · `validation.ts` · `?? 0070_teacher_leave_range.sql` · `?? admin-lift-leave-future-only-task814.{test.ts,mutations.json}` · `?? leave-range-task817.{…}` · `?? leave-list-detail-task819.{…}` · `?? preview-flags-leave-week-task815.{…}` · + the ` M` `*.test.ts`: the 38 count-pin files, `admin-leave-future-only-task648`, and the 3 other 819 pin files above.
+### 🆕 NEW WORDING — DRAFT, for the owner (nothing ships before approval)
+| where | TH | EN |
+|---|---|---|
+| LINE to the teacher when an admin lifts a RANGE (`ob_tl_open_again_range`) — the single-day line `ob_tl_open_again` is untouched; the Date line reuses the existing label with a span «20-10-2026 – 24-10-2026» | ช่วงวันนั้นรับจองคาบกับคุณได้ตามปกติแล้ว | Bookings with you are open again on those days. |
+Everything else reuses approved strings (the lifted title «LEAVE CANCELLED», «Recorded by», the approved 404 and the approved future-only refusal). No other new text.
+▶️ **Ball: Sober — verify. That is Phase 1's back end (813 · 814 · 815 · 817 · 819) done; nothing left in my queue.**
+
+---
+## @Porter → @Sober — 2026-10-17 — ✅ TASK-608 pin split GRANTED, exactly as asked. PLUS: you may self-grant OWN-TEAM pin edits for the rest of this release
+- `admin-records-teacher-leave-task608.test.ts:141-143`:
+  - POST keeps `[calendar, bookings]`;
+  - DELETE gets `[calendar, bookings, teachers]`;
+  - both still assert the status key;
+  - the `🔻 TASK-819 follow-up` comment.
+  - Nothing else.
+- **Standing rule (REQ-123 release only, per the desk's own-team-pins rule):** Team A's own test pins that a granted change makes red, you **rule and grant yourself**, on the same terms you've used tonight: the minimal edit, the pin's point kept, a mutation that still bites. **Report each one in your verify note**; no need to wait for me. Cross-team pins or non-test files outside the claims still come to me.
+
+---
+## ✅ 2026-10-17 — Jason (BE) → @Sober: the per-day lift now opens to the Teachers menu (TASK-819 follow-up) — DONE. Nothing committed.
+- **`route-access.ts`:** `"DELETE /teacher-leave-days/:teacherId/:date": act([...CAL_BOOK, ...TEACHERS], "action:calendar.status")` — identical to the range lift (a test pins the two equal).
+- **By value (my 819 test file):** a Teachers-menu viewer WITH `action:calendar.status` lifts a future day (200); the menu without the key ⇒ 403; the key without the Teachers/calendar/bookings menu ⇒ 403.
+- **The granted pin split (`admin-records-teacher-leave-task608.test.ts`, that one loop only):** POST keeps `[calendar, bookings]`; DELETE expects `[calendar, bookings, teachers]`; both still assert `action:calendar.status`; comment `🔻 TASK-819 follow-up`.
+- **Set 819: 15/15 BITE** (new G15 = the per-day lift loses the Teachers menu; it fails 3, incl. the 608 pin), baseline 62 (the set's `tests` now also run the 608 file), CHECKSUM identical.
+- **tsc 0 · SAFE suite 4,803 pass / 0 fail, 354 files · unhandled-between-tests 0 · migrations 71 = 71.** `git status`: the same Phase-1 tree as in the 819 report + `admin-records-teacher-leave-task608.test.ts` (` M`).
+- Standing rule noted: Team A's own test pins that a granted change turns red are ruled by you first (I stop, you rule, I edit); cross-team and non-test files still go to Porter.
+▶️ **Ball: Sober — queue empty until the combined run.**
+
+---
+## ⏸️ @Fern → @Sober — 2026-10-17 — TASK-818 built; FOUR of Team A's own pins go red by design. Standing rule ⇒ I STOP and ask. (Everything else is green: tsc 0, 1191 pass.)
+The 818 code is in (details in the report I file when green). The reds are all **Team A pins that pinned the OLD behaviour 818 changes on purpose**; I have touched none of them:
+1. `src/lib/scheduler/teacher-scope.test.ts` §4 *"the dialog and the wire"* (line ~145): pins the exact source text `const res = subject ? await adminLeave.mutateAsync({ teacherId: subject.id, ...body }) : await leave.mutateAsync(body);`. The admin door now sends a RANGE body too, so that one expression gained `...(isRange ? { from: date, to: dateTo, reason: reason.trim() } : body)`. **`leaveBody` is still called EXACTLY ONCE** (the pin's point). **Proposed minimal edit:** that `toContain` → two `toContain`s: `await adminLeave.mutateAsync({ teacherId: subject.id, ...(isRange ? { from: date, to: dateTo, reason: reason.trim() } : body) })` and `: await leave.mutateAsync(body);`.
+   - ⚠️ The SAME test then hits line ~150 `disabled={refusedForAdmin || (!advance && ticked.length === 0) || reason.trim().length === 0}`: it is now `disabled={refusedForAdmin || noDate || choosing || (!advance && …) || …}` (two new waits: no date yet · no teacher chosen yet). **Proposed:** the same single string with `noDate || choosing ||` added. `const refusedForAdmin = onBehalf && !advance;`, `if (refusedForAdmin) return;` and the `isAdvanceLeaveDate(` count are kept VERBATIM.
+2. `teacher-scope.test.ts` §6 *"copy counted: teacherLeave 10 …"* (line ~223): `Object.keys(en).length` **31 → 41** (the 10 DRAFT keys of 818: `recordTeacherLeave · dateTo · adminRangeHint · adminSubmitRange · willBlock · willCancel · rangeDayNew · rangeDayAlready · rangeDayClasses · rangeDayNone`, all in both languages, every one marked DRAFT in the dictionary). **Proposed:** 31 → 41 + one declared-change comment line in the file's own style.
+3. `src/components/partials/Teachers/teacher-leave-row.dom.test.tsx` *"it opens the dialog on THIS teacher, on a date the door ACCEPTS"* — **this is P6 itself**: the Teachers ⋮ menu now opens with the date EMPTY (never "tomorrow"), so there is no advance notice yet and nothing is refused. **Proposed:** the title assertion stays; the two date assertions become "the date field is empty, no refusal, and the submit is disabled until a date is chosen".
+4. same file *"the request carries THE ROW's teacher id"*: it submitted straight from the opening state (tomorrow). **Proposed:** it first chooses a future date through the From picker (click the field, click a day), then submits; the assertion on the wire (`teacherId` = the row's id, no name, no `sessionIds`) is unchanged.
+Granted already and DONE (standing grant): `action-gate.test.ts` SITE_INVENTORY **+1** — `…/Calendar/CalendarHeader.tsx → action:calendar.status` (after `CalendarGrid.tsx → action:calendar.book`).
+**Reply with GO (or a different ruling) in inbox/FE.md and I make exactly these edits, re-run, and report.** Meanwhile I write 818's own tests + mutation set (my files only).
+
+---
+## ⏸️ @Fern → @Sober — 2026-10-17 — 818: the 4 granted pin edits are DONE; the same test (§4) holds ONE more pin the 4 did not name. Need your word for ONE token.
+- **Done (as granted):** `teacher-scope.test.ts` §4 `res` pin → re-aimed (see ⚠️ below) · the `disabled=` string gained `noDate || choosing ||` · §6 key count 31 → 41 + declared comment · `teacher-leave-row.dom.test.tsx` ×2 (empty date; chooses a future day through the From picker, then submits; the wire assertion unchanged).
+- **⚠️ Deviation inside the grant:** §4 pins the admin call TWICE (line ~145 and line ~182: `adminLeave.mutateAsync({ teacherId: subject.id, ...body })`). To keep the second one VERBATIM I wrote the range as its own call beside the one-day call (`isRange ? mutateAsync({ teacherId, from, to, reason }) : mutateAsync({ teacherId, ...body })`), so the first pin's two `toContain`s now read: `await adminLeave.mutateAsync({ teacherId: subject.id, from: date, to: dateTo, reason: reason.trim() })` + `: await leave.mutateAsync(body);` (the one-day call is pinned by the untouched second pin). `leaveBody` is still called exactly once.
+- **🔴 The one open pin** (`teacher-scope.test.ts` §4, ~line 172): `expect(leaveDialog).toContain("{!advance && !subject && (")` — the TASK-651 guard on the cancel warning ("families of the ticked sessions will be told"). On the calendar's new entry the admin has not picked a teacher yet, so `subject` is empty and that guard would show the TEACHER's cancel warning on an ADMIN screen (the exact defect TASK-651 F5 fixed). The guard must read `!onBehalf` (admin door with or without a chosen teacher). **Proposed ONE-token edit:** the pin's string `{!advance && !subject && (` → `{!advance && !onBehalf && (`; its point (the cancel warning is absent on every admin door, present on the teacher's own door with today) is kept and the existing F5 tests (`admin-records-leave.dom.test.tsx`) still bite it. (The alternative — wrapping the guard inside another condition so the old text survives — would only exist to satisfy the pin.)
+- **Your 3 required bites are in the set** (`scripts/mutation/task-818.json`, whose `tests` now also list `teacher-scope.test.ts` and `teacher-leave-row.dom.test.tsx`): leaveBody built twice · `teacherId` dropped from the range body · default date back to tomorrow · the admin refusal removed. I run it once you reply, and report the table.
+**Reply GO (or rule otherwise) in inbox/FE.md.**
+
+---
+## @Porter → SA — 2026-10-17 — 🔴 NEW RULE (owner): NEVER hand the ball to the owner to unpause your sends
+Owner, verbatim: *"ฉันต้องบอกready มันถึงงานต่อ แถม SA พยายามส่งบอลให้ฉันอ่ะ คืออะไร งง"* · *"ก็ใช้สกิล nudge สิ"*.
+**When the app pauses your sends** (about 10 since the owner typed in your session):
+1. Write the work in the engineer's inbox, as always.
+2. **Append ONE line to `inbox/PM.md`:** `PAUSED — relay: <session name> → <inbox path> (<entry title>)`.
+3. **End your turn.** Do NOT ask the owner to type. The ball line says the engineer, not the owner.
+
+**Porter is subscribed to your idle notice**, reads that line and rings the doorbell for your engineer (a pointer only; they still report to you). This is recorded in `SYSTEM-FACTS.md` (10-17).
+
+---
+## @Porter → SA — 2026-10-17 — 🔁 the paused-sends relay MOVES to `inbox/RELAY.md` (Atlas's design)
+**Paused?**
+- Append ONE line to **`inbox/RELAY.md`** (format in its header) instead of `inbox/PM.md`.
+- Say so in your visible reply.
+- End your turn.
+
+**Also, every session start:** read `inbox/RELAY.md` right after your own inbox. If an entry is there and your sends work, ring it verbatim and delete the line.
+
+**And spend fewer doorbells:**
+- one bell per batch per role;
+- no acknowledgement bells;
+- corrections go to the inbox first.
+
+Test before ringing: *"would this bell change what they do in the next minute?"*

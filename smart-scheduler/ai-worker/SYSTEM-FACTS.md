@@ -211,7 +211,7 @@ person who can run it.**
 - **Confirm both sets `CONFIRMED` and pushes LINE to the TEACHER, not the parent** — *"มันก็ส่งไลน์ครูนะ ปกติ ปุ่มนี้"* (owner โด่ง, 2026-08-22). It fires for **every assigned teacher**, one outbox row **per PERSON, never per booking** (owner โด่ง, 2026-08-28).
 - **`uat`: 0 of ~180 parents and 2 of 20 teachers linked — a KNOWN STATE, not a defect**: *"uat ลูกค้าแค่ยังไม่ใช้เฉย ๆ ปล่อยไปอย่าไปยุ่ง"* (owner โด่ง, 2026-08-29). **No broadcast or nudge unless he asks.**
 - 🔴 **Where no admin has registered in the bot, notify-on-leave is a SILENT NO-OP forever, no error anywhere.** Registering an admin **per box** is a go-live checklist item (Porter + Sober, 2026-08-20). **`notify_on_leave` defaults `admin_only`; the teacher is never messaged** (2026-08-19).
-- **An admin registers through the BOT, not config: `สมัคร` → role `3` → the verify code `LINE_ADMIN_VERIFY_CODE ?? "229"` — `229` is only the fallback** (Porter, in code, 2026-08-20).
+- **An admin registers through the BOT, not config: `สมัคร` → role `3` → the verify code `LINE_ADMIN_VERIFY_CODE ?? <a hard-coded fallback>` — the fallback value is REDACTED here (Porter, 2026-10-11: a known default is a live code whenever the env is unset; TASK-725 removes it). ⚠️ **CORRECTION, same day: the fallback was ALREADY REMOVED by TASK-534** (`src/lib/line-admin-code.ts`, verified in source by Silver and Porter). This line was stale; there is no fallback today** (Porter, in code, 2026-08-20).
 - **An unlinked recipient is a reported SKIP, not an error** (Jason + Tanya, 2026-08-28).
 - 🔴 **A human admin LIVES IN the LINE OA and answers customers by hand** — *"admin เขาจะสิงไลน์นั้นแหละ ไปตอบลูกค้า"* (owner โด่ง, 2026-08-30). ⇒ the bot is never alone in the thread.
 
@@ -4343,3 +4343,20 @@ remaining pile goes to the owner WITH SIZES so he picks** — the team does not 
 3. **PM:** write the reproduction recipe from the customer's words and screenshots at intake. 🚫 Do not spend the owner's SQL on production data before the situation is reproduced, unless the data changes WHAT to fix.
 4. **Nothing is removed.** Every existing gate stays. This step goes in front of them.
 Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-the-customers-situation-first.md` (workspace root).
+
+## 2026-10-11 — Owner rulings after the customer meeting (Khwan + ฟีน + Palm)
+- 👤 **"ฟีน" is the customer's CEO.** The AI summary wrote "พี่ฟิล์ม", which was misheard (owner: *"เขาคือคนที่ชื่อว่า ฟีน เอไอ อาจจะฟังผิด"*). ✅ **There is NO name clash: our FE engineer "Fern" is read เฟิร์น** (owner, 2026-10-11: *"Fern อ่านว่า เฟิร์น"*). **Write the customer's name as "ฟีน" (romanise as "Feen"), never "Fern".** ⚠️ REQ-111 (2026-10-02) calls a customer person "Fern (brand/communications)": that was ฟีน, written wrongly, and the record stays as written.
+- 📊 **ALL reports belong to PALM: the Daily Report AND Dashboard + Overview, all front office.** *"เราจะไม่แตะ ฉันฝากให้ปาล์มรับผิดชอบ"*. **Palm-hands-off applies:** no build, no review, no test by the team. **The DATA those reports need is ours, LATER.** It is noted in `requirements/REQ-117-*.md` for a later talk. TASK-723/724 and the Overview re-open are CANCELLED.
+- 🏢 **Salary · Revenue · Stock (the back office) come AFTER the front office ends.** Owner: *"ทำความเข้าใจ โน้ตไว้ มาคุยต่อ หลังจบงาน frontoffice"*. Notes: `NOTE-backoffice-salary-revenue-stock-2026-10-11.md`.
+- 📄 **Only the sheet tabs REPORT · STOCK · REVENUE · SALARY count** (the others are "ไม่เกี่ยว").
+
+## 2026-10-12 — 🔴 `inet_server_addr()` returns the database's INTERNAL address, not the public host (@Sober, from the owner's REQ-118 read via @Porter)
+**uat answered `172.17.172.29`** (the public host is `154.197.124.29`). ⇒ **A read-check must compare with the INTERNAL value**, plus a data marker: `students.name LIKE 'QAChat%'` = 0 on uat, > 0 on sid. **sid's internal value is not yet recorded** — capture it the next time the owner reads sid. Two of my notes had said "must be 154.197.124.29" — corrected (`DEPLOY-uat-2026-10-12-final-front-office.md` §1, `ANALYSIS-REQ-118…` §3).
+
+- **Front `bun run build` cannot run in a junctioned clean room** (Sober, 2026-10-15). Next 16 Turbopack panics with *"Symlink [project]/node_modules is invalid, it points out of the filesystem root"*. tsc / `bun test` / mutation sets run fine there. Run the build in the real front tree when nobody is editing it, and compare `git status --short -uall` before and after.
+
+- 🔁 **Session mechanics, nudges (Porter, 2026-10-17):** the desktop app **pauses a session's outgoing cross-session sends after ~10 sends since the owner last typed in THAT session**. Seen twice on Sober, 10-17. The writes still land in inboxes; only the nudges stop. **Fix: the owner types anything (e.g. "ไปต่อ") in that session.** A PM can't cover it by nudging engineers (the chain is PM ↔ SA only).
+  - **Owner's fix (2026-10-17, verbatim: *"ทำไมฉันต้องพิมพ์เองอ่ะ ก็ใช้สกิล nudge สิ"*):** when an SA's sends are paused, **Porter rings the doorbell for that SA's engineers**. It is a one-line pointer to the SA's own inbox entry, with no content and no instruction; they still report to the SA. This is the only PM → engineer contact allowed.
+  - **How the relay runs (10-17):**
+    - a paused SA appends `PAUSED — relay: <session> → <inbox> (<entry>)` to `inbox/PM.md` and ends its turn, **never handing the ball to the owner**;
+    - Porter keeps an idle subscription on each active SA and relays the doorbell.

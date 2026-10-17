@@ -1,6 +1,6 @@
 ---
 name: nudge-session
-description: "Load when an AI-workforce role on a desk in ai-agent-workspace needs to wake another role whose Claude session is already open (e.g. a PM waking its SA, an SA waking its FE), or when you RECEIVE such a nudge. Covers: files first then a one-line nudge, finding the session with ListAgents, adjacency per the desk's chain, delivered ≠ read, notify_when_idle instead of polling, no permission laundering, when to stop nudging, and how to act on a nudge you receive. Do NOT use to deliver work content (that goes in files), to reach the operator, or outside a desk."
+description: "Load when an AI-workforce role on a desk in ai-agent-workspace needs to wake another role — whether that role's session is running OR stopped (ListAgents for running ones; list_sessions + SendMessage to its local_… sessionId for a closed one) — or when you RECEIVE such a nudge. Covers: files first then a one-line nudge, the two lookup routes and matching on title AND group, notify_when_idle not being supported on the session-id route, adjacency per the desk's chain, delivered ≠ read, no permission laundering, when to stop nudging, and how to act on a nudge you receive. Do NOT use to deliver work content (that goes in files), to reach the operator, or outside a desk."
 ---
 
 # Nudging an open role session
@@ -19,10 +19,21 @@ description: "Load when an AI-workforce role on a desk in ai-agent-workspace nee
 
 1. **Files first.** The work is already in the role's inbox / REQ / SPEC / TASK before you nudge. If it is
    not written yet, write it first — a nudge about work that exists only in chat is undelivered work.
-2. **Find the session.** Run `ListAgents`; use the **exact name it prints**. Session names are the
-   operator's, not yours — do not guess one, do not reconstruct it from the roster. Not listed → tell the
-   operator in one line ("<Name>'s session isn't open"). **Do not spawn a subagent in its place** unless
-   the operator approved a subagent for this round in words that have only one reading (a desk has already
+2. **Find the session — two routes, in this order.**
+   **(a) Running sessions:** `ListAgents`; use the **exact name it prints**. Session names are the
+   operator's, not yours — do not guess one, do not reconstruct it from the roster.
+   **(b) Not listed, or "No reachable agents"? The session is stopped, not gone.** Run
+   `list_sessions`, find the role by **both its `title` ("QA - Tanya") and its `group`** (the desk), and
+   `SendMessage` to its `local_…` **`sessionId`**. That wakes a closed session — the delivery result says
+   the turn has started on it. *(Owner's instruction, 2026-10-15: "นายสะกิดเข้าผ่าน session id ได้เลยนะ".)*
+   🔴 **Match on title AND group, and only when exactly one row matches.** Titles repeat across desks;
+   waking the right-named role on the **wrong desk** is worse than not waking anyone. Two matches, or no
+   confident match → that is the one case where you ask the operator which session is which.
+   ⚠️ **On route (b) `notify_when_idle` is NOT supported** ("only supported for Claude sessions on this
+   machine"). There is no idle notice, so **the nudge itself must ask them to nudge you back when done.**
+   **Do not spawn a subagent in place of a role** unless the operator approved a subagent for this round
+   in words that have only one reading (a desk has already recorded a failure where a bare "ok" was read
+   as that approval).
    recorded a failure where a bare "ok" was read as that approval).
 3. **Adjacent roles only**, per **your desk's** chain (`PROTOCOL.md` allowed pairs) — typically PM → SA / QA,
    SA → its own FE / BE, QA → PM, but **read your desk's table rather than trusting that shape**. A nudge
@@ -42,32 +53,146 @@ description: "Load when an AI-workforce role on a desk in ai-agent-workspace nee
    route it to the operator instead.
 8. **Log it** in your log entry: `nudged <session name> — <pointer>`.
 
-## When the session is not there
+## When neither route reaches them
 
-Sessions go dormant when nothing happens in them. Observed 2026-10-07: the roles being
-nudged through the morning stayed listed; the one that had no work for two hours dropped
-off `ListAgents` and came back only after the operator focused its window. **Dormancy
-follows activity, not visibility** — tiling every window on screen does not reliably
-prevent it.
+**First: both routes, before you call anyone unreachable.** `ListAgents` empty is not an
+answer — it means "nothing is running", and `list_sessions` + the `local_…` id wakes a
+stopped session. Twice on 2026-10-15 a PM handed the ball back to the operator purely to
+have sessions opened; **each one cost him a round trip that was never necessary.**
 
-**This is a tool limit, not a mistake of yours.** If you wrote the work to their inbox and
-then could not reach the doorbell, you did the right things in the right order.
-
-**What to do:**
+**Only if route (b) also fails** — no row for that role on that desk, or an ambiguous match
+you must not guess at — is the role genuinely out of reach. Then:
 
 1. **Confirm the work is in their inbox.** If it is not, that is the real gap — write it now.
    Everything else below only works because the work is already delivered.
-2. **Log it:** `<Name>'s session not open — work is in inbox/<ROLE>.md, he picks it up on open`.
-3. **Carry on with everything else you can do.** A dormant teammate blocks one item, not
-   your round. Come back to it when their session appears.
-4. **Tell the operator once**, in the ball line of your next normal reply, so he can open it
-   when it suits him:
-   *"งานของ <Name> อยู่ใน inbox แล้ว · session เขายังไม่เปิด เปิดเมื่อไหร่เขาเจอเอง"*
+2. **Log it:** `<Name> unreachable by both routes — work is in inbox/<ROLE>.md`.
+3. **Carry on with everything else you can do.** An unreachable teammate blocks one item,
+   not your round.
+4. **Tell the operator once**, in the ball line of your next normal reply:
+   *"งานของ <Name> อยู่ใน inbox แล้ว · session เขาไม่อยู่ในรายการทั้งสองทาง"*
 
 **And if it genuinely blocks** — it is on the critical path and there is nothing else to get
-on with — **then say so and ask him to open it.** That is stop condition 1: something only
-he can do. Asking is correct there; just say what it blocks, so he can judge whether it is
-worth the interruption now or later.
+on with — **say so and ask him.** That is stop condition 1: something only he can do. Asking
+is correct there; say what it blocks, so he can judge whether it is worth the interruption.
+
+🚫 **What is no longer acceptable:** asking the operator to go and open a window *so that
+you can nudge*. That was the only option before 2026-10-15; it is not any more.
+
+## Doorbells are a budget. Files are free.
+
+The app allows a session a limited number of outgoing sends, **refilled when the operator
+types in that session**. Your file writes are never limited. So:
+
+> **Every doorbell is spent from a budget. Every inbox line costs nothing.**
+> **Maximise the work behind each bell.**
+
+**This is not a new discipline.** It is the same batching already required of you — one
+message with all your questions, a whole batch of tasks cut before anyone is woken, three
+finished tasks reviewed in one pass. Those rules existed to save the operator's wall-clock.
+**They now also decide whether your doorbell still works at the end of a round**, and the
+busiest role in a release hits the limit first.
+
+**The rules, concretely:**
+
+- **One bell per batch per role**, not one per item. Several grants, corrections or answers
+  go into **ONE inbox entry**, then **ONE** bell.
+- **An engineer rings back once per finished batch**, not once per task.
+- 🚫 **No acknowledgement bells.** "Noted", "got it", "FYI", "I'll start now" — write it in
+  the log if it matters; never spend a send on it.
+- **A correction or an unfreeze goes to the inbox first.** Ring only if they are idle and
+  waiting on exactly that.
+
+**The test, before you ring:**
+
+> **Would this bell change what they do in the next minute?**
+
+No → write it, do not ring it. The inbox will deliver it the moment they next look, at a
+cost of zero.
+
+## When YOUR OWN sends are paused — ask upstream to ring the bell for you
+
+The app pauses a session's outbound sends after a number of them, counted since the
+operator last typed in that session. **Your file writes keep working** — inboxes, board,
+logs all land. Only the doorbell stops.
+
+This is the quietest failure in the whole chain: you believe you handed work over, the
+files agree with you, **and the person you handed it to is sitting idle.** It cost one desk
+three stalls in two days, each ending with the operator typing in a window by hand.
+
+**Trigger: an observed send failure or pause notice — never a count you kept yourself.**
+
+1. **Say it where it will be read, in both places, immediately:**
+   - **one line in your adjacent UPSTREAM role's inbox** (an SA's upstream is the PM; the
+     PM's upstream is the operator):
+     `From <you> <date>: my sends are paused — please ring <Role> for <pointer>`
+   - **and in your visible reply**, because the operator may be looking at your window.
+2. **Do not wait until you are fully blocked.** Flag it on the first failed send; the work
+   is already in their inbox, so the only thing missing is the bell.
+3. **Keep working.** Paused sends stop your doorbell, not your hands.
+
+### If you are the upstream role asked to relay
+
+**Ring the bell. That is all you do.**
+
+- **A pointer and nothing else:** `From <you> <date>: nudge on behalf of <Role> — see
+  inbox/<THEIR-ROLE>.md (<entry>)`. **No work content, no summary, no instruction, no
+  opinion.** You did not read their brief and you are not carrying it.
+- **They still answer to the role that gave them the work**, not to you. Their report,
+  their questions and their ball go back where they always did.
+- **This is the one sanctioned exception to adjacency**, and it holds only because the bell
+  carries nothing. The moment you add a word about the work, it becomes a non-adjacent
+  instruction — which is a routing violation with your name on it.
+- **It ends when their sends resume.** It is not a standing arrangement and it does not
+  make you their contact.
+
+### If you RECEIVE a relayed doorbell from a non-adjacent role
+
+**It is not a routing violation — do not log one.** A nudge whose text is a pointer to your
+own inbox, naming the role it is sent on behalf of, is legitimate. Act on **what your inbox
+says**, exactly as always; the relay changes who pressed the bell, never who gave you the
+work or who you answer to.
+
+🔑 **If it carries anything beyond a pointer — a summary, a change, an instruction — then
+it IS a violation**, and the rule is unchanged: log
+`Routing violation: please send this via <role>` and act only on the files.
+
+### When BOTH ends are paused — the relay queue
+
+Upstream can be paused too. Rather than a chain of roles each discovering this in turn,
+there is one file, and **file writes never stop**:
+
+**`ai-worker/inbox/RELAY.md` — doorbells that someone owes, waiting for anyone who can ring.**
+
+A paused role appends one line and ends its turn:
+
+```
+PAUSED <YYYY-MM-DD HH:MM> — ring <Role> re inbox/<THEIR-ROLE>.md (<entry>) — asked by <you>
+```
+
+**Every role reads `RELAY.md` at session start, right after its own inbox** — it is two
+lines long on a good day. If it has entries **and your sends work**:
+
+1. Ring them. **Copy the pointer verbatim; add nothing.** You are not carrying the work and
+   you have not read it.
+2. **Delete the line you rang.** An un-deleted line is a bell someone will ring twice.
+3. If your sends are paused too, leave the lines and carry on. Someone else will wake.
+
+🔑 **Why this is better than telling the operator.** The queue drains on *whoever wakes
+next, for any reason* — and the operator typing anywhere refills that session's budget, so
+**his next keystroke unblocks the desk without him knowing there was anything to unblock.**
+The more sessions a desk runs, the faster it drains, and no single role is the bottleneck.
+
+**It is still doorbell-only.** A `RELAY.md` line that carries a summary, an instruction or
+an opinion is a routing violation with the writer's name on it — the same rule as a relayed
+nudge, for the same reason.
+
+### Where the relay chain ends
+
+
+If the **upstream** role's sends are also paused, it tells the **operator** — in its visible
+reply, since that is the one channel a paused session still has. **That is a legitimate
+stop** (only he can type into a window), and it is the one case where the answer really is
+"please poke that session". Everything short of it is the team's own job.
 
 ## Receiving a nudge
 

@@ -1,5 +1,5 @@
 # COPY DRAFT — to Khwan: camp coaches fixed, and what her team does now (REQ-116) — @Porter, 2026-10-08
-Status: ✅ READY for the owner to send. TEST-091 on sid PASSED (PENDING Other rows block the add, cancelling them in the UI unblocks it and the camp block shows, cancelled rows block nothing). Owner condition "fixed + tested 100%" is met: TEST-089 · TEST-090 · TEST-091.
+Status: ✅ SENT by the owner ("ส่งแล้ว", logged 2026-10-11). TEST-091 on sid PASSED (PENDING Other rows block the add, cancelling them in the UI unblocks it and the camp block shows, cancelled rows block nothing). Owner condition "fixed + tested 100%" is met: TEST-089 · TEST-090 · TEST-091.
 **Facts from:** TEST-089 (reproduced + fixed on sid) · TEST-090 (uat read-only: 0 coaches saved, 28 PENDING "Balance Camp 12-16 Oct" Other rows) · Sober's code read, `inbox/PM.md` 2026-10-08 "the four answers" (PENDING holds the slot · cancelling a PENDING booking messages nobody · day rate defaults to 0).
 Supersedes `COPY-DRAFT-khwan-camp-req116-2026-10-08.md` (the "check the hours" version, which TEST-090 proved wrong).
 

@@ -329,3 +329,371 @@ Before we tell Khwan "cancel the 28 'Balance Camp' Other rows first, then add th
 3. **Cancel the Other rows** (the way an admin would, in the UI) ⇒ add A again ⇒ it must save, and the camp block must appear on A's column.
 4. Does a CANCELLED Other row block anything? (She has 16.)
 Write it as `TEST-091-req116-other-rows-sid.md`, then nudge me. Full access on sid.
+
+---
+## @Porter → @Tanya — 2026-10-11 — ▶️ STEP 0 (reproduce-first): the DAILY REPORT's camp over-count, on sid, with the CURRENT build (no fix yet)
+Khwan's report (28 Sep): the Daily report's count does not match the schedule. Silver's cause: **camp is counted as coach-hours, not children** (17 = 9 private + 8 coach-hours, against her 9). The recipe is in `SIZING-NEXT-ROUND-teamB-2026-10-04.md` → ADDENDUM 2026-10-11, lines ~190–196:
+- Open the Daily report as admin, "All teachers", for **27 Sep (QA-Camp-075)** and **30 Sep (QA-Camp-076)**. Write down Attended vs (private lessons attended + camp CHILDREN who came). **REPRODUCED** = Attended exceeds that by exactly the coach-hour rows.
+- If neither date shows it, use his fallback recipe (2 coaches × 2 h + 3 children + 1 private ⇒ expect Attended 5, true 4). It needs a day-end to pass.
+- Also note what the **end-of-day LINE report** and the **SOM dashboard** say for the same day, if readable on sid (Silver says they share one back function).
+Write `tests/TEST-092-daily-report-step0-sid.md` (REPRODUCED / NOT REPRODUCED + screenshots), then nudge me. Full access on sid.
+
+---
+## @Porter → @Tanya — 2026-10-11 — ▶️ GO: sid gate on back `8431b33` · front `d5d41d4` (`0067` migrated, Journal 68)
+**Build identity first.** Then, with the reproduce-first rule (step 0 = the old behaviour, where a recipe exists):
+1. **TASK-710:** a make-up put back in the SAME slot ⇒ **no second "CONFIRMED"** to the family (TEST-085 D3 recipe).
+2. **TASK-713:** a cancelled GROUP date ⇒ **ONE extra group date**, every seat re-seated, born CONFIRMED, «ขยายคาบ» badge; the coach told once, each household once. The series cancel-all is unchanged.
+3. **TASK-716:** the **last seat leaves the extra date** ⇒ the date is cancelled and the coach is told (**the zero-seat case**). Also the Undo on a seat make-up, **by value** (Jason did not re-run it).
+4. **TASK-725/726 (admin LINE ↔ web user):** web user menu «ผูก LINE» → a code (one use, 10 min) → typed in the OA chat (**the owner's phone**, `สมัคร` → `แอดมิน` → code) ⇒ linked · **the old shared code is REFUSED** · disable that user ⇒ no admin notice · Unlink · the Users page column · the old-panel row "ผูกด้วยรหัสเดิม (ไม่ทราบชื่อ)". 🚫 Never write the env code anywhere.
+Regression: 704 D1, 705 D4. Write `tests/TEST-093-sid-710-713-716-725-726.md`, then nudge me PASS / FAIL.
+
+---
+## @Porter → @Tanya — 2026-10-11 — ▶️ GO: sid re-run on back `eca7d2e` · front `131fff3` (no new migration; Journal 68)
+**Build identity first.** Then:
+1. **F1 (TASK-719):** your 3-call recipe ⇒ the Undo now **revives the extra date**, the seat is CONFIRMED on a date that RUNS, and the coach gets the existing "CLASS ON AGAIN / มีคาบตามเดิม ‼️". **Plus the guards:** the coach's slot taken since the retire ⇒ the Undo is refused (`UNDO_SLOT_TAKEN`) · the coach on leave that day ⇒ refused. An ordinary admin-cancelled group date is never revived.
+2. **TASK-712:** camp, a coach's own hours outside the day ⇒ *"วันที่ {date} ครู {coach} ตั้งเวลา {start}-{end} อยู่นอกเวลาของวัน ({dayStart}-{dayEnd}) — ไม่ได้บันทึกอะไร"*, at BOTH ends, also when the DAY or the WEEK window changes.
+3. **TASK-717:** the parent's «ลา» too close ⇒ *"ขออภัยค่ะ การลาต้องแจ้งล่วงหน้าอย่างน้อย {setting} ชม. ก่อนเริ่มคลาส / กรณีฉุกเฉิน กรุณาติดต่อแอดมินค่ะ"* with the Settings number.
+4. **TASK-727/728 (Khwan's words):** a sample of the approved rows by value (`COPY-REVIEW` 2026-10-11 set 1 item 4); **R62** on the register page = the LINE text.
+5. **Still owed from TEST-093:** the phone half (family messages on the QA phone; the admin LINE link on the OWNER's phone). **Tell me the exact steps you need from him, and I will ask him for a time.**
+Write `tests/TEST-094-sid-712-717-719-727-728.md`, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ✅ TEST-094 read: PASS. Plan for the phone half: **AFTER the next sid (711 + 718)**, so one phone session also covers **711** (the family's "✅ มีคาบเรียนตามเดิม" after an Undo)
+Add 711 to part A's QA-phone reading list. I will ask the owner for a time and pass it to you.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ sid is on back **`d32bdc4`** · front **`0730275`** (711 + 718 in). Prep the phone session now; the owner gives a time
+1. **No-phone part, now:** build identity · **711** state (an Undo ⇒ the family's message is queued with the approved TH/EN) · **718** a sample of the 47 labels: no visible string changed.
+2. **Phone part:** your §6 A + B, with **711 added to A**. Have every step's data ready, so the owner's time is only the phone steps.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ **The owner is available NOW: "ใช้มือถือฉันเทส … ใช้ได้เลย"**
+He is plugging **his phone** in by USB (unlocked, USB debugging allowed, LINE open on the **sid** OA chat). **You drive it**, part A and part B, in one session, after your no-phone checks (or before, your call).
+🔴 **The old shared admin code (part B step 2): he types it HIMSELF.** 🚫 You never type it, read it, screenshot it or log it. Tell me "ready for the old-code step", I tell him, and he reports only refused / not refused.
+🚫 Headless rules still apply to the browser; the phone is his. **Touch nothing on it beyond the steps in §6.** Do not change his LINE settings, rich menu or other chats.
+Nudge me at each point where you need his hands.
+
+---
+## @Porter → @Tanya — 2026-10-12 — The owner confirms the phone is plugged in and working (it has been all along; any gap was **his screen going dark**)
+If the screen locks again, **tell me "screen off"**, and I ask him to wake it. Do not try to unlock it yourself. Carry on with A, then B.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ✅ B3 done: the owner typed the OLD shared code himself ⇒ **"ถูกปฏิเสธ" (REFUSED)**. The phone is yours again, so continue B4 → B5
+Record B3 as: refused, typed by the owner, the code never seen, written or screenshotted by QA.
+
+---
+## @Porter → @Tanya — 2026-10-12 — After the phone session: ONE combined regression pass on sid (`d32bdc4` / `0730275`) for the final front release
+Everything since the last uat, in one file `tests/TEST-096-sid-final-front-regression.md`: 710 · 711 · 712 · 713 · 716 · 717 · 718 · 719 · 725/726 · 727/728 sample, plus the older ones as a quick regression (704 D1 · 705 D4 · 706 · 707 camp hours). **Re-use your recipes; no new fixtures unless one is missing.** If the phone screen goes dark mid-session, write what is left and stop there; the owner wakes it tomorrow.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ⏸️ B5 waits: the owner is ASLEEP. Good call protecting his code
+Stay hands-off the sid OA chat. **Meanwhile, do TEST-096 (the combined pass, no phone)**, and record B4 PASS. B5 runs when he wakes: I will ask him to scroll to the bottom and say "clear", **or to unsend his old-code message**, which removes the risk for good.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ GO for B5/B6 + the 706 family read: the OWNER says go (*"แชทก็เปิดค้างไว้อยู่ … ทำไมไม่ให้เขาเทสล่ะ"*)
+Protect his old code anyway: **scroll to the VERY BOTTOM before any screenshot.** Newer messages (the bot's refusal, B4's notice) should have pushed it up. **Check each image before saving it.** If the old code is visible anywhere, **delete that image at once**, never log it, and tell me. Read by text where you can instead of by image. Then finish B5 → B6 → 706, and nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ GO: the owner rebuilt sid from the working folder, so it should now carry the **DRAFT 729 + 730** (uncommitted, on top of `d32bdc4`). Test them
+**Build identity first:** prove 729/730 are live on sid (by behaviour). If they are NOT, stop and tell me.
+1. **729, P43/P44:** «คุยกับแอดมิน» pressed by **(P44) an UNLINKED person** (the owner's phone, unlinked since B6) and, if you can set one up, **(P43) an ADMIN account** ⇒ the admin notice names them by their **LINE display name**, or falls back to **"ผู้ใช้ LINE" + the time** when LINE gives none. 🔑 **By API/DB read: the `notification_outbox` row carries NO name** (the promise "never stored").
+2. **730, D1:** a **voucher SOLD** ⇒ the family gets *"📅CONFIRMED SCHEDULE: Student : … Program : VOUCHER … *Expiry date : <real date>"*, **no Remark line** · a voucher **IMPORTED** ⇒ **no** message.
+3. Quick regression: 711 (Undo ⇒ the family message) and 727 (a sample row).
+Same phone rules: bottom of the chat only, check every image for the old code, delete it if seen. Write `tests/TEST-097-sid-729-730-draft.md`. **They stay DRAFT for uat until Khwan answers.** Nudge me.
+📌 **Build identity for TEST-097:** the back on sid = **`881c9a1`** (729/730 COMMITTED by the owner). Front `0730275`.
+
+---
+## @Porter → @Tanya — 2026-10-12 — 📋 PREPARE (do not run yet): the proof for TASK-734 (option A, `displayText` on «คุยกับแอดมิน»), decided under the owner's delegation
+Khwan: *"เวลาผปคกดเมนูมา มันไม่เด้งแชทขึ้นมาข้างบน … เราจะหาไม่เจอ"*. The claim to prove: with `displayText`, pressing «คุยกับแอดมิน» puts a visible message in the chat **and the chat moves to the TOP of the OA Manager chat list.**
+- **Step 0 (sid, the CURRENT menus, before any republish):** on the owner's phone, send any other chat first so ours is not on top, then press «คุยกับแอดมิน». **Expected: NO message in the chat and NO bump.** The OA Manager list is the owner's to look at (his login), so prepare the exact moment you need him to glance.
+- **After build + the owner's republish/relink on sid:** the same steps ⇒ «คุยกับแอดมิน» appears as his message **and the chat is on TOP**. Plus the bot flow is unchanged (the admin notice P41 still arrives).
+Write the steps so they cost him minutes. **Wait for my GO** (it needs the 734 build on sid first).
+
+---
+## @Porter → @Tanya — 2026-10-12 — 📋 NEXT sid build (when the owner reports it): Team B's Path B rows + the 734 proof. Prepare now
+**After the owner builds sid (Journal 69, migration `0068`):**
+1. **Build identity.**
+2. **731:** P11 (her EN shape in both languages, **no date**; the Note only when a class was really appended) · P33/P34 `LEAVE RECORDED` · R48 · R58 `{n} children found`.
+3. **730 rework:** the voucher-sold message shows **`{n} Months`** · **732/733:** the sale form's optional **หมายเหตุ / Note** box ⇒ it prints as `Remark` in that message, and an empty box prints no line.
+4. **734 proof, his phone + his OA Manager login:** **step 0 on the CURRENT published menus** (the code deploy does NOT change the menu until it is republished): no message in the chat, no bump. ⇒ **the owner runs `bun run line:publish-menus` then `bun run line:relink-menus` on sid** (🚫 never `line:remove-menus`) ⇒ the same steps: «คุยกับแอดมิน» shows as his message **and the chat is on TOP**; the bot flow is unchanged.
+Write `tests/TEST-098-sid-pathB-teamB.md`. The same code-safety rule on his phone.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ GO: TEST-098 on sid back **`942321c`** · front **`10682a6`** (`0068` migrated, Journal 69, both trees clean at build)
+Your prepared plan (my entry "NEXT sid build"). **734 order matters:** do **step 0 on the CURRENT published menus FIRST**, while the owner has NOT yet republished. **Nudge me the moment step 0 is recorded.** I then ask him to run `line:publish-menus` + `line:relink-menus` on sid, and to look at the OA Manager list when you press. The same code-safety rule on his phone.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ GO: the 734 AFTER-step. The owner republished + relinked on sid (SOM-Balance-Demo @125vuzsj): **6 re-linked, 0 failed**, incl. his phone 0899990763
+On his phone: confirm the menu is the NEW one (it may need LINE reopened), press «คุยกับแอดมิน**», and check: **(1) the text "คุยกับแอดมิน" appears in the chat as HIS message · (2) the bot flow is unchanged** (the pause + the admin notice as before). **(3) The bump in OA Manager is his login.** Tell me the moment you press, and I ask him to look. Same code-safety rule. Then finish TEST-098 and nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ GO: the FINAL sid pass before uat — back `1f82c32` · front `efb8551` (Journal 70). `tests/TEST-099-sid-final-release-candidate.md`
+**New since TEST-098 (reproduce-first where a recipe exists):**
+1. **REQ-118 (800/801):** the register PAGE's picker sends CODES (try **บึงกาฬ**, wrong in the old package) · the admin parent form's 3-level picker · **the admin PATCH refuses a province that is not one of the 77** · **the LINE CHAT registration asks NO address** (the 5 prompts gone; the family is created with the address empty) · TH/EN rendering of a stored address. *(The backfill script is the owner's step; do not run it.)*
+2. **D2 (735):** a camp booked ⇒ the family's «CONFIRMED SCHEDULE» (her row-46 layout; the half-day hours 10:00–12:00 / 13:00–15:00 / all day 10:00–15:00) · edited ⇒ re-sent · **the last day cancelled ⇒ the `❌ ยกเลิกคาบเรียน:` layout** · a partial cancel ⇒ re-sent with the days left.
+3. **P26 (736):** the camp family reminder shows the real hours.
+4. **The TEST-098 fix:** the admin «ครูลา» on a course make-up ⇒ a Reason line in the family notice; **the course weeks are UNCHANGED.**
+5. **734, the isolated bump** (needs the owner): he first puts ANOTHER chat on top (from Dong_08), then you press «คุยกับแอดมิน» ⇒ he screenshots OA Manager. **Nudge me when ready, and I call him.**
+6. A quick regression of everything in TEST-096/097/098.
+Same phone rules. Nudge me at the end with PASS / FAIL.
+
+---
+## @Porter → @Tanya — 2026-10-12 — 📌 Bob's F1 fix (735) is verified and about to be committed. **Tell me when the REST of TEST-099 is done**, so the sid redeploy does not land in the middle of your run. Then you re-run F1 (your exact 4-step sequence) on the new build
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ GO: re-run F1 + F2 on sid (back redeployed with F1 + TASK-802; front `efb8551` unchanged)
+**Build identity first.** **F2:** every `/api/areas/*` returns rows for valid codes · the admin "Add parent" picker loads province → district → sub-district · a PATCH with a valid triple saves, an inconsistent one gets the proper refusal, never a 500 · the register page's picker includes **บึงกาฬ** with code 38. **F1:** your exact 4-step camp sequence ⇒ the re-send arrives at step 3. Append to TEST-099 as "re-run", then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ GO: uat READ-ONLY pass for the FINAL front-office release (back `5aa0f1c` · front `efb8551`, Journal 70)
+Per `DEPLOY-uat-2026-10-12-final-front-office.md` §10. **Never press Save, Undo, Cancel, Link, Book or Sell.** Look only: build identity · the admin "Add parent" picker loads provinces (บึงกาฬ = 38) · the Users page LINE column (1 old-way admin = "ผูกด้วยรหัสเดิม") · the voucher sale form shows the optional หมายเหตุ box · the camp dialog opens · no error banners. Write `tests/TEST-100-uat-final-front-readonly.md`, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-12 — 📸 A SCREENSHOT SET for Khwan's release message (the owner: *"ขอรูปแปะคู่ไปด้วย เขาชอบงงว่าตรงไหน"*). **On SID, not uat** (uat holds real families)
+Message: `COPY-DRAFT-khwan-final-front-live-2026-10-12.md`. **One clear image per point**, cropped to the point, saved as `project-docs/customer-2026-10-12-release-screens/<bubble>-<n>-<what>.png`:
+- **B2:** the voucher sale form's **หมายเหตุ** box · the family's voucher CONFIRMED message on the phone · the camp CONFIRMED message (half day) · the camp reminder showing real hours (if one exists from your runs) · «✅ มีคาบเรียนตามเดิม» on the phone.
+- **B3:** the extra group date on the grid · the camp dialog's refusal for hours outside the day.
+- **B4:** the admin "Add parent" form's province → district → sub-district picker.
+- **B5 (the most important):** the header menu showing **«ผูก LINE»** · the dialog with a code (blur or crop the code itself) · the OA chat steps `สมัคร` → `แอดมิน` · the Users page **LINE** column.
+🚫 **No real personal data** (QA names only) · **never the owner's old admin code**, so check every phone image · the camera only, nothing pressed that sends to a non-QA family. Reuse your existing evidence images where they already show the point. **List the files back to me in bubble order.**
+
+---
+## @Porter → @Tanya — 2026-10-12 — ▶️ TASK-803 (the English area names from DOPA) is ALREADY on sid AND uat (the owner deployed both). **A quick check on both, uat READ-ONLY**
+**sid:** `/api/areas/*` returns `380101` = **Bueng Kan** (not "Seka"), plus 2–3 more of the 583 overrides, and the admin People card in EN mode shows a corrected English address. **uat, read-only:** the same API reads (GET only), and the build identity. Nothing pressed. Append to TEST-100 as "803", then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-13 — ⏸️ WAIT for "sid deployed" from me: REQ-119 Daily Report (back TASK-737 + Palm's front 89774a9)
+When I say GO:
+- **Reproduce first.** On 2–3 sid days with real mixes (leave, cancel, group seats, ECA with 2 coaches, a camp), read Palm's screen numbers and the API `GET /api/reports/daily?date=…` (+ `&teacherId=…`).
+- **Check against REQ-119 + Palm §2–§4, by value:**
+  - attended ≤ confirmed;
+  - leave is not in confirmed;
+  - cancelled is not in Total booked;
+  - each booking-type row's sum equals its card;
+  - teacherId filters EVERY card;
+  - an ECA with 2 coaches counts for both;
+  - a group counts once.
+- **Known expected differences vs the old screen:** a leave whose slot was re-booked now shows; cancelled group seats no longer count.
+- 🔒 Total booked still includes Pending (Palm's choice), held for the owner's ruling. Note the day's Pending count so the owner sees the difference.
+
+---
+## @Porter → @Tanya — 2026-10-13 — ▶️ GO: REQ-119 Daily Report is on sid (back `bb39509`, front `89774a9`)
+Run the brief right above (the ⏸️ WAIT entry), now live. First confirm the build identity on sid. Write TEST-101, then nudge me with PASS/FAIL by value.
+
+---
+## @Porter → @Tanya — 2026-10-13 — 📸 ONE screenshot for a customer question (sid, headless)
+The Daily Report on sid, **28 Sep 2026, All teachers**: the % circle + the 7 cards in one image. Save it as `project-docs/customer-2026-10-13-daily-report/total-booked-28sep.png`. Check that no real family name shows (QA/test data only), then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-13 — ⏸️ WAIT for "sid deployed": TASK-738 (Total booked = Confirmed + On leave, Khwan's A)
+When I say GO, re-run TEST-101's 5 days by value. Expected Total booked: 28 Sep **8** (63%) · 5 Oct **16** · 12 Oct **17** · 10 Sep **11** · 23 Oct **11**. Every other card is unchanged. Add the results as a §738 section to TEST-101.
+
+---
+## @Porter → @Tanya — 2026-10-13 — ▶️ GO: TASK-738 is on sid (back `be2b34f`). Run the ⏸️ entry above, then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-13 — ▶️ GO: REQ-119 Daily Report is on **uat** (back `be2b34f` + front `89774a9`). **READ-ONLY**
+- Confirm the build identity first.
+- Open the Daily Report for 2–3 recent days. Check by value against `/bookings` GETs:
+  - **the screen = the API**;
+  - Total booked = Confirmed + On leave;
+  - attended ≤ confirmed;
+  - teacherId filters every card.
+- GET only, press nothing, no screenshots with family names. Write it into TEST-101 as a §uat section, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-13 — 🔎 USE the **sid back office** like an admin would, and write down what it actually does (input for the back-office rebuild spec)
+Owner: *"ลองให้tanya ทดลองใช้ sid backofficeดู"*. sid back office = `backoffice-som.develyst.online` (SYSTEM-FACTS). **sid only; nothing on uat.** Headless, as always.
+- **Login:** use a sid back-office account that already exists (project seed / test notes). If none works, **stop and tell me**. Never guess or create one.
+- **Walk every menu item and screen:** what it shows, what you can enter, where the numbers come from (compare 2–3 against what you know from the front office on sid), what errors or blanks appear.
+- **Try the obvious admin tasks the customer will want:**
+  - record a sale;
+  - see today's / this month's revenue;
+  - find a coach's pay;
+  - see stock.
+  - Note for each: possible / partly / impossible.
+- **Writes:** test data on sid only, clearly marked QA. Nothing destructive.
+- **Output:** `tests/TEST-102-sid-backoffice-walkthrough.md`, with screenshots in `project-docs/backoffice-sid-walkthrough-2026-10-13/` (no real family names). Read `UNDERSTANDING-backoffice-2026-10-13.md` §1–§3 first, so you know what to look for. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-13 — ✅ TEST-102 received, thank you. Yes: set your QA product on the sid back office to **inactive** (no delete). Nothing else.
+
+---
+## @Porter → @Tanya — 2026-10-15 — ⏸️ WAIT for "sid deployed": REQ-121 (TASK-805 back + 806 front), the teacher form offers EVERY active program, incl. DUO
+Read `requirements/REQ-121-teacher-form-cannot-offer-an-unassigned-program-duo.md` and Sober's steps (`inbox/PM.md`, his 10-15 "REQ-121 VERIFIED" entry). **The OLD-build proof is already done** by the owner on sid: typing "Du" offered only Duo INLINE SKATE, **not Duo SURFSKATE**. When I say GO:
+1. **Teachers → Edit a QA teacher → Subjects:** **both** DUO programs are offered.
+2. Tick **Duo SURFSKATE** and save. Then **New course → DUO → that teacher → Program** offers it, and a DUO course can be created (QA family, sid).
+3. **The Private course picker still hides DUO programs.**
+4. A Teachers-only user can load the form (no 403).
+
+Headless. Write TEST-103, then nudge me. The uat check comes later, read-only.
+
+---
+## @Porter → @Tanya — 2026-10-15 — ▶️ GO: REQ-121 is on sid (back `d29e9d0` + front `d1d0a99`). Run the ⏸️ entry above (TEST-103), then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-15 — ▶️ REQ-121 on **uat**, READ-ONLY (the owner has told Khwan she can tick DUO herself)
+1. **Build identity first:** is uat on back `d29e9d0` + front `d1d0a99`? If NOT, stop and tell me (the owner may not have deployed yet).
+2. If yes: Teachers → open the edit form → Subjects → "Du" offers **both** DUO programs. **Do not tick or save anything**; ticking is Khwan's.
+
+Add a §uat section to TEST-103, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ⏸️ LATER (not now): REQ-122 click-through of the customer prototype
+When both teams finish, I will GO you on a full click-through of `som-balance-backoffice-spec` (path in `machine.local.md`), **opened by double-click from a ZIP (file://)**, the way the customer will open it. Nobody has tested file:// yet. Details come with the GO.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ▶️ GO: REQ-122 full click-through of the customer prototype (TEST-104). Both teams are done
+Folder `som-balance-backoffice-spec` (path in `machine.local.md`; not git). Read `requirements/REQ-122-backoffice-clickable-spec-for-the-customer.md` §1, §2, §4 + the folder's `CHECKLIST.md` / `CHECKLIST-b.md`. **Headless.**
+1. **ZIP it, unzip it into a temp folder, open `index.html` by double-click (file://)**, the way Khwan will. Everything must work offline (Google font aside).
+2. **Every page × every role (CEO / Admin / Coach):**
+   - no console error; no "dead button" log;
+   - every button shows an effect;
+   - every page has the Thai "หน้านี้ทำอะไร" panel.
+3. **Visibility** (REQ-120 R0, incl. the widened R0.2):
+   - Admin sees **no** coach pay anywhere (no base, no FL rates, no slip totals) and **no** revenue;
+   - Coach sees only My slip + their own inbox.
+4. **Feedback:** tick ✓/✗ + a note on several pages → **copy-all** gives every page's answer (real clipboard) → **print / PDF** renders. The two in-page A/B questions (camp LINE message; installments) appear and are captured.
+5. **The look:**
+   - readable at phone width;
+   - light + dark;
+   - English UI labels, Thai explanations;
+   - no real family data (children only "น้องเอ / น้องบี").
+
+Write TEST-104 with findings by page. **Don't fix anything.** Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ▶️ TEST-104 re-check, 2 points only (Sober fixed both)
+Re-zip the folder and open it by double-click:
+1. typing `#/example/everything` must land on Home, with no pay shown anywhere;
+2. at 375×812 the header is compact (~94 px), the role switcher is visible, and every action behind ⋯ works.
+
+Add a §re-check to TEST-104, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ▶️ one last 5-minute check: the CLEAN customer ZIP
+I built the zip Khwan will get: `project-docs/customer-2026-10-16-backoffice-prototype/SOM-BALANCE-Backoffice-prototype.zip` (71 KB, 45 files). It is the spec folder **minus** CHECKLIST*.md, CONVENTIONS.md, data/a-example.js and pages/a-example/ (your ⚪).
+Unzip into a temp folder and double-click `index.html`. Then check:
+- Home opens;
+- 3 roles × a quick crawl of every menu: 0 console errors;
+- copy-all works.
+
+Add a §clean-zip line to TEST-104, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ⏸️ LATER: REQ-122 v2 screenshots
+REQ-122 §5: every page gets a [?] tutorial popup with **your screenshot** + pins (the engineers add the pins as an overlay; you only capture). When both teams finish the new look, I'll GO you:
+- every page × the relevant role;
+- one fixed desktop size;
+- headless;
+- PNGs ≤ ~150 KB into the spec folder's `help/` per the naming in `CONVENTIONS` v2.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ▶️ GO REQ-122 v2 screenshots, part 1: **Team A's 12 pages now** (Team B's 20 follow when they finish restyling)
+Folder `som-balance-backoffice-spec` (path in `machine.local.md`).
+- **Rules (`CONVENTIONS` v2 §5.3):** 1280×800 · the most privileged role that sees the page · light theme · `help/<slug>.png` ≤ 150 KB · headless.
+- **Team A's pages:** Salary (8) · Notifications (2) · Front office changes: teacher roles + coach login.
+- Example data only (it already is). **Capture only**: no pins, no edits to pages.
+
+List the files you wrote + their sizes in a TEST-105 note, then nudge me. Fern adds the pins after.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ▶️ GO REQ-122 v2 screenshots, part 2: **Team B's 20 pages** (TASK-740 restyled)
+The same rules (`CONVENTIONS` v2 §5.3): 1280×800 · **CEO role on all 20** · light · `help/<slug>.png` ≤ 150 KB · headless · capture only.
+
+**Silver's list of the 20 slugs is in `inbox/PM.md`**, her 10-16 entry "REQ-122 v2 Team B PHASE 1 DONE": take the slugs from the pages' help declarations.
+
+Also, while you're there, **look at the v2 design itself**: anything that looks broken or unfinished, by page. Add "part 2" to TEST-105, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ▶️ re-capture Team B's changed pages (TEST-105 part 3)
+Re-capture, same rules (1280×800, CEO, light, ≤ 150 KB, headless):
+- `stock-sales-record` ("Save sale" now top-right of the first card);
+- `revenue-summary` ("How refunds count" is now a header action);
+- `stock-demo` (3 header buttons);
+- `fo-payment` (the "Paid" badge after the action);
+- `fo-confirm-camp`.
+
+**fo-payment and fo-confirm-camp with the red [?] dot hidden.** Confirm each main action is inside the frame. Team A's 2 pages (Pay settings, Admin entries) come later, when Sober reports. Add part 3 to TEST-105, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ▶️ re-capture 3 Team A pages FULL-PAGE (TEST-105 part 4)
+Fern's v2.1 layout fix is in (Sober verified). Re-capture:
+- **Pay settings** (`salary-settings`);
+- **Admin entries** (`salary-entries`);
+- **Slip** (`salary-slip`).
+
+As **full-page PNGs, 1280 wide** (the whole page height), CEO, light, ⋯ closed, ≤ 150 KB each, headless, overwriting the old `help/` files. Check the main actions sit inside the first 800 px. Add part 4 to TEST-105, then nudge me. Fern re-pins after.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ▶️ re-capture the 3 tall Team A pages once more (TEST-105 part 5)
+Fern's fixes are verified: no overflow at 1280, the side menu runs the full page height, one "Add school". Re-capture **salary-settings, salary-entries, salary-slip** full-page, with the same rules as part 4 (1280 wide, CEO, light, ≤ 150 KB, headless, overwrite). Check:
+- the sidebar reaches the bottom of each image;
+- no clipping on the right.
+
+Add part 5 to TEST-105, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-16 — ▶️ GO TEST-106: the FINAL check of REQ-122 v2, on the exact CLEAN ZIP Khwan will get
+**The zip:** `project-docs/customer-2026-10-16-backoffice-prototype/SOM-BALANCE-Backoffice-prototype-v2.zip` (2.7 MB, 77 files, incl. 32 help PNGs; no CHECKLIST / CONVENTIONS / a-example). Unzip into a temp folder and **double-click `index.html` (file://)**. Headless.
+1. **Every page × 3 roles:** 0 console errors, 0 dead buttons, every button has an effect.
+2. **Every [?]:** the image loads, the pins sit on the right things, the Thai steps match the pins, feedback ✓/✗ + note works, and **both A/B questions** appear on their pages (red dot until answered).
+3. **Visibility:** Admin sees no coach pay (base, FL rates, slip totals) and no revenue; Coach sees only My slip + own inbox.
+4. **⋯ menu:** copy-all on the real clipboard (all pages + notes + both A/B), print/PDF, theme, reset.
+5. **The look:** 1280 and 375 wide, light + dark, no sideways scroll, English UI, Thai only in the help; no real family data.
+6. **Old answers:** v1 answers still present if any were saved (not required).
+
+Write TEST-106 by page. Fix nothing. Nudge me: PASS means it goes to the owner.
+
+---
+## @Porter → @Tanya — 2026-10-17 — 🔴 LIVE: REPRODUCE on sid: a weekly course can't be created when a week falls on the teacher's leave day (REQ-123)
+Read `requirements/REQ-123-course-create-refused-on-a-teacher-leave-day.md` (Khwan verbatim). On **sid**, headless:
+1. Put a QA teacher on **leave on a Saturday** about 3 weeks ahead.
+2. **New course → weekly Saturdays** with that teacher, spanning that date. Record the **exact refusal text + a screenshot**.
+3. **Mark that week as a planned absence** in the create preview ("ลาล่วงหน้า", REQ-045). Still refused? Exact text.
+4. **Try the other ways she could do it herself:**
+   - change that session's date;
+   - change its teacher in the preview;
+   - start the course after the leave.
+   - Note which (if any) let the course be created.
+5. The same with the **DUO** create, if it's a separate flow.
+
+Write TEST-107 by value, then nudge me. Fix nothing; no cause, only what happens.
+
+---
+## @Porter → @Tanya — 2026-10-17 — ➕ add to TEST-107: walk the WHOLE teacher advance-leave flow as an admin (REQ-123 §2)
+Owner: *"การจองวันลาล่วงหน้า ของครู แอบใช้งานยากด้วยนะ"*. On sid, after the reproduction, **do the admin's real job**: put a QA teacher on leave in advance (one day, then a range), and see what happens to that teacher's existing classes and to new bookings. Record:
+- every click from where you start to the end;
+- every word that is unclear;
+- every place you had to guess;
+- every dead end;
+- what the screen tells you about the classes affected.
+
+Screenshots. A "TEST-107 §2 friction list", ranked worst first. No fixes, no opinions about code.
+
+---
+## @Porter → @Tanya — 2026-10-17 — ➕ for TEST-107 (from Sober's read-only code reading; NOT confirmed until you show it)
+- **Expected refusal text, with and without the planned absence:** "ครู ต้าบ ลาวันที่ 2026-11-07 — เพิ่มคาบกับครูในวันนั้นไม่ได้ กรุณาเลือกครูอื่นหรือวันอื่น" (your QA teacher's name and date instead). Record what you actually see.
+- **Workarounds to try:**
+  - change THAT week's teacher in the preview;
+  - create the course without that week.
+
+---
+## @Porter → @Tanya — 2026-10-17 — 🔁 REQ-123: no workaround goes to the customer (owner: long-term fix only)
+Still do TEST-107 fully. It is the reproduction and the friction list for the redesign. The workaround tries stay useful as facts, but nothing is sent to Khwan.
+
+---
+## @Porter → @Tanya — 2026-10-17 — ⏸️ WAIT for "sid deployed": TASK-813 after-proof (TEST-107 §after)
+The same recipe as your reproduction, on the new build, Private + DUO:
+- the leave week **ticked → CREATED**: the week is pushed to the end and the leave stays;
+- **not ticked → still refused** (the same text);
+- two leave days, one ticked → still refused.
+
+By value + screenshots.
+
+---
+## @Porter → @Tanya — 2026-10-17 — ▶️ GO TASK-813 after-proof on sid (back `c1d90d8`). Run the ⏸️ entry above (TEST-107 §after), then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-17 — TASK-813 after-proof received (PASS). ⏸️ No uat check now
+The owner ships **813 + 814 + Phase 1 together**, once. Your full sid gate comes when the whole set is ready.
