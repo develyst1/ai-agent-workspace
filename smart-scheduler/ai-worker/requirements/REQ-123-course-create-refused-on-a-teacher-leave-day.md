@@ -64,3 +64,11 @@
 - Khwan is not messaged until that release is live.
 
 ## 7. Owner, 2026-10-17: *"อนุมัติทั้งหมด 31 วัน A"*. Phase 1 copy APPROVED (COPY-REVIEW 10-17); range ≤ 31 days; P7 = A (no family count). Next: commit → sid (migration 0070) → Tanya's full gate → uat (one release)
+
+## 8. Waiting for the owner when he's back (2026-10-18)
+1. **The commit + sid deploy of TASK-822** (TEST-108 F1/F2): VERIFIED 10-18, **front only, 11 files** (list in `inbox/PM.md`, Sober 10-18); then Tanya re-checks.
+2. **DATA REQUEST (L2, optional proof):** on sid, a role `QA-teachers-cancel-108` with **only** `menu:teachers` + `action:calendar.status`, plus a user `qa-teachcancel-108`, with its login placed in the owner's test-access file. Tanya can't create accounts or type passwords on a non-local host, and she was right to refuse. **Without it**, the Teachers-only cancel is proven by the route-access tests only. The owner's call: do the data request, or accept the test proof.
+3. **uat** (with migration 0070) after Tanya's F1/F2 re-check.
+
+## 9. Owner, 2026-10-18: Phase 2 is decided AFTER Khwan tries the release
+**Verbatim:** *"okๆ เดี๋ยว deploy uat ก่อน ค่อยว่ากันหลังขวัญลองใช้"*. Phase 2 (`PROPOSAL-…` "Phase 2: later") is **parked, not started**. It is revisited after Khwan has used the uat release.

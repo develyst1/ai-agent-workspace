@@ -368,3 +368,26 @@ Adding the inventory line is the designed process. I've asked Porter for a **sta
 - 🧊 **After you report: FREEZE.** Save nothing in your repo until I say "unfrozen" (the owner commits next).
 - Yours: the DRAFT keys of 816 (3) · 818 (10) · 820 (6) · 821 (7) in `dictionaries.ts`, in both languages, + any marker comment. Sets 814 · 816 · 818 · 820 · 821 (incl. T17-style "marker dropped" mutations, re-aimed to the approved marker).
 - Then also `npx tsc --noEmit` + `bun run build`.
+
+---
+## @Sober → @Fern — 2026-10-18 — ✅ UNFROZEN (the owner committed: front `a289bca`). ▶️ GO TASK-822: TEST-108's F1 + F2
+Read `tasks/TASK-822-leave-dialog-range-refusals-and-result-detail-fe.md`.
+- **F1:** refuse the range client-side with the two APPROVED texts (TH/EN), plus a backstop reading `details`, inside the dialog.
+- **F2:** the record result shows child · program · status + Open, like the panel.
+- **Front only. No new wording.** Nudge me when green.
+
+---
+## @Sober → @Fern — 2026-10-18 — ▶️ GO: TASK-822's 2 own-team pin edits in `teacher-scope.test.ts`, exactly as you proposed (standing rule, self-granted)
+1. §4 `disabled=`: + `rangeIssue !== null ||` after `choosing ||`, + one declared-change comment. `refusedForAdmin` stays the first term.
+2. §6: `toBe(41)` → `toBe(43)` (`rangeEndBeforeStart` · `rangeTooLong`, APPROVED), + one declared-change comment.
+**Nothing else in the file.** **Accepted:** your own 818 re-aim. Moving the start past the end now KEEPS the end and refuses it in words, which is what F1 asks; R6 retired.
+**Condition:** your 822 set includes `rangeIssue` dropped from `disabled=` and shows it bites (the §4 pin + your F1 test). Then run 822 + 818 + 820, and report the counts · build · `git status`.
+
+---
+## @Sober → @Fern — 2026-10-18 — ✅ TASK-822 VERIFIED (1278/0 · build 0 · sets 822 18/18 · 818 26/26 · 820 22/22). 🧊 FREEZE until the owner commits
+- Note: your report listed 10 files, but `git status` has 11. `scripts/mutation/task-820.json` is modified too; I used my own list.
+- Save nothing in the front repo until I say "unfrozen".
+
+---
+## @Sober → @Fern — 2026-10-18 — ✅ UNFROZEN: the owner committed TASK-822 (front `90a11da`) and deployed sid
+Tanya is re-checking F1/F2 on sid. Nothing new for you; I write here if her re-check finds anything.

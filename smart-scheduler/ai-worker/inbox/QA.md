@@ -714,3 +714,69 @@ When I say GO (sid, back + front, migration 0070):
 9. **Permissions:** a Teachers-only admin can use the list and cancel.
 
 By value + screenshots; nothing is sent to Khwan.
+
+---
+## @Porter → @Tanya — 2026-10-18 — ▶️ GO TEST-108: the REQ-123 full gate on sid (back `7d39cbf` + front `a289bca`, migration 0070 applied, journal 71 verified)
+Run the ⏸️ entry above (points 1–9), plus `DEPLOY-REQ-123-teacher-leave-release-2026-10-17.md` §4. By value + screenshots. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-18 — TEST-108: F1/F2 go to Sober for a fix. **L2: create the test user yourself on sid**
+- **L2:** sid is yours to write (full access on the dev server, test data only). **Create a QA user on sid via the app's Users / permissions screens** with ONLY `menu:teachers` + `action:calendar.status`, clearly QA-named. Prove the Teachers-only list + cancel. Raise it as a DATA REQUEST only if the app can't create that user.
+- **L1** (one LINE for a range) stays unobservable; it's noted, not blocking.
+- Re-check F1/F2 when I say the fix is on sid.
+
+---
+## @Porter → @Tanya — 2026-10-18 — ⏸️ WAIT for "sid deployed (front)": TEST-108 re-check of F1/F2 (TASK-822, front only)
+- **F1:** 32 days, and end-before-start, in TH and EN → the dialog shows the approved sentence, **the button waits, and NO request is sent** (check network).
+- **F2:** after recording a leave, the result lists child (DUO: both) · program · status + Open → the booking.
+
+Add §re-check to TEST-108. After it passes I send the owner the uat note.
+
+---
+## @Porter → @Tanya — 2026-10-18 — ▶️ GO: TEST-108 F1/F2 re-check on sid (front `90a11da`). Run the ⏸️ entry above, then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-18 — ⏸️ WAIT for "uat deployed": REQ-123 on uat, READ-ONLY (TEST-108 §uat)
+- Check the build identity first (back `7d39cbf` + front `90a11da`).
+- Then read-only: the calendar leave strip opens the panel; the Teachers page shows "Teacher leave"; the create preview warns on a leave week, **without creating anything**.
+- **No writes on uat.**
+
+---
+## @Porter → @Tanya — 2026-10-18 — ▶️ GO: REQ-123 on uat, READ-ONLY (the ⏸️ entry above), PLUS 4 screenshots for Khwan from SID
+The owner deployed uat (back `7d39cbf` + front `90a11da`) and migrated: 0070 applied, journal 71.
+1. **uat read-only:**
+   - build identity;
+   - the leave strip opens the panel;
+   - "Teacher leave" is on the Teachers page;
+   - the create preview warns on a leave week (create nothing).
+   - **No writes.**
+2. **For the customer message, from sid** (QA data only, no real family names), headless, into `project-docs/customer-2026-10-18-teacher-leave/`:
+   - `1-create-warning-tick.png`: the create preview warning + the one-click "planned absence";
+   - `2-leave-range-dialog.png`: the leave dialog with From–To and the "what saving will do" line;
+   - `3-leave-panel-cancel.png`: the calendar strip's panel (days, classes with child/program, Cancel leave);
+   - `4-teacher-leave-list.png`: the Teachers page list.
+
+Add §uat to TEST-108, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-19 — ⏸️ WAIT for "sid deployed": REQ-124, Palm's SOM dashboard + Daily Report "Others Program" (TEST-109)
+sid = back (REQ-124 commit) + front `e314303` (Palm's merged screens). Read `requirements/REQ-124-…md` + `CHECK-REQ-124-…md` + Silver's 10-18 done-entry in `inbox/PM.md`.
+- **The API equals your own recount** (from `/bookings`, `/calendar`, people and parents data) for `/reports/som?month=…` (with and without `badgeValueIds`), every `/reports/som/new-vs-renewing/:bucket` list (`rows.length` = the card), and `/reports/daily` `kidsByProgram`, **by value**, on 2–3 months/days with real mixes.
+- **The live bugs, fixed in the NEW fields:** Renew is not always 0 · Active Course excludes ended/paused · trials exclude CANCELLED · `today.confirmed`.
+- **ECA/OTHER once per class** (a 2-hour class with 5 kids = 5).
+- **District:** mostly "unknown" is expected.
+- **The screen:** which numbers Palm's screen shows, old fields or new? Record it by card. **If his screen still reads old fields, that is Palm's to switch**: note it, don't call it our defect.
+
+Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-19 — ▶️ GO TEST-109 on sid (back `4762aa7` + front `e314303`). Run the ⏸️ entry above, then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-19 — ⏸️ WAIT for "sid deployed": TEST-109 re-check (F2 + N1 fixed) + the SCREEN, once front `e314303` is on sid
+- **F2:** `kidsByProgram` CAMP counts a coach-less camp week's kids that day; under `?teacherId` only that coach's weeks.
+- **N1:** October `recentFirstTrial` now excludes children holding ANY course bought ≤ the month end (Aileen, ส้ม out), so expect your 4. The "no course" cards follow the same rule.
+- **The screen** (if the owner has put front `e314303` on sid): Palm's SOM page and the Daily Report's Others Program, by value vs the API, per card. Old-field cards are Palm's switch (note only).
+
+---
+## @Porter → @Tanya — 2026-10-19 — ▶️ GO the TEST-109 re-check on sid (back `82a1988` + front `e314303`, owner deployed both). Run the ⏸️ re-check entry above (F2 + N1 + the SCREEN), then nudge me

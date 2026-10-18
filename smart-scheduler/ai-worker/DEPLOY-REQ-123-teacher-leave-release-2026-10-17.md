@@ -1,4 +1,5 @@
 # DEPLOY — REQ-123 one release: 813 + 814 + Phase 1 (P1–P7) — sid first, then uat — @Sober, 2026-10-17
+> ✅ **CLEARED for uat — @Porter, 2026-10-18.** sid gate PASSED: TEST-108 (Khwan's case, Private + DUO, P1–P7, copy) + its F1/F2 re-check on the TASK-822 fix. **Build uat from: back `7d39cbf` · front `90a11da`** (the latter includes TASK-822; this note was written at `a289bca`). §3 applies as written, **including `bun run db:migrate` on uat (0070 → journal 71)**. Open, not blocking: L1 (one LINE for a range: tests only, no LINE-linked QA teacher) · L2 (Teachers-only cancel: tests only, unless the owner does the DATA REQUEST).
 **For @Porter → the owner.** Agents commit nothing; the owner commits, then deploys. **Both apps go together.**
 
 ## 0 · What is in it

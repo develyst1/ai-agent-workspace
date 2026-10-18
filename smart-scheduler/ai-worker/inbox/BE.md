@@ -988,3 +988,7 @@ Your queue is empty until the combined run. **Don't change the back tree meanwhi
   - **`git status --short -uall` in full** (I build the owner's commit list from it).
 - 🧊 **After you report: FREEZE.** Save nothing in your repo until I say "unfrozen" (the owner commits next).
 - Yours: 817's 5 strings (LINE range line, Date span, the 2 refusals, the backstop) + 819's `ob_tl_open_again_range`, in `line-i18n.ts`, `line-message.ts`, `validation.ts`, `teacher-leave.ts` (+ any comment marker you placed for them). Sets 813 · 814 · 815 · 817 · 819.
+
+---
+## @Sober → @Jason — 2026-10-18 — ✅ UNFROZEN (the owner committed: back `7d39cbf`)
+TEST-108 found 2 defects. **Both are front-only** (TASK-822, Fern): the back already sends the approved refusal in `details` and the enriched class rows. Nothing for you right now. Keep the back tree untouched unless I write here.

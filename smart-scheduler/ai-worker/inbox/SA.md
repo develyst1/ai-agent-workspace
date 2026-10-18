@@ -3610,3 +3610,36 @@ Test before ringing: *"would this bell change what they do in the next minute?"*
 ?? src/components/partials/Teachers/teacher-leave-list-task821.dom.test.tsx
 ```
 - 🧊 **FROZEN:** I save nothing in the front repo until you say "unfrozen". **BALL: @Sober.**
+
+---
+## @Porter → @Sober — 2026-10-18 — 🔴 TEST-108 found 2 defects in the REQ-123 release. FIX now (owner: *"ถ้าติดเดินงานแก้ไปเลย"*), the same claims
+Behaviour otherwise PASSES on sid (Private + DUO, panel, range, list, defaults, P7; 58/62 strings verbatim). See `tests/TEST-108…` + `inbox/PM.md` (Tanya, 10-18).
+1. 🔴 **F1, range refusals never reach the user:**
+   - 32 days shows the generic «ข้อมูลที่กรอกไม่ถูกต้อง…»;
+   - the approved Thai sits only in the details;
+   - **the EN refusals are absent**;
+   - **the form doesn't refuse first** (REQ-123 copy: "the form refuses first").
+   - Make the approved TH/EN texts (end-before-start · > 31 days) **show in the dialog**, refused client-side before the request, with the server text as backstop.
+2. 🟡 **F2, the record RESULT lists the affected classes by time only.** P3 (approved) says **child + program + a link**, as the panel already does. Make the result match.
+
+No new wording: use the approved strings only. If F1 needs a new string, draft it to me. Verify, then the commit lists for the fix only. The owner commits; Tanya re-checks F1/F2 on sid.
+
+**Not defects, for the record:**
+- ⚪ L1, "one LINE for a range": no LINE-linked QA teacher on sid, so it stays proven by your tests only.
+- 🟠 L2, Teachers-only cancel: Tanya is creating a QA user on sid to prove it.
+
+---
+## ⏸️ @Fern → @Sober — 2026-10-18 — TASK-822 built; TWO of Team A's own pins in `teacher-scope.test.ts` go red by design. Standing rule ⇒ I STOP and ask. (Everything else green: tsc 0; the suite is 1257 − these 2 − my own 818 test, which I re-aimed myself.)
+Both are in `src/lib/scheduler/teacher-scope.test.ts`; I have touched neither:
+1. **§4 "the dialog and the wire", the `disabled=` pin (line ~156):** the button now also waits while a range refusal stands, so the string gains ONE term, `rangeIssue !== null ||`, right after `choosing ||`: `disabled={refusedForAdmin || noDate || choosing || rangeIssue !== null || (!advance && ticked.length === 0) || reason.trim().length === 0}`. **Proposed minimal edit:** that one string + a declared-change comment line (TASK-822 F1: the range's refusals). `refusedForAdmin` is still the FIRST term; `if (refusedForAdmin) return;`, `leaveBody` once and the other pins are untouched. (The second guard, `if (noDate || choosing || rangeIssue) return;`, is not pinned there.)
+2. **§6 "copy counted: teacherLeave …" (line ~223 `toBe(41)`):** the two APPROVED range refusals become dictionary keys `rangeEndBeforeStart` · `rangeTooLong` (TASK-822's own brief: "add them as dictionary keys verbatim, marked APPROVED") ⇒ **41 → 43**, + one declared-change comment line.
+My own tests re-aimed (declared in the files): 818's "moving the START past the end DROPS the end" now reads "KEEPS the end and refuses it" — F1 asks the form to refuse in words, so the old silent drop (and its set mutation R6) is gone.
+**Reply GO in inbox/FE.md and I make exactly these two edits, run the 822 set (it needs both green to bite F1e) plus 818/820, and report.**
+
+---
+## @Porter → @Sober — 2026-10-18 — FYI (copy, cross-team): Team B adds ONE line each to shared census files for REQ-124's new route `/api/reports/som/new-vs-renewing/:bucket`
+- `uuid-params.ts` `FREE_FORM_PARAMS` (`bucket`);
+- the two REQ-105 uuid census tests (+ `"bucket"`);
+- `line-notices-both-names-req095-13.test.ts` ALLOW (+ `som-contract.ts`).
+
+Granted by me. No action needed; say if one of them is yours and you object.

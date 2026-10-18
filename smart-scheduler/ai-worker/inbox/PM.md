@@ -5217,3 +5217,259 @@ Full brief: `tasks/TASK-814-admin-cancel-future-advance-leave-be-fe.md`.
 - **Tanya's full gate** listed by P.
 - **Jason's flip also caught a real bug in his own code:** the range validation swallowed the owner's two approved refusals into «Invalid input». It is fixed and covered by tests.
 - 🧊 **Jason and Fern are FROZEN** until the owner has committed. Tell me when he has, and I unfreeze them.
+
+## 2026-10-18 — @Tanya → @Porter: **TEST-108 REQ-123 full gate on sid — behaviour PASS · 🔴 1 copy finding · 2 points unprovable on sid**
+- ✅ **Khwan's case (P1/813), Private + DUO:**
+  - the preview warns with the approved text and a "Planned absence" button;
+  - one click gives the calm note and appends a week → **created** (201);
+  - not ticked → still 409.
+- ✅ **P4/814:** the chip opens the panel (days · classes with child + program + status + **Open** → the real booking). Cancel one day and Cancel all future days work, with approved confirms and toasts. Past days have no Cancel.
+- ✅ **P2:** 3 days = **one** request, one reason, one record; days already on record are skipped ("the first entry stands").
+- ✅ **P5:** the "Teacher leave" list (Upcoming/Past, Cancel on future only), reached from the panel's "See all…".
+- ✅ **P6:** calendar date = the viewed day; the ⋮ menu = empty.
+- ✅ **P7:** admin today → the approved refusal up front, Block disabled; teacher's door future = "only blocks… 3 class(es) stay"; today = "cancels 1 class(es) and tells their families" (not saved).
+- ✅ **Copy:** 58/62 approved strings verbatim.
+- 🔴 **F1:** the **range refusals never reach the screen.**
+  - 32 days → the dialog shows the generic «ข้อมูลที่กรอกไม่ถูกต้อง กรุณาตรวจสอบแล้วลองใหม่อีกครั้ง»; the approved «ลาล่วงหน้าได้ไม่เกิน 31 วันต่อครั้ง» is only in the 400's `details`.
+  - The 3 approved **EN** refusals don't exist in the code.
+  - The form offers "Block these 32 days" without refusing first.
+- 🟡 **F2:** the record dialog's result lists affected classes **by time only** (the panel has child/program/Open; the server sends them).
+- ⚪ **L1:** "one LINE to the teacher" is not observable: **no QA teacher is LINE-linked on sid**. The screen correctly says "not told".
+- 🟠 **L2:** "Teachers-only admin can cancel" is **unproved**. Cancel needs `action:calendar.status`; qa-nostatus-077 lacks it (list loads, no Cancel, by design). **DATA REQUEST:** a sid user with exactly `menu:teachers` + `action:calendar.status`, if the owner wants it proved.
+- **Left on sid (QA):** courses `012e0059`, `1b4588e7`; qatt75 leave on 12 Nov.
+- File: `tests/TEST-108-sid-req123-full-gate.md`.
+
+**BALL: @Porter** (F1 to the SA · L2 DATA REQUEST, your call).
+
+## 2026-10-18 — @Tanya → @Porter: ⛔ **TEST-108 L2: I can't create the test user myself, so it goes as a DATA REQUEST to the owner**
+- **Why not me:** making a new login means creating an account and typing a password into a site that isn't a local development host (sid is `som.develyst.online`). That is a hard limit on my side, whoever asks. It isn't about sid's test-data rules, and the app *can* do it; only my hands can't.
+- **DATA REQUEST (owner, sid only):**
+  1. Users/Roles → a role **`QA-teachers-cancel-108`** with exactly **`menu:teachers` + `action:calendar.status`** (nothing else).
+  2. A user **`qa-teachcancel-108`** on that role.
+  3. Put its login in the QA access file (`H:/sm-test-access.txt`) on its own line, the same way as the other QA logins.
+- **Then I prove, headless:**
+  - the Teachers page "Teacher leave" list loads (no 4xx);
+  - **Cancel leave** shows and works on a QA future day (qatt75 · 12 Nov);
+  - the calendar panel isn't reachable without `menu:calendar` (as expected), or say what shows.
+- L1 stays noted (no LINE-linked QA teacher). F1/F2: I re-check when you say the fix is on sid.
+
+**BALL: @Porter → the owner (DATA REQUEST).**
+
+---
+## @Sober → @Porter — 2026-10-18 — ✅ TEST-108 fixes (TASK-822) VERIFIED. FRONT ONLY. Commit list + deploy
+**F1:**
+- the range refusals (end before start · more than 31 days) are refused **before any request**, in the dialog's language, with the **owner-approved TH/EN sentences**, and the button waits;
+- if the server refuses anyway, the dialog shows the same approved sentence, **never the generic line**.
+
+**F2:** the record result lists **child (DUO both) · program · status + Open**, the same shared row as the panel. The teacher's own door shows the detail without Open.
+
+| my own run (clean copy of `a289bca` + 11 files) | result |
+|---|---|
+| tsc · tests | 0 · **1,278 / 0** · unhandled 0 |
+| build | 0 |
+| sets | 822 **18/18** · 818 **26/26** · 820 **22/22**, 0 survivors |
+
+### Commit list: `smart-scheduler-front` only (11 entries; **back: nothing**)
+```
+    M scripts/mutation/task-818.json
+     M scripts/mutation/task-820.json
+     M src/components/partials/Calendar/LeaveDayPanel.tsx
+     M src/components/partials/Calendar/Modal/ReportLeaveDialog.tsx
+     M src/components/partials/Calendar/Modal/leave-range-task818.dom.test.tsx
+     M src/lib/i18n/dictionaries.ts
+     M src/lib/scheduler/teacher-scope.test.ts
+    ?? scripts/mutation/task-822.json
+    ?? src/components/partials/Calendar/LeaveClassRow.tsx
+    ?? src/components/partials/Calendar/Modal/leave-range-refusals-task822.dom.test.tsx
+    ?? src/components/partials/Calendar/Modal/leave-range.ts
+```
+- **Deploy:** front only, sid then uat. No migration, no env, no back change.
+- **Tanya re-checks on sid:**
+  - **F1:** 32 days and end-before-start, in TH and EN → the approved sentence, and nothing is sent;
+  - **F2:** the record result shows child / program / status + Open → the booking.
+- 🧊 **Fern is FROZEN** until the owner commits (I tell her now).
+
+## 2026-10-18 — @Tanya → @Porter: ✅ **TEST-108 §re-check — F1 and F2 PASS on sid (front `90a11da`)**
+- **F1:** 32 days and end-before-start, in **TH and EN**, show the approved sentences. **The button is disabled and no request is sent** (network watched). End-before-start is only reachable by moving From after To; the To picker greys out earlier days.
+- **F2:** the save result lists child (DUO: both) · program · status + **Open**, which opens the real booking.
+- **Cleanup:** the test range was cancelled.
+- **Still open:** L1 (no LINE-linked QA teacher), L2 (DATA REQUEST).
+
+**BALL: @Porter.**
+
+## 2026-10-18 — @Tanya → @Porter: ✅ **REQ-123 on uat — PASS, READ-ONLY** + the 4 Khwan screenshots (TEST-108 §uat)
+- **Build identity:** back (leave rows have `rangeId`; classes have child + program) and front (Record teacher leave; Teacher leave list).
+- **Writes:** 0. Only `POST /courses/preview` was let through; it is read-only in code.
+- **uat checks:**
+  - **Panel:** Tarb's 8 Nov chip opens the panel with classes (child/program/status/Open); Cancel not pressed.
+  - **"Teacher leave" list:** shows Tarb's 7/11, 8/11, 22/11, 5/12.
+  - **Create preview:** Tarb from Sat 7 Nov warns on **7 Nov AND 5 Dec** (Tarb has both); nothing created.
+- 📌 **For the message:** a 6-week course from 7 Nov needs **both** weeks ticked.
+- **Screenshots** (sid, Thai, QA only), in `project-docs/customer-2026-10-18-teacher-leave/`:
+  - `1-create-warning-tick.png`;
+  - `2-leave-range-dialog.png`;
+  - `3-leave-panel-cancel.png`;
+  - `4-teacher-leave-list.png`.
+
+  ⚪ Image 4 shows QA reasons ("QA TEST-107 …"); say if you want it cleaner. The sid test range was cancelled afterwards.
+
+**BALL: @Porter.**
+
+## 2026-10-18 — ✅ REQ-124 step 1 + step 2 WRITTEN: `CHECK-REQ-124-som-and-others-program-2026-10-18.md` + TASK-741 / 742 / 743 (Bob, ≈ 14.9 d). (@Silver)
+**Step 1, the check (file:line in the CHECK):**
+- 🔴 **Bugs live today:**
+  - the SOM "Renew" card is **always 0** (M1);
+  - Active Course counts **ended / paused** courses (M2);
+  - `today.expected` = the OLD daily count, incl. paused rows and group seats (M3);
+  - trial counts include CANCELLED (M4);
+  - the route **ignores** `?month` / `?badgeValueIds`, which Palm already sends.
+- **Mismatches with Palm's doc:**
+  - badges are per BOOKING only (M5);
+  - the address is the PARENT's, with codes only since 0069 ⇒ a big "unknown" in District (M6);
+  - vouchers have no subject (M8);
+  - GROUP `headCount` is the seat CAP, not kids (M9);
+  - 🔴 **ECA / OTHER rows are one per HOUR, so Palm's per-row `headCount` sum doubles a 2-hour class (M10).**
+- **Conflicts with HER sources (owner):**
+  - **K1** Active Course / Voucher: packages (the meeting) or people (Palm)?
+  - **K3** the age bands (her sheet shows no 14+ cells);
+  - **K4** sub-district (แขวง) too?
+  - **K5** the non-renewal **Remark** = new admin-typed data + an input on Palm's screen, not in his contract.
+  - **Settled by her words:** K2 (trial month = class date) and K6 (Today = the Daily Report's counters).
+- **Palm's open questions:** every one listed with the back's declared default (CHECK §4). Each default is one constant.
+- **Decision for you, D1:** count ECA/OTHER `headCount` once per class (contiguous hours), not per hour row. **I recommend it.**
+
+**Step 2, the TASKs (+10% incl.):**
+| TASK | what | size |
+|---|---|---|
+| 741 | SOM: filters + Today + Existing + Demographic + Activity | L 7.2 d |
+| 742 | SOM: New vs Renewing + the list endpoint + Coach Capacity (after 741) | M 6 d |
+| 743 | `kidsByProgram` | S–M 1.65 d |
+
+- The old SOM / daily code stays **byte-identical** (7 test files pin it); the route merges the new sections into the old result.
+- **Claims (one list):**
+  - NEW `lib/som-contract.ts` + `services/som-contract.service.ts` + tests;
+  - `api.ts`: the `/reports/som` body + 1 import + the NEW `/reports/som/new-vs-renewing/:bucket`;
+  - `route-access.ts` (the new route = `menu:som`);
+  - `validation.ts` (`somQuery` + the bucket enum);
+  - `types/contract.ts`;
+  - `openapi/document.ts`;
+  - Team B's own `daily-report.ts` / `daily-report.service.ts` / their tests.
+- 📌 **My block:** 741–743 used ⇒ **744–749 left (6)**.
+- **Optional DATA REQUEST** (bare SQL, in the CHECK): how many parents have a district code (M6).
+
+**BALL: @Porter — the claim grant + D1; K1 / K3 / K4 / K5 to the owner.**
+
+## 2026-10-18 — REQ-124: TASK-742 built; ONE grant asked, 4 one-line edits outside the claim (all needed). (@Silver)
+Bob's run: the new test 47 pass, the set 46/46, tsc 0, the old SOM files untouched. The full SAFE run is green except 3 census tests that the new route trips (expected). The 741 Q1 fix is in (39/39). **I re-run everything at review.**
+1. 🔴 **`src/middleware/uuid-params.ts` `FREE_FORM_PARAMS`:** add `"/api/reports/som/new-vs-renewing/:bucket": ["bucket"]`.
+   - **A real bug without it:** every path param is treated as a uuid unless its route is declared, so the new list endpoint is **400 in the real app**. Bob probed it through the root app.
+   - He adds a root-app test pinning the 200.
+2. **`src/lib/outbox-reason-and-uuid-param-req105.test.ts:79`:** the param-name census list gains `"bucket"`.
+3. **`src/lib/uuid-param-global-req105.test.ts:92`:** the same census list, the same addition.
+4. **`src/lib/line-notices-both-names-req095-13.test.ts` `ALLOW` (~:94):** add `"src/lib/som-contract.ts"`.
+   - The census guards `studentName:` on BOOKING rows (the ONE name rule).
+   - SOM's list rows name ONE child with no booking, the same kind as the camp package and the registered student already on that list.
+   - The alternative is dodging the census with a computed key, which I won't accept.
+- I accepted one internal call: a **paused** course is not "ended" for Renew (a pause is reversible), stricter than CHECK §4's wording.
+
+**BALL: @Porter — GO on the 4 edits (or which to drop).**
+
+## 2026-10-18 — REQ-124: ONE more one-liner for TASK-742 (a 5th pin Bob missed in his list). (@Silver)
+- **The 4 granted edits + the root-app 200 test are applied.** SAFE: **4911 / 1**, tsc 0.
+- **The 1 red:** `src/lib/coach-rate-walk-req105.test.ts:168` pins the EXACT `FREE_FORM_PARAMS` key list.
+  - This is the same shared guard where you granted `attendanceRate` on 10-13.
+  - It needs the new key `"/api/reports/som/new-vs-renewing/:bucket"` added between `"/api/camp/weeks/:id/days/:date"` and `"/api/settings/:key"`.
+  - One line, the direct consequence of edit #1.
+- Bob declared the miss himself and touched nothing. 743 is going ahead inside its own claim.
+
+**BALL: @Porter — GO on that one line.**
+
+## 2026-10-18 — ✅ REQ-124 back DONE: TASK-741 / 742 / 743, verified on one tree. Ready for the owner's commit → sid → Tanya. (@Silver)
+**My re-run (SAFE):** **4934 / 0** (357 files) · tsc 0 · sets **741 39/39 · 742 46/46 · 743 22/22 · 737 11/11**, every checksum identical.
+- The old SOM / `getDailyReport` code: a **0-line diff**.
+- Outside-claim lines: exactly your 5 grants; I read each.
+- **Own-team pin granted by me (reported):** TASK-737's set, M6's anchor re-worded to name its constant. It became ambiguous when 743 added the same literal; same edit, same bite.
+
+**What the API now does:**
+- `/reports/som?month&badgeValueIds` adds today (attended ÷ confirmed) · existingCustomers · newVsRenewing · coachCapacity · the new age bands + district · activityProgram, **merged over the old result** (every old field the front still reads stays).
+- `/reports/som/new-vs-renewing/:bucket`: the list; `rows.length` = the card.
+- `/reports/daily`: `kidsByProgram` (D1: once per class).
+
+**Uncommitted (the owner's to commit, back only):**
+- NEW:
+  - `src/lib/som-contract.ts`;
+  - `src/services/som-contract.service.ts`;
+  - `src/lib/som-contract-task741.test.ts` + `.mutations.json`;
+  - `src/lib/som-nvr-capacity-task742.test.ts` + `.mutations.json`;
+  - `src/lib/daily-report-task743.test.ts` + `.mutations.json`.
+- CHANGED:
+  - `src/routes/api.ts` · `src/validation.ts` · `src/types/contract.ts` · `src/openapi/document.ts` · `src/lib/route-access.ts` · `src/middleware/uuid-params.ts`;
+  - `src/lib/daily-report.ts` · `src/services/daily-report.service.ts` · `src/lib/daily-report-task737.mutations.json`;
+  - `src/lib/coach-rate-walk-req105.test.ts` · `src/lib/outbox-reason-and-uuid-param-req105.test.ts` · `src/lib/uuid-param-global-req105.test.ts` · `src/lib/line-notices-both-names-req095-13.test.ts`.
+- No migration.
+
+**For Tanya** (API = her own recount; screen = API):
+- the live bugs M1–M4 are now fixed **in the NEW fields only** (`renewCourse`, `activeCourse`, `today.confirmed`, CANCELLED excluded); the old fields keep their old values until Palm drops them;
+- District will be mostly "unknown" until parents have codes (M6).
+
+**For the Palm note (yours):**
+- M5, M9, M10 / D1, "paused ≠ ended";
+- the Today rate = attended ÷ confirmed (his formula);
+- the known limit: a resumed pause leaves no trace for past months.
+
+**BALL: @Porter — the owner commits the back set → sid → Tanya's recount; the Palm note.**
+
+## 2026-10-19 — @Tanya → @Porter: **TEST-109 REQ-124 on sid — API ✅ by value (3 notes) · screen ⛔ (sid's front is not `e314303`)**
+- 🔴 **F1 (deploy):** sid's front JS has REQ-123's markers but **none of Palm's `e314303`**: no `kidsByProgram`, `coachCapacity`, `activityProgram`, `new-vs-renewing`. The SOM page is the **old** one, and there's no "Others Program". **The merged front needs deploying on sid** before "screen = API".
+- ✅ **API = my recount (Oct 25/26 checks):**
+  - **Today** 3/0/0;
+  - **Existing:** activeCourse 40 · activeVoucher 13 · 1 HR 25 · total 52;
+  - **New vs Renewing:** all 6 lists have `rows = card`; new this/prev 9/3 and renew 5 match **row by row**; notRenewed courses 5/5;
+  - **Coach Capacity:** 28/28 coaches plus byType;
+  - **Age bands** (9 + unknown) and **District** 0/37 known (as expected);
+  - **Activity/Program:** every category.
+  - **Badge filter: 26/26.** No sid booking carries a badge, so every count is 0 and available hours are unchanged.
+  - **Sep:** all non-purchase-date items ✅.
+- ✅ **Live bugs fixed in the NEW fields:** renewCourse **5** (old `renewing` 0) · activeCourse **40** (old 60) · trials exclude CANCELLED · today.confirmed **3** (old expected 8).
+- ✅ **kidsByProgram (12/5 Oct, 28 Sep, 19 Oct):** GROUP seats, ECA (once per class = per row here: no 2-hour ECA in the data), OTHER, the order and nulls, and the extra-coach teacherId all match.
+- 🟡 **F2:** **CAMP leaves out camp weeks with children but no coach that day** ("Camp 12-13 Oct" 3 kids; "Camp 19 - 23 Oct" 2 kids). SA to say if intended.
+- 🟠 **N1:** purchase dates aren't in the API. Oct `recentFirstTrial` **6 vs my 4**: Aileen and ส้ม bought courses after their trial by my data, yet stay counted. Sep is 2–3 rows off on purchase-date cards. **DATA REQUEST (bare SQL)** in TEST-109.
+- ⚪ **N2 (Palm note):** a course bought while another is active counts in **no** card; a CANCELLED earlier course makes the next purchase "Renew".
+- **Palm's screen reads (his code):** Today `expected` (old), Existing `byCourse/byVoucher/byRecentTrial/total` (old), 1st Trial `newByFirstTrial` (old), **Renew `renewing` (old, always 0, so card 0 while the modal lists 5)**; the rest is new. **His to switch.**
+- File: `tests/TEST-109-sid-req124-som-and-others-program.md`.
+
+**BALL: @Porter** (F1 → the owner deploys the front · N1 SQL · F2/N2 → the SA / the Palm note).
+
+## 2026-10-19 — TEST-109 F2 + N1: both explained from the code, both sent to Bob as fixes. (@Silver)
+- **F2, a bug:** `daily-report.service.ts:23-34` reads a camp week's kids only when the day has a camp HOUR row, and hour rows exist only per coach. So a coach-less week vanishes.
+  - The rule is "kids in camp that day" (Palm §10.1), so this is not by design.
+  - **Fix:** every week with kids that day counts. Under `?teacherId`, only that coach's weeks show.
+- **N1, the API followed its rule; the RULE was the gap:** a trial moved out only for a course **bought on/after the trial date** (`som-contract.ts:220-235`).
+  - Aileen and ส้ม must hold a course whose `created_at` is **before** their trial (sold first, or an import). Tanya's stand-in (the first history event) is later than the real purchase.
+  - **Fix (my default, declared):** a trial moves out on ANY course bought ≤ the month end, whatever the order: a child holding a course is a course customer (*"ต่อคอร์สแล้วย้ายออก"*). The "no course" cards follow the same rule.
+  - **No SQL needed to decide.** Optional, to confirm the cause for the record: Tanya's SQL in TEST-109 (it already shows `bought_bkk`).
+- **Tanya's N2:** facts for the Palm note (as built). Nothing to change.
+
+**BALL: @Bob — the two fixes; then me; then the owner's commit → sid → Tanya re-checks F2 + N1.**
+
+## 2026-10-19 — ✅ TEST-109 F2 + N1 FIXED and verified. 10 files to commit, then sid, then Tanya re-checks the two. (@Silver)
+**My re-run (SAFE):** **4935 / 0** · tsc 0 · sets **741 40/40 · 742 47/47 · 743 25/25 · 737 11/11**, all checksums identical · the old SOM / daily code: a 0-line diff. No outside-claim edit.
+- **F2:**
+  - the day's camp weeks are always read, so a coach-less week with kids is a CAMP item (12 Oct "Camp 12-13 Oct" 3, 19 Oct "Camp 19 - 23 Oct" 2);
+  - under `?teacherId` it is hidden;
+  - a coached week still counts once.
+- **N1:** a trial moves out on ANY course bought ≤ the month end, whatever the order. October's `recentFirstTrial` should now read **4** (Aileen and ส้ม out), and `trialNotConverted` follows the same rule.
+- **Own-team pin granted by me:** `daily-report-task737.test.ts` spies `weeksForCalendar`.
+- **Uncommitted (back):** `src/lib/som-contract.ts` · `src/lib/daily-report.ts` · `src/services/daily-report.service.ts` · the tests + sets of 737 / 741 / 742 / 743 (`daily-report-task737.test.ts`, `daily-report-task743.*`, `som-contract-task741.*`, `som-nvr-capacity-task742.*`).
+
+**BALL: @Porter — the owner commits → sid → Tanya re-checks F2 (12 + 19 Oct) and N1 (Oct = 4).**
+
+## 2026-10-19 — @Tanya → @Porter: ✅ **TEST-109 re-check — F2 + N1 fixed · screen = API on the new-field cards** (back `82a1988` + front `e314303`)
+- **N1:** Oct `recentFirstTrial` **4** = mine (Aileen and ส้ม out); trialNotConverted 1 = 1; Sep 3/2 = mine. **Oct 26/26.** (Sep's 3 course-purchase rows differ only by the purchase-date limit; the SQL settles it if wanted.)
+- **F2:** CAMP now counts coach-less weeks: 12 Oct **5** (Camp 12-13 Oct 3 + 12-16 Oct 2), 19 Oct **2**. Under `?teacherId` only that coach's week shows; a non-camp coach sees an empty CAMP.
+- **Screen:** Palm's SOM page and Others Program are live on sid.
+  - **New-field cards equal the API:** NvR (except Renew), all 6 modals (1·9·3·5·1·12 rows), Coach capacity (28 coaches), Demographics (9 age bands), Activity/Program (128 · 1 · 129), and Others Program 12 Oct exactly.
+  - **Old-field cards (Palm's switch):** Confirmed **8** (API new 3), Active course **60** (40), 1st Trial 3 months **21** (4), Total **73** (52), and 🟠 **Renew Course shows 0 while its modal lists 5**.
+- File: TEST-109 §re-check.
+
+**BALL: @Porter** (the Palm note: switch to the new fields).

@@ -114,3 +114,7 @@ v1 (TEST-104 PASS, clean zip built) is **kept, not sent**. v2 replaces it.
 4. Tanya's full regression (as TEST-104) + clean zip;
 5. the owner looks;
 6. Khwan.
+
+## 6. Customer feedback while using the prototype (Khwan, LINE, 2026-10-19 03:33)
+- **SALES RECORD:** *"อันนี้เลือกคอมครูตรงไหนคะ · ขายของ"*. She did not find where to pick the coaches who earn the commission. The prototype has them as clickable name chips (KID ✓ POO ✓ KUNG BANK) in the "Coaches earning commission" card **below** the form. **They don't read as a control.**
+- **For the real build (REQ-120 R3.5):** make the coach picker an obvious control **inside the sale form**, e.g. a labelled multi-select "Coaches who sold (commission)", next to Product / Payment. The split table stays as the result. Answered to her by message (owner, 10-19).
