@@ -17,7 +17,7 @@
 > definitions, deliberate settings, decisions the owner already made, which document is
 > authoritative, environment facts.
 >
-> **The rule that makes it work — Porter's, binding on himself:**
+> **The rule that makes it work — the PM's, binding on the PM:**
 > **When the owner states a fact about the product or how the system behaves, it is
 > written HERE BEFORE the reply is sent.** Not after, not "when I update the board", not
 > in a log entry that scrolls away.
@@ -28,7 +28,7 @@
 > under it — do not delete.
 >
 > **Conventions:** every date is **<YYYY>** unless a full year is written · **`(owner)`
-> means the owner, develyst — the only person who has ever talked to this team** ·
+> means the `operator` seat — <operator's name, or "not named yet"> (harness `CLAUDE.md` §2)** ·
 > **⚠️ CONTESTED** means two sources disagree, both are recorded, and **neither may be
 > acted on** until the owner settles it · a line marked **(Marie, read-only survey
 > <date>)** was read out of the repos on the day the desk opened and is evidence of what
@@ -43,13 +43,13 @@
 ## Repos and environments
 
 - 🔧 repos by logical name, branch, what is in them (Marie, read-only survey <date>)
-- 🔧 stack — decided, or "TBD: Sober proposes in SPEC-001"
+- 🔧 stack — decided, or "TBD: the SA proposes in SPEC-001"
 - 🔧 environments — local only / dev server / production, and who may touch what
 
 ## Team (owner, <date>)
 
 - 🔧
 
-## Open questions for the owner — asked by Porter, answered here
+## Open questions for the owner — asked by the PM, answered here
 
 *(none yet)*

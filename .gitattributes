@@ -1,0 +1,52 @@
+# .gitattributes — keep every file that `harness.json` hashes on LF in the working tree.
+#
+# Why: a hash is a statement about CONTENT; a line ending is a TRANSPORT artefact. `core.autocrlf`
+# is `true` on this machine and there was no `.gitattributes` in either workspace, so a Windows
+# checkout produced CRLF while the shipped manifest held LF hashes — every hashed file missed, the
+# package read as drifted and every desk as "edited locally". Verified in the sibling workspace,
+# which still has the defect: its own `check-harness.mjs` there accuses all 4 of its desks.
+#
+# This file is the SECOND of two fixes and not the load-bearing one. The authoritative fix is in
+# code: `scripts/install.mjs` and `scripts/check-harness.mjs` strip CR bytes before hashing, so the
+# manifest holds on any machine, any clone and any git config — which matters because `CLAUDE.md`
+# opens by saying the owner switches machines constantly. This file just keeps the tree tidy so the
+# two never diverge again.
+#
+# Origin: MARIE.md ORDER 25.1 (Atlas), after the ORDER 24 finding. Marie wrote it; it is NOT
+# committed by any agent — git is the owner's alone (CLAUDE.md §6).
+
+# --- the three rule files in harness.json → ruleFiles ---
+/CLAUDE.md                                   text eol=lf
+/AGENTS.md                                   text eol=lf
+/ROLES.md                                    text eol=lf
+
+# --- harness.json → sharedTools: the write-through tools, in the template and on every desk ---
+**/ai-worker/add-failure.mjs                 text eol=lf
+**/ai-worker/append-log.mjs                  text eol=lf
+**/ai-worker/drain-inbox.mjs                 text eol=lf
+**/ai-worker/tools/pm-hub.sh                 text eol=lf
+**/ai-worker/tools/nudge-count.sh            text eol=lf
+
+# --- harness.json → sharedTools: the 7 craft skills (ORDER 25.2) ---
+**/ai-worker/verify-before-relay.md          text eol=lf
+**/ai-worker/reproduce-first.md              text eol=lf
+**/ai-worker/quote-dont-paraphrase.md        text eol=lf
+**/ai-worker/check-by-running-not-reading.md text eol=lf
+**/ai-worker/write-it-now.md                 text eol=lf
+**/ai-worker/team-brainstorm.md              text eol=lf
+**/ai-worker/attribution.md                  text eol=lf
+
+# --- the harness manifest itself, and the machinery that reads it ---
+/harness.json                                text eol=lf
+**/ai-worker/.harness                         text eol=lf
+scripts/**/*.mjs                             text eol=lf
+scripts/**/*.json                            text eol=lf
+/check-hygiene.mjs                           text eol=lf
+
+# Shell scripts, pinned for PORTABILITY, not for a defect seen here. Measured on this machine
+# 2026-10-21: the 10 hooks are checked out CRLF and work correctly — an identical LF/CRLF script
+# pair both ran and both returned exit 3, and all 12 guard probes passed against the CRLF copies.
+# So this line is prevention, not a fix: other shells (notably dash as `/bin/sh`) do treat a
+# trailing `\r` as part of the last token, and a guard that dies that way exits non-2 and fails
+# OPEN — the exact shape ORDER 24.0 held the hooks back for. Cheap to guarantee, so guarantee it.
+scripts/**/*.sh                              text eol=lf

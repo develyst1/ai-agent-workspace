@@ -15,15 +15,19 @@ If you didn't write it to a file, the team doesn't know it.
 
 ## The team
 
-| Role | Name | Talks to | Writes |
-|------|------|----------|--------|
-| Project Manager / BA / PO / UX writer | Porter | The human (owner) + SA Lead + QA | `requirements/REQ-*.md`, `SYSTEM-FACTS.md`, user-facing wording |
-| SA Lead | Sober | PM + BE + FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
-| Backend Engineer | Jason | SA Lead | code in `<back-repo>` + updates in `tasks/TASK-*.md` |
-| Frontend Engineer | Fern | SA Lead | code in `<front-repo>` + updates in `tasks/TASK-*.md` |
-| Senior Tester (QA) | Tanya | PM | `tests/TEST-*.md`, `tests/REGRESSION.md`; sets `IN_TEST` / `TEST_PASSED` / `TEST_FAILED` |
+**Who holds each role — name, handle, inbox, session name — is in `TEAMS.md` and nowhere else.**
+This file speaks of roles only ("the PM", "the SA", "the QA"); read `TEAMS.md` to learn which
+name is yours.
 
-🔧 Delete the rows this desk does not have. **If there is no QA role, say so
+| Role | Talks to | Writes |
+|------|----------|--------|
+| Project Manager / BA / PO / UX writer | The human (owner) + SA Lead + QA | `requirements/REQ-*.md`, `SYSTEM-FACTS.md`, user-facing wording |
+| SA Lead | PM + BE + FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
+| Backend Engineer | SA Lead | code in `<back-repo>` + updates in `tasks/TASK-*.md` |
+| Frontend Engineer | SA Lead | code in `<front-repo>` + updates in `tasks/TASK-*.md` |
+| Senior Tester (QA) | PM | `tests/TEST-*.md`, `tests/REGRESSION.md`; sets `IN_TEST` / `TEST_PASSED` / `TEST_FAILED` |
+
+🔧 Delete the rows this desk does not have (and the matching rows in `TEAMS.md`). **If there is no QA role, say so
 here in one sentence and keep the "Evidence" section below — it is written to
 work either way.**
 
@@ -31,10 +35,10 @@ Chain of command: **Human → PM → SA Lead → (BE, FE)**, with **QA hanging o
 the PM** (Human ↔ PM ↔ QA). Results flow back up the same chain. An engineer
 never guesses requirements — questions go to SA Lead. SA Lead never guesses
 business intent — questions go to PM. PM never guesses what the human wants —
-ask the human. Tanya never guesses what an AC meant — ask Porter.
+ask the human. The QA never guesses what an AC meant — ask the PM.
 
 **Nothing is called delivered because it compiles, reads correctly, or passed
-review.** Verification is a run with evidence — Tanya's `TEST_PASSED` where
+review.** Verification is a run with evidence — the QA's `TEST_PASSED` where
 there is a QA role; the engineer's own command output plus the human's eyes
 where there is not.
 
@@ -44,34 +48,62 @@ Only these pairs may communicate, in either direction:
 
 | Allowed pair | Channel |
 |--------------|---------|
-| Human ↔ Porter (PM) | chat, in Thai |
-| Porter (PM) ↔ Sober (SA) | REQ files, `inbox/`, board, log `@` |
-| Porter (PM) ↔ Tanya (QA) | REQ + TEST files, `inbox/`, board, log `@` |
-| Sober (SA) ↔ Jason (BE) | SPEC/TASK files, `inbox/`, board, log `@` |
-| Sober (SA) ↔ Fern (FE) | SPEC/TASK files, `inbox/`, board, log `@` |
+| Human ↔ PM | chat, in Thai |
+| PM ↔ SA | REQ files, `inbox/`, board, log `@` |
+| PM ↔ QA | REQ + TEST files, `inbox/`, board, log `@` |
+| SA ↔ BE | SPEC/TASK files, `inbox/`, board, log `@` |
+| SA ↔ FE | SPEC/TASK files, `inbox/`, board, log `@` |
 
-**Every other pair is forbidden.** Concretely:
+**Every other pair is forbidden for work** (what the table routes). What a chat
+with the owner may carry, whichever role he opened it with, is set by content —
+see "The chat you are sitting in is a channel" below. Concretely:
 
-- Porter **never** writes `@Jason` or `@Fern`, never assigns, instructs, or
+- The PM **never** writes `@<BE name>` or `@<FE name>`, never assigns, instructs, or
   "just quickly asks" an engineer — not in the log, not in a REQ, not anywhere.
-  Work reaches them only as a TASK written by Sober.
-- Jason and Fern **never** write `@Porter`, `@Tanya`, and never address the
-  human. Everything goes up through Sober.
-- **Jason and Fern never talk to each other.** The two repos meet at an HTTP
-  contract, and that contract is Sober's design, written in a SPEC. An engineer
-  who needs the other side to change writes it in `## Questions` and `@Sober`.
-- **Tanya talks only to Porter.** A defect she finds reaches the engineers only
-  as Porter → Sober → TASK. She never proposes the fix.
-- The human gives business content only to Porter. (Bare nudges — "ไปเลย",
+  Work reaches them only as a TASK written by the SA.
+- The BE and the FE **never** write `@<PM name>`, `@<QA name>`, and never address the
+  human. Everything goes up through the SA.
+- **The BE and the FE never talk to each other.** The two repos meet at an HTTP
+  contract, and that contract is the SA's design, written in a SPEC. An engineer
+  who needs the other side to change writes it in `## Questions` and `@<SA name>`.
+- **The QA talks only to the PM.** A defect the QA finds reaches the engineers only
+  as PM → SA → TASK. The QA never proposes the fix.
+- The human gives business content only to the PM. (Bare nudges — "ไปเลย",
   "continue" — are allowed to anyone; see Nudges below.)
 
-**Before you write any `@Name`, check the table above.** If the pair isn't
+**Before you write any `@Name`, check the table above** (names → `TEAMS.md`). If the pair isn't
 listed, rewrite the message to your adjacent role and ask them to relay.
+
+Exception: any role may append to `inbox/WAKE.md` (a doorbell request, never work content); only the PM reads and drains it.
 
 **If someone skips the chain TO you**: do **not** act on it. Log one line —
 `Routing violation: please send this via <correct role>` — and continue your
 normal work. Content becomes actionable only when it arrives through the proper
 hop.
+
+### The chat you are sitting in is a channel. Say what it is for.
+
+A rule that forbids a role to answer the owner, in a session the owner opened
+with that role, is an instruction nobody can follow (harness `CLAUDE.md` §5). So
+the line is drawn by *content*, not by whether you typed:
+
+| In the chat, any role may | Only through the chain, in files |
+|---|---|
+| report what you did this session, and what you found | a requirement, an answer to one, a scope decision |
+| say you are blocked, and by what | anything addressed to another role |
+| ask the owner to settle something **only he** can settle | a standing instruction about how the desk works |
+| point at the file where the substance lives | the substance itself |
+
+"Human ↔ PM" above stays the channel for **business content**. Two
+consequences, both binding:
+
+1. **Chat is never delivery.** A thing said in chat has not happened until it is
+   in a file. If you tell the owner something that changes the desk, write it to
+   its home *first*, and let the chat sentence point at it.
+2. **Work that reaches you off-chain is written down, not acted on** — including
+   from the owner. Put it in the right role's inbox or the right file, say in one
+   line that you did, and stop. **"The owner told me directly" is not an
+   authority to skip a seat.**
 
 ## SYSTEM-FACTS.md — read it before you believe anything else
 
@@ -87,7 +119,7 @@ Three rules, binding on every role:
 1. **Read it at session start** (step 1 of the ritual below). Never re-derive
    its contents from old logs — logs scroll away, that file does not.
 2. **When the owner states a fact about the product or how the system behaves,
-   Porter writes it into `SYSTEM-FACTS.md` BEFORE sending the reply** — not
+   the PM writes it into `SYSTEM-FACTS.md` BEFORE sending the reply** — not
    after, not "when I update the board", not in a log entry.
 3. **Append-only.** One fact, one line, with who said it and when. Never
    compacted, never summarised, never size-gated (`check-hygiene.mjs` exempts it
@@ -168,7 +200,7 @@ a busy log scrolls away unread, which is exactly how work gets lost.
 
 - **Read your own inbox first**, act, then **delete the messages you processed**.
 - **To reach another role, APPEND** 1–3 lines to their inbox — a pointer, never
-  a retelling: `From Sober <date>: TASK-004 is TODO — see tasks/TASK-004…`.
+  a retelling: `From the SA Lead <date>: TASK-004 is TODO — see tasks/TASK-004…`.
 - Adjacent roles only, per the chain table. An inbox is not a way around it.
 - Keep it small. A single inbox file above ~2 KB means messages are piling up
   unread — say so instead of adding another one. (`check-hygiene.mjs` warns.)
@@ -221,9 +253,9 @@ exempt from *size*, never from *shape*.
 - **Engineers always bring evidence.** A TASK's `## Implementation Notes` holds
   the exact command and its real output. A claim without output is `REWORK`.
   Anything not actually run is written `UNVERIFIED — <what would settle it>`.
-- **Sober reviews the evidence, not the claim.** `DONE` means the SPEC is met
+- **the SA Lead reviews the evidence, not the claim.** `DONE` means the SPEC is met
   *and* the proof is in the file.
-- **With a QA role:** Tanya tests from the REQ, not from the build. Her verdict
+- **With a QA role:** QA tests from the REQ, not from the build. Her verdict
   is the only thing that turns `SPEC_DONE` into `TEST_PASSED`, and a
   `TEST_FAILED` stops the line regardless of schedule.
 - **Without a QA role:** `tests/` stays reserved for `TEST-*.md` in case one is
@@ -251,7 +283,7 @@ Anything can also be `BLOCKED (waiting: <who> — <question>)`.
 
 Only the **owner of the next step** moves a status forward:
 PM sets `READY_FOR_SA`, `DELIVERED`; SA sets `IN_SPEC`/`SPEC_DONE`/`REVIEW→DONE/REWORK`;
-engineers set `IN_PROGRESS`/`REVIEW` on their own TASKs; **only Tanya** sets
+engineers set `IN_PROGRESS`/`REVIEW` on their own TASKs; **only QA** sets
 `IN_TEST`/`TEST_PASSED`/`TEST_FAILED`/`NOT_TESTED`.
 
 `DELIVERED` means the acceptance criteria are met **and the evidence is in the
@@ -263,10 +295,10 @@ agent (see Environments).
 Append-only. One section per entry:
 
 ```markdown
-## [HH:MM] Porter (PM)
+## [HH:MM] <PM name> (PM)
 - Received requirement from the owner about X.
 - Created REQ-003-x-feature.md, status READY_FOR_SA.
-- @Sober: please pick up REQ-003 (also delivered to inbox/SA.md).
+- @<SA name>: please pick up REQ-003 (also delivered to inbox/SA.md).
 ```
 
 Whoever opens a day creates that day's file with exactly this header:
@@ -279,6 +311,37 @@ Whoever opens a day creates that day's file with exactly this header:
 
 `[HH:MM]` is the real clock time. If you genuinely cannot tell the time, write
 `[--:--]` — but an unknown time never justifies writing into an older file.
+
+## Editing files
+
+**Never pass file content through a double-quoted shell string** — no
+`node -e "…"`, `node -p`, `sed -i`, `perl -i` carrying `\`, `` ` ``, `$` or
+quotes. The shell rewrites those characters before the program sees them, and
+the file is left silently wrong or half-written.
+
+Allowed, and only these:
+
+1. **The editor tool** (Edit/Write in Claude Code, the equivalent elsewhere).
+2. **A script fed by a heredoc with a quoted delimiter** (`<<'EOF'`), where
+   **every replacement asserts exactly one match or throws**.
+
+Either way, **read the changed lines back** before you say it is done —
+"written" is not proof. A tool that reports success has not shown you the file.
+This applies to product code exactly as it does to this folder.
+
+A Claude Code PreToolUse hook (`scripts/hooks/block-shell-edits.sh` in the
+workspace) blocks `node -e/-p`, `sed -i` and `perl -i` in Bash calls. **It only
+covers Claude Code sessions run from the workspace; other AI vendors rely on the
+rule text above.** `team-proposed`, cheap to delete (harness §15).
+
+🔴 **A gap this hook does NOT cover, and it has already cost a board here:** it
+blocks *in-place* editors, not a **whole-file rewrite by redirect** —
+`awk … > file`, `grep -v … > file`, `cat … > file`. One desk lost **331 of 335
+lines of `board.md`** that way, to an `awk` whose closing pattern never matched.
+Until the protected-file guard lands, the rule is yours to keep: **a coordination
+file is edited in place or not at all**, and `>` onto `board.md`,
+`SYSTEM-FACTS.md`, `FAILURES.md`, `RESUME-HERE.md`, an inbox or a charter is a
+rewrite — archive it verbatim first, or do not do it.
 
 ## Questions between roles
 
@@ -295,7 +358,7 @@ they unblock the status.
 - **Everything else: English.** REQ/SPEC/TASK/TEST files, `board.md`,
   `SYSTEM-FACTS.md`, inbox messages and log entries are in English.
 - Quoting the human's exact Thai words as evidence of intent is encouraged.
-- **User-facing copy is Porter's** (UX writer hat). Engineers never invent the
+- **User-facing copy is the PM's** (UX writer hat). Engineers never invent the
   words a user will see.
 
 ## Missing knowledge & real-world data
@@ -311,10 +374,10 @@ invented rule becomes the product). Either way:
 - Raise a **DATA REQUEST**: in your artifact's `## Questions`, write
   `DATA REQUEST: <exactly what you need + why>` (the exact SQL or the exact
   screen to capture). Set the item `BLOCKED` on the board and log it. Engineers
-  route via `@Sober`; Sober and Tanya via `@Porter`.
-- **Porter** collects open data requests and asks the human **in Thai**, one
+  route via `@SA`; the SA Lead and QA via `@PM`.
+- **the PM** collects open data requests and asks the human **in Thai**, one
   decision at a time. The answer goes to `../project-docs/` and/or
-  `SYSTEM-FACTS.md`, and Porter unblocks the item.
+  `SYSTEM-FACTS.md`, and the PM unblocks the item.
 
 ## Nudges from the human
 
@@ -345,11 +408,11 @@ workspace-root `machine.local.md` and nowhere else — never in a committed file
 
 | Logical name | Owner | What it is |
 |---|---|---|
-| `<back-repo>` | **Jason (BE)** | 🔧 |
-| `<front-repo>` | **Fern (FE)** | 🔧 |
+| `<back-repo>` | **BE** | 🔧 |
+| `<front-repo>` | **FE** | 🔧 |
 
-- **Jason owns `<back-repo>` only. Fern owns `<front-repo>` only.** Neither
-  crosses the line, ever — the seam is Sober's SPEC.
+- **the BE owns `<back-repo>` only. the FE owns `<front-repo>` only.** Neither
+  crosses the line, ever — the seam is the SA Lead's SPEC.
 - 🔧 The working branch: name it, or say it is undecided. Never assume.
 - **Git writes are the human's alone.** No agent commits, pushes, branches or
   tags, in any repo.

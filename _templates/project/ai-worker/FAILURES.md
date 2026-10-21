@@ -29,7 +29,14 @@ Write **before your next reply**, not at session end. One incident = one entry.
 Being the one who records it is not a confession. **Not recording it is the
 defect.**
 
-## What an entry looks like
+## What an entry looks like — and how it gets in
+
+Write the entry to a scratch file, leaving the heading as `F-NNN`, then run
+`node ai-worker/add-failure.mjs <that file>`. The tool gives it the next id under
+a lock, sets `Status: NEW`, puts it directly under the marker line at the bottom
+of this header, and prints the id. **Never pick a number yourself and never paste
+an entry into this file by hand** — two roles taking "the next number" at the
+same moment is how ids collided before.
 
 ```markdown
 ## F-NNN — YYYY-MM-DD — <Role> — <one line: what went wrong>
@@ -45,7 +52,8 @@ defect.**
 - **Evidence:** `log/YYYY-MM-DD.md`, an inbox line, a TASK section, a screenshot.
 ```
 
-Numbering is continuous per project: `F-001`, `F-002`, … Never renumber.
+Numbering is continuous per project (`F-001`, `F-002`, …) and comes from
+`add-failure.mjs`, never from you. Never renumber.
 
 ## Status values — only Atlas changes these
 

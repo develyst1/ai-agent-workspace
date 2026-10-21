@@ -1,0 +1,15 @@
+{
+  "harness": "develyst-harness",
+  "version": "2.6.0",
+  "installedAt": "2026-10-21",
+  "packageHashes": {
+    "ai-worker/add-failure.mjs": "7e3e39d7e707940f1affd48c1036c11051fccb7ccf638d4f910c9f805a2ee808",
+    "ai-worker/append-log.mjs": "97a93d9616020e9466be171ac584ec9b73510893283ef2f4af58920947beebe0",
+    "ai-worker/drain-inbox.mjs": "6b8db5188b68d2c80c39a1b212a9becb2d14a16140c311a0f196e7ecc042d2b0",
+    "ai-worker/tools/pm-hub.sh": "327289a05ced4f942730f9b9f7f2d4c31593f56d9b82c0d5f2be4155cd491266",
+    "ai-worker/tools/nudge-count.sh": "997d28f124a536dbc5853ee0dfa25586bf72b4d44ac874e2e1bc20259a975add",
+    "CLAUDE.md": "5aa8354cd99c8f575a6211838e4769128e1aa00e600e9a0ba4903362da019712",
+    "AGENTS.md": "e9975a71d3576d4afbab0e692658515b19e1679bfcbbe8a1f5c82d8d17ee1bac",
+    "ROLES.md": "fd62e5a5fa9e6cf01a7e9c7b4465e234b1ff93417b9f63d2c66e00cd3e1e547b"
+  }
+}

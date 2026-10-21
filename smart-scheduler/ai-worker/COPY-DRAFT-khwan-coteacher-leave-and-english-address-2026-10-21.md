@@ -1,5 +1,5 @@
-# COPY DRAFT — to Khwan: one teacher's leave on a multi-teacher class + English address names (REQ-125 ruling B, REQ-118 TASK-830) — @Porter, 2026-10-21
-Status: DRAFT for the owner. LIVE on uat (back `fa1a04c` + front `c743304`, migration 0071). Send after Tanya's uat read-only smoke.
+﻿# COPY DRAFT — to Khwan: one teacher's leave on a multi-teacher class + English address names (REQ-125 ruling B, REQ-118 TASK-830) — @Porter, 2026-10-21
+Status: ✅ SENT by the owner 2026-10-21. (Was: DRAFT for the owner). LIVE on uat (back `fa1a04c` + front `c743304`, migration 0071). Send after Tanya's uat read-only smoke.
 
 ---
 ขวัญครับ อัปเดต 2 เรื่องครับ ขึ้นระบบแล้ว

@@ -6078,3 +6078,312 @@ Once approved: a small FE change in the two confirms (≈ 0.25 d), plus a re-che
   - Closed with Cancel; nothing saved.
 - **TASK-830:** the EN admin parent form lists English names ("Bueng" ⇒ Bueng Kan; districts in English). Opened only.
 - Counts only in the files; no names.
+
+---
+## @Tanya → @Porter — 2026-10-21 — TEST-113 (uat READ-ONLY Daily Report recount): the DATA ✅ everywhere · 🔴 F1 the Others Program shows SAMPLE numbers on days with no programme children
+- **File:** `tests/TEST-113-uat-daily-report-recount-others-program.md`. 0 app writes. Counts only; coaches masked.
+- **Days:** 20 Oct (weekday + Khwan's 3-coach ECA), 18 Oct (weekend, 145 rows), 13 Oct (2 camp weeks + ECA + Other).
+- **API = my independent recount on every card,** All teachers **and all 25 coaches**, including Others Program (ECA once per class, camp per week incl. a coach-less week). **The screen = the API** on the cards, by-type and workload, every view.
+- **🔴 F1 (front):** when all four programmes are empty that day (e.g. **18 Oct for All teachers**, or any coach without programme classes), the Others Program section shows **made-up numbers**: Group 8 (Balance Play 3, Skate Crew 5) · ECA 13 (STA 5, ISB 8) · Camp 8 (October Camp W2) · Other 10 (Birthday 8, Rent park 2).
+  - No label; the API says empty. uat has no GROUP rows at all.
+  - **Code, read:** `ReportsContent.tsx:244-269`, `SHOW_SAMPLE_WHEN_EMPTY = true` + `SAMPLE_PROGRAMS`. Its own comment: *"TEMPORARY … Delete this … once `/reports/daily` ships `kidsByProgram`"*. The back has shipped it since 10-19.
+  - For Sober (fix). **For you:** ฟีน's *"พวก group ด้านล่าง"* may be exactly these cards on an empty day. I haven't confirmed that, and no cause has gone to the customer.
+- **Listed, not judged** (TEST-113 has 7):
+  - ECA counted once per class, so per-coach ECA doesn't add up to the day's;
+  - camp counts a coach-less week;
+  - an untitled Other shows as "OTHER —";
+  - cancelled Other rows aren't shown;
+  - Total booked excludes Pending;
+  - the workload hides under a coach filter (by design);
+  - Group is always "—" on uat.
+
+## 2026-10-21 — ✅ CONFIRMED, TEST-113 F1 mechanism (uat front `c743304`). (@Silver)
+- **The mechanism is confirmed:** `ReportsContent.tsx` at `c743304`:
+  - `:251` `SHOW_SAMPLE_WHEN_EMPTY = true`;
+  - `:252-257` `SAMPLE_PROGRAMS` (Group 8 · ECA 13 · Camp 8 · Other 10);
+  - `:269` `isSample = programs.every(p => p.items.length === 0) && SHOW_SAMPLE_WHEN_EMPTY`;
+  - `:271-272` it then renders the sample instead of the API's data.
+- **So on any day when all 4 programs come back empty, the screen shows made-up numbers.** Our back sends the right empty payload (4 programs, `total: null`, `items: []`).
+- Palm's own comment at `:249` says to delete it "once `/reports/daily` ships `kidsByProgram`", which it now does. The fix is Palm's (delete the flag and the sample). Nothing from us.
+
+---
+## @Tanya → @Porter — 2026-10-21 — ✅ TEST-114 PASS (sid front 33f9311): sample rows gone · sub-district = API · SOM cards = API · 0 preview numbers on sid + uat
+- **File:** `tests/TEST-114-sid-sample-removal-subdistrict-som-preview-scan.md`.
+- **1 ✅ No sample numbers:**
+  - an empty-programme view shows "Group — · ECA — · Camp — · Other —";
+  - a programme day still = the API;
+  - **sid's served JS no longer contains the sample at all.**
+  - (uat still has TEST-113 F1 until this front goes there.)
+- **2 ✅ Sub-district click-through = `subdistrictByDistrict`:**
+  - 2 districts, using QA parents' codes set temporarily and **restored exactly**;
+  - labels, counts and share match; "Not specified 0" is hidden by design;
+  - the branch filter's empty case shows "No data yet".
+- **3 ✅ The 5 SOM cards (+ 1 HR) = the API;** all 6 NvR pop-ups = the API detail = the card.
+- **4 ✅ Preview scan: 0 preview-filled numbers on sid (12 month × branch views) and uat (4 months).**
+  - **Latent risks for Sober / Palm:**
+    - (a) the preview code still runs on every SOM answer and would silently fill any null field with a plausible number;
+    - (b) **the NvR pop-up shows invented children on ANY request error.**
+  - Deleting `lib/som/preview.ts` is what its own comment asks for now.
+
+---
+## @Tanya → @Porter — 2026-10-21 — ✅ uat READ-ONLY smoke PASS (front 33f9311). TEST-113 F1 CLOSED on uat
+- **File:** TEST-114 §uat (+ a closing line in TEST-113). 0 app writes.
+- **Daily:** 18 Oct (All, no programme children) shows "—" on all four Others Program cards; **no sample**, and uat's JS no longer carries it. 13 and 20 Oct = the API, string for string.
+- **SOM Oct:** Confirmed 19 · Active course 187 · 1st Trial 162 · 1 HR 94 · Total 345 · Renew 33, each = the API.
+- **Sub-district:** the top 2 districts open to every non-zero sub-row with label + count; the sub totals = the district (9 = 9, 8 = 8). The API covers 45 of 45 districts.
+
+---
+## @Sober → @Porter — 2026-10-21 — REQ-122 v3, Team A sized: **≈ 4.7 d incl. +10% (Fern)**, 5 tasks cut (831–835), ⏳ waiting for your GO + claims
+| task | what | size |
+|---|---|---|
+| **TASK-831** | **SHELL v3:** new answer key `somspec.v3` (every page unanswered) · brand · ALL CAPS menu + a **FRONT OFFICE (SOM SCHEDULE)** group · the "หน้าบ้าน (SOM SCHEDULE)" label replacing the grey bar · dd/mm/yy dates · a month picker · the A/B **ask slot inside [?]** (for the 4 follow-ups) · **the single-file build** · CONVENTIONS v3 for Silver | 1.1 d |
+| **TASK-832** | **SALARY**, 8 pages: every §7.1 rename · Full-time/Part-time/Freelance · month picker ×3 · Daily Training Report by hours + the coach total · plain STAFF commission words · My slip (6) | 1.4 d |
+| **TASK-833** | **NOTIFICATION** (2) + **Role Setting / User Setting** (2): renames · no opt-out ticks | 0.55 d |
+| **TASK-834** | **FRONT OFFICE** F1 Branch · F2 Payment Method (default Transfer, editable front + back) · F4 Conversion (Who get Bonus? 1st / 2nd / Share 50/50, no 25/25) · F5 No Teacher · D3 Confirm camp (sets Transfer) | 1.1 d |
+| **TASK-835** | re-pin Team A's [?] help on Tanya's v3 captures + re-build | 0.55 d |
+
+- **Order:** 831 first (Silver builds on it). Then 832 / 833 / 834. Then 835 after Tanya's captures. **About 4 working days of Fern.** Jason could take 833 in parallel to save ~half a day; your call, the default is Fern alone.
+- **Delivery: ONE self-contained `.html`** (scripts, styles and the 32 help images inlined; ≈ 4 MB).
+  - **Why:** v2's zip failed because pages opened inside the zip were blank. One file has nothing to extract.
+  - I'll prove it by opening the built file from disk with the source folder gone.
+- **⚠️ Claim to confirm: the 5 front-office pages F1/F2/F4/F5/D3 were Team B's in v2** (`pages/b-fo`). §8.10 puts "the front-office pages" with Team A, so 834 takes them over.
+  - Silver drops them from `pages-b.js` the same day.
+  - **Please confirm the handover with Silver**, or say if you meant only Role / User Setting (then 834 drops out: −1.1 d).
+- **Claims (Team A):**
+  - `shell/*`, `index.html`, `CONVENTIONS.md`, a new `build/` + `dist/`;
+  - `pages-a.js`, `pages/a-*`, `data/a-*`;
+  - Team A's `help/*.png` (after Tanya);
+  - with 834: `pages/b-fo/*` + `data/b-fo.js` moving to Team A.
+- **No money, no prices; an admin never sees pay.** No requirement-hub / galaxy-spec.
+
+## 2026-10-21 — 📏 REQ-122 v3 (Team B: Revenue · Stock · Reports): **≈ 6.6 d** (Fanta 5.5 + Silver 1.1, +10% incl.). TASK-745 + 746 cut. (@Silver)
+| TASK | what | est → +10% |
+|---|---|---|
+| 745 | every §7.1 / §7.4 word · Products qty + location + filter, Category first · **Locations page removed** · Stock Demo Bravo first + order setting · Import "Never deleted" in plain words · the Balance picker · Stock In date picker · **STOCK OUT cart + bill discount + per-sale commission (admin sees that sale's lines only) + Transfer default** · **1st Trial type, no Manual type** · **Refund cancels unattended sessions + tells families** · the 4 questions in [?] · Reports "agreed later" · help steps rewritten | 4 → **4.4 d** |
+| 746 | pins on Tanya's new captures | 1 → **1.1 d** |
+| Silver | review: words checked against her list, roles (no pay for admin), every pin on its image | 1 → **1.1 d** |
+
+- **Why more than my 2.5 d of 10-20:** that covered the words + layout only. v3 also carries her rulings (the cart, refund, 1st Trial type, per-sale commission), the 4 questions, and a full re-pin on new captures.
+- **3 points for you / Sober:**
+  1. 🔁 **The front-office pages `pages/b-fo/*` (F1 / F2 / F4 / F5 / Confirm camp) are Team B's files today; §8.10 gives them to Team A.** How does the hand-over go: Sober writes his own and we unregister ours, or Sober takes over the files? Until then Fanta doesn't touch them.
+  2. **Shell:** STOCK OUT needs **TWO** A/B questions (commission lower/raise + per item/per bill). Does v3's `help.ask` allow a list? If not, one combined question with 4 options, or the second on the receipt dialog.
+  3. **Delivery (§8.8):** it is the shell's (Sober's) call. My view: a **single self-contained .html** is practical (≈ 20 captures ≤ 150 KB inlined as base64 ≈ 3–4 MB, which LINE carries). Have it built by a one-off inline script, so the double-click rule holds with nothing to unzip.
+- **Order:** TASK-745 starts on **Sober's v3 shell contract** (the new answers key, the ask slot). 746 follows Tanya's TEST-115 captures.
+- **Block:** 745–746 used ⇒ **747–749 left**, then 750–779.
+
+**BALL: @Porter — the size for the owner; points 1 + 2 to Sober; GO for 745 when his v3 shell lands.**
+
+## 2026-10-21 — Addendum to the v3 size: Sober wrote to MY inbox directly (shell contract, TASK-831). I answer through you. (@Silver)
+- 📌 **Routing:** SA → SA is not an allowed pair, so I don't write to Sober. His note says you asked him to coordinate the contract with me; if that channel is approved, say so and I'll follow it. Until then, my answers go through you.
+- **His contract covers my point 2 partly:** the [?] ask slot is `ask: { q, a, b }`, i.e. ONE question per page. **STOCK OUT needs TWO** (commission lower/raise + per item/per bill). Please ask Sober for either `ask` as a list, or I merge them into one question with four options.
+- **The single-file build:** my pages will load only through `SPEC.load` and reference images only as `help/<name>.png`, as his build needs. ✅
+- **Point 1, the b-fo hand-over:** his plan (Team A takes `pages/b-fo/*` + `data/b-fo.js` in TASK-834, and we drop their lines from `pages-b.js` the same day) is **fine by me**, once you confirm.
+- 🔴 **The date helper and the month picker:** we'll use his.
+- ⚠️ **My inbox:** I couldn't remove the two processed messages (drain-inbox.mjs was refused by the permission check in this session). They stay there, marked read in my log.
+
+---
+## @Sober → @Porter — 2026-10-21 — REQ-122 v3: TASK-831 (the shell) VERIFIED · **CONVENTIONS v3 is published** (spec folder `CONVENTIONS.md` §00) for Silver · 3 items for Team B · 1 ruling
+- **The single .html works on its own:** `dist/SOM-BACK-OFFICE-v3.html`, **3.85 MB**.
+  - I served it alone from an empty folder: 32 pages, 0 dead buttons, all 32 [?] images inside it, answers under the new key, the export lists all 32.
+  - Its only outside call is Google Fonts; offline it falls back cleanly.
+- **CONVENTIONS v3 (§00), for Silver:**
+  - \`ask\` is a LIST (\`help.ask: [{q,a,b}, …]\`; \`answer: "A|B"\` = answered in LINE);
+  - \`SPEC.date(v)\` → 16/10/26;
+  - \`SPEC.monthPicker(el, { value, onChange })\`;
+  - \`SPEC.foLabel()\`;
+  - load only via \`SPEC.load\`; images only as \`help/<name>.png\`;
+  - the build: \`node build/single.mjs\`.
+- **For Team B (please pass on):**
+  1. **\`#/revenue/categories\` throws** (\`undefined.map\`) after a \`data/b-revenue.js\` change. It's in today's test build; the release build is re-made at the end.
+  2. **An admin sees ฿** on \`#/stock/products\`, \`#/stock/import\`, \`#/stock/sales-record\` ("no money, no prices").
+  - Team A's two ฿ pages (\`#/salary/entries\`, \`#/fo/payment\`) are fixed in 832 / 834.
+- **My ruling, which you may overrule:**
+  - the front-office pages' menu heading is **SETTING**, her own §7.1 word ("Front office changes" → SETTING);
+  - each of those pages carries the "หน้าบ้าน (SOM SCHEDULE)" label, which meets §8.4's "clearly labelled";
+  - Fern changes one line in 832.
+- **TASK-833 (Jason):** the first pass is verified; he now switches to the shell helpers.
+
+## 2026-10-21 — ✅ REQ-122 v3 Team B pages DONE (TASK-745). Ready for Tanya's TEST-115 captures; then the pins (746). (@Silver)
+**Fanta's headless run:** 19 Team B pages · 16 dialogs · 31 [?] popups · 0 errors · 0 dead buttons.
+**My review:**
+- no external load / calc / `disabled`; dates via `SPEC.date`;
+- the cart adds up; the admin STOCK OUT toast has no revenue (only that sale's commission lines are shown);
+- Transfer is the default; the 4 questions are in [?] (STOCK OUT has 2, as a list).
+- `#/revenue/categories` no longer throws.
+
+**For Tanya, the page list (TEST-115):**
+- **Revenue:** `#/revenue/summary` Revenue Summary · `/lines` Detail · `/manual` Add Manually · `/refund` Refund · `/categories` Type and Category · `/eca-term` ECA Payment.
+- **Stock:** `#/stock/products` Product · `/stock-in` · `/import` · **`/stock-out` STOCK OUT (new route; was `/sales-record`)** · `/demo` · `/low-stock` · `/reports`.
+- **Removed:** `#/stock/locations` and `#/stock/sales-record`.
+- **Reports:** `#/reports/home`.
+- The b-fo pages are still in `pages-b.js` until Team A's 834 lands; then I drop them.
+
+**Not seen by eye:** a full real-browser pass. That is TEST-115.
+
+**BALL: @Porter — Tanya's TEST-115 captures; then I release 746 (pins).**
+
+---
+## @Sober → @Porter — 2026-10-21 — REQ-122 v3: TASK-833 DONE · TASK-832 one fix away · one more Team B item
+- **TASK-833 (Jason) DONE:** Notification + Role / User Setting, on the shell helpers. 0 errors, dead buttons or ฿.
+- **TASK-832 (Salary):** every word, date and role gate checks out.
+  - **One fix:** an admin may again see the amounts on the Other Income lines they enter. This is your R0 clarification; Fern's work had crossed it.
+  - **My ruling: "My slip" stays Coach-only**, which is the real rule. A Thai hint on Home tells her to switch to the Coach role to see it. She missed it in v2 because she never switched.
+- **For Team B:** `#/stock/stock-out` (the renamed STOCK OUT route) has **no help image** in the build, because the help PNG is still named for the old route. Rename the image to `help/stock-stock-out.png` or set `help.img`.
+
+---
+## @Tanya → @Porter — 2026-10-21 — TEST-115 PART B (REQ-122 v3, Team B pages): ✅ 13/14 pages · ❌ 1 on STOCK OUT · captures done (14)
+- **File:** `tests/TEST-115-req122-v3-prototype-check.md` (Part B).
+- **The single file:** built myself (3.83 MB, 40 scripts, 32 images); **works ALONE** from disk with every network request blocked (only Google Fonts is external, and it falls back fine). **Rebuild after 746** so my new captures are inside.
+- **Captures (1280 × 800, CEO, light):** 14 in the spec's `help/`, 47–96 KB each, the main action in frame. Names for 746: revenue-summary · revenue-lines · revenue-manual · revenue-refund · revenue-categories · revenue-eca-term · stock-products · stock-stock-in · stock-import · **stock-stock-out (new)** · stock-demo · stock-low-stock · stock-reports · reports-home.
+- **✅ Every §8 item on 13 pages, both roles:**
+  - her words exact (0 old words, 0 dates without year, ALL-CAPS menus, brand);
+  - Products layout; Locations gone; Demo Bravo first + Location Order; the Stock In date picker;
+  - Transfer default everywhere;
+  - Refund cancels the unattended + tells families;
+  - 1st Trial type, no Manual;
+  - the cart + commission inside the form, editable per coach;
+  - **the admin sees no revenue / no pay** (the Revenue pages say "cannot see"; the admin STOCK OUT save has no revenue);
+  - **the 4 questions in [?]** (STOCK OUT 2);
+  - "Never deleted" in plain words; the Balance location picker; Reports "LATER";
+  - **0 fee / our-price words.**
+- **❌ F1 (STOCK OUT):** "one bill discount **฿ / %**", but the page shows one box "10 %" with **no visible ฿ / % choice** (only the [?] text says ฿). She may read it as % only.
+- **🟡 N1:** STOCK OUT's **Commission box (coach picker) is below the 800-px capture frame**, so its [?] step can't be pinned. It's the control Khwan missed in v2.
+- ⚪ N2: two unused v2 images left in `help/` (locations, sales-record). ⚪ N3 (Team A's part): the sidebar still says "F2 · Payment record" (→ Payment Method), the b-fo pages 834 replaces.
+
+---
+## @Sober → @Porter — 2026-10-21 — ⏸ TASK-834 handover: please ask Silver to remove the 6 `b-fo` lines from `pages-b.js` NOW. Fern is ready to register hers
+- Fern's 5 front-office pages are written as Team A files (`pages/a-frontoffice/{branch,payment,trial-link,no-teacher,confirm-camp}.js` + `data/a-fo.js`), **not registered yet**.
+- **Silver removes exactly these lines from `pages-b.js`** (as of now):
+  - line 7: `SPEC.load("data/b-fo.js");`
+  - lines 28–32: `SPEC.load("pages/b-fo/branch.js");` … `confirm-camp.js`
+- **Order:** Silver removes → tell me → Fern adds her 6 lines.
+  - If Fern adds first, the shell logs "duplicate route".
+  - Fern proved the swap in a scratch copy: 31 pages × 3 roles, 0 errors, 0 dead, no page loaded twice.
+- **The old `pages/b-fo/*` + `data/b-fo.js` files stay on disk.** Nothing is deleted; after the swap nothing loads them.
+
+## 2026-10-21 — The b-fo hand-over is with Fanta now (pages-b.js is her file); I tell you the moment it's done. (@Silver)
+- She removes ONLY the 6 b-fo registrations (`data/b-fo.js` + the five `pages/b-fo/*`), checked by content, then re-runs headless. The b-fo files themselves stay, for Team A.
+- It's queued FIRST, ahead of her STOCK OUT fixes and the 746 pins.
+
+## 2026-10-21 — REQ-122 v3 Team B: 745 part B fixes done · 746 pins 12 / 13 ✅ (1 small fix) · 2 capture notes for Tanya. (@Silver)
+- **745 (STOCK OUT):**
+  - the ฿ / % selector is added;
+  - the Commission box now sits top-right of the form, inside 1280×800 (Fanta measured it in a browser);
+  - headless 0 / 0.
+  - **Tanya can re-capture STOCK OUT.**
+- **746:** I drew every pin onto its PNG and checked the 13 pages; 12 are right. **ECA Payment:** pins ① and ② share a corner (① is hidden). Sent to Fanta.
+- **For Tanya (capture notes, not defects of the pages):**
+  1. **`revenue-summary.png` has a leftover toast** ("บันทึกแล้ว: ตัดสต็อกแล้ว…") covering "Viewing as". Please re-capture it with no toast.
+  2. 📌 **The date pickers show `10/16/2026`** (US order) in her captures of Add Manually / Refund / ECA / Stock In / Stock reports. A native date field follows the browser's locale. Her rule is dd/mm with the year.
+     - **Option A:** Tanya captures with a dd/mm locale (e.g. en-GB, showing `16/10/2026`). Nothing changes in the pages.
+     - **Option B:** Fanta replaces the native fields with a text field showing `16/10/26` + a calendar icon.
+     - I suggest A (cheaper, and the real product will follow her locale anyway). Your call.
+- **The b-fo hand-over:** still queued first with Fanta (her turn was busy when it landed). I report it the moment it's done.
+
+**BALL: @Porter — Tanya: the STOCK OUT + revenue-summary re-captures, and pick A/B for the date fields.**
+
+## 2026-10-21 — ✅ The b-fo hand-over is DONE. Fern can register Team A's copies now. (@Silver)
+- **Verified by me:**
+  - `pages-b.js` no longer loads `data/b-fo.js` or any `pages/b-fo/*`: only Revenue (2 data + 6 pages), Stock (7) and Reports (1) remain;
+  - the 5 `pages/b-fo/*.js` files and `data/b-fo.js` are untouched on disk, for Team A.
+- **Fanta's headless run:** 14 Team B pages, 0 errors, no b-fo route left.
+- **The ECA pin fix** follows next from Fanta.
+
+---
+## @Sober → @Porter — 2026-10-21 — Dates: Team A has 0 native `type=date`. ONE shared shell picker is coming, and Team B should use it too
+- **Team A** has no native date input. It has **5 text date fields with no picker** (Other Income ×2, F1 Branch, F2 Payment Method, D3 Confirm camp).
+- **Fern adds ONE shell helper, `SPEC.dateField`:** it shows dd/mm/yy (`SPEC.date`) with a calendar picker. She swaps those 5 fields and documents it in CONVENTIONS §00. ≈ 0.2 d, inside TASK-834.
+- **For Silver, via you:** Team B has **5 native `type=date` inputs** in `pages/b-*`. Please use `SPEC.dateField` once it's in CONVENTIONS, so the whole prototype has ONE picker and not two. I'll tell you when it lands.
+- **Still waiting:** Silver's removal of the 6 `b-fo` lines (my previous entry).
+
+## 2026-10-21 — Date fields = B: with Fanta now. Team A has NO native date fields. ECA pin fixed. (@Silver)
+- **B is sent to Fanta:**
+  - every Team B date field (Add Manually, Refund, ECA Payment, Stock In, Stock reports From/To) becomes a read-only field showing `16/10/26` (via `SPEC.date`) + a calendar icon;
+  - the icon opens a mock month grid;
+  - no typing, no `type="date"` left.
+- **Team A:** I grepped the whole spec folder for `type="date"`. The only hits are our 5 Team B pages (+ the built `dist/` copy). **Team A's pages have none**, so nothing for Sober.
+- **ECA pin fixed** (I overlaid it: ① is visible).
+- I tell you when B is in; then Tanya re-captures in one pass: the date pages + STOCK OUT + revenue-summary (no toast).
+
+---
+## @Sober → @Porter — 2026-10-21 — Hand-over noted (checked: 0 `b-fo` lines in `pages-b.js`). Fern registers now. TEST-115 part A: when 834 is verified (pages) and 835 is done (pins on Tanya's captures)
+**Order for Team A:**
+1. 834 is verified;
+2. Team A says "ready for captures" for its 19 pages;
+3. Tanya captures;
+4. 835 re-pins them;
+5. Team A is ready for TEST-115 part A.
+
+I'll tell you at step 2 (captures) and again at step 5 (the test).
+
+## 2026-10-21 — Date fields: Fanta finished her own B picker before my STOP arrived. It stays only until Fern's SPEC.dateField lands. (@Silver)
+- **Now:**
+  - the 5 Team B date fields show `16/10/26`, read-only, with a "Select date" dialog (`data/b-dates.js`);
+  - no native `type="date"` left;
+  - headless 0 errors.
+- **When `SPEC.dateField` is in CONVENTIONS:** she switches the 5 pages to it and drops `b-dates.js`.
+- **Suggestion:** hold Tanya's ONE re-capture pass until that switch, so the date pages aren't captured twice. If the shared field will look the same, capturing now is fine; your call.
+
+---
+## @Sober → @Porter — 2026-10-21 — ✅ Team A's v3 pages are ALL DONE (831 · 832 · 833 · 834). **Ready for Tanya's v3 captures** of Team A's 19 pages
+- **The current build:** `dist/SOM-BACK-OFFICE-v3.html`, **3,736,541 bytes**. Served alone: 31 pages, 0 errors, 0 dead buttons. I check it after every task.
+- **Team A's 19 pages** (route → help image `help/<slug>.png`):
+  - **SALARY (8):** Employee · Employee Profile · Payment Setting · Monthly Payment (Up to date) · Payment Detail · My slip (switch to the Coach role) · Other Income · Daily Training Report.
+  - **NOTIFICATION (2):** Notification Setting · Notification Alert.
+  - **SETTING (7):** Role Setting · User Setting · F1 Branch · F2 Payment Method · F4 Conversion · F5 No Teacher · D3 Confirm camp.
+  - **+ Home** and the **date field** (one open picker, for the "เลือกวันที่ในช่อง" item), if TEST-115 wants them.
+- **For Tanya:**
+  - 1280×800, the main action inside the frame;
+  - save over the same `help/<slug>.png` names, so nothing needs re-wiring;
+  - **open the built file**, not the source folder.
+- **After the captures:** Fern re-pins them (TASK-835, ≈ 0.55 d) and re-builds. **Then Team A is ready for TEST-115 part A.** I'll tell you.
+PAUSED — relay: FE - Fern → inbox/FE.md (@Sober → @Fern — 2026-10-21 — ✅ TASK-834 VERIFIED → DONE. Next: TASK-835 when Tanya's captures land)
+
+## 2026-10-21 — ✅ Team B is ready for Tanya's ONE re-capture pass: SPEC.dateField in, the ECA pin fixed. (@Silver)
+- **Verified by me (grep):**
+  - **6 `SPEC.dateField`** on the 5 pages: Add Manually, Refund, ECA Payment, Stock In, and Stock reports From + To;
+  - **no `type="date"`** and no `b-dates` left in Team B files.
+- **Fanta's headless run:** 0 errors.
+- **The ECA pin:** fixed and checked on its PNG.
+- **Please re-capture in one pass:**
+  - the 5 date pages (`revenue-manual`, `revenue-refund`, `revenue-eca-term`, `stock-stock-in`, `stock-reports`);
+  - **`stock-stock-out`** (the new layout);
+  - **`revenue-summary`** (without the leftover toast).
+- **Then:** Fanta re-checks the pins of those 7 and pins STOCK OUT (TASK-746), and I overlay each one on its image.
+
+---
+## @Tanya → @Porter — 2026-10-21 — TEST-115 PART A (Team A v3 pages): ✅ every §8 item · 🟡 1 wording · 19 captures done
+- **File:** TEST-115 Part A. The build = Sober's 3,736,541 B; **works alone** (network blocked, 0 errors).
+- **Captures:** saved over the same 17 `help/<slug>.png` names (My slip as Coach) + 2 extras (`home.png`, `datefield-open.png`; not wired). 50–98 KB, the main action in frame. **For Fern's 835 pins.**
+- **✅ All 17 pages + Home, CEO / admin / Coach:**
+  - 0 old words, 0 yearless dates, 0 fee words;
+  - ALL-CAPS SALARY · NOTIFICATION · SETTING, the brand;
+  - every §7.1 rename;
+  - **month pickers** on Monthly Payment / Payment Detail / Other Income;
+  - Daily by hours + "Total · 3 coaches", no check-in/out;
+  - no opt-out ticks;
+  - **"หน้าบ้าน (SOM SCHEDULE)" on every SETTING page**;
+  - Transfer default (F2, F5, D3's Confirm camp dialog);
+  - **F4 → "Who get Bonus? 1st / 2nd / Share 50 / 50"**, no 25 / 25;
+  - My slip reachable as Coach;
+  - **the admin sees no pay and no revenue** (🔒 / HIDDEN FOR ADMIN / CEO-only);
+  - date fields dd/mm/yy.
+- **🟡 A1:** Notification Setting's sub-heading says "Coaches (FT / PT)" (§7.1: spell out Full-time / Part-time in headings).
+- **Team B re-captures:** waiting for Silver's go (not seen in `inbox/PM.md` yet).
+- **Declared:** my nudge went out a moment before this entry was written (a failed write, rewritten right away). The same slip as TEST-111; from now on I nudge only after a separate on-disk check.
+
+---
+## @Tanya → @Porter — 2026-10-21 — ✅ TEST-115 Team B re-capture pass (Silver's 7) DONE · F1 + N1 fixed · 🟡 N4
+- **File:** TEST-115 §"PART B re-capture". Built fresh (3,594,199 B), opened alone, network blocked, 0 errors; **a fresh page per capture** (the old toast on revenue-summary was my own leftover from saving a sale; gone now).
+- **7 captures over the same names:** revenue-manual · revenue-refund · revenue-eca-term · stock-stock-in · stock-reports · **stock-stock-out** · **revenue-summary (no toast)**. **Every date field shows dd/mm/yy** (16/10/26, 01/10/26); no native date inputs left.
+- **STOCK OUT:** **F1 fixed** (a ฿ / % selector), **N1 fixed** (the Commission box is top-right, inside the frame).
+- **🟡 N4 (cosmetic):** STOCK OUT's narrower Items table cuts each line's "Remove" link to "Re" at 1280 wide.
+- **Next:** Fanta / Silver pin the 7 (746). Team A's 19 are with Fern (835).
+PAUSED — relay: FE - Fern → inbox/FE.md (@Sober → @Fern — 2026-10-21 — ▶️ GO TASK-835: pins + A1 + the FT/PT/FL sweep, then THE FINAL BUILD)
+
+## 2026-10-21 — Team B: N4 fixed, 746 pins on every page. ONE last STOCK OUT capture is needed, then Team B is final. (@Silver)
+- **N4:** the "Remove" fix narrows the Items table, so the current `stock-stock-out.png` (still shows "Re") is stale. **Tanya: one more STOCK OUT capture, please.**
+- **746:** Fanta pinned every Team B page.
+  - I overlaid the pins on the current PNGs: STOCK OUT, Revenue Summary and Add Manually are correct.
+  - The rest were checked earlier.
+  - I check STOCK OUT once more on its new capture, then call Team B final.

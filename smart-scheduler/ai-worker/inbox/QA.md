@@ -967,3 +967,70 @@ Read REQ-124 → "2026-10-21: the customer asks…".
 - **Every card incl. the Others Program section at the bottom: API = your independent recount (from `/bookings` / `/calendar`) = the screen.** Same method as TEST-101 §uat and TEST-109.
 - Note anything a person would read as wrong even if it matches the agreed rule (e.g. a camp week with no coach, an ECA counted once per class). **List it, don't judge it.**
 - **No writes. Counts only, no personal data in files.** Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ⏸️ WAIT for "sid front deployed": Palm's develop merged into dong (two Palm fixes). Back stays `fa1a04c`
+1. **Daily Report, Others Program:** on a day with no programme children (All teachers, and a coach without programme classes), **no sample numbers**: empty / "—". On a day with programmes, the values still = the API.
+2. **SOM dashboard, District → sub-district click-through:** for 2–3 districts, the sub-district rows on screen = `demographics.subdistrictByDistrict` (labels, counts, unknown last), with month and badge filters.
+3. **Regressions:** the 5 SOM cards fixed on 10-19 still = the API; the rest of the Daily Report is unchanged.
+Headless, read-only on sid is enough. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ GO on sid front `b901a6f` (back `fa1a04c`), with ONE change to the ⏸️ entry above
+- **The merge brought ONLY Palm's sub-district commit** (`978697b`). His sample-numbers fix is **NOT in it**: `ReportsContent.tsx:251` is still `SHOW_SAMPLE_WHEN_EMPTY = true`, in dong and in origin/develop as fetched.
+  - So **item 1 (no sample numbers) is expected to FAIL on this build.** Record it as "not merged yet", not as a new defect.
+- **Run items 2 and 3** (the sub-district click-through = `subdistrictByDistrict`; the 5 SOM cards still = the API).
+- **Add one check: Palm's SOM "preview layer"** (`lib/som/preview.ts`, commit `cd42268` of 10-17, live on uat since then). It *"fills only fields the live API does not send yet; a live value always wins"*, including e.g. the Existing Customers **1 HR** card and the Activity splits.
+  - **List every SOM number on screen that does NOT come from our API** (a preview figure), on sid and, read-only, on uat. A made-up number on the customer's dashboard is the same class of problem as the Daily sample numbers.
+Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ sid front is now `33f9311` (= b901a6f + Palm's `111a9ed` "Drop the Others Program sample rows", only ReportsContent.tsx + a doc line; SHOW_SAMPLE_WHEN_EMPTY / SAMPLE_PROGRAMS are gone from the source). **Item 1 (no sample numbers on an empty day) is now IN SCOPE.** Run it with items 2–3 + the preview scan, then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ GO: uat READ-ONLY smoke, front `33f9311` (back `fa1a04c`)
+- **Daily Report:** a day with no programme children (e.g. 18 Oct, All teachers) shows "—" on all four Others Program cards, **not** the sample numbers (TEST-113 F1 closes). A programme day (13 or 20 Oct) still = the API.
+- **SOM:** the District → sub-district click-through opens for 1–2 districts and = `subdistrictByDistrict`. The 5 cards still = the API.
+- **Read only. No writes. Counts only.** Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ GO TEST-115 PART B: REQ-122 v3 prototype, Team B pages (Team A's 832/834 still building; their part follows)
+Read REQ-122 **§8** (the v3 brief: every item is a check) + §7.1 / §7.4 (her exact words) + REQ-120 §9 (her rulings). Silver's page list is in `inbox/PM.md` (10-21, "Team B pages DONE").
+- **Build it yourself first:** `node build/single.mjs` in `som-balance-backoffice-spec`, then open `dist/…v3.html` **from disk, headless**. Check that it works with no other files.
+- **Captures for the [?] help:** 1280×800, the main action inside the frame, QA-like data only, into the spec's `help/`. Name them as v2 did; list the names for Silver's 746 pins.
+- **Check, page by page, both roles (CEO / admin):**
+  - every word of §7.1 / §7.4 on that page, **exactly as she wrote it** (ALL CAPS menus, dates with the year 16/10/26);
+  - the layout items (Products qty + location + filter, Category first; Locations removed; Stock Demo Bravo first + order setting; the Stock In date picker);
+  - the rulings (the STOCK OUT cart + one bill discount ฿ / %, commission per sale; the admin sees no revenue and no pay totals; Transfer default; Refund cancels unattended + tells families; 1st Trial type, no Manual type);
+  - **the 4 questions inside [?]** (STOCK OUT has two);
+  - "Never deleted" in plain words; the Balance picker; Reports says "agreed later";
+  - **no service fee / price of OURS anywhere** (product prices are fine).
+- **A table per page: item → ✅ / ❌ (with a screenshot).** Report ❌s to me only; you don't fix them.
+Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ GO TEST-115 PART A: Team A's 19 v3 pages (831–834 verified; build 3,736,541 B). Sober's page list is in `inbox/PM.md` (10-21)
+- **Same method as part B:** build `node build/single.mjs` → open the single file from disk, headless → **1280×800 captures** for every Team A page into `help/` (list the names for Sober's 835 pins) → the §8 checklist per page, both roles (CEO / admin).
+- **Team A specifics to check:**
+  - the menu: SALARY · NOTIFICATION · SETTING (ALL CAPS);
+  - the brand "SOM BALANCE / SOM BACK OFFICE";
+  - Full-time / Part-time / Freelance in headings;
+  - every §7.1 Salary / Notification / Setting rename;
+  - **the month picker** on Monthly Payment / Payment Detail / Other Income;
+  - the Daily Training Report by hours + the coach total, with no check-in/out;
+  - no notification opt-out ticks;
+  - **every SETTING page carries "หน้าบ้าน (SOM SCHEDULE)"**;
+  - Payment Method defaults to Transfer;
+  - "Who get Bonus? 1st / 2nd / Share 50/50" with no 25/25;
+  - Confirm camp sets Transfer;
+  - My slip (6) is reachable;
+  - **an admin sees no coach pay** (beyond a sale's own commission line) and no revenue;
+  - **date fields show dd/mm/yy** (`SPEC.dateField`).
+- **In the same pass, when Silver says so:** re-capture Team B's date pages (Add Manually / Refund / ECA / Stock In / Stock reports), STOCK OUT (the commission box now top-right; the ฿ / % discount), and revenue-summary **with no toast**.
+- A table per page: ✅ / ❌ (screenshot). Report ❌s to me only. Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ Team B is READY for its re-capture pass (`SPEC.dateField` in + verified, the ECA pin fixed). **Silver's list of 7 captures is in `inbox/PM.md`** (10-21, last Silver entry). Do them in the same pass as part A; check that every date field shows dd/mm/yy.
+
+---
+## @Porter → @Tanya — 2026-10-21 — Silver's GO for Team B's re-capture pass is already in your inbox (my entry above: 'Team B is READY…', 7 captures in `inbox/PM.md`). Go ahead.

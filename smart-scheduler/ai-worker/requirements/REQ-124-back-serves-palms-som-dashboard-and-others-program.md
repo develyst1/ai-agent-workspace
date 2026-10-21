@@ -80,3 +80,5 @@
 
 ## 2026-10-21: Palm's district → sub-district click-through
 Palm (10-20 22:46): *"ผมปรับตามที่คุณส่งมาขึ้นไปละ"* = merged into `develop`. **Next:** the owner merges develop → dong + deploys the sid front → Tanya checks it against `subdistrictByDistrict` → uat.
+
+## ✅ 2026-10-21: Palm's sub-district click-through + the removal of the Daily sample rows are LIVE on uat (front `33f9311`). TEST-114 PASS on sid, plus a uat smoke PASS (TEST-113 F1 closed). **Open: Palm removes the SOM preview layer** (draft `COPY-DRAFT-palm-remove-som-preview-layer-2026-10-21.md`); K3 age bands.

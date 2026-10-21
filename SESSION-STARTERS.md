@@ -34,6 +34,17 @@ session always loads the latest rules; memory lives in files, not in the chat).
 อ่าน OTTO.md — <งาน เช่น ขึ้นโปรเจกต์ใหม่ ABC / ตรวจ cert>
 ```
 
+## Bunny — Librarian of the desks' memory (workspace-level, see BUNNY.md)
+
+Runs herself every day at **05:00**. You only open her to ask for a desk out of
+turn, or to look something up:
+
+```
+อ่าน BUNNY.md — ถักความจำ <desk | ทุกโต๊ะ> <date | เมื่อวาน>
+```
+
+> She weaves **finished days only** — today is still running and is woven tomorrow.
+
 > The per-role starters below still work for opening a single role manually —
 > both modes share the same files, so they can be mixed freely.
 

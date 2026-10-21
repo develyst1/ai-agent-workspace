@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เปิดโต๊ะ</title>
+<!-- v2 (MARIE-ORDER-2026-10-14-desk-open-form-v2.md). Served by scripts/desk-open.mjs. Words, roles and the
+     recommended team come from /api/questions (_templates/desk-open/questions.json); answers are saved through
+     /api/desks/<desk> to desk-open/<desk>.json. Offline: system fonts, no CDN, no packages.
+     The team canvas lays itself out from the chain (rows by distance from "คุณ"), so positions, teams and
+     session names are derived on screen and never stored. -->
+<style>
+:root {
+  --bg: #eceef2; --surface: #ffffff; --surface-2: #f5f6f9; --ink: #141826; --muted: #586078;
+  --line: #d6dae3; --line-strong: #868ea2;
+  --accent: #3245d1; --accent-hover: #2636b3; --accent-ink: #ffffff; --accent-soft: #e5e8fb;
+  --ok: #17794a; --ok-soft: #e0f1e7; --bad: #b3261e; --bad-soft: #fbe6e4;
+  --dot: #cbd0db; --cord: #69728f; --you: #141826; --you-ink: #ffffff; --you-muted: #b8bed0;
+  --shadow-1: 0 1px 2px rgba(20, 24, 38, .06), 0 2px 8px rgba(20, 24, 38, .06);
+  --shadow-2: 0 6px 24px rgba(20, 24, 38, .14);
+  --r-ctl: 8px; --r-card: 12px; --r-panel: 16px;
+  --f: "Sukhumvit Set", "Noto Sans Thai", "Leelawadee UI", "Thonburi", system-ui, sans-serif;
+  --f-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e111b; --surface: #171b29; --surface-2: #131726; --ink: #e8eaf2; --muted: #a0a7bd;
+    --line: #2b3145; --line-strong: #5f6987;
+    --accent: #8d9cff; --accent-hover: #a9b5ff; --accent-ink: #0e111b; --accent-soft: #252c52;
+    --ok: #5fd09a; --ok-soft: #16301f; --bad: #ff8f86; --bad-soft: #3a1c1c;
+    --dot: #272d40; --cord: #8a93b3; --you: #e8eaf2; --you-ink: #0e111b; --you-muted: #4c5470;
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .25);
+    --shadow-2: 0 8px 28px rgba(0, 0, 0, .5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e111b; --surface: #171b29; --surface-2: #131726; --ink: #e8eaf2; --muted: #a0a7bd;
+  --line: #2b3145; --line-strong: #5f6987;
+  --accent: #8d9cff; --accent-hover: #a9b5ff; --accent-ink: #0e111b; --accent-soft: #252c52;
+  --ok: #5fd09a; --ok-soft: #16301f; --bad: #ff8f86; --bad-soft: #3a1c1c;
+  --dot: #272d40; --cord: #8a93b3; --you: #e8eaf2; --you-ink: #0e111b; --you-muted: #4c5470;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .25);
+  --shadow-2: 0 8px 28px rgba(0, 0, 0, .5);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f); font-size: 16px; line-height: 1.6; }
+::selection { background: var(--accent-soft); color: var(--ink); }
+h1, h2, h3, p { margin: 0; }
+h1, h2 { line-height: 1.25; text-wrap: balance; letter-spacing: -.01em; }
+button, input, textarea { font: inherit; color: inherit; }
+input, textarea { caret-color: var(--accent); }
+[hidden] { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ic { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: var(--r-ctl); border: 1px solid var(--line); background: var(--surface); font-weight: 600; cursor: pointer; text-decoration: none; white-space: nowrap; transition: background-color .14s, border-color .14s, color .14s; }
+.btn:hover { border-color: var(--line-strong); background: var(--surface-2); }
+.btn:active { transform: translateY(1px); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--ink); }
+.btn.ghost:hover { background: var(--surface); border-color: var(--line); }
+.btn.link { background: transparent; border-color: transparent; color: var(--accent); padding: 0 10px; min-height: 44px; min-width: 44px; }
+.btn.link:hover { text-decoration: underline; text-underline-offset: 3px; background: transparent; }
+.btn:disabled, .btn:disabled:hover { cursor: not-allowed; background: var(--surface-2); border-color: var(--line); color: var(--muted); transform: none; }
+.btn.danger { color: var(--bad); }
+.btn.danger:hover { background: var(--bad-soft); border-color: transparent; }
+
+/* fields */
+.field { display: flex; flex-direction: column; gap: 10px; }
+.field > label, .field > .label { font-weight: 600; font-size: 17px; }
+input[type="text"], textarea { width: 100%; background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--r-ctl); padding: 10px 14px; min-height: 48px; transition: border-color .14s, box-shadow .14s; }
+input[type="text"]:hover, textarea:hover { border-color: var(--ink); }
+input[type="text"]:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+::placeholder { color: var(--muted); opacity: 1; }
+textarea { min-height: 96px; resize: vertical; line-height: 1.55; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background-color .14s, border-color .14s; }
+.chip:hover { border-color: var(--line-strong); }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); font-weight: 600; }
+.chip[aria-pressed="true"] .ic { color: var(--accent); }
+.chip[aria-pressed="false"] .ic { display: none; }
+.opt-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.opt-card { text-align: left; padding: 16px 18px; border-radius: var(--r-card); border: 1px solid var(--line); background: var(--surface); cursor: pointer; display: flex; flex-direction: column; gap: 2px; min-height: 72px; justify-content: center; transition: background-color .14s, border-color .14s; }
+.opt-card:hover { border-color: var(--line-strong); }
+.opt-card[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.opt-card strong { font-weight: 600; }
+.opt-card span { font-size: 14px; color: var(--muted); }
+
+/* home */
+.home { max-width: 640px; margin: 0 auto; padding: 72px 16px 96px; display: flex; flex-direction: column; gap: 40px; }
+.home h1 { font-size: 40px; font-weight: 700; }
+.home .lead { color: var(--muted); font-size: 18px; margin-top: 8px; }
+.home h2 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.new-row { display: flex; gap: 10px; }
+.new-row input { flex: 1; min-width: 0; font-family: var(--f-mono); font-size: 15px; }
+.new-row input::placeholder { font-family: var(--f); font-size: 16px; }
+.field-msg { font-size: 14px; color: var(--bad); min-height: 1.4em; margin-top: 6px; }
+.desk-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.desk-item { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-radius: var(--r-card); border: 1px solid var(--line); background: var(--surface); cursor: pointer; text-align: left; transition: border-color .14s, box-shadow .14s; }
+.desk-item:hover { border-color: var(--line-strong); box-shadow: var(--shadow-1); }
+.desk-item .t { font-weight: 600; overflow-wrap: anywhere; display: block; }
+.desk-item .d { font-size: 14px; color: var(--muted); }
+.quiet { color: var(--muted); font-size: 15px; }
+.pill { font-size: 13px; font-weight: 600; border-radius: 999px; padding: 3px 12px; white-space: nowrap; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+.pill.answered { background: var(--ok-soft); color: var(--ok); border-color: transparent; }
+.banner { background: var(--accent-soft); border-radius: var(--r-ctl); padding: 12px 16px; font-size: 15px; }
+
+/* desk frame */
+.topbar { background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar-in { max-width: 1320px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 16px; }
+.back { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; min-height: 44px; min-width: 44px; padding-right: 8px; border-radius: var(--r-ctl); }
+.back:hover { color: var(--ink); }
+.desk-name { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; }
+.desk-name h1 { font-size: 20px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stepper { max-width: 1320px; margin: 0 auto; padding: 0 24px; list-style: none; display: flex; gap: 4px; }
+.stepper li { flex: 1; }
+.step-btn { width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 4px 14px; border: 0; background: transparent; cursor: pointer; color: var(--muted); border-bottom: 3px solid transparent; text-align: left; font-weight: 600; min-height: 52px; }
+.step-btn:hover { color: var(--ink); }
+.step-btn .n { width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 14px; border: 1.5px solid var(--line-strong); flex: none; font-variant-numeric: tabular-nums; }
+.step-btn .n .ic { width: 15px; height: 15px; stroke-width: 2.6; }
+.step-btn[aria-current="step"] { color: var(--ink); border-bottom-color: var(--accent); }
+.step-btn[aria-current="step"] .n { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.step-btn.is-done:not([aria-current]) .n { background: var(--ok-soft); border-color: transparent; color: var(--ok); }
+
+.notice { max-width: 1320px; margin: 24px auto 0; padding: 12px 16px; border-radius: var(--r-ctl); background: var(--accent-soft); font-size: 15px; width: calc(100% - 48px); }
+.step-host { max-width: 1320px; margin: 0 auto; padding: 40px 24px 140px; }
+.step { display: flex; flex-direction: column; gap: 32px; animation: enter .18s ease-out; }
+@keyframes enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.step h2 { font-size: 30px; font-weight: 700; }
+.narrow { max-width: 680px; display: flex; flex-direction: column; gap: 36px; }
+.note-in { margin-top: 2px; }
+
+.navbar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); padding: 12px 24px calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 5; }
+.navbar-in { max-width: 1320px; margin: 0 auto; display: flex; align-items: center; gap: 16px; }
+.navbar #next { margin-left: auto; }
+.navbar .msg { flex: 1; font-size: 14px; color: var(--muted); text-align: right; }
+.navbar .msg.err { color: var(--bad); }
+
+/* team step */
+.team-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; }
+.head-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.mode-pick { gap: 10px; }
+.mode-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.mode-row .opt-card { min-height: 64px; padding: 12px 16px; }
+.mode-line { display: none; font-size: 14px; color: var(--muted); }
+.mode-sum { font-size: 15px; color: var(--muted); margin: -4px 0 12px; overflow-wrap: anywhere; }
+.mode-sum b { color: var(--ink); font-weight: 600; }
+.short-field { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.short-field input { width: 96px; font-family: var(--f-mono); text-transform: uppercase; text-align: center; letter-spacing: .06em; }
+.hint { position: relative; }
+.hint summary { list-style: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; }
+.hint summary .q { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line-strong); display: grid; place-items: center; font-size: 14px; font-weight: 700; color: var(--muted); }
+.hint summary::-webkit-details-marker { display: none; }
+.hint summary:hover .q { color: var(--ink); border-color: var(--ink); }
+.hint[open] summary .q { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.hint p { position: absolute; z-index: 6; top: 44px; left: 50%; transform: translateX(-50%); width: 240px; background: var(--ink); color: var(--surface); padding: 10px 14px; border-radius: var(--r-ctl); font-size: 14px; font-weight: 400; box-shadow: var(--shadow-2); }
+
+.team-grid { display: grid; grid-template-columns: 188px minmax(0, 1fr) 288px; gap: 24px; align-items: start; }
+.palette { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 16px; }
+.palette h3, .panel h3 { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.pal-fold > summary { display: none; }
+.pal-body { display: flex; flex-direction: column; gap: 20px; }
+.pal-list { display: flex; flex-direction: column; gap: 6px; }
+.pal-btn { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 6px 12px; border-radius: var(--r-ctl); border: 1px solid var(--line); background: var(--surface); cursor: pointer; text-align: left; transition: border-color .14s, background-color .14s; }
+.pal-btn:hover { border-color: var(--accent); }
+.pal-btn .ic { color: var(--accent); width: 16px; height: 16px; }
+.pal-btn b { font-weight: 700; }
+.pal-btn small { color: var(--muted); font-size: 13px; margin-left: auto; text-align: right; line-height: 1.3; }
+.pal-btn.person { border-style: dashed; }
+
+.canvas-wrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.canvas-frame { position: relative; background-color: var(--surface-2); background-image: radial-gradient(var(--dot) 1.2px, transparent 1.6px); background-size: 20px 20px; border: 1px solid var(--line); border-radius: var(--r-panel); }
+.connect-bar { position: fixed; z-index: 8; left: 50%; transform: translateX(-50%); bottom: 88px; width: max-content; max-width: calc(100vw - 32px); display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 6px 6px 16px; border-radius: var(--r-ctl); background: var(--ink); color: var(--surface); box-shadow: var(--shadow-2); font-size: 15px; }
+.connect-bar .btn { min-height: 36px; background: transparent; color: var(--surface); border-color: transparent; }
+.connect-bar .btn:hover { background: rgba(127, 127, 127, .25); }
+.canvas-hint { font-size: 14px; color: var(--muted); }
+
+.board { position: relative; min-height: 360px; user-select: none; -webkit-user-select: none; }
+.board input { user-select: text; -webkit-user-select: text; }
+.cords { position: absolute; left: 0; top: 0; overflow: visible; z-index: 0; }
+.board .card { z-index: 1; }
+.cord { fill: none; stroke: var(--cord); stroke-width: 2; stroke-linecap: round; }
+.cord-hit { fill: none; stroke: transparent; stroke-width: 18; cursor: pointer; pointer-events: stroke; }
+.cord-hit:focus { outline: none; }
+.edge:hover .cord, .edge:focus-within .cord, .cord-hit:focus-visible + .cord { stroke: var(--bad); stroke-dasharray: 6 5; }
+.edge .cut { opacity: 0; pointer-events: none; transition: opacity .12s; }
+.edge:hover .cut, .edge:focus-within .cut { opacity: 1; }
+.cut circle { fill: var(--surface); stroke: var(--bad); stroke-width: 1.5; }
+.cut path { stroke: var(--bad); stroke-width: 2; stroke-linecap: round; }
+.temp { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 6 5; pointer-events: none; }
+.tray-label { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; font-weight: 600; color: var(--muted); }
+
+.card { position: absolute; left: 0; top: 0; height: 104px; padding: 10px 12px 14px; border-radius: var(--r-card); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-1); display: flex; flex-direction: column; gap: 6px; cursor: pointer; }
+.card.new { animation: pop .18s ease-out; }
+@keyframes pop { from { opacity: 0; box-shadow: 0 0 0 6px var(--accent-soft); } to { opacity: 1; } }
+.card:hover { border-color: var(--line-strong); }
+.card.sel { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-1); }
+.card.person { border-style: dashed; border-color: var(--line-strong); box-shadow: none; }
+.card.person.sel { border-style: solid; border-color: var(--accent); }
+.card.you { background: var(--you); color: var(--you-ink); border-color: var(--you); justify-content: center; align-items: center; text-align: center; gap: 6px; }
+.card.you.sel { box-shadow: 0 0 0 3px var(--accent); }
+.you-name { font-size: 22px; font-weight: 700; line-height: 1.1; }
+.tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.tag { font-size: 12px; padding: 0 8px; border-radius: 999px; border: 1px solid var(--you-muted); color: var(--you-ink); line-height: 20px; }
+.card-top { display: flex; align-items: center; gap: 6px; min-width: 0; white-space: nowrap; overflow: hidden; }
+.role { font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; }
+.card.person .role { font-weight: 600; font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; }
+.card.person .role .ic { width: 14px; height: 14px; }
+.also { font-size: 12px; color: var(--muted); font-weight: 600; }
+.team { margin-left: auto; font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-soft); padding: 0 7px; border-radius: 999px; line-height: 20px; }
+.card input.name { min-height: 34px; padding: 4px 8px; font-size: 15px; border-radius: 6px; border-style: dashed; border-color: var(--line-strong); background: var(--surface); }
+.card input.name:not(:placeholder-shown) { border-style: solid; border-color: transparent; background: var(--surface-2); font-weight: 600; }
+.card input.name:focus { border-style: solid; border-color: var(--accent); background: var(--surface); }
+.name-ro { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sess { font-family: var(--f-mono); font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-height: 18px; }
+.handle { position: absolute; left: 50%; bottom: -16px; width: 32px; height: 32px; margin-left: -16px; border: 0; padding: 0; background: transparent; cursor: crosshair; display: grid; place-items: center; touch-action: none; z-index: 2; }
+.handle::after { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); transition: transform .12s, background-color .12s; }
+.handle:hover::after, .card.src .handle::after { background: var(--accent); transform: scale(1.2); }
+.card.you .handle::after { border-color: var(--you-ink); background: var(--you); }
+.card.you .handle:hover::after { background: var(--accent); border-color: var(--accent); }
+.card.src { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-1); }
+.card.drop { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent), var(--shadow-1); }
+.join { position: absolute; inset: -1px; border-radius: var(--r-card); border: 2px solid var(--accent); background: color-mix(in srgb, var(--accent-soft) 88%, transparent); color: var(--ink); font-weight: 700; cursor: pointer; z-index: 3; display: grid; place-items: center; font-size: 15px; }
+.join:hover { background: var(--accent); color: var(--accent-ink); }
+.board.tree .card { height: 84px; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; gap: 6px 10px; align-content: center; padding: 8px 12px; }
+.board.tree .card-top { grid-column: 1 / -1; }
+.board.tree .sess { grid-column: 2; grid-row: 2; min-height: 0; max-width: 110px; }
+.board.tree .card.you { display: flex; flex-direction: row; justify-content: flex-start; gap: 12px; padding-left: 16px; }
+.board.tree .card.you .tags { justify-content: flex-start; }
+.board.tree .handle { left: 16px; }
+.board.ro .card { cursor: default; animation: none; }
+.board.ro .card:hover { border-color: var(--line); }
+.board.ro .card.person:hover { border-color: var(--line-strong); }
+.board.ro .card.you:hover { border-color: var(--you); }
+.board.ro { min-height: 0; }
+
+.side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-panel); padding: 18px 20px; }
+.panel h3.big { font-size: 17px; color: var(--ink); margin-bottom: 12px; }
+.ticks { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; }
+.ticks legend { font-size: 14px; font-weight: 700; color: var(--muted); margin-bottom: 4px; padding: 0; }
+.tick { display: flex; align-items: center; gap: 10px; min-height: 40px; cursor: pointer; }
+.tick input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+.panel .btn.danger { margin-top: 12px; padding: 0 12px; min-height: 40px; }
+.checks-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.checks-head h3 { margin: 0; }
+.count { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--muted); }
+.count.all { color: var(--ok); }
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.checks li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.45; }
+.checks .mk { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; flex: none; margin-top: -1px; }
+.checks .mk .ic { width: 14px; height: 14px; stroke-width: 2.8; }
+.checks li.ok .mk { background: var(--ok-soft); color: var(--ok); }
+.checks li.todo .mk { border: 1.5px dashed var(--line-strong); }
+.checks li.bad .mk { background: var(--bad-soft); color: var(--bad); }
+.checks li.ok .rt { color: var(--muted); }
+.checks li.bad .rt { color: var(--bad); font-weight: 600; }
+.checks .fix { display: block; font-size: 14px; color: var(--muted); }
+.checks li.bad .fix { color: var(--ink); }
+
+/* check step */
+.missing { display: flex; flex-direction: column; gap: 10px; }
+.missing h3 { font-size: 16px; }
+.missing .chips .chip { min-height: 40px; }
+.summary { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.summary .col { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.ph { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.ph h3 { margin: 0; font-size: 17px; color: var(--ink); }
+.summary .board-host { background-color: var(--surface-2); background-image: radial-gradient(var(--dot) 1.2px, transparent 1.6px); background-size: 20px 20px; border-radius: var(--r-card); }
+.roster { list-style: none; margin: 0; padding: 0; }
+.roster li { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 12px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.roster li:last-child { border-bottom: 0; }
+.roster .r { font-weight: 700; font-size: 15px; }
+.roster .nm { overflow-wrap: anywhere; }
+.roster .nm small { display: block; color: var(--muted); font-size: 13px; }
+.roster .s { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.roster .empty { color: var(--bad); }
+dl.answers { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+dl.answers dt { font-size: 14px; color: var(--muted); font-weight: 600; }
+dl.answers dd { margin: 2px 0 0; overflow-wrap: anywhere; white-space: pre-line; }
+dl.answers dd.empty { color: var(--bad); }
+
+/* done */
+.done { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+.done-card { width: 100%; max-width: 640px; display: flex; flex-direction: column; gap: 16px; }
+.done-mark { width: 48px; height: 48px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); display: grid; place-items: center; }
+.done-mark .ic { width: 26px; height: 26px; stroke-width: 2.4; }
+.done h2 { font-size: 34px; font-weight: 700; }
+.done p { color: var(--muted); font-size: 18px; }
+.paste-row { display: flex; gap: 10px; align-items: stretch; margin-top: 8px; }
+.paste-row code { flex: 1; min-width: 0; font-family: var(--f-mono); font-size: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-ctl); padding: 12px 14px; overflow-wrap: anywhere; user-select: all; }
+.done-links { display: flex; gap: 8px; margin-top: 8px; margin-left: -8px; }
+
+.toast { position: fixed; left: 50%; bottom: 88px; transform: translateX(-50%); z-index: 10; display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 18px; background: var(--ink); color: var(--surface); border-radius: var(--r-ctl); box-shadow: var(--shadow-2); font-size: 15px; max-width: calc(100vw - 32px); }
+.toast .btn { min-height: 36px; color: var(--accent-soft); background: transparent; border-color: transparent; }
+.toast .btn:hover { background: rgba(127, 127, 127, .25); text-decoration: none; }
+
+/* small screens */
+@media (max-width: 1080px) {
+  .team-grid { grid-template-columns: minmax(0, 1fr) 280px; }
+  .palette { grid-column: 1 / -1; position: static; }
+  .pal-body { flex-direction: row; flex-wrap: wrap; gap: 12px 24px; }
+  .pal-body > div { min-width: 0; }
+  .pal-list { flex-direction: row; flex-wrap: wrap; }
+  .pal-btn { width: auto; }
+  .pal-btn small { display: none; }
+}
+@media (max-width: 760px) {
+  .topbar-in { padding: 8px 16px; gap: 8px; }
+  .back span { display: none; }
+  .desk-name h1 { font-size: 17px; }
+  .stepper { padding: 0 16px; }
+  .step-btn { justify-content: center; padding: 10px 0 12px; }
+  .step-btn .t { display: none; }
+  .step-btn[aria-current="step"] { flex-direction: row; }
+  .step-btn[aria-current="step"] .t { display: inline; font-size: 14px; white-space: nowrap; }
+  .stepper li:has(.step-btn[aria-current="step"]) { flex: 2.4; }
+  .step-host { padding: 28px 16px 140px; }
+  .notice { width: calc(100% - 32px); margin-top: 16px; }
+  .step h2 { font-size: 24px; }
+  .team-grid, .summary { grid-template-columns: minmax(0, 1fr); }
+  .team-grid { gap: 16px; }
+  .mode-row { gap: 8px; }
+  .mode-row .opt-card { min-height: 48px; padding: 8px 6px; align-items: center; text-align: center; }
+  .mode-row .opt-card strong { font-size: 15px; line-height: 1.3; }
+  .mode-row .opt-card span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .mode-line { display: block; }
+  .pal-fold > summary { display: inline-flex; list-style: none; }
+  .pal-fold > summary::-webkit-details-marker { display: none; }
+  .pal-fold > summary .ic { color: var(--accent); }
+  .pal-fold[open] > summary { margin-bottom: 16px; background: var(--accent-soft); border-color: var(--accent); }
+  .pal-btn { min-height: 44px; }
+  .side { position: static; }
+  .navbar { padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .navbar .msg { display: none; }
+  .navbar-in { justify-content: space-between; }
+  .home { padding-top: 40px; }
+  .home h1 { font-size: 32px; }
+  .roster li { grid-template-columns: 76px minmax(0, 1fr); }
+  .roster .s { grid-column: 2; }
+  .paste-row { flex-direction: column; }
+}
+@media (pointer: coarse) {
+  .handle { width: 44px; height: 44px; margin-left: -22px; bottom: -22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- first screen: saved desks + start a new one -->
+<main id="home" class="home" hidden>
+  <header>
+    <h1>เปิดโต๊ะ</h1>
+    <p class="lead">ตั้งทีม AI ของโต๊ะใหม่ แล้วส่งให้ Atlas ติดตั้ง</p>
+  </header>
+  <div id="home-banner" class="banner" role="status" hidden></div>
+  <section aria-labelledby="new-h">
+    <h2 id="new-h">เริ่มโต๊ะใหม่</h2>
+    <div class="new-row">
+      <label class="sr" for="new-name">ชื่อโฟลเดอร์ของโต๊ะ</label>
+      <input type="text" id="new-name" placeholder="ชื่อโฟลเดอร์ เช่น my-project" autocomplete="off" spellcheck="false" autocapitalize="off">
+      <button class="btn primary" id="new-go" type="button">เริ่มโต๊ะใหม่</button>
+    </div>
+    <p class="field-msg" id="new-msg" role="status"></p>
+  </section>
+  <section aria-labelledby="saved-h">
+    <h2 id="saved-h">โต๊ะที่บันทึกไว้</h2>
+    <ul class="desk-list" id="desk-list"></ul>
+    <p class="quiet" id="no-desks" hidden>ยังไม่มีโต๊ะที่บันทึกไว้</p>
+  </section>
+</main>
+
+<!-- one desk -->
+<div id="desk" hidden>
+  <div id="form-view">
+    <header class="topbar">
+      <div class="topbar-in">
+        <a class="back" href="#" id="back"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>โต๊ะทั้งหมด</span></a>
+        <div class="desk-name"><h1 id="title"></h1><span id="status-pill" class="pill"></span></div>
+        <button class="btn ghost" id="save-draft" type="button">บันทึกร่าง</button>
+      </div>
+      <nav aria-label="ขั้นตอน"><ol class="stepper" id="stepper"></ol></nav>
+    </header>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <main id="step-host" class="step-host"></main>
+    <footer class="navbar">
+      <div class="navbar-in">
+        <button class="btn ghost" id="prev" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>ย้อนกลับ</button>
+        <span class="msg" id="msg" role="status"></span>
+        <button class="btn primary" id="next" type="button">ถัดไป</button>
+      </div>
+    </footer>
+  </div>
+  <main id="done" class="done" hidden>
+    <div class="done-card">
+      <span class="done-mark"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <h2 id="done-h" tabindex="-1">ส่งให้ Atlas แล้ว</h2>
+      <p>เปิด session ใหม่ แล้ววางบรรทัดนี้</p>
+      <div class="paste-row"><code id="paste-line"></code><button class="btn primary" id="copy" type="button">คัดลอก</button></div>
+      <div class="done-links"><button class="btn link" id="edit-again" type="button">แก้คำตอบ</button><a class="btn link" href="#" id="done-home">โต๊ะทั้งหมด</a></div>
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast" role="status" hidden><span id="toast-t"></span><button class="btn" id="toast-undo" type="button">เลิกทำ</button></div>
+
+<script>
+'use strict';
+var DESK_RE = /^[a-z0-9][a-z0-9-]{1,40}$/;
+var Q = null;
+var S = { desks: [], current: null, data: null, dirty: false, saved: false, step: 0, sel: null, connect: null, undo: null, v1: false, observers: [] };
+var $ = function (id) { return document.getElementById(id); };
+var NS = 'http://www.w3.org/2000/svg';
+var ICON = {
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  x: '<path d="M7 7l10 10M17 7L7 17"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  person: '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/>'
+};
+var BUILDERS = ['FE', 'BE', 'designer'];
+
+function clone(x) { return JSON.parse(JSON.stringify(x)); }
+function h(tag, attrs) {
+  var e = document.createElement(tag);
+  if (attrs) Object.keys(attrs).forEach(function (k) {
+    var v = attrs[k];
+    if (v == null || v === false) return;
+    if (k === 'class') e.className = v;
+    else if (k === 'text') e.textContent = v;
+    else if (k === 'value') e.value = v;
+    else if (k === 'checked') e.checked = !!v;
+    else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : v);
+  });
+  for (var i = 2; i < arguments.length; i++) {
+    [].concat(arguments[i]).forEach(function (k) { if (k != null && k !== false) e.append(k.nodeType ? k : document.createTextNode(k)); });
+  }
+  return e;
+}
+function svg(tag, attrs) { var e = document.createElementNS(NS, tag); Object.keys(attrs || {}).forEach(function (k) { if (attrs[k] != null) e.setAttribute(k, attrs[k]); }); return e; }
+function icon(name) { var s = svg('svg', { viewBox: '0 0 24 24', class: 'ic', 'aria-hidden': 'true' }); s.innerHTML = ICON[name]; return s; }
+
+async function api(method, path, body) {
+  var opt = { method: method, headers: {} };
+  if (body !== undefined) { opt.headers['Content-Type'] = 'application/json'; opt.body = JSON.stringify(body); }
+  var r = await fetch(path, opt);
+  var data = null;
+  try { data = await r.json(); } catch (e) {}
+  if (!r.ok) { var err = new Error((data && data.error) || ('HTTP ' + r.status)); err.status = r.status; throw err; }
+  return data;
+}
+
+/* ---------- data ---------- */
+function field(id) { return Q.fields.find(function (f) { return f.id === id; }); }
+function fv(id) {
+  var f = field(id), g = S.data[f.group];
+  if (!g[id]) g[id] = { v: clone(f.default), by: 'template' };
+  if (f.noteFor && g[id].note == null) g[id].note = '';
+  return g[id];
+}
+function filled(v) { return Array.isArray(v) ? v.length > 0 : String(v == null ? '' : v).trim() !== ''; }
+function T() { return S.data.team; }
+function node(id) { return T().nodes.find(function (n) { return n.id === id; }); }
+function roleInfo(id) { return Q.roles.find(function (r) { return r.id === id; }) || { id: id, label: id }; }
+function personInfo(id) { return Q.people.find(function (p) { return p.id === id; }) || { id: id, label: id }; }
+function dutyLabel(id) { var d = Q.duties.find(function (x) { return x.id === id; }); return d ? d.label : id; }
+function kindLabel(n) { return n.kind === 'you' ? 'คุณ' : n.kind === 'person' ? personInfo(n.role).label : roleInfo(n.role).label; }
+function who(n) { return kindLabel(n) + (n.name ? ' ' + n.name : ''); }
+function hasRole(n, r) { return n.kind === 'agent' && (n.role === r || (n.also || []).indexOf(r) >= 0); }
+function neighbours(id) { return T().edges.filter(function (e) { return e.from === id || e.to === id; }).map(function (e) { return e.from === id ? e.to : e.from; }); }
+function shortCode() { return (S.data.short || '').trim().toUpperCase(); }
+function sessionName(n) { return n.kind === 'agent' && n.name.trim() ? n.name.trim() + '-' + (shortCode() || '?') : ''; }
+function reachable() {
+  var seen = { you: true }, q = ['you'];
+  while (q.length) neighbours(q.shift()).forEach(function (m) { if (!seen[m]) { seen[m] = true; q.push(m); } });
+  return seen;
+}
+// Teams are derived: each SA in the order it was added is a team letter; an FE/BE joins the first SA it is wired to.
+function teams() {
+  var map = {};
+  var sas = T().nodes.filter(function (n) { return n.kind === 'agent' && n.role === 'SA'; });
+  sas.forEach(function (sa, i) { map[sa.id] = String.fromCharCode(65 + i); });
+  T().nodes.forEach(function (n) {
+    if (n.kind !== 'agent' || (n.role !== 'FE' && n.role !== 'BE')) return;
+    var sa = sas.find(function (s) { return neighbours(n.id).indexOf(s.id) >= 0; });
+    if (sa) map[n.id] = map[sa.id];
+  });
+  return map;
+}
+function newId(prefix) { var i = 1; while (node(prefix + i)) i++; return prefix + i; }
+function markDirty() { S.dirty = true; refreshFrame(); }
+function snapshot() { S.undo = clone(T()); }
+
+/* ---------- rules (the live checklist) ---------- */
+// state: ok | todo (still to do, neutral) | bad (a forbidden shape, red)
+function rules() {
+  var t = T(), out = [];
+  var cards = t.nodes.filter(function (n) { return n.kind !== 'you'; });
+  var noName = cards.filter(function (n) { return !n.name.trim(); });
+  out.push({ id: 'names', text: 'ทุกการ์ดมีชื่อ', state: cards.length && !noName.length ? 'ok' : 'todo',
+    fix: cards.length ? 'ตั้งชื่อให้ ' + noName.map(kindLabel).join(', ') : 'กดใช้ทีมแนะนำ หรือเพิ่มการ์ด' });
+  out.push({ id: 'short', text: 'มีตัวย่อโต๊ะ', state: shortCode() ? 'ok' : 'todo', fix: 'ใส่ตัวย่อด้านบน เช่น EC' });
+  var toYou = neighbours('you').map(node).filter(function (n) { return n && n.kind === 'agent'; });
+  var pm = { id: 'pm', text: 'มีคนเดียวที่ต่อกับคุณ (คนนั้นคือ PM)', state: 'ok', fix: '' };
+  if (!toYou.length) { pm.state = 'todo'; pm.fix = 'ลากเส้นจาก PM มาที่คุณ'; }
+  else if (toYou.length > 1) { pm.state = 'bad'; pm.fix = 'ตัดเส้นที่ต่อกับคุณให้เหลือแค่ PM'; }
+  else if (toYou[0].role !== 'PM') { pm.state = 'bad'; pm.fix = 'คนที่ต่อกับคุณต้องเป็น PM ไม่ใช่ ' + kindLabel(toYou[0]); }
+  out.push(pm);
+  var lone = t.nodes.filter(function (n) {
+    return n.kind === 'agent' && (n.role === 'FE' || n.role === 'BE') &&
+      !neighbours(n.id).some(function (id) { var m = node(id); return m && m.kind === 'agent' && m.role === 'SA'; });
+  });
+  // A card that is not wired to anything yet is still being built (the floating rule says so); one wired to the
+  // chain but not to an SA is a forbidden shape.
+  var seen = reachable();
+  var wired = lone.filter(function (n) { return seen[n.id]; });
+  out.push({ id: 'eng', text: 'engineer ทุกคนต่อจาก SA', state: wired.length ? 'bad' : lone.length ? 'todo' : 'ok', fix: 'ต่อ ' + lone.map(who).join(', ') + ' เข้ากับ SA' });
+  var qa = t.nodes.filter(function (n) { return hasRole(n, 'QA') && BUILDERS.some(function (r) { return hasRole(n, r); }); });
+  out.push({ id: 'qa', text: 'QA ไม่ได้สร้างงานที่ตัวเองตรวจ', state: qa.length ? 'bad' : 'ok',
+    fix: qa.map(function (n) { return 'เอา ' + (n.role === 'QA' ? BUILDERS.filter(function (r) { return hasRole(n, r); }).map(function (r) { return roleInfo(r).label; }).join(', ') : 'QA') + ' ออกจากการ์ด ' + who(n); }).join(' และ ') });
+  var sa = t.nodes.filter(function (n) { return hasRole(n, 'SA') && (hasRole(n, 'FE') || hasRole(n, 'BE')); });
+  out.push({ id: 'sa', text: 'SA ไม่ได้เป็น engineer ในทีมตัวเอง', state: sa.length ? 'bad' : 'ok',
+    fix: sa.map(function (n) { return 'เอา ' + (n.role === 'SA' ? ['FE', 'BE'].filter(function (r) { return hasRole(n, r); }).join(', ') : 'SA') + ' ออกจากการ์ด ' + who(n); }).join(' และ ') });
+  var floating = cards.filter(function (n) { return !seen[n.id]; });
+  out.push({ id: 'float', text: 'ไม่มีการ์ดลอย', state: floating.length ? 'todo' : 'ok', fix: 'ต่อ ' + floating.map(who).join(', ') + ' เข้ากับสายงาน' });
+  return out;
+}
+
+function stepMissing(i) {
+  var out = [];
+  if (i === 0 || i === 2) {
+    Q.fields.filter(function (f) { return f.group === (i === 0 ? 'project' : 'code'); }).forEach(function (f) {
+      var a = fv(f.id);
+      if (!filled(a.v)) out.push(f.label);
+      else if (f.noteFor && a.v === f.noteFor && !filled(a.note)) out.push(f.label + ': ระบุว่าอะไร');
+    });
+  }
+  if (i === 1) rules().forEach(function (r) { if (r.state !== 'ok') out.push(r.text); });
+  if (i === 3) [0, 1, 2].forEach(function (s) { stepMissing(s).forEach(function (m) { out.push({ step: s, text: m }); }); });
+  return out;
+}
+
+/* ---------- canvas layout: rows by distance from "คุณ", so the picture is derived from the chain ---------- */
+// Narrow boards: an indented tree, one card per row. Parent = whoever reached the card first from "คุณ";
+// other wires (a second link, SA to SA) are drawn as side arcs.
+function treeLayout(width) {
+  var t = T(), PAD = 12, IND = 28, H = 84, GAP = 20, TOP = 16;
+  var parent = { you: null }, depth = { you: 0 }, kids = { you: [] }, q = ['you'];
+  while (q.length) {
+    var id = q.shift();
+    neighbours(id).forEach(function (m) { if (depth[m] == null) { depth[m] = depth[id] + 1; parent[m] = id; kids[m] = []; kids[id].push(m); q.push(m); } });
+  }
+  var idx = {}; t.nodes.forEach(function (n, i) { idx[n.id] = i; });
+  var order = [];
+  (function walk(id) { order.push(id); kids[id].sort(function (a, b) { return idx[a] - idx[b]; }).forEach(walk); })('you');
+  var tray = t.nodes.filter(function (n) { return depth[n.id] == null; }).map(function (n) { return n.id; });
+  var maxD = Math.max.apply(null, Object.keys(depth).map(function (k) { return depth[k]; }));
+  var W = width - 2 * PAD - maxD * IND, pos = {}, y = TOP;
+  order.forEach(function (id) { pos[id] = { x: PAD + depth[id] * IND, y: y }; y += H + GAP; });
+  var trayY = null;
+  if (tray.length) { trayY = y + 4; y += 30; tray.forEach(function (id) { pos[id] = { x: PAD, y: y }; y += H + GAP; }); }
+  return { tree: true, pos: pos, parent: parent, W: W, H: H, trayY: trayY, height: Math.max(y - GAP + 24, 200) };
+}
+function treeCord(e, L) {
+  var a = L.pos[e.from], b = L.pos[e.to];
+  var child = L.parent[e.to] === e.from ? b : L.parent[e.from] === e.to ? a : null;
+  var par = child === b ? a : child === a ? b : null;
+  if (par) { var x = par.x + 16, cy = child.y + L.H / 2; return 'M' + x + ',' + (par.y + L.H) + ' L' + x + ',' + (cy - 8) + ' Q' + x + ',' + cy + ' ' + (x + 8) + ',' + cy + ' L' + child.x + ',' + cy; }
+  var ax = a.x + L.W, bx = b.x + L.W, ay = a.y + L.H / 2, by = b.y + L.H / 2, out = Math.max(ax, bx) + 10;
+  return 'M' + ax + ',' + ay + ' C' + out + ',' + ay + ' ' + out + ',' + by + ' ' + bx + ',' + by;
+}
+function layout(width) {
+  if (width < 560) return treeLayout(width);
+  var t = T(), narrow = false;
+  var W = narrow ? 148 : 156, H = 104, GX = narrow ? 12 : 14, GY = 56, SUB = 18, PAD = narrow ? 14 : 20, TOP = 28;
+  var level = { you: 0 }, q = ['you'];
+  while (q.length) { var id = q.shift(); neighbours(id).forEach(function (m) { if (level[m] == null) { level[m] = level[id] + 1; q.push(m); } }); }
+  var rows = [], tray = [];
+  t.nodes.forEach(function (n, i) { n._i = i; if (level[n.id] == null) tray.push(n); else (rows[level[n.id]] = rows[level[n.id]] || []).push(n); });
+  var perRow = Math.max(1, Math.floor((width - 2 * PAD + GX) / (W + GX)));
+  var pos = {}, y = TOP;
+  function place(list) {
+    for (var s = 0; s < list.length; s += perRow) {
+      var chunk = list.slice(s, s + perRow), total = chunk.length * W + (chunk.length - 1) * GX, x0 = Math.round((width - total) / 2);
+      chunk.forEach(function (n, k) { pos[n.id] = { x: x0 + k * (W + GX), y: y }; });
+      y += H + SUB;
+    }
+  }
+  rows.forEach(function (row, l) {
+    if (!row) return;
+    if (l > 0) {
+      var key = {};
+      row.forEach(function (n) {
+        var xs = neighbours(n.id).filter(function (m) { return pos[m]; }).map(function (m) { return pos[m].x; });
+        key[n.id] = xs.length ? xs.reduce(function (a, b) { return a + b; }, 0) / xs.length : Infinity;
+      });
+      row.sort(function (a, b) { return key[a.id] - key[b.id] || a._i - b._i; });
+    }
+    place(row);
+    y += GY - SUB;
+  });
+  var trayY = null;
+  if (tray.length) { trayY = y - 12; y += 22; place(tray); y += GY - SUB; }
+  return { pos: pos, W: W, H: H, trayY: trayY, height: Math.max(y - GY + PAD + 8, 200) };
+}
+function cordPath(a, b, W, H) {
+  var p = a.y <= b.y ? a : b, q = a.y <= b.y ? b : a;
+  var x1 = p.x + W / 2, x2 = q.x + W / 2;
+  if (Math.abs(p.y - q.y) < H) { var y = p.y + H, d = 34; return 'M' + x1 + ',' + y + ' C' + x1 + ',' + (y + d) + ' ' + x2 + ',' + (y + d) + ' ' + x2 + ',' + y; }
+  var y1 = p.y + H, y2 = q.y, m = (y2 - y1) / 2;
+  return 'M' + x1 + ',' + y1 + ' C' + x1 + ',' + (y1 + m) + ' ' + x2 + ',' + (y2 - m) + ' ' + x2 + ',' + y2;
+}
+
+function mountBoard(host, ro) {
+  host.innerHTML = '';
+  var board = h('div', { class: 'board' + (ro ? ' ro' : ''), role: 'group', 'aria-label': 'ผังทีม' });
+  board._ro = ro;
+  host.append(board);
+  drawBoard(board);
+  var obs = new ResizeObserver(function () { if (board.clientWidth && board.clientWidth !== board._w) drawBoard(board); });
+  obs.observe(board);
+  S.observers.push(obs);
+  return board;
+}
+function drawBoards() { document.querySelectorAll('.board').forEach(drawBoard); }
+
+function drawBoard(board) {
+  var ro = board._ro, width = board.clientWidth || 600;
+  board._w = width;
+  var active = document.activeElement, focusKey = active && active.dataset ? active.dataset.fk : null;
+  var L = layout(width), tm = teams();
+  board.classList.toggle('tree', !!L.tree);
+  board.style.height = L.height + 'px';
+  board.innerHTML = '';
+  var s = svg('svg', { class: 'cords', width: width, height: L.height });
+  var cuts = [];
+  T().edges.forEach(function (e) {
+    var a = L.pos[e.from], b = L.pos[e.to];
+    if (!a || !b) return;
+    var d = L.tree ? treeCord(e, L) : cordPath(a, b, L.W, L.H);
+    var g = svg('g', { class: 'edge' });
+    if (!ro) {
+      var label = 'ตัดเส้น ' + who(node(e.from)) + ' กับ ' + who(node(e.to));
+      var hit = svg('path', { d: d, class: 'cord-hit', tabindex: '0', role: 'button', 'aria-label': label, 'data-fk': 'edge-' + e.from + '-' + e.to });
+      hit.addEventListener('click', function () { cutEdge(e); });
+      hit.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Delete' || ev.key === 'Backspace') { ev.preventDefault(); cutEdge(e); } });
+      g.append(hit);
+    }
+    g.append(svg('path', { d: d, class: 'cord' }));
+    if (!ro) {
+      var cut = svg('g', { class: 'cut' });
+      cut.append(svg('circle', { r: 11 }));
+      cut.append(svg('path', { d: 'M-4,-4 L4,4 M4,-4 L-4,4' }));
+      g.append(cut);
+      cuts.push([hit, cut]);
+    }
+    s.append(g);
+  });
+  var temp = svg('path', { class: 'temp' });
+  s.append(temp);
+  board._temp = temp;
+  if (L.trayY != null && !ro) board.append(h('div', { class: 'tray-label', style: 'top:' + L.trayY + 'px', text: 'ยังไม่ได้ต่อ' }));
+  T().nodes.forEach(function (n) {
+    var p = L.pos[n.id];
+    if (!p) return;
+    var c = cardEl(n, ro, tm);
+    c.style.width = L.W + 'px';
+    c.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px)';
+    board.append(c);
+  });
+  // Cords come after the cards in the DOM so Tab reaches every card before the wires; z-index keeps them drawn below.
+  board.append(s);
+  cuts.forEach(function (pc) { var p = pc[0].getPointAtLength(pc[0].getTotalLength() / 2); pc[1].setAttribute('transform', 'translate(' + p.x + ',' + p.y + ')'); });
+  if (focusKey) { var f = board.querySelector('[data-fk="' + focusKey + '"]'); if (f) f.focus({ preventScroll: true }); }
+}
+
+function cardEl(n, ro, tm) {
+  var cls = 'card ' + n.kind + (!ro && S.sel === n.id ? ' sel' : '') + (!ro && S.connect === n.id ? ' src' : '') + (!ro && S.fresh === n.id ? ' new' : '');
+  var c = h('div', { class: cls, 'data-id': n.id });
+  if (n.kind === 'you') {
+    c.append(h('div', { class: 'you-name', text: 'คุณ' }));
+    var tags = h('div', { class: 'tags' });
+    (n.duties || []).forEach(function (d) { tags.append(h('span', { class: 'tag', text: dutyLabel(d) })); });
+    c.append(tags);
+  } else {
+    var top = h('div', { class: 'card-top' });
+    if (n.kind === 'person') top.append(h('span', { class: 'role' }, icon('person'), personInfo(n.role).label));
+    else {
+      top.append(h('span', { class: 'role', text: roleInfo(n.role).label }));
+      (n.also || []).forEach(function (r) { top.append(h('span', { class: 'also', text: '+' + roleInfo(r).label })); });
+      if (tm[n.id]) top.append(h('span', { class: 'team', text: 'ทีม ' + tm[n.id] }));
+    }
+    c.append(top);
+    if (ro) c.append(h('div', { class: 'name-ro', text: n.name || 'ยังไม่มีชื่อ' }));
+    else {
+      var inp = h('input', { type: 'text', class: 'name', value: n.name, placeholder: n.kind === 'person' ? 'ชื่อคน' : 'ตั้งชื่อ', 'aria-label': 'ชื่อ ' + kindLabel(n), autocomplete: 'off', spellcheck: 'false', autocapitalize: 'off', maxlength: '40', 'data-fk': 'name-' + n.id });
+      inp.addEventListener('input', function () {
+        n.name = inp.value; n.by = 'operator';
+        c.querySelector('.sess').textContent = sessionName(n);
+        markDirty(); renderChecks(); renderInspectorTitle();
+      });
+      inp.addEventListener('focus', function () { select(n.id); });
+      c.append(inp);
+    }
+    c.append(h('div', { class: 'sess', text: sessionName(n) }));
+  }
+  if (!ro) {
+    c.addEventListener('click', function (e) { if (e.target === c || e.target.closest('.card-top, .you-name, .tags, .sess, .name-ro')) select(n.id); });
+    var hd = h('button', { type: 'button', class: 'handle', 'aria-label': 'ต่อเส้นจาก ' + who(n), 'data-fk': 'handle-' + n.id });
+    wireHandle(hd, n);
+    c.append(hd);
+    if (S.connect && S.connect !== n.id) {
+      c.append(h('button', { type: 'button', class: 'join', 'data-fk': 'join-' + n.id, 'aria-label': 'ต่อกับ ' + who(n), text: 'ต่อที่นี่', onclick: function () { var from = S.connect; endConnect(); addEdge(from, n.id); } }));
+    }
+  }
+  return c;
+}
+
+/* ---------- connecting: drag from a handle, or tap the handle then tap a card ---------- */
+function wireHandle(hd, n) {
+  var drag = null;
+  hd.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0) return;
+    var board = hd.closest('.board'), r = board.getBoundingClientRect(), hr = hd.getBoundingClientRect();
+    drag = { board: board, r: r, sx: hr.left + hr.width / 2 - r.left, sy: hr.top + hr.height / 2 - r.top, x0: e.clientX, y0: e.clientY, moved: false, over: null };
+    hd.setPointerCapture(e.pointerId);
+  });
+  hd.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    if (!drag.moved && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 6) return;
+    drag.moved = true;
+    var px = e.clientX - drag.r.left, py = e.clientY - drag.r.top, m = Math.max(30, Math.abs(py - drag.sy) / 2);
+    drag.board._temp.setAttribute('d', 'M' + drag.sx + ',' + drag.sy + ' C' + drag.sx + ',' + (drag.sy + m) + ' ' + px + ',' + (py - m) + ' ' + px + ',' + py);
+    var under = document.elementFromPoint(e.clientX, e.clientY), card = under && under.closest('.card');
+    if (card !== drag.over) { if (drag.over) drag.over.classList.remove('drop'); drag.over = card && card.dataset.id !== n.id ? card : null; if (drag.over) drag.over.classList.add('drop'); }
+  });
+  function finish(e, commit) {
+    if (!drag) return;
+    var d = drag; drag = null;
+    if (d.over) d.over.classList.remove('drop');
+    d.board._temp.removeAttribute('d');
+    if (!d.moved) return;
+    S.justDragged = true; setTimeout(function () { S.justDragged = false; }, 0);
+    if (commit) {
+      var under = document.elementFromPoint(e.clientX, e.clientY), card = under && under.closest('.card');
+      if (card && card.dataset.id !== n.id) addEdge(n.id, card.dataset.id);
+    }
+  }
+  hd.addEventListener('pointerup', function (e) { finish(e, true); });
+  hd.addEventListener('pointercancel', function (e) { finish(e, false); });
+  hd.addEventListener('lostpointercapture', function (e) { finish(e, false); });
+  hd.addEventListener('click', function () {
+    if (S.justDragged) return;
+    if (S.connect === n.id) endConnect(); else startConnect(n.id);
+  });
+}
+function startConnect(id) {
+  S.connect = id; S.sel = id;
+  var bar = $('connect-bar');
+  if (bar) { bar.hidden = false; $('connect-t').textContent = 'เลือกการ์ดที่จะต่อกับ ' + who(node(id)); }
+  drawBoards(); renderInspector();
+  var first = document.querySelector('.join'); if (first) first.focus({ preventScroll: true });
+}
+function endConnect() {
+  var was = S.connect; S.connect = null;
+  var bar = $('connect-bar'); if (bar) bar.hidden = true;
+  drawBoards();
+  var hd = document.querySelector('[data-fk="handle-' + was + '"]'); if (hd) hd.focus({ preventScroll: true });
+}
+function addEdge(a, b) {
+  if (a === b) return;
+  if (T().edges.some(function (e) { return (e.from === a && e.to === b) || (e.from === b && e.to === a); })) { toast('ต่อกันอยู่แล้ว'); drawBoards(); return; }
+  T().edges.push({ from: a, to: b, by: 'operator' });
+  markDirty(); teamChanged();
+}
+function cutEdge(e) {
+  snapshot();
+  T().edges = T().edges.filter(function (x) { return x !== e; });
+  markDirty(); teamChanged();
+  var hd = document.querySelector('[data-fk="handle-' + e.from + '"]'); if (hd) hd.focus({ preventScroll: true });
+  toast('ตัดเส้นแล้ว', true);
+}
+function addCard(kind, role) {
+  var id = newId(kind === 'person' ? 'p-' + role + '-' : role.toLowerCase());
+  T().nodes.push({ id: id, kind: kind, role: role, also: [], name: '', duties: [], by: 'operator' });
+  S.sel = id; S.fresh = id; markDirty(); teamChanged(); S.fresh = null;
+  var inp = document.querySelector('[data-fk="name-' + id + '"]');
+  if (inp) { inp.scrollIntoView({ block: 'nearest' }); inp.focus({ preventScroll: true }); }
+}
+function removeCard(id) {
+  snapshot();
+  T().nodes = T().nodes.filter(function (n) { return n.id !== id; });
+  T().edges = T().edges.filter(function (e) { return e.from !== id && e.to !== id; });
+  S.sel = null; markDirty(); teamChanged();
+  toast('ลบการ์ดแล้ว', true);
+}
+function useRecommended() {
+  snapshot();
+  S.data.team = clone(Q.recommended);
+  S.data.team.nodes.forEach(function (n) { n.by = 'template'; });
+  S.data.team.edges.forEach(function (e) { e.by = 'template'; });
+  S.sel = null; markDirty(); teamChanged();
+  toast('ใช้ทีมแนะนำแล้ว', true);
+}
+function select(id) {
+  if (S.sel === id) return;
+  S.sel = id;
+  document.querySelectorAll('.board:not(.ro) .card').forEach(function (c) { c.classList.toggle('sel', c.dataset.id === id); });
+  renderInspector();
+}
+function teamChanged() { drawBoards(); renderInspector(); renderChecks(); }
+
+/* ---------- side panels ---------- */
+function renderInspectorTitle() { var t = $('insp-title'), n = S.sel && node(S.sel); if (t && n) t.textContent = who(n); }
+function renderInspector() {
+  var box = $('inspector'); if (!box) return;
+  box.innerHTML = '';
+  var n = S.sel && node(S.sel);
+  if (!n) { box.append(h('p', { class: 'quiet', text: 'แตะการ์ดเพื่อตั้งหน้าที่เพิ่ม หรือลบการ์ด' })); return; }
+  box.append(h('h3', { class: 'big', id: 'insp-title', text: who(n) }));
+  function ticks(legend, items, list, onChange) {
+    var fs = h('fieldset', { class: 'ticks' }, h('legend', { text: legend }));
+    items.forEach(function (it) {
+      var cb = h('input', { type: 'checkbox', checked: list.indexOf(it.id) >= 0, 'data-fk': 'tick-' + it.id });
+      cb.addEventListener('change', function () { onChange(it.id, cb.checked); });
+      fs.append(h('label', { class: 'tick' }, cb, it.label));
+    });
+    box.append(fs);
+  }
+  function toggle(arr, id, on) { var i = arr.indexOf(id); if (on && i < 0) arr.push(id); if (!on && i >= 0) arr.splice(i, 1); }
+  if (n.kind === 'you') ticks('คุณทำเอง', Q.duties, n.duties, function (id, on) { toggle(n.duties, id, on); n.by = 'operator'; markDirty(); drawBoards(); renderChecks(); });
+  if (n.kind === 'agent') ticks('ทำหน้าที่อื่นด้วย', Q.roles.filter(function (r) { return r.id !== n.role; }), n.also, function (id, on) { toggle(n.also, id, on); n.by = 'operator'; markDirty(); drawBoards(); renderChecks(); });
+  if (n.kind !== 'you') box.append(h('button', { type: 'button', class: 'btn danger', onclick: function () { removeCard(n.id); } }, icon('x'), 'ลบการ์ดนี้'));
+}
+function renderChecks() {
+  var box = $('checks'); if (!box) return;
+  var rs = rules(), ok = rs.filter(function (r) { return r.state === 'ok'; }).length;
+  box.innerHTML = '';
+  box.append(h('div', { class: 'checks-head' }, h('h3', { text: 'ก่อนส่ง' }), h('span', { class: 'count' + (ok === rs.length ? ' all' : ''), text: ok + '/' + rs.length })));
+  var ul = h('ul', { class: 'checks' });
+  rs.forEach(function (r) {
+    ul.append(h('li', { class: r.state, 'data-rule': r.id },
+      h('span', { class: 'mk' }, r.state === 'ok' ? icon('check') : r.state === 'bad' ? icon('x') : null),
+      h('div', null, h('span', { class: 'rt', text: r.text }), r.state !== 'ok' ? h('span', { class: 'fix', text: r.fix }) : null)));
+  });
+  box.append(ul);
+}
+
+/* ---------- steps ---------- */
+function renderField(f) {
+  var a = fv(f.id), wrap = h('div', { class: 'field' });
+  var lid = 'lbl-' + f.id;
+  if (f.type === 'text' || f.type === 'textarea') {
+    wrap.append(h('label', { for: 'f-' + f.id, id: lid, text: f.label }));
+    var inp = h(f.type === 'text' ? 'input' : 'textarea', { id: 'f-' + f.id, type: f.type === 'text' ? 'text' : null, value: a.v, placeholder: f.placeholder || null, rows: f.type === 'textarea' ? '3' : null });
+    inp.addEventListener('input', function () { a.v = inp.value; a.by = 'operator'; markDirty(); });
+    wrap.append(inp);
+    return wrap;
+  }
+  wrap.append(h('span', { class: 'label', id: lid, text: f.label }));
+  var group = h('div', { class: f.style === 'cards' ? 'opt-cards' : 'chips', role: 'group', 'aria-labelledby': lid });
+  var note = null;
+  function on(opt) { return f.type === 'multi' ? (a.v || []).indexOf(opt) >= 0 : a.v === opt; }
+  function sync() {
+    group.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', on(b.dataset.opt) ? 'true' : 'false'); });
+    if (note) note.hidden = a.v !== f.noteFor;
+  }
+  f.options.forEach(function (opt) {
+    var b = f.style === 'cards'
+      ? h('button', { type: 'button', class: 'opt-card', 'data-opt': opt }, h('strong', { text: opt }), f.subs && f.subs[opt] ? h('span', { text: f.subs[opt] }) : null)
+      : h('button', { type: 'button', class: 'chip', 'data-opt': opt }, f.type === 'multi' ? icon('check') : null, opt);
+    b.addEventListener('click', function () {
+      if (f.type === 'multi') { var v = (a.v || []).slice(), i = v.indexOf(opt); if (i >= 0) v.splice(i, 1); else v.push(opt); a.v = v; }
+      else a.v = opt;
+      a.by = 'operator'; sync(); markDirty();
+      if (note && !note.hidden && a.v === f.noteFor) note.querySelector('input').focus();
+    });
+    group.append(b);
+  });
+  wrap.append(group);
+  if (f.noteFor) {
+    var ni = h('input', { type: 'text', value: a.note || '', placeholder: f.notePlaceholder || '', 'aria-label': f.label + ': ' + (f.notePlaceholder || '') });
+    ni.addEventListener('input', function () { a.note = ni.value; a.by = 'operator'; markDirty(); });
+    note = h('div', { class: 'note-in' }, ni);
+    wrap.append(note);
+  }
+  sync();
+  return wrap;
+}
+
+function stepFields(group, title) {
+  var sec = h('section', { class: 'step', 'aria-labelledby': 'step-h' }, h('h2', { id: 'step-h', tabindex: '-1', text: title }));
+  var col = h('div', { class: 'narrow' });
+  Q.fields.filter(function (f) { return f.group === group; }).forEach(function (f) { col.append(renderField(f)); });
+  sec.append(col);
+  return sec;
+}
+
+// The team's work mode: one row of three cards above the canvas. On phones the cards show only their label and
+// the chosen card's line sits under the row, so the canvas stays close to the top.
+function modeOpt(id) { return Q.mode.options.find(function (o) { return o.id === id; }) || Q.mode.options[0]; }
+function modePicker() {
+  var m = S.data.mode, lid = 'lbl-mode';
+  var group = h('div', { class: 'opt-cards mode-row', role: 'group', 'aria-labelledby': lid });
+  var line = h('p', { class: 'mode-line', 'aria-hidden': 'true' });
+  function sync() {
+    group.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.opt === m.v ? 'true' : 'false'); });
+    line.textContent = modeOpt(m.v).line;
+  }
+  Q.mode.options.forEach(function (o) {
+    group.append(h('button', { type: 'button', class: 'opt-card', 'data-opt': o.id, onclick: function () { m.v = o.id; m.by = 'operator'; sync(); markDirty(); } },
+      h('strong', { text: o.label }), h('span', { text: o.line })));
+  });
+  sync();
+  return h('div', { class: 'field mode-pick' }, h('span', { class: 'label', id: lid, text: Q.mode.label }), group, line);
+}
+
+function stepTeam() {
+  var sec = h('section', { class: 'step', 'aria-labelledby': 'step-h' });
+  var short = h('input', { type: 'text', id: 'short', value: S.data.short || '', maxlength: '6', autocomplete: 'off', spellcheck: 'false', autocapitalize: 'characters' });
+  short.addEventListener('input', function () {
+    S.data.short = short.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (short.value !== S.data.short) short.value = S.data.short;
+    document.querySelectorAll('.board:not(.ro) .card').forEach(function (c) { var n = node(c.dataset.id), s = c.querySelector('.sess'); if (n && s) s.textContent = sessionName(n); });
+    markDirty(); renderChecks();
+  });
+  sec.append(h('div', { class: 'team-head' },
+    h('h2', { id: 'step-h', tabindex: '-1', text: 'ทีมและสายงาน' }),
+    h('div', { class: 'head-tools' },
+      h('div', { class: 'short-field' }, h('label', { for: 'short', text: 'ตัวย่อโต๊ะ' }), short,
+        h('details', { class: 'hint' }, h('summary', { 'aria-label': 'ตัวย่อโต๊ะคืออะไร' }, h('span', { class: 'q', 'aria-hidden': 'true', text: '?' })), h('p', { text: 'ต่อท้ายชื่อ session ของทุกคน เช่น post-EC' }))),
+      h('button', { type: 'button', class: 'btn', onclick: useRecommended, text: 'ใช้ทีมแนะนำ' }))));
+  var pal = h('aside', { class: 'palette', 'aria-label': 'เพิ่มการ์ด' });
+  var ai = h('div', null, h('h3', { text: 'ทีม AI' })), aiList = h('div', { class: 'pal-list' });
+  Q.roles.forEach(function (r) { aiList.append(h('button', { type: 'button', class: 'pal-btn', 'aria-label': 'เพิ่ม ' + r.label, onclick: function () { addCard('agent', r.id); } }, icon('plus'), h('b', { text: r.label }), h('small', { text: r.hint }))); });
+  ai.append(aiList);
+  var ppl = h('div', null, h('h3', { text: 'คนจริง' })), pplList = h('div', { class: 'pal-list' });
+  Q.people.forEach(function (p) { pplList.append(h('button', { type: 'button', class: 'pal-btn person', 'aria-label': 'เพิ่ม ' + p.label, onclick: function () { addCard('person', p.id); } }, icon('plus'), p.label)); });
+  ppl.append(pplList);
+  // Small screens: the palette folds behind one button so the canvas is the first thing below the heading.
+  var fold = h('details', { class: 'pal-fold', open: !matchMedia('(max-width: 760px)').matches },
+    h('summary', { class: 'btn' }, icon('plus'), 'เพิ่มการ์ด'), h('div', { class: 'pal-body' }, ai, ppl));
+  pal.append(fold);
+  var frame = h('div', { class: 'canvas-frame' },
+    h('div', { class: 'connect-bar', id: 'connect-bar', hidden: true }, h('span', { id: 'connect-t' }), h('button', { type: 'button', class: 'btn', onclick: endConnect, text: 'ยกเลิก' })));
+  var host = h('div');
+  frame.append(host);
+  var wrap = h('div', { class: 'canvas-wrap' }, frame, h('p', { class: 'canvas-hint', text: 'ลากจุดใต้การ์ดไปวางบนการ์ดอื่นเพื่อต่อ แตะเส้นเพื่อตัด' }));
+  // The card panel sits above the checklist: the checklist grows and shrinks as rules change, and anything below
+  // it would move under the pointer while a box is being ticked.
+  var side = h('aside', { class: 'side' }, h('div', { class: 'panel', id: 'inspector' }), h('div', { class: 'panel', id: 'checks' }));
+  sec.append(modePicker());
+  sec.append(h('div', { class: 'team-grid' }, pal, wrap, side));
+  sec._mount = function () { mountBoard(host, false); renderInspector(); renderChecks(); };
+  return sec;
+}
+
+function stepCheck() {
+  var sec = h('section', { class: 'step', 'aria-labelledby': 'step-h' }, h('h2', { id: 'step-h', tabindex: '-1', text: 'ตรวจแล้วส่ง' }));
+  var miss = stepMissing(3);
+  if (miss.length) {
+    var chips = h('div', { class: 'chips' });
+    miss.forEach(function (m) { chips.append(h('button', { type: 'button', class: 'chip', onclick: function () { go(m.step); } }, 'ขั้น ' + (m.step + 1) + ': ' + m.text)); });
+    sec.append(h('div', { class: 'missing panel' }, h('h3', { text: 'ยังขาด ' + miss.length + ' ข้อ' }), chips));
+  }
+  function edit(step) { return h('button', { type: 'button', class: 'btn link', onclick: function () { go(step); }, 'aria-label': 'แก้' + Q.steps[step].title }, 'แก้'); }
+  function dl(group) {
+    var d = h('dl', { class: 'answers' });
+    Q.fields.filter(function (f) { return f.group === group; }).forEach(function (f) {
+      var a = fv(f.id), v = Array.isArray(a.v) ? a.v.join(', ') : a.v;
+      if (f.noteFor && a.v === f.noteFor && a.note) v += ': ' + a.note;
+      d.append(h('dt', { text: f.label }), h('dd', { class: filled(a.v) ? null : 'empty', text: filled(a.v) ? v : 'ยังไม่ได้ตอบ' }));
+    });
+    return d;
+  }
+  var host = h('div', { class: 'board-host' });
+  var mo = modeOpt(S.data.mode.v);
+  var chain = h('div', { class: 'panel' }, h('div', { class: 'ph' }, h('h3', { text: 'สายงาน' }), edit(1)),
+    h('p', { class: 'mode-sum' }, h('b', { text: Q.mode.summary + ': ' + mo.label }), ' · ' + mo.line), host);
+  var tm = teams(), list = h('ul', { class: 'roster' });
+  T().nodes.forEach(function (n) {
+    var sub = n.kind === 'you' ? (n.duties.length ? 'ทำเอง: ' + n.duties.map(dutyLabel).join(', ') : '') :
+      n.kind === 'agent' ? [n.also.length ? 'ทำ ' + n.also.map(function (r) { return roleInfo(r).label; }).join(', ') + ' ด้วย' : '', tm[n.id] ? 'ทีม ' + tm[n.id] : ''].filter(Boolean).join(', ') : 'คนจริง';
+    list.append(h('li', null,
+      h('span', { class: 'r', text: n.kind === 'person' ? personInfo(n.role).label : kindLabel(n) }),
+      h('span', { class: 'nm' + (n.kind !== 'you' && !n.name ? ' empty' : '') }, n.kind === 'you' ? 'คุณ' : (n.name || 'ยังไม่มีชื่อ'), sub ? h('small', { text: sub }) : null),
+      h('span', { class: 's', text: sessionName(n) })));
+  });
+  var people = h('div', { class: 'panel' }, h('div', { class: 'ph' }, h('h3', { text: 'ทีม' }), edit(1)), list);
+  var proj = h('div', { class: 'panel' }, h('div', { class: 'ph' }, h('h3', { text: 'โปรเจกต์' }), edit(0)), dl('project'));
+  var code = h('div', { class: 'panel' }, h('div', { class: 'ph' }, h('h3', { text: 'โค้ดและความปลอดภัย' }), edit(2)), dl('code'));
+  sec.append(h('div', { class: 'summary' }, h('div', { class: 'col' }, chain, people), h('div', { class: 'col' }, proj, code)));
+  sec._mount = function () { mountBoard(host, true); };
+  return sec;
+}
+
+function go(i, keepFocus) {
+  S.observers.forEach(function (o) { o.disconnect(); }); S.observers = [];
+  S.step = i; S.connect = null;
+  var host = $('step-host');
+  host.innerHTML = '';
+  var sec = i === 0 ? stepFields('project', 'โปรเจกต์') : i === 1 ? stepTeam() : i === 2 ? stepFields('code', 'โค้ดและความปลอดภัย') : stepCheck();
+  host.append(sec);
+  if (sec._mount) sec._mount();
+  refreshFrame();
+  window.scrollTo(0, 0);
+  if (!keepFocus) { var hd = $('step-h'); if (hd) hd.focus({ preventScroll: true }); }
+}
+
+/* ---------- frame: stepper, status, nav ---------- */
+function refreshFrame() {
+  if (!S.data) return;
+  var st = $('stepper'); st.innerHTML = '';
+  Q.steps.forEach(function (s, i) {
+    var done = i < 3 ? !stepMissing(i).length : false;
+    var b = h('button', { type: 'button', class: 'step-btn' + (done ? ' is-done' : ''), 'aria-current': S.step === i ? 'step' : null, onclick: function () { go(i); } },
+      h('span', { class: 'n' }, done && S.step !== i ? icon('check') : String(i + 1)), h('span', { class: 't', text: s.title }),
+      done ? h('span', { class: 'sr', text: ' (ครบแล้ว)' }) : null);
+    st.append(h('li', null, b));
+  });
+  var pill = $('status-pill');
+  pill.className = 'pill' + (S.saved && !S.dirty && S.data.status === 'answered' ? ' answered' : '');
+  pill.textContent = !S.saved ? 'ยังไม่ได้บันทึก' : S.dirty ? 'มีที่ยังไม่บันทึก' : S.data.status === 'answered' ? 'ส่งแล้ว' : 'ร่าง';
+  $('prev').hidden = S.step === 0;
+  var next = $('next'), last = S.step === 3;
+  next.textContent = last ? 'ส่งให้ Atlas' : 'ถัดไป';
+  next.disabled = last && stepMissing(3).length > 0;
+  if (last && next.disabled) setMsg('ยังขาด ' + stepMissing(3).length + ' ข้อ');
+  else if (last && $('msg').dataset.auto) setMsg('');
+}
+function setMsg(t, err) { var m = $('msg'); m.textContent = t; m.className = 'msg' + (err ? ' err' : ''); m.dataset.auto = t ? '1' : ''; }
+
+var toastTimer = null;
+function toast(text, undo) {
+  var t = $('toast');
+  $('toast-t').textContent = text;
+  $('toast-undo').hidden = !undo;
+  t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { t.hidden = true; }, 5000);
+}
+$('toast-undo').addEventListener('click', function () {
+  if (!S.undo) return;
+  S.data.team = S.undo; S.undo = null; S.sel = null;
+  $('toast').hidden = true; markDirty(); teamChanged();
+});
+
+/* ---------- save / load ---------- */
+function body(status) {
+  return { title: S.data.title, short: shortCode(), status: status, mode: S.data.mode, project: S.data.project, team: S.data.team, code: S.data.code };
+}
+async function save(status) {
+  if (!S.current) return;
+  $('save-draft').disabled = true; $('next').disabled = true;
+  setMsg('กำลังบันทึก…');
+  try {
+    var saved = await api('PUT', '/api/desks/' + encodeURIComponent(S.current), body(status));
+    S.data.status = saved.status; S.data.updatedAt = saved.updatedAt;
+    S.dirty = false; S.saved = true; S.v1 = false;
+    setMsg(status === 'answered' ? '' : 'บันทึกร่างแล้ว');
+    if (status === 'answered') showDone();
+  } catch (e) {
+    setMsg('บันทึกไม่สำเร็จ: ' + ((e && e.message) || 'ลองอีกครั้ง'), true);
+  }
+  $('save-draft').disabled = false;
+  refreshFrame();
+}
+
+function fresh(id) {
+  var d = { desk: id, title: id, short: '', status: 'draft', mode: { v: Q.mode.default, by: 'template' }, project: {}, code: {}, team: clone(Q.recommended) };
+  d.team.nodes.forEach(function (n) { n.by = 'template'; });
+  d.team.edges.forEach(function (e) { e.by = 'template'; });
+  return d;
+}
+// A v1 file (answers + roster) opens as the recommended team, names filled where the roles match.
+function fromV1(id, old) {
+  var d = fresh(id), m = Q.v1;
+  d.title = old.title || id; d.short = (old.short || '').toUpperCase();
+  Object.keys(m.fields).forEach(function (q) {
+    var a = old.answers && old.answers[q]; if (!a) return;
+    var f = field(m.fields[q]);
+    var v = Array.isArray(a.v) ? a.v.map(function (x) { return m.values[x] || x; }) : (m.values[a.v] || a.v);
+    if (f.type === 'choice' && f.options.indexOf(v) < 0) return;
+    d[f.group][f.id] = { v: v, by: a.by === 'operator' ? 'operator' : 'template' };
+    if (f.noteFor) d[f.group][f.id].note = a.note || '';
+  });
+  (old.roster || []).forEach(function (r) {
+    var nid = m.roster[r.role], n = nid && d.team.nodes.find(function (x) { return x.id === nid; });
+    if (n && !n.name && r.name && (r.team === 'A' || r.team === 'ทุกทีม')) { n.name = r.name; n.by = 'operator'; }
+  });
+  return d;
+}
+function normalise(d) {
+  d.project = d.project || {}; d.code = d.code || {}; d.short = d.short || '';
+  // A file saved before the mode choice existed opens as the template default.
+  if (!d.mode || !Q.mode.options.some(function (o) { return o.id === d.mode.v; })) d.mode = { v: Q.mode.default, by: 'template' };
+  d.team = d.team || { nodes: [], edges: [] };
+  if (!d.team.nodes.some(function (n) { return n.kind === 'you'; })) d.team.nodes.unshift(clone(Q.recommended.nodes[0]));
+  d.team.nodes.forEach(function (n) { n.also = n.also || []; n.duties = n.duties || []; n.name = n.name || ''; });
+  return d;
+}
+
+function showDesk() {
+  $('home').hidden = true; $('desk').hidden = false; $('form-view').hidden = false; $('done').hidden = true;
+  $('title').textContent = 'เปิดโต๊ะ ' + (S.data.title || S.current);
+  document.title = 'เปิดโต๊ะ ' + S.current;
+}
+function showDone() {
+  S.observers.forEach(function (o) { o.disconnect(); }); S.observers = [];
+  $('form-view').hidden = true; $('done').hidden = false; $('toast').hidden = true;
+  $('paste-line').textContent = pasteLine();
+  window.scrollTo(0, 0);
+  $('copy').focus();
+}
+function pasteLine() { return 'อ่าน ATLAS.md — เปิด desk ใหม่: ' + S.current + ' (ตอบแบบฟอร์มแล้ว: desk-open/' + S.current + '.json)'; }
+
+async function openDesk(id) {
+  try {
+    var d = await api('GET', '/api/desks/' + encodeURIComponent(id));
+    S.v1 = !d.team && !!(d.answers || d.roster);
+    S.data = S.v1 ? fromV1(id, d) : normalise(d);
+    S.current = id; S.dirty = false; S.saved = true; S.sel = null; S.undo = null;
+    showDesk();
+    setMsg('');
+    $('notice').hidden = !S.v1;
+    $('notice').textContent = S.v1 ? 'ไฟล์นี้มาจากแบบฟอร์มรุ่นแรก เริ่มจากทีมแนะนำ ใส่ชื่อตามตำแหน่งให้แล้ว' : '';
+    if (S.v1) S.data.status = 'draft';
+    if (!S.v1 && S.data.status === 'answered') { go(3, true); showDone(); }
+    else go(0, true);
+  } catch (e) {
+    showHome(e.status === 404 ? 'ไม่พบโต๊ะ ' + id : 'เปิดโต๊ะไม่ได้: ' + e.message);
+  }
+}
+function startNew(id) {
+  S.current = id; S.data = fresh(id); S.dirty = true; S.saved = false; S.sel = null; S.undo = null; S.v1 = false;
+  location.hash = 'desk=' + id;
+  showDesk(); setMsg(''); $('notice').hidden = true; go(0, true);
+  var f = $('f-oneLine'); if (f) f.focus();
+}
+
+async function showHome(banner) {
+  S.observers.forEach(function (o) { o.disconnect(); }); S.observers = [];
+  S.current = null; S.data = null; S.dirty = false;
+  document.title = 'เปิดโต๊ะ';
+  $('desk').hidden = true; $('home').hidden = false; $('toast').hidden = true;
+  var b = $('home-banner'); b.hidden = !banner; b.textContent = banner || '';
+  if (location.hash) history.replaceState(null, '', location.pathname);
+  try { S.desks = await api('GET', '/api/desks'); }
+  catch (e) { S.desks = []; b.hidden = false; b.textContent = 'อ่านรายการโต๊ะไม่ได้: ' + e.message; }
+  var list = $('desk-list'); list.innerHTML = '';
+  S.desks.forEach(function (x) {
+    var date = x.updatedAt ? new Date(x.updatedAt).toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+    list.append(h('li', null, h('button', { type: 'button', class: 'desk-item', onclick: function () { location.hash = 'desk=' + x.desk; } },
+      h('span', null, h('span', { class: 't', text: x.title || x.desk }), h('span', { class: 'd', text: date })),
+      h('span', { class: 'pill' + (x.status === 'answered' ? ' answered' : ''), text: x.status === 'answered' ? 'ส่งแล้ว' : 'ร่าง' }))));
+  });
+  $('no-desks').hidden = S.desks.length > 0;
+}
+
+function route() {
+  var m = /^#desk=(.+)$/.exec(location.hash);
+  if (!m) return showHome();
+  var id = decodeURIComponent(m[1]);
+  if (S.current === id && S.data) return;
+  if (!DESK_RE.test(id)) return showHome('ชื่อโต๊ะไม่ถูกต้อง: ' + id);
+  openDesk(id);
+}
+function newDesk() {
+  var id = $('new-name').value.trim(), msg = $('new-msg');
+  if (!DESK_RE.test(id)) { msg.textContent = 'ใช้ a–z 0–9 และ - ยาว 2–41 ตัว'; return; }
+  msg.textContent = '';
+  if (S.desks.some(function (x) { return x.desk === id; })) { location.hash = 'desk=' + id; return; }
+  startNew(id);
+}
+async function copyLine() {
+  var t = pasteLine();
+  try { await navigator.clipboard.writeText(t); }
+  catch (e) {
+    var r = document.createRange(); r.selectNodeContents($('paste-line'));
+    var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    try { document.execCommand('copy'); } catch (e2) {}
+  }
+  $('copy').textContent = 'คัดลอกแล้ว';
+  setTimeout(function () { $('copy').textContent = 'คัดลอก'; }, 1600);
+}
+
+$('new-go').addEventListener('click', newDesk);
+$('new-name').addEventListener('keydown', function (e) { if (e.key === 'Enter') newDesk(); });
+function leave(e) {
+  e.preventDefault();
+  if (S.dirty && !confirm('มีที่ยังไม่บันทึก ทิ้งไปไหม')) return;
+  showHome();
+}
+$('back').addEventListener('click', leave);
+$('done-home').addEventListener('click', leave);
+$('save-draft').addEventListener('click', function () { save('draft'); });
+$('prev').addEventListener('click', function () { if (S.step > 0) go(S.step - 1); });
+$('next').addEventListener('click', function () { if (S.step < 3) go(S.step + 1); else save('answered'); });
+$('copy').addEventListener('click', copyLine);
+$('edit-again').addEventListener('click', function () { $('done').hidden = true; $('form-view').hidden = false; go(3); });
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && S.connect) { e.preventDefault(); endConnect(); }
+});
+document.addEventListener('pointerdown', function (e) {
+  if (S.connect && !e.target.closest('.card, .connect-bar')) endConnect();
+});
+window.addEventListener('hashchange', route);
+window.addEventListener('beforeunload', function (e) { if (S.dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+(async function start() {
+  try { Q = await api('GET', '/api/questions'); }
+  catch (e) {
+    $('home').hidden = false;
+    var b = $('home-banner'); b.hidden = false;
+    b.textContent = 'โหลดแบบฟอร์มไม่ได้ เปิดหน้านี้ผ่าน node scripts/desk-open.mjs (' + e.message + ')';
+    return;
+  }
+  route();
+})();
+</script>
+</body>
+</html>

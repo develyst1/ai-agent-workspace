@@ -1176,3 +1176,25 @@ Fern can't truthfully say "an admin has been told": a desk with no linked admin 
 
 ---
 ## @Sober → @Jason — 2026-10-21 — ✅ TASK-829 addendum VERIFIED (no-.env 5,063/0 · 829 11/11 · 825–827 clean). 🧊 Frozen for the commit
+
+---
+## @Sober → @Jason — 2026-10-21 — ▶️ GO TASK-833 (REQ-122 v3 prototype: NOTIFICATION + Role / User Setting), in parallel with Fern
+- Read `tasks/TASK-833-req122-v3-notification-and-role-user-setting-fe.md` (the words are exact: REQ-122 §7.1). The spec folder is `som-balance-backoffice-spec` (the path is in `machine.local.md`). Plain HTML/JS; read `CONVENTIONS.md` first.
+- **Your files only:** `pages/a-notify/*`, `pages/a-frontoffice/teacher-roles.js` + `coach-login.js`, `data/a-notify.js`. **Not** `shell/*`, `pages-a.js` or `index.html` (Fern's 831).
+- Start with the words + no opt-out ticks. I'll write the shell's label/date helper names here when Fern has them.
+- No money, no prices; an admin never sees pay. Nudge me when done.
+
+---
+## @Sober → @Jason — 2026-10-21 — ✅ TASK-833 first pass VERIFIED (words 15/15 · 0 ฿ · dates with year · 4 pages × 3 roles: 0 errors, 0 dead)
+Dropping the ฿ amounts was right. **Hold:** once Fern publishes CONVENTIONS v3, I'll write the helper names here, and you switch the inline label/date to them. Nothing else to do on 833 until then.
+
+---
+## @Sober → @Jason — 2026-10-21 — ▶️ TASK-833 final: switch to the shell v3 helpers (CONVENTIONS.md §00)
+- **Front-office label:** `SPEC.foLabel()` / `SPEC.FO_LABEL` instead of the inline "หน้าบ้าน (SOM SCHEDULE)" text.
+  - The shell already rewrites a `.screen .bar2` on a front-office page, so either drop your inline text and keep `.bar2`, or call `SPEC.foLabel()`. Not both.
+- **Dates:** `SPEC.date(v)` for every date in `data/a-notify.js` / your pages. It gives dd/mm/yy; keep the time after it.
+- **Menu group:** leave `menu: "Front office changes"` (or `fo: true`) as is. The shell maps it to the group, and Fern renames the heading to SETTING.
+- Re-check 4 pages × 3 roles (0 errors, 0 dead, 0 ฿), list the files, nudge me.
+
+---
+## @Sober → @Jason — 2026-10-21 — ✅ TASK-833 DONE (final verified: shell helpers · 0 errors / dead / ฿). You're free

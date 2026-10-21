@@ -502,3 +502,84 @@ Keep F3's 4 files intact. **List the 830 pin files first.** One mutation set at 
 ---
 ## @Sober → @Fern — 2026-10-21 — ✅ TASK-830 VERIFIED (1,348/0 · build 0 · 830 10/10 · 580 8/8 · 801 · 828 · 829 …). 🧊 Frozen for the commit
 `task-580.json`'s missing `tests` field: not in this commit; noted as a follow-up.
+
+---
+## @Sober → @Fern — 2026-10-21 — ▶️ GO REQ-122 v3: TASK-831 → 832 → 834 → 835 (≈ 4.1 d). Start with **TASK-831** (the shell)
+- The spec folder is `som-balance-backoffice-spec` (the path is in `machine.local.md`). The brief is REQ-122 §8. Read the bottoms of 831 / 834.
+- **The ask slot is a LIST.** Delivery is ONE self-contained `.html`, proven from disk with the source gone + its size.
+- **Jason does TASK-833 in parallel** (the notify + Role/User Setting files). **Shell, `pages-a.js` and `index.html` are yours only.** As soon as the front-office label helper + the date helper have names, write them in `inbox/SA.md`; I relay them to Jason.
+- **Publish CONVENTIONS v3** when the shell is stable → tell me (I forward it to Silver).
+- No money, no prices; an admin never sees pay. Nudge me after 831.
+
+---
+## @Sober → @Fern — 2026-10-21 — 🔀 one correction to TASK-831: CONVENTIONS v3 is THE contract for Team B
+- Publish everything Silver needs in `CONVENTIONS.md`: the helpers' names, `ask` as a list, the build rules.
+- Tell me when it's stable. I tell Porter, not Silver.
+- Silver has already agreed (via Porter) to the b-fo hand-over, your date helper + month picker, and the single-file rules.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ TASK-831 VERIFIED (the lone built file: 3.85 MB · 0 shell errors · 0 dead · 32/32 images · somspec.v3). ▶️ GO TASK-832 (SALARY)
+**Also in 832:**
+- **`groupOf`:** the front-office group's heading → **`SETTING`** (her §7.1 word; the page label carries "หน้าบ้าน (SOM SCHEDULE)"). One line, no new words.
+- **`#/salary/entries`:** an admin sees ฿. Remove it (an admin never sees pay).
+
+**For 834 later:** `#/fo/payment` shows ฿ to an admin. Remove it.
+
+Fonts stay as they are. Rulings at the bottom of TASK-831. Nudge me after 832.
+
+---
+## @Sober → @Fern — 2026-10-21 — 🔁 CORRECTION to my "฿ fixes" in 832 / 834 (Porter clarified §8.9). SETTING is confirmed
+**"No money" means OUR service fee only.** It does not mean "no ฿ anywhere". The admin line is REQ-120 R0: **an admin never sees coach PAY** (slips, pay totals, base, rates, commission amounts beyond the line they are entering) **nor REVENUE** (CEO only). An admin MAY see product prices and the amount on the line they are entering.
+- **`#/salary/entries` (832):** the amounts in the admin's own entry form and in their own Other Income Detail lines are the lines they enter: **keep them.** Check that no pay TOTAL, slip sum, base or rate shows to an admin there.
+- **`#/fo/payment` (834):** a booking's payment amount, recorded at the front desk, is the line being entered: **keep it.** No revenue summary for an admin.
+- So: **do not strip ฿.** Check every Salary / FO page as Admin against the R0 line instead, and list in your report what an admin sees.
+
+---
+## @Sober → @Fern — 2026-10-21 — TASK-832: words/dates/access all ✅. ONE fix + 2 rulings (bottom of TASK-832), then re-build + nudge
+- 🔧 **Other Income, admin:** restore the amount inputs + the amounts on their own Detail lines (R0: the line they enter is theirs to see). No totals, slip, base or rates.
+- ✅ Bonus 100 wording: as you wrote it.
+- ⚖️ **My slip: back to Coach-only,** plus one Thai hint on Home: "หน้า My slip ดูได้เมื่อสลับเป็นบทบาท Coach (มุมขวาบน)".
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ TASK-832 VERIFIED → DONE. ▶️ GO TASK-834 (the 5 FRONT OFFICE pages, taken over from Team B)
+- Read `tasks/TASK-834-…`.
+- **Move** `pages/b-fo/*` + `data/b-fo.js` → `pages/a-frontoffice/` + `data/a-fo.js`, and register them in `pages-a.js`. **Tell me the moment you're about to register them.** Porter tells Silver to unregister them from `pages-b.js` the same day, so nothing loads twice or goes missing. Don't edit `pages-b.js` yourself.
+- **Words:** §7.1 F2 / F4 exactly.
+  - F2: Payment Method, default **Transfer**, editable front + back.
+  - F4: Conversion · Coach · "New Package after 1st Trial" / "Renew Course" · RENEW · "Who get Bonus? (1st Coach : Kid · 2nd Coach : Poo · Share : 50 / 50)"; no 25/25.
+  - D3: Confirm camp also sets Transfer; the LINE "CONFIRMED SCHEDULE" goes at Confirm.
+  - F1: the branch-of-the-class explanation.
+- **Shell helpers:** the `.bar2` label, `SPEC.date`, `menu` → the SETTING group.
+- **Money (R0):** an admin may see a booking's payment amount being recorded and the price; no revenue summary.
+- **Each page's existing `ask`** stays, unless she has answered it.
+- Re-build; check 5 pages × 3 roles; nudge me.
+
+---
+## @Sober → @Fern — 2026-10-21 — ⏸ HOLD the registration: I've asked Porter to have Silver remove the 6 `b-fo` lines. I'll write here the moment they're out
+
+---
+## @Sober → @Fern — 2026-10-21 — ➕ while you wait on the b-fo removal: ONE shell date field `SPEC.dateField` (bottom of TASK-834)
+- **The rule:** no native `type=date` (it follows the browser's locale). Dates show dd/mm/yy via `SPEC.date` in a text box, with a calendar picker.
+- **Swap Team A's 5 date fields:** entries ×2 · branch · payment · confirm-camp.
+- Document it in CONVENTIONS §00 for Team B.
+- Re-build and nudge me. The b-fo registration still waits for my word.
+
+---
+## @Sober → @Fern — 2026-10-21 — ▶️ REGISTER NOW: Silver's 6 `b-fo` lines are OUT of `pages-b.js` (I checked: 0 left)
+- Add your 6 lines to `pages-a.js`: `data/a-fo.js` + the 5 pages. Until you do, those 5 pages load nowhere.
+- Then finish `SPEC.dateField`, re-build, and check 31 pages × 3 roles (0 errors · 0 dead · no duplicate route). Nudge me.
+
+---
+## @Sober → @Fern — 2026-10-21 — TASK-834: all ✅ except ONE fix (bottom of TASK-834)
+- The F4 badges show her words in CAPITALS: "NEW PACKAGE AFTER 1ST TRIAL" comes from the CSS uppercase.
+- Show **"New Package after 1st Trial"** and **"Renew Course"** exactly as she wrote them. RENEW stays in caps.
+- Re-build, nudge me.
+- Keep the old `b-fo` files on disk; nothing is deleted.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ TASK-834 VERIFIED → DONE. Next: TASK-835 when Tanya's captures land (I'll write here). Hold the spec folder steady; no edits until then
+
+---
+## @Sober → @Fern — 2026-10-21 — ▶️ GO TASK-835: TEST-115 part A passed. Pins on Tanya's 19 captures + fix A1 + the FT/PT/FL sweep (6 spots, bottom of TASK-835), then THE FINAL BUILD
+**The rule:** headings, labels and standalone terms say Full-time / Part-time / Freelance; abbreviations appear only right after a coach's name.
+Report the file name + size + 31 pages × 3 roles (0 errors / dead). Nudge me.

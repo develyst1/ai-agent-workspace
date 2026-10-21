@@ -149,3 +149,11 @@ project-docs/
 
 # Per-machine path mapping — NEVER synced between machines (see CLAUDE.md "Paths & machines")
 machine.local.md
+
+# Memory web chat digests (scripts/memory/extract-day.mjs) — chat text stays on this machine (BUNNY-DESIGN-2026-10-20 §5.3)
+# Added 2026-10-21 by Marie (MARIE.md, ORDER 29 run): the scripts and the design both say "git-ignored", the sibling
+# workspace has these two lines, and ORDER 24's adoption never carried them here.
+*/ai-worker/memory/digest/
+
+# Which desk each Claude session belongs to (scripts/memory/session-desk.mjs) — per machine, per session
+.claude/session-desk/

@@ -15,7 +15,7 @@
 - Stack: 🔧 (or "TBD — SPEC-001")
 - Mode: 🔧 manual | dispatcher
 - Environments: 🔧
-- Team: 🔧 Porter (PM / BA / PO / UX writer) · Sober (SA) · Jason (BE) · Fern (FE) · Tanya (QA)
+- Team: 🔧 the PM (PM / BA / PO / UX writer) · the SA Lead (SA) · the BE (BE) · the FE (FE) · QA (QA)
 - Read first: `SYSTEM-FACTS.md`, then `PROTOCOL.md` + your role file, then this
   board, then your inbox, then today's log.
 

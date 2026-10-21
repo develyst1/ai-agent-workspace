@@ -1,0 +1,75 @@
+{
+  "source": "v2 2026-10-14 (MARIE-ORDER-2026-10-14-desk-open-form-v2.md). Single source of the desk-opening form's words, options, roles and recommended team; scripts/desk-open.mjs serves it and form.html renders it. v1 items 4-18 became the team canvas; items 9-13 are workspace defaults and are not asked; item 23 moved to role-pm 1b. mode: the team's work mode, chosen at the top of step 2 (MARIE-ORDER-2026-10-14-desk-open-work-mode.md).",
+  "steps": [
+    { "id": "project", "title": "โปรเจกต์" },
+    { "id": "team", "title": "ทีมและสายงาน" },
+    { "id": "code", "title": "โค้ดและความปลอดภัย" },
+    { "id": "check", "title": "ตรวจแล้วส่ง" }
+  ],
+  "fields": [
+    { "id": "oneLine", "group": "project", "label": "โปรเจกต์นี้คืออะไร", "type": "text", "placeholder": "หนึ่งประโยค", "default": "" },
+    { "id": "forWhom", "group": "project", "label": "ทำให้ใคร", "type": "choice", "options": ["ลูกค้าของคุณ", "บริษัทที่คุณทำงานด้วย", "ผลิตภัณฑ์ของคุณเอง"], "default": "" },
+    { "id": "firstWork", "group": "project", "label": "งานแรกของทีม", "type": "textarea", "placeholder": "อยากให้ทีมเริ่มจากอะไร", "default": "" },
+    { "id": "repos", "group": "code", "label": "repo อยู่ที่ไหน", "type": "textarea", "placeholder": "path ในเครื่อง บรรทัดละหนึ่ง repo", "default": "" },
+    { "id": "git", "group": "code", "label": "git", "type": "choice", "style": "cards", "options": ["AI ห้ามแตะ", "branch + commit ในเครื่อง"], "subs": { "branch + commit ในเครื่อง": "push เป็นของคุณ" }, "default": "AI ห้ามแตะ" },
+    { "id": "systems", "group": "code", "label": "ทีมแตะระบบไหนได้", "type": "multi", "options": ["เครื่องนี้เท่านั้น", "SIT (ทดสอบ)", "UAT", "production"], "default": ["เครื่องนี้เท่านั้น"] },
+    { "id": "secrets", "group": "code", "label": "ข้อมูลที่ห้ามขึ้น repo", "type": "choice", "options": ["ไม่มี", "มี"], "noteFor": "มี", "notePlaceholder": "ข้อมูลอะไร", "default": "ไม่มี" }
+  ],
+  "mode": {
+    "label": "ทีมทำงานแบบไหน",
+    "summary": "โหมดทำงาน",
+    "default": "manual",
+    "options": [
+      { "id": "manual", "label": "แยก session", "line": "หนึ่งคนหนึ่ง session — คุณเปิดเองทีละคน" },
+      { "id": "dispatcher", "label": "Dispatcher", "line": "session เดียวรันทั้งทีม — คุณอนุมัติเป็นช่วง" },
+      { "id": "long-run", "label": "Long run", "line": "Dispatcher ที่รันเองยาวๆ — คุณเซ็นจำนวนรอบก่อนรันทุกครั้ง" }
+    ]
+  },
+  "roles": [
+    { "id": "PM", "label": "PM", "hint": "แบ่งงาน" },
+    { "id": "BA", "label": "BA", "hint": "เขียน requirement" },
+    { "id": "SA", "label": "SA", "hint": "ออกแบบ รีวิว" },
+    { "id": "FE", "label": "FE", "hint": "หน้าจอ" },
+    { "id": "BE", "label": "BE", "hint": "หลังบ้าน" },
+    { "id": "QA", "label": "QA", "hint": "ทดสอบ" },
+    { "id": "designer", "label": "designer", "hint": "หน้าตา" },
+    { "id": "platform", "label": "platform", "hint": "server, deploy" }
+  ],
+  "people": [
+    { "id": "customer", "label": "ลูกค้า / ผู้ใช้จริง" },
+    { "id": "design-approver", "label": "คนอนุมัติดีไซน์" },
+    { "id": "tester", "label": "คนทดสอบ" },
+    { "id": "deployer", "label": "คน deploy" },
+    { "id": "tech-lead", "label": "dev / tech lead จริง" }
+  ],
+  "duties": [
+    { "id": "design-approve", "label": "อนุมัติดีไซน์" },
+    { "id": "deploy", "label": "deploy" }
+  ],
+  "recommended": {
+    "nodes": [
+      { "id": "you", "kind": "you", "role": "operator", "also": [], "name": "", "duties": ["design-approve", "deploy"] },
+      { "id": "pm1", "kind": "agent", "role": "PM", "also": ["BA"], "name": "", "duties": [] },
+      { "id": "qa1", "kind": "agent", "role": "QA", "also": [], "name": "", "duties": [] },
+      { "id": "sa1", "kind": "agent", "role": "SA", "also": [], "name": "", "duties": [] },
+      { "id": "fe1", "kind": "agent", "role": "FE", "also": ["designer"], "name": "", "duties": [] },
+      { "id": "be1", "kind": "agent", "role": "BE", "also": [], "name": "", "duties": [] }
+    ],
+    "edges": [
+      { "from": "you", "to": "pm1" },
+      { "from": "pm1", "to": "qa1" },
+      { "from": "pm1", "to": "sa1" },
+      { "from": "sa1", "to": "fe1" },
+      { "from": "sa1", "to": "be1" }
+    ]
+  },
+  "v1": {
+    "fields": { "q1": "oneLine", "q2": "forWhom", "q3": "firstWork", "q19": "repos", "q20": "git", "q21": "systems", "q22": "secrets" },
+    "values": {
+      "AI ห้ามแตะเลย": "AI ห้ามแตะ",
+      "AI ทำ branch + commit ในเครื่องได้ (push เป็นของคุณ)": "branch + commit ในเครื่อง",
+      "มี (ระบุในหมายเหตุ)": "มี"
+    },
+    "roster": { "PM": "pm1", "QA": "qa1", "SA": "sa1", "FE": "fe1", "BE": "be1" }
+  }
+}

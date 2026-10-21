@@ -11,7 +11,7 @@
 > **One page. ~4–6 KB.** History belongs in `log/`, decisions in
 > `SYSTEM-FACTS.md`, state in `board.md`. This file holds only the *situation*.
 >
-> **Who writes it:** the PM (Porter) **rewrites it before ending any session**.
+> **Who writes it:** the PM **rewrites it before ending any session**.
 > **Who reads it:** the PM and the SA Lead, **first**, before the board and
 > before the log. Engineers and QA do not read or write it — their context
 > travels with their TASK.

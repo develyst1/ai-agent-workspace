@@ -1,0 +1,205 @@
+#!/usr/bin/env node
+// extract-day.mjs <desk> <YYYY-MM-DD>
+// Turns one local day of this machine's Claude Code transcripts into a per-desk digest:
+//   <desk>/ai-worker/memory/digest/<date>.md   (git-ignored — chat text stays on this machine)
+// Keeps: the operator's typed messages, the role's text replies, cross-session messages in and out,
+// AskUserQuestion questions/answers. Drops tool calls, tool results, system reminders, thinking.
+// Which desk/role a transcript belongs to: its `/desk <desk> <Name>` invocation (latest one before
+// each entry), else the role's identity line `I am <Name> · <ROLE>` at the start of a reply, matched
+// against <desk>/ai-worker/TEAMS.md and confirmed by the session naming that desk's ai-worker path
+// more than any other desk's. Unknown → skipped.
+// Design: BUNNY-DESIGN-2026-10-20.md §5.3. Node built-ins only.
+
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import readline from 'node:readline';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+// Transcript folder name = the workspace path with every non-alphanumeric turned into '-'.
+// Was `'-' + ROOT.replace(…).replace(/^-/, '')` — the strip binds to ROOT.replace(…), which can
+// never start with '-', so the prepended '-' always survived and the path never existed.
+// Measured 2026-10-21: computed `-H--ai-agent-workplace-ai-agent-workspace` (absent) against the
+// real `H--ai-agent-workplace-ai-agent-workspace`. A POSIX root still yields its own leading '-'
+// from the first '/', which is the convention, so no prefix is needed on either platform.
+// ⚠️ The sibling workspace `ai-agent-workspace-entronica` still carries the original line.
+const TRANSCRIPTS = process.env.MEMORY_TRANSCRIPTS
+  || path.join(os.homedir(), '.claude', 'projects', ROOT.replace(/[^A-Za-z0-9]/g, '-'));
+const CUT = 600;          // a long reply keeps its first 600 characters
+const CUT_OPERATOR = 2000; // the operator's own words are kept longer (pastes can be huge)
+
+const [desk, date] = process.argv.slice(2);
+if (!desk || !/^\d{4}-\d{2}-\d{2}$/.test(date || '')) {
+  console.error('usage: node scripts/memory/extract-day.mjs <desk> <YYYY-MM-DD>');
+  process.exit(2);
+}
+const deskDir = path.join(ROOT, desk, 'ai-worker');
+const teamsFile = path.join(deskDir, 'TEAMS.md');
+if (!fs.existsSync(teamsFile)) { console.error(`no ${path.relative(ROOT, teamsFile)} — cannot tell roles apart`); process.exit(2); }
+
+// Roster: "| Porter | PM · all | ..." rows → name (lower) → { name, role }
+const roster = new Map();
+for (const line of fs.readFileSync(teamsFile, 'utf8').split('\n')) {
+  const m = line.match(/^\|\s*([A-Z][A-Za-z]+)\s*\|\s*([A-Z]{2,})\s*·/);
+  if (m) roster.set(m[1].toLowerCase(), { name: m[1], role: m[2] });
+}
+if (!roster.size) { console.error(`no roster rows found in ${path.relative(ROOT, teamsFile)}`); process.exit(2); }
+
+const desks = fs.readdirSync(ROOT).filter(d => fs.existsSync(path.join(ROOT, d, 'ai-worker')));
+const dayStart = new Date(`${date}T00:00:00`); // local time
+const dayEnd = new Date(dayStart.getTime() + 24 * 3600 * 1000);
+const pad = n => String(n).padStart(2, '0');
+const localDate = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const hhmm = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+function clean(text, cut) {
+  let t = String(text)
+    .replace(/<system-reminder>[\s\S]*?<\/system-reminder>/g, '')
+    .replace(/\s*\n\s*/g, ' ↵ ')
+    .replace(/[ \t]+/g, ' ')
+    .trim();
+  const chars = Array.from(t);
+  if (chars.length > cut) t = chars.slice(0, cut).join('') + ' …';
+  return t;
+}
+const textsOf = content => typeof content === 'string' ? [content]
+  : Array.isArray(content) ? content.filter(x => x && x.type === 'text').map(x => x.text) : [];
+
+// /desk args → { desk, who } (who may be null if no roster name is in the args)
+function parseDesk(text) {
+  const m = text.match(/<command-name>\/desk<\/command-name>\s*<command-args>([\s\S]*?)<\/command-args>/);
+  if (!m) return null;
+  const words = m[1].trim().split(/\s+/);
+  const d = words[0];
+  if (d !== desk) return { desk: d, who: null };
+  for (const w of words.slice(1)) { const r = roster.get(w.toLowerCase()); if (r) return { desk: d, who: r }; }
+  return { desk: d, who: null };
+}
+
+async function readSession(file) {
+  const session = path.basename(file);
+  let state = null;          // latest /desk: { desk, who } or null
+  let identity = null;       // first "I am <Name> · <ROLE>" from a reply
+  const pathCounts = {};
+  const entries = [];        // { t, who: state-at-time, line }
+  const pendingTools = new Map(); // tool_use id → { kind, t, state, to }
+  const rl = readline.createInterface({ input: fs.createReadStream(file, 'utf8'), crlfDelay: Infinity });
+  for await (const raw of rl) {
+    if (!raw) continue;
+    for (const d of desks) { const k = `${d}/ai-worker`; if (raw.includes(k)) pathCounts[d] = (pathCounts[d] || 0) + 1; }
+    let o; try { o = JSON.parse(raw); } catch { continue; }
+    if (o.isSidechain || (o.type !== 'user' && o.type !== 'assistant')) continue;
+    const t = o.timestamp ? new Date(o.timestamp) : null;
+    const content = o.message?.content;
+    const inDay = t && t >= dayStart && t < dayEnd;
+
+    if (o.type === 'user') {
+      const kind = o.origin?.kind;
+      if (kind === 'human' && !o.isMeta) {
+        const text = textsOf(content).join('\n');
+        const dk = parseDesk(text);
+        if (dk) state = dk;
+        if (inDay && text.trim()) {
+          let shown = text;
+          const cmd = text.match(/<command-name>([^<]*)<\/command-name>[\s\S]*?<command-args>([\s\S]*?)<\/command-args>/);
+          if (cmd) shown = `${cmd[1]} ${cmd[2]}`;
+          if (clean(shown, CUT_OPERATOR)) entries.push({ t, st: state, line: `operator: ${clean(shown, CUT_OPERATOR)}` });
+        }
+      } else if (kind === 'peer' && inDay) {
+        const text = textsOf(content).join('\n');
+        const re = /<cross-session-message\b([^>]*)>([\s\S]*?)(?:<\/cross-session-message>|$)/g;
+        let m, any = false;
+        while ((m = re.exec(text))) {
+          any = true;
+          const from = (m[1].match(/name="([^"]*)"/) || m[1].match(/from="([^"]*)"/) || [, o.origin?.name || '?'])[1];
+          entries.push({ t, st: state, line: `← ${from}: ${clean(m[2], CUT)}` });
+        }
+        if (!any && (o.origin?.body || text.trim())) entries.push({ t, st: state, line: `← ${o.origin?.name || '?'}: ${clean(o.origin?.body || text, CUT)}` });
+      }
+      if (Array.isArray(content)) for (const x of content) {
+        if (x.type !== 'tool_result' || !pendingTools.has(x.tool_use_id)) continue;
+        const p = pendingTools.get(x.tool_use_id); pendingTools.delete(x.tool_use_id);
+        const res = typeof x.content === 'string' ? x.content : textsOf(x.content).join('\n');
+        if (p.kind === 'send') {
+          const nm = res.match(/session \S+ \(\\?"([^"\\]+)\\?"\)/);
+          p.entry.line = p.entry.line.replace(/^(\S+ → )\S+/, `$1${nm ? nm[1] : p.to}`);
+        } else if (p.kind === 'ask') {
+          entries.push({ t: t || p.t, st: p.st, line: `operator (answer): ${clean(res, CUT)}` });
+        }
+      }
+    } else { // assistant
+      for (const x of Array.isArray(content) ? content : []) {
+        if (x.type === 'text') {
+          const id = x.text.match(/^\s*\**I am ([A-Z][a-z]+) · ([A-Z]{2,})/);
+          if (id && !identity && roster.get(id[1].toLowerCase())?.role === id[2]) identity = roster.get(id[1].toLowerCase());
+          if (inDay && x.text.trim()) entries.push({ t, st: state, line: `{who}: ${clean(x.text, CUT)}` });
+        } else if (x.type === 'tool_use' && inDay && x.name === 'SendMessage') {
+          const msg = x.input?.message;
+          if (typeof msg !== 'string' || !msg.trim()) continue;
+          const entry = { t, st: state, line: `{who} → ${x.input?.to || '?'}: ${clean(msg, CUT)}` };
+          entries.push(entry);
+          pendingTools.set(x.id, { kind: 'send', entry, to: x.input?.to || '?' });
+        } else if (x.type === 'tool_use' && inDay && x.name === 'AskUserQuestion') {
+          const qs = (x.input?.questions || []).map(q => q.question).filter(Boolean).join(' | ');
+          entries.push({ t, st: state, line: `{who} (asks): ${clean(qs, CUT)}` });
+          pendingTools.set(x.id, { kind: 'ask', t, st: state });
+        }
+      }
+    }
+  }
+  // Resolve who each entry belongs to.
+  const topDesk = Object.entries(pathCounts).sort((a, b) => b[1] - a[1])[0]?.[0];
+  const fallback = identity && topDesk === desk ? identity : null;
+  const kept = [];
+  for (const e of entries) {
+    let who;
+    if (e.st) who = e.st.desk === desk ? (e.st.who || fallback) : null;
+    else who = fallback;
+    if (!who) continue;
+    kept.push({ ...e, who, line: e.line.replace('{who}', who.name) });
+  }
+  return { session, kept };
+}
+
+const files = fs.readdirSync(TRANSCRIPTS).filter(f => f.endsWith('.jsonl')).map(f => path.join(TRANSCRIPTS, f))
+  .filter(f => fs.statSync(f).mtime >= dayStart); // untouched since before the day → nothing from that day
+
+const sections = [];
+for (const f of files) {
+  const { session, kept } = await readSession(f);
+  if (!kept.length) continue;
+  // a session can change role mid-way (/desk again) — split by role
+  const byRole = new Map();
+  for (const e of kept) { const k = `${e.who.name}|${e.who.role}`; if (!byRole.has(k)) byRole.set(k, []); byRole.get(k).push(e); }
+  for (const [k, es] of byRole) {
+    es.sort((a, b) => a.t - b.t);
+    const [name, role] = k.split('|');
+    sections.push({ name, role, session, es });
+  }
+}
+sections.sort((a, b) => a.es[0].t - b.es[0].t);
+
+let out = `# Digest — ${desk} — ${date}\n\n` +
+  `> Generated by \`scripts/memory/extract-day.mjs\` from this machine's Claude Code transcripts. Git-ignored: chat text\n` +
+  `> stays on this machine. Do not edit — re-run the script. Times are local. Long replies cut to ${CUT} characters.\n`;
+for (const s of sections) {
+  out += `\n## ${s.name} (${s.role}) — ${s.session}\n\n`;
+  for (const e of s.es) out += `[${hhmm(e.t)}] ${e.line}\n`;
+}
+const outDir = path.join(deskDir, 'memory', 'digest');
+fs.mkdirSync(outDir, { recursive: true });
+const outFile = path.join(outDir, `${date}.md`);
+fs.writeFileSync(outFile, out);
+
+console.log(`${path.relative(ROOT, outFile)} — ${Buffer.byteLength(out)} B, ${sections.length} section(s), ${sections.reduce((n, s) => n + s.es.length, 0)} entries`);
+for (const s of sections) {
+  const c = { operator: 0, reply: 0, xin: 0, xout: 0 };
+  for (const e of s.es) {
+    if (e.line.startsWith('operator')) c.operator++;
+    else if (e.line.startsWith('← ')) c.xin++;
+    else if (/^\S+ → /.test(e.line)) c.xout++;
+    else c.reply++;
+  }
+  console.log(`  ${s.name} (${s.role}) ${s.session.slice(0, 8)}: ${s.es.length} entries — operator ${c.operator} · replies ${c.reply} · cross-in ${c.xin} · cross-out ${c.xout}`);
+}

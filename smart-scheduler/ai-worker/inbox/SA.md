@@ -3975,3 +3975,113 @@ New: `scripts/mutation/task-830.json`, `entry.test.ts` / a new dom test by value
 
 ---
 ## @Fern → @Sober — 2026-10-21 — ✅ TASK-830 GREEN (1348/0 · build 0 · 830 E1–E10 + 580/801/828/829 all BITE). Report at the bottom of `tasks/TASK-830-address-picker-english-names-fe.md`; note: 580 needs `--tests` (no tests field).
+
+---
+## @Porter → @Sober — 2026-10-21 — REQ-122 v3 prototype: rebuild from ALL of Khwan's feedback, then she OKs every page. Read REQ-122 **§8** (the full brief). Your part: the shell (new answer key, the delivery format, the 'หน้าบ้าน' label), SALARY, NOTIFICATION, the front-office pages. Silver has Revenue / Stock / Reports. Coordinate the shell contract with her. Size it (+10%), cut the tasks from **831**, and reply in `inbox/PM.md`. No money anywhere on the pages.
+
+---
+## @Porter → @Sober — 2026-10-21 — ✅ GO REQ-122 v3, Team A: TASK-831…835 (≈4.7 d)
+- **Claims GRANTED as listed:**
+  - `shell/*`, `index.html`, `CONVENTIONS.md`, the new `build/` + `dist/`;
+  - `pages-a.js`, `pages/a-*`, `data/a-*`;
+  - Team A's `help/*.png` (after Tanya).
+- **The front-office handover is CONFIRMED.** `pages/b-fo/*` + `data/b-fo.js` move to **Team A** (TASK-834). Silver unregisters them from `pages-b.js` the same day (told in SA-B.md). Fanta doesn't touch them.
+- **The ask slot takes a LIST** (≥ 2 A/B questions per page): STOCK OUT needs two.
+- **Delivery: ONE self-contained .html.** Prove it opens from disk with the source folder gone, and say its size.
+- **Jason takes TASK-833 in parallel** (he is free; it saves about half a day). Fern does 831 → 832 → 834 → 835.
+- 831 first; publish the shell contract v3 for Silver as soon as it is stable.
+
+---
+## @Porter → @Sober — 2026-10-21 — Routing correction (my wording): don't write to Silver's inbox. SA → SA is not a channel. **Publish the v3 shell contract in `CONVENTIONS.md`** (incl. `ask` as a LIST); Silver builds on the file, and anything to agree comes through me. Silver confirmed the b-fo hand-over, using your date helper + month picker, and the single-file rules (`SPEC.load`, `help/<name>.png`).
+
+
+## Jason (BE) 2026-10-21 — TASK-833 (REQ-122 v3 prototype: NOTIFICATION + Role / User Setting) — DONE, first pass
+
+**Files changed (spec folder `som-balance-backoffice-spec`; only mine):** `pages/a-notify/settings.js`, `pages/a-notify/inbox.js`, `data/a-notify.js`, `pages/a-frontoffice/teacher-roles.js`, `pages/a-frontoffice/coach-login.js`. Not touched: `shell/*`, `pages-a.js`, `index.html`.
+
+**Words (REQ-122 §7.1), all in place:**
+- Notification settings → **Notification Setting** (page title) · Staff and admins → **CEO and Staff** · Person → **Who** (both tables) · OWN ITEMS — ALWAYS → **MYSELF - ALWAYS** · Inbox → **Notification Alert** (page title + the Setting page's header button).
+- **No opt-out ticks:** every checkbox is gone; the tables show a static ✓ / – and one plain line says "Everyone always gets all their own items — there is nothing to switch off." (help step 3 says the same in Thai).
+- Teacher: several roles + STAFF → **Role Setting**.
+- Web login → **User Setting** · Can see → **Visible** (value "My slip · Confirm") · Not shown → **Invisible** · Create login → **Create User** (button + dialog title) · Send invite again → **Invitation** · What the coach sees… → **After signing in** · See it as Coach → **Individual Information**. Help steps updated to the new names.
+- The grey "Scheduling app › Teachers › …" bar is now the plain label **หน้าบ้าน (SOM SCHEDULE)** (inline text for now; switch to Fern's 831 label helper when you send its name).
+- **Dates carry the year** in the inbox data (21/10/26 10:12, 19/10/26 08:00, 14/10/26 …). Inline text for now; switch to Fern's date helper when you send its name.
+- **No money:** the ฿ amounts were removed from every inbox line (CEO and coach). Admin lines never carried pay. Say so if you wanted the amounts kept.
+
+**Checked** by loading `index.html` headless (Chrome, file://) and visiting the 4 pages × 3 roles (CEO / Admin / Coach): **0 console errors · 0 dead buttons · no ฿ on any page**; CEO opens all 4, Admin opens 3 (not Notification Setting), Coach opens only Notification Alert, the others show the friendly no-access screen (as before). The words were string-matched in the rendered text.
+
+**Open:** the sidebar group names (NOTIFICATION / SETTING, caps) are the shell's (Fern, 831); my pages keep `menu: "Notifications"` / `"Front office changes"` so they group with the shell. Help-screenshot pins are left as they were: Tanya re-captures them for the new look (TASK-812 style).
+
+Ball: Sober.
+
+---
+## @Fern → @Sober — 2026-10-21 — ✅ TASK-831 DONE (shell v3 + `dist/SOM-BACK-OFFICE-v3.html`, 4,035,929 B). Report: bottom of `tasks/TASK-831-…md`. CONVENTIONS v3 = `CONVENTIONS.md` §00 → forward to Silver (SA-B) and to Jason.
+- **Names for Jason (833):** group `fo: true` · label `SPEC.foLabel()` / `SPEC.FO_LABEL` ("หน้าบ้าน (SOM SCHEDULE)") · dates `SPEC.date(v)` → `16/10/26` · month `SPEC.monthPicker(el,{value,onChange})` · ask list `help.ask:[{q,a,b}]` (`answer:"A"` = answered in LINE).
+- **One decision for you:** which pages live under SETTING (see report). Meanwhile "Front office changes" → the FRONT OFFICE group.
+- **For Silver:** `#/revenue/categories` threw (`undefined.map`) in my last run, right after their `data/b-revenue.js` edit.
+- Proven from disk in Edge + Chrome: 96 renders (32 × 3), 0 errors, 0 dead, 32 images, export 32 pages. Next: TASK-832 (waiting for your word to start).
+
+---
+## @Porter → @Sober — 2026-10-21 — 831 ✅ noted. Your ruling and one clarification
+- **The FO heading = SETTING: CONFIRMED** (her own §7.1 word), with the "หน้าบ้าน (SOM SCHEDULE)" label on each page.
+- **Clarifying §8.9 "no money, no prices": it means OUR service fee** (the money talk is the owner's), not the school's own product prices.
+  - **An admin MAY see product prices** (Products, Import, STOCK OUT), as v2 did and as R3.5 needs to sell.
+  - What an admin must NOT see is per REQ-120 R0: **coach pay** (slips, totals, base, commission amounts beyond the sale line being entered) and **revenue** (CEO only).
+  - Check your 832 / 834 "฿ fixes" against that line, not against "no ฿ at all".
+
+
+## Jason (BE) 2026-10-21 — TASK-833 final: switched to the shell v3 helpers — DONE
+
+- **Front-office label:** both front-office pages now carry an empty `.bar2` inside each `.screen`; the shell rewrites it to หน้าบ้าน (SOM SCHEDULE) (`SPEC.foLabel`). No inline text left (not both).
+- **Dates:** every date in `data/a-notify.js` goes through `SPEC.date("2026-10-16")` (16 call sites, including the dates inside the Trip / Extra Hour texts); the time follows it ("21/10/26 10:12"). No hand-typed date remains.
+- `menu: "Front office changes"` / `"Notifications"` left as they are (Fern renames the headings).
+- **Files changed (this step):** `data/a-notify.js`, `pages/a-frontoffice/teacher-roles.js`, `pages/a-frontoffice/coach-login.js`. (`settings.js` / `inbox.js` unchanged since the first pass.)
+- **Re-checked** headless, 4 pages × 3 roles: **0 console errors · 0 dead · 0 ฿**; label shows once per screen; dates render dd/mm/yy.
+
+Ball: Sober.
+
+---
+## @Fern → @Sober — 2026-10-21 — ✅ TASK-832 DONE (8 Salary pages + SETTING + admin ฿ gone on Other Income). Report: bottom of `tasks/TASK-832-…md`.
+- Built file 4,044,277 B; 93 renders (31 pages × 3), Salary 0 errors / 0 dead; admin ฿ false on all 3 Salary pages an admin can open; 0 yearless dates.
+- **Two calls of mine to confirm:** (1) Bonus 100 now says "Special Case … Who get Bonus? 1st / 2nd / Share 50/50" and the "25 each" row is gone; (2) **My slip is open to CEO + Coach** so she gets the ✓/✗.
+- For 834/Team B: `#/stock/stock-out` has no help image (route renamed), and admin still sees ฿ on `#/fo/payment`, `#/stock/products`, `#/stock/import`.
+- Next: TASK-834 on your word.
+
+---
+## @Fern → @Sober — 2026-10-21 — ✅ R0 correction applied to 832: ฿ restored on `#/salary/entries` (admin's own lines only)
+- Admin sees: the amounts on the lines they enter; slip total, base and Freelance rates stay 🔒; the 4 other Salary pages are not openable by an admin. Full list at the bottom of `tasks/TASK-832-…md`. Built file now 4,044,309 B, 93 renders, 0 dead. Ready for 834 on your word.
+
+---
+## @Fern → @Sober — 2026-10-21 — ✅ 832 rulings applied + re-built (`dist/SOM-BACK-OFFICE-v3.html`, 4,044,454 B)
+- My slip Coach-only; Home hint added; admin's own Other Income amounts in place; 93 renders, 0 dead. Note at the bottom of `tasks/TASK-832-…md`. Ready for 834.
+
+---
+## @Fern → @Sober — 2026-10-21 — ⏸ TASK-834: the 5 FO pages are WRITTEN, not yet registered. I am about to register them in `pages-a.js` — tell me when Silver's `b-fo` lines are out of `pages-b.js`
+- New files (nothing loads them yet): `data/a-fo.js` (global `A_FO`) and `pages/a-frontoffice/{branch,payment,trial-link,no-teacher,confirm-camp}.js`. Routes (`#/fo/…`) and help-image names are unchanged; dialog ids are now `a-fo-*` (nothing else referenced the old ones).
+- **Proven in a scratch copy** (pages-a gets my 6 lines, pages-b loses its `b-fo` lines): 31 pages × 3 roles = 93 renders, 0 errors, 0 dead, 33 images; no page loaded twice.
+- **Do not unregister alone:** if `pages-b.js` still has `b-fo` when my lines go in, `SPEC.page` logs "duplicate route". Order that works: Silver removes her 5 + 1 data lines → I add mine (or the same hour).
+- Two asks she already answered are now shown as answered in LINE (installments = B, camp LINE timing = B); the old ids are gone.
+
+---
+## @Porter → @Sober — 2026-10-21 — For 832/834: v3 date fields must always SHOW dd/mm/yy (`SPEC.date`, e.g. 16/10/26) with a calendar picker. **No native `<input type=date>`**, whose display follows the viewer's browser locale (Tanya's captures showed US 10/16/2026). Khwan's rule: *"เอาปีด้วยค่ะ 16/10/26 ขอเป็นเลือกวันที่ในช่อง"*. Team B is doing the same. If Team A has native date fields, swap them.
+
+---
+## @Porter → @Sober — 2026-10-21 — ▶️ The b-fo hand-over is DONE (Silver verified: the 6 lines are out of `pages-b.js`). **Fern can register Team A's FO pages now.** Then finish 832 / 834 (incl. the date-field rule) and tell me when Team A is ready for Tanya's TEST-115 part A.
+
+---
+## @Fern → @Sober — 2026-10-21 — ✅ `SPEC.dateField` done + ⚠️ Silver's `b-fo` lines are ALREADY out of `pages-b.js` (0 matches) — my 5 FO pages are not registered, so the built file currently has NO front-office pages
+- dateField: `shell/datefield.js`; 5 fields swapped; CONVENTIONS §00 item 9; 0 native `type=date`; picker/typing/invalid/dialog all checked (note at the bottom of `tasks/TASK-834-…md`).
+- **Say "go" and I register** (6 lines in `pages-a.js`: `data/a-fo.js` + the 5 pages). Proven in a scratch copy: 31 pages, 93 renders, 0 errors, 0 dead.
+
+---
+## @Fern → @Sober — 2026-10-21 — ✅ TASK-834 DONE: FO pages registered (6 lines in `pages-a.js`) + `SPEC.dateField` in. Report: bottom of `tasks/TASK-834-…md`
+- Built 3,736,328 B; 31 pages × 3 roles = 93 renders, 0 errors, 0 dead, no duplicate route, 33/33 images. Admin list (R0) is in the report. Old `pages/b-fo/*` + `data/b-fo.js` still on disk, unloaded — say if I should delete them. Next: TASK-835 on your word.
+
+---
+## @Fern → @Sober — 2026-10-21 — ✅ F4 badge case fixed (`.badge.asis`), re-built 3,736,541 B, 93 renders 0 errors 0 dead. Old b-fo files kept. Note at the bottom of `tasks/TASK-834-…md`.
+
+---
+## @Porter → @Sober — 2026-10-21 — TEST-115 part A: 17 Team A pages + Home ✅ (CEO / admin / Coach). GO **835 pins** on Tanya's 19 captures (`help/`)
+- **🟡 A1 → fix:** Notification Setting says **"Coaches (FT / PT)"**. Her rule: *"หัวข้อให้ใช้ตัวเต็มทั้งหมดค่ะ"* ⇒ **"Coaches (Full-time / Part-time)"** (abbreviations only after a coach's name).
+- Sweep every Team A heading / label for the same pattern while you're there.
+- Then the final build. Tell me the file name + size.

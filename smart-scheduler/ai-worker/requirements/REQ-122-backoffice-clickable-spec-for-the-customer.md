@@ -216,3 +216,69 @@ Verbatim: `…/khwan-answers-proto-v2-part2-2026-10-19-VERBATIM.md`. Still unans
 1. The owner sends the revised reply (answers + the C-a / C-b / C-f / C-e / C-j confirmations).
 2. Silver re-sizes the REQ-120 deltas (C-a…C-k vs the 160/173 d baseline) for the owner's money talk.
 3. The v3 prototype goes out only on the owner's GO.
+
+## 8. v3: rebuild the prototype from ALL her feedback, then send it back for an OK on EVERY page (owner, 2026-10-21)
+**Owner, verbatim:** *"ได้รับฟีทแบคยัง ให้นำมาทำใหม่ให้ตรงกับลูกค้า แล้วส่งไปใหม่ให้ลูกค้าตอบ ok ทั้งหมดก่อน"*.
+**Inputs, all on disk:**
+- §7.1–§7.4: every rename, layout change and prototype confusion;
+- REQ-120 §9: her 5 rulings (C-a B · C-j A · C-b C · C-f · C-e);
+- Silver's re-size conflicts (`inbox/PM.md` 10-20);
+- the verbatim part 1 + part 2 files;
+- REQ-122 §6: the commission picker inside the form.
+
+**v3 must:**
+1. **Apply every word** in §7.1 + §7.4, exactly as she wrote it:
+   - the menu headings ALL CAPS (SALARY · NOTIFICATION · SETTING …);
+   - Full-time / Part-time / Freelance in headings;
+   - dates with the year (16/10/26);
+   - SALES RECORD → **STOCK OUT**;
+   - the brand "SOM BALANCE / SOM BACK OFFICE".
+2. **Apply every layout change:**
+   - the Locations page removed → Products gets quantity + location columns and a location filter;
+   - the Category column before Product Name;
+   - Stock Demo with Bravo leftmost and the location order settable, "Teaching equipment by site" removed;
+   - the page titles she struck removed;
+   - a **month picker** on Monthly Payment / Payment Detail / Other Income;
+   - the Daily Training Report by teaching hours only + the coach total;
+   - notifications with no opt-out ticks.
+3. **Apply her rulings:**
+   - STOCK OUT = a **cart** (several items, ONE bill discount ฿ / %);
+   - commission editable per sale **by ฟีน and the admins**, on that sale's line only (an admin sees no pay totals);
+   - Payment Method defaults to Transfer, editable front + back;
+   - a refund cancels the course's unattended sessions + tells the families;
+   - "Who get Bonus? 1st / 2nd / Share 50/50" on a mid-course change; no trial 25/25;
+   - 1st Trial as its own revenue type, with a category per activity; no "manual" type.
+4. **Front-office items stay, clearly labelled as FRONT OFFICE** (SOM SCHEDULE): F1 branch, F2 Payment Method, F5 No Teacher, D3 Confirm camp, roles, user setting.
+   - The grey "Scheduling app › …" bar is replaced by a plain "หน้าบ้าน (SOM SCHEDULE)" label.
+   - She must see at a glance that nothing is done twice.
+5. **The 4 open follow-ups** (sent 10-21, not answered yet) appear as the page's A/B question **inside** the [?] popup, where they belong:
+   - commission: lower only / raise too;
+   - commission per item / per bill;
+   - refund: course status + voucher;
+   - Low Stock recipients.
+   
+   If she answers in LINE first, the answer is applied instead.
+6. **Answers, not changes, made clear on the page:** "Never deleted" in Import (plain words), and the Balance view of every location with a picker.
+7. **Fresh answers:** v3 stores answers under a NEW key, so **every page starts unanswered** and she must OK each one again. The export lists all 32 (+ any new) pages.
+   - **My slip (6)** gets her look this time.
+   - Reports (32) stays "agreed later" (REQ-120 §4), and the page says so.
+8. **Delivery that can't fail like v2's zip** (opened inside the zip → blank page): prefer a **single self-contained .html** (all scripts, styles and images inlined).
+   - If that's impractical, the zip plus a one-line "แตกไฟล์ก่อน" instruction on the first screen.
+   - The SA decides and says why.
+9. **Rules unchanged:**
+   - plain HTML in `som-balance-backoffice-spec`;
+   - the real-product look + [?] popups with Tanya's pointed captures (1280×800, the main action inside the frame);
+   - **no money, no prices**;
+   - **no requirement-hub / galaxy-spec**;
+   - an admin view never shows pay.
+10. **Team split as v2:**
+    - **Team A (Sober):** the shell, Salary, Notifications, the front-office pages;
+    - **Team B (Silver):** Revenue, Stock, Reports;
+    - **Tanya** re-captures the help screenshots and checks every §8 item page by page (TEST-115).
+    - Numbers: Team A **831+**, Team B **745–749**.
+11. **Done when:** Tanya's checklist shows every item above ✅. Porter then writes the customer message (what changed, "please OK every page", the 4 questions). The owner sends it.
+
+### 8.1 Sized + GO (Porter, 2026-10-21)
+- **Team A:** TASK-831…835, ≈4.7 d (Fern; Jason on 833).
+- **Team B:** TASK-745/746, ≈6.6 d (Fanta + Silver review).
+- **≈11.3 engineer-days in total**, run in parallel. The front-office pages move to Team A. One self-contained .html.

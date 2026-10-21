@@ -1,0 +1,46 @@
+{
+  "harness": "develyst-harness",
+  "version": "2.6.0",
+  "sharedTools": {
+    "ai-worker/add-failure.mjs": "2d9757735f33b4af6a7fa5252d2b2ccec3f89547d267111fa202c44322dddf00",
+    "ai-worker/append-log.mjs": "a01b01a1b582dc2d4cc59a00e388e9dd6c3f5fa095060a2b33df1342744a9979",
+    "ai-worker/drain-inbox.mjs": "a90f94fa028a2255ec777bb3489ff2021fcdf3a7d4786483967dcd8882f22b1b",
+    "ai-worker/tools/pm-hub.sh": "777f42870cd2509a204eaacf2f7bde7d2e2637021a9bd9124f3eeed9138425d4",
+    "ai-worker/tools/nudge-count.sh": "25946053a106ac55c9281e7ffc2be36b90d21c095dfd95f24e0c4579e1a5d5b0"
+  },
+  "ruleFiles": {
+    "CLAUDE.md": "404ab9eec95f860695bfc697e71435d8c2d971966bcb78c15d2dd6f0b4ebf35b",
+    "AGENTS.md": "a55a6eb0507297efa73a6b8369a819c70bbbf0e67dbf538266869ada2e0f40c8",
+    "ROLES.md": "315e66f7a76818ab3356b02f5681e7320d3f9e8f95a44aaa35b2582de27d6f57"
+  },
+  "deskOwned": [
+    "ai-worker/PROTOCOL.md",
+    "ai-worker/PM.md",
+    "ai-worker/SA-Lead.md",
+    "ai-worker/FE.md",
+    "ai-worker/BE.md",
+    "ai-worker/QA.md",
+    "ai-worker/TEAMS.md",
+    "ai-worker/SEATS.md",
+    "ai-worker/DECISIONS.md",
+    "ai-worker/FAILURES.md",
+    "ai-worker/LOCAL-RULES.md",
+    "ai-worker/SYSTEM-FACTS.md",
+    "ai-worker/PEOPLE.md",
+    "ai-worker/CORE.md",
+    "ai-worker/CONVENTIONS.md",
+    "ai-worker/RESUME-HERE.md",
+    "ai-worker/board.md",
+    "ai-worker/inbox/",
+    "ai-worker/log/",
+    "ai-worker/archive/",
+    "ai-worker/requirements/",
+    "ai-worker/specs/",
+    "ai-worker/tasks/",
+    "ai-worker/tests/",
+    "ai-worker/memory/",
+    "ai-worker/talks/",
+    "ai-worker/checks.json",
+    "ai-worker/checks/"
+  ]
+}

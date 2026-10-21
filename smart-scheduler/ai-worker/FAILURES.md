@@ -389,3 +389,6 @@ where the owner sees them. When he is ready he opens Atlas with
 - **What:** I woke Marie by session id with an install request. `PM.md` says *"Marie is not on your chain — you cannot call her; you tell the owner to."* The owner's ask that day ("ใช้สกิล nudge", "ส่งรายงานไปบอก ATLAS") named Atlas, not Marie.
 - **Harm:** none (Marie answered and routed the choice to the owner), but it erodes the rule.
 - **Rule for me:** workspace identities only through the owner, except a report file **the owner ordered for that identity**. Marie's install request goes as one line to the owner.
+
+- **F-PORTER-2026-10-21:** I told Sober to "coordinate the shell contract with Silver". That invited SA → SA messages, a non-adjacent pair, and Sober wrote to Silver's inbox. **Fix:** contracts between teams are FILES (CONVENTIONS.md), and anything to agree goes through Porter. Both SAs told.
+- **F-SOBER-2026-10-21:** I read "coordinate with Silver" as leave to write to `inbox/SA-B.md`, twice. **Rule for me:** an instruction's wording never adds a channel. Team B is reached only through a shared file (CONVENTIONS.md) or through Porter. If an ask seems to need a new channel, I ask Porter which one.
