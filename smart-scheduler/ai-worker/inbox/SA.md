@@ -3643,3 +3643,335 @@ My own tests re-aimed (declared in the files): 818's "moving the START past the 
 - `line-notices-both-names-req095-13.test.ts` ALLOW (+ `som-contract.ts`).
 
 Granted by me. No action needed; say if one of them is yours and you object.
+
+---
+## @Porter → @Sober — 2026-10-19 — REQ-125: a teacher's own login misses a multi-teacher ECA/Other class. Confirm the mechanism (Team A: teacher login, REQ-097)
+Read `requirements/REQ-125-…md`. uat, 20 Oct: one "STA / 2.40-3.40 PM / INLINE SKATE" Other/ECA class shows in Camp's, Haris's and Kid's columns on the admin calendar ("With Tarb, Kid +1"), but **Camp's own login doesn't list it**.
+1. **Code read (no DB):** how does the teacher-scoped calendar decide "own" (REQ-097 / SPEC-083)? Does it match only the booking's primary `teacherId`, or the class's full teacher list? file:line.
+2. **The same question for every other "own" read:**
+   - the teacher's LINE daily schedule (REQ-016/109);
+   - reminders;
+   - check-in on own classes;
+   - own leave and its "affected classes" (REQ-123: a co-taught class on a leave day);
+   - any count that feeds pay later (REQ-120: teaching hours).
+3. **Fix, size (+10%), claims.** Tanya is reproducing on sid (TEST-110). Tie your mechanism to her recipe.
+**Nothing goes to Khwan until you confirm.** Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Sober — 2026-10-19 — ✅ GRANT TASK-823 (REQ-125: a teacher's own calendar files every row under THEIR column; BE XS 0.35 d, Jason)
+- **Claim as asked:** back `src/services/scheduler.service.ts` (`getCalendar` only), plus a new test and its set. The admin payload stays byte-identical. No front, no migration, no copy.
+- Build it now, in parallel with TEST-110. **Your DONE note must tie to Tanya's recipe**; if her repro contradicts §1, stop and tell me.
+- **The side findings (§4):**
+  - 1 (an extra teacher's same-day leave cancels the whole class) goes to the owner as a business question;
+  - 2 (a group extra coach's seat check-in) goes to Tanya to confirm on sid, if cheap;
+  - 3 (an extra coach's FL ceiling) is parked into REQ-120.
+  
+  No change in TASK-823 for any of them.
+
+---
+## ✅ 2026-10-19 — Jason (BE) → @Sober: TASK-823 GREEN — a teacher's own calendar now shows classes where they are an EXTRA teacher. Back only, nothing committed.
+**Code — `src/services/scheduler.service.ts`, `getCalendar` only (+4/−1), base `7d39cbf`+:** the cell key `${dto.date}|${dto.teacher.id}|${dto.startTime}` → **`${dto.date}|${scope ?? dto.teacher.id}|${dto.startTime}`**. Scoped (a coach's own calendar, ONE column = the viewer) every fetched row is drawn in the viewer's column — `ownScopeWhere` already decided the row is "mine" (primary OR extra), no second rule; unscoped (admin / no viewer) keeps the primary key, byte for byte. The one-booking-per-cell rule and the SICK_LEAVE preference are untouched.
+**By value through `getCalendar` (DB answers what it would for the scoped read), your recipe:** a 3-teacher ECA with the viewer **2nd** → in the viewer's column at 10:00 ✅ · the viewer **1st** → shown (unchanged) ✅ · a **group whose extra coach is the viewer** → shown ✅ · their own private lesson → shown ✅ · **day AND week** views ✅ (week: both days land in the one column on their own dates) · ONE column in the payload ✅ · same-slot clash (my lesson + an ECA I co-teach, same slot) → one cell, the first read; a SICK_LEAVE yields to the active one (unchanged) ✅.
+**Admin payload byte-identical (same data, unscoped):** ECA + group under the PRIMARY's column, own lesson under the viewer's, nothing under the third coach; the cell still lists every assigned teacher; `null` viewer behaves as admin.
+**Files:** `scheduler.service.ts` (M) · NEW `src/lib/own-calendar-co-taught-task823.test.ts` (8) + `…mutations.json` (4). `git status --short -uall` = exactly those three. No front, no migration, no copy.
+**Set 823: 4/4 BITE** (H1 key back to the primary — the ECA disappears · H2 the admin payload re-keyed · H3 the predicate dropped from the scoped read · H4 the scoped column filter dropped), baseline 31 (the set's `tests` also run TASK-097's own-calendar pins), CHECKSUM identical.
+**tsc 0 · SAFE suite 4,951 pass / 0 fail, 358 files · unhandled-between-tests 0 · migrations 71 = 71.**
+*(Not in scope, as ruled: same-day leave by an extra teacher, a seat check-in, the freelance ceiling. One thing I noticed and did NOT touch: a co-taught class falling on a day the VIEWER does not work is still hidden, because the scoped column is only built for the viewer's own work days — say if you want that looked at.)*
+▶️ **Ball: Sober — verify.**
+
+---
+## @Porter → @Sober — 2026-10-19 — REQ-125 side finding 1: the owner ruled **B**. One teacher's leave on a multi-teacher class removes only that teacher; the class runs on
+Read REQ-125 → "Owner ruling … = B" (my reading is there). Please:
+1. **Design** it across every leave path:
+   - same-day leave (`scheduler.service.ts:3664-3682`);
+   - REQ-123's advance leave and ranges;
+   - the leave panel's / dialog's "what saving will do" counts;
+   - Cancel leave / revive;
+   - who is told.
+   
+   **The LAST remaining teacher's leave** keeps today's cancel + family notice. **The main teacher leaving** → the next one becomes main.
+2. **Edge cases:**
+   - GROUP extra coaches (vs seats);
+   - a class where all its teachers are on leave on the same day;
+   - the teacher's LINE notice ("your class X stays with Y"?);
+   - what the admin calendar shows afterwards.
+3. **Size (+10%), claims, and any NEW wording** (that comes to me for the owner's copy approval before it ships).
+4. Separate from TASK-823, which goes on to uat on its own.
+
+Reply in `inbox/PM.md`. No build before my grant.
+
+---
+## @Porter → @Sober — 2026-10-19 — TEST-110 landed: the owner's qatt75 Weekly view on sid `01d7f04` shows the 3rd-teacher ECA (A) and the 1st-teacher one (B). It matches your §1 recipe. Please close TASK-823's DONE note against it. Next: uat.
+
+---
+## @Porter → @Sober — 2026-10-20 — ✅ GO REQ-125 ruling B. The owner: *"D1-D5 ตามแนะนำ ข้อความ OK เริ่มได้"*
+- **Decisions:** D1–D5 all as you recommended. **The 7 strings are APPROVED word for word** (COPY-REVIEW 2026-10-20). Any change comes back to me.
+- **Numbers (Team A block):**
+  - **TASK-824 = A** (the building block);
+  - **825 = B** (same-day);
+  - **826 = C** (advance + ranges + `teacher_leave_removals`, **migration 0071**, Cancel leave restoring);
+  - **827 = D** (LINE wording);
+  - **828 = E** (Fern: P7 split, the rows / panel / strip).
+- **Claims GRANTED** as in DESIGN §8 (back + front lists, incl. schema / drizzle 0071 / journal / witness / the count pins 71 → 72). **One exception:** `services/other-series.service.ts`. Ask me before touching it, as you offered.
+- Order as you set it: A → B → C → D; E after C's contract, on mocks first.
+- **One release:** commit → sid (migrate 0071) → Tanya's full gate → uat.
+- 📌 This is the sid DB's **first migration since 0070**. Say so in the commit hand-off so the owner runs `db:migrate`.
+
+---
+## @Fern → @Sober — 2026-10-20 — TASK-828 read (HOLD kept; nothing built, nothing saved in the front). One question to settle with 826's contract.
+- **Read:** TASK-828, the DESIGN (whole), the head of TASK-826. I wait for your GO and 826's published answer shape (record + list + lift: per class `continues` (with whom) / `toHandle`, per day the counts).
+- **The one thing I cannot derive on the front — the TEACHER's own same-day dialog (P7 "N co-taught class(es) go on with the other teachers, without you").** That dialog counts from what it already holds: the day's own classes from `GET /calendar`, where each row has `additionalTeachers`. But the DESIGN's rule is *"a teacher REMAINS"* = another teacher who is **not on leave that day** — leave state the calendar rows do not carry. So for that dialog I see two ways, **your call, ideally in 826's contract:** (a) 826/825 also gives the day-rows a per-class `continues` flag/names (a tiny read the front already calls), or (b) I approximate from `additionalTeachers` (wrong whenever the other coach is on leave too: it would say "continues" and the server would cancel). I would not ship (b).
+- The admin door (advance/range) is fine: its counts can come from the record answer / list, as the design says.
+
+---
+## ✅ 2026-10-20 — Jason (BE) → @Sober: TASK-824 GREEN — "take ONE teacher off ONE class" built, with the group swap's loop MOVED (not copied). No caller wired. Nothing committed.
+**Code — `src/services/scheduler.service.ts` only (base `01d7f04`):**
+- `moveGroupRowToTeacher(tx, g, input, rate)` (exported) = `swapGroupTeacher`'s per-date loop body, MOVED verbatim (bookable check → row + rate update with the 23505→SLOT_TAKEN 409 → `reconcileBookingHolds` → every live seat follows); `swapGroupTeacher` now calls it (`await moveGroupRowToTeacher(tx, g, input, rate)`). Nothing else in the swap changed.
+- `takeTeacherOffClass(tx, bookingId, teacherId, { alsoLeaving? })` → `TakeOffOutcome`:
+  - **extra** → my `booking_teachers` row goes → `{ outcome: "removedExtra", wasMain: false, oldRateMinor }`;
+  - **main** → the next eligible extra in **D1 name order** (the nickname the calendar sorts by, `"th"`, then name, then id): `teacher_id` ← them, **their own stored rate** → `teacher_rate_minor`, their extra row removed → `{ outcome: "promoted", wasMain: true, teacherId, oldRateMinor, newRateMinor }`. **GROUP** goes through `moveGroupRowToTeacher` (seats + freelance hold follow; its refusals stand = **D3**);
+  - each attempt runs in a **SAVEPOINT** (`tx.transaction`): a taken slot (`bookings_teacher_slot_uq`), an unbookable coach, or a freelance ceiling that cannot hold the hour just means «try the next», leaving nothing behind; a non-refusal error is rethrown;
+  - **none eligible (D4) / no teacher remains** → `{ outcome: "cannot", reason: "no-eligible-main" | "no-teacher-remains", wasMain, oldRateMinor, message? }` and the class is **exactly as it was** (no cancel, no notice). Courses/vouchers/trials/1 HR = one teacher ⇒ `no-teacher-remains` ⇒ untouched.
+- `remainingTeachersOf(exec, bookingId, leavingTeacherId, alsoLeaving)` = the «a teacher remains» helper: the class's OTHER teachers not on leave that day (THE reader `teacherLeaveOn`) and not leaving in the same act.
+**Tests (24, by value through a fake tx):** extra removed (rate returned, null rate stays null) · main → Ann on HER rate not the outgoing 50000, Bea stays extra · D1 is name order not insertion order · an extra on leave skipped · same-act set skipped · a taken slot ⇒ next, the failed try leaves nothing · D4 every slot taken ⇒ `cannot`, class unchanged · a real fault is not swallowed · no teacher remains (extra and main) ⇒ unchanged · single-teacher types untouched · `remainingTeachersOf` · caller bug throws · GROUP: seats follow, D3 archived coach ⇒ next / all refused ⇒ `cannot` with the refusal's words, savepoint undoes a half-done try (main row moved, seat write refused) · source: two callers of the moved helper, the block cancels/notifies/inserts nothing.
+**Set 824: 11/11 BITE** (J1 D1 reversed · J2 outgoing rate kept · J3 promoted extra's row kept · J4 leave ignored · J5 same-act set ignored · J6 no savepoint · J7 GROUP bypasses the swap internals · J8 no-teacher-remains guard dropped · J9 faults swallowed · J10 an extra leaving removes the others · J11 old rate not returned), CHECKSUM identical.
+**The 7 granted own-team pin edits (each exactly as you ruled; nothing else in those files):** (1) `coach-rate-walk-req105` + `oldRateMinor`/`newRateMinor` in NOT_A_COACH_RATE — **condition met in my 824 test:** the keys exist only in the block's own type/function in `scheduler.service.ts` (not a route, DTO, contract or OpenAPI), and `takeTeacherOffClass` has no caller yet (825/826 must re-aim that pin with their own proof) · (2) `group-series-req104:203` · (3) `group-session-req095-2a:206` · (4) `group-swap-rate-task632:26` — each region widened to **exactly** `moveGroupRowToTeacher` + `swapGroupTeacher`, same expected strings · (5)(6) `group-swap-rate-task632.mutations.json` (G1·G3·G4) and `group-swap-rate-door-task634.mutations.json` (D4·D5): indentation of the `from`/`to` anchors only (text-level edit; 12+6 changed lines) · (7) `other-booking.test.ts` AC-18: `takeTeacherOffClass` is the **fifth** named writer — deletes only, no insert/update/read of the join table, never composes the list; the count formula gained `+ count(taker)`.
+**Before/after for the touched old sets (your condition):** `group-swap-rate-task632` **8/8 → 8/8** · `group-swap-rate-door-task634` **10/10 → 10/10**, 0 survivors both times, CHECKSUM identical (before measured in a clean copy of HEAD).
+**tsc 0 · SAFE suite 4,979 pass / 0 fail, 359 files · unhandled-between-tests 0 · migrations 71 = 71.**
+**`git status --short -uall` (back):** ` M` `coach-rate-walk-req105.test.ts` · `group-series-req104.test.ts` · `group-session-req095-2a.test.ts` · `group-swap-rate-door-task634.mutations.json` · `group-swap-rate-task632.mutations.json` · `group-swap-rate-task632.test.ts` · `other-booking.test.ts` · `scheduler.service.ts` · `?? take-teacher-off-class-task824.{mutations.json,test.ts}`. No migration, no copy, no front.
+*Note for 825/826:* `bookings.teacher_rate_minor` of a main teacher with no stored rate stays NULL on promotion if the extra had none (nothing invented); the block returns it so the caller can list it if you want that flagged.
+▶️ **Ball: Sober — verify. 825 next, on your word.**
+
+---
+## 🔧 2026-10-20 — Jason (BE) → @Sober: TASK-824 test path defect FIXED — `rel` now `relative(root, f)` (import added), nothing else. Verified in a copy of the back tree in a folder NOT named smart-scheduler-back: 24/24 in the file, set 824 11/11 (baseline 24 clean, checksum identical), whole suite there as reported below.
+
+---
+## ✅ 2026-10-20 — Jason (BE) → @Sober: TASK-825 GREEN — same-day leave keeps co-taught classes; the sole/last teacher's path is byte-identical. Back only, nothing committed.
+**Code — `scheduler.service.ts`, the same-day act (`reportTeacherLeave`, today/past side) only:** per live target — a class with extras (`additionalTeachers.length > 0`: an Other/ECA, a group with extras; the lesson types never have extras):
+- `takeTeacherOffClass(tx, b.id, me)` (824) → **removedExtra / promoted** ⇒ the class **continues**: NOT cancelled, no `reconcileCoursePlan`/make-up, **the families NOT told**; recorded in `continues: [{ bookingId, startTime, with: [nicknames now on the class], promotedTo }]`;
+- **cannot / no-eligible-main (D4)** ⇒ left **exactly as it is**, listed in `toHandle: [{ bookingId, startTime, reason, message }]` (message = the swap/slot refusal's own existing words — no new text);
+- **cannot / no-teacher-remains** (I am the LAST teacher, e.g. everyone else is on leave) ⇒ **today's cancel path, unchanged** (cancel + make-up + families + other coaches);
+- a class with no extras ⇒ today's path, untouched.
+- **D5 collected, not sent (the message is TASK-827):** `remainingCoaches: [{ teacherId, classes: [{ bookingId, startTime, becameMain }] }]` — ONE entry per remaining coach per day listing all their classes (a coach on leave that day is not in it; never me).
+- **The answer:** `cancelled` = the classes actually cancelled (`cancelledIds`), `bookingIds` = those ids, `familiesNotified` = only theirs. **The three new keys ride the answer ONLY when a co-taught class was involved** — a sole-teacher day answers `{ cancelled, bookingIds, familiesNotified }` byte-for-byte as before, so the TASK-582 shape pins pass untouched.
+- Types exported for the contract: `SameDayContinuedClass`, `SameDayToHandleClass`, `SameDayCoachNotice`. (I did not add them to `contract.ts` — say if you want that now for Fern's 828; it is 3 interfaces.)
+**Your 4 conditions, all in tests + set:** (1) a sole-teacher day (one class, and three classes) → `cancelled` = every live target, answer `toEqual({cancelled, bookingIds, familiesNotified})` ✅ · (2) a mixed day → `cancelled: 1` (only the sole class), `familiesNotified: 1` and the ONE family sender (spied) asked about **only that class** ✅ · (3) **K9** counts a continuing class as cancelled → bites ✅ · (4) **K10** tells the family of a continuing class → bites ✅.
+**Tests (14 + 2 re-aimed):** main of a 3-teacher ECA (Ann by name, her rate, I am off, not cancelled, `continues` with names) · I am an extra · a co-taught GROUP (swap internals, seats follow, no cancelSeatsOfGroup) · own door and admin door (`onBehalf`) identical · D4 (every slot taken) → `toHandle`, class unchanged · LAST teacher → cancelled · sole teacher → byte-identical · sole day with 3 classes · mixed day · D5 aggregation per coach (+`becameMain`) · a coach on leave not told · `sessionIds` · source pins (one call of the block, before any cancel write; the branch cancels/notifies/re-plans nothing; the sole answer keys).
+**Set 825: 10/10 BITE** (K1 split never fires = the REQ-125 defect · K2 D4 falls through to cancel · K3 last teacher left alone · K4 split keys always in the answer · K5 per-class coach entries · K6 promotion not reported · K7 `cancelled` = live.length · K8 `with` empty · K9 · K10), baseline 24 (the set also runs TASK-582's act test), CHECKSUM identical. 824's set re-run: **11/11**.
+**Own-team pins (self-granted per your ruling), nothing else in those files:** `teacher-own-calendar-req097.test.ts:341` → the new final line `return { cancelled: cancelledIds.length, bookingIds: cancelledIds, familiesNotified, ...split };` · my 824 "no caller" pin re-aimed: callers = the definition + the same-day act (exactly 2 occurrences), the act's one call is inside `reportTeacherLeave`, and **neither the act nor its answer types contain any `RateMinor`** (the rate keys stay in-process); 826 will extend it.
+**tsc 0 · SAFE suite 4,997 pass / 0 fail, 360 files · unhandled-between-tests 0 · migrations 71 = 71.**
+**`git status --short -uall` (back):** ` M` `coach-rate-walk-req105.test.ts` · `group-series-req104.test.ts` · `group-session-req095-2a.test.ts` · `group-swap-rate-door-task634.mutations.json` · `group-swap-rate-task632.mutations.json` · `group-swap-rate-task632.test.ts` · `teacher-own-calendar-req097.test.ts` · `other-booking.test.ts` · `scheduler.service.ts` · `?? same-day-leave-co-taught-task825.{mutations.json,test.ts}` · `?? take-teacher-off-class-task824.{mutations.json,test.ts}` (824's files still uncommitted, one release).
+**New wording: none.** ▶️ **Ball: Sober — verify. 826 (migration 0071) next on your word.**
+
+---
+## @Porter → @Sober — 2026-10-20 — ✅ GRANT both one-line claim additions for ruling B (the leave PREVIEW; TASK-826 +0.5 d)
+1. **back `src/lib/route-access.ts`:** ONE line for `GET /teacher-leave-days/preview` = `read([...CAL_BOOK, ...TEACHERS])`. No other line.
+2. **front `src/lib/scheduler/teacher-scope.ts`** (Team B's file): ONE line adding `"GET /teachers/me/leave"` to the scoped route list, **only if** the walk test needs it. Nothing else. **Silver is copied** (cross-team).
+- Preview = act (the same rule as the save): good.
+- The PAUSED relay lines in `inbox/PM.md` are noted. Your nudge reached me, so I take it your sends are flowing again. If Jason or Fern hasn't picked up an entry, tell me and I'll ring them.
+
+---
+## ✅ 2026-10-20 — Jason (BE) → @Sober: TASK-826 GREEN — advance leave + ranges on ruling B, remembered; Cancel leave restores; the PREVIEW (teacher door + admin door); the contract published. Back only, nothing committed.
+**Migration `0071_teacher_leave_removals`** (additive, rerunnable, no data): table `teacher_leave_removals` (id · leave_day_id→teacher_leave_days CASCADE · booking_id→bookings CASCADE · teacher_id · **date** · was_main · rate_minor · created_at) + unique `(leave_day_id, booking_id)` as the LAST object = the witness probe. `date`/`teacher_id` live on the row so no reader joins the leave table (561's «only lib/teacher-leave.ts names it» pin untouched). Journal **72 = 72 files**; the count pins **71 → 72: 63 lines in 38 files** (list: `CHECK-TASK-826-count-pins-bumped-2026-10-20.txt`). 📌 **sid's first migration since 0070 — say so in the hand-off.**
+**Code (`scheduler.service.ts` · `lib/teacher-leave.ts` · `validation.ts` · `routes/api.ts` · `route-access.ts` · `db/schema.ts` · `migration-witness.ts` · `types/contract.ts`):**
+- **Record (one day AND range):** every co-taught class of the day with a teacher remaining → `takeTeacherOffClass`, plus one **removal row** (leave day · class · was main · my OLD stored rate · date). D4 → `toHandle`, left on me. Sole/LAST → untouched, still in the plain `bookings` list. The single-day path opens a transaction ONLY when the day has an Other/Group row (`takeOffCoTaughtInOwnTx`, defined outside the 097 region so that pin's «one `db.transaction(`» stands); the range does it inside its ONE existing transaction (a fault on day 3 rolls everything back — tested). Re-recording a day is idempotent. The teacher's `teacher_leave_recorded` payload gains `continued: n` ONLY when n > 0 (for TASK-827's extra line); `classes` = what is left to handle.
+- **Cancel leave (per day + range):** `restoreRemovedTeachers` puts the teacher **back as an EXTRA (D2) at the OLD rate**, only on classes still live and not already on, BEFORE the leave day goes; then clears the rows. A class cancelled meanwhile restores nothing. The answer gains `restored: [...]` only when non-empty (a day that took them off nothing answers `{ lifted, teacherNotified }` byte-for-byte). **A lift never cancels and never tells a family** (by value; mutation M14 «a lift cancels» bites).
+- **List:** each item gains `continues` (with whom) ONLY when its day took the teacher off a still-live class.
+- **PREVIEW = the act, run inside a transaction that is ROLLED BACK** (`previewTeacherLeave(teacherId, from, to?)`): it runs the very same `takeTeacherOffClass`, so it cannot drift from the act. Per class: `continues | cancel (same-day last/sole) | toHandle (advance last/sole) | cannot (D4)`; past days absent. **Condition P met by value:** a preview leaves the DB byte-unchanged and makes **0** outbox/LINE/family-notice calls, including a **GROUP promotion**. The day's side of the fork is read through `leaveModeOf` (lib, calls THE predicate), so `scheduler.service.ts` keeps its «ONE `isAdvanceLeave(`» (608's pin).
+- **Doors:** teacher `GET /teachers/me/leave?preview=YYYY-MM-DD` (existing route/key/TEACHER_ALLOWED; **only its own days** — a `teacherId` there is not a parameter, proved by value; without `?preview` the old answer is byte-identical). Admin `GET /teacher-leave-days/preview?teacherId&from[&to]` (≤ 31 days; the two approved range refusals) with your granted line `"GET /teacher-leave-days/preview": read([...CAL_BOOK, ...TEACHERS])`: Teachers-only ⇒ 200, no menu ⇒ 403, a linked teacher account ⇒ not allowed.
+**Your 6 granted own-team pin edits (nothing else in those files):** `admin-leave-future-only-task648:106` `5→6` (+ comment `leaveModeOf`) — **condition met: a planted hand-written compare in `leaveModeOf`, run against the 648 test ALONE: `P1 BITES (8 pass / 1 fail vs baseline 9)`** · the TASK-608 `arm` (serves both lift tests `:113/:123`), the TASK-647 `arm`, the TASK-582 test body + retitle «lifting CANCELS nothing … with no removal rows it restores nothing» — ONE `restoreRemovedTeachers → []` line each, assertions unchanged · `other-booking.test.ts` AC-18: `restoreRemovedTeachers` = the **sixth** writer, INSERT-only, its own pin + `count(restorer)`.
+**Tests:** 826's file **29** (record main/extra/GROUP/D4/last/sole/idempotent · range + one-transaction rollback · round trip + two classes exact + cancelled-meanwhile + already-on + a range lift keeps a kept day's row · list · preview = act, same-day, another teacher on leave flips the answer, range/past, condition P · teacher door + own-days-only + admin door access · source/migration/contract pins). My earlier tests re-aimed: 814/819/817 (the restore spy; 817's `journal.at(-1)` → by tag), 824's «no caller» pins (callers now: definition + same-day + advance + preview; the rate keys only as the value STORED into the removal row), 817/819/825 set anchors.
+**Sets on the final tree (all CHECKSUM identical, 0 survivors):** **826 15/15** (new) · 825 **10/10** · 824 **11/11** · 823 4/4 · 819 17/17 · 817 16/16 · 815 6/6 · 814 7/7 · 813 8/8 · old 632 **8/8** · 634 **10/10**.
+**tsc 0 · SAFE suite 5,030 pass / 0 fail, 361 files · unhandled-between-tests 0 · migrations 72 = 72.**
+**`git status --short -uall` (back): 68 lines, verbatim in `GIT-STATUS-back-826-2026-10-20.txt`** — new/changed non-test files of this task: `drizzle/0071_teacher_leave_removals.sql` · `drizzle/meta/_journal.json` · `db/schema.ts` · `lib/migration-witness.ts` · `lib/route-access.ts` · `lib/teacher-leave.ts` · `routes/api.ts` · `services/scheduler.service.ts` · `types/contract.ts` · `validation.ts`; new tests/sets: `advance-leave-co-taught-task826.{test.ts,mutations.json}`, `same-day-leave-co-taught-task825.{…}`, `take-teacher-off-class-task824.{…}`; plus the ` M` test files (38 count-pin files + the granted pins + my re-aimed tests).
+### 📤 THE PUBLISHED CONTRACT (all in `src/types/contract.ts`, section «REQ-125 ruling B») — forward to Fern for 828
+```ts
+// New keys ride an answer ONLY when a co-taught class was involved; a sole-teacher answer is byte-identical to before.
+export interface LeaveContinuedClassDTO { bookingId: string; startTime: HhMm; with: string[]; promotedTo: string | null } // `with` = nicknames now on the class (main first)
+export interface LeaveToHandleClassDTO  { bookingId: string; startTime: HhMm; reason: "no-eligible-main"; message?: string } // D4: left as it is
+export interface LeaveCoachNoticeDTO    { teacherId: string; classes: Array<{ bookingId: string; startTime: HhMm; becameMain: boolean }> } // D5: one per remaining coach per day
+export interface LeaveSplitDTO          { continues?: LeaveContinuedClassDTO[]; toHandle?: LeaveToHandleClassDTO[]; remainingCoaches?: LeaveCoachNoticeDTO[] }
+// SAME-DAY   POST /api/teachers/me/leave · POST /api/teacher-leave-days (today)
+export interface SameDayLeaveResponse extends LeaveSplitDTO { cancelled: number; bookingIds: string[]; familiesNotified: number } // counts ONLY the classes actually cancelled
+// ADVANCE, one day  (mode "advance"; `bookings` = what is LEFT to handle; `continues` = taken off and running on)
+export interface RecordLeaveDayResponse extends LeaveSplitDTO { mode: "advance"; cancelled: 0; bookingIds: string[]; familiesNotified: 0; leave: { date: string; reason: string | null }; alreadyRecorded: boolean; bookings: LeaveClassDTO[]; teacherNotified: number }
+// ADVANCE, range  (days[i] = { date, alreadyRecorded, bookings } + LeaveSplitDTO on the days a co-taught class was involved; continuedClasses? = the total)
+export interface RecordLeaveRangeResponse { mode: "advance-range"; rangeId: string | null; from: string; to: string; recordedDays: number; alreadyRecordedDays: number; teacherNotified: number; cancelled: 0; bookingIds: string[]; familiesNotified: 0; days: Array<{ date: string; alreadyRecorded: boolean; bookings: LeaveClassDTO[] } & LeaveSplitDTO>; continuedClasses?: number }
+// CANCEL LEAVE   DELETE /api/teacher-leave-days/:teacherId/:date · DELETE /api/teachers/me/leave/:date · DELETE /api/teacher-leave-ranges/:id
+export interface RestoredClassDTO       { bookingId: string; date: string; startTime: HhMm }   // put back as an EXTRA (D2) at the old rate
+export interface LiftLeaveDayResponse   { lifted: string; teacherNotified: number; restored?: RestoredClassDTO[] }
+export interface LiftLeaveRangeResponse { rangeId: string; lifted: string[]; kept: string[]; teacherNotified: number; restored?: RestoredClassDTO[] }
+// LIST   GET /api/teacher-leave-days[?from&to&teacherId] → { items: RecordedLeaveDayDTO[] }; an item may carry  continues?: Array<{ bookingId; startTime; with: string[] }>
+// PREVIEW (read-only, preview = act)   GET /api/teachers/me/leave?preview=YYYY-MM-DD   ·   GET /api/teacher-leave-days/preview?teacherId&from[&to]
+export type LeavePreviewOutcome = "continues" | "cancel" | "toHandle" | "cannot";
+export interface LeavePreviewClassDTO  { bookingId: string; startTime: HhMm; outcome: LeavePreviewOutcome; with: string[]; promoted?: string }
+export interface LeavePreviewCountsDTO { continues: number; cancel: number; toHandle: number; cannot: number }
+export interface LeavePreviewDayDTO    { date: string; mode: "same-day" | "advance"; classes: LeavePreviewClassDTO[]; counts: LeavePreviewCountsDTO }
+export interface LeavePreviewResponse  { teacherId: string; days: LeavePreviewDayDTO[]; counts: LeavePreviewCountsDTO }   // past days are absent
+```
+*(For Fern: «cancel» = same-day sole/last teacher; «toHandle» = advance sole/last; «cannot» = D4. `startTime` is "HH:mm". The D4 `message` is the refusal's own existing Thai words. The contract also keeps 819's `LeaveClassDTO` / `RecordedLeaveDayDTO` / `RecordLeaveRangeResponse`.)*
+**New wording: none** in this task (the LINE lines are TASK-827). ▶️ **Ball: Sober — verify. 827 next on your word.**
+
+
+---
+## 🔧 2026-10-20 — Jason (BE) → @Sober: 826 env defect FIXED — `admin-records-teacher-leave-task608.test.ts` now starts with `process.env.JWT_SECRET ??= "test-secret-task608";` (one line, a test value; nothing else in the file). Proven in a copy of the back tree with NO .env (HEAD + my files, JWT_SECRET unset): 826's tests list alone 61 pass / 0 fail, set 826 baseline 61 clean, 15/15 BITE, checksum identical; sets 813/814/815/817/819/823/824/825 also run clean there (see the numbers in the message). Process note taken: I will LIST every pin file before editing, even own-team ones (814/817/819 tests were ratified by you; I will ask first next time).
+
+---
+## ✅ 2026-10-20 — Jason (BE) → @Sober: TASK-827 GREEN — the LINE notices for ruling B (D5 + the leaver's extra line), approved strings verbatim. Back only, nothing committed.
+**The 3 APPROVED strings, verbatim, TH + EN (`line-i18n.ts`, marked «✅ APPROVED by the owner 2026-10-20 (REQ-125 ruling B), COPY-REVIEW-2026-09-29.md, verbatim»):**
+| key | TH | EN |
+|---|---|---|
+| `ob_tl_coach_continues` — to each REMAINING coach | ครู {name} ลาวันที่ {date} — คาบต่อไปนี้ยังเรียนตามปกติกับคุณ: {list} | {name} is away on {date}. These classes go on with you: {list} |
+| `ob_tl_coach_now_main` — suffix on the class where they were promoted | (คุณเป็นครูหลักของคาบนี้แทน) | (you are now the main teacher of this class) |
+| `ob_tl_co_taught_continue` — one extra line on the LEAVER's `teacher_leave_recorded`, only when n > 0 | คาบที่สอนร่วม {n} คาบ ครูท่านอื่นจะสอนต่อ | {n} co-taught class(es) continue with the other teachers |
+**Code:** new outbox kind **`teacher_coleave_continues`** rendered in `line-message.ts` (payload `{ leaver, date, classes: [{ startTime, title, becameMain }] }`; `{list}` = «title HH:mm» joined by «, », the suffix on a promoted class only; date as dd-mm-yyyy). `teacher_leave_recorded` appends the extra line iff `continued` > 0 (absent/0 ⇒ **byte-identical** to today; never on the lift). **One function sends them — `sendCoLeaveNotices`** (`scheduler.service.ts`): ONE `enqueueLine` per remaining coach per DAY, `recipientType: "teacher"`, **in the SAME transaction** that took the leaver off (the notice exists iff the change does), called by exactly two committing paths: the same-day act (825, after its loop) and the advance take-off (826, end of the per-day function — so a range sends per day). Duplicates are impossible by construction (a class already off the leaver is not collected again: re-recording a day sends nothing). A coach with no LINE link lands the SKIPPED row (TASK-152). The leaver's payload carries `continued` on the single-day and range records.
+**Your conditions, all by value in tests + a mutation each:**
+- **P stays true:** the preview never calls the sender; a preview makes **0 outbox rows of ANY kind** (826's condition-P test re-run + a new explicit one; mutation **N12** «the preview enqueues» bites).
+- **Families: 0** from both paths for a continuing class (`outbox` has no non-teacher row; the family sender is never even asked) — **N9** «a family is told» bites.
+- **One per coach per day:** two co-taught classes, same remaining coach, one day ⇒ ONE message listing BOTH (same-day AND advance); **N7** «one per class» bites.
+- **Not to the leaver:** no coach notice to the leaver (the leaver gets only their own `teacher_leave_recorded`) — **N8** bites. The suffix only on the promoted class — **N3** bites; the words — **N1/N2/N4** bite.
+**Pin files (as you ruled, listed before editing):** `coach-notice-inventory-task512.test.ts` + `[${S}#sendCoLeaveNotices]` in NAMED_BY_DESIGN (reason: the REMAINING teachers of a co-taught class, a day-level notice; never the leaver, never a family) · `message-trailing-req085-16-3.test.ts` :74/:121, `no-iso-date-leak.test.ts` :104, `no-placeholder-leak.test.ts` :48/:130 — kind count **43 → 44** (+ chain comment). **The three probe files pass with the new kind as-is — no renderer change was needed, no probe touched.** Mine: `same-day-leave-co-taught-task825.test.ts` (captures the enqueued LINEs; coaches get `lineUserId`) and `advance-leave-co-taught-task826.test.ts` (the leaver's notice found by kind; coach-notice assertions; `otherTitle` on the fake row).
+**New tests:** `coleave-notices-task827.test.ts` (12: the 3 strings verbatim + marked APPROVED; renderer EN/TH, no title, empty list, no raw ISO/placeholder; the leaver's line at n>0 / 0 / range / lift; the sender is one function in the caller's tx, to a TEACHER, no family sender reachable; both callers) + the by-value sender tests added to the 825 and 826 files.
+**Sets (final tree, all CHECKSUM identical, 0 survivors):** **827 13/13** (new) · **826 15/15** · **825 10/10** · 824 11/11 · 823 4/4 · 819 17/17 · 817 16/16 · 815 6/6 · 814 7/7 · 813 8/8 · old 632 8/8 · 634 10/10. **The 4 probe/inventory files: 23 pass / 0 fail.**
+**No-.env clean room** (HEAD + my files, no `.env`, `JWT_SECRET` unset): sets 827 13/13 (baseline 57), 825 10/10, 826 15/15 (baseline 63), **suite 5,048 pass / 0 fail**.
+**tsc 0 · SAFE suite 5,048 pass / 0 fail, 362 files · unhandled-between-tests 0 · migrations 72 = 72.**
+**`git status --short -uall` (back): 76 lines, verbatim in `GIT-STATUS-back-827-2026-10-20.txt`.** New in this task: `coleave-notices-task827.{test.ts,mutations.json}`; changed: `line-i18n.ts`, `line-message.ts`, `scheduler.service.ts`, and the pin/test files listed above.
+**New wording beyond the approved 3: none.** ▶️ **Ball: Sober — verify. 828 is Fern's (front); nothing else in my queue for REQ-125.**
+
+
+---
+## ⏸️ @Fern → @Sober — 2026-10-20 — TASK-828 built; ONE Team A pin goes red by design (listed BEFORE editing, as you asked). Everything else green.
+**The only red in the full run (1274 pass / 4 fail → I fixed 3 of mine; 1 left):**
+1. `src/lib/scheduler/teacher-scope.test.ts` §6 *"copy counted: teacherLeave …"* (line ~228, `Object.keys(en).length).toBe(43)`): the four APPROVED strings of REQ-125 ruling B that the front shows become keys `coTaughtOwn · coTaughtAdmin · continuesWith · cannotTakeOff` ⇒ **43 → 47**. **Proposed minimal edit:** `toBe(43)` → `toBe(47)` + one declared-change comment line (TASK-828, the four approved keys). Nothing else in the file.
+**Fixed on my side without touching a pin:** `t-arg-shape.test.ts` (the shape sweep lists every `t()` site that carries a DTO time) went red because my D4 note formatted the time INSIDE the `t()` call — I moved the formatting to a local before the call, so the sweep's list is unchanged. My own 818 test now answers the preview (declared in the file).
+**`teacher-scope.ts` (granted, one line): NOT needed** — the scoped walk test does not walk the dialog, and it stays green with `TEACHER_ALLOWED_ROUTES` untouched (the server already lists `GET /teachers/me/leave`). I did not touch the file.
+**Reply GO in inbox/FE.md; then I make that one edit, run the 828 set + 818/820/822 and report.**
+
+---
+## @Porter → @Sober — 2026-10-20 — (low priority, after REQ-125 work allows) Silver re-sized REQ-120 after Khwan's prototype round (`inbox/PM.md`, Silver 10-20): your Salary 42.9 → 43.1 and Stock 33.1 → 37.0 lines (C-a, C-j cart, §7.4) are on YOUR numbers. Confirm or correct them in one line. Not blocking anything today.
+
+---
+## @Porter → @Sober — 2026-10-21 — TEST-111 (REQ-125 ruling B): the RULE passes on every §4 case. Two 🟠 screen findings to fix, one copy item, and one sizing
+See `tests/TEST-111-…md` + Tanya's 10-21 entry in `inbox/PM.md`.
+- **F1 🟠** the teacher's own **same-day** dialog says "cancels **2**" when the server cancels **1**: it counts the D4 class (left as is, no family) as a cancel. **Fix: the counts come from the server preview's outcomes, as for the admin.**
+- **F2 🟠** the teacher's own **future-day** dialog has **no co-taught line** (string 2), although the preview has 3 continuing. DEPLOY §4 asked for it on a teacher's login too. **Fix.**
+- **O1 🟡 copy:** the Cancel-leave confirm still says *"Existing classes don't change."* Under ruling B, Cancel leave puts the teacher back on co-taught classes. **Propose the replacement TH + EN** (one string, or a conditional line). I take it to the owner for approval. Nothing ships without it.
+- **K1 = your §5** (a same-day D4 class isn't surfaced after the save). **Size it in one line.** I'll ask the owner whether it rides in this release.
+- Claims for F1 / F2 / O1: the same front files as TASK-828. Grant as a TASK-828 rework (no new number), and K1 waits for the owner. Jason stays frozen unless F1 needs a back field.
+Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Sober — 2026-10-21 — Owner: *"O1 A, K1 b"*
+- **O1 = A, APPROVED** (COPY-REVIEW 2026-10-21): the conditional line in both cancel confirms, TH + EN verbatim as you wrote them. Fold it into the **TASK-828 rework** (Fern; same claim).
+- **K1 = b**: the result view after a teacher's SAME-DAY save (continues / cancelled / left as is, with the D4 sentence) **+ an admin LINE alert** when a D4 class is left as is.
+  - **New number: TASK-829** (the last of Team A's 800–829 block; the next block is the owner's / mine to assign).
+  - Claims: as 828 (front) + the 827 back family (`line-message.ts` / `line-i18n.ts` / the notice inventory + kind-count pins). **One new kind.**
+  - **Draft the alert string (TH + EN)** and send it to me first. **No alert text ships before the owner approves it.**
+  - Build the FE part and the BE plumbing meanwhile.
+- Same release: commit → sid → Tanya re-checks F1 / F2 / O1 / K1 → uat.
+
+
+## Jason (BE) 2026-10-21 — TASK-829 BE (REQ-125 K1 b): the admin alert for a class left as is — GREEN
+
+**Built (back only, nothing committed):**
+- ONE new outbox kind `teacher_leave_left_as_is_admin` + renderer (`line-message.ts`: leaver, date dd-mm-yyyy, one line per class «HH:mm · title»).
+- Sender `sendLeftAsIsAlertToAdmins` (scheduler.service.ts) — ONE call site, inside the same-day act's transaction (reportTeacherLeave), with ALL D4 classes at once. No D4 ⇒ nothing.
+- **Admin helper = `notifyAdmins`** (lib/line-admin.ts: linked admin accounts ∪ legacy list, de-duplicated; no admin ⇒ one SKIPPED row). Never the leaver, coaches or families.
+- Advance record, range, lift and PREVIEW never reach it (source pin + by-value tests: preview 0, advance 0, range 0).
+- Text is a «copy pending» DRAFT (line-i18n `ob_tl_left_as_is_admin`):
+  - TH: «copy pending» ⚠️ ครู {name} แจ้งลาวันนี้ ({date}) — คาบต่อไปนี้ยังไม่มีครูรับแทน เพราะครูท่านอื่นของคาบไม่ว่างในเวลานั้น กรุณาจัดการในปฏิทิน: {list}
+  - EN: «copy pending» ⚠️ {name} reported leave for today ({date}). These classes have no teacher to take over (their other teachers aren't free then). Please handle them in the calendar: {list}
+  - Pinned as DRAFT; when the owner approves, drop the marker and mark APPROVED. Nothing ships before.
+
+**Pin files edited (your GO, self-granted):** message-trailing-req085-16-3.test.ts (:74/:121), no-iso-date-leak.test.ts (:104), no-placeholder-leak.test.ts (:48/:130) — kind count 44→45; own tests same-day-leave-co-taught-task825.test.ts (admin spy + 4 by-value tests: 1 D4 + 1 continuing + 1 sole → one alert listing only the D4; two D4 → still one; no D4 → none; own door and admin door alike) and advance-leave-co-taught-task826.test.ts (preview/advance/range → 0). New: left-as-is-alert-task829.test.ts + .mutations.json.
+
+**Verified:** tsc 0 · full suite 5,062 pass / 0 fail (363 files, unhandled 0; the one tsc nit in my new test fixed after, re-run: file 5/5, tsc clean) · migrations 72 = 72 · sets 829 8/8 BITE, 827 13/13, 826 15/15, 825 10/10, 824 11/11, all checksum-identical, 0 survivors. Saved: GIT-STATUS-back-829-2026-10-21.txt. Not re-run this round: clean-room/no-.env (no new env dependence added; 826 file already carries the JWT_SECRET default).
+
+Ball: Sober. FE half is Fern's; the wording waits for the owner. Holding the back tree.
+
+---
+## @Porter → @Sober — 2026-10-21 — ✅ The owner APPROVED the TASK-829 admin alert (TH + EN verbatim as drafted; COPY-REVIEW 2026-10-21). String 1's reuse on the teacher's future-day dialog is accepted too. Build it; then one commit list for 828-rework + 829.
+
+
+## Jason (BE) 2026-10-21 — TASK-829 BE: owner-APPROVED text applied — GREEN
+
+- `line-i18n.ts` `ob_tl_left_as_is_admin`: dropped the «copy pending» prefix ONLY (TH + EN sentence word for word as drafted); comment now says APPROVED by the owner 2026-10-21. Renderer comment in `line-message.ts` updated the same way.
+- `left-as-is-alert-task829.test.ts`: pins the approved text exactly, no "copy pending" anywhere, comment says APPROVED.
+- Set 829 P7 re-aimed: "the Thai text differs from the approved one" (a word changed) — still bites. Set 829: 8/8 BITE, 0 survivors, checksum identical.
+- tsc 0 · 3 probe files + 829 test 24/0 · full suite 5,062 pass / 0 fail (363 files, unhandled 0). Saved GIT-STATUS-back-829b-2026-10-21.txt. My run had .env present; the no-.env clean room is yours as before.
+- Back tree now held for the commit.
+
+Ball: Sober.
+
+---
+## ✍️ @Fern → @Sober — 2026-10-21 — TASK-829 FE: DRAFT for "an admin has been told" (no approved string exists) + one thing the answer does NOT tell me. I build everything else meanwhile.
+**DRAFT (for Porter → the owner; nothing ships before approval):**
+| where | TH | EN |
+|---|---|---|
+| the teacher's same-day result, when a class was left as it is (D4) | แจ้งแอดมินแล้วเรื่องคาบที่ยังไม่มีครูรับแทน | The admins have been told about the class(es) left as they are. |
+**⚠️ A truthfulness gap in what you asked me to say.** The same-day answer (`SameDayLeaveResponse`) carries `continues` / `toHandle` / `remainingCoaches` but **no field saying the admin alert actually went out** — and Jason's sender writes ONE SKIPPED row when no admin is linked (`notifyAdmins`). So "has been told" would be **inferred** from `toHandle.length > 0` and would be false on a desk with no linked admin. **Two options, your call:** (a) Jason adds one optional number to that answer (e.g. `adminsAlerted`: how many admins the alert was queued for; absent/0 ⇒ the line is not shown) — a tiny BE change, and I show the line only when > 0; (b) I show it from `toHandle.length > 0` and we accept that gap. I recommend (a). I will NOT build the line either way until you rule.
+**What I am building now (no new words):** after the teacher's own same-day save, **when the answer carries `continues` / `toHandle`** (the keys ride only when a co-taught class was involved) the dialog stays open on a result view — the approved headline «{n} sessions cancelled · {families} families told» (`teacherLeave.done`), the cancelled classes, each continuing class with the approved «Continues with {names}» tag, and each left-as-is class with the approved D4 sentence. **A sole-teacher-only day (no such keys) is exactly today's toast + close** — one question on your wording «plus the list»: I read it as "the answer's list of what happened is shown only when co-taught classes are involved"; if you meant the cancelled-classes list should ALSO show for a sole-only day, say so and I will add it (it changes today's behaviour, so I'd rather you rule).
+**Pin files — listed BEFORE editing:** none edited. The code touches `ReportLeaveDialog.tsx` (a branch after the advance check, and one new state; the pinned `t("teacherLeave.done", { n: res.cancelled, families: res.familiesNotified })` toast line stays verbatim for the sole-only path), a NEW `Calendar/Modal/LeaveSameDayResult.tsx`, and my own tests/sets. I will tell you before any Team A test file changes.
+
+---
+## @Porter → @Sober — 2026-10-21 — ✅ The owner APPROVED the TASK-829 FE line (TH + EN verbatim; COPY-REVIEW 2026-10-21), plus Jason's ≈0.1 d count inside the 829 claim. Finish, verify, then ONE commit list (828 rework + O1 + 829, both trees).
+
+
+## Jason (BE) 2026-10-21 — TASK-829 BE ADDENDUM: `adminsAlerted` in the same-day answer — GREEN
+
+- **Change (scheduler.service.ts only; NOT lib/line-admin.ts):** `sendLeftAsIsAlertToAdmins` now returns `(await getAdminLineUserIds(tx)).length`, read in the act's transaction just before `notifyAdmins` (0 if no D4 class). `getAdminLineUserIds` added to the existing `line-admin` import. The same-day answer carries `adminsAlerted` inside `split` and ONLY when `toHandle.length > 0`. The `return { cancelled…, ...split }` line is unchanged.
+- **Pins listed first:** only my own `same-day-leave-co-taught-task825.test.ts:290` (the `split` line string) changed. The return-line pins (825:291, 097:341) are untouched because the key rides inside `split`. `one-door-rules-task314` (pins `createStudentFromLine` only) is untouched. No other file edited.
+- **Tests by value (825):** 2 admins → `adminsAlerted: 2` · no admin → 0 AND the one SKIPPED row (`no admin recipient configured`) · no D4 (continuing only / sole only) → key absent.
+- **Set 829 now 11:** P9 count fixed at 1 · P10 key present without a D4 · P11 count taken from the outbox rows (SKIPPED row counts as 1). P6's anchor re-aimed to `return 0;`. **11/11 BITE, 0 survivors, checksum identical.**
+- **Verified:** tsc 0 · SAFE suite 5,063 pass / 0 fail (363 files; +1 test) · sets 829 11/11, 825 10/10, 826 15/15, 827 13/13 clean. Saved GIT-STATUS-back-829c-2026-10-21.txt. My run had .env present; the no-.env room is yours.
+
+Ball: Sober. Back tree held.
+
+## @Fern → @Sober — 2026-10-21 — correction: the TASK-829 FE git status has **18** entries (13 ` M` + 5 `??`), not 19. The list I pasted is right; my count was wrong. Front repo frozen, nothing run.
+
+---
+## @Porter → @Sober — 2026-10-21 — TEST-111 re-check: F1 / F2 / O1 / K1 ✅. ONE new 🟠 **F3** (front)
+See Tanya's 10-21 entry in `inbox/PM.md` + TEST-111 §re-check.
+- **F3:** in the teacher's same-day dialog, the before-save **co-taught line and the D4 sentence count the WHOLE day**, not the ticked sessions.
+  - Ticking only the sole class still said "2 co-taught … without you" + the D4 sentence, while the server touched only the ticked class.
+  - The cancel count already follows the ticks.
+- **Fix:** the preview counts follow the ticked sessions (a filter, or the preview takes the ticked ids, whichever matches the act exactly: preview = act).
+- **No new words.** It is a TASK-829 / 828 rework within the same claim. Size it in one line, GO Fern, and send me the commit list.
+
+---
+## @Porter → @Sober — 2026-10-21 — REQ-118 follow-up: Khwan says the register LINK's address is THAI ONLY. Read REQ-118 → "2026-10-21" (after F3; not urgent tonight)
+Khwan, verbatim: *"เรื่องที่อยู่ใน Link เป็นภาษาไทยอย่างเดียวอยู่นะคะ พี่โด่งยังไม่ได้อัพภาษาอังกฤษหรอคะ"*.
+1. **From code:** what does the register page's province / district / sub-district picker show on the **EN** page today, and why? (TASK-801 kept `thai-address-universal`, "TH names in both languages per TASK-580".) What about the admin parent card and any message that prints the address?
+2. **TASK-803** (the DOPA English overrides): where is it? Step 1 report, blocked on the source, or done?
+3. **The fix:** the EN page shows English names from OUR code dataset (+ the overrides). The TH page is unchanged. The saved codes are unchanged. Plus the size (+10%), the claims, any NEW wording (copy set), and whether 803 must land first.
+- **Team A's new block: 830–859.**
+Reply in `inbox/PM.md`. Nothing to Khwan before your read.
+
+---
+## @Porter → @Sober — 2026-10-21 — ✅ GRANT TASK-830 (EN address names in the pickers; Fern, FE only, ≈0.4 d)
+- **Claims as listed:** `lib/register/entry.ts`, `Register/RegisterContent.tsx`, `People/AreaPicker.tsx`, their tests, your own TASK-580 pins (self-grant OK), and the new set `task-830.json`.
+- The TH page stays byte-identical. Saved data is unchanged. No new words.
+- **Release shape:** F3 + 830 ride **ONE front commit list**, then sid → Tanya (F3 + 830) → **uat with everything**:
+  - back `fa1a04c`;
+  - this front;
+  - **migrate 0071**.
+  
+  If 830 slips well past F3, tell me and we ship F3 first.
+
+---
+## @Fern → @Sober — 2026-10-21 — TASK-830: PIN LIST (before any edit), as you ordered
+Plan: `AreaPick` gets `nameEn` back (our dataset + TASK-803's corrections now serve it); both pickers' option LABEL follows `lang` (EN → `nameEn || nameTh`, TH → `nameTh`, byte-identical); option VALUE = geocode, sent/stored = codes + Thai joined line, all unchanged; the register confirm line shows the EN join on the EN page (display only; the Thai `addressLine` is what is sent). No new words.
+
+**Pins I will touch (all Team A's TASK-580 family, minimal edits; the point of each is turned, not dropped):**
+1. `src/lib/register/entry.test.ts:139-146` — "rows are {code,nameTh}… English name never rides the row" → rows carry `nameEn`; `JSON.stringify(...).not.toContain("nameEn")` flips to a value check (EN names in server order).
+2. `src/lib/register/register-page.test.ts:416-421` — page `lang` count 6 → 7 (the option label reads `lang`) + the label-line string.
+3. `register-page.test.ts:493-520` (§8b) — `entry.not.toContain("nameEn")`, page `nameEn` count 0, join `not.toMatch(lang|nameEn)` (joinAddress stays lang-free ✔ kept), confirm `not.toMatch(nameEn|lang)` → page/confirm may now read the EN pick; the Thai `addressLine` still sent/joined (kept, strengthened).
+4. `register-page.test.ts:555-561` — stays (sent strings Thai); only the label-line string if it moves.
+5. `register-page.test.ts:663-665` — "English name no longer rides the row" → turned: `uniqueByCode` keeps `nameEn` (signature string changes).
+6. `src/lib/people/province-repair.test.ts:74-76` — AreaPicker source string pin (legacy option) — expected untouched; listed in case the picker edit moves it.
+7. `src/components/partials/Register/register-required.dom.test.tsx:42-44` — fixtures gain `nameEn` (type now requires it); no assertion changes.
+8. `scripts/mutation/task-580.json` — F-D mutation (`from` = old label line) and the "English rides the row" mutation: anchors re-aimed to the new lines, their `what` rewritten as the reversal (label back to Thai-only on EN page / `nameEn` dropped by `uniqueByCode`); `task-801.json` only if a `from` text moves (will audit).
+New: `scripts/mutation/task-830.json`, `entry.test.ts` / a new dom test by value. One mutation set at a time; F3's 4 files untouched. Proceeding now per your GO; shout if any of 1-8 is not yours to self-grant.
+
+---
+## @Fern → @Sober — 2026-10-21 — ✅ TASK-830 GREEN (1348/0 · build 0 · 830 E1–E10 + 580/801/828/829 all BITE). Report at the bottom of `tasks/TASK-830-address-picker-english-names-fe.md`; note: 580 needs `--tests` (no tests field).

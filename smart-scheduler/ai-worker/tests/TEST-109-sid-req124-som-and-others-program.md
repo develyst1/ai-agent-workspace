@@ -185,3 +185,126 @@ His SOM page still reads the **old** `today.expected`, `byCourse`, `byRecentTria
 - **Renew Course shows 0 while its list shows 5.**
 
 Scripts (scratchpad): `t109d.js` (recount, N1 rule updated), `t109g.js` / `t109k.js` (kids + teacherId), `t109j.js` (front markers), `t109l.js` (screen).
+
+---
+# §uat — READ-ONLY smoke, REQ-124 back (`82a1988`) on uat (the uat front not deployed) · 2026-10-19
+**Verdict: ✅ PASS.** GET only. 0 writes attempted, 0 blocked. No names written to any file (counts only).
+
+| Check | uat | |
+|---|---|---|
+| `GET /reports/som?month=2026-10` | **200**. Sections: `today` (`confirmed`, `attendanceRate`) · `existingCustomers` (`activeCourse`, `activeVoucher`, `recentFirstTrial`, `recentSingleSession`, `totalCustomers`, `recentFrom/To`) · `newVsRenewing` (all 6) · `coachCapacity` (`byPerson` 24 coaches, `byType` 3) · `demographics` (`ageBand` 10 buckets = 9 + unknown, `district` **121 of 312 known**) · `activityProgram` (21 categories) | ✅ |
+| **The old fields are still there** (the admins' current screen) | `today.expected/attended` · `existingCustomers.byCourse/byVoucher/byRecentTrial/total/recentTrialSince` · `newVsRenewing.newByFirstTrial/newByRegistration/renewing` · `sportShare` · `demographics.gender/nationality/province` | ✅ |
+| New vs old (by value, Oct) | today confirmed **94** / attended 94 / 100% (old `expected` 115) · activeCourse **182** · activeVoucher 44 · recentFirstTrial 155 · 1 HR 82 · totalCustomers 327 · NvR: firstTrial 92 · newCourse this/prev 24 / 18 · **renewCourse 29** (old `renewing` 0) · trialNotConverted 78 · notRenewed 28 | ✅ |
+| **Lists: `rows.length` = the card** | `firstTrial` 92 = 92 · `newCourseThisMonth` 24 = 24 · `renewCourse` 29 = 29 · `notRenewed` 28 = 28 | ✅ |
+| `GET /reports/daily` **today** (Sun 18 Oct) | **200**, `kidsByProgram` with all 4 programs in order, each `{total: null, items: []}` (no group work on a Sunday) | ✅ |
+| …a weekday, for shape | 16 Oct: CAMP 5 (1 week); 15 Oct: CAMP 4. The other three are empty. | ✅ |
+
+📌 On uat, **District is 121 of 312 known**: real parents have area codes, unlike sid's 0.
+
+---
+# §TASK-744 — `demographics.subdistrictByDistrict` on sid (back `6bac497`) · 2026-10-19
+**Verdict: ✅ PASS by value.**
+
+**Baseline:** the district card is unchanged from TEST-109: `known 0 / 37`, `subdistrictByDistrict {}`. No October-attending parent on sid has codes.
+
+**To test by value**, I gave the two **QA parents** of the October-attending QA kids (QAChatOne + QAChatTwo → `a3fb456e`; QA Kid Three + QA Camp Kid2 → `b7146378`) area codes **for the duration of the check**, then **restored both exactly**. `a3fb456e` is back to province name «กรุงเทพมหานคร» with null codes; `b7146378` is all null. The district card returned to the baseline byte for byte.
+
+| Run | Codes set | `district` (API) | `subdistrictByDistrict` (API) | Mine | |
+|---|---|---|---|---|---|
+| 1 | both in **3801**: 380101 / 380102 | `3801 «เมืองบึงกาฬ, บึงกาฬ» 4`, unknown 33, known 4/37 | `3801`: `380101 «บึงกาฬ» 2 · 380102 «โนนสมบูรณ์» 2 · unknown 0`, known 4, total **4** = the district's 4 | 380101 2 · 380102 2 | ✅ |
+| 2 | **3801**/380101 and **1001**/100101 (Bangkok) | `1001 «พระนคร, กรุงเทพมหานคร» 2 · 3801 2`, unknown 33 | `1001`: `100101 «พระบรมมหาราชวัง» 2 · unknown 0`, total 2 · `3801`: `380101 2 · unknown 0`, total 2 | same | ✅ |
+
+- **Keys** = exactly the district card's keys (no `unknown` key) ✅.
+- **Each district's `total`** = its `count` in `demographics.district` ✅.
+- **`unknown` inside a district = 0** ✅.
+- **Labels:** Thai sub-district names ✅.
+- **Badge filter** (`97ccdb39…`; no sid booking has a badge): `district` total 0, `subdistrictByDistrict {}` ✅. It follows the same people as the district card.
+- **"District without sub-district"** can't be created: `PATCH /parents` with province + district only ⇒ **400** (REQ-118's full-triple rule). So a non-zero `unknown` inside a district can only come from older data, and "≈ 0" is what to expect.
+- **Screen:** API only, as briefed.
+
+Scripts (scratchpad): `t744.js`, `t744b.js` (both restore in `finally`), `t744fix.js` (restored `a3fb456e`'s province name after run 1's first restore had set it to null; verified).
+
+---
+# §screen re-check 2 — after Palm's "fixed, on dev" (21:28) · sid · 2026-10-19 ~21:30
+**Verdict: ⛔ NOT FIXED ON SID. Palm's change is not what sid serves.** No regressions on the other cards.
+
+**Build identity:**
+- the JS that `/scheduler/som`, `/reports` and `/calendar` load is **3,329,525 bytes, byte-for-byte the same total as at my previous re-check** (front `e314303`);
+- `subdistrictByDistrict` appears **nowhere** in it;
+- the page shows no commit or version except the old "v0.1".
+
+⇒ Either Palm's build went to another "dev" (his own server / the `develop` branch) and not to sid, or it hasn't been built yet. **Not visible from here.**
+
+| Card | Screen now | API new field | API old field | |
+|---|---|---|---|---|
+| Today · Confirmed | **31** | `confirmed` **15** | `expected` 31 | ⛔ still old |
+| Today · Attendance | **39%** (12/31) | `attendanceRate` **80** | — | ⛔ still computed from `expected` |
+| Today · Attended | 12 | 12 | — | ✅ |
+| Existing · Active course | **60** | `activeCourse` **40** | `byCourse` 60 | ⛔ |
+| Existing · 1st Trial (3 months) | **21** | `recentFirstTrial` **4** | `byRecentTrial` 21 | ⛔ |
+| Existing · Total customers | **73** | `totalCustomers` **52** | `total` 73 | ⛔ |
+| Existing · window | "since 21 Jul 2026" | `recentFrom` 2026-08 | `recentTrialSince` | ⛔ |
+| NvR · **Renew Course** | **0** | `renewCourse` **5** (its modal: **5 rows**) | `renewing` 0 | ⛔ |
+| Active voucher · 1 HR · NvR (other 5 cards) · all 6 modals (1·9·3·5·1·12 rows) · Coach capacity · Demographics · Activity/Program | as before | = API | — | ✅ no regression |
+| Daily Report 12 Oct · Others Program | Group 4 · ECA 17 · Camp 5 (Camp 12-13 Oct 3 · 12-16 Oct 2) · Other — | = `kidsByProgram` | — | ✅ no regression |
+| District click-through (sub-districts) | **does not exist** in this build (no `subdistrictByDistrict` in the JS) | `subdistrictByDistrict` served by back `6bac497` | — | ⚪ noted |
+
+Evidence: `qa-2026-10-19/test109/recheck2-som-page-oct.png`, `recheck2-daily-12oct-others.png`.
+**Next:** once sid really serves Palm's new front, the same script (`t109l.js`) re-runs in about 3 minutes.
+
+---
+# §uat TASK-744 — READ-ONLY smoke, uat back `6bac497` · 2026-10-19
+**Verdict: ✅ PASS.** GET only, 0 writes. Counts only.
+
+| Check | uat (Oct) | |
+|---|---|---|
+| `/reports/som?month=2026-10` | 200; **`demographics.subdistrictByDistrict` present** | ✅ |
+| Keys | **44** entries = exactly the district card's **44** district keys (no `unknown` key) | ✅ |
+| Every district | `total` = the district's `count` · `known + unknown = total` · Σ buckets = total: **0 mismatches across all 44** | ✅ |
+| `unknown` inside districts | **Σ 0** | ✅ (≈ 0 as expected) |
+| District #1 / #2 (count 7 each) | 4 and 3 buckets; Σ 7 · known 7 · unknown 0; sorted by count desc, `unknown` last | ✅ |
+| `demographics.district` vs my 10-19 smoke | now **127 known / 194 unknown / 321 total** (was 121 / 191 / 312) | ⚪ grew with the month's new attendance (uat's "today" moved from 18 to 19 Oct). Same shape, not a regression |
+
+---
+# §screen re-check 3 — front `692f798` + back `6bac497` on sid · 2026-10-19 ~21:38
+**Verdict: ✅ PASS. Palm's SOM page = the API on every card**, including the 5 that read old fields before. No regressions.
+
+**Build identity:** the JS that the pages load **changed** (3,329,909 bytes; it was 3,329,525). `subdistrictByDistrict` is absent, as briefed (no district click-through in this build).
+
+| Card | Before (re-check 2) | Screen now | API new field | |
+|---|---|---|---|---|
+| Today · Confirmed | 31 (`expected`) | **15** | `confirmed` 15 | ✅ |
+| Today · Attended / Attendance | 12 / 39% | **12 / 80%** | 12 / `attendanceRate` 80 | ✅ |
+| Existing · Active course | 60 | **40** | `activeCourse` 40 | ✅ |
+| Existing · Active voucher | 13 | 13 | `activeVoucher` 13 | ✅ |
+| Existing · 1st Trial (3 months) | 21 | **4** | `recentFirstTrial` 4 | ✅ |
+| Existing · 1 HR (3 months) | 25 | 25 | `recentSingleSession` 25 | ✅ |
+| Existing · Total customers | 73 | **52** | `totalCustomers` 52 | ✅ |
+| Existing · window line | "since 21 Jul 2026" | **"1st Trial / 1 HR: Aug 2026 – Oct 2026"** | `recentFrom` / `recentTo` | ✅ |
+| NvR · 1st Trial · New this/prev · Trial no course · Not renewed | 1 · 9 · 3 · 1 · 12 | same | same | ✅ |
+| NvR · **Renew Course** | 0 (modal 5) | **5** (modal **5 rows**) | `renewCourse` 5 | ✅ |
+| NvR modals | 1·9·3·5·1·12 rows | same | `rows.length` | ✅ |
+| Coach capacity · Demographics · Activity/Program | = API | = API (e.g. Bank `55 / 261 h · 21% 40/189 · 21% 15/72`) | — | ✅ no regression |
+| Daily Report 12 Oct · Others Program | = API | Group 4 · ECA 17 · Camp 5 (Camp 12-13 Oct 3 · 12-16 Oct 2) · Other — | = `kidsByProgram` | ✅ no regression |
+
+Evidence: `qa-2026-10-19/test109/recheck3-som-page-oct.png`, `recheck3-daily-12oct-others.png`.
+
+---
+# §uat screen — READ-ONLY smoke, front `692f798` + back `6bac497` on uat · 2026-10-19
+**Verdict: ✅ PASS.**
+- 🚫 **0 app writes.** Only 6 Cloudflare `cdn-cgi/rum` beacons were aborted.
+- **0 console/page errors.** Nothing pressed except opening one card's list.
+- Counts only, no names.
+
+| Palm's SOM page (Oct) | Screen | uat API new field | (old field, for contrast) | |
+|---|---|---|---|---|
+| Today · Confirmed | **28** | `confirmed` 28 | `expected` 31 | ✅ |
+| Today · Attendance | **100%** | `attendanceRate` 100 | — | ✅ |
+| Existing · Active course | **186** | `activeCourse` 186 | `byCourse` 200 | ✅ |
+| Existing · 1st Trial (3 months) | **155** | `recentFirstTrial` 155 | `byRecentTrial` 207 | ✅ |
+| Existing · Total customers | **332** | `totalCustomers` 332 | `total` 411 | ✅ |
+| NvR · Renew Course | **32**, and its list opens with **32 rows** | `renewCourse` 32 | `renewing` 0 | ✅ |
+
+- **The other sections render:** Today · Existing customers (window line "1st Trial / 1 HR: Aug 2026 – Oct 2026") · New vs renewing · Coach capacity · Demographics · Activity / Program ✅.
+- **Daily Report (today):** the **Others Program** section is shown with all 4 cards (Group · ECA · Camp · Other) ✅.
+- **REQ-123 still works:** Teachers → "Teacher leave" renders with Upcoming/Past, 5 rows and 4 Cancel buttons. **Nothing was pressed.** ✅

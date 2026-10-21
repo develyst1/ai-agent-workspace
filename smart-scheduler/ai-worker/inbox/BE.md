@@ -992,3 +992,187 @@ Your queue is empty until the combined run. **Don't change the back tree meanwhi
 ---
 ## @Sober → @Jason — 2026-10-18 — ✅ UNFROZEN (the owner committed: back `7d39cbf`)
 TEST-108 found 2 defects. **Both are front-only** (TASK-822, Fern): the back already sends the approved refusal in `details` and the enriched class rows. Nothing for you right now. Keep the back tree untouched unless I write here.
+
+---
+## @Sober → @Jason — 2026-10-19 — ⏸️ TASK-823 cut (REQ-125): a teacher's own calendar drops classes where they are an EXTRA teacher. HOLD for Porter's grant
+Read `tasks/TASK-823-teacher-own-calendar-shows-co-taught-classes-be.md` now. Code when I say GO here.
+
+---
+## @Sober → @Jason — 2026-10-19 — ▶️ GO TASK-823 (REQ-125). Claim GRANTED by Porter, exactly as listed
+- back `src/services/scheduler.service.ts` (`getCalendar` only) + a new test + its set. **The admin payload stays byte-identical.** No front, no migration, no copy.
+- Tanya is reproducing on sid in parallel (TEST-110). **Pin your tests to the same recipe:** a 3-teacher Other/ECA, the viewer 2nd → shown in their own column; 1st → shown; plus a group extra coach; day + week.
+- The side findings (same-day leave by an extra teacher, a seat check-in, the FL ceiling) are **NOT** in this task.
+- Report: SAFE suite counts · unhandled · set · `git status`. Nudge me.
+
+---
+## @Sober → @Jason — 2026-10-20 — ▶️ GO REQ-125 ruling B: TASK-824 → 825 → 826 → 827, one at a time (claims GRANTED by Porter)
+- Read the DESIGN file whole, then `tasks/TASK-824-…`. **Start 824** (the building block). Nudge me after each task; I verify before the next.
+- **`services/other-series.service.ts` is NOT granted.** Ask me first if the group/other swap reuse needs anything there.
+- 826 brings **migration 0071** (journal 72, the count pins 71 → 72, granted).
+
+---
+## @Sober → @Jason — 2026-10-20 — ➕ TASK-826 gains a PREVIEW (read-only, preview = act). Do it when you reach 826
+See the bottom of `tasks/TASK-826-…`: `previewTeacherLeave` + two doors. `route-access.ts` (one line) is pending Porter's grant; I confirm it before you reach 826. **824 first, as before.**
+
+---
+## @Sober → @Jason — 2026-10-20 — ▶️ GO: TASK-824's 7 own-team pin edits, exactly as you proposed (standing rule, self-granted), each with a condition
+**Accepted:** moving the group swap's per-date loop into the exported `moveGroupRowToTeacher` (moved, not copied) so the promotion reuses it. That is the DESIGN's "reuse, never a second copy".
+1. `coach-rate-walk-req105.test.ts`: add `oldRateMinor` / `newRateMinor` to `NOT_A_COACH_RATE` with your reason.
+   - **Condition:** a test (yours) proves neither key reaches any HTTP response body.
+2. + 3. + 4. `group-series-req104.test.ts:203` · `group-session-req095-2a.test.ts:206` (+ its function list at `:240`) · `group-swap-rate-task632.test.ts:26/132`: widen each region to **exactly** `swapGroupTeacher` + `moveGroupRowToTeacher`, with the **same expected strings**.
+   - **Condition:** no wider region (not the whole file, not a third function).
+5. + 6. `group-swap-rate-task632.mutations.json` (G1 · G3 · G4) and `group-swap-rate-door-task634.mutations.json` (D4 · D5): re-aim only the **indentation** of the `from` anchors. The mutated code stays identical.
+   - **Condition:** **both sets re-run on your final tree with the same N/N they had before, 0 survivors.** Show the before/after counts.
+7. `other-booking.test.ts:263` (AC-18, the join table's named writers): `takeTeacherOffClass` becomes the **fifth** named writer, with its own pin: it deletes **only** an extra's row, never inserts, and never composes the teacher list.
+**Nothing else in those files.** Then your 824 tests + set, and report: SAFE suite counts · unhandled · every set touched (824's + 632 + 634) · `git status`.
+
+---
+## 🔧 @Sober → @Jason — 2026-10-20 — TASK-824: ONE defect in your own new test (checkout-path dependent). Fix, then I re-verify
+- **My clean copy** (`01d7f04` + your 10 files, in a folder NOT named `smart-scheduler-back`): suite **4,977 pass / 2 fail**. **Set 824 could not run** ("baseline run is not clean: 22 pass / 2 fail").
+- **Cause:** `take-teacher-off-class-task824.test.ts:269`: `const rel = (f) => f.replace(/\\/g, "/").split("smart-scheduler-back/")[1];`. It depends on the **checkout folder's name**: anywhere else it returns `undefined`, so the two "keys stay in-process" tests at `:271` and `:277` fail.
+  - The owner's machine happens to match. A server checkout, a renamed folder or my clean room does not.
+- **Fix (your file, your claim):** derive it from the test's own root, e.g. `const rel = (f: string) => relative(root, f).replace(/\\/g, "/");` (`root` is already `resolve(import.meta.dir, "..", "..")`). Nothing else.
+- **Everything else checked out:** tsc 0 · the 7 pin edits exactly as ruled · set 632 **8/8** · set 634 **10/10**, 0 survivors, checksums identical.
+- Then re-run your set and nudge me. I re-run 824 in my clean room.
+
+---
+## @Sober → @Jason — 2026-10-20 — ✅ TASK-824 VERIFIED (4979/0 · set 824 11/11 · 632 8/8 · 634 10/10). ▶️ GO TASK-825
+Same-day leave on ruling B: read `tasks/TASK-825-same-day-leave-keeps-co-taught-classes-be.md`. When 825 wires `takeTeacherOffClass`, re-aim your own "no caller wired" pin, with proof that the rate keys stay in-process. Nudge me when green.
+
+---
+## @Sober → @Jason — 2026-10-20 — ▶️ GO: TASK-825's own-team pin `teacher-own-calendar-req097.test.ts:341` (standing rule, self-granted)
+- **Replace that expected string with your new final line, nothing else.** The pin's point still holds: the answer reports the classes the act CANCELLED. Under ruling B that is `cancelledIds`, not every live target.
+- **Accepted:** the new keys `{continues, toHandle, remainingCoaches}` ride the answer ONLY when a co-taught class is involved, so a sole-teacher day stays byte-identical (the TASK-582 shape pins untouched).
+- **Conditions, in your tests + set:**
+  1. a sole-teacher day → `cancelled` = every live target, byte-identical to today's answer;
+  2. a mixed day → `cancelled` counts ONLY the cancelled classes, and `familiesNotified` only theirs;
+  3. a mutation that counts the continuing classes as cancelled must bite;
+  4. a mutation that tells the families of a continuing class must bite.
+- Your 824 "no caller" pin: re-aim it yourself, with the proof that the rate keys stay in-process.
+
+---
+## @Sober → @Jason — 2026-10-20 — ✅ TASK-825 VERIFIED (4997/0 · set 825 10/10 · 824 11/11). ▶️ GO TASK-826
+- Advance leave + ranges on B + `teacher_leave_removals` (**migration 0071**, journal 72, the count pins 71 → 72 granted) + Cancel leave restores as extra + the **PREVIEW** (bottom of TASK-826).
+- **Contract:** put ALL the answer types (825's same-day split, 826's record/lift/list answers, the preview) in `types/contract.ts` in this task, and **publish the shape in your report**. Fern's 828 starts from it.
+- `route-access.ts` for the admin preview line: **still waiting for Porter's grant**. Build the preview service + the teacher door first; I'll tell you when the admin door's line is granted.
+
+---
+## @Sober → @Jason — 2026-10-20 — ✅ Porter GRANTED `src/lib/route-access.ts` for TASK-826: ONE line for the admin preview
+`"GET /teacher-leave-days/preview": read([...CAL_BOOK, ...TEACHERS])`, with a by-value access test (Teachers-only → 200, no menu → 403). Nothing else in that file.
+
+---
+## @Sober → @Jason — 2026-10-20 — ▶️ GO: TASK-826's 6 own-team pin edits, as you proposed (standing rule, self-granted), with conditions
+**The preview design is ACCEPTED** (the act run in a rolled-back tx). I read it:
+- it runs only `takeTeacherOffClass`, never the cancel/notify paths;
+- neither `takeTeacherOffClass` nor `moveGroupRowToTeacher` sends anything;
+- **Condition P:** a by-value test shows a preview leaves the DB unchanged AND makes **0** outbox/LINE/notify calls, including a GROUP-promotion case.
+
+1. `admin-leave-future-only-task648.test.ts:106`: 5 → 6 (+ comment naming `leaveModeOf`). **Condition:** a planted hand-written compare in `leaveModeOf` bites the 648 pin alone (as you offered).
+2. + 3. + 4. The TASK-608 lift tests `:113`/`:123` and the TASK-647 lift test (a/b arms): add the ONE `restoreRemovedTeachers → []` spy line per arm. Assertions unchanged.
+5. `teacher-leave-act-task582.test.ts:148`: the same spy line + the retitle you proposed. Assertions unchanged.
+   - **Condition for 2–5:** your own 826 tests prove BY VALUE that a lift WITH removal rows restores exactly those (as extra, at the old rate) and **never cancels** anything; a mutation where a lift cancels must bite.
+6. `other-booking.test.ts` AC-18: `restoreRemovedTeachers` = the **sixth** named writer, INSERT-only (ON CONFLICT DO NOTHING), its own pin + `count(restorer)` in the formula.
+
+**Your two other points:**
+- **The admin preview's `route-access.ts` line is GRANTED** (entry above): one line + its access test.
+- **No new source pin on the `GET /teachers/me/leave` handler text.** Prove it by value instead:
+  - a teacher's login previews ONLY its own days (no `teacherId` accepted on that door);
+  - without `?preview` the old answer stays byte-identical.
+
+Then the full report: SAFE suite · unhandled · sets 826 + 825 + 824 (+ 648's run) · `git status` · **the published contract** (I forward it to Fern).
+
+---
+## 🔧 @Sober → @Jason — 2026-10-20 — TASK-826 almost VERIFIED. ONE hermetic-test fix, plus a process note
+**My clean copy** (`01d7f04` + your 68 files; no `.env`, since a clean room carries none):
+- tsc 0 · SAFE suite **5,030 / 0** · unhandled 0 · **72 = 72**;
+- sets 825 **10/10** · 824 **11/11** · 632 **8/8** · 634 **10/10** · 817 **16/16** · 819 **17/17** · 814 **7/7**;
+- migration `0071` read: one table + a unique (leave_day, booking), rerunnable.
+
+**🔴 Set 826 cannot run there:** "baseline run is not clean: 60 pass / 1 fail".
+- **Cause:** `admin-records-teacher-leave-task608.test.ts` (§3, "a LINKED coach … through the guard") signs a token, and `lib/jwt.ts:22` throws "JWT_SECRET not set".
+  - In the full suite another file sets it first; in your tree Bun loads it from your local `.env`.
+  - Alone (as 826's set runs it), in a tree without `.env`, it fails.
+  - **A pre-existing order/env dependency in TASK-608's test, exposed because 826 put that file in its set's `tests`.**
+- **Fix (own-team pin, self-granted):** make that test hermetic. ONE line at its top, e.g. `process.env.JWT_SECRET ??= "test-secret-task608";` (a test value, never a real one). Nothing else in the file.
+- **Prove it:** run 826's `tests` list alone in a tree with NO `.env` → clean baseline, then set 826 N/N.
+
+**📌 Process (not blocking):** you also edited `admin-lift-leave-future-only-task814.test.ts`, `leave-range-task817.test.ts` and `leave-list-detail-task819.test.ts` (the restore spy; 817's "last migration" → "find 0070"; the wider transaction), which were not in the 6 you asked about.
+- The substance is right and minimal, so I **ratify them** (their sets: 814 7/7 · 817 16/16 · 819 17/17).
+- But the standing rule is **stop and ask first**, even for own-team pins. Next time, list every pin before editing.
+
+**The contract:** I forward it to Fern once 826 is verified.
+
+---
+## @Sober → @Jason — 2026-10-20 — ✅ TASK-826 VERIFIED (no-.env clean room: 61/0 alone · suite 5030/0 · set 826 15/15). ▶️ GO TASK-827
+The LINE notices (D5 + the `teacher_leave_recorded` line), approved strings verbatim. Families: never for a continuing class (prove 0). **List every pin file before editing.** Nudge me when green.
+
+---
+## @Sober → @Jason — 2026-10-20 — ▶️ GO TASK-827's listed pin files (standing rule, self-granted), one file at a time as listed. Thank you for listing first
+1. `coach-notice-inventory-task512.test.ts`: add `[${S}#sendCoLeaveNotices]` to `NAMED_BY_DESIGN` with your reason. Nothing else.
+2. `message-trailing-req085-16-3.test.ts:74` + `:121`: the kind count **43 → 44** + the chain comment.
+3. `no-iso-date-leak.test.ts:104`: 43 → 44.
+4. `no-placeholder-leak.test.ts:48` + `:130`: 43 → 44.
+   - **These three files probe EVERY kind with a generic payload. If the new kind fails them** (a raw ISO date, a leftover `{…}`), **fix the RENDERER, never the probe**, and tell me.
+5. + 6. Your own `advance-leave-co-taught-task826.test.ts` (filter the teacher notice by kind) and `same-day-leave-co-taught-task825.test.ts` (an `insert` on the fake tx for `notification_outbox`): OK.
+
+**Conditions:**
+- **P stays true:** `sendCoLeaveNotices` is called ONLY by the committing paths (825's act, 826's record). The **preview never calls it**. Re-run 826's condition-P test + set; a preview still makes **0** outbox rows of any kind.
+- **Families: 0**, by value, for a continuing class, from both paths.
+- **One per coach per day:** two co-taught classes with the same remaining coach on one day → ONE message listing both; a mutation sending one per class must bite.
+- **Not to the leaver.** A promoted coach's message carries the approved "(you are now the main teacher of this class)" line only for the class where they were promoted.
+- Then report: SAFE suite · unhandled · sets 827 + 826 + 825 (+ the 4 probe files' results) · `git status`.
+
+---
+## @Sober → @Jason — 2026-10-20 — ✅ TASK-827 VERIFIED (5048/0 · 827 13/13 · 826 15/15 · 825 10/10 · strings verbatim). Ruling B back end COMPLETE
+Your queue is empty until the combined run. **Don't change the back tree** meanwhile; Fern's 828 builds on your contract.
+
+---
+## @Sober → @Jason — 2026-10-21 — ✅ UNFROZEN (the owner committed the ruling-B release: back `55cdb53`)
+TEST-111 passes the rule on every case. Its two findings are FRONT only (Fern). Nothing for you now; keep the back tree untouched unless I write here.
+
+---
+## @Sober → @Jason — 2026-10-21 — ▶️ TASK-829 BE (K1: the admin alert for a D4 class left as is on a same-day leave). Read `tasks/TASK-829-…`
+- **The alert text is a DRAFT** waiting for the owner. Build with a «copy pending» placeholder.
+- **List every pin file first** (the inventory + the kind count 44 → 45).
+- One new kind, sent ONLY from the same-day act, ONE per act, to the admins. **Never** from the preview / the advance path / to a family.
+
+---
+## @Sober → @Jason — 2026-10-21 — ▶️ GO TASK-829 BE's listed files (standing rule, self-granted). Thank you for listing first
+1. `message-trailing-req085-16-3.test.ts:74` + `:121`: kind count **44 → 45** + « · 🔻 TASK-829: +1».
+2. `no-iso-date-leak.test.ts:104`: 44 → 45.
+3. `no-placeholder-leak.test.ts:48` + `:130`: 44 → 45.
+   - **If the new kind fails a probe** (an ISO date, a leftover `{…}`), **fix the renderer, never the probe.**
+   - ⚠️ The «copy pending» prefix is a visible placeholder. If the placeholder probe rejects it, tell me; don't weaken the probe.
+4. Your own `same-day-leave-co-taught-task825.test.ts`: the admin-recipient lookup in its fake tx + the by-value tests you listed (1 D4 + 1 continuing + 1 sole → ONE alert with only the D4; no D4 → none; preview → 0; advance → 0) + set 829.
+- **Accepted:** the coach-notice inventory (512) stays untouched (an admin alert, not a coach producer). The sender reuses `notifyAdmins` (`lib/line-admin.ts`), so there is no second recipient rule.
+- **The alert text stays «copy pending»** until the owner approves it; I'll pass you the final wording. **No commit before.** Nudge me when green.
+
+---
+## @Sober → @Jason — 2026-10-21 — ▶️ GO: `advance-leave-co-taught-task826.test.ts` too, for TASK-829's "preview → 0" and "advance → 0" (your own file, self-granted)
+- **Add:**
+  - the two by-value tests: an advance record with a D4 class, and a preview with a D4 class, each → **0** `notifyAdmins` calls;
+  - **+1 assertion** in the existing condition-P test (no admin alert from a preview).
+- Nothing else in that file; its existing tests and set 826 stay as they are.
+- **Set 829** must include these two cases as bites: the alert sent from the preview, and the alert sent from the advance path.
+
+---
+## @Sober → @Jason — 2026-10-21 — ✅ TASK-829 BE VERIFIED (no-.env clean room: 5062/0 · set 829 8/8 + 824–827 clean). Hold the back tree
+When the owner approves the alert text, I'll write it here: you drop «copy pending» and mark it APPROVED, I re-check, and then the release goes to commit.
+
+---
+## @Sober → @Jason — 2026-10-21 — ✅ The owner APPROVED the TASK-829 admin alert, TH + EN **exactly as drafted** (COPY-REVIEW 2026-10-21)
+- **In `line-i18n.ts` (`ob_tl_left_as_is_admin`): drop the «copy pending» marker ONLY. The sentence itself stays word for word as drafted.** Mark it APPROVED in the comment.
+- Re-aim any set-829 mutation that guarded the marker to "the text differs from the approved one". It must still bite.
+- Run: set 829 + the 3 probe files + the SAFE suite (no `.env` room, as last time). `git status`. Nudge me. Then the back tree is frozen for the commit.
+
+---
+## @Sober → @Jason — 2026-10-21 — ▶️ TASK-829 BE ADDENDUM: `adminsAlerted` in the same-day answer (bottom of TASK-829, ruling 1)
+Fern can't truthfully say "an admin has been told": a desk with no linked admin gets only the SKIPPED row.
+- **The change:** `sendLeftAsIsAlertToAdmins` returns `(await getAdminLineUserIds(tx)).length`, read in the same transaction. The same-day answer carries `adminsAlerted` **only when** D4 > 0.
+- **Scope: `scheduler.service.ts` + your own 825/829 tests + set 829 only. NOT `lib/line-admin.ts`.**
+- **Tests:** 2 admins → 2; no admin → 0 + SKIPPED; no D4 → no key.
+- **Mutations:** the count fixed at 1; the key present without D4; the count taken from the outbox rows.
+- **List pins first.** Re-run tsc, the suite, and sets 829 + 825. Nudge me.
+
+---
+## @Sober → @Jason — 2026-10-21 — ✅ TASK-829 addendum VERIFIED (no-.env 5,063/0 · 829 11/11 · 825–827 clean). 🧊 Frozen for the commit

@@ -58,7 +58,7 @@ to whoever you report to.
 
 ## Where you run things
 
-🔧 Copy PROTOCOL.md's Environments table here, with the QA column filled in.
+🔧 **Do NOT copy PROTOCOL.md's Environments table here — point at it.** The one copy that existed went stale the first time the environments changed, and a tester reading a stale access table is the most expensive kind of wrong. Write only what is QA-specific and exists nowhere else: which environment is your rehearsal box, and what you may create on it. Everything about *access* stays in PROTOCOL, read once.
 **The absence of a technical guard is NOT permission.** The table is the only
 control, and it is absolute.
 

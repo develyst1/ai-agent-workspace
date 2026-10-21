@@ -1,7 +1,9 @@
-# COPY DRAFT — to Khwan: where to pick the commission coaches in SALES RECORD (prototype) — @Porter, 2026-10-19
-Status: DRAFT for the owner (to send 2026-10-19 with the others). Her words: *"อันนี้เลือกคอมครูตรงไหนคะ · ขายของ"*.
+﻿# COPY DRAFT — to Khwan: where to pick the commission coaches in SALES RECORD (prototype) — @Porter, 2026-10-19
+Status: REVISED by the owner 10-19 (*"บอกขวัญให้หัดกด ปุ่ม question mark ดูเอาแล้ว"*): point her to the page's [?] help (step 3 = the commission coaches, verified in pages/b-stock/sales-record.js). Her words: *"อันนี้เลือกคอมครูตรงไหนคะ · ขายของ"*. Design note stays in REQ-122 §6.
 
 ---
-ขวัญครับ หน้า SALES RECORD ให้เลื่อนลงมาที่กล่อง "Coaches earning commission" ด้านล่างครับ กดที่ชื่อครู (KID, POO, KUNG, BANK) ได้เลย ชื่อที่เลือกจะมีเครื่องหมาย ✓ แล้วตารางด้านล่างจะแบ่งค่าคอมให้เท่ากันอัตโนมัติ
+ขวัญครับ ทุกหน้าในตัวอย่างหลังบ้านจะมีปุ่ม ? อยู่มุมขวาบนของหน้า กดแล้วจะมีรูปพร้อมเลขชี้ว่าตรงไหนทำอะไรครับ
 
-ตรงนี้ดูไม่ออกว่ากดได้ ในระบบจริงจะทำเป็นช่อง "ครูที่ได้ค่าคอม" ไว้ในฟอร์มขายเลย ให้เห็นชัดกว่านี้ครับ 🙏
+หน้า SALES RECORD ให้ดูข้อ 3 จะชี้ไปที่กล่องเลือกโค้ชที่ได้ค่าคอมด้านล่าง กดชื่อโค้ชได้เลยครับ
+
+ถ้าหน้าไหนสงสัยว่าใช้ยังไง ลองกด [?] ดูก่อนได้เลยครับ 🙏

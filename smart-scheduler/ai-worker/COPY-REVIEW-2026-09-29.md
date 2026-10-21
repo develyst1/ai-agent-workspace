@@ -625,3 +625,25 @@
 - **The range limit: 31 days** (as drafted).
 - **P7 = A:** `willCancel` says "tells their families" **with no number** (as drafted).
 - The approved wording is the draft file's TH/EN columns, unchanged. **Nothing is reworded.**
+
+## 2026-10-20 — APPROVED by the owner: REQ-125 ruling B, the 7 strings (TH/EN) in `DESIGN-REQ-125-one-teacher-leaves-a-multi-teacher-class-2026-10-19.md` §6. Verbatim *"ข้อความ OK"*
+- Covered: the P7 co-taught count (own leave today) · the P7 / admin range hint (advance) · the "Continues with {names}" row tag · the LINE to a remaining coach · its "(you are now the main teacher…)" suffix · the extra `teacher_leave_recorded` line · the D4 refusal.
+- **As drafted, word for word.** Any change during the build comes back here first.
+
+## 2026-10-21 — APPROVED by the owner: REQ-125 O1 = **A** (verbatim *"O1 A"*): the Cancel-leave confirm's conditional line
+- **When the leave took the teacher off n > 0 co-taught classes**, the sentence «คาบที่มีอยู่แล้วไม่มีอะไรเปลี่ยน» / «Existing classes don't change.» is REPLACED, in BOTH confirms (TASK-814 `cancelBody` and TASK-820 `cancelRangeBody`), by:
+  - TH: ครู {name} จะกลับเข้าคาบที่สอนร่วม {n} คาบที่ถูกนำออกไปตอนบันทึกลา คาบอื่นไม่มีอะไรเปลี่ยน
+  - EN: {name} goes back on the {n} co-taught class(es) they were taken off when the leave was recorded. Other classes don't change.
+- **When n = 0**, today's text stays word for word.
+- **Still to approve:** K1's admin LINE alert string (Sober drafts it).
+
+## 2026-10-21 — APPROVED by the owner: TASK-829 admin LINE alert (verbatim *"อนุมัติข้อความ LINE แจ้งแอดมิน"*)
+- TH: ⚠️ ครู {name} แจ้งลาวันนี้ ({date}) — คาบต่อไปนี้ยังไม่มีครูรับแทน เพราะครูท่านอื่นของคาบไม่ว่างในเวลานั้น กรุณาจัดการในปฏิทิน: {list}
+- EN: ⚠️ {name} reported leave for today ({date}). These classes have no teacher to take over (their other teachers aren't free then). Please handle them in the calendar: {list}
+- `{list}` = one line per class, "HH:mm · program/title". It goes to the admins only, once per same-day act, and never to a family.
+- **Also accepted:** approved string 1 reused verbatim on the teacher's own future-day dialog (Sober's transparency note, 10-21).
+
+## 2026-10-21 — APPROVED by the owner: the TASK-829 FE line (verbatim *"อนุมัติข้อความ"*)
+- TH: แจ้งแอดมินแล้วเรื่องคาบที่ยังไม่มีครูรับแทน
+- EN: The admins have been told about the class(es) left as they are.
+- Shown on the teacher's same-day result **only when the admin alert was really queued for ≥ 1 admin** (the count in the answer).

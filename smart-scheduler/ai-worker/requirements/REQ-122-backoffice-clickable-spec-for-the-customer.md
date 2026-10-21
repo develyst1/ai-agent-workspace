@@ -118,3 +118,101 @@ v1 (TEST-104 PASS, clean zip built) is **kept, not sent**. v2 replaces it.
 ## 6. Customer feedback while using the prototype (Khwan, LINE, 2026-10-19 03:33)
 - **SALES RECORD:** *"อันนี้เลือกคอมครูตรงไหนคะ · ขายของ"*. She did not find where to pick the coaches who earn the commission. The prototype has them as clickable name chips (KID ✓ POO ✓ KUNG BANK) in the "Coaches earning commission" card **below** the form. **They don't read as a control.**
 - **For the real build (REQ-120 R3.5):** make the coach picker an obvious control **inside the sale form**, e.g. a labelled multi-select "Coaches who sold (commission)", next to Product / Payment. The split table stays as the result. Answered to her by message (owner, 10-19).
+
+## 7. Khwan's prototype answers, PART 1 (2026-10-19). She is NOT finished
+Verbatim: `project-docs/customer-2026-10-16-backoffice-prototype/khwan-answers-proto-v2-part1-2026-10-19-VERBATIM.md`. Unanswered: pages 6 and 18–20 (her notes on 18 are words only), plus 22–32 (Revenue types onward, all of Stock, Reports).
+
+**Plan: ONE prototype v3 round after part 2 arrives**, not page by page (the batch rule). Until then nothing changes in the prototype.
+
+### 7.1 Words (v3; and the real build, since D2 = English)
+- **Brand:** the top title is SOM BALANCE / SOM BACK OFFICE.
+- **Menu headings ALL CAPS:** SALARY · NOTIFICATION · SETTING ("Front office changes" → SETTING).
+- **Headings spell out the types:** Full-time / Part-time / Freelance. After a coach's name, FT / PT / FL is fine.
+- **Dates carry the year:** 16/10/26.
+- **Renames, page by page:**
+  - **Salary:**
+    - People → Employee · Person profile → Employee Profile · Pay settings → Payment Setting · Pay run → Monthly Payment (Up to date) · Slip → Payment Detail;
+    - Admin entries → Other Income · Items I entered this period → Other Income Detail;
+    - Daily check-in report → Daily Training Report (Role that day → Role · Hours cut → Hour · What counts → Extra · Pay for the day → Daily Income · Day total → Total).
+  - **Notifications:**
+    - Notification settings → Notification Setting · Staff and admins → CEO and Staff · Person → Who · OWN ITEMS — ALWAYS → MYSELF - ALWAYS;
+    - Inbox → Notification Alert.
+  - **Teacher roles and web login:**
+    - Teacher: several roles + STAFF → Role Setting;
+    - web login → User Setting · Can see → Visible · Not shown → Invisible · Own slip only … → My slip · Confirm · Create Login → Create User · Send Invite again → Invitation · What the coach sees… → After signing in · See it as Coach → Individual Information.
+  - **F2 / F4:**
+    - Payment record → Payment Method;
+    - First coach and links → Conversion · First coach → Coach · course cards → "New Package after 1st Trial" / "Renew Course" · RENEWAL → RENEW · Admin chooses the first coach → Who get Bonus? (1st Coach : Kid · 2nd Coach : Poo · Share : 50 / 50).
+  - **Revenue:**
+    - Revenue summary → Revenue Summary · How refunds count → Refund · View line → View;
+    - Refund page: Record a refund → Refund Record · Original line → From · How it is counted → Record · Month → Period · Sep (Sales) / Oct (Refund).
+
+### 7.2 Prototype-only confusion (answers, not changes)
+- **The grey "Scheduling app › Teachers › …" bar** marks a screen that lives in the FRONT office. ฟีน found it confusing. **v3:** replace it with a plain label, e.g. "หน้าบ้าน (SOM SCHEDULE)", or drop it.
+- **F1 / F5 / D3 / F2: "why in the back office?"** They ARE front-office changes (REQ-120 §5). The prototype showed them only to agree on them, and she read them as back-office screens. Her ask (*"ไว้หน้าบ้านทั้งหมดได้ไหมคะ"*) **= the plan already**. **v3:** label them clearly as front-office screens.
+- **"Eligibility By type — STAFF today: Skate bag only"** = R1.3: a STAFF member earns commission on Skate bag sales only. It is her own earlier rule. **v3:** use plainer words.
+- **Month history** (Pay run / Slip / Other Income): the real build has a month picker. **v3:** show one.
+- **Other Income per month?** Yes, per pay period (R1.4: last day of the previous month → the day before the last day).
+- **F1 "Branch on a booking"** = which branch the class happens at (R2 revenue by branch; default Bravo). It is not a branch move.
+
+### 7.3 Changes to AGREED rules (REQ-120). Each one is confirmed with her by consequence before it becomes a ruling
+- **C-a, commission edited per sale** (*"ค่าคอม แก้ต่อครั้งได้ใช่ไหมคะ … ขายสินค้าที่มีดีเฟค…"*). R1.2 today: not reduced by a discount; only "set to 0" by hand. → Allow **any amount per sale** (CEO only?). Small.
+- **C-b, payment: default Transfer, no daily confirming** (*"ให้ระบบคอนเฟิร์มให้เลยเป็น Transfer ทั้งหมด ถ้ามีแก้ไข ค่อยเข้ามากดแก้"*). **This REVERSES D4 "required at confirm".**
+  - Consequence: anything not edited counts as Transfer, so revenue by method is only as right as the edits.
+  - ⚠️ **Where are edits made?** Item 17 says the front office; "เพิ่มเติม" 7 says the back office. Ask.
+- **C-c, camp confirm** (D3): a front-office button that also sets Transfer. The LINE "CONFIRMED SCHEDULE" goes at Confirm camp (her B). Consistent with D3; only the place is settled.
+- **C-d, installments: B** = each installment counts on the date it is received (D4's optional extra, now chosen).
+- **C-e, bonus:**
+  - *"Trial ไม่มีทางมีครู 2 คน"* ⇒ the Bonus 50 "two coaches share 25 each" case is dropped.
+  - The **mid-course coach change** = "Special Case", Bonus 100, with **Who get Bonus? 1st / 2nd / Share 50/50**.
+- **C-f, refund = CANCEL the course, not pause** (*"พอกด cancel ไป ระบบจะต้องยกเลิกตารางทั้งหมด"*). R2.3 today: refund = an expense, and nothing in the schedule changes.
+  - → A refund **cancels the course and all its remaining sessions in the front office**. That crosses into the scheduling system, and C2 says cancel reverses nothing today.
+  - **Ask:** are the family's LINE notices sent? Which sessions go: only future ones, or all unattended?
+- **C-g, Daily Training Report:** count by teaching hours only, no check-in/out; **add the total number of coaches**.
+- **C-h, notifications:** no opt-out ticks; everyone always gets all their own. This simplifies R0.
+
+**Sizing:** C-a, C-c, C-e and C-g are small or neutral, and C-h shrinks the work. **C-b and C-f are real changes** (C-f touches the front-office cancel). Silver re-sizes after part 2.
+
+### 7.4 PART 2 (2026-10-19 21:55, *"ครบทุกข้อค่ะ"*): pages 18–31
+Verbatim: `…/khwan-answers-proto-v2-part2-2026-10-19-VERBATIM.md`. Still unanswered: **6 My slip** · **32 Reports** (REQ-120 §4 agrees Reports later).
+
+**Words (v3), on top of §7.1:**
+- **Revenue:**
+  - Every Line → Detail · Add manual line / Manual revenue line → Add Manually · Product Name → Description · Payment → Method · N lines → N items · Total Revenue · Refund (Expense);
+  - Types and categories → Type and Category · Inline → Inline Skate · Also under COURSE → Other Course · Other types → Other Type · RENT ALL → EQUIPMENT · Park Fee → PARK;
+  - ECA term setup → ECA Payment (Students → Student · Classes per term → Class / Term · Date the school pays → Payment Date · Term total → Total Amount · Save Term → Save · ECA terms set up → ECA Payment History).
+- **Stock:**
+  - Products → Product · Products for sale → Sales Product · column headers ALL CAPS · Commission group → COMMISSION;
+  - Stock In: Save Stock in → Save · Bravo shop → Bravo;
+  - Import: Updated → Updated Item · Added → New Item Added;
+  - SALES RECORD → **STOCK OUT** · Buyer (from the system) → Student · …or type a name → Other Customer · Price after discount → Price · Coaches earning commission → Commission;
+  - Stock Demo: Add site → Add Location · Write-off → Delete · All sites → Total · From → To;
+  - Low Stock: Lowest amount per type → Setting · Alert when below / Lowest → Alert (Unit) · See balances → Balance Stock · Left → Balance · Save;
+  - Stock reports: Show → Search · Buyer → Customer · Kind → Type.
+- **Drop these page titles:** "New manual line" · "New ECA term" · "Receive goods" · "New sale". Also drop the "Counts as revenue on" line on ECA.
+- **Every date shows the year (16/10/26).** Stock In uses a **date picker**, not typing.
+
+**Layout / small changes:**
+- Products: **Category column before Product Name**. **Add Quantity + Location columns**, plus a **Location filter**.
+- **27: the "Locations and balance" page is removed.** Its job moves to Products (location filter + quantity).
+- Stock Demo: **Bravo is the leftmost column; the location order is settable**. **"Teaching equipment by site" is removed.**
+- **Answers, not changes:**
+  - 26 "Never deleted" = products not in the file are kept, history intact (R3.4). v3: clearer words.
+  - 31 Balance: all locations, with a location picker = **yes**, as designed (R3.3 / R3.8).
+
+**Rule changes (REQ-120), added to §7.3:**
+- **C-i, Revenue types:**
+  - **1st Trial becomes its own TYPE**, with a category per activity ("1st Trial (Inline Skate)", "1st Trial (Surfskate)" …);
+  - BALANCE CAMP BIRTHDAY stays under Course;
+  - the manual line offers the full type/category list, and **the "manual" type is removed**.
+  - Changes R2.1; small.
+- **C-j, STOCK OUT sells SEVERAL items in one sale** (*"ต้องเลือกซื้อได้หลายอันด้วย"*). R3.5 was one product per sale.
+  - Now a cart: lines, each with qty; one discount (฿ or %) on the sale; commission per line or per sale?
+  - **Medium**: it touches stock cut, revenue lines and commission (C-a's per-sale edit sits here).
+  - Ask with C-a.
+- **C-k, "Write-off" is labelled Delete**, but it keeps history with a reason (R3.6). Label only; nothing is hard-deleted.
+
+**Next:**
+1. The owner sends the revised reply (answers + the C-a / C-b / C-f / C-e / C-j confirmations).
+2. Silver re-sizes the REQ-120 deltas (C-a…C-k vs the 160/173 d baseline) for the owner's money talk.
+3. The v3 prototype goes out only on the owner's GO.

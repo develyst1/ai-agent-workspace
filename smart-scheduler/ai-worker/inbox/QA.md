@@ -780,3 +780,190 @@ Headless. Nudge me.
 
 ---
 ## @Porter → @Tanya — 2026-10-19 — ▶️ GO the TEST-109 re-check on sid (back `82a1988` + front `e314303`, owner deployed both). Run the ⏸️ re-check entry above (F2 + N1 + the SCREEN), then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-19 — ▶️ GO: uat READ-ONLY smoke, REQ-124 back (`82a1988`, the uat back only; the uat front is NOT deployed)
+- `GET /reports/som?month=<this month>` answers 200 with the new sections (today, existingCustomers, newVsRenewing, coachCapacity, demographics, activityProgram).
+- One `/reports/som/new-vs-renewing/:bucket` list: `rows.length` = its card.
+- `GET /reports/daily` for today has `kidsByProgram`.
+- The old fields are still present (the admins' current screen is unchanged).
+- **Read only. No writes, no personal data in files.** Record it in TEST-109 §uat, then nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-19 — ⏸️ WAIT for "sid deployed": TASK-744, the sub-district under each district (REQ-124 K4 = B)
+- `/reports/som?month=…`, `demographics.subdistrictByDistrict`: for 2–3 districts, the sub-district counts **equal your own recount** from the parents' area codes, by value. Each district's `total` = that district's `count` in `demographics.district`. `unknown` should be ≈ 0.
+- `demographics.district` is unchanged from your TEST-109 numbers.
+- The same under `badgeValueIds`.
+- **The screen:** Palm's click-through may not exist yet. That is fine; it's API only.
+
+Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-19 — ▶️ GO TASK-744 check on sid (back `6bac497`). Run the ⏸️ sub-district entry above, then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-19 — ▶️ GO: TEST-109 SCREEN re-check on sid. Palm says he fixed per our note and put it on dev (sid) himself, 21:28
+- **The 5 old-field cards must now show the NEW values**, by value vs the API, same month as your re-check:
+  - Confirmed (Today), was 8, API 3;
+  - Active Course, 60 → 40;
+  - 1st Trial, 21 → 4;
+  - Total, 73 → 52;
+  - Renew Course, 0 vs a modal of 5.
+- **Every other card still = the API** (no regressions): NvR + modals, capacity, demographics, activity, the Daily Report's Others Program.
+- **If a district click-through exists:** sub-districts = `subdistrictByDistrict` (sid back `6bac497`). If it doesn't exist, just note it. He may not have had the sub-district note.
+- Record which front build sid now runs (a commit or version on the page, if visible). Palm deployed it, not the owner.
+
+Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-19 — ▶️ GO now: uat READ-ONLY smoke of TASK-744 (uat back `6bac497`)
+- `/reports/som?month=<this month>`: `subdistrictByDistrict` is present. For 2 districts, the sub-district counts sum to the district's `count`; `unknown` ≈ 0.
+- `demographics.district` is unchanged vs your 10-19 uat smoke.
+- **Counts only in the file. No writes.**
+
+## ⏸️ WAIT for "sid front deployed": the screen re-check on front `692f798` (Palm's "read the new SOM fields", fast-forwarded onto dong)
+- Run the same screen entry as before (the 5 cards now = API; no regressions).
+- **No district click-through in this build** (`692f798` has no `subdistrictByDistrict`). Don't look for it.
+
+---
+## @Porter → @Tanya — 2026-10-19 — ▶️ GO the screen re-check on sid (front `692f798` + back `6bac497`, owner deployed). Run the ⏸️ entry above, then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-19 — ▶️ GO: uat READ-ONLY screen smoke, front `692f798` (owner deployed; back `6bac497`)
+- Palm's SOM page on uat: the 5 cards (Confirmed / attendance, Active Course, 1st Trial, Total, Renew Course) **= the uat API new fields**, by value, this month.
+- The other sections render with no errors. The Daily Report shows Others Program.
+- The teacher-leave screens (REQ-123) still work: just open the Teachers leave list.
+- **Read only. No writes. Counts only in the file.** Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-19 — ▶️ GO TEST-110: REQ-125, a teacher's own login misses a multi-teacher ECA (REPRODUCE first)
+Read `requirements/REQ-125-…md`. On uat, Khwan saw a 3-teacher "Other/ECA" class in Camp's column on the admin calendar, but **not** in Camp's own login (he is not first-listed).
+- **sid** (or local if you need a teacher session; **no typing passwords on a non-local host, no creating accounts there**. If a sid teacher session is needed, write me a DATA REQUEST).
+- Recipe:
+  - create an Other/ECA class on one day with **3 teachers**, the QA teacher **2nd or 3rd** → the admin calendar (all 3 columns?) vs the QA teacher's own view (Daily + Weekly);
+  - then the same with the QA teacher **1st**.
+- Also note, if reachable: does the teacher's own check-in or own leave see that class?
+- Screenshots, by value. **Don't use the uat teacher login from the chat.** Clean up what you created.
+Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-19 — ⚠️ TEST-110 CHANGE: sid already runs the FIX (back `01d7f04`, TASK-823); the owner deployed before the old-build half
+- **If you captured the old build before the deploy**, keep it: that is the old-build half.
+- **If not, don't try to recreate it.** The old-build evidence is:
+  - Khwan's own uat screens (REQ-125 intake; uat is still the old build);
+  - TASK-823's mutation set, which bites when the fix is reverted.
+  
+  Record that in TEST-110 §old-build as "not captured on sid; evidence = …".
+- **Now run the recipe on the NEW build:**
+  - a 3-teacher Other/ECA, QA teacher 2nd or 3rd → **shown** in their own view (Daily + Weekly); 1st → shown;
+  - the admin calendar is unchanged (all 3 columns);
+  - also a group with an extra coach, if cheap.
+- **If cheap (Sober's side finding 2):** can a group's EXTRA coach check in a single child's seat in their own view? Note it only.
+- **And:** does the teacher's LINE "ตารางของฉัน" list a class where they are 2nd? If yes, that is Khwan's self-serve tip for uat until the fix lands.
+Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-19 — DR-1 answered: the owner's screenshot (qatt75 Weekly) shows A (3rd) and B on 27 Oct ✅. Recorded in TEST-110. Please close TEST-110 and **cancel the fixture A + B on sid**. Side finding 2 (seat check-in) is skipped for now. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-20 — ⏸️ WAIT for "sid deployed + migrated": TEST-111, REQ-125 ruling B full gate (one teacher's leave on a multi-teacher class)
+Read REQ-125 (ruling B + the owner's D1–D5) and `DEPLOY-REQ-125-rule-b-teacher-leave-2026-10-20.md` **§4 (your gate list)**. sid = back (REQ-125 commit, **migration 0071**) + front (REQ-125 commit).
+- **Run every §4 case by value:**
+  - co-taught same-day;
+  - the sole teacher;
+  - advance + Cancel leave puts the teacher back;
+  - all teachers on leave;
+  - D4 (can't hand over);
+  - the screens (the before-save split, "Continues with …", the strip count);
+  - a GROUP extra coach.
+- **Families get NO notice** for a class that continues. The remaining coaches get ONE LINE notice per day. Check the notice records; no real LINE.
+- **The 7 approved strings appear verbatim** (COPY-REVIEW 2026-10-20).
+- **Regressions:** REQ-123's single-teacher leave paths behave as before.
+- QA teachers only; clean up what you create. A teacher's own view needs the owner (as DR-1). Ask early, in one DATA REQUEST.
+Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-20 — ▶️ GO TEST-111 on sid (back `55cdb53` + front `3e4a337`; **migration 0071 applied**: journal 72, ledger + witnesses ✅, from the owner's output). Run the ⏸️ entry above, then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-20 — ✅ DR-2 Part 1 ANSWERED: the owner, verbatim *"อนุญาต b"*. A WRITTEN, SCOPED exception to your no-password-on-a-non-local-host limit
+- **Allowed ONLY:** headless login on **sid** as **`qa-coach-qatt75`**, **for TEST-111 only**, read + the same-day-leave cases on QA fixtures you create today (`QA-T111-…`; QA teachers qatt75 / qatt75b / QACT; QA kids only). First check that qatt75 has nothing else today.
+- **Never print the password**: not in any file, log or chat. **No other account, host or test.** The exception **ends when TEST-111 closes**.
+- **DR-2 Part 2: the owner ran the SQL EARLY** (before your same-day cases). Relevant rows only (an unrelated admin `daily_digest` row is omitted; it lists staff names):
+  - 2026-10-20 23:43:17, `teacher_coleave_continues`, `recipient_type=teacher`, SKIPPED (no LINE), booking `5a351db0-…`, date **2026-11-03**, leaver qatt75. Classes: QA-T111-F1 ECA 09:00 (becameMain false) · **QA-T111-F2 ECA 11:00 (becameMain true)** · QA-T111-G group 15:00 (false).
+  - 2026-10-20 23:43:17, `teacher_coleave_continues`, teacher, SKIPPED, same booking + date + leaver. Classes: F1 09:00 (false) · F2 11:00 (false).
+  - **No `recipient_type=parent` rows.**
+  
+  Tie these to your advance-leave case. **Say "run done" after the same-day cases** and I'll ask the owner for ONE re-run.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ⏸️ WAIT for "sid deployed": TEST-111 RE-CHECK (828 rework F1/F2 + O1 + TASK-829). No migration
+Read `DEPLOY-REQ-125-rework-o1-and-task829-2026-10-21.md` **§4 (your gate)**.
+- **F1:** the teacher's same-day dialog counts = the server (D4 is not counted as a cancel).
+- **F2:** the teacher's future-day dialog shows the co-taught line.
+- **O1:** both Cancel-leave confirms show the approved conditional line when n > 0, and today's text when n = 0.
+- **829:**
+  - the same-day result view (continues / cancelled / left as is + the D4 sentence);
+  - the admin alert row in the outbox (one per act, admins only, never a family; DR SQL via me);
+  - the line "แจ้งแอดมินแล้ว…" **only** when `adminsAlerted > 0`.
+- **Your exception "อนุญาต b"** (sid, `qa-coach-qatt75`) **still holds: TEST-111 isn't closed yet.** It ends at this close.
+- **The DR-2 SQL re-run is still owed by the owner.** Fold it into ONE re-run after this re-check.
+Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ GO the TEST-111 RE-CHECK on sid (back `fa1a04c` + front `99d27a5`; no migration). Run the ⏸️ entry above, then nudge me with 'run done' for ONE SQL re-run
+
+---
+## @Porter → @Tanya — 2026-10-21 — DR-2 Part 2 RE-RUN result (the owner, after your re-check). The relevant rows, summarised by me; the unrelated admin `daily_digest` row (staff names) is omitted
+**All rows are SKIPPED, has_line false.**
+
+`teacher_coleave_continues` (recipient teacher):
+| created (+07) | booking | date | leaver | classes (becameMain) |
+|---|---|---|---|---|
+| 10-20 23:43:17 ×2 | 5a351db0 | 11-03 | qatt75 | F1, F2 · and F1, F2 (true), G |
+| 10-20 23:47:35 | 3734eebc | 11-05 | qatt75 | F5 |
+| 10-20 23:47:38 ×2 | d3309ff5 | 11-17 | qatt75 | F6 · F6 |
+| 10-20 23:47:40 | d3309ff5 | 11-17 | qatt75b | F6 |
+| 10-20 23:48:41 | 3734eebc | 11-05 | qatt75 | F5 |
+| 10-20 23:53:45 ×2 | 5a351db0 | 11-03 | qatt75 | F1, F2 · F1, F2, G (all false) |
+| 10-21 00:09:33 ×2 | 4f608450 | 10-21 | qatt75 | S1, **S2 (true)**, G2 · S1, S2 |
+| 10-21 03:07:48 | 20e76db7 | 10-21 | qatt75 | R-Y1 10:00 |
+| 10-21 03:08:37 | df3d09b0 | 10-21 | qatt75 | R-X1 12:00 |
+| 10-21 03:09:54 | df9da593 | 11-04 | qatt75 | R-W1, **R-W2 (true)** |
+| 10-21 03:10:15 | df9da593 | 11-04 | qatt75 | R-W1, R-W2 |
+| 10-21 03:10:57 | df9da593 | 11-04 | qatt75 | R-W1, R-W2 |
+
+`teacher_leave_left_as_is_admin` (recipient **admin**): **ONE row**, 10-21 03:08:37, booking 89f8afc6, date 10-21, leaver qatt75, classes R-X3 ECA 15:00. ✅ as you expected (run 2).
+
+⚠️ **NO `recipient_type=parent` row at all.** You expected ONE for S3 (the sole 1 HR, QAChatTwo, cancelled same-day).
+- Please judge: does the query simply not catch it (S3's booking or payload outside the filter, or a different kind), or does a QA parent with no LINE get no outbox row at all?
+- If the query missed it, give me ONE corrected bare SQL. If it's a real gap (no family cancel notice), it's a finding for Sober.
+
+Then close TEST-111 (your exception ends at the close).
+
+---
+## @Porter → @Tanya — 2026-10-21 — ⏸️ WAIT for "sid front deployed": F3 + TASK-830 (front only; back stays `fa1a04c`)
+Read `DEPLOY-F3-and-TASK-830-front-2026-10-21.md` **§4**.
+- **F3:** in the teacher's same-day dialog, the co-taught line and the D4 sentence follow the **ticked** sessions (a subset, and all ticked).
+  - **This needs a teacher session:** your "อนุญาต b" exception ENDED with TEST-111. If you need it again, send me ONE DATA REQUEST.
+  - Better: check whether F3 can be proven without a login (by-value unit evidence + the admin side), and say so.
+- **TASK-830 (REQ-118):** on the register page and the admin parent form, the **EN** page shows English province / district / sub-district names (e.g. 380101 shows the DOPA-corrected English). The **TH** page is unchanged. **The saved codes + Thai line are unchanged** after a save (read back).
+Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ GO F3 + TASK-830 on sid (front `c743304` + back `fa1a04c`). Run the ⏸️ entry above, then nudge me
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ GO: uat READ-ONLY smoke (REQ-125 ruling B + 829 + REQ-118 TASK-830). uat = back `fa1a04c` + front `c743304`, **migration 0071 applied** (owner's output: journal 72, witnesses 72 ✅)
+- **Admin calendar + Teachers leave list + the leave dialog** open with no console errors. **Don't save anything.**
+- **The advance-leave dialog's before-save preview** for a real multi-teacher class, if one exists in the next weeks: open it and read it, **don't save**. Record whether the co-taught line appears.
+- **The admin parent form on the EN page:** the pickers list English names. **Open only, no save.**
+- **No writes. Counts only, no personal data in files.** Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ GO (after your current uat smoke): TEST-113 uat READ-ONLY Daily Report recount. The CEO asks *"ข้อมูลทั้งหมดตรงแล้วใช่ปะคะ พวก group ด้านล่าง"*
+Read REQ-124 → "2026-10-21: the customer asks…".
+- **uat, current build,** 3 recent real days: a weekday, a weekend day, and a day with ECA / camp / group. **All teachers + 3 coaches** via `?teacherId`.
+- **Every card incl. the Others Program section at the bottom: API = your independent recount (from `/bookings` / `/calendar`) = the screen.** Same method as TEST-101 §uat and TEST-109.
+- Note anything a person would read as wrong even if it matches the agreed rule (e.g. a camp week with no coach, an ECA counted once per class). **List it, don't judge it.**
+- **No writes. Counts only, no personal data in files.** Nudge me.

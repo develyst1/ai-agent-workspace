@@ -25,3 +25,19 @@
 
 ## ⚖️ OWNER RULING 2026-10-12, the wrong ENGLISH names in the dataset: *"แก้"*
 Fix them, using the **Department of Provincial Administration (กรมการปกครอง / DOPA)** as the source of the correct English. An **override list in OUR repo**; the upstream file stays untouched. Scope = every wrong row the machine check finds (≥ 30 found so far; the count is not guessed). A follow-up after this uat; it does not hold it.
+
+## 2026-10-21: Khwan reports the register link's address is THAI ONLY (owner's screenshot, LINE 16:05), verbatim
+> *"@Dong_08 เรื่องที่อยู่ใน Link เป็นภาษาไทยอย่างเดียวอยู่นะคะ พี่โด่งยังไม่ได้อัพภาษาอังกฤษหรอคะ"*
+
+**Owner:** *"เรื่อง register แล้ว address บลาๆ เป็นไทยล้วน … ที่ฉันเคยบอกให้ไปทำเป็น code"*. The codes were meant to make the address render in Thai OR English.
+
+**What the files say (no cause claimed yet):**
+- TASK-801 kept the register page's picker, its labels and its dataset (`thai-address-universal`) **unchanged**, with "**TH names in both languages per TASK-580**". So the PICKER shows Thai names even on the English page, by an earlier decision. The codes are stored, but the picker still shows Thai.
+- **TASK-803** (fixing ≥30 wrong ENGLISH names from DOPA, a follow-up) may not be done. Its status goes to the SA.
+
+**Wanted:** an English-reading parent on the register page sees province / district / sub-district in **English** (from OUR code dataset + the DOPA overrides). The Thai page stays Thai. The same goes wherever the address is shown back (admin card, messages), by the reader's language.
+**Order:**
+1. **Sober (Team A, REQ-118):** confirm from the code what the EN page shows today, and why (TASK-580). Report TASK-803's status. Give the fix, its size, any new wording (copy set), and whether 803's English is a prerequisite.
+2. Porter grants → build → sid (Tanya: EN page shows English, TH page Thai, the saved codes unchanged) → uat → **then** the answer to Khwan.
+- **New numbers:** Team A's next block is **830–859** (800–829 is used).
+- **Sober's read (10-21):** the back already serves English (`nameEn`, with TASK-803's 583 DOPA overrides; 803 CLOSED 10-12, live on uat). **The front drops it** (TASK-580 removed it when the old package's English was garbled, and it was never switched back). The admin card is already right. **Fix: TASK-830** (Fern, FE ≈0.4 d, no new words, saved data unchanged). **GRANTED 10-21.** It rides with REQ-125's F3 front.

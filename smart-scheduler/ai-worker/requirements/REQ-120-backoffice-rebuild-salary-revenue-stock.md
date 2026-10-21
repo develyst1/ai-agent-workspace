@@ -167,3 +167,15 @@ Verbatim: `project-docs/customer-2026-10-15-backoffice-scope-and-decisions/khwan
 | **D6 bonus history** | **Neither A nor B:** *"ไม่เอาทั้งคู่ค่ะ เริ่มนับเฉพาะวันที่ระบบเสร็จเลยไม่ทำย้อนหลังค่ะ"* | bonuses only for cases that start after go-live; no back-fill, no manual bonus lines for old cases |
 
 **Sizing deltas to measure:** D3 (camp confirm step) and D4's optional installments. Both are additions to Silver's 84-day block. D2 and D6 can only shrink it.
+
+## 9. Prototype-round rulings (Khwan, LINE, 2026-10-20 ~10:00, the owner's screenshot), answering the 5 confirmations
+Asked in `COPY-DRAFT-khwan-proto-part1-status-2026-10-19.md`. The analysis is in REQ-122 §7.3 / §7.4. Her answers, verbatim:
+> 1. B · 2. A · 3. C · 4. ยกเลิกเฉพาะคาบที่ยังไม่ได้เรียนค่ะ และแจ้งผู้ปกครองด้วยค่ะ · 5. Trial มีครูเดียวเสมอค่ะ ส่วนการต่อคอร์สที่เปลี่ยนครูกลางคอร์สได้โบนัส 100 แอดมินเลือกให้ ครูคนแรก / ครูคนที่สอง / แบ่ง 50/50 ถูกค่ะ แอดมินเลือกค่ะ
+
+| # | ruling | changes |
+|---|---|---|
+| C-a | **1 = B: the commission can be edited per sale, by ฟีน AND the admins** | R1.2 "not reduced by a discount" → editable per sale. ⚠️ **Conflicts with R0.2** (the admins see NO coach pay): the admin would see and type a coach's commission. **Asked back (Porter, 10-20)** |
+| C-j | **2 = A: STOCK OUT sells several items, with ONE discount on the whole bill** (฿ or %) | R3.5 single product → a cart. Revenue nets the bill's discount across its lines |
+| C-b | **3 = C: Payment Method defaults to Transfer, editable in the FRONT and the BACK** | **D4 "required at confirm" is REVERSED.** No daily confirming; edits in both places |
+| C-f | **4: a refund cancels the course's UNATTENDED sessions only, and the families ARE told** | R2.3 + a front-office cancel. It reuses the family cancel notice |
+| C-e | **5: confirmed.** A trial always has one coach, so the Bonus 50 "25/25" case is gone. A renewal after a mid-course coach change = Bonus 100, and the admin picks 1st / 2nd / 50-50 | R1.2 bonus rows |

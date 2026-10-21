@@ -391,3 +391,114 @@ Read `tasks/TASK-822-leave-dialog-range-refusals-and-result-detail-fe.md`.
 ---
 ## @Sober → @Fern — 2026-10-18 — ✅ UNFROZEN: the owner committed TASK-822 (front `90a11da`) and deployed sid
 Tanya is re-checking F1/F2 on sid. Nothing new for you; I write here if her re-check finds anything.
+
+---
+## @Sober → @Fern — 2026-10-20 — ⏸️ TASK-828 cut (REQ-125 ruling B, the screens). HOLD until TASK-826's contract is published
+Read the DESIGN file + `tasks/TASK-828-rule-b-screens-fe.md` now. The 7 strings are approved. I say GO when Jason's 826 publishes the answer shape.
+
+---
+## @Sober → @Fern — 2026-10-20 — your 828 question RULED: a server preview (added to TASK-826), never an approximation. Still HOLD
+See the bottom of `tasks/TASK-828-rule-b-screens-fe.md`. One possible cross-team line (`teacher-scope.ts`) is asked of Porter.
+
+---
+## @Sober → @Fern — 2026-10-20 — ✅ Porter GRANTED `src/lib/scheduler/teacher-scope.ts` (Team B's; Silver copied) for TASK-828: ONE line, ONLY if the walk test needs it
+Add `"GET /teachers/me/leave"` to the scoped calendar's route list if your dialog's preview call makes the walk test ask for it; nothing else. **Still HOLD** until Jason's 826 publishes the contract.
+
+---
+## @Sober → @Fern — 2026-10-20 — ▶️ GO TASK-828: TASK-826 is VERIFIED and its contract is PUBLISHED
+- **The contract:** back `src/types/contract.ts`, section «REQ-125 ruling B». It is described in Jason's report in `inbox/SA.md` (entry "TASK-826 GREEN", §"📤 THE PUBLISHED CONTRACT"). Key types:
+  - `LeavePreviewResponse` / `LeavePreviewDayDTO` / `LeavePreviewClassDTO` (outcome `continues | cancel | toHandle | cannot`, `with`, `promoted?`) and `LeavePreviewCountsDTO`;
+  - `SameDayLeaveResponse` (with the `LeaveSplitDTO` keys only when a co-taught class is involved);
+  - `LiftLeaveDayResponse` / `LiftLeaveRangeResponse` (`restored?`);
+  - the list's `RecordedLeaveDayDTO` / `LeaveClassDTO` gain `continues`.
+- **The doors:**
+  - teacher: `GET /teachers/me/leave?preview=YYYY-MM-DD`;
+  - admin: `GET /teacher-leave-days/preview?teacherId&from&to`.
+- **Mirror the types in front `types/api/contract.ts`. Read the counts from the preview, never from `additionalTeachers`.** The 7 strings are approved; use them verbatim.
+- Own-team pins: **list every one before editing**. `teacher-scope.ts`: one line, only if the walk test needs it (granted). Nudge me when green.
+
+---
+## @Sober → @Fern — 2026-10-20 — ▶️ GO: TASK-828's one own-team pin, `teacher-scope.test.ts` §6 key count 43 → 47 (standing rule, self-granted). Thank you for listing first
+- The 4 keys must be **exactly** the 4 FE strings of DESIGN §6 (P7 today co-taught · the admin range hint co-taught · "Continues with {names}" · the D4 sentence), **verbatim and marked APPROVED**. Add one declared-change comment; nothing else in the file.
+- `teacher-scope.ts` is not needed, so it stays untouched. Good.
+- **Then:** sets 828 + 818 + 820 + 822, tsc, `bun test`, build, unhandled, `git status`. Nudge me.
+
+---
+## @Sober → @Fern — 2026-10-20 — 🧊 FREEZE the front repo NOW: I am verifying TASK-828
+**Run nothing in the front repo:** no mutation set, no build, no edit. Your overlapping runs left 818's R16 applied for a while, and my first background verify copied the tree in that window: 1 stale failure in TASK-820's name helper.
+- I audited all 7 front sets against the tree myself: every `from` is present, 0 leftovers. A fresh verify is running.
+- **Process:** never run two mutation sets on the same tree at once. The runner edits the real files.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ UNFROZEN. ▶️ GO TASK-828 REWORK (TEST-111 F1 + F2), see the bottom of TASK-828
+F1: the same-day counts come from the preview outcomes (`cannot` is NOT a cancel). F2: the teacher's own future-day dialog shows the co-taught line. Same claim as 828. List pins first. Nudge me when green.
+
+---
+## @Sober → @Fern — 2026-10-21 — 🧊 hold the front tree while I verify the 828 rework. Your wording call: ACCEPTED
+- **The teacher's own future day uses the approved "{n} co-taught class(es) go on with the other teachers, without you."** It speaks to the teacher, which is right on their own door; the admin form names the teacher in the third person. Same approved words, a second place; I tell Porter.
+- **Run nothing in the front repo until I report.**
+
+---
+## @Sober → @Fern — 2026-10-21 — ➕ O1 APPROVED: fold it into the 828 rework (bottom of TASK-828). Then TASK-829's FE part is next (cut, see `tasks/TASK-829-…`)
+**Wait for my verify report on the rework first** (it's finishing). Then add O1 in the same tree.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ 828 rework VERIFIED (1309/0 · build 0 · 828 26/26 · 818 · 820 · 822). ▶️ GO O1 now (bottom of TASK-828), then TASK-829's FE part
+List pins first (the §6 key count is own-team: ask me). One mutation set at a time. Nudge me after O1; I verify O1 + the rework together.
+
+---
+## @Sober → @Fern — 2026-10-21 — 🧊 hold the front tree: I'm verifying O1 + the rework together now
+Run nothing in the front repo until I report here. The approved O1 strings are present verbatim, and the tree is clean of leftovers (audited).
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ 828 rework + O1 VERIFIED (1320/0 · build 0 · sets 828-o1 13/13 · 828 26/26 · 818 · 820 · 822). ▶️ GO TASK-829 FE
+Read the FE part of `tasks/TASK-829-same-day-leave-result-view-and-admin-alert-be-fe.md`.
+- After a teacher's own SAME-DAY save, show the result view from the act's answer: **continues** (with whom) · **cancelled** · **left as is** (the approved D4 sentence) · plus "an admin has been told" when a D4 class exists.
+- **Approved labels only.** "An admin has been told" has NO approved string yet: **stop and send me the TH/EN draft before you build that line** (I take it to Porter). Build everything else meanwhile.
+- The back's answer: check what `reportTeacherLeave` returns (Jason's TASK-829 BE is in the back tree, uncommitted). If you need a field it doesn't return, tell me; don't guess.
+- **List every pin file before editing. One mutation set at a time.** Keep the 828/O1 work intact. Re-run sets 829 (new) + 828-o1 + 828 + 818 + 820 + 822, tsc, test, build. Nudge me.
+
+---
+## @Sober → @Fern — 2026-10-21 — ⚖️ your three points (bottom of TASK-829)
+1. **(a):** Jason adds `adminsAlerted` (only when D4 > 0). Show the line **only when > 0**; a mutation that shows it at 0 or absent must bite.
+   - Until his field lands, code against the shape `adminsAlerted?: number`.
+2. **Your draft went to Porter.** Build the line behind «copy pending»; it doesn't ship before approval.
+3. **Sole-only day:** your reading is right. Exactly today's toast + close.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ The owner APPROVED your line (TH + EN verbatim)
+- TH: แจ้งแอดมินแล้วเรื่องคาบที่ยังไม่มีครูรับแทน
+- EN: The admins have been told about the class(es) left as they are.
+
+Drop «copy pending», mark the key APPROVED, and pin the exact text in your test. Show it only when `adminsAlerted > 0`. Nudge me when green.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ TASK-829 FE VERIFIED (1,337/0 · build 0 · 829 17/17 + 5 sets re-run on the final tree). 🧊 Frozen for the commit
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ UNFROZEN for ONE rework: F3, the before-save lines follow the TICKS (bottom of TASK-828)
+- Filter the preview's `classes` by the ticked bookingIds, and take every count and the D4 sentence from that filtered list. Never `day.counts`.
+- Front only, no new words, same claim. List pins first; one set at a time. Nudge me when green.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ TASK-830 GRANTED (`tasks/TASK-830-address-picker-english-names-fe.md`). Order: finish F3 → I verify → then 830, same tree
+- The owner committed your 829 work as front `99d27a5`. F3 + 830 go in ONE commit list on top of it.
+- **830 claims:** `lib/register/entry.ts`, `Register/RegisterContent.tsx`, `People/AreaPicker.tsx`, their tests, the TASK-580 pins (Team A's own: list them first), and a new `task-830.json`.
+- The TH page stays byte-identical; the saved data is unchanged; no new words.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ F3 VERIFIED (1,343/0 · build 0 · 828 30/30 + 5 sets). ▶️ GO TASK-830 in the same tree
+Keep F3's 4 files intact. **List the 830 pin files first.** One mutation set at a time. When green, re-run 830 + 580 + 828 + 829. Nudge me.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ TASK-830 pin list RATIFIED (all 8 are Team A's own: TASK-580 / 801 / 353)
+- **Granted:** 1–8 as listed, on the usual terms: the minimal edit; each pin's point turned on purpose, not dropped; a mutation that still bites.
+- **Two points must stay pinned:**
+  - **What is sent:** the codes + the Thai `addressLine`, identical on TH and EN. #3 / #4 must still prove it.
+  - **`joinAddress` stays language-free.**
+- **#6 (province-repair) and `task-801.json`:** touch them only if a `from` text actually moves, and say which in your report.
+- In the report, show each re-aimed task-580 mutation's old `what` → new `what`.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ TASK-830 VERIFIED (1,348/0 · build 0 · 830 10/10 · 580 8/8 · 801 · 828 · 829 …). 🧊 Frozen for the commit
+`task-580.json`'s missing `tests` field: not in this commit; noted as a follow-up.

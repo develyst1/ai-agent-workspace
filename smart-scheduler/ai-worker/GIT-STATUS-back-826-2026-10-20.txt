@@ -1,0 +1,68 @@
+ M drizzle/meta/_journal.json
+ M src/db/schema.ts
+ M src/lib/admin-leave-future-only-task648.test.ts
+ M src/lib/admin-lift-leave-future-only-task814.test.ts
+ M src/lib/admin-records-teacher-leave-task608.test.ts
+ M src/lib/archive-parent-req098.test.ts
+ M src/lib/archive-student-req093.test.ts
+ M src/lib/birth-month-req099.test.ts
+ M src/lib/booking-rental-row-req091.test.ts
+ M src/lib/budget-visibility-req102.test.ts
+ M src/lib/bulk-confirm-extended-req094.test.ts
+ M src/lib/camp-3b-undo-qr-reminder-req095-3b.test.ts
+ M src/lib/camp-day-rate-req104.test.ts
+ M src/lib/camp-on-grid-req095-11.test.ts
+ M src/lib/camp-per-coach-window-req105.test.ts
+ M src/lib/camp-req095-3a.test.ts
+ M src/lib/camp-week-500-family-dedupe-req104.test.ts
+ M src/lib/coach-rate-req095-13-3.test.ts
+ M src/lib/coach-rate-visibility-req102-6.test.ts
+ M src/lib/coach-rate-walk-req105.test.ts
+ M src/lib/course-rental-round2-req091-14.test.ts
+ M src/lib/duo-course-req095-13.test.ts
+ M src/lib/group-price-and-walkin-req095-2b.test.ts
+ M src/lib/group-series-extender-req105.test.ts
+ M src/lib/group-series-req104.test.ts
+ M src/lib/group-session-req095-2a.test.ts
+ M src/lib/group-slot-yield-req105.test.ts
+ M src/lib/group-swap-rate-door-task634.mutations.json
+ M src/lib/group-swap-rate-task632.mutations.json
+ M src/lib/group-swap-rate-task632.test.ts
+ M src/lib/leave-list-detail-task819.mutations.json
+ M src/lib/leave-list-detail-task819.test.ts
+ M src/lib/leave-range-task817.mutations.json
+ M src/lib/leave-range-task817.test.ts
+ M src/lib/migration-witness.ts
+ M src/lib/notified-count-seam-task647.test.ts
+ M src/lib/oa-write-guard-req105.test.ts
+ M src/lib/other-schedule-req095.test.ts
+ M src/lib/other-series-req101.test.ts
+ M src/lib/rbac-stage1-users-req092.test.ts
+ M src/lib/rbac-stage2-menu-guard-req092.test.ts
+ M src/lib/rbac-stage3-actions-req092.test.ts
+ M src/lib/rbac-stage4-roles-req092.test.ts
+ M src/lib/rich-menu-relink-req105.test.ts
+ M src/lib/route-access.ts
+ M src/lib/school-issue-reason-task690.test.ts
+ M src/lib/subject-kind-req095-13-4a.test.ts
+ M src/lib/teacher-leave-act-task582.test.ts
+ M src/lib/teacher-leave.ts
+ M src/lib/teacher-own-calendar-req097.test.ts
+ M src/lib/voucher-end-req103.test.ts
+ M src/lib/webhook-ack-first-req105.test.ts
+ M src/lib/whole-course-rental-req091.test.ts
+ M src/lib/witness-observability-req105.test.ts
+ M src/routes/api.ts
+ M src/services/course-expiry-edit.test.ts
+ M src/services/other-booking.test.ts
+ M src/services/province-and-note-req088-9.test.ts
+ M src/services/scheduler.service.ts
+ M src/types/contract.ts
+ M src/validation.ts
+?? drizzle/0071_teacher_leave_removals.sql
+?? src/lib/advance-leave-co-taught-task826.mutations.json
+?? src/lib/advance-leave-co-taught-task826.test.ts
+?? src/lib/same-day-leave-co-taught-task825.mutations.json
+?? src/lib/same-day-leave-co-taught-task825.test.ts
+?? src/lib/take-teacher-off-class-task824.mutations.json
+?? src/lib/take-teacher-off-class-task824.test.ts

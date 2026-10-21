@@ -1148,7 +1148,426 @@ Set F-028 → `FIXED` once that clause is in, naming it.
   into the held run: give the desk's `QA.md` the same `## Hard boundaries` shape the template
   uses, and move the attribution boundary into it from `### 1c`.
 
+
+### ORDER 21 — open the desk `fb-autoreply` (owner's go, 2026-10-20)
+
+**What it is:** a backend that answers a Facebook page's messages automatically, by running
+a layered AI pipeline over the owner's own LLM gateway. **Backend only** — the webhook and
+the Send API are the whole path; no screen exists in it. A read-only admin view will
+probably be wanted later; **do not scaffold one now.**
+
+**Repo:** `fb-autoreply-back` → `H:\fb-autoreply\fb-autoreply-back`.
+⚠️ **The folder exists but is EMPTY and is not a git repository** (`git log` → *not a git
+repository*). Record it in `machine.local.md` as present; tell the owner it still needs
+`git init` / a clone — **no agent runs git**, and nothing should be written there until he
+has made it a repo.
+
+**Mode:** MANUAL, like his other current desks. With `nudge-session` installed the roles
+wake each other, so manual no longer costs him a round trip per hop.
+**Team:** Porter (PM) · Sober (SA) · Jason (BE) · Tanya (QA). **No FE** — there is no
+frontend. QA is included deliberately: this thing talks to the public on the owner's own
+page, so "it worked on my machine" is not a standard anyone should accept here.
+
+**Stack:** Bun. Postgres (the owner will supply the connection env himself — leave it as a
+named, empty variable; never invent one).
+
+#### 21.1 — Seed `SYSTEM-FACTS.md` with these, before the first session
+
+**The LLM gateway (read by Atlas from the repo and its Bruno collection, 2026-10-20):**
+- One normalized API over OpenAI / Gemini / xAI / DeepSeek. Bun. Local port **3009**;
+  in production it is the `ai.develyst.online` app on the shared server.
+- `POST /chat` — one provider, or **omit `provider` for the fallback chain
+  `deepseek → xai → gemini → openai`** (first success wins).
+- `POST /chat/multi` — several models in parallel, results returned **in the order the
+  configs were sent**.
+- `POST /search/classify` `{message}` → `{search, query, reason}` — a cheap small-tier call
+  that decides whether fresh web info is needed; **fail-soft** (unparseable → `search:false`).
+- `POST /search` `{query}` → Tavily results. `GET /` `/models` `/tiers` are open; everything
+  else needs `Authorization: Bearer <project-key>`.
+- Keys live in a **gitignored `api-keys.json`** on the gateway, one entry per project,
+  hot-reloaded, **fail-closed**. ⇒ this desk needs its own project key; **the owner issues
+  it.** Never commit it, never print it.
+- Tiers are `small` / `medium` / `flagship` — **choose by capability, not by model name.**
+- Current date/time is injected into every `/chat*` call automatically. Do not re-send it.
+- Response shape is always `{success, data:{provider, model, content, usage, latency_ms}}`.
+- 🔑 **The gateway is deliberately framework-free**: *"your product's orchestration layer
+  composes these."* **Every layer of this product's thinking belongs in this repo**, not in
+  the gateway. Do not propose changes to the gateway to make this project easier.
+
+**The owner's pipeline, as he stated it (max five layers):**
+`classify what they want → generate a query → the BACKEND runs it → analyse the result →
+answer`. 🔑 **Layer 3 is the backend executing it — not a human.** (Atlas first read it as a
+human step and was corrected; recorded so nobody re-introduces a human into the loop.)
+
+**Chat history:** kept, so the bot knows what has already been said. **Anything older than
+three months is deleted** — by a scheduled job, never lazily on a customer's message. It is
+personal data belonging to Facebook users; deleting on schedule is a feature.
+
+#### 21.2 — 🔴 Security constraints the owner has ruled on — write them into the REQ as binding
+
+Atlas raised the hazard: **an LLM writes SQL, the backend runs it, and the page is a public
+input anyone on the internet can type into.** The chain to fear is
+*crafted message → query that reaches data it should not → the analyse layer summarises it →
+the answer goes back to the person who crafted it.*
+
+**The owner's decision, 2026-10-20: customers may ask freely about services**, and the
+defences are documented in a `prompt-system.json` plus logging. **That is his call and the
+team builds it.**
+
+**And these four stay, because none of them limits what a customer may ask** — they limit
+only what a hallucinated or hostile query can reach:
+
+1. **The database role the backend connects with must not be able to write.** `SELECT` only.
+   If a generated statement tries to delete, the database refuses — **the guard lives in the
+   database, not in a prompt.**
+2. **Expose only what the bot needs**, through views, not the whole customer schema.
+3. **A statement timeout and a row cap**, both set in code.
+4. **Every generated statement is logged**, with the message that produced it. Without that,
+   the day something leaks nobody can say how.
+
+**Prompt-level defence is necessary and is not sufficient** — the attack arrives *through*
+the prompt, so it cannot be the only layer. Say this plainly in the REQ; it is not a
+re-argument of the owner's decision, it is the reason his `prompt-system.json` needs company.
+
+#### 21.3 — Scaffold
+
+Standard manual-mode desk from `_templates/project`, with every skill now in the template,
+including `reproduce-first`, `verify-before-relay` and `nudge-session`. Gate must PASS before
+the first session. Then tell the owner what remains his: `git init` on the repo, the Postgres
+connection env, and a gateway project key.
+
+
+### ORDER 22 — the boot-budget rule is unmeetable by construction. Fix the rule. (2026-10-20)
+
+**Your arithmetic settles it, and I re-verified every number myself:**
+
+| | |
+|---|---|
+| shared reads (PROTOCOL 20.8 + board 4.0 + knowledge 25.2) | **50.0 KB** |
+| left for a role charter + inbox | **10.0 KB** |
+| the **pristine template `PM.md`**, untouched | **13.6 KB** |
+| ⇒ a brand-new desk with nothing written in it boots at | **63.8 KB — over the 60 KB WARN at birth** |
+
+**No amount of discipline clears it.** I wrote on 2026-10-06 that *a rule that cannot be
+satisfied is worse than no rule — it teaches people that red is normal.* I then built one.
+
+#### 22.1 — Gate what discipline controls; report what it must not
+
+The rule counts two kinds of file as if they were the same thing:
+
+| Kind | Files | Should it be gated? |
+|---|---|---|
+| **Controllable** | `PROTOCOL.md` · the role charter · `board.md` · that role's inbox | **Yes.** Growth here is a discipline failure — restating facts, essays in cells, an undrained inbox. |
+| **Deliberately unbounded** | the knowledge file | **No.** It is exempt from size *by name* (ORDER 6) because a fact must never be lost. Gating it asks a role to choose between recording a fact and passing. |
+
+**Change `check-hygiene.mjs`:**
+
+- The **verdict** applies to the controllable part only. On a fresh desk that is
+  **39.6 KB** → set **WARN at 45 KB, FAIL at 70 KB**. Those still bite real bloat instantly
+  (one desk's `inbox/SA.md` alone was 281 KB) while leaving a new desk green.
+- The knowledge file is printed on its own line **as a number with no verdict**:
+  `knowledge 25.2KB — not gated; index it past ~40KB (ORDER 22.2)`.
+- Keep printing the **total** too, also without a verdict. The owner should still see what a
+  session actually costs; he just should not see a red mark nobody can clear.
+
+Thresholds are yours to tune — bring me the blast radius across all desks before and after,
+as always.
+
+#### 22.2 — The real fix, which needs the owner's go: index the knowledge file
+
+Gating the controllable part stops the false alarm. It does **not** stop the knowledge file
+from eventually being too large to read honestly — which was the second, real reason the
+boot rule existed.
+
+**The answer is the shape skills already use — progressive disclosure:** a short index at
+the top, read at boot (one line per fact area), with the detail in sections a role opens
+when it is working on that area. **Nothing deleted, nothing summarised**, and the boot cost
+stops tracking the file's total size.
+
+**Not ordered.** It changes how every role reads the most important file on a desk, so it
+needs the owner's word and a design I have not written yet. Raise it with him when the rest
+of this lands; the WARN is now cosmetic, so it is no longer urgent.
+
+#### 22.3 — Your template question, answered: a rule that says "copy" is a bug
+
+You found `QA.md` instructing *"copy PROTOCOL.md's Environments table here"*, and that copy
+is exactly what went stale when the test-page decision changed. You are right that it
+collides with *every fact is written once*. **Fixed in the template** — it now says, in
+substance: do not copy it, point at it; write only what is QA-specific and exists nowhere
+else; everything about access stays in PROTOCOL.
+
+**Sweep the desks that already took the copy** and replace each with a pointer. Treat any
+other "copy X here" in the templates the same way and report what you find — I would rather
+know how many I planted than be told once.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-20 (same day, third operation) — **`fb-autoreply`: AUTH_ENABLED verified and the project
+  key de-blocked · the owner's TEST-PAGE decision recorded with its conditions · and 🔴 THE BOOT
+  BUDGET HAS ACTUALLY FIRED ON THIS DESK — 3 WARNs, and I proved it is STRUCTURAL, not my prose.**
+  **Verified Atlas's AUTH_ENABLED relay before acting** (he had relayed unverified twice today and
+  said so). All three of his properties confirmed exactly in `src/auth/authMiddleware.ts`:
+  **`AUTH_ENABLED` is itself fail-closed** — only literal `false`/`0`/`off`, trimmed and
+  lower-cased, disable it (`:7–9`), so a typo cannot open the gateway · **read ONCE at start** (a
+  module-level `const`) ⇒ **a change needs a gateway RESTART**, unlike `api-keys.json` which
+  hot-reloads · **passes as `project="anonymous"`** (`:25–28`), so the gateway's logs stay honest ·
+  `.env.example:9` ships `AUTH_ENABLED=true`. ⇒ **project key moved from hard-blocking to a
+  deployment decision**, with the 401 consequence kept **conditionally** and *"his call per
+  environment, restart required"* recorded. Open question 4 settled **the way he asked — with what
+  changed, not struck as wrong.**
+  🔑 **TWO THINGS I FOUND THAT NOBODY HAD RAISED, both now facts in `SYSTEM-FACTS.md`:**
+  **① A 401 cannot tell you WHICH of three causes it is** — the gateway deliberately returns the
+  same `{success:false,error:"unauthorized"}` for a missing/malformed header, an unknown key, and
+  (via the fail-closed key store) a gateway whose `api-keys.json` is missing or corrupt
+  (`authMiddleware.ts:19`, `:35–41`). ⇒ **"we got 401" is not a diagnosis**; Sober designs the
+  logging that separates them.
+  **② 🔴 Layer 3 needs a TAVILY key — a SEPARATE credential that was on nobody's list.** With
+  `TAVILY_API_KEY` unset, `src/tools/webSearch.ts:28–30` returns `{error:"web search unavailable"}`
+  and `src/routes/search.ts:23–25` turns it into **HTTP 500** (same for
+  `WEB_SEARCH_ENABLED=false`). **So switching auth off does NOT make layer 3 testable** — and note
+  the asymmetry: **`/search/classify` works without Tavily, `/search` does not**, so a pipeline
+  that classifies then 500s is a *configuration* state, not an outage. ⇒ **Atlas's "the Facebook
+  test page is the only item with no workaround" was not quite right.** Free-tier key from
+  tavily.com; the owner's to supply; now a blocked row.
+  **TEST PAGE recorded with the conditions that make it sound** (owner, 2026-10-20): a **quiet page
+  he already owns**, no throwaway page · 🔴 **quiet ≠ private — "nobody talks to it" is a fact about
+  the PAST**, the page is publicly reachable and mid-test the bot would answer a stranger on his
+  business's page · isolation is **Meta's own DEVELOPMENT mode** (events only for app role-holders)
+  · ⚠️ **UNVERIFIED — made Tanya's FIRST task, with the exact two-account experiment and "record
+  either result", and 🛑 a STOP condition if it does not hold** · 🔴 **Going Live is the owner's
+  alone and treated as a one-way door; no role proposes it or flips it to ease a test** · QA
+  footprint applies in full, and *"never message a real person"* is now load-bearing. **The DECISION
+  is made; the five IDENTIFIERS are not** — page name · page ID · App ID · page access token ·
+  webhook verify token — kept blocked and named exactly.
+  🔧 **And the decision exposed the triple-storage disease, in my own work.** Updating
+  `SYSTEM-FACTS.md` left **five files contradicting it** — `PROTOCOL.md`'s Environments table,
+  `QA.md`'s boundaries card **and** its copied environments table, `board.md`, `BE.md`,
+  `SA-Lead.md` — all still saying *"the owner's real Facebook page: nothing, EVER"* after that had
+  stopped being true. **All five corrected and swept clean.** 🔑 **The template instructs QA.md to
+  "copy PROTOCOL.md's Environments table here", and that copy is exactly what went stale** — I
+  replaced it with a pointer plus the one QA-specific line. **That is a TEMPLATE question for
+  Atlas:** a rule that says copy a table collides with the rule that says every fact is written once.
+  🔴 **THE BOOT BUDGET FIRED, AND HERE IS THE ARITHMETIC THAT SHOWS IT IS NOT FIXABLE BY ME.**
+  Final: **PM 64.8 KB · QA 61.0 · SA 60.1 · BE 57.2** (WARN >60, FAIL >120). Gate **PASSES, exit 0,
+  with 3 warnings** — ORDER 21.3 required PASS and it passes; **the zero-warning bar was the
+  2026-09-17 precedent, not the order, and I did NOT meet that bar. Saying so rather than shaving to
+  hit it.**
+  **What I fixed, because it was genuinely my defect:** my board rows were mini-essays, breaking
+  this desk's own *"a board cell is ONE line + a pointer"* rule — rewritten to pointers and the
+  three ✅ CLEARED rows removed (**a board is CURRENT state; the history is in `SYSTEM-FACTS.md`**),
+  4.9→4.0 KB, which every role pays · charter text that **restated** `SYSTEM-FACTS.md` replaced by
+  pointers (PM 16.1→14.9 KB; this alone took SA under the line before correctness work put it back)
+  · QA's stale copied table removed, which was a **correctness** fix as much as a size one.
+  **What I will NOT do, and this is the whole point:** shave substance to turn a number green.
+  **Proof it is structural:** shared reads = PROTOCOL 20.9 + board 4.0 + SYSTEM-FACTS 25.9 = **50.8
+  KB**, leaving **9.4 KB** for a role file + inbox — while the **PRISTINE TEMPLATE `PM.md` is 13.6
+  KB. PM boots at 63.7 KB with an UNTOUCHED template charter.** ⇒ **this desk cannot pass at zero
+  warnings without compacting the knowledge file**, which is exempt from size **by name**, must
+  never be compacted, holds the owner's own words, and which Atlas explicitly asked keep its
+  history. `MARIE.md` itself says *"a role is measured on making the gate pass; only Marie's is to
+  keep the shape"* — **I am the one who must not game it.**
+  ⇒ **The boot-budget vs never-compact collision is no longer theoretical: it bites a desk AT
+  BIRTH, on the day it opens, before a single REQ exists.** It is Atlas's, it is now measured, and
+  the measurement says the threshold and the never-compact rule cannot both hold for a desk whose
+  owner states a lot of facts. **My read: the boot budget should not count an append-only knowledge
+  file the way it counts a charter** — but that is his design call, not mine, and I have not touched
+  the threshold.
+  🔧 **MY OWN SLIP, caught by my own audit, in the one rule I had just written a lesson about.**
+  Writing up the stale-map story I put the **absolute paths of both gateway checkouts into the
+  desk's `SYSTEM-FACTS.md`** — a committed file. That is precisely what the workspace rule forbids
+  (*"paths live ONLY in `machine.local.md`; committed files name repos logically"*), and those four
+  lines would have been **wrong on the owner's next machine**, which is the entire reason for the
+  rule. **All four replaced with logical references** ("the OLD checkout", "the `develyst-ai` row
+  in `machine.local.md`") with the lesson intact, then **audited every file in the desk: 0 absolute
+  filesystem paths.** 🔑 **The shape of it is worth more than the fix: I reached for the vivid detail
+  because it made the story land.** A rule can be fresh in mind and still lose to wanting the
+  anecdote to be concrete — which is an argument for the audit being mechanical, not remembered.
+  **Verified after all of it:** gate PASS exit 0 (3 WARNs, named above) · **blast radius still
+  exactly ` M README.md` + `?? fb-autoreply/`** from my side · **no git write anywhere** · both
+  gateway trees untouched by me (`H:\develyst-ai`'s 11 dirty files are the owner's own) ·
+  consistency re-swept: no file still claims the page is untouchable-ever.
+  ✅ **Atlas fixed the template leak while I worked** — `_templates/project/ai-worker/tests/REGRESSION.md`
+  is now `PROJ_NAME`, not `possibility` (verified: exactly that one template file changed, 1 line,
+  his edit not mine). He also has `ATLAS.md` and `SESSION-STARTERS.md` open. ⇒ **my earlier
+  "template md5-identical across all 29 files" is true only up to that point** — restated here
+  rather than left to look wrong later.
+  **The owner's list is now: the Postgres env · the five Facebook identifiers · a Tavily key ·
+  `prompt-system.json` · the branch · whether auth is on per environment.** All "supply a value or
+  make a call" — **no design question is blocked, and the desk can design and build the pipeline.**
+
+- 2026-10-20 (same day, second operation) — **ORDER 21 follow-up: the CONTESTED gateway block is
+  CLEARED — Atlas's facts were RIGHT and my survey was reading the WRONG TREE. The defect was a
+  STALE `machine.local.md` row, which is the paths rule failing in the one direction nobody had
+  tested.**
+  **I verified Atlas's correction before acting on it rather than taking the all-clear** — the same
+  habit that produced the false alarm in the first place. **Two checkouts of the gateway exist here:**
+  `H:chipintdevelyst-ai` (2026-09-08, `src/` has 6 entries, no `auth/`, no `tools/`) and
+  `H:develyst-ai` (2026-10-20, 8 entries **with** `auth/` and `tools/`). The map pointed at the
+  old one, so I surveyed the old one, and **every absence I reported was true of that tree and false
+  of this product's gateway.**
+  **All five facts re-verified by me in the LIVE tree, read-only, with file and line:**
+  `/search/classify` at `src/routes/search.ts:67` — and its **fail-soft** really is explicit
+  (unparseable → `{search:false,…,reason:"classifier_parse_failed"}`, `:100–112`) · `/search` +
+  Tavily via `src/tools/webSearch.ts` · `GET /tiers` at `src/index.ts:45` with
+  `small`/`medium`/`flagship` in `src/config/models.ts:23` · **bearer auth + `api-keys.json`
+  genuinely FAIL-CLOSED** — `src/auth/keyStore.ts:15`, and a missing or unparseable key file logs
+  *"all requests will be rejected (401)"* (`:32`, `:58`), middleware on `/chat/*` and `/search/*`
+  (`src/index.ts:17–18`) · **date injection real** — `src/providers/index.ts:9–12`, local + UTC,
+  timezone `AI_DATETIME_TZ` default `Asia/Bangkok`.
+  🔑 **One thing in Atlas's own correction is itself wrong, and I did not record it:** he asked me
+  to note the port as *"code default 3002, 3009 configured"*. **In the live tree `src/index.ts:47`
+  codes `PORT || 3009`** — the `3002` was an artifact of the stale checkout, exactly like the five
+  absences. **Recorded as "3009 is the code default AND the configured value, and do not record 3002
+  anywhere"**, with a line saying why 3002 was ever reported. Writing his "both values" note would
+  have planted a fresh false fact while clearing a false alarm.
+  ⚠️ **I also read the WORKING TREE, not a commit** — it carried **11 uncommitted files of the
+  owner's own** (8 Bruno requests + `src/config/models.ts`, `src/demo.ts`,
+  `src/providers/_fetch.ts`). That is the correct thing to read, because it is what runs when he
+  starts the gateway — but it is recorded in `SYSTEM-FACTS.md` as such, so a later `git checkout`
+  that differs is diagnosed instead of mistaken for rot.
+  **Cleared, with the history kept, never deleted:** `SYSTEM-FACTS.md` — the CONTESTED table and
+  the stale bullet list are gone, replaced by the verified contract with evidence per line, a
+  settlement note explaining **two checkouts / stale map**, and a one-paragraph provenance record of
+  the bad survey · open question 1 struck with ✅ SETTLED under it · **open question 4 sharpened into
+  a hard block**: the key store is fail-closed, so **no project key = 401 on every call**, the
+  pipeline answers *nothing* — that was invisible while the key looked like paperwork ·
+  `board.md` blocked row → one ✅ CLEARED line (Porter sweeps it once the team has seen it) and the
+  key row now states the 401 consequence · `SA-Lead.md` / `BE.md` / `PM.md` rewritten from "do not
+  design layers 1 and 3" to "design against this verified contract", each keeping the three traps
+  that survive the clearance (fail-closed ⇒ 401 looks like an outage · do not re-send the date ·
+  `classify` fail-soft means `search:false` is an ANSWER, not an error).
+  🔴 **And the workspace-level lesson, which is mine and is now written where it binds:** the rule
+  *"code-repo paths live ONLY in `machine.local.md`"* held perfectly — **and routed an agent into
+  the wrong tree anyway, because the map was stale rather than missing.** A stale map is worse than
+  no map: it is followed confidently. **My own 2026-08-29 note on that very row said the path was
+  "found by search, not told by the owner" and asked for a confirmation that never came — seven
+  weeks.** I have **struck that note in `machine.local.md` with the outcome under it** (the guess
+  was wrong; here is what it cost) and stated the rule it yields: **a row whose path was guessed
+  gets confirmed or removed — it is never left standing as a caveat.** Both engineer charters now
+  carry the field version: *"if a repo contradicts `SYSTEM-FACTS.md`, suspect the PATH before the
+  fact, and raise it rather than correcting the fact."*
+  **Verified again after the clearance:** gate `node check-hygiene.mjs fb-autoreply` → **PASS, 0
+  warnings, exit 0** · **blast radius STILL exactly two entries** (` M README.md` +
+  `?? fb-autoreply/`) · `_templates/project` **md5-identical across all 29 files** · every
+  substitution asserted to hit exactly once (two guards fired on my own over-broad assertions and
+  were corrected rather than loosened blindly — the template's generic *"mark both ⚠️ CONTESTED"*
+  rule must survive, and it did) · **both gateway trees untouched by me**: `chipint` still at the
+  same 2 pre-existing dirty entries, `H:develyst-ai`'s 11 are the owner's own work · no git write
+  anywhere.
+  ⚠️ **One number moved and it is worth his attention: the PM boot read is now 58.2 KB, headroom
+  1.8 KB** (was 56.3 / 3.7 at desk-open; SA 53.0 · BE 50.5 · QA 53.6; gate WARNs >60 KB). **My own
+  clearance text spent half the remaining headroom** — the settlement note and the per-line evidence
+  are what stop this desk re-litigating a false alarm, so I am not trimming them. ⇒ **Porter will
+  trip the WARN on his first or second appended fact.** The boot-budget vs never-compact collision is
+  Atlas's and I left it alone; it is now imminent rather than near, and this is the measurement.
+  **Left alone on Atlas's instruction, all still open and all his:** `REGRESSION.md`'s
+  "possibility" leak · ORDER 20.2's name placeholders · `SESSION-STARTERS.md` staleness (incl. the
+  generic Porter starter being wrong on this desk) · the boot-budget vs never-compact collision.
+
+- 2026-10-20 — **ORDER 21 DONE: the desk `fb-autoreply` is open, MANUAL mode, gate PASS with ZERO
+  warnings. And the operation found two things bigger than the scaffold: 🔴 FIVE of the gateway facts
+  ORDER 21 told this desk to believe do not exist in ANY branch on this machine, and ✅ Atlas's
+  `nudge-session` flag is STALE — the sync DID land, which closes the 🔴 left open in my 2026-10-17
+  entry.**
+  **Scaffolded fresh from `_templates/project`** (nothing copied from another desk): `PROTOCOL.md`
+  (MANUAL + "roles wake each other", 16 substitutions — FE removed from the team table, the chain
+  table, the prohibitions and the repo table; greenfield; the gate command named; **an Environments
+  table whose own row says 🚫 nothing ever reaches the owner's real Facebook page**) · `PM.md` /
+  `SA-Lead.md` / `BE.md` / `QA.md` (23 substitutions; Sober's "seam between the repos" section
+  **rewritten into the three seams this product actually has** — FB webhook incl. duplicate
+  delivery, FB Send API, the gateway's failure shape, and Postgres where the owner's four
+  constraints are designed in rather than noted; Tanya's section says plainly that **no end-to-end
+  path is testable yet** and turns each of the four constraints into an observable test) · the six
+  craft files + `FAILURES.md` + `RESUME-HERE.md` **md5-identical to the template** · `inbox/` ×4 at
+  **201 B each** (no `FE.md`, no `inbox/FE.md`) · `board.md` with **6 Blocked rows already true and
+  an empty Requirements table** (no REQ exists; a board row for a non-existent artifact is fiction)
+  · `tests/REGRESSION.md` + `tests/harness/` · `archive/` · `project-docs/`.
+  🔴 **`SYSTEM-FACTS.md` seeded BEFORE the first session** (13.5 KB) with the owner's facts carrying
+  his own emphasis: backend-only, **no admin view now**, the five layers with **layer 3 = the
+  BACKEND running the query, not a human** (his correction to Atlas, recorded so nobody
+  re-introduces one), chat history kept with **>3 months deleted by a SCHEDULED job because it is
+  Facebook users' personal data**, and the four **binding** security constraints with Atlas's
+  "prompt-level defence is necessary and is not sufficient" stated plainly.
+  🔴 **THE FINDING. Five of ORDER 21.1's gateway facts are NOT TRUE of any checkout here.** Verified
+  myself rather than relayed — `git grep -il` over **all six refs** of the gateway repo (`D1`,
+  `develop`, `main`, `origin/main`, `origin/develop`, `origin/production`) plus the full Bruno
+  collection (8 requests): **`POST /search/classify` absent · `POST /search`/Tavily absent ·
+  `/tiers` and the `small`/`medium`/`flagship` tiers absent · NO INBOUND AUTH AT ALL** (Bruno's
+  `/chat` is `auth: none`; the only `Bearer` in `src/` is *outbound* to the providers; zero hits for
+  `api-keys.json`) **· no date injection anywhere in `src/`** outside `demo.ts`. What IS confirmed:
+  the four providers, the fallback chain **exactly** `deepseek→xai→gemini→openai`
+  (`src/providers/index.ts:35`), `/chat`, `/chat/multi`, `/models`, `ai.develyst.online`, the
+  `{success,data:{…}}` shape, and `latency_ms`. ⚠️ **3009 is a `.env`/Bruno convention, not the code
+  default** — `src/index.ts:32` codes `PORT || 3002`. **Cost if unsettled:** layers 1 and 3 of the
+  owner's own pipeline would be built against endpoints that 404, authenticated with a key the
+  gateway cannot read, omitting the date on the assumption it is added. **Recorded as ⚠️ CONTESTED
+  with both sides and the evidence, NOT patched and NOT "fixed" by rewriting Atlas's facts** —
+  `machine.local.md` itself says that repo path was *found by search, not told by the owner*, so he
+  may have read the deployed app or an unpushed branch. Blocked on the board; **his to settle.**
+  ⚠️ **ORDER 21.2 asks me to do something my Hard boundaries forbid** — *"write them into the REQ as
+  binding"*. I never touch REQ content, and no REQ exists for me to write into. **Not patched:**
+  the four constraints are in `SYSTEM-FACTS.md` verbatim and marked binding (step 1 of every role's
+  ritual), each role's charter carries the half it owns, and the board's top Blocked row puts the
+  copy-into-REQ-001 job on **Porter** with the ball named. Reported, not improvised around.
+  🔧 **The repo state changed UNDER me, mid-run, and the "verify at the end" habit caught it.** At
+  ~22:00 `fb-autoreply-back` was an empty folder and **not** a git repository (confirmed
+  independently: zero files, `git rev-parse --git-dir` → *fatal*). At **22:15–22:16 the OWNER
+  created and cloned it himself**; re-verified read-only at 22:17 — clone of
+  `github.com/develyst1/fb-autoreply-back`, **branch `main` with NO `develop`**, one commit
+  `80ffe34` "Initial commit" by `D1 <develyst1@hotmail.com>` holding only `.gitignore` (113 lines,
+  `.env` already ignored) + a one-line `README.md`, working tree clean. **Six files corrected** so
+  the desk is not born with a false fact; in `SYSTEM-FACTS.md` the original line is **struck with
+  the correction under it, never deleted** (this file's own rule), and *"do not assume `develop`"*
+  is now a verified fact rather than a caution. **I wrote nothing in that repo and ran no git
+  write** — proved after: working tree still clean, still exactly 1 commit.
+  ✅ **Atlas's `nudge-session` warning is STALE, and I checked instead of working around it.** The
+  copy he pointed at — `~/.claude/skills/synced/<uuid>/nudge-session/SKILL.md`, 6781 B, 2026-10-07,
+  **zero** occurrences of `list_sessions` — is an **abandoned location**. The store the harness
+  actually serves is `…/LocalCache/…/local-agent-mode-sessions/skills-plugin/…`, **15527 B,
+  2026-10-17 21:37, MD5-IDENTICAL to `_templates/skills/nudge-session/SKILL.md`** — proved by
+  invoking the skill and reading the body back (it carries the session-id route, the doorbell
+  budget and `RELAY.md`). ⇒ **this desk's manual mode is NOT at risk, and the 🔴 in my 2026-10-17
+  entry is CLOSED: the sync landed.** The 6781-B leftover is cosmetic; **only the owner can clear
+  it**, and nothing depends on it.
+  **Verified, not assumed:** gate `node check-hygiene.mjs fb-autoreply` → **PASS, 0 warnings, exit
+  0** (run twice — before and after the repo correction) · **`_templates/project` md5-identical
+  across all 29 files, before and after** · **blast radius is exactly two entries**
+  (` M README.md` + `?? fb-autoreply/`), diffed against a `git status` snapshot taken before I
+  started · **zero absolute paths** in any file under `fb-autoreply/` · every substitution asserted
+  to hit exactly once and every placeholder class asserted absent, so a miss threw instead of
+  shipping quietly · each charter diffed against its template line by line · **no git write
+  anywhere.**
+  **Also:** `machine.local.md` +1 row +1 Updated line (git-ignored; carries both observations and
+  the branch fact) · `README.md` project table **+1 row** (14 desks).
+  🔧 **Template defect found, reported not patched:**
+  `_templates/project/ai-worker/tests/REGRESSION.md` line 1 still reads *"Regression checklist —
+  **possibility**"* — one desk's name leaking into every desk born since 2026-09-17. Fixed in this
+  desk's copy only; **the template is Atlas's call** (it is the same family as ORDER 20.2).
+  ⚠️ **ORDER 20.2's name placeholders are STILL NOT INSTALLED**, and this desk got lucky: its
+  roster *is* Porter/Sober/Jason/Tanya, so the hard-coded names happened to be correct and only
+  Fern had to be cut. **The next desk with a different cast will not be lucky.** His plan, awaited.
+  ⚠️ **`SESSION-STARTERS.md` — nothing to add, and that is the defect.** There is **no per-desk
+  starter line** to extend: the role starters are `<project>`-generic. The only desk-specific
+  enumeration is Tanya's *"(smart-scheduler, DID-046…, code-report)"*, which **already omits
+  `possibility`, `pun-kub-fang` and `safe-goods`** — and the Porter starter still says *"you talk
+  only to me and to Sober"* and calls the four-hat PM *"smart-scheduler only"*, while the template
+  `PM.md` every new desk is born with gives Porter four hats and Tanya. **On this desk the generic
+  Porter starter is wrong on both counts.** Atlas's file; **flagged a third time, not edited** —
+  the same call I made on 2026-09-18.
+  ⚠️ **This desk is born 3.7 KB from the boot-budget WARN, and that is the collision Atlas still owes.**
+  Measured at desk-open: **PM 56.3 KB** · QA 52.0 · SA 50.2 · BE 48.3 (gate warns >60 KB). `SYSTEM-FACTS.md`
+  is 17.4 KB of it and is **append-only and exempt from SIZE but still counted in the boot read** — so
+  Porter crosses the WARN after a handful of appended facts, through the file working exactly as
+  designed. **I am not trimming it:** the CONTESTED table is the thing standing between Jason and a
+  pipeline built on 404s. This is the same **boot-budget vs never-compact collision** recorded as
+  Atlas's in the ORDER 6 status block, now with a date attached to when it will bite here.
+  **What remains the OWNER's, named in `SYSTEM-FACTS.md` → Open questions and on the board:**
+  ① settle the five contested gateway facts ② the Postgres connection env (named, EMPTY — nobody
+  invents one) ③ a gateway project key ④ **the entire Facebook side, which nobody had stated: page,
+  app, page access token, webhook verify token, and above all a TEST page that is not his real
+  one** — until then there is no safe end-to-end evidence path and Tanya's verdict is
+  `NOT_TESTED` by construction ⑤ `prompt-system.json`'s content ⑥ whether work lands on `main` or a
+  branch he creates. `git init` is **done — by him, 22:15.**
 
 - 2026-10-17 — **`nudge-session` SKILL INSTALL: Porter's diagnosis CONFIRMED, but I did NOT install
   it, and I was right not to — the install target is a SYNCED store fed from the owner's claude.ai

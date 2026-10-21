@@ -399,3 +399,64 @@ manual mode nothing does, so the only time anyone sees it is when the owner asks
 or Marie. A gate that is only read when someone remembers to look is prose with a
 script's costume. **It must run inside a ritual someone performs anyway** — the PM's
 session start — and its result must land where the owner reads it.
+
+### A stale map is worse than a missing one (2026-10-20)
+
+The paths rule — *code-repo paths live ONLY in `machine.local.md`* — **held perfectly and
+still routed an agent into the wrong tree.** Two checkouts of the LLM gateway exist here:
+`H:\chipint\develyst-ai` (2026-09-08, no `auth/`, no `tools/`, no `/search`, no `/tiers`)
+and `H:\develyst-ai` (2026-10-20, the live one). The owner named the live path when he asked
+for the project; I read from it and **never updated the map.** Marie followed the map, as the
+rule tells her to, surveyed the dead tree, and reported five facts "absent" — correctly, of
+that tree. She blocked a desk on it, which was right.
+
+🔑 **The rule was written for a missing entry. The failure mode is a stale one, and it is
+worse: a missing path stops you, a stale path is followed confidently.**
+
+And the warning existed. That row carried Marie's own 2026-08-29 note — *"found by search,
+not told by the owner"* — asking for a confirmation that never came for **seven weeks**.
+
+**Rule this yields:** a row whose path was **guessed** gets confirmed or removed. It is never
+left standing as a caveat, because a caveat on a map is read as a map. The field version, now
+in both engineer charters: *if a repo contradicts the knowledge file, suspect the PATH before
+the fact.*
+
+### I broke my own skill three times in one day (2026-10-20)
+
+Recorded because the pattern is mine and it will repeat if it is not named.
+
+1. **Names in shared skills.** I corrected the owner's `nudge-session` for hard-coded names
+   on 10-06, then shipped `Porter`, `Tanya`, a host name and a desk name in my own four skill
+   files on 10-07. Marie found them and blocked the spread.
+2. **The stale map**, above.
+3. **The port.** Correcting Marie on the stale checkout, I told her to record the port as
+   "code default 3002, 3009 configured" — taking 3002 from *her survey of the tree I had just
+   proven was wrong*, without opening the live one. `src/index.ts:47` codes `3009`. She
+   refused to record it and said why. **She was right to distrust the correction.**
+
+**The common shape: I verify other people's claims and not my own.** `verify-before-relay`
+asks "what did I open?" — in all three I had opened something, just not the thing I was
+asserting about. **Writing the rule does not immunise you against it; only a check does.**
+
+### The knowledge file's growth is on a collision course with the boot budget (2026-10-20)
+
+Two rules I wrote are now in direct contradiction, and the collision has a date.
+
+- ORDER 6: the knowledge file is **exempt from every size rule** — append-only, never
+  compacted, so a fact is never lost.
+- ORDER 12.5: the gate measures each role's **boot read**, which **counts that file in full.**
+
+`fb-autoreply` was born at **PM 56.3 KB** against a 60 KB WARN, with `SYSTEM-FACTS.md` 17.4 KB
+of it. Clearing one false alarm took it to **58.2 KB — 1.8 KB of headroom on a desk that has
+not written a single REQ.** It trips on the first or second honest append. The file working
+exactly as designed is what breaks the budget.
+
+**The resolution is not compaction** (that loses facts, which is the whole point of the
+exemption) **and not a bigger budget** (it only moves the date). It is the shape skills
+already use: **an index at the top that is read at boot — one line per fact area — with the
+detail in sections that a role opens when it is working on that area.** Progressive
+disclosure, applied to knowledge. Nothing is deleted, nothing is summarised, and the boot
+cost stops tracking the file's total size.
+
+**Not yet designed in detail, not ordered.** It needs the owner's go and Marie's hands, and
+it should land before a desk is forced to choose between recording a fact and passing its gate.

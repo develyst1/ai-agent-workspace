@@ -1,4 +1,4 @@
-# Regression checklist — possibility
+# Regression checklist — PROJ_NAME
 
 > Owned by Tanya (QA). Everything the product must STILL do after any change.
 > Every delivered REQ adds its cases here; every escaped defect adds the case that
