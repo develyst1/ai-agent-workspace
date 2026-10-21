@@ -31,7 +31,7 @@ customer never said.
 
 ```markdown
 > ลูกค้า (10-06, verbatim): "<พิมพ์ตามที่เธอพูดเป๊ะ>"
-Porter's reading: every leave adds one week.   ← MINE, unconfirmed
+the PM's reading: every leave adds one week.   ← MINE, unconfirmed
 ```
 
 Anyone downstream can now see which half is testimony and which half is interpretation.

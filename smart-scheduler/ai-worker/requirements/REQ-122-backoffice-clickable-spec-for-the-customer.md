@@ -282,3 +282,8 @@ Verbatim: `…/khwan-answers-proto-v2-part2-2026-10-19-VERBATIM.md`. Still unans
 - **Team A:** TASK-831…835, ≈4.7 d (Fern; Jason on 833).
 - **Team B:** TASK-745/746, ≈6.6 d (Fanta + Silver review).
 - **≈11.3 engineer-days in total**, run in parallel. The front-office pages move to Team A. One self-contained .html.
+
+### 8.2 ✅ v3 DONE (2026-10-21/22)
+- **Team A** (831–835) + **Team B** (745/746) verified. TEST-115 parts A + B PASS, with every ❌ fixed.
+- **The final single file:** `dist/SOM-BACK-OFFICE-v3.html` (3,606,013 B), copied to `project-docs/customer-2026-10-22-backoffice-prototype-v3/`.
+- **Khwan draft:** `COPY-DRAFT-khwan-backoffice-prototype-v3-2026-10-22.md`.

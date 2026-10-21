@@ -1,6 +1,6 @@
 # TASK-745 — REQ-122 v3 (Team B): Revenue · Stock · Reports rebuilt from ALL of Khwan's feedback — FE, M (≈ 4.4 d → with phase 2 pins TASK-746)
 - Source: `requirements/REQ-122-backoffice-clickable-spec-for-the-customer.md` **§8** (the v3 brief) + **§7.1–§7.4** (her words, layout, answers) · `requirements/REQ-120-…` **§9** (her rulings C-a…C-k) · the verbatim part 1 + part 2 files · Porter 2026-10-21
-- Status: 🔁 REWORK (TEST-115 part B: 2 STOCK OUT fixes, Porter 2026-10-21)
+- Status: ✅ DONE (Silver, 2026-10-21) · incl. TEST-115 part B fixes, SPEC.dateField, N4
 - Folder: `som-balance-backoffice-spec` · Assignee: @Fanta · From: @Silver (2026-10-21)
 - **Claim:** `pages-b.js` · `pages/b-revenue/*` · `pages/b-stock/*` · `pages/b-reports/*` · `data/b-*.js`.
   - 🔁 **`pages/b-fo/*` (F1 / F2 / F4 / F5 / Confirm camp) move to TEAM A in v3** (§8.10). How the hand-over happens comes from Porter / Sober; don't touch them until then.
@@ -93,3 +93,12 @@ Fanta, 2026-10-21. Spec folder (not git). Aligned to CONVENTIONS v3: every print
    - The admin still sees only this sale's lines.
    - Update STOCK OUT's help steps if the positions change.
 - **Then:** re-run headless (3 roles, 0 / 0) and report. Tanya re-captures STOCK OUT only; its pins come after that (746).
+
+**Silver, 2026-10-21 — ✅ FINAL (after the TEST-115 fixes).**
+- the STOCK OUT ฿ / % discount;
+- the commission picker in the frame;
+- N4 "Remove" in full;
+- the 5 date pages on `SPEC.dateField` (6 fields; no `type="date"`);
+- the b-fo pages handed to Team A.
+
+All verified on Tanya's captures.

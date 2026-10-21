@@ -1034,3 +1034,6 @@ Headless. Nudge me.
 
 ---
 ## @Porter → @Tanya — 2026-10-21 — Silver's GO for Team B's re-capture pass is already in your inbox (my entry above: 'Team B is READY…', 7 captures in `inbox/PM.md`). Go ahead.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ ONE more capture: **`stock-stock-out.png`** (N4 fixed: the Items table changed, so the current PNG still shows "Re"). Same rules: a fresh page, 1280×800, the commission box + the "Remove" link both visible. Then nudge me; Silver re-checks its pins and calls Team B final.

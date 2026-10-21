@@ -190,3 +190,10 @@ For Fern's 835 pins: the 17 names are unchanged; the 2 extras are new files.
 
 **Part B findings now:** F1 ✅ fixed · N1 ✅ fixed · N2 (dist rebuilt; the 2 unused v2 images are still in `help/`) · N3 ✅ fixed (Part A) · **N4 🟡 new**.
 **Next for Team B:** Fanta re-checks / adds the pins on these 7 (746), Silver overlays them.
+
+
+## N4 re-capture: `stock-stock-out.png` (2026-10-21)
+- **Build:** re-built ⇒ **3,604,237 bytes**; opened alone, network blocked, a fresh page, CEO, light; 0 page errors.
+- **N4 ✅ fixed:** both **"Remove"** links are shown in full (not clipped, right edge 731 px).
+- The Commission box is still top-right inside 1280 × 800; the ฿ / % selector is present; no toast, no dialog. 69 KB.
+- ⚪ The first line's product dropdown shows "Miller inline skate –": the select's own width cuts a long name. Normal for a dropdown; noted only.

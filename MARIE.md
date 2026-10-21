@@ -1774,7 +1774,115 @@ If 29.1 cannot be done calmly before then, **let the first run find nothing.** H
 will say so, it will be true, and it is now traceable to a named cause rather than to the
 design. **A rushed seed on a live desk would cost more than a thin first report.**
 
+
+### ORDER 30 — ✅ DONE BY ATLAS 2026-10-21 — the two digest blockers ORDER 29 surfaced (record only, nothing for Marie to run)
+
+Marie's ORDER 29 report found `extract-day.mjs` running but producing **empty digests on every
+desk**, and the template `TEAMS.md` in a shape the scripts cannot read. Both were mine; both fixed:
+
+1. **`_templates/project/ai-worker/TEAMS.md`** — Role and Team merged into one `Role · team`
+   cell, with a warning line saying why. The three scripts read only rows with a `·` in the
+   second cell; the split template made every new desk report "no roster rows found".
+   (`TEAMS.md` is `deskOwned`, so no manifest recompute.)
+2. **`scripts/memory/extract-day.mjs` identity rule** — *corrected 2026-10-22.* The first fix
+   (accept a reply opening `<Name> (<ROLE>…)`) **mis-attributed Silver's SA-B session to the PM**
+   and was removed. Identity now comes from the **operator's first message** (the starter):
+   `You are <Name>` or `อ่าน <ROLE>[-B] Team…`, matched against the roster by name AND role, no
+   guess when two rows fit. A session continued after compaction opens with a summary instead —
+   for those, the summary's own `You are / I am <Name>` line decides (an off-roster name such as
+   Atlas ⇒ not a role's session), else the appositive `<Name>, [the] <own role>`. A looser rule
+   pinned Atlas's own session on Fern because its summary quoted her starter — caught and fixed.
+   The old `I am <Name> · <ROLE>` reply opening still works as a fallback.
+   **Proved in a scratch copy against the real transcripts:** smart-scheduler — all **8 roles**
+   attributed (Porter, Sober, Jason, Fern, Tanya, Silver, Bob, Fanta); 10-20 **0 → 212**
+   entries, 10-21 **0 → 658**. Nothing written into a real desk — the first real digest is Bunny's.
+3. **Transcript folder path** — the script computed a folder name that does not exist (an
+   extra leading `-`); fixed to the name Claude Code actually uses.
+
+⚠️ **Still open:** sessions started *outside* the workspace root write their transcripts to a
+different folder the script does not read (Marie's finding). Bunny's 05:11 report shows which
+desks came up empty; decide that fix from her report, not from a guess.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-21 23:50 (FIFTH operation, step 4 of ORDER 29 — run COMPLETE) — **`smart-scheduler` done, all three
+  held items: ORDER 28 shelf · ORDER 29.1 `TEAMS.md` (8 rows, two teams) · ORDER 26.1 the 5 craft files ·
+  `check-harness`: `harness 2.6.1: 15 desk(s), all current`, exit 0 — first time all 15 since the bump.**
+  **Live check, three signals, immediately before:** `list_sessions` (group SOM) all `isRunning: false`, last
+  activity 15:46Z; newest desk write 22:45:58 (`inbox/PM.md`), none after 22:46 at 23:37:23. ⚠️ **The idle flag
+  alone LIED tonight:** at 22:43 the same listing showed all eight idle while `TASK-835`, the log and four inboxes
+  were being written that minute, and at 22:44 `FE-B - Fanta` flipped to running — so I held the desk then and
+  went only after 51 quiet minutes. The spawned PM ran a live guard (any file it did not write, newer than its
+  start) before each part; clean every time. **What landed, verified by me, not from its report:** `memory/` =
+  `MAP.md` (sha `85a661c0…`, the template's) + `struck.md` 0 B, nothing else · `TEAMS.md` roster == PROTOCOL: YES
+  through all four readers (Porter PM · Tanya QA · Sober/Fern/Jason team A · Silver/Fanta/Bob team B; team B
+  inboxes `SA-B`/`FE-B`/`BE-B` from PROTOCOL line 25; one SPEC/TASK sequence per "Artifact numbering") ·
+  `install.mjs` archived the 3 differing craft files first (`archive/*.before-2.6.1.2026-10-21`, CR-stripped
+  sha `2eb65bd8…`/`8580a81d…`/`77fb2d78…` = **exactly my pre-run fingerprints**), then placed all 5 — each now
+  `cmp`-identical to the template. **The PM did not object:** it read the 3 diffs (names → roles only) and found
+  every concrete fact still on the desk — F-002 at `FAILURES.md:348`, F-022/F-023 at :153/:145, `ecosystem.cjs` in
+  `SYSTEM-FACTS.md` from :906. No log/board/inbox line, no role woken, no git.
+  **Gate, all 15, before vs after:** identical verdicts and fail counts on every desk (9 PASS / 6 FAIL);
+  the one count that moved is `smart-scheduler` warn 3 → 4 = `log/2026-10-21.md 40.1KB > 40.0KB`, from the
+  team's own entries at 22:42–22:45, not this run. **Blast radius vs the owner's 22:50 commit `b18c065`:**
+  `MARIE.md`, `smart-scheduler/ai-worker/{.harness, attribution.md, quote-dont-paraphrase.md,
+  verify-before-relay.md}` modified; new `TEAMS.md`, `memory/`, `reproduce-first.md`, `team-brainstorm.md`, 3
+  archive backups — nothing else.
+
+- 2026-10-21 23:45 (FIFTH operation, proof of ORDER 29.1) — **`extract-day.mjs` now RUNS (exit 0, digest
+  written) — but on this workspace's real transcripts it produces ZERO entries for EVERY desk, including the
+  busiest one. `TEAMS.md` was the blocker of the exit 2; it is not the last blocker. Bunny's 05:11 digests will
+  be header-only.** Proved by running, in the scratchpad, never in a desk (so Bunny's first run stays the first):
+  a byte-identical copy of the script (`cmp` clean) in a scratch tree mirroring all 15 desks' real `TEAMS.md`,
+  reading the REAL transcript folder. (a) The fixed path: the script's own expression with the real root →
+  `…\.claude\projects\H--ai-agent-workplace-ai-agent-workspace`, exists: true. (b) `dte 2026-10-21` → `262 B, 0
+  section(s), 0 entries`, exit 0, 10.6 s over ~0.9 GB. (c) `smart-scheduler` (scratch-only roster built from its
+  PROTOCOL; the desk itself still has none) for 2026-10-20 and 2026-10-21 — eight role sessions, hundreds of MB of
+  turns — → **0 sections, 0 entries both days.** (d) A 3-line synthetic transcript whose reply opens
+  `I am Porter · PM` and names `dte/ai-worker` → **1 section, 3 entries, correctly attributed.** So the script
+  and the seeded shape are right; **the attribution rule does not match how this workspace's roles talk.**
+  🔴 **Cause, measured:** extract-day attributes a session ONLY by a `/desk <desk> <Name>` command or a reply
+  opening `I am <Name> · <ROLE>`. Across all 16 transcripts here: **zero `/desk` invocations, zero identity
+  lines** — the roles open with e.g. `Porter (PM) จบรอบ…`. Every turn is skipped as "unknown". The same rule
+  feeds `session-desk.mjs`, so `memory-cue.sh` will stay silent here too. ⚠️ **Second, independent gap:**
+  sessions whose cwd is not the workspace root write transcripts to OTHER folders the script never reads —
+  `Porter-FB` (fb-autoreply) runs from the `develyst-ai` repo folder, the old dispatchers from `H:\`. Neither is
+  mine to fix: the rule is Bunny's design (Atlas), the opening line is each desk's charter (per-desk PM, on an
+  order). **Not patched.**
+
+- 2026-10-21 23:40 (FIFTH operation, step 3 of ORDER 29) — **ORDER 29.1 DONE on the 14 quiet desks:
+  every one has `ai-worker/TEAMS.md`, and every one's roster reads back EQUAL to its own PROTOCOL.md team
+  table through the exact regexes of all four readers · `smart-scheduler` not yet (step 4).**
+  🔴 **The order's shape was wrong, and I proved it by running before seeding:** ORDER 29.1 says to transcribe
+  "into the template's `TEAMS.md` shape", but the template puts Role and Team in SEPARATE columns
+  (`| Porter | PM | all |`), while `extract-day.mjs` and `session-desk.mjs` match
+  `^\|\s*([A-Z][A-Za-z]+)\s*\|\s*([A-Z]{2,})\s*·` and `ring-after-handoff.mjs` needs a `·` in cell 2 —
+  i.e. `| Porter | PM · all |`, the shape the sibling's live desks use. A byte-identical copy of
+  `extract-day.mjs` in the scratchpad, fed a correctly-filled template-shape file: `no roster rows found in
+  dte\ai-worker\TEAMS.md`, **exit 2** — the template, filled faithfully, still blocks Bunny. Same file with
+  the cell merged: exit 0. **So the desks got the template's text and columns with ONE change — Role and
+  Team in one cell — and a note in each file saying why, so nobody "fixes" it back.** ⚠️ **The template
+  itself (`_templates/project/ai-worker/TEAMS.md`) still has the broken shape** — every desk born from it
+  will block extract-day again. Not changed by me (`_templates/` needs approval); Atlas's to fix.
+  **How:** one spawned PM per desk, all 14 in parallel at 22:45, live-checked first (all non-SOM sessions
+  idle since 2026-10-20 or earlier; newest file on each of the 14 desks was the 21:22 `pm-hub.sh` install).
+  Each PM had one brief: `cp` the template (never retype it), Edit in a fixed provenance block, replace the
+  table with one row per role in ITS OWN PROTOCOL table, delete rows for roles the desk does not have (row
+  only), blank — never guess — a seat with no name, Session name empty unless sourced.
+  ⚠️ **All 14 PMs were cut off by an API rate limit (HTTP 429) before reporting**, so I re-verified from
+  disk instead of from their words, after the reset: all 14 files present (written 22:46:08–22:46:17), all
+  14 carry the provenance block, no template placeholder row left, all 56 data rows have an empty Session
+  name (no desk records one), CRLF consistent (CR = LF on each), and a read-only checker applying the
+  readers' own regexes says **roster == PROTOCOL: YES ×14** (e.g. `dte`: Porter PM · Sober SA · Fern FE ·
+  Jason BE). **No blank rows were needed** — every seat each PROTOCOL lists has a name, and every role with a
+  charter file is in its PROTOCOL table. **No PM wrote anything else**: no file on the 14 desks except
+  `TEAMS.md` changed after 22:44. Inbox files named by the rows but absent on disk (convention kept, not
+  created): `api-linkage2`, `develyst-ai`, `did-api-center-c#` (PM/SA/BE), `layout-pattern-app`,
+  `manager-gold` (all four), `code-report` (QA). `check-skills`' roster check is no longer inert.
+  📌 **The owner committed and pushed at 22:50 (`b18c065`, 327 files)**, which swept in this run's work up
+  to then (`harness.json`, the `.harness` files, `.gitignore`, both design copies, the 14 `TEAMS.md`, these
+  log lines). **Not mine — git is his** — but it means `git status` is now clean and my session-start
+  snapshot is no longer the right baseline; blast radius from here is measured against `b18c065`.
 
 - 2026-10-21 22:55 (FIFTH operation, step 2 of ORDER 29) — **ORDER 29.2 DONE: both absent files brought
   over from the sibling, as CLEAN copies, not verbatim — and a `.gitignore` gap closed that tonight's run

@@ -1,15 +1,22 @@
 {
   "harness": "develyst-harness",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "installedAt": "2026-10-21",
   "packageHashes": {
-    "ai-worker/add-failure.mjs": "7e3e39d7e707940f1affd48c1036c11051fccb7ccf638d4f910c9f805a2ee808",
-    "ai-worker/append-log.mjs": "97a93d9616020e9466be171ac584ec9b73510893283ef2f4af58920947beebe0",
-    "ai-worker/drain-inbox.mjs": "6b8db5188b68d2c80c39a1b212a9becb2d14a16140c311a0f196e7ecc042d2b0",
-    "ai-worker/tools/pm-hub.sh": "327289a05ced4f942730f9b9f7f2d4c31593f56d9b82c0d5f2be4155cd491266",
-    "ai-worker/tools/nudge-count.sh": "997d28f124a536dbc5853ee0dfa25586bf72b4d44ac874e2e1bc20259a975add",
-    "CLAUDE.md": "5aa8354cd99c8f575a6211838e4769128e1aa00e600e9a0ba4903362da019712",
+    "ai-worker/add-failure.mjs": "2d9757735f33b4af6a7fa5252d2b2ccec3f89547d267111fa202c44322dddf00",
+    "ai-worker/append-log.mjs": "a01b01a1b582dc2d4cc59a00e388e9dd6c3f5fa095060a2b33df1342744a9979",
+    "ai-worker/drain-inbox.mjs": "a90f94fa028a2255ec777bb3489ff2021fcdf3a7d4786483967dcd8882f22b1b",
+    "ai-worker/tools/pm-hub.sh": "777f42870cd2509a204eaacf2f7bde7d2e2637021a9bd9124f3eeed9138425d4",
+    "ai-worker/tools/nudge-count.sh": "25946053a106ac55c9281e7ffc2be36b90d21c095dfd95f24e0c4579e1a5d5b0",
+    "ai-worker/verify-before-relay.md": "29ec9bca9aa7672150e6f6019f184e7a59f5e74d3787c80f1e6ede32e42c5029",
+    "ai-worker/reproduce-first.md": "fc9c14869c737f0475ad7e64ce94e3904b2b0a1e72f96cae9c967c3672ce25d9",
+    "ai-worker/quote-dont-paraphrase.md": "8f3918c92cbc80902c346c76ac8c37643567a5709741bce6ed29bd46bdbb82a4",
+    "ai-worker/check-by-running-not-reading.md": "9f593b753cf8bf078b69c194894353d89f576365ef6d5819704110f9dfcadc7a",
+    "ai-worker/write-it-now.md": "422295304af8f6421f87ea0ad80e0841cc1ea227ea2fc0f455a03d7d46cbaef0",
+    "ai-worker/team-brainstorm.md": "1676625fce330675ed9f1667399bdee0b02a923c321c9efc75d3345aaf9a0c39",
+    "ai-worker/attribution.md": "cb79b4c4f6b6a30beb104346e100d97b000a63e5d263cf3c869602f2f197d7e0",
+    "CLAUDE.md": "bc694068200ca81a6498c27d3d2ed1852035df3ac237cfe9a7e2e9e93003b9de",
     "AGENTS.md": "e9975a71d3576d4afbab0e692658515b19e1679bfcbbe8a1f5c82d8d17ee1bac",
-    "ROLES.md": "fd62e5a5fa9e6cf01a7e9c7b4465e234b1ff93417b9f63d2c66e00cd3e1e547b"
+    "ROLES.md": "315e66f7a76818ab3356b02f5681e7320d3f9e8f95a44aaa35b2582de27d6f57"
   }
 }

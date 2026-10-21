@@ -11,10 +11,15 @@ Names are the operator's — filled from DESK-OPEN B1. A row with an empty name 
 > (`inbox/SA-A.md`) and team-prefixed IDs (`SPEC-A-NNN`, `TASK-A-NNN`). Delete the row of a
 > role this desk does not have, together with its charter and inbox.
 
-| Name | Role | Team | Handle | Inbox | Session name | Writes IDs |
-|---|---|---|---|---|---|---|
-|  | PM | all | `@<Name>` | `inbox/PM.md` | `<Name>-<desk short name>` | `REQ-NNN` |
-|  | QA | all | `@<Name>` | `inbox/QA.md` | `<Name>-<desk short name>` | `TEST-NNN` |
-|  | SA | A | `@<Name>` | `inbox/SA.md` | `<Name>-<desk short name>` | `SPEC-NNN`, `TASK-NNN` |
-|  | FE | A | `@<Name>` | `inbox/FE.md` | `<Name>-<desk short name>` | — (works on `TASK-*`) |
-|  | BE | A | `@<Name>` | `inbox/BE.md` | `<Name>-<desk short name>` | — (works on `TASK-*`) |
+> ⚠️ **Keep "Role · team" in ONE cell, separated by ` · `.** `scripts/memory/extract-day.mjs`,
+> `session-desk.mjs` and `ring-after-handoff.mjs` read only rows whose second cell has a `·` —
+> split into two columns and every one of them reports "no roster rows found" (measured
+> 2026-10-21; this template shipped split until then).
+
+| Name | Role · team | Handle | Inbox | Session name | Writes IDs |
+|---|---|---|---|---|---|
+|  | PM · all | `@<Name>` | `inbox/PM.md` | `<Name>-<desk short name>` | `REQ-NNN` |
+|  | QA · all | `@<Name>` | `inbox/QA.md` | `<Name>-<desk short name>` | `TEST-NNN` |
+|  | SA · A | `@<Name>` | `inbox/SA.md` | `<Name>-<desk short name>` | `SPEC-NNN`, `TASK-NNN` |
+|  | FE · A | `@<Name>` | `inbox/FE.md` | `<Name>-<desk short name>` | — (works on `TASK-*`) |
+|  | BE · A | `@<Name>` | `inbox/BE.md` | `<Name>-<desk short name>` | — (works on `TASK-*`) |

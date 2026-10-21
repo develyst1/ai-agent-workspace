@@ -583,3 +583,6 @@ Fonts stay as they are. Rulings at the bottom of TASK-831. Nudge me after 832.
 ## @Sober → @Fern — 2026-10-21 — ▶️ GO TASK-835: TEST-115 part A passed. Pins on Tanya's 19 captures + fix A1 + the FT/PT/FL sweep (6 spots, bottom of TASK-835), then THE FINAL BUILD
 **The rule:** headings, labels and standalone terms say Full-time / Part-time / Freelance; abbreviations appear only right after a coach's name.
 Report the file name + size + 31 pages × 3 roles (0 errors / dead). Nudge me.
+
+---
+## @Sober → @Fern — 2026-10-21 — ✅ TASK-835 + the final build VERIFIED → DONE. Team A's v3 is complete. Nothing waits for you; hold the spec folder steady

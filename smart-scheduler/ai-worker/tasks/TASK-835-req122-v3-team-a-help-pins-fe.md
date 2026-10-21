@@ -35,3 +35,21 @@
 1. the pins on the 19 captures, every step pinned;
 2. `node build/single.mjs`;
 3. report the **file name + size** and 31 pages × 3 roles (0 errors · 0 dead).
+
+---
+## FE report — Fern, 2026-10-21 — TASK-835 DONE: pins on Tanya's v3 captures + A1 + the FT/PT/FL sweep + THE FINAL BUILD
+**THE BUILD:** `dist/SOM-BACK-OFFICE-v3.html` = **3,606,013 bytes (3.44 MiB)**, md5 `540dc06ba50a…`. Opened ALONE from an empty folder (`file://`) in **headless Edge AND headless Chrome**: **31 pages × 3 roles = 93 renders · 0 errors · 0 dead buttons · 0 load errors · 31/31 help images** (35 PNGs inlined). Questions/answers: `somspec.v3`, export lists 31 pages.
+**Pins:** all **17** Team A pages (8 Salary · 2 Notification · Role Setting · User Setting · F1 · F2 · F4 · F5 · D3) re-placed on Tanya's 1280×800 captures; **every step has its pin** (17/17 pages, 0 steps without one). Method: each page is rendered at 1280×800 in a headless browser and each step's target element is *measured* (x/y/w/h in %), then written into the page's `help.pins` (the pins follow the real layout, not my eye). I looked at the [?] popups of Monthly Payment, F4 and Payment Setting on the PNGs: the pins sit on the right elements.
+  - Where a step's target is below the 1280×800 frame, the pin is clipped to the frame edge (Payment Setting commission card, Payment Detail table, Other Income Detail, My slip card); **one** step has nothing visible at all: *Payment Detail step 4 (the teaching-hours table)*, pinned as a thin strip at the bottom edge ("it continues below").
+  - `help/home.png` and `help/datefield-open.png` are not page captures (Home has no [?]); not pinned.
+**A1 + the sweep (all 6 spots done + the Thai steps that read as headings):** Notification Setting h2 "Coaches (Full-time / Part-time)" · Payment Setting tick labels "Full-time (to the Full-time pool)" / "Part-time" / "Freelance" and th "Full-time shares" + "the Full-time pool … all Full-time coaches" · Role Setting tick labels ×2 → Full-time / Part-time / Freelance · commission table values "Full-time pool" ×4 · slip row "Full-time pool 1,200 ฿ ÷ 6 Full-time coaches" · plus Nelson's profile text and the Thai steps of Notification Setting and Role Setting. Stay as FT/PT/FL (after a coach's name): the Employee / Monthly Payment / Daily Training Report type columns, Kid's "PT + FL" badge and day grid, "Nelson (FT)". Grep for "FT pool / FT shares / (FT / PT)" and the old tick labels: 0 left.
+**Files:** `pages/a-*/*.js` (17 page files: `help.pins` + the sweep spots), `data/a-salary.js`. Not touched: `pages-b.js`, Team B pages, the old `b-fo` files (kept on disk, unloaded).
+**Not done / caveats:** screens not eyeballed beyond the three above; the build contains Team B's pages as they are at this minute (Silver may still change them: a final re-build after her last edit is one command).
+
+## ✅ 2026-10-21 — @Sober: TASK-835 + THE FINAL BUILD VERIFIED → DONE
+- **The final file:** `dist/SOM-BACK-OFFICE-v3.html`, **3,606,013 bytes (3.44 MB)**. Served ALONE from an empty folder: 31 pages, 50 role-allowed renders · **0 errors · 0 dead**.
+- **Pins:** on all 17 Team A pages, every [?] step has its pin. Every image loads from inside the file at **1280×800**.
+- **A1 + the sweep:** the page text has "Coaches (Full-time / Part-time)" · "Full-time shares" · "Full-time pool". 0 left of "Coaches (FT / PT)" / "FT shares" / "FT pool" / "÷ 6 FT".
+  - The tick labels read Full-time / Part-time / Freelance on Payment Setting and Role Setting.
+  - The abbreviations stay only after a coach's name.
+- **Team A's REQ-122 v3 work (831–835) is complete.**

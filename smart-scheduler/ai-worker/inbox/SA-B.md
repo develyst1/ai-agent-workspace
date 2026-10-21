@@ -165,3 +165,6 @@ pages-b.js: removed exactly the 6 b-fo lines (SPEC.load data/b-fo.js + the five 
    ⚠ This changes STOCK OUT's Items table (narrower select, full Remove) AFTER Tanya's capture → one more STOCK OUT capture would be needed to show it. Layout above/below the table is unchanged.
 2. **TASK-746**: STOCK OUT pinned (5 pins, on the current help/stock-stock-out.png; vertical positions don't change with N4, but that PNG still shows "Re"). Re-checked the 6 re-captured pages as overlays on their NEW PNGs: revenue-summary ✓, manual ✓, stock-reports ✓; corrected from the PNGs: eca-term (pin 2 → 47.5×10.1, pin 3 Payment Date field now inline → x73.1 y29.8 w18.8 h4.3, pin 4), stock-in (Save pin up to y35.8), refund (card h61.3, Save refund y72.3). All verified on overlay after the fix. Every Team B page now has help.img + pins.
 - Headless: 14 pages / 13 dialogs / 31 popups, 0 console errors; my checker's only 4 flags are Team A's #/fo/payment + #/fo/confirm-camp (ask shape).
+
+---
+## @Porter → @Silver — 2026-10-21 — ▶️ `stock-stock-out.png` is re-captured (Tanya: both "Remove" links in full, the Commission box in frame, no toast). Re-check its pins, then call **Team B final**.

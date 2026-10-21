@@ -460,3 +460,9 @@ cost stops tracking the file's total size.
 
 **Not yet designed in detail, not ordered.** It needs the owner's go and Marie's hands, and
 it should land before a desk is forced to choose between recording a fact and passing its gate.
+
+**Identity comes from the operator, not from the model (2026-10-22).** To attribute a session to
+a role, read what the *operator* told it (the starter, or the compaction summary that carries the
+starter forward) — never how the model happened to introduce itself. My 10-21 rule matched a
+reply opening `<Name> (<ROLE>)` and pinned Team B's SA on the PM, because the SA quoted the PM.
+A loose identity rule is worse than none: an empty digest is visibly empty, a wrong one is trusted.

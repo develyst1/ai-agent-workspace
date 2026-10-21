@@ -1,6 +1,6 @@
 # TASK-746 — REQ-122 v3 (Team B): the [?] pins on Tanya's NEW captures — FE, S (≈ 1 d → 1.1 d)
 - Source: REQ-122 §8 · CONVENTIONS §5.3 (1280×800, the most privileged role, light) · follows TASK-745 · as TASK-740 phase 2
-- Status: REVIEW (Fanta, 2026-10-21) — 13 pages pinned; STOCK OUT outstanding — ▶️ GO for the 13 passing pages (Porter 2026-10-21); STOCK OUT after its re-capture
+- Status: ✅ DONE (Silver, 2026-10-21)
 - Folder: `som-balance-backoffice-spec` · Assignee: @Fanta · From: @Silver (2026-10-21)
 - **Claim:** TASK-745's files only.
 
@@ -28,3 +28,8 @@
 - **No pin (nothing visible at 1280×800):** summary step 6 (role note); lines step 5 (red refund row is below the frame); reports/home step 1 (intro). Partial: stock-in step 2 pins the Quantity field only (Date sits on the next row, not boxed); products step 4 boxes the COMMISSION column.
 - Headless re-run: 19 pages · 31 popups · 0 errors · 0 problems. Real popup opened on Product: image 1280×800 loads, 5 numbered steps. NOT VERIFIED: popups of the other pages opened by eye (only the overlay check).
 - STOCK OUT: layout changed in 745 part B; its pins come after Tanya's re-capture (`help/stock-stock-out.png` is the old one — I have not pinned it).
+
+**Silver, 2026-10-21 — ✅ FINAL: DONE.** I drew every Team B page's pins onto its CURRENT capture (14 pages incl. the re-captured STOCK OUT after N4) and looked at each one:
+- every pin points at its step;
+- the ECA ①/② overlap is fixed;
+- STOCK OUT now shows the full "Remove", its commission box sits inside the frame, and all 5 pins are right.

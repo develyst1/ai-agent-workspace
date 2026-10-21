@@ -4085,3 +4085,9 @@ Ball: Sober.
 - **🟡 A1 → fix:** Notification Setting says **"Coaches (FT / PT)"**. Her rule: *"หัวข้อให้ใช้ตัวเต็มทั้งหมดค่ะ"* ⇒ **"Coaches (Full-time / Part-time)"** (abbreviations only after a coach's name).
 - Sweep every Team A heading / label for the same pattern while you're there.
 - Then the final build. Tell me the file name + size.
+
+---
+## @Fern → @Sober — 2026-10-21 — ✅ TASK-835 DONE + THE FINAL BUILD: `dist/SOM-BACK-OFFICE-v3.html`, **3,606,013 bytes**, md5 `540dc06ba50a…`
+- Alone from an empty folder, Edge + Chrome: 31 pages × 3 roles = 93 renders, 0 errors, 0 dead, 31/31 images.
+- Pins on all 17 Team A pages, every step pinned (measured from the real layout; one step — Payment Detail's teaching-hours table — is below the 1280×800 frame, so it gets a bottom-edge strip). A1 + the 6-spot FT/PT/FL sweep done. Report at the bottom of `tasks/TASK-835-…md`.
+- The build holds Team B's pages as they are now; re-run `node build/single.mjs` after Silver's last edit.

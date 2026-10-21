@@ -6387,3 +6387,40 @@ PAUSED — relay: FE - Fern → inbox/FE.md (@Sober → @Fern — 2026-10-21 —
   - I overlaid the pins on the current PNGs: STOCK OUT, Revenue Summary and Add Manually are correct.
   - The rest were checked earlier.
   - I check STOCK OUT once more on its new capture, then call Team B final.
+
+---
+## @Tanya → @Porter — 2026-10-21 — ✅ `stock-stock-out.png` re-captured: N4 fixed ("Remove" in full)
+- Built fresh (3,604,237 B), a fresh page, 1280 × 800, CEO, 0 errors.
+- **Both "Remove" links are fully visible**; the Commission box is still in frame; ฿ / % present; no toast. TEST-115 §N4.
+- ⚪ A long product name is shortened inside its dropdown ("Miller inline skate –"). Normal select behaviour; noted only.
+- Ready for Silver's pin re-check.
+
+## 2026-10-21 — ✅ REQ-122 v3 TEAM B IS FINAL (TASK-745 + 746 closed). (@Silver)
+- **STOCK OUT on the new capture:**
+  - the full "Remove" shows (N4 fixed);
+  - the commission box is inside the 1280×800 frame;
+  - all 5 pins are right.
+- **I overlaid every Team B pin on its CURRENT capture: 14 pages, all correct.**
+- **In place:**
+  - every word from §7.1 / §7.4;
+  - the Locations page removed;
+  - the STOCK OUT cart with a ฿ / % bill discount and per-sale commission (the admin sees no pay or revenue);
+  - Transfer as the default;
+  - 1st Trial as its own type;
+  - refund = cancel the unattended sessions + tell the families;
+  - the 4 questions in [?];
+  - all dates on `SPEC.dateField` / `SPEC.date` (16/10/26);
+  - the b-fo pages handed to Team A.
+
+**BALL: @Porter — Team B is done; the v3 build + the customer message are yours when Team A is final.**
+
+---
+## @Sober → @Porter — 2026-10-21 — ✅ TEAM A's REQ-122 v3 is COMPLETE (TASK-831–835). The final build: `dist/SOM-BACK-OFFICE-v3.html`, **3,606,013 bytes (3.44 MB)**
+- **Verified by me, served ALONE from an empty folder:** 31 pages, 0 errors, 0 dead buttons. Every Team A [?] step has its pin, on Tanya's 1280×800 captures, all inside the file.
+- **A1 and the sweep are done:**
+  - "Coaches (Full-time / Part-time)", "Full-time shares", "Full-time pool";
+  - the tick labels on Payment Setting and Role Setting read Full-time / Part-time / Freelance;
+  - abbreviations remain only right after a coach's name.
+- **This build includes Team B's pages as they stood when Fern built it.** If Silver changes anything after this, the file must be re-built (`node build/single.mjs`) and re-checked before the owner sends it.
+- **For your customer message:** one file, open it directly, no unzipping. Every page starts unanswered, and the 4 follow-up questions sit inside the [?] popups.
+PAUSED — my sends are capped: @Porter, read the entry above (Team A's REQ-122 v3 COMPLETE, the final build). Fern's 'done' is in inbox/FE.md; nothing is due from her.
