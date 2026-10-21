@@ -65,6 +65,7 @@ they are the method, and each ends with a test to run before you send.
 |---|---|
 | `verify-before-relay.md` | stating or forwarding any fact — especially anything 🔴 |
 | `quote-dont-paraphrase.md` | turning what the owner or the customer said into a REQ or a ruling |
+| `team-brainstorm.md` | your reading of the owner or the customer becoming a REQ, an AC or a ruling — **you have no reviewer above you; this is it** |
 | `reproduce-first.md` | routing any reported defect — **you write the reproduction recipe, in the REQ** |
 | `write-it-now.md` | ending any exchange in which a decision was made |
 | `attribution.md` | labelling who approved anything (**hard boundary**, also in your card above) |

@@ -967,3 +967,22 @@ Read REQ-124 → "2026-10-21: the customer asks…".
 - **Every card incl. the Others Program section at the bottom: API = your independent recount (from `/bookings` / `/calendar`) = the screen.** Same method as TEST-101 §uat and TEST-109.
 - Note anything a person would read as wrong even if it matches the agreed rule (e.g. a camp week with no coach, an ECA counted once per class). **List it, don't judge it.**
 - **No writes. Counts only, no personal data in files.** Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ⏸️ WAIT for "sid front deployed": Palm's develop merged into dong (two Palm fixes). Back stays `fa1a04c`
+1. **Daily Report, Others Program:** on a day with no programme children (All teachers, and a coach without programme classes), **no sample numbers**: empty / "—". On a day with programmes, the values still = the API.
+2. **SOM dashboard, District → sub-district click-through:** for 2–3 districts, the sub-district rows on screen = `demographics.subdistrictByDistrict` (labels, counts, unknown last), with month and badge filters.
+3. **Regressions:** the 5 SOM cards fixed on 10-19 still = the API; the rest of the Daily Report is unchanged.
+Headless, read-only on sid is enough. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ GO on sid front `b901a6f` (back `fa1a04c`), with ONE change to the ⏸️ entry above
+- **The merge brought ONLY Palm's sub-district commit** (`978697b`). His sample-numbers fix is **NOT in it**: `ReportsContent.tsx:251` is still `SHOW_SAMPLE_WHEN_EMPTY = true`, in dong and in origin/develop as fetched.
+  - So **item 1 (no sample numbers) is expected to FAIL on this build.** Record it as "not merged yet", not as a new defect.
+- **Run items 2 and 3** (the sub-district click-through = `subdistrictByDistrict`; the 5 SOM cards still = the API).
+- **Add one check: Palm's SOM "preview layer"** (`lib/som/preview.ts`, commit `cd42268` of 10-17, live on uat since then). It *"fills only fields the live API does not send yet; a live value always wins"*, including e.g. the Existing Customers **1 HR** card and the Activity splits.
+  - **List every SOM number on screen that does NOT come from our API** (a preview figure), on sid and, read-only, on uat. A made-up number on the customer's dashboard is the same class of problem as the Daily sample numbers.
+Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-21 — ▶️ sid front is now `33f9311` (= b901a6f + Palm's `111a9ed` "Drop the Others Program sample rows", only ReportsContent.tsx + a doc line; SHOW_SAMPLE_WHEN_EMPTY / SAMPLE_PROGRAMS are gone from the source). **Item 1 (no sample numbers on an empty day) is now IN SCOPE.** Run it with items 2–3 + the preview scan, then nudge me

@@ -46,6 +46,7 @@ they are the method, and each ends with a test to run before you send.
 |---|---|
 | `check-by-running-not-reading.md` | writing any verdict, and before saying one instance is all of them |
 | `reproduce-first.md` | testing any reported defect — **Step 0 on the OLD build comes before judging the fix** |
+| `team-brainstorm.md` | calling something 🔴 / an incident, and when you are asked for a second reading — **"this is 🔴" is an interpretation too** |
 | `write-it-now.md` | ending any exchange in which a decision was made |
 | `attribution.md` | labelling who approved anything (**hard boundary**, also in your card above) |
 

@@ -14,6 +14,15 @@
 // v6 (--json / --list, so the gate can BE the API for harness-console) — ORDER 16 ①,
 //    owner's go 2026-10-05. The human output above is unchanged, byte for byte, and that
 //    was verified across all 14 desks including exit codes before this shipped.
+// v7 (the boot read: verdict on the CONTROLLABLE files only; the knowledge file and the
+//    total printed as NOTE lines with no verdict) — Atlas ORDER 22.1, 2026-10-21. The old
+//    rule was unmeetable by construction: a desk WARNed on the day it opened, before a
+//    single REQ existed, and the only way to clear it was to compact the one file that is
+//    exempt from size by name. 🔑 SCHEMA 1→2: `roles[].warnBytes`/`limitBytes` now govern
+//    the new `roles[].controllableBytes`, not `roles[].bytes` (which keeps its v6 meaning
+//    — the whole boot read — but is no longer gated). `gatedOn` says which field the
+//    verdict used so no reader has to infer it, `counts.note` is new, and `checks[]` can
+//    now carry `severity: "note"`. harness-console renders this and must branch on SCHEMA.
 
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -28,8 +37,12 @@ const WS = dirname(fileURLToPath(import.meta.url));
 const argv = process.argv.slice(2);
 const JSON_MODE = argv.includes("--json");
 const LIST_MODE = argv.includes("--list");
-const SCHEMA = 1;          // Q-5(c): bump when a field changes meaning or disappears.
-const GATE_VERSION = "v6"; // human-facing; SCHEMA is what a reader branches on.
+// Q-5(c): bump when a field changes meaning or disappears. 1→2 on 2026-10-21 (ORDER 22.1)
+// because `roles[].warnBytes`/`limitBytes` now govern `controllableBytes` instead of
+// `bytes`. Not bumping would have been the cheaper option and the dishonest one: a
+// consumer would still read `bytes` beside a limit it is no longer measured against.
+const SCHEMA = 2;
+const GATE_VERSION = "v7"; // human-facing; SCHEMA is what a reader branches on.
 
 // Q-5(a): a gate ERROR IS NOT A FAIL, and a reader must never have to tell them apart
 // by exit code alone. `ok` says whether the gate RAN; `result` says what it FOUND.
@@ -76,8 +89,28 @@ const LIMITS = {
   inboxMsgLines: 5,        // ONE message inside it (the rule says 1-3; 5 is the hard limit)
   boardClosedWarn: 10,     // closed rows tolerated on the live board before a nudge
   boardClosedFail: 30,     // closed rows that force a sweep to archive/board-closed.md
-  bootWarn: 60 * KB,       // one role's startup read (knowledge+PROTOCOL+role+board+its inbox)
-  bootFail: 120 * KB,      // same read, escalated
+  // The boot read, v7 (Atlas ORDER 22.1, 2026-10-20). These now govern the CONTROLLABLE
+  // part of the read only — PROTOCOL + the role charter + board + that role's inbox. The
+  // knowledge file and the total are printed as NOTE lines with no verdict. Why: at
+  // fb-autoreply the shared reads alone (PROTOCOL 20.8 + board 4.0 + SYSTEM-FACTS 25.2 =
+  // 50.0KB) left 10.0KB for a charter + inbox against the old 60KB WARN, while the
+  // PRISTINE template PM.md is 13.6KB — the desk WARNed on the day it opened and no
+  // amount of discipline could clear it. Gating a file that is exempt from size BY NAME
+  // (ORDER 6) asks a role to choose between recording a fact and passing.
+  bootWarn: 45 * KB,       // controllable part of one role's startup read (PROTOCOL+role+board+its inbox)
+  // 🔑 FAIL is 90KB, NOT the 70KB ORDER 22.1 proposed, and the reason is the same defect
+  // that order exists to fix. This gate caps board.md at 40KB and an inbox at 2KB, and
+  // caps PROTOCOL.md and a role charter at NOTHING. So a desk that is fully compliant
+  // file-by-file can still read 20.8 (fb-autoreply's PROTOCOL) + 40.0 (a LEGAL board) +
+  // 13.6 (the pristine template charter) + 2.0 (a LEGAL inbox) = 76.4KB — a FAIL nobody
+  // can clear, the unmeetable rule moved off the knowledge file and onto board.md.
+  // 90KB clears that legal maximum with ~14KB of margin. Measured 2026-10-21 across all
+  // 15 desks / 64 role-rows: nothing sits in 70–90KB except did-api-center-c# (77–79KB),
+  // whose board is 59.3KB and therefore ALREADY a hard FAIL on the board rule — a second
+  // red line for one defect is noise, not information. Real bloat still fails by an order
+  // of magnitude (smart-scheduler's PM reads 956.8KB of controllable files).
+  bootFail: 90 * KB,       // same, escalated
+  knowledgeIndexHint: 40 * KB, // knowledge file: NOT a verdict — the size at which ORDER 22.2's index is worth raising
   failuresNewFail: 10,     // unreviewed FAILURES.md entries before the gate stops the team
   resumeWarn: 8 * KB,      // RESUME-HERE.md — it is a page, not a log
   resumeFail: 20 * KB,     // same, escalated
@@ -112,7 +145,10 @@ const KNOWLEDGE_FILES = ["SYSTEM-FACTS.md", "FACTS.md", "KNOWLEDGE.md"];
 // only Marie is measured on keeping the shape. See the MOVED-FROM check in section 6.
 const NEVER_COMPACT = new Set(KNOWLEDGE_FILES);
 
-const fails = [], warns = [];
+// `notes` (v7, ORDER 22.1) is a THIRD severity and deliberately not a weaker warning: it
+// carries numbers the owner should see — what a session costs — about files no role is
+// asked to shrink. It never affects the exit code and never appears in `counts`.
+const fails = [], warns = [], notes = [];
 // Raw numbers for `--json`, recorded AT THE POINT each check computes them (ORDER 16 ①).
 // Never recomputed afterwards: a second computation of the same number is how a reader
 // and the gate begin to disagree, which is the whole reason this flag exists instead of
@@ -127,6 +163,7 @@ const metrics = {
   dispatcherRuns: null, today: null, newestLogDate: null, daysSinceNewestLog: null,
   active: null, logLongEntries: null, knowledgeFile: null, failuresUnreviewed: null,
   resumeSnapshotHeadings: null, resumeBehindDays: null,
+  knowledgeBytes: null,   // v7: the ungated number, recorded where section 9 computes it
 };
 const size = (p) => (existsSync(p) ? statSync(p).size : 0);
 const fmt = (n) => `${(n / KB).toFixed(1)}KB`;
@@ -512,16 +549,47 @@ if (!knowledgeFile) {
 // CORRECTNESS test. Every session pays this read on every vendor's bill, and a knowledge
 // file full of superseded, duplicated statements makes any model confidently wrong —
 // "it fits" is not "it is read honestly" (owner supplied the vendor facts, 2026-09-23).
+//
+// ⚠️ v7 (ORDER 22.1): the VERDICT applies to the controllable part only. Two kinds of file
+// were being counted as if they were the same thing, and they are not:
+//   controllable — PROTOCOL.md · the role charter · board.md · that role's inbox.
+//     Growth here IS a discipline failure: restating facts, essays in cells, an undrained
+//     inbox. A role can act on it, so a verdict means something.
+//   deliberately unbounded — the knowledge file. Exempt from size BY NAME (ORDER 6)
+//     because a fact must never be lost. A verdict here asks a role to choose between
+//     recording a fact and passing, and it chooses passing. That is how the first one got
+//     to 323KB: the gate taught it that red is normal.
+// The knowledge file and the TOTAL are still PRINTED, as NOTE lines with no verdict — the
+// owner should see what a session actually costs; he should not see a red mark nobody can
+// clear. NOTE lines are new human output in v7 and are the only change to it since v5.
 {
-  const shared = size(join(AW, "PROTOCOL.md")) + size(boardPath) + (knowledgeFile ? size(join(AW, knowledgeFile)) : 0);
+  const knowledgeBytes = knowledgeFile ? size(join(AW, knowledgeFile)) : 0;
+  metrics.knowledgeBytes = knowledgeBytes;
+  const shared = size(join(AW, "PROTOCOL.md")) + size(boardPath);
   for (const [role, roleFile] of Object.entries(ROLE_FILES)) {
     const rolePath = join(AW, roleFile);
     if (!existsSync(rolePath)) continue;   // role not staffed on this project
-    const boot = shared + size(rolePath) + size(join(AW, "inbox", `${role}.md`));
-    metrics.roles.push({ role, roleFile, inbox: `inbox/${role}.md`, bytes: boot, warnBytes: LIMITS.bootWarn, limitBytes: LIMITS.bootFail });
-    const detail = `${role} boot read ${fmt(boot)} (PROTOCOL+board+${knowledgeFile ?? "no knowledge file"}+${roleFile}+inbox/${role}.md)`;
-    if (boot > LIMITS.bootFail) fails.push(`🔴 ${detail} > ${fmt(LIMITS.bootFail)} — paid on every session, on every vendor's bill`);
-    else if (boot > LIMITS.bootWarn) warns.push(`${detail} > ${fmt(LIMITS.bootWarn)}`);
+    const controllable = shared + size(rolePath) + size(join(AW, "inbox", `${role}.md`));
+    const boot = controllable + knowledgeBytes;
+    metrics.roles.push({
+      role, roleFile, inbox: `inbox/${role}.md`,
+      controllableBytes: controllable,     // ← what warnBytes/limitBytes are compared against
+      knowledgeBytes,                      // ← not gated, by name (ORDER 6)
+      bytes: boot,                         // ← the whole boot read; same meaning as v6, now UNGATED
+      warnBytes: LIMITS.bootWarn, limitBytes: LIMITS.bootFail,
+      gatedOn: "controllableBytes",        // stated, never inferred — SCHEMA 2's reason for existing
+    });
+    const detail = `${role} controllable boot read ${fmt(controllable)} (PROTOCOL+board+${roleFile}+inbox/${role}.md)`;
+    if (controllable > LIMITS.bootFail) fails.push(`🔴 ${detail} > ${fmt(LIMITS.bootFail)} — paid on every session, on every vendor's bill`);
+    else if (controllable > LIMITS.bootWarn) warns.push(`${detail} > ${fmt(LIMITS.bootWarn)}`);
+    notes.push(`${role} boot read ${fmt(boot)} total = ${fmt(controllable)} controllable + ${fmt(knowledgeBytes)} ${knowledgeFile ?? "no knowledge file"} — total is not gated`);
+  }
+  if (knowledgeFile) {
+    notes.push(
+      `${knowledgeFile} ${fmt(knowledgeBytes)} — not gated; ` +
+      (knowledgeBytes > LIMITS.knowledgeIndexHint
+        ? `past ${fmt(LIMITS.knowledgeIndexHint)}, so raise ORDER 22.2's index with the owner (progressive disclosure — nothing deleted, nothing summarised)`
+        : `index it past ~${fmt(LIMITS.knowledgeIndexHint)} (ORDER 22.2)`));
   }
 }
 
@@ -534,6 +602,10 @@ if (JSON_MODE) {
   const checks = [
     ...fails.map((text) => ({ severity: "fail", text })),
     ...warns.map((text) => ({ severity: "warn", text })),
+    // v7: `note` carries a number with NO verdict. A console that ranks by severity must
+    // keep these below every warn — promoting one to a warning re-creates the red mark
+    // ORDER 22.1 removed, in the renderer instead of the gate.
+    ...notes.map((text) => ({ severity: "note", text })),
   ];
   console.log(JSON.stringify({
     schema: SCHEMA,
@@ -542,13 +614,14 @@ if (JSON_MODE) {
     generatedAt: new Date().toISOString(),
     project,
     result: fails.length ? "FAIL" : "PASS",
-    counts: { fail: fails.length, warn: warns.length },
+    counts: { fail: fails.length, warn: warns.length, note: notes.length },
     checks,
     ...metrics,
   }, null, 2));
   process.exit(fails.length ? 1 : 0);
 }
 
+for (const n of notes) console.log(`NOTE  ${n}`);
 for (const w of warns) console.log(`WARN  ${w}`);
 for (const f of fails) console.log(`FAIL  ${f}`);
 if (fails.length) {

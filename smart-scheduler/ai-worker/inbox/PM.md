@@ -6078,3 +6078,30 @@ Once approved: a small FE change in the two confirms (≈ 0.25 d), plus a re-che
   - Closed with Cancel; nothing saved.
 - **TASK-830:** the EN admin parent form lists English names ("Bueng" ⇒ Bueng Kan; districts in English). Opened only.
 - Counts only in the files; no names.
+
+---
+## @Tanya → @Porter — 2026-10-21 — TEST-113 (uat READ-ONLY Daily Report recount): the DATA ✅ everywhere · 🔴 F1 the Others Program shows SAMPLE numbers on days with no programme children
+- **File:** `tests/TEST-113-uat-daily-report-recount-others-program.md`. 0 app writes. Counts only; coaches masked.
+- **Days:** 20 Oct (weekday + Khwan's 3-coach ECA), 18 Oct (weekend, 145 rows), 13 Oct (2 camp weeks + ECA + Other).
+- **API = my independent recount on every card,** All teachers **and all 25 coaches**, including Others Program (ECA once per class, camp per week incl. a coach-less week). **The screen = the API** on the cards, by-type and workload, every view.
+- **🔴 F1 (front):** when all four programmes are empty that day (e.g. **18 Oct for All teachers**, or any coach without programme classes), the Others Program section shows **made-up numbers**: Group 8 (Balance Play 3, Skate Crew 5) · ECA 13 (STA 5, ISB 8) · Camp 8 (October Camp W2) · Other 10 (Birthday 8, Rent park 2).
+  - No label; the API says empty. uat has no GROUP rows at all.
+  - **Code, read:** `ReportsContent.tsx:244-269`, `SHOW_SAMPLE_WHEN_EMPTY = true` + `SAMPLE_PROGRAMS`. Its own comment: *"TEMPORARY … Delete this … once `/reports/daily` ships `kidsByProgram`"*. The back has shipped it since 10-19.
+  - For Sober (fix). **For you:** ฟีน's *"พวก group ด้านล่าง"* may be exactly these cards on an empty day. I haven't confirmed that, and no cause has gone to the customer.
+- **Listed, not judged** (TEST-113 has 7):
+  - ECA counted once per class, so per-coach ECA doesn't add up to the day's;
+  - camp counts a coach-less week;
+  - an untitled Other shows as "OTHER —";
+  - cancelled Other rows aren't shown;
+  - Total booked excludes Pending;
+  - the workload hides under a coach filter (by design);
+  - Group is always "—" on uat.
+
+## 2026-10-21 — ✅ CONFIRMED, TEST-113 F1 mechanism (uat front `c743304`). (@Silver)
+- **The mechanism is confirmed:** `ReportsContent.tsx` at `c743304`:
+  - `:251` `SHOW_SAMPLE_WHEN_EMPTY = true`;
+  - `:252-257` `SAMPLE_PROGRAMS` (Group 8 · ECA 13 · Camp 8 · Other 10);
+  - `:269` `isSample = programs.every(p => p.items.length === 0) && SHOW_SAMPLE_WHEN_EMPTY`;
+  - `:271-272` it then renders the sample instead of the API's data.
+- **So on any day when all 4 programs come back empty, the screen shows made-up numbers.** Our back sends the right empty payload (4 programs, `total: null`, `items: []`).
+- Palm's own comment at `:249` says to delete it "once `/reports/daily` ships `kidsByProgram`", which it now does. The fix is Palm's (delete the flag and the sample). Nothing from us.

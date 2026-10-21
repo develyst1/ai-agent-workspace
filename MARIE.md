@@ -1300,7 +1300,292 @@ else; everything about access stays in PROTOCOL.
 other "copy X here" in the templates the same way and report what you find — I would rather
 know how many I planted than be told once.
 
+
+### ORDER 23 — install `team-brainstorm` (owner's go, 2026-10-21)
+
+**Owner's ask, verbatim:** *"ฉันอยากให้ทีมทำงาน มีการ brainstorm กันอ่ะ รวมหลายหัวดีกว่าหัวเดียว
+เพื่อให้ไม่ให้หลงทาง ไปกับอารมณ์ หรือสถานการณ์ผิด ๆ"*
+
+**File:** `_templates/skills/team-brainstorm.md` (120 lines; `grep` for role names, desk names
+and customer names returns **0** — re-verify before installing, do not take this line as proof).
+
+**Install into:** `PM.md` · `SA-Lead.md` (both, where a desk has two) · `QA.md` · `BE.md` ·
+`FE.md`. Everyone can be asked for a second reading; everyone can call for one.
+
+#### Why it is not what the word usually means — keep this in the install note
+
+Atlas read the desk's `FAILURES.md` before designing it. The expensive entries were **never
+a shortage of ideas**: a customer's rule restated in one wrong sentence that an SA re-size,
+four rulings and a **built** task rested on · facts relayed that nobody had opened · a
+one-line request turned into a project · four rounds of production queries chasing a
+question that could not change the fix.
+
+🔑 **Every one is a single interpretation nobody contested** — and the role producing most
+of them is the one with no reviewer above it. Engineers are reviewed by the SA, the product
+is tested by QA, and **the PM's reading of a customer goes straight into a requirement.**
+
+So the skill is a **challenge round, not a meeting**: *never let your first reading be the
+only one on the record.* Five narrow triggers, one written round, adjacent roles only.
+
+#### The two rules that must survive installation unchanged
+
+1. 🔴 **The initiator writes the strongest case against their own reading, before anyone
+   replies.** A round opening *"I think X, does anyone disagree?"* produces agreement, not
+   thought. If they cannot produce the alternative, that is the finding.
+2. 🔴 **It is not a vote and it creates no new chain edge.** The role who owns the decision
+   still owns it; the round changes what they know, never who decides. **A group decision is
+   a decision with no owner**, and every rule here rests on naming who decided and reading
+   their reason.
+
+#### Check for a collision before you install
+
+The owner already has a personal `brainstorming` skill (10.4 KB) — but it is a **one-on-one
+dialogue between a human and an assistant**, and `grilling` / `scrutinize` are single-agent
+too. None of them does cross-role challenge, which is why this exists. **Confirm that
+yourself**, and if any desk charter already points at one of those for this purpose, bring
+it back rather than stacking a second instruction on top.
+
+#### Scope
+
+Install at desks with a live team, and add to `_templates/project` so new desks are born
+with it. **Do not add it to any startup read list** — it is an on-demand companion like the
+other craft files, and boot budgets are already the subject of ORDER 22.
+
+
+### ORDER 24 — adopt `develyst-harness` from the sibling workspace (owner's go, 2026-10-21)
+
+**Owner's instruction:** *"เอาทั้งสองข้อ ยกมาทั้งชุดเลย"* — (1) the gate thresholds **45 / 90**
+you proposed in ORDER 22 are **approved**; (2) adopt the harness from
+`H:\ai-agent-workplace\ai-agent-workspace-entronica` wholesale.
+
+**What that workspace is:** the same design, taken to his workplace and evolved into a
+**versioned package — `develyst-harness v2.6.0`** with a manifest of SHA-256 hashes, an
+installer that refuses on drift, real `PreToolUse` hooks, write-through tools, and a fourth
+workspace identity. We have been hand-designing several of its parts this week.
+
+**The comparison is complementary, not overlapping — verified file by file:**
+
+| They have, we do not (15 in the desk template) | We have, they do not (7 craft skills) |
+|---|---|
+| `TEAMS` · `SEATS` · `PEOPLE` · `DECISIONS` · `CONVENTIONS` · `LOCAL-RULES` · `CORE` | `verify-before-relay` · `reproduce-first` |
+| `add-failure.mjs` · `append-log.mjs` · `drain-inbox.mjs` · `tools/` | `quote-dont-paraphrase` · `check-by-running-not-reading` |
+| `checks.json` + `checks/` · `memory/` · `talks/` | `write-it-now` · `team-brainstorm` · `attribution` |
+| plus `scripts/` (hooks + tools + memory), `harness.json`, `ROLES.md`, `BUNNY.md` | |
+
+**They built machinery; we built craft. Neither collides with the other.**
+
+#### 24.0 — 🔴 BLOCKING PREREQUISITE: `jq` is not installed on this machine
+
+Every hook begins `command -v jq >/dev/null 2>&1 || exit 0`. **Without `jq` the guards
+install, wire into `settings.json`, and do nothing** — the exact disease we spent this week
+removing (a rule naming a guard that does not exist), but worse, because the files would be
+present and look installed.
+
+**Verify `jq` yourself before installing a single hook.** The owner has been told
+(`winget install jqlang.jq`). If it is absent: **install nothing from `scripts/hooks/`**,
+say so, and stop that half. The rest of the order can proceed.
+
+Also verify `perl` (present) and `node` (present) on this machine.
+
+#### 24.1 — Back up first, completely
+
+Before anything: a verbatim copy of this workspace's current state under `archive/`
+(or a dated sibling folder), **size-verified**. We are replacing rule files that hold
+months of decisions. **No git.** Report the location and the byte counts.
+
+#### 24.2 — Order of work, and why
+
+1. **Machinery first** — `scripts/`, `harness.json`, `_templates/project` (theirs),
+   `_templates/machine`, `_templates/desk-open`, `_templates/run`, `ROLES.md`.
+   These are new to us; nothing of ours is lost by taking them.
+2. **Carry our 7 craft skills into the new template**, then **assert all 7 are present**
+   before going further. They are the only thing in this workspace the other one lacks, and
+   a copy-over that drops them is the one irreversible loss in this operation.
+3. **Recompute `harness.json`** for *our* workspace once our skills are in — their hashes
+   describe their files; `install.mjs` and `check-harness.mjs` refuse when a hash does not
+   match, so a stale manifest blocks everything.
+4. **Per-desk `install.mjs`** across our 13 desks, one at a time, verifying each.
+5. **Hooks last**, and only if `jq` is there.
+
+#### 24.3 — Do NOT copy these; they need reading and merging, and that is Atlas's
+
+`CLAUDE.md` (6.3 KB ours / 17.1 theirs) · `ATLAS.md` (29.3 / 80.6) · `DISPATCHER.md`
+(14.2 / 19.1) · `MARIE.md` (283.6 / 197.9) · `SESSION-STARTERS.md` (11.2 / 3.5) ·
+`AGENTS*.md` · `check-hygiene.mjs` (ours is v7 as of today; theirs is a different lineage).
+
+**Both sides hold real history. Theirs is larger but not a superset** — ours carries this
+workspace's own lessons and `MARIE.md` holds 283 KB of operations log. **Copy none of them.**
+List the differences for me and I will merge them by hand.
+
+#### 24.4 — Live desks
+
+`smart-scheduler` had running sessions as recently as your last run. **Check immediately
+before each desk's install, not once at the start** — your own lesson from 2026-10-21.
+Hold any desk that is live and report it; the others can proceed.
+
+#### 24.5 — Afterwards
+
+Report: what installed, what refused and why, the 7 skills asserted present, `check-harness`
+clean, `check-hygiene` across all desks before and after with no verdict flipped except where
+intended, and the blast radius. Anything in this order that is wrong or impossible — say so
+and do not patch it; you have found a real error in four consecutive runs.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-21 — **ORDER 23 INSTALLED (templates + `fb-autoreply`; `smart-scheduler` HELD — Porter is
+  live) · ORDER 22 DONE as gate v7, but with the FAIL threshold TUNED from 70 to 90 KB because 70
+  RE-CREATES THE VERY DEFECT ORDER 22 EXISTS TO FIX · and 22.3's sweep found that the copy it tells
+  me to replace EXISTS ON ONLY ONE DESK, which I already fixed yesterday.**
+
+  **① ORDER 23 — the collision check, done by reading the skills rather than trusting the claim.**
+  Atlas asked me to confirm his belief, not take it. Read all four: `brainstorming` is a
+  human↔assistant dialogue (*"ask questions one at a time"*, gated on the **user's** approval);
+  `grilling` opens *"Interview me relentlessly"* — also human↔assistant; `grill-me` carries
+  `disable-model-invocation: true`, so it is operator-trigger-only; `scrutinize` is one reviewer
+  reading an artefact cold. ✅ **His belief holds: all four are single-agent, none does cross-role
+  written challenge, and no DESK CHARTER anywhere points at any of them** (grep over all 15 desks:
+  the only hits are incidental prose like *"second reading"* in logs/TASKs). **Nothing stacked.**
+  ⚠️ **But there IS an adjacency he did not name, and it is in his own newer skills tree:**
+  `_templates/skills/role-pm/SKILL.md:159–160` already routes the PM to `grill-me`/`grilling` for
+  *"stress-test a plan, a REQ, a recommendation"* and to `superpowers:brainstorming` for *"the
+  operator's idea is still fuzzy"*; `role-ba/SKILL.md:115–116` does the same. **`team-brainstorm`'s
+  trigger 1 — a reading about to become a REQ/AC/ruling — overlaps the first of those.** Not a
+  collision (one is operator-facing, the other cross-role) but a role reading both will have to
+  choose. **Reported, not patched: a disambiguation line in the role skills is Atlas's call, and
+  writing one myself is exactly the "stacking a second instruction" he told me to avoid.**
+  **Re-verified the file myself, did not take the line in the order as proof:** `team-brainstorm.md`
+  is **120 lines**, md5 `da9b5745b42d38133675286206412eb4`; grep for role / desk / customer / owner
+  names returns **0** real hits (one apparent hit is `sit`***uat***`ion` on l.96 — a regex artefact,
+  not the environment). **Both rules survive verbatim-in-substance and I changed neither:** the
+  initiator writing the strongest case against their own reading **before anyone replies** (l.56–59,
+  with *"if you cannot produce one… that is the finding"*) and **not a vote / no new chain edge**
+  (l.70–82, *"shared thinking, single accountability"*, *"nobody gains a new contact by calling a
+  round"*).
+  **Installed — workspace level, my own hands:** `_templates/project/ai-worker/team-brainstorm.md`
+  (`cmp` clean against the canonical `_templates/skills/` source) + **one routing row in each of the
+  five template charters**, role-specific triggers, `git diff --numstat` **1/0 on every one of the
+  five** — the tables only, nothing else in any file.
+  **Installed — `fb-autoreply`, via its spawned PM, and VERIFIED BY ME NOT BY HIS REPORT:** `cmp`
+  clean, md5 matches, `git diff -U0` shows **+1/-0 on each of PM/SA-Lead/QA/BE and the added line is
+  the routing row, nothing else**; no FE on that desk and none invented.
+  🔴 **"Do NOT add it to any startup read list" — proved, not assumed:** `grep` for
+  `team-brainstorm` across `PROTOCOL.md` · `RESUME-HERE.md` · `board.md` · `inbox/` at that desk and
+  in the template = **0 hits in 0 files**; the template's 9-step Session startup ritual is
+  byte-unchanged. Its only appearance anywhere is inside the five/four "Skills — the craft files"
+  tables, which say in their own header *"They are not startup reads."*
+  🔴 **`smart-scheduler` HELD, and this time the proof arrived mid-operation.** I checked sessions
+  before starting: all stopped. **While I was editing the templates, `PM - Porter` went
+  `isRunning: true` and wrote a new file into that desk** —
+  `COPY-DRAFT-khwan-attendance-percent-rule-2026-10-21.md`, which was NOT in my opening
+  `git status`. Spawning Porter to edit his own desk would have put **two Porters on one desk**
+  while his turn was unfinished. Same call as 2026-10-20, with better evidence. **What remains:
+  8 charters there (PM · SA-Lead · SA-Lead-B · BE · BE-B · FE · FE-B · QA) + the file copy.**
+  📌 **A one-line session check is not enough for a desk this busy** — it was true and 4 minutes
+  later it was false. Next run: re-check immediately before the write, not only at the start.
+
+  **② ORDER 22.1 — done, and I changed one of his two numbers. Gate v6 → v7, SCHEMA 1 → 2.**
+  The verdict now applies to **PROTOCOL + the role charter + board + that role's inbox** only; the
+  knowledge file and the total are printed as **`NOTE` lines with no verdict** (`NOTE` is a third
+  severity, never in `counts` for the exit code, and the --json `checks[]` can now carry
+  `severity:"note"`). **WARN 45 KB as ordered.**
+  🔴 **FAIL is 90 KB, NOT 70, and the reason is ORDER 22's own argument turned on itself.** This
+  gate caps `board.md` at 40 KB and an inbox at 2 KB and caps **`PROTOCOL.md` and a role charter at
+  NOTHING**. So a desk that is **fully compliant file-by-file** can read 20.8 (fb-autoreply's own
+  PROTOCOL) + **40.0 (a LEGAL board)** + 13.6 (the PRISTINE template charter) + **2.0 (a LEGAL
+  inbox)** = **76.4 KB → FAIL at 70.** That is the unmeetable rule **moved off the knowledge file
+  and onto `board.md`**, which is the one outcome 22.1 was written to prevent. 90 KB clears the
+  legal maximum with ~14 KB of margin.
+  **Second reason, from the blast radius:** at 70, three roles on `did-api-center-c#` flip
+  **WARN→FAIL** — a desk whose `board.md` is **59.3 KB** and therefore **already a hard FAIL on the
+  board rule**, with 48 over-long cells and 57 closed rows. **A second red line for one defect is
+  noise, not information**, and it would have made 22.1 look like a tightening. Nothing else in the
+  whole workspace sits between 70 and 90. Real bloat is untouched by the change:
+  **`smart-scheduler`'s PM still reads 956.8 KB of CONTROLLABLE files and still FAILs**, as do SA
+  820.3 · BE 346.8 · QA 283.0 · FE 243.7 · SA-B 188.3 · FE-B 187.7 · BE-B 177.5.
+  ⚠️ **Residual I am reporting and NOT patching, because it is the same class as 22.2 and his call:**
+  **WARN 45 KB is itself not clearable by a desk with a legal board.** fb-autoreply at a 40 KB board
+  would read 74.6 KB controllable — WARN, permanently. The honest fix is to **bound the two files
+  nothing bounds** (`PROTOCOL.md`, the role charter) or to accept the boot WARN as a cost signal
+  rather than a standard. **I did not invent a cap for either.**
+  ✅ **BLAST RADIUS, all 15 desks / 64 role-rows, v6 from `HEAD` run side by side with v7.**
+  **No desk's verdict or exit code flipped** — only warning counts moved:
+  `fb-autoreply` **PASS (3 warn) → PASS (0 warn), exit 0** ← the whole point of the order ·
+  `dte` FAIL (5) → **FAIL (1)** (4 boot FAILs gone; the survivor is a genuine long board cell) ·
+  `possibility` PASS (7) → **PASS (3)** · ⚠️ `portfolio-nichaphon` PASS (4) → **PASS (8)** — 4 NEW
+  boot WARNs at 46.9–50.2 KB from the 45 threshold; **I judge them honest** (its board is 27.7 KB
+  carrying 13 closed rows it should sweep) but they are a new nuisance on a dormant desk, so he
+  should see them · `did-api-center-c#` FAIL (3) → **FAIL (3), unchanged** · `smart-scheduler` FAIL
+  (22) → **FAIL (22), unchanged** · **the other 9 desks byte-identical.**
+  **And I proved I changed nothing else:** for every one of the 15 desks, the full human output with
+  the boot/NOTE lines excluded is **identical between v6 and v7** — the only differences anywhere
+  are the counts inside the `RESULT:` line, which are a consequence of the boot lines. Exit codes
+  0/1/**2** all still behave (`--list` 15, bad project → exit 2 with `ok:false`).
+  🔴 **SCHEMA 1→2 is a BREAKING CHANGE FOR `harness-console`, which renders this.**
+  `roles[].warnBytes`/`limitBytes` now govern the new `roles[].controllableBytes`;
+  `roles[].bytes` **keeps its v6 meaning** (the whole boot read) but is **no longer gated**, and
+  `gatedOn:"controllableBytes"` is stated so no reader has to infer it. Not bumping would have been
+  cheaper and dishonest — a consumer would still read `bytes` beside a limit it is not measured
+  against. **That desk needs telling; its FE is not mine to address.**
+  🔑 **One number in ORDER 22 is not true as labelled, and the conclusion survives anyway.** The
+  table says *"the pristine template `PM.md`, untouched ⇒ a brand-new desk with nothing written in
+  it boots at 63.8 KB."* **A genuinely pristine template desk boots at 36.6 KB** (PROTOCOL 18.75 +
+  board 1.48 + PM 13.58 + inbox 0.20 + SYSTEM-FACTS 2.59) — **controllable 34.0 KB.** The 63.8 is
+  **fb-autoreply on day two**: its PROTOCOL had grown to 20.8 and its knowledge file to 25.2 KB of
+  the owner's own facts. Likewise his *"on a fresh desk that is 39.6 KB"* is **fb-autoreply's actual
+  PM**, not a fresh one. ⇒ **The fix is right and I shipped it; the framing "at birth, with a
+  pristine charter" overstates it.** What actually ate the budget was **25 KB of recorded facts in
+  one day**, which is a stronger argument for 22.2's index than for anything about charters — and
+  worth saying plainly so the next reader does not plan against a number that is 27 KB off.
+
+  **③ ORDER 22.3 — his template fix is REAL and verified; his sweep instruction is NOT SAFELY
+  EXECUTABLE, and the reason is interesting.** ✅ `_templates/project/ai-worker/QA.md:61` now reads
+  *"Do NOT copy PROTOCOL.md's Environments table here — point at it"* with the staleness reason, and
+  it is in `HEAD`, not just the working tree. New desks cannot take the copy.
+  🔴 **"Sweep the desks that already took the copy" — there is only ONE, and it was fixed yesterday
+  by me.** `fb-autoreply/QA.md` (now l.57–58: *"The table is in `PROTOCOL.md` → Environments… Read
+  it there, not from a copy here"*). **Seven desks have an Environments table in `QA.md`, and on six
+  of them it is NOT a copy:**
+  🔴 **`code-report` and `portfolio-nichaphon` have NO Environments table in `PROTOCOL.md` at all** —
+  and `code-report/ai-worker/PROTOCOL.md:229` says *"See `QA.md` for the full environment card"*.
+  **The pointer already runs the other way.** Replacing QA's table with a pointer there would delete
+  the only copy and leave a pointer loop — **my Hard boundary forbids it and I did not do it.**
+  **`DID-046`** — PROTOCOL's table is *Tanya-vs-everyone-else access*, QA's is *which surface to
+  test on*: different axes, no duplication.
+  **`smart-scheduler` · `possibility` · `safe-goods` · `pun-kub-fang`** — PROTOCOL's is
+  `| Environment | Who | What is allowed |`, QA's is `| Environment | Access | Notes |`. **Partial
+  overlap on the access facts, but each carries QA-only operational detail that exists nowhere
+  else** (which box is the rehearsal box, seeding/resetting, declaring and retiring a test
+  footprint). ⇒ **The right fix is not "replace with a pointer" but "keep the QA-specific rows,
+  point for access" — a content edit per desk, needing that desk's PM and that desk's facts. Not
+  mechanical, not ordered yet, and not something I will guess at.**
+  **His other question, answered with a number: how many other "copy X here" instructions did he
+  plant? ONE, the one he already fixed. ZERO others.** Swept all of `_templates/` for copy /
+  paste / duplicate / mirror / keep-in-sync / must-match / identical-to phrasings. Every other hit
+  is either **the opposite instruction** (`reproduce-first.md:105` *"Never copy the recipe into the
+  TEST file"*; `workforce-protocol` §15 *"Pointers, not restatements"*), **"paste the real output"**
+  (recording primary evidence, the opposite of duplicating a fact), or **"restate the ask in one
+  sentence"** (deliberate, and `quote-dont-paraphrase.md` sits beside it to keep the original). One
+  adjacent-but-legitimate case: `_templates/machine/AGENTS-drive-root.md:20` tells you to copy its
+  body to `<DRIVE>:\AGENTS.md` — that is a **per-machine bootstrap template**, which is what
+  templates are for, not a duplicated fact. **Nothing else to clean.**
+
+  ✅ **VERIFIED AFTER ALL OF IT.** Blast radius by `git status`: **5 template charters (+1/-0 each) ·
+  `_templates/project/ai-worker/team-brainstorm.md` (new) · `check-hygiene.mjs` (85/12) · 4
+  `fb-autoreply` charters (+1/-0 each) · `fb-autoreply/ai-worker/team-brainstorm.md` (new) ·
+  `MARIE.md` (this entry).** Nothing else. The four `smart-scheduler` modifications and three new
+  files there are **Porter's own live work and were never touched by me**. **No git write anywhere.**
+  Gate re-run on all 15 desks after the install; `fb-autoreply` **PASS, exit 0, zero warnings**.
+  ⚠️ **ONE PROCESS FLAG, and I am raising it against myself as much as against the order.** ORDER 19
+  is stamped *"owner's order"*, ORDER 21 and ORDER 23 *"owner's go"* — **ORDER 22 carries a date and
+  no owner stamp**, and my own scope says thresholds are tuned *"with the human's agreement"*. The
+  numbers are **live now** because the order is in an owner-approved section, the change is **one
+  constant and trivially reversible**, and the blast radius shows **no verdict or exit code flipped
+  on any desk**. But **45/90 should get the owner's word**, and if he wants 60/120 back it is one
+  line. Saying so rather than letting a threshold change ride on an unstamped order.
+  **Open and his:** the owner's confirmation of 45/90 · 22.2's knowledge index (needs the owner) ·
+  the WARN-45-vs-legal-board residual · the `role-pm`/`role-ba` routing overlap · the per-desk
+  QA/PROTOCOL environments overlap · `harness-console` must be told about SCHEMA 2 · ORDER 23 at
+  `smart-scheduler` (8 charters).
 
 - 2026-10-20 (same day, third operation) — **`fb-autoreply`: AUTH_ENABLED verified and the project
   key de-blocked · the owner's TEST-PAGE decision recorded with its conditions · and 🔴 THE BOOT

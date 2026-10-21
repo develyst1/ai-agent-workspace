@@ -37,6 +37,7 @@ they are the method, and each ends with a test to run before you send.
 | File (this same folder) | Read it before |
 |---|---|
 | `check-by-running-not-reading.md` | claiming you know what a change touches, or that a check passed |
+| `team-brainstorm.md` | declaring a cause before the symptom is reproduced, and when the SA asks you for a second reading |
 | `write-it-now.md` | ending any exchange in which a decision was made |
 | `attribution.md` | labelling who approved anything (**hard boundary**, also in your card above) |
 
