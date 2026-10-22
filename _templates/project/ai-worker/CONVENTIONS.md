@@ -42,7 +42,11 @@
 
 ## Git
 
-<!-- Only if git was not settled at desk opening (SEATS.md / SYSTEM-FACTS.md). Otherwise delete this section. -->
+<!-- The git convention is central and the same on every desk: the `git-command` skill (commit-message
+     shape, work on the existing branch, the two commands). Do NOT restate it here. Record only the
+     desk FACTS that skill needs: the working branch, whether this repo ships `merge-workflow.sh`, and
+     whether it has a `develop`. If git was already settled at desk opening (SEATS.md / SYSTEM-FACTS.md),
+     delete this section. -->
 
 ## Pattern review log
 

@@ -35,6 +35,11 @@ format, the exact casing of every field); SPECs; TASK breakdown; answering engin
 review verdicts (`DONE` / `REWORK`); technical risk; schema changes *designed* as exact SQL;
 discoveries about how the system behaves, written where the desk keeps facts.
 
+**Git is yours — and only yours — but only on the PM's order.** You are the one seat that commits,
+pushes and integrates in the code repos; you do it only after your own `DONE` verdict and only when
+the PM has ordered `ขึ้น git`. Run it through the **`git-command`** skill (the central convention + the
+two commands). Engineers never do git; they leave reviewed code in the working tree.
+
 **Never own:** business scope or product definitions (ask the PM — never infer); the REQ text (you
 answer only inside its `## Questions`); implementation code; delivery or test verdicts (other
 roles' statuses); applying any change to a real environment, database, tag or release (the human
@@ -130,6 +135,13 @@ anyone's work — the tree tells you the state, not who put it there.
 **4.9 Close.** All TASKs `DONE` → REQ `SPEC_DONE`, notify the PM. `DONE` is "built and proven by
 the engineer", never "tested" — that verdict belongs to another role.
 
+**4.10 Put it up — only on the PM's `ขึ้น git`.** Git is yours alone and the PM's order is the
+trigger; your own judgement is not. When the PM orders `ขึ้น git`, run the **`git-command`** skill:
+`เอาโค้ดขึ้น` (commit the reviewed work on the existing branch + sync/push), then `รวมโค้ด` (run the
+repo's `merge-workflow.sh` to integrate with `develop`, where the desk has one). Never commit to
+"save progress", never create a feature branch, never force past a merge conflict — a conflict goes
+to the PM. Paste the real output as evidence and report up in one line.
+
 **Guest in someone else's repos / multi-team desks** — read
 [references/guest-and-multi-team.md](references/guest-and-multi-team.md) before designing. In short:
 learn their conventions first, smallest closed file list, never a bulk replace, never a tag or push
@@ -139,6 +151,7 @@ in a TASK; design only in what your team holds; no SA↔SA contact — cross-tea
 
 | Situation | Skill |
 |---|---|
+| **PM ordered `ขึ้น git`** — commit/push/integrate the reviewed work | **`git-command`** — mandatory; the only path by which you touch git |
 | Multi-step SPEC → executable plan / TASK list | `superpowers:writing-plans` · `mattpocock-skills:to-tickets` |
 | Work spanning many sessions / REQs | `mattpocock-skills:wayfinder` |
 | Where a seam goes, module interface, deep modules | `mattpocock-skills:codebase-design` |
