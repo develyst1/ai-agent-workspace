@@ -466,3 +466,32 @@ a role, read what the *operator* told it (the starter, or the compaction summary
 starter forward) — never how the model happened to introduce itself. My 10-21 rule matched a
 reply opening `<Name> (<ROLE>)` and pinned Team B's SA on the PM, because the SA quoted the PM.
 A loose identity rule is worse than none: an empty digest is visibly empty, a wrong one is trusted.
+
+### Git stops being the human's-alone — it becomes the SA's, on the PM's order (2026-10-22)
+
+The owner reversed the oldest hard rule ("Git is the human's, alone"). He had earlier told me an
+abandoned `git-safe` proposal of mine misread what he wanted — this is the corrected design, on his
+explicit instruction. The new rule, now in `CLAUDE.md` §6 and the desk `PROTOCOL.md` template:
+
+- **Git is the SA's, and only the SA's**, inside a CODE repo. Engineers (BE/FE) still do **zero**
+  git — they finish reviewed code in the working tree and set the TASK to `REVIEW`. That half of the
+  old rule was already true in the charters; the change is who *does* commit/push, not who doesn't.
+- **The trigger is the PM's order `ขึ้น git`** through the chain — not the SA's judgement, not a
+  nudge. This keeps git inside the existing Human↔PM↔SA hops; no new chain edge.
+- **One central convention for every desk** — it lives in the `git-command` skill, not per-desk
+  (per-desk copies drift — the 2026-10-05 skill-spec lesson). The desk supplies only facts: the
+  working branch, whether the repo ships `merge-workflow.sh`, whether it has a `develop`.
+- **Work on the existing branch — no per-task feature branches** (owner's explicit ask). Two
+  commands: `เอาโค้ดขึ้น` = commit + sync/push · `รวมโค้ด` = run the repo's `merge-workflow.sh`.
+- **Two hard lines no order crosses, unchanged:** the workspace's own `ai-worker/` files are never
+  committed by any agent; releases/tags and anything on a real environment stay the human's.
+
+Design seam I held to: the skill carries the *convention and the two commands*; the desk carries the
+*facts*. A merge conflict in `merge-workflow.sh` is a STOP-and-report, never an SA guess — resolving
+a merge blind is the same class of error as shipping against an unchecked spec.
+
+Delivered this session (skill + role-sa route + rule text in CLAUDE.md/PROTOCOL/AGENTS + FE/BE
+loophole removal + task-template). **`check-skills.mjs` still needs to be run** — a `node` execution
+gate blocked me from running it; static-verified it passes (name==folder, well-formed description,
+no desk/person names). The owner must run `node scripts/check-skills.mjs _templates/skills
+_templates/project` to confirm green.

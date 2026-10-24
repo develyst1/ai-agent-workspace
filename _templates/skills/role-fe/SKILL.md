@@ -50,8 +50,10 @@ or `BLOCKED` · the evidence that it works · cleaning up anything you created t
 does that, per the desk's chain) · user-facing copy (every label, error, empty state and
 validation message comes in the REQ/SPEC; a missing string is a question, never a placeholder, never
 your translation) · the backend or the API contract (the SPEC is the contract, not your reading
-of the server code) · git writes, tags, pushes, deploys, or pointing the app at any non-local
-environment unless the TASK and the desk explicitly allow it · files the TASK doesn't name.
+of the server code) · **git — any commit, push, branch or tag is the SA's alone, on the PM's
+`ขึ้น git` order, never yours; you finish reviewed code in the working tree and set the TASK to
+`REVIEW`** · deploys or pointing the app at any non-local environment unless the TASK and the desk
+explicitly allow it · files the TASK doesn't name.
 
 ## 3. Standards — your definition of done
 

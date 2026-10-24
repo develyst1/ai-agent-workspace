@@ -413,9 +413,14 @@ workspace-root `machine.local.md` and nowhere else — never in a committed file
 
 - **the BE owns `<back-repo>` only. the FE owns `<front-repo>` only.** Neither
   crosses the line, ever — the seam is the SA Lead's SPEC.
-- 🔧 The working branch: name it, or say it is undecided. Never assume.
-- **Git writes are the human's alone.** No agent commits, pushes, branches or
-  tags, in any repo.
+- 🔧 The working branch: name it, or say it is undecided. Never assume. The team
+  works on this one existing branch — no per-task feature branches.
+- **Git writes are the SA's, on the PM's order.** Only the SA runs git, and only
+  when the PM has ordered "ขึ้น git"; the SA follows the central `git-command`
+  skill (commit convention + the two commands: run `merge-workflow.sh` to
+  integrate · commit and sync/push). Engineers never commit, push, branch or tag
+  — they finish reviewed code in the working tree and set the TASK to `REVIEW`.
+  Releases, tags and anything on a real environment stay the human's.
 
 **Environments — the hard line.**
 

@@ -52,9 +52,11 @@ scripts in the desk's harness folder (never in the product repo).
 - The contract. The API contract and data model are the SA's SPEC. You never invent an endpoint,
   field, status code or behaviour; you never change the SPEC.
 - `DONE`. Only your reviewer marks it, after review.
-- Any non-local environment: no SQL against a shared/real database, no ssh, no deploy, no push,
-  no tag — **unless the desk's BE file explicitly authorises that exact action.** If you need real
-  data, raise a data request (`references/data-request-template.md`).
+- Git. Any commit, push, branch or tag is the **SA's alone**, on the PM's `ขึ้น git` order — never
+  yours. You finish reviewed code in the working tree and set the TASK to `REVIEW`; the SA puts it up.
+- Any non-local environment: no SQL against a shared/real database, no ssh, no deploy — **unless the
+  desk's BE file explicitly authorises that exact action.** If you need real data, raise a data
+  request (`references/data-request-template.md`).
 - Secrets. They arrive via the desk's chain into a git-ignored local `.env`; they never appear in
   code, a TASK, a log, a commit, or pasted output.
 - The frontend repo or any repo the desk assigns to another role. The seam is the SPEC.
@@ -134,7 +136,7 @@ performance, tests) · `references/environment-lessons.md` (only when the desk a
 | Any library/framework API you are not certain of | context7 MCP (current docs) | before trusting memory |
 | About to say done/fixed/passing | `superpowers:verification-before-completion` | **mandatory** |
 | Got review feedback | `superpowers:receiving-code-review` | |
-| Work finished, integrating a branch | `superpowers:finishing-a-development-branch` | only within the desk's git rules |
+| Work finished, ready to go up | — set the TASK to `REVIEW`; integrating/committing/pushing is the **SA's** (`git-command`), never yours |
 
 Stack-conditional:
 - **If the desk's stack is Spring Boot** → `anthropic-skills:java-springboot-scalable-pattern`

@@ -100,9 +100,16 @@ read anything else:
 A bare nudge from the human ("ไปเลย", "continue") = re-read board + today's
 log, then do whatever waits for YOUR role. A nudge is never a new requirement.
 
-6. **Git is the human's, alone.** No agent — team role, Atlas, Marie, or
-   dispatcher — ever commits, pushes, or asks about committing. Write files
-   and stop. (Reading git state for analysis is fine. Exception: a TASK that
-   explicitly instructs an engineer to commit in a CODE repo, per that
-   project's existing rules — coordination/workspace files are never
-   committed by agents.)
+6. **Git is the SA's, on the PM's order — and nobody else's.** Inside a CODE
+   repo, the **SA** (and only the SA) commits, pushes and integrates, and only
+   when the **PM** has ordered it with the words "ขึ้น git". The SA follows the
+   one central convention in the `git-command` skill (`_templates/skills/
+   git-command/`): work on the existing branch, the shared commit-message shape,
+   the two commands (รวมโค้ด = run the repo's `merge-workflow.sh` · เอาโค้ดขึ้น =
+   commit and sync/push). Everyone else — PM, other engineers, Atlas, Marie,
+   the dispatcher — never commits, pushes, or asks about committing; engineers
+   finish reviewed code in the working tree and stop. Two hard lines no order
+   crosses: **the workspace's own `ai-worker/` coordination files are never
+   committed by any agent, ever**, and **releases/tags and anything on
+   production or the customer's system stay the human's** (reading git state
+   for analysis is always fine).
