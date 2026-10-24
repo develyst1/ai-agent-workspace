@@ -9,3 +9,5 @@ Status: ✅ SENT by the owner 2026-10-21. (Was: DRAFT for the owner) (polite, �
 2. modal ของ New vs Renewing ถ้า request error จะขึ้นรายชื่อเด็กที่แต่งขึ้นมา
 
 ในคอมเมนต์ของปาล์มเขียนไว้ว่าให้ลบ preview ออกเมื่อ back ส่งครบ ซึ่งตอนนี้ส่งครบแล้วครับ รบกวนช่วยลบ preview ออก ให้ field ที่ว่างแสดงเป็น "—" และให้ modal แสดง error แทนด้วยครับ ขอบคุณครับ
+
+**Palm's answer, 2026-10-21 23:30:** *"ลบ preview ออกจากหน้า SOM แล้ว merge เข้า develop แล้ว (commit e7ec71d)"*.

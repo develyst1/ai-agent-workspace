@@ -287,3 +287,21 @@ Verbatim: `…/khwan-answers-proto-v2-part2-2026-10-19-VERBATIM.md`. Still unans
 - **Team A** (831–835) + **Team B** (745/746) verified. TEST-115 parts A + B PASS, with every ❌ fixed.
 - **The final single file:** `dist/SOM-BACK-OFFICE-v3.html` (3,606,013 B), copied to `project-docs/customer-2026-10-22-backoffice-prototype-v3/`.
 - **Khwan draft:** `COPY-DRAFT-khwan-backoffice-prototype-v3-2026-10-22.md`.
+
+## 9. Khwan's v3 answers, PART 1 (export 23/10/26). She is NOT finished (pages 1–5 and 8 answered)
+Verbatim: `project-docs/customer-2026-10-22-backoffice-prototype-v3/khwan-answers-v3-part1-2026-10-23-VERBATIM.md`. **One v4 round after she finishes** (the batch rule).
+- **Words / layout (v4):**
+  - the top-left brand = **SOM BACK OFFICE** only;
+  - **full words everywhere** (Full-time / Part-time / Freelance; v3's A1 sweep missed some);
+  - Employee Profile: "Freelance Rate"; **a Bonus heading after Merit**; shorter labels (All · All — shared among employees · Only Skate bag; Nov 2026);
+  - Payment Setting: her ~30 renames (Hour, Weekday / Weekend, Hour Count, "> 4th HR / > 5th HR", Apply to, Condition, Pay to, 1st Coach, Renewal Course / Voucher, Share Equally, Per KM …), **plus her Thai explanatory text, verbatim**, under Commission and Transportation, and the School Distance notes;
+  - Monthly Payment: Reminder · Pending · AUTO-LOCKED · TOTAL;
+  - Payment Detail: the bonus lines **grouped with counts** ("For 50 : น้องบี (Private) + น้องเอ (Voucher) = 2"), readable formatting, the Thai Extra Hour wording;
+  - Daily Training Report: full words + even spacing.
+- **NEW function (small, for REQ-120): the Payment Detail export.** **Excel = the summary per section only** (e.g. Bonus + Subtotal), **PDF = everything incl. the details**. Size it with v4.
+- **Her question (1:43 PM):** do the SETTING F-pages mean "the data links to the front office", not "the page moves to the front office"? **Answer: the opposite.**
+  - These screens ARE front-office screens (SOM SCHEDULE): e.g. the F1 Branch field is in the front office's booking form.
+  - The back office has no such page; it only receives the data.
+  - The prototype shows them only so she can agree what the front office gains. **v4 should make this unmistakable** (e.g. render the SETTING pages inside a "SOM SCHEDULE" frame, or move them to a separate "หน้าบ้าน (preview)" section).
+- **v4 UX note (owner's read, 10-25):** she likely reviewed pages without changes and didn't press ✓ because she didn't know it was needed. **v4:** before 'คัดลอกคำตอบทั้งหมด', list the unanswered pages and offer '✓ ครบ for all pages I viewed with no notes'.
+- **v4:** the 4 [?] questions are ANSWERED (REQ-120 §9.1). Pre-set them as answered in LINE (`answer`), and show the ruled behaviour on Refund / STOCK OUT / Low Stock.

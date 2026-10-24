@@ -168,3 +168,44 @@ pages-b.js: removed exactly the 6 b-fo lines (SPEC.load data/b-fo.js + the five 
 
 ---
 ## @Porter → @Silver — 2026-10-21 — ▶️ `stock-stock-out.png` is re-captured (Tanya: both "Remove" links in full, the Commission box in frame, no toast). Re-check its pins, then call **Team B final**.
+
+---
+## @Porter → @Silver — 2026-10-22 — REQUEST: size the EXISTING back office, as if it were built from ZERO (analysis only)
+**Owner, 2026-10-22, verbatim:** *"แล้ว มองอันเดิม ก่อน ว่าก่อนเราจะแก้เป็นแบบนี้ ถือว่า อันนั้น ถ้าทำใหม่จาก 0 เป็นกี่วัน"*.
+**Why:** he compares the new back office (REQ-120, ≈175 d) with what the customer already has (bought as Option C), in the same unit.
+- **Read the code as it is today:** `smart-scheduler-backoffice-back` + `smart-scheduler-backoffice-front` (paths in `machine.local.md`). Plus the back-office parts that live in the scheduling back (the `bo.*` write points, C1).
+- **Inventory it module by module:** what exists and works (screens, endpoints, tables, jobs). One line each.
+- **Size each module as if built from zero today:** the same unit as REQ-120 (engineer-days, your estimate + 10%, build + tests). **No credit for "already written".**
+- **Then a total**, plus a line: which of these REQ-120 keeps / reuses vs replaces (so the owner can see the overlap).
+- **No money, no opinions on price.**
+- **Your part** (you surveyed it for C3): the existing back office's **auth / users / roles, revenue / income / reports, the dashboards, settings**, and the back-office front's shell. Sober takes Stock / items / movements, pay-like parts and the C1 write points. **No overlap:** list your module names; I merge.
+
+---
+## @Porter → @Silver — 2026-10-22 — ⚠️ RE-SPLIT (replaces my earlier split today): **you size the WHOLE OLD back office (BO_old), as if built from zero**
+**Owner's method, 2026-10-22, verbatim:** *"ฉัน อยากรู้ว่า frontoffice + backoffice ที่ทำไป ตอนนี้ นับเป็นกี่วัน · ให้จำนวนวันนั้น = 73000 เอามาหาร จำนวนวัน จะตกวันละเท่าไหร่ · แล้วเอา ราคาต่อวันนั้น อ่ะ มา คูณ กับ backoffice new - backoffice old"*. So: **rate = 73,000 ÷ (FO_now + BO_old)**; **price = rate × (BO_new − BO_old)**.
+- **Scope:** `smart-scheduler-backoffice-back` + `smart-scheduler-backoffice-front` as they are today (every module), **plus** the back-office write points inside the scheduling back (C1, `bo.*`).
+- **Module by module, one line each:** engineer-days **from zero** (estimate + 10%, build + tests, the same unit as REQ-120). No credit for "already written".
+- **Then the total**, and one line per REQ-120 part: what of BO_old it keeps / reuses.
+- **Sober now does the front office (FO_now) only.** No money. Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Silver — 2026-10-22 — ONE-LINE confirm for the owner's pricing: is REQ-120's ≈175 d (BO_new) **incremental**, i.e. sized ON TOP of reusing BO_old (scaffold, schema, the C1 bridge, BF-SHELL…, as your keeps / reuses table suggests)? Or is it a from-zero total of the new back office? If incremental, give the from-zero equivalent: 175 + the BO_old parts it reuses (sum them). Also note: Sober counts the C1 sale posting / FL ceiling in FO_now module 9 (≈12 d), and you count C1 in BO_old (17.2), so it's double-counted once merged. Which side should hold it? One line each. Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Silver — 2026-10-22 — Pricing: two more numbers
+**Owner, 2026-10-22, on the pricing write-up's "not included" list** (QA/deploy/UAT · the §4 Reports · Palm's screens), verbatim: *"เอ่า นับสิ"*. Palm's screens are now counted in FO (Porter). Two more numbers are needed, analysis only, engineer-days, the same unit:
+1. **QA + deploy + UAT** effort for **each** of FO_now, BO_old and BO_new (from zero). Use one consistent rule, e.g. a % of build or per module, and say which. All three sides get it, so the comparison stays fair.
+2. **The §4 back-office Reports** (REQ-120 §4 headings: REPORT · STOCK · CHECK IN · COURSE · SALARY · STUDENT). A **rough** size from the headings + what Khwan's sheet / prototype show. Mark it as rough (the content isn't agreed with her yet).
+- **Yours:** item 1 for BO_old + BO_new; item 2 for REPORT · STOCK · SALARY-free parts as you see fit. Agree a split with me if needed. **Sober does FO_now's QA line and the SALARY / CHECK IN / COURSE / STUDENT reports.** Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Silver — 2026-10-22 — FYI, no action: the pricing is CLOSED. The owner ruled *"ยอมนับรวมเข้าไป โดยไม่ต้องคิดวันเพิ่ม"*: QA / deploy / UAT, the §4 reports and Palm's screens are included in the price with **no extra days**. So the 25 % line and the report sizes are recorded (REQ-120 §10) but **not used in the price** (≈ 39,200 ฿). Thank you, nothing more needed.
+
+---
+## @Porter → @Silver — 2026-10-22 — ✅ GRANT TASK-747: the SOM Today % follows the Daily Report rule (Khwan chose A)
+Read REQ-124 → "Khwan, 2026-10-22 … = A".
+- `today.attendanceRate` = **attended ÷ (Confirmed + on leave)**: the same numerator / denominator definitions as `/reports/daily` (REQ-119 Total booked). Prove it by value: **the same day ⇒ the same % on both endpoints**, incl. a day with a child on leave and a day with no bookings (0, not NaN).
+- **Claim:** `lib/som-contract.ts` (the rate line), its test + set, the contract / OpenAPI description if it states the formula. Nothing else. No front, no migration.
+- Then the commit list. Also **one line for Palm** (his doc §1 states the old formula), and I'll draft it.
+
+From Bob 2026-10-22: TASK-747 is in REVIEW - SOM today.attendanceRate = countDaily's own value (attended / (Confirmed + On leave)); the leave case is 50, not 67; empty day 0. SAFE 5064 pass / 0 fail (363 files), tsc 0; sets 741 45/45 - 742 47/47 - 743 25/25 - 737 11/11, checksums identical; old SOM/daily code 0-line diff. Own pins only (741 test + set). HEADS-UP: the repo .env now points at the CUSTOMER's system (LINE_OA_WRITE_ALLOW / LIFF_ID / LINE_LOGIN_CHANNEL_ID) so the test-env guard refuses a bare bun test / mutation:run; I did not touch it and used the SAFE overrides - see the TASK note.

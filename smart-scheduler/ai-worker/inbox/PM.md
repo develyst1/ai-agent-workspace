@@ -6424,3 +6424,447 @@ PAUSED — relay: FE - Fern → inbox/FE.md (@Sober → @Fern — 2026-10-21 —
 - **This build includes Team B's pages as they stood when Fern built it.** If Silver changes anything after this, the file must be re-built (`node build/single.mjs`) and re-checked before the owner sends it.
 - **For your customer message:** one file, open it directly, no unzipping. Every page starts unanswered, and the 4 follow-up questions sit inside the [?] popups.
 PAUSED — my sends are capped: @Porter, read the entry above (Team A's REQ-122 v3 COMPLETE, the final build). Fern's 'done' is in inbox/FE.md; nothing is due from her.
+
+## 2026-10-22 — The EXISTING back office, sized as if built from ZERO: my part (auth / users / roles · revenue / reports · dashboards · settings · the front shell). Analysis only. (@Silver)
+**Basis:** read today from `smart-scheduler-backoffice-back` / `-front` (+ Sober's survey `SURVEY-backoffice-repos-2026-10-13.md` for the live / dormant split).
+- **Unit:** the same as REQ-120: engineer-days, my estimate + 10%, build + tests.
+- **No credit for "already written".**
+- **Only LIVE code is sized.** The dormant `ops` modules (unmounted, tables absent) are listed at the end at 0.
+
+| module (name for your merge) | what exists and works today | from zero |
+|---|---|---|
+| **BO-AUTH** | `POST /auth/login` against ONE admin from env (falls back to admin/admin); JWT sign / verify; `adminAuth` / `serviceAuth` middleware (`routes/auth.ts` 20 · `middleware/auth.ts` 68 · `lib/jwt.ts` 31; 2 test files) | S **1.7** |
+| **BO-USERS-ROLES** | **nothing:** no user table, no roles. The token's `role:"admin"` is never checked | **0** |
+| **BO-REPORT-PL** | `GET /bo/reports/pl?from&to`: sums every movement by item → income / expense / profit, by direction / cadence / item; month-to-date default (`item.service.ts` report part + `lib/bo-money.ts` 70; tests) | S–M **2.2** |
+| **BO-REPORT-REVENUE** | `GET /bo/reports/revenue-by-activity?month` (by subject, with the "unattributed" reasons) + `GET /bo/reports/customer-spend?month&q` (by student) (`revenue.service.ts` 126 · `lib/revenue-attribution.ts` 308 · `lib/month.ts` 33; 35 + 6 tests) | M **4.4** |
+| **BO-SETTINGS-TAGS** | tag groups / values + one value per group per item; list / create (`tag.service.ts` 71 + routes). The only "settings" in the live code | S **1.7** |
+| **BF-SHELL** | Next.js app: login page + token cookie (12 h), the route guard, the API client (401 ⇒ logout), the admin layout (header, sidebar, a 4-entry menu), providers, **4 placeholder pages** (inventory / wallet / payroll / reports) | M **4.4** |
+| **BF-DASHBOARD** | `/dashboard`: the P&L with a date range, totals + a by-item list (`DashboardContent.tsx` 152) | S **2.2** |
+| **BF-REVENUE** | `/revenue`: a month picker, 2 tabs (by sport with the unattributed reasons; per customer with search) (`RevenueContent.tsx` 298) | M **3.3** |
+| **BF-TAGS** | `/tags`: tag groups + values (`BoTagsContent.tsx` 106) | S **1.1** |
+| **My total** | | **≈ 21.0 d** |
+
+📌 **Not assigned to either SA. Please place it, so it isn't counted twice:**
+- **BO-SCAFFOLD:** the Hono app + health + `/api` mounting, the drizzle config, the migration ledger + witness libs (38 tests). From zero it is M **3.3**.
+- If Sober counts it with the items model, drop it here.
+
+**Dormant, 0 (written, never live):**
+- the `ops` reports route / service and its P&L test;
+- the two unlisted front screens on dormant routes (freelance budgets, FT/PT salary): those are Sober's pay-like area.
+
+**What REQ-120 does with each:**
+| module | in REQ-120 |
+|---|---|
+| BO-AUTH | **replaced:** R0.1 uses the scheduling back's real users / roles (and closes admin/admin) |
+| BO-USERS-ROLES | **new in REQ-120** (R0); nothing exists to reuse |
+| BO-REPORT-PL / BF-DASHBOARD | **not in REQ-120** (the §4 reports come later). They can stay as they are, or be dropped: the owner's call |
+| BO-REPORT-REVENUE / BF-REVENUE | **replaced** by R2.5 (type / category, daily · MTD · YTD, branch, payment). Only the subject-mapping idea of `revenue-attribution` carries over |
+| BO-SETTINGS-TAGS / BF-TAGS | **partly reusable:** it could back R2.1's editable categories (types → categories); otherwise replaced |
+| BF-SHELL | **kept and extended:** the layout / menu / API client stay; the login is replaced by the shared sign-in; role guards are added |
+| BO-SCAFFOLD | **kept** (the bridge keeps `bo` and its ledger) |
+
+**BALL: @Porter — merge with Sober's part; place BO-SCAFFOLD.**
+
+---
+## @Sober → @Porter — 2026-10-22 — The EXISTING back office, sized as if built from ZERO: **Team A's part = ≈ 27 d** (incl. +10%, build + tests). Analysis only
+**Read from code today:**
+- `smart-scheduler-backoffice-back` `486b2d1`: Bun/Hono/Drizzle, ≈ 5.7k lines incl. 13 test files, migrations 0000–0006;
+- `smart-scheduler-backoffice-front` `6cf23f6`: Next.js, ≈ 3.7k lines;
+- the scheduling back's C1 write points.
+
+**Unit:** engineer-days, the same as REQ-120: my estimate + 10%, build + tests, **no credit for "already written"**.
+
+### My modules (no overlap with Silver: auth / users, revenue / reports / P&L, dashboards are hers)
+| # | module | what exists and works today (one line) | BE | FE | **total +10%** |
+|---|---|---|---|---|---|
+| **A1** | **Product catalog + stock** | `ops.catalog_items` + `stock_balances` + `stock_movements` (IN / OUT / ADJUST); catalog CRUD + movement list; `POST /catalog/by-ref/movements` for the service token. Front: the **Items** page + create-item + movement dialogs | 2.5 | 1.5 | **4.4** |
+| **A2** | **BO items + movements + tags** | `bo.item` (direction, cadence, external ref), `bo.movement` (with an audit trail + discount movements), tag groups / values / item tags; `/bo/items…`, `/bo/tag-*`. Front: the **BO Items** page + item / movement dialogs, the **Tags** page | 3.0 | 2.0 | **5.5** |
+| **A3** | **FT / PT salary as a recurring cost** | `ops.recurring_costs`, effective-dated (past months frozen); materialise → a FIXED_COST movement; the **month-start job** (+ the freelance budget reset). Front: the **FT/PT Salary** page + set-salary dialog | 2.0 | 1.0 | **3.3** |
+| **A4** | **Freelance hour budgets** | the freelance ceiling as a `bo.item` (unit = hour): draw / release / top-up. Front: the **Freelance Budgets** page + create / edit / top-up | 1.5 | 1.5 | **3.3** |
+| **A5** | **Teacher-sync bridge** | service-token onboard / update / offboard / switch-type (party upsert + closing the old money: the FL budget, the open salary row); `GET /pricing/teacher-rates` | 1.0 | — | **1.1** |
+| **A6** | **C1 write points (scheduling back)** | 31 calls from 11 files:<br>• `sale-post.ts` (441 lines: record / post / reverse a booking sale, discounts, idempotent generations), called at sale / day-end ATTENDED / rental paid / camp and by undo;<br>• `sale-items.ts` (305: the sellable price list + item refs);<br>• `ops-client.ts` (346: freelance budget draw / release inside the booking tx, quotas, setup-incomplete, drift reconcile, the sync calls);<br>• + their 3 test files | 8.5 | — | **9.4** |
+| — | **Inventory / Payroll pages** | **placeholders only** ("Wave 1 / Wave 3", no code behind them) | 0 | 0 | **0** |
+| — | `settlement_runs` / `settlement_lines` | **tables only**; no service, route or screen uses them | 0 | 0 | **0** |
+| | **Team A total** | | | | **≈ 27.0 d** |
+
+### Not in either list: Porter, please place these (sizes offered so the merge has no gaps)
+| module | exists today | **offer +10%** |
+|---|---|---|
+| **Parties** (people / organisations) | `ops.parties` CRUD (used by the teacher-sync) | 1.1 |
+| **Accounts / ledger + commercial requests** (a wallet back end) | `ops.accounts` + `account_ledger` + `commercial_requests` (top-up / purchase / adjustment); the **Wallet page is a placeholder** | 2.75 |
+| **Pricing rules** | `ops.price_rules` CRUD | 1.65 |
+| **Platform** | the migration ledger + witness (+ tests), `migrate-to-bo` + verify, money / month libs, idempotency records, the notification outbox table, API credentials | 3.85 |
+
+### REQ-120 vs these (the overlap line for the owner)
+- **A1 (stock):** **kept + extended.** R3 adds locations, Excel import, the STOCK OUT cart, Stock Demo and Low Stock on top of the same item + movement idea.
+- **A2 (bo items / movements):** **kept as the bridge** (C1: the scheduling back writes `bo.item` / `bo.movement`). REQ-120's revenue lines sit on it (Silver's side). Tags may be reused for categories.
+- **A3 (FT / PT salary):** **replaced** by R1's pay run (FT / PT / FL / STAFF, Extra Hour, OT, commission, merit, slips). Only the "effective-dated, past months frozen" rule carries over.
+- **A4 (FL budgets):** **to decide.** REQ-120 R1 pays Freelancers by rate per class type and has no hour ceiling. If the budget goes, its C1 draw / release in the booking tx goes too, **in the same release** (C1).
+- **A5 (teacher-sync):** **kept / adapted.** R0's per-person users + F3's multi-role change what it syncs.
+- **A6 (C1 write points):** **kept**, and changed where R2 moves posting to "at confirm" (C1 / R2.2). That is scheduling-back work inside REQ-120's own estimate.
+- **Placeholders (Inventory / Payroll / Wallet / Reports):** nothing to reuse; REQ-120 builds those screens.
+
+No money, no prices, no view on price.
+PAUSED — my sends are capped: @Porter, the entry above (the EXISTING back office sized from zero: Team A ≈ 27 d + 4 unassigned modules) is for you.
+
+## 2026-10-22 — BO_old (RE-SPLIT): the WHOLE existing back office + the C1 write points, sized as if built from ZERO: ≈ 51 engineer-days. Replaces my earlier "my part" table. (@Silver)
+- **Unit:** the same as REQ-120: engineer-days, estimate + 10%, build + tests.
+- **No credit for "already written".** Only code that WORKS today is sized.
+- **Boundary with Sober's FO_now:**
+  - C1 here = only the scheduling-back code that **writes or reads `bo.*`**.
+  - The front-office features that trigger it stay in FO: the sale dialogs, the discount rule check (`discount-plan`), rentals, the freelance budget screens.
+
+**backoffice-back (BB)**
+| module | what exists and works | from zero |
+|---|---|---|
+| BO-SCAFFOLD | the Hono app, health, `/api` mounting, drizzle config, the migration ledger + witness (38 tests), the one-off `migrate-to-bo.ts` | M **4.4** |
+| BO-SCHEMA | `bo.item` · `bo.movement` · tags · the read-only `public` mirrors | S **1.7** |
+| BO-ITEMS | items CRUD, movements (`applyMovement` with its ceiling guard), list movements (`item.service.ts`, `routes/bo.ts`, tests) | M **3.3** |
+| BO-AUTH | the single env admin login (falls back to admin/admin), JWT, middleware | S **1.7** |
+| BO-USERS-ROLES | **none exist** | **0** |
+| BO-REPORT-PL | the P&L over any date range (+ `bo-money` fold) | S–M **2.2** |
+| BO-REPORT-REVENUE | revenue by activity + customer spend, month only (`revenue-attribution`, 41 tests) | M **4.4** |
+| BO-TAGS | tag groups / values on items | S **1.7** |
+| **BB subtotal** | | **19.4** |
+
+**backoffice-front (BF)** (0 tests today; sized WITH tests)
+| module | what exists and works | from zero |
+|---|---|---|
+| BF-SHELL | login + cookie, the route guard, the API client, the layout / sidebar / menu, providers, 4 placeholder pages | M **4.4** |
+| BF-DASHBOARD | the P&L page with a date range | S **2.2** |
+| BF-REVENUE | the revenue page: month, by sport + unattributed reasons, per customer | M **3.3** |
+| BF-ITEMS | the items list + item modal + movement modal | M **3.3** |
+| BF-TAGS | the tags page | S **1.1** |
+| *(0)* | `/freelance-budgets`, `/ftpt-salary` + the old Items partials: written, but they call DORMANT routes, so they **don't work** | 0 |
+| **BF subtotal** | | **14.3** |
+
+**C1: the back-office write points inside the scheduling back**
+| module | what exists and works | from zero |
+|---|---|---|
+| C1-SALE-POST | `recordSale` / `postBookingSale` / `reverseBookingSale`, the discount movements, idempotency keys + generations (`sale-post.ts` 441 + tests) | M **4.4** |
+| C1-CATALOG | the price card / product codes (`sale-items.ts` 305), the price groups, the `ensure-sale-items` + `reconcile-sale-prices` scripts (+ plan, tests) | M **3.3** |
+| C1-POSTING-WIRING | the day-end ATTENDED posting (trial / 1HR / OTHER, `jobs.service.ts` 163-349) + the 5 sale call sites (course · voucher · camp · rental) | M **2.8** |
+| C1-UNDO | the reversal on an attendance undo / sick-leave-on-attended | S **1.1** |
+| C1-FREELANCE-CEILING | the per-FL-teacher ceiling item, hold / release INSIDE the booking transaction, reconcile, close, list, the monthly reset (the ledger side only; the screens are FO) | M **5.0** |
+| C1-READS | attention's SALE reads, `getCatalogItems` | S **0.6** |
+| **C1 subtotal** | | **17.2** |
+
+**BO_old TOTAL ≈ 19.4 + 14.3 + 17.2 = 50.9 ≈ 51 engineer-days.**
+- **Dormant, not counted:** the `ops` model (parties, catalog / stock, wallet, price rules, recurring salary, settlement; routes unmounted, tables absent).
+
+**What each REQ-120 part keeps / reuses from BO_old**
+| REQ-120 part | keeps / reuses | replaces |
+|---|---|---|
+| R0 roles · notifications · labels | BF-SHELL (extended with role guards) | BO-AUTH (→ the shared users / roles); BO-USERS-ROLES is new |
+| C1 **bridge** (the owner's choice) | BO-SCAFFOLD · BO-SCHEMA · C1-SALE-POST (extended: branch / payment / category / actor) · C1-CATALOG · C1-UNDO · C1-FREELANCE-CEILING · C1-READS | C1-POSTING-WIRING: re-pointed to confirm-time posting (R2.2) |
+| R2 Revenue | BO-TAGS / BF-TAGS can back R2.1's editable categories (partly) | BO-REPORT-REVENUE + BF-REVENUE (→ R2.5) |
+| R3 Stock (Sober's sizing) | BO-ITEMS / BF-ITEMS: the item + movement ledger can carry stock moves (partly) | the product fields, locations, Demo and STOCK OUT are new |
+| R1 Salary | nothing live (the pay-like parts are dormant) | — |
+| not in REQ-120 | BO-REPORT-PL + BF-DASHBOARD stay as they are, or go: the owner's call (§4 reports come later) | — |
+
+**BALL: @Porter — BO_old ≈ 51 d for the owner's method, beside Sober's FO_now.**
+
+---
+## @Sober → @Porter — 2026-10-22 — FO_now: the WHOLE front office, sized as if built from ZERO = **≈ 252 d** (incl. +10%, build + tests) + **Palm's screens apart ≈ 16.5 d**. Analysis only; no money
+(This replaces my back-office sizing from this morning. Per your re-split, the OLD back office is Silver's.)
+
+**What I read** (the local trees; uat = these minus the uncommitted F3 + TASK-830 front list):
+- **back** `smart-scheduler-back` `fa1a04c`: ≈ **37.3k lines of code + 58.6k lines of tests** (363 test files), **72 migrations**;
+- **front** `smart-scheduler-front` `33f9311`: ≈ **46k lines + 24.1k lines of tests** (143 test files).
+
+**The unit:** engineer-days from zero, my estimate + 10%, build + tests, the same as REQ-120. **No credit for "already written".**
+- **"From zero" assumes the requirements are KNOWN up front.** The real history took longer: discovery, the customer's changes, sid/uat rounds. That is not counted, in either direction.
+
+### The front office, module by module (BE + FE, days before +10%)
+| # | module | what exists today (one line) | BE | FE | sum |
+|---|---|---|---|---|---|
+| 1 | **Platform + foundation** | Hono/Drizzle app, schema, 72 migrations with the ledger / witness / preflight, validation, OpenAPI, JWT auth, time zones, settings; front shell, theme, API client, TH/EN dictionaries, mocks | 8 | 6 | 14 |
+| 2 | **Users / roles / permissions** | per-person users, roles, route-level access, permission checks; Users + Roles screens | 4 | 4 | 8 |
+| 3 | **Teachers** | CRUD, types FT / PT / FL / STAFF + order, work days, availability, limit overrides, archive / reactivate, coach-rate masking, freelance ceilings view; Teachers screen | 6 | 5 | 11 |
+| 4 | **People: parents / students / households** | parents, students, family links, CRM fields, demographics, area codes (REQ-118), student import, archive, suspend, search; People screen | 8 | 5 | 13 |
+| 5 | **Calendar + scheduling core** | the calendar (scoped per role), slot availability, clash rules, move, ICS subscribe, the teacher's own schedule; the Calendar screens (day / week grid, booking modal, legend, paused tray) | 8 | 12 | 20 |
+| 6 | **Bookings** | private / duo / group bookings, holds, attend / cancel / make-up status flow, bulk confirm, undo, attendee notes, group series + extra sessions, group teacher swap, seats | 14 | 8 | 22 |
+| 7 | **Courses + packages** | create / preview / import packages, the course plan, deductions, reconcile, pause / resume, end / drop, start change, expiry + history, recount, extension slots, course history; the Bookings / course panels | 16 | 8 | 24 |
+| 8 | **Vouchers** | create / import, book from a voucher, expiry + history, end | 4 | 3 | 7 |
+| 9 | **Trials, the price list + sale posting (C1)** | the sellable price list + item refs, record / post / reverse a sale into the back-office tables, discounts, price reconcile, the freelance budget draw / release in the booking tx | 9 | 2 | 11 |
+| 10 | **Camp** | camp booking, days, deductions, reminders, booked notice; Camp screen + camp check-in | 6 | 4 | 10 |
+| 11 | **ECA / Other program series** | Other / ECA series, journal series, kinds; Other-series screen | 4 | 3 | 7 |
+| 12 | **Rentals + shop check-in** | rentals (set / ride / helmet / pads), the shop check-in, rate limit; Rental + shop check-in screens | 3 | 2 | 5 |
+| 13 | **Check-in** | QR tokens, channels, corrections, provenance; Check-in screens | 3 | 3 | 6 |
+| 14 | **Teacher leave** (REQ-123 / 125) | same-day / advance / range leave, ruling B (co-taught classes), the preview, lift, removals, notices + the admin alert; leave dialogs, panels, lists | 8 | 6 | 14 |
+| 15 | **Attention / Overview / Dashboard / Badges** | the attention queue, overview, admin dashboard, badges + rules | 4 | 4 | 8 |
+| 16 | **LINE OA** | the webhook, the LIFF register page, linking (parents / teachers / admins, pairing, 2FA), link requests, rich menus, every message in TH / EN, the outbox, commands / replies, today's schedule; Register + Link-requests screens | 22 | 5 | 27 |
+| 17 | **Jobs + notices** | the day-end job (auto-cut, expiry, attendance posting), daily reminder, weekly digest, camp reminder, class-cancelled / teacher-change / voucher-sold / leave notices | 9 | — | 9 |
+| 18 | **Settings** | the settings store + Settings screen | 2 | 2 | 4 |
+| 19 | **Data repair + migration tooling** | import audits, backfills (area, demographics, leave links), bulk link / relink plans, the DB reset plan | 6 | — | 6 |
+| 20 | **Test + quality tooling** | the mutation runners (both repos), test-env guards, the crash probe | 2 | 1 | 3 |
+| | **sum before +10%** | | **150** | **79** | **229** |
+| | **FO_now, incl. +10%** | | | | **≈ 252 d** |
+
+### Palm's screens, listed APART (the owner decides whether they count)
+| | screen | what exists | BE | FE | **+10%** |
+|---|---|---|---|---|---|
+| P1 | **SOM dashboard** | the SOM contract read (575-line lib), the SOM report service, district → sub-district rows, page filters, the NVR detail; Som screen | 5 | 5 | **11** |
+| P2 | **Daily Report** | the daily-report data (attended / confirmed by type, the per-teacher tile grid, the Others Program section); Reports screen | 2 | 3 | **5.5** |
+| | **Palm total** | | | | **≈ 16.5 d** |
+
+Palm's other commits are small UI changes inside modules 5 / 6 / 7 (filters, weekday labels). They are already counted there, not again.
+
+### ⚠️ One thing to keep straight in the merge
+**Module 9 (the C1 sale posting + the freelance budget draw) lives in the FRONT-office repo.** If Silver's BO_old also counts "the C1 write points", it would be counted twice. They belong in **FO_now only**. Silver's BO_old should be the back-office repos alone.
+
+No money, no prices, no view on price.
+PAUSED — my sends are capped: @Porter, the entry above (FO_now ≈ 252 d + Palm ≈ 16.5 d apart) is for you.
+
+## 2026-10-22 — Confirm for the owner's pricing: REQ-120 ≈ 175 d is INCREMENTAL; the from-zero equivalent is ≈ 200 d. C1 belongs on the BO_old side. (@Silver)
+1. **Incremental: yes.** The 175 d was sized ON TOP of today's code:
+   - the bridge keeps `bo.*` and the C1 write points (only +3.3 d for the new columns);
+   - BF-SHELL is extended, not rebuilt;
+   - R0.1 reuses the scheduling back's users / roles (front-office code, which is already in FO_now).
+   - **From zero = 175 + the BO_old parts it firmly reuses** = BO-SCAFFOLD 4.4 + BO-SCHEMA 1.7 + C1-SALE-POST 4.4 + C1-CATALOG 3.3 + C1-UNDO 1.1 + C1-FREELANCE-CEILING 5.0 + C1-READS 0.6 + BF-SHELL 4.4 = **24.9** ⇒ **≈ 200 d**.
+   - If the partial reuses are counted too (tags 2.8 as R2.1's categories, the items + movement ledger 6.6 under Stock), the result is **≈ 209 d**. Whether Sober's R3 sizing leaned on the items ledger is his to confirm. I'd quote 200.
+2. **C1 is held on the BO_old side (my 17.2 d); Sober drops it from FO_now module 9.**
+   - C1's job is back-office: it posts revenue and the ceiling into `bo.*`.
+   - BO_new's from-zero total (point 1) also contains it, so in BO_new − BO_old it cancels out, which is right: work already delivered is not charged twice.
+   - The front-office triggers stay in FO_now: the sale dialogs, the discount check, rentals, the freelance budget screens.
+   - The same rule, whichever side holds it: C1 in exactly ONE of FO_now / BO_old, and BO_new compared from zero.
+
+## 2026-10-22 — Pricing: the QA / deploy / UAT line (BO_old, BO_new) + a ROUGH size of the REPORT · STOCK reports. Engineer-days, analysis only. (@Silver)
+**1. QA + deploy + UAT. The rule I propose for ALL three sides (please give Sober the same): 25 % of the build days.**
+- The split: ≈ 15 % QA (a test plan, by-value runs on sid, regression) · ≈ 3 % deploy (sid → uat → live, migrations, rollback notes) · ≈ 7 % UAT support (her walk-through, the fixes it raises).
+- **Why 25 %:** that is roughly what this desk has spent around each release (TEST runs, re-captures, fix rounds), and a flat % keeps the comparison fair.
+
+| side | build (from zero) | QA + deploy + UAT (25 %) |
+|---|---|---|
+| BO_old | 51 | **12.8** |
+| BO_new | 200 | **50.0** |
+| *(FO_now: Sober, the same 25 % on his build total)* | | |
+
+**2. §4 back-office Reports (my two). 🟡 ROUGH: the content isn't agreed with her yet (REQ-120 §4: "agreed later"). Treat ±50 %.**
+| report | what I assume, from her sheet + the prototype | rough size |
+|---|---|---|
+| **REPORT** | a business overview over a chosen period: revenue by type, active customers / courses, new vs renew, the stock value moved; filters period + branch; an Excel export | M **5 → 5.5** |
+| **STOCK** | beyond REQ-120 R3.8's sales history / balance / movement (**already in BO_new, 4.4 d**, Sober's): by location × category, Demo usage + write-offs, the commission per product group; Excel export | S–M **3 → 3.3** · ⚠️ **if her §4 STOCK = R3.8, it is 0 extra** |
+| **My two** | | **≈ 8.8** (or 5.5 if STOCK = R3.8) |
+- Sober has SALARY / CHECK IN / COURSE / STUDENT.
+- QA + deploy + UAT on the reports: add the same 25 %, i.e. ≈ 2.2 on my 8.8.
+
+**BALL: @Porter — give Sober the 25 % rule; add these to the pricing.**
+
+---
+## @Sober → @Porter — 2026-10-22 — Pricing, analysis only: (1) QA + deploy + UAT for FO_now = **≈ 80.5 d** (rule: 30 % of build) · (2) SALARY · CHECK IN · COURSE · STUDENT reports = **≈ 13.75 d, ROUGH** (+ 2.2 d for a shared report frame, if Silver doesn't count it)
+
+### 1 · The QA + deploy + UAT rule: proposed for ALL THREE sides (FO_now · BO_old · BO_new)
+**30 % of the build days**, split as:
+| part | % of build | what it covers |
+|---|---|---|
+| **QA** | 15 % | test design + execution on the dev server, the regression pass, the re-check after fixes (Tanya's gate) |
+| **Deploy** | 5 % | the release lists, migrations, sid → uat, env / menu steps, release notes |
+| **UAT** | 10 % | the customer's acceptance rounds on uat, triage, and the fixes they produce |
+
+- **Why a % of build, not per module:** the sides have different module counts and shapes. A % keeps the comparison fair and lets anyone check it in one line.
+- **Why 30 %:** our own releases go through a QA gate on sid, then uat, plus at least one fix round. The unit tests are already **inside** the build days, so this 30 % is **only** the work above them.
+- **If Silver proposes a different rule:** please pick ONE for all three sides, and I re-run mine. It is one multiplication.
+
+**FO_now:**
+- build = 252 (the front office) + **16.5 (Palm's screens, now counted, per you)** = **268.5 d**;
+- QA + deploy + UAT = 268.5 × 0.30 = **80.55 → ≈ 80.5 d** (QA 40.3 · deploy 13.4 · UAT 26.9);
+- **FO_now incl. QA / deploy / UAT ≈ 349 d.**
+
+### 2 · The §4 back-office reports, my four: **ROUGH**
+- Only the headings are agreed. REQ-120 §4: *"each one's content is agreed with her when this part starts"*; the prototype shows the six headings only.
+- **Assumed:** each report = one screen with a date-range / filter, a table + totals, and an export (Excel / CSV) + print, **reading data that REQ-120 already builds**. No new data capture.
+- **Margin: ± 50 %.** The real size moves with what she asks for.
+| report | what it would most likely show (from the data, NOT agreed with her) | BE | FE | **+10 %** |
+|---|---|---|---|---|
+| **SALARY** | per month: each coach's pay by part (base, Extra Hour, OT, commission, bonus, other income), totals by Full-time / Part-time / Freelance / STAFF. CEO only (R0) | 1.5 | 1.5 | **3.3** |
+| **CHECK IN** | attendance / check-ins by day, coach and student; hours taught (the Daily Training Report's data over a range) | 1.5 | 1.5 | **3.3** |
+| **COURSE** | courses sold / active / expired, remaining hours, renewals and trial → course conversion (the F4 links) | 2.0 | 1.5 | **3.85** |
+| **STUDENT** | students new / active / lapsed in a range, by program, age and area | 1.5 | 1.5 | **3.3** |
+| | **my four** | | | **≈ 13.75 d** |
+| | **+ a shared report frame** (filters, date range, export, print), **counted once** for all six. **Mine OR Silver's, not both:** please tell us which | 1.0 | 1.0 | **2.2** |
+
+- **QA / deploy / UAT for these reports:** they are part of **BO_new**, so they take Silver's BO_new rule (30 % if agreed): ≈ 4.1 d on my four.
+
+No money, no prices, no view on price.
+
+---
+## @Sober → @Porter — 2026-10-22 — The shared rule (QA + deploy + UAT = 25 % of build), applied
+**FO_now (incl. Palm's 16.5):**
+- build 268.5 d × 0.25 = **67.1 d**;
+- **FO_now incl. QA / deploy / UAT ≈ 335.6 d.** (This replaces my 30 % figure of 80.5 d.)
+
+**My four rough reports (SALARY · CHECK IN · COURSE · STUDENT):**
+- build ≈ 13.75 d × 0.25 = **3.4 d**, so ≈ **17.2 d** with QA / deploy / UAT (± 50 %, content not agreed);
+- **+ the shared report frame,** if it's counted on my side: 2.2 d × 0.25 = 0.55 → **2.75 d**. Counted once, mine or Silver's.
+
+**Is 25 % right for the front office? It's acceptable as the shared rule, but at the low end for FO.** One reason:
+- the front office carries the **LINE OA** (real phones, LIFF, rich menus, every message in TH / EN) and the **customer's live data rounds on uat**;
+- on this desk those took visibly more QA and UAT time than screen work.
+
+If the owner wants a cautious FO figure, 30 % gives 80.5 d (+13.4 d). **For a fair comparison across the three sides, 25 % everywhere is the consistent choice**, and I'm fine with it.
+
+## 2026-10-22 — ✅ TASK-747 DONE: the SOM Today % = the Daily Report rule. 3 files to commit, the Palm line, and a 🔴 .env heads-up. (@Silver)
+- **My re-run (SAFE):** **5064 / 0** · tsc 0 · all 4 REQ-124 sets bite (45 · 47 · 25 · 11), checksums identical.
+- The old SOM / daily code: a 0-line diff.
+- The change is one line: `today.attendanceRate` = `countDaily`'s own value.
+- **Proven by value:** the same day gives the same % on both endpoints; with a child on leave it is 50, not 67; a day with no bookings gives 0.
+- **To commit (back):** `src/lib/som-contract.ts` · `src/lib/som-contract-task741.test.ts` · `src/lib/som-contract-task741.mutations.json`.
+- **One line for Palm** (his SOM doc §1 still says `attended ÷ confirmed`):
+  > "SOM Today `attendanceRate` now = attended ÷ (Confirmed + On leave), the same value as `/reports/daily`'s `attendanceRate` (Khwan chose this, 22/10). Please change §1 of `backend-som-dashboard.md` to match. No field or shape changes."
+- 🔴 **Heads-up for the owner (Bob found it; nobody touched it):** the back repo's `.env` now points at the **customer's system** (the LINE OA write / LIFF / login channel keys).
+  - The test guard therefore refuses a bare `bun test` / mutation run.
+  - Our runs use the SAFE command, which overrides those values, so nothing of the customer's was reached.
+  - **Owner: if that `.env` is meant for a uat / live deploy, fine. If not, point it back to test values.**
+
+---
+## @Tanya → @Porter — 2026-10-22 — ✅ TEST-116 PASS: TASK-747 (SOM Today % = Daily %) · the preview layer IS gone from sid's served JS
+- **File:** `tests/TEST-116-sid-task747-som-today-rate-and-preview-removal.md`.
+- **TASK-747 ✅:**
+  - 22 Oct (2 children on leave): SOM **67%** = Daily **67%** = 4 ÷ (4 + 2) (the old SOM formula would say 100%);
+  - no booking ⇒ 0 on both;
+  - **both pages show 67% on screen.**
+  - SOM's "today" can't be moved to past days (no date input), so the live check is today.
+- **The front question, answered:** sid serves **`e7ec71d`**. **0** of 86 chunks contain any string that existed only in `lib/som/preview.ts`. ⚪ Two strings shared with the **mock-mode data** remain (inert unless `NEXT_PUBLIC_USE_MOCK`).
+- **The NvR pop-up with its request failing** (a browser-side 500, nothing sent) shows *"Couldn't load the list · Try again"*: **no invented children**.
+- **SOM regression:** all 14 cards + the 6 pop-ups on screen = the API.
+
+---
+## @Tanya → @Porter — 2026-10-22 — ✅ TEST-116 re-run on the confirmed deploy (back d9c0cf3 + front e7ec71d): identical, PASS
+- **Rate:** 67% = 67% (API and both screens; 2 on leave); no booking ⇒ 0.
+- **Preview:** 0 preview-only strings in the served JS.
+- **Forced error:** the NvR pop-up shows an error.
+- **Regression:** the 14 cards + 6 pop-ups = the API.
+- My earlier run had already hit this build. TEST-116 §re-run.
+
+---
+## @Tanya → @Porter — 2026-10-22 — ✅ uat READ-ONLY smoke PASS (back d9c0cf3 + front e7ec71d) · ⚪ uat was slow / gave a 522
+- **File:** TEST-116 §uat. **0 app writes**, no forced errors.
+- **Today:** SOM 86% = Daily 86% (19 ÷ (19 + 3 on leave)), API and both screens.
+- **Past day:** SOM has no date input; the Daily formula checked by value on 18 Oct (82 = 94 ÷ 115).
+- **Served JS:** 0 preview strings.
+- **SOM:** all 13 cards + 3 pop-ups = the API.
+- **Daily 18 Oct:** "—" on all four Others Program cards.
+- ⚪ **uat was unstable:** 2 of 3 runs couldn't log in; the login page took 10–19 s and once returned **522** (origin timeout). Worth a look by Otto / the owner if Khwan reports slowness.
+
+---
+## @Sober → @Porter — 2026-10-25 — REQ-126 + REQ-127, read from code: **BOTH work TODAY (self-serve)**, plus one OPTIONAL small change each
+Read on back `fa1a04c` / front `33f9311` (what uat runs).
+
+### REQ-126: end a course early → ✅ **SELF-SERVE: the existing "ยกเลิกคอร์ส" button does exactly her 4 points**
+**What the act does** (`endCourse`, `POST /courses/:id/cancel`, permission `action:bookings.course-cancel`):
+- **The remaining sessions:** every still-live session (today or later) is set to cancelled with the note "ยกเลิกคอร์ส (จบคอร์สก่อนกำหนด)". They are soft-cancelled, not deleted; the history stays. Delivered sessions are untouched.
+- **The course:** stamped **ended** (when, by whom, the reason, a note). **No make-ups are owed for the cut sessions** (the plan is deliberately not reconciled). Nothing more can be booked, moved or inserted on it.
+- **Notices:** **each coach gets ONE LINE** listing the confirmed classes he loses. **The family gets NO message.**
+- **Revenue: unchanged.** The course's sale was posted when it was bought, and ending reverses nothing (C2: only an attendance undo reverses). ✅ "เงินเข้าเท่าเดิม".
+- **Coach pay: nothing for the cut sessions.** They are cancelled, so nobody teaches them. Their freelance-ceiling holds are released. In REQ-120's pay run, pay comes from sessions taught, so the cut ones pay nothing. ✅ "เงินออกที่จ่ายครูไม่มีแล้ว".
+- **It is NOT a pause** (pause = "พักคอร์ส", reversible, still owed). This one is final: the dialog says "ทำแล้วย้อนกลับไม่ได้".
+
+**Khwan's steps (TH labels as on screen):**
+1. Bookings page → tab **"คอร์ส + สิทธิ์การลา"** → the student's course → **"จัดการแผน"**.
+2. In that window → the red **"ยกเลิกคอร์ส"** button.
+3. The dialog shows how many sessions will be removed → pick **เหตุผล** → confirm.
+
+**The only gap is WORDS, not behaviour:**
+- (a) The button and dialog say **"ยกเลิก"**, and she said it is *"ไม่ใช่ … cancel"*.
+- (b) **No reason fits** "a family that keeps taking leave". The four are: ลูกค้าเปลี่ยนกิจกรรม · ลูกค้าไม่เอาแล้ว · แอดมินคีย์ผิด · (ครูลา, written by the system only). **The coach reads the chosen reason in his LINE.**
+- Today, the nearest is **"ลูกค้าไม่เอาแล้ว"**.
+
+**OPTIONAL small change (owner's call): a 5th reason "ตัดจบคอร์ส" — ≈ 0.65 d (BE 0.4 + FE 0.2, +10%).**
+- **What it needs:** one new reason code (`ENDED_EARLY`); a migration to widen the course end-reason check (journal 72 → 73); the validator; the coach's LINE reason text; the dialog option; tests + a mutation set.
+- **Claims:** back `lib/course-plan.ts`, `line-i18n.ts`, a new `drizzle/0072_*`, the migration-count pins (Team A's own); front `dictionaries.ts` + `EndCourseDialog.tsx`.
+- **The new words for the owner (DRAFT):**
+  - reason: TH **"ตัดจบคอร์ส"** · EN **"Course ended early"**;
+  - **if he also wants the button not to say "cancel":** TH **"ยกเลิก / ตัดจบคอร์ส"** · EN **"Cancel / end course early"**. That changes an approved string, so it is his call; it's optional.
+
+### REQ-127: change the teacher for the rest of the course → ✅ **SELF-SERVE TODAY via "พักคอร์ส" → "กลับมาเรียน"** (it also takes the new TIME, which is her real case)
+**From code:**
+- The plan editor's "move" changes ONE session at a time. That is what she does now.
+- **But "กลับมาเรียน" (resume) re-plans the WHOLE rest of the course from a chosen date, at a chosen time, with a chosen teacher** (TASK-359/360: the teacher picker is in that dialog, pre-set to the current teacher).
+
+**Khwan's steps:**
+1. "จัดการแผน" → **"พักคอร์ส"** → confirm.
+   - The remaining sessions come off the calendar.
+   - **The old coach gets ONE LINE** listing the classes he loses. The family is not messaged.
+2. The same course → **"กลับมาเรียน"** → pick the **start date** (the next class) + the **new time** + the **new teacher** → confirm.
+   - All the remaining sessions are laid out weekly, as when the course was created.
+   - The screen shows the new last session and the expiry.
+   - **The expiry only grows, never shrinks.**
+3. **"ยืนยันทั้งคอร์ส"** (confirm course) → **ONE schedule message** each to the new coach and the family. Not one per session.
+
+**What happens to the rest:**
+- **Count:** the number of sessions owed is unchanged; delivered sessions stay delivered; leaves already used stay used.
+- **Freelance ceiling:** the holds move from the old coach to the new one (released on pause, taken on resume).
+- **First-coach history (REQ-120 F4 / bonuses):** **kept.** The delivered and paused rows keep the OLD teacher on their old dates, so "who taught first" is still readable. Nothing is overwritten.
+- ⚠️ **The coach RATE stays the course's default, which was set for the old coach.**
+  - Today a rate is **stored only; nothing pays from it** (the back office's pay is REQ-120). So there is **no money effect today**.
+  - REQ-120's pay run must take the rate per session, and a per-session override already exists ("เรทครู", `action:bookings.coach-rate`).
+  - **I'd settle "the new coach's rate" inside REQ-120, not here.**
+- **A clash** with the new teacher's existing bookings refuses the whole resume, naming the date. Nothing is half-moved.
+
+**Why it may feel odd to her:** it says "พัก" (pause) for something that isn't really a pause. That is the only cost.
+
+**OPTIONAL small change (owner's call): ONE button "เปลี่ยนครู/เวลา ทั้งคอร์ส" — ≈ 1.65 d (BE 0.75 + FE 0.75, +10%).**
+- It does pause + resume in ONE act, **without the pause stamp and the "dropped" wording**, reusing the resume planner exactly (no second scheduler).
+- **Messages:** ONE "teacher changed" pair (old coach / new coach) + the family's schedule message after confirm.
+- **Claims:** back `scheduler.service.ts` (`resumeCourse`'s planner, called from a new act) + a route + `line-i18n` (the pair message reuses TASK-436's reassigned notice); front `PlanModal.tsx` + a dialog based on `DropResumeDialog`.
+- **New words, DRAFT:** button TH **"เปลี่ยนครู / เวลา ทั้งคอร์ส"** · EN **"Change teacher / time for the rest"**. Plus one dialog line, TH "คาบที่เหลือ {n} คาบจะย้ายไปเรียนกับครูที่เลือก ตามวันและเวลาใหม่ คาบที่เรียนไปแล้วไม่เปลี่ยน" · EN "The remaining {n} sessions move to the chosen teacher, on the new day and time. Sessions already taught don't change."
+
+### Recommendation
+- **Answer Khwan today with the two self-serve recipes.** Both already work on uat, and both match her money rules.
+- The two optional changes (0.65 d + 1.65 d) only make the WORDS fit her model. Cut them (TASK-836 / 837) **only if the owner wants them**, with the drafts above approved.
+- ⚠️ **One caution for the message to her:** "ยกเลิกคอร์ส" is **final** (no undo). Tell her so, so she doesn't use it where "พักคอร์ส" was meant.
+
+---
+## @Sober → @Porter — 2026-10-25 — REQ-128, the APP side read from code (back `fa1a04c` · front `33f9311`). Ranked suspects. **No fix, no cause claimed yet**; Tanya's timings + Otto's server data decide
+**The headline:**
+- **The logouts have a code-level explanation that needs no server fault: suspect L1.**
+- **The slowness has NO 15:00 timer in the app.** What the code shows is a front that **re-asks the server for everything on every focus and every page change**, so the load grows with **how busy the staff are**. After-school hours are the busiest. That fits "from 15:00" **if** the server is near its limit; Otto's numbers will say.
+
+### A · Logouts: what ends a session on its own
+| rank | suspect | evidence (file:line) | how it would look |
+|---|---|---|---|
+| **L1 🔴** | **The API token expires after 12 h, but the front's login session lives 30 days. The first API call after 12 h returns 401, and EVERY 401 signs the user out** | back `src/lib/jwt.ts:18` (`JWT_TTL_SECONDS ?? 12 * 3600`), `:27` · front `src/auth.config.ts:9` (`session: { strategy: "jwt" }`, no `maxAge` ⇒ NextAuth's 30-day default) · front `src/lib/api/client.ts:83-87` (any 401 ⇒ `signOut`) | Whoever logged in 12 h earlier is thrown out mid-work, with no warning. Someone who logged in at 03:00–08:00 is logged out at 15:00–20:00. **Deterministic, not load-related.** |
+| L2 🟡 | **`JWT_SECRET` differs after a deploy / restart** (every old token fails verification ⇒ 401 ⇒ everyone logged out at once) | back `src/lib/jwt.ts:20-24` (read from env at each call; **no random fallback**, it throws if unset) | Everyone at the same minute, matching a restart / deploy time. Only if the env changed. |
+| L3 ⚪ | A slow / failed call read as a logout | back `src/middleware/auth.ts:65-79`: only a missing / invalid / expired token, an unknown user or a disabled user give 401. **A database error gives a 500, and a CDN 522 is not a 401** | **Ruled out by code.** A slow server shows errors, not a logout. |
+
+- **What decides L1:** is `JWT_TTL_SECONDS` set on uat, and to what?
+  - The owner reads it on the server; **the value is not to be posted, only "set / not set" and roughly how many hours.**
+  - Plus the users' login times vs their logout times (Tanya / the customer).
+
+### B · Slowness: the schedule page + search
+| rank | suspect | evidence (file:line) | grows with |
+|---|---|---|---|
+| **S1 🔴** | **No client cache at all: `staleTime: 0`, `gcTime: 0`, `refetchOnWindowFocus: true` as the GLOBAL default.** Every return to the browser tab (e.g. from LINE) and every page change re-fetches every query on the page; the schedule page's is the **full week calendar** | front `src/context/query/QueryProvider.tsx:12-14` · `src/hooks/scheduler/useCalendar` at `useScheduler.ts:252-257` (no override) · `useMe.ts:46-47` (also refetch on focus) | **The number of staff × how often they switch apps.** That peaks when the classes run (after school). **Load-driven, not clock-driven.** |
+| **S2 🟠** | **The week calendar is one big read:** every active teacher + every booking in the week with **12 relations each** (student, co-student, teacher, subject, course, badges + values + types, extra teachers, rental, seats + students, group, camp day), plus the course last-dates, camp weeks, freelance budgets and limit overrides | back `src/services/scheduler.service.ts:504-620` (`getCalendar`), `:446-466` (`withBookingRelations`), `:519` `attachFreelanceBudgets`, `:525` `readLimitOverrides` | Bookings per week (steady, not since go-live). Heavy per call; S1 multiplies the calls. Uses `bookings_date_idx`. |
+| S3 🟡 | **Search is `ILIKE '%term%'`** on student name / nickname (+ the parent's phone), which **can't use an index**: a full scan per keystroke-search | back `src/services/parent.service.ts:735-742`, used by `src/services/search.queries.ts:26-55` | Students / parents since go-live. Small tables ⇒ likely minor, unless search fires per keystroke. |
+| S4 🟡 | **The LINE outbox worker scans for `status = 'PENDING'` every 15 s** on a table with **no index on status**. It holds every notice ever sent | back `src/services/outbox.service.ts:73-85` (the query), `:131` (15 s), `src/index.ts:41` (in the API process) · schema: only `notification_outbox_idempotency_uq` | **Every message since go-live: grows daily.** A reminder burst adds sends in the same process. |
+| S5 ⚪ | **Jobs (end-of-day, daily reminder, digests, extender, month reset)** are triggered by the SERVER's cron, so their times are on the server, not in the app | back `src/routes/internal.ts:51-105` | If one is scheduled ~15:00 and is heavy, it'd show. **Otto has the crontab.** |
+| S6 ⚪ | **Added in the last ~10 days** | | |
+| | · REQ-125's leave **preview** (a real transaction rolled back, holding row locks while it runs) | `scheduler.service.ts:4114` | only when a leave dialog opens: rare |
+| | · TASK-823's scoped-calendar key | `:604` | no query change |
+| | · own-scope `EXISTS booking_teachers` | — | teacher logins only; the table's primary key `(booking_id, teacher_id)` covers it |
+| | · Palm's SOM dashboard / Daily Report | | only when opened |
+| | **⇒ Nothing new sits on the schedule page's hot path** | | |
+
+**No front polling on the calendar.** The only `setInterval` is the LINE-link dialog (`LinkLineModal.tsx:81`), and only while it is open. **S1's focus re-fetch acts like polling**, though.
+
+### C · What would separate them (DATA REQUESTS for the owner; bare SQL he pastes into his own tool, read-only)
+```
+SELECT status, count(*) FROM notification_outbox GROUP BY status;
+SELECT count(*) FROM bookings;
+SELECT count(*) FROM line_webhook_events;
+SELECT count(*) FROM students;
+```
+**For Otto:**
+- the server crontab times of the 6 job calls;
+- PM2 restarts with times (any around 15:00?);
+- CPU / RAM / DB connections by hour;
+- **whether `JWT_TTL_SECONDS` is set on uat (yes / no + hours; not the value of any secret).**
+
+**For Tanya (TEST-117):** add one step: log in, note the time, keep the tab, and note **when the first 401 / logout happens**. If it is ~12 h later, L1 is confirmed.
+
+### D · Sizes, for when the cause is confirmed (not cut; no fix before the evidence)
+- **L1:** a renewal of the API token before it expires, or one lifetime for both, so a working user is never thrown out. **≈ 0.5–1 d.** It needs one owner decision: how long a login lasts.
+- **S1:** sensible cache defaults (e.g. the calendar fresh for 30–60 s, no refetch on every focus) plus a targeted refresh after the user's own edits. **≈ 1 d** incl. a re-check that nothing shows stale data after an edit.
+- **S3 / S4:** an index each (trigram for search, a partial index for the outbox's pending rows). **≈ 0.5 d each** incl. the migration.

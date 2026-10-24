@@ -392,3 +392,5 @@ where the owner sees them. When he is ready he opens Atlas with
 
 - **F-PORTER-2026-10-21:** I told Sober to "coordinate the shell contract with Silver". That invited SA → SA messages, a non-adjacent pair, and Sober wrote to Silver's inbox. **Fix:** contracts between teams are FILES (CONVENTIONS.md), and anything to agree goes through Porter. Both SAs told.
 - **F-SOBER-2026-10-21:** I read "coordinate with Silver" as leave to write to `inbox/SA-B.md`, twice. **Rule for me:** an instruction's wording never adds a channel. Team B is reached only through a shared file (CONVENTIONS.md) or through Porter. If an ask seems to need a new channel, I ask Porter which one.
+
+- **F-PORTER-2026-10-25:** Khwan answered the 4 REQ-120 follow-ups on 10-21 11:21 in LINE. I never recorded it, and on 10-25 I told the owner they were unanswered (and offered to re-ask). **Fix:** when a question goes out, record it as 'asked, waiting'. When the owner forwards any LINE screenshot, scan it for answers to open questions before saying anything is unanswered.

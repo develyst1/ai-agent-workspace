@@ -179,3 +179,37 @@ Asked in `COPY-DRAFT-khwan-proto-part1-status-2026-10-19.md`. The analysis is in
 | C-b | **3 = C: Payment Method defaults to Transfer, editable in the FRONT and the BACK** | **D4 "required at confirm" is REVERSED.** No daily confirming; edits in both places |
 | C-f | **4: a refund cancels the course's UNATTENDED sessions only, and the families ARE told** | R2.3 + a front-office cancel. It reuses the family cancel notice |
 | C-e | **5: confirmed.** A trial always has one coach, so the Bonus 50 "25/25" case is gone. A renewal after a mid-course coach change = Bonus 100, and the admin picks 1st / 2nd / 50-50 | R1.2 bonus rows |
+
+## 10. Pricing method (owner, 2026-10-22)
+**Owner's method, 2026-10-22, verbatim:** *"ฉัน อยากรู้ว่า frontoffice + backoffice ที่ทำไป ตอนนี้ นับเป็นกี่วัน · ให้จำนวนวันนั้น = 73000 เอามาหาร จำนวนวัน จะตกวันละเท่าไหร่ · แล้วเอา ราคาต่อวันนั้น อ่ะ มา คูณ กับ backoffice new - backoffice old"*. So: **rate = 73,000 ÷ (FO_now + BO_old)**; **price = rate × (BO_new − BO_old)**.
+- **BO_new** = ≈174.6 d (Silver's re-size, 10-20; Sober to confirm his lines).
+- **FO_now** and **BO_old** = what exists today, sized AS IF BUILT FROM ZERO, in the same unit (engineer-days, estimate + 10%, build + tests): **Sober sizes FO_now, Silver sizes BO_old** (re-split 10-22).
+- **Numbers (2026-10-22):**
+  - **FO_now ≈ 240 d.** Sober's 252 − module 9 (C1, 12.1), which moves to the BO_old side per Silver.
+  - **BO_old ≈ 51 d** (Silver).
+  - **BO_new from zero ≈ 200 d.** The 175 d is incremental, + 24.9 of the BO_old parts it reuses. Silver quotes 200; with the partial reuses it is ≈ 209.
+  - **Palm's screens ≈ 16.5 d**, listed apart.
+- **Owner's formula, without Palm:**
+  - rate = 73,000 ÷ 291 ≈ **251 ฿/d**;
+  - price = 251 × (200 − 51 = 149) ≈ **37,400 ฿**.
+- **With Palm counted:** 73,000 ÷ 307.5 ≈ 237 ฿/d → ≈ **35,400 ฿**.
+- **With BO_new at 209:** ≈ 39,600 ฿.
+- **Owner, 2026-10-22, the permission adjustment:** *"เขาจ่ายค่างาน permission user role แยก · เอา 3500 ไปตีเป็นวัน แล้วเอาไปตัดวันหน้าบ้านออก"*.
+  - 3,500 ฿ is converted at the package's own rate: r = 76,500 ÷ 291 ≈ 263, so 3,500 ÷ 263 ≈ 13.3 d.
+  - FO = 240 − 13.3 = 226.7. Package days = 277.7. **Rate ≈ 263 ฿/d.**
+  - **Price = 149 × 263 ≈ 39,200 ฿** (Palm's screens not counted). The owner OK'd it ("ok").
+  - The write-up for Palm: `COPY-DRAFT-palm-backoffice-pricing-method-2026-10-22.md`.
+- **Owner, 2026-10-22: "นับสิ"** (count the excluded items).
+  - **Palm's screens:** in FO, so FO = 252 − 12.1 (C1) + 16.5 = 256.4.
+  - **QA / deploy / UAT:** a flat % on all three sides. Silver 25 %, Sober 30 %; **25 % is used**. A flat % cancels out of the price.
+  - **The §4 reports, ROUGH ±50 %:** Silver 8.8 + Sober 13.75 + a shared frame 2.2, counted once = 24.75.
+  - **Result at 25 %:** rate ≈ 199 ฿/d; growth = (199.5 + 24.75) × 1.25 − 50.9 × 1.25 = 216.7 d; **price ≈ 43,200 ฿**, range ≈ 40,000–46,000 by the reports' margin.
+- **CORRECTION, owner 2026-10-22:** *"ฉันหมาย ถึง ยอมนับรวมเข้าไป โดย ไม่ต้องคิดวันเพิ่ม"*. QA / deploy / UAT, the §4 reports and Palm's screens are **included in the price with NO extra days**. The ≈43,200 line above is SUPERSEDED. **The price stays ≈ 39,200 ฿** (rate ≈ 263 ฿/d × 149 d).
+
+### 9.1 The 4 follow-ups, answered by Khwan 2026-10-21 11:21 (LINE; Porter MISSED it until the owner's screenshot, 10-25). Verbatim: *"1 a · 2 a · 3 คอร์สเปลี่ยนเป็นยกเลิกใช่ค่ะ ว้อยเชอร์เหมือนกันค่ะ · 4 เลือกเป็นรายคนค่ะ"*
+| # | ruling |
+|---|---|
+| C-a | an admin may only **LOWER** a sale's commission (never raise it) |
+| C-j × C-a | in a multi-item bill, the commission is edited **per item** (e.g. only the defective board) |
+| C-f | a refund sets the **course status to CANCELLED** (+ cancels the unattended sessions, families told). **A voucher refund works the same way** |
+| R3.7 | the Low Stock Monday alert goes to **people chosen individually** (today London + ฟีน) |

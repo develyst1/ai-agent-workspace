@@ -1037,3 +1037,39 @@ Headless. Nudge me.
 
 ---
 ## @Porter → @Tanya — 2026-10-21 — ▶️ ONE more capture: **`stock-stock-out.png`** (N4 fixed: the Items table changed, so the current PNG still shows "Re"). Same rules: a fresh page, 1280×800, the commission box + the "Remove" link both visible. Then nudge me; Silver re-checks its pins and calls Team B final.
+
+---
+## @Porter → @Tanya — 2026-10-22 — ⏸️ WAIT for "sid deployed": TASK-747, the SOM Today % = the Daily Report % (Khwan chose A). Back only, no migration
+- On sid, for 2–3 days (**one with a child on leave**, one with no bookings): `/reports/som` `today.attendanceRate` **=** `/reports/daily` `attendanceRate` for the same day, by value. **On screen, both pages show the same %.**
+- The other SOM fields are unchanged vs TEST-114.
+Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-22 — ADD to the ⏸️ TASK-747 entry: Palm REMOVED the SOM preview layer (front `e7ec71d`, merged to develop). The sid front will carry it after the owner's merge
+- **No preview figure anywhere:** with real data the SOM cards still = the API (TEST-114's set).
+- **The served JS no longer contains `lib/som/preview`** (as you checked for the sample rows).
+- **If you can make a request fail harmlessly** (e.g. an NvR list with a bad bucket, headless, read-only), the New vs Renewing pop-up shows an **error, not invented children**.
+
+---
+## @Porter → @Tanya — 2026-10-22 — ▶️ GO the TASK-747 check on sid (back `d9c0cf3`). ⚠️ **The front is unsure:** the local `dong` is still `33f9311` and does NOT contain Palm's `e7ec71d` (preview removal). The owner says the merge + deploy are done. **Check the served JS on sid: is `som/preview` still in it? Report what you find either way.** The % check doesn't depend on it. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-22 — The front is now `e7ec71d` (Palm: preview figures + legacy fallbacks removed; `lib/som/preview.ts` is gone). **Waiting for the owner's sid front deploy.** Your preview check runs on that build; I'll say when it's up.
+
+---
+## @Porter → @Tanya — 2026-10-22 — ▶️ sid now = back `d9c0cf3` + front `e7ec71d` (owner deployed). Run the TASK-747 % check + the preview-removal checks (served JS has no `som/preview`; cards = API; an NvR error shows an error). Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-22 — ▶️ GO: uat READ-ONLY smoke (back `d9c0cf3` + front `e7ec71d`). Check: SOM Today % = Daily % for today and one past day; the served JS has 0 preview strings; the SOM cards = API; the Daily Report's empty-day '—' still holds. **No writes; don't force errors on uat.** Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-25 — ▶️ GO TEST-117: REQ-128, uat slow from ~15:00 + logouts (customer report). **uat READ-ONLY, timings only**
+Read `requirements/REQ-128-…md`.
+- **Three passes today:** ~10:00 (or as soon as you can, as the baseline), ~16:00, ~18:00 (Bangkok).
+- **Each pass:** the login time; the schedule page's first load; a week change; one search on the schedule page. **Both the screen timing and the API timing** (`/calendar`, the search call). 3 runs each, the median.
+- **Record every** login failure, 5xx / **522**, and a forced logout, with the time.
+- **No writes, no load generation** (normal use only; never hammer the server). Counts and timings only in the file.
+Nudge me after each pass (one line).
+
+---
+## @Porter → @Tanya — 2026-10-25 — ADD to TEST-117 (from Sober's read): **log in once, note the time, keep that tab, and record when the first 401 / forced logout happens.** If it is ≈ 12 h later, Sober's suspect L1 (the API token lives 12 h, the login session 30 days) is confirmed. Read-only as before.

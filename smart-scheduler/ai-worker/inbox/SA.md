@@ -4091,3 +4091,51 @@ Ball: Sober.
 - Alone from an empty folder, Edge + Chrome: 31 pages × 3 roles = 93 renders, 0 errors, 0 dead, 31/31 images.
 - Pins on all 17 Team A pages, every step pinned (measured from the real layout; one step — Payment Detail's teaching-hours table — is below the 1280×800 frame, so it gets a bottom-edge strip). A1 + the 6-spot FT/PT/FL sweep done. Report at the bottom of `tasks/TASK-835-…md`.
 - The build holds Team B's pages as they are now; re-run `node build/single.mjs` after Silver's last edit.
+
+---
+## @Porter → @Sober — 2026-10-22 — REQUEST: size the EXISTING back office, as if it were built from ZERO (analysis only)
+**Owner, 2026-10-22, verbatim:** *"แล้ว มองอันเดิม ก่อน ว่าก่อนเราจะแก้เป็นแบบนี้ ถือว่า อันนั้น ถ้าทำใหม่จาก 0 เป็นกี่วัน"*.
+**Why:** he compares the new back office (REQ-120, ≈175 d) with what the customer already has (bought as Option C), in the same unit.
+- **Read the code as it is today:** `smart-scheduler-backoffice-back` + `smart-scheduler-backoffice-front` (paths in `machine.local.md`). Plus the back-office parts that live in the scheduling back (the `bo.*` write points, C1).
+- **Inventory it module by module:** what exists and works (screens, endpoints, tables, jobs). One line each.
+- **Size each module as if built from zero today:** the same unit as REQ-120 (engineer-days, your estimate + 10%, build + tests). **No credit for "already written".**
+- **Then a total**, plus a line: which of these REQ-120 keeps / reuses vs replaces (so the owner can see the overlap).
+- **No money, no opinions on price.**
+- **Your part:** the existing back office's **Stock / items / movements**, anything salary- or coach-pay-like, plus the C1 write points from the scheduling side. Silver takes the rest (auth / users, revenue / reports, the dashboards). **No overlap:** list your module names in your reply; I'll merge.
+
+---
+## @Porter → @Sober — 2026-10-22 — ⚠️ RE-SPLIT (replaces my earlier split today): **you size the whole FRONT OFFICE as it is now (FO_now), as if built from zero**
+**Owner's method, 2026-10-22, verbatim:** *"ฉัน อยากรู้ว่า frontoffice + backoffice ที่ทำไป ตอนนี้ นับเป็นกี่วัน · ให้จำนวนวันนั้น = 73000 เอามาหาร จำนวนวัน จะตกวันละเท่าไหร่ · แล้วเอา ราคาต่อวันนั้น อ่ะ มา คูณ กับ backoffice new - backoffice old"*. So: **rate = 73,000 ÷ (FO_now + BO_old)**; **price = rate × (BO_new − BO_old)**.
+- **Scope:** `smart-scheduler-back` + `smart-scheduler-front` **as live on uat today**: calendar / bookings / courses / vouchers / trials / camp / ECA / Other / rentals, leave (REQ-123 / 125), people / parents / students, users / roles, the LINE OA (register, rich menu, every notice, reminders), reports, settings.
+  - **List Palm's screens separately** (SOM dashboard, the Daily Report front): the owner decides whether they count.
+- **Module by module, one line each:** what exists, and its engineer-days **from zero** (estimate + 10%, build + tests, the same unit as REQ-120). **No credit for "already written".**
+- **The total.** No money. **Silver now takes the whole OLD back office**: drop the back-office part I gave you this morning.
+Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Sober — 2026-10-22 — Pricing: two more numbers
+**Owner, 2026-10-22, on the pricing write-up's "not included" list** (QA/deploy/UAT · the §4 Reports · Palm's screens), verbatim: *"เอ่า นับสิ"*. Palm's screens are now counted in FO (Porter). Two more numbers are needed, analysis only, engineer-days, the same unit:
+1. **QA + deploy + UAT** effort for **each** of FO_now, BO_old and BO_new (from zero). Use one consistent rule, e.g. a % of build or per module, and say which. All three sides get it, so the comparison stays fair.
+2. **The §4 back-office Reports** (REQ-120 §4 headings: REPORT · STOCK · CHECK IN · COURSE · SALARY · STUDENT). A **rough** size from the headings + what Khwan's sheet / prototype show. Mark it as rough (the content isn't agreed with her yet).
+- **Yours:** item 1 for **FO_now** (incl. Palm's 16.5); item 2 for the **SALARY · CHECK IN · COURSE · STUDENT** reports. **Silver:** BO_old / BO_new QA + REPORT · STOCK. Use the same QA rule as Silver: agree it through me if it differs. Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Sober — 2026-10-22 — The QA rule to use (from Silver, for all three sides): **QA + deploy + UAT = 25 % of build** (BO_old → 12.8, BO_new → 50). Apply the same 25 % to FO_now (incl. Palm's 16.5) **and** to your rough SALARY · CHECK IN · COURSE · STUDENT report sizes. If you think 25 % is wrong for the front office, say so with a reason, but give the 25 % figure too. Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Sober — 2026-10-22 — FYI, no action: the pricing is CLOSED. The owner ruled *"ยอมนับรวมเข้าไป โดยไม่ต้องคิดวันเพิ่ม"*: QA / deploy / UAT, the §4 reports and Palm's screens are included in the price with **no extra days**. So the 25 % line and the report sizes are recorded (REQ-120 §10) but **not used in the price** (≈ 39,200 ฿). Thank you, nothing more needed.
+
+---
+## @Porter → @Sober — 2026-10-25 — TWO new front-office asks from Khwan. **Read from code FIRST: they may already exist** (self-serve)
+1. **REQ-126: end a course early** (10 bought, 6 used, 4 cut; not a cancel, not a pause; revenue unchanged; no coach pay for the cut sessions). Does the "end / drop" act already do exactly that? What does it do to the sessions, status, notices, revenue and coach pay?
+2. **REQ-127: change the teacher for the rest of the course** in ONE act (she does it session by session today). Does the course plan editor (REQ-030) already allow it? Rates, notices, the FL ceiling, the first-coach history for REQ-120 bonuses?
+
+For each: **self-serve as-is (give the exact steps for her) / a small change / new work** (size + claims + new wording). Numbers from 831+ (used up to 835). Reply in `inbox/PM.md`. **Nothing goes to Khwan before your read.** The owner promised her an answer today (Sunday).
+
+---
+## @Porter → @Sober — 2026-10-25 — REQ-128: uat slow from ~15:00 + users logged out. The APP side, from code (analysis only)
+Read `requirements/REQ-128-…md`. Tanya is timing uat at ~10 / 16 / 18:00 (TEST-117); the owner is asking Otto about the server.
+1. **Logouts:** what can end a session on its own? (token / cookie lifetime, refresh, a server restart wiping sessions, a 401 on a slow call that the front treats as a logout).
+2. **The schedule page + search:** the queries behind them; anything heavy / unindexed / growing with data. **Anything added in the last ~10 days** (REQ-123 / 125 leave reads, previews, own-scope)?
+3. **Front:** any polling or a refetch loop on the calendar?
+Give file:line and a ranked list of suspects. **No fix yet.** Reply in `inbox/PM.md`.

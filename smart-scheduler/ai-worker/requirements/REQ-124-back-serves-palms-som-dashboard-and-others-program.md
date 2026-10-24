@@ -82,3 +82,8 @@
 Palm (10-20 22:46): *"ผมปรับตามที่คุณส่งมาขึ้นไปละ"* = merged into `develop`. **Next:** the owner merges develop → dong + deploys the sid front → Tanya checks it against `subdistrictByDistrict` → uat.
 
 ## ✅ 2026-10-21: Palm's sub-district click-through + the removal of the Daily sample rows are LIVE on uat (front `33f9311`). TEST-114 PASS on sid, plus a uat smoke PASS (TEST-113 F1 closed). **Open: Palm removes the SOM preview layer** (draft `COPY-DRAFT-palm-remove-som-preview-layer-2026-10-21.md`); K3 age bands.
+
+## Khwan, 2026-10-22 17:34 (LINE, the owner's screenshot): ONE attendance-% rule = **A**, verbatim *"A. ใช้แบบ Daily Report ทั้งสองหน้า (เด็กลา ทำให้ % ลดลง) ค่ะ"*
+- **Ruling:** the SOM dashboard's **Today attendance %** becomes **attended ÷ (Confirmed + on leave)**, the Daily Report's rule (REQ-119 "Total booked"). It was attended ÷ confirmed (TASK-741 review 1, Palm §1).
+- **The back changes only** (`today.attendanceRate` in the SOM contract); Palm's screen already reads the field. **Palm is told**, because his `backend-som-dashboard.md` §1 states the old formula.
+- **TASK-747** (Team B). Then commit → sid → Tanya (by value: a day with leave, both pages show the same %) → uat.
