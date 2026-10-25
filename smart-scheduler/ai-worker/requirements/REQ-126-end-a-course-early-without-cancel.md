@@ -25,3 +25,6 @@ The owner told her: *"ขอดูให้เคสนี้ วันอาท
 2. **Nothing goes to Khwan before Sober's read.** If it already works, Porter drafts the how-to for her.
 
 ## Sober's read (10-25): SELF-SERVE. The existing **'ยกเลิกคอร์ส'** (endCourse) does all 4 of her points: the remaining sessions are cancelled, the course is ended, no make-ups, the revenue stays, no coach pay; one LINE to the coach, none to the family; FINAL. The gap is words only. **Optional:** a 5th reason 'ตัดจบคอร์ส' (≈0.65 d, migration 0072) ± a button rename; the owner's call.
+
+## Khwan, 2026-10-25 (reply to the how-to), verbatim: *"เข้าใจวิธีการค่ะ แต่อยากให้ชื่อปุ่มตรงกับที่ใช้จริงมากขึ้น เช่น "ตัดจบคอร์ส" หรือ "เปลี่ยนครู / เวลา ทั้งคอร์ส" ค่ะ"*
+⇒ She wants BOTH optional word-fit changes. Waiting for the owner's GO + copy approval: REQ-126 = the button reads 'ตัดจบคอร์ส' (+ a reason 'ตัดจบคอร์ส', migration 0072); REQ-127 = one button 'เปลี่ยนครู / เวลา ทั้งคอร์ส'.

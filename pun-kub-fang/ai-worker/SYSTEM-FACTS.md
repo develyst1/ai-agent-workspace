@@ -116,3 +116,4 @@
 - **Q5 — Should the API mirror the front's bilingual field names as they are (`nameEn` /
   `labelEn` / `en` / `titleEn`, inconsistent) or normalise them?** Sober will propose in
   SPEC-001; the owner decides, because it decides how much of the front Fern must touch.
+- 2026-10-25 — owner ruling supersedes every earlier 'no agent commits' line in this file: git runs only on his own command (`ขึ้น git` / `รวมโค้ด` / `release code`), relayed by the PM, typed by the SA — `CLAUDE.md` §6, `git-command` skill.

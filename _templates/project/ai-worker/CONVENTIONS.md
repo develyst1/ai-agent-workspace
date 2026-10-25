@@ -42,10 +42,11 @@
 
 ## Git
 
-<!-- The git convention is central and the same on every desk: the `git-command` skill (commit-message
-     shape, work on the existing branch, the two commands). Do NOT restate it here. Record only the
-     desk FACTS that skill needs: the working branch, whether this repo ships `merge-workflow.sh`, and
-     whether it has a `develop`. If git was already settled at desk opening (SEATS.md / SYSTEM-FACTS.md),
+<!-- How git runs is central: the `git-command` skill (the owner's three commands, existing branch,
+     no history rewriting). Do NOT restate it here. Record only the desk FACTS that skill needs:
+     each repo's COMMIT-MESSAGE CONVENTION (none ⇒ the SA asks the owner whether to create one), the
+     working branch, and whether the repo has `develop` / `production` and ships `merge-workflow.sh` /
+     `release-workflow.sh` (missing ⇒ installed from the skill when the owner first says the command). If git was already settled at desk opening (SEATS.md / SYSTEM-FACTS.md),
      delete this section. -->
 
 ## Pattern review log

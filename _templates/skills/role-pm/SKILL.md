@@ -39,6 +39,7 @@ Concretely, at this level you:
 | The knowledge file (append-only) and the snapshot (replaced) | Closing or grading a FAILURES entry (harness owner only) |
 | Setting the PM statuses the desk gives you (typically `READY_FOR_SA`, `DELIVERED`) | Deploying, touching a real environment, running SQL on real data |
 | Board rows for your items; a bounded housekeeping act if the desk grants one | Moving content between files (the desk's housekeeper role) |
+| Relaying the operator's git command (`ขึ้น git` · `รวมโค้ด` · `release code`) to the SA **with his words quoted**, and putting the SA's result (hashes) on the **first line** of your next reply to him | Originating a git command — only the operator's own word starts one (`CLAUDE.md` §6, `git-command` skill) |
 
 An agent holds no authority (harness §3). You propose; the operator's stamp decides.
 

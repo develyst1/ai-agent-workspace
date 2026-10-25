@@ -28,3 +28,19 @@
 - **Slowness: S1** no client cache + refetch on every focus / page change (load grows with staff activity, which peaks after school); **S2** the heavy week-calendar read; **S3** ILIKE search; **S4** the outbox poll every 15 s on an unindexed status; S5 the server cron; nothing new on the hot path.
 - **Pending:** the owner's 4 bare SQL counts; Otto (crontab, PM2 restarts, CPU / RAM / DB by hour, is JWT_TTL_SECONDS set y / n); Tanya's TEST-117 incl. the 12-h logout step.
 - **Sizes once confirmed:** L1 ≈0.5–1 d (needs the owner's ruling on the login length), S1 ≈1 d, S3 / S4 ≈0.5 d each.
+
+## Owner's data, 2026-10-25
+- **The customer's server is NOT under Otto** (*"ยังไม่มี otto ที่ server ลูกค้า"*): a Windows VM, Xeon E5-2690 v2, 6 vCPU, 16 GB, up 98 days.
+- **The owner had Claude Desktop, VS Code and Steam running ON that server**: CPU ≈30 %, RAM 40–50 %. After closing them: **CPU 3 %, RAM 3.5 / 16 GB (22 %)**. ⇒ **A likely contributor** (desk sessions run busiest in the afternoon too). Not proven; Tanya's afternoon timings will show it.
+- **DATA REQUEST answered (uat):** notification_outbox SENT 7,212 + SKIPPED 2,440 (no PENDING) · bookings 4,573 · line_webhook_events 1,923 · students 653. ⇒ **The tables are small; S3 (search) and S4 (the outbox poll) are minor.**
+- **Still open:** L1 (the 12 h token vs the 30-day session) is independent of load. Confirm via TEST-117's logout step; the fix needs the owner's ruling on how long a login lasts.
+
+## Owner ruling, 2026-10-25: a login lasts **7 days** (verbatim: *"A. 7 วัน"*)
+- **L1 fix = TASK-836** (Team A): the API token and the front session get ONE lifetime of 7 days (or a silent renewal inside 7 days), so a working user is never thrown out mid-day. After 7 days, a clean sign-in.
+- **Built now; ships after TEST-117's logout step confirms L1** (the expected first 401 ≈ 14:00:44). S1 (cache) waits for the afternoon timings.
+- **TASK-836 note (10-25):** the env sets `JWT_TTL_SECONDS=43200` on the servers. **OWNER STEP at deploy: set it to 604800 (or delete the line) on uat + sid; never empty; JWT / NextAuth secrets untouched.** `.env.example` → 604800 (granted). The code hardens empty / garbage values to 7 days.
+
+## TEST-117 (10-25): the long session was logged out at **09:33** (+7.55 h), NOT at the 12-h token expiry ⇒ **something else ended it between 09:23 and 09:33.** L1 is still real (12-h token vs 30-day session) but is NOT this event. Ask the owner: a server restart / deploy / app closing at ~09:23–09:33? Pass 1 at 13:44: fast, 0 errors (≈ baseline). **TASK-836 committed (43da846 / 46c6ee1), not deployed.**
+- **Correction (10-25):** the 09:33 logout coincided with the OWNER'S machine losing internet (where Tanya's watcher runs) ⇒ an artifact, not a uat event. L1 stands on the decoded token (12 h). **Decision: deploy TASK-836 to sid now** (+ the env step); its gate re-tests the lifetime.
+
+## TEST-117 (10-25): night 2.1 s / 13:44 2.2 s / 17:55 2.65 s for the schedule; the API ≈0.55–0.66 s; 0 errors. **No afternoon slowdown seen after the owner closed Claude Desktop / VS Code / Steam on the customer's server** (a Sunday, one sample). Re-check on a weekday afternoon (Tanya) before closing. L1 = TASK-836 (sid ✅, the uat deploy pending).

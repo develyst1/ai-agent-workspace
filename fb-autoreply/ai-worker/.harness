@@ -1,7 +1,7 @@
 {
   "harness": "develyst-harness",
-  "version": "2.6.1",
-  "installedAt": "2026-10-21",
+  "version": "2.6.2",
+  "installedAt": "2026-10-25",
   "packageHashes": {
     "ai-worker/add-failure.mjs": "2d9757735f33b4af6a7fa5252d2b2ccec3f89547d267111fa202c44322dddf00",
     "ai-worker/append-log.mjs": "a01b01a1b582dc2d4cc59a00e388e9dd6c3f5fa095060a2b33df1342744a9979",
@@ -15,8 +15,9 @@
     "ai-worker/write-it-now.md": "422295304af8f6421f87ea0ad80e0841cc1ea227ea2fc0f455a03d7d46cbaef0",
     "ai-worker/team-brainstorm.md": "1676625fce330675ed9f1667399bdee0b02a923c321c9efc75d3345aaf9a0c39",
     "ai-worker/attribution.md": "cb79b4c4f6b6a30beb104346e100d97b000a63e5d263cf3c869602f2f197d7e0",
-    "CLAUDE.md": "bc694068200ca81a6498c27d3d2ed1852035df3ac237cfe9a7e2e9e93003b9de",
-    "AGENTS.md": "e9975a71d3576d4afbab0e692658515b19e1679bfcbbe8a1f5c82d8d17ee1bac",
+    "ai-worker/predict-then-probe.md": "37d47dd04346f4da6d60a630e1dc6db7b69dd9ef077c781e90ffe8bf33c79e94",
+    "CLAUDE.md": "59606bddc8b073ba29fa2ac216ab1dc67a3ddb07936b965008e555753348e104",
+    "AGENTS.md": "9927330ad68feedf2ba122e1b9cc5758af7a021b9376b6ec1d05816d4e3eb6eb",
     "ROLES.md": "315e66f7a76818ab3356b02f5681e7320d3f9e8f95a44aaa35b2582de27d6f57"
   }
 }

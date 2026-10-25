@@ -45,10 +45,11 @@
   spawns the roles as subagents. Files remain the only channel; PROTOCOL
   unchanged. Dispatcher run log: `dispatcher-state.md`.
 - Standing rules: no irreversible actions by any role (no global installs, no
-  deleting anything outside the repo). **Git writes are the human's alone** — no
-  role runs `git add`, `git commit`, branch creation or `git push` (REQ-001 Q23,
-  answered 2026-08-22); editing files, e.g. `.gitignore`, is still the team's.
-  Real-world material arrives via DATA REQUEST into `../project-docs/`.
+  deleting anything outside the repo). Editing files, e.g. `.gitignore`, is the
+  team's. Real-world material arrives via DATA REQUEST into `../project-docs/`.
+- **Git: the rule is `CLAUDE.md` §6, the how is the `git-command` skill.** Do not
+  restate either here. In one line: git runs only on the owner's own command,
+  relayed by the PM, typed by the SA; engineers never run git.
 
 ## Requirements
 

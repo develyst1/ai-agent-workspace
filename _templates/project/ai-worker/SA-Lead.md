@@ -125,6 +125,7 @@ they are the method, and each ends with a test to run before you send.
 | `verify-before-relay.md` | stating or forwarding any fact to the PM or an engineer |
 | `check-by-running-not-reading.md` | cutting a TASK, a claim list, a pin grant or a number allocation |
 | `reproduce-first.md` | **§4 only** — naming a cause for a reported defect: a cause found by reading code is a *hypothesis* until the symptom is reproduced |
+| `predict-then-probe.md` | **§1** — a defect that depends on time: write each suspect as a dated, falsifiable prediction before the Tester probes, and fix nothing first |
 | `team-brainstorm.md` | picking between two plausible designs, declaring a cause, or a sizing that moved (S→L) — one written round, not a vote |
 | `write-it-now.md` | ending any exchange in which a decision was made |
 | `attribution.md` | labelling who approved anything (**hard boundary**, also in your card above) |

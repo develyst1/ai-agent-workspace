@@ -213,3 +213,14 @@ Asked in `COPY-DRAFT-khwan-proto-part1-status-2026-10-19.md`. The analysis is in
 | C-j × C-a | in a multi-item bill, the commission is edited **per item** (e.g. only the defective board) |
 | C-f | a refund sets the **course status to CANCELLED** (+ cancels the unattended sessions, families told). **A voucher refund works the same way** |
 | R3.7 | the Low Stock Monday alert goes to **people chosen individually** (today London + ฟีน) |
+
+### 9.2 v3 round (Khwan 10-25, *"ครบแล้วค่ะ V3"*)
+- **The STOCK OUT discount = PER ITEM** (supersedes the 10-20 bill-discount A).
+- **Admin commission edit: CONFLICT** (LINE 10-21 lower only vs prototype B raise or lower): asked.
+- **NEW: the Payment Detail export:** Excel = a summary per section (e.g. Bonus + Subtotal), PDF = everything incl. the details.
+- Detail in REQ-122 §10.
+
+### 9.3 The last 2 points (Khwan, LINE 10-25 15:02), verbatim: *"จริงๆ คงมีแต่ลดค่าคอมได้อย่างเดียวค่ะ ถ้าตามการใช้งาน แต่ขวัญคิดว่าใส่เพิ่มไว้ได้ด้วยก็ไม่เสียหายค่ะ เผื่อๆไว้ 🙏 ขออภัยที่ทำให้สับสนค่ะ · My slip ถ้าขึ้นตาม payment details ก็ตามนั้นเลยค่ะ"*
+- **Admin commission edit = B: lower OR raise** (per item, on that sale's line only; the admin sees no pay totals).
+- **My slip = the same content as Payment Detail** (the coach's own; confirm).
+⇒ **All the rules and screens are agreed. SPEC CLOSED** (words / format notes go into the build). The build waits for the owner's price talk + GO.

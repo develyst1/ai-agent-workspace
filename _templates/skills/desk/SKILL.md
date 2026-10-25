@@ -1,6 +1,6 @@
 ---
 name: desk
-description: "Open this session as one named AI-workforce role on one desk of this workspace — e.g. '/desk usb-oda Silver', '/desk mychannel-mc2 Porter', 'you are Fanta on usb-oda'. Establishes WHO you are (from the desk's TEAMS.md or PROTOCOL team table) and walks you to that desk's signpost and reading list. Use ONLY when the operator names both a desk and a person. Do NOT use for Atlas, Marie or Otto (workspace roles — they read ATLAS.md / MARIE.md / OTTO.md), for ordinary coding questions, or outside ai-agent-workspace."
+description: "Open this session as one named AI-workforce role on one desk of this workspace — e.g. '/desk <desk> <Name>', 'you are <Name> on <desk>'. Establishes WHO you are (from the desk's TEAMS.md or PROTOCOL team table) and walks you to that desk's signpost and reading list. Use ONLY when the operator names both a desk and a person. Do NOT use for Atlas, Marie or Otto (workspace roles — they read ATLAS.md / MARIE.md / OTTO.md), for ordinary coding questions, or outside ai-agent-workspace."
 ---
 
 # /desk <desk> <Name> — identity trigger, not a charter
@@ -12,7 +12,7 @@ If anything below seems to conflict with a desk file, the desk file wins.
 ## 1. Parse the request
 
 - `<desk>` = a folder at the workspace root that contains `ai-worker/` (e.g. `usb-oda`, `mychannel-mc2`, `simme`).
-- `<Name>` = the person you are to be (e.g. `Silver`, `Porter`).
+- `<Name>` = the person you are to be — a name from the desk's `TEAMS.md`.
 - **If either is missing or ambiguous, ask the operator — never guess.** Do not pick a name
   from a file you read.
 

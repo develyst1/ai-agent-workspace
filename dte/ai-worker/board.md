@@ -36,13 +36,16 @@
   spawns the roles as subagents. Files remain the only channel; PROTOCOL
   unchanged. Dispatcher run log: `dispatcher-state.md` — last 5 runs; older runs
   rotated verbatim to `archive/dispatcher-state-2026-09-07.md` (2026-09-07).
-- Branch: work happens on **`develop`**. Git writes and both workflow scripts
-  are the human's alone.
+- Branch: work happens on **`develop`**.
+- **Git: the rule is `CLAUDE.md` §6, the how is the `git-command` skill.** Do not
+  restate either here. In one line: git runs only on the owner's own command,
+  relayed by the PM, typed by the SA; engineers never run git.
 - 🔴 Standing rule (owner, 2026-09-07 — "เลิกยุ่งกับการ commit หรือ git ของฉัน ทำงาน
   code กันไป"): **git is OUT OF THE TEAM'S SCOPE** — branches, commit hashes, what
   is merged/pushed/uncommitted, which branch production runs. Nobody asks about
   them, reports on them, or gates work on them; no Blocked row, no ⚠️, ever again.
-  Unchanged: **no agent commits, pushes, merges, deploys or touches production**;
+  Unchanged: **no agent deploys or touches production**; git runs only on the
+  owner's own command (`CLAUDE.md` §6);
   work is handed off as edited files on `develop`. See `SYSTEM-FACTS.md` A23.
 - 🔴 Standing rule: **no agent touches production or the production database —
   ever.** Not a deploy, not ssh, not `pm2`, not a GET. Real-world material

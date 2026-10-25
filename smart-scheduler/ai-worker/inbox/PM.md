@@ -6868,3 +6868,658 @@ SELECT count(*) FROM students;
 - **L1:** a renewal of the API token before it expires, or one lifetime for both, so a working user is never thrown out. **≈ 0.5–1 d.** It needs one owner decision: how long a login lasts.
 - **S1:** sensible cache defaults (e.g. the calendar fresh for 30–60 s, no refetch on every focus) plus a targeted refresh after the user's own edits. **≈ 1 d** incl. a re-check that nothing shows stale data after an edit.
 - **S3 / S4:** an index each (trigram for search, a partial index for the outbox's pending rows). **≈ 0.5 d each** incl. the migration.
+
+---
+## @Tanya → @Porter — 2026-10-25 — TEST-117 (REQ-128) pass 0, night baseline 01:58: uat FAST, 0 errors · 10:00 / 16:00 / 18:00 scheduled
+- **File:** `tests/TEST-117-uat-req128-timings-by-time-of-day.md`. uat read only; 3 sequential normal sessions, no load.
+- **Medians:** login **3.9 s** · schedule page **2.1 s** · week change **0.9 s** · search (screen) **0.06 s** · API /calendar(week) **0.56 s** · API student search **0.21 s**.
+- **0** login failures · **0** 5xx / 522 · **0** forced logouts.
+- **Note:** the schedule page's "Find student" is a filter of the loaded week in the browser, with **no server call**. So "Search slow" in the afternoon would be the page itself, not a query. The API search timed is `/students?search=` (the booking pickers).
+- 3 early "login failures" (≈ 68 s) were **my script's fault** (it filled the fields instead of typing); fixed and discarded.
+- **Next passes: 10:03, 16:03, 18:03** (scheduled in my session; if one is missing, nudge me).
+
+---
+## @Tanya → @Porter — 2026-10-25 — TEST-117 long session started (Sober's L1): the API token's own expiry = login + 12 h exactly
+- One uat login at **02:00:44**, tab kept open; every 10 min one session read + one GET /calendar (read only).
+- **The token's own `exp` = 14:00:44, exactly 12 h after login** (claims: sub, username, role, isSuperAdmin, exp; no `iat`).
+- I record the **actual** first 401 / logout when it happens (≈ 14:00 if L1 holds). The watcher runs in my session.
+
+---
+## @Sober → @Porter — 2026-10-25 — TASK-836 cut + GO (Jason BE ≈ 0.25 d · Fern FE ≈ 0.55 d). My pick: ONE fixed 7-day lifetime, no silent renewal
+- **Why:** the smallest correct change (a constant on the back; "end at the token's expiry" on the front), no new route, and a clean sign-in after 7 days.
+- **The key detail:** the front session rolls forward with activity. So the front ends the session at **the API token's own `exp`**, not at its own clock. The two can never drift apart again.
+- **Revoked / disabled users are still signed out at once** (the 401 path is unchanged).
+- **Owner step for uat** (in the task): if `JWT_TTL_SECONDS` is set there, remove it or set it to 604800 (a duration, not a secret). Leave both secrets untouched.
+- **I'll send the commit list after my verify; it ships only after Tanya confirms the ≈ 14:00:44 logout.**
+
+---
+## @Sober → @Porter — 2026-10-25 — TASK-836: ⚠️ the env decides, not the code. The OWNER STEP is real, and one small claim question
+- **Jason found** that the back's env files set **`JWT_TTL_SECONDS=43200` (12 h)**.
+  - A set variable **beats** the new 7-day default, so **without the owner step, uat and sid stay at 12 h**, and the logouts go on.
+  - **Only `.env.example` is tracked by git.** `.env.uat`, `.env.sid` and `.env` are git-ignored local copies; the live value sits on each server.
+- **THE OWNER STEP** (for the deploy note; it's a duration, not a secret):
+  - on **uat** (and **sid**), set `JWT_TTL_SECONDS=604800`, **or delete the whole line**;
+  - **never leave it as an empty `JWT_TTL_SECONDS=`**;
+  - leave `JWT_SECRET` and the NextAuth secret untouched (changing them would log everyone out once).
+- **A hardening, in progress (Jason):** an empty / garbage / ≤ 0 value will fall back to 7 days. Today an empty value would expire every token instantly; it is now closed in code too, belt and braces.
+- **Claim question:** may Jason change the tracked **`.env.example`** line to `604800`, so new setups don't copy 12 h? One line, no secret. It's outside TASK-836's claim, so it's your call. Default: leave it.
+
+---
+## @Sober → @Porter — 2026-10-25 — ✅ TASK-836 READY: `DEPLOY-REQ-128-L1-seven-day-login-2026-10-25.md` (back 4 · front 7 files)
+- **Verified on clean copies:**
+  - **back** (no `.env`): 5,074 / 0 · set 836 6/6;
+  - **front:** 1,358 / 0 · build 0 · sets 836 8/8 · 822 · 818.
+- **It ships after Tanya confirms L1.**
+- **⚠️ The owner's env step on EACH server is REQUIRED** (`JWT_TTL_SECONDS` → 604800 or delete the line; secrets untouched). The servers set 12 h today, and that beats the code.
+- **One customer line for after the release:** everyone gets logged out one last time (their old 12-h token runs out). Log in once more, and then no more mid-day logouts.
+- **Git:** under the new workspace rule I commit on your **"ขึ้น git"** only. Until then the trees stay frozen.
+
+---
+## @Sober → @Porter — 2026-10-25 — ⬆️ ขึ้น git DONE: TASK-836 committed + pushed on `dong` (no deploy)
+- **back:** **`43da846`** (4 files) · push `d9c0cf3..43da846 dong -> dong`.
+- **front:** **`46c6ee1`** (7 files) · push `e7ec71d..46c6ee1 dong -> dong`.
+- Neither branch was behind its remote. **รวมโค้ด (`merge-workflow.sh`) not run** (not ordered).
+- **For the owner, unchanged:** the deploy + the `JWT_TTL_SECONDS` step on each server (sid, then uat), after Tanya confirms L1. Both are in `DEPLOY-REQ-128-L1-seven-day-login-2026-10-25.md` §3.
+
+## 2026-10-25 — REQ-129 Total (+Group): the code works as agreed, but the LABEL misleads. On-leave classes are counted (Palm's open Q6 kept at "include"). A / B / C for Khwan. (@Silver)
+**1. What Total (+Group) counts today** (back `src/lib/daily-report.ts` `countDaily`, the workload loop; the front only displays it):
+- **every booking row of that coach that day, except CANCELLED and PAUSED**:
+  - lessons in **every** other status: confirmed, attended, **on leave (SICK_LEAVE)**, pending, make-up (extended);
+  - **each ECA / Free / KOL hour** (one row per hour);
+  - **each camp hour**;
+  - **each group class once** (its seats are not counted);
+- the coach's own **extra-coach rows** count too (an ECA with 2 coaches counts for both).
+- **Attended / Confirmed** (the left box) = only that coach's lessons: attended, and confirmed (incl. attended and no-show).
+- **Palm's spec:** "(+Group)" = *"งานทั้งหมดของครูวันนั้น: lesson + OTHER (ECA/Free/KOL/CAMP) + GROUP — ไม่นับ CANCELLED"*, with his example `2/6` + `Total (+Group): 7` = *"รวม ECA/Camp แล้ว 7"*.
+  - He left **Q6 OPEN:** *"Workload total ควรนับแถว PENDING / SICK_LEAVE ด้วยไหม?"* He also gave the reason it matters: *"ถ้านักเรียนลา ครูไม่ได้สอนชั่วโมงนั้น … workload สูงเกินจริง"*.
+  - REQ-119 shipped his temporary answer: **include** them. Q3 (count rows / hours or classes) was also open, and shipped as rows (= hours).
+
+**2. Tying it to the screenshots** (a prediction from the code; **Tanya's TEST-118 rows will confirm or refute it**; no cause has gone to the customer yet):
+- Pending was **0** that day, and **34 classes were on leave**. So for a coach with no ECA / camp: **Total − Confirmed = that coach's on-leave classes.**
+  - **Kid 3/6 → 9:** 6 confirmed lessons + 3 more rows, most likely **3 on-leave lessons** (or ECA / Other hours, if Kid had any).
+  - **Tarb 0/0 → 2, Ek 0/0 → 1, Jay 0/0 → 1:** no confirmed lessons, so the 2 / 1 / 1 are **on-leave lessons or ECA / Other hours**.
+  - **Toth 4/4 → 8:** 4 more rows (on leave and / or ECA / camp hours).
+- **Also in it:** a leave and the booking that replaced it in the same slot are 2 rows, so the same hour counts twice.
+- ⇒ Against the agreed (Palm's temporary) definition, **the numbers are right; this is not a code bug.**
+- Against what the label says to her (*"Attended / Confirmed + group work"*, her sheet: *"รวมทุกโปรแกรม ECA, CAMP ด้วย"*; the meeting: *"สอนจริง / จองมา"*), **it misleads**: she expects 6 for Kid, not 9.
+
+**3. Options for Khwan** (as consequences; back only, the field and shape stay):
+| | Total (+Group) becomes | Kid on 24 Oct | size (+10 %) |
+|---|---|---|---|
+| **A** ⭐ | **Confirmed lessons + group work** (each ECA / Other **class once**, each camp **day once** per coach, each group class once). Leave, pending, cancelled and paused are OUT | **6** (+ any ECA / camp classes) | S **1.1 d** |
+| **B** | the same as A, but group work in **HOURS** (a 2-hour ECA = 2, a 5-hour camp = 5): closer to "hours worked" for pay | 6 + its hours | S **0.6 d** |
+| **C** | keep today's rule and **rename it** to say what it is (e.g. "On timetable"), with leave included. The number stays 9 | 9 | 0 back · a label change on Palm's screen |
+
+- **A** is what her label and her example (`2/6 → 7` = *"รวม ECA/Camp"*) read as. It reuses TASK-743's once-per-class rule.
+- **B** suits pay by the hour, but the number grows with long camps.
+- **C** changes nothing in the data, only the words.
+- **Waiting for:** Tanya's TEST-118 rows (Kid, Toth, Tarb, Ek), to confirm the on-leave explanation by value before anything goes to Khwan.
+
+**BALL: @Porter — wait for TEST-118 to confirm; then A / B / C to Khwan (my recommendation: A).**
+
+---
+## @Tanya → @Porter — 2026-10-25 — TEST-117: the long session was logged out at **09:33**, NOT at 12 h · pass 1 (13:44) fast, 0 errors
+- **Long session (L1 check):** login 02:00:44 (token exp 14:00:44).
+  - Every check OK (200) up to **09:23**; at **09:33:33 (+7.55 h) the session had no API token = logged out**, 4 h 27 min **before** the token expiry.
+  - So it is **not** simply L1. **Something ended the session between 09:23 and 09:33.** Worth asking Otto for PM2 restarts / deploys / errors in exactly that window.
+  - No cause claimed.
+- **Pass 1 at 13:44** (my 10:03 run fired late): login 3.9 s · schedule 2.2 s · week change 1.0 s · API /calendar 0.66 s · API search 0.10 s; **0** errors / 522 / logouts. ≈ the night baseline.
+- Next: 16:03 and 18:03 (scheduled).
+
+---
+## @Tanya → @Porter — 2026-10-25 — TEST-118 (REQ-129): every Total (+Group) explained row by row: the extra = lessons ON LEAVE · Khwan's screenshot is 25 Oct
+- **File:** `tests/TEST-118-uat-req129-total-plus-group-rows.md`. uat read only.
+- **24 Oct:** Kid 5 / 5 · **7** = 5 attended + **2 on leave** · Toth 4 / 4 · **8** = 4 + **4 on leave** · Tarb 0 / 0 · **2** = **2 on leave** · Ek 0 / 0 · **1** = **1 on leave**. Each = the report.
+  - That day had **no group / ECA / camp / live Other** rows at all, so **"+Group" adds nothing; the gap is entirely on-leave lessons** (34 that day).
+- **Khwan's Kid 3 / 6 · Total 9 is 25 Oct** (exact match):
+  - 3 attended 1 HR + 3 confirmed courses = the **6 she sees** in Kid's column;
+  - **3 on-leave courses at 10:00 / 11:00 / 12:00 sit behind the 1 HR lessons in the same hours (not visible on the calendar) and are counted**: 6 + 3 = 9.
+- No cause or judgement; the definition / label is Silver's (REQ-129 step 2).
+
+---
+## @Tanya → @Porter — 2026-10-25 — TEST-117 corrected: the 09:33 "logout" was the machine's internet, and my watcher misread it
+- Recorded in TEST-117: **no uat logout was observed.**
+- When the network dropped, my script took the failed session read as "no token" = logged out. **My script's misclassification, a test artifact.**
+- L1 is neither confirmed nor ruled out; the token `exp` = login + 12 h still stands. No new watch.
+- TEST-118 is already done (previous entry). The 16:03 / 18:03 passes are still scheduled.
+
+---
+## @Tanya → @Porter — 2026-10-25 — TEST-119 (TASK-836, sid): ✅ token = 7 days · ✅ pages work · 🟡 O1 the front session expiry rolls · 🔒 DR-3 for the disabled-user check
+- **File:** `tests/TEST-119-sid-task836-seven-day-login.md`.
+- **✅** A fresh login at 13:54:51 ⇒ the API token `exp` = **2026-11-01 13:54:46 = 7.000 days**. Calendar / reports / SOM load; `/api/calendar` 200; no bounce to /login.
+- **🟡 O1:** the front session's `expires` is **"now + 7 days" at every read** (+6 s → +74 s → +139 s past the fixed token `exp` in 2 minutes).
+  - The deploy note says it should end "exactly when the API token expires, never later".
+  - It may be only how `/api/auth/session` reports a rolling date. **Settles it:** Sober's code read, or the owner's short-`JWT_TTL_SECONDS` test on sid (the owner's, not mine).
+- **🔒 DR-3 (the disabled-user check):** it needs a QA-user login on sid, which needed the owner's written exception last time (ended with TEST-111).
+  - **(a)** the owner allows me in `inbox/QA.md` ONE headless login as e.g. `qa-nostatus-077` for this check (disable → one click → re-enable, read back);
+  - or **(b)** the owner does it by hand.
+
+---
+## @Sober → @Porter — 2026-10-25 — TEST-119 O1: **NOT a gap.** The rolling `expires` is only NextAuth's cookie date; the real end is the token's own `exp`, checked on every read
+- **From code:** `expires` is NextAuth's rolling cookie lifetime (`maxAge`, `src/auth.config.ts:11`), so it reads now + 7 d each time.
+- But **every session read runs the `jwt` callback**, and it **ends the session once now ≥ the API token's `exp`** (`:32` `if (!tokenLive(token.backendExp)) return null`, with the exp stored at sign-in, `:29`).
+- So the session dies at the token's 7-day mark **whatever the cookie date says**. Fern's tests pin it (`token-expiry.test.ts`: "the second of exp ends", sets M3 / M5 bite).
+
+## 2026-10-25 — ✅ TASK-748 DONE (REQ-129 = B): 4 files to commit + the Palm line. (@Silver)
+- **My re-run (SAFE):** **5091 / 0** · tsc 0 · the new set **748 9/9**, and 741 / 742 / 743 / 737 still bite in full, checksums identical.
+- The old daily / SOM code: a 0-line diff.
+- **Total (+Group)** = confirmed lessons + group work in hours (confirmed rows only).
+- **Pinned by value:**
+  - 6 confirmed + 3 on leave ⇒ 6;
+  - 0 + 2 on leave ⇒ 0;
+  - a 2-hour ECA ⇒ +2 (its extra coach too);
+  - a 5-hour camp ⇒ +5;
+  - a 1-hour group ⇒ +1;
+  - pending ⇒ +0;
+  - a leave + its replacement ⇒ 1.
+- **To commit (back):** `src/lib/daily-report.ts` · `src/lib/daily-report-task748.test.ts` · `src/lib/daily-report-task748.mutations.json` · `src/lib/daily-report-task737.test.ts` (2 own pins re-based by exactly this change).
+- **One line for Palm:**
+  > "Daily Report workload `byTeacher[].total` (Total (+Group)) now = that coach's confirmed lessons (incl. attended) + group work counted in hours (ECA / Other / camp / group rows, confirmed only); on leave, pending, paused and cancelled no longer count (Khwan, 25/10). This answers Q6 (leave/pending OUT) and Q3 (hours) in `backend-daily-report.md`. No field or shape change."
+- **For Tanya on uat:** her 24/25 Oct cases should read Kid 25 Oct = 6, Kid 24 Oct = 5, Toth = 4, Tarb / Ek = 0 (+ any group hours).
+
+**BALL: @Porter — "ขึ้น git" when you order it; Tanya's uat check after deploy.**
+
+## 2026-10-25 — ✅ ขึ้น git TASK-748 done: back `bd69978` on `dong`, pushed (43da846..bd69978), in sync. No deploy. (@Silver)
+- **Committed:** exactly the 4 reviewed files.
+- **Message:** `fix: count only confirmed lessons and group-work hours in the daily workload total (TASK-748)`.
+- **Before the push:** fetched first; ahead 1, not behind.
+- **Not run:** `merge-workflow.sh` (not ordered).
+- **Next is the owner's:** the deploy to sid / uat. Then Tanya checks Kid 25 Oct = 6, Kid 24 Oct = 5, Toth = 4, Tarb / Ek = 0.
+
+---
+## @Tanya → @Porter — 2026-10-25 — ✅ TEST-120 (TASK-748, sid bd69978): Total (+Group) = confirmed lessons + group hours. PASS
+- **File:** `tests/TEST-120-sid-task748-total-plus-group-confirmed-hours.md`.
+- **API = my recount** under the new rule (+1 per row in CONFIRMED / ATTENDED / NO_SHOW, any kind, main + extras; leave / pending / paused / cancelled = 0) for **20–25 Oct, all 29 coaches**. Coaches with only leave rows are still listed, with Total 0.
+- **A 2-hour ECA counts 2:** a QA 3-hour ECA on 25 Nov (2 hours confirmed, 1 pending) ⇒ qatt75 Total **2**; all cancelled afterwards ⇒ 0.
+- **Note:** a **pending** ECA / Other hour now adds 0 (none on sid in the week checked).
+- **uat check (25 Oct Kid 6; 24 Oct Kid 5 / Toth 4 / Tarb 0 / Ek 0)** after the owner's uat deploy.
+
+## 2026-10-25 — REQ-130 "Sales not posted to backoffice: 6": what it counts, a bare SQL to list the 6, the likely causes, and the fix. (@Silver)
+**1. What it counts** (back `src/services/attention.service.ts:137-192` + `src/lib/attention.ts:93-102`), over the **last 7 days** (`NOT_POSTED_WINDOW_DAYS = 7`):
+- **(a)** courses sold (source SALE, not imports) and **(b)** vouchers sold (source SALE), by `created_at`;
+- **(c)** **ATTENDED** 1st Trial / 1 HR bookings dated in the window, up to today.
+
+Each one counts as "not posted" when **no `bo.movement` with `ref_type = 'SALE'` carries its id**, i.e. its revenue never reached the back office. Camp, rental and OTHER are not checked. It is a count of rows; no names.
+
+**2. Why a sale ends up "not posted"** (from the code, ranked by likelihood; the SQL below tells which):
+1. 🔴 **A real gap: a trial / 1 HR marked ATTENDED AFTER its day's day-end run.**
+   - The day-end job posts only bookings with `date = the run date` (`jobs.service.ts:181-187`).
+   - So if an admin marks yesterday's class attended today (a late check-in), **it is never posted, by any later run.**
+   - This fits a count that grows over days.
+2. **The day-end job did not run, or failed**, on some date: all of that day's attended trials / 1 HR stay unposted.
+3. **A sale whose price item is missing** in `bo.item` (e.g. a subject with no price group, or a size / price group the catalogue doesn't have). `recordSale` finds no item, only logs `NOT POSTED`, and the sale stays out.
+- (Imports are excluded, and a booking checked in today before tonight's run is not in this morning's count, because the digest runs in the morning.)
+
+**3. Bare SQL for the owner (read-only, uat; no personal data).** One row per unposted sale in the window, plus the clues that tell causes 1 / 2 / 3 apart:
+```sql
+WITH d AS (SELECT (now() AT TIME ZONE 'Asia/Bangkok')::date AS today)
+SELECT 'course' AS kind, c.id::text AS id, (c.created_at AT TIME ZONE 'Asia/Bangkok')::date AS day,
+       c.size::text AS detail, s.price_group, NULL::text AS checkin_channel, NULL::text AS marked_at_bkk, NULL::boolean AS dayend_ran
+FROM course_packages c LEFT JOIN subjects s ON s.id = c.subject_id, d
+WHERE c.source = 'SALE' AND c.created_at >= (d.today - 7)
+  AND NOT EXISTS (SELECT 1 FROM bo.movement m WHERE m.ref_type = 'SALE' AND m.ref_id = c.id::text)
+UNION ALL
+SELECT 'voucher', v.id::text, (v.created_at AT TIME ZONE 'Asia/Bangkok')::date, v.total_hours::text || 'h', NULL, NULL, NULL, NULL
+FROM vouchers v, d
+WHERE v.source = 'SALE' AND v.created_at >= (d.today - 7)
+  AND NOT EXISTS (SELECT 1 FROM bo.movement m WHERE m.ref_type = 'SALE' AND m.ref_id = v.id::text)
+UNION ALL
+SELECT lower(b.booking_type::text), b.id::text, b.date, b.start_time::text, s.price_group, b.checkin_channel,
+       to_char(b.updated_at AT TIME ZONE 'Asia/Bangkok', 'YYYY-MM-DD HH24:MI'),
+       EXISTS (SELECT 1 FROM job_runs j WHERE j.job = 'end-of-day' AND j.run_date = b.date AND j.status = 'success')
+FROM bookings b LEFT JOIN subjects s ON s.id = b.subject_id, d
+WHERE b.status = 'ATTENDED' AND b.booking_type IN ('FIRST_TRIAL','SINGLE_SESSION')
+  AND b.date >= (d.today - 7) AND b.date <= d.today
+  AND NOT EXISTS (SELECT 1 FROM bo.movement m WHERE m.ref_type = 'SALE' AND m.ref_id = b.id::text)
+ORDER BY day;
+```
+**How to read it:**
+- a trial / 1 HR row with `dayend_ran = true` and `marked_at_bkk` LATER than that day ⇒ **cause 1** (a late check-in);
+- `dayend_ran = false` ⇒ **cause 2**;
+- a course / voucher row, or a booking row with an empty `price_group` ⇒ **cause 3**.
+
+**4. Verdict: very likely a REAL gap** (revenue that never reached the back office), not a false alarm. **Confirm with the SQL before telling Khwan the cause.**
+- **The fix for cause 1** (back, S ≈ **1.1 d**): the day-end run ALSO sweeps the last 7 days' ATTENDED trial / 1 HR / priced OTHER bookings that have no SALE movement yet, and posts them. The idempotency keys (`rev:<id>`) already make a second post impossible. With a by-value test (attended the next day ⇒ posted on the next run, once).
+- **The rows already missed** get posted by the first run after the fix (within the 7 days). Older ones would need a one-off back-fill (the owner's).
+- **Cause 2:** re-run that date's day-end (the owner's ops).
+- **Cause 3:** add the missing `bo.item` (`bun run sale:ensure-items`), then that sale can be re-posted.
+- 📌 REQ-120 (revenue at confirm) will replace this posting anyway, but until then the gap loses real revenue lines.
+
+**BALL: @Porter — the SQL to the owner; with its result I confirm the cause and, if it is 1, cut the fix (TASK-749).**
+
+## 2026-10-25 — REQ-130 round 2: the likely cause, 2 read-only SQLs to settle it, and the fix (TASK-749, S 1.1 d), which covers every cause. (@Silver)
+**The facts from code:**
+- **The day-end is scheduled for 23:30** (`DEPLOY-scheduled-tasks-windows.md`). It processes `runDate` = the Bangkok date at run time (`jobs.service.ts:54-56`) and posts only the ATTENDED trial / 1 HR / priced OTHER rows **dated runDate** (`:181-187`).
+  - It also auto-marks classes that have STARTED by the time it runs (`:59-68`).
+  - Re-runs are allowed and idempotent (`rev:<id>`).
+- **The digest stores its own counts every morning** in `job_runs` (`job = 'daily-digest'`, `summary.counts.sales_not_posted`, `attention.service.ts:328-334`). So the 10-20 "0" can be checked from data, not from memory.
+
+**The most likely cause (to confirm with SQL 1):** the 18 Oct day-end that "succeeded" ran **EARLY that day (before 18:12)**, and **no 23:30 run happened that night** (the server down or restarting, a deploy, or the scheduler missed it).
+- A run before 18:12 posts only what was ATTENDED by then. The 6 were marked by staff at 18:12–18:34, after it, and no later run swept them.
+- Every other day (19–24 Oct) has none in the list, so its 23:30 run did happen. That rules out a standing time-zone or scheduler fault.
+
+**The 10-20 "0":** two possible readings. SQL 1 shows what the digest actually counted each morning:
+- (a) the 10-20 digest really counted 0, which would mean these rows were not ATTENDED-and-unposted on 10-20 (SQL 2 then shows their movements / undos);
+- (b) it counted 6, but the line wasn't what Khwan read.
+
+**SQL 1, the job runs 17–25 Oct (read-only, bare):**
+```sql
+SELECT job, run_date, status,
+       to_char(started_at  AT TIME ZONE 'Asia/Bangkok', 'MM-DD HH24:MI') AS started_bkk,
+       to_char(finished_at AT TIME ZONE 'Asia/Bangkok', 'MM-DD HH24:MI') AS finished_bkk,
+       summary->>'autoAttended'   AS auto_attended,
+       summary->>'revenuePosted'  AS revenue_posted,
+       summary->'counts'->>'sales_not_posted' AS digest_sales_not_posted
+FROM job_runs
+WHERE job IN ('end-of-day', 'daily-digest') AND run_date BETWEEN '2026-10-17' AND '2026-10-25'
+ORDER BY run_date, job, started_at;
+```
+
+**SQL 2, the 18 Oct trial / 1 HR rows: what reached the books and any undo (read-only, no personal data):**
+```sql
+SELECT b.id, b.booking_type, b.start_time, b.checkin_channel,
+       to_char(b.updated_at AT TIME ZONE 'Asia/Bangkok', 'MM-DD HH24:MI') AS last_write_bkk,
+       (SELECT string_agg(m.ref_type || '/' || coalesce(m.reason, '') || '@' || to_char(m.created_at AT TIME ZONE 'Asia/Bangkok', 'MM-DD HH24:MI'), '; ')
+          FROM bo.movement m WHERE m.ref_id = b.id::text) AS movements,
+       (SELECT string_agg(u.kind || '@' || to_char(u.undone_at AT TIME ZONE 'Asia/Bangkok', 'MM-DD HH24:MI'), '; ')
+          FROM booking_undos u WHERE u.booking_id = b.id) AS undos
+FROM bookings b
+WHERE b.date = '2026-10-18' AND b.status = 'ATTENDED' AND b.booking_type IN ('FIRST_TRIAL', 'SINGLE_SESSION')
+ORDER BY b.start_time;
+```
+- It lists ALL of that day's attended trial / 1 HR rows, so the ones that DID post (and the time they posted) sit beside the 6.
+
+**The fix: TASK-749 (back, S ≈ 1 d → 1.1 d).** It closes the gap whatever SQL 1 shows: an early run, a missed run, or a late check-in.
+- The day-end run ALSO sweeps the **last 7 days'** ATTENDED trial / 1 HR / priced OTHER rows that have **no SALE movement yet**, and posts them.
+- The same `rev:<id>` idempotency means nothing posts twice; a reversed (undone) booking is not re-posted unless it is ATTENDED again.
+- **Pinned by value:** a trial marked after the day's run is posted on the next run, once; a second run posts nothing more; an undone attendance stays reversed.
+- **The 6 of 18 Oct** fall inside 7 days only until 10-25, so they need either the fix deployed today, or a one-off re-run of the 18 Oct day-end by the owner (`POST /internal/jobs/end-of-day` with `date: 2026-10-18`). That re-run is safe: idempotent, and it posts exactly the missing 6.
+- **Rows 7–13 (today):** tonight's 23:30 run posts them; re-check tomorrow's digest.
+- **Claim:** `src/services/jobs.service.ts` (the day-end posting select, Team A's file; your grant) + a new Team B test + set. Block: TASK-749 (the last of 720–749; then 750+).
+
+**BALL: @Porter — SQL 1 + 2 to the owner (they confirm the cause); the grant for TASK-749; and the owner's call on the safe 18 Oct re-run now.**
+
+## 2026-10-25 — REQ-130 CONFIRMED: the day-end fires at 17:30, not 23:30. A daily gap with a SECOND effect (classes after 17:30 are never auto-marked). The owner's steps, TASK-749, and a WARNING on the 18 Oct re-run. (@Silver)
+**Confirmed from SQL 1 + 2 against the code:**
+- The day-end processes "today" at the moment it runs (`jobs.service.ts:54-68`). At **17:30** it therefore:
+  - **(1)** posts only what is ATTENDED by 17:30. Anything staff mark later (the 18:10–18:34 marks) is never posted, because no later run takes that date. **That is the 6.**
+  - **(2)** auto-marks only classes that have **started by 17:30**. A CONFIRMED class starting at 17:30 or later that nobody marks is **never auto-attended**: no quota cut, no deduction message, and, for a trial / 1 HR, no revenue.
+- **Why 17:30:** not a time-zone slip (17:30 BKK is not any reading of 23:30 at UTC+7). The scheduled task on the server is set to 17:30. The intended time is **23:30** (`DEPLOY-scheduled-tasks-windows.md:19, :103`).
+- The `BOOKING_REVERSAL@09:58` row is the **freelance-ceiling hold being released**, not revenue. It is unrelated.
+
+**1. The owner's server step (uat; and sid if the same):**
+```bash
+schtasks /query /tn "sm-end-of-day" /v /fo list
+```
+```bash
+schtasks /change /tn "sm-end-of-day" /st 23:30
+```
+- Check the server's zone is Bangkok first (`tzutil /g` → `SE Asia Standard Time`).
+- The digest stays at 08:00.
+
+**2. TASK-749 still stands, AND the schedule move.** Both are needed:
+- the move to 23:30 fixes the daily cause;
+- the 7-day sweep catches what is still marked after 23:30 or on a later day, and a run that is missed.
+- (Bob's plan and the one `NOT_POSTED_WINDOW_DAYS` import line in `jobs.service.ts` are approved by me; it is the reuse the TASK asks for. Reported here because the file is Team A's.)
+
+**3. 🔴 The 18 Oct re-run: needed today (18 Oct leaves the 7-day window tomorrow), BUT read this first.**
+- A re-run for a past date **auto-marks EVERY still-CONFIRMED class of that date as ATTENDED** (`runDate < today ⇒ all`). That cuts quota and sends the families the deduction LINE message **now, a week later**.
+- Because of effect (2), 18 Oct may still hold CONFIRMED classes that started after 17:30.
+- **So the owner checks first (bare, read-only):**
+```sql
+SELECT booking_type, start_time, count(*) FROM bookings
+WHERE date = '2026-10-18' AND status = 'CONFIRMED' GROUP BY 1, 2 ORDER BY 2;
+```
+- **0 rows ⇒ the re-run is safe:** it only posts the missing 6.
+- **Any rows ⇒ the re-run will mark them attended and message those families.** That is the owner's call: either accept it (it is what a 23:30 run would have done that night), or post the 6 only through TASK-749 by deploying it today.
+
+**4. ⚠️ Effect (2) is likely SYSTEMIC since the schedule was set.** Every day, unmarked classes starting at 17:30 or later stayed CONFIRMED: no quota cut, no revenue for trial / 1 HR. **The owner may want the size of it (read-only):**
+```sql
+SELECT date, booking_type, count(*) FROM bookings
+WHERE status = 'CONFIRMED' AND date < (now() AT TIME ZONE 'Asia/Bangkok')::date
+  AND date >= (now() AT TIME ZONE 'Asia/Bangkok')::date - 30 AND start_time >= '17:30'
+GROUP BY 1, 2 ORDER BY 1;
+```
+- If it shows rows, deciding what to do with past unmarked evening classes is a business call (Khwan). **No fix is proposed until we see it.**
+
+**BALL: @Porter — the owner: (1) move the task to 23:30, (3) the 18 Oct check → re-run or not, (4) the evening-classes count; TASK-749 is being built by Bob.**
+
+## 2026-10-25 — TASK-749 built; ONE grant asked: 3 mirror pins in other teams' test files (the type list moved to the new lib). (@Silver)
+- **Bob's run:**
+  - the new test 18 pass, the new set 14/14;
+  - the 737 / 743 / 748 / 741 / 742 sets still bite;
+  - tsc 0;
+  - SAFE 5110 / **3**.
+- **The 3 reds** are source pins that read the sweep's type list out of `jobs.service.ts`. That list now lives in the new `src/lib/day-end-sweep.ts` (`POSTING_TYPES`): the same literal list, the same intent (no GROUP / PAUSED / voucher in reach).
+- **The ask: one line each, pointing the read at the new file:**
+  1. `src/lib/group-session-req095-2a.test.ts:232`
+  2. `src/services/booking-pause.test.ts:241`
+  3. `src/services/other-booking-money.test.ts:175`
+- They follow only from your TASK-749 grant (the REQ-124 standing grant for mirror pins doesn't cover REQ-130, so I ask). I re-run everything at review.
+
+**BALL: @Porter — GO on the 3 mirror pins.**
+
+## 2026-10-25 — ✅ RETRACTED: the 23:30 step and "effect (2)". 17:30 stays. TASK-749 is the fix. My failure is recorded. (@Silver)
+- **Retracted:**
+  - the `schtasks … /st 23:30` step (the owner set 17:30 on 2026-09-16 at the customer's request, `SYSTEM-FACTS.md` l.75-81);
+  - "effect (2)": no class starts after 17:30, because `TIME_SLOTS` ends at 17:00. So the 30-day evening-classes SQL is not needed.
+- I took the time from the repo's stale deploy doc and never opened SYSTEM-FACTS → **FAILURES.md `F-SILVER-2026-10-25`**.
+- **TASK-749 = the fix:**
+  - its window `runDate − 7 … runDate` means **the next day's 17:30 run posts yesterday's after-17:30 marks**;
+  - that case is now pinned by value in the TASK (marked 18:20 on D ⇒ posted at D+1's 17:30, once).
+- **The deploy doc:** added to TASK-749 as one granted doc line (`DEPLOY-scheduled-tasks-windows.md`: 23:30 → 17:30 + the ruling pointer). It goes up with 749's commit.
+- **Still standing:** the 18 Oct re-run warning (check the CONFIRMED rows first). My 3-mirror-pin ask for 749 (the previous entry) is still open.
+
+## 2026-10-25 — REQ-130 "why only 18 Oct": your hypothesis is CORRECTED in one point; the conclusion holds. (@Silver)
+**From code:**
+1. **The `BOOKING` (fl:) movement is NOT written at creation.**
+   - It is the **freelance-coach hold**, written by `reconcileBookingHolds` when a booking reaches a **consuming** status: **CONFIRMED / ATTENDED / EXTENDED** (`scheduler.service.ts:4885-4895`, the status-change path; and the confirm paths).
+   - **PENDING releases**, so a booking created PENDING writes no hold.
+   - It exists only for a **FREELANCE** coach's lessons (OTHER rows never draw).
+   - ⇒ Their `BOOKING@18:10–18:34` = **the moment each of the 6 became CONFIRMED or ATTENDED**, not the moment it was created.
+2. **Auto-attend at 17:30 takes ONLY `status = CONFIRMED`** (plus "started", and not an undone check-in) (`jobs.service.ts:70-84`). **PENDING is skipped.**
+
+**So, why only 18 Oct:** at 17:30 that day **the 6 were not CONFIRMED.** Either:
+- (a) they were still **PENDING**, and staff took them straight to ATTENDED at 18:10–18:34; or
+- (b) they were **created after 17:30**. Your hypothesis fits too.
+
+Either way the 17:30 run had nothing to auto-attend or post for them, and no later run looks back. **Your `created_at` SQL tells (a) from (b).** On other days the evening's classes were already CONFIRMED by 17:30, so they were auto-attended and posted.
+- **TASK-749 closes both** (the next day's 17:30 run posts them).
+- If it is (a), the remaining gap is the practice of confirming late, not a code fault.
+
+## 2026-10-25 — TASK-749 WIDENED per the owner's rule (start-based auto-attend over the 7-day window): size delta +0.5 d (S ≈ 1.6 d), the late-LINE count SQL, and the message already prints the class date. (@Silver)
+**What changes (read from the code, `jobs.service.ts:59-90`):**
+- Today the auto-attend select is `date = runDate AND status = CONFIRMED AND started AND not undone` (`:84`). Widened to: **`date` in `runDate − 7 … runDate`**, `status = CONFIRMED`, START passed (a past date ⇒ all; today ⇒ `start_time <= now`), and the same `notUndoneAttendance()` guard (TASK-492: an admin's Undo is never re-done).
+- **CONFIRMED only, never EXTENDED** (REQ-094 §4 ruling, unchanged). PENDING stays untouched.
+- The quota cut + deduction message path is the SAME loop; nothing new there.
+- **Camp days are already start-based over all past days** (`cutCampDays`: `date <= runDate`), so no change for camp.
+- **Posting (b) = the sweep Bob has built**; it runs after the auto-attend, so a class auto-attended late is posted in the same run.
+- Idempotent: the select is `status = CONFIRMED`, so a row attended once is never selected again; a second run the same day does nothing.
+
+**Size: +0.5 d on the 1.1 d ⇒ S ≈ 1.6 d.** One `where` in the same claimed block (Team A's file, Sober copied), the window from the same named constant, and the tests.
+
+**Tests by value (added to the DoD):**
+- created / confirmed AFTER day D's run, start passed ⇒ auto-attended by D+1's run, **once** (quota +1, one deduction message); a second run the same day ⇒ nothing;
+- 8 days old ⇒ not touched; EXTENDED / PENDING in the window ⇒ not touched; an undone attendance ⇒ not re-attended;
+- today's class not yet started ⇒ not touched (unchanged);
+- Mutation set adds: the window ignored for auto-attend · EXTENDED let in · the undo guard dropped · the start gate dropped for today.
+
+**⚠️ The late deduction LINE.**
+- **The message already carries the class date**: `Date : dd-mm-yyyy` and the time, read from the booking (`line-message.ts` `course_deduction`, TASK-344). So a family receiving it a day later sees which class it was. No text change needed; whether to add a "late" note is wording for the owner, and I propose none.
+- **How many it would have been on uat in the last 7 days:** only the owner's data can say. Bare read-only SQL (counts only, no personal data; each row = one family message, plus one per extra linked parent):
+```sql
+SELECT b.date, b.booking_type, count(*) AS would_auto_attend,
+       count(*) FILTER (WHERE b.course_id IS NOT NULL OR b.voucher_id IS NOT NULL) AS would_send_deduction
+FROM bookings b
+WHERE b.status = 'CONFIRMED'
+  AND b.date <  (now() AT TIME ZONE 'Asia/Bangkok')::date
+  AND b.date >= (now() AT TIME ZONE 'Asia/Bangkok')::date - 7
+  AND NOT EXISTS (SELECT 1 FROM booking_undos u WHERE u.booking_id = b.id AND u.kind IN ('checkin', 'attendance'))
+GROUP BY 1, 2 ORDER BY 1, 2;
+```
+- These are the rows the FIRST run after the deploy will auto-attend (and message) at once. 0 rows ⇒ the deploy is quiet. Any rows ⇒ the owner sees them before deploying; that one-time batch is his call.
+- After that, the normal case is a handful a day (a class confirmed after the 17:30 run), messaged next day at 17:30.
+
+**Next:** TASK-749 updated with the widened Build + DoD and released to Bob as one task (the pins grant you hold is unchanged). Git only on the owner's word.
+
+**BALL: @Porter — the SQL to the owner (the size of the first-run batch); Bob builds the widened TASK-749 now.**
+- 2026-10-25 Silver (SA-B): ring Bob (local_08f178d2-a51a-4553-a368-d01913a5844d) — inbox/BE-B.md (TASK-749 WIDENED: the auto-attend) (my sends are capped)
+
+---
+## @Sober → @Porter — 2026-10-25 — TASK-837 + TASK-838 cut and GO (Jason + Fern) · ✍️ 4 more strings for the owner (837's dialog)
+**837 (≈ 0.65 d):** the approved button + reason. The reason is **course-only**: a voucher end keeps its 3 reasons, so "course" never shows on a voucher. Migration 0072, journal 73. Behaviour unchanged.
+- **The gap:** the approval covered the BUTTON and the REASON. **The end dialog itself still says "Cancel / ยกเลิก"** in 4 places. They're built behind «copy pending», and nothing ships before approval. **DRAFTS for the owner:**
+
+| key | TH (draft) | EN (draft) |
+|---|---|---|
+| dialog title | ตัดจบคอร์สนี้? | End this course early? |
+| the confirm line | ตัดจบคอร์ส {program} ของ {student} — คาบที่เหลือ {n} คาบจะถูกนำออกจากตาราง ทำแล้วย้อนกลับไม่ได้ | End the {program} course for {student} early — the {n} remaining sessions are removed. It cannot be undone. |
+| the confirm button | ตัดจบคอร์ส | End course early |
+| the done toast | ตัดจบคอร์สแล้ว | Course ended early |
+
+**838 (≈ 1.65 d):** one act that **moves the remaining live sessions in place** (TASK-570's start-change pattern + the resume planner's dates), instead of a literal pause + resume.
+- **Same result**, but there are **no cancelled rows and no pause stamp**, and every link and history row is kept.
+- Delivered sessions keep the old coach, so the first-coach history is intact.
+- **ONE LINE per coach per act** (old + new); the family gets the schedule message at "ยืนยันทั้งคอร์ส".
+- The preview = the act. A clash rolls the whole act back.
+- **If TASK-436's reassigned notice can't list several sessions, I'll come back to you for words** (none expected).
+
+Git: on the owner's word only. Commit lists when verified.
+
+---
+## @Sober → @Porter — 2026-10-25 — ⚠️ Two teams in ONE back working tree: Team B's TASK-749 (uncommitted) breaks 3 shared tests. FYI for Silver; no action needed from Team A
+- **The back tree** (branch `dong`, now at Team B's `bd69978` TASK-748) holds **TASK-749 in progress**: `src/services/jobs.service.ts` modified, plus the new `src/lib/day-end-sweep.ts` / `day-end-sweep-task749.test.ts` / `.mutations.json`.
+- **It turns 3 existing tests red:** `group-session-req095-2a.test.ts:232` · `booking-pause.test.ts:241` · `other-booking-money.test.ts:175`. **Please tell Silver** (expected while it's in progress, or a real break).
+- **For Team A, nothing changes:** Jason doesn't touch them. I verify TASK-837 in a clean room built from **837's files only**, and **the 837 commit list will exclude 749's files.**
+- ⚠️ **When "ขึ้น git" comes for either team, each commit takes only its own named files.** Never `git add -A` on this tree.
+
+## 2026-10-25 — BACK-OFFICE BUILD-READINESS REVIEW, Team B parts (R2 Revenue · F1 · F2 · F4 · F5 · Confirm camp · C1 · §4 reports). Analysis only, no build. (@Silver)
+**Read:** REQ-120 §0–§10 (incl. §9 / §9.1 / §9.2) · REQ-122 §6–§10 · the verbatim v2 part 1 + 2, v3 part 1 + full · `STATUS-BACKOFFICE-SPEC.md` · my SIZING-REQ-120 + the 10-20 re-size · the v3 data (`data/b-revenue.js`) · the code's confirm paths (`confirmCourse`, `bulkConfirm`, `applyConfirm`; vouchers have NO confirm step).
+**Verdict:** **buildable, with 11 questions (2 of them 🔴) and a short data list.** Nothing below blocks starting with Stock + R0.1, the planned first slice.
+
+### 1. R2 Revenue
+| line | mark | note / default |
+|---|---|---|
+| R2.1 types → categories (v3 tree; 1st Trial its own type; no "manual" type; she can add more) | 🟡 | default: the v3 tree as she ✓'d it. 🔴 **GROUP courses have no category** (only Private / Duo / 1 HR per sport + Other Course) → **Q7** |
+| R2.2 course: the whole amount at CONFIRM | 🟡 | default: counts ONCE, on the first confirm of the course (`confirmCourse` or a bulk-confirm of its sessions). A course created but never confirmed counts nothing |
+| R2.2 voucher: at CONFIRM | 🔴 | **a voucher has no confirm step** in the front office → **Q11** (sale date vs first confirmed session) |
+| R2.2 trial: at confirm | 🔴 | today a trial counts only if ATTENDED. Counting at confirm leaves **a cancelled / no-show trial counted** unless a rule says otherwise → **Q1** |
+| R2.2 camp: per child per week, at "To Confirm Camp" | 🟡 | default: one line per week, all dated the confirm date; every camp → category "Balance Camp" |
+| R2.2 ECA (price × students × classes, on the school's payment date; ฟีน enters) | ✅ | default: an edit replaces the term's line (no history of edits) |
+| R2.2 Rent / EQUIPMENT (from the Rental booking, at the paid press) | ✅ | unchanged from today |
+| R2.2 PARK (a priced Other booking, teacher "No Teacher") | 🟡 | default: counts at confirm, like a trial (today an OTHER counts at day-end ATTENDED) |
+| R2.2 Birthday (an Other booking + a line typed by hand) | 🟡 | default: the Birthday Other booking stays UNPRICED; its money comes only from Add Manually (else it counts twice) |
+| R2.2 SALES · F&B · OTHER from STOCK OUT, net of discount | ✅ | with §9.2 the discount is PER ITEM ⇒ each line is already net; simpler than the bill spread |
+| R2.2 Add Manually (date · branch · type · category · description · amount · method · remark) | ✅ | default: positive amounts only; money out goes through Refund |
+| R2.3 + C-f + §9.1: refund = an expense in the refund month; the course → CANCELLED + its unattended sessions cancelled + families told; a voucher the same | 🟡 | defaults: "unattended" = every session not ATTENDED, any date; the amount is typed by ฟีน (Revenue is CEO-only), no check against the price; a refund of a pre-go-live sale is still an expense. **The family message → Q8.** Other refunds → **Q9** |
+| R2.3 pause changes nothing | ✅ | |
+| R2.4 every line stores the branch + the method | ✅ | |
+| R2.5 report: summary by type → Detail (Date · Branch · Type · Category · Description · Amount · Method · Remark); day / MTD / YTD, real-time; filters | 🟡 | default: YTD = the calendar year; in the go-live year it starts at the go-live month (D5) |
+| D5 cut-over: revenue starts on day 1 of the go-live month | 🟡 | 🔴 risk from my 10-15 sizing, never asked: **a course SOLD before go-live (in her Excel) but CONFIRMED after it** would count again → **Q6** |
+
+### 2. F1 · F2 · F4 · F5 · Confirm camp (front office, SOM SCHEDULE)
+| line | mark | note / default |
+|---|---|---|
+| F1 "Branch for booking", default Bravo; "Other" = future branches, picked by the admin | 🟡 | default: set on the booking / course / camp / rental; its sessions inherit it; the revenue line takes it |
+| F2 Payment Method: auto Transfer, edit only, front + back (C-b; v3 *"confirm auto … มีแค่ edit"*) | 🟡 | defaults: the payment date = the confirm date; one record, last edit wins, audited; editable any time (a later edit changes past reports) |
+| F2 Installment B (each counts on the day received) | 🟡 | default: the auto record is the full price; an admin splits it into installments, each with its own date + method |
+| F4 Conversion: the 1st Coach of a trial / a course; trial → course / voucher link; course → renewal | 🟡 | default: all automatic from the timetable (1st Coach = the teacher of the first class). The links are the open rules → **Q2, Q3, Q5** |
+| F4 Special Case: mid-course coach change ⇒ Bonus 100, admin picks 1st / 2nd / Share 50 / 50 | 🔴 | what counts as a "change" is undefined → **Q4** |
+| F4 page 15 (v3): *"หน้านี้จะขึ้นรายละเอียดของทั้งเดือน … แบ่งตามค่าโบนัส 50/100"*, no dates | 🟡 | **NEW reading:** she expects a whole-month Conversion LIST split by Bonus 50 / 100. Bonus amounts are pay (R0.2) → **Q10**. Size +1.0 d |
+| F4 "Renewal Voucher : NO" (v3 part 1 wording) | ✅ | = R1.2 voucher after voucher is NOT a renewal |
+| F5 heading "Park Rent", the "No Teacher" teacher | 🟡 | default: the pseudo-teacher is still named "No Teacher" in the timetable; only the page heading says Park Rent. It is excluded from every pay, workload, LINE and teacher-list path (sizing risk 6) |
+| To Confirm Camp: the button sets Transfer; "CONFIRMED SCHEDULE" LINE at confirm (B) | 🟡 | default: an unconfirmed camp still runs (the day cut, the attendance); only its revenue + the LINE wait for the confirm |
+
+### 3. C1 bridge + the §4 reports
+| line | mark | note |
+|---|---|---|
+| C1: keep `bo.item` / `bo.movement`; move the write points in the same release | ✅ | the owner chose the bridge. The new posting points: course at confirm · voucher (Q11) · trial / PARK at confirm · camp at To Confirm Camp · rental at paid · STOCK OUT at save · ECA / manual in the back office. 📌 TASK-749's day-end posting and the digest's "Sales not posted" check must move with it (+0.3 d) |
+| §4 reports: REPORT · STOCK · CHECK IN · COURSE · SALARY · STUDENT (page "All Report") | 🔴 | **content of all six is undecided** (REQ-120 §4: agreed when that part starts; built last; priced ROUGH ±50 %). Not needed until then |
+
+### 4. Questions for Khwan (A / B by consequence; Khwan only, no money). In order of consequence
+1. 🔴 **A 1st Trial counted at confirm, then cancelled or a no-show.** A: the line is removed when the trial is cancelled (revenue = trials that took place). B: it stays, and money given back goes through Refund.
+2. **Bonus 50 across activities.** A: any course / voucher after any trial counts (an Inline trial → a Surfskate course = Bonus 50). B: the same activity only.
+3. **What is a renewal (Bonus 100)?** A: a course after a course only (voucher → course and course → voucher are not). B: any package after a course. Same activity or any, as Q2.
+4. 🔴 **"Coach changed mid-course" (Special Case).** A: only a change made with the front office's "change teacher"; a one-day leave cover does not count. B: any class of the course taught by another coach.
+5. **A case across go-live (D6).** A trial before go-live with the course after it, or the renewal of a pre-go-live course. A: the bonus is paid (the event happens after go-live). B: not paid (the case started before).
+6. **A course sold before go-live but confirmed after (D5).** A: the system counts it on its confirm date, and she leaves it out of her Excel. B: the system counts only packages sold from go-live day 1.
+7. **Group courses: which category?** A: a "Group" sub-level per sport (Private / Duo / Group / 1 HR). B: under Other Course.
+8. **The family message when a refund cancels the sessions.** A: ONE message listing every cancelled session. B: one message per session (today's cancel notice, which could be 8+ messages).
+9. **A refund of a camp, a 1st Trial or goods.** A: a refund line (expense) only; nothing else changes. B: a camp refund also cancels its remaining days.
+10. **The monthly Conversion list (by Bonus 50 / 100).** A: in the back office, CEO only, because it shows bonus amounts. B: admins see the list too, without amounts.
+11. **When does a voucher count?** (A voucher has no confirm step.) A: on the sale date. B: when its first class is confirmed.
+- (The admin commission conflict, lower only vs raise, is already asked; it is Sober's part and does not change my size.)
+
+### 5. Data checklist (to go live; my parts)
+1. **The go-live month** (D5; the owner + Khwan).
+2. **The activity list** for the COURSE + 1st Trial categories. v3 shows 8: Inline Skate · Surfskate · Skateboard · Bike · Balance Play · Onewheel · Freeskate · Scooter. Check it against the front office's subjects.
+3. **The ECA schools**: v3 Revenue shows STA · RIS · ABC · ISB · KIS, and Stock Demo shows STA · ABC · RIS · WA · KIS. Which list is right? (The term figures are entered by ฟีน at use.)
+4. **The branch names** besides Bravo (or "Other" only, for now).
+5. **The payment methods:** Transfer · Cash · Credit card. Is that final?
+6. **The first price list**: every program / size in the front office's price items (1st Trial, 1 HR, courses, vouchers, camp weeks, equipment rent, a default Park Rent price), checked once by her before go-live.
+7. **The goods → revenue mapping**: each stock category's revenue type (SALES: Miller · Inline Skate · Bike · Safety; F&B: Drink · Snack; OTHER: Shirt · Sock · Bag). This comes with Sober's stock import.
+8. **The §4 report contents**: when that part starts.
+
+### 6. Words still undecided (my parts)
+- Revenue pages 18–24: **none**; all ✓, words given.
+- F4: she asks to drop the "หน้าบ้าน (SOM SCHEDULE)" label. In the real build the screen IS in SOM SCHEDULE, so no label exists. No dates on the "from Trial of …" / "RENEW of …" lines.
+- F5: "Park Rent" is the heading. Does the timetable name of the pseudo-teacher also change? (Default: no; it stays "No Teacher".)
+- D3: "To Confirm Camp" (default: both the heading and the button).
+- The six §4 report pages: undecided.
+
+### 7. Places the text still shows a SUPERSEDED rule (all parts, as you asked)
+- **REQ-120:**
+  - R0.4: per-person × per-type subscriptions → C-h, no opt-outs; Low Stock goes to people chosen one by one (§9.1);
+  - R1.2: Bonus 50 "two coaches share 25 each" → C-e, a trial always has one coach;
+  - R1.2: commission "not reduced by a discount … set to 0 by hand" → now editable per item (lower-only vs raise: open);
+  - R2.1: no 1st Trial type, no removal of "manual" → C-i;
+  - R2.3: refund "an expense" only → C-f / §9.1, also CANCELLED + sessions cancelled + families told, and a voucher the same;
+  - R3.5: one product per sale, one discount → a cart with a per-item discount (§9.2);
+  - §5 F2 + §8 D4 "required at confirm / no confirm without" → C-b, auto Transfer, edit only;
+  - §5 F5 "No Teacher" → heading "Park Rent";
+  - §8 "Sizing deltas to measure: … D4's optional installments" → chosen (C-d), sized 10-20;
+  - §9 C-a "Asked back (Porter, 10-20)" → answered §9.1, then a conflict in §9.2;
+  - §9 C-j "ONE discount on the whole bill" → per item (§9.2);
+  - §7 Open: "English?" (settled, D2) and "bridge or replace?" (settled, bridge);
+  - the header "Next: sizing …" is stale.
+- **REQ-122:**
+  - §8 item 3 "a cart (… ONE bill discount ฿ / %)" → per item;
+  - §7.3 C-b "where are edits made? Ask" → both;
+  - §7.3 C-f "Ask" → answered;
+  - §7.4 C-j "commission per line or per sale? Ask" → per item.
+- **STATUS-BACKOFFICE-SPEC.md §3 Stock:** "one bill discount" and "admin may only LOWER" are both stale (per item; and the LOWER rule is now in conflict). §4's v4 rows are superseded by the UPDATE section (no v4).
+- **Prototype `data/b-revenue.js:67`:** the remark says "bill discount 10 %". This is harmless, since no v4 is planned; the build spec follows §9.2.
+
+### 8. ± days vs the 10-20 re-size (my parts)
+- F4 monthly Conversion list: **+1.0**
+- the voucher refund path (cancel the voucher + its unattended sessions; my 3.3 was course-based): **+0.5**
+- the digest / day-end posting moved with the confirm posting (C1): **+0.3**
+- the per-item discount (simpler revenue lines; this counts in Sober's Stock number): **−0.3**
+- hide what a role can't see, no times on dates, F2 = C-b: **0**
+- **Net ≈ +1.5 d** on Team B's side, before Q1–Q11. A "B" on Q4 (any coach counts) or an "A" on Q8 (a new combined message) adds ≈ +0.5 each. The price is fixed at 149 d by the owner's method; whether this changes it is his call.
+
+**BALL: @Porter — the 11 questions to Khwan (via the owner), the data list for the go-live talk; Sober covers Salary / Stock / F3 / F6 / R0. TASK-749 is with Bob.**
+
+## 2026-10-25 — Re Sober's FYI (3 red tests in TASK-749): EXPECTED, not a break. They are the 3 mirror pins I already asked you to grant (this inbox, "TASK-749 built; ONE grant asked"). (@Silver)
+- Each of the 3 pins checks that the text `inArray(bookings.bookingType, ["FIRST_TRIAL", "SINGLE_SESSION", "OTHER"])` appears in `jobs.service.ts`:
+  - `group-session-req095-2a.test.ts:232`
+  - `booking-pause.test.ts:241`
+  - `other-booking-money.test.ts:175`
+- TASK-749 moved that list into `src/lib/day-end-sweep.ts`, unchanged: `POSTING_TYPES = ["FIRST_TRIAL", "SINGLE_SESSION", "OTHER"]`, used in `postingWhere`.
+- The rule each pin protects still holds: no GROUP, no PAUSED, and exactly 3 types.
+- The fix: each pin reads the list from `day-end-sweep.ts` instead. Same intent, one line per file, done by Bob.
+- 749 is NOT DONE until the full SAFE suite is 0 fail; I re-run it myself at review.
+- At any "ขึ้น git": only 749's named files: `jobs.service.ts`, `day-end-sweep.ts`, its test + mutation set, the 3 pins if granted, and the deploy-doc line.
+
+**BALL: @Porter — GO on the 3 mirror pins (copy Sober), and he can see they are expected.**
+
+---
+## @Sober → @Porter — 2026-10-25 — BUILD-READINESS REVIEW, Team A's parts → `REVIEW-backoffice-build-readiness-teamA-2026-10-25.md` (analysis only)
+**99 requirement lines: ✅ 52 buildable as written · 🟡 38 buildable on a stated default · 🔴 9 cannot build yet.**
+
+| part | ✅ | 🟡 | 🔴 |
+|---|---|---|---|
+| R1 Salary | 17 | 20 | 4 |
+| R3 Stock | 18 | 9 | 3 |
+| F3 / F6 | 6 | 5 | 1 |
+| R0 | 11 | 4 | 1 |
+
+**The 9 🔴:**
+- **Salary rules:**
+  - which FL rate pays a 1st Trial / 1 HR / OTHER class, and whether the profile rate or the per-session rate the front office already stores wins;
+  - which trial pairs with which purchase for Bonus 50;
+  - what counts as a "renewal" for Bonus 100;
+  - the admin's commission edit range (**her two answers conflict**: 10-21 *"1 a"* vs v3 *"B. ลดหรือเพิ่มก็ได้"*; already asked);
+  - OT for STAFF.
+- **Stock:**
+  - whether the Excel import sets / adds to / never touches quantities;
+  - **the opening stock count** (data);
+  - cancelling or returning a STOCK OUT (stock / revenue / commission).
+- **R0:** **Khwan's own role** (CEO-like or admin-like) + the user / role list.
+
+**Also in the file:**
+- **22 places** where the REQ / STATUS / v3 text still shows an old rule (e.g. the 25/25 bonus, the one-bill discount, SALES RECORD, R0.4's opt-outs, STATUS §3).
+- **(a) 25 questions for Khwan**, each A/B by consequence, no amounts (Q1 is the open commission one).
+- **(b) A data checklist of 24 items** (4 already given).
+  - **Blocking:** the staff list, the commission groups × rates, her product Excel, the opening counts, the school distances, the go-live date, the class-kind → FL-rate map, and the users + roles.
+  - The base salaries + FL rates are typed by the CEO at go-live.
+- **(c) 15 undecided screen words** (all of My slip, the export labels, the per-item discount / commission controls never shown to her, the two Special Case wordings).
+- **(d) vs the 10-20 re-size:** **≈ +3.8 d firm**, mostly the Payment Detail Excel / PDF export (+2.0) and the notification table she kept in v3 (+0.8, a partial give-back of C-h's −2.2). **≈ +4.7** if the Reminder button and two Exports weren't sized before. **Ceiling ≈ +8.5** if her answers widen the scope (e.g. "cancel sale" +1.0–1.5).
+
+**Three things for you specifically:**
+1. **Questions go to Khwan only, in ONE batched message** (the 25 + Silver's).
+2. **Her open question on Other Income** (*"กดเข้าไป จะเห็นสลิปทั้งหมดใช่ไหมคะ"*) has a plain answer to give her: an admin sees **no** slip there; the CEO sees it on Payment Detail.
+3. **Overlaps to merge with Silver:**
+   - C-h's −2.2 assumed the notification table goes, but she kept it in v3;
+   - the F4 page's bonus split feeds my bonus lines (hers to size).
+
+---
+## @Sober → @Porter — 2026-10-25 — Noted: Q1 + My slip marked ✅ in the review (counts now ✅ 54 · 🟡 37 · 🔴 8; 24 questions left). TASK-837 VERIFIED
+- **TASK-837** passes on both sides: back 5,106 / 0 (73 = 73, Team B's 749 WIP excluded) · front 1,367 / 0. Every planted bug caught.
+- **It ships TOGETHER with TASK-838:** both edit `scheduler.service.ts` on each side, so they can't be split into two commits. One commit list once 838 is verified, with the build re-proven on the combined tree.
+ring BE - Jason — inbox/BE.md (@Sober → @Jason — 2026-10-25 — TASK-838: 6 pins GRANTED + 3 answers) (my sends are capped)
+ring FE - Fern — inbox/FE.md (@Sober → @Fern — 2026-10-25 — TASK-838: gate the button with action:bookings.course-plan) (my sends are capped)
+ring FE - Fern — inbox/FE.md (@Sober → @Fern — 2026-10-25 — TASK-838 FE: ONE fix, PlanModal.tsx:488 → course-plan) (my sends are capped)
+ring FE - Fern — inbox/FE.md (@Sober → @Fern — 2026-10-25 — TASK-838 needsReconfirm: YES, reuse courseStart.reconfirmTitle/Body) (my sends are capped)
+
+---
+## @Sober → @Porter — 2026-10-25 — ✅ TASK-837 + TASK-838 READY: `DEPLOY-REQ-126-127-end-early-and-change-teacher-time-2026-10-25.md` (back 61 · front 16)
+- **Verified together on clean copies:**
+  - **back** (no `.env`, Team B's 749 excluded): **5,128 / 0** · 73 = 73 · sets 838 / 837 / 690 all bite;
+  - **front:** **1,382 / 0** · build 0 · sets 838 / 837 all bite.
+- **⚠️ `db:migrate` 0072** (journal 73) on sid, then uat.
+- **⚠️ The back tree also holds Team B's uncommitted TASK-749 (4 files).** The deploy note's §2 lists them as **NOT in this commit**. When "ขึ้น git" comes, I commit **only the 61 named files**, never `git add -A`.
+- **Tanya's gate is §4:** the 837 words + the reason in the coach's LINE; 838's in-place move, exactly 2 coach LINEs, the reconfirm alert → "ยืนยันทั้งคอร์ส", a clash refused.
+- Both trees are frozen.
+
+---
+## @Sober → @Porter — 2026-10-25 — ⬆️ ขึ้น git DONE: TASK-837 + 838 → back **`5b5f483`** · front **`f9f7f9c`** (on `dong`, pushed, no deploy)
+- **back `5b5f483`:** exactly the 61 named files (staged count 61, **0 TASK-749 files**) · push `bd69978..5b5f483`. Team B's 4 TASK-749 files remain in the tree, untouched.
+- **front `f9f7f9c`:** the 16 files · push `46c6ee1..f9f7f9c`.
+- Neither branch was behind its remote; `merge-workflow.sh` not run.
+- **For the owner:** the deploy + **`db:migrate` 0072** (sid, then uat) after Tanya's §4 gate (`DEPLOY-REQ-126-127-…`).
+
+---
+## @Tanya → @Porter — 2026-10-25 — TEST-117 pass 2 at 17:55 (the 16:03 job ran late): no afternoon slowdown seen, 0 errors
+- **Medians:** login 4.0 s · schedule 2.65 s (night 2.1) · week change 0.96 s · API /calendar 0.55 s · API search 0.16 s. **0** failures / 5xx / 522 / logouts.
+- vs night and 13:44: only the schedule page's first load is about 0.5 s slower. **Not the slowdown the customer describes**, on this Sunday evening (one sample, 3 runs).
+- The 18:03 pass follows; then the day table.
+
+---
+## @Sober → @Porter — 2026-10-25 — REQ-131 read from code: **CONFIRMED cause, a one-argument bug.** Bare SQL for the owner + the fix (≈ 0.3 d)
+**The kind:** `leave_refused_no_validity`. A parent's leave request was refused because the course has no room for a make-up before its expiry (REQ-112, TASK-692). It's sent to every admin.
+
+**Where the fields come from:**
+- The text `…: {student} · {date}` (`lib/line-i18n.ts:453-456`) is filled **from the outbox row's `booking_id`**: the sender looks the booking up by that column (`services/outbox.service.ts:97` `bookingContext(row.bookingId)`).
+- The renderer prints "-" when it finds nothing (`lib/line-message.ts:718-722`).
+
+**Why it's "-":**
+- `notifyAdmins(payload, exec, bookingId)` takes the booking as its **3rd argument** (`lib/line-admin.ts:59`); that becomes the row's `booking_id`.
+- The parent-leave refusal calls it as **`notifyAdmins({ kind: "leave_refused_no_validity", bookingId: b.id })`** (`services/line-webhook.service.ts:1047`). The id is **inside the payload**, and the 3rd argument is missing.
+- So the row's `booking_id` is empty, nothing is looked up, and you get **"- · -"**.
+- **Every time**, for every admin, since TASK-692 shipped. **Nothing else is wrong:** the leave is correctly refused, and the parent gets her approved sentence.
+- **The only call site with this mistake:** the other 8 `notifyAdmins` calls either pass the booking correctly (makeup_past_expiry, makeup_far_out, makeup_not_confirmed, 829's left-as-is, the leave notices) or don't need one (registration, the daily digest, the admin ask).
+
+**Bare SQL for the owner** (read-only; his own tool; shows WHO each refused leave was, from the id the payload did keep):
+```
+SELECT o.created_at, o.status, o.booking_id AS row_booking_id, o.payload->>'bookingId' AS payload_booking_id,
+       s.name AS student, s.nickname, b.date AS class_date, b.start_time
+FROM notification_outbox o
+LEFT JOIN bookings b ON b.id = (o.payload->>'bookingId')::uuid
+LEFT JOIN students s ON s.id = b.student_id
+WHERE o.payload->>'kind' = 'leave_refused_no_validity'
+ORDER BY o.created_at DESC
+LIMIT 20;
+```
+Expected: `row_booking_id` is NULL on every row, and `payload_booking_id` + `student` / `class_date` say who it was. **That answers Khwan for today's 08:04 alert**, and for any earlier ones.
+
+**The fix: TASK-839 (Jason, BE only, ≈ 0.3 d incl. +10%):**
+- pass the booking as the 3rd argument at `line-webhook.service.ts:1047`;
+- **plus a guard in the renderer** for rows already queued without it: fall back to `payload.bookingId`, so old PENDING rows render too.
+- **No new words.** The approved text already has the `{student} · {date}` slots.
+- **Tests by value:** a refused parent leave ⇒ the admin text names the child and the class date (not "-"); an old row with only `payload.bookingId` renders too.
+- **Mutation:** the 3rd argument dropped (must bite).
+- **Claims:** `line-webhook.service.ts`, `line-message.ts` (one case) + a test + a set.
+- **Not cut yet. Your GO, and I cut it from 839.** It ships after the 837 / 838 deploy, or with it.
+
+**For Khwan, after the fix ships** (your words): the alert will name the child and the class. Until then, the owner's SQL above says who it was.

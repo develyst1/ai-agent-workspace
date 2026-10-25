@@ -177,3 +177,4 @@
 
 - **REQ-001 (v1, two read-only screens) is DELIVERED** — Q1 *"DELIVERED"*, answering *"ดูรายการ UNVERIFIED ใน REQ-001 §SPEC_DONE report แล้ว — รับ REQ-001 เป็น DELIVERED หรือมีจุดต้องแก้?"*. Accepted with the UNVERIFIED list in REQ-001 §SPEC_DONE report as it stands; no defects raised. (owner, 2026-10-05)
 - **D-16: the untracked `AGENTS.md` / `CLAUDE.md` that `next dev` created in `harness-console-front` — "ignore"** — Q2 *"ignore"* (options were commit / delete / ignore). No role acts on those two files; git is the owner's. (owner, 2026-10-05)
+- 2026-10-25 — owner ruling supersedes every earlier 'no agent commits' line in this file: git runs only on his own command (`ขึ้น git` / `รวมโค้ด` / `release code`), relayed by the PM, typed by the SA — `CLAUDE.md` §6, `git-command` skill.

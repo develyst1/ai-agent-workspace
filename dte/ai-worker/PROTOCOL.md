@@ -146,6 +146,13 @@ work into one file, so this is a hard rule:
    on and set its status to `BLOCKED` on the board.
 5. If the owner stated a system fact this session, it is already in
    `SYSTEM-FACTS.md` (rule 2 above) — check, don't assume.
+6. **PM and SA Lead: arm your inbox watcher as the last act of every turn**, with
+   the Bash tool's `run_in_background`: the PM runs
+   `bash ai-worker/tools/watch-inbox.sh PM RELAY`, an SA runs
+   `bash ai-worker/tools/watch-inbox.sh <its inbox name>` (`SA`, `SA-B`, …). When a
+   line lands in your inbox it exits and the app wakes you, even if every sender's
+   nudges are capped. On wake: read the inbox, act, arm it again. Never run two at
+   once.
 
 ## Inbox — the delivery channel
 
@@ -355,8 +362,10 @@ dte/
   decision of Sober's, written as SQL, applied by the **human** — never by an
   agent against any real database.
 - **The working branch is `develop`.** Every role hands work off as edited files
-  on `develop`. Git writes (`add`/`commit`/`push`, branch creation) and both
-  workflow scripts are the **human's alone** — no agent commits anything.
+  on `develop`.
+- **Git: the rule is `CLAUDE.md` §6, the how is the `git-command` skill.** Do not
+  restate either here. In one line: git runs only on the owner's own command,
+  relayed by the PM, typed by the SA; engineers never run git.
 - **`README.md` at the repo root is stale and must not be trusted** — it
   describes a NestJS + Prisma backend that does not exist. `back/README.md` is
   the accurate backend document. This is recorded in `SYSTEM-FACTS.md`; read

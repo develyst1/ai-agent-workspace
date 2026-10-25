@@ -41,11 +41,13 @@
 - 🤖 Run mode: **DISPATCHER** (workspace-root `DISPATCHER.md`) — one session
   spawns the roles as subagents. Files remain the only channel; PROTOCOL
   unchanged. Dispatcher run log: `dispatcher-state.md`.
-- Standing rules: git writes (`add`/`commit`/`push`, branches) are the human's
-  alone — the team hands work off as edited files on `develop`. **Nobody
-  deploys**: the live droplet, `pm2`, ssh, `merge-workflow.sh` and
-  `release-workflow.sh` are the human's hands only. Real-world material (copy,
-  screenshots, client facts) arrives via DATA REQUEST into `../project-docs/`.
+- Standing rules: the team hands work off as edited files on `develop`. **Nobody
+  deploys**: the live droplet, `pm2` and ssh are the human's hands only.
+  Real-world material (copy, screenshots, client facts) arrives via DATA REQUEST
+  into `../project-docs/`.
+- **Git: the rule is `CLAUDE.md` §6, the how is the `git-command` skill.** Do not
+  restate either here. In one line: git runs only on the owner's own command,
+  relayed by the PM, typed by the SA; engineers never run git.
 - Branches on the repo (git read 2026-09-13, Porter — replaces the stale 2026-09-05 line
   SA flagged): **checkout is `D1`, clean tree, HEAD `1dcc9b8`** — the human committed
   TASK-018 as `6c17609` and TASK-019 as `1dcc9b8`, both on `D1` = `origin/D1`.

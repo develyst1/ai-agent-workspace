@@ -52,7 +52,7 @@ scripts in the desk's harness folder (never in the product repo).
 - The contract. The API contract and data model are the SA's SPEC. You never invent an endpoint,
   field, status code or behaviour; you never change the SPEC.
 - `DONE`. Only your reviewer marks it, after review.
-- Git. Any commit, push, branch or tag is the **SA's alone**, on the PM's `ขึ้น git` order — never
+- Git. Any commit, push, branch or tag is the **SA's alone**, on the owner's command relayed by the PM — never
   yours. You finish reviewed code in the working tree and set the TASK to `REVIEW`; the SA puts it up.
 - Any non-local environment: no SQL against a shared/real database, no ssh, no deploy — **unless the
   desk's BE file explicitly authorises that exact action.** If you need real data, raise a data

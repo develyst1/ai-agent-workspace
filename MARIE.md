@@ -1803,7 +1803,126 @@ desk**, and the template `TEAMS.md` in a shape the scripts cannot read. Both wer
 different folder the script does not read (Marie's finding). Bunny's 05:11 report shows which
 desks came up empty; decide that fix from her report, not from a guess.
 
+### ORDER 31 — 2026-10-25 — git runs only on the OWNER's word; bring all 15 desks to harness 2.6.2
+
+**Owner, verbatim (to Atlas, 2026-10-25):** *"ฉันไม่ได้อยากให้สกิลนี้ ทำให้ SA ทำงานgit เอง แต่ฉันต้องการแค่
+SA ทำงานขึ้นgit ให้เมื่อฉันสั่ง ซึ่งฉันจะสั่งผ่านPM และ ฉันจะบอก PMเป็นแค่ คำสั่ง แค่สองคำสั่ง"* — then
+three: `ขึ้น git` (commit + sync with the repo's commit convention; none ⇒ ask whether to create one),
+`รวมโค้ด` (run `merge-workflow.sh`; conflict ⇒ fix, rerun), `release code` (run `release-workflow.sh`;
+missing ⇒ install it). Trigger: he found SA commits he had not asked for (Porter's
+`REPORT-porter-to-atlas-2026-10-25-git-rule-change-owner-surprised.md`).
+
+**Done by Atlas (workspace root + templates):** `CLAUDE.md` §6 and `AGENTS.md` rewritten (the PM never
+originates a git command; the result goes on the first line to the owner with hashes); the
+`git-command` skill rewritten with the three commands and the owner's two scripts under
+`_templates/skills/git-command/scripts/`; `role-sa` / `role-pm` / `role-be` / `role-fe` /
+task-template / template `PROTOCOL.md` + `CONVENTIONS.md` aligned. `harness.json` → **2.6.2** (only the
+two rule-file hashes changed; no shared tool changed).
+
+**For Marie:**
+1. Run `node scripts/install.mjs <desk>` on all 15 desks so each `.harness` reads 2.6.2; then
+   `node scripts/check-harness.mjs` must say all current. Nothing desk-owned changes.
+2. Through each desk's PM: if the desk's own `PROTOCOL.md` or `CONVENTIONS.md` still says "on the PM's
+   order" / "PM has ordered ขึ้น git", replace that clause with the template's new paragraph. Archive
+   verbatim first, as always.
+3. **2.6.2 also ships a new craft skill, `ai-worker/predict-then-probe.md`** (owner named it
+   2026-10-25, from Porter's `REPORT-porter-to-atlas-2026-10-25-timed-observation-pattern.md`);
+   install.mjs copies it. Through each PM, add its row to the desk's `## Skills` table in the
+   Tester's charter (`QA.md`) and every SA charter (`SA-Lead.md`, `SA-Lead-B.md`, …), copying the
+   rows from the template `QA.md` / `SA-Lead.md`. A desk with no QA gets only the SA row.
+   ⛔ **Skip fb-autoreply** — owner 2026-10-25: *"โต๊ะนี้จะปิดแล้ว"*. Do not touch that desk for this
+   order (or any later roll-out) until he says how to close it.
+4. Not yours, reported only: `check-skills.mjs` FAILs on 6 older hits (`desk` skill names Porter /
+   Silver / Fanta, `nudge-session` names Tanya). Leave them; Atlas owns that fix.
+
+### ORDER 32 — ⏳ PARTLY DONE 2026-10-25 (13 desks wired, 19 charters · smart-scheduler's `predict-then-probe.md` row still OWED, desk was live · see Operations log) — give the SA and QA charters a Skills section on the 12 desks that lack one
+
+**Owner:** *"ไปเลย"* (2026-10-25) to Atlas's proposal: *"ให้ Marie ใส่ตารางสกิล (แบบเดียวกับแม่แบบ) ลงใน
+charter ของ SA และ QA ทั้ง 13 โต๊ะ — ผ่าน PM ของแต่ละโต๊ะ ไม่แตะงานของทีม"*. Origin: your ORDER 31 report.
+The skill files reach every desk, but on 13 desks no role is told to read them. **fb-autoreply is
+excluded** (owner: closing), so this is **12 desks**.
+
+For each desk except fb-autoreply and smart-scheduler, through its PM:
+1. Archive each charter you touch verbatim first.
+2. In every SA charter (`SA-Lead.md`, plus any `SA-Lead-<team>.md`) and in `QA.md` where the desk has
+   one, insert the whole `## Skills — the craft files for this role` section from the template
+   `_templates/project/ai-worker/SA-Lead.md` / `QA.md`. Copy it verbatim, including the
+   "the desk wins" closing line. Put it just before the charter's last section, or at the end if the
+   placement is unclear. Change nothing else in the charter.
+3. Only list files that exist in that desk's `ai-worker/`. All seven craft files plus
+   `predict-then-probe.md` should exist after ORDER 31; if one is missing, leave its row out and
+   report it.
+
+**smart-scheduler** (the ORDER 31 leftover): when the desk is quiet, add only the
+`predict-then-probe.md` row to `QA.md`, `SA-Lead.md` and `SA-Lead-B.md` through Porter. It is
+live, so never edit it while a role is mid-turn.
+
+Not in scope: PM / BE / FE charters (the owner approved SA and QA only), and the check-skills FAILs.
+
+### ORDER 33 — ⏳ PARTLY DONE 2026-10-25 (7 desks done · smart-scheduler's SYSTEM-FACTS append still OWED, desk was live · see Operations log) — replace the old "git is the human's alone" text on the desks with a pointer
+
+**Owner:** *"แก้หมดเลย แก้ที่กฏใหญ่ด้วย เปิดโต๊ะใหม่ๆ ก็ควรเป็นแบบนี้"* (2026-10-25), then *"เป็นกฏ เหรอ ไม่ใช่
+สกิลเหรอ"*. Design: the boundary (only the owner's word starts git) lives once, in `CLAUDE.md` §6; the
+how lives once, in the `git-command` skill. A desk file keeps **one pointer line only**. The template
+`PROTOCOL.md` already carries that line (search "Git: the rule is").
+
+Desks: dte, harness-console, layout-pattern-app, portfolio-nichaphon, possibility, pun-kub-fang,
+safe-goods, and smart-scheduler (only when it is quiet, through Porter). **Not fb-autoreply** (closing).
+Through each PM, archive verbatim first, then:
+1. **`PROTOCOL.md`**: replace the git paragraph ("Git writes are the human's alone…" or "No agent runs
+   git…") with the template's pointer line, verbatim.
+2. **`board.md`**: a line that says git is the human's alone → shorten to the same one-line pointer.
+3. **`SYSTEM-FACTS.md` is append-only; never edit old lines there.** Append one dated entry:
+   *"2026-10-25 — owner ruling supersedes every earlier 'no agent commits' line in this file: git runs
+   only on his own command (`ขึ้น git` / `รวมโค้ด` / `release code`), relayed by the PM, typed by the
+   SA — `CLAUDE.md` §6, `git-command` skill."*
+4. **Engineer charters (FE.md / BE.md) that say "Git is the owner's… never commit": leave them.**
+   They are still true, because engineers never run git.
+5. **Follow-up (Atlas, 2026-10-25, owner: "ไปแก้อันอื่นก่อน"): portfolio-nichaphon `PROTOCOL.md`.** The
+   sentence about the repo-root files (`merge-workflow.sh`, `release-workflow.sh`, …) says "No role
+   edits or runs them without a TASK that names them explicitly". Append to that sentence: *"— except
+   the SA running `merge-workflow.sh` / `release-workflow.sh` on the owner's own `รวมโค้ด` /
+   `release code` (`CLAUDE.md` §6)."* Leave dte's 09-07 board rule as it is: it already ends with the
+   §6 pointer and does not conflict. Leave the FE.md lines as they are, because the FE still never runs the scripts.
+
+### ORDER 34 — ⏳ PARTLY DONE 2026-10-25 (install 14/14 · PROTOCOL step on 13 desks · smart-scheduler's PROTOCOL step still OWED, desk was live · see Operations log) — 2026-10-25 — inbox watcher: wake the PM / SA without a send (harness 2.6.3) — owner: *"ไปเลย"* (2026-10-25)
+
+**Why:** `REPORT-porter-to-atlas-2026-10-22-sa-to-pm-nudges-lost-when-capped.md`. When an SA's sends are
+capped, nothing wakes the PM. **Proven by Atlas 2026-10-25:** an idle session is woken when a command it
+started with `run_in_background` exits. That is not a cross-session send, so the cap does not apply. The
+new shared tool `ai-worker/tools/watch-inbox.sh` exits when a watched inbox grows, and ignores drains
+(scratch test: a drain at +5 s did not wake it; an append to RELAY at +30 s woke it). The template
+`PROTOCOL.md` shutdown ritual has a new step 6 (search "arm your inbox watcher").
+
+For Marie, once the owner says go:
+1. `node scripts/install.mjs <desk>` on every desk **except fb-autoreply** → 2.6.3 (this adds `tools/watch-inbox.sh`).
+2. Through each PM, archive first, then add the template's shutdown-ritual step 6 verbatim to the desk's
+   `PROTOCOL.md` "Session shutdown ritual". smart-scheduler: only when it is quiet.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-25 15:13 (ORDER 34, PARTLY DONE; smart-scheduler's PROTOCOL step OWED) — **① `install.mjs` on 14 desks (all but fb-autoreply), exit 0 ×14:** each got only `ai-worker/tools/watch-inbox.sh` plus a rewritten `.harness`; no desk-owned file touched. `check-harness`: `harness 2.6.3: 15 desk(s), 1 not current`. The one is fb-autoreply, still on 2.6.2 **on purpose** (owner is closing it). **② Shutdown-ritual watcher step added to `PROTOCOL.md` on 13 desks, through 13 spawned PMs.** Each desk was quiet: nothing newer than my own ORDER 32/33 edits. Each file was archived first as `archive/PROTOCOL.md.before-ORDER34.2026-10-25` and edited with Edit only. **I diff-verified every file myself:** there is one hunk per file, +7 lines, 0 removed, and the text matches template lines 195–201 except for the step number. Each file kept its own line endings: CRLF files are lines = CRs (+7), LF files have 0 CR. **Numbered 6** on dte, harness-console, possibility, pun-kub-fang and safe-goods, whose rituals have 5 steps. ⚠️ **Numbered 4** on DID-046, api-linkage2, code-report, develyst-ai, did-api-center-c#, layout-pattern-app, manager-gold and portfolio-nichaphon. Those 8 rituals have only 3 steps (no inbox-@ step, no SYSTEM-FACTS check), so "6" would have left a gap, and I applied the order's "next step" rule. Every desk has both a PM and an SA, so nothing was adapted. ⚠️ **Surprise, for Atlas:** those same 8 desks' PROTOCOL never mentions an inbox at all. 5 of them (api-linkage2, develyst-ai, did-api-center-c#, layout-pattern-app, manager-gold) have no `inbox/` folder. The watcher still runs there, because a missing file reads as size 0 and it wakes when the file is created, but nothing on those desks tells anyone to write to an inbox. Only smart-scheduler has `inbox/RELAY.md`. **Skipped:** fb-autoreply entirely (closing). **smart-scheduler is OWED:** it was installed (allowed while live) but was LIVE throughout, with its log at 15:09:32, TASK-838, and inbox PM written 15:10:21. Its PROTOCOL step goes through Porter when the desk is quiet. Its ritual has 3 steps, so the step will be numbered 4. ⚠️ Its PROTOCOL has **mixed line endings: 598 lines, 441 CRs**, so whoever edits it must match the endings of the surrounding lines. No commit.
+
+- 2026-10-25 15:02 (ORDER 33 item 5, DONE) — **portfolio-nichaphon `PROTOCOL.md`, through its spawned PM:** the repo-root-files sentence (line 265) now ends "names them explicitly — except the SA running `merge-workflow.sh` / `release-workflow.sh` on the owner's own `รวมโค้ด` / `release code` (`CLAUDE.md` §6)." The desk was quiet (nothing newer than 14:58, dispatcher STOPPED). The file was archived first as `archive/PROTOCOL.md.before-ORDER33-5.2026-10-25` (`cmp`-identical) and edited with Edit only. **I diff-verified it myself:** the only change is 1 line → 3 lines; CRLF kept, 288 lines = 288 CRs. Nothing else on the desk was touched; dte board and portfolio FE.md were left as the order says. smart-scheduler and fb-autoreply were not touched. No commit.
+
+- 2026-10-25 14:58 (ORDER 33, PARTLY DONE; smart-scheduler OWED) — **The old "git is the human's alone" text was replaced on 7 desks, through 7 spawned PMs.** Each desk passed a live guard (no file newer than 14:45) before its first edit. Each file was archived first as `archive/<file>.before-ORDER33.2026-10-25` (`cmp`-identical) and edited with Edit only. **I diff-verified every file myself.** **The changes:** **dte**: PROTOCOL (git sentence → template pointer), board (Branch line → pointer; 🔴 A23 bullet "no agent commits, pushes, merges, deploys…" → "no agent deploys or touches production; git runs only on the owner's own command (`CLAUDE.md` §6)"), SYSTEM-FACTS (+1 appended line). **harness-console**: PROTOCOL → pointer, SYSTEM-FACTS +1. **layout-pattern-app**: board only; its PROTOCOL has no git paragraph and the desk has no SYSTEM-FACTS. **portfolio-nichaphon**: PROTOCOL (Environments paragraph loses "runs the release/merge scripts" and the git sentence; pointer follows) and board (standing rules lose git and `merge-workflow.sh` / `release-workflow.sh` from the human-only list, because §6 now gives them to the SA on the owner's `รวมโค้ด` / `release code`; pointer added); no SYSTEM-FACTS. **possibility** and **pun-kub-fang**: PROTOCOL (the handoff sentence is kept and the pointer follows it), SYSTEM-FACTS +1. **safe-goods**: PROTOCOL → pointer, SYSTEM-FACTS +1. No old SYSTEM-FACTS line was changed. FE/BE charters were not touched. **Skipped:** fb-autoreply (closing). **smart-scheduler is OWED:** it was LIVE at 14:53–14:55 (log, inboxes, TASK-837). Its PROTOCOL and board have no git-alone line, so it owes only the SYSTEM-FACTS append, through Porter, when quiet. ⚠️ **Line endings vary within a desk:** dte board, layout board and portfolio PROTOCOL are CRLF; the rest are LF. Each file kept its own ending, none mixed. `grep -c $'\r$'` is unreliable in this Git Bash, so count with `tr -cd '\r'`. ⚠️ **Left for Atlas (outside the order's wording):** portfolio `PROTOCOL.md:263` still lists `merge-workflow.sh` / `release-workflow.sh` as "the human's deployment/infra"; portfolio `FE.md:71-72` says "no release/merge scripts" (true for engineers, but phrased as the human's alone); dte board still says git is "OUT OF THE TEAM'S SCOPE" (A23). Historical board, REQ and TASK lines about git were left as records.
+
+- 2026-10-25 14:43 (ORDER 32, PARTLY DONE; smart-scheduler OWED) — **The template `## Skills` section went into 19 charters on 13 desks, through 13 spawned PMs.** The desks: DID-046 (SA+QA) · api-linkage2 (SA) · code-report (SA+QA) · develyst-ai (SA) · did-api-center-c# (SA) · dte (SA) · harness-console (SA) · layout-pattern-app (SA) · manager-gold (SA) · portfolio-nichaphon (SA+QA) · possibility (SA+QA) · pun-kub-fang (SA+QA) · safe-goods (SA+QA). The order says 12, but it is 13. fb-autoreply already HAD a table and was never one of the 13 that lacked one, so excluding it removes nothing. Every desk was quiet: 0 files changed since 10-24. Each charter was archived first as `archive/<file>.before-ORDER32.2026-10-25` (`cmp`-identical) and edited with Edit only. **I verified this myself:** every diff against its archive is additions only. The added text equals the template section (SA 17 lines / QA 16 lines, all 7 / all 6 rows, since every craft file exists on every desk). There is 1 `## Skills` heading per file, and each file keeps its own line endings (CRLF or LF) with none mixed. **Placement:** in harness-console it goes before `## RESUME-HERE.md`, the template's own spot. Everywhere else it goes at the END. There the "last section" is the fenced TASK/TEST template, and putting the section in front of it would split the SPEC and TASK templates. At the end it sits after the templates, as in the template. PM/BE/FE charters were not touched. possibility's `QA-PLAYWRIGHT.md` was not touched either, because the order does not name it. **Skipped:** fb-autoreply (owner is closing it). **smart-scheduler is OWED:** at 14:38–14:42 it was LIVE, with the log written 14:38:34 and inbox PM/RELAY/SA-B written after 14:39. Its 3 charters are untouched; add only the `predict-then-probe.md` row when the desk is quiet. ⚠️ **Correction to the 14:27 ORDER 31 line below:** the fb-autoreply PM spawn DID run. Its `archive/QA.md.before-ORDER31.2026-10-25` and `archive/SA-Lead.md.before-ORDER31.2026-10-25` are timestamped 14:27:56. `QA.md` and `SA-Lead.md` were edited at 14:28:04–05, each with exactly the `predict-then-probe.md` row added (diff-verified). Nothing was undone. This leaves fb-autoreply's ORDER 31 item 3 already done before the owner's "skip".
+
+- 2026-10-25 14:27 (ORDER 31, items 1–2 done; item 3 STOPPED by the user's interrupt, ORDER 31 NOT done) —
+  **① `install.mjs` on all 15 desks, exit 0 ×15:** each got only `ai-worker/predict-then-probe.md` (new,
+  absent everywhere before; `cmp`-identical to the template on all 15; 0 archived, nothing displaced) and a
+  rewritten `.harness`. `check-harness`: `harness 2.6.2: 15 desk(s), all current`, exit 0. No desk-owned file
+  moved. smart-scheduler was LIVE (SA-B Silver + BE-B Bob `isRunning: true`, activity 07:27Z) — installed
+  anyway because install writes no desk-owned or team-written file; its charter edit (item 3) was to be held.
+  **② Git clause: nothing to replace on any desk.** No desk's `PROTOCOL.md` says "on the PM's order" / "PM has
+  ordered ขึ้น git"; no desk has a `CONVENTIONS.md`. ⚠️ Seven desks (dte, fb-autoreply, harness-console,
+  portfolio-nichaphon, possibility, pun-kub-fang, safe-goods) still say git writes are **the human's alone / no
+  agent runs git** — stricter than the new template; outside ORDER 31's wording, left untouched, for Atlas.
+  **③ Skills rows: only 2 of 15 desks HAVE a `## Skills` table** — fb-autoreply (QA + SA-Lead) and
+  smart-scheduler (QA + SA-Lead + SA-Lead-B). The other 13 desks' QA/SA charters carry no craft wiring at all
+  (the ORDER 25.2 "files delivered ≠ desks wired" gap, still open). Not created — beyond ORDER 31. The
+  fb-autoreply PM spawn was interrupted by the user before it ran; **no charter was touched, nothing archived.**
 
 - 2026-10-21 23:50 (FIFTH operation, step 4 of ORDER 29 — run COMPLETE) — **`smart-scheduler` done, all three
   held items: ORDER 28 shelf · ORDER 29.1 `TEAMS.md` (8 rows, two teams) · ORDER 26.1 the 5 craft files ·

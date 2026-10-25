@@ -1,7 +1,7 @@
-# STATUS: the back-office spec (REQ-120 + REQ-122). THE ONE PLACE to know where it stands
+﻿# STATUS: the back-office spec (REQ-120 + REQ-122). THE ONE PLACE to know where it stands
 **Owner, 2026-10-25, verbatim:** *"โน็ต requirement ทุกอย่าง ไม่ให้ lost แล้วนะ ว่า process spec backoffice ถึงไหน ห้าม lost เด็ดขาด"*.
 **Rule:** whoever changes the state of the back-office spec updates THIS file in the same step (Porter owns it). Details live in the files linked below. This file is the map + the current state, never a copy of them.
-_Last updated: 2026-10-25 by @Porter._
+_Last updated: 2026-10-25 (v3 full answers) by @Porter._
 
 ---
 ## 1. Where it stands (one paragraph)
@@ -65,3 +65,15 @@ _Last updated: 2026-10-25 by @Porter._
 | rate | 73,000 ÷ 277.7 ≈ 263 ฿/d | REQ-120 §10 |
 | **price** | **149 d × 263 ≈ 39,200 ฿** (tests / UAT, reports and Palm's screens included, no extra days) | REQ-120 §10 |
 | calendar | ≈ 2–3 months; Stock first | SUMMARY 10-15 |
+
+---
+## UPDATE 2026-10-25 (later): Khwan finished v3: *"ครบแล้วค่ะ V3"*. ✓ on 29 / 31 pages
+- **Screens AGREED.** The remaining notes are words / format, which go straight into the build spec. **No v4 needed.** (REQ-122 §10; verbatim `…prototype-v3/khwan-answers-v3-full-2026-10-25-VERBATIM.md`.)
+- **Still open before the build:**
+  - (1) the **admin commission edit conflict** (lower only vs raise or lower): asked;
+  - (2) **My slip** (page 6) never answered: asked;
+  - (3) the size of the new **Excel / PDF export** on Payment Detail (small).
+- **Rule change:** the **STOCK OUT discount is per ITEM** (REQ-120 §9.2).
+- **Blocking the build:** only the owner's price talk (≈ 39,200 ฿) + his GO.
+---
+## ✅ SPEC CLOSED, 2026-10-25 15:02: Khwan answered the last 2 points (commission edit = lower OR raise; My slip = as Payment Detail). REQ-120 §9.3. **Remaining before the build:** the owner's price talk (≈ 39,200 ฿) + GO; the SAs' build-readiness review (a data checklist for go-live, defaults to confirm).

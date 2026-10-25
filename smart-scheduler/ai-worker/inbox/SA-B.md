@@ -209,3 +209,109 @@ Read REQ-124 → "Khwan, 2026-10-22 … = A".
 - Then the commit list. Also **one line for Palm** (his doc §1 states the old formula), and I'll draft it.
 
 From Bob 2026-10-22: TASK-747 is in REVIEW - SOM today.attendanceRate = countDaily's own value (attended / (Confirmed + On leave)); the leave case is 50, not 67; empty day 0. SAFE 5064 pass / 0 fail (363 files), tsc 0; sets 741 45/45 - 742 47/47 - 743 25/25 - 737 11/11, checksums identical; old SOM/daily code 0-line diff. Own pins only (741 test + set). HEADS-UP: the repo .env now points at the CUSTOMER's system (LINE_OA_WRITE_ALLOW / LIFF_ID / LINE_LOGIN_CHANNEL_ID) so the test-env guard refuses a bare bun test / mutation:run; I did not touch it and used the SAFE overrides - see the TASK note.
+
+---
+## @Porter → @Silver — 2026-10-25 — REQ-129: the customer says the Daily Report's per-coach **Total (+Group)** is wrong (24 Oct, uat). Read REQ-129
+1. **From code + Palm's `backend-daily-report.md` (the workload section):** exactly which statuses and kinds count in Total (+Group). Do **on-leave** (34 that day), pending, ECA / Other hours and camp hours count? What did "(+Group)" mean in Palm's spec?
+2. **Tie it to Tanya's TEST-118 row lists** (Kid 3/6 → 9; Tarb 0/0 → 2; Ek 0/0 → 1).
+3. **Is it a bug against the agreed definition, or a definition the label misleads?** If the latter, give 2–3 options as consequences for Khwan (A / B / C), with the size.
+No fix yet. Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Silver — 2026-10-25 — ✅ GRANT TASK-748: REQ-129 = **B** (Khwan: *"แบบ A แต่นับงานกลุ่มเป็นชั่วโมง"*)
+- **Per-coach Total (+Group)** = that coach's **confirmed lessons (attended included)** + **group work in HOURS**: each ECA / Other / Free / KOL hour, each camp hour, each group class (counted by its hours).
+- **Out:** on leave, pending, awaiting, cancelled, paused. The same-slot double rows (a leave + its replacement) therefore count once, as the replacement.
+- **Prove it by value** on her cases: 25 Oct Kid = 6; 24 Oct Kid = 5, Toth = 4, Tarb / Ek = 0 (+ any group hours). Plus a 2-hour ECA = 2.
+- **Claim:** `lib/daily-report.ts` (the workload loop) + its tests + set, and the contract / OpenAPI text if it describes Total. Back only, the shape unchanged. **One line for Palm** (his doc's Q6 is now answered).
+- Then the commit list. Under the new rule I'll say **"ขึ้น git"**.
+
+From Bob 2026-10-25: TASK-748 is in REVIEW - the Daily Report per-coach total = confirmed lessons + group work in hours (one named constant WORKLOAD_STATUSES; only the workload loop changed). SAFE 5091 pass / 0 fail (365 files), tsc 0; NEW set 748 9/9; 737 11/11 - 743 25/25 - 741 45/45 - 742 47/47 all still bite, checksums identical; getDailyReport + old SOM files 0-line diff. Two own pins re-based in 737's test (Palm §8 total 11 -> 9; coach B 2 -> 1). Notes in the TASK.
+
+---
+## @Porter → @Silver — 2026-10-25 — **ขึ้น git**: TASK-748 (back, exactly the 4 files in your entry), per the `git-command` skill (the existing branch, the shared message shape). **Commit + sync only, no deploy.** Report the hash.
+
+---
+## @Porter → @Silver — 2026-10-25 — REQ-130: Khwan asks what the admin morning digest's **"Sales not posted to backoffice: 6"** means. Read `requirements/REQ-130-…md`. From code: what `sales_not_posted` counts and why a sale would be 'not posted'; a **bare read-only SQL** for the owner to list today's 6 on uat (ids / kind / date / status, no personal data); real gap or false alarm; the fix if real. Reply in `inbox/PM.md`.
+
+---
+## @Porter → @Silver — 2026-10-25 — REQ-130: the owner's SQL result (uat), **13 rows**. Ids withheld here (the owner has them); kinds / times only
+| # | kind | day | start | price_group | channel | marked_at (BKK) | dayend_ran |
+|---|---|---|---|---|---|---|---|
+| 1 | first_trial | 10-18 | 17:00 | bike-skate | staff | 10-18 18:20 | true |
+| 2 | single_session | 10-18 | 09:00 | onewheel | staff | 10-18 18:34 | true |
+| 3 | single_session | 10-18 | 09:00 | bike-skate | staff | 10-18 18:34 | true |
+| 4 | single_session | 10-18 | 09:00 | bike-skate | staff | 10-18 18:34 | true |
+| 5 | first_trial | 10-18 | 17:00 | bike-skate | staff | 10-18 18:20 | true |
+| 6 | first_trial | 10-18 | 17:00 | onewheel | staff | 10-18 18:12 | true |
+| 7–13 | first_trial ×3 / single_session ×4 | **10-25 (today)** | 10:00–14:00 | bike-skate | line ×5, shopfront-qr ×1 | 10-25 09:52–13:51 | **false** (today's day-end hasn't run yet) |
+
+**My reading, for you to confirm:**
+- **The 6 in the digest = rows 1–6 (18 Oct)**, all marked attended **the same evening (18:12–18:34)**, and that date's day-end **succeeded**. So it is NOT a next-day late check-in. Either the **day-end ran BEFORE ~18:12** that day (then cause 1 still applies, as same-day-but-after-the-run), or something else.
+- **What time does the day-end cron run?** I can ask the owner for `job_runs` start times for 10-18.
+- **Also odd:** the 10-20 08:00 digest showed `sales_not_posted: 0`, while these 18-Oct rows were inside its 7-day window. Was the posting there and later reversed? Or is `updated_at` not the marking time?
+- **Rows 7–13 (today):** expected to post tonight. Re-check tomorrow.
+
+Give me: the cause; any SQL you need (e.g. `job_runs` for 10-18, `bo.movement` for those ids incl. reversals); and the fix + size (TASK-749).
+
+---
+## @Porter → @Silver — 2026-10-25 — ✅ GRANT TASK-749 (REQ-130): the day-end also sweeps the last 7 days' ATTENDED trial / 1 HR / priced OTHER rows with no SALE movement (idempotent via `rev:<id>`; an undone row stays reversed). **Claim:** `src/services/jobs.service.ts` (the day-end posting select only; Team A's file, so Sober is copied) + a new test + set. SQL 1 / 2 have gone to the owner; tie your DONE note to their result. Build now. Git only when the owner says so.
+
+From Bob 2026-10-25: TASK-749 - LIST before I edit (your rule). Plan: inside the posting block only - widen the attended select from "date = runDate" to the 8 dates runDate-7..runDate (via the existing inArray + addDays, no new drizzle import), keep the SAME per-booking loop, count older rows into summary.sweptPosted (revenuePosted stays today-only). The auto-attend block is not touched. ONE line OUTSIDE the posting part is needed: an import line in jobs.service.ts  `import { NOT_POSTED_WINDOW_DAYS } from "../lib/attention";`  (reuse the digest constant, as the TASK says). Asking GO for that one import line; I start the Team B test + set meanwhile.
+
+---
+## @Porter → @Silver — 2026-10-25 — REQ-130: SQL 1 + 2 results (the owner, uat). **The cause looks clear: the day-end runs at 17:30 every day, not 23:30**
+**SQL 1:** `end-of-day` started **17:30** BKK on EVERY date 10-17 … 10-24 (status success; auto_attended 3 / 4 / 0 / 5 / 6 / 2 / 0 / 4; revenue_posted 7 / 13 / 7 / 5 / 3 / 6 / 4 / 9). `daily-digest` 08:00 daily: sales_not_posted **1 (10-17), 1 (10-18), 6 from 10-19 to 10-25**. *(The earlier "0" for 10-20 came from the **sid** outbox digest, not uat. Not a contradiction.)*
+**SQL 2 (18 Oct, 19 ATTENDED trial / 1 HR rows):**
+- **13 have a `SALE/SALE@10-18 17:30`** movement: posted by the 17:30 run.
+- **6 have ONLY `BOOKING/…` movements**: the 3 × 09:00 SINGLE_SESSION last written by staff at **18:33–18:34**, and the 3 × 17:00 FIRST_TRIAL by staff at **18:10–18:20**. These 6 are the digest's 6. **No undos.**
+- One row (b6638872…, a 10:00 trial) shows `SALE@10-18 17:30` + a `BOOKING_REVERSAL@10-18 09:58`. Note it, in case it matters.
+
+**So:** any attendance marked **after 17:30** (staff closing the day after evening classes) is never posted. A **daily, systemic** gap, not a one-off. Please confirm, and say:
+1. why 17:30 (the server's scheduled-task time? a time-zone offset? 23:30 per `DEPLOY-scheduled-tasks-windows.md`). **The owner's server step** to move it to 23:30, if that's the intent;
+2. does TASK-749's 7-day sweep still stand, **plus** the schedule move (both, I'd say);
+3. the 18 Oct re-run: still needed today (18 Oct leaves the 7-day window after today).
+
+From Bob 2026-10-25 (amends my entry above): TASK-749 - the selection lives in a NEW Team B file src/lib/day-end-sweep.ts (testable by value). Ask: (1) that new file; (2) ONE import line in jobs.service.ts: import { isSwept, postingWhere } from "../lib/day-end-sweep"; (replaces the NOT_POSTED_WINDOW_DAYS import ask); (3) inside the posting block only: .where(postingWhere(runDate)), date: bookings.date in the select, and the counters (revenuePosted = today, summary.sweptPosted = older). jobs.service.ts untouched until you answer.
+
+From Bob 2026-10-25: TASK-749 built (jobs.service.ts posting block + import + new src/lib/day-end-sweep.ts; test 18 pass, set 14/14). Full SAFE: 5110 pass / 3 fail, tsc 0. The 3 fails are MIRROR PINS of the sweep type list, which moved from jobs.service.ts into day-end-sweep.ts - NOT touched, asking: (1) src/lib/group-session-req095-2a.test.ts:232  (2) src/services/booking-pause.test.ts:241  (3) src/services/other-booking-money.test.ts:175 - each `expect(JOB(S)).toContain(inArray(bookings.bookingType, [FIRST_TRIAL, SINGLE_SESSION, OTHER]))` would read the list from src/lib/day-end-sweep.ts (POSTING_TYPES) instead and keep the same intent. Asking GO on the three.
+
+---
+## @Porter → @Silver — 2026-10-25 — ⛔ RETRACT the 23:30 step. **17:30 is the customer's deliberate choice** (REQ-089 l.61: moved from 18:30 on 09-16 at her request; REQ-094 §: the team leaves at 17:30 and wants 17:00 / 17:30 cut the same day; `SYSTEM-FACTS.md`). `DEPLOY-scheduled-tasks-windows.md` (23:30) is stale on this point. Please note that in the deploy doc. **TASK-749 is the fix**: make sure its sweep posts the late marks at the NEXT 17:30 run. Effect (2) is by design; the 30-day evening count decides whether anything more is needed (Khwan's call). The 18 Oct re-run warning stands.
+
+---
+## @Porter → @Silver — 2026-10-25 — REQ-130: the owner asks **why ONLY 18 Oct**, when other days also had classes after 17:00. My hypothesis from SQL 2, to confirm: the 6 rows' only movement is `BOOKING/@10-18 18:10–18:34`, i.e. the freelance hold written **when the booking was CREATED**. So these 6 bookings were **entered into the system after the class (after 18:00)**, too late for the 17:30 auto-attend + post. On other days the classes existed in advance, so 17:30 auto-attended and posted them. I've given the owner a `created_at` SQL. Confirm or correct from code: is a BOOKING movement written at creation? And does auto-attend skip PENDING?
+
+---
+## @Porter → @Silver — 2026-10-25 — ⚠️ WIDEN TASK-749 (the owner's rule). Verbatim: *"กวาด เช็คอิน เนี่ย ควรกวาดจากเวลาเริ่ม มันเคยเกิดขึ้นแล้ว ตอนที่เปลี่ยน เวลาเป็น 17:30 แรกๆ"*
+- **The rule (REQ-094 §2, start-based):** each day-end run handles **every class whose START time has passed and that isn't handled yet**, over a look-back window (7 days, as you proposed), **regardless of the date it belongs to, or when it was created / confirmed / marked**:
+  - **(a) auto-attend:** CONFIRMED rows whose start has passed (incl. ones created or confirmed after an earlier run). The same rules as today (CONFIRMED only, never EXTENDED: REQ-094 §4);
+  - **(b) post:** ATTENDED trial / 1 HR / priced OTHER with no SALE movement (your sweep).
+- **⚠️ (a) sends the deduction LINE for a past-day class at the next run.** Say how many that would have been on uat in the last 7 days (the owner's 30-day count of evening still-CONFIRMED was 0), and whether the message text needs the class date (it may already have it).
+- **Idempotent; the same claim** (`jobs.service.ts` select / loop, Sober copied) + tests by value: created after the run ⇒ handled next run, once.
+- **Size delta**, then build. Git only on the owner's word.
+
+---
+## @Porter → @Silver — 2026-10-25 — BUILD-READINESS REVIEW of the back-office spec (analysis only). Owner, 2026-10-25: *"ระหว่างรอก็อย่าลืมเก็บข้อมูล หรือ review spec backoffice นะ ว่าครบยัง"*
+**Read:**
+- REQ-120 §0–§10 (incl. §9, §9.1 and §9.2: her later rulings SUPERSEDE earlier ones; list every place the text still shows the old rule);
+- REQ-122 §6–§10 + the verbatim v2 / v3 answer files;
+- `STATUS-BACKOFFICE-SPEC.md`.
+
+**For EVERY requirement line in YOUR parts, mark one:**
+- ✅ **buildable as written**;
+- 🟡 **buildable, a default assumed** (state the default; it goes to Khwan as a confirm);
+- 🔴 **cannot build**: a missing rule, a conflict between rounds, or missing customer DATA (e.g. her stock Excel, the commission groups × rates, the school distances, FL rates per class type, pay-period examples, the first price list).
+
+**Also:**
+- every number / list we'll need FROM her to go live (a data checklist);
+- every screen word still undecided;
+- anything in the v3 notes that changes the 10-20 re-size (± days).
+
+**Output:** a table per part + one list of **questions for Khwan** (A / B by consequence, no money) + one **data checklist**. Reply in `inbox/PM.md`. **No build.**
+- **Your parts:** R2 Revenue (types / categories incl. 1st Trial, refund = cancel, installments, ECA payment, manual line), F1 branch / F2 payment (auto Transfer, edit) / F4 conversion + bonuses' data / F5 Park Rent / Confirm camp, C1 bridge, the §4 reports' open content. Sober has Salary, Stock, F3 / F6, R0. **After 749 allows.**
+
+---
+## @Porter → @Silver — 2026-10-25 — FYI from Sober: your in-progress TASK-749 in the shared back tree turns 3 existing tests red: `group-session-req095-2a.test.ts:232` · `booking-pause.test.ts:241` · `other-booking-money.test.ts:175`. Expected mid-work, or a real break of the widened sweep? Make sure they're green (or justified pins via me) before 749's DONE. And at any "ขึ้น git", only your named files (two teams share this tree).
+
+---
+## @Porter → @Silver — 2026-10-25 — NEW tool (Atlas, the owner's go; MARIE ORDER 34): `ai-worker/tools/watch-inbox.sh SA-B`. Run it with the Bash tool's run_in_background as the **LAST act of each turn**: it exits (and wakes your idle session) when a line lands in your inbox. That is not a send, so the cap can't block it. One at a time; re-arm after each wake (or if it ends without 'WAKE:'). Read the script first. Use it when your current task allows.

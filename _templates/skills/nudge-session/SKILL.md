@@ -23,7 +23,7 @@ description: "Load when an AI-workforce role on a desk in ai-agent-workspace nee
    **(a) Running sessions:** `ListAgents`; use the **exact name it prints**. Session names are the
    operator's, not yours — do not guess one, do not reconstruct it from the roster.
    **(b) Not listed, or "No reachable agents"? The session is stopped, not gone.** Run
-   `list_sessions`, find the role by **both its `title` ("QA - Tanya") and its `group`** (the desk), and
+   `list_sessions`, find the role by **both its `title` ("<ROLE> - <Name>") and its `group`** (the desk), and
    `SendMessage` to its `local_…` **`sessionId`**. That wakes a closed session — the delivery result says
    the turn has started on it. *(Owner's instruction, 2026-10-15: "นายสะกิดเข้าผ่าน session id ได้เลยนะ".)*
    🔴 **Match on title AND group, and only when exactly one row matches.** Titles repeat across desks;

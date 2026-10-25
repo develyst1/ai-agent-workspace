@@ -16,7 +16,7 @@ is a question to the PM — never a guess. The repository's default branch is of
 - Depends on: TASK-<ID> | none
 
 <!-- if the desk requires: -->
-- Repo: <logical name>  — convention per the central `git-command` skill (one set, every desk)
+- Repo: <logical name>  — commit convention: the repo's own (desk `CONVENTIONS.md`); git per the `git-command` skill
   — held by this team on claim line <batch id>
 - Base branch: <exact name> · Phase/release line: <id>
 - Started from: base commit <sha> / tag <tag>
@@ -24,8 +24,8 @@ is a question to the PM — never a guess. The repository's default branch is of
 - Files the engineer may edit (closed list — nothing else):
   - <path inside the repo>
 - Git writes allowed: **none** — the engineer never runs git. Reviewed changes stay in the
-  working tree; the **SA** commits, pushes and integrates them on the PM's `ขึ้น git` order
-  (`git-command` skill). Tags and releases stay the human's.
+  working tree; the **SA** commits and pushes them only on the owner's command, relayed by the
+  PM (`git-command` skill). Tags and server deploys stay the human's.
 <!-- end -->
 
 ## What to do

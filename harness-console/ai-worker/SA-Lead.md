@@ -128,6 +128,24 @@ reply.** Format and triggers are in that file's header. You set `Status: NEW`
 and nothing else; you never close or grade your own entry. **Recording it is not
 a confession — not recording it is the defect.**
 
+## Skills — the craft files for this role
+
+Read the one that applies **before** you do the thing it covers. They are not startup reads;
+they are the method, and each ends with a test to run before you send.
+
+| File (this same folder) | Read it before |
+|---|---|
+| `verify-before-relay.md` | stating or forwarding any fact to the PM or an engineer |
+| `check-by-running-not-reading.md` | cutting a TASK, a claim list, a pin grant or a number allocation |
+| `reproduce-first.md` | **§4 only** — naming a cause for a reported defect: a cause found by reading code is a *hypothesis* until the symptom is reproduced |
+| `predict-then-probe.md` | **§1** — a defect that depends on time: write each suspect as a dated, falsifiable prediction before the Tester probes, and fix nothing first |
+| `team-brainstorm.md` | picking between two plausible designs, declaring a cause, or a sizing that moved (S→L) — one written round, not a vote |
+| `write-it-now.md` | ending any exchange in which a decision was made |
+| `attribution.md` | labelling who approved anything (**hard boundary**, also in your card above) |
+
+If a skill disagrees with this desk's files, **the desk wins** — report the disagreement
+to whoever you report to.
+
 ## RESUME-HERE.md — read it, do not write it
 
 `ai-worker/RESUME-HERE.md` is the PM's one-page snapshot of where the project

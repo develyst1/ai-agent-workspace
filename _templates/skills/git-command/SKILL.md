@@ -1,132 +1,102 @@
 ---
 name: git-command
-description: "Load when you are the SA role and the PM has ordered 'ขึ้น git' (put the code up) on a desk in ai-agent-workspace. Covers the one central git convention every desk shares (commit-message shape, work on the existing branch, no new branches, no history rewriting) and the two commands: รวมโค้ด = run the repo's merge-workflow.sh to integrate with develop; เอาโค้ดขึ้น = commit and sync (push). Do NOT load for PM/BA/FE/BE/QA seats, for Atlas/Marie/Otto, for git inside the workspace folder (agents never commit there), or without a PM order."
+description: "Load when you are the SA role on a desk in ai-agent-workspace and the PM has relayed one of the OWNER's three git commands: 'ขึ้น git' (commit + sync with the repo's commit-message convention), 'รวมโค้ด' (run the repo's merge-workflow.sh), 'release code' (run the repo's release-workflow.sh). Covers the gate (the owner's own words only), the three commands, conflicts, installing a missing workflow script, and reporting hashes back. Do NOT load for PM/BA/FE/BE/QA seats, for Atlas/Marie/Otto, for git inside the workspace folder (agents never commit there), or when the owner has not said the command."
 ---
 
-# git-command — the SA's git, on the PM's order
+# git-command — the SA types the owner's three git commands
+
+**Owner's ruling, 2026-10-25 (verbatim):** *"ฉันไม่ได้อยากให้สกิลนี้ ทำให้ SA ทำงานgit เอง แต่ฉันต้องการแค่
+SA ทำงานขึ้นgit ให้เมื่อฉันสั่ง ซึ่งฉันจะสั่งผ่านPM และ ฉันจะบอก PMเป็นแค่ คำสั่ง"* — and he named the
+commands (§3). This replaces the 2026-10-22 version, under which the PM could order git on his own;
+the owner found commits he had not asked for.
 
 **If the desk's files disagree with this skill, the desk wins; report the disagreement to the PM.**
-Generic desk mechanics (identity, log, evidence, safe edits) live in `workforce-protocol`; the two
-worlds and the paths rule live in the workspace `CLAUDE.md`. This skill is the git craft only, and
-it is **one central convention for every desk** — a desk supplies facts (branch, repo, whether a
-`merge-workflow.sh` and a `develop` exist), never a second convention.
 
-## 1. The gate — do not run a single git write until all of these hold
-
-Git used to be the human's alone. It is now **the SA's, and only the SA's** — under three conditions
-that are all required, every time:
+## 1. The gate — no git write until ALL of these hold
 
 1. **You are the SA** of this desk. No other seat runs git. Engineers (BE/FE) never commit, push,
-   branch or tag; they finish reviewed code **in the working tree** and set the TASK to `REVIEW`.
-   If you are not the SA, stop — this skill is not yours.
-2. **The PM ordered it through the chain** — the words are `ขึ้น git` (put the code up), in your
-   inbox or the board, from the PM. A nudge, your own judgement, or an engineer asking is **not** an
-   order. No order ⇒ do nothing; ask the PM.
-3. **The work is reviewed and `DONE`.** You committing is the last step after your own `DONE`
-   verdict, not a way to "save progress". Nothing half-reviewed goes up.
+   branch or tag; they finish reviewed code in the working tree and set the TASK to `REVIEW`.
+2. **The OWNER said the command, and the PM relayed it.** The PM's inbox line to you must quote the
+   owner's words (`ขึ้น git` / `รวมโค้ด` / `release code`) with the date. **The PM never originates a
+   git command**, and your own judgement, a nudge, or an engineer asking is not one. No quoted owner
+   command ⇒ do nothing; ask the PM.
+3. **Only the command he said.** `ขึ้น git` does not include `รวมโค้ด`; `รวมโค้ด` does not include
+   `release code`. One command, one run.
+4. **The work is reviewed and `DONE`** — nothing half-reviewed goes up.
 
-Two hard lines that no order can cross:
+Hard lines no command crosses:
 
-- **Never git inside the workspace folder.** The `ai-worker/` coordination files are never committed
-  by any agent, ever (`CLAUDE.md`). This skill runs **only inside a code repo** whose path you read
-  from `machine.local.md`.
-- **Never touch a real environment, tag or release.** Push to the shared remote is allowed by this
-  skill; deploying, tagging a release, or anything on production/the customer's system stays the
-  human's — a DATA REQUEST / release request up the chain, never a git write here.
+- **Never git inside the workspace folder.** `ai-worker/` coordination files are never committed by
+  any agent, ever. Run only inside a code repo whose path you read from `machine.local.md`.
+- **Never rewrite history.** No `--force`, no `--amend` of a pushed commit, no rebase of pushed work,
+  no `reset --hard` that drops reviewed work. **Never create, rename or delete branches.**
+- **No tags, no server deploy, nothing on the customer's system** — those stay the owner's.
 
-## 2. The one central convention — the same on every desk
+## 2. Before any command
 
-- **Work on the existing branch. Never create, rename or switch branches yourself.** The desk has one
-  working branch; you commit onto whatever branch the repo is already on. Branch model is a desk
-  fact (`PROTOCOL.md` / `SYSTEM-FACTS.md`): if the repo is sitting on `main`/`master`/`develop` and
-  the desk has not said that is the working branch, **stop and ask the PM** — do not commit onto it.
-- **Never rewrite history.** No `--force`, no `--amend` of a pushed commit, no rebase that rewrites
-  what is already on the remote, no `git reset --hard` that drops reviewed work.
-- **Commit-message shape** (central, one set):
-  ```
-  <type>: <imperative summary> (TASK-<ID>[, TASK-<ID>])
-  ```
-  `<type>` ∈ `feat | fix | refactor | test | docs | chore`. Summary is concise and imperative;
-  English by default (a desk whose convention is Thai overrides). Name every TASK the commit
-  delivers — that is the thread from the commit back to the SPEC. One logical change per commit
-  where it is cheap; one commit for a reviewed batch is fine.
-- **A commit carries only reviewed work.** If `git status` shows files no TASK named, stop and find
-  out why before committing — never sweep strays in with `git add -A` blind.
+- `git rev-parse --show-toplevel` → the repo path from `machine.local.md`, not a workspace path.
+- `git branch --show-current` → stay on the branch the repo is on. If it is `main`/`master`/
+  `develop`/`production` and the desk has not named it the working branch ⇒ stop, ask the PM.
+- `git status --porcelain` → every changed path maps to a reviewed `DONE` TASK. A stray file is a
+  question to the PM, never swept in with `git add -A`.
 
-## 3. The two commands
+## 3. The three commands
 
-The order is fixed: **เอาโค้ดขึ้น first, รวมโค้ด second.** `merge-workflow.sh` refuses to run with a
-dirty tree, so you commit and push before you integrate.
+### 3A. `ขึ้น git` — commit + sync, with the repo's commit-message convention
 
-### 3A. เอาโค้ดขึ้น — commit and sync (push)
+1. **Find the convention:** the desk's `CONVENTIONS.md` (git section), else the repo's own
+   (`CONTRIBUTING`, commitlint config, a clear pattern in `git log --oneline -20`).
+2. **No convention found ⇒ stop and ask** (to the PM, for the owner): *"repo `<name>` ไม่มี commit
+   convention — จะสร้างไหม? เสนอ `<type>: <summary> (TASK-<ID>)`"*. Commit nothing until he answers;
+   if he says yes, the SA writes it into the desk's `CONVENTIONS.md` through the PM, then commits.
+3. **Commit** the reviewed files: `git add <files>` → `git commit -m '<message per convention>'`
+   (name every TASK the commit delivers).
+4. **Sync the current branch:** `git fetch origin` → `git pull origin <branch>` (a conflict here is
+   handled as in 3B step 3) → `git push origin <branch>`.
 
-1. **Confirm the world.** You are in the code repo, not the workspace:
-   `git rev-parse --show-toplevel` → the path from `machine.local.md`, not an `ai-worker` path.
-2. **Confirm the branch.** `git branch --show-current` → the desk's working branch (§2). On
-   `main`/`master`/`develop` and the desk has not blessed it ⇒ stop, ask the PM.
-3. **See what will go up.** `git status --porcelain` and `git diff --stat`. Every path maps to a
-   reviewed `DONE` TASK. A stray file is a question, not a `git add -A`.
-4. **Stage and commit** with the §2 message:
-   `git add <the reviewed files>` (or `-A` only once step 3 is clean) → `git commit -m '<message>'`.
-5. **Sync.** `git fetch origin` → if behind, integrate per the desk's convention (the desk's
-   `merge-workflow.sh` is the normal integrator; a plain `git pull` only if the desk says so) →
-   `git push origin <current-branch>`.
-6. **Capture the output** of the commit and the push (the commit sha, the push summary) — that is
-   your evidence (§4).
+### 3B. `รวมโค้ด` — run the repo's `merge-workflow.sh`
 
-### 3B. รวมโค้ด — integrate with develop (run `merge-workflow.sh`)
+What it does: checkout `develop` → pull latest → back to your branch → merge `develop` into it →
+push → checkout `develop` → merge your branch into it → push → back to your branch.
 
-This is the desk's integration script; it syncs `develop → your branch` and `your branch → develop`
-and pushes both. It applies **only where the desk has a `develop` and ships the script** — a desk
-whose only branch is `main` has no `รวมโค้ด`; say so to the PM, do not improvise a merge.
+1. **Tree must be clean** (`git status --porcelain` empty). The script would ask to stash, and the
+   question cannot be answered from here. Dirty ⇒ stop and tell the PM: *"มีงานยังไม่ commit — ต้อง
+   `ขึ้น git` ก่อน"*. Never stash on your own.
+2. **Run it from the repo root:** `bash ./merge-workflow.sh`. Read every line of the output.
+3. **On a conflict: fix it, then run the script again** (owner's ruling). Fixing means: open each
+   conflicted file, keep both sides' intent, run the repo's build/tests, `git add` + `git commit`,
+   then rerun. If you cannot tell which side is right — the two sides change the same behaviour
+   differently — stop and ask the PM; that is a decision, not a merge.
+4. **Script missing ⇒ install it** from this skill's `scripts/merge-workflow.sh` into the repo root,
+   tell the PM you added it, then run it. (The new file goes up with the next `ขึ้น git`.)
 
-1. **Tree must be clean.** `git status --porcelain` is empty — you ran §3A first. If it is dirty,
-   commit (§3A) before integrating; do not rely on the script's stash prompt.
-2. **Run it from the repo root:** `./merge-workflow.sh` (the path is the repo's own copy — find the
-   repo via `machine.local.md`; never run the workspace copy against a code repo).
-3. **Read every line of its output.** It is interactive and it can stop on a conflict.
-4. **On a merge conflict: STOP.** Do not guess a resolution and do not force anything. A conflict is
-   a design decision — report it to the PM with the exact conflict output; the resolution may need
-   the owner. Resolving blind is how you ship a silent regression.
-5. **Capture the final summary** (the script's `✅ Sync Complete` block, or the conflict) as evidence.
+### 3C. `release code` — run the repo's `release-workflow.sh`
 
-## 4. After — evidence, log, hand back
+What it does: pull latest `develop` → checkout `production` → pull → merge `develop` into it →
+push `production` → back to the original branch.
 
-- **Paste the real command output** (commit sha, push result, the script's summary) into the TASK /
-  the log, the same way any evidence is recorded (`workforce-protocol` §14). "Pushed" without the
-  output is not evidence.
-- **Log one entry** through the desk's log script: what went up, which TASK IDs, which branch, and
-  whether `รวมโค้ด` ran or did not apply.
-- **Report up to the PM** in one line: done / where it is / anything the PM must relay to the owner
-  (a release or tag the human still has to make, a conflict that is waiting).
-- **A failure is reported, never worked around.** Push rejected, auth failed, conflict, wrong branch
-  — stop and tell the PM with the output. Record it in `FAILURES.md` if it was your mistake
-  (wrong branch, strays swept in, an order you acted on that never came).
+1. **Tree must be clean**, as in 3B step 1.
+2. **Script missing ⇒ install it** from this skill's `scripts/release-workflow.sh` into the repo
+   root, tell the PM, then run it.
+3. **No `production` branch on the remote ⇒ stop and ask the PM.** Never create it.
+4. **On a conflict: fix and rerun**, as in 3B step 3.
+5. If the repo deploys automatically from `production`, this command deploys — the owner's own
+   word is the authority for that, which is why only his word starts it.
 
-## 5. Skills you call
+## 4. After every command — the owner must see it
 
-| Situation | Skill |
-|---|---|
-| About to write a `DONE`/"synced"/"pushed" claim | `superpowers:verification-before-completion` — confirm against real output first |
-| A clean branch-integration flow beyond this script | `superpowers:finishing-a-development-branch` — **only within §1–§2 above** |
-| The PM's open session needs waking after you push | `nudge-session` (files first, then nudge) |
+- **Report to the PM** with the real output: branch, every commit hash, the push lines, the
+  script's `✅ … Complete` block (or the conflict and how you fixed it). "Pushed" without output is
+  `UNVERIFIED`.
+- **The PM puts it on the FIRST line of his next reply to the owner**: `git: <command> เสร็จ —
+  <repo> <branch> <hashes>`. Never buried inside a longer message.
+- **A failure is reported, never worked around** (push rejected, auth failed, wrong branch, missing
+  `production`). Your own mistake goes into `FAILURES.md`.
 
-## 6. Anti-patterns you will be tempted by
+## 5. Anti-patterns
 
-- **Treating a nudge or your own judgement as the order.** Only `ขึ้น git` from the PM counts (§1.2).
-- **Committing to "save progress."** Git here is the last step after `DONE`, not a checkpoint.
-- **`git add -A` over a dirty tree.** Strays no TASK named go up with the batch and nobody notices.
-- **Creating a feature branch per task.** The desk works on one existing branch (§2); splitting is
-  not your call.
-- **Forcing past a conflict** in `merge-workflow.sh` — that is deciding a merge blind. Stop, report.
-- **Running git in the workspace**, or committing an absolute path / a secret / a local `.env`.
-- **Rewriting pushed history** to "tidy up" — `--force`/`--amend`/hard-reset on what is on the remote.
-- **Claiming it went up without the output** — a push summary or sha, or it is `UNVERIFIED`.
-
-## 7. Desk handshake
-
-Before running anything: the identity line the desk prescribes, then the desk signpost
-`<desk>/CLAUDE.md` reading list for the SA seat. From the desk come the **working branch**, the
-**repo path** (via `machine.local.md`), whether this repo ships a **`merge-workflow.sh`** and has a
-**`develop`**, the TASK ID prefix, and the failure log. This skill supplies only the convention and
-the two commands; everything desk-specific, the desk wins.
+- Acting on a PM line that does not quote the owner's command.
+- Running `รวมโค้ด` or `release code` because `ขึ้น git` went well — one command, one run.
+- `git add -A` over a dirty tree; stashing to make a script run.
+- Creating a branch, or creating a commit convention without asking.
+- Rewriting pushed history to tidy up.

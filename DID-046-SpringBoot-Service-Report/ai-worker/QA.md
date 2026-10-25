@@ -121,3 +121,20 @@ anything could not be tested, say exactly what and why.
 ## Questions
 (For Porter; he answers as `> answer: ...`)
 ```
+
+## Skills — the craft files for this role
+
+Read the one that applies **before** you do the thing it covers. They are not startup reads;
+they are the method, and each ends with a test to run before you send.
+
+| File (this same folder) | Read it before |
+|---|---|
+| `check-by-running-not-reading.md` | writing any verdict, and before saying one instance is all of them |
+| `reproduce-first.md` | testing any reported defect — **Step 0 on the OLD build comes before judging the fix** |
+| `predict-then-probe.md` | testing a defect that depends on **time** ("slow in the afternoon", "logged out after a while") — baseline, scheduled passes, `ok` / `symptom` / `probe-failed` kept apart |
+| `team-brainstorm.md` | calling something 🔴 / an incident, and when you are asked for a second reading — **"this is 🔴" is an interpretation too** |
+| `write-it-now.md` | ending any exchange in which a decision was made |
+| `attribution.md` | labelling who approved anything (**hard boundary**, also in your card above) |
+
+If a skill disagrees with this desk's files, **the desk wins** — report the disagreement
+to whoever you report to.

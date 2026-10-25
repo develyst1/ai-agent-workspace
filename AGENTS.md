@@ -27,7 +27,7 @@ at once. They are not the same thing and they follow different rules.
 | Where | `ai-agent-workplace/ai-agent-workspace/` | anywhere on the drive — **you do not guess** |
 | How it is named in writing | **a path relative to the workspace root**: `smart-scheduler/ai-worker/board.md` | **its logical name only**: `smart-scheduler-front` |
 | How you find it | it is right there | look up the logical name in **`machine.local.md`** at the workspace root |
-| Git | **agents never commit here, ever** | the **SA's alone, on the PM's "ขึ้น git" order** — see `CLAUDE.md` §6 and the `git-command` skill |
+| Git | **agents never commit here, ever** | the **SA types it, only when the OWNER says one of his three commands** (relayed by the PM) — see `CLAUDE.md` §6 and the `git-command` skill |
 
 **The rule that follows from this, and it is absolute:**
 

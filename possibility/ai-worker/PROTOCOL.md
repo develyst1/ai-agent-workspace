@@ -156,6 +156,13 @@ work into one file, so this is a hard rule:
    on and set its status to `BLOCKED` on the board.
 5. If the owner stated a fact this session, it is already in `SYSTEM-FACTS.md`
    (rule 2 above) — check, don't assume.
+6. **PM and SA Lead: arm your inbox watcher as the last act of every turn**, with
+   the Bash tool's `run_in_background`: the PM runs
+   `bash ai-worker/tools/watch-inbox.sh PM RELAY`, an SA runs
+   `bash ai-worker/tools/watch-inbox.sh <its inbox name>` (`SA`, `SA-B`, …). When a
+   line lands in your inbox it exits and the app wakes you, even if every sender's
+   nudges are capped. On wake: read the inbox, act, arm it again. Never run two at
+   once.
 
 ## Inbox — the delivery channel
 
@@ -363,8 +370,10 @@ workspace-root `machine.local.md` and nowhere else — never in a committed file
 - All three repos are **greenfield: one initial commit each, branch `main`**
   (Marie, read-only survey 2026-09-17). The working branch is the owner's call —
   ask, don't assume `develop`.
-- **Git writes are the human's alone.** Every role hands work off as edited
-  files. No agent commits, pushes, branches or tags — in any of the three repos.
+- Every role hands work off as edited files.
+- **Git: the rule is `CLAUDE.md` §6, the how is the `git-command` skill.** Do not
+  restate either here. In one line: git runs only on the owner's own command,
+  relayed by the PM, typed by the SA; engineers never run git.
 
 **Environments — the hard line, as of 2026-09-17.**
 

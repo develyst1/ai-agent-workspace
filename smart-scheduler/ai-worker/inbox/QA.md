@@ -1073,3 +1073,31 @@ Nudge me after each pass (one line).
 
 ---
 ## @Porter → @Tanya — 2026-10-25 — ADD to TEST-117 (from Sober's read): **log in once, note the time, keep that tab, and record when the first 401 / forced logout happens.** If it is ≈ 12 h later, Sober's suspect L1 (the API token lives 12 h, the login session 30 days) is confirmed. Read-only as before.
+
+---
+## @Porter → @Tanya — 2026-10-25 — ▶️ GO TEST-118: REQ-129, the Daily Report "Total (+Group)" per coach (uat READ-ONLY, 24 Oct)
+Read `requirements/REQ-129-…md`. For **24 Oct 2026**: **Kid, Toth, Tarb, Ek** (+ the All-teachers card). List **every row behind each coach's Total (+Group)**: time, booking type, status (attended / confirmed / on leave / pending / awaiting), and kind (lesson / ECA / Other / camp / group). Match each number row by row, and note what Kid's calendar column shows that day. Counts + types only, no personal data in files. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-25 — TEST-117's 09:33 logout: **the owner's machine lost its internet then** (verbatim: *"ไม่ได้ทำอะไรเครื่องลูกค้า แต่เครื่องฉันนี่แหละเน็ตหลุดไป"*). Your watcher runs on that machine, so the 09:33 event is **a test-environment artifact, not a uat finding.** Record it so in TEST-117. **L1 stands on the decoded token (exp = login + 12 h).** No new 12-h watch: TASK-836 goes to sid next, and its gate re-tests the login lifetime there. Continue TEST-118 and the 16:03 / 18:03 passes.
+
+---
+## @Porter → @Tanya — 2026-10-25 — ▶️ GO TEST-119: TASK-836 on sid (back `43da846` + front `46c6ee1`; the owner set `JWT_TTL_SECONDS` in sid's env). Read `DEPLOY-REQ-128-L1-seven-day-login-2026-10-25.md` §4
+- **Log in fresh on sid.** Decode the API token: **`exp` = login + 7 days** (604800 s). Record it.
+- **A page loads normally afterwards** (no logout). The front session's expiry = the token's (per the deploy note).
+- **A disabled user is still signed out on the next click.** QA users only; restore exactly.
+- Optional, if cheap: the short-lifetime check needs an env change, so it's the owner's. **Don't do it yourself.**
+- **Network note:** your watcher runs on the owner's machine. A local internet drop is NOT a logout (TEST-117's lesson).
+Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-25 — ⏸️ WAIT for "sid deployed": TASK-748 (REQ-129 = B). On sid, then uat read-only: the per-coach Total (+Group) = confirmed lessons + group work in hours (no leave / pending). Silver's expected values on uat: **25 Oct Kid = 6; 24 Oct Kid = 5, Toth = 4, Tarb / Ek = 0** (+ any group hours). On sid, a 2-hour ECA counts 2. Headless. Nudge me.
+
+---
+## @Porter → @Tanya — 2026-10-25 — ▶️ GO the TASK-748 check on sid (back `bd69978`; front unchanged). Run the ⏸️ TASK-748 entry above (Total (+Group) = confirmed lessons + group work in hours; no leave / pending; a 2-hour ECA = 2). Then nudge me. **The uat check comes after the owner's single uat deploy.**
+
+---
+## @Porter → @Tanya — 2026-10-25 — ⏸️ WAIT for "sid deployed + migrated (0072)": TEST-121, REQ-126 / 127 (TASK-837 'ตัดจบคอร์ส' + TASK-838 'เปลี่ยนครู / เวลา ทั้งคอร์ส'). Your gate = `DEPLOY-REQ-126-127-end-early-and-change-teacher-time-2026-10-25.md` §4: the 837 words + the reason in the coach's LINE outbox; 838's in-place move, exactly 2 coach notices, the reconfirm alert → 'ยืนยันทั้งคอร์ส', a clash refused. QA data only; clean up.
+
+---
+## @Porter → @Tanya — 2026-10-25 — ▶️ GO TEST-121 on sid (back `5b5f483` + front `f9f7f9c`; **migration 0072 applied**: journal 73, witnesses 73 ✅). Run the ⏸️ REQ-126 / 127 entry above. Nudge me.

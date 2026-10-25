@@ -647,3 +647,15 @@
 - TH: แจ้งแอดมินแล้วเรื่องคาบที่ยังไม่มีครูรับแทน
 - EN: The admins have been told about the class(es) left as they are.
 - Shown on the teacher's same-day result **only when the admin alert was really queued for ≥ 1 admin** (the count in the answer).
+
+## 2026-10-25 — APPROVED by the owner (verbatim *"ทำทั้งคู่ ข้อความ OK"*): REQ-126 / REQ-127 words (Khwan's own names)
+- The button "ยกเลิกคอร์ส" → TH **ตัดจบคอร์ส** · EN **End course early**
+- A new end reason: TH **ตัดจบคอร์ส** · EN **Course ended early** (also what the coach's LINE shows as the reason)
+- A new button: TH **เปลี่ยนครู / เวลา ทั้งคอร์ส** · EN **Change teacher / time for the rest**
+- Its dialog line: TH **คาบที่เหลือ {n} คาบจะย้ายไปเรียนกับครูที่เลือก ตามวันและเวลาใหม่ คาบที่เรียนไปแล้วไม่เปลี่ยน** · EN **The remaining {n} sessions move to the chosen teacher, on the new day and time. Sessions already taught don't change.**
+
+## 2026-10-25 — APPROVED by the owner (verbatim *"OK"*): TASK-837's end-dialog strings
+- the title: TH **ตัดจบคอร์สนี้?** · EN **End this course early?**
+- the confirm line: TH **ตัดจบคอร์ส {program} ของ {student} — คาบที่เหลือ {n} คาบจะถูกนำออกจากตาราง ทำแล้วย้อนกลับไม่ได้** · EN **End the {program} course for {student} early — the {n} remaining sessions are removed. It cannot be undone.**
+- the confirm button: TH **ตัดจบคอร์ส** · EN **End course early**
+- the done toast: TH **ตัดจบคอร์สแล้ว** · EN **Course ended early**

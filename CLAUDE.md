@@ -100,16 +100,22 @@ read anything else:
 A bare nudge from the human ("ไปเลย", "continue") = re-read board + today's
 log, then do whatever waits for YOUR role. A nudge is never a new requirement.
 
-6. **Git is the SA's, on the PM's order — and nobody else's.** Inside a CODE
-   repo, the **SA** (and only the SA) commits, pushes and integrates, and only
-   when the **PM** has ordered it with the words "ขึ้น git". The SA follows the
-   one central convention in the `git-command` skill (`_templates/skills/
-   git-command/`): work on the existing branch, the shared commit-message shape,
-   the two commands (รวมโค้ด = run the repo's `merge-workflow.sh` · เอาโค้ดขึ้น =
-   commit and sync/push). Everyone else — PM, other engineers, Atlas, Marie,
-   the dispatcher — never commits, pushes, or asks about committing; engineers
-   finish reviewed code in the working tree and stop. Two hard lines no order
-   crosses: **the workspace's own `ai-worker/` coordination files are never
-   committed by any agent, ever**, and **releases/tags and anything on
-   production or the customer's system stay the human's** (reading git state
-   for analysis is always fine).
+6. **Git happens only when the OWNER says it.** Inside a CODE repo the **SA**
+   (and only the SA) types git — but only one of the owner's three commands,
+   said by the owner and relayed by the PM with his words quoted. **The PM never
+   originates a git command; no role runs git on its own judgement.** (Owner,
+   2026-10-25: *"ฉันไม่ได้อยากให้สกิลนี้ ทำให้ SA ทำงานgit เอง แต่ฉันต้องการแค่
+   SA ทำงานขึ้นgit ให้เมื่อฉันสั่ง ซึ่งฉันจะสั่งผ่านPM"*.) The commands, per the
+   `git-command` skill (`_templates/skills/git-command/`):
+   - **ขึ้น git** = commit + sync the current branch, with the repo's
+     commit-message convention — none found ⇒ ask him whether to create one first;
+   - **รวมโค้ด** = run the repo's `merge-workflow.sh` (develop ↔ current branch);
+     a conflict is fixed, then the script is rerun;
+   - **release code** = run the repo's `release-workflow.sh` (develop →
+     production); missing ⇒ install it from the skill, then run.
+   Every result goes to the owner on the **first line** of the PM's next reply,
+   with the commit hashes. Everyone else — PM, engineers, Atlas, Marie, the
+   dispatcher — never commits or pushes. Hard lines no command crosses: **the
+   workspace's own `ai-worker/` files are never committed by any agent, ever**;
+   no history rewriting, no new branches; **tags, server deploys and the
+   customer's system stay the human's** (reading git state is always fine).

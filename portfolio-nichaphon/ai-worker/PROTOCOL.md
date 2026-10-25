@@ -107,6 +107,13 @@ work into one file, so this is a hard rule:
    opened this session. Never rewrite others' entries.
 3. If you are blocked, write a **QUESTION** block in the artifact you're working
    on and set its status to `BLOCKED` on the board.
+4. **PM and SA Lead: arm your inbox watcher as the last act of every turn**, with
+   the Bash tool's `run_in_background`: the PM runs
+   `bash ai-worker/tools/watch-inbox.sh PM RELAY`, an SA runs
+   `bash ai-worker/tools/watch-inbox.sh <its inbox name>` (`SA`, `SA-B`, …). When a
+   line lands in your inbox it exits and the app wakes you, even if every sender's
+   nudges are capped. On wake: read the inbox, act, arm it again. Never run two at
+   once.
 
 ## Hygiene & file surgery — what a role may do, and what only Marie may do
 
@@ -262,7 +269,9 @@ content even if extra words are attached — route real content through the chai
 - Repo-root files outside `front/` (`docker-compose.yml`, `build.bat`,
   `merge-workflow.sh`, `release-workflow.sh`, `SERVER_MAINTENANCE.md`) are the
   human's deployment/infra. No role edits or runs them without a TASK that
-  names them explicitly.
+  names them explicitly — except the SA running `merge-workflow.sh` /
+  `release-workflow.sh` on the owner's own `รวมโค้ด` / `release code`
+  (`CLAUDE.md` §6).
 - Site content is **real copy about a real person and a real business**. No
   role invents a client name, a testimonial, a certificate, a date or a metric.
   Missing copy is a DATA REQUEST to the human via Porter — never a
@@ -272,9 +281,11 @@ content even if extra words are attached — route real content through the chai
 (http://localhost:3000) and `npm run build`. The live site
 (`portfolio.develyst.online`, PM2 process `portfolio-frontend` on the human's
 droplet) is **production and the human's hands alone** — no role deploys, runs
-`pm2`, ssh's anywhere, or runs the release/merge scripts. Git writes
-(`add`/`commit`/`push`, branch creation) are the human's too; the team hands
-work off as edited files on `develop`.
+`pm2` or ssh's anywhere. The team hands work off as edited files on `develop`.
+
+- **Git: the rule is `CLAUDE.md` §6, the how is the `git-command` skill.** Do not
+  restate either here. In one line: git runs only on the owner's own command,
+  relayed by the PM, typed by the SA; engineers never run git.
 
 The project now has a **QA role** — Tanya (see `QA.md`) — who runs acceptance
 tests on **local only** (`cd front && npm run dev`, http://localhost:3000),

@@ -1061,3 +1061,4 @@
   `/auth/profile` — security-shaped; (c) `/verify-email` reads a field that does not exist, so **the
   verify link can never verify anyone**. With A51: **no self-registered user can become verified today**
   except by a hand-flip of `users.is_email_verified`. Detail: `specs/SPEC-009-…md` §Findings F2/F3.
+- 2026-10-25 — owner ruling supersedes every earlier 'no agent commits' line in this file: git runs only on his own command (`ขึ้น git` / `รวมโค้ด` / `release code`), relayed by the PM, typed by the SA — `CLAUDE.md` §6, `git-command` skill.

@@ -586,3 +586,33 @@ Report the file name + size + 31 pages × 3 roles (0 errors / dead). Nudge me.
 
 ---
 ## @Sober → @Fern — 2026-10-21 — ✅ TASK-835 + the final build VERIFIED → DONE. Team A's v3 is complete. Nothing waits for you; hold the spec folder steady
+
+---
+## @Sober → @Fern — 2026-10-25 — ▶️ GO TASK-836 FE (REQ-128 L1): the session ends exactly when the API token expires (7 days). Read `tasks/TASK-836-req128-l1-one-7-day-login-be-fe.md`
+- `src/auth.config.ts`: `maxAge` 7 days + store the API token's `exp` at sign-in. End the session (return null in `jwt`) once now ≥ exp, and fail closed when exp is missing.
+- `src/lib/api/client.ts`: unchanged (a 401 still signs out; `reason=disabled` kept).
+- No secret on the front: read the claim, don't verify.
+- **List pins first;** one mutation set at a time. Nudge me when green.
+
+---
+## @Sober → @Fern — 2026-10-25 — ▶️ GO the clock fix for the 3 red tests (bottom of TASK-836). Then `bun test` 0 fail + sets 822 / 818 / 836, and nudge me
+
+---
+## @Sober → @Fern — 2026-10-25 — ▶️ GO TASK-837 FE, then TASK-838 FE. Read both task files
+- **837:** the approved button + the 5th reason. **The 4 dialog keys go behind «copy pending»** with the drafts in the task (they are with the owner). The voucher's strings are untouched.
+- **838:** the button + a dialog from `DropResumeDialog`'s pickers; `{n}` only from the server's preview. Build it against Jason's route names, as written in the task.
+- **List pins first; one set at a time;** nudge me once per task. No git.
+
+---
+## @Sober → @Fern — 2026-10-25 — ✅ TASK-837: the 4 end-dialog strings are APPROVED verbatim. Use them with NO «copy pending» (bottom of TASK-837)
+If you've already put the markers in, drop them and pin the exact text. Part of the same 837 batch; nudge me once when 837 is green.
+
+---
+## @Sober → @Fern — 2026-10-25 — 🔁 TASK-838: gate the button with `action:bookings.course-plan` (NOT `course-edit`, which my task named wrongly; bottom of TASK-838)
+A time-only change sends nothing at the act; the existing "ยืนยันทั้งคอร์ส" is the next step. Show `needsReconfirm` as the existing start-change screen does (no new words).
+
+---
+## @Sober → @Fern — 2026-10-25 — 🔧 TASK-838 FE: ONE fix. `PlanModal.tsx:488` → `action:bookings.course-plan` (not course-edit). Everything else matches Jason's back (bottom of TASK-838)
+
+---
+## @Sober → @Fern — 2026-10-25 — ⚖️ TASK-838 needsReconfirm: YES. Show the start-change screen's orange alert with the SAME approved keys (`courseStart.reconfirmTitle` / `reconfirmBody`); no new words (bottom of TASK-838). The last FE item

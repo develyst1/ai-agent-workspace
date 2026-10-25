@@ -255,3 +255,4 @@ Sober's SPEC-001 recommendations were overridden line by line. These are the fac
 - **Preview route `/preview/directions` built (TASK-020): the result page in three directions — A quiet luminous (dark), B warm editorial (light/cream, serif, a letter), C cinematic (full-bleed image).** Fern + Sober recommend **B**. C's quality depends on images not yet made.
 - **Owner deployed the `/preview/directions` route to SIT and CHOSE DIRECTION B — warm editorial (light/cream, serif, the result as a letter)** (owner, 2026-09-26: *"deploy แล้ว เลือก B"*). A and C are dropped; only IMG-002 gets generated.
 - **Direction B (TASK-021) deployed to SIT by the owner, 2026-09-26** (*"deploy แล้ว"*). His look verdict (REQ-009 AC-1) not given yet.
+- 2026-10-25 — owner ruling supersedes every earlier 'no agent commits' line in this file: git runs only on his own command (`ขึ้น git` / `รวมโค้ด` / `release code`), relayed by the PM, typed by the SA — `CLAUDE.md` §6, `git-command` skill.

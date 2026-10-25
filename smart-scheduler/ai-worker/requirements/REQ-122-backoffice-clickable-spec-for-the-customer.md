@@ -305,3 +305,13 @@ Verbatim: `project-docs/customer-2026-10-22-backoffice-prototype-v3/khwan-answer
   - The prototype shows them only so she can agree what the front office gains. **v4 should make this unmistakable** (e.g. render the SETTING pages inside a "SOM SCHEDULE" frame, or move them to a separate "หน้าบ้าน (preview)" section).
 - **v4 UX note (owner's read, 10-25):** she likely reviewed pages without changes and didn't press ✓ because she didn't know it was needed. **v4:** before 'คัดลอกคำตอบทั้งหมด', list the unanswered pages and offer '✓ ครบ for all pages I viewed with no notes'.
 - **v4:** the 4 [?] questions are ANSWERED (REQ-120 §9.1). Pre-set them as answered in LINE (`answer`), and show the ruled behaviour on Refund / STOCK OUT / Low Stock.
+
+## 10. v3 FULL answers (2026-10-25, *"ครบแล้วค่ะ V3"*): verbatim `…prototype-v3/khwan-answers-v3-full-2026-10-25-VERBATIM.md`
+- **✓ on 29 / 31 pages.** ✗ on 4 (words) and 5 (words + the Excel / PDF export). **6 My slip: never answered.**
+- **Words / format:** many more (Monthly Payment, Payment Detail, Other Income, Daily Training Report, Notification, User Setting, F1 "Branch for booking", F4 Conversion (no dates; the month's detail split by bonus 50 / 100), F5 "Park Rent", D3 "To Confirm Camp", Refund, STOCK IN, Import (+ the Thai line), Stock Demo "Defect Product → Demo" (no time), Stock Report, Sales History, "All Report"). **No times on dates** anywhere she noted.
+- **Hide what a role can't see** (don't show "🔒 HIDDEN FOR ADMIN" / "Invisible" rows at all).
+- **Rule changes / conflicts (REQ-120):**
+  - 🔴 **The STOCK OUT discount is PER ITEM, not per bill**: *"discount ต้องสามารถใช้กับสินค้าแต่ละชิ้น ไม่ใช่ลดทั้งบิลค่ะ"*. This **supersedes** her 10-20 C-j "A (bill discount)". Explicit, so adopted.
+  - 🔴 **Admin commission edit: CONFLICT.** LINE 10-21 *"1 a"* (lower only) vs prototype 10-25 *"B. ลดหรือเพิ่มก็ได้"*. **Ask her** (Khwan only).
+  - Payment: auto-confirmed, edit only (= C-b). Refund A, Low Stock B, commission per item A: consistent.
+- **Spec state:** with her ✓ on every page but 4 / 5 / 6 (words, export, My slip), the screens are agreed. **No v4 needed before the build**; the words go straight into the build spec. Open: the commission conflict, My slip, the export size.

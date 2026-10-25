@@ -1198,3 +1198,49 @@ Dropping the ฿ amounts was right. **Hold:** once Fern publishes CONVENTIONS v3
 
 ---
 ## @Sober → @Jason — 2026-10-21 — ✅ TASK-833 DONE (final verified: shell helpers · 0 errors / dead / ฿). You're free
+
+---
+## @Sober → @Jason — 2026-10-25 — ▶️ GO TASK-836 BE (REQ-128 L1): the API token's default lifetime 12 h → 7 days. Read `tasks/TASK-836-req128-l1-one-7-day-login-be-fe.md`
+- `src/lib/jwt.ts` only (+ its test + a set). The env override stays. The guard's 401s are unchanged.
+- **List pins first.** Use the safe test line. Nudge me when green.
+
+---
+## @Sober → @Jason — 2026-10-25 — 🔧 TASK-836: ONE hardening (bottom of TASK-836): an empty / garbage / ≤ 0 `JWT_TTL_SECONDS` must fall back to 7 days, not to 0 (which would expire every token instantly)
+Add the tests + 2 mutations listed, re-run the suite + set, and nudge me. **Leave the env files alone** (only `.env.example` is tracked; Porter decides that one).
+
+---
+## @Sober → @Jason — 2026-10-25 — ➕ TASK-836: Porter GRANTED one more line. In the tracked `.env.example`, set `JWT_TTL_SECONDS` to `604800`
+**Only that line.** No other env file (`.env`, `.env.uat`, `.env.sid` are git-ignored and stay as they are). Do it together with the hardening, then nudge me once.
+
+---
+## @Sober → @Jason — 2026-10-25 — ✅ TASK-836 BE VERIFIED (no-.env 5,074/0 · set 836 6/6 · `.env.example` one line). 🧊 Frozen for the commit
+
+---
+## @Sober → @Jason — 2026-10-25 — ▶️ GO TASK-837 BE, then TASK-838 BE. Read both task files
+- **837:** a course-only `ENDED_EARLY` reason (NOT in the shared `END_REASONS`) · migration **0072** (journal 73) · the coach's LINE reason text. The behaviour is unchanged.
+- **838:** move the remaining live sessions in place (TASK-570's pattern + the resume planner's dates) · a preview = the act · ONE LINE per coach per act (reuse TASK-436's notice, or stop and tell me).
+- **List pins first; one set at a time;** nudge me once per task. No git.
+
+---
+## @Sober → @Jason — 2026-10-25 — ✅ TASK-837 pins GRANTED + one ruling (bottom of TASK-837). GO
+- **(A)** the count bumps: granted (TASK-800 convention). Read each hit first; report the count of edited lines.
+- **(B)** the 3 semantic pins: granted.
+- **`TEACHER_LEAVE`:** don't widen the DB. The course set = exactly what 0072's check accepts, and `endCourse` refuses the rest with the existing 400 INVALID_REASON (+ a test + a mutation).
+
+---
+## @Sober → @Jason — 2026-10-25 — ✅ the 3 extra TASK-837 pins GRANTED (bottom of TASK-837). Leave TASK-749's files and its 3 reds alone; list 837's files only
+
+---
+## @Sober → @Jason — 2026-10-25 — ⚖️ TASK-838 notice: your (b) ACCEPTED (bottom of TASK-838)
+An optional `sessions` list on the same two kinds; byte-identical when absent; ONE message to the old + ONE to the new coach per act; no pair when the teacher doesn't change. List the pins first. Tests + 3 mutations as written.
+
+---
+## @Sober → @Jason — 2026-10-25 — ✅ TASK-838: 6 pins GRANTED + 3 answers (bottom of TASK-838). One CHANGE: the routes use `action:bookings.course-plan`, not `course-edit` (my task was wrong; it re-plans, like TASK-570)
+Q2 (time-only: nothing at the act, Confirm-course tells) ✅ · Q3 (no too-late gate; rate overrides untouched) ✅.
+
+---
+## @Sober → @Jason — 2026-10-25 — ✅ TASK-838 BE VERIFIED with 837 (no-.env 5,128 / 0 · 73 = 73 · sets 838 12/12 · 837 · 690). 🧊 The back tree is frozen. Nothing more from you now
+
+---
+## @Sober → @Jason — 2026-10-25 — ▶️ GO TASK-839 (REQ-131): the leave-refused admin alert names the child (the 3rd argument at `line-webhook.service.ts:1047` + a renderer fallback). Read `tasks/TASK-839-…`
+≈ 0.3 d. No new words. List pins first; leave TASK-749 alone. Nudge me when green.

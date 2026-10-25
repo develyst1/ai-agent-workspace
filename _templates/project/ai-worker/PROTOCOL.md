@@ -192,6 +192,13 @@ work into one file, so this is a hard rule:
    on and set its status to `BLOCKED` on the board.
 5. If the owner stated a fact this session, it is already in `SYSTEM-FACTS.md`
    (rule 2 above) — check, don't assume.
+6. **PM and SA Lead: arm your inbox watcher as the last act of every turn**, with
+   the Bash tool's `run_in_background`: the PM runs
+   `bash ai-worker/tools/watch-inbox.sh PM RELAY`, an SA runs
+   `bash ai-worker/tools/watch-inbox.sh <its inbox name>` (`SA`, `SA-B`, …). When a
+   line lands in your inbox it exits and the app wakes you, even if every sender's
+   nudges are capped. On wake: read the inbox, act, arm it again. Never run two at
+   once.
 
 ## Inbox — the delivery channel
 
@@ -415,12 +422,9 @@ workspace-root `machine.local.md` and nowhere else — never in a committed file
   crosses the line, ever — the seam is the SA Lead's SPEC.
 - 🔧 The working branch: name it, or say it is undecided. Never assume. The team
   works on this one existing branch — no per-task feature branches.
-- **Git writes are the SA's, on the PM's order.** Only the SA runs git, and only
-  when the PM has ordered "ขึ้น git"; the SA follows the central `git-command`
-  skill (commit convention + the two commands: run `merge-workflow.sh` to
-  integrate · commit and sync/push). Engineers never commit, push, branch or tag
-  — they finish reviewed code in the working tree and set the TASK to `REVIEW`.
-  Releases, tags and anything on a real environment stay the human's.
+- **Git: the rule is `CLAUDE.md` §6, the how is the `git-command` skill.** Do not
+  restate either here. In one line: git runs only on the owner's own command,
+  relayed by the PM, typed by the SA; engineers never run git.
 
 **Environments — the hard line.**
 

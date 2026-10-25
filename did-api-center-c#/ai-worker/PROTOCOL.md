@@ -98,6 +98,13 @@ work into one file, so this is a hard rule:
    opened this session. Never rewrite others' entries.
 3. If you are blocked, write a **QUESTION** block in the artifact you're working
    on and set its status to `BLOCKED` on the board.
+4. **PM and SA Lead: arm your inbox watcher as the last act of every turn**, with
+   the Bash tool's `run_in_background`: the PM runs
+   `bash ai-worker/tools/watch-inbox.sh PM RELAY`, an SA runs
+   `bash ai-worker/tools/watch-inbox.sh <its inbox name>` (`SA`, `SA-B`, …). When a
+   line lands in your inbox it exits and the app wakes you, even if every sender's
+   nudges are capped. On wake: read the inbox, act, arm it again. Never run two at
+   once.
 
 ## Hygiene & file surgery — what a role may do, and what only Marie may do
 

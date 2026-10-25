@@ -495,3 +495,18 @@ loophole removal + task-template). **`check-skills.mjs` still needs to be run** 
 gate blocked me from running it; static-verified it passes (name==folder, well-formed description,
 no desk/person names). The owner must run `node scripts/check-skills.mjs _templates/skills
 _templates/project` to confirm green.
+
+**Correction to the 2026-10-22 git entry above (2026-10-25).** That design let the PM originate
+"ขึ้น git". The owner found SA commits he had not asked for and ruled: git runs only on HIS word,
+relayed by the PM with it quoted, and only three commands exist (`ขึ้น git` · `รวมโค้ด` ·
+`release code`). Lesson: when a rule moves the owner's authority to an agent, I record his exact
+words and make the first use of it visible to him. The 10-22 entry recorded "on his explicit
+instruction" with no quote, and nobody could check what he had meant. Details: `MARIE.md` ORDER 31.
+
+**A background command is a wake that no send cap touches (proven 2026-10-25).** An idle session is
+re-invoked when a command it started with `run_in_background` exits. The test: my own idle session
+woke 46 s after a line was appended to a watched file. That is the harness, not a cross-session send,
+so the app's ~10-send cap does not apply. It turns "who wakes the PM when every sender is capped"
+into "the PM arms `tools/watch-inbox.sh` at the end of each turn" (`MARIE.md` ORDER 34). Untested:
+whether the watcher survives the session being stopped, or many hours idle. If it ends without
+`WAKE:`, re-arm it.
