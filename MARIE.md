@@ -1899,6 +1899,45 @@ For Marie, once the owner says go:
 2. Through each PM, archive first, then add the template's shutdown-ritual step 6 verbatim to the desk's
    `PROTOCOL.md` "Session shutdown ritual". smart-scheduler: only when it is quiet.
 
+### ORDER 35 — 2026-10-26 — open the fork desk `smart-scheduler-atom/` (runs on Atom's Debian box) — ⛔ BLOCKED on the git line, read item 0 first
+
+**Owner via Atom (2026-10-26 17:23), verbatim:** *"Decisions final. Create the Atom fork desk (option C): it READS
+knowledge from the original smart-scheduler desk but all working writes go ONLY to the Atom desk
+(smart-scheduler-atom/). Later the owner, at the main desk, will order: pull updates from the Atom desk into main,
+then empty the Atom desk. Codebases: merge-workflow only after real testing passes. Workspace: merge at real job
+end only. Commit and push the Atom desk + ATOM.md … on branch atom. Models: PM/SA/QA opus medium; engineers sonnet
+medium."* Design: Atlas's option C (chat 2026-10-26; summary in `ATOM.md` → "The fork desk").
+
+0. ⛔ **Not runnable as relayed, and not by Atlas.** (a) Creating a desk's `ai-worker/` is yours, not Atlas's
+   (`ATLAS.md` Hard boundaries). (b) **Committing it is forbidden to every agent** by `CLAUDE.md` §6 (*"the
+   workspace's own `ai-worker/` files are never committed by any agent, ever"*) — no relayed order lifts that; only
+   the owner rewriting §6 himself does (draft exception text: Atlas's chat 2026-10-26, item 3). (c) An Atom relay is
+   not yet ruled to be the owner's word (`ATOM.md` Open 1). The commit/push stays the owner's (he commits the
+   workspace himself, as `dev`), unless §6 has been amended first.
+   ✅ **BUILD GO (items 1–5, no git), owner via Atom 2026-10-26 17:30:** *"ปกติ atlas ก็ติดต่อเธอเองนะ ฉันไม่เคยได้คุย
+   กับ marie เลย"* — hand ORDER 35 to Marie the usual way and build the desk now. Atlas spawned you for it.
+   Building files is reversible and touches no existing desk; **git stays blocked (b).**
+   **Also (same relay):** every session of this desk runs in **permission mode `auto`** — state it in the desk's
+   `AGENTS.md` next to the models (PM / SA / QA opus medium · engineers sonnet medium).
+1. **Create `smart-scheduler-atom/`** from `_templates/project` + `node scripts/install.mjs smart-scheduler-atom`
+   (harness current). Desk signpost `AGENTS.md`: a FORK of `smart-scheduler`; repos by logical name
+   (`smart-scheduler-back` / `-front`, paths in `machine.local.md`); working branch **`atom`** (from `develop`).
+2. **Roster (`TEAMS.md`)** = SOM's roster, same names and roles, session names `<Name>-SOMA`: Porter (PM) ·
+   Tanya (QA) · Sober / Jason / Fern (team A, inboxes unsuffixed) · Silver / Bob / Fanta (team B, `-B` inboxes).
+   Charters = copies of SOM's `PM.md`, `QA.md`, `SA-Lead.md`, `SA-Lead-B.md`, `BE.md`, `BE-B.md`, `FE.md`,
+   `FE-B.md`, `PROTOCOL.md` — copy verbatim, then change only desk name, session names and the lines below.
+3. **Knowledge is READ from the original, never copied or written there.** Add to the startup ritual, step 1:
+   *"Read `../smart-scheduler/ai-worker/SYSTEM-FACTS.md` (READ-ONLY). This desk's own new facts go to this desk's
+   `SYSTEM-FACTS.md`, which starts empty below a `FORK 2026-10-26` line."* Same for `OWNER-LIST.md`. **No role on
+   this desk writes anything under `smart-scheduler/`** — say it in PROTOCOL's Hard boundaries.
+4. **IDs from 5000** (REQ / SPEC / TASK / TEST), stated on this desk's board. New `board.md`, empty inboxes +
+   `RELAY.md`, `log/`, `FAILURES.md`, `memory/` from the template.
+5. **Git lines in this desk's PROTOCOL/board:** code — `รวมโค้ด` (merge-workflow) **only after a real test pass**
+   (Tanya's TEST_PASSED on sid), and only on the owner's word per §6; migrations: none without the owner's go
+   (journal collision with `dong`'s 0072). Workspace — synced **only at the real end of a job**, by the owner.
+6. **Later, not now:** the owner's "pull the Atom desk into main, then empty it" — a separate order (archive first,
+   never delete information).
+
 ## Operations log (append one line per operation, newest first)
 
 - 2026-10-25 15:13 (ORDER 34, PARTLY DONE; smart-scheduler's PROTOCOL step OWED) — **① `install.mjs` on 14 desks (all but fb-autoreply), exit 0 ×14:** each got only `ai-worker/tools/watch-inbox.sh` plus a rewritten `.harness`; no desk-owned file touched. `check-harness`: `harness 2.6.3: 15 desk(s), 1 not current`. The one is fb-autoreply, still on 2.6.2 **on purpose** (owner is closing it). **② Shutdown-ritual watcher step added to `PROTOCOL.md` on 13 desks, through 13 spawned PMs.** Each desk was quiet: nothing newer than my own ORDER 32/33 edits. Each file was archived first as `archive/PROTOCOL.md.before-ORDER34.2026-10-25` and edited with Edit only. **I diff-verified every file myself:** there is one hunk per file, +7 lines, 0 removed, and the text matches template lines 195–201 except for the step number. Each file kept its own line endings: CRLF files are lines = CRs (+7), LF files have 0 CR. **Numbered 6** on dte, harness-console, possibility, pun-kub-fang and safe-goods, whose rituals have 5 steps. ⚠️ **Numbered 4** on DID-046, api-linkage2, code-report, develyst-ai, did-api-center-c#, layout-pattern-app, manager-gold and portfolio-nichaphon. Those 8 rituals have only 3 steps (no inbox-@ step, no SYSTEM-FACTS check), so "6" would have left a gap, and I applied the order's "next step" rule. Every desk has both a PM and an SA, so nothing was adapted. ⚠️ **Surprise, for Atlas:** those same 8 desks' PROTOCOL never mentions an inbox at all. 5 of them (api-linkage2, develyst-ai, did-api-center-c#, layout-pattern-app, manager-gold) have no `inbox/` folder. The watcher still runs there, because a missing file reads as size 0 and it wakes when the file is created, but nothing on those desks tells anyone to write to an inbox. Only smart-scheduler has `inbox/RELAY.md`. **Skipped:** fb-autoreply entirely (closing). **smart-scheduler is OWED:** it was installed (allowed while live) but was LIVE throughout, with its log at 15:09:32, TASK-838, and inbox PM written 15:10:21. Its PROTOCOL step goes through Porter when the desk is quiet. Its ritual has 3 steps, so the step will be numbered 4. ⚠️ Its PROTOCOL has **mixed line endings: 598 lines, 441 CRs**, so whoever edits it must match the endings of the surrounding lines. No commit.

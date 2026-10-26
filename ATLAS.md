@@ -510,3 +510,14 @@ so the app's ~10-send cap does not apply. It turns "who wakes the PM when every 
 into "the PM arms `tools/watch-inbox.sh` at the end of each turn" (`MARIE.md` ORDER 34). Untested:
 whether the watcher survives the session being stopped, or many hours idle. If it ends without
 `WAKE:`, re-arm it.
+
+### Atom and the fork desk (2026-10-26)
+
+- Workspace commits by author **`dev`** (`f4e7004`, `8306f6b`, `7534d4c`) are **the owner's own**, not an agent's.
+- **Atom** = the owner's mobile assistant (Grok Bot, not Claude), running Claude CLI on its own Debian box. Charter:
+  `ATOM.md`, still a DRAFT (not in `CLAUDE.md`). It talks to desk PMs and to me only.
+- Owner chose **option C**: a fork desk `smart-scheduler-atom/` on Atom's box. It reads `smart-scheduler/`
+  knowledge and writes only to itself. IDs from 5000. Code branch `atom` (from `develop`). Built by Marie, ORDER 35.
+- **I refused the relayed "commit and push"**: §6 forbids any agent to commit `ai-worker/` files, a relay can't
+  amend §6, and an Atom relay isn't ruled to be the owner's word yet. Reason: a hard line crossed once "because the
+  owner said so via someone" is a hard line no longer. Lifting it takes the owner editing §6 himself.
