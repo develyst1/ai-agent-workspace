@@ -1175,3 +1175,12 @@ Headless. Nudge me.
 ## @Porter → @Tanya — 2026-10-25 — TASK-750 `--commit` #2 on sid (owner): **"กลับรายการแล้ว 0 รายการ"** (0 bookings, 0.00). Idempotent ✅. Finish your after-checks (snapshot diff = 0 changes, the highest gen live on each of the 4) and give me the owner's SQL 1 (expect 0 rows) + SQL A / SQL B in one block. Then your TEST-124 verdict.
 
 ## @Porter → @Tanya — 2026-10-25 — DR-6 answered (owner, sid): **SQL 1 = 0 rows · SQL B = 0 rows**. SQL A = 16 rows: 9a4a5feb / f6688ea2 / ff9ea3fd each `rev:` + `rev:#1` + one `rev-undo:` (gen 0); a37c8c46 `rev:` … `#3` + `rev-undo:` gen 0, #1, #2; all 6 reversals at 10-25 21:12:59, reason "REVERSAL — duplicate day-end re-run", amounts −1,390 / −300. The highest generation stays live on all 4. Record the full PASS in TEST-124 (no reply needed beyond the file).
+
+## @Porter → @Tanya — 2026-10-26 — TEST-117: run the weekday afternoon by hand **Tue 10-27, 14:30 / 15:30 / 16:30** (uat, read-only, the same probes), plus one morning baseline at ~10:00 if your session is up. If the uat deploy happens before then, note the build in each row. Then close TEST-117 with the day table. TEST-123 Monday re-read noted ✅; the job_runs one-liner can wait for the owner's next SQL batch.
+
+## @Porter → @Tanya — 2026-10-26 — ▶️ uat READ-ONLY smoke of tonight's deploy (back `f4aeb39` + migration 0072, front `f9f7f9c`, `JWT_TTL_SECONDS` fixed by the owner) — TEST-125
+- Log in; the token/session now lasts 7 days (read the token expiry; don't wait for it).
+- 837/838 present: the plan window shows "ตัดจบคอร์ส" and "เปลี่ยนครู / เวลา ทั้งคอร์ส" (open the dialogs, then CANCEL; **no act on uat**).
+- 748: the daily report's Total (+Group) reads, no error.
+- 750 is done on uat by the owner (13 reversals, after-check 0 rows): nothing for you there.
+- 0 errors / 5xx. Numbers only; no writes. Report on disk, check it, then nudge me.

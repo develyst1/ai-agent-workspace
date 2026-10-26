@@ -4361,3 +4361,7 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
   - **How the relay runs (10-17):**
     - a paused SA appends `PAUSED — relay: <session> → <inbox> (<entry>)` to `inbox/PM.md` and ends its turn, **never handing the ball to the owner**;
     - Porter keeps an idle subscription on each active SA and relays the doorbell.
+- 🧾 **Archiving a child who still holds a usable voucher stays ALLOWED (owner via Atom, 2026-10-26 18:13, verbatim *"ปล่อยไว้แบบเดิม จบเคส"*; Atom desk REQ-5000 / TEST-5000).** Imported by Porter 2026-10-26.
+  - **Symptom it explains:** the booking's **Voucher tab** can't find a child although other tabs can. The voucher sits on an ARCHIVED duplicate record of that child (same parent), and the Voucher tab hides archived children (TASK-392); the other tabs find the active duplicate.
+  - **Fix = the customer's own, in-app:** People → แสดงที่เก็บแล้ว → คืนสถานะ on the archived record. No code.
+  - **Known gap, kept by choice:** `archiveStudent` blocks only on future bookings, not on a live voucher. A live course package is treated the same unless the owner says otherwise.

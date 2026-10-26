@@ -156,3 +156,39 @@
   - **Weak:** one idle headless tab, and the trigger isn't identified.
   - **Not a 7-day check:** uat is still on the 12 h build, and TASK-836 (7 days) is on sid only.
 - **Monday:** the planned weekday timing passes are unchanged. I won't start a new long watcher unless Porter wants one, since TASK-836's 7-day token makes L1 moot once it reaches uat.
+
+
+## Weekday re-run, Mon 26 Oct: ⚠️ only ONE pass ran (19:13). The 10:07 / 13:07 / 14:37 / 15:37 / 16:37 / 18:07 passes were all MISSED
+- **Why:** they were scheduled in my session only, and the session wasn't running during the day. The prompts arrived together at ~19:10.
+- **So there's no weekday-afternoon data,** which is the slot the customer reports (from ~15:00). I ran the one pass I could, at its real time.
+
+### Pass · 19:13 (Mon)
+| Run (start) | Login | Schedule page | Week change | Search (screen) | API /calendar (week) | API search |
+|---|---|---|---|---|---|---|
+| #1 19:13:11 | 4,872 ms | 2,355 ms | 1,101 ms | 50 ms | 891 ms · 200 | 85 ms · 200 |
+| #2 19:13:24 | 3,924 ms | 2,653 ms | 975 ms | 57 ms | 631 ms · 200 | 98 ms · 200 |
+| #3 19:13:34 | 5,058 ms | 2,638 ms | 1,283 ms | 67 ms | 670 ms · 200 | 98 ms · 200 |
+| **Median** | **4.9 s** | **2.6 s** | **1.1 s** | **0.06 s** | **0.67 s** | **0.10 s** |
+
+**0** login failures · **0** 5xx / 522 · **0** failed requests · **0** forced logouts.
+
+### Monday next to Sunday (medians)
+| Pass | Login | Schedule page | Week change | API /calendar | API search | Errors / 522 / logouts |
+|---|---|---|---|---|---|---|
+| Sun 01:58 (night) | 3.9 s | 2.1 s | 0.9 s | 0.56 s | 0.21 s | 0 / 0 / 0 |
+| Sun 13:44 | 3.9 s | 2.2 s | 1.0 s | 0.66 s | 0.10 s | 0 / 0 / 0 |
+| Sun 17:55 | 4.0 s | 2.65 s | 0.96 s | 0.55 s | 0.16 s | 0 / 0 / 0 |
+| Sun 19:02 | 5.5 s | 2.7 s | 1.1 s | 0.60 s | 0.29 s | 0 / 0 / 0 |
+| **Mon 19:13** | **4.9 s** | **2.6 s** | **1.1 s** | **0.67 s** | **0.10 s** | **0 / 0 / 0** |
+
+### Verdict so far (numbers only; no cause)
+- **Mon 19:13 ≈ Sun 19:02:** every step is within ~0.6 s, no step reaches 2× a Sunday median, and there's no error, 522 or logout.
+- **The weekday afternoon (13:00–17:00) is still UNMEASURED.** This pass says nothing about it.
+- **To close it:** the passes must run while a session is open in the afternoon, by hand or with an open session. That's Porter's call (e.g. Tue 27 Oct, 14:30 / 15:30 / 16:30).
+
+
+## Weekday afternoon by hand, Tue 27 Oct (Porter's decision, inbox/QA.md 10-26)
+- **Planned:** ~10:03 (morning baseline), ~14:31, ~15:31, ~16:31. The same `u117.js`, 3 runs each, uat read only.
+  - If uat is deployed before a pass, that pass's row notes the build.
+  - The 16:31 pass closes TEST-117 with the full day table.
+- ⚠️ **They are scheduled in my session only, the same as Monday.** If the session isn't running at those times they are missed again. **The fix:** keep my session open on Tue afternoon, or nudge me at the time and I run the pass by hand (`node u117.js tue-HHMM 3`).

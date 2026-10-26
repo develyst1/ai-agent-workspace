@@ -47,3 +47,5 @@
 - **TEST-123 RE-RUN PASS (10-25 19:50, sid, back d33e249):** run twice ⇒ each row posted once, run 2 nothing. TASK-749 (304212d + d33e249) ready for uat together with the backlog SQL first.
 - **Owner 10-25:** *"B ขึ้น uat พรุ่งนี้"*: reversal option B ⇒ **TASK-750** (one-off script, dry run first, sid rehearsal on the 4 QA dups, then the owner runs it on uat). uat deploy tomorrow 10-26.
 - **TASK-750 rehearsal on sid: FULL PASS (10-25 21:13).** Dry run 4 / 7,250 → commit 6 reversals → commit 0 → SQL 1 = 0 rows, outbox 0, 0 other changes. uat next (10-26), after the 749 deploy: SQL 1+2 → dry run with `.env.uat` (host ≠ sid 172.17.172.206) → commit → commit = 0.
+- **10-26: the 18 Oct duplicates REVERSED on uat** (TASK-750, owner ran it: 13 reversals, 17,751.00; 2nd run 0). After-check SQL pending.
+- ✅ **10-26 after-check on uat: SQL 2 = 0 rows.** No duplicate sales remain since 09-06.

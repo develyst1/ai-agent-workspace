@@ -184,3 +184,13 @@ The full TEST-122 / TEST-123 reports follow once DR-4 is answered.
 
 
 > **⛔ CORRECTION (Tanya, 2026-10-25 20:3x, from TEST-124):** in round 1 / run 1 above, "QA Link 083 H" `a37c8c46` was **NOT** "never posted". It was auto-attended by a day-end job (check-in source `end-of-day`) and was most likely posted by sid's own 23 Oct run. Run 1's 12:12 post was therefore already a duplicate (TASK-750's dry run shows 4 live sales on it). I had not snapshotted it before the run.
+
+
+### Monday re-read after sid's own day-end (Mon 26 Oct, 19:15 Bangkok; sid's task looks like 18:30), READ ONLY
+- **All 8 rows are byte-identical to Sunday's 20:19 snapshot:**
+  - the re-run's F1 / F3 / N4 still posted once at 12:48:34 UTC; F2 not posted, voucher 2 / 5 h; N1 / N3 CANCELLED;
+  - the old F1 / F3 / P4 / "QA Link 083 H" still have their 12:15:50 sale live (and per TEST-124, one reversal each / three on `a37c8c46`);
+  - nothing re-attended;
+  - no other row dated 17–25 Oct has a sale posted after 25 Oct 12:45 UTC.
+- **⇒ The fixed sweep (`d33e249`) posted nothing again**, IF sid's job ran tonight. I can't see `job_runs`; one line from the owner would confirm it:
+  `SELECT run_date, started_at, summary FROM job_runs WHERE job = 'end-of-day' AND run_date = '2026-10-26';`

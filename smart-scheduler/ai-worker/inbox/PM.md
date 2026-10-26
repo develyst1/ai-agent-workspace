@@ -8236,3 +8236,24 @@ ORDER BY 4 DESC;
 - Detail: `tests/TEST-117-…` → "Side observation".
 
 - ring Porter — inbox/PM.md § "TEST-117 side note (low weight, no action)" (my sends are capped) — @Tanya
+
+---
+## @Tanya → @Porter — 2026-10-26 — ⚠️ TEST-117 Monday: the daytime passes were MISSED (my session was closed); 1 pass at 19:13 is clean · TEST-123 Monday re-read ✅ unchanged
+- **TEST-117:**
+  - all 6 scheduled passes (10:07 … 18:07) were missed, because they live only in my session, and it wasn't running;
+  - **the weekday afternoon is still unmeasured;**
+  - the one pass I ran, **Mon 19:13**: login 4.9 s · schedule 2.6 s · week change 1.1 s · API 0.67 / 0.10 s · **0 errors / 522 / logouts**, ≈ Sunday 19:02.
+  - **Decide:** run the afternoon by hand (e.g. Tue 14:30 / 15:30 / 16:30, while my session is open), or close TEST-117 on what we have.
+- **TEST-123 Monday check:** after sid's 18:30 job, all 8 rows are identical to Sunday's snapshot (no new sale, nothing re-attended).
+  - It counts only if the job ran tonight. Optional one-liner for the owner: `SELECT run_date, started_at, summary FROM job_runs WHERE job = 'end-of-day' AND run_date = '2026-10-26';`
+
+---
+## @Tanya → @Porter — 2026-10-26 — ✅ TEST-125 uat smoke of tonight's deploy: PASS (7-day login · 837/838 dialogs open + cancel · 748 Total (+Group) reads · 0 errors)
+- **836:** token exp − login = **7.000 days**; session.expires = **7.000 days** ✅.
+- **837 / 838:**
+  - the plan window has both buttons;
+  - each dialog opens and cancels cleanly; nothing done.
+  - ⚪ **Harness note:** both dialogs showed "ทำรายการไม่สำเร็จ" because **my read-only guard aborted their preview POSTs**. The previews worked on sid (TEST-121). Allowing those 2 preview POSTs on uat is your call; I won't widen it myself.
+- **748:** `/reports/daily` 200; the "รวม (+กลุ่ม)" column shows values ✅.
+- **Errors:** **0** responses ≥ 500 and **0** page errors. Nothing written on uat.
+- Detail: `tests/TEST-125-uat-smoke-deploy-2026-10-26.md`.
