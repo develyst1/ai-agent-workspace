@@ -103,3 +103,56 @@
 - At 17:55 the schedule page's first load is about **0.5 s slower** than at night (2.65 vs 2.1 s).
 - Everything else is the same. **No slowdown of the size the customer describes**, and no error, in this pass.
 - This is one quiet Sunday-evening sample (3 runs), not a weekday at peak; listed, not judged.
+
+
+## Pass 3 · 19:02 (the "~18:00" pass; my scheduled 18:03 run fired late, so labelled by its real time)
+| Run (start) | Login | Schedule page | Week change | Search (screen) | API /calendar (week) | API search |
+|---|---|---|---|---|---|---|
+| #1 19:02:08 | 4,637 ms | 2,700 ms | 980 ms | 99 ms | 600 ms · 200 | 290 ms · 200 |
+| #2 19:02:20 | 6,743 ms | 2,770 ms | 1,121 ms | 50 ms | 614 ms · 200 | 89 ms · 200 |
+| #3 19:02:34 | 5,482 ms | 2,206 ms | 1,127 ms | 44 ms | 582 ms · 200 | 302 ms · 200 |
+| **Median** | **5.5 s** | **2.7 s** | **1.1 s** | **0.05 s** | **0.60 s** | **0.29 s** |
+
+**0** login failures · **0** 5xx / 522 · **0** forced logouts.
+
+## The day (Sun 25 Oct 2026), medians of 3 runs each
+| Pass (real time) | Login | Schedule page | Week change | Search (screen) | API /calendar (week) | API search | Errors / 522 / logouts |
+|---|---|---|---|---|---|---|---|
+| 0 · 01:58 night | 3.9 s | 2.1 s | 0.9 s | 0.06 s | 0.56 s | 0.21 s | 0 / 0 / 0 |
+| 1 · 13:44 | 3.9 s | 2.2 s | 1.0 s | 0.06 s | 0.66 s | 0.10 s | 0 / 0 / 0 |
+| 2 · 17:55 | 4.0 s | 2.65 s | 0.96 s | 0.06 s | 0.55 s | 0.16 s | 0 / 0 / 0 |
+| **3 · 19:02** | **5.5 s** | **2.7 s** | **1.1 s** | **0.05 s** | **0.60 s** | **0.29 s** | **0 / 0 / 0** |
+
+(The scheduled 10:03 / 16:03 / 18:03 runs each fired late; the real times are above. No pass hit the morning 10:00 slot.)
+
+## Verdict (numbers only; no cause)
+- **No slowdown of the size the customer describes, and not one error, 522 or forced logout in 12 runs today.**
+- **What does move from night to evening:**
+  - the schedule page's first load, **2.1 s → 2.7 s** (+0.6 s);
+  - the login, **3.9 s → 5.5 s** (+1.6 s, with one 6.7 s run at 19:02).
+- The week change, the API calls and the in-page search stay flat.
+- **This is a Sunday**, so the shop's load may be unlike a weekday afternoon. **The customer's report is about weekdays from about 15:00.** A weekday re-run (≈ 15:30 / 17:00) would compare like with like; Porter's call.
+- The long-session logout earlier today was a test artifact (see the CORRECTION above). **No uat logout was observed today.**
+
+
+---
+# Weekday re-run, Mon 26 Oct 2026 (Porter's GO; the afternoon 13:00–17:00 weighted)
+- **Planned passes** (same script `u117.js`, 3 runs each, uat read only, normal use): **10:07 · 13:07 · 14:37 · 15:37 · 16:37 · 18:07**.
+- They are scheduled in my session only. If a pass is missing here by the evening, the session was closed: nudge me and I run it by hand.
+- **Today the jobs fired up to an hour late**, so each pass is labelled by its real start time.
+- Results and a Monday-vs-Sunday table follow below as the passes run.
+
+
+### Side observation (low weight): an IDLE uat tab, logged in ~02:00, was sent to /login at 17:55:13
+- **What it was:** my first long-session watcher (started 02:00). It crashed in its own log formatting at 02:00:26, right after the login succeeded, so its loop never ran. Its headless tab stayed open on uat, **logged in and idle**: no checks, no clicks.
+  - The second watcher, the one with the 09:33 network artifact, is a different process.
+- **What it caught:** at **17:55:13** that idle tab was **navigated to `/login`** by the app itself. The process ended at ~21:3x.
+- **By value:**
+  - that login's token would have expired at ≈ **14:00** (login + 12 h, as the second watcher measured);
+  - the bounce came ≈ **3 h 55 min after the expiry**, not at it. An idle tab notices only when something makes it check.
+  - **The bounce came seconds before my 17:55 pass's first admin login finished** (run 1 ended 17:55:31). The same account logged in at **13:44**, while this tab's token was still valid, and that did **not** bounce it.
+  - ⇒ This is **not** "one session per user" (a new login doesn't kick an open tab). The trigger at 17:55 is unknown; most likely the app's own session re-check firing after the expiry.
+- **What it adds to L1 (the 12 h token):** consistent with it. An open tab is logged out some time after login + 12 h, at the next session check, not exactly at 12 h.
+  - **Weak:** one idle headless tab, and the trigger isn't identified.
+  - **Not a 7-day check:** uat is still on the 12 h build, and TASK-836 (7 days) is on sid only.
+- **Monday:** the planned weekday timing passes are unchanged. I won't start a new long watcher unless Porter wants one, since TASK-836's 7-day token makes L1 moot once it reaches uat.

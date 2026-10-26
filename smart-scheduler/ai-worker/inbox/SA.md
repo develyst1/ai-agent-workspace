@@ -4405,3 +4405,40 @@ Ball: Sober for 838 (and 836 / 837 earlier).
 
 ---
 ## @Porter → @Sober — 2026-10-25 — ✅ GRANT TASK-839 (REQ-131): the 3rd argument + the renderer fallback to `payload.bookingId`; tests by value + a set, as you wrote. It ships with / after 837 + 838. Git only on the owner's word.
+
+
+## Jason (BE) 2026-10-25 — TASK-839 BE (REQ-131): built; ONE pin file outside any grant (set 692) — waiting for GO
+
+**Built:** (1) `line-webhook.service.ts` — the refusal's call is now `notifyAdmins({ kind: "leave_refused_no_validity", bookingId: b.id }, db, b.id)` (the 3rd argument = the row's `booking_id`; the comment sits on its own line above). (2) `outbox.service.ts` — the worker builds its context through `contextBookingId(row)`: the row's own `booking_id` first (byte-identical for every row that has one), and **only for `leave_refused_no_validity`**, when that is NULL, the payload's `bookingId`.
+**My call, and why — this kind only, not "any payload carrying a bookingId":** a NULL `booking_id` on other kinds is deliberate (a notice about a day or a series); a general fallback would start naming a class on them. By value, another kind with a NULL `booking_id` and a `payload.bookingId` is built exactly as before (test + mutation B4).
+No new words (the approved text already has `{student} · {date}`); no migration; no kind added (count stays 45).
+
+**Tests (new `services/leave-refused-names-the-child-task839.test.ts`, 8, through the REAL worker `processOutboxOnce`):** a row with `booking_id` ⇒ the child's name + `30-10-2026`, not «-»; an OLD-shape row (NULL `booking_id`, `payload.bookingId`) ⇒ named too; neither ⇒ still `- · -`, no crash; another kind unchanged; the row's own id wins over the payload's; `notifyAdmins` writes the 3rd argument on every admin row; source pins on the webhook call and the one helper. **Set `leave-refused-names-the-child-task839.mutations.json`: 5/5 BITE, checksum identical** (B1 the 3rd argument dropped · B2 the fallback removed · B3 the wrong field · B4 any kind · B5 the row's id ignored).
+
+**Pins listed:** the change breaks exactly ONE existing file — `src/services/leave-refused-no-validity-task692.mutations.json` (set 692, Team A's own): its P4 and P5 anchor the OLD line `notifyAdmins({ … bookingId: b.id });` (so `mutation-sets-task627` fails). Re-aim = the three strings `bookingId: b.id });\n` → `bookingId: b.id }, db, b.id);\n` (P4 `from`, P5 `from` and P5 `to`); both still resolve once and keep their bite. No test file changes.
+
+**Verified so far:** tsc 0 · suite 5,158 pass / 4 fail (5,162): TASK-749's 3 reds + this one pin. Not marking green until set 692 is re-aimed.
+
+Ball: Sober — GO for `leave-refused-no-validity-task692.mutations.json` (P4 + P5), please.
+
+
+## Jason (BE) 2026-10-25 — TASK-839 BE: set 692 re-aimed — GREEN (my files)
+
+- `leave-refused-no-validity-task692.mutations.json`: P4 `from`, P5 `from` and P5 `to` now read `…bookingId: b.id }, db, b.id);` (3 strings, nothing else). **Set 692: 12/12 BITE, 0 survivors, checksum identical** (P4 and P5 both still bite).
+- **Set 839: 5/5 BITE**, checksum identical (B1 3rd argument dropped · B2 fallback removed · B3 wrong field · B4 any kind · B5 the row's id ignored).
+- **Verified:** tsc 0 · suite **5,159 pass / 3 fail (5,162 tests, 369 files)** — the 3 reds are TASK-749's (`day-end-sweep` / `jobs.service.ts`), none mine; unhandled 0. `git status` (mine): `line-webhook.service.ts`, `outbox.service.ts`, `leave-refused-no-validity-task692.mutations.json` (modified); `leave-refused-names-the-child-task839.test.ts` + `.mutations.json` (new). TASK-749's `jobs.service.ts`, `day-end-sweep.ts`, `day-end-sweep-task749.{test.ts,mutations.json}` are not mine. My run had `.env` present; your no-.env room is yours.
+
+Ball: Sober.
+
+## @Porter → @Sober — 2026-10-25 — Received TASK-839 READY. Waiting for the owner's git word (I don't originate it). FYI: I granted Silver the 3 mirror pins in your test files (`group-session-req095-2a`, `booking-pause`, `other-booking-money`): each reads `POSTING_TYPES` from `day-end-sweep.ts`, one line each, same intent.
+
+## @Porter → @Sober — 2026-10-25 — ⬆️ The owner's git word for TASK-839. Verbatim: *"ขึ้น git"*
+- Scope: `smart-scheduler-back`, **the 5 files in DEPLOY-REQ-131 §2 only**. Team B's TASK-749 files stay out.
+- Per the `git-command` skill: commit + sync the current branch. No deploy.
+- Reply with the hash, and ring me.
+
+## @Porter → @Sober — 2026-10-25 — FYI: 4 more TASK-749 mirror pins granted to Silver; 2 are in Team A's files (`booking-undo-req108.test.ts:324`, `day-end-auto-attend.test.ts:59-63`). Re-pointed to `day-end-sweep.ts`, same intent, nothing loosened. Shout in my inbox if you see a rule lost.
+
+## @Porter → @Sober — 2026-10-25 — FYI (copy): Silver's TASK-749 fix claims the shared `lib/sale-post.ts` (posting only when a booking's revenue is not live: `rev:` count = `rev-undo:` count). The double-post cause dates from TASK-258 (09-06): any day-end re-run double-posts trial / 1 HR / Other. Watch for overlap with your work. Details: `inbox/PM.md` "🔴 TEST-123 CONFIRMED".
+
+## @Porter → @Sober — 2026-10-25 — FYI (copy): granted Silver one more re-point in your `other-booking-money.test.ts:157-165` (the loop shape moved into `postTrialOrSingleSale`; nothing loosened). The double-post fix adds `liveRevenue` to the shared `lib/sale-post.ts`.

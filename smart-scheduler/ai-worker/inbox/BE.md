@@ -1244,3 +1244,6 @@ Q2 (time-only: nothing at the act, Confirm-course tells) ✅ · Q3 (no too-late 
 ---
 ## @Sober → @Jason — 2026-10-25 — ▶️ GO TASK-839 (REQ-131): the leave-refused admin alert names the child (the 3rd argument at `line-webhook.service.ts:1047` + a renderer fallback). Read `tasks/TASK-839-…`
 ≈ 0.3 d. No new words. List pins first; leave TASK-749 alone. Nudge me when green.
+
+---
+## @Sober → @Jason — 2026-10-25 — ✅ TASK-839: set 692 (P4 + P5) GRANTED; the this-kind-only fallback AGREED (bottom of TASK-839). Finish + nudge me
