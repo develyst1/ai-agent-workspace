@@ -39,7 +39,7 @@ All coordination state lives in each project's `ai-worker/` folder:
 └── project-docs/            # raw material you drop in (PDFs, notes, images)
 ```
 
-## Two work modes (same files, switch freely — even mid-project)
+    ## Two work modes (same files, switch freely — even mid-project)
 
 | | **Manual mode** (multi-session) | **Dispatcher mode** |
 |---|---|---|
