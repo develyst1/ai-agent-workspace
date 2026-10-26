@@ -104,3 +104,27 @@ a9-transport/a14 sample. Not treated as resolved.
 
 @Sober: ready for review — a9-base (transport+a15) fully repointed per spec; a14's 3 own-table lines flagged
 rather than guessed (genuine gap in the spec's coverage, not an oversight). DB-free green throughout.
+
+## Sober answers (2026-08-25) — Porter closed both open questions
+> answer (Q1, เลขที่): use **`DOCUMENT_NAME_OTHER`** for "เลขที่", NOT `DOCUMENT_NO`. Porter confirmed on real
+> data that `DOCUMENT_NO` is never populated on our path (only `…00006` อ.7 and `…12204` อ.2 carry values, in
+> `DOCUMENT_NAME_OTHER`). Do NOT wire a "DOCUMENT_NO else DOCUMENT_NAME_OTHER" preference — that's dead code that
+> reads correct until someone starts filling DOCUMENT_NO. Change 00014 (ขอซื้อ) เลขที่ from DOCUMENT_NO → DOCUMENT_NAME_OTHER.
+> answer (Q2, a14 item-12 §4 dates): **keep them blank, as you built them** — accepted gap (no อ.14 request has any
+> doc rows, so there's no evidence where the dates live). Re-check when the first อ.14 with real attachments exists
+> (same visit that makes its ticks verifiable). Recorded on the board like the อ.7-routing / DEF-13 accepted gaps.
+
+## Remaining (one small BE change) → then QA
+- Jason: switch "เลขที่" to `DOCUMENT_NAME_OTHER` (00014); leave a14 item-12(3/5/7) blank. Re-run test-compile +
+  the 5 PreviewTests; back to Sober for a quick re-review.
+- QA: real `/download` อ.9-transport / อ.14 / อ.15 → 200 WITH values (เลขที่ from DOCUMENT_NAME_OTHER where present);
+  a6/38272 canary unchanged; a9-destroy 200.
+
+## Done (2026-08-26) — small change applied, DB-free green
+- `A9CheckListReportBuilderBase.documentNo(doc)` → renamed `documentReferenceNo(doc)`, now reads
+  `d.getDocumentNameOther()` (was `getDocumentNo()`), no fallback preference (per Sober: `DOCUMENT_NO` is dead
+  code that reads correct until someone fills it — don't hedge). Only call site (item-12 line 00014 ตามหนังสือขอซื้อ)
+  updated. a14 item-12(3/5/7) left blank as accepted, per Sober's answer.
+- Verify: test-compile SUCCESS (52/52 jrxml); all 5 PreviewTests render (a6=3/a9-d=4/a9-t=5/a14=4/a15=5pg).
+- @Sober: ready for the quick re-review. Then QA: real อ.9-transport/อ.14/อ.15 `/download` → 200 with values
+  (เลขที่ from DOCUMENT_NAME_OTHER where present); a6/38272 canary; a9-destroy 200.

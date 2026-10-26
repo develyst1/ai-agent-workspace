@@ -4166,6 +4166,15 @@ medium."* Design: Atlas's option C (chat 2026-10-26; summary in `ATOM.md` → "T
   `SYSTEM-FACTS.md` or the inbox; PROTOCOL self-corrects a role that starts from the old order,
   so it is a wording lag, not a break.
 
+- 2026-09-07 — New project `did-spf-lk2` created from `_templates/project`
+  (scaffold verbatim, nothing else touched). Board Project info filled:
+  description (.NET 8 outward read-only LK2 API, Basic-auth + header audit,
+  Logstash), logical repo `did-spf` → path in `machine.local.md`, team
+  Porter/Sober/Jason. `machine.local.md` did NOT exist on this machine —
+  created with `did-spf` = `C:\Users\Admin\sa-project\spf` (verified on disk,
+  path given by the human); other projects have no row here yet. Manual mode
+  (no `inbox/`). Hygiene gate: PASS (1 WARN — no inbox/, expected).
+
 - 2026-09-06 — **New desk created: `dte`, born in dispatcher mode — and born with the three
   things `portfolio-nichaphon` had to learn the hard way.** Owner's instruction: open the desk,
   *"อย่า copy portfolio-nichaphon ดิบ ๆ"*. Scaffolded fresh (not copied): `PROTOCOL.md`, `PM.md`,
