@@ -1,6 +1,6 @@
 # REQ-5000: Voucher booking cannot find a child who has a voucher
 
-- Status: DRAFT — waiting on Tanya's read-only investigation on `uat` (step 1 below), then `READY_FOR_SA`
+- Status: CLOSED — no code change (owner via Atom 2026-10-26 18:13: "ปล่อยไว้แบบเดิม จบเคส"); cause = data (TEST-5000), fixed by staff in-app
 - Priority: HIGH (a live bug on the customer's system)
 - Requested: 2026-10-26 by the owner, relayed by Atom (17:38)
 - Deadline: none stated
@@ -55,4 +55,15 @@ they sold. Goal: every child who holds a usable voucher is findable on the Vouch
 ## Questions
 
 - Q1 (Porter → owner, 2026-10-26): which child (name / nickname / parent phone), and how Tanya logs in to `uat`
-  read-only (no credentials in `project-docs/`). — open
+  read-only (no credentials in `project-docs/`).
+  > answer (owner via Atom, 2026-10-26 17:48): child = **"Lewis"** · `uat` login is in the workspace-root
+  > `machine.local.md` → section `smart-scheduler-atom QA credentials` (never print or copy the values) ·
+  > Tanya may also READ `../smart-scheduler/project-docs/` (read-only). Section heading confirmed present by Porter.
+- Q2 (owner via Atom, 2026-10-26 18:09): "มีทางที่ให้ขวัญทำเองมั้ย" — can staff fix Lewis Liu (archived, voucher 11 h left) in the app?
+  > answer [PM, code read, not run on uat]: yes. People → switch "แสดงที่เก็บแล้ว" → row "Lewis Liu" (badge "เก็บแล้ว") →
+  > "คืนสถานะ" (`POST /students/:id/unarchive`, TASK-392; back `parent.service.ts` `unarchiveStudent`, front
+  > `PeopleContent.tsx`). Refused only if the parent is archived or already has 5 active children. Duplicate "Lewis Lui"
+  > (0 vouchers) can then be archived the same way if it has no future bookings. Code read on branch `atom`; the uat build
+  > is older, but Tanya's probe shows uat already serves `?archived=true` (TEST-5000 [6]). Button not seen on uat screen.
+- Q3 (Porter → owner, 2026-10-26 18:11): archive rule for a child with a live voucher — block / warn / keep?
+  > answer (owner via Atom, 2026-10-26 18:13): "ปล่อยไว้แบบเดิม จบเคส" — keep as is, no code change; Khwan un-archives Lewis Liu herself. Case closed.

@@ -79,3 +79,9 @@ where the owner sees them. When he is ready he opens Atlas with
 ---
 
 <!-- newest entry goes directly below this line -->
+
+## F-001 — 2026-10-26 — Porter (PM) — drained and appended inboxes with python instead of the inbox tools
+- **Status:** NEW
+- **What happened:** On REQ-5000 I appended to `inbox/QA.md` (17:42, 17:48) and drained `inbox/PM.md` (18:10) by rewriting each file with a python heredoc. The desk's way is `>>` as its own command to append and `drain-inbox.mjs` to drain. It came to light at 18:14, when the `block-inbox-write.sh` hook refused a combined command.
+- **Rule involved:** the hook message: "an inbox is appended with >> (its own command) and drained only with drain-inbox.mjs".
+- **Why the rule did not stop it:** the hook only matches some command shapes, and I did not check how the desk handles inbox writes before editing the files.

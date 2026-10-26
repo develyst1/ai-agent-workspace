@@ -11,3 +11,4 @@
 ---
 
 <!-- รายการใหม่ต่อท้ายบรรทัดนี้ -->
+2026-10-26 · owner (via Atom 18:13) · operator · Decided: archiving a child who still has a usable voucher stays ALLOWED, no block, no warning ("ปล่อยไว้แบบเดิม จบเคส") · Covers: student archive with an ACTIVE voucher (REQ-5000, Lewis Liu) · Neighbouring cases: the same child with a live course package — not asked; treat as the same rule unless the owner says otherwise · Open: nothing pending; a stranded voucher is fixed by staff with People → แสดงที่เก็บแล้ว → คืนสถานะ

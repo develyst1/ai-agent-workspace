@@ -27,46 +27,31 @@
 > than one "RESUME HERE" heading fails, and being more than 2 days behind the
 > newest log fails.
 
-**Written:** YYYY-MM-DD by <role> · **Newest log at the time:** `log/YYYY-MM-DD.md`
+**Written:** 2026-10-26 18:15 by Porter · **Newest log at the time:** `log/2026-10-26.md`
 
 ## What we are in the middle of
 
-*The 1–3 threads that are actually live. Not everything open — what is moving.*
-
-- …
+- Nothing live. REQ-5000 (Lewis, voucher tab) CLOSED 2026-10-26 18:13, no code change [owner-approved 2026-10-26].
 
 ## What each thread is waiting on, and from whom
 
-*Name the role or the person. "Waiting on review" with no name is how a thread
-stalls for a week without anyone noticing.*
-
 | Thread | Waiting on | Since | What unblocks it |
 |---|---|---|---|
-| | | | |
+| REQ-5000 data fix on uat | Khwan (customer staff) restores "Lewis Liu" in-app | 2026-10-26 | nothing from the team [owner-approved 2026-10-26] |
+| TEST-5000 board row | Tanya closes her row | 2026-10-26 | pointer in her inbox [team-proposed] |
 
 ## Decided recently, not yet in a REQ
 
-*What the owner settled that has not reached a requirement file yet. This is the
-gap where decisions get lost between his sentence and the artifact.*
-
-- …
+- Archiving a child with a live voucher stays allowed — `DECISIONS.md` 2026-10-26 [owner-approved 2026-10-26].
 
 ## What becomes urgent, and when
 
-*Dates, deploy windows, customer commitments.*
-
-- …
+- Nothing dated.
 
 ## What we already tried that did NOT work
 
-*So the next session does not spend an hour rediscovering it. This section earns
-its place more than any other — keep it even when it is long.*
-
-- …
+- Nudging Tanya-SOMA from Porter-SOMA: SendMessage "not reachable" (2026-10-26 17:48); why is Atlas's question [carried-over].
 
 ## Open questions with the owner
 
-*Asked and unanswered. If it has been answered, it belongs in `SYSTEM-FACTS.md`
-and comes off this list.*
-
-- …
+- None.

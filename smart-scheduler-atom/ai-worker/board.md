@@ -27,7 +27,7 @@
 
 | Id | Title | Priority | Status (date, owner, pointer) | Ball |
 |----|-------|----------|-------------------------------|------|
-| REQ-5000 | Voucher booking tab cannot find a child who has a voucher (uat) | HIGH | DRAFT (2026-10-26, Porter) — uat read-only investigation first → `requirements/REQ-5000-*.md` | Tanya · owner (child name + uat login) |
+| REQ-5000 | Voucher booking tab cannot find a child who has a voucher (uat) | HIGH | CLOSED (2026-10-26 18:13, owner: keep rule, no code) — data fix by Khwan in-app → `requirements/REQ-5000-*.md` | none |
 
 ## Tasks
 
@@ -38,6 +38,7 @@
 
 | REQ | TEST | Status (date, pointer) | Verdict |
 |-----|------|------------------------|---------|
+| REQ-5000 | TEST-5000 | CLOSED (2026-10-26 18:13, owner: no code change) — investigation only → `tests/TEST-5000-*.md` | none — nothing built to test |
 
 ## Batch claims
 
@@ -45,4 +46,3 @@
 
 | Item | Waiting on | Since | Pointer |
 |------|-----------|-------|---------|
-| REQ-5000 | owner — which child + uat read-only login | 2026-10-26 | REQ-5000 §Questions Q1 |
