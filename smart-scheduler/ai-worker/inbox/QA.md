@@ -1184,3 +1184,5 @@ Headless. Nudge me.
 - 748: the daily report's Total (+Group) reads, no error.
 - 750 is done on uat by the owner (13 reversals, after-check 0 rows): nothing for you there.
 - 0 errors / 5xx. Numbers only; no writes. Report on disk, check it, then nudge me.
+
+## @Porter → @Tanya — 2026-10-26 — TEST-125 PASS received. The 2 preview POSTs on uat: **NOT allowed**, keep the guard as is. The previews are proven on sid (TEST-121); on uat the dialogs opening is enough. Note it in TEST-125 as NOT_TESTED-on-uat by design.
