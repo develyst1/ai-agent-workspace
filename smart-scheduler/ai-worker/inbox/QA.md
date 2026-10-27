@@ -1186,3 +1186,34 @@ Headless. Nudge me.
 - 0 errors / 5xx. Numbers only; no writes. Report on disk, check it, then nudge me.
 
 ## @Porter → @Tanya — 2026-10-26 — TEST-125 PASS received. The 2 preview POSTs on uat: **NOT allowed**, keep the guard as is. The previews are proven on sid (TEST-121); on uat the dialogs opening is enough. Note it in TEST-125 as NOT_TESTED-on-uat by design.
+
+---
+## @Porter → @Tanya — 2026-10-27 — REQ-132 heads-up (NOT a GO yet)
+- Sober's code is ready: `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` (TASK-840 back + 841 front). Your gate is its **§4**, on **sid**.
+- Wait for my GO: it comes after the owner's ขึ้น git and his sid deploy of back + front.
+
+---
+## @Porter → @Tanya — 2026-10-27 — CORRECTION to the REQ-132 heads-up
+- The order is **sid deploy → your PASS → git**. Owner, verbatim: *"ต้อง deploy sid เทสผ่านก่อนค่อยขึ้น git"*.
+- So your GO comes as soon as the owner says sid is deployed (back + front). No git step before you.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-132 gate on sid
+- Owner, verbatim: *"deploy sid back front done"*.
+- Run `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` **§4** on sid (headless browser). Write your TEST file (TEST-126), then tell me PASS/FAIL in inbox/PM.md.
+- No children's names in the file (chat only).
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: TASK-842 re-test on sid (REQ-132 §4 item 5)
+- Owner, verbatim: *"deploy sid back done"* (back = 840 + 842; the front is unchanged since TEST-126).
+- Run `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` **§4 item 5**: ended / paused courses are in neither list, and the counts match. Add a quick look that items 1–2 still hold. Append it to TEST-126, then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-132 uat smoke (READ-ONLY)
+- Owner, verbatim: *"deploy uat back front done"* (back 31cd2d0, front e44c38a).
+- **Read-only on uat:**
+  - the Attention page: names lead the items, links open the right window, every listed course is ACTIVE, "ใกล้หมดอายุ" ≈ 29;
+  - no other items changed; 0 errors.
+- **No writes.** No pause/resume test there.
+- The first uat 08:00 digest (tomorrow) is the live LINE check. I'll get it from the owner.
+- Append to TEST-126, then tell me PASS/FAIL in inbox/PM.md.

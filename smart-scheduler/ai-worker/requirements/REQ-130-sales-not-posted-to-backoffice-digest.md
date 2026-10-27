@@ -49,3 +49,5 @@
 - **TASK-750 rehearsal on sid: FULL PASS (10-25 21:13).** Dry run 4 / 7,250 → commit 6 reversals → commit 0 → SQL 1 = 0 rows, outbox 0, 0 other changes. uat next (10-26), after the 749 deploy: SQL 1+2 → dry run with `.env.uat` (host ≠ sid 172.17.172.206) → commit → commit = 0.
 - **10-26: the 18 Oct duplicates REVERSED on uat** (TASK-750, owner ran it: 13 reversals, 17,751.00; 2nd run 0). After-check SQL pending.
 - ✅ **10-26 after-check on uat: SQL 2 = 0 rows.** No duplicate sales remain since 09-06.
+
+- ✅ **LIVE on uat 2026-10-26 (TEST-125 smoke PASS); Khwan told 2026-10-27** (`COPY-DRAFT-khwan-uat-release-2026-10-26.md`, sent by the owner).

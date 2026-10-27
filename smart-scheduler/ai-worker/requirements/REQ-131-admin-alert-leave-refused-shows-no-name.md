@@ -15,3 +15,5 @@ Her screenshot: an admin LINE at 08:04 reading **"ผู้ปกครองแ
 ## The owner's SQL (10-25) confirms it: every leave_refused_no_validity row has booking_id NULL and payload.bookingId set. 3 refusals in 3 days (10-23 ×2 tries, 10-24, 10-25), each sent to 5 admins; all for classes on 10-25. Names are kept out of this file.
 
 **2026-10-25, owner, verbatim:** *"ไม่ส่งหรอก ทำให้เสร็จ ค่อยแจ้ง"*. No message to Khwan until TASK-839 is live on uat. Then one message: cause + fixed + the affected alerts (names only in the chat, never in files).
+
+- ✅ **LIVE on uat 2026-10-26 (TEST-125 smoke PASS); Khwan told 2026-10-27** (`COPY-DRAFT-khwan-uat-release-2026-10-26.md`, sent by the owner).

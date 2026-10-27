@@ -4442,3 +4442,97 @@ Ball: Sober.
 ## @Porter → @Sober — 2026-10-25 — FYI (copy): Silver's TASK-749 fix claims the shared `lib/sale-post.ts` (posting only when a booking's revenue is not live: `rev:` count = `rev-undo:` count). The double-post cause dates from TASK-258 (09-06): any day-end re-run double-posts trial / 1 HR / Other. Watch for overlap with your work. Details: `inbox/PM.md` "🔴 TEST-123 CONFIRMED".
 
 ## @Porter → @Sober — 2026-10-25 — FYI (copy): granted Silver one more re-point in your `other-booking-money.test.ts:157-165` (the loop shape moved into `postTrialOrSingleSale`; nothing loosened). The double-post fix adds `liveRevenue` to the shared `lib/sale-post.ts`.
+
+## @Porter → @Sober — 2026-10-27 — REQ-132 (new, small): admin กุ้ง asks if she can see WHO is behind the digest's "คอร์สที่ใกล้ใช้ครบ: 48"
+- File: `requirements/REQ-132-digest-nearly-finished-courses-who.md` (her words verbatim, my code read).
+- My read, to confirm or correct: the attention panel lists the items, but the label is `course <size> · เหลือ <n>` with no child and no link (`lib/attention.ts:278-289`, `AttentionContent.tsx` `CHECK_LINKS`).
+- Answer 1–3 in the REQ: what she sees today + the menu path; any existing page where she can already see them (self-serve); if none, the smallest change + size (name / parent / link), and whether "ใกล้หมดอายุ: 43" needs the same. Analysis only; no build yet.
+
+---
+## @Porter → @Sober — 2026-10-27 — REQ-132: GO on option B (names + links)
+- Owner, verbatim: *"B"* (after I confirmed the LINE digest stays counts-only; he did not want the LINE message longer).
+- Scope = your answer 3 **with** the FE link:
+  - BE: the child's name on every Attention item, for both checks (ใกล้ใช้ครบ + ใกล้หมดอายุ); DUO names both; reuse the name helper; no new words; LINE digest unchanged;
+  - FE: each item links to that course in Bookings (your pick of target).
+- No parent/phone. ≈ 0.6 d. Team A, TASKs from **840**.
+- Path as usual: sid → Tanya's pass → the owner's ขึ้น git / deploy. Send me "ready for QA" when it is on sid-ready code.
+- Detail: `requirements/REQ-132-digest-nearly-finished-courses-who.md` → "Owner's decision".
+
+---
+## @Fern → @Sober — 2026-10-27 — TASK-841 FE: PIN LIST (before any edit). Front tree is clean (837 + 838 are committed `f9f7f9c`). Starting now: no pin needs EDITING
+**Files:** `AttentionContent.tsx` (a `link`ed item's label → `<Anchor component={Link} href=…>`; no-link items byte-identical; `CHECK_LINKS` untouched) · `types/app/attention/index.ts` (`AttentionItem.link?: { kind: "course" | "voucher"; id: string } | null`) · NEW `lib/scheduler/attention-link.ts` (the one href builder) · `BookingsContent.tsx` (the ONE new URL read: `?course=<id>` / `?voucher=<id>` only) · `bookings/page.tsx` (a `<Suspense>` around it, which `useSearchParams` needs at build) · NEW test + `scripts/mutation/task-841.json`. **Not written yet in TASK-840's file: Jason's item shape — I built to the `link: { kind, id }` in the task text.**
+**Voucher answer (for the report):** a voucher CAN be opened by id — the plan window is one component for both (`PlanModal` + `GET /entitlements/:id/plan`, the voucher card already calls the same `setPlanId`). So `link.kind === "voucher"` ⇒ `/scheduler/bookings?voucher=<id>` opens that voucher's plan window (and lands on the Vouchers tab); no search-prefill fallback needed.
+**Pins that read these files (all checked, none moves):** `action-gate.test.ts:48-52` (BookingsContent's 5 `can()` sites; I add none) · `course-lifecycle.test.ts:80` (`BookingsContent` must not contain `courseStatus`) · `duo-subjects.test.ts:54` (a `not.toContain`) · `rental-row.test.ts:142` (`<RentalModal` stays) · `t-arg-shape.test.ts:227` (`const fmtTime` in AttentionContent stays) · mutation `task-658.json` Q8 (BookingsContent `<Group justify="flex-end" …>` anchor stays). I will re-run `task-658.json` after.
+**One behaviour I am choosing (say if wrong):** the window opens only after the plan LOADS and its kind matches the param (`?course=` needs a course, `?voucher=` a voucher); an unknown / wrong-kind id opens nothing, no toast. An ENDED course whose plan loads WILL open (its plan is readable and shows the ended state) — the task text said an ended id "doesn't open"; tell me if you want that excluded.
+
+
+## Jason (BE) 2026-10-27 — TASK-840 BE (REQ-132): the Attention items name the child + a `link` — GREEN
+
+**Built (back):**
+- `lib/attention.ts`: a `childLead(row)` helper on THE one name rule (`studentNamesOf` — a DUO course names both children, `A & B`). The labels of the two checks now lead with it: `nearly_finished_courses` → `<child> · course <size> · เหลือ <n>`; `expiring_entitlements` → `<child> · course <size> · <expiry>` and `<child> · voucher <hours>h · <expiry>`. A row with no student keeps its old label (no leading separator).
+- **No extra read, no N+1:** `getCourses()` already loads `student` + `coStudent` with each course and `getVouchers()` loads `student` with each voucher — the checks just read them.
+- `AttentionItem` (+ `attention.service.ts`'s item type) gains an optional `link`; only these two checks set it. Every other check: **no `link` key**, labels byte-identical.
+- **The LINE digest is unchanged and counts-only for these two checks** (`namesPeopleInDigest` stays unset; names stay behind the login). Who sees the page is unchanged (`menu:attention`; the mask keeps `link` through).
+- No new words; no migration; no kind; no pin touched (suite 0 red).
+
+**Item shape — for @Fern (`GET` the attention checks; each item of the two checks):**
+```
+{ "id": "<course|voucher id>",
+  "label": "น้องเอ · course 10 · เหลือ 2",            // nearly_finished_courses
+  "link": { "kind": "course", "id": "<course id>" } }
+
+{ "id": "…", "label": "น้องเอ & น้องบี · course 10 · 2026-08-10", "link": { "kind": "course",  "id": "<course id>"  } }   // expiring_entitlements — a course (DUO: both names)
+{ "id": "…", "label": "น้องบี · voucher 10h · 2026-08-10",       "link": { "kind": "voucher", "id": "<voucher id>" } }   // expiring_entitlements — a voucher
+```
+`link.kind` ∈ `"course" | "voucher"`; `link.id` = the item's `id`. Other checks' items: `{ id, label, hint? }` exactly as before — no `link` key. The label's date part is still the raw `expiryDate` (ISO) as before — I did not change its format (REQ-132 is about the name); say if the front should format it.
+
+**Tests (new `src/lib/attention-names-the-child-task840.test.ts`, 11, by value):** course with 2 left for «น้องเอ» ⇒ `น้องเอ · course 10 · เหลือ 2` + link course · DUO ⇒ `น้องเอ & น้องบี · …` · no student ⇒ the old label · a nickname-less child reads by name · expiring course AND voucher ⇒ both lead with the child, link kind right for each · studentless voucher keeps its label · **the LINE digest is BYTE-IDENTICAL (TH and EN) with or without names, and contains no child name** · both checks' `namesPeopleInDigest` unset · `unconfirmed_bookings` / `teachers_without_line` unchanged, no `link` · source pin (one helper on `studentNamesOf`, exactly 3 `link` sites).
+**Set `attention-names-the-child-task840.mutations.json`: 7/7 BITE, 0 survivors, checksum identical** — C1 name dropped · C2 DUO shows one child · C3 the digest gains names · C4 `link.kind` wrong for a voucher · C5 the link missing on nearly-finished · C6 another check gains a `link` · C7 a voucher not led by the child.
+
+**Verified:** tsc 0 · full suite **5,224 pass / 0 fail (372 files)**, unhandled 0 (TASK-749's earlier reds are gone from the tree). `git status` (all mine): `src/lib/attention.ts`, `src/services/attention.service.ts` (modified); `attention-names-the-child-task840.test.ts` + `.mutations.json` (new). Saved: `GIT-STATUS-back-840-2026-10-27.txt`. My run had `.env` present; your no-.env room is yours.
+
+Ball: Sober.
+
+---
+## @Fern → @Sober — 2026-10-27 — ✅ TASK-841 FE DONE: `bun test` 1392/0 · tsc 0 · build 0 · set 841 8/8 BITE (+ 658 17/17 re-run)
+- Report + full `git status` at the bottom of `tasks/TASK-841-…md`. A linked item → `/scheduler/bookings?course=<id>` (`?voucher=<id>` for a voucher); the Bookings page opens that plan window once, only if it loads and is the right kind. Voucher: yes, openable by id (same plan window). No pin edited.
+- ⚠️ I built to the `link: { kind, id }` in the task text — TASK-840's report isn't written into its file yet, so please confirm Jason's real item matches. And ended courses: an ended course whose plan loads WILL open (say if you want those excluded).
+
+---
+## @Porter → @Sober — 2026-10-27 — REQ-132: Tanya PASS + one pre-existing 🟡 to confirm and size (no build yet)
+- TEST-126 PASS on sid (`tests/TEST-126-sid-req132-attention-names-and-links.md`).
+- Her 🟡: "ใกล้หมดอายุ" seems to include **CANCELLED** courses (`courseEligible` doesn't check the course status). uat read-only: 15 of 44; sid 13 / 39. "ใกล้ใช้ครบ" is clean on uat.
+- Please **confirm from code and size** an ACTIVE-only fix (does it also change the digest count?). Reply in inbox/PM.md. **Build only on my GO** (the owner decides whether it rides with this uat deploy).
+
+---
+## @Porter → @Sober — 2026-10-27 — GO: TASK-842 (REQ-132 🟡, ACTIVE-only course checks), rides with REQ-132
+- Owner picked **ก**, verbatim: *"ก"* (= fix it together with REQ-132, re-test on sid).
+- Scope = your sizing in inbox/PM.md: both Attention course predicates require `courseStatus(c, today) === "ACTIVE"`; `courseEligible` unchanged; BE only; tests + mutations as you listed. Fold it into the REQ-132 back commit list.
+- When ready: update the DEPLOY file (back list + a §4 line for Tanya: an ended/paused course is in neither list) and send me "ready for QA". Order stays: owner's sid deploy → Tanya PASS → owner's ขึ้น git.
+- Palm SOM report FYI: not opened (owner not asked yet).
+
+
+## Jason (BE) 2026-10-27 — TASK-842 BE (REQ-132 🟡): the two Attention course checks count ACTIVE courses only — GREEN
+
+**Pins listed first: NONE to edit.** `isNearlyFinishedCourse` / `isCourseExpiringSoon` gained *optional* `endedAt?` / `droppedAt?` in their input type (a row without them reads as not ended / not paused), so the existing callers (`attention.test.ts:59-62`, `advance-leave-no-cap-req089.test.ts:126`, the 840 test's rows) compile and pass untouched. No pin file was touched.
+
+**Built (`lib/attention.ts` only, on top of 840):**
+- New private `isActiveCourse(c, today)` = `courseStatus({...c, endedAt: c.endedAt ?? null, droppedAt: c.droppedAt ?? null}, today) === "ACTIVE"` — THE one status rule (`lib/course-status.ts`), no second copy.
+- `isNearlyFinishedCourse` and `isCourseExpiringSoon` now `isActiveCourse(c, today) && courseEligible(c, today) && …`.
+- **`courseEligible` NOT changed** (eligibility.ts untouched; `scheduler.service:794`, `som-report.service:52` keep their meaning). Vouchers untouched (`voucherEligible`).
+- **No extra read:** `getCourses()` → `coursesByIds` already returns the row's `endedAt` / `droppedAt`. No new words, no migration, no front change. The digest count follows (same items feed it), still counts only.
+- 840's names + `link` are byte-for-byte the same.
+
+**Tests (new `attention-active-courses-only-task842.test.ts`, 8, by value):** ended / paused / both ⇒ in NEITHER list; ACTIVE ⇒ in both with 840's `น้องเอ · course 10 · …` + link · digest count = active only, no name in the text · expiring voucher unaffected · a row without the two fields still counts · source pin (both predicates ask `isActiveCourse`; `eligibility.ts` has no `endedAt`/`droppedAt`).
+**Set 842: 3/3 BITE, checksum identical** — A status check dropped from nearly-finished · B dropped from expiring · C `"ACTIVE"` → `!== "CANCELLED"` (paused gets back in).
+**Set 840 re-run: 7/7 BITE (C1–C7), checksum identical.**
+
+**Verified:** tsc 0 · SAFE suite **5,236 pass / 0 fail (373 files)** · unhandled-between-tests: 0 (the only "UNHANDLED" hits are `[line-in] postback … UNHANDLED action=` log lines of existing tests, not runner errors). `git status` (full): `M src/lib/attention.ts` · `M src/services/attention.service.ts` (840) · `?? attention-active-courses-only-task842.{test.ts,mutations.json}` · `?? attention-names-the-child-task840.{test.ts,mutations.json}` (840). Saved: `GIT-STATUS-back-842-2026-10-27.txt`. My run had `.env` present; the no-.env room is yours.
+
+Ball: Sober.
+
+---
+## @Porter → @Sober — 2026-10-27 — OWNER'S GIT COMMAND: ขึ้น git (REQ-132 = TASK-840 + 841 + 842)
+- Owner, verbatim, 2026-10-27: *"ขึ้น git"*. It comes after TEST-126 PASS on sid (840/841, plus the 842 re-test).
+- Commit + sync the current branch, with the repo's commit-message convention, per `_templates/skills/git-command/`. **Only the files in `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` §2**: back 6, front 8.
+- Reply in inbox/PM.md with the hashes for back + front.

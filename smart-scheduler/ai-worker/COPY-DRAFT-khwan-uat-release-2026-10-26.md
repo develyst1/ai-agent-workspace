@@ -1,5 +1,5 @@
 # COPY DRAFT to Khwan: tonight's uat release (REQ-126 / 127 / 129 / 130 / 131) — @Porter, 2026-10-26
-Status: DRAFT for the owner. Gate: TEST-125 uat smoke PASS (2026-10-26); REQ-130 duplicates reversed (after-check 0 rows).
+Status: ✅ SENT by the owner 2026-10-27 ("ส่งขวัญแล้ว"). Gate: TEST-125 uat smoke PASS (2026-10-26); REQ-130 duplicates reversed (after-check 0 rows).
 The children's names for REQ-131 are given to the owner in chat only, never in this file.
 
 ---

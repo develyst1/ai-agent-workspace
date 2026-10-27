@@ -1938,7 +1938,27 @@ medium."* Design: Atlas's option C (chat 2026-10-26; summary in `ATOM.md` → "T
 6. **Later, not now:** the owner's "pull the Atom desk into main, then empty it" — a separate order (archive first,
    never delete information).
 
+### ORDER 36 — 2026-10-27 — ✅ A DONE 2026-10-27 · B pending (Atom's box) — Atom ruling: harness 2.6.4 everywhere; children's names off the fork desk
+
+**Owner, to Atlas, 2026-10-27:** *"ตามแนะนำ"* (to Atlas's four recommendations), plus *"มันจะมีการทำข้างนอกบ้าง
+เช่น ATLAS เพราะฉันก็คุยกับ ATLAS ผ่าน atom"*. The ruling is in `ATOM.md` → "Ruled by the owner — 2026-10-27".
+`CLAUDE.md` §6 gained the Atom-sync exception, so `harness.json` is now **2.6.4** (only the CLAUDE.md
+hash changed).
+
+**A — on the owner's main machine, now:** `node scripts/install.mjs <desk>` on every desk **except
+fb-autoreply** → 2.6.4. Then run `check-harness`.
+
+**B — on Atom's box only, when Atom relays "run ORDER 36 B":** the fork desk is live there, and
+editing it here would collide with branch `atom`. On `smart-scheduler-atom/`, replace every child's
+name with the child's student ID (or `child #1`, `#2`, … where no ID is known), in every file
+(`grep -rl` for the names first). **The owner's privacy rule outranks "archive verbatim" here: do
+NOT keep an archive copy that holds the names.** Log each file changed, never the names themselves.
+Known so far: `DECISIONS.md`, `log/2026-10-26.md`, `RESUME-HERE.md`, `requirements/REQ-5000-*`,
+`tests/TEST-5000-*`, `tests/harness/uat-req5000-probe.mjs`.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-27 20:08 (ORDER 36 part A, DONE; B not run — Atom's box only) — **`install.mjs` on 16 desks (all but fb-autoreply) → 2.6.4, exit 0 ×16, none refused.** 15 desks: shared tools already current, only `.harness` rewritten. `did-spf-lk2` had **no `.harness`** (came in with develop's merge): it got all 14 shared tools added (none existed, so no backups) plus a new `.harness`; no desk-owned file touched. `smart-scheduler-atom` got `.harness` only (no name edits — that is part B). `check-harness`: `harness 2.6.4: 17 desk(s), 1 not current` — the one is fb-autoreply, 2.6.2 on purpose; exit 1 from it alone. No commit.
 
 - 2026-10-26 17:36 (ORDER 35 items 1–5, DONE; git BLOCKED; item 6 not now) — **Built the fork desk `smart-scheduler-atom/` (60 files), spawned by Atlas on the BUILD GO.** `install.mjs smart-scheduler-atom` → new desk, harness 2.6.3, exit 0. SOM's `PROTOCOL/PM/QA/SA-Lead/SA-Lead-B/BE/BE-B/FE/FE-B.md` copied byte-exact (`cmp` ok), then edited with Edit only: PM/SA-Lead(-B)/BE(-B) **unchanged**; QA/FE/FE-B = project name → `smart-scheduler-atom`, startup item 1 reads `../smart-scheduler/ai-worker/SYSTEM-FACTS.md` + `OWNER-LIST.md` READ-ONLY, "Where things live" → this desk (`QA-PLAYWRIGHT.md` / `FE-DESIGN.md` READ from the original, not copied); PROTOCOL = new `## Hard boundaries` (no writes under `smart-scheduler/`, knowledge read-only, git lines per item 5), startup step 1 per item 3, IDs from 5000. New: `AGENTS.md` (fork signpost, logical repo names, branch `atom`, models + permission mode `auto`, git lines), `TEAMS.md` (8 people, `<Name>-SOMA`), `board.md` (IDs from 5000, git lines), `SYSTEM-FACTS.md` / `OWNER-LIST.md` (header + `FORK 2026-10-26` line only), empty inboxes `SA-B/BE-B/FE-B/RELAY.md` (template gave PM/QA/SA/BE/FE/WAKE), `project-docs/.gitkeep`. No SOM history copied. All files LF, 0 CR, no BOM, no absolute path. `check-harness`: 16 desks, `smart-scheduler-atom current`; exit 1 only from fb-autoreply 2.6.2 (on purpose). `check-hygiene smart-scheduler-atom`: **PASS**, 8 WARN = boot read 52–69 KB > 45 KB, inherited from SOM's verbatim charters. Nothing outside the new desk touched besides this file. ⚠️ **Surprise:** while I was building, commit `5b36456` (17:33:18, author `develyst`, "Atom desk … owner approved via Atom") committed the half-built desk + ATOM/ATLAS/MARIE.md on `atom` and it is in sync with `origin/atom` — **not run by me**; the desk's final TEAMS/board/SYSTEM-FACTS/AGENTS/OWNER-LIST and this line are uncommitted.
 

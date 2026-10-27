@@ -8257,3 +8257,105 @@ ORDER BY 4 DESC;
 - **748:** `/reports/daily` 200; the "รวม (+กลุ่ม)" column shows values ✅.
 - **Errors:** **0** responses ≥ 500 and **0** page errors. Nothing written on uat.
 - Detail: `tests/TEST-125-uat-smoke-deploy-2026-10-26.md`.
+
+---
+## @Sober → @Porter — 2026-10-27 — REQ-132 answered (in the REQ file, "answers 1–3")
+- **Your read is confirmed.** The Attention page lists the 48 / 43 with no name or link.
+- **Self-serve only partly:** the Active course list has no "≤ 2 left / expiring" filter, so 48 means reading every card.
+- **Smallest fix:** the child's name on each item, for BOTH checks. **BE ≈ 0.35 d**, no new words, and the LINE digest stays counts-only. **+ optional links, FE ≈ 0.25 d.**
+- Numbers from 840 on your GO. I'd skip parent / phone on the list (personal data, one click away already).
+
+---
+## @Sober → @Porter — 2026-10-27 — ✅ REQ-132 READY FOR QA (sid-ready code): `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` (back 4 · front 8)
+- **Verified:** back (no `.env`) **5,224 / 0** · set 840 7/7 · the digest byte-identical (TH + EN) · front **1,392 / 0** · build 0 · sets 841 8/8 · 658.
+- **What changes:** the Attention items of "ใกล้ใช้ครบ" + "ใกล้หมดอายุ" lead with the child's name. A click opens that course's (or voucher's) own "จัดการแผน" window. The LINE digest is unchanged.
+- No migration, no env, no new words. **Tanya's gate is §4.**
+- **A possible small follow-up (not built; your call):** the "ใกล้หมดอายุ" label still shows its date as ISO (2026-08-10), as before.
+- Both trees are frozen. Git on the owner's word.
+
+---
+## @Tanya → @Porter — 2026-10-27 — ✅ TEST-126 REQ-132 gate on sid: PASS · 🟡 pre-existing: "ใกล้หมดอายุ" counts CANCELLED courses (uat 15 of 44)
+- **§4.1 "ใกล้ใช้ครบ":**
+  - 35 / 35 items lead with the child's name; 2 DUO items name both;
+  - every item is a link; a click opens Bookings on **that course's own "จัดการแผน" window** (checked on a QA course and the DUO) ✅.
+- **§4.2 "ใกล้หมดอายุ":**
+  - 39 / 39 name-led, and a course click opens its window ✅;
+  - **voucher:** sid has no voucher expiring within 14 days, so I opened the exact link URL (`?voucher=<QA id>`): the Vouchers tab + that voucher's window ✅;
+  - an unknown id opens nothing, with no error ✅.
+- **§4.3 LINE digest:** by code, these two checks carry no `namesPeopleInDigest` flag, so they stay counts-only ✅.
+  - Live: SKIPPED (no LINE-linked admin on sid). **The first uat 08:00 digest after the deploy is the live check.**
+- **§4.4:**
+  - the other items are unchanged (no link, old labels) ✅;
+  - the no-Attention-menu user is 🔒 not run live (DR-3, a non-admin login); by code, no guard file was touched.
+- **Errors:** 0 responses ≥ 500 and 0 page errors.
+- **⇒ OK for uat** from the REQ-132 side.
+- **🟡 Pre-existing, not 840 / 841: "ใกล้หมดอายุ" includes CANCELLED courses.** `courseEligible` = sessions left and not expired; the course status is never checked.
+  - **uat today (read only):** **15 of 44** expiring items are cancelled courses; "ใกล้ใช้ครบ" (กุ้ง's line) is clean, 49 / 49 ACTIVE.
+  - sid: 13 / 39 and 3 / 35.
+  - After 841, กุ้ง would click into cancelled courses from "ใกล้หมดอายุ", and its digest count is inflated by about ⅓.
+  - **Your / Sober's call:** fix it before or with the uat deploy (it looks small: ACTIVE only), or note it.
+- Detail: `tests/TEST-126-sid-req132-attention-names-and-links.md`.
+
+---
+## @Sober → @Porter — 2026-10-27 — REQ-132 Tanya 🟡: **CONFIRMED from code.** Fix sized ≈ 0.3 d (BE only); the digest COUNT drops too. No build until your GO
+**Why:**
+- Both Attention course checks ask `courseEligible` (`lib/attention.ts:53` nearly-finished, `:128` expiring).
+- `courseEligible` = "sessions left > 0 AND not past expiry" (`lib/eligibility.ts:38-39`). **It never looks at whether the course was ENDED (ตัดจบ / ยกเลิก) or PAUSED (พักคอร์ส).**
+- So an ended course with sessions left and a near expiry shows under "ใกล้หมดอายุ". That's Tanya's 15 / 44 on uat.
+- **"ใกล้ใช้ครบ" has the SAME hole in code.** It's clean on uat only by chance: no ended course there has ≤ 2 left.
+- **Vouchers are fine:** `voucherEligible` → `voucherUsable` already refuses an ended voucher (TASK-439).
+
+**The fix: TASK-842 when you GO** (Jason, BE only, ≈ 0.3 d incl. +10%):
+- both Attention course predicates also require **`courseStatus(c, today) === "ACTIVE"`**. That's THE one status rule the course list's tabs already use (`lib/course-status.ts:45`: ended ⇒ CANCELLED, paused ⇒ DROPPED, used up ⇒ COMPLETED, past ⇒ EXPIRED, else ACTIVE).
+- **Paused courses leave too.** That's correct: a paused course's expiry is re-planned (it only grows) when it resumes, so warning about it is noise.
+- **`courseEligible` itself is NOT changed** (its other callers keep their meaning).
+- No new words, no migration, no front change.
+- **Tests by value:** an ended / a paused course with 1 left and expiring in 3 days ⇒ in neither list; an ACTIVE one ⇒ in both.
+- **Mutations:** the status check dropped from each predicate.
+
+**The digest: YES, the COUNT changes.** The LINE digest counts the same items, so on uat "ใกล้หมดอายุ: 44" would read ≈ 29 (44 − Tanya's 15). Still counts only; no names.
+
+**It can ride with REQ-132's uat deploy:** back only, small, and it lands in the same file (`lib/attention.ts`) as TASK-840. If it rides, I'd fold it into the same back commit list.
+
+**FYI, not in this fix (your call whether to open it):** Palm's SOM report counts students from `courseEligible` too (`som-report.service.ts:52`), so it may count ended / paused courses' students the same way. The booking-side reader (`scheduler.service.ts:794`) is guarded separately: an ended course refuses new bookings at its own door.
+
+---
+## @Sober → @Porter — 2026-10-27 — ✅ TASK-842 READY FOR QA, folded into REQ-132: `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` (updated: back 6 · front 8)
+- **Verified** (no `.env`, 840 + 842 together): **5,236 / 0** · sets 842 3/3 · 840 7/7 (840 unchanged byte-for-byte). The front is unchanged since TEST-126 (md5s re-checked).
+- **What 842 changes:** ended / paused courses leave both Attention course lists. The digest's counts drop the same way (≈ 44 → 29 on uat).
+- **Tanya:** §4 item 5 is the only new check (840 / 841 passed in TEST-126).
+- Order as you wrote: the owner's sid deploy → Tanya → the owner's ขึ้น git.
+
+---
+## @Tanya → @Porter — 2026-10-27 — ✅ TEST-117 CLOSED: 27 uat runs over 3 days, 0 errors / 522 / logouts; weekday afternoon ≈ Sunday, and only the login is slower than at night (+0.8–2.4 s)
+- **Tue afternoon medians** (14:31 / 15:31 / 16:31): login 4.8 / 6.3 / 4.7 s · schedule 2.1–2.2 s · week change 0.9–1.15 s · API calendar 0.62–0.69 s · API search 0.09–0.17 s.
+- **vs Sunday night:**
+  - only the login is slower (3.9 s at night ⇒ up to 6.3 s);
+  - everything else is the same, within ~0.1 s.
+  - No step reached 2× a Sunday median.
+- **0 login failures, 0 5xx, 0 522, 0 logouts** in all 27 runs. **The customer's slowdown and logouts were not reproduced** from here.
+- **Gaps declared:**
+  - Monday's daytime passes were missed;
+  - one weekday only;
+  - one user from the owner's network, not the shop's.
+- **Note:** uat changed build between Monday and Tuesday (the 10-26 deploy). L1 (the 12 h logout) is now addressed by the 7-day login (TEST-125).
+- Full day table + verdict: `tests/TEST-117-…` → "TEST-117 CLOSED".
+
+---
+## @Tanya → @Porter — 2026-10-27 — ✅ TEST-126 re-test, TASK-842 on sid: PASS (ended + paused courses are out of both lists; the counts match) · REQ-132 ready for uat
+- **Ended:**
+  - "ใกล้หมดอายุ" 39 → **26**, "ใกล้ใช้ครบ" 35 → **32**;
+  - the removed are **exactly my 13 + 3 CANCELLED**, and nothing was added;
+  - every listed course is now ACTIVE, and my own recount from the ACTIVE courses = the API lists exactly.
+- **Paused:**
+  - built on a QA course: paused ⇒ it left "ใกล้ใช้ครบ" (32 → 31); resumed ⇒ back (32) ✅;
+  - QA data only, and the course is active again.
+- **Counts match:** the page headers 26 / 32 = the API = the items. The digest uses the same counts (by code); the live digest is the uat 08:00 after the deploy.
+- **Items 1–2 still hold:** names lead, DUO both, clicks open the right window, voucher URL OK, unknown id → nothing. 0 errors.
+- **Next:** the uat deploy, then my read-only uat smoke (every listed course ACTIVE, "ใกล้หมดอายุ" ≈ 29).
+- Detail: `tests/TEST-126-…` → "Re-test: TASK-842".
+
+## @Sober → @Porter — 2026-10-27 — DONE: ขึ้น git REQ-132 (TASK-840 + 841 + 842)
+- **First line for the owner:** ขึ้น git เรียบร้อย — back `31cd2d0` · front `e44c38a` (branch `dong`, pushed, in sync with origin).
+- Exactly DEPLOY-REQ-132 §2: back 6 files, front 8 files. The md5s matched my frozen lists before staging, and both trees are clean after the commit.
+- Still the owner's: deploy to uat (back pull + restart, front build + restart). No migration, no env change.

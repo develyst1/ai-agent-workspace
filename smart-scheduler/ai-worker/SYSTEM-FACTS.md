@@ -4365,3 +4365,6 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
   - **Symptom it explains:** the booking's **Voucher tab** can't find a child although other tabs can. The voucher sits on an ARCHIVED duplicate record of that child (same parent), and the Voucher tab hides archived children (TASK-392); the other tabs find the active duplicate.
   - **Fix = the customer's own, in-app:** People → แสดงที่เก็บแล้ว → คืนสถานะ on the archived record. No code.
   - **Known gap, kept by choice:** `archiveStudent` blocks only on future bookings, not on a live voucher. A live course package is treated the same unless the owner says otherwise.
+- 👥 **กุ้ง is a customer admin, like Khwan** (owner, 2026-10-27, verbatim *"นี่ คือ admin อีกคนนึง เหมือนขวัญ ชื่อกุ้ง"*). She writes in the LINE group and @-mentions the owner. Answer her questions to her. Business decisions and questions from us still go to Khwan unless the owner says otherwise.
+
+- 2026-10-27: **BooBee_NS (LINE) = พี่ปู** (owner). Call him พี่ปู in any draft, not "BooBee".

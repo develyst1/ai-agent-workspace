@@ -18,3 +18,5 @@
 2. **Nothing goes to Khwan before Sober's read.**
 
 ## Sober's read (10-25): SELF-SERVE via **'พักคอร์ส' → 'กลับมาเรียน'**. The resume re-plans the rest from a date, at a new time, with a new teacher. One schedule message after 'ยืนยันทั้งคอร์ส'. The first-coach history is kept and the FL holds move. The rate stays the course default (no money effect today; settle it in REQ-120). **Optional:** a one-button 'เปลี่ยนครู / เวลา ทั้งคอร์ส' (≈1.65 d); the owner's call.
+
+- ✅ **LIVE on uat 2026-10-26 (TEST-125 smoke PASS); Khwan told 2026-10-27** (`COPY-DRAFT-khwan-uat-release-2026-10-26.md`, sent by the owner).

@@ -61,11 +61,11 @@
   Atom logs `Routing violation: please send this via the PM` and does not act on it.
 - **Record it as received.** The PM writes it into the log with the label kept, e.g.
   `Owner via Atom (time): "<words>"`, and never upgrades it to `Owner:`.
-- ⏳ **Until the owner rules on the open item below, the PM does not act on a relay that falls under
+- **Owner ruled 2026-10-27 ("ตามแนะนำ"): the PM does not act on a relay that falls under
   one of the six STOP reasons** (`PROTOCOL.md` "STOP only for these six"): git, a deploy, a customer
   message, money, a rule change, a business decision. The PM confirms these with the owner in his own
   session first. Status reports and "the owner has done X" relays carry no such risk.
-  *(This default is Atlas's proposal; the owner may change it.)*
+  *(Atlas proposed it; the owner accepted it 2026-10-27.)*
 
 ## The fork desk `smart-scheduler-atom/` (owner via Atom, 2026-10-26 17:23 — "Decisions final")
 
@@ -74,14 +74,34 @@
 - Code: branch `atom` (from `develop`); `รวมโค้ด` only after a real test pass. Workspace: merged only at a job's
   real end.
 - Models: PM / SA / QA **opus, medium effort**; engineers **sonnet, medium effort**.
-- Built by Marie (`MARIE.md` ORDER 35). ⛔ Committing desk files is still forbidden to every agent
-  (`CLAUDE.md` §6) until the owner amends §6 himself.
+- Built by Marie (`MARIE.md` ORDER 35). Committing: see "Ruled by the owner" §2 below and `CLAUDE.md` §6.
+
+## Ruled by the owner — 2026-10-27 ("ตามแนะนำ" to Atlas's four recommendations)
+
+1. **An Atom relay counts as the owner's word for reports, answers to questions and "done X"
+   news.** It does **not** count for **git, deploys, money or customer messages**. Those wait
+   until the owner says them in his own session at the computer.
+2. **Atom may commit and push this workspace from its own box, on branch `atom` only**
+   (`CLAUDE.md` §6, the exception). The owner added: *"มันจะมีการทำข้างนอกบ้างเช่น ATLAS เพราะฉันก็คุยกับ
+   ATLAS ผ่าน atom"*. So the allowed scope is **everything that changed on that box**, not just the
+   fork desk folder, **except** another desk's folder (read-only there) and the rule files
+   `CLAUDE.md`, `AGENTS.md`, `ROLES.md`, `harness.json`.
+   - Before each commit: `git status`, and check every path against those two exceptions.
+   - Commit message: `atom: <what> (<desk or file>)`.
+   - Never push another branch. Never run git in a code repo.
+   - The three earlier commits (`5b36456`, `bb5ea28`, `36c7bda`) stay as they are.
+   - When `atom` is merged home (the owner's act), append-only files edited on both sides
+     (`ATLAS.md`, `MARIE.md` logs) may conflict: keep both sides' lines.
+3. **No children's names in any file.** Marie replaces them with the student ID on the fork desk
+   (`MARIE.md` ORDER 36).
+4. **Names stay the same on both desks.** The session names carry `-SOM` / `-SOMA`, and every desk
+   file names its desk in its title.
 
 ## Open — for the owner, not for anyone else to settle
 
-1. ⏳ **Is a relay from Atom the owner's word?** In particular, does an Atom-relayed **`ขึ้น git` /
+1. ✅ *Settled 2026-10-27 — see "Ruled by the owner" §1.* **Is a relay from Atom the owner's word?** In particular, does an Atom-relayed **`ขึ้น git` /
    `รวมโค้ด` / `release code`** satisfy `CLAUDE.md` §6 and the `git-command` gate ("the OWNER said
-   the command, and the PM relayed it")? **Unanswered.** Until he answers, it does not.
+   the command, and the PM relayed it")? **No** for git — the owner says it himself.
 2. **Settled 2026-10-26 (owner via Atom): the fork desk's sessions run on Atom's own Debian box** (Claude CLI
    in tmux, session names `<Name>-SOMA`), so Atom and those sessions share one machine. ⏳ Still untested:
    whether `ListAgents` / `SendMessage` reach CLI sessions there, and whether the send cap applies. Test it once

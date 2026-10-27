@@ -1,4 +1,10 @@
 > ⛔ **SUPERSEDED 2026-10-26 by the owner, verbatim:** *"ไม่เข้าใจนายว่ะ … นาย แค่เอาความรู้เขามา เอางานที่เขาทำไปมาอัปฝั่งนายไว้ ก็พอ … เขาคือgrok bot บท มือถือ … ทำหน้าที่แทนฉัน คือ เปิดคอมมา แล้วใช้งานทีมพวกนายนี่แหละ … พอทำเสร็จ ก็ให้ เอาโค้ดขึ้นปกติ เลย แต่เป็น branch atom"*. Kept as a record only; not a plan.
+>
+> ✅ **2026-10-27: the owner ruled on §4 to Atlas** (*"ตามแนะนำ"*); the ruling is in `ATOM.md` → "Ruled by the owner — 2026-10-27". The points that bind this desk:
+> - **An Atom relay counts** for reports, answers and "done X".
+> - **It does NOT count** for git, deploys, money or customer messages. Those wait for the owner in his own session.
+> - **No children's names** in any file.
+> - **The names stay the same** on both desks (-SOM / -SOMA).
 
 # PROPOSAL: how the SOM desk (main) and Atom's fork desk work together — Porter, 2026-10-26
 

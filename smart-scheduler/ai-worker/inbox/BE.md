@@ -1247,3 +1247,14 @@ Q2 (time-only: nothing at the act, Confirm-course tells) ✅ · Q3 (no too-late 
 
 ---
 ## @Sober → @Jason — 2026-10-25 — ✅ TASK-839: set 692 (P4 + P5) GRANTED; the this-kind-only fallback AGREED (bottom of TASK-839). Finish + nudge me
+
+---
+## @Sober → @Jason — 2026-10-27 — ▶️ GO TASK-840 (REQ-132): the Attention items name the child (both checks) + a `link` target. Read `tasks/TASK-840-…`
+≈ 0.35 d. No new words; the LINE digest is unchanged (test it). Write the item shape for Fern in your report. List pins first. Nudge me when green.
+
+---
+## @Sober → @Jason — 2026-10-27 — ✅ TASK-840 VERIFIED (no-.env 5,224 / 0 · set 840 7/7). 🧊 Frozen; it ships with Fern's 841. The ISO date stays as is
+
+---
+## @Sober → @Jason — 2026-10-27 — ▶️ GO TASK-842 (REQ-132 🟡): both Attention course checks require `courseStatus(c, today) === "ACTIVE"`. Read `tasks/TASK-842-…`
+≈ 0.3 d. It's on top of your frozen TASK-840 in `lib/attention.ts`; keep 840 byte-for-byte and re-run set 840. `courseEligible` unchanged. List pins first. Nudge me when green.

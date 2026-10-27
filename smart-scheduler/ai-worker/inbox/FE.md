@@ -616,3 +616,7 @@ A time-only change sends nothing at the act; the existing "ยืนยันท
 
 ---
 ## @Sober → @Fern — 2026-10-25 — ⚖️ TASK-838 needsReconfirm: YES. Show the start-change screen's orange alert with the SAME approved keys (`courseStart.reconfirmTitle` / `reconfirmBody`); no new words (bottom of TASK-838). The last FE item
+
+---
+## @Sober → @Fern — 2026-10-27 — ▶️ GO TASK-841 (REQ-132): each Attention item links to that course (`/scheduler/bookings?course=<id>` opens its plan window). Read `tasks/TASK-841-…`
+≈ 0.3 d. No new words. Build against Jason's item shape (TASK-840's report; `link: { kind, id }`). List pins first. Nudge me when green.

@@ -192,3 +192,99 @@
   - If uat is deployed before a pass, that pass's row notes the build.
   - The 16:31 pass closes TEST-117 with the full day table.
 - ⚠️ **They are scheduled in my session only, the same as Monday.** If the session isn't running at those times they are missed again. **The fix:** keep my session open on Tue afternoon, or nudge me at the time and I run the pass by hand (`node u117.js tue-HHMM 3`).
+
+
+### Tue pass · 10:03 (morning baseline)
+- **uat build:** back `f4aeb39` / front `f9f7f9c`, the 10-26 night deploy (TEST-125); no later deploy in `inbox/QA.md`.
+- ⚠️ **Not the build Sunday and Monday were measured on** (that was before the 7-day login and 837 / 838 / 748). Compare with that in mind.
+
+| Run (start) | Login | Schedule page | Week change | Search (screen) | API /calendar (week) | API search |
+|---|---|---|---|---|---|---|
+| #1 10:03:10 | 4,830 ms | 2,164 ms | 1,179 ms | 60 ms | 506 ms · 200 | 118 ms · 200 |
+| #2 10:03:22 | 5,138 ms | 2,751 ms | 983 ms | 61 ms | 489 ms · 200 | 93 ms · 200 |
+| #3 10:03:34 | 5,233 ms | 2,163 ms | 956 ms | 62 ms | 581 ms · 200 | 79 ms · 200 |
+| **Median** | **5.1 s** | **2.2 s** | **0.98 s** | **0.06 s** | **0.51 s** | **0.09 s** |
+
+**0** login failures · **0** 5xx / 522 · **0** failed requests · **0** forced logouts.
+
+- No step reaches 2× a Sunday median. The login is 5.1 s vs Sunday's 3.9–5.5 s range.
+
+
+### Tue pass · 14:31
+- **uat build:** back `f4aeb39` / front `f9f7f9c`, unchanged (no later uat deploy in `inbox/QA.md`).
+
+| Run (start) | Login | Schedule page | Week change | Search (screen) | API /calendar (week) | API search |
+|---|---|---|---|---|---|---|
+| #1 14:31:14 | 5,313 ms | 1,846 ms | 1,154 ms | 44 ms | 686 ms · 200 | 103 ms · 200 |
+| #2 14:31:26 | 4,668 ms | 2,099 ms | 1,559 ms | 46 ms | 1,069 ms · 200 | 158 ms · 200 |
+| #3 14:31:38 | 4,770 ms | 2,612 ms | 981 ms | 47 ms | 565 ms · 200 | 72 ms · 200 |
+| **Median** | **4.8 s** | **2.1 s** | **1.15 s** | **0.05 s** | **0.69 s** | **0.10 s** |
+
+**0** login failures · **0** 5xx / 522 · **0** failed requests · **0** forced logouts.
+
+- No step reaches 2× a Sunday median. The highest single values were run #2's week change (1.56 s) and calendar API (1.07 s).
+
+
+### Tue pass · 15:31
+- **uat build:** back `f4aeb39` / front `f9f7f9c`, unchanged (no uat deploy in `inbox/QA.md` today).
+
+| Run (start) | Login | Schedule page | Week change | Search (screen) | API /calendar (week) | API search |
+|---|---|---|---|---|---|---|
+| #1 15:31:08 | 5,425 ms | 2,197 ms | 1,143 ms | 45 ms | 588 ms · 200 | 174 ms · 200 |
+| #2 15:31:19 | 6,460 ms | 2,118 ms | 925 ms | 57 ms | 690 ms · 200 | 97 ms · 200 |
+| #3 15:31:32 | 6,285 ms | 2,199 ms | 1,022 ms | 52 ms | 642 ms · 200 | 165 ms · 200 |
+| **Median** | **6.3 s** | **2.2 s** | **1.02 s** | **0.05 s** | **0.64 s** | **0.17 s** |
+
+**0** login failures · **0** 5xx / 522 · **0** failed requests · **0** forced logouts.
+
+- **The login is the slowest median so far** (6.3 s, against Sunday's 3.9–5.5 s). That's still below 2× a Sunday median (2 × 3.9 = 7.8 s).
+- Every other step is in line with Sunday.
+
+
+### Tue pass · 16:31 (last)
+- **uat build:** back `f4aeb39` / front `f9f7f9c`, unchanged.
+
+| Run (start) | Login | Schedule page | Week change | Search (screen) | API /calendar (week) | API search |
+|---|---|---|---|---|---|---|
+| #1 16:31:07 | 4,579 ms | 2,105 ms | 911 ms | 51 ms | 615 ms · 200 | 87 ms · 200 |
+| #2 16:31:18 | 4,666 ms | 2,098 ms | 1,079 ms | 60 ms | 645 ms · 200 | 218 ms · 200 |
+| #3 16:31:29 | 6,838 ms | 2,123 ms | 867 ms | 59 ms | 576 ms · 200 | 85 ms · 200 |
+| **Median** | **4.7 s** | **2.1 s** | **0.91 s** | **0.06 s** | **0.62 s** | **0.09 s** |
+
+**0** login failures · **0** 5xx / 522 · **0** failed requests · **0** forced logouts.
+
+---
+# ✅ TEST-117 CLOSED (2026-10-27 16:35): every pass, medians of 3 runs each (real start times)
+| Pass | uat build | Login | Schedule page | Week change | Search (screen) | API /calendar (week) | API search | Errors / 522 / logouts |
+|---|---|---|---|---|---|---|---|---|
+| Sun 01:58 (night) | pre-10-26 | 3.9 s | 2.1 s | 0.9 s | 0.06 s | 0.56 s | 0.21 s | 0 / 0 / 0 |
+| Sun 13:44 | pre-10-26 | 3.9 s | 2.2 s | 1.0 s | 0.06 s | 0.66 s | 0.10 s | 0 / 0 / 0 |
+| Sun 17:55 | pre-10-26 | 4.0 s | 2.65 s | 0.96 s | 0.06 s | 0.55 s | 0.16 s | 0 / 0 / 0 |
+| Sun 19:02 | pre-10-26 | 5.5 s | 2.7 s | 1.1 s | 0.05 s | 0.60 s | 0.29 s | 0 / 0 / 0 |
+| Mon 19:13 | pre-10-26 | 4.9 s | 2.6 s | 1.1 s | 0.06 s | 0.67 s | 0.10 s | 0 / 0 / 0 |
+| Tue 10:03 | f4aeb39 / f9f7f9c | 5.1 s | 2.2 s | 0.98 s | 0.06 s | 0.51 s | 0.09 s | 0 / 0 / 0 |
+| **Tue 14:31** | f4aeb39 / f9f7f9c | **4.8 s** | **2.1 s** | **1.15 s** | **0.05 s** | **0.69 s** | **0.10 s** | **0 / 0 / 0** |
+| **Tue 15:31** | f4aeb39 / f9f7f9c | **6.3 s** | **2.2 s** | **1.02 s** | **0.05 s** | **0.64 s** | **0.17 s** | **0 / 0 / 0** |
+| **Tue 16:31** | f4aeb39 / f9f7f9c | **4.7 s** | **2.1 s** | **0.91 s** | **0.06 s** | **0.62 s** | **0.09 s** | **0 / 0 / 0** |
+
+**Declared gaps:**
+- the Sunday 10:03 slot never ran (the job fired late);
+- **all six Monday daytime passes (10:07–18:07) were missed** (my session was closed);
+- the build changed between Monday and Tuesday (the 10-26 night deploy: the 7-day login + 837 / 838 / 748).
+
+## Verdict (numbers only; no cause)
+- **27 runs over 3 days, 9 passes:** **0 login failures · 0 5xx · 0 Cloudflare 522 · 0 failed requests · 0 forced logouts.**
+- **Weekday afternoon (Tue 14:31 / 15:31 / 16:31) vs Sunday night (01:58):**
+  - **login:** 4.7–6.3 s vs 3.9 s, i.e. **+0.8 to +2.4 s**. The slowest single login was 6.8 s (Tue 16:31 #3); Sunday 19:02 had a 6.7 s.
+  - **schedule page:** 2.1–2.2 s vs 2.1 s, **the same**.
+  - **week change:** 0.91–1.15 s vs 0.9 s, **about the same** (one 1.56 s run at 14:31).
+  - **API calendar:** 0.62–0.69 s vs 0.56 s, **+0.1 s**. **API search:** 0.09–0.17 s vs 0.21 s, **the same or faster**.
+- **Weekday afternoon vs Sunday afternoon / evening:** within the same range on every step. No step reached 2× any Sunday median.
+- **So in these samples:**
+  - **only the login is measurably slower** in the afternoon / evening than at night, by at most ~2.4 s (median);
+  - **no slowdown of the size the customer describes, and no logout, was reproduced.**
+- **Limits:**
+  - 3 runs per pass, one admin user, no real staff load visible to me, and one weekday;
+  - my probes run from the owner's machine, so the network path differs from the shop's.
+  - What happens on a staff machine at the shop is not covered.
+- **Logouts:** none observed in any run. With the 7-day login now on uat (TEST-125), L1 (the 12 h token) is closed by the fix, not by this test.
