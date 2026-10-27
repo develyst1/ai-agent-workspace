@@ -77,3 +77,11 @@ _Last updated: 2026-10-25 (v3 full answers) by @Porter._
 - **Blocking the build:** only the owner's price talk (≈ 39,200 ฿) + his GO.
 ---
 ## ✅ SPEC CLOSED, 2026-10-25 15:02: Khwan answered the last 2 points (commission edit = lower OR raise; My slip = as Payment Detail). REQ-120 §9.3. **Remaining before the build:** the owner's price talk (≈ 39,200 ฿) + GO; the SAs' build-readiness review (a data checklist for go-live, defaults to confirm).
+
+---
+## 2026-10-27: the build-readiness questions DRAFTED for Khwan (owner: *"ร่างเลย"*)
+- One message: 31 A/B questions (Team A Q2–Q25 + Team B Q1–Q11, with duplicates merged) + the data list. Draft: `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md` (a mapping table to the team Q numbers is in its header).
+- Waiting for the owner to send. Her answers get saved VERBATIM, then the SAs update their reviews.
+- Still blocking the build: the owner's price talk (≈ 39,200 ฿) + GO.
+
+- 2026-10-27: **6 build questions SENT to Khwan** (the short version in `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md`; the owner cut 31 → 6). Every other review question = **the SA's stated default**, shown to her on UAT. The data list is asked when each part starts.

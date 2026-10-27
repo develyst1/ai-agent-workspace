@@ -1217,3 +1217,19 @@ Headless. Nudge me.
 - **No writes.** No pause/resume test there.
 - The first uat 08:00 digest (tomorrow) is the live LINE check. I'll get it from the owner.
 - Append to TEST-126, then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: re-check the uat front (REQ-132 / 841), READ-ONLY
+- Owner, verbatim: *"deploy uat front ใหม่แล้ว"*.
+- Re-check as you listed: links present, a click opens the right window, `?course=` works (read only). Append to TEST-126, then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — ONE screenshot for the กุ้ง reply (uat, READ-ONLY)
+- Owner, verbatim: *"ขอรูปแนบมาประกอบด้วย ไม่ต้องเยอะ รูปเดียวก็ได้"*.
+- **One** screenshot of the uat "รายการที่ต้องดูแล" page:
+  - the "คอร์สที่ใกล้จบ (ต่ออายุ)" section open, so a few name-led items show;
+  - desktop width, Thai UI;
+  - nothing clicked or saved.
+- **It shows children's names, so it must NOT go in the repo.** Save it here (outside the repo):
+  `C:\Users\KUYDONG\AppData\Local\Temp\claude\H--ai-agent-workplace-ai-agent-workspace\beeb0a17-adf2-4686-92fb-b7ef2b605744\scratchpad\req132-attention-uat.png`
+- Tell me in inbox/PM.md when it's there (file name only).

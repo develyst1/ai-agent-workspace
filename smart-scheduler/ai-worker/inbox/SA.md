@@ -4536,3 +4536,9 @@ Ball: Sober.
 - Owner, verbatim, 2026-10-27: *"ขึ้น git"*. It comes after TEST-126 PASS on sid (840/841, plus the 842 re-test).
 - Commit + sync the current branch, with the repo's commit-message convention, per `_templates/skills/git-command/`. **Only the files in `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` §2**: back 6, front 8.
 - Reply in inbox/PM.md with the hashes for back + front.
+
+---
+## @Porter → @Sober — 2026-10-27 — FYI (no action now): the back-office readiness questions
+- The owner cut the batch to **6 money questions**, sent to Khwan 2026-10-27. The short version is in `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md`. Your Q kept: A4 (no-show counts), A7/A9 (bonus across activities), A11 (coach change), A20 (what Khwan sees).
+- **Every other question of yours = YOUR stated default** in the build. She sees it on UAT. The data list is asked per part when it starts.
+- I'll pass her answers on when they come. The build still waits on the owner's price talk + GO.

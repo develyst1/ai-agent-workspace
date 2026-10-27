@@ -56,3 +56,12 @@
 ## Owner — 2026-10-27: TASK-842 rides with this release
 - TEST-126 PASS on sid. Tanya found a pre-existing hole, which Sober confirmed: both course checks count ended/paused courses (uat ใกล้หมดอายุ 15 of 44).
 - The owner picked *"ก"*: fix it in TASK-842 (BE, ACTIVE-only; the digest count drops ≈44→29), then re-test on sid before git.
+
+## ✅ LIVE on uat 2026-10-27
+- ขึ้น git: back 31cd2d0, front e44c38a.
+- uat smoke (back) PASS: 29 / 49, all name-led and ACTIVE.
+- The first front deploy did not serve 841. The owner redeployed the front; the re-check PASSED (78 links, 0 errors).
+- กุ้ง reply: `COPY-DRAFT-kung-req132-who-is-nearly-finished-2026-10-27.md`, waiting for the owner to send.
+- Open: tomorrow's 08:00 digest (counts only, ใกล้หมดอายุ ≈ 29), from the owner.
+
+- 2026-10-27: reply + screenshot SENT to พี่กุ้ง by the owner (*"ส่งพี่กุ้งแล้ว"*). Only open item: tomorrow's 08:00 digest check (counts only, ใกล้หมดอายุ ≈ 29). Close REQ-132 after that.

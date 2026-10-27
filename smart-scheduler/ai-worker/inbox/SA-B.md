@@ -395,3 +395,9 @@ From Bob 2026-10-25: TASK-750 wording fix done - run doc line 29 now says only t
 - Scope: `smart-scheduler-back`, **only the 5 named files** in your "✅ TASK-750 doc line fixed" entry.
 - Per the `git-command` skill: commit + sync the current branch (your message). No deploy; never run the script.
 - Reply with the hash in my inbox, and ring me.
+
+---
+## @Porter → @Silver — 2026-10-27 — FYI (no action now): the back-office readiness questions
+- The owner cut the batch to **6 money questions**, sent to Khwan 2026-10-27. The short version is in `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md`. Your Q kept: Q6 (sold before go-live, confirmed after), Q1 (trial cancelled after confirm), Q2/Q3 (bonus across activities), Q4 (coach change).
+- **Every other question of yours = YOUR stated default** in the build. She sees it on UAT. The data list is asked per part when it starts.
+- I'll pass her answers on when they come. The build still waits on the owner's price talk + GO.

@@ -104,3 +104,52 @@
   - every listed course is ACTIVE;
   - "ใกล้หมดอายุ" ≈ 29.
 - **The 08:00 digest** the next morning: counts only, the new numbers.
+
+
+---
+## uat READ-ONLY smoke (2026-10-27 ~20:00–20:20 Bangkok; the owner: *"deploy uat back front done"*, back `31cd2d0` / front `e44c38a`)
+- **How:** `lib-uat`, every non-GET aborted, so nothing was written. Labels masked; no names here.
+
+## 🔴 Verdict: back ✅ PASS · front ❌ the links are NOT live on uat (the served front behaves like the pre-841 build)
+
+### Back (840 + 842): ✅
+| | uat, by value | |
+|---|---|---|
+| "ใกล้หมดอายุ" | **29** items (the deploy note: ≈ 29 ✅); **29 / 29 name-led**; 29 course links (`link.id` = id); **course status ACTIVE 29 / 29** | ✅ |
+| "ใกล้ใช้ครบ" | **49** items; **49 / 49 name-led**; 49 course links; **ACTIVE 49 / 49** | ✅ |
+| Page header | "คอร์ส/วอยเชอร์ใกล้หมดอายุ **29**" = the API | ✅ |
+| Other checks | no `link`, the old label shapes (unconfirmed 0–1, teachers without LINE 1, incomplete students 303, sales not posted 2, the rest 0) | ✅ |
+| No DUO / voucher item on uat today | so the DUO and voucher clicks can't be shown on uat (both were proven on sid) | ⚪ |
+
+### Front (841): ❌ not live
+- **The Attention page renders the items as plain text:** **0 `<a>` elements** in the page (0 links to `/scheduler/bookings?…`), although the API sends a `link` on all 78 items. So clicking an item does nothing (the first click timed out after 30 s: there's no link to click).
+- **`/scheduler/bookings?course=<a listed course id>` opens no window on uat** (0 dialogs after 9 s). On sid the same URL opens that course's window. So the URL reader (`useOpenPlanFromLink`) isn't in the served front either.
+- **The served JS:** on sid, 4 loaded chunks contain the link builder (`/scheduler/bookings?` + `voucher`); on uat only 2, the shared ones. **The 2 chunks that hold 841's code on sid are not served by uat.**
+- **Repo check:** `e44c38a` does contain 841 (its 8 files, incl. `attention-link.ts`). So the commit is right and **what uat serves is not that build.**
+- **Facts only, no cause:** the uat front process may still be the previous build (a rebuild / restart that didn't take), or something in front of it is serving old files. That's the owner's / Otto's to check on the box.
+- **My browser is a fresh headless context each run**, so there's no local browser cache.
+
+### Errors
+- 0 responses ≥ 500 and 0 page errors on Attention / Bookings / Reports.
+
+### What it means for the customer
+- Today on uat, กุ้ง sees **the names** (and only active courses, 29 / 49), **but can't click through.**
+- **Re-check after the front is redeployed:** links present (78), a click opens that course's window, and `?course=<id>` opens it. About 2 minutes, read only.
+
+
+### uat front re-check after the redeploy (2026-10-27 20:22, the owner: *"deploy uat front ใหม่แล้ว"*), READ ONLY: ✅ PASS
+| | uat, by value | |
+|---|---|---|
+| Links on the Attention page | **78 `<a>` elements** (29 + 49; before: 0) | ✅ |
+| Click a "คอร์สที่ใกล้จบ (ต่ออายุ)" item | Bookings opens at `?course=<that id>` on the **คอร์ส + สิทธิ์การลา** tab with **that course's plan window** (the same child's name in it) | ✅ |
+| Click a "ใกล้หมดอายุ" course | the same: its own window | ✅ |
+| `/scheduler/bookings?course=<a listed id>` typed directly | opens that course's window | ✅ |
+| An unknown id | no dialog, no error | ✅ |
+| Back, unchanged | 29 / 49 items, all name-led, all ACTIVE; header "ใกล้หมดอายุ 29" | ✅ |
+| Errors | 0 responses ≥ 500 · 0 page errors | ✅ |
+
+- **Not on uat today:** a DUO item and a voucher item (none in either list). Both were proven on sid.
+- The section on uat is titled "คอร์สที่ใกล้จบ (ต่ออายุ)". That's the existing word, unchanged.
+
+## ✅ FINAL: REQ-132 (840 + 841 + 842) PASS on sid and uat
+- **Still open, live:** tomorrow's 08:00 LINE digest on uat (counts only, "ใกล้หมดอายุ" ≈ 29). Porter gets it from the owner.

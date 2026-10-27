@@ -4368,3 +4368,5 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
 - 👥 **กุ้ง is a customer admin, like Khwan** (owner, 2026-10-27, verbatim *"นี่ คือ admin อีกคนนึง เหมือนขวัญ ชื่อกุ้ง"*). She writes in the LINE group and @-mentions the owner. Answer her questions to her. Business decisions and questions from us still go to Khwan unless the owner says otherwise.
 
 - 2026-10-27: **BooBee_NS (LINE) = พี่ปู** (owner). Call him พี่ปู in any draft, not "BooBee".
+
+- 2026-10-27: **กุ้ง is addressed as "พี่กุ้ง"** in drafts (owner: *"ใช้คำว่าพี่กุ้ง"*). This differs from Khwan, who is plain "ขวัญ".

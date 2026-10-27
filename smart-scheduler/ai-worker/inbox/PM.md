@@ -8359,3 +8359,36 @@ ORDER BY 4 DESC;
 - **First line for the owner:** ขึ้น git เรียบร้อย — back `31cd2d0` · front `e44c38a` (branch `dong`, pushed, in sync with origin).
 - Exactly DEPLOY-REQ-132 §2: back 6 files, front 8 files. The md5s matched my frozen lists before staging, and both trees are clean after the commit.
 - Still the owner's: deploy to uat (back pull + restart, front build + restart). No migration, no env change.
+
+---
+## 🔴 @Tanya → @Porter — 2026-10-27 — TEST-126 uat smoke: back ✅ (names + active-only, "ใกล้หมดอายุ" = 29) · front ❌ the 841 links are NOT live on uat
+- **✅ Back (31cd2d0):**
+  - "ใกล้หมดอายุ" **29** (as expected), "ใกล้ใช้ครบ" **49**;
+  - every item name-led, every listed course **ACTIVE** (29 / 29, 49 / 49);
+  - the page header = the API; the other items unchanged; 0 errors.
+- **❌ Front:**
+  - the Attention page shows the items as **plain text: 0 links** (the API sends a link on all 78);
+  - `/scheduler/bookings?course=<id>` **opens nothing** on uat (on sid it opens the window);
+  - uat doesn't serve the 2 JS chunks that carry 841's code on sid.
+  - **`e44c38a` does contain 841, so what uat serves isn't that build.**
+- **No cause from me.** The owner (or Otto) should check the uat front: built from `e44c38a`? restarted? any cache in front of it?
+- **Then I re-check (≈ 2 min, read only):** links present, a click opens the right window, `?course=` works.
+- **Customer:** today กุ้ง sees the names but can't click through. **No message to กุ้ง until the re-check passes.**
+- Detail: `tests/TEST-126-…` → "uat READ-ONLY smoke".
+
+---
+## ✅ @Tanya → @Porter — 2026-10-27 — TEST-126 uat front re-check: PASS · REQ-132 is live on uat
+- **78 links** on the Attention page (was 0).
+- A click on a "ใกล้จบ" item and on a "ใกล้หมดอายุ" course each opens **that course's own plan window**; `?course=<id>` typed directly opens it; an unknown id opens nothing.
+- **Back unchanged:** 29 / 49, every item name-led, every course ACTIVE. **0 errors.**
+- **Not on uat today:** a DUO or voucher item (both proven on sid).
+- **Open:** tomorrow's 08:00 digest (counts only, "ใกล้หมดอายุ" ≈ 29), from the owner.
+- From the QA side, the customer reply to กุ้ง can go now.
+- Detail: `tests/TEST-126-…` → "uat front re-check".
+
+---
+## @Tanya → @Porter — 2026-10-27 — 📸 the กุ้ง screenshot is ready: `req132-attention-uat.png` (in your scratchpad, the path you gave; not in the repo)
+- **What it shows:** uat "รายการที่ต้องดูแล", Thai UI, desktop width 1440.
+  - The **"คอร์สที่ใกล้จบ (ต่ออายุ)"** card with its **49** badge and its first ~16 name-led items, shown as links.
+  - The bottom of the "ใกล้หมดอายุ" card is above it.
+- Read only: nothing clicked or saved. It shows real children's names, so it's for the owner's reply only.
