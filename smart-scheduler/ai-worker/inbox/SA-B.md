@@ -401,3 +401,75 @@ From Bob 2026-10-25: TASK-750 wording fix done - run doc line 29 now says only t
 - The owner cut the batch to **6 money questions**, sent to Khwan 2026-10-27. The short version is in `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md`. Your Q kept: Q6 (sold before go-live, confirmed after), Q1 (trial cancelled after confirm), Q2/Q3 (bonus across activities), Q4 (coach change).
 - **Every other question of yours = YOUR stated default** in the build. She sees it on UAT. The data list is asked per part when it starts.
 - I'll pass her answers on when they come. The build still waits on the owner's price talk + GO.
+
+---
+## @Porter → @Silver — 2026-10-27 — REQ-133 (new, Sober leads): back-office FINAL UI in Vite + React + Mantine. YOUR pages = Revenue, Stock, Reports. PLAN + SIZE first, no build
+- Read `requirements/REQ-133-backoffice-final-ui-and-pricing-presentation.md` (the owner's words verbatim).
+- **Same split as v3:**
+  - your pages are built inside Sober's Vite shell, with all of Khwan's v3 notes applied (the per-item discount, the cart, the words);
+  - Revenue's numbers feed the presentation's "how it's used" section.
+- **Reply in inbox/PM.md:**
+  - the size of your part;
+  - the earliest ready date;
+  - your view of option B's split in the BRIEF §4: which Revenue / F-items still make sense without Salary.
+- Team B numbers from **751**.
+
+---
+## @Porter → @Silver — 2026-10-27 — GO: REQ-133 Team B (cut 751–753). Defaults until the owner answers
+- Your plan as written: Fanta on 751 Revenue, 752 Stock (the cart) and 753 Reports + data + roles; you review; Tanya gates.
+- Start on Sober's shell contract (promised Wed 10-28).
+- **Defaults until the owner answers:**
+  - the STOCK OUT commission picker STAYS as a record;
+  - Reports = the 6 headings, "content agreed when that part starts";
+  - the 3 embed pages (Revenue Summary, Detail, STOCK OUT) first, by Mon 11-02.
+- Your option split is adopted in the BRIEF §4.1 (B ≈ 25,700). Send me "ready for QA" when your pages are in.
+## [Fanta → Silver] 2026-10-27 — TASK-751/752/753: read, waiting for the shell contract
+Read the three TASKs + REQ-133 summary and the v3 sources I'm porting. `som-balance-backoffice-spec/final-ui/` holds only CONVENTIONS.md so far (no Vite shell yet), so I have built nothing and touched nothing. Plan once the contract lands: 753 DATA first (typed TS from data/b-revenue.js + b-stock.js, hand-typed totals that add up, named exports for Sober's deck) → STOCK OUT + Revenue Summary + Detail by Mon 11-02 → the rest by Fri 11-06; each step reported with tsc, build, console per page.
+Heads-up that changes the v3 numbers: per-item discount replaces my v3 bill discount (10 %, SALES 3,510 / F&B 135 / Today 82,685). I'll re-type the cart lines, SALES/F&B, and Today/MTD/YTD totals so they add up, and show commission unchanged by the discount. If you have a preferred example (which item discounted, ฿ or %), say so; otherwise I pick one and declare it in the Notes.
+
+---
+## @Porter → @Silver — 2026-10-27 — RELAY from Sober: the shell contract is published
+- File: **`som-balance-backoffice-spec/final-ui/CONVENTIONS.md`**. Team B can start against it today.
+  - pages in `src/pages/b/<area>/*.tsx`; mock data in `src/mock/b-*.ts`; one list `src/pages/b/index.ts` (an array of `PageDef`);
+  - menu order 500–899; never touch `src/shell/` or Team A's files;
+  - Vite + React 19.2.7 + Mantine 9.3.2 + **lucide-react 1.17.0** (not Tabler);
+  - hash routes = the v3 routes minus `#`;
+  - v3's `SPEC.*`, `[?]` help and ✓/✗ answers are dropped;
+  - **all front-office pages (incl. v3's `/fo/*`) are now Team A's.**
+- **The shell itself lands Wed 10-28.** I'll tell you when it exists.
+
+---
+## @Porter → @Silver — 2026-10-27 — RELAY from Sober: ⭐ THE SHELL EXISTS (TASK-843 done). Fanta can run pages in it now
+- `som-balance-backoffice-spec/final-ui/` is built to `final-ui/CONVENTIONS.md`.
+  - `src/pages/b/index.ts` exists (empty, with one commented example).
+  - `npm install` is done. Use `npm run dev` to build pages and `npm run build` to get one `dist/index.html`.
+- **Import helpers + types from `@/shell` only.** It never exports the registry, to avoid an import cycle.
+- Versions: Vite 8.3.5 · react-router-dom 7.18.4 · TS 6.0.3 · recharts 3.10.1 (for `@mantine/charts`).
+- Fern's gates: build 0 · one file ≈ 1.0 MB · 0 network · 0 console errors · role switch · 375 px drawer · the no-access screen.
+
+---
+## @Porter → @Silver — 2026-10-27 — RELAY from Sober: both your CONVENTIONS notes were RIGHT, the contract is fixed
+- §4's example is now `roles: ["ceo"]`, and §2.7 says "an Admin never sees revenue".
+- §2.7 now says **hide, never mask** (it quotes Khwan's v3 lines). `<Locked>` is withdrawn (§5); Fern removes it from the shell with 844.
+- Your dates are noted: the deck pages Mon 11-02; all 14 Fri 11-06.
+
+---
+## @Porter → @Silver — 2026-10-27 — RELAY from Sober: NO real staff names in the final UI's mock data (CONVENTIONS §2.8 fixed)
+- Tanya found the customer's real admin nicknames shown beside salaries (TEST-127). §2.8 used to allow Khwan's staff names in mock data; **now every name is invented**, with the same map as the deck: Kid → Ton · Poo → Ploy · Kung → Nam · Bank → May · London → Beam · Nelson → Pete · พี่ฟีน → CEO. No item codes (F1, D3…) in the menu either.
+- **Your Stock commission and Revenue pages use the same map.** Please check Fanta's data (`src/mock/b-*.ts`) for any real staff or customer name.
+## [Fanta → Silver] 2026-10-27 — TASK-751 / 752 / 753 built → REVIEW (the 3 deck pages + all the rest, one report)
+All 14 Team B pages are in `final-ui/` (src/pages/b/**, src/mock/b-*.ts only; shell untouched, no new package): Revenue ×6, Stock ×7 (incl. STOCK OUT), All Report. Details, the declared numbers and the not-verified list are in each TASK's Implementation Notes.
+- **tsc 0 · `npm run build` OK** (one dist/index.html, 1.24 MB) · console 0 errors / 0 warnings on every page (dev server; 109 controls clicked as CEO) · 375 px: no sideways scroll on any page · roles checked as CEO / Admin / Coach (Admin: no REVENUE / REPORTS menu; Coach: none of mine).
+- **Your 2 rules applied:** revenue pages + All Report `["ceo"]`; no `<Locked>` anywhere (hide). One call of mine to confirm: Admin does NOT see the COMMISSION column on Product (a commission rate is pay); prices stay visible.
+- **Numbers (your example):** Today 82,700 (SALES 3,510, F&B 150), MTD 757,475, YTD 7,113,915; cart Price 3,660; commission Kid 50 + Poo 50 unchanged by the −10 %; the defect Balance bike (3,200 −400 → 2,800, commission 50→30) is on 14/10/26. Deck import: `REV_DECK` in `src/mock/b-revenue.ts`.
+- **Not verified:** the built dist/index.html opened by double-click (I used the dev server); and while the browser pane is hidden Mantine modal transitions don't run (they open fine when it is visible) — Tanya's headless run should be unaffected.
+- Detail holds 14/10–16/10 only; its Month/Custom total is the sum of the rows shown and does not equal the typed MTD on the Summary (noted on screen).
+## [Fanta → Silver] 2026-10-27 — real staff names swapped (TEST-127)
+Map applied exactly (Kid→Ton · Poo→Ploy · Kung→Nam · Bank→May · London→Beam · Nelson→Pete · พี่ฟีน→CEO): `src/mock/b-stock.ts` (24 places: coaches, cart commission, Demo history, Low Stock people + recipients, the comment on line 33) and `src/pages/b/stock/Demo.tsx:32`. Line 3 comment now "staff names are invented (CONVENTIONS §2.8)". No item codes in the menu.
+Re-scan `grep -rnE "\b(Kid|Poo|Kung|Bank|London|Nelson)\b|พี่ฟีน|Khwan|ขวัญ" src/mock/b-*.ts src/pages/b` → **0 hits**. `tsc --noEmit` 0. (Revenue data had no staff names.) Children remain invented nicknames.
+## [Fanta → Silver] 2026-10-27 — the 3 review changes done
+1. **Names:** swap landed (see my previous entry; it crossed your review). `grep -rnE "\b(Kid|Poo|Kung|Bank|London|Nelson)\b|ฟีน" src/mock/b-*.ts src/pages/b` → **0 lines** (no output).
+2. **Product COMMISSION for Admin:** now shown to the Admin too (`showCommission = true`; role hook removed). Decision noted in 752's Implementation Notes (replaces my earlier hide).
+3. **STOCK IN:** page title and menu title now "STOCK IN".
+- **tsc 0 · build OK:** dist/index.html 1,243.49 kB (gzip 424.66 kB).
+- **Built file:** `file://` can't be opened in my pane (refused), so I served the BUILT dist with `vite preview` and opened it: all 14 routes render with the right titles (STOCK IN included), Product shows COMMISSION, **console empty**. The double-click `file://` open stays for Tanya's gate.

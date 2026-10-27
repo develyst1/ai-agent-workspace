@@ -1233,3 +1233,62 @@ Headless. Nudge me.
 - **It shows children's names, so it must NOT go in the repo.** Save it here (outside the repo):
   `C:\Users\KUYDONG\AppData\Local\Temp\claude\H--ai-agent-workplace-ai-agent-workspace\beeb0a17-adf2-4686-92fb-b7ef2b605744\scratchpad\req132-attention-uat.png`
 - Tell me in inbox/PM.md when it's there (file name only).
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-133 Deliverable 2, the pricing deck (TASK-846). Local file, headless
+- **File:** `som-balance-backoffice-spec/pricing-deck/dist/index.html` (path in `machine.local.md`), md5 `ba12a2de7253981b870015af3191e9be`, 12 slides. The audience is ฟีน + Khwan at the owner's money meeting.
+- **Gate:**
+  - opens offline (file://, 0 network requests);
+  - 0 console errors;
+  - every slide reachable by keys (← → Space Home End) AND click, and `#/slide/N` survives a reload;
+  - Thai renders in the bundled font (no boxes);
+  - **no "pending" tag and no A/B/C anywhere** (on screen AND in the file's text);
+  - **the price:** one offer, 39,200 ฿, 3 installments 11,900 / 13,800 / 13,500 (sum = 39,200);
+  - nothing internal: no team names, TASK/REQ numbers or engineer-day breakdowns beyond 278 / 200 / 51 / 149 and ≈ 7 months;
+  - **read every slide's Thai as a customer would:** flag anything unclear, wrong or awkward. Say which slide and quote it.
+- Known, not a fail: the screenshots are v3 (English, dark) for now; they get swapped when the final UI is done.
+- Write TEST-127, then tell me PASS/FAIL in inbox/PM.md, with one screenshot of the price slide in my scratchpad (`C:\Users\KUYDONG\AppData\Local\Temp\claude\H--ai-agent-workplace-ai-agent-workspace\beeb0a17-adf2-4686-92fb-b7ef2b605744\scratchpad\req133-deck-price.png`).
+
+---
+## @Porter → @Tanya — 2026-10-27 — CORRECTION to the deck GO: a NEW md5
+- The deck was rebuilt once more (one leftover title renamed). **Test THIS file:** 1,364,052 B, md5 **`e357cbf55a223bbb827d90191b56497d`**. It supersedes `ba12a2de…`. Record the md5 in TEST-127.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: TEST-127 quick re-check of the fixed deck
+- **File:** `som-balance-backoffice-spec/pricing-deck/dist/index.html`, 1,352,754 B, md5 **`056a00b466fced49741c0c3fbd6cb9a5`** (supersedes `e357cbf5…`).
+- **Re-check:**
+  - each of your 11 notes, especially the 5 screenshots (invented names only, no real amounts beside real names);
+  - the gate basics (offline, 0 errors, every slide reachable).
+- Append it to TEST-127. Put a fresh price-slide screenshot in my scratchpad (`…\scratchpad\req133-deck-price.png`, overwrite), then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-133 Deliverable 1, Team B's 14 pages (TASK-751/752/753). Local file, headless
+- **File:** the BUILT `som-balance-backoffice-spec/final-ui/dist/index.html` (one file, 1.24 MB). Open it via file:// offline; Silver and Fanta could not open file:// in their panes. Team A's pages (Salary, front office) are still being built: test only Team B's.
+- **Gate (REQ-133):**
+  - opens offline, 0 network, 0 console errors;
+  - every Team B page is reachable from the menu, with no dead buttons;
+  - Thai OK;
+  - **roles via the header switcher:** Revenue ×6 + All Report = CEO only; Stock ×7 = CEO + Admin; Coach = none of them. Hidden, never a 🔒;
+  - **STOCK OUT:** a cart, the per-item discount (฿ / %), the commission edited per item (lower AND raise), and the discount doesn't change the commission;
+  - **no real staff names** (the invented map: Ton / Ploy / Nam / May / Beam / Pete / CEO), invented children;
+  - 375 px without sideways scroll.
+- **Known, not a fail:**
+  - Detail's month total (rows 14–16 Oct) differs from the Summary's typed MTD, and it's labelled on screen;
+  - Silver's ruling: the Admin sees the Product COMMISSION rate column (a rate, not anyone's pay).
+- Compare each page with Khwan's v3 notes (REQ-122 §9/§10) where you can. Write TEST-128, then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-133 final UI, the WHOLE file (Team A's 17 pages + a re-check of Team B's 14). Local, headless
+- **File:** `som-balance-backoffice-spec/final-ui/dist/index.html`, 1,243,190 B, md5 **`a33a3b433f581dc3b53ba451de0a8670`**. Team B's pages were already done when you passed TEST-128, so this one file should hold all 31.
+  - **First check:** are all 14 of Team B's pages in it? If any are missing, tell me and gate Team A only.
+- **Team A gate:**
+  - opens offline, 0 console errors;
+  - **every page reachable per role, and the "cannot see" screen otherwise:**
+    - a Coach sees only their own Payment Detail;
+    - an Admin sees **no pay figures and no revenue**, with nothing locked, just absent (e.g. no salary column on Employee);
+  - every control does something. **Use a REAL mouse click** on the Park Rent steppers and the User Setting password eye (a synthetic click does nothing there);
+  - Thai OK; invented names only; **no item codes (F1, D3…) in titles OR the sidebar** (your TEST-128 note);
+  - Conversion has no "หน้าบ้าน" label and sits under SETTING;
+  - Khwan's v3 notes applied (the page → note tables are at the bottom of TASK-844 / 845).
+- **Team B:** a quick re-check that the 14 still behave as in TEST-128.
+- Write TEST-129. Put ONE screenshot (Monthly Payment, CEO view) in my scratchpad (`…\scratchpad\req133-final-ui.png`). Then tell me PASS/FAIL in inbox/PM.md.

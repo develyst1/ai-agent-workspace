@@ -8392,3 +8392,390 @@ ORDER BY 4 DESC;
   - The **"คอร์สที่ใกล้จบ (ต่ออายุ)"** card with its **49** badge and its first ~16 name-led items, shown as links.
   - The bottom of the "ใกล้หมดอายุ" card is above it.
 - Read only: nothing clicked or saved. It shows real children's names, so it's for the owner's reply only.
+
+## 2026-10-27 — REQ-133 PLAN + SIZE, Team B (Revenue · Stock · Reports pages of the final UI). No build. Plus option B firmed up: **≈ 25,700, not 27,000–29,500**. (@Silver)
+### 1. My part of Deliverable 1: 14 pages, inside Sober's Vite + React + TS + Mantine shell
+| area | pages (v3 → final) | what changes vs v3 | size (d, +10 %) |
+|---|---|---|---|
+| **Revenue** (CEO only) | Revenue Summary · Detail · Add Manually · Refund · Type and Category · ECA Payment (6) | Mantine tables / filters / date pickers (dd/mm/yy, no times); 1st Trial type; Refund = CANCELLED + sessions + "families told"; dates with the year; every v3 word | **2.4** |
+| **Stock** | Product · STOCK IN · Import from Excel · **STOCK OUT** · Stock Demo · Low Stock · Stock Report (Sales History / Balance / Movement tabs) (7) | **STOCK OUT = a cart with a PER-ITEM discount (฿ / %) and the commission edited PER ITEM** (lower or raise, as she answered on v3); "Defect Product → Demo"; the Thai Import note; location filter + qty on Product; Bravo first in Demo | **3.6** |
+| **Reports** | All Report (1): the 6 headings, each marked "content agreed when this part starts" | none (REQ-120 §4) | **0.3** |
+| **Data** | the v3 mock (`b-revenue.js`, `b-stock.js`) ported to typed TS data, Thai mock names (no real children) | the stale "bill discount" remark goes; the totals stay hand-typed so they add up | **0.6** |
+| **Roles** | CEO sees all; Admin: no Revenue menu and no commission totals; Coach: none of my pages | rows a role can't see are HIDDEN, not marked (her v3 note) | **0.4** |
+| **Tanya fixes** | buffer for her check (offline, 0 console errors, every page reachable, Thai OK, no dead buttons) | | **0.5** |
+| **Team B total** | | | **≈ 7.8 d** (Fanta builds, I review) |
+
+- **Not mine:** the shell, Salary + My slip + the Payment Detail Excel / PDF button, R0 switcher mechanics, the F-pages, and the presentation app (Sober).
+- **Carry-over to Next.js:** each page is a plain React component + Mantine + a typed data import, with no Vite-only APIs, so it moves into the Next app nearly as-is.
+
+### 2. The earliest ready date
+- **Depends on Sober's shell contract:** the layout, the router, a role context and the theme tokens. With that in ~1 day, Fanta starts on **Wed 10-28**.
+- **The 3 pages the presentation embeds** (Revenue Summary, Detail, STOCK OUT) are ready first: **Mon 11-02**.
+- **All 14 pages:** **Fri 11-06** to Tanya; **Mon 11-09** meeting-ready after her check.
+- If the owner's meeting is earlier, he can meet with the 3 key pages + Sober's parts, and the rest follows.
+
+### 3. Option B ("no Salary yet"): what stays, from the sizing (10-15 + 10-20)
+**Front-office items without Salary:**
+| item | days | without Salary? | why |
+|---|---|---|---|
+| F1 branch at booking | 7.2 | ✅ keep | revenue by branch |
+| F2 payment method (auto Transfer, edit) | 8.8 | ✅ keep | revenue by method (D4 / C-b) |
+| C-d installments | 5.5 | ✅ keep | revenue counts each on its date |
+| F5 Park Rent ("No Teacher") | 2.8 | ✅ keep | the PARK revenue line + the timetable block |
+| D3 To Confirm Camp | 4.4 | ✅ keep | camp revenue counts at confirm |
+| F3 multi-role (PT weekend / FL weekday) + STAFF | 9.4 | ❌ drop | it only decides PAY by the day's role |
+| F4 Conversion (1st Coach, trial → package, renewal) | 5.5 | ❌ drop | it only feeds Bonus 50 / 100 |
+| F6 a web user per coach (My slip) | 2.2 | ❌ drop | the slip is Salary |
+
+- **Kept: 28.7 d** of the 45.7 front-office days (63 %).
+- **Revenue stays whole without Salary.** No R2 line depends on pay. The refund-cancel and ECA stay.
+- **One Stock line touches Salary:** the STOCK OUT "Commission" picker.
+  - Default for B: keep it as a record of who sold (it is small and in Stock), so the commission can be paid later from the data.
+  - Its pay effect waits for Salary.
+- **R0 shrinks a little in B:** the pay visibility (R0.2 / R0.3) and the pay notification types are moot. Per-person users and roles stay (the admin must not see revenue).
+
+**Porter's shares check out** against my day split: Salary 43.1 → 9,700 · Revenue 32.8 → 7,400 · Stock 37.0 → 8,300 · front office 45.7 → 10,300 · roles + bridge 16.0 → 3,600, all of 174.6 d → 39,200.
+
+**The firmed-up options:**
+| | days (of 174.6) | price ≈ (39,200 × share) | time |
+|---|---|---|---|
+| **A** all 5 | 174.6 | **39,200** | 2–3 months, Stock usable first |
+| **B** no Salary | Stock 37.0 + Revenue 32.8 + FO 28.7 + roles / bridge 16.0 = **114.5** | **≈ 25,700** (≈ 25,300 with R0's pay parts removed) | ≈ 1.5–2 months |
+| **C** Stock first | Stock 37.0 + roles / bridge 16.0 = 53.0 | **≈ 11,900** | ≈ 3–4 weeks |
+| **Salary later** (after B) | Salary 43.1 + F3 / F4 / F6 17.1 = 60.2 | ≈ 13,500 | ≈ 1 month |
+
+- ⇒ **B = ≈ 25,700, not 27,000–29,500**: the Salary-bound front-office items (F3 / F4 / F6) are 17 d, more than the range assumed.
+- B + "Salary later" = 39,200, so nothing is lost by splitting.
+
+### 4. To confirm with the owner (one line each)
+- **The meeting date.** If before 11-09, the 3-page early set (11-02) is the plan.
+- **B's STOCK OUT commission picker:** keep it as a record (my default), or hide it until Salary?
+- **Reports page:** shown as "6 headings, content agreed when that part starts" (my default), or left out of the meeting UI?
+
+### 5. TASK numbers (cut only on Porter's GO): Team B from 751
+- **TASK-751** FE: the Revenue pages
+- **TASK-752** FE: the Stock pages (incl. the STOCK OUT cart)
+- **TASK-753** FE: Reports + the typed mock data + role visibility
+- All Fanta; I review; Tanya gates.
+
+**BALL: @Porter — the size (7.8 d) + dates to the owner; his 3 one-liners; Sober's shell contract (via you); the GO to cut 751–753.**
+
+## @Sober → @Porter — 2026-10-27 — REQ-133 PLAN + SIZE (Team A, lead). Nothing built yet; task numbers from 843 are reserved and not cut
+**Sources:**
+- the v3 prototype: 32 routes, 16 example dialogs;
+- the front office's `package.json` and theme;
+- Silver's `SIZING-REQ-120-revenue-frontoffice-2026-10-15.md` (F1–F6 lines + the 10-16 deltas);
+- his 10-20 re-size (174.6 d).
+
+### 1 · How it's built (both deliverables)
+- **Stack = the front office's own:**
+  - Vite + React 19 + TypeScript + **Mantine 9** (core / dates / charts / notifications), Tabler icons, **Noto Sans Thai**;
+  - the same AppShell (sidebar + header) and the same colours, copied from the front office's theme.
+  - The components move into the Next.js build with only the router swapped.
+- **Offline, one file:**
+  - Each app builds to **one self-contained `.html`** (vite-plugin-singlefile, hash routes, the font bundled, no CDN), so it opens by double-click with no network.
+  - Why: a normal Vite build does NOT open from `file://` (Chrome blocks module scripts there).
+- **Mock data:** one `mock/` module. Thai names that are invented (no real children), realistic amounts. No network calls at all.
+- **Roles:** a header switcher **CEO / Admin / Coach**, driving page AND field visibility per R0:
+  - an Admin never sees base salary or pay totals;
+  - a Coach sees only My slip (= Payment Detail).
+- **Where:** proposal, under `som-balance-backoffice-spec` (already in `machine.local.md`, holds v3, not a git repo):
+  - `final-ui/` (Deliverable 1);
+  - `pricing-deck/` (Deliverable 2).
+  - No new path is needed unless the owner prefers one.
+
+### 2 · Size: Team A ≈ 9.0 engineer-days
+| piece | content | d |
+|---|---|---|
+| Shell | Vite + theme + AppShell + hash router + role switcher + mock module + single-file build + CONVENTIONS for Silver's pages | 1.5 |
+| Salary (8 pages) | every v3 note applied: words / formats, commission lower-or-raise, My slip = Payment Detail, the Excel / PDF export button (mock download) | 3.5 |
+| Notify (2) + front office (7) | F1–F6 + Confirm camp, each marked **"หน้าบ้าน"** | 1.5 |
+| Presentation app | slide engine (← → / click / progress), 7 sections, **all numbers from `pricing.ts`**, A/B/C table + timeline, screenshots of Deliverable 1 | 2.0 |
+| My checks + handover to Tanya | offline open, 0 console errors, every route reachable from the menu per role, no dead buttons | 0.5 |
+| **Team A** | | **9.0** |
+
+- **Team B (Revenue 6 + Stock 7 + Reports 1 = 14 pages):** Silver sizes his own. For reference, his v3 HTML version was 7.2 d.
+- **Who:**
+  - Fern: shell → Salary → Notify / front office.
+  - **Jason: the presentation app.** It is pure static React with no backend, which runs it in parallel and keeps Fern on the critical path.
+  - Both under my review.
+
+### 3 · Earliest dates (from your GO today, Tue 10-27)
+| | date |
+|---|---|
+| Shell ready (unblocks Silver's pages) | **Wed 10-28** |
+| **Presentation ready for Tanya** (v3 screenshots first, swapped for final-UI shots when ready) | **Thu 10-29** |
+| Team A pages ready for Tanya | **Fri 10-30** |
+| **Both to the owner after Tanya** | **Mon 11-02**, if Silver's pages land by Fri 10-30 |
+
+**If the meeting is sooner,** the deck alone can reach the owner **Fri 10-30**.
+
+### 4 · Options A/B/C: checked, and B firmed up
+**Module shares:**
+- Your §4 split matches day-share × 39,200: Salary 9,700 · Revenue 7,400 · Stock 8,300 · front office 10,300 · roles + bridge 3,600.
+- **A = 39,200 ✓.**
+- **C = Stock + roles + bridge = 53.0 / 174.6 d ≈ 11,900 ✓.**
+
+**B, the firm range.** Three front-office items exist **only to feed Salary** (Silver's sizing: "These must land BEFORE Sober's Salary"):
+
+| item | what it is | d |
+|---|---|---|
+| **F3** | multi-role coaches + STAFF (FL pay / Extra Hour / OT) | 9.4 |
+| **F4** | first coach + trial → course / renewal links (Bonus 50 / 100), after D6's −1.1 | 5.5 |
+| **F6** | a web login per coach (to see / confirm the slip) | 2.2 |
+| **total** | | **17.1** |
+
+| B variant | days | price |
+|---|---|---|
+| **B-lean:** no Salary, no F3 / F4 / F6 | 114.4 | **≈ 25,700** |
+| B + F4 (if they want "who converted a trial to a course" reported now) | 119.9 | ≈ 26,900 |
+| B-full: all front-office items | 131.5 | ≈ 29,500 |
+
+- **Recommend quoting B = ≈ 25,700** (or the range 25,700–29,500).
+- Salary added later as a bundle (Salary + F3 / F4 / F6) = 60.2 d ≈ 13,500; A − B-lean = 13,500 ✓.
+- F1 (branch), F2 (payment record + installments), F5 ("No Teacher") and Confirm camp stay in B. Revenue reads F1 / F2 / D3.
+
+**Two things to say in the room (no price change):**
+- In B and C, the commission typed per line on STOCK OUT is recorded but only paid once Salary exists.
+- In C, Stock sales show in revenue only once Revenue is bought.
+
+### 5 · To confirm with the owner
+1. **The meeting date.** It decides whether the deck goes first (Fri 10-30) or both together (Mon 11-02).
+2. **B to quote:** lean ≈ 25,700 (my recommendation) / + F4 ≈ 26,900 / full ≈ 29,500.
+3. **The +5 d slip export etc. (≈ +1,300):** shown on a slide as included, as an extra, or left out. It changes `pricing.ts` only.
+4. **The folder:** `som-balance-backoffice-spec/final-ui` + `/pricing-deck` OK?
+5. **The final option numbers:** you send them, and they go straight into `pricing.ts`. Built as "PENDING" until then.
+
+**Ball: @Porter**
+- the owner's answers to §5;
+- Silver's page size;
+- your GO. On GO I cut TASK-843 (shell, Fern), 844 (Salary, Fern), 845 (Notify + front office, Fern) and 846 (deck, Jason).
+
+## 2026-10-27 — REQ-133 Team B: TASK-751 / 752 / 753 CUT + GO to Fanta. Waiting on Sober's shell contract (please relay it to me when it lands). (@Silver)
+- **751:** Revenue, 6 pages (≈ 2.4 d) · **752:** Stock, 7 pages incl. the STOCK OUT cart (≈ 3.6 d) · **753:** Reports + the typed mock data + role visibility (≈ 1.8 d incl. the Tanya buffer). All on the board.
+- **Your defaults are in the TASKs:** the commission picker stays as a record; Reports = the 6 headings "content agreed later"; the 3 deck pages first.
+- **Dates:**
+  - the deck pages **Mon 11-02**;
+  - all 14 **Fri 11-06**, then "ready for QA" to you.
+  - The dates hold only if the shell contract arrives Wed 10-28.
+- **For Sober's deck:** 753 exports the Revenue example numbers by name from Team B's data file, so his "how it's used" slides read the same figures the pages show.
+- **BALL: @Porter — Sober's shell contract to me (and the data-slot path); Fanta reads now.**
+
+## @Sober → @Porter — 2026-10-27 — REQ-133 Team A CUT (843–846) + ⭐ THE SHELL CONTRACT for Silver is published
+- **For Silver (please relay):** the contract is **`som-balance-backoffice-spec/final-ui/CONVENTIONS.md`**. Team B can start their pages today against it:
+  - pages in `src/pages/b/<area>/*.tsx`, mock data in `src/mock/b-*.ts`, one list `src/pages/b/index.ts` (an array of `PageDef`);
+  - menu order 500–899; never touch `src/shell/` or Team A's files;
+  - Vite + React 19.2.7 + Mantine 9.3.2 + **lucide-react 1.17.0**. The front's icon set is lucide, not Tabler: my plan said Tabler, and that was wrong;
+  - hash routes = the v3 routes minus `#`;
+  - **v3's `SPEC.*`, `[?]` help and ✓/✗ answers are dropped** (this is the final UI);
+  - **front-office pages are all Team A's now**, including v3's `/fo/*`, which were Team B's.
+  - **The shell itself lands Wed 10-28**. I'll tell you the moment it exists, so they can run their pages in it.
+- **Cut:**
+
+  | task | owner | what | d |
+  |---|---|---|---|
+  | TASK-843 | Fern | shell | 1.5 |
+  | TASK-844 | Fern | Salary 8 | 3.5 |
+  | TASK-845 | Fern | Notify 2 + front office 7 | 1.5 |
+  | TASK-846 | Jason | the deck | 2.0 |
+
+  - Your defaults are written into 846: A 39,200 · B 25,700 · C 11,900 · Salary later 13,500, PENDING; the +5 d not shown.
+  - B's card says coach logins / STAFF / bonus links come with Salary.
+- **Dates:** deck → my check Thu 10-29 → "ready for QA" to you → owner Fri 10-30. Team A pages Fri 10-30 → both Mon 11-02 if Silver lands Fri.
+
+## @Sober → @Porter — 2026-10-27 — correction: TASK-846 is ONE offer (no A/B/C). My earlier "defaults written into 846" line is superseded
+- I had missed your "NO options" entry; Jason caught it before building slide 5. 846 is now **one offer:** 39,200 ฿, 3 installments by delivery (11,900 / 13,800 / 13,500), the 5 d free and unmentioned, no PENDING.
+- Your Silver note (753 exports the Revenue figures by name) is folded into 846: the deck imports them from `final-ui/src/mock/b-*.ts`.
+- The contract was already published early (`final-ui/CONVENTIONS.md`, see my CUT entry), so Silver need not wait for Wed.
+
+## @Sober → @Porter — 2026-10-27 — REQ-133: ⭐ THE SHELL EXISTS (TASK-843 done). Silver's team can run their pages in it now · the deck (846) is back with Jason for 2 fixes
+- **For Silver (please relay):**
+  - `som-balance-backoffice-spec/final-ui/` is built by Fern exactly to `final-ui/CONVENTIONS.md`;
+  - `src/pages/b/index.ts` exists (empty, with one commented example);
+  - `npm install` done; `npm run dev` to build pages, `npm run build` → one `dist/index.html`.
+  - **Import helpers + types from `@/shell` only** (it never exports the registry, to avoid an import cycle).
+  - Exact versions: Vite 8.3.5, react-router-dom 7.18.4, TS 6.0.3, recharts 3.10.1 (for `@mantine/charts`).
+- **Fern's gates (her report):** build 0 · one file ≈ 1.0 MB · 0 network requests · 0 console errors / warnings (headless Edge + Chrome) · roles switch · 375 px drawer · the no-access screen. She is now on 844 (Salary).
+- **The deck (846): NOT ready for QA yet.** My check found two customer-visible problems, sent back to Jason:
+  1. The price slide carries the tag **"ตัวเลขรอยืนยัน"**: the customer would read our price as unconfirmed.
+  2. The dropped A/B/C (the B price 25,700 and its texts) is still **inside the file**, readable in the source if the owner forwards it.
+  - Everything else is good. Still on track for the owner Fri 10-30.
+
+## 2026-10-27 — Shell received; Fanta is building 751–753 now. Two notes on `final-ui/CONVENTIONS.md` for Sober (via you). Neither blocks us. (@Silver)
+1. **§4 example: `roles: ["ceo", "admin"]` on Revenue Summary.**
+   - Revenue is **CEO only** (REQ-120 §2 "seen by the CEO only", R0.1 "an admin never sees … any revenue").
+   - Team B registers the Revenue pages as `["ceo"]`. Sober may want to correct the example, so nobody copies it.
+   - §2.7's R0 list could also say "an Admin never sees revenue".
+2. **§2.7 "mask a field with `<Locked label="CEO only" />`"** vs Khwan's v3 note (pages 7 and 12): *"🔒 HIDDEN FOR ADMIN … ไม่ต้องขึ้นค่ะ"*, *"Invisible … ไม่ต้องขึ้นค่ะ ขึ้นแค่อันที่เขาดูได้ค่ะ"*.
+   - Team B therefore HIDES what a role can't see and uses no `<Locked>`.
+   - Sober's Salary pages may need the same (his call).
+- **Dates:** the deck pages Mon 11-02; all 14 Fri 11-06.
+- **BALL: @Porter — the 2 notes to Sober; Fanta builds.**
+
+## @Sober → @Porter — 2026-10-27 — ✅ TASK-846 the pricing deck: READY FOR QA (REQ-133 Deliverable 2)
+- **File:** `som-balance-backoffice-spec/pricing-deck/dist/index.html`. One file, 1,364,040 B, md5 `ba12a2de7253981b870015af3191e9be`. Opens by double-click, offline. 12 slides (← → Space, click, Home / End, F = fullscreen; `#/slide/N` survives a reload).
+- **My check:**
+  - tsc 0;
+  - **a grep of the built file finds 0** of: "ตัวเลขรอยืนยัน", 25700 / "ยังไม่เอา Salary" / "Stock ก่อน" (the dropped options), 99,999, TASK- / REQ-, our names;
+  - in the browser the offer slide reads 11,900 / 13,800 / 13,500 = 39,200, and installment 3 names Salary + coach login + multi-role / STAFF + trial conversion;
+  - console empty.
+- **For Tanya's gate (REQ-133):**
+  - opens offline;
+  - 0 console errors;
+  - every slide reachable by keys AND click;
+  - Thai renders in the bundled font (no boxes);
+  - **no "pending" tag and no A/B/C anywhere**;
+  - nothing internal on a slide (days only as BRIEF §3: 278 / 200 / 51 / 149, ≈ 7 months).
+- **Wording for the owner to glance at:** the 4-step "day in the life" per part and the timeline labels are Jason's, from BRIEF §1 / §4 verbs (no new rules or dates).
+- **Screenshots** are from v3 (English, dark) for now. They're swappable for final-UI shots by replacing the image files only, once Deliverable 1 is done.
+
+## @Sober → @Porter — 2026-10-27 — Silver's 2 notes: both RIGHT, contract fixed · and the deck's md5 changed (one more Jason rebuild), re-checked
+- **For Silver (please relay):** `final-ui/CONVENTIONS.md` is corrected.
+  - §4's example is now `roles: ["ceo"]`, and §2.7 says "an Admin never sees revenue".
+  - §2.7 now says **hide, never mask**, quoting Khwan's v3 lines; `<Locked>` is withdrawn (§5).
+  - Fern removes it from the shell with 844, and the Salary pages hide too.
+  - Silver's dates noted: pages for the deck Mon 11-02; all 14 Fri 11-06.
+- **⚠️ The deck file changed after my READY FOR QA** (Jason renamed one leftover bundled title, "Stock ก่อน" → "เริ่มจาก Stock"). **Use this one for Tanya:** 1,364,052 B, md5 **`e357cbf55a223bbb827d90191b56497d`** (supersedes `ba12a2de…`). Re-checked by me: tsc 0, 0 banned hits.
+- **Both deliverables to the owner:** Silver's 14 pages land Fri 11-06, so **the final UI as a whole reaches the owner after Tanya, ≈ Mon 11-09**, not Mon 11-02. The deck is unaffected (Fri 10-30).
+
+---
+## @Tanya → @Porter — 2026-10-27 — ✅ TEST-127 pricing deck: PASS on the gate · 🟡 11 wording / screenshot notes for the owner · ⚠️ the file's md5 changed
+- **⚠️ md5:** I tested **`e357cbf5…`** (rebuilt 22:07), not the brief's `ba12a2de…`. If another build is meant, tell me (≈ 5-min re-run).
+- **Gate ✅:**
+  - offline with 0 network requests;
+  - 0 console / page errors;
+  - 12 slides by → ← Space Home End and by the on-screen buttons (disabled at the ends);
+  - `#/slide/N` survives a reload;
+  - Noto Sans Thai bundled, no boxes;
+  - **0 "pending" and 0 A/B/C on screen** (the file's "pending" hits are React internals);
+  - **one offer: 39,200 = 11,900 + 13,800 + 13,500**, and the arithmetic holds (149 × 263 ≈ 39,200; 73,000 / 278 ≈ 263);
+  - nothing internal except **"(V3)"** on slide 8.
+- **🟡 The ones I'd fix before ฟีน sees it:**
+  - slide 8 "(V3)" + the "ตกลงกันแล้ว" vs "ทันทีที่ตกลงกัน" contradiction;
+  - slide 2 *"จ่ายออกแบบตะกร้า"* reads as "ออกแบบ" (design);
+  - slide 9 *"…Daily Report ไว้แล้ว"*: included, or already delivered?;
+  - slide 9 "< 6,000 / month" is averaged over 7 months, but they pay in 2–3;
+  - **slide 3's (v3) screenshot shows "Kung" 17,200 ฿ / "Poo" 15,600 ฿ salaries**, their own admins' nicknames, in front of the CEO.
+- **The rest** (quoted per slide): slides 2, 4, 9, 11 and 12 in `tests/TEST-127-req133-pricing-deck.md`.
+- **Price screenshot:** `req133-deck-price.png` in your scratchpad.
+
+---
+## @Tanya → @Porter — 2026-10-27 — TEST-127: md5 `e357cbf5…` is the file I tested. The PASS + notes stand; no re-run
+
+## @Sober → @Porter — 2026-10-27 — TEST-127 notes: all 11 sent to Jason with exact Thai · the same real-names leak fixed in the final UI contract (please relay to Silver)
+- **The deck:** Jason does all 11 of Tanya's notes (my rulings + exact wording in inbox/BE.md).
+  - The screenshots are recaptured with neutral names (Kid → Ton, Poo → Ploy, Kung → Nam, Bank → May, London → Beam, Nelson → Pete, พี่ฟีน → CEO) and without the F1 / D3 codes.
+  - Slide 9: the 3,500 bracket goes (263 = 73,000 ÷ 278), and **the "< 6,000 / month" line goes** (now: "≈ 7 เดือนของโปรแกรมเมอร์ 1 คน แต่เราส่งมอบได้ใน 2–3 เดือน").
+  - You get the new md5 after my check.
+- **The same leak was in my contract.** `final-ui/CONVENTIONS.md` §2.8 allowed Khwan's staff names in mock data, and Fern's Salary pages used them beside salaries.
+  - **Fixed:** invented staff names everywhere, the same map as the deck; no item codes in the menu.
+  - **For Silver:** his Stock commission and Revenue pages use the same map.
+- **TASK-844 (Salary 8 pages) is built** but back to Fern for one pass: hide instead of 🔒, and the names. Then 845.
+- ring Jason — inbox/BE.md §"TASK-846 UNFROZEN for one round" · ring Fern — inbox/FE.md §"TASK-844 REWORK (one pass)" · and read my entry above "TEST-127 notes" (my sends are capped)
+- ring Fern — inbox/FE.md §"TASK-844 REWORK (one pass)": her "844 done" nudge predates it; **do the rework BEFORE 845** (on disk now: real staff names + 🔒 in 7 Salary files) (my sends are capped) · FYI for Silver: Team B's `src/mock/b-stock.ts` + `pages/b/stock/Demo.tsx` + `pages/b/index.ts` also carry the real staff names → the same name map (CONVENTIONS §2.8)
+
+## 2026-10-27 — Re NO real staff names: checked Fanta's files. Real names WERE there; the swap is ordered. (@Silver)
+- **My scan of `src/mock/b-*.ts` + `src/pages/b/`** found the real staff names in `b-stock.ts` (the commission sellers, the Low Stock recipients London + พี่ฟีน; about 12 lines) and in `pages/b/stock/Demo.tsx:32`.
+- **None in `b-revenue.ts`.** The children's names are already invented.
+- **Ordered to Fanta:** apply the map (Kid → Ton · Poo → Ploy · Kung → Nam · Bank → May · London → Beam · Nelson → Pete · พี่ฟีน → CEO), fix the stale comment, then re-scan. I re-scan at review.
+- **BALL: @Porter — none; Fanta swaps and carries on.**
+
+## @Sober → @Porter — 2026-10-27 — ✅ TASK-846 deck: Tanya's 11 notes DONE, checked by me → for her quick re-check, then the owner
+- **The file:** `som-balance-backoffice-spec/pricing-deck/dist/index.html`, 1,352,754 B, md5 **`056a00b466fced49741c0c3fbd6cb9a5`** (supersedes `e357cbf5…`). Frozen.
+- **My check:**
+  - tsc 0;
+  - a word-boundary grep of the build for the real staff names, "(V3)", เทส, UAT, ห้องนี้, 6,000, the pending tag, A/B/C, 99,999, TASK- / REQ- = **0**. A plain "Poo" still matches React's internal `cachePool`, not text;
+  - **I opened all 5 screenshots at full size:** invented names only (Pete / May / Ton / Ploy / Nam / Beam), no F1 / D3 codes, the only child is "น้องเอ";
+  - slide 9 now reads "แพ็กเกจเดิม 73,000 บาท … 263 บาท", "ราคานี้รวมการทดสอบ … ช่วงทดลองใช้ก่อนใช้งานจริง … แล้ว", and "≈ 7 เดือน แต่เราส่งมอบได้ใน 2–3 เดือน" (no per-month figure); title and footer match;
+  - console empty.
+- **For Tanya:** a quick re-check of her 11 notes on this md5. Then it's the owner's (Fri 10-30 target met early).
+
+---
+## ✅ @Tanya → @Porter — 2026-10-27 — TEST-127 re-check: the fixed deck (`056a00b4…`) PASSES. All 11 notes resolved; ready for the meeting
+- **Gate re-run ✅:**
+  - offline, 0 errors, all 12 slides by keys / buttons / click, the reload keeps the slide, Thai font;
+  - no pending / A-B-C / V3 / internal words on screen;
+  - **39,200 = 11,900 + 13,800 + 13,500**.
+- **The 11 notes are all fixed.** Incl.:
+  - **the 5 screenshots now use invented names only** (Pete / May / Ton / Ploy / Nam / Beam; no Kung / Poo), and the F1 / D3 codes are gone;
+  - "ไว้แล้ว" is now "ราคานี้รวม … แล้ว";
+  - the 6,000 / month line is gone;
+  - "(V3)" is gone;
+  - "จ่ายออกแบบตะกร้า" → "ขายออกเป็นตะกร้า (หลายชิ้นในบิลเดียว)".
+- ⚪ **2 cosmetic leftovers, no action needed:**
+  - slide 8's 3rd card repeats the title;
+  - installment 2 has no own duration.
+- **Price screenshot:** fresh in your scratchpad (`req133-deck-price.png`).
+- Detail: `tests/TEST-127-…` → "Quick re-check".
+
+## 2026-10-27 — ✅ REQ-133 Team B: READY FOR QA. All 14 pages (TASK-751 / 752 / 753) are in `som-balance-backoffice-spec/final-ui/`, ahead of the 11-02 / 11-06 dates. (@Silver)
+**Verified by me:**
+- tsc 0; `npm run build` → ONE `dist/index.html` (1.24 MB);
+- the roles: Revenue ×6 + All Report CEO-only; Stock ×7 CEO + Admin; the Coach sees none;
+- no `<Locked>` (hidden, per Khwan); no network; no item codes;
+- STOCK OUT: a cart with a per-item discount (฿ / %) and the commission edited per item (lower / raise); the discount doesn't change the commission;
+- **no real staff names:** the §2.8 map, my scan = 0 hits; the children's nicknames are invented;
+- Fanta's dev-server run: 0 console errors / 0 warnings, 109 controls clicked, 375 px with no sideways scroll.
+
+**Fixed in my review:**
+- the real names (→ the map);
+- **my decision:** the Admin DOES see the COMMISSION column on Product. It is the product's rate, not a coach's pay, and the Admin already sees and edits the commission in STOCK OUT. An Admin still sees no coach total anywhere.
+- the "STOCK IN" title (her v3 note).
+
+**For Tanya's gate:**
+- **open the BUILT file offline.** Neither Fanta nor I could open `file://` in our panes.
+- In the meeting, Detail's Month / Custom total (the shown rows: 14–16 Oct) differs from the typed MTD on the Summary. It is labelled on screen as such.
+
+**For Sober's deck:** `REV_DECK` in `src/mock/b-revenue.ts` holds the example revenue numbers (Today 82,700 · MTD 757,475 · YTD 7,113,915).
+
+**BALL: @Porter — Tanya's gate on Team B's 14 pages; no git (only on the owner's word).**
+- 2026-10-27 Silver (SA-B), an addition to "REQ-133 Team B: READY FOR QA": Fanta has since SERVED the built `dist/index.html` (over http, not `file://`), and its console is empty. Only the double-click `file://` open is still untested, which is Tanya's gate.
+- ring Fern — inbox/FE.md §"TEAM A REWORK, ONE consolidated list (844 + 845)": she finished 845 without ever seeing my rework (real staff names + 🔒 in 16 files, item codes in 5 titles) (my sends are capped) · Team A's final UI is NOT ready for QA until this lands · FYI Silver: Team B's real names are down to `src/pages/b/index.ts` only
+
+---
+## ✅ @Tanya → @Porter — 2026-10-27 — TEST-128 final UI, Team B's 14 pages: PASS · ⚪ one note for Team A (sidebar codes)
+- **File:** md5 `3738636a…` (built 22:27).
+- **Basics:**
+  - offline, 0 network;
+  - **0 console errors / warnings** across load, the 14 pages, ~140 clicks and STOCK OUT;
+  - all 14 in the CEO menu;
+  - **0 dead controls** (13 first flags were steppers / a clear (×) / the already-active tab, each checked);
+  - Thai OK;
+  - **375 px: 0 pages scroll sideways.**
+- **Roles ✅:**
+  - **CEO** 14;
+  - **Admin** the 7 Stock pages only (Revenue + All Report ⇒ "This role cannot see this page");
+  - **Coach** none;
+  - 0 🔒 / "CEO only";
+  - the Admin's STOCK OUT toast drops the revenue amounts.
+- **STOCK OUT ✅:**
+  - a cart (Add item → 3 lines);
+  - per-item discount: 10 % ⇒ 3,510, 50 ฿ ⇒ 100, Price 4,900;
+  - the commission edited per item: **Ton 50 → 40 (lower), Ploy 50 → 75 (raise)**;
+  - **the discount left every commission unchanged.**
+- **Names ✅:** invented staff only (Ton / Ploy / Nam / May), invented children (น้องมะลิ / ภูมิ / ข้าวหอม); 0 real staff names.
+- **⚪ Team A, not this gate:** the shared sidebar shows *"F1 · Branch for booking"* / *"F2 · Payment Method"*, i.e. internal codes; CONVENTIONS §2.8 forbids them. Worth telling Sober before Team A's gate.
+- Detail: `tests/TEST-128-req133-final-ui-team-b.md`.
+- ring Fern — inbox/FE.md §"Rework CHECKED ✅ except ONE item": the Conversion page's หน้าบ้าน label, Khwan's ask (my sends are capped). Team A's final UI: everything else is verified by me; READY FOR QA follows her one-line fix
+
+## @Sober → @Porter — 2026-10-27 — ✅ REQ-133 final UI: TEAM A's 17 pages READY FOR QA (TASK-843 / 844 / 845)
+- **File:** `som-balance-backoffice-spec/final-ui/dist/index.html`, 1,243,190 B, md5 **`a33a3b433f581dc3b53ba451de0a8670`**. One file, offline.
+  - ⚠️ It also carries **Team B's pages as registered so far** (Stock is already in the menu). Those are Silver's, not part of this gate. The md5 changes when his pages land, so Tanya's final pass on the whole UI comes after his Fri 11-06.
+- **Team A = 17 pages:**
+  - SALARY 8: Employee · Employee Profile · Payment Setting · Monthly Payment · Payment Detail · Other Income · Daily Training Report, + the Coach's own Payment Detail;
+  - NOTIFICATION 2;
+  - SETTING 7: Role Setting · User Setting · Branch for booking · Payment Method · Conversion · Park Rent · To Confirm Camp.
+- **My check:**
+  - tsc 0;
+  - **0** real staff names / `Locked` / 🔒 in Team A's source and in the build; **0** item codes (F1 / D3 …) in titles;
+  - in the browser: Admin's Employee page has **no salary column** (hidden, not masked); Conversion shows **no** หน้าบ้าน label (Khwan's ask) and sits under SETTING; console 0.
+  - Fern's own crawl: 17 pages × 3 roles in headless Edge + Chrome, every control clicked, 0 console errors / warnings, 375 px no sideways scroll.
+- **For Tanya's gate (REQ-133):**
+  - opens offline; 0 console errors;
+  - **every page reachable per role, and the "cannot see" screen otherwise**: a Coach sees only their own Payment Detail; an Admin sees **no pay figures and no revenue**, with nothing locked, only absent;
+  - every control does something. Fern notes the Park Rent number steppers and the User Setting password eye need a REAL mouse click (a synthetic `click()` does nothing on those Mantine controls);
+  - Thai OK; **invented names only** (staff: Pete / May / Ton / Ploy / Nam / Beam / CEO; children: น้อง…); no item codes; Khwan's v3 notes applied (Fern's page → note tables are at the bottom of TASK-844 and TASK-845).
+- **Fern's 3 judgement calls, accepted by me** (FYI for the owner):
+  1. Payment Setting's "Hours come from" row was dropped (Khwan removed its value);
+  2. User Setting › Individual Information opens a dialog;
+  3. an Admin's / a Coach's alerts list only their own items.
