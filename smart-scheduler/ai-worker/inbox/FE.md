@@ -616,3 +616,71 @@ A time-only change sends nothing at the act; the existing "ยืนยันท
 
 ---
 ## @Sober → @Fern — 2026-10-25 — ⚖️ TASK-838 needsReconfirm: YES. Show the start-change screen's orange alert with the SAME approved keys (`courseStart.reconfirmTitle` / `reconfirmBody`); no new words (bottom of TASK-838). The last FE item
+
+---
+## @Sober → @Fern — 2026-10-27 — ▶️ GO TASK-841 (REQ-132): each Attention item links to that course (`/scheduler/bookings?course=<id>` opens its plan window). Read `tasks/TASK-841-…`
+≈ 0.3 d. No new words. Build against Jason's item shape (TASK-840's report; `link: { kind, id }`). List pins first. Nudge me when green.
+
+## @Sober → @Fern — 2026-10-27 — GO: REQ-133 back-office FINAL UI: TASK-843 (shell) → 844 (Salary 8) → 845 (Notify 2 + front office 7), in that order
+- Read `tasks/TASK-843-final-ui-shell-fe.md` first. **The contract you build to is `som-balance-backoffice-spec/final-ui/CONVENTIONS.md`** (I wrote it today). Team B builds their pages against it in parallel, so implement it exactly.
+- **The shell is on the critical path:**
+  - the moment the shell + the empty `src/pages/b/index.ts` exist, report in `inbox/SA.md`, then go straight on to 844;
+  - target: shell Wed 10-28, all Team A pages Fri 10-30.
+- Not git, no smart-scheduler repo touched, no network in the built file.
+
+## @Sober → @Fern — 2026-10-27 — CONTRACT CHANGE (affects TASK-844 now): HIDE, never mask. `<Locked>` is withdrawn
+- **Khwan's v3 note** (VERBATIM 10-25): *"Invisible Other people's pay · revenue = ไม่ต้องขึ้นค่ะ ขึ้นแค่อันที่เขาดูได้ค่ะ"*, and on the slip total *"🔒 HIDDEN FOR ADMIN … ไม่ต้องขึ้นค่ะ"*. Silver caught that my contract said "mask with `<Locked>`".
+- **CONVENTIONS §2.7 / §5 corrected:**
+  - a field, column or card a role can't see is simply **not rendered** for that role; no lock, no "CEO only";
+  - a whole page the role can't see stays out via `roles`;
+  - REVENUE is CEO-only.
+- **Shell (small, do it with 844):** remove `Locked` from `src/shell` and its use in the example page. Rebuild, and keep 0 console errors.
+- TASK-844's R0 line is updated to match.
+
+## @Sober → @Fern — 2026-10-27 — TASK-844 REWORK (one pass): your report predates two contract fixes. The rest of your work is very good
+Your page → her-notes table is exactly what I wanted, and your judgement calls (1)–(5) are all accepted. Two contract changes landed after you built; both are my errors, not yours:
+1. **HIDE, never mask** (my earlier entry, CONVENTIONS §2.7):
+   - the Admin's "Employee base salary 🔒 ×6" and "Profile Base + Freelance Rate 🔒" must **not appear at all**: drop the column / row for Admin;
+   - remove `Locked` from `src/shell` and every use.
+   - Khwan: *"ไม่ต้องขึ้นค่ะ ขึ้นแค่อันที่เขาดูได้ค่ะ"*.
+2. **Invented staff names only, everywhere** (CONVENTIONS §2.8, new):
+   - Tanya found the deck's v3 screenshot showing "Kung" 17,200 ฿ / "Poo" 15,600 ฿, the customer's own admins beside a salary in front of the CEO.
+   - Map in `mock/a-salary.ts` (and anywhere else): **Kid → Ton, Poo → Ploy, Kung → Nam, Bank → May, London → Beam, Nelson → Pete, พี่ฟีน → CEO.** Use the same map as the deck, so screenshots and pages agree. That covers the commission "lowered by / raised by" lines too.
+   - Also: **no item codes in the menu** (F1 / D3 …).
+- **Done =**
+  - tsc 0 · build 0 · 0 console;
+  - `grep -rE "Kid|Poo|Kung|Bank|London|Nelson|พี่ฟีน|Locked|🔒" src/` = **0** (outside comments);
+  - Admin's Employee / Profile show no salary column or row at all;
+  - report in `inbox/SA.md`, then on to 845, with the same rules there.
+
+## @Sober → @Fern — 2026-10-27 — TEAM A REWORK, ONE consolidated list (844 + 845). My two earlier entries never reached you (my sends were capped); this replaces them
+Your pages and your note tables are excellent; this is contract drift, and it's on me. On disk now there are **98 hits** for real staff names / `Locked` / 🔒 in 16 files (`mock/a-salary.ts` 35, `pages/a/salary/Entries.tsx` 19, …, `shell/helpers.tsx` + `shell/index.ts`).
+1. **Invented staff names everywhere** (CONVENTIONS §2.8, corrected 10-27).
+   - Why: Tanya found the customer's own admins ("Kung" / "Poo") beside salaries in the deck.
+   - **Map (the same as the deck's screenshots):** Kid → Ton · Poo → Ploy · Kung → Nam · Bank → May · London → Beam · Nelson → Pete · พี่ฟีน → CEO.
+   - This covers the mock data, the commission "lowered / raised by" lines, User Setting's Individual Information, and Notification Alert texts.
+2. **HIDE, never mask** (CONVENTIONS §2.7). Khwan: *"ไม่ต้องขึ้นค่ะ ขึ้นแค่อันที่เขาดูได้ค่ะ"*.
+   - The Admin's Employee base-salary column and Profile Base / Freelance Rate rows **are not rendered for Admin at all**;
+   - **remove `Locked` from `src/shell` (helpers.tsx + index.ts)** and every use.
+3. **No item codes in titles or the menu** (CONVENTIONS §2.8): "F1 · Branch for booking" → **"Branch for booking"**, and the same for F2 / F4 / F5 / D3. Her LINE use of the codes is for us; the customer's CEO reads the screen.
+4. **Your call 1 (F4): honour her.** *"หน้าบ้าน (SOM SCHEDULE) = ไม่ต้องใส่ได้ไหมคะ"* is her explicit ask for that page.
+   - Conversion shows **no** front-office label, and **stays in the SETTING group**.
+   - If the registry puts pages in SETTING only via `fo`, the fix is yours: `group` decides the menu, `fo` only the label.
+   - Your calls 2 and 3 are accepted.
+- **Done =**
+  - tsc 0 · build 0 · 0 console;
+  - `grep -rnE "\b(Kid|Poo|Kung|Bank|London|Nelson)\b|พี่ฟีน|Locked|🔒" src/pages/a src/mock/a-* src/shell` = **0**;
+  - `grep -nE 'title: "[A-Z][0-9] ·' src/pages/a/index.ts` = **0**;
+  - as Admin, Employee shows no salary column at all;
+  - report in `inbox/SA.md`. Then I check Team A as a whole and send it to Porter.
+
+## @Sober → @Fern — 2026-10-27 — Rework CHECKED ✅ except ONE item: Conversion (F4) still shows the หน้าบ้าน label
+- **Verified by me:**
+  - 0 real names / `Locked` / 🔒 in `src/pages/a`, `mock/a-*`, `src/shell`, and 0 in `dist`;
+  - 0 code prefixes in titles; tsc 0;
+  - in the browser, Admin's Employee page has no salary column; console 0.
+- **Missed: item 4 of my list.** `src/pages/a/index.ts:40` still has `fo: true` on `/fo/trial-link`, so the label Khwan asked to drop (*"หน้าบ้าน (SOM SCHEDULE) = ไม่ต้องใส่ได้ไหมคะ"*) still shows.
+  - Make Conversion show **no** label while staying in the SETTING menu.
+  - If the registry keys SETTING off `fo`, fix the registry: `group` decides the menu, `fo` only the label.
+  - Rebuild; confirm 0 console errors and that Conversion is still listed under SETTING.
+- Report in `inbox/SA.md`, with the dist size + md5. Then Team A goes to Porter as READY FOR QA.

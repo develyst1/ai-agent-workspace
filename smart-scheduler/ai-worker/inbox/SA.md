@@ -4405,3 +4405,316 @@ Ball: Sober for 838 (and 836 / 837 earlier).
 
 ---
 ## @Porter → @Sober — 2026-10-25 — ✅ GRANT TASK-839 (REQ-131): the 3rd argument + the renderer fallback to `payload.bookingId`; tests by value + a set, as you wrote. It ships with / after 837 + 838. Git only on the owner's word.
+
+
+## Jason (BE) 2026-10-25 — TASK-839 BE (REQ-131): built; ONE pin file outside any grant (set 692) — waiting for GO
+
+**Built:** (1) `line-webhook.service.ts` — the refusal's call is now `notifyAdmins({ kind: "leave_refused_no_validity", bookingId: b.id }, db, b.id)` (the 3rd argument = the row's `booking_id`; the comment sits on its own line above). (2) `outbox.service.ts` — the worker builds its context through `contextBookingId(row)`: the row's own `booking_id` first (byte-identical for every row that has one), and **only for `leave_refused_no_validity`**, when that is NULL, the payload's `bookingId`.
+**My call, and why — this kind only, not "any payload carrying a bookingId":** a NULL `booking_id` on other kinds is deliberate (a notice about a day or a series); a general fallback would start naming a class on them. By value, another kind with a NULL `booking_id` and a `payload.bookingId` is built exactly as before (test + mutation B4).
+No new words (the approved text already has `{student} · {date}`); no migration; no kind added (count stays 45).
+
+**Tests (new `services/leave-refused-names-the-child-task839.test.ts`, 8, through the REAL worker `processOutboxOnce`):** a row with `booking_id` ⇒ the child's name + `30-10-2026`, not «-»; an OLD-shape row (NULL `booking_id`, `payload.bookingId`) ⇒ named too; neither ⇒ still `- · -`, no crash; another kind unchanged; the row's own id wins over the payload's; `notifyAdmins` writes the 3rd argument on every admin row; source pins on the webhook call and the one helper. **Set `leave-refused-names-the-child-task839.mutations.json`: 5/5 BITE, checksum identical** (B1 the 3rd argument dropped · B2 the fallback removed · B3 the wrong field · B4 any kind · B5 the row's id ignored).
+
+**Pins listed:** the change breaks exactly ONE existing file — `src/services/leave-refused-no-validity-task692.mutations.json` (set 692, Team A's own): its P4 and P5 anchor the OLD line `notifyAdmins({ … bookingId: b.id });` (so `mutation-sets-task627` fails). Re-aim = the three strings `bookingId: b.id });\n` → `bookingId: b.id }, db, b.id);\n` (P4 `from`, P5 `from` and P5 `to`); both still resolve once and keep their bite. No test file changes.
+
+**Verified so far:** tsc 0 · suite 5,158 pass / 4 fail (5,162): TASK-749's 3 reds + this one pin. Not marking green until set 692 is re-aimed.
+
+Ball: Sober — GO for `leave-refused-no-validity-task692.mutations.json` (P4 + P5), please.
+
+
+## Jason (BE) 2026-10-25 — TASK-839 BE: set 692 re-aimed — GREEN (my files)
+
+- `leave-refused-no-validity-task692.mutations.json`: P4 `from`, P5 `from` and P5 `to` now read `…bookingId: b.id }, db, b.id);` (3 strings, nothing else). **Set 692: 12/12 BITE, 0 survivors, checksum identical** (P4 and P5 both still bite).
+- **Set 839: 5/5 BITE**, checksum identical (B1 3rd argument dropped · B2 fallback removed · B3 wrong field · B4 any kind · B5 the row's id ignored).
+- **Verified:** tsc 0 · suite **5,159 pass / 3 fail (5,162 tests, 369 files)** — the 3 reds are TASK-749's (`day-end-sweep` / `jobs.service.ts`), none mine; unhandled 0. `git status` (mine): `line-webhook.service.ts`, `outbox.service.ts`, `leave-refused-no-validity-task692.mutations.json` (modified); `leave-refused-names-the-child-task839.test.ts` + `.mutations.json` (new). TASK-749's `jobs.service.ts`, `day-end-sweep.ts`, `day-end-sweep-task749.{test.ts,mutations.json}` are not mine. My run had `.env` present; your no-.env room is yours.
+
+Ball: Sober.
+
+## @Porter → @Sober — 2026-10-25 — Received TASK-839 READY. Waiting for the owner's git word (I don't originate it). FYI: I granted Silver the 3 mirror pins in your test files (`group-session-req095-2a`, `booking-pause`, `other-booking-money`): each reads `POSTING_TYPES` from `day-end-sweep.ts`, one line each, same intent.
+
+## @Porter → @Sober — 2026-10-25 — ⬆️ The owner's git word for TASK-839. Verbatim: *"ขึ้น git"*
+- Scope: `smart-scheduler-back`, **the 5 files in DEPLOY-REQ-131 §2 only**. Team B's TASK-749 files stay out.
+- Per the `git-command` skill: commit + sync the current branch. No deploy.
+- Reply with the hash, and ring me.
+
+## @Porter → @Sober — 2026-10-25 — FYI: 4 more TASK-749 mirror pins granted to Silver; 2 are in Team A's files (`booking-undo-req108.test.ts:324`, `day-end-auto-attend.test.ts:59-63`). Re-pointed to `day-end-sweep.ts`, same intent, nothing loosened. Shout in my inbox if you see a rule lost.
+
+## @Porter → @Sober — 2026-10-25 — FYI (copy): Silver's TASK-749 fix claims the shared `lib/sale-post.ts` (posting only when a booking's revenue is not live: `rev:` count = `rev-undo:` count). The double-post cause dates from TASK-258 (09-06): any day-end re-run double-posts trial / 1 HR / Other. Watch for overlap with your work. Details: `inbox/PM.md` "🔴 TEST-123 CONFIRMED".
+
+## @Porter → @Sober — 2026-10-25 — FYI (copy): granted Silver one more re-point in your `other-booking-money.test.ts:157-165` (the loop shape moved into `postTrialOrSingleSale`; nothing loosened). The double-post fix adds `liveRevenue` to the shared `lib/sale-post.ts`.
+
+## @Porter → @Sober — 2026-10-27 — REQ-132 (new, small): admin กุ้ง asks if she can see WHO is behind the digest's "คอร์สที่ใกล้ใช้ครบ: 48"
+- File: `requirements/REQ-132-digest-nearly-finished-courses-who.md` (her words verbatim, my code read).
+- My read, to confirm or correct: the attention panel lists the items, but the label is `course <size> · เหลือ <n>` with no child and no link (`lib/attention.ts:278-289`, `AttentionContent.tsx` `CHECK_LINKS`).
+- Answer 1–3 in the REQ: what she sees today + the menu path; any existing page where she can already see them (self-serve); if none, the smallest change + size (name / parent / link), and whether "ใกล้หมดอายุ: 43" needs the same. Analysis only; no build yet.
+
+---
+## @Porter → @Sober — 2026-10-27 — REQ-132: GO on option B (names + links)
+- Owner, verbatim: *"B"* (after I confirmed the LINE digest stays counts-only; he did not want the LINE message longer).
+- Scope = your answer 3 **with** the FE link:
+  - BE: the child's name on every Attention item, for both checks (ใกล้ใช้ครบ + ใกล้หมดอายุ); DUO names both; reuse the name helper; no new words; LINE digest unchanged;
+  - FE: each item links to that course in Bookings (your pick of target).
+- No parent/phone. ≈ 0.6 d. Team A, TASKs from **840**.
+- Path as usual: sid → Tanya's pass → the owner's ขึ้น git / deploy. Send me "ready for QA" when it is on sid-ready code.
+- Detail: `requirements/REQ-132-digest-nearly-finished-courses-who.md` → "Owner's decision".
+
+---
+## @Fern → @Sober — 2026-10-27 — TASK-841 FE: PIN LIST (before any edit). Front tree is clean (837 + 838 are committed `f9f7f9c`). Starting now: no pin needs EDITING
+**Files:** `AttentionContent.tsx` (a `link`ed item's label → `<Anchor component={Link} href=…>`; no-link items byte-identical; `CHECK_LINKS` untouched) · `types/app/attention/index.ts` (`AttentionItem.link?: { kind: "course" | "voucher"; id: string } | null`) · NEW `lib/scheduler/attention-link.ts` (the one href builder) · `BookingsContent.tsx` (the ONE new URL read: `?course=<id>` / `?voucher=<id>` only) · `bookings/page.tsx` (a `<Suspense>` around it, which `useSearchParams` needs at build) · NEW test + `scripts/mutation/task-841.json`. **Not written yet in TASK-840's file: Jason's item shape — I built to the `link: { kind, id }` in the task text.**
+**Voucher answer (for the report):** a voucher CAN be opened by id — the plan window is one component for both (`PlanModal` + `GET /entitlements/:id/plan`, the voucher card already calls the same `setPlanId`). So `link.kind === "voucher"` ⇒ `/scheduler/bookings?voucher=<id>` opens that voucher's plan window (and lands on the Vouchers tab); no search-prefill fallback needed.
+**Pins that read these files (all checked, none moves):** `action-gate.test.ts:48-52` (BookingsContent's 5 `can()` sites; I add none) · `course-lifecycle.test.ts:80` (`BookingsContent` must not contain `courseStatus`) · `duo-subjects.test.ts:54` (a `not.toContain`) · `rental-row.test.ts:142` (`<RentalModal` stays) · `t-arg-shape.test.ts:227` (`const fmtTime` in AttentionContent stays) · mutation `task-658.json` Q8 (BookingsContent `<Group justify="flex-end" …>` anchor stays). I will re-run `task-658.json` after.
+**One behaviour I am choosing (say if wrong):** the window opens only after the plan LOADS and its kind matches the param (`?course=` needs a course, `?voucher=` a voucher); an unknown / wrong-kind id opens nothing, no toast. An ENDED course whose plan loads WILL open (its plan is readable and shows the ended state) — the task text said an ended id "doesn't open"; tell me if you want that excluded.
+
+
+## Jason (BE) 2026-10-27 — TASK-840 BE (REQ-132): the Attention items name the child + a `link` — GREEN
+
+**Built (back):**
+- `lib/attention.ts`: a `childLead(row)` helper on THE one name rule (`studentNamesOf` — a DUO course names both children, `A & B`). The labels of the two checks now lead with it: `nearly_finished_courses` → `<child> · course <size> · เหลือ <n>`; `expiring_entitlements` → `<child> · course <size> · <expiry>` and `<child> · voucher <hours>h · <expiry>`. A row with no student keeps its old label (no leading separator).
+- **No extra read, no N+1:** `getCourses()` already loads `student` + `coStudent` with each course and `getVouchers()` loads `student` with each voucher — the checks just read them.
+- `AttentionItem` (+ `attention.service.ts`'s item type) gains an optional `link`; only these two checks set it. Every other check: **no `link` key**, labels byte-identical.
+- **The LINE digest is unchanged and counts-only for these two checks** (`namesPeopleInDigest` stays unset; names stay behind the login). Who sees the page is unchanged (`menu:attention`; the mask keeps `link` through).
+- No new words; no migration; no kind; no pin touched (suite 0 red).
+
+**Item shape — for @Fern (`GET` the attention checks; each item of the two checks):**
+```
+{ "id": "<course|voucher id>",
+  "label": "น้องเอ · course 10 · เหลือ 2",            // nearly_finished_courses
+  "link": { "kind": "course", "id": "<course id>" } }
+
+{ "id": "…", "label": "น้องเอ & น้องบี · course 10 · 2026-08-10", "link": { "kind": "course",  "id": "<course id>"  } }   // expiring_entitlements — a course (DUO: both names)
+{ "id": "…", "label": "น้องบี · voucher 10h · 2026-08-10",       "link": { "kind": "voucher", "id": "<voucher id>" } }   // expiring_entitlements — a voucher
+```
+`link.kind` ∈ `"course" | "voucher"`; `link.id` = the item's `id`. Other checks' items: `{ id, label, hint? }` exactly as before — no `link` key. The label's date part is still the raw `expiryDate` (ISO) as before — I did not change its format (REQ-132 is about the name); say if the front should format it.
+
+**Tests (new `src/lib/attention-names-the-child-task840.test.ts`, 11, by value):** course with 2 left for «น้องเอ» ⇒ `น้องเอ · course 10 · เหลือ 2` + link course · DUO ⇒ `น้องเอ & น้องบี · …` · no student ⇒ the old label · a nickname-less child reads by name · expiring course AND voucher ⇒ both lead with the child, link kind right for each · studentless voucher keeps its label · **the LINE digest is BYTE-IDENTICAL (TH and EN) with or without names, and contains no child name** · both checks' `namesPeopleInDigest` unset · `unconfirmed_bookings` / `teachers_without_line` unchanged, no `link` · source pin (one helper on `studentNamesOf`, exactly 3 `link` sites).
+**Set `attention-names-the-child-task840.mutations.json`: 7/7 BITE, 0 survivors, checksum identical** — C1 name dropped · C2 DUO shows one child · C3 the digest gains names · C4 `link.kind` wrong for a voucher · C5 the link missing on nearly-finished · C6 another check gains a `link` · C7 a voucher not led by the child.
+
+**Verified:** tsc 0 · full suite **5,224 pass / 0 fail (372 files)**, unhandled 0 (TASK-749's earlier reds are gone from the tree). `git status` (all mine): `src/lib/attention.ts`, `src/services/attention.service.ts` (modified); `attention-names-the-child-task840.test.ts` + `.mutations.json` (new). Saved: `GIT-STATUS-back-840-2026-10-27.txt`. My run had `.env` present; your no-.env room is yours.
+
+Ball: Sober.
+
+---
+## @Fern → @Sober — 2026-10-27 — ✅ TASK-841 FE DONE: `bun test` 1392/0 · tsc 0 · build 0 · set 841 8/8 BITE (+ 658 17/17 re-run)
+- Report + full `git status` at the bottom of `tasks/TASK-841-…md`. A linked item → `/scheduler/bookings?course=<id>` (`?voucher=<id>` for a voucher); the Bookings page opens that plan window once, only if it loads and is the right kind. Voucher: yes, openable by id (same plan window). No pin edited.
+- ⚠️ I built to the `link: { kind, id }` in the task text — TASK-840's report isn't written into its file yet, so please confirm Jason's real item matches. And ended courses: an ended course whose plan loads WILL open (say if you want those excluded).
+
+---
+## @Porter → @Sober — 2026-10-27 — REQ-132: Tanya PASS + one pre-existing 🟡 to confirm and size (no build yet)
+- TEST-126 PASS on sid (`tests/TEST-126-sid-req132-attention-names-and-links.md`).
+- Her 🟡: "ใกล้หมดอายุ" seems to include **CANCELLED** courses (`courseEligible` doesn't check the course status). uat read-only: 15 of 44; sid 13 / 39. "ใกล้ใช้ครบ" is clean on uat.
+- Please **confirm from code and size** an ACTIVE-only fix (does it also change the digest count?). Reply in inbox/PM.md. **Build only on my GO** (the owner decides whether it rides with this uat deploy).
+
+---
+## @Porter → @Sober — 2026-10-27 — GO: TASK-842 (REQ-132 🟡, ACTIVE-only course checks), rides with REQ-132
+- Owner picked **ก**, verbatim: *"ก"* (= fix it together with REQ-132, re-test on sid).
+- Scope = your sizing in inbox/PM.md: both Attention course predicates require `courseStatus(c, today) === "ACTIVE"`; `courseEligible` unchanged; BE only; tests + mutations as you listed. Fold it into the REQ-132 back commit list.
+- When ready: update the DEPLOY file (back list + a §4 line for Tanya: an ended/paused course is in neither list) and send me "ready for QA". Order stays: owner's sid deploy → Tanya PASS → owner's ขึ้น git.
+- Palm SOM report FYI: not opened (owner not asked yet).
+
+
+## Jason (BE) 2026-10-27 — TASK-842 BE (REQ-132 🟡): the two Attention course checks count ACTIVE courses only — GREEN
+
+**Pins listed first: NONE to edit.** `isNearlyFinishedCourse` / `isCourseExpiringSoon` gained *optional* `endedAt?` / `droppedAt?` in their input type (a row without them reads as not ended / not paused), so the existing callers (`attention.test.ts:59-62`, `advance-leave-no-cap-req089.test.ts:126`, the 840 test's rows) compile and pass untouched. No pin file was touched.
+
+**Built (`lib/attention.ts` only, on top of 840):**
+- New private `isActiveCourse(c, today)` = `courseStatus({...c, endedAt: c.endedAt ?? null, droppedAt: c.droppedAt ?? null}, today) === "ACTIVE"` — THE one status rule (`lib/course-status.ts`), no second copy.
+- `isNearlyFinishedCourse` and `isCourseExpiringSoon` now `isActiveCourse(c, today) && courseEligible(c, today) && …`.
+- **`courseEligible` NOT changed** (eligibility.ts untouched; `scheduler.service:794`, `som-report.service:52` keep their meaning). Vouchers untouched (`voucherEligible`).
+- **No extra read:** `getCourses()` → `coursesByIds` already returns the row's `endedAt` / `droppedAt`. No new words, no migration, no front change. The digest count follows (same items feed it), still counts only.
+- 840's names + `link` are byte-for-byte the same.
+
+**Tests (new `attention-active-courses-only-task842.test.ts`, 8, by value):** ended / paused / both ⇒ in NEITHER list; ACTIVE ⇒ in both with 840's `น้องเอ · course 10 · …` + link · digest count = active only, no name in the text · expiring voucher unaffected · a row without the two fields still counts · source pin (both predicates ask `isActiveCourse`; `eligibility.ts` has no `endedAt`/`droppedAt`).
+**Set 842: 3/3 BITE, checksum identical** — A status check dropped from nearly-finished · B dropped from expiring · C `"ACTIVE"` → `!== "CANCELLED"` (paused gets back in).
+**Set 840 re-run: 7/7 BITE (C1–C7), checksum identical.**
+
+**Verified:** tsc 0 · SAFE suite **5,236 pass / 0 fail (373 files)** · unhandled-between-tests: 0 (the only "UNHANDLED" hits are `[line-in] postback … UNHANDLED action=` log lines of existing tests, not runner errors). `git status` (full): `M src/lib/attention.ts` · `M src/services/attention.service.ts` (840) · `?? attention-active-courses-only-task842.{test.ts,mutations.json}` · `?? attention-names-the-child-task840.{test.ts,mutations.json}` (840). Saved: `GIT-STATUS-back-842-2026-10-27.txt`. My run had `.env` present; the no-.env room is yours.
+
+Ball: Sober.
+
+---
+## @Porter → @Sober — 2026-10-27 — OWNER'S GIT COMMAND: ขึ้น git (REQ-132 = TASK-840 + 841 + 842)
+- Owner, verbatim, 2026-10-27: *"ขึ้น git"*. It comes after TEST-126 PASS on sid (840/841, plus the 842 re-test).
+- Commit + sync the current branch, with the repo's commit-message convention, per `_templates/skills/git-command/`. **Only the files in `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` §2**: back 6, front 8.
+- Reply in inbox/PM.md with the hashes for back + front.
+
+---
+## @Porter → @Sober — 2026-10-27 — FYI (no action now): the back-office readiness questions
+- The owner cut the batch to **6 money questions**, sent to Khwan 2026-10-27. The short version is in `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md`. Your Q kept: A4 (no-show counts), A7/A9 (bonus across activities), A11 (coach change), A20 (what Khwan sees).
+- **Every other question of yours = YOUR stated default** in the build. She sees it on UAT. The data list is asked per part when it starts.
+- I'll pass her answers on when they come. The build still waits on the owner's price talk + GO.
+
+---
+## @Porter → @Sober — 2026-10-27 — REQ-133 (new, you lead): back-office FINAL UI in Vite + React + Mantine + a pricing-meeting presentation. PLAN + SIZE first, no build
+- The owner's words are verbatim in `requirements/REQ-133-backoffice-final-ui-and-pricing-presentation.md`. He is setting a money meeting with ฟีน + Khwan.
+- **Your part:**
+  - the Vite shell, Salary, R0 / roles (with a CEO / Admin / Coach switcher), the front-office pages, and the presentation app;
+  - one combined plan + size for both deliverables (Silver sends his pages' size to you, or to me).
+- **Also:** check the Options A/B/C module split in `BRIEF-owner-backoffice-money-meeting-2026-10-27.md` §4, and firm up option B's range (which F-items depend on Salary).
+- **Reply in inbox/PM.md:** the size, the earliest ready date, and anything to confirm with the owner. Team A numbers from **843**.
+
+---
+## @Porter → @Sober — 2026-10-27 — GO: REQ-133 Team A (cut 843–846). Defaults until the owner answers
+- The owner asked for both deliverables himself (REQ-133, verbatim), so the build GO is mine. Your plan as written: Fern on 843 shell, 844 Salary and 845 Notify + FO; Jason on 846 deck.
+- **Ship the shell contract to Silver first** (he is waiting on it). Relay it through me if your sends are capped.
+- **Defaults until the owner answers:**
+  - folder `som-balance-backoffice-spec/final-ui` + `/pricing-deck` ✅;
+  - `pricing.ts`: A 39,200 · **B 25,700 (lean)** · C 11,900 · "Salary later" 13,500, all marked PENDING;
+  - the +5 d (≈ +1,300) is NOT shown;
+  - the meeting date is unknown, so aim for the deck at **Fri 10-30** and both at **Mon 11-02**.
+- Customer-facing words in the deck: Thai, and the price explanation as in `BRIEF-owner-backoffice-money-meeting-2026-10-27.md` §3 + §4.1. No SA names or task numbers on slides.
+- Tanya gates both. Send me "ready for QA" per deliverable.
+
+---
+## @Porter → @Sober — 2026-10-27 — REQ-133 CHANGE for the deck (846): NO options
+- Owner, verbatim: *"ไม่เอา option ดีกว่า เอาเป็น all แต่ผ่อนจ่ายได้"*.
+- **The deck shows ONE offer:** all 5 parts, 39,200 ฿, payable in installments. **Drop the A/B/C table and the option timeline.**
+- **Add an installment slide**, from `pricing.ts`:
+  - by delivery: 1) Stock + roles ≈ 11,900 · 2) Revenue + front office ≈ 13,800 · 3) Salary (+ multi-role, Conversion, coach login) ≈ 13,500;
+  - or 3 monthly ≈ 13,070;
+  - mark it PENDING (the owner picks).
+- The per-part timeline (Stock first) stays.
+- The final UI is unchanged. Detail: REQ-133, "Owner, 2026-10-27: NO options".
+
+---
+## @Porter → @Sober — 2026-10-27 — REQ-133: Silver's team is cut (751–753) and waiting on your shell contract
+- When the shell lands (Wed 10-28), write the contract as a file in the folder, e.g. `som-balance-backoffice-spec/final-ui/CONVENTIONS.md`: layout, router, role context, theme tokens, and the data-slot path. Then tell me in inbox/PM.md, and I relay it to Silver.
+- Silver: 753 exports the Revenue example numbers by name from Team B's data file, so your "how it's used" slides read the same figures as the pages.
+
+---
+## @Porter → @Sober — 2026-10-27 — REQ-133 deck (846): the owner OK'd the defaults
+- Owner, verbatim: *"โอเค"*, to these defaults:
+  - **installments = by delivery, 3 payments:** 1) Stock + roles ≈ 11,900 · 2) Revenue + front office ≈ 13,800 · 3) Salary ≈ 13,500 (total 39,200). This is no longer PENDING; the monthly alternative is dropped;
+  - **the extra ≈ 5 d is included free:** the price stays 39,200, and no extra line appears on any slide.
+- The meeting date is still unknown, so keep aiming for the deck to the owner Fri 10-30.
+
+
+## Jason (BE) 2026-10-27 — TASK-846: ONE question before slide 5 (everything else I'm building now)
+**The conflict:** `tasks/TASK-846…` §5 says "Options A / B / C (comparison table + timeline per option)", but `requirements/REQ-133…` ("Owner, 2026-10-27: NO options, everything, in installments", verbatim *"ไม่เอา option ดีกว่า เอาเป็น all แต่ผ่อนจ่ายได้"*) says **"The deck shows ONE offer: all 5 parts, 39,200 ฿, payable in installments. No A/B/C table."** — and BRIEF's last section says the same (§4/§4.1 kept as internal info only). Your update (payment 3 installments) fits the one-offer reading.
+**My default unless you say otherwise: follow the owner — NO A/B/C slide.** Slide 5 becomes "the offer: all 5 parts · 39,200 ฿ · 3 installments by delivery" (payment table from `pricing.ts`, summed + asserted = `total`), no PENDING tag on it. `pricing.ts` would still hold the A/B/C data (internal, never rendered) so it can come back with one switch. Say "A/B/C stays" if you want the table after all.
+I'm scaffolding now (Vite/React/Mantine/single-file/nav/`pricing.ts`) — that part is the same either way.
+Ball: Sober (one line is enough).
+
+
+## Jason (BE) 2026-10-27 — TASK-846 BUILT: the pricing deck is ready for your check (ahead of Thu 10-29)
+**Where:** `som-balance-backoffice-spec/pricing-deck/` (not git; no smart-scheduler repo touched). **Open `dist/index.html` by double-click** — ONE file, **1.37 MB** (JS + CSS + Noto Sans Thai + screenshots all inlined). Rebuild: `bun install && bun run build` (= `tsc --noEmit` + `vite build`).
+**Stack (exact):** Vite 7.1.9 · React 19.2.7 · TS 5.6.3 strict · Mantine 9.3.2 · lucide-react 1.17.0 · `@fontsource/noto-sans-thai` 5.2.5 · vite-plugin-singlefile 2.3.0. Theme copied from the front's `MantineProviders` (blue, shade 6, radius md, same shadows).
+
+**⚠️ One default I took (my question above is still open):** the slide for "options" is **OFF** — the deck shows the owner's ONE offer (all 5 parts · 39,200 · 3 installments), per REQ-133 + BRIEF ("ไม่เอา option ดีกว่า เอาเป็น all แต่ผ่อนจ่ายได้"). The A/B/C table is fully built and sits behind **one switch: `SHOW_OPTIONS` in `src/pricing.ts`** (flip to `true`, rebuild ⇒ a slide "ตัวเลือก A / B / C" appears after the price slide, with the PENDING tag). Say "A/B/C stays" and I flip it.
+
+**Slides (12 with the switch off, 13 on):**
+1 เริ่มต้น (cover) · 2 5 ส่วนของหลังบ้านใหม่ (§1, no days column) · 3–7 ใช้งาน: Salary / Revenue / Stock / แก้หน้าบ้าน / สิทธิ์ + เชื่อมระบบ (a 4-step day-in-the-life + a v3 screenshot each) · 8 สิ่งที่ตกลงกันแล้ว (BRIEF §2 first bullet only) · 9 ราคาคิดอย่างไร (§3: the 3 sentences + 149 × 263 ≈ 39,200 + the 7-months comparison; PENDING tag) · [10 ตัวเลือก A/B/C — only with the switch] · 10 ข้อเสนอ: ครบทุกส่วน แบ่งจ่าย 3 งวด (11,900 / 13,800 / 13,500 = 39,200, **no PENDING tag**) · 11 ลำดับการส่งมอบ (Stock first) · 12 สิ่งที่ต้องได้จากห้องประชุม.
+
+**`src/pricing.ts` holds EVERY number** (`PENDING`, `rate`, `work`, `total`, `payment`, `options`, `timeline`, `needs`, `comparison`); no slide types a number. `paymentSum` is computed from the array and **the module throws at load if it ≠ `total`** (so a mismatched edit cannot ship). Not shown anywhere: +5 d, the extra line, engineer days per part, SA/engineer names, TASK/REQ numbers, internal words.
+
+**Screenshots:** captured from `dist/SOM-BACK-OFFICE-v3.html` (served locally) into `src/assets/shots/{salary,revenue,stock,frontoffice,roles}.png` — **swap = replace the file only**. They show only invented names (Nelson/Bank/Kid/Poo/Kung/London staff nicknames and the placeholder «น้องเอ»); I looked at each. The mock-up UI is English/dark, as v3 is — it will be replaced by the final-UI shots later.
+
+**Verified:**
+- `tsc` 0 · `vite build` 0.
+- **Offline:** Edge headless on `file://…/dist/index.html` renders every slide I viewed (1, 2, 3, 6, 7, 8, 9, 10, 11, 12); Thai is the bundled font, no tofu (6 font faces loaded, 0 external requests — `performance` resource list has none outside the page).
+- **Keys/click (real DOM events, all 12 slides):** → ↓ Space PageDown Enter forward, ← ↑ PageUp Backspace back, Home/End jump, click on the right 75 % = next, left 25 % = back; every slide reachable; `#/slide/N` follows the slide and a load at `#/slide/9` opens slide 9; **F** = fullscreen (handler tested to run; the browser pane itself can't show fullscreen); counter + progress bar update. Stage is 1920×1080 scaled to the window (laptop and projector).
+- **Console: 0 errors / 0 warnings.**
+- **The pricing test (done, reverted):** set `options.B.price` 25,700 → **99,999** with `SHOW_OPTIONS = true`, rebuilt, rendered the A/B/C slide: it read **99,999** on B (A 39,200 and C 11,900 untouched); then **restored `pricing.ts`** byte-for-byte (`price: 25700`, `SHOW_OPTIONS = false`), rebuilt, and `dist/index.html` has no "99,999". (With the switch off, B is not on any slide, so this test needed the switch.)
+
+**For your check:** my only invented-ish wording is the 4-step "day in the life" per part (from BRIEF §1 verbs, no new rules) and slide 11's timeline labels (from BRIEF §4: Stock ≈ 3–4 weeks, all within 2–3 months; slide 2/3 of the delivery say "ต่อจากงวดแรก" / "ปิดจบภายใน 2–3 เดือน", no new dates). Tell me if any phrase should change; all text is in `src/slides.tsx` / `src/pricing.ts`.
+
+Ball: Sober (check) + your answer on A/B/C.
+
+---
+## @Fern → @Sober — 2026-10-27 — ✅ TASK-843 SHELL DONE: the shell + the EMPTY `src/pages/b/index.ts` EXIST — tell Porter, Silver's team can start
+- `som-balance-backoffice-spec/final-ui/` (`npm install` once, then `npm run dev`; `npm run build` → `dist/index.html`). Contract implemented as written (types §4, helpers §5 from `@/shell`); `pages/b/index.ts` is `export default [] satisfies PageDef[];` + a commented example line. Team B imports only `@/shell` (it exports helpers + types, never the registry).
+- Proven: build exit 0, tsc 0, **`dist/index.html` 1,022,322 B**, alone from an empty folder in Edge + Chrome: **0 console errors / 0 warnings**, 3 roles switch, routes + back/forward, unknown hash → Home + Thai toast, 375 px no sideways scroll + a drawer, the no-access screen for a CEO-only page. Full report + exact versions at the bottom of `tasks/TASK-843-final-ui-shell-fe.md`.
+- Going straight on to TASK-844 (Salary 8).
+
+
+## Jason (BE) 2026-10-27 — TASK-846 per your RULING: A/B/C code GONE, one offer only — rebuilt, GREEN
+**Removed (dead code, per the ruling):** `options`, `SHOW_OPTIONS`, `PENDING`, the A/B/C slide and the PENDING tag from `pricing.ts` / `slides.tsx`. Built `dist/index.html` has **0** hits for "ตัวเลือก", "ตัวเลขรอยืนยัน", 25,700, PENDING, SHOW_OPTIONS (also 0 in `src/`).
+**Changed to match the updated task:**
+- Installment 3 now reads in plain Thai: **"ส่งมอบ Salary พร้อมล็อกอินโค้ช หลายบทบาท / STAFF และการดูว่าใครเปลี่ยนทดลองเป็นคอร์ส"** (amount 13,500).
+- **Slide 11 (timeline)** now shows each delivery as one installment: the step title and "งวดที่ n · amount" are read from `payment[i]` (so an installment change shows on slide 10 AND 11); the times (≈ 3–4 สัปดาห์ / ต่อจากงวดแรก / ปิดจบภายใน 2–3 เดือน) stay in `timeline`.
+- **Slide 12 (needs)** = go-live date · first data (product Excel + stock counts) · "คำตอบ 6 ข้อเรื่องเงิน ที่ส่งให้คุณขวัญไว้ (ถ้ายังไม่ได้ตอบ)" — no "choose A/B/C".
+- Slide 9 (how the price is calculated) has no tag. No slide prints a Revenue figure as text, so nothing is imported from `final-ui/src/mock/b-*.ts` (screenshots only).
+
+**Slides (12):** 1 เริ่มต้น · 2 5 ส่วนของหลังบ้านใหม่ · 3 Salary · 4 Revenue · 5 Stock · 6 แก้หน้าบ้าน · 7 สิทธิ์ + เชื่อมระบบ · 8 สิ่งที่ตกลงกันแล้ว · 9 ราคาคิดอย่างไร · 10 ข้อเสนอ: ครบทุกส่วน แบ่งจ่าย 3 งวด · 11 ลำดับการส่งมอบ (Stock ก่อน) · 12 สิ่งที่ต้องได้จากห้องประชุม. **`dist/index.html` = 1,364,040 bytes (1.36 MB).**
+
+**Verified again:** `tsc` 0 · build 0 · navigation/keys/click/console re-run earlier on the same app code (all 12 reachable, 0 console errors, bundled Thai font, 0 external requests); after this change I re-rendered slides 9–11 offline from `file://` (Thai OK).
+**The price test (your new form), done and reverted:**
+1. Installment 2 → **99,999** alone ⇒ the page **does not load**: console `Uncaught Error: pricing.ts: payments sum to 125399, total is 39200` (the sum assertion fired).
+2. Installment 2 → 99,999 **and** `total` → 125,399 ⇒ rebuilt: slide 10 shows 99,999 in row 2, "รวม 125,399" in the table and the lead line; slide 11 shows "งวดที่ 2 · 99,999 บาท". (Slide 9 prints `total` too; I rendered it but did not look at that image — by source it reads `baht(total)`, so it follows.)
+3. **Restored `pricing.ts` byte-for-byte** (13,800 / 39,200), rebuilt, `dist/index.html` has no 99,999 / 125399.
+
+Ball: Sober (check).
+
+---
+## @Porter → @Sober — 2026-10-27 — RELAY from Silver: 2 notes on `final-ui/CONVENTIONS.md` (non-blocking)
+1. **§4 example `roles: ["ceo", "admin"]` on Revenue Summary is wrong.** Revenue is **CEO only** (REQ-120 §2; R0.1: "an admin never sees … any revenue"). Team B registers it as `["ceo"]`. Please fix the example so nobody copies it; §2.7 could also say "an Admin never sees revenue".
+2. **§2.7 "mask with `<Locked label="CEO only" />`"** conflicts with Khwan's v3 note (pages 7 + 12): *"🔒 HIDDEN FOR ADMIN … ไม่ต้องขึ้นค่ะ"*, *"Invisible … ไม่ต้องขึ้นค่ะ ขึ้นแค่อันที่เขาดูได้ค่ะ"*. Team B HIDES what a role can't see and uses no `<Locked>`. **Her note binds the Salary pages too**: hide, don't mask.
+- Silver's dates: the deck pages Mon 11-02; all 14 Fri 11-06.
+
+
+## Jason (BE) 2026-10-27 — TASK-846 CHECK answered: all 3 were already in my 2nd build; plus one leftover string removed
+Your check read my FIRST build (it crossed your ruling, as you said). The rebuild per the ruling was reported just before your CHECK; current state:
+1. **PENDING / PendingTag:** removed (slide 9 has no tag).
+2. **A/B/C:** `options`, `SHOW_OPTIONS`, `optionsSlide`, `OPT` deleted outright.
+3. **Installment 3:** "ส่งมอบ Salary พร้อมล็อกอินโค้ช หลายบทบาท / STAFF และการดูว่าใครเปลี่ยนทดลองเป็นคอร์ส".
+**One leftover found by your own grep:** the slide-11 `title` string "ลำดับการส่งมอบ (Stock ก่อน)" (not shown on a slide, but bundled) ⇒ renamed "ลำดับการส่งมอบ (เริ่มจาก Stock)".
+**Your Done list:** tsc 0 · build 0 · `grep -cE 'ตัวเลขรอยืนยัน|25700|ยังไม่เอา Salary|Stock ก่อน' dist/index.html` = **0** · the installment-2 → 99,999 test (sum assertion fires alone; with `total` changed it shows on slides 10 + 11; reverted — see the report above) · file size **1,364,052 bytes**.
+Ball: Sober ("ready for QA" to Porter is yours).
+
+---
+## @Porter → @Sober — 2026-10-27 — TASK-846: Tanya PASSED the gate, but FIX her 🟡 notes before the owner sees it
+- TEST-127 (md5 `e357cbf5…`): gate ✅. The deck goes to the owner only after these are fixed. **All 11 notes** are in `tests/TEST-127-req133-pricing-deck.md` (quoted per slide). The must-fix ones:
+  1. **Slide 3 screenshot (v3) shows salaries for "Kung" 17,200 ฿ / "Poo" 15,600 ฿.** Those are their real admins' nicknames, shown in front of the CEO. Replace them with invented names, or crop / blur the amounts. Check every screenshot for real names or amounts.
+  2. **Slide 8:** remove "(V3)". Fix the contradiction "ตกลงกันแล้ว" vs "ทันทีที่ตกลงกัน".
+  3. **Slide 2:** *"จ่ายออกแบบตะกร้า"* reads as "ออกแบบ" (design). Reword, e.g. "ขายของแบบตะกร้า (หลายชิ้นในบิลเดียว)".
+  4. **Slide 9:** *"…Daily Report ไว้แล้ว"* is ambiguous; say "รวมอยู่ในราคานี้แล้ว".
+  5. **Slide 9:** "< 6,000 / month" is averaged over 7 months but they pay in 2–3. Write it as "เทียบกับจ้างโปรแกรมเมอร์ 1 คน ≈ 7 เดือน", not a per-month payment.
+  - The remaining notes (slides 2, 4, 9, 11, 12): your call; fix where cheap.
+- Then send me the new md5 → Tanya's quick re-check → the owner.
+
+---
+## @Fern → @Sober — 2026-10-27 — ✅ TASK-844 SALARY (8 pages) DONE: tsc 0 · build 0 · `dist/index.html` 1,207,617 B (carries Team B's pages as registered now) · all pages × 3 roles · EVERY control clicked: 0 dead · 0 console errors/warnings · 375 px no sideways scroll
+- Table "page → her notes (quoted)" + my 5 judgement calls are at the bottom of `tasks/TASK-844-final-ui-salary-pages-fe.md`. R0 per CONVENTIONS: Admin sees no base salary / slips / pay totals (🔒 or the no-access screen), a Coach sees Payment Detail (My slip) only and lands there.
+- ⚠️ Three to look at: (1) I dropped Payment Setting's "Hours come from" row entirely (her two lines cancel its value); (2) totals are sums of the rows shown, so Nelson's is now 23,389 (her new Bonus lines); (3) page 6 (My slip) was unanswered in v3, so the coach's Payment Detail is my reading.
+- Next: TASK-845 (Notification 2 + front office 7).
+
+
+## Jason (BE) 2026-10-27 — TASK-846 unfrozen round DONE (Tanya's 11 notes) — GREEN, frozen again
+**Slide wording (your table, exact Thai, all 10):** (1) slide 8 "(V3)" dropped · (2) slide 8 3rd card **"รายละเอียดครบแล้ว พร้อมเริ่มสร้าง"** and the heading no longer says "สเปกปิดแล้ว" (now "รายละเอียดครบแล้ว พร้อมเริ่มสร้าง") · (3) slide 2 Stock card: "รับเข้า / ขายออกเป็นตะกร้า (หลายชิ้นในบิลเดียว)" + "ของ Demo ที่วางไว้ตามโรงเรียน" · (4) slide 2 สิทธิ์ card: "CEO เห็นทุกอย่าง · แอดมินไม่เห็นยอดเงินเดือน · มีแจ้งเตือนในระบบ · เชื่อมกับระบบเดิม" · (5) slide 4 "ถ้าต้องลงเอง ก็เพิ่มรายการเองได้" · (6) slide 9 point 3 "ราคานี้รวมการทดสอบ การติดตั้งระบบ ช่วงทดลองใช้ก่อนใช้งานจริง รายงาน 6 หัวข้อ และหน้า SOM Dashboard / Daily Report แล้ว" · (7) slide 9 point 1 "แพ็กเกจเดิม 73,000 บาท ได้งานประมาณ 278 วันทำงาน ตกวันละประมาณ 263 บาท"; **`licence` removed from `pricing.ts`** · (8) comparison "149 วันทำงาน เท่ากับจ้างโปรแกรมเมอร์ 1 คนประมาณ 7 เดือน แต่เราส่งมอบได้ใน 2–3 เดือน เพราะใช้เครื่องมือ AI ช่วย"; **`perMonthUnder` removed** · (9) one name per slide: footer section = the slide's own kicker on slides 2, 9, 11 (the others already matched); installment 2 keeps "ต่อจากงวดแรก" · (10) slide 12: all three places say "จากการประชุมวันนี้".
+**One more of mine, caught by the grep:** the slide-11 note for installment 3 said "รวมเทส ขึ้นระบบ และ UAT" ⇒ now "รวมการทดสอบ การติดตั้งระบบ และช่วงทดลองใช้ก่อนใช้งานจริง".
+
+**Screenshots (note 11) — all 5 recaptured and LOOKED AT (salary, revenue, stock, frontoffice, roles):** I did not touch the original v3: I wrote a patched COPY (scratchpad) that runs a live text replace before the capture — Kid→Ton, Poo→Ploy, Kung→Nam, Bank→May, London→Beam, Nelson→Pete, พี่ฟีน→CEO, and strips every `^[A-Z][0-9]+ · ` item code (sidebar, page title, breadcrumb). In each image: salary = Pete/May/Ton/Ploy/Nam/Beam beside the figures; stock = coaches Ton/Ploy/Nam/May; roles = Ton/Ploy; frontoffice teacher = Ton; sidebar reads "Branch on a booking", "Payment Method", "Conversion", "No Teacher", "Confirm camp" with no codes. **No real staff name and no code in any shot.** (The invented child «น้องเอ» and mock items like "Miller inline skate" remain — v3's own invented data.)
+
+**Done list:**
+- tsc 0 · build 0 · **0 console** (served build, all 12 slides stepped by key; footer/kicker names checked per slide).
+- Banned grep on `dist/index.html`: with word boundaries `\b(Kung|Poo|Kid|Bank|London|Nelson)\b|พี่ฟีน|\(V3\)|เทส|UAT|ห้องนี้|6,000` = **0**; your earlier list (ตัวเลขรอยืนยัน|25700|ยังไม่เอา Salary|Stock ก่อน|TASK|REQ-|99,999|3,500|licence|perMonthUnder) = **0**. ⚠️ A *plain-substring* grep for `Poo` / `Kid` still hits: `Poo` = React's own `cachePool` in the bundled library (21×), `Kid` = a random run inside base64 font/image data (1×) — not on any slide; the text of all 12 slides, dumped from the DOM, matches none of the banned words (the only "3,500" hit is inside "13,500").
+- Slides 3 / 4 / 5 (Salary / Revenue / Stock) shots looked at by me: yes (see above).
+- **Size 1,352,754 bytes · md5 `056a00b466fced49741c0c3fbd6cb9a5`** (`dist/index.html`).
+**Frozen again** — no more rebuilds unless you ask.
+Ball: Sober.
+
+---
+## @Fern → @Sober — 2026-10-27 — ✅ TASK-845 DONE → **TEAM A PAGES DONE** (all 17: Salary 8 · Notification 2 · SETTING 7), ready for your check
+- `final-ui/` · tsc 0 · build 0 · **`dist/index.html` 1,243,548 B** (with Team B's pages as registered now) · alone from an empty folder in Edge + Chrome: all 17 pages × 3 roles reachable/no-access per `roles`, every control clicked (4 Mantine stepper / eye controls verified with real mouse events), **0 console errors / warnings**, 375 px no sideways scroll.
+- Tables "page → her notes (quoted)" are at the bottom of `tasks/TASK-844-…md` and `tasks/TASK-845-…md`.
+- ⚠️ Needs your call: **F4 — she asked for no "หน้าบ้าน (SOM SCHEDULE)" label** ("ไม่ต้องใส่ได้ไหมคะ"); I kept it (every FO page `fo: true`). One-word change if you want it off. Also: User Setting's "Individual Information" is a dialog (the contract gives pages no role switch), and Payment Setting's "Hours come from" row is dropped (844).
+- Shell + `pages/b/index.ts` were reported earlier (TASK-843).
+
+---
+## @Porter → @Sober — 2026-10-27 — TEST-128: Team B's 14 pages PASS · ⚪ one note for your rework
+- Tanya: the shared sidebar shows *"F1 · Branch for booking"* / *"F2 · Payment Method"*, i.e. internal codes (CONVENTIONS §2.8). It is probably already in Fern's "item codes in 5 titles" list. Please make sure the **sidebar labels** are covered too.
+- After Fern's rework: "ready for QA" for Team A's pages. Tanya then gates the whole final UI once.
+
+## 2026-10-27 — Fern (FE) → Sober: TASK-844 REWORK done (+ 845 pages, same rules)
+- **Hide, never mask:** `Locked` removed from `src/shell` (helpers + index export). Employee: Admin gets no "Base salary" header or cell; Employee Profile: Admin gets no "Base salary" and no "Freelance Rate" row (CEO unchanged).
+- **Invented names everywhere** (`mock/a-salary.ts`, `a-notify.ts`, `a-fo.ts`, all Team A page strings/toasts, slip keys, file names, ton@example.com): Kid→Ton, Poo→Ploy, Kung→Nam, Bank→May, London→Beam, Nelson→Pete, พี่ฟีน→CEO.
+- **No item codes** in the menu or page titles (F1/F2/F4/F5/D3 prefixes dropped).
+- Checks: `tsc` 0 · build 0 (dist/index.html 1,243,19x B) · crawl in Edge + Chrome, 17 pages × 3 roles: 0 console errors/warnings · 375px: no sideways scroll · Admin R0 scan: no base salary, no lock badges. The crawl's "dead" list is the same synthetic-click false positives as before (NumberInput steppers on Park Rent, password eye in User Setting) — unchanged.
+- `grep -rE "Kid|Poo|Kung|Bank|London|Nelson|พี่ฟีน|Locked|🔒" src/` → only 1 hit: a comment in Team B's `src/pages/b/index.ts:3` ("no <Locked>") — theirs, not touched.
+- unhandled-between-tests: 0
+- git status --short -uall (workspace): ai-worker files only, as listed at session start plus TEST-128; the final-ui folder is outside this repo. Nothing committed.
+
+## 2026-10-27 — Fern (FE) → Sober: TEAM A REWORK consolidated list — all 4 items done (via Porter's relay)
+- Items 1–3 were already delivered in my previous entry (names map, `Locked` removed + hidden for Admin, no item codes).
+- Item 4 (F4): `fo: true` removed from Conversion in `src/pages/a/index.ts`; it stays `group: "SETTING"`, so no "หน้าบ้าน" label and still in the SETTING menu.
+- Done-checks: tsc 0 · build 0 · greps `\b(Kid|Poo|Kung|Bank|London|Nelson)\b|พี่ฟีน|Locked|🔒` over `src/pages/a src/mock/a-* src/shell` = 0 · `title: "[A-Z][0-9] ·"` = 0 · Conversion/Branch crawl clean · Admin Employee has no salary column.
+- unhandled-between-tests: 0 · nothing committed (final-ui is outside this repo; workspace git status unchanged apart from ai-worker files).

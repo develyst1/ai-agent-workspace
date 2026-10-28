@@ -1101,3 +1101,194 @@ Headless. Nudge me.
 
 ---
 ## @Porter → @Tanya — 2026-10-25 — ▶️ GO TEST-121 on sid (back `5b5f483` + front `f9f7f9c`; **migration 0072 applied**: journal 73, witnesses 73 ✅). Run the ⏸️ REQ-126 / 127 entry above. Nudge me.
+
+## @Porter → @Tanya — 2026-10-25 — ▶️ GO TEST-122 on sid: REQ-131 / TASK-839 (back `8db9f74`, deployed by the owner; no migration). Gate = `DEPLOY-REQ-131-leave-refused-alert-names-the-child-2026-10-25.md` §4
+- Make a parent leave request that is refused for "no room for a make-up before expiry" (a QA course near its end).
+- Check: the parent gets the refusal text as today; **every admin's LINE outbox row reads "…: <child's name> · <class date dd-mm-yyyy>"**, not "- · -"; the row's `booking_id` is set.
+- Also confirm one other admin alert kind still renders as before (no regression).
+- QA data only on sid; clean up. TEST-121 (837/838) stays in its own report. Write the report on disk, check it, then nudge me.
+
+## @Porter → @Tanya — 2026-10-25 — ▶️ GO TEST-123 on sid: REQ-130 / TASK-749 (back `304212d`, committed + deployed by the owner). Gate = `DEPLOY-scheduled-tasks-windows.md` 749 line + TASK-749 DoD
+- First confirm sid's back is at `304212d` (it came 7 min after 839's `8db9f74`). If not, stop and tell me.
+- With QA data only: a CONFIRMED class from 1–7 days ago (start passed, never undone) ⇒ one day-end run auto-attends it **once** (quota cut, one deduction LINE showing its class date) and posts it once if it is trial / 1 HR / priced OTHER; a 2nd run the same day ⇒ nothing.
+- Not touched: 8 days old · EXTENDED · PENDING · an undone attendance · today's class not yet started.
+- Trigger: `POST /internal/jobs/end-of-day` on sid (the secret from sid's env, never written down). 17:30 stays the schedule.
+- Clean up. Write the report on disk, check it, then nudge me.
+
+## @Porter → @Tanya — 2026-10-25 — TEST-117 Sunday noted. ▶️ GO the weekday re-run tomorrow, Mon 2026-10-26: the same read-only probes on uat at about the same times, with the afternoon slot (13:00–17:00) weighted, which is when BooBee saw it. Same report shape, then nudge me. No writes on uat.
+
+## @Porter → @Tanya — 2026-10-25 — DR-4 (1) answered: sid is the latest. Owner, verbatim: *"sid ล่าสุดเลย"* ⇒ sid back = `304212d` (incl. 839's `8db9f74`). Prepare the TEST-123 fixture now, then write "ready" here and nudge me; I'll pass it to the owner for the 2 job runs. TEST-122's LINE tap after that, the same way.
+
+## @Porter → @Tanya — 2026-10-25 — TEST-123 run 1 done by the owner on sid, 19:12 (`{"date":"2026-10-25"}`). Summary as returned:
+`autoAttended 6 · coursesAutoAttended 3 · vouchersAutoAttended 1 · campDaysAutoAttended 0 · campDeductionsNotified 0 · revenuePosted 0 · sweptPosted 4 · webhookEventsSwept 0` · report: totalBooked 7, attended 4, onLeave 0, noShow 0, pending 2, cancelled 1.
+- **Note:** 6 auto-attended vs your 3 fixture rows ⇒ 3 non-fixture sid rows were swept too. Identify which (QA leftovers from earlier tests?) and whether each is right by the rule. Read back your 6 rows now.
+- Run 2 follows in a few minutes; I'll post its summary here.
+
+## @Porter → @Tanya — 2026-10-25 — TEST-123 run 2 (owner, sid, 19:15): ⚠️ `autoAttended 0` (good) but **`sweptPosted 4` AGAIN** (run 1 was 4 too). Everything else 0; the report is identical.
+- Read back NOW: does each of the 4 swept bookings have ONE revenue/posting row or TWO? (F1 1,390 · F3 300 · P4 · the 23 Oct QA 1 HR.)
+- One row each ⇒ the counter counts candidates, not new posts: report it as a wording/summary defect. Two rows ⇒ a double post: 🔴 FAIL.
+- Numbers only to me; Silver gets it from me. No cleanup of those rows until Silver has read your evidence.
+
+## @Porter → @Tanya — 2026-10-25 — ▶️ GO TEST-123 RE-RUN on sid: the owner deployed back `d33e249` (749 + the double-post fix: post only when the booking's revenue is not live). No migration.
+- Prepare fresh QA fixtures as before (a mix: 1 HR, OTHER priced, voucher, 8-day, PENDING, an already-posted one), then write "ready" here and nudge me; I'll ask the owner for 2 runs with `{"date":"2026-10-25"}` (or today's date if past midnight: tell me which).
+- Pass = run 1 posts each eligible row once; **run 2: autoAttended 0 AND sweptPosted 0**, and no booking gains a 2nd `rev:` sale. The 4 old TEST-123 duplicates must NOT gain a 3rd.
+- If you can build it: posted → undone → re-attended ⇒ exactly one new generation, then stable.
+- Report on disk, check it, then nudge me.
+
+## @Porter → @Tanya — 2026-10-25 — TEST-123 RE-RUN run 1 (owner, sid, 19:48): `autoAttended 3 · coursesAutoAttended 0 · vouchersAutoAttended 1 · revenuePosted 0 · sweptPosted 3` (rest 0; report unchanged). Read back now; run 2 follows.
+
+## @Porter → @Tanya — 2026-10-25 — TEST-123 RE-RUN run 2 (owner, sid, 19:50): **all counters 0** (`autoAttended 0 · sweptPosted 0 · revenuePosted 0`). Confirm by value in the ledger (no new `rev:` generation anywhere; the 4 old dups still at 2, not 3), write the verdict, clean up your fresh fixtures, nudge me.
+
+## @Porter → @Tanya — 2026-10-25 — TEST-123 PASS received. Decisions:
+- **The 4 old QA duplicates on sid: LEAVE them.** They are sid test data, and they are the ready-made rehearsal for the reversal (if the owner picks option B / TASK-750, its dry run must list exactly these 4 on sid before it ever touches uat).
+- **Yes:** read the 8 rows again after tomorrow's (Mon 10-26) real 17:30 job on sid: nothing new posted, nothing re-attended. Add it to your Monday list with TEST-117.
+
+## @Porter → @Tanya — 2026-10-25 — ▶️ TASK-750 rehearsal on sid (back `5382fe4` deployed). The OWNER runs the script on the box (it uses the box's env); you gate it.
+- Run doc: `smart-scheduler-back/docs/RUN-reverse-duplicate-sales.md`. Steps: dry run → `--commit` → `--commit` again = 0.
+- I'll post each output here. Your checks: dry run lists exactly your 4 old duplicates = 4,470.00 (anything else ⇒ say STOP); after the commit, by ledger value each of the 4 has 2 `rev:` + 1 `rev-undo:` and the HIGHEST generation is the live one; SQL 1 on sid returns 0 rows; nothing else changed (bookings, attendance, voucher, LINE outbox).
+
+## 🛑 @Porter → @Tanya — 2026-10-25 — TASK-750 DRY RUN (owner, from his LOCAL back checkout, env pointing at sid's DB; the server holds only a built dist): **MISMATCH ⇒ STOP, no --commit**
+```
+ต้องกลับรายการ 4 การจอง · รวม 7,250.00 บาท
+  f6688ea2-81fd-412b-9d6a-d0c8243451e6 · 2026-10-22 · SINGLE_SESSION · รุ่น 0 · 1,390.00
+  a37c8c46-6d6e-47b1-9d01-171a7c9d6c56 · 2026-10-23 · SINGLE_SESSION · รุ่น 0,1,2 · 4,170.00
+  ff9ea3fd-ba8d-40aa-919f-a995cd783c6c · 2026-10-23 · OTHER · รุ่น 0 · 300.00
+  9a4a5feb-4d36-43c8-a197-093160cc896e · 2026-10-24 · SINGLE_SESSION · รุ่น 0 · 1,390.00
+```
+- The ids match yours; **`a37c8c46` shows generations 0,1,2 (3 extra = 4 `rev:` sales live), not 1 extra.** Total 7,250 vs your 4,470.
+- Read that booking's full ledger now (all `rev:` / `rev-undo:` / `discount:` keys, with times) and tell me: are there really 4 live sales (earlier QA re-runs, e.g. TEST-083 era?), or is the script miscounting? Also check the 1,390 per generation (no discount).
+- Nothing is written until you and Silver agree on why.
+
+## @Porter → @Tanya — 2026-10-25 — Re the 750 mismatch: Silver's read (inbox/PM.md "Re TASK-750 sid MISMATCH"): `a37c8c46` likely has **4 live `rev:` sales** (#0–#3) from 4 pre-fix runs whose window held 10-23; 7,250 − 4,470 = 2 × 1,390 exactly. Settle it by value: its full ledger (every key + time) vs the end-of-day `job_runs` since 10-18. Silver gave 2 read-only SQLs in that entry. If your sid access doesn't cover SQL, put them in your file as a DATA REQUEST and I'll take them to the owner.
+- Also note in TEST-124: the dry run's ids proved the owner's local env pointed at **sid** this time.
+
+## @Porter → @Tanya — 2026-10-25 — TASK-750 dry run #2 (owner, local `f4aeb39`, `--env-file=.env.sid`): target line `smart_scheduler @ 172.17.172.206/32`; the same 4 bookings, **7,250.00** (a37c8c46 gens 0,1,2 = 4,170.00). Identical to dry run #1. DR-5's 2 SQLs are still with the owner; no `--commit` until your gate says go.
+- Note for the uat run: the DB **name** is probably the same on both boxes, so the **host** is what tells sid from uat. Record sid's host in TEST-124.
+
+## @Porter → @Tanya — 2026-10-25 — DR-5 SQL 1 answered (owner, sid): `a37c8c46` ledger = 4 rows, all 1,390.00, no `rev-undo:` / `discount:`:
+`rev:…` 10-23 18:30 · `rev:…#1` 10-25 18:30 · `rev:…#2` 10-25 19:12 · `rev:…#3` 10-25 19:15.
+- Meets your pass (4 gens, last 19:15, one before 19:12). ⇒ 7,250 is right. I'm telling the owner to run `--commit` now, then `--commit` again (= 0). Then do your after-checks (snapshot diff, highest gen live) and post the SQL A / SQL B the owner should run.
+- ⚪ Note for TEST-124: sid's own day-end posted at **10-23 18:30 and 10-25 18:30**, so sid's schedule looks like 18:30, not 17:30 (sid only; record it, don't chase it tonight).
+
+## @Porter → @Tanya — 2026-10-25 — TASK-750 `--commit` #1 on sid (owner): target `smart_scheduler @ 172.17.172.206/32`; the same 4 bookings / 7,250.00; **"✓ กลับรายการแล้ว 6 รายการ"** (1 + 3 + 1 + 1 generations). The 2nd `--commit` follows. Start your after-checks.
+
+## @Porter → @Tanya — 2026-10-25 — TASK-750 `--commit` #2 on sid (owner): **"กลับรายการแล้ว 0 รายการ"** (0 bookings, 0.00). Idempotent ✅. Finish your after-checks (snapshot diff = 0 changes, the highest gen live on each of the 4) and give me the owner's SQL 1 (expect 0 rows) + SQL A / SQL B in one block. Then your TEST-124 verdict.
+
+## @Porter → @Tanya — 2026-10-25 — DR-6 answered (owner, sid): **SQL 1 = 0 rows · SQL B = 0 rows**. SQL A = 16 rows: 9a4a5feb / f6688ea2 / ff9ea3fd each `rev:` + `rev:#1` + one `rev-undo:` (gen 0); a37c8c46 `rev:` … `#3` + `rev-undo:` gen 0, #1, #2; all 6 reversals at 10-25 21:12:59, reason "REVERSAL — duplicate day-end re-run", amounts −1,390 / −300. The highest generation stays live on all 4. Record the full PASS in TEST-124 (no reply needed beyond the file).
+
+## @Porter → @Tanya — 2026-10-26 — TEST-117: run the weekday afternoon by hand **Tue 10-27, 14:30 / 15:30 / 16:30** (uat, read-only, the same probes), plus one morning baseline at ~10:00 if your session is up. If the uat deploy happens before then, note the build in each row. Then close TEST-117 with the day table. TEST-123 Monday re-read noted ✅; the job_runs one-liner can wait for the owner's next SQL batch.
+
+## @Porter → @Tanya — 2026-10-26 — ▶️ uat READ-ONLY smoke of tonight's deploy (back `f4aeb39` + migration 0072, front `f9f7f9c`, `JWT_TTL_SECONDS` fixed by the owner) — TEST-125
+- Log in; the token/session now lasts 7 days (read the token expiry; don't wait for it).
+- 837/838 present: the plan window shows "ตัดจบคอร์ส" and "เปลี่ยนครู / เวลา ทั้งคอร์ส" (open the dialogs, then CANCEL; **no act on uat**).
+- 748: the daily report's Total (+Group) reads, no error.
+- 750 is done on uat by the owner (13 reversals, after-check 0 rows): nothing for you there.
+- 0 errors / 5xx. Numbers only; no writes. Report on disk, check it, then nudge me.
+
+## @Porter → @Tanya — 2026-10-26 — TEST-125 PASS received. The 2 preview POSTs on uat: **NOT allowed**, keep the guard as is. The previews are proven on sid (TEST-121); on uat the dialogs opening is enough. Note it in TEST-125 as NOT_TESTED-on-uat by design.
+
+---
+## @Porter → @Tanya — 2026-10-27 — REQ-132 heads-up (NOT a GO yet)
+- Sober's code is ready: `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` (TASK-840 back + 841 front). Your gate is its **§4**, on **sid**.
+- Wait for my GO: it comes after the owner's ขึ้น git and his sid deploy of back + front.
+
+---
+## @Porter → @Tanya — 2026-10-27 — CORRECTION to the REQ-132 heads-up
+- The order is **sid deploy → your PASS → git**. Owner, verbatim: *"ต้อง deploy sid เทสผ่านก่อนค่อยขึ้น git"*.
+- So your GO comes as soon as the owner says sid is deployed (back + front). No git step before you.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-132 gate on sid
+- Owner, verbatim: *"deploy sid back front done"*.
+- Run `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` **§4** on sid (headless browser). Write your TEST file (TEST-126), then tell me PASS/FAIL in inbox/PM.md.
+- No children's names in the file (chat only).
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: TASK-842 re-test on sid (REQ-132 §4 item 5)
+- Owner, verbatim: *"deploy sid back done"* (back = 840 + 842; the front is unchanged since TEST-126).
+- Run `DEPLOY-REQ-132-attention-names-and-links-2026-10-27.md` **§4 item 5**: ended / paused courses are in neither list, and the counts match. Add a quick look that items 1–2 still hold. Append it to TEST-126, then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-132 uat smoke (READ-ONLY)
+- Owner, verbatim: *"deploy uat back front done"* (back 31cd2d0, front e44c38a).
+- **Read-only on uat:**
+  - the Attention page: names lead the items, links open the right window, every listed course is ACTIVE, "ใกล้หมดอายุ" ≈ 29;
+  - no other items changed; 0 errors.
+- **No writes.** No pause/resume test there.
+- The first uat 08:00 digest (tomorrow) is the live LINE check. I'll get it from the owner.
+- Append to TEST-126, then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: re-check the uat front (REQ-132 / 841), READ-ONLY
+- Owner, verbatim: *"deploy uat front ใหม่แล้ว"*.
+- Re-check as you listed: links present, a click opens the right window, `?course=` works (read only). Append to TEST-126, then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — ONE screenshot for the กุ้ง reply (uat, READ-ONLY)
+- Owner, verbatim: *"ขอรูปแนบมาประกอบด้วย ไม่ต้องเยอะ รูปเดียวก็ได้"*.
+- **One** screenshot of the uat "รายการที่ต้องดูแล" page:
+  - the "คอร์สที่ใกล้จบ (ต่ออายุ)" section open, so a few name-led items show;
+  - desktop width, Thai UI;
+  - nothing clicked or saved.
+- **It shows children's names, so it must NOT go in the repo.** Save it here (outside the repo):
+  `C:\Users\KUYDONG\AppData\Local\Temp\claude\H--ai-agent-workplace-ai-agent-workspace\beeb0a17-adf2-4686-92fb-b7ef2b605744\scratchpad\req132-attention-uat.png`
+- Tell me in inbox/PM.md when it's there (file name only).
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-133 Deliverable 2, the pricing deck (TASK-846). Local file, headless
+- **File:** `som-balance-backoffice-spec/pricing-deck/dist/index.html` (path in `machine.local.md`), md5 `ba12a2de7253981b870015af3191e9be`, 12 slides. The audience is ฟีน + Khwan at the owner's money meeting.
+- **Gate:**
+  - opens offline (file://, 0 network requests);
+  - 0 console errors;
+  - every slide reachable by keys (← → Space Home End) AND click, and `#/slide/N` survives a reload;
+  - Thai renders in the bundled font (no boxes);
+  - **no "pending" tag and no A/B/C anywhere** (on screen AND in the file's text);
+  - **the price:** one offer, 39,200 ฿, 3 installments 11,900 / 13,800 / 13,500 (sum = 39,200);
+  - nothing internal: no team names, TASK/REQ numbers or engineer-day breakdowns beyond 278 / 200 / 51 / 149 and ≈ 7 months;
+  - **read every slide's Thai as a customer would:** flag anything unclear, wrong or awkward. Say which slide and quote it.
+- Known, not a fail: the screenshots are v3 (English, dark) for now; they get swapped when the final UI is done.
+- Write TEST-127, then tell me PASS/FAIL in inbox/PM.md, with one screenshot of the price slide in my scratchpad (`C:\Users\KUYDONG\AppData\Local\Temp\claude\H--ai-agent-workplace-ai-agent-workspace\beeb0a17-adf2-4686-92fb-b7ef2b605744\scratchpad\req133-deck-price.png`).
+
+---
+## @Porter → @Tanya — 2026-10-27 — CORRECTION to the deck GO: a NEW md5
+- The deck was rebuilt once more (one leftover title renamed). **Test THIS file:** 1,364,052 B, md5 **`e357cbf55a223bbb827d90191b56497d`**. It supersedes `ba12a2de…`. Record the md5 in TEST-127.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: TEST-127 quick re-check of the fixed deck
+- **File:** `som-balance-backoffice-spec/pricing-deck/dist/index.html`, 1,352,754 B, md5 **`056a00b466fced49741c0c3fbd6cb9a5`** (supersedes `e357cbf5…`).
+- **Re-check:**
+  - each of your 11 notes, especially the 5 screenshots (invented names only, no real amounts beside real names);
+  - the gate basics (offline, 0 errors, every slide reachable).
+- Append it to TEST-127. Put a fresh price-slide screenshot in my scratchpad (`…\scratchpad\req133-deck-price.png`, overwrite), then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-133 Deliverable 1, Team B's 14 pages (TASK-751/752/753). Local file, headless
+- **File:** the BUILT `som-balance-backoffice-spec/final-ui/dist/index.html` (one file, 1.24 MB). Open it via file:// offline; Silver and Fanta could not open file:// in their panes. Team A's pages (Salary, front office) are still being built: test only Team B's.
+- **Gate (REQ-133):**
+  - opens offline, 0 network, 0 console errors;
+  - every Team B page is reachable from the menu, with no dead buttons;
+  - Thai OK;
+  - **roles via the header switcher:** Revenue ×6 + All Report = CEO only; Stock ×7 = CEO + Admin; Coach = none of them. Hidden, never a 🔒;
+  - **STOCK OUT:** a cart, the per-item discount (฿ / %), the commission edited per item (lower AND raise), and the discount doesn't change the commission;
+  - **no real staff names** (the invented map: Ton / Ploy / Nam / May / Beam / Pete / CEO), invented children;
+  - 375 px without sideways scroll.
+- **Known, not a fail:**
+  - Detail's month total (rows 14–16 Oct) differs from the Summary's typed MTD, and it's labelled on screen;
+  - Silver's ruling: the Admin sees the Product COMMISSION rate column (a rate, not anyone's pay).
+- Compare each page with Khwan's v3 notes (REQ-122 §9/§10) where you can. Write TEST-128, then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: REQ-133 final UI, the WHOLE file (Team A's 17 pages + a re-check of Team B's 14). Local, headless
+- **File:** `som-balance-backoffice-spec/final-ui/dist/index.html`, 1,243,190 B, md5 **`a33a3b433f581dc3b53ba451de0a8670`**. Team B's pages were already done when you passed TEST-128, so this one file should hold all 31.
+  - **First check:** are all 14 of Team B's pages in it? If any are missing, tell me and gate Team A only.
+- **Team A gate:**
+  - opens offline, 0 console errors;
+  - **every page reachable per role, and the "cannot see" screen otherwise:**
+    - a Coach sees only their own Payment Detail;
+    - an Admin sees **no pay figures and no revenue**, with nothing locked, just absent (e.g. no salary column on Employee);
+  - every control does something. **Use a REAL mouse click** on the Park Rent steppers and the User Setting password eye (a synthetic click does nothing there);
+  - Thai OK; invented names only; **no item codes (F1, D3…) in titles OR the sidebar** (your TEST-128 note);
+  - Conversion has no "หน้าบ้าน" label and sits under SETTING;
+  - Khwan's v3 notes applied (the page → note tables are at the bottom of TASK-844 / 845).
+- **Team B:** a quick re-check that the 14 still behave as in TEST-128.
+- Write TEST-129. Put ONE screenshot (Monthly Payment, CEO view) in my scratchpad (`…\scratchpad\req133-final-ui.png`). Then tell me PASS/FAIL in inbox/PM.md.

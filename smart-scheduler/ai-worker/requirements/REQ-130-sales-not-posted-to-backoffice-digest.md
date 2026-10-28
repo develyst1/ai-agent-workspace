@@ -37,3 +37,17 @@
 ## created_at check (owner, 10-25): CONFIRMED why only 18 Oct. The 6 = **3 × 17:00 trials created 17:13 / 17:26 / 17:36** (still new or unconfirmed at the 17:30 run, marked attended 18:12–18:20) + **3 × 09:00 single sessions created at 18:33–18:34** (entered after the fact). The other 13 existed before 17:30 and posted. ⇒ Bookings created or confirmed around / after the run are never handled; the widened TASK-749 (start-based sweep) is the fix. **Not an admin error.**
 
 ## PROVEN by data (`confirmed_at`, owner's SQL 10-25): the 3 × 17:00 trials were created 17:13 / 17:26 / 17:36 and **confirmed at 18:10** by staff (attended 18:12–18:20). At 17:30 they were still PENDING, and the job attends CONFIRMED only. The 3 × 09:00 single sessions were created + confirmed at 18:33–18:34. All 6 were staff check-ins, by one admin account. **Two ways to slip:** created after 17:30; or created before but confirmed after 17:30. Both are closed by the widened TASK-749.
+
+## 🔴 10-25 evening: the 18 Oct re-run likely DOUBLE-POSTED on uat
+- TEST-123 on sid found that any day-end re-run posts trial / 1 HR / Other again (cause from TASK-258, 09-06; no "already posted" check). The 18 Oct re-run on uat today (line above) would have doubled the rows already posted at 17:30 that day.
+- Silver gave 2 read-only SQLs (inbox/PM.md "🔴 URGENT reply") → owner. Reversal: A = Undo + re-mark in the app per booking; B = a one-off reversal script (TASK-750, ≈0.5 d, dry run first), Silver recommends B. Nothing before the owner sees the result.
+- Khwan sees the doubles in the current back office (P&L, Revenue by activity, Customer spend); not in the front office reports. **No message to Khwan until fixed** (owner rule).
+- The fix: TASK-749 reopened (post only when not live). No re-runs anywhere until it is in.
+- **Owner ran the SQL (10-25 evening): CONFIRMED, only 2026-10-18: 13 bookings (9 FIRST_TRIAL + 4 SINGLE_SESSION) posted twice (17:30 on 10-18 + the 14:34 re-run on 10-25), ≈ 17,751.00 THB extra. No other date since 09-06.** Reversal A/B: the owner's pick.
+- **TEST-123 RE-RUN PASS (10-25 19:50, sid, back d33e249):** run twice ⇒ each row posted once, run 2 nothing. TASK-749 (304212d + d33e249) ready for uat together with the backlog SQL first.
+- **Owner 10-25:** *"B ขึ้น uat พรุ่งนี้"*: reversal option B ⇒ **TASK-750** (one-off script, dry run first, sid rehearsal on the 4 QA dups, then the owner runs it on uat). uat deploy tomorrow 10-26.
+- **TASK-750 rehearsal on sid: FULL PASS (10-25 21:13).** Dry run 4 / 7,250 → commit 6 reversals → commit 0 → SQL 1 = 0 rows, outbox 0, 0 other changes. uat next (10-26), after the 749 deploy: SQL 1+2 → dry run with `.env.uat` (host ≠ sid 172.17.172.206) → commit → commit = 0.
+- **10-26: the 18 Oct duplicates REVERSED on uat** (TASK-750, owner ran it: 13 reversals, 17,751.00; 2nd run 0). After-check SQL pending.
+- ✅ **10-26 after-check on uat: SQL 2 = 0 rows.** No duplicate sales remain since 09-06.
+
+- ✅ **LIVE on uat 2026-10-26 (TEST-125 smoke PASS); Khwan told 2026-10-27** (`COPY-DRAFT-khwan-uat-release-2026-10-26.md`, sent by the owner).

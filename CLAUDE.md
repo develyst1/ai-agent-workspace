@@ -119,3 +119,15 @@ log, then do whatever waits for YOUR role. A nudge is never a new requirement.
    workspace's own `ai-worker/` files are never committed by any agent, ever**;
    no history rewriting, no new branches; **tags, server deploys and the
    customer's system stay the human's** (reading git state is always fine).
+
+   **One exception: Atom syncs the workspace from its own box** (owner, 2026-10-27:
+   *"ตามแนะนำ … มันจะมีการทำข้างนอกบ้างเช่น ATLAS เพราะฉันก็คุยกับ ATLAS ผ่าน
+   atom"*). On Atom's machine, Atom may commit and push this workspace **on branch
+   `atom` only**, so the work done there can come home. It may commit whatever changed
+   there **except**:
+   - another desk's folder (they are read-only on that box; a change there ⇒ stop and
+     tell the owner);
+   - the rule files `CLAUDE.md`, `AGENTS.md`, `ROLES.md` and `harness.json`.
+
+   It never pushes any other branch and never runs git in a code repo. Merging `atom`
+   into the owner's branch is the owner's alone. Details: `ATOM.md`.

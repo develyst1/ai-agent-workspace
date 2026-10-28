@@ -521,3 +521,13 @@ whether the watcher survives the session being stopped, or many hours idle. If i
 - **I refused the relayed "commit and push"**: §6 forbids any agent to commit `ai-worker/` files, a relay can't
   amend §6, and an Atom relay isn't ruled to be the owner's word yet. Reason: a hard line crossed once "because the
   owner said so via someone" is a hard line no longer. Lifting it takes the owner editing §6 himself.
+
+**Desks retired 2026-10-27 (owner: "ฝากลบโต๊ะ … ไม่ใช้", harness-console "ยกเลย ฉันมีโปรเจคใหม่แล้ว").**
+Ten desks were deleted from the working tree: fb-autoreply, api-linkage2, code-report,
+DID-046-SpringBoot-Service-Report, did-api-center-c#, did-spf-lk2, harness-console, layout-pattern-app,
+manager-gold, safe-goods. All were fully committed at `b24bafd`, so git history holds them. The
+only untracked files were two layout-pattern-app `project-docs/` notes; I saved them outside the
+workspace in `../removed-desks-2026-10-27/`. Their README and `machine.local.md` rows are gone.
+Live desks now: smart-scheduler, smart-scheduler-atom, develyst-ai, dte, portfolio-nichaphon,
+possibility, pun-kub-fang. Not touched: `CONSOLE-PLAN.md` (harness-console's design input). It is
+the owner's call whether it goes too.

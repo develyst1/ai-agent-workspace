@@ -28,3 +28,5 @@ The owner told her: *"ขอดูให้เคสนี้ วันอาท
 
 ## Khwan, 2026-10-25 (reply to the how-to), verbatim: *"เข้าใจวิธีการค่ะ แต่อยากให้ชื่อปุ่มตรงกับที่ใช้จริงมากขึ้น เช่น "ตัดจบคอร์ส" หรือ "เปลี่ยนครู / เวลา ทั้งคอร์ส" ค่ะ"*
 ⇒ She wants BOTH optional word-fit changes. Waiting for the owner's GO + copy approval: REQ-126 = the button reads 'ตัดจบคอร์ส' (+ a reason 'ตัดจบคอร์ส', migration 0072); REQ-127 = one button 'เปลี่ยนครู / เวลา ทั้งคอร์ส'.
+
+- ✅ **LIVE on uat 2026-10-26 (TEST-125 smoke PASS); Khwan told 2026-10-27** (`COPY-DRAFT-khwan-uat-release-2026-10-26.md`, sent by the owner).

@@ -1244,3 +1244,85 @@ Q2 (time-only: nothing at the act, Confirm-course tells) ✅ · Q3 (no too-late 
 ---
 ## @Sober → @Jason — 2026-10-25 — ▶️ GO TASK-839 (REQ-131): the leave-refused admin alert names the child (the 3rd argument at `line-webhook.service.ts:1047` + a renderer fallback). Read `tasks/TASK-839-…`
 ≈ 0.3 d. No new words. List pins first; leave TASK-749 alone. Nudge me when green.
+
+---
+## @Sober → @Jason — 2026-10-25 — ✅ TASK-839: set 692 (P4 + P5) GRANTED; the this-kind-only fallback AGREED (bottom of TASK-839). Finish + nudge me
+
+---
+## @Sober → @Jason — 2026-10-27 — ▶️ GO TASK-840 (REQ-132): the Attention items name the child (both checks) + a `link` target. Read `tasks/TASK-840-…`
+≈ 0.35 d. No new words; the LINE digest is unchanged (test it). Write the item shape for Fern in your report. List pins first. Nudge me when green.
+
+---
+## @Sober → @Jason — 2026-10-27 — ✅ TASK-840 VERIFIED (no-.env 5,224 / 0 · set 840 7/7). 🧊 Frozen; it ships with Fern's 841. The ISO date stays as is
+
+---
+## @Sober → @Jason — 2026-10-27 — ▶️ GO TASK-842 (REQ-132 🟡): both Attention course checks require `courseStatus(c, today) === "ACTIVE"`. Read `tasks/TASK-842-…`
+≈ 0.3 d. It's on top of your frozen TASK-840 in `lib/attention.ts`; keep 840 byte-for-byte and re-run set 840. `courseEligible` unchanged. List pins first. Nudge me when green.
+
+## @Sober → @Jason — 2026-10-27 — GO: TASK-846, the pricing-meeting PRESENTATION (REQ-133 Deliverable 2): static React, no backend
+- Read `tasks/TASK-846-pricing-presentation-deck.md`. It is all there: the folder, the stack, the 7 sections, `pricing.ts`, and what never goes on a slide.
+- **Target: ready for my check Thu 10-29.** Report in `inbox/SA.md`.
+- Not git, no smart-scheduler repo touched. The v3 HTML you screenshot is a local mock-up file, not an environment.
+
+## @Sober → @Jason — 2026-10-27 — TASK-846 update: payment is owner-approved (3 installments by delivery)
+- The `pricing.ts` payment block in the task file is updated: 11,900 / 13,800 / 13,500 = 39,200, **not PENDING**. 30/40/30 is dropped.
+- **No slide mentions the extra 5 days** (included free; the price stays 39,200).
+- The A / B / C prices stay PENDING.
+
+## @Sober → @Jason — 2026-10-27 — RULING on your TASK-846 question: your default is right. NO A/B/C
+- I missed Porter's "NO options" entry; you caught it. Thank you.
+- **One offer:** all 5 parts · 39,200 ฿ · 3 installments by delivery. No A/B/C table, no option timeline, no PENDING tag.
+- **Also: don't keep the unrendered A/B/C data in `pricing.ts`.** The owner dropped options, and a hidden switch is just dead code.
+- The task file is updated (§5–§7, `pricing.ts`, the Done check now edits installment 2). One addition: a "how it's used" slide that prints a Revenue figure as text imports it from Team B's `final-ui/src/mock/b-*.ts`.
+- TASK-842: noted, already committed (`31cd2d0`).
+
+## @Sober → @Jason — 2026-10-27 — TASK-846 CHECK: NOT yet ready for QA. 2 fixes + 1 wording, then it goes
+**Your build crossed my ruling.** My answer ("no A/B/C, and no hidden A/B/C data") landed while you were building. The rest is good:
+- the stack, single file, 0 console errors and the payment table are fine;
+- the built file carries no internal word (no TASK / REQ / names / sid / uat / 99,999).
+
+**Fix:**
+1. 🔴 **Slide 9 "ราคาคิดอย่างไร" shows the tag "ตัวเลขรอยืนยัน"** (`PENDING = true`, `<PendingTag />` at `slides.tsx:157`). I saw it on screen. The customer would read our price as unconfirmed. The owner OK'd the offer. **Remove `PENDING`, `PendingTag` and both uses.**
+2. 🔴 **The dropped options ship inside the file:**
+   - `dist/index.html` contains `25700`, "ยังไม่เอา Salary" and "Stock ก่อน" (the `options` const is bundled even with `SHOW_OPTIONS = false`);
+   - the owner may send this file on, and anyone can read it in the source.
+   - **Delete `SHOW_OPTIONS`, `options` and `optionsSlide`** (and the `OPT` helper) outright. If the owner ever wants options back, that is a new request.
+3. 🟡 **Installment 3 says only "ส่งมอบ Salary".** Per the task: Salary **together with** the coach login, multi-role / STAFF and "ใครเปลี่ยนทดลองเป็นคอร์ส". E.g. `ส่งมอบ Salary (+ หลายบทบาท / STAFF, ล็อกอินโค้ช, ใครเปลี่ยนทดลองเป็นคอร์ส)`; your wording is fine if it says that.
+
+**Done = (report in `inbox/SA.md`):**
+- tsc 0 · build 0;
+- a grep of `dist/index.html` for `ตัวเลขรอยืนยัน|25700|ยังไม่เอา Salary|Stock ก่อน"` returns **nothing**;
+- the installment-2 → 99,999 test: on slide 10 + the sum assertion firing, then reverted;
+- the file size.
+
+Then I send it to Porter as "ready for QA".
+
+## @Sober → @Jason — 2026-10-27 — TASK-846 UNFROZEN for one round: Tanya PASSED the gate (TEST-127); fix her notes before the owner sees it
+Read `tests/TEST-127-req133-pricing-deck.md` §"Notes for the owner" (11 items). **Do ALL of them.** My rulings and the exact Thai:
+
+**🔴 Screenshots (her note 11):**
+- **Recapture every v3 shot with neutral names and no internal codes.** Serve v3 locally as before; **before each capture, run a DOM text replace in the page:**
+  - Kid → Ton, Poo → Ploy, Kung → Nam, Bank → May, London → Beam, Nelson → Pete, พี่ฟีน → CEO;
+  - strip the item codes from the sidebar (`F1 · `, `D3 · ` …: any `^[A-Z][0-9]+ · ` prefix).
+- Then **look at every shot** for a real name or a code. **No real staff name may appear next to a number.**
+- (They get swapped for the final UI later; this is for the meeting.)
+
+**Slide wording:**
+| # | slide | fix |
+|---|---|---|
+| 1 | 8 | drop "(V3)" |
+| 2 | 8 | the 3rd card → **"รายละเอียดครบแล้ว พร้อมเริ่มสร้าง"**; drop "สเปกปิดแล้ว" |
+| 3 | 2 | Stock → **"รับเข้า / ขายออกเป็นตะกร้า (หลายชิ้นในบิลเดียว)"** and **"ของ Demo ที่วางไว้ตามโรงเรียน"** |
+| 4 | 2 | สิทธิ์ → **"CEO เห็นทุกอย่าง · แอดมินไม่เห็นยอดเงินเดือน · มีแจ้งเตือนในระบบ · เชื่อมกับระบบเดิม"** |
+| 5 | 4 | → **"ถ้าต้องลงเอง ก็เพิ่มรายการเองได้"** |
+| 6 | 9 | point 3 → **"ราคานี้รวมการทดสอบ การติดตั้งระบบ ช่วงทดลองใช้ก่อนใช้งานจริง รายงาน 6 หัวข้อ และหน้า SOM Dashboard / Daily Report แล้ว"** (no "เทส" / "UAT") |
+| 7 | 9 | point 1 → **"แพ็กเกจเดิม 73,000 บาท ได้งานประมาณ 278 วันทำงาน ตกวันละประมาณ 263 บาท"**. Drop the 3,500 bracket (263 = 73,000 ÷ 278); remove `licence` from `pricing.ts` |
+| 8 | 9 | the comparison → **"149 วันทำงาน เท่ากับจ้างโปรแกรมเมอร์ 1 คนประมาณ 7 เดือน แต่เราส่งมอบได้ใน 2–3 เดือน เพราะใช้เครื่องมือ AI ช่วย"**. **No per-month figure**; remove `perMonthUnder` |
+| 9 | 9, 11 | one name per slide: the footer section = the title's section. Installment 2 keeps "ต่อจากงวดแรก" (invent no durations) |
+| 10 | 12 | "จากห้องนี้" → **"จากการประชุมวันนี้"** |
+
+**Done = (report in `inbox/SA.md`):**
+- tsc 0 · build 0 · 0 console;
+- a grep of dist for `Kung|Poo|Kid|Bank|London|Nelson|พี่ฟีน|\(V3\)|เทส|UAT|ห้องนี้|6,000` = **0**, plus my earlier banned list = 0;
+- the 3 slide-3 / 4 / 5 shots looked at by you;
+- the size + md5. **Then freeze again.**

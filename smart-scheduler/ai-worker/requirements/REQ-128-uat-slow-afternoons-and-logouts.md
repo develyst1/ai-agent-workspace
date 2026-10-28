@@ -44,3 +44,13 @@
 - **Correction (10-25):** the 09:33 logout coincided with the OWNER'S machine losing internet (where Tanya's watcher runs) ⇒ an artifact, not a uat event. L1 stands on the decoded token (12 h). **Decision: deploy TASK-836 to sid now** (+ the env step); its gate re-tests the lifetime.
 
 ## TEST-117 (10-25): night 2.1 s / 13:44 2.2 s / 17:55 2.65 s for the schedule; the API ≈0.55–0.66 s; 0 errors. **No afternoon slowdown seen after the owner closed Claude Desktop / VS Code / Steam on the customer's server** (a Sunday, one sample). Re-check on a weekday afternoon (Tanya) before closing. L1 = TASK-836 (sid ✅, the uat deploy pending).
+
+## 2026-10-27: TEST-117 CLOSED (Tanya); reply drafted
+- 27 uat runs over 3 days. 0 errors / 522 / logouts. Weekday afternoon ≈ Sunday; only the login is slower (+0.8–2.4 s). The slowdown was not reproduced; no cause claimed. S1 (cache) not opened.
+- L1 fixed by TASK-836 (live on uat 10-26).
+- Reply to BooBee: `COPY-DRAFT-booboo-req128-slow-and-logouts-2026-10-27.md`, waiting for the owner to send. Close REQ-128 when sent.
+
+## 2026-10-27: CLOSED by the owner. No reply from us
+- Owner, verbatim: *"ไม่ต้องตอบ Boobee แล้ว เขาชื่อพี่ปู ฉันบอกไปแล้วมันช้าเพราะบางอย่างเดี๋ยวแก้ให้ทีหลัง"*.
+- The owner answered the customer himself. The COPY-DRAFT is withdrawn.
+- "เดี๋ยวแก้ให้ทีหลัง" is the owner's own follow-up; no team work is opened unless he asks.

@@ -23,3 +23,5 @@
 ## Khwan, 2026-10-25 13:54: **B**, verbatim *"B. แบบ A แต่นับงานกลุ่มเป็นชั่วโมง (เช่น ECA 2 ชั่วโมง = 2) ค่ะ"*
 - Total (+Group) = **confirmed / attended lessons** + **group work in HOURS** (each ECA / Other hour, each camp hour, each group class's hours). **On leave, pending, cancelled and paused are OUT.**
 - **TASK-747 is taken (the % rule) ⇒ Team B's next number = TASK-748.** Back only; the field / shape is unchanged. Then sid → Tanya (24 / 25 Oct by value: Kid 25 Oct = 6) → uat → Khwan.
+
+- ✅ **LIVE on uat 2026-10-26 (TEST-125 smoke PASS); Khwan told 2026-10-27** (`COPY-DRAFT-khwan-uat-release-2026-10-26.md`, sent by the owner).
