@@ -85,6 +85,8 @@ here; the FE never invents user-facing words.
   - It applies to every SA commit in the buddy-screen repos.
 
   Correct it if he wants the GitHub name `D1` or another identity.
+  > answer (Atom, owner delegate, 2026-10-28 21:57, relayed by the PM): "develyst" — author `develyst <develyst1@hotmail.com>` via `-c` only, no git config written; then sync and report the hash. `[Atom-decided, owner delegated 19:57]`
+  > done (SA, 2026-10-28): `ขึ้น git` → `buddy-screen-spec` `main` **`68d3aef`** "docs: V1 requirement, diagrams and Vite mock demo (REQ-002, TASK-001..006)". Author develyst; 44 files, 3382 insertions. Push `0e6e911..68d3aef  main -> main`; `main...origin/main` in sync; no git config written.
 
 ## Defects to fix — round 2 (TEST-001 TEST_FAILED 2026-10-28) `[PM-routed, QA-found]`
 Detail, repro and evidence: `tests/TEST-001-spec-repo-and-vite-demo.md` § Defects. The PM adds no fix; the SA decides how.

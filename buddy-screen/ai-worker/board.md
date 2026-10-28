@@ -30,7 +30,7 @@
 | Id | Title | Priority | Status (date, owner, pointer) | Ball |
 |----|-------|----------|-------------------------------|------|
 | REQ-001 | AI for Kids V1 — owner's requirement, verbatim | HIGH | DECIDED except [needs owner] items (2026-10-28 19:58, PM; `DECISIONS.md`; full text `../project-docs/requirements-v1.md`) | owner (D2/D5/D6/D8/PDPA) |
-| REQ-002 | Full requirement + diagrams in buddy-screen-spec, Vite mock demo | HIGH | DELIVERED (2026-10-28 21:50, PM — QA TEST_PASSED round 2; not committed; `requirements/REQ-002-spec-repo-and-vite-demo.md`) | owner (ขึ้น git when he says) |
+| REQ-002 | Full requirement + diagrams in buddy-screen-spec, Vite mock demo | HIGH | DELIVERED (2026-10-28 21:50, PM — QA TEST_PASSED round 2; spec `main` 68d3aef pushed; `requirements/REQ-002-spec-repo-and-vite-demo.md`) | — |
 
 ## Tasks
 
@@ -54,4 +54,3 @@
 | Item | Waiting on | Since | Pointer |
 |------|-----------|-------|---------|
 | REQ-001 / SPEC-001 | owner: [needs owner] — D2/D2a/D2b (paid probes not approved), D5, D6, D8, PDPA check | 2026-10-28 | `DECISIONS.md` 2026-10-28 19:58 |
-| ขึ้น git buddy-screen-spec (owner 21:49) | owner: commit author (Q-B convention approved 21:53; commit failed, no git identity) — staged, nothing committed | 2026-10-28 | REQ-002 § Questions Q-C |

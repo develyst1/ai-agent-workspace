@@ -9,7 +9,7 @@
 
 ## What we are in the middle of
 
-- REQ-002 DELIVERED 2026-10-28 21:50: full V1 requirement + 4 diagrams + Vite mock demo in `buddy-screen-spec` (working tree, **not committed**). QA TEST_PASSED round 2. [owner-approved 2026-10-28 19:57, via Atom]
+- REQ-002 DELIVERED 2026-10-28 21:50: full V1 requirement + 4 diagrams + Vite mock demo in `buddy-screen-spec`, committed + pushed as `68d3aef`. QA TEST_PASSED round 2. [owner-approved 2026-10-28 19:57, via Atom]
 - Demo: `cd demo && npm install && npm run dev` in `buddy-screen-spec`, then open the printed URL (localhost:5173). [team-proposed]
 - All V1 decisions: `DECISIONS.md` 2026-10-28; full text `../project-docs/requirements-v1.md`. [owner-approved 2026-10-28]
 
@@ -17,7 +17,7 @@
 
 | Thread | Waiting on | Since | What unblocks it |
 |---|---|---|---|
-| Commit + sync of `buddy-screen-spec` (REQ-002) | the SA | 2026-10-28 21:50 | owner said it 21:49 via Atom (*"บอก porter สั่ง SA commit and sync ได้เลย"*); PM relayed; SA reports hashes → PM puts them on the first line to the owner |
+| Commit + sync of `buddy-screen-spec` (REQ-002) | — done | 2026-10-28 22:00 | `main` 68d3aef pushed (0e6e911..68d3aef), author develyst, in sync with origin — PM verified |
 | [needs owner] items | the owner | 2026-10-28 | D2/D2a/D2b (paid probes not approved), D5 payment, D6 LINE OA, D8 server, PDPA legal check |
 | Next build (product in Next.js) | the owner | 2026-10-28 | not asked yet; feature REQs come after his go |
 
