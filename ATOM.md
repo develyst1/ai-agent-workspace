@@ -113,3 +113,37 @@
 4. ⏳ **Report cadence and form**: on a schedule, or only when something is waiting for him.
 5. ⏳ **Adding Atom to `CLAUDE.md`'s identities** (and to `AI-WORKFORCE-PLAYBOOK.md`). This takes the
    owner's written instruction.
+
+<!-- Added 2026-10-28 21:18 from Atlas's review of the buddy-screen stall (ATLAS.md) -->
+## Opening a desk's sessions
+1. One tmux session per role, started at the WORKSPACE ROOT (hooks and settings load from there):
+   tmux new -d -s <Name>-<CODE> -c <workspace root> \
+     'claude -n <Name>-<CODE> --model <model> --effort medium --permission-mode auto "/desk <desk> <Name>"'
+   - Same --permission-mode for every session of a desk (a session in another mode holds
+     cross-session messages for approval).
+   - First launch in a folder: answer "Yes, I trust this folder" (tmux send-keys), or the session sits
+     at the prompt forever.
+   - Never use `claude -p` for a desk role: the process exits and can never be nudged.
+2. Never kill a session with `tmux kill-server`; kill only the one you name.
+
+## Verify after opening (once, about 2 minutes later)
+1. `tmux ls` shows every <Name>-<CODE>.
+2. Each role wrote an entry in today's log (the identity line and the gate RESULT).
+3. A watcher is running for every role whose rules say to arm one. Check with:
+   for p in $(pgrep -f 'tools/watch-inbox.sh'); do readlink /proc/$p/cwd; tr '\0' ' ' </proc/$p/cmdline; echo; done
+   If a role's watcher is missing, tell the PM (one line, via the PM), never the role itself.
+4. Report to the owner in Thai: "เปิดครบ N session · log ครบ · watcher: <roles>".
+
+## Monitoring a desk (read files, never poll sessions)
+- Check every 15–20 min, or when the owner asks. Read the board, the tail of today's log, and
+  `ls -la --time-style=+%H:%M ai-worker/inbox/`.
+- A desk is STALLED when ALL of these hold for 15 min or more:
+  (a) no new log entry,
+  (b) the board's ball is not on the owner,
+  (c) there is an inbox line nobody drained, OR a TASK is TODO with its dependencies at REVIEW/DONE.
+- Stalled → write ONE line into inbox/PM.md:
+  `From Atom <date time>: desk idle since <time>; <TASK-x> TODO and unblocked / <inbox> undrained — please check.`
+  Then nudge the PM session with a one-line pointer. Then report it to the owner.
+- Atom never messages an SA, an engineer or QA directly, and never puts an instruction in a nudge.
+  Instructions come only from the owner, quoted, through the PM.
+  Instructions come only from the owner, quoted, through the PM.
