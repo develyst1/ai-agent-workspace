@@ -1,72 +1,41 @@
 # RESUME HERE — where this project is right now
 
-> 🔴 **THIS FILE IS REPLACED, NEVER APPENDED TO.** It is a snapshot, not a log.
-> The moment you add a second "Where we are — <date>" block under the first, it
-> stops being a snapshot and becomes another thing nobody can read. That is
-> exactly how its predecessor died: `PROJECT-STATUS.md` reached 47.9 KB by
-> stacking three dated blocks, sat outside `ai-worker/` where the hygiene gate
-> never looked, and was **nine days stale** while a cold PM read it faithfully
-> and looked lost.
->
-> **One page. ~4–6 KB.** History belongs in `log/`, decisions in
-> `SYSTEM-FACTS.md`, state in `board.md`. This file holds only the *situation*.
->
-> **Who writes it:** the PM **rewrites it before ending any session**.
-> **Who reads it:** the PM and the SA Lead, **first**, before the board and
-> before the log. Engineers and QA do not read or write it — their context
-> travels with their TASK.
->
-> **On opening,** the PM checks it against `board.md` and today's log and
-> **reports any disagreement to the owner** — never silently trusts it, never
-> silently fixes it. A situation file that quietly drifts is worse than none.
->
-> **Provenance on every line**, one of:
-> `[owner-approved YYYY-MM-DD]` · `[team-proposed]` · `[customer-asked]` · `[carried-over]`
->
-> The hygiene gate measures this file: over 8 KB warns, over 20 KB fails, more
-> than one "RESUME HERE" heading fails, and being more than 2 days behind the
-> newest log fails.
+> 🔴 **THIS FILE IS REPLACED, NEVER APPENDED TO.** One page. History → `log/`, facts →
+> `SYSTEM-FACTS.md`, state → `board.md`. Written by the PM before ending any session; read
+> first by the PM and the SA, and the PM checks it against the board + today's log.
+> Provenance on every line: `[owner-approved YYYY-MM-DD]` · `[team-proposed]` · `[customer-asked]` · `[carried-over]`
 
-**Written:** YYYY-MM-DD by <role> · **Newest log at the time:** `log/YYYY-MM-DD.md`
+**Written:** 2026-10-28 21:58 by Porter (PM) — checkpoint saved on the owner's ask (21:49: *"save checkpoint นี้ไว้"*); the owner moves to other work after this · **Newest log at the time:** `log/2026-10-28.md`
 
 ## What we are in the middle of
 
-*The 1–3 threads that are actually live. Not everything open — what is moving.*
-
-- …
+- REQ-002 DELIVERED 2026-10-28 21:50: full V1 requirement + 4 diagrams + Vite mock demo in `buddy-screen-spec` (working tree, **not committed**). QA TEST_PASSED round 2. [owner-approved 2026-10-28 19:57, via Atom]
+- Demo: `cd demo && npm install && npm run dev` in `buddy-screen-spec`, then open the printed URL (localhost:5173). [team-proposed]
+- All V1 decisions: `DECISIONS.md` 2026-10-28; full text `../project-docs/requirements-v1.md`. [owner-approved 2026-10-28]
 
 ## What each thread is waiting on, and from whom
 
-*Name the role or the person. "Waiting on review" with no name is how a thread
-stalls for a week without anyone noticing.*
-
 | Thread | Waiting on | Since | What unblocks it |
 |---|---|---|---|
-| | | | |
+| Commit + sync of `buddy-screen-spec` (REQ-002) | the SA | 2026-10-28 21:50 | owner said it 21:49 via Atom (*"บอก porter สั่ง SA commit and sync ได้เลย"*); PM relayed; SA reports hashes → PM puts them on the first line to the owner |
+| [needs owner] items | the owner | 2026-10-28 | D2/D2a/D2b (paid probes not approved), D5 payment, D6 LINE OA, D8 server, PDPA legal check |
+| Next build (product in Next.js) | the owner | 2026-10-28 | not asked yet; feature REQs come after his go |
 
 ## Decided recently, not yet in a REQ
 
-*What the owner settled that has not reached a requirement file yet. This is the
-gap where decisions get lost between his sentence and the artifact.*
-
-- …
+- Atom decides open questions for the owner from 19:57; risky ones stay [needs owner]. [owner-approved 2026-10-28, relayed by Atom]
+- Standing rule 16:37: architecture choices go back to the owner first. [owner-approved 2026-10-28]
 
 ## What becomes urgent, and when
 
-*Dates, deploy windows, customer commitments.*
-
-- …
+- No dates. No commit/push without the owner's word. [owner-approved 2026-10-28]
+- `PROTOCOL.md` still says `buddy-screen-spec` read-only; lift is in `DECISIONS.md` 19:58 only — Marie to update (owner calls her). [team-proposed]
+- F-001 unreviewed — owner calls Atlas. `CORE.md`, `PEOPLE.md` still empty. [carried-over]
 
 ## What we already tried that did NOT work
 
-*So the next session does not spend an hour rediscovering it. This section earns
-its place more than any other — keep it even when it is long.*
-
-- …
+- TEST-001 round 1 failed on 4 defects (missing TV decline line, diagrams missing rules, no buy-back, face emoji) — all fixed in round 2. [carried-over]
 
 ## Open questions with the owner
 
-*Asked and unanswered. If it has been answered, it belongs in `SYSTEM-FACTS.md`
-and comes off this list.*
-
-- …
+- The [needs owner] list above. [team-proposed]

@@ -1,0 +1,121 @@
+meta {
+  name: POST Chat Multi (4 models parallel)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/chat/multi
+  body: json
+  auth: none
+}
+
+docs {
+  # ผลลัพธ์ที่คาดว่าจะได้ (200 OK)
+
+  เรียกหลาย model พร้อมกันแบบขนาน (parallel) แล้วคืน array ของ `AIResponse`
+  เรียงตามลำดับ `configs` ที่ส่งไป (ในไฟล์นี้คือ gemini → openai → xai → deepseek)
+
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "provider": "gemini",
+        "model": "gemini-2.5-flash",
+        "content": "Bun.js คือ JavaScript runtime ที่เร็วและรวมเครื่องมือครบ ...",
+        "usage": { "prompt_tokens": 12, "completion_tokens": 95, "total_tokens": 107 },
+        "latency_ms": 1500
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-4.1-nano",
+        "content": "Bun.js เป็น runtime ทางเลือกแทน Node.js ...",
+        "usage": { "prompt_tokens": 12, "completion_tokens": 80, "total_tokens": 92 },
+        "latency_ms": 1300
+      },
+      {
+        "provider": "xai",
+        "model": "grok-4-latest",
+        "content": "Bun คือ JS runtime แบบ all-in-one ...",
+        "usage": { "prompt_tokens": 12, "completion_tokens": 88, "total_tokens": 100 },
+        "latency_ms": 2200
+      },
+      {
+        "provider": "deepseek",
+        "model": "deepseek-v4-flash",
+        "content": "Bun.js เป็น JavaScript runtime ที่เน้นความเร็ว ...",
+        "usage": { "prompt_tokens": 12, "completion_tokens": 90, "total_tokens": 102 },
+        "latency_ms": 1900
+      }
+    ]
+  }
+  ```
+
+  - `data` — array ที่มีจำนวนสมาชิกเท่ากับจำนวน `configs` ที่ส่งไป (ที่นี่คือ 4)
+  - แต่ละ entry มีโครงสร้างเหมือน `AIResponse` ของ `/chat` ปกติ
+  - หาก provider ใด provider หนึ่งล้มเหลว ผลของตัวนั้นจะสะท้อน error ของมัน โดยไม่กระทบตัวอื่น
+}
+
+body:json {
+  {
+    "configs": [
+      {
+        "provider": "gemini",
+        "model": "gemini-2.5-flash",
+        "temperature": 0.5,
+        "max_tokens": 400,
+        "messages": [
+          { "role": "user", "content": "อธิบาย Bun.js ให้สั้น ๆ" }
+        ]
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-4.1-nano",
+        "temperature": 0.5,
+        "max_tokens": 256,
+        "messages": [
+          { "role": "user", "content": "อธิบาย Bun.js ให้สั้น ๆ" }
+        ]
+      },
+      {
+        "provider": "xai",
+        "model": "grok-4-latest",
+        "temperature": 0.5,
+        "max_tokens": 256,
+        "messages": [
+          { "role": "user", "content": "อธิบาย Bun.js ให้สั้น ๆ" }
+        ]
+      },
+      {
+        "provider": "deepseek",
+        "model": "deepseek-v4-flash",
+        "temperature": 0.5,
+        "max_tokens": 256,
+        "messages": [
+          { "role": "user", "content": "อธิบาย Bun.js ให้สั้น ๆ" }
+        ]
+      }
+    ]
+  }
+}
+
+tests {
+  test("returns 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("responds with one normalized AIResponse per config, in order", function () {
+    const body = res.getBody();
+    expect(body.success).to.equal(true);
+    expect(body.data).to.be.an("array").with.lengthOf(4);
+
+    const expectedProviders = ["gemini", "openai", "xai", "deepseek"];
+    body.data.forEach(function (entry, i) {
+      expect(entry.provider).to.equal(expectedProviders[i]);
+      expect(entry.model).to.be.a("string");
+      expect(entry.content).to.be.a("string");
+      expect(entry.latency_ms).to.be.a("number");
+    });
+  });
+}

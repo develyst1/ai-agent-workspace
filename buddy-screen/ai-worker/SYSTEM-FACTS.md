@@ -66,7 +66,9 @@
   survey 2026-10-28)
 - Working branch: **not named by the owner** — undecided; the clones sit on `main`. (Marie,
   2026-10-28)
+- Working branch decided: *"ใช้ main ไปก่อนเลย"* — `main` for now. Scope: `DECISIONS.md` 2026-10-28 17:04. (owner via Atom, 2026-10-28 17:04)
 - Stack: **TBD — the SA proposes in `SPEC-001`**; the owner decides. (owner, 2026-10-28)
+- Stack decided: Next.js (TV + LIFF) · Bun + Hono · PostgreSQL + pgvector · Drizzle. Scope: `DECISIONS.md` 2026-10-28 16:43. (owner via Atom, 2026-10-28 16:43)
 - Environments: **this machine only** — no dev server, no production. Deploy and design approval
   are the owner's duties. (owner, 2026-10-28)
 - Git: per `CLAUDE.md` §6 — the SA types only the owner's three commands, relayed by the PM.
@@ -79,6 +81,22 @@
   `TEAMS.md`. (owner, 2026-10-28)
 - Mode: **manual** — one interactive Claude CLI session per role in tmux, **never `claude -p`**.
   (owner, 2026-10-28)
+
+## Costs (owner)
+
+- Server cost: *"ค่า server ต่อเดือน ใช้ร่วมกันทุกลูกค้า 1200บาท — 8 vCPU, 150GB SSD, RAM 24GB"* — one server shared by all customers, 1,200 THB/month. Stated as a cost for D0; it does not say the server exists yet or that the backend will be hosted there (D8 still open). (owner via Atom, 2026-10-28 16:04)
+- AI budget: *"ถ้า AI เราใช้ kimi / chatgpt / deepseek API (1 ครอบครัวแล้วแต่สถานการณ์) งบเดือนละ 1000 (ต่อครอบครัว) สำหรับเรา"* — 1,000 THB per family per month for AI; provider (Kimi / ChatGPT / DeepSeek API) chosen per family by situation. Asked as a what-if for break-even; D0 not chosen yet. (owner via Atom, 2026-10-28 16:13)
+- No GPU; the product uses AI providers' API keys. Calls go through the owner's own LLM gateway (its docs are being made shared knowledge by Atlas — not yet in this desk). (owner via Atom, 2026-10-28 16:13)
+- The owner's LLM gateway "AI Develyst" is now the `llm-gateway` skill (owner via Atom 2026-10-28, from his Bruno collection): endpoints `GET /`, `GET /models`, `POST /chat`, `POST /chat/multi` — text chat only, no speech-to-text / text-to-speech endpoint listed; providers openai · gemini · xai · deepseek, **no Kimi listed**; no provider ⇒ fallback deepseek → xai → gemini → openai; `usage` may be missing. ⚠️ The owner named Kimi at 16:13 but the gateway lists no Kimi — not settled; ask the owner when D2 comes up. (PM read the skill, 2026-10-28)
+
+- Gift budget changed: *"500 ต่อเดือน ก็ได้"* — 500 THB per family per month (was 500 THB every 2 weeks in REQ-001). Delivery cadence not decided. Scope: `DECISIONS.md` 2026-10-28 16:19. (owner via Atom, 2026-10-28 16:19)
+- Server plan: *"ตอนลูกค้าเรายังน้อย เราจะไป server เล็กกว่านี้ ราคา 500-750 ต่อเดือนก่อน"* — start on a smaller server at 500–750 THB/month while customers are few; the 1,200 THB one later. Its spec not stated. With margin 500/family (DECISIONS 16:19): break-even at 1 family (500) or 2 families (750). (owner via Atom, 2026-10-28 16:22; break-even PM-computed)
+- Future direction, not V1: *"ในอนาคต หากเรามีลูกค้าเยอะๆ เราจะซื้อการ์ดจอ RTX Pro 6000 Blackwell มาเพื่อรัน local AI ไปตอบเอา"* — at scale, buy an RTX Pro 6000 Blackwell GPU and answer with self-hosted local AI. The design must let the AI provider be swapped for a local one. (owner via Atom, 2026-10-28 16:24)
+
+## Time counting (owner)
+
+- Owner's model: *"การนับเวลา ก็คือตอนที่เปิด event ต่างๆ ที่ไม่ใช่ sleep — มี sleep / idle / active"* — three states: sleep, idle, active; time is counted while an event is open and the state is not sleep. ⚠️ **CONTESTED until the owner answers:** read literally, idle is counted; REQ-001 verbatim says *"นับเฉพาะช่วงที่กำลังทำกิจกรรมจริง"* and *"คืนโควต้า…เมื่อไม่ได้ทำกิจกรรม"*. Asked 17:11. The thresholds (SA's 10 s / 20 s, ≤ 1 min error per hour) are not approved. (owner via Atom, 2026-10-28 17:10)
+  - Settled: *"นับ"* — **idle IS counted.** Time counts in active + idle, not in sleep. This supersedes the literal reading of REQ-001's *"นับเฉพาะช่วงที่กำลังทำกิจกรรมจริง"*: quota is returned only in sleep. Thresholds still not approved. (owner via Atom, 2026-10-28 17:13)
 
 ## Open questions for the owner — asked by the PM, answered here
 

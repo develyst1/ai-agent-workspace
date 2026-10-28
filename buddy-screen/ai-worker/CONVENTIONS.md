@@ -42,6 +42,8 @@
 
 ## Git
 
+2026-10-28 · operator-delegated (Atom, owner delegated 2026-10-28 19:57) · commit message `<type>: <summary> (REQ-<id>, TASK-<ids>)`, types feat/fix/docs/chore, English ≤ 72 chars, ends with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`; applies to `buddy-screen-spec` and `buddy-screen-front` · working branch `main` (owner 17:04) · no `develop`/`production`, no merge/release scripts yet (· `DECISIONS.md` 2026-10-28 21:53)
+
 <!-- How git runs is central: the `git-command` skill (the owner's three commands, existing branch,
      no history rewriting). Do NOT restate it here. Record only the desk FACTS that skill needs:
      each repo's COMMIT-MESSAGE CONVENTION (none ⇒ the SA asks the owner whether to create one), the

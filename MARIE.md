@@ -1997,6 +1997,43 @@ paraphrase it). The owner is on mobile, so the desk-open form (`scripts/desk-ope
    ORDER 36 rule on the SOM fork.
 5. Prove: `check-harness` → current, `check-hygiene buddy-screen` → PASS. Report back to Atlas.
 
+### ORDER 38 — 2026-10-28 — ⏸️ ON HOLD (owner via Atom 21:10: "investigate, do not fix yet"; Atlas stopped Marie before any change; Atlas's template edits reverted; corrected cause in ATLAS.md: Fern's bell was absorbed mid-turn, not dropped) — was GO: owner via Atom 21:05 ("Owner says sessions must nudge and hand off to each other on their own … fix it workspace-wide, plus a rule: never idle on review when independent tasks remain") — no stalls on review, every role arms its watcher
+
+**Cause (Atlas, read from both transcripts):** the watcher was NOT the problem. Sober's `watch-inbox.sh SA` woke
+him at 20:06:11 on Fern's inbox line. He reviewed TASK-001 → DONE at 20:07 (Fern's bell arrived mid-turn and was
+removed from his queue unread). The idle compaction came at 21:01, after that. The desk stalled because (1) Fern
+ended her turn after TASK-001, reading workforce-protocol step 10 "the one unit of work" as one TASK per turn,
+though TASK-002 said "Depends on: none"; (2) Sober wrote the verdict only into the TASK and sent no inbox line or
+bell, assuming she was on TASK-002; (3) engineers arm no inbox watcher (PROTOCOL rule 6 named only PM and SA), so
+nothing could wake her. Each side thought the other was working.
+
+**Already done by Atlas (`_templates/`, skills, synced to `~/.claude/skills`, check-skills PASS):** workforce-protocol
+step 10 (keep going, never idle on review, a dependency at REVIEW counts as met) and §4 step 6 (every role arms its
+watcher); template `PROTOCOL.md` shutdown rules 6–8 (all roles watch; never idle on review; the verdict always goes
+to the engineer's inbox); nudge-session (a bell can be dropped, so the inbox line and the watcher are what wake).
+
+**Marie, do:**
+1. **Every desk's `ai-worker/PROTOCOL.md`** that has the old rule 6 ("PM and SA Lead: arm your inbox watcher…"):
+   replace it with rules 6–8 exactly as in `_templates/project/ai-worker/PROTOCOL.md`. Keep each desk's own
+   numbering, and skip `smart-scheduler/` and other desks that are read-only on this box per `ATOM.md`. List
+   the desks you skipped. Make sure each desk has `tools/watch-inbox.sh`.
+2. **The Stop hook gets a second check, "work left".** Add it to `scripts/hooks/ring-after-handoff.mjs`, or put
+   it in a sibling helper called from `ring-after-handoff.sh`; the same once-per-turn `stop_hook_active` guard
+   applies. For a desk session whose role is an engineer or QA:
+   - find any `tasks/TASK-*.md` with `Owner:` naming that person, `Status: TODO` or `IN_PROGRESS`, and every
+     `Depends on:` TASK either `none` or at `REVIEW`/`DONE`;
+   - if one exists, block once with: `You still hold <TASK-x> (unblocked). Do not stop to wait for review —
+     start it now. Stop only if it is BLOCKED (write why in its ## Questions and on the board).`
+   - also block once if no `watch-inbox.sh` was started in the turn and none is running for that session. Use
+     your judgement on how to detect this cheaply, or drop this check and say so.
+   - Never throw, stay under the 0.8 s limit, and stay silent on any parse doubt.
+   Prove it with scratch transcripts under `$MEMORY_ROOT`: Fern's 20:06 shape → block; all tasks REVIEW → silent;
+   TASK-003 depending on a TODO TASK-002 → silent.
+3. **`buddy-screen/ai-worker/FAILURES.md`:** add one entry with `add-failure.mjs`: the 20:06–21:03 stall, the
+   cause above, and the fix as rules. No child data.
+4. Run `check-harness` and `check-hygiene` on each desk you touched. Report the results to the Operations log.
+   No git.
+
 ## Operations log (append one line per operation, newest first)
 
 - 2026-10-28 15:30 (ORDER 37, DONE) — **Opened the desk `buddy-screen/` (AI for Kids V1, 53 files), spawned by Atlas on the owner's GO.** Checked first: no `buddy-screen/`, no clones, ACTIVE.md unchanged from the cut-off attempt. **Codebases:** cloned `buddy-screen-spec` (`main`, HEAD `0e6e911`) and `buddy-screen-front` (`main`, HEAD `8a3280c`) into `codebases/`; each holds only a one-line `README.md` (one commit "Initial commit", author `D1`). `buddy-screen-back` NOT cloned. `codebases/ACTIVE.md`: the two smart-scheduler rows removed (folders kept), the two buddy-screen rows listed (2 of 2). `machine.local.md`: +3 rows (spec/front `owner-confirmed`, back `— not cloned yet (owner: later)`). No other git anywhere. **Desk:** `install.mjs buddy-screen` → new desk, harness 2.6.4, exit 0; `project-docs/.gitkeep` copied. Filled with Edit/Write: `TEAMS.md` (Porter PM+BA · Tanya QA · Sober SA · Jason BE · Fern FE+designer, `<Name>-BUD`), `SEATS.md` (operator โด่ง; customer skipped; pm/sa/dev/designer/platform → operator; qa human `— ยังไม่มี`, not answered), `DECISIONS.md` (9 lines `[operator 2026-10-28]`, mode manual, never `claude -p`), `PROTOCOL.md` (new `## Hard boundaries` with the children's-data synthetic-only line, spec read-only, back not available / SA API contract only, this machine only; repos, greenfield, branch undecided — clones on `main`, environments), `board.md` (project info + REQ-001 row DRAFT, ball PM), `SYSTEM-FACTS.md` (privacy line, owner facts, read-only repo survey), PM/SA-Lead/QA/FE/BE `🔧` marks and repo placeholders, `FAILURES.md` desk name, new signpost `AGENTS.md` (pointers only, possibility's shape). **REQ-001** = header + `/workspace/inbox-atom/buddy-screen-v1-req.md` byte-exact (`cmp` ok), provenance `owner (โด่ง)`, NOT customer-validated. Left on purpose: `CONVENTIONS.md` 🔧 (the SA's at the foundation talk), `RESUME-HERE.md` template (the PM writes it). LF only, no CR, no absolute path in the desk. `check-harness`: `8 desk(s), all current`, exit 0. `check-hygiene buddy-screen`: **PASS**, 0 WARN. `git status`: only `MARIE.md` + `buddy-screen/`. Note: `smart-scheduler-atom/` now has no active codebase — its code work is parked per the owner; desk not touched. No commit.

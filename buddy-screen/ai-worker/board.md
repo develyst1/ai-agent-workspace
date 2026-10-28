@@ -29,19 +29,29 @@
 
 | Id | Title | Priority | Status (date, owner, pointer) | Ball |
 |----|-------|----------|-------------------------------|------|
-| REQ-001 | AI for Kids V1 — owner's requirement, verbatim | — | DRAFT (2026-10-28, filed by Marie at desk-open, `requirements/REQ-001-ai-for-kids-v1.md`) | PM |
+| REQ-001 | AI for Kids V1 — owner's requirement, verbatim | HIGH | DECIDED except [needs owner] items (2026-10-28 19:58, PM; `DECISIONS.md`; full text `../project-docs/requirements-v1.md`) | owner (D2/D5/D6/D8/PDPA) |
+| REQ-002 | Full requirement + diagrams in buddy-screen-spec, Vite mock demo | HIGH | DELIVERED (2026-10-28 21:50, PM — QA TEST_PASSED round 2; not committed; `requirements/REQ-002-spec-repo-and-vite-demo.md`) | owner (ขึ้น git when he says) |
 
 ## Tasks
 
 | Id | Title | Source SPEC | Status (date, owner, pointer) | Owner | Depends on |
 |----|-------|-------------|-------------------------------|-------|------------|
+| TASK-001 | Requirement md + 4 diagrams + README in buddy-screen-spec | SPEC-002 | DONE (2026-10-28, SA review, `tasks/TASK-001-spec-repo-requirement-and-diagrams.md` § Review) | FE | — |
+| TASK-002 | Vite demo scaffold + engagement logic + TV screens | SPEC-002 | DONE (2026-10-28, SA review, `tasks/TASK-002-vite-demo-scaffold-engagement-tv.md` § Review) | FE | — |
+| TASK-003 | Vite demo parent LINE/LIFF screens + network check | SPEC-002 | DONE (2026-10-28, SA review, `tasks/TASK-003-vite-demo-parent-line-liff-screens.md` § Review) | FE | TASK-002 |
+| TASK-004 | Demo: apply PM wording review (11 replacements, no ร่าง left) | SPEC-002 | DONE (2026-10-28, SA review, `tasks/TASK-004-demo-pm-approved-wording.md` § Review) | FE | TASK-003 |
+| TASK-005 | Fix TEST-001 DEF-1..4 (TV decline screen, diagrams, buy-back, no face emoji) | SPEC-002 | DONE (2026-10-28, SA review, `tasks/TASK-005-demo-fix-test001-defects.md` § Review) | FE | TASK-004 |
+| TASK-006 | Demo: apply PM review of TASK-005 labels (3 replacements, no ร่าง left) | SPEC-002 | DONE (2026-10-28, SA review, `tasks/TASK-006-demo-pm-wording-task005-labels.md` § Review) | FE | TASK-005 |
 
 ## QA / Tests
 
 | REQ | TEST | Status (date, pointer) | Verdict |
 |-----|------|------------------------|---------|
+| REQ-002 | TEST-001 | TEST_PASSED (2026-10-28 21:45, QA; round 2: DEF-1..4 fixed, regression ok, 4 NOT_TESTED named; `tests/TEST-001-spec-repo-and-vite-demo.md`) | TEST_PASSED |
 
 ## Blocked / waiting
 
 | Item | Waiting on | Since | Pointer |
 |------|-----------|-------|---------|
+| REQ-001 / SPEC-001 | owner: [needs owner] — D2/D2a/D2b (paid probes not approved), D5, D6, D8, PDPA check | 2026-10-28 | `DECISIONS.md` 2026-10-28 19:58 |
+| ขึ้น git buddy-screen-spec (owner 21:49) | owner: commit author (Q-B convention approved 21:53; commit failed, no git identity) — staged, nothing committed | 2026-10-28 | REQ-002 § Questions Q-C |

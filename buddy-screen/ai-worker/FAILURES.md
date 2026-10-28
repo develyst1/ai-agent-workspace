@@ -79,3 +79,19 @@ where the owner sees them. When he is ready he opens Atlas with
 ---
 
 <!-- newest entry goes directly below this line -->
+
+## F-002 — 2026-10-28 — SA — Reviewed a §13 string as present in the strings file, not on a screen; TEST-001 failed on it
+- **Status:** NEW
+- **What happened:** TASK-003 said "(`ไม่อนุมัติ` → the TV shows §13 'overtime declined', built in TASK-002.)", but TASK-002's step 6 never listed a screen or state that shows it. Its DoD and the SA's review only checked the string is defined in `src/strings.ts` (`grep -qF … src/strings.ts`). The string `overtimeDeclinedTv` was defined and never rendered. QA's TEST-001 found it on no screen: DEF-1 (MAJOR), AC-7 and AC-8 failed. Separately, at the TASK-001 review the SA accepted two diagram omissions ("or the child says stop", template retention) as "summary-level". AC-2 says each state/number must match, and QA failed them as DEF-2.
+- **Rule involved:** role-sa §6 "Checking the gate, not the generator. Verify in the artifact the reader actually opens." Also §3: "Every claim that a user *can* do something cites the line that renders it". And the TASK 5-minute test: the TASK-002 step list did not carry the decline screen.
+- **How it was caught:** QA (TEST-001 TEST_FAILED, 2026-10-28), routed by the PM (REQ-002 § Defects to fix — round 2).
+- **Cost:** one QA round failed; TASK-005 to fix; a QA re-run.
+- **Evidence:** tasks/TASK-002 DoD (strings-file grep), tasks/TASK-003 step 1 (the TV pointer), tasks/TASK-001 § Review (omissions accepted), tests/TEST-001 § Defects DEF-1, DEF-2.
+
+## F-001 — 2026-10-28 — SA — Labelled an architecture change `[SA-decided]` before the owner decided it
+- **Status:** NEW
+- **What happened:** After the owner's 16:13 cost/provider facts, the SA rewrote SPEC-001 §3.2 and labelled the consequences `[SA-decided from the owner's fact]`. Several lines were also worded as settled ("becomes the base design", "drops out", "superseded", "settles part of D4"). The correct label was `[SA-proposed]`: D2 had not been decided by the owner. The SA's own skill says it may decide only what the user cannot see, and a provider/architecture choice is visible to the owner. The owner then set a standing rule (DECISIONS 2026-10-28 16:37, second line): every architecture choice comes back to him; the SA only proposes.
+- **Rule involved:** workforce-protocol §8a ("Label something as approved … only if you can point at that person's own words … No approver named → it is not an approval, it is a proposal") and `attribution.md`; also SA-Lead.md "The stack is undecided … the owner decides". The SA used an own-decision label, not an owner-approved one, but on a choice that was not the SA's to make.
+- **How it was caught:** the owner, via the PM, about 25 minutes later (inbox/SA.md 2026-10-28; DECISIONS 16:37).
+- **Cost:** one owner correction and a standing rule; SPEC-001 relabelled (8 lines + 2 notes). No TASK or code was affected.
+- **Evidence:** specs/SPEC-001-v1-stack-architecture.md §3.2 (16:13 update, now `[SA-proposed]`), §4 session-token row, §10; log/2026-10-28.md SA entries.

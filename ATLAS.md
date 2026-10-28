@@ -531,3 +531,40 @@ workspace in `../removed-desks-2026-10-27/`. Their README and `machine.local.md`
 Live desks now: smart-scheduler, smart-scheduler-atom, develyst-ai, dte, portfolio-nichaphon,
 possibility, pun-kub-fang. Not touched: `CONSOLE-PLAN.md` (harness-console's design input). It is
 the owner's call whether it goes too.
+
+### Shared knowledge: the owner's LLM gateway (2026-10-28)
+
+The owner asked for his LLM gateway to be usable from any project, because desks call it often. It now lives in
+one shared skill, **`_templates/skills/llm-gateway/`** (`SKILL.md` plus his Bruno collection, verbatim, in
+`references/bruno/`), installed to `~/.claude/skills/` on Atom's box. `check-skills` passes. It is a skill, not a
+desk's SYSTEM-FACTS entry, because the knowledge is cross-desk and a per-desk copy drifts. It never names the
+gateway's own desk. Auth: none needed for now (owner 2026-10-28: "เกตเวย์ไม่ต้องใช้คีย์ ณ ตอนนี้"). It may
+need a key later, so clients keep auth as one optional env value. A future key comes by DATA REQUEST into `.env`,
+never into git.
+
+## The buddy-screen review stall (2026-10-28 20:06–21:03) — findings only (owner via Atom 21:10: "investigate, do not fix yet")
+
+- **Nudges reach tmux CLI sessions.** Sessions opened with `claude -n <Name>-BUD … --permission-mode auto`
+  are reachable by SendMessage. Porter and Sober exchanged rings all afternoon, and each was acted on.
+- **Fern's 20:06 ring reached the right session, Sober-BUD.** Sober was mid-turn: the watcher had already
+  woken him at 20:06:11 on Fern's inbox line, so the bell was merged into that turn ("absorbed_mid_turn"),
+  not lost. He reviewed TASK-001 → DONE at 20:07 and re-armed his watcher. His idle compaction (21:01)
+  played no part.
+- **The stall was mutual waiting:**
+  - Fern ended her turn after TASK-001. She read workforce-protocol step 10, "the one unit of work", as
+    one TASK per turn, though TASK-002 says "Depends on: none".
+  - Sober wrote the verdict only into the TASK file and the board, with no FE inbox line and no bell,
+    assuming she was on TASK-002.
+  - Fern had no watcher, and PROTOCOL rule 6 tells only the PM and the SA to arm one. So nothing could
+    wake her.
+- **Proposed, not applied** (template edits reverted, Marie's ORDER 38 stopped before she changed
+  anything):
+  - every role arms its watcher;
+  - never idle on review while an unblocked TASK remains;
+  - a verdict always goes into the engineer's inbox.
+- **More evidence (21:12):** Sober's watcher survived the idle compaction. It fired at 21:10 on a new line in
+  his inbox. So compaction does not kill a watcher.
+- **Owner's question (4):** the cause was not how Atom opens sessions. Atlas gave paste-ready rules for Atom's
+  `ai-workspace-proxy` skill: open sessions, verify, monitor without polling, and relay only via the PM.
+  - Atom's 21:03 direct messages to Sober and Fern broke ATOM.md ("Only the PM and Atlas").
+  - The message to Fern also carried an instruction.

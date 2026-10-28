@@ -1,0 +1,48 @@
+meta {
+  name: GET Info
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/
+  body: none
+  auth: none
+}
+
+docs {
+  # ผลลัพธ์ที่คาดว่าจะได้ (200 OK)
+
+  ข้อมูลทั่วไปของ service พร้อม model ที่รองรับ และรายการ endpoint
+
+  ```json
+  {
+    "name": "AI Develyst",
+    "version": "1.0.0",
+    "supported_models": {
+      "openai": ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-3.5-turbo", "gpt-4.1-nano"],
+      "gemini": ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-1.5-flash", "gemini-1.5-pro"],
+      "xai": ["grok-4-latest", "grok-3", "grok-3-mini", "grok-2-1212"],
+      "deepseek": ["deepseek-v4-flash", "deepseek-chat", "deepseek-reasoner"]
+    },
+    "endpoints": {
+      "POST /chat": "เรียก model เดียว",
+      "POST /chat/multi": "เรียกหลาย model พร้อมกัน"
+    }
+  }
+  ```
+}
+
+tests {
+  test("returns 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("describes the service and its endpoints", function () {
+    const body = res.getBody();
+    expect(body.name).to.equal("AI Develyst");
+    expect(body.version).to.be.a("string");
+    expect(body.supported_models).to.be.an("object");
+    expect(body.endpoints).to.have.keys(["POST /chat", "POST /chat/multi"]);
+  });
+}
