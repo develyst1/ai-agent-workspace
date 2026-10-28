@@ -147,3 +147,5 @@
 - Atom never messages an SA, an engineer or QA directly, and never puts an instruction in a nudge.
   Instructions come only from the owner, quoted, through the PM.
   Instructions come only from the owner, quoted, through the PM.
+
+- Relay submit (learned 2026-10-29): after `send-keys -l "<text>"`, wait 1 second, then send `Enter`, then capture the pane and confirm the input line is empty. A `C-m` sent right after the text can be swallowed, leaving the message unsent.
