@@ -1956,7 +1956,50 @@ NOT keep an archive copy that holds the names.** Log each file changed, never th
 Known so far: `DECISIONS.md`, `log/2026-10-26.md`, `RESUME-HERE.md`, `requirements/REQ-5000-*`,
 `tests/TEST-5000-*`, `tests/harness/uat-req5000-probe.mjs`.
 
+### ORDER 37 — 2026-10-28 — ✅ DONE 2026-10-28 15:30 (Marie; see Operations log) — ▶️ GO: owner via Atom 15:02 *"ไปเลย"* (defaults confirmed as listed) — open the new desk `buddy-screen` (AI for Kids V1), on Atom's box
+
+**Owner via Atom (2026-10-28 14:36):** *"มีงานใหม่ ต้องเปิดโต๊ะใหม่ก่อน"*. The requirement and the 3 repos are in
+`/workspace/inbox-atom/buddy-screen-v1-req.md` (outside the workspace; copy it **verbatim** into the desk, do not
+paraphrase it). The owner is on mobile, so the desk-open form (`scripts/desk-open.mjs`) cannot be filled in a browser;
+**Atlas fills the answers below from the requirement plus the template defaults. The owner confirms them with one
+"ไปเลย ORDER 37", or changes a line first.**
+
+**Answers (form v2 shape; `by: operator` once he says go):**
+- project: oneLine *"AI for Kids V1 — แอปบนจอทีวี + กล้อง ให้ AI คุยและชวนเด็กทำกิจกรรม"* · forWhom *ผลิตภัณฑ์ของคุณเอง*
+  (⚠️ guessed: confirm) · firstWork *"อ่าน requirement V1 + spec repo แล้วให้ SA เสนอ stack/สถาปัตยกรรม (role-sa §4.0) ก่อนเขียนโค้ด"*.
+- mode: **manual** (one CLI session per role in tmux, interactive, never `-p`, as tested 2026-10-26).
+- team: the template's recommended shape and the workspace's standard names: **Porter (PM+BA) · Tanya (QA) ·
+  Sober (SA) · Jason (BE) · Fern (FE+designer)**. One team. Short code **BUD**, so the sessions are `<Name>-BUD`.
+  Owner duties: design-approve, deploy.
+- code.repos (logical names, paths to `machine.local.md` after cloning): `buddy-screen-spec` (the owner's requirement
+  repo; read-only for the team, like `possibility-spec`) · `buddy-screen-front` · `buddy-screen-back` (**later**;
+  until then the team has no BE codebase. Jason's seat exists but stays idle, and the SA designs the API contract
+  only).
+- code.git: per `CLAUDE.md` §6 (SA types the owner's three commands, relayed by the PM). code.systems: **this machine
+  only**. code.secrets: **มี**: children's faces, voices, names (see the privacy line).
+- seats: customer = **skipped** (own product, no customer yet ⇒ no `customer-validated` stamp ever) · designer /
+  platform / deploy → operator.
+
+**For Marie, after the go:**
+1. **Codebases (owner via Atom 2026-10-28 14:40, verbatim: *"เอาออกทั้งสอง repo เราไม่ใช้แล้ว เอา specกับ frontลง
+   ก่อน"*):** in `/workspace/codebases/ACTIVE.md`, **remove** smart-scheduler-back and smart-scheduler-front. Leave
+   their folders on disk; nothing is deleted. Then clone **`buddy-screen-spec` and `buddy-screen-front` only** into
+   `/workspace/codebases/` and list those two in `ACTIVE.md` (2 of 2). **`buddy-screen-back` is LATER:** do not clone
+   it, and give it a `machine.local.md` row reading `— not cloned yet (owner: later)`. Add rows for the two clones,
+   marked `owner-confirmed`, since he named them. Cloning is reading. **No other git.**
+2. The SOM fork desk (`smart-scheduler-atom/`) now has no active codebase. **Do not touch that desk.** Just note in
+   your report that its code work is parked per the owner.
+3. `install.mjs buddy-screen`, fill `TEAMS.md` / `SEATS.md` / `DECISIONS.md` (stamped `[operator 2026-10-28]`)
+   from the answers above. The requirement goes in verbatim as `REQ-001` (provenance `owner (โด่ง)`, NOT
+   customer-validated). `SYSTEM-FACTS.md` gets only what the owner said, plus a read-only survey of the repos.
+4. **Privacy line, in PROTOCOL Hard boundaries and SYSTEM-FACTS:** the product handles children's faces, voices and
+   names. No real child data in any desk file, test fixture or log. Synthetic data only. This follows the owner's
+   ORDER 36 rule on the SOM fork.
+5. Prove: `check-harness` → current, `check-hygiene buddy-screen` → PASS. Report back to Atlas.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-28 15:30 (ORDER 37, DONE) — **Opened the desk `buddy-screen/` (AI for Kids V1, 53 files), spawned by Atlas on the owner's GO.** Checked first: no `buddy-screen/`, no clones, ACTIVE.md unchanged from the cut-off attempt. **Codebases:** cloned `buddy-screen-spec` (`main`, HEAD `0e6e911`) and `buddy-screen-front` (`main`, HEAD `8a3280c`) into `codebases/`; each holds only a one-line `README.md` (one commit "Initial commit", author `D1`). `buddy-screen-back` NOT cloned. `codebases/ACTIVE.md`: the two smart-scheduler rows removed (folders kept), the two buddy-screen rows listed (2 of 2). `machine.local.md`: +3 rows (spec/front `owner-confirmed`, back `— not cloned yet (owner: later)`). No other git anywhere. **Desk:** `install.mjs buddy-screen` → new desk, harness 2.6.4, exit 0; `project-docs/.gitkeep` copied. Filled with Edit/Write: `TEAMS.md` (Porter PM+BA · Tanya QA · Sober SA · Jason BE · Fern FE+designer, `<Name>-BUD`), `SEATS.md` (operator โด่ง; customer skipped; pm/sa/dev/designer/platform → operator; qa human `— ยังไม่มี`, not answered), `DECISIONS.md` (9 lines `[operator 2026-10-28]`, mode manual, never `claude -p`), `PROTOCOL.md` (new `## Hard boundaries` with the children's-data synthetic-only line, spec read-only, back not available / SA API contract only, this machine only; repos, greenfield, branch undecided — clones on `main`, environments), `board.md` (project info + REQ-001 row DRAFT, ball PM), `SYSTEM-FACTS.md` (privacy line, owner facts, read-only repo survey), PM/SA-Lead/QA/FE/BE `🔧` marks and repo placeholders, `FAILURES.md` desk name, new signpost `AGENTS.md` (pointers only, possibility's shape). **REQ-001** = header + `/workspace/inbox-atom/buddy-screen-v1-req.md` byte-exact (`cmp` ok), provenance `owner (โด่ง)`, NOT customer-validated. Left on purpose: `CONVENTIONS.md` 🔧 (the SA's at the foundation talk), `RESUME-HERE.md` template (the PM writes it). LF only, no CR, no absolute path in the desk. `check-harness`: `8 desk(s), all current`, exit 0. `check-hygiene buddy-screen`: **PASS**, 0 WARN. `git status`: only `MARIE.md` + `buddy-screen/`. Note: `smart-scheduler-atom/` now has no active codebase — its code work is parked per the owner; desk not touched. No commit.
 
 - 2026-10-27 20:08 (ORDER 36 part A, DONE; B not run — Atom's box only) — **`install.mjs` on 16 desks (all but fb-autoreply) → 2.6.4, exit 0 ×16, none refused.** 15 desks: shared tools already current, only `.harness` rewritten. `did-spf-lk2` had **no `.harness`** (came in with develop's merge): it got all 14 shared tools added (none existed, so no backups) plus a new `.harness`; no desk-owned file touched. `smart-scheduler-atom` got `.harness` only (no name edits — that is part B). `check-harness`: `harness 2.6.4: 17 desk(s), 1 not current` — the one is fb-autoreply, 2.6.2 on purpose; exit 1 from it alone. No commit.
 
