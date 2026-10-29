@@ -149,3 +149,5 @@
   Instructions come only from the owner, quoted, through the PM.
 
 - Relay submit (learned 2026-10-29): after `send-keys -l "<text>"`, wait 1 second, then send `Enter`, then capture the pane and confirm the input line is empty. A `C-m` sent right after the text can be swallowed, leaving the message unsent.
+
+- Nudging (owner ruling 2026-10-29): session-to-session rings (ListAgents/list_sessions) do not work on this CLI box. Atom nudges: when a session is idle with unread inbox lines, type a short nudge into its tmux pane (same C-u / -l / wait 1s / Enter / verify pattern). Desk sessions should name in their log who needs a nudge.
