@@ -1,0 +1,27 @@
+{
+  "id": "179e1d68-e8bc-4347-a91b-e2d021a9aace",
+  "role": "bot",
+  "content": "",
+  "model": "fake/qa-stub",
+  "creativity": 0.5,
+  "roundStatus": "applied",
+  "changeSetId": "6850186c-0857-4ee3-9a9c-331ea8a1b2b1",
+  "createdAt": "2026-10-29T12:11:19.415Z",
+  "roundReason": null,
+  "roundNote": null,
+  "roundRefused": [
+    {
+      "op": "part.add",
+      "key": null,
+      "ref": "$f",
+      "item": "changes[4]",
+      "kind": "feature",
+      "title": "ฟีเจอร์ที่ไม่มีจริง",
+      "detail": "a feature cannot be added as a change — use questions / contradictions",
+      "reason": "unknown_kind"
+    }
+  ],
+  "roundSaved": 4,
+  "roundAdjusted": null,
+  "roundRaw": null
+}

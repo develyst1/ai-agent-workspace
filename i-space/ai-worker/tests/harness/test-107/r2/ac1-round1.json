@@ -1,0 +1,220 @@
+{
+  "s": 200,
+  "j": {
+    "status": "applied",
+    "reply": null,
+    "changeSetId": "eccd52d9-9a2e-4d27-950f-146b2021d939",
+    "questions": [],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "20dc19f0-3d69-40eb-b0b5-5e33de58273a",
+      "5198351a-1aa4-4696-a339-50da70d52ba8"
+    ],
+    "reason": null,
+    "note": null,
+    "refused": [
+      {
+        "item": "changes[2]",
+        "op": "part.add",
+        "kind": "system",
+        "ref": "$monitor",
+        "key": null,
+        "title": "ตัวตรวจสอบสถานะบริการ",
+        "reason": "invalid_change",
+        "detail": "✖ Invalid input: expected record, received undefined\n  → at body"
+      },
+      {
+        "item": "changes[17]",
+        "op": "link.add",
+        "kind": "to",
+        "ref": "$monitor",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $monitor, which was not saved"
+      },
+      {
+        "item": "changes[18]",
+        "op": "link.add",
+        "kind": "writes",
+        "ref": "$monitor",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $monitor, which was not saved"
+      },
+      {
+        "item": "changes[20]",
+        "op": "link.add",
+        "kind": "covers",
+        "ref": "$monitor",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $monitor, which was not saved"
+      },
+      {
+        "item": "changes[3]",
+        "op": "part.add",
+        "kind": "data",
+        "ref": "$status-data",
+        "key": null,
+        "title": "สถานะบริการปัจจุบัน",
+        "reason": "invalid_change",
+        "detail": "✖ Invalid string: must match pattern /^\\$[A-Za-z0-9_]+$/\n  → at ref"
+      },
+      {
+        "item": "changes[19]",
+        "op": "link.add",
+        "kind": "shows",
+        "ref": "$status-data",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $status-data, which was not saved"
+      },
+      {
+        "item": "changes[4]",
+        "op": "part.add",
+        "kind": "screen",
+        "ref": "$dashboard",
+        "key": null,
+        "title": "หน้า I-Space Health Board",
+        "reason": "invalid_change",
+        "detail": "screen body: ✖ Invalid input: expected array, received string\n  → at fields\n✖ Invalid input: expected array, received string\n  → at actions\n✖ Invalid input: expected array, received string\n  → at stat"
+      },
+      {
+        "item": "changes[15]",
+        "op": "link.add",
+        "kind": "to",
+        "ref": "$dashboard",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $dashboard, which was not saved"
+      },
+      {
+        "item": "changes[5]",
+        "op": "part.add",
+        "kind": "decision",
+        "ref": "$availability",
+        "key": null,
+        "title": "เกณฑ์สถานะบริการ",
+        "reason": "invalid_change",
+        "detail": "decision body: ✖ Invalid input: expected array, received string\n  → at cases\n✖ Invalid input: expected string, received boolean\n  → at open"
+      },
+      {
+        "item": "questions[0]",
+        "op": "part.add",
+        "kind": "question",
+        "ref": "$availability",
+        "key": null,
+        "title": "ยืนยันว่าให้ตัวแอปบนพอร์ต 3900 ตรวจ URL ทั้ง 4 จากฝั่งเซิร์ฟเวอร์ของแอป (ไม่ใช่เ",
+        "reason": "depends_on_refused",
+        "detail": "needs $availability, which was not saved"
+      },
+      {
+        "item": "changes[6]",
+        "op": "part.add",
+        "kind": "step",
+        "ref": "$step-view",
+        "key": null,
+        "title": "ดูสถานะบริการ",
+        "reason": "invalid_change",
+        "detail": "✖ Invalid string: must match pattern /^\\$[A-Za-z0-9_]+$/\n  → at ref"
+      },
+      {
+        "item": "changes[10]",
+        "op": "link.add",
+        "kind": "has_step",
+        "ref": "$step-view",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $step-view, which was not saved"
+      },
+      {
+        "item": "changes[12]",
+        "op": "link.add",
+        "kind": "has_interaction",
+        "ref": "$step-view",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $step-view, which was not saved"
+      },
+      {
+        "item": "changes[7]",
+        "op": "part.add",
+        "kind": "step",
+        "ref": "$step-check",
+        "key": null,
+        "title": "เช็คสถานะบริการ",
+        "reason": "invalid_change",
+        "detail": "✖ Invalid string: must match pattern /^\\$[A-Za-z0-9_]+$/\n  → at ref"
+      },
+      {
+        "item": "changes[11]",
+        "op": "link.add",
+        "kind": "has_step",
+        "ref": "$step-check",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $step-check, which was not saved"
+      },
+      {
+        "item": "changes[13]",
+        "op": "link.add",
+        "kind": "has_interaction",
+        "ref": "$step-check",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $step-check, which was not saved"
+      },
+      {
+        "item": "changes[8]",
+        "op": "part.add",
+        "kind": "interaction",
+        "ref": "$open-dashboard",
+        "key": null,
+        "title": "เปิดแดชบอร์ด",
+        "reason": "invalid_change",
+        "detail": "✖ Invalid string: must match pattern /^\\$[A-Za-z0-9_]+$/\n  → at ref"
+      },
+      {
+        "item": "changes[14]",
+        "op": "link.add",
+        "kind": "from",
+        "ref": "$open-dashboard",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $open-dashboard, which was not saved"
+      },
+      {
+        "item": "changes[9]",
+        "op": "part.add",
+        "kind": "interaction",
+        "ref": "$manual-check",
+        "key": null,
+        "title": "สั่งเช็คตอนนี้",
+        "reason": "invalid_change",
+        "detail": "✖ Invalid string: must match pattern /^\\$[A-Za-z0-9_]+$/\n  → at ref"
+      },
+      {
+        "item": "changes[16]",
+        "op": "link.add",
+        "kind": "from",
+        "ref": "$manual-check",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $manual-check, which was not saved"
+      }
+    ],
+    "saved": 2
+  }
+}

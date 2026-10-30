@@ -1,0 +1,42 @@
+// TEST-107 #4–#6 re-run, watched: timeout → "เปลี่ยนโมเดล" → pick "เร็ว" by keyboard → audit → explicit "ลองใหม่" → applied.
+import { createRequire } from 'node:module';
+import fs from 'node:fs';
+const [front] = process.argv.slice(2);
+const { chromium } = createRequire(front + '/package.json')('@playwright/test');
+const WEB = 'http://127.0.0.1:3141', API = 'http://127.0.0.1:4231', MODE = 'mode.txt';
+const note = (c, ok, d) => console.log(`${ok ? 'OK ' : 'BAD'} ${c} — ${d}`);
+const by = { 'content-type': 'application/json', 'X-Blueprint-By': encodeURIComponent('โด่ง') };
+const chats = () => fs.readFileSync('gateway-modes.log', 'utf8').split('\n').filter((l) => l.includes('POST /chat')).length;
+const msgs = async (id) => { const m = await (await fetch(`${API}/v1/projects/${id}/messages?limit=50`)).json(); return m.messages ?? m; };
+const id = (await (await fetch(`${API}/v1/projects`, { method: 'POST', headers: by, body: JSON.stringify({ name: 'TEST-107 timeout', theme: 'clean-blue' }) })).json()).id;
+const b = await chromium.launch({ channel: 'chrome' }); const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+await ctx.addCookies([{ name: 'bp_by', value: encodeURIComponent('โด่ง'), url: WEB }]);
+const p = await ctx.newPage(); p.setDefaultTimeout(30000);
+const posts = []; p.on('request', (r) => { if (r.method() === 'POST') posts.push(`${new Date().toISOString().slice(11, 19)} ${r.headers()['next-action'] ? 'action' : r.url()}`); });
+fs.writeFileSync(MODE, 'sleep');
+await p.goto(`${WEB}/p/${id}/chat`, { waitUntil: 'networkidle' });
+const c0 = chats();
+const box = p.locator('textarea').first(); await box.fill('ลองถามอีกเรื่องหนึ่งครับ'); await box.press('Enter');
+for (let i = 0; i < 130; i++) { if ((await msgs(id)).some((m) => m.roundStatus === 'bot_could_not_answer')) break; await p.waitForTimeout(1000); }
+await p.reload({ waitUntil: 'networkidle' });
+note('#4 timeout row + 1 chat call', (await msgs(id)).some((m) => m.roundReason === 'timeout') && chats() - c0 === 1, `calls ${chats() - c0}`);
+fs.writeFileSync(MODE, 'good');
+console.log('posts so far:', JSON.stringify(posts));
+const c1 = chats(); posts.length = 0;
+await p.getByRole('button', { name: 'เปลี่ยนโมเดล' }).click(); await p.waitForTimeout(500);
+await p.keyboard.press('ArrowDown'); await p.waitForTimeout(400);
+const opts = await p.$$eval('[role="option"]', (els) => els.map((e) => e.textContent.trim()));
+console.log('options open:', JSON.stringify(opts.slice(0, 5)));
+await p.getByRole('option', { name: 'เร็ว' }).first().click(); await p.waitForLoadState('networkidle'); await p.waitForTimeout(1500);
+const proj = (await (await fetch(`${API}/v1/projects/${id}`)).json()).project;
+const set = (await (await fetch(`${API}/v1/projects/${id}/history?limit=5`)).json()).entries.find((e) => e.kind === 'settings');
+note('#6 "เปลี่ยนโมเดล" → pick "เร็ว" → model tier:small, audited by the name', proj.model === 'tier:small' && set?.by === 'โด่ง', `model ${proj.model}; ${JSON.stringify(set?.before)} → ${JSON.stringify(set?.after)} by ${set?.by}`);
+note('#6 changing the model sends no chat by itself', chats() === c1, `chat calls during the model change: ${chats() - c1}; page POSTs ${JSON.stringify(posts)}`);
+posts.length = 0;
+const retry = p.getByRole('button', { name: 'ลองใหม่' });
+console.log('retry buttons', await retry.count());
+await retry.first().click();
+let ok = null; for (let i = 0; i < 30 && !ok; i++) { ok = (await msgs(id)).find((m) => m.roundStatus === 'applied'); if (!ok) await p.waitForTimeout(1000); }
+note('#5 explicit "ลองใหม่" → applied on the lower tier', !!ok && ok.model !== 'tier:medium', `applied ${!!ok}; model on the row ${ok?.model}; chat calls ${chats() - c1}`);
+await p.screenshot({ path: '05-retry-applied.png', fullPage: true });
+await b.close();

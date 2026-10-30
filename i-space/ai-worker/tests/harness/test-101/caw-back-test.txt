@@ -1,0 +1,29 @@
+
+Checked 124 installs across 213 packages (no changes) [9.00ms]
+bun test v1.4.2 (744846f84)
+
+src/runner/settings.test.ts:
+157 |   test("the file tools: a PreToolUse hook on Read|Glob|Grep runs the guard with the readable folders as ONE argument (JSON), not through the environment", () => {
+158 |     const s: any = withReadGuard(base, readable);
+159 |     const m = s.hooks.PreToolUse.find((h: any) => h.matcher === "Read|Glob|Grep");
+160 |     expect(m.hooks).toHaveLength(1);
+161 |     const cmd: string = m.hooks[0].command;
+162 |     expect(cmd.startsWith(`${process.execPath} `)).toBe(true);
+                                                         ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/workspace/codebases/caw-back/src/runner/settings.test.ts:162:52)
+(fail) withReadGuard — the read fence of every hop (TASK-C-042 Part A, UP-3) > the file tools: a PreToolUse hook on Read|Glob|Grep runs the guard with the readable folders as ONE argument (JSON), not through the environment [0.22ms]
+
+test/http/rebuild-sequence.test.ts:
+AC-6 tables : {"mode":"dispatcher","hopBudget":4,"hopsUsed":2,"workspace":["/work/app","/work/web"],"latestSeenVersion":3,"statuses":["1:todo:-","2:review:-","3:todo:3"],"hops":["commented:runner-1:run","interrupted:runner-2:run"],"runs":["operator_stopped:3"]}
+AC-6 rebuilt: {"mode":"dispatcher","hopBudget":4,"hopsUsed":2,"workspace":["/work/app","/work/web"],"latestSeenVersion":3,"statuses":["1:todo:-","2:review:-","3:todo:3"],"hops":["commented:runner-1:run","interrupted:runner-2:run"],"runs":["operator_stopped:3"]}
+
+ 677 pass
+ 1 skip
+ 1 fail
+ 2639 expect() calls
+Ran 679 tests across 60 files. [91.18s]

@@ -1,0 +1,31 @@
+{
+  "s": 200,
+  "j": {
+    "status": "applied",
+    "reply": "สรุปสเปกหน้า I-Space Health Board: แสดงสถานะ 4 บริการบนหน้าเดียว ภาษาไทย เช็คอัตโนมัติทุก 10 วินาที/เช็คเองได้ กำหนด timeout 3 วินาที และไม่เก็บข้อมูลถาวร มี 2 ประเด็นที่ต้องยืนยันเรื่องวิธีเช็คข้ามพอร์ตและเกณฑ์ของเว็บ",
+    "changeSetId": "4e5d4e1f-d059-4c09-91e1-c7b4950f3277",
+    "questions": [
+      "Q-001",
+      "Q-002"
+    ],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "826f0c1d-3b55-4df1-966e-fdbeb88a28a1",
+      "b9a8bbd3-4637-433c-a5e4-5cdee79066ba"
+    ],
+    "reason": null,
+    "note": null,
+    "refused": null,
+    "saved": null,
+    "adjusted": [
+      {
+        "item": "changes[2]",
+        "what": "body_defaulted",
+        "title": "I-Space Health Board",
+        "key": null,
+        "ref": "$system_health_board"
+      }
+    ]
+  }
+}

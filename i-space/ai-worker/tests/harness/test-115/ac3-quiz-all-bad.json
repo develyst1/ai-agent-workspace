@@ -1,0 +1,86 @@
+{
+  "http": [
+    "tier:small:unreadable",
+    "tier:medium:unreadable",
+    "tier:small:unreadable",
+    "tier:medium:unreadable"
+  ],
+  "id": "4f3ae9ae-48a8-4c0e-b92b-8a4ce45fe57c",
+  "status": "failed",
+  "calls": [
+    {
+      "ok": false,
+      "step": "answer",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "reason": "protocol",
+      "weight": "light",
+      "fallback": false
+    },
+    {
+      "ok": false,
+      "step": "answer",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "reason": "protocol",
+      "weight": "light",
+      "fallback": true
+    },
+    {
+      "ok": false,
+      "step": "reask",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "reason": "protocol",
+      "weight": "light",
+      "fallback": false
+    },
+    {
+      "ok": false,
+      "step": "reask",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "reason": "protocol",
+      "weight": "light",
+      "fallback": true
+    }
+  ],
+  "storedCalls": [
+    {
+      "ok": false,
+      "step": "answer",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "reason": "protocol",
+      "weight": "light",
+      "fallback": false
+    },
+    {
+      "ok": false,
+      "step": "answer",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "reason": "protocol",
+      "weight": "light",
+      "fallback": true
+    },
+    {
+      "ok": false,
+      "step": "reask",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "reason": "protocol",
+      "weight": "light",
+      "fallback": false
+    },
+    {
+      "ok": false,
+      "step": "reask",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "reason": "protocol",
+      "weight": "light",
+      "fallback": true
+    }
+  ]
+}

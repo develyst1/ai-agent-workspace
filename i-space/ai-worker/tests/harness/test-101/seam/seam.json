@@ -1,0 +1,62 @@
+[
+  {
+    "step": "S0 seed project",
+    "ok": true,
+    "detail": "bp=dd3ed5cb-98eb-432a-b15d-929abdc0d77b project 201, change-set 201"
+  },
+  {
+    "step": "S0 confirm v1",
+    "ok": true,
+    "detail": "status 201 version 1"
+  },
+  {
+    "step": "S1 build href",
+    "ok": true,
+    "detail": "href http://127.0.0.1:3520/start?project=dd3ed5cb-98eb-432a-b15d-929abdc0d77b&version=1"
+  },
+  {
+    "step": "S1 click lands on CAW board",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3520/p/4aed7f5d-0caa-46aa-9ff4-9ba67b5bb7d5; name shown true"
+  },
+  {
+    "step": "S1b second click → same project",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3520/p/4aed7f5d-0caa-46aa-9ff4-9ba67b5bb7d5"
+  },
+  {
+    "step": "S2 getProject/getVersion via create",
+    "ok": true,
+    "detail": "status 200 {\"id\":\"4aed7f5d-0caa-46aa-9ff4-9ba67b5bb7d5\",\"name\":\"TEST-101 seam\",\"blueprintProjectId\":\"dd3ed5cb-98eb-432a-b15d-929abdc0d77b\",\"version\":1,\"latestSeenVersion\":1,\"mode\":\"manual\",\"hopBudget\":0,\"hopsUsed\":0,\"workspace\":{\"roots\":[],\"readOnly\":[]},\"entryWorkerId\":null,\"codeMap\":null,\"createdAt\":\"2026-10"
+  },
+  {
+    "step": "S3 partContext pass-through",
+    "ok": true,
+    "detail": "CAW 200, BP 200, key API-001"
+  },
+  {
+    "step": "S3b partContext unknown key",
+    "ok": true,
+    "detail": "CAW 404 {\"error\":{\"code\":\"part_not_found\",\"message\":\"Blueprint has no part NOPE-999 at version 1\"}}"
+  },
+  {
+    "step": "S4 locate",
+    "ok": true,
+    "detail": "status 200 candidates 10 notInSpec false"
+  },
+  {
+    "step": "S5 amend 201 + message in Blueprint chat",
+    "ok": true,
+    "detail": "CAW 201; BP messages 200, landed true"
+  },
+  {
+    "step": "S5b amend unknown about → refusal",
+    "ok": true,
+    "detail": "CAW 400 {\"error\":{\"code\":\"amendment_refused\",\"message\":\"about: not a live part of this project: NOPE-999\"}}"
+  },
+  {
+    "step": "S6 push + versionsAfter",
+    "ok": true,
+    "detail": "BP v2; CAW project after push: \"latestSeenVersion\":2"
+  }
+]

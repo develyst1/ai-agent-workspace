@@ -1,0 +1,3 @@
+ 346 pass
+ 0 fail
+caw-front typecheck exit=0

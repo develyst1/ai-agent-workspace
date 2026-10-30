@@ -1,0 +1,43 @@
+OK  [5.1s] AC-3 /start?project=<no label> opens a board (no version in the link) — landed /p/8e1023fe-4817-4a66-a724-3dc910148f90; "ลิงก์นี้ไม่ครบ" false
+OK  [5.1s] AC-3 the header says ยังไม่มีป้าย — 
+OK  [5.7s] AC-3 neighbour: /start with no project → the new incomplete sentence — "ลิงก์นี้ไม่ครบ ต้องมีโปรเจกต์กลับไปที่โปรเจกต์(self.__"
+OK  [5.7s] AC-3 API: POST /v1/projects with no version → 201, latestLabel null, version 0 — 201 version 0 latestLabel null spec {"revision":1,"reachable":true,"lastPullAt":null}
+OK  [5.8s] AC-4 a card cut with no label: anchorLabel null, anchor.version 0 — {"anchor":{"key":"STEP-004","version":0},"anchorLabel":null}
+OK  [13.4s] AC-4 a label added in Blueprint reaches CAW (no edit, no restart) — after 7.635s
+OK  [13.4s] AC-4 a card cut at v1 keeps anchorLabel v1 — {"anchor":{"key":"STEP-004","version":1},"anchorLabel":"v1"}
+OK  [23.1s] AC-4 project shows v2; card B still says v1 — v2 after 9.708s; card B anchorLabel v1
+OK  [23.8s] AC-4 board header: ป้าย v2 — ["ป้าย v2บอร์ดทีมกา","ป้าย v2\\\"}],[\\\"$\\"]
+OK  [25.2s] AC-4 card A page: ตัดงานก่อนมีป้าย — 
+OK  [25.2s] AC-4 card B page: ตัดงานที่ป้าย v1 (history) — 
+OK  [25.9s] AC-4 projects list chip: ป้าย v2 (no 'spec เวอร์ชัน') — 
+OK  [33.1s] AC-1 (stand-in) an edit without a label: card flagged and the part reader shows the new text within 30 s — after 7.198s (before: "STEP-004 แก้ไขรอบ 2")
+OK  [33.1s] AC-1 / D7 the flagged card is still workable — specChangedVersion 2, workable true
+OK  [33.7s] AC-1 the board shows the card as changed — 
+    [63.8s] gave up waiting 30s for: runner running
+BAD [63.8s] AC-2 hop 1 starts on the flagged card (D7) — 400 {"error":{"code":"validation","message":"✖ Invalid input: expected string, received undefined\n  → at workerId"}}
+    [437.0s] gave up waiting 60s for: hop 1 read its start text
+    [437.0s] hop 1 started reading after -1s
+OK  [437.4s] AC-2 mid-hop: the operator (no hop) already reads the new text — after 0.219s
+    [497.6s] gave up waiting 60s for: hop undefined ended
+    [557.6s] gave up waiting 60s for: hop undefined ended
+BAD [558.4s] AC-2 hop 1 start read: the text it started with — 
+BAD [558.4s] AC-2 hop 1 mid read, AFTER the edit: still its start text — 
+BAD [558.4s] AC-2 hop 2 (next hop) reads the new text — 
+BAD [558.4s] AC-2 D5 neighbour: hop 1's pin still answers after it ended — QA-AC2 ข้อความใหม่กลางก้าว pinned false
+OK  [558.4s] AC-2 D5 neighbour: hop 1's id on ANOTHER card → latest, not the pin — QA-AC2 ข้อความใหม่กลางก้าว pinned false
+    [558.4s] stand-in stopped (CAW last revision 3)
+OK  [567.1s] AC-5 CAW notices Blueprint is down — after 8.647s; spec {"revision":3,"reachable":false,"lastPullAt":"2026-10-30T01:35:22.331Z"}
+OK  [567.1s] AC-5 card context still answers from the last read (fromCache) — 200 {"revision":3,"readAt":"2026-10-30T01:35:23.712Z","fromCache":true,"pinned":false} QA-AC2 ข้อความใหม่กลางก้าว
+OK  [567.1s] AC-5 the part reader still answers from the last read — 200
+    [627.6s] gave up waiting 60s for: hop undefined ended
+BAD [628.4s] AC-5 a hop started while Blueprint is down still works on the last read — no worker read
+OK  [629.9s] AC-5 the board says Blueprint is unreachable (PM's sentence) — 
+OK  [629.9s] AC-5 the card page says it too and still shows the part — 
+    [629.9s] stand-in down for 71s; starting it again (same state file)
+OK  [637.1s] AC-5 CAW catches up without a restart (reachable, new text, card flagged) — after 6.704s since the edit; api pid 314220 alive true
+BAD [637.1s] AC-5 the first pull after the outage resumes from CAW's last revision — GET /v1/projects/00000000-0000-4000-8000-0000000000c2/spec/changes?after=1 (last revision before: 3)
+OK  [637.7s] AC-5 the unreachable sentence is gone when Blueprint is back — 
+OK  [637.8s] AC-6 /v1/notify: version.confirmed 202 · no event 400 · spec.changed 202 · unknown event 202 — 202 · 400 · 202 · 202
+OK  [637.8s] D1: CAW made no v1 version/locate/context call to Blueprint — 0 — 
+OK  [637.8s] AC-6 rebuild-check stays clean after spec.revised / anchor events — {"same":true}
+run dir /tmp/qa110-8SS5XK

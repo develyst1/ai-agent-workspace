@@ -1,0 +1,48 @@
+== ac1.mjs
+OK  AC-1 round applied, 1 call, nothing refused — applied; calls 1; refused null
+OK  AC-1 the 4 services are stored as api parts with their full addresses — ["API-001 Blueprint API Health GET http://127.0.0.1:4200/health","API-002 Blueprint เว็บ GET http://127.0.0.1:3100","API-003 CAW API Health GET http://127.0.0.1:4500/health","API-004 CAW เว็บ GET http://127.0.0.1:3500"]
+OK  AC-1 everything round 1 stored live is stored again (WRK, SCR, STEP, has_step, 2 questions) — ["API-001","API-002","API-003","API-004","Q-001","Q-002","SCR-001","STEP-001","WRK-001"]
+    API-001: links on the chat page 0
+    pages showing the addresses (path, status, how many of 4): [["/p/fa3eb7da-ea37-4f81-a1f5-2033542320b4",200,0],["/p/fa3eb7da-ea37-4f81-a1f5-2033542320b4/technical",404,0],["/p/fa3eb7da-ea37-4f81-a1f5-2033542320b4/flow",404,0]]
+    stored paths: ["/rooms","https://example.test/api/v1","http://127.0.0.1:4200/health?x=1#y"]
+    refused: [
+ "127.0.0.1:4200/health → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL",
+ "localhost:3100 → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL",
+ "ftp://127.0.0.1/x → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL",
+ "javascript:alert(1) → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL",
+ "https:// → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL"
+]
+OK  neighbour: "/path", https URL and a URL with query stored — 
+OK  neighbour: ftp, javascript: and an empty host refused, each named — 
+BAD neighbour: host:port without a scheme (REQ-114 req 1 names "host:port") — 127.0.0.1:4200/health refused · localhost:3100 refused
+OK  neighbour: the round is applied and the refusals are named (REQ-110 req 4 still holds) — applied, 3 stored, 5 refused
+== r2.mjs
+OK  AC-4 round 1 (the live answer, rebuilt: no api part) → applied, 1 call, nothing refused — applied; calls 1; refused null
+OK  AC-4 all 4 addresses are now in stored non-question parts — :4200/health→API-001 :3100→API-002 :4500/health→API-003 :3500→API-004
+OK  AC-4 Blueprint kept them as GET api parts — ["API-001 GET http://127.0.0.1:4200/health [team-proposed]","API-002 GET http://127.0.0.1:3100 [team-proposed]","API-003 GET http://127.0.0.1:4500/health [team-proposed]","API-004 GET http://127.0.0.1:3500 [team-proposed]"]
+OK  AC-4 :3900 (held by WRK-001) is not duplicated — holders of :3900 ["WRK-001"]
+OK  AC-4 the record names each kept address with its key — ["API-001:http://127.0.0.1:4200/health","API-002:http://127.0.0.1:3100","API-003:http://127.0.0.1:4500/health","API-004:http://127.0.0.1:3500"]
+OK  AC-4 the chat names each one (PM's line) — []
+OK  AC-4 the bot does not claim "nothing saved" — 
+    accept buttons: all 1 · one 1
+OK  AC-4 round 2 ("ตามนั้น") → applied, adds no api part again — applied; api parts 4→4; calls 1
+OK  AC-4 after the 2 rounds: the 4 addresses still stored — 
+OK  edge: brackets, trailing "." and "," stripped; a URL twice → one part — ["http://127.0.0.1:4200/health","http://127.0.0.1:3100"]
+OK  edge: an address an earlier round already stored is not stored again — 2 api parts; adjusted null
+OK  edge: Thai written right after the URL (no space, usual in Thai) — stored ["http://127.0.0.1:4500/health"]
+OK  edge: the same with spaces → the exact address — ["http://127.0.0.1:4500/health"]
+OK  edge: a part holding :31000 does not count as holding :3100 — parts ["API-001 http://127.0.0.1:3100","SYS-001 บริการทดสอบ http://127.0.0.1:31000"]
+OK  edge: ftp not caught; an https URL with a query kept whole — ["https://example.test/api?q=1"]
+    when no part holds :3900 (the app's own address): ["API-005 GET http://127.0.0.1:3900"]
+== edges.mjs
+OK  AC-1 Thai right after the URL → exactly http://127.0.0.1:4500/health — {"status":"applied","paths":["http://127.0.0.1:4500/health"],"kept":["http://127.0.0.1:4500/health"]}
+OK  AC-1 Thai on both sides, two URLs, one with a trailing "/" — ["http://127.0.0.1:3100","http://127.0.0.1:3500/"]
+OK  AC-1 neighbour: query + fragment kept whole (ASCII) — ["http://127.0.0.1:4200/health?a=1&b=2#top"]
+    neighbour (observe): a URL whose path is Thai → kept ["https://example.test/"]
+OK  neighbour: a percent-encoded Thai path is kept whole — ["https://example.test/%E0%B8%84%E0%B9%89%E0%B8%99"]
+OK  AC-2 a part holding :31000 does NOT hold :3100 → :3100 kept — {"status":"applied","paths":["http://127.0.0.1:3100"],"kept":["http://127.0.0.1:3100"]}
+OK  AC-2 neighbour: a part holding exactly :3100 → nothing kept (no duplicate) — {"status":"applied","paths":[],"kept":[]}
+OK  AC-2 neighbour: a part holding ":3100/" counts as ":3100" (trailing slash) — {"status":"applied","paths":[],"kept":[]}
+OK  AC-2 neighbour: a part holding ":4200/health" does NOT hold ":4200" — {"status":"applied","paths":["http://127.0.0.1:4200"],"kept":["http://127.0.0.1:4200"]}
+    neighbour (observe): part holds ":4200/health?x=1", user wrote ":4200/health" → kept ["http://127.0.0.1:4200/health"]
+OK  AC-1 × AC-2: Thai-glued URL that a part already holds → nothing kept — {"status":"applied","paths":[],"kept":[]}

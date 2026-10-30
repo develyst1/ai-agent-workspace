@@ -1,0 +1,40 @@
+{
+  "project": {
+    "id": "6a8fca0c-47ad-4bb7-85db-26c32554cd70",
+    "organisationId": "00000000-0000-0000-0000-000000000001",
+    "name": "TEST-107 r2 AC-1 Health Board",
+    "createdAt": "2026-10-29T10:29:01.093Z",
+    "theme": "clean-blue",
+    "model": "tier:medium",
+    "creativity": 0.5
+  },
+  "parts": [
+    {
+      "key": "ROLE-001",
+      "kind": "role",
+      "title": "ผู้ใช้งานภายใน",
+      "body": {
+        "duty": "เปิดแดชบอร์ดเพื่อดูสถานะบริการและสั่งเช็คสถานะทันที"
+      },
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "eccd52d9-9a2e-4d27-950f-146b2021d939"
+    },
+    {
+      "key": "WRK-001",
+      "kind": "work",
+      "title": "I-Space Health Board",
+      "body": {
+        "goal": "สร้างหน้าเว็บภาษาไทยหน้าเดียวที่รันในเครื่องบน http://127.0.0.1:3900 เพื่อแสดงสถานะปัจจุบันของบริการ I-Space 4 รายการ เช็คอัตโนมัติทุก 10 วินาทีหรือสั่งเช็คได้ทันที โดยถือว่าไม่ตอบเมื่อเกิน 3 วินาที และไม่ต้องมี login ฐานข้อมูล ประวัติ การแจ้งเตือน หรือการ deploy"
+      },
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "eccd52d9-9a2e-4d27-950f-146b2021d939"
+    }
+  ],
+  "links": []
+}

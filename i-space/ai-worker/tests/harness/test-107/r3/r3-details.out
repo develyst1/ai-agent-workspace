@@ -1,0 +1,4 @@
+TEST-107 r3 replay minimal-mono: before fields:true actions:true states:true open:true | after click fields:true actions:true states:true open:true | dialog 0
+no ดูรายละเอียด on TEST-107 r3 replay luxury-gold
+TEST-107 r3 replay luxury-gold: before fields:true actions:true states:true open:true | after click fields:true actions:true states:true open:true | dialog 0
+TEST-107 r3 replay clean-blue: before fields:absent actions:absent states:absent open:absent | after click fields:true actions:true states:true open:true | dialog 0

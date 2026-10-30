@@ -1,0 +1,273 @@
+{
+ "card": {
+  "id": "01a18a74-baae-77e2-9417-15a1749ae18f",
+  "projectId": "9f4a4743-1c40-4389-9da4-0e19e3704432",
+  "number": 2,
+  "kind": "work",
+  "title": "B — cut at v1",
+  "todo": "TEST-110",
+  "status": "todo",
+  "assigneeId": "01a18a74-9ea0-7023-a6e6-981aed76c922",
+  "anchor": {
+   "key": "STEP-004",
+   "version": 1
+  },
+  "anchorLabel": "v1",
+  "specChangedVersion": 2,
+  "anchorRemoved": false,
+  "dependsOn": [],
+  "question": null,
+  "answer": null,
+  "workable": true,
+  "stoppedMidway": null,
+  "createdAt": "2026-10-30T01:37:48.211Z",
+  "updatedAt": "2026-10-30T01:38:10.975Z"
+ },
+ "spec": {
+  "projectId": "51d0ec28-c4a6-48d9-9834-da8e2a826758",
+  "revision": 3,
+  "savedAt": "2026-10-30T01:38:10.139Z",
+  "latestLabel": {
+   "version": 2,
+   "label": "v2",
+   "labelledAt": "2026-10-30T01:37:48.214Z",
+   "by": "โด่ง"
+  },
+  "part": {
+   "key": "STEP-004",
+   "kind": "step",
+   "title": "QA-AC2 ข้อความใหม่กลางก้าว",
+   "body": {
+    "ends": false
+   },
+   "origin": {
+    "date": "2026-10-08",
+    "stamp": "operator"
+   },
+   "createdIn": "860f2747-790b-4cf9-b9f3-ed76598d2c50"
+  },
+  "neighbours": [
+   {
+    "direction": "in",
+    "linkKind": "covers",
+    "label": null,
+    "position": null,
+    "part": {
+     "key": "DEC-001",
+     "kind": "decision",
+     "title": "ห้องที่จุเกิน 10 คนต้องให้ผู้ดูแลอนุมัติ"
+    }
+   },
+   {
+    "direction": "in",
+    "linkKind": "about",
+    "label": null,
+    "position": null,
+    "part": {
+     "key": "Q-001",
+     "kind": "question",
+     "title": "ผู้ดูแลไม่ตอบใน 24 ชม. ทำอย่างไร"
+    }
+   },
+   {
+    "direction": "in",
+    "linkKind": "next",
+    "label": "ห้องใหญ่ ต้องอนุมัติ",
+    "position": 1,
+    "part": {
+     "key": "STEP-003",
+     "kind": "step",
+     "title": "ส่งคำขอจอง"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "has_interaction",
+    "label": null,
+    "position": 1,
+    "part": {
+     "key": "INT-010",
+     "kind": "interaction",
+     "title": "เปิดคำขอแล้วกดอนุมัติหรือปฏิเสธ"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "has_interaction",
+    "label": null,
+    "position": 2,
+    "part": {
+     "key": "INT-011",
+     "kind": "interaction",
+     "title": "ส่งผลการพิจารณา"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "has_interaction",
+    "label": null,
+    "position": 3,
+    "part": {
+     "key": "INT-012",
+     "kind": "interaction",
+     "title": "อัปเดตสถานะการจอง"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "next",
+    "label": "อนุมัติ",
+    "position": 1,
+    "part": {
+     "key": "STEP-005",
+     "kind": "step",
+     "title": "ได้รับการยืนยัน"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "next",
+    "label": "ปฏิเสธ",
+    "position": 2,
+    "part": {
+     "key": "STEP-006",
+     "kind": "step",
+     "title": "แจ้งว่าถูกปฏิเสธ"
+    }
+   },
+   {
+    "direction": "in",
+    "linkKind": "has_step",
+    "label": null,
+    "position": 4,
+    "part": {
+     "key": "WRK-001",
+     "kind": "work",
+     "title": "จองห้องประชุม"
+    }
+   }
+  ],
+  "decisions": [
+   {
+    "key": "DEC-001",
+    "body": {
+     "open": "ห้องพอดี 10 คน",
+     "rule": "ห้องที่จุเกิน 10 คนต้องให้ผู้ดูแลอนุมัติ",
+     "cases": [
+      "ห้องใหญ่ → ผู้ดูแลอนุมัติ",
+      "ห้องเล็ก → ยืนยันทันที"
+     ]
+    },
+    "kind": "decision",
+    "title": "ห้องที่จุเกิน 10 คนต้องให้ผู้ดูแลอนุมัติ",
+    "origin": {
+     "date": "2026-10-08",
+     "stamp": "operator"
+    },
+    "createdIn": "860f2747-790b-4cf9-b9f3-ed76598d2c50"
+   }
+  ],
+  "flows": [
+   {
+    "work": {
+     "key": "WRK-001",
+     "title": "จองห้องประชุม"
+    },
+    "steps": [
+     {
+      "key": "STEP-001",
+      "title": "ค้นหาห้องว่าง",
+      "position": 1
+     },
+     {
+      "key": "STEP-002",
+      "title": "เลือกห้องและเวลา",
+      "position": 2
+     },
+     {
+      "key": "STEP-003",
+      "title": "ส่งคำขอจอง",
+      "position": 3
+     },
+     {
+      "key": "STEP-004",
+      "title": "ผู้ดูแลพิจารณา",
+      "position": 4
+     },
+     {
+      "key": "STEP-005",
+      "title": "ได้รับการยืนยัน",
+      "position": 5
+     },
+     {
+      "key": "STEP-006",
+      "title": "แจ้งว่าถูกปฏิเสธ",
+      "position": 6
+     }
+    ],
+    "at": [
+     "STEP-004"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "key": "Q-001",
+    "body": {
+     "text": "ผู้ดูแลไม่ตอบใน 24 ชม. ทำอย่างไร",
+     "cases": [],
+     "answer": "ยกเลิกอัตโนมัติและแจ้งพนักงาน",
+     "status": "answered",
+     "proposedAnswer": "ยกเลิกอัตโนมัติและแจ้งพนักงาน"
+    },
+    "kind": "question",
+    "title": "ผู้ดูแลไม่ตอบใน 24 ชม. ทำอย่างไร",
+    "origin": {
+     "date": "2026-10-08",
+     "stamp": "operator"
+    },
+    "createdIn": "860f2747-790b-4cf9-b9f3-ed76598d2c50"
+   }
+  ]
+ },
+ "specRead": {
+  "revision": 3,
+  "readAt": "2026-10-30T01:38:12.001Z",
+  "fromCache": false,
+  "pinned": false
+ },
+ "notes": [
+  {
+   "id": "01a18a75-0f86-734b-ac7e-6a7c0c4dc7b1",
+   "type": "comment",
+   "actor": "worker:01a18a74-9ea0-7023-a6e6-981aed76c922",
+   "text": "TEST-110 start-read (hop 01a18a75-0e55-746a-9600-4b0701169ea5): 200 title=QA-AC1 ผู้ดูแลพิจารณา (แก้แล้ว) revision=2 pinned=true fromCache=false",
+   "fromWorkerId": null,
+   "toWorkerId": null,
+   "allowed": null,
+   "at": "2026-10-30T01:38:09.934Z"
+  },
+  {
+   "id": "01a18a75-1192-755c-a514-af2f436ea1df",
+   "type": "comment",
+   "actor": "worker:01a18a74-9ea0-7023-a6e6-981aed76c922",
+   "text": "TEST-110 mid-read (hop 01a18a75-0e55-746a-9600-4b0701169ea5): 200 title=QA-AC1 ผู้ดูแลพิจารณา (แก้แล้ว) revision=2 pinned=true fromCache=false",
+   "fromWorkerId": null,
+   "toWorkerId": null,
+   "allowed": null,
+   "at": "2026-10-30T01:38:10.458Z"
+  },
+  {
+   "id": "01a18a75-1383-7169-a129-7a36f74c5870",
+   "type": "comment",
+   "actor": "worker:01a18a74-9ea0-7023-a6e6-981aed76c922",
+   "text": "TEST-110 start-read (hop 01a18a75-126e-7374-ab83-028a6759570b): 200 title=QA-AC2 ข้อความใหม่กลางก้าว revision=3 pinned=true fromCache=false",
+   "fromWorkerId": null,
+   "toWorkerId": null,
+   "allowed": null,
+   "at": "2026-10-30T01:38:10.955Z"
+  }
+ ],
+ "decisions": [],
+ "codeMap": null
+}

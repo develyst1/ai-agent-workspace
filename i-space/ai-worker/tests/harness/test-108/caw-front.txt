@@ -1,0 +1,9 @@
+ 0 fail
+ 1325 expect() calls
+Ran 334 tests across 24 files. [2.50s]
+typecheck exit=0
+
+build exit=0
+  ✓  148 [build] › tests/chat.spec.ts:100:7 › D-057: a chat step that failed › the line + ลองอีกครั้ง sit under M3 only; pressing removes both, with no alert (397ms)
+  ✓  253 [build] › tests/test-reset.spec.ts:25:5 › POST /test-reset?state=chat-failed → 204 and the thread's second ask has no reply any more; chat-running → 204; a plain POST brings the reply back (542ms)
+  265 passed (3.0m)

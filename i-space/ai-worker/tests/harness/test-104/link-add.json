@@ -1,0 +1,15 @@
+{
+  "id": "4026809b-0c10-47e0-89da-91ffa8021d14",
+  "kind": "link",
+  "name": "http://127.0.0.1:4295/page",
+  "mime": null,
+  "sha256": "b15d5f69670e87896a6a5043cfc5579e6a35c4d31aea2a8d9d8eacc11053a1bb",
+  "size": 26,
+  "status": "failed",
+  "reason": "link_unreachable",
+  "origin": {
+    "date": "2026-10-29",
+    "stamp": "operator"
+  },
+  "createdAt": "2026-10-29T07:05:51.064Z"
+}

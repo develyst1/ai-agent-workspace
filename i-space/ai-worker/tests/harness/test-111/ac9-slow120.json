@@ -1,0 +1,17 @@
+{
+ "status": "applied",
+ "reply": "เพิ่มงานให้แล้วครับ",
+ "changeSetId": "e79899d4-e022-434b-9abb-7caa1c7369bb",
+ "questions": [],
+ "contradictions": [],
+ "failedSources": [],
+ "messageIds": [
+  "4b520365-e6af-4cc2-9271-d370fbe65459",
+  "deb03035-ad6c-4252-9733-6044eb7d93ab"
+ ],
+ "reason": null,
+ "note": null,
+ "refused": null,
+ "saved": null,
+ "adjusted": null
+}

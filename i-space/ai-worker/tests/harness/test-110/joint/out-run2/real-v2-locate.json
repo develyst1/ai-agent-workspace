@@ -1,0 +1,20 @@
+{
+ "revision": 1,
+ "notInSpec": false,
+ "candidates": [
+  {
+   "key": "STEP-002",
+   "kind": "step",
+   "title": "เช็คสถานะทั้ง 4 บริการ",
+   "score": 1,
+   "matched": [
+    "เช็ค",
+    "สถานะ",
+    "บริการ"
+   ],
+   "where": [
+    "title"
+   ]
+  }
+ ]
+}

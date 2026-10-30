@@ -1,0 +1,33 @@
+{
+  "s": 200,
+  "j": {
+    "status": "applied",
+    "reply": null,
+    "changeSetId": "acee3bcd-68f2-4007-a39a-12cda6f0c6e3",
+    "questions": [
+      "Q-001"
+    ],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "86a7df47-2521-4e6e-8306-c9bd9d7f7313",
+      "107216d6-5a22-4e1c-a55c-de1d02256ecf"
+    ],
+    "reason": null,
+    "note": null,
+    "refused": [
+      {
+        "item": "changes[13]",
+        "op": "link.add",
+        "kind": "covers",
+        "ref": null,
+        "key": null,
+        "title": null,
+        "reason": "invalid_change",
+        "detail": "no live part \"$decision_service_health\""
+      }
+    ],
+    "saved": 16,
+    "adjusted": null
+  }
+}

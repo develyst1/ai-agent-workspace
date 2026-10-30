@@ -1,0 +1,37 @@
+  Generating static pages using 7 workers (0/3) ...
+✓ Generating static pages using 7 workers (3/3) in 96ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ○ /icon.svg
+├ ƒ /p/[id]
+├ ƒ /p/[id]/c/[cardId]
+├ ƒ /p/[id]/chat
+├ ƒ /p/[id]/runs
+├ ƒ /p/[id]/team
+├ ƒ /start
+└ ƒ /test-reset
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+build exit=0
+  ✓  245 [build] › tests/test-reset.spec.ts:25:5 › POST /test-reset?state=chat-failed → 204 and the thread's second ask has no reply any more; chat-running → 204; a plain POST brings the reply back (472ms)
+  ✓  246 [build] › tests/test-reset.spec.ts:39:5 › POST /test-reset?state=new-project → 204 and a second project with nothing in it exists; working-now → 204 and the one running card hop moves from ฝน's card to แบงค์'s; a plain POST undoes both (621ms)
+  ✓  247 [build] › tests/test-reset.spec.ts:57:5 › POST /test-reset?state=entry-asked → 204 and the thread ends on the entry worker's questions; a plain POST puts the thread back (365ms)
+  ✓  248 [build] › tests/test-reset.spec.ts:68:5 › POST /test-reset?reply=… → 204 and the entry worker's plain reply is in the thread, also under an ask that was answered already; an empty reply → 400 (TASK-B-101) (428ms)
+  ✓  249 [build] › tests/test-reset.spec.ts:81:5 › POST /test-reset?team=down → 204 (the gate-off 404 and the read itself are in `src/api/mock.test.ts`) and the mock team stops checking in; ?team=up brings it back; ?state=team-down starts that way; anything else → 400 (TASK-B-103) (16ms)
+  ✓  250 [build] › tests/test-reset.spec.ts:90:5 › POST /test-reset?codeMap=save → 204 (that the project then carries a map is read back in `src/api/mock.test.ts`: no screen shows it before B-108); anything but `save` → 400; the reset after it → 204 (TASK-B-110) (12ms)
+  ✓  251 [build] › tests/workspace.spec.ts:15:5 › the header has no folders and no warning bar, on every project screen (H-3, H-5); ทีม's row says there are none (468ms)
+  ✓  252 [build] › tests/workspace.spec.ts:26:5 › ทีม's readiness fix for the folders opens the same dialog (271ms)
+  ✓  253 [build] › tests/workspace.spec.ts:32:5 › a path the rules refuse answers with the field's hint and adds nothing: relative, a `..` segment (692ms)
+  ✓  254 [build] › tests/workspace.spec.ts:44:5 › add a folder: it is listed in the dialog and on ทีม's row, it survives a reload; a repeat is refused; remove brings the none line back (1.2s)
+  ✓  255 [build] › tests/workspace.spec.ts:69:5 › keyboard: the dialog opens from its button, the field takes Enter, Escape closes it (868ms)
+  ✓  256 [build] › tests/workspace.spec.ts:86:5 › @390: the folders row and the dialog fit the screen, nothing scrolls sideways (319ms)
+  ✓  257 [build] › tests/workspace.spec.ts:99:5 › add a folder as read-only → ทีม's row tags it, after a reload too; switch it to writable; remove it and its tag goes (1.5s)
+
+  257 passed (2.6m)
+e2e exit=0

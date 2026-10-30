@@ -23,6 +23,15 @@
 //    — the whole boot read — but is no longer gated). `gatedOn` says which field the
 //    verdict used so no reader has to infer it, `counts.note` is new, and `checks[]` can
 //    now carry `severity: "note"`. harness-console renders this and must branch on SCHEMA.
+// v7 + section 10 (DoD base runs, OPT-IN per desk via its checks.json) — Atlas ORDER 41,
+//    2026-10-29. Adds WARN lines only on a desk that switches it on; SCHEMA, GATE_VERSION
+//    and every other desk's output (text and --json) are unchanged, verified byte for byte.
+// v7 + section 11 (memory cards: card > 4 KB, proposed.md > 1 day; OPT-IN via checks.json) — Atlas ORDER 43,
+//    2026-10-30. Same terms as section 10: WARN only, SCHEMA/GATE_VERSION unchanged, other desks byte-identical.
+// v7 + section 12 (SPEC consumer probe: shape-change section without "Consumers (probe):", unticked hit; OPT-IN via
+//    checks.json "spec-probe") — Atlas ORDER 45, 2026-10-30. Same terms: WARN only, other desks byte-identical.
+// v7 + log rollover (section 3 measures the LATEST part of today's log, log/<date>.N.md; OPT-IN via checks.json
+//    "log-rollover") — Atlas ORDER 46, 2026-10-30. No new verdict; other desks byte-identical.
 
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -325,14 +334,28 @@ if (dsSize) {
 }
 
 // 3) today's log — existence, size, entry length
-const logPath = join(AW, "log", `${today}.md`);
+// ORDER 46 (owner via Atom 2026-10-30 16:28, "เราไม่ควรlost the detail"): on a desk whose checks.json has
+// "hygiene": { "log-rollover": … }, append-log.mjs starts log/<date>.2.md, .3.md, … once a part reaches its
+// part-kb, so "today's log" = the LATEST part: it alone is measured below. No key ⇒ log/<date>.md, as before.
+let logName = `${today}.md`;
+try {
+  if (JSON.parse(readFileSync(join(AW, "checks.json"), "utf8"))?.hygiene?.["log-rollover"] && existsSync(logDir)) {
+    let n = 1;
+    for (const f of readdirSync(logDir)) {
+      const m = /^(\d{4}-\d{2}-\d{2})\.(\d+)\.md$/.exec(f);
+      if (m && m[1] === today && Number(m[2]) > n) n = Number(m[2]);
+    }
+    if (n > 1) logName = `${today}.${n}.md`;
+  }
+} catch { logName = `${today}.md`; }
+const logPath = join(AW, "log", logName);
 const logExists = existsSync(logPath);
 const logSize = size(logPath);
 metrics.today = today;
 metrics.newestLogDate = newestLogDate;
 metrics.daysSinceNewestLog = newestLogDate ? daysSince(newestLogDate) : null;
 metrics.active = active;
-metrics.files.push({ name: `log/${today}.md`, bytes: logSize, exists: logExists, warnBytes: LIMITS.logToday, limitBytes: null });
+metrics.files.push({ name: `log/${logName}`, bytes: logSize, exists: logExists, warnBytes: LIMITS.logToday, limitBytes: null });
 
 // A MISSING today's log used to score size 0 and sail through silently — which is exactly
 // how this workspace misfiled its log by date four times in five days without the gate
@@ -345,14 +368,14 @@ if (!logExists && newestLogDate && daysSince(newestLogDate) <= LIMITS.logMissing
 // the discipline applies to the NEXT entries, not retroactively. That is also why the
 // escalated tier stays a WARN — a FAIL on an append-only file would be unfixable by design.
 if (logSize > LIMITS.logTodayLoud)
-  warns.push(`🔴 log/${today}.md ${fmt(logSize)} > ${fmt(LIMITS.logTodayLoud)} — this file is now too big for a fresh role to read honestly; point at files instead of retelling`);
+  warns.push(`🔴 log/${logName} ${fmt(logSize)} > ${fmt(LIMITS.logTodayLoud)} — this file is now too big for a fresh role to read honestly; point at files instead of retelling`);
 else if (logSize > LIMITS.logToday)
-  warns.push(`log/${today}.md ${fmt(logSize)} > ${fmt(LIMITS.logToday)} (append-only; write shorter entries from now on)`);
+  warns.push(`log/${logName} ${fmt(logSize)} > ${fmt(LIMITS.logToday)} (append-only; write shorter entries from now on)`);
 if (logSize) {
   const entries = readFileSync(logPath, "utf8").split(/^## /m).slice(1);
   const long = entries.filter((e) => e.split("\n").length > LIMITS.logEntryLines).length;
   metrics.logLongEntries = long;
-  if (long > 0) warns.push(`log/${today}.md has ${long} entr(ies) > ${LIMITS.logEntryLines} lines (rule: <=15 — point at files instead of retelling)`);
+  if (long > 0) warns.push(`log/${logName} has ${long} entr(ies) > ${LIMITS.logEntryLines} lines (rule: <=15 — point at files instead of retelling)`);
 }
 
 // 4) requirements/ and tasks/ file sizes
@@ -593,6 +616,97 @@ if (!knowledgeFile) {
   }
 }
 
+// 10) DoD base runs — OPT-IN PER DESK, off everywhere else (Atlas ORDER 41, owner via
+// Atom 2026-10-29 01:06 "Okay."; born i-space F-001 + F-002). Two SAs on one day wrote a
+// DoD expected result (`→ …`) without running it on the base code. role-sa §3 already said
+// to run it; as prose it decayed. Here it becomes visible: in a TODO / IN_PROGRESS TASK,
+// every `## Definition of Done` line holding `→` must carry `(base: …)` — the pasted base
+// output, or `(base: n/a — new: <why>)`. WARN only, never FAIL; older TASKs are not read.
+// Switch: the desk's own `ai-worker/checks.json` (desk-owned in harness.json, already the
+// desk's check config), top-level key `"hygiene": { "dod-base": { … } }`. The desk-checks
+// hook reads only `.checks`, so it ignores this key. No file, bad JSON, or no key ⇒ this
+// section does nothing and prints nothing — every other desk's output is byte-identical.
+{
+  let deskHygiene = null;
+  try { deskHygiene = JSON.parse(readFileSync(join(AW, "checks.json"), "utf8"))?.hygiene ?? null; } catch { deskHygiene = null; }
+  const tasksDir = join(AW, "tasks");
+  if (deskHygiene && deskHygiene["dod-base"] && existsSync(tasksDir)) {
+    for (const f of readdirSync(tasksDir).filter((n) => /^TASK-.*\.md$/.test(n)).sort()) {
+      const lines = readFileSync(join(tasksDir, f), "utf8").split(NL);
+      // The FIRST Status line decides, as in section 7: a later line quoting a status
+      // (in a review, a note) must not switch the check on or off.
+      const statusLine = lines.find((l) => /^\s*[-*]?\s*\**Status\b/i.test(l));
+      const status = statusLine ? /Status\**\s*:?\**\s*([A-Z_]+)/i.exec(statusLine)?.[1]?.toUpperCase() : null;
+      if (status !== "TODO" && status !== "IN_PROGRESS") continue;
+      let inDod = false;
+      lines.forEach((l, i) => {
+        if (/^##\s/.test(l)) { inDod = /^##\s+Definition of Done\b/i.test(l); return; }
+        if (inDod && l.includes("→") && !/\(base:/i.test(l))
+          warns.push(`tasks/${f}:${i + 1} DoD line has "→" without "(base: …)" — paste the base run, or "(base: n/a — new: <why>)" (F-001/F-002; SA-Lead.md § TASK template)`);
+      });
+    }
+  }
+}
+
+// 11) Memory cards — OPT-IN PER DESK, off everywhere else (Atlas ORDER 43, owner GO 2026-10-30 14:43; i-space
+// pilot). A card (`ai-worker/cards/<Name>.md`) is injected into the role's context at every session start, so it
+// must stay small; a `<Name>.proposed.md` left unreviewed means the distill never finished and the role is not
+// ready to clear. Switch: the desk's `checks.json`, key `"hygiene": { "memory-cards": { "pilot": [...] } }`.
+// WARN only, never FAIL. No file, bad JSON, or no key ⇒ nothing printed — every other desk is byte-identical.
+{
+  let cardsOn = false;
+  try { cardsOn = !!JSON.parse(readFileSync(join(AW, "checks.json"), "utf8"))?.hygiene?.["memory-cards"]; } catch { cardsOn = false; }
+  const cardsDir = join(AW, "cards");
+  if (cardsOn && existsSync(cardsDir)) {
+    const CARD_CAP = 4096, DAY_MS = 24 * 60 * 60 * 1000;
+    for (const f of readdirSync(cardsDir).sort()) {
+      const st = statSync(join(cardsDir, f));
+      if (/^[A-Z][A-Za-z0-9_-]*\.md$/.test(f) && f !== "PILOT.md" && st.size > CARD_CAP)
+        warns.push(`cards/${f} ${st.size} B > ${CARD_CAP} B card cap — trim it at the next distill (ORDER 43)`);
+      if (/\.proposed\.md$/.test(f) && Date.now() - st.mtimeMs > DAY_MS)
+        warns.push(`cards/${f} is ${Math.floor((Date.now() - st.mtimeMs) / 3600000)} h old — review it and run distill.mjs <Name> --done (ORDER 43)`);
+    }
+  }
+}
+
+// 12) Consumer probe on SPECs — OPT-IN PER DESK, off everywhere else (Atlas ORDER 45, owner via Atom 2026-10-30
+// 16:04; i-space P1c: F-018…F-042). A grep picks its own words; the probe (`tools/probe-change.sh`) runs the change.
+// In a SPEC whose FIRST Status is DRAFT / ACTIVE / IN_PROGRESS: a `## ` section that changes a shape (it has a
+// `Consumers` line, or names `openapi.json`, `ALTER TABLE`, `ADD COLUMN`, `NOT NULL`) without a `Consumers (probe):`
+// line → WARN; and every hit line under a `Consumers (probe):` line (up to the next blank line or heading) needs
+// `→ TASK-` or `→ untouched —` → else WARN. Switch: checks.json `"hygiene": { "spec-probe": { … } }`. WARN only.
+// No file, bad JSON, or no key ⇒ nothing printed — every other desk is byte-identical.
+{
+  let probeOn = false;
+  try { probeOn = !!JSON.parse(readFileSync(join(AW, "checks.json"), "utf8"))?.hygiene?.["spec-probe"]; } catch { probeOn = false; }
+  const specsDir = join(AW, "specs");
+  if (probeOn && existsSync(specsDir)) {
+    for (const f of readdirSync(specsDir).filter((n) => /^SPEC-.*\.md$/.test(n)).sort()) {
+      const lines = readFileSync(join(specsDir, f), "utf8").split(NL);
+      const statusLine = lines.find((l) => /^\s*[-*]?\s*\**Status\b/i.test(l));
+      const status = statusLine ? /Status\**\s*:?\**\s*([A-Z_]+)/i.exec(statusLine)?.[1]?.toUpperCase() : null;
+      if (status !== "DRAFT" && status !== "ACTIVE" && status !== "IN_PROGRESS") continue;
+      let head = -1, shape = false, probe = false, inHits = false;
+      const close = () => {
+        if (head >= 0 && shape && !probe)
+          warns.push(`specs/${f}:${head + 1} section changes a shape but has no "Consumers (probe):" line — run tools/probe-change.sh and paste it (ORDER 45; SA-Lead.md § SPEC template)`);
+      };
+      lines.forEach((l, i) => {
+        if (/^##\s/.test(l)) { close(); head = i; shape = false; probe = false; inHits = false; return; }
+        if (/Consumers \(probe\):/.test(l)) { probe = shape = true; inHits = true; return; }
+        if (inHits) {
+          if (!l.trim() || /^#/.test(l)) { inHits = false; return; }
+          if (!/→\s*TASK-\d+/.test(l) && !/→\s*untouched\s+—/.test(l))
+            warns.push(`specs/${f}:${i + 1} Consumers hit without "→ TASK-…" or "→ untouched — <why>" (ORDER 45; spec-rules.md § 1)`);
+          return;
+        }
+        if (/Consumers\b/.test(l) || /openapi\.json|ALTER TABLE|ADD COLUMN|NOT NULL/.test(l)) shape = true;
+      });
+      close();
+    }
+  }
+}
+
 // ─── the two printers. Everything above produced the SAME fails/warns/metrics either
 // way; only the rendering differs, which is what keeps --json from drifting from the
 // text an owner reads.
@@ -628,4 +742,4 @@ if (fails.length) {
   console.log(`\nRESULT: FAIL (${fails.length}) — run a PM housekeeping hop before dispatching work.`);
   process.exit(1);
 }
-console.log(`RESULT: PASS${warns.length ? ` (${warns.length} warning(s))` : ""} — board ${fmt(boardSize)}, dispatcher-state ${fmt(dsSize)}, today's log ${fmt(logSize)} (${today}, local).`);
+console.log(`RESULT: PASS${warns.length ? ` (${warns.length} warning(s))` : ""} — board ${fmt(boardSize)}, dispatcher-state ${fmt(dsSize)}, today's log ${fmt(logSize)} (${logName === `${today}.md` ? today : logName.slice(0, -3)}, local).`);

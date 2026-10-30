@@ -1,0 +1,28 @@
+{
+  "changeSetId": "e0b814fe-9e80-4c88-8999-c4e0defbb620",
+  "keys": {
+    "$work1": "WRK-001",
+    "$role1": "ROLE-001",
+    "$scr1": "SCR-001",
+    "$sys1": "SYS-001",
+    "$sys2": "SYS-002",
+    "$sys3": "SYS-003",
+    "$sys4": "SYS-004",
+    "$data1": "DATA-001",
+    "$step1": "STEP-001",
+    "$step2": "STEP-002",
+    "$step3": "STEP-003",
+    "$int1": "INT-001",
+    "$int20": "INT-002",
+    "$int21": "INT-003",
+    "$int22": "INT-004",
+    "$int23": "INT-005",
+    "$int3": "INT-006",
+    "$dec1": "DEC-001",
+    "$dec2": "DEC-002",
+    "$dec3": "DEC-003",
+    "$dec4": "DEC-004",
+    "$dec5": "DEC-005",
+    "$dec6": "DEC-006"
+  }
+}

@@ -1,0 +1,19 @@
+    [4.2s] chat message 201; proposal after 0.511s: 01a18ac5-69c9-712a-8f2a-42efc69acc24 items [{"key":"SCR-001","version":0}]
+OK  [4.2s] AC-2 coverage for the proposal (one item on SCR-001): STEP-002 (DEC-001…003) and WRK-001 (DEC-004, DEC-006) uncovered — 200 STEP-002:DEC-001+DEC-002+DEC-003 · WRK-001:DEC-004+DEC-006
+OK  [5.8s] AC-2 the proposal block shows the PM's sentence for STEP-002 and WRK-001 (key + title) — []
+OK  [5.8s] AC-2 advisory only: the proposal can still be accepted — 
+OK  [5.8s] AC-2 accept works with uncovered parts (D4: never blocks) — 200 card 1 anchor {"key":"SCR-001","version":0}
+OK  [5.8s] AC-2 board coverage (cards only) gives the same two parts — STEP-002:DEC-001+DEC-002+DEC-003 · WRK-001:DEC-004+DEC-006
+OK  [7.3s] AC-2 the board shows the PM's sentence for both parts — []
+OK  [7.3s] AC-2 each key links to Blueprint (D3) — ["http://127.0.0.1:3100/p/00000000-0000-4000-8000-0000000001c2/web?part=STEP-002","http://127.0.0.1:3100/p/00000000-0000-4000-8000-0000000001c2/web?part=WRK-001"]
+OK  [7.9s] today (no relatedDecisions): the card context has DEC-005 only — the 10 s / 3 s rules do not reach the worker yet — decisions ["DEC-005"], relatedDecisions undefined
+OK  [7.9s] AC-1 (D1) the worker's prompt tells it to follow spec.decisions AND spec.relatedDecisions — "2. Follow every rule in `spec.decisions` and `spec.relatedDecisions` of your card's context — a rule on a related part applies to your card too."
+OK  [7.9s] memo (SPEC-109 D2) right after Blueprint gains the field, same revision — uncovered now: STEP-002:DEC-001+DEC-002+DEC-003 · WRK-001:DEC-004+DEC-006 (revision 1)
+OK  [8.5s] AC-1 the builder's card context carries the 10-second and 3-second rules (via STEP-002) — ["DEC-001<STEP-002","DEC-002<STEP-002","DEC-003<STEP-002","DEC-004<WRK-001","DEC-006<WRK-001"]
+OK  [8.5s] AC-1 passed through whole: relatedDecisionsMore and decisions unchanged — 
+OK  [8.5s] AC-2 with relatedDecisions: nothing uncovered once the revision moves — after 0.009s, revision 2
+OK  [10.0s] AC-2 the board shows no uncovered line when everything is covered — 
+OK  [10.0s] AC-4 a part with no extra rules: relatedDecisions [] and the rest of its context unchanged — relatedDecisions []; same otherwise true
+OK  [14.1s] D4 Blueprint down: coverage → 502 blueprint_unreachable; the board still renders, no coverage line, the REQ-105 sentence — 502 {"error":{"code":"blueprint_unreachable","message":"blueprint_unreachable (netwo
+OK  [14.6s] D1 MCP card_context description names spec.decisions and spec.relatedDecisions — "Everything you need to do a card: the card, the part of the spec it is anchored to (as Blueprint has it), the decisions covering that part (spec.decisions) and those on the steps and works around it (spec.relatedDecisions), the notes on it (oldest first) and the decisions already made for it."
+run dir /tmp/qa112-8AGYsT

@@ -1,0 +1,59 @@
+# Regression checklist — i-space
+
+> Owned by QA. Everything the product must STILL do after any change.
+> Every delivered REQ adds its cases here; every escaped defect adds the case that
+> would have caught it. Run the relevant subset in every test round.
+>
+> Guards for every run: caw-back with the refusing `claude` stub on PATH **and** as `CLAUDE_BIN`, with
+> `CAW_WORKSPACE_ROOT` unset (`tests/harness/bin/claude`). blueprint-back with `GATEWAY_URL` pointed at
+> `tests/harness/test-101-gateway-stub.mjs` (never `https://ai.develyst.online`). caw-front only with a
+> `NEXT_DIST_DIR` already listed in its `tsconfig.json` (`.next-f`), or none (F-003).
+>
+> 🔴 **Since 2026-10-29 12:54 both backs have a real `.env`, which Bun loads on its own** (`SYSTEM-FACTS.md`
+> § Environment). Bun fills only variables that are **missing**, so `env -u X` no longer keeps X away. Pass
+> each one **explicitly** on every server start:
+> - `DATABASE_URL=pglite:memory` (or `pglite:file:<dir>`) — otherwise the remote TEST DB is used. Never print that URL.
+> - caw-back: `CLAUDE_BIN=<stub>` **and** `CAW_WORKSPACE_ROOT=` (empty string: `.env` sets a real root, and
+>   `config.ts:30` treats "" as unset, so the runner refuses). Only TEST-105, under its own guards, sets a root.
+> - `BLUEPRINT_URL`, `CAW_API_URL`, `BLUEPRINT_WEB_URL`, `PORT`: set explicitly when using QA's spare ports.
+> - `bun test`: caw-back clears `.env` keys itself (`test/setup/no-operator-env.ts`). blueprint-back reads
+>   `DATABASE_URL` only in the SIT test, which needs `BLUEPRINT_SIT=1`, so **keep `BLUEPRINT_SIT` unset**.
+> - QA does **not** use the remote TEST DB until `PROTOCOL.md` § Environments lists it (Marie's edit, pending).
+> - **Real Claude CLI (owner 13:01, `DECISIONS.md`):** allowed for testing, with a purpose, **logged each time**, and
+>   quota above ~60% reported to the PM. Regression rounds stay on the stub; a real run is its own named case.
+>   The **LLM gateway** still needs the owner's word every time.
+
+## Cases
+
+| # | Case | From REQ | Added | Last run | Result |
+|---|------|----------|-------|----------|--------|
+| R-1 | caw-back `bun test`: 677 pass / 1 skip / 1 fail. The only fail is `src/runner/settings.test.ts:162` (machine path with "@"); `db-scripts` Case C may time out under load. Any other fail is new | REQ-101 | 2026-10-29 | 2026-10-29 (atom 102a130) | PASS |
+| R-2 | caw-front `bun test src` 328 pass · `typecheck` clean · `build` exit 0 · `test:e2e` 257 passed | REQ-101 | 2026-10-29 | 2026-10-29 (atom 4b58bf3) | PASS |
+| R-3 | blueprint-back `bun test --timeout 30000`: 218 pass / 16 skip (1 live smoke + 15 SIT) / 0 fail, about 6 min | REQ-101 | 2026-10-29 | 2026-10-29 (atom f60b934) | PASS |
+| R-4 | blueprint-front typecheck · check:no-fetch · check:api · `bun test src` 186 · build · test:isolation 4 · test:states 34 · test:required 1 (back end on :4299 started by hand, recipe in `maps/blueprint.md` §2) | REQ-101 | 2026-10-29 | 2026-10-29 (atom e46322a) | PASS |
+| R-5 | Seam end to end (`tests/harness/test-101-seam-e2e.mjs`). Blueprint "ส่งไปสร้างที่ CAW" → CAW board for that project; a second click → same project; partContext, locate and amend through CAW; a BP confirm push moves CAW's latestSeenVersion | REQ-101 | 2026-10-29 | 2026-10-29 | PASS |
+| R-6 | CAW main flow by clicks on the mock (`tests/harness/test-101-caw-walk.mjs`): /start → board → card → ทีม → การรัน → แชต → home; /start negatives; /test-reset 404 without the flag | REQ-101 | 2026-10-29 | 2026-10-29 | PASS |
+| R-7 | Blueprint main flow by clicks (`tests/harness/test-101-bp-walk.mjs`, nav re-run `test-101/bp-nav2.mjs`): home, new-project dialog, overview, chat composer, spec pages on both nav levels, ready + build link; `/dev/*` 404 without `BLUEPRINT_DEV_PAGES=1` | REQ-101 | 2026-10-29 | 2026-10-29 | PASS |
+| R-8 | No live run: the `claude` stub log stays 0 bytes and the gateway stub logs no call outside fake mode, through all of the above | REQ-101 | 2026-10-29 | 2026-10-29 | PASS |
+| R-9 | After any round: all four repos `git status --porcelain` empty — QA's own runs included | REQ-101 (+ F-003) | 2026-10-29 | 2026-10-29 01:17 | PASS |
+| R-10 | Every Blueprint write refuses without `X-Blueprint-By` (400 `name_required`, nothing stored); the UI prompts first (`tests/harness/test-104/api-checks.mjs`, `ui-1.mjs`) | REQ-103 | 2026-10-29 | 2026-10-29 (fp 1ef8723d2796 / 52bb5a06ac1c) | PASS |
+| R-11 | Every listed write leaves exactly one record with who / when / before→after; a link re-fetch keeps the old row (`api-checks-2.mjs`) | REQ-103 | 2026-10-29 | 2026-10-29 | PASS |
+| R-12 | Labels: never blocked, never automatic, each keeps its state; empty label refused (`api-checks-3.mjs`, `ui-1.mjs`) | REQ-103 | 2026-10-29 | 2026-10-29 | PASS |
+| R-13 | Seam with labels and a requirement part: button → CAW board, 6 calls + push, requirement read + located (`test-104/seam-e2e.mjs`) — replaces R-5's seeding for builds after REQ-103 | REQ-103 | 2026-10-29 | 2026-10-29 | PASS |
+| R-14 | blueprint-front suites need `PLAYWRIGHT_PORT` when :3100 is held; `test:required` needs a back end on :4299 (now 948 items / 48 pages) | REQ-103 | 2026-10-29 | 2026-10-29 | PASS |
+| R-15 | Live screen with the stub: `bun --no-env-file run src/runner/e2e/live-view.ts` (`CAW_WORKSPACE_ROOT`, `LIVE_VIEW_SECRET`, `TICKS=90`, `E2E_PORT`) + `tests/harness/test-105/watch.mjs`: lines ≤ 5 s, nothing until clicked, secrets `***`, no input, finished hop readable | REQ-104 | 2026-10-29 | 2026-10-29 (fp 1b685c23fb11 / a03c0e186242) | PASS |
+| R-16 | API outage: the same with `LIVE_VIEW_API_DOWN_AT=20 LIVE_VIEW_API_DOWN_FOR=30` + `outage.mjs`: hop survives, one ≈ 30 s gap entry + marker | REQ-104 | 2026-10-29 | 2026-10-29 | PASS |
+| R-17 | `liveRedact` shapes (`tests/harness/test-105/redact-edges.txt` inputs); caw-back now 749/1 skip/1 known fail, caw-front 334 unit / 264 e2e | REQ-104 | 2026-10-29 | 2026-10-29 | PASS |
+| R-18 | Honest interview with the mode stub (`tests/harness/test-107-gateway-modes.mjs`, modes feature / sleep / good; `test-107/ui.mjs`, `ui-timeout.mjs`): rejected round → "nothing saved" sentence, never the model's text; timeout → 1 call, sentence, retry + faster model; send → apply → undo. Build the front from HEAD + `git diff HEAD` | REQ-110 | 2026-10-29 | 2026-10-29 (HEAD a4bf924/a52e022 + fp d833b2d400d0/75ac7c78ec4e) | PASS |
+| R-19 | Worker command policy at the real hook: `tests/harness/test-108/hook-cases.mjs` (48 commands incl. 24 bypass attempts) — 0 on the wrong side | REQ-111 | 2026-10-29 | 2026-10-29 (HEAD f8a619e + fp 18ca4d833a46) | PASS |
+| R-20 | Refusal / crash / time cap on the real runner with QA's stub (`test-108/runner-cases.ts` + `qa-claude.ts`): hop goes on after 1 refusal, stops at 10; card back to `todo` + `stoppedMidway`; dependant not blocked | REQ-111 | 2026-10-29 | 2026-10-29 | PASS |
+| R-21 | Worker → local API refusal at the real hook with the runner's ports (`tests/harness/test-109/hook-api-cases.mjs`, 34 cases incl. host / port / header spellings, own ports, moved ports). **Must include `04500` and `-H @file`** (DEF-1 escaped the SA's own probes) | REQ-113 | 2026-10-29 | 2026-10-29 17:50 (fp 9ca932a8dab7) + `test-109/r2/variations.mjs` (41 cases; `--json` to own port = DEF-2 MINOR) | PASS (DEF-1 fixed) |
+| R-22 | CAW ↔ REAL Blueprint joint run: `tests/harness/test-110/joint/r110j.ts` + `qa-net.mjs` — an edit seen ≤ 30 s by poll alone and by push; a running hop keeps its start text; no-label start via Blueprint's own button; labels are tags (header / card / chip); Blueprint unreachable 60 s → last read + sentence, catch-up without restart; nameless old label → "ป้าย {n}"; 0 v1 calls; 24/24 | REQ-105 | 2026-10-30 | 2026-10-30 (bp-back 9578d51 + fp bfa66c01b56c, caw-back 58ab883 + fp f80e56880896, caw-front 7ef4a1e + fp 1c1cf758f4de) |
+| R-23 | blueprint-front `bun run check:api` against the blueprint-back beside it — the seam's client matches the API document after any back-end route change (TEST-110 DEF-1 escaped once) | REQ-105 | 2026-10-30 | 2026-10-30 (bp-front b041cbd + fp 61317ffea9b1) |
+| R-24 | Blueprint keeps the addresses the user wrote: `tests/harness/test-111/r2/r2.mjs` (stub `gateway-r2.mjs`) — rebuilt live round with no `api` part → 4 `GET` api parts + the PM's line each, no copies when the model sends them, edges (brackets, punctuation, duplicates, ftp, query); `test-111/r2/ac1.mjs` for AC-1 | REQ-114 | 2026-10-30 | 2026-10-30 (bp-back e4b2579 + fp 7275c1bc9fb9, bp-front 282e426 + fp 55e35d7e7b5e) |
+| R-25 | The team-built Health Board re-checks by itself every 10 s (REQ-108 spec point 3): run the built page per its README on :3900, `tests/harness/test-112/joint/ac3.mjs` — its own `/api/health` calls ~10 s apart with no click, shown times move | REQ-112 | 2026-10-30 | 2026-10-30 (live team, caw 67dfe55 / 7359fa3, bp-back 2da175e + fp 15fbcda12f05) |
+| R-26 | A card anchored on a **work** gets the rules on that work's steps (DEF-1 escaped AC-1): `GET /v1/cards/{id}/context` for a WRK-001 card on TEST-106's spec must carry DEC-001…003 (`tests/harness/test-112/r2/r2.mjs`) | REQ-112 | 2026-10-30 | 2026-10-30 (bp-back 2da175e + fp 1d9eb523d5e1) |
+| R-27 | Fresh install: starting team's first hop starts with CAW's shipped role skills, and a review that holds work up is named in the run report and on the board (`tests/harness/test-117/r117.mjs` + `qa-claude.ts`) | REQ-117 | 2026-10-30 | 2026-10-30 (caw-back 67dfe55 + fp 8eabc258e3d2, caw-front 7359fa3 + fp 53136121e54d) |
+| R-28 | URL catcher edges: Thai glued to a URL, Thai both sides, exact / trailing-slash / longer-path holders (`tests/harness/test-116/edges.mjs`, stub mode `holds:<address>`) | REQ-116 | 2026-10-30 | 2026-10-30 (bp-back ccd32af + fp 329169c658bb) |
+| R-29 | Model per call: first heavy on the project model, correction / re-ask / quiz light on `tier:small` (or `GATEWAY_LIGHT_MODEL`), one fallback up, all in `calls` (`tests/harness/test-115/cases.mjs main|env` + recording stub `gateway-115.mjs`) | REQ-115 | 2026-10-30 | 2026-10-30 (bp-back f10f8cb, tree-fp 3f9eb04bbf99) |
+| R-30 | A commenting card gets one extra turn, then the run stops `no_progress` naming it (never "ไม่มีงานที่ทำต่อได้" while workable); hand-off recipients by name + role, by name or id (`tests/harness/test-119/r119.mjs` + `qa-claude.ts`) | REQ-119 | 2026-10-30 | 2026-10-30 (caw-back 4cc3241 tree-fp 045bfe44eda2) |

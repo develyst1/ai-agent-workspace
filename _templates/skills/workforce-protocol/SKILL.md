@@ -34,7 +34,8 @@ decisions come from the desk. Paths are relative to `<desk>/` unless marked work
    in this chat — all are stale by design.
 2. Unsure of the date? **Ask the operator before writing any log line.** That is a clock question,
    not business content — any role may ask it directly; it is not a chain violation.
-3. Write only to `log/<TODAY>.md`. Never append to a file whose name is not TODAY, even the newest.
+3. Write only to TODAY's log: `log/<TODAY>.md`, or its latest part `log/<TODAY>.N.md` if the desk rolls over (the
+   script picks it). Never append to a file whose name is not TODAY, even the newest.
    Yesterday's file became read-only history at midnight. A session crossing midnight switches files.
 4. All dates in files are absolute. Never "today", "tomorrow", "last week".
 
@@ -52,7 +53,8 @@ Generic shape, for orientation only:
 5. `board.md` — the one source of truth for what is in flight.
 6. **Your inbox** — act, then delete what you processed.
 7. `FAILURES.md` — **the last 5 entries**, not the file.
-8. Settle TODAY (§2), read `log/<TODAY>.md`; older logs only when inbox or board points there.
+8. Settle TODAY (§2), read TODAY's log (its latest part, if the desk rolls over); earlier parts and older logs
+   only when a pointer, the inbox or the board sends you there.
 9. **Run the hygiene gate** (§12) — its `RESULT:` line tops your log entry.
 10. Do the one unit of work waiting for your role (harness §13).
 
@@ -137,7 +139,7 @@ filling `## Implementation Notes` of a TASK assigned to them.
 
 | Tier | Holds | Grows | Typical home |
 |---|---|---|---|
-| **History** | what happened, who said what | forever, append-only | `log/YYYY-MM-DD.md` |
+| **History** | what happened, who said what | forever, append-only | `log/YYYY-MM-DD.md` (+ `.N.md` parts) |
 | **State** | what is in flight now | bounded, gated, rewritten | `board.md`, `RESUME-HERE.md`, inboxes |
 | **Knowledge** | what does not change: seat decisions, system behaviour, product definitions, lessons, rules | slowly, never compacted | knowledge file, `DECISIONS.md`, rule files, `FAILURES.md` |
 

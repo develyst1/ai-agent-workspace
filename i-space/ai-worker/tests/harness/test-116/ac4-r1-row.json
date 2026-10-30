@@ -1,0 +1,45 @@
+{
+ "id": "98b3a10c-0217-4be1-9d02-8a81e72a9bbf",
+ "role": "bot",
+ "content": "บันทึกให้แล้วครับ",
+ "model": "fake/qa-stub",
+ "creativity": 0.5,
+ "roundStatus": "applied",
+ "changeSetId": "6fd0df95-3cf2-4e81-93a3-3e10bfc862f5",
+ "createdAt": "2026-10-30T08:00:47.153Z",
+ "roundReason": null,
+ "roundNote": null,
+ "roundRefused": null,
+ "roundSaved": null,
+ "roundAdjusted": [
+  {
+   "key": "API-001",
+   "ref": "$url_1",
+   "item": "server:url 1",
+   "what": "url_kept",
+   "title": "http://127.0.0.1:4200/health"
+  },
+  {
+   "key": "API-002",
+   "ref": "$url_2",
+   "item": "server:url 2",
+   "what": "url_kept",
+   "title": "http://127.0.0.1:3100"
+  },
+  {
+   "key": "API-003",
+   "ref": "$url_3",
+   "item": "server:url 3",
+   "what": "url_kept",
+   "title": "http://127.0.0.1:4500/health"
+  },
+  {
+   "key": "API-004",
+   "ref": "$url_4",
+   "item": "server:url 4",
+   "what": "url_kept",
+   "title": "http://127.0.0.1:3500"
+  }
+ ],
+ "roundRaw": null
+}

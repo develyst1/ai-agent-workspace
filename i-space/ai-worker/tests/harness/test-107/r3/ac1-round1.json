@@ -1,0 +1,20 @@
+{
+  "s": 200,
+  "j": {
+    "status": "bot_could_not_answer",
+    "reply": null,
+    "changeSetId": null,
+    "questions": [],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "86a7df47-2521-4e6e-8306-c9bd9d7f7313",
+      "7be939cb-8d7a-4cbb-8768-76bda3cd2b6b"
+    ],
+    "reason": "timeout",
+    "note": null,
+    "refused": null,
+    "saved": null,
+    "adjusted": null
+  }
+}

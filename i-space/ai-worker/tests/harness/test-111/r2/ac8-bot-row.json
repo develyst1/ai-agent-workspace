@@ -1,0 +1,98 @@
+{
+ "id": "1be52ee9-6978-4643-b831-3be5929fbebb",
+ "role": "bot",
+ "content": "บันทึกคำตอบของ Q-001 แล้ว (2xx/3xx ภายใน 3 วินาที = ทำงาน, 4xx/5xx = ไม่ตอบ) พร้อมเพิ่มรายละเอียดหน้าจอและกฎที่เกี่ยวข้อง เหลือเรื่องวิธีเสิร์ฟหน้าเว็บที่พอร์ต 3900 และพฤติกรรมเมื่อติด CORS ให้ยืนยันครับ",
+ "model": "fake/qa-stub",
+ "creativity": 0.5,
+ "roundStatus": "applied",
+ "changeSetId": "ec132600-c565-4cc5-933b-8d0ca8499285",
+ "createdAt": "2026-10-30T05:54:26.044Z",
+ "roundReason": null,
+ "roundNote": null,
+ "roundRefused": null,
+ "roundSaved": null,
+ "roundAdjusted": [
+  {
+   "to": "op",
+   "key": "SCR-001",
+   "ref": null,
+   "from": "type",
+   "item": "changes[0]",
+   "what": "op_renamed",
+   "title": null
+  },
+  {
+   "to": "op",
+   "key": null,
+   "ref": "$data_check",
+   "from": "type",
+   "item": "changes[1]",
+   "what": "op_renamed",
+   "title": "ผลการตรวจบริการ"
+  },
+  {
+   "to": "op",
+   "key": null,
+   "ref": "$dec_status",
+   "from": "type",
+   "item": "changes[2]",
+   "what": "op_renamed",
+   "title": "เกณฑ์ตัดสินว่าบริการ \"ทำงาน\""
+  },
+  {
+   "to": "op",
+   "key": null,
+   "ref": "$dec_timeout",
+   "from": "type",
+   "item": "changes[3]",
+   "what": "op_renamed",
+   "title": "เวลาหมดอายุการเช็ค"
+  },
+  {
+   "to": "op",
+   "key": null,
+   "ref": "$dec_scope",
+   "from": "type",
+   "item": "changes[4]",
+   "what": "op_renamed",
+   "title": "ขอบเขตที่ไม่ทำในเวอร์ชันนี้"
+  },
+  {
+   "to": "op",
+   "key": null,
+   "ref": null,
+   "from": "type",
+   "item": "changes[5]",
+   "what": "op_renamed",
+   "title": null
+  },
+  {
+   "to": "op",
+   "key": null,
+   "ref": null,
+   "from": "type",
+   "item": "changes[6]",
+   "what": "op_renamed",
+   "title": null
+  },
+  {
+   "to": "op",
+   "key": null,
+   "ref": null,
+   "from": "type",
+   "item": "changes[7]",
+   "what": "op_renamed",
+   "title": null
+  },
+  {
+   "to": "op",
+   "key": null,
+   "ref": null,
+   "from": "type",
+   "item": "changes[8]",
+   "what": "op_renamed",
+   "title": null
+  }
+ ],
+ "roundRaw": null
+}

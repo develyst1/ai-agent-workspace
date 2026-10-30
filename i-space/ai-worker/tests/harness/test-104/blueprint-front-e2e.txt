@@ -1,0 +1,9 @@
+
+  4 passed (6.3s)
+isolation exit=0
+  34 passed (41.4s)
+states exit=0
+after states:
+LISTEN 0      512    127.0.0.1:4298 0.0.0.0:* users:(("bun.exe",pid=956649,fd=8))
+checked 948 items on 48 pages × 4 themes, 0 failures
+  1 passed (2.1m)

@@ -1,0 +1,5 @@
+(fail) withReadGuard — the read fence of every hop (TASK-C-042 Part A, UP-3) > the file tools and Bash: a PreToolUse hook on Read|Glob|Grep|Bash runs the guard with the readable folders as ONE argument (JSON), not through the environment [0.23ms]
+ 835 pass
+ 1 skip
+ 1 fail
+Ran 837 tests across 65 files. [93.77s]

@@ -27,7 +27,7 @@ Weave **finished days only** — from the day after your last finished day (`mem
 still running and is woven tomorrow. For each desk and each such day:
 
 1. **Read the day's record:** `memory/digest/<date>.md` (made by `scripts/memory/extract-day.mjs` — run it first if
-   missing), new files in `ai-worker/talks/`, and that day's `DECISIONS.md` lines, `log/<date>.md` and FAILURES entries.
+   missing), new files in `ai-worker/talks/`, and that day's `DECISIONS.md` lines, `log/<date>.md` and every later part `log/<date>.N.md` of that day (follow the `→ continued in …` pointers) and FAILURES entries. *(owner via Atom 2026-10-30 16:47; ORDER 47)*
 2. **Weave into `ai-worker/memory/`** (format: `BUNNY-DESIGN-2026-10-20.md` §5.2):
    - a fact about something that already has a knot → one line on that knot, with source and date;
    - a new name that matters to the work (a person, repo, env, module, procedure, recurring question) → a new knot;

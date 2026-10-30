@@ -1,0 +1,11 @@
+Checked 223 installs across 272 packages (no changes) [20.00ms]
+$ bun run gen:themes && tsc --noEmit
+$ node scripts/gen-theme-registry.mjs
+themes: clean-blue, luxury-gold, minimal-mono
+check:no-fetch — 98 theme files, 0 problems
+check:api — src/core/api/schema.d.ts matches the OpenAPI document
+
+ 186 pass
+ 0 fail
+ 2353 expect() calls
+Ran 186 tests across 8 files. [6.57s]

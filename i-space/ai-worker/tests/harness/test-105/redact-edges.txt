@@ -1,0 +1,14 @@
+secretValues → ["must-not-leak-q7xk2","abcdef","pglite:file:/tmp/qa-t105-db"]
+OK  a bare sk-ant key: "key is ***"
+OK  b ANTHROPIC_API_KEY=: "export ANTHROPIC_API_KEY=***"
+OK  c bare env value: "the value *** printed alone"
+OK  d URL credentials: "git clone https://***@host.example/repo"
+OK  e Bearer: "Authorization: Bearer ***"
+OK  7b 6-char token value: "token value *** here"
+LEAK 7b 5-char DB_PASS (below the floor): "pass abc12 here"
+OK  7b DATABASE_URL value: "db at *** now"
+OK  ghp token: "use ***"
+OK  AWS key: "*** leaked"
+OK  JWT: "jwt ***"
+OK  path kept (not a secret): "ls /workspace/caw-workspaces/health-board"
+#8 split halves → ["the value must-not-","leak-q7xk2 continues"]

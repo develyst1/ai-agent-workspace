@@ -1,0 +1,104 @@
+{
+  "s": 200,
+  "j": {
+    "status": "applied",
+    "reply": null,
+    "changeSetId": "5fcf64c8-de9c-481f-a5e3-2d003dcccb6a",
+    "questions": [
+      "Q-001",
+      "Q-002"
+    ],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "cd51896b-1c56-418e-9bd1-b9e37b0f9771",
+      "fe9c8d94-9476-48b4-8d4c-2f885db67ba5"
+    ],
+    "reason": null,
+    "note": null,
+    "refused": [
+      {
+        "item": "changes[5]",
+        "op": "part.add",
+        "kind": "api",
+        "ref": "$api_blueprint_api_health",
+        "key": null,
+        "title": "Blueprint API Health",
+        "reason": "invalid_change",
+        "detail": "api body: ✖ Invalid string: must start with \"/\"\n  → at path"
+      },
+      {
+        "item": "changes[10]",
+        "op": "link.add",
+        "kind": "covers",
+        "ref": "$api_blueprint_api_health",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $api_blueprint_api_health, which was not saved"
+      },
+      {
+        "item": "changes[6]",
+        "op": "part.add",
+        "kind": "api",
+        "ref": "$api_blueprint_web",
+        "key": null,
+        "title": "Blueprint เว็บ",
+        "reason": "invalid_change",
+        "detail": "api body: ✖ Invalid string: must start with \"/\"\n  → at path"
+      },
+      {
+        "item": "changes[11]",
+        "op": "link.add",
+        "kind": "covers",
+        "ref": "$api_blueprint_web",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $api_blueprint_web, which was not saved"
+      },
+      {
+        "item": "changes[7]",
+        "op": "part.add",
+        "kind": "api",
+        "ref": "$api_caw_api_health",
+        "key": null,
+        "title": "CAW API Health",
+        "reason": "invalid_change",
+        "detail": "api body: ✖ Invalid string: must start with \"/\"\n  → at path"
+      },
+      {
+        "item": "changes[12]",
+        "op": "link.add",
+        "kind": "covers",
+        "ref": "$api_caw_api_health",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $api_caw_api_health, which was not saved"
+      },
+      {
+        "item": "changes[8]",
+        "op": "part.add",
+        "kind": "api",
+        "ref": "$api_caw_web",
+        "key": null,
+        "title": "CAW เว็บ",
+        "reason": "invalid_change",
+        "detail": "api body: ✖ Invalid string: must start with \"/\"\n  → at path"
+      },
+      {
+        "item": "changes[13]",
+        "op": "link.add",
+        "kind": "covers",
+        "ref": "$api_caw_web",
+        "key": null,
+        "title": null,
+        "reason": "depends_on_refused",
+        "detail": "needs $api_caw_web, which was not saved"
+      }
+    ],
+    "saved": 6,
+    "adjusted": null
+  }
+}

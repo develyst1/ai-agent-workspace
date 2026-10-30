@@ -1,0 +1,52 @@
+{
+ "cards": [
+  {
+   "id": "01a18a6a-1770-758e-9335-822b43e621f9",
+   "projectId": "446e6a60-0c50-4188-9e83-640190777bf1",
+   "number": 1,
+   "kind": "work",
+   "title": "A — cut before any label",
+   "todo": "TEST-110",
+   "status": "todo",
+   "assigneeId": null,
+   "anchor": {
+    "key": "STEP-004",
+    "version": 0
+   },
+   "anchorLabel": null,
+   "specChangedVersion": 4,
+   "anchorRemoved": false,
+   "dependsOn": [],
+   "question": null,
+   "answer": null,
+   "workable": true,
+   "stoppedMidway": null,
+   "createdAt": "2026-10-30T01:26:11.061Z",
+   "updatedAt": "2026-10-30T01:36:42.339Z"
+  },
+  {
+   "id": "01a18a6a-3553-7165-a616-78dbe4315511",
+   "projectId": "446e6a60-0c50-4188-9e83-640190777bf1",
+   "number": 2,
+   "kind": "work",
+   "title": "B — cut at v1",
+   "todo": "TEST-110",
+   "status": "todo",
+   "assigneeId": null,
+   "anchor": {
+    "key": "STEP-004",
+    "version": 1
+   },
+   "anchorLabel": "v1",
+   "specChangedVersion": 4,
+   "anchorRemoved": false,
+   "dependsOn": [],
+   "question": null,
+   "answer": null,
+   "workable": true,
+   "stoppedMidway": null,
+   "createdAt": "2026-10-30T01:26:18.712Z",
+   "updatedAt": "2026-10-30T01:36:42.339Z"
+  }
+ ]
+}

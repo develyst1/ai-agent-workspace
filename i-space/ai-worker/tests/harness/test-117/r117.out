@@ -1,0 +1,19 @@
+OK  [0.0s] setup: the fresh root has no .claude/skills — /tmp/qa117-IhpHGQ/root
+    [8.3s] team: ปลา(role-pm) · ใบเตย(role-sa) · ฝน(role-fe) · แบงค์(role-be) · มิ้นท์(role-qa)
+OK  [11.5s] AC-1 the first chat hop of the starting team STARTS on a fresh root (no "skill … not found") — hop 01a18bcb-5982 outcome replied · note "" · runner "not found" false
+OK  [11.5s] AC-1 the CLI was handed the PM role skill text — 695 chars from /tmp/caw-runner-b750ec66-e83b-458a-bda5-3e5e70571d59/hop-01a18bcb-5982-715a-87d2-3c8223d9e3c9/skills.md
+OK  [11.5s] AC-1 (Q1) the skill carries the PM's sentence — 
+OK  [11.5s] AC-1 nothing was written into the fresh root's .claude by the runner — exists false
+OK  [12.9s] AC-1 the reply shows in the chat — 
+    [13.0s] card #1 → review: 200 review
+    [13.1s] card #5 → review: 200 review
+    [13.1s] cards: #1:review:w=false #2:todo:w=false #3:todo:w=false #4:todo:w=false #5:review:w=false
+    [14.9s] report: "เสร็จแล้ว\n- ไม่มี\nทีมตัดสินเอง\n- ไม่มี\nรอคุณ\n- รอคุณตรวจ: ออกแบบ Health Board — มีอีก 3 งานรออยู่\nปัญหา\n- เหตุที่จบรอบ: ไม่มีงานที่ทำต่อได้\nค่าใช้จ่าย\n- 0 ก้าว จากงบ 10\n- โทเค็นเข้า 0 ออก 0\n- ใช้เวลา 0 วินาที"
+OK  [14.9s] AC-2 the run ends nothing_workable and the report names #1 with the PM's words — ["- รอคุณตรวจ: ออกแบบ Health Board — มีอีก 3 งานรออยู่"]
+OK  [14.9s] AC-2 never "รอคุณ — ไม่มี" when a review holds work up — 
+BAD [14.9s] AC-2 "2 waiting cards" — the count for #1 — count 3 (direct #2, #3; #4 waits through #2) → see Q
+OK  [14.9s] Q2 a review card that holds nothing up (#5) is not listed — 
+OK  [16.5s] AC-2 the board shows the same line — ["รอคุณตรวจ: ออกแบบ Health Board — มีอีก 3 งานรออยู่"]
+OK  [21.5s] AC-3 a run with nothing waiting on the operator still says "รอคุณ — ไม่มี" — ["เสร็จแล้ว","- ไม่มี","ทีมตัดสินเอง","- ไม่มี","รอคุณ","- ไม่มี","ปัญหา"]
+OK  [23.0s] AC-3 its board shows no review line — 
+run dir /tmp/qa117-IhpHGQ

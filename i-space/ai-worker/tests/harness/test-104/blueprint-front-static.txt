@@ -1,0 +1,11 @@
+$ node scripts/gen-theme-registry.mjs
+themes: clean-blue, luxury-gold, minimal-mono
+check:no-fetch — 98 theme files, 0 problems
+error: script "check:api" exited with code 1
+ 212 pass
+ 0 fail
+ 2425 expect() calls
+Ran 212 tests across 10 files. [8.22s]
+ƒ  (Dynamic)  server-rendered on demand
+
+build exit=0

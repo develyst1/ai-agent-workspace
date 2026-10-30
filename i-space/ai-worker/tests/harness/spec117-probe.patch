@@ -1,0 +1,121 @@
+diff -ru a/skills/role-ba/SKILL.md b/skills/role-ba/SKILL.md
+--- a/skills/role-ba/SKILL.md	2026-10-30 16:44:10.290293870 +0700
++++ b/skills/role-ba/SKILL.md	2026-10-30 16:44:23.558244680 +0700
+@@ -2,6 +2,6 @@
+ 
+ You are the team's business analyst. Turn a card into clear, checkable expectations from its spec part and its rules (`spec.decisions`, `spec.relatedDecisions`); write them on the card; ask the operator only what the spec cannot answer.
+ 
+-Before you ask the operator anything, read the card's `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
++Before you ask the operator anything, read the card's `spec.requirements`, `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
+ 
+ Anything a user reads — card text, comments, questions — is in Thai, short and plain.
+diff -ru a/skills/role-be/SKILL.md b/skills/role-be/SKILL.md
+--- a/skills/role-be/SKILL.md	2026-10-30 16:44:10.294293854 +0700
++++ b/skills/role-be/SKILL.md	2026-10-30 16:44:23.558244680 +0700
+@@ -2,6 +2,6 @@
+ 
+ You are the team's back-end engineer. Build the server and data the card asks for inside your working folder, run it, and check it with real requests before you hand off.
+ 
+-Before you ask the operator anything, read the card's `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
++Before you ask the operator anything, read the card's `spec.requirements`, `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
+ 
+ Anything a user reads — card text, comments, questions — is in Thai, short and plain.
+diff -ru a/skills/role-fe/SKILL.md b/skills/role-fe/SKILL.md
+--- a/skills/role-fe/SKILL.md	2026-10-30 16:44:10.302293825 +0700
++++ b/skills/role-fe/SKILL.md	2026-10-30 16:44:23.558244680 +0700
+@@ -2,6 +2,6 @@
+ 
+ You are the team's front-end engineer. Build the screens the card asks for inside your working folder, run them, and check them the way a user would before you hand off.
+ 
+-Before you ask the operator anything, read the card's `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
++Before you ask the operator anything, read the card's `spec.requirements`, `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
+ 
+ Anything a user reads — card text, comments, questions — is in Thai, short and plain.
+diff -ru a/skills/role-pm/SKILL.md b/skills/role-pm/SKILL.md
+--- a/skills/role-pm/SKILL.md	2026-10-30 16:44:10.306293811 +0700
++++ b/skills/role-pm/SKILL.md	2026-10-30 16:44:23.558244680 +0700
+@@ -2,6 +2,6 @@
+ 
+ You are the team's PM. In chat you are the operator's partner: understand what they need, ask only what you cannot decide, then propose cards — each one testable piece, anchored to the spec part it builds, given to the right teammate, with its dependencies. On a card you plan and split work; you do not write code.
+ 
+-Before you ask the operator anything, read the card's `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
++Before you ask the operator anything, read the card's `spec.requirements`, `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
+ 
+ Anything a user reads — card text, comments, questions — is in Thai, short and plain.
+diff -ru a/skills/role-qa/SKILL.md b/skills/role-qa/SKILL.md
+--- a/skills/role-qa/SKILL.md	2026-10-30 16:44:10.310293797 +0700
++++ b/skills/role-qa/SKILL.md	2026-10-30 16:44:23.558244680 +0700
+@@ -2,6 +2,6 @@
+ 
+ You are the team's tester. Check the card's work against its spec part and every rule it must follow; say what you ran and what you saw; when it meets the card, set it to review; when it does not, hand it back with what failed. You never fix the code.
+ 
+-Before you ask the operator anything, read the card's `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
++Before you ask the operator anything, read the card's `spec.requirements`, `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
+ 
+ Anything a user reads — card text, comments, questions — is in Thai, short and plain.
+diff -ru a/skills/role-sa/SKILL.md b/skills/role-sa/SKILL.md
+--- a/skills/role-sa/SKILL.md	2026-10-30 16:44:10.314293781 +0700
++++ b/skills/role-sa/SKILL.md	2026-10-30 16:44:23.558244680 +0700
+@@ -2,6 +2,6 @@
+ 
+ You are the team's solution architect. Decide how a card is built — files, data, contracts between front and back — and write it on the card before anyone builds; hand the card to the builder it needs.
+ 
+-Before you ask the operator anything, read the card's `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
++Before you ask the operator anything, read the card's `spec.requirements`, `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.
+ 
+ Anything a user reads — card text, comments, questions — is in Thai, short and plain.
+diff -ru a/src/http/routes/projects.ts b/src/http/routes/projects.ts
+--- a/src/http/routes/projects.ts	2026-10-30 16:44:10.282293899 +0700
++++ b/src/http/routes/projects.ts	2026-10-30 16:44:23.558244680 +0700
+@@ -7,6 +7,7 @@
+ import { errors } from "../errors";
+ 
+ const json = <T extends z.ZodType>(schema: T, description: string) => ({ description, content: { "application/json": { schema } } });
++const RequirementsSchema = z.object({ revision: z.number(), requirements: z.array(z.object({ key: z.string(), title: z.string(), text: z.string() })) }).openapi("Requirements");
+ const Id = z.object({ id: z.string() }); // not .uuid(): an id that is no project is 404, as Blueprint does
+ 
+ // v1.16 (REQ-015 R2a): the setup step's result. Every string 1–500, notes ≤ 2 000, each list ≤ 50, folders ≥ 1; rules (and the other lists) may be empty.
+@@ -72,6 +73,19 @@
+   }), async (c) => c.json(await projectView(db, await getProject(db, c.req.valid("param").id)), 200));
+ 
+   // REQ-112 (SPEC-109 D2/D4): advisory — never blocks accepting a proposal or starting a run. Any actor may read it.
++  // SPEC-117 D2: every requirement of Blueprint's current spec (route 1), by key — the chat hop's system prompt
++  app.openapi(createRoute({
++    method: "get", path: "/v1/projects/{projectId}/requirements", request: { params: z.object({ projectId: z.string() }) },
++    responses: { 200: json(RequirementsSchema, "every requirement part of Blueprint's current spec, sorted by key"), 404: errors[404], 502: errors[502] },
++  }), async (c) => {
++    const project = await getProject(db, c.req.valid("param").projectId);
++    const spec = await blueprint.spec(project.blueprintProjectId);
++    if (spec === null) return c.json({ revision: 0, requirements: [] }, 200);
++    const requirements = (spec.parts as { key: string; kind: string; title: string; body?: { text?: string } }[]).filter((p) => p.kind === "requirement")
++      .map((p) => ({ key: p.key, title: p.title, text: p.body?.text ?? "" })).sort((a, b) => a.key.localeCompare(b.key, "en", { numeric: true }));
++    return c.json({ revision: spec.revision, requirements }, 200);
++  });
++
+   app.openapi(createRoute({
+     method: "get", path: "/v1/projects/{projectId}/coverage", request: { params: z.object({ projectId: z.string() }), query: z.object({ proposalId: z.string().uuid().optional() }) },
+     responses: { 200: json(CoverageSchema, "the decisions of Blueprint's current spec that no work card (nor the asked-for proposal) covers"), 400: errors[400], 404: errors[404], 502: errors[502] },
+diff -ru a/src/runner/api.ts b/src/runner/api.ts
+--- a/src/runner/api.ts	2026-10-30 16:44:10.278293913 +0700
++++ b/src/runner/api.ts	2026-10-30 16:44:23.558244680 +0700
+@@ -73,6 +73,8 @@
+     card: (id: string) => call<Card>("GET", `/v1/cards/${enc(id)}`, null),
+     /** the project's chain: its members (with name and roles) and who may hand to whom (SPEC-116 D3.2) */
+     chain: (projectId: string) => call<{ members: Worker[]; edges: { from: string; to: string }[] }>("GET", `/v1/projects/${enc(projectId)}/chain`, null),
++    /** SPEC-117 D2: every requirement of the current spec, by key */
++    requirements: (projectId: string) => call<{ revision: number; requirements: { key: string; title: string; text: string }[] }>("GET", `/v1/projects/${enc(projectId)}/requirements`, null),
+     /** newest first */
+     hops: async (projectId: string, limit = 50) => (await call<{ hops: Hop[] }>("GET", `/v1/projects/${enc(projectId)}/hops?limit=${limit}`, null)).hops,
+     events: async (projectId: string, after: number, limit = 500) =>
+diff -ru a/src/runner/prompt.ts b/src/runner/prompt.ts
+--- a/src/runner/prompt.ts	2026-10-30 16:44:10.286293883 +0700
++++ b/src/runner/prompt.ts	2026-10-30 16:44:23.558244680 +0700
+@@ -20,7 +20,7 @@
+     "",
+     "1. Call the MCP tool `card_context` first (with that cardId), then do the work.",
+     // REQ-112 (SPEC-109 D1): a rule on a related part binds the card too — Blueprint puts those in `spec.relatedDecisions`
+-    "2. Follow every rule in `spec.decisions` and `spec.relatedDecisions` of your card's context — a rule on a related part applies to your card too.",
++    "2. Follow every requirement in `spec.requirements` and every rule in `spec.decisions` and `spec.relatedDecisions` of your card's context — the requirements bind every card, whatever its anchor; a rule on a related part applies to your card too.",
+     "3. End this step with exactly one of the MCP tools: `comment`, `hand_off`, `set_status`, `ask_operator`.",
+     // SPEC-116 D3.2: the only other place a worker learns whom it may hand to is the refusal — say it up front, by name and role
+     ...(recipients.length === 0 ? [] : [`You may hand off to: ${recipients.map((r) => `${r.name} (${r.roles.join(" + ")})`).join(", ")} — pass the name (or the id) as \`toWorkerId\` of \`hand_off\`.`]),

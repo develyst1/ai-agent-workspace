@@ -1,0 +1,18 @@
+project 18c87086-617d-4a47-82f4-45a3963129dc model tier:medium
+round1: HTTP 200 in 94 s · status applied · reason - · note - · saved 6 · refused 8 · adjusted 0 · questions 2
+parts 5 · links 1
+ Q-001 [question] ให้ตัวตรวจสอบทำงานฝั่งเซิร์ฟเวอร์ของแอป เพื่อให้ตรวจ URL ข้ามพอร์ตได้โดยไม่ติดข้อจำกัด CORS ของเบราว์เซอร์หรือไม่ :: {"text":"ให้ตัวตรวจสอบทำงานฝั่งเซิร์ฟเวอร์ของแอป เพื่อให้ตรวจ URL ข้ามพอร์ตได้โดยไม่ติดข้อจำกัด CORS ของเบราว์เซอร์หรือไม่","cases":["หากตรวจจากเบราว์เซอร์โดยตรง ปลายทางทั้ง 4 ต้องรองรับ CORS","หากตรวจจากฝั่งเซิร์ฟเวอร์ 
+ Q-002 [question] HTTP status ใดควรนับว่าบริการ “ทำงาน” :: {"text":"HTTP status ใดควรนับว่าบริการ “ทำงาน”","cases":["หน้าเว็บอาจ redirect จึงควรรองรับ 3xx","API health ปกติควรตอบ 2xx","4xx/5xx แปลว่าปลายทางตอบได้แต่บริการไม่พร้อมตามเกณฑ์ที่เสนอ"],"status":"open","proposedAnswer"
+ SCR-001 [screen] หน้า I-Space Health Board :: {"fields":[{"name":"serviceName","type":"text","label":"ชื่อบริการ"},{"name":"status","type":"text","label":"สถานะ"},{"name":"responseTimeMs","type":"number","label":"เวลาตอบ (ms)"},{"name":"checkedAt","type":"datetime",
+ STEP-001 [step] ตรวจสอบสถานะบริการ :: {"ends":true}
+ WRK-001 [work] I-Space Health Board :: {"goal":"สร้างหน้าเว็บภาษาไทยหน้าเดียวที่รันบน http://127.0.0.1:3900 เพื่อให้ผู้ใช้เห็นสถานะปัจจุบันของ Blueprint API, Blueprint เว็บ, CAW API และ CAW เว็บ พร้อมเวลาตอบและเวลาเช็คล่าสุด โดยตรวจซ้ำอัตโนมัติทุก 10 วินาทีแล
+ question offered: "Q-001"
+ question offered: "Q-002"
+ refused: {"item":"changes[5]","op":"part.add","kind":"api","ref":"$api_blueprint_api_health","key":null,"title":"Blueprint API Health","reason":"invalid_change","detail":"api body: ✖ Invalid string: must start
+ refused: {"item":"changes[10]","op":"link.add","kind":"covers","ref":"$api_blueprint_api_health","key":null,"title":null,"reason":"depends_on_refused","detail":"needs $api_blueprint_api_health, which was not s
+ refused: {"item":"changes[6]","op":"part.add","kind":"api","ref":"$api_blueprint_web","key":null,"title":"Blueprint เว็บ","reason":"invalid_change","detail":"api body: ✖ Invalid string: must start with \"/\"\n
+ refused: {"item":"changes[11]","op":"link.add","kind":"covers","ref":"$api_blueprint_web","key":null,"title":null,"reason":"depends_on_refused","detail":"needs $api_blueprint_web, which was not saved"}
+ refused: {"item":"changes[7]","op":"part.add","kind":"api","ref":"$api_caw_api_health","key":null,"title":"CAW API Health","reason":"invalid_change","detail":"api body: ✖ Invalid string: must start with \"/\"\
+ refused: {"item":"changes[12]","op":"link.add","kind":"covers","ref":"$api_caw_api_health","key":null,"title":null,"reason":"depends_on_refused","detail":"needs $api_caw_api_health, which was not saved"}
+ refused: {"item":"changes[8]","op":"part.add","kind":"api","ref":"$api_caw_web","key":null,"title":"CAW เว็บ","reason":"invalid_change","detail":"api body: ✖ Invalid string: must start with \"/\"\n  → at path"
+ refused: {"item":"changes[13]","op":"link.add","kind":"covers","ref":"$api_caw_web","key":null,"title":null,"reason":"depends_on_refused","detail":"needs $api_caw_web, which was not saved"}

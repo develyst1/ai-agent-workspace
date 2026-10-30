@@ -1,0 +1,43 @@
+{
+  "s": 200,
+  "j": {
+    "status": "applied",
+    "reply": null,
+    "changeSetId": "ea4128ab-e35e-44e6-a1ce-bd2bad11b2d3",
+    "questions": [
+      "Q-003"
+    ],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "06456d6e-76d2-4bfa-ba4f-ff2fb2d7e36c",
+      "cd336978-ee93-44ba-8e9e-b96afb5027b2"
+    ],
+    "reason": null,
+    "note": null,
+    "refused": [
+      {
+        "item": "changes[10]",
+        "op": "link.add",
+        "kind": "to",
+        "ref": null,
+        "key": null,
+        "title": null,
+        "reason": "invalid_change",
+        "detail": "no live part \"$api_check\""
+      },
+      {
+        "item": "changes[11]",
+        "op": "link.add",
+        "kind": "from",
+        "ref": null,
+        "key": null,
+        "title": null,
+        "reason": "invalid_change",
+        "detail": "no live part \"$api_check\""
+      }
+    ],
+    "saved": 14,
+    "adjusted": null
+  }
+}

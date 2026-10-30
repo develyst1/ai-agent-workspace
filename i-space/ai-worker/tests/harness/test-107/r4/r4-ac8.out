@@ -1,0 +1,10 @@
+OK  AC-8 setup: the live round-2 state rebuilt (7 parts, all team-proposed as live, Q-001 open) — applied; ["INT-001:team-proposed","INT-002:team-proposed","Q-001:team-proposed","ROLE-001:team-proposed","SCR-001:team-proposed","STEP-001:team-proposed","WRK-001:team-proposed"]; refused null
+OK  AC-8 the page offers "ตามนั้น" for Q-001 — ["ตามนั้น","ตามนั้นทั้ง 1 ข้อ"]
+OK  AC-8 round applied, 1 call, nothing refused — applied / -; calls 1; refused null
+OK  AC-8 the new parts stored (data + 3 decisions; the 2 new questions of the reply too) — ["DATA-001 ผลการตรวจบริการ","DEC-001 เกณฑ์ตัดสินว่าบริการ \"ทำงาน\"","DEC-002 เวลาหมดอายุการเช็ค","DEC-003 ขอบเขตที่ไม่ทำในเวอร์ชันนี้","Q-002 หน้าเว็บที่ http://127.0.0.1:3900 จะถูกเสิร์ฟอย่างไร — ไฟล์ HTML เดียวรันผ่าน static server หรือมีเซิร์ฟเวอร์ตัวเล็กของเราเอง?","Q-003 การเรียกจากหน้าเว็บ (3900) ไปยัง 4200/3100/4500/3500 ถ้าปลายทางไม่ส่ง CORS header จนเบราว์เซอร์บล็อก ควรทำอย่างไร?"]
+OK  AC-8 the data part holds all 4 URLs — http://127.0.0.1:4200/health:true http://127.0.0.1:3100:true http://127.0.0.1:4500/health:true http://127.0.0.1:3500:true
+OK  AC-8 SCR-001 updated (fields now carry ms / status enum) — {"fields":[{"name":"service","label":"ชื่อบริการ"},{"name":"status","type":"enum: ทำงาน | ไม่ตอบ","label":"สถานะ"},{"name":"responseMs","type":"number","label":
+OK  AC-8 Q-001 answered, no longer open — "answered"
+OK  AC-8 the 4 links stored — links 0 → 4
+OK  AC-8 the record names each `type`→`op` repair — ["op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed"]
+OK  AC-8 no "nothing saved" claim on a stored round — "บันทึกคำตอบของ Q-001 แล้ว (2xx/3xx ภายใน 3 วินาที = ทำงาน, 4xx/5xx = ไม่ตอบ) พร้อมเพิ่มรายละเอียดหน้"

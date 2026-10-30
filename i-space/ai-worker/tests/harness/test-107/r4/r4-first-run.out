@@ -1,0 +1,11 @@
+OK  AC-8 setup: the live round-2 state rebuilt (7 parts incl. SCR-001, STEP-001, WRK-001, Q-001 open) — applied; ["INT-001","INT-002","Q-001","ROLE-001","SCR-001","STEP-001","WRK-001"]; refused null
+OK  AC-8 the page offers "ตามนั้น" for Q-001 — ["ตามนั้น","ตามนั้นทั้ง 1 ข้อ"]
+BAD AC-8 round applied, 1 call, nothing refused — applied / -; calls 2; refused [{"op":"part.update","key":"SCR-001","ref":null,"item":"changes[0]","kind":null,"title":null,"detail":"SCR-001 was stated by a person; changing it needs the user's own words (quote)","reason":"needs_user_words"}]
+BAD AC-8 the 4 new parts stored (data + 3 decisions) — ["DATA-001 ผลการตรวจบริการ","DEC-001 เกณฑ์ตัดสินว่าบริการ \"ทำงาน\"","DEC-002 เวลาหมดอายุการเช็ค","DEC-003 ขอบเขตที่ไม่ทำในเวอร์ชันนี้","Q-002 หน้าเว็บที่ http://127.0.0.1:3900 จะถูกเสิร์ฟอย่างไร — ไฟล์ HTML เดียวรันผ่าน static server หรือมีเซิร์ฟเวอร์ตัวเล็กของเราเอง?","Q-003 การเรียกจากหน้าเว็บ (3900) ไปยัง 4200/3100/4500/3500 ถ้าปลายทางไม่ส่ง CORS header จนเบราว์เซอร์บล็อก ควรทำอย่างไร?"]
+OK  AC-8 the data part holds all 4 URLs — http://127.0.0.1:4200/health:true http://127.0.0.1:3100:true http://127.0.0.1:4500/health:true http://127.0.0.1:3500:true
+BAD AC-8 SCR-001 updated (fields now carry ms / status enum) — {"fields":[{"name":"serviceName","type":"text","label":"ชื่อบริการ"},{"name":"serviceStatus","type":"text","label":"สถานะ"},{"name":"responseTime","type":"text"
+OK  AC-8 Q-001 answered, no longer open — "answered"
+OK  AC-8 the 4 links stored — links 0 → 4
+BAD AC-8 the record names each `type`→`op` repair — ["op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed"]
+OK  AC-8 no "nothing saved" claim on a stored round — undefined
+OK  AC-9 a 120 s first answer is stored, not dropped — applied / - after 140 s; parts 1; calls 1

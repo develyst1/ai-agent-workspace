@@ -1,0 +1,20 @@
+{
+  "s": 200,
+  "j": {
+    "status": "bot_could_not_answer",
+    "reply": null,
+    "changeSetId": "72171499-5040-4f5f-ac73-6e3679acc20f",
+    "questions": [],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "6dc96420-48cd-48e8-bafc-8f4183f2559c",
+      "50edd110-0ec3-4492-819b-79e820a31a8f"
+    ],
+    "reason": "protocol",
+    "note": null,
+    "refused": null,
+    "saved": null,
+    "adjusted": null
+  }
+}

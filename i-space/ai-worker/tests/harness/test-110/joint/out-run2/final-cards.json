@@ -1,0 +1,76 @@
+{
+ "cards": [
+  {
+   "id": "01a18b08-690d-726b-9c44-c469026c63f2",
+   "projectId": "95db1f59-5692-415e-a5a0-2dd664f0960c",
+   "number": 1,
+   "kind": "work",
+   "title": "A — before any label",
+   "todo": "TEST-110 joint",
+   "status": "todo",
+   "assigneeId": "01a18b08-68ed-71c3-af30-d050e5bf091d",
+   "anchor": {
+    "key": "STEP-002",
+    "version": 0
+   },
+   "anchorLabel": null,
+   "specChangedVersion": 5,
+   "anchorRemoved": false,
+   "dependsOn": [],
+   "question": null,
+   "answer": null,
+   "workable": true,
+   "stoppedMidway": null,
+   "createdAt": "2026-10-30T04:19:06.641Z",
+   "updatedAt": "2026-10-30T04:20:23.382Z"
+  },
+  {
+   "id": "01a18b08-8457-7451-8570-fb20ab363d0f",
+   "projectId": "95db1f59-5692-415e-a5a0-2dd664f0960c",
+   "number": 2,
+   "kind": "work",
+   "title": "A2 — push",
+   "todo": "TEST-110 joint",
+   "status": "todo",
+   "assigneeId": "01a18b08-68ed-71c3-af30-d050e5bf091d",
+   "anchor": {
+    "key": "SCR-001",
+    "version": 0
+   },
+   "anchorLabel": null,
+   "specChangedVersion": 3,
+   "anchorRemoved": false,
+   "dependsOn": [],
+   "question": null,
+   "answer": null,
+   "workable": true,
+   "stoppedMidway": null,
+   "createdAt": "2026-10-30T04:19:13.628Z",
+   "updatedAt": "2026-10-30T04:19:13.664Z"
+  },
+  {
+   "id": "01a18b08-8b68-77f5-b9f3-b74c509a6473",
+   "projectId": "95db1f59-5692-415e-a5a0-2dd664f0960c",
+   "number": 3,
+   "kind": "work",
+   "title": "B — cut at v1",
+   "todo": "TEST-110 joint",
+   "status": "todo",
+   "assigneeId": "01a18b08-68ed-71c3-af30-d050e5bf091d",
+   "anchor": {
+    "key": "STEP-002",
+    "version": 1
+   },
+   "anchorLabel": "v1",
+   "specChangedVersion": 5,
+   "anchorRemoved": false,
+   "dependsOn": [],
+   "question": null,
+   "answer": null,
+   "workable": true,
+   "stoppedMidway": null,
+   "createdAt": "2026-10-30T04:19:15.436Z",
+   "updatedAt": "2026-10-30T04:20:23.382Z"
+  }
+ ]
+}

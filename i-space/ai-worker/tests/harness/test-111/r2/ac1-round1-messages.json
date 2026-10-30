@@ -1,0 +1,34 @@
+[
+ {
+  "id": "4bb28482-dcfe-4dd3-8c2b-1dea06f37782",
+  "role": "user",
+  "content": "ชื่อ: I-Space Health Board — หน้าเว็บเดียว ดูว่าบริการของ I-Space ตัวไหนเปิดอยู่\n1. แสดง 4 บริการ: Blueprint API (http://127.0.0.1:4200/health), Blueprint เว็บ (http://127.0.0.1:3100), CAW API (http://127.0.0.1:4500/health), CAW เว็บ (http://127.0.0.1:3500).\n2. แต่ละบริการแสดง: ชื่อ · สถานะ \"ทำงาน\" (เขียว) หรือ \"ไม่ตอบ\" (แดง) · เวลาตอบเป็น ms · เวลาที่เช็คล่าสุด.\n3. เช็คใหม่เองทุก 10 วินาที และมีปุ่ม \"เช็คตอนนี้\".\n4. ถ้าบริการไม่ตอบภายใน 3 วินาที ให้ถือว่า \"ไม่ตอบ\".\n5. รันในเครื่องที่ http://127.0.0.1:3900 ไม่ต้อง login ไม่ต้องมีฐานข้อมูล.\n6. ข้อความบนหน้าเป็นภาษาไทย.\nไม่ทำ: login, การแจ้งเตือน, เก็บประวัติ, deploy.",
+  "model": "tier:medium",
+  "creativity": 0.5,
+  "roundStatus": null,
+  "changeSetId": null,
+  "createdAt": "2026-10-30T06:09:57.467Z",
+  "roundReason": null,
+  "roundNote": null,
+  "roundRefused": null,
+  "roundSaved": null,
+  "roundAdjusted": null,
+  "roundRaw": null
+ },
+ {
+  "id": "4e2ec2a8-1ac7-4ba2-b3dc-2a338126e0ea",
+  "role": "bot",
+  "content": "รับสเปกหน้า I-Space Health Board แล้ว เหลือยืนยันเกณฑ์ HTTP ที่ถือว่าใช้งานได้ และวิธีเช็คผ่านเซิร์ฟเวอร์ในเครื่องเพื่อกำหนดพฤติกรรมการตรวจสอบให้ชัดเจน",
+  "model": "openai/gpt-5.6-terra",
+  "creativity": 0.5,
+  "roundStatus": "applied",
+  "changeSetId": "2eb6add0-7b56-423c-a081-e0b49af4d0b7",
+  "createdAt": "2026-10-30T06:11:22.242Z",
+  "roundReason": null,
+  "roundNote": null,
+  "roundRefused": null,
+  "roundSaved": null,
+  "roundAdjusted": null,
+  "roundRaw": null
+ }
+]

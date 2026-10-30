@@ -1,0 +1,27 @@
+    [5.1s] Blueprint p1 430351a4-c0b0-4aed-9c20-68e3a8afe35b (change-set 201, keys {"$w":"WRK-001","$scr":"SCR-001","$s1":"STEP-001","$s2":"STEP-002","$d":"DEC-001"}) · p2 e590ea5f-88f8-4eb9-8bd4-2e997a9acf1c (no parts, no label)
+    [5.9s] blueprint-front ready page: button 1 href http://127.0.0.1:3541/start?project=e590ea5f-88f8-4eb9-8bd4-2e997a9acf1c
+OK  [6.8s] AC-3 Blueprint's "ส่งไปสร้างที่ CAW" on a project with NO label → a CAW board, no "ลิงก์นี้ไม่ครบ" — href http://127.0.0.1:3541/start?project=e590ea5f-88f8-4eb9-8bd4-2e997a9acf1c → http://127.0.0.1:3541/p/2e252f4a-c753-4749-a11c-703794dcd82c
+OK  [6.9s] AC-3 API: CAW project from a real Blueprint project with no label — 201 spec {"revision":1,"reachable":true,"lastPullAt":null}
+OK  [6.9s] AC-4 card A cut with no label — {"anchor":{"key":"STEP-002","version":0},"anchorLabel":null}
+OK  [13.9s] AC-1 (poll only) an edit in Blueprint, no label → CAW flags the card and the part reader shows the new text within 30 s — edit 201; after 6.961s
+OK  [14.2s] AC-1 (push on) the same, through Blueprint's spec.changed push — after 0.263s; pushes relayed 1
+OK  [15.4s] AC-1 the board shows the cards as changed — 
+OK  [15.7s] AC-4 Blueprint's label v1 reaches CAW — label 201; after 0.289s
+OK  [16.0s] AC-4 project shows v2, card B keeps v1 — after 0.265s; B v1
+OK  [19.6s] AC-4 header ป้าย v2 · card A ตัดงานก่อนมีป้าย · card B ตัดงานที่ป้าย v1 · content = latest — 
+OK  [21.8s] AC-2 hop 1 reads its start text before AND after the mid-hop edit — TEST-110 start-read (hop 01a18b08-9ba7-7458-90aa-10dd313dbfb4): 200 title=เช็คสถานะทั้ง 4 บริการ (แก้ครั้งที่ 1) revision=3 pinned=true fromCache=false | TEST-110 mid-read (hop 01a18b08-9ba7-7458-90aa-10dd313dbfb4): 200 title=เช็คสถานะทั้ง 4 บริการ (แก้ครั้งที่ 1) revision=3 pinned=true fromCache=false
+OK  [21.8s] AC-2 hop 2 reads the new text — TEST-110 start-read (hop 01a18b08-9ed7-7728-a54f-36a823d200c2): 200 title=เช็คสถานะทั้ง 4 บริการ (แก้กลางก้าว) revision=4 pinned=true fromCache=false
+OK  [23.8s] AC-5 CAW shows unreachable and serves the last read — after 2.053s; context 200 {"revision":4,"readAt":"2026-10-30T04:19:21.507Z","fromCache":true,"pinned":false}
+OK  [25.2s] AC-5 a hop started while unreachable works on the last read — TEST-110 start-read (hop 01a18b08-ab36-75a0-8919-28611a4022c6): 200 title=เช็คสถานะทั้ง 4 บริการ (แก้กลางก้าว) revision=4 pinned=true fromCache=true
+OK  [26.4s] AC-5 the board says so (PM's sentence) — 
+    [81.8s] net down for 60s
+OK  [83.8s] AC-5 back: CAW catches up with the edit made while it could not see, without a restart — after 2.06s; first pull GET /v1/projects/430351a4-c0b0-4aed-9c20-68e3a8afe35b/spec/changes?after=4 (CAW's last revision before: 4)
+OK  [85.1s] AC-5 the sentence is gone — 
+OK  [85.1s] Q6 CAW takes a nameless label (version 2, label null) without error — 201 latestLabel {"version":2,"label":null}
+BAD [88.5s] Q6 header shows ป้าย 2, never "ป้าย null" — ["ป้าย 2บอร์ดทีมการ","ป้าย 2\\\"}],[\\\"$\\\""]
+OK  [88.5s] Q6 projects list chip shows ป้าย 2 for it, no "null" anywhere on the list — 
+BAD [88.5s] Q6 its card: ตัดงานที่ป้าย 2, no null — undefined
+OK  [88.5s] AC-6 / D1: CAW called no v1 versions / locate / versioned context on the real Blueprint — 0 
+OK  [88.5s] AC-6 rebuild-check same — {"same":true}
+OK  [88.5s] AC-6 Blueprint's v1 feed still answers (unchanged route) — 200 versions 2
+run dir /tmp/qa110j-sEMOrI

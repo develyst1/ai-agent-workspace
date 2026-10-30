@@ -2034,7 +2034,537 @@ to the engineer's inbox); nudge-session (a bell can be dropped, so the inbox lin
 4. Run `check-harness` and `check-hygiene` on each desk you touched. Report the results to the Operations log.
    No git.
 
+### ORDER 39 — 2026-10-29 — ✅ DONE 2026-10-29 (Marie; see Operations log — one deviation: the seed is REQ-101, not REQ-001, per item 5's ID finding) — ▶️ GO: owner via Atom 00:24 *"ใช้ชื่ออะไรก็แล้วแต่ เอาที่มันโอเค แล้วก็เรื่องการคอมมิต ก็คอมมิตแอนด์ซิงค์ตามเดิม แล้วก็ตอนเปิดก็สั่งพีเอ็ม ให้เขาไปสั่งเอสเอทำก็ได้"* — open the desk `i-space` (I-Space = Intelligent Space: Blueprint + CAW), on Atom's box
+
+**The owner's words, in order (all relayed by Atom; Atlas's reading is in `ATLAS.md` § "CAW + Blueprint: desk
+recommendation"):**
+- 00:00 *"อันนี้ cloneลง สี่อันได้เลย ทำความเข้าใจโค้ดทั้งหมด และ ปรึกษาATLAS เปิดตัวทำงานนี้ว่าต้องใช้เอสเอกี่ทีม"*
+- 00:16 *"…สองโปรเจกต์นี้มันคือโปรเจกต์ใหญ่เดียวกัน เราจะเรียกโปรเจกต์นี้ว่า I space ย่อมาจาก Intelligent Space"*
+- 00:19 *"ข้อหนึ่ง เปิดพิเศษให้ใช้สี่ repo ได้ แล้วก็ลบบัดดี้สกรีนออกไปเลย เพราะว่าเราโค้ดขึ้น git แล้ว / ข้อสอง
+  ให้ย้ายสเปคกับการตัดสินใจของทีมเก่าตามนั้นมาเลย / ข้อสาม CAW จะใช้ Claude แบบ Subscription เปิด Claude CLI
+  ที่เซิร์ฟเวอร์ฝั่งที่ deploy แล้วสั่งงานเหมือนสั่ง Atom เลย CAW คือเสมือน Atom"*
+- Atom's note, 2026-10-29: the owner decided that all four repos have develop/production/atom at the latest
+  code, and the desk works on `atom`.
+- 00:24, the GO quoted above.
+
+**Answers:**
+- **project:** I-Space. Blueprint is a spec-authoring service: an AI interview turns sources into a confirmed
+  spec version. CAW is the AI-workforce runner: it executes work from Blueprint's confirmed versions with Claude
+  CLI workers, and is "เสมือน Atom". It is the owner's own product.
+- **mode:** manual. One interactive CLI session per role in tmux. Never `claude -p`. Atom opens them.
+- **team:** one desk with two SA teams, split by product. Short code **ISP**; sessions are `<Name>-ISP`.
+
+  | Name | Role · team | Inbox |
+  |---|---|---|
+  | Porter | PM (+BA) · all | `inbox/PM.md` |
+  | Tanya | QA · all | `inbox/QA.md` |
+  | Sober | SA · A, Blueprint | `inbox/SA.md` |
+  | Jason | BE · A | `inbox/BE.md` |
+  | Fern | FE · A | `inbox/FE.md` |
+  | Silver | SA · B, CAW | `inbox/SA-B.md` |
+  | Bob | BE · B | `inbox/BE-B.md` |
+  | Fanta | FE · B | `inbox/FE-B.md` |
+
+  The names and inbox shape are the same as smart-scheduler's TEAMS.md. Models: PM/SA/QA opus medium,
+  engineers sonnet medium. Owner duties: design-approve and deploy.
+- **repos** (logical names; paths only in `machine.local.md`):
+  - Team A: `blueprint-back` (API :4200) and `blueprint-front` (:3100).
+  - Team B: `caw-back` (API :4500, plus MCP server and runner) and `caw-front` (:3500).
+  - Two teams never share a repo.
+- **The seams** are the only SA-to-SA wire, and every change to them goes through the PM.
+  - The read API: `caw-back/src/blueprint/client.ts` calls `blueprint-back/src/seam/*`. Blueprint owns the
+    contract; CAW consumes it.
+  - The front link: blueprint-front's ready screen opens caw-front `/start` (`CAW_URL`).
+- **git:** `CLAUDE.md` §6. Each team's SA types the owner's three commands, relayed by the PM ("คอมมิตแอนด์ซิงค์
+  ตามเดิม").
+  - Branch: `atom` in all four repos. Never create a branch.
+  - Each repo has `merge-workflow.sh` and `release-workflow.sh`.
+  - The old team's "ไม่ต้องยุ่งกับ git เด็ดขาด" is superseded for this desk by the 00:24 words.
+- **systems:** this machine only, for local runs. CAW in production runs Claude CLI on a Claude subscription on
+  the deploy server. Locally, tests use mocks/fixtures. A live Claude CLI run uses the subscription quota, so it
+  is a question for the owner through the PM first.
+- **seats:** customer = skipped (own product, so no `customer-validated` stamp ever). designer, platform and
+  deploy → operator. qa human = `— ยังไม่มี`.
+
+**For Marie:**
+1. **Codebases.**
+   - In `/workspace/codebases/ACTIVE.md`, remove the two buddy-screen rows. Their folders stay on disk; both are
+     clean and level with `origin/main` (spec at `68d3aef`, front at `8a3280c`; Atlas checked 2026-10-29).
+   - List the four I-Space repos with branch `atom` and HEAD.
+   - Add a dated line to `RULES.md` and `ACTIVE.md`: *owner exception 2026-10-29 (via Atom 00:19): I-Space may
+     have 4 active repos — "เปิดพิเศษให้ใช้สี่ repo ได้"*. Do not change the general rule.
+   - Add `machine.local.md` rows for the four clones (`/workspace/codebases/<name>`, owner-confirmed).
+   - No git anywhere: the clones already exist on `atom`.
+2. **Do not touch the `buddy-screen/` desk folder.** It is parked, not deleted. Its tmux sessions are Atom's
+   business. Say so in your report.
+3. **Install and fill the desk.**
+   - Run `install.mjs i-space`, then fill `TEAMS.md` (the table above), `SEATS.md`, and `DECISIONS.md`.
+     DECISIONS gets one line per owner decision above, stamped `[operator via Atom 2026-10-29]`, each with its
+     quote.
+   - `PROTOCOL.md` gets Hard boundaries and the repo-to-team map: the seam rule, git on `atom`, and live Claude
+     runs only on the owner's word.
+   - Copy the CAW per-team wiring (SA-B, FE-B, BE-B inboxes and chain pairs) from smart-scheduler's shape. Do
+     not invent a new shape.
+4. **SYSTEM-FACTS.** Only what the owner said, plus a read-only survey taken from `ATLAS.md`: stack, ports,
+   sizes, the seams and the spec-ID series. Mark the survey `[team-proposed, Atlas read 2026-10-29]`.
+5. **The old team's memory is not here yet** (Atom brings `~/Develyst/intelligence-space` from the owner's
+   machine). Create `ai-worker/legacy/README.md` saying:
+   - the old SPEC/REQ/DECISIONS will be copied in verbatim, per the owner 00:19 "ให้ย้ายสเปคกับการตัดสินใจของทีมเก่าตามนั้นมาเลย";
+   - the old IDs (SPEC-A/B/C-…, REQ-…, D-…) are kept as they are because the code cites them;
+   - new desk IDs must not collide: list the ID ranges the old team used, taken from the code, and start the
+     new desk's IDs above them. If that is impractical, use a prefix and say which.
+
+   The import itself is a later order.
+6. **Board and first work.**
+   - The ball is with the PM.
+   - Seed `REQ-001` as DRAFT, with the owner's 00:00 words verbatim as the need: understand all the code. The
+     PM writes the ACs and hands it to both SAs ("ตอนเปิดก็สั่งพีเอ็ม ให้เขาไปสั่งเอสเอทำ").
+   - Write nothing more in it.
+7. **Prove it.** `node scripts/check-harness.mjs` → current; `node check-hygiene.mjs i-space` → PASS. Write
+   the Operations log line. **No git**: Atom commits the workspace on branch `atom`. Report back to Atlas.
+
+### ORDER 40 — 2026-10-29 — ✅ DONE 2026-10-29 (Marie; see Operations log) — ▶️ GO: Atom's decisions 00:40 (owner delegated them to Atom) — file the old I-Space docs into `i-space/ai-worker/legacy/`, record the gap, set the commit format, settle the buddy-screen scope
+
+**Atom's note 2026-10-29 00:40, verbatim in substance.** Decisions owner-delegated to Atom:
+1. Close the 4 BUD sessions after the 8 ISP sessions are verified. This is Atom's task; Marie does nothing here.
+2. The old team folder was copied from the owner's Mac to `/workspace/uploads/intelligence-space-docs`. It holds
+   only md files: the design spec, the blueprint-back plan and four READMEs. **No `ai-worker/` with
+   SPEC-A/B/C or D-… exists on the Mac.**
+3. Commit format for all 4 repos, the same as buddy-screen: `<type>: <summary> (REQ, TASK)`, author
+   `develyst <develyst1@hotmail.com>`.
+4. "Delete buddy-screen" means only removing it from the active codebases list. Its folders and repos are kept,
+   like smart-scheduler.
+
+**Marie, do:**
+1. **Copy byte-exact** into `i-space/ai-worker/legacy/intelligence-space/`, keeping the relative paths:
+   - `docs/specs/2026-10-08-blueprint-design.md`
+   - `blueprint-back/docs/superpowers/plans/2026-10-08-blueprint-back-foundation.md`
+   - the four `*/README.md`
+
+   **Skip the `._*` files** (macOS resource forks, not content). Check each copy with `cmp`. Leave the uploads
+   folder as it is. If a file holds a secret value, stop and report it; do not copy it.
+2. **`legacy/README.md`: add a section "What arrived / the gap (2026-10-29)".**
+   - List what arrived.
+   - Record that the old desk's REQ-001…017, SPEC-A/B/C, TASK-A/B/C, D-003…112 and STUDY-001…002 exist **only
+     as citations in the code**. Their texts were not found on the owner's Mac (Atom 00:40).
+   - Rule for the team: when the code cites an old ID, the code and its comments are the only evidence. Never
+     invent the old text. A design question that needs it goes to the owner through the PM.
+   - The design spec and the plan carry a SUPERSEDED/history note where they say so. Treat them as history,
+     not instructions.
+3. **`DECISIONS.md`: add lines stamped `[Atom, owner-delegated, 2026-10-29 00:40]`:**
+   - decision 3, the commit format and author;
+   - decision 4, the buddy-screen scope;
+   - the gap from item 2.
+
+   Put decision 3 into `CONVENTIONS.md` (the commit section) or `SYSTEM-FACTS.md`, wherever the git-command
+   skill looks for the repo's convention. Note that the first `ขึ้น git` still needs the owner's own words, per
+   `ATOM.md` ruled §1.
+4. **SYSTEM-FACTS:** close the two open items (the buddy-screen scope, the commit format) and point at
+   DECISIONS.
+5. Run `check-hygiene i-space` → PASS and write the Operations log line. **No git.** Do not touch any desk
+   other than `i-space/`. Do not open or message any session.
+
+### ORDER 41 — 2026-10-29 — ✅ DONE 2026-10-29 (Marie; see Operations log) — ▶️ GO: owner via Atom 01:06 *"Okay."* (to Atlas's F-001/F-002 proposal) — i-space: every DoD expected result carries its base run; the hygiene gate warns when one is missing
+
+**Why** (`ATLAS.md`, FAILURES review i-space 2026-10-29): F-001 (Sober) and F-002 (Silver) are one pattern. An SA
+wrote a DoD command or expected result without running it on the base code. role-sa §3 already says to run it and
+paste the result, but that rule is prose, and it decayed under the speed of a code study. The fix makes it visible
+and checked.
+
+**Scope: the `i-space` desk only.** Do not change shared skills or other desks. The change to `check-hygiene.mjs`
+must be **opt-in per desk** and change nothing for any other desk.
+
+**Marie, do:**
+1. **The rule, in the desk's words.** In `i-space/ai-worker/SA-Lead.md` (and in PROTOCOL.md where it describes
+   TASKs, if it does), write:
+   - In a TASK's `## Definition of Done`, **every line with an expected result (`→ …`) carries the real output of
+     running it on the base code, as `(base: <pasted output, trimmed>)`**.
+   - A result that cannot exist on the base (a file the TASK creates, a new route) is written
+     `(base: n/a — new: <why>)`. It is never left blank.
+   - Cite F-001/F-002 and the owner's 01:06 "Okay." (via Atom).
+   - If the desk has a TASK template or a TASK example, update it to show both forms.
+2. **The gate.** Add an opt-in check to `check-hygiene.mjs`, switched on for i-space only. Prefer the desk's
+   existing `ai-worker/checks.json` mechanism if `check-hygiene` reads it; otherwise use a small per-desk flag.
+   Read how it works first, and do not invent a second config path if one exists.
+   - For each `tasks/TASK-*.md` with `Status: TODO` or `IN_PROGRESS`: in its `## Definition of Done` section,
+     every line containing `→` that has no `(base:` → **WARN** naming the file and line. Never FAIL.
+   - Older TASKs (REVIEW, DONE and the rest) are not checked. Do not edit existing TASK files.
+3. **Prove it** with scratch fixtures under your scratchpad, not in the desk:
+   - a TODO TASK with one bare `→` line → WARN;
+   - the same with `(base: …)` → no warning;
+   - `(base: n/a — new: …)` → no warning;
+   - a DONE TASK with a bare `→` → no warning;
+   - another desk (e.g. buddy-screen) → output byte-identical before and after. Run it and compare.
+
+   Then run `check-hygiene i-space` on the real desk and report the RESULT line plus any warnings.
+4. **Do not touch:** other desks, shared skills, `CLAUDE.md`/`AGENTS.md`/`ROLES.md`/`harness.json`, or any
+   session. The `lsof`→`ss -ltn` machine fact is the PM's to record, so leave it. **No git.** Write the Operations
+   log line.
+
+### ORDER 42 — 2026-10-29 — ✅ DONE 2026-10-29 (Marie; see Operations log — one reading: the AC check sits at the end of the REQ, so the SA's card and PROTOCOL § Rules got a matching exception) — ▶️ GO: owner via Atom 14:20 *"ให้ Atlas ติดตั้งกฎทั้ง 7 ข้อ"* — i-space: install the 7 fixes from the FAILURES F-003…F-013 review, plus 3 SYSTEM-FACTS
+
+**Source:** `ATLAS.md` § "FAILURES review i-space F-003…F-013", patterns P1–P7, and the statuses in
+`i-space/ai-worker/FAILURES.md`.
+
+**Scope: the `i-space` desk only.**
+- Not included, on the owner's word: the ring fix and restarting sessions (`claude -c`). Do not touch the
+  sockets or the sessions.
+- Do not change shared skills, other desks or rule files.
+
+**Live sessions are working in i-space.** Re-read every file right before you edit it and use Edit. Do not edit
+TASK, REQ, SPEC, TEST, board or log files. Inbox files are touched only as item 8 says, appended with `>>` as
+their own command.
+
+**Marie, do.** Each rule is stamped *(F-0xx; owner via Atom 2026-10-29 14:20; ORDER 42)*.
+1. **P1, consumers grepped** (F-009, F-012). In `SA-Lead.md` § SPEC template and the rule text: every SPEC section
+   that changes a data shape, format, key pattern or rendered field carries
+   `Consumers: <grep command> → <hits, file:line>`, or `Consumers: none (<grep> → no hits)`.
+2. **P2, base DoD lines** (F-011). The rule is already there from ORDER 41. Add only a one-line pointer from the
+   SPEC rule to the TASK rule if one is missing. The re-read line in item 8 delivers it.
+3. **P3, AC-by-AC check at SPEC_DONE** (F-006, F-007). In `SA-Lead.md` (hand-off) and PROTOCOL (where SPEC_DONE is
+   described): an SA sets SPEC_DONE only with an `## AC check` table in the REQ's SA section, one row per AC:
+   `AC-n → where it is met (file:line / artifact §) → self-checked yes/no`. A "no" row means not SPEC_DONE.
+4. **P4, locked ID allocation** (F-008). Add `i-space/ai-worker/new-id.mjs <REQ|SPEC|TASK|TEST> <slug>`.
+   - It finds the highest number in the folder and creates `<TYPE>-<n+1>-<slug>.md` with an exclusive create
+     (`wx`). On EEXIST it retries with the next number.
+   - It never overwrites, prints the path, and respects the desk's start at 101.
+   - Model it on `add-failure.mjs`'s style. Then write the rule ("create artifacts only with new-id.mjs") in
+     `SA-Lead.md`, `PM.md` (REQ) and `QA.md` (TEST).
+   - Prove it in scratch: two runs started at the same moment → two different numbers; and it never overwrites.
+5. **P5, next topic waits for the commit** (F-013). In PROTOCOL (git / per-topic commits) and `SA-Lead.md` (TASK
+   dependencies): when the owner commits per topic, a TASK of the next topic that touches the same repo carries
+   `Depends on: <previous topic> committed (hash)`, not its TASK being DONE. Quote Sober's suggestion.
+6. **P6, one watcher** (F-005). In `i-space/ai-worker/tools/watch-inbox.sh` only, before it starts watching: if
+   another `watch-inbox.sh` process with the same desk (`/proc/<pid>/cwd` or the script path) and the same role
+   arguments is running, print `already watching: <files> (pid N) — not starting a second` and **exit 3**.
+   - Exit 3 (not 0) means the session's wake logic does not read it as a WAKE.
+   - Never kill the other watcher.
+   - Prove it in scratch, with a copy of the script, and touch no live watcher.
+   - Update the script's header and PROTOCOL rule 6 ("Never run two at once" → the script now refuses).
+7. **P7, re-read on a rule change.** In PROTOCOL and `PM.md`: when a desk rule file changes (by Marie, by Atlas
+   or on the owner's word), each affected role's inbox gets one line:
+   `From <who> <date>: rule changed — re-read <file> § <section> (<why, F-id>)`. Whoever changes the rule writes
+   it. A role that receives it re-reads before its next artifact. Note it in your own ORDER procedure too, as one
+   line in MARIE.md's charter "how I close an order", if such a section exists. Otherwise put it in this order's
+   log line.
+8. **Deliver item 7 for this order.** Append one re-read line each to:
+   - `inbox/SA.md` and `inbox/SA-B.md`: `SA-Lead.md` § SPEC template, TASK template, AC check, new-id; PROTOCOL
+     § per-topic commits;
+   - `inbox/PM.md`: `PM.md` new-id and re-read rule; PROTOCOL; SYSTEM-FACTS facts;
+   - `inbox/QA.md`: `QA.md` new-id; SYSTEM-FACTS facts.
+
+   Engineers need no line (their duties did not change). Use `>>`, one command per append (a hook enforces
+   this).
+9. **SYSTEM-FACTS**, three facts, each stamped `[Atlas review 2026-10-29, F-0xx]`:
+   - blueprint-back accepts only `pglite:memory`; any other value is read as a Postgres URL (F-010,
+     `src/db/client.ts:12-20`);
+   - a new `NEXT_DIST_DIR` makes Next.js add it to the tracked `tsconfig.json` `include`, so use the map's
+     `.next-f` (F-003);
+   - this box has no `lsof`, so use `ss -ltn` (F-002).
+10. Run `check-hygiene i-space` → PASS; the warnings may stay. Set F-005, F-006, F-007, F-008, F-009, F-012 and
+    F-013 to `FIXED 2026-10-29 — <what now covers it> (ORDER 42)`. Leave F-003, F-004, F-010 and F-011 as they
+    are; Atlas sets them.
+
+    Write the Operations log line. **No git.** Do not open or message any session.
+
+### ORDER 43 — 2026-10-30 — ✅ DONE 2026-10-30 (Marie; see Operations log — the PILOT.md rows and Atlas's one-day report are the pilot's, not this build's) — ▶️ GO: owner (typed by Atom) 14:43 *"GO ตามแบบที่ Atlas เสนอ (การ์ดความจำต่อคน + hook จับคำ + กลั่นตอนจบเรื่องให้เจ้าตัวตรวจ + SessionStart โหลดการ์ด + clear ทีละคนเมื่อจบเรื่อง) แต่ทดลองกับ SA ทุกคน (Sober, Silver) และ PM (Porter) … ห้าม clear ใครขณะงานค้าง ให้ clear เมื่อคนนั้นจบเรื่องของตัวเองเท่านั้น วัดผล /usage และ FAILURES ซ้ำหลัง clear แล้วรายงาน"* — i-space pilot: memory cards so a role can /clear without losing what it learned
+
+**Why** (owner 14:26, typed by Atom): the I-Space sessions run 8 hours or more, their context swells, and
+/usage shows 95% of the 24-hour quota used. A clear saves quota, but each clear loses small decisions, habits and
+corrections that nobody wrote down. The owner said: *"ห้ามหนีปัญหาด้วยการไม่ clear ต้องแก้ให้ได้"*. Atlas's
+design is in this session's reply of 14:2x; the GO's own words are above.
+
+**Pilot scope:** the i-space desk, and **Porter, Sober and Silver only**. Nothing changes for any other role or
+desk. Prove that. Put the pilot switch in `i-space/ai-worker/checks.json`, e.g.
+`"memory-cards": {"pilot": ["Porter","Sober","Silver"]}`, the same mechanism as `hygiene.dod-base`.
+
+**Marie, build:**
+1. **Cards.** Create `i-space/ai-worker/cards/<Name>.md` for each of the three (the folder is not `memory/`,
+   which is Bunny's). Header:
+   - who it is for;
+   - **cap 4 KB**;
+   - one line per item, in the form `- <habit / correction / owner preference / decision> — source: <quote> (<log line | transcript file:line | DECISIONS/REQ/TASK pointer>)`;
+   - pointers, never copied content;
+   - only the owner of the card edits it.
+
+   Start each card empty except for the header. The role fills it at its first distill.
+2. **Capture hook** (UserPromptSubmit, pilot sessions only; desk and name from `scripts/memory/session-desk.mjs`
+   as `memory-cue.sh` does).
+   - Append each non-trivial prompt to `cards/<Name>.capture.md` with a timestamp and a source tag: `owner`,
+     `owner via Atom`, `Atom`, or `peer` when it is a cross-session message.
+   - Skip bare nudges (ไปเลย / ไปต่อ / continue / ok and the like) and empty prompts.
+   - No model call. Exit 0 always, fast, and silent on any error. Follow the style of the existing hook
+     scripts.
+3. **Distill script**, `scripts/memory/distill.mjs <Name>`.
+   - It takes this session's transcript from the last distill mark onward (keep the mark in
+     `cards/<Name>.state.json`). It strips the transcript to user and assistant text only (no tool output) and
+     adds the capture file.
+   - It asks a **cheap model** (`claude -p --model haiku`, one shot, not a desk role) for candidate items:
+     decisions, habits, corrections received, and owner preferences. **Every item must carry a verbatim quote
+     and its transcript line.**
+   - It writes them to `cards/<Name>.proposed.md`.
+   - **The role reviews**: it keeps, edits or drops each item, moves the kept ones into its card under the 4 KB
+     cap, then deletes `proposed.md` and the capture lines it consumed. The script never writes the card
+     itself.
+   - Put a short cost note in the header: the stripped input stays small.
+4. **Ready-to-clear check**, `scripts/memory/ready-to-clear.mjs i-space <Name>`. It prints `READY` or the
+   reasons it is not.
+
+   READY only if:
+   - the role's own inbox is empty;
+   - it owns nothing at `IN_PROGRESS` and no SPEC or REQ it is mid-way through;
+   - the board's ball is not on it;
+   - its card was distilled after its last log entry, and `proposed.md` is gone.
+
+   **"ห้าม clear ใครขณะงานค้าง"**: only a READY role is cleared. Atom types `/clear` and then
+   `/desk i-space <Name>` in that tmux session on the owner's behalf, after checking READY. Nobody clears the
+   team all at once.
+5. **SessionStart hook** (pilot only): inject the role's card plus a one-line pointer to RESUME-HERE as
+   additional context.
+   - First find out whether SessionStart after `/clear` can tell who the session is (session name, the
+     `session-desk` cache, `source: "clear"`). If it cannot, use the fallback: add "pilot roles read
+     `cards/<Name>.md` first" to the boot reading list in PROTOCOL and the three role charters, and say which
+     route you used.
+   - Prove it with a scratch session or fixture.
+6. **Gate.** `check-hygiene` opt-in (checks.json) WARN when a card is over 4 KB, or when a `proposed.md` is older
+   than a day.
+7. **Measurement.**
+   - Create `cards/PILOT.md` with one row per clear: date and time, name, card size, the /usage % before and after
+     (Atom reads /usage and writes it), and the context size if visible.
+   - Add to the three charters: a FAILURES entry about something the role knew before a clear carries
+     `(after-clear <date time>)` in its title.
+   - Atlas reports after one working day.
+8. **The P7 rule (ORDER 42).** Append re-read lines to `inbox/PM.md`, `inbox/SA.md` and `inbox/SA-B.md` naming
+   the changed sections, with `>>` as a command of its own.
+9. **Prove it.**
+   - Fixture tests for the capture hook, distill (with the model call stubbed, plus one real haiku call on a
+     tiny fixture, if allowed), ready-to-clear (READY and not-READY cases), SessionStart and the gate WARN.
+   - Other desks' `check-hygiene` output byte-identical before and after.
+   - A non-pilot i-space session's hooks stay silent.
+   - Run `check-hygiene i-space` → PASS.
+   - Write the Operations log line. **No git.** Do not clear, open or message any session.
+
+### ORDER 44 — 2026-10-30 — ✅ DONE 2026-10-30 16:16 (Marie; see Operations log — item 3 has no supported rollover, so today's log is left as is and the proposal is Atlas's; item 5 is a proposal, not an edit) — ▶️ GO: owner 15:36 *"โอเค"* (relayed by Atom 15:37) — housekeeping for i-space, following the gate WARNs in RESUME-HERE.md
+
+**Scope:** the gate WARNs only. The FAILURES FAIL (F-027…F-039) is **not** in this order; it waits for the owner.
+Archive verbatim first, every time (charter). No information is lost; zero semantic change.
+
+**Timing.** Eight manual sessions are live, so this is not a dispatcher run. Your rule "never during a dispatcher
+mid-run" does not apply as written, but the same risk does: two writers on one file.
+- Use `ListAgents` (read only; never message) to see who is busy.
+- Touch a **hot file** (`board.md`, today's log, inboxes) only when no session is busy. Re-read the file right
+  before the Edit; the Edit fails if the file changed, so retry later.
+- **Cold files** (yesterday's log, a DONE TASK's patch) can be moved at any time.
+
+**Marie, do:**
+1. **Board, 55 closed rows** (DELIVERED, DONE, CANCELLED, and the like).
+   - Move them verbatim to `ai-worker/archive/board-closed.md`, appending with a dated header, in the format
+     the gate suggests.
+   - Leave every open row, and leave the board's head and legend.
+   - Do this in a quiet moment, as one Edit.
+2. **`log/2026-10-29.md` (216 KB, a finished day).**
+   - Archive it verbatim to `ai-worker/archive/log/2026-10-29.md`.
+   - In its place, leave a short index: one line per entry header (`[HH:MM] Name (role)`) with a pointer to the
+     archive.
+   - Bunny reads finished days, so check her inputs (BUNNY.md) and keep whatever path she reads valid. If the
+     move would break her, keep the file in place and say why.
+3. **Today's log (`log/2026-10-30.md`, ~111 KB, live).** Do not split or rewrite it; roles are appending to it.
+   - Find out whether `append-log.mjs` or the harness has a supported rollover (a part-2 file, for example). If
+     it does, and it is safe for live writers, use it. Otherwise leave the file, and say what the roles should
+     do (point instead of retelling) for Atlas to raise.
+4. **`tasks/TASK-109-req110-only.patch` (226 KB).**
+   - First check that TASK-109 is DONE and that its topic is committed in blueprint-back (read only: `git log`
+     for the REQ-110 commit).
+   - If both hold, move the patch verbatim to `ai-worker/archive/patches/` and fix every pointer to it
+     (`grep -rn TASK-109-req110-only.patch`).
+   - If either does not hold, leave it and report.
+5. **Boot reads over 45 KB** (PM 64, SA 61, QA 58, BE 54.5, FE 54.3 KB).
+   - Re-measure after items 1 and 4.
+   - **Do not compact `PROTOCOL.md` or any charter** (rule text; the boot-budget vs never-compact collision is
+     Atlas's). Write a slimming proposal instead, for Atlas: which sections of PROTOCOL.md, PM.md and SA-Lead.md
+     are history or rationale that could move to `archive/` behind a one-line pointer, how many KB each saves,
+     and the expected boot sizes after.
+6. **Inboxes:** drain nothing; inbox lines are the roles' to process. Report any inbox over 2 KB.
+7. **Tell the PM.** Append one line to `inbox/PM.md`, as a command of its own:
+   `From Marie <date>: housekeeping done (ORDER 44) — board closed rows → archive/board-closed.md; 10-29 log → archive/log/; see MARIE.md ORDER 44`.
+8. **Prove it.**
+   - Byte counts before and after for every file touched, and `cmp` of each archive against its original
+     content.
+   - Run `check-hygiene i-space` before and after, and list the WARNs that cleared.
+   - Write the Operations log line. **No git.** Do not touch TASK/REQ/SPEC/TEST content, rule text, cards or
+     FAILURES.
+
+### ORDER 45 — 2026-10-30 — ✅ DONE 2026-10-30 (Marie; see Operations log — FAILURES statuses not touched, per this order's scope) — ▶️ GO: owner via Atom 16:04 *"บอกเขาreview and develop ไปเลย"* (Atom: review every NEW FAILURE on i-space, then develop the root-cause fixes) — i-space: fix the root causes of F-016…F-042
+
+**Atlas's review** (statuses in `i-space/ai-worker/FAILURES.md`; `ATLAS.md` § "FAILURES review i-space F-027…F-042"):
+- **The dominant root cause is P1c, the consumer list.** 13 misses since the grep rule (F-018, 019, 026, 027,
+  028, 029, 034, 035, 036, 042). The SAs follow the rule, but a grep chooses its own words, so it keeps missing
+  test roots, schema objects, typed fixtures and generated types. **Replace judgement with a mechanical probe.**
+- The pending Q1–Q5 from the F-016…F-026 review are included here: Q1 is replaced by item 1; the rest are
+  items 6–8.
+
+**Scope:** the i-space desk only (its rule files, tools and checks.json) plus the opt-in gate. No shared skills.
+Live sessions are working: re-read right before each edit; use Edit; do not touch
+TASK/REQ/SPEC/TEST/board/log/cards/FAILURES content. Every rule is stamped *(F-ids; owner via Atom 2026-10-30
+16:04; ORDER 45)*. Finish with the P7 re-read lines.
+
+**Marie, build:**
+1. **Consumer probe (P1c).** Add `i-space/ai-worker/tools/probe-change.sh <repo-logical-name> <patch-file> [cmd…]`.
+   - It makes a **scratch copy** of the repo under the caller's scratchpad or `/tmp`, from the working tree.
+     Never use a git worktree or a branch. Symlink or hard-link `node_modules` to keep it cheap.
+   - It applies the patch in the copy and runs the repo's checks. The defaults per repo come from SYSTEM-FACTS
+     or the maps: `tsc` / typecheck, `bun test` and, for blueprint-front, `gen:api` + `check:api`.
+   - It prints each error as `file:line`, then removes the copy. It never writes to the real repo; prove that
+     with `git status` before and after.
+   - Repo paths come from `machine.local.md`.
+
+   **Rule** in `SA-Lead.md` § SPEC template: a SPEC section that changes a shape (field, required-ness, schema
+   object, column, `openapi.json`, an event sequence or a function's inputs) carries:
+   - `Consumers (probe): <command> → <N errors>`, followed by **one line per hit**, ticked as
+     `→ TASK-xxx` or `→ untouched — <why>`;
+   - "untouched" is never allowed for a file that builds a literal of the changed type;
+   - a plain grep line is no longer enough on its own.
+2. **openapi.json is paired (F-036, F-042).** Rule: a TASK whose diff touches a back end's `openapi.json` has a
+   paired front `gen:api` + typecheck + `check:api` step, or TASK, by default. Its review runs the front's
+   `check:api`.
+3. **P12, derived rules (F-037, F-038, F-040).** Rule in the SPEC template:
+   - a rule computed per kind or anchor has a result table for every kind the consumer uses;
+   - a rule deriving a state from data an existing rule already uses cites that rule's `file:line` and works
+     one boundary case;
+   - a claim about uniqueness, nullability or range cites the schema line that decides it.
+4. **P13, git safety (F-031, F-033).**
+   - (a) A TASK that creates a file has a DoD line `git check-ignore -v <path>` → exit 1 (base pasted).
+   - (b) Add `i-space/ai-worker/tools/tree-fp.sh <repo>`: one read-only tree fingerprint that covers tracked
+     and untracked files and does not write the index (e.g. hash `git ls-files -co --exclude-standard` with
+     the file contents). QA's verdict and the SA's pre-commit check both use it.
+   - (c) Rule: any git experiment beyond reading happens in a scratch copy.
+   - (d) The SA's pre-commit check lists `git status --short --untracked-files=all` against every new path in
+     the topic's TASKs.
+5. **P14, a nudge after its write (F-030).** PROTOCOL § Inbox: ring only after the inbox write's tool result
+   is back. Never put the nudge in the same batch as the write.
+6. **Q2, wording (F-021, F-024).** In the SPEC template, every user-visible line a SPEC adds lists its
+   placeholders, each with the record field it comes from.
+7. **Q3 and Q3b, scarce live calls (F-020, F-023).** In the SPEC template:
+   - before a design spends scarce live model calls, the server records what is needed to diagnose a failure
+     (the failing item and the reason);
+   - a prompt that asks a model for structured output carries the full schema (types, patterns, required),
+     generated from the same zod schema the server validates with.
+8. **Q4 and Q5.**
+   - (Q4, F-022) A deny-rule on a value another program parses is reviewed by probing that program's own
+     alternative spellings with the real program.
+   - (Q5, F-025, F-041) PROTOCOL § Editing files: a heredoc edit script uses `replace(a, () => b)` or
+     `split(a).join(b)`, never a string `b`. The read-back is a grep or `sed -n` of the changed lines.
+9. **Gate.** Add an opt-in WARN to `check-hygiene` (checks.json, as in ORDER 41):
+   - a SPEC with `Status` DRAFT, ACTIVE or IN_PROGRESS that has a shape-change section but no
+     `Consumers (probe):` line;
+   - a `Consumers` hit line without `→ TASK-` or `→ untouched —`.
+
+   Keep it simple and WARN only. Prove that other desks' output is byte-identical.
+10. **Boot size.** The SA boot read is already 61 KB. Keep the new rule text short, and **put the long form in
+    a new `i-space/ai-worker/spec-rules.md`** that the SPEC template points to in one line. Report the boot
+    sizes before and after.
+11. **Prove it.**
+    - `probe-change.sh` on a real tiny patch in one repo (e.g. add a required field to a type): it lists the
+      errors, and the real repo is unchanged (`git status`).
+    - `tree-fp.sh` gives the same value twice, and the index is unchanged.
+    - Gate fixtures.
+    - Run `check-hygiene i-space`.
+12. **P7.** Re-read lines go to `inbox/SA.md`, `inbox/SA-B.md`, `inbox/QA.md` (tree-fp) and `inbox/PM.md`.
+    Write the Operations log line. **No git** (reading only).
+
+### ORDER 46 — 2026-10-30 — ✅ DONE 2026-10-30 (Marie; see Operations log — live rollover to log/2026-10-30.2.md seen at 16:38) — ▶️ GO: owner via Atom 16:28 *"ข้อแรกเอาตามนาย เพราะเราไม่ควรlost the detail"* (Atom: option (a), a daily log may roll over to a new file mid-day; do not reduce logging) — i-space: log rollover without losing detail
+
+**Why:** i-space's log for 10-30 reached about 128 KB from volume (162 short entries), not from retelling (ORDER 44
+§3). The owner chose to keep every entry and split the file instead. **Run only after ORDER 45 is DONE**; both
+orders touch `check-hygiene.mjs` and PROTOCOL.
+
+**Design.** Change nothing that is already written. Today's file stays `log/YYYY-MM-DD.md`; later parts are
+`log/YYYY-MM-DD.2.md`, `.3.md`, …
+1. **`append-log.mjs`.**
+   - Before appending, if the latest part of today is at or above a threshold (90 KB; put it in checks.json and
+     state it), start the next part.
+   - The new part's first line is `# Log <date> — part N (continues part N-1)`.
+   - The previous part gets one closing line, `→ continued in log/<date>.N.md`, written by the script in the
+     same run.
+   - Keep locking and atomicity as the script has them now. Two roles appending at the same moment must never
+     both start a part, or both lose an entry. Prove it with parallel appends.
+2. **Readers agree on "today's log":**
+   - `check-hygiene.mjs` measures the **latest part** against the 100 KB WARN. It is opt-in for i-space via
+     checks.json, and other desks stay byte-identical.
+   - `ready-to-clear.mjs` and anything else that reads "the last log entry" (grep `log/` in `scripts/` and in
+     the i-space tools) read **all of today's parts**.
+   - The memory-card scripts are among them.
+   - Check BUNNY.md's inputs and make sure a finished day with several parts is read whole. If her tooling
+     needs a change, describe it for Atlas rather than changing Bunny's charter.
+3. **Rules.**
+   - PROTOCOL § Date discipline and § Log format, short: "today's log = the latest part; earlier parts of today
+     only when a pointer sends you there".
+   - The workforce-protocol skill is shared; do not edit it. Note any line there that becomes inaccurate for
+     Atlas.
+4. **Do not split the existing 10-30 file by hand.** It rolls over on the next append after the threshold, so
+   it stays whole as part 1.
+5. **Prove it.** Fixtures for: below the threshold → same file; crossing it → part 2 plus the pointer line;
+   parallel appends → no lost or duplicated entry and one part 2; check-hygiene on the latest part;
+   ready-to-clear across parts; another desk unchanged.
+
+   Then:
+   - run `check-hygiene i-space`;
+   - send the P7 re-read line to every i-space role's inbox (PM, SA, SA-B, QA, BE, BE-B, FE, FE-B), since
+     every role appends to the log;
+   - write the Operations log line. **No git.**
+
+### ORDER 47 — 2026-10-30 — ▶️ GO: owner via Atom 16:47 *"ตามแนะ แต่ ข้อสุดท้าย ก่อนทำ ให้ up git ก่อน แล้วค่อยทำ แล้วup git againเพื่อแยกให้ฉันไปดูง่ายๆ"* — the follow-ups to ORDER 46, in the owner's order
+
+**The owner wants two separate commits on branch `atom`, so the diff is easy to read.** Atom makes both commits
+under the `CLAUDE.md` §6 exception. Marie and Atlas never commit.
+
+**Part A, now** (goes into commit 1 together with all the work so far):
+- A1. `BUNNY.md` step 1 (line ~30): change `` `log/<date>.md` `` to
+  `` `log/<date>.md` and every later part `log/<date>.N.md` of that day (follow the `→ continued in …` pointers) ``.
+  - This is a charter change on the owner's words ("ตามแนะ" to Atlas's follow-up (a), 16:47). Stamp it
+    *(owner via Atom 2026-10-30 16:47; ORDER 47)*.
+  - Change nothing else in BUNNY.md.
+- A2. **Already done by Atlas:** the shared skill `_templates/skills/workforce-protocol` (SKILL.md §2.3, startup
+  step 8, the memory-tier row, and references/log-format.md) now says "TODAY's log = the latest part when the desk
+  rolls over". It is synced to `~/.claude/skills/` and check-skills passes.
+- **Then STOP and report.** Atlas tells Atom to make commit 1.
+
+**Part B, only after Atlas confirms commit 1 exists:**
+- B1. Promote i-space's `ai-worker/append-log.mjs` (rollover with lock; off unless `checks.json` has
+  `hygiene.log-rollover`) and `ai-worker/tools/watch-inbox.sh` (single-watcher guard, exit 3) into
+  `_templates/project/ai-worker/` through the harness's normal promotion path.
+  - Read `scripts/install.mjs`, `scripts/check-harness.mjs` and `harness.json`: whatever bumps the harness
+    version and updates every desk. You may not edit `harness.json` itself (rule file). If promotion needs a
+    harness.json change, stop and report what is needed.
+  - Every desk ends `current`.
+  - Rollover stays **off** on the other desks (no checks.json key), so their behaviour is unchanged apart from
+    the watcher guard.
+- B2. **Prove it.**
+  - `check-harness` → all current.
+  - `check-hygiene` on all 9 desks, before and after.
+  - The watcher guard tested once on a scratch desk.
+  - Running watchers on other desks are untouched (they read the script at start).
+- B3. P7: one re-read line per desk is not needed, because the duties did not change. Say so in the Operations
+  log.
+- **Then report.** Atom makes commit 2. **No git by Marie.**
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-10-30 (ORDER 47, Part A DONE — Part B PENDING commit 1; order NOT done) — **A1:** `BUNNY.md` step 1 (line 30) now reads `` `log/<date>.md` and every later part `log/<date>.N.md` of that day (follow the `→ continued in …` pointers) ``, stamped *(owner via Atom 2026-10-30 16:47; ORDER 47)*; one Edit, nothing else in BUNNY.md changed; read back with grep. **A2:** done by Atlas (not touched by me). **Part B not started** — waits until Atlas confirms Atom's commit 1 exists. **No git.**
+
+- 2026-10-30 (ORDER 46, DONE) — **i-space: log rollover without losing detail, owner via Atom 16:28.** **`append-log.mjs`** (i-space only; swapped by temp file + `mv`, live == base checked first): opt-in `checks.json` → `hygiene.log-rollover.part-kb: 90` (92160 B). Parts `log/<date>.md`, `.2.md`, `.3.md`…; when the latest part is ≥ part-kb the run creates the next part with `wx` (`# Log <date> — part N (continues part N-1)` + the usual blockquote) and appends `→ continued in log/<date>.N.md` to the previous one, then the entry — all under `log/.append.lock` (open `wx`, pid+time, 20–50 ms retry, stale > 30 s removed, after 15 s appends without it so no entry is dropped); the gate still runs before, outside the lock; one `appendFileSync` per entry as before; no key ⇒ no lock, old behaviour. Skills hint reads every part, latest first. **Fixtures (scratch):** below (92159 B) → same file; at 92160 → part 2 + pointer; next append stays in part 2; no key + 200 KB → never rolls, no lock file; 20 parallel at the threshold → 1 part 2, 1 pointer, 20/20 entries; 60 parallel at part-kb 1 → 20 parts, 60 total/60 distinct, 19 pointers/19 headers, chain OK (control without the lock: entries after pointers in 3 parts, BROKEN); stale 60 s lock cleared (0.05 s); held lock → waited 1.0 s then appended; skills hint: old script (part 1 only) gave a false hint, new none. **`check-hygiene.mjs`** section 3: opt-in same key → measures the latest part (`log/<date>.N.md`), RESULT shows `(<date>.N, local)`; fixtures: on + parts 1(130 KB)+2 → part 2 0.1 KB, no 🔴; off → part 1 🔴 (= old); on + part 1 only → part 1 🔴. Pre-order gate (symlinked scratch root) beside the new one, all 9 desks, text + `--json` minus generatedAt: **9 IDENTICAL** (i-space too, until its part 2 exists). **`scripts/memory/ready-to-clear.mjs`**: all parts, newest day then highest part first (numeric: .10 > .2); fixtures (MEMORY_ROOT): Sober 15:00 in part 2, distilled 12:00 → old READY (wrong) / new NOT READY; 10 parts, 15:30 in part 10 → NOT READY; distilled 15:31 → READY. Other `log/` readers: none (distill, card-hook, cards-lib, extract-day, recall, hooks, desk tools checked). **Rules:** `PROTOCOL.md` § Date discipline 4–5 (part header; "today's log = the latest part; earlier parts only when a pointer sends you there"), startup 8 (one clause), § Log format "Parts". `checks.json` key with born/why. **Not split** the live 10-30 file by hand. **Live rollover seen:** Porter's 16:38 entry (P7 ack) — part 1 got `→ continued in log/2026-10-30.2.md` (138,846 → 138,884 B, nothing else changed), `2026-10-30.2.md` opened with the part header, lock gone. `check-hygiene i-space`: **RESULT: PASS (15 warning(s)) — today's log 0.9KB (2026-10-30.2, local)** (the 🔴 135.6 KB WARN is gone; it was 16 before). `check-harness`: i-space now `edited locally: append-log.mjs, tools/watch-inbox.sh` (expected; template/other desks unchanged). **P7:** one `>>` each to `inbox/PM, SA, SA-B, QA, BE, BE-B, FE, FE-B.md`. **For Atlas:** BUNNY.md step 1 names `log/<date>.md` only (should read every part of a finished day); workforce-protocol SKILL.md §2.3/§startup 8/memory-tier row and `references/log-format.md` (one file per day, first-line check) are now inaccurate for i-space. **No git**; no session messaged; no process killed.
+
+- 2026-10-30 (ORDER 45, DONE) — **i-space: root-cause fixes for F-016…F-042, owner via Atom 16:04.** **New tools** (`i-space/ai-worker/tools/`): `probe-change.sh <repo> <patch> [cmd…]` — copies the working tree (tracked + untracked non-ignored, so never `.env`) twice (base/, patched/) under `$PROBE_TMP`, `node_modules` symlinked, no worktree/branch/git write; applies the patch (`patch -p1`/`-p0`, else exit 3); runs the repo's defaults (backs: `tsc --noEmit` + `bun test`; fronts: `gen:api` (skipped if the patch edits schema.d.ts) + `typecheck` (+ `check:api` blueprint) + `bun test src`) with `DATABASE_URL=pglite:memory`, a `CLAUDE_BIN` stub, `GATEWAY_URL=:9`; a back is also `openapi:emit`ted and, when its openapi.json changes, the paired front runs against it; prints only NEW errors as `<repo> → file:line <code> <msg>` under `Consumers (probe): … → N errors`; removes the copies; proves the real repo(s) untouched (tree-fp + index sha before = after, else exit 4). `tree-fp.sh <repo> [--list]` — sha256 over `git ls-files -co --exclude-standard` (content + exec bit + symlink target, deleted marked), HEAD printed not hashed, `GIT_OPTIONAL_LOCKS=0`, reads only. **Proofs:** caw-front + `Seat.since` required → 1 error (`src/lib/crew.ts:74 TS2322`), 16 s; blueprint-back + `ProjectSchema.owner` (tsc only) → 7 errors incl. paired blueprint-front `src/features/{chat,export,ready}/load.test.ts` TS2741 (the F-042/F-029 class), 58 s; caw-front behaviour patch (`entryAsked` → false, `bun test src`) → 9 `(fail)` with file:line; bad patch → exit 3; usage/unknown repo → exit 2; `git status --short --untracked-files=all` sha before = after in each repo (caw-front 36944a270d4f, blueprint-back 0c1dccd5ce75, blueprint-front 115c4e618f73); no copy left. tree-fp twice: caw-front 16244093690a ×2, blueprint-back 3f9eb04bbf99 ×2, `.git/index` sha unchanged; on a scratch copy an edit, a chmod, a new file and a delete each changed it, an ignored file did not. **Rules** (each stamped ORDER 45): `SA-Lead.md` § SPEC template (probe example lines; rule paragraph "consumers, probed" + one-line §-index to new `spec-rules.md`), § TASK template (DoD line 4 `git check-ignore -v`), new "Git safety" paragraph (pre-commit `git status --untracked-files=all` vs new paths, tree-fp = QA's value, experiments in a scratch copy); new `spec-rules.md` §1 probe · §2 openapi.json paired + review runs check:api · §3 P12 · §4 P13 a–d · §5 Q2 · §6 Q3/Q3b · §7 Q4; `PROTOCOL.md` § Inbox (P14 ring after the write), § Editing files (Q5 `replace(a, () => b)`/split-join, grep/sed -n read-back), § Repo layout (git safety + tree-fp); `QA.md` § TEST template ("Build under test" = tree-fp at start and verdict). `PM.md` unchanged (nothing PM-specific). **Gate:** `check-hygiene.mjs` section 12, opt-in `checks.json` → `hygiene.spec-probe`; fixtures (scratch desk): no-probe shape section → WARN, openapi.json section → WARN, ticked hits → none, two unticked (one with `-` not `—`) → 2 WARN, DONE SPEC → none, prose-only → none, key off → 0 lines. Pre-order gate run beside the new one on all 9 desks, text + `--json` (minus generatedAt): 8 IDENTICAL; i-space differs only by the 14 new WARNs (switched on). `check-hygiene i-space`: **RESULT: PASS (20 warning(s))** — new: 14 on old ACTIVE SPECs (107×5, 109, 113, 115×4, 117×3) with no probe line; also `FAILURES.md: 1 unreviewed (F-043)` (Atlas's, not mine). **Boot** (controllable / total, gate): before SA 48.8/66.5, PM 52.0/69.8, QA 46.5/64.3, BE 42.5, FE 42.4 KB → after SA 51.0/69.7, PM 53.0/71.8, QA 47.8/66.5, BE/FE 43.4 KB — this order's share: SA-Lead.md +1,239 B, PROTOCOL.md +947 B, QA.md +251 B; the rest is live growth (board, inbox, SYSTEM-FACTS 17.8 → 18.8). Long form (7,957 B) is in `spec-rules.md`, not a boot read. **P7:** one `>>` each (own command) to `inbox/SA.md`, `SA-B.md`, `QA.md` (tree-fp), `PM.md`. **No git** (reads with `GIT_OPTIONAL_LOCKS=0` only); no TASK/REQ/SPEC/TEST/board/log/cards/FAILURES content touched; no session messaged; no process killed.
+
+- 2026-10-30 (ORDER 44, DONE) — **i-space housekeeping, owner GO 15:36.** No ListAgents in my toolset, so "busy" = the `esc to interrupt` line in each `<Name>-ISP` tmux pane (read with `capture-pane`, nothing sent). **1 Board:** waited 15:38–16:15 for all eight panes idle and the board untouched for 30 s; then a guarded swap (snapshot sha → `cmp` still equal → one write). **59** closed rows (gate's own test: status starts DONE/DELIVERED/CODE ACCEPTED; 55 at 15:38, 4 more closed while I waited) moved verbatim to new `archive/board-closed.md` under `## Swept from board.md on 2026-10-30 by Marie (MARIE.md ORDER 44) — 59 closed rows`, grouped by board section with their table heads; board 21,376 → 7,378 B, archive 0 → 14,898 B; removed lines = archived rows (sorted diff empty), 0 lines added to the board; head, legend, open rows, QA table and Blocked table untouched. **2 Log 10-29:** archived verbatim to `archive/log/2026-10-29.md` (216,348 B, `cmp` OK, sha 8d26e22b…); `log/2026-10-29.md` is now a 19,880 B index: header naming the archive ("Bunny included: read the archive file"), then all 303 `## [HH:MM] Name (role)` headings kept verbatim, each followed by `→ archive/log/2026-10-29.md:<line>`. Headings kept as `## ` on purpose so `append-log.mjs` (skills-changed check) and `ready-to-clear.mjs` (last entry time) read the same times as before. Bunny: no `memory/woven.log` on i-space (never woven), so 10-29 is still unwoven — her path stays valid and points to the full text; flagged to Atlas. **3 Today's log:** no rollover in `append-log.mjs` (always `log/<TODAY>.md`) or the harness; `ready-to-clear.mjs`, `append-log.mjs` and the gate only read `YYYY-MM-DD.md`. Left untouched (113 → 127 KB during this order). Entries are already short (162 at 15:40, longest 1.45 KB; Porter 57, Sober 30, Tanya 29, Silver 25) — the size is volume, not retelling; for Atlas. **4 Patch:** TASK-109 `Status: DONE`; blueprint-back `git log` (read only) → e2c3326 on `atom` (REQ-110, TASK-109/123/126/130). Moved `tasks/TASK-109-req110-only.patch` → `archive/patches/` (231,128 B both, `cmp` OK twice incl. a scratch copy); left `tasks/TASK-109-req110-only.patch.MOVED.md` (410 B pointer). Pointers NOT edited: TASK-109 :45/:132/:167, TASK-123 :24/:72, TASK-126 :27/:77, TASK-129 :18/:26, TASK-130 :36/:58 (TASK content) and log 10-29 lines (history). **5 Boot:** after → PM 52.2, SA 48.8, QA 46.5, BE 42.5, FE 42.4 KB (BE/FE cleared). Slimming proposal for Atlas in my report (no rule text edited); also seen: `PM.md` § REQ template's code fence is never closed, so § Skills sits inside the template. **6 Inboxes:** none over 2 KB (largest SA-B 909 B); nothing drained. **7** One line `>>` to `inbox/PM.md` at 16:15 (all idle). **8 Gate:** before `FAIL (1)` + 9 WARN; after `PASS (5 warnings)`, exit 0. Cleared: closed rows (55), TASK-109 patch > 60 KB, BE boot, FE boot; "REQ rows past SPEC_DONE naming no TASK" 25 → 15 (the rest are QA-table rows `REQ-x | TEST-y | TEST_PASSED`, which the gate's test counts too). The FAILURES FAIL also cleared, not by me (out of scope). Left: 🔴 today's log 127 KB, PM/SA/QA boot. **No git**; no session messaged; no process killed.
+
+- 2026-10-30 (ORDER 43, DONE) — **i-space memory-card pilot (Porter, Sober, Silver only), owner GO 14:43.** **New:** `scripts/hooks/memory-cards.sh` (one hook, two events; bash+jq, node helpers killed after 0.8 s, exit 0 always, silent on error; first line greps every `*/ai-worker/checks.json` for `"memory-cards"` and exits if none) · `scripts/memory/cards-lib.mjs` (pilot list, TEAMS roster incl. "Session name", the session name of the nearest `claude` ancestor process → `$CLAUDE_PID` → tmux `#S`) · `card-hook.mjs` (capture / start) · `distill.mjs` · `ready-to-clear.mjs`. **Desk:** `cards/Porter.md`, `Sober.md`, `Silver.md` (header only: for whom, cap 4 KB, item form with source quote + pointer, pointers not copies, only the owner edits) + `cards/PILOT.md` (row per clear, Atom writes /usage before/after); `checks.json` → `hygiene.memory-cards {pilot:[Porter,Sober,Silver], born, why}`; `PROTOCOL.md` § Session startup ritual item 2 (+3 lines: card first if not in context); `PM.md` + `SA-Lead.md` new § "Memory card (pilot, ORDER 43)" (distill → review → `--done`; cleared only on READY; FAILURES title `(after-clear <date time>)`); re-read lines `>>` (one command each) to `inbox/PM.md`, `inbox/SA.md`, `inbox/SA-B.md`. **Wired** (after fixture tests): `.claude/settings.json` + `scripts/run/run-settings.json` (mirrors) — `memory-cards.sh` added to UserPromptSubmit and a new SessionStart block, timeout 5; `jq` diff vs backup = only those two additions. **SessionStart route: the hook itself, not the fallback** — after `/clear` the session id is new and session-desk has nothing, but the Claude process survives and carries `-n <Name>-ISP` (ps: `claude -n Porter-ISP … /desk i-space Porter`, pids 4262/4266/4272); that name is matched in TEAMS.md "Session name" of a pilot desk. Proven on the real process (a node child of this session's Bash resolved `Atlas` from claude pid 4256; tmux `#S` = `Atlas`) and on fixtures; resume/compact also read the session-desk cache. The PROTOCOL/charter line is belt-and-braces only. **Fixtures ($MEMORY_ROOT scratch, fake `claude -n X` parent):** SessionStart Porter-ISP clear/startup → card + RESUME pointer; Sober (no card) / Tanya-ISP (card file present, not pilot) / Porter-OTH (desk without switch) / Atlas / no claude ancestor / garbage / empty → silent, exit 0; resume via cache → card; clear via cache → silent. Capture: owner / `owner via Atom` / `Atom` / `peer` tagged right; ไปเลย, OK, ไปต่อครับ, empty, Atom inbox nudge, `/usage`, `<task-notification>`, `<local-command-stdout>` skipped; Tanya / other desk / session-desk says Tanya → nothing; `/desk i-space Sober` then a prompt → Sober's capture. Timing 0.04–0.08 s; 0.004 s where no desk has the switch. Distill: stub run → 4 items, 1 ⚠️ (quote not at cited line), 1 unparsed dropped; tool output, sidechain and system reminders not in the prompt (grep 0); second run with proposed open → exit 1; `--done` with card > 4 KB → exit 1; `--done` consumed exactly the 5 counted capture lines (a later line kept), mark moved; **one real `claude -p --model haiku`** (tiny fixture, 1,478 B in, 4.4 s) → 2 items, both quotes verified. Live: Silver ran `distill.mjs Silver` on its own at 14:57 (62 KB input, 20 oldest messages cut) → `Silver.proposed.md` awaiting Silver's review — not touched by me. Ready-to-clear fixtures: ball `PM (Q1)` + DRAFT REQ → NOT READY; inbox line + DRAFT SPEC → NOT READY; team engineer's TASK in REVIEW + proposed open → NOT READY; `SA B` ball hits Silver, not Sober; cleaned → `READY`; a log entry after the distill → NOT READY; Tanya → exit 2. Live desk, read only: all three NOT READY (Porter: ball REQ-108/117; Sober: inbox, TASK-142 REVIEW, SPEC-106 still `IN_PROGRESS` though its TASKs are DONE, REQ-116 IN_SPEC; Silver: never distilled). **Gate:** `check-hygiene.mjs` section 11, OPT-IN via the same checks.json key: card > 4 KB or `*.proposed.md` > 24 h → WARN; flag off → 0 lines; proven on a desk copy (5,000 B card + 48 h proposed → 2 WARN; capture/PILOT.md over 4 KB ignored). **Other desks:** the pre-order gate rebuilt (current minus section 11, 22 lines) and run beside the new one on all 9 desks, text + `--json` (minus `generatedAt`) → all 18 IDENTICAL incl. exit lines (a first before/after json for smart-scheduler differed only because the "before" capture was cut by a pipe). `check-hygiene i-space`: **RESULT: FAIL (1)** — unchanged and not from this order: `FAILURES.md: 13 unreviewed (F-039…)` (Atlas's); new WARN 0. **No git**; no session cleared, opened or messaged; no process killed.
+- 2026-10-29 (ORDER 42, DONE) — **i-space: the 7 fixes from Atlas's F-003…F-013 review + 3 SYSTEM-FACTS** (owner via Atom 14:20 *"ให้ Atlas ติดตั้งกฎทั้ง 7 ข้อ"*). **Desk edits (Edit only, each file re-read just before; no TASK/REQ/SPEC/TEST/board/log touched):** `SA-Lead.md` — card row (SA may add the REQ's `## AC check`), § Your responsibilities 3 (create SPEC/TASK only with `new-id.mjs`) and 7 (`## AC check` table at the end of the REQ before SPEC_DONE, a `no` row ⇒ not SPEC_DONE), § SPEC template (two `Consumers:` example lines + rule block, with the one-line pointer to the DoD base-run rule — P2), § TASK template (`Depends on: … or <previous topic> committed (<hash>)`) + per-topic-commit rule quoting Sober (F-013); `PROTOCOL.md` — shutdown ritual 6 (script refuses a second, exit 3), § Inbox (+ re-read-on-rule-change bullet, P7), § Artifact numbering (old "check the folder" struck → `new-id.mjs`), § Statuses (SPEC_DONE needs AC check), § Rules (AC-check exception), § Repo layout (per-topic commits bullet); `PM.md` § Your responsibilities 2 (`new-id.mjs REQ`) + new 9 (re-read rule; PM passes owner-made rule changes to SA/SA-B/QA); `QA.md` § Your responsibilities 1 (`new-id.mjs TEST`); `SYSTEM-FACTS.md` new § "Machine and repo facts from the FAILURES review" (pglite:memory F-010, NEXT_DIST_DIR/.next-f F-003, no lsof → `ss -ltn` F-002 — each re-checked read-only first). **New `new-id.mjs`** (add-failure style: per-type lock `new-id.<TYPE>.lock`, scan `<TYPE>-<n>`, floor 101, `wx` create, EEXIST → next, prints path). Scratch proof: empty → 101 · highest TASK-113 (+ old TASK-017, + `.patch`) → 114 · 2 parallel → 115/116 · 10 parallel → SPEC-101…110 no dup · pre-existing REQ-120 sha unchanged, same slug → REQ-121 · stale lock removed · bad type/no slug → exit 2, bad slug → exit 1. **`tools/watch-inbox.sh`** — header + a builtins-only check before watching (same desk by `/proc/<pid>/cwd` or absolute script path, same role set in any order, older watcher only) → `already watching: … (pid N) — not starting a second`, exit 3. Scratch proof on a copy: same args, reversed args, absolute path from `/`, from inside tools/ → exit 3 each, first watcher alive; `PM` alone, other desk → start; append → first exits WAKE 0; two at once → one runs, one refuses; usage exit 2. Read-only check of the block against the live desk: SA and PM RELAY detected (pids 944112/950708), nothing stopped. Live watchers were in their loop during the edit (bash had parsed it). **Item 7/8 (re-read line):** no "how I close an order" section exists in this charter, so recorded here: *every order that changes a desk rule file ends by appending `From Marie <date>: rule changed — re-read <file> § <section> (<why, F-id>)` to each affected role's inbox.* Appended (one `>>` each) to `inbox/SA.md`, `inbox/SA-B.md`, `inbox/PM.md`, `inbox/QA.md`; the SA, SA-B and PM watchers woke on them as designed. **FAILURES:** F-005, F-006, F-007, F-008, F-009, F-012, F-013 → `FIXED 2026-10-29 — … (ORDER 42)` (old "was ATLAS-REVIEWED, pattern Pn" kept on the line); F-003/F-004/F-010/F-011 left for Atlas. `check-hygiene i-space`: **PASS (12 warnings)**, exit 0 — new among them: `SA controllable boot read 49.0KB > 45.0KB` (PM 51.8, QA 47.3 were already over) from this order's rule text. **No git.**
+- 2026-10-29 (ORDER 41, DONE) — **i-space: every DoD expected result carries its base run; the gate WARNs when one is missing** (born F-001/F-002; owner via Atom 01:06 *"Okay."*). **Desk (Edit only, re-read just before each):** `SA-Lead.md` § TASK template — 3 example DoD lines (`(base: <empty>…)`, `(base: \`200\`)`, `(base: n/a — new: this TASK creates it)`) + a rule block under the template (every `→` line carries `(base: <pasted output, trimmed>)` or `(base: n/a — new: <why>)`, never blank; the gate and its switch named); `PROTOCOL.md` § Evidence — one bullet with the same rule; `checks.json` — new top-level key `hygiene.dod-base` {born, why} (the hook reads only `checks`, still empty; hook run on a tasks/ path → exit 0, silent). No TASK/board/log/inbox touched. **Gate:** `check-hygiene.mjs` section 10, OPT-IN through the desk's own `checks.json` (desk-owned in harness.json; check-hygiene did not read it before, no other per-desk config existed, so no second path): for `tasks/TASK-*.md` whose first Status line is TODO/IN_PROGRESS, each `## Definition of Done` line with `→` and no `(base:` → WARN `tasks/<f>:<line> …`; never FAIL; SCHEMA, GATE_VERSION and metrics unchanged. **Proof** (scratch fixtures, same gate byte-for-byte): TODO bare → 1 WARN · `(base: …)` → 0 · `(base: n/a — new: …)` → 0 · DONE bare → 0 · IN_PROGRESS bare → 1 · `**Status:** TODO` bare → 1 · TODO bare with the flag off → 0; all exit 0. **Other desks:** text + `--json` (minus `generatedAt`) captured before the change and after it, all 8 other desks on this box (buddy-screen, develyst-ai, dte, portfolio-nichaphon, possibility, pun-kub-fang, smart-scheduler, smart-scheduler-atom) `cmp` IDENTICAL incl. exit lines. `check-hygiene i-space`: **PASS (1 warning)** — the pre-existing `board.md: 1 REQ row(s) past SPEC_DONE naming no TASK id (REQ-101)`, same as before; 0 DoD warnings because TASK-101…104 are all DONE. **No git.**
+
+- 2026-10-29 (ORDER 40, DONE) — **Filed the old I-Space docs and recorded the gap, on Atom's owner-delegated decisions of 00:40.** **Copied byte-exact** (cp, then `cmp` = identical for all 6; all LF; `._*` resource forks skipped; scanned first, no secret values found; `uploads/` left as it was) into `i-space/ai-worker/legacy/intelligence-space/`, paths kept: `docs/specs/2026-10-08-blueprint-design.md` (18699 B), `blueprint-back/docs/superpowers/plans/2026-10-08-blueprint-back-foundation.md` (26718 B), and `blueprint-back/`, `blueprint-front/`, `caw-back/`, `caw-front/` `README.md` (16/17/10/2293 B). **Edited (i-space only, all by Edit/append):** `legacy/README.md` (header note + new section "What arrived / the gap (2026-10-29)": file table, the gap — old REQ-001…017, SPEC-A/B/C, TASK-A/B/C, D-003…112, STUDY-001…002 exist only as code citations; the rule: code and comments are the only evidence, never invent the old text, design questions go to the owner via the PM; spec and plan are history, not instructions); `DECISIONS.md` (+3 lines `[Atom, owner-delegated, 2026-10-29 00:40]`: commit format + author, buddy-screen scope = off the active list only, the gap); **`CONVENTIONS.md` § Git** (+1 line: `<type>: <summary> (REQ, TASK)`, author `develyst <develyst1@hotmail.com>`, the first `ขึ้น git` still needs the owner's own words per `ATOM.md` "Ruled by the owner" §1) — put there because `git-command` §3A step 1 reads the desk's `CONVENTIONS.md` git section first; the rest of CONVENTIONS stays 🔧 for the SA; `SYSTEM-FACTS.md` (both open items struck and CLOSED with pointers to DECISIONS, + a line on the gap). No other desk touched, no session opened or messaged. `check-hygiene i-space`: **PASS** (board 2.4KB, today's log 3.6KB; NOTEs only), exit 0. **No git.**
+
+- 2026-10-29 (ORDER 39, DONE) — **Opened the desk `i-space/` (I-Space = Blueprint + CAW, two SA teams), spawned by Atlas on the owner's GO 00:24.** **Codebases:** `codebases/ACTIVE.md` — the two buddy-screen rows removed (clones kept on disk), the four I-Space repos listed on `atom` with HEADs (`blueprint-back` f60b934 · `blueprint-front` e46322a · `caw-back` 102a130 · `caw-front` 4b58bf3; each tip "chore: add merge and release workflows", `develop` = `production` = `atom`, trees clean). The dated owner exception (*"เปิดพิเศษให้ใช้สี่ repo ได้"*) was added to `ACTIVE.md` (quote line) and to `RULES.md` (new section "ข้อยกเว้นจากเจ้าของ"); the general 2-repo rule is unchanged. `machine.local.md`: +4 rows `owner-confirmed`. No git anywhere. **The `buddy-screen/` desk was not touched** (parked; its tmux sessions are Atom's). **Desk:** `install.mjs i-space` → new desk, harness 2.6.4, exit 0; `project-docs/.gitkeep` copied. Filled: `TEAMS.md` (8 rows, `<Name>-ISP`, Team A Blueprint / Team B CAW), `SEATS.md`, `DECISIONS.md` (11 lines `[operator via Atom 2026-10-29]`, each quoted), `PROTOCOL.md` (new Hard boundaries: no shared repos, the seams through the PM, git on `atom`, live Claude runs only on the owner's word, old IDs kept; two-team table, chain diagram and pairs copied from smart-scheduler's shape; repo-to-team map; branch `atom`; environments; brownfield), inboxes `SA-B.md` / `BE-B.md` / `FE-B.md`, `SA-Lead.md` / `BE.md` / `FE.md` / `PM.md` / `QA.md` team-aware (one charter per role, per the template's TEAMS rule; no `-B` charters), `FAILURES.md` desk name, `SYSTEM-FACTS.md` (owner's words, plus the Atlas survey marked `[team-proposed, Atlas read 2026-10-29]`; ports re-checked in code), `legacy/README.md`, the signpost `AGENTS.md`, and `board.md` (project info; REQ-101 DRAFT, ball PM). **ID finding** (`git grep` on `atom`): REQ-001…017, SPEC-A-001…009, SPEC-B-001…005, SPEC-C-001…006, TASK-A-001…096, TASK-B-001…121, TASK-C-002…048, D-003…D-112 (Atlas had …D-103), STUDY-001…002. No unlettered SPEC/TASK and no TEST. ⇒ New desk IDs start at **101**, with no team letter and one shared SPEC/TASK sequence, because the template's `SPEC-A-NNN` would collide. So the seed is **`REQ-101`**, not REQ-001, and holds the owner's 00:00 words verbatim only. Left on purpose: `CONVENTIONS.md` 🔧 (SA's), `RESUME-HERE.md` template (PM's). LF only, no absolute path in the desk. `check-harness`: `harness 2.6.4: 9 desk(s), all current`, exit 0. `check-hygiene i-space`: **PASS** (board 2.4KB; NOTEs only), exit 0. `git status`: `ATLAS.md`, `MARIE.md` (both already modified before this run) + `i-space/`. No commit.
 
 - 2026-10-28 15:30 (ORDER 37, DONE) — **Opened the desk `buddy-screen/` (AI for Kids V1, 53 files), spawned by Atlas on the owner's GO.** Checked first: no `buddy-screen/`, no clones, ACTIVE.md unchanged from the cut-off attempt. **Codebases:** cloned `buddy-screen-spec` (`main`, HEAD `0e6e911`) and `buddy-screen-front` (`main`, HEAD `8a3280c`) into `codebases/`; each holds only a one-line `README.md` (one commit "Initial commit", author `D1`). `buddy-screen-back` NOT cloned. `codebases/ACTIVE.md`: the two smart-scheduler rows removed (folders kept), the two buddy-screen rows listed (2 of 2). `machine.local.md`: +3 rows (spec/front `owner-confirmed`, back `— not cloned yet (owner: later)`). No other git anywhere. **Desk:** `install.mjs buddy-screen` → new desk, harness 2.6.4, exit 0; `project-docs/.gitkeep` copied. Filled with Edit/Write: `TEAMS.md` (Porter PM+BA · Tanya QA · Sober SA · Jason BE · Fern FE+designer, `<Name>-BUD`), `SEATS.md` (operator โด่ง; customer skipped; pm/sa/dev/designer/platform → operator; qa human `— ยังไม่มี`, not answered), `DECISIONS.md` (9 lines `[operator 2026-10-28]`, mode manual, never `claude -p`), `PROTOCOL.md` (new `## Hard boundaries` with the children's-data synthetic-only line, spec read-only, back not available / SA API contract only, this machine only; repos, greenfield, branch undecided — clones on `main`, environments), `board.md` (project info + REQ-001 row DRAFT, ball PM), `SYSTEM-FACTS.md` (privacy line, owner facts, read-only repo survey), PM/SA-Lead/QA/FE/BE `🔧` marks and repo placeholders, `FAILURES.md` desk name, new signpost `AGENTS.md` (pointers only, possibility's shape). **REQ-001** = header + `/workspace/inbox-atom/buddy-screen-v1-req.md` byte-exact (`cmp` ok), provenance `owner (โด่ง)`, NOT customer-validated. Left on purpose: `CONVENTIONS.md` 🔧 (the SA's at the foundation talk), `RESUME-HERE.md` template (the PM writes it). LF only, no CR, no absolute path in the desk. `check-harness`: `8 desk(s), all current`, exit 0. `check-hygiene buddy-screen`: **PASS**, 0 WARN. `git status`: only `MARIE.md` + `buddy-screen/`. Note: `smart-scheduler-atom/` now has no active codebase — its code work is parked per the owner; desk not touched. No commit.
 

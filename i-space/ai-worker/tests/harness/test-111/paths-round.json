@@ -1,0 +1,68 @@
+{
+ "status": "applied",
+ "reply": null,
+ "changeSetId": "d56bbe85-245d-4595-a72b-4ab7ca4806ad",
+ "questions": [],
+ "contradictions": [],
+ "failedSources": [],
+ "messageIds": [
+  "bd0e402b-e070-40f8-ade4-b33ac86e78c6",
+  "19beb1dc-261f-495d-9485-d464e6408f22"
+ ],
+ "reason": null,
+ "note": null,
+ "refused": [
+  {
+   "item": "changes[2]",
+   "op": "part.add",
+   "kind": "api",
+   "ref": "$p_hostport",
+   "key": null,
+   "title": "QA path 127.0.0.1:4200/health",
+   "reason": "invalid_change",
+   "detail": "api body: ✖ must start with \"/\" or be a full http(s) URL\n  → at path"
+  },
+  {
+   "item": "changes[3]",
+   "op": "part.add",
+   "kind": "api",
+   "ref": "$p_localhost",
+   "key": null,
+   "title": "QA path localhost:3100",
+   "reason": "invalid_change",
+   "detail": "api body: ✖ must start with \"/\" or be a full http(s) URL\n  → at path"
+  },
+  {
+   "item": "changes[4]",
+   "op": "part.add",
+   "kind": "api",
+   "ref": "$p_ftp",
+   "key": null,
+   "title": "QA path ftp://127.0.0.1/x",
+   "reason": "invalid_change",
+   "detail": "api body: ✖ must start with \"/\" or be a full http(s) URL\n  → at path"
+  },
+  {
+   "item": "changes[5]",
+   "op": "part.add",
+   "kind": "api",
+   "ref": "$p_js",
+   "key": null,
+   "title": "QA path javascript:alert(1)",
+   "reason": "invalid_change",
+   "detail": "api body: ✖ must start with \"/\" or be a full http(s) URL\n  → at path"
+  },
+  {
+   "item": "changes[6]",
+   "op": "part.add",
+   "kind": "api",
+   "ref": "$p_empty_host",
+   "key": null,
+   "title": "QA path https://",
+   "reason": "invalid_change",
+   "detail": "api body: ✖ must start with \"/\" or be a full http(s) URL\n  → at path"
+  }
+ ],
+ "saved": 3,
+ "adjusted": null
+}

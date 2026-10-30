@@ -1,0 +1,20 @@
+// TEST-106: switch the project's model to the flagship tier through the chat screen's model picker (as a user would).
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import fs from 'node:fs';
+const [front, out] = process.argv.slice(2);
+const { chromium } = createRequire(path.join(front, 'package.json'))('@playwright/test');
+const id = fs.readFileSync(path.join(out, 'project-id.txt'), 'utf8').trim();
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.goto(`http://127.0.0.1:3100/p/${id}/chat`, { waitUntil: 'networkidle' });
+await page.getByText('สมดุล', { exact: true }).first().click();
+await page.waitForTimeout(800);
+const opts = await page.$$eval('[role="option"]', (els) => els.map((e) => (e.textContent || '').trim()));
+console.log('options:', JSON.stringify(opts.slice(0, 8)));
+await page.screenshot({ path: path.join(out, '3-model-picker.png') });
+await page.locator('[role="option"]').nth(2).click();
+await page.waitForLoadState('networkidle'); await page.waitForTimeout(1500);
+const p = await (await fetch(`http://127.0.0.1:4200/v1/projects/${id}`)).json();
+console.log('project model now', p.project.model);
+await browser.close();

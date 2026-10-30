@@ -1,0 +1,11 @@
+OK  AC-1 Thai right after the URL → exactly http://127.0.0.1:4500/health — {"status":"applied","paths":["http://127.0.0.1:4500/health"],"kept":["http://127.0.0.1:4500/health"]}
+OK  AC-1 Thai on both sides, two URLs, one with a trailing "/" — ["http://127.0.0.1:3100","http://127.0.0.1:3500/"]
+OK  AC-1 neighbour: query + fragment kept whole (ASCII) — ["http://127.0.0.1:4200/health?a=1&b=2#top"]
+    neighbour (observe): a URL whose path is Thai → kept ["https://example.test/"]
+OK  neighbour: a percent-encoded Thai path is kept whole — ["https://example.test/%E0%B8%84%E0%B9%89%E0%B8%99"]
+OK  AC-2 a part holding :31000 does NOT hold :3100 → :3100 kept — {"status":"applied","paths":["http://127.0.0.1:3100"],"kept":["http://127.0.0.1:3100"]}
+OK  AC-2 neighbour: a part holding exactly :3100 → nothing kept (no duplicate) — {"status":"applied","paths":[],"kept":[]}
+OK  AC-2 neighbour: a part holding ":3100/" counts as ":3100" (trailing slash) — {"status":"applied","paths":[],"kept":[]}
+OK  AC-2 neighbour: a part holding ":4200/health" does NOT hold ":4200" — {"status":"applied","paths":["http://127.0.0.1:4200"],"kept":["http://127.0.0.1:4200"]}
+    neighbour (observe): part holds ":4200/health?x=1", user wrote ":4200/health" → kept ["http://127.0.0.1:4200/health"]
+OK  AC-1 × AC-2: Thai-glued URL that a part already holds → nothing kept — {"status":"applied","paths":[],"kept":[]}

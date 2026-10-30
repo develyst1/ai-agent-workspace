@@ -1,0 +1,4 @@
+ 
+  ✓  1 tests/required.spec.ts:6:5 › every required item is visible on every page × every registered theme (+ default) (1.9m)
+
+  1 passed (2.0m)

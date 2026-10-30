@@ -1,0 +1,7 @@
+== isolation
+  4 passed (8.5s)
+== states
+  34 passed (36.6s)
+== required
+checked 948 items on 48 pages × 4 themes, 0 failures
+  1 passed (2.3m)

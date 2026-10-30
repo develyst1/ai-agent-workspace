@@ -4,7 +4,10 @@ Back to [SKILL.md §6](../SKILL.md). The desk's `PROTOCOL.md` § "Log format" wi
 
 ## The file
 
-`<desk>/ai-worker/log/YYYY-MM-DD.md` — one file per real calendar day, append-only. Whoever opens
+`<desk>/ai-worker/log/YYYY-MM-DD.md` — one file per real calendar day, append-only. A desk that turns on
+rollover (`checks.json` → `hygiene.log-rollover`) continues a long day in `log/YYYY-MM-DD.2.md`, `.3.md`, …;
+the script starts each part and leaves `→ continued in …` at the end of the previous one. TODAY's log is then
+the **latest part**. Whoever opens
 the day creates it with exactly this header (the script does this for you):
 
 ```markdown
@@ -14,7 +17,7 @@ the day creates it with exactly this header (the script does this for you):
 ```
 
 Before appending by any other means (there should be none), the first line must read
-`# Log — <TODAY> — <desk>`. If it doesn't, you have the wrong file.
+`# Log — <TODAY> — <desk>` (or, for a later part, `# Log <TODAY> — part N …`). If it doesn't, you have the wrong file.
 
 ## One entry
 
@@ -47,7 +50,7 @@ EOF
 
 - Body on stdin, via a heredoc whose delimiter is **quoted** (`<<'EOF'`) so the shell leaves
   `$`, backticks and backslashes alone. Never `node -e`, never `>`/`>>`, never an editor on `log/`.
-- The script computes TODAY from the **local** clock, writes the day header if the file is new,
+- The script computes TODAY from the **local** clock, writes the day header if the file is new (and starts the next part when the desk rolls over),
   writes the `## [HH:MM] <who>` heading itself, and appends. It prints the bytes appended — read
   that line; it is your evidence the entry landed.
 - It exits non-zero on a missing name or an empty body; nothing is written then.

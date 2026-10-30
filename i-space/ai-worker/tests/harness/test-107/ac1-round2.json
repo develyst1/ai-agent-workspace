@@ -1,0 +1,17 @@
+{
+  "s": 200,
+  "j": {
+    "status": "changes_rejected",
+    "reply": null,
+    "changeSetId": null,
+    "questions": [],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "28226dea-4cc4-406b-ae28-c958d8f9f8a7",
+      "7f330340-1a27-46aa-995e-b961677257bd"
+    ],
+    "reason": "invalid_change",
+    "note": null
+  }
+}

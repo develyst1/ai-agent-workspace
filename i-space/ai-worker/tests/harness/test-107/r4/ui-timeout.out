@@ -1,0 +1,7 @@
+OK  #4 timeout row + 1 chat call — calls 1
+posts so far: ["18:50:52 action"]
+options open: ["เร็ว","สมดุล","เก่งที่สุด","fake/qa-stub"]
+OK  #6 "เปลี่ยนโมเดล" → pick "เร็ว" → model tier:small, audited by the name — model tier:small; {"model":"tier:medium","creativity":0.5} → {"model":"tier:small","creativity":0.5} by โด่ง
+OK  #6 changing the model sends no chat by itself — chat calls during the model change: 0; page POSTs ["18:59:10 action"]
+retry buttons 1
+OK  #5 explicit "ลองใหม่" → applied on the lower tier — applied true; model on the row fake/qa-stub; chat calls 1

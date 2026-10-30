@@ -1,0 +1,38 @@
+OK  [5.1s] AC-3 /start?project=<no label> opens a board (no version in the link) — landed /p/75fb05ce-18d3-43de-a67c-aa7a5bdd5c9a; "ลิงก์นี้ไม่ครบ" false
+OK  [5.1s] AC-3 the header says ยังไม่มีป้าย — 
+OK  [5.7s] AC-3 neighbour: /start with no project → the new incomplete sentence — "ลิงก์นี้ไม่ครบ ต้องมีโปรเจกต์กลับไปที่โปรเจกต์(self.__"
+OK  [5.7s] AC-3 API: POST /v1/projects with no version → 201, latestLabel null, version 0 — 201 version 0 latestLabel null spec {"revision":1,"reachable":true,"lastPullAt":null}
+OK  [5.8s] AC-4 a card cut with no label: anchorLabel null, anchor.version 0 — {"anchor":{"key":"STEP-004","version":0},"anchorLabel":null}
+OK  [12.9s] AC-4 a label added in Blueprint reaches CAW (no edit, no restart) — after 7.135s
+OK  [12.9s] AC-4 a card cut at v1 keeps anchorLabel v1 — {"anchor":{"key":"STEP-004","version":1},"anchorLabel":"v1"}
+OK  [23.1s] AC-4 project shows v2; card B still says v1 — v2 after 10.196s; card B anchorLabel v1
+OK  [23.8s] AC-4 board header: ป้าย v2 — ["ป้าย v2บอร์ดทีมกา","ป้าย v2\\\"}],[\\\"$\\"]
+OK  [25.3s] AC-4 card A page: ตัดงานก่อนมีป้าย — 
+OK  [25.3s] AC-4 card B page: ตัดงานที่ป้าย v1 (history) — 
+OK  [25.9s] AC-4 projects list chip: ป้าย v2 (no 'spec เวอร์ชัน') — 
+OK  [33.2s] AC-1 (stand-in) an edit without a label: card flagged and the part reader shows the new text within 30 s — after 7.232s (before: "STEP-004 แก้ไขรอบ 2")
+OK  [33.2s] AC-1 / D7 the flagged card is still workable — specChangedVersion 2, workable true
+OK  [33.8s] AC-1 the board shows the card as changed — 
+OK  [34.4s] AC-2 hop 1 starts on the flagged card (D7) — 201 {"id":"01a18a75-0e55-746a-9600-4b0701169ea5","projectId":"9f4a4743-1c40-4389-9da4-0e19e3704432","runId":null,"claimedBy"
+    [34.9s] hop 1 started reading after 0.501s
+OK  [34.9s] AC-2 mid-hop: the operator (no hop) already reads the new text — after 0.012s
+OK  [36.7s] AC-2 hop 1 start read: the text it started with — TEST-110 start-read (hop 01a18a75-0e55-746a-9600-4b0701169ea5): 200 title=QA-AC1 ผู้ดูแลพิจารณา (แก้แล้ว) revision=2 pinned=true fromCache=false
+OK  [36.7s] AC-2 hop 1 mid read, AFTER the edit: still its start text — TEST-110 mid-read (hop 01a18a75-0e55-746a-9600-4b0701169ea5): 200 title=QA-AC1 ผู้ดูแลพิจารณา (แก้แล้ว) revision=2 pinned=true fromCache=false
+OK  [36.7s] AC-2 hop 2 (next hop) reads the new text — TEST-110 start-read (hop 01a18a75-126e-7374-ab83-028a6759570b): 200 title=QA-AC2 ข้อความใหม่กลางก้าว revision=3 pinned=true fromCache=false
+BAD [36.7s] AC-2 D5 neighbour: hop 1's pin still answers after it ended — QA-AC2 ข้อความใหม่กลางก้าว pinned false
+OK  [36.7s] AC-2 D5 neighbour: hop 1's id on ANOTHER card → latest, not the pin — QA-AC2 ข้อความใหม่กลางก้าว pinned false
+    [36.7s] stand-in stopped (CAW last revision 2)
+OK  [47.6s] AC-5 CAW notices Blueprint is down — after 10.867s; spec {"revision":2,"reachable":false,"lastPullAt":"2026-10-30T01:38:08.027Z"}
+OK  [47.6s] AC-5 card context still answers from the last read (fromCache) — 200 {"revision":3,"readAt":"2026-10-30T01:38:12.015Z","fromCache":true,"pinned":false} QA-AC2 ข้อความใหม่กลางก้าว
+OK  [47.6s] AC-5 the part reader still answers from the last read — 200
+OK  [49.0s] AC-5 a hop started while Blueprint is down still works on the last read — TEST-110 start-read (hop 01a18a75-423c-70f7-8a3c-9b2891edb001): 200 title=QA-AC2 ข้อความใหม่กลางก้าว revision=3 pinned=true fromCache=true
+OK  [50.4s] AC-5 the board says Blueprint is unreachable (PM's sentence) — 
+OK  [50.4s] AC-5 the card page says it too and still shows the part — 
+    [146.5s] stand-in down for 110s; starting it again (same state file)
+OK  [153.4s] AC-5 CAW catches up without a restart (reachable, new text, card flagged) — after 6.282s since the edit; api pid 319226 alive true
+OK  [153.4s] AC-5 the first pull after the outage resumes from CAW's last revision — GET /v1/projects/51d0ec28-c4a6-48d9-9834-da8e2a826758/spec/changes?after=2 (last revision before: 2)
+OK  [154.6s] AC-5 the unreachable sentence is gone when Blueprint is back — 
+OK  [154.6s] AC-6 /v1/notify: version.confirmed 202 · no event 400 · spec.changed 202 · unknown event 202 — 202 · 400 · 202 · 202
+OK  [154.6s] D1: CAW made no v1 version/locate/context call to Blueprint — 0 — 
+OK  [154.6s] AC-6 rebuild-check stays clean after spec.revised / anchor events — {"same":true}
+run dir /tmp/qa110-XHk1HF

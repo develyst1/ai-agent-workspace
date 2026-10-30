@@ -568,3 +568,319 @@ never into git.
   `ai-workspace-proxy` skill: open sessions, verify, monitor without polling, and relay only via the PM.
   - Atom's 21:03 direct messages to Sober and Fern broke ATOM.md ("Only the PM and Atlas").
   - The message to Fern also carried an instruction.
+
+## CAW + Blueprint: desk recommendation (2026-10-29, RECOMMEND ONLY, owner via Atom 00:00/00:01)
+
+Atlas read the four clones (`caw-front`, `caw-back`, `blueprint-front`, `blueprint-back`, all on `main`, untouched)
+alongside Atom's notes in `/workspace/caw-blueprint-analysis.md`.
+
+- **Real size** (src / tests, .ts/.tsx; Atom's larger figures include lockfiles and openapi.json):
+
+  | repo | src | tests |
+  |---|---|---|
+  | blueprint-back | 4.1k | 4.2k |
+  | caw-back | 9.3k | 5.2k |
+  | blueprint-front | 15k | 0.5k |
+  | caw-front | 13.4k | 2.6k |
+
+  All four use Bun, TypeScript, Hono + zod-openapi + Drizzle (pglite in tests), and Next 16 / React 19.
+- **One system.**
+  - CAW reads Blueprint through a narrow seam: `caw-back/src/blueprint/client.ts` (88 lines) →
+    `blueprint-back/src/seam/*` (about 290 lines). The calls are getProject / getVersion / partContext /
+    versionsAfter / locate / amend, with `BLUEPRINT_URL` defaulting to :4200.
+  - CAW's runner drives Claude CLI workers (hops, guard, MCP), so it is a product cousin of this workspace.
+- **Built earlier by another AI desk.**
+  - The code cites SPEC-A-001…009, SPEC-B-001…005, SPEC-C-002…004, REQ-001…015, D-0xx…D-103 and STUDY-002.
+    One plan file points at `~/Develyst/intelligence-space/docs/` and says the operator ruled
+    *"ไม่ต้องยุ่งกับ git เด็ดขาด"*.
+  - Spec series by repo:
+    - A spans all four repos (backs and seam);
+    - B covers both fronts (themes, overlays);
+    - C covers blueprint-front screens and the caw-back runner settings.
+  - That desk's memory is not on this box, and no branch of this workspace holds it.
+- **Recommendation:**
+  - **One desk, two SA teams split by product.**
+    - Team A = Blueprint (back + front). Team B = CAW (back + front).
+    - The seam is the only SA-to-SA wire: Blueprint owns the contract, CAW consumes it, and every change goes
+      through the PM.
+    - Why not two desks: desks cannot talk to each other, so a seam change would have to go through the owner.
+    - Why not split teams by layer: a feature would need two teams.
+  - **Roles:** PM (+BA) · QA · SA-A · BE-A · FE-A · SA-B · BE-B · FE-B, 8 sessions. Models: PM/SA/QA opus
+    medium, engineers sonnet medium.
+  - Names as smart-scheduler: Porter, Tanya, Sober/Jason/Fern (A), Silver/Bob/Fanta (B).
+  - Suggested desk `caw-blueprint`, code `CBP`, sessions `<Name>-CBP`. Owner's call.
+  - **First work = a code study, not features:**
+    - each SA maps its product: modules, run commands, tests green or red, and the seam;
+    - QA runs all four apps together locally (ports 4200/3100/4500/3500);
+    - the PM writes SYSTEM-FACTS.
+- **Blocking rule clash:** `codebases/RULES.md` allows at most 2 ACTIVE codebases. buddy-screen holds both
+  slots, and this work needs 4. The owner must rule.
+- **Re-read on the latest branches** (owner via Atom 00:12, "use latest branch"):
+  - **Branches read:** caw-* on `main`, the only branch (2026-10-20). blueprint-* on `nichaphon` (2026-10-20,
+    ahead of main/develop of 10-12).
+  - **blueprint-back:** +3 commits, 11 files, +231 lines (interview goal/duty fields, locate scoring,
+    contradiction de-dup). src 4.1k, tests 4.4k.
+  - **blueprint-front:** +8 commits, 91 files, +5.4k/−1.1k lines (web view zoom/pan, stuck contradictions in
+    chat, a build link to CAW with version confirmation, overview page, `.env.example`). src 17.8k, tests 0.9k.
+  - **New second seam, front to front:** the ready screen's "ส่งไปสร้างที่ CAW" button opens caw-front `/start`
+    (`CAW_URL`, default :3500).
+  - **Recommendation unchanged.** The new link strengthens "one desk": the build-handoff flow now spans
+    Blueprint's front and CAW's front too.
+  - **New question for the owner:** is `nichaphon` the working branch for blueprint, and `main` for caw?
+- **Owner via Atom 00:16:** *"ใช่ แต่ว่าเดียวเพราะว่าสองโปรเจกต์นี้มันคือโปรเจกต์ใหญ่เดียวกัน เราจะเรียกโปรเจกต์นี้ว่า I space
+  ย่อมาจาก Intelligent Space"*. One desk with two SA teams is agreed.
+  - The project is named **I-Space** (Intelligent Space). This replaces the suggested `caw-blueprint` / `CBP`.
+  - Atlas suggests the desk folder `i-space`, code **`ISP`**, sessions `<Name>-ISP` (e.g. `Porter-ISP`). This
+    is still the owner's call. Checked: no clash with existing codes (BUD, SOM, SOMA).
+  - Still waiting for the owner: questions 1–4 (the 2-ACTIVE codebase rule, the old desk's memory, git, live
+    Claude CLI cost). Branches are settled (`nichaphon` for blueprint, `main` for caw).
+  - The desk is NOT opened yet.
+- **Owner via Atom 00:19, answers** (his numbering; his "ข้อสาม" answers Atlas's Q4):
+  1. *"เปิดพิเศษให้ใช้สี่ repo ได้ แล้วก็ลบบัดดี้สกรีนออกไปเลย เพราะว่าเราโค้ดขึ้น git แล้ว"*
+     - Verified 00:2x: both buddy-screen clones are clean and level with `origin/main` (spec at `68d3aef`,
+       front at `8a3280c`).
+     - Atlas's reading: drop the buddy-screen rows from `codebases/ACTIVE.md`. Keep the clone folders
+       (RULES.md allows keeping any number) and keep the desk folder parked, never deleted.
+     - Record the 4-repo exception in RULES.md/ACTIVE.md as an owner exception for I-Space, dated.
+     - To confirm with the owner whether he meant deleting more than that.
+  2. *"ให้ย้ายสเปคกับการตัดสินใจของทีมเก่าตามนั้นมาเลย"*
+     - Migrate the old team's SPEC/REQ/DECISIONS verbatim into the new desk (Marie, at desk-open). Keep the
+       old IDs (SPEC-A-…, D-…) as they are, because the code cites them. Atom brings the folder from the
+       owner's machine.
+  3. *"CAW จะใช้ Claude แบบ Subscription เปิด Claude CLI ที่เซิร์ฟเวอร์ฝั่งที่ deploy แล้วสั่งงานเหมือนสั่ง Atom เลย
+     CAW คือเสมือน Atom"*
+     - CAW's workers run on a Claude subscription, through the CLI on the deploy server. No per-call API
+       money.
+     - Locally, tests stay on mocks/fixtures by default. A live run uses the subscription's quota, so ask
+       first.
+  - Still open: the git rule for this desk (the old team's "ห้ามยุ่ง git" vs the three commands) and the
+    desk name `i-space`/`ISP`.
+  - Branch was answered at 00:12 ("use latest branch": `nichaphon` / `main`). Atom may re-confirm it.
+- **Branch decided (owner, relayed by an Atom note on 2026-10-29): the desk works on `atom`.**
+  - Verified: in all four repos `develop` = `production` = `atom`, and each is checked out on `atom` with a
+    clean tree.
+  - Each `atom` contains the old latest code (`main` for caw, `nichaphon` for blueprint) plus one commit,
+    "chore: add merge and release workflows". So `merge-workflow.sh` and `release-workflow.sh` are in place.
+  - That points to the standard three git commands (ขึ้น git / รวมโค้ด / release code) rather than the old
+    team's "ห้ามยุ่ง git". Atlas recommends that, but the owner has not yet said it in words.
+  - Still to confirm: that git rule, the desk name `i-space`/`ISP`, the scope of "ลบบัดดี้สกรีน", and the old
+    team's folder (Atom is bringing it).
+- **The `i-space` desk was opened by Marie (ORDER 39, 2026-10-29). Atlas re-checked it.**
+  - check-harness: 9 desks, all current. check-hygiene i-space: PASS.
+  - TEAMS has 8 people, sessions `<Name>-ISP`.
+  - ACTIVE.md lists the 4 repos on `atom`, with the owner's exception recorded. All four clones are clean.
+  - No absolute paths in the desk.
+  - New IDs start at **101** (REQ-101, SPEC-101, TASK-101, TEST-101) because the old team's IDs reach
+    REQ-017, TASK-B-121 and D-112.
+  - The first work is REQ-101 "understand all the code" (DRAFT); the ball is with the PM.
+  - Still open: the old folder import (Atom brings it), each repo's commit-message format before the first
+    ขึ้น git, and the scope of "ลบบัดดี้สกรีน".
+- **ORDER 40 is done (2026-10-29, Atlas re-checked).** The 6 old docs are in `i-space/ai-worker/legacy/intelligence-space/`, cmp-identical. The gap is recorded: old IDs exist only as code citations. The commit format is in `CONVENTIONS.md` § Git. The buddy-screen scope (removed from the active list only) is in DECISIONS. Hygiene: PASS. All 8 `-ISP` tmux sessions are up.
+- **FAILURES review, i-space (2026-10-29, Atom's call 00:58).** F-001 (Sober) and F-002 (Silver) → ATLAS-REVIEWED.
+  - **One pattern, two SAs, one day:** a DoD claim or command was written without being run on the base.
+    F-001 rested on a single grep hit; F-002 had a curl that missed the actor header, and `lsof`, which this
+    box lacks.
+  - The rule already exists (role-sa §3, "every DoD expected output was run on the base first"), but it is
+    prose, and it decays under the speed of a code study.
+  - Engineers caught both within 10 minutes, at low cost.
+  - **Proposed structural fix, not installed, for the owner's go:**
+    - a TASK DoD line with `→ expected` must carry `(base: <pasted output>)`;
+    - `check-hygiene` warns on a `→` line without one in a TODO TASK.
+  - Machine fact for the desk via the PM: no `lsof` here, use `ss -ltn`.
+- **ORDER 41 is done (Atlas re-checked).** The i-space DoD base-run rule is installed, and `check-hygiene` warns on it (opt-in: `checks.json` → `hygiene.dod-base`). buddy-screen, smart-scheduler and dte output are identical to the HEAD gate. F-001 and F-002 are now FIXED.
+
+## FAILURES review i-space F-003…F-013 (2026-10-29 14:1x, owner via Atom 14:09 "เรียก Atlas มารีวิว F-003 ถึง F-013 เลย")
+
+All 11 entries are ATLAS-REVIEWED. The gate went from FAIL (11 NEW ≥ 10) to PASS (11 warnings).
+
+Patterns:
+- **P1, a shape change without grepping its consumers** (F-009, F-012; Sober).
+  Proposed: a SPEC section that changes a shape or format carries `Consumers: <grep> → <hits>`.
+- **P2, DoD not run on the base** (F-011).
+  ORDER 41 already covers it, but TASK-105…112 carry **0** `(base:` lines, and the gate WARNs on TASK-109/110.
+- **P3, deliverable not checked AC by AC before SPEC_DONE** (F-006 Silver and F-007 Sober, the same AC-5 on the
+  same day).
+  Proposed: the SPEC_DONE hand-off carries an AC → evidence self-check.
+- **P4, two SAs on one ID counter** (F-008).
+  Proposed: an allocator script that creates the file under a lock, like `add-failure.mjs`.
+- **P5, per-topic commits vs one shared working tree** (F-013).
+  Proposed rule: the next topic's TASK in the same repo depends on the previous topic's commit, not on its DONE.
+- **P6, two watchers** (F-005).
+  Proposed: `watch-inbox.sh` refuses a duplicate for the same desk and inbox.
+- **P7 (Atlas's own finding, the most important): a rule change does not reach running sessions.**
+  - ORDER 41 landed about 01:10. The sessions had read `SA-Lead.md` at boot (about 00:4x), and long-lived
+    sessions never re-read it.
+  - The hygiene WARNs are printed but not acted on.
+  - Proposed: when a desk rule changes, the PM puts one line in each affected role's inbox ("re-read
+    <file> § <section> — rule changed <date>"). Marie's orders end with that step.
+- **F-004 is partly Atlas's.** The "confirmed versions" product line came from Atlas's reading of the code.
+  Proposed: owner-facing summaries of existing code split observed behaviour from intent to be confirmed.
+- **Facts for SYSTEM-FACTS via the PM:**
+  - blueprint-back takes only `pglite:memory` (F-010);
+  - a new `NEXT_DIST_DIR` edits the tracked `tsconfig.json`, so use `.next-f` (F-003);
+  - no `lsof` on this box, use `ss -ltn`.
+- **Status:** none of the fixes is installed; they wait for the owner's GO. The work can continue now.
+- **Could not tell Porter.** `SendMessage Porter-ISP` → "not reachable", and `ListAgents` shows no peers, though
+  all 8 `claude -n …-ISP` processes are alive.
+  - **Cause, verified:** the peer sockets live in `$XDG_RUNTIME_DIR/cc-socks/`
+    (`/tmp/xdg-runtime-box-10`). That directory was **recreated at 02:20**, and `cc-socks/` again at 11:04.
+  - The ISP sessions started at 00:36. `ss -xlp` still shows each one listening on
+    `cc-socks/<pid>.sock`, but the socket files no longer exist, because the directory is empty. So nobody can
+    discover or ring them.
+  - **Every nudge on i-space since about 02:20 has failed.** The desk log has "Porter-ISP unreachable by both
+    routes" from line ~256 on. The desk ran on inbox watchers alone.
+  - Not yet known: what wipes `/tmp/xdg-runtime-box-10` (a tmp cleaner, or a logind session end).
+  - **Fix options (not done, owner's call):** restart the 8 sessions so they rebind (`claude -c`, or the same
+    launch line in the same tmux names, resuming the conversation). Then find and stop whatever wipes the
+    runtime dir, or point `XDG_RUNTIME_DIR` at a path no cleaner touches.
+  - **The same failure explains the buddy-screen "nudge" question of 10-28.** No: that one worked. This is new
+    as of 02:20.
+- **ORDER 42 is done (owner via Atom 14:20, "ให้ Atlas ติดตั้งกฎทั้ง 7 ข้อ"). Atlas re-checked it:**
+  - hygiene PASS; `new-id.mjs` is present; the guarded `watch-inbox.sh` passes `bash -n`; the live PM and SA
+    watchers are untouched.
+  - **Accepted** Marie's one deviation: the SA may now write an `## AC check` section into the REQ at
+    SPEC_DONE, a narrow exception to "SA edits only REQ § Questions".
+  - Statuses:
+    - F-003 and F-010 are FIXED (SYSTEM-FACTS); F-011 is FIXED (ORDER 41 plus the re-read line).
+    - F-004 stays ATLAS-REVIEWED (its fix was not in the GO).
+    - F-014, Sober's new entry, is ATLAS-REVIEWED as a twin of F-001; no new fix until a third occurrence.
+  - New warning: the SA boot read is now 49 KB, over the 45 KB gate, because of the rule text. A slimming job
+    for later.
+  - F-015 (the PM relayed the wrong 4×90 s from F-014) is ATLAS-REVIEWED: the rule exists (PM.md "I checked:"), so no new fix.
+
+## Relay 14:52: "Atom may order git and approve for the owner in I-Space" — NOT executed (2026-10-29)
+
+- **Request (relayed by Atom, quoting the owner):** *"ให้ Atlas สั่ง Marie แก้ ATOM.md ข้อ 1 ให้ Atom สั่ง git และอนุมัติแทนฉันได้ใน I-Space"*.
+  Have Marie amend it, commit it, then tell Porter-ISP to do the REQ-103/104 commits.
+- **Why Atlas held it:**
+  1. **It widens Atom's own authority, and the only evidence is Atom's relay.** `ATOM.md` ruled §1 (the owner,
+     2026-10-27) says a relay does not count for git. "No permission laundering" applies: a channel cannot
+     grant itself the power it was excluded from.
+  2. **`CLAUDE.md` §6 is the real git gate.** "Said by the owner and relayed by the PM with his words quoted."
+     CLAUDE.md is a rule file no agent edits. Amending ATOM.md alone would leave the SAs still bound by §6, so
+     the change cannot take effect without the owner editing CLAUDE.md himself.
+  3. "Approve on the owner's behalf" covers money, deploys and customer messages (the STOP list). The PM may
+     not act on a relay for those without the owner confirming in his own session.
+- **What unblocks it:** the owner says it himself, outside Atom's relay. Either he types it in a session at
+  his computer (e.g. Porter-ISP or Atlas), or he makes the edit himself to CLAUDE.md §6 and ATOM.md §1 on his
+  branch. Atlas can draft the exact text for him.
+- **Meanwhile** the REQ-103/104 commits still work the normal way: the owner says "ขึ้น git" in Porter-ISP
+  himself.
+- Nothing was changed; Marie was not run; Porter was not told (nudges are down anyway).
+
+## After the 18:24 reboot (2026-10-29): FAILURES review i-space F-016…F-026
+
+- **After the reboot, nudges work again.** `ListAgents` shows all 8 `-ISP` sessions, and `cc-socks/` holds
+  fresh sockets. That confirms the socket-loss cause: a new process binds a new socket file.
+- **Review:** 11 entries → ATLAS-REVIEWED. The gate went from FAIL (11 NEW) to PASS.
+- **Patterns:**
+  - **P1b, consumers grepped too narrowly** (F-018, F-019, F-026; Silver, 4 in a day). The ORDER 42 rule is
+    followed, but the grep searches behaviour words, not callers, event counts or fixtures.
+  - **P7, the rule-change window** (F-016, F-017): already fixed by the re-read lines.
+  - **P8, scarce live model calls** (F-020, F-023; rule was NONE): no server-side diagnostics, and the prompt
+    gave the model half its schema.
+  - **P9, wording without a data source** (F-021, F-024).
+  - **P10, a deny-rule not probed with the real parser** (F-022).
+  - **P11, edit-script `$` expansion** (F-025, which damaged files for 30 minutes).
+- **Proposed, not installed, waiting for the owner's GO:**
+  - Q1: the consumer list for a behaviour or signature change comes from a full suite run on a throwaway
+    patch plus a caller grep;
+  - Q2: a placeholder → field table for each user-visible line;
+  - Q3: diagnose-first before scarce live calls, and Q3b: the model prompt carries the full zod-generated
+    schema;
+  - Q4: a deny-rule review probes the parser's own spellings;
+  - Q5: edit scripts use `replace(a, () => b)` or split/join, with a real read-back.
+
+  Q5 is generic, so it could go into the shared workforce-protocol §7.
+
+## Memory-card pilot (ORDER 43; owner typed by Atom 2026-10-30 14:43): installed
+
+- **Scope:** i-space; Porter, Sober and Silver (`checks.json` → `hygiene.memory-cards.pilot`).
+- **Pieces:**
+  - `scripts/hooks/memory-cards.sh`: UserPromptSubmit capture plus a SessionStart card injection. It finds the
+    role from the `claude -n <Name>-ISP` parent process, so it works after `/clear`.
+  - `scripts/memory/distill.mjs`: haiku proposes; the role reviews, then runs `--done`.
+  - `scripts/memory/ready-to-clear.mjs`.
+  - `cards/PILOT.md` records the measurements.
+  - Gate section 11 (WARN only).
+- **Atlas re-checked:** settings.json is valid JSON; the hook is silent and exits 0 for a non-pilot session.
+  All 9 desks' gate output is identical to before (Marie, side by side).
+- **Live state (15:0x):**
+  - Silver distilled on his own and is **READY** (card 2.8 KB).
+  - Porter is NOT READY (the ball is on him for REQ-108/117).
+  - Sober is NOT READY (inbox, TASK-142 REVIEW, REQ-116 IN_SPEC, and a stale SPEC-106 IN_PROGRESS).
+- **Known limit:** the first distill of a long session drops its oldest messages (60 KB cap).
+- The i-space gate is FAIL because of 13 unreviewed FAILURES (F-027…F-039), not this order. Atlas reports the
+  pilot after one working day.
+
+## FAILURES review i-space F-027…F-042 (2026-10-30, owner via Atom 16:04, "บอกเขาreview and develop ไปเลย")
+
+- **Statuses:** 16 entries reviewed (14 ATLAS-REVIEWED; F-032 and F-041 ACCEPTED, because the hooks worked as
+  designed). The gate went from FAIL to PASS.
+- **Dominant cause: P1c, the consumer list.** 13 misses since the grep rule. A grep picks its own words, so it
+  misses test roots, schema objects, typed fixtures and generated types.
+- **Fix:** a mechanical probe. `probe-change.sh` applies the change to a scratch copy and runs
+  tsc/gen:api/check:api/tests, and the errors become the list.
+- **Other patterns:**
+  - P12, derived rules: a per-kind table, the cited rule plus one boundary case, and the schema line for
+    uniqueness;
+  - P13, git safety: `check-ignore` for new paths, one `tree-fp.sh`, git experiments only in a scratch copy;
+  - P14: nudge only after the write's result is back.
+- **Also included:** the pending Q2–Q5 (wording placeholders, live-call diagnostics and schema, deny-rule
+  parser probing, edit-script replace).
+- **ORDER 45** has been written; it waits for ORDER 44 (housekeeping) to finish before Marie runs it. The long
+  rule text goes into a new `spec-rules.md` to protect the boot size.
+- **ORDER 44 (housekeeping) is done (Atlas re-checked). Gate: PASS, 5 warnings.**
+  - Board: 21.4 → 7.4 KB, with 59 closed rows moved to `archive/board-closed.md`.
+  - The 10-29 log is archived; an index is left in place.
+  - The TASK-109 patch is archived; its pointers inside TASK files are left for the SA to update.
+  - Boot reads: PM 52, SA 49, QA 46.5 KB, while BE and FE cleared.
+- **Open for the owner or Atlas:**
+  - Today's log is 128 KB from sheer volume (162 entries), so it needs either a supported daily rollover or
+    fewer entries per role.
+  - Marie's slimming proposal (move rationale and history behind pointers) would save about 4 KB from
+    PROTOCOL, 2–3 KB from PM.md and 2–4 KB from SA-Lead.md.
+  - PM.md's REQ template code block never closes.
+  - The gate's "REQ past SPEC_DONE naming no TASK" check also counts QA-table rows, which is a false positive.
+- ORDER 45 has started.
+- **Owner via Atom 16:28:** *"ข้อแรกเอาตามนาย เพราะเราไม่ควรlost the detail"*.
+  - The log rollover is GO. ORDER 46 is drafted in Atlas's scratchpad and will be inserted and run after
+    ORDER 45 finishes, because both touch check-hygiene and PROTOCOL. Parts are `log/<date>.N.md`.
+  - The slimming plan is NOT GO: the owner asked what it is for, and it does not start until he answers.
+- **ORDER 45 is done (Atlas re-checked): gate PASS.**
+  - New tools: `tools/probe-change.sh` (scratch copy, only new errors, the real repo verified unchanged) and
+    `tools/tree-fp.sh` (read only). New file: `spec-rules.md`, the long form.
+  - The gate's spec-probe WARN is on; 14 WARNs come from old ACTIVE SPECs, for the SAs to clear.
+  - 23 FAILURES moved to FIXED. F-043 (a guessed clock time) is ATLAS-REVIEWED as a one-off.
+  - Known risk: the probe symlinks `node_modules`, so a test that writes there would write into the real
+    repo's (ignored) `node_modules`.
+  - Boot reads grew a little: SA 51, PM 53, QA 47.8 KB.
+- **ORDER 46 (log rollover)** started after ORDER 45 finished.
+
+## Owner's standing criterion (2026-10-30 16:32/16:37 via Atom), applies to every Atlas proposal
+- *"เป้าไม่ใช่การประหยัดโควต้า เผ้าคือการทำงานที่มีประสิทธิภาพ การกระทำใดที่คุณภาพสูงขึ้นแลกกับความต่างเผาโควต้า ที่ฟังดูคุ้มค่า เราเอาอันนั้น"* ·
+  *"ไม่ย่อหรอกถ้าไม่คุ้ม"*
+- **Choose what raises the quality of the work.** Spending more quota is acceptable when it buys quality;
+  saving quota is never the reason for a change.
+- Marie's rule-file slimming plan is **closed, not done.**
+- **The 45 KB boot-read WARN, judged by this criterion:**
+  - The cap was a quality rule, not a quota rule. It came from smart-scheduler's 363–384 KB boots, which roles
+    skimmed instead of reading.
+  - At 47–53 KB there is no evidence of harm. The read-miss failures (F-016, F-017) were the rule-change
+    window, fixed by the P7 re-read lines.
+  - Atlas recommends leaving the gate as it is: a WARN only, with no slimming action. Revisit only if a
+    FAILURE shows a boot rule was skimmed.
+- Note from Atom: the text "ข้อ 2 ย่อไฟล์กฎ GO ได้" seen in an input box was not the owner's words. Treat it
+  as nothing.
+- **ORDER 46 (log rollover) is done and live (Atlas re-checked).**
+  - At 16:38 the 10-30 log rolled to `log/2026-10-30.2.md`. Part 1 ends with a `→ continued` line, and no
+    lock is left behind. Gate: PASS; the 🔴 log WARN is gone.
+  - Parallel appends were proven with a lock; the control run without the lock lost the order.
+  - **Open follow-ups, for the owner's go:**
+    - (a) BUNNY.md step 1 should read every part of a finished day. That is a charter change, so it needs the
+      owner's words.
+    - (b) The shared workforce-protocol skill still says "one file per day". The desk's PROTOCOL wins over the
+      skill, so the risk is low, but the skill should say "the latest part".
+    - (c) check-harness reports i-space "1 not current" (local edits to `append-log.mjs` and
+      `watch-inbox.sh`). Either promote both into `_templates` for every desk, or record them as accepted
+      i-space-local edits.

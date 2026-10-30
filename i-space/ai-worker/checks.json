@@ -1,0 +1,23 @@
+{
+  "checks": [],
+  "hygiene": {
+    "dod-base": {
+      "born": "F-001 F-002 2026-10-29",
+      "why": "check-hygiene.mjs section 10: WARN on a DoD line with '→' and no '(base:' in a TODO/IN_PROGRESS TASK. Rule: SA-Lead.md § TASK template; PROTOCOL.md § Evidence. Owner via Atom 2026-10-29 01:06 'Okay.' (Atlas ORDER 41). The desk-checks hook reads only 'checks' and ignores this key."
+    },
+    "memory-cards": {
+      "pilot": ["Porter", "Sober", "Silver"],
+      "born": "ORDER 43 2026-10-30",
+      "why": "Memory-card pilot: owner GO (typed by Atom) 2026-10-30 14:43. Read by scripts/hooks/memory-cards.sh (UserPromptSubmit capture, SessionStart card), scripts/memory/distill.mjs, ready-to-clear.mjs and check-hygiene.mjs section 11 (card > 4 KB, proposed.md > 1 day: WARN). Only the names in 'pilot' are touched; remove this key to switch the pilot off."
+    },
+    "spec-probe": {
+      "born": "ORDER 45 2026-10-30 (F-018…F-042, P1c)",
+      "why": "check-hygiene.mjs section 12: in a DRAFT/ACTIVE/IN_PROGRESS SPEC, WARN on a section that changes a shape (a Consumers line, openapi.json, ALTER TABLE, ADD COLUMN, NOT NULL) with no 'Consumers (probe):' line, and on a hit line under it without '→ TASK-' or '→ untouched —'. Tool: tools/probe-change.sh. Rule: SA-Lead.md § SPEC template, spec-rules.md § 1. Owner via Atom 2026-10-30 16:04 (Atlas ORDER 45). WARN only; remove this key to switch it off."
+    },
+    "log-rollover": {
+      "part-kb": 90,
+      "born": "ORDER 46 2026-10-30",
+      "why": "append-log.mjs: when the latest part of today (log/<date>.md, then log/<date>.2.md, .3.md, …) is at or above part-kb (90 KB = 92160 bytes), the next append starts the next part (first line '# Log <date> — part N (continues part N-1)') and closes the previous one with '→ continued in log/<date>.N.md', all under log/.append.lock. check-hygiene.mjs section 3 measures the latest part; ready-to-clear.mjs and the skills hint read every part. Rule: PROTOCOL.md § Date discipline, § Log format. Owner via Atom 2026-10-30 16:28 (Atlas ORDER 46). Remove this key to switch rollover off; nothing already written changes."
+    }
+  }
+}

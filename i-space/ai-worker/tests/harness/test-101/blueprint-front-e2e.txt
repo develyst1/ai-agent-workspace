@@ -1,0 +1,18 @@
+└ ƒ /p/[projectId]/ready
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+build exit=0
+  ✓  4 tests/isolation.spec.ts:131:5 › 4. no library variables on the page root; the Mantine block carries its own (788ms)
+
+  4 passed (5.9s)
+isolation exit=0
+narrowed box 560×500: arrangements seen ["wide"]; 14 distinct transforms
+  ✓  34 tests/states.spec.ts:465:5 › default ใยโหนด: a box that narrows around a choice keeps the wide arrangement and glides; a real window resize still switches it (REQ-009 DEF-3, TASK-B-037) (1.7s)
+
+  34 passed (38.3s)
+states exit=0
+after states, listeners:
+LISTEN 0      512    127.0.0.1:4298 0.0.0.0:* users:(("bun.exe",pid=480569,fd=8))

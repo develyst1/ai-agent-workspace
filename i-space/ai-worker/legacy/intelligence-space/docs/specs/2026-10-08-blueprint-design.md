@@ -1,0 +1,275 @@
+# Blueprint — design spec
+
+> ⚠️ **PARTLY SUPERSEDED — read this box first (Atlas, 2026-10-09).** The operator decided on 2026-10-08, after
+> approving this spec, that **galaxy-spec is a failed example to surpass, not a model to copy**. Where this
+> document seeds Blueprint from galaxy-spec it is **no longer binding**: §1 "the data is not the problem" (that was
+> Atlas's inference from one measurement, never the operator's words), §4 "seeded from galaxy-spec's model" and its
+> node types / stamps, §10 the parity exam and the importer. The binding sources now are the desk's
+> `intelligence-space/ai-worker/DECISIONS.md` (2026-10-08 onward), `REQ-001` and `SPEC-A-001` (the data model the
+> operator approved, AC-1). Also superseded: §6 "themes = design-token sets" — themes differ in components, layout
+> and information arrangement, and will be open to authorised submissions (DECISIONS 2026-10-08); §6 spec pages
+> explain with **many diagrams**. Everything else stands until a desk decision says otherwise.
+
+> Status: **APPROVED by the operator 2026-10-08** (*"อนุมัติ spec ไปเขียนแผนได้เลย"*) · written 2026-10-08 by Atlas from a design conversation with the operator.
+> Stand-alone: a session in `blueprint-back` or `blueprint-front` needs nothing else to understand it.
+> Provenance on every decision: `[operator 2026-10-08]` = the operator decided it in that conversation ·
+> `[team-proposed]` = Atlas proposed it, not yet decided · `Interpreted` = a reversible call Atlas made, open to overrule.
+> Full decision log (with the operator's own words): `ai-agent-workspace/intelligence-space/VISION.md` § Decisions log.
+
+---
+
+## 1. What Blueprint is
+
+**intelligence-space** is three apps: **Blueprint** (this spec), **CAW** (Cloud AI agent Workspace — board, workforce
+and runs as one app) and the existing **LLM Gateway**. `[operator 2026-10-08]`
+
+**Blueprint is where a project's spec is *made*, not only shown.** It takes the operator from an incomplete idea to a
+spec that is complete enough for an AI team to build from overnight without asking. It:
+
+1. **Interviews** — a chatbot asks, collects, and links answers into one project spec (W2).
+2. **Reads sources first** — uploaded documents (PDF, Word, Excel, images, links); it asks only what they don't answer.
+   Designed so a code repo can be added as a source later (reverse-engineer a repo into spec). `[operator 2026-10-08]`
+3. **Shows the whole spec and says what is wrong** — "with what we have we can draw this; we are stuck at A, B, C;
+   these parts don't connect; these contradict" — and keeps going until the operator is satisfied (W3).
+4. **Owns the spec alone.** CAW holds no copy; a CAW card stores only a pointer `spec node X @ version N`.
+   `[operator 2026-10-08]`
+5. **Plugs into CAW** through a small API, but is useful on its own. `[operator 2026-10-08]`
+6. **Hands over** a confirmed, locked version through a **Build** button. `[operator 2026-10-08]`
+
+### Why it exists — the pain it replaces
+The operator's current tool, the `galaxy-spec` skill, has a strong data model but its output "reads like a book —
+small text, dense, everywhere" (`[operator 2026-10-08]`). Measured on `mychannel-mc2-spec`: `requirement.html` is one
+page, 1.0 MB, ~59 screen-heights, ~43,600 characters, from 52 nodes / 168 edges / 46 open questions. **The data is
+not the problem; the presentation is.** Blueprint keeps the graph and shows it as many focused pages, visual first,
+text on demand.
+
+### Users (v1)
+**The operator only** — single user first (W8). Provenance stamps are stored from day one so customers can be
+admitted later without a schema change (`customer-validated` becomes real then).
+
+---
+
+## 2. Decisions that bound the design
+
+| Decision | Source |
+|---|---|
+| Two repos under `~/Develyst/intelligence-space/`: **`blueprint-back`** (Bun + Hono) and **`blueprint-front`** (Next.js) | `[operator 2026-10-08]` |
+| **Hono holds all logic.** Next.js renders screens only and never touches the database. Blueprint's own UI and CAW use the **same API** | `[operator 2026-10-08]` |
+| **Postgres** is the single store of truth. Uploaded files sit in a folder as originals only | `[operator 2026-10-08]` (route 2) |
+| The chatbot calls models through the **LLM Gateway**; CAW workers will use Claude (subscription) | `[operator 2026-10-08]` |
+| The user chooses the **model** and the **creativity** (temperature) | `[operator 2026-10-08]` |
+| Both are a project default set at creation, changeable any time in the chat | `Interpreted` |
+| **Best end state from the start** — no interim architecture meant to be migrated later (W12) | `[operator 2026-10-06]` |
+| **No git writes by any AI** (branch, commit, push) — git is the operator's alone | `[operator 2026-10-08]` |
+| Built by a workforce desk `intelligence-space` (PM, QA, three SA teams) that owns `blueprint-*` and `caw-*` | `[operator 2026-10-08]` |
+| The contract between back and front is an **OpenAPI document generated by `blueprint-back`**; `blueprint-front` generates a typed client from it | `[team-proposed]`, accepted with the two-repo choice |
+
+---
+
+## 3. System shape
+
+```
+ ┌──────────── blueprint-front (Next.js) ────────────┐
+ │ ① projects  ② chat  ③ spec pages  ④ ready-to-build │
+ └────────────────────────┬──────────────────────────┘
+                          │ HTTP — typed client generated from OpenAPI      CAW ─┐
+ ┌────────────────────────▼─────────────────────────────────────────────────────▼─┐
+ │ blueprint-back (Hono on Bun) — all logic                                        │
+ │  projects · sources · interview · spec-graph · checker · versions · seam API v1 │
+ └──────────┬───────────────────────┬────────────────────────┬────────────────────┘
+            ▼                       ▼                        ▼
+        Postgres              file folder               LLM Gateway
+     (single truth)      (uploaded originals)     https://ai.develyst.online
+```
+
+### Units inside `blueprint-back` — one purpose each
+
+| Unit | Does | Depends on |
+|---|---|---|
+| `projects` | create / list projects; theme, model, creativity; status `drafting → ready → building` | Postgres |
+| `sources` | accept a file or link, store the original by content hash, extract text into Postgres; status `pending / read / failed (reason)`; source kind is open-ended (`file`, `link`, later `repo`) | Postgres, folder |
+| `interview` | the bot's brain: build context, choose the next question pack, turn answers into proposed changes | spec-graph, checker, sources, gateway |
+| `spec-graph` | nodes, edges, flows, decisions, questions; applies changes as events | Postgres |
+| `checker` | the rules that find gaps, contradictions and unconnected parts — ported from galaxy-spec `check.mjs`, plus contradiction detection | spec-graph |
+| `versions` | lock a confirmed snapshot; serve any version | spec-graph, checker |
+| `seam` | the API CAW uses (§8) | versions, interview |
+| `gateway` client | one place that calls the LLM Gateway and normalises failures (§9) | — |
+
+---
+
+## 4. Data model (Postgres)
+
+**Project and sources**
+
+| Table | Holds |
+|---|---|
+| `projects` | name, theme, default model, default creativity, status |
+| `sources` | kind, original filename / URL, content hash, storage path, extracted text, read status + reason, **who it is from** (asked at upload; sets the provenance of nodes drawn from it) |
+
+**The spec graph** — seeded from galaxy-spec's model (`reference/data-model.md` in that skill)
+
+| Table | Holds |
+|---|---|
+| `spec_nodes` | one row per node · **permanent id** (`UC-003`) — never renumbered or reused · type · title · status · type-specific fields in `jsonb`, validated by a schema per type · **provenance stamp (required on every row)** |
+| `spec_edges` | `from → to`, unique; both ends must exist |
+| `spec_flows` | screen paths with branches (`steps[0]` is the start — no stored `start` field) |
+| `decisions` | what was decided · **scope** (which cases it covers) · provenance |
+| `questions` | open item · attached node · **proposed answer** · status `open / answered / parked` · answer |
+
+Node types are the ones galaxy-spec's gate accepts today (`mychannel-mc2-spec/spec/check.mjs:22`):
+`WF · UC · JE · SCR · MJ · ST · API · TC · DIA · DOC`; a new type is added by registering its schema, not by changing
+tables. A project may carry a **profile** (`odyssey` today) that switches on extra rules for its node types.
+
+**Provenance stamps** (six, as the current gate accepts): `customer-validated` (needs date + channel) ·
+`customer-asked` · `operator` · `operator-delegated` (needs a note) · `team-proposed` · `legacy-observed` (read from
+existing code; needs `source {repo, path}`). Every stamp needs a date. No stamp = it never happened. `Delivered`
+means the operator accepted it, not the customer.
+
+**History and versions**
+
+| Table | Holds |
+|---|---|
+| `messages` | every chat message, with the model and creativity used |
+| `spec_events` | **every change to the spec, append-only**, each linked to the message or source that caused it — so any node can answer "where did this come from" |
+| `spec_versions` | a locked snapshot taken on confirm, with the checker result at that moment. **Immutable at the database level.** This is what CAW points at (`SCR-004 @ v7`) |
+
+**Not stored — computed live:** the gap / contradiction list, counts, readiness, cost estimates (galaxy-spec lesson:
+a stored derived value goes stale silently). The only exception is the checker result frozen inside a confirmed version.
+
+---
+
+## 5. The interview loop
+
+One round:
+
+1. **Context, not the whole chat.** The model receives: a summary of the current graph, the latest checker
+   findings, the relevant source excerpts, and the last few messages. The spec is the memory — so switching model
+   mid-project loses nothing, and long conversations do not bloat.
+2. **Choose what to ask — as a pack.** Rank gaps by how much they block (core work → use cases → screens → APIs →
+   tests). **Before asking, search the sources and the decisions;** if the answer exists, do not ask. Every question
+   carries a **proposed answer** and the cases it covers, so the operator can accept all in one pass.
+3. **The operator answers** — free text, or accepts the proposals.
+4. **The model proposes changes; the API applies them.** The model never writes the spec. It returns structured
+   changes (add node · update field · add edge · record decision with scope · close question). `blueprint-back`
+   validates them against the schemas; invalid → not applied. Valid changes are **applied immediately with undo**
+   `[operator 2026-10-08]`, shown in the chat as a short card ("added 3 nodes · changed 1" + Undo). What the operator
+   said is stamped `operator`; what the bot inferred is stamped `team-proposed` until the operator accepts it. When
+   the model is not sure, the item becomes a **question**, never a node.
+5. **Re-check**, then loop. When the checker is clean the bot says so, summarises, and points to screen ④.
+
+All changes from one answer apply in **one transaction** — all or nothing.
+
+---
+
+## 6. Screens (`blueprint-front`)
+
+Mood and tone from the operator's reference images (`ai-agent-workspace/intelligence-space/refs/blueprint-ui-2026-10-08/`);
+**more pages and more data than the references is fine** `[operator 2026-10-08]`. The project home follows NotebookLM.
+
+**① Projects** — cards in each project's theme: name, date, number of sources, **readiness bar** ("stuck on 7" /
+"ready to build"). **+ New project** → name → theme (live preview) → model + creativity (defaults filled).
+
+**② Chat** — almost empty; the chat is the one focus. Question packs as cards with an accept button and free text.
+At the edges, quiet: a drop-zone for sources, a small readiness ring, "view spec".
+
+**③ Spec** — many pages, one subject each, **visual first; long text only behind a click** (the rule that keeps
+Blueprint from becoming the book again):
+
+| Page | Shows |
+|---|---|
+| Overview | the core work as step cards (01 → 02 → 03) with status |
+| Node web | the graph as a "universe"; click a node → details + "came from which message / source" |
+| Work order | swimlane matrix: step × lane (person / screen / API / backend), each cell with a status |
+| Screens | one card per screen: fields, actions, states |
+| API | one contract per endpoint |
+| Stuck on | gaps, contradictions, unconnected parts — click → back into the chat to resolve (W3) |
+| History | what changed, when, and why |
+
+**④ Ready to build** — one-page summary (work, screens, APIs, all checks passing) · **Confirm 100 %** locks a version
+· **Build → CAW**. While anything blocks, the buttons are disabled and say why.
+
+**Themes** — sets of design tokens (colour, type, radius, surface); every theme uses the same screens. Start with three,
+from the references: clean blue · minimal mono · luxury gold. A new theme = a new token set, no screen changes.
+
+**UI workflow:** `frontend-design` sets each theme's direction → build → `/impeccable audit` → `/impeccable polish`.
+**Acceptance for anything visual is the operator's "yes" on a one-screen mockup per theme before it is built.** An
+audit score is supporting evidence, never the verdict (lesson from mychannel-mc2: every metric passed, the operator
+rejected the page three times).
+
+---
+
+## 7. Ready-to-build rule `[team-proposed]` — not yet decided
+
+Build is enabled only when **both** hold: the checker shows zero open questions, zero contradictions and zero
+unconnected parts, **and** the operator clicks *Confirm 100 %*. The system cannot decide for the operator, and the
+operator cannot skip a gap the system can see. Build hands CAW the **locked version N**; a later change creates
+version N+1 and notifies CAW — it never edits a version already building. Until CAW exists, Build shows
+"CAW not ready" while confirm/lock still works.
+
+---
+
+## 8. Seam API v1 — what CAW calls (published in the OpenAPI document)
+
+| Need | Call | Behaviour |
+|---|---|---|
+| Section + surroundings (W11) | `GET /v1/projects/{p}/versions/{v}/nodes/{id}/context` | node, its neighbours, the decisions whose scope covers it, the flows it is on |
+| Where does this request sit (W10) | `POST /v1/projects/{p}/locate` | candidate nodes, or "not in the spec" |
+| Request an amendment | `POST /v1/projects/{p}/amendments` | **never edits the spec**; opens a question pack in Blueprint's chat, resolved through the normal loop and checks |
+| The spec changed | webhook to CAW + `GET /v1/projects/{p}/events?since=` | pull fallback so nothing is lost if CAW was down |
+
+---
+
+## 9. Failure handling
+
+| Case | Behaviour |
+|---|---|
+| Gateway down, error, malformed JSON, or **`success: true` with empty `content`** (seen on deepseek with low `max_tokens`, 2026-10-08) | counted as a failure; retry once; then the chat says the bot could not answer — retry or switch model |
+| Proposed changes fail schema validation | not applied; logged; the model is asked to correct once |
+| A source cannot be read | marked `failed` with the reason, visible; the interview continues and flags the missing source |
+| Partial apply | impossible — one transaction per answer |
+| Editing a confirmed version | rejected by the database |
+
+---
+
+## 10. Testing
+
+- **`blueprint-back`** — `bun test` against a real local Postgres.
+  - Each checker rule has its own fixtures.
+  - **Real-world exam:** import `mychannel-mc2-spec/spec/spec.json`; Blueprint's checker must report the same findings
+    as galaxy-spec's `check.mjs` on the same file (baseline 2026-10-08: PASS, 0 FAIL, 18 WARN). The mc2 file is a
+    client's project data — it is read from a local path, **never committed** to these repos; a synthetic fixture
+    that trips every rule is committed instead. The gate's OpenAPI-file binding (§6 of `check.mjs`, reads sibling repos
+    on disk) is out of parity until repos become a source.
+  - Gateway: recorded responses, including the empty-content case; one live smoke test.
+- **Contract** — CI fails if the OpenAPI document and the generated client in `blueprint-front` disagree.
+- **`blueprint-front`** — Playwright walks screens ①–④ in all three themes and saves a screenshot of each page as
+  evidence.
+
+### galaxy-spec importer `[team-proposed]`
+Import a galaxy-spec `spec.json` in v1. One piece of work gives three things: the exam above, real data on screen
+from day one (mc2's 52 nodes), and the migration path from galaxy-spec to Blueprint.
+
+---
+
+## 11. Out of scope for v1
+
+- Code repos as a source (designed for, not built).
+- More than one user; customer access; auth (single user first, W8).
+- CAW itself and the Build hand-off target.
+- Exports other than PDF. **v1 exports PDF only** `[operator 2026-10-08]`; design brief, Figma plugin and the
+  project's OpenAPI draft come later.
+- Streaming answers — **not needed** `[operator 2026-10-08]`; the chat shows a thinking state while the gateway works.
+
+## 12. Open items (each needs the operator, none assumed)
+
+1. **§7 ready-to-build rule** — accept or change.
+2. ~~Gateway providers vs W6.~~ **Decided `[operator 2026-10-08]`:** the model picker reads the gateway's
+   `GET /models` live — never a hard-coded list — so whatever the gateway serves is what Blueprint offers.
+   (Gateway facts, tested 2026-10-08: v1.1.0;
+   `POST /chat` takes `provider` + `model` or `tier: small|medium|flagship`; no provider → fallback
+   deepseek → xai → gemini → openai; xai returns `grok-4.3` whatever model is asked; unknown provider → HTTP 500.)
+3. **Streaming.** The gateway returns whole answers; with large models the chat sits silent for seconds. Proposed:
+   add streaming to the gateway as separate work; until then Blueprint shows a thinking state.
+4. **Exports in v1** (§11).
+5. **Hosting.** The vision says a Windows server; the operator will give the path and the database connection
+   (`[operator 2026-10-08]` "เดี๋ยวบอก"). Until then everything reads them from environment variables.
