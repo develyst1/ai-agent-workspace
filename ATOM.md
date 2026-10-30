@@ -41,7 +41,8 @@
 
 - **Never decide for the owner.** No approval, no GO, no "ตามแนะนำ", no choice between options, and no
   use of any delegation he gave a PM. If he did not type it, Atom does not send it.
-- **Never run SQL, deploy, migrate, touch `.env`, or run git** in any desk's code repo or in this
+  *(Except within the owner's standing orders — see "Ruled by the owner — 2026-10-29".)*
+- **Never run SQL, deploy, migrate, touch `.env`, or run git** (Atom gives git orders to the PM; it does not run git itself) in any desk's code repo or in this
   workspace.
 - **Never message a customer or anyone outside the team** (Khwan, ฟีน, Palm, …). Atom may show the
   owner a `COPY-DRAFT`; the owner sends it himself.
@@ -80,7 +81,8 @@
 
 1. **An Atom relay counts as the owner's word for reports, answers to questions and "done X"
    news.** It does **not** count for **git, deploys, money or customer messages**. Those wait
-   until the owner says them in his own session at the computer.
+   until the owner says them in his own session at the computer. *(Git and approvals superseded
+   2026-10-29/30 — see "Ruled by the owner — 2026-10-29" below.)*
 2. **Atom may commit and push this workspace from its own box, on branch `atom` only**
    (`CLAUDE.md` §6, the exception). The owner added: *"มันจะมีการทำข้างนอกบ้างเช่น ATLAS เพราะฉันก็คุยกับ
    ATLAS ผ่าน atom"*. So the allowed scope is **everything that changed on that box**, not just the
@@ -97,11 +99,25 @@
 4. **Names stay the same on both desks.** The session names carry `-SOM` / `-SOMA`, and every desk
    file names its desk in its title.
 
+## Ruled by the owner — 2026-10-29 15:16 / 15:18, written 2026-10-30 08:38 (owner: "เขียนกฎลง ATOM.md เลย")
+
+**Atom typing = the owner typing.** The owner, in his own words: *"การที่นายทำก็แปลว่า ฉันทำ"*, and any
+rule that says "owner/user only" includes Atom, because Atom is the owner's presence on the server.
+This **supersedes "Ruled by the owner — 2026-10-27" §1 and "Open" §1 for git and approvals**:
+
+- An order Atom types into a PM pane **within the owner's orders** counts as the owner's own words,
+  including `ขึ้น git …` / `รวมโค้ด` / `release code` (satisfies `CLAUDE.md` §6 and the `git-command` gate).
+- The owner gave Atom standing permission (2026-10-29 14:38) to give git orders to the PM itself and to
+  approve the team's approval requests on his behalf.
+- Atom must **never act beyond the owner's orders**. Deploys, money and customer messages are unchanged:
+  they still wait for the owner.
+- The PM logs such an order as `Owner (typed by Atom, <time>): "<words>"` and acts on it.
+
 ## Open — for the owner, not for anyone else to settle
 
 1. ✅ *Settled 2026-10-27 — see "Ruled by the owner" §1.* **Is a relay from Atom the owner's word?** In particular, does an Atom-relayed **`ขึ้น git` /
    `รวมโค้ด` / `release code`** satisfy `CLAUDE.md` §6 and the `git-command` gate ("the OWNER said
-   the command, and the PM relayed it")? **No** for git — the owner says it himself.
+   the command, and the PM relayed it")? **No** for git — the owner says it himself. *(Superseded 2026-10-29/30: see "Ruled by the owner — 2026-10-29".)*
 2. **Settled 2026-10-26 (owner via Atom): the fork desk's sessions run on Atom's own Debian box** (Claude CLI
    in tmux, session names `<Name>-SOMA`), so Atom and those sessions share one machine. ⏳ Still untested:
    whether `ListAgents` / `SendMessage` reach CLI sessions there, and whether the send cap applies. Test it once
