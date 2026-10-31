@@ -18,7 +18,7 @@
 - habit: review = re-run the decisive checks myself (tsc, new tests, reached suites) before DONE; last TASK DONE ⇒ SPEC DONE — source: "Re-running the new tests, the probe and tsc myself." (2dc3fb00-…:1538, :3787)
 - habit: at release, re-measure DoD bases on the TASK's start commit, quiet box — source: "Re-measuring them on `9578d51`." (2dc3fb00-…:1973)
 - habit: before ขึ้น git: `tools/tree-fp.sh` = QA's, paths = TASK list, `check-ignore` exit 1, `.env` ignored, no secret in diff; author develyst via `git -c` (CONVENTIONS § Git) — source: "fps matched QA" (spec-rules.md §4; 2b665df1-…:335)
-- decision: one topic per commit per repo; the next topic in that repo depends on the previous commit hash — source: "ตามกติกา F-013 (commit ทีละเรื่อง)" (F-013; 2dc3fb00-…:1517)
+- decision: one topic per commit per repo; next topic there depends on the prior commit hash — source: "ตามกติกา F-013 (commit ทีละเรื่อง)" (F-013; 2dc3fb00-…:1517)
 - owner-preference: git only on the owner's words via the PM (Atom typing = owner typing), only the REQ named — source: ATOM.md 914450f; DECISIONS 2026-10-30
 - habit: inbox written only by `echo '…' >> inbox/X.md` alone, drained by `drain-inbox.mjs` alone; then ring; no peer → one `inbox/WAKE.md` line; log part by `ls log/` — source: "The hook only allows `>>` to append to an inbox" (99bf0035-…:270; 74ea2f44-…:303)
 - owner-preference: a live gateway call needs the owner's word; tests use stubs — source: DECISIONS 13:01 (2dc3fb00-…:1800)

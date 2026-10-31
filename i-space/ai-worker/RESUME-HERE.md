@@ -7,13 +7,15 @@
 > disagreement to the owner.
 > Provenance on every line: `[owner-approved YYYY-MM-DD]` · `[operator-delegated YYYY-MM-DD]` · `[team-proposed]` · `[carried-over]` · `[PM-decided]`
 
-**Written:** 2026-10-31 05:1x by Porter (PM) (replaces the 04:1x snapshot, which still showed REQ-126 r2 in build) · **Newest log:** `log/2026-10-31.md`
+**Written:** 2026-10-31 14:41 by Porter (PM) (replaces the 05:1x snapshot, which lacked the 13:3x รวมโค้ด) · **Newest log:** `log/2026-10-31.md`
 
 ## What we are in the middle of
 
 - **REQ-124 DELIVERED 2026-10-31 03:2x** — the owner's finish line met locally: new product "สมุดยืม-คืนหนังสือในออฟฟิศ", screens only, 8/8 points work, 0 interventions, 9/9 notes (TEST-122 § Round 2). REQ-125 AC-4 + REQ-126 AC-5 PASS live. `[PM-decided]` (DECISIONS 2026-10-31 03:2x)
 - **REQ-126 round 2 DELIVERED + COMMITTED 2026-10-31 05:12** (caw-back 8271082 · caw-front e7a36eb, PM verified) — DEF-2 fixed: a reworded repost of work already on open cards is refused; only new work becomes cards (TEST-124 § Round 2, stub). O-2 accepted (an old open plan re-enabled after one of its cards is done). `[owner-approved 2026-10-31]` (git word) · `[PM-decided]` (O-2)
 - **Nothing in flight on the desk.** Every REQ is DELIVERED or CANCELLED. `[PM-decided]`
+- **รวมโค้ด done 2026-10-31 13:35** (owner typed by Atom 13:31) — all 4 repos atom = develop = origin: bp-back 08e1e4d · bp-front 6a64527 · caw-back 8271082 · caw-front e7a36eb; fast-forward, no deploy. Local `develop` tracks origin/main / origin/nichaphon (pre-existing, untouched). `[owner-approved 2026-10-31]`
+- **The owner's Windows box (workspace branch `dong`) has no i-space repos in `machine.local.md`** — repo checks only on Atom's box. `[PM-checked 2026-10-31 14:41]`
 - **Delivered + committed (PM-verified, hashes on the board / DECISIONS):** REQ-125 (caw 5779554 / ce5ca8d), REQ-126 (caw 5b49f65 / 7f68c42), REQ-122, 121, 120, 119, 118, 115, 108 and earlier. `[owner-approved 2026-10-31]`
 - **REQ-123 CANCELLED** — removed from Blueprint (bp-back 08e1e4d · bp-front 6a64527), CAW uncommitted work discarded. `[owner-approved 2026-10-31]`
 
@@ -22,7 +24,7 @@
 | Thread | Waiting on | Since | What unblocks it |
 |---|---|---|---|
 | Next work | owner | 2026-10-31 05:1x | the owner's next order (watch list below rides the next live run) |
-| FAILURES F-044…F-061 (17 unreviewed — gate FAIL) | owner → Atlas | 2026-10-30 | Atlas review |
+| FAILURES F-044…F-061 (18 unreviewed — gate FAIL) | owner → Atlas | 2026-10-30 | Atlas review |
 | Gate WARNs: 29 closed board rows, log 2026-10-31 > 40 KB, boot reads > 45 KB | owner → Marie | 2026-10-30 | Marie housekeeping |
 
 ## Standing orders to remember

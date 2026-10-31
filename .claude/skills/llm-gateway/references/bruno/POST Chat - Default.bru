@@ -1,0 +1,80 @@
+meta {
+  name: POST Chat - Default (fallback deepseek→xai→gemini→openai)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/chat
+  body: json
+  auth: none
+}
+
+docs {
+  # ผลลัพธ์ที่คาดว่าจะได้ (200 OK)
+
+  ไม่ได้ระบุ `provider` มา ระบบจะลองตามลำดับ fallback chain:
+  `deepseek → xai → gemini → openai` แล้วคืนค่าจาก provider ตัวแรกที่เรียกสำเร็จ
+  เป็น `AIResponse` (ดู `src/types/index.ts`)
+
+  ```json
+  {
+    "success": true,
+    "data": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "content": "สวัสดีครับ! ผมคือผู้ช่วย AI ...",
+      "usage": {
+        "prompt_tokens": 13,
+        "completion_tokens": 120,
+        "total_tokens": 133
+      },
+      "latency_ms": 2300
+    }
+  }
+  ```
+
+  - `data.provider` — จะเป็น "deepseek", "xai", "gemini" หรือ "openai" แล้วแต่ว่าตัวไหนเรียกสำเร็จก่อน
+  - ฟิลด์อื่น ๆ เหมือนกับ response ของ `/chat` ปกติ (provider เดี่ยว)
+
+  ถ้าทุก provider ในสายล้มเหลวหมด จะได้ `500`:
+  ```json
+  { "success": false, "error": "<error message>" }
+  ```
+}
+
+body:json {
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "สวัสดี! คุณคือใคร?"
+      }
+    ]
+  }
+}
+
+tests {
+  test("returns 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("responds with a normalized AIResponse from the fallback chain", function () {
+    const body = res.getBody();
+    expect(body.success).to.equal(true);
+
+    const data = body.data;
+    expect(data.provider).to.be.oneOf(["deepseek", "xai", "gemini", "openai"]);
+    expect(data.model).to.be.a("string");
+    expect(data.content).to.be.a("string").and.not.empty;
+    expect(data.latency_ms).to.be.a("number");
+  });
+
+  test("includes token usage", function () {
+    const usage = res.getBody().data.usage;
+    expect(usage).to.be.an("object");
+    expect(usage.prompt_tokens).to.be.a("number");
+    expect(usage.completion_tokens).to.be.a("number");
+    expect(usage.total_tokens).to.be.a("number");
+  });
+}

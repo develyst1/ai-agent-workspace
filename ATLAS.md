@@ -909,3 +909,51 @@ Patterns:
        and arguably buddy-screen and smart-scheduler-atom, which were opened on this box.
   - Without those paths, git holds a template that does not match `harness.json`, and the other desks stay on
     2.6.4.
+
+**Workspace skills are installed as project skills (2026-10-31, owner: "ทำไม ไม่ติดตั้งสกิลทั้งหมดลงไป").**
+Until today the folder skills lived only in `_templates/skills/`, so no session could load them: `/desk`
+did not exist, and the role skills were never loaded. They are now copied to `.claude/skills/`, which
+every session opened in this workspace loads, on any machine that pulls the repo. The 11 skills are:
+desk, git-command, llm-gateway, nudge-session, role-ba/be/fe/pm/qa/sa, workforce-protocol.
+`rat-semantic-keys` was left out because it belongs to one project. **`_templates/skills/` stays the
+source.** After editing a skill there, copy it to `.claude/skills/` again, or the two drift.
+`nudge-session` also exists as an account skill. The project copy is the newer one (names generalised
+2026-10-25).
+
+## FAILURES review i-space F-044…F-061 (2026-10-31, owner in Porter's pane: "เรียก Atlas ก่อน")
+- **All 18 entries are ATLAS-REVIEWED** (only their Status lines were changed). Gate: FAIL → **PASS** (9 WARN).
+- **P15, guessed time stamps: 7 entries** (F-044/045/046/049/050/053/060), from 5 roles, in about 12 h. Each
+  "run `date` first" card line was broken again within hours, and it was always a FUTURE stamp. Willpower has
+  failed 7 times. Proposed: a gate WARN when a `HH:MM` / `HH:Mx` stamp dated today is later than the file's mtime.
+- **P1d, consumers the type probe cannot see: 5 entries** (F-047/051/055/057/059).
+  - Tests that pin a text, readers of a state literal, a mock or fixture behaviour, prose next to a changed shape,
+    a DoD path missing from the closed list.
+  - Proposed: spec-rules §1. The probe patch carries the behaviour, not just the types. Use `git grep -F` for the
+    old text and the state literal, tests included. Grep the route's description strings.
+  - Also proposed: a gate check that DoD paths ⊆ the closed list on TODO TASKs.
+- **Single entries:**
+  - F-054: a probe-derived number must state the probe's limits and be checked against a real trace.
+  - F-058: pre-git checks must fail closed (`|| exit 1`), and tree-fp gets the logical name, never `.` (git-command skill).
+  - F-061: QA greps `^BAD` before any verdict.
+  - F-048: daemon trials end with `ps` + `free`, and PM2_HOME stays short.
+  - F-052 and F-056: no new design.
+- **None of the fixes is installed. They wait for the owner's GO.**
+- **Owner 2026-10-31: "ปิดไปเลย"** — his reading: the env/clock entries come from the Grok-bot box the desk ran
+  on. CLOSED, no fix: the 7 time-stamp entries (P15) + F-048 (pm2 daemons) + F-056 (Next dist folder). The gate
+  WARN for future stamps is therefore dropped. **9 remain ATLAS-REVIEWED**, needing 4 fixes:
+  (1) consumer rules for SPECs (F-047/051/052/055/057/059); (2) probe limits (F-054);
+  (3) fail-closed pre-git checks (F-058); (4) QA `^BAD` sweep (F-061).
+- **Owner 2026-10-31: "ปิดไปให้หมด เลย ช่างมันเริ่มใหม่"** — the remaining 9 CLOSED too, no fix installed. He declined the effort raise (opus/sonnet medium stays). My read for the record: 62 FAILURES in 3 days vs smart-scheduler 39 in 6 weeks; likely causes: medium effort, non-stop pace under Atom, unfamiliar brownfield code.
+
+**Otto security review + skill (2026-10-31, owner: "บอก ATLAS review นาย และ อัปสกิลด้วย นะ เรื่องsecurity").**
+- Review: `REVIEW-atlas-to-otto-2026-10-31-security.md`. Otto's 6 actions on Server 2 were sound.
+  - The key with no passphrase is acceptable only if `new-app` validates every argument.
+  - pm2 should be installed under `deploy`, called by absolute path, with root only for `pm2 startup`.
+  - Cloudflare Full (strict) should go per hostname via a Configuration Rule, not zone-wide.
+- New skill `platform-security`: the source is in `_templates/skills/`, installed in `.claude/skills/`; check-skills PASS.
+- Open, for the owner's written go: make `OTTO.md` multi-server (a Servers table, per-box facts moved to
+  SERVER-FACTS, and a pointer to the skill).
+- **OTTO.md made multi-server (2026-10-31, owner: "ไปเลย").** Added a Servers table (Server 1 Windows, Server 2 Linux), "every box is shared", Server 2 facts as a pointer to S2.x, a Server 2 provisioning path, new hard boundaries (no password handling; zone-wide Cloudflare only after listing every host), and the `platform-security` skill line. Hard-coded role names in "The chain" were replaced by roles. All Server 1 content was kept.
+- **Owner 2026-10-31: ONE server only, the Linux VPS** ("ตอนนี้ฉันให้รู้ว่ามีแค่เครื่องเดียวนะคือ Linux"). The Windows box is not in use. OTTO.md now describes the one Linux server; SERVER-FACTS §1–§10 have a "history only" banner (nothing deleted). The "2 servers" idea came from the 09-23 survey + Otto 10-31 request; no file had said the Windows box was out of use.
+- **Owner 2026-10-31: Otto = Linux servers only, any number; Windows never counted or touched.** Written into OTTO.md § "Linux servers only".
+- **Daily Linux security audit (2026-10-31, owner: "เริ่มเลย" ~20–21h).** The design for Otto is in `REQUEST-atlas-to-otto-2026-10-31-daily-security-audit.md`: a read-only root script plus a one-script sudoers rule, rkhunter, and ClamAV without clamd (RAM). The scheduled task `otto-daily-security-audit` runs daily at 20:30 local, dispatched ~20:42, and writes `server-audit/<server>/<date>.md` with a 🟢/🔴 first line. The task was saved without a permission mode, so runs may pause on prompts until the owner sets the mode or approves on a first "Run now". Otto builds the script; the owner types sudo once.
