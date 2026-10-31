@@ -884,3 +884,28 @@ Patterns:
     - (c) check-harness reports i-space "1 not current" (local edits to `append-log.mjs` and
       `watch-inbox.sh`). Either promote both into `_templates` for every desk, or record them as accepted
       i-space-local edits.
+- **ORDER 47 Part B is blocked on `harness.json`** (a rule file no agent edits or commits).
+  - The owner chose option 1 (Atom 17:09): he edits `harness.json` himself, changing 3 values: version
+    2.6.4 → 2.6.5 and the sha256 of append-log.mjs and watch-inbox.sh. The full values are in MARIE.md, ORDER 47
+    Operations log.
+  - **Atlas waits for Atom to say the owner's edit is done.** Then Marie re-runs Part B (copy into the template,
+    `install.mjs` on each desk), and Atom makes commit 2 with only Part B's paths.
+  - Note: `install.mjs` overwrites in place, so do not install on a desk while its watcher runs. Only i-space
+    has watchers today, and install skips it as already current.
+- **Owner via Atom 17:41, "ให้ Atlas ทำสิ" (one time only): Atlas edited `harness.json`.**
+  - Exactly 3 values changed: version 2.6.4 → 2.6.5, and the sha256 of append-log.mjs and watch-inbox.sh. Both
+    hashes were verified against the live i-space files first, and the JSON is valid.
+  - Running watchers are on i-space only, so installing the other 8 desks is safe.
+  - Marie re-runs Part B.
+  - **Commit-2 catch:** under `CLAUDE.md` §6 the Atom exception excludes `harness.json`. Atom may commit Part
+    B's other paths, but `harness.json` needs the owner, or his explicit word that Atom may include it this
+    time.
+- **ORDER 47 is DONE (Atlas re-checked): `harness 2.6.5: 9 desk(s), all current`.**
+  - Part B changed: the template (2 files), harness.json (Atlas), i-space's `.harness`, MARIE.md, ATLAS.md,
+    and, on 8 other desks, `.harness`, `append-log.mjs`, `watch-inbox.sh` and 2 archive backups each.
+  - **Commit 2 needs the owner's word** for 2 categories the Atom exception excludes (`CLAUDE.md` §6):
+    1. `harness.json`;
+    2. other desks' folders: smart-scheduler, dte, possibility, pun-kub-fang, develyst-ai, portfolio-nichaphon,
+       and arguably buddy-screen and smart-scheduler-atom, which were opened on this box.
+  - Without those paths, git holds a template that does not match `harness.json`, and the other desks stay on
+    2.6.4.
