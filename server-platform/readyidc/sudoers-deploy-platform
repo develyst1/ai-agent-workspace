@@ -1,0 +1,4 @@
+# Deploy platform: deploy may set up apps (new-app validates every argument) and test/reload nginx. Nothing else.
+deploy ALL=(root) NOPASSWD: /usr/local/bin/new-app
+deploy ALL=(root) NOPASSWD: /usr/sbin/nginx -t
+deploy ALL=(root) NOPASSWD: /usr/bin/systemctl reload nginx

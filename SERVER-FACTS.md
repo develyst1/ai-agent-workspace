@@ -352,3 +352,82 @@ Goal: the AI team deploys many small projects with no manual copying — **merge
   - Moving to a new server later: this cert is **not tied to an IP**, so copy both files (as root) or simply issue a new one.
   - Rollback: `sudo rm -r /etc/ssl/cloudflare` and revoke the cert in Cloudflare → SSL/TLS → Origin Server.
 - **Owner question 2026-10-31, "how much work to move to a bigger server / new IP?"** Otto's answer, **proposed and not yet decided**: design for it now with three things: (1) every server setup step kept as a script in git (bootstrap); (2) never hard-code the server IP in each repo's workflow: one org-level GitHub variable/secret, or a DNS-only name such as `deploy.develyst.online`, plus copying the SSH host keys so `known_hosts` stays valid; (3) back up `/srv/apps/*/shared/.env` and the port registry off the box. With those, a move is about 1 h and touches no project repo.
+- **2026-10-31 15:47 — Build step 3 done (nginx base).** The owner's sudo ran `~/nginx-stage/install-nginx-base.sh` (staged by Otto, shown before running): it printed `KEY-MATCH` (origin key ↔ cert, checked as root), `nginx -t` passed, then a reload printed `NGINX-OK`.
+  - New **`/etc/nginx/snippets/cloudflare-origin-tls.conf`** = `ssl_certificate` + `ssl_certificate_key` for `/etc/ssl/cloudflare/origin.{pem,key}`. Every app's `listen 443 ssl` block includes it. `ssl_protocols TLSv1.2 TLSv1.3` already comes from Ubuntu's `nginx.conf` (http block), so do not repeat it.
+  - New **`/etc/nginx/sites-available/00-default-drop.conf`**, enabled. Port 80 `default_server` → `return 444`; port 443 `default_server` → `ssl_reject_handshake on` (no cert served to unknown SNI). IPv4 and IPv6 listeners. The box has no global IPv6 address.
+  - Ubuntu's `default` site is **disabled** (symlink removed). Backup: `/etc/nginx/sites-available/default.bak-20261031-0847`; the original file is also still in `sites-available/default`.
+  - Checks: on the box, `curl http://127.0.0.1/` → empty reply (000) and `curl -k https://127.0.0.1/` → exit 35 (handshake refused). From the PC, `http://43.228.86.89` → exit 52 (empty reply) and `openssl s_client` → `alert 112 unrecognized_name`. ssh, fail2ban and ufw are active.
+  - **Rollback:** `sudo rm /etc/nginx/sites-enabled/00-default-drop.conf && sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default && sudo nginx -t && sudo systemctl reload nginx`.
+  - **Network oddity, not caused by the config, watch it:** around 15:49, from the PC, some TLS handshakes hung until timeout and SSH to :22 timed out for about a minute, while ping still answered. A minute later everything worked again (path MTU 1500 OK, DF ping with 1472 bytes OK). Loopback on the box always behaved correctly. Possible causes: provider network flakiness, or rate-limiting of one IP that opens many connections. If Cloudflare→origin errors (522/524) show up at the pilot, check this first.
+
+## S2.2b Daily security audit (installed 2026-10-31 ~15:58; addition to S2.2)
+
+Owner: *"ฉันอยากให้ออโต้ทำการเช็คว่าเซิร์ฟเวอร์โดนแฮกไหมมีไวรัสไหมทุกวัน"* · *"เริ่มเลย"*. Design: `REQUEST-atlas-to-otto-2026-10-31-daily-security-audit.md`.
+
+| Item | State |
+|---|---|
+| ClamAV | `clamav` + `clamav-freshclam` 1.5.4 (Ubuntu). **No `clamd` daemon** (it would hold ~1 GB RAM). `clamav-freshclam` service enabled and active; it updates signatures. A `NotifyClamd: Can't find … clamd.conf` error from freshclam is expected and harmless |
+| rkhunter | 1.4.6, installed with `--no-install-recommends` (so no MTA/mailer). Baseline taken with `rkhunter --propupd` (181 files searched, 177 found). `/etc/default/rkhunter` has `APT_AUTOGEN="true"` so apt/unattended-upgrades refresh the baseline after upgrades (backup: `/etc/default/rkhunter.bak-20261031-0857`). Trade-off: a binary swapped *through dpkg* is not flagged by rkhunter |
+| Script | **`/usr/local/bin/security-audit`**, root:root 755, read-only, no arguments, prints 8 sections: logins, access, config hashes, processes/ports/cron/units, changed files, rkhunter, ClamAV, patching |
+| sudoers | **`/etc/sudoers.d/security-audit`** (root 440): `deploy ALL=(root) NOPASSWD: /usr/local/bin/security-audit ""`. `visudo` checked it before and after install. Proven: `sudo -n …/security-audit` works as deploy; `sudo -n ls /root` is refused; `security-audit extra-arg` is refused |
+| Schedule | Atlas's task **`otto-daily-security-audit`**, daily **20:30** (owner's local time). It opens an Otto session that runs `ssh readyidc 'sudo -n /usr/local/bin/security-audit'` and writes `server-audit/readyidc/<YYYY-MM-DD>.md` (line 1 = verdict 🟢/🔴) |
+| Staging copies | The install files were staged in `/home/deploy/audit-stage/`; the source of truth is the installed script |
+
+Rollback: `sudo rm /etc/sudoers.d/security-audit /usr/local/bin/security-audit && sudo apt-get purge clamav clamav-freshclam rkhunter`.
+
+**Audit baseline (2026-10-31 15:58, `server-audit/readyidc/2026-10-31.md`, 🟢):**
+- **One run takes about 7.5 min** (455 s; ClamAV loading signatures takes most of it). RAM stays fine with 6 GB and no swap.
+- **Known login IPs** (with recorded keys only): owner's Mac `202.129.207.248`; Otto's Windows PC `223.24.171.7`. Both may be dynamic: a new IP **with a known key** = 🟡 note; an unknown key = 🔴.
+- **Known rkhunter false positives** (do not raise 🔴): `PermitRootLogin has not been set` (rkhunter does not read `sshd_config.d/`, and the effective value is `no`); hidden files `/etc/.resolv.conf.systemd-resolved.bak` and `/etc/.updated`. The `clamav` user/group "added" warnings were one-time (install day).
+- **Found, not changed:** `/root/.ssh/authorized_keys` contains the owner's Mac key (`entronica@Mac.localdomain`), probably injected by the ReadyIDC rebuild. It is not usable while `permitrootlogin no`; it is not in the handbook. The owner decides whether to remove it.
+- **Observation:** 788 failed SSH attempts in 24 h (scanners). With keys-only auth, most bots end at `Connection closed by authenticating user … [preauth]`, which fail2ban's default `normal` mode may not count. They cannot get in either way; this is log noise only. Making fail2ban count them means `mode = aggressive` in `jail.local`, which needs the owner's go.
+- `deploy` cannot read the system journal (it is not in `adm` or `systemd-journal`). Only the audit script (root) sees the ssh log.
+- **2026-10-31 16:45 — Build step 4 done (scripts + sudoers).** The owner ran one sudo install, which printed `PLATFORM-INSTALL-OK`.
+  - **`/usr/local/bin/new-app`** (root 755): `new-app <name> <static|process> [--host <one-label>.develyst.online] [--start "<cmd>"] [--health </path>]`.
+    - **Validation:** every argument is checked. Values containing a newline are refused before the pattern check. Name `^[a-z0-9-]{2,40}$`. Host is one label under `develyst.online` only (the wildcard cert covers one level). `--start` allows letters, digits, space and `. _ / = : -`. `--health` must be `/path`. Tested before install: bad name, bad type, two-level host, foreign host, `;`, `$( )`, newline in each value and unknown flags were all refused.
+    - **Creates:** `/srv/apps/<name>/{releases,shared/.env(600)}` owned by deploy; `app.conf` with TYPE/HOST/PORT/HEALTH; for `process`, `ecosystem.config.cjs` (the file **must** be named `*.config.cjs`, or pm2 ignores it); `/etc/nginx/sites-available/<name>.conf` plus its `sites-enabled` link.
+    - **nginx:** 80 → 301 to https; 443 uses `snippets/cloudflare-origin-tls.conf` and `http2`; `process` proxies to `127.0.0.1:<port>`; `static` serves from `current` with SPA fallback.
+    - **Safety:** runs `nginx -t` and removes the site again if the test fails.
+    - **Ports:** reserved under a `flock` in **`/srv/apps/ports.tsv`** (name TAB port), from 3001 up; ports already listening are skipped.
+  - **`/usr/local/bin/deploy-app`** (root 755, run as deploy, no sudo): `deploy-app <name> <artifact.tgz>`.
+    - **Before it starts:** needs ≥ 2 GB free and takes a per-app lock.
+    - **Release:** extracted into `releases/<UTC ts>`; `.env` → `../../shared/.env`; atomic `current` switch; then `pm2 reload --update-env`, or `pm2 start` the first time.
+    - **Health check:** status < 500 at `127.0.0.1:<port><health>` within 30 s; a static app only needs `index.html`.
+    - **On a failed check:** switches back to the previous release and deletes the failed one.
+    - **After a deploy:** keeps current + previous, then `pm2 save`.
+    - **Tested end to end** before install (in a temp folder, port 3998, removed afterwards): v1 ok → v2 ok (`.env` readable through the symlink) → v3 crashing → rolled back to v2, exit 1, the failed release deleted → v4 ok, 2 releases kept.
+    - **pm2 picks up the new release:** shown separately with a throwaway app — switching the `current` symlink and running `pm2 reload` serves the new release.
+  - **`/etc/sudoers.d/deploy-platform`** (root 440): deploy NOPASSWD **only** `/usr/local/bin/new-app`, `/usr/sbin/nginx -t`, `/usr/bin/systemctl reload nginx`. `visudo` checked it before and after install.
+    - Proven as deploy: `new-app --help` and `nginx -t` work; `systemctl reload nginx` works; `ls /root`, `systemctl restart nginx` and the audit script with an extra argument are refused; `new-app ../x` is refused; deploy cannot write to `new-app`.
+  - **Apps get no env from pm2** apart from `NODE_ENV=production`, `PORT` and `HOSTNAME=127.0.0.1`. Secrets come only from `.env` in the working directory: Bun loads it automatically. **Whether Next.js standalone reads `.env` at runtime is not yet proven** — check this with the pilot (step 6).
+  - Byte-for-byte copies of every installed file: `server-platform/readyidc/` (README maps each one to its path). Staging folders in `/home/deploy` are deleted.
+  - **Rollback:** `sudo rm /etc/sudoers.d/deploy-platform /usr/local/bin/new-app /usr/local/bin/deploy-app` (`/srv/apps` is empty apart from `ports.tsv`).
+  - **Routine work now needs no owner password:** new-app, deploy-app, the nginx test and reload, and the security audit. Changes to the system itself (packages, firewall, sshd, sudoers, swap) still need it.
+- **2026-10-31 ~16:50 — Build step 5 pre-check (read-only, from the Windows PC): `develyst.online` still has LIVE hosts on OTHER origins.**
+  - **No wildcard yet:** a random name (`zz-probe-<ts>.develyst.online`) returns NXDOMAIN.
+  - **Live through Cloudflare** (explicit, proxied records):
+
+    | Via Cloudflare | Hosts |
+    |---|---|
+    | 200 | apex `develyst.online`, `www`, `ai`, `dte`, `offml`, `fangfangshop`, `portfolio`, `punkubfang` |
+    | 307 | `som`, `learning` |
+    | 502 | `ong`, `backoffice-som` |
+
+  - **NXDOMAIN (no record):** `chipint`, `tocktest`, `jari`, `knowcode`, `orenge`, `wi-store`, `line-oa`, `klang`, `possibility`, `roommade`.
+  - **The old Windows box (154.197.124.206) is still serving** `ai`, `dte`, `som`, `learning`, `offml`, `fangfangshop`, `portfolio` and `punkubfang` (probed with `--resolve`; each has a valid Let's Encrypt cert, expiring 2026-11-21 to 2026-12-25). The apex and `www` give 502 on the Windows box but 200 through Cloudflare, so they are served by some other origin (unknown).
+  - **This contradicts "only the Linux box is in use"** (owner, earlier today), so it was raised with the owner. Otto does nothing on the Windows box. It matters here only because Cloudflare zone settings reach those hosts.
+  - **Consequence for step 5:**
+    - The wildcard `*` is safe: every live host has its own record, and explicit records win.
+    - The zone SSL mode must **not** be flipped blind; read the current mode first. The Let's Encrypt certs would pass Full (strict) today, but `som`'s cert expires 2026-11-21 and auto-renews only if win-acme still runs there.
+- **2026-10-31 ~16:55 — Build step 5 done (DNS).**
+  - **Wildcard record:** the owner added `A * 43.228.86.89` (proxied) on `develyst.online`.
+    - Check: a random name `zz-probe-<ts>.develyst.online` now resolves to Cloudflare (`104.21.25.137` and IPv6) and returns **525**. That is correct: no app claims the name, so the origin's `default_server` rejects the TLS handshake (`ssl_reject_handshake`).
+    - Existing hosts are unchanged after the record: `som` 307, `ai` 200, `portfolio` 200, apex 200.
+  - **Zone SSL mode was read, not changed: `Full`** (automatic mode disabled ~315 days ago).
+    - Full encrypts Cloudflare→origin but does **not** validate the origin cert. The Origin Certificate on this box works under it, so **no SSL change was needed**.
+    - Optional hardening, for later and only with the owner's go: a Cloudflare **Configuration Rule** setting Full (strict) for this box's hostnames only. Do not change the zone-wide mode while other origins serve live hosts.
+- **2026-10-31 ~17:00 — Otto's own mess, cleaned up.**
+  - **What happened:** an earlier test used a config file named `eco.cjs`. pm2 does not recognise that name as a config, so it ran the file as an app called `eco`. This happened twice (ids 1 and 2, ~68 MB each, about 70 min). A later `pm2 save`, from the deploy-app test, put both into the boot dump.
+  - **Fixed:** both deleted and `pm2 save --force` run. pm2 now holds only `pm2-logrotate`, the dump holds no apps, and no `/tmp/tmp.*` test folders are left.
+  - **Lesson:** after every throwaway pm2 test, run `pm2 list`, not only `pm2 list | grep <name>`.
+- **2026-10-31 17:00 — resources** (owner asked): 4 vCPU, load 0.10, CPU 98 % idle; RAM 5.8 Gi, 575 Mi used, 5.2 Gi available; swap none; disk `/` 58 G, 3.6 G used (7 %), 54 G free; up 2 h 16 m.

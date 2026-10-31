@@ -1,0 +1,141 @@
+#!/bin/sh
+# new-app: one-time setup of an app on this box. Run as root (deploy may: sudo -n new-app ...).
+#   new-app <name> <static|process> [--host <sub>.develyst.online] [--start "<cmd>"] [--health </path>]
+# Every argument is validated: this script runs as root from a passwordless sudo rule.
+set -eu
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH LC_ALL=C
+APPS=/srv/apps
+PORTS=$APPS/ports.tsv
+DOMAIN=develyst.online
+FIRST_PORT=3001
+
+usage() {
+  cat <<'EOF'
+usage: new-app <name> <static|process> [--host <sub>.develyst.online] [--start "<cmd>"] [--health </path>]
+  name     ^[a-z0-9-]{2,40}$, must not exist yet
+  static   built files served by nginx from /srv/apps/<name>/current (SPA fallback to index.html)
+  process  pm2 runs <cmd> in /srv/apps/<name>/current on 127.0.0.1:<port>; nginx proxies to it
+  --host   default <name>.develyst.online (one level only: the wildcard cert covers no deeper)
+  --start  default "node server.js" (Next.js standalone); a Bun binary: "./app"
+           allowed characters: letters, digits, space . _ / = : -
+  --health default /; deploy-app expects a status < 500 there within 30 s
+EOF
+}
+die() { echo "new-app: $*" >&2; exit 1; }
+
+[ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ] && { usage; exit 0; }
+[ "$(id -u)" -eq 0 ] || die "run as root: sudo -n new-app ..."
+[ "$#" -ge 2 ] || { usage >&2; exit 2; }
+
+NAME=$1; TYPE=$2; shift 2
+HOST="$NAME.$DOMAIN"; START="node server.js"; HEALTH=/
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --host)   [ "$#" -ge 2 ] || die "--host needs a value";   HOST=$2;   shift 2 ;;
+    --start)  [ "$#" -ge 2 ] || die "--start needs a value";  START=$2;  shift 2 ;;
+    --health) [ "$#" -ge 2 ] || die "--health needs a value"; HEALTH=$2; shift 2 ;;
+    *) die "unknown argument: $1" ;;
+  esac
+done
+
+# grep -x matches line by line, so a value with a newline is refused before the pattern check.
+valid() { case "$2" in *"
+"*) return 1 ;; esac; printf '%s' "$2" | grep -Eqx "$1"; }
+valid '[a-z0-9-]{2,40}' "$NAME" || die "bad name (want ^[a-z0-9-]{2,40}$)"
+case "$TYPE" in static|process) ;; *) die "type must be static or process" ;; esac
+valid "[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.develyst\.online" "$HOST" || die "bad --host (want <one-label>.$DOMAIN)"
+valid '[A-Za-z0-9 ._/=:-]{1,200}' "$START" || die "bad --start (allowed: letters digits space . _ / = : -)"
+valid '/[A-Za-z0-9._/-]{0,100}' "$HEALTH" || die "bad --health (want /path)"
+
+SITE=/etc/nginx/sites-available/$NAME.conf
+LINK=/etc/nginx/sites-enabled/$NAME.conf
+[ -e "$APPS/$NAME" ] && die "$APPS/$NAME already exists"
+[ -e "$SITE" ] || [ -e "$LINK" ] && die "$SITE already exists"
+grep -rqs -- "server_name $HOST;" /etc/nginx/sites-enabled/ && die "host $HOST is already served"
+
+install -d -o root -g root -m 755 "$APPS"
+[ -f "$PORTS" ] || install -o root -g root -m 644 /dev/null "$PORTS"
+
+# Reserve a port under a lock, so two new-app runs never pick the same one.
+PORT=-
+if [ "$TYPE" = process ]; then
+  exec 9>"$APPS/.ports.lock"
+  flock 9
+  awk -F'\t' -v n="$NAME" '$1 == n {f=1} END {exit !f}' "$PORTS" && die "$NAME already has a port"
+  PORT=$FIRST_PORT
+  while awk -F'\t' -v p="$PORT" '$2 == p {f=1} END {exit !f}' "$PORTS" || ss -Hltn "sport = :$PORT" | grep -q .; do
+    PORT=$((PORT + 1))
+  done
+  printf '%s\t%s\n' "$NAME" "$PORT" >> "$PORTS"
+  flock -u 9
+fi
+
+install -d -o deploy -g deploy -m 755 "$APPS/$NAME" "$APPS/$NAME/releases"
+install -d -o deploy -g deploy -m 700 "$APPS/$NAME/shared"
+install -o deploy -g deploy -m 600 /dev/null "$APPS/$NAME/shared/.env"
+printf 'TYPE=%s\nHOST=%s\nPORT=%s\nHEALTH=%s\n' "$TYPE" "$HOST" "$PORT" "$HEALTH" > "$APPS/$NAME/app.conf"
+chmod 644 "$APPS/$NAME/app.conf"
+
+if [ "$TYPE" = process ]; then
+  SCRIPT=${START%% *}
+  ARGS=""; [ "$SCRIPT" = "$START" ] || ARGS=${START#* }
+  cat > "$APPS/$NAME/ecosystem.config.cjs" <<EOF
+module.exports = { apps: [{
+  name: "$NAME",
+  cwd: "$APPS/$NAME/current",
+  script: "$SCRIPT",
+  args: "$ARGS",
+  interpreter: "none",
+  env: { NODE_ENV: "production", PORT: "$PORT", HOSTNAME: "127.0.0.1" },
+}] };
+EOF
+  chown deploy:deploy "$APPS/$NAME/ecosystem.config.cjs"
+  LOCATION="    location / {
+        proxy_pass http://127.0.0.1:$PORT;
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection \$http_connection;
+    }"
+else
+  LOCATION="    root $APPS/$NAME/current;
+    index index.html;
+    location / {
+        try_files \$uri \$uri/ /index.html;
+    }"
+fi
+
+cat > "$SITE" <<EOF
+# $NAME ($TYPE): written by new-app $(date -u '+%Y-%m-%d %H:%M UTC'). Remove with: rm this file + its sites-enabled link.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $HOST;
+    return 301 https://\$host\$request_uri;
+}
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name $HOST;
+    include snippets/cloudflare-origin-tls.conf;
+    client_max_body_size 20m;
+$LOCATION
+}
+EOF
+chmod 644 "$SITE"
+ln -s "$SITE" "$LINK"
+
+if ! ERR=$(nginx -t 2>&1); then
+  echo "$ERR" >&2
+  rm -f "$LINK" "$SITE"
+  die "nginx -t failed: site removed, nginx untouched. App folder $APPS/$NAME and port $PORT were kept; remove them by hand."
+fi
+systemctl reload nginx
+
+echo "name=$NAME type=$TYPE host=$HOST port=$PORT health=$HEALTH"
+echo "next: put secrets in $APPS/$NAME/shared/.env, then: deploy-app $NAME <artifact.tgz>"

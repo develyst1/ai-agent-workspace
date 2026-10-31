@@ -1,0 +1,91 @@
+#!/bin/sh
+# deploy-app: put a new release live, health-check it, roll back on failure. Run as deploy (no sudo).
+#   deploy-app <name> <artifact.tgz>
+set -eu
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH LC_ALL=C
+PM2=/home/deploy/.local/bin/pm2
+APPS=/srv/apps
+MIN_FREE_KB=2097152   # 2 GB
+
+die() { echo "deploy-app: $*" >&2; exit 1; }
+[ "${1:-}" = "--help" ] && { echo "usage: deploy-app <name> <artifact.tgz>"; exit 0; }
+[ "$#" -eq 2 ] || die "usage: deploy-app <name> <artifact.tgz>"
+[ "$(id -un)" = deploy ] || die "run as deploy, not $(id -un)"
+NAME=$1; ART=$2
+case "$NAME" in *"
+"*) die "bad name" ;; esac
+printf '%s' "$NAME" | grep -Eqx '[a-z0-9-]{2,40}' || die "bad name"
+D=$APPS/$NAME
+[ -f "$D/app.conf" ] || die "no app $NAME (run: sudo new-app $NAME <static|process> first)"
+[ -f "$ART" ] || die "artifact not found: $ART"
+FREE=$(df -Pk "$APPS" | awk 'NR==2 {print $4}')
+[ "$FREE" -ge "$MIN_FREE_KB" ] || die "only $((FREE / 1024)) MB free; need 2 GB"
+
+conf() { awk -F= -v k="$1" '$1 == k {print substr($0, length(k) + 2)}' "$D/app.conf"; }
+TYPE=$(conf TYPE); PORT=$(conf PORT); HEALTH=$(conf HEALTH); HOST=$(conf HOST)
+
+# Only one deploy of this app at a time.
+exec 9>"$D/.deploy.lock"
+flock -n 9 || die "another deploy of $NAME is running"
+
+TS=$(date -u +%Y%m%d-%H%M%S)
+NEW=$D/releases/$TS
+mkdir "$NEW"
+tar -xzf "$ART" -C "$NEW" --no-same-owner
+[ -d "$NEW/.next" ] && [ ! -d "$NEW/.next/static" ] && echo "deploy-app: warning: .next/static missing (Next.js standalone needs it copied in)" >&2
+rm -f "$NEW/.env"
+ln -s ../../shared/.env "$NEW/.env"
+[ "$TYPE" = static ] && chmod -R a+rX "$NEW"
+
+OLD=$(readlink "$D/current" 2>/dev/null || true)
+switch_to() { ln -sfn "$1" "$D/current.tmp" && mv -T "$D/current.tmp" "$D/current"; }
+
+healthy() {
+  if [ "$TYPE" = static ]; then
+    [ -f "$D/current/index.html" ]
+    return
+  fi
+  i=0
+  while [ "$i" -lt 30 ]; do
+    code=$(curl -s -o /dev/null -m 3 -w '%{http_code}' "http://127.0.0.1:$PORT$HEALTH" || true)
+    [ "$code" != 000 ] && [ "$code" -lt 500 ] && { echo "health: $code after ${i}s"; return 0; }
+    sleep 1; i=$((i + 1))
+  done
+  echo "health: last status $code after 30s" >&2
+  return 1
+}
+
+# A failed reload/start must not stop the script: the health check decides, and a rollback follows.
+restart() {
+  [ "$TYPE" = process ] || return 0
+  if $PM2 describe "$NAME" >/dev/null 2>&1; then
+    $PM2 reload "$NAME" --update-env >/dev/null || echo "deploy-app: pm2 reload returned an error" >&2
+  else
+    $PM2 start "$D/ecosystem.config.cjs" >/dev/null || echo "deploy-app: pm2 start returned an error" >&2
+  fi
+}
+
+switch_to "releases/$TS"
+restart
+if ! healthy; then
+  if [ -n "$OLD" ]; then
+    echo "deploy-app: health check FAILED, rolling back to $OLD" >&2
+    switch_to "$OLD"
+    restart
+    healthy || echo "deploy-app: WARNING: the old release is not healthy either" >&2
+    rm -rf "$NEW"
+  else
+    echo "deploy-app: health check FAILED on first deploy, nothing to roll back to" >&2
+    [ "$TYPE" = process ] && $PM2 logs "$NAME" --nostream --lines 20 >&2 || true
+  fi
+  exit 1
+fi
+
+# Keep current + the previous release; delete older ones.
+KEEP_PREV=${OLD#releases/}
+for r in $(ls -1 "$D/releases" | sort); do
+  [ "$r" = "$TS" ] || [ "$r" = "$KEEP_PREV" ] || rm -rf "${D:?}/releases/$r"
+done
+[ "$TYPE" = process ] && $PM2 save >/dev/null
+echo "deployed $NAME release $TS -> https://$HOST (previous: ${KEEP_PREV:-none})"

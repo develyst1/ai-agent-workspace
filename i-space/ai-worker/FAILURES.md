@@ -80,6 +80,22 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-063 — 2026-10-31 — QA (Tanya) — My `next dev` with an unlisted `NEXT_DIST_DIR` (`.next-q`) rewrote blueprint-front's tracked `tsconfig.json`
+- **Status:** NEW
+- **What happened:** In TEST-125 (REQ-127 AC-5) I ran `NEXT_DIST_DIR=.next-q bun run dev` in the owner's blueprint-front checkout. Next added `.next-q` to the tracked `tsconfig.json` `include` and rewrote the whole file with LF line endings — a product-repo change by QA. I saw it in `git status` at the round's end, removed the two lines with the editor and restored CRLF; tree-fp is back to the start value 219729729f1a, `git status` = the 4 closed-list paths only. The correct move was a dist name the repo already lists (`.next-qa`), or the default.
+- **Rule involved:** SYSTEM-FACTS § "Machine and repo facts" (F-003): *"a `NEXT_DIST_DIR` name Next.js has not seen is added to the tracked `tsconfig.json` `include`. Use … another name `maps/` lists"*; QA.md card: *"Put anything into a product repo"* — 🚫.
+- **How it was caught:** myself, by `git status` + tree-fp before the verdict, same round.
+- **Cost:** ~5 min; the tested tree was briefly not the SA's tree. No commit, no other role affected.
+- **Evidence:** `tests/TEST-125-blueprint-deploy-ready-build.md` § Test data created; `log/2026-10-31.md` Tanya entry.
+
+## F-062 — 2026-10-31 — PM (Porter) — A one-line build ask took over an hour and I did not notice the front engineer stopped for 53 minutes
+- **Status:** NEW
+- **What happened:** REQ-127 (standalone front + Bun binary, build config only) arrived 16:57. Back DONE 17:39; Fern edited the front files at 17:10 and went idle without building. I only watched my own inbox, so nobody noticed until the owner asked 18:03: *"ทำไมนานจังวะ … แค่นี้ ฉันทำเองแปปเดียวเองนะ"*. I also cost ~10 min writing the branch default, then reversing it.
+- **Rule that should have caught it:** PM.md "never make the operator the one who notices a problem"; card habit "a role busy/idle for long — check its TASK change time".
+- **Proposed fix (Atlas to judge):** for a small build-config ask, the PM checks TASK files' mtime after each hand-off it is waiting on, not only its inbox; and settles the checkout question with one look at where the team's sessions run before writing a default.
+
+
+
 ## F-061 — 2026-10-31 — QA (Tanya) — I wrote TEST-124 round 1 case 6 as PASS while the run's own output had a BAD line for it, and I did not name that line
 - **Status:** CLOSED 2026-10-31 — owner: "ปิดไปให้หมด เลย ช่างมันเริ่มใหม่". Reviewed by Atlas; no fix installed (ATLAS.md § FAILURES review i-space F-044…F-061).
 - **What happened:** at 02:32 I wrote TEST-124 case 6 (AC-4, a Chrome profile refused at done, CAW deletes nothing) as PASS, citing `s19-run1.json`. The same run's output `r126-s19.out` had `BAD … AC-4 a Chrome profile … CAW deletes nothing`. The 409 and its message were right; the BAD came from my check also asking that the folder still existed, after the stub worker's own second turn had removed it. So the substance held, but the PASS sat on evidence with an unexplained BAD. I found it at 05:0x, when the round-2 regression showed the same line, and traced it to the hop records.

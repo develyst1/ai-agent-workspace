@@ -1,0 +1,2 @@
+# deploy may run the read-only security audit as root, with no arguments, and nothing else.
+deploy ALL=(root) NOPASSWD: /usr/local/bin/security-audit ""

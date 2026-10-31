@@ -1,0 +1,229 @@
+bun test v1.3.14 (0d9b296a)
+
+test\db\chatbot-schema.test.ts:
+14 | 
+15 | // A copy of the migrations folder that stops at `lastIdx` — the database as it was before a later migration.
+16 | function migrationsUpTo(lastIdx: number): string {
+17 |   const dir = mkdtempSync(join(tmpdir(), "blueprint-migrations-"));
+18 |   mkdirSync(join(dir, "meta"));
+19 |   const journal = JSON.parse(readFileSync(join(REAL, "meta/_journal.json"), "utf8"));
+                                  ^
+ENOENT: no such file or directory, open '\H:\ispace\blueprint-back\src\db\migrations\meta\_journal.json'
+    path: "\\H:\\ispace\\blueprint-back\\src\\db\\migrations\\meta\\_journal.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at migrationsUpTo (H:\ispace\blueprint-back\test\db\chatbot-schema.test.ts:19:30)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\chatbot-schema.test.ts:33:15)
+(fail) a project that existed before 0004 reads model tier:medium and creativity 0.5 after it [1.28ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\chatbot-schema.test.ts:47:20)
+(fail) creativity outside 0–2 is refused by the database [3.89ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\chatbot-schema.test.ts:53:20)
+(fail) the same file (same sha256) cannot be added twice to one project [1.18ms]
+
+test\db\rules.test.ts:
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\rules.test.ts:20:20)
+(fail) AC-11 base: a version row cannot be updated or deleted [3.68ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\rules.test.ts:31:20)
+(fail) a link cannot touch a removed part [10.91ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\rules.test.ts:43:20)
+(fail) removing a linked part fails at commit; unlinking first commits [1.30ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\rules.test.ts:65:20)
+(fail) AC-12 base: a project without an organisation gets the default one [1.20ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\rules.test.ts:73:20)
+(fail) a link to a part that does not exist is rejected [1.28ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\rules.test.ts:83:20)
+(fail) AC-2 base: a Thai title round-trips byte-identical [1.43ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\rules.test.ts:92:20)
+(fail) a confirmed version cannot be truncated [1.39ms]
+
+test\db\theme.test.ts:
+12 | 
+13 | // A copy of the migrations folder that stops at `lastIdx` — the database as it was before a later migration.
+14 | function migrationsUpTo(lastIdx: number): string {
+15 |   const dir = mkdtempSync(join(tmpdir(), "blueprint-migrations-"));
+16 |   mkdirSync(join(dir, "meta"));
+17 |   const journal = JSON.parse(readFileSync(join(REAL, "meta/_journal.json"), "utf8"));
+                                  ^
+ENOENT: no such file or directory, open '\H:\ispace\blueprint-back\src\db\migrations\meta\_journal.json'
+    path: "\\H:\\ispace\\blueprint-back\\src\\db\\migrations\\meta\\_journal.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at migrationsUpTo (H:\ispace\blueprint-back\test\db\theme.test.ts:17:30)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\theme.test.ts:31:15)
+(fail) AC-B4: a project that existed before the theme column reads clean-blue after the migration [5.77ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\blueprint-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\blueprint-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\blueprint-back\src\db\client.ts:18:11)
+      at testDb (H:\ispace\blueprint-back\test\helpers\db.ts:4:10)
+      at <anonymous> (H:\ispace\blueprint-back\test\db\theme.test.ts:45:20)
+(fail) the database itself refuses an empty theme and one over 64 characters [2.42ms]
+
+test\gateway\client.test.ts:
+29 | 
+30 | test("chat OK; the request carries tier or provider+model, temperature = creativity, max_tokens 16 384", async () => {
+31 |   const g = fake([ok, ok]);
+32 |   const gw = createGateway({ baseUrl: BASE, fetch: g.fetch });
+33 |   const a = await gw.chat({ model: "tier:medium", creativity: 0.3, messages });
+34 |   expect(a).toEqual({ ok: true, content: "สวัสดีครับ ห้องใหญ่ต้องให้ผู้ดูแลอนุมัติ", provider: "openai", model: "gpt-4.1-mini",
+                 ^
+error: expect(received).toEqual(expected)
+
+  {
+-   "content": "สวัสดีครับ ห้องใหญ่ต้องให้ผู้ดูแลอนุมัติ",
+-   "model": "gpt-4.1-mini",
+-   "ok": true,
+-   "provider": "openai",
+-   "usage": {
+-     "completion_tokens": 12,
+-     "prompt_tokens": 42,
+-     "total_tokens": 54,
+-   },
++   "ok": false,
++   "reason": "network",
+  }
+
+- Expected  - 9
++ Received  + 2
+
+      at <anonymous> (H:\ispace\blueprint-back\test\gateway\client.test.ts:34:13)
+(fail) chat OK; the request carries tier or provider+model, temperature = creativity, max_tokens 16 384 [43.98ms]
+47 |     ["empty_content", () => new Response(recorded("chat-empty-content.json"))],
+48 |   ];
+49 |   for (const [reason, reply] of cases) {
+50 |     const g = fake([reply, reply]);
+51 |     const r = await createGateway({ baseUrl: BASE, fetch: g.fetch }).chat({ model: "tier:small", creativity: 0, messages });
+52 |     expect([reason, r, g.calls()]).toEqual([reason, { ok: false, reason }, 2]);
+                                        ^
+error: expect(received).toEqual(expected)
+
+@@ -4,3 +4,3 @@
+      "ok": false,
+-     "reason": "http_500",
++     "reason": "network",
+    },
+
+- Expected  - 1
++ Received  + 1
+
+      at <anonymous> (H:\ispace\blueprint-back\test\gateway\client.test.ts:52:36)
+(fail) AC-10 (client): every kind of failure is retried once, then reported with its reason [17.63ms]
