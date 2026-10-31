@@ -1326,3 +1326,32 @@ Read `tests/TEST-127-req133-pricing-deck.md` §"Notes for the owner" (11 items).
 - a grep of dist for `Kung|Poo|Kid|Bank|London|Nelson|พี่ฟีน|\(V3\)|เทส|UAT|ห้องนี้|6,000` = **0**, plus my earlier banned list = 0;
 - the 3 slide-3 / 4 / 5 shots looked at by you;
 - the size + md5. **Then freeze again.**
+
+## @Sober → @Jason — 2026-10-27 — TASK-846 ON HOLD (owner's edit batch coming)
+- **Don't touch the deck.** Porter is sending an edit batch after the owner answers 2 questions. It likely includes swapping your v3 shots for **dark final-UI shots**, which Fern is making now (TASK-847 → `final-ui/shots-dark/`).
+
+## @Sober → @Jason — 2026-10-27 — TASK-846 EDIT BATCH 2 is written (8 edits, the owner's answers). STILL ON HOLD until I say GO
+- Read "EDIT BATCH 2" at the bottom of `tasks/TASK-846-pricing-presentation-deck.md`. You may draft the Thai now, but **don't rebuild `dist`**.
+- Start condition: Fern's dark final UI (TASK-847) passes Tanya and its 5 dark shots exist. I'll ring you then.
+
+## @Sober → @Jason — 2026-10-27 — GO: TASK-846 EDIT BATCH 2 (dark final UI passed Tanya)
+- Do "EDIT BATCH 2" at the bottom of `tasks/TASK-846-pricing-presentation-deck.md`, **with the GO note under it:**
+  - "2 ทีมทำพร้อมกัน", **no head count** (`showBuilders: false`);
+  - the shots come from `final-ui/shots-dark/` (Tanya passed them).
+- Report in `inbox/SA.md`, with the Done list, size + md5. Then freeze.
+
+## @Sober → @Jason — 2026-10-27 — TASK-846 batch 2 CHECKED: all 8 edits ✅, shots ✅. ONE line to fix (old, missed by all of us), then freeze
+- **Verified:**
+  - md5 `661a5bc9…`; tsc 0;
+  - the 5 shots are byte-identical to `final-ui/shots-dark/`;
+  - all 12 slides read by me: why 2–3 months (no head count, "ทุกตัวเลขมีคนตรวจซ้ำ"), the "ราคานี้รวม" list, the scope line, ไม่มีมัดจำ, 3–4 / 4–5 / 3 weeks + นับจากวันที่ได้ข้อมูลครบ, slide 8 "ขั้นต่อไป", the reports note. All as ruled.
+  - The 1 grep hit ("UAT") is inside base64 data, not text. Fine.
+- **🔴 Fix: `src/slides.tsx:29`, slide 3 (Salary), step 2:**
+  - *"แอดมินดูยอดรวม แล้วเตือนคนที่ยังไม่ยืนยัน"* says the Admin sees the pay TOTAL. That is false: Monthly Payment (the total + Reminder) is **CEO-only** (R0), and slides 2 and 7 say "แอดมินไม่เห็นยอดเงินเดือน". The CEO would see the deck contradict itself.
+  - → **"CEO ดูยอดรวมทั้งเดือน แล้วกดเตือนคนที่ยังไม่ยืนยัน"**.
+- **Done =** tsc 0 · build 0 · grep dist for `แอดมินดูยอดรวม` = 0 · size + md5 in `inbox/SA.md`. Then freeze.
+
+## @Sober → @Jason — 2026-10-28 — GO: TASK-846, ONE fix on slide 12 (Khwan answered the 6 questions)
+- `pricing.ts` `needs`: **drop item 3** ("คำตอบ 6 ข้อเรื่องเงิน … (ถ้ายังไม่ได้ตอบ)"). She answered all 6 on 10-28 (REQ-120 §9.4).
+- `slides.tsx:207`: the heading **counts from the list**, so `${needs.length} อย่างที่ต้องได้จากการประชุมวันนี้` → "2 อย่าง". No literal "3".
+- **Done =** tsc 0 · build 0 · console 0 · `grep -c "คำตอบ 6 ข้อ\|3 อย่าง" dist/index.html` = 0 · size + md5 in `inbox/SA.md`. Then freeze.

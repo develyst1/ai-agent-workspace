@@ -473,3 +473,40 @@ Re-scan `grep -rnE "\b(Kid|Poo|Kung|Bank|London|Nelson)\b|พี่ฟีน|Khw
 3. **STOCK IN:** page title and menu title now "STOCK IN".
 - **tsc 0 · build OK:** dist/index.html 1,243.49 kB (gzip 424.66 kB).
 - **Built file:** `file://` can't be opened in my pane (refused), so I served the BUILT dist with `vite preview` and opened it: all 14 routes render with the right titles (STOCK IN included), Product shows COMMISSION, **console empty**. The double-click `file://` open stays for Tanya's gate.
+
+---
+## @Porter → @Silver — 2026-10-27 — DARK MODE (TASK-847, owner's ask): ONE Team B fix, Revenue › Detail expense rows
+- The final UI now opens in dark (owner: *"backoffice start with dark mode first"*). Sober/Fern found one Team B spot:
+  - `src/pages/b/revenue/Detail.tsx:129` colours expense rows `var(--mantine-color-red-0)`. In dark that's a pale band under light text, which is unreadable.
+- **Fix:** use a scheme-aware colour, e.g. `light-dark(var(--mantine-color-red-0), rgba(250,82,82,0.12))` or Mantine's `red.light` variable.
+  - Scan the rest of your pages for any other hard-coded light colour while you're there.
+- Rebuild, then tell me the new md5 in inbox/PM.md. Tanya then gates dark on all 31 pages in ONE pass.
+
+## @Fanta → @Silver — 2026-10-27 — DARK MODE fix done (Revenue › Detail expense rows)
+- **Change:** `src/pages/b/revenue/Detail.tsx:129` — `bg` is now `var(--mantine-color-red-light)` (scheme-aware). Nothing else touched; no other `red-0` in `src/pages/b/**`.
+- **Checked** on the built file served by `vite preview`, route `#/revenue/lines`:
+  - dark: the expense row is `rgb(101,21,21)` under `rgb(201,201,201)` text — readable;
+  - light: `rgb(255,227,227)` under black text — readable;
+  - console: empty.
+- `tsc` 0; `npm run build` OK (dist/index.html 1,245.87 kB).
+- **md5 `dist/index.html`:** `8cc93ae4b5f98ba380e976e0e0295f69`
+- NOT VERIFIED: the `file://` double-click open (Tanya's gate). Preview server stopped. No git.
+- BALL: @Silver
+
+---
+## @Porter → @Silver — 2026-10-28 — Khwan answered the 6 back-office questions (FYI for the build; no action now)
+- Verbatim + the table: `requirements/REQ-120-backoffice-rebuild-salary-revenue-stock.md` §9.4.
+- **Yours:**
+  - **B6 = A:** a course sold before go-live but confirmed after counts on its confirm date (she leaves it out of her Excel);
+  - **B1 = B:** a confirmed trial later cancelled / a no-show keeps its revenue (money back via Refund);
+  - **B2 / B3 = A:** the bonus is paid across sports;
+  - **B4 = A:** Special Case only on a real whole-course change.
+- Every other question = your stated default. The build waits on the owner's GO (meeting Sat 10-31 / Sun 11-01).
+
+---
+## @Porter → @Silver — 2026-10-28 — Khwan's 6 answers: does ANYTHING need changing NOW? (the owner asked)
+- Owner: *"แล้วที่ขวัญตอบ ไม่มีอะไรต้องแก้เลยเหรอ"*. Answers: REQ-120 §9.4.
+- **Please check your part and reply in inbox/PM.md**, one line per item:
+  1. **The final UI (your 14 pages):** anything that contradicts B6 = A (counted on confirm date), B1 = B (a cancelled confirmed trial keeps revenue; Refund for money back), B2/B3 = A (bonus across sports), B4 = A (Special Case only on a real whole-course change)?
+  2. **The size / price:** does any answer differ from the default you sized, and by how many days?
+- "Nothing to change" is fine, if true.

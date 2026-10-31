@@ -85,3 +85,13 @@ _Last updated: 2026-10-25 (v3 full answers) by @Porter._
 - Still blocking the build: the owner's price talk (≈ 39,200 ฿) + GO.
 
 - 2026-10-27: **6 build questions SENT to Khwan** (the short version in `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md`; the owner cut 31 → 6). Every other review question = **the SA's stated default**, shown to her on UAT. The data list is asked when each part starts.
+
+- 2026-10-28: pricing deck + final UI (dark) accepted by the owner (REQ-133). Next: the owner's money meeting (39,200 ฿, 3 installments by delivery, no deposit, 6-month maintenance) → his GO → the build starts with Stock.
+
+- 2026-10-28: the money meeting is set for **Sat 10-31 / Sun 11-01** (owner).
+
+- 2026-10-28: **Khwan answered the 6 build questions** (1A 2B 3A 4A 5A 6B). REQ-120 §9.4. The rules are complete for the build; only the owner's money meeting (Sat 10-31 / Sun 11-01) + his GO remain.
+
+- 2026-10-28: meeting moved: *"ประชุมเสาร์หน้า"* = **Sat 11-07** (Porter's reading, stated to the owner).
+
+- 2026-10-28: **Sat 11-07 confirmed** by the owner (*"ถูกแล้ว เสาร์ 7"*).

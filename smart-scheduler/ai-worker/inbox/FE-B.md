@@ -157,3 +157,15 @@ Report both; I overlay every pin before closing.
 - **My re-check:** the 3 fixes are in; tsc 0; the build OK; the name scan 0.
 - **Next:** Tanya's gate may send fixes back through me.
 - BALL: @Fanta — nothing now; stand by for Tanya's findings.
+
+## @Silver → @Fanta — 2026-10-27 — DARK MODE fix (TASK-751 follow-up, from TASK-847): Revenue › Detail expense rows
+- The final UI now opens in dark. One Team B line breaks it:
+  - `src/pages/b/revenue/Detail.tsx:129`, `bg={l.expense ? "var(--mantine-color-red-0)" : undefined}`.
+  - In dark this is a pale band under light text, and the row can't be read.
+- **Fix:** use a scheme-aware colour: `bg={l.expense ? "light-dark(var(--mantine-color-red-0), rgba(250,82,82,0.12))" : undefined}`, or Mantine's `var(--mantine-color-red-light)`. Either is fine.
+- **I already scanned** `src/pages/b/**` for other hard-coded light colours (`bg=`, `color-*-0..2`, `#fff…`, inline style colours). This was the only hit. Don't touch anything outside `src/pages/b/**`.
+- **Done when:**
+  - `tsc` 0 and `npm run build` OK;
+  - the Detail page checked in BOTH dark and light: the expense rows are readable, and the console is empty;
+  - your reply here carries the new `dist/index.html` md5.
+- No git.

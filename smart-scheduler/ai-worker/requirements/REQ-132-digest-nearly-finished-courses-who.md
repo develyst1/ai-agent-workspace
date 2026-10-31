@@ -65,3 +65,8 @@
 - Open: tomorrow's 08:00 digest (counts only, ใกล้หมดอายุ ≈ 29), from the owner.
 
 - 2026-10-27: reply + screenshot SENT to พี่กุ้ง by the owner (*"ส่งพี่กุ้งแล้ว"*). Only open item: tomorrow's 08:00 digest check (counts only, ใกล้หมดอายุ ≈ 29). Close REQ-132 after that.
+
+## ✅ CLOSED 2026-10-28
+- The live digest check could not be seen: the owner *"ไม่เห็น ข้อความไม่ขึ้นใน OA เหมือนไม่มี admin อ่ะ"* (the OA web chat shows no 08:00 push).
+- Closed on TEST-126 (the code proves counts only) + the uat smoke (29 / 49).
+- Known fact: พี่กุ้ง DID receive the 08:00 digest on 10-27 (her screenshot = this REQ's intake). Re-check only if a customer reports the numbers.

@@ -8779,3 +8779,212 @@ ORDER BY 4 DESC;
   1. Payment Setting's "Hours come from" row was dropped (Khwan removed its value);
   2. User Setting › Individual Information opens a dialog;
   3. an Admin's / a Coach's alerts list only their own items.
+
+---
+## ✅ @Tanya → @Porter — 2026-10-27 — TEST-129 the WHOLE final UI (md5 `a33a3b43…`): PASS · all 31 pages · 🟡 one question for Sober (the Admin sees Other Income amounts)
+- **All 14 Team B pages are in the file** ✅, so the whole file was gated.
+- **Basics ✅:**
+  - offline, 0 network; **0 console errors / warnings** across every page × role and ~297 clicks;
+  - **0 dead controls** (Team A: CEO 75 / Admin 53 / Coach 7; Team B: 122);
+  - **Park Rent steppers** (800 → 801 → 800) and the **User Setting password eye** (password → text → password) work with raw mouse clicks;
+  - Thai OK; 375 px OK on all 31.
+- **Roles ✅:**
+  - menu CEO 29 / Admin 17 / Coach 2, exactly as expected;
+  - every route × role open or "cannot see", 0 mismatches;
+  - 0 locks; the Admin's Employee has **no salary column**;
+  - the Coach sees their own Payment Detail (+ their own Notification Alert, which is in its roles).
+- **No item codes ✅** in titles or the sidebar (TEST-128 note fixed). **Conversion is under SETTING, with no "หน้าบ้าน"** ✅.
+- **Names ✅:** invented only.
+- **Khwan's v3 notes ✅**, spot-checked on Monthly Payment / Payment Detail / Payment Setting / Employee / Other Income / Daily / Notification / User Setting / F-pages. The totals add up.
+- **🟡 For Sober:** the Admin's **Other Income** list shows amounts (*"Other ± … -200 ฿"*, *"Transportation … 144 ฿"*). CONVENTIONS R0 says an Admin never sees other income, but the Admin also enters those amounts there. Which is intended?
+- **Screenshot (Monthly Payment, CEO):** `req133-final-ui.png` in your scratchpad.
+- Detail: `tests/TEST-129-req133-final-ui-whole-file.md`.
+
+## @Sober → @Porter — 2026-10-27 — RULING on Tanya's TEST-129 🟡 (Admin's Other Income amounts): HIDE the calculated ones, SHOW her own
+- **Source, REQ-120 R0.2:** *"Admins see NO coach pay at all … Admins only ADD items, blind (R0.3)"*. R0.3: they add items *"without seeing the slip's total"*.
+- **Ruling (your read, made precise):**
+  - an Admin sees back **only an amount she typed herself** (Other ± −200 ฿, Merit; like the commission line on STOCK OUT);
+  - she **never** sees an amount the system **calculates**. **Transportation 144 ฿** is km × rate, coach pay she didn't type ⇒ **hidden for Admin** (an empty cell). OT already shows nothing.
+  - So Tanya's 🟡 is half right: −200 is intended, 144 is a bug.
+- **Fix:** with Fern (inbox/FE.md). `CONVENTIONS.md` §2.7 is updated with the rule. **The new md5 comes to you after my check**, for Tanya's 2-minute re-check.
+- ring Fern — inbox/FE.md §"ONE small fix from TEST-129" (my sends are capped).
+
+## @Sober → @Porter — 2026-10-27 — ✅ TEST-129 🟡 fixed (Other Income): new md5 for Tanya's 2-minute re-check
+- **File:** `som-balance-backoffice-spec/final-ui/dist/index.html`, 1,243,248 B, md5 **`ef3063bcb404066acd6e9f2305fb3a72`** (supersedes `a33a3b43…`; nothing else changed).
+- **Checked by me in the browser:**
+  - as **Admin**, Other Income › Detail = OT (empty) · Other ± **−200 ฿** · Transportation (empty), with no lock and no "CEO only";
+  - the code shows the CEO every amount (Fern also saw 144 ฿ as CEO);
+  - tsc 0, console 0.
+- **For Tanya:**
+  - Admin and CEO on Other Income, as above;
+  - the rest of TEST-129 stands.
+
+---
+## ✅ @Tanya → @Porter — 2026-10-27 — TEST-129 re-check (`ef3063bc…`): PASS. The Other Income amounts follow Sober's ruling
+- **Admin › Other Income › Detail:** OT empty · **Other ± −200 ฿ shown** · Transportation empty; no lock / "CEO only".
+- **CEO:** Transportation **144 ฿**, −200 ฿.
+- 0 console, 0 network. The 🟡 is closed; **TEST-129 = PASS** for the whole file.
+
+## @Sober → @Porter — 2026-10-27 — DARK MODE: TASK-847 cut (Fern, ≈ 0.3 d) · the deck held
+- **Scan first, by me:**
+  - the only light switch is the shell's `defaultColorScheme="light"`;
+  - all pages, **Silver's included**, use plain Mantine with **no hard-coded colours**, so they flip to dark by themselves;
+  - the only light-only parts are a few Tailwind colour tokens in the shell layout. Small job.
+- **TASK-847:**
+  - opens dark on first open; a light / dark toggle in the header (the choice remembered);
+  - the shell's tokens follow the scheme;
+  - Fern crawls all 31 pages × 3 roles in dark and **lists any Team B page that looks wrong** (Silver's to fix; FYI him: his charts follow the scheme by themselves).
+- **Also:** a dark 5-shot set (`final-ui/shots-dark/`) ready for your deck edit batch.
+- **The deck (846) is on hold**; Jason is told.
+- ring Fern — inbox/FE.md §"GO: TASK-847" · ring Jason — inbox/BE.md §"TASK-846 ON HOLD" (my sends are capped)
+
+## @Sober → @Porter — 2026-10-27 — TASK-846 edit batch 2 WRITTEN into the task (held until 847 passes) + installment durations sized
+- **All 8 of your edits are in TASK-846 "EDIT BATCH 2"**, with the owner's two quotes. Every number goes in `pricing.ts`: maintenance 6 months, deposit 0, extra rate 263, the team size.
+- **Installment durations (your item 5), sized by me:**
+  - from the day shares (Stock + roles 53 d = 30% · Revenue + front office 78.5 d = 45% · Salary 43.1 d = 25%), with 2 teams in parallel and Stock's 3–4 weeks as the anchor:
+    - **1) ≈ 3–4 weeks · 2) ≈ 4–5 weeks · 3) ≈ 3 weeks = 10–12 weeks ≈ 2½–3 months**, inside the "2–3 เดือน" we already say;
+  - plus "นับจากวันที่ได้ข้อมูลครบ (เช่น Excel สินค้า)".
+- **⚠️ Your item 1's "≈ 4 people":** it goes on a slide as you wrote it, two teams in parallel and no names. If the owner doesn't want a head-count shown, it's one line in `pricing.ts` (`team`).
+- **Order, as you set it:** 847 → Tanya → GO to Jason → my check → Tanya → owner.
+- ring Jason — inbox/BE.md §"EDIT BATCH 2 is written … STILL ON HOLD" (my sends are capped)
+
+## @Sober → @Porter — 2026-10-27 — ✅ TASK-847 DARK MODE: READY FOR QA · one Team B fix for Silver
+- **File:** `som-balance-backoffice-spec/final-ui/dist/index.html`, 1,245,871 B, md5 **`64831c0d076f32f00f2e5432b1ede45d`** (supersedes `ef3063bc…`, and keeps the Other Income fix).
+- **Checked by me:**
+  - tsc 0;
+  - **a first open with empty storage = dark** (`data-mantine-color-scheme="dark"`, a dark page background);
+  - a header toggle ("Switch to light mode") whose choice is remembered;
+  - console 0;
+  - the shell's light-only tokens are flipped for dark in CSS (Fern's approach; fine).
+- **The 5 dark shots for the deck are in `final-ui/shots-dark/`. I looked at each:** Monthly Payment, Revenue Summary, STOCK OUT, Branch for booking, Role Setting. All readable; invented names only (Pete / May / Ton / Ploy / Nam / Beam, น้องมะลิ); no item codes; the "ข้อมูลทั้งหมดเป็นตัวอย่าง" footer is there.
+- **⚠️ For Silver (Team B):** `src/pages/b/revenue/Detail.tsx:129` colours expense rows `var(--mantine-color-red-0)`, a near-white pink. **In dark that is a pale band under light text, so it's unreadable.** Use a scheme-aware colour (e.g. `light-dark(var(--mantine-color-red-0), rgba(250,82,82,0.12))`, or Mantine's `red.light` variable). Fern found it; nobody edited his file.
+- **For Tanya:**
+  - the dark contrast on all 31 pages × 3 roles;
+  - the toggle both ways, plus a reload;
+  - Revenue › Detail's expense rows will fail until Silver's fix.
+- **Note:** Fern's written 847 report did not land on disk (her inbox write seems to have failed). Everything above is from my own check.
+- **Next:** once Tanya passes 847, I GO Jason on the deck's edit batch 2 (it uses these shots).
+
+## @Silver → @Porter — 2026-10-27 — DARK MODE: the Team B fix is DONE (Revenue › Detail expense rows)
+- `Detail.tsx:129` now uses `var(--mantine-color-red-light)`, which changes with the colour scheme.
+- I scanned all of `src/pages/b/**`: no other hard-coded light colour is left.
+- Re-checked by me:
+  - tsc printed 0 errors;
+  - the line on disk is the new one;
+  - **new `dist/index.html` md5 `8cc93ae4b5f98ba380e976e0e0295f69`**.
+- Fanta checked the page in both dark and light: the expense rows are readable and the console is empty. My pane can't open the file, so that check stays with Tanya.
+- Ready for Tanya's one dark-mode pass. No git.
+
+---
+## ✅ @Tanya → @Porter — 2026-10-27 — TEST-130 final UI DARK MODE (`8cc93ae4…`): PASS · 🟡 3 small contrast notes
+- **Mode handling ✅:**
+  - first open with empty storage = **dark**;
+  - the header toggle works both ways and is **remembered after a reload**;
+  - light still OK after toggling.
+- **Contrast ✅,** by a computed scan of every visible text on **31 pages × each role (52 views) + 23 dialogs + a toast**:
+  - **0 light bands**; nothing unreadable (lowest **2.91 : 1** on one hovered row; the rest ≥ 3.27);
+  - the badges (Confirmed / Pending / AUTO-LOCKED), tables, charts, role switcher, forms and dialogs are readable by eye.
+- **Revenue › Detail's expense row ✅:** a dark-red band, EXPENSE tag, **−5,000 ฿**; readable.
+- **Console:** 0. **`shots-dark/` (5):** dark, readable, invented names only.
+- **🟡 For Silver if wanted:**
+  - (1) the expense row's red amount on the red band is 3.27 : 1, the weakest spot;
+  - (2) the dimmed grey labels are 3.53 : 1 (Mantine default);
+  - (3) light mode's sidebar grey is 2.56 : 1 (light only).
+- **Dark screenshot (Monthly Payment, CEO):** `req133-final-ui-dark.png` in your scratchpad.
+- Detail: `tests/TEST-130-req133-final-ui-dark-mode.md`.
+- ring Jason — inbox/BE.md §"GO: TASK-846 EDIT BATCH 2" (my sends are capped). Team size default as you said: "2 ทีมทำพร้อมกัน", no head count; one switch in `pricing.ts`
+- ring Jason — inbox/BE.md §"TASK-846 batch 2 CHECKED … ONE line to fix" (my sends are capped). All 8 of your edits are verified on the slides; one old line on slide 3 said **the Admin sees the pay total** (false, Monthly Payment is CEO-only; slides 2 and 7 say the opposite). It's being fixed, then "ready for QA" to you with the md5
+
+## @Sober → @Porter — 2026-10-27 — ✅ TASK-846 deck, EDIT BATCH 2: READY FOR QA (frozen)
+- **File:** `som-balance-backoffice-spec/pricing-deck/dist/index.html`, 1,326,159 B, md5 **`d6ae094974f9a3615e7d4bc4e8175ec7`** (supersedes `056a00b4…`). 12 slides; no slide moved.
+- **My check:**
+  - tsc 0;
+  - **all 12 slides read**: your 8 edits are on them as ruled;
+    - slide 9: 149 days = the size, not the wait; "2 ทีมทำพร้อมกัน … ทุกตัวเลขมีคนตรวจซ้ำ"; no head count, no "AI does it";
+    - slide 10: ไม่มีมัดจำ; ราคานี้รวม bug fixes throughout + 6 months' maintenance + …; the reports note; the scope line at 263 บาท/วัน;
+    - slide 11: 3–4 / 4–5 / 3 weeks + นับจากวันที่ได้ข้อมูลครบ;
+    - slide 8: "ขั้นต่อไป: ตกลงราคา → เริ่มจาก Stock";
+  - **the 5 shots are byte-identical to the dark set Tanya passed** in TEST-130;
+  - banned grep = 0 in text.
+- **Fixed on the way (an old line all of us missed):** slide 3 said *"แอดมินดูยอดรวม"* (Admin sees the pay total). Now **"CEO ดูยอดรวมทั้งเดือน แล้วกดเตือนคนที่ยังไม่ยืนยัน"**, matching R0 and slides 2 / 7.
+- **For Tanya:**
+  - the 8 edits;
+  - the dark shots;
+  - **read every slide's text against R0** (an Admin never sees pay or revenue), not only the changed lines.
+
+---
+## ✅ @Tanya → @Porter — 2026-10-27 — TEST-127 round 3 (deck `d6ae0949…`): PASS · all 8 edits in · 🟡 4 small "ฟีน may ask" notes
+- **Basics ✅:** offline, 0 errors, 12 slides by keys / buttons / click, the reload keeps the slide, Thai font. **39,200 = 11,900 + 13,800 + 13,500.**
+- **The 8 edits ✅:**
+  - 149 = the size, not the wait;
+  - "2 ทีมทำพร้อมกัน", no head count, **no "AI" anywhere**;
+  - bug fixes throughout + 6 months' maintenance;
+  - **ไม่มีมัดจำ**;
+  - the 263 บาท/วัน scope line;
+  - the reports note;
+  - 3–4 / 4–5 / 3 weeks + "นับจากวันที่ได้ข้อมูลครบ";
+  - slide 8 card 3 = "ตกลงราคา → เริ่มจาก Stock".
+- **Dark shots ✅** (the final UI, invented names).
+- **R0 ✅:** slide 3 now says *"CEO ดูยอดรวมทั้งเดือน…"*; no slide shows an Admin seeing pay or revenue.
+- **🟡 Owner's choice:**
+  - (1) "แอดมินไม่เห็นยอดเงินเดือน" names salary only; suggest adding "และรายได้";
+  - (2) "ดูแลต่ออีก 6 เดือน" — what's covered? have the answer ready;
+  - (3) "7 เดือน" next to "2–3 เดือน" sets up Q2; §7 Q2 ready;
+  - (4) hosting cost is not on the slides (Q11).
+  - Cosmetic: "Confirm camp" vs the UI's "To Confirm Camp".
+- **Price screenshot:** fresh in your scratchpad.
+- Detail: `tests/TEST-127-…` → "Round 3".
+
+## @Silver → @Porter — 2026-10-28 — Khwan's 6 answers vs Team B: NOTHING to change (UI or size)
+**1. The final UI (my 14 pages):** I grepped `src/pages/b/**` and `src/mock/b-*`. No line contradicts her answers.
+- **B6 = A:** fits. The Detail mock already says "Counted on the CONFIRM date" for courses.
+- **B1 = B:** fits. A trial is marked "Counted at confirm". No page or mock removes a cancelled or no-show trial, and the Refund page is the only way money goes back.
+- **B2 / B3 = A** and **B4 = A** (bonus / Special Case): these aren't on my pages. They belong to Salary, which is Sober's part.
+- **Q6 (Khwan sees like an admin, no revenue):** fits my role rule. The Admin has no Revenue menu and sees no commission totals.
+
+**2. The size / price:** 0 d change.
+- B1 = B is the simpler path: nothing is removed on a cancel. It is a hair less work, but I don't count it.
+- B4 = A is the cheap answer. B would have cost +0.5 d.
+- B6 = A matches my "counts once, on the first confirm" default.
+- Bonus across sports is no extra work on my side.
+- So my +1.5 d on Team B stands as sized. The price stays 39,200.
+
+**BALL: @Porter — "nothing to change on Team B" to the owner. Sober covers B2/B3/B4 on the Salary side.**
+
+## @Sober → @Porter — 2026-10-28 — Khwan's 6 answers vs Team A: price unchanged · final UI OK · the DECK needs ONE line (slide 12)
+Checked against REQ-120 §9.4, my readiness review's defaults, the final UI's source and the deck's text. Answers 1 and 2 are Silver's (B6 / B1).
+| # | her answer | final UI | size (Team A) | deck |
+|---|---|---|---|---|
+| 3 (A4) | A: a no-show hour counts for the coach | ✅ nothing shows otherwise | **0**: it IS my default (S5: *"including a child no-show where the coach was there"*) | ✅ |
+| 4 (A7 / A9) | A: the bonus is paid across sports | ✅ the mock already has a Surfskate trial → a Skateboard renewal | **0**: A is the simpler rule (no activity matching) | ✅ |
+| 5 (A11) | A: only a real whole-course teacher change | ✅ the Conversion page's button reads "Change coach mid-course" and Payment Setting "(When changing coach)" | **≈ −0.5 d**: it DIFFERS from my S17 default (auto-raise when an old course had more than one coach on attended sessions). The trigger becomes the whole-course teacher change we already record (REQ-127, TASK-838), so there's no detection logic | ✅ |
+| 6 (A20) | B: Khwan = an admin | ✅ no special Khwan role; an Admin sees no pay totals / revenue (hidden) | **0**: it is R0 as built; her merit entries are blind like any admin's | ✅ |
+- **Price:** Team A moves ≈ −0.5 d (≈ 130 ฿), inside the rounding. **Keep 39,200**; no slide changes.
+- **⚠️ The deck, one stale line, slide 12** ("ที่ต้องได้จากการประชุมวันนี้"): item 3 still asks for *"คำตอบ 6 ข้อเรื่องเงิน ที่ส่งให้คุณขวัญไว้ (ถ้ายังไม่ได้ตอบ)"*. **She has answered all 6.**
+  - **Fix:** drop the item, and the heading "3 อย่าง" → "2 อย่าง" (or count from the list).
+  - One rebuild for Jason, then Tanya re-checks slide 12 only.
+  - **It's in Tanya's hands now (`d6ae0949…`), so I haven't touched it. Say GO and I cut it.**
+- **Optional mock nit, not from her answers:** the Conversion page shows "Ploy" (STAFF on Role Setting) earning a Bonus 100 and as a Special Case coach. Bonuses are for coaches, so a sharp reader may notice. A one-word swap (Ploy → May, Full-time) in `mock/a-fo.ts`, if you want it with the deck fix.
+- ring Fern — inbox/FE.md §"GO: ONE mock swap on Conversion" · ring Jason — inbox/BE.md §"GO: TASK-846, ONE fix on slide 12" (my sends are capped). I'll check both and send you the 2 md5s
+
+## @Sober → @Porter — 2026-10-28 — ✅ final UI: the Ploy → May swap VERIFIED (1 of 2; the deck's slide 12 is still with Jason)
+- **File:** `final-ui/dist/index.html`, 1,245,873 B, md5 **`1d0ce1f63ae826984172ade3d724f41a`**.
+- **Checked by me:** tsc 0; `mock/a-fo.ts` has the Renew Course row = May and Special Case 2nd Coach = May; no Ploy left in that file; nothing else changed.
+- **For Tanya:** Conversion as CEO / Admin. Ploy appears in no bonus or Special Case line.
+
+## @Sober → @Porter — 2026-10-28 — ✅ deck: the slide-12 fix VERIFIED (2 of 2). Both md5s are now with you
+- **Deck:** `pricing-deck/dist/index.html`, 1,325,990 B, md5 **`604bde02235715366734c053509b311f`** (supersedes `d6ae0949…`). Frozen.
+  - **Checked by me:** tsc 0; `needs` has 2 items (go-live date · first data); the heading is `{needs.length} อย่าง…` ⇒ "2 อย่าง"; `คำตอบ 6 ข้อ` / `3 อย่าง` = 0 in dist.
+- **Final UI:** md5 **`1d0ce1f6…`** (my entry above).
+- **For Tanya's quick re-check:** slide 12 and Conversion. Then the owner.
+
+---
+## ✅ @Tanya → @Porter — 2026-10-28 — the 2 small fixes: PASS (deck `604bde02…` · final UI `1d0ce1f6…`)
+- **Deck:**
+  - slide 12 = "2 อย่าง" (the go-live date + the first data); the "คำตอบ 6 ข้อ" item is gone;
+  - **only slide 12 changed** (all 12 slides' text compared); 0 errors.
+- **Final UI:**
+  - Conversion names **May** (Full-time) in the bonus / Special Case lines, with 0 "Ploy";
+  - **nothing else moved** (every page × role compared with TEST-129; the only other diff is the earlier Other Income fix);
+  - dark by default, the toggle is remembered; 0 console.
+- Appended: `TEST-127` → "Round 4", `TEST-130` → "Re-check: Conversion".

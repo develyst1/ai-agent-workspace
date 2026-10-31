@@ -4718,3 +4718,139 @@ Ball: Sober.
 - Item 4 (F4): `fo: true` removed from Conversion in `src/pages/a/index.ts`; it stays `group: "SETTING"`, so no "หน้าบ้าน" label and still in the SETTING menu.
 - Done-checks: tsc 0 · build 0 · greps `\b(Kid|Poo|Kung|Bank|London|Nelson)\b|พี่ฟีน|Locked|🔒` over `src/pages/a src/mock/a-* src/shell` = 0 · `title: "[A-Z][0-9] ·"` = 0 · Conversion/Branch crawl clean · Admin Employee has no salary column.
 - unhandled-between-tests: 0 · nothing committed (final-ui is outside this repo; workspace git status unchanged apart from ai-worker files).
+
+## 2026-10-27 — Fern (FE) → Sober: "Rework CHECKED except ONE item" — Conversion label already fixed
+- `src/pages/a/index.ts:40`: `/fo/trial-link` is `group: "SETTING"` with no `fo` (removed before your check read it; my entry just above this one reports it).
+- Browser (Edge, CEO, rebuilt dist): Conversion page text has **no** "หน้าบ้าน"; the menu lists "Conversion"; page title "Conversion". Console 0 (crawl of Conversion + Branch earlier: 0 errors, 0 dead).
+- dist/index.html **1,243,190 B** · md5 **a33a3b433f581dc3b53ba451de0a8670**. If your check still saw the label, you were on an older dist — rebuild is current.
+- unhandled-between-tests: 0 · nothing committed.
+
+---
+## @Porter → @Sober — 2026-10-27 — TEST-129 whole final UI PASS (md5 `a33a3b43…`, 31 pages) · 🟡 ONE question for you
+- **Tanya's question:** the Admin's **Other Income** list shows amounts (*"Other ± … -200 ฿"*, *"Transportation … 144 ฿"*). CONVENTIONS R0 says an Admin never sees other income, but the Admin also ENTERS those amounts there. Which is intended?
+- **My read of REQ-120** (you decide; quote the line): an admin enters items, but never sees a slip, a total or base salary. An item's own amount, which she typed herself, is like the per-item commission on STOCK OUT. Rule on it.
+  - If the rule is "hide", fix it and send me a new md5 for Tanya's 2-minute re-check.
+  - If the rule is "show", fix CONVENTIONS R0's wording instead.
+- The owner gets the file now with this caveat. It doesn't change the meeting.
+
+## 2026-10-27 — Fern (FE) → Sober: TEST-129 fix done — Other Income shows an Admin only amounts she typed
+- `mock/a-salary.ts` `OTHER_INCOME_ROWS` gains `typed: boolean` (Other ± true; OT, Transportation false). `Entries.tsx`: amount cell is `role !== "ceo" && !r.typed ? "" : …` — empty cell, no lock, no "CEO only".
+- Browser (Edge, rebuilt dist): **Admin** Detail = OT (empty) · Other ± **−200 ฿** · Transportation (empty). **CEO** = OT — · −200 ฿ · Transportation **144 ฿**.
+- tsc 0 · build 0 · console 0 (page loads clean in both roles).
+- dist/index.html **1,243,248 B** · md5 **ef3063bcb404066acd6e9f2305fb3a72**.
+- unhandled-between-tests: 0 · nothing committed.
+
+---
+## @Porter → @Sober — 2026-10-27 — REQ-133 final UI: START IN DARK MODE (owner)
+- Owner, verbatim, after opening `final-ui/dist/index.html`: *"where the dark theme? backoffice start with dark mode first"*.
+- **Change:**
+  - the final UI opens in **dark mode by default**;
+  - keep a light/dark toggle in the header if the shell already has one (cheap). Otherwise add one, defaulting to dark;
+  - every page must stay readable in dark: tables, badges (Confirmed / Pending / AUTO-LOCKED), charts, dialogs, the role switcher.
+- Then a new md5 → Tanya's re-check (dark contrast on all 31 pages × 3 roles).
+- **Hold the deck (846) for now.** I'm sending a deck edit batch after the owner answers 2 questions. It will likely include swapping the screenshots for **dark final-UI shots**, so do the dark mode first.
+
+---
+## @Porter → @Sober — 2026-10-27 — TASK-846 deck: ONE edit batch (owner's answers in). Unfreeze after 847's dark shots
+**Owner, verbatim:**
+- A: *"จริงๆเราแก้บั้ค ตลอด อยู่แล้ว เพราะเราจะขึ้นระบบให้เขาทดสอบตลอด แต่หลังจบโปรเจค ดูแลต่อ อีก 6เดือน เป็น maintainace"*;
+- B: *"ไม่มีมัดจำ"*.
+
+**Edits** (Thai wording is Jason's, checked by you; numbers in `pricing.ts`):
+1. **Price slide: why 2–3 months.** Present 149 as the SIZE of the work (the same yardstick as the old package), not the waiting time. Add the honest reason it's 2–3 months: **two teams build in parallel (≈ 4 people building + review/testing)**, and tools help them deliver faster. Every number is still checked by people. Don't say "AI does the work".
+2. **"What's included":** bug fixes throughout the project (the system is always up for them to test) + **6 months of maintenance after the project ends**. Plus the existing items: testing, install, trial period, the 6 reports, SOM Dashboard / Daily Report.
+3. **Scope line:** "ราคานี้ = ขอบเขตที่ยืนยันแล้ว · ขอเพิ่มภายหลังคิดเรทเดิม (263 บาท/วัน) ตามขนาดงาน".
+4. **Payment slide:** say plainly **"ไม่มีมัดจำ"**, pay when each part is delivered.
+5. **Timeline:**
+   - give installment 2 its own duration. Size it from your plan, so the three add up to 2–3 months;
+   - add "นับจากวันที่ได้ข้อมูลครบ (เช่น Excel สินค้า)".
+6. **Slide "ตกลงกันแล้ว":** card 3 repeats the title. Replace it, e.g. "ขั้นต่อไป: ตกลงราคา → เริ่มจาก Stock".
+7. **"รายงาน 6 หัวข้อ":** add "เนื้อหาตกลงกันตอนเริ่มทำส่วนนั้น".
+8. **Swap the 5 screenshots** for the DARK final-UI shots (`final-ui/shots-dark/`) once 847 passes.
+- **Order:** 847 → its Tanya re-check → 846 edits → Tanya re-check → the owner. Q&A context for the owner: `BRIEF-owner-backoffice-money-meeting-2026-10-27.md` §7.
+
+## 2026-10-27 — Fern (FE) → Sober: TASK-847 done — final UI opens in DARK, with a toggle
+- **Build:** `App.tsx` `defaultColorScheme="dark"` (Mantine's own manager remembers the viewer's choice in localStorage). Header: `ActionIcon` Sun/Moon (aria-label "Switch to light/dark mode") next to "Viewing as". The Tailwind tokens are CSS variables, so `index.css` gets one `:root[data-mantine-color-scheme="dark"]` block flipping `--color-fg/surface/paper/muted-*` — no light patch left in the layout. `tailwind.config.ts` untouched.
+- **One own fix:** `SlipView.tsx` Total card `bg="blue.0"` (light patch on Payment Detail / My slip) → `var(--mantine-color-blue-light)`.
+- **Proof (Edge, fresh profile):** first open with empty localStorage = **dark** (body rgb 26,27,30) · toggle → light · reload keeps light · toggle back → dark · reload keeps dark.
+- **Crawl in DARK, all 31 pages × 3 roles:** **0 console errors/warnings**; contrast scan (text vs effective background < 3:1, plus near-white patches ≥80×24 px): clean **except one Team B spot** below (before my fix the scan also caught the Slip total card).
+- 🔴 **Team B, theirs to fix (I did not edit):** `src/pages/b/revenue/Detail.tsx:129` — `<Table.Tr bg={l.expense ? "var(--mantine-color-red-0)" : undefined}>` is a light-pink row in dark (contrast 1.55:1, the Refund row in Revenue Detail, `/revenue/lines`). Suggest `var(--mantine-color-red-light)`.
+- **Shots (1600×900, dark, CEO):** `final-ui/shots-dark/` — `1-monthly-payment.png`, `2-revenue-summary.png`, `3-stock-out.png`, `4-branch-for-booking.png`, `5-role-setting.png`. I looked at 1 and 2 (badges, tables, header all read); the Revenue Detail Refund row is not in the set.
+- tsc 0 · build 0 · dist/index.html **1,245,871 B** · md5 **64831c0d076f32f00f2e5432b1ede45d**. (Dialogs/drawers/date picker/notifications follow Mantine's scheme; the crawl opens them and logged no console issues, but my contrast scan only sees them when open at scan time — eyeball one if you want certainty.)
+- unhandled-between-tests: 0 · nothing committed.
+
+---
+## @Porter → @Sober — 2026-10-27 — TEST-130 dark mode PASS (`8cc93ae4…`) ⇒ GO: Jason on TASK-846 EDIT BATCH 2
+- Tanya: dark by default, the toggle is remembered, 0 light bands, console 0, and the 5 `shots-dark/` are OK. Her 3 small contrast 🟡s (3.27 / 3.53 / 2.56 : 1) are **not needed now**.
+- **Team size on the slide:** the owner hasn't answered. Default = **"2 ทีมทำพร้อมกัน"** with no head count; keep the number in `pricing.ts` (`team`) so it's a one-line change if he says yes.
+- Then: your check → "ready for QA" to me → Tanya → the owner.
+
+
+## Jason (BE) 2026-10-27 — TASK-846 EDIT BATCH 2 DONE — GREEN, frozen again
+**Your 8 edits, plus the GO note (2 ทีมทำพร้อมกัน, no head count):**
+1. **Slide 9 "why 2–3 months"** — "AI ช่วย" line replaced: 149 วันทำงาน = ขนาดของงาน, ไม้บรรทัดเดียวกับแพ็กเกจเดิม, ไม่ใช่เวลาที่ต้องรอ (เท่ากับโปรแกรมเมอร์ 1 คน ~7 เดือน) · "เสร็จใน 2–3 เดือน เพราะมี 2 ทีมทำพร้อมกัน มีการตรวจทานและทดสอบ และมีเครื่องมือช่วยให้ทำเร็วขึ้น · ทุกตัวเลขมีคนตรวจซ้ำ". **No head count**: `team = { parallelTeams: 2, builders: 4, showBuilders: false }` in `pricing.ts`; flipping `showBuilders` to true adds "(≈ 4 คน)". Point 3 is now price only (the included list moved to slide 10).
+2. **"What's included" (one list), slide 10:** แก้บั๊กตลอดโครงการ (ระบบขึ้นให้ทดสอบได้ตลอด) · ดูแลต่ออีก 6 เดือนหลังจบโครงการ (`maintenanceMonths`) · การทดสอบ การติดตั้งระบบ ช่วงทดลองใช้ก่อนใช้งานจริง · รายงาน 6 หัวข้อ · หน้า SOM Dashboard / Daily Report.
+3. **Scope line (slide 10, Porter's words verbatim):** "ราคานี้ = ขอบเขตที่ยืนยันแล้ว · ขอเพิ่มภายหลังคิดเรทเดิม (263 บาท/วัน) ตามขนาดงาน" — 263 from `extraRatePerDay`.
+4. **Payment (slide 10):** "ไม่มีมัดจำ · จ่ายเมื่อส่งมอบแต่ละส่วน" from `deposit = 0` (a non-zero value would render "มัดจำ N บาท").
+5. **Timeline (slide 11):** 3–4 / 4–5 / 3 สัปดาห์ in `pricing.ts`; footer "นับจากวันที่ได้ข้อมูลครบ (เช่น Excel สินค้า) · ครบทั้งหมดภายใน 2–3 เดือน".
+6. **Slide 8 card 3:** "ขั้นต่อไป: ตกลงราคา → เริ่มจาก Stock" (heading "ขั้นต่อไป", body "ตกลงราคา → เริ่มจาก Stock").
+7. **"รายงาน 6 หัวข้อ"** appears once (slide 10 list) and now carries "(เนื้อหาตกลงกันตอนเริ่มทำส่วนนั้น)".
+8. **5 dark shots** copied from `final-ui/shots-dark/` into `src/assets/shots/` only (salary ← 1-monthly-payment, revenue ← 2-revenue-summary, stock ← 3-stock-out, frontoffice ← 4-branch-for-booking, roles ← 5-role-setting). **All 5 LOOKED AT:** invented names only (Pete/May/Ton/Ploy/Nam/Beam, น้องมะลิ), no item codes. The caption "ชื่อและตัวเลขเป็นตัวอย่าง" stays. I also looked at slides 3, 9, 10, 11 rendered at 1920×1080: nothing clipped; slide 10 is the fullest (scope line ends just above the bottom edge).
+
+**Done list:**
+- tsc 0 · build 0 · **0 console** (served build, all 12 slides stepped).
+- Your earlier banned list + `AI ทำ` on `dist/index.html` = **0**. The word-boundary list `\b(Kung|Poo|Kid|Bank|London|Nelson)\b|พี่ฟีน|\(V3\)|เทส|UAT|ห้องนี้|6,000` = 0 on the rendered slide text; on the file it hits "UAT" once, inside a random base64 run of an image (not a slide).
+- `paymentSum === total` still asserted at module load (11,900 + 13,800 + 13,500 = 39,200); build passed.
+- **No slide moved:** still 12 slides, same order.
+- **Size 1,326,140 bytes · md5 `661a5bc96c90201de64face30e7c86f7`** (`dist/index.html`).
+**Frozen again** — no more rebuilds unless you ask.
+Ball: Sober.
+
+
+## Jason (BE) 2026-10-27 — TASK-846 batch 2: the ONE line fixed — GREEN, frozen again
+`src/slides.tsx:29`, slide 3 (Salary) step 2: "แอดมินดูยอดรวม แล้วเตือนคนที่ยังไม่ยืนยัน" → **"CEO ดูยอดรวมทั้งเดือน แล้วกดเตือนคนที่ยังไม่ยืนยัน"** (your exact Thai). Nothing else touched.
+- tsc 0 · build 0 · grep dist `แอดมินดูยอดรวม` = **0** (new line = 1) · `AI ทำ` = 0.
+- **Size 1,326,159 bytes · md5 `d6ae094974f9a3615e7d4bc4e8175ec7`** (`dist/index.html`).
+**Frozen again.** Ball: Sober.
+
+---
+## @Porter → @Sober — 2026-10-28 — Khwan answered the 6 back-office questions (FYI for the build; no action now)
+- Verbatim + the table: `requirements/REQ-120-backoffice-rebuild-salary-revenue-stock.md` §9.4.
+- **Yours:**
+  - **A4 = A:** a no-show hour counts for the coach;
+  - **A7 / A9 = A:** the bonus is paid across sports;
+  - **A11 = A:** Special Case only on a real whole-course change;
+  - **A20 = B:** Khwan sees like an admin (no pay totals, no revenue).
+- Every other question = your stated default. Update your readiness review when the build starts (after the owner's GO, meeting Sat 10-31 / Sun 11-01).
+- **Final UI check:** does any page show Khwan / admin-level pay that contradicts A20 = B? It should be consistent already (Admin = no pay), so FYI only.
+
+---
+## @Porter → @Sober — 2026-10-28 — Khwan's 6 answers: does ANYTHING need changing NOW? (the owner asked)
+- Owner: *"แล้วที่ขวัญตอบ ไม่มีอะไรต้องแก้เลยเหรอ"*. Answers: REQ-120 §9.4.
+- **Please check and reply in inbox/PM.md**, one line per item:
+  1. **The final UI:** does any page or text contradict an answer? E.g. Special Case wording (A11 = A: only a real whole-course change, which may differ from your S17 default of "more than one coach on attended sessions"); the no-show hours (A4 = A); Khwan = admin view (A20 = B); bonus across sports (A7 / A9 = A).
+  2. **The size / price (39,200):** does any answer differ from the default you sized? If so, by how many days (+/−)?
+  3. **The deck:** does any slide contradict an answer?
+- "Nothing to change" is a fine answer, if it's true. Silver is checking his part (B1 / B6 / B2-3 / B4) the same way.
+
+---
+## @Porter → @Sober — 2026-10-28 — GO: the slide-12 fix + the Ploy mock swap (both before the 11-07 meeting)
+1. **Deck (Jason):** drop slide 12's item 3 ("คำตอบ 6 ข้อ…", she answered), and make the heading count from the list ("2 อย่าง").
+2. **Final UI (Fern):** swap Ploy → May (Full-time) on the Conversion page's bonus / Special Case lines (`mock/a-fo.ts`). Bonuses are for coaches, and ฟีน might notice.
+- Price stays 39,200 (your −0.5 d is inside rounding). Then the two new md5s → me → Tanya's quick re-check (slide 12 + Conversion).
+
+## 2026-10-28 — Fern (FE) → Sober: Conversion mock swap done (Ploy → May)
+- `src/mock/a-fo.ts`: `CONV_100` Skateboard Duo "Renew Course" row coach and `SPECIAL_CASE.second` are now **May**. Nothing else touched; Ploy stays STAFF elsewhere. The Special Case toast reads SPECIAL_CASE, so it says May too.
+- `grep -n Ploy src/mock/a-fo.ts` → 0 lines.
+- tsc 0 · build 0 · Conversion crawl (Edge, 3 roles): 0 console errors, 0 dead controls.
+- dist/index.html **1,245,873 B** · md5 **1d0ce1f63ae826984172ade3d724f41a**.
+- unhandled-between-tests: 0 · nothing committed.
+
+
+## Jason (BE) 2026-10-28 — TASK-846 slide 12: the ONE fix DONE — GREEN, frozen again
+- `pricing.ts` `needs`: item 3 ("คำตอบ 6 ข้อเรื่องเงิน … (ถ้ายังไม่ได้ตอบ)") dropped; 2 items remain (วันที่จะเริ่มใช้ระบบ · ข้อมูลชุดแรก).
+- `slides.tsx` slide 12 heading counts from the list: `{needs.length} อย่างที่ต้องได้จากการประชุมวันนี้` → renders "2 อย่าง…". No literal "3".
+- Looked at slide 12 rendered at 1920×1080: two cards, left-aligned in the 3-column grid (empty third column, nothing clipped). Nothing else touched; still 12 slides.
+- tsc 0 · build 0 · **0 console** (served build, all 12 slides stepped) · `grep -c "คำตอบ 6 ข้อ\|3 อย่าง" dist/index.html` = **0**.
+- **Size 1,325,990 bytes · md5 `604bde02235715366734c053509b311f`** (`dist/index.html`).
+**Frozen again.** Ball: Sober.

@@ -224,3 +224,15 @@ Asked in `COPY-DRAFT-khwan-proto-part1-status-2026-10-19.md`. The analysis is in
 - **Admin commission edit = B: lower OR raise** (per item, on that sale's line only; the admin sees no pay totals).
 - **My slip = the same content as Payment Detail** (the coach's own; confirm).
 ⇒ **All the rules and screens are agreed. SPEC CLOSED** (words / format notes go into the build). The build waits for the owner's price talk + GO.
+
+### 9.4 The 6 build questions, answered by Khwan (LINE, 2026-10-28; the owner's screenshots). Verbatim: *"1a · 2b · 3a · 4a · 5a · 6ขอรีเช็คกับพี่ฟีนอีกทีค่ะ"*, then *"6b kaa @Dong_08"*
+Questions: `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md` → SHORT VERSION.
+| # | question | ruling | team Q |
+|---|---|---|---|
+| 1 | a course sold before go-live, confirmed after | **A:** the system counts it on its confirm date (she leaves it out of her Excel) | B6 |
+| 2 | a confirmed 1st Trial later cancelled / a no-show | **B:** the revenue stays; money back goes through Refund | B1 |
+| 3 | a child no-show, the coach was there | **A:** the hour counts for the coach | A4 |
+| 4 | a trial or renewal into a DIFFERENT sport | **A:** the bonus is paid across sports (Bonus 50 and Bonus 100) | A7 / A9 / B2 / B3 |
+| 5 | when "coach changed mid-course" (Special Case) applies | **A:** only a real whole-course teacher change; a 1–2 day cover does not count | A11 / B4 |
+| 6 | what Khwan herself sees | **B:** like an admin; she enters items but sees no pay totals and no revenue (checked with ฟีน) | A20 |
+- Every other readiness question = the SA's stated default (owner, 2026-10-27). A10 (course ↔ voucher) was not asked, so its default stands.

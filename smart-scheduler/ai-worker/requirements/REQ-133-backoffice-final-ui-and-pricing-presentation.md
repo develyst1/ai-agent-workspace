@@ -70,3 +70,15 @@
 ## 2026-10-27: Deliverable 2 (the deck) DONE
 - TEST-127 PASS after one fix round. md5 `056a00b466fced49741c0c3fbd6cb9a5`, 12 slides, sent to the owner.
 - The screenshots are v3-based (invented names). Swap them for final-UI shots when Deliverable 1 lands (≈ 11-09), if the owner wants.
+
+## 2026-10-27: Deliverable 1 (final UI) PASS: TEST-129, all 31 pages, md5 `a33a3b43…`, sent to the owner. One open 🟡: Admin sees Other Income amounts (Sober to rule).
+
+## ✅ REQ-133 DONE 2026-10-27
+- Deck md5 `056a00b4…` (TEST-127). Final UI md5 `ef3063bc…` (TEST-128 + TEST-129). Both are with the owner. No git (a non-repo folder).
+- Open: the owner's meeting with ฟีน + Khwan; optional, swap the deck's v3 screenshots for final-UI shots.
+
+## 2026-10-27: the deck v2 (edit batch 2) PASS: md5 `d6ae0949…`, sent to the owner. Final UI dark: md5 `8cc93ae4…` (TEST-130).
+
+## ✅ 2026-10-28: ACCEPTED by the owner (*"ดูแล้ว รวมๆ โอเค"*). Deck `d6ae0949…` + final UI `8cc93ae4…`.
+
+## 2026-10-28: FINAL for the 11-07 meeting: deck `604bde02…`, final UI `1d0ce1f6…` (Tanya PASS). Khwan's 6 answers checked by both SAs: no UI change, price stays 39,200.

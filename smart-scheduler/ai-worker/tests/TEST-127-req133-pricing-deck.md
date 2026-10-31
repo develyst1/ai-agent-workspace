@@ -91,3 +91,60 @@
 - **Price screenshot:** fresh, from this build (slide 10), in Porter's scratchpad as `req133-deck-price.png` (overwritten).
 
 ## ✅ FINAL: the deck `056a00b4…` passes. Ready for the meeting
+
+
+---
+## Round 3: the EDIT BATCH 2 (md5 `d6ae094974f9a3615e7d4bc4e8175ec7`, 1,326,159 B, built 23:53): ✅ PASS · 🟡 4 small notes for the owner
+- **Brief:** Porter's "GO: TEST-127 round 3" in `inbox/QA.md`; the edits per `BRIEF-owner-backoffice-money-meeting-2026-10-27.md` §7 + the owner's A / B. The md5 was checked before the run.
+
+### Gate basics (re-run): all ✅
+- offline (0 network); 0 console / page errors;
+- 12 slides by → ← Space Home End, the on-screen buttons (disabled at the ends) and a click;
+- `#/slide/7` survives a reload; Noto Sans Thai;
+- 0 pending / A-B-C / TASK / team names / "V3" in the UI text.
+
+### The 8 edits
+| # | Edit | On screen (quoted) | |
+|---|---|---|---|
+| 1 | 149 = the size, not the wait | slide 9: *"149 วันทำงาน คือขนาดของงาน ใช้ไม้บรรทัดเดียวกับแพ็กเกจเดิม ไม่ใช่เวลาที่ต้องรอ (เท่ากับโปรแกรมเมอร์ 1 คนทำประมาณ 7 เดือน)"* | ✅ |
+| 2 | "2 ทีมทำพร้อมกัน", no head count, no "AI does it" | slide 9: *"เสร็จใน 2–3 เดือน เพราะมี 2 ทีมทำพร้อมกัน มีการตรวจทานและทดสอบ และมีเครื่องมือช่วยให้ทำเร็วขึ้น · ทุกตัวเลขมีคนตรวจซ้ำ"*. No person count; **the word "AI" is gone from the whole deck** | ✅ |
+| 3 | Bug fixes throughout + 6 months' maintenance | slide 10: *"ราคานี้รวม: แก้บั๊กตลอดโครงการ (ระบบขึ้นให้ทดสอบได้ตลอด) · ดูแลต่ออีก 6 เดือนหลังจบโครงการ · …"* | ✅ |
+| 4 | **ไม่มีมัดจำ** | slide 10: ***"ไม่มีมัดจำ · จ่ายเมื่อส่งมอบแต่ละส่วน"*** | ✅ |
+| 5 | The scope line at 263 บาท/วัน | slide 10: *"ราคานี้ = ขอบเขตที่ยืนยันแล้ว · ขอเพิ่มภายหลังคิดเรทเดิม (263 บาท/วัน) ตามขนาดงาน"* | ✅ |
+| 6 | The reports note | slide 10: *"รายงาน 6 หัวข้อ (เนื้อหาตกลงกันตอนเริ่มทำส่วนนั้น)"* | ✅ |
+| 7 | Installments 3–4 / 4–5 / 3 weeks + "นับจากวันที่ได้ข้อมูลครบ" | slide 11: **≈ 3–4 สัปดาห์ · ≈ 4–5 สัปดาห์ · ≈ 3 สัปดาห์** (= 10–12 weeks, consistent with *"ครบทั้งหมดภายใน 2–3 เดือน"*) + *"นับจากวันที่ได้ข้อมูลครบ (เช่น Excel สินค้า)"* | ✅ |
+| 8 | Slide 8's card 3 | *"ขั้นต่อไป: ตกลงราคา → เริ่มจาก Stock"*: no longer a repeat of the title | ✅ |
+
+- **The price is unchanged:** 39,200 = 11,900 + 13,800 + 13,500; 149 × 263 ≈ 39,200.
+
+### The 5 dark shots
+- Slides 3–7 now show the **final UI in dark mode** (Monthly Payment · Revenue Summary · STOCK OUT · Branch for booking · Role Setting), the same files TEST-130 checked.
+- Readable at slide size; invented names only (Pete / May / Ton / Ploy / Nam / Beam, น้องมะลิ); no item codes ✅.
+
+### Every slide's text against R0 (an Admin never sees pay or revenue)
+- **Slide 3 is fixed:** *"CEO ดูยอดรวมทั้งเดือน แล้วกดเตือนคนที่ยังไม่ยืนยัน"* (it used to say แอดมิน) ✅.
+- **Slides 2 and 7:** *"CEO เห็นทุกอย่าง · แอดมินไม่เห็นยอดเงินเดือน"* ✅.
+- **No slide says or shows an Admin seeing pay or revenue.** The Revenue slide (4) names no role; its screenshot is the CEO's view ("Viewing as CEO").
+- (See 🟡 1: the R0 sentence names salary only.)
+
+### Read as ฟีน would: 🟡 notes (none wrong; each invites a question)
+1. **Slides 2 / 7:** *"แอดมินไม่เห็นยอดเงินเดือน"* names salary only. R0 also hides **revenue** from the Admin. ฟีน may ask "แอดมินเห็นรายได้ไหม?". Suggest *"แอดมินไม่เห็นยอดเงินเดือนและรายได้"*.
+2. **Slide 10:** *"ดูแลต่ออีก 6 เดือนหลังจบโครงการ"* doesn't say what "ดูแล" covers: bugs only, or small changes too? Have the answer ready (the owner's A: bug-fixing / maintenance).
+3. **Slide 9:** *"(เท่ากับโปรแกรมเมอร์ 1 คนทำประมาณ 7 เดือน)"* next to *"เสร็จใน 2–3 เดือน"* is exactly the setup for the brief's Q2 ("เร็วแล้วทำไมคิดเต็ม 149 วัน?"). The slide's own answer ("ไม้บรรทัดเดียวกับแพ็กเกจเดิม") is there; the owner should have §7 Q2 ready.
+4. **Not on any slide:** server / monthly hosting cost (brief Q11: not included). If ฟีน asks, it's the owner's answer.
+- **Cosmetic:** slides 2 and 6 say *"Confirm camp"*, but the final UI's page is *"To Confirm Camp"* (Khwan's rename).
+
+### Price screenshot
+- **Fresh from this build** (slide 10): `req133-deck-price.png` in Porter's scratchpad (overwritten).
+
+## ✅ Round 3: PASS. The deck `d6ae0949…` is ready for the meeting (the 🟡 are the owner's choice)
+
+
+---
+## Round 4: slide 12 fix (md5 `604bde02235715366734c053509b311f`, 2026-10-28): ✅ PASS
+- **Slide 12** now reads *"2 อย่างที่ต้องได้จากการประชุมวันนี้"*:
+  1. *"วันที่จะเริ่มใช้ระบบ …"*;
+  2. *"ข้อมูลชุดแรก ไฟล์ Excel สินค้าจริง + จำนวนคงเหลือ (เริ่มจาก Stock)"*.
+  - The "คำตอบ 6 ข้อเรื่องเงิน" item is gone ✅.
+- **Nothing else moved:** the text of all 12 slides was compared with round 3's, and **only slide 12 differs**.
+- **Gate basics:** offline (0 network), 0 console / page errors, 12 slides by keys, the reload keeps the slide, Thai font ✅.

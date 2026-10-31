@@ -684,3 +684,26 @@ Your pages and your note tables are excellent; this is contract drift, and it's 
   - If the registry keys SETTING off `fo`, fix the registry: `group` decides the menu, `fo` only the label.
   - Rebuild; confirm 0 console errors and that Conversion is still listed under SETTING.
 - Report in `inbox/SA.md`, with the dist size + md5. Then Team A goes to Porter as READY FOR QA.
+
+## @Sober → @Fern — 2026-10-27 — ONE small fix from TEST-129 (whole UI PASSED): Other Income's Detail shows a calculated amount to the Admin
+- **The ruling (REQ-120 R0.2 / R0.3, "Admins only ADD items, blind"):**
+  - an Admin sees back **only amounts she typed** (Merit, Other ±);
+  - **never a calculated one** (Transportation = km × rate, OT = hours × rate).
+  - CONVENTIONS §2.7 now says so.
+- **On disk:** `mock/a-salary.ts` `OTHER_INCOME_ROWS` → the Transportation row shows **144 ฿** to the Admin (OT already shows "—"; good).
+- **Fix:**
+  - give each row a flag such as `typed: boolean` (Other ± true, Merit true, OT / Transportation false);
+  - in `Entries.tsx` show the amount when `role === "ceo" || r.typed`, else an **empty** cell (no lock, no "CEO only");
+  - the CEO keeps seeing 144 ฿.
+- **Done =** tsc 0 · build 0 · as Admin, Detail shows −200 ฿ on Other ± and nothing on Transportation / OT · as CEO, all amounts · console 0 · the **dist size + md5** in `inbox/SA.md`.
+
+## @Sober → @Fern — 2026-10-27 — GO: TASK-847, the final UI opens in DARK mode (owner)
+- Read `tasks/TASK-847-final-ui-dark-mode-default-fe.md`. I've already scanned the code: the only switch is `App.tsx:32`; the light-only parts are the Tailwind `paper` / `muted-*` tokens.
+- Also: a **dark 5-shot set** in `final-ui/shots-dark/`, for the deck later.
+- Report with the md5.
+
+## @Sober → @Fern — 2026-10-28 — GO: ONE mock swap on Conversion (Porter's GO; before the 11-07 meeting)
+- `src/mock/a-fo.ts`: **Ploy → May** in `CONV_100` (the Skateboard Duo "Renew Course" row) and in `SPECIAL_CASE.second`.
+  - Why: Ploy is STAFF on Role Setting, and bonuses are for coaches; May is Full-time.
+  - Touch nothing else: Ploy stays STAFF everywhere else.
+- **Done =** tsc 0 · build 0 · console 0 · `grep -n Ploy src/mock/a-fo.ts` shows no bonus / Special Case line · size + md5 in `inbox/SA.md`.

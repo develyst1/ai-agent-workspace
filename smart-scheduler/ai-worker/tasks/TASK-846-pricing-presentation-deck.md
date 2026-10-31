@@ -134,3 +134,94 @@ Ball: Sober ("ready for QA" to Porter is yours).
 - **Size 1,352,754 bytes · md5 `056a00b466fced49741c0c3fbd6cb9a5`** (`dist/index.html`).
 **Frozen again** — no more rebuilds unless you ask.
 Ball: Sober.
+
+---
+## EDIT BATCH 2 — @Sober, 2026-10-27 (the owner's answers, via Porter inbox/SA.md "TASK-846 deck: ONE edit batch")
+**START CONDITION:** only after TASK-847 (dark final UI) passes Tanya's re-check and its shots exist in `final-ui/shots-dark/`. I'll say GO.
+**Owner, verbatim:**
+- *"จริงๆเราแก้บั้ค ตลอด อยู่แล้ว เพราะเราจะขึ้นระบบให้เขาทดสอบตลอด แต่หลังจบโปรเจค ดูแลต่อ อีก 6เดือน เป็น maintainace"*;
+- *"ไม่มีมัดจำ"*.
+
+**`pricing.ts` additions** (every number lives here):
+```ts
+export const maintenanceMonths = 6;
+export const deposit = 0;                      // render "ไม่มีมัดจำ" when 0
+export const extraRatePerDay = rate.perDay;    // 263: later additions at the same rate
+export const team = { parallelTeams: 2, builders: 4 };
+// timeline: each installment gets its own duration; together 10–12 weeks ≈ 2½–3 months (inside "2–3 เดือน")
+export const timeline = [
+  { step: "Stock + สิทธิ์ผู้ใช้", when: "≈ 3–4 สัปดาห์" },
+  { step: "Revenue + แก้หน้าบ้าน", when: "≈ 4–5 สัปดาห์" },
+  { step: "Salary (+ ล็อกอินโค้ช หลายบทบาท / STAFF ใครเปลี่ยนทดลองเป็นคอร์ส)", when: "≈ 3 สัปดาห์" },
+];
+```
+Sizing: day shares 30% / 45% / 25% of 174.6 d, 2 teams in parallel, Stock's 3–4 wk as the anchor (Sober).
+
+**The edits (you write the Thai; I check it). Customer-facing, plain:**
+1. **Price slide, "why 2–3 months":**
+   - 149 days is the **size** of the work, the same yardstick as the old package, not the waiting time;
+   - it's done in 2–3 months because **two teams build in parallel (≈ 4 people) with review and testing**, and tools help them work faster;
+   - **every number is still checked by people.**
+   - 🚫 Never "AI does the work". Today's line "เพราะใช้เครื่องมือ AI ช่วย" is replaced by this.
+2. **"What's included" (one list):**
+   - bug fixes **throughout** the project (the system is always up for them to test);
+   - **6 months of maintenance after the project ends** (`maintenanceMonths`);
+   - testing, installation, the trial period before real use, the 6 reports, SOM Dashboard / Daily Report.
+3. **Scope line,** verbatim from Porter: **"ราคานี้ = ขอบเขตที่ยืนยันแล้ว · ขอเพิ่มภายหลังคิดเรทเดิม (263 บาท/วัน) ตามขนาดงาน"** (263 from `extraRatePerDay`).
+4. **Payment slide:** say plainly **"ไม่มีมัดจำ"**, pay when each part is delivered (from `deposit`).
+5. **Timeline slide:**
+   - the three durations above;
+   - add **"นับจากวันที่ได้ข้อมูลครบ (เช่น Excel สินค้า)"**.
+6. **Slide "ตกลงกันแล้ว":** card 3 repeats the title. Replace it with **"ขั้นต่อไป: ตกลงราคา → เริ่มจาก Stock"**.
+7. **"รายงาน 6 หัวข้อ"** (wherever it appears): add **"เนื้อหาตกลงกันตอนเริ่มทำส่วนนั้น"**.
+8. **Swap the 5 screenshots** for `final-ui/shots-dark/` (replace the files in `src/assets/shots/` only).
+   - Mapping: salary ← Monthly Payment, revenue ← Revenue Summary, stock ← STOCK OUT, frontoffice ← Branch for booking, roles ← Role Setting.
+   - Look at each: invented names only, no codes.
+   - The "ชื่อและตัวเลขเป็นตัวอย่าง" caption stays.
+
+**Done = (report in `inbox/SA.md`):**
+- tsc 0 · build 0 · 0 console;
+- my earlier banned grep = 0, **plus "AI ทำ" = 0**;
+- `paymentSum === total` still asserted;
+- the 5 dark shots looked at by you;
+- the slide list (did any slide move?) + size + md5. **Then freeze.**
+- **GO for EDIT BATCH 2 — @Sober, 2026-10-27** (TEST-130 dark mode PASS). **One change to item 1:**
+  - the owner hasn't approved a head count, so the slide says **"2 ทีมทำพร้อมกัน"** with **no number of people**;
+  - keep it switchable in `pricing.ts`: `team = { parallelTeams: 2, builders: 4, showBuilders: false }` (true ⇒ "≈ 4 คน" appears). One line, if he says yes.
+
+
+## Jason (BE) 2026-10-27 — TASK-846 EDIT BATCH 2 DONE — GREEN, frozen again
+**Your 8 edits, plus the GO note (2 ทีมทำพร้อมกัน, no head count):**
+1. **Slide 9 "why 2–3 months"** — "AI ช่วย" line replaced: 149 วันทำงาน = ขนาดของงาน, ไม้บรรทัดเดียวกับแพ็กเกจเดิม, ไม่ใช่เวลาที่ต้องรอ (เท่ากับโปรแกรมเมอร์ 1 คน ~7 เดือน) · "เสร็จใน 2–3 เดือน เพราะมี 2 ทีมทำพร้อมกัน มีการตรวจทานและทดสอบ และมีเครื่องมือช่วยให้ทำเร็วขึ้น · ทุกตัวเลขมีคนตรวจซ้ำ". **No head count**: `team = { parallelTeams: 2, builders: 4, showBuilders: false }` in `pricing.ts`; flipping `showBuilders` to true adds "(≈ 4 คน)". Point 3 is now price only (the included list moved to slide 10).
+2. **"What's included" (one list), slide 10:** แก้บั๊กตลอดโครงการ (ระบบขึ้นให้ทดสอบได้ตลอด) · ดูแลต่ออีก 6 เดือนหลังจบโครงการ (`maintenanceMonths`) · การทดสอบ การติดตั้งระบบ ช่วงทดลองใช้ก่อนใช้งานจริง · รายงาน 6 หัวข้อ · หน้า SOM Dashboard / Daily Report.
+3. **Scope line (slide 10, Porter's words verbatim):** "ราคานี้ = ขอบเขตที่ยืนยันแล้ว · ขอเพิ่มภายหลังคิดเรทเดิม (263 บาท/วัน) ตามขนาดงาน" — 263 from `extraRatePerDay`.
+4. **Payment (slide 10):** "ไม่มีมัดจำ · จ่ายเมื่อส่งมอบแต่ละส่วน" from `deposit = 0` (a non-zero value would render "มัดจำ N บาท").
+5. **Timeline (slide 11):** 3–4 / 4–5 / 3 สัปดาห์ in `pricing.ts`; footer "นับจากวันที่ได้ข้อมูลครบ (เช่น Excel สินค้า) · ครบทั้งหมดภายใน 2–3 เดือน".
+6. **Slide 8 card 3:** "ขั้นต่อไป: ตกลงราคา → เริ่มจาก Stock" (heading "ขั้นต่อไป", body "ตกลงราคา → เริ่มจาก Stock").
+7. **"รายงาน 6 หัวข้อ"** appears once (slide 10 list) and now carries "(เนื้อหาตกลงกันตอนเริ่มทำส่วนนั้น)".
+8. **5 dark shots** copied from `final-ui/shots-dark/` into `src/assets/shots/` only (salary ← 1-monthly-payment, revenue ← 2-revenue-summary, stock ← 3-stock-out, frontoffice ← 4-branch-for-booking, roles ← 5-role-setting). **All 5 LOOKED AT:** invented names only (Pete/May/Ton/Ploy/Nam/Beam, น้องมะลิ), no item codes. The caption "ชื่อและตัวเลขเป็นตัวอย่าง" stays. I also looked at slides 3, 9, 10, 11 rendered at 1920×1080: nothing clipped; slide 10 is the fullest (scope line ends just above the bottom edge).
+
+**Done list:**
+- tsc 0 · build 0 · **0 console** (served build, all 12 slides stepped).
+- Your earlier banned list + `AI ทำ` on `dist/index.html` = **0**. The word-boundary list `\b(Kung|Poo|Kid|Bank|London|Nelson)\b|พี่ฟีน|\(V3\)|เทส|UAT|ห้องนี้|6,000` = 0 on the rendered slide text; on the file it hits "UAT" once, inside a random base64 run of an image (not a slide).
+- `paymentSum === total` still asserted at module load (11,900 + 13,800 + 13,500 = 39,200); build passed.
+- **No slide moved:** still 12 slides, same order.
+- **Size 1,326,140 bytes · md5 `661a5bc96c90201de64face30e7c86f7`** (`dist/index.html`).
+**Frozen again** — no more rebuilds unless you ask.
+Ball: Sober.
+
+
+## Jason (BE) 2026-10-27 — TASK-846 batch 2: the ONE line fixed — GREEN, frozen again
+`src/slides.tsx:29`, slide 3 (Salary) step 2: "แอดมินดูยอดรวม แล้วเตือนคนที่ยังไม่ยืนยัน" → **"CEO ดูยอดรวมทั้งเดือน แล้วกดเตือนคนที่ยังไม่ยืนยัน"** (your exact Thai). Nothing else touched.
+- tsc 0 · build 0 · grep dist `แอดมินดูยอดรวม` = **0** (new line = 1) · `AI ทำ` = 0.
+- **Size 1,326,159 bytes · md5 `d6ae094974f9a3615e7d4bc4e8175ec7`** (`dist/index.html`).
+**Frozen again.** Ball: Sober.
+
+
+## Jason (BE) 2026-10-28 — TASK-846 slide 12: the ONE fix DONE — GREEN, frozen again
+- `pricing.ts` `needs`: item 3 ("คำตอบ 6 ข้อเรื่องเงิน … (ถ้ายังไม่ได้ตอบ)") dropped; 2 items remain (วันที่จะเริ่มใช้ระบบ · ข้อมูลชุดแรก).
+- `slides.tsx` slide 12 heading counts from the list: `{needs.length} อย่างที่ต้องได้จากการประชุมวันนี้` → renders "2 อย่าง…". No literal "3".
+- Looked at slide 12 rendered at 1920×1080: two cards, left-aligned in the 3-column grid (empty third column, nothing clipped). Nothing else touched; still 12 slides.
+- tsc 0 · build 0 · **0 console** (served build, all 12 slides stepped) · `grep -c "คำตอบ 6 ข้อ\|3 อย่าง" dist/index.html` = **0**.
+- **Size 1,325,990 bytes · md5 `604bde02235715366734c053509b311f`** (`dist/index.html`).
+**Frozen again.** Ball: Sober.

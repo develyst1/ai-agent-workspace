@@ -1292,3 +1292,46 @@ Headless. Nudge me.
   - Khwan's v3 notes applied (the page → note tables are at the bottom of TASK-844 / 845).
 - **Team B:** a quick re-check that the 14 still behave as in TEST-128.
 - Write TEST-129. Put ONE screenshot (Monthly Payment, CEO view) in my scratchpad (`…\scratchpad\req133-final-ui.png`). Then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: TEST-129 2-minute re-check (Other Income fix)
+- **File:** final-ui `dist/index.html`, md5 **`ef3063bcb404066acd6e9f2305fb3a72`** (supersedes `a33a3b43…`; nothing else changed).
+- **Sober's ruling** (REQ-120 R0.2/R0.3): an Admin sees only an amount she typed herself. Calculated amounts are hidden.
+  - **Admin** on Other Income › Detail: OT empty · Other ± −200 ฿ shown · Transportation empty; no lock, no "CEO only".
+  - **CEO:** every amount (Transportation 144 ฿).
+- Console 0. Append to TEST-129, then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: final UI DARK MODE gate (TASK-847 + Silver's fix). Local, headless
+- Owner, verbatim: *"backoffice start with dark mode first"*.
+- **File:** final-ui `dist/index.html`, md5 **`8cc93ae4b5f98ba380e976e0e0295f69`** (supersedes `64831c0d…` / `ef3063bc…`, keeps the Other Income fix).
+- **Gate:**
+  - a first open with empty storage = **dark**;
+  - the header toggle switches both ways and is remembered after a reload;
+  - **dark contrast on all 31 pages × 3 roles:** tables, badges (Confirmed / Pending / AUTO-LOCKED), charts, dialogs, toasts, the role switcher, forms. Flag anything unreadable (low contrast, light bands);
+  - Revenue › Detail's expense rows (just fixed);
+  - light mode is still OK after toggling;
+  - console 0. The rest of TEST-129 stands.
+- Also look at the 5 shots in `final-ui/shots-dark/` (they go into the deck): readable, invented names only.
+- Write TEST-130 and put ONE dark screenshot (Monthly Payment, CEO) in my scratchpad (`…\scratchpad\req133-final-ui-dark.png`). Then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-27 — GO: TEST-127 round 3, the deck EDIT BATCH 2. Local, headless
+- **File:** pricing-deck `dist/index.html`, md5 **`d6ae094974f9a3615e7d4bc4e8175ec7`** (supersedes `056a00b4…`), 12 slides.
+- **Check:**
+  1. the 8 edits, per `BRIEF-owner-backoffice-money-meeting-2026-10-27.md` §7 + the owner's A / B answers:
+     - 149 = the size, not the wait; "2 ทีมทำพร้อมกัน", no head count, no "AI does it";
+     - bug fixes throughout + 6 months' maintenance; **ไม่มีมัดจำ**; the scope line at 263 บาท/วัน; the reports note;
+     - installments 3–4 / 4–5 / 3 weeks + "นับจากวันที่ได้ข้อมูลครบ";
+     - slide 8's card 3;
+  2. the 5 dark shots;
+  3. **every slide's text against R0:** an Admin never sees pay or revenue. Slide 3 had a wrong line, now fixed;
+  4. the gate basics: offline, 0 errors, all slides reachable;
+  5. read it as ฟีน would: anything that invites a hard question we can't answer.
+- Append to TEST-127. Put a fresh price-slide screenshot in my scratchpad (`req133-deck-price.png`, overwrite), then tell me PASS/FAIL in inbox/PM.md.
+
+---
+## @Porter → @Tanya — 2026-10-28 — GO: a quick re-check of 2 small fixes (deck slide 12 + final UI Conversion). Local, headless
+- **Deck:** md5 **`604bde02235715366734c053509b311f`** (supersedes `d6ae0949…`). Slide 12 now lists 2 items (the go-live date, the first data) and its heading says "2 อย่าง". The "คำตอบ 6 ข้อ" item is gone (Khwan answered: REQ-120 §9.4).
+- **Final UI:** md5 **`1d0ce1f63ae826984172ade3d724f41a`** (supersedes `8cc93ae4…`). On Conversion, the bonus / Special Case lines name **May (Full-time)**, not Ploy (STAFF). Dark mode + roles unchanged.
+- **Check:** those two spots; console 0; and that nothing else moved (a spot-check). Append to TEST-127 / TEST-130, then tell me PASS/FAIL in inbox/PM.md.
