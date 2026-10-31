@@ -1,6 +1,6 @@
 # SPEC-115: seam — every requirement of the spec in every part's context (Team A side of REQ-118)
 - Source: REQ-118
-- Status: ACTIVE (2026-10-30 15:3x, Sober)
+- Status: DONE (2026-10-30 17:30, Sober — TASK-145 + TASK-146 DONE, uncommitted) · was ACTIVE (2026-10-30 15:3x, Sober)
 - Team: A (Blueprint) owns this contract; Team B (CAW) consumes it — the CAW side (proposal prompt AC-2, coverage AC-3, worker prompt line, cache on a requirement edit AC-4) is **not** in this SPEC; it goes to the PM for Team B (§ For the PM).
 
 ## Read before designing (blueprint-back `f10f8cb`, 2026-10-30)
@@ -35,7 +35,12 @@ Example (v2, a card on WRK-001 in a spec with two requirements):
     { "key": "REQ-002", "kind": "requirement", "title": "…", "body": { "text": "…" }, "origin": { … }, "createdIn": "…" } ] }
 ```
 
-Consumers: `grep -rn "contextIn\|PartContext\|SpecContext\|relatedDecisionsMore" src test` (blueprint-back, 2026-10-30) →
+Consumers (probe): probe-change.sh blueprint-back spec115.patch → 1 errors
+blueprint-back → test/seam/spec-v2.test.ts:144 (fail) GET /spec/parts/{key}/context: v1's body with revision, savedAt, latestLabel instead of version/confirmedAt; unknown key → 404 → TASK-145
+
+(Sober 2026-10-30 17:00, on blueprint-back `93249a7` = REQ-115 committed; patch = the § Flow line + `requirements: Part[]` + `requirements: z.array(PartSchema)`. Base and patched tsc 0; paired blueprint-front gen:api / typecheck / check:api / test src all exit 0 → its gen:api step = TASK-146. Real repos untouched: tree-fp before = after.)
+
+Consumers (grep, 15:3x on `f10f8cb`, kept for prose/keys the probe cannot see): `grep -rn "contextIn\|PartContext\|SpecContext\|relatedDecisionsMore" src test` (blueprint-back, 2026-10-30) →
 - `src/seam/context.ts` (the change) · `src/seam/spec.ts:11,42,45,47` (type flows through, no edit) · `src/http/routes/seam.ts:16-34,55` (schema: TASK A) · `openapi.json` (re-emit: TASK A)
 - `test/seam/spec-v2.test.ts:144` pins the v2 key list → **must gain `"requirements"`** (TASK A) · `test/seam/related-decisions.test.ts:44-109` reads only its own fields → untouched
 - other key-list pins (`git grep -n "Object.keys" f10f8cb -- test/seam test/http`): `spec-v2.test.ts:98,168,172`, `locate.test.ts:110-111`, `spec-store.test.ts:391-396` — other bodies, untouched
@@ -44,6 +49,7 @@ Consumers: `grep -rn "contextIn\|PartContext\|SpecContext\|relatedDecisionsMore"
 
 ## Data Model
 None. `requirements` is read from the parts already stored. Consumers: n/a — no table, column or key pattern changes.
+Consumers (probe): no data-model patch — the one patch for this SPEC is probed in § API / Interface Design (17:00, 1 error, ticked there)
 
 ## Flow
 `contextIn(spec, key)`: after `relatedDecisions`, add
@@ -69,10 +75,14 @@ Size: a context grows by the requirements' size. 8 typed requirements ≈ a few 
 
 ## Order (F-013)
 blueprint-back's tree holds REQ-115's TASK-134 in progress (11 paths incl. `openapi.json`, 15:32). **TASK A depends on REQ-115 committed** in blueprint-back; TASK B on TASK A's `openapi.json` and blueprint-front's previous topic committed (REQ-115's TASK-135, same file `schema.d.ts`). `[SA-decided]` — recalling TASK-134 would throw away a migration and 11 files of work; TASK A is XS.
+**Met 2026-10-30 17:0x:** REQ-115 committed — blueprint-back `93249a7`, blueprint-front `b08d23a` (Sober, owner's ขึ้น git 16:4x). TASK-145 released on `93249a7`.
+Consumers (probe): no extra shape here — see § API / Interface Design (one patch, probed 17:00)
 
 ## Tasks
 - TASK A: blueprint-back — `requirements` in every part context (v1 + v2), schema, openapi, tests — owner: BE Jason (depends on: REQ-115 committed)
 - TASK B: blueprint-front — gen:api for `requirements` — owner: FE Fern (depends on: TASK A `openapi.json` · REQ-115 front committed)
+- (TASK A = TASK-145, TASK B = TASK-146.)
+Consumers (probe): no extra shape here — see § API / Interface Design (one patch, probed 17:00)
 
 ## For the PM (Team B side — a seam change, routed by the PM)
 Contract above is final for Team A. Team B needs, for REQ-118: AC-2 entry-chat prompt, AC-3 coverage (after Q1), AC-4 cache rule, and (their choice) a worker prompt line naming `spec.requirements`. They can build against this contract now; the joint run waits for TASK A's commit.

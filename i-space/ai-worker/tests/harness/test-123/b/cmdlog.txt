@@ -1,0 +1,75 @@
+$ git clone -b atom <local blueprint-back> blueprint-back
+blueprint-back HEAD 861e35a fp fa2163a9aafd (160 paths: 160 tracked, 0 untracked, 0 deleted)
+$ git clone -b atom <local blueprint-front> blueprint-front
+blueprint-front HEAD 119942e fp 7977f1cccca9 (317 paths: 317 tracked, 0 untracked, 0 deleted)
+$ git clone -b atom <local caw-back> caw-back
+(overlaid the uncommitted tree under test)
+caw-back HEAD 2426d9a fp cd8dfd83981c (262 paths: 252 tracked, 10 untracked, 0 deleted)
+$ git clone -b atom <local caw-front> caw-front
+(overlaid the uncommitted tree under test)
+caw-front HEAD a009d2c fp 1b01369237d6 (154 paths: 146 tracked, 8 untracked, 0 deleted)
+== caw-back prerequisites
+$ jq --version
+jq-1.7
+(exit 0)
+$ perl -v | sed -n 2p
+This is perl 5, version 40, subversion 1 (v5.40.1) built for x86_64-linux-gnu-thread-multi
+(exit 0)
+$ claude --version
+2.1.314 (Claude Code)
+(exit 0)
+$ pm2 --version
+bash: line 1: pm2: command not found
+(exit 127)
+== blueprint-back install
+$ bun install --frozen-lockfile 2>&1 | tail -1
+227 packages installed [318.00ms]
+(exit 0)
+== blueprint-front install
+$ bun install --frozen-lockfile 2>&1 | tail -1
+219 packages installed [1312.00ms]
+(exit 0)
+== caw-back install
+$ bun install --frozen-lockfile 2>&1 | tail -1
+121 packages installed [88.00ms]
+(exit 0)
+== caw-front install
+$ bun install --frozen-lockfile 2>&1 | tail -1
+445 packages installed [355.00ms]
+(exit 0)
+--- QA's blueprint-back/.env:
+DATABASE_URL=pglite:memory
+PORT=4281
+HOST=
+SOURCES_DIR=
+GATEWAY_URL=http://127.0.0.1:4396
+GATEWAY_LIGHT_MODEL=
+CAW_NOTIFY_URL=http://127.0.0.1:4581/v1/notify
+--- QA's caw-back/.env:
+DATABASE_URL=pglite:file:/tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t123b/caw-db
+PORT=4581
+HOST=
+BLUEPRINT_URL=http://127.0.0.1:4281
+CAW_POLL_MS=
+CAW_WORKSPACE_ROOT=/tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t123b/caw-root
+BLUEPRINT_WEB_URL=http://127.0.0.1:3181
+CAW_API_URL=http://127.0.0.1:4581
+RUNNER_POLL_MS=
+RUNNER_HOP_MAX_MS=
+RUNNER_WORKER_MAX_TASKS=
+RUNNER_WORKER_MAX_TOKENS=
+RUNNER_WORKER_IDLE_MS=
+CLAUDE_BIN=/tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t123b/qa-claude.sh
+RUNNER_TRACE_DIR=/tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t123b/traces
+--- QA's blueprint-front/.env.local:
+PORT=3181
+BLUEPRINT_API_URL=http://127.0.0.1:4281
+CAW_URL=http://127.0.0.1:3581
+--- QA's caw-front/.env.local:
+CAW_API=http
+CAW_API_URL=http://127.0.0.1:4581
+BLUEPRINT_URL=http://127.0.0.1:3181
+PORT=3581
+NEXT_DIST_DIR=
+$ bun run build   (blueprint-front, offline: unshare -rn, loopback up) → exit 0 in 23 s
+$ bun run build   (caw-front, offline: unshare -rn, loopback up) → exit 0 in 9 s

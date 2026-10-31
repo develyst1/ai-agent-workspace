@@ -1,0 +1,42 @@
+    [14.1s] S9 hops: แบงค์:#1:handed_off:handoff:ฝน→200, ฝน:#1:commented:comment→201, ฝน:#2:commented:comment→201
+OK  [14.1s] AC-1 แบงค์ (BE) is offered ฝน (FE) as well as มิ้นท์ (QA) — "You may hand off to: ฝน (FE), มิ้นท์ (QA) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+OK  [14.1s] AC-1 card_context.handOffTo for แบงค์ holds ฝน (FE) — [{"id":"01a18c93-1210-763a-91fb-fa5bd12bf72b","name":"ฝน","roles":["FE"]},{"id":"01a18c93-122e-7277-b370-d833bbb528a8","name":"มิ้นท์","roles":["QA"]}]
+OK  [14.1s] AC-1 a hand-off แบงค์ → ฝน (by name) works: 200, #1 now ฝน's — HTTP 200 · assignee ฝน
+OK  [14.1s] AC-1 ฝน (FE) is offered แบงค์ (BE) back, and มิ้นท์ (QA) — "You may hand off to: แบงค์ (BE), มิ้นท์ (QA) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+OK  [14.1s] AC-2 แบงค์'s hop on #1 is told rule 2 ("Do only your card's work…") and rule 7 ("…do not build it yourself") — ["2. Do only your card's work — its title and its `todo`. Every requirement in `spec.requirements` and every rule in `spec","7. If you find work that no card holds, say so in a `comment` (what is missing and why) — do not build it yourself."]
+OK  [14.1s] AC-2 …and shown the other card it must leave alone: "#2 ทำหน้าเว็บ (ฝน FE, todo)" — "Other cards hold their own work — leave it to them, even if you could do it now: #2 ทำหน้าเว็บ (ฝน FE, todo)."
+OK  [14.1s] AC-2 ฝน's hop gets the same rules — Other cards hold their own work — leave it to them, even if you could do it now: #1 ทำ server (ฝน FE, todo).
+OK  [22.3s] S8 run 1 with 2 → 2 hops, budget_spent, "2 ก้าว จากงบ 2" — budget_spent · 2 hops · "- 2 ก้าว จากงบ 2"
+OK  [25.2s] AC-1 a SECOND อัตโนมัติ with the same 2 (the real dialog) takes its own 2 steps — it does not end at once — 2 hops · budget_spent · 1.1 s
+OK  [25.2s] AC-2 run 2's report counts its own steps: "2 ก้าว จากงบ 2", reason "ใช้งบครบแล้ว" — true this time — "- 2 ก้าว จากงบ 2" · ["- เหตุที่จบรอบ: ใช้งบครบแล้ว"]
+OK  [27.7s] AC-1 neighbour: a third run with 1 → 1 own step, "1 ก้าว จากงบ 1" — 1 hops · "- 1 ก้าว จากงบ 1"
+OK  [27.7s] AC-2 neighbour: the project has 5 card hops in all (2 + 2 + 1) — no run borrowed another's count — 5
+    [29.2s] S8 board strip: ["การรัน","การรันหยุดแล้ว: ใช้งบครบแล้ว · กด อัตโนมัติ เพื่อเริ่มรอบใหม่"]
+    [37.4s] S1 hops on #1: ใบเตย:commented, ใบเตย:commented · stop no_progress · reason ["- เหตุที่จบรอบ: #1 ออกแบบ Health Board ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [37.4s] AC-1 the commented card gets ONE more turn (2 hops on #1 by ใบเตย, both commented), not a loop — 2 hops
+OK  [37.4s] AC-1 the run does NOT end nothing_workable; it ends no_progress — no_progress
+OK  [37.4s] AC-1 the report names the card in the PM's words, never "ไม่มีงานที่ทำต่อได้" — ["- เหตุที่จบรอบ: #1 ออกแบบ Health Board ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [37.4s] AC-1 the card is still todo and workable — todo workable true
+OK  [38.9s] AC-1 the board's run strip says "มีงานที่ยังทำต่อได้ แต่ไม่คืบ", not "ไม่มีงานที่ทำต่อได้" — ["การรันหยุดแล้ว: มีงานที่ยังทำต่อได้ แต่ไม่คืบ · กด อัตโนมัติ เพื่อเริ่มรอบใหม่"]
+    [38.9s] S1 SA prompt line: "You may hand off to: ฝน (FE), แบงค์ (BE) — pass the name (or the id) as `toWorkerId` of `hand_off`." · handOffTo [{"id":"01a18c93-1210-763a-91fb-fa5bd12bf72b","name":"ฝน","roles":["FE"]},{"id":"01a18c93-1223-7640-b608-467e999b2ea6","name":"แบงค์","roles":["BE"]}]
+OK  [38.9s] AC-2 the SA's prompt names its recipients by name + role ("ฝน (FE)", "แบงค์ (BE)"), no bare id — "You may hand off to: ฝน (FE), แบงค์ (BE) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+OK  [38.9s] AC-2 card_context.handOffTo = name + roles + id for each — [{"id":"01a18c93-1210-763a-91fb-fa5bd12bf72b","name":"ฝน","roles":["FE"]},{"id":"01a18c93-1223-7640-b608-467e999b2ea6","name":"แบงค์","roles":["BE"]}]
+OK  [41.6s] AC-1 neighbour: pressing อัตโนมัติ again → the card gets its turns again (2), then the same honest stop — 2 hops · no_progress · ["- เหตุที่จบรอบ: #1 ออกแบบ Health Board ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+    [51.0s] S2 hops: ใบเตย:commented:comment→201, ใบเตย:handed_off:handoff:แบงค์→200, แบงค์:commented:comment→201, แบงค์:commented:comment→201 · stop no_progress · reason ["- เหตุที่จบรอบ: #1 ทำ API ตามแบบ ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [51.0s] AC-2 a hand-off BY NAME ("แบงค์") is accepted and the card goes to แบงค์'s id — HTTP 200 · assignee แบงค์
+OK  [51.0s] AC-1 the comment-then-hand-off turn counts as progress: แบงค์ then gets its own turns — ใบเตย,ใบเตย,แบงค์,แบงค์
+OK  [51.0s] AC-1 the stop names #1 again — ["- เหตุที่จบรอบ: #1 ทำ API ตามแบบ ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [51.0s] AC-4 after the hand-off the stop says "ทำ 2 รอบแล้วไม่คืบ" (not 4) — ["- เหตุที่จบรอบ: #1 ทำ API ตามแบบ ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [51.0s] AC-2 แบงค์'s prompt names its recipient as "มิ้นท์ (QA)" — "You may hand off to: ฝน (FE), มิ้นท์ (QA) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+    [59.1s] S3 hops: ใบเตย:handed_off:handoff:01a18c93-1210-763a-91fb-fa5bd12bf72b→200, ฝน:failed:handoff:ใครก็ไม่รู้→409 · stop no_progress · reason ["- เหตุที่จบรอบ: #1 ทำหน้าเว็บ ยังทำต่อได้ แต่ทำ 1 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [59.1s] AC-2 a hand-off BY ID still works — HTTP 200
+OK  [59.1s] AC-2 neighbour: an unknown name is refused, and the refusal names who is allowed (name + role) — HTTP 409 · {"error":{"code":"chain_broken","message":"the chain has no hand-off from the card's worker to that worker — you may hand to: แบงค์ (BE) 01a18c93-1223-7640-b608-467e999b2ea6, มิ้นท์ (QA) 01a18c93-122e-7277-b370-d833bbb528a8","details":{"from":"01a18c93-1210-763a-91fb-fa5bd12bf72b","allowed":["01a18c
+    [59.1s] S3 end: no_progress · ["- เหตุที่จบรอบ: #1 ทำหน้าเว็บ ยังทำต่อได้ แต่ทำ 1 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"] · card assignee ฝน
+OK  [68.7s] AC-1 neighbour: two commented cards → order #1, #2, #1, #2 (fresh turns first), then the stop names #1 only — #1,#2,#1,#2 · ["- เหตุที่จบรอบ: #1 งานแรก ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [76.6s] regression: budget 1 → 1 hop, budget_spent (the second turn does not override the budget) — budget_spent · ["- เหตุที่จบรอบ: ใช้งบครบแล้ว"]
+    [84.8s] S7 hops: ใบเตย:status:status:doing→200 · card todo workable true · stop no_progress · ["- เหตุที่จบรอบ: มีงานที่ยังทำต่อได้ แต่ไม่คืบ"]
+OK  [84.8s] AC-4 / Q4a: count 0 → the generic line "เหตุที่จบรอบ: มีงานที่ยังทำต่อได้ แต่ไม่คืบ", no number, never "ทำ 0 รอบ" — no_progress · ["- เหตุที่จบรอบ: มีงานที่ยังทำต่อได้ แต่ไม่คืบ"]
+OK  [92.5s] AC-3 REQ-117: the review line unchanged ("รอคุณตรวจ: ออกแบบ Health Board — มีอีก 3 งานรออยู่"), stop nothing_workable — ["- รอคุณตรวจ: ออกแบบ Health Board — มีอีก 3 งานรออยู่"]
+OK  [92.5s] AC-3 a truly nothing-workable run still says "ไม่มีงานที่ทำต่อได้" — ["- เหตุที่จบรอบ: ไม่มีงานที่ทำต่อได้"]
+OK  [100.0s] AC-3 no cards → "รอคุณ — ไม่มี", no review line, nothing_workable — ["เสร็จแล้ว","- ไม่มี","ทีมตัดสินเอง","- ไม่มี","รอคุณ","- ไม่มี","ปัญหา","- เหตุที่จบรอบ: ไม่มีงานที่ทำต่อได้"]
+run dir /tmp/qa119-d5RuHZ

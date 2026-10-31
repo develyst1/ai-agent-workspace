@@ -1,0 +1,74 @@
+diff --git a/src/themes/clean-blue/font.ts b/src/themes/clean-blue/font.ts
+index ea40675..d3c1def 100644
+--- a/src/themes/clean-blue/font.ts
++++ b/src/themes/clean-blue/font.ts
+@@ -1,10 +1,11 @@
+-import { Anuphan } from "next/font/google";
++import localFont from "next/font/local";
+ 
+ // clean-blue's one family: Anuphan (Thai + Latin), friendly and geometric like the mood refs, and neither of the
+ // other themes' faces (mono: Noto Sans Thai · gold: Noto Sans Thai Looped + Noto Serif Thai). Applied on the theme
+ // root only — never html/body (SPEC-B-001 A-4).
+-export const cleanBlueFont = Anuphan({
+-  weight: ["400", "500", "600", "700"],
+-  subsets: ["thai", "latin"],
++// A local file, so the build needs no internet (REQ-123 round 2, SPEC-122): Google's own Anuphan, weight 400–700.
++export const cleanBlueFont = localFont({
++  src: "./fonts/anuphan.woff2",
++  weight: "400 700",
+   display: "swap",
+ });
+diff --git a/src/themes/luxury-gold/ThemeRoot.tsx b/src/themes/luxury-gold/ThemeRoot.tsx
+index 73cf7ec..1d642e3 100644
+--- a/src/themes/luxury-gold/ThemeRoot.tsx
++++ b/src/themes/luxury-gold/ThemeRoot.tsx
+@@ -4,20 +4,21 @@
+ // its CSS variables, its fonts and — through UNSAFE_PortalProvider — every HeroUI overlay
+ // (Popover, Drawer, Modal), which would otherwise portal to <body> and lose the variables (SPEC-B-001 rule).
+ import "./theme.css";
+-import { Noto_Sans_Thai_Looped, Noto_Serif_Thai } from "next/font/google";
++import localFont from "next/font/local";
+ import { createContext, useCallback, useContext, useRef, type ReactNode, type RefObject } from "react";
+ import { UNSAFE_PortalProvider } from "react-aria";
+ 
+-const serif = Noto_Serif_Thai({
+-  weight: ["500", "600", "700"],
+-  subsets: ["thai", "latin"],
++// Local files, so the build needs no internet (REQ-123 round 2, SPEC-122): Google's own faces, the weights below.
++const serif = localFont({
++  src: "./fonts/noto-serif-thai.woff2",
++  weight: "500 700",
+   variable: "--lg-font-serif",
+   display: "swap",
+ });
+ 
+-const sans = Noto_Sans_Thai_Looped({
+-  weight: ["400", "500", "600"],
+-  subsets: ["thai", "latin"],
++const sans = localFont({
++  src: "./fonts/noto-sans-thai-looped.woff2",
++  weight: "400 600",
+   variable: "--lg-font-sans",
+   display: "swap",
+ });
+diff --git a/src/themes/minimal-mono/font.ts b/src/themes/minimal-mono/font.ts
+index e624d95..1cf3b7b 100644
+--- a/src/themes/minimal-mono/font.ts
++++ b/src/themes/minimal-mono/font.ts
+@@ -1,11 +1,12 @@
+-import { Noto_Sans_Thai } from "next/font/google";
++import localFont from "next/font/local";
+ 
+ // minimal mono's one family. Its emphasis is weight, so it loads the weights the type scale uses:
+ // 400 body · 500 labels · 700 name and section headings · 800 step numerals.
+ // Applied on the theme root only (MonoRoot) — never on html/body, which keep the core's system Thai stack.
+-export const monoFont = Noto_Sans_Thai({
+-  subsets: ["thai", "latin"],
+-  weight: ["400", "500", "700", "800"],
++// A local file, so the build needs no internet (REQ-123 round 2, SPEC-122): Google's own Noto Sans Thai, weight 400–800.
++export const monoFont = localFont({
++  src: "./fonts/noto-sans-thai.woff2",
++  weight: "400 800",
+   display: "swap",
+   fallback: ["Sukhumvit Set", "Thonburi", "system-ui", "sans-serif"],
+ });

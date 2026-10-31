@@ -1,6 +1,6 @@
 # TEST-116: a CAW run does not end "nothing workable" while a card is workable; hand-off names its people
 - Source REQ: REQ-119 (Team B: SPEC-116, TASK-147 caw-back, TASK-148 caw-front) — from TEST-106 phase 2 P2-2, P2-3
-- Status: **TEST_PASSED** (2026-10-30 16:36, Tanya; stamp corrected from a wrong "17:4x" — F-044) — AC-1…AC-3; DEF-1 MINOR for the PM
+- Status: **TEST_PASSED round 2** (2026-10-30 16:52, Tanya — AC-4: DEF-1 fixed; § Round 2) · round 1 TEST_PASSED (2026-10-30 16:36, Tanya; stamp corrected from a wrong "17:4x" — F-044) — AC-1…AC-3; DEF-1 MINOR for the PM
 - Environment: local (this machine) · stub `CLAUDE_BIN` · no gateway (refusing stub :4396, 0 calls)
 - Tested: 2026-10-30 by Tanya · harness `tests/harness/test-119/` (named after the REQ; the TEST number came from `new-id.mjs`)
 - Build under test (`bash ai-worker/tools/tree-fp.sh`, at the start and again at the verdict — **the same**):
@@ -54,3 +54,23 @@ REQ-119 req 1 (the run's end), req 2 (recipients by name and role), req 3 (nothi
 
 ## Questions
 (none)
+
+## Round 2 — REQ-119 req 4 / AC-4 (DEF-1), 2026-10-30 16:49–16:52, Tanya
+- Build under test (`bash ai-worker/tools/tree-fp.sh`, start 16:49 and verdict 16:52 — **the same**):
+  - `tree-fp caw-back HEAD 7956aa7 fp 496ee381c955 (247 paths: 247 tracked, 0 untracked, 0 deleted)` — round 1 committed (7956aa7) + TASK-151's 2 paths (`src/runner/main.ts`, `main.test.ts`)
+  - `tree-fp caw-front HEAD 7a2a6a5 fp 16244093690a (145 paths: 145 tracked, 0 untracked, 0 deleted)` — the same content as round 1 (same fp), so round 1's built export was reused
+- Same harness (`r119.mjs`, stub CLI with a new `status:<s>` action), plus **S7**; round 1's evidence kept as `out-r1/`, `r119-r1.out`, `caw-back-test-r1.txt`.
+
+| # | AC | Type | Actual (`r119.out`, `out/`) | Result |
+|---|---|---|---|---|
+| R2-1 | **AC-4** | happy | S2 (ใบเตย comments, hands off by name on its 2nd turn; แบงค์ comments twice) → `- เหตุที่จบรอบ: #1 ทำ API ตามแบบ ยังทำต่อได้ แต่ทำ **2** รอบแล้วไม่คืบ — กด "อัตโนมัติ" เพื่อลองต่อ หรือเปิดการ์ดดู` (round 1: 4) — **DEF-1 fixed** (`out/s2-run.json`) | PASS |
+| R2-2 | AC-4 | regression | single worker (S1) still `ทำ 2 รอบ`; two cards (S4) still `ทำ 2 รอบ`, #1 named | PASS |
+| R2-3 | AC-4 / Q4a | boundary | S7: the only hop moves the card `todo → doing` (`status`, HTTP 200), its turn used up → `no_progress`, report `- เหตุที่จบรอบ: มีงานที่ยังทำต่อได้ แต่ไม่คืบ` — the generic line, **no number, never "ทำ 0 รอบ"** (`out/s7-run.json`) | PASS |
+| R2-4 | AC-1…3 | regression | every round-1 case again: 2 turns then the honest stop, board word, press again, #1,#2,#1,#2, budget; prompt + `handOffTo` names, by name / id / unknown name 409; REQ-117 review line, "ไม่มีงานที่ทำต่อได้" when true, "รอคุณ — ไม่มี" — all OK | PASS |
+| R2-5 | AC-3 | suites | caw-back `bun test --timeout 30000` **895 / 1 skip / 1 fail** — the same known `withReadGuard` test (`caw-back-test.txt`); caw-front unchanged (round 1: typecheck 0, 355/0, build 0) | PASS |
+
+- Observation (not REQ-119's): in S7 the card reads `todo`, workable, after the run, though the hop set it `doing` (HTTP 200). The stop line is right for it. Whether a `doing` card should be back in `todo` after its hop is outside this REQ — noted only.
+- Test data: 8 CAW projects in `/tmp/qa119-…` (QA scratch); servers 4292 / 4541 / 3541, the runner, stub 4396 stopped, `ss` clear 16:52.
+
+### Verdict, round 2
+**`TEST_PASSED`** — AC-4 (the turns since the last hand-off: "ทำ 2 รอบ" for TEST-116 S2; count 0 → the generic line, Q4a), AC-1…AC-3 unchanged, suites green apart from the known test. **Tested trees for git (tree-fp.sh):** caw-back **7956aa7 fp `496ee381c955`** · caw-front **7a2a6a5 fp `16244093690a`** (no change since round 1's commit).

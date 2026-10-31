@@ -1,13 +1,13 @@
 {
   "harness": "develyst-harness",
-  "version": "2.6.4",
-  "installedAt": "2026-10-28",
+  "version": "2.6.5",
+  "installedAt": "2026-10-30",
   "packageHashes": {
     "ai-worker/add-failure.mjs": "2d9757735f33b4af6a7fa5252d2b2ccec3f89547d267111fa202c44322dddf00",
-    "ai-worker/append-log.mjs": "a01b01a1b582dc2d4cc59a00e388e9dd6c3f5fa095060a2b33df1342744a9979",
+    "ai-worker/append-log.mjs": "81f520ddb7d2c3df897e79c7fd4114343028341684729f6257ab9d1250e297f9",
     "ai-worker/drain-inbox.mjs": "a90f94fa028a2255ec777bb3489ff2021fcdf3a7d4786483967dcd8882f22b1b",
     "ai-worker/tools/pm-hub.sh": "777f42870cd2509a204eaacf2f7bde7d2e2637021a9bd9124f3eeed9138425d4",
-    "ai-worker/tools/watch-inbox.sh": "7740ec7c272f2aff3a2ef6f127aa85930b2787278367dbffe6811269dd187d9a",
+    "ai-worker/tools/watch-inbox.sh": "b2133e73126c1bf056b2ac8a744475a546b98cc60b8e559981b2b420f0798130",
     "ai-worker/tools/nudge-count.sh": "25946053a106ac55c9281e7ffc2be36b90d21c095dfd95f24e0c4579e1a5d5b0",
     "ai-worker/verify-before-relay.md": "29ec9bca9aa7672150e6f6019f184e7a59f5e74d3787c80f1e6ede32e42c5029",
     "ai-worker/reproduce-first.md": "fc9c14869c737f0475ad7e64ce94e3904b2b0a1e72f96cae9c967c3672ce25d9",

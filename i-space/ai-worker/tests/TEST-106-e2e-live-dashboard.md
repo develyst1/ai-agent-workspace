@@ -1,7 +1,7 @@
 # TEST-106: Live end to end — the Health Board built through Blueprint → CAW → real Claude CLI workers
 - Teams: A + B (both SAs on standby; QA runs it) · TASKs: none
 - Source REQ: REQ-108 (ACs tested: AC-1 … AC-8)
-- Status: **TEST_FAILED** (phase 2, 2026-10-30 15:29, Tanya — AC-4 FAIL: a hand-entered spec never reached the workers (P2-1); AC-1/2/3/5/6/7/8 PASS; § Phase 2) · phase 1: **TEST_FAILED — phase 1** (2026-10-29 14:55, Tanya). AC-1 fails through the interview (P1-1) and AC-4 fails (the dashboard never re-checks by itself, P1-10). AC-2, AC-3, AC-6, AC-7, AC-8 PASS; AC-5 is phase 2. **Phase 2** (REQ-103 + REQ-104 builds, hand-entered requirements, live view) not run yet.
+- Status: **TEST_PASSED** (phase 3, 2026-10-30 18:03, Tanya — AC-4 PASS live: the built dashboard on :3900, 4 services, "ไม่ตอบ" in 6.9 s; AC-1/2/3/6/7/8 PASS, AC-5 from phase 2; TEST-106 § Phase 3) · **TEST_FAILED** (phase 2, 2026-10-30 15:29, Tanya — AC-4 FAIL: a hand-entered spec never reached the workers (P2-1); AC-1/2/3/5/6/7/8 PASS; § Phase 2) · phase 1: **TEST_FAILED — phase 1** (2026-10-29 14:55, Tanya). AC-1 fails through the interview (P1-1) and AC-4 fails (the dashboard never re-checks by itself, P1-10). AC-2, AC-3, AC-6, AC-7, AC-8 PASS; AC-5 is phase 2. **Phase 2** (REQ-103 + REQ-104 builds, hand-entered requirements, live view) not run yet.
 - Build under test: clean `git archive` exports of blueprint-back f60b934 · blueprint-front e46322a · caw-back 102a130 · caw-front 4b58bf3 (see § Instrument limits) · the Health Board spec as written in REQ-108 (the PM's text, entered verbatim: `tests/harness/test-106/spec.txt`)
 - Surfaces: local · desktop web 1440 (Playwright + screenshots) · API reads · process list · the workspace folder on disk
 - Designed: 2026-10-29 by Tanya
@@ -309,3 +309,52 @@ For the PM. Q1 and Q2 change the setup, not the ACs. Each has my default; correc
 ### Verdict, phase 2
 **`TEST_FAILED`** — AC-4: the dashboard the team built does not monitor the spec's services and does not run on :3900, because a hand-entered spec never reached the workers (P2-1, MAJOR). **AC-1, AC-2, AC-3, AC-5, AC-6, AC-7, AC-8 PASS** — the pipeline itself (hand entry → label → button → team → real hops → files, live screen) works end to end. P2-2, P2-3 for the PM.
 - **O-1 cleaned (2026-10-30 15:31, PM's request, DECISIONS 15:3x):** `/workspace/caw-workspaces/.claude/skills/i-space-builder/` removed (copy kept: `phase2/out/i-space-builder-SKILL.md.removed`, 565 bytes). The now-empty `/workspace/caw-workspaces/.claude/skills/` is left. Phase-1 test-data row "… `.claude/skills/i-space-builder/SKILL.md` — left" is superseded by this line. Left in the CAW root on purpose: `scripts/hooks/` (the runner needs them) and the build folders `health-board`, `health-board-112`, `health-board-112r2`, `health-board-108p2` (evidence).
+
+## Phase 3 (2026-10-30 17:53–, PM's go after REQ-118 + REQ-119 committed) — evidence `tests/harness/test-106/phase3/`
+- Build under test (`bash ai-worker/tools/tree-fp.sh`, start 17:53 — all four clean, committed; the same fps REQ-118 was tested on in TEST-117):
+  - `tree-fp blueprint-back HEAD 6123018 fp c51f8477e700 (157 paths: 157 tracked, 0 untracked, 0 deleted)`
+  - `tree-fp blueprint-front HEAD 6692a16 fp 3a86ddf81dbf (305 paths: 305 tracked, 0 untracked, 0 deleted)`
+  - `tree-fp caw-back HEAD 3efcc1a fp a5e46d86d6b7 (249 paths: 249 tracked, 0 untracked, 0 deleted)`
+  - `tree-fp caw-front HEAD 1287772 fp 0c57fd1ec4c8 (145 paths: 145 tracked, 0 untracked, 0 deleted)`
+- Clean HEAD exports, standard ports 4200 / 3100 / 4500 / 3500, :3900 for the dashboard. Blueprint's gateway = the refusing stub (the spec is typed by hand; 0 calls). Runner: real `claude` 2.1.314, `CLAUDE_BIN=/home/box/.local/bin/claude` (logged), `CAW_WORKSPACE_ROOT=/workspace/caw-workspaces` with `.claude/skills` **empty** (O-1 cleaned at 15:31), new folder **`health-board-108p3`**. Every step in `phase3/out/live.log`.
+- **AC-1: PASS** — the same 8 requirements typed on Blueprint's requirements page (`hand.mjs`), label v1 by โด่ง (`label.mjs`).
+- **AC-2: PASS** — Blueprint's "ส่งไปสร้างที่ CAW" → CAW board; "ใช้ทีมเริ่มต้น" → 5 seats; chat (the phase-2 message) → ปลา (opus) proposed **8 cards anchored one per requirement** (REQ-001…REQ-007 + a test card), each to the right role, and asked 2 questions with defaults (stack: plain Node + one HTML/JS page; "ทำงาน" = 2xx/3xx within 3 s). Coverage on the proposal: only **REQ-008 "ไม่ทำ"** uncovered (it asks for no work). Operator: "ตามนั้น" (its defaults) → ปลา re-proposed → "ตกลง เริ่มงาน" → 8 cards.
+- **P2-1 fixed live:** every one of the 8 cards' contexts holds the 4 service URLs, 10 s, 3 s and :3900 (`accept-q.mjs` → `card-N-context.json`) — phase 2: none did.
+- Auto mode 10:58:33Z (17:58 local), budget 16 (the project's first run).
+- **The run (17:58–18:01, 3 card hops):** ใบเตย (SA, opus) designed it — the spec's 4 URLs, :3900, the 3 s rule, the server doing the checks — and handed off **by name** ("แบงค์"); แบงค์ (BE, sonnet) built `server.js`, `index.html`, `package.json`, `README.md`, `test/server.test.js` (`node --test` 7/7) and handed off by name ("มิ้นท์"); มิ้นท์ (QA, opus) ran it on :3900 and checked the 3 s boundary (2.5 s → ทำงาน, 3.5 s → ไม่ตอบ), "QA ผ่าน ✅", and moved #1 to review. **No worker asked the operator anything (0 `ask_operator` calls); no hand-off needed the operator** (P2-3 fixed live). The run then stopped honestly: "รอคุณตรวจ: วางโครงโปรเจกต์และกำหนด API — มีอีก 7 งานรออยู่" (REQ-117), `nothing_workable` — true, every other card waits on #1.
+- **AC-4: PASS** (workers reported done: มิ้นท์'s "QA ผ่าน ✅" on #1). Run as its README says (`node server.js` in `health-board-108p3`), read from the **painted page** (`ac4.mjs`): "Blueprint API · ทำงาน · 8 ms · 18:02:45", "Blueprint เว็บ · ทำงาน · 35 ms", "CAW API · ทำงาน · 7 ms", "CAW เว็บ · ทำงาน · 50 ms" — the spec's 4, in order, with status, ms and check time, and a "เช็คตอนนี้" button (`ac4-all-up.png`). QA stopped its own caw-web (:3500, pid checked) → **"CAW เว็บ · ไม่ตอบ · — · 18:02:55" after 6.9 s, by itself** (≤ 10 + 3 s); the other 3 still ทำงาน (`ac4-caw-web-down.png`, `ac4-rows-*.json`).
+- QA stopped the team at the owner's review of #1: the 7 cards behind it would redo what แบงค์ already built; AC-4 was decided. #1 is left in review, honestly.
+
+### Phase 3 results by AC
+
+| AC | Result | Evidence |
+|---|---|---|
+| AC-1 | **PASS** — by hand on the requirements page, label v1 | `hand.mjs`, `label.mjs` output in `live.log` |
+| AC-2 | **PASS** — Blueprint's button → CAW board; 8 cards from the spec, one per requirement; only "ไม่ทำ" uncovered | `proposal.json`, `card-N-context.json` |
+| AC-3 | **PASS** — real `claude` hops (opus/sonnet, `CLAUDE_BIN` logged), files in `health-board-108p3` | `runner.log`, `traces/`, `ledger.txt`, `ls` |
+| AC-4 | **PASS** — :3900, the 4 services right; caw-web stopped → "ไม่ตอบ" in 6.9 s | `ac4-*.png`, `ac4-rows-*.json` |
+| AC-5 | PASS **from phase 2** (15:24, "หน้าจอของ ใบเตย · สด") — not re-run in phase 3 | `phase2/out/ac5-*` |
+| AC-6 | **PASS** — ledger below; no limit or usage signal; gateway 0 | `ledger.txt` |
+| AC-7 | **PASS** — findings below | — |
+| AC-8 | **PASS** — QA ran from clean HEAD exports and changed nothing; blueprint-back, blueprint-front, caw-front clean at 18:03; caw-back shows 5 modified paths at 18:03 — Team B's REQ-120 / TASK-152 (board 18:01), made in the live repo after QA's export (tree-fp `a5e46d86d6b7` → `b0c6fe5fcaf9`, HEAD 3efcc1a unchanged), not by this test | `tree-fp.sh`, `git status` |
+
+### Live-run ledger, phase 3 (`phase3/out/ledger.txt`)
+| # | Hop | Model | Out tokens | Cache read | Outcome |
+|---|---|---|---|---|---|
+| C3-1 | chat 01a18c74-019b (the request) | opus | 4,999 | 63 k | 8 cards + 2 questions |
+| C3-2 | chat 01a18c75-44d6 ("ตามนั้น") | opus | 3,889 | 58 k | re-proposed |
+| C3-3 | #1 SA 01a18c76-220c | opus | 3,786 | 113 k | handed off → แบงค์ |
+| C3-4 | #1 BE 01a18c76-d0ae | sonnet | 12,834 | 413 k | built, handed off → มิ้นท์ |
+| C3-5 | #1 QA 01a18c77-f606 | opus | 5,407 | 442 k | ran it, → review |
+| — | **5 hops, ≈ 30.9 k out, ≈ 1.1 M cache-read; gateway 0; no limit signal** | | | | |
+
+### Phase 3 findings (AC-7)
+- **P2-1, P2-2, P2-3 — fixed live.** Every card held the whole spec; no run ended falsely; hand-offs went by name with no operator question.
+- **P3-1 — the starting team's chain lets แบงค์ (BE) hand only to มิ้นท์ (QA), so the page was written by the BE**, and ฝน (FE) never ran. แบงค์ said so in its note ("ผมส่งต่อให้ ฝน ไม่ได้ เพราะ chain ส่งได้แค่หา มิ้นท์"); มิ้นท์ said the page is a plain one and suggested a card for ฝน. The result meets the spec; whether the FE should get the page is the PM's call (team shape, not a defect of REQ-118/119).
+- **P3-2 — the whole product was built inside card #1** ("วางโครงโปรเจกต์และกำหนด API"); cards #2–#8 (one per requirement) now wait on the owner's review of #1, and will find their work already done. The cards follow the spec; the hops do the whole job on the first card.
+- **O-3 (not ours)** — REQ-120 work landed in the live caw-back during the run (AC-8 row); QA's export was unaffected.
+
+### Verdict, phase 3
+**`TEST_PASSED`** — the owner's way works end to end, live: a spec typed by hand in Blueprint → the button → CAW's starting team → real Claude hops, with no operator question → a dashboard on :3900 that shows the spec's 4 services and turns one "ไม่ตอบ" 6.9 s after it stops (AC-4). AC-1/2/3/6/7/8 PASS; AC-5 from phase 2. P3-1, P3-2 for the PM. **Tested trees (tree-fp.sh, 17:53, committed):** blueprint-back 6123018 `c51f8477e700` · blueprint-front 6692a16 `3a86ddf81dbf` · caw-back 3efcc1a `a5e46d86d6b7` · caw-front 1287772 `0c57fd1ec4c8`.
+- **Test data, phase 3:** CAW project + 8 cards in `pglite:file` under QA's scratch export (servers stopped 18:03, so the data stays on disk, unserved); folder `/workspace/caw-workspaces/health-board-108p3` (the built dashboard, left as evidence); Blueprint project in `pglite:memory` (gone). Servers 4200 / 3100 / 4500 / 3500 / 3900 / 4396 and the runner: stopped, `ss` clear 18:03.
+- **Owner's screenshots (via Atom 18:04, PM's line):** the run had ended at 18:01 and QA had stopped the servers at 18:03, before the ask, so no new picture could be taken without a new run (ruled out). Copied to the owner's `caw-shots/` (beside the code repos, in none of them): `req108-phase3-board-8-cards-run-started-1758.png` (phase 3: the board with the 8 cards, auto run just started) and `req108-phase2-card-running-live-cli-1524.png` (**phase 2**, 15:24: "หน้าจอของ ใบเตย · สด" while its card hop ran — the only running-card + live-CLI picture; phase 3 did not re-take it).

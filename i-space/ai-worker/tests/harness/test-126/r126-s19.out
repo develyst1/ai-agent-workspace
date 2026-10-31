@@ -1,0 +1,7 @@
+BAD [13.6s] AC-4 a Chrome profile (a folder with "Local State") in the product folder → done refused, naming it; CAW deletes nothing — 409 "ยังส่งไม่ได้ — มีโฟลเดอร์ชั่วคราว qa-tmp-profile ในโฟลเดอร์งาน ให้ย้ายไปไว้ใน $TMPDIR หรือลบออกก่อน"
+OK  [13.6s] AC-4 an untracked ".cache" folder → review refused, naming it — 409 "ยังส่งไม่ได้ — มีโฟลเดอร์ชั่วคราว .cache ในโฟลเดอร์งาน ให้ย้ายไปไว้ใน $TMPDIR หรือลบออกก่อน"
+OK  [13.6s] AC-4 the runner gives each worker its own TMPDIR / XDG_CACHE_HOME outside the product folder — {"cwd":"/tmp/qa119-VcN9ws/root/TEST-126-S19","TMPDIR":"/tmp/caw-runner-2b152852-4ef3-4f9c-b6e0-ebd0219c9bad/worker-41e7fa00-d666-4f4e-89b2-151b97d3eedb-01a18e48-66ff-745e-8e14-b6a4203d79b6/tmp","XDG_CACHE_HOME":"/tmp/caw-runner-2b152852-4ef3-4f9c-b6e0-ebd0219c9bad/worker-41e7fa00-d666-4f4e-89b2-151b97d3eedb-01a18e48-66ff-745e-8e14-b6a4203d79b6/cache"}
+    [16.5s] S19 run 2: แบงค์ cleaned ITS profile, done → 409 "ยังส่งไม่ได้ — มีโฟลเดอร์ชั่วคราว .cache ในโฟลเดอร์งาน ให้ย้ายไปไว้ใน $TMPDIR หรือลบออกก่อน" (ฝน's .cache may still be there — the folder is shared)
+OK  [18.4s] AC-4 once the temp folders are gone: done / review go through; the folder holds no temp folder — #B done · #F review · folder ["qa-tmp-api.js"]
+    [18.4s] S19 observation: a loose temp FILE (qa-tmp-api.js) is still in the folder — not covered by the folder rule
+run dir /tmp/qa119-VcN9ws

@@ -1,0 +1,4 @@
+    [14.4s] S14 tasks: pid 1821336 task 1 card #1 ctx 200 · pid 1821336 task 2 card #2 ctx 200 · pid 1821353 task 1 card #3 ctx 200
+OK  [14.4s] AC-3 limit 2: tasks 1–2 in one process, task 3 in a NEW process (restarted) — 1821336/1 1821336/2 1821353/1
+OK  [14.4s] AC-3 the restarted worker's task still does the right card with full context (its card id in the prompt, card_context 200 for that card, card done) — #3 ctx 200 · 2 rule lines
+run dir /tmp/qa119-Q1z6Qg

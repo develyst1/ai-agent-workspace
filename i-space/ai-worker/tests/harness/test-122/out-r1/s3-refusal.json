@@ -1,0 +1,33 @@
+{
+ "step": "handoff:ใครก็ไม่รู้",
+ "s": 409,
+ "j": {
+  "error": {
+   "code": "chain_broken",
+   "message": "the chain has no hand-off from the card's worker to that worker — you may hand to: แบงค์ (BE) 01a18d30-9739-7725-8c60-81a4ffa681a7, มิ้นท์ (QA) 01a18d30-9745-704f-bc7f-6d0c9388bb99",
+   "details": {
+    "from": "01a18d30-972d-7484-9f57-096d12cefda6",
+    "allowed": [
+     "01a18d30-9739-7725-8c60-81a4ffa681a7",
+     "01a18d30-9745-704f-bc7f-6d0c9388bb99"
+    ],
+    "allowedWorkers": [
+     {
+      "id": "01a18d30-9739-7725-8c60-81a4ffa681a7",
+      "name": "แบงค์",
+      "roles": [
+       "BE"
+      ]
+     },
+     {
+      "id": "01a18d30-9745-704f-bc7f-6d0c9388bb99",
+      "name": "มิ้นท์",
+      "roles": [
+       "QA"
+      ]
+     }
+    ]
+   }
+  }
+ }
+}

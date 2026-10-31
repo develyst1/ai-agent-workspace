@@ -1,5 +1,5 @@
 # REQ-119: A CAW run does not end while a card is workable, and hand-off names its people
-- Status: **DELIVERED + COMMITTED round 1** (2026-10-30 16:4x — caw-back 7956aa7 · caw-front 7a2a6a5, pushed, PM verified) · DELIVERED round 1 (the PM — QA's TEST_PASSED; tested trees caw-back 4cc3241 fp `045bfe44eda2` · caw-front b4f2659 fp `16244093690a`) · **round 2 (DEF-1) READY_FOR_SA** after round 1's commit — § Round 2 · was TEST_PASSED (2026-10-30 16:36, QA Tanya — AC-1…AC-3; DEF-1 MINOR; `tests/TEST-116-caw-run-honest-end-named-handoff.md`) · SPEC_DONE (2026-10-30 16:1x, Silver, per the board) · READY_FOR_SA (2026-10-30 15:3x, the PM)
+- Status: **round 2 DELIVERED + COMMITTED** (2026-10-30 16:5x — caw-back b6fbfaf, pushed, PM verified) · round 2 DELIVERED (the PM) · round 2 TEST_PASSED (2026-10-30 16:52, QA Tanya — AC-4; tested caw-back 7956aa7 fp `496ee381c955` · caw-front 7a2a6a5 fp `16244093690a`) · **DELIVERED + COMMITTED round 1** (2026-10-30 16:4x — caw-back 7956aa7 · caw-front 7a2a6a5, pushed, PM verified) · DELIVERED round 1 (the PM — QA's TEST_PASSED; tested trees caw-back 4cc3241 fp `045bfe44eda2` · caw-front b4f2659 fp `16244093690a`) · **round 2 (DEF-1) READY_FOR_SA** after round 1's commit — § Round 2 · was TEST_PASSED (2026-10-30 16:36, QA Tanya — AC-1…AC-3; DEF-1 MINOR; `tests/TEST-116-caw-run-honest-end-named-handoff.md`) · SPEC_DONE (2026-10-30 16:1x, Silver, per the board) · READY_FOR_SA (2026-10-30 15:3x, the PM)
 - Priority: HIGH `[PM-decided]` — in TEST-106 phase 2 the operator had to restart the run once and answer "who is this id" twice; a real user would think the team stopped.
 - Requested: 2026-10-30 by the PM, from QA's TEST-106 phase 2 P2-2 and P2-3. Stamp `team-proposed` (defect route); decided under the owner's 08:40 standing order (`DECISIONS.md` § "ตัดสินใจแทนเจ้าของ รอทบทวน" 2026-10-30 15:3x).
 - Deadline: none · Team: **B (CAW)**
@@ -75,3 +75,11 @@ Tanya, 2026-10-30 16:36 — tree-fp.sh: caw-back 4cc3241 fp `045bfe44eda2`, caw-
 | AC-3 | PASS | REQ-117's "รอคุณตรวจ: … — มีอีก 3 งานรออยู่" and "รอคุณ — ไม่มี" unchanged; caw-back 893/1/1 (known withReadGuard), caw-front typecheck 0, 355/0, build 0 |
 
 DEF-1 MINOR: after a hand-off inside the run, "ทำ {turns} รอบแล้วไม่คืบ" counts the hand-off turn too (4 where 2 made no progress).
+
+**Round 2** — Tanya, 2026-10-30 16:52 — tree-fp.sh: caw-back 7956aa7 fp `496ee381c955`, caw-front 7a2a6a5 fp `16244093690a` (same at start and verdict); stub CLI; TEST-116 § Round 2.
+
+| AC | Verdict | What I checked myself |
+|---|---|---|
+| AC-4 | PASS | TEST-116 S2 → "ทำ 2 รอบแล้วไม่คืบ" (was 4); single worker and two cards still 2; count 0 (the hop moved the card to doing) → "เหตุที่จบรอบ: มีงานที่ยังทำต่อได้ แต่ไม่คืบ", no number (Q4a) |
+| AC-1…3 | PASS (regression) | every round-1 case again OK; caw-back 895/1/1 (known withReadGuard) |
+

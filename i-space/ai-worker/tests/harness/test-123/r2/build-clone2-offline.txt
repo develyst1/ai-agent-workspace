@@ -1,0 +1,13 @@
+$ bun run gen:themes
+$ node scripts/gen-theme-registry.mjs
+themes: clean-blue, luxury-gold, minimal-mono
+$ next build
+▲ Next.js 16.3.6 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 25ms
+- Experiments (use with caution):
+  · optimizePackageImports
+  · serverActions
+
+  Creating an optimized production build ...
+error: script "build" exited with code 143

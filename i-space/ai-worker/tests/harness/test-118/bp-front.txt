@@ -1,0 +1,12 @@
+219 packages installed [1092.00ms]
+compared against /tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t118/blueprint-back/openapi.json (working tree, not a commit)
+check:api — src/core/api/schema.d.ts matches the OpenAPI document
+themes: clean-blue, luxury-gold, minimal-mono
+TYPECHECK EXIT 0
+ 238 pass
+ 0 fail
+ 2490 expect() calls
+Ran 238 tests across 10 files. [7.52s]
+ƒ  (Dynamic)  server-rendered on demand
+
+BUILD EXIT 0

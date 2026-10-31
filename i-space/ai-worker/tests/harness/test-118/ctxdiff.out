@@ -1,0 +1,2 @@
+OK  AC-5 interview-built spec: 23 parts × v2 + v1 — every context equal to the old one except the new `requirements` field — 46 equal · differ: none
+OK  AC-5 that field is [] on every context (the spec has no requirement) — []

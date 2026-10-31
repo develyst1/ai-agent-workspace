@@ -1,0 +1,32 @@
+bun test v1.4.2 (744846f84)
+
+src/runner/settings.test.ts:
+160 |   test("the file tools and Bash: a PreToolUse hook on Read|Glob|Grep|Bash runs the guard with the readable folders as ONE argument (JSON), not through the environment", () => {
+161 |     const s: any = withReadGuard(base, readable);
+162 |     const m = s.hooks.PreToolUse.find((h: any) => h.matcher === "Read|Glob|Grep|Bash"); // TASK-112: Bash joined the matcher (was "Read|Glob|Grep")
+163 |     expect(m.hooks).toHaveLength(1);
+164 |     const cmd: string = m.hooks[0].command;
+165 |     expect(cmd.startsWith(`${process.execPath} `)).toBe(true);
+                                                         ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t125/caw-back/src/runner/settings.test.ts:165:52)
+(fail) withReadGuard — the read fence of every hop (TASK-C-042 Part A, UP-3) > the file tools and Bash: a PreToolUse hook on Read|Glob|Grep|Bash runs the guard with the readable folders as ONE argument (JSON), not through the environment [0.27ms]
+
+test/http/rebuild-sequence.test.ts:
+AC-6 tables : {"mode":"dispatcher","hopBudget":4,"hopsUsed":2,"workspace":["/work/app","/work/web"],"latestSeenVersion":1,"statuses":["1:todo:-","2:review:-","3:todo:3"],"hops":["commented:runner-1:run","interrupted:runner-2:run"],"runs":["operator_stopped:3"]}
+AC-6 rebuilt: {"mode":"dispatcher","hopBudget":4,"hopsUsed":2,"workspace":["/work/app","/work/web"],"latestSeenVersion":1,"statuses":["1:todo:-","2:review:-","3:todo:3"],"hops":["commented:runner-1:run","interrupted:runner-2:run"],"runs":["operator_stopped:3"]}
+
+test/http/spec-latest.test.ts:
+[pin] hop 01a18e0f-2d06-75a6-b32c-748c0425b886: STEP-004 is not in the current spec — not pinned
+[pin] hop 01a18e0f-2d28-716c-9086-051a994ba545: not pinned — blueprint_unreachable (status 500)
+
+ 988 pass
+ 1 skip
+ 1 fail
+ 4239 expect() calls
+Ran 990 tests across 74 files. [117.76s]
+BACK EXIT 1

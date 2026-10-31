@@ -1,6 +1,6 @@
 # REQ-108: Live end-to-end proof — a small monitoring dashboard built through Blueprint → CAW → real CLI workers
 
-- Status: TEST_FAILED (phase 2, 2026-10-30 15:29, QA Tanya — AC-4 FAIL: a hand-entered spec never reached the workers, who built a different dashboard (P2-1, MAJOR); AC-1/2/3/5/6/7/8 PASS; `tests/TEST-106-e2e-live-dashboard.md` § Phase 2) · TEST_FAILED — phase 1 (2026-10-29 14:55, QA Tanya — `tests/TEST-106-e2e-live-dashboard.md`; AC-1 via interview + AC-4 fail; phase 2 not run) · was READY (2026-10-29 13:05, the PM) — phase 1 unblocked: owner allowed the gateway for this test (Q1). QA designs and runs.
+- Status: **DELIVERED** (2026-10-30 18:0x, the PM — tested trees are today's commits, no git needed; P3-1/P3-2 → REQ-121) · was TEST_PASSED (phase 3, 2026-10-30 18:03, QA Tanya — AC-4 PASS live: the built dashboard on :3900, 4 services, "ไม่ตอบ" in 6.9 s; AC-1/2/3/6/7/8 PASS, AC-5 from phase 2; TEST-106 § Phase 3) · TEST_FAILED (phase 2, 2026-10-30 15:29, QA Tanya — AC-4 FAIL: a hand-entered spec never reached the workers, who built a different dashboard (P2-1, MAJOR); AC-1/2/3/5/6/7/8 PASS; `tests/TEST-106-e2e-live-dashboard.md` § Phase 2) · TEST_FAILED — phase 1 (2026-10-29 14:55, QA Tanya — `tests/TEST-106-e2e-live-dashboard.md`; AC-1 via interview + AC-4 fail; phase 2 not run) · was READY (2026-10-29 13:05, the PM) — phase 1 unblocked: owner allowed the gateway for this test (Q1). QA designs and runs.
 - Priority: HIGH `[PM-decided: owner asked 13:02]`
 - Requested: 2026-10-29 13:02 by the owner, relayed by Atom — stamp `operator`
 - Deadline: none
@@ -104,3 +104,17 @@ Phase 2, 2026-10-30 15:20–15:29 (clean HEADs bp ccd32af/09f2717, caw 4cc3241/b
 | AC-6 | PASS | ledger C2-1…C2-6, ≈ 21.3 k out; no limit signal |
 | AC-7 | PASS | findings P2-1 (MAJOR), P2-2, P2-3, O-1 |
 | AC-8 | PASS | exports only; repos clean |
+
+Phase 3, 2026-10-30 17:53–18:03 (committed HEADs bp 6123018/6692a16, caw 3efcc1a/1287772; real `claude`; 5 hops; gateway 0). Detail: TEST-106 § Phase 3.
+
+| AC | Verdict | What I checked myself |
+|---|---|---|
+| AC-1 | PASS | the 8 requirements typed on Blueprint's page, label v1 |
+| AC-2 | PASS | Blueprint's button → CAW board; ปลา proposed 8 cards, one per requirement; every card's context holds the whole spec |
+| AC-3 | PASS | real opus/sonnet hops; SA → BE → QA by name, no operator question; files in `health-board-108p3` |
+| AC-4 | **PASS** | `node server.js` (README) → the page shows the 4 services ทำงาน with ms and time; QA's caw-web stopped → "CAW เว็บ · ไม่ตอบ" in 6.9 s, by itself |
+| AC-5 | PASS (phase 2) | not re-run in phase 3 |
+| AC-6 | PASS | ledger C3-1…C3-5, ≈ 30.9 k out; no limit signal |
+| AC-7 | PASS | P2-1/2/3 fixed live; P3-1 (BE cannot hand to FE in the starting chain, so BE wrote the page), P3-2 (whole product built in card #1) |
+| AC-8 | PASS | QA ran from exports; caw-back's 5 modified paths are Team B's REQ-120 (18:01), after QA's export |
+

@@ -8,16 +8,21 @@
 > One line per item: `- <habit / correction / owner preference / decision> — source: <quote> (<log line | transcript file:line | DECISIONS/REQ/TASK pointer>)`.
 > Pointers, never copied content.
 
-- correction: every consumer grep runs over `src test`, once per changed schema/type name (not per field), re-run at TASK release on the current commit — source: "I grepped `insert(changeSets)` in `src` only, not in `test`." (F-034, F-042; transcript 2dc3fb00-47aa-4513-824d-52509dbff66a.jsonl:2064)
+- correction: consumers come from `tools/probe-change.sh <repo> <patch>` (patch by `diff -u` of copies), pasted + ticked, re-run at release; grep only as extra — source: "rules now require a scripted check" (spec-rules.md §1; F-034, F-042; 1ccec1f0-…:263)
 - correction: any TASK whose diff touches `openapi.json` gets a paired front `gen:api` TASK, and its review runs the front `check:api` — source: SPEC-106 said "Front: no change" (FAILURES F-036)
-- correction: a rule computed per anchor (context, coverage) is simulated for every anchor kind the consumer uses (work, step, screen, data, decision) before cutting — source: "สาเหตุคือผมออกแบบพลาดเอง" (FAILURES F-037; transcript 2dc3fb00-…:3491)
-- correction: run `date +%H:%M` before writing any time stamp; my stamps drifted ahead of the real clock — source: "I wrote 12:2x but the real clock is 11:49." (transcript 2dc3fb00-…:2533)
-- habit: review = re-run the decisive checks myself (tsc, the new tests, the suites the change reaches; screenshots read by eye) before DONE — source: "Re-running the new tests, the probe and tsc myself." (transcript 2dc3fb00-…:1538)
-- habit: at release, re-measure every DoD base on the commit the TASK starts from and fill the Depends hash — source: "Re-measuring them on `9578d51`." (transcript 2dc3fb00-…:1973)
-- habit: at git, QA's fp = `git diff HEAD | sha256sum | cut -c1-12` (matched REQ-116 329169c658bb); no `git` identity on this box → `git -c user.name=develyst -c user.email=develyst1@hotmail.com commit`, no config change — source: "The fingerprint matches QA's tested tree exactly" (transcript 99bf0035-…:226,242)
-- decision: one topic per commit per repo; the next topic in that repo depends on the previous commit hash — source: "ตามกติกา F-013 (commit ทีละเรื่อง)" (F-013; transcript 2dc3fb00-…:1517)
-- owner-preference: git only on the owner's words relayed by the PM (DECISIONS line), via the git-command skill — source: owner's order lines in DECISIONS.md 2026-10-30 (transcript 2dc3fb00-…:2607)
-- habit: set a SPEC's status to DONE as soon as its last TASK is committed (ready-to-clear refuses while one says IN_PROGRESS) — source: "SPEC-106 still shows IN_PROGRESS" (transcript 2dc3fb00-…:3787)
-- habit: an inbox is written only by `echo '…' >> inbox/X.md` alone and drained by `drain-inbox.mjs` alone (Edit is blocked); then ring by session name (`Porter-ISP`), not socket address — source: "The hook only allows `>>` to append to an inbox" (transcript 99bf0035-…:270)
-- owner-preference: any live gateway call needs the owner's word; tests use stubs — source: "เพราะนับเป็นการใช้ gateway ที่ต้องได้คำเจ้าของก่อน" (transcript 2dc3fb00-…:1800)
+- correction: a rule computed per anchor is simulated for every anchor kind the consumer uses before cutting — source: "สาเหตุคือผมออกแบบพลาดเอง" (F-037; 2dc3fb00-…:3491)
+- correction: `date +%H:%M` in view BEFORE typing any stamp (incl. WAKE) — source: "I wrote 12:2x but the real clock is 11:49." (2dc3fb00-…:2533; F-049, F-053)
+- correction: server trials end with `ps`+`free -m` pasted; stop only my own pid/port group, never by name; no pm2/deploy at all — source: "หยุดทดสอบ pm2 ทันที" (F-048; SYSTEM-FACTS 2026-10-30 23:31)
+- habit: a permission refusal is reported (file + PM), never routed around; owner's word in my pane ⇒ rerun it unchanged — source: "I didn't go round the refusal" (2b665df1-…:401; 2ce1ff7a-…:376)
+- habit: joint REQ AC check = my rows re-run, B's cited, joint path UNVERIFIED for QA — source: REQ-118 § AC check (log 2026-10-30.2 17:31)
+- habit: review = re-run the decisive checks myself (tsc, new tests, reached suites) before DONE; last TASK DONE ⇒ SPEC DONE — source: "Re-running the new tests, the probe and tsc myself." (2dc3fb00-…:1538, :3787)
+- habit: at release, re-measure DoD bases on the TASK's start commit, quiet box — source: "Re-measuring them on `9578d51`." (2dc3fb00-…:1973)
+- habit: before ขึ้น git: `tools/tree-fp.sh` = QA's, paths = TASK list, `check-ignore` exit 1, `.env` ignored, no secret in diff; author develyst via `git -c` (CONVENTIONS § Git) — source: "fps matched QA" (spec-rules.md §4; 2b665df1-…:335)
+- decision: one topic per commit per repo; the next topic in that repo depends on the previous commit hash — source: "ตามกติกา F-013 (commit ทีละเรื่อง)" (F-013; 2dc3fb00-…:1517)
+- owner-preference: git only on the owner's words via the PM (Atom typing = owner typing), only the REQ named — source: ATOM.md 914450f; DECISIONS 2026-10-30
+- habit: inbox written only by `echo '…' >> inbox/X.md` alone, drained by `drain-inbox.mjs` alone; then ring; no peer → one `inbox/WAKE.md` line; log part by `ls log/` — source: "The hook only allows `>>` to append to an inbox" (99bf0035-…:270; 74ea2f44-…:303)
+- owner-preference: a live gateway call needs the owner's word; tests use stubs — source: DECISIONS 13:01 (2dc3fb00-…:1800)
+- habit: my watcher survives /clear — `pgrep -af watch-inbox` before arming; exit 3 = already armed, not a wake — source: "already watching: inbox/SA.md" (74ea2f44-…:169)
+- correction: last act of every session, even a no-work one = distill after my last log entry — source: "last distill 00:34 is before your 00:37 log entry" (8464fcb1-…:170)
+- decision: owner's git line ≠ QA verdict (defect PM-accepted) → commit as ordered, tell the PM; board: my TASK rows only — source: "I committed as the owner ordered" (74ea2f44-…:270)
 

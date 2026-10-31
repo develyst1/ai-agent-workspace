@@ -1,0 +1,150 @@
+diff -ru a/src/cards/service.ts b/src/cards/service.ts
+--- a/src/cards/service.ts	2026-10-31 00:35:21.983803827 +0700
++++ b/src/cards/service.ts	2026-10-31 00:41:16.515000521 +0700
+@@ -3,7 +3,7 @@
+ import { eq } from "drizzle-orm";
+ import type { Blueprint } from "../blueprint/client";
+ import { labelOf, pinnedRead, readLatestPart, type LatestRead } from "../blueprint/latest";
+-import type { Actor, CardStatus } from "../core/events";
++import type { Actor, CardStatus, CawEvent } from "../core/events";
+ import { newId, now } from "../core/ids";
+ import { rewriteForActor } from "../core/paths";
+ import type { CardState, CodeMapState, State } from "../core/reduce";
+@@ -141,7 +141,21 @@
+   .sort((a, b) => (a.id < b.id ? -1 : 1));
+ 
+ // A hand-off follows an edge of the project's chain: from the card's current assignee to a worker it may hand to — named by id or by name (SPEC-116 D3.4).
+-export async function handOff(db: Db, actor: Actor, hopId: string | null, cardId: string, toWorkerId: string, text: string): Promise<Card> {
++/** REQ-125 (SPEC-124 D1): the worker a card was made for — the sender of its first hand-off (note ids are time-ordered), else its assignee now. Read from the notes, so no new column. */
++export function madeFor(s: State, c: CardState): string | null {
++  const first = s.notes.filter((n) => n.cardId === c.id && n.type === "handoff").sort((a, b) => (a.id < b.id ? -1 : 1))[0];
++  return first ? first.fromWorkerId : c.assigneeId;
++}
++
++/** REQ-125 (SPEC-124 D1): a card's builder role — BE or FE — from the worker it was made for; null when that worker is neither or both */
++export function cardRole(s: State, c: CardState): "BE" | "FE" | null {
++  const who = madeFor(s, c);
++  const roles = s.workers.find((w) => w.id === who)?.roles ?? [];
++  const be = roles.includes("BE"), fe = roles.includes("FE");
++  return be && !fe ? "BE" : fe && !be ? "FE" : null;
++}
++
++export async function handOff(db: Db, actor: Actor, hopId: string | null, cardId: string, toWorkerId: string, text: string, reason?: string): Promise<Card> {
+   const { projectId } = await findCard(db, cardId);
+   const noteId = newId();
+   try {
+@@ -157,7 +171,15 @@
+         throw new ApiError(409, "chain_broken", `the chain has no hand-off from the card's worker to that worker — you may hand to: ${list}`,
+           { from: c.assigneeId, allowed: recipients.map((r) => r.id), allowedWorkers: recipients });
+       }
+-      return { type: "card.handed_off", projectId: c.projectId, actor, at: now(), data: { cardId, fromWorkerId: c.assigneeId, toWorkerId: to, noteId, text } };
++      // REQ-125 (SPEC-124 D2): a BE card to a worker who is FE and not BE (or the other way round) needs a reason; QA, SA, PM, BA and other never do
++      const role = cardRole(s, c);
++      const toRoles = recipients.find((r) => r.id === to)!.roles;
++      const other = role === "BE" ? "FE" : role === "FE" ? "BE" : null;
++      const why = (reason ?? "").trim();
++      if (role !== null && other !== null && !toRoles.includes(role) && toRoles.includes(other) && why === "") {
++        throw new ApiError(409, "wrong_role", `ส่งต่อการ์ดนี้ไม่ได้ — การ์ดนี้เป็นงานของ ${role} ถ้าต้องให้ ${other} ช่วย ให้บอกเหตุผลในการส่งต่อ (ใส่ใน reason)`, { cardRole: role, toRoles });
++      }
++      return { type: "card.handed_off", projectId: c.projectId, actor, at: now(), data: { cardId, fromWorkerId: c.assigneeId, toWorkerId: to, noteId, text: why === "" ? text : `${text}\n\n${why}` } };
+     });
+     return cardView(state, card);
+   } catch (e) {
+@@ -186,7 +208,7 @@
+   }
+ }
+ 
+-export async function setStatus(db: Db, actor: Actor, hopId: string | null, cardId: string, status: CardStatus): Promise<Card> {
++export async function setStatus(db: Db, actor: Actor, hopId: string | null, cardId: string, status: CardStatus, note: { done?: string; howToTry?: string } = {}): Promise<Card> {
+   await findCard(db, cardId);
+   const { state, card } = await onCard(db, cardId, (s, c) => {
+     guardHop(s, actor, hopId, c);
+@@ -195,7 +217,16 @@
+     if (status === "doing" && depsOf(s, c.id).some((d) => d.status !== "done")) {
+       throw new ApiError(409, "waiting_on_question", "a card this one depends on is not done yet");
+     }
+-    return { type: "card.status_set", projectId: c.projectId, actor, at: now(), data: { cardId, status } };
++    const at = now();
++    const done = (note.done ?? "").trim(), howToTry = (note.howToTry ?? "").trim();
++    // REQ-125 (SPEC-124 D3): a worker moves a card to review only with both parts; CAW writes them as one note on the card, in the same write
++    if (status === "review" && actor.startsWith("worker:") && (done === "" || howToTry === "")) {
++      throw new ApiError(409, "review_note_missing", "ยังส่งตรวจไม่ได้ — เขียนบันทึกก่อนว่าทำอะไรไปบ้าง และเจ้าของจะลองได้อย่างไร (ใส่ใน done และ howToTry)", { missing: [...(done === "" ? ["done"] : []), ...(howToTry === "" ? ["howToTry"] : [])] });
++    }
++    const set: CawEvent = { type: "card.status_set", projectId: c.projectId, actor, at, data: { cardId, status } };
++    if (status !== "review" || done === "" || howToTry === "") return set;
++    const text = rewriteForActor(actor, `ทำแล้ว: ${done}\nลองได้โดย: ${howToTry}`, s.project!.workspace.roots);
++    return [{ type: "card.commented", projectId: c.projectId, actor, at, data: { cardId, noteId: newId(), text } }, set];
+   });
+   return cardView(state, card);
+ }
+diff -ru a/src/http/errors.ts b/src/http/errors.ts
+--- a/src/http/errors.ts	2026-10-31 00:35:21.991804082 +0700
++++ b/src/http/errors.ts	2026-10-31 00:35:54.189411665 +0700
+@@ -15,7 +15,7 @@
+   400: errorContent("validation · actor_required · unknown_worker · anchor_required · not_a_member · not_a_question · hop_required"),
+   403: errorContent("operator_only · runner_only · not_your_card · not_your_message · not_entry_worker"),
+   404: errorContent("not_found · blueprint_project_not_found"),
+-  409: errorContent("version_not_confirmed · already_exists · name_taken · already_member · edge_exists · is_entry · has_open_cards · chain_broken · waiting_on_question · already_answered · hop_not_running · worker_in_chain · hop_running · no_code_map"),
++  409: errorContent("version_not_confirmed · already_exists · name_taken · already_member · edge_exists · is_entry · has_open_cards · chain_broken · waiting_on_question · already_answered · hop_not_running · worker_in_chain · hop_running · no_code_map · wrong_role · review_note_missing"),
+   422: errorContent("anchor_not_in_version · version_not_confirmed · anchor_not_located"),
+   502: errorContent("blueprint_unreachable"),
+ } as const;
+diff -ru a/src/http/routes/cards.ts b/src/http/routes/cards.ts
+--- a/src/http/routes/cards.ts	2026-10-31 00:35:21.987803954 +0700
++++ b/src/http/routes/cards.ts	2026-10-31 00:35:54.189411665 +0700
+@@ -86,17 +86,17 @@
+ 
+   app.openapi(createRoute({
+     method: "post", path: "/v1/cards/{cardId}/handoff",
+-    request: { params: CardId, body: body(z.object({ toWorkerId: z.string().min(1).openapi({ description: "the worker's id or name (see `handOffTo` in your card context)" }), text: Text }), "hand the card to the next worker along the chain") },
++    request: { params: CardId, body: body(z.object({ toWorkerId: z.string().min(1).openapi({ description: "the worker's id or name (see `handOffTo` in your card context)" }), text: Text, reason: z.string().max(2000).optional().openapi({ description: "REQ-125: why another builder role is needed — required when a BE card goes to a worker who is FE and not BE, or the other way round (else 409 wrong_role)" }) }), "hand the card to the next worker along the chain") },
+     responses: { 200: card("the card, now the next worker's"), 400: errors[400], 403: errors[403], 404: errors[404], 409: errors[409] },
+   }), async (c) => {
+     const b = c.req.valid("json");
+-    return c.json(await handOff(db, c.get("actor"), c.get("hop"), c.req.valid("param").cardId, b.toWorkerId, b.text), 200);
++    return c.json(await handOff(db, c.get("actor"), c.get("hop"), c.req.valid("param").cardId, b.toWorkerId, b.text, b.reason), 200);
+   });
+ 
+   app.openapi(createRoute({
+-    method: "patch", path: "/v1/cards/{cardId}/status", request: { params: CardId, body: body(z.object({ status: Status }), "the new status") },
++    method: "patch", path: "/v1/cards/{cardId}/status", request: { params: CardId, body: body(z.object({ status: Status, done: z.string().max(4000).optional().openapi({ description: "REQ-125: with status review, what was done — a worker must send it with howToTry (else 409 review_note_missing)" }), howToTry: z.string().max(4000).optional().openapi({ description: "REQ-125: with status review, how the owner tries it, or nothing to try and why" }) }), "the new status") },
+     responses: { 200: card("the card"), 400: errors[400], 403: errors[403], 404: errors[404], 409: errors[409] },
+-  }), async (c) => c.json(await setStatus(db, c.get("actor"), c.get("hop"), c.req.valid("param").cardId, c.req.valid("json").status), 200));
++  }), async (c) => { const b = c.req.valid("json"); return c.json(await setStatus(db, c.get("actor"), c.get("hop"), c.req.valid("param").cardId, b.status, { done: b.done, howToTry: b.howToTry }), 200); });
+ 
+   app.openapi(createRoute({
+     method: "patch", path: "/v1/cards/{cardId}/assignee", request: { params: CardId, body: body(z.object({ workerId: z.string().min(1) }), "the operator re-assigns") },
+diff -ru a/src/mcp/server.ts b/src/mcp/server.ts
+--- a/src/mcp/server.ts	2026-10-31 00:35:21.991804082 +0700
++++ b/src/mcp/server.ts	2026-10-31 00:35:54.193411916 +0700
+@@ -89,14 +89,14 @@
+   server.registerTool("hand_off", {
+     title: "Hand a card to the next worker",
+     description: "Pass a card assigned to you to another worker. Only along the project's chain: an edge from you to them must exist, or the call fails with chain_broken and lists who you may hand to.",
+-    inputSchema: { cardId: z.string().min(1), toWorkerId: z.string().min(1).describe("the worker's id or name (see `handOffTo` in your card context)"), text: z.string().min(1).describe("what you did and what they should do next") },
+-  }, ({ cardId, toWorkerId, text }) => run("POST", `/v1/cards/${id(cardId)}/handoff`, { toWorkerId, text }));
++    inputSchema: { cardId: z.string().min(1), toWorkerId: z.string().min(1).describe("the worker's id or name (see `handOffTo` in your card context)"), text: z.string().min(1).describe("what you did and what they should do next"), reason: z.string().min(1).optional().describe("why another builder is needed — required when you hand a BE card to an FE (or an FE card to a BE)") },
++  }, ({ cardId, toWorkerId, text, reason }) => run("POST", `/v1/cards/${id(cardId)}/handoff`, { toWorkerId, text, ...(reason ? { reason } : {}) }));
+ 
+   server.registerTool("set_status", {
+     title: "Set a card's status",
+     description: "Move a card assigned to you: todo, doing, review, done or stuck. `doing` is refused (waiting_on_question) while a card it depends on is not done.",
+-    inputSchema: { cardId: z.string().min(1), status: z.enum(["todo", "doing", "review", "done", "stuck"]) },
+-  }, ({ cardId, status }) => run("PATCH", `/v1/cards/${id(cardId)}/status`, { status }));
++    inputSchema: { cardId: z.string().min(1), status: z.enum(["todo", "doing", "review", "done", "stuck"]), done: z.string().min(1).optional().describe("with review (required): what you did — files or parts, in plain Thai"), howToTry: z.string().min(1).optional().describe("with review (required): how the owner can try it — a command, a page to open, or nothing to try and why") },
++  }, ({ cardId, status, done, howToTry }) => run("PATCH", `/v1/cards/${id(cardId)}/status`, { status, ...(done ? { done: lineBreaks(done) } : {}), ...(howToTry ? { howToTry: lineBreaks(howToTry) } : {}) }));
+ 
+   server.registerTool("ask_operator", {
+     title: "Ask the operator",
+diff -ru a/src/runner/prompt.ts b/src/runner/prompt.ts
+--- a/src/runner/prompt.ts	2026-10-31 00:35:21.995804208 +0700
++++ b/src/runner/prompt.ts	2026-10-31 00:35:54.193411916 +0700
+@@ -27,7 +27,7 @@
+     // REQ-121 (SPEC-119 D2.1): they bind HOW the card's work is done; they are not this card's work list (TEST-106 P3-2: card #1 built all eight)
+     "2. Do only your card's work — its title and its `todo`. Every requirement in `spec.requirements` and every rule in `spec.decisions` and `spec.relatedDecisions` binds how you do it (a rule on a related part applies to your card too); they are not a list of work for this card.",
+     ...(others.length === 0 ? [] : [`Other cards hold their own work — leave it to them, even if you could do it now: ${others.map((o) => `#${o.number} ${o.title} (${o.assignee ?? "ยังไม่มีคนรับ"}, ${o.status})`).join("; ")}.`]),
+-    "3. End this step with exactly one of the MCP tools: `comment`, `hand_off`, `set_status`, `ask_operator`.",
++    "3. End this step with exactly one of the MCP tools: `comment`, `hand_off`, `set_status`, `ask_operator`. To send a card to review, `set_status` with `review` needs `done` (what you did) and `howToTry` (how the owner tries it).",
+     // SPEC-116 D3.2: the only other place a worker learns whom it may hand to is the refusal — say it up front, by name and role
+     ...(recipients.length === 0 ? [] : [`You may hand off to: ${recipients.map((r) => `${r.name} (${r.roles.join(" + ")})`).join(", ")} — pass the name (or the id) as \`toWorkerId\` of \`hand_off\`.`]),
+     "4. No git writes (no add, commit, push, branch, checkout). No web. Stay inside your working folders.",

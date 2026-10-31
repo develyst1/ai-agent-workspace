@@ -1,0 +1,9 @@
+445 packages installed [371.00ms]
+$ tsc --noEmit
+TYPECHECK EXIT 0
+ 361 pass
+ 0 fail
+ 1385 expect() calls
+Ran 361 tests across 27 files. [2.28s]
+
+BUILD EXIT 0

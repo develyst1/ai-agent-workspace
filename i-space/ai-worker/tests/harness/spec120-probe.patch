@@ -1,0 +1,28 @@
+diff -ru a/src/hops/service.ts b/src/hops/service.ts
+--- a/src/hops/service.ts	2026-10-30 17:54:30.303344059 +0700
++++ b/src/hops/service.ts	2026-10-30 17:54:50.347120868 +0700
+@@ -46,10 +46,8 @@
+     if (run && run.endedAt !== null) throw new ApiError(409, "already_finished", "that run has ended");
+     if (card && !isWorkable(s, card)) throw new ApiError(409, "not_workable", "that card is not workable (a question, done, in review, or waiting on a card)"); // REQ-105 D7: "or its spec changed" is gone — the flag no longer stops a card
+     if (s.hops.some((h) => h.endedAt === null)) throw new ApiError(409, "hop_running", "this project already has a hop running");
+-    // a chat hop is outside every budget (v1.8, D-055): it is neither checked against one nor counted in one
+-    if (!message && project.mode === "dispatcher" && project.hopsUsed >= project.hopBudget) {
+-      throw new ApiError(409, "no_budget", `the project's hop budget (${project.hopBudget}) is spent`);
+-    }
++    // a chat hop is outside every budget (v1.8, D-055): it is neither checked against one nor counted in one.
++    // REQ-120: the only budget is the run's (the number typed for อัตโนมัติ = this run's steps); Project.hopsUsed only counts
+     if (!message && run && s.hops.filter((h) => h.runId === run.id && h.messageId === null).length >= run.hopBudget) {
+       throw new ApiError(409, "no_budget", `the run's hop budget (${run.hopBudget}) is spent`);
+     }
+diff -ru a/src/runner/main.ts b/src/runner/main.ts
+--- a/src/runner/main.ts	2026-10-30 17:54:30.307344017 +0700
++++ b/src/runner/main.ts	2026-10-30 17:54:50.347120868 +0700
+@@ -275,7 +275,7 @@
+         } catch (e) {
+           if (!(e instanceof RunnerApiError)) throw e;
+           if (e.code === "hop_running" || e.code === "not_workable") return; // lost a race; the next tick sees how it ended
+-          if (e.code === "no_budget") return await endRun(project.id, openRun!.id, "budget_spent"); // the project's budget, which the plan cannot see
++          if (e.code === "no_budget") return await endRun(project.id, openRun!.id, "budget_spent"); // the run's budget, filled since the listing (REQ-120: the only budget)
+           if (e.status >= 400 && e.status < 500) {
+             // e.g. not_a_member (the card's assignee is not in the chain): that card's problem, not the run's. Say so once, leave the
+             // card where it is, and go on with the next one

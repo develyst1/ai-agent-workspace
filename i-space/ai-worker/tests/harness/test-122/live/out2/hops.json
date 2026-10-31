@@ -1,0 +1,36 @@
+[
+ {
+  "id": "01a18d41-720b-7107-a28e-be312820fca0",
+  "projectId": "5f3ea810-98ca-4d08-adc5-6007baadfd57",
+  "runId": "01a18d41-709c-70ee-93b5-1d32916e1f47",
+  "claimedBy": "d038807f-ec5d-4847-80af-7ba85017fabc",
+  "cardId": "01a18d41-707d-7354-963f-d5c35180c495",
+  "messageId": null,
+  "locatedKeys": null,
+  "workerId": "01a18d34-6038-7563-94f9-73a78a14bdf5",
+  "startedAt": "2026-10-30T14:40:38.927Z",
+  "lastActivityAt": "2026-10-30T14:40:38.927Z",
+  "endedAt": "2026-10-30T14:40:46.593Z",
+  "outcome": "status",
+  "tokensIn": 151872,
+  "tokensOut": 326,
+  "note": ""
+ },
+ {
+  "id": "01a18d41-92e8-7015-b50b-93a8788f8179",
+  "projectId": "5f3ea810-98ca-4d08-adc5-6007baadfd57",
+  "runId": "01a18d41-709c-70ee-93b5-1d32916e1f47",
+  "claimedBy": "d038807f-ec5d-4847-80af-7ba85017fabc",
+  "cardId": "01a18d41-708e-7403-8f6c-58afaefd39ff",
+  "messageId": null,
+  "locatedKeys": null,
+  "workerId": "01a18d34-6038-7563-94f9-73a78a14bdf5",
+  "startedAt": "2026-10-30T14:40:47.341Z",
+  "lastActivityAt": "2026-10-30T14:40:47.341Z",
+  "endedAt": "2026-10-30T14:40:53.647Z",
+  "outcome": "status",
+  "tokensIn": 165892,
+  "tokensOut": 335,
+  "note": ""
+ }
+]

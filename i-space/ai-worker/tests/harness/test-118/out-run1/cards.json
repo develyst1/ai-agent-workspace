@@ -1,0 +1,50 @@
+[
+ {
+  "id": "01a18c64-549e-723f-976f-0c3f180edda7",
+  "projectId": "0e462188-47d0-49a4-8563-b8c202a3ba61",
+  "number": 1,
+  "kind": "work",
+  "title": "ออกแบบ Health Board",
+  "todo": "TEST-118: a card on the title line, as in TEST-106 phase 2",
+  "status": "todo",
+  "assigneeId": "01a18c64-3894-71e1-9f04-87d05947af1f",
+  "anchor": {
+   "key": "REQ-001",
+   "version": 0
+  },
+  "anchorLabel": null,
+  "specChangedVersion": null,
+  "anchorRemoved": false,
+  "dependsOn": [],
+  "question": null,
+  "answer": null,
+  "workable": true,
+  "stoppedMidway": null,
+  "createdAt": "2026-10-30T10:39:07.937Z",
+  "updatedAt": "2026-10-30T10:39:07.937Z"
+ },
+ {
+  "id": "01a18c64-549e-7240-9149-044a8c0851a4",
+  "projectId": "0e462188-47d0-49a4-8563-b8c202a3ba61",
+  "number": 2,
+  "kind": "work",
+  "title": "ตัดสินสถานะไม่ตอบใน 3 วินาที",
+  "todo": "TEST-118: a card on point 4",
+  "status": "todo",
+  "assigneeId": "01a18c64-38bc-7761-b2b5-0523c2b6f210",
+  "anchor": {
+   "key": "REQ-005",
+   "version": 0
+  },
+  "anchorLabel": null,
+  "specChangedVersion": null,
+  "anchorRemoved": false,
+  "dependsOn": [],
+  "question": null,
+  "answer": null,
+  "workable": true,
+  "stoppedMidway": null,
+  "createdAt": "2026-10-30T10:39:07.937Z",
+  "updatedAt": "2026-10-30T10:39:07.937Z"
+ }
+]

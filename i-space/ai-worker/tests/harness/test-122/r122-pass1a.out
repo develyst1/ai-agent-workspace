@@ -1,0 +1,52 @@
+OK  [26.3s] AC-1 10 tasks ran in 5 processes — one per worker — and each process served its worker's 2 tasks (task 1 then task 2) — {"ปลา":["pid 1715584 task 2","pid 1715584 task 1"],"ใบเตย":["pid 1715595 task 1","pid 1715595 task 2"],"ฝน":["pid 1715617 task 1","pid 1715617 task 2"],"แบงค์":["pid 1715606 task 1","pid 1715606 task 2"],"มิ้นท์":["pid 1715628 task 2","pid 1715628 task 1"]}
+OK  [26.3s] AC-1 the 5 workers ran at the same time (hops overlapping) — max hops at once 5 · stub processes seen at once 5 · run 10.2 s for 10 tasks of 4 s
+OK  [26.3s] AC-1 all 10 cards done, run ended on its own — budget_spent
+OK  [39.3s] AC-2 one process served all 3 tasks (tasks 1, 2, 3 of the same pid) — pid 1716041 task 1 card #1 · pid 1716041 task 2 card #2 · pid 1716041 task 3 card #3
+OK  [39.3s] AC-2 each hop was marked ended right after its result (≤ 2 s after the stub finished its task), not at process end — ["0.02 s","0.02 s","0.02 s"]
+OK  [39.4s] AC-2 each task's writes (status done + comment) landed on its own card, with its own hop id — #1 done note(task 1) 1 hop n/a · #2 done note(task 2) 1 hop n/a · #3 done note(task 3) 1 hop n/a
+    [48.7s] S12 killed the open worker pid 1716550 mid-task (SIGKILL)
+    [49.6s] S12 hops: #1:failed:"ก้าวนี้ไม่ได้ทิ้งผลงานไว้ · exit 137 · tools: none · turns 0", #2:commented:"" · pids 1716667
+OK  [49.6s] AC-4 the killed task ends as today: failed/interrupted (not left running, not done) — failed · "ก้าวนี้ไม่ได้ทิ้งผลงานไว้ · exit 137 · tools: none · turns 0"
+OK  [49.6s] AC-4 the worker came back in a NEW process and its next task worked (card done) — pid 1716667 task 1 card #2
+OK  [49.6s] AC-4 both cards end done in the same run (the killed card got another turn) — or say why not — #1 todo · #2 done · no_progress · ["- เหตุที่จบรอบ: #1 งานที่ถูกฆ่ากลางทาง ยังทำต่อได้ แต่ทำ 1 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+BAD [62.3s] AC-5 the open, idle worker's screen says "ว่าง · เปิดรอรับงาน" — "หน้าจอของ ปลา\nยังไม่ได้เริ่มทำงาน\nปิด"
+    [62.3s] S13 run 2 started via API: 201 {"id":"01a18d2e-b20a-75bb-812a-d37e47450577","projectId":"fc696ecb-e8e7-4a31-ba28-8dc2bb8d98f7","mode":"dispatcher","hop
+BAD [92.5s] AC-5 then, with no reload, the same screen shows the new task's activity — after -1 s: ""
+BAD [95.1s] AC-5 neighbour: after the task, idle again on the same screen — "หน้าจอของ ปลา\nยังไม่ได้เริ่มทำงาน\nปิด"
+    [103.7s] S9 hops: แบงค์:#1:handed_off:handoff:ฝน→-, ฝน:#2:commented:comment→-, ฝน:#1:commented:comment→-
+OK  [103.7s] AC-1 แบงค์ (BE) is offered ฝน (FE) as well as มิ้นท์ (QA) — "You may hand off to: ฝน (FE), มิ้นท์ (QA) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+OK  [103.7s] AC-1 card_context.handOffTo for แบงค์ holds ฝน (FE) — [{"id":"01a18d2d-e309-7509-9a91-03d0062ab131","name":"ฝน","roles":["FE"]},{"id":"01a18d2d-e32f-7093-8304-2568985899ff","name":"มิ้นท์","roles":["QA"]}]
+BAD [103.7s] AC-1 a hand-off แบงค์ → ฝน (by name) works: 200, #1 now ฝน's — HTTP undefined · assignee ฝน
+OK  [103.7s] AC-1 ฝน (FE) is offered แบงค์ (BE) back, and มิ้นท์ (QA) — "You may hand off to: แบงค์ (BE), มิ้นท์ (QA) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+OK  [103.7s] AC-2 แบงค์'s hop on #1 is told rule 2 ("Do only your card's work…") and rule 7 ("…do not build it yourself") — ["2. Do only your card's work — its title and its `todo`. Every requirement in `spec.requirements` and every rule in `spec","7. If you find work that no card holds, say so in a `comment` (what is missing and why) — do not build it yourself."]
+BAD [103.7s] AC-2 …and shown the other card it must leave alone: "#2 ทำหน้าเว็บ (ฝน FE, todo)" — "Other cards hold their own work — leave it to them, even if you could do it now: #2 ทำหน้าเว็บ (ฝน FE, doing)."
+OK  [103.7s] AC-2 ฝน's hop gets the same rules — Other cards hold their own work — leave it to them, even if you could do it now: #1 ทำ server (แบงค์ BE, doing).
+OK  [112.0s] S8 run 1 with 2 → 2 hops, budget_spent, "2 ก้าว จากงบ 2" — budget_spent · 2 hops · "- 2 ก้าว จากงบ 2"
+OK  [114.5s] AC-1 a SECOND อัตโนมัติ with the same 2 (the real dialog) takes its own 2 steps — it does not end at once — 2 hops · budget_spent · 0.8 s
+OK  [114.5s] AC-2 run 2's report counts its own steps: "2 ก้าว จากงบ 2", reason "ใช้งบครบแล้ว" — true this time — "- 2 ก้าว จากงบ 2" · ["- เหตุที่จบรอบ: ใช้งบครบแล้ว"]
+OK  [117.4s] AC-1 neighbour: a third run with 1 → 1 own step, "1 ก้าว จากงบ 1" — 1 hops · "- 1 ก้าว จากงบ 1"
+OK  [117.4s] AC-2 neighbour: the project has 5 card hops in all (2 + 2 + 1) — no run borrowed another's count — 5
+    [118.9s] S8 board strip: ["การรัน","การรันหยุดแล้ว: ใช้งบครบแล้ว · กด อัตโนมัติ เพื่อเริ่มรอบใหม่"]
+    [127.6s] S1 hops on #1: ใบเตย:commented, ใบเตย:commented · stop no_progress · reason ["- เหตุที่จบรอบ: #1 ออกแบบ Health Board ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [127.6s] AC-1 the commented card gets ONE more turn (2 hops on #1 by ใบเตย, both commented), not a loop — 2 hops
+OK  [127.6s] AC-1 the run does NOT end nothing_workable; it ends no_progress — no_progress
+OK  [127.6s] AC-1 the report names the card in the PM's words, never "ไม่มีงานที่ทำต่อได้" — ["- เหตุที่จบรอบ: #1 ออกแบบ Health Board ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [127.6s] AC-1 the card is still todo and workable — todo workable true
+OK  [129.1s] AC-1 the board's run strip says "มีงานที่ยังทำต่อได้ แต่ไม่คืบ", not "ไม่มีงานที่ทำต่อได้" — ["การรันหยุดแล้ว: มีงานที่ยังทำต่อได้ แต่ไม่คืบ · กด อัตโนมัติ เพื่อเริ่มรอบใหม่"]
+    [129.1s] S1 SA prompt line: "You may hand off to: ฝน (FE), แบงค์ (BE) — pass the name (or the id) as `toWorkerId` of `hand_off`." · handOffTo [{"id":"01a18d2d-e309-7509-9a91-03d0062ab131","name":"ฝน","roles":["FE"]},{"id":"01a18d2d-e31c-73b5-a17d-e9b26fba1840","name":"แบงค์","roles":["BE"]}]
+OK  [129.1s] AC-2 the SA's prompt names its recipients by name + role ("ฝน (FE)", "แบงค์ (BE)"), no bare id — "You may hand off to: ฝน (FE), แบงค์ (BE) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+OK  [129.1s] AC-2 card_context.handOffTo = name + roles + id for each — [{"id":"01a18d2d-e309-7509-9a91-03d0062ab131","name":"ฝน","roles":["FE"]},{"id":"01a18d2d-e31c-73b5-a17d-e9b26fba1840","name":"แบงค์","roles":["BE"]}]
+OK  [132.2s] AC-1 neighbour: pressing อัตโนมัติ again → the card gets its turns again (2), then the same honest stop — 2 hops · no_progress · ["- เหตุที่จบรอบ: #1 ออกแบบ Health Board ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+    [142.3s] S2 hops: ใบเตย:commented:comment→-, ใบเตย:handed_off:handoff:แบงค์→-, แบงค์:commented:comment→-, แบงค์:commented:comment→- · stop no_progress · reason ["- เหตุที่จบรอบ: #1 ทำ API ตามแบบ ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+BAD [142.3s] AC-2 a hand-off BY NAME ("แบงค์") is accepted and the card goes to แบงค์'s id — HTTP undefined · assignee แบงค์
+OK  [142.3s] AC-1 the comment-then-hand-off turn counts as progress: แบงค์ then gets its own turns — ใบเตย,ใบเตย,แบงค์,แบงค์
+OK  [142.3s] AC-1 the stop names #1 again — ["- เหตุที่จบรอบ: #1 ทำ API ตามแบบ ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [142.3s] AC-4 after the hand-off the stop says "ทำ 2 รอบแล้วไม่คืบ" (not 4) — ["- เหตุที่จบรอบ: #1 ทำ API ตามแบบ ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [142.3s] AC-2 แบงค์'s prompt names its recipient as "มิ้นท์ (QA)" — "You may hand off to: ฝน (FE), มิ้นท์ (QA) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+    [151.4s] S3 hops: ใบเตย:handed_off:handoff:01a18d2d-e309-7509-9a91-03d0062ab131→-, ฝน:failed:handoff:ใครก็ไม่รู้→- · stop no_progress · reason ["- เหตุที่จบรอบ: #1 ทำหน้าเว็บ ยังทำต่อได้ แต่ทำ 1 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+BAD [151.4s] AC-2 a hand-off BY ID still works — HTTP undefined
+ERROR TypeError: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView
+    at writeFileSync (unknown)
+    at /workspace/ai-agent-workspace/i-space/ai-worker/tests/harness/test-122/r122.mjs:256:8
+    at processTicksAndRejections (native:7:39)
+run dir /tmp/qa119-mdsduY

@@ -1,0 +1,69 @@
+diff -ru a/src/hops/service.ts b/src/hops/service.ts
+--- a/src/hops/service.ts	2026-10-30 19:07:29.124103498 +0700
++++ b/src/hops/service.ts	2026-10-30 19:07:32.740090105 +0700
+@@ -45,7 +45,9 @@
+     const run = input.runId === undefined ? null : s.runs.find((r) => r.id === input.runId) ?? (() => { throw notFound("run"); })();
+     if (run && run.endedAt !== null) throw new ApiError(409, "already_finished", "that run has ended");
+     if (card && !isWorkable(s, card)) throw new ApiError(409, "not_workable", "that card is not workable (a question, done, in review, or waiting on a card)"); // REQ-105 D7: "or its spec changed" is gone — the flag no longer stops a card
+-    if (s.hops.some((h) => h.endedAt === null)) throw new ApiError(409, "hop_running", "this project already has a hop running");
++    // REQ-122 (SPEC-120 D5.1): one running hop per worker and per card — the team works in parallel
++    if (s.hops.some((h) => h.endedAt === null && h.workerId === input.workerId)) throw new ApiError(409, "hop_running", "this worker already has a hop running");
++    if (card && s.hops.some((h) => h.endedAt === null && h.cardId === card.id)) throw new ApiError(409, "hop_running", "that card already has a hop running");
+     // a chat hop is outside every budget (v1.8, D-055): it is neither checked against one nor counted in one.
+     // REQ-120: the only budget is the run's (the number typed for อัตโนมัติ = this run's steps); Project.hopsUsed only counts
+     if (!message && run && s.hops.filter((h) => h.runId === run.id && h.messageId === null).length >= run.hopBudget) {
+diff -ru a/src/http/routes/team.ts b/src/http/routes/team.ts
+--- a/src/http/routes/team.ts	2026-10-30 19:07:29.128103484 +0700
++++ b/src/http/routes/team.ts	2026-10-30 19:08:06.867878161 +0700
+@@ -13,16 +13,19 @@
+ export const START_COMMAND = "cd caw-back && bun run runner";
+ export type CheckInState = "running" | "stopping";
+ 
+-export type TeamStatus = { running: boolean; runnerName: string | null; lastSeenAt: string | null; startCommand: typeof START_COMMAND };
++export type TeamSession = { projectId: string; workerId: string; state: "idle" | "busy" };
++export type TeamStatus = { running: boolean; runnerName: string | null; lastSeenAt: string | null; startCommand: typeof START_COMMAND; sessions: TeamSession[] };
+ 
+ /** one per app (tests inject the clock); nothing is module-global */
+ export function createTeamStatus(clock: () => Date = () => new Date()) {
+-  let last: { name: string; at: Date; state: CheckInState } | null = null;
++  let last: { name: string; at: Date; state: CheckInState; sessions: TeamSession[] } | null = null;
+   return {
+-    checkIn(name: string, state: CheckInState): void { last = { name, at: clock(), state }; },
++    checkIn(name: string, state: CheckInState, sessions: TeamSession[] = []): void { last = { name, at: clock(), state, sessions: state === "running" ? sessions : [] }; },
+     status(): TeamStatus {
++      const running = last !== null && last.state === "running" && clock().getTime() - last.at.getTime() <= RUNNING_WITHIN_MS;
+       return {
+-        running: last !== null && last.state === "running" && clock().getTime() - last.at.getTime() <= RUNNING_WITHIN_MS,
++        running,
++        sessions: running ? last!.sessions : [],
+         runnerName: last?.name ?? null,
+         lastSeenAt: last?.at.toISOString() ?? null,
+         startCommand: START_COMMAND,
+@@ -32,21 +35,25 @@
+ }
+ export type TeamStatusHolder = ReturnType<typeof createTeamStatus>;
+ 
++const SessionSchema = z.object({ projectId: z.string().uuid(), workerId: z.string().uuid(), state: z.enum(["idle", "busy"]) }).openapi("TeamSession");
++
+ const StatusSchema = z.object({
+   running: z.boolean().openapi({ description: "the last check-in said `running` and is at most 45 s old (a `stopping` check-in makes it false at once)" }),
+   runnerName: z.string().nullable(), lastSeenAt: z.string().nullable().openapi({ description: "the last check-in, kept after the team goes quiet" }),
+   startCommand: z.literal(START_COMMAND).openapi({ description: "what the screen tells the operator to run when running is false" }),
++  sessions: z.array(SessionSchema).openapi({ description: "the runner's open worker sessions (REQ-122); [] when running is false" }),
+ }).openapi("TeamStatus");
+ 
+ export function teamRoutes(app: OpenAPIHono<Env>, team: TeamStatusHolder) {
+   app.openapi(createRoute({
+     method: "post", path: "/v1/runner/check-in",
+-    request: { body: { required: true, content: { "application/json": { schema: z.object({ state: z.enum(["running", "stopping"]) }) } }, description: "`running` while it works, `stopping` once on a clean stop" } },
++    request: { body: { required: true, content: { "application/json": { schema: z.object({ state: z.enum(["running", "stopping"]), sessions: z.array(SessionSchema).max(200).optional() }) } }, description: "`running` while it works, `stopping` once on a clean stop" } },
+     responses: { 204: { description: "noted — the name is the runner's actor, the time is the core's clock; only `state` is read from the body" }, 400: errors[400], 403: errors[403] },
+   }), (c) => {
+     const actor = c.get("actor");
+     if (!actor.startsWith("runner:")) throw new ApiError(403, "runner_only", "only the runner checks in");
+-    team.checkIn(actor.slice("runner:".length), c.req.valid("json").state);
++    const body = c.req.valid("json");
++    team.checkIn(actor.slice("runner:".length), body.state, body.sessions ?? []);
+     return c.body(null, 204);
+   });
+ 

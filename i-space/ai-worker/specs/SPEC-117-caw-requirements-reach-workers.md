@@ -51,8 +51,15 @@ Shape unchanged (`Uncovered`), so no front change: the board/proposal line is th
 - Flag: `pull.ts:83` — a change set whose `added`, `changed` or `removed` holds a key starting `REQ-` flags **every** card with `anchorRevision < rev` (not only the cards anchored on it), because that requirement is in every card's context now (SPEC-115 AC map, AC-4). Show-only (REQ-105 D7), nothing stops. `card.anchor_removed` / `restored` stay per anchor key (unchanged).
 
 ## Consumers (`grep -rn … src test`, caw-back + caw-front, 2026-10-30)
-- **Probe still owed (ORDER 45, `spec-rules.md` §1):** this list is grep-only (cut before the rule). Before TASK-149/150 are released, I run `tools/probe-change.sh caw-back <patch>` on the tree with REQ-119 committed (same files, F-013) and paste the `Consumers (probe):` lines into each shape-changing section the gate flags, each hit ticked to a TASK. (Silver, 2026-10-30 16:3x)
+- **Probe still owed (ORDER 45, `spec-rules.md` §1):** this list is grep-only (cut before the rule). Before TASK-149/150 are released, I run `tools/probe-change.sh caw-back <patch>` on the tree with REQ-119 committed (same files, F-013) and paste the probe's result into this section, each hit ticked to a TASK (done 16:5x, below). (Silver, 2026-10-30 16:3x)
   REQ-119 r1 is committed (caw-back `7956aa7`). The patch is ready: `tests/harness/spec117-probe.patch` (made from `7956aa7` in a scratch copy: runner `api.requirements`, the new route + `RequirementsSchema` in `routes/projects.ts`, the prompt line 2, the six skills' line 5). It runs once TASK-151 (Bob, `main.ts` + `main.test.ts` only, no file shared with this SPEC) is at REVIEW, so the tree is not changing under the probe (exit 4). (Silver, 16:4x)
+- **Probe run 2026-10-30 16:5x** on caw-back `7956aa7` + TASK-151's 2 paths (real repos untouched: caw-back fp `496ee381c955`, caw-front fp `16244093690a`, before = after). Base: tsc 0, `bun test` exit 1 (the known `settings.test.ts`), the same on both sides. `openapi.json` changes, so the paired caw-front ran gen:api 0 · typecheck 0 · `bun test src` 0 on both sides → TASK-150's gen:api + typecheck step stands (spec-rules §2), with no front file beyond `schema.d.ts`.
+
+Consumers (probe): probe-change.sh caw-back spec117-probe.patch → 2 errors
+caw-back → src/runner/prompt.test.ts:24 (fail) buildPrompt > tells the worker to follow every rule in spec.decisions and spec.relatedDecisions (pins line 2, D1) → TASK-149
+caw-back → src/runner/prompt.test.ts:82 (fail) the shipped starter skills (REQ-117) > (c) … each file … ends with the Thai line (pins the skills' text, D1) → TASK-149
+
+  The patch covers the shapes (runner `Api` gains a method, the new route + schema, the D1 text). D2.2–D4's behaviour (hop file, proposals, coverage, pull) are TASK-149's own new tests. The grep lines below still hold.
 - `buildPrompt|buildChatPrompt` → `src/runner/prompt.ts`, `src/runner/hop.ts:326`, `src/runner/prompt.test.ts` (TASK-149).
 - `Before you ask the operator` → `skills/role-{ba,be,fe,pm,qa,sa}/SKILL.md:5` (TASK-149); `prompt.test.ts` / `hop.test.ts` assertions on the skill text → TASK-149 updates any that pin it.
 - `anchor_not_located` → `src/proposals/service.ts:56`, `test/http/proposals.test.ts`, `test/mcp/chat-tools.test.ts` (kept green; one new case each way).
@@ -76,9 +83,13 @@ Shape unchanged (`Uncovered`), so no front change: the board/proposal line is th
 - R3 — until TASK-145 is committed, `spec.requirements` is absent: D1's prompt line names a field that is not there (harmless) and AC-1 cannot pass. TASK-149's own tests use a fake Blueprint that sends `requirements`.
 
 ## Order (F-013)
-TASK-149 depends on **REQ-119 committed** in caw-back (same files: `prompt.ts`, `hop.ts`, `runner/api.ts`, `openapi.json`); TASK-150 on TASK-149's `openapi.json` and **REQ-119 front committed** (`schema.d.ts`). The joint QA run needs Team A's TASK-145 committed too.
+Consumers (probe): probe-change.sh caw-back spec117-probe.patch → 2 errors (both `src/runner/prompt.test.ts`, ticked → TASK-149 in § Consumers)
+
+**Updated 2026-10-30 16:5x:** REQ-119 round 1 is committed (`7956aa7`). TASK-149 now waits for REQ-119 **round 2**'s commit (TASK-151's `main.ts` + `main.test.ts`). The files do not overlap, but QA's round-2 verdict fingerprints the whole caw-back tree (TASK-149 § Depends). Original text: TASK-149 depends on **REQ-119 committed** in caw-back (same files: `prompt.ts`, `hop.ts`, `runner/api.ts`, `openapi.json`); TASK-150 on TASK-149's `openapi.json` and **REQ-119 front committed** (`schema.d.ts`). The joint QA run needs Team A's TASK-145 committed too.
 
 ## Tasks
+Consumers (probe): probe-change.sh caw-back spec117-probe.patch → 2 errors (ticked → TASK-149 in § Consumers; the paired front → TASK-150)
+
 - TASK-149: caw-back — requirements route, chat system-prompt block, requirement anchors, coverage, pull flag, prompt + skills line — owner: BE Bob (depends on: REQ-119 committed)
 - TASK-150: caw-front — gen:api for the requirements route — owner: FE Fanta (depends on: TASK-149 `openapi.json` · REQ-119 front committed)
 

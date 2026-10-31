@@ -1,0 +1,16 @@
+[no DATABASE_URL] first stderr line: blueprint-back: missing required setting DATABASE_URL — see README § Configuration
+[DATABASE_URL=mysql://x] first stderr line: blueprint-back: wrong setting DATABASE_URL (not pglite:memory or a postgres:// URL) — see README § Configuration
+[PORT=abc] first stderr line: blueprint-back: wrong setting PORT ("abc" is not a port number) — see README § Configuration
+[unreachable postgres :1] first stderr line: blueprint-back: wrong setting DATABASE_URL (cannot reach the database, code ECONNREFUSED) — see README § Configuration
+[port in use 4271] first stderr line: blueprint-back: cannot listen on 127.0.0.1:4271 (EADDRINUSE) — see README § Configuration
+[no DATABASE_URL] exit 1 after 239 ms
+[DATABASE_URL=mysql://x] exit 1 after 259 ms
+[PORT=abc] exit 1 after 242 ms
+[unreachable postgres :1] exit 1 after 238 ms
+[port in use 4271] exit 1 after 1947 ms
+[front PORT=abc] blueprint-front: wrong setting PORT ("abc" is not a port number) — see README § Configuration · after 47 ms
+[front port in use 3171] blueprint-front: port 3171 is in use — see README § Configuration · after 38 ms
+[front port 80 (EACCES)] blueprint-front: cannot listen on port 80 (EACCES) — see README § Configuration · after 48 ms
+[front PORT=abc] exit 1
+[front PORT=3171] exit 1
+[front PORT=80] exit 1

@@ -1,0 +1,31 @@
+diff -ru a/src/app/layout.tsx b/src/app/layout.tsx
+--- a/src/app/layout.tsx	2026-10-30 22:47:01.434408329 +0700
++++ b/src/app/layout.tsx	2026-10-30 22:47:01.434408329 +0700
+@@ -1,7 +1,7 @@
+ import type { Metadata } from "next";
+ import type { ReactNode } from "react";
+ import { cookies } from "next/headers";
+-import { IBM_Plex_Sans_Thai } from "next/font/google";
++import localFont from "next/font/local";
+ import { connection } from "next/server";
+ import { backendReachable, backendUrl, onSampleData } from "@/api";
+ import { BackendDown } from "@/components/BackendDown";
+@@ -11,8 +11,16 @@
+ 
+ export const metadata: Metadata = { title: "CAW" };
+ 
+-// Direction B's one family (TASK-B-085, WHY.md rule 4): IBM Plex Sans Thai 400 / 500 / 600.
+-const plex = IBM_Plex_Sans_Thai({ weight: ["400", "500", "600"], subsets: ["thai", "latin"], display: "swap", variable: "--font-plex" });
++// Direction B's one family (TASK-B-085, WHY.md rule 4): IBM Plex Sans Thai 400 / 500 / 600 — local files (REQ-123: the build fetches nothing; OFL text beside them).
++const plex = localFont({
++  src: [
++    { path: "./fonts/ibm-plex-sans-thai-400.woff2", weight: "400", style: "normal" },
++    { path: "./fonts/ibm-plex-sans-thai-500.woff2", weight: "500", style: "normal" },
++    { path: "./fonts/ibm-plex-sans-thai-600.woff2", weight: "600", style: "normal" },
++  ],
++  display: "swap",
++  variable: "--font-plex",
++});
+ 
+ // Runs in <head> before the first paint (P-1, OD-10): the stored pick, else the computer's setting — so a dark page never flashes
+ // light. The key is CawRoot's THEME_KEY ("caw-theme"); it is written out here because a server layout cannot read a client module's value.

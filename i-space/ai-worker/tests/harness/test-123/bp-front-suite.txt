@@ -1,0 +1,7 @@
+check:api — src/core/api/schema.d.ts matches the OpenAPI document
+themes: clean-blue, luxury-gold, minimal-mono
+TYPECHECK EXIT 0
+ 246 pass
+ 0 fail
+ 2500 expect() calls
+Ran 246 tests across 11 files. [6.16s]

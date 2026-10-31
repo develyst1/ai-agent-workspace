@@ -1,0 +1,15 @@
+    [13.3s] S18 questions on screen 4 · ตามนั้น buttons 4
+OK  [14.1s] AC-1 "ตามนั้น" on question 1 marks ONLY question 1 "ตอบแล้ว · <its default>" — ["ใช้เทคโนโลยีอะไรทำ? ตอบแล้ว · Node.js ล้วน ไม่ใช้ framework แก้","\"วันนี้\" นับตามเวลาไหน? คำตอบที่เสนอ เวลาไทย 00:00–23:59 เครื่องตั้งเว","จำนวนเงินใส่ทศนิยมได้ไหม? คำตอบที่เสนอ ได้ ไม่เกิน 2 ตำแหน่ง ใส่ 12.34","หมายเหตุบังคับใส่ไหม? คำตอบที่เสนอ ไม่บังคับ ยาวไม่เกิน 100 ตัวอักษร เ"]
+OK  [14.1s] AC-1 questions 2–4 still show their defaults and their own "ตามนั้น" — answer pairs left 3
+OK  [14.1s] AC-2 "ตกลง เริ่มงาน" disabled, with "ยังตอบคำถามไม่ครบ — เหลืออีก 3 ข้อ" — disabled true
+OK  [14.1s] AC-1 nothing is sent yet (the answer is held on the screen) — operator messages 1
+OK  [15.2s] AC-2 3 of 4 answered → still disabled, "เหลืออีก 1 ข้อ" — disabled true
+OK  [16.8s] AC-2 the 4th answer sends ONE message, one line per question, each with its own text (3 defaults + the typed one) — "ข้อ 1: Node.js ล้วน ไม่ใช้ framework\nข้อ 2: เวลาไทย 00:00–23:59\nข้อ 3: ได้ ไม่เกิน 2 ตำแหน่ง\nข้อ 4: ไม่บังคับ ยาวได้ 200 ตัวอักษร (QA ตอบเอง)"
+OK  [17.8s] AC-2 then "ตกลง เริ่มงาน" is enabled — 
+    [17.8s] S18 turn 1 (copy before accept): propose 201
+OK  [23.2s] AC-3 two open copies before accept; after "ตกลง เริ่มงาน" the other copy shows "แผนนี้ตกลงไปแล้ว" and no button; 2 cards, not 4 — open before 2 · badge true · buttons 0 · cards 2
+BAD [25.5s] AC-3 the same plan posted AFTER acceptance → 409 plan_already_accepted; still no "ตกลง เริ่มงาน", still 2 cards — 201 {"id":"01a18e46-5de5-7188-9e50-e32a15e12f73","projectId":"24453b17-8ee9-4ecc-80df-3806c9072c69","messageId":"01a18e46-5c84-766a-b225-77d591e9e985","version":0,"
+ERROR ReferenceError: Cannot access 'recsOf' before initialization.
+    at /workspace/ai-agent-workspace/i-space/ai-worker/tests/harness/test-126/r126.mjs:142:18
+    at processTicksAndRejections (native:7:39)
+run dir /tmp/qa119-bAQSDj

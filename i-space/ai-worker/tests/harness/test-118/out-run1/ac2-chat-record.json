@@ -1,0 +1,78 @@
+{
+ "f": "mode.txt.chat-01a18c64-4df6-713a-a237-ff0ac4c72d88.json",
+ "prompt": "คุณคือ ปลา (PM) ผู้รับแชตของโปรเจกต์ใน CAW — your role skills are in your system prompt: follow them.\nThe operator wrote message 01a18c64-4d5d-7708-b2d0-0feb1a0043eb in project 0e462188-47d0-49a4-8563-b8c202a3ba61.\n\nFolders: hb118\n\n0. If the message asks you to understand the project — which folders hold what, the stack, how to run and test, the house rules — it is SETUP, not a feature. For SETUP:\n   - do not call `locate`, `send_amendment` or `propose_cards`;\n   - read the folders listed above (Read / Glob / Grep only, at most about 40 reads);\n   - call `save_code_map` once with the structured map: `folders` (every folder, each `{ name, kind: fe | be | other, note }` — the note says why, in Thai, one line), `stack`, `commands.run` and `commands.test` (lists), `rules` (file names, or an empty list), `questions` (each `{ text, proposedDefault }`), and `notes` only if needed; every string at most 500 characters;\n   - then `reply` in a few lines: what you mapped, and ask the operator to confirm the map.\n   Anything that is not SETUP is a feature request: do not read any file — go to step 1 (`chat_context`, then `locate`) and follow steps 1–6.\n\n1. Read it with the MCP tool `chat_context` (messageId above).\n2. Call `locate` { projectId: \"0e462188-47d0-49a4-8563-b8c202a3ba61\", request } before anything else: it tells you which parts of the confirmed spec the request touches.\n2b. The spec's requirements are in your system prompt (`# The spec's requirements`). Propose cards so that every requirement that asks for work is taken up by a card anchored on its key — a requirement key may be an anchor even when `locate` did not return it.\n3. If `locate` returned parts (candidates) for the request, propose cards for them with `propose_cards` — only for parts `locate` returned or requirement keys from your system prompt, every item anchored on a located key, each with your estimate of `hops`. Nothing is made until the operator accepts. Missing details are not a reason to hold the proposal back: put the questions in your reply (step 5).\n4. Use `send_amendment` ONLY for what `locate` did not return (`notInSpec`), or when the request changes the spec itself — it asks Blueprint's chat to change the spec; do not invent a card for it.\n5. If you need decisions first, put ALL your questions in the one reply as `questions[]`, each with `text`, `proposedDefault` and `cases` — never one question at a time.\n6. Always end with exactly one `reply` in Thai. `reply` is mandatory — if you cannot do anything else, reply and say what blocks you.\n   - Write line breaks as real new lines in `text` — never the two characters \\n.\n   - In every reply: never write a path that starts with `/` or `~`; use `<folder>/<path inside>`. Never print an id (no uuid, no message id). Never tell the operator to go to Blueprint in your text — with an amendment, pass `amendment.blueprintMessageId` and the screen shows the link.\n   - With a proposal the text contains: `{n} งาน ใช้ประมาณ {h} ก้าว` (n = the number of cards, h = the sum of the hops) and you pass `proposalId`.\n   - With an amendment the text contains: `เรื่องนี้ยังไม่มีใน spec — ส่งไปเพิ่มใน Blueprint แล้ว` and the link, and you pass `amendment.blueprintMessageId`.\n\nNo git writes, no web, no file writes: this is a conversation, not coding.",
+ "sysFile": "/tmp/caw-runner-0321d650-0520-4071-bdbf-071a09b4266a/hop-01a18c64-4df6-713a-a237-ff0ac4c72d88/skills.md",
+ "system": "# Skill: role-pm\n\n<!-- CAW's own starter skill (REQ-117, SPEC-114 D2) — an operator's <CAW_WORKSPACE_ROOT>/.claude/skills/role-pm/SKILL.md overrides it -->\n\nYou are the team's PM. In chat you are the operator's partner: understand what they need, ask only what you cannot decide, then propose cards — each one testable piece, anchored to the spec part it builds, given to the right teammate, with its dependencies. On a card you plan and split work; you do not write code.\n\nBefore you ask the operator anything, read the card's `spec.requirements`, `spec.decisions` and `spec.relatedDecisions`; ask only what they do not answer.\n\nAnything a user reads — card text, comments, questions — is in Thai, short and plain.\n\n\n---\n\n# The spec's requirements (Blueprint revision 8) — they bind the whole project\n\n## REQ-001 — สิ่งที่สร้าง: I-Space Health Board\nชื่อ: I-Space Health Board — หน้าเว็บเดียว ดูว่าบริการของ I-Space ตัวไหนเปิดอยู่\n\n## REQ-002 — 1. บริการ 4 ตัวที่แสดง\n1. แสดง 4 บริการ: Blueprint API (http://127.0.0.1:4200/health), Blueprint เว็บ (http://127.0.0.1:3100), CAW API (http://127.0.0.1:4500/health), CAW เว็บ (http://127.0.0.1:3500).\n\n## REQ-003 — 2. สิ่งที่แสดงต่อบริการ\n2. แต่ละบริการแสดง: ชื่อ · สถานะ \"ทำงาน\" (เขียว) หรือ \"ไม่ตอบ\" (แดง) · เวลาตอบเป็น ms · เวลาที่เช็คล่าสุด.\n\n## REQ-004 — 3. เช็คใหม่ทุก 10 วินาที + ปุ่มเช็คตอนนี้\n3. เช็คใหม่เองทุก 10 วินาที และมีปุ่ม \"เช็คตอนนี้\".\n\n## REQ-005 — 4. ไม่ตอบใน 3 วินาที = ไม่ตอบ\n4. ถ้าบริการไม่ตอบภายใน 3 วินาที ให้ถือว่า \"ไม่ตอบ\".\n\n## REQ-006 — 5. รันที่ :3900 ไม่ต้อง login ไม่มีฐานข้อมูล\n5. รันในเครื่องที่ http://127.0.0.1:3900 ไม่ต้อง login ไม่ต้องมีฐานข้อมูล.\n\n## REQ-007 — 6. ข้อความภาษาไทย\n6. ข้อความบนหน้าเป็นภาษาไทย.\n\n## REQ-008 — ไม่ทำ\nไม่ทำ: login, การแจ้งเตือน, เก็บประวัติ, deploy.",
+ "locate": [
+  {
+   "s": 200,
+   "j": {
+    "revision": 8,
+    "notInSpec": true,
+    "candidates": []
+   }
+  },
+  {
+   "s": 200,
+   "j": {
+    "revision": 8,
+    "notInSpec": true,
+    "candidates": []
+   }
+  }
+ ],
+ "proposal": {
+  "s": 201,
+  "j": {
+   "id": "01a18c64-4e64-762c-8d5e-2759fa7f7532",
+   "projectId": "0e462188-47d0-49a4-8563-b8c202a3ba61",
+   "messageId": "01a18c64-4d5d-7708-b2d0-0feb1a0043eb",
+   "version": 0,
+   "items": [
+    {
+     "title": "ออกแบบ Health Board",
+     "todo": "TEST-118: a card on the title line, as in TEST-106 phase 2",
+     "anchor": {
+      "key": "REQ-001",
+      "version": 0
+     },
+     "workerId": "01a18c64-3894-71e1-9f04-87d05947af1f",
+     "dependsOn": [],
+     "hops": 2
+    },
+    {
+     "title": "ตัดสินสถานะไม่ตอบใน 3 วินาที",
+     "todo": "TEST-118: a card on point 4",
+     "anchor": {
+      "key": "REQ-005",
+      "version": 0
+     },
+     "workerId": "01a18c64-38bc-7761-b2b5-0523c2b6f210",
+     "dependsOn": [],
+     "hops": 2
+    }
+   ],
+   "status": "open",
+   "cardIds": null,
+   "createdAt": "2026-10-30T10:39:06.343Z",
+   "hopsTotal": 4
+  }
+ },
+ "reply": {
+  "s": 201,
+  "j": {
+   "id": "01a18c64-4e6f-7154-a38d-e2a3fdfbc566",
+   "projectId": "0e462188-47d0-49a4-8563-b8c202a3ba61",
+   "author": "worker:01a18c64-3882-74e1-b767-03c1d63b5df8",
+   "text": "เสนองานตามข้อกำหนดครับ (TEST-118 stub)",
+   "replyTo": "01a18c64-4d5d-7708-b2d0-0feb1a0043eb",
+   "replyHopId": null,
+   "questions": null,
+   "proposalId": "01a18c64-4e64-762c-8d5e-2759fa7f7532",
+   "amendment": null,
+   "at": "2026-10-30T10:39:06.354Z",
+   "retryRequestedAt": null,
+   "chatHop": null
+  }
+ }
+}
