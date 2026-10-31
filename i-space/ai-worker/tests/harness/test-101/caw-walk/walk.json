@@ -1,0 +1,82 @@
+[
+  {
+    "step": "1 /start known v3",
+    "ok": true,
+    "detail": "landed http://127.0.0.1:3530/p/10000000-0000-4000-8000-000000000001 (status 200)"
+  },
+  {
+    "step": "2 board words",
+    "ok": true,
+    "detail": "tabs + project name present"
+  },
+  {
+    "step": "2 board no /start link",
+    "ok": true,
+    "detail": "[]"
+  },
+  {
+    "step": "3 card",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3530/p/10000000-0000-4000-8000-000000000001/c/30000000-0000-4000-8000-000000000011; ดู spec hrefs [\"http://127.0.0.1:3100/p/11111111-2222-4333-8444-555555555555/web?part=Q-001\"]"
+  },
+  {
+    "step": "4-team tab click",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3530/p/10000000-0000-4000-8000-000000000001/team"
+  },
+  {
+    "step": "4-team no /start link",
+    "ok": true,
+    "detail": "[]"
+  },
+  {
+    "step": "5-runs tab click",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3530/p/10000000-0000-4000-8000-000000000001/runs"
+  },
+  {
+    "step": "5-runs no /start link",
+    "ok": true,
+    "detail": "[]"
+  },
+  {
+    "step": "6-chat tab click",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3530/p/10000000-0000-4000-8000-000000000001/chat"
+  },
+  {
+    "step": "6-chat no /start link",
+    "ok": true,
+    "detail": "[]"
+  },
+  {
+    "step": "7 home by header",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3530/"
+  },
+  {
+    "step": "7 home no /start link",
+    "ok": true,
+    "detail": "[]"
+  },
+  {
+    "step": "N1 no query",
+    "ok": true,
+    "detail": "stays http://127.0.0.1:3530/start; text present: true"
+  },
+  {
+    "step": "N2 bad version",
+    "ok": true,
+    "detail": "stays http://127.0.0.1:3530/start?project=11111111-2222-4333-8444-555555555555&version=abc; text present: true"
+  },
+  {
+    "step": "N3 v99",
+    "ok": true,
+    "detail": "stays http://127.0.0.1:3530/start?project=11111111-2222-4333-8444-555555555555&version=99; text present: true"
+  },
+  {
+    "step": "N4 /test-reset without CAW_TEST_RESET",
+    "ok": true,
+    "detail": "status 404"
+  }
+]

@@ -1,0 +1,16 @@
+{
+ "id": "52b434e9-1114-44d6-af43-6e8154b5a321",
+ "role": "bot",
+ "content": "",
+ "model": "fake/qa-stub",
+ "creativity": 0.5,
+ "roundStatus": "bot_could_not_answer",
+ "changeSetId": null,
+ "createdAt": "2026-10-30T08:08:10.398Z",
+ "roundReason": "protocol",
+ "roundNote": null,
+ "roundRefused": null,
+ "roundSaved": null,
+ "roundAdjusted": null,
+ "roundRaw": "QA-UNREADABLE นี่ไม่ใช่ JSON {{{"
+}

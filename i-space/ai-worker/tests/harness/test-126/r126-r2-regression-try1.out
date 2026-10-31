@@ -1,0 +1,15 @@
+    [14.0s] S20 first plan 201 · keys on located parts [["REQ-009","REQ-007","REQ-008","REQ-003","REQ-002","REQ-004","REQ-005","REQ-006","REQ-001"]]
+OK  [16.1s] AC-9 a first plan in a new project is accepted as before (the live first plan → 9 cards) — propose 201 · cards 9 · keys ["REQ-009","REQ-007","REQ-008","REQ-003","REQ-002","REQ-004","REQ-005","REQ-006","REQ-001"]
+OK  [19.4s] AC-7 the live repost (reworded titles, regrouped anchors) shows "แผนนี้ตกลงไปแล้ว" and NO "ตกลง เริ่มงาน" — badge true · buttons 0 · onBoard [0,1,2,3,4,5,6,7,8]
+OK  [19.4s] AC-7 accepting it anyway → 409 plan_already_accepted "แผนนี้ตกลงไปแล้ว"; the card count does not change; the plan stays open — 409 plan_already_accepted "แผนนี้ตกลงไปแล้ว" · cards 9
+OK  [22.8s] AC-8 the line above the button: "มีงานนี้บนบอร์ดแล้ว 9 งาน — จะเพิ่มเฉพาะงานใหม่ 1 งาน", and the count under it says 1 card — "มีงานนี้บนบอร์ดแล้ว 9 งาน — จะเพิ่มเฉพาะงานใหม่ 1 งาน" · "จะได้ 1 การ์ด"
+OK  [24.9s] AC-8 "ตกลง เริ่มงาน" adds exactly ONE card, for REQ-010; its dependency on the skipped item points at the open REQ-007 card — cards 9 → 10 · new [[10,"เขียนสิ่งที่ไม่ทำลง README","REQ-010",["01a18ed2-b5b9-7260-9da2-626d2e0ebfbd"]]] · REQ-007 card 01a18ed2-b5b9-7260-9da2-626d2e0ebfbd
+OK  [28.2s] Q2 (C) a requirement whose card is done is NOT on the board: a plan for REQ-006 shows its button and is accepted → 1 new card — done 200 · onBoard [] · buttons 2 · accept 200 · cards 11
+    [36.0s] S18 questions on screen 0 · ตามนั้น buttons 0
+ERROR click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-question]').first().getByRole('button', { name: 'ตามนั้น' })
+
+    at /workspace/ai-agent-workspace/i-space/ai-worker/tests/harness/test-126/r126.mjs:145:62
+    at processTicksAndRejections (native:7:39)
+run dir /tmp/qa119-0Kiufl

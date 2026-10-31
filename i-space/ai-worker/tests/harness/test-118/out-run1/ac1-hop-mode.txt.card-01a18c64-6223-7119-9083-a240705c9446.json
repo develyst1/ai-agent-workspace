@@ -1,0 +1,188 @@
+{
+ "f": "mode.txt.card-01a18c64-6223-7119-9083-a240705c9446.json",
+ "prompt": "คุณคือ ใบเตย (SA) ทีมงาน AI ใน CAW — your role skills are in your system prompt: follow them.\nYour card is 01a18c64-549e-723f-976f-0c3f180edda7 (#1) in project 0e462188-47d0-49a4-8563-b8c202a3ba61.\n\n1. Call the MCP tool `card_context` first (with that cardId), then do the work.\n2. Follow every requirement in `spec.requirements` and every rule in `spec.decisions` and `spec.relatedDecisions` of your card's context — the requirements bind every card, whatever its anchor; a rule on a related part applies to your card too.\n3. End this step with exactly one of the MCP tools: `comment`, `hand_off`, `set_status`, `ask_operator`.\nYou may hand off to: ฝน (FE), แบงค์ (BE) — pass the name (or the id) as `toWorkerId` of `hand_off`.\n4. No git writes (no add, commit, push, branch, checkout). No web. Stay inside your working folders.\n5. If you cannot go on without a decision, use `ask_operator` with your proposed default — do not guess.\n6. In `comment` and `ask_operator` text, write line breaks as real new lines — never the two characters \\n.",
+ "cardId": "01a18c64-549e-723f-976f-0c3f180edda7",
+ "status": 200,
+ "context": {
+  "card": {
+   "id": "01a18c64-549e-723f-976f-0c3f180edda7",
+   "projectId": "0e462188-47d0-49a4-8563-b8c202a3ba61",
+   "number": 1,
+   "kind": "work",
+   "title": "ออกแบบ Health Board",
+   "todo": "TEST-118: a card on the title line, as in TEST-106 phase 2",
+   "status": "doing",
+   "assigneeId": "01a18c64-3894-71e1-9f04-87d05947af1f",
+   "anchor": {
+    "key": "REQ-001",
+    "version": 0
+   },
+   "anchorLabel": null,
+   "specChangedVersion": null,
+   "anchorRemoved": false,
+   "dependsOn": [],
+   "question": null,
+   "answer": null,
+   "workable": true,
+   "stoppedMidway": null,
+   "createdAt": "2026-10-30T10:39:07.937Z",
+   "updatedAt": "2026-10-30T10:39:11.400Z"
+  },
+  "spec": {
+   "part": {
+    "key": "REQ-001",
+    "body": {
+     "text": "ชื่อ: I-Space Health Board — หน้าเว็บเดียว ดูว่าบริการของ I-Space ตัวไหนเปิดอยู่"
+    },
+    "kind": "requirement",
+    "title": "สิ่งที่สร้าง: I-Space Health Board",
+    "origin": {
+     "date": "2026-10-30",
+     "stamp": "operator"
+    },
+    "createdIn": "16d4014e-687b-4b6a-971a-0e728910b43b"
+   },
+   "flows": [],
+   "savedAt": "2026-10-30T10:38:57.096Z",
+   "revision": 8,
+   "decisions": [],
+   "projectId": "84fe4b90-031d-4f77-9d51-f693611ad905",
+   "questions": [],
+   "neighbours": [],
+   "latestLabel": null,
+   "requirements": [
+    {
+     "key": "REQ-001",
+     "body": {
+      "text": "ชื่อ: I-Space Health Board — หน้าเว็บเดียว ดูว่าบริการของ I-Space ตัวไหนเปิดอยู่"
+     },
+     "kind": "requirement",
+     "title": "สิ่งที่สร้าง: I-Space Health Board",
+     "origin": {
+      "date": "2026-10-30",
+      "stamp": "operator"
+     },
+     "createdIn": "16d4014e-687b-4b6a-971a-0e728910b43b"
+    },
+    {
+     "key": "REQ-002",
+     "body": {
+      "text": "1. แสดง 4 บริการ: Blueprint API (http://127.0.0.1:4200/health), Blueprint เว็บ (http://127.0.0.1:3100), CAW API (http://127.0.0.1:4500/health), CAW เว็บ (http://127.0.0.1:3500)."
+     },
+     "kind": "requirement",
+     "title": "1. บริการ 4 ตัวที่แสดง",
+     "origin": {
+      "date": "2026-10-30",
+      "stamp": "operator"
+     },
+     "createdIn": "896b3e38-dc79-46e8-a204-16bbbbcefe2e"
+    },
+    {
+     "key": "REQ-003",
+     "body": {
+      "text": "2. แต่ละบริการแสดง: ชื่อ · สถานะ \"ทำงาน\" (เขียว) หรือ \"ไม่ตอบ\" (แดง) · เวลาตอบเป็น ms · เวลาที่เช็คล่าสุด."
+     },
+     "kind": "requirement",
+     "title": "2. สิ่งที่แสดงต่อบริการ",
+     "origin": {
+      "date": "2026-10-30",
+      "stamp": "operator"
+     },
+     "createdIn": "d35c49de-d86c-4b07-a81a-7ca1fa167b95"
+    },
+    {
+     "key": "REQ-004",
+     "body": {
+      "text": "3. เช็คใหม่เองทุก 10 วินาที และมีปุ่ม \"เช็คตอนนี้\"."
+     },
+     "kind": "requirement",
+     "title": "3. เช็คใหม่ทุก 10 วินาที + ปุ่มเช็คตอนนี้",
+     "origin": {
+      "date": "2026-10-30",
+      "stamp": "operator"
+     },
+     "createdIn": "b3a29fbd-48db-4c1a-a261-7e636a40b1b6"
+    },
+    {
+     "key": "REQ-005",
+     "body": {
+      "text": "4. ถ้าบริการไม่ตอบภายใน 3 วินาที ให้ถือว่า \"ไม่ตอบ\"."
+     },
+     "kind": "requirement",
+     "title": "4. ไม่ตอบใน 3 วินาที = ไม่ตอบ",
+     "origin": {
+      "date": "2026-10-30",
+      "stamp": "operator"
+     },
+     "createdIn": "d8396645-1760-4808-a0f6-c5faadd2de7f"
+    },
+    {
+     "key": "REQ-006",
+     "body": {
+      "text": "5. รันในเครื่องที่ http://127.0.0.1:3900 ไม่ต้อง login ไม่ต้องมีฐานข้อมูล."
+     },
+     "kind": "requirement",
+     "title": "5. รันที่ :3900 ไม่ต้อง login ไม่มีฐานข้อมูล",
+     "origin": {
+      "date": "2026-10-30",
+      "stamp": "operator"
+     },
+     "createdIn": "eccf3316-2ade-4f1d-8076-850f594aace2"
+    },
+    {
+     "key": "REQ-007",
+     "body": {
+      "text": "6. ข้อความบนหน้าเป็นภาษาไทย."
+     },
+     "kind": "requirement",
+     "title": "6. ข้อความภาษาไทย",
+     "origin": {
+      "date": "2026-10-30",
+      "stamp": "operator"
+     },
+     "createdIn": "704c9715-b16f-4dc4-afd6-763266e2ed45"
+    },
+    {
+     "key": "REQ-008",
+     "body": {
+      "text": "ไม่ทำ: login, การแจ้งเตือน, เก็บประวัติ, deploy."
+     },
+     "kind": "requirement",
+     "title": "ไม่ทำ",
+     "origin": {
+      "date": "2026-10-30",
+      "stamp": "operator"
+     },
+     "createdIn": "e12785e0-8fd8-4fb9-9141-8da3333a044e"
+    }
+   ],
+   "relatedDecisions": [],
+   "relatedDecisionsMore": false
+  },
+  "specRead": {
+   "revision": 8,
+   "readAt": "2026-10-30T10:39:11.413Z",
+   "fromCache": false,
+   "pinned": true
+  },
+  "notes": [],
+  "decisions": [],
+  "handOffTo": [
+   {
+    "id": "01a18c64-38ac-7270-8195-81ec8285b560",
+    "name": "ฝน",
+    "roles": [
+     "FE"
+    ]
+   },
+   {
+    "id": "01a18c64-38bc-7761-b2b5-0523c2b6f210",
+    "name": "แบงค์",
+    "roles": [
+     "BE"
+    ]
+   }
+  ],
+  "codeMap": null
+ }
+}

@@ -1,0 +1,17 @@
+OK  AC-1 round applied, 1 call, nothing refused — applied; calls 1; refused null
+OK  AC-1 the 4 services are stored as api parts with their full addresses — ["API-001 Blueprint API Health GET http://127.0.0.1:4200/health","API-002 Blueprint เว็บ GET http://127.0.0.1:3100","API-003 CAW API Health GET http://127.0.0.1:4500/health","API-004 CAW เว็บ GET http://127.0.0.1:3500"]
+OK  AC-1 everything round 1 stored live is stored again (WRK, SCR, STEP, has_step, 2 questions) — ["API-001","API-002","API-003","API-004","Q-001","Q-002","SCR-001","STEP-001","WRK-001"]
+    API-001: links on the chat page 0
+    pages showing the addresses (path, status, how many of 4): [["/p/f4b062e2-9d69-4e53-9257-bf46cb6a4e21",200,0],["/p/f4b062e2-9d69-4e53-9257-bf46cb6a4e21/technical",404,0],["/p/f4b062e2-9d69-4e53-9257-bf46cb6a4e21/flow",404,0]]
+    stored paths: ["/rooms","https://example.test/api/v1","http://127.0.0.1:4200/health?x=1#y"]
+    refused: [
+ "127.0.0.1:4200/health → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL",
+ "localhost:3100 → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL",
+ "ftp://127.0.0.1/x → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL",
+ "javascript:alert(1) → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL",
+ "https:// → invalid_change: api body: ✖ must start with \"/\" or be a full http(s) URL"
+]
+OK  neighbour: "/path", https URL and a URL with query stored — 
+OK  neighbour: ftp, javascript: and an empty host refused, each named — 
+BAD neighbour: host:port without a scheme (REQ-114 req 1 names "host:port") — 127.0.0.1:4200/health refused · localhost:3100 refused
+OK  neighbour: the round is applied and the refusals are named (REQ-110 req 4 still holds) — applied, 3 stored, 5 refused

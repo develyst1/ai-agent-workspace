@@ -1,0 +1,8 @@
+    [13.2s] S18 questions on screen 0 · ตามนั้น buttons 0
+ERROR click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-question]').first().getByRole('button', { name: 'ตามนั้น' })
+
+    at /workspace/ai-agent-workspace/i-space/ai-worker/tests/harness/test-126/r126.mjs:95:62
+    at processTicksAndRejections (native:7:39)
+run dir /tmp/qa119-18fl8O

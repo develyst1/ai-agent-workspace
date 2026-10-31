@@ -1,0 +1,89 @@
+$ git clone -b atom <local blueprint-back> blueprint-back
+6123018
+(overlaid the uncommitted tree under test: 7 paths)
+$ git clone -b atom <local blueprint-front> blueprint-front
+6692a16
+(overlaid the uncommitted tree under test: 7 paths)
+== blueprint-back README
+$ bun --version
+1.4.2
+(exit 0)
+$ psql --version
+psql (PostgreSQL) 17.11 (Debian 17.11-0+deb13u1)
+(exit 0)
+$ pm2 --version
+bash: line 1: pm2: command not found
+(exit 127)
+$ bun install --frozen-lockfile 2>&1 | tail -2
+
+227 packages installed [320.00ms]
+(exit 0)
+$ cp .env.example .env
+(exit 0)
+--- .env.example (as shipped, values QA sees):
+# Postgres connection URL, or pglite:memory for a local in-memory database
+DATABASE_URL=
+# Port the HTTP server listens on
+PORT=4200
+# Address to listen on: leave empty for this machine only; set 0.0.0.0 only on a server you have secured
+HOST=
+# Folder for uploaded originals; default ./data/sources
+SOURCES_DIR=
+# LLM Gateway base URL; default https://ai.develyst.online
+GATEWAY_URL=
+# Cheap model for light gateway calls (re-asks, corrections, quiz answers): tier:small or <provider>/<model>; empty = tier:small
+GATEWAY_LIGHT_MODEL=
+# CAW push notice after each confirm (http/https); empty = no outbound call — CAW reads GET /versions?after= instead
+CAW_NOTIFY_URL=
+# --- tests only ---
+# Lets an exact list of local addresses (<host>:<port>[,<host>:<port>…]) through the private-address refusal; honoured only with DATABASE_URL=pglite:memory
+# BLUEPRINT_LINK_TEST_ALLOW=
+# 1 = run the one live LLM Gateway smoke test (GET /models + one POST /chat); unset = skipped
+# BLUEPRINT_GATEWAY_LIVE=
+# 1 = run the database rules test against the SIT Postgres in DATABASE_URL (rolled back, nothing committed); unset = skipped
+# BLUEPRINT_SIT=
+--- QA's .env (pglite, refusing gateway, port 4271):
+DATABASE_URL=pglite:memory
+PORT=4271
+HOST=
+SOURCES_DIR=
+GATEWAY_URL=http://127.0.0.1:4396
+GATEWAY_LIGHT_MODEL=
+CAW_NOTIFY_URL=
+$ bun run start   (README: without pm2)
+$ curl -s http://127.0.0.1:4271/health
+{"ok":true,"service":"blueprint-back"}
+== blueprint-front README
+$ bun --version
+1.4.2
+(exit 0)
+$ node --version
+v24.22.1
+(exit 0)
+$ google-chrome --version
+Google Chrome 156.0.8078.47 
+(exit 0)
+$ pm2 --version
+bash: line 1: pm2: command not found
+(exit 127)
+$ bun install --frozen-lockfile 2>&1 | tail -1
+219 packages installed [1174.00ms]
+(exit 0)
+$ cp .env.example .env.local
+(exit 0)
+--- QA's .env.local:
+PORT=3171
+BLUEPRINT_API_URL=http://127.0.0.1:4271
+CAW_URL=http://127.0.0.1:3500
+$ bun run build 2>&1 | tail -4
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> ([next]/internal/font/google/anuphan_e334cf7.module.css:142:8)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+error: script "build" exited with code 1
+(exit 0)
+$ bun run build   → exit 1 (font: Module not found @vercel/turbopack-next/internal/font/google/font) — front-build-1.txt
+$ bun run build   → exit 1 again (same) — front-build-1.txt
+$ rm -r .next && bun run build   → exit 0 (QA's guess, not in the README) — front-build-2.txt
+$ bun run start   (README: without pm2)
+$ curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3171/
+200

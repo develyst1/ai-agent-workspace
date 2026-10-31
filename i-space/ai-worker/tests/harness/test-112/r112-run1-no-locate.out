@@ -1,0 +1,9 @@
+    [64.0s] gave up waiting 60s for: the entry worker proposed
+    [64.0s] chat message 201; proposal after -1s: undefined items undefined
+BAD [64.0s] AC-2 coverage for the proposal (one item on SCR-001): STEP-002 (DEC-001…003) and WRK-001 (DEC-004, DEC-006) uncovered — 400 
+BAD [65.6s] AC-2 the proposal block shows the PM's sentence for STEP-002 and WRK-001 (key + title) — []
+OK  [65.6s] AC-2 advisory only: the proposal can still be accepted — 
+ERROR TypeError: undefined is not an object (evaluating 'prop.id')
+    at /workspace/ai-agent-workspace/i-space/ai-worker/tests/harness/test-112/r112.ts:77:51
+    at processTicksAndRejections (native:7:39)
+run dir /tmp/qa112-KHmyza

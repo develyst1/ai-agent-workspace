@@ -1,0 +1,240 @@
+[
+  {
+    "g": "AC-1",
+    "cmd": "curl -s -X PATCH -H 'X-CAW-Actor: operator' -H 'content-type: application/json' -d '{\"mode\":\"dispatcher\",\"hopBudget\":999}' http://127.0.0.1:4500/v1/projects/P/mode",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-1",
+    "cmd": "curl -s -X POST -H 'X-CAW-Actor: operator' http://127.0.0.1:4500/v1/proposals/X/accept",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-1",
+    "cmd": "curl -s -X PATCH -H 'X-CAW-Actor: operator' -H 'content-type: application/json' -d '{\"roots\":[\"/workspace/caw-workspaces\"]}' http://127.0.0.1:4500/v1/projects/P/workspace",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-1",
+    "cmd": "curl -s -X POST -H 'X-Blueprint-By: worker' -H 'content-type: application/json' -d '{\"label\":\"v9\"}' http://127.0.0.1:4200/v1/projects/P/versions",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-1",
+    "cmd": "curl -s -X POST -H 'X-Blueprint-By: x' -H 'content-type: application/json' -d '{\"cause\":{\"kind\":\"operator\"},\"changes\":[]}' http://127.0.0.1:4200/v1/projects/P/change-sets",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://127.0.0.1:4500/v1/projects",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://localhost:4500/health",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://[::1]:4500/health",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://127.1:4500/health",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://0.0.0.0:4500/health",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://127.0.0.2:4500/health",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://2130706433:4500/health",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://[::ffff:127.0.0.1]:4500/health",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl 127.0.0.1:4500/health",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl --url http://127.0.0.1:4500/health",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://127.0.0.1:4200/v1/projects",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://127.0.0.1:3100/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl -X POST http://127.0.0.1:3500/p/x",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "wget -qO- http://127.0.0.1:4500/v1/workers",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "port",
+    "cmd": "curl http://127.0.0.1:04500/health",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "header",
+    "cmd": "curl -H 'x-caw-actor: operator' http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "header",
+    "cmd": "curl --header 'X-CAW-Actor: operator' http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "header",
+    "cmd": "curl -H @h.txt http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "header",
+    "cmd": "curl -H 'X-Blueprint-By: x' http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "header",
+    "cmd": "wget --header='X-CAW-Actor: operator' http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-2",
+    "cmd": "curl -s http://127.0.0.1:3900/api/status",
+    "want": "allow",
+    "got": "allow",
+    "ok": true
+  },
+  {
+    "g": "AC-2",
+    "cmd": "curl -I http://localhost:3900/",
+    "want": "allow",
+    "got": "allow",
+    "ok": true
+  },
+  {
+    "g": "AC-2",
+    "cmd": "curl http://localhost:5173/",
+    "want": "allow",
+    "got": "allow",
+    "ok": true
+  },
+  {
+    "g": "AC-3",
+    "cmd": "curl http://127.0.0.1:4510/v1/projects",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-3",
+    "cmd": "curl http://localhost:4510/v1/projects",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-3",
+    "cmd": "curl http://127.0.0.1:4210/v1/projects",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-3",
+    "cmd": "curl http://localhost:4210/v1/projects",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-3",
+    "cmd": "curl http://127.0.0.1:3110/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-3",
+    "cmd": "curl http://127.0.0.1:4500/health",
+    "want": "allow",
+    "got": "allow",
+    "ok": true
+  }
+]

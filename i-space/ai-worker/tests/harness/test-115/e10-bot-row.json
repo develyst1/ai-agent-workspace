@@ -1,0 +1,45 @@
+{
+ "id": "2837a2c8-4b48-4bdf-874c-cd0d837c1270",
+ "role": "bot",
+ "content": "",
+ "model": "fake/qa-stub",
+ "creativity": 0.5,
+ "roundStatus": "bot_could_not_answer",
+ "changeSetId": null,
+ "createdAt": "2026-10-30T09:21:10.147Z",
+ "roundReason": "protocol",
+ "roundNote": null,
+ "roundRefused": null,
+ "roundSaved": null,
+ "roundAdjusted": null,
+ "roundRaw": "QA-UNREADABLE นี่ไม่ใช่ JSON {{{",
+ "roundCalls": [
+  {
+   "ok": false,
+   "step": "first",
+   "asked": "tier:medium",
+   "model": "fake/qa-stub",
+   "reason": "protocol",
+   "weight": "heavy",
+   "fallback": false
+  },
+  {
+   "ok": false,
+   "step": "reask",
+   "asked": "tier:small",
+   "model": "fake/qa-stub",
+   "reason": "protocol",
+   "weight": "light",
+   "fallback": false
+  },
+  {
+   "ok": false,
+   "step": "reask",
+   "asked": "tier:medium",
+   "model": "fake/qa-stub",
+   "reason": "protocol",
+   "weight": "light",
+   "fallback": true
+  }
+ ]
+}

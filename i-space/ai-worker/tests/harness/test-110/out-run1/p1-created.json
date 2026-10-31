@@ -1,0 +1,23 @@
+{
+ "id": "446e6a60-0c50-4188-9e83-640190777bf1",
+ "name": "จองห้องประชุม",
+ "blueprintProjectId": "51d0ec28-c4a6-48d9-9834-da8e2a826758",
+ "version": 0,
+ "latestSeenVersion": 0,
+ "latestLabel": null,
+ "mode": "manual",
+ "hopBudget": 0,
+ "hopsUsed": 0,
+ "workspace": {
+  "roots": [],
+  "readOnly": []
+ },
+ "entryWorkerId": null,
+ "codeMap": null,
+ "createdAt": "2026-10-30T01:26:11.029Z",
+ "spec": {
+  "revision": 1,
+  "reachable": true,
+  "lastPullAt": null
+ }
+}

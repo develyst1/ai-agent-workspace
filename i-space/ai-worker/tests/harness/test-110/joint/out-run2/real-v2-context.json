@@ -1,0 +1,96 @@
+{
+ "projectId": "430351a4-c0b0-4aed-9c20-68e3a8afe35b",
+ "revision": 1,
+ "savedAt": "2026-10-30T04:19:04.824Z",
+ "latestLabel": null,
+ "part": {
+  "key": "STEP-002",
+  "kind": "step",
+  "title": "เช็คสถานะทั้ง 4 บริการ",
+  "body": {
+   "ends": true
+  },
+  "origin": {
+   "date": "2026-10-30",
+   "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+   "stamp": "operator"
+  },
+  "createdIn": "bb2aa2c4-e625-4206-8e4e-c5d6e8f9dcf9"
+ },
+ "neighbours": [
+  {
+   "direction": "in",
+   "linkKind": "covers",
+   "label": null,
+   "position": null,
+   "part": {
+    "key": "DEC-001",
+    "kind": "decision",
+    "title": "เช็คใหม่เองทุก 10 วินาที"
+   }
+  },
+  {
+   "direction": "in",
+   "linkKind": "next",
+   "label": null,
+   "position": 1,
+   "part": {
+    "key": "STEP-001",
+    "kind": "step",
+    "title": "เปิดหน้า Health Board"
+   }
+  },
+  {
+   "direction": "in",
+   "linkKind": "has_step",
+   "label": null,
+   "position": 2,
+   "part": {
+    "key": "WRK-001",
+    "kind": "work",
+    "title": "I-Space Health Board"
+   }
+  }
+ ],
+ "decisions": [
+  {
+   "key": "DEC-001",
+   "kind": "decision",
+   "title": "เช็คใหม่เองทุก 10 วินาที",
+   "body": {
+    "rule": "เช็คใหม่เองทุก 10 วินาที และมีปุ่ม \"เช็คตอนนี้\"",
+    "cases": []
+   },
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   },
+   "createdIn": "bb2aa2c4-e625-4206-8e4e-c5d6e8f9dcf9"
+  }
+ ],
+ "flows": [
+  {
+   "work": {
+    "key": "WRK-001",
+    "title": "I-Space Health Board"
+   },
+   "steps": [
+    {
+     "key": "STEP-001",
+     "title": "เปิดหน้า Health Board",
+     "position": 1
+    },
+    {
+     "key": "STEP-002",
+     "title": "เช็คสถานะทั้ง 4 บริการ",
+     "position": 2
+    }
+   ],
+   "at": [
+    "STEP-002"
+   ]
+  }
+ ],
+ "questions": []
+}

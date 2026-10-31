@@ -1,0 +1,49 @@
+{
+  "http": [
+    "tier:medium:refused",
+    "tier:small:good"
+  ],
+  "id": "3da6a81a-d5f6-43eb-90d5-56d52eb2edfb",
+  "status": "applied",
+  "calls": [
+    {
+      "step": "first",
+      "weight": "heavy",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "fallback": false,
+      "ok": true,
+      "reason": null
+    },
+    {
+      "step": "correction",
+      "weight": "light",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "fallback": false,
+      "ok": true,
+      "reason": null
+    }
+  ],
+  "rowCalls": [
+    {
+      "ok": true,
+      "step": "first",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "reason": null,
+      "weight": "heavy",
+      "fallback": false
+    },
+    {
+      "ok": true,
+      "step": "correction",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "reason": null,
+      "weight": "light",
+      "fallback": false
+    }
+  ],
+  "refused": null
+}

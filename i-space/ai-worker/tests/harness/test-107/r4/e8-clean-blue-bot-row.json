@@ -1,0 +1,91 @@
+{
+ "id": "f94ae534-797f-45a3-ac56-ed4514f795da",
+ "role": "bot",
+ "content": "บันทึกให้แล้วครับ",
+ "model": "fake/qa-stub",
+ "creativity": 0.5,
+ "roundStatus": "applied",
+ "changeSetId": "cccfe1be-6b2f-4654-b30e-54fe53dbbcf7",
+ "createdAt": "2026-10-29T18:59:25.651Z",
+ "roundReason": null,
+ "roundNote": null,
+ "roundRefused": null,
+ "roundSaved": null,
+ "roundAdjusted": [
+  {
+   "to": "$status_data",
+   "key": null,
+   "ref": "$status_data",
+   "from": "$status-data",
+   "item": "changes[3]",
+   "what": "ref_renamed",
+   "title": "สถานะบริการ QA"
+  },
+  {
+   "to": "$step_view",
+   "key": null,
+   "ref": "$step_view",
+   "from": "$step-view",
+   "item": "changes[6]",
+   "what": "ref_renamed",
+   "title": "ดูสถานะ QA"
+  },
+  {
+   "to": "$open_dashboard",
+   "key": null,
+   "ref": "$open_dashboard",
+   "from": "$open-dashboard",
+   "item": "changes[7]",
+   "what": "ref_renamed",
+   "title": "เปิดแดชบอร์ด QA"
+  },
+  {
+   "key": null,
+   "ref": "$monitor",
+   "item": "changes[2]",
+   "what": "body_defaulted",
+   "title": "ตัวตรวจสถานะ QA"
+  },
+  {
+   "key": null,
+   "ref": "$availability",
+   "item": "changes[5]",
+   "what": "wrapped_in_list",
+   "field": "cases",
+   "title": "เกณฑ์สถานะ QA"
+  },
+  {
+   "key": null,
+   "ref": "$dashboard",
+   "item": "changes[4]",
+   "what": "field_dropped",
+   "field": "fields",
+   "title": "หน้าแดชบอร์ด QA"
+  },
+  {
+   "key": null,
+   "ref": "$dashboard",
+   "item": "changes[4]",
+   "what": "field_dropped",
+   "field": "actions",
+   "title": "หน้าแดชบอร์ด QA"
+  },
+  {
+   "key": null,
+   "ref": "$dashboard",
+   "item": "changes[4]",
+   "what": "field_dropped",
+   "field": "states",
+   "title": "หน้าแดชบอร์ด QA"
+  },
+  {
+   "key": null,
+   "ref": "$availability",
+   "item": "changes[5]",
+   "what": "field_dropped",
+   "field": "open",
+   "title": "เกณฑ์สถานะ QA"
+  }
+ ],
+ "roundRaw": null
+}

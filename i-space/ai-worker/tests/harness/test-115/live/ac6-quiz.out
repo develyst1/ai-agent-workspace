@@ -1,0 +1,2 @@
+quiz: HTTP 200 in 1 s · status answered · answer "ระบบตรวจสอบซ้ำทุก 10 วินาที (และตรวจทันทีเมื่อเปิดหน้า)" · parts ["INT-001"] · model undefined
+calls: answer/light asked tier:small → deepseek/deepseek-flash ok

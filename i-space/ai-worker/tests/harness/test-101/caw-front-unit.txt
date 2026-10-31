@@ -1,0 +1,8 @@
+
+Checked 450 installs across 498 packages (no changes) [80.00ms]
+ 328 pass
+ 0 fail
+ 1295 expect() calls
+Ran 328 tests across 23 files. [2.41s]
+$ tsc --noEmit
+typecheck exit=0

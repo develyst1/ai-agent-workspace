@@ -1,0 +1,24 @@
+{
+ "revision": 1,
+ "uncovered": [
+  {
+   "key": "STEP-002",
+   "kind": "step",
+   "title": "เช็คสถานะทั้ง 4 บริการ",
+   "decisions": [
+    "DEC-001",
+    "DEC-002",
+    "DEC-003"
+   ]
+  },
+  {
+   "key": "WRK-001",
+   "kind": "work",
+   "title": "I-Space Health Board",
+   "decisions": [
+    "DEC-004",
+    "DEC-006"
+   ]
+  }
+ ]
+}

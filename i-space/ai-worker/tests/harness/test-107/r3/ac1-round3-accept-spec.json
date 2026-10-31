@@ -1,0 +1,262 @@
+{
+  "project": {
+    "id": "f8927e80-04a7-4363-8759-ef5a4c91dd5e",
+    "organisationId": "00000000-0000-0000-0000-000000000001",
+    "name": "TEST-107 r3 AC-1 Health Board",
+    "createdAt": "2026-10-29T13:04:23.339Z",
+    "theme": "clean-blue",
+    "model": "tier:medium",
+    "creativity": 0.5
+  },
+  "parts": [
+    {
+      "key": "INT-001",
+      "kind": "interaction",
+      "title": "ดูสถานะบริการ",
+      "body": {
+        "text": "ผู้ใช้เปิดหน้า Health Board เพื่อดูสถานะ เวลาตอบ และเวลาที่เช็คล่าสุดของทั้ง 4 บริการ",
+        "reply": "ระบบแสดงรายการบริการและผลการตรวจล่าสุดเป็นภาษาไทย"
+      },
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "acee3bcd-68f2-4007-a39a-12cda6f0c6e3"
+    },
+    {
+      "key": "INT-002",
+      "kind": "interaction",
+      "title": "ตรวจสุขภาพบริการ",
+      "body": {
+        "text": "ระบบตรวจสุขภาพบริการทั้ง 4 ทุก 10 วินาที และผู้ใช้กดปุ่ม “เช็คตอนนี้” เพื่อเริ่มตรวจทันที",
+        "reply": "ระบบวัดเวลาตอบของแต่ละบริการ อัปเดตเวลาที่เช็คล่าสุด และระบุว่า “ไม่ตอบ” หากเกิน 3 วินาที"
+      },
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "acee3bcd-68f2-4007-a39a-12cda6f0c6e3"
+    },
+    {
+      "key": "Q-001",
+      "kind": "question",
+      "title": "สำหรับ URL ของบริการเว็บที่ไม่มี /health ควรถือว่า “ทำงาน” เมื่อได้รับ HTTP response สถานะใดบ้าง?",
+      "body": {
+        "text": "สำหรับ URL ของบริการเว็บที่ไม่มี /health ควรถือว่า “ทำงาน” เมื่อได้รับ HTTP response สถานะใดบ้าง?",
+        "cases": [
+          "Blueprint เว็บ http://127.0.0.1:3100",
+          "CAW เว็บ http://127.0.0.1:3500",
+          "กรณีหน้าเว็บ redirect",
+          "กรณีเซิร์ฟเวอร์ตอบ error แต่ยังเชื่อมต่อได้"
+        ],
+        "answer": "ถือว่าทำงานเมื่อ URL ตอบ HTTP 2xx หรือ 3xx ภายใน 3 วินาที; สถานะ 4xx/5xx ให้เป็น “ไม่ตอบ”",
+        "status": "answered",
+        "proposedAnswer": "ถือว่าทำงานเมื่อ URL ตอบ HTTP 2xx หรือ 3xx ภายใน 3 วินาที; สถานะ 4xx/5xx ให้เป็น “ไม่ตอบ”"
+      },
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "operator"
+      },
+      "createdIn": "acee3bcd-68f2-4007-a39a-12cda6f0c6e3"
+    },
+    {
+      "key": "ROLE-001",
+      "kind": "role",
+      "title": "ผู้ใช้",
+      "body": {
+        "duty": "เปิดดูสถานะบริการและกดเช็คตอนนี้เมื่อต้องการตรวจทันที"
+      },
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "acee3bcd-68f2-4007-a39a-12cda6f0c6e3"
+    },
+    {
+      "key": "SCR-001",
+      "kind": "screen",
+      "title": "หน้า I-Space Health Board",
+      "body": {
+        "fields": [
+          {
+            "name": "serviceName",
+            "type": "text",
+            "label": "ชื่อบริการ"
+          },
+          {
+            "name": "serviceStatus",
+            "type": "text",
+            "label": "สถานะ"
+          },
+          {
+            "name": "responseTime",
+            "type": "text",
+            "label": "เวลาตอบ"
+          },
+          {
+            "name": "lastCheckedAt",
+            "type": "text",
+            "label": "เวลาที่เช็คล่าสุด"
+          }
+        ],
+        "states": [
+          {
+            "name": "working",
+            "note": "แสดง “ทำงาน” สีเขียวเมื่อบริการตอบภายใน 3 วินาที"
+          },
+          {
+            "name": "unresponsive",
+            "note": "แสดง “ไม่ตอบ” สีแดงเมื่อบริการไม่ตอบภายใน 3 วินาที"
+          }
+        ],
+        "actions": [
+          {
+            "name": "checkNow",
+            "label": "เช็คตอนนี้"
+          }
+        ]
+      },
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "acee3bcd-68f2-4007-a39a-12cda6f0c6e3"
+    },
+    {
+      "key": "STEP-001",
+      "kind": "step",
+      "title": "ตรวจและแสดงสถานะบริการ",
+      "body": {
+        "ends": true
+      },
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "acee3bcd-68f2-4007-a39a-12cda6f0c6e3"
+    },
+    {
+      "key": "WRK-001",
+      "kind": "work",
+      "title": "I-Space Health Board",
+      "body": {
+        "goal": "สร้างหน้าเว็บเดียวภาษาไทยที่รันบน http://127.0.0.1:3900 เพื่อแสดงสถานะปัจจุบัน เวลาตอบ และเวลาที่ตรวจล่าสุดของ Blueprint API, Blueprint เว็บ, CAW API และ CAW เว็บ โดยตรวจซ้ำอัตโนมัติทุก 10 วินาทีหรือเมื่อผู้ใช้กดเช็คเอง โดยไม่ต้องล็อกอิน ฐานข้อมูล ประวัติ การแจ้งเตือน หรือการ deploy"
+      },
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "acee3bcd-68f2-4007-a39a-12cda6f0c6e3"
+    }
+  ],
+  "links": [
+    {
+      "id": "90496540-cb61-40e7-ae8f-a2fd1cbbf76c",
+      "kind": "from",
+      "fromKey": "INT-001",
+      "toKey": "ROLE-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "0d115f27-6a09-4aa5-905c-737b877452fc",
+      "kind": "from",
+      "fromKey": "INT-001",
+      "toKey": "SCR-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "fcd4de9f-050a-4fe3-af53-09e27a2d87ff",
+      "kind": "to",
+      "fromKey": "INT-001",
+      "toKey": "SCR-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "3d932792-7caa-4fea-b063-1090e4c2ac7c",
+      "kind": "from",
+      "fromKey": "INT-002",
+      "toKey": "ROLE-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "8f4d5075-187d-42ec-a5f3-30e93cbbe4d1",
+      "kind": "from",
+      "fromKey": "INT-002",
+      "toKey": "SCR-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "224b4e67-0ef0-47ea-b588-6839f6fffd6a",
+      "kind": "to",
+      "fromKey": "INT-002",
+      "toKey": "SCR-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "e1911779-12b6-40f0-a09c-82b86187a6f5",
+      "kind": "has_interaction",
+      "fromKey": "STEP-001",
+      "toKey": "INT-001",
+      "position": 1,
+      "label": null,
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "d9ea3460-919d-4c85-8a82-efaa81ddab75",
+      "kind": "has_interaction",
+      "fromKey": "STEP-001",
+      "toKey": "INT-002",
+      "position": 2,
+      "label": null,
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "cb90f567-531a-471a-ad53-69d54f77ee46",
+      "kind": "has_step",
+      "fromKey": "WRK-001",
+      "toKey": "STEP-001",
+      "position": 1,
+      "label": null,
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "team-proposed"
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+round3-accept: HTTP 200 in 33 s · status bot_could_not_answer · reason protocol · note - · saved - · refused 0 · adjusted 0 · questions 0
+parts 7 · links 9
+ INT-001 [interaction] ดูสถานะบริการ :: {"text":"ผู้ใช้เปิดหน้า Health Board เพื่อดูสถานะ เวลาตอบ และเวลาที่เช็คล่าสุดของทั้ง 4 บริการ","reply":"ระบบแสดงรายการบริการและผลการตรวจล่าสุดเป็นภาษาไทย"}
+ INT-002 [interaction] ตรวจสุขภาพบริการ :: {"text":"ระบบตรวจสุขภาพบริการทั้ง 4 ทุก 10 วินาที และผู้ใช้กดปุ่ม “เช็คตอนนี้” เพื่อเริ่มตรวจทันที","reply":"ระบบวัดเวลาตอบของแต่ละบริการ อัปเดตเวลาที่เช็คล่าสุด และระบุว่า “ไม่ตอบ” หากเกิน 3 วินาที"}
+ Q-001 [question] สำหรับ URL ของบริการเว็บที่ไม่มี /health ควรถือว่า “ทำงาน” เมื่อได้รับ HTTP response สถานะใดบ้าง? :: {"text":"สำหรับ URL ของบริการเว็บที่ไม่มี /health ควรถือว่า “ทำงาน” เมื่อได้รับ HTTP response สถานะใดบ้าง?","cases":["Blueprint เว็บ http://127.0.0.1:3100","CAW เว็บ http://127.0.0.1:3500","กรณีหน้าเว็บ redirect","กรณีเซ
+ ROLE-001 [role] ผู้ใช้ :: {"duty":"เปิดดูสถานะบริการและกดเช็คตอนนี้เมื่อต้องการตรวจทันที"}
+ SCR-001 [screen] หน้า I-Space Health Board :: {"fields":[{"name":"serviceName","type":"text","label":"ชื่อบริการ"},{"name":"serviceStatus","type":"text","label":"สถานะ"},{"name":"responseTime","type":"text","label":"เวลาตอบ"},{"name":"lastCheckedAt","type":"text","l
+ STEP-001 [step] ตรวจและแสดงสถานะบริการ :: {"ends":true}
+ WRK-001 [work] I-Space Health Board :: {"goal":"สร้างหน้าเว็บเดียวภาษาไทยที่รันบน http://127.0.0.1:3900 เพื่อแสดงสถานะปัจจุบัน เวลาตอบ และเวลาที่ตรวจล่าสุดของ Blueprint API, Blueprint เว็บ, CAW API และ CAW เว็บ โดยตรวจซ้ำอัตโนมัติทุก 10 วินาทีหรือเมื่อผู้ใช้ก

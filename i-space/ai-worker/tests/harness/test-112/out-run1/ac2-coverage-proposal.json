@@ -1,0 +1,6 @@
+{
+ "error": {
+  "code": "validation",
+  "message": "✖ Invalid UUID\n  → at proposalId"
+ }
+}

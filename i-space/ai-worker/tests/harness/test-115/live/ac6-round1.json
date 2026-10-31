@@ -1,0 +1,63 @@
+{
+  "s": 200,
+  "j": {
+    "status": "applied",
+    "reply": "สรุปสเปกหน้า Health Board แล้ว เหลือยืนยันวิธีตรวจจากหน้าเว็บและเกณฑ์ HTTP ที่นับว่าใช้งานได้",
+    "changeSetId": "e2a3ea77-379a-4488-80f5-26fee347c661",
+    "questions": [
+      "Q-001",
+      "Q-002"
+    ],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "ab0a6099-a7e6-4032-ba6a-83721ba15059",
+      "8d30f161-17ce-448d-8742-db619589121f"
+    ],
+    "calls": [
+      {
+        "step": "first",
+        "weight": "heavy",
+        "asked": "tier:medium",
+        "model": "openai/gpt-5.6-terra",
+        "fallback": false,
+        "ok": true,
+        "reason": null
+      }
+    ],
+    "reason": null,
+    "note": null,
+    "refused": null,
+    "saved": null,
+    "adjusted": [
+      {
+        "item": "server:url 1",
+        "what": "url_kept",
+        "title": "http://127.0.0.1:4200/health",
+        "key": "API-001",
+        "ref": "$url_1"
+      },
+      {
+        "item": "server:url 2",
+        "what": "url_kept",
+        "title": "http://127.0.0.1:3100",
+        "key": "API-002",
+        "ref": "$url_2"
+      },
+      {
+        "item": "server:url 3",
+        "what": "url_kept",
+        "title": "http://127.0.0.1:4500/health",
+        "key": "API-003",
+        "ref": "$url_3"
+      },
+      {
+        "item": "server:url 4",
+        "what": "url_kept",
+        "title": "http://127.0.0.1:3500",
+        "key": "API-004",
+        "ref": "$url_4"
+      }
+    ]
+  }
+}

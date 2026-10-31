@@ -1,0 +1,12 @@
+check:api — src/core/api/schema.d.ts matches the OpenAPI document
+typecheck exit=0
+ 238 pass
+ 0 fail
+build exit=0 (clean .next, 12:5x)
+== isolation
+  4 passed (6.7s)
+== states
+  34 passed (33.9s)
+== required
+checked 948 items on 48 pages × 4 themes, 0 failures
+  1 passed (2.3m)

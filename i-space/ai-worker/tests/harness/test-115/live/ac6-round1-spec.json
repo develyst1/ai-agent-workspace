@@ -1,0 +1,421 @@
+{
+  "project": {
+    "id": "d8500883-447b-4c39-a613-5fa6dc05b1b8",
+    "organisationId": "00000000-0000-0000-0000-000000000001",
+    "name": "TEST-115 AC-6 Health Board",
+    "createdAt": "2026-10-30T09:23:57.703Z",
+    "theme": "clean-blue",
+    "model": "tier:medium",
+    "creativity": 0.5
+  },
+  "parts": [
+    {
+      "key": "API-001",
+      "kind": "api",
+      "title": "http://127.0.0.1:4200/health",
+      "body": {
+        "path": "http://127.0.0.1:4200/health",
+        "method": "GET",
+        "responses": []
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "API-002",
+      "kind": "api",
+      "title": "http://127.0.0.1:3100",
+      "body": {
+        "path": "http://127.0.0.1:3100",
+        "method": "GET",
+        "responses": []
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "API-003",
+      "kind": "api",
+      "title": "http://127.0.0.1:4500/health",
+      "body": {
+        "path": "http://127.0.0.1:4500/health",
+        "method": "GET",
+        "responses": []
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "API-004",
+      "kind": "api",
+      "title": "http://127.0.0.1:3500",
+      "body": {
+        "path": "http://127.0.0.1:3500",
+        "method": "GET",
+        "responses": []
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "DATA-001",
+      "kind": "data",
+      "title": "รายการบริการที่ต้องตรวจ",
+      "body": {
+        "fields": [
+          {
+            "name": "name",
+            "note": "ชื่อบริการ",
+            "type": "string"
+          },
+          {
+            "name": "url",
+            "note": "URL ที่ใช้ตรวจสอบ",
+            "type": "string"
+          }
+        ]
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "DATA-002",
+      "kind": "data",
+      "title": "สถานะบริการปัจจุบัน",
+      "body": {
+        "fields": [
+          {
+            "name": "serviceName",
+            "note": "ชื่อบริการ",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "note": "ทำงาน หรือ ไม่ตอบ",
+            "type": "string"
+          },
+          {
+            "name": "responseTimeMs",
+            "note": "เวลาตอบหน่วยมิลลิวินาที",
+            "type": "number"
+          },
+          {
+            "name": "checkedAt",
+            "note": "เวลาที่ตรวจล่าสุด",
+            "type": "datetime"
+          }
+        ]
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "DEC-001",
+      "kind": "decision",
+      "title": "ตัดสินผลเมื่อเกินเวลา",
+      "body": {
+        "rule": "หากการตรวจสอบบริการใดไม่เสร็จภายใน 3 วินาที ให้กำหนดสถานะเป็น ไม่ตอบ",
+        "cases": [
+          "ตอบกลับภายใน 3 วินาที: ประเมินผลตามเกณฑ์ HTTP ที่ต้องยืนยัน",
+          "ไม่ตอบหรือเกิดข้อผิดพลาดภายใน 3 วินาที: ไม่ตอบ",
+          "เกิน 3 วินาที: ไม่ตอบ"
+        ],
+        "neighbouring": "ใช้กับการตรวจทั้งแบบอัตโนมัติและจากปุ่ม เช็คตอนนี้"
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "INT-001",
+      "kind": "interaction",
+      "title": "ตรวจสอบอัตโนมัติ",
+      "body": {
+        "text": "ระบบตรวจสอบบริการทั้ง 4 รายการเมื่อเปิดหน้า และตรวจซ้ำทุก 10 วินาที",
+        "reply": "อัปเดตสถานะ เวลาตอบ และเวลาที่ตรวจล่าสุดบนหน้า"
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "INT-002",
+      "kind": "interaction",
+      "title": "ตรวจสอบทันที",
+      "body": {
+        "text": "ผู้ใช้กดปุ่ม เช็คตอนนี้ เพื่อเริ่มตรวจสอบบริการทั้ง 4 รายการทันที",
+        "reply": "อัปเดตสถานะ เวลาตอบ และเวลาที่ตรวจล่าสุดบนหน้า"
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "Q-001",
+      "kind": "question",
+      "title": "ให้เว็บที่พอร์ต 3900 ตรวจ URL ของบริการผ่านตัวตรวจฝั่งเซิร์ฟเวอร์ของแอป (same-origin) หรือให้เบราว์เซอร์เรียก URL ปลายทางโดยตรง?",
+      "body": {
+        "text": "ให้เว็บที่พอร์ต 3900 ตรวจ URL ของบริการผ่านตัวตรวจฝั่งเซิร์ฟเวอร์ของแอป (same-origin) หรือให้เบราว์เซอร์เรียก URL ปลายทางโดยตรง?",
+        "cases": [
+          "เรียกผ่านเซิร์ฟเวอร์: เหมาะเมื่อปลายทางไม่ได้ตั้ง CORS หรือจำเป็นต้องควบคุม timeout รวมศูนย์",
+          "เรียกจากเบราว์เซอร์โดยตรง: ใช้ได้เมื่อทุกปลายทางอนุญาต CORS จาก http://127.0.0.1:3900"
+        ],
+        "status": "open",
+        "proposedAnswer": "ให้ตัวตรวจฝั่งเซิร์ฟเวอร์ของแอปที่พอร์ต 3900 เรียกปลายทางแทนเบราว์เซอร์ เพื่อไม่ติดข้อจำกัด CORS และควบคุม timeout 3 วินาทีได้แน่นอน"
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "Q-002",
+      "kind": "question",
+      "title": "สำหรับ URL ที่ตอบกลับภายใน 3 วินาที ให้ถือว่า “ทำงาน” เมื่อได้ HTTP สถานะใด?",
+      "body": {
+        "text": "สำหรับ URL ที่ตอบกลับภายใน 3 วินาที ให้ถือว่า “ทำงาน” เมื่อได้ HTTP สถานะใด?",
+        "cases": [
+          "HTTP 2xx: ทำงาน",
+          "HTTP 3xx, 4xx, 5xx: ไม่ตอบ",
+          "DNS/connection error หรือ timeout: ไม่ตอบ"
+        ],
+        "status": "open",
+        "proposedAnswer": "ถือว่า ทำงาน เมื่อได้รับ HTTP 2xx; สถานะอื่นหรือข้อผิดพลาดเครือข่ายให้เป็น ไม่ตอบ"
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "SCR-001",
+      "kind": "screen",
+      "title": "หน้า I-Space Health Board",
+      "body": {
+        "fields": [],
+        "states": [
+          {
+            "name": "loading",
+            "note": "กำลังตรวจสอบบริการ"
+          },
+          {
+            "name": "available",
+            "note": "แสดงสถานะ ทำงาน เป็นสีเขียว"
+          },
+          {
+            "name": "unavailable",
+            "note": "แสดงสถานะ ไม่ตอบ เป็นสีแดง"
+          }
+        ],
+        "actions": [
+          {
+            "name": "check_now",
+            "label": "เช็คตอนนี้"
+          }
+        ]
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "STEP-001",
+      "kind": "step",
+      "title": "ติดตามสถานะบริการ",
+      "body": {
+        "ends": true
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "SYS-001",
+      "kind": "system",
+      "title": "ตัวตรวจสอบสถานะบริการ",
+      "body": {},
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    },
+    {
+      "key": "WRK-001",
+      "kind": "work",
+      "title": "I-Space Health Board",
+      "body": {
+        "goal": "สร้างเว็บหน้าเดียวภาษาไทยที่รันในเครื่องบน http://127.0.0.1:3900 เพื่อแสดงสถานะปัจจุบันของบริการ I-Space 4 รายการ พร้อมเวลาตอบ เวลาตรวจล่าสุด การตรวจอัตโนมัติทุก 10 วินาที และปุ่มตรวจทันที โดยไม่ต้องมี login ฐานข้อมูล ประวัติ การแจ้งเตือน หรือการ deploy"
+      },
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      },
+      "createdIn": "e2a3ea77-379a-4488-80f5-26fee347c661"
+    }
+  ],
+  "links": [
+    {
+      "id": "7fc3644f-3972-4e8a-9338-f72a5d95f822",
+      "kind": "covers",
+      "fromKey": "DEC-001",
+      "toKey": "SYS-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "5d422f66-97a6-479f-83de-485227a22c81",
+      "kind": "from",
+      "fromKey": "INT-001",
+      "toKey": "SYS-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "134b25e7-7606-4523-9aeb-cef030da9f54",
+      "kind": "to",
+      "fromKey": "INT-001",
+      "toKey": "SCR-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "1797b9a5-19b9-4c68-8838-ae08c0e1dc7f",
+      "kind": "from",
+      "fromKey": "INT-002",
+      "toKey": "SCR-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "40781e33-398d-4e97-b1ab-ad020ae02ac9",
+      "kind": "to",
+      "fromKey": "INT-002",
+      "toKey": "SYS-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "ef0c0a63-817e-4eed-93d0-1efc012cab46",
+      "kind": "about",
+      "fromKey": "Q-001",
+      "toKey": "SYS-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "d8c0c441-433b-4b00-a159-f459792c62a7",
+      "kind": "about",
+      "fromKey": "Q-002",
+      "toKey": "DEC-001",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "bbb4f406-d382-46aa-9975-942682609827",
+      "kind": "shows",
+      "fromKey": "SCR-001",
+      "toKey": "DATA-002",
+      "position": null,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "fa37b35a-3f3e-46b2-b2d8-97a4af60604b",
+      "kind": "has_interaction",
+      "fromKey": "STEP-001",
+      "toKey": "INT-001",
+      "position": 1,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "ae89a8e4-8ada-4b2a-9e58-49dd16a446f2",
+      "kind": "has_interaction",
+      "fromKey": "STEP-001",
+      "toKey": "INT-002",
+      "position": 2,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    },
+    {
+      "id": "32ef7231-88b7-42e9-bf18-811427a1b465",
+      "kind": "has_step",
+      "fromKey": "WRK-001",
+      "toKey": "STEP-001",
+      "position": 1,
+      "label": null,
+      "origin": {
+        "date": "2026-10-30",
+        "stamp": "team-proposed"
+      }
+    }
+  ]
+}

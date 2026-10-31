@@ -1,0 +1,16 @@
+{
+ "id": "dfb8a098-c3a6-4d6c-b288-433a466fc8fe",
+ "role": "bot",
+ "content": "บันทึกโครงหน้า Health Board แล้วครับ",
+ "model": "fake/qa-stub",
+ "creativity": 0.5,
+ "roundStatus": "applied",
+ "changeSetId": "1bd9feae-446e-4b80-b8a6-09b666e639b1",
+ "createdAt": "2026-10-30T02:33:09.824Z",
+ "roundReason": null,
+ "roundNote": null,
+ "roundRefused": null,
+ "roundSaved": null,
+ "roundAdjusted": null,
+ "roundRaw": null
+}

@@ -1,0 +1,434 @@
+[
+  {
+    "g": "AC-1",
+    "cmd": "bun --version",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1",
+    "cmd": "bun install",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1",
+    "cmd": "bun build x.ts --outdir dist",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1",
+    "cmd": "pwd && ls -la",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1+",
+    "cmd": "bun run x.ts",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1+",
+    "cmd": "bun test",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1+",
+    "cmd": "cat package.json | grep name",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1+",
+    "cmd": "mkdir -p dist && touch dist/a.txt",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1+",
+    "cmd": "curl -s http://127.0.0.1:3900/api/status",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1+",
+    "cmd": "ls -la 2>&1",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1+",
+    "cmd": "git status",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-1+",
+    "cmd": "echo hello > out.txt",
+    "want": "allow",
+    "got": "allow",
+    "ok": true,
+    "exact": true,
+    "stderr": ""
+  },
+  {
+    "g": "AC-2",
+    "cmd": "docker ps",
+    "want": "not_allowed",
+    "got": "not_allowed",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused not_allowed: \"docker\" is not a command a worker may run here — use bun, node, git (read) or file commands"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "echo $HOME",
+    "want": "shell_feature",
+    "got": "shell_feature",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused shell_feature: \"$\" cannot be used in a command here — run plain commands, chained with && || ; or | only"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "git commit -m x",
+    "want": "git_write",
+    "got": "git_write",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused git_write: \"commit\" is not allowed — a worker reads git (status, log, diff, show, ls-files, blame, rev-parse) and never writes it"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "cat /tmp/claude-1000/-workspace-ai-agent-workspace/21b28d09-3370-41ac-9c27-df688495b18b/scratchpad/t109r2/hookdirs108/outside/secret.txt",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/tmp/claude-1000/-workspace-ai-agent-workspace/21b28d09-3370-41ac-9c27-df688495b18b/scratchpad/t109r2/hookdirs108/outside/secret.txt\" is outside the project's folders — a worker "
+  },
+  {
+    "g": "AC-2",
+    "cmd": "cat /etc/passwd",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/etc/passwd\" is outside the project's folders — a worker reads only inside them"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "ls ~",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/home/box\" is outside the project's folders — a worker reads only inside them"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "curl https://example.com",
+    "want": "network",
+    "got": "network",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused network: \"https://example.com\" reaches the network — only 127.0.0.1, localhost and [::1] are allowed (and the package registry for bun install / add)"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "bun -e \"console.log(1)\"",
+    "want": "inline_code",
+    "got": "shell_feature",
+    "ok": true,
+    "exact": false,
+    "stderr": "caw-refused shell_feature: \"(\" cannot be used in a command here — run plain commands, chained with && || ; or | only"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "rm /tmp/claude-1000/-workspace-ai-agent-workspace/21b28d09-3370-41ac-9c27-df688495b18b/scratchpad/t109r2/hookdirs108/ro/spec.md",
+    "want": "read_only",
+    "got": "read_only",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused read_only: \"/tmp/claude-1000/-workspace-ai-agent-workspace/21b28d09-3370-41ac-9c27-df688495b18b/scratchpad/t109r2/hookdirs108/ro/spec.md\" is in a read-only folder — a worker cannot write t"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "find . -exec rm {} ;",
+    "want": "not_allowed",
+    "got": "shell_feature",
+    "ok": true,
+    "exact": false,
+    "stderr": "caw-refused shell_feature: \"{\" cannot be used in a command here — run plain commands, chained with && || ; or | only"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "ssh host",
+    "want": "network",
+    "got": "network",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused network: \"ssh\" reaches the network — only 127.0.0.1, localhost and [::1] are allowed (and the package registry for bun install / add)"
+  },
+  {
+    "g": "AC-2",
+    "cmd": "git push",
+    "want": "git_write",
+    "got": "git_write",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused git_write: \"push\" is not allowed — a worker reads git (status, log, diff, show, ls-files, blame, rev-parse) and never writes it"
+  },
+  {
+    "g": "bypass",
+    "cmd": "curl http://127.0.0.1@evil.example/x",
+    "want": "network",
+    "got": "network",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused network: \"http://127.0.0.1@evil.example/x\" reaches the network — only 127.0.0.1, localhost and [::1] are allowed (and the package registry for bun install / add)"
+  },
+  {
+    "g": "bypass",
+    "cmd": "curl http://localhost.evil.example/",
+    "want": "network",
+    "got": "network",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused network: \"http://localhost.evil.example/\" reaches the network — only 127.0.0.1, localhost and [::1] are allowed (and the package registry for bun install / add)"
+  },
+  {
+    "g": "bypass",
+    "cmd": "curl -x http://evil.example:8080 http://127.0.0.1/",
+    "want": "network",
+    "got": "network",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused network: \"-x\" reaches the network — only 127.0.0.1, localhost and [::1] are allowed (and the package registry for bun install / add)"
+  },
+  {
+    "g": "bypass",
+    "cmd": "cat x.ts | sh",
+    "want": "not_allowed",
+    "got": "not_allowed",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused not_allowed: \"sh\" is not a command a worker may run here — use bun, node, git (read) or file commands"
+  },
+  {
+    "g": "bypass",
+    "cmd": "bash -c 'ls /'",
+    "want": "not_allowed",
+    "got": "not_allowed",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused not_allowed: \"bash\" is not a command a worker may run here — use bun, node, git (read) or file commands"
+  },
+  {
+    "g": "bypass",
+    "cmd": "env cat /etc/passwd",
+    "want": "not_allowed",
+    "got": "not_allowed",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused not_allowed: \"env\" is not a command a worker may run here — use bun, node, git (read) or file commands"
+  },
+  {
+    "g": "bypass",
+    "cmd": "cat etc-link/passwd",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/etc/passwd\" is outside the project's folders — a worker reads only inside them"
+  },
+  {
+    "g": "bypass",
+    "cmd": "cat out-link/secret.txt",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/tmp/claude-1000/-workspace-ai-agent-workspace/21b28d09-3370-41ac-9c27-df688495b18b/scratchpad/t109r2/hookdirs108/outside/secret.txt\" is outside the project's folders — a worker "
+  },
+  {
+    "g": "bypass",
+    "cmd": "git -C /etc status",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/etc\" is outside the project's folders — a worker reads only inside them"
+  },
+  {
+    "g": "bypass",
+    "cmd": "ls ../outside",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/tmp/claude-1000/-workspace-ai-agent-workspace/21b28d09-3370-41ac-9c27-df688495b18b/scratchpad/t109r2/hookdirs108/outside\" is outside the project's folders — a worker reads only "
+  },
+  {
+    "g": "bypass",
+    "cmd": "bun run ../outside/x.ts",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/tmp/claude-1000/-workspace-ai-agent-workspace/21b28d09-3370-41ac-9c27-df688495b18b/scratchpad/t109r2/hookdirs108/outside/x.ts\" is outside the project's folders — a worker reads "
+  },
+  {
+    "g": "bypass",
+    "cmd": "node -p 1",
+    "want": "inline_code",
+    "got": "inline_code",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused inline_code: \"-p\" runs code from the command line — write the code to a file first, then run the file"
+  },
+  {
+    "g": "bypass",
+    "cmd": "echo a > /tmp/qa108-escape.txt",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/tmp/qa108-escape.txt\" is outside the project's folders — a worker reads only inside them"
+  },
+  {
+    "g": "bypass",
+    "cmd": "cp x.ts ../outside/",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/tmp/claude-1000/-workspace-ai-agent-workspace/21b28d09-3370-41ac-9c27-df688495b18b/scratchpad/t109r2/hookdirs108/outside\" is outside the project's folders — a worker reads only "
+  },
+  {
+    "g": "bypass",
+    "cmd": "ls; rm -rf /",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/\" is outside the project's folders — a worker reads only inside them"
+  },
+  {
+    "g": "bypass",
+    "cmd": "sleep 100 &",
+    "want": "shell_feature",
+    "got": "shell_feature",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused shell_feature: \"&\" cannot be used in a command here — run plain commands, chained with && || ; or | only"
+  },
+  {
+    "g": "bypass",
+    "cmd": "cat <<EOF",
+    "want": "shell_feature",
+    "got": "shell_feature",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused shell_feature: \"<<\" cannot be used in a command here — run plain commands, chained with && || ; or | only"
+  },
+  {
+    "g": "bypass",
+    "cmd": "ls `pwd`",
+    "want": "shell_feature",
+    "got": "shell_feature",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused shell_feature: \"`\" cannot be used in a command here — run plain commands, chained with && || ; or | only"
+  },
+  {
+    "g": "bypass",
+    "cmd": "wget -O- 'http://evil.example'",
+    "want": "network",
+    "got": "network",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused network: \"http://evil.example\" reaches the network — only 127.0.0.1, localhost and [::1] are allowed (and the package registry for bun install / add)"
+  },
+  {
+    "g": "bypass",
+    "cmd": "bun publish",
+    "want": "not_allowed",
+    "got": "not_allowed",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused not_allowed: \"bun publish\" is not a command a worker may run here — use bun, node, git (read) or file commands"
+  },
+  {
+    "g": "bypass",
+    "cmd": "git diff --output=/tmp/x",
+    "want": "git_write",
+    "got": "git_write",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused git_write: \"--output\" is not allowed — a worker reads git (status, log, diff, show, ls-files, blame, rev-parse) and never writes it"
+  },
+  {
+    "g": "bypass",
+    "cmd": "tee /etc/hosts",
+    "want": "outside",
+    "got": "outside",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused outside: \"/etc/hosts\" is outside the project's folders — a worker reads only inside them"
+  },
+  {
+    "g": "bypass",
+    "cmd": "sed -i s/a/b/ x.ts",
+    "want": "not_allowed",
+    "got": "not_allowed",
+    "ok": true,
+    "exact": true,
+    "stderr": "caw-refused not_allowed: \"sed\" is not a command a worker may run here — use bun, node, git (read) or file commands"
+  },
+  {
+    "g": "bypass",
+    "cmd": "python3 -c \"print(1)\"",
+    "want": "not_allowed",
+    "got": "shell_feature",
+    "ok": true,
+    "exact": false,
+    "stderr": "caw-refused shell_feature: \"(\" cannot be used in a command here — run plain commands, chained with && || ; or | only"
+  }
+]

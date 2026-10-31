@@ -1,0 +1,68 @@
+{
+  "http": [
+    "tier:medium:refused",
+    "tier:small:unreadable",
+    "tier:medium:good"
+  ],
+  "id": "7860e592-4a28-46a3-9695-40c3d577eac4",
+  "status": "applied",
+  "calls": [
+    {
+      "step": "first",
+      "weight": "heavy",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "fallback": false,
+      "ok": true,
+      "reason": null
+    },
+    {
+      "step": "correction",
+      "weight": "light",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "fallback": false,
+      "ok": false,
+      "reason": "protocol"
+    },
+    {
+      "step": "correction",
+      "weight": "light",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "fallback": true,
+      "ok": true,
+      "reason": null
+    }
+  ],
+  "rowCalls": [
+    {
+      "ok": true,
+      "step": "first",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "reason": null,
+      "weight": "heavy",
+      "fallback": false
+    },
+    {
+      "ok": false,
+      "step": "correction",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "reason": "protocol",
+      "weight": "light",
+      "fallback": false
+    },
+    {
+      "ok": true,
+      "step": "correction",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "reason": null,
+      "weight": "light",
+      "fallback": true
+    }
+  ],
+  "refused": null
+}

@@ -1,0 +1,25 @@
+OK  [24.5s] setup: 8 requirements typed on the page, nothing else in the spec — REQ-001 สิ่งที่สร้าง: I-Space Health Board · REQ-002 1. บริการ 4 ตัวที่แสดง · REQ-003 2. สิ่งที่แสดงต่อบริการ · REQ-004 3. เช็คใหม่ทุก 10 วินาที + ปุ่มเช็คตอนนี้ · REQ-005 4. ไม่ตอบใน 3 วินาที = ไม่ตอบ · REQ-006 5. รันที่ :3900 ไม่ต้อง login ไม่มีฐานข้อมูล · REQ-007 6. ข้อความภาษาไทย · REQ-008 ไม่ทำ
+OK  [26.0s] seam: Blueprint's REQ-001 context carries all 8 requirements verbatim — requirements 8 · [true,true,true,true,true,true,true,true]
+OK  [26.0s] seam: Blueprint's REQ-005 context carries all 8 requirements verbatim — requirements 8 · [true,true,true,true,true,true,true,true]
+OK  [31.6s] CAW reads the 8 from Blueprint (GET /requirements) — 200 · REQ-001,REQ-002,REQ-003,REQ-004,REQ-005,REQ-006,REQ-007,REQ-008
+OK  [32.8s] AC-2 the entry chat hop was given all 8 requirements verbatim (system-prompt file) — system [true,true,true,true,true,true,true,true] · prompt [false,false,false,false,false,false,false,false] · # The spec's requirements (Blueprint revision 8) — they bind the whole project
+OK  [32.8s] AC-2 the chat prompt tells it to anchor cards on requirement keys — ["2b. The spec's requirements are in your system prompt (`# The spec's requirements`). Propose cards so that every requirement that asks for work is taken up by a","3. If `locate` returned parts (candidates) for the request, propose cards for them with `propose_cards` — only for parts `locate` returned or requirement keys f"]
+    [32.8s] locate: 200,200 · proposal 201 ["REQ-001","REQ-005"]
+OK  [32.9s] AC-3 coverage of the proposal (cards on REQ-001, REQ-005): the other 6 requirements uncovered — 200 · REQ-002,REQ-003,REQ-004,REQ-006,REQ-007,REQ-008
+    [34.4s] chat page uncovered lines: ["ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:"]
+OK  [34.4s] setup: accept → 2 cards anchored REQ-001 and REQ-005 — 200 · #1 REQ-001, #2 REQ-005
+OK  [34.4s] AC-3 the board's coverage after accept: the same 6 uncovered — REQ-002,REQ-003,REQ-004,REQ-006,REQ-007,REQ-008
+OK  [35.9s] AC-3 the board shows the uncovered line for each of the 6 (the REQ-112 words) — ["ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","REQ-002","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","REQ-003","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","REQ-004","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","REQ-006","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","REQ-007","ส่วนนี้ใน spec ยังไม่มีงานไหนรับไป:","REQ-008"]
+OK  [35.9s] AC-1 card #1 (anchored REQ-001) — context holds all 8 requirement texts verbatim — 200 · 8 · [true,true,true,true,true,true,true,true]
+OK  [35.9s] AC-1 card #2 (anchored REQ-005) — context holds all 8 requirement texts verbatim — 200 · 8 · [true,true,true,true,true,true,true,true]
+OK  [38.8s] AC-1 the hop on #2 (REQ-005) read all 8 through card_context — 8
+OK  [38.8s] AC-1 the hop on #2 is told to follow spec.requirements — "2. Follow every requirement in `spec.requirements` and every rule in `spec.decisions` and `spec.relatedDecisions` of your card's context — the requirements bind every card, whatever its anchor; a rule"
+OK  [38.8s] AC-1 the hop on #1 (REQ-001) read all 8 through card_context — 8
+OK  [38.8s] AC-1 the hop on #1 is told to follow spec.requirements — "2. Follow every requirement in `spec.requirements` and every rule in `spec.decisions` and `spec.relatedDecisions` of your card's context — the requirements bind every card, whatever its anchor; a rule"
+    [38.8s] run 1: 2 card hops · budget_spent
+    [38.8s] edit REQ-004 in Blueprint: {"changeSetId":"33bc6b45-42ad-42a3-a56c-7c9d3e855b09","keys":{}}
+    [40.3s] cards after the edit: #1 todo pull=null · #2 todo pull=null
+OK  [43.1s] AC-4 the next hop sees REQ-004's edited text (and the other 7 unchanged) — "เช็คใหม่ทุก 5 วินาที และมีปุ่ม \"เช็คตอนนี้\" (QA แก้ใน TEST-118)" · hops this run 2 · budget_spent
+OK  [43.1s] AC-4 CAW flagged both cards when the requirement changed (specChangedVersion set) — #1 9, #2 9
+OK  [43.1s] AC-4 CAW's requirements route shows the edit, revision up — revision 8 → 9
+run dir /tmp/qa118-JDWesO

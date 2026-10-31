@@ -1,0 +1,57 @@
+[
+  {
+    "step": "S0 seed + requirement + quiz 5/5",
+    "ok": true,
+    "detail": "bp=f99b0cd1-145e-49df-8eae-3b38762b2281; requirement REQ-001; stuck 0"
+  },
+  {
+    "step": "#3b ready project: no warning",
+    "ok": true,
+    "detail": "stuck 0; warning text present false"
+  },
+  {
+    "step": "S0 label v1 through the ready screen",
+    "ok": true,
+    "detail": "[{\"version\":1,\"label\":\"v1 พร้อม\",\"labelledAt\":\"2026-10-29T07:20:54.612Z\",\"by\":\"โด่ง\"}]"
+  },
+  {
+    "step": "#18 S1 build href with the label's version",
+    "ok": true,
+    "detail": "href http://127.0.0.1:3521/start?project=f99b0cd1-145e-49df-8eae-3b38762b2281&version=1"
+  },
+  {
+    "step": "#18 S1 click lands on CAW board",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3521/p/c77f67dc-1b10-4336-b01d-c60fae839817"
+  },
+  {
+    "step": "#18 S2 getProject/getVersion via create",
+    "ok": true,
+    "detail": "status 200 version 1"
+  },
+  {
+    "step": "#18 S3 partContext pass-through (a step)",
+    "ok": true,
+    "detail": "CAW 200"
+  },
+  {
+    "step": "#18b requirement part through CAW",
+    "ok": true,
+    "detail": "CAW 200 kind requirement"
+  },
+  {
+    "step": "#18b locate finds the requirement",
+    "ok": true,
+    "detail": "status 200; candidates [\"REQ-001\"]"
+  },
+  {
+    "step": "#18 S5 amend 201 + lands in Blueprint chat",
+    "ok": true,
+    "detail": "CAW 201"
+  },
+  {
+    "step": "#18 S6 push + versionsAfter",
+    "ok": true,
+    "detail": "BP label v2; CAW latestSeenVersion 2"
+  }
+]

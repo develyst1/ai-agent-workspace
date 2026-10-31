@@ -1,0 +1,84 @@
+diff -ru a/src/runner/hop.ts b/src/runner/hop.ts
+--- a/src/runner/hop.ts	2026-10-30 21:44:54.107334367 +0700
++++ b/src/runner/hop.ts	2026-10-30 21:45:08.423161163 +0700
+@@ -471,7 +471,7 @@
+     }
+ 
+     const sum = state.summary();
+-    tokensInOfTask = sum.tokensIn;
++    tokensInOfTask = sum.lastContext; // REQ-122 r2: the context the session holds now, not the task's summed usage
+     // an open worker's stderr only ends with its process: a task that finished cleanly has nothing to read there yet
+     if (code !== 0 || sum.isError) log(`hop ${hop.id}: claude exit ${code}, is_error ${sum.isError}, stderr: ${(taskDone ? "" : await stderr).slice(0, 300)}`);
+     log(`hop ${hop.id}: init: ${JSON.stringify(sum.init)}; usage: in ${sum.usage?.input ?? "-"}, cacheCreation ${sum.usage?.cacheCreation ?? "-"}, cacheRead ${sum.usage?.cacheRead ?? "-"}, out ${sum.usage?.output ?? "-"}`);
+diff -ru a/src/runner/pool.ts b/src/runner/pool.ts
+--- a/src/runner/pool.ts	2026-10-30 21:44:54.107334367 +0700
++++ b/src/runner/pool.ts	2026-10-30 21:45:08.423161163 +0700
+@@ -65,8 +65,8 @@
+   key: string; projectId: string; workerId: string; child: Child; dir: string; spawnKey: string;
+   /** tasks finished on this process */
+   tasks: number;
+-  /** the last finished task's context size (input + cache tokens) */
+-  lastTokensIn: number;
++  /** the context the session held at the end of its last task: the last model call's prompt (StreamSummary.lastContext) */
++  lastContext: number;
+   /** the hop running on it now, or null = idle */
+   busyHop: string | null;
+   idleSince: number;
+@@ -124,7 +124,7 @@
+     if (w) {
+       const why = !w.alive ? "its process has exited"
+         : w.tasks >= (this.o.maxTasks ?? WORKER_MAX_TASKS) ? `it has done ${w.tasks} tasks`
+-        : w.lastTokensIn >= (this.o.maxTokens ?? WORKER_MAX_TOKENS) ? `its context reached ${w.lastTokensIn} tokens`
++        : w.lastContext >= (this.o.maxTokens ?? WORKER_MAX_TOKENS) ? `its context reached ${w.lastContext} tokens (the last call's prompt)`
+         : w.spawnKey !== a.spawnKey ? "its spawn inputs changed"
+         : null;
+       if (why !== null) {
+@@ -145,7 +145,7 @@
+     if (!child.stdin) { child.kill(); throw new Error("the spawner gave no stdin for an open worker"); }
+     const w: OpenWorker = {
+       key, projectId: a.projectId, workerId: a.workerId, child, dir: this.dirOf(a.projectId, a.workerId), spawnKey: a.spawnKey,
+-      tasks: 0, lastTokensIn: 0, busyHop: null, idleSince: this.now(), lines: lineReader(child.stdout, this.o.log), alive: true,
++      tasks: 0, lastContext: 0, busyHop: null, idleSince: this.now(), lines: lineReader(child.stdout, this.o.log), alive: true,
+       stderr: child.stderrText().catch((e) => { this.o.log(`worker ${a.workerId}: could not read claude's stderr: ${messageOf(e)}`); return ""; }), // drained from the start
+     };
+     this.workers.set(key, w);
+@@ -154,9 +154,9 @@
+   }
+ 
+   /** a task is over (its `result` was read): the worker waits for the next one */
+-  release(w: OpenWorker, tokensIn: number | null): void {
++  release(w: OpenWorker, context: number | null): void {
+     w.tasks++;
+-    if (tokensIn !== null) w.lastTokensIn = tokensIn;
++    if (context !== null) w.lastContext = context;
+     w.busyHop = null;
+     w.idleSince = this.now();
+     this.changed();
+diff -ru a/src/runner/stream.ts b/src/runner/stream.ts
+--- a/src/runner/stream.ts	2026-10-30 21:44:54.107334367 +0700
++++ b/src/runner/stream.ts	2026-10-30 21:45:08.423161163 +0700
+@@ -14,6 +14,9 @@
+   tokensIn: number | null; tokensOut: number | null; isError: boolean | null; subtype: string | null; blocks: Block[]; limit: Limit | null;
+   /** what the session started with (the `system/init` message) and the four token numbers apart — for the log, not the store */
+   init: Init | null; usage: Usage | null;
++  /** REQ-122 r2: the session's context at the task's end = the LAST model call's prompt (input + cacheCreation + cacheRead of the last assistant message); null without one.
++   *  Not `usage`: that adds up every call of the task (TEST-121 DEF-1). */
++  lastContext: number | null;
+ };
+ 
+ type Json = Record<string, any>;
+@@ -120,10 +123,14 @@
+       limit: this.limit,
+       init: this.init,
+       usage,
++      lastContext: lastContextOf([...this.assistantUsage.values()].at(-1)),
+     };
+   }
+ }
+ 
++/** one call's prompt size: everything the model read for it */
++const lastContextOf = (u: Usage | undefined): number | null => (u === undefined ? null : u.input + u.cacheCreation + u.cacheRead);
++
+ export function summarize(lines: Iterable<string>): StreamSummary {
+   const st = new StreamState();
+   for (const l of lines) st.feed(l);

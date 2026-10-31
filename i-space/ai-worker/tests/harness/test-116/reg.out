@@ -1,0 +1,60 @@
+== ui.mjs
+OK  #1 stored row: changes_rejected, empty content, unknown_kind, note feature — {"s":"changes_rejected","c":"","r":"unknown_kind","n":"feature"}
+OK  #1 chat shows the "nothing saved" sentence, naming feature — "รอบนี้ยังไม่ได้บันทึกอะไรเลย — AI เสนอข้อมูลแบบ “feature” ที่ Blueprint ยังไม่รองรับ ลองพิมพ์ใหม่หรือแก้ตามนี้ได้ครับ"
+OK  #1 no "saved" claim anywhere on the page — 
+OK  #3 rejected and named, nothing stored — parts 0; gateway calls this round 2 (round + one correction)
+OK  #2 theme luxury-gold: sentence shown, no model text — "รอบนี้ยังไม่ได้บันทึกอะไรเลย — AI เสนอข้อมูลแบบ “feature” ที่ Blueprint ยังไม่รองรับ ลองพิมพ์ใหม่หรือแก้ตามน"
+OK  #2 theme minimal-mono: sentence shown, no model text — "รอบนี้ยังไม่ได้บันทึกอะไรเลย — AI เสนอข้อมูลแบบ “feature” ที่ Blueprint ยังไม่รองรับ ลองพิมพ์ใหม่หรือแก้ตามน"
+OK  #4 stored row: bot_could_not_answer / timeout — {"s":"bot_could_not_answer","r":"timeout"} after ~182 s
+OK  #4 exactly one gateway call (no retry on timeout) — calls 1
+OK  #4 the timeout sentence shows — 
+OK  #4 a retry control and a model control are there — ["โด่ง · เปลี่ยนชื่อ","ส่งออก PDF","เลือกไฟล์","ส่ง","ลองใหม่","เปลี่ยนโมเดล","ดูรายละเอียด"]
+after "เปลี่ยนโมเดล": focused = <input id="_R_4tbsnpfivbH2_" type="text" readonly="" autocomplete="new-password" class="ant-select-input" role="combobox | url http://127.0.0.1:3141/p/669d4604-d2ef-4af8-b5b6-92e44c48d9b9/chat
+BAD #6 the model control leads to a lower tier, audited — model tier:medium; settings record undefined by undefined
+OK  #5 retry → the round runs again and is applied — retry button 0; applied true; parts 1
+OK  #7 send → applied → "ย้อนกลับ" undoes it, audited — status applied; parts 2→1; undo record true
+== ui-timeout.mjs
+OK  #4 timeout row + 1 chat call — calls 1
+posts so far: ["08:04:54 action"]
+options open: ["เร็ว","สมดุล","เก่งที่สุด","fake/qa-stub"]
+OK  #6 "เปลี่ยนโมเดล" → pick "เร็ว" → model tier:small, audited by the name — model tier:small; {"model":"tier:medium","creativity":0.5} → {"model":"tier:small","creativity":0.5} by โด่ง
+OK  #6 changing the model sends no chat by itself — chat calls during the model change: 0; page POSTs ["08:07:57 action"]
+retry buttons 1
+OK  #5 explicit "ลองใหม่" → applied on the lower tier — applied true; model on the row fake/qa-stub; chat calls 1
+== partial.mjs
+OK  AC-6 the 4 valid changes are stored — 4 parts: ["role:ผู้ใช้ทดสอบ","screen:หน้าทดสอบ AC-6","system:ระบบทดสอบ","work:งานทดสอบ AC-6"]; round applied; gateway calls 2
+OK  AC-6 the chat says 4 saved, 1 not, and names it with its reason — "บันทึกแล้ว 4 รายการ — ยังไม่ได้บันทึก 1 รายการ:\nฟีเจอร์ที่ไม่มีจริง — AI เสนอข้อมูลแบบ “feature” ที่ Blueprint ยังไม่รองรับ30 ต.ค. 2569คุณผมอยากได้ฟีเจอร์ใหม่ ช่วยเพิ่มให้หน่อยดู specโมเดลสมดุลความสร้างสรรค์"
+OK  AC-6 no blanket "saved" claim from the model — 
+OK  AC-7 the stored round record says which change and why — roundSaved 4; roundRefused [{"op":"part.add","key":null,"ref":"$f","item":"changes[4]","kind":"feature","title":"ฟีเจอร์ที่ไม่มีจริง","detail":"a feature cannot be added as a change — use questions / contradictions","reason":"unknown_kind"}]
+OK  AC-7 no key or secret in the record — 
+== r3.mjs
+OK  E8 clean-blue: all 8 parts stored, nothing refused, 1 call — applied; 8 parts ["data","decision","interaction","role","screen","step","system","work"]; links 6; refused null; calls 1
+OK  E8 clean-blue: system body {} · decision cases wrapped, open dropped · screen lists dropped — {"system":{},"decision":{"rule":"ตอบ 200 ภายใน 3 วิ = ปกติ","cases":["200 = ปกติ"]},"screen":{"fields":[],"states":[],"actions":[]}}
+OK  E8 clean-blue: the record names every repair with title — [["ref_renamed","สถานะบริการ QA","$status_data"],["ref_renamed","ดูสถานะ QA","$step_view"],["ref_renamed","เปิดแดชบอร์ด QA","$open_dashboard"],["body_defaulted","ตัวตรวจสถานะ QA",""],["wrapped_in_list","เกณฑ์สถานะ QA","cases"],["field_dropped","หน้าแดชบอร์ด QA","fields"],["field_dropped","หน้าแดชบอร์ด QA","actions"],["field_dropped","หน้าแดชบอร์ด QA","states"],["field_dropped","เกณฑ์สถานะ QA","open"]]
+OK  E9 clean-blue: one "saved, but field X left out" line per dropped field (Q5 wording) — 4 lines shown
+OK  E9 clean-blue: no "not saved" claim for a saved round — 
+OK  E8 luxury-gold: all 8 parts stored, nothing refused, 1 call — applied; 8 parts ["data","decision","interaction","role","screen","step","system","work"]; links 6; refused null; calls 1
+OK  E8 luxury-gold: system body {} · decision cases wrapped, open dropped · screen lists dropped — {"system":{},"decision":{"rule":"ตอบ 200 ภายใน 3 วิ = ปกติ","cases":["200 = ปกติ"]},"screen":{"fields":[],"states":[],"actions":[]}}
+OK  E8 luxury-gold: the record names every repair with title — [["ref_renamed","สถานะบริการ QA","$status_data"],["ref_renamed","ดูสถานะ QA","$step_view"],["ref_renamed","เปิดแดชบอร์ด QA","$open_dashboard"],["body_defaulted","ตัวตรวจสถานะ QA",""],["wrapped_in_list","เกณฑ์สถานะ QA","cases"],["field_dropped","หน้าแดชบอร์ด QA","fields"],["field_dropped","หน้าแดชบอร์ด QA","actions"],["field_dropped","หน้าแดชบอร์ด QA","states"],["field_dropped","เกณฑ์สถานะ QA","open"]]
+OK  E9 luxury-gold: one "saved, but field X left out" line per dropped field (Q5 wording) — 4 lines shown
+OK  E9 luxury-gold: no "not saved" claim for a saved round — 
+OK  E8 minimal-mono: all 8 parts stored, nothing refused, 1 call — applied; 8 parts ["data","decision","interaction","role","screen","step","system","work"]; links 6; refused null; calls 1
+OK  E8 minimal-mono: system body {} · decision cases wrapped, open dropped · screen lists dropped — {"system":{},"decision":{"rule":"ตอบ 200 ภายใน 3 วิ = ปกติ","cases":["200 = ปกติ"]},"screen":{"fields":[],"states":[],"actions":[]}}
+OK  E8 minimal-mono: the record names every repair with title — [["ref_renamed","สถานะบริการ QA","$status_data"],["ref_renamed","ดูสถานะ QA","$step_view"],["ref_renamed","เปิดแดชบอร์ด QA","$open_dashboard"],["body_defaulted","ตัวตรวจสถานะ QA",""],["wrapped_in_list","เกณฑ์สถานะ QA","cases"],["field_dropped","หน้าแดชบอร์ด QA","fields"],["field_dropped","หน้าแดชบอร์ด QA","actions"],["field_dropped","หน้าแดชบอร์ด QA","states"],["field_dropped","เกณฑ์สถานะ QA","open"]]
+OK  E9 minimal-mono: one "saved, but field X left out" line per dropped field (Q5 wording) — 4 lines shown
+OK  E9 minimal-mono: no "not saved" claim for a saved round — 
+OK  E10 stored row: bot_could_not_answer / protocol, raw kept, content empty — {"s":"bot_could_not_answer","r":"protocol","n":null,"raw":"QA-UNREADABLE นี่ไม่ใช่ JSON {{{","c":"","calls":2}
+OK  E10 nothing stored, no saved claim, raw text not shown to the user — parts 0
+E10 chat text near the bot row: undefined
+== r4.mjs
+OK  AC-8 setup: the live round-2 state rebuilt (7 parts, all team-proposed as live, Q-001 open) — applied; ["INT-001:team-proposed","INT-002:team-proposed","Q-001:team-proposed","ROLE-001:team-proposed","SCR-001:team-proposed","STEP-001:team-proposed","WRK-001:team-proposed"]; refused null
+OK  AC-8 the page offers "ตามนั้น" for Q-001 — ["ตามนั้น","ตามนั้นทั้ง 1 ข้อ"]
+OK  AC-8 round applied, 1 call, nothing refused — applied / -; calls 1; refused null
+OK  AC-8 the new parts stored (data + 3 decisions; the 2 new questions of the reply too) — ["DATA-001 ผลการตรวจบริการ","DEC-001 เกณฑ์ตัดสินว่าบริการ \"ทำงาน\"","DEC-002 เวลาหมดอายุการเช็ค","DEC-003 ขอบเขตที่ไม่ทำในเวอร์ชันนี้","Q-002 หน้าเว็บที่ http://127.0.0.1:3900 จะถูกเสิร์ฟอย่างไร — ไฟล์ HTML เดียวรันผ่าน static server หรือมีเซิร์ฟเวอร์ตัวเล็กของเราเอง?","Q-003 การเรียกจากหน้าเว็บ (3900) ไปยัง 4200/3100/4500/3500 ถ้าปลายทางไม่ส่ง CORS header จนเบราว์เซอร์บล็อก ควรทำอย่างไร?"]
+OK  AC-8 the data part holds all 4 URLs — http://127.0.0.1:4200/health:true http://127.0.0.1:3100:true http://127.0.0.1:4500/health:true http://127.0.0.1:3500:true
+OK  AC-8 SCR-001 updated (fields now carry ms / status enum) — {"fields":[{"name":"service","label":"ชื่อบริการ"},{"name":"status","type":"enum: ทำงาน | ไม่ตอบ","label":"สถานะ"},{"name":"responseMs","type":"number","label":
+OK  AC-8 Q-001 answered, no longer open — "answered"
+OK  AC-8 the 4 links stored — links 0 → 4
+OK  AC-8 the record names each `type`→`op` repair — ["op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed","op_renamed"]
+OK  AC-8 no "nothing saved" claim on a stored round — "บันทึกคำตอบของ Q-001 แล้ว (2xx/3xx ภายใน 3 วินาที = ทำงาน, 4xx/5xx = ไม่ตอบ) พร้อมเพิ่มรายละเอียดหน้"
+OK  AC-9 a 120 s first answer is stored, not dropped — applied / - after 120 s; parts 1; calls 1

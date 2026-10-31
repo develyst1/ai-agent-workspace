@@ -1,0 +1,27 @@
+{
+ "id": "cfbe4547-ffe3-43b4-bf72-5b2de7bb7bda",
+ "role": "bot",
+ "content": "บันทึกโครงหน้า Health Board แล้วครับ",
+ "model": "fake/qa-stub",
+ "creativity": 0.5,
+ "roundStatus": "applied",
+ "changeSetId": "5c0fe4ce-aeca-4414-bce4-148d1334fcff",
+ "createdAt": "2026-10-30T09:23:18.655Z",
+ "roundReason": null,
+ "roundNote": null,
+ "roundRefused": null,
+ "roundSaved": null,
+ "roundAdjusted": null,
+ "roundRaw": null,
+ "roundCalls": [
+  {
+   "ok": true,
+   "step": "first",
+   "asked": "tier:medium",
+   "model": "fake/qa-stub",
+   "reason": null,
+   "weight": "heavy",
+   "fallback": false
+  }
+ ]
+}

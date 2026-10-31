@@ -1,0 +1,9 @@
+(fail) AC-10: every gateway failure leaves a failed item that cannot be marked [6046.31ms]
+(fail) R2: a source's stamp only with a found quote; customer-validated is capped at customer-asked; sourceId kept [5400.75ms]
+(fail) A-023 step 2: a quote counts only from 10 characters (normalised) — user and source alike [5633.23ms]
+(fail) AC-10: every gateway failure ends bot_could_not_answer with the spec unchanged [5021.91ms]
+ 263 pass
+ 16 skip
+ 4 fail
+Ran 283 tests across 38 files. [610.13s]
+exit 1

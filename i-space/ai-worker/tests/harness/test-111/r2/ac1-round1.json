@@ -1,0 +1,24 @@
+{
+  "s": 200,
+  "j": {
+    "status": "applied",
+    "reply": "รับสเปกหน้า I-Space Health Board แล้ว เหลือยืนยันเกณฑ์ HTTP ที่ถือว่าใช้งานได้ และวิธีเช็คผ่านเซิร์ฟเวอร์ในเครื่องเพื่อกำหนดพฤติกรรมการตรวจสอบให้ชัดเจน",
+    "changeSetId": "2eb6add0-7b56-423c-a081-e0b49af4d0b7",
+    "questions": [
+      "Q-001",
+      "Q-002",
+      "Q-003"
+    ],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "4bb28482-dcfe-4dd3-8c2b-1dea06f37782",
+      "4e2ec2a8-1ac7-4ba2-b3dc-2a338126e0ea"
+    ],
+    "reason": null,
+    "note": null,
+    "refused": null,
+    "saved": null,
+    "adjusted": null
+  }
+}

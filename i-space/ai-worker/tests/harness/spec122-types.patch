@@ -1,0 +1,39 @@
+diff -ru a/src/runner/api.ts b/src/runner/api.ts
+--- a/src/runner/api.ts	2026-10-30 19:58:22.762507514 +0700
++++ b/src/runner/api.ts	2026-10-30 19:58:29.670460932 +0700
+@@ -99,7 +99,7 @@
+     /** contract v1.11: "this hop's stream is alive". No body — the core stamps the time and throttles to one write per 60 s (still 200). 409 `hop_not_running` once it ended. */
+     heartbeat: (hopId: string) => call<{ lastActivityAt: string }>("POST", `/v1/hops/${enc(hopId)}/heartbeat`, actor),
+     /** contract v1.16 rev. 1: "this runner is alive" (`running`) or "I am stopping" (`stopping`), runner actor only → 204 with NO body — the only call that may have an empty one */
+-    checkIn: async (state: "running" | "stopping"): Promise<void> => { await call<unknown>("POST", "/v1/runner/check-in", actor, { state }, true); },
++    checkIn: async (state: "running" | "stopping", sessions?: { projectId: string; workerId: string; state: "idle" | "busy" }[]): Promise<void> => { await call<unknown>("POST", "/v1/runner/check-in", actor, { state, ...(sessions ? { sessions } : {}) }, true); },
+     finishHop: (hopId: string, finish: Finish) => call<Hop>("PATCH", `/v1/hops/${enc(hopId)}`, actor, finish),
+     /** REQ-104: a batch of what the hop's CLI showed (rendered and redacted by screen.ts), runner actor only → 202 `{ stored }`; a (hopId, seq) already stored is skipped */
+     hopOutput: (hopId: string, entries: ScreenEntry[]) => call<{ stored: number }>("POST", `/v1/hops/${enc(hopId)}/output`, actor, { entries }),
+diff -ru a/src/runner/hop.ts b/src/runner/hop.ts
+--- a/src/runner/hop.ts	2026-10-30 19:58:22.762507514 +0700
++++ b/src/runner/hop.ts	2026-10-30 19:58:26.878479765 +0700
+@@ -35,8 +35,8 @@
+ } as const;
+ 
+ /** `pid` is the child's process id; with the real spawner it is also its process group id (the child leads its own group). */
+-export type Child = { pid?: number; stdout: ReadableStream<Uint8Array>; exited: Promise<number>; kill(signal?: string): void; stderrText(): Promise<string> };
+-export type Spawner = (cmd: string[], opts: { cwd: string; env: Record<string, string | undefined> }) => Child;
++export type Child = { pid?: number; stdout: ReadableStream<Uint8Array>; exited: Promise<number>; kill(signal?: string): void; stderrText(): Promise<string>; stdin?: { write(line: string): void; end(): void } };
++export type Spawner = (cmd: string[], opts: { cwd: string; env: Record<string, string | undefined>; stdin?: "pipe" }) => Child;
+ 
+ export type HopDeps = {
+   api: Api; config: RunnerConfig; spawn: Spawner;
+diff -ru a/src/runner/stream.ts b/src/runner/stream.ts
+--- a/src/runner/stream.ts	2026-10-30 19:58:22.762507514 +0700
++++ b/src/runner/stream.ts	2026-10-30 19:58:31.754446871 +0700
+@@ -100,6 +100,9 @@
+     return added;
+   }
+ 
++  /** a `result` line was read: with an open worker (REQ-122) that is the end of one task */
++  get done(): boolean { return this.result !== null; }
++
+   summary(): StreamSummary {
+     // The final `result` has the real totals. A hop the runner ends first has none: then the assistant messages' own usage, each distinct message
+     // once. Input is exact (it matched the recorded result); output is a LOWER BOUND — an assistant line carries the count from when the message began.

@@ -1,0 +1,29 @@
+{
+  "http": [
+    "tier:small:quiz"
+  ],
+  "id": "c322a6b5-85b8-4c0e-80d5-cec747860304",
+  "status": "answered",
+  "calls": [
+    {
+      "ok": true,
+      "step": "answer",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "reason": null,
+      "weight": "light",
+      "fallback": false
+    }
+  ],
+  "storedCalls": [
+    {
+      "ok": true,
+      "step": "answer",
+      "asked": "tier:small",
+      "model": "stub/tier-small",
+      "reason": null,
+      "weight": "light",
+      "fallback": false
+    }
+  ]
+}

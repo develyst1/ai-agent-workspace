@@ -1,0 +1,3 @@
+  ✓  147 [build] › tests/chat.spec.ts:100:7 › D-057: a chat step that failed › the line + ลองอีกครั้ง sit under M3 only; pressing removes both, with no alert (286ms)
+  ✓  252 [build] › tests/test-reset.spec.ts:25:5 › POST /test-reset?state=chat-failed → 204 and the thread's second ask has no reply any more; chat-running → 204; a plain POST brings the reply back (392ms)
+  264 passed (2.7m)

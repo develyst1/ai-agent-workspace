@@ -1,0 +1,140 @@
+{
+ "projectId": "430351a4-c0b0-4aed-9c20-68e3a8afe35b",
+ "revision": 1,
+ "savedAt": "2026-10-30T04:19:04.824Z",
+ "latestLabel": null,
+ "parts": [
+  {
+   "key": "DEC-001",
+   "kind": "decision",
+   "title": "เช็คใหม่เองทุก 10 วินาที",
+   "body": {
+    "rule": "เช็คใหม่เองทุก 10 วินาที และมีปุ่ม \"เช็คตอนนี้\"",
+    "cases": []
+   },
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   },
+   "createdIn": "bb2aa2c4-e625-4206-8e4e-c5d6e8f9dcf9"
+  },
+  {
+   "key": "SCR-001",
+   "kind": "screen",
+   "title": "หน้า Health Board",
+   "body": {
+    "fields": [],
+    "states": [],
+    "actions": [
+     {
+      "name": "checkNow",
+      "label": "เช็คตอนนี้"
+     }
+    ]
+   },
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   },
+   "createdIn": "bb2aa2c4-e625-4206-8e4e-c5d6e8f9dcf9"
+  },
+  {
+   "key": "STEP-001",
+   "kind": "step",
+   "title": "เปิดหน้า Health Board",
+   "body": {
+    "ends": false
+   },
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   },
+   "createdIn": "bb2aa2c4-e625-4206-8e4e-c5d6e8f9dcf9"
+  },
+  {
+   "key": "STEP-002",
+   "kind": "step",
+   "title": "เช็คสถานะทั้ง 4 บริการ",
+   "body": {
+    "ends": true
+   },
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   },
+   "createdIn": "bb2aa2c4-e625-4206-8e4e-c5d6e8f9dcf9"
+  },
+  {
+   "key": "WRK-001",
+   "kind": "work",
+   "title": "I-Space Health Board",
+   "body": {
+    "goal": "หน้าเว็บเดียว ดูว่าบริการของ I-Space ตัวไหนเปิดอยู่"
+   },
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   },
+   "createdIn": "bb2aa2c4-e625-4206-8e4e-c5d6e8f9dcf9"
+  }
+ ],
+ "links": [
+  {
+   "id": "049da498-fa50-418d-8375-f439a6c5e2c5",
+   "kind": "covers",
+   "fromKey": "DEC-001",
+   "toKey": "STEP-002",
+   "position": null,
+   "label": null,
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   }
+  },
+  {
+   "id": "cc7d256a-d052-4563-8bc2-27549004969a",
+   "kind": "next",
+   "fromKey": "STEP-001",
+   "toKey": "STEP-002",
+   "position": 1,
+   "label": null,
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   }
+  },
+  {
+   "id": "321c569e-fe60-4266-93e0-e5391bfe485c",
+   "kind": "has_step",
+   "fromKey": "WRK-001",
+   "toKey": "STEP-001",
+   "position": 1,
+   "label": null,
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   }
+  },
+  {
+   "id": "3de9fe5a-4a5e-4283-a6ba-9215fc634fdb",
+   "kind": "has_step",
+   "fromKey": "WRK-001",
+   "toKey": "STEP-002",
+   "position": 2,
+   "label": null,
+   "origin": {
+    "date": "2026-10-30",
+    "note": "TEST-110 joint run seed (the change-set route, as TEST-106)",
+    "stamp": "operator"
+   }
+  }
+ ]
+}

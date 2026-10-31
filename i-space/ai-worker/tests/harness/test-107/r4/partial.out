@@ -1,0 +1,5 @@
+OK  AC-6 the 4 valid changes are stored — 4 parts: ["role:ผู้ใช้ทดสอบ","screen:หน้าทดสอบ AC-6","system:ระบบทดสอบ","work:งานทดสอบ AC-6"]; round applied; gateway calls 2
+OK  AC-6 the chat says 4 saved, 1 not, and names it with its reason — "บันทึกแล้ว 4 รายการ — ยังไม่ได้บันทึก 1 รายการ:\nฟีเจอร์ที่ไม่มีจริง — AI เสนอข้อมูลแบบ “feature” ที่ Blueprint ยังไม่รองรับ30 ต.ค. 2569คุณผมอยากได้ฟีเจอร์ใหม่ ช่วยเพิ่มให้หน่อยดู specโมเดลสมดุลความสร้างสรรค์"
+OK  AC-6 no blanket "saved" claim from the model — 
+OK  AC-7 the stored round record says which change and why — roundSaved 4; roundRefused [{"op":"part.add","key":null,"ref":"$f","item":"changes[4]","kind":"feature","title":"ฟีเจอร์ที่ไม่มีจริง","detail":"a feature cannot be added as a change — use questions / contradictions","reason":"unknown_kind"}]
+OK  AC-7 no key or secret in the record — 

@@ -1,0 +1,30 @@
+    [6.3s] Blueprint p1 32eabd28-c768-4d3d-b9c8-bd0576c10570 (change-set 400, keys {}) · p2 893e7f57-8781-43b9-bed0-fc607a014845 (no parts, no label)
+    [7.1s] blueprint-front ready page: button 1 href http://127.0.0.1:3541/start?project=893e7f57-8781-43b9-bed0-fc607a014845
+OK  [8.1s] AC-3 Blueprint's "ส่งไปสร้างที่ CAW" on a project with NO label → a CAW board, no "ลิงก์นี้ไม่ครบ" — href http://127.0.0.1:3541/start?project=893e7f57-8781-43b9-bed0-fc607a014845 → http://127.0.0.1:3541/p/5ae8c63c-459b-4a3d-8b75-9c8471ea77cd
+OK  [8.1s] AC-3 API: CAW project from a real Blueprint project with no label — 201 spec {"revision":0,"reachable":true,"lastPullAt":null}
+BAD [8.2s] AC-4 card A cut with no label — {}
+    [48.4s] gave up waiting 40s for: CAW shows card A changed + the part reader shows the new text
+BAD [48.4s] AC-1 (poll only) an edit in Blueprint, no label → CAW flags the card and the part reader shows the new text within 30 s — edit 400; after -1s
+BAD [48.4s] AC-1 (push on) the same, through Blueprint's spec.changed push — after 0.001s; pushes relayed 0
+BAD [49.6s] AC-1 the board shows the cards as changed — 
+OK  [49.8s] AC-4 Blueprint's label v1 reaches CAW — label 201; after 0.264s
+BAD [50.1s] AC-4 project shows v2, card B keeps v1 — after 0.264s; B undefined
+BAD [53.5s] AC-4 header ป้าย v2 · card A ตัดงานก่อนมีป้าย · card B ตัดงานที่ป้าย v1 · content = latest — 
+    [113.9s] gave up waiting 60s for: hop 1 read
+    [154.2s] gave up waiting 40s for: operator sees the mid-hop edit
+    [244.2s] gave up waiting 90s for: hop undefined
+    [334.3s] gave up waiting 90s for: hop undefined
+BAD [335.1s] AC-2 hop 1 reads its start text before AND after the mid-hop edit —  | 
+BAD [335.1s] AC-2 hop 2 reads the new text — 
+BAD [343.6s] AC-5 CAW shows unreachable and serves the last read — after 8.44s; context 404 undefined
+    [433.6s] gave up waiting 90s for: hop undefined
+BAD [434.4s] AC-5 a hop started while unreachable works on the last read — no worker read
+OK  [435.6s] AC-5 the board says so (PM's sentence) — 
+    [435.6s] net down for 101s
+    [475.8s] gave up waiting 40s for: CAW catches up
+BAD [475.8s] AC-5 back: CAW catches up with the edit made while it could not see, without a restart — after -1s; first pull GET /v1/projects/32eabd28-c768-4d3d-b9c8-bd0576c10570/spec/changes?after=0 (CAW's last revision before: 0)
+OK  [476.9s] AC-5 the sentence is gone — 
+OK  [476.9s] AC-6 / D1: CAW called no v1 versions / locate / versioned context on the real Blueprint — 0 
+OK  [476.9s] AC-6 rebuild-check same — {"same":true}
+OK  [476.9s] AC-6 Blueprint's v1 feed still answers (unchanged route) — 200 versions 2
+run dir /tmp/qa110j-YvjvU4

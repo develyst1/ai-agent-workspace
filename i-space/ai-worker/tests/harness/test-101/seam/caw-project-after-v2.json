@@ -1,0 +1,17 @@
+{
+  "id": "4aed7f5d-0caa-46aa-9ff4-9ba67b5bb7d5",
+  "name": "TEST-101 seam",
+  "blueprintProjectId": "dd3ed5cb-98eb-432a-b15d-929abdc0d77b",
+  "version": 1,
+  "latestSeenVersion": 2,
+  "mode": "manual",
+  "hopBudget": 0,
+  "hopsUsed": 0,
+  "workspace": {
+    "roots": [],
+    "readOnly": []
+  },
+  "entryWorkerId": null,
+  "codeMap": null,
+  "createdAt": "2026-10-28T18:15:18.801Z"
+}

@@ -1,0 +1,28 @@
+{
+ "status": "applied",
+ "reply": "เพิ่มงานให้แล้วครับ",
+ "changeSetId": "590e477b-4799-4a05-8969-db167d7fae00",
+ "questions": [],
+ "contradictions": [],
+ "failedSources": [],
+ "messageIds": [
+  "8df6b310-b6c0-4e98-9fc5-d069ad32a068",
+  "795690da-9f06-40b6-8f61-0c9d46bb8339"
+ ],
+ "calls": [
+  {
+   "step": "first",
+   "weight": "heavy",
+   "asked": "tier:medium",
+   "model": "fake/qa-stub",
+   "fallback": false,
+   "ok": true,
+   "reason": null
+  }
+ ],
+ "reason": null,
+ "note": null,
+ "refused": null,
+ "saved": null,
+ "adjusted": null
+}

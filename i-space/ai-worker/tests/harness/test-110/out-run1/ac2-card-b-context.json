@@ -1,0 +1,242 @@
+{
+ "card": {
+  "id": "01a18a6a-3553-7165-a616-78dbe4315511",
+  "projectId": "446e6a60-0c50-4188-9e83-640190777bf1",
+  "number": 2,
+  "kind": "work",
+  "title": "B — cut at v1",
+  "todo": "TEST-110",
+  "status": "todo",
+  "assigneeId": null,
+  "anchor": {
+   "key": "STEP-004",
+   "version": 1
+  },
+  "anchorLabel": "v1",
+  "specChangedVersion": 3,
+  "anchorRemoved": false,
+  "dependsOn": [],
+  "question": null,
+  "answer": null,
+  "workable": true,
+  "stoppedMidway": null,
+  "createdAt": "2026-10-30T01:26:18.712Z",
+  "updatedAt": "2026-10-30T01:33:22.832Z"
+ },
+ "spec": {
+  "projectId": "51d0ec28-c4a6-48d9-9834-da8e2a826758",
+  "revision": 3,
+  "savedAt": "2026-10-30T01:33:22.465Z",
+  "latestLabel": {
+   "version": 2,
+   "label": "v2",
+   "labelledAt": "2026-10-30T01:26:18.714Z",
+   "by": "โด่ง"
+  },
+  "part": {
+   "key": "STEP-004",
+   "kind": "step",
+   "title": "QA-AC2 ข้อความใหม่กลางก้าว",
+   "body": {
+    "ends": false
+   },
+   "origin": {
+    "date": "2026-10-08",
+    "stamp": "operator"
+   },
+   "createdIn": "860f2747-790b-4cf9-b9f3-ed76598d2c50"
+  },
+  "neighbours": [
+   {
+    "direction": "in",
+    "linkKind": "covers",
+    "label": null,
+    "position": null,
+    "part": {
+     "key": "DEC-001",
+     "kind": "decision",
+     "title": "ห้องที่จุเกิน 10 คนต้องให้ผู้ดูแลอนุมัติ"
+    }
+   },
+   {
+    "direction": "in",
+    "linkKind": "about",
+    "label": null,
+    "position": null,
+    "part": {
+     "key": "Q-001",
+     "kind": "question",
+     "title": "ผู้ดูแลไม่ตอบใน 24 ชม. ทำอย่างไร"
+    }
+   },
+   {
+    "direction": "in",
+    "linkKind": "next",
+    "label": "ห้องใหญ่ ต้องอนุมัติ",
+    "position": 1,
+    "part": {
+     "key": "STEP-003",
+     "kind": "step",
+     "title": "ส่งคำขอจอง"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "has_interaction",
+    "label": null,
+    "position": 1,
+    "part": {
+     "key": "INT-010",
+     "kind": "interaction",
+     "title": "เปิดคำขอแล้วกดอนุมัติหรือปฏิเสธ"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "has_interaction",
+    "label": null,
+    "position": 2,
+    "part": {
+     "key": "INT-011",
+     "kind": "interaction",
+     "title": "ส่งผลการพิจารณา"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "has_interaction",
+    "label": null,
+    "position": 3,
+    "part": {
+     "key": "INT-012",
+     "kind": "interaction",
+     "title": "อัปเดตสถานะการจอง"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "next",
+    "label": "อนุมัติ",
+    "position": 1,
+    "part": {
+     "key": "STEP-005",
+     "kind": "step",
+     "title": "ได้รับการยืนยัน"
+    }
+   },
+   {
+    "direction": "out",
+    "linkKind": "next",
+    "label": "ปฏิเสธ",
+    "position": 2,
+    "part": {
+     "key": "STEP-006",
+     "kind": "step",
+     "title": "แจ้งว่าถูกปฏิเสธ"
+    }
+   },
+   {
+    "direction": "in",
+    "linkKind": "has_step",
+    "label": null,
+    "position": 4,
+    "part": {
+     "key": "WRK-001",
+     "kind": "work",
+     "title": "จองห้องประชุม"
+    }
+   }
+  ],
+  "decisions": [
+   {
+    "key": "DEC-001",
+    "body": {
+     "open": "ห้องพอดี 10 คน",
+     "rule": "ห้องที่จุเกิน 10 คนต้องให้ผู้ดูแลอนุมัติ",
+     "cases": [
+      "ห้องใหญ่ → ผู้ดูแลอนุมัติ",
+      "ห้องเล็ก → ยืนยันทันที"
+     ]
+    },
+    "kind": "decision",
+    "title": "ห้องที่จุเกิน 10 คนต้องให้ผู้ดูแลอนุมัติ",
+    "origin": {
+     "date": "2026-10-08",
+     "stamp": "operator"
+    },
+    "createdIn": "860f2747-790b-4cf9-b9f3-ed76598d2c50"
+   }
+  ],
+  "flows": [
+   {
+    "work": {
+     "key": "WRK-001",
+     "title": "จองห้องประชุม"
+    },
+    "steps": [
+     {
+      "key": "STEP-001",
+      "title": "ค้นหาห้องว่าง",
+      "position": 1
+     },
+     {
+      "key": "STEP-002",
+      "title": "เลือกห้องและเวลา",
+      "position": 2
+     },
+     {
+      "key": "STEP-003",
+      "title": "ส่งคำขอจอง",
+      "position": 3
+     },
+     {
+      "key": "STEP-004",
+      "title": "ผู้ดูแลพิจารณา",
+      "position": 4
+     },
+     {
+      "key": "STEP-005",
+      "title": "ได้รับการยืนยัน",
+      "position": 5
+     },
+     {
+      "key": "STEP-006",
+      "title": "แจ้งว่าถูกปฏิเสธ",
+      "position": 6
+     }
+    ],
+    "at": [
+     "STEP-004"
+    ]
+   }
+  ],
+  "questions": [
+   {
+    "key": "Q-001",
+    "body": {
+     "text": "ผู้ดูแลไม่ตอบใน 24 ชม. ทำอย่างไร",
+     "cases": [],
+     "answer": "ยกเลิกอัตโนมัติและแจ้งพนักงาน",
+     "status": "answered",
+     "proposedAnswer": "ยกเลิกอัตโนมัติและแจ้งพนักงาน"
+    },
+    "kind": "question",
+    "title": "ผู้ดูแลไม่ตอบใน 24 ชม. ทำอย่างไร",
+    "origin": {
+     "date": "2026-10-08",
+     "stamp": "operator"
+    },
+    "createdIn": "860f2747-790b-4cf9-b9f3-ed76598d2c50"
+   }
+  ]
+ },
+ "specRead": {
+  "revision": 3,
+  "readAt": "2026-10-30T01:35:23.696Z",
+  "fromCache": false,
+  "pinned": false
+ },
+ "notes": [],
+ "decisions": [],
+ "codeMap": null
+}

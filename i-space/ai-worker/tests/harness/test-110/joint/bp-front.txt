@@ -1,0 +1,12 @@
+
+error: script "check:api" exited with code 1
+ 235 pass
+ 0 fail
+bp-front typecheck exit=0
+== isolation
+  4 passed (5.5s)
+== states
+  34 passed (29.9s)
+== required
+checked 948 items on 48 pages × 4 themes, 0 failures
+  1 passed (2.2m)

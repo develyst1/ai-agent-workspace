@@ -1,0 +1,13 @@
+{
+  "project": {
+    "id": "a341c2ed-b852-4d63-9aea-9afebe3dc934",
+    "organisationId": "00000000-0000-0000-0000-000000000001",
+    "name": "TEST-107 AC-1 Health Board",
+    "createdAt": "2026-10-29T09:06:41.324Z",
+    "theme": "clean-blue",
+    "model": "tier:medium",
+    "creativity": 0.5
+  },
+  "parts": [],
+  "links": []
+}

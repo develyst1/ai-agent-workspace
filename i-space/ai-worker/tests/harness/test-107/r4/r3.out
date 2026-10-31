@@ -1,0 +1,18 @@
+OK  E8 clean-blue: all 8 parts stored, nothing refused, 1 call — applied; 8 parts ["data","decision","interaction","role","screen","step","system","work"]; links 6; refused null; calls 1
+OK  E8 clean-blue: system body {} · decision cases wrapped, open dropped · screen lists dropped — {"system":{},"decision":{"rule":"ตอบ 200 ภายใน 3 วิ = ปกติ","cases":["200 = ปกติ"]},"screen":{"fields":[],"states":[],"actions":[]}}
+OK  E8 clean-blue: the record names every repair with title — [["ref_renamed","สถานะบริการ QA","$status_data"],["ref_renamed","ดูสถานะ QA","$step_view"],["ref_renamed","เปิดแดชบอร์ด QA","$open_dashboard"],["body_defaulted","ตัวตรวจสถานะ QA",""],["wrapped_in_list","เกณฑ์สถานะ QA","cases"],["field_dropped","หน้าแดชบอร์ด QA","fields"],["field_dropped","หน้าแดชบอร์ด QA","actions"],["field_dropped","หน้าแดชบอร์ด QA","states"],["field_dropped","เกณฑ์สถานะ QA","open"]]
+OK  E9 clean-blue: one "saved, but field X left out" line per dropped field (Q5 wording) — 4 lines shown
+OK  E9 clean-blue: no "not saved" claim for a saved round — 
+OK  E8 luxury-gold: all 8 parts stored, nothing refused, 1 call — applied; 8 parts ["data","decision","interaction","role","screen","step","system","work"]; links 6; refused null; calls 1
+OK  E8 luxury-gold: system body {} · decision cases wrapped, open dropped · screen lists dropped — {"system":{},"decision":{"rule":"ตอบ 200 ภายใน 3 วิ = ปกติ","cases":["200 = ปกติ"]},"screen":{"fields":[],"states":[],"actions":[]}}
+OK  E8 luxury-gold: the record names every repair with title — [["ref_renamed","สถานะบริการ QA","$status_data"],["ref_renamed","ดูสถานะ QA","$step_view"],["ref_renamed","เปิดแดชบอร์ด QA","$open_dashboard"],["body_defaulted","ตัวตรวจสถานะ QA",""],["wrapped_in_list","เกณฑ์สถานะ QA","cases"],["field_dropped","หน้าแดชบอร์ด QA","fields"],["field_dropped","หน้าแดชบอร์ด QA","actions"],["field_dropped","หน้าแดชบอร์ด QA","states"],["field_dropped","เกณฑ์สถานะ QA","open"]]
+OK  E9 luxury-gold: one "saved, but field X left out" line per dropped field (Q5 wording) — 4 lines shown
+OK  E9 luxury-gold: no "not saved" claim for a saved round — 
+OK  E8 minimal-mono: all 8 parts stored, nothing refused, 1 call — applied; 8 parts ["data","decision","interaction","role","screen","step","system","work"]; links 6; refused null; calls 1
+OK  E8 minimal-mono: system body {} · decision cases wrapped, open dropped · screen lists dropped — {"system":{},"decision":{"rule":"ตอบ 200 ภายใน 3 วิ = ปกติ","cases":["200 = ปกติ"]},"screen":{"fields":[],"states":[],"actions":[]}}
+OK  E8 minimal-mono: the record names every repair with title — [["ref_renamed","สถานะบริการ QA","$status_data"],["ref_renamed","ดูสถานะ QA","$step_view"],["ref_renamed","เปิดแดชบอร์ด QA","$open_dashboard"],["body_defaulted","ตัวตรวจสถานะ QA",""],["wrapped_in_list","เกณฑ์สถานะ QA","cases"],["field_dropped","หน้าแดชบอร์ด QA","fields"],["field_dropped","หน้าแดชบอร์ด QA","actions"],["field_dropped","หน้าแดชบอร์ด QA","states"],["field_dropped","เกณฑ์สถานะ QA","open"]]
+OK  E9 minimal-mono: one "saved, but field X left out" line per dropped field (Q5 wording) — 4 lines shown
+OK  E9 minimal-mono: no "not saved" claim for a saved round — 
+OK  E10 stored row: bot_could_not_answer / protocol, raw kept, content empty — {"s":"bot_could_not_answer","r":"protocol","n":null,"raw":"QA-UNREADABLE นี่ไม่ใช่ JSON {{{","c":"","calls":2}
+OK  E10 nothing stored, no saved claim, raw text not shown to the user — parts 0
+E10 chat text near the bot row: undefined

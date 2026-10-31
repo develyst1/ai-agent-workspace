@@ -1,0 +1,112 @@
+[
+  {
+    "at": "2026-10-29T07:06:28.326Z",
+    "by": "โด่ง",
+    "kind": "label",
+    "entity": "label:3",
+    "op": "label",
+    "before": null,
+    "after": {
+      "label": "v1 ทดลอง",
+      "version": 3
+    },
+    "changeSetId": null
+  },
+  {
+    "at": "2026-10-29T07:06:28.323Z",
+    "by": "โด่ง",
+    "kind": "settings",
+    "entity": "project",
+    "op": "settings",
+    "before": {
+      "model": "tier:small",
+      "creativity": 0.7
+    },
+    "after": {
+      "model": "tier:small",
+      "creativity": 0.2
+    },
+    "changeSetId": null
+  },
+  {
+    "at": "2026-10-29T07:06:28.320Z",
+    "by": "โด่ง",
+    "kind": "settings",
+    "entity": "project",
+    "op": "settings",
+    "before": {
+      "model": "tier:medium",
+      "creativity": 0.7
+    },
+    "after": {
+      "model": "tier:small",
+      "creativity": 0.7
+    },
+    "changeSetId": null
+  },
+  {
+    "at": "2026-10-29T07:06:28.315Z",
+    "by": "โด่ง",
+    "kind": "source_refetch",
+    "entity": "source:4026809b-0c10-47e0-89da-91ffa8021d14",
+    "op": "source_refetch",
+    "before": {
+      "id": "4026809b-0c10-47e0-89da-91ffa8021d14",
+      "kind": "link",
+      "mime": null,
+      "name": "http://127.0.0.1:4295/page",
+      "size": 26,
+      "text": "",
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "operator"
+      },
+      "reason": "link_unreachable",
+      "sha256": "b15d5f69670e87896a6a5043cfc5579e6a35c4d31aea2a8d9d8eacc11053a1bb",
+      "status": "failed",
+      "storedAs": "b1/b15d5f69670e87896a6a5043cfc5579e6a35c4d31aea2a8d9d8eacc11053a1bb",
+      "createdAt": "2026-10-29T07:05:51.064Z"
+    },
+    "after": {
+      "id": "4026809b-0c10-47e0-89da-91ffa8021d14",
+      "kind": "link",
+      "mime": "text/html",
+      "name": "http://127.0.0.1:4295/page",
+      "size": 159,
+      "text": "หน้าทดสอบ TEST-104\nเนื้อหาใหม่หลังเช็คอีกครั้ง",
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "operator"
+      },
+      "sha256": "35aecc7e8dc1610c874764a5017723fb6eecdbb7add4cbe235186e24362ce4a2",
+      "status": "read",
+      "storedAs": "35/35aecc7e8dc1610c874764a5017723fb6eecdbb7add4cbe235186e24362ce4a2",
+      "createdAt": "2026-10-29T07:05:51.064Z"
+    },
+    "changeSetId": null
+  },
+  {
+    "at": "2026-10-29T07:06:28.296Z",
+    "by": "โด่ง",
+    "kind": "source_add",
+    "entity": "source:e6880ba9-5b54-4e63-8457-505334a4199e",
+    "op": "source_add",
+    "before": null,
+    "after": {
+      "id": "e6880ba9-5b54-4e63-8457-505334a4199e",
+      "kind": "file",
+      "mime": "text/plain",
+      "name": "second.txt",
+      "size": 51,
+      "text": "แหล่งข้อมูลที่สอง",
+      "origin": {
+        "date": "2026-10-29",
+        "stamp": "operator"
+      },
+      "sha256": "daea938e47fd3745a3978651d6fdf4e908308fb54e7af226b5b05724a89003ea",
+      "status": "read",
+      "createdAt": "2026-10-29T07:06:28.296Z"
+    },
+    "changeSetId": null
+  }
+]

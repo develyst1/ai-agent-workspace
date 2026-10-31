@@ -1,0 +1,19 @@
+{
+  "s": 200,
+  "j": {
+    "status": "bot_could_not_answer",
+    "reply": null,
+    "changeSetId": null,
+    "questions": [],
+    "contradictions": [],
+    "failedSources": [],
+    "messageIds": [
+      "5ca48658-912b-4b2d-ac7f-304b1ca78271",
+      "8b969109-2d94-4356-86fd-6ac34f75d694"
+    ],
+    "reason": "http_503",
+    "note": null,
+    "refused": null,
+    "saved": null
+  }
+}

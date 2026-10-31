@@ -1,0 +1,85 @@
+{
+  "id": "4f77e265-1f26-44fc-b853-afd48f97f9a5",
+  "createdAt": "2026-10-29T06:28:34.724Z",
+  "stale": false,
+  "items": [
+    {
+      "id": "f60f9105-f179-406e-a146-5e850d424242",
+      "position": 1,
+      "question": "แสดงกี่บริการ อะไรบ้าง",
+      "status": "answered",
+      "answer": "แสดง 4 บริการ: Blueprint API, Blueprint เว็บ, CAW API, CAW เว็บ",
+      "notInSpec": false,
+      "parts": [
+        "DEC-001"
+      ],
+      "mark": null,
+      "note": null,
+      "questionKey": null,
+      "createdAt": "2026-10-29T06:28:38.661Z"
+    },
+    {
+      "id": "a26af6b4-5cc2-4026-a1bb-a231eeccad18",
+      "position": 2,
+      "question": "เช็คใหม่ทุกกี่วินาที",
+      "status": "answered",
+      "answer": "ทุก 10 วินาที",
+      "notInSpec": false,
+      "parts": [
+        "DEC-002"
+      ],
+      "mark": null,
+      "note": null,
+      "questionKey": null,
+      "createdAt": "2026-10-29T06:28:43.733Z"
+    },
+    {
+      "id": "2aa95ad2-82c6-4dc8-ad1b-e320398cae71",
+      "position": 3,
+      "question": "ไม่ตอบภายในกี่วินาทีถือว่าไม่ตอบ",
+      "status": "answered",
+      "answer": "3 วินาที",
+      "notInSpec": false,
+      "parts": [
+        "DEC-003"
+      ],
+      "mark": null,
+      "note": null,
+      "questionKey": null,
+      "createdAt": "2026-10-29T06:28:47.887Z"
+    },
+    {
+      "id": "567a9370-2c02-43ac-8157-09aba7361406",
+      "position": 4,
+      "question": "รันที่พอร์ตอะไร",
+      "status": "answered",
+      "answer": "รันที่ http://127.0.0.1:3900 (พอร์ต 3900)",
+      "notInSpec": false,
+      "parts": [
+        "DEC-004"
+      ],
+      "mark": null,
+      "note": null,
+      "questionKey": null,
+      "createdAt": "2026-10-29T06:28:51.890Z"
+    },
+    {
+      "id": "c4d2d7b0-edfd-4517-867b-f1b07009e463",
+      "position": 5,
+      "question": "อะไรบ้างที่ไม่ทำ",
+      "status": "answered",
+      "answer": "ไม่ทำ: login, การแจ้งเตือน, เก็บประวัติ, deploy",
+      "notInSpec": false,
+      "parts": [
+        "DEC-006"
+      ],
+      "mark": null,
+      "note": null,
+      "questionKey": null,
+      "createdAt": "2026-10-29T06:28:55.738Z"
+    }
+  ],
+  "right": 0,
+  "marked": 0,
+  "score": null
+}

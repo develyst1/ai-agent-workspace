@@ -1,0 +1,22 @@
+{
+ "revision": 1,
+ "latestLabel": null,
+ "changes": [
+  {
+   "rev": 1,
+   "at": "2026-10-30T04:19:04.824Z",
+   "by": "โด่ง",
+   "cause": "operator",
+   "added": [
+    "DEC-001",
+    "SCR-001",
+    "STEP-001",
+    "STEP-002",
+    "WRK-001"
+   ],
+   "changed": [],
+   "removed": []
+  }
+ ],
+ "more": false
+}

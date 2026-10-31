@@ -1,0 +1,15 @@
+    [13.5s] S18 questions on screen 4 · ตามนั้น buttons 4
+OK  [14.4s] AC-1 "ตามนั้น" on question 1 marks ONLY question 1 "ตอบแล้ว · <its default>" — ["ใช้เทคโนโลยีอะไรทำ? ตอบแล้ว · Node.js ล้วน ไม่ใช้ framework แก้","\"วันนี้\" นับตามเวลาไหน? คำตอบที่เสนอ เวลาไทย 00:00–23:59 เครื่องตั้งเว","จำนวนเงินใส่ทศนิยมได้ไหม? คำตอบที่เสนอ ได้ ไม่เกิน 2 ตำแหน่ง ใส่ 12.34","หมายเหตุบังคับใส่ไหม? คำตอบที่เสนอ ไม่บังคับ ยาวไม่เกิน 100 ตัวอักษร เ"]
+OK  [14.4s] AC-1 questions 2–4 still show their defaults and their own "ตามนั้น" — answer pairs left 3
+OK  [14.4s] AC-2 "ตกลง เริ่มงาน" disabled, with "ยังตอบคำถามไม่ครบ — เหลืออีก 3 ข้อ" — disabled true
+OK  [14.4s] AC-1 nothing is sent yet (the answer is held on the screen) — operator messages 1
+OK  [15.5s] AC-2 3 of 4 answered → still disabled, "เหลืออีก 1 ข้อ" — disabled true
+OK  [17.1s] AC-2 the 4th answer sends ONE message, one line per question, each with its own text (3 defaults + the typed one) — "ข้อ 1: Node.js ล้วน ไม่ใช้ framework\nข้อ 2: เวลาไทย 00:00–23:59\nข้อ 3: ได้ ไม่เกิน 2 ตำแหน่ง\nข้อ 4: ไม่บังคับ ยาวได้ 200 ตัวอักษร (QA ตอบเอง)"
+OK  [18.1s] AC-2 then "ตกลง เริ่มงาน" is enabled — 
+    [18.1s] S18 turn 1 (copy before accept): propose 201
+OK  [23.6s] AC-3 two open copies before accept; after "ตกลง เริ่มงาน" the other copy shows "แผนนี้ตกลงไปแล้ว" and no button; 2 cards, not 4 — open before 2 · badge true · buttons 0 · cards 2
+OK  [25.7s] AC-3 the same plan posted AFTER acceptance: the screen shows "แผนนี้ตกลงไปแล้ว" and no "ตกลง เริ่มงาน"; accepting it is refused 409 plan_already_accepted; still 2 cards — posted 201 · buttons 0 · accept 409 {"error":{"code":"plan_already_accepted","message":"แผนนี้ตกลงไปแล้ว"}}
+ERROR TypeError: undefined is not an object (evaluating 'JSON.stringify(bRes?.j).slice')
+    at /workspace/ai-agent-workspace/i-space/ai-worker/tests/harness/test-126/r126.mjs:149:329
+    at processTicksAndRejections (native:7:39)
+run dir /tmp/qa119-RVdpbY

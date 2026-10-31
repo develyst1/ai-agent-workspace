@@ -1,0 +1,179 @@
+{
+ "prompt": "คุณคือ QA112 (BE) ทีมงาน AI ใน CAW — your role skills are in your system prompt: follow them.\nYour card is 01a18ac4-d50e-7519-9176-2ced6230bc61 (#1) in project 65a032fa-97d2-4fa3-bde5-feb876cf50f5.\n\n1. Call the MCP tool `card_context` first (with that cardId), then do the work.\n2. Follow every rule in `spec.decisions` and `spec.relatedDecisions` of your card's context — a rule on a related part applies to your card too.\n3. End this step with exactly one of the MCP tools: `comment`, `hand_off`, `set_status`, `ask_operator`.\n4. No git writes (no add, commit, push, branch, checkout). No web. Stay inside your working folders.\n5. If you cannot go on without a decision, use `ask_operator` with your proposed default — do not guess.\n6. In `comment` and `ask_operator` text, write line breaks as real new lines — never the two characters \\n.",
+ "status": 200,
+ "context": {
+  "card": {
+   "id": "01a18ac4-d50e-7519-9176-2ced6230bc61",
+   "projectId": "65a032fa-97d2-4fa3-bde5-feb876cf50f5",
+   "number": 1,
+   "kind": "work",
+   "title": "สร้างหน้า Health Board",
+   "todo": "TEST-112: the builder's card, anchored on the screen as in TEST-106",
+   "status": "doing",
+   "assigneeId": "01a18ac4-cc8a-735f-bf4c-86788d94e733",
+   "anchor": {
+    "key": "SCR-001",
+    "version": 0
+   },
+   "anchorLabel": null,
+   "specChangedVersion": null,
+   "anchorRemoved": false,
+   "dependsOn": [],
+   "question": null,
+   "answer": null,
+   "workable": true,
+   "stoppedMidway": null,
+   "createdAt": "2026-10-30T03:05:17.842Z",
+   "updatedAt": "2026-10-30T03:05:19.920Z"
+  },
+  "spec": {
+   "part": {
+    "key": "SCR-001",
+    "body": {
+     "fields": [],
+     "states": [],
+     "actions": [
+      {
+       "name": "checkNow",
+       "label": "เช็คตอนนี้"
+      }
+     ]
+    },
+    "kind": "screen",
+    "title": "หน้า Health Board",
+    "origin": {
+     "date": "2026-10-29",
+     "stamp": "operator"
+    }
+   },
+   "flows": [
+    {
+     "at": [
+      "STEP-001",
+      "STEP-002",
+      "STEP-003"
+     ],
+     "work": "WRK-001"
+    }
+   ],
+   "savedAt": "2026-10-30T03:05:12.053Z",
+   "revision": 1,
+   "decisions": [
+    {
+     "key": "DEC-005",
+     "body": {
+      "rule": "ข้อความบนหน้าเป็นภาษาไทย"
+     },
+     "kind": "decision",
+     "title": "ข้อความบนหน้าเป็นภาษาไทย",
+     "origin": {
+      "date": "2026-10-29",
+      "stamp": "operator"
+     }
+    }
+   ],
+   "projectId": "00000000-0000-4000-8000-0000000001c2",
+   "questions": [],
+   "neighbours": [],
+   "latestLabel": null,
+   "relatedDecisions": [
+    {
+     "via": "STEP-002",
+     "decision": {
+      "key": "DEC-001",
+      "body": {
+       "rule": "แสดง 4 บริการ: Blueprint API (http://127.0.0.1:4200/health), Blueprint เว็บ (http://127.0.0.1:3100), CAW API (http://127.0.0.1:4500/health), CAW เว็บ (http://127.0.0.1:3500)"
+      },
+      "kind": "decision",
+      "title": "แสดง 4 บริการ",
+      "origin": {
+       "date": "2026-10-29",
+       "stamp": "operator"
+      }
+     }
+    },
+    {
+     "via": "STEP-002",
+     "decision": {
+      "key": "DEC-002",
+      "body": {
+       "rule": "เช็คใหม่เองทุก 10 วินาที และมีปุ่ม \"เช็คตอนนี้\""
+      },
+      "kind": "decision",
+      "title": "เช็คใหม่เองทุก 10 วินาที และมีปุ่ม \"เช็คตอนนี้\"",
+      "origin": {
+       "date": "2026-10-29",
+       "stamp": "operator"
+      }
+     }
+    },
+    {
+     "via": "STEP-002",
+     "decision": {
+      "key": "DEC-003",
+      "body": {
+       "rule": "ถ้าบริการไม่ตอบภายใน 3 วินาที ให้ถือว่า \"ไม่ตอบ\""
+      },
+      "kind": "decision",
+      "title": "ไม่ตอบภายใน 3 วินาที = \"ไม่ตอบ\"",
+      "origin": {
+       "date": "2026-10-29",
+       "stamp": "operator"
+      }
+     }
+    },
+    {
+     "via": "WRK-001",
+     "decision": {
+      "key": "DEC-004",
+      "body": {
+       "rule": "รันในเครื่องที่ http://127.0.0.1:3900 ไม่ต้อง login ไม่ต้องมีฐานข้อมูล"
+      },
+      "kind": "decision",
+      "title": "รันที่ http://127.0.0.1:3900 ไม่ต้อง login ไม่ต้องมีฐานข้อมูล",
+      "origin": {
+       "date": "2026-10-29",
+       "stamp": "operator"
+      }
+     }
+    },
+    {
+     "via": "WRK-001",
+     "decision": {
+      "key": "DEC-006",
+      "body": {
+       "rule": "ไม่ทำ: login, การแจ้งเตือน, เก็บประวัติ, deploy"
+      },
+      "kind": "decision",
+      "title": "ไม่ทำ: login, การแจ้งเตือน, เก็บประวัติ, deploy",
+      "origin": {
+       "date": "2026-10-29",
+       "stamp": "operator"
+      }
+     }
+    }
+   ],
+   "relatedDecisionsMore": false
+  },
+  "specRead": {
+   "revision": 1,
+   "readAt": "2026-10-30T03:05:19.928Z",
+   "fromCache": false,
+   "pinned": true
+  },
+  "notes": [
+   {
+    "id": "01a18ac4-db7e-7382-904a-cfb4d779394e",
+    "type": "comment",
+    "actor": "worker:01a18ac4-cc8a-735f-bf4c-86788d94e733",
+    "text": "TEST-112 read the card context (200)",
+    "fromWorkerId": null,
+    "toWorkerId": null,
+    "allowed": null,
+    "at": "2026-10-30T03:05:19.494Z"
+   }
+  ],
+  "decisions": [],
+  "codeMap": null
+ }
+}

@@ -1,0 +1,2 @@
+OK  AC-4 light call uses the configured tier:medium — {"http":["tier:medium:refused","tier:medium:good"],"calls":["first/heavy/tier:medium/ok","correction/light/tier:medium/ok"]}
+OK  AC-4 quiz uses tier:medium — {"http":["tier:medium:quiz"],"calls":["answer/light/tier:medium/ok"]}

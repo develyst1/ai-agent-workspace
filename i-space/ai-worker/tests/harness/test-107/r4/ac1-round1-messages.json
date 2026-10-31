@@ -1,0 +1,115 @@
+[
+ {
+  "id": "cd51896b-1c56-418e-9bd1-b9e37b0f9771",
+  "role": "user",
+  "content": "ชื่อ: I-Space Health Board — หน้าเว็บเดียว ดูว่าบริการของ I-Space ตัวไหนเปิดอยู่\n1. แสดง 4 บริการ: Blueprint API (http://127.0.0.1:4200/health), Blueprint เว็บ (http://127.0.0.1:3100), CAW API (http://127.0.0.1:4500/health), CAW เว็บ (http://127.0.0.1:3500).\n2. แต่ละบริการแสดง: ชื่อ · สถานะ \"ทำงาน\" (เขียว) หรือ \"ไม่ตอบ\" (แดง) · เวลาตอบเป็น ms · เวลาที่เช็คล่าสุด.\n3. เช็คใหม่เองทุก 10 วินาที และมีปุ่ม \"เช็คตอนนี้\".\n4. ถ้าบริการไม่ตอบภายใน 3 วินาที ให้ถือว่า \"ไม่ตอบ\".\n5. รันในเครื่องที่ http://127.0.0.1:3900 ไม่ต้อง login ไม่ต้องมีฐานข้อมูล.\n6. ข้อความบนหน้าเป็นภาษาไทย.\nไม่ทำ: login, การแจ้งเตือน, เก็บประวัติ, deploy.",
+  "model": "tier:medium",
+  "creativity": 0.5,
+  "roundStatus": null,
+  "changeSetId": null,
+  "createdAt": "2026-10-29T19:22:44.625Z",
+  "roundReason": null,
+  "roundNote": null,
+  "roundRefused": null,
+  "roundSaved": null,
+  "roundAdjusted": null,
+  "roundRaw": null
+ },
+ {
+  "id": "fe9c8d94-9476-48b4-8d4c-2f885db67ba5",
+  "role": "bot",
+  "content": "",
+  "model": "deepseek/deepseek-flash",
+  "creativity": 0.5,
+  "roundStatus": "applied",
+  "changeSetId": "5fcf64c8-de9c-481f-a5e3-2d003dcccb6a",
+  "createdAt": "2026-10-29T19:24:19.040Z",
+  "roundReason": null,
+  "roundNote": null,
+  "roundRefused": [
+   {
+    "op": "part.add",
+    "key": null,
+    "ref": "$api_blueprint_api_health",
+    "item": "changes[5]",
+    "kind": "api",
+    "title": "Blueprint API Health",
+    "detail": "api body: ✖ Invalid string: must start with \"/\"\n  → at path",
+    "reason": "invalid_change"
+   },
+   {
+    "op": "link.add",
+    "key": null,
+    "ref": "$api_blueprint_api_health",
+    "item": "changes[10]",
+    "kind": "covers",
+    "title": null,
+    "detail": "needs $api_blueprint_api_health, which was not saved",
+    "reason": "depends_on_refused"
+   },
+   {
+    "op": "part.add",
+    "key": null,
+    "ref": "$api_blueprint_web",
+    "item": "changes[6]",
+    "kind": "api",
+    "title": "Blueprint เว็บ",
+    "detail": "api body: ✖ Invalid string: must start with \"/\"\n  → at path",
+    "reason": "invalid_change"
+   },
+   {
+    "op": "link.add",
+    "key": null,
+    "ref": "$api_blueprint_web",
+    "item": "changes[11]",
+    "kind": "covers",
+    "title": null,
+    "detail": "needs $api_blueprint_web, which was not saved",
+    "reason": "depends_on_refused"
+   },
+   {
+    "op": "part.add",
+    "key": null,
+    "ref": "$api_caw_api_health",
+    "item": "changes[7]",
+    "kind": "api",
+    "title": "CAW API Health",
+    "detail": "api body: ✖ Invalid string: must start with \"/\"\n  → at path",
+    "reason": "invalid_change"
+   },
+   {
+    "op": "link.add",
+    "key": null,
+    "ref": "$api_caw_api_health",
+    "item": "changes[12]",
+    "kind": "covers",
+    "title": null,
+    "detail": "needs $api_caw_api_health, which was not saved",
+    "reason": "depends_on_refused"
+   },
+   {
+    "op": "part.add",
+    "key": null,
+    "ref": "$api_caw_web",
+    "item": "changes[8]",
+    "kind": "api",
+    "title": "CAW เว็บ",
+    "detail": "api body: ✖ Invalid string: must start with \"/\"\n  → at path",
+    "reason": "invalid_change"
+   },
+   {
+    "op": "link.add",
+    "key": null,
+    "ref": "$api_caw_web",
+    "item": "changes[13]",
+    "kind": "covers",
+    "title": null,
+    "detail": "needs $api_caw_web, which was not saved",
+    "reason": "depends_on_refused"
+   }
+  ],
+  "roundSaved": 6,
+  "roundAdjusted": null,
+  "roundRaw": null
+ }
+]

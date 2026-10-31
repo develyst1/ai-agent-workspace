@@ -1,0 +1,126 @@
+[
+ {
+  "theme": "clean-blue",
+  "tag": "before",
+  "body": "\"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "h1": "Anuphan, \"Anuphan Fallback\"",
+  "faces": [
+   "Anuphan 400",
+   "Anuphan 400",
+   "Anuphan 500",
+   "Anuphan 500",
+   "Anuphan 600",
+   "Anuphan 600",
+   "Anuphan 700",
+   "Anuphan 700"
+  ],
+  "fontFiles": [
+   "/_next/static/media/41668b7e976a3c46-s.p.2vx-usavuz-_v.woff2",
+   "/_next/static/media/48a9130fde140ce9-s.p.2chmmw5jncpj5.woff2",
+   "/_next/static/media/890d5c8c3271b311-s.p.33bu0xzn0g3ya.woff2",
+   "/_next/static/media/9abe3d53283d35f1-s.p.1gbn-6w9rll2_.woff2",
+   "/_next/static/media/bfd813093b8ca1bb.p.3ok2djvs6w93k.woff2",
+   "/_next/static/media/cf5137f13e977cd9-s.p.3tm3xjr2tc5ut.woff2",
+   "/_next/static/media/d5110018ffd17724-s.p.3o7l06385mh_r.woff2",
+   "/_next/static/media/f304c3cf3765fb5f.p.0h0-3wqrkgcb1.woff2"
+  ]
+ },
+ {
+  "theme": "clean-blue",
+  "tag": "after",
+  "body": "\"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "h1": "cleanBlueFont, \"cleanBlueFont Fallback\"",
+  "faces": [
+   "cleanBlueFont 400 700"
+  ],
+  "fontFiles": [
+   "/_next/static/media/anuphan-s.p.34k_ma568vw82.woff2",
+   "/_next/static/media/noto_sans_thai-s.p.3538yta5hc4xd.woff2",
+   "/_next/static/media/noto_sans_thai_looped-s.p.1_8tgbzyu70f-.woff2",
+   "/_next/static/media/noto_serif_thai-s.p.2lm9ryp6q9b3d.woff2"
+  ]
+ },
+ {
+  "theme": "luxury-gold",
+  "tag": "before",
+  "body": "\"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "h1": "\"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "faces": [
+   "Noto Serif Thai 600",
+   "Noto Serif Thai 600",
+   "Noto Sans Thai Looped 400",
+   "Noto Sans Thai Looped 400",
+   "Noto Sans Thai Looped 500",
+   "Noto Sans Thai Looped 500",
+   "Noto Sans Thai Looped 600",
+   "Noto Sans Thai Looped 600"
+  ],
+  "fontFiles": [
+   "/_next/static/media/41668b7e976a3c46-s.p.2vx-usavuz-_v.woff2",
+   "/_next/static/media/48a9130fde140ce9-s.p.2chmmw5jncpj5.woff2",
+   "/_next/static/media/890d5c8c3271b311-s.p.33bu0xzn0g3ya.woff2",
+   "/_next/static/media/9abe3d53283d35f1-s.p.1gbn-6w9rll2_.woff2",
+   "/_next/static/media/bfd813093b8ca1bb.p.3ok2djvs6w93k.woff2",
+   "/_next/static/media/cf5137f13e977cd9-s.p.3tm3xjr2tc5ut.woff2",
+   "/_next/static/media/d5110018ffd17724-s.p.3o7l06385mh_r.woff2",
+   "/_next/static/media/f304c3cf3765fb5f.p.0h0-3wqrkgcb1.woff2"
+  ]
+ },
+ {
+  "theme": "luxury-gold",
+  "tag": "after",
+  "body": "\"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "h1": "\"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "faces": [
+   "serif 500 700",
+   "sans 400 600"
+  ],
+  "fontFiles": [
+   "/_next/static/media/anuphan-s.p.34k_ma568vw82.woff2",
+   "/_next/static/media/noto_sans_thai-s.p.3538yta5hc4xd.woff2",
+   "/_next/static/media/noto_sans_thai_looped-s.p.1_8tgbzyu70f-.woff2",
+   "/_next/static/media/noto_serif_thai-s.p.2lm9ryp6q9b3d.woff2"
+  ]
+ },
+ {
+  "theme": "minimal-mono",
+  "tag": "before",
+  "body": "\"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "h1": "\"Noto Sans Thai\", \"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "faces": [
+   "Noto Sans Thai 400",
+   "Noto Sans Thai 400",
+   "Noto Sans Thai 500",
+   "Noto Sans Thai 500",
+   "Noto Sans Thai 700",
+   "Noto Sans Thai 700",
+   "Noto Sans Thai 800",
+   "Noto Sans Thai 800"
+  ],
+  "fontFiles": [
+   "/_next/static/media/41668b7e976a3c46-s.p.2vx-usavuz-_v.woff2",
+   "/_next/static/media/48a9130fde140ce9-s.p.2chmmw5jncpj5.woff2",
+   "/_next/static/media/890d5c8c3271b311-s.p.33bu0xzn0g3ya.woff2",
+   "/_next/static/media/9abe3d53283d35f1-s.p.1gbn-6w9rll2_.woff2",
+   "/_next/static/media/bfd813093b8ca1bb.p.3ok2djvs6w93k.woff2",
+   "/_next/static/media/cf5137f13e977cd9-s.p.3tm3xjr2tc5ut.woff2",
+   "/_next/static/media/d5110018ffd17724-s.p.3o7l06385mh_r.woff2",
+   "/_next/static/media/f304c3cf3765fb5f.p.0h0-3wqrkgcb1.woff2"
+  ]
+ },
+ {
+  "theme": "minimal-mono",
+  "tag": "after",
+  "body": "\"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "h1": "monoFont, \"monoFont Fallback\", \"Sukhumvit Set\", Thonburi, system-ui, sans-serif",
+  "faces": [
+   "monoFont 400 800"
+  ],
+  "fontFiles": [
+   "/_next/static/media/anuphan-s.p.34k_ma568vw82.woff2",
+   "/_next/static/media/noto_sans_thai-s.p.3538yta5hc4xd.woff2",
+   "/_next/static/media/noto_sans_thai_looped-s.p.1_8tgbzyu70f-.woff2",
+   "/_next/static/media/noto_serif_thai-s.p.2lm9ryp6q9b3d.woff2"
+  ]
+ }
+]

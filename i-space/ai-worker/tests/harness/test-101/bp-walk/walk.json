@@ -1,0 +1,107 @@
+[
+  {
+    "step": "1 home lists the seeded project",
+    "ok": true,
+    "detail": "7 /p/ links; seeded present true"
+  },
+  {
+    "step": "1b home sample link target",
+    "ok": true,
+    "detail": "sample link /p/d01a63a7-c48d-4eea-9a85-4fca1b8501e3/sequence?step=STEP-001 → HTTP 404 (visible: false)"
+  },
+  {
+    "step": "2 create project by dialog",
+    "ok": false,
+    "detail": "after submit url http://127.0.0.1:3110/"
+  },
+  {
+    "step": "3 open card → overview",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/overview"
+  },
+  {
+    "step": "nav chat",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/chat"
+  },
+  {
+    "step": "nav flowchart",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/flowchart"
+  },
+  {
+    "step": "nav sequence",
+    "ok": false,
+    "detail": "no link /p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/sequence on http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/flowchart"
+  },
+  {
+    "step": "nav screens",
+    "ok": false,
+    "detail": "no link /p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/screens on http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/flowchart"
+  },
+  {
+    "step": "nav api",
+    "ok": false,
+    "detail": "no link /p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/api on http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/flowchart"
+  },
+  {
+    "step": "nav web",
+    "ok": false,
+    "detail": "no link /p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/web on http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/flowchart"
+  },
+  {
+    "step": "nav stuck",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/stuck"
+  },
+  {
+    "step": "nav work-order",
+    "ok": true,
+    "detail": "url http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/work-order"
+  },
+  {
+    "step": "nav ready",
+    "ok": false,
+    "detail": "no link /p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/ready on http://127.0.0.1:3110/p/dd3ed5cb-98eb-432a-b15d-929abdc0d77b/work-order"
+  },
+  {
+    "step": "nav history link present",
+    "ok": true,
+    "detail": "history links on ready page: 1"
+  },
+  {
+    "step": "4 chat composer present",
+    "ok": true,
+    "detail": "textareas 2"
+  },
+  {
+    "step": "8 ready build link",
+    "ok": true,
+    "detail": "href http://127.0.0.1:3520/start?project=dd3ed5cb-98eb-432a-b15d-929abdc0d77b&version=2"
+  },
+  {
+    "step": "9 PDF export control present",
+    "ok": true,
+    "detail": "controls 1 (export itself not run: it launches local Chrome to print — NOT_TESTED)"
+  },
+  {
+    "step": "U1 /dev/isolation without BLUEPRINT_DEV_PAGES",
+    "ok": true,
+    "detail": "HTTP 404"
+  },
+  {
+    "step": "U2 no print/dev link on overview",
+    "ok": true,
+    "detail": "[]"
+  },
+  {
+    "step": "U2 no print/dev link on ready",
+    "ok": true,
+    "detail": "[]"
+  },
+  {
+    "step": "U2 no print/dev link on chat",
+    "ok": true,
+    "detail": "[]"
+  }
+]

@@ -1,0 +1,11 @@
+OK  [13.1s] AC-1 review with NO note → refused (409), the message names what is missing (PM words), the card stays where it was — HTTP 409 · {"error":{"code":"review_note_missing","message":"ยังส่งตรวจไม่ได้ — เขียนบันทึกก่อนว่าทำอะไรไปบ้าง และเจ้าของจะลองได้อย่างไร (ใส่ใน done และ howToTry)","details":{"missing":["done","howToTry"]}}} · card todo
+OK  [13.1s] AC-1 neighbour: only `done` (no howToTry) → refused, details.missing = [howToTry] (the sentence itself always names both), card unchanged — HTTP 409 · {"error":{"code":"review_note_missing","message":"ยังส่งตรวจไม่ได้ — เขียนบันทึกก่อนว่าทำอะไรไปบ้าง และเจ้าของจะลองได้อย่างไร (ใส่ใน done และ howToTry)","details":{"missing":["howToTry"]}}} · card todo
+OK  [13.1s] AC-2 both parts → the card is in review with ONE note "ทำแล้ว: …
+ลองได้โดย: …" — HTTP 200 · review · "ทำแล้ว: เพิ่ม server.js (task 1)\nลองได้โดย: รัน node server.js แล้วเปิด http://127.0.0.1:3920"
+OK  [14.7s] AC-2 the owner sees the note on the card screen — "ทำแล้ว: เพิ่ม server.js (task 1) ลองได้โดย: รัน node server.js แล้วเปิด http://127.0.0.1:3920\n\nส่ง"
+OK  [14.7s] AC-1 neighbour (Q1 e): the OPERATOR may still move a card to review without a note — HTTP 200
+OK  [25.7s] AC-3 BE → FE with NO reason → refused (409 wrong_role), message names the card's role, the card stays with the BE — HTTP 409 · {"error":{"code":"wrong_role","message":"ส่งต่อการ์ดนี้ไม่ได้ — การ์ดนี้เป็นงานของ BE ถ้าต้องให้ FE ช่วย ให้บอกเหตุผลในการส่งต่อ (ใส่ใน reason)","details":{"cardRole":"BE","toRoles":["FE"]}}}
+OK  [25.7s] AC-3 the same hand-off WITH a reason → goes through (card now ฝน's) and the note keeps the reason — HTTP 200 · assignee ฝน
+OK  [25.7s] AC-3 the reason is kept where the owner sees it — ["TEST-123 stub hand-off\n\nต้องให้ทำส่วนหน้าเว็บต่อ","TEST-122 comment (pid 2117850, task 1)","TEST-122 comment (pid 2117850, task 2)"]
+OK  [29.3s] AC-3 neighbour (Q1 b): BE → QA with no reason → goes through — HTTP 200
+run dir /tmp/qa119-HMknQV

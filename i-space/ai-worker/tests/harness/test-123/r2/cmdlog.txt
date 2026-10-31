@@ -1,0 +1,21 @@
+== clone 1
+tree-fp /tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t123r2/clone1 HEAD 3096bca fp 7977f1cccca9 (317 paths: 309 tracked, 8 untracked, 0 deleted)
+$ bun install --frozen-lockfile
+219 packages installed [955.00ms]
+== clone 2
+tree-fp /tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t123r2/clone2 HEAD 3096bca fp 7977f1cccca9 (317 paths: 309 tracked, 8 untracked, 0 deleted)
+$ bun install --frozen-lockfile
+219 packages installed [925.00ms]
+== clone 3
+tree-fp /tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t123r2/clone3 HEAD 3096bca fp 7977f1cccca9 (317 paths: 309 tracked, 8 untracked, 0 deleted)
+$ bun install --frozen-lockfile
+219 packages installed [930.00ms]
+$ bun run build   (clone 1, online) → exit 0 in 22 s
+(clone 2's first offline build hung: QA's namespace had loopback DOWN — Turbopack needs local sockets; QA's instrument, not the product. Stopped by QA after ~10 min — clone 2 now holds a half-way .next)
+$ bun run build   (clone 2, offline: no outside network, loopback up; after-halfway-hang) → exit 0 in 22 s
+$ bun run build   (clone 3, offline: no outside network, loopback up; fresh) → exit 0 in 20 s
+$ bun run build   (clone 3, offline) SIGKILLed at 9 s → exit 0 ; last line: 
+$ bun run build   (clone 3, offline, right after the killed one, nothing deleted) → exit 0 in 5 s
+(the 9 s kill came too late: clone 3's cached rebuild finished in < 9 s, exit 0 — not a half-way stop; redone at 2 s)
+$ bun run build   (clone 3, offline) SIGKILLed at 2 s → exit 137; log ends: ✓ Compiled successfully in 359ms   Running TypeScript ... 
+$ bun run build   (clone 3, offline, right after the 2 s kill, nothing deleted) → exit 0 in 5 s

@@ -1,0 +1,45 @@
+$ bun run gen:themes
+$ node scripts/gen-theme-registry.mjs
+themes: clean-blue, luxury-gold, minimal-mono
+$ next build
+▲ Next.js 16.3.6 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 25ms
+- Experiments (use with caution):
+  · optimizePackageImports
+  · serverActions
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 373ms
+  Running TypeScript ...
+  Finished TypeScript in 2.6s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/3) ...
+✓ Generating static pages using 7 workers (3/3) in 181ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /dev/isolation/all
+├ ƒ /dev/isolation/antd
+├ ƒ /dev/isolation/heroui
+├ ƒ /dev/isolation/mantine
+├ ƒ /dev/isolation/none
+├ ƒ /dev/layouts
+├ ƒ /dev/loaders
+├ ƒ /dev/samples
+├ ƒ /dev/themes/luxury-gold
+├ ƒ /dev/themes/minimal-mono
+├ ○ /icon.svg
+├ ƒ /p/[projectId]
+├ ƒ /p/[projectId]/[page]
+├ ƒ /p/[projectId]/chat
+├ ƒ /p/[projectId]/export/pdf
+├ ƒ /p/[projectId]/export/print
+└ ƒ /p/[projectId]/ready
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

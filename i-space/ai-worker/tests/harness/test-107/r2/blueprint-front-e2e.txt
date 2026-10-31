@@ -1,0 +1,4 @@
+  4 passed (5.9s)
+  34 passed (34.2s)
+checked 948 items on 48 pages × 4 themes, 0 failures
+  1 passed (2.1m)

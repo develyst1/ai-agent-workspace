@@ -1,0 +1,20 @@
+== api
+$ bun run src/index.ts
+caw-back API on http://127.0.0.1:4500
+health: {"ok":true}
+openapi: 200
+no actor: {"error":{"code":"actor_required","message":"send X-CAW-Actor: operator, worker:<workerId> or runner:<name> (name = letters, digits, _ and -, 1–64)"}} 400
+operator, bp down: {"error":{"code":"blueprint_unreachable","message":"blueprint_unreachable (network)"}} 502
+listeners after: 0
+== dev (no CAW_WORKSPACE_ROOT)
+$ bun run src/dev.ts
+[runner] runner: CAW_WORKSPACE_ROOT is not set: the absolute path of ai-agent-workspace (the guard hooks and skills are read from it)
+[runner] stopped: runner: CAW_WORKSPACE_ROOT is not set: the absolute path of ai-agent-workspace (the guard hooks and skills are read from it)
+[api] caw-back API on http://127.0.0.1:4500
+health: {"ok":true}
+listeners after: 0
+== mcp
+$ bun run src/mcp/server.ts
+CAW_WORKER_ID is required: the id of the CAW worker this MCP server acts as
+error: script "mcp" exited with code 1
+exit=1

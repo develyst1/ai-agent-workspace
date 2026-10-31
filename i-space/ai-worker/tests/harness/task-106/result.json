@@ -1,0 +1,80 @@
+[
+  {
+    "width": 375,
+    "reducedMotion": false,
+    "watchButton": "64x44",
+    "focusRing": "active=true focus-visible=true | ring-layers-with-colour=oklab(0.456757 0.0262511 -0.212958 / 0.5) 0px 0px 0px 3px",
+    "sidewaysBefore": 0,
+    "sidewaysAfter": 0,
+    "sheet": "375x800",
+    "lines": 18,
+    "atBottom": true,
+    "overflowX": false,
+    "closeButton": "44x44"
+  },
+  {
+    "width": 375,
+    "reducedMotion": true,
+    "watchButton": "64x44",
+    "focusRing": "active=true focus-visible=true | ring-layers-with-colour=oklab(0.456757 0.0262511 -0.212958 / 0.5) 0px 0px 0px 3px",
+    "sidewaysBefore": 0,
+    "sidewaysAfter": 0,
+    "sheet": "375x800",
+    "lines": 20,
+    "atBottom": true,
+    "overflowX": false,
+    "closeButton": "44x44"
+  },
+  {
+    "width": 768,
+    "reducedMotion": false,
+    "watchButton": "64x44",
+    "focusRing": "active=true focus-visible=true | ring-layers-with-colour=oklab(0.456757 0.0262511 -0.212958 / 0.5) 0px 0px 0px 3px",
+    "sidewaysBefore": 0,
+    "sidewaysAfter": 0,
+    "sheet": "560x900",
+    "lines": 22,
+    "atBottom": true,
+    "overflowX": false,
+    "closeButton": "44x44"
+  },
+  {
+    "width": 768,
+    "reducedMotion": true,
+    "watchButton": "64x44",
+    "focusRing": "active=true focus-visible=true | ring-layers-with-colour=oklab(0.456757 0.0262511 -0.212958 / 0.5) 0px 0px 0px 3px",
+    "sidewaysBefore": 0,
+    "sidewaysAfter": 0,
+    "sheet": "560x900",
+    "lines": 24,
+    "atBottom": true,
+    "overflowX": false,
+    "closeButton": "44x44"
+  },
+  {
+    "width": 1280,
+    "reducedMotion": false,
+    "watchButton": "64x44",
+    "focusRing": "active=true focus-visible=true | ring-layers-with-colour=oklab(0.456757 0.0262511 -0.212958 / 0.5) 0px 0px 0px 3px",
+    "sidewaysBefore": 0,
+    "sidewaysAfter": 0,
+    "sheet": "560x900",
+    "lines": 26,
+    "atBottom": true,
+    "overflowX": false,
+    "closeButton": "44x44"
+  },
+  {
+    "width": 1280,
+    "reducedMotion": true,
+    "watchButton": "64x44",
+    "focusRing": "active=true focus-visible=true | ring-layers-with-colour=oklab(0.456757 0.0262511 -0.212958 / 0.5) 0px 0px 0px 3px",
+    "sidewaysBefore": 0,
+    "sidewaysAfter": 0,
+    "sheet": "560x900",
+    "lines": 28,
+    "atBottom": true,
+    "overflowX": false,
+    "closeButton": "44x44"
+  }
+]

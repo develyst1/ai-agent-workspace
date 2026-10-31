@@ -1,0 +1,67 @@
+bun test v1.4.2 (744846f84)
+
+test/sources/http.test.ts:
+Warning: Indexing all PDF objects
+
+test/quiz/answer.test.ts:
+quiz context: uncapped 39724 chars → capped 23918 (cap 24000)
+
+test/interview/partial.test.ts:
+[round] changes_rejected reason=validation
+[round] changes_rejected reason=validation
+[round] changes_rejected reason=validation
+
+test/interview/shapes.test.ts:
+[round] changes_rejected reason=validation
+[round] bot_could_not_answer reason=protocol
+[round] bot_could_not_answer reason=protocol
+[round] bot_could_not_answer reason=protocol
+
+test/interview/op-slip.test.ts:
+[round] bot_could_not_answer reason=timeout
+
+test/interview/url-catcher.test.ts:
+[round] bot_could_not_answer reason=timeout
+[round] bot_could_not_answer reason=timeout
+[round] changes_rejected reason=validation
+
+test/interview/round.test.ts:
+Warning: Indexing all PDF objects
+[round] bot_could_not_answer reason=network
+[round] bot_could_not_answer reason=http_500
+[round] bot_could_not_answer reason=not_json
+[round] bot_could_not_answer reason=empty_content
+[round] bot_could_not_answer reason=protocol
+[round] bot_could_not_answer reason=protocol
+
+test/interview/honest.test.ts:
+[round] changes_rejected reason=validation
+[round] changes_rejected reason=validation
+[round] changes_rejected reason=validation
+[round] changes_rejected reason=validation
+[round] changes_rejected reason=protocol
+[round] changes_rejected reason=network
+[round] changes_rejected reason=validation
+[round] bot_could_not_answer reason=timeout
+[round] bot_could_not_answer reason=network
+
+test/seam/locate.test.ts:
+AC-3 response: {"version":1,"notInSpec":false,"candidates":[{"key":"DEC-001","kind":"decision","title":"ห้องที่จุเกิน 10 คนต้องให้ผู้ดูแลอนุมัติ","score":1,"matched":["อนุมัติ","ห้อง","ใหญ่"],"where":["title","body"]},{"key":"STEP-003","kind":"step","title":"ส่งคำขอจอง","score":1,"matched":["อนุมัติ","ห้อง","ใหญ่"],"where":["link label"]},{"key":"STEP-004","kind":"step","title":"ผู้ดูแลพิจารณา","score":1,"matched":["อนุมัติ","ห้อง","ใหญ่"],"where":["link label"]},{"key":"STEP-005","kind":"step","title":"ได้รับการยืนยัน","score":0.67,"matched":["อนุมัติ","ห้อง"],"where":["link label"]}]}
+AC-4 response: {"version":1,"notInSpec":true,"candidates":[]} · sub-threshold: [["SYS-001",0.25,["ระบบ"]]]
+S1.2b QA sentence: [["INT-010",1],["SCR-003",1],["STEP-004",0.67],["STEP-003",0.67],["API-003",0.67]]
+
+test/seam/notify.test.ts:
+AC-6 log line: [notify] failed reason=network
+
+test/http/spec-store.test.ts:
+[round] changes_rejected reason=validation
+
+test/http/size.test.ts:
+AC-14: GET /stuck on 52 parts / 168 links took 5.1 ms
+
+ 329 pass
+ 16 skip
+ 0 fail
+ 1601 expect() calls
+Ran 345 tests across 45 files. [472.79s]
+BACK EXIT 0

@@ -1,0 +1,29 @@
+{
+  "s": 200,
+  "j": {
+    "id": "4c8f85bf-9941-416c-97b3-6e575c8eb393",
+    "position": 1,
+    "question": "หน้า Health Board เช็คสถานะบริการใหม่ทุกกี่วินาที",
+    "status": "answered",
+    "answer": "ระบบตรวจสอบซ้ำทุก 10 วินาที (และตรวจทันทีเมื่อเปิดหน้า)",
+    "notInSpec": false,
+    "parts": [
+      "INT-001"
+    ],
+    "mark": null,
+    "note": null,
+    "questionKey": null,
+    "createdAt": "2026-10-30T09:25:19.325Z",
+    "calls": [
+      {
+        "ok": true,
+        "step": "answer",
+        "asked": "tier:small",
+        "model": "deepseek/deepseek-flash",
+        "reason": null,
+        "weight": "light",
+        "fallback": false
+      }
+    ]
+  }
+}

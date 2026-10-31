@@ -1,0 +1,8 @@
+typecheck exit=0
+check:api — src/core/api/schema.d.ts matches the OpenAPI document
+ 227 pass
+ 0 fail
+ 2468 expect() calls
+Ran 227 tests across 10 files. [7.45s]
+
+build exit=0

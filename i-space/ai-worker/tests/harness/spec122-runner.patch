@@ -1,0 +1,194 @@
+diff -ru a/src/mcp/server.ts b/src/mcp/server.ts
+--- a/src/mcp/server.ts	2026-10-30 19:08:21.423751802 +0700
++++ b/src/mcp/server.ts	2026-10-30 19:09:24.575062305 +0700
+@@ -4,7 +4,8 @@
+ // a tool error whose text is the API's own error body, so the model sees the code (`not_your_card`, `chain_broken` …).
+ //   env: CAW_API_URL (default http://127.0.0.1:4500) · CAW_WORKER_ID (required — refuses to start without it) ·
+ //        CAW_HOP_ID (the worker's running hop, set by the runner per hop; without it every write tool answers hop_required)
+-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
++import { readFileSync } from "node:fs";
++import { McpServer } from"@modelcontextprotocol/sdk/server/mcp.js";
+ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+ import { z } from "zod";
+ 
+@@ -16,7 +17,8 @@
+ const fail = (error: { code: string; message: string; details?: unknown }): Result => ({ isError: true, content: [{ type: "text", text: JSON.stringify({ error }) }] });
+ 
+ // hopId = the worker's running hop (v1.5, D-054): sent as X-CAW-Hop on every call; without it every write answers hop_required
+-export type McpOptions = { apiUrl: string; workerId: string; hopId?: string; fetch?: (input: string, init?: RequestInit) => Promise<Response> };
++// a function is asked on every call: an open worker (REQ-122) runs a new hop per task, so its hop id is read from a file the runner rewrites
++export type McpOptions = { apiUrl: string; workerId: string; hopId?: string | (() => string | undefined); fetch?:(input: string, init?: RequestInit) => Promise<Response> };
+ 
+ export function createMcpServer({ apiUrl, workerId, hopId, fetch: fetchImpl = (input, init) => fetch(input, init) }: McpOptions): McpServer {
+   const actor = `worker:${workerId}`;
+@@ -24,10 +26,11 @@
+   // one HTTP call: the parsed JSON on success, or the error to hand back as a tool error
+   async function api(method: string, path: string, body?: unknown): Promise<{ json: any } | { error: Result }> {
+     let res: Response;
++    const hop = typeof hopId === "function" ? hopId() : hopId;
+     try {
+       res = await fetchImpl(`${apiUrl}${path}`, {
+         method,
+-        headers: { "x-caw-actor": actor, ...(hopId ? { "x-caw-hop": hopId } : {}), ...(body === undefined ? {} : { "content-type": "application/json" }) },
++        headers: { "x-caw-actor": actor, ...(hop ?{ "x-caw-hop": hop } : {}), ...(body === undefined ? {} : { "content-type": "application/json" }) },
+         body: body === undefined ? undefined : JSON.stringify(body),
+       });
+     } catch {
+@@ -171,6 +174,9 @@
+     console.error("CAW_WORKER_ID is required: the id of the CAW worker this MCP server acts as");
+     process.exit(1);
+   }
+-  const server = createMcpServer({ apiUrl: process.env.CAW_API_URL || "http://127.0.0.1:4500", workerId, hopId: process.env.CAW_HOP_ID || undefined });
++  // CAW_HOP_FILE (REQ-122): an open worker's hop id, read on every call (empty or missing = none); else CAW_HOP_ID, fixed at spawn (a chat hop)
++  const hopFile = process.env.CAW_HOP_FILE || "";
++  const hopId = hopFile ? () => { try { return readFileSync(hopFile, "utf8").trim() || undefined; } catch { return undefined; } } : process.env.CAW_HOP_ID || undefined;
++  const server = createMcpServer({ apiUrl: process.env.CAW_API_URL || "http://127.0.0.1:4500", workerId, hopId });
+   await server.connect(new StdioServerTransport());
+ }
+diff -ru a/src/runner/main.ts b/src/runner/main.ts
+--- a/src/runner/main.ts	2026-10-30 19:08:21.423751802 +0700
++++ b/src/runner/main.ts	2026-10-30 19:09:07.671263045 +0700
+@@ -194,6 +194,10 @@
+     const hopRunning = adopted.running || [...activeIn.values()].includes(project.id);
+     // a hop that ended since the listing must count toward its card's turn and the run's budget: list again
+     const hops = adopted.stale ? await api.hops(project.id, 200) : listed;
++    // one hop per worker and per card (REQ-122): the store's running hops and the ones this process is still finishing
++    const mine = hops.filter((h) => h.endedAt === null || activeIn.has(h.id));
++    const busyWorkers = [...new Set(mine.map((h) => h.workerId))];
++    const busyCards = [...new Set(mine.flatMap((h) => (h.cardId === null ? [] : [h.cardId])))];
+ 
+     // A hop stopped for the subscription limit whose run could not be closed (the API failed just then): close it now, before anything else.
+     // Read from the store, so it survives a restart. Its note is exactly the stop words.
+@@ -204,10 +208,10 @@
+ 
+     // The mode is read here, every tick, never cached (AC-3).
+     let workable: Awaited<ReturnType<typeof api.workableCards>> = [];
+-    if (project.mode === "dispatcher" && openRun && !hopRunning) {
+-      workable = (await api.workableCards(project.id)).filter((c) => !refused.has(`${openRun.id}|${c.id}|${c.assigneeId}`));
++    if (project.mode === "dispatcher" && openRun) {
++      workable =(await api.workableCards(project.id)).filter((c) => !refused.has(`${openRun.id}|${c.id}|${c.assigneeId}`));
+     }
+-    const pending = hopRunning ? null : await pendingMessage(project, hops);
++    const pending = project.entryWorkerId !== null && busyWorkers.includes(project.entryWorkerId) ? null : await pendingMessage(project, hops);
+     if (pending && !project.entryWorkerId && !toldChat.has(`${pending.id}|entry`)) {
+       toldChat.add(`${pending.id}|entry`);
+       log(`message ${pending.id} waits: the project has no entry worker to answer the chat`);
+@@ -218,6 +222,8 @@
+       runCanReopen: project.mode === "dispatcher" && !openRun ? runs.length === 0 || (await sync(project.id)).switchedSince(runs[0]!.id) : false,
+       reviewFailed: project.mode === "dispatcher" && openRun ? (await sync(project.id)).reviewFailedIn(openRun.id) : null,
+       hopRunning,
++      busyWorkers,
++      busyCards,
+       pendingMessage: pending,
+       entryWorkerId: project.entryWorkerId,
+       workable,
+@@ -269,21 +275,28 @@
+         }
+         return;
+       }
+-      case "start_hop": {
+-        try {
+-          launch(project, await api.startHop(project.id, { cardId: action.cardId, workerId: action.workerId, runId: openRun!.id, claim: instance }));
+-        } catch (e) {
+-          if (!(e instanceof RunnerApiError)) throw e;
+-          if (e.code === "hop_running" || e.code === "not_workable") return; // lost a race; the next tick sees how it ended
+-          if (e.code === "no_budget") return await endRun(project.id, openRun!.id, "budget_spent"); // the run's budget, filled since the listing (REQ-120: the only budget)
+-          if (e.status >= 400 && e.status < 500) {
+-            // e.g. not_a_member (the card's assignee is not in the chain): that card's problem, not the run's. Say so once, leave the
+-            // card where it is, and go on with the next one
+-            refused.add(`${openRun!.id}|${action.cardId}|${action.workerId}`);
+-            log(`card ${action.cardId}: the API refused a hop for worker ${action.workerId} (${e.code}) — skipped for this run`);
+-            return;
++      case "start_hops": {
++        // every idle worker's next card, one after another (REQ-122); each refusal is that card's alone, except the budget, which ends the run
++        for (const s of action.hops) {
++          try {
++            launch(project, await api.startHop(project.id, { cardId: s.cardId, workerId: s.workerId, runId: openRun!.id, claim: instance }));
++          } catch (e) {
++            if (!(e instanceof RunnerApiError)) throw e;
++            if (e.code === "hop_running" || e.code === "not_workable") continue; // lost a race; the next tick sees how it ended
++            if (e.code === "no_budget") {
++              // the run's budget, filled since the listing (REQ-120: the only budget); with hops of ours still running the run ends when they do
++              if (![...activeIn.values()].includes(project.id)) await endRun(project.id, openRun!.id, "budget_spent");
++              return;
++            }
++            if (e.status >= 400 && e.status < 500) {
++              // e.g. not_a_member (the card's assignee is not in the chain): that card's problem, not the run's. Say so once, leave the
++              // card where it is, and go on with the next one
++              refused.add(`${openRun!.id}|${s.cardId}|${s.workerId}`);
++              log(`card ${s.cardId}: the API refused a hop for worker ${s.workerId} (${e.code}) — skipped for this run`);
++              continue;
++            }
++            throw e; // not the card's fault (network, 5xx, unreadable body): the tick logs it and the next tick tries again — the card is NOT banned
+           }
+-          throw e; // not the card's fault (network, 5xx, unreadable body): the tick logs it and the next tick tries again — the card is NOT banned
+         }
+         return;
+       }
+diff -ru a/src/runner/plan.ts b/src/runner/plan.ts
+--- a/src/runner/plan.ts	2026-10-30 19:08:21.423751802 +0700
++++ b/src/runner/plan.ts	2026-10-30 19:08:46.855496239 +0700
+@@ -22,6 +22,9 @@
+   entryWorkerId: string | null;
+   /** a hop of this project is running (this runner's or an orphan's) — one at a time per project (D-047 Q3) */
+   hopRunning: boolean;
++  /** workers and cards with a running hop in this project (the store's and this process's) — one hop per worker and per card (REQ-122, SPEC-120 D5) */
++  busyWorkers: string[];
++  busyCards: string[];
+   /** `GET …/cards?workable=true` */
+   workable: { id: string; number: number; assigneeId: string | null }[];
+   /** every hop of the open run, any state */
+@@ -32,13 +35,13 @@
+   | { kind: "idle" }
+   | { kind: "open_run" }
+   | { kind: "finish_run"; runId: string; reason: StopReason; cardId?: string }
+-  | { kind: "start_hop"; cardId: string; workerId: string }
++  | { kind: "start_hops"; hops: { cardId: string; workerId: string }[] }
+   | { kind: "start_chat_hop"; messageId: string; workerId: string };
+ 
+ export function planTick(i: PlanInput): Action {
+   // A chat message is the operator\'s go for one chat hop, in EITHER mode (D-053 Q-A): not gated by the mode, the run or its budget. It waits for a
+   // running hop (one at a time per project) and goes before any card — the operator is waiting for the answer (TASK-C-034).
+-  const chat: Action | null = i.pendingMessage && i.entryWorkerId && !i.hopRunning ? { kind: "start_chat_hop", messageId: i.pendingMessage.id, workerId: i.entryWorkerId } : null;
++  const chat: Action | null = i.pendingMessage && i.entryWorkerId && !i.busyWorkers.includes(i.entryWorkerId) ?{ kind: "start_chat_hop", messageId: i.pendingMessage.id, workerId: i.entryWorkerId } : null;
+   if (i.mode === "manual") {
+     // the hop in progress finishes normally (AC-3); only the run ends, here
+     return i.openRun ? { kind: "finish_run", runId: i.openRun.id, reason: "operator_stopped" } : (chat ?? { kind: "idle" });
+@@ -48,10 +51,9 @@
+   if (!i.openRun) return i.runCanReopen ? { kind: "open_run" } : { kind: "idle" };
+   // REQ-012 R6: the run ends. A hop in progress finishes on its own (as with operator_stopped) — only the run is closed.
+   if (i.reviewFailed !== null) return { kind: "finish_run", runId: i.openRun.id, reason: "failed_review_twice" };
+-  if (i.hopRunning) return { kind: "idle" };
+-
+-  // the API counts every hop of the run against its budget, so the runner does not ask for one it knows will be refused
+-  if (i.hopsInRun.length >= i.openRun.hopBudget) return { kind: "finish_run", runId: i.openRun.id, reason: "budget_spent" };
++  // the API counts every hop of the run against its budget, running ones too, so the runner does not ask for one it knows will be refused
++  const room = i.openRun.hopBudget - i.hopsInRun.length;
++  if (room <= 0) return i.hopRunning ? { kind: "idle" } : { kind: "finish_run", runId: i.openRun.id, reason: "budget_spent" };
+ 
+   // A card gets its turns per worker per run (SPEC-116 D1): a card whose hop failed or was stopped stays where it is and the run goes on with
+   // the next card (SPEC-C-003 § 3); one that was only commented on (status unchanged) gets a second turn, then is not hopped in a loop.
+@@ -66,10 +68,19 @@
+   }
+   const turned = [...i.workable].sort((a, b) => a.number - b.number).filter((c) => c.assigneeId !== null);
+   const pairOf = (c: { id: string; assigneeId: string | null }) => `${c.id}|${c.assigneeId}`;
+-  const fresh = turned.find((c) => !spent.has(pairOf(c)) && !commented.has(pairOf(c)));
+-  const second = turned.find((c) => !spent.has(pairOf(c)) && (commented.get(pairOf(c)) ?? 0) < COMMENT_TURNS);
+-  const next = fresh ?? second;
+-  if (next) return { kind: "start_hop", cardId: next.id, workerId: next.assigneeId! };
++  const fresh = turned.filter((c) => !spent.has(pairOf(c)) && !commented.has(pairOf(c)));
++  const second = turned.filter((c) => !spent.has(pairOf(c)) && (commented.get(pairOf(c)) ?? 0) < COMMENT_TURNS);
++  // every idle worker gets its next card at once (REQ-122): fresh cards first, then second turns; never a busy worker or card, one card per worker, within the budget
++  const busy = new Set(i.busyWorkers);
++  const starts: { cardId: string; workerId: string }[] = [];
++  for (const c of [...fresh, ...second]) {
++    if (starts.length >= room) break;
++    if (busy.has(c.assigneeId!) || i.busyCards.includes(c.id)) continue;
++    busy.add(c.assigneeId!);
++    starts.push({ cardId: c.id, workerId: c.assigneeId! });
++  }
++  if (starts.length > 0) return { kind: "start_hops", hops: starts };
++  if (i.hopRunning) return { kind: "idle" };
+   // a workable card with an assignee is still there, but every turn on it is used up: say so, naming the card (SPEC-116 D2)
+   return turned.length > 0
+     ? { kind: "finish_run", runId: i.openRun.id, reason: "no_progress", cardId: turned[0].id }

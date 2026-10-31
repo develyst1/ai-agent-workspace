@@ -1,0 +1,440 @@
+{
+  "hopId": "01a18690-240e-7055-95e5-095f34f5229d",
+  "entries": [
+    {
+      "seq": 0,
+      "at": "2026-10-29T07:29:16.090Z",
+      "kind": "line",
+      "text": "● session ticker-stub",
+      "gapSeconds": null
+    },
+    {
+      "seq": 1,
+      "at": "2026-10-29T07:29:16.091Z",
+      "kind": "line",
+      "text": "tick 1 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-29T07:29:17.054Z",
+      "kind": "line",
+      "text": "tick 2 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-29T07:29:18.055Z",
+      "kind": "line",
+      "text": "tick 3 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-29T07:29:19.055Z",
+      "kind": "line",
+      "text": "tick 4 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-29T07:29:20.057Z",
+      "kind": "line",
+      "text": "tick 5 of 60 — key *** and the secret ***",
+      "gapSeconds": null
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-29T07:29:21.058Z",
+      "kind": "line",
+      "text": "tick 6 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-29T07:29:22.059Z",
+      "kind": "line",
+      "text": "tick 7 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-29T07:29:23.059Z",
+      "kind": "line",
+      "text": "tick 8 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-29T07:29:24.060Z",
+      "kind": "line",
+      "text": "tick 9 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-29T07:29:25.060Z",
+      "kind": "line",
+      "text": "tick 10 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-29T07:29:26.061Z",
+      "kind": "line",
+      "text": "tick 11 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-29T07:29:27.062Z",
+      "kind": "line",
+      "text": "tick 12 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-29T07:29:28.062Z",
+      "kind": "line",
+      "text": "tick 13 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-29T07:29:29.063Z",
+      "kind": "line",
+      "text": "tick 14 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-29T07:29:30.063Z",
+      "kind": "line",
+      "text": "tick 15 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-29T07:29:31.064Z",
+      "kind": "line",
+      "text": "tick 16 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-29T07:29:32.064Z",
+      "kind": "line",
+      "text": "tick 17 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-29T07:29:33.065Z",
+      "kind": "line",
+      "text": "tick 18 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-29T07:29:34.066Z",
+      "kind": "line",
+      "text": "tick 19 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-29T07:29:35.067Z",
+      "kind": "line",
+      "text": "tick 20 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-29T07:29:36.067Z",
+      "kind": "line",
+      "text": "tick 21 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-29T07:29:37.068Z",
+      "kind": "line",
+      "text": "tick 22 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-29T07:29:38.068Z",
+      "kind": "line",
+      "text": "tick 23 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-29T07:29:39.069Z",
+      "kind": "line",
+      "text": "tick 24 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-29T07:29:40.070Z",
+      "kind": "line",
+      "text": "tick 25 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-29T07:29:41.072Z",
+      "kind": "line",
+      "text": "tick 26 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-29T07:29:42.073Z",
+      "kind": "line",
+      "text": "tick 27 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-29T07:29:43.074Z",
+      "kind": "line",
+      "text": "tick 28 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-29T07:29:44.074Z",
+      "kind": "line",
+      "text": "tick 29 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-29T07:29:45.076Z",
+      "kind": "line",
+      "text": "tick 30 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-29T07:29:46.081Z",
+      "kind": "line",
+      "text": "tick 31 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-29T07:29:47.088Z",
+      "kind": "line",
+      "text": "tick 32 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-29T07:29:48.095Z",
+      "kind": "line",
+      "text": "tick 33 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-29T07:29:49.095Z",
+      "kind": "line",
+      "text": "tick 34 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-29T07:29:50.097Z",
+      "kind": "line",
+      "text": "tick 35 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-29T07:29:51.098Z",
+      "kind": "line",
+      "text": "tick 36 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-29T07:29:52.100Z",
+      "kind": "line",
+      "text": "tick 37 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-29T07:29:53.102Z",
+      "kind": "line",
+      "text": "tick 38 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-29T07:29:54.104Z",
+      "kind": "line",
+      "text": "tick 39 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-29T07:29:55.106Z",
+      "kind": "line",
+      "text": "tick 40 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-29T07:29:56.108Z",
+      "kind": "line",
+      "text": "tick 41 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-29T07:29:57.110Z",
+      "kind": "line",
+      "text": "tick 42 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-29T07:29:58.110Z",
+      "kind": "line",
+      "text": "tick 43 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 44,
+      "at": "2026-10-29T07:29:59.112Z",
+      "kind": "line",
+      "text": "tick 44 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 45,
+      "at": "2026-10-29T07:30:00.113Z",
+      "kind": "line",
+      "text": "tick 45 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 46,
+      "at": "2026-10-29T07:30:01.115Z",
+      "kind": "line",
+      "text": "tick 46 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 47,
+      "at": "2026-10-29T07:30:02.117Z",
+      "kind": "line",
+      "text": "tick 47 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 48,
+      "at": "2026-10-29T07:30:03.118Z",
+      "kind": "line",
+      "text": "tick 48 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 49,
+      "at": "2026-10-29T07:30:04.120Z",
+      "kind": "line",
+      "text": "tick 49 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 50,
+      "at": "2026-10-29T07:30:05.122Z",
+      "kind": "line",
+      "text": "tick 50 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 51,
+      "at": "2026-10-29T07:30:06.124Z",
+      "kind": "line",
+      "text": "tick 51 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 52,
+      "at": "2026-10-29T07:30:07.125Z",
+      "kind": "line",
+      "text": "tick 52 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 53,
+      "at": "2026-10-29T07:30:08.126Z",
+      "kind": "line",
+      "text": "tick 53 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 54,
+      "at": "2026-10-29T07:30:09.128Z",
+      "kind": "line",
+      "text": "tick 54 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 55,
+      "at": "2026-10-29T07:30:10.129Z",
+      "kind": "line",
+      "text": "tick 55 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 56,
+      "at": "2026-10-29T07:30:11.131Z",
+      "kind": "line",
+      "text": "tick 56 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 57,
+      "at": "2026-10-29T07:30:12.133Z",
+      "kind": "line",
+      "text": "tick 57 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 58,
+      "at": "2026-10-29T07:30:13.135Z",
+      "kind": "line",
+      "text": "tick 58 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 59,
+      "at": "2026-10-29T07:30:14.136Z",
+      "kind": "line",
+      "text": "tick 59 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 60,
+      "at": "2026-10-29T07:30:15.138Z",
+      "kind": "line",
+      "text": "tick 60 of 60",
+      "gapSeconds": null
+    },
+    {
+      "seq": 61,
+      "at": "2026-10-29T07:30:16.179Z",
+      "kind": "line",
+      "text": "■ success · turns 1",
+      "gapSeconds": null
+    }
+  ],
+  "more": false
+}

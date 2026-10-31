@@ -1,0 +1,89 @@
+meta {
+  name: POST Chat - DeepSeek
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/chat
+  body: json
+  auth: none
+}
+
+docs {
+  # ผลลัพธ์ที่คาดว่าจะได้ (200 OK)
+
+  ระบบจะ normalize คำตอบจาก DeepSeek ให้อยู่ในรูป `AIResponse` เสมอ
+  (ดู `src/types/index.ts`)
+
+  ```json
+  {
+    "success": true,
+    "data": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "content": "สวัสดีครับ! ผมคือ DeepSeek ผู้ช่วย AI ...",
+      "usage": {
+        "prompt_tokens": 13,
+        "completion_tokens": 331,
+        "total_tokens": 344
+      },
+      "latency_ms": 4576
+    }
+  }
+  ```
+
+  - `data.provider` / `data.model` — ตรงกับที่ส่งไปใน request (หรือค่า default ถ้าไม่ระบุ)
+  - `data.content` — คำตอบจาก AI เป็น string
+  - `data.usage` — จำนวน token ที่ใช้ (อาจไม่มีถ้า provider ไม่ส่งกลับมา)
+  - `data.latency_ms` — เวลาที่ใช้เรียก provider เป็น milliseconds
+
+  ถ้า request ผิดพลาด (เช่น เรียก provider ไม่สำเร็จ) จะได้ `500`:
+  ```json
+  { "success": false, "error": "<error message>" }
+  ```
+}
+
+body:json {
+  {
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "temperature": 0.7,
+    "max_tokens": 512,
+    "messages": [
+      {
+        "role": "system",
+        "content": "คุณคือผู้ช่วย AI ที่ตอบภาษาไทยสั้น ๆ และชัดเจน"
+      },
+      {
+        "role": "user",
+        "content": "สวัสดี! คุณคือใคร?"
+      }
+    ]
+  }
+}
+
+tests {
+  test("returns 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("responds with a normalized AIResponse from deepseek", function () {
+    const body = res.getBody();
+    expect(body.success).to.equal(true);
+
+    const data = body.data;
+    expect(data.provider).to.equal("deepseek");
+    expect(data.model).to.be.a("string");
+    expect(data.content).to.be.a("string").and.not.empty;
+    expect(data.latency_ms).to.be.a("number");
+  });
+
+  test("includes token usage", function () {
+    const usage = res.getBody().data.usage;
+    expect(usage).to.be.an("object");
+    expect(usage.prompt_tokens).to.be.a("number");
+    expect(usage.completion_tokens).to.be.a("number");
+    expect(usage.total_tokens).to.be.a("number");
+  });
+}

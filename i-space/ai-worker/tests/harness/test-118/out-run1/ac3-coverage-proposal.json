@@ -1,0 +1,53 @@
+{
+ "revision": 8,
+ "uncovered": [
+  {
+   "key": "REQ-002",
+   "kind": "requirement",
+   "title": "1. บริการ 4 ตัวที่แสดง",
+   "decisions": [
+    "REQ-002"
+   ]
+  },
+  {
+   "key": "REQ-003",
+   "kind": "requirement",
+   "title": "2. สิ่งที่แสดงต่อบริการ",
+   "decisions": [
+    "REQ-003"
+   ]
+  },
+  {
+   "key": "REQ-004",
+   "kind": "requirement",
+   "title": "3. เช็คใหม่ทุก 10 วินาที + ปุ่มเช็คตอนนี้",
+   "decisions": [
+    "REQ-004"
+   ]
+  },
+  {
+   "key": "REQ-006",
+   "kind": "requirement",
+   "title": "5. รันที่ :3900 ไม่ต้อง login ไม่มีฐานข้อมูล",
+   "decisions": [
+    "REQ-006"
+   ]
+  },
+  {
+   "key": "REQ-007",
+   "kind": "requirement",
+   "title": "6. ข้อความภาษาไทย",
+   "decisions": [
+    "REQ-007"
+   ]
+  },
+  {
+   "key": "REQ-008",
+   "kind": "requirement",
+   "title": "ไม่ทำ",
+   "decisions": [
+    "REQ-008"
+   ]
+  }
+ ]
+}

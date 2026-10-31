@@ -1,0 +1,43 @@
+meta {
+  name: GET Models
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/models
+  body: none
+  auth: none
+}
+
+docs {
+  # ผลลัพธ์ที่คาดว่าจะได้ (200 OK)
+
+  รายชื่อ model ที่แต่ละ provider รองรับ (ตรงกับ `SUPPORTED_MODELS` ใน `src/config/models.ts`)
+
+  ```json
+  {
+    "openai": ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-3.5-turbo", "gpt-4.1-nano"],
+    "gemini": ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-1.5-flash", "gemini-1.5-pro"],
+    "xai": ["grok-4-latest", "grok-3", "grok-3-mini", "grok-2-1212"],
+    "deepseek": ["deepseek-v4-flash", "deepseek-chat", "deepseek-reasoner"]
+  }
+  ```
+
+  - แต่ละ key คือชื่อ provider, value คือ array ของชื่อ model ที่ใช้ได้กับ provider นั้น
+}
+
+tests {
+  test("returns 200 OK", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("lists supported models per provider", function () {
+    const body = res.getBody();
+    expect(body).to.have.keys(["openai", "gemini", "xai", "deepseek"]);
+    Object.values(body).forEach(function (models) {
+      expect(models).to.be.an("array").that.is.not.empty;
+      models.forEach(function (m) { expect(m).to.be.a("string"); });
+    });
+  });
+}

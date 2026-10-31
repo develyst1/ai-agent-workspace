@@ -1,0 +1,25 @@
+    [15.2s] S1 hops on #1: ใบเตย:commented, ใบเตย:commented · stop no_progress · reason ["- เหตุที่จบรอบ: #1 ออกแบบ Health Board ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [15.2s] AC-1 the commented card gets ONE more turn (2 hops on #1 by ใบเตย, both commented), not a loop — 2 hops
+OK  [15.2s] AC-1 the run does NOT end nothing_workable; it ends no_progress — no_progress
+OK  [15.2s] AC-1 the report names the card in the PM's words, never "ไม่มีงานที่ทำต่อได้" — ["- เหตุที่จบรอบ: #1 ออกแบบ Health Board ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [15.2s] AC-1 the card is still todo and workable — todo workable true
+OK  [16.7s] AC-1 the board's run strip says "มีงานที่ยังทำต่อได้ แต่ไม่คืบ", not "ไม่มีงานที่ทำต่อได้" — ["การรันหยุดแล้ว: มีงานที่ยังทำต่อได้ แต่ไม่คืบ · กด อัตโนมัติ เพื่อเริ่มรอบใหม่"]
+    [16.7s] S1 SA prompt line: "You may hand off to: ฝน (FE), แบงค์ (BE) — pass the name (or the id) as `toWorkerId` of `hand_off`." · handOffTo [{"id":"01a18c28-d35b-71a5-9829-ee2f9a70acc0","name":"ฝน","roles":["FE"]},{"id":"01a18c28-d374-7563-8306-5eeae7082c35","name":"แบงค์","roles":["BE"]}]
+OK  [16.7s] AC-2 the SA's prompt names its recipients by name + role ("ฝน (FE)", "แบงค์ (BE)"), no bare id — "You may hand off to: ฝน (FE), แบงค์ (BE) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+OK  [16.7s] AC-2 card_context.handOffTo = name + roles + id for each — [{"id":"01a18c28-d35b-71a5-9829-ee2f9a70acc0","name":"ฝน","roles":["FE"]},{"id":"01a18c28-d374-7563-8306-5eeae7082c35","name":"แบงค์","roles":["BE"]}]
+OK  [19.2s] AC-1 neighbour: pressing อัตโนมัติ again → the card gets its turns again (2), then the same honest stop — 2 hops · no_progress · ["- เหตุที่จบรอบ: #1 ออกแบบ Health Board ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+    [28.2s] S2 hops: ใบเตย:commented:comment→201, ใบเตย:handed_off:handoff:แบงค์→200, แบงค์:commented:comment→201, แบงค์:commented:comment→201 · stop no_progress · reason ["- เหตุที่จบรอบ: #1 ทำ API ตามแบบ ยังทำต่อได้ แต่ทำ 4 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [28.2s] AC-2 a hand-off BY NAME ("แบงค์") is accepted and the card goes to แบงค์'s id — HTTP 200 · assignee แบงค์
+OK  [28.2s] AC-1 the comment-then-hand-off turn counts as progress: แบงค์ then gets its own turns — ใบเตย,ใบเตย,แบงค์,แบงค์
+OK  [28.2s] AC-1 the stop names #1 again — ["- เหตุที่จบรอบ: #1 ทำ API ตามแบบ ยังทำต่อได้ แต่ทำ 4 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [28.2s] AC-2 แบงค์'s prompt names its recipient as "มิ้นท์ (QA)" — "You may hand off to: มิ้นท์ (QA) — pass the name (or the id) as `toWorkerId` of `hand_off`."
+    [36.3s] S3 hops: ใบเตย:handed_off:handoff:01a18c28-d35b-71a5-9829-ee2f9a70acc0→200, ฝน:failed:handoff:ใครก็ไม่รู้→409 · stop no_progress · reason ["- เหตุที่จบรอบ: #1 ทำหน้าเว็บ ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [36.3s] AC-2 a hand-off BY ID still works — HTTP 200
+OK  [36.3s] AC-2 neighbour: an unknown name is refused, and the refusal names who is allowed (name + role) — HTTP 409 · {"error":{"code":"chain_broken","message":"the chain has no hand-off from the card's worker to that worker — you may hand to: มิ้นท์ (QA) 01a18c28-d380-7231-8cf6-40c6639609af","details":{"from":"01a18c28-d35b-71a5-9829-ee2f9a70acc0","allowed":["01a18c28-d380-7231-8cf6-40c6639609af"],"allowedWorkers"
+    [36.3s] S3 end: no_progress · ["- เหตุที่จบรอบ: #1 ทำหน้าเว็บ ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"] · card assignee ฝน
+OK  [45.7s] AC-1 neighbour: two commented cards → order #1, #2, #1, #2 (fresh turns first), then the stop names #1 only — #1,#2,#1,#2 · ["- เหตุที่จบรอบ: #1 งานแรก ยังทำต่อได้ แต่ทำ 2 รอบแล้วไม่คืบ — กด \"อัตโนมัติ\" เพื่อลองต่อ หรือเปิดการ์ดดู"]
+OK  [53.6s] regression: budget 1 → 1 hop, budget_spent (the second turn does not override the budget) — budget_spent · ["- เหตุที่จบรอบ: ใช้งบครบแล้ว"]
+OK  [60.9s] AC-3 REQ-117: the review line unchanged ("รอคุณตรวจ: ออกแบบ Health Board — มีอีก 3 งานรออยู่"), stop nothing_workable — ["- รอคุณตรวจ: ออกแบบ Health Board — มีอีก 3 งานรออยู่"]
+OK  [60.9s] AC-3 a truly nothing-workable run still says "ไม่มีงานที่ทำต่อได้" — ["- เหตุที่จบรอบ: ไม่มีงานที่ทำต่อได้"]
+OK  [68.5s] AC-3 no cards → "รอคุณ — ไม่มี", no review line, nothing_workable — ["เสร็จแล้ว","- ไม่มี","ทีมตัดสินเอง","- ไม่มี","รอคุณ","- ไม่มี","ปัญหา","- เหตุที่จบรอบ: ไม่มีงานที่ทำต่อได้"]
+run dir /tmp/qa119-HDKVuG

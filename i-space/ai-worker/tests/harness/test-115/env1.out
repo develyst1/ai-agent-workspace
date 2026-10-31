@@ -1,0 +1,2 @@
+OK  AC-4 light call uses the configured deepseek/deepseek-chat — {"http":["tier:medium:refused","deepseek/deepseek-chat:good"],"calls":["first/heavy/tier:medium/ok","correction/light/deepseek/deepseek-chat/ok"]}
+OK  AC-4 quiz uses deepseek/deepseek-chat — {"http":["deepseek/deepseek-chat:quiz"],"calls":["answer/light/deepseek/deepseek-chat/ok"]}

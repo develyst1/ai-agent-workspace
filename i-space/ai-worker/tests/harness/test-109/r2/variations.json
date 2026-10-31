@@ -1,0 +1,289 @@
+[
+  {
+    "g": "AC-5 port",
+    "cmd": "curl http://127.0.0.1:04500/v1/projects",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-5 port",
+    "cmd": "curl http://127.0.0.1:004500/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-5 port",
+    "cmd": "curl http://localhost:04200/v1/projects",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-5 port",
+    "cmd": "curl http://localhost:4500/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-5 port",
+    "cmd": "curl http://[::1]:4500/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-5 port",
+    "cmd": "curl http://0.0.0.0:4500/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "AC-5 port",
+    "cmd": "curl http://grok-bot-vm-430905844:4500/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "AC-5 header",
+    "cmd": "curl -H @h.txt http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-5 header",
+    "cmd": "curl -H@h.txt http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-5 header",
+    "cmd": "curl --header @h.txt http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "AC-5 header",
+    "cmd": "curl -K cfg.txt http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "AC-5 header",
+    "cmd": "curl -H \"X-CAW-Actor: $ACTOR\" http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "shell_feature",
+    "ok": true
+  },
+  {
+    "g": "AC-5 both",
+    "cmd": "curl -H @h.txt http://127.0.0.1:04500/v1/proposals/X/accept",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var port",
+    "cmd": "curl http://127.0.0.1:0x1194/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "var port",
+    "cmd": "curl http://[::]:4500/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "var port",
+    "cmd": "curl http://[0:0:0:0:0:0:0:1]:4500/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "var port",
+    "cmd": "curl http://x@127.0.0.1:4500/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var port",
+    "cmd": "curl http://127.0.0.1:4500@example.invalid/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "var port",
+    "cmd": "curl http://LOCALHOST:4500/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "var port",
+    "cmd": "curl http://localhost.:4500/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "var port",
+    "cmd": "curl http://127.0.0.1:3900/ http://127.0.0.1:4500/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var port",
+    "cmd": "curl -: http://127.0.0.1:3900/ -: http://127.0.0.1:4500/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var header",
+    "cmd": "curl -H \"X-CAW-Actor:operator\" http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var header",
+    "cmd": "curl -H @- http://127.0.0.1:3900/ < h.txt",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var header",
+    "cmd": "curl -H @/dev/stdin http://127.0.0.1:3900/ < h.txt",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var header",
+    "cmd": "curl --variable h@h.txt --expand-header '{{h}}' http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var header",
+    "cmd": "curl -H 'x-blueprint-by:x' http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var hidden",
+    "cmd": "curl --variable u@u.txt --expand-url '{{u}}'",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "var hidden",
+    "cmd": "wget -i u.txt",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "var hidden",
+    "cmd": "wget --input-file=u.txt",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "var hidden",
+    "cmd": "curl --next http://127.0.0.1:4500/",
+    "want": "refuse",
+    "got": "api",
+    "ok": true
+  },
+  {
+    "g": "D8",
+    "cmd": "curl --connect-to 127.0.0.1:3900:127.0.0.1:4500 http://127.0.0.1:3900/v1/projects",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "D8",
+    "cmd": "curl --connect-to ::127.0.0.1:4500 http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "D8",
+    "cmd": "curl --resolve example.invalid:4500:127.0.0.1 http://example.invalid:4500/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "D8",
+    "cmd": "curl --unix-socket /tmp/x.sock http://localhost/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "D8",
+    "cmd": "curl -x 127.0.0.1:4500 http://example.invalid/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "D8",
+    "cmd": "curl --preproxy 127.0.0.1:4500 http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "D8",
+    "cmd": "curl --proxy http://127.0.0.1:3900 http://127.0.0.1:3900/",
+    "want": "refuse",
+    "got": "network",
+    "ok": true
+  },
+  {
+    "g": "AC-2",
+    "cmd": "curl -s http://127.0.0.1:3900/api/status",
+    "want": "allow",
+    "got": "allow",
+    "ok": true
+  },
+  {
+    "g": "AC-2",
+    "cmd": "curl -s --json '{\"a\":1}' http://127.0.0.1:3900/api/x",
+    "want": "allow",
+    "got": "network",
+    "ok": false
+  },
+  {
+    "g": "AC-2",
+    "cmd": "curl -L http://localhost:3900/",
+    "want": "allow",
+    "got": "allow",
+    "ok": true
+  }
+]

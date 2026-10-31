@@ -1,0 +1,14 @@
+OK  #1 stored row: changes_rejected, empty content, unknown_kind, note feature — {"s":"changes_rejected","c":"","r":"unknown_kind","n":"feature"}
+OK  #1 chat shows the "nothing saved" sentence, naming feature — "รอบนี้ยังไม่ได้บันทึกอะไรเลย — AI เสนอข้อมูลแบบ “feature” ที่ Blueprint ยังไม่รองรับ ลองพิมพ์ใหม่หรือแก้ตามนี้ได้ครับ"
+OK  #1 no "saved" claim anywhere on the page — 
+OK  #3 rejected and named, nothing stored — parts 0; gateway calls this round 2 (round + one correction)
+OK  #2 theme luxury-gold: sentence shown, no model text — "รอบนี้ยังไม่ได้บันทึกอะไรเลย — AI เสนอข้อมูลแบบ “feature” ที่ Blueprint ยังไม่รองรับ ลองพิมพ์ใหม่หรือแก้ตามน"
+OK  #2 theme minimal-mono: sentence shown, no model text — "รอบนี้ยังไม่ได้บันทึกอะไรเลย — AI เสนอข้อมูลแบบ “feature” ที่ Blueprint ยังไม่รองรับ ลองพิมพ์ใหม่หรือแก้ตามน"
+OK  #4 stored row: bot_could_not_answer / timeout — {"s":"bot_could_not_answer","r":"timeout"} after ~329 s
+OK  #4 exactly one gateway call (no retry on timeout) — calls 1
+OK  #4 the timeout sentence shows — 
+OK  #4 a retry control and a model control are there — ["โด่ง · เปลี่ยนชื่อ","ส่งออก PDF","เลือกไฟล์","ส่ง","ลองใหม่","เปลี่ยนโมเดล","ดูรายละเอียด"]
+after "เปลี่ยนโมเดล": focused = <input id="_R_4tbsnpfivbH2_" type="text" readonly="" autocomplete="new-password" class="ant-select-input" role="combobox | url http://127.0.0.1:3141/p/80b56ea9-e503-4b6e-95c6-d00dbf60e18e/chat
+BAD #6 the model control leads to a lower tier, audited — model tier:medium; settings record undefined by undefined
+OK  #5 retry → the round runs again and is applied — retry button 0; applied true; parts 1
+OK  #7 send → applied → "ย้อนกลับ" undoes it, audited — status applied; parts 2→1; undo record true

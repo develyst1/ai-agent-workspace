@@ -1,0 +1,4 @@
+check:api — src/core/api/schema.d.ts matches the OpenAPI document
+bp-front typecheck exit=0
+ 238 pass
+ 0 fail

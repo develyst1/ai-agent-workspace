@@ -1,0 +1,8 @@
+check:api — OpenAPI document not found: /tmp/claude-1000/-workspace-ai-agent-workspace/56374999-a120-4208-93c8-395f18cb31f5/scratchpad/t123r2/blueprint-back/openapi.json
+themes: clean-blue, luxury-gold, minimal-mono
+TYPECHECK EXIT 0
+ 246 pass
+ 0 fail
+ 2500 expect() calls
+Ran 246 tests across 11 files. [5.82s]
+check:api — src/core/api/schema.d.ts matches the OpenAPI document

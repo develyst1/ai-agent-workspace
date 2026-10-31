@@ -1,0 +1,5 @@
+#!/bin/sh
+# TEST-101 guard: a `claude` that never runs. Logs the call and refuses.
+echo "$(date '+%F %T') pid=$$ cwd=$(pwd) args: $*" >> "$(dirname "$0")/../test-101/claude-stub.log"
+echo "claude-stub (TEST-101): refused — no live Claude CLI run without the owner's word" >&2
+exit 97

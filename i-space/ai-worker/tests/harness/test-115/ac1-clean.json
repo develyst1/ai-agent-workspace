@@ -1,0 +1,30 @@
+{
+  "http": [
+    "tier:medium:good"
+  ],
+  "id": "5a0f980c-6c53-4471-b414-16ea01609413",
+  "status": "applied",
+  "calls": [
+    {
+      "step": "first",
+      "weight": "heavy",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "fallback": false,
+      "ok": true,
+      "reason": null
+    }
+  ],
+  "rowCalls": [
+    {
+      "ok": true,
+      "step": "first",
+      "asked": "tier:medium",
+      "model": "stub/tier-medium",
+      "reason": null,
+      "weight": "heavy",
+      "fallback": false
+    }
+  ],
+  "refused": null
+}

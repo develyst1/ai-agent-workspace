@@ -1,0 +1,28 @@
+== blueprint-back
+-- hosts in product code (not tests):
+src/gateway/client.ts: https://ai.develyst.online
+src/interview/context.ts: http://127.0.0.1:4200
+-- env vars read vs .env.example:
+  BLUEPRINT_LINK_TEST_ALLOW ✓
+  CAW_NOTIFY_URL ✓
+  DATABASE_URL ✓
+  GATEWAY_LIGHT_MODEL ✓
+  GATEWAY_URL ✓
+  HOST ✓
+  PORT ✓
+  SOURCES_DIR ✓
+== blueprint-front
+-- hosts in product code (not tests):
+src/core/api/client.ts: http://127.0.0.1:4200
+src/features/ready/load.ts: http://127.0.0.1:3500
+-- env vars read vs .env.example:
+  BLUEPRINT_API_URL ✓
+  BLUEPRINT_BACK ✓
+  BLUEPRINT_DEV_PAGES ✓
+  BLUEPRINT_OPENAPI ✓
+  BLUEPRINT_PDF_CHROME_CHANNEL ✓
+  CAW_URL ✓
+  CHECK_BASE_URL ✓
+  CHECK_EXTRA_PORT ✓
+  PORT ✓
+  TZ ✓

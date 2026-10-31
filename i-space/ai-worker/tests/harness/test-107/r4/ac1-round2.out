@@ -1,0 +1,16 @@
+round2: HTTP 200 in 22 s · status applied · reason - · note - · saved 14 · refused 2 · adjusted 0 · questions 1
+parts 11 · links 8
+ DATA-001 [data] ผลตรวจสถานะบริการ :: {"fields":[{"name":"service","note":"ชื่อบริการ เช่น Blueprint API","type":"string"},{"name":"status","note":"เขียว/แดง","type":"\"ทำงาน\" | \"ไม่ตอบ\""},{"name":"responseTimeMs","note":"เวลาตอบเป็น ms","type":"number | 
+ DEC-001 [decision] เกณฑ์ตัดสินว่าบริการ “ทำงาน” :: {"rule":"นับ HTTP 2xx และ 3xx ว่า “ทำงาน”; 4xx, 5xx, ข้อผิดพลาดเครือข่าย หรือไม่ตอบภายใน 3 วินาที เป็น “ไม่ตอบ”","cases":["2xx (200/204) → ทำงาน","3xx (301/302) → ทำงาน","4xx (401/404) → ไม่ตอบ","5xx (500) → ไม่ตอบ","con
+ INT-001 [interaction] ขอผลตรวจสถานะจากหน้าเว็บ :: {"text":"หน้าเว็บขอผลตรวจสถานะจาก API ของ Health Board ทุก 10 วินาที และเมื่อผู้ใช้กดปุ่ม “เช็คตอนนี้”","reply":"ผลตรวจของทั้ง 4 บริการ พร้อมสถานะ เวลาตอบ และเวลาที่เช็คล่าสุด"}
+ INT-002 [interaction] ยิงตรวจ 4 บริการจากฝั่งเซิร์ฟเวอร์ :: {"text":"เซิร์ฟเวอร์ของ Health Board ยิง HTTP GET ไปยัง URL ของทั้ง 4 บริการ โดยรอผลไม่เกิน 3 วินาทีต่อบริการ","reply":"สถานะ “ทำงาน” หรือ “ไม่ตอบ” พร้อมเวลาตอบเป็น ms และเวลาที่เช็คล่าสุด"}
+ Q-001 [question] ให้ตัวตรวจสอบทำงานฝั่งเซิร์ฟเวอร์ของแอป เพื่อให้ตรวจ URL ข้ามพอร์ตได้โดยไม่ติดข้อจำกัด CORS ของเบราว์เซอร์หรือไม่ :: {"text":"ให้ตัวตรวจสอบทำงานฝั่งเซิร์ฟเวอร์ของแอป เพื่อให้ตรวจ URL ข้ามพอร์ตได้โดยไม่ติดข้อจำกัด CORS ของเบราว์เซอร์หรือไม่","cases":["หากตรวจจากเบราว์เซอร์โดยตรง ปลายทางทั้ง 4 ต้องรองรับ CORS","หากตรวจจากฝั่งเซิร์ฟเวอร์ 
+ Q-002 [question] HTTP status ใดควรนับว่าบริการ “ทำงาน” :: {"text":"HTTP status ใดควรนับว่าบริการ “ทำงาน”","cases":["หน้าเว็บอาจ redirect จึงควรรองรับ 3xx","API health ปกติควรตอบ 2xx","4xx/5xx แปลว่าปลายทางตอบได้แต่บริการไม่พร้อมตามเกณฑ์ที่เสนอ"],"answer":"นับ HTTP 2xx และ 3xx ว
+ Q-003 [question] เส้นทางและวิธีเรียก API ของ Health Board ที่หน้าเว็บใช้ขอผลตรวจ :: {"text":"เส้นทางและวิธีเรียก API ของ Health Board ที่หน้าเว็บใช้ขอผลตรวจ","cases":["ใช้ GET /api/health (ตามที่เสนอ)","ใช้ GET /api/status","ใช้ POST /api/check เพื่อสั่งตรวจใหม่ทันที"],"status":"open","proposedAnswer":"
+ SCR-001 [screen] หน้า I-Space Health Board :: {"fields":[{"name":"service","type":"text","label":"บริการ"},{"name":"status","type":"badge","label":"สถานะ"},{"name":"responseTimeMs","type":"number","label":"เวลาตอบ (ms)"},{"name":"lastCheckedAt","type":"time","label"
+ STEP-001 [step] ตรวจสอบสถานะบริการ :: {"ends":true}
+ SYS-001 [system] ตัวตรวจสอบสถานะฝั่งเซิร์ฟเวอร์ (Health Board) :: {}
+ WRK-001 [work] I-Space Health Board :: {"goal":"สร้างหน้าเว็บภาษาไทยหน้าเดียวที่รันบน http://127.0.0.1:3900 เพื่อให้ผู้ใช้เห็นสถานะปัจจุบันของ Blueprint API, Blueprint เว็บ, CAW API และ CAW เว็บ พร้อมเวลาตอบและเวลาเช็คล่าสุด โดยตรวจซ้ำอัตโนมัติทุก 10 วินาทีแล
+ question offered: "Q-003"
+ refused: {"item":"changes[10]","op":"link.add","kind":"to","ref":null,"key":null,"title":null,"reason":"invalid_change","detail":"no live part \"$api_check\""}
+ refused: {"item":"changes[11]","op":"link.add","kind":"from","ref":null,"key":null,"title":null,"reason":"invalid_change","detail":"no live part \"$api_check\""}

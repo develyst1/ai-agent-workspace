@@ -1,0 +1,8 @@
+    [19.4s] S20 first plan 201 · keys on located parts [["REQ-009","REQ-007","REQ-008","REQ-003","REQ-002","REQ-004","REQ-005","REQ-006","REQ-001"]]
+OK  [21.5s] AC-9 a first plan in a new project is accepted as before (the live first plan → 9 cards) — propose 201 · cards 9 · keys ["REQ-009","REQ-007","REQ-008","REQ-003","REQ-002","REQ-004","REQ-005","REQ-006","REQ-001"]
+OK  [24.8s] AC-7 the live repost (reworded titles, regrouped anchors) shows "แผนนี้ตกลงไปแล้ว" and NO "ตกลง เริ่มงาน" — badge true · buttons 0 · onBoard [0,1,2,3,4,5,6,7,8]
+OK  [24.8s] AC-7 accepting it anyway → 409 plan_already_accepted "แผนนี้ตกลงไปแล้ว"; the card count does not change; the plan stays open — 409 plan_already_accepted "แผนนี้ตกลงไปแล้ว" · cards 9
+OK  [28.3s] AC-8 the line above the button: "มีงานนี้บนบอร์ดแล้ว 9 งาน — จะเพิ่มเฉพาะงานใหม่ 1 งาน", and the count under it says 1 card — "มีงานนี้บนบอร์ดแล้ว 9 งาน — จะเพิ่มเฉพาะงานใหม่ 1 งาน" · "จะได้ 1 การ์ด"
+OK  [30.3s] AC-8 "ตกลง เริ่มงาน" adds exactly ONE card, for REQ-010; its dependency on the skipped item points at the open REQ-007 card — cards 9 → 10 · new [[10,"เขียนสิ่งที่ไม่ทำลง README","REQ-010",["01a18ed1-615e-70bd-9407-771f529fdb71"]]] · REQ-007 card 01a18ed1-615e-70bd-9407-771f529fdb71
+BAD [33.6s] Q2 (C) a requirement whose card is done is NOT on the board: a plan for REQ-006 shows its button and is accepted → 1 new card — done 200 · onBoard undefined · buttons 1 · accept 404 · cards 10
+run dir /tmp/qa119-PjjIrX

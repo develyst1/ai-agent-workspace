@@ -1,0 +1,24 @@
+{
+ "s": 409,
+ "j": {
+  "error": {
+   "code": "chain_broken",
+   "message": "the chain has no hand-off from the card's worker to that worker — you may hand to: มิ้นท์ (QA) 01a18c28-d380-7231-8cf6-40c6639609af",
+   "details": {
+    "from": "01a18c28-d35b-71a5-9829-ee2f9a70acc0",
+    "allowed": [
+     "01a18c28-d380-7231-8cf6-40c6639609af"
+    ],
+    "allowedWorkers": [
+     {
+      "id": "01a18c28-d380-7231-8cf6-40c6639609af",
+      "name": "มิ้นท์",
+      "roles": [
+       "QA"
+      ]
+     }
+    ]
+   }
+  }
+ }
+}

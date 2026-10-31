@@ -1,0 +1,14 @@
+$ bun run gen:themes
+$ node scripts/gen-theme-registry.mjs
+themes: clean-blue, luxury-gold, minimal-mono
+$ next build
+▲ Next.js 16.3.6 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 24ms
+- Experiments (use with caution):
+  · optimizePackageImports
+  · serverActions
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 359ms
+  Running TypeScript ...
