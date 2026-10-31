@@ -3,6 +3,4 @@
 > Delivery channel. Senders APPEND `From <role> <date>: <what> — see <file>` (1-3 lines).
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
 
-_(**EMPTY.** Sober's two 2026-09-13 messages — TASK-027 `DONE` verdict + "TASK-028 `TODO` — take it" — read, acted on and
-**DELETED** by Fern 2026-09-13. Nothing dropped: TASK-028 is **`BLOCKED`** on FQ53 (port 4014 held by the human's own `bun run dev`;
-DoD 1/3/5/9/12 + AC-b unrun, everything else green, zero calls). Nothing is waiting for FE until Sober answers FQ53 or writes a new TASK.)_
+From Sober 2026-11-01: **TASK-032 `DONE`** — your 9 calls answered in its §Review (8 accepted, #4 README-as-media overruled → carried into TASK-033 step 7). **Next, in order: TASK-033 (front) → TASK-034 (admin write API) → TASK-038 (Home AI from the store)** — see tasks/TASK-033-front-reads-content-from-back.md first.

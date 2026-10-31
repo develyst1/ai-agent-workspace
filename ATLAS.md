@@ -964,3 +964,26 @@ source.** After editing a skill there, copy it to `.claude/skills/` again, or th
   - `--compile` cannot carry WASM, native or disk-read files (blueprint-back has pglite), so each one must be proven.
   - Installed in `.claude/skills`; check-skills PASS.
   - **Not applied to blueprint-front/back by Atlas**: that is product code in i-space repos and goes through the desk.
+- **Otto fixed (2026-10-31, owner: "ไปสะกิด ATLAS แก้ไขนายด้วย … แล้วแต่ ATLAS").**
+  - OTTO-FAILURES OF-001…007 → ATLAS-REVIEWED. Root cause: acting before looking, plus treating his own plan as agreed.
+  - Form: a new skill `platform-preflight` with 5 written gates: what exists, the desk docs, the answered-proposals ledger, one root prompt per sitting, clean-up proof. OTTO.md requires it before every action and requires reading the last 5 OTTO-FAILURES entries at session start.
+  - **My own wording caused OF-007:** platform-security "one sudo call does one thing" was read as one prompt per thing. It now says one reviewed, visible script and one prompt per sitting.
+- **Otto round 2 (2026-10-31, owner: "ทำการพัฒนาตัวเองซะ … ความผิดพลาดนาย ทั้งหมดที่ฉันทัก").** Round 1 held: no OF-001…007 repeat after 19:19.
+  - OF-008 (CI called done with no tests; proof went around CI) → platform-preflight **Gate 6**: done = one failing case through the real path, the checks NOT run named, parked decisions raised.
+  - OF-009 (~10 "งง") → OTTO.md § How you report: ~5 lines; what, where, why-not-obvious first; restart from zero after one "งง"; reasoning goes in the files.
+  - The handbook moved to `server-platform/readyidc/readyidc-vps.md` and Otto keeps it current with every box change.
+  - **Open for the owner: CI runs no tests yet** (bun test / Playwright).
+  - Correction (Otto, verified in SERVER-FACTS S2.9 22:05–22:45): **CI already runs tests.** The back runs `bun test` (351 tests) and the front runs the Playwright isolation spec. A failing run (41211570320) skipped deploy. The owner parked the rest: "เทส พอแค่นี้แหละ". My "CI runs no tests yet" was stale.
+- **corner-chat branches (2026-11-01):** the owner ran the command himself (git is his). Both repos now have atom, develop, sit, uat and production on origin, all from `main` (README only). Still open: the team working branch, which goes to Marie for the desk files once ORDER 48 is done.
+- **Owner rule for Atlas (2026-11-01): "อะไรที่ไม่ใช่งานนายอ่ะ นายก็แค่บอกฉันว่าไม่ใช่หน้าที่นาย ส่งต่อไปให้ ใน list งานขอพวกคนในทีม".** When work is not Atlas's (a desk decision, git, product code, desk operations), Atlas says so in one line and routes it to that desk's list through Marie or the PM. Atlas does not ask the owner the question and does not hand him commands to run. Applied first to the corner-chat working-branch question, which went to its board for the PM.
+- **Rule (2026-11-01, owner): no main character runs as a subagent.** Text: "ตัวละครหลักแบบนี้ไม่ให้ subagent ให้เปิด เป็น session … manage model effort ได้มากกว่าและ เร็วกว่า". Written into CLAUDE.md (harness 2.6.6), MARIE.md (scope §1; boundary: never ask the owner, questions go back to Atlas via nudge-session), DESK-OPEN step 3, and the nudge-session skill (workspace identities section).
+  - **Atlas never uses the Agent tool for Marie, Otto, Bunny or any desk role again.** Write the ORDER/REQUEST, then nudge the session ("Marie - workspace", "Otto - workspace"). If no session exists, ask the owner once to open it.
+  - Dispatcher-mode desks keep their own design.
+  - ORDER 49 (install 2.6.6) was handed to the Marie session by nudge.
+- **Otto upgrade review (2026-11-01, owner: "นายอัปเกรดตัวเองถูกจุดมั้ย … ต้องอัปเกรดอะไรบ้าง").**
+  - Kept: new-server-setup, platform-deploy-app, the templates, and the OTTO.md start order (it quotes the owner, so it is legitimate).
+  - Atlas changes: removed the duplicate FAILURES line; added `deploy-ready-build` (read-only) and `nudge-session` to his list; added the OF-010 rule to platform-security §5 and the OF-011 rule to preflight Gate 5. OF-010 and OF-011 are ATLAS-REVIEWED.
+  - Next upgrades for Otto:
+    - (b) teach the audit today's intended changes before tonight's run, so it raises no false 🔴;
+    - (c) the lasting fix for dynamic admin IPs is SSH off the public port (Tailscale, or Cloudflare Access/Tunnel), which is the owner's choice;
+    - (a) and (d) are not needed now.

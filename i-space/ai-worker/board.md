@@ -28,7 +28,7 @@
 
 | Id | Title | Priority | Status (date, owner, pointer) | Ball |
 |----|-------|----------|-------------------------------|------|
-| REQ-128 | CAW front + back build the way the owner deploys (standalone / Bun binary) | HIGH (owner 2026-10-31 18:39) | READY_FOR_SA (2026-10-31 18:4x, PM; DECISIONS 18:4x; skill deploy-ready-build; nichaphon) | SA B (Silver) |
+| REQ-128 | CAW front + back build the way the owner deploys (standalone / Bun binary) | HIGH (owner 2026-10-31 18:39) | DELIVERED + COMMITTED (2026-10-31 19:12 on nichaphon; caw-front 8febd0a · caw-back d3f100c, PM verified; AC-4 Linux NOT_TESTED → first server run) | — |
 | REQ-127 | Blueprint front + back build the way the owner deploys (standalone / Bun binary) | HIGH (owner 2026-10-31 via Atlas) | DELIVERED + COMMITTED (2026-10-31 18:38 on nichaphon; bp-front fbf3424 · bp-back d8df886, PM verified; AC-4 NOT_TESTED → first server run) | — |
 | REQ-108 | Live E2E: Health Board via Blueprint → CAW → real CLI | HIGH (owner 13:02) | DELIVERED (2026-10-30 18:0x, PM; TEST-106 phase 3 PASSED live; committed trees) — P3-1/P3-2 → REQ-121 | — |
 | REQ-121 | CAW's starting team works card by card, each role on its own card | HIGH (PM, from TEST-106 P3-1/P3-2) | DELIVERED + COMMITTED (2026-10-30 18:5x; caw-back d33e586 · caw-front 04e2874, PM verified) | — |
@@ -46,6 +46,8 @@
 
 | Id | Title | Source SPEC | Status (date, owner, pointer) | Owner | Depends on |
 |----|-------|-------------|-------------------------------|-------|------------|
+| TASK-174 | caw-front — standalone output + static copy in `build` (REQ-128) | SPEC-128 | DONE + COMMITTED (2026-10-31 19:12, Silver; caw-front 8febd0a on nichaphon; `tasks/TASK-174-caw-front-standalone-build.md` § Review) | FE Fanta (B) | none (nichaphon e7a36eb) |
+| TASK-175 | caw-back — `build` compiles the API to one Linux binary; prove it (REQ-128) | SPEC-128 | DONE + COMMITTED (2026-10-31 19:12, Silver; caw-back d3f100c on nichaphon; DoD 7 UNVERIFIED no Linux; `tasks/TASK-175-caw-back-compile-api-binary.md` § Review) | BE Bob (B) | none (nichaphon 8271082) |
 | TASK-172 | blueprint-front — standalone output + static copy in `build` (REQ-127) | SPEC-127 | DONE + COMMITTED (2026-10-31 18:38, Sober; bp-front fbf3424 on nichaphon; `tasks/TASK-172-blueprint-front-standalone-build.md` § Review) | FE Fern (A) | none (nichaphon 6a64527) |
 | TASK-173 | blueprint-back — `build` compiles one Linux binary; prove what it carries (REQ-127) | SPEC-127 | DONE + COMMITTED (2026-10-31 18:38, Sober; bp-back d8df886 on nichaphon; DoD 6–7 UNVERIFIED no Linux; `tasks/TASK-173-blueprint-back-compile-linux-binary.md` § Review) | BE Jason (A) | none (nichaphon 08e1e4d) |
 | TASK-170 | caw-back — a later plan adds only work not open on the board; `Proposal.onBoard` (REQ-126 r2) | SPEC-126 | DONE + COMMITTED (2026-10-31 05:12, Silver; caw-back 8271082; `tasks/TASK-170-caw-back-plan-adds-only-new-work.md` § Review) | BE Bob (B) | REQ-126 r1 committed 5b49f65 ✓ |
@@ -101,6 +103,7 @@
 | REQ-122 | TEST-121 | TEST_PASSED round 2 (2026-10-30 22:23, Tanya; `tests/TEST-121-caw-open-workers-parallel.md` § Round 2) — AC-8 live: one session per worker, DEF-1 fixed | TEST_PASSED → PM |
 | REQ-124 | TEST-122 | r2 TEST_PASSED (2026-10-31 03:18, Tanya; `tests/TEST-122-full-loop-rehearsal-new-project.md` § Round 2) — new product, 8/8 work, 0 interventions, 9/9 notes; r1 TEST_FAILED 00:54 | TEST_PASSED → PM |
 | REQ-125 | TEST-123 | TEST_PASSED (2026-10-31 01:29 stub + AC-4 live 03:18 in REQ-124 r2, Tanya; `tests/TEST-123-review-note-and-builder-handoff.md`) — complete | TEST_PASSED → PM |
+| REQ-128 | TEST-126 | TEST_PASSED (2026-10-31 19:0x, Tanya; `tests/TEST-126-caw-deploy-ready-build.md`) — AC-1/2/3/5 PASS; AC-4 Linux NOT_TESTED (accepted), Windows partial PASS | TEST_PASSED → PM |
 | REQ-127 | TEST-125 | TEST_PASSED (2026-10-31 18:3x, Tanya; `tests/TEST-125-blueprint-deploy-ready-build.md`) — AC-1/2/3/5 PASS; AC-4 NOT_TESTED (no Linux, PM-accepted) | TEST_PASSED → PM |
 | REQ-126 | TEST-124 | r2 TEST_PASSED (2026-10-31 05:08, Tanya; `tests/TEST-124-chat-answers-plan-copy-temp-folders.md` § Round 2) — AC-7/8/9 PASS, DEF-2 fixed; O-2 noted | TEST_PASSED → PM |
 

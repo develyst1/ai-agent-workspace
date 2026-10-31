@@ -1,0 +1,22 @@
+#!/bin/sh
+# ci-deploy: the ONLY thing the GitHub CI key may run (forced command in deploy's authorized_keys).
+#   CI side:  ssh deploy@<host> <app-name> < app.tgz
+# Reads the app name from SSH_ORIGINAL_COMMAND, the artifact from stdin, then runs deploy-app.
+set -eu
+PATH=/usr/local/bin:/usr/bin:/bin
+MAX_BYTES=524288000   # 500 MB
+IN=/home/deploy/ci-incoming
+
+NAME=${SSH_ORIGINAL_COMMAND:-}
+case "$NAME" in *"
+"*) echo "ci-deploy: bad app name" >&2; exit 2 ;; esac
+printf '%s' "$NAME" | grep -Eqx '[a-z0-9-]{2,40}' || { echo "ci-deploy: usage: ssh deploy@host <app-name> < app.tgz" >&2; exit 2; }
+[ -f "/srv/apps/$NAME/app.conf" ] || { echo "ci-deploy: no app $NAME" >&2; exit 2; }
+
+install -d -m 700 "$IN"
+F=$(mktemp "$IN/$NAME.XXXXXX.tgz")
+trap 'rm -f "$F"' EXIT
+head -c "$((MAX_BYTES + 1))" > "$F"
+[ "$(stat -c %s "$F")" -le "$MAX_BYTES" ] || { echo "ci-deploy: artifact over 500 MB" >&2; exit 2; }
+echo "ci-deploy: received $(stat -c %s "$F") bytes for $NAME"
+/usr/local/bin/deploy-app "$NAME" "$F"

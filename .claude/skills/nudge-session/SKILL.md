@@ -1,6 +1,6 @@
 ---
 name: nudge-session
-description: "Load when an AI-workforce role on a desk in ai-agent-workspace needs to wake another role — whether that role's session is running OR stopped (ListAgents for running ones; list_sessions + SendMessage to its local_… sessionId for a closed one) — or when you RECEIVE such a nudge. Covers: files first then a one-line nudge, the two lookup routes and matching on title AND group, notify_when_idle not being supported on the session-id route, adjacency per the desk's chain, delivered ≠ read, no permission laundering, when to stop nudging, and how to act on a nudge you receive. Do NOT use to deliver work content (that goes in files), to reach the operator, or outside a desk."
+description: "Load when an AI-workforce role on a desk in ai-agent-workspace needs to wake another role — whether that role's session is running OR stopped (ListAgents for running ones; list_sessions + SendMessage to its local_… sessionId for a closed one) — or when you RECEIVE such a nudge. Covers: files first then a one-line nudge, the two lookup routes and matching on title AND group, notify_when_idle not being supported on the session-id route, adjacency per the desk's chain, delivered ≠ read, no permission laundering, when to stop nudging, and how to act on a nudge you receive. Also for the workspace identities (Atlas, Marie, Otto, Bunny) waking each other, or Marie waking a desk PM. Do NOT use to deliver work content (that goes in files), or to reach the operator."
 ---
 
 # Nudging an open role session
@@ -14,6 +14,19 @@ description: "Load when an AI-workforce role on a desk in ai-agent-workspace nee
 > come from **the desk you are on** — its `ai-worker/TEAMS.md` roster (or the team table at the top of
 > `PROTOCOL.md`) and its chain of allowed pairs. Never carry a roster from one desk to another, and never
 > assume a role exists because it existed somewhere else.
+
+## Workspace identities (Atlas, Marie, Otto, Bunny) use this skill too
+
+Since 2026-11-01 no main character runs as a subagent (`CLAUDE.md`); each has its own session. Between them:
+- **Atlas → Marie / Otto:** write the ORDER (`MARIE.md`) or REQUEST file, then nudge that session (title
+  "Marie" / "Otto"; group "workspace" if there is one).
+- **Marie / Otto / Bunny → Atlas:** a question, a doubt or a finished order goes back to Atlas. Write it under the
+  ORDER, or in a REQUEST/REPORT file at the workspace root, then nudge the session titled "Atlas". **Marie never
+  asks the owner; Atlas does that** (`MARIE.md` Hard boundaries).
+- **Marie → a desk PM:** a line in that desk's `inbox/PM.md`, then nudge the PM's session (title + group).
+- The same rules apply: files first, then a one-line pointer; delivered ≠ read; the budget below.
+- **No such session exists:** do not spawn one. Say so in one line, so that Atlas (or, for Atlas, the owner)
+  can open it.
 
 ## Sending a nudge
 

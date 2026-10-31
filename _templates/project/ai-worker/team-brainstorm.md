@@ -27,9 +27,28 @@ by QA, and **the PM's reading of the customer goes straight into a requirement.*
 So this skill is not a meeting and not an idea-generator. It is: **never let your first
 reading be the only one on the record.**
 
-## When to run it — narrow on purpose
+## 🔴 The owner's three MUST moments (2026-11-01)
 
-Ceremony everywhere is how a good practice dies. Run it **only** at these five points:
+Owner: *"อยากให้ มีการเรียกใช้ ก่อนเริ่มทำReq ใหม่ เมื่อ ยังไม่เข้าใจ 100% หรือมีคำถามอยู่ · ทุกครั้งที่มีคำถามยากๆ
+ที่รอฉัน แล้วฉันไม่ค่อยมาตอบ เผื่อมันจะ ตอบได้ในตัวเลย เพราะ แค่คนสักคนมองพลาดไป หรือ เปลี่ยนคำถาม ให้ดีขึ้น ·
+ตอนที่PM หรือตัวที่ต่อตรงกับฉันเนี่ยทำผิดพลาด"*. In these three moments the round is **not optional**. The PM (or
+whoever talks to the owner) starts it:
+
+| # | The moment | What the round is for |
+|---|---|---|
+| **A** | **Before a new REQ starts**, while the PM does not understand the ask 100%, or still has a question about it | Before the owner is asked anything, the SA and QA each write the strongest other reading. Often one of them already knows the answer, or the question gets sharper. |
+| **B** | **A hard question is waiting for the owner, and he has not answered it** (it is still open the next time the PM picks up work) | Can the team answer it **from the files** (SYSTEM-FACTS, DECISIONS, earlier REQs, the code)? If yes, close it, cite the source, and tell the owner in one line. If not, **rewrite the question** so it is easier to answer: one yes/no with a recommendation, not an essay. The question was often wrong because one person misread something. |
+| **C** | **The owner caught a mistake by the PM** (or by whichever role faces him) | Before the PM replies again, the SA and QA each read the owner's correction: what he actually meant, and whether there is another reading. The PM's next message is checked against it. That reply is where a second mistake usually happens. |
+
+- **Who joins:** the roles adjacent to the PM, the SA Lead(s) and QA, as below. Each answers once, in the file.
+- **Where:** one file per round, `talks/BRAINSTORM-<YYYY-MM-DD>-<topic>.md`, using the format below. Then a pointer
+  line in each joiner's inbox, then a nudge.
+- **What it never does:** decide what only the owner may decide (money, a customer message, git, a deploy, a rule
+  change, a business decision). For those, B produces **a better question with a recommendation**, never the answer.
+
+## The other moments — narrow on purpose
+
+Ceremony everywhere is how a good practice dies. Beyond A–C above, run it **only** at these five points:
 
 1. **A customer's or the owner's words are about to become a REQ, an AC or a ruling.**
 2. **A cause is about to be declared** before the symptom has been reproduced.

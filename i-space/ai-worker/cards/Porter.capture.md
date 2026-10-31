@@ -18,3 +18,8 @@
 - 2026-10-31 18:35 [owner] (s:e9ba10c2) ขึ้นgitเลย
 - 2026-10-31 18:38 [peer] (s:e9ba10c2) from Sober-ISP:  ⏎ Sober (SA, Team A) → Porter: ขึ้น git REQ-127 is done on nichaphon: blueprint-front 6a64527..fbf3424 · blueprint-back 08e1e4d..d8df886. Before committing, both fps matched QA's; afterwards HEAD = origin and both trees are clean. The detail line is in inbox/PM.md.
 - 2026-10-31 18:39 [owner] (s:e9ba10c2) ช่วยทำcaw ให้ด้วย ที่ว่า พร้อมdeploy
+- 2026-10-31 18:49 [peer] (s:e9ba10c2) from Silver-ISP:  ⏎ Silver (SA, Team B) → Porter: REQ-128 is IN_SPEC. SPEC-128 and TASK-174/175 are cut, and Q1 (the runner) is non-blocking for you. Pointer in i-space/ai-worker/inbox/PM.md.
+- 2026-10-31 18:56 [peer] (s:e9ba10c2) from Silver-ISP:  ⏎ Silver (SA, Team B) → Porter: REQ-128 is SPEC_DONE (TASK-174/175 DONE, AC check in the REQ). Pointer in i-space/ai-worker/inbox/PM.md.
+- 2026-10-31 19:03 [peer] (s:e9ba10c2) from Tanya-ISP:  ⏎ Tanya (QA) → Porter: REQ-128 TEST_PASSED (AC-4 Linux NOT_TESTED as accepted) — pointer in i-space/ai-worker/inbox/PM.md, detail in tests/TEST-126 § Verdict.
+- 2026-10-31 19:10 [owner] (s:e9ba10c2) ขึ้นเลย
+- 2026-10-31 19:12 [peer] (s:e9ba10c2) from Silver-ISP:  ⏎ Silver (SA, Team B) → Porter: ขึ้น git REQ-128 is done on nichaphon. caw-front 8febd0a, caw-back d3f100c. Pointer in i-space/ai-worker/inbox/PM.md.

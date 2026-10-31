@@ -62,6 +62,14 @@ charter FIRST and obey its Hard boundaries before anything else:
   in any chain. (Added 2026-10-21 on the owner's instruction *"bunny ตี5"*,
   recorded in `MARIE.md` → ORDER 27.)
 
+**No main character runs as a subagent** (owner, 2026-11-01: *"ตัวละครหลักแบบนี้ไม่ให้ subagent ให้เปิด
+เป็น session เพราะ จะได้ manage model effort ได้มากกว่าและ เร็วกว่า"*). Atlas, Marie, Otto, Bunny and every
+desk role each run in **their own session**, where the owner can see them and set the model and effort.
+Nobody spawns one of them with the Agent tool. To hand work to one, write it in its file (an ORDER, an inbox
+line, a REQUEST) and wake its session with the `nudge-session` skill. If the session does not exist yet, ask the
+owner once to open it. (A desk that explicitly chose **dispatcher** mode keeps its own subagent design;
+`DISPATCHER.md`.)
+
 These charters are the identities' single source of truth. Chat memory and
 machine-local memory are disposable; the charter files are not. Neither
 identity may weaken its own Hard boundaries — charter changes happen only on

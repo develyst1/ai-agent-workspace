@@ -207,6 +207,10 @@ read
 
 # Server 2 — ReadyIDC VPS (Linux) — recorded 2026-10-31
 
+> **Current state = the handbook `server-platform/readyidc/readyidc-vps.md`.** S2.1–S2.8 below describe the 10-28/10-31
+> starting state (e.g. "pm2 not installed", "UFW 80/443 open", "platform NOT BUILT" are all superseded). The dated
+> entries appended under S2.9 are the history, newest at the bottom. (Pointer added 2026-11-01 after a cold-start test.)
+
 > **Source:** two documents the owner handed Otto on 2026-10-31 — `readyidc-vps.md`
 > (server handbook, last updated 2026-10-28; the owner's copy lives on his Mac at
 > `~/Documents/servers/readyidc-vps.md`) and `deploy-platform-brief.md` (written
@@ -431,3 +435,173 @@ Rollback: `sudo rm /etc/sudoers.d/security-audit /usr/local/bin/security-audit &
   - **Fixed:** both deleted and `pm2 save --force` run. pm2 now holds only `pm2-logrotate`, the dump holds no apps, and no `/tmp/tmp.*` test folders are left.
   - **Lesson:** after every throwaway pm2 test, run `pm2 list`, not only `pm2 list | grep <name>`.
 - **2026-10-31 17:00 — resources** (owner asked): 4 vCPU, load 0.10, CPU 98 % idle; RAM 5.8 Gi, 575 Mi used, 5.2 Gi available; swap none; disk `/` 58 G, 3.6 G used (7 %), 54 G free; up 2 h 16 m.
+- **2026-10-31 ~17:10 — Pilot candidate surveyed (read-only): `blueprint-front` + `blueprint-back`.** These are the i-space desk's Team A repos (paths in `machine.local.md`; branch `nichaphon`, also on GitHub). REQ-127 made them deploy-ready today: front commit `fbf3424`, back commit `d8df886`.
+  - **Front:** Next 16 standalone; `build` copies static/public in. At runtime it reads `BLUEPRINT_API_URL` on the server side (default `http://127.0.0.1:4200`) and `CAW_URL`. PDF export launches **Chrome via playwright-core**, which is **not on this box**, so export will fail there until Chrome is installed (owner's call).
+  - **Back:** a Bun binary compiled with `--target=bun-linux-x64`. It reads `DATABASE_URL` (Postgres URL, or `pglite:memory` = in-memory, lost on restart), `PORT`, `HOST` (default 127.0.0.1), `SOURCES_DIR` (default `./data/sources`, **relative to cwd = the release folder, so it is lost on each deploy**; set it to `/srv/apps/<name>/shared/sources`), `GATEWAY_URL`, `GATEWAY_LIGHT_MODEL` and `CAW_NOTIFY_URL`.
+  - **The back has no authentication at all.** It must **not** get a public hostname. Only the front calls it, server-side, over `127.0.0.1`.
+  - **`new-app` today always creates a public nginx site,** so a private back needs a new `--private` option (re-install = one owner sudo).
+  - **REQ-127 AC-4 is still open** ("pglite in the compiled binary on Linux", NOT_TESTED, *"settles on the owner's first server run"*). The pilot will settle it.
+  - **Tooling on the Windows PC:** bun 1.3.14 and node 22 are installed.
+- **2026-10-31 ~19:00 — Cloudflare Access protects the pilot front (owner's decision instead of an app login).**
+  - **Why:** the owner suggested asking the desk for a quick temporary login. Otto recommended Access instead (no code change, the team keeps working, stronger), and the owner agreed: *"โอเคนะ"*.
+  - **Setup:** the owner set up Zero Trust **Free**, team **`aged-fire-690b`** (login domain `aged-fire-690b.cloudflareaccess.com`). Self-hosted app **`blueprint-sit`** → `blueprint-sit.develyst.online`; policy **`owner only`** (Allow, Include: the owner's email); login by one-time PIN; session 24 h.
+  - **Check:** `curl https://blueprint-sit.develyst.online/` returns **302 to the Access login**. A random host still returns 525; `som` returns 307, unchanged.
+  - **Every new public app on this box needs its own Access app,** or the same policy added to it, until it has a real login. Cloudflare checks the policy before traffic reaches the box.
+- **2026-10-31 ~19:10 — Pilot, first try: `blueprint-back-sit` failed at its DB start.** Otto's mistakes along the way, then the result.
+  - **Wrong turn 1, reverted:** Otto first cloned both repos into his scratch and started `bun install` + `build` there. The owner stopped it: *"เราสามารถ ทำการ build ที่ codebase จริงๆ ได้ ไม่ต้องไป clone ให้เครื่องหนัก"*. The team checkout already held today's REQ-127 builds (18:23). The clones were deleted and their processes stopped.
+  - **Rule from now on:** use the build already in the codebase. **Look before building.**
+  - **Artifacts:** packed read-only from the team checkout; `git status` stays clean.
+    - back = `dist/blueprint-back` (ELF x86-64, 95 MB). The tar needs `--mode=755`: files tarred on Windows carry no exec bit.
+    - front = `.next/standalone` (46 MB). It contains `@img/sharp-win32-x64` (Windows-native sharp), so next/image optimisation would fail on Linux. A Linux build (CI) fixes that. Its `server.js` embeds `outputFileTracingRoot: H:\ispace\blueprint-front`.
+  - `new-app` was updated with **`--private`** (process apps only, no nginx site, loopback only). The owner ran one sudo; backups are `/usr/local/bin/{new-app,deploy-app}.bak-20261031-1158`.
+  - **Apps created** (ports in `ports.tsv`): `blueprint-back-sit` 3001, PRIVATE, health `/health`, start `./blueprint-back`; `blueprint-sit` 3002, public, behind Cloudflare Access.
+  - **`.env`** (no secrets): back `DATABASE_URL=pglite:memory`, `SOURCES_DIR=/srv/apps/blueprint-back-sit/shared/sources`; front `BLUEPRINT_API_URL=http://127.0.0.1:3001`.
+  - **Result:** `deploy-app blueprint-back-sit` gave **health 000 after 30 s**. The binary **does start on Linux** (`Bun v1.3.14 (Linux x64)`), then dies: `Can't find meta/_journal.json`. The drizzle migrations are not inside the compiled binary.
+  - **Wrong turn 2:** this was **already documented by the team**, TASK-173 line 18: *"The binary needs a Postgres DATABASE_URL; pglite:memory crashes it (P2) and that is expected"*. Otto's `pglite:memory` advice was wrong because he had not read SPEC-127 / TASK-173 first.
+  - **Now:** the process is **stopped** after 16 pm2 restarts. Release `20261031-121107` is kept. `pm2 save` was not run, so the boot dump stays empty.
+  - **Blocker:** the back needs a real Postgres. Decision S2.4 #13 says no DB on this box; the owner picks the DB.
+- **2026-10-31 ~19:20 — PILOT LIVE (manual first deploy, no CI yet).**
+  - **DB:** the team's own `blueprint-back/.env` points at Postgres **`154.197.124.206:5432`**, the old Windows box. That port **is reachable from this box** (and from the internet, which is a risk on that box; Otto does not touch it).
+  - **`.env`:** the owner said *"ก็อปไปทั้ง env เลยสิ"*. The whole back `.env` (keys `DATABASE_URL`, empty `PORT`) was piped straight into `/srv/apps/blueprint-back-sit/shared/.env` (600, deploy), with `SOURCES_DIR` appended. **No value was printed anywhere.**
+  - **The pilot shares the team's dev database:** data made on sit lands in the team's DB.
+  - **`blueprint-back-sit`:** release `20261031-121700`. `/health` → `{"ok":true}` 200; **`GET /v1/projects` (reads the DB) → 200**. That is **REQ-127 AC-4 proven on Linux** (the compiled binary answers a DB route). ~96 MB RAM. Kept previous release `20261031-121107` (the failed pglite one).
+  - **`blueprint-sit`** (front): release `20261031-121712`. Loopback `/` → 200; CSS `/_next/static/...css` → 200; public `https://blueprint-sit.develyst.online` → **302 to the Cloudflare Access login**. ~192 MB RAM.
+  - **pm2:** both apps were saved by deploy-app. RAM now 830 Mi used, 5.0 Gi available.
+  - **Not verified:**
+    - the full page in a browser after login (the owner will try it);
+    - image optimisation, since sharp in the bundle is win32;
+    - PDF export (no Chrome on the box);
+    - a deliberately broken deploy rolling back on these real apps (it was proven only on the throwaway test app);
+    - boot resurrect with real apps in the dump.
+  - Otto's mistakes today: **`OTTO-FAILURES.md`** OF-001…007. Fix requested from Atlas: `REQUEST-otto-to-atlas-2026-10-31-fix-otto.md`.
+- **2026-10-31 ~19:25 — owner confirmed in his browser:** `https://blueprint-sit.develyst.online` opens after the Access login (*"เปิดได้"*). The path browser → Cloudflare Access → origin cert → nginx → front → private back → Postgres works end to end. Still not done in S2.6 step 6: CI (GitHub Actions on `sit`) and a broken-push auto-rollback on these real apps. Step 7 (handbook update) is open too.
+- **2026-10-31 ~21:10 — CI set-up (S2.6 step 6, CI part). No root needed.**
+  - **Owner's answers:**
+    - (1) Otto writes the workflow files; **the owner commits and pushes them himself.** The desk may not (owner 2026-10-30 23:31: *"เรื่องฝั่ง deployment ไม่ต้องแตะอะไรเลย"*). Answer: *"2ข้อ ตามนั้น"*.
+    - (2) `sit` is cut from **`nichaphon`**, the only branch with REQ-127's build commits.
+    - (3) a CI-only key, restricted to deploy. Answer: *"ก็โอเคนะ"*.
+    - Owner's question: does a merge from the Mac work too? Yes. CI runs on GitHub on any push to `sit`, wherever it comes from.
+  - **CI key:** ED25519 `SHA256:pdr7Rgc6We2xXJ3H1YuuPnszrbpeP5TJ51k4XIvVUk0`, comment `github-ci@blueprint-2026-10-31`, line 3 of `/home/deploy/.ssh/authorized_keys`: `command="/home/deploy/.local/bin/ci-deploy",restrict …`. Backup: `authorized_keys.bak-20261031-1407`. **Revoke** = delete the line ending `github-ci@blueprint-2026-10-31`.
+  - **`/home/deploy/.local/bin/ci-deploy`** (copy in `server-platform/readyidc/ci-deploy`): the forced command.
+    - Takes the app name from `SSH_ORIGINAL_COMMAND` (regex, and the app must exist), reads the artifact from stdin into `~/ci-incoming` (500 MB cap), runs `deploy-app`, and always deletes the temp file.
+    - **Proven with the CI key from the PC:** `id` → refused ("no app id"); `cat /etc/passwd` → refused; `nope-app` → refused; `blueprint-sit < blueprint-front.tgz` → deployed release `20261031-140825`, health 200. `~/ci-incoming` is empty afterwards.
+  - **Workflow files** (new, untracked, nothing else touched): `.github/workflows/deploy-sit.yml` in both repos (paths in `machine.local.md`). On push to `sit`, or a manual run: setup-bun latest → `bun install --frozen-lockfile` → `typecheck`/`lint` if present → `build` → tar → `ssh deploy@43.228.86.89 <app> < app.tgz`. Back tars `dist/blueprint-back` with `--mode=755`; front tars `.next/standalone`, built on Linux, so sharp is the Linux one.
+  - **Repo secrets for the owner to add:** `DEPLOY_SSH_KEY` (the private key) and `DEPLOY_KNOWN_HOSTS` (the server's host-key line). They are staged in `C:\Users\KUYDONG\ci-secrets\` (that user only) and **must be deleted after he adds them.**
+  - **Risk to watch:** `--frozen-lockfile` with bun latest may refuse the v2 lock, as bun 1.3.14 on the PC did (REQ-127 R2/R6). If the first run fails there, decide with the owner: pin the bun version Atom's box uses, or drop `--frozen-lockfile`.
+  - Otto ran `git fetch` (read-only, remote-tracking refs only) in both team checkouts to see the branches.
+- **2026-10-31 ~21:33 — CI LIVE for both pilot apps (S2.6 step 6 done, except a real broken-push test).**
+  - **Commits:** the owner committed and pushed the workflows himself: back `14a9201`, front `65e2ec2`. `sit` was created from `nichaphon` with `git push origin nichaphon nichaphon:sit`.
+  - **Gotcha 1 — no run on the first push:** GitHub registered **no run** for the push that created `sit`; the workflow stayed unknown, its page 404. Pushing an **empty commit** to `sit` made it fire: back `39d5c88`, front `1abf14b`. If a new repo's first `sit` push shows nothing under Actions, do that.
+  - **Gotcha 2 — the secrets were missing:** the owner had pushed before adding them. Back run 1 failed with `No ED25519 host key is known … Host key verification failed` (exit 255). That is the safe behaviour: nothing reached the server. After the owner added both secrets in both repos, the re-run went green.
+  - **Back:** run `41209638571` attempt 2 **success** (~32 s), release `20261031-142926`, `/health` ok, `/v1/projects` 200. `bun install --frozen-lockfile` with bun latest **passed** on the Linux runner; the lock problem was only the Windows PC's bun.
+  - **Front:** run `41210487765` **success** (~75 s), release `20261031-143204`, loopback 200, public 302 → Access. Built on Linux, so `node_modules/@img/sharp-linux-x64` and the libvips packages are present, which fixes the win32-sharp issue of the manual deploy.
+  - **Repos are PUBLIC** (`develyst1/blueprint-front`, `develyst1/blueprint-back`). The secrets are safe; the code and the workflow are readable by anyone. The owner was told.
+  - **Clean-up proof:**
+    - Removed: the CI key copies and secret files on the PC (`C:\Users\KUYDONG\ci-secrets\` is empty; the folder itself was busy, probably open in Explorer); the local `artifacts/`; `/tmp/blueprint-{back,front}.tgz` on the server. `~/ci-incoming` is empty.
+    - pm2 holds 3 entries (2 apps + logrotate), and the dump holds `blueprint-back-sit` and `blueprint-sit`.
+  - **The deploy loop from now on:** merge into `sit` and push, from any machine; GitHub builds and the server health-checks and rolls back by itself.
+  - **Still open:**
+    - (a) a real broken push showing the auto-rollback on these apps;
+    - (b) a reboot with real apps in the dump (needs the owner's sudo);
+    - (c) S2.6 step 7, the handbook;
+    - (d) actions/checkout@v4 warns about Node 20 deprecation, so bump to a newer major later.
+- **2026-10-31 ~21:43 — Auto-rollback proven on a real app** (owner: *"ลองก็ ลอง"*).
+  - **Test:** a fake `blueprint-back` (a 3-line sh script that exits 1) was packed like a real build, sent with Otto's key, and run through `deploy-app blueprint-back-sit` — the same step the CI door calls.
+  - **Why not the CI key:** its PC copy was deleted at clean-up; the door itself was proven at 14:08.
+  - **Why not a real push through CI:** that would put broken code on the desk's `sit` branch and need a revert. The server's behaviour is the same either way.
+  - **Before:** `current → releases/20261031-142926`, health ok.
+  - **Run:** `health: last status 000 after 30s` → `health check FAILED, rolling back to releases/20261031-142926` → `health: 200 after 1s` → exit 1, which a CI run shows as red.
+  - **After:** `current → releases/20261031-142926`, `/health` ok, `/v1/projects` 200. The failed release was deleted; kept `20261031-121700` and `20261031-142926`.
+  - **Downtime:** the back was down for about 30 s during the test.
+  - **Clean-up:** the local fake package and the server's `/tmp/otto-broken-test.tgz` were removed.
+- **2026-10-31 ~22:05 — `bun test` added to the back CI. Its first run proved that CI blocks a bad build.**
+  - **Changes:** owner commit `b6b7bd8` added `bun test` (env `DATABASE_URL=pglite:memory`).
+  - **Run `41211570320`:** 8 min; **330 pass, 16 skip, 5 fail**. Every visible failure reads `this test timed out after 5000ms` (each took ~6 s; bun's default limit is 5 s). Build, tar and **deploy were skipped**, and the server stayed on `20261031-142926`, healthy.
+    - This is the first real-path proof that CI stops a bad change.
+    - Whether the 5 are only slow on the runner, or a real problem, is **not settled**; the desk would have to say.
+  - **Owner's choice (*"ตามนั้น"*):** raise the CI limit to `bun test --timeout 20000`. That is a workflow-only change, not the desk's code. Sending the 5 slow tests to the i-space desk stays the owner's call: the desk is off-limits for deployment work.
+  - **Gotcha:** unauthenticated GitHub API = **60 calls/hour per IP**. Otto ran out while watching run `41211570320` (reset 22:12). Poll every 60 s or slower, or ask the owner to look in his browser.
+- **2026-10-31 ~22:15 — Back CI green with tests.** Owner commit `4fd6e50` (`bun test --timeout 20000`). About 9 min after the push, the server switched to release **`20261031-150429`**: `/health` ok, `/v1/projects` 200; it keeps `20261031-142926` as the previous release. The deploy step runs only after `bun test`, so the tests passed with the 20 s limit. The back pipeline is now install → tests → build → deploy → server health-check / auto-rollback.
+  - **Front CI still has no tests.** The Playwright specs need a browser and a running back, so that is a separate piece of work.
+  - **A full back run takes ~9 min**, most of it the tests.
+- **2026-10-31 ~22:16 — Front CI now runs the Playwright isolation spec** (owner: *"เอาแค่ isolation"*).
+  - **Changes:** owner commit `34dd9cb` put `bun run test:isolation` after `build` and before deploy.
+  - **Run `41213932255`:** success, about 80 s in total; the isolation step itself took **8 s** (15:15:51 → 15:15:59 UTC). Otto has **not seen the step's log** (it needs a GitHub login), so the number of tests that actually ran is unverified: confirm it says passed, not 0 tests.
+  - **Result:** release `20261031-151610`, loopback 200, public 302 → Access. `/dev/isolation/none` gives 404 on the server, as it should: dev pages are off in production.
+  - **Not in CI yet:** `test:states` and `test:required`. Both need blueprint-back's source checked out beside the front (they start it on pglite: 4298, or 4299 for required).
+- **2026-10-31 ~22:42 — Front isolation step VERIFIED from its log** (owner's screenshot of run `41213932255`).
+  - **Result:** "Running 4 tests using 1 worker" → **4 passed (7.4 s)**. The core made 1152 property comparisons and the libraries 384, with 0 differences; 3 library buttons were checked, 0 unstyled. The step is real, not a 0-test pass.
+  - **Note:** Playwright's webServer runs `next start`, which warns that it *"does not work with output: standalone; use node .next/standalone/server.js"*. The spec therefore tests the build through `next start`, not through the exact `server.js` that runs on the box. It works today. Changing it is the desk's config (`playwright.config.ts`), not CI's.
+- **2026-10-31 ~22:45 — Owner: *"เทส พอแค่นี้แหละ"*.** The CI tests stay as they are: back = `bun test --timeout 20000`, front = `test:isolation`. `test:states` and `test:required` are **not** to be added unless the owner asks again.
+- **2026-10-31 ~23:52 — One root sitting, 3 steps, 1 password** (platform-preflight gate 4). Script `root-batch.sh`, staged, shown, then deleted.
+  - **Owner's answers:**
+    - swap: *"ลองดูก่อน"*. Otto measured: blueprint front 157 MB + back 66 MB; pm2 + logrotate 167 MB; total 747 MB used of 5.9 GB, 5.1 GB available, disk 4 G / 58 G. **No swap for now.**
+    - root's Mac key: *"ลบเลยก็ได้"*.
+    - fail2ban aggressive: *"แบนแม่งเลย"*.
+  - **Done:**
+    - (1) `/root/.ssh/authorized_keys` → **0 keys**; backup `authorized_keys.bak-<ts>` beside it.
+    - (2) `/etc/fail2ban/jail.local` gets **`mode = aggressive`** under `[sshd]`; `fail2ban-client -t` passed and fail2ban restarted. **1 IP banned within seconds.** Backup `jail.local.bak-<ts>`. Copy in `server-platform/readyidc/jail.local`? Not copied; the content is in the handbook and below.
+    - (3) Reboot.
+  - **Boot with real apps PROVEN:** new boot `2026-10-31 16:51:42` UTC. `pm2-deploy`, nginx, fail2ban, ssh and ufw are all active. **`blueprint-back-sit` and `blueprint-sit` came back by themselves from the pm2 dump:** back `/health` ok, `/v1/projects` 200; front 200; public 302 → Access.
+  - **The owner's plan for SSH access:** this Windows PC and Atom's box (Grok bot). **Atom has no key yet.** Adding one is a separate order. Deploys need no personal key: the CI key does it.
+- **2026-10-31 — S2.6 step 7 done:** the server handbook was rewritten to match what was built, at **`server-platform/readyidc/readyidc-vps.md`** (no secrets). The owner should copy it over `~/Documents/servers/readyidc-vps.md` on the Mac.
+- **2026-10-31 — The handbook lives in the workspace only.** Owner: *"คู่มือ ไม่ต้องใช้แล้ว จดไว้ที่นายนี่แหละ"*. **`server-platform/readyidc/readyidc-vps.md`** is the handbook; the Mac copy is retired. Keep it current whenever the box changes, next to SERVER-FACTS.
+- **2026-11-01 ~00:15 — Full security review (read-only): `server-platform/readyidc/SECURITY-REVIEW-2026-11-01.md`.** It has the timeline since purchase, the good baseline, 13 gaps and a new-server recipe.
+  - **🔴 Cloudflare Access can be bypassed:** `curl --resolve blueprint-sit.develyst.online:443:43.228.86.89` returns **200 Blueprint with no login**, because 80/443 accept any source. The fix (owner's go) is UFW 80/443 from Cloudflare IP ranges only.
+  - **🟡 Otto's PC is banned on :22 by fail2ban aggressive** (OF-010). The PC's public IP is now `223.24.156.113` and it is **dynamic** (it was `223.24.171.7`). Ping and 443 still work. The ban expires after 1 h, or the owner unbans it from the Mac or the panel: `sudo fail2ban-client set sshd unbanip <ip>`.
+  - Also found: the provider's `99-custom.conf` is still on disk; `X11Forwarding yes`; **the clock is not NTP-synced**; there is no automatic reboot for kernel fixes; several unused root services are enabled; there are no backups of the `.env` files; the **Windows box's Postgres :5432 is open to the internet**.
+- **2026-11-01 ~00:40 — Gap 1 FIXED: the Cloudflare-Access bypass is closed** (owner: *"แก้เลย"*; one sudo sitting).
+  - **Script:** `server-platform/readyidc/ufw-cloudflare-only.sh` (the server copy was deleted after the run). It first added `allow proto tcp from <range> to any port 80,443` (comment `cloudflare`) for the **15 IPv4 and 7 IPv6 Cloudflare ranges** (from cloudflare.com/ips-v4 and /ips-v6, 2026-11-01), then removed `80/tcp` and `443/tcp` from Anywhere (v4 + v6). **22/tcp from Anywhere is unchanged.** Output: `UFW-CLOUDFLARE-OK`.
+  - **Proof:** direct `curl --resolve blueprint-sit.develyst.online:443:43.228.86.89` → **000, timeout (blocked)**; via Cloudflare → **302 to the Access login**; SSH ok; front loopback 200.
+  - **Expect in the next daily audit:** the hashes of `/etc/ufw/user.rules` and `user6.rules` changed. That is this recorded change, not tampering.
+  - **To do:** re-check the Cloudflare ranges monthly. A new Cloudflare range missing from UFW would make some visitors fail to connect (not a security hole).
+  - **Rollback:** `sudo ufw allow 80/tcp && sudo ufw allow 443/tcp`, then delete the `cloudflare` rules.
+- **2026-11-01 ~00:45 local (17:44 UTC) — Hardening sitting: review gaps 2, 3, 4, 7, 8 FIXED; gap 5 (clock) NOT fixed.** Owner: *"ทำเลย ขอให้ทำอย่างรอบคอบ"*. One sudo run of `harden.sh` (copies of all files in `server-platform/readyidc/`). Backups in **`/root/otto-backup-20261031-1744/`**.
+  - **fail2ban:** `ignoreip = 127.0.0.1/8 ::1 223.24.156.113 202.129.207.248` (PC and Mac, both **dynamic**; update them when they change). Mode stays aggressive. Step 0 found **no** log lines for 223.24.x, so the cause of the 10-31 ban is still unknown.
+  - **SSH:** the provider's `99-custom.conf` was **removed**. `00-hardening.conf` now sets `AllowUsers deploy`, `MaxAuthTries 3`, `LoginGraceTime 30`, and `X11Forwarding`/`AllowTcpForwarding`/`AllowAgentForwarding` `no`. `sshd -t` passed; `sshd -T` shows every value.
+    - **Proven:** a new login works; a `-L` tunnel is refused (`administratively prohibited`).
+    - **Dead-man guard** `otto-ssh-guard-20261031-1744` (fires 17:55 UTC): it reverts unless `~/.ssh-guard-ok` exists. Confirmed in time (see OF-011 for the near-miss).
+  - **Clock:** `ptp_kvm` loads and `/dev/ptp0` exists; `/etc/modules-load.d/ptp_kvm.conf` is persisted. But chrony **failed to start** with `refclock PHC /dev/ptp0 poll 2 stratum 2`, so the script **restored the old chrony.conf** and chrony is active, still unsynced.
+    - The clock is right today (kvm-clock matches the PC to the second).
+    - **Open:** find why chrony refused the PHC refclock (probably its AppArmor profile or sandbox on /dev/ptp0). Outbound **UDP 123 is blocked** by the provider, while TCP 4460 (NTS-KE) is open.
+  - **sysctl:** `/etc/sysctl.d/90-hardening.conf` sets `send_redirects=0`, `log_martians=1`, `suid_dumpable=0`.
+  - **Services disabled** (not masked; `systemctl enable --now <unit>` brings one back): ModemManager, multipathd, udisks2, apport, snapd(+socket), lxd-installer.socket, iscsid.socket, open-iscsi, open-vm-tools. `qemu-guest-agent` is **untouched**, so the provider's panel features keep working.
+  - **Post-check:** nginx, pm2-deploy, fail2ban, ufw and ssh active; back health ok; front 200; public 302; `sudo -n new-app` works.
+  - **Next audit will show:** changed hashes for `/etc/ssh/sshd_config.d/*` (99-custom gone), `jail.local` and `/etc/sysctl.d`, plus fewer enabled units. All of these are this recorded change.
+  - **Still open from the review:** gap 5 (clock), gap 6 (auto-reboot), gap 9 (backups), gap 11 (strict SSL rule), gap 10 (the Windows DB is the owner's call).
+- **2026-10-31 17:56 UTC — The SSH guard fired and kept the hardening:** the timer is gone; `sshd_config.d` = `00-hardening.conf`, `50-cloud-init.conf`, `60-cloudimg-settings.conf` (no `99-custom.conf`); `AllowUsers deploy` and `AllowTcpForwarding no` are still in place. The confirmation flag was removed only after the guard ran.
+- **2026-11-01 — Otto made ready for a cold start** (owner: *"อัปเกรดตัวเอง … ให้สามารถทำได้ แม้จะ restart session นายใหม่"*).
+  - **OTTO.md:** a session-start order (charter, failures, handbook, machine.local, SERVER-FACTS for detail) and the task skills.
+  - **New skill `platform-deploy-app`:** the next app onto the platform, step by step.
+  - **Templates `server-platform/templates/deploy-sit.{bun-binary,next-standalone}.yml`:** the live blueprint workflows with `__APP__/__BINARY__/__SERVER__` placeholders.
+  - **`machine.local.md` → "Otto":** this PC's SSH alias, key and dynamic-IP note.
+  - **CI keys:** one per repo from now on. The blueprint CI key's private half exists only in GitHub, so it cannot be reused.
+- **2026-11-01 — Cold-start test** (a fresh, read-only Otto agent planned "deploy CAW" and "new server" from the files alone).
+  - **It found:** the start order, the skills, the templates, the `readyidc` alias, the new-key-per-repo rule, the Access-before-deploy step, and the two-sitting plan.
+  - **Fixed after it:** stale pointers (OTTO.md S2.1–S2.9 → handbook; a current-state note under "# Server 2"); handbook stale lines (99-custom, AllowUsers/ignoreip, SSL mode, add-app steps → skill); who types git and the chain (skill); new-server sitting A as root via the Console, and "templates, not drop-ins" (skill).
+  - **Open questions for when the owner orders CAW's deploy** (raised by the test, not decided):
+    - (a) The CAW **runner** is a second process from source (`bun`, not on the box) and needs **Claude CLI with a subscription** on the box. `new-app` has no mode for a second process.
+    - (b) Its `CLAUDE_BIN` and `CAW_WORKSPACE_ROOT` must be set so it never launches real runs by accident.
+    - (c) caw repos: public or private? Existing workflows? Which branch becomes `sit`?
+    - (d) The URLs between caw-back and blueprint-back-sit (`BLUEPRINT_URL`, `CAW_URL`).
+    - (e) Its DB: blueprint's is on the old Windows box with :5432 open to the internet.
+
+## S2.2c Audit baseline — intended changes since the 2026-10-31 baseline (do NOT raise 🔴 for these)
+
+The scheduled audit (`otto-daily-security-audit`, 20:30) compares against `server-audit/readyidc/2026-10-31.md`. These differences are recorded, owner-approved changes:
+- **Config hashes changed:**
+  - `/etc/ufw/user.rules` and `user6.rules`: 80/443 now **only from Cloudflare ranges** (comment `cloudflare`), 22/tcp anywhere (2026-11-01).
+  - `/etc/ssh/sshd_config.d/`: `99-custom.conf` **removed**; `00-hardening.conf` rewritten (`AllowUsers deploy`, no forwarding, `MaxAuthTries 3`, `LoginGraceTime 30`); `50-cloud-init.conf` and `60-cloudimg-settings.conf` unchanged.
+  - `/etc/fail2ban/jail.local`: `ignoreip` + `mode = aggressive`.
+  - New `/etc/sysctl.d/90-hardening.conf`, `/etc/modules-load.d/ptp_kvm.conf`.
+  - `/root/.ssh/authorized_keys`: now empty (Mac key removed 10-31).
+  - `/etc/nginx/sites-available/blueprint-sit.conf` + link (10-31).
+- **Units no longer enabled:** ModemManager, multipathd, udisks2, apport, snapd(+socket), lxd-installer.socket, iscsid.socket, open-iscsi, open-vm-tools.
+- **New keys** in `/home/deploy/.ssh/authorized_keys`: `github-ci@blueprint-2026-10-31` (forced command `ci-deploy`, 10-31). Expected total: 3 keys (Mac, Otto's PC, CI).
+- **Listening (expected):** 22, 80, 443, 127.0.0.1:3001 (blueprint-back-sit), 127.0.0.1:3002 (blueprint-sit), local DNS 53, chrony 323.
+- **Logins:** the PC's IP is dynamic (`223.24.171.7` → `223.24.156.113`). A known key from a new IP = 🟡 note, not 🔴.
+- Anything **not** on this list, or not in a dated S2.9 entry, is still 🔴.
+- **2026-11-01 — SSH off the public port: DEFERRED by the owner, to be raised again.** Owner: *"ยังดีกว่า แต่จำไว้ เอาไว้ นำเสนอ หรือ หาทางที่มันดีกว่านี้อีกมา ครั้งหน้า"*.
+  - **Idea:** Tailscale (or Cloudflare Access/Tunnel for SSH) so port 22 is not public. That ends the scanner noise and the fail2ban self-lockouts.
+  - **Cost:** CI needs a way in too (a Tailscale GitHub Action + auth key, or Cloudflare Access for SSH).
+  - **Next time** (a new server, or the next security talk): present it again in ≤5 lines, **and compare at least one alternative** before recommending (e.g. Cloudflare Tunnel `cloudflared access ssh` + a service token for CI; WireGuard on the box; port-knocking is NOT acceptable).

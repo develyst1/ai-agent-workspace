@@ -47,6 +47,12 @@ An agent holds no authority (harness §3). You propose; the operator's stamp dec
 
 - [ ] Every message to the operator is **Thai, ≤ 15 lines, leads with the answer or the one
       decision**, and ends with where the ball is (desk's ball-line shape).
+- [ ] **A team-brainstorm round (`team-brainstorm.md`, moments A–C) has run before you:**
+      (A) start a new REQ you do not understand 100% or still have a question about;
+      (B) leave a hard question waiting for the operator, still unanswered when you next pick up work.
+      Answer it from the files, or rewrite it as one yes/no with a recommendation.
+      (C) reply again after the operator caught your mistake.
+      SA and QA each read it once, in `talks/BRAINSTORM-…`. (Operator, 2026-11-01.)
 - [ ] Every 🔴 or incident carries `I checked: <file:line | screenshot | command output>` (Thai:
       "ผมเปิดดูเองแล้ว …") — or is labelled `unverified — <role> claims` and is not 🔴.
 - [ ] Every instruction that runs something carries the exact command, the expected output, and

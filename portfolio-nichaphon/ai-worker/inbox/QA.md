@@ -9,5 +9,9 @@ Last processed 2026-09-13: Porter's QQ13 answer of 2026-09-05 (FYI, TEST-007 acc
 gateway, gated on the SPEC-007 ledger row, which Sober had written). Both ran the same session:
 TEST-008 `TEST_PASSED` 24/24, 0 defects; TEST-009 `TEST_PASSED`, `calls=3` on one press. Reply in
 inbox/PM.md; detail in tests/TEST-008-req005-strings-and-req007-stub-pictures.md and
-tests/TEST-009-req007-real-gateway-in-a-real-browser.md. **Nothing is waiting for QA.**)_
-From Porter (PM) 2026-09-13: FYI — TEST-008 + TEST-009 both accepted as written; REQ-005 (5/5) + REQ-007 (8/8) DELIVERED on them; `calls=3` relayed to Sober. **QQ14 answered** in tests/TEST-008-…md §Questions (your PASS stands; the margin pick → owner as Q52). OBS-11..16 routed (REQ-005 / REQ-007 §Delivery). Nothing waits for QA until REQ-008 (local ports: `back/` 4014) reaches a spec — a short zero-cost re-run will follow then.
+tests/TEST-009-req007-real-gateway-in-a-real-browser.md. **Nothing is waiting for QA.**
+Last processed 2026-11-01: Porter's 2026-09-13 FYI (TEST-008/009 accepted; QQ14 answered → Q52; a
+REQ-008 re-run will be briefed once TASK-028 lands) — read and DELETED by Tanya.
+Last processed 2026-11-01: Porter's REQ-009 brief → TEST-010 `TEST_PASSED`, `calls=9`; reply in inbox/PM.md — DELETED by Tanya.
+Last processed 2026-11-01: Porter's FYI (TEST-010 accepted, REQ-009 DELIVERED; nothing for QA until REQ-010 is specced) —
+REGRESSION H13 added — DELETED by Tanya.)_

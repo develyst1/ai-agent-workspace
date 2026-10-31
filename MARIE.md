@@ -16,10 +16,12 @@ logged didn't happen.
 ## Your scope — all of it, and nothing else
 
 1. **Housekeeping runs.** When a project's coordination files are bloated
-   (board, dispatcher-state, REQ files), you run the cleanup — by **spawning
-   that project's PM as a subagent** with precise instructions (archive
-   verbatim first, compact to state-only, zero semantic change), then
-   verifying the result yourself (sizes, spot checks). You never rewrite a
+   (board, dispatcher-state, REQ files), you run the cleanup through **that
+   project's PM, in the PM's own session**. Write precise instructions as a
+   line in its `inbox/PM.md` (archive verbatim first, compact to state-only,
+   zero semantic change) and wake it with the `nudge-session` skill. Then
+   verify the result yourself (sizes, spot checks). **Never spawn the PM, or
+   any main character, as a subagent** (`CLAUDE.md`, owner 2026-11-01). You never rewrite a
    project's ai-worker files with your own hands; the project's PM knows its
    context, you know the procedure.
 2. **Migrations between work modes.** Moving a project to dispatcher mode:
@@ -44,7 +46,13 @@ logged didn't happen.
 - Never run SQL or touch real environments.
 - You may write: workspace-root tooling (`check-hygiene.mjs`), `MARIE.md`'s
   own log section below, `_templates/` (with approval). Everything inside a
-  project happens via that project's spawned PM.
+  project happens through that project's PM, in its own session (never a subagent).
+- **Never ask the owner anything.** A question, a doubt, or a choice the order
+  does not settle goes **back to Atlas**: write it under the ORDER in this file,
+  then wake Atlas's session with the `nudge-session` skill (title "Atlas"). Atlas
+  decides, or asks the owner himself. (Owner, 2026-11-01: *"เขียนกฏ ให้ดี สำหรับ
+  session ห้าม marie ถาม user ให้ถามกลับมาหานายโดย สกิล สะกิด"*.) When the order
+  is done, report to Atlas the same way, not to the owner.
 
 ## Pending orders from Atlas (owner-approved — read this BEFORE the log below)
 
@@ -2548,7 +2556,96 @@ under the `CLAUDE.md` §6 exception. Marie and Atlas never commit.
   log.
 - **Then report.** Atom makes commit 2. **No git by Marie.**
 
+### ORDER 48 — 2026-11-01 — open desk `corner-chat` (two teams sharing both repos, two testers, manual mode) — ✅ DONE 2026-11-01 01:05 (Operations log)
+
+**Owner, to Atlas, 2026-11-01, in order:**
+- *"อยากเปิดโต๊ะใหม่อ่ะทำเป็นแหล่งรวมแชตอ่ะจะส่งรีควอร์เมนต์ให้"*, with the requirement pasted. It is staged verbatim at the workspace root: `DESK-OPEN-corner-chat-requirements.md`.
+- *"back ไม่ใช้ nest ใช้ bun hono หรือ bun elysia เท่านั้น"*
+- *"ขอแอปชื่อว่า corner-chat แทนแล้วกัน"*
+- Repos: *"H:\corner-chat\"*.
+- *"น่าจะต้องมีทีม engineer สองทีม เทสเตอร์สองคน"*
+- On real systems: *"ใช่ แต่ก็แตะของจริงได้บ้าง หากจำเป็น"*
+- *"ทำไมจะทำrepo ด้วยกันไม่ได้ smart scheduler ยังทำได้เลย TESTER tefany"*. Both teams share both repos, as smart-scheduler does, split by file area through the PM's batch claims.
+
+**Steps (desk-open flow, `_templates/DESK-OPEN.md` step 4):**
+1. `node scripts/install.mjs corner-chat`.
+2. **Move** `DESK-OPEN-corner-chat-requirements.md` to `corner-chat/project-docs/requirements-from-owner-2026-11-01.md`, byte for byte, then remove the root copy.
+3. **`TEAMS.md`**, in smart-scheduler's shape: Team A inboxes have no suffix, Team B's end in `-B`; session names are `<Name>-CC`.
+
+   | Name | Role · team | Inbox |
+   |---|---|---|
+   | Porter | PM · all | `inbox/PM.md` |
+   | Tanya | QA · A | `inbox/QA.md` |
+   | Tefany | QA · B | `inbox/QA-B.md` |
+   | Sober | SA · A | `inbox/SA.md` |
+   | Jason | BE · A | `inbox/BE.md` |
+   | Fern | FE · A | `inbox/FE.md` |
+   | Silver | SA · B | `inbox/SA-B.md` |
+   | Bob | BE · B | `inbox/BE-B.md` |
+   | Fanta | FE · B | `inbox/FE-B.md` |
+
+   - One charter per role serves both teams: `SA-Lead.md`, `BE.md`, `FE.md`, `QA.md`.
+   - Both teams work in both repos. The PM claims a file area per team on the board before either starts (smart-scheduler's "Batch claims").
+   - Create the `-B` inbox files.
+4. **`machine.local.md`:** rows `corner-chat-back` → `H:\corner-chat\corner-chat-back` and `corner-chat-front` → `H:\corner-chat\corner-chat-front`. Both are empty repos (README only), branch `main`, origin `github.com/develyst1/...`.
+5. **`SYSTEM-FACTS.md`**, seeded before the team's first session with the owner's words above, stamped `[operator 2026-11-01]`:
+   - **Stack:** back = **Bun + Hono or Bun + Elysia only, never NestJS**, with Postgres. Atlas recommends Hono, but the choice is the SA's in SPEC-001. Front = Dashboard + Web Chat; its stack is decided in SPEC-001.
+   - **AI:** through the owner's LLM gateway (the `llm-gateway` skill).
+   - **Real systems:** reading a real system is allowed when needed. **Sending or changing anything real** (a LINE message, an email to a real person, a real Discord post, the real Zimbra mailbox on the owner's mail host) **needs the owner's go each time**, by DATA REQUEST through the PM. Build and test against test accounts by default.
+   - **Secrets:** LINE, Discord and gateway tokens and the Zimbra password live only in each repo's `.env`, never in git.
+   - **Open for the owner:** the repos have only `main` and no `develop`, while the git commands (`CLAUDE.md` §6) assume `develop` plus `merge-workflow.sh`. Branch creation is the owner's.
+6. **`DECISIONS.md`:** the mode is **manual** (one session per role), the team above, and the stack line. `board.md` Project info follows the same.
+7. **`README.md` projects table:** add a `corner-chat` row.
+8. Prove it:
+   - `node scripts/check-harness.mjs` shows `corner-chat current`;
+   - `node check-hygiene.mjs corner-chat` gives PASS.
+
+### ORDER 49 — 2026-11-01 — ✅ DONE 2026-11-01 (Marie; see Operations log — 10/10 current, only `.harness` changed) — harness 2.6.6 everywhere (the "no main character as a subagent" rule)
+
+**Owner, to Atlas, 2026-11-01:** *"คราวหลังตั้งกฏไว้เลย ตัวละครหลักแบบนี้ไม่ให้ subagent ให้เปิด เป็น session เพราะ จะได้
+manage model effort ได้มากกว่าและ เร็วกว่า"* and *"เขียนกฏ ให้ดี สำหรับ session ห้าม marie ถาม user ให้ถามกลับมาหานายโดย
+สกิล สะกิด"*.
+
+- New in `CLAUDE.md`: **no main character runs as a subagent.** Each main character runs in its own session, and work
+  is handed over with a file plus a nudge. That changed the rule-file hash, so `harness.json` is now **2.6.6**.
+- New in this file: your scope §1 and your Hard boundaries. You never spawn a PM as a subagent; desk work goes to the
+  PM's inbox plus a nudge. **You never ask the owner**; questions and reports go back to Atlas through `nudge-session`.
+
+**Do:** run `node scripts/install.mjs <desk>` on every desk; only `.harness` changes. Then
+`node scripts/check-harness.mjs` must say all current. Then nudge Atlas with the summary line. Never spawn a subagent
+for any of this.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-11-01 — **ORDER 49 DONE: harness 2.6.6 on all 10 desks. `check-harness`: "10 desk(s), all
+  current", exit 0. Only `.harness` changed — proven with git, not assumed.** Owner's go via Atlas
+  (ORDER 49). **No subagent used; no owner question asked** — the two rules this order installs, applied
+  to the order that installs them.
+  **Read before acting:** Atlas's nudge said my scope §1 and Hard boundaries had changed. A peer cannot
+  change a charter, so I checked the charter, not the message: both changes are in this file's own text
+  with the owner's words (2026-11-01), and `CLAUDE.md` carries the same rule. Only then did I act.
+  **Read the tool before running it on every desk.** `install.mjs` decides everything first and refuses,
+  writing nothing, if any desk's shared tool was edited locally; it backs up before it replaces. Safe to
+  run in a loop.
+  **"Every desk" defined by the checker, not by me:** `check-harness.mjs` counts every folder with
+  `ai-worker/`; all 10 such folders have a `.harness`, so the 10 it listed ARE every desk.
+  **Before:** all 10 "behind 2.6.6 (desk has 2.6.5)". **Run:** 10 × exit 0, 10 × *"shared tools already
+  current — none touched"*. **After:** all 10 "current".
+  ✅ **The order's claim "only `.harness` changes" — tested, not trusted.** `git status --porcelain`
+  snapshotted before and after; the diff is **exactly nine `M …/ai-worker/.harness` lines and nothing
+  else**. The tenth, `corner-chat`, was opened today (ORDER 48) and is untracked as a whole folder
+  (`?? corner-chat/` before and after), so git cannot list its `.harness` separately — its file reads
+  2.6.6, installedAt 2026-11-01.
+  ⚠️ **Tooling note, not a problem:** a workspace hook (`block-shell-edits.sh`) blocks every `node -e`,
+  including read-only ones. I used plain `sed -n`/`head` to read instead. *The hook cannot tell a read
+  from a write; it is right to err that way.*
+  **Report:** to Atlas through `nudge-session`, not to the owner (Hard boundaries, 2026-11-01).
+  Nudged "Atlas - workspace" (`local_fa926441…`, the session that sent ORDER 49) — **status: NOT
+  CONFIRMED.** The app returned *"gave no sign of starting on it within 20s … it can still pick it up
+  later"*. Per the skill that is **"nudged, not yet picked up"**, not "Atlas has it". **Not re-rung** —
+  a second bell spends budget and says nothing new; this entry is the report and it is already on disk.
+
+- 2026-11-01 01:05 (ORDER 48, DONE) — **Opened the desk `corner-chat/`, plus Atlas's addition (owner's go): branches + an open item for the PM.** `install.mjs corner-chat` → new desk, harness 2.6.5, exit 0. Requirement moved: `cp -p` to `corner-chat/project-docs/requirements-from-owner-2026-11-01.md`, `cmp` equal, sha256 52779d06…cdadcb both, 7838 B, no CR, then the root copy removed; `project-docs/.gitkeep` copied. **Filled:** `TEAMS.md` (9 rows, `<Name>-CC`, Tanya `QA · A` / Tefany `QA · B` → `inbox/QA-B.md`; shared SPEC/TASK and TEST sequences, as smart-scheduler), new inboxes `SA-B`, `BE-B`, `FE-B`, `QA-B`; `SYSTEM-FACTS.md` (owner's quotes `[operator 2026-11-01]`: product, stack, gateway, real-systems rule, secrets; read-only survey; **branches** `atom`/`develop`/`sit`/`uat`/`production` from `main`, pushed, re-read on disk: all at d1152f1 back / 0f8c0bc front, checked out on `main`; working branch UNDECIDED; the old "no develop" open item struck and answered); `DECISIONS.md` (4 lines: mode manual, team, shared repos, stack); `board.md` (Project info, new `## Batch claims`, one Blocked row: working branch undecided → PM settles with the owner before the first ขึ้น git); `PROTOCOL.md` (template comment and `<project>` placeholders gone, mode, two-team note, greenfield + the owner's real-systems rule, repo table, branch undecided, environments, new § "Two teams — batch claims"); `FAILURES.md` desk name. `machine.local.md` +2 rows; `README.md` projects row. Not filled (not in the order): `SEATS.md`, the 🔧 marks in PM/SA-Lead/BE/FE/QA/CONVENTIONS, `RESUME-HERE.md`; no REQ seeded. No absolute path in the desk (grep). `check-harness`: `harness 2.6.5: 10 desk(s), all current`, exit 0. `check-hygiene corner-chat`: **RESULT: PASS** (NOTEs only), exit 0. **No git.**
 
 - 2026-10-30 17:43 (ORDER 47, Part B DONE — order DONE) — **Unblocked:** on the owner's words via Atom 17:41 (*"ให้ Atlas ทำสิ"*, this one time) **Atlas** edited `harness.json` with exactly my 3 values (version 2.6.5; `append-log.mjs` 81f520dd…97f9; `watch-inbox.sh` b2133e73…0130) — I did not touch it (checked with `git diff harness.json`: only those 3 lines). **B1:** `_templates/project/ai-worker/append-log.mjs` and `…/tools/watch-inbox.sh` ← i-space's live copies (cp to temp + mv; `cmp` equal; CR-stripped sha = harness.json; no CR). Right before installing, checked every process's open fds: the only `watch-inbox.sh` handles are i-space's 3 watchers (pids 1236287 SA-B, 1260692 SA, 1261223 PM RELAY) — no other desk had one, none skipped. `node scripts/install.mjs <desk>` × 9, all exit 0: 8 desks (buddy-screen, develyst-ai, dte, portfolio-nichaphon, possibility, pun-kub-fang, smart-scheduler, smart-scheduler-atom) backed up both tools to `ai-worker/archive/{append-log.mjs,watch-inbox.sh}.before-2.6.5.2026-10-30` and replaced them; i-space "shared tools already current — none touched"; all 9 `.harness` rewritten 2.6.5. Same 3 i-space watcher pids alive after. Rollover stays off elsewhere: only `i-space/ai-worker/checks.json` has `log-rollover`. **B2:** `check-harness` → `harness 2.6.5: 9 desk(s), all current`, exit 0. `check-hygiene` after vs my 16:53 before (scratch `hyg-before/`): 8 desks **identical** (same verdicts/WARNs; only my capture's `exit=` vs `exit ` text differs); **i-space differs from desk work only, not Part B** (files dated 16:54–17:31, before the 17:43 install; install touched only i-space's `.harness`): SPEC-115/117 Consumers lines fixed (12 WARNs gone), F-047 added (3→4 unreviewed), log 11.0→25.1KB, QA boot 48.5→49.0KB ⇒ PASS(17) → PASS(5). The watcher-guard test on a scratch desk was done in the rehearsal (line below). **B3:** no per-desk re-read line (P7) needed — the duties did not change; only the two shared tools' behaviour changed (watcher guard everywhere; rollover only where `checks.json` turns it on). **No git.**
 

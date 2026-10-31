@@ -24,9 +24,10 @@
    ```
 3. **Atlas** reads the file and checks it (below). If something needs changing, Atlas asks in **one** message,
    and the person fixes it on the form and presses ส่งให้ Atlas again. Otherwise Atlas writes Marie's order
-   **and spawns Marie itself, in the same session** — the person does nothing between steps 2 and 5 (operator
-   2026-10-14: a new user does not know Marie exists, so an Atlas that stops at "order written" strands them).
-4. **Marie** (spawned by Atlas) runs `node scripts/install.mjs <desk>`, fills the desk files from the answers (`TEAMS.md` from the
+   **and wakes Marie's own session with the `nudge-session` skill** — never as a subagent (`CLAUDE.md`, owner
+   2026-11-01). If no Marie session exists yet, Atlas asks the person once to open one (`อ่าน MARIE.md`), so the
+   person is never stranded at "order written" (operator 2026-10-14). Marie reports back to Atlas the same way.
+4. **Marie** (in her own session) runs `node scripts/install.mjs <desk>`, fills the desk files from the answers (`TEAMS.md` from the
    roster, `SEATS.md` from section C, the first lines of `DECISIONS.md` stamped `[operator <date>]`), proves it
    with `node scripts/check-harness.mjs` → `current` and `node check-hygiene.mjs <desk>` → PASS, then deletes
    `desk-open/<desk>.json` (its content now lives in the desk).

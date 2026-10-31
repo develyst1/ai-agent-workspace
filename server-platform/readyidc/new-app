@@ -1,6 +1,6 @@
 #!/bin/sh
 # new-app: one-time setup of an app on this box. Run as root (deploy may: sudo -n new-app ...).
-#   new-app <name> <static|process> [--host <sub>.develyst.online] [--start "<cmd>"] [--health </path>]
+#   new-app <name> <static|process> [--host <sub>.develyst.online] [--start "<cmd>"] [--health </path>] [--private]
 # Every argument is validated: this script runs as root from a passwordless sudo rule.
 set -eu
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -12,14 +12,16 @@ FIRST_PORT=3001
 
 usage() {
   cat <<'EOF'
-usage: new-app <name> <static|process> [--host <sub>.develyst.online] [--start "<cmd>"] [--health </path>]
-  name     ^[a-z0-9-]{2,40}$, must not exist yet
+usage: new-app <name> <static|process> [--host <sub>.develyst.online] [--start "<cmd>"] [--health </path>] [--private]
+  name    ^[a-z0-9-]{2,40}$, must not exist yet
   static   built files served by nginx from /srv/apps/<name>/current (SPA fallback to index.html)
   process  pm2 runs <cmd> in /srv/apps/<name>/current on 127.0.0.1:<port>; nginx proxies to it
   --host   default <name>.develyst.online (one level only: the wildcard cert covers no deeper)
   --start  default "node server.js" (Next.js standalone); a Bun binary: "./app"
            allowed characters: letters, digits, space . _ / = : -
   --health default /; deploy-app expects a status < 500 there within 30 s
+  --private process only: no nginx site, reachable only on 127.0.0.1:<port> (e.g. a back end
+           with no login of its own that only the front calls)
 EOF
 }
 die() { echo "new-app: $*" >&2; exit 1; }
@@ -29,9 +31,10 @@ die() { echo "new-app: $*" >&2; exit 1; }
 [ "$#" -ge 2 ] || { usage >&2; exit 2; }
 
 NAME=$1; TYPE=$2; shift 2
-HOST="$NAME.$DOMAIN"; START="node server.js"; HEALTH=/
+HOST="$NAME.$DOMAIN"; START="node server.js"; HEALTH=/; PRIVATE=0
 while [ "$#" -gt 0 ]; do
   case "$1" in
+    --private) PRIVATE=1; shift ;;
     --host)   [ "$#" -ge 2 ] || die "--host needs a value";   HOST=$2;   shift 2 ;;
     --start)  [ "$#" -ge 2 ] || die "--start needs a value";  START=$2;  shift 2 ;;
     --health) [ "$#" -ge 2 ] || die "--health needs a value"; HEALTH=$2; shift 2 ;;
@@ -47,12 +50,16 @@ case "$TYPE" in static|process) ;; *) die "type must be static or process" ;; es
 valid "[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.develyst\.online" "$HOST" || die "bad --host (want <one-label>.$DOMAIN)"
 valid '[A-Za-z0-9 ._/=:-]{1,200}' "$START" || die "bad --start (allowed: letters digits space . _ / = : -)"
 valid '/[A-Za-z0-9._/-]{0,100}' "$HEALTH" || die "bad --health (want /path)"
+if [ "$PRIVATE" = 1 ]; then
+  [ "$TYPE" = process ] || die "--private is for process apps only"
+  HOST=-
+fi
 
 SITE=/etc/nginx/sites-available/$NAME.conf
 LINK=/etc/nginx/sites-enabled/$NAME.conf
 [ -e "$APPS/$NAME" ] && die "$APPS/$NAME already exists"
 [ -e "$SITE" ] || [ -e "$LINK" ] && die "$SITE already exists"
-grep -rqs -- "server_name $HOST;" /etc/nginx/sites-enabled/ && die "host $HOST is already served"
+[ "$PRIVATE" = 1 ] || ! grep -rqs -- "server_name $HOST;" /etc/nginx/sites-enabled/ || die "host $HOST is already served"
 
 install -d -o root -g root -m 755 "$APPS"
 [ -f "$PORTS" ] || install -o root -g root -m 644 /dev/null "$PORTS"
@@ -107,6 +114,12 @@ else
     location / {
         try_files \$uri \$uri/ /index.html;
     }"
+fi
+
+if [ "$PRIVATE" = 1 ]; then
+  echo "name=$NAME type=$TYPE PRIVATE (no nginx site) port=$PORT health=$HEALTH"
+  echo "next: put secrets in $APPS/$NAME/shared/.env, then: deploy-app $NAME <artifact.tgz>"
+  exit 0
 fi
 
 cat > "$SITE" <<EOF

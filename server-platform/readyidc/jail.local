@@ -1,0 +1,15 @@
+[DEFAULT]
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+backend  = systemd
+# Admin machines are never banned (OF-010). These home IPs are dynamic: update when they change.
+# 223.24.156.113 = owner's Windows PC (2026-11-01), 202.129.207.248 = owner's Mac (2026-10-31)
+ignoreip = 127.0.0.1/8 ::1 223.24.156.113 202.129.207.248
+
+[sshd]
+enabled = true
+# OpenSSH 10 logs auth failures from sshd-session; defaults-debian.conf only watches sshd.
+journalmatch = _SYSTEMD_UNIT=ssh.service + _COMM=sshd + _COMM=sshd-session
+# aggressive = also count scanners that disconnect before any password try (key-only box). Otto, 2026-10-31.
+mode = aggressive

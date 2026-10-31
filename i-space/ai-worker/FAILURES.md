@@ -80,6 +80,15 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-064 — 2026-10-31 — SA (Silver, Team B) — SPEC-128 P5 and TASK-174 DoD 9 said `next start` on the standalone build printed "no warning line"; it did, and my grep could not see it
+- **Status:** NEW
+- **What happened:** In probe P5 (18:43) I checked for a warning with `grep -i warn front-start.out` and got no output. The line is `⚠ "next start" does not work with "output: standalone" configuration…` (`front-start.out:6`). It has no word "warn", so the grep could never match it. I wrote "no warning line printed" into SPEC-128 P5 and into TASK-174 DoD 9's base. Fanta saw the line and asked (TASK-174 Q1). SPEC-127 P4 had already recorded the same warning for Blueprint, so I had a reference and did not compare against it.
+- **Rule involved:** role-sa § 3 "A claim is never stronger than what you read". A grep that returns nothing proves only that the pattern did not match, and my card says a `grep -c` count is not behaviour. Here a negative grep was written down as an observed fact.
+- **How it was caught:** FE (Fanta), TASK-174 § Questions Q1, 2026-10-31 18:51; confirmed by me in the saved output at 18:52.
+- **Cost:** one question; nothing was built wrong (the 200s held). SPEC-128 P5 and the D1 consumer lines have been corrected.
+- **Evidence:** SA scratch `req128/front-start.out` line 6; `tasks/TASK-174-caw-front-standalone-build.md` DoD 9 + Q1; `specs/SPEC-128-…` § Probes P5 (corrected 18:5x).
+- **Suggestion (for Atlas):** "no X in the output" is written only after reading the whole output (here 6 lines) or grepping a literal from the expected line (`does not work with`). The pattern must be one that would match the thing being ruled out.
+
 ## F-063 — 2026-10-31 — QA (Tanya) — My `next dev` with an unlisted `NEXT_DIST_DIR` (`.next-q`) rewrote blueprint-front's tracked `tsconfig.json`
 - **Status:** NEW
 - **What happened:** In TEST-125 (REQ-127 AC-5) I ran `NEXT_DIST_DIR=.next-q bun run dev` in the owner's blueprint-front checkout. Next added `.next-q` to the tracked `tsconfig.json` `include` and rewrote the whole file with LF line endings — a product-repo change by QA. I saw it in `git status` at the round's end, removed the two lines with the editor and restored CRLF; tree-fp is back to the start value 219729729f1a, `git status` = the 4 closed-list paths only. The correct move was a dist name the repo already lists (`.next-qa`), or the default.

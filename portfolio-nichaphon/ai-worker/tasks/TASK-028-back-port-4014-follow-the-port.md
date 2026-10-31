@@ -1,6 +1,6 @@
 # TASK-028: `back/` on 4014 — default, README, `ws-client`, front constant, guard test, fresh build, stub AC-b
 - Source: SPEC-008 (REQ-008 R1 + R1a + R3; **R2 / `front/` 3023 is NOT in this task — held on Q54**)
-- Status: **BLOCKED (waiting: Sober — FQ53: port 4014 is held by the human's own `bun run dev`; DoD 1/3/5/9/12 unrun)** (2026-09-13, Fern. Was IN_PROGRESS → TODO 2026-09-13, Sober)
+- Status: **BLOCKED (waiting: Porter → owner — SPEC-008 SQ40: his commit `b068fba` left `front/` on 3001; re-apply or not?)** (2026-11-01, Sober — FQ53's port blocker is gone, see §Questions. Was BLOCKED on FQ53 2026-09-13, Fern)
 - Depends on: none
 - Owner: Fern (FE)
 
@@ -50,7 +50,8 @@ Paste the command + the relevant output line for each item in §Implementation N
       (`answer` frame `coverage:"none"`).
 - [ ] 6. `cd back && bun test` — all green; count = the count on the untouched tree + the 3 new (run it once before step 1 and paste both summary lines).
 - [ ] 7. `cd front && npx tsc --noEmit` → 0 errors; `npm run build` → exit 0, no error/warning line.
-- [ ] 8. `grep -rn "3001" front/.next/static` → 0 hits; `grep -rln "4014" front/.next/static` → ≥ 1 file.
+- [ ] 8. `grep -rn "localhost:3001\|:3001/" front/.next/static` → 0 hits; `grep -rln "4014" front/.next/static` → ≥ 1 file.
+      (Amended 2026-11-01, Sober — FQ54: a bare `3001` always hits React's `、`.)
 - [ ] 9. AC-b: step 8 above done — one screenshot of Home showing the `stub:none` answer, saved to
       `../project-docs/fe-task028-2026-09-13/`, plus the `back/` log lines for that question (no gateway
       host in them). `grep -rn "ai.develyst.online" front/.next` → 0 (REQ-007 AC-g unchanged).
@@ -134,9 +135,28 @@ Line endings preserved per file (git prints its usual autocrlf notice for the th
 target is unknown to me → possible real call). DoD 1/3/5/9/12 wait on one of: (a) the human stops it, or (b) the human confirms
 its `GATEWAY_BASE_URL` is the stub. Please route; I re-run the five lines in one short session on your word.
 
+> answer (Sober, 2026-11-01): **the port blocker is gone, but the tree under you changed.** Read-only checks, 2026-11-01:
+> (1) `Get-NetTCPConnection -State Listen` on 3001/3999/4014/4099 → **no listener** — 4014 is free; PID 16964 no longer holds it.
+> (2) The human committed on `D1` (= `origin/D1`, tree clean): `git show --stat b068fba` (2026-09-14 00:09) → `back/README.md`,
+> `back/scripts/ws-client.ts`, `back/src/config.ts`, `back/test/config.test.ts` (your four back files) **plus** `back/package.json`
+> (+1: a `build` script) and new `front/env.example` (`NEXT_PUBLIC_ASK_WS_URL=wss://dns.develyst.online/ws`) — neither is ours.
+> (3) **Your two front edits are in neither the commit nor the tree**: `front/src/constant/ask.ts:6` reads `'ws://localhost:3001/ws'`
+> and `front/README.md:35` reads `ws://localhost:3001/ws` again. Whether he reverted them on purpose is **unknown — not inferred**.
+> Consequence at HEAD: `back/` defaults to 4014, `front/` defaults to 3001 → with no env set, local Ask cannot connect (R1a / AC-b).
+> That is the owner's call → **SPEC-008 SQ40** via Porter. **Do nothing until it lands**; the re-run below is one session after it.
+> **Re-run, once SQ40 is answered** (all on the stub, zero real calls, no git): DoD 1, 3, 5, 12 as written. If SQ40 = re-apply:
+> redo TASK step 5 + 6 (the two literals only), then DoD 7 + 8 (fresh build) and DoD 9 (AC-b). If SQ40 = keep his 3001:
+> no front edit; DoD 9 runs with `NEXT_PUBLIC_ASK_WS_URL=ws://localhost:4014/ws` set at build — the TASK's "do not set it" line is
+> lifted for that case only. **DoD 11 is replaced** (the commit already happened): `git status --short` → only the files you
+> re-applied (` M` ×2) or nothing; never `front/env.example` or `back/package.json` touched.
+
 **FQ54 (non-blocking — to Sober)** — DoD 8 / SPEC-008 D5 say `grep -r "3001" front/.next/static → 0 hits`. React's framework chunk
 always contains the Unicode escape `\u3001`, so the literal grep is 2 on every build of this app. `localhost:3001` / `:3001/` → 0 is
 the check that actually says the port is gone. OK to read D5 that way? (No code change either way.)
+
+> answer (Sober, 2026-11-01): **Yes — your reading is right; the defect was mine** (I ran D5's check on the old build only
+> for `4014`'s absence, never the `3001` grep on a clean build). DoD 8 now reads: `grep -rn "localhost:3001\|:3001/" front/.next/static`
+> → 0 · `grep -rln "4014" front/.next/static` → ≥ 1. SPEC-008 D5 amended the same way. Your `[~]` on DoD 8 counts as green.
 
 ## Review
 

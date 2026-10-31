@@ -1,0 +1,2140 @@
+bun test v1.3.14 (0d9b296a)
+
+test\dev.test.ts:
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:84:19)
+(fail) both children start with the same environment, and every line carries its prefix [6.51ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:94:19)
+(fail) the runner exits (here: its own 'CAW_WORKSPACE_ROOT is not set' line) → `[runner] stopped: <its last line>` is printed and the API stays up; the runner is NOT restarted [3.49ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:107:19)
+(fail) SIGINT stops both children and dev.ts exits; no child is left (checked by pid) [3.66ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:116:19)
+(fail) SIGTERM does the same [3.21ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:124:19)
+(fail) after the runner has stopped, SIGINT still stops the API and dev.ts exits [3.24ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:133:19)
+(fail) the API exits → the runner is stopped and dev.ts exits with the API's code [3.12ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:143:19)
+(fail) the REAL API (src/index.ts, in-memory database) prints one start line that dev.ts prefixes — `[api] caw-back API on http://127.0.0.1:<port>` — and never the database URL [3.52ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:156:19)
+(fail) an API already answers /health on the port → `[dev] an API already answers on :<port> — starting the runner only`; ONE child (the runner), no API started; dev exits with the runner's code [6.49ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:167:19)
+(fail) with an API already up, SIGINT stops the runner and dev.ts exits (the other program's API is not touched) [6.52ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:176:19)
+(fail) the API child exits within 5 s of its start (a race, or a non-CAW program on the port) → `[api] could not start (port in use?) — runner kept`; the runner stays alive and is never restarted [3.36ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:190:19)
+(fail) when the API could not start and the runner then stops too, nothing is left: dev.ts prints the stopped line and exits with the runner's code [3.85ms]
+42 |   probe.stop(true);
+43 |   if (opts.apiAlreadyUp) {
+44 |     const already = Bun.serve({ port, hostname: "127.0.0.1", fetch: (req) => (opts.apiAlreadyUp === "caw" && new URL(req.url).pathname === "/health" ? Response.json({ ok: true }) : new Response("hello")) });
+45 |     cleanups.push(() => already.stop(true));
+46 |   }
+47 |   const proc = Bun.spawn([process.execPath, "--no-env-file", "src/dev.ts"], {
+                        ^
+ENOENT: no such file or directory, uv_spawn 'C:\Users\KUYDONG\.bun\bin\bun.exe'
+    path: "C:\\Users\\KUYDONG\\.bun\\bin\\bun.exe",
+ syscall: "uv_spawn",
+   errno: -4058,
+    code: "ENOENT"
+
+      at startDev (H:\ispace\caw-back\test\dev.test.ts:47:20)
+      at <anonymous> (H:\ispace\caw-back\test\dev.test.ts:199:19)
+(fail) a NON-CAW program already on the port (200 "hello", not { ok: true }) is not taken for the API: dev.ts tries to start its own, which cannot bind — and the runner is kept [5.65ms]
+
+src\runner\api.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+4 | 
+5 | const FIX = new URL("../fixtures/blueprint/", import.meta.url).pathname;
+6 | const fixture = (name: string) => readFileSync(`${FIX}${name}.json`, "utf8");
+7 | 
+8 | /** the Blueprint project id the fixtures were recorded for */
+9 | export const BP_PROJECT = (JSON.parse(fixture("project-200")) as { project: { id: string } }).project.id;
+                                          ^
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at H:\ispace\caw-back\test\helpers\fake-blueprint.ts:9:39
+-------------------------------
+
+
+src\runner\bash-policy.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+14 | const outside = tmp("bp-out-");      // not readable
+15 | mkdirSync(join(root, "src"), { recursive: true });
+16 | writeFileSync(join(root, "src", "a.ts"), "ok");
+17 | writeFileSync(join(spec, "spec.md"), "spec");
+18 | writeFileSync(join(outside, "canary.txt"), "CANARY");
+19 | symlinkSync(outside, join(root, "link-out"));
+     ^
+EPERM: operation not permitted, symlink 'C:\Users\KUYDONG\AppData\Local\Temp\bp-out-1bivnq' -> 'C:\Users\KUYDONG\AppData\Local\Temp\bp-root-Aq5ter\link-out'
+    path: "C:\\Users\\KUYDONG\\AppData\\Local\\Temp\\bp-out-1bivnq",
+    dest: "C:\\Users\\KUYDONG\\AppData\\Local\\Temp\\bp-root-Aq5ter\\link-out",
+ syscall: "symlink",
+   errno: -1,
+    code: "EPERM"
+
+      at H:\ispace\caw-back\src\runner\bash-policy.test.ts:19:1
+-------------------------------
+
+
+src\runner\guard.test.ts:
+22 |     expect(JSON.parse(PROBES["block-irreversible.sh"]).tool_input.command).toBe("git push origin HEAD");
+23 |   });
+24 | 
+25 |   test("passes when all three hooks exit 2 on their probe", async () => {
+26 |     const hooks = HOOKS.map((h) => script(h, 2));
+27 |     await expect(probeHooks(hooks)).resolves.toBeUndefined();
+                                                  ^
+error: 
+
+Expected promise that resolves
+Received promise that rejected: Promise { <rejected> }
+
+      at <anonymous> (H:\ispace\caw-back\src\runner\guard.test.ts:27:46)
+(fail) probeHooks > passes when all three hooks exit 2 on their probe [9.14ms]
+29 | 
+30 |   test("refuses, naming the hook, when one exits 0 (inert) — and says what to check", async () => {
+31 |     const hooks = HOOKS.map((h, i) => script(h, i === 1 ? 0 : 2));
+32 |     const err = await probeHooks(hooks).catch((e) => e);
+33 |     expect(err).toBeInstanceOf(GuardError);
+34 |     expect(err.message).toContain("block-irreversible.sh");
+                             ^
+error: expect(received).toContain(expected)
+
+Expected to contain: "block-irreversible.sh"
+Received: "guard hook block-shell-edits.sh could not be run: Executable not found in $PATH: \"C:\\Users\\KUYDONG\\AppData\\Local\\Temp\\caw-guard-test-ugeARD\\block-shell-edits.sh\""
+
+      at <anonymous> (H:\ispace\caw-back\src\runner\guard.test.ts:34:25)
+(fail) probeHooks > refuses, naming the hook, when one exits 0 (inert) — and says what to check [1.28ms]
+37 |   });
+38 | 
+39 |   test("refuses when a hook crashes with another code (126/127/1), not only 0", async () => {
+40 |     for (const code of [1, 126, 127]) {
+41 |       const hooks = HOOKS.map((h, i) => script(h, i === 0 ? code : 2));
+42 |       await expect(probeHooks(hooks)).rejects.toThrow(String(code));
+                                                   ^
+error: expect(received).toThrow(expected)
+
+Expected substring: "1"
+Received message: "guard hook block-shell-edits.sh could not be run: Executable not found in $PATH: \"C:\\Users\\KUYDONG\\AppData\\Local\\Temp\\caw-guard-test-ugeARD\\block-shell-edits.sh\""
+
+      at <anonymous> (H:\ispace\caw-back\src\runner\guard.test.ts:42:47)
+(fail) probeHooks > refuses when a hook crashes with another code (126/127/1), not only 0 [1.24ms]
+
+src\runner\hop.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+src\runner\main.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+src\runner\procs.test.ts:
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-t4kfE8\hops is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:36:5)
+(fail) the hop file > is written 0600 in a 0700 folder, and read back [0.95ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-oq1DGr is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:43:5)
+(fail) the hop file > removeHopFile deletes it, and a second delete is not an error [0.36ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-nIQXhl is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:49:5)
+(fail) the hop file > a file that is not JSON, or lacks fields, is reported (logged) and treated as missing [0.34ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-wjQ8fk is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:63:5)
+(fail) the hop file > listHopFiles returns the valid files only [0.36ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-sFSEN7 is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:72:5)
+(fail) a hop file is untrusted input (security review) > pgid must equal pid — the child leads its own group; anything else could name somebody else's group [0.31ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-ej8d9u is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:77:5)
+(fail) a hop file is untrusted input (security review) > a group with a dead leader that is NOT the recorded pid is never signalled (it would be someone else's group) [0.42ms]
+91 |   });
+92 |   test("a symlink planted at <id>.json is REPLACED, not followed: the file it points to is not overwritten", () => {
+93 |     const d = dir();
+94 |     const victim = join(dir(), "victim.txt");
+95 |     writeFileSync(victim, "precious");
+96 |     symlinkSync(victim, join(d, "h1.json"));
+         ^
+error: EPERM: operation not permitted, symlink 'C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-TWSXDH\victim.txt' -> 'C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-8BVBRa\h1.json'
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:96:5)
+(fail) a hop file is untrusted input (security review) > a symlink planted at <id>.json is REPLACED, not followed: the file it points to is not overwritten [0.84ms]
+100 |   });
+101 |   test("reading a symlink, a directory, or an oversized file gives null and a log line, not a hang or a crash", () => {
+102 |     const d = dir();
+103 |     const target = join(dir(), "t.json");
+104 |     writeFileSync(target, JSON.stringify(file({ hopId: "link" })));
+105 |     symlinkSync(target, join(d, "link.json"));
+          ^
+error: EPERM: operation not permitted, symlink 'C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-5PtOxc\t.json' -> 'C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-jkqrZE\link.json'
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:105:5)
+(fail) a hop file is untrusted input (security review) > reading a symlink, a directory, or an oversized file gives null and a log line, not a hang or a crash [1.14ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-DAn1ef is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:114:5)
+(fail) a hop file is untrusted input (security review) > the write is atomic: the final file is complete and no temp file is left behind [0.33ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-Lx9KDo is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:122:5)
+(fail) a hop file can never make the runner signal the wrong thing (a corrupt or hostile file) > pid 0 / pgid 0 is refused when read [0.31ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-dTL5Jc is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:122:5)
+(fail) a hop file can never make the runner signal the wrong thing (a corrupt or hostile file) > pid 1 / pgid 1 is refused when read [0.45ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-NLtxVS is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:122:5)
+(fail) a hop file can never make the runner signal the wrong thing (a corrupt or hostile file) > pid -5 / pgid -5 is refused when read [0.28ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-o0LSP5 is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:122:5)
+(fail) a hop file can never make the runner signal the wrong thing (a corrupt or hostile file) > pid 4242 / pgid 0 is refused when read [0.26ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-wgbuaa is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:122:5)
+(fail) a hop file can never make the runner signal the wrong thing (a corrupt or hostile file) > pid 4242 / pgid 1 is refused when read [0.26ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                                                                                           ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-ku7lDw is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:87)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:122:5)
+(fail) a hop file can never make the runner signal the wrong thing (a corrupt or hostile file) > pid 4242 / pgid -1 is refused when read [0.25ms]
+127 |   test("realProcs.killGroup refuses group 0 and 1 (kill(0) is OUR group, kill(-1) is everything)", () => {
+128 |     for (const g of [0, 1, -3, 1.5]) expect(() => realProcs.killGroup(g, "SIGTERM")).toThrow();
+129 |   });
+130 |   test("a file naming the runner's OWN process group is not ours to kill (whatever the leader's state)", async () => {
+131 |     const mine = realProcs.inspect(process.pid)!;
+132 |     const leader = realProcs.inspect(mine.pgid);                                            // the leader of OUR group, if it still exists
+                                           ^
+TypeError: null is not an object (evaluating 'mine.pgid')
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:132:38)
+(fail) a hop file can never make the runner signal the wrong thing (a corrupt or hostile file) > a file naming the runner's OWN process group is not ours to kill (whatever the leader's state) [13.64ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-1weu7T is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:151:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > the process is gone and so is its group → `dead`, nothing signalled [0.42ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-eS7STc is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:157:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > alive and the same process (start time and group match) → SIGTERM to the GROUP, then it is gone → `stopped` [0.42ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-8qEM1a is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:163:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > it ignores SIGTERM → SIGKILL to the group after the grace period [0.38ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-KQy8tv is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:169:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > a RECYCLED pid (same number, different start time) is never signalled → `not_ours` [0.38ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-QPefvL is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:175:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > same pid and start time but another process group → `not_ours` too [0.49ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-8ZCgUy is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:181:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > the leader is dead but the group still has members (claude's MCP server, a Bash child) → they are stopped; a live group cannot be a recycled pid [0.40ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-05Lu1u is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:187:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > a signal the OS refuses (EPERM: not our group) is `stuck`, not an exception that stalls the project [0.39ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-3Stced is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:195:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > the runner that wrote the file is STILL ALIVE (same pid, same start time) → `runner_alive`: its worker is not an orphan and is left alone [0.35ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-finOGR is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:201:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > a recycled number for the runner (different start time) does not protect the leftover [0.41ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-B776up is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:206:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > a file written by THIS process is not 'another runner alive' (its own earlier hop) [0.37ms]
+73 | 
+74 | export function writeHopFile(dir: string, f: HopFile): void {
+75 |   if (!SAFE_ID.test(f.hopId)) throw new Error(`unsafe hop id for a file name: ${f.hopId}`);
+76 |   mkdirSync(dir, { recursive: true, mode: 0o700 });
+77 |   const problem = folderProblem(dir);
+78 |   if (problem) throw new Error(`hop file folder ${dir} is not safe to use: ${problem}`);
+                              ^
+error: hop file folder C:\Users\KUYDONG\AppData\Local\Temp\caw-procs-test-8oQziO is not safe to use: owned by uid 0, not by this user
+      at writeHopFile (H:\ispace\caw-back\src\runner\procs.ts:78:26)
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:213:22)
+(fail) reapLeftover — before a hop is marked interrupted, stop what is still running of it > a group that survives even SIGKILL → `stuck` (the caller must NOT start a second worker on the card) [0.35ms]
+219 | describe("REAL processes (no fakes): a detached group is found by its hop file and stopped, including a grandchild", () => {
+220 |   test("`sh -c 'sleep 30 & wait'` started detached: its pid is its pgid, and reapLeftover ends both processes", async () => {
+221 |     const d = dir();
+222 |     const p = Bun.spawn(["sh", "-c", "sleep 30 & wait"], { detached: true, stdin: "ignore", stdout: "ignore", stderr: "ignore" });
+223 |     const info = realProcs.inspect(p.pid)!;
+224 |     expect(info.pgid).toBe(p.pid);                                                     // its own group
+                 ^
+TypeError: null is not an object (evaluating 'info.pgid')
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:224:12)
+(fail) REAL processes (no fakes): a detached group is found by its hop file and stopped, including a grandchild > `sh -c 'sleep 30 & wait'` started detached: its pid is its pgid, and reapLeftover ends both processes [18.49ms]
+233 |   });
+234 |   test("the start time does not depend on the TZ the runner was launched with (a laptop that travelled must not turn a live worker into a stranger)", () => {
+235 |     const before = process.env.TZ;
+236 |     try {
+237 |       process.env.TZ = "UTC";
+238 |       const a = realProcs.inspect(process.pid)!.lstart;
+                                                   ^
+TypeError: null is not an object (evaluating 'realProcs.inspect(process.pid).lstart')
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:238:46)
+(fail) REAL processes (no fakes): a detached group is found by its hop file and stopped, including a grandchild > the start time does not depend on the TZ the runner was launched with (a laptop that travelled must not turn a live worker into a stranger) [10.18ms]
+247 |     try {
+248 |       writeHopFile(d, file({ hopId: "other", pid: p.pid, pgid: p.pid, lstart: "Mon Jan  1 00:00:00 2001" }));
+249 |       const r = await reapLeftover("other", { dir: d, procs: realProcs, log: () => {}, graceMs: 100 });
+250 |       expect(r).toBe("not_ours");
+251 |       expect(realProcs.inspect(p.pid)).not.toBeNull();
+252 |     } finally { process.kill(-p.pid, "SIGKILL"); await p.exited; }
+                              ^
+SystemError: kill() failed: ESRCH: no such process
+ syscall: "kill",
+   errno: -4040,
+    code: "ESRCH"
+
+      at <anonymous> (H:\ispace\caw-back\src\runner\procs.test.ts:252:25)
+(fail) REAL processes (no fakes): a detached group is found by its hop file and stopped, including a grandchild > a real process that is NOT the recorded one (same pid number claimed, wrong start time) survives [2.40ms]
+
+src\runner\prompt.test.ts:
+145 |   test("no skills at all is an empty text, not a refusal", () => {
+146 |     expect(loadSkills(root, [])).toEqual({ ok: true, text: "" });
+147 |   });
+148 |   test("writeSkillsFile puts the text in a file under the given folder", () => {
+149 |     const dir = mkdtempSync(join(tmpdir(), "caw-skills-out-"));
+150 |     try { const f = writeSkillsFile(join(dir, "in"), "hello"); expect(readFileSync(f, "utf8")).toBe("hello"); expect(statSync(f).mode & 0o777).toBe(0o600); expect(statSync(join(dir, "in")).mode & 0o777).toBe(0o700); } finally { rmSync(dir, { recursive: true }); rmSync(root, { recursive: true }); }
+                                                                                                                                                     ^
+error: expect(received).toBe(expected)
+
+Expected: 384
+Received: 438
+
+      at <anonymous> (H:\ispace\caw-back\src\runner\prompt.test.ts:150:144)
+(fail) loadSkills > writeSkillsFile puts the text in a file under the given folder [1.99ms]
+
+src\runner\read-guard.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+13 | const hopDir = tmp("rg-hop-");    // the hop's private folder (readable)
+14 | const outside = tmp("rg-out-");   // a folder that is NOT readable
+15 | mkdirSync(join(root, "src"), { recursive: true });
+16 | writeFileSync(join(root, "src", "a.ts"), "ok");
+17 | writeFileSync(join(outside, "canary.txt"), "CANARY-7Q");
+18 | symlinkSync(outside, join(root, "link-out"));              // inside the root, pointing outside
+     ^
+EPERM: operation not permitted, symlink 'C:\Users\KUYDONG\AppData\Local\Temp\rg-out-nwzh4m' -> 'C:\Users\KUYDONG\AppData\Local\Temp\rg-root-ETs9kc\link-out'
+    path: "C:\\Users\\KUYDONG\\AppData\\Local\\Temp\\rg-out-nwzh4m",
+    dest: "C:\\Users\\KUYDONG\\AppData\\Local\\Temp\\rg-root-ETs9kc\\link-out",
+ syscall: "symlink",
+   errno: -1,
+    code: "EPERM"
+
+      at H:\ispace\caw-back\src\runner\read-guard.test.ts:18:1
+-------------------------------
+
+
+src\runner\settings.test.ts:
+107 |   test("the settings folder is 0700 and settings.json is 0600", () => {
+108 |     const base = mkdtempSync(join(tmpdir(), "caw-runner-test-"));
+109 |     try {
+110 |       const dir = join(base, "inner");
+111 |       const file = writeSettings(dir, hookPaths);
+112 |       expect(statSync(dir).mode & 0o777).toBe(0o700);
+                                               ^
+error: expect(received).toBe(expected)
+
+Expected: 448
+Received: 438
+
+      at <anonymous> (H:\ispace\caw-back\src\runner\settings.test.ts:112:42)
+(fail) temp files are private to the user (security review) > the settings folder is 0700 and settings.json is 0600 [1.20ms]
+160 |   test("the file tools and Bash: a PreToolUse hook on Read|Glob|Grep|Bash runs the guard with the readable folders as ONE argument (JSON), not through the environment", () => {
+161 |     const s: any = withReadGuard(base, readable);
+162 |     const m = s.hooks.PreToolUse.find((h: any) => h.matcher === "Read|Glob|Grep|Bash"); // TASK-112: Bash joined the matcher (was "Read|Glob|Grep")
+163 |     expect(m.hooks).toHaveLength(1);
+164 |     const cmd: string = m.hooks[0].command;
+165 |     expect(cmd.startsWith(`${process.execPath} `)).toBe(true);
+                                                         ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (H:\ispace\caw-back\src\runner\settings.test.ts:165:52)
+(fail) withReadGuard — the read fence of every hop (TASK-C-042 Part A, UP-3) > the file tools and Bash: a PreToolUse hook on Read|Glob|Grep|Bash runs the guard with the readable folders as ONE argument (JSON), not through the environment [0.15ms]
+
+src\runner\stream.test.ts:
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:10:25)
+(fail) summarize on the recorded spike streams > a plain run: tokens are input + cache creation + cache read, out is output_tokens [0.17ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/push-relative-hooks.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:20:25)
+(fail) summarize on the recorded spike streams > git push through RELATIVE hooks was not blocked: no block, and the run still ends success [0.12ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/push-absolute-hooks.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:26:25)
+(fail) summarize on the recorded spike streams > git push through ABSOLUTE hooks: one HOOK block, naming the tool and the command [0.13ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/write-outside.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:36:25)
+(fail) summarize on the recorded spike streams > a write outside the roots is one PERMISSION block [0.11ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/no-web.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:45:25)
+(fail) summarize on the recorded spike streams > the curl fallback after --disallowedTools is one PERMISSION block [0.14ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/push-absolute-hooks.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:55:18)
+(fail) StreamState, line by line (what hop.ts feeds it) > returns the new blocks of THIS line, so the hop can stop at the first one [0.17ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:69:21)
+(fail) StreamState, line by line (what hop.ts feeds it) > a stream that has neither a result nor an assistant message yet has null tokens, not zero [0.13ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:97:22)
+(fail) the subscription limit (SYNTHETIC line — the real 'hit' value was never observed, TASK-C-029 § 4) > a recorded 'allowed' event never sets it [0.10ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:132:28)
+(fail) what the log needs to see about a hop (R-5 trial): the init message and the token breakdown > init: tools, MCP servers, plugins, model, permission mode, login source [0.12ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:141:22)
+(fail) what the log needs to see about a hop (R-5 trial): the init message and the token breakdown > usage keeps the four numbers apart, so the cache part can be compared [0.11ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/push-absolute-hooks.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at cut (H:\ispace\caw-back\src\runner\stream.test.ts:151:35)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:153:12)
+(fail) tokens of a stream that was cut before its `result` (a stopped hop) — from the assistant messages' own usage (TASK-C-035 item 3) > it has no result line, so today's source is empty [0.12ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/push-absolute-hooks.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at cut (H:\ispace\caw-back\src\runner\stream.test.ts:151:35)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:156:25)
+(fail) tokens of a stream that was cut before its `result` (a stopped hop) — from the assistant messages' own usage (TASK-C-035 item 3) > each DISTINCT message id counts once (one id appears on several lines with the same usage); same in/out formula [0.13ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/push-absolute-hooks.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at cut (H:\ispace\caw-back\src\runner\stream.test.ts:151:35)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:162:22)
+(fail) tokens of a stream that was cut before its `result` (a stopped hop) — from the assistant messages' own usage (TASK-C-035 item 3) > output is the sum of each message's output_tokens as the assistant line carries it — a LOWER BOUND (1 + 4), the result says 832 [0.12ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:166:22)
+(fail) tokens of a stream that was cut before its `result` (a stopped hop) — from the assistant messages' own usage (TASK-C-035 item 3) > when a `result` exists it wins over the assistant lines [0.10ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:169:22)
+(fail) tokens of a stream that was cut before its `result` (a stopped hop) — from the assistant messages' own usage (TASK-C-035 item 3) > a stream with no assistant message and no result has null tokens, not zero [0.10ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:182:17)
+(fail) done (an open worker's task ends at its result) > false on every line of the recorded run up to its result, true from the result on [0.12ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:192:21)
+(fail) done (an open worker's task ends at its result) > a stream that stops before a result is never done [0.13ms]
+1 | // stream.ts on COPIES of the TASK-C-029 spike fixtures (real `claude` 2.1.287 output). Only the limit case is synthetic, and says so.
+2 | import { describe, expect, test } from "bun:test";
+3 | import { readFileSync } from "node:fs";
+4 | import { StreamState, summarize } from "./stream";
+5 | 
+6 | const lines = (name: string) => readFileSync(new URL(`./fixtures/${name}.stream.jsonl`, import.meta.url).pathname, "utf8").split("\n").filter(Boolean);
+                                    ^
+error: ENOENT: no such file or directory, open '/H:/ispace/caw-back/src/runner/fixtures/ok.stream.jsonl'
+      at lines (H:\ispace\caw-back\src\runner\stream.test.ts:6:33)
+      at <anonymous> (H:\ispace\caw-back\src\runner\stream.test.ts:220:25)
+(fail) lastContext > the recorded `ok` run: lastContext is its one call's prompt, which here equals the result's input side [0.11ms]
+
+src\runner\trace.test.ts:
+ 8 | const asst = (id: string, ...tools: string[]) => JSON.stringify({ type: "assistant", message: { id, content: tools.map((name, i) => ({ type: "tool_use", id: `${id}-${i}`, name, input: {} })) } });
+ 9 | 
+10 | describe("traceDirFrom", () => {
+11 |   test("RUNNER_TRACE_DIR wins; blank falls back to ~/.caw/traces", () => {
+12 |     expect(traceDirFrom({ RUNNER_TRACE_DIR: "/x/y" })).toBe("/x/y");
+13 |     expect(traceDirFrom({ RUNNER_TRACE_DIR: "" })).toMatch(/\.caw\/traces$/);
+                                                        ^
+error: expect(received).toMatch(expected)
+
+Expected substring or pattern: /\.caw\/traces$/
+Received: "C:\\Users\\KUYDONG\\.caw\\traces"
+
+      at <anonymous> (H:\ispace\caw-back\src\runner\trace.test.ts:13:52)
+(fail) traceDirFrom > RUNNER_TRACE_DIR wins; blank falls back to ~/.caw/traces [1.44ms]
+21 |     expect(path).toBe(join(dir, "hop-1.jsonl"));
+22 |     const text = readFileSync(path, "utf8");
+23 |     expect(text).not.toContain("secret");
+24 |     expect(text).not.toContain("abc123");
+25 |     expect(text.trim().split("\n")).toHaveLength(2);
+26 |     expect(statSync(path).mode & 0o777).toBe(0o600);
+                                             ^
+error: expect(received).toBe(expected)
+
+Expected: 384
+Received: 438
+
+      at <anonymous> (H:\ispace\caw-back\src\runner\trace.test.ts:26:41)
+(fail) writeTrace > writes <hopId>.jsonl, 0600 in a 0700 folder, every line redacted [1.59ms]
+
+test\blueprint\client.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\config\env-example.test.ts:
+ 6 | const read = (f: string) => readFileSync(new URL(`../../${f}`, import.meta.url), "utf8");
+ 7 | 
+ 8 | test(".env.example: the eleven keys, every value empty, a comment line above each key, nothing that looks like a secret", () => {
+ 9 |   const lines = read(".env.example").split("\n");
+10 |   const keys = lines.filter((l) => /^[A-Z][A-Z0-9_]*=/.test(l));
+11 |   expect(keys).toEqual(["DATABASE_URL=", "PORT=", "BLUEPRINT_URL=", "CAW_POLL_MS=", "CAW_WORKSPACE_ROOT=", "BLUEPRINT_WEB_URL=", "CAW_API_URL=", "RUNNER_POLL_MS=", "RUNNER_HOP_MAX_MS=", "CLAUDE_BIN=", "RUNNER_TRACE_DIR="]);
+                    ^
+error: expect(received).toEqual(expected)
+
+  [
+-   "DATABASE_URL=",
+-   "PORT=",
+-   "BLUEPRINT_URL=",
+-   "CAW_POLL_MS=",
+-   "CAW_WORKSPACE_ROOT=",
+-   "BLUEPRINT_WEB_URL=",
+-   "CAW_API_URL=",
+-   "RUNNER_POLL_MS=",
+-   "RUNNER_HOP_MAX_MS=",
+-   "CLAUDE_BIN=",
+-   "RUNNER_TRACE_DIR=",
++   
++ "DATABASE_URL=
++ "
++ ,
++   
++ "PORT=
++ "
++ ,
++   
++ "BLUEPRINT_URL=
++ "
++ ,
++   
++ "CAW_POLL_MS=
++ "
++ ,
++   
++ "CAW_WORKSPACE_ROOT=
++ "
++ ,
++   
++ "BLUEPRINT_WEB_URL=
++ "
++ ,
++   
++ "CAW_API_URL=
++ "
++ ,
++   
++ "RUNNER_POLL_MS=
++ "
++ ,
++   
++ "RUNNER_HOP_MAX_MS=
++ "
++ ,
++   
++ "CLAUDE_BIN=
++ "
++ ,
++   
++ "RUNNER_TRACE_DIR=
++ "
++ ,
+  ]
+
+- Expected  - 11
++ Received  + 44
+
+      at <anonymous> (H:\ispace\caw-back\test\config\env-example.test.ts:11:16)
+(fail) .env.example: the eleven keys, every value empty, a comment line above each key, nothing that looks like a secret [0.47ms]
+
+test\core\events.test.ts:
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at <anonymous> (H:\ispace\caw-back\test\core\events.test.ts:30:20)
+(fail) writeEvent: the event and the table row land together; the row equals what the reducer says [4.81ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at <anonymous> (H:\ispace\caw-back\test\core\events.test.ts:30:20)
+(fail) writeEvent is one transaction: a write the tables refuse leaves no event behind [0.18ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at <anonymous> (H:\ispace\caw-back\test\core\events.test.ts:30:20)
+(fail) events are append-only: the database refuses UPDATE and DELETE [0.16ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at <anonymous> (H:\ispace\caw-back\test\core\events.test.ts:30:20)
+(fail) rebuild: replaying the project's events from empty gives the state the tables hold (AC-6) [0.15ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at <anonymous> (H:\ispace\caw-back\test\core\events.test.ts:30:20)
+(fail) rebuild-check says what differs when a table was changed behind the events' back [0.16ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at <anonymous> (H:\ispace\caw-back\test\core\events.test.ts:30:20)
+(fail) a worker-only event (projectId null) is replayed for every project: rebuild reads events of the project and the null ones, in seq order [0.16ms]
+
+test\db\file.test.ts:
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at <anonymous> (H:\ispace\caw-back\test\db\file.test.ts:15:22)
+(fail) a file-backed PGlite keeps its rows across a close and a re-open (migrations applied once) [9.61ms]
+
+test\db\journal.test.ts:
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) after migrate: the journal is caw.__caw_migrations (one row per migration); schema `drizzle` and `public` hold nothing of ours [0.37ms]
+
+test\db\migration-0002.test.ts:
+16 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig-"));
+17 |   const pg = new PGlite();
+18 |   try {
+19 |     // a copy of the migrations folder holding only 0000 and 0001 — what the operator's SIT has applied
+20 |     const src = MIGRATIONS.migrationsFolder;
+21 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0002.test.ts:21:5)
+(fail) 0002 applies on a database already at 0001: a 3rd journal row, notes.allowed (uuid[], nullable), `handoff_refused` allowed in notes.type (later migrations then follow) [1447.12ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at H:\ispace\caw-back\test\db\migration-0002.test.ts:50:11
+(fail) a second run applies nothing (idempotent), and a fresh database gets every migration [1414.74ms]
+
+test\db\migration-0003.test.ts:
+15 | test("0003 applies on a database at 0002: new tables and columns, card_id nullable, exactly one of card_id / message_id, the four outcomes — an old hop is untouched", async () => {
+16 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig3-"));
+17 |   const pg = new PGlite();
+18 |   try {
+19 |     const src = MIGRATIONS.migrationsFolder;
+20 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0003.test.ts:20:5)
+(fail) 0003 applies on a database at 0002: new tables and columns, card_id nullable, exactly one of card_id / message_id, the four outcomes — an old hop is untouched [1453.62ms]
+
+test\db\migration-0004.test.ts:
+15 | test("0004 applies on a database at 0003: chat_messages gets a nullable retry_requested_at (timestamptz), an old message keeps null", async () => {
+16 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig4-"));
+17 |   const pg = new PGlite();
+18 |   try {
+19 |     const src = MIGRATIONS.migrationsFolder;
+20 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0004.test.ts:20:5)
+(fail) 0004 applies on a database at 0003: chat_messages gets a nullable retry_requested_at (timestamptz), an old message keeps null [1399.44ms]
+
+test\db\migration-0005.test.ts:
+17 | test("0005 applies on a database at 0004: roles = ARRAY[role] for every old worker (a combined one stays {other}), role is gone, roles is NOT NULL and checked", async () => {
+18 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig5-"));
+19 |   const pg = new PGlite();
+20 |   try {
+21 |     const src = MIGRATIONS.migrationsFolder;
+22 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0005.test.ts:22:5)
+(fail) 0005 applies on a database at 0004: roles = ARRAY[role] for every old worker (a combined one stays {other}), role is gone, roles is NOT NULL and checked [1443.56ms]
+
+test\db\migration-0006.test.ts:
+15 | test("0006 applies on a database at 0005: every old hop (a finished card hop, a running one, a chat hop) gets last_activity_at = started_at; the column is NOT NULL timestamptz", async () => {
+16 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig6-"));
+17 |   const pg = new PGlite();
+18 |   try {
+19 |     const src = MIGRATIONS.migrationsFolder;
+20 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0006.test.ts:20:5)
+(fail) 0006 applies on a database at 0005: every old hop (a finished card hop, a running one, a chat hop) gets last_activity_at = started_at; the column is NOT NULL timestamptz [1420.21ms]
+
+test\db\migration-0007.test.ts:
+15 | test("0007 applies on a database at 0006: workers.avatar is jsonb, nullable, no default; an old worker has avatar NULL; the column takes a value", async () => {
+16 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig7-"));
+17 |   const pg = new PGlite();
+18 |   try {
+19 |     const src = MIGRATIONS.migrationsFolder;
+20 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0007.test.ts:20:5)
+(fail) 0007 applies on a database at 0006: workers.avatar is jsonb, nullable, no default; an old worker has avatar NULL; the column takes a value [1550.72ms]
+
+test\db\migration-0008.test.ts:
+17 | test("0008 applies on a database at 0007: deleted_at NULL for the old workers, workers_name_unique gone, workers_name_live exists; a deleted twin of a live name is accepted, two live ones are refused", async () => {
+18 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig8-"));
+19 |   const pg = new PGlite();
+20 |   try {
+21 |     const src = MIGRATIONS.migrationsFolder;
+22 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0008.test.ts:22:5)
+(fail) 0008 applies on a database at 0007: deleted_at NULL for the old workers, workers_name_unique gone, workers_name_live exists; a deleted twin of a live name is accepted, two live ones are refused [1407.90ms]
+
+test\db\migration-0009.test.ts:
+15 | test("0009 applies on a database at 0008: projects.code_map is jsonb, nullable, no default; an old project has code_map NULL and its workspace untouched; the column takes a value", async () => {
+16 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig9-"));
+17 |   const pg = new PGlite();
+18 |   try {
+19 |     const src = MIGRATIONS.migrationsFolder;
+20 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0009.test.ts:20:5)
+(fail) 0009 applies on a database at 0008: projects.code_map is jsonb, nullable, no default; an old project has code_map NULL and its workspace untouched; the column takes a value [1353.83ms]
+
+test\db\migration-0010.test.ts:
+16 | test("0010 applies on a database at 0009: hop_output is there, empty, with its columns, primary key, three checks and the foreign key to hops", async () => {
+17 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig10-"));
+18 |   const pg = new PGlite();
+19 |   try {
+20 |     const src = MIGRATIONS.migrationsFolder;
+21 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0010.test.ts:21:5)
+(fail) 0010 applies on a database at 0009: hop_output is there, empty, with its columns, primary key, three checks and the foreign key to hops [1340.56ms]
+
+test\db\migration-0011.test.ts:
+16 | test("0011 applies on a database at 0010 that already has a project, a card and a follow state: they keep their values and get the defaults; the two new tables are empty with their keys", async () => {
+17 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig11-"));
+18 |   const pg = new PGlite();
+19 |   try {
+20 |     const src = MIGRATIONS.migrationsFolder;
+21 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0011.test.ts:21:5)
+(fail) 0011 applies on a database at 0010 that already has a project, a card and a follow state: they keep their values and get the defaults; the two new tables are empty with their keys [1380.28ms]
+
+test\db\migration-0012.test.ts:
+15 | test("0012 applies on a database at 0011 with a card in it: the card keeps its values and reads anchor_removed_revision NULL; a revision can be stored and cleared; the column is nullable with no default", async () => {
+16 |   const dir = mkdtempSync(join(tmpdir(), "caw-mig12-"));
+17 |   const pg = new PGlite();
+18 |   try {
+19 |     const src = MIGRATIONS.migrationsFolder;
+20 |     cpSync(src, dir, { recursive: true });
+         ^
+ENOENT: no such file or directory, copyfile '\H:\ispace\caw-back\src\db\migrations'
+    path: "\\H:\\ispace\\caw-back\\src\\db\\migrations",
+ syscall: "copyfile",
+   errno: -2,
+    code: "ENOENT"
+
+      at <anonymous> (H:\ispace\caw-back\test\db\migration-0012.test.ts:20:5)
+(fail) 0012 applies on a database at 0011 with a card in it: the card keeps its values and reads anchor_removed_revision NULL; a revision can be stored and cleared; the column is nullable with no default [1359.04ms]
+
+test\db\shared.test.ts:
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) testDb() hands every test an empty database (all caw tables, events' sequence from 1) — and it is the same instance [2.33ms]
+
+test\follow\pull.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\anchor-removed.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\card-stopped-midway.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\cards.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\chat-hops-budget.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\chat-retry.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\chat.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\code-map.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\coverage.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\handoff-refused.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\hop-card-doing.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\hop-guard.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\hop-heartbeat.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\hop-note-paths.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\hop-output.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\hops-runs.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\mode-workspace.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\notify.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\openapi-nullable.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\part-read.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\plan-copy.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\projects.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\proposals.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\rebuild-sequence.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\requirements.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\review-note.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\runner-actor.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\seam.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\spec-latest.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\team-status.test.ts:
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) a fresh API: not running, nobody seen, and the start command the screen shows [0.32ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) a `running` check-in as runner:r1 → 204, then team-status says running with the runner's name and the check-in time [0.16ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) running is a `running` check-in in the last 45 s: 45.000 s still running, 45.001 s and 46 s not — and lastSeenAt is kept [0.17ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) a `stopping` check-in makes running false AT ONCE, keeps the name, and moves lastSeenAt; a later `running` check-in makes it true again [0.16ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) a later check-in moves lastSeenAt and makes it running again; the last runner to check in is the one named [0.16ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) the state is required and checked: a missing body, no state, `paused`, a number, or a non-object → 400 validation, and nothing is recorded [0.22ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) only a runner checks in: the operator and a worker → 403 runner_only, nothing recorded; no actor → 400 actor_required [0.24ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) a check-in writes NO event and no table row — the events count is unchanged (the one exception to 'every write is an event', SPEC § R1b) [0.23ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) only `state` is read from the body: a name or a time sent with it is ignored — the name comes from the actor, the time from the core's clock [0.14ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) the status belongs to the app that made it: a second app starts empty (after an API restart it is empty until the next check-in) [0.16ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) the runner is still refused on every other write (the check-in is the one route added to its list) [0.18ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) REQ-122 (c): a check-in with 2 sessions → team-status lists them, in the order sent [0.31ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) REQ-122 (d): a later check-in with 1 session → only that one (replaced, not merged) [0.16ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) REQ-122 (e): a `stopping` check-in → sessions [] at once, even when it carries some [0.14ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) REQ-122 (f): stale after 45 s → sessions [] with the check-in's name and time kept [0.14ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at createDb (H:\ispace\caw-back\src\db\client.ts:20:11)
+      at testDb (H:\ispace\caw-back\test\helpers\db.ts:11:14)
+      at H:\ispace\caw-back\test\core\events.test.ts:24:61
+(fail) REQ-122 (g): a session with state `paused` or a non-uuid id, or more than 200 sessions → 400 validation, nothing recorded [0.23ms]
+
+test\http\temp-folders.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\worker-avatar.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\worker-delete.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\worker-roles.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\http\workers-chain.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\mcp\chat-tools.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\mcp\server.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+ENOENT: no such file or directory, open '/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json'
+    path: "/H:/ispace/caw-back/test/fixtures/blueprint/project-200.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readFileSync (unknown:1:1)
+-------------------------------
+
+
+test\scripts\db-scripts.test.ts:
+88 | 
+89 | test("db:fix-journal on Case A: moves the 2 rows, leaves Blueprint's 6, and then the migrator applies only what is newer (0002, 0003 …) and succeeds", async () => {
+90 |   const w = await caseA();
+91 |   // before the fix the migrator tries to create the tables again — the 42P07 on SIT
+92 |   const failing = await migrate(drizzle({ client: w.pg }), MIGRATIONS).then(() => null, (e: any) => `${e?.message} ${e?.cause?.message ?? ""} ${e?.cause?.code ?? ""}`);
+93 |   expect(failing).toMatch(/already exists|42P07/);
+                       ^
+error: expect(received).toMatch(expected)
+
+Expected substring or pattern: /already exists|42P07/
+Received: "Can't find meta/_journal.json file  "
+
+      at <anonymous> (H:\ispace\caw-back\test\scripts\db-scripts.test.ts:93:19)
+(fail) db:fix-journal on Case A: moves the 2 rows, leaves Blueprint's 6, and then the migrator applies only what is newer (0002, 0003 …) and succeeds [1467.34ms]
+3 | function readMigrationFiles(config) {
+4 |   const migrationFolderTo = config.migrationsFolder;
+5 |   const migrationQueries = [];
+6 |   const journalPath = `${migrationFolderTo}/meta/_journal.json`;
+7 |   if (!fs.existsSync(journalPath)) {
+8 |     throw new Error(`Can't find meta/_journal.json file`);
+                  ^
+error: Can't find meta/_journal.json file
+      at readMigrationFiles (H:\ispace\caw-back\node_modules\drizzle-orm\migrator.js:8:15)
+      at migrate (H:\ispace\caw-back\node_modules\drizzle-orm\pglite\migrator.js:3:22)
+      at <anonymous> (H:\ispace\caw-back\test\scripts\db-scripts.test.ts:170:9)
+(fail) MIGRATED (healthy): the journal is caw.__caw_migrations with both rows and drizzle's journal holds none of ours — never reported as CASE B [1334.64ms]
+205 |       cwd: dir, env: { ...(process.env as Record<string, string>), DATABASE_URL: "postgres://someuser:secretpw@127.0.0.1:1/blueprint" }, stdout: "pipe", stderr: "pipe",
+206 |     });
+207 |     const code = await proc.exited;
+208 |     const out = (await new Response(proc.stdout).text()) + (await new Response(proc.stderr).text());
+209 |     expect([script, code]).toEqual([script, 1]);
+210 |     expect(out).toContain(`${script.replace("db-", "db:")} failed — code `);
+                      ^
+error: expect(received).toContain(expected)
+
+Expected to contain: "db:inspect failed — code "
+Received: "error: Module not found \"/H:/ispace/caw-back/src/scripts/db-inspect.ts\"\n"
+
+      at <anonymous> (H:\ispace\caw-back\test\scripts\db-scripts.test.ts:210:17)
+(fail) failure output is one fixed line with the error code — no URL, host, user, password or message [43.36ms]
+
+ 280 pass
+ 1 skip
+ 151 fail
+ 42 errors
+ 921 expect() calls
+Ran 432 tests across 76 files. [42.55s]

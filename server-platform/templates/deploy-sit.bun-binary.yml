@@ -1,0 +1,47 @@
+# TEMPLATE: Bun back end compiled to one Linux binary. Proven live on blueprint-back (2026-10-31).
+# Copy to <repo>/.github/workflows/deploy-sit.yml and replace:
+#   __APP__     the app name made by `new-app` (e.g. blueprint-back-sit)
+#   __BINARY__  the file `bun run build` writes in dist/ (e.g. blueprint-back)
+#   __SERVER__  the server IP or host (SERVER-FACTS)
+# Delete the `bun test` step only if the repo has no tests, and say so to the owner (platform-preflight gate 6).
+# Push to `sit` → build on GitHub (Linux x86-64) → deploy. The server checks health and rolls back by itself.
+# Repo secrets, added BEFORE the first push: DEPLOY_SSH_KEY (a CI-only key for this repo), DEPLOY_KNOWN_HOSTS.
+name: deploy-sit
+
+on:
+  push:
+    branches: [sit]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-sit
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun run --if-present typecheck
+      - run: bun run --if-present lint
+      # Unit tests; a failure stops the deploy. 20 s per test: the GitHub runner is slower than a dev box.
+      - run: bun test --timeout 20000
+        env:
+          DATABASE_URL: pglite:memory
+      - run: bun run build
+      - run: tar -czf app.tgz --mode=755 -C dist __BINARY__
+      - name: deploy
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          ssh -o StrictHostKeyChecking=yes -o BatchMode=yes deploy@__SERVER__ __APP__ < app.tgz

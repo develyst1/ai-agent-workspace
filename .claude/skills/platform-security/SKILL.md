@@ -44,8 +44,12 @@ truth: re-read it, write the new reading into the facts file with its date, then
 - **An agent never holds, asks for, or types the owner's password,** and never asks for it in chat.
 - Hand the owner one exact command for **his own terminal** (`ssh -t <alias> "sudo …"`), say what it does
   and what it changes, and read its output afterwards.
-- **One sudo call does one thing.** Never bundle an install, a config change and a restart into one
-  `sudo sh -c`; the owner should be able to read what he is approving.
+- **One password prompt per sitting, every step visible** (clarified 2026-10-31 after OTTO-FAILURES OF-007, where
+  the earlier wording "one sudo call does one thing" became 7 prompts in an afternoon). Collect every root step the
+  sitting needs into **one reviewed script**. It lists each step with what it does, what it changes and its check,
+  so the owner can read what he is approving. What is forbidden is a *hidden* bundle, a one-line `sudo sh -c` that
+  does several things nobody can read. A visible, batched script is not forbidden. Details: the
+  `platform-preflight` skill, Gate 4.
 - A passwordless sudoers rule is only for **one named script with validated arguments** (plus the web
   server's test/reload). The script is root-owned and not writable by the user it serves. Check the rule
   file with `visudo -c`. Prove it: the allowed command works with `sudo -n`, and `sudo -n ls /root` is refused.
@@ -64,6 +68,10 @@ truth: re-read it, write the new reading into the facts file with its date, then
 ## 5. Don't lock yourself out
 
 - **Linux fail2ban:** at most **one** deliberate failed login to prove password login is off, never a loop.
+  **Before tightening fail2ban** (aggressive mode, lower thresholds): either `ignoreip` covers every admin
+  machine, or a second way in is tested and ready (another machine's key, or the panel Console). Admin IPs that
+  change (home internet) cannot go in `ignoreip` safely, so the second way in is required. Never probe port 22 with
+  bare TCP checks or loops; use one real `ssh` with backoff. (OTTO-FAILURES OF-010.)
   Know the ban threshold from the facts file before testing anything that can fail.
 - **sshd drop-ins:** sshd keeps the **first** value it reads. A provider drop-in (for example
   `99-custom.conf`) may turn root or password login back on. A hardening file must sort **first** (`00-…`).

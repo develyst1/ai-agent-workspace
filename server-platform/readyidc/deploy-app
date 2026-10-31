@@ -88,4 +88,5 @@ for r in $(ls -1 "$D/releases" | sort); do
   [ "$r" = "$TS" ] || [ "$r" = "$KEEP_PREV" ] || rm -rf "${D:?}/releases/$r"
 done
 [ "$TYPE" = process ] && $PM2 save >/dev/null
-echo "deployed $NAME release $TS -> https://$HOST (previous: ${KEEP_PREV:-none})"
+WHERE="https://$HOST"; [ "$HOST" = - ] && WHERE="127.0.0.1:$PORT (private)"
+echo "deployed $NAME release $TS -> $WHERE (previous: ${KEEP_PREV:-none})"

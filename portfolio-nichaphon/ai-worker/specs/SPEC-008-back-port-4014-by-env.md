@@ -52,8 +52,8 @@ follow-up TASK, not a redesign.
   Not in the repo but names 3001: `ai-worker/tests/harness/reverify-2026-09-02.cjs:18` (QA's own comment about a *front* dev server that once landed on 3001) — Tanya's file, FYI to Porter only.
 - **D5 — The front default is baked at build (SPEC-007 D11 / SQ36).** The `.next` built for TASK-026 /
   TEST-008 still carries `3001`; **AC-b and AC-e require a fresh `npm run build`** after D3, and the QA
-  re-run must be on that fresh build. Read-only check: `grep -r "3001" front/.next/static` → 0 hits
-  after the build; `4014` ≥ 1 hit.
+  re-run must be on that fresh build. Read-only check: `grep -rn "localhost:3001\|:3001/" front/.next/static` → 0 hits
+  after the build; `4014` ≥ 1 hit. (Amended 2026-11-01, Sober — TASK-028 FQ54: a bare `3001` grep always hits React's `、`.)
 - **D6 — A three-line guard test** so the default cannot drift back silently: new `back/test/config.test.ts`
   — `PORT` unset → `config.PORT === 4014`; `PORT=4099` → `4099`; `PORT=abc` → `4014`. Save and restore
   `process.env.PORT` around each case (the getter reads on access, SPEC-006 D4, so no re-import).
@@ -93,3 +93,15 @@ and points a variable nobody reads at `http://localhost:3001` (38); its healthch
 `back/` does not serve. Left exactly as found (D4) because the file is his deployment artefact. If he wants
 it to follow 4014 (and the healthcheck to hit `/health`), that is a TASK naming the file on his word — not
 a team default. Same standing for `front/Dockerfile` `EXPOSE 3000` / `ENV PORT=3000` once Q54 is answered.
+
+**SQ40 (to Porter → owner, BLOCKS TASK-028's close; 2026-11-01)** — His commit `b068fba` (`D1`, 2026-09-14) carries TASK-028's
+`back/` half (default 4014, test, ws-client, README) but **not** its `front/` half: `front/src/constant/ask.ts:6` and
+`front/README.md:35` still read `ws://localhost:3001/ws` in HEAD and in the tree (Fern had both at 4014 on 2026-09-13). He also
+added `front/env.example` (`NEXT_PUBLIC_ASK_WS_URL=wss://dns.develyst.online/ws`) and a `back/` `build` script — not ours, untouched.
+Checked: REQ-008 §Questions Q53/Q54 and SQ39 — none covers dropping D3's front literal. Whether he reverted it on purpose: **unknown**.
+Effect today: `bun run dev` (4014) + `npm run dev` with no env → Home Ask cannot connect (REQ-008 R1a / AC-b fail as written).
+**SA default: re-apply the two literals to 4014** (one line each, his `env.example` untouched — the env still overrides). Cases:
+(a) "re-apply" → Fern redoes steps 5–6 + fresh build + AC-b; (b) "keep 3001, front comes only from env" → no front edit; R1a is
+then met by setting `NEXT_PUBLIC_ASK_WS_URL` locally, AC-b runs that way and REQ-008 R1a's "without hand-editing" / AC-b's "no URL edited by hand" is his waiver,
+recorded as such; (c) "it was an accident" = (a). Either way DoD 1/3/5/12 re-run in the same session (4014 is free 2026-11-01).
+Correct only the case that is wrong.
