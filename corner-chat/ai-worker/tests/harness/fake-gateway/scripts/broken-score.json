@@ -1,0 +1,2 @@
+{ "layer1": { "json": { "addressed": "yes", "meaning": "request", "summary": "ทดสอบคะแนนเสีย" } },
+  "layer2": { "raw": "{\"score\":\"70%\",\"reason\":\"คะแนนเป็นข้อความ\"}" } }

@@ -84,6 +84,7 @@ His reply to Q1, verbatim: *"ตามนั้นเกือบหมด ย�
 **Q2 (owner, blocks going live only — NOT the build) — how does he log in?** Deferred by him 2026-11-01.
 The team builds everything else and runs it locally; nothing of the admin goes public until he answers.
 Porter will bring it back when the build is ready to show, with the options laid out.
+> 2026-11-01, owner again: *"ปล่อยไปก่อนเลยเรื่อง login เดี๋ยวฉันเอามาคุยทีหลัง"* — still deferred; he will raise it himself. `[operator]`
 
 **~~Q1~~ ANSWERED 2026-11-01** (see §Owner decisions) — (b)–(f) approved, (a) deferred → Q2. The pack as asked:
 **Q1 (owner, BLOCKS REQ-010) — decision pack. Correct only the line that is wrong.** `[PM-proposed]`

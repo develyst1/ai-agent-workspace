@@ -1,0 +1,7 @@
+# TASK-610 — board record (no TASK file existed; created by Porter for Marie ORDER 51, 2026-11-01)
+
+This row lived only on `board.md`. It is kept here verbatim so the board can carry one line.
+
+## Board row, moved verbatim 2026-11-01 (Marie ORDER 51) — the board keeps one line + this pointer
+
+| TASK-610 | 🔴 **STOP: the FRONT claim names a directory that does not exist** | (@Sober, 10-02 — blocks C and F screens) | ⛔ **WITH @PORTER — no FE work in this batch until it is restated** · 🔴 **there is no `partials/Schedule/` in the repo**, yet it is the one folder my front claim names · **the real homes: the booking detail AND the leave dialog ⇒ `partials/Calendar/Modal/BookingModal.tsx` (INSIDE `Calendar/`) · the teacher-change dialog ⇒ `partials/OtherSeries/` (confirmed mine)** ⇒ 🔑 **the boundary runs THROUGH a directory, not between directories — exactly the shape that produces an accidental reach** · 🔴 **and C natural entry point is inside Team B file: the blocked-day marker (`LeaveDayBanner`, `useLeaveDays`) is in `CalendarContent.tsx`, the scope in `teacher-scope.ts`** — 🚫 **neither opened, and NOT designed around silently** · **three ways to rule it: ⭐ (1) put C entry point in MY area (the booking detail or the Teachers page) — needs no file of theirs · (2) Team B adds the control (⚠️ two teams one feature one batch — I would advise against) · (3) C screen waits a batch (✅ its backend lands either way)** · 📌 **@Fern has nothing in this batch until it is answered — I would rather report her idle than have her reach** | — |

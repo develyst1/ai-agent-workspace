@@ -1,0 +1,12 @@
+{
+  "layer1": { "json": { "addressed": "yes", "meaning": "request", "summary": "ขอให้ยืนยันนัด" } },
+  "layer2": {
+    "score": 50,
+    "rules": [
+      { "contains": "คะแนน69", "score": 69 },
+      { "contains": "คะแนน70", "score": 70 },
+      { "contains": "คะแนน71", "score": 71 },
+      { "contains": "คะแนนทศนิยม", "score": 70.5 }
+    ]
+  }
+}

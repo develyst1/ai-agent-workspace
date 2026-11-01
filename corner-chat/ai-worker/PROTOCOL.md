@@ -18,7 +18,7 @@ name is yours.
 | Project Manager / BA / PO / UX writer | The human (owner) + SA Lead + QA | `requirements/REQ-*.md`, `SYSTEM-FACTS.md`, user-facing wording |
 | SA Lead | PM + BE + FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
 | Backend Engineer | SA Lead | code in `corner-chat-back`, inside the file area the PM claimed for your team + updates in `tasks/TASK-*.md` |
-| Frontend Engineer | SA Lead | code in `corner-chat-front`, inside the file area the PM claimed for your team + updates in `tasks/TASK-*.md` |
+| Frontend Engineer | SA Lead | code in `corner-chat-front` or `corner-chat-app`, inside the file area the PM claimed for your team + updates in `tasks/TASK-*.md` |
 | Senior Tester (QA) | PM | `tests/TEST-*.md`, `tests/REGRESSION.md`; sets `IN_TEST` / `TEST_PASSED` / `TEST_FAILED` |
 
 **Two teams, two testers (owner 2026-11-01).** Team A and Team B each have an SA Lead, a BE and an FE;
@@ -58,7 +58,7 @@ see "The chat you are sitting in is a channel" below. Concretely:
   Work reaches them only as a TASK written by the SA.
 - The BE and the FE **never** write `@<PM name>`, `@<QA name>`, and never address the
   human. Everything goes up through the SA.
-- **The BE and the FE never talk to each other.** The two repos meet at an HTTP
+- **The BE and the FE never talk to each other.** The repos meet at an HTTP
   contract, and that contract is the SA's design, written in a SPEC. An engineer
   who needs the other side to change writes it in `## Questions` and `@<SA name>`.
 - **The QA talks only to the PM.** A defect the QA finds reaches the engineers only
@@ -364,7 +364,7 @@ they unblock the status.
 
 ## Missing knowledge & real-world data
 
-This desk is **greenfield**: both repos hold only a README (2026-11-01) — every
+This desk is **greenfield**: all three repos hold only a README (2026-11-01) — every
 invented rule becomes the product. **Real systems** (LINE, Discord, Zimbra Mail, Teams)
 follow the owner's own rule in `SYSTEM-FACTS.md`: reading one is allowed when needed;
 sending or changing anything real needs the owner's go each time, by DATA REQUEST
@@ -412,11 +412,12 @@ workspace-root `machine.local.md` and nowhere else — never in a committed file
 | Logical name | Owner | What it is |
 |---|---|---|
 | `corner-chat-back` | **BE** (both teams) | the API — Bun + Hono or Bun + Elysia, Postgres (`SYSTEM-FACTS.md`) |
-| `corner-chat-front` | **FE** (both teams) | the Dashboard + Web Chat — stack in SPEC-001 |
+| `corner-chat-front` | **FE** (both teams) | the owner's admin web — users never use the web — stack in SPEC-001 |
+| `corner-chat-app` | **FE** (both teams) | the Android app users work in (iOS later) — stack in SPEC-001 |
 
-- **A BE writes only in `corner-chat-back`, an FE only in `corner-chat-front`.** Neither
+- **A BE writes only in `corner-chat-back`, an FE only in `corner-chat-front` and `corner-chat-app`.** Neither
   crosses the line, ever — the seam is the SA Lead's SPEC.
-- **Both teams share both repos** — never the same files at the same time ("Two teams —
+- **Both teams share all three repos** — never the same files at the same time ("Two teams —
   batch claims" below).
 - The working branch is **undecided** (2026-11-01): the repos have `main`, `develop`, `atom`,
   `sit`, `uat`, `production` and are checked out on `main`; the PM settles the team's branch
@@ -441,7 +442,7 @@ it is absolute. When an environment appears later, it is recorded in
 
 ## Two teams — batch claims (owner 2026-11-01, smart-scheduler's shape)
 
-Both teams work in both repos. When work arrives, **the PM** does this, as a named PM job:
+Both teams work in all three repos. When work arrives, **the PM** does this, as a named PM job:
 
 1. Sizes each item roughly — large / medium / small — and splits the batch into two piles
    of comparable weight, not equal count.

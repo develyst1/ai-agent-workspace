@@ -1,0 +1,5 @@
+{ "layer1": { "json": { "addressed": "yes", "meaning": "request", "summary": "ทดสอบตัวรันคอร์ปัส" } },
+  "layer2": { "score": 50, "rules": [
+    { "contains": "ยืนยันหน่อย", "score": 85, "reason": "ถามตรง ๆ เรื่องงาน" },
+    { "contains": "โปรโมชั่น", "score": 10, "reason": "โฆษณา" },
+    { "contains": "ว่างเสาร์", "score": 75, "reason": "ถามเรื่องส่วนตัว" } ] } }

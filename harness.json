@@ -1,10 +1,10 @@
 {
   "harness": "develyst-harness",
-  "version": "2.6.7",
+  "version": "2.6.9",
   "sharedTools": {
     "ai-worker/add-failure.mjs": "2d9757735f33b4af6a7fa5252d2b2ccec3f89547d267111fa202c44322dddf00",
     "ai-worker/append-log.mjs": "81f520ddb7d2c3df897e79c7fd4114343028341684729f6257ab9d1250e297f9",
-    "ai-worker/drain-inbox.mjs": "a90f94fa028a2255ec777bb3489ff2021fcdf3a7d4786483967dcd8882f22b1b",
+    "ai-worker/drain-inbox.mjs": "24dcdd8244507b428e0c2716bbd95b232192247ca0243d8f2193a5582129a2c0",
     "ai-worker/tools/pm-hub.sh": "777f42870cd2509a204eaacf2f7bde7d2e2637021a9bd9124f3eeed9138425d4",
     "ai-worker/tools/watch-inbox.sh": "b2133e73126c1bf056b2ac8a744475a546b98cc60b8e559981b2b420f0798130",
     "ai-worker/tools/nudge-count.sh":"25946053a106ac55c9281e7ffc2be36b90d21c095dfd95f24e0c4579e1a5d5b0",

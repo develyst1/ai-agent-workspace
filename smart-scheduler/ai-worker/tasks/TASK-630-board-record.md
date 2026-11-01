@@ -1,0 +1,7 @@
+# TASK-630 — board record (no TASK file existed; created by Porter for Marie ORDER 51, 2026-11-01)
+
+This row lived only on `board.md`. It is kept here verbatim so the board can carry one line.
+
+## Board row, moved verbatim 2026-11-01 (Marie ORDER 51) — the board keeps one line + this pointer
+
+| TASK-630 | 📌 **RECORDED DESIGN (not work): if a WITHDRAWN pre-start declaration should return to the pool** | (@Sober, 10-04 — so nobody re-derives it) | 📌 **A ROW, NOT A TASK — it exists so the answer survives the session** · **TASK-609 §3 made the cap count `plannedAtCreation` ALONE** 🔑 *a limit that cancel-and-re-declare can reset is decorative* ⇒ ⚠️ **known, pinned cost: a declaration TAKEN BACK still consumes one of the cap** · 🔴 **it must NOT be fixed by clearing `plannedAtCreation` on the Undo: `leaveChargeOf` returns `"free"` off that flag BEFORE it falls through to the make-up test, so clearing it makes an ALREADY-REFUNDED row answer `"charged"` (make-up linked) or `"unknown"` (not)** ⇒ **it would RE-OPEN `UNDO_LEAVE_CHARGE_UNKNOWN`, a set on record as closed and shrinking, on rows we have already acted on** · ▶️ **the design IF the owner asks: a SEPARATE “withdrawn” marker, never clearing the flag** · 🔑 *a flag that answers a question about the PAST cannot be reused to change a count about the PRESENT* · 📌 **the cost went to the owner as a STATEMENT, bundled with the twice-the-allowance one — 🚫 not a question, 🚫 not a blocker** | — |

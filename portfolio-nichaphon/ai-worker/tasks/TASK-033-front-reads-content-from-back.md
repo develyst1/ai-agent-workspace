@@ -1,6 +1,6 @@
 # TASK-033: `front/` reads its content from `back/` — `lib/content.ts`, props from pages, `/blog/[slug]`, unavailable state
 - Source: SPEC-010 (D4 front half, D6 page, §API rows 1–3; AC-g regression)
-- Status: REVIEW (2026-11-01, Fern — DoD 1–8 run; 12/12 route pictures 0-pixel diff; FQ55 non-blocking. Was TODO — startable: TASK-032 `DONE` 2026-11-01, Sober)
+- Status: **DONE** (2026-11-01, Sober — see §Review. Was REVIEW 2026-11-01, Fern: 12/12 route pictures 0-pixel diff)
 - Depends on: TASK-032 `DONE` (its seed + read routes are this TASK's only data source)
 - Owner: Fern (FE)
 
@@ -138,5 +138,24 @@ no visual direction. Keep it, or give articles a smaller heading (a design call,
 appears only when nothing is cached (cold start, or a cache older than the process). That fits D4's "never stale *constants*" (it is the store's own last answer),
 but D4 says "unreachable → unavailable state". Accept it as the behaviour, or should an outage show the unavailable state even when cached copy exists?
 
+> answer (Sober, 2026-11-01): (a) **Keep the sentence; no approval needed** `[SA-decided]` — a status message, the same class as the
+> Ask section's failure sentences (machinery under SQ44a's default); it states nothing about him. FYI to Porter.
+> (b) **Keep it for now** `[SA-decided, reversible]` — no REQ asks for an article layout; it rides to the owner as **SQ47** with your
+> picture; a smaller article heading is a one-TASK change if he wants it. (c) **Accepted as the behaviour** — the store's own last
+> good answer during an outage serves a visitor better than an error and is not a second source of truth. SPEC-010 D4 amended:
+> *unreachable with nothing cached → unavailable state; with a cached answer → that answer until `back/` returns*.
+
 ## Review
-(Sober fills this in at REVIEW: verdict + reasons.)
+
+**Verdict: DONE** (Sober, 2026-11-01). Zero real calls in review.
+- Evidence reviewed: the 0-pixel diff method (in-browser pixel count, both sides standalone, same viewport, reduced motion) is a
+  stronger check than I asked for; 29 pictures present in `../project-docs/fe-task033-2026-11-01/`; I opened `about-unavailable-1280.png`
+  (header + nav + one-sentence panel + footer, no trace).
+- Re-run by me: `grep -rn "constant/content" front/src` → 0; no `front/package-lock.json`; `front npx tsc --noEmit` → 0;
+  `back bun test` → `75 pass / 0 fail` (incl. TASK-034's); `back bunx tsc` → 0; `knowledge/PROJECTS.md` diff empty after the repoint.
+- Carry from TASK-032 done (9 picture rows, README 404). Your three calls — **accepted**: `PullQuote` renders nothing instead of
+  throwing (right now that quotes are editable; `HomeStatement.tsx` outside the list is the necessary consequence); bun lockfile kept,
+  the stray npm lockfile removed; standalone on both sides of the diff.
+- Line endings: 31 touched files now uniformly LF in the working copy, none mixed; `core.autocrlf=true` normalises on commit, so no
+  action. Who rewrote `db.ts` to LF is unknown — not chased, harmless.
+- FQ55 answered above (a keep · b → SQ47 · c accepted, D4 amended).

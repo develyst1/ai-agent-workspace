@@ -160,3 +160,8 @@ No FE. **The ROLLBACK is proven by @Tanya on her local database (§2f), not here
 
 ---
 📌 **2026-10-07 — next round (NOT tonight):** `makeup_not_confirmed` was APPROVED by the owner as Jason's code text (`COPY-REVIEW-2026-09-29.md` last section) — **flip its code comment from DRAFT to APPROVED** (comments only; `line-i18n.ts:615`, `scheduler.service.ts:3901`). sid: `0066` migrated GREEN (Journal 67); step 0 = 0 rows on sid AND uat.
+
+
+## Board row, moved verbatim 2026-11-01 (Marie ORDER 51) — the board keeps one line + this pointer
+
+| TASK-702 | BE: **REQ-115 — a make-up is a NORMAL class: born CONFIRMED + a durable MARKER (T1) + a migration that checks itself** (P1–P4, RAISE ⇒ rollback; owner's before/after counts; own release) | REQ-115 (below "REPLACED") · SPEC-REQ-115 (corrected) · Porter GO 10-07 | ✅ LIVE ON uat 2026-10-08 (back 6f7a40f · front f60d7e7) · sid gate PASSED (TEST-084/085/086) in ONE release (back 6f7a40f · front f60d7e7) · VERIFIED by Sober 2026-10-07 — tsc 0 · 4276/0 · unhandled 0 · 67=67 · set 24/24 · ⛔ NOT shippable until: round 1 on uat → commit → owner step-0 (sid) → Tanya abort proof ON SID (§2f, prepared rollback) → the 2nd green migrate = the real sid migration → sid gate WITH 703 + Team B grid → Sober release note · commit AFTER round 1 is on uat · `tasks/TASK-702-makeup-born-confirmed-with-marker-be.md` | @Porter |

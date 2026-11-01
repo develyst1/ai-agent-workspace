@@ -1,0 +1,7 @@
+# TASK-628 — board record (no TASK file existed; created by Porter for Marie ORDER 51, 2026-11-01)
+
+This row lived only on `board.md`. It is kept here verbatim so the board can carry one line.
+
+## Board row, moved verbatim 2026-11-01 (Marie ORDER 51) — the board keeps one line + this pointer
+
+| TASK-628 | ⛔ **the ONE live-DB suite run — @Porter schedules it, because KHWAN IS TESTING ON SID** | (@Sober, 10-03) | 🚫 **CANCELLED by OWNER RULING, 10-04 — 🚫 do NOT revive this; the reason is below so nobody re-opens it next month** · **the owner ruled: 🚫 no local stack (a second migration target to keep in step, which he will not pay for) · 🚫 engineers do NOT verify against `sid` · ✅ that verification is QA — @Tanya remit is the FULL test (every API route, the screens, the phone, the LINE OA) · ✅ nobody needs a WINDOW on `sid`** — *Khwan is using it to help us; the three of them need not tiptoe around each other* · 📌 **@Porter withdrew his own window request: “that was me carrying a constraint the owner does not have”** · ✅ **what the run WOULD have told us (a test passing BECAUSE the database is absent) is now PART 1 of the QA line, where it belongs** · 🔑 **@Sober finding still stands and is still worth keeping: the suite needs NO database — 3763 of 3763 pass with it pointed at nothing, no `skipIf`s, no skip count** ⇒ **the no-DB run is now the ONLY suite run there is, not a second opinion on a live one** | — (closed) |

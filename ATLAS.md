@@ -987,3 +987,23 @@ source.** After editing a skill there, copy it to `.claude/skills/` again, or th
     - (b) teach the audit today's intended changes before tonight's run, so it raises no false 🔴;
     - (c) the lasting fix for dynamic admin IPs is SSH off the public port (Tailscale, or Cloudflare Access/Tunnel), which is the owner's choice;
     - (a) and (d) are not needed now.
+- **team-brainstorm made to be used (2026-11-01, owner).**
+  - Evidence first: across all desks it had been used once (corner-chat today) and was otherwise only a row in charters.
+  - The owner named three MUST moments, now in the skill as A–C, each started by the PM:
+    - A: before a new REQ that is not understood 100%;
+    - B: a hard question to the owner still unanswered when the PM next picks up work → answer it from the files or rewrite it as one yes/no with a recommendation; never decide what only the owner may decide;
+    - C: after the owner catches the PM's mistake → SA and QA each read his correction before the PM replies again.
+  - Format: `talks/BRAINSTORM-<date>-<topic>.md`, plus an inbox pointer and a nudge. The `role-pm` standards require it. Harness 2.6.7; ORDER 50 went to the Marie session by nudge.
+  - Watch: whether `talks/BRAINSTORM-*` files appear in the next week. If none do, add a gate WARN (an open owner-question older than one day with no BRAINSTORM file).
+  - ORDER 50 result (Marie): harness 2.6.7 on all 10 desks. The PM-row wording reached i-space and buddy-screen; corner-chat is pending (busy). Atlas rulings: smart-scheduler and smart-scheduler-atom get the row too (atom: an inbox line only, no nudge, since the desk is live on Atom's box). buddy-screen needs no session opened because it is off the active list; the line waits in its inbox.
+- **corner-chat third repo (2026-11-01):** `corner-chat-app` is the Android app. It is written by the FE of either team under batch claims, so FE.md = front + app and BE.md = back. The stack is the SA's SPEC-001. Marie's one-pass rule-text fix is approved (`REQUEST-marie-to-atlas-2026-11-01-corner-chat-app.md` § Atlas's answer).
+- **smart-scheduler FAILURES review (2026-11-01).** 9 entries had been NEW since Sep/Oct; the decisions made in ORDER 17 were never applied to them.
+  - FIXED: F-004, F-010, F-029, F-031. F-020 (bare SQL) and F-028 (BEFORE checks) are FIXED now that role-pm §3 carries them, de-named.
+  - ATLAS-REVIEWED: F-009, F-030, F-019. F-019's guard (ORDER 17.4) still awaits the owner.
+  - Gate: 0 unreviewed.
+- **ORDER 51 (smart-scheduler housekeeping):** gate FAIL 28 → 9.
+  - Atlas approved archiving 4 stale board sections.
+  - Boot-read FAILs (107–126 KB vs 90) are left in place: no slimming, per the owner's quality-over-quota rule. Whether the boot check becomes a WARN is a threshold change, so it is put to the owner.
+  - The drain-tool BOM bug is fixed and tested in scratch: harness 2.6.8.
+  - ORDER 51 closed (Marie, Atlas re-checked): board 137 → 46 KB, inboxes ~2.3 MB → 3.6 KB, boot reads 95–113 KB (were up to 1.2 MB). Harness 2.6.8 is on all desks. What remains: board 6 KB over (live state) and the boot FAILs, waiting on the owner's WARN decision.
+- **Queue tool durable write (2026-11-01):** after Marie found a NUL-filled corner-chat SA queue, the queue tool now fsyncs its temp file, reads it back, then renames. Harness 2.6.9; ORDER 52 went to the Marie session.

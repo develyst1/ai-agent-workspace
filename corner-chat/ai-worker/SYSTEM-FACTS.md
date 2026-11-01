@@ -52,6 +52,100 @@
   staff reply in the original app). How hard it is = the SA's assessment, asked 2026-11-01.
 - `[operator 2026-11-01, to the PM]` Auto-reply (understanding doc Q1b — "auto-reply such as out-of-hours or keyword
   replies is not in the first round, later?"): *"ใช่ ไว้ทีหลัง"* — **auto-reply is out of the first scope; later.**
+- `[operator 2026-11-01, to the PM]` Correcting the PM's 6-step flow (understanding doc §Q0), verbatim, per step:
+  - on "ทีม": *"ทีมตรงนี้หมายถึงอะไร ฉันหมายถึงผู้ใช้ corner-chat แล้วแต่คนจะตั้งเงื่อนไขตามสไตล์ตัวเอง"* — there is
+    **no "team"**: it is **each corner-chat user**, and **each user sets their own filter conditions** in their own style.
+    ⇒ every "staff" / "team" in the lines above means **the corner-chat user** (PM's correction of its own wording).
+  - on "กลุ่ม LINE": *"ไม่ใช่กลุ่มไลน์ LINE OA 1 on 1 กับผู้ใช้แต่ละคน"* — passed messages reach the user **1-on-1
+    from a LINE OA, to each user**, not into a LINE group.
+  - on "Web Chat": *"ถ้าสุดท้าย ไลน์ เต็มจริงๆ ให้ส่ง เข้า app เราเป็น app มือถือ มี notification"* — if LINE is really
+    full in the end, send into **our app, a mobile app with notifications**.
+    ~~⚠️ **CONTESTED** with his own requirement doc §8 *"Out of Scope (ตอนนี้) … Mobile App"* — unactionable until he
+    settles whether the mobile app is in the first scope or a later fallback.~~ **Settled 2026-11-01** — see the
+    "ทำแอปด้วย" line below: the mobile app is **in the first round**; doc §8's "Mobile App" out-of-scope is overridden.
+  - on reply: *"ใช่ ผู้ใช้สามารถตอบกลับ คนที่ทักเขามากลับไปทางเดิมได้ แต่ถ้ามันยาก ก็ตามที่บอก คือทำแค่เป็นฝ่ายรับข้อความเพื่อรับบรู้
+    อย่างเดียวก่อนได้"* — the user can reply to whoever messaged them, back the same way; if hard, receive-only first.
+  - on held messages: *"จะอยู่ในแอปเรา คือข้อความที่ไม่เข้าเงื่อนไขคุณ"* — messages that did not meet **your** conditions
+    stay in our app.
+  - and: *"req ฉันอาจจะ เขียนมาไม่ครบ หรือผิดก็ได้ นะ นายเข้าใจว่าไง"* — **the requirement doc may be incomplete or
+    wrong**; his later words win over it where they differ, and the PM confirms each difference with him.
+- `[operator 2026-11-01, to the PM]` On reading v2 item 2 (a personal LINE chat cannot be read by any system):
+  *"เออใช่ว่ะ อาจจะ ต้องสร้าง LINE OA ของ corner-chat แล้วให้ดึงไปเข้ากลุ่มไลน์ของ ผู้ใช้ แล้วให้คอยสังเกตุว่าข้อความไหน
+  ส่งถึงผู้ใช้ หรือtag all ก็ให้นำมา เข้าเช็คเงื่อนไขกรอง แล้วส่งให้ผู้ใช้ ผ่าน LINE OA corner chat"* — agrees personal
+  LINE cannot be read; **his proposed shape ("อาจจะ" = a proposal, feasibility not yet checked):** corner-chat has its own
+  LINE OA; users add it into their LINE groups; it watches for messages **addressed to the user or tagging all**, runs
+  them through that user's filter conditions, and sends the passed ones to the user via the corner-chat LINE OA.
+  He commented on item 2 only; items 1, 3–7 of v2 drew no objection `[PM-interpreted, not approved]`.
+- `[operator 2026-11-01, to the PM]` Confirmed by example: *"ถูก"* — to the PM's example: the user adds the corner-chat
+  LINE OA as a friend and pulls it into their LINE group; a message in the group that **tags the user or replies to the
+  user's message** → checked against that user's conditions → if passed, the corner-chat OA sends it to the user 1-on-1;
+  **@All** → the same; **every other group message is not taken in at all.** (Feasibility: SA, §Q2-SA.)
+- `[operator 2026-11-01, to the PM]` LINE allows only ONE Official Account per group (SA, from LINE's group-chats doc),
+  so a group that already holds another OA cannot add corner-chat and its messages never reach corner-chat — asked
+  "รับได้ไหม": *"รับได้"* — **accepted.**
+- `[operator 2026-11-01, to the PM]` Who can use corner-chat (asked ก = only people the owner adds, no open sign-up,
+  first round · ข = anyone signs up): *"ใช่ เฉพาะคนที่เพิ่ม"* — **first round: only people the owner adds; no open
+  sign-up.** (Open sign-up later = the PM's default, not his words.)
+- `[operator 2026-11-01, to the PM]` Mail providers (asked: Zimbra with password first, or Gmail/Outlook too):
+  *"Zimbra ก่อน"* — **first round: Zimbra only**; Gmail / Outlook later.
+- `[operator 2026-11-01, to the PM]` LINE quota / mobile app (asked: first round LINE notifications only, no mobile app,
+  decide at the quota limit — or build the app too): *"ทำแอปด้วย"* — **the mobile app with notifications is in the
+  first round.** Overrides requirement doc §8 "Mobile App" out of scope.
+- `[operator 2026-11-01, to the PM]` What the app does (asked: users do everything in the mobile app — see passed and
+  held messages, set conditions, connect Zimbra and LINE groups, reply; the web is only the owner's page to add users,
+  normal users never use the web): *"ใช่"* — **users do everything in the mobile app; the web is the owner's admin page
+  only.** (Replaces the requirement doc's §4.6 web "Dashboard" for users.)
+- `[operator 2026-11-01, to the PM]` Phones (asked: iPhone and Android both in the first round, or Android first):
+  ~~*"ทั้งสอง"* — **iPhone and Android both, first round.**~~
+  **Corrected by him the same exchange, 2026-11-01:** *"Android ก่อน IOS ทีหลัง"* — **Android first; iOS later.**
+- `[operator 2026-11-01, to the PM]` Replying into LINE groups (asked: a reply from the app would show in the group as the
+  corner-chat bot, seen by everyone; first round LINE groups receive-only, the user replies in LINE from the
+  notification; Zimbra mail can be answered from the app, sent from the user's own address): *"ใช่ รับอย่างเดียว"* —
+  **first round: LINE groups receive-only; Zimbra mail two-way.**
+- `[operator 2026-11-01, to the PM]` What a user's condition looks like (asked: two kinds used together — fixed rules,
+  e.g. from this person → always notify, contains "ใบเสนอราคา" → always notify, from this group → don't notify; and a few
+  plain sentences the AI reads, e.g. "แจ้งเฉพาะเรื่องงานที่ต้องตอบ ไม่เอาโฆษณา ไม่เอาข่าวทั่วไป"; fixed rules win when
+  they and the AI disagree): *"ใช่ ทั้งสอง"* — **both kinds; fixed rules win over the AI.**
+- `[operator 2026-11-01, to the PM]` Notify timing (asked: every passed message notified by LINE and in the app both,
+  every time — or LINE first, the app only when the LINE quota is full): *"ทั้งสองทุกครั้ง"* — **both, every time.**
+- `[operator 2026-11-01, to the PM]` Replies in LINE groups (asked: to know a group reply answers the user's own message,
+  corner-chat must note the **id only, no text** of every message the user writes in the group; slightly against "every
+  other group message is not taken in at all"; without it, only tags are caught): *"ได้ เก็บเลข"* — **allowed: keep the
+  id only, never the text, of a linked user's own group messages.**
+- `[operator 2026-11-01, to the PM]` AI providers (asked: message content goes through his gateway to outside AI
+  providers, fallback deepseek → xai → gemini → openai — OK?): *"ได้ และเอไอ เลือกใช้ได้หลายตัวด้วย แล้วแต่เหตุการณ์ ที่ใช้
+  เลย แล้วใช้หลายขั้นได้ เพื่อเป็นตัวกรอง ทางความคิด เพื่อ คิดหลายขั้น"* — **OK to send content to outside providers;
+  several AI models may be used, chosen by the situation; and the filter may run in several AI steps ("คิดหลายขั้น").**
+  What a "situation" and a "step" are is the PM's reading, being confirmed by example (understanding doc Q15).
+- `[operator 2026-11-01, to the PM]` Correcting the PM's two-step example, verbatim: *"ฉันหมายถึง ชั้นแรก วิเคราะห์ ก่อน ว่า
+  ข้อความที่เข้ามานี่ ถึงเรามั้ยวะ มีชื่อเรามั้ย ถึงแม้ไม่ได้แท็ก แล้วความหมายมันคืออะไรกันนะข้อความนี้ สรุปออกมา แล้ว เอามาทั้งข้อความ
+  เพียวๆ และข้อความที่สรุปได้มา ตั้งคำถามว่า มันเข้าเงื่อนไข ของผู้ใช้มั้ยวะ เข้ากี่% ถ้าเข้าเกณ ก็ ส่งข้อความนั้นให้ผู้ใช้ พร้อมบอกด้วย
+  เขาทักมาเเกี่ยวกับ อะไร"* then *"แต่แล้วแต่นาย ไปรวมหัวคิดกัน เอาว่าเอาแบบไหน"* — his idea: **layer 1** analyses whether
+  the message is addressed to the user / has the user's name **even without a tag**, what it means, and summarises it;
+  **layer 2** takes the raw message + the summary and asks whether it meets the user's conditions and **by how many %**;
+  above the bar → send the message to the user **with a line saying what it is about**. **The final shape is delegated to
+  the team** ("แล้วแต่นาย ไปรวมหัวคิดกัน") `[operator-delegated 2026-11-01]`.
+  ~~⚠️ **CONTESTED** with his confirmed example above (*"ถูก"*: in a LINE group, "every other group message is not taken in
+  at all"): catching the user's **name without a tag** means every group message must be read. Unactionable until he
+  settles it; the PM brings it back after the team round.~~ **Settled 2026-11-01** — next line.
+- `[operator 2026-11-01, to the PM]` Asked: catch the user's name when nobody tags them, which means scanning the text
+  of every group message (plain match, nothing kept that does not match)? *"เอาแล้ว แต่นาย กับ ทีมนายตัดสินใจเลย"* —
+  **he wants it ("เอาแล้ว"), and delegates how to the PM and team** `[operator-delegated 2026-11-01]`. How: `DECISIONS.md`.
+
+## How the owner wants the desk to work from now (owner, 2026-11-01)
+
+- `[operator 2026-11-01, to the PM]` *"ต่อจากนี้ ไม่ต้องถามฉันแล้ว ทำงานกันได้ เลย ทำให้ได้ ตามเป้าหมายไปเลย เป้าคือ ทำให้เสร็จใช้งานได้
+  หากมีคำถามให้ รวมหัวกันคิด แล้วตัดสินใจไปก่อน แล้ว ลิสต์ ไว้ ว่า มีต้องการตัดสินใจอะไรจากฉัน ที่ตัดสินใจไปกันเอง ก่อนเลือกอะไร
+  และ ทำไปจนกว่่าจะติดไปต่อไม่ได้จริงๆ"* — **standing instruction:** stop asking him; the goal is **done and usable**;
+  a question is settled by the team (a round, `team-brainstorm.md`), decided, and **listed** for his later review with
+  what was chosen — `../project-docs/decisions-for-owner-review.md`; keep going **until truly blocked**.
+  **What it does not change** `[PM-interpreted]`: the hard lines in `CLAUDE.md` and `PROTOCOL.md` stay — git only on his
+  own command; nothing sent to or changed on a real system without his go; no production. Those are "truly blocked"
+  points, not questions.
+- `[operator 2026-11-01, to the PM]` *"ฉันทำแบบนี้เพื่อให้นายหัดตัดสินใจ และหากนายและทีมตัดสินใจ ได้ไม่ตรงใจกับฉัน เราก็แค่ ไปปรับจูนกัน
+  แต่อย่าทำการ deploy นะ แค่พัฒนาไปจนสุดท้ายก็พอ"* — the purpose is for the team to **learn to decide**; a decision that
+  misses his intent is simply tuned later. **No deploy** — develop all the way to the end, locally; nothing goes on a
+  server.
 
 ## Repos and environments
 
@@ -65,6 +159,15 @@
   `production` on both repos, all from `main`, pushed to origin. The repos are still checked out on
   `main`. (Marie re-read both repos 2026-11-01: all six branches at the initial commit, each tracking
   its `origin/` twin — back `d1152f1`, front `0f8c0bc`.)
+- `[operator 2026-11-01, to the PM]` A third repo for the Android app (asked: create `corner-chat-app` or share
+  `corner-chat-front`): *"done"* + its path — **`corner-chat-app`**, created by the owner (absolute path in
+  `machine.local.md`). (Porter read it 2026-11-01: README only, one commit `f5e060d`, checked out on `main`, branches
+  `atom`, `develop`, `sit`, `uat`, `production`, origin `github.com/develyst1/corner-chat-app`.) Who on the teams writes in
+  it is not yet set — `PROTOCOL.md`'s repo table names only back (BE) and front (FE).
+- (Atlas, 2026-11-01 — `REQUEST-marie-to-atlas-2026-11-01-corner-chat-app.md` § "Atlas's answer") **`corner-chat-app` is
+  written by the FE, of either team**, under the PM's batch claims; **the BE never writes in it**; the app's stack is the
+  SA's call in SPEC-001. FE owns `corner-chat-front` + `corner-chat-app`; BE owns `corner-chat-back`. Now in
+  `PROTOCOL.md`, `FE.md`, `BE.md`, `TEAMS.md` (2026-11-01).
 - **The team's working branch is UNDECIDED** — a new own branch like smart-scheduler's `dong`, or
   `atom`. The PM settles it with the owner before the first `ขึ้น git` (board → Blocked / waiting).
 - `[operator 2026-11-01]` **Stack — back:** *"back ไม่ใช้ nest ใช้ bun hono หรือ bun elysia เท่านั้น"* —

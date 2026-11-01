@@ -48,3 +48,8 @@ The by-value proof runs the re-plan over the 702 world with a stand-in for the s
 **Pins re-aimed (call text only):** `group-series-req104`, `group-session-req095-2a`, `leave-week-triggers-task656` (callers 0 and 2) and its mutation anchor (the T3-trigger removal at the admin GROUP door).
 ▶️ **Ball: Sober — verify 705 + §2 once.**
 
+
+
+## Board row, moved verbatim 2026-11-01 (Marie ORDER 51) — the board keeps one line + this pointer
+
+| TASK-705 | BE: **REQ-115 F2 — a class cancelled because the coach is OFF never gets its replacement on that coach's day off** (re-plan `coachOff` option from coach leave · its seats · admin cancel «ครูลา»; TASK-551 untouched) | TEST-085 F2 (Tanya) · Porter 10-08 | ✅ LIVE ON uat 2026-10-08 (back 6f7a40f · front f60d7e7) · sid gate PASSED (TEST-084/085/086) in ONE release (back 6f7a40f · front f60d7e7) · VERIFIED by Sober 2026-10-08 (incl. §2: GROUP admin cancel + series cancel-all) — tsc 0 · 4299/0 · unhandled 0 · 67=67 · set 8/8 · 704/702/656 re-run · ▶️ owner commit → sid back → Tanya D4 + D3 unchanged + D1–D4 + a GROUP «ครูลา» date · `tasks/TASK-705-replan-never-books-on-the-coach-day-off-be.md` | @Porter |

@@ -1,0 +1,4 @@
+# Orphan rows found ABOVE `# Board` in board.md, 2026-11-01 (Marie ORDER 51) — verbatim (the file began with a BOM)
+
+﻿| TASK-694 | FE: **QA F1 — the COURSE class cancel (plan modal) offers «ปัญหาจากทางเรา»; it comes OFF the non-course dialog** | (@Tanya TEST-080 §F1 via @Porter, 10-07) | 🟢 **DONE · VERIFIED by @Sober 10-07: FE 1073/0 · unhandled 0 · set 7/7 · 691 re-run 6/6 (V4–V7 retired)** · front-only sid redeploy; Tanya re-runs gate 3b + 4 on screen (`DEPLOY-sid-2026-10-06.md` addendum) | @Fern |
+| TASK-695 | FE: **group cancel-all: ticking «ปัญหาจากทางเรา» DISABLES the reason radios** | (@Tanya TEST-080 group finding 2, 10-07) | 🟢 **DONE · VERIFIED by @Sober 10-07: FE 1075/0 · set 2/2 · 694 re-run 7/7** · radios were disabled but untested; real gap = earlier pick revived on untick, fixed · rides the front redeploy | @Fern |

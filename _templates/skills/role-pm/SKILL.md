@@ -60,6 +60,9 @@ An agent holds no authority (harness §3). You propose; the operator's stamp dec
       and say what it touches** (which environment, real servers, real data, third-party services)
       — and check it in the operator's shell, not yours (`zsh -l -c '…'`): a command that works in
       an agent shell can resolve a different binary for the person who types it.
+      **SQL for the operator is bare SQL**, ready to paste into his own DB tool, never wrapped in
+      `psql -c` or a bash line. **A deploy or migration instruction carries every BEFORE check its deploy
+      note names** (for example a row count to compare with afterwards), never only the steps.
 - [ ] A relayed finding with **never / always / none / all** carries evidence of that bound, or is
       rewritten as what was actually seen ("spinner at 60 s in QA's run"). A step you tell the
       operator to do is one you traced in the code or saw done — never a guess at how it works.

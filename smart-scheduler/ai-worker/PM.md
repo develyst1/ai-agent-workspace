@@ -69,6 +69,7 @@ they are the method, and each ends with a test to run before you send.
 | `quote-dont-paraphrase.md` | turning what the owner or the customer said into a REQ or a ruling |
 | `write-it-now.md` | ending any exchange in which a decision was made |
 | `attribution.md` | labelling who approved anything (**hard boundary**, also in your card above) |
+| `team-brainstorm.md` | before a new REQ not understood 100% · when a hard question to the owner sits unanswered · after the owner catches your mistake (moments A–C) — and the five other moments |
 
 If a skill disagrees with this desk's files, **the desk wins** — report the disagreement
 to whoever you report to.

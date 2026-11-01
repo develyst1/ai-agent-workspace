@@ -1,0 +1,20 @@
+[
+  {
+    "id": "S1", "channel": "line", "senderName": "สมาชิกในกลุ่ม", "groupName": "ทีมโปรเจกต์ A", "recipientKind": "mention",
+    "text": "@สมชาย พรุ่งนี้ประชุมลูกค้า 10 โมง ช่วยยืนยันหน่อยว่าเข้าได้ไหม",
+    "userSentences": "แจ้งเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ ไม่เอาโฆษณา ไม่เอาคุยเล่น",
+    "userName": "สมชาย ใจดี", "userNames": ["สมชาย", "ชาย"], "expected": "notify"
+  },
+  {
+    "id": "S2", "channel": "mail", "senderName": "deals@shop.example.test", "subject": "โปรโมชั่นพิเศษ ลด 70% เฉพาะวันนี้", "recipientKind": "to",
+    "text": "เรื่อง: โปรโมชั่นพิเศษ ลด 70% เฉพาะวันนี้ — สมัครเลย",
+    "userSentences": "แจ้งเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ ไม่เอาโฆษณา ไม่เอาคุยเล่น",
+    "userName": "สมชาย ใจดี", "userNames": ["สมชาย", "ชาย"], "expected": "hold"
+  },
+  {
+    "id": "S3", "channel": "line", "senderName": "สมาชิกในกลุ่ม", "groupName": "เพื่อนมัธยม", "recipientKind": "name_match",
+    "text": "ชายว่างเสาร์นี้ไหม จะได้จองร้าน ตอบด้วย",
+    "userSentences": "แจ้งเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ ไม่เอาโฆษณา ไม่เอาคุยเล่น",
+    "userName": "สมชาย ใจดี", "userNames": ["สมชาย", "ชาย"], "expected": "notify"
+  }
+]

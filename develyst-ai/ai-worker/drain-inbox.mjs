@@ -26,7 +26,8 @@ const shortHash = (text) => crypto.createHash('sha256').update(text).digest('hex
 // Header = line 1 (`# Inbox — …`) plus the `>` lines right under it (blank lines between them allowed).
 // Everything after the last such `>` line is body.
 function headerEnd(lines) {
-  if (!/^#\s/.test(lines[0] || '')) return 0;
+  // A file saved with a UTF-8 BOM starts with U+FEFF; the header is still line 1 (ORDER 51: RELAY.md was misread).
+  if (!/^﻿?#\s/.test(lines[0] || '')) return 0;
   let end = 1;
   for (let i = 1; i < lines.length; i++) {
     if (/^>/.test(lines[i])) end = i + 1;
@@ -73,8 +74,16 @@ if (shortHash(fs.readFileSync(file, 'utf8')) !== hash) {
   console.error(`refused: ${rel} changed while running — nothing deleted. Print it again.`);
   process.exit(1);
 }
+// Durable write: flush the temp file to disk before the rename, then read it back. A rename without fsync can leave
+// a file of the right size full of NUL bytes after a crash or power cut (corner-chat inbox/SA.md, 2026-11-01).
 const tmp = `${file}.drain-${process.pid}.tmp`;
-fs.writeFileSync(tmp, out);
+const fd = fs.openSync(tmp, 'w');
+try { fs.writeSync(fd, out); fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
+if (fs.readFileSync(tmp, 'utf8') !== out) {
+  fs.rmSync(tmp, { force: true });
+  console.error(`refused: the temp copy did not read back as written — ${rel} left unchanged`);
+  process.exit(1);
+}
 fs.renameSync(tmp, file);
 console.log(`deleted ${targets.size} line(s) from ${rel}:`);
 [...targets].sort((a, b) => a - b).forEach((n) => console.log(`${String(n).padStart(4)}: ${lines[n - 1]}`));

@@ -2615,7 +2615,332 @@ manage model effort ได้มากกว่าและ เร็วกว�
 `node scripts/check-harness.mjs` must say all current. Then nudge Atlas with the summary line. Never spawn a subagent
 for any of this.
 
+### ORDER 50 — 2026-11-01 — ✅ steps 1–2 DONE (10/10 at 2.6.7) · ⏳ step 3: ✅ i-space + smart-scheduler DONE (verified); smart-scheduler-atom delivered (no nudge, per Atlas); buddy-screen CLOSED (PM not running); corner-chat delivered 02:15 — Atlas's 2 questions answered (see Operations log) — harness 2.6.7: team-brainstorm gets the owner's three MUST moments
+
+**Owner, to Atlas, 2026-11-01:** *"อยากให้ ถูกใช้มากขึ้น"*, then he named the moments:
+- before a new REQ that is not understood 100%;
+- a hard question waiting for him that he has not answered;
+- after the PM's mistake.
+
+`_templates/project/ai-worker/team-brainstorm.md` (a shared tool) now has section "The owner's three MUST moments", and
+the `role-pm` skill's standards require it. `harness.json` is now **2.6.7**. **This supersedes ORDER 49's version
+number:** if ORDER 49 is not finished, just install 2.6.7.
+
+**Do:**
+1. Run `node scripts/install.mjs <desk>` on every desk. It replaces `ai-worker/team-brainstorm.md`. A desk that edited
+   its own copy refuses; report it.
+2. Run `check-harness`; it must show all current.
+3. On each desk with a PM charter, the PM's row for `team-brainstorm.md` in the `## Skills` table should read: *"before
+   a new REQ not understood 100% · when a hard question to the owner sits unanswered · after the owner catches your
+   mistake (moments A–C) — and the five other moments"*. Make that change through the desk PM's inbox plus a nudge
+   (never a subagent), only on quiet desks; report the rest as pending.
+4. Nudge Atlas with the result. Never ask the owner.
+
+### ORDER 51 — 2026-11-01 — ✅ CLOSED 2026-11-01 (gate FAIL 28 → 9; board 46.0 KB, stopped per Atlas; boot FAILs with the owner via Atlas; harness 2.6.8 installed — see Operations log) — smart-scheduler housekeeping (gate FAIL), owner: *"ไปเลย"*
+
+The gate on 2026-11-01 says:
+- `board.md` is 136.9 KB (cap 40), with 115 closed rows and 44 cells over 300 characters;
+- `inbox/PM.md` is about 1 MB with 474 over-long messages, and `inbox/BE-B.md` is 11 KB;
+- boot reads are 0.8–1.7 MB per role;
+- `RESUME-HERE.md` is 2 days behind.
+
+**Do, through Porter's own session** (an inbox line plus a nudge, never a subagent), **only while the desk is quiet:**
+1. **Archive everything verbatim first** under `ai-worker/archive/`.
+2. **Board:**
+   - sweep every DONE / DELIVERED row to `archive/board-closed.md`;
+   - shorten each over-long cell to one line plus a pointer to the file that already holds the detail.
+   Zero semantic change to the live rows.
+3. **Inboxes:** messages already processed are archived and drained with `drain-inbox.mjs`. A message the owner of
+   that inbox has not acted on stays, shortened to 1–3 lines plus a pointer. If you cannot tell which is which,
+   ask Porter in his inbox, not the owner.
+4. Have Porter refresh `RESUME-HERE.md` (it is his).
+5. Not yours: the 9 unreviewed FAILURES (Atlas reviews them) and the 3 REQ rows with no TASK id (the SA's).
+6. Prove it with `node check-hygiene.mjs smart-scheduler`: the FAIL lines must be gone, and paste before/after sizes.
+   Then nudge Atlas. Never ask the owner.
+
+**⏳ Marie → Atlas, 2026-11-01 — steps 1–5 DONE and verified; step 6 cannot be met by housekeeping. Your decision:**
+Gate **FAIL (28) → FAIL (9)**. The 9 left are `board.md 58.6 KB > 40` plus **8 boot reads over 90 KB**. Each boot read
+is `PROTOCOL.md` (38 KB) + `board.md` + the role's charter (PM 27 · SA 21 · FE 20 · QA 17 · BE 10 KB) + an inbox now
+~0.5 KB. ⇒ **the PM's boot only passes with the board at ≤ ~25 KB**, but the live `## Tasks` table alone is **30.7 KB**.
+Trimming board prose can clear the board-size FAIL; **it cannot clear the 8 boot FAILs** without slimming
+`PROTOCOL.md` or the charters, which is rule design, not housekeeping. Two questions:
+1. **Board under 40 KB:** may Porter move these, verbatim to `archive/` with a one-line pointer each? `## 🔴 DEADLINE`
+   (1.7 KB — the date it names, **FRI 16 OCT, has passed**) · closed entries in `## Batch claims` (6.5 KB) ·
+   `## TASK number blocks` (1.4 KB) · `## Project context` (5.3 KB, already "pointers only"). `## Blocked / waiting` and
+   `## OWNER'S NEXT BATCH` are live state and stay. That is ~15 KB. Whether it gets under 40 depends on how many Batch
+   claims are closed; it may still be short by a few KB.
+2. **The 8 boot FAILs:** a gate threshold, a slimmer `PROTOCOL.md`/charters, or accepted as is? Not mine to choose.
+
+**✅ Atlas → Marie, 2026-11-01:**
+1. **Yes, move all four**, each verbatim to `archive/` with a one-line pointer left behind, through Porter as before.
+   The 🔴 DEADLINE is past, the closed Batch claims and TASK number blocks are history, and Project context is
+   already pointers. Then re-run the gate. If the board is still a few KB over 40, report the number and stop; do
+   not trim live state to make it.
+2. **The boot FAILs are not housekeeping. Leave them as they are, and do not slim PROTOCOL or the charters.** The
+   owner's standing criterion is quality over quota: *"ไม่ย่อหรอกถ้าไม่คุ้ม"*. Whether the boot-read check should be a
+   WARN instead of a FAIL is a gate-threshold change, so it needs the owner. Atlas is asking him. Close ORDER 51 once
+   step 1 is done.
+3. **The BOM bug is fixed in the harness:** `drain-inbox.mjs` now accepts a BOM before the header (tested in
+   scratch). Harness **2.6.8**: run `install.mjs` on every desk and `check-harness` must show all current. That is part
+   of this order.
+
+### ORDER 52 — 2026-11-01 — ✅ DONE 2026-11-01 (10/10 current; see Operations log) — harness 2.6.9: drain-inbox writes durably (Marie's NUL-file finding)
+
+Atlas fixed `drain-inbox.mjs` after Marie found corner-chat's `inbox/SA.md` full of NUL bytes:
+- the temp file is now `fsync`ed before the rename;
+- it is read back, and a mismatch refuses the drain, leaving the queue untouched.
+
+Tested in scratch on a BOM'd file: one message drained, header and other message intact, no NULs.
+
+**Do:** run `install.mjs` on every desk, then `check-harness` must show all current. Then nudge Atlas. Install
+writes only the tool and `.harness`, so a live desk is fine.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-11-01 — ✅ **ORDER 52 DONE: harness 2.6.9 on all 10 desks — `drain-inbox.mjs` now writes durably.**
+  Before installing I read the template: write → **`fsyncSync`** → close → **read the temp back and compare,
+  refuse on mismatch** → rename (lines 80–87) — exactly as the order says. `install.mjs` × 10, all exit 0, each
+  backed up its old tool (`archive/drain-inbox.mjs.before-2.6.9.2026-11-01`). `check-harness`: **"10 desk(s),
+  all current"**. Git before/after: **only** `.harness`, the tool and its backup. All 10 copies contain
+  `fsyncSync`. Smoke test (print mode) on the repaired corner-chat `inbox/SA.md`: still `header = lines 1-4`,
+  same hash `61ea367330bb`. **The finding closed the loop the same day: found → repaired → hardened → installed.**
+
+- 2026-11-01 — ✅ **corner-chat `inbox/SA.md` REPAIRED, verified.** Porter ran the 4 steps, each on its own.
+  Checked myself: **0 NUL bytes**, no line with leading spaces, the drain tool reads **`header = lines 1-4`,
+  0 messages** (hash `61ea367330bb`, the same as his). Against git HEAD the only difference is **one trailing
+  blank line** HEAD has and the repair does not (195 vs 196 B) — harmless; not worth another round trip.
+  **Open for Atlas, not ordered by me:** harden `drain-inbox.mjs` with an fsync before its rename (likely cause;
+  see the entry below). The zeroing was isolated — one file in the whole workspace.
+
+- 2026-11-01 — ⏳ **corner-chat `inbox/SA.md` = 201 NUL bytes: verified, nothing lost, repair delivered to
+  Porter.** His request: `REQUEST-porter-to-marie-2026-11-01-corner-chat-sa-inbox-nul.md` (my answer appended).
+  **Checked myself:** 201 B, all NUL, written **03:40:42**; git HEAD = 196 B = the same 4-line header in LF, = 201 B
+  in CRLF ⇒ **it held only the header when zeroed — no message lost**; still 201 B ⇒ nothing appended since.
+  🔴 **First worry, and it was mine to rule out:** I had installed a changed drain tool (2.6.8) at ~02:45, an hour
+  before. **Not the cause:** the write path (temp file + rename) is **identical** before and after; 2.6.8 only added
+  BOM tolerance. **Isolated:** a scan of every `.md` in the workspace finds **this one** all-NUL file, no other.
+  **Likely cause, NOT proven:** at 03:40 one role wrote SPEC-001 → TASK-006 → board → its own inbox (the end-of-round
+  drain). The tool does `writeFileSync(tmp)` + `renameSync` **with no fsync**; "right size, no data" is the known
+  signature of data not reaching disk before the rename. ⇒ **For Atlas: a harness hardening (fsync before rename),
+  not ordered by me.**
+  **"No role can repair it" was not quite right:** the tool cannot find a header, but for the same reason it lists the
+  201 NULs as **message line 1** (NUL is not whitespace to `trim()`) and lets it be deleted → 0 B → `>>` the header.
+  Verified by **reading the code** — I could not run it in scratch because the inbox guard (rightly) blocks any write
+  to an `inbox/` path, and I did not work around a guard to test. Steps written for Porter (4 commands, each on its
+  own), with a warning I caught in my own draft: the header must start at column 1, not indented as in the list.
+  Bell delivered, turn started. **Waiting on step 4's output.**
+
+- 2026-11-01 02:5x — ✅ **ORDER 51 CLOSED. smart-scheduler gate FAIL (28) → FAIL (9); stopped at the line
+  Atlas drew.** Last step (4 board sections) done by Porter, verified by me: pre-sections archive matches my
+  fingerprint (`ed5c50e0…`) · **75 lines left the board, 75 / 75 found verbatim** in
+  `archive/board-2026-11-01-sections.md` · the only lines added are the four pointers · **0 ids lost**.
+  Porter kept the **TASK-number rule** on the board while moving the old blocks (the blocks are history, the
+  rule is live) and kept the live release-status line in Batch claims; 4 closed batches moved.
+  **Before → after, whole order:** board **140,155 → 60,050 → 47,081 B** · nine inboxes **~2.3 MB → ~3.6 KB**
+  · boot reads PM 1,220 → 112.5 KB · SA 951 → 106.0 · BE 373 → 94.9 · FE 271 → 104.9 · QA 329 → 102.3 ·
+  SA-B 256 → 105.7 · BE-B 196 → 94.6 · FE-B 211 → 104.7 · RESUME-HERE refreshed · drain tool fixed (2.6.8).
+  **The 9 left, and why they stay:** `board.md` **46.0 KB > 40** — the rest is live state, and Atlas's rule
+  was *report the number and stop, do not trim live state*. The **8 boot reads (94.6–112.5 KB > 90)** are
+  PROTOCOL + charters, not housekeeping — **Atlas is asking the owner** whether that check should be a WARN.
+
+- 2026-11-01 02:4x — **ORDER 51, Atlas's answers applied: (3) harness 2.6.8 DONE · (1) the 4 board
+  sections DELIVERED to Porter · (2) boot FAILs left as is, per Atlas (the owner is asked).**
+  **(3) 2.6.8:** `install.mjs` × 10, all exit 0, no refusals; each backed up its old `drain-inbox.mjs`
+  (`archive/drain-inbox.mjs.before-2.6.8.2026-11-01`) and installed the fix. `check-harness`: **"10 desk(s),
+  all current"**. Git before/after: only `.harness`, the tool and its backup — plus one `corner-chat`
+  `tasks/TASK-010-…` file that is that team's own work (their SAs were busy), not the installer's.
+  ✅ **Fix proven, not trusted:** the new tool on the same BOM'd `smart-scheduler` `RELAY.md` now prints
+  **`header = lines 1-4`, 0 messages** — it printed `header = lines 1-0` an hour earlier. The BOM is still in
+  the file; the tool now copes with it.
+  **(1) Board:** desk quiet apart from Porter's finished ORDER 51 work. Board fingerprinted (`ed5c50e0…`,
+  60,050 B — his reported figure). Instruction in `inbox/PM.md` (4 lines): archive first; move DEADLINE (L3),
+  TASK number blocks (L14), **only fully-closed** batches from Batch claims (L22), Project context (L49) to
+  `archive/board-2026-11-01-sections.md`, one pointer each; **never trim live state to reach 40 KB**. Bell
+  queued (mid-turn).
+
+- 2026-11-01 03:0x — **ORDER 51 steps 1–5 DONE, verified by me. Gate FAIL (28) → FAIL (9); the 9 need
+  Atlas (see the block under ORDER 51).** Porter did it in his own session; his report is
+  `REPORT-porter-to-marie-2026-11-01-smart-scheduler-housekeeping.md`.
+  **My checks, not his report:** archives 11 / 11 match my own fingerprints · **all 398 REQ/TASK/DEF ids** of
+  the pre-sweep board still exist somewhere (board, `board-closed.md`, orphan archive, TASK/REQ files) · board
+  now starts at `# Board` with no BOM — **two** orphan rows above the title, not the one I counted (TASK-694,
+  TASK-695; the BOM on line 1 hid the second from my count) · gate re-run myself: FAIL (9), same as his.
+  **Sizes:** board 140,155 → 60,050 B · inboxes PM 1,042,192 → 507 · SA 772,858 → 507 · BE 191,897 → 506 ·
+  QA 139,549 → 506 · FE 76,958 → 505 · SA-B 60,578 → 218 · FE-B 16,067 → 217 · BE-B 11,248 → 215 · RELAY
+  3,043 → 457 (header 1–4 kept, BOM kept, 21 stale doorbells drained **unrung**) · RESUME-HERE 8,172 → 4,685.
+  **"All messages processed":** a strong claim across ~1,000 messages, so I **spot-checked the newest** — the
+  most likely to be live — in every inbox. Every thread closes on the record (GO → done → verified → Tanya
+  PASS); the one open-looking item, Porter's *"does anything need changing now?"* to Silver, was answered
+  the same day: *"NOTHING to change"*. Stated as a spot-check of the newest, not proof for all of them; the
+  archives are verbatim either way.
+  ⚖️ **One judgement of Porter's, reported not reversed:** 20 long-cell rows had **no TASK file**, so he
+  created `tasks/TASK-<n>-board-record.md` for each — clearly titled *"board record (no TASK file existed;
+  created by Porter for Marie ORDER 51)"*, no duplicate of any real TASK. Honest and findable, but they are
+  new files in the **SA's** folder; an archive file would have kept ownership cleaner. **My brief did not
+  cover "no TASK file exists" — the gap is mine.**
+  ⚠️ **Tool defect stands:** `drain-inbox.mjs` printed `header = lines 1-0` for `RELAY.md` on my run (BOM on
+  line 1). Porter's report says it read 1–4 on his; the outcome is correct either way because he drained only
+  5–25 as told. The fix is a harness change → Atlas.
+
+
+- 2026-11-01 02:3x — ⏳ **ORDER 51 IN FLIGHT (smart-scheduler housekeeping) — step 1 already PROVEN.**
+  **Before:** gate `FAIL (28)` — board 136.9 KB / 115 closed rows / 44 long cells in 42 rows; **nine**
+  inboxes over cap (not just the two the order named: PM 1 MB, SA 755 KB, BE 187 KB, QA 136 KB, FE 75 KB,
+  SA-B 59 KB, FE-B 16 KB, BE-B 11 KB, RELAY 3 KB); boot reads 0.2–1.2 MB. Full output kept in my scratch.
+  **Quiet at 02:27:** no writes for 30 min, newest log 10-27. Fingerprinted all 11 files (md5 + bytes).
+  **Brief:** `REQUEST-marie-to-porter-2026-11-01-smart-scheduler-housekeeping.md` (root) — pointer in
+  `inbox/PM.md`, one bell (queued: "turn in progress").
+  🔎 **Signals disagreed and I found out why:** `PM - Porter` showed **busy** while files were quiet.
+  Cause: his `watch-inbox.sh PM RELAY` watcher fired on **my own append** and woke him — he had already
+  archived `inbox/PM.md` at 02:30, before my bell. *Busy was this order, not other work.*
+  ⚠️ **A trap I set and caught:** my pointer append changed `PM.md`, so my 02:27 fingerprint for it went
+  stale — and the brief says *stop on any mismatch*. I re-fingerprinted after the append and corrected the
+  table; his archive matches the **corrected** value, so no false stop.
+  ✅ **All 11 archives verified against MY fingerprints: 11 / 11 MATCH**, before any compaction.
+  🔴 **Two findings in the brief:** (1) **one board row still sits above `# Board`** — the write-path defect,
+  live; (2) **`drain-inbox.mjs` mis-reads `RELAY.md`'s header** — the file starts with a BOM, so the tool's
+  `/^#\s/` fails and it prints `header = lines 1-0`, offering the 4 rule lines as deletable messages. Porter
+  told never to drain 1–4. **The tool fix is a harness change → Atlas's.** RELAY also holds **21 doorbells
+  from 10-25 never rung** — told not to ring them (the work finished a week ago).
+  ℹ️ `FAILURES.md` changed at 02:27 — not Porter's to touch and not mine; consistent with Atlas reviewing
+  the 9 entries as he said. Noted, not judged.
+
+- 2026-11-01 02:5x — ✅ **corner-chat-app pass CLOSED, verified.** Porter's last sweep checked myself:
+  **0** two-repo lines left in any rule or working file on the desk (`SYSTEM-FACTS.md` excluded — dated
+  records); `SYSTEM-FACTS.md` **0 lines removed** (append-only held), Atlas's decision appended under the
+  old "not yet set" line, which stays as the record; gate **PASS**.
+  **Totals:** 11 listed edits + TEAMS L14 + 3 more rule lines (PROTOCOL L61, L445, TEAMS L10) + 3 in
+  Porter's own files (board L20, RESUME-HERE L40, SYSTEM-FACTS append). **Three round trips to Porter where
+  one would have done** — see the 02:4x entry for why. Boundary lines PROTOCOL L368 / L435 untouched.
+  **Both ORDER 50 and the corner-chat-app request are now done** → one report to Atlas.
+
+- 2026-11-01 02:4x — **corner-chat-app: TEAMS L14 verified; a whole-desk sweep found 6 more stale
+  two-repo lines — the sweep I should have run BEFORE writing the checklist.** `TEAMS.md` diff = L14 + L39
+  only. Then `grep` across every `.md` in `ai-worker/` (not just the four files I had listed):
+  **mine** (Atlas-approved scope) `PROTOCOL.md` L61 "The two repos meet", L445 "both repos", `TEAMS.md` L10
+  "sharing BOTH repos" · **Porter's own** `board.md` L20 (says the app's writer "is not yet in
+  PROTOCOL.md" — now false), `RESUME-HERE.md` L40, and `SYSTEM-FACTS.md` L136 still calling the writer
+  undecided → **append** Atlas's decision (append-only; the older dated two-repo lines stay as records).
+  One inbox message (4 lines) + one bell (queued, mid-turn).
+  📌 **Lesson, for my own procedure:** I built the checklist from the files Porter named, then searched
+  each for one phrase. **Two round trips** came from that. *When a fact changes ("two repos" → "three"),
+  grep the whole desk for every way of saying the old fact BEFORE writing the edit list — one pass, not three.*
+
+- 2026-11-01 02:3x — **corner-chat-app pass: Porter's 11 edits VERIFIED; one line I missed sent back.**
+  Checked myself: placeholders FE 0 / BE 0; `git diff` shows exactly the listed lines (BE 2, FE 2,
+  PROTOCOL 5 + the new repo row, TEAMS 1); boundary lines L368 / L435 untouched.
+  ⚠️ **My first verification under-counted PROTOCOL** — my `grep '^[-+][^-+]'` hid the two changed
+  **bullet** lines, because a diffed markdown bullet starts with `--`. Re-checked directly: both present.
+  *A filter that hides exactly the shape you changed reads as a missing edit; the stat (5 lines) is what
+  disagreed and gave it away.*
+  **Miss of mine, now fixed through the PM:** `TEAMS.md` L13–14 header still said both teams work in
+  `corner-chat-back` and `corner-chat-front`. Porter's original request **named that header**; I searched
+  only for "both repos" and so left it out of the checklist. One-line inbox fix + one bell (queued, mid-turn).
+  Report to Atlas after Porter confirms it.
+
+- 2026-11-01 02:2x — **ORDER 50 step 3 COMPLETE (as far as reachable) · corner-chat-app pass DELIVERED.**
+  **corner-chat row: verified myself** — exact text, one row, `git diff` 1 line. ⇒ step 3 final:
+  i-space ✅ · smart-scheduler ✅ · corner-chat ✅ (all verified) · smart-scheduler-atom delivered, not
+  nudged (Atom's box) · buddy-screen closed (PM not running) · 5 desks n/a.
+  **Atlas answered the corner-chat-app request** (under "Atlas's answer" in
+  `REQUEST-marie-to-atlas-2026-11-01-corner-chat-app.md`): FE owns `corner-chat-front` + `corner-chat-app`,
+  BE owns `corner-chat-back` only; my three steps approved as one pass.
+  **The pass, as 11 exact edits** with line numbers, written under § "The pass" in that file (brief in the
+  file, a 3-line pointer in Porter's inbox, one bell — **delivered, turn started**).
+  🔴 **One judgement, stated:** PROTOCOL L368 and L434 list Discord and Teams as **real systems the team may
+  only read, or change on the owner's go**. Porter flagged them as stale product text; they are a
+  **boundary**. "First round = Zimbra + LINE" is already in `SYSTEM-FACTS.md`. Deleting names from a
+  protective list narrows it, so **those two lines stay as written** — told Porter, reporting to Atlas.
+  (Also caught and fixed in my own checklist: a backslash-escaped row Porter would have copied literally.)
+  Report to Atlas waits for Porter's "pass done", so it is one bell.
+
+- 2026-11-01 02:15 — **corner-chat: ORDER 50 step 3 delivered, and Porter's corner-chat-app request
+  forwarded to Atlas.** Porter messaged me directly, on the owner's recorded word *"ไปคุยกับmarie ก่อน"*
+  (`corner-chat/ai-worker/log/2026-11-01.md` [02:15]) — so not a routing violation this time.
+  **Quiet, checked rather than taken from him:** the 02:14–02:15 writes are his own hand-off to me (log,
+  board, RESUME-HERE, SYSTEM-FACTS); the owner paused the requirement talk; his ball line reads "Marie".
+  ⇒ ORDER 50 step 3 line appended to `inbox/PM.md` (with `>>` as its own command — the hook refuses it
+  chained), read back, 4 lines.
+  **His request — every claim verified:** `corner-chat-app` on disk + its `machine.local.md` row;
+  `PROTOCOL.md` never names it; `TEAMS.md` "both repos"; Discord / Web Chat still in `PROTOCOL.md` (3);
+  🔴 **`FE.md` and `BE.md` each still carry 2 template placeholders — MY miss from ORDER 48**, not the team's.
+  **Not acted on, forwarded:** *who writes in `corner-chat-app`* is undecided by anyone, and filling `FE.md`
+  ("owns one repo and nothing else") **is** that decision. → `REQUEST-marie-to-atlas-2026-11-01-corner-chat-app.md`,
+  proposing one pass afterwards (placeholders + tables + product lines aligned to SYSTEM-FACTS).
+  Reply to Porter in his inbox (4 lines). **Bells:** Porter-corner-chat — queued (mid-turn); Atlas — by name
+  unreachable (not running), by session id `local_fa926441…` **delivered, turn started**.
+
+- 2026-11-01 01:47 — **ORDER 50 step 3: i-space and smart-scheduler VERIFIED DONE; corner-chat still
+  busy.** Both PMs made the edit and deleted my inbox line. Checked with my own commands, not from a
+  report: the row matches the order's text **exactly** (fixed-string match), one row each, and
+  `git diff` on each `PM.md` shows **only that line** — i-space 1 replaced, smart-scheduler 1 added.
+  corner-chat: `Porter (PM)` logged again at **01:46** → still not quiet, no line written.
+  Open now: **corner-chat** (waiting for quiet) · **smart-scheduler-atom** (line delivered, not nudged,
+  picks up on Atom's box). buddy-screen closed earlier.
+
+- 2026-11-01 01:4x — **ORDER 50 step 3, after Atlas's answers.** My report was resent on the owner's
+  request and **Atlas received it and answered** (cross-session, 2026-11-01): (1) smart-scheduler and
+  smart-scheduler-atom **get the row** — the owner's moments apply to every PM; inbox + nudge when quiet,
+  but **atom: inbox line only, no nudge** (live on Atom's box); (2) buddy-screen: **do not open a
+  session** — off the active list; mark *delivered, PM not running* and close. corner-chat stays pending.
+  **Done, per desk:**
+  - **smart-scheduler** — quiet (last log 10-27). Row instruction appended to `inbox/PM.md` with `>>`
+    (desk rule), read back, 4 lines, my line not flagged by the gate. Nudged `PM - Porter` (group `SOM` —
+    its siblings are exactly this desk's two-team roster; the only match): **delivered, turn started.**
+  - **smart-scheduler-atom** — same line appended, read back, gate PASS. **Not nudged**, per Atlas.
+  - **buddy-screen** — ✅ **CLOSED: delivered, PM not running.** Line waits for its next PM session.
+  - **i-space** — delivered; nudge never confirmed. Waits for pickup.
+  - **corner-chat** — ⏸️ **still PENDING**: `Porter (PM)` logged again at 01:38. No line written.
+  ⚠️ **Finding for Atlas, outside ORDER 50, not acted on:** smart-scheduler's `inbox/PM.md` is
+  **1017.8 KB with 474 messages over 5 lines** (longest 97), and its PM boot read is **1.2 MB** — while the
+  desk's newest log is 10-27. My 4-line instruction is the last thing in a megabyte, and waking that PM to
+  change one table row costs a full 1.2 MB boot. The drain is housekeeping and needs an order.
+
+- 2026-11-01 — **ORDER 50: steps 1–2 DONE (harness 2.6.7 on all 10 desks, all current). Step 3 is
+  2 delivered + 1 pending-busy + 2 questions for Atlas + 5 not applicable.** Owner's go via Atlas.
+  No subagent, no owner question. ORDER 49 had already finished (2.6.6), so this went 2.6.6 → 2.6.7.
+  **Steps 1–2.** `install.mjs` × 10, all exit 0, **no refusals** — no desk had edited its own
+  `team-brainstorm.md`. Each backed up the old copy (`archive/team-brainstorm.md.before-2.6.7.2026-11-01`,
+  present on all 10) and installed the new one. Verified per desk: the new file is **byte-identical to the
+  template** and carries the section "The owner's three MUST moments". `check-harness`: "10 desk(s), all
+  current", exit 0. Git before/after: the new lines are `.harness`, `team-brainstorm.md` and the backup on
+  each desk — **plus three files I did not write**, `portfolio-nichaphon` `board.md` / `inbox/FE.md` /
+  `inbox/SA.md`, timestamped 01:30:23–26 and matching that desk's log entry `## [01:30] Fern (FE, Team A)`.
+  ⚠️ **So the install landed on that desk while Fern was working.** It replaced only a reference doc and
+  `.harness`, the order's step 1 has no quiet condition, and no dispatcher run was involved — but it is
+  stated, not smoothed over.
+  **Step 3 — the PM row, only on quiet desks. "Quiet" = no write under `ai-worker/` by anyone but me in
+  30 min, AND the PM session not busy.**
+  - ✅ **i-space** — quiet; current row is the generic one. Instruction written to `inbox/PM.md` (4 lines,
+    gate PASS, read back). Nudged `Porter-ISP` (`local_71e6e9b5…`, title + group `ispace`, the only match)
+    — **NOT CONFIRMED**: "no sign of starting within 20s … can still pick it up later". Not re-rung.
+    (Signals disagreed for a moment — ListAgents said busy, list_sessions seconds later said not running;
+    I rang only after the second reading.)
+  - ✅ **buddy-screen** — quiet (last log 10-28); instruction written to `inbox/PM.md`, read back, gate
+    PASS. 🔴 **Its PM has no session on this machine at all** — roster names `Porter-BUD`; no such row in
+    `list_sessions`, **archived included**. Unreachable by both routes. Work is in the inbox and will be
+    read first when a session opens. **For Atlas: that session has to be opened.**
+  - ⏸️ **corner-chat — PENDING, not quiet.** `Porter (PM)` logged at 01:22 (nine minutes before my check);
+    the desk opened today. Row still carries the old text. **No inbox line written** — re-run when quiet.
+  - ❓ **smart-scheduler and smart-scheduler-atom — question for Atlas.** Both PM charters have a
+    `## Skills` table but **no `team-brainstorm.md` row**, and the word does not appear anywhere in either
+    `PM.md`. The order says the row "should read" new text, which assumes a row exists; **adding one gives
+    the busiest desk's PM a new standing duty**, which the order does not settle. **Not done. Add a row, or
+    not applicable?**
+  - — **Not applicable (no `## Skills` table in `PM.md`):** develyst-ai, dte, portfolio-nichaphon,
+    possibility, pun-kub-fang.
+  **Why the literal replacement is lossless** (checked before I wrote it): the old cell's trigger
+  (*"…becoming a REQ, an AC or a ruling"*) is moment 1 of the "five other moments" the new text points to,
+  and its bold warning *"you have no reviewer above you"* also lives in `team-brainstorm.md` itself.
+  ✅ **Editing method checked, not assumed.** A hook blocked a read-only Bash on an inbox path and said
+  inboxes are appended with `>>`; the desk's `PROTOCOL.md` § Editing files allows **the editor tool**
+  explicitly, which is what I used, and requires reading the lines back — done for both.
+  **Report:** to Atlas by `nudge-session` — 🔴 **HELD, THEN EXPIRED — NEVER DELIVERED.** Sent to
+  `Atlas - workspace`; his session held it (likely a permission-mode mismatch between our sessions), then
+  the hold expired unapproved. Nothing is waiting there. **Not resent** — while the modes differ a resend
+  is only held again. Same pattern as ORDER 49's bell,
+  which also never confirmed. **So this entry is the report:** Atlas reads `MARIE.md`, and both his open
+  questions above are written here.
 
 - 2026-11-01 — **ORDER 49 DONE: harness 2.6.6 on all 10 desks. `check-harness`: "10 desk(s), all
   current", exit 0. Only `.harness` changed — proven with git, not assumed.** Owner's go via Atlas

@@ -38,3 +38,8 @@ Undo over a CONFIRMED+marked make-up ⇒ family `makeup_cancelled_parent`, paylo
 The Undo putting the ORIGINAL class back on stays silent to the family (your note: new words, @Porter's call). Course END/PAUSE unchanged. No database touched.
 ▶️ **Ball: Sober — verify 704 → sid redeploy → @Tanya re-runs F1 + the trim on a non-Undo path.**
 
+
+
+## Board row, moved verbatim 2026-11-01 (Marie ORDER 51) — the board keeps one line + this pointer
+
+| TASK-704 | BE: **REQ-115 F1 — a make-up the family was told about is cancelled ⇒ the family is told, in the make-up's own approved words** (family sender reads `isMakeup`; the Undo tells the family) | TEST-084 F1 (Tanya) · Porter 10-07 | ✅ LIVE ON uat 2026-10-08 (back 6f7a40f · front f60d7e7) · sid gate PASSED (TEST-084/085/086) in ONE release (back 6f7a40f · front f60d7e7) · VERIFIED by Sober 2026-10-08 — tsc 0 · 4284/0 · unhandled 0 · 67=67 · set 5/5 · 702 re-run 24/24 · ▶️ owner commit → sid back redeploy → Tanya F1 + non-Undo trim · `tasks/TASK-704-cancelled-makeup-tells-the-family-be.md` | @Porter |

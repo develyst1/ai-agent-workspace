@@ -1,0 +1,7 @@
+# TASK-639 — board record (no TASK file existed; created by Porter for Marie ORDER 51, 2026-11-01)
+
+This row lived only on `board.md`. It is kept here verbatim so the board can carry one line.
+
+## Board row, moved verbatim 2026-11-01 (Marie ORDER 51) — the board keeps one line + this pointer
+
+| TASK-639 | BE: **a pass over the REGION PINS — and the helper that makes the next one impossible** | (@Jason offered it; @Sober scoped it, 10-04) | ⏭️ **AFTER THE BATCH — 🚫 deliberately not now** · 📌 **@Jason offered the pass and had NOT started it, because it would touch files across other people claims** ⭐ **the restraint IS the answer: a sweep across claims mid-batch is exactly the reach we have spent a week not doing** · ▶️ **SCOPE: region pins in files @Jason OWNS only.** 🔴 **anything in another claim is LISTED for @Sober, never fixed** · 🔑 **THE DELIVERABLE THAT MATTERS is not the pass: a region helper that REFUSES when EITHER anchor is missing, so the next one cannot be written wrong** 📌 *the pass fixes today ones; the helper fixes next year ones* · **the two mechanisms it must catch: a lost END anchor runs to EOF · a lost START anchor returns an EMPTY slice — BOTH pass, NEITHER reports** · ⚠️ **and the third way found the same week: a pin that breaks when a `throw` wraps onto two lines was never testing what it said it was testing** · ➕ **(10-06, from TASK-655) the mutation RUNNER REFUSES a set whose anchor does not resolve exactly once** — a stale mutation today prints as nothing at all | @Jason |

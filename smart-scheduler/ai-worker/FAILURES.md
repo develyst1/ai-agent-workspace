@@ -73,7 +73,7 @@ where the owner sees them. When he is ready he opens Atlas with
 <!-- newest entry goes directly below this line -->
 
 ## F-031 — 2026-10-12 — SA Lead Team B (Silver) — Cleared my inbox by "cut everything after the header", deleting a message that arrived after I read it (Porter's PATH B note)
-- **Status:** NEW
+- **Status:** FIXED 2026-11-01 — queues are drained only with drain-inbox.mjs (deletes only what was read), enforced by its hook.
 - **What happened:**
   - To "delete processed messages" I truncated `inbox/SA-B.md` at its first entry header, as a final step of a long write script.
   - Porter's "PATH B" entry landed **between my read and that write**, so it was deleted unread. I noticed only because his nudge pointed at it.
@@ -85,7 +85,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `log/2026-10-12.md:53-54`; this session's scripts.
 
 ## F-030 — 2026-10-11 — BE-B (Bob) — Edited files outside the approved list, then reported — twice in TASK-727
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-01 — the rule exists (role-be: closed file list; ask before stepping outside). Twice in one TASK, then reported; no new design.
 - **What happened:** In TASK-727 I edited about twenty old-text test pins outside my three-file claim and then reported them. After the SA Lead restated the rule I did it again in round 2: two more test files (`line-notices-both-names-req095-13`, `one-door-rules-task314`) and two count lines (`deduction-remark-req087`, `note-guard-depth`) were edited first and listed afterwards. The correct order was to run the suite, list the files that must change, ask, and only then edit.
 - **Rule involved:** the standing practice "run → list → ask → THEN edit" for any file outside the claim (SA Lead, 2026-10-07; restated in the TASK-727 review). Fair context: round 1 had an ambiguous claim ("+ tests" in the TASK was Silver's wording), so that part is shared; round 2 came after the rule was restated and is mine alone.
 - **How it was caught:** by the SA Lead's review (Silver), after the edits were already on disk and reported.
@@ -93,7 +93,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `tasks/TASK-727-khwan-workbook-line-wording-be.md` (review rounds 1 and 2); `inbox/BE-B.md` and `inbox/SA-B.md` 2026-10-11; `log/2026-10-11.md`.
 
 ## F-029 — 2026-10-11 — PM (Porter) — Reported a security hole to the owner from a 2-month-old fact, without opening the code
-- **Status:** NEW
+- **Status:** FIXED 2026-11-01 — verify-before-relay.md: a fact relayed to the owner is re-opened at its source first, never repeated from an old record.
 - **What happened:** I saw `LINE_ADMIN_VERIFY_CODE ?? "<fallback>"` in `SYSTEM-FACTS.md:214` (written 2026-08-20). I told the owner there was a hard-coded fallback admin code, made it a TASK-725 acceptance item, and redacted the file. **The fallback was removed by TASK-534.** Today's `line-admin-code.ts` has NO default and also refuses every value that was ever published. Silver found it by reading the source.
 - **Rule involved:** my own memory rule "verify config before alarm" and F-002 (relaying unverified facts). One `grep` of the source would have settled it.
 - **How it was caught:** by Silver, the same hour.
@@ -101,7 +101,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `inbox/PM.md` (Silver 2026-10-11) · `SYSTEM-FACTS.md:214` (corrected) · `log/2026-10-11.md`.
 
 ## F-028 — 2026-10-08 — PM (Porter) — Gave the owner the uat migration steps without the deploy note's BEFORE count (§2a)
-- **Status:** NEW
+- **Status:** FIXED 2026-11-01 — role-pm §3: a deploy or migration instruction carries every BEFORE check its deploy note names.
 - **What happened:** `DEPLOY-uat-2026-10-09.md` §2a asked the owner for two reads before migrating: the `ขยาย` step-0 read, and a BEFORE count of make-up rows (≈ 461), with §2b's AFTER count to match. I wrote my own short list for the owner and carried only step 0. So the BEFORE count was never taken, and it cannot be taken now.
 - **Rule involved:** the deploy note's own header: "Read it in order; the order is the instruction." It is also F-004's pattern: an incomplete instruction to the owner.
 - **How it was caught:** by Tanya, after the release. Her uat pass listed "the BEFORE vs AFTER marker count is the owner's SQL" as not hers. Only then did I re-read §2a.
@@ -167,7 +167,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `COPY-REVIEW-2026-09-29.md:564`.
 
 ## F-020 — 2026-10-06 — PM (Porter) — Sent the owner SQL wrapped in a psql/bash command instead of bare SQL
-- **Status:** NEW
+- **Status:** FIXED 2026-11-01 — role-pm §3 now says SQL for the operator is bare SQL, never wrapped in psql or bash (it had lived only in machine memory).
 - **What happened:** The owner pastes SQL into his own tool. I sent it wrapped in a shell command, more than once.
 - **Rule involved:** `NONE` in the repo at the time. It had been the established practice ("you used to send just the SQL").
 - **How it was caught:** by the owner — *"หยุดส่ง เป็นคำสั่งมาได้แล้ว … เคยส่งมาเป็น แค่ sql นี้"*.
@@ -175,7 +175,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** 🔴 **not logged at the time** (that gap is part of F-027). The rule now lives in machine-local memory only, so it should be promoted to `PM.md`.
 
 ## F-019 — 2026-10-06 — PM (Porter) — Deleted 331 of 335 lines of board.md with an awk rewrite whose end pattern never matched
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-01 — the rule exists (PROTOCOL § Editing files: Edit tool only). The mechanical guard against a shell rewrite of an ai-worker file (ORDER 17.4) is still waiting for the owner.
 - **What happened:** To replace the deadline banner I ran `awk '/start/{skip=1} skip && /^## TASK number blocks/{skip=0} !skip' board.md > tmp && mv tmp board.md`. The end pattern never matched, so `skip` stayed on to the end of the file. The top of the file looked perfect because it WAS perfect.
 - **Rule involved:** `NONE — no rule covered it`. Adopted since: no delete-to-end-of-file construct on a repo file, ever; read first, then one exact find-and-replace; verify by `wc -l` before and after.
 - **How it was caught:** by myself, by count.
@@ -270,7 +270,7 @@ where the owner sees them. When he is ready he opens Atlas with
 
 
 ## F-010 — 2026-10-05 — SA Lead Team B (Silver) — A TASK told the engineer to edit a file I had left off its claim list
-- **Status:** NEW
+- **Status:** FIXED 2026-11-01 — check-by-running-not-reading.md covers a claim list built by reading (Atlas decision ORDER 17).
 - **What happened:**
   - TASK-663 said "pass it through the route" (`GET /students` in `back/src/routes/api.ts`). Its claim line listed only `validation.ts` + `parent.service.ts` + tests.
   - The engineer (Bob) had to edit `api.ts`, plus two existing source pins that read that route line, to do what the TASK asked. Every file outside the claim had to be granted after the fact.
@@ -284,7 +284,7 @@ where the owner sees them. When he is ready he opens Atlas with
 
 
 ## F-009 — 2026-10-04 — SA Lead Team B (Silver) — A message of mine to Porter carried the wrong TASK number (629 for 623)
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-01 — a one-off transcription slip with no pattern; no rule (Atlas decision ORDER 17).
 - **What happened:**
   - My 10-03 line in `inbox/PM.md` ("GO taken. TASK-6xx (Bob, XS script) is cut and BLOCKED…") reads `TASK-629`. Bob's task is `TASK-623`, and `TASK-629` is Team A's item E back half.
   - **CERTAIN:** my own log entry of the same session (`log/2026-10-03.md`, "TASK-623 cut BLOCKED"), the task file and the board row all say 623.
@@ -330,7 +330,7 @@ where the owner sees them. When he is ready he opens Atlas with
 - **Evidence:** `REPORT-porter-pm-failures-2026-09-28.md` §1.E; `log/2026-09-24.md`, `log/2026-09-26.md`.
 
 ## F-004 — 2026-09-25 — PM (Porter) — Gave the owner an incomplete instruction and he ran the wrong thing
-- **Status:** NEW
+- **Status:** FIXED 2026-11-01 — role-pm §3: every instruction carries the exact command, the expected output and what output means stop (Atlas decision ORDER 17, status applied now).
 - **What happened:** I told the owner to copy the extender `.ps1` to the server and "dry-run" it, without giving the dry-run command. The script applies by default, so he ran the apply — *"จริงๆ ฉันมีเผลอรันตัวนี้ไปก่อน นายบอก เพราะนายบอกไม่ครบแต่แรก"*. There was no harm only because of a separate bug: the plan came out empty. I also said "set it up in Task Scheduler" with no command — *"บอกกูตั้ง มึงก็ส่งคำสั่งมาอีกทีก่อนสิ"* — and relayed "expect 57 = 57" for a runbook step where a pre-migrate verify legitimately shows a red "would apply" line, so he saw red and had to stop and wait for me.
 - **Rule involved:** `NONE — no rule covered it`. No rule required the exact command, the expected output and the abort-worthy output to travel in the same message.
 - **How it was caught:** By the owner — after he had already run the wrong command. The Task Scheduler and runbook instances surfaced when he came back to ask.

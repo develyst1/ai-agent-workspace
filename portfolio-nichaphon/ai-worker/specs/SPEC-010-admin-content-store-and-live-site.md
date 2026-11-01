@@ -50,13 +50,24 @@ and testable locally (REQ-010 Q2 says exactly this); the stale-site pain on prod
   content route gets `export const dynamic = 'force-dynamic'` so `next build` never needs `back/` running. Components receive
   content **as props** from their page; no component imports `constant/content/*` any more. `back/` unreachable at request time
   → the page renders a short "content is unavailable" state, never a crash, never stale constants (a second source of truth is
-  how the site went stale).
+  how the site went stale). *Amended 2026-11-01 (TASK-033 FQ55c):* unreachable **with nothing cached** → that state; with a
+  cached answer (Next's data cache keeps the last good response while revalidation fails) → that answer until `back/` returns.
+  *Amended 2026-11-01 (TASK-036 FQ59):* the single-post read (`getPost`) is **uncached** (`no-store`) so a deleted or unpublished
+  post is a 404 at once; lists and documents keep the 60 s cache.
+  *Amended again 2026-11-01 (TASK-036 rework 1 → TASK-040):* `revalidate: 60` is stale-while-revalidate — the first visit after the
+  window still gets the old copy, so R4's "within one minute" was never guaranteed (measured 67 s). **Every read is now `no-store`**:
+  a Save shows on the next visit; with `back/` down the unavailable state shows at once (reverses FQ55c — the honest trade for R4).
 - **D5 — The write side does not exist on the public build.** `back/src/admin/` registers `/admin/api/*` **only when
   `ADMIN_ENABLED=1`** at startup; every admin route goes through one guard `requireAdmin(c)` which today allows only a loopback
   remote address (`127.0.0.1` / `::1`) and refuses everything else with 403 — **the single point Q2's login replaces**. The
   admin UI is a separate Next.js app `admin/` (Mantine, dev server on 4015, imports the front's theme via a path alias the way
   `back/` imports front types) that is never part of `front/`'s build. → AC-f has two independent locks, both checkable by grep
   and by a probe.
+  **Amended 2026-11-01 (TASK-034 review — my defect):** loopback alone is not a lock. Proven on a scratch store: a cross-site
+  `text/plain` POST from `Origin: http://evil.test` published a post (CSRF); `Host: evil.test` (DNS rebinding) and
+  `X-Forwarded-For` (a reverse proxy on the same host) both passed. `requireAdmin` now checks, in order: no proxy headers
+  (`Forwarded`/`X-Forwarded-For`/`X-Real-IP`) · loopback socket · `Host` is `localhost`/`127.0.0.1`/`[::1]` · for writes, `Origin`
+  absent or exactly `ADMIN_ORIGIN` · JSON routes require `application/json`, media requires `multipart/form-data` (415 otherwise).
 - **D6 — Blog posts.** Table `posts` (§Data Model) carries every `BlogPost` field shown today (`author`, `readTime` included)
   plus `body_md`, `cover_media`, `status`. Body is Markdown, rendered on the new page `front/src/app/blog/[slug]/page.tsx`
   with `react-markdown` (raw HTML **off**, its default) — the one new front dependency. Categories are derived from published
@@ -100,7 +111,7 @@ form labels/validation text — default of SQ44a.
 | `GET /content` | public | → `200 { etag, documents: { <key>: <json> } }` |
 | `GET /content/posts` | public | → `200 { posts: BlogPost[] }` — exactly today's `BlogPost` fields (`id`, `title`, `excerpt`, `author`, `publishedAt`, `readTime`, `category`, `slug`) + `cover` (null today); published only, newest `publishedAt` first |
 | `GET /content/posts/:slug` | public | → `200 { post: BlogPost & { cover, bodyMd } }` · unknown/draft → `404 { error: "not_found" }` |
-| `GET /media/:file` | public | → file bytes with its mime; unknown → 404 |
+| `GET /media/:file` | public | → file bytes with its mime; unknown → 404. **The browser reaches it through the front** (added 2026-11-01, TASK-036 FQ56 — my gap): `front/src/app/media/[file]/route.ts` proxies to `${CONTENT_API_URL}/media/<file>` at request time (not a build-time rewrite), same name rule, `back/` down → 502 |
 | `/admin/api/*` | **only if `ADMIN_ENABLED=1`; loopback only** | stage 2 (TASK-034+): `GET/PUT /admin/api/documents/:key`, posts CRUD, `POST /admin/api/media` (jpg/png/webp ≤ 5 MB), `POST /admin/api/draft`. Non-loopback → `403 { error: "admin_local_only" }`; flag off → route absent → 404 |
 
 Field casing in JSON = the TypeScript interfaces exactly (camelCase as today, e.g. `techStack`).
@@ -124,17 +135,30 @@ Stage 2a — the back-end contracts, **cut 2026-11-01** at TASK-032 `DONE`:
 - **TASK-034**: `back/` admin write API — flag + loopback guard, validators, posts CRUD, picture upload, CORS for the admin origin (depends on: TASK-032)
 - **TASK-038**: the Home AI reads the store and refreshes on Save (depends on: TASK-034's `onSaved`)
 
-Stage 2b — **cut when TASK-034 is `DONE`** (restaged 2026-11-01: the admin UI is built on the *write* contract, so it waits for
-that contract to be proven, the same reason stage 2 waited for the seed): TASK-035 `admin/` app shell + document editors ·
-TASK-036 posts + pictures in the admin · TASK-037 AI draft (`back/` route + admin button) · TASK-039 ledgered real-gateway checks (AC-d, AC-e).
-Engineer order (one engineer): 033 → 034 → 038 → stage 2b.
+TASK-033 **DONE** · TASK-034 **DONE 2026-11-01** after one REWORK (guard hardening — my contract's defect, D5 amended).
+
+Stage 2b — **cut 2026-11-01** at TASK-034 `DONE`:
+- **TASK-035**: `admin/` app — local-only shell (`next dev -H 127.0.0.1 -p 4015`) + one field-map-driven editor per document (depends on: TASK-034)
+- **TASK-036**: posts (draft/publish/delete, Markdown preview) + pictures (upload, picker) (depends on: TASK-035)
+- **TASK-037**: AI draft route + "Draft with AI" button, never saves; **one** ledgered real call (depends on: TASK-035/036)
+- ~~TASK-039~~ folded away: TASK-037 carries the one engineer real call; AC-d/AC-e real proofs are QA's round on this ledger.
+- **TASK-040** (added 2026-11-01): all front reads `no-store` — R4 guaranteed (depends on: TASK-036)
+Engineer order (one engineer): **038 → 035 → 036 → 037 → 040**, then REQ-010 `SPEC_DONE` → Porter → QA.
 
 AC map: AC-a → TASK-032 (data) + QA · AC-b → TASK-033/034/035 + QA · AC-c → TASK-033/036 + QA · AC-d → TASK-037/039 + QA ·
 AC-e → TASK-038/039 + QA · AC-f → D5 (TASK-034) + QA probe · AC-g → TASK-033 + QA REGRESSION.
 
-## Call ledger — REQ-010 (none opened yet)
+## Call ledger — REQ-010 (budget **15**, `[SA-decided]` — REQ-010 AC-d/e: "inside a call ledger the SA writes first"; his money, → SQ48)
 
-Stage 1 makes **zero** real calls. The ledger opens with TASK-037/039; its size goes to the owner via Porter then.
+Counted per call; a row is written **before** any fire; only Sober writes here.
+
+| # | Date | Who | Request | Result | Running total |
+|---|------|-----|---------|--------|---------------|
+| — | 2026-11-01 | Sober | **Budget 15. Allocation: TASK-037 rows 1–2 (planned 1, cap 2) · QA round cap 13 (AC-d one or two drafts; AC-e one Home AI question after adding a project, 3–5 calls; plus a Home AI regression question), row written on Porter's ask.** Stages 1–2a fired nothing. | — | 0 / 15 |
+| 1–2 | 2026-11-01 | Fern (TASK-037 step 5) — written BEFORE any fire | ONE "Draft with AI" on `projects[].summary`, the Thai note in TASK-037 verbatim, `back/` on defaults; planned 1, cap 2 (2 only if the first is a technical failure); "Use this" NOT pressed | PENDING | 0 / 15 |
+
+**SQ48 (to Porter → owner, FYI, non-blocking) — REQ-010 budget.** 15 real calls `[SA-decided]`: 1–2 for the engineer's one draft,
+up to 13 for Tanya's AC-d/AC-e round. A different number, or drawing from REQ-009's 11 unallocated, is one line.
 
 ## Questions
 
@@ -164,4 +188,14 @@ local-only while Q2 is open (R1). So the live site stays as it is today until Q2
 must live on a disk that survives redeploys and be backed up — it is now his content; (b) the front server must reach `back/`
 server-side (`CONTENT_API_URL`); (c) `next build` no longer needs content at build time — pages render on request with a 60 s cache;
 (d) added 2026-11-01 (TASK-032 call 9): the compiled `back/` binary (`bun run build`) resolves `front/public` from its own location,
-so on a server the seeded pictures are found only if that folder sits beside it — to be designed with Q2/deploy, not now.
+so on a server the seeded pictures are found only if that folder sits beside it — to be designed with Q2/deploy, not now;
+(e) `ADMIN_ENABLED=1` must never be set on a server until Q2 — the guard now refuses proxied requests, but the flag is the first lock.
+
+**SQ47 (to Porter → owner, non-blocking, default taken) — the new article page.** `/blog/<post>` shows the post title in the same
+large heading the other pages use; a 10-word title fills most of the first screen at desktop width (picture:
+`../project-docs/fe-task033-2026-11-01/blog-slug-1280.png`). Default: keep. If he wants a smaller article heading, one TASK.
+FYI in the same message: when `back/` cannot be reached and nothing is cached, pages say "Content is unavailable right now." (SA wording, a status line).
+
+**SQ49 (to Porter → owner, non-blocking, default taken) — blog post cover pictures.** The admin can attach a picture to a post (it is
+stored), but no REQ asked to show one, so the public `/blog` pages do **not** show covers (TASK-036 FQ57). Default: not shown. If he
+wants them: where (on the `/blog` cards, at the top of the post, or both) — then one TASK.

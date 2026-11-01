@@ -1,0 +1,2 @@
+{ "layer1": { "json": { "addressed": "yes", "meaning": "request", "summary": "ทดสอบชั้นที่ 2 ล่ม" } },
+  "layer2": { "http500": true } }

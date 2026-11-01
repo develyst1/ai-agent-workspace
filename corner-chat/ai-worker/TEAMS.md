@@ -7,11 +7,11 @@ Names are the operator's — filled from DESK-OPEN B1. A row with an empty name 
 > `BE.md`. **Your name, your team, your inbox and your ID prefix are here and nowhere else** —
 > every other file in this folder speaks of roles ("the PM", "the SA"), never of people.
 >
-> **Two engineer teams and two testers, sharing BOTH repos (MARIE.md ORDER 48, owner 2026-11-01:
+> **Two engineer teams and two testers, sharing all three repos (MARIE.md ORDER 48, owner 2026-11-01:
 > *"น่าจะต้องมีทีม engineer สองทีม เทสเตอร์สองคน"* · *"ทำไมจะทำrepo ด้วยกันไม่ได้ smart scheduler
 > ยังทำได้เลย TESTER tefany"*).** Same shape as smart-scheduler's `TEAMS.md`: Team A's inboxes have no
 > suffix, Team B's end in `-B`. The PM serves both teams; each team has its own tester. Both teams work
-> in `corner-chat-back` and `corner-chat-front`; **the PM claims a file area per team on the board
+> in `corner-chat-back`, `corner-chat-front` and `corner-chat-app`; **the PM claims a file area per team on the board
 > (`board.md` → `## Batch claims`) before either team starts** — never two teams in the same files.
 > One charter per role serves both teams: the SA reads `SA-Lead.md`, the BE `BE.md`, the FE `FE.md`,
 > the testers `QA.md`.
@@ -36,5 +36,5 @@ Names are the operator's — filled from DESK-OPEN B1. A row with an empty name 
 | Bob | BE · B | `@Bob` | `inbox/BE-B.md` | `Bob-CC` | — (works on `TASK-*`) |
 | Fanta | FE · B | `@Fanta` | `inbox/FE-B.md` | `Fanta-CC` | — (works on `TASK-*`) |
 
-Two teams (A, B), both in both repos. Desk short code **CC**. Filled 2026-11-01 by Marie from ORDER 48
+Two teams (A, B), both in all three repos. Desk short code **CC**. Filled 2026-11-01 by Marie from ORDER 48
 (owner to Atlas).
