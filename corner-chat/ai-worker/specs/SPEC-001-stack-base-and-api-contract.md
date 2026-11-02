@@ -22,7 +22,7 @@ D16). Builds are still shaped the owner's way (`deploy-ready-build` skill), so a
 | S5 | Zimbra password = **AES-256-GCM** with `SECRET_KEY` from `.env` (WebCrypto) | REQ-002 req 7 / D14; reversible because IMAP needs the plain password | — |
 | S6 | Mail: **`imapflow`** (IMAP), **`mailparser`** (MIME → text), **`nodemailer`** (SMTP) | the standard, maintained Node mail stack | hand-written IMAP: no |
 | S7 | Admin web = **Next.js 16 + React 19 + Ant Design v6** (`nextjs-antd-pattern` skill), `output: "standalone"` | the owner's house pattern | — |
-| S8 | Android app = **Flutter** (stable channel) + `firebase_messaging` | one code base gives iOS later ("Android ก่อน IOS ทีหลัง"); FE skills cover it | Kotlin: Android only · React Native: weaker push story |
+| S8 | ~~Android app = **Flutter** (stable channel) + `firebase_messaging`~~ **Overturned by the owner 2026-11-01** (*"ฉันไม่ชอบflutter ดิ เวลาเทสมันยากมั้ยวะ สมมุตจ ะทำสคริปเทส"*, DECISIONS D36): not Flutter; it must be easy to test with scripts. The app stack now belongs to **SPEC-003 (SA-B)**. The HTTP contract in §3 does not change, whatever the app is built in | — | (my miss: I weighed iOS reach and the push library, not how the owner and QA test — F-entry) |
 | S9 | Background work = **in-process loops** (`setInterval`) with state in Postgres (`mail_accounts.last_uid`, `mail_outbox`) | one local process; state in DB survives a restart (REQ-002 AC-2 "no duplicate after restart") | a job-queue library |
 | S10 | AI defaults: ~~layer 1 `deepseek` / `deepseek-v4-flash` · layer 2 `gemini` / `gemini-2.5-pro`~~ **changed 2026-11-01 (TASK-006 review):** layer 1 `deepseek` / `deepseek-flash` · layer 2 `deepseek` / `deepseek-v4-pro`, temperature 0. Why: the gateway's `GET /models` no longer lists `deepseek-v4-flash`, and `gemini-2.5-pro` answered with Google's free-tier daily quota exceeded. Probe on 3 made-up messages with the new pair: 100 / 0 / 95, all correct | a fast cheap model + a stronger one, as the owner described; **settings, replaced by the corpus run** (REQ-004 AC-6) | no provider ⇒ the gateway's fallback chain |
 
@@ -89,7 +89,9 @@ the token); every `/admin/*` route also answers 403 — so AC-2 holds even if th
 | `GET /admin/ai-models` | — | 200 the gateway's `GET /models` body passed through | 502 `GATEWAY_UNAVAILABLE` |
 
 `AiSettings = { "layer1": { "provider": string | null, "model": string | null }, "layer2": { "provider": string | null, "model": string | null } }`.
-`null` provider = let the gateway's fallback chain choose. The owner account is created at start-up from `.env`
+`null` provider = let the gateway's fallback chain choose. **Known behaviour (2026-11-01, TASK-009):** `PUT` validates
+**both** layers, so if the gateway drops a model that is saved for one layer, saving fails (400, that layer's field named)
+until that layer is re-picked. Intended: a saved model the gateway no longer serves must be visible, not kept silently. The owner account is created at start-up from `.env`
 (`OWNER_EMAIL`, `OWNER_PASSWORD`, `OWNER_NAME`) if no owner exists; it is never created through the API. `[SA-decided]`
 
 ### 3.4 Messages and decisions (REQ-004, REQ-005 screens) — Team A
@@ -108,7 +110,9 @@ MessageSummary = {
   "groupName": string | null,                            // line only
   "subject": string | null,                              // mail only
   "preview": string,                                     // first 2 non-empty lines of the text, ≤ 200 chars
-  "aboutLine": string | null,                            // REQ-004 req 4; null when no AI ran
+  "aboutLine": string | null,                            // REQ-004 req 4. AI decision: "[ch · group|sender] <summary>" ·
+                                                         // rule decision (DECISIONS 2026-11-01): "[ch · group|sender] ตรงกฎของคุณ: <kind label> <value>" ·
+                                                         // null only for ai_unavailable (consumers then show "AI ไม่ได้ตรวจ")
   "outcome": "notified" | "held",                        // after any user correction — decides the tab
   "decidedBy": "rule" | "ai" | "ai_unavailable" | "user",
   "score": number | null,                                // 0–100 whole number
@@ -176,6 +180,13 @@ The password is **never** returned. Host/ports from env (`ZIMBRA_IMAP_HOST`, `ZI
 `line_links` table (§5) so the app gets one call.
 
 ### 3.8 Devices (REQ-005 push) — Team A
+> **Not used by the app since 2026-11-01 (D41, no Firebase).** The app polls `GET /messages` every 30 s and shows the notification
+> itself (SPEC-003 D-B14). It never calls `/devices`. `[SA-decided 2026-11-01]`
+> - **Kept as is:** the endpoints and the FCM sender (TASK-007, DONE). They are off by construction: with `FCM_SERVICE_ACCOUNT_JSON`
+>   empty, `notify.ts:61` skips FCM and nothing is sent. The `devices` table stays empty.
+> - **Why kept:** removing them is a new TASK on tested code, and it changes nothing a user sees. Keeping them means a return to
+>   Firebase costs nothing.
+> - The LINE OA push is unaffected.
 | Method + path | Request | Response |
 |---|---|---|
 | `PUT /devices` | `{ "fcmToken": string, "platform": "android" }` | 204 (upsert; the token moves to this user if another had it) |
@@ -358,17 +369,27 @@ in To → `to`; in Cc → `cc`; a `List-Id` header, or `Precedence: list|bulk` �
 
 **Filter (Team A), for each `filter_state='pending'` message, in received order, at most 4 at a time:**
 1. Rules (no AI): match `sender` / `keyword` / `group`. Any match → decision `rule`; `always` beats `never`. Done.
-2. Layer 1 → gateway, model from `app_settings.ai.layer1`, temperature 0, `max_tokens` 300, JSON-only prompt
+2. Layer 1 → gateway, model from `app_settings.ai.layer1`, temperature 0, ~~`max_tokens` 300~~ **`max_tokens` 4096** (DEF-1,
+   see the note under step 5), JSON-only prompt
    (`src/filter/prompts/v1.ts`, `promptVersion` `"v1"`) returning
    `{ "addressed": "yes"|"no"|"unclear", "meaning": "request"|"question"|"info"|"ad"|"spam"|"chatter"|"other", "summary": "<Thai, ≤ 60 chars>" }`.
-3. Layer 2 → **always**, even if `meaning` is `spam` — model from `layer2`, temperature 0, `max_tokens` 300, input =
+3. Layer 2 → **always**, even if `meaning` is `spam` — model from `layer2`, temperature 0, ~~`max_tokens` 300~~ **4096**, input =
    raw text + layer-1 JSON + the user's `sentences` + `recipient_kind`, returning `{ "score": 0–100, "reason": "<Thai, ≤ 200 chars>" }`.
 4. `score >= bar` → `notified`, else `held`. `aboutLine` = `"[" + channelLabel + " · " + (groupName ?? senderName) + "] " + summary`,
-   cut to 80 characters (REQ-004 AC-10), `channelLabel` = `อีเมล` | `LINE`.
+   cut to 80 characters (REQ-004 AC-10), `channelLabel` = `อีเมล` | `LINE`. **Amended 2026-11-01 (PM wording, TEST-003):**
+   for mail, `senderName` = the display name, or the part before `@` when there is none · a line over 80 characters is cut at
+   the last **word boundary** (`Intl.Segmenter("th", { granularity: "word" })`) that leaves room for `…`, never mid-word.
 5. Gateway 500 / unparsable JSON / a `score` that is not a JSON integer 0–100 (never clamped) → **one retry** of that layer.
    **Timeout (20 s) or gateway unreachable → no retry** `[SA-decided 2026-11-01, TASK-006 Q2: a dead gateway must not delay
    the fail-open notification past REQ-005's 1 minute]`. Then, then decision `ai_unavailable`, outcome
    `notified`, reason `AI ไม่ได้ตรวจ` (D3). Every call logged in `ai_calls`.
+   **DEF-1 (TEST-003, 2026-11-01) — cause found by an SA probe on the real gateway:** the deepseek models spend hidden
+   *reasoning* tokens out of `max_tokens` before they write the JSON. At 300, H07 failed in **10 of 16** calls, and every failure
+   had `completion_tokens` = exactly 300 (7 empty, 3 cut-off JSON). At 1500: 0 of 16, but one call used 1268 tokens. Hence
+   **4096**, a per-call **timeout of 40 s** (was 20 s, because the longer answers take longer), and `ai_calls.completion_tokens`
+   logged (migration `202611010003_core_ai_calls_tokens.sql`: `ALTER TABLE ai_calls ADD COLUMN completion_tokens int;`,
+   null when the gateway gives no `usage`). Worst case with a hanging gateway: the fail-open notification comes after up to
+   2 × 40 s, inside REQ-005's 1 minute only for the typical case. Accepted for round 1; the timeouts are a setting.
 6. Write `decisions`, set `messages.outcome`, `filter_state='done'` in one transaction; then notify if `notified`.
 A disabled user's messages: not taken in at all (mail poller skips them; `ingestMessage` refuses — REQ-001 req 4).
 
@@ -389,6 +410,27 @@ A sent row is never sent twice: status moves `queued → sending` with `UPDATE �
 - `.env` git-ignored; `.env.example` committed with every key and no values (§9).
 - Performance: none required beyond REQ-002 "within 2 minutes" and REQ-005 "notification within 1 minute".
 - **`/security-review` by the SA before REQ-002 is `SPEC_DONE`** (auth, secrets, stored passwords) — D14.
+  **Widened 2026-11-01 (F-010):** one `/security-review` of the whole back end (auth, sessions, lockout, admin, FCM key, mail
+  password encryption, the LINE webhook seam) is a **gate before any of REQ-001 / REQ-002 / REQ-004 goes `SPEC_DONE`**. It
+  covers TASK-002 and TASK-007, which were set DONE without it. Findings become TASKs.
+  **Run 2026-11-01 (round 1, before REQ-001/REQ-004 SPEC_DONE): no finding at the bar** (>80 % exploitable).
+  - **Scope:** `corner-chat-back` `src/**`, `migrations/**`, `scripts/**`; read-only, by a review subagent.
+  - **Checked by the subagent:** per-user filtering on every `:id` route; `requireOwner` on `/admin/*`; created users are
+    `role 'user'` only; tagged SQL everywhere; token and link-code randomness; GCM IV per encryption; the LINE HMAC over
+    the raw body with `timingSafeEqual`; no password, token or key in responses or logs; SSRF only through config values.
+  - **Spot-checked by me:** `line/webhook.ts:207–217` (raw text, then `JSON.parse`) · `line/signature.ts:12`
+    (`timingSafeEqual`) · `core/crypto.ts:22` (`getRandomValues` IV) · `admin/index.ts:12` (`admin.use("*", requireOwner)`) ·
+    the only two `.unsafe(` calls carry no request data.
+  - **Under the bar, noted:** LINE link codes are 6 digits, with an in-memory per-LINE-id guess limit (rate-limit class). A
+    known FCM token can be moved to another user by `PUT /devices` (it needs the victim's secret token).
+  - **REQ-002** (TASK-003/004: mail password at use, SMTP) gets its own review run before its `SPEC_DONE`.
+    **Run 2026-11-01: no finding at the bar.** Scope: `src/modules/mail/**`, `core/crypto.ts`, `channels/index.ts`, the replies
+    part of `messages/index.ts`. Checked by the subagent: every query is scoped to the caller · the recipient is always the
+    stored `From` · headers are built by nodemailer's MailComposer, with CR/LF stripped from `In-Reply-To`/`References` · the
+    password is scrubbed from `last_error`/`error` and never returned · tagged SQL only · only the plain-text part is stored
+    (no HTML returned) · host and port come from config only. Spot-checked by me: `mail/connection.ts:15–23` (TLS required for
+    any non-local host, implicit on 993/465, plain only on 127.0.0.1/localhost/::1) · no `rejectUnauthorized` anywhere in `src`
+    · `mail/parse.ts:68` stores `mail.text` only. **Not covered:** real Zimbra TLS/certificates (B2).
 
 ## 7a. Testability — local only (REQ-001 § Questions, PM 2026-11-01, from QA Tanya / Tefany)
 | QA needs | How | TASK |
@@ -419,6 +461,14 @@ A sent row is never sent twice: status moves `queued → sending` with `UPDATE �
   - **B4 is not needed today:** the gateway takes no key (llm-gateway skill §5).
 
 ## 8a. The team's own local Postgres cluster `[SA-decided 2026-11-01, on the PM's direction in §Questions]`
+> **SUPERSEDED 2026-11-01 evening by the owner (D43; `SYSTEM-FACTS.md` "env keys and the database"). Carried by TASK-033.**
+> - No local Postgres, ever: the only server is the owner's (`<host>:5432`; the address is in `SYSTEM-FACTS`, the URL only in `.env`).
+> - The app uses the database `corner_chat`. Tests use `corner_chat_test` as the base, and each run gets its own
+>   `corner_chat_test_r<pid>_<6 hex>`, dropped after the run.
+> - Nothing else on that server is touched, and `config.ts` / `test/setup.ts` refuse any other name.
+> - TLS is required; if the server refuses it, the owner decides.
+>
+> The text below is history.
 - PostgreSQL 18 binaries already on PATH (`initdb`, `pg_ctl`, `psql` — `/c/Program Files/PostgreSQL/18/bin/`, PM checked).
 - **Data folder `corner-chat-back/.local/pgdata/`, log `.local/pg.log`** — inside the repo, git-ignored (`.local/`).
 - **Port 5433, listen `127.0.0.1` only.** I checked 2026-11-01: `pg_isready -h 127.0.0.1 -p 5433` → `no response` (free).
@@ -432,6 +482,18 @@ A sent row is never sent twice: status moves `queued → sending` with `UPDATE �
   5432**; the script refuses `PG_LOCAL_PORT=5432`.
 
 ## 9. `.env.example` (back) — every key, no values
+> **Amended 2026-11-01 (D43, TASK-033):** `PG_LOCAL_*` are gone. `DATABASE_URL_TEST` is optional (derived), and `TEST_MAIL_A_EMAIL`,
+> `TEST_MAIL_A_PASSWORD` and `TEST_MAIL_B_EMAIL` are added. `.env.example` carries a one-line comment on every key.
+>
+> **Keys the OWNER fills** (the PM asks him, one pack, before anyone needs them):
+> - `DATABASE_URL` (his Postgres, database `corner_chat`);
+> - `SECRET_KEY`;
+> - `OWNER_EMAIL` / `OWNER_PASSWORD`;
+> - `TEST_MAIL_A_EMAIL` / `TEST_MAIL_A_PASSWORD` / `TEST_MAIL_B_EMAIL` (B2);
+> - `LINE_CHANNEL_SECRET` / `LINE_CHANNEL_ACCESS_TOKEN` (Team B);
+> - `FCM_SERVICE_ACCOUNT_JSON` — not needed now: D41, no Firebase.
+>
+> Every other key has a working default.
 `PORT=8080` `HOST=127.0.0.1` `PG_LOCAL_PORT=5433` `PG_LOCAL_PASSWORD=` `DATABASE_URL=` `DATABASE_URL_TEST=` `SECRET_KEY=` (32 bytes, base64) `OWNER_EMAIL=`
 `OWNER_PASSWORD=` `OWNER_NAME=` `ADMIN_WEB_ORIGIN=http://localhost:3000` `ZIMBRA_IMAP_HOST=mail.entronica.in.th`
 `ZIMBRA_IMAP_PORT=993` `ZIMBRA_SMTP_HOST=mail.entronica.in.th` `ZIMBRA_SMTP_PORT=465` `MAIL_POLL_SECONDS=60`

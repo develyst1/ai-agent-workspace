@@ -1,0 +1,343 @@
+{
+  "ranAt": "2026-11-01T18:04:13.336Z",
+  "pass": 48,
+  "fail": 0,
+  "checks": [
+    {
+      "case": "1",
+      "what": "link-code shape",
+      "expected": "6 digits, expires ≈ +10 min",
+      "actual": "{\"code\":\"467647\",\"expiresAt\":\"2026-11-01T18:11:53.131Z\"}",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "AC-1 right code → linked",
+      "expected": "reply เชื่อม LINE แล้ว · linked · displayName from profile",
+      "actual": "เชื่อม LINE แล้ว · {\"linked\":true,\"displayName\":\"เอ\"}",
+      "pass": true
+    },
+    {
+      "case": "2",
+      "what": "AC-1 wrong code",
+      "expected": "reply รหัสไม่ถูกต้องหรือหมดอายุ ขอรหัสใหม่ในแอป",
+      "actual": "[\"รหัสไม่ถูกต้องหรือหมดอายุ ขอรหัสใหม่ในแอป\"]",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "AC-1 expired code (10:10 stand-in)",
+      "expected": "refused, not linked",
+      "actual": "รหัสไม่ถูกต้องหรือหมดอายุ ขอรหัสใหม่ในแอป · linked=false",
+      "pass": true
+    },
+    {
+      "case": "4",
+      "what": "AC-1 old code after a new one",
+      "expected": "A refused",
+      "actual": "[\"รหัสไม่ถูกต้องหรือหมดอายุ ขอรหัสใหม่ในแอป\"]",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "AC-1 code 10 s before expiry (9:50 stand-in)",
+      "expected": "linked",
+      "actual": "เชื่อม LINE แล้ว · true",
+      "pass": true
+    },
+    {
+      "case": "4",
+      "what": "AC-1 newest code works",
+      "expected": "B linked",
+      "actual": "true",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "AC-1 used code from another LINE account",
+      "expected": "refused; U2 still linked",
+      "actual": "รหัสไม่ถูกต้องหรือหมดอายุ ขอรหัสใหม่ในแอป · true",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "AC-1 LINE account linked to U1 sends U3's code (Q2)",
+      "expected": "refused; U1 linked, U3 not",
+      "actual": "รหัสไม่ถูกต้องหรือหมดอายุ ขอรหัสใหม่ในแอป · U1=true U3=false",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "the same U3 code then works from a free LINE account",
+      "expected": "linked",
+      "actual": "true",
+      "pass": true
+    },
+    {
+      "case": "1b",
+      "what": "AC-1 6th try after 5 wrong in 10 min",
+      "expected": "no reply, not linked",
+      "actual": "[] · false",
+      "pass": true
+    },
+    {
+      "case": "1c",
+      "what": "AC-1 text that is not 6 digits",
+      "expected": "no reply, no row change",
+      "actual": "0,0,0 · ",
+      "pass": true
+    },
+    {
+      "case": "33",
+      "what": "req 2 OA joins G1; U1 never wrote there",
+      "expected": "G1 on U1's list",
+      "actual": "[\"Cqab000000000000000000000000g2\",\"Cqab000000000000000000000000g1\"]",
+      "pass": true
+    },
+    {
+      "case": "33",
+      "what": "req 2 G2 where U2 is NOT a member (profile 404)",
+      "expected": "U2's list = [G1] only",
+      "actual": "[\"Cqab000000000000000000000000g1\"]",
+      "pass": true
+    },
+    {
+      "case": "33a",
+      "what": "req 2 U4 links after the OA is in G1/G2",
+      "expected": "G1 and G2 listed for U4 (fake says member)",
+      "actual": "2",
+      "pass": true
+    },
+    {
+      "case": "33b",
+      "what": "req 2 memberJoined G3 for U1",
+      "expected": "U1 now lists 3 groups (G1, G2, G3)",
+      "actual": "3",
+      "pass": true
+    },
+    {
+      "case": "33c",
+      "what": "req 2 user with no link has no groups",
+      "expected": "[]",
+      "actual": "[]",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "AC-2 tag U1",
+      "expected": "1 new message for U1, recipientKind mention",
+      "actual": "1 · mention",
+      "pass": true
+    },
+    {
+      "case": "18",
+      "what": "AC-3 U1's own non-trigger message",
+      "expected": "only line_own_messages +1",
+      "actual": "[\"line_own_messages 0→1\"]",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "AC-2 reply to U1's own message",
+      "expected": "+1 for U1",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "9",
+      "what": "AC-2 tag all (harness shape type:all)",
+      "expected": "+1 for each of U1–U4",
+      "actual": "[1,1,1,1]",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "AC-2 nickname untagged",
+      "expected": "+1 for U1",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "AC-2 name inside another word (recorded, not judged)",
+      "expected": "taken in (substring, Q7)",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "12",
+      "what": "AC-2 Latin name, other case",
+      "expected": "taken in (Q7)",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "AC-2 tag U1 + name U2 in one message",
+      "expected": "+1 each",
+      "actual": "1,1",
+      "pass": true
+    },
+    {
+      "case": "14",
+      "what": "AC-3 tag a non-linked member",
+      "expected": "no row change, no AI call",
+      "actual": "rows [] · ai 22→22",
+      "pass": true
+    },
+    {
+      "case": "15",
+      "what": "AC-3 reply to a non-linked member's message",
+      "expected": "no row change, no AI call",
+      "actual": "rows [] · ai 22→22",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "AC-3 U1 writes U1's own nickname (Q1)",
+      "expected": "only line_own_messages +1; no message, no AI call",
+      "actual": "rows [\"line_own_messages 1→2\"] · ai 22→22",
+      "pass": true
+    },
+    {
+      "case": "17",
+      "what": "AC-3 plain chatter",
+      "expected": "no row change, no AI call",
+      "actual": "rows [] · ai 22→22",
+      "pass": true
+    },
+    {
+      "case": "20",
+      "what": "AC-3 image with no trigger",
+      "expected": "no row change, no AI call",
+      "actual": "rows [] · ai 22→22",
+      "pass": true
+    },
+    {
+      "case": "20",
+      "what": "AC-3 sticker with no trigger",
+      "expected": "no row change, no AI call",
+      "actual": "rows [] · ai 22→22",
+      "pass": true
+    },
+    {
+      "case": "17",
+      "what": "AC-3 dropped text in any table",
+      "expected": "0 hits",
+      "actual": "[]",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "AC-4 passed message pushed 1-on-1 to U1's LINE id",
+      "expected": "≥ 1 push to L1",
+      "actual": "7",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "AC-4 push text = about line, newline, first lines",
+      "expected": "line 1 about line (from layer 1), line 2 message",
+      "actual": "\"[LINE · กลุ่มทดสอบ] ขอให้ช่วยดูเรื่องงาน\\n@U1 ช่วยดูเอกสารนี้หน่อย\"",
+      "pass": true
+    },
+    {
+      "case": "35",
+      "what": "req 7 receive-only: no push/reply addressed to a group id",
+      "expected": "0",
+      "actual": "0",
+      "pass": true
+    },
+    {
+      "case": "23",
+      "what": "AC-4 5-line message",
+      "expected": "about + lines 1–2 only",
+      "actual": "\"[LINE · กลุ่มทดสอบ] ขอให้ช่วยดูเรื่องงาน\\n@U1 ข้อความยาว\\nบรรทัดสอง\"",
+      "pass": true
+    },
+    {
+      "case": "30",
+      "what": "AC-7 count +1 per push",
+      "expected": "11→12",
+      "actual": "11→12",
+      "pass": true
+    },
+    {
+      "case": "22",
+      "what": "AC-4 held message → no push",
+      "expected": "0 new pushes; held tab has exactly that one",
+      "actual": "0 pushes · held=1 · {\"id\":\"dc249b77-4b31-4d5a-8de3-03d86d552f2f\",\"channel\":\"line\",\"sender\":{\"name\":\"สมชาย\",\"key\":\"Uqab00000000000000000000000000m\"},\"groupName\":\"กลุ่มทดสอบ\",\"subjec",
+      "pass": true
+    },
+    {
+      "case": "31",
+      "what": "AC-7 a held message and a link-code reply do not count",
+      "expected": "12",
+      "actual": "12",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "AC-4 AI down (D3) still pushed, marked",
+      "expected": "starts 'AI ไม่ได้ตรวจ' (or about line) and pushed",
+      "actual": "\"AI ไม่ได้ตรวจ · สมชาย\\n@U1 [L2DOWN] ด่วน\"",
+      "pass": true
+    },
+    {
+      "case": "24",
+      "what": "AC-4 disabled user U3 tagged",
+      "expected": "no push to L3",
+      "actual": "0",
+      "pass": true
+    },
+    {
+      "case": "25",
+      "what": "AC-4 the same event delivered twice",
+      "expected": "1 message, 1 push",
+      "actual": "1 msg · 1 push",
+      "pass": true
+    },
+    {
+      "case": "27",
+      "what": "AC-6 wrong signature",
+      "expected": "401, no row change",
+      "actual": "401 · []",
+      "pass": true
+    },
+    {
+      "case": "28",
+      "what": "AC-6 no signature header",
+      "expected": "401, no row change",
+      "actual": "401 · []",
+      "pass": true
+    },
+    {
+      "case": "29",
+      "what": "AC-6 body changed after signing",
+      "expected": "401, no row change",
+      "actual": "401 · []",
+      "pass": true
+    },
+    {
+      "case": "34",
+      "what": "req 5 removed nickname no longer takes in",
+      "expected": "names [\"Ton\"] · +0",
+      "actual": "[\"Ton\"] · +0",
+      "pass": true
+    },
+    {
+      "case": "1d",
+      "what": "un-link U2",
+      "expected": "204 · not linked · groups [] · names kept · tag not taken in",
+      "actual": "204 · false · 0 · [\"บี\"] · +0",
+      "pass": true
+    },
+    {
+      "case": "19",
+      "what": "AC-3 message text in back-end stdout/stderr",
+      "expected": "0 hits (dropped and taken-in text)",
+      "actual": "[]",
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "ranAt": "2026-11-01T13:08:12.055Z",
+  "device": "sdk_gphone64_x86_64 · API 34 · 720x1600",
+  "apk": "H:/ai-agent-workplace/ai-agent-workspace/corner-chat/ai-worker/tests/harness/qa-a/cornerchat-qa-a-8191.apk",
+  "checks": [
+    {
+      "case": "dev",
+      "what": "emulator-5554 booted",
+      "expected": "1",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "dev",
+      "what": "page runs inside the native Capacitor shell",
+      "expected": "true",
+      "actual": "true",
+      "pass": true
+    },
+    {
+      "case": "T1#1",
+      "what": "sign-in title (APK)",
+      "expected": "เข้าสู่ระบบ corner-chat",
+      "actual": "เข้าสู่ระบบ corner-chat",
+      "pass": true
+    },
+    {
+      "case": "T1#4",
+      "what": "wrong password / unknown email (APK, native HTTP)",
+      "expected": "อีเมลหรือรหัสผ่านไม่ถูกต้อง ×2",
+      "actual": "อีเมลหรือรหัสผ่านไม่ถูกต้อง | อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+      "pass": true
+    },
+    {
+      "case": "T1#7",
+      "what": "U1's notified list from the back end over 10.0.2.2: own rows only",
+      "expected": "m1n + m1x, no U2",
+      "actual": "[\"3748bcc4\",\"f3c9fb1f\"]",
+      "pass": true
+    },
+    {
+      "case": "T3#14",
+      "what": "ai_unavailable row says AI ไม่ได้ตรวจ (APK)",
+      "expected": "contains AI ไม่ได้ตรวจ",
+      "actual": "LINE กลุ่มทดสอบ QA-A 1 พ.ย. 20:07 AI ไม่ได้ตรวจ U1 เกตเวย์ตอบเสีย [L2DOWN]",
+      "pass": true
+    },
+    {
+      "case": "T1#7",
+      "what": "U1 opens U2's message by its id (APK)",
+      "expected": "error, no U2 text",
+      "actual": "detail-error",
+      "pass": true
+    },
+    {
+      "case": "T3#12",
+      "what": "why card (APK)",
+      "expected": "ทำไมไม่แจ้ง · 69% · เกณฑ์ 70% · AI · models",
+      "actual": "ทำไมไม่แจ้ง ตามสคริปต์ของเกตเวย์ปลอม ตรงเงื่อนไข 69% · เกณฑ์ 70% ตัดสินโดย: AI โมเดล: deepseek-flash / deepseek-v4-pro",
+      "pass": true
+    },
+    {
+      "case": "T3#22",
+      "what": "held → แจ้ง (APK)",
+      "expected": "คุณย้ายข้อความนี้มาเอง · notified/user",
+      "actual": "คุณย้ายข้อความนี้มาเอง · notified/user",
+      "pass": true
+    },
+    {
+      "case": "T3#20",
+      "what": "bar to 80 + save (APK)",
+      "expected": "label 80% · API 80",
+      "actual": "แจ้งเมื่อตรงเงื่อนไขตั้งแต่ 80% · 80",
+      "pass": true
+    },
+    {
+      "case": "T1#7",
+      "what": "while signed in: token + saved pages in Android Preferences (precondition)",
+      "expected": "cc.token + cc.cache.*",
+      "actual": "[\"cc.token\",\"cc.push.asked\",\"cc.cache.list.notified.all\"]",
+      "pass": true
+    },
+    {
+      "case": "T1#11",
+      "what": "owner disables U1 → the APK's next load lands on sign-in",
+      "expected": "screen-signin",
+      "actual": "screen-signin",
+      "pass": true
+    },
+    {
+      "case": "T1#7",
+      "what": "after the 401: no token and no saved pages in Android Preferences",
+      "expected": "no cc.token, no cc.cache.*",
+      "actual": "[\"cc.push.asked\"]",
+      "pass": true
+    },
+    {
+      "case": "T1#10",
+      "what": "disabled U1 signs in (APK)",
+      "expected": "บัญชีนี้ถูกปิดใช้งาน ติดต่อผู้ดูแล",
+      "actual": "บัญชีนี้ถูกปิดใช้งาน ติดต่อผู้ดูแล",
+      "pass": true
+    },
+    {
+      "case": "T1#15",
+      "what": "owner resets → the APK's next action lands on sign-in",
+      "expected": "screen-signin",
+      "actual": "screen-signin",
+      "pass": true
+    },
+    {
+      "case": "T1#21",
+      "what": "sign-out on the APK: confirm, Preferences clean, old token dead",
+      "expected": "ออกจากระบบไหม · [] · 401",
+      "actual": "ออกจากระบบไหม  · [] · 401",
+      "pass": true
+    },
+    {
+      "case": "T1#16",
+      "what": "right password after 5 wrong (APK)",
+      "expected": "ลองผิดหลายครั้งเกินไป รอสักครู่แล้วลองใหม่",
+      "actual": "ลองผิดหลายครั้งเกินไป รอสักครู่แล้วลองใหม่",
+      "pass": true
+    }
+  ]
+}

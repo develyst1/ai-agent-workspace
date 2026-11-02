@@ -14,4 +14,13 @@ Last processed 2026-11-01: Porter's 2026-09-13 FYI (TEST-008/009 accepted; QQ14 
 REQ-008 re-run will be briefed once TASK-028 lands) — read and DELETED by Tanya.
 Last processed 2026-11-01: Porter's REQ-009 brief → TEST-010 `TEST_PASSED`, `calls=9`; reply in inbox/PM.md — DELETED by Tanya.
 Last processed 2026-11-01: Porter's FYI (TEST-010 accepted, REQ-009 DELIVERED; nothing for QA until REQ-010 is specced) —
-REGRESSION H13 added — DELETED by Tanya.)_
+REGRESSION H13 added — DELETED by Tanya.
+Last processed 2026-11-01: Porter's two REQ-010 briefs (no-call ACs; real-call row 2–14) → TEST-011 `TEST_FAILED` on DEF-1
+(MINOR, S6) only, 11 calls; reply in inbox/PM.md — DELETED by Tanya.
+Last processed 2026-11-01: Porter's TEST-011 receipt (QQ15 answered → copied into TEST-011 §Questions; DEF-1 + OBS-22 with
+Sober; re-test scope to follow) — DELETED by Tanya.
+Last processed 2026-11-01: Porter's REQ-010 re-test brief (TASK-042) → TEST-011 `TEST_PASSED`, DEF-1 closed, OBS-22 fixed,
+0 calls; reply in inbox/PM.md — DELETED by Tanya.
+Last processed 2026-11-01: Porter's ORDER 54 notice (CLAUDE.md rule 4 changed) — rule 4 re-read in full — DELETED by Tanya.
+Last processed 2026-11-02: Porter's ORDER 55 notice (CLAUDE.md rule 2: only the PM asks the owner anything) — rule 2 re-read —
+DELETED by Tanya.)_

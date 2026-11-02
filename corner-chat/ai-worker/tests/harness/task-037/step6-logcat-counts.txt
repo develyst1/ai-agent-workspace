@@ -1,0 +1,8 @@
+NEW APK = from 23:11:06 (install -r of the fixed APK) to the end; OLD APK part = TASK-030's local APK (logging on), 23:08-23:11. Lines: old 34039, new 6026
+Capacitor: old-APK part: 228  |  NEW-APK part: 4
+password (not AutofillManager): old-APK part: 24  |  NEW-APK part: 7
+cc.token: old-APK part: 9  |  NEW-APK part: 0
+bearer: old-APK part: 0  |  NEW-APK part: 0
+message text: old-APK part: 2  |  NEW-APK part: 0
+sign-in password itself: old 1 new 0
+appb@corner.test: old 2 new 0

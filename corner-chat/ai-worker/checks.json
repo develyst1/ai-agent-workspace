@@ -1,1 +1,10 @@
-{ "checks": [] }
+{
+  "checks": [],
+  "hygiene": {
+    "log-rollover": {
+      "part-kb": 90,
+      "born": "ORDER 53 2026-11-01 (ORDER 46's mechanism, as i-space)",
+      "why": "append-log.mjs: when the latest part of today reaches part-kb (90 KB), the next append starts the next part (first line '# Log <date> — part N (continues part N-1)') and closes the previous one with '→ continued in log/<date>.N.md'. check-hygiene.mjs measures the latest part. Rule: PROTOCOL.md § Date discipline, § Log format. Remove this key to switch rollover off; nothing already written changes."
+    }
+  }
+}

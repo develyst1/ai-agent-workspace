@@ -1007,3 +1007,24 @@ source.** After editing a skill there, copy it to `.claude/skills/` again, or th
   - The drain-tool BOM bug is fixed and tested in scratch: harness 2.6.8.
   - ORDER 51 closed (Marie, Atlas re-checked): board 137 → 46 KB, inboxes ~2.3 MB → 3.6 KB, boot reads 95–113 KB (were up to 1.2 MB). Harness 2.6.8 is on all desks. What remains: board 6 KB over (live state) and the boot FAILs, waiting on the owner's WARN decision.
 - **Queue tool durable write (2026-11-01):** after Marie found a NUL-filled corner-chat SA queue, the queue tool now fsyncs its temp file, reads it back, then renames. Harness 2.6.9; ORDER 52 went to the Marie session.
+- **corner-chat FAILURES review (2026-11-01), 14 entries:**
+  - FIXED 9: F-003 (new-id.mjs promoted to a shared tool with ids.start config; race-tested), F-004 (workforce §5: two inbox write paths), F-007/F-013 (role-be §6: own PIDs/ports, no --watch on a shared DB), F-008 (separate test DB/ports per team), F-010/F-011 (security-review line required in the TASK Review), F-012 (real outside services off by construction), F-014 (a stack choice says how the owner and QA test it).
+  - ATLAS-REVIEWED 5: F-001, F-002, F-005, F-006, F-009.
+  - Harness 2.6.10. corner-chat log rollover approved (ORDER 46 mechanism); ORDER 53 went to Marie.
+  - **Gotcha:** FAILURES.md can have mixed line endings, so a status script must split on /\r?\n/, never on one EOL (5 entries were silently skipped at first).
+  - ORDER 53 follow-up: new-id.mjs now refuses on an unparseable checks.json or a bad ids.start (Marie's safety note), harness 2.6.11. smart-scheduler-atom is HELD: it needs ids.start 5000 set on Atom's side before installing. A PM inbox line only, no edit here.
+- **Owner rule (2026-11-01, via the corner-chat PM): no local Postgres; use the owner's dev Postgres server; env values come from him; .env.example lists every key.**
+  - Written into CLAUDE.md rule 4 as an explicit carve-out: the dev server is the team's dev database, not "real". Production databases and other projects' databases stay off-limits.
+  - Also in role-be §6, role-sa §3 and the user memory. Harness 2.6.12.
+  - Harness 2.6.12 is on 9/10 desks (smart-scheduler-atom HELD). corner-chat rollover: Atlas chose (b), the PM applies it at a pause he picks, then Marie verifies and closes ORDER 53.
+- **corner-chat FAILURES F-015…F-023 (2026-11-01).** The duplicate F-021 (Tanya's) was renumbered F-023: it was written by hand, since add-failure.mjs is locked.
+  - FIXED: F-018/F-021 (secrets printed on failure → workforce-protocol §14: no secrets as CLI args; tests assert presence, never the value), F-019/F-020 (rule 4), F-022 (re-read rule files that changed today).
+  - ATLAS-REVIEWED: F-015, F-016, F-017, F-023.
+  - The owner decides on reissuing the LINE token; Porter raises it.
+  - **Practice for Atlas:** when CLAUDE.md changes, live sessions keep the old copy (F-022), so send every live desk a re-read note via its PM.
+- **add-failure.mjs durable write (2026-11-01, Marie's finding):** fsync, read back, then rename, as drain-inbox does. Harness 2.6.13; ORDER 54 also sends a CLAUDE.md rule-4 re-read note to every live PM (first use of the re-read practice).
+  - Follow-ups:
+    - Tanya's F-021 (now F-023) DID go through add-failure.mjs, so Jason's F-021 is the one that bypassed it, or a cause is unknown. Numbers are kept as they are (owner-facing reports cite Jason's F-021); the heading note was corrected.
+    - Porter's reading of rule 4 is upheld: QA test instruments held only in a run's process env (the fake LINE, a fake gateway, a throwaway SECRET_KEY or login for QA's own test DB) are not "stand-ins". The rule targets owner-provided values and real infrastructure.
+- **Rule (2026-11-01, owner via the corner-chat PM): only the PM asks the owner anything** (chat, question box, or next-step options). Prompted by SA Sober's own session ending with a question box to him: "ทำไม sober ถามฉัน อันนี้ผิด chain นะ". Written in CLAUDE.md rule 2; harness 2.6.14 (ORDER 55, with a re-read note).
+  - **Possible mechanical guard later:** a PreToolUse hook on AskUserQuestion that reads the session's role from `.claude/session-desk/` and refuses non-PM roles. Build it if the rule is broken again.

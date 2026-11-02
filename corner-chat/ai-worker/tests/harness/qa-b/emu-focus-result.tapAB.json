@@ -1,0 +1,37 @@
+{
+  "ranAt": "2026-11-01T15:48:00.724Z",
+  "signedIn": true,
+  "A": {
+    "notifiedMs": 24744,
+    "msgNotifsInShade": 1,
+    "tapped": [
+      396,
+      575
+    ],
+    "seen": [
+      "/messages/50e0d842-1b4a-4d6d-bbe4-ce4728597a80"
+    ],
+    "ok": true,
+    "expected": "/messages/50e0d842-1b4a-4d6d-bbe4-ce4728597a80"
+  },
+  "B": {
+    "notifiedMs": 27857,
+    "msgNotifsInShade": 1,
+    "expanded": true,
+    "tapped": [
+      356,
+      648
+    ],
+    "seen": [
+      "/messages/bd26cd8e-052f-4b5b-9057-fb8eaf5000fd"
+    ],
+    "ok": true,
+    "expected": "/messages/bd26cd8e-052f-4b5b-9057-fb8eaf5000fd"
+  },
+  "backFrom": "/messages/d2e894d1-6eb9-44fb-ac80-4939d335c792",
+  "historyLength": 5,
+  "afterBackForeground": true,
+  "afterBackPath": "/messages/d2e894d1-6eb9-44fb-ac80-4939d335c792",
+  "afterSecondBackForeground": true,
+  "afterSecondBackPath": "/messages/d2e894d1-6eb9-44fb-ac80-4939d335c792"
+}

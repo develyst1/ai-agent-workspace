@@ -71,6 +71,17 @@ A SPEC is done when:
 - [ ] Every contract states path/method/auth, request and response shape with exact field casing,
       status codes, error bodies, and what happens to existing data.
 - [ ] Every AC of the REQ maps to a TASK or to an explicit "no work — <why, verified where>".
+- [ ] **A call to a real outside service (LINE, mail, payment, any third-party API) is off by
+      construction in dev and test:** the default base URL points to a fake, and no token means no
+      call (fail closed). It never relies on every running server being pointed at the fake.
+- [ ] **A stack or tool choice says how the owner and QA will run and test the result** on the
+      machines they actually have, next to the technical reasons. A choice nobody on the desk can
+      run is not finished.
+- [ ] **Databases live on the owner's dev Postgres server, never on a dev machine** (`CLAUDE.md` rule 4).
+      Every env key the build needs is in `.env.example` with what it is for. The SPEC lists the keys
+      the owner must fill, and that list goes to him through the PM before anyone needs them.
+- [ ] **Two teams in one tree get separate test databases (or schemas) and separate dev ports,** named
+      in the SPEC. A shared one that each run drops will break the other team's runs.
 - [ ] Risks, assumptions and unknowns are listed, each with what would settle it.
 - [ ] Non-functional lists only what is actually required.
 
@@ -164,7 +175,7 @@ in a TASK; design only in what your team holds; no SA↔SA contact — cross-tea
 | Isolated read/try of a branch without touching the tree | `superpowers:using-git-worktrees` (local only, never a push) |
 | A bug or unexpected behaviour behind a REQ | `superpowers:systematic-debugging` |
 | Reviewing an engineer's diff | `mattpocock-skills:code-review` (Standards + Spec axes) · pr-review-toolkit agents `code-reviewer`, `silent-failure-hunter`, `type-design-analyzer`, `pr-test-analyzer` |
-| Changes touching auth, input, secrets, data exposure | `/security-review` — **mandatory** before `DONE` |
+| Changes touching auth, input, secrets, data exposure | `/security-review` — **mandatory** before `DONE`, and its result is written in the TASK's `## Review` as `Security review: <findings or "none">`. No such line means not DONE |
 | Asking for a review of your own SPEC / receiving one | `superpowers:requesting-code-review` · `superpowers:receiving-code-review` |
 | About to write `DONE`, `SPEC_DONE`, "verified" | `superpowers:verification-before-completion` — **mandatory** |
 | Desk stack is Flutter/Dart | `dart-flutter:flutter-apply-architecture-best-practices`; public API of a package: `pr-review-toolkit:type-design-analyzer` + `mattpocock-skills:codebase-design` |

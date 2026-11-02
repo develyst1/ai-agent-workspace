@@ -1,7 +1,7 @@
 # TASK-014: Toolchain on this machine + Flutter scaffold + navigation shell (all routes as placeholders)
 - Source: SPEC-003 § Stack, § Structure, § Screens and navigation (routes + bottom bar + sign-out menu) · REQ-005 req 1, 2 · AC-4 (shell part)
 - Owner: FE (Fanta)
-- Status: IN_PROGRESS
+- Status: SUPERSEDED 2026-11-01 by TASK-025 (owner: not Flutter, DECISIONS D36; SA-B) — Fanta: record in Implementation Notes what you already installed or made, then stop. Was: IN_PROGRESS
 - Depends on: none
 
 - Repo: `corner-chat-app` (absolute path: workspace-root `machine.local.md`). Team B claims it whole (board → Batch claims).
@@ -54,6 +54,18 @@
 - [ ] Disk used by `H:\dev-tools` (paste the number). For the owner's list (D-B9).
 
 ## Implementation Notes
+Stopped 2026-11-01 on SA-B's STOP (D36). Fanta (FE-B). What exists, all user-level, official sources, no UAC prompt:
+- **Installed under `H:\dev-tools\`** (12 GB at the time of the stop; the owner approved the downloads and the user-level env vars in chat):
+  `flutter` 3.47.9 (zip SHA-256 matched Google's `releases_windows.json`), `jdk-17` Temurin 17.0.20.1 (SHA-256 matched Adoptium's `.sha256.txt`),
+  `android-sdk` (cmdline-tools `commandlinetools-win-15859902`, platform-tools 37.0.1, platforms;android-36, build-tools 36.0.0,
+  emulator 37.2.13, system-images;android-34;google_apis;x86_64 r14), `dl\` (the zips, safe to delete).
+  Android SDK licenses accepted (the owner said yes in chat). User env: `JAVA_HOME`, `ANDROID_HOME`, PATH (flutter, jdk, cmdline-tools, platform-tools, emulator).
+- **AVD `cc_phone_360`** created (pixel_6 on the API 34 image); `config.ini` set to `hw.lcd.width=720`, `height=1600`, `density=320` (= 360 dp). Never started.
+- `flutter doctor -v`: Android toolchain ✓ ("All Android licenses accepted"); Chrome ✓; Visual Studio ✗ (irrelevant).
+- In `corner-chat-app` (untracked, nothing committed): `flutter create` scaffold, 7 packages, `lib/` shell with 11 routes, 2 widget tests —
+  `flutter analyze` → `No issues found!`, `flutter test` → `All tests passed!` (2). The `flutter build apk --debug` was killed mid-run by the stop.
+  Not done: APK, emulator run, screenshots. These Flutter files are removed by TASK-025 step 0 (they were my own footprint).
+- Not done and now moot: `machine.local.md` row (TASK-025 writes it once, with the AVD).
 
 ## Questions
 

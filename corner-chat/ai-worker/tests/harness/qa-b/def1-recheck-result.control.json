@@ -1,0 +1,69 @@
+{
+  "ranAt": "2026-11-01T14:33:26.545Z",
+  "device": "sdk_gphone64_x86_64 · API 34",
+  "apks": {
+    "fake": "cornerchat-qa-b-def1-fake.apk",
+    "local": "cornerchat-qa-b-8192.apk"
+  },
+  "counts": {
+    "local": {
+      "lines": 592,
+      "capacitorVerbose": 2,
+      "capacitorAny": 55,
+      "typedPassword": 1,
+      "typedEmail": 1,
+      "fixtureText": 0,
+      "tokenPref": 0,
+      "bearer": 0,
+      "loginBody": 3
+    },
+    "fake": {
+      "lines": 541,
+      "capacitorVerbose": 0,
+      "capacitorAny": 1,
+      "typedPassword": 0,
+      "typedEmail": 0,
+      "fixtureText": 0,
+      "tokenPref": 0,
+      "bearer": 0,
+      "loginBody": 0
+    }
+  },
+  "checks": [
+    {
+      "case": "T5#40",
+      "what": "local APK: login request (server unreachable) — typed password / email / login body in logcat",
+      "expected": "0 · 0 · 0",
+      "actual": "1 · 1 · 3",
+      "pass": false
+    },
+    {
+      "case": "T5#40",
+      "what": "local APK: Capacitor verbose bridge lines",
+      "expected": "0",
+      "actual": "2",
+      "pass": false
+    },
+    {
+      "case": "T5#40",
+      "what": "fake APK precondition: signed in and the list loaded (so cache writes happened)",
+      "expected": "screen-messages + rows > 0",
+      "actual": "true · 6 rows",
+      "pass": true
+    },
+    {
+      "case": "T5#40",
+      "what": "fake APK: signed in + list + detail — fixture message text / token pref / Bearer in logcat",
+      "expected": "0 · 0 · 0",
+      "actual": "0 · 0 · 0",
+      "pass": true
+    },
+    {
+      "case": "T5#40",
+      "what": "fake APK: typed password / Capacitor verbose lines",
+      "expected": "0 · 0",
+      "actual": "0 · 0",
+      "pass": true
+    }
+  ]
+}

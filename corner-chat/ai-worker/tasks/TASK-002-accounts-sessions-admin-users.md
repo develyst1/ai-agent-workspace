@@ -96,3 +96,5 @@ Rulings on your declared decisions — all accepted:
   expiry: all inside the TASK's latitude. Sessions with no expiry match SPEC §5.
 Unverified, accepted: real concurrency on the row lock (the design is right by reading); `Retry-After` checked as a range.
 FE TASK-008's live rerun can now run against this.
+Security review: none at the bar — added 2026-11-01. It was run on the whole back end after this verdict (F-010), and the result is
+in SPEC-001 §7 (sessions, lockout, `requireOwner`, token randomness).

@@ -1,7 +1,7 @@
 # TASK-015: Message list + message detail on fakes — the comp for REQ-005 AC-1
 - Source: SPEC-003 § Screens (`/messages`, `/messages/:id`), § Structure (fakes, models) · SPEC-001 §3.4 (`MessageSummary`, `MessageDetail`, `Reply` — field names exact) · REQ-005 req 2, AC-1, AC-3 · REQ-004 wording · REQ-002 wording (Cc, attachments, reply button)
 - Owner: FE (Fanta)
-- Status: TODO
+- Status: SUPERSEDED 2026-11-01 by TASK-026 (owner: not Flutter, DECISIONS D36; SA-B). Was: TODO
 - Depends on: TASK-014
 
 - Repo: `corner-chat-app`. Files you may edit:

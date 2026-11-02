@@ -1,0 +1,6 @@
+message b1: notified id=cd314a81-aeab-4161-803e-92f9e42218af
+message b2: notified id=451433dd-57c4-4273-9cc6-437a01728049
+message b3: notified id=73eae723-1476-49aa-be77-9c17de1e76be
+message c1: notified id=c76ea711-0c76-4d5f-86e1-7a1ccc8bd185
+message c2: notified id=6587c528-437f-4a0e-8297-d49ce86d852f
+message c3: notified id=c3e7e457-766b-435a-8697-68c8a1648be6

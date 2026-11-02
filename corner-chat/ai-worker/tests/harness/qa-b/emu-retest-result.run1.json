@@ -1,0 +1,62 @@
+{
+  "ranAt": "2026-11-01T17:03:18.804Z",
+  "apk": "cornerchat-qa-b-t038-local.apk",
+  "checks": [
+    {
+      "case": "setup",
+      "what": "signed in on the APK",
+      "expected": "screen-messages",
+      "actual": "true",
+      "pass": true
+    },
+    {
+      "case": "T5#4",
+      "what": "precondition: 3 message notifications in the shade",
+      "expected": "3",
+      "actual": "3",
+      "pass": true
+    },
+    {
+      "case": "T5#4",
+      "what": "collapsed group tap opens the newest message (N3)",
+      "expected": "/messages/2aac6d66-c71…",
+      "actual": "true · /messages/2aac6d66-c71b-482f-b41e-fe1611c93150",
+      "pass": true
+    },
+    {
+      "case": "T5#5",
+      "what": "expanded group: tap the oldest row (N1) → that message",
+      "expected": "/messages/1aa155bc-5e0…",
+      "actual": "true/false · /messages/2aac6d66-c71b-482f-b41e-fe1611c93150",
+      "pass": false
+    },
+    {
+      "case": "T5#4",
+      "what": "after a swipe from recents: notified, collapsed tap → that message",
+      "expected": "/messages/95c586e0-aa9…",
+      "actual": "22499 ms · true · /messages → /messages/95c586e0-aa98-4153-bf54-a1519e40ad17",
+      "pass": true
+    },
+    {
+      "case": "T5#17",
+      "what": "back key (D46): sub-screen one step back; tab top leaves the app",
+      "expected": "all ✓",
+      "actual": "detail: /messages/95c586e0-aa98-4153-bf54-a1519e40ad17 → /messages | line: /channels/line → /channels | names: /channels/line/names → /channels/line | groups: /channels/line/groups → /channels/line | zimbra: /channels/line → /channels | top /messages: /messages → HOME | top /conditions: /conditions → HOME | top /channels: /channels → HOME",
+      "pass": true
+    },
+    {
+      "case": "D46x",
+      "what": "back with an overlay open closes it only (no step back, no leaving), nothing confirmed",
+      "expected": "all ✓ · still signed in · still linked · rule kept",
+      "actual": "menu on /messages: opened=true inFront=true closed=false samePath=true ✗ | sign-out dialog: opened=true inFront=true closed=true samePath=true | un-link dialog: opened=true inFront=true closed=true samePath=true | rule delete dialog: opened=false inFront=true closed=true samePath=false ✗ · signedIn=true linked=true ruleKept=true",
+      "pass": false
+    },
+    {
+      "case": "T5#40",
+      "what": "logcat clean (counts only)",
+      "expected": "all 0",
+      "actual": "{\"messageText\":0,\"password\":0,\"bearer\":0,\"capacitorVerbose\":0}",
+      "pass": true
+    }
+  ]
+}

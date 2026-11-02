@@ -1,0 +1,5057 @@
+{
+  "ranAt": "2026-11-01T09:50:01.477Z",
+  "gatewayUrl": "https://ai.develyst.online",
+  "settings": {
+    "layer1": {
+      "provider": "deepseek",
+      "model": "deepseek-flash"
+    },
+    "layer2": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro"
+    }
+  },
+  "runs": 3,
+  "userName": "สมชาย ใจดี",
+  "userNames": [
+    "สมชาย",
+    "ชาย"
+  ],
+  "sentences": "แจ้งเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ ทั้งเรื่องงานและเรื่องส่วนตัวที่ถามเราตรงๆ ไม่เอาโฆษณา ไม่เอาข่าวทั่วไป ไม่เอาคุยเล่น",
+  "items": [
+    {
+      "id": "N01",
+      "expected": "notify",
+      "text": "@สมชาย พรุ่งนี้ประชุมลูกค้า 10 โมง ช่วยยืนยันหน่อยว่าเข้าได้ไหม",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "N02",
+      "expected": "notify",
+      "text": "ไฟล์ที่พี่ส่งมาเปิดไม่ได้ครับ ส่งใหม่ได้ไหม",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "reply_to_me"
+    },
+    {
+      "id": "N03",
+      "expected": "notify",
+      "text": "ชายๆ งานสรุปยอดเดือนนี้ต้องส่งก่อนบ่ายสามนะ",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "name_match"
+    },
+    {
+      "id": "N04",
+      "expected": "notify",
+      "text": "@All ระบบ production ล่ม ทุกคนเข้าห้องประชุมออนไลน์ด่วน",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "N05",
+      "expected": "notify",
+      "text": "เรื่อง: อนุมัติงบไตรมาส 4 — รบกวนตรวจตัวเลขในไฟล์แนบและตอบกลับภายในวันศุกร์",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "boss@acme.example.test",
+      "subject": "อนุมัติงบไตรมาส 4",
+      "recipientKind": "to"
+    },
+    {
+      "id": "N06",
+      "expected": "notify",
+      "text": "เรื่อง: สอบถามสถานะใบสั่งซื้อ PO-2291 — ยังไม่ได้รับของค่ะ รบกวนตรวจสอบให้ด้วย",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "ลูกค้า",
+      "subject": "สอบถามสถานะใบสั่งซื้อ PO-2291",
+      "recipientKind": "to"
+    },
+    {
+      "id": "N07",
+      "expected": "notify",
+      "text": "เรื่อง: แผนส่งมอบ — คุณสมชาย (cc) ช่วยยืนยันวันส่งมอบระบบด้วยครับ",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "pm@acme.example.test",
+      "subject": "แผนส่งมอบ",
+      "recipientKind": "cc"
+    },
+    {
+      "id": "N08",
+      "expected": "notify",
+      "text": "@สมชาย ที่ยืมไป 2,000 จะคืนวันไหนเหรอ",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "N09",
+      "expected": "notify",
+      "text": "เรื่อง: สัญญาจ้างฉบับใหม่ — กรุณาเซ็นในระบบภายในวันที่ 15 พ.ย.",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "hr@acme.example.test",
+      "subject": "สัญญาจ้างฉบับใหม่",
+      "recipientKind": "to"
+    },
+    {
+      "id": "N10",
+      "expected": "notify",
+      "text": "@สมชาย ด่วน โทรกลับด้วย",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "N11",
+      "expected": "notify",
+      "text": "@สมชาย deploy ตัวใหม่ fail ที่ step migrate ช่วยดู log หน่อย",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "N12",
+      "expected": "notify",
+      "text": "เรื่อง: ขอเลื่อนนัดสัมภาษณ์ — จากวันอังคารเป็นวันพุธ สะดวกไหมคะ",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "recruiter@example.test",
+      "subject": "ขอเลื่อนนัดสัมภาษณ์",
+      "recipientKind": "to"
+    },
+    {
+      "id": "N13",
+      "expected": "notify",
+      "text": "ชายว่างเสาร์นี้ไหม จะได้จองร้าน ตอบด้วย",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "name_match"
+    },
+    {
+      "id": "N14",
+      "expected": "notify",
+      "text": "ตกลงตามที่เสนอครับ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวดได้ไหม",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "reply_to_me"
+    },
+    {
+      "id": "H01",
+      "expected": "hold",
+      "text": "เรื่อง: โปรโมชั่นพิเศษ ลด 70% เฉพาะวันนี้ — สมัครเลย",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "deals@shop.example.test",
+      "subject": "โปรโมชั่นพิเศษ ลด 70% เฉพาะวันนี้",
+      "recipientKind": "to"
+    },
+    {
+      "id": "H02",
+      "expected": "hold",
+      "text": "เรื่อง: สรุปข่าวเทคโนโลยีประจำสัปดาห์",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "news@techweekly.example.test",
+      "subject": "สรุปข่าวเทคโนโลยีประจำสัปดาห์",
+      "recipientKind": "list"
+    },
+    {
+      "id": "H03",
+      "expected": "hold",
+      "text": "@All สวัสดีวันจันทร์ 🌞",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "H04",
+      "expected": "hold",
+      "text": "@All ใครสนใจสั่งชานมไข่มุกบ้าง",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "H05",
+      "expected": "hold",
+      "text": "เมื่อวานไปเที่ยวชายหาดมา สวยมาก",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "name_match"
+    },
+    {
+      "id": "H06",
+      "expected": "hold",
+      "text": "เรื่อง: แจ้งเพื่อทราบ ตารางเวรเดือนธันวาคม (ไม่ต้องตอบกลับ)",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "admin@acme.example.test",
+      "subject": "แจ้งเพื่อทราบ ตารางเวรเดือนธันวาคม (ไม่ต้องตอบกลับ)",
+      "recipientKind": "cc"
+    },
+    {
+      "id": "H07",
+      "expected": "hold",
+      "text": "เรื่อง: บัญชีของคุณจะถูกระงับ — คลิกลิงก์เพื่อยืนยันตัวตน",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "security@bank-verify.example.test",
+      "subject": "บัญชีของคุณจะถูกระงับ",
+      "recipientKind": "to"
+    },
+    {
+      "id": "H08",
+      "expected": "hold",
+      "text": "@สมชาย 555555 ฮามาก",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "H09",
+      "expected": "hold",
+      "text": "👍",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "reply_to_me"
+    },
+    {
+      "id": "H10",
+      "expected": "hold",
+      "text": "@All ขายบ้านมือสอง ราคาถูก สนใจทักแชท",
+      "channel": "line",
+      "groupName": "หมู่บ้านสุขใจ",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "H11",
+      "expected": "hold",
+      "text": "เรื่อง: ใบเสร็จการชำระเงินเดือนพฤศจิกายน",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "billing@stream.example.test",
+      "subject": "ใบเสร็จการชำระเงินเดือนพฤศจิกายน",
+      "recipientKind": "to"
+    },
+    {
+      "id": "H12",
+      "expected": "hold",
+      "text": "@All แชร์บทความ: 10 เทคนิคเขียนโค้ดให้สะอาด",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "H13",
+      "expected": "hold",
+      "text": "เรื่อง: ขอแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "all-staff@acme.example.test",
+      "subject": "ขอแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+      "recipientKind": "list"
+    },
+    {
+      "id": "H14",
+      "expected": "hold",
+      "text": "@สมชาย ส่งต่อให้ 10 คน แล้วจะโชคดี",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "H15",
+      "expected": "hold",
+      "text": "เรื่อง: สินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องใช้คนค้ำ",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "loan@fastcash.example.test",
+      "subject": "สินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องใช้คนค้ำ",
+      "recipientKind": "to"
+    },
+    {
+      "id": "H16",
+      "expected": "hold",
+      "text": "ขอบคุณครับ",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "reply_to_me"
+    }
+  ],
+  "results": {
+    "N01": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5466,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ยืนยันเข้าประชุมลูกค้าพรุ่งนี้ 10 โมง",
+        "score": 100,
+        "reason": "เป็นคำขอโดยตรงให้ยืนยันการเข้าประชุมงานพรุ่งนี้ ซึ่งต้องตอบหรือตัดสินใจชัดเจน ตรงกับเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ยืนยันเข้าประชุมลูกค้าพรุ่งนี้ 10 โมง",
+        "calls": [
+          {
+            "messageId": "fa9d9a63-b8ff-4bac-be74-a17999477451",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1711,
+            "completionTokens": 191,
+            "error": null
+          },
+          {
+            "messageId": "fa9d9a63-b8ff-4bac-be74-a17999477451",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3125,
+            "completionTokens": 165,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4806,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ยืนยันเข้าประชุมลูกค้าพรุ่งนี้ 10 โมง",
+        "score": 100,
+        "reason": "เป็นการถามตรงๆ ให้ยืนยันการเข้าประชุมลูกค้า ซึ่งต้องตอบหรือตัดสินใจ จึงตรงกับเงื่อนไขที่ต้องแจ้งทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ยืนยันเข้าประชุมลูกค้าพรุ่งนี้ 10 โมง",
+        "calls": [
+          {
+            "messageId": "928910a7-5c37-4c22-98db-7898f03be9d7",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1616,
+            "completionTokens": 144,
+            "error": null
+          },
+          {
+            "messageId": "928910a7-5c37-4c22-98db-7898f03be9d7",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2557,
+            "completionTokens": 132,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5428,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ยืนยันเข้าร่วมประชุมลูกค้าพรุ่งนี้ 10 โมง",
+        "score": 100,
+        "reason": "แท็กถามตรงๆ ให้ยืนยันเข้าร่วมประชุมลูกค้าพรุ่งนี้ 10 โมง เป็นเรื่องงานที่ต้องตอบและตัดสินใจชัดเจน ตรงตามเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ยืนยันเข้าร่วมประชุมลูกค้าพรุ่งนี้ 10 โมง",
+        "calls": [
+          {
+            "messageId": "7290453c-858e-429b-96d3-dd4f249b49cb",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1545,
+            "completionTokens": 174,
+            "error": null
+          },
+          {
+            "messageId": "7290453c-858e-429b-96d3-dd4f249b49cb",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3230,
+            "completionTokens": 192,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N02": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4851,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "สมาชิกกลุ่มบอกว่าไฟล์ที่ส่งมาเปิดไม่ได้ ขอให้ส่งใหม่",
+        "score": 100,
+        "reason": "เป็นการขอโดยตรงให้ส่งไฟล์ใหม่ ต้องดำเนินการหรือตอบกลับทันที ตรงกับเงื่อนไขเรื่องงาน/ส่วนตัวที่ต้องทำ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกกลุ่มบอกว่าไฟล์ที่ส่งมาเปิดไม่ได้ ขอให้ส่งใหม่",
+        "calls": [
+          {
+            "messageId": "acd2360f-1ce4-4931-a241-1977924b4744",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1621,
+            "completionTokens": 182,
+            "error": null
+          },
+          {
+            "messageId": "acd2360f-1ce4-4931-a241-1977924b4744",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2611,
+            "completionTokens": 134,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 6409,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งว่าไฟล์ที่ส่งมาเปิดไม่ได้และขอให้ส่งใหม่",
+        "score": 90,
+        "reason": "เป็นคำขอโดยตรงให้ผู้ใช้ส่งไฟล์ใหม่ ต้องตอบหรือดำเนินการ ไม่ใช่โฆษณาหรือข่าวทั่วไป",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แจ้งว่าไฟล์ที่ส่งมาเปิดไม่ได้และขอให้ส่งใหม่",
+        "calls": [
+          {
+            "messageId": "7e0737fc-3147-4f51-b8b7-74d02e40734f",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1183,
+            "completionTokens": 132,
+            "error": null
+          },
+          {
+            "messageId": "7e0737fc-3147-4f51-b8b7-74d02e40734f",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 5099,
+            "completionTokens": 350,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4465,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "สมาชิกกลุ่มแจ้งว่าไฟล์เปิดไม่ได้ ขอให้ส่งใหม่",
+        "score": 100,
+        "reason": "เป็นคำขอโดยตรงจากสมาชิกกลุ่มให้ส่งไฟล์ใหม่ ต้องตอบหรือดำเนินการทันที ตรงกับเงื่อนไขที่ต้องแจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกกลุ่มแจ้งว่าไฟล์เปิดไม่ได้ ขอให้ส่งใหม่",
+        "calls": [
+          {
+            "messageId": "586115d7-2b4e-4438-9bf9-4fab9a3527ea",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1435,
+            "completionTokens": 166,
+            "error": null
+          },
+          {
+            "messageId": "586115d7-2b4e-4438-9bf9-4fab9a3527ea",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2861,
+            "completionTokens": 167,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N03": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5393,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งให้ชายส่งสรุปยอดเดือนนี้ก่อนบ่ายสาม",
+        "score": 95,
+        "reason": "เป็นงานที่ต้องทำโดยตรง มีกำหนดส่งชัดเจนก่อนบ่ายสาม หากผู้ใช้คือชายจะพลาดไม่ได้ จึงควรแจ้งทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แจ้งให้ชายส่งสรุปยอดเดือนนี้ก่อนบ่ายสาม",
+        "calls": [
+          {
+            "messageId": "a98fa693-5ba3-494c-9a77-4ffaf039ea00",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1035,
+            "completionTokens": 101,
+            "error": null
+          },
+          {
+            "messageId": "a98fa693-5ba3-494c-9a77-4ffaf039ea00",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4204,
+            "completionTokens": 227,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4818,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งให้ส่งสรุปยอดเดือนนี้ก่อนบ่ายสาม",
+        "score": 100,
+        "reason": "เป็นคำสั่งงานที่ระบุให้ผู้ใช้ส่งสรุปยอดเดือนนี้ก่อนบ่ายสาม ต้องตอบสนองหรือดำเนินการโดยตรง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แจ้งให้ส่งสรุปยอดเดือนนี้ก่อนบ่ายสาม",
+        "calls": [
+          {
+            "messageId": "7a059f7e-c00b-4817-a6ab-aa5522a99d53",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1147,
+            "completionTokens": 125,
+            "error": null
+          },
+          {
+            "messageId": "7a059f7e-c00b-4817-a6ab-aa5522a99d53",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3543,
+            "completionTokens": 189,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 7081,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งให้ส่งสรุปยอดเดือนนี้ก่อนบ่ายสาม",
+        "score": 95,
+        "reason": "เป็นงานที่ต้องส่งก่อนบ่ายสาม เป็นคำสั่ง/คำขอตรงตัว ต้องรีบจัดการ ไม่ใช่โฆษณาหรือข่าว",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แจ้งให้ส่งสรุปยอดเดือนนี้ก่อนบ่ายสาม",
+        "calls": [
+          {
+            "messageId": "9dc8f917-76dd-4901-82ca-f45e2946ac55",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1299,
+            "completionTokens": 155,
+            "error": null
+          },
+          {
+            "messageId": "9dc8f917-76dd-4901-82ca-f45e2946ac55",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 5645,
+            "completionTokens": 356,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N04": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 6678,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ระบบ production ล่ม ขอให้ทุกคนเข้าประชุมออนไลน์ด่วน",
+        "score": 100,
+        "reason": "เป็นคำขอเร่งด่วนเรื่องงาน ระบบ production ล่ม เรียกทุกคนเข้าประชุมออนไลน์ ต้องตอบสนองหรือเข้าประชุมทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ระบบ production ล่ม ขอให้ทุกคนเข้าประชุมออนไลน์ด่วน",
+        "calls": [
+          {
+            "messageId": "20ded3f7-444c-48de-87a7-d267c6a559b7",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 3149,
+            "completionTokens": 512,
+            "error": null
+          },
+          {
+            "messageId": "20ded3f7-444c-48de-87a7-d267c6a559b7",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3401,
+            "completionTokens": 153,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 7032,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ระบบ production ล่ม เรียกทุกคนเข้าประชุมออนไลน์ด่วน",
+        "score": 100,
+        "reason": "เป็นคำสั่งด่วนให้เข้าประชุมออนไลน์ทันทีเพราะระบบ production ล่ม เกี่ยวข้องกับงานและต้องลงมือทำ จำเป็นต้องรู้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ระบบ production ล่ม เรียกทุกคนเข้าประชุมออนไลน์ด่วน",
+        "calls": [
+          {
+            "messageId": "efdb36c8-e7b8-4973-8806-35525e5b7480",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2220,
+            "completionTokens": 274,
+            "error": null
+          },
+          {
+            "messageId": "efdb36c8-e7b8-4973-8806-35525e5b7480",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4681,
+            "completionTokens": 291,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 6270,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ระบบ production ล่ม ขอให้ทุกคนเข้าประชุมออนไลน์ด่วน",
+        "score": 100,
+        "reason": "เป็นคำขอเร่งด่วนเรื่องงานที่แท็กทุกคน ต้องการให้ผู้ใช้เข้าประชุมทันที ตรงกับเงื่อนไขที่ต้องทำหรือตอบสนอง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ระบบ production ล่ม ขอให้ทุกคนเข้าประชุมออนไลน์ด่วน",
+        "calls": [
+          {
+            "messageId": "0dfc3069-014a-4f88-876d-505140a9e41d",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1824,
+            "completionTokens": 282,
+            "error": null
+          },
+          {
+            "messageId": "0dfc3069-014a-4f88-876d-505140a9e41d",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4312,
+            "completionTokens": 239,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N05": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 6377,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ตรวจตัวเลขในไฟล์แนบงบไตรมาส 4 แล้วตอบกลับภายในวันศุกร์",
+        "score": 100,
+        "reason": "ส่งตรงถึงผู้ใช้ เป็นคำขอให้ตรวจตัวเลขและตอบกลับภายในกำหนดชัดเจน ตรงกับเงื่อนไขเรื่องที่ต้องตอบ/ต้องทำ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · boss] ขอให้ตรวจตัวเลขในไฟล์แนบงบไตรมาส 4 แล้วตอบกลับภายในวันศุกร์",
+        "calls": [
+          {
+            "messageId": "27d84d2e-6429-4ef0-a65f-f5fae18fe879",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2918,
+            "completionTokens": 501,
+            "error": null
+          },
+          {
+            "messageId": "27d84d2e-6429-4ef0-a65f-f5fae18fe879",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3264,
+            "completionTokens": 197,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4868,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ตรวจตัวเลขงบ Q4 ในไฟล์แนบและตอบกลับภายในวันศุกร์",
+        "score": 100,
+        "reason": "เป็นงานที่ขอให้ตรวจตัวเลขและตอบกลับภายในกำหนดโดยตรง ต้องดำเนินการและตอบกลับ จึงควรแจ้งเตือนทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · boss] ขอให้ตรวจตัวเลขงบ Q4 ในไฟล์แนบและตอบกลับภายในวันศุกร์",
+        "calls": [
+          {
+            "messageId": "76b325e0-c7e0-4d39-b0fd-61b7b6e772bb",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2008,
+            "completionTokens": 357,
+            "error": null
+          },
+          {
+            "messageId": "76b325e0-c7e0-4d39-b0fd-61b7b6e772bb",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2670,
+            "completionTokens": 137,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4379,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ตรวจตัวเลขในไฟล์แนบและตอบกลับภายในวันศุกร์",
+        "score": 100,
+        "reason": "เป็นงานที่ส่งตรงถึงผู้ใช้ ขอให้ตรวจตัวเลขและตอบกลับภายในกำหนด ถือเป็นเรื่องที่ต้องทำและต้องตัดสินใจ จึงควรรบกวนทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · boss] ขอให้ตรวจตัวเลขในไฟล์แนบและตอบกลับภายในวันศุกร์",
+        "calls": [
+          {
+            "messageId": "754cd959-5aa2-4a6b-a71b-6923d4bf2af6",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1176,
+            "completionTokens": 109,
+            "error": null
+          },
+          {
+            "messageId": "754cd959-5aa2-4a6b-a71b-6923d4bf2af6",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3020,
+            "completionTokens": 159,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N06": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4728,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ลูกค้าถามสถานะ PO-2291 ยังไม่ได้รับสินค้า ขอให้ตรวจสอบ",
+        "score": 100,
+        "reason": "ลูกค้าสอบถามสถานะใบสั่งซื้อโดยตรงและขอให้ตรวจสอบ เป็นเรื่องที่ต้องตอบหรือดำเนินการทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · ลูกค้า] ลูกค้าถามสถานะ PO-2291 ยังไม่ได้รับสินค้า ขอให้ตรวจสอบ",
+        "calls": [
+          {
+            "messageId": "eb25c6d2-172e-4a24-9768-ea19680630af",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1560,
+            "completionTokens": 192,
+            "error": null
+          },
+          {
+            "messageId": "eb25c6d2-172e-4a24-9768-ea19680630af",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3011,
+            "completionTokens": 133,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5414,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ลูกค้าถามสถานะ PO-2291 ยังไม่ได้รับของ ขอให้ตรวจสอบ",
+        "score": 100,
+        "reason": "ลูกค้าสอบถามสถานะใบสั่งซื้อโดยตรงและขอให้ตรวจสอบ เป็นเรื่องที่ผู้ใช้ต้องตอบหรือดำเนินการทันที ตรงตามเงื่อนไข",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · ลูกค้า] ลูกค้าถามสถานะ PO-2291 ยังไม่ได้รับของ ขอให้ตรวจสอบ",
+        "calls": [
+          {
+            "messageId": "7abcc907-88ab-4a43-a81c-04497b28a6e9",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2258,
+            "completionTokens": 374,
+            "error": null
+          },
+          {
+            "messageId": "7abcc907-88ab-4a43-a81c-04497b28a6e9",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3063,
+            "completionTokens": 155,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4341,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ลูกค้าถามสถานะ PO-2291 ยังไม่ได้รับสินค้า ขอให้ตรวจสอบ",
+        "score": 100,
+        "reason": "ลูกค้าถามตรงๆ เรื่องสถานะใบสั่งซื้อ PO-2291 ที่ยังไม่ได้รับสินค้า เป็นเรื่องงานที่ต้องตอบหรือตรวจสอบทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · ลูกค้า] ลูกค้าถามสถานะ PO-2291 ยังไม่ได้รับสินค้า ขอให้ตรวจสอบ",
+        "calls": [
+          {
+            "messageId": "a1f747f5-34d6-49c1-a052-4ecee79e2495",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1249,
+            "completionTokens": 158,
+            "error": null
+          },
+          {
+            "messageId": "a1f747f5-34d6-49c1-a052-4ecee79e2495",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2939,
+            "completionTokens": 169,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N07": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 6731,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้คุณสมชายยืนยันวันส่งมอบระบบ",
+        "score": 100,
+        "reason": "ข้อความขอให้คุณสมชายยืนยันวันส่งมอบระบบโดยตรง เป็นเรื่องงานที่ต้องตอบกลับและตัดสินใจ ไม่ใช่โฆษณา ข่าวทั่วไป หรือคุยเล่น จึงควรแจ้งทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · pm] ขอให้คุณสมชายยืนยันวันส่งมอบระบบ",
+        "calls": [
+          {
+            "messageId": "05167e0d-c73d-4653-916a-332f9d382a56",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1097,
+            "completionTokens": 119,
+            "error": null
+          },
+          {
+            "messageId": "05167e0d-c73d-4653-916a-332f9d382a56",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 5492,
+            "completionTokens": 382,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 6473,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้สมชายยืนยันวันส่งมอบระบบ",
+        "score": 100,
+        "reason": "ข้อความถามให้เรายืนยันวันส่งมอบระบบโดยตรง ต้องตอบหรือดำเนินการ ไม่ใช่โฆษณา ข่าวทั่วไป หรือคุยเล่น จึงควรแจ้งเตือนทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · pm] ขอให้สมชายยืนยันวันส่งมอบระบบ",
+        "calls": [
+          {
+            "messageId": "fc949a8c-004d-4668-8ca8-ea0ccf1fd22e",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1264,
+            "completionTokens": 105,
+            "error": null
+          },
+          {
+            "messageId": "fc949a8c-004d-4668-8ca8-ea0ccf1fd22e",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 5050,
+            "completionTokens": 336,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 6359,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ยืนยันวันส่งมอบระบบ โดยผู้ใช้อยู่ใน Cc",
+        "score": 90,
+        "reason": "ข้อความระบุชื่อผู้ใช้ใน Cc และขอให้ยืนยันวันส่งมอบระบบโดยตรง เป็นเรื่องงานที่ต้องตอบหรือตัดสินใจ จึงควรแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · pm] ขอให้ยืนยันวันส่งมอบระบบ โดยผู้ใช้อยู่ใน Cc",
+        "calls": [
+          {
+            "messageId": "68f65076-4ba6-4bb0-8d93-4475be627ab5",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1699,
+            "completionTokens": 147,
+            "error": null
+          },
+          {
+            "messageId": "68f65076-4ba6-4bb0-8d93-4475be627ab5",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4512,
+            "completionTokens": 308,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N08": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 3988,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่าจะคืนเงิน 2,000 ที่ยืมไปเมื่อไหร่",
+        "score": 100,
+        "reason": "เป็นเรื่องส่วนตัวที่ถามตรงๆ เรื่องการคืนเงินยืม 2,000 บาท ผู้ใช้ต้องตอบหรือจัดการทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ถามว่าจะคืนเงิน 2,000 ที่ยืมไปเมื่อไหร่",
+        "calls": [
+          {
+            "messageId": "b0447495-69b9-4ad9-8630-6212400733a7",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1113,
+            "completionTokens": 98,
+            "error": null
+          },
+          {
+            "messageId": "b0447495-69b9-4ad9-8630-6212400733a7",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2698,
+            "completionTokens": 125,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 3909,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่ายืมเงิน 2,000 จะคืนวันไหน",
+        "score": 100,
+        "reason": "เป็นการถามตรงๆ เรื่องเงินที่ยืมและกำหนดวันคืน ผู้ใช้ต้องตอบหรือตัดสินใจทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ถามว่ายืมเงิน 2,000 จะคืนวันไหน",
+        "calls": [
+          {
+            "messageId": "ef7fb983-f91d-4c14-b03c-ce88ffa11ce2",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1144,
+            "completionTokens": 88,
+            "error": null
+          },
+          {
+            "messageId": "ef7fb983-f91d-4c14-b03c-ce88ffa11ce2",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2631,
+            "completionTokens": 123,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5152,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "เพื่อนในกลุ่มถามว่ายืมเงิน 2,000 จะคืนวันไหน",
+        "score": 100,
+        "reason": "เพื่อนแท็กถามตรงเรื่องยืมเงิน 2,000 ว่าจะคืนวันไหน เป็นเรื่องส่วนตัวที่ต้องตอบหรือตัดสินใจ ควรรู้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เพื่อนในกลุ่มถามว่ายืมเงิน 2,000 จะคืนวันไหน",
+        "calls": [
+          {
+            "messageId": "2f0c625d-6b45-407d-a5e6-31e1c6d102f8",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1614,
+            "completionTokens": 144,
+            "error": null
+          },
+          {
+            "messageId": "2f0c625d-6b45-407d-a5e6-31e1c6d102f8",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3366,
+            "completionTokens": 186,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N09": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4843,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ให้เซ็นสัญญาจ้างใหม่ในระบบภายใน 15 พ.ย.",
+        "score": 100,
+        "reason": "เป็นคำขอโดยตรงให้ผู้ใช้เซ็นสัญญาจ้างใหม่ในระบบภายในวันที่ 15 พ.ย. ซึ่งต้องดำเนินการตามกำหนดชัดเจน เข้าเกณฑ์เรื่องงานที่ต้องทำ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · hr] ให้เซ็นสัญญาจ้างใหม่ในระบบภายใน 15 พ.ย.",
+        "calls": [
+          {
+            "messageId": "8156cfae-a589-43bf-a293-6259501c134a",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1301,
+            "completionTokens": 141,
+            "error": null
+          },
+          {
+            "messageId": "8156cfae-a589-43bf-a293-6259501c134a",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3339,
+            "completionTokens": 169,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5055,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "กรุณาเซ็นสัญญาจ้างฉบับใหม่ในระบบภายใน 15 พ.ย.",
+        "score": 100,
+        "reason": "เป็นงานที่ต้องดำเนินการโดยตรง ระบุชัดให้เซ็นสัญญาจ้างฉบับใหม่ในระบบภายในวันที่ 15 พ.ย. ต้องรู้และทำทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · hr] กรุณาเซ็นสัญญาจ้างฉบับใหม่ในระบบภายใน 15 พ.ย.",
+        "calls": [
+          {
+            "messageId": "3214d4fc-08b7-4bf7-9075-5ab9009a6d9f",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2101,
+            "completionTokens": 399,
+            "error": null
+          },
+          {
+            "messageId": "3214d4fc-08b7-4bf7-9075-5ab9009a6d9f",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2826,
+            "completionTokens": 143,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4045,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้เซ็นสัญญาจ้างฉบับใหม่ในระบบภายใน 15 พ.ย.",
+        "score": 100,
+        "reason": "เป็นคำขอโดยตรงให้เซ็นสัญญาจ้างฉบับใหม่ภายใน 15 พ.ย. ซึ่งต้องดำเนินการและตัดสินใจ จึงควรรบกวนผู้ใช้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · hr] ขอให้เซ็นสัญญาจ้างฉบับใหม่ในระบบภายใน 15 พ.ย.",
+        "calls": [
+          {
+            "messageId": "0fd447df-ce40-4d03-ab91-b6a5d169c216",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 816,
+            "completionTokens": 93,
+            "error": null
+          },
+          {
+            "messageId": "0fd447df-ce40-4d03-ab91-b6a5d169c216",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3094,
+            "completionTokens": 172,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N10": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4279,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "เพื่อนร่วมทีมแท็กให้โทรกลับด่วน",
+        "score": 100,
+        "reason": "เป็นการแท็กตรงและขอให้โทรกลับด่วน เป็นงาน/เรื่องที่ต้องทำทันที ตรงกับเงื่อนไขที่ต้องแจ้งผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] เพื่อนร่วมทีมแท็กให้โทรกลับด่วน",
+        "calls": [
+          {
+            "messageId": "c9cc6965-2afa-4e51-bef0-183dbe99e347",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1169,
+            "completionTokens": 85,
+            "error": null
+          },
+          {
+            "messageId": "c9cc6965-2afa-4e51-bef0-183dbe99e347",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2982,
+            "completionTokens": 153,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4507,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ถูกแท็กให้โทรกลับด่วน",
+        "score": 100,
+        "reason": "ถูกแท็กโดยตรงและขอให้โทรกลับด่วน เป็นการสั่งให้ต้องทำทันที ตรงกับเงื่อนไขที่ผู้ใช้ต้องการให้แจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ถูกแท็กให้โทรกลับด่วน",
+        "calls": [
+          {
+            "messageId": "822bc53f-9848-40b4-b9fe-af8832fa5973",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 822,
+            "completionTokens": 89,
+            "error": null
+          },
+          {
+            "messageId": "822bc53f-9848-40b4-b9fe-af8832fa5973",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3418,
+            "completionTokens": 178,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5325,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ถูกแท็กให้โทรกลับด่วน",
+        "score": 100,
+        "reason": "ถูกแท็กตรงและสั่งให้โทรกลับด่วน เป็นการขอให้กระทำทันที ตรงกับเงื่อนไขเรื่องที่ต้องตอบหรือต้องทำ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ถูกแท็กให้โทรกลับด่วน",
+        "calls": [
+          {
+            "messageId": "504ad147-ca37-43e6-a8db-805f87fa383a",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1282,
+            "completionTokens": 72,
+            "error": null
+          },
+          {
+            "messageId": "504ad147-ca37-43e6-a8db-805f87fa383a",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3893,
+            "completionTokens": 218,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N11": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5305,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ช่วยดู log หลัง deploy ใหม่ fail ที่ step migrate",
+        "score": 100,
+        "reason": "เป็นการแท็กถามตรงๆ เรื่องงาน ให้ช่วยดู log หลัง deploy fail ที่ step migrate ต้องตอบหรือลงมือทำทันที ตรงเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ช่วยดู log หลัง deploy ใหม่ fail ที่ step migrate",
+        "calls": [
+          {
+            "messageId": "8f4f21b0-fbfc-49f1-aac3-3dcee30ed03d",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1098,
+            "completionTokens": 102,
+            "error": null
+          },
+          {
+            "messageId": "8f4f21b0-fbfc-49f1-aac3-3dcee30ed03d",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3963,
+            "completionTokens": 265,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4231,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ช่วยดู log ที่ deploy fail ขั้น migrate",
+        "score": 100,
+        "reason": "ข้อความนี้แท็กหาเราโดยตรงและขอให้ช่วยดู log ที่ deploy fail ซึ่งเป็นงานที่ต้องตอบหรือทำทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ช่วยดู log ที่ deploy fail ขั้น migrate",
+        "calls": [
+          {
+            "messageId": "aa105af3-0806-479e-a7f9-1bff6547643f",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1365,
+            "completionTokens": 93,
+            "error": null
+          },
+          {
+            "messageId": "aa105af3-0806-479e-a7f9-1bff6547643f",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2607,
+            "completionTokens": 155,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 3463,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ช่วยดู log ที่ deploy fail ตอน step migrate",
+        "score": 100,
+        "reason": "เป็นข้อความแจ้งงานที่แท็กผู้ใช้โดยตรงและขอให้ช่วยดู log ที่ deploy fail ต้องตอบหรือดำเนินการทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ช่วยดู log ที่ deploy fail ตอน step migrate",
+        "calls": [
+          {
+            "messageId": "34aa6f69-f3de-4182-a4dd-aa16286fd657",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 998,
+            "completionTokens": 96,
+            "error": null
+          },
+          {
+            "messageId": "34aa6f69-f3de-4182-a4dd-aa16286fd657",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2286,
+            "completionTokens": 128,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N12": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4378,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธ สะดวกไหม",
+        "score": 100,
+        "reason": "เป็นการขอเลื่อนนัดสัมภาษณ์ที่ส่งตรงถึงผู้ใช้และถามโดยตรง ต้องตอบรับหรือปฏิเสธ ถือเป็นเรื่องที่ต้องตัดสินใจทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · recruiter] ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธ สะดวกไหม",
+        "calls": [
+          {
+            "messageId": "3a884de2-716b-4994-a8c3-d05c2b9cf315",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1099,
+            "completionTokens": 106,
+            "error": null
+          },
+          {
+            "messageId": "3a884de2-716b-4994-a8c3-d05c2b9cf315",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3125,
+            "completionTokens": 176,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 3885,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธ",
+        "score": 100,
+        "reason": "ข้อความส่งถึงผู้ใช้โดยตรงและขอให้ตอบ/ตัดสินใจเรื่องเลื่อนนัดสัมภาษณ์ ซึ่งเป็นเรื่องที่ต้องตอบหรือตัดสินใจทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · recruiter] ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธ",
+        "calls": [
+          {
+            "messageId": "99902e44-f72a-4e06-8afd-edc7584166a2",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1043,
+            "completionTokens": 102,
+            "error": null
+          },
+          {
+            "messageId": "99902e44-f72a-4e06-8afd-edc7584166a2",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2685,
+            "completionTokens": 143,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4657,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอเลื่อนนัดสัมภาษณ์จากวันอังคารเป็นวันพุธ",
+        "score": 100,
+        "reason": "เป็นการขอเลื่อนนัดสัมภาษณ์ที่ส่งตรงถึงผู้ใช้และต้องการคำตอบหรือการตัดสินใจทันที ตรงกับเงื่อนไขเรื่องงานที่ต้องตอบ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · recruiter] ขอเลื่อนนัดสัมภาษณ์จากวันอังคารเป็นวันพุธ",
+        "calls": [
+          {
+            "messageId": "b3912d1b-c39b-4399-a237-f2899b393eda",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1236,
+            "completionTokens": 121,
+            "error": null
+          },
+          {
+            "messageId": "b3912d1b-c39b-4399-a237-f2899b393eda",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3089,
+            "completionTokens": 160,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N13": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5779,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่าว่างเสาร์นี้ไหม เพื่อจองร้านและขอให้ตอบกลับ",
+        "score": 100,
+        "reason": "เป็นคำถามตรงตัวเรื่องแผนส่วนตัว ต้องตัดสินใจและตอบกลับเพื่อจองร้าน จึงควรรบกวนผู้ใช้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ถามว่าว่างเสาร์นี้ไหม เพื่อจองร้านและขอให้ตอบกลับ",
+        "calls": [
+          {
+            "messageId": "a1f54e06-aa43-4892-b8cb-bf6b85cc54df",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2052,
+            "completionTokens": 303,
+            "error": null
+          },
+          {
+            "messageId": "a1f54e06-aa43-4892-b8cb-bf6b85cc54df",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3591,
+            "completionTokens": 210,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 6930,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่าชายว่างวันเสาร์ไหม เพื่อจองร้านและให้ตอบ",
+        "score": 95,
+        "reason": "ถามตรงๆ เรื่องว่างเสาร์นี้หรือไม่ เพื่อจองร้านและขอให้ตอบ เป็นเรื่องส่วนตัวที่ต้องตอบ/ตัดสินใจ ตรงเงื่อนไขผู้ใช้ ไม่ใช่โฆษณาหรือข่าว",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ถามว่าชายว่างวันเสาร์ไหม เพื่อจองร้านและให้ตอบ",
+        "calls": [
+          {
+            "messageId": "8c382ffa-cb30-4714-b768-fd9570093ee9",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1594,
+            "completionTokens": 152,
+            "error": null
+          },
+          {
+            "messageId": "8c382ffa-cb30-4714-b768-fd9570093ee9",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 5120,
+            "completionTokens": 323,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5110,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่าว่างเสาร์นี้ไหม เพื่อจองร้านและขอให้ตอบ",
+        "score": 95,
+        "reason": "ถามตรงๆ ว่าว่างเสาร์นี้ไหมเพื่อจองร้านและขอให้ตอบ เป็นเรื่องส่วนตัวที่ต้องตัดสินใจและตอบกลับ ไม่ใช่โฆษณาหรือข่าวทั่วไป",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ถามว่าว่างเสาร์นี้ไหม เพื่อจองร้านและขอให้ตอบ",
+        "calls": [
+          {
+            "messageId": "edab8d69-7c05-432d-8c84-a9545c1b55b0",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1285,
+            "completionTokens": 177,
+            "error": null
+          },
+          {
+            "messageId": "edab8d69-7c05-432d-8c84-a9545c1b55b0",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3572,
+            "completionTokens": 203,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "N14": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 6542,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ตอบรับข้อเสนอแต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด",
+        "score": 95,
+        "reason": "ข้อความนี้ถามตรงๆ ขอแก้ข้อ 3 เป็นจ่ายสองงวด ต้องให้ผู้ใช้ตอบหรือตัดสินใจ เป็นเรื่องที่ต้องดำเนินการ ไม่ใช่โฆษณา ข่าว หรือคุยเล่น",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ตอบรับข้อเสนอแต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด",
+        "calls": [
+          {
+            "messageId": "8a7ac507-1ddf-4db4-93af-86e3e423b277",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1725,
+            "completionTokens": 190,
+            "error": null
+          },
+          {
+            "messageId": "8a7ac507-1ddf-4db4-93af-86e3e423b277",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4712,
+            "completionTokens": 260,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 6545,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ตอบตกลงตามข้อเสนอ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด",
+        "score": 100,
+        "reason": "ข้อความนี้ถามเราตรงๆ ว่าขอแก้ข้อ 3 เป็นจ่ายสองงวดได้ไหม ต้องตอบหรือตัดสินใจทันที ไม่ใช่โฆษณา ข่าว หรือคุยเล่น",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ตอบตกลงตามข้อเสนอ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด",
+        "calls": [
+          {
+            "messageId": "9352dd83-8e71-4230-b3ee-16c1239c8da6",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1622,
+            "completionTokens": 97,
+            "error": null
+          },
+          {
+            "messageId": "9352dd83-8e71-4230-b3ee-16c1239c8da6",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4754,
+            "completionTokens": 290,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 6243,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ตอบรับข้อเสนอ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด",
+        "score": 100,
+        "reason": "ข้อความนี้เป็นการตอบรับและขอแก้ไขเงื่อนไขข้อ 3 เป็นการจ่ายสองงวด พร้อมถามความเห็นโดยตรง จึงเป็นเรื่องที่ผู้ใช้ต้องตอบหรือตัดสินใจทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ตอบรับข้อเสนอ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด",
+        "calls": [
+          {
+            "messageId": "ba607725-de31-46b1-8795-a0b9e7d9c0fa",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1603,
+            "completionTokens": 192,
+            "error": null
+          },
+          {
+            "messageId": "ba607725-de31-46b1-8795-a0b9e7d9c0fa",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4445,
+            "completionTokens": 313,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H01": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4270,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้ ชวนสมัคร",
+        "score": 0,
+        "reason": "เป็นโฆษณาโปรโมชันลดราคาและชวนสมัคร ไม่ตรงเงื่อนไขที่ผู้ใช้ระบุว่าต้องการเฉพาะเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · deals] โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้ ชวนสมัคร",
+        "calls": [
+          {
+            "messageId": "b6f09865-a59e-4957-851f-5f968727f537",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 995,
+            "completionTokens": 108,
+            "error": null
+          },
+          {
+            "messageId": "b6f09865-a59e-4957-851f-5f968727f537",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3132,
+            "completionTokens": 149,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4260,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้ ชวนสมัคร",
+        "score": 0,
+        "reason": "เป็นโฆษณาโปรโมชัน ไม่ตรงเงื่อนไขที่ผู้ใช้ต้องการให้แจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · deals] โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้ ชวนสมัคร",
+        "calls": [
+          {
+            "messageId": "7905f1ea-9eba-4d48-8c4c-492a94d58f9c",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1265,
+            "completionTokens": 107,
+            "error": null
+          },
+          {
+            "messageId": "7905f1ea-9eba-4d48-8c4c-492a94d58f9c",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2758,
+            "completionTokens": 152,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4356,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้ ชวนสมัคร",
+        "score": 0,
+        "reason": "เป็นโฆษณาโปรโมชันลดราคาและชวนสมัคร ตรงกับข้อยกเว้น 'ไม่เอาโฆษณา' จึงไม่ควรรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · deals] โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้ ชวนสมัคร",
+        "calls": [
+          {
+            "messageId": "dfdb74be-13d5-4fa9-b5e0-7e74514492a5",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1374,
+            "completionTokens": 104,
+            "error": null
+          },
+          {
+            "messageId": "dfdb74be-13d5-4fa9-b5e0-7e74514492a5",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2854,
+            "completionTokens": 139,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H02": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5184,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "จดหมายข่าวสรุปข่าวเทคโนโลยีประจำสัปดาห์",
+        "score": 0,
+        "reason": "เป็นจดหมายข่าวสรุปข่าวเทคโนโลยีทั่วไป ไม่ได้ถามหรือสั่งให้ตอบ/ทำ/ตัดสินใจ และไม่เกี่ยวกับงานหรือเรื่องส่วนตัวโดยตรง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · news] จดหมายข่าวสรุปข่าวเทคโนโลยีประจำสัปดาห์",
+        "calls": [
+          {
+            "messageId": "ed0172d2-64a1-47ef-9d0f-cda14c7daad7",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2432,
+            "completionTokens": 311,
+            "error": null
+          },
+          {
+            "messageId": "ed0172d2-64a1-47ef-9d0f-cda14c7daad7",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2611,
+            "completionTokens": 150,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4663,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "สรุปข่าวเทคโนโลยีประจำสัปดาห์จากจดหมายข่าว",
+        "score": 0,
+        "reason": "เป็นจดหมายข่าวสรุปข่าวเทคโนโลยีทั่วไป ไม่มีการถามตรง ๆ ไม่ต้องตอบ ต้องทำ หรือตัดสินใจ จึงไม่ตรงเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · news] สรุปข่าวเทคโนโลยีประจำสัปดาห์จากจดหมายข่าว",
+        "calls": [
+          {
+            "messageId": "29646da2-1104-463c-a7e7-57bccbcaba24",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2095,
+            "completionTokens": 225,
+            "error": null
+          },
+          {
+            "messageId": "29646da2-1104-463c-a7e7-57bccbcaba24",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2428,
+            "completionTokens": 151,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 16600,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "จดหมายข่าวสรุปข่าวเทคโนโลยีประจำสัปดาห์",
+        "score": 0,
+        "reason": "เป็นจดหมายข่าวสรุปข่าวเทคโนโลยีทั่วไป ไม่มีการถามตรง ๆ ไม่ต้องตอบ ทำ หรือตัดสินใจเฉพาะบุคคล จึงไม่ตรงเงื่อนไขการแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · news] จดหมายข่าวสรุปข่าวเทคโนโลยีประจำสัปดาห์",
+        "calls": [
+          {
+            "messageId": "0bfc218d-e79c-49ec-9c89-a36008a1bd12",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 14457,
+            "completionTokens": 2418,
+            "error": null
+          },
+          {
+            "messageId": "0bfc218d-e79c-49ec-9c89-a36008a1bd12",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2009,
+            "completionTokens": 137,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H03": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 3674,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "ทักทายทุกคนในกลุ่มและอวยพรวันจันทร์",
+        "score": 0,
+        "reason": "เป็นเพียงคำทักทายอวยพรวันจันทร์ในกลุ่ม ไม่มีการถามตรง ๆ ไม่ต้องตอบ ทำ หรือตัดสินใจ จึงไม่ควรรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ทักทายทุกคนในกลุ่มและอวยพรวันจันทร์",
+        "calls": [
+          {
+            "messageId": "30a60966-4af5-4899-9cef-3b8337f1ff17",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1322,
+            "completionTokens": 128,
+            "error": null
+          },
+          {
+            "messageId": "30a60966-4af5-4899-9cef-3b8337f1ff17",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2198,
+            "completionTokens": 150,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4130,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "ทักทายทุกคนในกลุ่ม สวัสดีวันจันทร์",
+        "score": 0,
+        "reason": "เป็นเพียงคำทักทายชวนคุยทั่วไป ไม่มีการถาม ตอบ ต้องทำ หรือต้องตัดสินใจ จึงไม่ควรแจ้งเตือนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ทักทายทุกคนในกลุ่ม สวัสดีวันจันทร์",
+        "calls": [
+          {
+            "messageId": "a16878e6-d660-42d1-b490-27b072af9030",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1161,
+            "completionTokens": 115,
+            "error": null
+          },
+          {
+            "messageId": "a16878e6-d660-42d1-b490-27b072af9030",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2830,
+            "completionTokens": 151,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 3702,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "ทักทายทุกคนในกลุ่มสวัสดีวันจันทร์",
+        "score": 0,
+        "reason": "เป็นเพียงคำทักทายคุยเล่น ไม่มีการถามตรงๆ หรือเรื่องที่ต้องตอบ ตัดสินใจ หรือดำเนินการใด",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ทักทายทุกคนในกลุ่มสวัสดีวันจันทร์",
+        "calls": [
+          {
+            "messageId": "dd89ffdb-7382-4b81-8181-38dd4f3a2981",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1244,
+            "completionTokens": 86,
+            "error": null
+          },
+          {
+            "messageId": "dd89ffdb-7382-4b81-8181-38dd4f3a2981",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2335,
+            "completionTokens": 131,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H04": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 23584,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่ามีใครสนใจสั่งชานมไข่มุกบ้าง",
+        "score": 30,
+        "reason": "เป็นคำถามชวนสั่งชานมไข่มุกในกลุ่ม ไม่เฉพาะเจาะจงผู้ใช้ ไม่เร่งด่วน และค่อนไปทางคุยเล่น/ธุระส่วนตัวเล็กน้อย ต้องตอบเฉพาะเมื่อสนใจ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ถามว่ามีใครสนใจสั่งชานมไข่มุกบ้าง",
+        "calls": [
+          {
+            "messageId": "1db9294e-9425-46b0-88a4-2ce4b7f3b534",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1620,
+            "completionTokens": 157,
+            "error": null
+          },
+          {
+            "messageId": "1db9294e-9425-46b0-88a4-2ce4b7f3b534",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 21828,
+            "completionTokens": 1541,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 7900,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่ามีใครสนใจสั่งชานมไข่มุกบ้าง",
+        "score": 15,
+        "reason": "เป็นเพียงการชวนสั่งชานมไข่มุกในกลุ่ม เชิงสอบถามทั่วไป/คุยเล่น ไม่ใช่เรื่องงานหรือเรื่องส่วนตัวที่ต้องตอบหรือตัดสินใจสำคัญ และ @All ไม่ได้ถามเราโดยตรง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ถามว่ามีใครสนใจสั่งชานมไข่มุกบ้าง",
+        "calls": [
+          {
+            "messageId": "43bad840-c9d3-4845-84e2-822d5e0be4da",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1270,
+            "completionTokens": 142,
+            "error": null
+          },
+          {
+            "messageId": "43bad840-c9d3-4845-84e2-822d5e0be4da",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 6520,
+            "completionTokens": 414,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 9090,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่ามีใครสนใจสั่งชานมไข่มุกไหม",
+        "score": 15,
+        "reason": "เป็นเพียงการชวนสั่งชานมไข่มุกในกลุ่ม ไม่ได้ถามตรงตัวหรือต้องตัดสินใจใด ๆ เว้นแต่สนใจ จึงไม่ควรรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ถามว่ามีใครสนใจสั่งชานมไข่มุกไหม",
+        "calls": [
+          {
+            "messageId": "ed4e8e99-908a-4788-b9c2-21e3ca26d310",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1418,
+            "completionTokens": 133,
+            "error": null
+          },
+          {
+            "messageId": "ed4e8e99-908a-4788-b9c2-21e3ca26d310",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 7368,
+            "completionTokens": 493,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H05": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4616,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "เล่าว่าเมื่อวานไปเที่ยวชายหาด สวยมาก",
+        "score": 0,
+        "reason": "เป็นเพียงการเล่าเรื่องส่วนตัวแบบคุยเล่น ไม่มีการถามหรือขอให้ตอบ ตัดสินใจ หรือทำอะไร จึงไม่เข้าเงื่อนไขที่ต้องแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เล่าว่าเมื่อวานไปเที่ยวชายหาด สวยมาก",
+        "calls": [
+          {
+            "messageId": "f5b69955-0007-4133-9018-486ffa0cd137",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1712,
+            "completionTokens": 188,
+            "error": null
+          },
+          {
+            "messageId": "f5b69955-0007-4133-9018-486ffa0cd137",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2649,
+            "completionTokens": 148,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 3244,
+        "addressed": "no",
+        "meaning": "chatter",
+        "summary": "สมาชิกในกลุ่มเล่าว่าเมื่อวานไปเที่ยวชายหาดมา สวยมาก",
+        "score": 0,
+        "reason": "เป็นข้อความคุยเล่นเล่าเรื่องส่วนตัว ไม่มีการถาม ตอบ ต้องทำ หรือต้องตัดสินใจ และไม่เกี่ยวข้องกับผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] สมาชิกในกลุ่มเล่าว่าเมื่อวานไปเที่ยวชายหาดมา สวยมาก",
+        "calls": [
+          {
+            "messageId": "569f5a2f-2f3d-41e7-9ad2-1c506da4efbd",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 938,
+            "completionTokens": 84,
+            "error": null
+          },
+          {
+            "messageId": "569f5a2f-2f3d-41e7-9ad2-1c506da4efbd",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2065,
+            "completionTokens": 118,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 3977,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "เล่าว่าเมื่อวานไปเที่ยวชายหาดมา สวยมาก",
+        "score": 0,
+        "reason": "เป็นเพียงการเล่าเรื่องส่วนตัวแบบคุยเล่น ไม่มีการถามตรง ๆ ไม่ต้องตอบ ตัดสินใจ หรือทำอะไร",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เล่าว่าเมื่อวานไปเที่ยวชายหาดมา สวยมาก",
+        "calls": [
+          {
+            "messageId": "42989469-196e-453a-accf-c919199b8a82",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1143,
+            "completionTokens": 136,
+            "error": null
+          },
+          {
+            "messageId": "42989469-196e-453a-accf-c919199b8a82",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2704,
+            "completionTokens": 137,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H06": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 7947,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แจ้งตารางเวรเดือนธันวาคมเพื่อทราบ ไม่ต้องตอบกลับ",
+        "score": 0,
+        "reason": "เป็นเพียงแจ้งข้อมูลตารางเวรเพื่อทราบ ไม่ต้องตอบกลับหรือตัดสินใจใด จึงไม่ตรงกับเงื่อนไขที่ต้องการให้แจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · admin] แจ้งตารางเวรเดือนธันวาคมเพื่อทราบ ไม่ต้องตอบกลับ",
+        "calls": [
+          {
+            "messageId": "106b44a4-f6c1-47ee-9646-f0c0cb8ca8bd",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 4056,
+            "completionTokens": 587,
+            "error": null
+          },
+          {
+            "messageId": "106b44a4-f6c1-47ee-9646-f0c0cb8ca8bd",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3635,
+            "completionTokens": 243,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 14412,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ",
+        "score": 0,
+        "reason": "เป็นเพียงแจ้งเพื่อทราบตารางเวร ไม่ต้องตอบกลับ ไม่ต้องทำหรือตัดสินใจ และไม่มีการถามตรง ๆ จึงไม่เข้าข่ายต้องรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · admin] แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ",
+        "calls": [
+          {
+            "messageId": "cb3d02a6-0ca4-4926-85b5-3c83062c03f6",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 8821,
+            "completionTokens": 1356,
+            "error": null
+          },
+          {
+            "messageId": "cb3d02a6-0ca4-4926-85b5-3c83062c03f6",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 5425,
+            "completionTokens": 354,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 7743,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ",
+        "score": 0,
+        "reason": "เป็นเพียงแจ้งข้อมูลตารางเวรและระบุว่าไม่ต้องตอบกลับ ไม่มีสิ่งที่ต้องตอบ ทำ หรือตัดสินใจ จึงไม่ตรงกับเงื่อนไขที่ต้องการให้รบกวน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · admin] แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ",
+        "calls": [
+          {
+            "messageId": "03339080-af5f-4979-98bf-e2d236208967",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2891,
+            "completionTokens": 388,
+            "error": null
+          },
+          {
+            "messageId": "03339080-af5f-4979-98bf-e2d236208967",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4724,
+            "completionTokens": 313,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H07": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 7647,
+        "addressed": "yes",
+        "meaning": "spam",
+        "summary": "อีเมลแจ้งบัญชีจะถูกระงับ ให้คลิกลิงก์ยืนยันตัวตน",
+        "score": 0,
+        "reason": "เป็นสแปม/ฟิชชิ่งหลอกให้คลิกลิงก์ ไม่ใช่เรื่องจริงที่ต้องตอบหรือตัดสินใจ ไม่ตรงเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · security] อีเมลแจ้งบัญชีจะถูกระงับ ให้คลิกลิงก์ยืนยันตัวตน",
+        "calls": [
+          {
+            "messageId": "54b41ce1-0247-429c-a5c7-81a22a11b2db",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1091,
+            "completionTokens": 165,
+            "error": null
+          },
+          {
+            "messageId": "54b41ce1-0247-429c-a5c7-81a22a11b2db",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 6343,
+            "completionTokens": 393,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 9581,
+        "addressed": "yes",
+        "meaning": "spam",
+        "summary": "อีเมลแจ้งบัญชีจะถูกระงับให้คลิกลิงก์ยืนยันตัวตน",
+        "score": 0,
+        "reason": "เป็นสแปม/ฟิชชิงหลอกให้คลิกลิงก์ยืนยันตัวตน ไม่ใช่เรื่องจริงที่ต้องตอบ ทำ หรือตัดสินใจ จึงไม่ควรแจ้งเตือนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · security] อีเมลแจ้งบัญชีจะถูกระงับให้คลิกลิงก์ยืนยันตัวตน",
+        "calls": [
+          {
+            "messageId": "a4ab01d1-fb26-4d85-8cd9-0c969aaa64cc",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2163,
+            "completionTokens": 298,
+            "error": null
+          },
+          {
+            "messageId": "a4ab01d1-fb26-4d85-8cd9-0c969aaa64cc",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 7299,
+            "completionTokens": 534,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 6405,
+        "addressed": "yes",
+        "meaning": "spam",
+        "summary": "อีเมลแจ้งบัญชีจะถูกระงับ ให้คลิกลิงก์ยืนยันตัวตน",
+        "score": 0,
+        "reason": "เป็นอีเมลสแปมหลอกให้คลิกลิงก์ยืนยันตัวตน ไม่ใช่เรื่องที่ต้องตอบหรือตัดสินใจจริง และไม่ตรงกับความต้องการของผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · security] อีเมลแจ้งบัญชีจะถูกระงับ ให้คลิกลิงก์ยืนยันตัวตน",
+        "calls": [
+          {
+            "messageId": "abfeb0cc-908b-4211-ae26-28abb002ab41",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1453,
+            "completionTokens": 150,
+            "error": null
+          },
+          {
+            "messageId": "abfeb0cc-908b-4211-ae26-28abb002ab41",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4770,
+            "completionTokens": 299,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H08": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4782,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "เพื่อนแท็กแล้วหัวเราะว่าฮามาก",
+        "score": 0,
+        "reason": "เป็นข้อความคุยเล่นหัวเราะ ไม่มีการถาม ตอบ หรือขอให้ทำ/ตัดสินใจ จึงไม่ตรงเงื่อนไขที่ต้องแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เพื่อนแท็กแล้วหัวเราะว่าฮามาก",
+        "calls": [
+          {
+            "messageId": "59e1a0f7-336c-4ebc-b04b-b9271ba0bca4",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 869,
+            "completionTokens": 85,
+            "error": null
+          },
+          {
+            "messageId": "59e1a0f7-336c-4ebc-b04b-b9271ba0bca4",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3708,
+            "completionTokens": 240,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4547,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "แท็กสมชายแล้วหัวเราะว่าฮามาก",
+        "score": 0,
+        "reason": "เป็นข้อความคุยเล่นหัวเราะ ไม่มีการถาม ตอบ หรือต้องตัดสินใจใด ๆ ตรงกับเงื่อนไขไม่ควรรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] แท็กสมชายแล้วหัวเราะว่าฮามาก",
+        "calls": [
+          {
+            "messageId": "54015ec3-6e03-40e6-9ee1-6bb305695b71",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1343,
+            "completionTokens": 103,
+            "error": null
+          },
+          {
+            "messageId": "54015ec3-6e03-40e6-9ee1-6bb305695b71",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2745,
+            "completionTokens": 152,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4438,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "แท็กชื่อแล้วหัวเราะ ฮามากกับเรื่องตลก",
+        "score": 0,
+        "reason": "เป็นข้อความคุยเล่น แท็กชื่อแล้วหัวเราะ ไม่มีการถาม ตอบสนอง หรือขอให้ตัดสินใจ จึงไม่ควรแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] แท็กชื่อแล้วหัวเราะ ฮามากกับเรื่องตลก",
+        "calls": [
+          {
+            "messageId": "3131f76f-02d1-49fc-9c4e-e8581ebe2cf6",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1005,
+            "completionTokens": 102,
+            "error": null
+          },
+          {
+            "messageId": "3131f76f-02d1-49fc-9c4e-e8581ebe2cf6",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3285,
+            "completionTokens": 171,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H09": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4789,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "สมาชิกในกลุ่มตอบกลับด้วยอิโมจิ👍รับทราบ",
+        "score": 0,
+        "reason": "เป็นเพียงอีโมจิรับทราบในกลุ่ม ไม่มีการถาม ตอบ ต้องทำ หรือต้องตัดสินใจ ถือเป็นคุยเล่น/ตอบรับ ไม่ควรแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกในกลุ่มตอบกลับด้วยอิโมจิ👍รับทราบ",
+        "calls": [
+          {
+            "messageId": "f89d7c89-65a9-409b-92da-df30e4b400b7",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1291,
+            "completionTokens": 107,
+            "error": null
+          },
+          {
+            "messageId": "f89d7c89-65a9-409b-92da-df30e4b400b7",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3363,
+            "completionTokens": 189,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4603,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "ตอบกลับข้อความผู้ใช้ด้วยอีโมจิถูกใจ 👍",
+        "score": 0,
+        "reason": "เป็นเพียงอีโมจิตอบกลับ ไม่มีการถาม ต้องการให้ทำ หรือตัดสินใจใด จึงไม่เข้าข่ายที่ต้องแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ตอบกลับข้อความผู้ใช้ด้วยอีโมจิถูกใจ 👍",
+        "calls": [
+          {
+            "messageId": "07d29cc3-60d8-43ca-a749-271c2f9e2679",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1318,
+            "completionTokens": 100,
+            "error": null
+          },
+          {
+            "messageId": "07d29cc3-60d8-43ca-a749-271c2f9e2679",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3139,
+            "completionTokens": 176,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 3695,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "ตอบกลับด้วยอิโมจิถูกใจ 👍",
+        "score": 0,
+        "reason": "เป็นเพียงอิโมจิแสดงความรู้สึก ตอบกลับเชิงคุยเล่น ไม่มีการถาม ต้องทำ หรือต้องตัดสินใจใด ๆ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ตอบกลับด้วยอิโมจิถูกใจ 👍",
+        "calls": [
+          {
+            "messageId": "cba72414-7003-4e1e-b494-3abd37841d3c",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1226,
+            "completionTokens": 106,
+            "error": null
+          },
+          {
+            "messageId": "cba72414-7003-4e1e-b494-3abd37841d3c",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2335,
+            "completionTokens": 133,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H10": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4201,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาขายบ้านมือสองราคาถูก ให้สนใจทักแชท",
+        "score": 0,
+        "reason": "เป็นโฆษณาขายบ้าน ไม่ใช่ข้อความที่ถามหรือต้องการให้ตัดสินใจโดยตรง จึงไม่เข้าข่ายที่ต้องแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · หมู่บ้านสุขใจ] โฆษณาขายบ้านมือสองราคาถูก ให้สนใจทักแชท",
+        "calls": [
+          {
+            "messageId": "22a6b528-f55d-46c1-98fc-3ec0148adb83",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1453,
+            "completionTokens": 199,
+            "error": null
+          },
+          {
+            "messageId": "22a6b528-f55d-46c1-98fc-3ec0148adb83",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2468,
+            "completionTokens": 115,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4483,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาขายบ้านมือสองราคาถูก สนใจทักแชท",
+        "score": 0,
+        "reason": "เป็นโฆษณาขายบ้าน ไม่ตรงเงื่อนไขที่ให้แจ้งเฉพาะเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ และไม่ใช่เรื่องงานหรือส่วนตัวที่ถามตรงๆ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · หมู่บ้านสุขใจ] โฆษณาขายบ้านมือสองราคาถูก สนใจทักแชท",
+        "calls": [
+          {
+            "messageId": "84b6b024-0ac8-480e-aab3-ff6e4a58f7b3",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1568,
+            "completionTokens": 151,
+            "error": null
+          },
+          {
+            "messageId": "84b6b024-0ac8-480e-aab3-ff6e4a58f7b3",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2748,
+            "completionTokens": 141,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4084,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาขายบ้านมือสองราคาถูก สนใจทักแชท",
+        "score": 0,
+        "reason": "เป็นโฆษณาขายบ้าน ไม่ใช่เรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจโดยตรง และไม่ตรงเงื่อนไขที่ผู้ใช้ระบุ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · หมู่บ้านสุขใจ] โฆษณาขายบ้านมือสองราคาถูก สนใจทักแชท",
+        "calls": [
+          {
+            "messageId": "9f6936eb-e1e2-4f49-a7eb-98ee3505d363",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1511,
+            "completionTokens": 147,
+            "error": null
+          },
+          {
+            "messageId": "9f6936eb-e1e2-4f49-a7eb-98ee3505d363",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2391,
+            "completionTokens": 133,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H11": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 6232,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แจ้งใบเสร็จชำระเงินเดือนพฤศจิกายน",
+        "score": 0,
+        "reason": "เป็นเพียงการแจ้งข้อมูลใบเสร็จชำระเงิน ไม่มีการถามให้ตอบ ทำ หรือตัดสินใจ จึงไม่ตรงเงื่อนไขที่ผู้ใช้กำหนด",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · billing] แจ้งใบเสร็จชำระเงินเดือนพฤศจิกายน",
+        "calls": [
+          {
+            "messageId": "388b1bc0-25be-41bf-91b6-070592050847",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1329,
+            "completionTokens": 103,
+            "error": null
+          },
+          {
+            "messageId": "388b1bc0-25be-41bf-91b6-070592050847",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4771,
+            "completionTokens": 319,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 9532,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แจ้งใบเสร็จชำระเงินเดือนพฤศจิกายน",
+        "score": 0,
+        "reason": "เป็นเพียงใบเสร็จแจ้งข้อมูลการชำระเงิน ไม่มีการถาม ตอบ ต้องทำ หรือตัดสินใจ จึงไม่ตรงเงื่อนไข",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · billing] แจ้งใบเสร็จชำระเงินเดือนพฤศจิกายน",
+        "calls": [
+          {
+            "messageId": "eb8bfa0d-8a76-4962-a02f-4d868bc32053",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1180,
+            "completionTokens": 113,
+            "error": null
+          },
+          {
+            "messageId": "eb8bfa0d-8a76-4962-a02f-4d868bc32053",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 8140,
+            "completionTokens": 596,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 7868,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "ใบเสร็จชำระเงินเดือนพฤศจิกายนจากสตรีม",
+        "score": 15,
+        "reason": "เป็นเพียงใบเสร็จแจ้งข้อมูลการชำระเงิน ไม่มีการถามตรง ๆ หรือสั่งให้ตอบ ทำ หรือตัดสินใจ จึงไม่ตรงกับเงื่อนไขที่ต้องรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · billing] ใบเสร็จชำระเงินเดือนพฤศจิกายนจากสตรีม",
+        "calls": [
+          {
+            "messageId": "2f31b927-9269-4298-9d2c-0bec6df65844",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 902,
+            "completionTokens": 100,
+            "error": null
+          },
+          {
+            "messageId": "2f31b927-9269-4298-9d2c-0bec6df65844",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 6796,
+            "completionTokens": 471,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H12": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5171,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แชร์บทความ 10 เทคนิคเขียนโค้ดสะอาดถึงทุกคนในกลุ่ม",
+        "score": 0,
+        "reason": "เป็นเพียงการแชร์บทความให้ทุกคนอ่าน ไม่มีการถาม ต้องทำ หรือต้องตัดสินใจโดยตรง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แชร์บทความ 10 เทคนิคเขียนโค้ดสะอาดถึงทุกคนในกลุ่ม",
+        "calls": [
+          {
+            "messageId": "d2fdeb62-bb03-4882-a9bb-4490099a2ae4",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1221,
+            "completionTokens": 104,
+            "error": null
+          },
+          {
+            "messageId": "d2fdeb62-bb03-4882-a9bb-4490099a2ae4",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3757,
+            "completionTokens": 195,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4337,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาดในกลุ่ม",
+        "score": 0,
+        "reason": "เป็นเพียงการแชร์บทความทั่วไป ไม่มีการถามหรือขอให้ตอบ/ทำ/ตัดสินใจโดยตรง จึงไม่เข้าข่ายที่ต้องรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาดในกลุ่ม",
+        "calls": [
+          {
+            "messageId": "f0d20237-0f5a-4fd7-b768-babd2771265a",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1110,
+            "completionTokens": 133,
+            "error": null
+          },
+          {
+            "messageId": "f0d20237-0f5a-4fd7-b768-babd2771265a",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3097,
+            "completionTokens": 167,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5279,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาด",
+        "score": 0,
+        "reason": "เป็นเพียงการแชร์บทความความรู้ทั่วไป ไม่มีการถาม ตอบ หรือขอให้ตัดสินใจโดยตรง ตรงกับประเภทข่าว/บทความที่ผู้ใช้ไม่ต้องการให้แจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาด",
+        "calls": [
+          {
+            "messageId": "52bc3e3a-11aa-4f82-a070-a394483a22a4",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1052,
+            "completionTokens": 109,
+            "error": null
+          },
+          {
+            "messageId": "52bc3e3a-11aa-4f82-a070-a394483a22a4",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4080,
+            "completionTokens": 271,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H13": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4987,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "ประกาศแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+        "score": 0,
+        "reason": "เป็นประกาศแสดงความยินดีทั่วไป ไม่ได้ถามหรือขอให้ผู้ใช้ตอบ ทำ หรือตัดสินใจ และไม่ได้ส่งถึงผู้ใช้โดยตรง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · all-staff] ประกาศแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+        "calls": [
+          {
+            "messageId": "761783e8-f591-4f34-b671-c58cd8bfe1d6",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1765,
+            "completionTokens": 170,
+            "error": null
+          },
+          {
+            "messageId": "761783e8-f591-4f34-b671-c58cd8bfe1d6",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3064,
+            "completionTokens": 175,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 7528,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "ประกาศแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+        "score": 0,
+        "reason": "เป็นประกาศแสดงความยินดีกับทีมขาย ไม่มีการถามหรือขอให้ตอบ/ทำ/ตัดสินใจโดยตรง จึงไม่เข้าข่ายที่ต้องรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · all-staff] ประกาศแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+        "calls": [
+          {
+            "messageId": "0543f51a-a926-4e2c-b01e-efb2e2f25d51",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2388,
+            "completionTokens": 293,
+            "error": null
+          },
+          {
+            "messageId": "0543f51a-a926-4e2c-b01e-efb2e2f25d51",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 5003,
+            "completionTokens": 353,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5572,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "ประกาศแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+        "score": 10,
+        "reason": "เป็นประกาศแสดงความยินดีทั่วไปในกลุ่ม ไม่มีการถามหรือมอบหมายให้ผู้ใช้ตอบ ทำ หรือตัดสินใจ จึงไม่เข้าข่ายต้องรบกวน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · all-staff] ประกาศแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+        "calls": [
+          {
+            "messageId": "411fc532-93cc-4392-8cc2-d63115a70029",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2315,
+            "completionTokens": 272,
+            "error": null
+          },
+          {
+            "messageId": "411fc532-93cc-4392-8cc2-d63115a70029",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3080,
+            "completionTokens": 157,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H14": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5818,
+        "addressed": "yes",
+        "meaning": "spam",
+        "summary": "แท็กสมชายให้ส่งต่อข้อความ 10 คน แล้วจะโชคดี",
+        "score": 0,
+        "reason": "เป็นข้อความลูกโซ่/สแปมชวนส่งต่อ ไม่ใช่เรื่องงานหรือเรื่องส่วนตัวที่ต้องตอบ ตัดสินใจ หรือทำจริง จึงไม่ควรรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] แท็กสมชายให้ส่งต่อข้อความ 10 คน แล้วจะโชคดี",
+        "calls": [
+          {
+            "messageId": "5b5628a9-3614-4388-b526-ad32ab06d0ba",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1554,
+            "completionTokens": 175,
+            "error": null
+          },
+          {
+            "messageId": "5b5628a9-3614-4388-b526-ad32ab06d0ba",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 4104,
+            "completionTokens": 247,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 6650,
+        "addressed": "yes",
+        "meaning": "spam",
+        "summary": "ขอให้ส่งต่อข้อความให้ 10 คนเพื่อโชคดี",
+        "score": 0,
+        "reason": "เป็นข้อความลูกโซ่/สแปมที่ขอให้ส่งต่อเพื่อโชคดี ไม่ใช่เรื่องที่ต้องตอบ ตัดสินใจ หรือทำจริง จึงไม่ควรแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ขอให้ส่งต่อข้อความให้ 10 คนเพื่อโชคดี",
+        "calls": [
+          {
+            "messageId": "c7f6e9ae-7e6c-422f-8a56-9924464f1674",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 2837,
+            "completionTokens": 316,
+            "error": null
+          },
+          {
+            "messageId": "c7f6e9ae-7e6c-422f-8a56-9924464f1674",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3684,
+            "completionTokens": 221,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5049,
+        "addressed": "yes",
+        "meaning": "spam",
+        "summary": "ขอให้ส่งต่อข้อความให้ 10 คนแล้วจะโชคดี",
+        "score": 0,
+        "reason": "เป็นข้อความลูกโซ่ชวนส่งต่อ ไม่ใช่เรื่องงานหรือเรื่องส่วนตัวที่ต้องตอบหรือตัดสินใจ จึงไม่ควรรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ขอให้ส่งต่อข้อความให้ 10 คนแล้วจะโชคดี",
+        "calls": [
+          {
+            "messageId": "d5ebcd5d-e8da-4152-9109-ccf752e3edc8",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1954,
+            "completionTokens": 213,
+            "error": null
+          },
+          {
+            "messageId": "d5ebcd5d-e8da-4152-9109-ccf752e3edc8",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2961,
+            "completionTokens": 151,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H15": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 3592,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องมีคนค้ำ",
+        "score": 0,
+        "reason": "เป็นโฆษณาสินเชื่อ ไม่ใช่เรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ และไม่มีการถามตรง ๆ จึงไม่ควรแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · loan] โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องมีคนค้ำ",
+        "calls": [
+          {
+            "messageId": "4bbe4110-2a4b-4dba-ac20-029a19480803",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 916,
+            "completionTokens": 117,
+            "error": null
+          },
+          {
+            "messageId": "4bbe4110-2a4b-4dba-ac20-029a19480803",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2527,
+            "completionTokens": 150,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 3948,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องมีคนค้ำ",
+        "score": 0,
+        "reason": "เป็นโฆษณาสินเชื่อ ไม่เข้าข่ายเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ ผู้ใช้ระบุไม่เอาโฆษณา จึงไม่ควรรบกวน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · loan] โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องมีคนค้ำ",
+        "calls": [
+          {
+            "messageId": "f7c6a4d0-458c-4cbe-acdd-a780fe362c24",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 858,
+            "completionTokens": 115,
+            "error": null
+          },
+          {
+            "messageId": "f7c6a4d0-458c-4cbe-acdd-a780fe362c24",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2862,
+            "completionTokens": 143,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4141,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องมีคนค้ำ",
+        "score": 0,
+        "reason": "เป็นโฆษณาสินเชื่อ ไม่ใช่เรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ และผู้ใช้ไม่ต้องการโฆษณา",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · loan] โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องมีคนค้ำ",
+        "calls": [
+          {
+            "messageId": "acf2be06-b55b-4fd1-9f58-196a9da69cb9",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1520,
+            "completionTokens": 224,
+            "error": null
+          },
+          {
+            "messageId": "acf2be06-b55b-4fd1-9f58-196a9da69cb9",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 2411,
+            "completionTokens": 114,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "H16": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4662,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "สมาชิกในกลุ่มตอบขอบคุณผู้ใช้",
+        "score": 0,
+        "reason": "เป็นเพียงคำขอบคุณเชิงพูดคุย ไม่มีการถาม ตอบ ต้องทำ หรือตัดสินใจ จึงไม่ตรงเงื่อนไขที่ควรแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกในกลุ่มตอบขอบคุณผู้ใช้",
+        "calls": [
+          {
+            "messageId": "9daee047-4989-4dce-8f78-5bc33b4a2acd",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1042,
+            "completionTokens": 85,
+            "error": null
+          },
+          {
+            "messageId": "9daee047-4989-4dce-8f78-5bc33b4a2acd",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3471,
+            "completionTokens": 201,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5213,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "สมาชิกในกลุ่มตอบขอบคุณผู้ใช้",
+        "score": 0,
+        "reason": "เป็นเพียงคำขอบคุณ ไม่มีเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ จึงไม่ควรแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกในกลุ่มตอบขอบคุณผู้ใช้",
+        "calls": [
+          {
+            "messageId": "17bb12c2-9eeb-473b-a44e-a18ddbbebb69",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1245,
+            "completionTokens": 145,
+            "error": null
+          },
+          {
+            "messageId": "17bb12c2-9eeb-473b-a44e-a18ddbbebb69",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3814,
+            "completionTokens": 224,
+            "error": null
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4876,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "สมาชิกในกลุ่มตอบขอบคุณผู้ใช้",
+        "score": 0,
+        "reason": "เป็นเพียงคำขอบคุณ ไม่มีการถามหรือขอให้ตอบ/ทำ/ตัดสินใจ จึงไม่ตรงเงื่อนไขที่ต้องแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกในกลุ่มตอบขอบคุณผู้ใช้",
+        "calls": [
+          {
+            "messageId": "d6a07ed7-b117-4511-b1a7-c57a7846dec4",
+            "layer": 1,
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "ok": true,
+            "latencyMs": 1109,
+            "completionTokens": 113,
+            "error": null
+          },
+          {
+            "messageId": "d6a07ed7-b117-4511-b1a7-c57a7846dec4",
+            "layer": 2,
+            "provider": "deepseek",
+            "model": "deepseek-v4-pro",
+            "ok": true,
+            "latencyMs": 3391,
+            "completionTokens": 207,
+            "error": null
+          }
+        ]
+      }
+    ]
+  },
+  "totals": [
+    {
+      "bar": 0,
+      "wrongHolds": 0,
+      "wrongPasses": 16,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 1,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 2,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 3,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 4,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 5,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 6,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 7,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 8,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 9,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 10,
+      "wrongHolds": 0,
+      "wrongPasses": 3,
+      "flips": 0,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 11,
+      "wrongHolds": 0,
+      "wrongPasses": 2,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 12,
+      "wrongHolds": 0,
+      "wrongPasses": 2,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 13,
+      "wrongHolds": 0,
+      "wrongPasses": 2,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 14,
+      "wrongHolds": 0,
+      "wrongPasses": 2,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 15,
+      "wrongHolds": 0,
+      "wrongPasses": 2,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 16,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 17,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 18,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 19,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 20,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 21,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 22,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 23,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 24,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 25,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 26,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 27,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 28,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 29,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 30,
+      "wrongHolds": 0,
+      "wrongPasses": 1,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 31,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 32,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 33,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 34,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 35,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 36,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 37,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 38,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 39,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 40,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 41,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 42,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 43,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 44,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 45,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 46,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 47,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 48,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 49,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 50,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 51,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 52,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 53,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 54,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 55,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 56,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 57,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 58,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 59,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 60,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 61,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 62,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 63,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 64,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 65,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 66,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 67,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 68,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 69,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 70,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 71,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 72,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 73,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 74,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 75,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 76,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 77,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 78,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 79,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 80,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 81,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 82,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 83,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 84,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 85,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 86,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 87,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 88,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 89,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 90,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 0,
+      "meets": true
+    },
+    {
+      "bar": 91,
+      "wrongHolds": 2,
+      "wrongPasses": 0,
+      "flips": 2,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 92,
+      "wrongHolds": 2,
+      "wrongPasses": 0,
+      "flips": 2,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 93,
+      "wrongHolds": 2,
+      "wrongPasses": 0,
+      "flips": 2,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 94,
+      "wrongHolds": 2,
+      "wrongPasses": 0,
+      "flips": 2,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 95,
+      "wrongHolds": 2,
+      "wrongPasses": 0,
+      "flips": 2,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 96,
+      "wrongHolds": 5,
+      "wrongPasses": 0,
+      "flips": 5,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 97,
+      "wrongHolds": 5,
+      "wrongPasses": 0,
+      "flips": 5,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 98,
+      "wrongHolds": 5,
+      "wrongPasses": 0,
+      "flips": 5,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 99,
+      "wrongHolds": 5,
+      "wrongPasses": 0,
+      "flips": 5,
+      "unscored": 0,
+      "meets": false
+    },
+    {
+      "bar": 100,
+      "wrongHolds": 5,
+      "wrongPasses": 0,
+      "flips": 5,
+      "unscored": 0,
+      "meets": false
+    }
+  ],
+  "meeting": [
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90
+  ]
+}

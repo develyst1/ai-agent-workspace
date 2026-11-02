@@ -1,0 +1,13 @@
+{
+  "layer1": {
+    "json": { "addressed": "yes", "meaning": "request", "summary": "ขอให้ช่วยดูเรื่องงาน" }
+  },
+  "layer2": {
+    "score": 100,
+    "reason": "เหตุผลจาก fake gateway (QA-B)",
+    "rules": [
+      { "contains": "[HOLD]", "score": 0, "reason": "ไม่เกี่ยวกับงาน (QA-B stub)" },
+      { "contains": "[L2DOWN]", "http500": true }
+    ]
+  }
+}

@@ -1,0 +1,353 @@
+{
+  "ranAt": "2026-11-01T15:00:42.053Z",
+  "tag": "mvxyglh9",
+  "walked": {
+    "messages": {
+      "ok": true,
+      "url": "/messages",
+      "back": null,
+      "tabbar": true,
+      "sideways": false,
+      "missing": []
+    },
+    "detail": {
+      "ok": true,
+      "url": "/messages/6b0eee9f-da8e-4766-9fea-aababd964587",
+      "back": true,
+      "tabbar": null,
+      "sideways": false,
+      "missing": []
+    },
+    "conditions": {
+      "ok": true,
+      "url": "/conditions",
+      "back": null,
+      "tabbar": true,
+      "sideways": false,
+      "missing": []
+    },
+    "channels": {
+      "ok": true,
+      "url": "/channels",
+      "back": null,
+      "tabbar": true,
+      "sideways": false,
+      "missing": []
+    },
+    "zimbra": {
+      "ok": true,
+      "url": "/channels/zimbra",
+      "back": true,
+      "tabbar": null,
+      "sideways": false,
+      "missing": []
+    },
+    "line": {
+      "ok": true,
+      "url": "/channels/line",
+      "back": true,
+      "tabbar": null,
+      "sideways": false,
+      "missing": []
+    },
+    "line-names": {
+      "ok": true,
+      "url": "/channels/line/names",
+      "back": true,
+      "tabbar": null,
+      "sideways": false,
+      "missing": []
+    },
+    "line-groups": {
+      "ok": true,
+      "url": "/channels/line/groups",
+      "back": true,
+      "tabbar": null,
+      "sideways": false,
+      "missing": []
+    },
+    "signout-dialog-menu": {
+      "ok": true,
+      "url": "/channels",
+      "back": null,
+      "tabbar": true,
+      "sideways": false,
+      "missing": []
+    }
+  },
+  "checks": [
+    {
+      "case": "setup",
+      "what": "made-up messages decided as stubbed",
+      "expected": "notified 35 · held 1 · ids found",
+      "actual": "notified 35 · held 1 · true",
+      "pass": true
+    },
+    {
+      "case": "T5#35",
+      "what": "not signed in: every route → /signin",
+      "expected": "all signin",
+      "actual": "/messages→signin /messages/6b0eee9f-da8e-4766-9fea-aababd964587→signin /conditions→signin /channels→signin /channels/line→signin /channels/line/names→signin /channels/line/groups→signin /channels/zimbra→signin",
+      "pass": true
+    },
+    {
+      "case": "T5#12",
+      "what": "empty tabs wording",
+      "expected": "ยังไม่มีข้อความที่ต้องแจ้ง / ยังไม่มีข้อความที่ถูกกรองออก",
+      "actual": "ยังไม่มีข้อความที่ต้องแจ้ง / ยังไม่มีข้อความที่ถูกกรองออก",
+      "pass": true
+    },
+    {
+      "case": "T4#1",
+      "what": "link screen: intro, 6-digit code, countdown from ~10:00",
+      "expected": "เชื่อม LINE: เพิ่มเพื่อน corner-chat แล้วส่งรหัสนี้ในแชต · code · รหัสหมดอายุใน 09:5x/10:00",
+      "actual": "เชื่อม LINE: เพิ่มเพื่อน corner-chat แล้วส่งรหัสนี้ในแชต · 195959 · รหัสหมดอายุใน 10:00 → รหัสหมดอายุใน 09:58",
+      "pass": true
+    },
+    {
+      "case": "T4#1a",
+      "what": "ขอรหัสใหม่ replaces the code; the old one no longer links",
+      "expected": "new ≠ old · still not linked",
+      "actual": "195959→860805 · false",
+      "pass": true
+    },
+    {
+      "case": "T4#1",
+      "what": "app shows linked without a manual reload (polls)",
+      "expected": "เชื่อม LINE แล้ว + display name within ~3 s",
+      "actual": "เชื่อม LINE แล้ว · เอ · 1250 ms",
+      "pass": true
+    },
+    {
+      "case": "T4#34a",
+      "what": "names empty wording",
+      "expected": "ยังไม่มีชื่อ เพิ่มชื่อหรือชื่อเล่นที่เพื่อนใช้เรียกคุณ",
+      "actual": "ยังไม่มีชื่อ เพิ่มชื่อหรือชื่อเล่นที่เพื่อนใช้เรียกคุณ",
+      "pass": true
+    },
+    {
+      "case": "T4#36",
+      "what": "names screen title",
+      "expected": "ชื่อที่ใช้เรียกคุณ (ใส่ชื่อเล่นได้หลายชื่อ)",
+      "actual": "ชื่อที่ใช้เรียกคุณ (ใส่ชื่อเล่นได้หลายชื่อ)",
+      "pass": true
+    },
+    {
+      "case": "T4#34",
+      "what": "add ต้น + Ton, delete the first, reload",
+      "expected": "API and screen hold [Ton] only",
+      "actual": "Ton ลบ · [\"Ton\"]",
+      "pass": true
+    },
+    {
+      "case": "T4#33a",
+      "what": "U3 links after the OA is in G1 → G1 listed at once (fake LINE says member)",
+      "expected": "กลุ่มทดสอบ listed",
+      "actual": "กลุ่มทดสอบ 1 พ.ย. 21:59 กลุ่มทดสอบ 1 พ.ย. 21:59 กลุ่มทดสอบ 1",
+      "pass": true
+    },
+    {
+      "case": "T4#1d",
+      "what": "un-link from the app",
+      "expected": "linked=false · names kept",
+      "actual": "{\"linked\":false,\"displayName\":null} · [\"Ton\"]",
+      "pass": true
+    },
+    {
+      "case": "T5#11",
+      "what": "tabs: passed under แจ้งแล้ว, held under ไม่ได้แจ้ง",
+      "expected": "PASS row in notified, HOLD row in held only",
+      "actual": "true/false · true/false",
+      "pass": true
+    },
+    {
+      "case": "T5#11",
+      "what": "tab labels",
+      "expected": "แจ้งแล้ว · ไม่ได้แจ้ง",
+      "actual": "แจ้งแล้ว · ไม่ได้แจ้ง",
+      "pass": true
+    },
+    {
+      "case": "T5#11",
+      "what": "held detail: ทำไมไม่แจ้ง + reason",
+      "expected": "ทำไมไม่แจ้ง · ไม่เกี่ยวกับงาน (QA-B stub) · ตรงเงื่อนไข 0% · เกณฑ์ 70%",
+      "actual": "ทำไมไม่แจ้ง ไม่เกี่ยวกับงาน (QA-B stub) ตรงเงื่อนไข 0% · เกณฑ์ 70% ตัดสินโดย: AI โมเดล: deepseek-flash / deepseek-v4-pro",
+      "pass": true
+    },
+    {
+      "case": "T5#21",
+      "what": "held detail button",
+      "expected": "แจ้ง",
+      "actual": "แจ้ง",
+      "pass": true
+    },
+    {
+      "case": "T5#21",
+      "what": "passed AI detail: about, text, why, score, bar, decided by, models, button",
+      "expected": "ทำไมถึงแจ้ง · 100% · เกณฑ์ 70% · AI · โมเดล: a / b · ไม่ต้องแจ้ง · no ตอบกลับ (LINE)",
+      "actual": "ขอให้ช่วยดูเรื่องงาน | @U1 QAB5-PASS ขอให้ส่งรายงานภายในวันนี้  | ทำไมถึงแจ้ง เหตุผลจาก fake gateway (QA-B) ตรงเงื่อนไข 100% · เกณฑ์ 70% ตัดสินโดย: AI โมเดล: deepseek-flash / deepseek-v4-pro | ไม่ต้องแจ้ง | reply=0",
+      "pass": true
+    },
+    {
+      "case": "T5#21",
+      "what": "AI-down detail",
+      "expected": "about shows AI ไม่ได้ตรวจ · ตัดสินโดย: AI ไม่ได้ตรวจ",
+      "actual": "AI ไม่ได้ตรวจ | ตัดสินโดย: AI ไม่ได้ตรวจ",
+      "pass": true
+    },
+    {
+      "case": "T5#19",
+      "what": "2,000+ char Thai message: detail scrolls, no sideways scroll, button reachable",
+      "expected": "no sideways · button hit-tests",
+      "actual": "true · hit=BUTTON[detail-correct] box=24..336 page=360/360",
+      "pass": true
+    },
+    {
+      "case": "T5#38",
+      "what": "dates in Bangkok time from a New York browser",
+      "expected": "PASS 23:59 on 1 พ.ย. · HOLD 00:01 on 2 พ.ย.",
+      "actual": "1 พ.ย. 23:59 · 2 พ.ย. 00:01",
+      "pass": true
+    },
+    {
+      "case": "T5#14",
+      "what": "chips: อีเมล shows no LINE rows (no mail exists); LINE shows LINE rows",
+      "expected": "mail → empty · line → rows",
+      "actual": "ยังไม่มีข้อความที่ต้องแจ้ง · true",
+      "pass": true
+    },
+    {
+      "case": "T5#14",
+      "what": "chip labels",
+      "expected": "ทั้งหมด · อีเมล · LINE",
+      "actual": "ทั้งหมด · อีเมล · LINE",
+      "pass": true
+    },
+    {
+      "case": "T5#15",
+      "what": "scroll to the end loads the next page once",
+      "expected": "35 rows, no duplicates",
+      "actual": "35 rows · 35 unique",
+      "pass": true
+    },
+    {
+      "case": "T5#22",
+      "what": "new message shows without restarting the app",
+      "expected": "pull to refresh shows it",
+      "actual": "before=false · pull=true · tab-switch=false",
+      "pass": true
+    },
+    {
+      "case": "T5#16",
+      "what": "walk: messages, detail, conditions, channels, zimbra, line, names, groups, menu (reply needs a mail message)",
+      "expected": "every screen reached by navigation, no sideways scroll, back arrow hit-tests",
+      "actual": "messages:ok detail:ok conditions:ok channels:ok zimbra:ok line:ok line-names:ok line-groups:ok signout-dialog-menu:ok",
+      "pass": true
+    },
+    {
+      "case": "T5#18",
+      "what": "every interactive element carries a data-testid (own or wrapper)",
+      "expected": "0 missing",
+      "actual": "0",
+      "pass": true
+    },
+    {
+      "case": "T4#33",
+      "what": "U1's groups screen lists G1 (OA joined, U1 never wrote)",
+      "expected": "1 group, กลุ่มทดสอบ",
+      "actual": "กลุ่มทดสอบ 1 พ.ย. 21:59 กลุ่มทดสอบ 1 พ.ย. 21:58 กลุ่มทดสอบ 1 พ.ย. 21:58",
+      "pass": true
+    },
+    {
+      "case": "T4#26",
+      "what": "help text present on the groups screen with a group",
+      "expected": "กลุ่มหนึ่งใส่บัญชีทางการได้แค่ตัวเดียว …",
+      "actual": "กลุ่มหนึ่งใส่บัญชีทางการได้แค่ตัวเดียว ถ้ากลุ่มมีบอทอื่นอยู่แล้ว จะเพิ่ม corner-chat ไม่ได้",
+      "pass": true
+    },
+    {
+      "case": "T5#28",
+      "what": "U2's text on any of U1's screens",
+      "expected": "none",
+      "actual": "none",
+      "pass": true
+    },
+    {
+      "case": "T5#30",
+      "what": "U1 types U2's message URL",
+      "expected": "detail-error, no U2 text",
+      "actual": "true · false",
+      "pass": true
+    },
+    {
+      "case": "T5#23",
+      "what": "offline: banner + the saved list",
+      "expected": "ไม่มีอินเทอร์เน็ต กำลังแสดงข้อมูลล่าสุด + rows",
+      "actual": "ไม่มีอินเทอร์เน็ต กำลังแสดงข้อมูลล่าสุด · rows=true",
+      "pass": true
+    },
+    {
+      "case": "T5#27",
+      "what": "correction tapped while offline",
+      "expected": "visible error; message unchanged after reconnect",
+      "actual": "เกิดข้อผิดพลาด ลองอีกครั้ง · outcome now notified · (nav /messages/6b0eee9f-da8e-4766-9fea-aababd964587)",
+      "pass": true
+    },
+    {
+      "case": "T5#25",
+      "what": "back online: banner gone, list loads",
+      "expected": "no banner · rows",
+      "actual": "0 · true",
+      "pass": true
+    },
+    {
+      "case": "T4#33c",
+      "what": "groups empty wording + help text (after the OA left G1)",
+      "expected": "ยังไม่มีกลุ่ม … · help always shown",
+      "actual": "ยังไม่มีกลุ่ม เพิ่ม corner-chat เข้ากลุ่มไลน์ของคุณ แล้วกลุ่มจะขึ้นที่นี่ · กลุ่มหนึ่งใส่บัญชีทางการได้แค่ตัวเดียว ถ้ากลุ่มมีบอทอื่นอยู่แล้ว จะเพิ่ม corner-chat ไม่ได้",
+      "pass": true
+    },
+    {
+      "case": "T5#33",
+      "what": "sign out: confirm, sign-in screen, browser back shows no data",
+      "expected": "ออกจากระบบไหม · signin · no QAB5 text",
+      "actual": "ออกจากระบบไหม ยก · true · back shows data=false",
+      "pass": true
+    },
+    {
+      "case": "T5#32",
+      "what": "sign-out clears the saved list",
+      "expected": "no QAB5 text in storage",
+      "actual": "clean",
+      "pass": true
+    },
+    {
+      "case": "T5#37",
+      "what": "mail server unreachable (MAIL_SERVER_UNREACHABLE, a code the app has no text for) → generic Thai text, not the server message",
+      "expected": "เกิดข้อผิดพลาด ลองอีกครั้ง",
+      "actual": "เกิดข้อผิดพลาด ลองอีกครั้ง",
+      "pass": true
+    },
+    {
+      "case": "T5#39",
+      "what": "tab bar + channels screen wording",
+      "expected": "ข้อความ · เงื่อนไขของฉัน · ช่องทาง · อีเมล Zimbra · LINE",
+      "actual": "ข้อความ · เงื่อนไขของฉัน · ช่องทาง | ช่องทาง ⋮ อีเมล Zimbra LINE",
+      "pass": true
+    },
+    {
+      "case": "T5#39",
+      "what": "menu item",
+      "expected": "ออกจากระบบ",
+      "actual": "ออกจากระบบ",
+      "pass": true
+    },
+    {
+      "case": "T5#40",
+      "what": "browser console holds no token, password or message text",
+      "expected": "0 lines",
+      "actual": "0 of 117",
+      "pass": true
+    }
+  ]
+}

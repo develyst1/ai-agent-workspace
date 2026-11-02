@@ -81,8 +81,11 @@ try {
   const head = text.slice(0, at + MARKER.length);
   const rest = text.slice(at + MARKER.length).replace(/^\n+/, '');
   const out = `${head}\n\n${body}\n${rest ? `\n${rest}` : ''}`;
+  // Durable write (Marie 2026-11-01, same gap as drain-inbox): fsync the temp file, read it back, then rename.
   const tmp = `${target}.${process.pid}.tmp`;
-  fs.writeFileSync(tmp, out);
+  const fd = fs.openSync(tmp, 'w');
+  try { fs.writeSync(fd, out); fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
+  if (fs.readFileSync(tmp, 'utf8') !== out) { fs.rmSync(tmp, { force: true }); refuse('the temp copy did not read back as written — FAILURES.md left unchanged'); }
   fs.renameSync(tmp, target);
 } finally {
   try { fs.unlinkSync(lock); } catch {}

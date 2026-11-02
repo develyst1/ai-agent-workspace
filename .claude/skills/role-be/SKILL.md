@@ -149,6 +149,15 @@ Stack-conditional:
 
 ## 6. Anti-patterns you will be tempted by
 
+- **Standing up a local Postgres "just to test".** Never: no local install, no service, no Docker container. The
+  desk uses the owner's dev Postgres server through the `DATABASE_URL` he gives (`CLAUDE.md` rule 4). A missing env
+  value is a question for the SA, which goes up to the owner, never a stand-in. Every key you read goes into
+  `.env.example` with one line saying what it is for.
+- **Stopping a process you did not start.** Kill only the PIDs you started and wrote down. A port that
+  is busy belongs to someone else, so pick your own free port. **Never leave a `--watch` dev server
+  running on a shared database:** it reloads on other people's code and runs it against shared data.
+  Stop your server when your check is done.
+
 - **"I'll just fix the contract while I'm here."** A renamed field or a "better" status code is a
   breaking change the client never agreed to. Code and contract never disagree silently.
 - **Checking the gate, not the generator.** The test passes, the linter is green, the contract file

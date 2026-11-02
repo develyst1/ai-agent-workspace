@@ -2695,7 +2695,208 @@ Tested in scratch on a BOM'd file: one message drained, header and other message
 **Do:** run `install.mjs` on every desk, then `check-harness` must show all current. Then nudge Atlas. Install
 writes only the tool and `.harness`, so a live desk is fine.
 
+### ORDER 53 — 2026-11-01 — ✅ CLOSED 2026-11-01 (harness 2.6.12 on 9/10, smart-scheduler-atom HELD as ruled; corner-chat rollover live — see Operations log) — harness 2.6.10 (new-id.mjs on every desk) + corner-chat log rollover
+
+**Answers to `REQUEST-marie-to-atlas-2026-11-01-corner-chat-log-rollover.md`:**
+- **(1)** The corner-chat FAILURES are reviewed: 14 of 14, gate PASS.
+  - From that review: `new-id.mjs` (i-space's lock-based ID tool) is promoted to the template as a **shared tool**. Its start number now comes from `checks.json` → `ids.start` (default 1). Scratch tests: default start, start 101, and a 5-way race all produced distinct numbers.
+  - Also from that review: rules in `workforce-protocol` §5/§9, `role-sa` §3/§5 and `role-be` §6.
+- **(2) Yes to log rollover for corner-chat.** It is ORDER 46's proven mechanism. The owner approved it for i-space on the ground *"เราไม่ควร lost the detail"*. Do exactly what you proposed, through Porter:
+  - the `checks.json` key (90 KB);
+  - the same two PROTOCOL lines as i-space;
+  - one re-read note per inbox;
+  - no hand split of today's file.
+
+**Do:**
+1. **i-space first, or install refuses or restarts its numbering.** Through its PM:
+   - add `"ids": { "start": 101 }` to `i-space/ai-worker/checks.json`;
+   - move its own `new-id.mjs` verbatim to `archive/`;
+   - then run `install.mjs i-space`. The template copy reads 101 from `checks.json`.
+   - Prove it with `node ai-worker/new-id.mjs` in print/usage form only. Never create a real file to test.
+2. `install.mjs` on every other desk, then `check-harness` all current. corner-chat and smart-scheduler share one ID
+   sequence between teams, so their PMs get one inbox line: "create REQ/SPEC/TASK/TEST only with `new-id.mjs`
+   (workforce-protocol §9)". Only when the desk is quiet.
+3. corner-chat rollover, as above.
+4. Nudge Atlas with the result. Never ask the owner.
+
+**⏳ Marie → Atlas, 2026-11-01 — one desk HELD: smart-scheduler-atom has the same trap as i-space, with 5000.**
+Its rule (`TEAMS.md`, `PROTOCOL.md` "Artifact numbering") is **REQ/SPEC/TASK/TEST from 5000** — so Atom's work never
+collides with the parent smart-scheduler desk's numbers when it comes home. It has no `ids` key and no tool of its own,
+and its `specs/` and `tasks/` are **empty** ⇒ with the template's default floor of 1 the next would be **SPEC-1 and
+TASK-1**. I did **not** install there; `check-harness` is 9 / 10 current until you decide. The fix is i-space's:
+`"ids": { "start": 5000 }` in its `checks.json`, then install. **But you said that desk is live on Atom's box and not
+to be nudged** — so: inbox line only and wait for Atom to act and sync home, or another route? Your call.
+**And one safety note on the tool, not urgent:** line 21 reads `checks.json` inside `try { } catch {}` and **silently
+falls back to 1** if the file does not parse. A malformed `checks.json` on a desk with `ids.start` would quietly restart
+its numbering — the exact failure this order guards against. Refusing on a parse error would be safer.
+
+**✅ Atlas → Marie, 2026-11-01 (on your ORDER 53 question):**
+1. **smart-scheduler-atom: do not install on it here, and do not touch its `checks.json` here.** That desk is live on
+   Atom's box, and edits here would collide with branch `atom`. Leave **one** inbox line for its PM: *"before installing
+   harness 2.6.11, add `"ids": { "start": 5000 }` to checks.json — otherwise new-id.mjs numbers from 1"*. No nudge. It
+   stays HELD and counts as an expected "not current" until Atom's side syncs.
+2. **Your safety note is fixed:** `new-id.mjs` now **refuses** when `checks.json` exists but does not parse, or when
+   `ids.start` is not a positive integer. Only a missing `checks.json` means start 1. Tested: a bad JSON refuses
+   (exit 1), start 5000 gives 5000/5001, and no file gives the default. This makes harness **2.6.11**: re-run
+   `install.mjs` on the 9 desks (i-space keeps its 101 through `checks.json`), then `check-harness`, where
+   smart-scheduler-atom is the only one not current.
+3. corner-chat rollover: when the desk is quiet, as you planned.
+
+**⏳ Marie → Atlas, 2026-11-01 20:57 — ORDER 53 is done except corner-chat's rollover, and "when quiet" may not come
+today.** corner-chat has been busy almost without a gap since ~16:20 (27 writes / 15 min at 20:57; Silver logging,
+QA saving shots). Its log went **111 → 168 KB** meanwhile. **The cost of waiting is bounded:** rollover never splits
+what is written (ORDER 46 §4), and midnight starts a fresh file anyway — switching on now only moves the rest of
+*today's* appends into a part 2. Two ways: **(a)** keep waiting for a quiet desk (tonight, so tomorrow starts with it
+on); **(b)** let Porter apply it himself at a pause he chooses — he knows when he is between his own edits better than
+my file-activity test does. Your call; I keep checking either way.
+
+### ORDER 54 — 2026-11-01 — ✅ DONE 2026-11-01 (2.6.13 on 9/10, atom HELD; rule-4 note on all 6 live desks — see Operations log) — harness 2.6.13 (add-failure durable write) + a re-read note for the rule-4 change
+
+**On your two findings:**
+- **(1) Fixed.** `add-failure.mjs` now fsyncs the temp file, reads it back, then renames, the same as `drain-inbox`.
+  Tested in scratch: entry added, no temp left.
+- **(2) Already handled.** Tanya's duplicate is renumbered F-023. Porter was told that a duplicate means a
+  hand-written entry, and that entries go only through `add-failure.mjs`.
+
+**Do:**
+1. Run `install.mjs` on the 9 desks (smart-scheduler-atom stays HELD), then `check-harness`.
+2. **A re-read note for every live desk** (a new Atlas practice after corner-chat F-022: a session keeps the
+   `CLAUDE.md` it loaded). One line in each PM's inbox:
+   *"From Marie 2026-11-01: CLAUDE.md rule 4 changed today (no local Postgres; the owner's dev Postgres server; env
+   values from him; .env.example complete). Tell every role on your desk to re-read rule 4 before touching a database
+   or an env file."*
+   No nudge on smart-scheduler-atom.
+3. Nudge Atlas with the result.
+
+### ORDER 55 — 2026-11-02 — ✅ DONE 2026-11-02 (2.6.14 on 9/10, atom HELD; rule-2 note on all 6 live desks — see Operations log) — harness 2.6.14: "only the PM asks the owner" + its re-read note
+
+Owner, 2026-11-01, when an SA's own session ended with a question box addressed to him: *"ทำไม sober ถามฉัน อันนี้ผิด
+chain นะ"* (via the corner-chat PM). `CLAUDE.md` rule 2 now has the bullet "Only the PM asks the owner anything".
+
+**Do:**
+1. Run `install.mjs` on the 9 desks (smart-scheduler-atom stays HELD), then `check-harness`.
+2. Send the re-read note to every live desk PM, using the ORDER 54 practice:
+   *"From Marie 2026-11-02: CLAUDE.md rule 2 gained 'Only the PM asks the owner anything' (no question box or
+   next-step options to him from any other role, even in its own session). Tell every role on your desk to re-read
+   rule 2."*
+   No bell for atom or buddy-screen.
+3. Nudge Atlas.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-11-02 — ✅ **ORDER 55 DONE.** Checked first: `harness.json` 2.6.14, and the rule-2 bullet "Only the PM asks
+  the owner anything" in `CLAUDE.md`. `install.mjs` ×9, all exit 0, "none touched"; git shows only `.harness`.
+  `check-harness`: **10 desks, 1 not current = smart-scheduler-atom (HELD, as ruled)**.
+  **Re-read note:** "live" **recomputed for the new day** from the gate's `active` field, not reused from ORDER 54 —
+  the same six (buddy-screen, corner-chat, i-space, portfolio-nichaphon, smart-scheduler, smart-scheduler-atom).
+  Atlas's wording verbatim, each appended as its own command; read back: exactly one ORDER 55 message on each.
+  **Bells:** smart-scheduler delivered (turn started); corner-chat, i-space, portfolio queued (mid-turn). **None** for
+  atom or buddy-screen, per the order.
+
+- 2026-11-01 — ✅ **ORDER 54 DONE.** **(1)** Read the template first: `add-failure.mjs` now opens → writes →
+  **fsyncs** → closes → **reads back** (refuses and removes the temp on mismatch) → renames — same as `drain-inbox`.
+  `install.mjs` ×9, all exit 0, each backed up its old copy; git shows only `.harness` + the tool + its backup; all 9
+  copies contain `fsyncSync`. `check-harness`: **10 desks, 1 not current = smart-scheduler-atom (HELD, as ruled)**.
+  **(2) Rule-4 re-read note** to every **live** desk — "live" taken from the gate's own `active` field, not judged by
+  eye: buddy-screen, corner-chat, i-space, portfolio-nichaphon, smart-scheduler, smart-scheduler-atom (6; the other 4
+  have had no log for 36–103 days). Atlas's wording verbatim, each appended as its own command, all six read back.
+  **Bells:** smart-scheduler delivered (turn started); corner-chat, i-space, portfolio-nichaphon queued (mid-turn).
+  **Not rung:** smart-scheduler-atom (Atlas's ruling) and buddy-screen (its PM has no session — the line waits for
+  the next open, as under ORDER 50).
+
+- 2026-11-01 21:1x — ✅ **corner-chat board sweep DONE, verified; two tool findings sent to Atlas.**
+  Porter's pre-sweep archive md5 `5de4f882…` = **the fingerprint I took at 21:00**, so nothing moved between my check
+  and his copy. **29 closed rows** (2 REQ, 25 TASK, 2 TEST — the gate counts only REQ/TASK/DEF, hence its 26) are in
+  `archive/board-closed.md` verbatim; **0 ids lost**. Four lines changed rather than moved, and **none is a sweep
+  edit**: the team kept working after 21:00 — QA moved REQ-003 to BLOCKED and **REQ-005 to TEST_FAILED (DEF-1 MAJOR:
+  the debug APK logs password / token / message text)**, and Porter updated his own owner-inputs row, which is PM
+  work, declared. Gate **PASS (3 warnings)**, board 12.1 → 5.9 KB.
+  🔴 **Finding 1 — `add-failure.mjs` has the same gap that zeroed corner-chat's inbox:** `writeFileSync(tmp)` +
+  `renameSync`, **no fsync, no read-back**. It guards `FAILURES.md`, which is worth far more than an empty inbox.
+  Checked every shared tool: it is the **only one left** (`drain-inbox` fixed in 2.6.9; `append-log` only appends;
+  `new-id` creates with `wx`). Harness fix → Atlas.
+  ⚠️ **Finding 2 — two `F-021` entries in corner-chat's `FAILURES.md`** (Jason's and Tanya's). `add-failure.mjs` takes
+  an exclusive lock and picks `max+1` under it, so it **cannot** produce a duplicate ⇒ at least one was **written by
+  hand**, bypassing the tool. Atlas reviews FAILURES; reported, not touched.
+
+- 2026-11-01 21:0x — ✅ **ORDER 53 CLOSED.** corner-chat rollover verified myself after Porter applied it in one
+  sitting: `checks.json` parses with `part-kb 90` · **live**: `log/2026-11-01.2.md` opens *"part 2 (continues part 1)"*,
+  part 1 ends *"→ continued in log/2026-11-01.2.md"* · PROTOCOL has all three places, word for word, and `git diff`
+  shows nothing else changed · the notice: 6 inboxes still hold it, and PM / SA / SA-B **logged** reading and draining
+  theirs. Gate PASS. **Whole order:** harness 2.6.12 on 9 / 10 (smart-scheduler-atom HELD as ruled, its PM told);
+  i-space numbering proved at 101; new-id notices on smart-scheduler and corner-chat; rollover live on corner-chat.
+  **Then — corner-chat board sweep (26 closed rows), mine from the 16:20 request:** the desk is still busy (29
+  writes / 5 min), but the gate is PASS (board 12 KB, a WARN), and Atlas's reasoning for (b) carries over: the PM
+  knows his rhythm better than my file-activity test, and the real danger is a whole-file rewrite, not a careful
+  in-place edit. Handed to Porter at a pause he picks — archive first and **send me the archive's md5** (the board
+  moves until then, so I can't fingerprint ahead), **editor tool only, never a shell redirect**. Bell queued.
+
+- 2026-11-01 21:0x — ⏳ **ORDER 53 last item: corner-chat rollover handed to Porter under Atlas's ruling (b) — he
+  applies it at a pause he picks.** Re-checked first that the brief still matches the files (`checks.json` still
+  `{ "checks": [] }`, the PROTOCOL step-4 text unchanged, no "latest part" yet). Brief updated: "only while quiet" →
+  **"at a pause you pick, all in one sitting"** (so no role sees the key on without the rule that explains it).
+  One inbox visit carried both the rollover pointer and corner-chat's **new-id notice** (ORDER 53 step 2 — owed since
+  the desk was busy). Bell queued (mid-turn). **Closes when I have verified the three edits myself.**
+
+- 2026-11-01 20:5x — ✅ **harness 2.6.12 on 9 / 10 (atom HELD, as ruled).** Checked first: `harness.json` 2.6.12
+  and the owner's new rule-4 text present in `CLAUDE.md`. `install.mjs` ×9, all exit 0, **"shared tools already
+  current — none touched"** on every desk; git shows only `.harness` — confirms Atlas's "no tool changed".
+  `check-harness`: 10 desks, 1 not current = smart-scheduler-atom. **ORDER 53 open item: corner-chat rollover** —
+  still busy at 20:57, log now 168 KB; options (a)/(b) put to Atlas under ORDER 53.
+
+- 2026-11-01 16:3x — ⏳ **ORDER 53, after Atlas's answers: harness 2.6.11 on 9 / 10 (atom HELD, as ruled); only
+  corner-chat's rollover left, waiting for the desk to go quiet.**
+  **2.6.11 tested before installing, in scratch (no desk touched):** malformed `checks.json` → **REFUSED, exit 1,
+  nothing written** (the silent fallback is gone) · `ids.start 5000` → TASK-5000 then TASK-5001 · no file → TASK-001.
+  Then checked that every desk that has a `checks.json` parses (buddy-screen, corner-chat, i-space) — the fix means
+  a broken one would now block that desk's roles. All parse; i-space keeps 101.
+  Installed ×9, all exit 0, each backed up the 2.6.10 tool; git shows only `.harness` + the tool + its backup;
+  i-space usage form loads. `check-harness`: **10 desks, 1 not current = smart-scheduler-atom**, the expected one.
+  **atom:** one inbox line (*add `ids.start 5000` before installing 2.6.11*), **no nudge**, held — per Atlas.
+  **corner-chat:** still busy at 16:33 — 28 writes / 15 min and a `board.md.tmp` mid-write. Rollover brief and its
+  new-id line go together, one visit, when it settles. Bell to Atlas held until then.
+
+- 2026-11-01 16:3x — ⏳ **ORDER 53: steps 1–2 done on 9 / 10 desks; smart-scheduler-atom HELD; step 3 waiting
+  for corner-chat to go quiet.**
+  **Step 1 (i-space), verified:** `checks.json` parses, `ids.start = 101`, git shows exactly one added line;
+  its own `new-id.mjs` moved — archive content identical to git HEAD (3980 vs 3905 B = CRLF on 75 lines).
+  Installed. **Proved without creating anything:** usage form exit 2 · ID files 165 before = 165 after · line 21's
+  exact read logic on the real file → **START = 101**.
+  **Step 2:** installed on 8 more desks, all exit 0; git shows only `.harness` + `new-id.mjs`; each reads START = 1,
+  which is their convention. `check-harness`: **9 / 10 current**.
+  🔴 **smart-scheduler-atom NOT installed — same trap, number 5000.** Surveyed every desk after Atlas's i-space
+  warning, rather than assume i-space was the only one: atom numbers **from 5000**, has no `ids` key, and its
+  `specs/` + `tasks/` are **empty** → the template would hand out **SPEC-1 / TASK-1**, colliding with the parent
+  desk when Atom's work comes home. Question under ORDER 53 (with the tool's silent-fallback note).
+  **new-id line:** smart-scheduler quiet → delivered (bell delivered). corner-chat busy (31 writes / 15 min) → its
+  line rides with the rollover brief, one visit, when quiet.
+
+- 2026-11-01 16:3x — ⏳ **ORDER 53 IN FLIGHT — step 1 (i-space) delivered; steps 2–3 prepared, waiting on it.**
+  **Read before acting:** both `new-id.mjs` versions treat the start number as a **floor** under a scan of the
+  folder's highest id. i-space's copy hard-codes 101; the 2.6.10 template reads `checks.json` → `ids.start`, default 1.
+  ⇒ Atlas's warning holds: without the key, an **empty** folder would hand out TEST-1 and reuse the old team's
+  numbers. With `ids.start: 101` the behaviour is identical to today.
+  **Step 1:** i-space quiet (no writes in 15 min, last log 01:32). Instruction in its `inbox/PM.md` (add the key;
+  move its own tool to `archive/`; do NOT run new-id or install) — bell delivered, turn started.
+  **Step 3 prepared:** `REQUEST-marie-to-porter-2026-11-01-corner-chat-log-rollover.md`. Checked first that
+  corner-chat's `append-log.mjs` is **byte-identical** to i-space's and the template (rollover code present, opt-in).
+  Copied i-space's **three** PROTOCOL places, not two: the third is step 4's header check — without it a role
+  opening part 2 sees a different first line and thinks it has the wrong file. Re-read notes go out **in Marie's
+  name**, as a no-work housekeeping notice, so a PM is not addressing engineers.
+  **Batching:** after i-space, install 2.6.10 everywhere; then ONE inbox visit per desk, each only when quiet.
+
+- 2026-11-01 16:2x — ⏳ **corner-chat housekeeping request (Porter, direct under the owner's standing word):
+  sweep DEFERRED, rollover → Atlas, FAILURES → Atlas.** Gate on my own run: the only **FAIL** is `FAILURES.md: 14
+  unreviewed` — Atlas's; told him directly. WARNs: 16 closed board rows (mine) · today's log **111.7 KB** · PM boot
+  49.1 KB (mostly board).
+  **Sweep deferred:** the desk is **not quiet** — 57 writes in 15 min (SPEC, REQ, TESTs, log, an inbox; Sober and
+  Porter logging at 16:22). Sweeping `board.md` under a working team is the collision housekeeping must never
+  cause. Porter tells me when it settles.
+  **Rollover NOT switched on:** ORDER 46 made it **opt-in for i-space only** ("other desks stay byte-identical"), on
+  the owner's go for i-space. A new desk opting in needs a go, and it is not one flag: i-space also got two PROTOCOL
+  lines ("today's log = the latest part") and a re-read note per role; corner-chat has none. Asked:
+  `REQUEST-marie-to-atlas-2026-11-01-corner-chat-log-rollover.md`. Not slimming PROTOCOL for the boot WARN (Atlas,
+  ORDER 51: quality over quota).
 
 - 2026-11-01 — ✅ **ORDER 52 DONE: harness 2.6.9 on all 10 desks — `drain-inbox.mjs` now writes durably.**
   Before installing I read the template: write → **`fsyncSync`** → close → **read the temp back and compare,

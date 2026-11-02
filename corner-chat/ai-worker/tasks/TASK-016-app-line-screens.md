@@ -1,8 +1,8 @@
 # TASK-016: LINE screens: link with a code, names list, my groups (fake + HTTP)
 - Source: SPEC-003 § Screens (`/channels`, `/channels/line`, `/channels/line/names`, `/channels/line/groups`), § Structure · SPEC-002 § API (shapes exact) · SPEC-001 §3.6/§3.7 (`GET /channels` → `{ mail, line }`, `LineChannel { linked, displayName }`) · REQ-003 req 1, 2, 5, AC-1, AC-5 · REQ-003 wording
 - Owner: FE (Fanta)
-- Status: TODO
-- Depends on: TASK-014 · the **live** check needs Bob's TASK-012 + Team A's TASK-002 running locally. Build on the fake first.
+- Status: SUPERSEDED 2026-11-01 by TASK-028 (owner: not Flutter, DECISIONS D36; SA-B). Was: TODO
+- Depends on: TASK-014 · **TASK-024** (re-ordered 2026-11-01 for D35: it writes `api_client.dart`, `AuthRepo` and sign-in, so here you **reuse** `api_client.dart` and add only `http_channels.dart`; drop the `DEV_TOKEN` trick and sign in through `/signin`) · the **live** check needs Bob's TASK-012 + Team A's TASK-002 running locally. Build on the fake first.
 
 - Repo: `corner-chat-app`. Files you may edit:
   - `lib/data/models.dart` (add `Channels`, `MailChannel`, `LineChannel`, `LinkCode`, `LineGroup`)

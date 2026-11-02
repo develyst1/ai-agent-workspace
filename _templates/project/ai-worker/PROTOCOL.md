@@ -249,8 +249,10 @@ exempt from *size*, never from *shape*.
 
 - `requirements/REQ-001-short-title.md`, `specs/SPEC-001-short-title.md`,
   `tasks/TASK-001-short-title.md`, `tests/TEST-001-short-title.md`
-- Numbers are per-type, zero-padded to 3, never reused. Check the folder for
-  the highest existing number before creating a new one.
+- Numbers are per-type, zero-padded to 3, never reused. **Create every REQ, SPEC,
+  TASK and TEST file only with `node ai-worker/new-id.mjs <REQ|SPEC|TASK|TEST> <slug>`.**
+  It picks the next number under a lock, so two roles never take the same one.
+  The start number is `checks.json` → `ids.start` (default 1).
 - Every SPEC names its source REQ. Every TASK names its source SPEC. Every TEST
   names its source REQ. Full traceability: REQ → SPEC → TASK → code, and
   REQ → TEST → verdict.

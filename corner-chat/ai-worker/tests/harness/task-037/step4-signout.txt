@@ -1,0 +1,3 @@
+before-signout cc.messages-lines=3
+cc.messages lines just before sign-out: 6
+after sign-out: corner-chat notification records = 0  ; g:cc.* lines = 0

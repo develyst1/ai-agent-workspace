@@ -1,6 +1,6 @@
 # SPEC-010: Admin — a content store in `back/`, a live-reading public site, a local-only admin app, AI drafting
 - Source: REQ-010 (R1–R8, AC-a…g)
-- Status: **ACTIVE** (2026-11-01, Sober — stage 1 cut: TASK-032, TASK-033; stage 2 (admin app, AI draft, Home AI from the store) is cut when TASK-032 is `DONE` — see §Tasks)
+- Status: **DONE** (2026-11-01, Sober — TASK-032…038, 040, 041 all DONE; REQ-010 → SPEC_DONE; QA round next — see §Tasks)
 - Read 2026-11-01, repo `portfolio-nichaphon-web`, branch `D1`, HEAD `b068fba` + uncommitted REQ-009 work (TASK-029/031):
   `front/src/constant/{site.ts,content/*.ts}` (15 content exports incl. `SITE` and `BLOG_POSTS`, 720 lines by `wc -l`), the 7 `*.config.ts` copy files (202 lines),
   `front/src/types/app/content/index.ts` (13 interfaces), `front/src/app/**/page.tsx`, `front/next.config.ts` (`output: 'standalone'`),
@@ -142,8 +142,21 @@ Stage 2b — **cut 2026-11-01** at TASK-034 `DONE`:
 - **TASK-036**: posts (draft/publish/delete, Markdown preview) + pictures (upload, picker) (depends on: TASK-035)
 - **TASK-037**: AI draft route + "Draft with AI" button, never saves; **one** ledgered real call (depends on: TASK-035/036)
 - ~~TASK-039~~ folded away: TASK-037 carries the one engineer real call; AC-d/AC-e real proofs are QA's round on this ledger.
-- **TASK-040** (added 2026-11-01): all front reads `no-store` — R4 guaranteed (depends on: TASK-036)
-Engineer order (one engineer): **038 → 035 → 036 → 037 → 040**, then REQ-010 `SPEC_DONE` → Porter → QA.
+- **TASK-040** (added 2026-11-01): all front reads `no-store` — R4 guaranteed (depends on: TASK-036) — **DONE 2026-11-01**
+- **TASK-041** (added 2026-11-01): admin polish — Save contrast, Draft button only on prose fields (depends on: TASK-037) — **DONE 2026-11-01** (rework 1: none on `quotes`)
+
+**All TASKs DONE 2026-11-01 → REQ-010 `SPEC_DONE`, handed to Porter for the QA round** (ledger 1 / 15; QA row cap 13 on Porter's ask).
+- **TASK-042** (added 2026-11-01, after TEST-011 `TEST_FAILED` on DEF-1 only): `prefetch={false}` on the public site's links (DEF-1 —
+  dynamic-route prefetch carries no data, costs `back/` nothing, only makes S6's aborted lines) + new post Author = `site.name` (OBS-22)
+  (depends on: TASK-041). Zero real calls; re-test is no-call. — **DONE 2026-11-01**
+- **OBS-23 (grid band stops part-way down `/blog/<post>`) — no TASK: a full-page-screenshot artifact, not on screen** (Sober, 2026-11-01,
+  measured). The grid is `MachineGround` (`position: fixed; inset: 0; z-index: -1`, mounted once in `SiteShell`): it always fills the
+  visible screen and stays put while the page scrolls. A full-page capture paints a fixed layer over the first viewport only, so the
+  seam lands exactly at the capture's viewport height (900 px in TEST-011, 500 px in my probe). Scrolled to the bottom in a real
+  viewport, the grid layer measured top 0 / bottom 500 and covers the whole screen. Pictures: `project-docs/sa-obs23-2026-11-01/`
+  (`obs23-fullpage.png` seam vs `obs23-scrolled-bottom-viewport.png` none). Every long page has the same artifact in full-page shots;
+  sections with their own background hide it. QA's picture check should use viewport shots after scrolling, not `fullPage`.
+Engineer order (one engineer): **038 → 035 → 036 → 037 → 040 → 041**, then REQ-010 `SPEC_DONE` → Porter → QA.
 
 AC map: AC-a → TASK-032 (data) + QA · AC-b → TASK-033/034/035 + QA · AC-c → TASK-033/036 + QA · AC-d → TASK-037/039 + QA ·
 AC-e → TASK-038/039 + QA · AC-f → D5 (TASK-034) + QA probe · AC-g → TASK-033 + QA REGRESSION.
@@ -155,7 +168,10 @@ Counted per call; a row is written **before** any fire; only Sober writes here.
 | # | Date | Who | Request | Result | Running total |
 |---|------|-----|---------|--------|---------------|
 | — | 2026-11-01 | Sober | **Budget 15. Allocation: TASK-037 rows 1–2 (planned 1, cap 2) · QA round cap 13 (AC-d one or two drafts; AC-e one Home AI question after adding a project, 3–5 calls; plus a Home AI regression question), row written on Porter's ask.** Stages 1–2a fired nothing. | — | 0 / 15 |
-| 1–2 | 2026-11-01 | Fern (TASK-037 step 5) — written BEFORE any fire | ONE "Draft with AI" on `projects[].summary`, the Thai note in TASK-037 verbatim, `back/` on defaults; planned 1, cap 2 (2 only if the first is a technical failure); "Use this" NOT pressed | PENDING | 0 / 15 |
+| 1–2 | 2026-11-01 | Fern (TASK-037 step 5) — written BEFORE any fire | ONE "Draft with AI" on `projects[].summary`, the Thai note in TASK-037 verbatim, `back/` on defaults; planned 1, cap 2 (2 only if the first is a technical failure); "Use this" NOT pressed | **actual 1** (row 1; row 2 released) — `deepseek / deepseek-flash`, tokens 333/264/597, English, nothing added beyond the note (Fern's reading; AC-d is QA's) — TASK-037 §Implementation Notes | **1 / 15** |
+| — | 2026-11-01 | Sober (TASK-037 review) | **Row 2 released. Spent 1. 14 unallocated — QA round row (cap 13) written on Porter's ask.** Fired nothing in review. | — | **1 / 15** |
+| **2–14** | 2026-11-01 | **Tanya (REQ-010 QA round)** — row written by Sober BEFORE any fire, on Porter's ask | Local only, on a **copy of the seeded store** (never his content): `back/` = working tree on `D1`, real gateway, `ADMIN_ENABLED=1`; built `front/` with `NEXT_PUBLIC_ASK_WS_URL=ws://localhost:4014/ws` (SQ40 still open — per-run env, say it in the TEST file); `admin/` on 127.0.0.1:4015. Count = gateway calls from `back/`'s log (`[admin] draft …` = 1 each; one Home AI question = up to 3). **Presses, one each, in this order:** **AC-d** (2 calls) — (1) Draft on `projects[].summary` with a Thai note of yours; (2) Draft on a post body (`posts[].bodyMd`) with a Thai note; check English, editable, nothing new invented, and the public page unchanged until "Use this" + Save · **AC-e** (≤ 6) — add a test project with a unique made-up marker (e.g. a project name only you know) + Save, then ask the Home AI (a) in English and (b) in Thai about it; the answer must use the new fact · **AC-g regression** (≤ 3) — one Home AI chip question, answered normally. **Planned ≤ 11, hard cap 13.** A technical failure is the result: record it, **no re-press**; at 13 stop whatever is left. Never "Use this" + Save into anything but the copy. | **actual 11** (rows 2–12; 13–14 released) — 2 drafts + 3 Home AI questions × `calls=3`, 0 failures, 0 retries — TEST-011 §Results — real-call leg | **12 / 15** |
+| — | 2026-11-01 | Sober (TEST-011 read) | **Rows 13–14 released. Spent 12 of 15; 3 unallocated.** Any re-test after TASK-042 needs **no** real call (DEF-1 + OBS-22 are no-call lines). | — | **12 / 15** |
 
 **SQ48 (to Porter → owner, FYI, non-blocking) — REQ-010 budget.** 15 real calls `[SA-decided]`: 1–2 for the engineer's one draft,
 up to 13 for Tanya's AC-d/AC-e round. A different number, or drawing from REQ-009's 11 unallocated, is one line.

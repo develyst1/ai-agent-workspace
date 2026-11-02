@@ -1,5 +1,5 @@
 # REQ-010: Admin system — the owner updates 100% of the site himself, with AI help to write
-- Status: READY_FOR_SA (2026-11-01, Porter — Q1 answered except (a) login, which he deferred; see Q2)
+- Status: DELIVERED (2026-11-01, Porter — on TEST-011 `TEST_PASSED` after TASK-042) · **SIGNED OFF 2026-11-01 by the owner: "ไปต่อให้จบเลย"** (in chat, answering "Do you sign off on REQ-010?") · uncommitted on `D1`, not deployed · **cannot go public until Q2 login** (deferred by him) — §Delivery
 - Priority: HIGH
 - Requested: 2026-11-01 by the owner (Dong), in chat to Porter
 - Deadline: none
@@ -96,3 +96,25 @@ Porter will bring it back when the build is ready to show, with the options laid
 - (d) Live: on Save the public site shows the change within a minute — no rebuild, no deploy by him.
 - (e) AI writing: works in Thai or English, whichever he types in; it never publishes by itself.
 - (f) The site stays in English for visitors; he may write to the AI in Thai and get English text back.
+
+## QA brief — 2026-11-01, Porter → Tanya
+
+Test AC-a…g from this REQ, not from the build. Local only (`back/` + built `front/` + `admin/` on 127.0.0.1:4015); never
+production. Use a copy of the seeded store so your edits don't become his content.
+- **No-call ACs first (start now):** AC-a (page-by-page vs pictures of today's live site), AC-b (headline + project +
+  certificate Save → public page within 1 min, timed), AC-c (write a post → /blog + its own page), AC-f (probe: no admin
+  link, no writable endpoint from the public site / front origin — SPEC-010 D5), AC-g (REGRESSION list, 6 pages + Home AI UI).
+- **Real-call ACs (AC-d, AC-e, and one Home AI regression question) only after Sober writes your row** in SPEC-010
+  §Call ledger (cap 13). Follow the row exactly; a technical failure is the result — record it, no re-press.
+Report: verdict per AC, pictures, `calls=` from the back log, any defect reproducible from the steps.
+
+## Delivery — 2026-11-01, Porter
+
+All 7 AC ticked on tests/TEST-011-req010-admin-acceptance.md (`TEST_PASSED` after re-test; round 1 failed only on DEF-1,
+closed by TASK-042). Real calls 12 / 15 (TASK-037 1, QA 11; re-test 0). Accepted as written.
+- `[PM-decided]` QQ15: AC-a baseline = pre-switch `D1` build (b068fba), not production (lacks REQ-005).
+- `[PM-decided]` OBS-22 fixed: new posts default to his name.
+- For him at sign-off: **OBS-20** — after deploy the whole site depends on `back/`; `back/` down = every page shows
+  "Content is unavailable right now." · OBS-23 (post page background band stops part-way, cosmetic) · OBS-24 (Home AI said
+  "PostgreSQL has been my main choice" — small inference) · OBS-25 (click-nav `_rsc` may log ERR_ABORTED, harmless).
+- **Not live:** uncommitted on `D1`; nothing deployed; the admin stays local-only until he answers Q2 (login).
