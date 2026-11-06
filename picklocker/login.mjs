@@ -118,9 +118,11 @@ try {
   const verifyContext = await verifyBrowser.newContext({ storageState: statePath })
   const verifyPage = await verifyContext.newPage()
   try {
-    res = await verifyPage.goto(target, { waitUntil: 'domcontentloaded', timeout: 45000 })
+    // 'commit' returns as soon as the response head is in, so a slow Cloudflare page cannot
+    // turn a valid session into a false NOT_UNLOCKED; the final URL still tells us where we landed.
+    res = await verifyPage.goto(target, { waitUntil: 'commit', timeout: 30000 })
+    await verifyPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {})
   } catch (e) {
-    // A slow page still proves the session if it landed on an authenticated URL; keep going.
     navError = e.message.split('\n')[0]
   }
   const finalUrl = verifyPage.url()

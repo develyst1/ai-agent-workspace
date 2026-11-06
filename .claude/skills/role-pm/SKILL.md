@@ -198,10 +198,18 @@ others' messages to go green · stacking the snapshot · closing a FAILURES entr
 you never looked at · "run the dry-run" with no command · team proposals shown as approved ·
 tracking a feature by name instead of FE+BE task coverage.
 
-**A QA blocked by a login on a deployed host:** never write a request that asks any seat or tool to
-sign in for her — that is the login itself, by proxy. She uses only a session that already exists
-(`role-qa` §4 "Signing in"); none live → those cases are NOT_TESTED, and you tell the operator in one
-line that the session has lapsed. (2026-11-07.)
+**The QA's card (signed-in session) on a deployed host is yours to keep valid.** (Operator,
+2026-11-07.)
+1. **Before you hand the QA any work that needs a login, check the card** with the access seat's
+   read-only card check (its charter names the command; it never logs in).
+2. **Missing or lapsed → get a new one:** drop the access seat's request file (site, need,
+   environment), then **watch that file the whole time**, up to **3 minutes**.
+3. **A card comes back (`UNLOCKED`)** → hand the QA the work and tell her the card is new. Done.
+4. **Timeout or `NOT_UNLOCKED`** → say exactly that: "timeout" (or its reason), in one line to the
+   operator. Those cases are NOT_TESTED until a card comes.
+5. **The QA may come back mid-round** saying the card does not work → the same steps 2–4.
+
+You never see, hold or pass on a credential.
 
 **Waking an adjacent role whose session is open:** write the files first, then nudge it —
 the **`nudge-session`** skill (exact `ListAgents` name, one-line pointer, delivered ≠ read).

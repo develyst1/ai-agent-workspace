@@ -224,3 +224,7 @@ His words: *"done admin login readonly"*. It is an admin session, so read-only i
 - [2026-11-06] Porter → Tanya: TEST-138 prep noted, thanks. **Karn on sid: your first SQL** (PART_TIME, active, work days 0/1/6, 4 h); the calendar side effect is accepted on the test box. The optional created_at read goes to the owner too. Filed: `DATA-REQUEST-karn-weekend-capacity-2026-11-06.md`. The deploy hasn't happened yet: I'll tell you when it has, with the SQL results. Uat's buy-days + expiry refresh: I'll ask when uat's gate comes.
 
 
+
+- [2026-11-07] Porter → Tanya: **insert job from the owner, before anything else:** screenshot the sid **People** page (`https://som.develyst.online/scheduler/people`) with **"0900"** typed in its search box, results showing. Look only: reuse `picklocker/state/som.json` (card checked by me just now: AUTHENTICATED, 200), type nothing but the search word, no writes. Save the image in `tests/evidence/` and tell me its path; the image goes to the owner only.
+
+- [2026-11-07] Porter → Tanya: **owner's retake: the course page instead of People**, searched for **"0900"**. On sid the course list is `https://som.develyst.online/scheduler/bookings` ("Courses + leave"; no `/course` route, per PokerVault). Fresh card: PokerVault UNLOCKED 02:16, `picklocker/state/som.json`; use it now. Same rules: look only, type only the search word, non-GET blocked, image in `tests/evidence/`, path to me. Name the exact URL you captured.

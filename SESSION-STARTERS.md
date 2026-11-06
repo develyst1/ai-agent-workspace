@@ -63,8 +63,9 @@ turn, or to look something up:
 อ่าน POKERVAULT.md
 ```
 
-> Opening the session is the whole order: he goes to standby by himself and keeps the
-> session files fresh every hour (POKERVAULT.md § Standby, changed 2026-11-07). Desks never
+> Opening the session is the whole order: he renews any lapsed session file once, then goes
+> to standby by himself (POKERVAULT.md § Standby, changed 2026-11-07). Leave the session
+> open: a desk PM's request file wakes him in under 3 minutes; a closed session wakes nobody. Desks never
 > ask him; they only use the files. The owner can still add a one-off line, e.g.
 > `อ่าน POKERVAULT.md — ปลดล็อก <site> ให้ <ใคร>`, or drop a
 > `REQUEST-<from>-to-pokervault-<date>-<site>.md` at the workspace root. He runs on

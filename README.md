@@ -55,7 +55,8 @@ platform — the shared server, knowledge in `SERVER-FACTS.md`), **Bunny**
 (`BUNNY.md`, weaver of each desk's memory), **Iso** (`ISO.md`, independent
 verifier — the workforce's own QA, verdicts in `ISO-LEDGER.md`), **PokerVault**
 (`POKERVAULT.md`, access operator — the workforce's keyholder; logs in and unlocks
-sessions the Anthropic-bound desks cannot, log in `POKERVAULT-LOG.md`) and **Atom**
+sessions the Anthropic-bound desks cannot, keeps them fresh hourly, and wakes on a
+`REQUEST-*-to-pokervault-*.md` dropped at the workspace root; log in `POKERVAULT-LOG.md`) and **Atom**
 (`ATOM.md`, draft — the owner's mobile mouth and ears).
 
 ## How to run a work session (manual mode)

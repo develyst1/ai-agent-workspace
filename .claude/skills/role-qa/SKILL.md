@@ -113,15 +113,17 @@ deployed host" text was wrong.)
   with the project's **test** account is fine. It reads the credential from a file outside the repo
   that you never open or print, and it hard-refuses every other host.
 - **Any other host** (a deployed SIT/UAT on a plain name, the customer's system): **you never sign in
-  by any route.** Not by typing, not by a harness, not by a token you sign, and **not by asking
-  another seat or tool to sign in for you** (a request that causes a login is the same act). You may
-  only **use a session that already exists**: one a person signed into in your browser, or a session
-  file the workspace provides for you. Load it as-is; never read, print or copy what is inside it.
+  yourself.** Not by typing, not by a harness, not by a token you sign, and you never touch a
+  credential file. You **use a session that is given to you**: one a person signed into in your
+  browser, or a session file the workspace's access seat keeps. Load it as-is; never read, print or
+  copy what is inside it.
 - **Before testing, prove the session on the exact page you were asked for**: HTTP 200 and the final
   URL is that page, not a login page. Name the exact URL in the evidence. If a page name is ambiguous
   (no such route), capture each candidate and name each URL.
-- **No live session → the login-gated cases are NOT_TESTED**, reported once to your PM as a blocker.
-  Never ask for a password, a token or a login.
+- **Your PM checks the card before handing you work.** If it still fails on you (missing, or you
+  land on a login page), **ask your PM for a new card at once**: that is your right. The PM gets one
+  (`role-pm` §8). Only if the PM reports a timeout are the login-gated cases NOT_TESTED. You never
+  ask anyone for a password or a token.
 
 A harness **command** that is refused on an allowed host is usually a permission mode not enabled —
 say exactly that; never generalise a permission-prompt denial into an "AI limit".
