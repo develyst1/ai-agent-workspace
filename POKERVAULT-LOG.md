@@ -81,15 +81,17 @@
   `{"url":".../login?error=CredentialsSignin&code=credentials"}`. The live credential is the
   one `machine.local.md` names under *smart-scheduler QA credentials*; with it the login
   passes. `machine.local.md` was right, the project-docs file is the trap it warns about.
-- **Tooling change:** `login.mjs` now keeps the old session as `state/<site>.json.prev` and
-  **verifies with a clean context loaded from the saved file** — it prints
-  `verified: status … · <url> · AUTHENTICATED|REDIRECTED TO LOGIN` and exits 1 on a redirect,
-  so "session saved" can never be mistaken for an unlock again.
+- **Tooling change:** `login.mjs` now keeps the old session as `state/<site>.json.prev`, and a
+  refused login exits 1 with `NOT_UNLOCKED — login stayed on /login …` **without touching the
+  working session file** (tested: a bogus credential left `som.json` byte-identical). Then it
+  **verifies with a clean context loaded from the saved file** — `verified: status … · <url> ·
+  AUTHENTICATED`, exit 1 on a redirect — so "session saved" can never be mistaken for an unlock.
 - **Verified:** status **200** · final URL `https://som.develyst.online/scheduler/calendar` ·
   **AUTHENTICATED**.
 - **Handed:** `picklocker/state/som.json` — held for the next request, handed to nobody.
 - **Result:** `UNLOCKED`
-- **Standby:** watcher job `pwsh-05078e2063c54b33` — PowerShell loop, 20 s poll, both
+- **Standby:** watcher jobs `pwsh-05078e2063c54b33` (fired on the self-test) → restarted as
+  `pwsh-f5e959429a624745`, the one live now — PowerShell loop, 20 s poll, both
   `REQUEST-*-to-pokervault-*.md` and `REQUEST-*-to-picklocker-*.md`. **Wake path tested, not
   assumed:** a self-test request file made the job finish at 01:38:18 and wake this session;
   the file was deleted and the watcher restarted. This is the route that works — not

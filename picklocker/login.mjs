@@ -77,6 +77,7 @@ if (existsSync(statePath)) copyFileSync(statePath, `${statePath}.prev`)
 const browser = await chromium.launch({ channel: 'chrome', headless: true })
 const context = await browser.newContext()
 const page = await context.newPage()
+let loginError = null
 try {
   if (existsSync(`${statePath}.prev`) && process.env.PICKLOCK_REUSE === '1') {
     // Reuse: restore the saved session and verify we are still signed in.
@@ -88,25 +89,43 @@ try {
     await page.fill(site.selectors.email, user)
     await page.fill(site.selectors.password, pass)
     await page.click(site.selectors.submit)
-    await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 30000 })
+    try {
+      await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 30000 })
+    } catch {
+      const u = new URL(page.url())
+      loginError = `NOT_UNLOCKED — login stayed on ${u.pathname}${u.search}: credential refused, or the login page changed (stale credential is the usual cause — see UNLOCK-005)`
+    }
   }
-  await context.storageState({ path: statePath })
-  console.log(`session saved: ${statePath}`)
+  if (!loginError) {
+    await context.storageState({ path: statePath })
+    console.log(`session saved: ${statePath}`)
+  }
 } finally {
   await browser.close()
 }
 
+if (loginError) {
+  console.error(loginError)
+  process.exit(1)
+}
+
 // Verify with a CLEAN context loaded from the saved file — "saved" is not an unlock.
+const target = site.authenticatedUrl ?? site.baseUrl
 const verifyBrowser = await chromium.launch({ channel: 'chrome', headless: true })
+let res = null
+let navError = null
 try {
   const verifyContext = await verifyBrowser.newContext({ storageState: statePath })
   const verifyPage = await verifyContext.newPage()
-  const target = site.authenticatedUrl ?? site.baseUrl
-  const res = await verifyPage.goto(target, { waitUntil: 'domcontentloaded' })
+  try {
+    res = await verifyPage.goto(target, { waitUntil: 'domcontentloaded', timeout: 45000 })
+  } catch (e) {
+    // A slow page still proves the session if it landed on an authenticated URL; keep going.
+    navError = e.message.split('\n')[0]
+  }
   const finalUrl = verifyPage.url()
-  const signedIn = !new URL(finalUrl).pathname.includes('/login')
-  console.log(`verified: status ${res?.status()} · ${finalUrl} · ${signedIn ? 'AUTHENTICATED' : 'REDIRECTED TO LOGIN'}`)
-  if (!signedIn) process.exitCode = 1
+  console.log(`verified: status ${res?.status() ?? 'no-response'} · ${finalUrl} · ${new URL(finalUrl).pathname.includes('/login') ? 'REDIRECTED TO LOGIN' : 'AUTHENTICATED'}${navError ? ` · nav: ${navError}` : ''}`)
+  if (!res || new URL(finalUrl).pathname.includes('/login')) process.exitCode = 1
 } finally {
   await verifyBrowser.close()
 }

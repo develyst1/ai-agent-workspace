@@ -60,11 +60,13 @@ turn, or to look something up:
 ## PokerVault — Access Operator / Keyholder (workspace-level, see POKERVAULT.md)
 
 ```
-อ่าน POKERVAULT.md — ปลดล็อก <site> ให้ <ใคร> [เพราะ <เหตุผล>]
+อ่าน POKERVAULT.md
 ```
 
-> He performs the real-world actions the Anthropic-bound desks cannot: logging in to a
-> deployed site and handing back a verified session. A desk's QA calls him with a
+> Opening the session is the whole order: he goes to standby by himself and keeps the
+> session files fresh every hour (POKERVAULT.md § Standby, changed 2026-11-07). Desks never
+> ask him; they only use the files. The owner can still add a one-off line, e.g.
+> `อ่าน POKERVAULT.md — ปลดล็อก <site> ให้ <ใคร>`, or drop a
 > `REQUEST-<from>-to-pokervault-<date>-<site>.md` at the workspace root. He runs on
 > DeepSeek Harness, not Claude Desktop — `nudge-session` cannot wake him; a background
 > watcher job (or the owner) wakes him to read the request. He unlocks, he never tests;

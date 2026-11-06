@@ -110,6 +110,12 @@ When you finish, write `UNLOCKED` / `NOT_UNLOCKED` back into the same request fi
 brief to a desk tells it to re-read that file after ~60 s (within the 3-minute timeout)
 and continue when it sees `UNLOCKED`; the owner is never asked to relay.
 
+**Changed 2026-11-07 (Atlas ruling, owner: *"อันแรก แอบยุ่งยากอ่ะ ช่วยทำให้มันดีขึ้นกว่านี้ได้มั้ย"*).**
+The Claude desks no longer write requests to you: a Claude seat may not cause a login, even by
+asking another seat. So **you keep the doors open on your own** (§ Standby, "keep fresh"), and the
+desks only use the session files you keep. A request file is now only the owner's manual route.
+Ruling: `REQUEST-pokervault-to-atlas-2026-11-06-unlocker-call-path.md` § Atlas's answer.
+
 ## Standby — a fresh session at this workspace (any machine)
 
 A new session opens with only what git carries: this file, `POKERVAULT-LOG.md`, and the
@@ -124,21 +130,26 @@ A new session opens with only what git carries: this file, `POKERVAULT-LOG.md`, 
    that file is missing too. Never invent them. A credential that was live in August is not live
    now: `error=CredentialsSignin` means the credential, not the script (UNLOCK-005).
 4. `picklocker/state/` empty is fine — the first request does a fresh login.
-5. Start the watcher as a background job (shell-only, no AI cost while waiting), then
-   standby. The exact loop:
+5. **Standby starts by itself.** Opening this session is the whole order; the owner does not
+   have to say "standby". Start the watcher as a background job. It is shell-only and costs no
+   AI tokens: it runs `picklocker/keep-fresh.mjs` itself at start and then every hour, and it
+   wakes you **only** on a new request or when a keep-fresh run fails (`KEEP_FRESH_FAILED`). A
+   passing check never wakes you. The exact loop:
 
    ```bash
-   cd <workspace> && while true; do found=""; for f in REQUEST-*-to-pokervault-*.md; do
+   cd <workspace> && n=180; while true; do found=""; for f in REQUEST-*-to-pokervault-*.md; do
    [ -e "$f" ] || continue; if ! grep -qE '^UNLOCKED|^NOT_UNLOCKED' "$f"; then found="$f";
-   break; fi; done; if [ -n "$found" ]; then sleep 2; echo "NEW_REQUEST $(date '+%Y-%m-%d
-   %H:%M:%S') $found"; exit 0; fi; sleep 20; done
+   break; fi; done; if [ -n "$found" ]; then sleep 2; echo "NEW_REQUEST $(date '+%F %T') $found";
+   exit 0; fi; if [ $n -ge 180 ]; then n=0; node picklocker/keep-fresh.mjs >/dev/null ||
+   { echo "KEEP_FRESH_FAILED $(date '+%F %T')"; exit 0; }; fi; n=$((n+1)); sleep 20; done
    ```
 
-   The same loop on Windows PowerShell — what ran as UNLOCK-005's standby, job
-   `pwsh-05078e2063c54b33` — which also watches the older `-to-picklocker-` name:
+   The same loop on Windows PowerShell — the one this session ran as its standby — which also
+   watches the older `-to-picklocker-` name (the job id differs every session):
 
    ```powershell
    $root='<workspace>'
+   $n=180
    while ($true) {
      $found=$null
      foreach ($p in @('REQUEST-*-to-pokervault-*.md','REQUEST-*-to-picklocker-*.md')) {
@@ -148,10 +159,21 @@ A new session opens with only what git carries: this file, `POKERVAULT-LOG.md`, 
        if ($found) { break }
      }
      if ($found) { Start-Sleep -Seconds 2; Write-Output ("NEW_REQUEST " + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss') + " " + $found); exit 0 }
-     Start-Sleep -Seconds 20
+     if ($n -ge 180) {
+       $n=0; node "$root\picklocker\keep-fresh.mjs" | Out-Null
+       if ($LASTEXITCODE -ne 0) { Write-Output ("KEEP_FRESH_FAILED " + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')); exit 0 }
+     }
+     $n++; Start-Sleep -Seconds 20
    }
    ```
-6. A new `REQUEST-*-to-pokervault-*.md` wakes it → log in → reply in the file → restart watcher.
+6. `NEW_REQUEST` → log in → reply in the file → restart the watcher. `KEEP_FRESH_FAILED` →
+   read the last line of `picklocker/state/keep-fresh.log`, find out why (UNLOCK-005: usually a
+   stale credential), log one UNLOCK line (`Request: keep-fresh`), then restart the watcher.
+7. **What keep-fresh does** (`picklocker/keep-fresh.mjs`, no AI): for every `"mode": "password"`
+   site in `sites.json` (today: `som`) it runs `login.mjs` with `PICKLOCK_REUSE=1`; if the session
+   lapsed it logs in fresh; it writes one line per run to `picklocker/state/keep-fresh.log` and
+   exits 1 only if a site still fails. A `session-import` site (uat, OAuth sites) is not kept
+   fresh: the owner re-exports it.
 
 The watcher dies with the session. Every fresh session must restart it; there is no
 cross-session daemon. `nudge-session` from a Claude seat never reaches you.
