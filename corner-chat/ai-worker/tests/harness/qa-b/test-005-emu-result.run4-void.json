@@ -1,0 +1,252 @@
+{
+  "ranAt": "2026-11-01T15:25:02.038Z",
+  "tag": "mvxygwlu",
+  "apk": "cornerchat-qa-b-def1-local.apk",
+  "checks": [
+    {
+      "case": "dev",
+      "what": "emulator-5554 booted",
+      "expected": "boot_completed 1",
+      "actual": "sdk_gphone64_x86_64 · API 34 · 720x1600 · density 320",
+      "pass": true
+    },
+    {
+      "case": "T5#41",
+      "what": "fresh install of the local debug APK",
+      "expected": "installed",
+      "actual": "package:/data/app/~~fI1KiojIRltxSgSQUliE",
+      "pass": true
+    },
+    {
+      "case": "T5#41",
+      "what": "opens to sign-in",
+      "expected": "/signin",
+      "actual": "/",
+      "pass": false
+    },
+    {
+      "case": "T5#8",
+      "what": "permission asked at the first sign-in",
+      "expected": "system prompt shown and refused",
+      "actual": "prompt → Don't allow",
+      "pass": true
+    },
+    {
+      "case": "T5#8",
+      "what": "refused → hint on the list",
+      "expected": "ปิดการแจ้งเตือนอยู่ จะไม่เห็นข้อความใหม่จนกว่าจะเปิด · แตะเพื่อเปิด",
+      "actual": "ปิดการแจ้งเตือนอยู่ จะไม่เห็นข้อความใหม่จนกว่าจะเปิด · แตะเพื่อเปิด",
+      "pass": true
+    },
+    {
+      "case": "T5#8",
+      "what": "refused → no notification for a passed message (50 s)",
+      "expected": "none",
+      "actual": "none",
+      "pass": true
+    },
+    {
+      "case": "T5#9",
+      "what": "second sign-in does not ask again",
+      "expected": "no prompt",
+      "actual": "no prompt",
+      "pass": true
+    },
+    {
+      "case": "obs",
+      "what": "permanent watcher notification while signed in (SPEC D-B14)",
+      "expected": "corner-chat กำลังรอข้อความใหม่",
+      "actual": "corner-chat กำลังรอข้อความใหม่|",
+      "pass": true
+    },
+    {
+      "case": "T5#1",
+      "what": "messages from before sign-in raise nothing (watermark)",
+      "expected": "no QABE-OLD notification",
+      "actual": "none",
+      "pass": true
+    },
+    {
+      "case": "T5#3",
+      "what": "app open on the list: new message appears without action",
+      "expected": "row ≤ 60 s",
+      "actual": "not in 75 s · notification=false",
+      "pass": false
+    },
+    {
+      "case": "T5#1",
+      "what": "background: notification arrives",
+      "expected": "title = about line (full form), body = first 2 lines",
+      "actual": "none in 90 s",
+      "pass": false
+    },
+    {
+      "case": "T5#7",
+      "what": "5 runs, each ≤ 60 s from the webhook (includes the filter)",
+      "expected": "all ≤ 60000 ms",
+      "actual": ", , , , ",
+      "pass": false
+    },
+    {
+      "case": "T5#4",
+      "what": "precondition: exactly one message notification in the shade",
+      "expected": "1",
+      "actual": "0",
+      "pass": false
+    },
+    {
+      "case": "T5#4",
+      "what": "tap the notification (app in background) → that message",
+      "expected": "/messages/undefined…",
+      "actual": "false · /messages",
+      "pass": false
+    },
+    {
+      "case": "obs",
+      "what": "detail screen: battery toast present (Tanya's observation)",
+      "expected": "recorded",
+      "actual": "no toast",
+      "pass": true
+    },
+    {
+      "case": "T5#19",
+      "what": "detail button hit-tests inside the APK WebView",
+      "expected": "hit",
+      "actual": "absent",
+      "pass": false
+    },
+    {
+      "case": "T5#5",
+      "what": "two notifications, tap the older (A)",
+      "expected": "A's detail",
+      "actual": "false · /messages",
+      "pass": false
+    },
+    {
+      "case": "T5#2",
+      "what": "app swiped away from recents → still notified",
+      "expected": "≤ 60 s",
+      "actual": "none in 90 s",
+      "pass": false
+    },
+    {
+      "case": "T5#4",
+      "what": "tap after the app was swiped away → that message",
+      "expected": "that detail",
+      "actual": "false · ?",
+      "pass": false
+    },
+    {
+      "case": "T5#6",
+      "what": "held message → no notification (70 s, > 2 ticks)",
+      "expected": "none",
+      "actual": "none",
+      "pass": true
+    },
+    {
+      "case": "T5#10",
+      "what": "AI down → still notified, title AI ไม่ได้ตรวจ",
+      "expected": "title starts AI ไม่ได้ตรวจ",
+      "actual": "none",
+      "pass": false
+    },
+    {
+      "case": "T5#22",
+      "what": "resume the APK → list reloads (held message added while away)",
+      "expected": "QABE-RESUME shown",
+      "actual": "false",
+      "pass": false
+    },
+    {
+      "case": "T5#11",
+      "what": "APK smoke: tab switch",
+      "expected": "both tabs render",
+      "actual": "true · true",
+      "pass": true
+    },
+    {
+      "case": "T5#17",
+      "what": "system back on each sub-screen → one step back, app stays open",
+      "expected": "all one step back",
+      "actual": "screen-message-detail→SETUP(page error: Error: no row-undefined\n     at /messages) screen-line(/channels/line)→LOST[fg=true path=/channels/line focus=mCurrentFocus=Window{b7e0eab u0 com.develyst.cornerchat/com.develyst.cornerchat.MainActivi] screen-line-names→SETUP(page error: Error: no channels-open-line at /channels/line) screen-line-groups(/channels/line/groups)→LOST[fg=true path=/channels/line/groups focus=mCurrentFocus=Window{b7e0eab u0 com.develyst.cornerchat/com.develyst.cornerchat.MainActivi] screen-zimbra→SETUP(page error: Error: no channels-open-zimb at /channels/line)",
+      "pass": false
+    },
+    {
+      "case": "T5#20",
+      "what": "font scale 1.3 (largest on API 34 = 1.3): controls still hit-test",
+      "expected": "all true",
+      "actual": "list-tab-held:true tab-conditions:true tab-channels:true menu-open:true detail-correct:false",
+      "pass": false
+    },
+    {
+      "case": "T5#24",
+      "what": "airplane mode: banner + the saved list",
+      "expected": "ไม่มีอินเทอร์เน็ต กำลังแสดงข้อมูลล่าสุด + rows",
+      "actual": "ไม่มีอินเทอร์เน็ต กำลังแสดงข้อมูลล่าสุด · rows=true",
+      "pass": true
+    },
+    {
+      "case": "T5#26",
+      "what": "cold start in airplane mode: saved list + banner",
+      "expected": "banner + rows",
+      "actual": "ไม่มีอินเทอร์เน็ต กำลังแสดงข้อมูลล่าสุด · rows=true",
+      "pass": true
+    },
+    {
+      "case": "T5#25",
+      "what": "airplane off → banner goes, list loads",
+      "expected": "no banner",
+      "actual": "false",
+      "pass": true
+    },
+    {
+      "case": "T5#32",
+      "what": "while signed in, Preferences hold the token + saved list (precondition)",
+      "expected": "cc.token + cc.cache",
+      "actual": "true · true",
+      "pass": true
+    },
+    {
+      "case": "T5#32",
+      "what": "after sign-out: no token, no saved list, no message text in Preferences",
+      "expected": "clean",
+      "actual": "false · false · false",
+      "pass": true
+    },
+    {
+      "case": "T5#33",
+      "what": "APK sign-out: confirm text; system back shows no data",
+      "expected": "ออกจากระบบไหม · no data",
+      "actual": "ออกจากระบบไหม ยก · false",
+      "pass": true
+    },
+    {
+      "case": "T5#31",
+      "what": "signed out: the watcher's permanent notification is gone",
+      "expected": "none",
+      "actual": "0",
+      "pass": true
+    },
+    {
+      "case": "T5#31",
+      "what": "U1 signed out, U2 signed in: U1's passed message raises nothing on this device (90 s)",
+      "expected": "none",
+      "actual": "none",
+      "pass": true
+    },
+    {
+      "case": "T5#31",
+      "what": "U2's app shows none of U1's messages",
+      "expected": "no QABE-BG/FG text",
+      "actual": "clean",
+      "pass": true
+    },
+    {
+      "case": "T5#40",
+      "what": "logcat: no message text, password or token",
+      "expected": "0 lines",
+      "actual": "{\"messageText\":0,\"password\":0,\"bearer\":0,\"tokenPref\":0,\"capacitorVerbose\":0} of 21076 lines",
+      "pass": true
+    }
+  ]
+}

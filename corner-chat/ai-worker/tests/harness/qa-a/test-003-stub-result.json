@@ -1,0 +1,342 @@
+{
+  "ranAt": "2026-11-01T14:58:36.452Z",
+  "user": "f-mvxycd9o@qa-a.test",
+  "checks": [
+    {
+      "case": "1",
+      "what": "rule created with sender key as given",
+      "expected": "201",
+      "actual": "201",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "AC-1 sender rule always → notify, no AI call",
+      "expected": "notified · rule · 0 calls · notify step ran",
+      "actual": "notified · rule · 0 calls · notes 2",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "AC-1 rule reason / about line (wording D32 under TASK-023 — reported, not judged)",
+      "expected": "reason starts กฎของคุณ",
+      "actual": "reason=\"กฎของคุณ: จากคนนี้ u-rule-sender\" about=\"[LINE · กลุ่มทดสอบ QA-A] ตรงกฎของคุณ: จากคนนี้ u-rule-sender\"",
+      "pass": true
+    },
+    {
+      "case": "2",
+      "what": "AC-2 keyword never → held, no AI call",
+      "expected": "held · rule · reason กฎของคุณ… · 0 calls · no notification",
+      "actual": "held · rule · \"กฎของคุณ: มีคำว่า โปรโมชั่น\" · 0 calls · notes 0",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "spelling variant โปรโมชัน (no rule for it) → AI decides",
+      "expected": "ai · 100 → notified",
+      "actual": "ai · 100 → notified",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "PROMOTION vs rule 'promotion' (Latin case-insensitive)",
+      "expected": "held by rule",
+      "actual": "rule → held",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "keyword as part of a longer word (substring)",
+      "expected": "held by rule",
+      "actual": "rule → held",
+      "pass": true
+    },
+    {
+      "case": "4",
+      "what": "group rule never → held, no AI call",
+      "expected": "held · rule · 0 calls",
+      "actual": "held · rule · 0 calls",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "always (sender) + never (keyword) both match → always wins",
+      "expected": "notified · rule",
+      "actual": "notified · rule · rule=always",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "no rule matches → layer 1 then layer 2",
+      "expected": "2 calls, layers 1,2",
+      "actual": "[1,2]",
+      "pass": true
+    },
+    {
+      "case": "7-9",
+      "what": "AC-3 bar 70, stub score [S69]",
+      "expected": "held",
+      "actual": "69 → held (bar 70) · notes 0",
+      "pass": true
+    },
+    {
+      "case": "7-9",
+      "what": "AC-3 bar 70, stub score [S70]",
+      "expected": "notified",
+      "actual": "70 → notified (bar 70) · notes 2",
+      "pass": true
+    },
+    {
+      "case": "7-9",
+      "what": "AC-3 bar 70, stub score [S71]",
+      "expected": "notified",
+      "actual": "71 → notified (bar 70) · notes 2",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "bar 0, score 0",
+      "expected": "notified",
+      "actual": "0 → notified",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "bar 100, score 100",
+      "expected": "notified",
+      "actual": "100 → notified",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "bar 100, score 99",
+      "expected": "held",
+      "actual": "99 → held",
+      "pass": true
+    },
+    {
+      "case": "20",
+      "what": "AC-7 bar 80, score 75",
+      "expected": "held, bar recorded 80",
+      "actual": "held, bar 80",
+      "pass": true
+    },
+    {
+      "case": "20",
+      "what": "AC-7 back to 70, score 75",
+      "expected": "notified",
+      "actual": "notified, bar 70",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "bar 101",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "bar -1",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "bar 70.5",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "bar \"70\"",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "bar unchanged after refused values",
+      "expected": "70",
+      "actual": "70",
+      "pass": true
+    },
+    {
+      "case": "12",
+      "what": "AC-4 record: whole % 0–100, reason, summary, models per layer, prompt version, bar",
+      "expected": "all present",
+      "actual": "{\"score\":71,\"reason\":\"ตามสคริปต์ของเกตเวย์ปลอม\",\"summary\":\"ขอให้ยืนยันนัด\",\"l1\":{\"provider\":\"deepseek\",\"model\":\"deepseek-flash\"},\"l2\":{\"provider\":\"deepseek\",\"model\":\"deepseek-v4-pro\"},\"pv\":\"v1\",\"bar\":70}",
+      "pass": true
+    },
+    {
+      "case": "26",
+      "what": "about line form for an AI decision",
+      "expected": "[LINE · กลุ่มทดสอบ QA-A] ขอให้ยืนยันนัด",
+      "actual": "[LINE · กลุ่มทดสอบ QA-A] ขอให้ยืนยันนัด",
+      "pass": true
+    },
+    {
+      "case": "26",
+      "what": "about line with a long summary",
+      "expected": "≤ 80, one line, ends with … after a whole word",
+      "actual": "80 chars: [LINE · กลุ่มทดสอบ QA-A] สรุปยาวมากเพื่อทดสอบการตัดความยาวของบรรทัดเรื่องให้ไม่…",
+      "pass": true
+    },
+    {
+      "case": "26",
+      "what": "about line with a very long group name",
+      "expected": "≤ 80, ends with … after a whole word",
+      "actual": "80 chars: [LINE · กลุ่มที่มีชื่อยาวมากๆ เพื่อทดสอบว่าบรรทัดเรื่องยังไม่เกินแปดสิบตัวอักษร…",
+      "pass": true
+    },
+    {
+      "case": "26",
+      "what": "a line ≤ 80 is left as it is (no …)",
+      "expected": "[LINE · กลุ่มทดสอบ QA-A] ขอให้ยืนยันนัด",
+      "actual": "[LINE · กลุ่มทดสอบ QA-A] ขอให้ยืนยันนัด",
+      "pass": true
+    },
+    {
+      "case": "26",
+      "what": "mail head with a display name",
+      "expected": "[อีเมล · Anna Lee] ขอให้ยืนยันนัด",
+      "actual": "[อีเมล · Anna Lee] ขอให้ยืนยันนัด",
+      "pass": true
+    },
+    {
+      "case": "26",
+      "what": "mail head with no display name (name stored as the address)",
+      "expected": "[อีเมล · anna] ขอให้ยืนยันนัด",
+      "actual": "[อีเมล · anna] ขอให้ยืนยันนัด",
+      "pass": true
+    },
+    {
+      "case": "26",
+      "what": "rule line, mail, no display name",
+      "expected": "[อีเมล · deals] ตรงกฎของคุณ: มีคำว่า โปรโมชั่น",
+      "actual": "[อีเมล · deals] ตรงกฎของคุณ: มีคำว่า โปรโมชั่น",
+      "pass": true
+    },
+    {
+      "case": "12",
+      "what": "ai_calls stores completion_tokens (fake gateway sends usage 1)",
+      "expected": "column present, filled on ok calls",
+      "actual": "filled on 38 ok calls",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "layer 1 says spam → layer 2 still called",
+      "expected": "calls at layers 1 and 2",
+      "actual": "[1,2]",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "score 70.5 → fail open",
+      "expected": "notified · ai_unavailable · score null · reason AI ไม่ได้ตรวจ · aboutLine null · 1 retry (2 failed calls) · notify ran",
+      "actual": "notified · ai_unavailable · null · \"AI ไม่ได้ตรวจ\" · null · failed calls 2 · notes 2",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "score \"70%\" → fail open",
+      "expected": "notified · ai_unavailable · score null · reason AI ไม่ได้ตรวจ · aboutLine null · 1 retry (2 failed calls) · notify ran",
+      "actual": "notified · ai_unavailable · null · \"AI ไม่ได้ตรวจ\" · null · failed calls 2 · notes 2",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "score 120 → fail open",
+      "expected": "notified · ai_unavailable · score null · reason AI ไม่ได้ตรวจ · aboutLine null · 1 retry (2 failed calls) · notify ran",
+      "actual": "notified · ai_unavailable · null · \"AI ไม่ได้ตรวจ\" · null · failed calls 2 · notes 2",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "score -5 → fail open",
+      "expected": "notified · ai_unavailable · score null · reason AI ไม่ได้ตรวจ · aboutLine null · 1 retry (2 failed calls) · notify ran",
+      "actual": "notified · ai_unavailable · null · \"AI ไม่ได้ตรวจ\" · null · failed calls 2 · notes 2",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "no score → fail open",
+      "expected": "notified · ai_unavailable · score null · reason AI ไม่ได้ตรวจ · aboutLine null · 1 retry (2 failed calls) · notify ran",
+      "actual": "notified · ai_unavailable · null · \"AI ไม่ได้ตรวจ\" · null · failed calls 2 · notes 2",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "layer 1 not JSON → fail open",
+      "expected": "notified · ai_unavailable · score null · reason AI ไม่ได้ตรวจ · aboutLine null · 1 retry (2 failed calls) · notify ran",
+      "actual": "notified · ai_unavailable · null · \"AI ไม่ได้ตรวจ\" · null · failed calls 2 · notes 2",
+      "pass": true
+    },
+    {
+      "case": "17",
+      "what": "layer 2 HTTP 500 → fail open",
+      "expected": "notified · ai_unavailable · score null · reason AI ไม่ได้ตรวจ · aboutLine null · 1 retry (2 failed calls) · notify ran",
+      "actual": "notified · ai_unavailable · null · \"AI ไม่ได้ตรวจ\" · null · failed calls 2 · notes 2",
+      "pass": true
+    },
+    {
+      "case": "15",
+      "what": "gateway never answers (LLM_TIMEOUT_MS default 40 s, TASK-031)",
+      "expected": "notified ai_unavailable after ~40 s, 1 failed call (no retry)",
+      "actual": "notified · ai_unavailable · 42.9 s · calls 1",
+      "pass": true
+    },
+    {
+      "case": "22",
+      "what": "AC-8 held → แจ้ง",
+      "expected": "200 · in notified tab · decidedBy user · system decision kept · 1 correction row · no new notification",
+      "actual": "200 · true · user · system ai/held · rows 1 · notes 0→0",
+      "pass": true
+    },
+    {
+      "case": "23",
+      "what": "AC-8 passed → ไม่ต้องแจ้ง",
+      "expected": "200 · in held tab",
+      "actual": "200 · true",
+      "pass": true
+    },
+    {
+      "case": "23",
+      "what": "correction with an unknown outcome",
+      "expected": "400",
+      "actual": "400",
+      "pass": true
+    },
+    {
+      "case": "24",
+      "what": "after a correction, a similar message is judged the same (no learning)",
+      "expected": "held",
+      "actual": "held",
+      "pass": true
+    },
+    {
+      "case": "25",
+      "what": "AC-9 change both layers' models in settings → next decision",
+      "expected": "openai/gpt-4o-mini · gemini/gemini-2.5-flash",
+      "actual": "200 · {\"provider\":\"openai\",\"model\":\"gpt-4o-mini\"} · {\"provider\":\"gemini\",\"model\":\"gemini-2.5-flash\"}",
+      "pass": true
+    },
+    {
+      "case": "25",
+      "what": "a model the gateway does not list",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "14",
+      "what": "AC-5 gateway down (connection refused)",
+      "expected": "notified · ai_unavailable · AI ไม่ได้ตรวจ · notify ran · no retry",
+      "actual": "notified · ai_unavailable · \"AI ไม่ได้ตรวจ\" · notes 2 · calls 1 · 1.2 s",
+      "pass": true
+    }
+  ]
+}

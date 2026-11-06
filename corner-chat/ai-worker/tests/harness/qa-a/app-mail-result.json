@@ -1,0 +1,111 @@
+{
+  "ranAt": "2026-11-01T15:58:37.627Z",
+  "tag": "mvy0j7ht",
+  "checks": [
+    {
+      "case": "1",
+      "what": "connect screen title",
+      "expected": "เชื่อมอีเมล Zimbra",
+      "actual": "เชื่อมอีเมล Zimbra",
+      "pass": true
+    },
+    {
+      "case": "2",
+      "what": "wrong mail password wording (app)",
+      "expected": "เชื่อมไม่สำเร็จ ตรวจอีเมลหรือรหัสผ่านอีกครั้ง",
+      "actual": "เชื่อมไม่สำเร็จ ตรวจอีเมลหรือรหัสผ่านอีกครั้ง",
+      "pass": true
+    },
+    {
+      "case": "2",
+      "what": "the password field is cleared after an attempt",
+      "expected": "empty",
+      "actual": "",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "right password → connected (app)",
+      "expected": "เชื่อมแล้ว · the address shown",
+      "actual": "เชื่อมแล้ว · somchai@test.local",
+      "pass": true
+    },
+    {
+      "case": "4s",
+      "what": "three mails taken in after connect",
+      "expected": "3 ids",
+      "actual": "3",
+      "pass": true
+    },
+    {
+      "case": "9",
+      "what": "Cc-only mail shows the Cc marker (app)",
+      "expected": "สำเนาถึงคุณ",
+      "actual": "สำเนาถึงคุณ",
+      "pass": true
+    },
+    {
+      "case": "12",
+      "what": "attachments note (app)",
+      "expected": "มีไฟล์แนบ: a.pdf, รายงาน.xlsx",
+      "actual": "มีไฟล์แนบ: a.pdf, รายงาน.xlsx",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "Thai subject and body readable on the detail (app)",
+      "expected": "[corner-chat TEST-002 app] ขอให้ตอบกลับ mvy0j7ht · พรุ่งนี้ประชุมได้ไหมครับ",
+      "actual": "[corner-chat TEST-002 app] ขอให้ตอบกลับ mvy0j7ht · พรุ่งนี้ประชุมได้ไหมครับ ตอบด้",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "reply from the app → ส่งแล้ว, one mail out",
+      "expected": "ส่งแล้ว · 1 SMTP message · Re: [corner-chat TEST-002 app] ขอให้ตอบกลับ mvy0j7ht",
+      "actual": "ส่งแล้ว · 1 · Re: [corner-chat TEST-002 app] ขอให้ตอบกลับ mvy0j7ht",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "SMTP unreachable → the app says so, with a retry",
+      "expected": "ส่งไม่สำเร็จ ลองอีกครั้ง · retry button",
+      "actual": "ส่งไม่สำเร็จ ลองอีกครั้ง · retry 1",
+      "pass": true
+    },
+    {
+      "case": "17",
+      "what": "retry on the same screen after the server is back",
+      "expected": "ส่งแล้ว · 2 SMTP messages in all",
+      "actual": "true · 2",
+      "pass": true
+    },
+    {
+      "case": "18",
+      "what": "after leaving the reply screen: the failed reply is shown",
+      "expected": "listed with ส่งไม่สำเร็จ ลองอีกครั้ง",
+      "actual": "ล้มเหลวแล้วออกจากหน้าจอ ส่งไม่สำเร็จ ลองอีกครั้ง ลองอีกครั้ง",
+      "pass": true
+    },
+    {
+      "case": "18",
+      "what": "after leaving the reply screen: the user can retry it (AC-6 'with a retry', req. 6)",
+      "expected": "≥ 1 retry control on the detail",
+      "actual": "2 retry controls · API failed replies 1",
+      "pass": true
+    },
+    {
+      "case": "18",
+      "what": "the detail's retry delivers the failed reply once",
+      "expected": "button pressed · no ส่งไม่สำเร็จ left · +1 mail",
+      "actual": "true · true · 2 → 3",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "disconnect from the app",
+      "expected": "connect form back · API connected false",
+      "actual": "true · false",
+      "pass": true
+    }
+  ]
+}

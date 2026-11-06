@@ -1,0 +1,6 @@
+b-set1 collapsed tap: expected newest=/messages/73eae723-1476-49aa-be77-9c17de1e76be -> "url": "https://localhost/messages/73eae723-1476-49aa-be77-9c17de1e76be"
+c-set1 expanded oldest row: expected=/messages/c76ea711-0c76-4d5f-86e1-7a1ccc8bd185 -> "url": "https://localhost/messages/c76ea711-0c76-4d5f-86e1-7a1ccc8bd185"
+collapsed d expected=/messages/46763a8f-6a1f-4b00-9c95-7a548c731f3f (group lines seen=6) -> "url": "https://localhost/messages/46763a8f-6a1f-4b00-9c95-7a548c731f3f"
+oldest e expected=/messages/3ad854a1-67fe-40ad-8475-d2eff8e47790 (group lines seen=4) -> "url": "https://localhost/messages/3ad854a1-67fe-40ad-8475-d2eff8e47790"
+collapsed f expected=/messages/a386d7de-4749-4d77-89e6-2232ffe13c3f (group lines seen=6) -> "url": "https://localhost/messages/a386d7de-4749-4d77-89e6-2232ffe13c3f"
+oldest g expected=/messages/9d6e873f-d991-4308-bb99-4a9b25cb8f22 (group lines seen=4) -> "url": "https://localhost/messages/9d6e873f-d991-4308-bb99-4a9b25cb8f22"

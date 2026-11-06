@@ -1,0 +1,216 @@
+{
+  "ranAt": "2026-11-01T13:09:13.125Z",
+  "tag": "mvxujaa4",
+  "checks": [
+    {
+      "case": "setup",
+      "what": "made-up messages decided",
+      "expected": "notified/held/notified(ai_unavailable)/notified",
+      "actual": "notified/ai held/ai notified/ai_unavailable notified/ai",
+      "pass": true
+    },
+    {
+      "case": "T1#1",
+      "what": "not signed in → /messages redirects to sign-in",
+      "expected": "screen-signin",
+      "actual": "http://127.0.0.1:3192/signin",
+      "pass": true
+    },
+    {
+      "case": "T1#1",
+      "what": "app sign-in title",
+      "expected": "เข้าสู่ระบบ corner-chat",
+      "actual": "เข้าสู่ระบบ corner-chat",
+      "pass": true
+    },
+    {
+      "case": "T1#4",
+      "what": "wrong password / unknown email wording (same text)",
+      "expected": "อีเมลหรือรหัสผ่านไม่ถูกต้อง ×2",
+      "actual": "อีเมลหรือรหัสผ่านไม่ถูกต้อง | อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+      "pass": true
+    },
+    {
+      "case": "T1#1",
+      "what": "U1 signs in on the app → message list",
+      "expected": "screen-messages",
+      "actual": "http://127.0.0.1:3192/messages",
+      "pass": true
+    },
+    {
+      "case": "T1#7",
+      "what": "notified tab: U1's notified rows, none of U2's",
+      "expected": "row 7576cc66 present, U2 text absent",
+      "actual": "LINE กลุ่มทดสอบ QA-A 1 พ.ย. 20:08 AI ไม่ได้ตรวจ U1 เกตเวย์ตอบเสีย [L2DOWN] LINE กลุ่มทดสอบ QA-A 1 พ.ย. 20:08 ขอให้ยืนยันนัด U1 ขอให้ยืนยันนัดประชุม [S71]",
+      "pass": true
+    },
+    {
+      "case": "T3#14",
+      "what": "an ai_unavailable message on the list says so",
+      "expected": "row contains AI ไม่ได้ตรวจ",
+      "actual": "LINE กลุ่มทดสอบ QA-A 1 พ.ย. 20:08 AI ไม่ได้ตรวจ U1 เกตเวย์ตอบเสีย [L2DOWN]",
+      "pass": true
+    },
+    {
+      "case": "T3#26",
+      "what": "list about line without the [channel · group] head (D42)",
+      "expected": "ขอให้ยืนยันนัด, no '[LINE ·'",
+      "actual": "LINE กลุ่มทดสอบ QA-A 1 พ.ย. 20:08 ขอให้ยืนยันนัด U1 ขอให้ยืนยันนัดประชุม [S71]",
+      "pass": true
+    },
+    {
+      "case": "T1#7",
+      "what": "held tab: U1's held row, none of U2's",
+      "expected": "held row present",
+      "actual": "LINE กลุ่มทดสอบ QA-A 1 พ.ย. 20:08 ขอให้ยืนยันนัด U1 ข้อความพักไว้ [S69]",
+      "pass": true
+    },
+    {
+      "case": "T1#7",
+      "what": "U1 opens U2's message by URL",
+      "expected": "detail-error, no U2 text",
+      "actual": "detail-error shown",
+      "pass": true
+    },
+    {
+      "case": "T3#12",
+      "what": "why card: header, reason, score, bar, decided by, models",
+      "expected": "ทำไมไม่แจ้ง · 69 · เกณฑ์ 70% · AI · deepseek-flash / deepseek-v4-pro",
+      "actual": "ทำไมไม่แจ้ง ตามสคริปต์ของเกตเวย์ปลอม ตรงเงื่อนไข 69% · เกณฑ์ 70% ตัดสินโดย: AI โมเดล: deepseek-flash / deepseek-v4-pro",
+      "pass": true
+    },
+    {
+      "case": "T3#22",
+      "what": "held → button แจ้ง → moved",
+      "expected": "button แจ้ง · คุณย้ายข้อความนี้มาเอง · API outcome notified, decidedBy user",
+      "actual": "แจ้ง · คุณย้ายข้อความนี้มาเอง · notified/user",
+      "pass": true
+    },
+    {
+      "case": "T3#22",
+      "what": "why card still shows the system's decision after the move",
+      "expected": "ทำไมไม่แจ้ง",
+      "actual": "ทำไมไม่แจ้ง ตามสคริปต์ของเกตเวย์ปลอม ตรงเงื่อนไข 69% · เกณฑ์",
+      "pass": true
+    },
+    {
+      "case": "T3#23",
+      "what": "notified → ไม่ต้องแจ้ง → in the held tab",
+      "expected": "button ไม่ต้องแจ้ง · row in held",
+      "actual": "ไม่ต้องแจ้ง · true",
+      "pass": true
+    },
+    {
+      "case": "T3#21",
+      "what": "bar label",
+      "expected": "แจ้งเมื่อตรงเงื่อนไขตั้งแต่ 70%",
+      "actual": "แจ้งเมื่อตรงเงื่อนไขตั้งแต่ 70%",
+      "pass": true
+    },
+    {
+      "case": "T3#20",
+      "what": "slider to 80 + save",
+      "expected": "label 80% · saved · API bar 80",
+      "actual": "แจ้งเมื่อตรงเงื่อนไขตั้งแต่ 80% · true · 80",
+      "pass": true
+    },
+    {
+      "case": "T3#20",
+      "what": "next message after the app change (score 75, bar 80)",
+      "expected": "held",
+      "actual": "held",
+      "pass": true
+    },
+    {
+      "case": "T3#21",
+      "what": "slider cannot go past 100 / below 0",
+      "expected": "100% at End, value stays 100",
+      "actual": "แจ้งเมื่อตรงเงื่อนไขตั้งแต่ 100% · 100",
+      "pass": true
+    },
+    {
+      "case": "T3#21",
+      "what": "slider Home",
+      "expected": "0%",
+      "actual": "แจ้งเมื่อตรงเงื่อนไขตั้งแต่ 0%",
+      "pass": true
+    },
+    {
+      "case": "T3#20",
+      "what": "back to 70 + save",
+      "expected": "API bar 70",
+      "actual": "70",
+      "pass": true
+    },
+    {
+      "case": "T3#2",
+      "what": "rule added in the app shows in the list",
+      "expected": "มีคำว่า … โปรโมชั่น … ไม่ต้องแจ้ง",
+      "actual": "มีคำว่า โปรโมชั่น ไม่ต้องแจ้ง ลบ",
+      "pass": true
+    },
+    {
+      "case": "T3#2",
+      "what": "rule-held message: why card in the app",
+      "expected": "held · ตัดสินโดย: กฎของคุณ · กฎของคุณ: มีคำว่า โปรโมชั่น",
+      "actual": "held · ทำไมไม่แจ้ง กฎของคุณ: มีคำว่า โปรโมชั่น ตัดสินโดย: กฎของคุณ",
+      "pass": true
+    },
+    {
+      "case": "T1#7",
+      "what": "while signed in, the offline cache holds U1's list (precondition)",
+      "expected": "U1 text in storage",
+      "actual": "yes",
+      "pass": true
+    },
+    {
+      "case": "T1#11",
+      "what": "owner disables U1 → app's next load",
+      "expected": "back to sign-in",
+      "actual": "http://127.0.0.1:3192/signin",
+      "pass": true
+    },
+    {
+      "case": "T1#7",
+      "what": "after the 401: no U1 message text and no token left in storage (TASK-029 fix)",
+      "expected": "no 'U1 ', no live token",
+      "actual": "clean",
+      "pass": true
+    },
+    {
+      "case": "T1#10",
+      "what": "disabled U1 signs in on the app",
+      "expected": "บัญชีนี้ถูกปิดใช้งาน ติดต่อผู้ดูแล",
+      "actual": "บัญชีนี้ถูกปิดใช้งาน ติดต่อผู้ดูแล",
+      "pass": true
+    },
+    {
+      "case": "T1#15",
+      "what": "owner resets U1's password → the app's next action",
+      "expected": "back to sign-in",
+      "actual": "http://127.0.0.1:3192/signin",
+      "pass": true
+    },
+    {
+      "case": "T1#14",
+      "what": "old password refused, new works (app)",
+      "expected": "อีเมลหรือรหัสผ่านไม่ถูกต้อง · list",
+      "actual": "อีเมลหรือรหัสผ่านไม่ถูกต้อง · true",
+      "pass": true
+    },
+    {
+      "case": "T1#21",
+      "what": "sign-out: confirm, back to sign-in, storage clean, old token dead",
+      "expected": "ออกจากระบบไหม · signin · no U1 text · /me 401",
+      "actual": "ออกจากระบบไหม ยกเลิก · true · clean · 401",
+      "pass": true
+    },
+    {
+      "case": "T1#16",
+      "what": "right password after 5 wrong (app)",
+      "expected": "ลองผิดหลายครั้งเกินไป รอสักครู่แล้วลองใหม่",
+      "actual": "ลองผิดหลายครั้งเกินไป รอสักครู่แล้วลองใหม่",
+      "pass": true
+    }
+  ]
+}

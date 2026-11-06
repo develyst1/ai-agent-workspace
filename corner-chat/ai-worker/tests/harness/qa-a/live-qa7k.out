@@ -1,0 +1,20 @@
+countsBefore: {"inbox":153,"unseen":81,"sent":2}
+#1 connect real Zimbra: 200 connected=true
+
+>>> READY 2026-11-01T15:43:52.295Z — ask the owner to send from B now. Subject must contain: qa7k
+
+#4 arrival: stored 6 s after the mail's Date header (9.7 min after connect)
+#7 real Thai — subject: [corner-chat TEST-002] ทดสอบภาษาไทย qa7k
+#7 real Thai — text (first 120): ทดสอบภาษาไทย
+ตอบกลับด้วยนะครับ
+
+#7 replacement characters: none
+recipient kind: to
+#13 reply: 202 → sent at 2026-11-01T15:53:41.868Z (to B only: <B: owner personal mail>)
+countsAfter: {"inbox":154,"unseen":82,"sent":3}
+#21 disconnect: 204
+#20 log: 12 lines · A's password absent
+
+>>> Now ask the owner (via the PM): did the reply arrive in B, in the SAME conversation as his mail, from his work address, Thai readable? (TEST-002 § Owner window, step 3)
+
+cleanup: dropped corner_chat_test_qa_a

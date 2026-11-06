@@ -1,7 +1,7 @@
 # TASK-009: Admin web — AI settings page (model per layer) + this month's LINE push count
 - Source: SPEC-001 §3.3 (`/admin/settings/ai`, `/admin/ai-models`, `/admin/stats/line-pushes`) · REQ-004 req 6, AC-9 · REQ-003 req 8, AC-7
 - Owner: FE (Fern)
-- Status: BLOCKED (waiting: TASK-006, TASK-007 for the live lines) — code accepted on the mock; Review items 1 + 3 checked by SA 2026-11-01
+- Status: DONE (SA Sober, 2026-11-01)
 - Depends on: TASK-008's scaffold (built — may start now, SA 2026-11-01) · build against a harness mock of SPEC-001 §3.3, as in
   TASK-008 · live DoD needs TASK-006 (settings API) and TASK-007 (count API) running
 
@@ -93,6 +93,36 @@ raw ids (not translated — they are names, not copy). Passing the audit is not 
 **Footprint:** test data in the mock's memory only; servers on :3000 / :3100 / :8080 started and stopped; `playwright-core` was installed in my scratchpad
 (outside the workspace and the repo).
 
+**REWORK item 2 — live lines against the REAL back end (TASK-006 / TASK-007), done 2026-11-01** after Sober's "TASK-006/007 DONE":
+- **Set-up (all local, nothing real):** Jason's own back end holds :8080 on the dev DB and I did not touch it or the shared settings. I created a
+  **throwaway database** `corner_chat_fe9_live` on the team's local cluster (:5433; never :5432), applied the three migrations (`22 tables`), and started
+  the real back end (`bun src/index.ts`) on **:8081** against it, with `LLM_GATEWAY_URL` = the **fake gateway** (`tests/harness/fake-gateway`, :3997). The front
+  was a separate standalone build pointed at :8081 (`NEXT_PUBLIC_API_BASE_URL`, `NEXT_DIST_DIR=.next-mock`, deleted afterwards; Next added its types to
+  `tsconfig.json`, I reverted that). Owner login read from the back end's `.env` at run time, never printed. The gateway is the fake, not a real model
+  (TASK-006's own UNVERIFIED: no real-gateway probe exists yet).
+- **Fake-gateway script added:** `tests/harness/fake-gateway/scripts/fe-live-task-009.json` — `sample-run`'s answers plus a `/models` list that includes the
+  shipped defaults (`deepseek-flash`, `deepseek-v4-pro`). Why: with the fake's default list the real server rejects *any* save, because it validates both layers and
+  layer 2's saved default isn't listed (`PUT` → `400 {"fields":{"layer2.model":"not a model the gateway lists under deepseek"}}`). The page showed that as the
+  field error it should; it was a harness gap, not a front-end defect. **Product note:** if the real gateway drops a model the owner has saved, he cannot
+  save the *other* layer until he re-picks the dropped one — the page shows the stale value plus the listed ones, so it is possible, but the message is only
+  `admin.error.validation` at that field.
+- **Run:** `tests/harness/task-009/shoot-live.mjs … main` → **ALL PASS**, then the fake gateway **stopped for real** (its process killed, port 3997 closed) and
+  `… down` → **ALL PASS**:
+  - save layer 1's model in the UI: `{"provider":"deepseek","model":"deepseek-flash"}` → `{"provider":"deepseek","model":"deepseek-chat"}` on the real server; reload shows it;
+    a real `PUT` with an unlisted model → `400 VALIDATION` naming `layer1.model`;
+  - **AC-9** — a made-up message ingested *after* the save (`tests/harness/task-005-ingest.ts`, user U1, no rules → AI path). The decision U1 reads at `GET /messages/:id`:
+    `{"decidedBy":"ai","outcome":"notified","rule":null,"summary":"ทดสอบหน้าตั้งค่า AI (FE)","score":85,"bar":70,"reason":"ถามตรง ๆ เรื่องงาน","layer1":{"provider":"deepseek","model":"deepseek-chat"},"layer2":{"provider":"deepseek","model":"deepseek-v4-pro"},"promptVersion":"v1","decidedAt":"2026-11-01T08:55:01.313Z"}` → `layer1.model` = the new one;
+  - **count card** vs the endpoint: `GET /admin/stats/line-pushes` → `{"month":"2026-11","count":2}`, the card reads 2; October: `{"month":"2026-10","count":1}`, the picker's card reads 1.
+    **The 3 `line_pushes` rows were hand-inserted** by `psql` into the throwaway DB (2 now, 1 on 2026-10-15) because nothing writes them until Team B's notifier is wired; this proves
+    the card follows the endpoint, not that a real push increments it (AC-7's "+1 per push" is Team B's);
+  - **gateway stopped for real:** `GET /admin/ai-models` → `502 GATEWAY_UNAVAILABLE`; the page shows the PM's gateway-down warning, 4 selects read-only with the saved values kept, save disabled.
+- **Screenshots (1280 × 800, `tests/harness/task-009/`):** `live-01-ai-settings.png` · `live-02-ai-saved.png` · `live-03-users-line-count.png` · `live-04-ai-gateway-stopped.png`.
+- `bun run lint` / `typecheck` / `build` clean after cleanup; `ls .next/standalone/server.js` exists; `git status --porcelain` in the front = only the closed-list paths; the back repo
+  has no change from me.
+- **Seen, minor (P3):** the count card's title says "พฤศจิกายน 2569" (Buddhist year, the PM's `{month}` example) while the month picker beside it shows "2026-11" — two calendars on one line. Say if the picker should show the Buddhist year too.
+- **Footprint:** the throwaway DB `corner_chat_fe9_live` is **dropped** (`select datname …` lists only `corner_chat_dev` and the BE's `corner_chat_test*`); U1 users, messages and push rows died with it. My back end (:8081), fake gateway (:3997), front (:3000) are stopped;
+  Jason's :8080 and the :5433 cluster are untouched and still running. Helper scripts that hold no secret and read the `.env` themselves live in my scratchpad, not in the workspace.
+
 ## Questions
 - To SA (non-blocking): add `admin.common.save` to a PM wording question · the "this month" title vs the month picker · accept the three deviations above ·
   the live DoD needs TASK-006 / TASK-007 (see UNVERIFIED).
@@ -119,3 +149,16 @@ still waits on TASK-006/007.
 **SA check 2026-11-01:** items 1 and 3 are met. `strings.ts:62-63` → `ข้อความ LINE ที่ส่งในเดือน {month}` and `บันทึก`;
 `AdminBar.tsx:30` → `message.destroy()` on sign-out; `bun run lint` and `bun run typecheck` are clean when I re-ran them.
 I'll tell you when TASK-006 and TASK-007 are DONE, for item 2.
+
+**Final verdict: DONE** — SA Sober, 2026-11-01. Item 2 is met against the real back end (TASK-006/007). You used your own
+port (:8081) and a throwaway DB on :5433 (dropped afterwards), and left Jason's :8080 untouched — exactly right. AC-9: the
+decision read through `GET /messages/:id` after the save shows `layer1.model = deepseek-chat`, the new value. The count card
+matches the endpoint for both months. Gateway down: the fake was stopped for real (port closed), and I looked at
+`live-04-ai-gateway-stopped.png` (warning shown, four selects read-only with the saved values, บันทึก disabled).
+Accepted, with what each one proves:
+- The hand-inserted `line_pushes` rows prove that the card follows the endpoint. "+1 per real push" is Team B's AC-7.
+- The fake gateway, not a real model: the real-gateway probe is TASK-006's (done there).
+**Your product note is right**, and it happened today (`deepseek-v4-flash` was dropped). If the gateway drops a saved model,
+the owner must re-pick that layer before he can save the other one. The page makes that possible, and I've recorded it in
+SPEC-001 §3.3 as known behaviour.
+**P3, Buddhist year on the title vs the Gregorian picker:** left as is for round 1 and passed to the PM as wording.

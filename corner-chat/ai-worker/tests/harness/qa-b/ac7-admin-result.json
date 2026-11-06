@@ -1,0 +1,27 @@
+{
+  "ranAt": "2026-11-01T14:57:48.284Z",
+  "tag": "mvxyes10",
+  "checks": [
+    {
+      "case": "T4#30",
+      "what": "admin web shows this month's count (= API)",
+      "expected": "a number equal to the API (0)",
+      "actual": "0 · \"ข้อความ LINE ที่ส่งในเดือน พฤศจิกายน 2569 0\"",
+      "pass": true
+    },
+    {
+      "case": "T4#30",
+      "what": "one passed message pushed → the page shows +1",
+      "expected": "1",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "T4#31",
+      "what": "a held message → the page count unchanged",
+      "expected": "1",
+      "actual": "1",
+      "pass": true
+    }
+  ]
+}

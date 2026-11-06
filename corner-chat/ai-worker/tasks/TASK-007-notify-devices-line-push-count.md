@@ -1,7 +1,7 @@
 # TASK-007: Notify — FCM push + notifier registry for LINE, devices API, admin LINE push count
 - Source: SPEC-001 §3.3 (`/admin/stats/line-pushes`), §3.8, §4 (`registerNotifier`, `Notification`), §5 (`devices`, `notifications_log`), §6 "Notify" · REQ-005 req 3 (server side) · REQ-003 req 6, 8 (server seam) · REQ-001 req 4
 - Owner: BE (Jason)
-- Status: REVIEW
+- Status: DONE (SA Sober, 2026-11-01)
 - Depends on: TASK-006 · a live push needs **B3** (Firebase service-account JSON path in `FCM_SERVICE_ACCOUNT_JSON`) and a
   device token from Team B's app — without them this TASK is still DONE on the mocked tests + the "not configured" path.
 
@@ -28,7 +28,7 @@
 3. `fcm.ts`: FCM HTTP v1 (`https://fcm.googleapis.com/v1/projects/<project_id>/messages:send`) with an OAuth token from the
    service-account JSON (signed JWT → Google token endpoint; cache the token until 1 min before expiry). Payload per §3.8:
    `notification.title` = `aboutLine` (or `AI ไม่ได้ตรวจ · <senderName>` when `aboutLine` is null), `notification.body` =
-   `preview`, `data = { type: "message", messageId }`, Android `priority: "high"`. A 404/`UNREGISTERED` answer → delete that
+   `preview`, `data = { type: "message", messageId }`, Android `priority: "high"`. An `UNREGISTERED` error code (~~404/~~ — a bare 404 is not enough, SA 2026-11-01) → delete that
    device row. **`FCM_SERVICE_ACCOUNT_JSON` unset → skip, log `ok=false, error='fcm not configured'`.** You may add one
    dependency for the JWT only if `crypto.subtle` RS256 signing is not enough — say which and why in Notes.
 4. `GET /admin/stats/line-pushes?month=YYYY-MM` (§3.3): `count(*)` from `line_pushes` where `pushed_at` falls in that month in
@@ -82,5 +82,25 @@ Test-first throughout (step 0 and the rest each ran RED, then GREEN). Working tr
 
 ## Questions
 - For the SA: (1) `registerNotifier` as a module function vs SPEC-002's `deps.registerNotifier` — please settle it with SA-B (I would keep the module function). (2) A bare FCM 404 does not delete a device (see above) — say if you want the TASK's literal "404 deletes". (3) `notified_at` = "notify step finished", not "delivered" — fine for REQ-005's timing?
+  > answer (SA Sober, 2026-11-01): (1) Keep the **module function**. That is what SPEC-001 §4 promised, and I'm telling SA-B through
+  > the PM to import it from `src/core/notify`. (2) Your rule is better: only `UNREGISTERED` deletes. Step 3 of this TASK now says so; SPEC-001
+  > never named a 404. (3) Yes. `notified_at` = the notify step finished. Delivery per target is in `notifications_log`.
 
 ## Review
+**Verdict: DONE** — SA Sober, 2026-11-01. Reviewed against SPEC-001 §3.3, §3.8, §4, §5, §6 "Notify", REQ-005 req 3, REQ-001 req 4.
+Re-run by me: `bun run test` → `262 pass · 0 fail [12.90s]` · `tsc` 0. Spot-checked: `fcm.ts:134` sends `priority: "HIGH"`
+(the v1 enum, correct), and `fcm.ts:143` deletes a device only on `UNREGISTERED`. `pipeline.ts:113` now writes `::text::jsonb`
+(step 0). `notify.ts:14` exports `registerNotifier`.
+Your evidence holds:
+- the JWT is verified against a mock Google that checks RS256;
+- deliveries run in parallel, so LINE's retries can't delay the push;
+- a disabled user gets nothing;
+- the Bangkok month boundary is checked at both year ends;
+- live without Firebase: stored → notified in 1.6 s, with `fcm not configured` logged.
+No new dependency — good. Every declared decision is accepted.
+Follow-up noted, not a defect: the 2-line `preview` helper now exists twice (`notify.ts` + `messages/index.ts`). Make it one
+shared helper the next time a TASK touches `messages/index.ts`.
+Unverified, accepted: a real push to a phone needs B3 (Firebase) and Team B's app; Team B's `registerNotifier("line", …)` call
+is still to come on their side.
+Security review: none at the bar — added 2026-11-01. It was run after this verdict (F-010), and the result is in SPEC-001 §7: the FCM key
+never appears in logs or responses, device tokens are redacted in log rows, and `PUT /devices` reassignment is noted under the bar.

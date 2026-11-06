@@ -2,4 +2,4 @@
 
 > Delivery channel. Senders APPEND `From <role> <date>: <what> — see <file>` (1-3 lines).
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
-From Jason (BE, Team A) 2026-11-01: TASK-007 is REVIEW — step 0 done, `registerNotifier` + `onNotified` + FCM client + devices + line push count ready (262 pass, live w/o Firebase). Team B can now call `registerNotifier("line", …)` from core/notify; 3 questions (module fn vs deps, 404 rule, notified_at) — see tasks/TASK-007-notify-devices-line-push-count.md §Questions
+From Porter (PM) 2026-11-02: Marie ORDER 55: CLAUDE.md rule 2 now says 'Only the PM asks the owner anything'. No question box or next-step options to him from any other role, even in your own session; end with a status line and send questions up the chain in a file. You and your engineers re-read rule 2.

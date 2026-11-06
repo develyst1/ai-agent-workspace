@@ -187,6 +187,7 @@ Existing rows: none (greenfield). Who runs it: the BE, **local database only**, 
 `PUT names` replaces the user's rows in one transaction (delete + insert with `position` 0…n).
 
 ## Config (`corner-chat-back/.env`, never in git)
+**Fail closed (amended 2026-11-01, TASK-022):** an empty `LINE_CHANNEL_ACCESS_TOKEN` means no LINE call leaves the machine, so a dev server with no test-OA token can never reach real LINE.
 `LINE_CHANNEL_SECRET`, `LINE_CHANNEL_ACCESS_TOKEN` (already in SPEC-001 §9) + **`LINE_API_BASE`** (default
 `https://api.line.me`, read in code). Tests set it in-process to the fake LINE API. **Team B does not edit
 `.env.example` or `package.json`** (Team A's files): `LINE_API_BASE` is optional and documented here; scripts run as
@@ -203,6 +204,54 @@ Existing rows: none (greenfield). Who runs it: the BE, **local database only**, 
   reply, summary, member-profile and profile, and records each call. The tests run against it with `LINE_API_BASE`
   pointing there. Real LINE is used only with B1, through a temporary tunnel, test OA only, never left running (D16).
 
+## Real-LINE live run plan (REQ-003 Q8 leftovers; B1 · D16 · D44) — Silver, SA-B, 2026-11-01
+Closes what TEST-004 § Verdict names NOT_TESTED: **AC-8** (real "tag all"), the **real push** to a LINE account, and
+AC-1 on the real OA. AC-5's refusal (B7, needs a second test OA) and #1b (a 10-minute wait) stay out unless the owner wants them.
+One sitting, **owner present the whole time, about 45 minutes**. Nothing is left running afterwards.
+
+**What the owner must have or install (before the sitting):**
+1. **cloudflared** on this PC (Cloudflare's quick tunnel: no account, no domain, the URL dies when it stops):
+   `winget install --id Cloudflare.cloudflared`. He installs it himself; no role downloads it.
+2. **The test OA's LINE Developers console** open (he has the login): Messaging API tab.
+3. **Two LINE accounts on two phones:** his own (= user U1 in corner-chat) and **one more person** (= member M) who agrees
+   to be in a test group for 45 minutes. A third person is not needed.
+4. **A new LINE group** "corner-chat test" with only those two people. The OA joins it during the sitting.
+
+**What the owner does in the console (each is a change to the real OA, so it is his hand, in the sitting):**
+- Webhook URL = `https://<the tunnel name QA reads out>.trycloudflare.com/api/v1/webhooks/line` → **Verify** (expect Success) →
+  **Use webhook: ON**.
+- **Allow bot to join group chats: ON** (LINE Official Account Manager → Settings, if it is off).
+- **Auto-reply messages: OFF** and Greeting message as he likes (otherwise LINE answers codes by itself).
+- At the end: **Use webhook: OFF**. The tunnel URL is dead by then anyway.
+
+**What QA (Tefany) runs, nothing else on the machine talks to LINE:**
+- Back end from `corner-chat-back` with, **on the command line only** (D44; Bun keeps process env over `.env`):
+  `LINE_LIVE=1 LINE_API_BASE=https://api.line.me DATABASE_URL=<owner's server>/corner_chat_test_qa_b` + the AI **stub**
+  (so pass/hold is chosen, not guessed). The startup line must read `line: target=live`; anything else → stop.
+- `cloudflared tunnel --url http://localhost:<port>` in its own window; QA reads the `trycloudflare.com` name to the owner.
+- The app: the web build or the APK on `cc_phone_360`, signed in as U1's corner-chat test user.
+
+**The run (TEST-004 rows, each with the owner's or M's phone):**
+| # | Who does what | Expected |
+|---|---|---|
+| 1 | U1 opens `/channels/line`, adds the OA as a friend, sends the 6-digit code | OA replies "เชื่อม LINE แล้ว"; the app shows the link within ~3 s |
+| 2 | U1 sends `123456` (never issued) | OA replies the wrong-code wording; still linked once |
+| 26-lite | the owner adds the OA to the test group | the group appears under "กลุ่มของฉัน" |
+| 7 | M tags U1 | U1 gets a 1-on-1 push from the OA (about line + 2 lines) and a phone notification |
+| 8 | U1 writes; M quote-replies it | taken in for U1 |
+| 10 | M writes U1's nickname untagged | taken in |
+| **AC-8** | M uses **@All** ("แท็กทุกคน") | taken in for U1 (`type:"all"`), or not; **either way the result is recorded as the fact**, it is the open question |
+| 17 | M writes "ใครกินข้าวยัง" | nothing stored, no push (DB snapshot before/after) |
+| 22 | AI stub = hold; M tags U1 | no push |
+- Pushes used: about 10, well inside a free OA's monthly quota.
+
+**Closing (QA, written in TEST-004):** stop the tunnel and the server; check the ports are closed; the owner turns the webhook
+OFF; the OA may stay in the test group (harmless with the webhook off) or he removes it. `LINE_LIVE` is never written to a file.
+
+**Risks:** the only real people reached are U1 and M, by the OA, in a group made for this. The real secret and token stay in
+`.env` (never printed; the guard keeps every other run closed). If the startup line is not `target=live`, nothing is sent and
+we stop.
+
 ## Non-functional
 - The webhook does the in-memory match and at most N small inserts before answering. Measured once in TASK-011
   (time for a 1-event body, local).
@@ -211,11 +260,11 @@ Existing rows: none (greenfield). Who runs it: the BE, **local database only**, 
 ## AC coverage (REQ-003)
 | AC | Carried by | Note |
 |---|---|---|
-| AC-1 linking | TASK-010 (code logic) · TASK-011 (webhook + reply) · TASK-012 (link-code API) · TASK-016 (app screen) | live: B1 |
+| AC-1 linking | TASK-010 (code logic) · TASK-011 (webhook + reply) · TASK-012 (link-code API) · ~~TASK-016~~ TASK-028 (app screen, DONE; live link proven locally) | live: B1 |
 | AC-2 four cases | TASK-010 (pure rule, unit) · TASK-011 (end-to-end on fake LINE + local DB) | live + AC-8: B1, test group |
 | AC-3 no row, no AI | TASK-010 (rule returns nothing) · TASK-011 (`rows.ts` before/after + `ai_calls` count) | |
-| AC-4 push + app | TASK-013 (LINE notifier) · Team A TASK-007 (FCM) | live: B1 + B3 |
-| AC-5 one OA per group | TASK-016 (help text on the groups screen) | LINE gives no event (`inferred`) |
+| AC-4 push + app | TASK-013 (LINE notifier) · ~~Team A TASK-007 (FCM)~~ TASK-030 (the app's own watcher, SPEC-003 D-B14; no Firebase, D41) | live: B1 (LINE); the app part is local, no B3 |
+| AC-5 one OA per group | ~~TASK-016~~ TASK-028 (help text on the groups screen, DONE) | LINE gives no event (`inferred`) |
 | AC-6 bad signature | TASK-010 (verify fn) · TASK-011 (route: 401, `rows.ts` unchanged) | |
 | AC-7 push count | TASK-013 (one `line_pushes` row per sent push) · Team A TASK-007/009 (API + page) | |
 | AC-8 tag all | doc-verified (above) · TASK-010 handles `type:"all"` · test-group check with B1 | SA + QA |
@@ -228,6 +277,7 @@ Existing rows: none (greenfield). Who runs it: the BE, **local database only**, 
 - TASK-012: `/api/v1/channels/line/*` endpoints — owner: BE Bob (depends on: TASK-011, Team A TASK-002)
 - TASK-013: LINE notifier + `line_pushes` — owner: BE Bob (depends on: TASK-011, Team A TASK-007)
 - TASK-020: register the notifier with Team A's notify module + the live push check (split from TASK-013 at review) — owner: BE Bob (depends on: TASK-013, Team A TASK-007)
+- TASK-022: fail closed — no LINE call when `LINE_CHANNEL_ACCESS_TOKEN` is empty (after the TASK-020 incident) — owner: BE Bob (depends on: TASK-020)
 (The app screens, TASK-016, are in SPEC-003.)
 
 ## Decisions to list for the owner (the PM adds them to `decisions-for-owner-review.md`)
@@ -241,3 +291,34 @@ Existing rows: none (greenfield). Who runs it: the BE, **local database only**, 
 
 ## Questions
 (Engineers ask here; answer as `> answer: …`.)
+
+- **Q-LIVE (for the PM → the owner; urgent, 2026-11-01 ~20:15, Silver).**
+  - **What I found:** `corner-chat-back/.env` now holds the real LINE secret (32 chars) and token (171 chars) **and** `LINE_API_BASE=https://api.line.me`. I checked names, lengths and the base URL only; the base URL is not a secret.
+  - **What that means:** fail-closed (TASK-022) no longer protects us. Every `bun run dev` from this `.env` — Jason's, Bob's, an FE recipe, QA's — talks to the **real** LINE OA. The webhook's linking reply would be real, and every passed message for a linked user would be a real push that counts toward the paid quota (AC-7). That breaks `DECISIONS.md` line 21 ("in dev, `LINE_API_BASE` points at the fake LINE API … a call to the real LINE … needs the owner's go each time").
+  - **Tests are mostly safe:** `test/line-*.test.ts` point `LINE_API_BASE` at the fake. But `test/setup.ts` does not neutralise LINE for the other test files, so a Team A test that ingests for a LINE-linked user would reach the real API (`inferred`; not seen).
+  - **My proposal (A), `[SA-proposed]`:**
+    1. The owner keeps the real keys in `.env` but sets `LINE_API_BASE` to the fake (`http://127.0.0.1:<fake port>`) or leaves it out of the default `.env`. The real base is set **only on the command line** for the planned real-LINE test window (test OA only, tunnel only while testing, D16).
+    2. Team A's `test/setup.ts` blanks `LINE_CHANNEL_ACCESS_TOKEN` for every test run (1 line, Sober's file).
+  - **Until he answers:** nobody starts the back end from this `.env`, unless they set `LINE_API_BASE` to the fake on the command line.
+  - **Other choice (B):** keep the real base, and every server start becomes a real LINE session needing his go each time. I do not recommend it.
+  - (Not mine to touch: `.env` is the owner's, and I do not edit secrets.)
+  > answer `[PM-decided 2026-11-01, D44]`: **neither A nor B: the owner is not asked to edit `.env` again.** He has just
+  > asked not to be sent back for env work. Make it safe in code instead:
+  > - The back end uses the real `api.line.me` **only when `LINE_LIVE=1` is set on the command line**, for a planned
+  >   real-LINE window (test OA, tunnel only while testing, D16).
+  > - Without it, the LINE client goes to the fake, or fails closed, whatever `LINE_API_BASE` says.
+  > - Plus your point 2: `test/setup.ts` blanks the token for every test run.
+  >
+  > **The hold stands until both are in.** The SAs decide who writes which file.
+  > SA-B (2026-11-01): the guard is in our file `line-api.ts` → **TASK-034** (Bob). `test/setup.ts` is Team A's → Sober, as the PM routed it.
+
+## Security review (2026-11-01, Silver; remedy for F-011)
+`/security-review` over `corner-chat-back` `src/modules/line/**` + `migrations/202611010100_line_init.sql` (untracked tree, after TASK-013):
+**no HIGH/MEDIUM finding.** Checked: SQL (all Bun.sql tagged templates; the one `db.unsafe` is the `rows.ts` CLI on
+`information_schema` names) · signature (raw body, empty secret fails closed, `timingSafeEqual`, parse after verify) ·
+IDOR on `/channels/line/*` (`requireUser`, every query on the session id) · link-code takeover (live code needed, LINE id
+↔ one user + UNIQUE, single-use transactional UPDATE, CSPRNG digits) · privacy (nobody concerned → nothing written or
+logged) · SSRF (fixed/env host, encoded segments) · secrets in errors/logs. The SA re-read signature + store paths himself.
+The subagent's other lines are labelled `UNVERIFIED — subagent`.
+Low note, not a finding: Team A's `handleError` logs a whole unexpected error. A unique-violation race in linking could
+log the linking person's own LINE id. Out of our files, so it is told to the PM for Team A.

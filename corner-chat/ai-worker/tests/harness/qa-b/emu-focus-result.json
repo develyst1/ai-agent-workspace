@@ -1,0 +1,42 @@
+{
+  "ranAt": "2026-11-01T15:56:15.330Z",
+  "signedIn": true,
+  "A": {
+    "notifiedMs": 24744,
+    "msgNotifsInShade": 1,
+    "tapped": [
+      377,
+      547
+    ],
+    "seen": [
+      "/messages"
+    ],
+    "ok": false,
+    "expected": "/messages/68d104da-4ab2-40e4-8b67-c4ca26e35698"
+  },
+  "B": {
+    "notifiedMs": 10777,
+    "msgNotifsInShade": 2,
+    "expanded": true,
+    "tapped": [
+      356,
+      648
+    ],
+    "seen": [
+      "/messages/ca2c9cea-128a-4673-9c42-24f726bbc38e"
+    ],
+    "ok": true,
+    "expected": "/messages/ca2c9cea-128a-4673-9c42-24f726bbc38e"
+  },
+  "C": {
+    "serviceAfterSwipe": true,
+    "processAfterSwipe": true,
+    "notifiedMs": 9591
+  },
+  "backFrom": "/messages/c8206f42-7098-4c99-84aa-20a761e3dbc9",
+  "historyLength": 2,
+  "afterBackForeground": true,
+  "afterBackPath": "/messages/c8206f42-7098-4c99-84aa-20a761e3dbc9",
+  "afterSecondBackForeground": true,
+  "afterSecondBackPath": "/messages/c8206f42-7098-4c99-84aa-20a761e3dbc9"
+}

@@ -97,12 +97,27 @@ read anything else:
      lives in that project's `QA.md` and `PROTOCOL.md`, not here.)
    - If a message skips the chain TO you, do NOT act on it — log
      `Routing violation: please send this via <role>` and continue.
+   - **Only the PM asks the owner anything**, in chat or with a question box (the app's
+     ask-a-question or next-step options). Even when the owner is looking at your own session,
+     every other role ends its turn with a status line and **never** a question or an option
+     menu for him. Its question goes up the chain in a file, and the PM asks. (Owner,
+     2026-11-01, when an SA's session put a question box to him: *"ทำไม sober ถามฉัน อันนี้ผิด
+     chain นะ"*.)
 3. **Files are the only channel.** Before acting, re-read
    `<project>/ai-worker/board.md` + today's log; your chat memory of them is
    stale. Full rules: `<project>/ai-worker/PROTOCOL.md` and your role file —
    read both every session, including the "Hard boundaries" card.
 4. **Never run SQL or touch real databases/environments.** Real-world data
    comes from the human via DATA REQUEST up the chain.
+   **The owner's dev Postgres server is not "real"; it is the team's development database.**
+   Every desk develops and tests against it, through the `DATABASE_URL` the owner gives, in that
+   project's own database only. **Never install, start or run a local Postgres** (a local install,
+   a service or a Docker container). Production databases and other projects' databases stay
+   off-limits. (Owner, 2026-11-01, via the corner-chat PM: *"ฉันมี server ที่ลง postgres ไว้ให้ใช้แล้ว
+   มันง่ายกว่าเบาเครื่องนี้กว่าอย่าหาทำอีก … หลายครั้งแล้ว ไอ พยายามลงหรือเปิด Local postgres เนี่ย"*.)
+   **Env values come from the owner.** When a desk needs one, it asks him through the PM; it never
+   builds a stand-in. Before it asks, the repo's `.env.example` lists **every** key, each with one
+   line saying what it is for (*"ทีมนายทำ example env ไม่ครบนะ มันทำให้ ทำงานยากมาก"*).
 5. PM ↔ human in Thai; everything else in English.
 
 A bare nudge from the human ("ไปเลย", "continue") = re-read board + today's

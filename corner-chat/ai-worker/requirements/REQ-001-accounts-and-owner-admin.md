@@ -1,5 +1,5 @@
 # REQ-001: Only people the owner adds can sign in, and each sees only their own messages
-- Status: READY_FOR_SA
+- Status: DELIVERED (2026-11-01, PM — TEST-001 run 3 PASS: back end + app browser + native APK on the emulator)
 - Priority: HIGH `[team-proposed]` — everything else stands on it
 - Requested: 2026-11-01 by the owner — stamp: operator (shape) · operator-delegated (details, `../../project-docs/decisions-for-owner-review.md`)
 - Deadline: none
@@ -73,6 +73,8 @@ is shown on Team A's admin web).
 > `admin.confirm.enable` เปิดใช้งาน {name} อีกครั้งไหม · `admin.reset.title` ตั้งรหัสผ่านใหม่ให้ {name} · `admin.signout` ออกจากระบบ ·
 > `admin.error.emailTaken` อีเมลนี้มีผู้ใช้แล้ว · `admin.error.serverDown` ติดต่อเซิร์ฟเวอร์ไม่ได้ ลองใหม่อีกครั้ง ·
 > `admin.linePushes.title` ข้อความ LINE ที่ส่งเดือนนี้
+> **Amended 2026-11-01 by the PM (UX writer, P3):** the month picker beside that title shows Thai month names and the
+> Buddhist year (พ.ย. 2569), the same as the title; if that costs more than a small change, leave the picker as it is.
 
 **Q-SA-2 — 13 more admin-web strings found while building (SA Sober, 2026-11-01, from FE Fern's TASK-008).** Not blocking.
 `Checked:` the table above + the Q-SA-1 answer — not in either. One Thai line each: `admin.signin.fields.email` /

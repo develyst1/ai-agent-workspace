@@ -1,5 +1,5 @@
 # REQ-004: Each message is judged against the user's own conditions, and only what fits reaches them
-- Status: READY_FOR_SA
+- Status: DELIVERED (2026-11-01, PM — TEST-003 run 4 PASS: back end, corpus, app browser + native APK on the emulator)
 - Priority: HIGH `[team-proposed]` — the reason the product exists
 - Requested: 2026-11-01 by the owner — stamp: operator (shape) · operator-delegated (pipeline, `DECISIONS.md`)
 - Deadline: none
@@ -73,6 +73,19 @@ Too much noise reaches people. Each user sets what matters to them; an AI does t
 Auto-reply · learning from corrections · per-channel bars · sentiment · English prompts/UI.
 
 ## Questions
+- **TEST_FAILED 2026-11-01 (QA Tanya, TEST-003 DEF-1, BLOCKER) — routed by the PM to SA Team A as REQ content:**
+  on the owner's real gateway about **1 in 8 AI judgements never arrives** (empty content or invalid JSON, even after the
+  retry). By D3 each one is notified "AI ไม่ได้ตรวจ", so 5–6 must-hold messages per run reach the user. Where the AI does answer,
+  it judges every corpus message right (must-notify 90–100, must-hold 0–15). **What the requirement needs:** AC-6 passes
+  unchanged on the real gateway: 0 wrong holds, ≤ 2 wrong passes, 0 flips over 3 runs. "AI ไม่ได้ตรวจ" must be the rare case
+  (gateway truly down), not 1 in 8. **How is the SA's** (QA proposes no fix; the PM proposes none either). The pass line is
+  not moved, and D3 fail-open stays.
+- **TEST_PASSED 2026-11-01** (Tanya, TEST-003 run 2, build `945cad21…`: exact 48/48 · corpus 30×3 twice, 0/90 failed
+  judgements · bar 70 → 0 wrong holds, 0 wrong passes, 0 flips). **AC-6 amended 2026-11-01 by the PM:** "the highest bar
+  meeting the line" is the **upper limit**, not the setting; the default stays **70 %**, for margin (D38). Not yet
+  DELIVERED: the app screens for conditions and the bar (REQ-005) are not built.
+- **Wording, PM 2026-11-01 (from TEST-003 Observation):** the about line's head shows the sender's display name, or the part
+  before `@` when there is none; a line over 80 characters is cut at a word boundary with `…`, never mid-word.
 
 **Q-SA-1 — wording for the owner's AI settings page (SA Sober, 2026-11-01).** Not blocking (TASK-009 uses keys until answered).
 `Checked:` wording table above — req 6 says "a setting" but gives no page words. One Thai line each: `admin.ai.title` ·

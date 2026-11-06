@@ -1,7 +1,7 @@
 # TASK-018: Phone push: permission once, device registration, foreground display, tap → message detail
 - Source: SPEC-003 § Behaviour (Push), § Non-functional (`google-services.json` git-ignored) · SPEC-001 §3.8 (`PUT /devices`, `DELETE /devices/:fcmToken`, the payload) · REQ-005 req 3, AC-2, amendment (permission once, sign-out unregisters) · REQ-005 wording (notifications refused hint)
 - Owner: FE (Fanta)
-- Status: TODO (code + fake checks can run) · the live AC-2 check is **BLOCKED on B3** (the owner's Firebase project → `android/app/google-services.json`)
+- Status: SUPERSEDED 2026-11-01 by TASK-030 (owner: not Flutter, DECISIONS D36; SA-B). Was: TODO (code + fake checks can run) · the live AC-2 check is **BLOCKED on B3** (the owner's Firebase project → `android/app/google-services.json`)
 - Depends on: TASK-017 · live: B3 + Team A's TASK-007
 
 - Repo: `corner-chat-app`. Files you may edit:

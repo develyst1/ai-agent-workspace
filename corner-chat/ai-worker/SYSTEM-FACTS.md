@@ -146,6 +146,14 @@
   แต่อย่าทำการ deploy นะ แค่พัฒนาไปจนสุดท้ายก็พอ"* — the purpose is for the team to **learn to decide**; a decision that
   misses his intent is simply tuned later. **No deploy** — develop all the way to the end, locally; nothing goes on a
   server.
+- `[operator 2026-11-01, to the PM]` On the app's stack (asked whether React Native would be easier than Flutter):
+  *"หรือ อะไรก็ได้ ง่ายๆ ที่แค่ ลงเครื่อง android ได้ก่อนก็พอ"* — **any simple stack is fine; what matters first is an app
+  that installs on an Android phone.** The choice is delegated (PM decided to keep Flutter — `DECISIONS.md`).
+- `[operator 2026-11-01, to the PM]` *"ฉันไม่ชอบflutter ดิ เวลาเทสมันยากมั้ยวะ สมมุตจ ะทำสคริปเทส"* — **he does not like
+  Flutter**, and he cares that the app is **easy to test with scripts**. (Supersedes the PM's keep-Flutter decision.)
+- `[operator 2026-11-01, to the PM]` To the PM's recommendation (a React/TypeScript web app wrapped as an Android app):
+  *"ดีเลย ทำเป็นแค่เว็บ ที่ทำเป็นแอป ได้ เนาะ"* — **the app is a web app that can be turned into an app** (installable on
+  Android). Which wrapper is the SA's call.
 
 ## Repos and environments
 
@@ -199,3 +207,23 @@
   creation is the owner's; no role creates a branch.~~ **Answered 2026-11-01:** the owner created
   `develop` (and `atom`, `sit`, `uat`, `production`) — see Repos above. Still open: **which branch the
   team works on** (the PM asks the owner before the first `ขึ้น git`). No role creates a branch.
+
+## Owner's answers to the B list (operator, 2026-11-01, verbatim)
+- B2 mailboxes: *"1 ไม่เข้าใจเอา เมล ทำงานฉัน กับเมลส่วนตัวฉันได้มั้ย"*. He offers his own work mail and his personal mail as the test boxes; still open which of them is on Zimbra.
+- B1 test LINE OA: *"2 มี"*. He has one.
+- B3 Firebase: *"3 ไม่อยากใช้ firebase ใช้ทำอะไร ต้องการอะไร database? มี server ที่ลง postgres ไว้ สามารถ เอามาใส่ db_url ให้ไปสร้าง database ใช้ได้"*. **He does not want Firebase.** He also offers his server's Postgres through a `DB_URL`.
+- B6 branch: *"4 สร้างเลย ชื่อ D1"*. The working branch is **`D1`**. He said "create it"; `CLAUDE.md` §6 says no role creates a branch, so the PM gives him the command and does not create it.
+
+## Owner, 2026-11-01 evening (verbatim): env keys and the database
+- *"ใส่แล้ว ลองดูดิ้ ทีมนายทำ example env ไม่ครบนะ มันทำให้ ทำงานยากมาก ไม่มี เมล A เมลB ไปดูด้วยว่าฉันทำถูกมั้ย"*. `.env.example` lacked `TEST_MAIL_*`.
+  The PM's check of `corner-chat-back/.env` (names and shapes only, no values): the LINE secret and token are set; `TEST_MAIL_A_EMAIL` is set (entronica.in.th); `TEST_MAIL_B_EMAIL` is set (hotmail.com); **`TEST_MAIL_A_PASSWORD` is empty**.
+- *"พวก env ต่างๆ ถ้าต้องการ บอกฉัน ฉันมี server ที่ลง postgres ไว้ให้ใช้แล้ว มันง่ายกว่าเบาเครื่องนี้กว่าอย่าหาทำอีก โน้ตไว้ เลยว่านี่คือข้อมูลของผู้ใช้ชื่อโด่ง ไปบอก ATLAS ด้วย หลายครั้งแล้ว ไอ พยายามลงหรือเปิด Local postgres เนี่ย"*.
+  **Standing rule (owner's): never install or start a local Postgres. Use the owner's Postgres server. When an env value is needed, ask him for it.** Workspace-wide → told to Atlas.
+- *"DATABASE_URL=postgresql://postgres:xxxxx@154.197.124.206:5432/db เนี่ย เอาไปลง เดี๋ยวฉันเปลี่ยนpass ให้"*. The owner's Postgres is at **154.197.124.206:5432**. He will change the password. The real URL lives only in the git-ignored `.env`, never in a desk file.
+- Owner, 2026-11-01 ~21:50: *"ใส่ env ให้ละ"*. The PM's shape check (no values read out): `DATABASE_URL` = postgresql, user postgres, host 154.197.124.206:5432, database **corner_chat**, password set (12 chars, already URL-encoded); `TEST_MAIL_A_PASSWORD` set (14 chars). He said earlier the team may create its databases there (*"ให้ไปสร้าง database ใช้ได้"*).
+- Owner, 2026-11-01 ~22:10, his answer to "how should the real-mail test go, given the DB has no SSL?": *"Unencrypted is fine"*. **The REQ-002 live check with his real work mail may run over the unencrypted connection to his Postgres.** Scope: this dev server and this live check; SSL was not turned on.
+- Owner, 2026-11-01 ~23:35, about the LINE OA LifeStyle-Shop (@183qrfme), which ran a shop bot before: *"ไม่ใช้ ใช้ไปเลย นี่ใช้ทดสอบ"*. **It is a test OA; the old shop bot is not in use.** corner-chat may use it freely, and restoring the old webhook URL is not required.
+- Owner, 2026-11-02: *"created D1"*. The PM checked: branch **D1** exists and is checked out in corner-chat-back, -front and -app; all the work is still uncommitted there. It is the working branch (B6). No `ขึ้น git` has been given yet.
+- Owner, 2026-11-02: *"ขึ้น git"*. Relayed by the PM to SA Sober for all 3 repos on D1.
+- Owner, 2026-11-02, on Q-GIT-1 (the commit-message convention, CONVENTIONS.md § Git): *"Use it"*. Approved as proposed: `<type>: <summary> (TASK-<ID>[, …])` with type feat/fix/test/chore and an English summary of ≤ 72 chars; the first push to D1 is one commit per repo; later pushes go per TASK; `ai-worker/` is never committed.
+- Owner, 2026-11-02, with a screenshot of Sober's session showing a question box addressed to him (Q-GIT-1): *"ทำไม sober ถามฉัน อันนี้ผิด chain นะ"*. **The SA must never put a question to the owner, not even in his own session's next-step or question box. Owner questions go only through the PM.**

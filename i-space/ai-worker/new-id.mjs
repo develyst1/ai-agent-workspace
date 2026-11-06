@@ -2,20 +2,36 @@
 // new-id.mjs — the only way a role creates a REQ, SPEC, TASK or TEST file. It picks the number; you never do.
 //   node ai-worker/new-id.mjs <REQ|SPEC|TASK|TEST> <slug>        e.g.  node ai-worker/new-id.mjs TASK caw-back-export
 // Under a lock file (exclusive create, retried), it finds the highest `<TYPE>-<digits>` in that type's folder
-// (requirements/ specs/ tasks/ tests/), takes the next number — never below 101, this desk's start (PROTOCOL.md
-// § Hard boundaries: the old team's IDs are never reused) — and creates `<TYPE>-<n>-<slug>.md` with an exclusive
+// (requirements/ specs/ tasks/ tests/), takes the next number — never below the desk's start number, read from
+// `checks.json` → `ids.start` (default 1; a desk whose old IDs must never be reused sets it, e.g. 101) — and creates `<TYPE>-<n>-<slug>.md` with an exclusive
 // create (`wx`). On EEXIST it tries the next number. It never overwrites. It prints the new file's path; the
 // file holds one heading line, `# <TYPE>-<n>: <slug>` — fill it from your role's template.
 // Refuses (writes nothing, exit 1) on: a bad slug, a missing folder, a lock held too long. Exit 2 = usage.
 // No dependencies.
 // Why: F-008 (2026-10-29) — two SAs listed tasks/, wrote for several minutes, then both created TASK-105/106.
 // Checking the folder early is not checking it at write time. Owned by Marie. Origin: ORDER 42 (P4), MARIE.md.
+// Promoted to the desk template 2026-11-01 (Atlas) after corner-chat F-003: two testers took the same TEST numbers.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const FOLDERS = { REQ: 'requirements', SPEC: 'specs', TASK: 'tasks', TEST: 'tests' };
-const START = 101; // this desk's first number; below it are the old team's IDs
+const here0 = path.dirname(fileURLToPath(import.meta.url));
+let START = 1; // this desk's first number: checks.json → ids.start, default 1
+// A checks.json that exists but does not parse, or an ids.start that is not a positive integer, is refused: a silent
+// fallback to 1 would restart a desk's numbering (Marie, ORDER 53). No checks.json at all means start 1.
+{
+  const cfg = path.join(here0, 'checks.json');
+  if (fs.existsSync(cfg)) {
+    let c;
+    try { c = JSON.parse(fs.readFileSync(cfg, 'utf8')); }
+    catch (e) { console.error(`REFUSED: checks.json does not parse (${e.message}) — fix it first.\nNothing written.`); process.exit(1); }
+    if (c?.ids?.start !== undefined) {
+      if (!Number.isInteger(c.ids.start) || c.ids.start < 1) { console.error('REFUSED: checks.json ids.start must be a positive integer.\nNothing written.'); process.exit(1); }
+      START = c.ids.start;
+    }
+  }
+}
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 let locked = null; // the lock path while we hold it — process.exit skips `finally`, so refuse releases it

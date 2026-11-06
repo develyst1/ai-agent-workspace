@@ -1,0 +1,16 @@
+row1 menu open + BACK: route="url": "https://localhost/messages" focus=com.develyst.cornerchat/com.develyst.cornerchat.MainActivity
+row1 BACK again: focus=com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity
+row2 sign-out dialog + BACK: route="url": "https://localhost/messages" focus=com.develyst.cornerchat/com.develyst.cornerchat.MainActivity
+row3 delete confirm + BACK: route="url": "https://localhost/conditions"
+row4 un-link confirm + BACK: route="url": "https://localhost/channels/line"
+row4 BACK again: route="url": "https://localhost/channels"
+37-1 list -> detail (tap in list): "url": "https://localhost/messages/7ec65f2f-e280-4fbf-878f-81817c04c9c8"
+37-1 BACK on detail: "url": "https://localhost/messages"
+37-2 BACK on /messages: focus=com.google.android.apps.nexuslauncher, in recents: 11
+37-3 cold start with id: "url": "https://localhost/messages/7ec65f2f-e280-4fbf-878f-81817c04c9c8"
+37-3 BACK: "url": "https://localhost/messages"
+37-4 on names: "url": "https://localhost/channels/line/names"
+37-4 BACK on names: "url": "https://localhost/channels/line"
+37-4 BACK on /channels/line: "url": "https://localhost/channels"
+37-5 on conditions: "url": "https://localhost/conditions"
+37-5 BACK on /conditions: focus=com.google.android.apps.nexuslauncher

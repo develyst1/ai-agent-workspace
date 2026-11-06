@@ -1,0 +1,2828 @@
+{
+  "ranAt": "2026-11-01T09:21:13.165Z",
+  "gatewayUrl": "https://ai.develyst.online",
+  "settings": {
+    "layer1": {
+      "provider": "deepseek",
+      "model": "deepseek-flash"
+    },
+    "layer2": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro"
+    }
+  },
+  "runs": 3,
+  "userName": "สมชาย ใจดี",
+  "userNames": [
+    "สมชาย",
+    "ชาย"
+  ],
+  "sentences": "แจ้งเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ ทั้งเรื่องงานและเรื่องส่วนตัวที่ถามเราตรงๆ ไม่เอาโฆษณา ไม่เอาข่าวทั่วไป ไม่เอาคุยเล่น",
+  "items": [
+    {
+      "id": "N01",
+      "expected": "notify",
+      "text": "@สมชาย พรุ่งนี้ประชุมลูกค้า 10 โมง ช่วยยืนยันหน่อยว่าเข้าได้ไหม",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "N02",
+      "expected": "notify",
+      "text": "ไฟล์ที่พี่ส่งมาเปิดไม่ได้ครับ ส่งใหม่ได้ไหม",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "reply_to_me"
+    },
+    {
+      "id": "N03",
+      "expected": "notify",
+      "text": "ชายๆ งานสรุปยอดเดือนนี้ต้องส่งก่อนบ่ายสามนะ",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "name_match"
+    },
+    {
+      "id": "N04",
+      "expected": "notify",
+      "text": "@All ระบบ production ล่ม ทุกคนเข้าห้องประชุมออนไลน์ด่วน",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "N05",
+      "expected": "notify",
+      "text": "เรื่อง: อนุมัติงบไตรมาส 4 — รบกวนตรวจตัวเลขในไฟล์แนบและตอบกลับภายในวันศุกร์",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "boss@acme.example.test",
+      "subject": "อนุมัติงบไตรมาส 4",
+      "recipientKind": "to"
+    },
+    {
+      "id": "N06",
+      "expected": "notify",
+      "text": "เรื่อง: สอบถามสถานะใบสั่งซื้อ PO-2291 — ยังไม่ได้รับของค่ะ รบกวนตรวจสอบให้ด้วย",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "ลูกค้า",
+      "subject": "สอบถามสถานะใบสั่งซื้อ PO-2291",
+      "recipientKind": "to"
+    },
+    {
+      "id": "N07",
+      "expected": "notify",
+      "text": "เรื่อง: แผนส่งมอบ — คุณสมชาย (cc) ช่วยยืนยันวันส่งมอบระบบด้วยครับ",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "pm@acme.example.test",
+      "subject": "แผนส่งมอบ",
+      "recipientKind": "cc"
+    },
+    {
+      "id": "N08",
+      "expected": "notify",
+      "text": "@สมชาย ที่ยืมไป 2,000 จะคืนวันไหนเหรอ",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "N09",
+      "expected": "notify",
+      "text": "เรื่อง: สัญญาจ้างฉบับใหม่ — กรุณาเซ็นในระบบภายในวันที่ 15 พ.ย.",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "hr@acme.example.test",
+      "subject": "สัญญาจ้างฉบับใหม่",
+      "recipientKind": "to"
+    },
+    {
+      "id": "N10",
+      "expected": "notify",
+      "text": "@สมชาย ด่วน โทรกลับด้วย",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "N11",
+      "expected": "notify",
+      "text": "@สมชาย deploy ตัวใหม่ fail ที่ step migrate ช่วยดู log หน่อย",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "N12",
+      "expected": "notify",
+      "text": "เรื่อง: ขอเลื่อนนัดสัมภาษณ์ — จากวันอังคารเป็นวันพุธ สะดวกไหมคะ",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "recruiter@example.test",
+      "subject": "ขอเลื่อนนัดสัมภาษณ์",
+      "recipientKind": "to"
+    },
+    {
+      "id": "N13",
+      "expected": "notify",
+      "text": "ชายว่างเสาร์นี้ไหม จะได้จองร้าน ตอบด้วย",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "name_match"
+    },
+    {
+      "id": "N14",
+      "expected": "notify",
+      "text": "ตกลงตามที่เสนอครับ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวดได้ไหม",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "reply_to_me"
+    },
+    {
+      "id": "H01",
+      "expected": "hold",
+      "text": "เรื่อง: โปรโมชั่นพิเศษ ลด 70% เฉพาะวันนี้ — สมัครเลย",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "deals@shop.example.test",
+      "subject": "โปรโมชั่นพิเศษ ลด 70% เฉพาะวันนี้",
+      "recipientKind": "to"
+    },
+    {
+      "id": "H02",
+      "expected": "hold",
+      "text": "เรื่อง: สรุปข่าวเทคโนโลยีประจำสัปดาห์",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "news@techweekly.example.test",
+      "subject": "สรุปข่าวเทคโนโลยีประจำสัปดาห์",
+      "recipientKind": "list"
+    },
+    {
+      "id": "H03",
+      "expected": "hold",
+      "text": "@All สวัสดีวันจันทร์ 🌞",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "H04",
+      "expected": "hold",
+      "text": "@All ใครสนใจสั่งชานมไข่มุกบ้าง",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "H05",
+      "expected": "hold",
+      "text": "เมื่อวานไปเที่ยวชายหาดมา สวยมาก",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "name_match"
+    },
+    {
+      "id": "H06",
+      "expected": "hold",
+      "text": "เรื่อง: แจ้งเพื่อทราบ ตารางเวรเดือนธันวาคม (ไม่ต้องตอบกลับ)",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "admin@acme.example.test",
+      "subject": "แจ้งเพื่อทราบ ตารางเวรเดือนธันวาคม (ไม่ต้องตอบกลับ)",
+      "recipientKind": "cc"
+    },
+    {
+      "id": "H07",
+      "expected": "hold",
+      "text": "เรื่อง: บัญชีของคุณจะถูกระงับ — คลิกลิงก์เพื่อยืนยันตัวตน",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "security@bank-verify.example.test",
+      "subject": "บัญชีของคุณจะถูกระงับ",
+      "recipientKind": "to"
+    },
+    {
+      "id": "H08",
+      "expected": "hold",
+      "text": "@สมชาย 555555 ฮามาก",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "H09",
+      "expected": "hold",
+      "text": "👍",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "reply_to_me"
+    },
+    {
+      "id": "H10",
+      "expected": "hold",
+      "text": "@All ขายบ้านมือสอง ราคาถูก สนใจทักแชท",
+      "channel": "line",
+      "groupName": "หมู่บ้านสุขใจ",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "H11",
+      "expected": "hold",
+      "text": "เรื่อง: ใบเสร็จการชำระเงินเดือนพฤศจิกายน",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "billing@stream.example.test",
+      "subject": "ใบเสร็จการชำระเงินเดือนพฤศจิกายน",
+      "recipientKind": "to"
+    },
+    {
+      "id": "H12",
+      "expected": "hold",
+      "text": "@All แชร์บทความ: 10 เทคนิคเขียนโค้ดให้สะอาด",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention_all"
+    },
+    {
+      "id": "H13",
+      "expected": "hold",
+      "text": "เรื่อง: ขอแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "all-staff@acme.example.test",
+      "subject": "ขอแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+      "recipientKind": "list"
+    },
+    {
+      "id": "H14",
+      "expected": "hold",
+      "text": "@สมชาย ส่งต่อให้ 10 คน แล้วจะโชคดี",
+      "channel": "line",
+      "groupName": "เพื่อนมัธยม",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "mention"
+    },
+    {
+      "id": "H15",
+      "expected": "hold",
+      "text": "เรื่อง: สินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องใช้คนค้ำ",
+      "channel": "mail",
+      "groupName": null,
+      "senderName": "loan@fastcash.example.test",
+      "subject": "สินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องใช้คนค้ำ",
+      "recipientKind": "to"
+    },
+    {
+      "id": "H16",
+      "expected": "hold",
+      "text": "ขอบคุณครับ",
+      "channel": "line",
+      "groupName": "ทีมโปรเจกต์ A",
+      "senderName": "สมาชิกในกลุ่ม",
+      "subject": null,
+      "recipientKind": "reply_to_me"
+    }
+  ],
+  "results": {
+    "N01": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 6224,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งประชุมลูกค้าพรุ่งนี้ 10 โมง ขอให้ยืนยันเข้าร่วม",
+        "score": 100,
+        "reason": "แท็กตรงถึงผู้ใช้และขอให้ยืนยันการเข้าประชุมพรุ่งนี้ เป็นเรื่องที่ต้องตอบโดยตรง ตรงเงื่อนไขครบถ้วน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แจ้งประชุมลูกค้าพรุ่งนี้ 10 โมง ขอให้ยืนยันเข้าร่วม"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 8047,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ยืนยันเข้าประชุมลูกค้าพรุ่งนี้ 10 โมง",
+        "score": 100,
+        "reason": "แท็กตรงและขอให้ยืนยันการเข้าประชุมพรุ่งนี้ ซึ่งต้องตอบ/ตัดสินใจโดยตรง ตรงเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ยืนยันเข้าประชุมลูกค้าพรุ่งนี้ 10 โมง"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5215,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งประชุมลูกค้าพรุ่งนี้ 10 โมง ขอยืนยันว่าเข้าร่วมได้ไหม",
+        "score": 95,
+        "reason": "แท็กโดยตรงและขอให้ยืนยันการเข้าร่วมประชุมพรุ่งนี้ ซึ่งต้องตอบหรือตัดสินใจชัดเจน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แจ้งประชุมลูกค้าพรุ่งนี้ 10 โมง ขอยืนยันว่าเข้าร่วมได้ไหม"
+      }
+    ],
+    "N02": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 7783,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งว่าไฟล์เปิดไม่ได้ ขอให้ส่งไฟล์ใหม่",
+        "score": 100,
+        "reason": "เป็นการขอให้ผู้ใช้ส่งไฟล์ใหม่โดยตรง ต้องตอบหรือดำเนินการทันที ตรงกับเงื่อนไขเรื่องที่ต้องทำ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แจ้งว่าไฟล์เปิดไม่ได้ ขอให้ส่งไฟล์ใหม่"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5930,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ไฟล์ที่ส่งมาเปิดไม่ได้ ขอให้ส่งใหม่",
+        "score": 100,
+        "reason": "ผู้ส่งถามตรงๆ ให้ส่งไฟล์ใหม่ เพราะไฟล์เดิมเปิดไม่ได้ เป็นเรื่องที่ผู้ใช้ต้องตอบหรือดำเนินการทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ไฟล์ที่ส่งมาเปิดไม่ได้ ขอให้ส่งใหม่"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5336,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "สมาชิกกลุ่มแจ้งว่าไฟล์ที่ส่งไปเปิดไม่ได้ ขอให้ส่งใหม่",
+        "score": 100,
+        "reason": "เป็นการขอให้ผู้ใช้ส่งไฟล์ใหม่โดยตรง ต้องตอบหรือจัดการทันที ตรงกับเงื่อนไขเรื่องที่ต้องทำ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกกลุ่มแจ้งว่าไฟล์ที่ส่งไปเปิดไม่ได้ ขอให้ส่งใหม่"
+      }
+    ],
+    "N04": [
+      {
+        "run": 0,
+        "ok": false,
+        "ms": 5220,
+        "error": "layer 1 failed after 2 tries: gateway answered with empty content"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5008,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งระบบ production ล่ม ให้ทุกคนเข้าห้องประชุมออนไลน์ด่วน",
+        "score": 100,
+        "reason": "แจ้งเหตุฉุกเฉินระบบงานล่มและสั่งให้เข้าประชุมด่วน เป็นงานที่ต้องตอบสนองและลงมือทำทันที ตรงเงื่อนไขผู้ใช้มากที่สุด",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แจ้งระบบ production ล่ม ให้ทุกคนเข้าห้องประชุมออนไลน์ด่วน"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4492,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ระบบ production ล่ม ขอให้ทุกคนเข้าห้องประชุมออนไลน์ด่วน",
+        "score": 100,
+        "reason": "เป็นคำขอเชิงงานด่วน ระบุระบบล่มและสั่งให้ทุกคนเข้าประชุมออนไลน์ทันที ผู้ใช้ต้องตอบสนองหรือเข้าร่วมประชุมเพื่อแก้ไข จึงควรรบกวนทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ระบบ production ล่ม ขอให้ทุกคนเข้าห้องประชุมออนไลน์ด่วน"
+      }
+    ],
+    "N03": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 11141,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งให้ชายส่งสรุปยอดเดือนนี้ก่อนบ่ายสาม",
+        "score": 100,
+        "reason": "เป็นคำขอโดยตรงเรื่องงานให้ส่งสรุปยอดเดือนก่อนบ่ายสาม เป็นสิ่งที่ต้องทำตามกำหนดเวลา ควรแจ้งทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แจ้งให้ชายส่งสรุปยอดเดือนนี้ก่อนบ่ายสาม"
+      },
+      {
+        "run": 1,
+        "ok": false,
+        "ms": 12230,
+        "error": "layer 2 failed after 2 tries: gateway answered with empty content"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5773,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ให้ส่งงานสรุปยอดเดือนนี้ก่อนบ่ายสาม",
+        "score": 100,
+        "reason": "เป็นงานที่ต้องทำโดยตรง มีกำหนดเวลาชัดเจน ต้องรีบดำเนินการก่อนบ่ายสาม",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ให้ส่งงานสรุปยอดเดือนนี้ก่อนบ่ายสาม"
+      }
+    ],
+    "N05": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5035,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ตรวจตัวเลขงบ Q4 ในไฟล์แนบและตอบกลับภายในวันศุกร์",
+        "score": 100,
+        "reason": "เป็นงานที่ส่งตรงถึงผู้ใช้ ขอให้ตรวจตัวเลขงบและตอบกลับภายในกำหนด ถือเป็นเรื่องที่ต้องทำและตัดสินใจ ควรแจ้งทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · boss@acme.example.test] ขอให้ตรวจตัวเลขงบ Q4 ในไฟล์แนบและตอบกลับภายในวั"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5807,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ตรวจตัวเลขงบไตรมาส 4 และตอบกลับภายในวันศุกร์",
+        "score": 100,
+        "reason": "ส่งถึงผู้ใช้โดยตรง เป็นคำขอให้ตรวจตัวเลขงบและตอบกลับภายในกำหนด ถือเป็นงานที่ต้องลงมือทำและมีเดดไลน์ ควรรู้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · boss@acme.example.test] ขอให้ตรวจตัวเลขงบไตรมาส 4 และตอบกลับภายในวันศุก"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 12893,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ตรวจตัวเลขงบ Q4 ในไฟล์แนบและตอบกลับภายในวันศุกร์",
+        "score": 100,
+        "reason": "เป็นงานที่ส่งถึงผู้ใช้โดยตรง ขอให้ตรวจตัวเลขงบ Q4 ในไฟล์แนบและตอบกลับภายในกำหนด เป็นเรื่องต้องทำและตัดสินใจ ตรงตามเงื่อนไขแจ้งเตือนทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · boss@acme.example.test] ขอให้ตรวจตัวเลขงบ Q4 ในไฟล์แนบและตอบกลับภายในวั"
+      }
+    ],
+    "N06": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 9712,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ลูกค้าถามสถานะ PO-2291 และขอให้ตรวจสอบการจัดส่ง",
+        "score": 100,
+        "reason": "ลูกค้าถามตรงถึงสถานะคำสั่งซื้อและขอให้ตรวจสอบการจัดส่ง เป็นเรื่องงานที่ต้องตอบหรือดำเนินการทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · ลูกค้า] ลูกค้าถามสถานะ PO-2291 และขอให้ตรวจสอบการจัดส่ง"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5751,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ลูกค้าถามสถานะ PO-2291 และขอให้ตรวจสอบการจัดส่ง",
+        "score": 100,
+        "reason": "ลูกค้าถามตรงถึงสถานะใบสั่งซื้อ PO-2291 และขอให้ตรวจสอบการจัดส่ง เป็นเรื่องงานที่ต้องตอบและดำเนินการทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · ลูกค้า] ลูกค้าถามสถานะ PO-2291 และขอให้ตรวจสอบการจัดส่ง"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5747,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "สอบถามสถานะ PO-2291 และขอให้ตรวจสอบการจัดส่ง",
+        "score": 100,
+        "reason": "เป็นคำขอตรงถึงผู้ใช้ให้ตรวจสอบสถานะใบสั่งซื้อ PO-2291 และตอบกลับเรื่องยังไม่ได้รับของ ซึ่งต้องตอบหรือดำเนินการทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · ลูกค้า] สอบถามสถานะ PO-2291 และขอให้ตรวจสอบการจัดส่ง"
+      }
+    ],
+    "N07": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 10634,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้สมชายยืนยันวันส่งมอบระบบ",
+        "score": 100,
+        "reason": "มีคำขอโดยตรงให้ผู้ใช้ยืนยันวันส่งมอบระบบ เป็นเรื่องงานที่ต้องตอบและตัดสินใจ ตรงเงื่อนไขแจ้งเตือนทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · pm@acme.example.test] ขอให้สมชายยืนยันวันส่งมอบระบบ"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5692,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้สมชายยืนยันวันส่งมอบระบบ",
+        "score": 95,
+        "reason": "ข้อความระบุชื่อผู้ใช้และขอให้ยืนยันวันส่งมอบระบบโดยตรง เป็นเรื่องที่ต้องตอบ/ตัดสินใจ ตรงเงื่อนไขการแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · pm@acme.example.test] ขอให้สมชายยืนยันวันส่งมอบระบบ"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5936,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้สมชายยืนยันวันส่งมอบระบบ",
+        "score": 95,
+        "reason": "ข้อความถามผู้ใช้โดยตรงให้ยืนยันวันส่งมอบระบบ เป็นเรื่องงานที่ต้องตอบหรือตัดสินใจ ตรงเงื่อนไขการแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · pm@acme.example.test] ขอให้สมชายยืนยันวันส่งมอบระบบ"
+      }
+    ],
+    "N08": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 10274,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามสมชายว่ายืมเงิน 2,000 บาทไปจะคืนวันไหน",
+        "score": 100,
+        "reason": "ถามตรงๆ เรื่องส่วนตัวเกี่ยวกับเงินที่ยืม ต้องตอบหรือตัดสินใจเรื่องคืนเงิน จึงควรรบกวนผู้ใช้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ถามสมชายว่ายืมเงิน 2,000 บาทไปจะคืนวันไหน"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5233,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "เพื่อนถามว่ายืมเงิน 2,000 จะคืนวันไหน",
+        "score": 100,
+        "reason": "เพื่อนแท็กถามตรงๆ เรื่องเงินที่ยืมและกำหนดคืน เป็นเรื่องส่วนตัวที่ต้องตอบหรือตัดสินใจ จึงควรรบกวนผู้ใช้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เพื่อนถามว่ายืมเงิน 2,000 จะคืนวันไหน"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4353,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่ายืมเงิน 2,000 จะคืนวันไหน",
+        "score": 100,
+        "reason": "ถามตรงถึงผู้ใช้เรื่องเงินที่ยืม ต้องตอบหรือตัดสินใจเรื่องคืนเงิน เป็นเรื่องส่วนตัวที่ถามตรงๆ ตรงเงื่อนไข",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ถามว่ายืมเงิน 2,000 จะคืนวันไหน"
+      }
+    ],
+    "N09": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5239,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งสัญญาจ้างฉบับใหม่ ขอให้เซ็นในระบบภายใน 15 พ.ย.",
+        "score": 100,
+        "reason": "เป็นงานที่ส่งตรงถึงผู้ใช้และขอให้ดำเนินการเซ็นสัญญาในระบบภายในวันที่ 15 พ.ย. ต้องตอบสนองหรือตัดสินใจ จึงควรแจ้งทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · hr@acme.example.test] แจ้งสัญญาจ้างฉบับใหม่ ขอให้เซ็นในระบบภายใน 15 พ.ย"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4367,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แจ้งสัญญาจ้างใหม่ ขอให้เซ็นในระบบภายใน 15 พ.ย.",
+        "score": 100,
+        "reason": "เป็นคำขอโดยตรงให้ผู้ใช้เซ็นสัญญาจ้างใหม่ภายในวันที่ 15 พ.ย. ซึ่งต้องดำเนินการและมีกำหนดเวลา จำเป็นต้องรู้และจัดการทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · hr@acme.example.test] แจ้งสัญญาจ้างใหม่ ขอให้เซ็นในระบบภายใน 15 พ.ย."
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4667,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้เซ็นสัญญาจ้างใหม่ในระบบภายใน 15 พ.ย.",
+        "score": 100,
+        "reason": "เป็นคำขอตรงตัวให้เซ็นสัญญาจ้างใหม่ภายในวันที่ 15 พ.ย. มีกำหนดเวลาและต้องลงมือทำ จึงเป็นเรื่องที่ผู้ใช้ต้องรู้และจัดการทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · hr@acme.example.test] ขอให้เซ็นสัญญาจ้างใหม่ในระบบภายใน 15 พ.ย."
+      }
+    ],
+    "N10": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4631,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ถูกแท็กให้โทรกลับด่วน",
+        "score": 100,
+        "reason": "ข้อความนี้แท็กผู้ใช้โดยตรงและขอให้โทรกลับด่วน เป็นคำขอที่ต้องตอบหรือทำทันที ตรงกับเงื่อนไขการแจ้งเตือนเรื่องงานหรือเรื่องส่วนตัวที่ถามตรง ๆ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ถูกแท็กให้โทรกลับด่วน"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 9574,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "แท็กสมชายให้โทรกลับด่วน",
+        "score": 100,
+        "reason": "แท็กตรงตัวและสั่งให้โทรกลับด่วน เป็นเรื่องที่ต้องตอบสนองหรือตัดสินใจทันที ตรงกับเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แท็กสมชายให้โทรกลับด่วน"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5905,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "มีคนแท็กสมชายให้โทรกลับด่วน",
+        "score": 100,
+        "reason": "แท็กตรงถึงผู้ใช้และขอให้โทรกลับด่วน เป็นคำขอที่ต้องตอบสนองหรือจัดการทันที ตรงกับเงื่อนไขที่ต้องแจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] มีคนแท็กสมชายให้โทรกลับด่วน"
+      }
+    ],
+    "N11": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5689,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ช่วยดู log ที่ deploy fail ตอน migrate",
+        "score": 100,
+        "reason": "แท็กผู้ใช้โดยตรงและขอให้ช่วยดู log ที่ deploy fail ซึ่งเป็นเรื่องงานที่ต้องตอบหรือดำเนินการทันที ตรงตามเงื่อนไขที่ตั้งไว้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ช่วยดู log ที่ deploy fail ตอน migrate"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4533,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ช่วยดู log deploy ที่ fail ตอน migrate",
+        "score": 100,
+        "reason": "เป็นการถามตรงๆ เรื่องงานให้ผู้ใช้ช่วยดู log deploy ที่ fail ซึ่งต้องตอบหรือลงมือทำทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ช่วยดู log deploy ที่ fail ตอน migrate"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4917,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอให้ช่วยดู log ที่ deploy fail ตอน step migrate",
+        "score": 100,
+        "reason": "เป็นการถามตรงๆ เรื่องงาน ให้ช่วยดู log ที่ deploy fail ซึ่งต้องตอบหรือลงมือทำทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอให้ช่วยดู log ที่ deploy fail ตอน step migrate"
+      }
+    ],
+    "N12": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5645,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธ สะดวกไหม",
+        "score": 95,
+        "reason": "เป็นข้อความส่งตรงถึงผู้ใช้ ขอให้ตอบ/ตัดสินใจเรื่องเลื่อนนัดสัมภาษณ์ ซึ่งเป็นเรื่องงานที่ต้องจัดการโดยตรง จึงควรรบกวนผู้ใช้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · recruiter@example.test] ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธ สะดวกไหม"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4929,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธ สะดวกไหม",
+        "score": 100,
+        "reason": "เป็นการขอเลื่อนนัดสัมภาษณ์ที่ส่งตรงถึงผู้ใช้และถามความสะดวกโดยตรง ต้องตอบรับหรือปฏิเสธ/ตัดสินใจทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · recruiter@example.test] ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธ สะดวกไหม"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5062,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธและถามว่าสะดวกไหม",
+        "score": 100,
+        "reason": "เป็นการขอเลื่อนนัดสัมภาษณ์ที่ส่งตรงถึงผู้ใช้และถามความสะดวกโดยตรง ต้องตอบรับหรือปฏิเสธ จึงควรแจ้งทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · recruiter@example.test] ขอเลื่อนนัดสัมภาษณ์จากอังคารเป็นพุธและถามว่าสะด"
+      }
+    ],
+    "N14": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 6225,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ตอบรับข้อเสนอ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด",
+        "score": 95,
+        "reason": "ข้อความนี้เป็นการตอบกลับที่ขอแก้เงื่อนไขข้อ 3 โดยตรง ต้องตัดสินใจว่าจะตกลงหรือไม่ จึงควรรบกวนผู้ใช้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ตอบรับข้อเสนอ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 8399,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ตอบตกลงตามข้อเสนอ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด",
+        "score": 95,
+        "reason": "ข้อความขอแก้ไขเงื่อนไขข้อ 3 เป็นจ่ายสองงวด ซึ่งต้องตอบรับหรือตัดสินใจโดยตรง เกี่ยวข้องกับเรื่องที่คุยอยู่ จึงควรรบกวนผู้ใช้ทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ตอบตกลงตามข้อเสนอ แต่ขอแก้ข้อ 3 เป็นจ่ายสองงวด"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5718,
+        "addressed": "yes",
+        "meaning": "request",
+        "summary": "ขอแก้ข้อ 3 เป็นจ่ายสองงวดได้ไหม",
+        "score": 95,
+        "reason": "เป็นข้อความตอบกลับที่มีคำขอตรงๆ ให้เราพิจารณาแก้ไขข้อ 3 เป็นการจ่ายสองงวด ต้องตอบหรือตัดสินใจ ไม่ใช่โฆษณาหรือคุยเล่น",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ขอแก้ข้อ 3 เป็นจ่ายสองงวดได้ไหม"
+      }
+    ],
+    "N13": [
+      {
+        "run": 0,
+        "ok": false,
+        "ms": 11896,
+        "error": "layer 2 failed after 2 tries: gateway answered with empty content"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 10667,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่าว่างเสาร์นี้ไหม เพื่อจองร้านและขอให้ตอบ",
+        "score": 100,
+        "reason": "ถามตรงๆ ว่าว่างเสาร์นี้ไหมเพื่อจองร้าน และขอให้ตอบ เป็นเรื่องส่วนตัวที่ต้องตัดสินใจและตอบกลับ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ถามว่าว่างเสาร์นี้ไหม เพื่อจองร้านและขอให้ตอบ"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 10215,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามว่าวันเสาร์ว่างไหม จะจองร้านให้ตอบกลับ",
+        "score": 100,
+        "reason": "เป็นการถามตรง ๆ เรื่องวันเสาร์ว่างไหม พร้อมขอให้ตอบกลับเพื่อจองร้าน ถือเป็นเรื่องส่วนตัวที่ต้องตัดสินใจและตอบกลับทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ถามว่าวันเสาร์ว่างไหม จะจองร้านให้ตอบกลับ"
+      }
+    ],
+    "H01": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4856,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาลด 70% เฉพาะวันนี้ ชวนสมัคร",
+        "score": 0,
+        "reason": "เป็นโฆษณาโปรโมชัน ไม่ใช่เรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ จึงไม่ตรงกับเงื่อนไขที่ผู้ใช้ต้องการให้แจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · deals@shop.example.test] โฆษณาลด 70% เฉพาะวันนี้ ชวนสมัคร"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4721,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้ ชวนสมัคร",
+        "score": 0,
+        "reason": "เป็นโฆษณาโปรโมชัน ซึ่งผู้ใช้ระบุว่าไม่ต้องการให้แจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · deals@shop.example.test] โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้ ชวนสมัคร"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 3556,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้",
+        "score": 0,
+        "reason": "เป็นโฆษณาโปรโมชั่น ไม่ตรงเงื่อนไขที่ผู้ใช้ต้องการให้แจ้ง จึงไม่ควรรบกวน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · deals@shop.example.test] โฆษณาโปรโมชั่นลด 70% เฉพาะวันนี้"
+      }
+    ],
+    "H02": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4493,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "สรุปข่าวเทคโนโลยีประจำสัปดาห์ผ่านลิสต์เมล",
+        "score": 0,
+        "reason": "เป็นข่าวทั่วไป ไม่ได้ถามตรงๆ ไม่ต้องตอบ ทำ หรือตัดสินใจ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · news@techweekly.example.test] สรุปข่าวเทคโนโลยีประจำสัปดาห์ผ่านลิสต์เมล"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 7979,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "สรุปข่าวเทคโนโลยีประจำสัปดาห์",
+        "score": 0,
+        "reason": "เป็นสรุปข่าวเทคโนโลยีทั่วไป ไม่ใช่การถามให้ตอบ ทำ หรือตัดสินใจ จึงไม่ตรงเงื่อนไขที่ผู้ใช้กำหนด",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · news@techweekly.example.test] สรุปข่าวเทคโนโลยีประจำสัปดาห์"
+      },
+      {
+        "run": 2,
+        "ok": false,
+        "ms": 5328,
+        "error": "layer 1 failed after 2 tries: unusable answer: answer is not valid JSON"
+      }
+    ],
+    "H03": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5045,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "ทักทายสวัสดีวันจันทร์ถึงทุกคนในกลุ่ม",
+        "score": 0,
+        "reason": "เป็นข้อความทักทาย/คุยเล่นทั่วไป ไม่มีการถามตรงๆ หรือขอให้ตอบ ทำ หรือตัดสินใจ ตรงกับเงื่อนไขไม่เอาคุยเล่น",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ทักทายสวัสดีวันจันทร์ถึงทุกคนในกลุ่ม"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4345,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "แท็กทุกคนในกลุ่ม ทักทายสวัสดีวันจันทร์",
+        "score": 0,
+        "reason": "เป็นเพียงคำทักทายสวัสดีวันจันทร์ ไม่มีการถาม ต้องการให้ทำ หรือให้ตัดสินใจ จึงไม่เข้าข่ายที่ต้องรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] แท็กทุกคนในกลุ่ม ทักทายสวัสดีวันจันทร์"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5168,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "ทักทายทุกคนในกลุ่มว่าสวัสดีวันจันทร์",
+        "score": 0,
+        "reason": "เป็นเพียงคำทักทาย/คุยเล่น ไม่มีการถามหรือขอให้ตอบ ทำ หรือตัดสินใจ จึงไม่ตรงเงื่อนไขการแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ทักทายทุกคนในกลุ่มว่าสวัสดีวันจันทร์"
+      }
+    ],
+    "H05": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5150,
+        "addressed": "no",
+        "meaning": "chatter",
+        "summary": "เพื่อนเล่าว่าเมื่อวานไปเที่ยวชายหาดมา สวยมาก",
+        "score": 0,
+        "reason": "เป็นเพียงการเล่าเรื่องเที่ยวชายหาด ไม่มีคำถามหรือขอให้ทำ/ตัดสินใจใด",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เพื่อนเล่าว่าเมื่อวานไปเที่ยวชายหาดมา สวยมาก"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4944,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "เล่าว่าเมื่อวานไปเที่ยวชายหาดมา สวยมาก",
+        "score": 0,
+        "reason": "เป็นเพียงการเล่าเรื่องส่วนตัวแบบคุยเล่น ไม่มีคำถาม คำขอ หรือสิ่งที่ต้องตอบ/ทำ/ตัดสินใจ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เล่าว่าเมื่อวานไปเที่ยวชายหาดมา สวยมาก"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5079,
+        "addressed": "no",
+        "meaning": "chatter",
+        "summary": "เล่าว่าเมื่อวานไปเที่ยวชายหาดมาสวยมาก",
+        "score": 0,
+        "reason": "เป็นข้อความเล่าเรื่องส่วนตัวแบบคุยเล่น ไม่มีการถามตรง ๆ หรือขอให้ตอบ ทำ หรือตัดสินใจ จึงไม่เข้าเงื่อนไขที่ควรแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เล่าว่าเมื่อวานไปเที่ยวชายหาดมาสวยมาก"
+      }
+    ],
+    "H04": [
+      {
+        "run": 0,
+        "ok": false,
+        "ms": 12767,
+        "error": "layer 2 failed after 2 tries: gateway answered with empty content"
+      },
+      {
+        "run": 1,
+        "ok": false,
+        "ms": 14364,
+        "error": "layer 2 failed after 2 tries: gateway answered with empty content"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 12582,
+        "addressed": "yes",
+        "meaning": "question",
+        "summary": "ถามทุกคนว่ามีใครสนใจสั่งชานมไข่มุกบ้าง",
+        "score": 5,
+        "reason": "เป็นคำถามชวนสั่งชานมไข่มุกแบบคุยเล่น/เรื่องส่วนตัวเล็กน้อย แท็กทุกคน ไม่ได้ถามเราตรง ๆ และไม่จำเป็นต้องตอบหรือตัดสินใจทันที",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ถามทุกคนว่ามีใครสนใจสั่งชานมไข่มุกบ้าง"
+      }
+    ],
+    "H06": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5608,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ",
+        "score": 0,
+        "reason": "เป็นเพียงแจ้งตารางเวรเพื่อทราบ ระบุว่าไม่ต้องตอบกลับ ไม่มีการถาม ตัดสินใจ หรือให้ทำอะไร จึงไม่ตรงเงื่อนไขที่ต้องรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · admin@acme.example.test] แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 8797,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ",
+        "score": 0,
+        "reason": "เป็นเพียงการแจ้งเพื่อทราบตารางเวร และระบุชัดว่าไม่ต้องตอบกลับ ไม่มีการขอให้ทำหรือตัดสินใจโดยตรง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · admin@acme.example.test] แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 8717,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ",
+        "score": 0,
+        "reason": "เป็นเพียงแจ้งเพื่อทราบตารางเวรและระบุว่าไม่ต้องตอบกลับ ทั้งยังส่งมาทาง Cc ไม่ตรงเงื่อนไขที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · admin@acme.example.test] แจ้งตารางเวรเดือนธันวาคม ไม่ต้องตอบกลับ"
+      }
+    ],
+    "H07": [
+      {
+        "run": 0,
+        "ok": false,
+        "ms": 12218,
+        "error": "layer 2 failed after 2 tries: unusable answer: answer is not valid JSON"
+      },
+      {
+        "run": 1,
+        "ok": false,
+        "ms": 12397,
+        "error": "layer 2 failed after 2 tries: gateway answered with empty content"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 6086,
+        "addressed": "yes",
+        "meaning": "spam",
+        "summary": "แจ้งบัญชีจะถูกระงับและให้คลิกลิงก์ยืนยันตัวตน",
+        "score": 0,
+        "reason": "เป็นข้อความหลอกลวง/สแปม แอบอ้างให้คลิกลิงก์ยืนยันตัวตน ไม่ใช่เรื่องที่ต้องตอบหรือตัดสินใจจริง จึงไม่ควรแจ้งเตือนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · security@bank-verify.example.test] แจ้งบัญชีจะถูกระงับและให้คลิกลิงก์ยื"
+      }
+    ],
+    "H08": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4866,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "แท็กสมชายแล้วหัวเราะว่าตลกมาก",
+        "score": 0,
+        "reason": "เป็นเพียงการหัวเราะและแซวเล่น ไม่มีคำถาม งาน หรือสิ่งที่ต้องตอบ ตัดสินใจ หรือดำเนินการใด ๆ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] แท็กสมชายแล้วหัวเราะว่าตลกมาก"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4084,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "เพื่อนแท็กสมชายแล้วขำกับเรื่องตลกในแชต",
+        "score": 0,
+        "reason": "เป็นข้อความคุยเล่นขำๆ ไม่มีคำถาม งาน หรือสิ่งที่ต้องตัดสินใจหรือตอบกลับโดยตรง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เพื่อนแท็กสมชายแล้วขำกับเรื่องตลกในแชต"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4894,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "เพื่อนแท็กสมชายและขำว่าข้อความตลกมาก",
+        "score": 0,
+        "reason": "เป็นข้อความคุยเล่น ขำขัน ไม่มีการถามโดยตรง ไม่ต้องตอบ ตัดสินใจ หรือทำอะไร",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] เพื่อนแท็กสมชายและขำว่าข้อความตลกมาก"
+      }
+    ],
+    "H09": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4494,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "ตอบกลับด้วยอีโมจิโป้งรับทราบข้อความของผู้ใช้",
+        "score": 0,
+        "reason": "เป็นเพียงอีโมจิตอบรับ ไม่มีการถามหรือสั่งให้ตอบ ทำ หรือตัดสินใจ จึงไม่ตรงเงื่อนไขการแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ตอบกลับด้วยอีโมจิโป้งรับทราบข้อความของผู้ใช้"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 4554,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "ตอบกลับข้อความผู้ใช้ด้วยอีโมจิถูกใจ 👍",
+        "score": 0,
+        "reason": "เป็นเพียงอีโมจิตอบรับ คุยเล่น/แสดงการรับรู้ ไม่มีการถาม ตอบ ต้องทำ หรือตัดสินใจใด ๆ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] ตอบกลับข้อความผู้ใช้ด้วยอีโมจิถูกใจ 👍"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4359,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "สมาชิกในกลุ่มตอบกลับด้วยอิโมจิถูกใจ (กดไลก์)",
+        "score": 0,
+        "reason": "เป็นเพียงอิโมจิถูกใจตอบกลับ ไม่มีคำถาม เรื่องที่ต้องตอบ/ทำ/ตัดสินใจ จึงไม่ควรรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกในกลุ่มตอบกลับด้วยอิโมจิถูกใจ (กดไลก์)"
+      }
+    ],
+    "H10": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4693,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โพสต์ขายบ้านมือสองราคาถูก สนใจทักแชท",
+        "score": 0,
+        "reason": "เป็นโฆษณาขายบ้าน ไม่ตรงกับเงื่อนไขที่ผู้ใช้ต้องการให้แจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · หมู่บ้านสุขใจ] โพสต์ขายบ้านมือสองราคาถูก สนใจทักแชท"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 7208,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาขายบ้านมือสองราคาถูก ให้ทักแชทสนใจ",
+        "score": 0,
+        "reason": "เป็นโฆษณาขายบ้าน ไม่ตรงกับเงื่อนไขที่ให้แจ้งเฉพาะเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · หมู่บ้านสุขใจ] โฆษณาขายบ้านมือสองราคาถูก ให้ทักแชทสนใจ"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4399,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาขายบ้านมือสองราคาถูก สนใจทักแชท",
+        "score": 0,
+        "reason": "เป็นโฆษณาขายบ้าน ไม่ใช่ข้อความที่ถามหรือขอให้ตอบ/ตัดสินใจโดยตรง จึงไม่ตรงเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · หมู่บ้านสุขใจ] โฆษณาขายบ้านมือสองราคาถูก สนใจทักแชท"
+      }
+    ],
+    "H12": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 5649,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาด",
+        "score": 0,
+        "reason": "เป็นเพียงการแชร์บทความทั่วไป ไม่ใช่เรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ และไม่ได้ถามผู้ใช้โดยตรง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาด"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 12970,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แท็กทุกคนแชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาด",
+        "score": 0,
+        "reason": "เป็นเพียงการแชร์บทความให้ทุกคนอ่าน ไม่มีการถามตรง ๆ หรือขอให้ตอบ ทำ หรือตัดสินใจ จึงไม่ตรงเงื่อนไขที่ผู้ใช้ต้องการ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แท็กทุกคนแชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาด"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 12140,
+        "addressed": "yes",
+        "meaning": "info",
+        "summary": "แชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาด",
+        "score": 0,
+        "reason": "เป็นเพียงการแชร์บทความทั่วไป ไม่มีการถามตรง ๆ หรือขอให้ตอบ ทำ หรือตัดสินใจ จึงไม่เข้าข่ายที่ต้องแจ้งเตือนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] แชร์บทความ 10 เทคนิคเขียนโค้ดให้สะอาด"
+      }
+    ],
+    "H11": [
+      {
+        "run": 0,
+        "ok": false,
+        "ms": 12523,
+        "error": "layer 2 failed after 2 tries: gateway answered with empty content"
+      },
+      {
+        "run": 1,
+        "ok": false,
+        "ms": 11205,
+        "error": "layer 2 failed after 2 tries: gateway answered with empty content"
+      },
+      {
+        "run": 2,
+        "ok": false,
+        "ms": 12394,
+        "error": "layer 2 failed after 2 tries: gateway answered with empty content"
+      }
+    ],
+    "H13": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 10341,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "ขอแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+        "score": 0,
+        "reason": "เป็นเพียงข้อมูลแสดงความยินดีกับทีมขาย ไม่ได้ถามหรือมอบหมายให้ผู้ใช้ตอบ ทำ หรือตัดสินใจ จึงไม่เข้าเงื่อนไขที่ต้องแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · all-staff@acme.example.test] ขอแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 6086,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "ประกาศแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป้า",
+        "score": 0,
+        "reason": "เป็นประกาศแสดงความยินดีทั่วไป ไม่ได้ถามหรือขอให้ตอบ ทำ หรือตัดสินใจโดยตรง จึงไม่ตรงเงื่อนไขการแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · all-staff@acme.example.test] ประกาศแสดงความยินดีกับทีมขายที่ทำยอดทะลุเป"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 5626,
+        "addressed": "no",
+        "meaning": "info",
+        "summary": "ขอแสดงความยินดีกับทีมขายที่ทำยอดเกินเป้า",
+        "score": 0,
+        "reason": "เป็นเพียงข้อมูลทั่วไปในกลุ่ม ไม่มีการถามหรือมอบหมายให้ผู้ใช้ตอบ ทำ หรือตัดสินใจ จึงไม่ตรงเงื่อนไขการแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · all-staff@acme.example.test] ขอแสดงความยินดีกับทีมขายที่ทำยอดเกินเป้า"
+      }
+    ],
+    "H14": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 8160,
+        "addressed": "yes",
+        "meaning": "spam",
+        "summary": "ข้อความลูกโซ่ให้ส่งต่อ 10 คนเพื่อโชคดี",
+        "score": 0,
+        "reason": "เป็นข้อความลูกโซ่/สแปมชวนส่งต่อ ไม่ใช่เรื่องงานหรือส่วนตัวที่ต้องตอบหรือตัดสินใจจริง จึงไม่ควรรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ข้อความลูกโซ่ให้ส่งต่อ 10 คนเพื่อโชคดี"
+      },
+      {
+        "run": 1,
+        "ok": false,
+        "ms": 12047,
+        "error": "layer 2 failed after 2 tries: unusable answer: answer is not valid JSON"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 6069,
+        "addressed": "yes",
+        "meaning": "spam",
+        "summary": "ข้อความลูกโซ่ให้ส่งต่อ 10 คนอ้างว่าจะโชคดี",
+        "score": 0,
+        "reason": "เป็นข้อความลูกโซ่/สแปมชวนส่งต่อ ไม่ใช่เรื่องงานหรือเรื่องส่วนตัวที่ต้องตอบ ตัดสินใจ หรือทำจริง จึงไม่ควรรบกวนผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · เพื่อนมัธยม] ข้อความลูกโซ่ให้ส่งต่อ 10 คนอ้างว่าจะโชคดี"
+      }
+    ],
+    "H15": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4279,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องมีคนค้ำ",
+        "score": 0,
+        "reason": "เป็นโฆษณาสินเชื่อ ไม่ใช่เรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ จึงไม่ตรงเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · loan@fastcash.example.test] โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องม"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 5036,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องมีคนค้ำ",
+        "score": 0,
+        "reason": "เป็นโฆษณาสินเชื่อ ไม่ใช่เรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ และเข้าข่ายไม่เอาโฆษณาตามเงื่อนไขผู้ใช้",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · loan@fastcash.example.test] โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องม"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4893,
+        "addressed": "yes",
+        "meaning": "ad",
+        "summary": "โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องมีคนค้ำ",
+        "score": 0,
+        "reason": "เป็นโฆษณาสินเชื่อ ไม่ตรงเงื่อนไขที่ให้แจ้งเฉพาะเรื่องที่ต้องตอบ ต้องทำ หรือต้องตัดสินใจ",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[อีเมล · loan@fastcash.example.test] โฆษณาสินเชื่อดอกเบี้ยต่ำ อนุมัติไว ไม่ต้องม"
+      }
+    ],
+    "H16": [
+      {
+        "run": 0,
+        "ok": true,
+        "ms": 4771,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "สมาชิกในกลุ่มกล่าวขอบคุณผู้ใช้",
+        "score": 0,
+        "reason": "เป็นเพียงคำขอบคุณ ไม่มีการถาม ตอบ หรือขอให้ตัดสินใจ จึงไม่เข้าข่ายที่ต้องแจ้ง",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกในกลุ่มกล่าวขอบคุณผู้ใช้"
+      },
+      {
+        "run": 1,
+        "ok": true,
+        "ms": 6295,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "สมาชิกในกลุ่มขอบคุณผู้ใช้",
+        "score": 0,
+        "reason": "เป็นเพียงคำขอบคุณ ไม่มีคำถามหรือสิ่งที่ต้องตอบ/ทำ/ตัดสินใจ เป็นการพูดคุยเล่น ไม่ตรงเงื่อนไขที่ต้องแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกในกลุ่มขอบคุณผู้ใช้"
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "ms": 4796,
+        "addressed": "yes",
+        "meaning": "chatter",
+        "summary": "สมาชิกในกลุ่มกล่าวขอบคุณผู้ใช้",
+        "score": 0,
+        "reason": "เป็นเพียงคำกล่าวขอบคุณ คุยเล่นทั่วไป ไม่มีการถาม ตอบ หรือขอให้ตัดสินใจใด ๆ จึงไม่เข้าข่ายที่ต้องแจ้งเตือน",
+        "layer1": {
+          "provider": "deepseek",
+          "model": "deepseek-flash"
+        },
+        "layer2": {
+          "provider": "deepseek",
+          "model": "deepseek-v4-pro"
+        },
+        "promptVersion": "v1",
+        "aboutLine": "[LINE · ทีมโปรเจกต์ A] สมาชิกในกลุ่มกล่าวขอบคุณผู้ใช้"
+      }
+    ]
+  },
+  "totals": [
+    {
+      "bar": 0,
+      "wrongHolds": 0,
+      "wrongPasses": 11,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 1,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 2,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 3,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 4,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 5,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 6,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 7,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 8,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 9,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 10,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 11,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 12,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 13,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 14,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 15,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 16,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 17,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 18,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 19,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 20,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 21,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 22,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 23,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 24,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 25,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 26,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 27,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 28,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 29,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 30,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 31,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 32,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 33,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 34,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 35,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 36,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 37,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 38,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 39,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 40,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 41,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 42,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 43,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 44,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 45,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 46,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 47,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 48,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 49,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 50,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 51,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 52,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 53,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 54,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 55,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 56,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 57,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 58,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 59,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 60,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 61,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 62,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 63,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 64,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 65,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 66,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 67,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 68,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 69,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 70,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 71,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 72,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 73,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 74,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 75,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 76,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 77,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 78,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 79,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 80,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 81,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 82,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 83,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 84,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 85,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 86,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 87,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 88,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 89,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 90,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 91,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 92,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 93,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 94,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 95,
+      "wrongHolds": 0,
+      "wrongPasses": 0,
+      "flips": 0,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 96,
+      "wrongHolds": 4,
+      "wrongPasses": 0,
+      "flips": 3,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 97,
+      "wrongHolds": 4,
+      "wrongPasses": 0,
+      "flips": 3,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 98,
+      "wrongHolds": 4,
+      "wrongPasses": 0,
+      "flips": 3,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 99,
+      "wrongHolds": 4,
+      "wrongPasses": 0,
+      "flips": 3,
+      "unscored": 8,
+      "meets": false
+    },
+    {
+      "bar": 100,
+      "wrongHolds": 4,
+      "wrongPasses": 0,
+      "flips": 3,
+      "unscored": 8,
+      "meets": false
+    }
+  ],
+  "meeting": []
+}

@@ -1,0 +1,10 @@
+    NotificationRecord(0x0bd2856c: pkg=com.develyst.cornerchat user=UserHandle{0} id=2 tag=null importance=4 key=<key>: Notification(channel=messages shortcut=null contentView=null vibrate=null sound=
+      groupKey=0|com.develyst.cornerchat|g:cc.messages
+    NotificationRecord(0x0293cd3b: pkg=com.develyst.cornerchat user=UserHandle{0} id=-712669966 tag=null importance=4 key=<key>: Notification(channel=messages shortcut=null contentView=null vibrate=nu
+      groupKey=0|com.develyst.cornerchat|g:cc.messages
+    NotificationRecord(0x0a0a9696: pkg=com.develyst.cornerchat user=UserHandle{0} id=1138093104 tag=null importance=4 key=<key>: Notification(channel=messages shortcut=null contentView=null vibrate=nu
+      groupKey=0|com.develyst.cornerchat|g:cc.messages
+    NotificationRecord(0x0e54c7ed: pkg=com.develyst.cornerchat user=UserHandle{0} id=78842197 tag=null importance=4 key=<key>: Notification(channel=messages shortcut=null contentView=null vibrate=null
+      groupKey=0|com.develyst.cornerchat|g:cc.messages
+    NotificationRecord(0x0a808e70: pkg=com.develyst.cornerchat user=UserHandle{0} id=1 tag=null importance=2 key=<key>: Notification(channel=service shortcut=null contentView=null vibrate=null sound=n
+      groupKey=0|com.develyst.cornerchat|g:cc.service

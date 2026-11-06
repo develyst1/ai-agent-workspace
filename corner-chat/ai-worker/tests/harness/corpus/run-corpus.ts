@@ -102,7 +102,8 @@ const settings = {
 };
 const byUser = new Map(items.map((i) => [i.id, { name: i.userName, names: i.userNames }]));
 const judge = createJudge({
-  gateway: createGateway({ url: gatewayUrl, key: process.env.LLM_GATEWAY_KEY?.trim() ?? "" }),
+  // the same per-call timeout as the back end (LLM_TIMEOUT_MS, default 40 s since DEF-1; the library default is 20 s)
+  gateway: createGateway({ url: gatewayUrl, key: process.env.LLM_GATEWAY_KEY?.trim() ?? "", timeoutMs: Number(process.env.LLM_TIMEOUT_MS) || 40_000 }),
   settings: async () => settings,
   userContext: async (userId: string) => byUser.get(userId)!,
   logCall: async () => {},

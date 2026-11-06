@@ -1,0 +1,31 @@
+{
+  "layer1": {
+    "json": { "addressed": "yes", "meaning": "request", "summary": "ขอให้ยืนยันนัด" },
+    "rules": [
+      { "contains": "[HANG]", "hang": true },
+      { "contains": "[L1BROKEN]", "raw": "ไม่ใช่ JSON เลย" },
+      { "contains": "[L1SPAM]", "json": { "addressed": "no", "meaning": "spam", "summary": "โฆษณาขายของ" } },
+      { "contains": "[LONGSUM]", "json": { "addressed": "yes", "meaning": "request", "summary": "สรุปยาวมากเพื่อทดสอบการตัดความยาวของบรรทัดเรื่องให้ไม่เกินแปดสิบตัวอักษรตามที่กำหนดไว้ในข้อกำหนดของระบบ corner-chat ทั้งหมด" } }
+    ]
+  },
+  "layer2": {
+    "score": 50,
+    "reason": "เหตุผลจาก fake gateway",
+    "rules": [
+      { "contains": "[HANG]", "hang": true },
+      { "contains": "[L2DOWN]", "http500": true },
+      { "contains": "[SMISS]", "json": { "reason": "ไม่มีคะแนน" } },
+      { "contains": "[SPCT]", "score": "70%" },
+      { "contains": "[S70.5]", "score": 70.5 },
+      { "contains": "[S120]", "score": 120 },
+      { "contains": "[SNEG]", "score": -5 },
+      { "contains": "[S100]", "score": 100 },
+      { "contains": "[S99]", "score": 99 },
+      { "contains": "[S75]", "score": 75 },
+      { "contains": "[S71]", "score": 71 },
+      { "contains": "[S70]", "score": 70 },
+      { "contains": "[S69]", "score": 69 },
+      { "contains": "[S0]", "score": 0 }
+    ]
+  }
+}

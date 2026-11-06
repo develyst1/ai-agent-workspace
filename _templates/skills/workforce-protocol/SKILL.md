@@ -78,6 +78,10 @@ The log is history; **the inbox is delivery.** An `@` in a busy log scrolls away
   `From <Name> (<team if any>) <YYYY-MM-DD>: <what> — see <file §section>`
 - **One message is 1–3 lines; 5 is the hard limit** (the gate fails a longer message). The brief
   belongs in the REQ/SPEC/TASK, not the inbox.
+- **Only two ways to write an inbox:** append with `>>` in its own command, or delete what you
+  processed with `node ai-worker/drain-inbox.mjs <INBOX>` (it shows a hash, then deletes only the
+  lines you name, and only if nothing arrived meanwhile). **Never the Edit/Write tool on an inbox**:
+  it has no such check, so a message that arrived after your read is deleted unread.
 - **Findings go to a file, the inbox gets the pointer.** A review or check with more than one
   finding (line numbers, file:line citations, a list) is written to its own file; the message is
   one line: `From <Name> (<team>) <date>: topic 07 checked — 3 fixes — see <path>`. File:line
@@ -193,6 +197,9 @@ Generic lifecycle: **REQ → SPEC → TASK → code**, and **REQ → TEST → ve
 its REQ, every TASK its SPEC, every TEST its REQ. Numbers are per type, zero-padded to 3, never
 reused — check the folder for the highest before creating. When the desk has teams, the team
 letter is part of the ID (`TASK-B-004`) and each team numbers its own: no shared counter.
+**Where the desk has `ai-worker/new-id.mjs`, every REQ/SPEC/TASK/TEST file is created only with
+`node ai-worker/new-id.mjs <REQ|SPEC|TASK|TEST> <slug>`.** It picks the number under a lock. Two roles
+checking the folder at the same moment otherwise both take the same number.
 
 Only the **owner of the next step** moves a status forward, and only for the statuses its role
 holds. Never invent scope: not in a REQ/SPEC/TASK means it does not exist.
@@ -288,6 +295,17 @@ Entry template: [references/failures-entry.md](references/failures-entry.md).
 ## 14. Evidence and QA
 
 **Nothing is delivered because it compiles, reads correctly or passed review** (harness §8).
+
+- **A secret never reaches output, not even when something fails.** Failure messages print what they hold:
+  - a child process's error prints its whole command line, so never pass a password, URL or token as an argument
+    (use the environment, e.g. `PGPASSWORD`, or a file);
+  - a test matcher prints the received value, so assert that a secret is *present* or *empty*
+    (`toBeTruthy()`, its length), never `toBe(<the real value>)`, and never run such a test before the
+    test setup has replaced the real value.
+  If a secret did print, say so at once in a FAILURES entry. Whether to reissue it is the owner's call,
+  through the PM.
+- **A rule file you loaded can change while your session runs.** When `CLAUDE.md`, `PROTOCOL.md` or your
+  charter changed today, re-read it before you run anything it governs (environments, databases, git).
 
 - **Engineers bring evidence**: the exact command and its real output in the TASK's
   `## Implementation Notes`. A claim without output is `REWORK`; anything not run is

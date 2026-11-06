@@ -1,0 +1,90 @@
+{
+  "ranAt": "2026-11-01T09:16:22.091Z",
+  "user": "web-mvxm7waa@qa-a.test",
+  "checks": [
+    {
+      "case": "1",
+      "what": "admin sign-in title",
+      "expected": "เข้าสู่ระบบผู้ดูแล corner-chat",
+      "actual": "shown",
+      "pass": true
+    },
+    {
+      "case": "4",
+      "what": "wrong password wording on the web",
+      "expected": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+      "actual": "shown",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "owner signs in → users page with the add button",
+      "expected": "เพิ่มผู้ใช้ visible",
+      "actual": "http://localhost:3191/users",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "added user listed",
+      "expected": "row with the email, ใช้งานอยู่",
+      "actual": "ผู้ใช้เว็บ mvxm7waa web-mvxm7waa@qa-a.test ใช้งานอยู่ 2026-11-01 16:16 ปิดใช้งาน ตั้งรหัสผ่านใหม่",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "user added on the web signs in with that password (API — the app is not built)",
+      "expected": "200",
+      "actual": "200",
+      "pass": true
+    },
+    {
+      "case": "2",
+      "what": "duplicate email (upper case) on the web",
+      "expected": "อีเมลนี้มีผู้ใช้แล้ว",
+      "actual": "shown",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "disable asks first, with the REQ wording",
+      "expected": "ปิดใช้งาน ผู้ใช้เว็บ mvxm7waa ไหม …",
+      "actual": "shown",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "disable on the web → row + sign-in",
+      "expected": "row ปิดใช้งาน · login 403",
+      "actual": "ผู้ใช้เว็บ mvxm7waa web-mvxm7waa@qa-a.test ปิดใช้งาน 2026-11-01 16:16 เปิดใช้งาน ตั้งรหัสผ่านใหม่ · 403",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "enable on the web → sign-in",
+      "expected": "200",
+      "actual": "200",
+      "pass": true
+    },
+    {
+      "case": "14",
+      "what": "reset on the web → old / new",
+      "expected": "เปลี่ยนรหัสผ่านแล้ว · 401 / 200",
+      "actual": "shown · 401 / 200",
+      "pass": true
+    },
+    {
+      "case": "2",
+      "what": "user account on the admin web",
+      "expected": "หน้านี้สำหรับผู้ดูแลเท่านั้น, no usable token kept",
+      "actual": "shown · storage keys=[__next_debug_channel:LV52ziF8Ib5d3ZrY8ZtPs] · usable tokens under=[]",
+      "pass": true
+    },
+    {
+      "case": "2",
+      "what": "user then opens /users directly",
+      "expected": "no users page (sent to sign-in)",
+      "actual": "http://localhost:3191/login",
+      "pass": true
+    }
+  ]
+}

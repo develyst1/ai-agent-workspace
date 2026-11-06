@@ -1,9 +1,9 @@
 {
   "harness": "develyst-harness",
-  "version": "2.6.9",
-  "installedAt": "2026-11-01",
+  "version": "2.6.14",
+  "installedAt": "2026-11-02",
   "packageHashes": {
-    "ai-worker/add-failure.mjs": "2d9757735f33b4af6a7fa5252d2b2ccec3f89547d267111fa202c44322dddf00",
+    "ai-worker/add-failure.mjs": "791081e8b61e7c50b2cf56d697f212f795896ed0626218eb977adcb4bab92901",
     "ai-worker/append-log.mjs": "81f520ddb7d2c3df897e79c7fd4114343028341684729f6257ab9d1250e297f9",
     "ai-worker/drain-inbox.mjs": "24dcdd8244507b428e0c2716bbd95b232192247ca0243d8f2193a5582129a2c0",
     "ai-worker/tools/pm-hub.sh": "777f42870cd2509a204eaacf2f7bde7d2e2637021a9bd9124f3eeed9138425d4",
@@ -17,7 +17,8 @@
     "ai-worker/team-brainstorm.md": "9c27bb37af9107ec8cdda6907d495b9ec20e643ec4b44d9efb3fd5087014d283",
     "ai-worker/attribution.md": "cb79b4c4f6b6a30beb104346e100d97b000a63e5d263cf3c869602f2f197d7e0",
     "ai-worker/predict-then-probe.md": "37d47dd04346f4da6d60a630e1dc6db7b69dd9ef077c781e90ffe8bf33c79e94",
-    "CLAUDE.md": "2eeed96214f5099870693ef3403ee8c564ca8143174018d6d2347bbe1e5bfe0c",
+    "ai-worker/new-id.mjs": "2b6fa6721d79eaff6ff08cef78e34a0bf3b87307aa006c100a478db7d4cb7c36",
+    "CLAUDE.md": "b633e438a4e3adb69fa0cd85a0cc2a8e9d1484acf6fc95dec4b172633b17a2a0",
     "AGENTS.md": "9927330ad68feedf2ba122e1b9cc5758af7a021b9376b6ec1d05816d4e3eb6eb",
     "ROLES.md": "315e66f7a76818ab3356b02f5681e7320d3f9e8f95a44aaa35b2582de27d6f57"
   }

@@ -1,0 +1,476 @@
+{
+  "ranAt": "2026-11-01T14:55:30.272Z",
+  "tag": "mvxybs8f",
+  "U3": "u3-mvxybs8f@qa-a.test",
+  "checks": [
+    {
+      "case": "1",
+      "what": "owner signs in",
+      "expected": "200 role owner",
+      "actual": "200 owner",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "owner adds U1",
+      "expected": "201 role user active",
+      "actual": "201 user active",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "U1 signs in with the owner's email+password (API)",
+      "expected": "200",
+      "actual": "200",
+      "pass": true
+    },
+    {
+      "case": "1",
+      "what": "email is trimmed + case-insensitive at sign-in",
+      "expected": "200",
+      "actual": "200",
+      "pass": true
+    },
+    {
+      "case": "2",
+      "what": "add again with U1's email (upper-case)",
+      "expected": "409 EMAIL_TAKEN",
+      "actual": "409 EMAIL_TAKEN",
+      "pass": true
+    },
+    {
+      "case": "2",
+      "what": "still one account for U1's email",
+      "expected": "1",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "add with empty email",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "add with malformed email",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "add with empty password",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "add with 7-char password",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "add with empty name",
+      "expected": "400 VALIDATION",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "no account left by the refused adds",
+      "expected": "0",
+      "actual": "0",
+      "pass": true
+    },
+    {
+      "case": "4",
+      "what": "wrong password",
+      "expected": "401 INVALID_CREDENTIALS",
+      "actual": "401 INVALID_CREDENTIALS",
+      "pass": true
+    },
+    {
+      "case": "4",
+      "what": "unknown email: same answer as wrong password",
+      "expected": "401 INVALID_CREDENTIALS",
+      "actual": "401 INVALID_CREDENTIALS",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U1 token GET /admin/users",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U1 token POST /admin/users",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U1 token POST /admin/users/<U2>/disable",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U1 token POST /admin/users/<U2>/enable",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U1 token POST /admin/users/<U2>/password",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U1 token GET /admin/settings/ai",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U1 token PUT /admin/settings/ai",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U1 token GET /admin/stats/line-pushes",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U1 token GET /admin/ai-models",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "U2 unaffected by U1's admin attempts (old password still works)",
+      "expected": "200",
+      "actual": "200",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "no token GET /admin/users",
+      "expected": "401 UNAUTHENTICATED",
+      "actual": "401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "no token GET /me",
+      "expected": "401 UNAUTHENTICATED",
+      "actual": "401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "no token GET /messages?tab=notified",
+      "expected": "401 UNAUTHENTICATED",
+      "actual": "401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "no token GET /conditions",
+      "expected": "401 UNAUTHENTICATED",
+      "actual": "401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "no token GET /channels",
+      "expected": "401 UNAUTHENTICATED",
+      "actual": "401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "no token PUT /devices",
+      "expected": "401 UNAUTHENTICATED",
+      "actual": "401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "made-up token",
+      "expected": "401 UNAUTHENTICATED",
+      "actual": "401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "made-up messages ingested for U1 and U2",
+      "expected": "two ids",
+      "actual": "64f393c2-6d93-4af7-ae16-e02f6f87c501 479d0da4-7cd4-47b6-90e1-0ef4f2d6a057",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "U1's message lists hold none of U2's",
+      "expected": "no U2 id",
+      "actual": "[\"64f393c2-6d93-4af7-ae16-e02f6f87c501\"]",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "U1's conditions: own bar and no U2 rule",
+      "expected": "bar 70, no U2 rule",
+      "actual": "{\"bar\":70,\"rules\":0,\"sentences\":\"\"}",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "U1's channels: nothing of U2's",
+      "expected": "mail not connected",
+      "actual": "{\"mail\":{\"connected\":false,\"email\":null,\"lastSyncAt\":null,\"lastError\":null},\"line\":{\"linked\":false,\"displayName\":null}}",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "U1 token GET /messages/<U2 msg>",
+      "expected": "404 NOT_FOUND",
+      "actual": "404 NOT_FOUND",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "U1 token POST /messages/<U2 msg>/correction",
+      "expected": "404 NOT_FOUND",
+      "actual": "404 NOT_FOUND",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "U1 token POST /messages/<U2 msg>/correction",
+      "expected": "404 NOT_FOUND",
+      "actual": "404 NOT_FOUND",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "U1 token POST /messages/<U2 msg>/replies",
+      "expected": "404 NOT_FOUND",
+      "actual": "404 NOT_FOUND",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "U1 token DELETE /conditions/rules/<U2 rule>",
+      "expected": "404 NOT_FOUND",
+      "actual": "404 NOT_FOUND",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "an id that does not exist: same answer as another user's",
+      "expected": "404 NOT_FOUND",
+      "actual": "404 NOT_FOUND",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "a malformed id",
+      "expected": "404 (or 400), never 500",
+      "actual": "404 NOT_FOUND",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "U1 deletes U2's device token",
+      "expected": "U2's device kept",
+      "actual": "404, U2 rows left 1",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "U2's data unchanged afterwards",
+      "expected": "rule kept, bar 42, no correction, no reply",
+      "actual": "{\"rules\":1,\"bar\":42,\"corrections\":0,\"outbox\":0,\"outcome\":\"held\"}",
+      "pass": true
+    },
+    {
+      "case": "9",
+      "what": "rule created by U1 with userId=U2 in the body",
+      "expected": "stored as U1's or refused",
+      "actual": "201 owner=U1",
+      "pass": true
+    },
+    {
+      "case": "9",
+      "what": "settings PUT by U1 with userId=U2",
+      "expected": "U2's bar stays 42",
+      "actual": "200, U2 bar 42",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "U1's sign-in works before the disable",
+      "expected": "200",
+      "actual": "200",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "owner disables U1",
+      "expected": "200 status disabled",
+      "actual": "200 disabled",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "U1's existing sign-in after the disable (D23: refused at once)",
+      "expected": "401 (UNAUTHENTICATED or ACCOUNT_DISABLED)",
+      "actual": "401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "disabled U1 signs in",
+      "expected": "403 ACCOUNT_DISABLED",
+      "actual": "403 ACCOUNT_DISABLED",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "disabled U1 with a WRONG password",
+      "expected": "401 INVALID_CREDENTIALS (does not reveal the account state)",
+      "actual": "401 INVALID_CREDENTIALS",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "owner tries to disable the owner",
+      "expected": "400 CANNOT_DISABLE_OWNER",
+      "actual": "400 CANNOT_DISABLE_OWNER",
+      "pass": true
+    },
+    {
+      "case": "12",
+      "what": "ingest for disabled U1 (core seam; mail poller = REQ-002, not built)",
+      "expected": "IngestRefused, no new row",
+      "actual": "{\"error\":\"IngestRefused: User is disabled\"} rows 1→1",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "owner enables U1; U1 signs in",
+      "expected": "200 / 200",
+      "actual": "200 / 200",
+      "pass": true
+    },
+    {
+      "case": "14",
+      "what": "owner resets U1's password",
+      "expected": "204",
+      "actual": "204",
+      "pass": true
+    },
+    {
+      "case": "15",
+      "what": "sign-in made before the reset (D23)",
+      "expected": "401",
+      "actual": "401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "case": "14",
+      "what": "old password",
+      "expected": "401 INVALID_CREDENTIALS",
+      "actual": "401 INVALID_CREDENTIALS",
+      "pass": true
+    },
+    {
+      "case": "14",
+      "what": "new password",
+      "expected": "200",
+      "actual": "200",
+      "pass": true
+    },
+    {
+      "case": "14",
+      "what": "reset to a 5-char password",
+      "expected": "400",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "wrong passwords 1–4",
+      "expected": "401 ×4",
+      "actual": "[\"401 INVALID_CREDENTIALS\",\"401 INVALID_CREDENTIALS\",\"401 INVALID_CREDENTIALS\",\"401 INVALID_CREDENTIALS\"]",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "5th wrong password",
+      "expected": "401 or 429 (lock starts)",
+      "actual": "401 INVALID_CREDENTIALS",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "RIGHT password while locked",
+      "expected": "429 TOO_MANY_ATTEMPTS + Retry-After ≤ 300",
+      "actual": "429 TOO_MANY_ATTEMPTS Retry-After=300",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "same email in upper case while locked",
+      "expected": "429",
+      "actual": "429 TOO_MANY_ATTEMPTS",
+      "pass": true
+    },
+    {
+      "case": "18",
+      "what": "U2 signs in while U3 is locked",
+      "expected": "200",
+      "actual": "200",
+      "pass": true
+    },
+    {
+      "case": "17",
+      "what": "4 wrong → right → 4 wrong → right",
+      "expected": "200 then 200 (count reset)",
+      "actual": "200 … 401 INVALID_CREDENTIALS,401 INVALID_CREDENTIALS,401 INVALID_CREDENTIALS,401 INVALID_CREDENTIALS … 200",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "unknown email 6 wrong in a row (counted too, SPEC §3.2)",
+      "expected": "…429 by the 6th",
+      "actual": "[\"401\",\"401\",\"401\",\"401\",\"401\",\"429\"]",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "no password / hash in admin list or sign-in replies",
+      "expected": "no 'password', no '$argon2'",
+      "actual": "none",
+      "pass": true
+    }
+  ]
+}

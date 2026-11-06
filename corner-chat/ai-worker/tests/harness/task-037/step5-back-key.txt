@@ -1,0 +1,12 @@
+after BACK on detail g1 (opened by notification tap, same session): "url": "https://localhost/messages/a386d7de-4749-4d77-89e6-2232ffe13c3f"
+back presses to reach the list: 10 -> "url": "https://localhost/messages"
+BACK with the sign-out dialog open on /messages: focus -> 7743d3c u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}
+tap tab channels: "url": "https://localhost/messages/20200d60-81ce-436a-a600-fb36cd20728b"
+detail opened by a list tap -> BACK: "url": "https://localhost/messages"
+BACK on /conditions: focus -> com.google.android.apps.nexuslauncher.NexusLauncherActivity}
+BACK on /channels/line: "url": "https://localhost/channels"
+BACK on /channels/line/names: "url": "https://localhost/channels/line"
+BACK on /channels/line: "url": "https://localhost/channels"
+cold start with a message id extra (what a notification tap sends): "url": "https://localhost/messages/20200d60-81ce-436a-a600-fb36cd20728b"
+BACK on that detail: "url": "https://localhost/messages"
+BACK on /messages: focus -> com.google.android.apps.nexuslauncher.NexusLauncherActivity}; app still in recents: 11

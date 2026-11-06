@@ -1,0 +1,342 @@
+{
+  "ranAt": "2026-11-01T15:32:15.655Z",
+  "tag": "mvxzjupc",
+  "checks": [
+    {
+      "case": "2",
+      "what": "connect with a wrong password",
+      "expected": "422 MAIL_LOGIN_FAILED · 0 rows",
+      "actual": "422 MAIL_LOGIN_FAILED · 0",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "connect with malformed email",
+      "expected": "400",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "connect with empty password",
+      "expected": "400",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "connect with an address the server does not know",
+      "expected": "422",
+      "actual": "422 MAIL_LOGIN_FAILED",
+      "pass": true
+    },
+    {
+      "case": "3",
+      "what": "nothing stored after the refused connects",
+      "expected": "0",
+      "actual": "0",
+      "pass": true
+    },
+    {
+      "case": "1s",
+      "what": "connect with the right password (stand-in)",
+      "expected": "200 connected",
+      "actual": "200 true",
+      "pass": true
+    },
+    {
+      "case": "20",
+      "what": "GET /channels and the PUT reply never carry the password",
+      "expected": "no password text, no password field",
+      "actual": "clean",
+      "pass": true
+    },
+    {
+      "case": "1s",
+      "what": "mail already in INBOX before connect is not taken in (SPEC §6)",
+      "expected": "0 rows",
+      "actual": "0",
+      "pass": true
+    },
+    {
+      "case": "4s",
+      "what": "a new mail is taken in (stand-in, poll 3 s)",
+      "expected": "≤ 120 s, once",
+      "actual": "0.6 s, 1 row",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "Thai: UTF-8 8bit",
+      "expected": "\"สวัสดีครับ ทดสอบภาษาไทย ๑๒๓\" readable",
+      "actual": "สวัสดีครับ ทดสอบภาษาไทย ๑๒๓ ",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "Thai: TIS-620",
+      "expected": "\"สวัสดีครับ ทดสอบภาษาไทย ๑๒๓\" readable",
+      "actual": "สวัสดีครับ ทดสอบภาษาไทย ๑๒๓",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "Thai: windows-874",
+      "expected": "\"สวัสดีครับ ทดสอบภาษาไทย ๑๒๓\" readable",
+      "actual": "สวัสดีครับ ทดสอบภาษาไทย ๑๒๓",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "Thai: quoted-printable",
+      "expected": "\"สวัสดีครับ ทดสอบภาษาไทย ๑๒๓\" readable",
+      "actual": "สวัสดีครับ ทดสอบภาษาไทย ๑๒๓ ",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "Thai: base64",
+      "expected": "\"สวัสดีครับ ทดสอบภาษาไทย ๑๒๓\" readable",
+      "actual": "สวัสดีครับ ทดสอบภาษาไทย ๑๒๓",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "Thai: HTML only",
+      "expected": "\"สวัสดีครับ ทดสอบภาษาไทย ๑๒๓\" readable, no tags",
+      "actual": "สวัสดีครับ ทดสอบภาษาไทย ๑๒๓ บรรทัดสอง",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "Thai: Thai subject (RFC 2047)",
+      "expected": "\"หัวเรื่องภาษาไทย ทดสอบ\" readable",
+      "actual": "หัวเรื่องภาษาไทย ทดสอบ",
+      "pass": true
+    },
+    {
+      "case": "7",
+      "what": "Thai: TIS-620 subject (RFC 2047 Q)",
+      "expected": "\"เรื่องไทยแบบเก่า\" readable",
+      "actual": "เรื่องไทยแบบเก่า",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "no subject",
+      "expected": "taken in once",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "empty body",
+      "expected": "taken in once",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "8",
+      "what": "long body (200 KB)",
+      "expected": "taken in once",
+      "actual": "1",
+      "pass": true
+    },
+    {
+      "case": "9",
+      "what": "recipient kind: only in Cc",
+      "expected": "cc",
+      "actual": "cc",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "recipient kind: in To and Cc",
+      "expected": "to",
+      "actual": "to",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "recipient kind: only in Bcc (not in To/Cc)",
+      "expected": "to",
+      "actual": "to",
+      "pass": true
+    },
+    {
+      "case": "10",
+      "what": "recipient kind: mailing list (List-Id)",
+      "expected": "list",
+      "actual": "list",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "one PDF attached",
+      "expected": "hasAttachments · [report.pdf] · file content not stored",
+      "actual": "true · [\"report.pdf\"] · not stored",
+      "pass": true
+    },
+    {
+      "case": "12",
+      "what": "two files, one with a Thai name",
+      "expected": "[\"a.pdf\",\"รายงาน.xlsx\"]",
+      "actual": "[\"a.pdf\",\"รายงาน.xlsx\"]",
+      "pass": true
+    },
+    {
+      "case": "12",
+      "what": "the API shows the names (app shows มีไฟล์แนบ: {names})",
+      "expected": "attachmentNames on the item",
+      "actual": "[\"a.pdf\",\"รายงาน.xlsx\"]",
+      "pass": true
+    },
+    {
+      "case": "Q-SA-1",
+      "what": "a mail over 15 MB: row kept, preview in the PM's wording",
+      "expected": "อีเมลนี้ใหญ่เกินไป ({n} MB) เปิดอ่านใน Zimbra",
+      "actual": "อีเมลนี้ใหญ่เกินไป (16.0 MB) เปิดอ่านใน Zimbra",
+      "pass": true
+    },
+    {
+      "case": "6",
+      "what": "the poller marks nothing as read",
+      "expected": "0 \\Seen",
+      "actual": "0 of 20",
+      "pass": true
+    },
+    {
+      "case": "5",
+      "what": "restart + 3 polls: no mail taken in twice",
+      "expected": "same row count, 0 duplicates",
+      "actual": "19 → 19, duplicates 0/0",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "reply → sent",
+      "expected": "202 queued → sent",
+      "actual": "202 queued → sent",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "reply envelope: from mailbox A, to the sender only",
+      "expected": "somchai@test.local → [boss@acme.example.test]",
+      "actual": "somchai@test.local → [\"boss@acme.example.test\"]",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "reply headers: Re: subject, In-Reply-To, References",
+      "expected": "Re: … · <t2-2-mvxzjupc@test.local>",
+      "actual": "Re: [corner-chat TEST-002] ขอให้ยืนยันนัดประชุม · <t2-2-mvxzjupc@test.local> · \"<t2-2-mvxzjupc@test.local>\"",
+      "pass": true
+    },
+    {
+      "case": "15",
+      "what": "Thai reply body readable after the SMTP round trip",
+      "expected": "ยืนยันครับ เข้าได้ ๑๐ โมง",
+      "actual": "ยืนยันครับ เข้าได้ ๑๐ โมง",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "one copy in mailbox A's Sent",
+      "expected": "+1",
+      "actual": "0 → 1",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "reply to a mail with Cc goes to the sender only (D37, no reply-all)",
+      "expected": "[boss@acme.example.test]",
+      "actual": "[\"boss@acme.example.test\"]",
+      "pass": true
+    },
+    {
+      "case": "14",
+      "what": "reply to a reply",
+      "expected": "Re: once · In-Reply-To = that mail · References keep the chain",
+      "actual": "Re: [corner-chat TEST-002] ขอให้ยืนยันนัดประชุม · true · [\"<af50acb1-7d10-4d28-ba27-53211cf0bb27@test.local>\",\"<t2-22-mvxzjupc@test.local>\"]",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "reply to a LINE message",
+      "expected": "400 NOT_MAIL",
+      "actual": "400 NOT_MAIL",
+      "pass": true
+    },
+    {
+      "case": "13",
+      "what": "empty reply body",
+      "expected": "400",
+      "actual": "400 VALIDATION",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "SMTP unreachable → failed with an error, nothing reaches the server",
+      "expected": "failed ×2 · 0 accepted",
+      "actual": "failed/failed · \"SMTP server unreachable (connect ECONNREFUSED 127.\" · 0",
+      "pass": true
+    },
+    {
+      "case": "16",
+      "what": "the detail shows the failed reply (app: ส่งไม่สำเร็จ ลองอีกครั้ง + retry)",
+      "expected": "status failed in replies[]",
+      "actual": "[\"sent\",\"failed\",\"failed\"]",
+      "pass": true
+    },
+    {
+      "case": "18",
+      "what": "failed replies survive a back-end restart (never silently lost)",
+      "expected": "2 failed",
+      "actual": "2",
+      "pass": true
+    },
+    {
+      "case": "17",
+      "what": "retry → sent once; retry again → 409 NOT_FAILED",
+      "expected": "202 · sent · 409",
+      "actual": "202 · sent · 409 NOT_FAILED",
+      "pass": true
+    },
+    {
+      "case": "17",
+      "what": "double-tap retry on the other failed reply",
+      "expected": "one 202 + one 409 (or both 202), exactly one mail",
+      "actual": "202/409 · bodies [\"ส่งตอนเซิร์ฟเวอร์ล่ม ก\",\"ส่งตอนเซิร์ฟเวอร์ล่ม ข\"]",
+      "pass": true
+    },
+    {
+      "case": "19",
+      "what": "stored mailbox password",
+      "expected": "not plain, not base64(plain), present",
+      "actual": "64 chars, plain: false, b64(plain): false",
+      "pass": true
+    },
+    {
+      "case": "20",
+      "what": "back-end log (whole run, 4 starts)",
+      "expected": "no mailbox password, no URL",
+      "actual": "58 lines · password absent · postgres URL absent",
+      "pass": true
+    },
+    {
+      "case": "22",
+      "what": "U2: own mailbox only; U1's mail, reply and retry by id → 404",
+      "expected": "other@test.local · 404 · 404 · 404 · none of U1's ids",
+      "actual": "other@test.local · 404 · 404 · 404 · clean",
+      "pass": true
+    },
+    {
+      "case": "21",
+      "what": "disconnect: 204 · password row gone · new mail not taken in for U1 · old mail kept · reply → 409",
+      "expected": "204 · 0 · 0 · 200 · 409 MAIL_NOT_CONNECTED",
+      "actual": "204 · 0 · 0 · 200 · 409 MAIL_NOT_CONNECTED",
+      "pass": true
+    }
+  ]
+}

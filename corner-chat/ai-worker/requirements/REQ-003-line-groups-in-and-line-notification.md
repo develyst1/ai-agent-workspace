@@ -1,5 +1,5 @@
 # REQ-003: Messages to the user in their LINE groups come in, and passed ones reach them on LINE 1-on-1
-- Status: READY_FOR_SA
+- Status: DELIVERED (2026-11-01, PM — TEST-004 run 2 PASS + the real-LINE live run with the owner 23:30–23:50: link, wrong code, reply, nickname, real mention, @All (AC-8) pushed; chatter and a rule-held message not pushed. AC-5's second-OA refusal (B7) stays NOT_TESTED)
 - Priority: HIGH `[team-proposed]`
 - Requested: 2026-11-01 by the owner — stamp: operator (shape) · operator-delegated (details)
 - Deadline: none
