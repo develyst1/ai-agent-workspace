@@ -30,3 +30,6 @@
 | 2026-10-31 03:43 | Sober | 4082 B | session 19% / week 39% | Current session: 19% used Current week (all models): 39% used  | — | watch-run clear (READY, distilled 01:47; prior 01:48 clear apparently didn't take, pane still held 134k ctx); /clear + /desk i-space Sober; session started reading (role-sa loaded) |
 | 2026-10-31 04:14 | Porter | 4095 B | session 0% / week 40% | Current session: 0% used Current week (all models): 40% used  | — | clear after re-distill 04:08 (idle, PM inbox empty; ball with Team B) |
 | 2026-10-31 04:3x | Silver | 4067 B | session 2% / week 40% | session 2% / week 40% | — | READY after REQ-126 r2 SPEC_DONE 04:29; idle, nothing pending; /desk reloaded |
+| 2026-11-01 16:21 | Sober | 4061 | usage % not shown by /usage | usage % not shown | — | watch clear after change-review (READY) |
+| 2026-11-01 16:32 | Porter | 4084 B | usage % not shown by /usage | usage % not shown | — | watch clear after 16:27 re-distill (READY, --done); /clear + /desk i-space Porter; session started reading |
+| 2026-11-01 16:40 | Silver | 4067 B | usage % not shown by /usage | usage % not shown | — | watch clear (READY, distilled 16:26, idle, SA-B inbox empty); /clear + /desk i-space Silver; session started reading |
