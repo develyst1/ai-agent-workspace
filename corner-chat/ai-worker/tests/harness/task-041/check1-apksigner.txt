@@ -1,0 +1,4 @@
+Signer #1 certificate DN: CN=throwaway task-041
+Signer #1 certificate SHA-256 digest: a3a82b90490703f7…
+Signer #1 certificate SHA-1 digest: d35412bf2097c79a177ab6d39a7e8336e8725794
+Signer #1 certificate MD5 digest: c12e85f343569580521e6d023b72e30f

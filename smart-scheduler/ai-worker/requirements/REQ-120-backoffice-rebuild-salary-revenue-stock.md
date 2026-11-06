@@ -236,3 +236,19 @@ Questions: `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md` → SHORT
 | 5 | when "coach changed mid-course" (Special Case) applies | **A:** only a real whole-course teacher change; a 1–2 day cover does not count | A11 / B4 |
 | 6 | what Khwan herself sees | **B:** like an admin; she enters items but sees no pay totals and no revenue (checked with ฟีน) | A20 |
 - Every other readiness question = the SA's stated default (owner, 2026-10-27). A10 (course ↔ voucher) was not asked, so its default stands.
+
+## 11. The customer's block order, before the meeting (LINE group, 2026-11-05 00:11, the owner's screenshot; kn = Khwan, replying to the agenda the owner posted)
+Verbatim:
+> ขวัญน่าจะไม่เห็นข้อความนั้นเองค่ะ ขอโทษค่า ยังไงเดี๋ยวขวัญเช็คให้และ feedback กลับนะคะ
+
+> อันนี้เราจะทำเป็น เงินเดือน รายได้ สต็อก ตามลำดับนะคะ
+> แจ้งเพิ่มเติมค่ะ
+> เงินเดือนก้อนแรก อยากให้เรียงทำแบบนี้ เอาเรื่อง ฐานเงินเดือน / Extra hour / Bonus คอร์สต่อคอร์สขึ้นมาก่อนค่ะ
+> ** โบนัสให้เริ่มจาก 100 ก่อนนะคะ ตัว 50 ทำทีหลังได้ค่ะ
+> และ
+> ก้อนรายได้ต้องมีเรื่อง ECA ด้วยนะคะ
+
+**Status:** the order is stated; it is confirmed in the 11-07 room, with พี่ฟีน present (the owner: Khwan is not the only decider). No build GO yet.
+**Installments if confirmed (DELIVERY-FACTS Q5):** SALARY 13,500 + Roles 3,600 = 17,100 · REVENUE 13,800 · STOCK 8,300 = 39,200.
+**Open, asked of both SAs 2026-11-05:** the weeks for her first Salary slice. It differs from the slice in DELIVERY-FACTS Q4 (base + manual lines, ≈ 5–6 wk): Extra Hour and Bonus 100 are in it, and Q2.3 says F3 feeds Extra Hour and F4 feeds the bonuses.
+**ECA in Revenue:** already in scope, §2 (the ECA row).

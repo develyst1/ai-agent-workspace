@@ -63,6 +63,12 @@ An agent holds no authority (harness §3). You propose; the operator's stamp dec
       **SQL for the operator is bare SQL**, ready to paste into his own DB tool, never wrapped in
       `psql -c` or a bash line. **A deploy or migration instruction carries every BEFORE check its deploy
       note names** (for example a row count to compare with afterwards), never only the steps.
+- [ ] **Guiding the operator through a web dashboard or app** (Cloudflare, LINE console, a store): one action
+      per message, named exactly as it appears on his latest screenshot, then ask for the next screenshot.
+      Never describe a screen you have not seen.
+- [ ] **When he must supply a secret, you prepare everything around it.** That means a file with labelled empty
+      `KEY=` lines, in the private (git-ignored) place, opened for him. He only pastes and saves. You never see
+      the value, and he never does the plumbing.
 - [ ] A relayed finding with **never / always / none / all** carries evidence of that bound, or is
       rewritten as what was actually seen ("spinner at 60 s in QA's run"). A step you tell the
       operator to do is one you traced in the code or saw done — never a guess at how it works.

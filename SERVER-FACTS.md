@@ -605,3 +605,133 @@ The scheduled audit (`otto-daily-security-audit`, 20:30) compares against `serve
   - **Idea:** Tailscale (or Cloudflare Access/Tunnel for SSH) so port 22 is not public. That ends the scanner noise and the fail2ban self-lockouts.
   - **Cost:** CI needs a way in too (a Tailscale GitHub Action + auth key, or Cloudflare Access for SSH).
   - **Next time** (a new server, or the next security talk): present it again in ≤5 lines, **and compare at least one alternative** before recommending (e.g. Cloudflare Tunnel `cloudflared access ssh` + a service token for CI; WireGuard on the box; port-knocking is NOT acceptable).
+- **2026-11-02 — corner-chat deploy request** (owner via Porter: *"ส่งรายละเอียดไปบอก otto หน่อยว่ามีแอป อยาก deploy"*; `REQUEST-porter-to-otto-2026-11-02-corner-chat-deploy.md`). Survey is read-only; nothing has changed on the box yet.
+  - **Repos** (branch `D1`; private, since the GitHub API gives 404):
+    - back `519ebf5`: Bun + Hono, already `bun build --compile` → `dist/corner-chat-back`; Bearer-session auth; the LINE webhook checks the HMAC signature. Migrations run only from `scripts/` (db-init / migrate), **not at start-up**.
+    - front `2a90393`: Next standalone + copy script. `NEXT_PUBLIC_API_BASE_URL` is **baked in at build time**, so CI must set it.
+    - app `21eb731`: Capacitor/Vite APK; `VITE_API_BASE` is baked in at build.
+  - **Back tests need a real Postgres:** they create `corner_chat_test_r<pid>_…` DBs on the server in `DATABASE_URL`/`DATABASE_URL_TEST`.
+  - **Outbound from this box:** `api.line.me:443` open; `ai.develyst.online:443` open; `154.197.124.206:5432` open; **`mail.entronica.in.th` (202.183.141.121): 993, 465, 587, 143, 25 and even 443 all BLOCKED**, while the owner's PC reaches 993/465 fine. So the mail host (or its network) refuses this box's IP. **The mail poller cannot work from here until `43.228.86.89` is allowed** (the owner or entronica IT).
+  - **Capacity:** 5.1 GB RAM free, 53 G disk; the ports in use are 3001 and 3002.
+- **2026-11-02 — corner-chat APK prep (Porter, TASK-041):**
+  - **`VITE_FAKE` defaults to true**, so the release APK build must set `VITE_FAKE=false` together with `VITE_API_BASE=https://<api host>/api/v1`.
+  - The repo now git-ignores `*.jks`.
+  - The APK still waits on the owner's final API hostname and on where the signing key is kept.
+- **2026-11-02 — mail block: it is NOT this box.** The owner asked *"ไม่ได้เป็นที่เราเหรอ นี่เครื่องที่บ้านฉันนะ ยังเข้าได้ปกติเลย ไม่ใช่เครื่องบริษัท"*. Read-only checks:
+  - From this box: `imap.gmail.com:993`, `smtp.gmail.com:465`, `outlook.office365.com:993` are **open**; `mail.entronica.in.th:993/465` still **fail**; ping to 202.183.141.121 gets 0 replies.
+  - Outbound policy here is `DEFAULT_OUTPUT_POLICY="ACCEPT"`; nothing in `/etc/ufw` or `/etc/fail2ban` names 202.183.x; the route is the normal gateway 43.228.86.1.
+  - The owner's home PC (today `223.24.168.26`) reaches `202.183.141.121:993`.
+  - **So the mail side (or its network) drops this box's IP** — likely an allow-list or a block on data-centre IPs. Fix is on the mail side: allow `43.228.86.89`.
+  - **Note:** the PC's IP changed again (`223.24.156.113` → `223.24.168.26`); fail2ban `ignoreip` still holds the old one.
+- **2026-11-02 — owner: park entronica, use an ordinary mailbox for now.** Owner: *"ปิดข้าม เรื่อง เมล entronica ไว้ก่อนแล้วกันทำให้ มันทำงานได้ แค่เมลธรรมดาก็ได้ ก่อน"*.
+  - **No code change needed:** the back reads the mail host from env: `ZIMBRA_IMAP_HOST/PORT`, `ZIMBRA_SMTP_HOST/PORT` (`src/config.ts`, `origin/D1`). The server `.env` points them at an ordinary provider (e.g. Gmail `imap.gmail.com:993` / `smtp.gmail.com:465`, both reachable from this box).
+  - **One host serves every user**, so each user's mailbox in the app must be on that provider.
+  - **Gmail:** needs 2-Step Verification + an App Password per mailbox. Set `MAIL_APPEND_SENT=false`, because Gmail's SMTP already files sent mail (the code finds Sent by `\Sent`, so leaving it true would duplicate).
+  - Waiting on the owner: which provider.
+- **2026-11-02 — owner's mail is Outlook (personal); that cannot work with the app as built.**
+  - **The network is fine:** from this box, `outlook.office365.com:993`, `smtp.office365.com:587` and `smtp-mail.outlook.com:587` are all open (587 = STARTTLS, which `connection.ts` requires on non-465 ports).
+  - **Why it still fails:** Microsoft ended password (basic-auth) logins for IMAP/SMTP on personal Outlook/Hotmail accounts on 2024-09-16. App passwords are refused too, and only OAuth2 works. The app logs in to IMAP/SMTP with a stored password (`imapflow` with `password_enc`), so an Outlook mailbox would be refused at login.
+  - **Options for the owner:**
+    - (a) a Gmail mailbox with an App Password: env change only, works now;
+    - (b) the desk adds Microsoft OAuth2 sign-in. That is code work, and it goes through Porter.
+- **2026-11-02 — owner: incoming mail only for now** (*"ไม่เอา เอาแค่ขาเข้ามาก่อนก็ได้"*).
+  - No env switch turns off outgoing: `app.ts:66` always starts the outbox. It sends only when a user presses reply (`POST /messages/:id/replies`), though, so "incoming only" just means not replying.
+  - **Incoming still logs in to IMAP with a password,** so the Outlook limit applies to reading too. The mailbox choice stands: Gmail + App Password, or entronica once it allows `43.228.86.89`.
+- **2026-11-02 — DECIDED: mail off on SIT for now** (owner: *"ปิดเมลไว้ก่อน"*). The server `.env` for the corner-chat back gets `MAIL_POLL_SECONDS=0`, so the poller does not start (`app.ts:65`). Tanya's SIT pass skips the mail poller. Revisit when entronica allows `43.228.86.89`, or the owner picks a Gmail box.
+- **2026-11-02 — DECIDED: mail via forward** (owner: *"forward"*; replaces "mail off"). Incoming only (*"ฉันไม่เอาส่งออก ฉันเอา ขาเข้ามา เพื่อรับรู้ว่าใครทักมาจากไหนบ้าง"*).
+  - **The owner** sets a forward in the entronica webmail (Zimbra) to one Gmail box. That Gmail box needs 2-Step Verification and an App Password. He connects it in the app himself; the password never passes through Otto.
+  - **The server `.env` (corner-chat back):** `ZIMBRA_IMAP_HOST=imap.gmail.com`, `ZIMBRA_IMAP_PORT=993`, `ZIMBRA_SMTP_HOST=smtp.gmail.com`, `ZIMBRA_SMTP_PORT=465`, `MAIL_POLL_SECONDS=60`, `MAIL_APPEND_SENT=false`.
+  - **To prove:** one test mail to the entronica address shows up in the app with the original sender (not the forwarder).
+  - **Later:** when entronica allows `43.228.86.89`, switch the env back to `mail.entronica.in.th` and drop the forward.
+- **2026-11-02 — DECIDED: hostnames** (owner: *"ตามนั้นก็ได้"*).
+  - API `cornerchat-api-sit.develyst.online`: public, no Access, because LINE and the APK must reach it.
+  - Admin web `cornerchat-sit.develyst.online`: behind Cloudflare Access (owner only).
+  - APK `VITE_API_BASE=https://cornerchat-api-sit.develyst.online/api/v1`.
+- **2026-11-02 — DECIDED: corner-chat uses the owner's Postgres without SSL for now** (owner: *"ใช้ไปก่อน"*). This is an accepted risk, the same as review gap 10: the DB password and the data cross the internet unencrypted between `43.228.86.89` and `154.197.124.206:5432`. Raise it again when the gaps are reviewed.
+- **2026-11-02 — DECIDED: LINE on SIT = the test OA LifeStyle-Shop (@183qrfme)** (owner: *"ใช้ OA ทดสอบ"*).
+  - Its channel secret/token go into the server `.env` only, plus `LINE_LIVE=1`.
+  - After the first deploy, the owner sets the Webhook URL in the LINE console to `https://cornerchat-api-sit.develyst.online/api/v1/webhooks/line`.
+- **2026-11-02 — DECIDED: corner-chat back CI runs no DB tests** (owner: *"ไม่ต่อ"*).
+  - The workflow runs typecheck, lint and build only, and **no `bun test`**, because the tests need a real Postgres and the owner keeps the DB secret out of GitHub.
+  - Gate 6 gap, said out loud: CI does not run the back's unit tests. The desk runs them locally against the dev DB.
+- **2026-11-02 — DECIDED: APK signing key lives on the owner's PC + a backup off the PC** (owner: *"เครื่องนี้ + สำรอง"*).
+  - On the PC: a folder **outside every repo**. Its path goes in `machine.local.md` only.
+  - The off-PC backup (password manager or a private drive) is the owner's to make.
+  - Never in git (`*.jks` is git-ignored).
+- **All owner decisions for the first corner-chat SIT deploy are in** (2026-11-02): mail via forward to Gmail, hostnames, DB without SSL, the test LINE OA, CI without DB tests, the key location. Next: server `.env` source, then `new-app` ×2, Access, CI keys, workflows.
+- **2026-11-02 — corner-chat apps created on the box** (owner: *"ก็อปไปเลย"* for the `.env`).
+  - **`new-app`** (no password; both rc=0):
+    - `cornerchat-api-sit`: process, `--start "./corner-chat-back"`, `--health /api/v1/health`, port **3003**, public;
+    - `cornerchat-sit`: process, port **3004**, public, Access still to add.
+  - Ports in `ports.tsv`: 3001–3004. nginx on the API returns 502 until the first deploy (expected).
+  - **`shared/.env` for the back** (600, 32 lines, no duplicate keys, values never printed): the team's local `.env` piped in.
+    These keys are replaced with server values: `PORT=3003`, `HOST=127.0.0.1`, `ADMIN_WEB_ORIGIN=https://cornerchat-sit.develyst.online`, Gmail IMAP/SMTP, `MAIL_APPEND_SENT=false`, `LLM_GATEWAY_URL=https://ai.develyst.online` (the local value was `localhost:3009`; prod per the `llm-gateway` skill, no key needed), `LINE_LIVE=1`.
+    **`MAIL_POLL_SECONDS=0` for now** (see the next entry). `PG_LOCAL_*` and `TEST_MAIL_*` came along with the copy.
+  - **`shared/.env` for the front:** comments only. The API URL is a build-time value set in CI.
+- **2026-11-02 — OPEN: SIT and local dev share one database.** The back only accepts the DB name `corner_chat` (or `corner_chat_test_*`) (`src/config.ts:60-91`), so the SIT back and anyone's local back write the same rows.
+  - **Mail:** the mail host is one global setting, so a SIT poller (Gmail) would try every mailbox in `mail_accounts`, including the team's entronica ones, and fail on them (writing `last_error`), and vice versa. So the poller stays at 0 until the owner decides.
+  - **Options:**
+    - (a) the desk lets the back accept a SIT DB name (small code change, through Porter);
+    - (b) accept the sharing, and only one back polls mail at a time.
+- **2026-11-02 — corner-chat release APK built** (Porter, TASK-041 DONE; `REQUEST-porter-to-otto-…` Follow-up 2).
+  - `app-release.apk`, 3,361,589 bytes, SHA-256 `9816a1b5…8b96e3b`. It points at `https://cornerchat-api-sit.develyst.online/api/v1`.
+  - Not handed out yet. Its install and sign-in are not yet proven, because the API is not deployed.
+  - **Otto tells Porter when SIT is up; that starts the desk's release QA** (owner: *"เสร็จแล้วฝากส่งรายละเอียดให้ทีมเทสต่อด้วยนะ"*).
+- **2026-11-02 — DECIDED: SIT shares the `corner_chat` DB with local dev** (owner: *"ใช้ร่วมกัน"*).
+  - Only one back may poll mail at a time. The SIT poller stays at `MAIL_POLL_SECONDS=0` until the owner connects the Gmail box.
+  - At that point Otto turns the SIT poller on, and the desk's local backs run with `MAIL_POLL_SECONDS=0`. Porter is told this with the "SIT is up" note.
+- **2026-11-02 — corner-chat CI keys + workflows (Otto).**
+  - **CI keys** (made in `C:\Users\KUYDONG\ci-secrets\`, ACL that user only; lines 4–5 of `/home/deploy/.ssh/authorized_keys`, forced command `ci-deploy`, `restrict`; backup `authorized_keys.bak-20261102-cornerchat`):
+    - `github-ci@corner-chat-back-2026-11-02` `SHA256:68TQ31A/D81G8qLu0ogk6ZD57gtLkNVCtSHSKFGkwtU`;
+    - `github-ci@corner-chat-front-2026-11-02` `SHA256:cqz8soO3fUos4ndjYxJdroQDqyw1hXK++bGPxwXkSD0`.
+    - **Proven:** both are refused for `id` ("no app id") and `cat /etc/passwd` (usage). **Expected total now: 5 keys.**
+    - **Revoke** = delete the line ending with that comment.
+  - **Workflows written (not committed)**, `.github/workflows/deploy-sit.yml` in `corner-chat-back` and `corner-chat-front`:
+    - **back:** `bun install` → `bunx tsc --noEmit` (the repo has no typecheck script; it passed locally at `519ebf5`) → build → deploy `cornerchat-api-sit`. **No tests and no lint** (no lint script; DB tests decided out).
+    - **front:** `bun install` → typecheck → lint → build with `NEXT_PUBLIC_API_BASE_URL=https://cornerchat-api-sit.develyst.online/api/v1` → deploy `cornerchat-sit`. **No UI tests** (the repo has none).
+  - **Remote `sit` exists in both repos** and is an ancestor of `D1`, so `git push origin D1:sit` fast-forwards (no force).
+  - **Waiting on the owner:** the Access app for `cornerchat-sit.develyst.online` (before the front's first push), the two secrets per repo, then his git commands.
+- **2026-11-02 23:13 — corner-chat SIT is UP** (both CI runs green after the owner fixed the secrets).
+  - **Runs:** front run 41477535507 re-run (`94f3b1c`), back run 41479201958 (`4323ee1`).
+  - **Releases:** `cornerchat-sit` `20261102-161151`, `cornerchat-api-sit` `20261102-161312`.
+  - **On the box:**
+    - both apps are online in pm2, ↺ 0 (api 56 MB, front 86 MB);
+    - `/api/v1/health` → `{"ok":true,"db":true}`, which reads the DB;
+    - front `/` → 307 (app redirect), and a `/_next/static` chunk → 200;
+    - API log: `line: target=live`, "database connection is not encrypted" (accepted), and "Owner account created for owner@corner-chat.local".
+  - **From outside:**
+    - API `https://cornerchat-api-sit.develyst.online/api/v1/health` → 200;
+    - the admin web via the IP directly times out (firewall OK);
+    - 🔴 **the admin web `https://cornerchat-sit.develyst.online/` → 307 to `/users`, NOT to the Access login. So Cloudflare Access is NOT on it yet.** It is protected only by the app's own sign-in until the owner adds the Access app.
+  - **Gate 6 gaps:**
+    - back CI = tsc + build only; front CI = typecheck + lint + build. No tests.
+    - Not yet done: a failing case pushed through CI, and a rollback proof, for these repos.
+    - The health check catches a crash, not wrong behaviour.
+  - **Open for QA:** Access is owner-only (email PIN), so Tanya's headless browser cannot pass it. A Cloudflare Access service token for QA is the usual fix; the owner decides.
+- **2026-11-02 ~23:30 — Access ON for `cornerchat-sit`.** The owner made Access app `cornerchat-sit` (destination `cornerchat-sit.develyst.online`, policy `owner only`, self-hosted).
+  - From outside, `/`, `/users` and `/_next/static/…` all → 302 to `aged-fire-690b.cloudflareaccess.com/…/login/cornerchat-sit.develyst.online`.
+  - The API stays public: health → 200.
+  - Closes the 🔴 in the 23:13 entry.
+- **2026-11-02 ~23:55 — QA Access token for `cornerchat-sit`** (owner: *"ทำเลย"*).
+  - **Token:** Cloudflare service token `corner-chat-qa` (1 year; expires around 2027-11-02, renew before then). The owner made it in the dashboard.
+  - **Policy:** `qa service token` (Service Auth, Include = that token), order 2, after `owner only`.
+  - **The values** sit in a private file on the PC; its path is in `machine.local.md` only. Otto never printed them. The harness did show the file to Otto's session once, by accident (diff notice). The owner was told and may rotate the token.
+  - **Proven from outside:**
+    - with the token headers: `/` → 307 (the app itself) and an unknown static file → 404 (the app);
+    - without them: → 302 to the Access login;
+    - before the app page's Save: → 403.
+- **2026-11-02 — clean-up:** deleted the two corner-chat CI key files (private + `.pub`) from `C:\Users\KUYDONG\ci-secrets\`; their private halves now live only in the GitHub secrets. Left in that folder: `known_hosts.txt` (not secret) and `corner-chat-qa-token.txt` (the QA token, in use).
+- **2026-11-02 — LINE webhook switched to SIT** (owner: *"เปลี่ยนเลย"*, then *"done"* after Update + Verify in the LINE console). The test OA LifeStyle-Shop now posts to `https://cornerchat-api-sit.develyst.online/api/v1/webhooks/line`.
+  - **Checked from outside:** an unsigned POST → 401, and a bad `x-line-signature` → 401, so the route is live and the HMAC check works.
+  - **Not seen by Otto:** LINE's own Verify call. nginx `access.log` is `www-data:adm 640`, and `deploy` is not in `adm`, so the log needs sudo. The app logs nothing per webhook.
+  - **Gap:** a real LINE message showing up in the admin web is not proven yet. That is in QA's pass.
+  - **Side effect:** the desk's local back no longer gets LINE events for this OA.
+- **2026-11-03 00:3x — the owner signed in to the SIT admin web through Access + the app login** (`owner@corner-chat.local`). His screenshot shows the users page working, with QA's test users already there (`qa-sit-*`, 23:16–23:30). So QA has started.
+  - The page's LINE number is "LINE messages **sent** in Nov 2569 = 0". That is outgoing quota, not received messages, so it cannot prove the owner's test message arrived.
+  - **Inbound LINE stays unproven;** the check is the APK inbox in QA's pass.
+- **2026-11-03 ~01:05 — SIT mail poller ON** (asked by Porter, Follow-up 3: the owner's entronica→Gmail forward is set; this is the step the owner's "forward / gmail" decision planned).
+  - **Server `.env`:** `MAIL_POLL_SECONDS=0` → `60`, guarded by an exact-one-line match. Backup `.env.bak-20261103-mailon`. The Gmail IMAP/SMTP host and `MAIL_APPEND_SENT=false` were already set.
+  - **Restart:** `pm2 restart --update-env`, then `pm2 save`. Online, ↺ 1 (this restart), health `{"ok":true,"db":true}`.
+  - **After ~90 s (one poll):** no `mail:` lines in the log, so no failing mailbox row so far. The poller logs only failures.
+  - **Not proven yet:** a forwarded mail showing up in the app. That waits for the owner to connect the Gmail box in the app, then QA TEST-006 row 10.
+  - **Roll back:** set the line back to `0` and restart.

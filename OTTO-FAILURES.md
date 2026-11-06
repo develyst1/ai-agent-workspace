@@ -123,3 +123,21 @@ Format:
 - Root cause: the clean-up bundled every path from the sitting into one `rm` without checking whether any was still in use by a pending timer.
 - Fix / rule: clean-up happens only after every scheduled job from the sitting has fired. List them first (`systemctl list-timers | grep otto-`).
 - Status: ATLAS-REVIEWED 2026-11-01 — rule added to platform-preflight Gate 5: clean up only after every job scheduled in the sitting has fired; list timers first.
+
+## OF-012 — Dashboard steps written from memory, not from the screen the owner was looking at
+- When: 2026-11-02 ~23:20 local
+- What happened: the owner asked how to add Cloudflare Access (*"cloudflare access ทำไง"*). Otto gave a 6-step list written from memory ("Access → Applications → Add an application → Self-hosted", "Add public hostname"). The real dashboard labels differ ("Access controls → Applications", "Create new application", tabs "Self-hosted and private" / "Public DNS"). Then, on his screenshot, Otto again described a next screen it had not seen.
+- Owner's words: *"นายแม่งอธิบายหมาไม่แดกเลยว่ะ"*
+- Cost: the owner's patience; Access stayed off the admin web for longer.
+- Root cause: the same as OF-009. Otto wrote instructions for a UI it could not see, instead of one step at a time from the screenshot in front of it.
+- Fix / rule: for any web dashboard, give **one** action at a time, named exactly as it appears on the owner's latest screenshot, then ask for the next screenshot. Never describe a screen not yet seen.
+- Status: ATLAS-REVIEWED 2026-11-02 — fix goes in OTTO.md § How you report (not a new skill): guiding the owner through a UI = one action per message, named exactly as on his latest screenshot, then ask for the next one; never describe a screen not yet seen. Same rule added to role-pm §3 for the PM.
+
+## OF-013 — Told the owner to create a file by hand that Otto could have created itself
+- When: 2026-11-02 ~23:40 local
+- What happened: for the Cloudflare QA service token, Otto told the owner to open Notepad, paste the values and save as `C:\Users\KUYDONG\ci-secrets\corner-chat-qa-token.txt`. Otto could have made the file (with blank `KEY=` lines) and opened it for him in one step. It did so only after he said it.
+- Owner's words: *"มึงก็สร้างไฟล์ให้กูสิ otto"*, then *"แจ้ง report ความห่วยของนายด้วย"*
+- Cost: an extra round with the owner, on top of OF-012 the same evening.
+- Root cause: Otto handed the owner every step that touched a secret, including the parts that need no secret (making the file, its name, its layout, opening it). The rule is that Otto never sees the values; that does not mean the owner does the plumbing.
+- Fix / rule: when the owner must supply a secret, Otto prepares everything around it: the file with labelled empty lines, in the private folder, opened in an editor. The owner only pastes and saves.
+- Status: ATLAS-REVIEWED 2026-11-02 — fix goes in OTTO.md § How you report: when the owner must supply a secret, Otto prepares everything around it (the file with labelled empty KEY= lines, in the private folder, opened in an editor); the owner only pastes and saves. Same rule in role-pm §3.

@@ -1,0 +1,4 @@
+== res/8G.xml
+E: network-security-config (line=2)
+  E: base-config (line=4)
+    A: cleartextTrafficPermitted=(type 0x12)0x0

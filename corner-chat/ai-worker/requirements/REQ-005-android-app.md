@@ -106,3 +106,9 @@ iOS · public Play listing · English · tablet layouts · auto-reply screens ·
 - **D46 extended `[PM-decided 2026-11-01]` (SA-B's question in TASK-037 § Review):** when a dialog or menu is open, the Android back key
   **closes the dialog and nothing more**. It is the same as tapping its cancel button: no step back and no leaving the app. That is
   what an Android user expects. Today it minimises the app and leaves the dialog open.
+- **Owner-reported defect, 2026-11-03 ~01:25 (his own phone, release APK `3edb05dc…`), the first real-phone run.** Owner: *"แก้แอป ให้ข้างบน ข้างล่าง มัน sefety หน่อย มันกดไม่ได้"*.
+  - On his phone, the app draws under the system bars. His screenshots show the status-bar icons sitting on top of the screen title (ข้อความ / ช่องทาง / เชื่อมอีเมล Zimbra, with the back arrow).
+  - He says the top and bottom controls **cannot be tapped**: the header actions (⋮, back) and the bottom tab bar.
+  - **What the requirement needs:** every screen keeps its header and bottom bar inside the phone's safe area (status bar, cutout, and the gesture or navigation bar). Everything at the top and bottom can be tapped on a real phone, as well as on the emulator. How is the SA's.
+  - Priority HIGH: the owner uses the app on his phone now. `[PM-decided]`
+  - The emulator did not show it. Proof needs the owner's phone (an owner step through the PM) or an emulator image with a cutout and gesture navigation.

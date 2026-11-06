@@ -1,0 +1,129 @@
+{
+  "ranAt": "2026-11-02T16:17:19.446Z",
+  "tag": "mvzgpblb",
+  "created": [
+    "ccdccbd5-cfc1-487e-be6c-c533997c75f3 qa-sit-u1 qa-sit-u1-mvzgpblb@qa-a.test",
+    "95df2954-0224-482a-a9c0-66c799abbe5b qa-sit-u2 qa-sit-u2-mvzgpblb@qa-a.test"
+  ],
+  "checks": [
+    {
+      "row": "1",
+      "what": "GET /health",
+      "expected": "200 {ok:true, db:true}",
+      "actual": "200 {\"ok\":true,\"db\":true}",
+      "pass": true
+    },
+    {
+      "row": "1",
+      "what": "plain HTTP",
+      "expected": "refused, or a redirect to https",
+      "actual": "301 https://cornerchat-api-sit.develyst.online/api/v1/health",
+      "pass": true
+    },
+    {
+      "row": "1",
+      "what": "TLS certificate",
+      "expected": "trusted chain, name matches, not expiring within 14 days",
+      "actual": "trusted · CN develyst.online · Google Trust Services · 67 days left",
+      "pass": true
+    },
+    {
+      "row": "2",
+      "what": "owner signs in (password not printed)",
+      "expected": "200 role owner",
+      "actual": "200 owner",
+      "pass": true
+    },
+    {
+      "row": "2",
+      "what": "create qa-sit-u1 and qa-sit-u2",
+      "expected": "201 · 201, role user",
+      "actual": "201 · 201",
+      "pass": true
+    },
+    {
+      "row": "2",
+      "what": "the user list shows them",
+      "expected": "both emails present",
+      "actual": "200 · true/true",
+      "pass": true
+    },
+    {
+      "row": "3",
+      "what": "qa-sit-u1 signs in",
+      "expected": "200",
+      "actual": "200",
+      "pass": true
+    },
+    {
+      "row": "3",
+      "what": "a wrong password is refused",
+      "expected": "401 INVALID_CREDENTIALS",
+      "actual": "401 INVALID_CREDENTIALS",
+      "pass": true
+    },
+    {
+      "row": "3",
+      "what": "U1 cannot read or delete U2's data",
+      "expected": "U1 sees bar 70 / no U2 rule · delete U2's rule → 404 · U2 unchanged (bar 42, rule kept)",
+      "actual": "U1 bar 70, U2 rule visible false · 404 NOT_FOUND · U2 bar 42, rule kept true",
+      "pass": true
+    },
+    {
+      "row": "3",
+      "what": "a user token on the admin API",
+      "expected": "403 FORBIDDEN",
+      "actual": "403 FORBIDDEN",
+      "pass": true
+    },
+    {
+      "row": "4",
+      "what": "U1 sets a bar and sentences, adds a rule; they read back the same",
+      "expected": "bar 75 · Thai sentences · rule มีคำว่า โปรโมชั่น never",
+      "actual": "200/201 · bar 75 · \"แจ้งเรื่องงานที่ต้องตอบ (qa-sit)\" · [\"keyword:โปรโมชั่น:never\"]",
+      "pass": true
+    },
+    {
+      "row": "4",
+      "what": "AI settings read (owner)",
+      "expected": "200, a model per layer",
+      "actual": "200 {\"layer1\":{\"provider\":\"deepseek\",\"model\":\"deepseek-flash\"},\"layer2\":{\"provider\":\"deepseek\",\"model\":\"deepseek-v4-pro\"}}",
+      "pass": true
+    },
+    {
+      "row": "4",
+      "what": "SIT reaches the AI gateway (GET /admin/ai-models passes the gateway's list through)",
+      "expected": "200, providers listed",
+      "actual": "200 · [\"openai\",\"gemini\",\"xai\",\"deepseek\"]",
+      "pass": true
+    },
+    {
+      "row": "5",
+      "what": "preflight from the admin origin",
+      "expected": "allowed: ACAO = https://cornerchat-sit.develyst.online",
+      "actual": "204 ACAO=https://cornerchat-sit.develyst.online",
+      "pass": true
+    },
+    {
+      "row": "5",
+      "what": "preflight from an unknown origin",
+      "expected": "no ACAO for it (and not *)",
+      "actual": "204 ACAO=null",
+      "pass": true
+    },
+    {
+      "row": "3",
+      "what": "sign-out revokes the token",
+      "expected": "204, then /me → 401",
+      "actual": "204 · 401 UNAUTHENTICATED",
+      "pass": true
+    },
+    {
+      "row": "footprint",
+      "what": "the two qa-sit users are disabled at the end",
+      "expected": "disabled · disabled",
+      "actual": "disabled · disabled",
+      "pass": true
+    }
+  ]
+}

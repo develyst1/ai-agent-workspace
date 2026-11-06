@@ -72,6 +72,24 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-033 — 2026-11-05 — PM (Porter) — Relayed Tanya's "owner, please sign in" to him without checking; her access already existed (third time on login: 09-24, 09-26, 11-05)
+- **Status:** NEW
+- **What happened:** Tanya stopped logging in to sid and asked the owner to sign in for her in her pane. I passed that to him three times in one evening and offered it as my recommended option, without opening `project-docs` or checking that she had logged in from his access file all along. F-005 records the same mistake on 09-24 (sid login) and 09-26 (uat access), and that fix (ORDER 12.3) did not stop it.
+- **Rule involved:** F-005's fix: ORDER 12.3 ② intake discipline (PM.md). QA.md: *"Credentials come from the human via Porter"* and live in `../project-docs/`. The rule exists; I relayed a team ask to the owner without testing it against the files.
+- **How it was caught:** by the owner, after the third relay, when he asked why she doesn't log in herself: *"ไม่ ฉันให้ access เป็นไฟล์ไว้แล้ว พวกนาย เคยLogin test sit and uat(only read) มานานแล้ว"*.
+- **Cost:** about three round trips of the owner's time, the REQ-5002 gate delayed, and his trust: *"อย่าทำตัวโง่ๆ แบบนี้อีกเป็นครั้งที่สอง"*.
+- **Evidence:** `log/2026-11-05.md`; `tests/TEST-137-sid-req5002-gate-task754-755.md`; the 2026-11-05 ruling entry in the QA inbox; F-005.
+
+
+
+## F-032 — 2026-11-03 — SA Lead Team A (Sober) — Gave the PM a delivery total built on the wrong team split (R0, F3, F6 under Team B), so "≈ 10 weeks" understated the critical path
+- **Status:** NEW
+- **What happened:** for REQ-5001 §8 (the customer's question about delivery order) I compiled Q1–Q5 and assigned roles R0, F3 and F6 to Team B. They are Team A's: my own 10-25 readiness review covers them, and Porter set F3 / F6 = Team A on 10-16. I also used a full-parallel rate (10 engineer-days a week) without saying it was optimistic. Together that made Team B the "long pole" and gave "≈ 10 weeks, 2–3 months stays true". With the right split and Silver's 70 % rate, the critical path is Team A, ≈ 13 weeks rebalanced, ≈ 3 months.
+- **Rule involved:** role-sa §3, *"A claim is never stronger than what you read"*. I took ownership from memory of the sizing files' authors (Silver sized R0 / F1–F6 on 10-15), not from the assignment records.
+- **How it was caught:** by Silver's own Team B lines (via Porter), the same day, before any customer wording was written.
+- **Cost:** one compile round; the PM's customer agenda would have promised a total that the critical path can't meet.
+- **Evidence:** `DELIVERY-FACTS-REQ-5001-s8-part-order-2026-11-03.md` (the correction note at the top) · `inbox/PM.md` 2026-11-03 (both versions) · `log/2026-10-16.md` l.8 (F3 / F6 = Team A).
+
 ## F-031 — 2026-10-12 — SA Lead Team B (Silver) — Cleared my inbox by "cut everything after the header", deleting a message that arrived after I read it (Porter's PATH B note)
 - **Status:** FIXED 2026-11-01 — queues are drained only with drain-inbox.mjs (deletes only what was read), enforced by its hook.
 - **What happened:**
@@ -407,3 +425,8 @@ where the owner sees them. When he is ready he opens Atlas with
 ## F-SILVER-2026-10-25b — "posted once" accepted from a key test; the re-run "safe" claim was never checked against the ledger
 - **What:** TASK-749 went DONE with a DoD of "posted once", proven only by a pure test (the same booking + the same generation ⇒ the same key). On sid, two runs posted each sale twice: the generation is DERIVED from the posts, so run 2 always gets a new key (TEST-123). I had also told the owner a day-end re-run "is safe: idempotent" (REQ-130, 10-25), which has been false since TASK-258 (2026-09-06).
 - **Rule:** an idempotency claim is proven by value, **by running the thing twice against a ledger that keeps run 1's writes**, never by a key function alone. Before I call a re-run safe, I read how its key is BUILT (where the generation or counter comes from), not just that a key exists.
+
+## F-SILVER-2026-11-05: I wrote a default that contradicted the customer's own words, and it got a GO
+- **What:** REQ-5002's CHECK Q1 defaulted "a course ended early = cancelled, out of all counts". REQ-126 has her words on that exact case: *"แต่ไม่ใช่การ pause ไว้ หรือ cancel ไปค่ะ"*, and TASK-837 stores it as `ENDED_EARLY`. Bob built on it. Caught when TEST-136's Q6 named ตัดจบคอร์ส. No uat number was affected (0 such rows).
+- **Why:** I reasoned from `courseStatus` (every ended course = CANCELLED) and never grepped requirements/ for the case.
+- **Rule:** before stating a default on a customer-visible meaning, grep `requirements/` for that case and for her words. The code's label is not her meaning.
