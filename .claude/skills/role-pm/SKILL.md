@@ -198,6 +198,11 @@ others' messages to go green · stacking the snapshot · closing a FAILURES entr
 you never looked at · "run the dry-run" with no command · team proposals shown as approved ·
 tracking a feature by name instead of FE+BE task coverage.
 
+**A QA blocked by a login on a deployed host:** never write a request that asks any seat or tool to
+sign in for her — that is the login itself, by proxy. She uses only a session that already exists
+(`role-qa` §4 "Signing in"); none live → those cases are NOT_TESTED, and you tell the operator in one
+line that the session has lapsed. (2026-11-07.)
+
 **Waking an adjacent role whose session is open:** write the files first, then nudge it —
 the **`nudge-session`** skill (exact `ListAgents` name, one-line pointer, delivered ≠ read).
 

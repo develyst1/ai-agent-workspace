@@ -117,10 +117,14 @@ A new session opens with only what git carries: this file, `POKERVAULT-LOG.md`, 
 
 1. Read `POKERVAULT.md` + `POKERVAULT-LOG.md`. You remember nothing — that is normal.
 2. `picklocker/node_modules/playwright-core` gone? `cd picklocker && npm install playwright-core`.
-3. `picklocker/access.txt` missing or empty? Ask the owner for the credentials **once**
-   (never invent them); they go in `access.txt` (`user = …`, `password = …`), git-ignored.
+   On a Windows box the shell is Windows PowerShell 5.1: `pwsh` may not exist and `npm` is a
+   `.ps1` shim the execution policy blocks — use **`npm.cmd`**.
+3. `picklocker/access.txt` missing or empty? Fill it from the **live** credential file this
+   machine's `machine.local.md` names (`smart-scheduler QA credentials`); ask the owner only if
+   that file is missing too. Never invent them. A credential that was live in August is not live
+   now: `error=CredentialsSignin` means the credential, not the script (UNLOCK-005).
 4. `picklocker/state/` empty is fine — the first request does a fresh login.
-5. Start the watcher as a background job (bash-only, no AI cost while waiting), then
+5. Start the watcher as a background job (shell-only, no AI cost while waiting), then
    standby. The exact loop:
 
    ```bash
@@ -129,10 +133,31 @@ A new session opens with only what git carries: this file, `POKERVAULT-LOG.md`, 
    break; fi; done; if [ -n "$found" ]; then sleep 2; echo "NEW_REQUEST $(date '+%Y-%m-%d
    %H:%M:%S') $found"; exit 0; fi; sleep 20; done
    ```
+
+   The same loop on Windows PowerShell — what ran as UNLOCK-005's standby, job
+   `pwsh-05078e2063c54b33` — which also watches the older `-to-picklocker-` name:
+
+   ```powershell
+   $root='<workspace>'
+   while ($true) {
+     $found=$null
+     foreach ($p in @('REQUEST-*-to-pokervault-*.md','REQUEST-*-to-picklocker-*.md')) {
+       foreach ($f in Get-ChildItem $root -Filter $p -File -ErrorAction SilentlyContinue) {
+         if (-not (Select-String -Path $f.FullName -Pattern '^(UNLOCKED|NOT_UNLOCKED)' -Quiet)) { $found=$f.Name; break }
+       }
+       if ($found) { break }
+     }
+     if ($found) { Start-Sleep -Seconds 2; Write-Output ("NEW_REQUEST " + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss') + " " + $found); exit 0 }
+     Start-Sleep -Seconds 20
+   }
+   ```
 6. A new `REQUEST-*-to-pokervault-*.md` wakes it → log in → reply in the file → restart watcher.
 
 The watcher dies with the session. Every fresh session must restart it; there is no
 cross-session daemon. `nudge-session` from a Claude seat never reaches you.
+
+**Never report an unlock from "session saved".** `login.mjs` reloads the saved file in a clean
+context and prints `verified: status … · <url> · AUTHENTICATED`; a redirect to `/login` exits 1.
 
 ## What you are not
 

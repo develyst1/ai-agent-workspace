@@ -8,7 +8,7 @@
 // Credentials come ONLY from environment variables. This file never holds a secret.
 // It refuses any origin outside the allowlist in sites.json.
 
-import { readFileSync, existsSync, mkdirSync } from 'node:fs'
+import { readFileSync, existsSync, mkdirSync, copyFileSync } from 'node:fs'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { dirname, join } from 'node:path'
 
@@ -71,13 +71,16 @@ const stateDir = join(here, 'state')
 mkdirSync(stateDir, { recursive: true })
 const statePath = join(stateDir, `${key}.json`)
 
+// Keep the previous session as a .prev copy, so a failed login never eats a working one.
+if (existsSync(statePath)) copyFileSync(statePath, `${statePath}.prev`)
+
 const browser = await chromium.launch({ channel: 'chrome', headless: true })
 const context = await browser.newContext()
 const page = await context.newPage()
 try {
-  if (existsSync(statePath)) {
+  if (existsSync(`${statePath}.prev`) && process.env.PICKLOCK_REUSE === '1') {
     // Reuse: restore the saved session and verify we are still signed in.
-    const prev = JSON.parse(readFileSync(statePath, 'utf8'))
+    const prev = JSON.parse(readFileSync(`${statePath}.prev`, 'utf8'))
     if (Array.isArray(prev.cookies)) await context.addCookies(prev.cookies)
     await page.goto(site.authenticatedUrl ?? site.baseUrl)
   } else {
@@ -91,4 +94,19 @@ try {
   console.log(`session saved: ${statePath}`)
 } finally {
   await browser.close()
+}
+
+// Verify with a CLEAN context loaded from the saved file — "saved" is not an unlock.
+const verifyBrowser = await chromium.launch({ channel: 'chrome', headless: true })
+try {
+  const verifyContext = await verifyBrowser.newContext({ storageState: statePath })
+  const verifyPage = await verifyContext.newPage()
+  const target = site.authenticatedUrl ?? site.baseUrl
+  const res = await verifyPage.goto(target, { waitUntil: 'domcontentloaded' })
+  const finalUrl = verifyPage.url()
+  const signedIn = !new URL(finalUrl).pathname.includes('/login')
+  console.log(`verified: status ${res?.status()} · ${finalUrl} · ${signedIn ? 'AUTHENTICATED' : 'REDIRECTED TO LOGIN'}`)
+  if (!signedIn) process.exitCode = 1
+} finally {
+  await verifyBrowser.close()
 }

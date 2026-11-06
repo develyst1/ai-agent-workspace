@@ -106,6 +106,8 @@ Porter  <->  Sober (SA Lead)  <->  Jason (BE) / Fero (FE)
 > **The absence of a technical guard is NOT permission.** If a host happens to be
 > reachable and writable, the ban still holds.
 
+**Session files (PokerVault keeps them fresh; you only reuse one, `role-qa` §4):** `picklocker/state/som.json` = **sid front office** (`som.develyst.online`). No file exists yet for sid back office or for uat. No file, or a stale one, ⇒ those cases NOT_TESTED. (Atlas, 2026-11-07.)
+
 ### Dev-server rules — not optional
 
 1. **Clean up after yourself.** Every record, booking, user, file or message you

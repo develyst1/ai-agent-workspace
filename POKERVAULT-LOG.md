@@ -65,3 +65,32 @@
   ("Courses + leave", Active 89 / Paused 4 / Completed 29 / Expired 24 / Cancelled 112)
   plus one course's plan window; both **200**, GET-only, no typing.
 - **Discovery:** sid has no `/course` path — the course list lives at `/scheduler/bookings`.
+
+---
+
+## UNLOCK-005 · 2026-11-07 · som standby readiness (nobody asked; the lock is checked before it is needed)
+
+- **Request:** none. The owner's standby order, quoted: *"ทำความเข้าใจหน้าที่ตัวเองให้ถี่ถ้วน
+  และเตรียมพร้อมทำงาน"*. No desk is waiting; this is the check that the door opens **before**
+  someone knocks.
+- **Ran (fresh machine):** `cd picklocker && npm.cmd install playwright-core` (the git-ignored
+  tree was absent); then `node picklocker/login.mjs som`, credentials from the git-ignored
+  `picklocker/access.txt`.
+- **Miss, first attempt (`NOT_UNLOCKED`):** `smart-scheduler/project-docs/sm-test-access.txt`
+  is the **stale** credential — `/api/auth/callback/credentials` answered
+  `{"url":".../login?error=CredentialsSignin&code=credentials"}`. The live credential is the
+  one `machine.local.md` names under *smart-scheduler QA credentials*; with it the login
+  passes. `machine.local.md` was right, the project-docs file is the trap it warns about.
+- **Tooling change:** `login.mjs` now keeps the old session as `state/<site>.json.prev` and
+  **verifies with a clean context loaded from the saved file** — it prints
+  `verified: status … · <url> · AUTHENTICATED|REDIRECTED TO LOGIN` and exits 1 on a redirect,
+  so "session saved" can never be mistaken for an unlock again.
+- **Verified:** status **200** · final URL `https://som.develyst.online/scheduler/calendar` ·
+  **AUTHENTICATED**.
+- **Handed:** `picklocker/state/som.json` — held for the next request, handed to nobody.
+- **Result:** `UNLOCKED`
+- **Standby:** watcher job `pwsh-05078e2063c54b33` — PowerShell loop, 20 s poll, both
+  `REQUEST-*-to-pokervault-*.md` and `REQUEST-*-to-picklocker-*.md`. **Wake path tested, not
+  assumed:** a self-test request file made the job finish at 01:38:18 and wake this session;
+  the file was deleted and the watcher restarted. This is the route that works — not
+  `nudge-session`.

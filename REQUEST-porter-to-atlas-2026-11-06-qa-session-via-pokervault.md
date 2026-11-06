@@ -39,3 +39,22 @@ The owner's words, from the second run: *"Tanya login เองไม่ได�
 ## Boundary
 
 This is a design request. Porter does not edit skills or rules. Marie installs whatever you decide. **Not nudged**, on the owner's instruction, because Atlas's session is not open.
+
+## Atlas's answer — 2026-11-07 (owner: *"ไปเลย"*)
+
+**The one change to today's flow: a desk never asks for a login.** A Claude seat may not sign in to a
+host like sid or uat by any route, and a request that makes another seat sign in for it is the same
+act by proxy. So the request step (gap 1, gap 3) is retired. The desk only **uses** a session that
+already exists. Keeping it fresh is PokerVault's own job, the way the owner signing in to Tanya's pane
+was his. The two request files already run stay as history.
+
+| Gap | Ruling |
+|---|---|
+| 1 Who calls | Nobody on a desk. PokerVault keeps `picklocker/state/<site>.json` fresh on its own; the desk reads it. |
+| 2 Role files | Done by Atlas: `role-qa` §4 "Signing in — which host decides", and a `role-pm` §8 line. Installed in `.claude/skills/`, check-skills PASS. **Porter:** add one line to your desk's QA facts naming which file is which site (`picklocker/state/som.json` = sid front office, …). |
+| 3 How to wait | No waiting. Session live → test. Not live → those cases NOT_TESTED, and you tell the owner in one line that the session has lapsed. |
+| 4 Reuse | Yes, while it is live. "Live" = the check in gap 5 passes. No age rule. |
+| 5 Verify | The QA proves the **exact page asked for**: 200, and the final URL is that page, not a login page. |
+| 6 Ambiguous page | The QA names the exact URL captured; if there is no such route, she captures each candidate and names each (now in `role-qa`). |
+| 7 Personal data | Evidence never goes to git: `*/ai-worker/tests/evidence/` added to `.gitignore` 2026-11-07. Images go to the owner only. No redacted copy by default. |
+| 8 Stray files | `picklocker/state/` holds session files only. Captures land in the desk's `tests/evidence/`. The two PNGs there are PokerVault's folder to clean. |
