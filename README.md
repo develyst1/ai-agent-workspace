@@ -50,8 +50,13 @@ All coordination state lives in each project's `ai-worker/` folder:
 
 Both modes read and write the same `ai-worker/` files, so nothing migrates
 when you switch. Workspace-level identities: **Atlas** (`ATLAS.md`, architect),
-**Marie** (`MARIE.md`, workflow operations) and **Otto** (`OTTO.md`, release &
-platform — the shared server, knowledge in `SERVER-FACTS.md`).
+**Marie** (`MARIE.md`, workflow operations), **Otto** (`OTTO.md`, release &
+platform — the shared server, knowledge in `SERVER-FACTS.md`), **Bunny**
+(`BUNNY.md`, weaver of each desk's memory), **Iso** (`ISO.md`, independent
+verifier — the workforce's own QA, verdicts in `ISO-LEDGER.md`), **PokerVault**
+(`POKERVAULT.md`, access operator — the workforce's keyholder; logs in and unlocks
+sessions the Anthropic-bound desks cannot, log in `POKERVAULT-LOG.md`) and **Atom**
+(`ATOM.md`, draft — the owner's mobile mouth and ears).
 
 ## How to run a work session (manual mode)
 
@@ -93,9 +98,12 @@ with the rules older desks had to learn.) Opening a desk is Marie's job
 | Project | Description | Team |
 |---------|-------------|------|
 | `smart-scheduler` | Scheduling + back-office ERP for a sports activity center (monorepo, 4 repos) | Porter (PM/BA), Sober (SA Lead), Jason (BE), Fern (FE), **Tanya (QA — trial)** |
+| `i-space` | **I-Space (Intelligent Space)** — one product in two halves: **Blueprint** (an AI interview turns sources into a confirmed spec version) and **CAW** (the AI-workforce runner that executes confirmed versions with Claude CLI workers, *"เสมือน Atom"*). Brownfield, 4 repos on branch `atom`, **MANUAL mode** (8 sessions `<Name>-ISP`), IDs from 101 | Porter (PM/BA/PO/UX writer), Tanya (QA) · Team A (Blueprint): Sober (SA), Jason (BE), Fern (FE) · Team B (CAW): Silver (SA), Bob (BE), Fanta (FE) |
 | `develyst-ai` | Develyst AI Gateway — Bun+Hono multi-provider AI API (single backend repo) | Porter (PM), Sober (SA Lead), Jason (BE) |
 | `portfolio-nichaphon` | Personal portfolio / freelance-services site for Nichaphon Sayvav (`portfolio.develyst.online`) — Next.js 15 + Mantine 8, frontend only, single repo `portfolio-nichaphon-web`. **Dispatcher-run** | Porter (PM), Sober (SA Lead), Fern (FE) — no BE, no QA |
 | `dte` | **DTE — "Disrupt Thai Education"**: online learning platform with a per-course AI Teacher, live at `dte.develyst.online`. **Brownfield, real users.** Single repo `dte` = `back/` (Bun + ElysiaJS + PostgreSQL, raw SQL, no ORM) + `front/` (Next.js 15 + React 19 + Tailwind); AI via the `develyst-ai` gateway. **Dispatcher-run**, branch `develop`. Born 2026-09-06 with `SYSTEM-FACTS.md` + `inbox/` + `tests/` | Porter (PM), Sober (SA Lead), Jason (BE — `back/`), Fern (FE — `front/`) — no QA |
 | `possibility` | Freelance / innovation platform — a user says what they want, the AI analyses feasibility, social impact and interest; five user tiers. **Greenfield, MANUAL mode**, three repos (`possibility-back`, `possibility-front`, `possibility-spec` = the owner's requirement repo). Stack TBD (SPEC-001). | Porter (PM/BA/PO/UX writer), Sober (SA Lead), Jason (BE), Fern (FE), Tanya (QA) |
 | `pun-kub-fang` | ปั่นกับฟ่าง — smoothie/drinks shop. **The front exists and belongs to another developer**; our team builds the **backend** (`pun-kub-fang-back`, Bun + Hono, greenfield) and touches the front only at the API seam. **MANUAL mode.** ⚠️ parent folder on disk is misspelled `pub-` | Porter (PM/BA/PO), Sober (SA — public API contract), Jason (BE), Fern (FE, guest), Tanya (QA) |
 | `corner-chat` | Unified inbox with an AI guard — LINE, Discord, Zimbra Mail, Web Chat (later Teams) in one place, AI filtering before people, auto-reply rules, dashboard. **Greenfield, MANUAL mode**, two repos (`corner-chat-back` = Bun + Hono or Elysia, never NestJS, + Postgres; `corner-chat-front` = Dashboard + Web Chat, stack in SPEC-001), **both teams share both repos** via the PM's batch claims. Opened 2026-11-01 | Porter (PM) · Team A: Sober (SA), Jason (BE), Fern (FE), Tanya (QA) · Team B: Silver (SA), Bob (BE), Fanta (FE), Tefany (QA) |
+| `smart-scheduler-atom` | **Fork of `smart-scheduler` on Atom's own box** (owner's option C, 2026-10-26): reads that desk's knowledge, writes only to itself, IDs from **5000**, code branch `atom`. **MANUAL mode**, 8 sessions `<Name>-SOMA`. Not the same tree as `smart-scheduler` | same eight people as `smart-scheduler`: Porter (PM), Tanya (QA) · A: Sober (SA), Jason (BE), Fern (FE) · B: Silver (SA), Bob (BE), Fanta (FE) |
+| `buddy-screen` | **Parked 2026-10-29** — the owner dropped it from the active codebase list (*"ลบบัดดี้สกรีนออกไปเลย เพราะเราโค้ดขึ้น git แล้ว"*); the folder and the desk stay on disk, never deleted, no new work. One team (BUD) | Porter (PM), Tanya (QA), Sober (SA), Fern (FE), Jason (BE) — no second team |

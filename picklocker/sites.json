@@ -1,0 +1,36 @@
+{
+  "//": "Picklocker allowlist. Fill in the login URL + selectors per site. mode: password = login.mjs can do it; session-import = the owner signs in once in a real browser and exports state/<key>.json. read-write vs read-only only documents the desk's own QA rule; picklocker never overrides it.",
+  "som": {
+    "name": "smart-scheduler sid (dev server)",
+    "baseUrl": "https://som.develyst.online",
+    "loginUrl": "https://som.develyst.online/login",
+    "authenticatedUrl": "https://som.develyst.online/scheduler/calendar",
+    "mode": "password",
+    "access": "read-write",
+    "selectors": { "email": "input[placeholder=\"admin\"]", "password": "input[type=\"password\"]", "submit": "button[type=\"submit\"]" }
+  },
+  "possibility": {
+    "name": "possibility SIT",
+    "baseUrl": "https://possibility.develyst.online",
+    "loginUrl": "https://possibility.develyst.online/ideas/new",
+    "mode": "session-import",
+    "access": "read-write",
+    "note": "Google sign-in — OAuth popup cannot be automated; the owner exports the session once."
+  },
+  "blueprint-sit": {
+    "name": "i-space Blueprint SIT",
+    "baseUrl": "https://blueprint-sit.develyst.online",
+    "loginUrl": "https://blueprint-sit.develyst.online",
+    "mode": "session-import",
+    "access": "read-write",
+    "note": "Behind Cloudflare Access (owner email + one-time PIN); owner exports the session once."
+  },
+  "uat": {
+    "name": "smart-scheduler uat (customer's system)",
+    "baseUrl": "https://frontoffice.develyst.online",
+    "loginUrl": "https://frontoffice.develyst.online/login",
+    "mode": "session-import",
+    "access": "read-only",
+    "note": "READ-ONLY. Never write here; picklocker only supplies a login and never writes."
+  }
+}

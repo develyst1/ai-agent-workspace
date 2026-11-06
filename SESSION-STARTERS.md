@@ -45,6 +45,32 @@ turn, or to look something up:
 
 > She weaves **finished days only** — today is still running and is woven tomorrow.
 
+## Iso — Independent Verifier (workspace-level, see ISO.md)
+
+```
+อ่าน ISO.md — <คำถาม/สิ่งที่อยากให้ตรวจ>
+```
+
+> He checks the workforce's own claims: what was run, what was only read, what was
+> announced as done — and writes the verdict in `ISO-LEDGER.md`. He may read
+> everything, refuse or HOLD a workspace-level change, and owns truth but not
+> direction: he never does desk work, never edits a rule, and never asks a desk for
+> anything. Session title for nudges: `Iso - workspace`.
+
+## PokerVault — Access Operator / Keyholder (workspace-level, see POKERVAULT.md)
+
+```
+อ่าน POKERVAULT.md — ปลดล็อก <site> ให้ <ใคร> [เพราะ <เหตุผล>]
+```
+
+> He performs the real-world actions the Anthropic-bound desks cannot: logging in to a
+> deployed site and handing back a verified session. A desk's QA calls him with a
+> `REQUEST-<from>-to-pokervault-<date>-<site>.md` at the workspace root. He runs on
+> DeepSeek Harness, not Claude Desktop — `nudge-session` cannot wake him; a background
+> watcher job (or the owner) wakes him to read the request. He unlocks, he never tests;
+> allowlist (`*.develyst.online`) only; `uat` stays read-only; credentials are never
+> handed over.
+
 > The per-role starters below still work for opening a single role manually —
 > both modes share the same files, so they can be mixed freely.
 
