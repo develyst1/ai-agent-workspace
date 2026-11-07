@@ -34,7 +34,7 @@
 - **PAUSED 2026-11-07 for a new project.** Owner (typed by Atom, 12:16): save all, `ขึ้น git`, `รวมโค้ด`, then God Plan. Notes only, verbatim: `../project-docs/god-plan-initial-notes-2026-11-07.md`. Nothing built from them. `[owner-approved 2026-11-07, typed by Atom]`
 - REQ-101 stays `IN_SPEC`. **Nothing has passed a tester, run on a phone, or called a real AI.** `[team-proposed]`
 - Git, branch `atom`: `call-scribe-back` 22d8de8 and `call-scribe-front` 4070f78, each also on `develop`; `develyst-ai` 6711807 on `atom` only, `develop` at f9699aa. Nothing deployed. **`develop` holds code no tester has passed.** TASK-115 is `DONE` per Sober, though commit 3bb7f2c's message wrongly says in progress (corrected in the TASK; F-023). `[team-proposed; the PM checked with ls-remote]`
-- **This desk's folder is NOT on git.** `call-scribe/` is untracked in the workspace. No rule lets anyone here commit it: `CLAUDE.md` §6 bars every agent from committing `ai-worker/`; `ATOM.md:143` excludes another desk's folder from Atom's exception; the SA never runs git in the workspace. It needs the owner's own commit or his written exception. `[team-proposed]`
+- **Workspace saved by Atom, 2026-11-07 16:56:** `9fcb0f6`, `origin/atom` = `origin/develop`, 176 files of `call-scribe/` including the God Plan notes; 3 log files stay out by `.gitignore`. The PM checked the hashes and found no rule file, `.env` or media in it. On what authority Atom committed this desk's folder was not shown to the PM; it is Atom's to state. Files changed after 16:56, such as this one, are not in it. `[team-proposed; the PM checked]`
 
 ## On return, in this order
 
@@ -51,7 +51,7 @@
 | Which machine | Owner | 2026-11-07 | PM recommended moving before more tests or paid runs: 14 pauses, 6.45 h lost in 8.35 h, plus 15 shorter gaps |
 | AC-9, AC-10, AC-13, AC-17 | Owner: LINE call; deploy word | 2026-11-06 | His phone and word |
 | FAILURES review, 22 unreviewed; gate FAIL | Owner: call Atlas | 2026-11-07 | Work was not held `[PM-decided]`; he has been told |
-| Workspace commit of `call-scribe/` | Owner: his own commit, or a written exception | 2026-11-07 | Scan by the PM: 179 files, 3.0 MB, no media or `.env`, only fake local credentials; 3 files name absolute paths |
+| 3 desk files name absolute paths (TASK-103, TASK-104, Tanya's capture state), now in git | Their owners, on return | 2026-11-07 | Workspace path rule; no secret in them |
 | `blueprint-front`: 6 uncommitted deletions | Owner, that desk | 2026-11-07 | Reported, untouched |
 
 ## Decided recently, not yet in a REQ

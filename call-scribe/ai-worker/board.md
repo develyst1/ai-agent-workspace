@@ -70,7 +70,7 @@ Batch 2026-11-06 (REQ-101): Team A → `call-scribe-back/*` · `call-scribe-fron
 
 | Item | Waiting on | Since | Pointer |
 |------|-----------|-------|---------|
-| Desk pause for a new project: `ขึ้น git`, `รวมโค้ด`, then workspace commit by Atom | Sober, Silver, then Atom | 2026-11-07 12:16 | `DECISIONS.md`, 12:16 line |
+| Desk PAUSED for God Plan. Done: back 22d8de8, front 4070f78, workspace 9fcb0f6 (each atom = develop). Held: `develyst-ai` merge | Owner (develyst-ai merge; Atlas; machine; budget word) | 2026-11-07 | `RESUME-HERE.md` |
 | REQ-101 AC-9 only | Owner: one LINE test call when he has a free minute; the build does not wait | 2026-11-06 | REQ-101 § Questions Q4 |
 | TASK-103 live calls, every real AI result | Owner: his own word in the PM's pane; ceiling US$0.50, small models, no DeepSeek; Silver re-sizes | 2026-11-07 | `DECISIONS.md`, 2026-11-07 lines |
 | TEST-102's 9 real cases | Voices: provider TTS, if the Q9 keys come and it works; no install retry | 2026-11-06 | TEST-102 § Questions Q1 |
