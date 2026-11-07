@@ -1,0 +1,1256 @@
+{
+ "reached": [
+  "sending",
+  "sent",
+  "pick",
+  "record",
+  "unsupported",
+  "empty",
+  "speaker1",
+  "speaker2",
+  "conversation",
+  "summary",
+  "noSpeech",
+  "transFailed",
+  "retry",
+  "outCut",
+  "refused",
+  "sumFailed",
+  "sumCut",
+  "login",
+  "wrongPw",
+  "logout",
+  "tooMany",
+  "confirm",
+  "stop",
+  "micRefused",
+  "noMic",
+  "cutOff",
+  "sendKept"
+ ],
+ "unreached": [
+  "sendFailed",
+  "tooLarge",
+  "busy"
+ ],
+ "backEvents": [
+  {
+   "t": "2026-11-06T19:20:24.795Z",
+   "up": 11551,
+   "by": "api",
+   "method": "GET",
+   "path": "/api/recordings",
+   "ms": 41684,
+   "status": 500
+  },
+  {
+   "t": "2026-11-06T19:21:45.546Z",
+   "up": 11631,
+   "by": "page",
+   "method": "GET",
+   "path": "/api/recordings",
+   "ms": 241,
+   "status": "net::ERR_CONNECTION_REFUSED"
+  },
+  {
+   "t": "2026-11-06T19:26:13.686Z",
+   "up": 11899,
+   "by": "api",
+   "method": "GET",
+   "path": "/api/recordings/:id",
+   "ms": 149995,
+   "status": 500
+  },
+  {
+   "t": "2026-11-06T19:30:55.680Z",
+   "up": 12181,
+   "by": "page",
+   "method": "GET",
+   "path": "/api/recordings",
+   "ms": 101454,
+   "status": 500
+  },
+  {
+   "t": "2026-11-06T19:30:55.680Z",
+   "up": 12181,
+   "by": "page",
+   "method": "GET",
+   "path": "/api/recordings/:id",
+   "ms": 101446,
+   "status": 500
+  },
+  {
+   "t": "2026-11-06T19:30:58.317Z",
+   "up": 12184,
+   "by": "page",
+   "method": "GET",
+   "path": "/api/auth/me",
+   "ms": 8,
+   "status": "net::ERR_ABORTED"
+  },
+  {
+   "t": "2026-11-06T19:38:56.564Z",
+   "up": 12466,
+   "by": "api",
+   "method": "GET",
+   "path": "/api/recordings/:id",
+   "ms": 460238,
+   "status": "TypeError"
+  },
+  {
+   "t": "2026-11-06T19:38:59.986Z",
+   "up": 12470,
+   "by": "page",
+   "method": "GET",
+   "path": "/api/auth/me",
+   "ms": 10,
+   "status": "net::ERR_ABORTED"
+  },
+  {
+   "t": "2026-11-06T19:39:02.426Z",
+   "up": 12472,
+   "by": "page",
+   "method": "GET",
+   "path": "/api/auth/me",
+   "ms": 10,
+   "status": "net::ERR_ABORTED"
+  },
+  {
+   "t": "2026-11-06T19:39:02.710Z",
+   "up": 12472,
+   "by": "page",
+   "method": "GET",
+   "path": "/api/recordings",
+   "ms": 13,
+   "status": "net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "t": "2026-11-06T19:39:08.894Z",
+   "up": 12479,
+   "by": "page",
+   "method": "POST",
+   "path": "/api/recordings",
+   "ms": 2,
+   "status": "net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "t": "2026-11-06T19:40:48.794Z",
+   "up": 12579,
+   "by": "page",
+   "method": "GET",
+   "path": "/api/auth/me",
+   "ms": 5,
+   "status": "net::ERR_ABORTED"
+  },
+  {
+   "t": "2026-11-06T19:42:44.617Z",
+   "up": 12694,
+   "by": "page",
+   "method": "GET",
+   "path": "/api/auth/me",
+   "ms": 5,
+   "status": "net::ERR_ABORTED"
+  },
+  {
+   "t": "2026-11-07T03:35:14.757Z",
+   "up": 18010,
+   "by": "api",
+   "method": "GET",
+   "path": "/api/recordings",
+   "ms": 4,
+   "status": "TypeError"
+  },
+  {
+   "t": "2026-11-07T03:35:15.132Z",
+   "up": 18010,
+   "by": "api",
+   "method": "GET",
+   "path": "/api/recordings",
+   "ms": 2,
+   "status": "TypeError"
+  }
+ ],
+ "results": [
+  {
+   "id": "1.1-m4a",
+   "group": "files",
+   "title": "AC-1 format m4a",
+   "result": "PASS",
+   "began": "2026-11-06T19:11:34.120Z",
+   "secs": 17,
+   "upSecs": 17,
+   "fails": [],
+   "notes": [
+    "m4a: showed sending (phases sending>sent)",
+    "m4a: \"after sending\" text exact",
+    "m4a: ended done",
+    "m4a: stored file AAC 16 kHz mono"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.1-mp3",
+   "group": "files",
+   "title": "AC-1 format mp3",
+   "result": "PASS",
+   "began": "2026-11-06T19:11:51.442Z",
+   "secs": 16,
+   "upSecs": 16,
+   "fails": [],
+   "notes": [
+    "mp3: showed sending (phases sending>sent)",
+    "mp3: \"after sending\" text exact",
+    "mp3: ended done",
+    "mp3: stored file AAC 16 kHz mono"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.1-wav",
+   "group": "files",
+   "title": "AC-1 format wav",
+   "result": "PASS",
+   "began": "2026-11-06T19:12:07.129Z",
+   "secs": 15,
+   "upSecs": 15,
+   "fails": [],
+   "notes": [
+    "wav: showed sending (phases sending>sent)",
+    "wav: \"after sending\" text exact",
+    "wav: ended done",
+    "wav: stored file AAC 16 kHz mono"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.1-opus",
+   "group": "files",
+   "title": "AC-1 format opus",
+   "result": "PASS",
+   "began": "2026-11-06T19:12:21.715Z",
+   "secs": 15,
+   "upSecs": 15,
+   "fails": [],
+   "notes": [
+    "opus: showed sending (phases sending>sent)",
+    "opus: \"after sending\" text exact",
+    "opus: ended done",
+    "opus: stored file AAC 16 kHz mono"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.1-webm",
+   "group": "files",
+   "title": "AC-1 format webm",
+   "result": "PASS",
+   "began": "2026-11-06T19:12:37.110Z",
+   "secs": 15,
+   "upSecs": 15,
+   "fails": [],
+   "notes": [
+    "webm: showed sending (phases sending>sent)",
+    "webm: \"after sending\" text exact",
+    "webm: ended done",
+    "webm: stored file AAC 16 kHz mono"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.1-flac",
+   "group": "files",
+   "title": "AC-1 format flac",
+   "result": "PASS",
+   "began": "2026-11-06T19:12:52.465Z",
+   "secs": 15,
+   "upSecs": 16,
+   "fails": [],
+   "notes": [
+    "flac: showed sending (phases sending>sent)",
+    "flac: \"after sending\" text exact",
+    "flac: ended done",
+    "flac: stored file AAC 16 kHz mono"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.1-ogg",
+   "group": "files",
+   "title": "AC-1 format ogg",
+   "result": "PASS",
+   "began": "2026-11-06T19:13:07.839Z",
+   "secs": 15,
+   "upSecs": 15,
+   "fails": [],
+   "notes": [
+    "ogg: showed sending (phases sending>sent)",
+    "ogg: \"after sending\" text exact",
+    "ogg: ended done",
+    "ogg: stored file AAC 16 kHz mono"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.2",
+   "group": "files",
+   "title": "AC-1 both actions reachable at 390 and 360",
+   "result": "PASS",
+   "began": "2026-11-06T19:13:23.242Z",
+   "secs": 2,
+   "upSecs": 2,
+   "fails": [],
+   "notes": [
+    "390px: no sideways scroll (390/390)",
+    "390px: อัดเสียง is hit at its centre, 172x56",
+    "390px: เลือกไฟล์ is hit at its centre, 174x56",
+    "360px: no sideways scroll (360/360)",
+    "360px: อัดเสียง is hit at its centre, 157x56",
+    "360px: เลือกไฟล์ is hit at its centre, 159x56"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.3",
+   "group": "files",
+   "title": "AC-1 no extension",
+   "result": "PASS",
+   "began": "2026-11-06T19:13:25.515Z",
+   "secs": 15,
+   "upSecs": 16,
+   "fails": [],
+   "notes": [
+    "no extension: showed sending (phases sending>sent)",
+    "no extension: \"after sending\" text exact",
+    "no extension: ended done",
+    "no extension: stored file AAC 16 kHz mono"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.4",
+   "group": "files",
+   "title": "AC-1 Thai file name",
+   "result": "PASS",
+   "began": "2026-11-06T19:13:40.972Z",
+   "secs": 16,
+   "upSecs": 16,
+   "fails": [],
+   "notes": [
+    "thai: showed sending (phases sending>sent)",
+    "thai: \"after sending\" text exact",
+    "thai: ended done",
+    "thai: stored file AAC 16 kHz mono",
+    "thai: name stored as ไฟล์ทดสอบ ชื่อไทย มีวรรค (1).mp3",
+    "name shows correctly in the list"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.5",
+   "group": "files",
+   "title": "AC-1 double tap on send",
+   "result": "FAIL",
+   "began": "2026-11-06T19:13:57.312Z",
+   "secs": 33,
+   "upSecs": 33,
+   "fails": [
+    "each row made one job",
+    "one recording from two fast picks (got 2)"
+   ],
+   "notes": [
+    "creates 2, rows 2, transcriptions 11"
+   ],
+   "error": null
+  },
+  {
+   "id": "1.6",
+   "group": "files",
+   "title": "Decodable, on no list",
+   "result": "PASS",
+   "began": "2026-11-06T19:14:30.145Z",
+   "secs": 16,
+   "upSecs": 16,
+   "fails": [],
+   "notes": [
+    "wma: showed sending (phases sending>sent)",
+    "wma: \"after sending\" text exact",
+    "wma: ended done",
+    "wma: stored file AAC 16 kHz mono"
+   ],
+   "error": null
+  },
+  {
+   "id": "21.1",
+   "group": "files",
+   "title": "AC-21 video, browser strip",
+   "result": "ERROR",
+   "began": "2026-11-06T19:14:46.247Z",
+   "secs": 4,
+   "upSecs": 4,
+   "fails": [],
+   "notes": [],
+   "error": "TypeError: The \"list[0]\" argument must be an instance of Buffer or Uint8Array. Received null"
+  },
+  {
+   "id": "21.2",
+   "group": "files",
+   "title": "AC-21 back as fallback; 21.3 no picture kept",
+   "result": "FAIL",
+   "began": "2026-11-06T19:14:50.265Z",
+   "secs": 17,
+   "upSecs": 17,
+   "fails": [
+    "the original was sent, 0 B"
+   ],
+   "notes": [
+    "ended done",
+    "kept only audio.m4a",
+    "stored file has no video",
+    "what reached the gateway is audio only"
+   ],
+   "error": null
+  },
+  {
+   "id": "21.4",
+   "group": "files",
+   "title": "Video with no sound, both paths",
+   "result": "PASS",
+   "began": "2026-11-06T19:15:07.352Z",
+   "secs": 9,
+   "upSecs": 9,
+   "fails": [],
+   "notes": [
+    "strip: unsupported message",
+    "strip: nothing kept",
+    "fallback: unsupported message",
+    "fallback: nothing kept"
+   ],
+   "error": null
+  },
+  {
+   "id": "6.1",
+   "group": "refuse",
+   "title": "AC-6 text named .mp3",
+   "result": "PASS",
+   "began": "2026-11-06T19:15:16.613Z",
+   "secs": 9,
+   "upSecs": 10,
+   "fails": [],
+   "notes": [
+    "bad-text-as.mp3: unsupported message",
+    "bad-text-as.mp3: no row or folder (rows 0->0, folders 1->1)",
+    "bad-text-as.mp3: list unchanged",
+    "bad-text-as.mp3: gateway calls 0"
+   ],
+   "error": null
+  },
+  {
+   "id": "6.2",
+   "group": "refuse",
+   "title": "AC-6 0 bytes",
+   "result": "PASS",
+   "began": "2026-11-06T19:15:26.086Z",
+   "secs": 13,
+   "upSecs": 13,
+   "fails": [],
+   "notes": [
+    "bad-zero.mp3: unsupported message",
+    "bad-zero.mp3: no row or folder (rows 0->0, folders 1->1)",
+    "bad-zero.mp3: list unchanged",
+    "bad-zero.mp3: gateway calls 0",
+    "bad-zero.m4a: unsupported message",
+    "bad-zero.m4a: no row or folder (rows 0->0, folders 1->1)",
+    "bad-zero.m4a: list unchanged",
+    "bad-zero.m4a: gateway calls 0"
+   ],
+   "error": null
+  },
+  {
+   "id": "6.3",
+   "group": "refuse",
+   "title": "AC-6 corrupt",
+   "result": "PASS",
+   "began": "2026-11-06T19:15:39.458Z",
+   "secs": 25,
+   "upSecs": 26,
+   "fails": [],
+   "notes": [
+    "bad-random.m4a: unsupported message",
+    "bad-random.m4a: no row or folder (rows 0->0, folders 1->1)",
+    "bad-random.m4a: list unchanged",
+    "bad-random.m4a: gateway calls 0",
+    "bad-cut-header.m4a: unsupported message",
+    "bad-cut-header.m4a: no row or folder (rows 0->0, folders 1->1)",
+    "bad-cut-header.m4a: list unchanged",
+    "bad-cut-header.m4a: gateway calls 0",
+    "bad-midfile-corrupt.mp3: unsupported message",
+    "bad-midfile-corrupt.mp3: no row or folder (rows 0->0, folders 1->1)",
+    "bad-midfile-corrupt.mp3: list unchanged",
+    "bad-midfile-corrupt.mp3: gateway calls 0"
+   ],
+   "error": null
+  },
+  {
+   "id": "6.4",
+   "group": "refuse",
+   "title": "AC-6 picture named .mp3",
+   "result": "PASS",
+   "began": "2026-11-06T19:16:04.912Z",
+   "secs": 10,
+   "upSecs": 9,
+   "fails": [],
+   "notes": [
+    "bad-image-as.mp3: unsupported message",
+    "bad-image-as.mp3: no row or folder (rows 0->0, folders 1->1)",
+    "bad-image-as.mp3: list unchanged",
+    "bad-image-as.mp3: gateway calls 0"
+   ],
+   "error": null
+  },
+  {
+   "id": "6.6",
+   "group": "refuse",
+   "title": "AC-6 plain .txt",
+   "result": "PASS",
+   "began": "2026-11-06T19:16:14.451Z",
+   "secs": 9,
+   "upSecs": 9,
+   "fails": [],
+   "notes": [
+    "bad-plain.txt: unsupported message",
+    "bad-plain.txt: no row or folder (rows 0->0, folders 1->1)",
+    "bad-plain.txt: list unchanged",
+    "bad-plain.txt: gateway calls 0",
+    "picker accept: audio/*,video/*"
+   ],
+   "error": null
+  },
+  {
+   "id": "6.7",
+   "group": "refuse",
+   "title": "AC-6 app still works after a refusal",
+   "result": "PASS",
+   "began": "2026-11-06T19:16:23.450Z",
+   "secs": 18,
+   "upSecs": 18,
+   "fails": [],
+   "notes": [
+    "ended done"
+   ],
+   "error": null
+  },
+  {
+   "id": "X.1",
+   "group": "result",
+   "title": "Empty list",
+   "result": "PASS",
+   "began": "2026-11-06T19:16:41.105Z",
+   "secs": 2,
+   "upSecs": 2,
+   "fails": [],
+   "notes": [
+    "empty message exact, on an empty store"
+   ],
+   "error": null
+  },
+  {
+   "id": "3.2+4.2",
+   "group": "result",
+   "title": "Shown in full, labels",
+   "result": "PASS",
+   "began": "2026-11-06T19:16:43.342Z",
+   "secs": 17,
+   "upSecs": 17,
+   "fails": [],
+   "notes": [
+    "390px: all 4 turns shown, same text",
+    "390px: nothing clipped (390/390, clipped 0)",
+    "390px: labels ผู้พูด 1, ผู้พูด 2",
+    "390px: conversation and summary sections",
+    "360px: all 4 turns shown, same text",
+    "360px: nothing clipped (360/360, clipped 0)",
+    "360px: labels ผู้พูด 1, ผู้พูด 2",
+    "360px: conversation and summary sections"
+   ],
+   "error": null
+  },
+  {
+   "id": "20.1",
+   "group": "result",
+   "title": "AC-20 no speech from the gateway",
+   "result": "PASS",
+   "began": "2026-11-06T19:17:00.498Z",
+   "secs": 12,
+   "upSecs": 12,
+   "fails": [],
+   "notes": [
+    "ended no_speech",
+    "no-speech message",
+    "no empty result section",
+    "summary calls 0"
+   ],
+   "error": null
+  },
+  {
+   "id": "20.4",
+   "group": "result",
+   "title": "AC-20 silence at intake",
+   "result": "PASS",
+   "began": "2026-11-06T19:17:12.064Z",
+   "secs": 9,
+   "upSecs": 8,
+   "fails": [],
+   "notes": [
+    "ended no_speech",
+    "no-speech message",
+    "gateway calls 0"
+   ],
+   "error": null
+  },
+  {
+   "id": "20.3",
+   "group": "result",
+   "title": "AC-20 tiny file",
+   "result": "PASS",
+   "began": "2026-11-06T19:17:20.603Z",
+   "secs": 8,
+   "upSecs": 9,
+   "fails": [],
+   "notes": [
+    "ended no_speech",
+    "no-speech message",
+    "gateway calls 0"
+   ],
+   "error": null
+  },
+  {
+   "id": "7.1",
+   "group": "fail",
+   "title": "AC-7 retry works",
+   "result": "FAIL",
+   "began": "2026-11-06T19:17:28.890Z",
+   "secs": 18,
+   "upSecs": 18,
+   "fails": [
+    "after retry: transcription_failed"
+   ],
+   "notes": [
+    "ended transcription_failed (provider_failed)",
+    "message exact: transFailed",
+    "file choosers 0, PUTs 0",
+    "same recording, list count 1",
+    "result shows without leaving the screen"
+   ],
+   "error": null
+  },
+  {
+   "id": "7.2",
+   "group": "fail",
+   "title": "AC-7 still failing",
+   "result": "PASS",
+   "began": "2026-11-06T19:17:47.285Z",
+   "secs": 24,
+   "upSecs": 24,
+   "fails": [],
+   "notes": [
+    "ended transcription_failed (provider_failed)",
+    "message exact: transFailed",
+    "after retry: transcription_failed",
+    "same message",
+    "one entry",
+    "audio intact, probed"
+   ],
+   "error": null
+  },
+  {
+   "id": "7.3",
+   "group": "fail",
+   "title": "AC-7 retry twice fast",
+   "result": "PASS",
+   "began": "2026-11-06T19:18:11.294Z",
+   "secs": 23,
+   "upSecs": 23,
+   "fails": [],
+   "notes": [
+    "ended transcription_failed (provider_failed)",
+    "message exact: transFailed",
+    "two retries answered 202,409",
+    "transcription calls 1"
+   ],
+   "error": null
+  },
+  {
+   "id": "7.4",
+   "group": "fail",
+   "title": "No retry: transcript cut off",
+   "result": "PASS",
+   "began": "2026-11-06T19:18:34.014Z",
+   "secs": 12,
+   "upSecs": 11,
+   "fails": [],
+   "notes": [
+    "ended transcription_failed (output_truncated)",
+    "message exact: outCut",
+    "code output_truncated, retryable false",
+    "no retry button",
+    "no partial result",
+    "audio intact"
+   ],
+   "error": null
+  },
+  {
+   "id": "7.9",
+   "group": "fail",
+   "title": "No retry: provider refused",
+   "result": "PASS",
+   "began": "2026-11-06T19:18:45.658Z",
+   "secs": 10,
+   "upSecs": 10,
+   "fails": [],
+   "notes": [
+    "transcription_failed provider_rejected_audio retryable false",
+    "message exact",
+    "no retry button",
+    "audio intact"
+   ],
+   "error": null
+  },
+  {
+   "id": "7.5",
+   "group": "fail",
+   "title": "Gateway unreachable, then not configured",
+   "result": "PASS",
+   "began": "2026-11-06T19:18:55.681Z",
+   "secs": 10,
+   "upSecs": 10,
+   "fails": [],
+   "notes": [
+    "stopped: transcription_failed gateway_unreachable retryable true",
+    "stopped: message exact, with retry",
+    "stopped: retry button",
+    "no provider: transcription_failed gateway_rejected retryable true"
+   ],
+   "error": null
+  },
+  {
+   "id": "7.6",
+   "group": "fail",
+   "title": "Job lost in a restart",
+   "result": "PASS",
+   "began": "2026-11-06T19:19:05.224Z",
+   "secs": 38,
+   "upSecs": 38,
+   "fails": [],
+   "notes": [
+    "restart once: ended done (null)",
+    "restart once: submits 2",
+    "lost twice: transcription_failed job_lost",
+    "lost twice: submits 2",
+    "lost twice: message exact"
+   ],
+   "error": null
+  },
+  {
+   "id": "7.7",
+   "group": "fail",
+   "title": "Busy",
+   "result": "ERROR",
+   "began": "2026-11-06T19:19:43.111Z",
+   "secs": 42,
+   "upSecs": 42,
+   "fails": [],
+   "notes": [],
+   "error": "TypeError: (intermediate value) is not iterable"
+  },
+  {
+   "id": "7.10",
+   "group": "fail",
+   "title": "Queue order",
+   "result": "PASS",
+   "began": "2026-11-06T19:20:24.796Z",
+   "secs": 38,
+   "upSecs": 38,
+   "fails": [],
+   "notes": [
+    "all finished (3)",
+    "at most one at a time (1)",
+    "oldest first"
+   ],
+   "error": null
+  },
+  {
+   "id": "15.1+15.2",
+   "group": "fail",
+   "title": "AC-15 summary fails, retry summary only, also after reopening",
+   "result": "FAIL",
+   "began": "2026-11-06T19:21:03.101Z",
+   "secs": 22,
+   "upSecs": 22,
+   "fails": [
+    "after retry: summary_failed"
+   ],
+   "notes": [
+    "ended summary_failed (provider_failed)",
+    "message exact: sumFailed",
+    "turns kept: 4",
+    "transcript shows",
+    "reopened: same message",
+    "transcription calls 0, summary calls 1"
+   ],
+   "error": null
+  },
+  {
+   "id": "15.3",
+   "group": "fail",
+   "title": "No retry: summary cut off",
+   "result": "PASS",
+   "began": "2026-11-06T19:21:24.928Z",
+   "secs": 18,
+   "upSecs": 17,
+   "fails": [],
+   "notes": [
+    "summary_failed output_truncated",
+    "message exact",
+    "no retry",
+    "transcript shows",
+    "no partial summary"
+   ],
+   "error": null
+  },
+  {
+   "id": "14.1",
+   "group": "fail",
+   "title": "AC-14 upload lost midway",
+   "result": "ERROR",
+   "began": "2026-11-06T19:21:42.535Z",
+   "secs": 2,
+   "upSecs": 2,
+   "fails": [],
+   "notes": [],
+   "error": "Error: ENOENT: no such file or directory, stat '/tmp/claude-1000/-workspace-ai-agent-workspace/772b3720-0d25-4322-8363-cb27170b13bf/scratchpad/t102/fx/tmp/claude-1000/-workspace-ai-agent-workspace/772b3720-0"
+  },
+  {
+   "id": "14.5",
+   "group": "fail",
+   "title": "AC-14 closed while sending",
+   "result": "ERROR",
+   "began": "2026-11-06T19:21:44.143Z",
+   "secs": 1,
+   "upSecs": 1,
+   "fails": [],
+   "notes": [],
+   "error": "Error: ENOENT: no such file or directory, stat '/tmp/claude-1000/-workspace-ai-agent-workspace/772b3720-0d25-4322-8363-cb27170b13bf/scratchpad/t102/fx/tmp/claude-1000/-workspace-ai-agent-workspace/772b3720-0"
+  },
+  {
+   "id": "14.8",
+   "group": "fail",
+   "title": "Send refused, too large",
+   "result": "ERROR",
+   "began": "2026-11-06T19:21:45.047Z",
+   "secs": 19,
+   "upSecs": 19,
+   "fails": [],
+   "notes": [
+    "at the limit (53468 B): goes through"
+   ],
+   "error": "Error: ENOENT: no such file or directory, stat '/tmp/claude-1000/-workspace-ai-agent-workspace/772b3720-0d25-4322-8363-cb27170b13bf/scratchpad/t102/fx/tmp/claude-1000/-workspace-ai-agent-workspace/772b3720-0"
+  },
+  {
+   "id": "14.7",
+   "group": "fail",
+   "title": "AC-14 half a file",
+   "result": "PASS",
+   "began": "2026-11-06T19:22:04.249Z",
+   "secs": 17,
+   "upSecs": 17,
+   "fails": [],
+   "notes": [
+    "half: showed sending (phases sending>sent)",
+    "half: \"after sending\" text exact",
+    "half: ended done",
+    "half: stored file AAC 16 kHz mono",
+    "durationMs 8787"
+   ],
+   "error": null
+  },
+  {
+   "id": "16.1",
+   "group": "fail",
+   "title": "AC-16 closed after sent",
+   "result": "PASS",
+   "began": "2026-11-06T19:22:21.215Z",
+   "secs": 23,
+   "upSecs": 23,
+   "fails": [],
+   "notes": [
+    "reopened: still processing, message exact",
+    "same screen then shows the result, no reload"
+   ],
+   "error": null
+  },
+  {
+   "id": "16.2",
+   "group": "fail",
+   "title": "AC-16 back restarted while transcribing",
+   "result": "PASS",
+   "began": "2026-11-06T19:22:44.352Z",
+   "secs": 32,
+   "upSecs": 32,
+   "fails": [],
+   "notes": [
+    "right after boot: transcribing",
+    "finished: done (null)"
+   ],
+   "error": null
+  },
+  {
+   "id": "16.3",
+   "group": "fail",
+   "title": "AC-16 back restarted while summarising",
+   "result": "ERROR",
+   "began": "2026-11-06T19:23:16.673Z",
+   "secs": 177,
+   "upSecs": 177,
+   "fails": [],
+   "notes": [],
+   "error": "Error: recording stayed 500, waited for done,no_speech,transcription_failed,summary_failed"
+  },
+  {
+   "id": "8.1+8.3+8.4",
+   "group": "fail",
+   "title": "AC-8 reopen: new tab, gateway gone, back restarted",
+   "result": "PASS",
+   "began": "2026-11-06T19:26:13.687Z",
+   "secs": 24,
+   "upSecs": 25,
+   "fails": [],
+   "notes": [
+    "new tab: opens, same text, still logged in",
+    "gateway stopped: opens, same text, still logged in",
+    "back restarted: opens, same text, still logged in"
+   ],
+   "error": null
+  },
+  {
+   "id": "8.2",
+   "group": "fail",
+   "title": "AC-8 browser restarted",
+   "result": "PASS",
+   "began": "2026-11-06T19:26:37.905Z",
+   "secs": 21,
+   "upSecs": 20,
+   "fails": [],
+   "notes": [
+    "after a browser restart: opens, still logged in"
+   ],
+   "error": null
+  },
+  {
+   "id": "17.1+17.2",
+   "group": "access",
+   "title": "AC-17 no login, every route, known id, path tricks",
+   "result": "PASS",
+   "began": "2026-11-06T19:26:58.573Z",
+   "secs": 20,
+   "upSecs": 20,
+   "fails": [],
+   "notes": [
+    "no cookie GET /api/auth/me: 401",
+    "no cookie POST /api/auth/logout: 401",
+    "no cookie GET /api/recordings: 401",
+    "no cookie POST /api/recordings: 401",
+    "no cookie GET /api/recordings/:id: 401",
+    "no cookie PUT /api/recordings/:id/chunks/0: 401",
+    "no cookie POST /api/recordings/:id/complete: 401",
+    "no cookie POST /api/recordings/:id/retry: 401",
+    "no cookie DELETE /api/recordings/:id: 401",
+    "rows unchanged, recording intact",
+    "no cookie GET /api/recordings/..%2F..%2Fetc: 401",
+    "logged in GET /api/recordings/..%2F..%2Fetc: 404",
+    "no cookie GET /api/recordings/../../etc/passwd: 404",
+    "logged in GET /api/recordings/../../etc/passwd: 404",
+    "no cookie GET /:id/audio.m4a: 404",
+    "logged in GET /:id/audio.m4a: 404",
+    "no cookie GET /storage/:id/audio.m4a: 404",
+    "logged in GET /storage/:id/audio.m4a: 404",
+    "no cookie GET /api/recordings/:id/audio.m4a: 401",
+    "logged in GET /api/recordings/:id/audio.m4a: 404",
+    "no cookie GET /audio.m4a: 404",
+    "logged in GET /audio.m4a: 404"
+   ],
+   "error": null
+  },
+  {
+   "id": "17.5+17.6",
+   "group": "access",
+   "title": "Login wrong password, too many tries",
+   "result": "PASS",
+   "began": "2026-11-06T19:27:18.161Z",
+   "secs": 6,
+   "upSecs": 6,
+   "fails": [],
+   "notes": [
+    "wrong password: message, no cookie",
+    "then the right one: in",
+    "after 5 wrong, even the right one: 429 message, no cookie"
+   ],
+   "error": null
+  },
+  {
+   "id": "17.7",
+   "group": "access",
+   "title": "Log out",
+   "result": "PASS",
+   "began": "2026-11-06T19:27:24.311Z",
+   "secs": 5,
+   "upSecs": 5,
+   "fails": [],
+   "notes": [
+    "old cookie after logout: 401"
+   ],
+   "error": null
+  },
+  {
+   "id": "17.8",
+   "group": "access",
+   "title": "Another site",
+   "result": "ERROR",
+   "began": "2026-11-06T19:27:28.906Z",
+   "secs": 1,
+   "upSecs": 1,
+   "fails": [],
+   "notes": [
+    "other origin: allow-origin null",
+    "FRONT_ORIGIN: allowed, so the check can fail"
+   ],
+   "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3120/"
+  },
+  {
+   "id": "17.9",
+   "group": "access",
+   "title": "Cookie",
+   "result": "PASS",
+   "began": "2026-11-06T19:27:29.978Z",
+   "secs": 3,
+   "upSecs": 2,
+   "fails": [],
+   "notes": [
+    "flags: Max-Age, Path, HttpOnly, Secure, SameSite / SameSite=Lax",
+    "script on the page cannot read it"
+   ],
+   "error": null
+  },
+  {
+   "id": "17.10",
+   "group": "access",
+   "title": "Hostile file name",
+   "result": "PASS",
+   "began": "2026-11-06T19:27:32.496Z",
+   "secs": 9,
+   "upSecs": 9,
+   "fails": [],
+   "notes": [
+    "both shown as plain text: [\"../../../QA-x.mp3\",\"<img src=x onerror=alert(1)>.mp3\"]",
+    "nothing ran (dialogs 0)",
+    "nothing named after it on disk: \"\""
+   ],
+   "error": null
+  },
+  {
+   "id": "17.3",
+   "group": "access",
+   "title": "AC-17 keys stay on the server",
+   "result": "PASS",
+   "began": "2026-11-06T19:27:41.330Z",
+   "secs": 2,
+   "upSecs": 2,
+   "fails": [],
+   "notes": [
+    "built front files naming them: 0",
+    "database URL value absent (matched, never printed)"
+   ],
+   "error": null
+  },
+  {
+   "id": "18.1+18.2",
+   "group": "delete",
+   "title": "AC-18 cancel, then confirm",
+   "result": "PASS",
+   "began": "2026-11-06T19:27:43.584Z",
+   "secs": 19,
+   "upSecs": 19,
+   "fails": [],
+   "notes": [
+    "confirm text exact",
+    "cancel: nothing changes",
+    "confirm: GET answers 404",
+    "confirm: folder gone",
+    "confirm: row gone"
+   ],
+   "error": null
+  },
+  {
+   "id": "18.3",
+   "group": "delete",
+   "title": "AC-18 only that one",
+   "result": "PASS",
+   "began": "2026-11-06T19:28:02.523Z",
+   "secs": 27,
+   "upSecs": 27,
+   "fails": [],
+   "notes": [
+    "the other is intact",
+    "deleted one gone"
+   ],
+   "error": null
+  },
+  {
+   "id": "18.4",
+   "group": "delete",
+   "title": "AC-18 while processing",
+   "result": "PASS",
+   "began": "2026-11-06T19:28:29.542Z",
+   "secs": 34,
+   "upSecs": 35,
+   "fails": [],
+   "notes": [
+    "delete answered 204",
+    "stays gone after the job ended",
+    "no folder came back",
+    "no row came back"
+   ],
+   "error": null
+  },
+  {
+   "id": "18.5",
+   "group": "delete",
+   "title": "AC-18 a failed one",
+   "result": "ERROR",
+   "began": "2026-11-06T19:29:03.980Z",
+   "secs": 112,
+   "upSecs": 111,
+   "fails": [],
+   "notes": [
+    "ended transcription_failed (provider_failed)"
+   ],
+   "error": "TimeoutError: locator.innerText: Timeout 15000ms exceeded."
+  },
+  {
+   "id": "2.1",
+   "group": "mic",
+   "title": "AC-2 measured",
+   "result": "ERROR",
+   "began": "2026-11-06T19:30:55.665Z",
+   "secs": 481,
+   "upSecs": 285,
+   "fails": [],
+   "notes": [],
+   "error": "TypeError: fetch failed"
+  },
+  {
+   "id": "2.3",
+   "group": "mic",
+   "title": "AC-2 mic refused",
+   "result": "PASS",
+   "began": "2026-11-06T19:38:56.570Z",
+   "secs": 3,
+   "upSecs": 3,
+   "fails": [],
+   "notes": [
+    "kind mic_refused",
+    "mic-refused message exact",
+    "no empty recording in the list"
+   ],
+   "error": null
+  },
+  {
+   "id": "2.4",
+   "group": "mic",
+   "title": "No microphone",
+   "result": "PASS",
+   "began": "2026-11-06T19:38:59.250Z",
+   "secs": 2,
+   "upSecs": 2,
+   "fails": [],
+   "notes": [
+    "no-mic message exact",
+    "forced: getUserMedia made to answer NotFoundError, since this box's Chrome cannot be run with no device on demand",
+    "nothing recorded"
+   ],
+   "error": null
+  },
+  {
+   "id": "14.2",
+   "group": "mic",
+   "title": "AC-14 recording not yet sent, offline",
+   "result": "ERROR",
+   "began": "2026-11-06T19:39:01.366Z",
+   "secs": 105,
+   "upSecs": 105,
+   "fails": [],
+   "notes": [
+    "new tab: cut-off message"
+   ],
+   "error": "Error: recording stayed queued, waited for done,no_speech,transcription_failed,summary_failed"
+  },
+  {
+   "id": "14.3",
+   "group": "mic",
+   "title": "AC-14 mic lost at 20 s",
+   "result": "ERROR",
+   "began": "2026-11-06T19:40:46.744Z",
+   "secs": 116,
+   "upSecs": 116,
+   "fails": [],
+   "notes": [
+    "cut-off message"
+   ],
+   "error": "Error: recording stayed queued, waited for done,no_speech,transcription_failed,summary_failed"
+  },
+  {
+   "id": "14.4",
+   "group": "mic",
+   "title": "AC-14 page dies at 20 s",
+   "result": "ERROR",
+   "began": "2026-11-06T19:42:42.629Z",
+   "secs": 28352,
+   "upSecs": 5318,
+   "fails": [],
+   "notes": [],
+   "error": "Error: browserContext.newPage: Target page, context or browser has been closed"
+  },
+  {
+   "id": "14.6",
+   "group": "mic",
+   "title": "AC-14 empty never finished",
+   "result": "ERROR",
+   "began": "2026-11-07T03:35:14.753Z",
+   "secs": 0,
+   "upSecs": 0,
+   "fails": [],
+   "notes": [],
+   "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3120/"
+  },
+  {
+   "id": "X.3",
+   "group": "after",
+   "title": "Personal data in logs",
+   "result": "PASS",
+   "began": "2026-11-07T03:35:15.130Z",
+   "secs": 0,
+   "upSecs": 0,
+   "fails": [],
+   "notes": [
+    "\"ok-en\" is absent",
+    "\"QA-\" is absent",
+    "\"ไฟล์ทดสอบ\" is absent",
+    "\"onerror\" is absent",
+    "\"พัสดุ\" is absent",
+    "\"ทีเอช\" is absent",
+    "the password is absent",
+    "661 log lines searched"
+   ],
+   "error": null
+  }
+ ]
+}

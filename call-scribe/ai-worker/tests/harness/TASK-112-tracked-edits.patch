@@ -1,0 +1,161 @@
+diff --git a/.env.example b/.env.example
+index 531c103..eabea46 100644
+--- a/.env.example
++++ b/.env.example
+@@ -16,3 +16,15 @@ DEFAULT_TIMEOUT=30000
+ TAVILY_API_KEY=                 # free-tier key from tavily.com; empty → web search off (date/time still works)
+ WEB_SEARCH_ENABLED=true         # global kill-switch for web search; set false to disable
+ AI_DATETIME_TZ=Asia/Bangkok     # IANA tz for the injected local time (UTC always included too)
++
++# Audio routes /audio/* (SPEC-101). Both providers stay unset here, so a copy of this file answers 503 audio_not_configured.
++# AUDIO_TRANSCRIBE_PROVIDER=    # who turns audio into labelled turns: gemini | xai | stub (stub is refused when NODE_ENV=production)
++# AUDIO_TRANSCRIBE_MODEL=       # model id for transcription; empty → the provider's default
++# AUDIO_SUMMARY_PROVIDER=       # who writes the summary: gemini | xai | stub; pinned, no fallback chain
++# AUDIO_SUMMARY_MODEL=          # model id for the summary; empty → the provider's default
++AUDIO_MAX_BYTES=104857600       # upload limit in bytes (100 MiB); keep at or under 128 MiB, Bun refuses larger before our code runs
++AUDIO_MAX_CONCURRENT=2          # jobs running or queued at once; more get 429 busy; bounds memory
++AUDIO_JOB_TIMEOUT_MS=1800000    # per-job limit in ms (30 min); past it the job fails provider_timeout
++AUDIO_JOB_TTL_MS=3600000        # how long a finished result stays readable, in ms (1 h)
++# AUDIO_STUB_MODE=ok            # stub provider only: ok | no_speech | fail | truncated | summary_fail
++# AUDIO_STUB_DELAY_MS=2000      # stub provider only: time spent "running", in ms
+diff --git a/CLAUDE.md b/CLAUDE.md
+index 64c0e67..6e236d3 100644
+--- a/CLAUDE.md
++++ b/CLAUDE.md
+@@ -47,9 +47,11 @@ Also add `NAME_API_KEY` to `.env` and `.env.example`, and create a Bruno request
+ | `src/config/models.ts` | Single source of truth for URLs, defaults, supported model lists |
+ | `src/types/index.ts` | `ModelProvider`, `ModelConfig`, `AIResponse`, `ChatRequest` |
+ | `src/auth/keyStore.ts` | Loads/caches gitignored `api-keys.json`; `lookupProject(key)` (hot-reloads on mtime, fail-closed) |
+-| `src/auth/authMiddleware.ts` | Hono middleware on `/chat/*` + `/search/*`: Bearer-key check, generic 401, attribution log |
++| `src/auth/authMiddleware.ts` | Hono middleware on `/chat/*` + `/search/*` + `/audio/*`: Bearer-key check, generic 401, attribution log |
+ | `src/tools/webSearch.ts` | Tavily search client — query-only, fail-soft, env key never logged; used by `/search` |
+ | `src/routes/search.ts` | `POST /search` (Tavily) + `POST /search/classify` (cheap AI JSON classifier) |
++| `src/routes/audio.ts` | `POST /audio/transcriptions`, `POST /audio/summaries`, `GET /audio/jobs/:job_id`: async jobs held in memory (SPEC-101) |
++| `src/audio/` | Audio job store, byte-format checks, provider adapters (`gemini`, `xai`, `stub`) behind `/audio/*`; no audio or provider text is written to disk or logs |
+ 
+ ### Real-time knowledge (SPEC-002 + SPEC-006)
+ 
+@@ -87,11 +89,20 @@ or log key values; attribution logs show the project name only.
+ 
+ | Variable | Purpose |
+ |---|---|
+-| `AUTH_ENABLED` | `false`/`0`/`off` turns bearer auth off for `/chat*` + `/search*` (project logged as `anonymous`, startup warning printed). Unset or anything else = on. Read once at startup |
++| `AUTH_ENABLED` | `false`/`0`/`off` turns bearer auth off for `/chat*` + `/search*` + `/audio*` (project logged as `anonymous`, startup warning printed). Unset or anything else = on. Read once at startup |
+ | `PORT` | HTTP port (default **3009**; `src/index.ts`: `Number(process.env.PORT) || 3009`, `.env.example` sets `PORT=3009`) |
+ | `DEFAULT_PROVIDER` | Fallback provider when request omits `provider` |
+ | `DEFAULT_TEMPERATURE` / `DEFAULT_MAX_TOKENS` / `DEFAULT_TIMEOUT` | Global fallback values |
+ | `OPENAI_API_KEY` / `GEMINI_API_KEY` / `XAI_API_KEY` / `DEEPSEEK_API_KEY` | Provider credentials |
++| `AUDIO_TRANSCRIBE_PROVIDER` | Provider for `/audio/transcriptions`: `gemini` \| `xai` \| `stub`. Unset → `503 audio_not_configured`. `stub` is refused at startup when `NODE_ENV=production` |
++| `AUDIO_TRANSCRIBE_MODEL` | Model id for transcription; empty → the provider's default |
++| `AUDIO_SUMMARY_PROVIDER` | Provider for `/audio/summaries`: `gemini` \| `xai` \| `stub`. Pinned, no fallback chain. Unset → `503` |
++| `AUDIO_SUMMARY_MODEL` | Model id for the summary; empty → the provider's default |
++| `AUDIO_MAX_BYTES` | Upload limit in bytes, default 104857600 (100 MiB). Keep at or under 128 MiB |
++| `AUDIO_MAX_CONCURRENT` | Jobs running or queued at once, default 2; more get `429 busy` |
++| `AUDIO_JOB_TIMEOUT_MS` | Per-job limit, default 1800000 |
++| `AUDIO_JOB_TTL_MS` | How long a finished result stays readable, default 3600000 |
++| `AUDIO_STUB_MODE` / `AUDIO_STUB_DELAY_MS` | Stub provider only: outcome (`ok`, `no_speech`, `fail`, `truncated`, `summary_fail`) and time spent `running`, default 2000 ms |
+ 
+ ### Bruno collection
+ 
+diff --git a/docs/consumer-guide.md b/docs/consumer-guide.md
+index 240fc3c..b2d8d59 100644
+--- a/docs/consumer-guide.md
++++ b/docs/consumer-guide.md
+@@ -233,10 +233,72 @@ curl -s -X POST http://localhost:3009/chat \
+ # → {"success":false,"error":"unauthorized"}
+ ```
+ 
++### 6b. Audio: transcript with speakers, and summary (async jobs)
++
++Three routes, all under `Authorization: Bearer <project-key>` (same `401 unauthorized` as `/chat`).
++Both operations are **jobs**: you get a `job_id`, then poll. Jobs live in gateway memory; a job can be read
++only with the project key that created it. Field names are snake_case; every reply is `{ success, data }` or
++`{ success:false, error }`.
++
++**`POST /audio/transcriptions`** — `multipart/form-data` with one part, `file`. The gateway reads the bytes;
++the file name and declared type are ignored.
++
++```bash
++curl -s -X POST http://localhost:3009/audio/transcriptions \
++  -H 'Authorization: Bearer <project-key>' \
++  -F 'file=@call.m4a'
++# → 202 {"success":true,"data":{"job_id":"…","status":"queued"}}
++```
++
++| Status | `error` | When |
++|---|---|---|
++| 400 | `file_required` | Not multipart, or no `file` part |
++| 413 | `file_too_large` | Over `AUDIO_MAX_BYTES` (default 100 MiB). Over 128 MiB the 413 has an empty body, so treat every 413 as too large |
++| 415 | `unsupported_audio` | 0 bytes, or the bytes are not a listed format |
++| 415 | `video_not_allowed` | The container holds a video track |
++| 429 | `busy` | `AUDIO_MAX_CONCURRENT` jobs already running or queued; retry later |
++| 503 | `audio_not_configured` | The provider setting or its key is missing |
++
++Accepted by bytes: M4A/MP4 audio, AAC (ADTS), MP3, WAV, Ogg/Opus, WebM audio, FLAC. AMR is not accepted.
++
++**`POST /audio/summaries`** — `application/json`, at most 5 MiB:
++
++```bash
++curl -s -X POST http://localhost:3009/audio/summaries \
++  -H 'Content-Type: application/json' \
++  -H 'Authorization: Bearer <project-key>' \
++  -d '{"turns":[{"speaker":1,"text":"…"},{"speaker":2,"text":"…"}]}'
++# → 202 {"success":true,"data":{"job_id":"…","status":"queued"}}
++```
++
++Errors: `400 turns_required` (bad JSON, missing or empty `turns`, or a turn without an integer `speaker` and a
++non-empty string `text`) · `413 body_too_large` · `429 busy` · `503 audio_not_configured`.
++
++**`GET /audio/jobs/:job_id`** — poll every 5 seconds.
++
++```json
++{ "success": true, "data": { "job_id": "…", "kind": "transcription", "status": "running" } }
++```
++
++- `kind`: `transcription` | `summary`. `status`: `queued` | `running` | `done` | `failed`.
++- `done` adds `result`; `failed` adds `error`. A failed job is still HTTP `200`.
++- `404 { "success": false, "error": "job_not_found" }`: unknown, expired, another project's, or lost in a gateway
++  restart. Resubmit.
++- Transcription `result`: `{ provider, model, no_speech, speaker_count, turns:[{speaker,text}], latency_ms }`.
++  `speaker` is an integer from 1, numbered by first appearance; it says nothing about who the person is.
++  No speech is `no_speech: true` with `turns: []`, status `done`.
++- Summary `result`: `{ provider, model, summary, latency_ms }`, plain Thai text.
++- Failed job `error`: `{ "code": "…", "retryable": true|false }`, with `code` one of `provider_timeout`,
++  `provider_failed`, `provider_response_invalid` (all retryable), `provider_rejected_audio`, `output_truncated`
++  (not retryable). A partial transcript or summary is never returned as `done`.
++
+ ---
+ 
+ ## 7. Limits (honest)
+ 
++- **Audio providers are `gemini`, `xai` and `stub`**, chosen by `AUDIO_TRANSCRIBE_PROVIDER` and
++  `AUDIO_SUMMARY_PROVIDER`; with none set, `/audio/*` answers `503 audio_not_configured`. `stub` makes no network call.
++
+ - **Web search is not automatic inside `/chat`** — use the `/search/classify` +
+   `/search` primitives and feed results into `/chat` yourself.
+ - `/search` is backed by **Tavily's free tier** (query-only; no open-proxy/URL fetch).
+diff --git a/src/index.ts b/src/index.ts
+index 191c2d3..aaf3c10 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -3,6 +3,7 @@ import { logger } from "hono/logger";
+ import { cors } from "hono/cors";
+ import chat from "./routes/chat";
+ import search from "./routes/search";
++import audio from "./routes/audio";
+ import { authMiddleware } from "./auth/authMiddleware";
+ import { SUPPORTED_MODELS, MODEL_TIERS } from "./config/models";
+ 
+@@ -16,10 +17,12 @@ app.use("*", cors());
+ // GET /, /models, /tiers เป็น info endpoint เปิดไว้ตามเดิม
+ app.use("/chat/*", authMiddleware);
+ app.use("/search/*", authMiddleware);
++app.use("/audio/*", authMiddleware);
+ 
+ // Routes
+ app.route("/chat", chat);
+ app.route("/search", search);
++app.route("/audio", audio);
+ 
+ // GET / - แสดง info โปรเจกต์
+ app.get("/", (c) =>
