@@ -136,3 +136,30 @@ real one — no Claude seat ever touches a credential or runs a login.
 Also changed, same day: **no hourly keep-fresh** (owner: *"ทำไมต้องทำให้มันทำงาน เปลืองคอมฉันทุกชั่วโมงด้วย"*).
 It runs **once when this seat opens**. The scheduler offer is withdrawn. My reply in
 `REQUEST-porter-to-pokervault-2026-11-07-som-course.md` quoted the withdrawn rule and has been corrected there.
+
+---
+
+## UNLOCK-007 · 2026-11-07 · uat for Porter/Tanya (REQ-5004 gate, TEST-138 — read only)
+
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-07-uat.md` (Porter): *"signed-in session for
+  Tanya (QA) to run REQ-5004's uat gate (TEST-138): SOM Dashboard cards, lists and capacity,
+  read only"* — the customer's system.
+- **Decision first:** `uat` is a `session-import` site in `sites.json` (the owner exports it; nothing
+  auto-renews it). I kept that default and added an explicit one-off switch instead of flipping the
+  mode: `login.mjs --allow-import`, which refuses without the flag. This was a deliberate exception,
+  logged here because it is the customer's system.
+- **Ran:** read-only probe of the login page (GET only, no credential) → same standard form as som;
+  then `node picklocker/login.mjs uat --allow-import` (owner's credential file, git-ignored
+  `picklocker/access.txt` — the uat entry there is the same live pair).
+- **Verified:** status **200** · final URL `https://frontoffice.develyst.online/scheduler/calendar` ·
+  **AUTHENTICATED** at **03:06**.
+- **Read-only proof:** `node picklocker/check-card.mjs uat` → `AUTHENTICATED · 200 · /scheduler/calendar`
+  with **every non-GET request aborted** (route filter) — the reads the gate needs work; the check
+  writes nothing.
+- **Handed:** `picklocker/state/uat.json`
+- **Result:** `UNLOCKED` — reply written into the request file at 03:06.
+- **Wake:** watcher `pwsh-a46092c75e1a458f` fired at **03:05:42**.
+- **Standing risk noted:** a card on the customer's system lets a careless harness write. The
+  control is the QA's own rule (read-only; every write is a DATA REQUEST), plus the GET-only check
+  above. If the owner wants uat logins to stop entirely, `sites.json` mode stays `session-import`
+  and the `--allow-import` flag is never used — that is his call, recorded in POKERVAULT.md.

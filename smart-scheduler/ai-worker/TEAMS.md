@@ -28,3 +28,7 @@ Names are the operator's — filled from DESK-OPEN B1. A row with an empty name 
 | Silver | SA · B | `@Silver` | `inbox/SA-B.md` |  | `SPEC-NNN`, `TASK-NNN` |
 | Fanta | FE · B | `@Fanta` | `inbox/FE-B.md` |  | — (works on `TASK-*`) |
 | Bob | BE · B | `@Bob` | `inbox/BE-B.md` |  | — (works on `TASK-*`) |
+| Sector | SA · C | `@Sector` | `inbox/SA-C.md` | `Sector-SOM` | `SPEC-NNN`, `TASK-NNN` |
+| Brew | BE · C | `@Brew` | `inbox/BE-C.md` | `Brew-SOM` | — (works on `TASK-*`) |
+| Flash | FE · C | `@Flash` | `inbox/FE-C.md` | `Flash-SOM` | — (works on `TASK-*`) |
+| Twenty | QA · all | `@Twenty` | `inbox/QA-2.md` | `Twenty-SOM` | `TEST-NNN` |

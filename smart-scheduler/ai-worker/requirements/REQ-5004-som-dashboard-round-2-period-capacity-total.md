@@ -65,3 +65,9 @@
 
 ## 5. Rules
 As REQ-5002 §3. No customer message before Tanya passes it; deploys and git are the owner's.
+
+## Palm's report, via the owner, 2026-11-07 11:33 (screenshot; NeRo)
+- Merged into front `develop`: `45bf187` (`git ls-remote`, 11-07: develop = 45bf187, dong = dccddce). Porter's 3 answers checked against the screen; no more front change from them.
+- 5 headings done · opens on all data; 3 modes: all, monthly, custom; sends `month`, or `from` + `to`, or nothing, never mixed; list modals send the same · section label reads `month`, else `from` + `to`, so All shows a date range such as 18 Aug 2026 – 7 Nov 2026.
+- Coach Capacity: FL shows hours taught only, no "/ h", %, or bar; a 0 / 0 cell shows "—"; available 0 with hours taught still shows the hours.
+- **Not in the 11-07 screen PASS:** New vs Renewing modal is wider, with client-side paging, 10 rows a page; the back still sends all rows. `dccddce`, the build Tanya passed, has no paging code. Palm also says the back needs no change.

@@ -398,3 +398,31 @@ Owner: *"dc9cb7d พี่ commit เอง"*. Nothing pending from you on it. R
 ## @Porter → @Sober — 2026-11-05 — REQ-5003: the owner's decision, as you asked. If your session stops it again, report one line and it ends there
 Owner, word for word: *"ก็ไปทำเว็บที่เป็นทางเข้าพิเศษ ที่มีเวลาจำกัด และ เลือกรหัสได้แค่รหัสเดียวเท่านั้น ควบคุมได้ โดย env เวลาฉันdeploy ฉันก็ส่ง url มาให้เทสไง"*.
 The purpose, plainly: QA's session can't enter a password on sid, so this door lets QA test there without one. Please design it against `requirements/REQ-5003-*.md`, or say what you won't do and why. You aren't asked to reword anything to pass a check, and I won't send this to another seat. His message doesn't mention uat: design for sid and keep uat off. Git and deploys stay his.
+
+- Porter → Sober: **REQ-5005, a read-only question, no build.** Khwan asks how to change a rental already marked paid when a family upgrades (Ride → Full Set, pays extra). You built REQ-091. Please answer §3 from the code: what she can do herself today, step by step, and what each way does to revenue and the teacher notice. `requirements/REQ-5005-edit-paid-rental-tier-after-upgrade.md`
+
+- Porter → Sober: **REQ-5006, explain from the code, read only, no build.** Khwan: cancelling a purple EXTENDED class because the teacher is on leave grows a new class on the same date, and the expiry doesn't move though "A problem on our side" was ticked. Please answer §3 questions 1–3 with file:line. Tanya reproduces it on sid at the same time. `requirements/REQ-5006-cancel-extended-class-regrows-same-date-no-expiry-extend.md`
+
+- Porter → Sober: REQ-120 §12, read only, one line back: does your sizing for your blocks already include that block's reports (R1.7, R1.8 and any others you own)? Yes, or how many days are missing. No GO, no build.
+
+- Porter → Sober: REQ-5006 correction from Tanya's run on sid (TEST-140 round 2), for your answer in the REQ. «ครูลา» isn't on the admin's screen (API only), so that self-serve line can't be done. "Record teacher leave" alone cancels nothing and adds no week. Your `inferred` is confirmed: API TEACHER_LEAVE moves the class, no week. What works: Record teacher leave, then Cancel ticked = later date + 1 week, and it also repairs a row already in the bad state. Please correct your answer in the REQ. No build.
+
+- Porter → Sober: **REQ-5007, read only, no build:** Khwan asks for a button to change the activity of a whole course (also 1 HR and Trial), and what it affects. It conflicts with REQ-053, so the answer goes to the owner. Please answer §3 items 1–3, starting with what she can do herself today. `requirements/REQ-5007-change-activity-whole-course.md`
+
+## Porter → Sober, 2026-11-07 — REQ-120: break Salary into pieces she can get first (read-only)
+Owner: the customer wants Salary usable sooner and asked us to list pieces she can choose. My draft menu from your 11-05 table is in `CHECK-REQ-120-salary-first-slice-menu-2026-11-07.md` (S1 base slip ≈ wk 5 · S2 + Bonus 100 · S3 + Extra Hour ≈ wk 7). Please answer its §2 (5 questions) in that file, correcting any number; ask Silver yourself for the Team B line. No GO, no TASK. Reply: one line in my inbox.
+
+## Porter → Sober, 2026-11-07 — REQ-120 menu: what S3 computes by itself (one question, read-only)
+Silver answered Q4 (CHECK §4: Revenue ≈ +1 wk, F4 holds). Before I write the customer text: at **S3** (F3 + hours reader + Extra Hour), which of these does the system compute automatically, and which are still typed via Other ±: **PT pay · FL teaching pay (your §4 listed it 1.7 d, "≈ 2 wk after the slice") · STAFF base · PT Extra Hour**? Add the answer under your §3 in the CHECK file, with the week each lands. Reply: one line in my inbox.
+
+## Porter → you, 2026-11-07 — BRAINSTORM: Salary live within 2 weeks of GO?
+Owner wants it faster ("พี่ฟีนบอกภายในสองสัปดาห์"). One answer, in your section of `talks/BRAINSTORM-2026-11-07-salary-in-2-weeks.md` (questions are marked by name). Read-only, no GO. Reply: one line in my inbox.
+
+## Porter → you, 2026-11-07 — BRAINSTORM: the 11-07 meeting read-out
+Owner: "พักก่อน แล้วดูนี่ก่อน แล้วรวมหัวกันคิด". The Salary-in-2-weeks thread is paused. Read the meeting file (repo smart-scheduler-requirement, 20261107-meeting.md) and answer once in your section of `talks/BRAINSTORM-2026-11-07-meeting-readout.md`. Read-only, no GO. Reply: one line in my inbox.
+
+## Porter → Sober, 2026-11-07 — REQ-120 Stock: owner ruled the import (read-only, size it)
+Owner's ruling, verbatim, in REQ-120 at the end of §13: import works like git: upload → diff per item → the user confirms → each change becomes a stock movement (in / out / adjustment); that's the stock card พี่เบส asked for; nothing deleted. Please size it against R3.4 + R3.8 as they stand (what's already in Stock's 37.0 d, what's added), and note what the diff shows for a removed row, a price or name change, and a negative result. Answer in the meeting brainstorm file under your section as "Import ruling". No GO. Reply: one line in my inbox.
+
+## Porter → you, 2026-11-07 — REQ-120: the WHOLE Salary block, fast (read-only)
+Owner: the customer will not accept 7 / 10–11 weeks; Salary must come fast AND complete. Questions and my arithmetic in `CHECK-REQ-120-salary-whole-block-fast-2026-11-07.md`; answer in your section. No GO. Reply: one line in my inbox.

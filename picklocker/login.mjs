@@ -37,8 +37,8 @@ if (!site) {
   console.error(`Unknown site "${key}". Known: ${Object.keys(sites).filter((k) => !k.startsWith('//')).join(', ')}`)
   process.exit(2)
 }
-if (site.mode === 'session-import') {
-  console.error(`"${key}" is a session-import site (${site.note ?? 'OAuth/Cloudflare Access'}); the owner exports state/${key}.json once — no password login here.`)
+if (site.mode === 'session-import' && !process.argv.includes('--allow-import')) {
+  console.error(`"${key}" is a session-import site (${site.note ?? 'OAuth/Cloudflare Access'}); the owner exports state/${key}.json once — no password login here. A deliberate one-off needs --allow-import, and that is the owner's call, not a default.`)
   process.exit(2)
 }
 

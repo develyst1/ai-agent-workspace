@@ -72,6 +72,22 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-035 — 2026-11-07 — SA Lead Team A (Sober) — Named an API-only cancel reason («ครูลา») as a self-serve step in a REQ-5006 answer without checking it is on the admin screen
+- **Status:** NEW
+- **What happened:** answering REQ-5006 §3 (what Khwan can do today), I wrote "cancel the class with the reason «ครูลา» (TEACHER_LEAVE)" as a self-serve door. `TEACHER_LEAVE` is an **API-only** reason — it is not on the admin's cancel screen — so the step cannot be done from the UI. I had cited the service/handler code but not the render line that would prove the reason is selectable. Tanya's sid reproduce (TEST-140 round 2) caught it and found the recipe that actually works.
+- **Rule involved:** role-sa §6, *"A method existing is not the user reaching it … Cite the render line"*, and §3's DoD *"Every claim that a user can do something cites the line that renders/exposes it."* I cited the handler, not the screen.
+- **How it was caught:** QA (Tanya) on sid, before any customer message — the self-serve answer had not yet gone out.
+- **Cost:** one correction round; no customer impact (nothing had been sent).
+- **Evidence:** `requirements/REQ-5006-*.md` "## Answer" (original Q3 + the "Q3 — CORRECTED" block) · `inbox/SA.md` 2026-11-07 (Porter relaying Tanya) · `log/2026-11-07.md`.
+
+## F-034 — 2026-11-07 — PM (Porter) — Dropped the customer's back-office report messages: noted a cut-off line, never asked for it, and nothing tracked her report-page feedback
+- **Status:** NEW
+- **What happened:** On 11-05 a Khwan message was cut off in the owner's screenshot; its tail mentioned teaching reports, activity statistics and back-office money. I wrote in REQ-5002 §1 "Porter asks the owner for the whole line if it matters" and never asked. The same day she said she would check the report pages and feed back (log 11-05, REQ-120 §11). No board row or REQ tracked either, so REQ-5002 and REQ-5004 closed around the front office only.
+- **Rule involved:** Intake discipline: a customer item is written to its home file the moment it is known, and an "ask later" note needs an owner on the board.
+- **How it was caught:** by the owner, 2026-11-07: *"เหมือนเขาทักเรื่อง report ด้วยนะ ไม่รู้นายลืมหรือเปล่า ของ backoffice"*.
+- **Cost:** the customer's report question sat unanswered for 2 days, and the owner had to notice it.
+- **Evidence:** `requirements/REQ-5002-*.md` line 43; `log/2026-11-05.md` line 7; `log/2026-11-04.md` line 7.
+
 ## F-033 — 2026-11-05 — PM (Porter) — Relayed Tanya's "owner, please sign in" to him without checking; her access already existed (third time on login: 09-24, 09-26, 11-05)
 - **Status:** NEW
 - **What happened:** Tanya stopped logging in to sid and asked the owner to sign in for her in her pane. I passed that to him three times in one evening and offered it as my recommended option, without opening `project-docs` or checking that she had logged in from his access file all along. F-005 records the same mistake on 09-24 (sid login) and 09-26 (uat access), and that fix (ORDER 12.3) did not stop it.

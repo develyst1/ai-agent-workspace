@@ -1,5 +1,5 @@
 # TEST-138: REQ-5004 SOM Dashboard round 2 gate (TASK-756 + 757, one build)
-**Status:** ⏸ PREPARED 2026-11-06, NOT RUN. Waits for Porter's word that the owner has deployed sid. Then Karn's SQL (DR-9).
+**Status:** ✅ TEST_PASSED on sid, 2026-11-07, for what this round could reach (the API, and today's month screen). **Palm's screen: ✅ TEST_PASSED on sid 2026-11-07** (last section); not yet run on uat, which needs the front deployed there. **Uat:** ✅ TEST_PASSED 2026-11-07, read-only, on the same reach; see the last section.
 **Source:** `requirements/REQ-5004-*.md` §2, §3, §4a · `CHECK-REQ-5004-som-round-2-2026-11-06.md` · TASK-756, TASK-757. REQ-5002 §4–§7 for the lines that must not move.
 **Tanya's limits here:** the owner signs in himself, in my pane; I type no password. Sid: QA data only, cleaned up and declared. GETs and my recount run inside the page; counts and ids come out, nothing is sent elsewhere.
 
@@ -117,7 +117,14 @@ AC-1 (headings) · AC-2's screen half (opens on all data, the from–to control)
 - **REQ-5004's customer message** is held (Porter); it goes through me once rewritten.
 
 ## Test data created
-- **So far, sid:** none in the app. In the pane's browser storage only: `qa-t138-baseline` (the old build's report, for the diff) and `qa-t138-dr8` (ids + dates). Deleted at step F.
+**Sid, 2026-11-07, note "QA TEST-138". All soft records, so they stay visible as cancelled. 13 existing QA children, none with a parent, so no family could get a notice.**
+- **16 bookings, all cancelled:** `14933fb3` `83e37c1c` `60ac2a9a` `bf905972` `b8a810a4` `bbf757de` `86803b89` `8ccdccf2` `bdb836c5` `0c7918aa` `db4d853d` `b472f656` `9ee0cc5a` `42f398cf` `8b2719d2` `b195bcb2`.
+- **4 courses, cancelled (ADMIN_ERROR):** `2d1eab04` `8e938e35` `d94a0915` `a2360b33`. Their 16 classes dated in December onward: 0 live.
+- **4 vouchers, cancelled (ADMIN_ERROR):** `b97a05c0` `a4e4cd04` `b38d15d4` `b52f8c00`.
+- **1 coach, archived:** `ce39b746` (PART_TIME, "QA PT TEST-138"). Its 2 leave days (11-14, 11-16) were removed.
+- **Attended, then cancelled:** `86803b89` and `8b2719d2`. Undo was refused (409 `UNDO_STAFF_ATTEND`), so I cancelled them directly; that worked.
+- **Not checked:** whether the sales, the attended classes or the cancels left revenue rows on sid.
+- **The pane's browser storage:** `qa-t138-baseline` deleted as planned. **`qa-t138-dr8` kept on purpose** (ids + dates, no names): Palm's round needs the recount, and DR-8 can't be re-read without the owner. It goes when that round ends.
 - **Uat:** nothing, not opened for this test.
 
 ## DR-9 ruling, 2026-11-06 (Porter, `inbox/QA.md`; filed as `DATA-REQUEST-karn-weekend-capacity-2026-11-06.md`)
@@ -134,3 +141,290 @@ AC-1 (headings) · AC-2's screen half (opens on all data, the from–to control)
 - **Karn's Monday adds no capacity** (PT weekday rate 0). Any Monday class he has stays real in his weekday cell and out of his Hours.
 - **Coaches on the list:** 28 → 29; PT 5 → 6; FL inactive 1 → 0. Karn's booked hours join the PT row.
 - **My recount:** gets Karn's id in `window.__OWN` (4 h) before it runs.
+
+## The run, 2026-11-07 (sid, after the owner's "deploy sid แล้ว")
+**Instrument:** the API inside my signed-in pane, GETs + the built cases above, and today's screen on Oct and Nov. Desktop width. **Build:** whatever the owner deployed to sid; `/api` gives no build id. It answers with the new `from` + `to`, and his migrate output shows 0073 applied (74 recorded, as relayed by Porter). Sid's date was 11-07, not the baseline's 11-06.
+
+### Verdict by step
+| Step | Result | Evidence |
+|---|---|---|
+| A. Deploy | ✅ | `from` + `to` echoed; `/teachers` loads; the screen opens on a month |
+| B. A month must not move | ✅ | Below |
+| C. Total, capacity, leave, Karn | ✅ | Below |
+| D. Built cases | ✅ | Below |
+| E. Period API | ✅, with 1 named gap | Below |
+| F. Clean up | ✅ | Numbers back to the start; 0 live QA rows |
+
+### B. A month must not move (AC-6)
+Against the old build's saved report. Comparison ignores the new `from` + `to` fields and key order.
+| Month | Cards moved | List rows | Demographics · activity | Card = list = my recount |
+|---|---|---|---|---|
+| Sep | Total only (52 → 38, ruled) | identical, 6 lists | identical | ✅ |
+| Oct | Total only (63 → 40, ruled) | identical, 6 lists | identical | ✅ |
+| Nov | Total (63 → 33, ruled) · Active course 81 → 78 · Not renewed 12 → 13 | 1 row added on Not renewed | identical | ✅ |
+
+**Nov's 2 extra moves are the date, not the build:** today went from 11-06 to 11-07, and my recount, written from the rules, gives 78 and 13 for 11-07. I didn't trace those courses one by one.
+
+### C. The changed rules, every number as written down before the deploy
+| Month | Total | Card 3 | Available FT · PT · FL | Booked FT · PT · FL |
+|---|---|---|---|---|
+| Sep | 38 ✅ | 3 ✅ | 1803 · 272 · 0 ✅ | 238 · 7 · 16 ✅ |
+| Oct | 40 ✅ | 4 ✅ | 1852 · 306 · 0 ✅ | 308 · 13 · 39 ✅ |
+| Nov | 33 ✅ | 3 ✅ | 1782 · 306 · 0 ✅ | 196 · 8 · 8 ✅ |
+
+- **Per coach:** 29 / 29 match my recount on Sep, Oct, Nov, on hours in each cell.
+- **Karn:** PART_TIME, work days 0/1/6, **32 · 36 · 36 h**, which is 4 h × 8 · 9 · 9 Sat–Sun days; Monday adds nothing. So the 4 h is live, though Porter's last note said the UPDATE was still pending. The API doesn't show the value itself; the hours prove it.
+- **Leave:** FT on real data (a Friday and a Saturday in Oct, off at 5 and 6 h, in the 29 / 29). PT on a QA coach (Sat–Sun + Mon): Nov 54 h → **48 h** with a Saturday and a Monday on leave, so -6 and -0; back to 54 when removed.
+- **The screen:** on Oct and Nov, cards and By type = the API. Read per coach on Nov only: Karn 0 / 36 h; PT Hours = weekend only with the weekday cell real (e.g. 3 / 0 h, Hours 0 / 54 h); FL "6 / 0 h", 0%. Oct's "not renewed" card opened a list of 11 rows = the card.
+
+### D. Built cases, read as the change on Nov's cards after each step
+| # | Build | Moved | Expected |
+|---|---|---|---|
+| D1 | 1st attended, then a voucher | Card 3 -1; No course stays +1 | ✅ |
+| D2 | Voucher, then a 1st after it | Card 3 no change | ✅ |
+| D3 | Cancel that voucher | Card 3 +1 | ✅ |
+| D4 | 1st, then 1 HR the next day | Card 3 -1, card 4 +1 | ✅ |
+| D4b | 1st, then 1 HR the same day, earlier hour | Card 3 -1, card 4 +1 | ✅ |
+| D5 | 1 HR, then a 1st after it | Card 3 +1, card 4 stays | ✅ |
+| D6 | 1 HR after the 1st, then cancelled | Card 3 back +1, card 4 -1 | ✅ |
+| D7 | 1st + 1 HR dated 11-20 | Card 3 stays; card 4 +1 | ✅ (today only; I can't move the date) |
+| D8 | 1 HR, then a voucher (Silver's trap) | Card 4 stays | ✅ |
+| D9 | 1 HR, then a course | Card 4 -1 | ✅ |
+| D10 | Course + voucher + 2nd course, one child | Total +1 only; Active course +2, voucher +1 | ✅ |
+| D11 | DUO course | Total +2, Active course +1 | ✅ |
+| D12 | Children with only cancelled courses | Not in Total: on real data, in the recount | ✅ |
+| D13 | Archived holder | Out of Total, still on the Active cards: on real data, by the recount's cut (Oct 41 − 1, Nov 34 − 1 as read before the deploy). I didn't check whether that child's holding is a course or a voucher, and built no archived child | ✅ |
+
+**With all of them live,** a recount loaded from scratch still matched: 0 differences on 6 periods, 29 / 29 coaches.
+
+### E. The period, API only
+- **Card = list = recount, 0 differences:** all data · 09-15 to 10-20 · one day (10-10) · 10-15 to today · 09-01 to 09-20 · 08-18 to 08-31 · 11-01 to today.
+- **All data:** echo 2026-08-18 → 2026-11-07, `month` null; New previous = 3, so not always 0.
+- **A month = its own dates:** Oct and 10-01 to 10-31 give the same report and rows, apart from the echo.
+- **Past as-of:** 09-01 to 09-20 reads Active 57 and Total 31, that day's, against Nov's 78 and 33.
+- **400 on both endpoints:** only `from` · only `to` · `from` > `to` · future `to` · `month` + range · 02-30 · bad format. A range ending today gives 200.
+- **Branch filter, first real test:** sid's real bookings carry no badge, so all 4 values read 0 (every card = its list). I tagged a QA 1st and a QA voucher class with 1 value. On a month and on a range: 1st, No course, card 3, Active voucher and Total each read 1; another value still reads 0; 2 values together behave as OR. Every card = its list.
+
+**A new coach on all data:** created today: all data 6 h (today, a Saturday) · 11-01 to today 12 h · Nov 54 h · Oct 54 h. So all data starts at the created day, and a month or a range stays as asked.
+
+## NOT_TESTED, named
+| What | Why | What settles it |
+|---|---|---|
+| AC-1 · AC-2's screen half · AC-5's FL display | Palm hasn't shipped | Palm's round |
+| All data's available hours on existing coaches | The optional `created_at` read hasn't reached me. Booked hours are checked, and the rule held on the 1 coach above | The SELECT in DR-9, if wanted |
+| Leave on Karn's 4 h rate | Sid is QA data only, so I didn't add leave to his row. The same code passed at the 6 h rate | Karn's first real leave, or the owner's word |
+| Branch filter on a course | I tagged a voucher class; a course goes through the same check in the code, which is a read, not a run | One tagged course row |
+| A phone-width screen | Desktop only this round | Palm's round |
+| Uat | Not this round | Uat's gate, with fresh buy days + expiry |
+
+## Karn's case, re-read after the owner's word, 2026-11-07 02:49 Bangkok: ✅
+Owner's result via Porter: "1 row updated" (PART_TIME, active, work days 0/1/6, weekend_capacity_hours 4). That explains what the first run saw, so no one else changed the row.
+
+| Month | Karn's Sat–Sun available | Weekday available | Leave on file | PT available |
+|---|---|---|---|---|
+| Sep | 32 h (8 days × 4) | 0 | 0 | 272 |
+| Oct | 36 h (9 days × 4) | 0 | 0 | 306 |
+| Nov | 36 h (9 days × 4) | 0 | 0 | 306 |
+
+- **As predicted in the DR-9 ruling above.** Coaches on the list: 29.
+- **Limit:** Karn has no class in these months (booked 0 on every cell), so a Monday class staying in the weekday cell wasn't seen on that row. The rule was seen on other PT coaches.
+
+## Uat round 1, 2026-11-07 03:08 Bangkok: READ-ONLY. No defect so far, NO verdict yet
+**Card and guards:** `picklocker/state/uat.json` (PokerVault, 03:06), loaded as-is, headless. The exact page answered 200 at `https://frontoffice.develyst.online/scheduler/som`. Every non-GET was aborted in the browser: the only one tried was `POST /cdn-cgi/rum`, Cloudflare's page analytics, not the app. All counting ran inside the page; counts and short ids came out; nothing was saved. I changed the month and the By type tab on screen only, which is local to my own browser. **Nothing on uat was created, edited or cancelled.**
+**Build:** whatever the owner deployed; no version is shown. It echoes `from` + `to`, and his migrate output shows 0073 applied (74 OK, via Porter).
+
+| Month | Active course · voucher | Card 3 | 1 HR | Total | 1st · New this · New prev · Renew · No course · Not renewed | Available FT · PT · FL (after Karn's 4 h) | Booked FT · PT · FL |
+|---|---|---|---|---|---|---|---|
+| Sep | 187 · 39 | 68 | 35 | 217 | 68 · 10 · 4 · 52 · 58 · 20 | 818 · 320 · 0 | 337 · 163 · 240 |
+| Oct | 188 · 50 | 127 | 88 | 228 | 123 · 27 · 0 · 55 · 96 · 32 | 844 · 360 · 0 | 510 · 275 · 419 |
+| Nov | 185 · 51 | 115 | 92 | 225 | 8 · 1 · 1 · 23 · 7 · 8 | 811 · 360 · 0 | 283 · 206 · 300 |
+
+### What holds
+- **Card = list row count:** 8 periods (Sep · Oct · Nov · all data · 09-15 to 10-20 · 10-10 · 10-15 to today · 09-01 to 09-20), all 6 lists: 0 differences.
+- **Active, voucher, card 3, 1 HR, Total = my recount as of today:** Nov, all data, 10-15 to today: 0 differences. **Total Nov:** 226 holders − 1 archived = 225. **Card 3 Nov:** 165 on the old rule → 115.
+- **Capacity:** 24 of 24 coaches on booked hours in every period; on available hours in every period but all data. FT · PT · FL by type = the sum of their coaches; FL available 0. No FT on all 7 days here.
+- **A month doesn't move, Oct against TEST-137's table of 11-06:** 9 of 11 lines are the same. Only Total (502 → 228) and card 3 (176 → 127) moved, the 2 ruled changes. **Cards only:** I have no row-level baseline on uat.
+- **Nov moved since 11-06:** Active course 195 → 185 · 1 HR 91 → 92 · 1st 7 → 8 · No course 6 → 7 · Renew 21 → 23 · Not renewed 6 → 8. The date moved and uat is live, and Active agrees with my recount for 11-07. The others have no recount yet.
+- **A month = its own dates:** Oct and 10-01 to 10-31 are the same report, apart from the echo.
+- **400 on both endpoints:** all 7 bad requests.
+- **All data:** 2026-08-09 → 2026-11-07, `month` null.
+- **The screen, Oct and Nov:** cards and By type = the API. Nov: PT weekday cell "14 / 0 h", 0%; Hours weekend only; FL "300 / 0 h"; these are the two "not a bug" readings Porter's brief named.
+
+### Karn on uat (`c3648d58`): the 4 h is already live; who ran it is Porter's to confirm
+- **Row:** PART_TIME, active, work days 0/1/6, no leave on file.
+- **My first run read Sep at 48 h (6 h × 8 days), then every later read at 4 h.** The re-read minutes later gives Sep 32 h on the month and on 09-01 to 09-30. So the value changed during that run; it isn't a Sep-only fault. The first run's Sep row and PT total (336) are from before the change; the table above has the re-read.
+- **Now:** Sep 32 · Oct 36 · Nov 36 (4 h × 8 · 9 · 9 days); 09-15 to 10-20 40 h (10 days); 10-10 4 h; weekday available 0.
+- **The Monday rule, the limit left open on sid, is seen here:** Oct weekday booked 1 h, Hours 40 / 36 h on weekend only.
+- **Screen, Nov:** 28 / 36 h, weekday 0 / 0 h, 78%.
+
+### NOT_TESTED on uat, named
+| What | Why | What settles it |
+|---|---|---|
+| Recount on past months and past ranges: Active, voucher, card 3, 1 HR, Total | They read as of a past day, which needs buy days + expiry moves | The owner's CSVs |
+| New this, New prev, Renew, Not renewed row by row, No course and 1st against a recount | Same | The owner's CSVs |
+| Card 3's and Total's rules on built cases | Read-only: no building on uat. They passed on sid | Nothing more on uat |
+| All data's available hours | No `created_at` on the API; booked hours are checked | A SELECT, if wanted |
+| Branch filter | Uat has 1 badge with 0 values, so there's nothing to filter by | A badge value on uat |
+| AC-1 · AC-2's screen half · AC-5's FL display | Palm hasn't shipped | Palm's round |
+
+### Test data created (uat)
+None. Read-only.
+
+## Uat round 2, 2026-11-07 03:13 Bangkok: ✅ TEST_PASSED, READ-ONLY
+**Replaces "no verdict yet" above.** The same `gate.js` that was checked on sid, fed the owner's CSVs (`project-docs/qa-2026-11-07/uat-dr/`: 592 buy days, latest 11-06; 326 expiry changes). Same guards as round 1: headless, non-GET aborted (only `POST /cdn-cgi/rum` was tried), counts out, nothing saved. The CSVs went into a throwaway browser session and were removed from it. **Nothing on uat was created, edited or cancelled.**
+
+**Every purchase on uat is in the CSV (0 undated), and no id collides on its first 8 characters.**
+
+| Period | Active course · voucher · card 3 · 1 HR · Total | 1st · New this · New prev · Renew · No course · Not renewed | Booked / available FT · PT · FL | Old-rule card 3 · holders − archived | Differences · coaches |
+|---|---|---|---|---|---|
+| Sep | 187 · 39 · 68 · 35 · 217 | 68 · 10 · 4 · 52 · 58 · 20 | 337/818 · 163/320 · 240/0 | 80 · 219 − 2 | 0 · 24/24 |
+| Oct | 188 · 50 · 127 · 88 · 228 | 123 · 27 · 0 · 55 · 96 · 32 | 510/844 · 275/360 · 419/0 | 176 · 229 − 1 | 0 · 24/24 |
+| Nov | 185 · 51 · 115 · 92 · 225 | 8 · 1 · 1 · 23 · 7 · 8 | 283/811 · 206/360 · 300/0 | 165 · 226 − 1 | 0 · 24/24 |
+| All data | 185 · 51 · 114 · 91 · 225 | 224 · 38 · 5 · 135 · 181 · 77 | 1085 · 590 · 872 booked | 164 · 226 − 1 | 0 · 24/24 booked |
+| 09-15 to 10-20 | 188 · 49 · 114 · 75 · 228 | 124 · 23 · 0 · 49 · 102 · 29 | 497/980 · 231/400 · 392/0 | 156 · 229 − 1 | 0 · 24/24 |
+| 10-10 | 194 · 44 · 82 · 52 · 223 | 8 · 0 · 0 · 1 · 8 · 0 | 27/36 · 28/40 · 26/0 | 108 · 224 − 1 | 0 · 24/24 |
+| 10-15 to today | 185 · 51 · 114 · 91 · 225 | 69 · 16 · 1 · 54 · 57 · 28 | 357/646 · 224/280 · 327/0 | 164 · 226 − 1 | 0 · 24/24 |
+| 09-01 to 09-20 | 169 · 36 · 62 · 33 · 194 | 55 · 5 · 4 · 44 · 50 · 16 | 265/551 · 154/240 · 214/0 | 71 · 198 − 4 | 0 · 24/24 |
+
+- **Differences covers:** all 11 cards against my recount; every list's length against its card; New this, New prev, Renew and Not renewed row by row. 1st and No course are matched on count, not row by row.
+- **The rules moved what they should:** Oct's old-rule card 3 reads 176, the same as TEST-137's table, against 127 now.
+- **Past as-of:** 09-01 to 09-20 reads Active 169 and Total 194, that day's, against today's 185 and 225.
+- **Nov's moves since 11-06:** every line matches the recount on today's data. The lists hold rows dated 11-06 (1st 1 · No course 1 · Renew 4 · Not renewed 2), consistent with live data arriving after that table; I didn't compare the two days row by row.
+
+**Karn on uat: ✅.** The owner's read then "1 row updated" (via Porter) accounts for the change I saw at 03:08. Re-read: PART_TIME, active, days 0/1/6, no leave, Sep 32 · Oct 36 · Nov 36 h, steady across 2 runs since; Oct's 1 h Monday class stays in the weekday cell and out of Hours. The recount now counts Karn at 4 h and agrees on every period.
+
+### Still NOT_TESTED on uat
+| What | Why | What settles it |
+|---|---|---|
+| Card 3's and Total's rules on built cases | Read-only. They passed on sid; on uat only the totals are proved | Nothing more on uat |
+| 1st and No course row by row | My recount compares their counts only | Low risk; REQ-5002's lists passed before |
+| All data's available hours | No `created_at` on the API; booked hours are checked | A SELECT, if wanted |
+| Branch filter | Uat has 1 badge with 0 values | A badge value on uat |
+| AC-1 · AC-2's screen half · AC-5's FL display | Palm hasn't shipped | Palm's round |
+| A phone-width screen | Desktop only | Palm's round |
+
+## Customer gate, 2026-11-07: the ฟีน "when is it done" draft: 🔧 FAIL, 3 lines
+**Draft checked:** `COPY-DRAFT-feen-som-dashboard-when-done-2026-11-07.md`, md5 `8c325442229a947a7d9afee6c7b3b2e1` from "พี่ฟีนครับ" to the end of the file (`1b12fe0e2e78b2ff7100f6aa810ff605` without the last newline).
+
+**🔧 3 lines to fix:**
+1. **"ย้ายออกจากรายการ 1st" names the wrong place.** The dashboard has 3 lines called 1st, and only card 3 moves. A child who opens a voucher **stays on "1st Trial, no course"** (D1), and on "1st Trial" if attended. Reading "รายการ 1st", ฟีน could open that list, see the child and call it not fixed.
+   **"ลง 1 HR" is also too wide.** A 1 HR dated after today leaves the child on card 3 until that day (D7), and a 1 HR before the 1st doesn't move them (D5).
+   - **Replace with:** *"เด็กที่มี 1st แล้วเปิด Voucher หรือมีคลาส 1 HR ตั้งแต่วัน 1st จนถึงวันนี้ จะย้ายออกจากช่อง 1st Trial (last 3 months)"*
+2. **"Total customers นับเฉพาะคอร์สและ Voucher ที่ Active อยู่" reads as a sum.** It counts children, each once, so Oct on uat is 188 + 50 = 238 against a Total of 228.
+   - **Replace with:** *"Total customers นับเด็กที่มีคอร์สหรือ Voucher ที่ Active อยู่ คนละ 1 ครั้ง"*
+3. **The screen list leaves out her first item.** "หน้าแรกแสดงข้อมูลทั้งหมด" is in Palm's part and isn't built: uat still opens on the month. ฟีน would read it as done or dropped.
+   - **Replace with:** *"ส่วนหน้าจอ คือหัวข้อตัวใหญ่ การเปิดหน้ามาแสดงข้อมูลทั้งหมด การเลือกช่วงวันเอง และการแสดงชั่วโมงของครู FL อยู่ระหว่างแก้"*
+
+**Holds:**
+- **"แก้ครบแล้ว" on the numbers:** rows 2, 3, 4 of REQ-5004 passed on sid and uat (card 3 and Total's rules on built cases on sid; on uat by recount).
+- **"ขึ้นระบบแล้ว":** uat is deployed, and the owner's UPDATE for Karn's 4 h is in.
+- **"Coach Capacity ... ตาม FT / PT / FL ที่กำหนดมา":** 24 of 24 coaches on uat.
+- **"การแสดงชั่วโมงของครู FL":** still "x / 0 h" on screen, so it belongs in this paragraph.
+- **The rules:** information only, no question to ฟีน; ครับ; formal; "ขวัญ" without พี่; no internal words; no staff name; no cause.
+
+**Yours or the owner's to check, not things I can prove:**
+- **"อยู่ระหว่างแก้":** I only know Palm's part was sent, not that it has started. The owner knows when he fills `[วันที่]`.
+- **"วันนี้" is only true if it goes out on 11-07.** Later, it should say "เมื่อวันที่ 7".
+
+**Optional, your call:**
+- **Leave:** capacity deducts recorded leave, which isn't in her words, so someone working it out by hand can differ. It can wait for the definitions, or add *"(หักวันลาที่บันทึกไว้)"*.
+- **PT weekday cell:** it reads like "14 / 0 h", and Palm's hiding it is optional. Not covered by "ครู FL", so it may draw a question.
+- **The drop:** Oct's Total goes from 502 to 228. She asked for this, but it's the most visible change on the page.
+
+Send it back with the 3 fixes and I'll re-check the new md5.
+
+## Customer gate, re-check, 2026-11-07: the ฟีน "when is it done" draft v2: ✅ PASS
+**Draft checked:** v2, md5 `164f2c400df6fbad58a5d65b01f6ddd2` from "พี่ฟีนครับ" to the end of the file (`bc3cf15eefbe5f8e8fe3bc5e6fcba435` without the last newline).
+- **My 3 fixes are in, word for word.** The first names card 3 and the 1 HR's dates (D1, D5, D7), the second counts each child once, and the third lists the all-data default.
+- **"ขึ้นระบบแล้วเมื่อวันที่ 7 พ.ย.":** true. The owner's uat deploy and my round ran on 11-07, and the date no longer depends on when it's sent.
+- **Everything else** is unchanged from v1 and holds, as in my v1 check.
+
+**This PASS covers the text as it stands, with `[วันที่]` left for the owner.** If anything else changes, the md5 changes and it comes back to me. The owner confirms "อยู่ระหว่างแก้" when he fills in the date, because I only know Palm's part was sent.
+
+## Customer gate, re-check, 2026-11-07: the same draft v3, now to ขวัญ: ✅ PASS
+**Draft checked:** v3, md5 `3b30935059ace7d2ffe693b5a66a597d` from "ขวัญครับ" to the end of the file (`3e8b28166c0b6c9d295da64896c085a2` without the last newline).
+- **Paragraph 1:** the facts are unchanged from v2 and hold. The only change is the name it opens with.
+- **"ส่วนที่เหลือเป็นหน้าจอ":** true. Those 4 are all that's left of REQ-5004: AC-1, AC-2's screen half and AC-5's FL display, with the all-data default and the from–to control both under AC-2. No number is waiting on them.
+- **No date, and Palm named:** both are the owner's own words, so I don't count them against the rule on staff names.
+
+**Not the text's fault, but they're yours to weigh:**
+- **ฟีน's question stays open:** she asked "จะเสร็จตอนไหน", and this gives no date. The owner chose that.
+- **A promise for Palm to keep:** "ปาล์มจะแจ้งกลับเมื่อเสร็จ" only comes true if Palm knows to report back, and to whom. I can't see that anyone has told Palm.
+
+**Optional, one word:** "เดี๋ยวปาล์มจะแจ้งกลับ" is a little casual against the formal-tone rule. "ปาล์มจะแจ้งกลับเมื่อเสร็จครับ" keeps the meaning. It's close to the owner's own wording, so it isn't a fail; a change means a new md5 and a quick re-check.
+
+## Palm's screen, 2026-11-07, sid: ✅ TEST_PASSED
+**Build:** front `dccddce` in my clone, "feat: Add All / Monthly / Custom range periods"; the owner's "deploy หน้าบ้านขึ้น sid แล้ว". The running build shows no version. **Instrument:** headless Chrome through the real controls, `som` card, every non-GET blocked (only `POST /cdn-cgi/rum` was tried). Nothing written, on any system.
+
+| What | Result on sid's screen |
+|---|---|
+| **AC-1, headings** | Existing Customers · New vs Renewing · Coach Capacity · Coach Name · Coach Type, exactly. None of the 5 old spellings left. English screen; the Thai screen keeps its own Thai headings |
+| **AC-2, opens on all data** | "All" selected; its first request has no period. Label 18 Aug 2026 – 7 Nov 2026 on all 3 sections, the same as the API |
+| **AC-2, the control** | All · Monthly · Custom range. A half-picked range leaves the figures alone. Picking 15–20 Oct sent `from=2026-10-15&to=2026-10-20`. Dates after today are disabled. Back to All gives the same figures |
+| **AC-2, every card agrees** | All 11 cards = the API on All · Nov · Oct · 15–20 Oct, 0 differences |
+| **AC-2, lists** | Tried on All, Oct, 15–20 Oct, all 6 lists: each list asks with that period, and row count = the card. An empty list says "0 rows · No data yet" |
+| **Labels** | "1st Trial / 1 HR" reads the window ending at the period's last month: Sep–Nov on All, Aug–Oct on 15–20 Oct, matching the API's `recentFrom` / `recentTo`. Today stays on today |
+| **AC-5, FL display** | Hours taught only: "6 h", weekday "6 h", weekend "0 h". No " / h", no %, no bar (FL cell 2 elements against FT's 5 with a bar). The By type tab uses the same cell in the code; I didn't read FL's row there on this build |
+| **PT "—"** | Weekday cell "—" when there's nothing to show; **real hours when a PT taught on weekdays** ("20 h"). Hours = weekend only. No "/ 0" left. Karn reads 0 / 36 h on Oct |
+| **FT** | Unchanged: %, x / y h, bar. An FT with no weekend days reads "—" too |
+| **Phone, 375 px** | No sideways scroll on the page. The period control fits and works. The date picker fits, with future dates greyed. A list opens inside the screen (93 rows). The capacity table scrolls inside its own box to reach Weekday and Weekend |
+
+**Not tested on this round:**
+- **Uat:** Palm's screen isn't deployed there yet. Same run when it is.
+- **The branch control on the new screen:** the API's filter passed on sid (round 1), but I didn't pick a badge on the new control.
+- **All data's available hours on existing coaches:** still the optional `created_at` read. The screen shows them the same as the API.
+- **A real phone:** this is headless Chrome at 375 px with touch, not a device.
+- **Thai:** only the headings and period words in the dictionary, not a run through each state.
+
+**Worth your eye, not a defect:** on the first pass my phone check counted 392 elements past the screen's right edge. That was my own filter, catching things inside the off-screen menu and the table's scroll box; the page itself doesn't scroll sideways, and the pictures show it fits.
+
+**Evidence (`tests/evidence/`, git-ignored):** `test138s-1-opens-on-all.png` proves it opens on all data; `test138s-3-range-applied.png` the custom range; `test138s-10-fl-rows-desktop.png` the FL rows; `test138s-4-phone-top.png` + `test138s-6-phone-picker.png` + `test138s-11-capacity-phone-scrolled.png` the phone.
+
+## Test data created (this round)
+None. Writes were blocked.
+
+## Palm's `45bf187`, 2026-11-07: NOT on sid, not tested
+**Live test on sid (`som` card, writes blocked):** the Renew list on All still shows **all 93 rows**, "93 rows", no page control, width 780 px. That's `dccddce`'s window, so the paged one isn't deployed. I stopped there, as you said; **no verdict on the new window.**
+
+**`dccddce..45bf187`, read from a throwaway clone in my scratchpad:** 1 commit, 2 files, nothing else.
+- **`NvrDetailModal.tsx`:** size `xl` → `68rem`; client-side paging at 10 rows, with a page control only when there's more than one page; row numbers carry across pages; the count line becomes a range ("from–to of total", `overview.rowRange`); the teacher filter resets to page 1; closing resets to page 1.
+- **`dictionaries.ts`:** removes `som.nvrRowCount`, in EN and TH. No other use of it remains, and `overview.rowRange` exists in the dictionary.
+- **So my PASS on `dccddce` stands for everything else.** That's from reading the diff; the list windows themselves need the run below.
+
+**What I'll run once it's on sid:**
+- **Row count = card across pages,** on All, Oct and 15–20 Oct, walking every page of the longest lists and checking the row numbers run 1 to n with none repeated.
+- **The range line and the page control,** including a list of 10 or fewer (no control) and an empty one.
+- **The teacher filter** on the New lists: back to page 1, count follows.
+- **Reopening** a list, and a different list, starts at page 1.
+- **Phone, 375 px:** `68rem` must not push the window off the screen; the control fits.
+
+**A note on how I read the diff:** you asked me to fetch in my clone. A fetch changes a code repo's refs, and my charter says no state-changing git there, so I cloned into my scratchpad and deleted it afterwards. `smart-scheduler-front` is untouched (still at `dccddce`; `git ls-remote` says develop is `45bf187`).
+
+## The paged list window, 2026-11-07, sid: ✅ TEST_PASSED
+**Live:** the Renew list now reads "1–10 of 93", with a page control, width 1088 px. The build shows no version, so this confirms the paged window, not the commit id. Writes blocked; only `POST /cdn-cgi/rum` was tried.
+
+**Every list walked page by page, row count = card = API, row numbers 1 to n with no gap, never more than 10 on a page:**
+| Period | 1st | New this | New prev | Renew | No course | Not renewed |
+|---|---|---|---|---|---|---|
+| All | 15, 2 pages | 4 | 3 | 93, 10 pages | 2 | 26, 3 pages |
+| Oct | 1 | 0 | 0 | 54, 6 pages | 1 | 11, 2 pages |
+| 15–20 Oct | 0 | 0 | 0 | 7 | 0 | 1 |
+
+- **The range line:** "11–15 of 15", "91–93 of 93", "1–4 of 4". An empty list reads "0–0 of 0".
+- **The page control:** shown only when there's more than one page (shown at 11 rows, absent at 7 or fewer; exactly 10 rows didn't occur). Next works; page 3 reads "21–30 of 93".
+- **Reset:** closed on page 3, reopened: "1–10 of 93". A different list: "1–10 of 26".
+- **Teacher filter:** "1–4 of 4" → pick a teacher → "1–1 of 1".
+- **Phone, 375 px:** no sideways page scroll; window 19–356 px; the control fits at 35–340 px and wraps onto 2 rows with 10 buttons, which looks a little untidy but works; page 2 works by touch; the table scrolls inside its own box.
+
+**Not covered:**
+- **The filter resetting from page 2:** the New lists on sid have at most 4 rows, so it never starts past page 1. That line is in the code, not seen.
+- **Row content page by page:** I compared counts and numbering, not each row's cells against the API. The pages are slices of the one list the earlier row-by-row checks covered.
+- **Thai:** the range line's Thai wording is in the dictionary, not seen.
+- **A real phone:** headless Chrome with touch.
+
+**My earlier screen PASS:** nothing else in the diff touches it, and this run used the same control through All, Oct and a custom range with the cards matching.
+
+**Can uat take this build? From QA's side, yes: no defect on sid.** What's deployed is the owner's call. When it's up, I run the same round on uat, read-only.
+
+**Evidence (`tests/evidence/`, git-ignored):** `test138p-1-renew-page1.png` · `test138p-2-renew-page3.png` · `test138p-3-phone-list.png` · `test138p-4-phone-page2.png`.
+**Test data created:** none.

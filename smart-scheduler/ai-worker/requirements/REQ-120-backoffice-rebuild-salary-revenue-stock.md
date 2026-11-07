@@ -252,3 +252,28 @@ Verbatim:
 **Installments if confirmed (DELIVERY-FACTS Q5):** SALARY 13,500 + Roles 3,600 = 17,100 · REVENUE 13,800 · STOCK 8,300 = 39,200.
 **Open, asked of both SAs 2026-11-05:** the weeks for her first Salary slice. It differs from the slice in DELIVERY-FACTS Q4 (base + manual lines, ≈ 5–6 wk): Extra Hour and Bonus 100 are in it, and Q2.3 says F3 feeds Extra Hour and F4 feeds the bonuses.
 **ECA in Revenue:** already in scope, §2 (the ECA row).
+
+## 12. Reports: per block or all at the end (LINE, 8:22 PM, the owner's screenshots 2026-11-07)
+Khwan, verbatim:
+> @Dong_08 Report แต่ละเรื่องทำสุดท้ายใช่ไหมคะ เราทำเป็นเรื่องๆ หรือ มาทำรวมทีหลังทีเดียวคะ เช่น Report เงินเดือน Report สต็อก อะไรแบบนี้ค่ะ
+
+The owner replied: *"หลังบ้านจะเป็นเรื่องๆครับจบตามก้อนแต่ละเรื่องเลยครับ"*, and to Porter: *"แก้ได้นะ หมายถึงเราจะทำยังไง"*.
+**Porter's reading of this REQ, for the owner to rule:** each block's own reports finish with that block: Salary R1.7 + R1.8, Revenue R2.5, Stock R3.8. The §4 pages (REPORT · STOCK · CHECK IN · COURSE · SALARY · STUDENT) stay last, their content agreed when that part starts. No price change (§9, owner 10-22). The SAs have not been asked whether a block's reports can ship inside it as sized.
+
+**Owner's ruling, 2026-11-07:** *"เอาแบบนั้นแหละ"*. Two layers as read above. Open, read-only, before any GO: both SAs confirm their sizes include each block's reports.
+
+**Sizes confirmed, 2026-11-07:** each block's reports are already inside its size, 0 days missing. Sober: R1.7 2.8 d + R1.8 3.3 d in Salary 43.1; R3.8 4.4 d in Stock 37.0. Silver: R2.5 6.6 d in R2 ≈ 32.8. The §4 pages stay outside these sizes.
+
+## 13. The 11-07 meeting (owner's file, 2026-11-07)
+**Source:** repo `smart-scheduler-requirement`, `20261107-meeting.md`: an AI-written summary of the call, not verbatim. **Read-out and open points:** `talks/BRAINSTORM-2026-11-07-meeting-readout.md`. Headlines as reported: coach confirm + export + CEO reminders kept if small; Stock import described as overwrite (🔴 vs R3.4); พี่เบส asked for a stock card and a Master Plan before work starts; back office dark theme; maintenance 6 months free then 500 ฿/man-day; project total 97,600. Not reported: Bonus 100 A/B, go-live date, GO.
+
+**Owner's ruling on Stock import, 2026-11-07** (replaces the meeting's "overwrite"; R3.4's "never deletes history" stands): *"การ import excel อยากทำแนวคิดเดียวกันกับ gitเลย เวลาอัปเข้ามา ก็ให้ เช็ค diff ว่ามี change ยังไง ให้เขากด ยืนยัน แล้ว ค่อยไป สร้าง movement ให้ เห็นว่ามี การ in out ยังไง นั่นแหละ คือแบบ stockcard ที่พี่เบสบอก เลย"*.
+- Upload → a diff per item (new item, changed quantity +/−, other changed fields) → the user confirms → each change is written as a stock movement (in / out / adjustment). The movements are the stock card. Nothing is deleted.
+- Size: Sober (Stock is Team A's), read-only; the customer is told in the Master Plan.
+- **Sober's size, 2026-11-07:** git-style import ≈ +2.5 d over R3.4's 3.9 d (classified diff + per-line confirm 1.5, each balance change as a movement 1.0) → Stock ≈ 39.5 d. A removed row is shown, never deleted; a price or name change is a field edit, not a movement; a negative result is flagged and refused. A per-item stock card view (running balance) is separate from R3.8: ≈ +2–2.5 d → ≈ 41.5–42 d if wanted. Extras at 263 ฿/d unless the owner folds them in.
+
+**Owner's ruling on course-change revenue, 2026-11-07:** *"เอาแบบ A ก็ได้ แต่ต้องเอามาให้เขาดูด้วย ว่าจะเป็นแบบไหน"*. A = at the change, the sale is split by hours: hours taught stay on the old activity, the rest moves to the new one (Silver, ≈ +1.5 d; may overlap REQ-5007's revenue add-on). Not B (earned per hour). **Before it is built, the customer sees a worked example** (e.g. 10 h skate, 5 taught, switch to bike: what the revenue report shows per activity and month) in the Master Plan, and agrees.
+
+**Owner, 2026-11-07, on พี่เบส's stock card:** *"Stock Card เอาออกไปเลย เพราะ import แบบ git change ตอบโจทย์แล้ว"*. The separate per-item stock card view (Sober ≈ +2–2.5 d) is OUT; the git-style import's movements answer it. Remaining extras not yet priced: slip export 5 d · "remind now" 1 d · git-style import 2.5 d · course-change revenue split 1.5 d · dark theme 0.5–1 d ≈ 10.5–11 d ≈ 2,750–2,900 ฿ at 263 ฿/d (in 39,200 or extra: owner's call).
+
+**Owner, 2026-11-07, on the extras:** *"รวมให้ทั้งหมด"*. Slip export · "remind now" · git-style import · course-change revenue split (A) · dark theme are IN scope, inside 39,200, no extra charge (≈ 10.5–11 d added to the build: Salary +6 d, Stock +2.5 d, Revenue +1.5 d, UI +0.5–1 d). The Master Plan names each as included, and states that asks after it are charged at 263 ฿/d by size.

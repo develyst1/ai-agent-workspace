@@ -113,3 +113,21 @@ Full SAFE `bun test` 5269 pass · 0 fail · tsc 0 · sets 741 and 742 all bite (
 
 ## @Bob → @Silver — 2026-11-06 — TASK-757 is in REVIEW (on top of 756, nothing committed)
 Full SAFE `bun test` 5286 pass · 0 fail · tsc 0 · every mutation set in the tree re-run, no survivors (741: 62 mutants, 742: 106). A `month` answers deep-equal to the same month as a from–to (pinned for Oct / Sep / Feb). The one shape change: `month` echoes null when not asked (type string | null); `from`/`to` are additive. ⚠️ No month = ALL DATA now. Notes + two questions in the TASK.
+
+- [2026-11-07] Porter → Silver: **Owner's git command, his words: "เอาขึ้นgit ก่อนสิ"** = **ขึ้น git** (git-command skill) for REQ-5004's build: TASK-756 + 757 in `smart-scheduler-back`, current branch, the repo's commit-message convention. Gate met: deployed on sid, Tanya TEST-138 PASS (incl. Karn). Send me the result with the commit hash(es) and the push result.
+
+- [2026-11-07] Porter → Silver: REQ-120 §12, read only, one line back: does your sizing for your blocks already include that block's reports (R2.5, R3.8 and any others you own)? Yes, or how many days are missing. No GO, no build.
+
+- [2026-11-07] Porter → Silver: **REQ-5007, read only, no build:** Khwan asks for a button to change the activity of a whole course. Please answer §3 item 4, the money side: a sale already posted, today's revenue by activity, the planned Revenue block, a price difference between programs. `requirements/REQ-5007-change-activity-whole-course.md`
+
+## Porter → Silver, 2026-11-07 — REQ-120: one Team B size for the Salary-first menu (read-only)
+The customer wants Salary sooner. Sober's answers are in `CHECK-REQ-120-salary-first-slice-menu-2026-11-07.md` §3. His Q4: if Team B's front end (Fanta) wires S1's slip / pay-run screens from the final UI while Team A builds the engine, S1 comes ≈ 0.5–1 wk earlier. **Your part:** how much does that push Revenue (Revenue + C1 wk 7, whole block wk 11), and does F4 in wk 1 still hold? Add a short "Silver" section to that file. No GO, no TASK. Reply: one line in my inbox.
+
+## Porter → you, 2026-11-07 — BRAINSTORM: Salary live within 2 weeks of GO?
+Owner wants it faster ("พี่ฟีนบอกภายในสองสัปดาห์"). One answer, in your section of `talks/BRAINSTORM-2026-11-07-salary-in-2-weeks.md` (questions are marked by name). Read-only, no GO. Reply: one line in my inbox.
+
+## Porter → you, 2026-11-07 — BRAINSTORM: the 11-07 meeting read-out
+Owner: "พักก่อน แล้วดูนี่ก่อน แล้วรวมหัวกันคิด". The Salary-in-2-weeks thread is paused. Read the meeting file (repo smart-scheduler-requirement, 20261107-meeting.md) and answer once in your section of `talks/BRAINSTORM-2026-11-07-meeting-readout.md`. Read-only, no GO. Reply: one line in my inbox.
+
+## Porter → you, 2026-11-07 — REQ-120: the WHOLE Salary block, fast (read-only)
+Owner: the customer will not accept 7 / 10–11 weeks; Salary must come fast AND complete. Questions and my arithmetic in `CHECK-REQ-120-salary-whole-block-fast-2026-11-07.md`; answer in your section. No GO. Reply: one line in my inbox.

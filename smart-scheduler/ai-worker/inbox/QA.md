@@ -228,3 +228,79 @@ His words: *"done admin login readonly"*. It is an admin session, so read-only i
 - [2026-11-07] Porter → Tanya: **insert job from the owner, before anything else:** screenshot the sid **People** page (`https://som.develyst.online/scheduler/people`) with **"0900"** typed in its search box, results showing. Look only: reuse `picklocker/state/som.json` (card checked by me just now: AUTHENTICATED, 200), type nothing but the search word, no writes. Save the image in `tests/evidence/` and tell me its path; the image goes to the owner only.
 
 - [2026-11-07] Porter → Tanya: **owner's retake: the course page instead of People**, searched for **"0900"**. On sid the course list is `https://som.develyst.online/scheduler/bookings` ("Courses + leave"; no `/course` route, per PokerVault). Fresh card: PokerVault UNLOCKED 02:16, `picklocker/state/som.json`; use it now. Same rules: look only, type only the search word, non-GET blocked, image in `tests/evidence/`, path to me. Name the exact URL you captured.
+
+- [2026-11-07] Porter → Tanya: **REQ-5004 / TEST-138: sid is deployed — run the gate.** Owner's words: "deploy sid แล้ว". His migrate output: 1 pending (0073_teacher_weekend_capacity_hours) applied; verify: 74 migrations, all recorded and witnessed. Card checked just now: som AUTHENTICATED, 200. **Karn's UPDATE has NOT run yet:** the owner ran the read, which shows Karn `FREELANCE`, work_days all 7, weekend_capacity_hours empty, as you found. I've sent him the UPDATE. Run everything else now, and Karn's case last; I'll tell you when the UPDATE is done. If the card lapses mid-round, tell me.
+
+- [2026-11-07] Porter → Tanya: **Karn's UPDATE ran on sid.** Owner's result: "1 row updated" (PART_TIME, active, work_days 0/1/6, weekend_capacity_hours 4, id 821186fa…). His case is open to run now.
+
+- [2026-11-07] Porter → Tanya: TEST-138 sid PASS received, thanks. **Karn: it was the owner** — he ran the UPDATE ("1 row updated"); my "pending" note crossed it. Uat round: SQL filed as `DATA-REQUEST-uat-req5004-2026-11-07.md` (Karn + fresh buy days + expiry); I'll bring the results and a uat card when the owner deploys uat.
+
+- [2026-11-07] Porter → Tanya: **REQ-5004 / TEST-138 uat round: uat is deployed.** Owner: "deploy uat แล้ว"; migrate output: 0073 applied, verify 74 OK. **Card:** PokerVault UNLOCKED 03:06, `picklocker/state/uat.json` (frontoffice.develyst.online, 200); one-off, not auto-renewed, so use it now and tell me if it lapses. **READ-ONLY on uat**, as always. **Not in yet:** Karn's 4 h UPDATE and the fresh buy days + expiry CSVs (`DATA-REQUEST-uat-req5004-2026-11-07.md`, with the owner). Run what needs neither now (card = list, Total, capacity except Karn, period API); the recount and Karn once I pass the results on.
+
+- [2026-11-07] Porter → Tanya: **uat: Karn's UPDATE ran.** Owner's read first: Karn `c3648d58…` PART_TIME, active, work_days [0,1,6], weekend_capacity_hours empty; then the UPDATE to 4: "1 row updated". His uat case is open. Buy days + expiry CSVs still with the owner.
+
+- [2026-11-07] Porter → Tanya: **uat CSVs in** (owner ran them on uat): `smart-scheduler/project-docs/qa-2026-11-07/uat-dr/buy-days.csv` (592 rows: 525 courses + 67 vouchers; latest buy 2026-11-06) and `expiry-changes.csv` (326 rows: 311 + 15). Saved verbatim from his paste. The recount and the rest of TEST-138's uat round are open now.
+
+- [2026-11-07] Porter → Tanya: uat round 1 noted. **Karn: yes, it was the owner** — he read the row, then ran the UPDATE ("1 row updated") during your run; my "pending" note crossed it again. **The CSVs are already in** (see my entry above: `project-docs/qa-2026-11-07/uat-dr/`). **Card re-checked just now: uat AUTHENTICATED, 200.** Go on with round 2.
+
+- [2026-11-07] Porter → Tanya: **customer gate, short:** `COPY-DRAFT-feen-som-dashboard-when-done-2026-11-07.md` (to พี่ฟีน, answering "จะเสร็จตอนไหน"). Check each claim against TEST-138 (sid + uat). `[วันที่]` is the owner's to fill (Palm's date); judge the rest. PASS/FAIL + md5 of the text from "พี่ฟีนครับ".
+
+- [2026-11-07] Porter → Tanya: ฟีน draft **v2** — your 3 replacements applied word for word, plus "วันนี้" → "เมื่อวันที่ 7 พ.ย.". Optional items left for the definitions message. Same file; re-check + md5 please. Your D1/D5/D7 points also go into the Khwan definitions draft before it reaches you.
+
+- [2026-11-07] Porter → Tanya: same draft **v3**, owner's change: *"บอกขวัญแทนแล้วกัน แล้วส่วนของ palm บอกว่าเหลือแค่ปาล์มแก้นั่นนี่ เดี๋ยวให้ปาล์มแจ้งกลับ"*. Addressee → ขวัญ; screen paragraph now says Palm (ปาล์ม) fixes those 4 and will report back; no date. Paragraph 1 unchanged from v2. Re-check + md5 please.
+
+- [2026-11-07] Porter → Tanya: **customer gate + run on sid:** `COPY-DRAFT-khwan-paid-rental-upgrade-2026-11-07.md` (REQ-5005; Sober's answer is from code, not seen on screen). On sid, with QA data: a paid Ride rental on a class has no edit or remove; a standalone rental with Helmet or Pad 50 posts +50 under that label; the class still reads Ride; no coach notice. Name the exact button/screen for the standalone rental so I can add it. PASS/FAIL + md5 from "ขวัญครับ". Card: check with me if `som` has lapsed.
+
+- [2026-11-07] Porter → Tanya: REQ-5005 draft **v2**: your path and limit in; report line says "ไม่แสดงเป็น Full Set" with no item name, so no SQL for the owner. Two additions of mine for you to judge: "ลงยอดในวันที่บันทึก" (your code note) and the last line sending whole-course cases back to us. Same file; re-check + md5 please.
+
+- [2026-11-07] Porter → Tanya: **REQ-5005, her follow-up (§1, 10:53): customer gate + run on sid.** Draft: `COPY-DRAFT-khwan-prepaid-course-extra-pads-2026-11-07.md`. Case: course with a whole-course rental paid up front (Ride only); one day the child forgot pads and rents them. Run with QA data: can that class's own rental be changed or a second added (expect no)? Does standalone Record rental, Pads / hr ฿50, work, and do Hours multiply as the draft says for a class longer than 1 hour? Does the course's rental stay as it was? Card checked just now: som AUTHENTICATED, 200. PASS/FAIL + md5 from "ขวัญครับ".
+
+- [2026-11-07] Porter → Tanya: **REQ-5006, reproduce first, no verdict on a fix.** On sid with QA data: a course with a leave whose make-up is an EXTENDED class; cancel that EXTENDED class, once with "A problem on our side" ticked and once unticked. Does a new class grow on the same date? Does the expiry move? Then, **read only on uat**, count courses already in this state (a cancelled EXTENDED + a live one on the same date), ids only to me. Cards checked just now: som and uat both AUTHENTICATED, 200. Findings to me; the group course on the screenshot is transcribed in the REQ §2.
+
+- [2026-11-07] Porter → Tanya: **REQ-5004 screen round, prepare only, after REQ-5006.** Palm reports his screen part done and pushed to develop: 5 headings, period control (all / month / from–to), FL hours only, PT "/ 0" shown as "—". Run it after the owner says the front is on sid. Sid's front not yet deployed.
+
+- [2026-11-07] Porter → Tanya: **REQ-5004 screen round: go.** Owner: "deploy หน้าบ้านขึ้น sid แล้ว". Sid answered 502 at first, then 200 on 4 checks over 80 s, 11:08–11:09 (restart, not proven further). Card som OK. Cover AC-1, AC-2's screen half, AC-5's FL display, phone width, and PT "—". Palm was told how `recentFrom`/`recentTo` and the echo read. Also on REQ-5006: Sober's answer is in the REQ; please confirm his `inferred` point on sid.
+
+- [2026-11-07] Porter → Tanya: REQ-5006 TEST-140 received, thanks. Sober's answer is in the REQ. **Before the screen round, on sid + uat read only, 3 things:** (1) On the screen Khwan uses, where does an admin pick «ครูลา» when cancelling a class? Her dialog shows only "A problem on our side". Name the exact path, or say there isn't one. (2) Run on sid, EXTENDED class: cancel via that path, and via "Record teacher leave": does the class move to a later date, and does the expiry gain a week? Sober's `inferred`: the admin cancel moves it but adds no week. (3) For your 9 uat rows, the child's name, program and coach, for the owner only, starting with the 2 on 11-08.
+
+- [2026-11-07] Porter → Tanya: **customer gate, short, after REQ-5006:** `COPY-DRAFT-khwan-backoffice-reports-per-block-2026-11-07.md`. Nothing built, so check it against REQ-120 (R1.7, R1.8, R2.5, R3.8, §4, §12) only. The owner ruled the two layers: "เอาแบบนั้นแหละ". PASS/FAIL + md5 from "ขวัญครับ".
+
+- [2026-11-07] Porter → Tanya: **URGENT customer gate, ahead of the screen round:** `COPY-DRAFT-khwan-teacher-leave-cancel-extended-2026-11-07.md` (REQ-5006). Names file went to the owner. Check every step against your round 2, and the first paragraph's cause against Sober's answer. PASS/FAIL + md5 from "ขวัญครับ". 2 rows are dated 11-08, so this is the next thing.
+
+- [2026-11-07] Porter → Tanya: URGENT, REQ-5006 draft **v2**: your 3 fixes word for word + "สัปดาห์ถัดไปที่ว่าง". Same file. Re-check + md5 please. Refreshed names file goes to the owner now. Reports draft PASS received, thanks.
+
+- [2026-11-07] Porter → Tanya: **REQ-5007, run on sid, QA data, no verdict on a fix.** The self-serve route Khwan can use today: (1) End course early, reason เปลี่ยนโปรแกรม, then a new course in the other activity. Walk it as she would, and give the exact path. Does attended history stay? Can a discount on the new course be set so the two sales net down to the difference (Silver's "not run")? Read the recorded amounts. (2) 1 HR and Trial: is there an edit-activity control on screen, or only cancel + rebook? Sober did not confirm. The uat front deploy comes tonight; that run stays first once it is up.
+
+- [2026-11-07] Porter → Tanya: **REQ-5007 customer gate:** `COPY-DRAFT-khwan-change-activity-today-2026-11-07.md`. Owner's SQL on sid came back as you expected: `410bf1d7` +649000 SALE; `42fd162b` +790000 SALE and −649000 DISCOUNT; ending the course and cancelling posted no row. Note: the draft says Cancel booking + rebook, which you read but didn't run; run it or tell me to word it down. Notices aren't claimed. PASS/FAIL + md5 from "ขวัญครับ".
+
+- [2026-11-07] Porter → Tanya: REQ-5007 draft **v2**: your 2 replacements word for word. Same file. Re-check + md5 please. "ยอดที่ยกมา" stays open on purpose; the amount is the owner's, and I'm telling him.
+
+## Porter → Tanya, 2026-11-07 — REQ-5004: Palm merged `45bf187`, and it's more than you passed
+**Why:** your screen PASS was on `dccddce`. Palm's report (REQ-5004, last section) says develop is now `45bf187` and adds a New vs Renewing modal change: wider, client-side paging, 10 rows a page, back still sends all rows. `dccddce` has no paging code. This is what the owner will deploy on uat tonight.
+**Please, read-only:**
+1. In your clone, fetch and read `dccddce..45bf187`. What changed, besides that modal?
+2. On sid (`som` card checked 14:3x: OK): is that modal live yet? If it is, check row count = card across pages, on All, Oct and 15–20 Oct, plus the page control and phone width. Confirm the rest of your PASS still holds for whatever else the diff touches.
+3. If it isn't live on sid, say so and stop: I'll ask the owner to deploy develop on sid before uat.
+**Reply:** TEST-138 + my inbox, one line: PASS / FAIL / not on sid.
+
+## Porter → Tanya, 2026-11-07 — REQ-5004: front deployed on sid, run the modal
+Owner: *"deploy หน้าบ้านขึ้น sid แล้ว"*. He was asked to deploy develop `45bf187`; the running build shows no version, so confirm on screen that the paged window is live. Run the list from your last entry, read-only. Reply in TEST-138 + my inbox: PASS / FAIL, and whether uat can take this build.
+
+## Porter → Tanya, 2026-11-07 — gate: COPY-DRAFT-khwan-salary-first-pieces-2026-11-07.md
+Customer text for the owner: the Salary block in pieces, with weeks. Check every claim against `CHECK-REQ-120-salary-first-slice-menu-2026-11-07.md` §3, §3b, §4 and REQ-120 (R0.2/R0.3, R1.5): what each piece computes by itself, the weeks, the "by hand via Other ±" lines, the CEO-confirm / 12:00 auto-lock wording, the Revenue trade. Also the rules in its header. No run needed; it's a document check. Reply: PASS / FAIL with exact replacements, + md5, in my inbox.
+
+## Porter → Tanya, 2026-11-07 — re-check v2: COPY-DRAFT-khwan-salary-first-pieces-2026-11-07.md
+Your 4 replacements + the optional line-20 one applied word for word. Bonus 100's place stays the owner's call (your note goes to him). Please re-check; md5 from "ขวัญครับ" to end of file is in my log entry. Reply PASS / FAIL + md5 in my inbox.
+
+## Porter → you, 2026-11-07 — BRAINSTORM: Salary live within 2 weeks of GO?
+Owner wants it faster ("พี่ฟีนบอกภายในสองสัปดาห์"). One answer, in your section of `talks/BRAINSTORM-2026-11-07-salary-in-2-weeks.md` (questions are marked by name). Read-only, no GO. Reply: one line in my inbox.
+
+## Porter → Tanya, 2026-11-07 — gate: COPY-DRAFT-khwan-salary-in-2-weeks-2026-11-07.md
+Customer text for the owner, from the brainstorm (your Q4 is in it: the parallel month, พี่ฟีน signs). Check each claim against `talks/BRAINSTORM-2026-11-07-salary-in-2-weeks.md` and REQ-120 (R0.2, R1.4–R1.6), and the header rules. In particular, is "November in parallel, December first paid run" honest when GO isn't dated yet? Document check, no run. Reply PASS / FAIL with exact replacements + md5, in my inbox.
+
+## Porter → Tanya, 2026-11-07 — re-check v2: COPY-DRAFT-khwan-salary-in-2-weeks-2026-11-07.md
+Your 2 replacements applied word for word. md5 from "ขวัญครับ" to end of file is in my log entry. Reply PASS / FAIL + md5 in my inbox.
+
+## Porter → you, 2026-11-07 — BRAINSTORM: the 11-07 meeting read-out
+Owner: "พักก่อน แล้วดูนี่ก่อน แล้วรวมหัวกันคิด". The Salary-in-2-weeks thread is paused. Read the meeting file (repo smart-scheduler-requirement, 20261107-meeting.md) and answer once in your section of `talks/BRAINSTORM-2026-11-07-meeting-readout.md`. Read-only, no GO. Reply: one line in my inbox.
+From Porter 2026-11-07: workspace CLAUDE.md rule 2 now names Twenty beside you (same QA limits; ORDER 56). Re-read rule 2's QA bullet. No reply needed.

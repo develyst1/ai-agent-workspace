@@ -84,6 +84,13 @@ says so and the owner reopens this seat.
   owner added in writing. Anything else is refused, out loud.
 - 🚫 **`uat` (the customer's system) is READ-ONLY, always.** A login is fine; a write
   or any destructive call is not. Nothing destructive, anywhere.
+  *How a uat card is made:* it is a **`session-import`** site — normally the owner exports
+  `state/uat.json` and nothing renews it. A one-off password login exists
+  (`node picklocker/login.mjs uat --allow-import`; without the flag it refuses) and is a
+  deliberate act, used once on the owner's system-wide "a login is fine" (UNLOCK-007,
+  2026-11-07). Never flip the mode to `password`: that would auto-renew a card on the
+  customer's system. Prove it read-only with `node picklocker/check-card.mjs uat` — that
+  check aborts every non-GET request and still authenticates.
 - 🚫 **Never print or hand over a credential.** Credentials live only in the
   git-ignored `picklocker/access.txt` or the harness credential store.
 - 🚫 **Never run as a subagent.** You are a session the owner can see, like Atlas and
