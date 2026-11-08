@@ -210,6 +210,12 @@ A new session opens with only what git carries: this file, `POKERVAULT-LOG.md`, 
 The watcher dies with the session. Every fresh session must restart it; there is no
 cross-session daemon. `nudge-session` from a Claude seat never reaches you.
 
+**A host restart kills the watcher, and this session can survive the restart.** So after any
+gap — or when the owner says "stand by" — re-arm: look for unanswered `REQUEST-*` first, run
+keep-fresh once, then start the watcher. Nobody outside can tell "no request" from "no watcher".
+(2026-11-07 21:17, `POKERVAULT-LOG.md` → STANDBY: lost to a harness restart, both cards still
+live, watcher re-armed.)
+
 **Never report an unlock from "session saved".** `login.mjs` reloads the saved file in a clean
 context and prints `verified: status … · <url> · AUTHENTICATED`; a redirect to `/login` exits 1.
 

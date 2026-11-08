@@ -4370,3 +4370,21 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
 - 2026-10-27: **BooBee_NS (LINE) = พี่ปู** (owner). Call him พี่ปู in any draft, not "BooBee".
 
 - 2026-10-27: **กุ้ง is addressed as "พี่กุ้ง"** in drafts (owner: *"ใช้คำว่าพี่กุ้ง"*). This differs from Khwan, who is plain "ขวัญ".
+
+## 2026-11-08 — 🔴 Local env files on the owner's machine point at REAL servers. Check the host before any DB or API run (Sector, Team C; Flash found the BF one)
+- **Host check, by name only, against this file's 2026-10-08 entry** (sid = `154.197.124.206`, uat = `154.197.124.29`).
+- **`smart-scheduler-backoffice-back/.env`:**
+  - It pointed at **uat (.29), the customer's system**, until the owner repointed it to sid on 2026-11-08.
+  - Team A's `0007_bo_users_roles` landed on uat because of it. The owner keeps those objects there (MIGRATION-QUEUE.md).
+- **`smart-scheduler-back/.env`:** sid (.206).
+- **`smart-scheduler-backoffice-front/.env.local`:** `NEXT_PUBLIC_BACKOFFICE_API_URL` = `https://backoffice-som.develyst.online/api`, the **deployed sid back office**. A plain `next dev` sends every call there.
+  - **Fix:** set the var inline, e.g. `NEXT_PUBLIC_BACKOFFICE_API_URL=http://localhost:4310/api next dev -p 3310`. The process env wins over `.env.local`.
+  - The base URL must end in `/api`.
+- **Bun auto-loads `.env` into every `bun` command**, including `bun test`. A test that imports the db connects to whatever `.env` names (F-037).
+  - **Before any command that can connect:** print the host only, `grep -E '^DATABASE_URL=' .env | sed -E 's#^DATABASE_URL=[a-z]+://[^@]*@([^:/]+).*#host \1#'`, and compare it with sid.
+
+## 2026-11-08 — SA read-only access to uat (ORDER 57, Atlas; owner: "มอบสิทธิ์ให้ SA ทำเองได้ … ทำการ select ได้")
+- **Tool:** `bun scripts/uat-select.mjs "<SELECT …>"` from the workspace root — one read statement, READ ONLY transaction rolled back, 15 s timeout, prints the DB host (never the URL), ≤ 200 rows. SA seats only (Sober, Silver, Sector). Root `CLAUDE.md` rule 4; PROTOCOL l.320.
+- **Credentials:** the git-ignored `.env.uat-readonly` at the workspace root (`UAT_READONLY_DATABASE_URL=` for role `sa_readonly`, SELECT-only, created by the owner). **No agent opens or prints it.**
+- **uat's expected DB host: 154.197.124.29 (internal 172.17.172.29)** — from the 2026-10-08 entry above (the owner's `.env.uat`), per Atlas 2026-11-08 (REQUEST-porter-to-atlas-2026-11-08… end). The SA checks the host the tool prints against THIS line — never against the tool's own output.
+- Per query: host check, summarise personal data (never paste it into shared files), one log line (seat · purpose · tables), no coach pay (R0.2) unless the owner says so per case.

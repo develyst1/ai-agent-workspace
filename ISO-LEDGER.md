@@ -35,6 +35,10 @@
   and is the only hand on `MARIE.md`. Iso does not touch the charter. **Done** = the next Marie
   session's read is under the 45 KB warn and no fact was lost (spot-check against the archive).
   → open, owner: Atlas.
+  - **Re-check 2026-11-08 (this box):** `MARIE.md` **550,385 B** (was 522,418 B on 2026-11-06,
+    +5.4 %), `ATLAS.md` **96,378 B** (was 82,912 B). `check-hygiene.mjs:109,616-629` is unchanged:
+    the boot gate still measures PROTOCOL + board + role charter + that role's inbox only, so no
+    workspace charter is in any desk's boot path. The finding is older and larger; verdict stands.
 
 ## IV-002 · 2026-11-06 · "README.md is the workspace map, and it is current"
 
@@ -63,6 +67,10 @@
 - **Verdict:** `CERTIFIED` — the manifest tells the truth, and the single exception is deliberate
   and documented. A verifier who reports this as a failure would be manufacturing one.
 - **Consequence:** none. Re-check when Atom's `ids.start 5000` exists; then Marie installs.
+  - **Re-check 2026-11-08:** `node scripts/check-harness.mjs` → `harness 2.6.17: 10 desk(s), 1 not
+    current` (`smart-scheduler-atom` behind 2.6.17, desk has 2.6.9). Same single exception, same
+    documented hold (`ATLAS.md:1015`). The condition is Atom-side and cannot be run from here, so
+    the hold still stands. Verdict unchanged.
 
 ## IV-004 · 2026-11-06 · "This machine can resolve a code-repo path"
 
@@ -77,6 +85,40 @@
   product repo. Owner to add the per-machine section, or say "workspace-only for this machine".
   → open, owner: the owner.
 
+## IV-005 · 2026-11-08 · "This machine has no path map, so no code repo can be resolved from here"
+
+- **Claim:** IV-004 above recorded `machine.local.md` absent and this box a Mac (`entronica`);
+  `CLAUDE.md` § Paths & machines makes that file the only place an absolute repo path may live.
+- **Check:** `Test-Path machine.local.md` · `(Get-Item machine.local.md).Length` · every `H:\…` path
+  extracted from `machine.local.md:18-111` tested with `Test-Path -LiteralPath` · existence-only
+  check of `C:\Users\KUYDONG\ci-secrets\corner-chat-qa-token.txt` and `H:\sm-test-access.txt` ·
+  `node scripts/check-harness.mjs`.
+- **Observed:** the file is present, **10,253 B**, header names machine `KUYDONG` (Windows 10),
+  workspace at `H:\ai-agent-workplace\ai-agent-workspace` (`machine.local.md:9`, matches reality).
+  **30/30 real paths exist**; one regex
+  match (`H:\…`) was a mojibake ellipsis in prose, not a path. Both credential files exist (not
+  opened, not printed). Harness **2.6.17**, 10 desks, 1 not current (IV-003 re-check).
+- **Verdict:** `CERTIFIED` — for **this** box. IV-004's precondition is a property of the machine,
+  not of the workspace.
+- **Consequence:** IV-004 is closed as a Mac-box record and stays as that record. A session on any
+  other box re-runs this check before claiming a repo path. Nothing for a desk to act on.
+
+## IV-006 · 2026-11-08 · "Iso is a workspace identity in the rulebook, not only in his own file and starter"
+
+- **Claim:** `ISO.md:126-145` — the `CLAUDE.md` / `ROLES.md` registration is the one step that needs
+  the owner's keystroke (it re-hashes `ruleFiles` in `harness.json`); until it exists, "this file is
+  the identity and the owner's starter is the way in".
+- **Check:** `Select-String -Path CLAUDE.md,ROLES.md,SESSION-STARTERS.md -Pattern 'Iso|ISO'`.
+- **Observed:** `CLAUDE.md` **0** hits, `ROLES.md` **0** hits — the identities section still reads
+  "Four standing identities". `SESSION-STARTERS.md:48-58` carries the starter and the session title
+  `Iso - workspace`. The route in exists; the rulebook does not name the seat.
+- **Verdict:** `PARK` — not a failure: the patch is written and waiting, and applying it without his
+  word is the one thing `ISO.md` forbids. Any claim that "Iso is a standing identity like Atlas" is
+  unstated until then.
+- **Consequence:** the owner says go → Marie applies the exact patch (`ISO.md:136-145`), bumps the
+  manifest, installs on every desk → Iso certifies the **presence** of the lines by grep (not the
+  install, not the bump). → open, owner: the owner.
+
 ---
 
 ## Open items at birth
@@ -85,3 +127,15 @@
 - `IV-004` (this machine's path map) — awaiting the owner.
 - Planned, not installed: the gate line `N uncertified — call Iso` (Marie, an ORDER from Iso), and
   a weekly one-pager (owner's word on a scheduled task).
+
+## Open items — 2026-11-08
+
+- `IV-001` — Marie/Atlas boot budget. Awaiting Atlas's design; **grew** since (MARIE.md 550 KB).
+- `IV-006` — Iso's registration in `CLAUDE.md` / `ROLES.md`. Awaiting the owner's word.
+- Closed this session: `IV-004` (re-checked as `IV-005`, this box resolves every path); `IV-002` and
+  `IV-003` verified still true in passing (README lists all 10 desks incl. Bunny/Iso/Atom; harness
+  2.6.17 with the one documented hold).
+- Still not measured — Iso's own first three audits, none started: (1) boot budget as **tokens per
+  role** across all charters, not just Marie's; (2) the announced-vs-installed sweep over every ORDER
+  and desk `FAILURES.md`; (3) the maps (`README.md` done; `SESSION-STARTERS.md` and desk `TEAMS.md`
+  vs reality not yet). The gate line above remains uninstalled, so nothing reminds anyone of them.

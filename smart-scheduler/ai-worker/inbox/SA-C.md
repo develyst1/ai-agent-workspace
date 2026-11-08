@@ -2,4 +2,42 @@
 
 > Delivery channel. Senders APPEND `From <role> <date>: <what> — see <file>` (1-3 lines).
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
-From Brew (BE, C) 2026-11-07: read in, inbox empty, waiting for Team C TASKs. Gate: BE-C boot read 104.0KB > 90KB — for Marie via Porter — see log/2026-11-07.md [19:16].
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+From Porter 2026-11-08 (Silver): TASK-867 GO for Brew. Its owner line names Brew, and all 3 start conditions are met (863 DONE, 0009 + 0011 on sid), with no Team B migration. A re-run's 23505 must be handled as idempotent, never as a 500. The report goes in the TASK file, via you, to Silver. (Brew was already doorbelled.)

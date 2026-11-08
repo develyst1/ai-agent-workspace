@@ -1,5 +1,5 @@
 # COPY-DRAFT: SOM Dashboard fixed + her call summary done + how each number is counted, to ขวัญ (from the owner, LINE) — @Porter, 2026-11-07
-**Status:** DRAFT, pre-written. Goes to Tanya only after REQ-5004 passes on uat **and** Palm's screen part is live (headings, period picker, FL display). Numbers in it must match what Tanya sees then.
+**Status:** ✅ READY for the owner — Tanya PASS v2 2026-11-08, md5 `9e145954…`. History: Tanya v1 FAIL (md5 723ebfd5…): her 2 replacements (lines 3, 8) + recommended line 7 + over-capacity line applied word for word; back to her. Was: DRAFT, pre-written. Goes to Tanya only after REQ-5004 passes on uat **and** Palm's screen part is live (headings, period picker, FL display). Numbers in it must match what Tanya sees then.
 **Replaces:** `COPY-DRAFT-khwan-som-dashboard-fixed-and-definitions-2026-11-06.md` (HELD, never sent) — one message for both rounds.
 **Facts:** REQ-5002 §4–§7 · REQ-5004 §2, §4a · `CHECK-REQ-5004-som-round-2-2026-11-06.md` §4.2, §4.6.
 **Changed from the 11-06 draft:** opening; "period" paragraph; line 3; line 5; lines 7 + 8; Coach Capacity; headings in Title Case.
@@ -18,12 +18,12 @@
 1. Active course: นับเป็นจำนวนคอร์ส คือคอร์สที่ยังมีคลาสนัดเรียนหลังจากวันนั้น ไม่รวมคอร์สที่ pause ใช้ครบแล้ว หรือหมดอายุ เด็ก 1 คนมี 2 คอร์ส นับ 2 ครับ
    - คอร์สที่เหลือคลาสสุดท้ายเป็นวันนี้ จะไม่นับตั้งแต่วันนี้
 2. Active voucher: นับเป็นจำนวน Voucher ที่เปิดใช้งานอยู่ ยังใช้ไม่ครบ และยังไม่หมดอายุครับ
-3. 1st Trial (last 3 months): เด็กที่มี 1st ในช่วง 3 เดือน เมื่อเปิดคอร์ส เปิด Voucher หรือมีคลาส 1 HR ตั้งแต่วัน 1st จนถึงวันนี้ จะย้ายออกจากช่องนี้ (แต่ยังอยู่ในช่อง 1st Trial และ 1st Trial, no course ตามเงื่อนไขของช่องนั้น) ครับ
+3. 1st Trial (last 3 months): เด็กที่มี 1st ในช่วง 3 เดือนนั้น ถ้าเปิดคอร์สหรือ Voucher หรือมีคลาส 1 HR ตั้งแต่วัน 1st จนถึงวันสุดท้ายของช่วงที่เลือก จะย้ายออกจากช่องนี้ (แต่ยังอยู่ในช่อง 1st Trial และ 1st Trial, no course ตามเงื่อนไขของช่องนั้น) ครับ
 4. 1 HR (last 3 months): เด็กที่มีคลาส 1 HR ใน 3 เดือนนั้น และยังไม่เคยเปิดคอร์ส นับเป็นรายชื่อครับ
 5. Total customers: เด็กที่มีคอร์สหรือ Voucher ที่ Active อยู่ (แบบเดียวกับข้อ 1 และ 2) นับชื่อละครั้ง ไม่นับนักเรียนที่ซ่อนออกจากรายการแล้วครับ
 6. 1st Trial: เด็กที่มาเรียน 1st ครั้งแรกในช่วงที่เลือกครับ
-7. New Course this month: คอร์สแรกของเด็ก ที่เปิดในเดือนเดียวกับที่มี 1st ครับ
-8. New Course previous month: คอร์สแรกของเด็ก ที่มี 1st ในเดือนก่อนหน้า แล้วมาเปิดคอร์สในช่วงที่เลือกครับ
+7. New Course this month: คอร์สแรกของเด็ก ที่เปิดในช่วงที่เลือก โดยมี 1st ในเดือนเดียวกับที่เปิดคอร์สครับ
+8. New Course previous month: คอร์สแรกของเด็ก ที่เปิดในช่วงที่เลือก โดยมี 1st ในเดือนก่อนหน้าเดือนที่เปิดคอร์ส (เดือนใดก็ได้ก่อนหน้านั้น) ครับ
    - เด็กที่เปิดคอร์สโดยไม่มี 1st ก่อนหน้านั้น จะไม่อยู่ในข้อ 7 และ 8
 9. Renew Course: คอร์สที่เปิดต่อจากคอร์สก่อนหน้าของเด็กคนเดียวกัน แม้คอร์สเดิมยังเรียนไม่จบ และ Voucher ต่อ Voucher แบบเดียวกัน นับตามครั้งที่ซื้อ ในเดือนที่เปิดครับ
 10. 1st Trial, no course: เด็กในข้อ 6 ที่ยังไม่เปิดคอร์สภายในวันสุดท้ายของช่วงที่เลือก การซื้อ Voucher ไม่นับเป็นการเปิดคอร์สครับ
@@ -35,6 +35,7 @@ Coach Capacity: ชั่วโมงที่มีสอน / ชั่วโ�
   - FT: วันธรรมดา 5 ชั่วโมง วันเสาร์อาทิตย์ 6 ชั่วโมง
   - PT: วันเสาร์อาทิตย์ 6 ชั่วโมง (Karn 4 ชั่วโมง) ส่วนวันธรรมดาที่รับงาน FL ไม่นำมาคำนวณ
   - FL: ไม่คำนวณ แสดงเฉพาะชั่วโมงที่สอนไป
+- ถ้าชั่วโมงที่มีสอนเกินชั่วโมงที่สอนได้ เปอร์เซ็นต์จะแสดงสูงสุด 100% แต่ตัวเลขชั่วโมงเป็นค่าจริง เช่น 40 / 36 h
 
 ข้อควรทราบ: ตัวเลขของช่วงที่ผ่านมาอาจเปลี่ยนได้ ถ้ามีการยกเลิก ซื้อต่อ หรือนัดคลาสเพิ่มทีหลัง และถ้าเปลี่ยนวันทำงานของครู ชั่วโมงที่สอนได้ของช่วงที่ผ่านมาจะคิดตามวันทำงานปัจจุบันครับ
 

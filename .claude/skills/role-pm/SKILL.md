@@ -121,6 +121,16 @@ operator to send) passes all six before you show it:
 5. **Colleague length:** 3–6 lines, no numbered blocks or bold labels unless they asked for a list.
 6. **If the operator edits it twice, stop and ask what they want the message to do** — don't iterate blind.
 
+**A question to the customer: search first, ask once.** (Operator, 2026-11-08: *"เพื่อไม่ให้ ดู โง่ ไม่รู้จักเรียนรู้"*.)
+- **Before drafting it**, search the desk's `CUSTOMER-ANSWERS.md` (create it from the template if missing),
+  her verbatim files, the REQs and the meeting notes, plus the real data where the desk can read it. The
+  draft's Facts header carries `Searched: <what>` and `Data: <query/count, or none>`. Drop every question
+  either one settles.
+- **When her answer lands**, add its line to `CUSTOMER-ANSWERS.md` at once. A search that finds an
+  answer not yet listed adds that too.
+- **A block's questions go in one pack before its build**, from the SA's edge-case map, never one by
+  one as the build trips on them.
+
 Check every message for:
 
 - **Lead with the answer or the decision.** Background goes after, or into a file.

@@ -163,3 +163,19 @@ It runs **once when this seat opens**. The scheduler offer is withdrawn. My repl
   control is the QA's own rule (read-only; every write is a DATA REQUEST), plus the GET-only check
   above. If the owner wants uat logins to stop entirely, `sites.json` mode stays `session-import`
   and the `--allow-import` flag is never used — that is his call, recorded in POKERVAULT.md.
+
+---
+
+## STANDBY · 2026-11-07 21:17 · watcher lost to a host restart, re-armed
+
+- The standby watcher (`pwsh-748f983caf954225`) was killed at the host side, not by a request
+  (`Windows Job runner exited … 1073807364`); the harness restarted (GUI port changed 53785 →
+  50826). Between 03:07 and 21:17 this seat was **deaf**: a request written in that window would
+  have waited. No request was written.
+- On the owner's "stand by": keep-fresh once → `som=ok`; `check-card.mjs` → **som
+  AUTHENTICATED 200**, **uat AUTHENTICATED 200** (the uat card from 03:06 was still live after
+  18 h, and nothing renewed it — mode stays `session-import`).
+- Watcher re-armed as `pwsh-dea802718097421d`, request-only.
+- **Lesson for this file:** a host restart silently ends the wake path. A fresh session (or a
+  restart) must re-arm it, and the desks cannot tell the difference between "no request" and
+  "no watcher". If a request ever seems ignored, check this line first.

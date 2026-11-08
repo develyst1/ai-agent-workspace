@@ -317,7 +317,7 @@ from source (Jason, 2026-08-02, self-reported before presenting his work; two re
 without starting it, or ask . And note: **anything such a run happens to display is NOT a sanctioned
 DATA REQUEST answer** and must not be used as one.
 
-- **Never run SQL yourself.** Never connect to any real database, server, or
+- **Never run SQL yourself.** Exception: SA seats may read uat through `scripts/uat-select.mjs` only (root `CLAUDE.md` rule 4). Never connect to any real database, server, or
   environment. The human is the only source of real-world data. *(One scoped
   exception exists for the Tester — see "The Tester's environment" below. It
   applies to Tanya and to nobody else.)*

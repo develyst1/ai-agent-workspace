@@ -65,6 +65,8 @@ Environments table. **The absence of a technical guard is not permission.**
 - [ ] `## Test data created` is filled (or says "none — read-only") and the desk's footprint
       ledger is updated for every shared environment touched.
 - [ ] No secret, token or real person's data in any file, log, screenshot or pasted output.
+- [ ] A customer draft that **asks** anything carries `Searched:` and `Data:` lines in its Facts
+      header. Missing → FAIL. Spot-check one question against `CUSTOMER-ANSWERS.md`.
 - [ ] Regression list updated: delivered REQ adds its lines; an escaped defect adds its catching case.
 - [ ] Verdict is one of the desk's words, with a one-line reason. Ambiguities are under
       `## Questions`, item marked `BLOCKED`, not passed.

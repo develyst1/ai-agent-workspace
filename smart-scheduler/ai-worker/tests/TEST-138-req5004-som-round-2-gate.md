@@ -428,3 +428,124 @@ None. Writes were blocked.
 
 **Evidence (`tests/evidence/`, git-ignored):** `test138p-1-renew-page1.png` · `test138p-2-renew-page3.png` · `test138p-3-phone-list.png` · `test138p-4-phone-page2.png`.
 **Test data created:** none.
+
+## uat, 45bf187, 2026-11-08: ✅ TEST_PASSED, READ-ONLY
+**Instrument:** headless Chrome through the real controls, uat card `picklocker/state/uat.json` used as given. Every non-GET was aborted, including auth; only `POST /cdn-cgi/rum` was tried, on all 3 runs. Nothing was saved, and nothing on uat was created, edited or cancelled. The build shows no version, so this confirms the paged window is live, not the commit id.
+
+**Card check:** ✅ the card opened `/scheduler/som` on `frontoffice.develyst.online` (no redirect to login), on all 3 runs.
+
+**The paged list window (as on sid):** ✅
+- **Live:** the Renew list on All reads "1–10 of 136", with a page control, width 1088 px.
+- **All 18 lists walked page by page, on All, Oct and 15–20 Oct.** Row count = API, row numbers 1 to n with no gap, never more than 10 on a page:
+| Period | 1st | New this | New prev | Renew | No course | Not renewed |
+|---|---|---|---|---|---|---|
+| All | 230, 23 pages | 38, 4 pages | 5 | 136, 14 pages | 187, 19 pages | 83, 9 pages |
+| Oct | 123, 13 pages | 27, 3 pages | 0 | 55, 6 pages | 96, 10 pages | 32, 4 pages |
+| 15–20 Oct | 30, 3 pages | 4 | 0 | 5 | 27, 3 pages | 11, 2 pages |
+- **One mismatch in my first run, and it was mine:** Oct "1st Trial" card read 14 against 123 in the API and the list. My script read the card before October's figures had loaded (14 is November's). A re-read after a 5 s wait shows 123 = API 123, and the screen run below reads it as 123 too. Not a defect.
+- **Range line:** "221–230 of 230", "11–11 of 11", and an empty list reads "0–0 of 0". **The page control** shows at 11 rows and up, and is absent at 5 or fewer.
+- **Reset:** page 3 of Renew reads "21–30 of 136", closed and reopened: "1–10 of 136"; another list: "1–10 of 83".
+- **Teacher filter, now also from page 2** (sid couldn't test this): New this month on page 2 reads "11–20 of 38"; picking a teacher gives "1–1 of 1", with row number 1. From page 1: "1–10 of 38" → "1–1 of 1". The teacher I picked had 1 row, so this proves no stranded "page 2 of 1", not a reset inside a list still longer than 10.
+- **Phone, 375 px:** no sideways page scroll (doc 375); window 19–356 px; the control fits at 35–340 px and wraps onto 2 rows with 10 buttons; page 2 by touch reads "11–20 of 136"; the table scrolls in its own box (306 of 600 px).
+
+**Palm's screen, AC-1 / AC-2 / AC-5 (as on sid):** ✅
+- **AC-1:** Existing Customers · New vs Renewing · Coach Capacity · Coach Name · Coach Type; none of the 5 old spellings.
+- **AC-2:**
+  - Opens on "All". Its first request has no period. The label "9 Aug 2026 – 8 Nov 2026" is on all 3 sections and equals the API's echo.
+  - Every card = API, 0 differences, on All · Nov · Oct · 15–20 Oct · back to All · phone All.
+  - A half-picked range leaves the figures alone. 15–20 Oct sends `from=2026-10-15&to=2026-10-20`. 27 of 35 days in November's calendar are disabled (after today).
+  - "1st Trial / 1 HR" reads Sep–Nov on All and Nov, Aug–Oct on Oct and the range. "Today · 8 Nov 2026" stays.
+  - Lists ask with the period chosen.
+- **A month doesn't move:** Oct's 11 cards read 188 · 50 · 127 · 88 · 228 · 123 · 27 · 0 · 55 · 96 · 32, **exactly uat round 2's Oct row** (2026-11-07).
+- **AC-5, FL:** all 11 FL rows read hours only (e.g. "105 h", "4 h", "101 h"); no "/", no %, no bar.
+- **PT "—":** "—" where a PT has no weekday hours, real hours where they have some ("1 h", "16 h"). Hours = the weekend figure. No "/ 0".
+- **FT:** % and x / y h, unchanged.
+- **Phone, 375 px:** no sideways scroll; the period control fits; the date picker fits (16–309 px); a list opens inside the screen.
+
+**Worth your eye, not a defect of this build:** on Oct, 3 PT rows read **"100% 40 / 36 h"**, "62 / 54 h" and "56 / 54 h": more hours booked than available, with the % stopping at 100. The capacity rules weren't changed by `45bf187`, and round 2 passed the numbers. Only the display of over-capacity is worth a look, if anyone wants.
+
+**Still NOT_TESTED on uat:**
+- the branch control on the new screen (uat has 1 badge with 0 values);
+- each row's cells against the API page by page (counts and numbering checked, row by row only in round 2);
+- the filter reset inside a list still longer than 10 after filtering;
+- a list of exactly 10 rows;
+- Thai beyond the dictionary;
+- a real phone;
+- card 3's and Total's rules on built cases (read-only; passed on sid).
+
+**Evidence (`tests/evidence/`, git-ignored):** `test138up-1-renew-page1.png` · `test138up-2-renew-page3.png` · `test138up-3-phone-list.png` · `test138up-4-phone-page2.png` · `test138us-1-opens-on-all.png` · `test138us-3-range-applied.png` · `test138us-4-phone-top.png` · `test138us-6-phone-picker.png` · `test138us-7-phone-list.png`.
+**Test data created:** none.
+
+## Customer gate, 2026-11-08: the Khwan definitions draft (round 2): 🔧 FAIL, 2 lines
+**Draft checked:** `COPY-DRAFT-khwan-som-dashboard-round-2-definitions-2026-11-07.md`, md5 `723ebfd596efdfc4637f5eb465aff4d6` from "ขวัญครับ" to the end of the file (`6aadcf08e71cea60689de5557146b6de` without the last newline).
+- **Checked against:** REQ-5002, REQ-5004 §2–§4a, Silver's CHECK §4.2–§4.6, my TEST-138 built cases D1–D13, and today's uat runs.
+- **Read on uat today:** the screen and paged rounds, plus one more read-only API read. Every non-GET aborted; only `POST /cdn-cgi/rum` was tried; counts and field names only.
+
+**These hold:**
+- **The opening:**
+  - "แก้ … ทั้งสองครั้ง … ขึ้นระบบแล้ว": REQ-5002 and REQ-5004 (back + Palm's `45bf187`) are both on uat and passed.
+  - The example child's Renew row in October: **1 row** on uat today, out of 55, matched in-page by her name. The cancelled ones are gone.
+- **"ช่วงเวลา":** it opens on all data (uat: "9 Aug 2026 – 8 Nov 2026"); Monthly and a custom from–to work; the Active cards count as of the period's last day, capped at today (Silver §4.6; on uat, Oct reads that month's figures and All reads today's).
+- **The cut-short line:** as ruled in REQ-5002 (not cancelled, counted as finished).
+- **Lines 1, 2, 4, 6, 9, 10, 11** match the rules and the built cases (D8, D9, D10).
+- **Line 5 (Total):** children with an Active course or voucher, each once, archived out (D10–D13, AC-4 amended).
+- **The 11 names** match the screen's labels exactly.
+- **Coach Capacity:** FT 5 / 6, PT 6 at weekends, Karn 4, a PT's weekday FL hours out of the fraction, FL hours only, recorded leave deducted (§4.2). All seen on uat's screen today.
+- **The note on past periods:** today's working days apply backwards (§4.2).
+
+**2 required replacements:**
+1. **Line 21 (card 3), "ตั้งแต่วัน 1st จนถึงวันนี้".** It's true only for the current period. On a past period, the as-of day is that period's last day (§4.5–§4.6). Example: an October view where the 1 HR came in November still shows the child on card 3, and she'd read that as a bug. The wording also suggests that only a voucher opened after the 1st counts, but a course or voucher moves the child whatever the order (D2).
+   - **Replace** line 21 **with:** `3. 1st Trial (last 3 months): เด็กที่มี 1st ในช่วง 3 เดือนนั้น ถ้าเปิดคอร์สหรือ Voucher หรือมีคลาส 1 HR ตั้งแต่วัน 1st จนถึงวันสุดท้ายของช่วงที่เลือก จะย้ายออกจากช่องนี้ (แต่ยังอยู่ในช่อง 1st Trial และ 1st Trial, no course ตามเงื่อนไขของช่องนั้น) ครับ`
+   - **To keep D5/D7 in it:** a 1 HR before the 1st, or one dated after the period's end, doesn't move the child. The "ตั้งแต่ … จนถึง" in the replacement covers both, and "จนถึงวันสุดท้ายของช่วงที่เลือก" covers D7 for today too.
+2. **Line 26 (New previous), "มี 1st ในเดือนก่อนหน้า".** Silver's rule (§4.6) is the 1st in **an earlier** calendar month than the purchase, any earlier month, not only the month just before. Over "All" it has to be, or New previous would always be 0. On uat today every row happens to be a 1-month gap (5 rows on All; Sep 4, Oct 0, Nov 1), so the data doesn't show the difference yet. A 1st in August with a course in October would count, and her checking would miss it.
+   - **Replace** line 26 **with:** `8. New Course previous month: คอร์สแรกของเด็ก ที่เปิดในช่วงที่เลือก โดยมี 1st ในเดือนก่อนหน้าเดือนที่เปิดคอร์ส (เดือนใดก็ได้ก่อนหน้านั้น) ครับ`
+
+**Recommended, for the same reason as fix 2:** line 25 (New this month) doesn't say "in the selected period". Replace with `7. New Course this month: คอร์สแรกของเด็ก ที่เปิดในช่วงที่เลือก โดยมี 1st ในเดือนเดียวกับที่เปิดคอร์สครับ`
+
+**Your over-capacity question: yes, add a line.** On uat's October, 3 PT rows read "100% 40 / 36 h", "62 / 54 h" and "56 / 54 h": more hours taught than available, with the % stopping at 100. She'll compare her own sheet with the % and find it lower than the hours say.
+- **Add under Coach Capacity:** `- ถ้าชั่วโมงที่มีสอนเกินชั่วโมงที่สอนได้ เปอร์เซ็นต์จะแสดงสูงสุด 100% แต่ตัวเลขชั่วโมงเป็นค่าจริง เช่น 40 / 36 h`
+- **Whether the % should stop at 100** isn't in her words or the REQ. It's the screen's behaviour, and I'm stating it as seen, not as ruled. If the owner wants it to show 111 %, that's Palm's.
+
+**A limit I didn't add, your call:** capacity over "All" is rough (Silver §4.6: a coach counts from the later of the data's start and when they were added). Line 39 covers past changes in working days, not this.
+
+**This verdict rests on:** uat as read today. Card 3's and Total's rules on built cases were run on sid, not uat. Nothing on uat was written. The example child's name was matched in the page only, and not printed or stored.
+
+## Customer gate, re-check, 2026-11-08: the Khwan definitions draft v2: ✅ PASS
+**Draft checked:** v2, md5 `9e1459548950492d8e0c4474f1f972a6` from "ขวัญครับ" to the end of the file (`29d07eb61858a9b06ddada72ce0e5c8a` without the last newline). It matches your `9e145954`.
+- **In, word for word:** my 2 replacements (line 3 to the period's last day; line 8 any earlier month), the recommended line 7, and the over-capacity line (100 % cap, real hours, "40 / 36 h", as seen on uat's October).
+- **The rest is unchanged from v1** and holds, as in my v1 check against uat today.
+- **The "All" capacity limit** is left out, your call. It's not a wrong claim, only an unstated one.
+
+**This PASS rests on:** uat as read on 2026-11-08, read-only. Card 3's and Total's rules on built cases were run on sid. The 100 % cap is stated as the screen behaves, not as a ruling. Nothing was written.
+
+## Customer gate, 2026-11-08: the Khwan follow-up draft (Bonus 100 example, go-live month, park fee, data list): 🔧 FAIL, 1 line
+**Draft checked:** `COPY-DRAFT-khwan-followup-bonus100-golive-parkfee-data-2026-11-08.md`, md5 `844f70321a61ac500ef5dc9792e37f0a` from "ขวัญครับ" to the end of the file (`99ad922f74aa9f01e45f93157929b028` without the last newline).
+**Checked against:** REQ-120 §15 (her verbatim answers), R1.1, R1.2 (Bonus 100), D5, D6, DECISIONS rows 11 and 12, and Master Plan v1 §3 and §7 (md5 `83592c51`, unchanged). It's a document check; nothing was run.
+
+**These hold:**
+- **Item 1, the case and A/B:** the same case as the 11-07 draft I passed (bought before go-live, renewed after), and the same A/B meaning. "ครูคนแรกของคอร์สเดิม" matches R1.2. Build default 1A stays switchable (row 12). The rows 17–20 wording is fine.
+- **Item 2:** "เร็วที่สุดเดือนกุมภาพันธ์ 2570" holds. Revenue goes live for trial in wk 11–12 = 18–31 Jan 2027 (from Mon 9 Nov), so the first whole month is Feb 2570, the same as the 11-07 draft. "เริ่มนับวันที่ 1 ของเดือนนั้น" = D5. It answers her question back ("เราเลือกได้เลยหรอคะ") without inventing a month.
+- **Item 3:** the same question as the HELD park-fee draft, word for word in substance, and exactly what row 11 needs (one block per hour today; yes ⇒ a follow-up TASK). "Park fee" is her own term (R2 table).
+- **Item 4:** exactly §7's ขวัญ rows that are due on the start day: staff + type · vehicles · schools + distances · Merit · revenue types/categories + branches. The pay data (base, FL rates, the comparison month) is **not** in it, so it stays ฟีน → owner. The product list (received 3 Nov) and the stock count (≈ wk 7) are rightly out. The 4 types match R1.1.
+- **Rules:** formal, ครับ throughout; "ขวัญ" without พี่; no staff or child names; no internal words; the only questions are to ขวัญ; no cause stated.
+
+**1 required replacement:**
+1. **Line 21, "ส่วนคอร์สที่เปิดก่อนเริ่มใช้ระบบกลางเดือน ขวัญใส่มือตามที่แจ้งมาได้เลยครับ".** It sits right under A/B, and the example's old course was **also** "ซื้อก่อนวันเริ่มใช้ระบบ". So she can read line 21 as "the old course's bonus, I enter by hand". Under 1A the system already pays that renewal, so she'd pay it twice. Or she reads A/B as moot. What she said in §15 is narrower: a mid-month go-live, the purchases made **earlier that month**, which the system doesn't compute. The bonus goes by the purchase date (row 12b), so say that.
+   - **Replace** line 21 **with:** `   ส่วนกรณีเริ่มใช้ระบบกลางเดือน โบนัสจากคอร์สที่ซื้อหรือต่อในเดือนนั้นก่อนวันเริ่มใช้ระบบ ระบบจะไม่คิดให้ ขวัญใส่มือได้ตามที่แจ้งมาครับ`
+
+**Recommended, your call:**
+- **Line 19 (A's reason):** her answer was all about "no back-calculation", so give A the 11-07 reason she has already seen. `   A. ได้ (เพราะการต่อคอร์สเกิดหลังเริ่มใช้ระบบ ไม่ใช่การคิดย้อนหลัง)`
+- **Line 27 (when the data is due):** "ประมาณวันไหน" alone invites "end of the month", and the plan counts its weeks from when the data is complete (§3 heading and its first bullet). `4. ข้อมูลสำหรับเริ่มงานตามแผน ตามแผนต้องการตั้งแต่วันเริ่มงานครับ ถ้าส่งช้า วันส่งมอบจะเลื่อนตาม ขวัญจะส่งได้ประมาณวันไหนครับ`
+- **Line 28:** one person can be PT + FL (R1.1). `   - รายชื่อพนักงานพร้อมประเภท (Full-time / Part-time / Freelance / Staff ถ้าคนเดียวเป็นทั้ง Part-time และ Freelance ระบุทั้งสองอย่าง)`
+- **Line 14:** "ขอยืนยันเพิ่มอีกนิด" reads a little casual, and items 2–4 aren't confirmations. `ขวัญครับ ขอบคุณสำหรับคำตอบครับ ขอสอบถามเพิ่มเติมอีก 4 ข้อครับ`
+- **Line 25 (optional):** "2 กลุ่ม" → "2 กลุ่มขึ้นไป", if more than two at once is possible.
+
+**This verdict rests on:** the files named above as on disk today. Whether the system's go-live cut-off really skips pre-go-live purchases is from DECISIONS row 12 (switch `goLiveDate`), not from a run.
+
+## Customer gate, re-check, 2026-11-08: the Khwan follow-up draft v2: ✅ PASS
+**Draft checked:** v2, md5 `1a42720887b6f72fe1df5110ed32a13f` from "ขวัญครับ" to the end of the file (`f40738b2f3f346a3c3cf1ba409a83f0e` without the last newline). It matches your `1a427208`.
+- **In, word for word:** my line-21 replacement (bonuses from purchases earlier in a mid-month go-live month, entered by hand) and all 5 recommended lines (14 the opening, 19 A's reason, 25 "2 กลุ่มขึ้นไป", 27 needed from the start day and a late send moves the dates, 28 PT + FL).
+- **The rest is unchanged from v1** (lines 16–18, 20, 23, 29–34) and holds, as in my v1 check: item 2's Feb 2570 (wk 11–12 = 18–31 Jan 2027), item 4 = §7's ขวัญ rows only, pay data stays ฟีน → owner.
+- **Rules:** formal, ครับ; "ขวัญ" without พี่; no names; no internal words; questions to ขวัญ only; no cause stated.
+
+**This PASS rests on:** a document check against REQ-120 §15, R1.1, R1.2, D5, D6, DECISIONS rows 11–12 and Master Plan v1 §3, §7 as on disk today. That the system skips purchases made before go-live comes from DECISIONS row 12, not from a run.
