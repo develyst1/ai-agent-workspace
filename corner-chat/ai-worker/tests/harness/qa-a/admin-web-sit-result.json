@@ -1,0 +1,93 @@
+{
+  "ranAt": "2026-11-02T16:31:06.673Z",
+  "tag": "mvzh6wj9",
+  "created": [
+    "qa-sit-w-…@qa-a.test"
+  ],
+  "checks": [
+    {
+      "case": "11",
+      "what": "without the token, Access stops the request",
+      "expected": "302 to an Access login, or 403",
+      "actual": "302 https://aged-fire-690b.cloudflareaccess.com/cdn-cgi/access/l",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "with the QA token, the sign-in page opens",
+      "expected": "200 · title เข้าสู่ระบบผู้ดูแล corner-chat",
+      "actual": "200 · shown",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "wrong password on the SIT admin web",
+      "expected": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+      "actual": "shown",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "owner signs in → users page (web → SIT API, cross-origin)",
+      "expected": "เพิ่มผู้ใช้ visible",
+      "actual": "https://cornerchat-sit.develyst.online/users",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "the LINE push count panel shows",
+      "expected": "ข้อความ LINE ที่ส่งในเดือน {month}",
+      "actual": "shown",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "add qa-sit-w through the web → listed → it signs in (API)",
+      "expected": "row ใช้งานอยู่ · 200",
+      "actual": "qa-sit-w mvzh6wj9 qa-sit-w-mvzh6wj9@qa-a.test ใช้งานอยู่ 2026-11-02 23 · 200",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "duplicate email (upper case)",
+      "expected": "อีเมลนี้มีผู้ใช้แล้ว",
+      "actual": "shown",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "reset on the web → old / new",
+      "expected": "เปลี่ยนรหัสผ่านแล้ว · 401 / 200",
+      "actual": "shown · 401 / 200",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "AI settings page opens and loads (not saved)",
+      "expected": "ตั้งค่า AI กรองข้อความ · both layers · deepseek shown, ≤ 30 s",
+      "actual": "shown · loaded true in 0.2 s · layer1 true · layer2 true · deepseek true",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "disable on the web → the qa-sit user cannot sign in",
+      "expected": "row ปิดใช้งาน · 403",
+      "actual": "true · 403",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "sign out → back to sign-in",
+      "expected": "sign-in title",
+      "actual": "shown",
+      "pass": true
+    },
+    {
+      "case": "11",
+      "what": "no unexpected browser console errors (the walk's own 401 + 409 excluded)",
+      "expected": "0",
+      "actual": "0 unexpected of 2",
+      "pass": true
+    }
+  ]
+}

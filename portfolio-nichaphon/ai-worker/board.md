@@ -49,7 +49,7 @@
   restate either here. In one line: git runs only on the owner's own command,
   relayed by the PM, typed by the SA; engineers never run git.
 - Branches on the repo (git read-only 2026-11-01, Porter — replaces the 2026-09-13 line): **checkout `D1` =
-  `origin/D1`, clean tree, HEAD `00fe101`** (2026-11-01, Sober on the owner's "ขึ้น git": REQ-009 + REQ-010, pushed, D1 == origin/D1) — before that the human committed `back/` + front as `a294347`, then `b068fba`
+  `origin/D1`, clean tree, HEAD `72aaf5f`** (2026-11-03, Sober on the owner's "ขึ้น git": TASK-043 env examples; before it `00fe101` 2026-11-01 = REQ-009 + REQ-010; pushed, D1 == origin/D1) — before that the human committed `back/` + front as `a294347`, then `b068fba`
   (TASK-028's back-side files + `front/env.example` + a `build` script; **not** Fern's `front/src/constant/ask.ts` /
   `front/README.md` edits — they still read 3001). `develop` = `origin/develop` = `ca5c097`; `main` `d30dfea`,
   `origin/production` `ed2eb5d` carry none of `D1`. No role committed anything — git stays the human's.

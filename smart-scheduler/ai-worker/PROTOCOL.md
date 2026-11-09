@@ -16,7 +16,15 @@ If you didn't write it to a file, the team doesn't know it.
 | SA Lead | Silver | **Team B** | PM + BE/FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
 | Backend Engineer | Bob | **Team B** | SA Lead | code + updates in `tasks/TASK-*.md` |
 | Frontend Engineer | Fanta | **Team B** | SA Lead | code + updates in `tasks/TASK-*.md` |
-| Senior Tester (QA) | Tanya | both | PM | `tests/TEST-*.md`, `tests/REGRESSION.md` |
+| SA Lead | Sector | **Team C** | PM + BE/FE | `specs/SPEC-*.md`, `tasks/TASK-*.md` |
+| Backend Engineer | Brew | **Team C** | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Frontend Engineer | Flash | **Team C** | SA Lead | code + updates in `tasks/TASK-*.md` |
+| Senior Tester (QA) | Tanya | all | PM | `tests/TEST-*.md`, `tests/REGRESSION.md` |
+| Senior Tester (QA) | Twenty | all | PM | `tests/TEST-*.md`, `tests/REGRESSION.md` |
+
+**Team C and a second tester (ORDER 56, owner 2026-11-07):** Team C's charters are `SA-Lead-C.md` (Sector) ·
+`BE-C.md` (Brew) · `FE-C.md` (Flash); inboxes `inbox/SA-C.md` · `inbox/BE-C.md` · `inbox/FE-C.md`. Twenty's charter
+is `QA-2.md`, inbox `inbox/QA-2.md`. Porter stays the only PM.
 
 **Porter (PM) and Tanya (QA) are single, and serve both teams.** They are not
 duplicated: the owner's one voice to the customer, and one verdict authority, are
@@ -25,6 +33,33 @@ worth more than the parallelism a second PM would buy. Team B's charters are
 `inbox/SA-B.md` · `inbox/BE-B.md` · `inbox/FE-B.md`.
 
 ### The chain with two teams (ORDER 14.2, owner's go 2026-10-02)
+
+**Three teams and two testers since ORDER 56 (2026-11-07):**
+
+```
+                Human  ↔  Porter (PM)  ↔  Tanya (QA) · Twenty (QA)
+                     ↓            ↓            ↓
+                  Sober        Silver        Sector
+                  ↓   ↓        ↓    ↓        ↓    ↓
+               Jason Fern    Bob  Fanta    Brew  Flash
+```
+
+**The ORDER 56.2 rules, word for word (`MARIE.md` ORDER 56.2):**
+
+1. **No SA-to-SA edge, among all three.** Discoveries go to `SYSTEM-FACTS.md`. A decision that touches two teams goes up
+   to Porter. Unchanged from 14.2, now with three SAs.
+2. **Batch claims, three ways** (14.3 extended): Porter sizes the batch, splits it into **three piles of comparable
+   weight**, and writes **one file-area claim per team** in `## Batch claims` before any team starts. An item spanning
+   two claims goes **whole** to one team. A team with no pile this batch gets no claim. That is fine; never invent one.
+3. **One SPEC/TASK sequence for all three teams**, through `new-id.mjs` (already on this desk). No team prefixes.
+4. **Two testers, one TEST sequence** (corner-chat's pattern, ORDER 48), through `new-id.mjs`. **Porter gives each test
+   round to one tester, whole**, and never splits a round across both. The tester who ran a round signs its gate.
+   `tests/REGRESSION.md` stays one file. On sid, each tester marks her own test data with her name, so that two rounds on one
+   day never clean up each other's rows.
+5. **The card rule covers both testers** (`role-pm` §8): Porter checks the card before every login-gated round, for
+   whichever tester runs it.
+
+The two-team diagram ORDER 14.2 installed (kept as the record):
 
 ```
             Human  ↔  Porter (PM)  ↔  Tanya (QA)
@@ -67,6 +102,10 @@ Only these pairs may communicate, in either direction:
 | Porter (PM) ↔ Silver (SA, Team B) | REQ files, board, log `@` |
 | Silver (SA) ↔ Bob (BE, Team B) | SPEC/TASK files, board, log `@` |
 | Silver (SA) ↔ Fanta (FE, Team B) | SPEC/TASK files, board, log `@` |
+| Porter (PM) ↔ Sector (SA, Team C) | REQ files, board, log `@` |
+| Sector (SA) ↔ Brew (BE, Team C) | SPEC/TASK files, board, log `@` |
+| Sector (SA) ↔ Flash (FE, Team C) | SPEC/TASK files, board, log `@` |
+| Porter (PM) ↔ Twenty (QA) | REQ files, TEST files, board, log `@` |
 
 **Every other pair is forbidden.** Concretely:
 
@@ -278,7 +317,7 @@ from source (Jason, 2026-08-02, self-reported before presenting his work; two re
 without starting it, or ask . And note: **anything such a run happens to display is NOT a sanctioned
 DATA REQUEST answer** and must not be used as one.
 
-- **Never run SQL yourself.** Never connect to any real database, server, or
+- **Never run SQL yourself.** Exception: SA seats may read uat through `scripts/uat-select.mjs` only (root `CLAUDE.md` rule 4). Never connect to any real database, server, or
   environment. The human is the only source of real-world data. *(One scoped
   exception exists for the Tester — see "The Tester's environment" below. It
   applies to Tanya and to nobody else.)*

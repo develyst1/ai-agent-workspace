@@ -1,0 +1,8 @@
+tap row 1 -> /messages/m01
+tap back arrow (75,195) -> /messages
+tap ⋮ -> menu
+tab conditions -> /conditions
+tab channels -> /channels
+Zimbra row -> /channels/zimbra
+back arrow -> /channels
+tab messages -> /messages

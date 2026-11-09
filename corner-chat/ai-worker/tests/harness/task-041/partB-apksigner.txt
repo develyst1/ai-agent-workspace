@@ -1,0 +1,5 @@
+Signer #1 certificate DN: CN=corner-chat, O=develyst
+Signer #1 certificate SHA-256 digest: deb72918e64257d273885e0102523faf2d145ab9c77b0715075c126f58f04c6a
+Signer #1 certificate SHA-1 digest: dacd0bc3bffa353b4e4950fa5fdc08a9f0475302
+Signer #1 certificate MD5 digest: 5600f8432bc071532250d08a07c06c96
+apk sha256: 9816a1b5f9986b52d22f586591266f3b44cebef185f449d3b68898abf8b96e3b  size: 3361589

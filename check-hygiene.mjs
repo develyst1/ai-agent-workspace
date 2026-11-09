@@ -136,7 +136,17 @@ const ROLE_FILES = {
   // here because a role the gate does not know is a role whose boot cost nobody pays
   // attention to — which is exactly how the first boot budget was blown.
   "SA-B": "SA-Lead-B.md", "BE-B": "BE-B.md", "FE-B": "FE-B.md",
+  // Team C + the second tester — smart-scheduler only (Atlas ORDER 56, owner 2026-11-07). Same reason as Team B: a
+  // seat the gate does not know is a seat whose boot cost nobody watches. Absent elsewhere, so skipped elsewhere.
+  "SA-C": "SA-Lead-C.md", "BE-C": "BE-C.md", "FE-C": "FE-C.md", "QA-2": "QA-2.md",
+  // corner-chat's second tester (ORDER 48; entry ORDER 56 step 10). She has her own inbox but SHARES `QA.md` with the
+  // first tester, so the role file alone cannot say whether the seat exists — every desk with a QA.md has one. See
+  // SEAT_BY_INBOX below: this seat counts only where its inbox exists.
+  "QA-B": "QA.md",
 };
+// Seats whose charter is shared with another seat. For these, the charter's presence proves nothing; the seat exists
+// only where its own inbox does. Without this, every desk with a QA.md would report a phantom "QA-B" boot read.
+const SEAT_BY_INBOX = new Set(["QA-B"]);
 
 // The project's Knowledge file: what the owner has already said and how the running
 // system behaves. First match wins; the first name is the canonical one.
@@ -590,19 +600,30 @@ if (!knowledgeFile) {
   metrics.knowledgeBytes = knowledgeBytes;
   const shared = size(join(AW, "PROTOCOL.md")) + size(boardPath);
   for (const [role, roleFile] of Object.entries(ROLE_FILES)) {
-    const rolePath = join(AW, roleFile);
+    let rolePath = join(AW, roleFile);
+    // A second team that SHARES the first team's charters (corner-chat, i-space) has its own `-B` inboxes but no
+    // `-B` charter. There the seat is real and reads the base charter, so measure it with that (ORDER 56 step 12).
+    // Only when the `-B` inbox exists — a desk with no second team must not grow phantom seats.
+    if (!existsSync(rolePath) && /-B\.md$/.test(roleFile) && existsSync(join(AW, "inbox", `${role}.md`))) {
+      const base = join(AW, roleFile.replace(/-B\.md$/, ".md"));
+      if (existsSync(base)) rolePath = base;
+    }
     if (!existsSync(rolePath)) continue;   // role not staffed on this project
+    if (SEAT_BY_INBOX.has(role) && !existsSync(join(AW, "inbox", `${role}.md`))) continue;   // shared charter: inbox decides
+    // Name the charter actually read. For every ordinary seat this IS roleFile; only a fallback seat differs, and
+    // printing "SA-Lead-B.md" for a desk that has no such file would send a reader to a file that is not there.
+    const usedFile = rolePath === join(AW, roleFile) ? roleFile : roleFile.replace(/-B\.md$/, ".md");
     const controllable = shared + size(rolePath) + size(join(AW, "inbox", `${role}.md`));
     const boot = controllable + knowledgeBytes;
     metrics.roles.push({
-      role, roleFile, inbox: `inbox/${role}.md`,
+      role, roleFile: usedFile, inbox: `inbox/${role}.md`,
       controllableBytes: controllable,     // ← what warnBytes/limitBytes are compared against
       knowledgeBytes,                      // ← not gated, by name (ORDER 6)
       bytes: boot,                         // ← the whole boot read; same meaning as v6, now UNGATED
       warnBytes: LIMITS.bootWarn, limitBytes: LIMITS.bootFail,
       gatedOn: "controllableBytes",        // stated, never inferred — SCHEMA 2's reason for existing
     });
-    const detail = `${role} controllable boot read ${fmt(controllable)} (PROTOCOL+board+${roleFile}+inbox/${role}.md)`;
+    const detail = `${role} controllable boot read ${fmt(controllable)} (PROTOCOL+board+${usedFile}+inbox/${role}.md)`;
     if (controllable > LIMITS.bootFail) fails.push(`🔴 ${detail} > ${fmt(LIMITS.bootFail)} — paid on every session, on every vendor's bill`);
     else if (controllable > LIMITS.bootWarn) warns.push(`${detail} > ${fmt(LIMITS.bootWarn)}`);
     notes.push(`${role} boot read ${fmt(boot)} total = ${fmt(controllable)} controllable + ${fmt(knowledgeBytes)} ${knowledgeFile ?? "no knowledge file"} — total is not gated`);

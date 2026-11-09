@@ -155,5 +155,9 @@ machine.local.md
 # workspace has these two lines, and ORDER 24's adoption never carried them here.
 */ai-worker/memory/digest/
 
+# QA screenshots/evidence — may show customers' personal data (phones, children's names). NEVER commit.
+# Added 2026-11-07 by Atlas on the owner's "เอาออกก็ได้", after 3 sid captures were committed in 17d1a91.
+*/ai-worker/tests/evidence/
+
 # Which desk each Claude session belongs to (scripts/memory/session-desk.mjs) — per machine, per session
 .claude/session-desk/

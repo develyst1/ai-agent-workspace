@@ -106,6 +106,8 @@ Porter  <->  Sober (SA Lead)  <->  Jason (BE) / Fero (FE)
 > **The absence of a technical guard is NOT permission.** If a host happens to be
 > reachable and writable, the ban still holds.
 
+**Session files (PokerVault's; `role-qa` §4):** `picklocker/state/som.json` = **sid front office** (`som.develyst.online`). No file exists yet for sid back office or for uat. Reuse a live file; if it has lapsed or is missing, tell Porter → Porter files a REQUEST to PokerVault → UNLOCKED (≤ 3 min) → you go on. `NOT_UNLOCKED` or a timeout ⇒ those cases NOT_TESTED. (Atlas's correction, 2026-11-07, owner's ruling.)
+
 ### Dev-server rules — not optional
 
 1. **Clean up after yourself.** Every record, booking, user, file or message you

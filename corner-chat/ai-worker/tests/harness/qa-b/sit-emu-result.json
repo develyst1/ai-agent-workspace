@@ -1,0 +1,63 @@
+{
+  "ranAt": "2026-11-02T16:34:06.547Z",
+  "apkSha256": "9816a1b5f9986b52…",
+  "user": "qa-sit-b1-mvzgof6t@qa-b.test",
+  "checks": [
+    {
+      "case": "T6#6",
+      "what": "release APK opens to sign-in",
+      "expected": "/signin",
+      "actual": "/signin (https://localhost)",
+      "pass": true
+    },
+    {
+      "case": "T6#6",
+      "what": "sign in as QA-B's SIT user → message list",
+      "expected": "screen-messages, no error",
+      "actual": "true · errors []",
+      "pass": true
+    },
+    {
+      "case": "T6#6",
+      "what": "every reachable screen opens with no error (SIT API)",
+      "expected": "all ok",
+      "actual": "messages:ok | held tab:ok | chips:ok | menu:ok | conditions:ok | channels:ok | zimbra:ok | line:ok | names:not reachable (LINE not linked — expected for a new user) | groups:not reachable (LINE not linked — expected for a new user) | line code:a 6-digit code shown",
+      "pass": true
+    },
+    {
+      "case": "T6#8",
+      "what": "the watcher's permanent notification shows after sign-in",
+      "expected": "corner-chat กำลังรอข้อความใหม่",
+      "actual": "shown",
+      "pass": true
+    },
+    {
+      "case": "T6#8",
+      "what": "airplane mode → offline wording + the last list",
+      "expected": "ไม่มีอินเทอร์เน็ต กำลังแสดงข้อมูลล่าสุด",
+      "actual": "ไม่มีอินเทอร์เน็ต กำลังแสดงข้อมูลล่าสุด · list=true",
+      "pass": true
+    },
+    {
+      "case": "T6#8",
+      "what": "airplane off → banner gone, list loads from SIT",
+      "expected": "no banner, no error",
+      "actual": "banner=false · errors []",
+      "pass": true
+    },
+    {
+      "case": "T6#6",
+      "what": "sign out → sign-in screen; watcher notification gone",
+      "expected": "signin · no watcher",
+      "actual": "true · watcher posted=false · prefs: <run-as refused: release build>",
+      "pass": true
+    },
+    {
+      "case": "T6#7",
+      "what": "logcat during rows 6 + 8: no password / e-mail / token / bridge dump; no cleartext attempt",
+      "expected": "all 0",
+      "actual": "{\"password\":0,\"email\":0,\"bearer\":0,\"tokenPref\":0,\"capacitorVerbose\":0,\"cleartextRefused\":0,\"plainHttpToSit\":0} of 7301 lines",
+      "pass": true
+    }
+  ]
+}

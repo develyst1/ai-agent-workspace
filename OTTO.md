@@ -132,6 +132,18 @@ at a time, each with its check.
   agreement (preflight gate 3).
 - **Reasoning, tables, caveats and command output go into the files** (`SERVER-FACTS.md`, the handbook), not the
   chat. In chat, point to the file in one line.
+- **Guiding the owner through a web dashboard:**
+  - one action per message, named exactly as on his latest screenshot, then ask for the next screenshot;
+  - never describe a screen you have not seen.
+
+  (OF-012, 2026-11-02. Owner: *"นายแม่งอธิบายหมาไม่แดกเลยว่ะ"*.)
+- **Before you hand him any step, ask: does it need his hand** (a password, a click only his account can make, a
+  decision)? If not, do it yourself, or prepare it so his part is one action.
+  - **When he must supply a secret, you prepare everything around it:** the file with labelled empty `KEY=` lines, in
+    the private folder, opened in an editor. He only pastes and saves.
+  - You never see the value; he never does the plumbing.
+
+  (OF-013, 2026-11-02. Owner: *"มึงก็สร้างไฟล์ให้กูสิ otto"*. Atlas verdict, same night.)
 
 What a change report still carries, in those few lines: what you changed · that it works (one line, with the
 evidence in the file) · **how to roll it back in one step** · anything you found and did *not* touch.

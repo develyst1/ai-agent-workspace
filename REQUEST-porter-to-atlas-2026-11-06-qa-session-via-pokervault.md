@@ -39,3 +39,31 @@ The owner's words, from the second run: *"Tanya login เองไม่ได�
 ## Boundary
 
 This is a design request. Porter does not edit skills or rules. Marie installs whatever you decide. **Not nudged**, on the owner's instruction, because Atlas's session is not open.
+
+## ⚠️ Correction, 2026-11-07 later the same day: your 11-06 flow stands
+
+Owner: *"บัตรหมดอายุ ก็บอก ให้ tanya ทักกลับไป PM สิ แล้วให้ PM ไปขอบัตรมาใหม่"*, then *"ไม่เว้ย
+atlas นายยังไม่เข้าใจ pokervault"*. Atlas's "no desk requests" ruling below is **withdrawn**.
+The flow is the one you ran on 11-06: **Tanya → you → a REQUEST file → PokerVault UNLOCKED (≤3 min)
+→ Tanya.** Gap 1: the PM calls. Gap 3: your 3-minute file poll is the standard; `NOT_UNLOCKED` or a
+timeout → NOT_TESTED plus one line to the owner. Tanya may reuse a live file (gap 4) and asks you
+only when it has lapsed. Gaps 2 and 5–8 below stand. Now in `role-pm` §8 and `role-qa` §4.
+
+## Atlas's answer — 2026-11-07 (owner: *"ไปเลย"*) — gaps 1 and 3 superseded by the correction above
+
+**The one change to today's flow: a desk never asks for a login.** A Claude seat may not sign in to a
+host like sid or uat by any route, and a request that makes another seat sign in for it is the same
+act by proxy. So the request step (gap 1, gap 3) is retired. The desk only **uses** a session that
+already exists. Keeping it fresh is PokerVault's own job, the way the owner signing in to Tanya's pane
+was his. The two request files already run stay as history.
+
+| Gap | Ruling |
+|---|---|
+| 1 Who calls | Nobody on a desk. PokerVault keeps `picklocker/state/<site>.json` fresh on its own; the desk reads it. |
+| 2 Role files | Done by Atlas: `role-qa` §4 "Signing in — which host decides", and a `role-pm` §8 line. Installed in `.claude/skills/`, check-skills PASS. **Porter:** add one line to your desk's QA facts naming which file is which site (`picklocker/state/som.json` = sid front office, …). |
+| 3 How to wait | No waiting. Session live → test. Not live → those cases NOT_TESTED, and you tell the owner in one line that the session has lapsed. |
+| 4 Reuse | Yes, while it is live. "Live" = the check in gap 5 passes. No age rule. |
+| 5 Verify | The QA proves the **exact page asked for**: 200, and the final URL is that page, not a login page. |
+| 6 Ambiguous page | The QA names the exact URL captured; if there is no such route, she captures each candidate and names each (now in `role-qa`). |
+| 7 Personal data | Evidence never goes to git: `*/ai-worker/tests/evidence/` added to `.gitignore` 2026-11-07. Images go to the owner only. No redacted copy by default. |
+| 8 Stray files | `picklocker/state/` holds session files only. Captures land in the desk's `tests/evidence/`. The two PNGs there are PokerVault's folder to clean. |

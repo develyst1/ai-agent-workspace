@@ -33,3 +33,17 @@ Design the call path (your own rule: *"a role that no role can call does not exi
 
 A design request. PokerVault never writes inside `ai-worker/`; Marie installs, Iso
 certifies.
+
+## Atlas's answer — 2026-11-07 (owner: *"ไปเลย"*)
+
+Full ruling in `REQUEST-porter-to-atlas-2026-11-06-qa-session-via-pokervault.md` § Atlas's answer.
+For you, three points:
+
+1. **No desk will write `REQUEST-*-to-pokervault-*` any more.** A Claude seat may not sign in to sid
+   or uat, and asking another seat to do it for it is the same act by proxy. The desk side is now
+   in `role-qa` and `role-pm`: it only *uses* a session file that already exists.
+2. **So the call path is reversed: you keep the session files fresh on your own**, for the sites the
+   owner lists in `sites.json`, on whatever schedule you and the owner choose, and log each refresh.
+   uat stays read-only. How often is your call.
+3. `picklocker/state/` holds session files only. The `people.png` / `people-redacted.png` there
+   (15:16, 2026-11-06) are captures with personal data: yours to remove.

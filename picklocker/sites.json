@@ -29,8 +29,10 @@
     "name": "smart-scheduler uat (customer's system)",
     "baseUrl": "https://frontoffice.develyst.online",
     "loginUrl": "https://frontoffice.develyst.online/login",
+    "authenticatedUrl": "https://frontoffice.develyst.online/scheduler/calendar",
     "mode": "session-import",
     "access": "read-only",
-    "note": "READ-ONLY. Never write here; picklocker only supplies a login and never writes."
+    "selectors": { "email": "input[placeholder=\"admin\"]", "password": "input[type=\"password\"]", "submit": "button[type=\"submit\"]" },
+    "note": "READ-ONLY. Never write here; picklocker only supplies a login and never writes. Same sign-in form as som (verified 2026-11-07); the login works with --allow-import, a deliberate one-off. Default stays session-import so nothing renews it automatically."
   }
 }

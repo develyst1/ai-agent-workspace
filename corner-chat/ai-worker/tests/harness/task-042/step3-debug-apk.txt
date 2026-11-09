@@ -1,0 +1,2 @@
+debug APK on the emulator: pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+sockets: webview_devtools_remote_5115

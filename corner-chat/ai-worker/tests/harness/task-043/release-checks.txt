@@ -1,0 +1,6 @@
+Signer #1 certificate DN: CN=corner-chat, O=develyst
+Signer #1 certificate SHA-256 digest: deb72918e64257d273885e0102523faf2d145ab9c77b0715075c126f58f04c6a
+bundle: SIT base 1, 10.0.2.2 0, get fake(){return!1}
+config: "webContentsDebuggingEnabled": false
+debuggable: 0
+release apk: 3361601 bytes sha256 d9ec28e2f766e44bb3fcfb18f28d46a004436a02a283ed72487f97e072dc6cfc

@@ -1,0 +1,10 @@
+2026-11-07 10:35:08
+--- back sockets: peer port only, host hidden
+      1 ESTAB recvQ=0 sendQ=0 peerport=5432
+      1 ESTAB recvQ=0 sendQ=102 peerport=5432
+      1 ESTAB recvQ=0 sendQ=54 peerport=5432
+--- retransmit detail on database-port sockets
+timer:(keepalive,16sec,0) lastsnd:42916 lastack:42668 timer:(on,1min20sec,9) retrans:1020 lastsnd:39212 lastack:298732 retrans:1/10 timer:(keepalive,31sec,0) lastsnd:13968 lastack:13720 timer:(on,27sec,10) retrans:594 lastsnd:92460 lastack:462828 retrans:1/11 timer:(on,1min14sec,10) retrans:352 lastsnd:45356 lastack:467844 retrans:1/11 timer:(keepalive,31sec,0) lastsnd:27928 lastack:27684 timer:(keepalive,1.280sec,0) lastsnd:57916 lastack:57664 timer:(keepalive,46sec,0) lastsnd:12904 lastack:12656
+--- watch sockets
+      4 ESTAB sendQ=0 peerport=5432
+      1 ESTAB sendQ=960 peerport=5432

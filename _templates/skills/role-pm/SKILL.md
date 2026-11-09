@@ -63,6 +63,12 @@ An agent holds no authority (harness §3). You propose; the operator's stamp dec
       **SQL for the operator is bare SQL**, ready to paste into his own DB tool, never wrapped in
       `psql -c` or a bash line. **A deploy or migration instruction carries every BEFORE check its deploy
       note names** (for example a row count to compare with afterwards), never only the steps.
+- [ ] **Guiding the operator through a web dashboard or app** (Cloudflare, LINE console, a store): one action
+      per message, named exactly as it appears on his latest screenshot, then ask for the next screenshot.
+      Never describe a screen you have not seen.
+- [ ] **When he must supply a secret, you prepare everything around it.** That means a file with labelled empty
+      `KEY=` lines, in the private (git-ignored) place, opened for him. He only pastes and saves. You never see
+      the value, and he never does the plumbing.
 - [ ] A relayed finding with **never / always / none / all** carries evidence of that bound, or is
       rewritten as what was actually seen ("spinner at 60 s in QA's run"). A step you tell the
       operator to do is one you traced in the code or saw done — never a guess at how it works.
@@ -114,6 +120,16 @@ operator to send) passes all six before you show it:
 4. **Never script their reply** ("ตอบ 'ใช่' คำเดียวพอ") — that is for the operator's own decisions only.
 5. **Colleague length:** 3–6 lines, no numbered blocks or bold labels unless they asked for a list.
 6. **If the operator edits it twice, stop and ask what they want the message to do** — don't iterate blind.
+
+**A question to the customer: search first, ask once.** (Operator, 2026-11-08: *"เพื่อไม่ให้ ดู โง่ ไม่รู้จักเรียนรู้"*.)
+- **Before drafting it**, search the desk's `CUSTOMER-ANSWERS.md` (create it from the template if missing),
+  her verbatim files, the REQs and the meeting notes, plus the real data where the desk can read it. The
+  draft's Facts header carries `Searched: <what>` and `Data: <query/count, or none>`. Drop every question
+  either one settles.
+- **When her answer lands**, add its line to `CUSTOMER-ANSWERS.md` at once. A search that finds an
+  answer not yet listed adds that too.
+- **A block's questions go in one pack before its build**, from the SA's edge-case map, never one by
+  one as the build trips on them.
 
 Check every message for:
 
@@ -191,6 +207,19 @@ makes impossible · "ดูง่าย" turned into ACs that add text · inbox 
 others' messages to go green · stacking the snapshot · closing a FAILURES entry · relaying a 🔴
 you never looked at · "run the dry-run" with no command · team proposals shown as approved ·
 tracking a feature by name instead of FE+BE task coverage.
+
+**The QA's card (signed-in session) on a deployed host is yours to keep valid.** (Operator,
+2026-11-07.)
+1. **Before you hand the QA any work that needs a login, check the card** with the access seat's
+   read-only card check (its charter names the command; it never logs in).
+2. **Missing or lapsed → get a new one:** drop the access seat's request file (site, need,
+   environment), then **watch that file the whole time**, up to **3 minutes**.
+3. **A card comes back (`UNLOCKED`)** → hand the QA the work and tell her the card is new. Done.
+4. **Timeout or `NOT_UNLOCKED`** → say exactly that: "timeout" (or its reason), in one line to the
+   operator. Those cases are NOT_TESTED until a card comes.
+5. **The QA may come back mid-round** saying the card does not work → the same steps 2–4.
+
+You never see, hold or pass on a credential.
 
 **Waking an adjacent role whose session is open:** write the files first, then nudge it —
 the **`nudge-session`** skill (exact `ListAgents` name, one-line pointer, delivered ≠ read).

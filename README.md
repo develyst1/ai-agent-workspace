@@ -55,7 +55,8 @@ platform — the shared server, knowledge in `SERVER-FACTS.md`), **Bunny**
 (`BUNNY.md`, weaver of each desk's memory), **Iso** (`ISO.md`, independent verifier — inspects the machine that produces the work: the rules,
 the seats, the maps, and every "it is done"; verdicts in `ISO-LEDGER.md`), **PokerVault**
 (`POKERVAULT.md`, access operator — the workforce's keyholder; logs in and unlocks
-sessions the Anthropic-bound desks cannot, log in `POKERVAULT-LOG.md`) and **Atom**
+sessions the Anthropic-bound desks cannot, keeps them fresh hourly, and wakes on a
+`REQUEST-*-to-pokervault-*.md` dropped at the workspace root; log in `POKERVAULT-LOG.md`) and **Atom**
 (`ATOM.md`, draft — the owner's mobile mouth and ears).
 
 ## How to run a work session (manual mode)
@@ -97,7 +98,7 @@ with the rules older desks had to learn.) Opening a desk is Marie's job
 
 | Project | Description | Team |
 |---------|-------------|------|
-| `smart-scheduler` | Scheduling + back-office ERP for a sports activity center (monorepo, 4 repos) | Porter (PM/BA), Sober (SA Lead), Jason (BE), Fern (FE), **Tanya (QA — trial)** |
+| `smart-scheduler` | Scheduling + back-office ERP for a sports activity center (monorepo, 4 repos) | Porter (PM/BA) · **Team A** Sober (SA Lead), Jason (BE), Fern (FE) · **Team B** Silver (SA Lead), Bob (BE), Fanta (FE) · **Team C** Sector (SA Lead), Brew (BE), Flash (FE) · **Tanya + Twenty (QA — trial, both `QA · all`)** |
 | `i-space` | **I-Space (Intelligent Space)** — one product in two halves: **Blueprint** (an AI interview turns sources into a confirmed spec version) and **CAW** (the AI-workforce runner that executes confirmed versions with Claude CLI workers, *"เสมือน Atom"*). Brownfield, 4 repos on branch `atom`, **MANUAL mode** (8 sessions `<Name>-ISP`), IDs from 101 | Porter (PM/BA/PO/UX writer), Tanya (QA) · Team A (Blueprint): Sober (SA), Jason (BE), Fern (FE) · Team B (CAW): Silver (SA), Bob (BE), Fanta (FE) |
 | `develyst-ai` | Develyst AI Gateway — Bun+Hono multi-provider AI API (single backend repo) | Porter (PM), Sober (SA Lead), Jason (BE) |
 | `portfolio-nichaphon` | Personal portfolio / freelance-services site for Nichaphon Sayvav (`portfolio.develyst.online`) — Next.js 15 + Mantine 8, frontend only, single repo `portfolio-nichaphon-web`. **Dispatcher-run** | Porter (PM), Sober (SA Lead), Fern (FE) — no BE, no QA |

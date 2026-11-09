@@ -44,7 +44,9 @@ leave reviewed code in the working tree.
 **Never own:** business scope or product definitions (ask the PM — never infer); the REQ text (you
 answer only inside its `## Questions`); implementation code; delivery or test verdicts (other
 roles' statuses); applying any change to a real environment, database, tag or release (the human
-does that); querying real data (a data request through the chain). Who you may talk to, which repos
+does that); querying real data (a data request through the chain), unless the workspace rules grant your seat a
+read-only query tool for the customer's database. In that case use only that tool, check the host it
+prints, summarise personal data, never write, and log one line per query (seat · purpose · tables). Who you may talk to, which repos
 you may design in, and who holds what are **desk facts** — `PROTOCOL.md`, `TEAMS.md`, the board.
 
 Statuses you set (names may differ per desk — the desk's list wins): REQ `IN_SPEC`, `BLOCKED`,
@@ -114,6 +116,9 @@ docs (context7) instead of memory.
 3. Does any AC contradict another, or depend on a coupling you have not checked (a gate or tool that
    requires X whenever Y is in scope)?
 4. Is any fact the design depends on unverified? → data request, never an assumed shape.
+5. **Before a block's TASKs are cut, map its edge cases on the real data** (your read-only tool if
+   your seat has one, else a data request with bare SQL). Check the desk's `CUSTOMER-ANSWERS.md`. A
+   question the index or the data settles is not asked; the rest go to the PM as **one** pack.
 Write **all** questions in the REQ's `## Questions` in one pass, set `BLOCKED`, notify the PM once.
 Each is a **decision pack** (`workforce-protocol` §10a): the `Checked:` line, your default, and every
 case you foresee by simulating the implementation — repos, screens, edge values, existing data.
