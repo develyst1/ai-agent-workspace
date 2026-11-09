@@ -7,16 +7,17 @@
 > disagreement to the owner.
 > Provenance on every line: `[owner-approved YYYY-MM-DD]` · `[operator-delegated YYYY-MM-DD]` · `[team-proposed]` · `[carried-over]` · `[PM-decided]`
 
-**Written:** 2026-10-31 18:3x by Porter (PM) (adds REQ-127; FAILURES gate now PASS after Atlas) · **Newest log:** `log/2026-10-31.md`
+**Written:** 2026-11-01 16:3x by Porter (PM) (adds the 2026-11-01 change review; REQ-127/128 now on `atom` too) · **Newest log:** `log/2026-11-01.md`
 
 ## What we are in the middle of
 
 - **REQ-124 DELIVERED 2026-10-31 03:2x** — the owner's finish line met locally: new product "สมุดยืม-คืนหนังสือในออฟฟิศ", screens only, 8/8 points work, 0 interventions, 9/9 notes (TEST-122 § Round 2). REQ-125 AC-4 + REQ-126 AC-5 PASS live. `[PM-decided]` (DECISIONS 2026-10-31 03:2x)
 - **REQ-126 round 2 DELIVERED + COMMITTED 2026-10-31 05:12** (caw-back 8271082 · caw-front e7a36eb, PM verified) — DEF-2 fixed: a reworded repost of work already on open cards is refused; only new work becomes cards (TEST-124 § Round 2, stub). O-2 accepted (an old open plan re-enabled after one of its cards is done). `[owner-approved 2026-10-31]` (git word) · `[PM-decided]` (O-2)
 - **Nothing in flight on the desk.** Every REQ is DELIVERED or CANCELLED. `[PM-decided]`
+- **2026-11-01 change review done (read only, owner typed by Atom 16:13)** — `talks/CHANGES-2026-11-01.md`: the owner's develop → atom merge brought REQ-127/128 home to `atom` plus Blueprint's `deploy-sit.yml` (push to `sit` deploys). 5 questions for the owner in § PM's roll-up. `[owner-approved 2026-11-01]` (the ask) · `[team-proposed]` (findings)
 - **รวมโค้ด done 2026-10-31 13:35** (owner typed by Atom 13:31) — all 4 repos atom = develop = origin: bp-back 08e1e4d · bp-front 6a64527 · caw-back 8271082 · caw-front e7a36eb; fast-forward, no deploy. Local `develop` tracks origin/main / origin/nichaphon (pre-existing, untouched). `[owner-approved 2026-10-31]`
-- **REQ-127 DELIVERED 2026-10-31 18:3x** — Blueprint front builds standalone, back compiles a Linux binary (skill `deploy-ready-build`); TEST-125 PASS, AC-4 (Linux binary on a DB route) NOT_TESTED → owner's first server run. **COMMITTED 18:38 on `nichaphon`** (owner "ขึ้นgitเลย"): bp-front fbf3424 · bp-back d8df886, PM verified HEAD = origin/nichaphon, author develyst, no `.env`. `atom` does not have it. `[owner-approved 2026-10-31]` (checkout) · `[PM-decided]` (DECISIONS 16:5x–18:3x)
-- **REQ-128 DELIVERED + COMMITTED 2026-10-31 19:12 on `nichaphon`** — CAW same shape: caw-front 8febd0a · caw-back d3f100c (API binary only; the runner stays `bun run runner` from source, DECISIONS 18:4x), PM verified HEAD = origin; Linux run NOT_TESTED. `atom` has neither REQ-127 nor REQ-128. `[owner-approved 2026-10-31]`
+- **REQ-127 DELIVERED 2026-10-31 18:3x** — Blueprint front builds standalone, back compiles a Linux binary (skill `deploy-ready-build`); TEST-125 PASS, AC-4 (Linux binary on a DB route) NOT_TESTED → owner's first server run. **COMMITTED 18:38 on `nichaphon`** (owner "ขึ้นgitเลย"): bp-front fbf3424 · bp-back d8df886, PM verified HEAD = origin/nichaphon, author develyst, no `.env`. Now on `atom` too (owner's develop → atom merge; bp-back 4fd6e50 · bp-front 34dd9cb, `talks/CHANGES-2026-11-01.md` § Ranges); AC-4 since proved by Otto on SIT (SERVER-FACTS 2026-10-31). `[owner-approved 2026-10-31]` (checkout) · `[PM-decided]` (DECISIONS 16:5x–18:3x)
+- **REQ-128 DELIVERED + COMMITTED 2026-10-31 19:12 on `nichaphon`** — CAW same shape: caw-front 8febd0a · caw-back d3f100c (API binary only; the runner stays `bun run runner` from source, DECISIONS 18:4x), PM verified HEAD = origin; Linux run NOT_TESTED. Now on `atom` too (caw-back d3f100c · caw-front 8febd0a, `talks/CHANGES-2026-11-01.md` § Ranges). `[owner-approved 2026-10-31]`
 - **The owner's Windows box now has blueprint-back / blueprint-front / caw-back / caw-front in `machine.local.md`** (branch `nichaphon`, his `.env` in bp-back); the team's sessions run there. CAW repos not listed. `[PM-checked 2026-10-31 17:0x]`
 - **Delivered + committed (PM-verified, hashes on the board / DECISIONS):** REQ-125 (caw 5779554 / ce5ca8d), REQ-126 (caw 5b49f65 / 7f68c42), REQ-122, 121, 120, 119, 118, 115, 108 and earlier. `[owner-approved 2026-10-31]`
 - **REQ-123 CANCELLED** — removed from Blueprint (bp-back 08e1e4d · bp-front 6a64527), CAW uncommitted work discarded. `[owner-approved 2026-10-31]`
@@ -25,11 +26,14 @@
 
 | Thread | Waiting on | Since | What unblocks it |
 |---|---|---|---|
+| Skills sync repo → `~/.claude/skills` (owner 2026-11-01 19:15; not yet done, `diff -rq` differs) | Atom / Marie (workspace-level) | 2026-11-01 19:15 | the sync; then sessions reload |
 | Next work | owner | 2026-10-31 05:1x | the owner's next order (watch list below rides the next live run) |
-| FAILURES F-062 (PM), F-063 (QA) NEW | Atlas | 2026-10-31 | Atlas review |
-| Gate WARNs: 29 closed board rows, log 2026-10-31 > 40 KB, boot reads > 45 KB | owner → Marie | 2026-10-30 | Marie housekeeping |
+| FAILURES F-062…F-065 NEW | Atlas | 2026-11-01 | Atlas review |
+| Gate WARNs: 36 closed board rows, boot reads > 45 KB | owner → Marie | 2026-10-30 | Marie housekeeping |
 
 ## Standing orders to remember
+
+- **2026-11-01 19:15 owner answers** (SYSTEM-FACTS § "Owner's answers to the change-review questions"): new work on `atom`; owner's DB full access; CAW→SIT postponed (owner's scripts); SIT not in PROTOCOL, not ready — no merge/push to `sit`. `[owner-approved 2026-11-01]` · `[PM-decided]` (no `sit`)
 
 - **Desk goal** = finish I-Space itself: a new project built through I-Space, full loop, locally; every REQ closed. Deployment / server / pm2 / SIT / real `.env`: never touched. Deleting anything: show the owner the list first. `[owner-approved 2026-10-30]` (SYSTEM-FACTS 23:31–23:32)
 - **Never stop and wait for the owner:** the PM decides and logs under `DECISIONS.md` § "ตัดสินใจแทนเจ้าของ รอทบทวน"; scope: not deploy/money/customer, no git origination, gateway ≤ 6 per test round. `[owner-approved 2026-10-30]`

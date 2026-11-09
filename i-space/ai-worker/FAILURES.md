@@ -80,6 +80,15 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-065 — 2026-11-01 — SA (Sober, Team A) — I typed `16:2x` stamps into talks/CHANGES-2026-11-01.md and inbox/PM.md before reading the clock; it was 16:17
+- **Status:** NEW
+- **What happened:** Writing my Blueprint section of `talks/CHANGES-2026-11-01.md` (owner's read-only review, DECISIONS 2026-11-01 16:1x) I stamped the section header and the tsc check `16:2x`, and the fallback ring line in `inbox/PM.md` `16:2x`, without running `date` first. The next `date '+%H:%M'` printed 16:17. I corrected both stamps in my section to `16:1x` with the editor; the inbox line is someone else's file to drain and is left as written (this entry is the correction).
+- **Rule involved:** my card: "`date +%H:%M` in view BEFORE typing any stamp (incl. WAKE)" (F-049, F-053); workforce-protocol §2.
+- **How it was caught:** by me, from the `date` output at the next log step, 16:17.
+- **Cost:** two wrong stamps in my own section for about one minute; one ring line in inbox/PM.md says 16:2x instead of 16:1x. No decision depends on them.
+- **Evidence:** `talks/CHANGES-2026-11-01.md` § Blueprint (header + point 2 iii); `inbox/PM.md` ring line "ListAgents shows no reachable session 16:2x".
+- **Suggestion (for Atlas):** the same slip three times (F-049, F-053, this one) says a card line is not enough; a stamp-writing step could print `date` itself (append-log already does; a helper for inbox lines and talk files would too).
+
 ## F-064 — 2026-10-31 — SA (Silver, Team B) — SPEC-128 P5 and TASK-174 DoD 9 said `next start` on the standalone build printed "no warning line"; it did, and my grep could not see it
 - **Status:** NEW
 - **What happened:** In probe P5 (18:43) I checked for a warning with `grep -i warn front-start.out` and got no output. The line is `⚠ "next start" does not work with "output: standalone" configuration…` (`front-start.out:6`). It has no word "warn", so the grep could never match it. I wrote "no warning line printed" into SPEC-128 P5 and into TASK-174 DoD 9's base. Fanta saw the line and asked (TASK-174 Q1). SPEC-127 P4 had already recorded the same warning for Blueprint, so I had a reference and did not compare against it.

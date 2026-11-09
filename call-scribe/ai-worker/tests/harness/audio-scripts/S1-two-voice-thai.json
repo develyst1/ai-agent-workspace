@@ -1,0 +1,36 @@
+{
+  "id": "S1-two-voice-thai",
+  "note": "Written by Tanya for TEST-102, 2026-11-06. Entirely invented: no real person, company or call. For synthetic text-to-speech only. Voice A and voice B must be two different voices. Short turns are deliberate: they are the hardest to label, and AC-4 counts them.",
+  "topics": [
+    "The budget meeting moves from Friday 14 November to Tuesday 18 November",
+    "The marketing budget this round is two hundred thousand baht",
+    "The packaging supplier changes because the last delivery came late",
+    "The sales report is due by Monday, sent as a PDF"
+  ],
+  "turns": [
+    { "voice": "A", "text": "สวัสดีครับ ขอคุยเรื่องประชุมงบประมาณหน่อยได้ไหมครับ" },
+    { "voice": "B", "text": "ได้ค่ะ ตอนนี้สะดวกอยู่ค่ะ" },
+    { "voice": "A", "text": "เดิมเรานัดกันวันศุกร์ที่สิบสี่พฤศจิกายน แต่ผมติดงานด่วนที่ต่างจังหวัด" },
+    { "voice": "B", "text": "อ๋อ อย่างนั้นเหรอคะ" },
+    { "voice": "A", "text": "ครับ ผมขอย้ายไปเป็นวันอังคารที่สิบแปดพฤศจิกายนได้ไหมครับ" },
+    { "voice": "B", "text": "วันอังคารช่วงบ่ายได้ค่ะ เดี๋ยวดิฉันเปลี่ยน meeting ในปฏิทินให้เองนะคะ" },
+    { "voice": "A", "text": "ขอบคุณครับ" },
+    { "voice": "B", "text": "แล้วเรื่องงบการตลาดรอบนี้ สรุปได้ตัวเลขหรือยังคะ" },
+    { "voice": "A", "text": "สรุปแล้วครับ งบการตลาดรอบนี้สองแสนบาท แบ่งเป็นโฆษณาออนไลน์ครึ่งหนึ่ง" },
+    { "voice": "B", "text": "สองแสนบาทนะคะ" },
+    { "voice": "A", "text": "ใช่ครับ อีกครึ่งหนึ่งเก็บไว้ทำกิจกรรมที่หน้าร้าน" },
+    { "voice": "B", "text": "ค่ะ รับทราบ ส่วนเรื่องถุงบรรจุภัณฑ์ มีปัญหานิดหน่อยนะคะ" },
+    { "voice": "A", "text": "มีปัญหาอะไรครับ" },
+    { "voice": "B", "text": "ร้านเดิมส่งของช้าไปสองสัปดาห์แล้วค่ะ ลูกค้าเริ่มถามเข้ามาเยอะมาก" },
+    { "voice": "A", "text": "ถ้าอย่างนั้นเราเปลี่ยนซัพพลายเออร์เลยดีกว่าครับ" },
+    { "voice": "B", "text": "ดิฉันก็คิดอย่างนั้นค่ะ มีเจ้าใหม่เสนอราคามาแล้วหนึ่งราย" },
+    { "voice": "A", "text": "ส่ง quotation ให้ผมดูก่อนได้ไหมครับ" },
+    { "voice": "B", "text": "ได้ค่ะ เดี๋ยวส่งให้ทางอีเมลตอนเย็น" },
+    { "voice": "A", "text": "โอเคครับ แล้วรายงานยอดขายล่ะครับ" },
+    { "voice": "B", "text": "กำลังทำอยู่ค่ะ ต้องส่งเมื่อไหร่คะ" },
+    { "voice": "A", "text": "ขอภายในวันจันทร์นี้นะครับ ส่งเป็นไฟล์ PDF ก็พอ" },
+    { "voice": "B", "text": "ได้ค่ะ ภายในวันจันทร์ เป็นไฟล์ PDF" },
+    { "voice": "A", "text": "ขอบคุณมากครับ งั้นเจอกันวันอังคารนะครับ" },
+    { "voice": "B", "text": "ค่ะ สวัสดีค่ะ" }
+  ]
+}
