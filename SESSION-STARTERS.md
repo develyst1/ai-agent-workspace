@@ -51,11 +51,14 @@ turn, or to look something up:
 อ่าน ISO.md — <คำถาม/สิ่งที่อยากให้ตรวจ>
 ```
 
-> He checks the workforce's own claims: what was run, what was only read, what was
-> announced as done — and writes the verdict in `ISO-LEDGER.md`. He may read
-> everything, refuse or HOLD a workspace-level change, and owns truth but not
-> direction: he never does desk work, never edits a rule, and never asks a desk for
-> anything. Session title for nudges: `Iso - workspace`.
+> He is **not a tester**. Tanya checks a desk's deliverable; Iso inspects the machine
+> that produces it — the rules, the seats, the maps, and every "it is done" — and
+> writes the verdict in `ISO-LEDGER.md`. He may read everything, refuse or HOLD a
+> workspace-level change, and owns truth but not direction: he never does desk work,
+> never edits a rule, and never asks a desk for anything.
+>
+> Call him with a `REQUEST-<from>-to-iso-<date>-<topic>.md` file at the workspace
+> root — his watcher wakes him. `nudge-session` cannot reach a DeepSeek seat.
 
 ## PokerVault — Access Operator / Keyholder (workspace-level, see POKERVAULT.md)
 

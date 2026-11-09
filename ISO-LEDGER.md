@@ -77,11 +77,79 @@
   product repo. Owner to add the per-machine section, or say "workspace-only for this machine".
   → open, owner: the owner.
 
+## IV-005 · 2026-11-09 · "A role wakes Iso with `nudge-session`, by session title"
+
+- **Claim:** `ISO.md` § How anyone reaches you, as written 2026-11-06: *"The owner opens a session
+  titled `Iso - workspace` (the title is how `nudge-session` finds you)"* — i.e. any Claude seat can
+  wake this seat the same way it wakes Marie or a desk role.
+- **Check:** this session's own skill catalog (DeepSeek Harness) · `ls .claude/skills` ·
+  `POKERVAULT.md:95-111` · `ATLAS.md` 2026-11-01 (the nudge rule is written in Claude-session terms:
+  `list_sessions` + `SendMessage`).
+- **Observed:** `nudge-session` is **not in this session's catalog**; the skill exists only under
+  `.claude/skills/`, which is Claude Code's path. `POKERVAULT.md:97-99` records the same for the
+  other DeepSeek seat and names the only proven bridge (REQUEST file + background watcher). No
+  cross-harness send has ever been demonstrated by anyone.
+- **Verdict:** `SELF-ERROR` — the call path in my own birth file named a mechanism that does not
+  exist on my harness. The exact defect this role exists to catch, in its first three days, in its
+  own file.
+- **Consequence:** fixed in `ISO.md` § How anyone reaches you (watcher + request file) the same day.
+  **Lesson for the ledger:** a seat's birth file must name a wake mechanism that exists **on that
+  seat's harness** — not the one every other desk uses.
+
+## IV-006 · 2026-11-06 · "PokerVault's birth is registered, and no credential reached git"
+
+- **Claim:** `POKERVAULT.md:143-147` — *"README.md and SESSION-STARTERS.md carry this seat now"*, and
+  the credential store is git-ignored.
+- **Check:** `grep -n PokerVault README.md SESSION-STARTERS.md` · `cat picklocker/.gitignore` ·
+  `git ls-files picklocker`.
+- **Observed:** registration present (`README.md:56`, `SESSION-STARTERS.md:60`). The tooling's own
+  `.gitignore` excludes `state/`, `*.env`, `access.txt`, `node_modules/`. Tracked files are
+  `.gitignore`, `README.md`, `login.mjs`, `package.json`, `sites.json` — **no credential, no saved
+  session**. The `CLAUDE.md`/`ROLES.md` line is pending, as Iso's is.
+- **Verdict:** `CERTIFIED`.
+- **Consequence:** none. Re-check when the owner bumps the package.
+
+## IV-007 · 2026-11-09 · "No workspace seat's startup read crosses the desk gate's FAIL line (90 KB)"
+
+- **Claim:** the workspace's own charters are held to the standard the desk gate enforces — **45 KB
+  WARN / 90 KB FAIL** (`check-hygiene.mjs:109,121`) — or at least to the bar Atlas accepted on
+  2026-10-30: 47–53 KB is *"no evidence of harm"* and needs no slimming.
+- **Check:** `wc -c` on every workspace seat's startup files, 2026-11-09.
+- **Observed:**
+
+  | seat | startup read | bytes | vs 90 KB FAIL |
+  |---|---|---|---|
+  | Marie | `MARIE.md` | **522,418** | **5.8×** |
+  | Atlas | `ATLAS.md` (Standing knowledge) | **82,912** | 92 % — under the line, over the 45 KB warn |
+  | Iso | `ISO.md` + `ISO-LEDGER.md` | 19,418 | 22 % |
+  | Atom | `ATOM.md` | 17,935 | 20 % |
+  | Otto | `OTTO.md` (then `SERVER-FACTS.md` on demand) | 10,467 | 12 % |
+  | PokerVault | `POKERVAULT.md` + `POKERVAULT-LOG.md` | 11,826 | 13 % |
+  | Bunny | `BUNNY.md` | 7,254 | 8 % |
+
+- **Verdict:** `REFUTED` — by two seats. Marie fails outright; Atlas sits at 92 % of the line and
+  the file only grows (it is append-only by its own rule).
+- **The fix already exists in this workspace, and Otto is the proof:** `OTTO.md` is 10 KB because it
+  sends the reader to `server-platform/readyidc/readyidc-vps.md` (a one-page handbook) and to
+  `SERVER-FACTS.md` **on demand**, not at boot. That is exactly the progressive disclosure Atlas
+  designed on 2026-10-20 and never applied to his own file. `SERVER-FACTS.md` is 75,460 B and that
+  is *fine*, because nobody reads it at boot.
+- **Consequence:** Atlas designs the index-and-pointer shape for `MARIE.md` (and decides whether
+  `ATLAS.md` needs it before it crosses 90 KB); Marie executes and is the only hand on her charter.
+  Nothing is deleted — every moved section is archived verbatim and pointed to. **Done** = the next
+  Marie session's read is under the 45 KB warn and a spot-check of the archive matches the old text.
+  → open, owner: Atlas. *(Atlas's own file: a check to schedule, not a change to make yet.)*
+
 ---
 
-## Open items at birth
+## Open items
 
-- `IV-001` (Marie/Atlas boot budget) — awaiting Atlas's design.
-- `IV-004` (this machine's path map) — awaiting the owner.
-- Planned, not installed: the gate line `N uncertified — call Iso` (Marie, an ORDER from Iso), and
-  a weekly one-pager (owner's word on a scheduled task).
+- **IV-001 / IV-007** workspace charter boot budget — Atlas designs, Marie executes. **open**
+  (IV-007 carries the full seat-by-seat table; IV-001 is the Marie entry it grew from).
+- **IV-004** this machine's path map (`machine.local.md` absent) — the owner. **open.**
+- **Registration** (Iso + PokerVault) in `CLAUDE.md`/`ROLES.md` — needs the owner's keystroke: it
+  bumps `harness.json`'s hashes and needs an install on every desk. **open.**
+- **Gate line** `N uncertified — call Iso` — an ORDER for Marie. **not installed.**
+- **Weekly one-pager** — the owner's word on a scheduled task. **not installed.**
+- **Iso's watcher** — armed 2026-11-09 in this session; it dies with this session. Re-arm every
+  session (see `ISO.md` § How anyone reaches you).

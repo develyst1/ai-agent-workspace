@@ -52,8 +52,8 @@ Both modes read and write the same `ai-worker/` files, so nothing migrates
 when you switch. Workspace-level identities: **Atlas** (`ATLAS.md`, architect),
 **Marie** (`MARIE.md`, workflow operations), **Otto** (`OTTO.md`, release &
 platform — the shared server, knowledge in `SERVER-FACTS.md`), **Bunny**
-(`BUNNY.md`, weaver of each desk's memory), **Iso** (`ISO.md`, independent
-verifier — the workforce's own QA, verdicts in `ISO-LEDGER.md`), **PokerVault**
+(`BUNNY.md`, weaver of each desk's memory), **Iso** (`ISO.md`, independent verifier — inspects the machine that produces the work: the rules,
+the seats, the maps, and every "it is done"; verdicts in `ISO-LEDGER.md`), **PokerVault**
 (`POKERVAULT.md`, access operator — the workforce's keyholder; logs in and unlocks
 sessions the Anthropic-bound desks cannot, log in `POKERVAULT-LOG.md`) and **Atom**
 (`ATOM.md`, draft — the owner's mobile mouth and ears).
