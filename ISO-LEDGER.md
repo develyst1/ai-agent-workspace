@@ -125,8 +125,8 @@
 
 - `IV-001` (Marie/Atlas boot budget) — awaiting Atlas's design.
 - `IV-004` (this machine's path map) — awaiting the owner.
-- Planned, not installed: the gate line `N uncertified — call Iso` (Marie, an ORDER from Iso), and
-  a weekly one-pager (owner's word on a scheduled task).
+- Planned, not installed: the gate line `N uncertified — call Iso` (Marie, an ORDER from Iso).
+  **The weekly one-pager is withdrawn** — see the 2026-11-09 block below.
 
 ## Open items — 2026-11-08
 
@@ -139,3 +139,15 @@
   role** across all charters, not just Marie's; (2) the announced-vs-installed sweep over every ORDER
   and desk `FAILURES.md`; (3) the maps (`README.md` done; `SESSION-STARTERS.md` and desk `TEAMS.md`
   vs reality not yet). The gate line above remains uninstalled, so nothing reminds anyone of them.
+
+## Open items — 2026-11-09 (standby, not a schedule)
+
+- **No schedule, no shift** (owner, 2026-11-09: *"ของ pokervault ยังแค่ มาเปิดไว้ แล้วบอกให้สแตนบาย
+  แค่นั้นเอง รอ wake by request"*). The weekly one-pager idea is **withdrawn**. PokerVault's pattern is
+  the model: opened → stand by → woken by a request → work → reply in the file → re-arm → stand by.
+  `ISO.md` § Standby.
+- **IV-001** still open — `MARIE.md` reported at ~550 KB on 2026-11-08. Awaiting Atlas's design.
+- **IV-006** registration in `CLAUDE.md`/`ROLES.md` — `PARK`, awaiting the owner's word.
+- **Gate line** `N uncertified — call Iso` — not installed (Marie).
+- **Watcher** — armed with `while true` (no clock, no bound); it dies with the session and is re-armed
+  by the next one.

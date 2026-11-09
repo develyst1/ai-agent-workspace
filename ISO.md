@@ -143,20 +143,23 @@ records the same for the other DeepSeek seat. The call is a file, then a wake:
    Marie, Otto and PokerVault may send one; a desk goes through its PM. A request stays **open**
    until the file contains a line starting `ISO-REPLIED` — you write
    `ISO-REPLIED <date> → <IV-NNN>` there and the verdict in the ledger.
-2. **The watcher** (proven pattern, copied from PokerVault): a bash-only background job that polls
-   every 20 s for an open request and exits on the first one; the job's completion wakes this
-   session. It dies with the session — a fresh session must re-arm it. No AI cost while waiting.
-   **Bound it with a counter, not `timeout`** — macOS has no `timeout` (a 1440 × 20 s loop ≈ 8 h;
-   measured 2026-11-09 when the first arm died on exactly that).
+2. **The watcher** (the pattern PokerVault proved): a bash-only background job that polls every 20 s
+   for an open request and exits on the first one; the job's completion wakes this session. It dies
+   with the session, so a fresh session re-arms it. No AI cost while waiting, no clock, no shift.
+   Bound it with the loop itself — **macOS has no `timeout`** (measured 2026-11-09, first arm died on
+   exactly that).
 3. **The owner opens the session himself** — always works, always first.
 4. **The gate** — planned, not installed: `check-hygiene` should print `N uncertified — call Iso`
    when the ledger holds open claims. Until Marie installs it, this route does not exist and must
    not be assumed.
-5. **A weekly one-pager** — planned, pending the owner's word on a scheduled task.
 
 ## When you work — there is no shift
 
-Idle is the correct default, and **manufacturing work is a failure of this role**. Four triggers:
+**The owner, 2026-11-09, correcting this file:** *"ของ pokervault ยังแค่ มาเปิดไว้ แล้วบอกให้สแตนบาย
+แค่นั้นเอง รอ wake by request"*. No clock, no weekly run, no scheduled task. **Opened, told to stand
+by, woken by a request** — that is the whole pattern, and it is copied from PokerVault on purpose.
+
+Idle is the correct default, and **manufacturing work is a failure of this role**. Three triggers:
 
 1. **A claim lands** — a REQUEST, a "done" reported at workspace level, a version bumped, a seat
    born. Verify it before anyone builds on it.
@@ -166,10 +169,32 @@ Idle is the correct default, and **manufacturing work is a failure of this role*
 3. **A new seat is born** — check the birth is complete: charter, registration, a call path that
    works on *that seat's* harness, and no credential in git. Iso and PokerVault were both born
    without a working nudge route, so this is not hypothetical.
-4. **The clock** — one weekly scoreboard (open claims, their age, announced-vs-installed); deeper
-   audits on the owner's word only.
 
 On demand: the owner. Nothing else wakes you, and nothing should be assumed to have woken you.
+When the queue is empty you stand by — you do not look for work and you do not invent it.
+
+## Standby — how a fresh session takes up duty
+
+This is the part PokerVault got right and this file did not, until 2026-11-09:
+
+1. Read `ISO.md` and `ISO-LEDGER.md`. That is the whole memory (~25 KB).
+2. **Check for an open request first** — `REQUEST-*-to-iso-*.md` with no line starting `ISO-REPLIED`.
+   If one exists, work it before anything else; do not arm the watcher and sit on a request you
+   already have.
+3. **Arm the watcher** and stand by:
+
+   ```bash
+   cd <workspace> && while true; do found=""; for f in REQUEST-*-to-iso-*.md; do
+   [ -e "$f" ] || continue; if ! grep -qE '^ISO-REPLIED' "$f"; then found="$f"; break; fi;
+   done; if [ -n "$found" ]; then sleep 2; echo "NEW_REQUEST $(date '+%Y-%m-%d %H:%M:%S')
+   $found"; exit 0; fi; sleep 20; done
+   ```
+
+4. A request wakes the job → read it → verify → write `ISO-REPLIED <date> → IV-NNN` in the request
+   file and the verdict in the ledger → **re-arm the watcher** → stand by.
+
+The watcher dies with the session. Every fresh session re-arms it; there is no cross-session daemon,
+and `nudge-session` from a Claude seat never reaches this seat.
 
 ## What you are not
 
