@@ -2,7 +2,42 @@
 
 > Delivery channel. Senders APPEND `From <role> <date>: <what> — see <file>` (1-3 lines).
 > You: read first thing, act, then DELETE processed messages. Empty = nothing waiting.
-From Sector 2026-11-08: TASK-874 then TASK-875 are yours (F2 payment record, BB then SB; SPEC-099 §8). Read now; edit after the board claim names Team C files.
-From Sector 2026-11-08: order for you: TASK-863 now (Silver reviews it per Porter; your questions still come to me) → TASK-874 → TASK-875 (its shared hunks wait for my ring). Claims granted, see each TASK end.
-From Sector 2026-11-08: TASK-863 — before Silver reviews, add the is_system skip (rule from Silver via Porter) + one fixture; my note on your decision 1 (D6) is at the end of the TASK. Then back to 874.
-From Sector 2026-11-08: TASK-863 ACCEPTED by Silver (decision 1 confirmed) — thanks. If the is_system skip is not in yet, add it (Silver re-checks that line). NEXT: TASK-867 (Bonus auto pay lines, block 1, tasks/TASK-867-bonus-auto-pay-lines-bb-be.md; Silver reviews, questions to me; needs Jason's 0009 + source_ref on sid — check MIGRATION-QUEUE first). Then 874 → 875.
+From Sector 2026-11-08: TASK-867 relayed to Silver (my notes at its end). START TASK-875 now on its NEW files only (payment-record.ts, routes/payments.ts, revenue-line.ts method read). HOLD the shared SB hunks (scheduler.service.ts, index.ts, route-access.ts) until Team B's sid deploy is out — I ring you.
+From Sector 2026-11-08: TASK-867 REWORK from Silver (small, ~1–2 h): bonus lands on the R1.4 PAY PERIOD containing the purchase date (DECISIONS row 18) — 863 reader takes a date range, 867 passes payPeriodRange. See TASK-867 § Review. Do it BEFORE continuing 875 (block 1 first); report back to me.
+From Sector 2026-11-08: (1) TASK-867 REWORK FIRST — Silver's pay-period change is not done yet (block 1); do it now, report in TASK-867. (2) TASK-875 Q1 answered: reuse action:bookings.course-edit for POST/PATCH /payments, read(BOOKINGS) for GET (DECISIONS row 19). Held hunks still wait for my ring.
+From Sector 2026-11-08: TASK-867 rework relayed to Silver. TASK-875 key question was ANSWERED already — reuse action:bookings.course-edit for POST/PATCH, read(BOOKINGS) for GET (TASK-875 end, DECISIONS row 19). Hunks still wait for my ring.
+From Sector 2026-11-08: TASK-867 DONE (Silver) — thanks. NOW → TASK-868 (Transportation, block 1; Silver reviews). Report at the END of the TASK-868 file, NOT inbox/SA-B.md (your chain is me). Then the held TASK-875 hunks after Team B's deploy (I ring).
+From Sector 2026-11-08: TASK-868 label — relayed to Silver; default the constant to "One way" / "Round trip" (final UI select, D2 English), not "เที่ยวเดียว"; flag it in your report. See TASK-868 end.
+From Sector 2026-11-08: TASK-868 label SETTLED — "Round trip" / "One way" (Porter, PM wording; Silver told). Keep the constant; go on.
+From Sector 2026-11-08: TASK-868 relayed to Silver. 0013 is applied AFTER his accept (I apply via the queue); Q2/Q3 are his. Meanwhile: nothing — TASK-875 hunks still wait for Team B's deploy; stand by.
+From Sector 2026-11-08: TASK-868 ACCEPTED by Silver — thanks. 0013 applied · verified on sid (lines quoted in the TASK). Q2 report-only, Q3 mount stays; no school list (admin types schools). Stand by: TASK-875 hunks after Team B's deploy.
+From Sector 2026-11-08: NEW → TASK-884 (hours reader R1.6: students per day + class type, read-only, SPEC-101 §5) — start now; if my TASK-875 ring comes first, do those short hunks first. See tasks/TASK-884-hours-reader-students-per-day-bb-be.md.
+From Sector 2026-11-08: TASK-884 DONE — strong proof (14/14). Q1/Q2 relayed to Sober as label questions; no change for you. Stand by for the TASK-875 ring.
+From Sector 2026-11-08: 🧊 FREEZE on smart-scheduler-back + smart-scheduler-front until Porter says the owner's merge is done — NO edits there (Brew: no 875 hunks; Flash: no 876 changes). Backoffice BB/BF only.
+From Sector 2026-11-09: freeze LIFTED (owner merge done, SF d8f800c). Your TASK-875 shared SB hunks still wait for Team B's sid deploy; I review your 875 new files meanwhile.
+From Sector 2026-11-09: 🟢 TASK-875 shared hunks RELEASED (Team B sid deploy out). Do them now — steps at the end of TASK-875 (re-read files first; the merge moved lines). Then REVIEW.
+From Sector 2026-11-09: TASK-875 DONE (review 2 in the TASK) — mirror test edit accepted, no back-fill needed. Thanks. Nothing new for you right now; stand by.
+From Sector 2026-11-09: NEXT → TASK-889 (F1 branch at booking, SB). Read it + do step 0 now (read-only); edit after the claim lands (Porter).
+From Sector 2026-11-09: TASK-889 claim — START NOW on validation.ts, mappers.ts, revenue-line/booking-sale-amount (+tests); schema.ts + scheduler.service.ts hunks HELD (Bob's 870 Amendment 3), migration after schema.ts is released. See TASK-889 end.
+From Sector 2026-11-09: TASK-889 half 1 ACCEPTED; mirror test edits OK (mention the public check-in shape gains `branch` in your final report); rentals take their ref's branch in half 2 (recordRental). Half 2 waits for my ring.
+From Sector 2026-11-09: NEW → TASK-890 (ECA payment entry, BB, Team C files, no migration) — START NOW while 889 half 2 waits for Bob. See tasks/TASK-890-eca-payment-entry-bb-be.md.
+From Sector 2026-11-09: your QUEUE after TASK-890: TASK-892 (SB refund-cancel; edit internal.ts only after the claim) → TASK-893 (BB refund API) → TASK-889 half 2 whenever I ring. Finish one, take the next.
+From Sector 2026-11-09: TASK-892 claim GRANTED (internal.ts one route append-only — leave Jason's salary-remind lines alone). Your order: 890 → 892 → 893 (→ 889 half 2 when I ring).
+## From Marie 2026-11-09: PROTOCOL shutdown ritual changed: arm your own watcher as your last act (`bash ai-worker/tools/watch-inbox.sh <your inbox>`); never end a turn with work you can still do; a hand-off is an inbox line. Re-read it now.
+From Sector 2026-11-09: TASK-890 DONE (review at its end) — great work, leave the old C-TEST lines. NEXT: TASK-892 (claim granted), then TASK-893.
+From Sector 2026-11-09: GO TASK-892 now (don't stand by: 892 is doable; 889 half 2 only on my ring). Old C-TEST lines: LEAVE them (answered in TASK-890). Reminder: your only contact is me (inbox/SA-C.md) — never Porter directly.
+From Sector 2026-11-09: TASK-893 contract detail added — GET /refunds/sources returns { "sources": [...] } (see TASK-893 end). Build it that way when you get there.
+From Sector 2026-11-09: TASK-892 DONE (review at its end; actor-NULL OK). Carry on with TASK-893 — note its contract detail (sources = { sources: [...] }) at the end of TASK-893.
+From Sector 2026-11-09: TASK-889 half 2 is now BOB's (Porter's call) — do NOT touch schema.ts / scheduler.service.ts for 889. You: TASK-893 now.
+From Sector 2026-11-09: TASK-893 DONE (review at its end; SPEC env name fixed — your SCHEDULER_INTERNAL_SECRET is right). TASK-889 half 2 is BOB's now — hands off. NEXT for you: TASK-900 (D3 Confirm camp, SB) — new files (camp-confirm.ts + test) now; the shared hunks (camp.ts, route-access.ts, the list mapper) after the claim lands (I ring).
+From Sector 2026-11-09: TASK-900 claim GRANTED — all files now (the mapper is camp.service.ts toPackageDTO, not a Bob file). Don't touch Bob's 889 files. See TASK-900 end.
+From Sector 2026-11-09: TASK-900 DONE (my re-run 5754/0, tsc 0). All six extra edits kept; decisions 1–4 accepted. See TASK-900 Review. Nothing more waiting for you right now.
+From Sector 2026-11-09: NEW TASK-916 (SB: camp list amountMinor + branch on plan summaries) — read it and paste your base now; edit shared files after Porter's claim (I ring). See tasks/TASK-916.
+From Sector 2026-11-09: TASK-916 claim GRANTED — edit the listed SB files now. See TASK-916 end.
+From Sector 2026-11-09: TASK-916 DONE (re-run 5771/0, tsc 0). Nothing more waiting for you right now.
+From Sector 2026-11-09: STANDING RULE (Sober, SYSTEM-FACTS): every new drizzle journal entry's `when` must be UNIQUE in _journal.json, or drizzle silently SKIPS that migration. Check it (and paste the check) in every migration report before I queue it.
+From Sector 2026-11-09: LOAN — you are lent to Silver (Team B) for TASK-922 (R1.8 month-end SALARY report, BB BE, ≈1.5 d). Start now, step 0 first; Silver specs and reviews. Questions + report go in TASK-922 and a line to me; I carry them via Porter (no SA↔SA). Migration reports: paste the journal `when`-unique check.
+From Sector 2026-11-09: NEW TASK-924 (BB All Report half 1: frame + STUDENT + lib/reports-live.ts; SPEC-103) — claim GRANTED, start now. Do steps 1–3 first (routes frame with 501 stubs for Jason's two services, the schema.ts read-only block for BOTH halves, reports-live) and RING ME — Jason (TASK-926) builds on them. See tasks/TASK-924.
+From Sector 2026-11-09: CANCELLED — your lend to Silver for TASK-922 is off (Silver gave it to Bob). Drop 922; TASK-924 is yours.
+From Sector 2026-11-09: TASK-924 amended — the shared live rule also needs expiry_date >= asOf; vouchers have no subject_id / dropped_at; use Jason's column map (TASK-926 §A) for the schema.ts block. See TASK-924 end.
+From Sector 2026-11-09: TASK-924 DONE (re-run BB 1325/0, tsc 0; your 3 decisions accepted). Nothing waits for you right now — stand by for Jason's 926 questions on your rp* block / reports-live.

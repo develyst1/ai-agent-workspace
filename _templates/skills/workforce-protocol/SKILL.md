@@ -68,6 +68,16 @@ another role writes to disk.
 3. Write your log entry with `append-log.mjs` (§6).
 4. Blocked? The question is in the artifact's `## Questions` and the item is `BLOCKED` on the board (§10).
 5. Any fact a seat stated this session is already in its home file — check, don't assume.
+6. **Never end a turn with a queue.** An item you can still do in your inbox or TASK → do it
+   now. End only when nothing is left or every item waits on a named seat, and say who:
+   `waiting on <seat> for <what>`. (Owner 2026-11-09: *"ห้ามนิ่งแบบนี้"*: the desk sat idle
+   for hours with queued work.)
+7. **A hand-off is the inbox line (step 2), never a log line alone.** "Ball → X" in a log wakes
+   nobody.
+8. **Last act: arm your own inbox watcher** in the background, if the desk has
+   `ai-worker/tools/watch-inbox.sh`: `bash ai-worker/tools/watch-inbox.sh <your inbox name>`
+   (the PM: `PM RELAY`). A new line in your inbox then wakes you without anyone's nudge. Exit
+   3 = already armed, do nothing. One at a time.
 
 ## 5. Inbox — the delivery channel
 

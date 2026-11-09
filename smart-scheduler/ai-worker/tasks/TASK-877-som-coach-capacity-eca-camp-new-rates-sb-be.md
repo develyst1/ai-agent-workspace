@@ -49,3 +49,18 @@
 - SAFE suite green (count before / after); the mutation set all bites.
 - A report in `inbox/SA-B.md`. `git status` = only the claimed files. No git command run.
 - **It rides the same SB sid deploy as TASK-861 + 870**, so Tanya checks Coach Capacity with the new numbers on sid.
+
+## BE report (Bob, 2026-11-08) — DONE-pending-review, no migration, nothing committed
+- **Rates** (`som-contract.ts`): `CAPACITY_FULL_TIME_WEEKDAY_HOURS = 4`; `CAPACITY_WEEKEND_HOURS` split into `CAPACITY_FULL_TIME_WEEKEND_HOURS = 5` and `CAPACITY_PART_TIME_WEEKEND_HOURS = 5`; PT weekday 0 and FL 0 unchanged; a PT's own `weekend_capacity_hours` still wins (Karn's 4 is data; no name in the code). The comment block cites REQ-5009 superseding REQ-5004 §1 row 4.
+- **Booked hours:** `CAPACITY_OTHER_KINDS = {ECA, CAMP}`; the filter accepts `isLesson || GROUP || (OTHER && kind ∈ set)`; clock minutes, weekday / weekend by date, not CANCELLED, badge filter as before, primary + every extra coach, never a seat. FREE · KOL · no-kind OTHER stay out. `SomBooking.otherKind?` (optional — no constructor changed) and the service's column list + mapper pass `otherKind`. The comment that said «never ECA / camp» is fixed. The system "No Teacher" stays out of the roster (TASK-861's filter).
+- **Tests:** `som-capacity-task877.test.ts` 12 pass (FT 4+5; PT 5 / own 4 / weekday 0; ECA 2 h weekday + CAMP 1 h Saturday with an extra coach; FREE / KOL / no-kind out; CANCELLED out; seats out; badge filter; a lesson still counts; the service mapper). `som-capacity-task877.mutations.json` 17 mutants, all bite (one candidate, «FT weekend read from the PT constant», is EQUIVALENT while both are 5 and was dropped — noted in the file). Every other set in the tree re-run: no survivors. Full SAFE `bun test` → **5530 pass · 0 fail**; tsc (`typescript@5.9.3`) 0.
+- **Mirror edits (pins only, tagged 🔻 TASK-877):** `som-nvr-capacity-task742.test.ts` — the constants pin (4 / 5 / 5 / 0 / 0) and every capacity figure moved from the 5 / 6 arithmetic to 4 / 5 (≈ 25 lines, incl. the TASK-756 / TASK-757 capacity cases that quote hours); the byType case now books 4 lessons (5 would make the average-of-percentages mutant equivalent); `som-nvr-capacity-task742.mutations.json` — six capacity mutants re-aimed to the new constants (N10, N16, S1, S4, S5, S6).
+
+## Review — @Silver, 2026-11-08: ✅ ACCEPTED (DONE)
+- **Re-run by me:** SB tsc 0 (TS 5.9.3); SAFE **5530 pass / 0 fail**.
+- **Constants** (`som-contract.ts:591–597`): FT weekday 4 · FT weekend 5 · PT weekend 5 (the coach's own value still wins) · `CAPACITY_OTHER_KINDS = {ECA, CAMP}`.
+- **Filter** (`:645`): adds OTHER rows of those kinds only. FREE / KOL / no-kind stay out, and seats / cancelled / badge rules are unchanged.
+- **Mapper:** `som-contract.service.ts` now passes `otherKind`.
+- **Tests:** the 742 pins moved 5/6 → 4/5. The new 877 test is green, with 17 of 17 mutants.
+- **Live numbers:** Tanya checks them on sid after the deploy, with Karn's own 4 shown on his row.
+- **Security review:** none (read-only report).

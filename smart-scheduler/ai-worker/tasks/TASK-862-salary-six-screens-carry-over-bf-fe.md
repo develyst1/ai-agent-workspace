@@ -63,3 +63,30 @@ Repo `smart-scheduler-backoffice-front`, branch `dong`. **No git command: git on
 - Each role (Fern's seeded / stub users) sees exactly the menu and fields the final UI gives that role. Screenshots per page × role in `tests/evidence/task-862/`, at 1280 px and 375 px, dark and light.
 - A short table: page → the final-UI file it came from → anything that couldn't carry over one-to-one, and why.
 - A report in `inbox/SA-B.md`. `git status` = only the claimed files. No git command run.
+
+## Amendment — split (Silver, 2026-11-08, Porter's call): **My slip + Entries move to Fern (TASK-882).** Fanta keeps People · Person · Settings · Daily.
+- **Drop from this TASK:** the `my-slip` and `entries` routes and components, and the Export buttons note. The REQ-5010 "OT Hour" fold goes with Entries to TASK-882.
+- **🔴 The service file:** `src/services/salary.service.ts` and `src/types/app/salary.ts` **already exist and are Fern's** (her real Pay run / Slip calls). **Don't create or overwrite them.**
+  - Put your seam in **new** files instead: `src/services/salary-people.service.ts` (+ `src/services/__fixtures__/salary-people.ts`) and `src/types/app/salary-people.ts`. Same rule as before: one constant `SALARY_PEOPLE_SOURCE = "fixture"`, and no component imports the fixture.
+- **`parts.tsx` / `money.ts` are Fern's:** import them freely. If you need a change in them, ask me; don't edit them.
+- **Your claim, corrected:**
+  - `src/app/(admin)/salary/{people,person,settings,daily}/**`;
+  - new `src/components/partials/Salary/{People,Person,Settings,Daily}*.tsx`;
+  - the two new service / type files and the fixture;
+  - the four menu lines.
+
+## Review — @Silver, 2026-11-09: ✅ ACCEPTED (DONE)
+- **Re-run by me:**
+  - BF `bunx --package typescript@5.9.3 tsc --noEmit` = 0;
+  - `bun test` = **34 pass / 0 fail**;
+  - `bun run build` = 0, with `/salary/{people,person,settings,daily}` built;
+  - no component imports `__fixtures__` (a test pins it).
+- **File boundary kept:** her own `salary-people.service.ts` + types + fixture. Fern's `salary.service.ts`, `parts.tsx` and `money.ts` are only imported. The one `lib/roles/pages.ts` edit (4 rows + icons) is accepted as "the menu config the shell exposes".
+- **R0 at the seam** (no base / FL rates for an admin; Settings + Daily answer nothing to a non-CEO; the role is in every cache key): **accepted.** The server enforces it for real in 869 (the 871 routes).
+- **REQ-5010 folds:** all applied and pinned. Only the **button** reads «Add» (the modal keeps «Add employee»): correct.
+- **Rulings on her notes:**
+  - **Menu order** (Daily before Pay run because of first-match): accepted for now. **Follow-up for Fern** (her shell, via Sober): an explicit `/salary/payrun` row, so the CEO's SALARY order matches the final UI. It's small, not blocking.
+  - The Daily Export button stays inert (as the TASK says).
+  - `?name=` in the Person URL is fine for fixtures; **869 must switch it to `?teacherId=`**, since a name isn't unique and the API keys on `teacherId`.
+- **Not verified, accepted as such:** the running shell + sign-in click-through. That's Tanya's gate after a deploy (no password typing on sid).
+- **Security review:** none. These are fixture-backed screens; real access control lands with the 871 routes in 869.

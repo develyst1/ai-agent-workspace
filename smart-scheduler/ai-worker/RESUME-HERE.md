@@ -25,6 +25,8 @@
 | Meeting on the 7 extras | **พี่เบส + แนท** (owner asked them for a date) | 11-08 | Date → set card 19's due date. After the talk: move each card to BACKLOG / WON'T DO, cut TASKs, send ขวัญ the 3 questions in ONE message. |
 | SB/SF sid deploy round | **Silver** ("ready to deploy") | 11-08 | Then hand the owner the deploy steps (BEFORE checks from `DEPLOY-NOTES-REQ-120.md`), then TEST-142 (Twenty) + TASK-864 C1. |
 | Back-office demo deploy on sid | the build | 11-08 | ≈ 20–23 Nov (Salary demo). |
+| **TEST-142 part 2 (Twenty)** | **Porter: ring Twenty after 17:30 on 2026-11-09** (sid day-end) | 11-09 | First coach, SAME_COACH, park-block settle. Part 1 PASS. |
+| uat deploy (incl. Palm's SOM work) | **owner: "จะไม่ขึ้นจนกว่าโค้ดที่ sit ตอนนี้ผ่าน" + "เรื่องขึ้น uat ไว้ทีหลัง จากแก้ทุกอย่างนิ่งเลย ระบบหน้าบ้าน"**: deferred until the frontoffice is fully stable on sid | 11-09 | Bob's TASK-870 Amend 3 (race fix) + Brew's TASK-875 → ขึ้น git → SB sid deploy → Tanya re-run → TEST-142 pt 2 → C1 DB read. uat needs SB 0074 + 0075 migrate. |
 | ขวัญ: Bonus 100 1A/1B · park fee · data dates · activity table (REQ-5009 #5) | **ขวัญ** | 11-08 | Her reply → `CUSTOMER-ANSWERS.md` at once. |
 | Palm's merge | **Palm** | 11-08 | — |
 | Trolley DB | **แนท** (host / SSH) | 11-08 | Then one SA seat maps the schema → `TROLLEY.md` (Atlas phase 1). |

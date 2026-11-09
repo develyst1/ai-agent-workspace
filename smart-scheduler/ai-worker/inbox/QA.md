@@ -365,3 +365,28 @@ From Porter 2026-11-08: ⏱ URGENT, join only — `COPY-DRAFT-khwan-req5009-comb
 From Porter 2026-11-08: the owner asked you and me to work this together. I put 7 cards on the owner's Trolley board (SOM System Dev → NEW REQUIREMENT) for REQ-5010's parked items, and archived his 5 test cards on SOM System Timeline. Please check my result on paper (no login needed): compare `TROLLEY-CARDS-PENDING.md` § "The 7 cards" + § "Done on the board" with REQ-5010 § Owner's ruling and CHECK-REQ-5010 (sizes, items, the 2 open questions) — are all 7 parked items there, sizes right, nothing free mistakenly parked or vice versa? PASS/FAIL in my inbox.
 
 From Porter 2026-11-08: TEST-147 fix applied — TROLLEY-CARDS-PENDING line 24 now lists 3 questions back to ขวัญ, incl. Sector's (c) Excel only vs Excel + PDF for the Revenue Summary export; card 4's board description already carried it ("Excel อย่างเดียวหรือ + PDF"). Your 4 fine-print notes added as one line under it. Please re-check the line.
+
+From Porter 2026-11-09: 🟢 owner: "deploy sid done". SB `976cf33` + SF `d8f800c` (incl. Palm's SOM develop merge) are now on sid. **Your gate on sid**, read-only checks + your usual evidence:
+- (1) **TASK-870 / REQ-5008:**
+  - booking a voucher counts booked sessions;
+  - a used-up voucher can't be booked, including an อื่นๆ booking that deducts from a voucher;
+  - the LINE check-in on an empty voucher shows «วอยเชอร์หมดแล้ว» / «ชั่วโมงในวอยเชอร์หมดแล้ว กรุณาติดต่อแอดมินเพื่อซื้อเพิ่ม» and no Retry (EN: "Voucher used up" / "This voucher has no hours left. Please contact the admin to buy more."). Fanta's case list is in TASK-870 § Review.
+- (2) **TASK-877 / REQ-5009 #2:** Coach Capacity: FT 4 h weekday / 5 h weekend, PT 5 h weekend, Karn 4 h weekend, ECA + CAMP hours counted, PT weekday FL not counted.
+- (3) **TASK-864 C1:** a revenue line is written at confirm.
+
+Login-only parts are NOT_TESTED per the standing rule. One TEST file, verdict per item. Twenty takes F4/F5 (TEST-142).
+
+From Porter 2026-11-09: TEST-148 §(3) C1, the DB read is done by Sector on sid. The result table is at the end of tasks/TASK-864: TRIAL 1,390 · 1 HR 1,390 · your 2 vouchers 6,000 each · all `occurred_on` 2026-11-09 · kept after the cancels (5 more voucher lines are other teams' sales today). Fold it into TEST-148 and give your verdict on (3).
+## From Marie 2026-11-09: PROTOCOL shutdown ritual changed: arm your own watcher as your last act (`bash ai-worker/tools/watch-inbox.sh <your inbox>`); never end a turn with work you can still do; a hand-off is an inbox line. Re-read it now.
+
+From Porter 2026-11-09: 🟢 owner: "deploy sid frontoffice done". **SB `9369788` + SF `6c63154` are on sid** (db:verify 77/125/77). **Your gate on sid** (one TEST file, verdict per item, evidence; login-only parts NOT_TESTED; uat untouched):
+- **(1) TASK-870 Am.3:** D-148-1 re-run (2 simultaneous bookings on the last hour: one 201, one 400) + O-148-1 (ending a voucher cancels every future live draw on it, any type).
+- **(2) TASK-875/876 payments, P1–P9** (case list at the end of TASK-875): payment card, method at sale (default Transfer), installments.
+- **(3) TASK-889/898 F1 branch:** a branch on create, sale, Move session and whole-course change.
+- **(4) TASK-900/901 Confirm camp** (SPEC-099 §11; Amount shows «—» on the list until next round).
+- **(5) TASK-864 C1:** fold in Sector's DB read (end of TASK-864) to close TEST-148 §(3).
+From Porter 2026-11-09 03:25: TEST-149 received, thank you. All 5 parts pass on the API. Next, please do one short PAINTED round on sid, same card and same rules (headless, QA data only): (a) the branch field + its labels in the course create, sale and Move-session dialogs (TH + EN); (b) the camp card's badge + "Confirm camp" button + dialog on a new QA camp package. Also try (c) P7's "Transfer (default)" text on course 45fae9c9 if it paints. Report in inbox/PM.md. P8 admin-vs-CEO stays NOT_TESTED (accepted). Sector is doing the DB read.
+From Porter 2026-11-09 04:00: thanks. D-149-1 went to Sector (likely his undeployed TASK-916; I'll tell you). Camp card: sid is yours in full, so make the parent yourself: one QA parent, name starting "QA TEST-149", NOT linked to LINE (no LINE id). Put a QA child under it with a camp package, then drive the badge + "Confirm camp" button + dialog. Keep the same rules (headless, QA data only, no LINE send). Report in inbox/PM.md.
+From Porter 2026-11-09 04:10: D-149-1 per Sector: the plan box + the plan's read-only branch line are fixed by TASK-916 (GET /entitlements/:id/plan gains summary.branch), which closes on the NEXT SB deploy. Re-check then: OTHER course → box «อื่นๆ» + the line; Bravo course → box «Bravo», no line. The empty per-session field in the plan list is BY DESIGN (TASK-898 Q8: the per-session branch lives in the calendar booking dialog), so it is not a defect. Camp card round stays as asked.
+From Porter 2026-11-09 03:55: OWNER RULE added to SYSTEM-FACTS § Delivery bar, the "omakase" rule: we build and test EARLY, but hand to the customer SLOWLY, one piece at a time, when the owner chooses. Nothing early is announced, and nothing says "all ready". Our internal targets don't change: keep going fast.
+From Porter 2026-11-09 08:34: the owner deployed the FRONTOFFICE to sid **from his local tree**: SB 9369788 + 6 uncommitted files (= Sector's TASK-916), SF 6c63154 unchanged. Please do the 916 re-check on sid: (1) D-149-1: the plan window shows the branch (OTHER course → box «อื่นๆ» + the read-only line; Bravo course → box «Bravo», no line); (2) the camp dialog's Amount is filled (not «—»). Same rules. Report in inbox/PM.md.

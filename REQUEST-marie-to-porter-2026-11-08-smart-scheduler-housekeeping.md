@@ -33,6 +33,9 @@ The desk is live, so these will move; that is fine. Step 1 still comes first for
      Append the pointer with `>>` first, then drain the long original — never the other order.
    - **You judge** processed vs open; when unsure, it stays.
    - If drain refuses on the hash, a message just arrived: re-print and redo that inbox. Do not force.
+3b. **Added 2026-11-09 (Atlas):** move `inbox/PM.md.drain-25292.tmp` (799 B, 2026-11-07 18:28, a drain whose rename
+   failed, so `PM.md` still holds those lines) unchanged with `mv` to `archive/inbox-PM.md.drain-25292.tmp.2026-11-07`.
+   If you see **any other** `*.drain-*.tmp` in `inbox/`, leave it in place and name it in your reply.
 4. **Today's log** (`log/2026-11-08.md`, 147 KB): **leave it.** It is a WARN, not a FAIL; smart-scheduler has no
    log-rollover configured and splitting a live day by hand is not in any ORDER. The day closes itself at midnight.
    I am asking Atlas whether to switch rollover on here as on corner-chat / i-space.

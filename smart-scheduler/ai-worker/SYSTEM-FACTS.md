@@ -4388,3 +4388,26 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
 - **Credentials:** the git-ignored `.env.uat-readonly` at the workspace root (`UAT_READONLY_DATABASE_URL=` for role `sa_readonly`, SELECT-only, created by the owner). **No agent opens or prints it.**
 - **uat's expected DB host: 154.197.124.29 (internal 172.17.172.29)** — from the 2026-10-08 entry above (the owner's `.env.uat`), per Atlas 2026-11-08 (REQUEST-porter-to-atlas-2026-11-08… end). The SA checks the host the tool prints against THIS line — never against the tool's own output.
 - Per query: host check, summarise personal data (never paste it into shared files), one log line (seat · purpose · tables), no coach pay (R0.2) unless the owner says so per case.
+
+## 2026-11-09 — sid LINE OA allow-list (owner, verbatim)
+*"ใช่ตอนนี้ LINE_OA_WRITE_ALLOW ที่ deploy sid เป็นของ line SOM DEMO ของฉัน"*. On sid, smart-scheduler-back's `LINE_OA_WRITE_ALLOW` holds the owner's own **SOM DEMO** LINE OA, not the customer's. LINE sends from sid (including TASK-888 pay-confirm reminders) can reach only the demo OA. Keep it that way on sid. The customer's OA belongs only on the real (production) server.
+
+## Migrations: journal `when` must be UNIQUE across the team (drizzle silently skips a collision)
+2026-11-09 (Jason, TASK-915). `drizzle-kit migrate` applies only migrations whose journal `when` is **strictly newer** than the ledger's newest applied row. If a new migration's `when` **equals** an already-applied one (e.g. two engineers pick the same timestamp), `migrate` prints success but **creates nothing** — the ledger row it matches is the older one. Jason's 0019 `when` equalled Bob's 0018 `when`; the tables were silently not created. **Fix:** bump the new migration's `when` to a unique, strictly-greater value and re-run. **Always run `db:verify` after a migration** — it caught this ("NOT recorded"). Rule: when adding a migration, give its journal `when` a value no other migration uses and greater than every applied one.
+
+## Delivery bar: finish 2 weeks before every Master Plan due date [owner 2026-11-09]
+- Owner, verbatim: *"งานเราอ่ะ ต้องแน่น แม่นยำ และไว ซึ่งจะเพิ่งคำนึกไว้ว่าเราต้องทำเสร็จก่อน due ใน master plan -2week"*
+- Master Plan v1 (`project-docs/master-plan-2026-11-07/MASTER-PLAN-v1.md` §3): wk 1 = Mon 9 Nov 2026. **Internal target = the EARLIEST week of each range, minus 2 weeks:**
+  | Block | Plan: sid / uat | **Our target: sid / uat** |
+  |---|---|---|
+  | Salary demo (พี่ฟีน tries a slip on sid) | ≈ 20–23 Nov | **as soon as the owner's backoffice ขึ้น git + sid deploy** (the code is ready) |
+  | 1. Salary (whole block except commission) | wk 6–7 / wk 7–8 | **by Sun 6 Dec (wk 4) / by Sun 13 Dec (wk 5)** |
+  | 2. Revenue | wk 10–11 / wk 11–12 | **by Sun 3 Jan (wk 8) / by Sun 10 Jan (wk 9)** |
+  | 3. Stock + commission on the slip | wk 10–11 / wk 11 | **by Sun 3 Jan (wk 8) / by Sun 10 Jan (wk 9)** |
+  | 2.1 Reports REPORT · COURSE · STUDENT | wk 12–13 / wk 13–14 | **by Sun 17 Jan (wk 10) / by Sun 24 Jan (wk 11)** |
+- uat dates also depend on the owner's uat-deploy rule (frontoffice stable first).
+- "แน่น แม่นยำ": speed never skips the gate. Every block still passes Tanya's sid gate before it counts as done.
+- **Delivery pacing, the "omakase" rule [owner 2026-11-09]**, verbatim: *"ต่อให้เสร็จไวแค่ไหนก็ตามเราต้องมีชั้นเชิงในการ ส่งมอบ ความหมายคือ ต่อให้เสร็จเร็วมากที่สุดแบบ ดีงามมากๆ เราก็จะ ค่อยๆ นำมา ส่งมอบช้าๆ ทีละ อย่าง เหมือนการ serve omakase"*
+  1. **Build and test early, internally:** finish before the Master Plan dates (the −2-week targets above).
+  2. **Hand to the customer slowly, one piece at a time,** like courses served in order. Being finished early is **not** a reason to show or announce it early.
+  3. Consequences for the desk: no customer message or draft says "it's all ready" or offers early dates. Each piece goes out on its own, in the Master Plan's order, when the owner chooses to serve it. The owner decides when each course is served; the PM proposes the order. SAs and QA never promise dates or scope to anyone outside the desk.

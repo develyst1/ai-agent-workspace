@@ -209,6 +209,23 @@ work into one file, so this is a hard rule:
    opened this session. Never rewrite others' entries.
 3. If you are blocked, write a **QUESTION** block in the artifact you're working
    on and set its status to `BLOCKED` on the board.
+4. `@` the next role by **appending 1–3 lines to `inbox/<ROLE>.md`**:
+   `From <you> <date>: <what> — see <file §section>`. Adjacent roles only.
+5. **Every seat arms its inbox watcher as the last act of every turn**, with
+   the Bash tool's `run_in_background`: the PM runs
+   `bash ai-worker/tools/watch-inbox.sh PM RELAY`; every other seat runs
+   `bash ai-worker/tools/watch-inbox.sh <its inbox name>` (`SA`, `BE`, `FE-B`, `QA`, …).
+   When a line lands in your inbox it exits and the app wakes you, even if every sender's
+   nudges are capped. On wake: read the inbox, act, arm it again. Never run two at
+   once. While any seat holds open work, the PM arms it as
+   `WATCH_TICK_MIN=30 bash ai-worker/tools/watch-inbox.sh PM RELAY` and runs the idle
+   sweep on each `TICK:` (role-pm skill).
+6. **Never end a turn with a queue.** If your inbox or your TASK still holds an item you
+   can do, do it now. End a turn only when nothing is left, or when every item left waits
+   on a named seat; your last line says who (`waiting on <seat> for <what>`).
+7. **A hand-off is an inbox line, never a log line alone.** "Ball → <seat>" in the log
+   wakes nobody; the line in `inbox/<seat>.md` wakes its watcher. Add a doorbell
+   (nudge-session) when you can.
 
 ## Hygiene & file surgery — what a role may do, and what only Marie may do
 

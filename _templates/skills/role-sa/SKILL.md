@@ -218,6 +218,12 @@ in a TASK; design only in what your team holds; no SA↔SA contact — cross-tea
 **Waking an adjacent role whose session is open:** write the files first, then nudge it —
 the **`nudge-session`** skill (exact `ListAgents` name, one-line pointer, delivered ≠ read).
 
+**Every hand-off to an engineer = a line in `inbox/<engineer>.md` + a doorbell, every time.**
+That covers a new TASK, an amendment, a review verdict and a "go on to the next item". A
+"ball → <engineer>" in the log or in your own inbox wakes nobody: the engineer's watcher
+watches only its own inbox. Several items for one engineer go in one line that names them all,
+in order, so the engineer works through them without coming back to you between them.
+
 ## 7. Desk handshake
 
 Before any work: the identity line the desk prescribes, then the desk signpost `<desk>/CLAUDE.md`

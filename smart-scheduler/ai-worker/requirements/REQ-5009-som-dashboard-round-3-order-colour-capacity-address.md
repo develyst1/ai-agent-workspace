@@ -73,3 +73,4 @@ The 7:34 table was unsent; the combined items 1–5 reply (Tanya PASS d9f2bc5b) 
     - EN: "1st Trial - New Course" ✅ · "1st Trial (last 3 months) (Tried, didn't continue)". ⚠️ She wrote "(มาลองแล้วไม่ชอบ)" inside the English label; EN shows an English translation instead.
     - TH: "ทดลองเรียนครั้งแรก (3 เดือนล่าสุด) (มาลองแล้วไม่ชอบ)" ✅ · "ทดลองเรียนครั้งแรก - เปิดคอร์สใหม่".
 - Not seen on a screen yet. It needs the owner's deploy of develop to uat, then Tanya's read-only screen check (order, colours, both languages).
+- **Palm's answer, 2026-11-08 22:52 (Discord, via the owner), verbatim:** "1. deploy 2. ตามนี้". (1) The merge needs a deploy to uat; nothing else from us. (2) The EN label "(Tried, didn't continue)" is intended, so it stays as is. Next: the owner deploys, then Tanya checks the screen on uat (order, colours, labels in TH + EN).
