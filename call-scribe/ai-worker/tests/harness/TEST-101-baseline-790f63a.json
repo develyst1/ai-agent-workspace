@@ -1,0 +1,2509 @@
+{
+ "source": "790f63a",
+ "cases": [
+  {
+   "name": "bruno: GET Info.bru",
+   "server": "main",
+   "method": "GET",
+   "path": "/"
+  },
+  {
+   "name": "bruno: GET Models.bru",
+   "server": "main",
+   "method": "GET",
+   "path": "/models"
+  },
+  {
+   "name": "bruno: POST Chat - DeepSeek.bru",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"deepseek\",\"model\":\"deepseek-flash\",\"temperature\":0.7,\"max_tokens\":512,\"messages\":[{\"role\":\"system\",\"content\":\"คุณคือผู้ช่วย AI ที่ตอบภาษาไทยสั้น ๆ และชัดเจน\"},{\"role\":\"user\",\"content\":\"สวัสดี! คุณคือใคร?\"}]}"
+  },
+  {
+   "name": "bruno: POST Chat - Default.bru",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"messages\":[{\"role\":\"user\",\"content\":\"สวัสดี! คุณคือใคร?\"}]}"
+  },
+  {
+   "name": "bruno: POST Chat - Gemini.bru",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"gemini\",\"model\":\"gemini-3.8-flash\",\"temperature\":0.7,\"max_tokens\":512,\"messages\":[{\"role\":\"system\",\"content\":\"คุณคือผู้ช่วย AI ที่ตอบภาษาไทยสั้น ๆ และชัดเจน\"},{\"role\":\"user\",\"content\":\"สวัสดี! คุณคือใคร? ชื่อจริงชื่ออะไร\"}]}"
+  },
+  {
+   "name": "bruno: POST Chat - OpenAI.bru",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"openai\",\"model\":\"gpt-5.6-luna\",\"temperature\":0.7,\"max_tokens\":512,\"messages\":[{\"role\":\"system\",\"content\":\"คุณคือผู้ช่วย AI ที่ตอบภาษาไทยสั้น ๆ และชัดเจน\"},{\"role\":\"user\",\"content\":\"สวัสดี! คุณคือใคร?\"}]}"
+  },
+  {
+   "name": "bruno: POST Chat - xAI Grok.bru",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"xai\",\"model\":\"grok-4.3\",\"temperature\":0.7,\"max_tokens\":512,\"messages\":[{\"role\":\"system\",\"content\":\"คุณคือผู้ช่วย AI ที่ตอบภาษาไทยสั้น ๆ และชัดเจน\"},{\"role\":\"user\",\"content\":\"สวัสดี! คุณคือใคร?\"}]}"
+  },
+  {
+   "name": "bruno: POST Chat Multi (4 models parallel).bru",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat/multi",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"configs\":[{\"provider\":\"gemini\",\"model\":\"gemini-3.8-flash\",\"temperature\":0.5,\"max_tokens\":400,\"messages\":[{\"role\":\"user\",\"content\":\"อธิบาย Bun.js ให้สั้น ๆ\"}]},{\"provider\":\"openai\",\"model\":\"gpt-5.6-luna\",\"temperature\":0.5,\"max_tokens\":256,\"messages\":[{\"role\":\"user\",\"content\":\"อธิบาย Bun.js ให้สั้น ๆ\"}]},{\"provider\":\"xai\",\"model\":\"grok-4.7\",\"temperature\":0.5,\"max_tokens\":256,\"messages\":[{\"role\":\"user\",\"content\":\"อธิบาย Bun.js ให้สั้น ๆ\"}]},{\"provider\":\"deepseek\",\"model\":\"deepseek-flash\",\"temperature\":0.5,\"max_tokens\":256,\"messages\":[{\"role\":\"user\",\"content\":\"อธิบาย Bun.js ให้สั้น ๆ\"}]}]}"
+  },
+  {
+   "name": "bruno: POST Search Classify.bru",
+   "server": "main",
+   "method": "POST",
+   "path": "/search/classify",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"message\":\"What is AAPL trading at right now?\"}"
+  },
+  {
+   "name": "bruno: POST Search.bru",
+   "server": "main",
+   "method": "POST",
+   "path": "/search",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"query\":\"current AAPL stock price\"}"
+  },
+  {
+   "name": "open: GET /tiers",
+   "server": "main",
+   "method": "GET",
+   "path": "/tiers"
+  },
+  {
+   "name": "open: unknown route",
+   "server": "main",
+   "method": "GET",
+   "path": "/no-such-route"
+  },
+  {
+   "name": "open: GET /chat",
+   "server": "main",
+   "method": "GET",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real"
+  },
+  {
+   "name": "open: CORS preflight /chat",
+   "server": "main",
+   "method": "OPTIONS",
+   "path": "/chat",
+   "origin": "https://example.invalid"
+  },
+  {
+   "name": "auth: /chat no header",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /chat unknown key",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "wrong-key",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /chat disabled key",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-disabled-key-not-real",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /chat wrong scheme",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "body": "{}",
+   "rawAuth": "Basic tefany-test-key-not-real"
+  },
+  {
+   "name": "auth: /chat/multi no header",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat/multi",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /chat/multi unknown key",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat/multi",
+   "key": "wrong-key",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /chat/multi disabled key",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat/multi",
+   "key": "tefany-disabled-key-not-real",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /chat/multi wrong scheme",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat/multi",
+   "body": "{}",
+   "rawAuth": "Basic tefany-test-key-not-real"
+  },
+  {
+   "name": "auth: /search no header",
+   "server": "main",
+   "method": "POST",
+   "path": "/search",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /search unknown key",
+   "server": "main",
+   "method": "POST",
+   "path": "/search",
+   "key": "wrong-key",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /search disabled key",
+   "server": "main",
+   "method": "POST",
+   "path": "/search",
+   "key": "tefany-disabled-key-not-real",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /search wrong scheme",
+   "server": "main",
+   "method": "POST",
+   "path": "/search",
+   "body": "{}",
+   "rawAuth": "Basic tefany-test-key-not-real"
+  },
+  {
+   "name": "auth: /search/classify no header",
+   "server": "main",
+   "method": "POST",
+   "path": "/search/classify",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /search/classify unknown key",
+   "server": "main",
+   "method": "POST",
+   "path": "/search/classify",
+   "key": "wrong-key",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /search/classify disabled key",
+   "server": "main",
+   "method": "POST",
+   "path": "/search/classify",
+   "key": "tefany-disabled-key-not-real",
+   "body": "{}"
+  },
+  {
+   "name": "auth: /search/classify wrong scheme",
+   "server": "main",
+   "method": "POST",
+   "path": "/search/classify",
+   "body": "{}",
+   "rawAuth": "Basic tefany-test-key-not-real"
+  },
+  {
+   "name": "400: /chat empty messages",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"messages\":[]}"
+  },
+  {
+   "name": "400: /chat no messages",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{}"
+  },
+  {
+   "name": "400: /chat/multi no configs",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat/multi",
+   "key": "tefany-test-key-not-real",
+   "body": "{}"
+  },
+  {
+   "name": "400: /search no query",
+   "server": "main",
+   "method": "POST",
+   "path": "/search",
+   "key": "tefany-test-key-not-real",
+   "body": "{}"
+  },
+  {
+   "name": "400: /search blank query",
+   "server": "main",
+   "method": "POST",
+   "path": "/search",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"query\":\"   \"}"
+  },
+  {
+   "name": "400: /search/classify no message",
+   "server": "main",
+   "method": "POST",
+   "path": "/search/classify",
+   "key": "tefany-test-key-not-real",
+   "body": "{}"
+  },
+  {
+   "name": "bad body: /chat not JSON",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "not json"
+  },
+  {
+   "name": "bad body: /chat/multi not JSON",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat/multi",
+   "key": "tefany-test-key-not-real",
+   "body": "not json"
+  },
+  {
+   "name": "bad body: /search not JSON",
+   "server": "main",
+   "method": "POST",
+   "path": "/search",
+   "key": "tefany-test-key-not-real",
+   "body": "not json"
+  },
+  {
+   "name": "bad body: /chat multipart",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "--x\r\nContent-Disposition: form-data; name=\"a\"\r\n\r\nb\r\n--x--\r\n",
+   "contentType": "multipart/form-data; boundary=x"
+  },
+  {
+   "name": "provider down: /chat openai 429",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"openai\",\"messages\":[{\"role\":\"user\",\"content\":\"[[fail:openai]]\"}]}"
+  },
+  {
+   "name": "provider down: /chat gemini 429",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"gemini\",\"messages\":[{\"role\":\"user\",\"content\":\"[[fail:gemini]]\"}]}"
+  },
+  {
+   "name": "provider unknown: /chat",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"nobody\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}"
+  },
+  {
+   "name": "provider slow: /chat timeout",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"xai\",\"timeout\":50,\"messages\":[{\"role\":\"user\",\"content\":\"[[slow]]\"}]}"
+  },
+  {
+   "name": "provider slow: /chat gemini timeout",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"gemini\",\"timeout\":50,\"messages\":[{\"role\":\"user\",\"content\":\"[[slow]]\"}]}"
+  },
+  {
+   "name": "tier: /chat flagship",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"openai\",\"tier\":\"flagship\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}"
+  },
+  {
+   "name": "tier: /chat default chain small",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"tier\":\"small\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}"
+  },
+  {
+   "name": "fallback: deepseek down",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"messages\":[{\"role\":\"user\",\"content\":\"[[fail:deepseek]]\"}]}"
+  },
+  {
+   "name": "fallback: three down",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"messages\":[{\"role\":\"user\",\"content\":\"[[fail:deepseek,xai,gemini]]\"}]}"
+  },
+  {
+   "name": "fallback: all down",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"messages\":[{\"role\":\"user\",\"content\":\"[[fail:deepseek,xai,gemini,openai]]\"}]}"
+  },
+  {
+   "name": "multi: one of two down",
+   "server": "main",
+   "method": "POST",
+   "path": "/chat/multi",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"configs\":[{\"provider\":\"xai\",\"messages\":[{\"role\":\"user\",\"content\":\"[[fail:xai]]\"}]},{\"provider\":\"openai\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}]}"
+  },
+  {
+   "name": "search: tavily down",
+   "server": "main",
+   "method": "POST",
+   "path": "/search",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"query\":\"[[fail:tavily]]\"}"
+  },
+  {
+   "name": "classify: not JSON",
+   "server": "main",
+   "method": "POST",
+   "path": "/search/classify",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"message\":\"[[garbage]]\"}"
+  },
+  {
+   "name": "classify: model down",
+   "server": "main",
+   "method": "POST",
+   "path": "/search/classify",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"message\":\"[[fail:gemini]]\"}"
+  },
+  {
+   "name": "no provider keys: /chat openai",
+   "server": "nokeys",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"openai\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}"
+  },
+  {
+   "name": "no provider keys: /chat gemini",
+   "server": "nokeys",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"gemini\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}"
+  },
+  {
+   "name": "no provider keys: default chain",
+   "server": "nokeys",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}"
+  },
+  {
+   "name": "no provider keys: /search",
+   "server": "nokeys",
+   "method": "POST",
+   "path": "/search",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"query\":\"hello\"}"
+  },
+  {
+   "name": "auth off: /chat without a key",
+   "server": "authoff",
+   "method": "POST",
+   "path": "/chat",
+   "body": "{\"provider\":\"openai\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}"
+  },
+  {
+   "name": "no key file: fails closed",
+   "server": "nokeyfile",
+   "method": "POST",
+   "path": "/chat",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"provider\":\"openai\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}"
+  },
+  {
+   "name": "search disabled: /search",
+   "server": "searchoff",
+   "method": "POST",
+   "path": "/search",
+   "key": "tefany-test-key-not-real",
+   "body": "{\"query\":\"hello\"}"
+  }
+ ],
+ "results": [
+  {
+   "name": "bruno: GET Info.bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "full": {
+     "name": "AI Develyst",
+     "version": "1.1.0",
+     "supported_models": {
+      "openai": [
+       "gpt-5.6-sol",
+       "gpt-5.6-terra",
+       "gpt-5.6-luna",
+       "gpt-5.5",
+       "gpt-5.5-pro",
+       "gpt-5.4",
+       "gpt-5.4-mini",
+       "gpt-5.4-nano",
+       "gpt-4.1",
+       "gpt-4.1-mini",
+       "gpt-4.1-nano",
+       "o3",
+       "o4-mini"
+      ],
+      "gemini": [
+       "gemini-3.1-pro-preview",
+       "gemini-3.8-flash",
+       "gemini-3.7-flash",
+       "gemini-3.6-flash",
+       "gemini-3.5-flash",
+       "gemini-3.5-flash-lite",
+       "gemini-3.1-flash-lite",
+       "gemini-2.5-pro",
+       "gemini-2.5-flash",
+       "gemini-2.5-flash-lite"
+      ],
+      "xai": [
+       "grok-4.7",
+       "grok-4.6",
+       "grok-4.5",
+       "grok-4.3"
+      ],
+      "deepseek": [
+       "deepseek-v4-pro",
+       "deepseek-flash"
+      ]
+     },
+     "model_tiers": {
+      "openai": {
+       "small": "gpt-5.6-luna",
+       "medium": "gpt-5.6-terra",
+       "flagship": "gpt-5.6-sol"
+      },
+      "gemini": {
+       "small": "gemini-3.5-flash-lite",
+       "medium": "gemini-3.8-flash",
+       "flagship": "gemini-3.1-pro-preview"
+      },
+      "xai": {
+       "small": "grok-4.3",
+       "medium": "grok-4.6",
+       "flagship": "grok-4.7"
+      },
+      "deepseek": {
+       "small": "deepseek-flash",
+       "medium": "deepseek-flash",
+       "flagship": "deepseek-v4-pro"
+      }
+     },
+     "endpoints": {
+      "POST /chat": "เรียก model เดียว (ระบุ model หรือ tier: small|medium|flagship)",
+      "POST /chat/multi": "เรียกหลาย model พร้อมกัน",
+      "POST /search": "ค้นเว็บผ่าน Tavily คืน { query, answer, results }",
+      "POST /search/classify": "ถาม AI ว่าควร search ไหม คืน { search, query, reason }",
+      "GET /tiers": "ดู mapping ของ tier (เล็ก/กลาง/เรือธง) ต่อ provider"
+     }
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "bruno: GET Models.bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "full": {
+     "openai": [
+      "gpt-5.6-sol",
+      "gpt-5.6-terra",
+      "gpt-5.6-luna",
+      "gpt-5.5",
+      "gpt-5.5-pro",
+      "gpt-5.4",
+      "gpt-5.4-mini",
+      "gpt-5.4-nano",
+      "gpt-4.1",
+      "gpt-4.1-mini",
+      "gpt-4.1-nano",
+      "o3",
+      "o4-mini"
+     ],
+     "gemini": [
+      "gemini-3.1-pro-preview",
+      "gemini-3.8-flash",
+      "gemini-3.7-flash",
+      "gemini-3.6-flash",
+      "gemini-3.5-flash",
+      "gemini-3.5-flash-lite",
+      "gemini-3.1-flash-lite",
+      "gemini-2.5-pro",
+      "gemini-2.5-flash",
+      "gemini-2.5-flash-lite"
+     ],
+     "xai": [
+      "grok-4.7",
+      "grok-4.6",
+      "grok-4.5",
+      "grok-4.3"
+     ],
+     "deepseek": [
+      "deepseek-v4-pro",
+      "deepseek-flash"
+     ]
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "bruno: POST Chat - DeepSeek.bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "deepseek-flash",
+      "provider": "deepseek",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "deepseek",
+     "url": "https://api.deepseek.com/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "deepseek-flash",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>\nคุณคือผู้ช่วย AI ที่ตอบภาษาไทยสั้น ๆ และชัดเจน"
+       },
+       {
+        "role": "user",
+        "content": "สวัสดี! คุณคือใคร?"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 512,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "bruno: POST Chat - Default.bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "deepseek-flash",
+      "provider": "deepseek",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "deepseek",
+     "url": "https://api.deepseek.com/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "deepseek-flash",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "สวัสดี! คุณคือใคร?"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "bruno: POST Chat - Gemini.bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "gemini-3.8-flash",
+      "provider": "gemini",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "gemini",
+     "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=REDACTED",
+     "method": "POST",
+     "auth": null,
+     "body": {
+      "contents": [
+       {
+        "role": "user",
+        "parts": [
+         {
+          "text": "สวัสดี! คุณคือใคร? ชื่อจริงชื่ออะไร"
+         }
+        ]
+       }
+      ],
+      "generationConfig": {
+       "temperature": 0.7,
+       "maxOutputTokens": 512
+      },
+      "systemInstruction": {
+       "parts": [
+        {
+         "text": "<DATETIME>\nคุณคือผู้ช่วย AI ที่ตอบภาษาไทยสั้น ๆ และชัดเจน"
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "bruno: POST Chat - OpenAI.bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "gpt-5.6-luna",
+      "provider": "openai",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "openai",
+     "url": "https://api.openai.com/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "gpt-5.6-luna",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>\nคุณคือผู้ช่วย AI ที่ตอบภาษาไทยสั้น ๆ และชัดเจน"
+       },
+       {
+        "role": "user",
+        "content": "สวัสดี! คุณคือใคร?"
+       }
+      ],
+      "max_completion_tokens": 512
+     }
+    }
+   ]
+  },
+  {
+   "name": "bruno: POST Chat - xAI Grok.bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "grok-4.3",
+      "provider": "xai",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "xai",
+     "url": "https://api.x.ai/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "grok-4.3",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>\nคุณคือผู้ช่วย AI ที่ตอบภาษาไทยสั้น ๆ และชัดเจน"
+       },
+       {
+        "role": "user",
+        "content": "สวัสดี! คุณคือใคร?"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 512,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "bruno: POST Chat Multi (4 models parallel).bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": [
+      {
+       "content": "string",
+       "latency_ms": "number",
+       "model": "gemini-3.8-flash",
+       "provider": "gemini",
+       "usage": {
+        "completion_tokens": "number",
+        "prompt_tokens": "number",
+        "total_tokens": "number"
+       }
+      },
+      {
+       "content": "string",
+       "latency_ms": "number",
+       "model": "gpt-5.6-luna",
+       "provider": "openai",
+       "usage": {
+        "completion_tokens": "number",
+        "prompt_tokens": "number",
+        "total_tokens": "number"
+       }
+      },
+      {
+       "content": "string",
+       "latency_ms": "number",
+       "model": "grok-4.7",
+       "provider": "xai",
+       "usage": {
+        "completion_tokens": "number",
+        "prompt_tokens": "number",
+        "total_tokens": "number"
+       }
+      },
+      {
+       "content": "string",
+       "latency_ms": "number",
+       "model": "deepseek-flash",
+       "provider": "deepseek",
+       "usage": {
+        "completion_tokens": "number",
+        "prompt_tokens": "number",
+        "total_tokens": "number"
+       }
+      }
+     ],
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "deepseek",
+     "url": "https://api.deepseek.com/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "deepseek-flash",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "อธิบาย Bun.js ให้สั้น ๆ"
+       }
+      ],
+      "temperature": 0.5,
+      "max_tokens": 256,
+      "stream": false
+     }
+    },
+    {
+     "provider": "gemini",
+     "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=REDACTED",
+     "method": "POST",
+     "auth": null,
+     "body": {
+      "contents": [
+       {
+        "role": "user",
+        "parts": [
+         {
+          "text": "อธิบาย Bun.js ให้สั้น ๆ"
+         }
+        ]
+       }
+      ],
+      "generationConfig": {
+       "temperature": 0.5,
+       "maxOutputTokens": 400
+      },
+      "systemInstruction": {
+       "parts": [
+        {
+         "text": "<DATETIME>"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "provider": "openai",
+     "url": "https://api.openai.com/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "gpt-5.6-luna",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "อธิบาย Bun.js ให้สั้น ๆ"
+       }
+      ],
+      "max_completion_tokens": 256
+     }
+    },
+    {
+     "provider": "xai",
+     "url": "https://api.x.ai/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "grok-4.7",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "อธิบาย Bun.js ให้สั้น ๆ"
+       }
+      ],
+      "temperature": 0.5,
+      "max_tokens": 256,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "bruno: POST Search Classify.bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "query": "stub query",
+      "reason": "stub reason",
+      "search": true
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "gemini",
+     "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=REDACTED",
+     "method": "POST",
+     "auth": null,
+     "body": {
+      "contents": [
+       {
+        "role": "user",
+        "parts": [
+         {
+          "text": "Classify the following user message. Do NOT answer it. Output ONLY the JSON object described, nothing else.\n\nUser message:\n\"\"\"What is AAPL trading at right now?\"\"\""
+         }
+        ]
+       }
+      ],
+      "generationConfig": {
+       "temperature": 0,
+       "maxOutputTokens": 200
+      },
+      "systemInstruction": {
+       "parts": [
+        {
+         "text": "<DATETIME>\nYou are a routing classifier. Decide if answering the user's message needs a fresh web search (current/live/recent info, or facts that may have changed after your training cutoff). Reply with ONLY a compact JSON object, no prose, no markdown fences: {\"search\": boolean, \"query\": string|null, \"reason\": string} - \"search\": true if a web search is needed, else false. - \"query\": a good web search query string when search is true, else null. - \"reason\": a short justification."
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "bruno: POST Search.bru",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "answer": "string",
+      "query": "current AAPL stock price",
+      "results": [
+       {
+        "content": "string",
+        "title": "string",
+        "url": "string"
+       }
+      ]
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "tavily",
+     "url": "https://api.tavily.com/search",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "query": "current AAPL stock price",
+      "include_answer": true,
+      "max_results": 5
+     }
+    }
+   ]
+  },
+  {
+   "name": "open: GET /tiers",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "full": {
+     "openai": {
+      "small": "gpt-5.6-luna",
+      "medium": "gpt-5.6-terra",
+      "flagship": "gpt-5.6-sol"
+     },
+     "gemini": {
+      "small": "gemini-3.5-flash-lite",
+      "medium": "gemini-3.8-flash",
+      "flagship": "gemini-3.1-pro-preview"
+     },
+     "xai": {
+      "small": "grok-4.3",
+      "medium": "grok-4.6",
+      "flagship": "grok-4.7"
+     },
+     "deepseek": {
+      "small": "deepseek-flash",
+      "medium": "deepseek-flash",
+      "flagship": "deepseek-v4-pro"
+     }
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "open: unknown route",
+   "status": 404,
+   "headers": {
+    "content-type": "text/plain; charset=UTF-8",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "text": "404 Not Found"
+   },
+   "outbound": []
+  },
+  {
+   "name": "open: GET /chat",
+   "status": 404,
+   "headers": {
+    "content-type": "text/plain; charset=UTF-8",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "text": "404 Not Found"
+   },
+   "outbound": []
+  },
+  {
+   "name": "open: CORS preflight /chat",
+   "status": 204,
+   "headers": {
+    "content-type": null,
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": "GET,HEAD,PUT,POST,DELETE,PATCH"
+   },
+   "body": {
+    "text": ""
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /chat no header",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /chat unknown key",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /chat disabled key",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /chat wrong scheme",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /chat/multi no header",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /chat/multi unknown key",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /chat/multi disabled key",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /chat/multi wrong scheme",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /search no header",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /search unknown key",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /search disabled key",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /search wrong scheme",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /search/classify no header",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /search/classify unknown key",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /search/classify disabled key",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth: /search/classify wrong scheme",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "400: /chat empty messages",
+   "status": 400,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "messages is required"
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "400: /chat no messages",
+   "status": 400,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "messages is required"
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "400: /chat/multi no configs",
+   "status": 400,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "configs array is required"
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "400: /search no query",
+   "status": 400,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "query is required"
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "400: /search blank query",
+   "status": 400,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "query is required"
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "400: /search/classify no message",
+   "status": 400,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "message is required"
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "bad body: /chat not JSON",
+   "status": 500,
+   "headers": {
+    "content-type": "text/plain; charset=UTF-8",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "text": "Internal Server Error"
+   },
+   "outbound": []
+  },
+  {
+   "name": "bad body: /chat/multi not JSON",
+   "status": 500,
+   "headers": {
+    "content-type": "text/plain; charset=UTF-8",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "text": "Internal Server Error"
+   },
+   "outbound": []
+  },
+  {
+   "name": "bad body: /search not JSON",
+   "status": 500,
+   "headers": {
+    "content-type": "text/plain; charset=UTF-8",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "text": "Internal Server Error"
+   },
+   "outbound": []
+  },
+  {
+   "name": "bad body: /chat multipart",
+   "status": 500,
+   "headers": {
+    "content-type": "text/plain; charset=UTF-8",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "text": "Internal Server Error"
+   },
+   "outbound": []
+  },
+  {
+   "name": "provider down: /chat openai 429",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "OpenAI API error 429: {\"error\":{\"message\":\"stub openai failure\"}}",
+     "success": false
+    }
+   },
+   "outbound": [
+    {
+     "provider": "openai",
+     "url": "https://api.openai.com/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "gpt-5.6-terra",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:openai]]"
+       }
+      ],
+      "max_completion_tokens": 1024
+     }
+    }
+   ]
+  },
+  {
+   "name": "provider down: /chat gemini 429",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "Gemini API error 429: {\"error\":{\"message\":\"stub gemini failure\"}}",
+     "success": false
+    }
+   },
+   "outbound": [
+    {
+     "provider": "gemini",
+     "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=REDACTED",
+     "method": "POST",
+     "auth": null,
+     "body": {
+      "contents": [
+       {
+        "role": "user",
+        "parts": [
+         {
+          "text": "[[fail:gemini]]"
+         }
+        ]
+       }
+      ],
+      "generationConfig": {
+       "temperature": 0.7,
+       "maxOutputTokens": 1024
+      },
+      "systemInstruction": {
+       "parts": [
+        {
+         "text": "<DATETIME>"
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "provider unknown: /chat",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "Unknown provider: nobody",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "provider slow: /chat timeout",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "stub aborted",
+     "success": false
+    }
+   },
+   "outbound": [
+    {
+     "provider": "xai",
+     "url": "https://api.x.ai/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "grok-4.6",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[slow]]"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "provider slow: /chat gemini timeout",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "stub aborted",
+     "success": false
+    }
+   },
+   "outbound": [
+    {
+     "provider": "gemini",
+     "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=REDACTED",
+     "method": "POST",
+     "auth": null,
+     "body": {
+      "contents": [
+       {
+        "role": "user",
+        "parts": [
+         {
+          "text": "[[slow]]"
+         }
+        ]
+       }
+      ],
+      "generationConfig": {
+       "temperature": 0.7,
+       "maxOutputTokens": 1024
+      },
+      "systemInstruction": {
+       "parts": [
+        {
+         "text": "<DATETIME>"
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "tier: /chat flagship",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "gpt-5.6-sol",
+      "provider": "openai",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "openai",
+     "url": "https://api.openai.com/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "gpt-5.6-sol",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "hello"
+       }
+      ],
+      "max_completion_tokens": 1024
+     }
+    }
+   ]
+  },
+  {
+   "name": "tier: /chat default chain small",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "deepseek-flash",
+      "provider": "deepseek",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "deepseek",
+     "url": "https://api.deepseek.com/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "deepseek-flash",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "hello"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "fallback: deepseek down",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "grok-4.6",
+      "provider": "xai",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "deepseek",
+     "url": "https://api.deepseek.com/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "deepseek-flash",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:deepseek]]"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    },
+    {
+     "provider": "xai",
+     "url": "https://api.x.ai/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "grok-4.6",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:deepseek]]"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "fallback: three down",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "gpt-5.6-terra",
+      "provider": "openai",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "deepseek",
+     "url": "https://api.deepseek.com/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "deepseek-flash",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:deepseek,xai,gemini]]"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    },
+    {
+     "provider": "gemini",
+     "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=REDACTED",
+     "method": "POST",
+     "auth": null,
+     "body": {
+      "contents": [
+       {
+        "role": "user",
+        "parts": [
+         {
+          "text": "[[fail:deepseek,xai,gemini]]"
+         }
+        ]
+       }
+      ],
+      "generationConfig": {
+       "temperature": 0.7,
+       "maxOutputTokens": 1024
+      },
+      "systemInstruction": {
+       "parts": [
+        {
+         "text": "<DATETIME>"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "provider": "openai",
+     "url": "https://api.openai.com/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "gpt-5.6-terra",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:deepseek,xai,gemini]]"
+       }
+      ],
+      "max_completion_tokens": 1024
+     }
+    },
+    {
+     "provider": "xai",
+     "url": "https://api.x.ai/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "grok-4.6",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:deepseek,xai,gemini]]"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "fallback: all down",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "OpenAI API error 429: {\"error\":{\"message\":\"stub openai failure\"}}",
+     "success": false
+    }
+   },
+   "outbound": [
+    {
+     "provider": "deepseek",
+     "url": "https://api.deepseek.com/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "deepseek-flash",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:deepseek,xai,gemini,openai]]"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    },
+    {
+     "provider": "gemini",
+     "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=REDACTED",
+     "method": "POST",
+     "auth": null,
+     "body": {
+      "contents": [
+       {
+        "role": "user",
+        "parts": [
+         {
+          "text": "[[fail:deepseek,xai,gemini,openai]]"
+         }
+        ]
+       }
+      ],
+      "generationConfig": {
+       "temperature": 0.7,
+       "maxOutputTokens": 1024
+      },
+      "systemInstruction": {
+       "parts": [
+        {
+         "text": "<DATETIME>"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "provider": "openai",
+     "url": "https://api.openai.com/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "gpt-5.6-terra",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:deepseek,xai,gemini,openai]]"
+       }
+      ],
+      "max_completion_tokens": 1024
+     }
+    },
+    {
+     "provider": "xai",
+     "url": "https://api.x.ai/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "grok-4.6",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:deepseek,xai,gemini,openai]]"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "multi: one of two down",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": [
+      {
+       "content": "string",
+       "latency_ms": "number",
+       "model": "grok-4.6",
+       "provider": "xai"
+      },
+      {
+       "content": "string",
+       "latency_ms": "number",
+       "model": "gpt-5.6-terra",
+       "provider": "openai",
+       "usage": {
+        "completion_tokens": "number",
+        "prompt_tokens": "number",
+        "total_tokens": "number"
+       }
+      }
+     ],
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "openai",
+     "url": "https://api.openai.com/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "gpt-5.6-terra",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "hello"
+       }
+      ],
+      "max_completion_tokens": 1024
+     }
+    },
+    {
+     "provider": "xai",
+     "url": "https://api.x.ai/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "grok-4.6",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "[[fail:xai]]"
+       }
+      ],
+      "temperature": 0.7,
+      "max_tokens": 1024,
+      "stream": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "search: tavily down",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "web search failed",
+     "success": false
+    }
+   },
+   "outbound": [
+    {
+     "provider": "tavily",
+     "url": "https://api.tavily.com/search",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "query": "[[fail:tavily]]",
+      "include_answer": true,
+      "max_results": 5
+     }
+    }
+   ]
+  },
+  {
+   "name": "classify: not JSON",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "query": "null",
+      "reason": "classifier_parse_failed",
+      "search": false
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "gemini",
+     "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=REDACTED",
+     "method": "POST",
+     "auth": null,
+     "body": {
+      "contents": [
+       {
+        "role": "user",
+        "parts": [
+         {
+          "text": "Classify the following user message. Do NOT answer it. Output ONLY the JSON object described, nothing else.\n\nUser message:\n\"\"\"[[garbage]]\"\"\""
+         }
+        ]
+       }
+      ],
+      "generationConfig": {
+       "temperature": 0,
+       "maxOutputTokens": 200
+      },
+      "systemInstruction": {
+       "parts": [
+        {
+         "text": "<DATETIME>\nYou are a routing classifier. Decide if answering the user's message needs a fresh web search (current/live/recent info, or facts that may have changed after your training cutoff). Reply with ONLY a compact JSON object, no prose, no markdown fences: {\"search\": boolean, \"query\": string|null, \"reason\": string} - \"search\": true if a web search is needed, else false. - \"query\": a good web search query string when search is true, else null. - \"reason\": a short justification."
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "classify: model down",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "query": "null",
+      "reason": "classifier_parse_failed",
+      "search": false
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "gemini",
+     "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=REDACTED",
+     "method": "POST",
+     "auth": null,
+     "body": {
+      "contents": [
+       {
+        "role": "user",
+        "parts": [
+         {
+          "text": "Classify the following user message. Do NOT answer it. Output ONLY the JSON object described, nothing else.\n\nUser message:\n\"\"\"[[fail:gemini]]\"\"\""
+         }
+        ]
+       }
+      ],
+      "generationConfig": {
+       "temperature": 0,
+       "maxOutputTokens": 200
+      },
+      "systemInstruction": {
+       "parts": [
+        {
+         "text": "<DATETIME>\nYou are a routing classifier. Decide if answering the user's message needs a fresh web search (current/live/recent info, or facts that may have changed after your training cutoff). Reply with ONLY a compact JSON object, no prose, no markdown fences: {\"search\": boolean, \"query\": string|null, \"reason\": string} - \"search\": true if a web search is needed, else false. - \"query\": a good web search query string when search is true, else null. - \"reason\": a short justification."
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "no provider keys: /chat openai",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "OPENAI_API_KEY is not set in .env",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "no provider keys: /chat gemini",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "GEMINI_API_KEY is not set in .env",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "no provider keys: default chain",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "OPENAI_API_KEY is not set in .env",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "no provider keys: /search",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "web search unavailable",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "auth off: /chat without a key",
+   "status": 200,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "data": {
+      "content": "string",
+      "latency_ms": "number",
+      "model": "gpt-5.6-terra",
+      "provider": "openai",
+      "usage": {
+       "completion_tokens": "number",
+       "prompt_tokens": "number",
+       "total_tokens": "number"
+      }
+     },
+     "success": true
+    }
+   },
+   "outbound": [
+    {
+     "provider": "openai",
+     "url": "https://api.openai.com/v1/chat/completions",
+     "method": "POST",
+     "auth": "Bearer",
+     "body": {
+      "model": "gpt-5.6-terra",
+      "messages": [
+       {
+        "role": "system",
+        "content": "<DATETIME>"
+       },
+       {
+        "role": "user",
+        "content": "hello"
+       }
+      ],
+      "max_completion_tokens": 1024
+     }
+    }
+   ]
+  },
+  {
+   "name": "no key file: fails closed",
+   "status": 401,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "unauthorized",
+     "success": false
+    }
+   },
+   "outbound": []
+  },
+  {
+   "name": "search disabled: /search",
+   "status": 500,
+   "headers": {
+    "content-type": "application/json",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": null
+   },
+   "body": {
+    "shape": {
+     "error": "web search unavailable",
+     "success": false
+    }
+   },
+   "outbound": []
+  }
+ ]
+}

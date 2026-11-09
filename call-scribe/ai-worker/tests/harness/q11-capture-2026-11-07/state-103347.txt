@@ -1,0 +1,71 @@
+2026-11-07 10:33:47
+17922.00
+2026-11-07 05:35:05
+--- ps
+ 494658  494651    6907        9 Sl   159228 /usr/local/lib/nodejs/node /workspace/ai-agent-workspace/call-scribe/ai-worker/tests/harness/local-test10
+ 494727  494658    6905        3 Sl   102480 next-server (v16.4.5)
+ 494844  494658    6903       18 Ssl  245600 /opt/google/chrome/chrome --disable-field-trial-config --disable-background-networking --disable-backgrou
+ 494848  494844    6903        0 S    46724 /opt/google/chrome/chrome --type=zygote --no-zygote-sandbox --no-sandbox --headless --crashpad-handler-pid
+ 494851  494844    6903        0 S    47332 /opt/google/chrome/chrome --type=zygote --no-sandbox --headless --crashpad-handler-pid=0 --enable-crash-re
+ 494878  494848    6902        2 Sl   103320 /opt/google/chrome/chrome --type=gpu-process --gpu-recent-crash-count=0 --no-sandbox --disable-dev-shm-us
+ 494937  494658    6902        6 Sl   39960 /usr/local/lib/pnpm/5/.pnpm/bun@1.4.4/node_modules/bun/bin/bun.exe /workspace/ai-agent-workspace/call-scri
+ 506052  494851    6708        0 Sl   137504 /opt/google/chrome/chrome --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-repo
+ 506064  494851    6708        0 Sl   149076 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialo
+ 531952  494851    6292        0 Sl   137408 /opt/google/chrome/chrome --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-repo
+ 531964  494851    6292        0 Sl   144012 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialo
+ 532156  494851    6291        0 Sl   137280 /opt/google/chrome/chrome --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-repo
+ 532168  494851    6291        0 Sl   144752 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialo
+ 532356  494851    6290        0 Sl   137380 /opt/google/chrome/chrome --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-repo
+ 532384  494851    6290        0 Sl   148372 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialo
+ 553108  494851    5946        0 Sl   137732 /opt/google/chrome/chrome --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-repo
+ 553119  494851    5946        0 Sl   135976 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialo
+ 553321  494658    5944        6 Sl   45736 /usr/local/lib/pnpm/5/.pnpm/bun@1.4.4/node_modules/bun/bin/bun.exe src/index.ts
+ 555062  494851    5842        1 Sl   138068 /opt/google/chrome/chrome --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-repo
+ 555074  494851    5842        0 Sl   145316 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialo
+ 555534  494658    5738        2 Sl   35116 /usr/local/lib/pnpm/5/.pnpm/bun@1.4.4/node_modules/bun/bin/bun.exe src/index.ts
+ 555565  494658    5738        4 Ssl  191456 /opt/google/chrome/chrome --disable-field-trial-config --disable-background-networking --disable-backgrou
+ 555571  555565    5738        0 S    47296 /opt/google/chrome/chrome --type=zygote --no-zygote-sandbox --no-sandbox --headless --crashpad-handler-pid
+ 555574  555565    5738        0 S    48140 /opt/google/chrome/chrome --type=zygote --no-sandbox --headless --crashpad-handler-pid=0 --enable-crash-re
+ 555596  555571    5738        1 Sl   81604 /opt/google/chrome/chrome --type=gpu-process --gpu-recent-crash-count=0 --no-sandbox --disable-dev-shm-usa
+ 555599  555565    5738        1 Sl   90604 /opt/google/chrome/chrome --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --se
+ 555627  555574    5738        0 Sl   54032 /opt/google/chrome/chrome --type=utility --utility-sub-type=storage.mojom.StorageService --lang=en-US --se
+ 555653  555574    5738        1 Sl   138220 /opt/google/chrome/chrome --type=renderer --top-chrome-webui --crashpad-handler-pid=0 --enable-crash-repo
+ 555664  555574    5738        0 Sl   77624 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialog
+ 555665  555574    5738        1 Sl   158468 /opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=0 --enable-crash-reporter=, --noerrdialo
+--- listeners
+LISTEN 0      511        127.0.0.1:3123       0.0.0.0:*    users:(("MainThread",pid=494658,fd=21))  
+LISTEN 0      512        127.0.0.1:3121       0.0.0.0:*    users:(("bun.exe",pid=553321,fd=5))      
+LISTEN 0      511            [::1]:3120          [::]:*    users:(("next-server (v1",pid=494727,fd=2
+LISTEN 0      512                *:3122             *:*    users:(("bun.exe",pid=555534,fd=5))      
+--- back conns to db (by state; remote hidden)
+back pid 553321
+      1 ESTAB 0 0
+      2 ESTAB 0 102
+      1 ESTAB 0 54
+--- watch conns
+--- back threads/wchan
+ep_poll
+State:	S (sleeping)
+VmRSS:	   45736 kB
+Threads:	17
+--- back log tail
+worker: id=38fdbdf9-e9dc-4614-8ec3-99f0fcb63593 status=transcribing
+unhandled error: PostgresError
+worker: job crashed: PostgresError
+unhandled error: PostgresError
+unhandled error: PostgresError
+unhandled error: PostgresError
+unhandled error: PostgresError
+worker: job crashed: PostgresError
+unhandled error: PostgresError
+unhandled error: PostgresError
+unhandled error: PostgresError
+cleanup: uploads=0 sessions=0
+worker: job crashed: PostgresError
+unhandled error: PostgresError
+unhandled error: PostgresError
+worker: job crashed: PostgresError
+unhandled error: PostgresError
+unhandled error: PostgresError
+unhandled error: PostgresError
+unhandled error: PostgresError
