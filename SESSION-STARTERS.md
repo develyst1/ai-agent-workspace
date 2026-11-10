@@ -77,6 +77,18 @@ turn, or to look something up:
 > allowlist (`*.develyst.online`) only; `uat` stays read-only; credentials are never
 > handed over.
 
+## Charlotte — Challenger to Atlas (workspace-level, see CHARLOTTE.md · trial)
+
+```
+อ่าน CHARLOTTE.md
+```
+
+> She works only with Atlas: Atlas sends her the problem without its own answer, she answers with
+> at least three options in `IDEAS-Charlotte-<date>-<topic>.md`, and then she challenges Atlas's
+> proposal. She decides nothing. She runs on DeepSeek Harness, so `nudge-session` cannot wake her.
+> Leave the session open; her watcher wakes on a `REQUEST-atlas-to-charlotte-<date>-<topic>.md` at
+> the workspace root.
+
 > The per-role starters below still work for opening a single role manually —
 > both modes share the same files, so they can be mixed freely.
 
