@@ -4,8 +4,11 @@
 > `archive/RESUME-HERE-2026-11-10-0300-pre-rewrite.md`.
 > History → `log/` · decisions → `SYSTEM-FACTS.md` / `DECISIONS-REQ-120-build.md` · state → `board.md`.
 
-**Written:** 2026-11-10 ~03:00 by Porter (PM). Newest log: `log/2026-11-10.md`.
-The owner went to sleep at ~03:00: *"ฝากต่อ … ทำเท่าที่ทำได้อย่าลากดึกถ้าไม่จำเป็น"* (today only).
+**Written:** 2026-11-10 ~03:00 by Porter (PM). **Updated ~08:45:**
+- GR **round 2 is LIVE** (md5 6ac40756): orange everywhere; status badges stay blue on purpose.
+- The **first bot send** went out at 08:32 (the round-2 note plus 3 live screenshots, on the owner's "ส่ง"; sent:true, 4 messages).
+- **TASK-944 `watch-line.sh` is done.** Start it each session from `smart-scheduler/` with `bash ai-worker/tools/watch-line.sh <bot path>`. It runs every 30 min.
+- Tanya has a **som-gr live card** (`picklocker/basic-auth.mjs`), so she checks and screenshots on the real site.
 
 ## The mode right now (full text in SYSTEM-FACTS)
 - **The real build is PAUSED until 14 Nov.** All hands are on the GR web (feedback site) until then.

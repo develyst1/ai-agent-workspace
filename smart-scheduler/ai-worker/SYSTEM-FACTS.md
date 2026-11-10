@@ -4490,3 +4490,12 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
   6. The owner says "ส่ง", and the bot posts it (send.ts --img).
 
   Then wait for the next feedback, and so on. The real-code ledger still applies (see above). A customer message never goes out without his "ส่ง", so anything ready while he sleeps waits as a draft.
+
+## Staff + salary data from พี่ฟีน: CONFIDENTIAL [customer 2026-11-09/10, via the owner]
+- พี่ฟีน sent `รายชื่อพนักงานและเงินเดือนลงระบบ.xlsx` in his PRIVATE chat with the owner (11-09 22:01). It holds staff names, salaries, vehicle (car/motorbike), Merit, schools and distances: the data asked for on 11-09.
+- His words: *"เงินเดือนถ้าบางค.ถ้ามีเปลี่ยนฐาน ไปปรับได้เลย ง่ายๆเนอะ"*, then *"พวกนี้จะ confidential มากนะคะ เงินค."*, then (owner: ห้ามส่งลงกลุ่ม?) *"เรื่องเงินต้องระมัดระวัง ใช่ค่ะ ไม่ลงกลุ่มและ เป็นความลับค่ะ สำหรับตัวเงิน"*.
+- **Rules:**
+  - The file is kept ONLY at `.private/staff-salary-2026-11-09.xlsx` (git-ignored).
+  - No salary figure goes into any shared file, inbox, log, board, TASK, test or screenshot. **Nothing about money is ever posted to the LINE group** (the bot included).
+  - A seat that needs it for seeding the salary block reads it from `.private` only, on the owner's per-case word (the coach-pay rule).
+  - Porter read only the sheet headers.
