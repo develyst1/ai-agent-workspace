@@ -73,3 +73,5 @@ None.
 - The sid read-only proof (9/9 amounts equal an independent SQL sum; the plan branches match the rows) and the 18/19 mutants (the survivor is the equivalent `null <= 0` case) are accepted. The one mirror pin (`camp-scan-allow-list-task502`) is the usual DTO value.
 - Security review: list-only read fields, no new route, no auth change, no personal data. **None.**
 - **Ships with the next SB deploy (the owner's call).**
+
+- **Committed (Sector, 2026-11-09, under the owner's ขึ้น git grant, after sid + Tanya PASS 08:38):** smart-scheduler-back `dong` **77a4262** (pushed 9369788..77a4262). SB 5771/0 and tsc 0 on that tree.

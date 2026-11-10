@@ -179,3 +179,67 @@ It runs **once when this seat opens**. The scheduler offer is withdrawn. My repl
 - **Lesson for this file:** a host restart silently ends the wake path. A fresh session (or a
   restart) must re-arm it, and the desks cannot tell the difference between "no request" and
   "no watcher". If a request ever seems ignored, check this line first.
+
+---
+
+## NOT_UNLOCKED · 2026-11-09 20:2x · bo-sid (3 back-office cards) for Porter/Tanya
+
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-09-bo-sid.md` — TEST-150 needs three cards:
+  CEO (`bo-ceo.json`), admin (`bo-admin.json`), coach (`bo-coach.json`) on the back office
+  deployed to sid today (BB 693627d + BF e2add44).
+- **Site:** `https://backoffice-som.develyst.online` · `/login` · `POST /api/v1/auth/login` ·
+  Mantine form, inputs carry no name/placeholder, submit is `button[type=submit]`. Page says the
+  username/password are the same as the front office.
+- **Ran (read-only first, then four login attempts):** `probe.mjs` on the login URL (GET only);
+  then `admin`/bo-2026-07-20, `admin`/front-office-live, `qa-coach-qatt75`, `qa-nostatus-077`.
+- **Verified:** every attempt `401 UNAUTHORIZED · ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง`. No cookie, no
+  localStorage token, URL stays `/login`.
+- **Result:** `NOT_UNLOCKED` — the bo user store has no matching account; the three role users do
+  not exist yet and creating them is the owner's.
+- **Ready for the moment they exist:** `sites.json` has `bo-admin` / `bo-ceo` / `bo-coach`
+  (real selectors, own auth); `access.txt` now supports `[site-key]` credential sections
+  (login.mjs change, backwards compatible — `som` re-verified 200 after it). One command per card.
+- **Tooling added:** `picklocker/probe.mjs` — allowlisted, GET-only page probe (no credential,
+  no click), so a new site can be mapped without a login attempt.
+
+---
+
+## UNLOCK-008 · 2026-11-09 · bo-ceo for Porter/Tanya (TEST-150, back office on sid)
+
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-09-bo-ceo.md` — the CEO card only;
+  `bo-admin` / `bo-coach` wait for TASK-930 (front-office accounts).
+- **Credential:** the owner had written the pair inside the commented `[bo-ceo]` block of the
+  git-ignored `access.txt`; uncommented the section (value never printed). No env vars needed now.
+- **Ran:** `node picklocker/login.mjs bo-ceo` → session saved; `check-card.mjs bo-ceo` → ok.
+- **Verified:** status **200** · `https://backoffice-som.develyst.online/dashboard` ·
+  **AUTHENTICATED** at **20:55** · the auth response carries `JWT {"sub":"ceo","role":"ceo"}`, so
+  it is the CEO account, not the admin one.
+- **Handed:** `picklocker/state/bo-ceo.json` (plus `sites.json` `bo-*` entries pointing their
+  `authenticatedUrl` at `/dashboard`).
+- **Result:** `UNLOCKED`
+- **Tooling fixed (this is why two attempts looked refused):** both sid apps now render the
+  sign-in form with Mantine/Next. A click before hydration is a native GET submit, so the login
+  "fails" while the credential is correct. `login.mjs` now waits for network idle, retries 3×,
+  and treats a dropped connection as a retry. `som` re-verified 200 after the change; `keep-fresh`
+  reports `bo-admin`/`bo-coach` as `skipped-no-credential` (exit 0) instead of failing.
+- **Unlock-009 pending:** `bo-admin`, `bo-coach` — need accounts after TASK-930.
+
+---
+
+## NOT_UNLOCKED · 2026-11-10 03:0x · som-gr (GR / feedback web, LIVE) for Porter/Tanya
+
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-10-som-gr.md` — a card so Tanya can check and
+  screenshot each feedback round on the real site (owner: *"อยากให้ดูของจริงมากกว่าดูในเครื่องว่ะ"*).
+- **Site:** `https://som-gr.develyst.online` — **401 Unauthorized** with no credential: HTTP Basic
+  at nginx, no form, nothing to sign into inside the app.
+- **Why not a session file:** a `storageState` cannot carry Basic Auth, and writing
+  `httpCredentials` into `state/` would be **the password in a file**, which the charter forbids.
+- **Built instead (card = a context, not a file):** `sites.json` → `som-gr` `"mode": "basic-auth"`;
+  `picklocker/basic-auth.mjs` → `openCard(browser, 'som-gr')` returns a context whose
+  `httpCredentials` came from the git-ignored `access.txt` (`send: 'always'`). Nothing is printed,
+  nothing is persisted. CLI verify prints only status + URL.
+- **Waiting:** the password. `access.txt` has `[som-gr]` with `user = som` and a blank password for
+  the owner to paste when he wakes. Until then the card check says `MISSING · no credential`.
+- **Refactor, tested:** the credential lookup moved to `picklocker/creds.mjs` (shared with
+  `login.mjs`); `som` re-verified **200** after the move, so the refactor changed no behaviour.
+- **Result:** `NOT_UNLOCKED` — one paste away from `UNLOCKED`.

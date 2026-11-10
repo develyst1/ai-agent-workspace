@@ -11,6 +11,7 @@
 import { readFileSync, existsSync, mkdirSync, copyFileSync } from 'node:fs'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { dirname, join } from 'node:path'
+import { credentialsFor } from './creds.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const sites = JSON.parse(readFileSync(join(here, 'sites.json'), 'utf8'))
@@ -45,23 +46,7 @@ if (site.mode === 'session-import' && !process.argv.includes('--allow-import')) 
 const origin = new URL(site.loginUrl).origin
 assertAllowed(origin)
 
-const envKey = key.toUpperCase().replace(/[^A-Z0-9]/g, '_')
-let user = process.env[`PICKLOCK_USER_${envKey}`]
-let pass = process.env[`PICKLOCK_PASS_${envKey}`]
-
-// Fallback: access.txt (git-ignored) — the owner drops "user = ..." / "password = ..." in.
-if (!user || !pass) {
-  const accPath = join(here, 'access.txt')
-  if (existsSync(accPath)) {
-    for (const line of readFileSync(accPath, 'utf8').split(/\r?\n/)) {
-      const m = line.match(/^\s*(user|password)\s*[:=]\s*(.+?)\s*$/i)
-      if (m) {
-        if (m[1].toLowerCase() === 'user') user = m[2]
-        if (m[1].toLowerCase() === 'password') pass = m[2]
-      }
-    }
-  }
-}
+const { user, pass, envKey } = credentialsFor(here, key)
 if (!user || !pass) {
   console.error(`Credentials missing: set PICKLOCK_USER_${envKey} / PICKLOCK_PASS_${envKey}, or fill picklocker/access.txt with "user = ..." and "password = ..."`)
   process.exit(2)
@@ -85,15 +70,34 @@ try {
     if (Array.isArray(prev.cookies)) await context.addCookies(prev.cookies)
     await page.goto(site.authenticatedUrl ?? site.baseUrl)
   } else {
-    await page.goto(site.loginUrl)
-    await page.fill(site.selectors.email, user)
-    await page.fill(site.selectors.password, pass)
-    await page.click(site.selectors.submit)
-    try {
-      await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 30000 })
-    } catch {
-      const u = new URL(page.url())
-      loginError = `NOT_UNLOCKED — login stayed on ${u.pathname}${u.search}: credential refused, or the login page changed (stale credential is the usual cause — see UNLOCK-005)`
+    // A client-rendered form (Mantine/Next) can be filled before React hydrates; the click then
+    // does a native form submit and nothing happens. Retry the whole attempt on a fresh load.
+    let lastUrl = ''
+    for (let attempt = 1; attempt <= 3 && !loginError; attempt++) {
+      try {
+        await page.goto(site.loginUrl, { waitUntil: 'domcontentloaded', timeout: 45000 })
+      } catch (e) {
+        // a dropped connection is a retry, not a verdict
+        lastUrl = `network: ${e.message.split('\n')[0]}`
+        if (attempt === 3) loginError = `NOT_UNLOCKED — could not load ${site.loginUrl} (${lastUrl})`
+        continue
+      }
+      // Client-rendered forms (Mantine/Next) answer the click with a native GET submit until
+      // React hydrates. Waiting for network idle is what makes the React handler exist.
+      await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {})
+      await page.fill(site.selectors.email, user)
+      await page.fill(site.selectors.password, pass)
+      await page.waitForTimeout(300) // let the controlled inputs push their state
+      await page.click(site.selectors.submit)
+      try {
+        await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 })
+      } catch {
+        lastUrl = page.url()
+        if (attempt === 3) {
+          const u = new URL(lastUrl)
+          loginError = `NOT_UNLOCKED — login stayed on ${u.pathname}${u.search} after 3 attempts: credential refused, or the login page changed (stale credential is the usual cause — see UNLOCK-005)`
+        }
+      }
     }
   }
   if (!loginError) {

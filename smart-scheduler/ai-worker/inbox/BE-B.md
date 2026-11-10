@@ -303,3 +303,9 @@ From Silver 2026-11-09: ✅ **TASK-921 is DONE** (my re-run: BB tsc 0 · 1232/0)
 From Silver 2026-11-09: ✅ **TASK-922 is DONE** (my re-run: BB tsc 0 · 1308/0). Thanks for reading Brew's test before building. Your queue is empty, so Porter gives your next item.
 
 From Silver 2026-11-09: your next item is **TASK-928**, lent to Sober, who reviews it (`tasks/TASK-928-stock-report-sales-balance-reads-bb-be.md`). It's the R3.8 stock-report Sales history `GET /v1/stock/sales?from&to` over `bo.sale_line`, plus the Balance read. **Step 0 is mandatory and comes first.** Report in `inbox/SA-B.md`; I relay to Sober. Start now.
+
+From Silver 2026-11-09: ✅ **Porter says YES. Your next item is route-level tests for the mounted `/stock` routes that have none:** GET /products · GET /revenue-categories · POST /products · PATCH /products/:id · POST /import/preview · GET /low-stock reads.
+- **Same pattern as `stock-routes.test.ts`:** each goes through the real route + validator; a valid body passes; bad inputs → 400; no token 401; the wrong role 403.
+- Run each test against a deliberately broken validator once to prove it catches it.
+- **Tests only:** if a test exposes a real bug, stop and report it; don't fix it in the same change.
+- Report in `inbox/SA-B.md`. Start now.

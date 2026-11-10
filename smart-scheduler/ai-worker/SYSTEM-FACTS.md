@@ -4411,3 +4411,82 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
   1. **Build and test early, internally:** finish before the Master Plan dates (the −2-week targets above).
   2. **Hand to the customer slowly, one piece at a time,** like courses served in order. Being finished early is **not** a reason to show or announce it early.
   3. Consequences for the desk: no customer message or draft says "it's all ready" or offers early dates. Each piece goes out on its own, in the Master Plan's order, when the owner chooses to serve it. The owner decides when each course is served; the PM proposes the order. SAs and QA never promise dates or scope to anyone outside the desk.
+
+## Git after a sid pass: ask at once, never leave it hanging [owner 2026-11-09]
+- Owner, verbatim: *"จดไว้ ถ้าขึ้น sid แล้ว เทสผ่าน ให้ ขอ ขึ้น git ทันที ไม่ปล่อยค้างไว้แบบนี้ หรือ ถ้าหาก ฉันให้สิทธิ ก็ขึ้นเองได้เลย"*
+- **Rule:** the moment code is on sid AND Tanya's test passes, the PM asks the owner for the matching ขึ้น git (หน้าบ้าน / หลังบ้าน) **in the same reply as the pass**, so no tested code stays uncommitted.
+- **The standing permission to commit without asking is NOT granted yet.** The owner said "if I grant it". Until he states it in writing, rule 6 of the workspace CLAUDE.md stands: git only on his word. When he grants it, record the exact words here.
+- Trigger case: TASK-916 sat uncommitted in smart-scheduler-back after it was deployed to sid from the owner's local tree and passed Tanya's re-check (08:38).
+- **GRANTED 2026-11-09 [owner, verbatim]:** *"ฉันให้สิทธิ์ git ในการ commit + push"*
+  - **Scope = ขึ้น git only** (commit + push on the current branch `dong`, with the repo's commit convention). The SA seats run it on their own once a change **is on sid AND has passed Tanya's test**; the owner no longer has to say "ขึ้น git" each time.
+  - **Not granted (still the owner's word):** รวมโค้ด (merge-workflow), release code, tags, new branches, history rewriting, any deploy, uat/customer systems. The workspace's own `ai-worker/` files are never committed.
+  - Only SA seats type git; engineers, QA and the PM never do. Every commit is reported to the PM with hashes, and the PM puts them on the first line of his next reply to the owner.
+
+## Route-level tests: two rules for every BE [Silver/Bob 2026-11-09, after the /stock/in 400 bug]
+- (a) A route test asserts **zod's own 400 body**, not just the status, because the service also answers 400.
+- (b) A test that reaches a handler **stubs the DB to fail at once**, or the shared client keeps retrying and times out another team's test.
+- Why: `POST /v1/stock/in` shipped to sid answering 400 for every date (a regex lost its backslashes). The service tests bypassed the route validator, so the suite stayed green.
+
+## Deploys from the owner's LOCAL tree need a freeze [Porter 2026-11-09]
+- The owner may deploy from his local working tree. In-flight work by any seat (a half-made migration, a red test) ships with it. Before asking him to deploy: the SAs confirm **tsc 0 + tests + build on a frozen tree**, and every in-flight hunk is stashed or finished (for a schema change, its migration must already be applied on sid).
+
+## Migration SQL files must be LF — CRLF changes the db:verify ledger hash
+2026-11-09 (Jason, TASK-930). `db:verify` hashes each migration's SQL file, so the WORKING-COPY line endings matter: a migration stored/checked-out as CRLF has a different hash than the LF version applied on sid → db:verify goes red ("ledger hash mismatch"). Jason's `git stash pop` re-wrote `0021_*.sql` as CRLF (Windows autocrlf) and broke db:verify; restoring it to LF fixed it. **This can bite ANY fresh checkout/pop of ANY migration** (0013–0021), and the owner deploys from a local tree. **Fix:** add a repo `.gitattributes` with `*.sql text eol=lf` (and `drizzle/** text eol=lf`) so git always normalises migrations to LF regardless of `core.autocrlf`. Until that lands: after a checkout/stash-pop on Windows, verify migration SQL is LF before `db:verify`/deploy. (Sober will add the .gitattributes with the R0.1 commit.)
+
+## Scope freeze → URS for signature [owner 2026-11-10, after his meeting with พี่เบส + แนท]
+- Owner, verbatim: *"ตอนนี้จะแบ่งเป็นสองงาน งานแรก คือเดินงาน ต่อไปพยายามให้ได้ ก่อน due ตามเดิม งานสอง มาอัปเดตเป็นภาพที่ถูกต้อง และ จะให้เวลา เขา บอก ขวัญ และ พี่ฟีน ว่ามีเวลาให้ถึง วันที่ 17 เพื่อทำให้เป็น URS SPEC เพื่อนำมาทำ URS SPEC ไปส่งเมล ให้เขา sign ตกลง จบ แล้วหลังจากนั้น หากงอก out of scope มากเกิน 1-2 วัน ให้นำมาคุย หาก 1-2 วัน ทำเลย ทำให้เลย"* · why: *"final ui ตอนนี้ ที่เราส่งไป เขา feedback รัวๆ ขอให้ชัดขึ้นๆๆ จนหมดเวลา แล้ว freeze"*
+- **Track 1:** the build continues toward the same dates (−2-week targets above). Nothing stops.
+- **Track 2:** ขวัญ + พี่ฟีน get until **17 Nov 2026** to give the full picture (all feedback). Then we write a **URS (User Requirement Specification)**, email it, and **they sign** it. That **freezes the scope**.
+- **After the signature:** a request outside the URS that takes **≤ 1–2 days** gets done without asking; anything **bigger** comes back to the owner to discuss (a change request).
+- **Customer told 2026-11-10** (the owner sent the announcement to the group): feedback by 17 Nov → URS by email → sign → freeze.
+
+## "Get Requirement web": the real build PAUSES until 14 Nov [owner 2026-11-10]
+- Owner, verbatim: *"ตอนนี้ เอาจริงๆ เราจะต้องเบรก งานจริงไว้ก่อน ที่กำลังทำอยู่ ไม่ว่าจะก้อน1 2 3 เบรคไว้ก่อน แล้วไปทำ ตัวเว็บปลอมเนี่ย เรียกว่า เว็บ get requirement แล้วกัน ไป deploy แล้วทำให้มันอัปเดตตามfeedback ที่เรานำมาแก้ แล้วdeploy ขึ้นไปใหม่แล้วบอก ขวัญ หรือพี่ฟีน ให้ดูใหม่ได้เลย … เขาจะหมดสิทธิ ฟีทแบควันที่ 17 … เรา ก็เริ่มทำก้อนแรกต่อ ตั้ง แต่ 14 … ต่อให้ เขาแจ้งมา เราก็ต้องแก้ตาม ไป แม้จะเป้นการทำงานซ้ำซ้อน เราก็ต้องทำ"*
+- **Now → 13 Nov:** the real build of blocks 1/2/3 is PAUSED. Every hand goes to the **Get Requirement web (GR web)**, the clickable mock (the final-UI Vite prototype, mock data, it can fake anything not built yet). It is deployed at one URL, updated from feedback and redeployed. Each time, we tell ขวัญ / พี่ฟีน to look again.
+- **17 Nov:** their last day for feedback. Then URS → signature → freeze.
+- **14 Nov:** the real build of block 1 resumes, at the owner's accepted risk. Feedback from 14–17 Nov on built parts is still fixed, even if it means rework.
+- Prototype, not the real app, because the real app can't show unbuilt parts (owner: *"ถ้าเว็บจริงยังไม่เสร็จ ก้อนไหน ก้อนนั้นจะไม่สามารถ นำขึ้น โชว์"*).
+
+## develyst-line-bot repo + FULL git rights on it [owner 2026-11-10]
+- Owner, verbatim: *"https://github.com/develyst1/develyst-line-bot.git เอาไป clone เองในที่ๆ ควรทำนะ ดูจากที่เดิมๆ ที่ฉันมักทำก็ได้ แล้วก็ให้สิทธิกิตเต็มที่"*
+- Place: `H:\scheduler\develyst-line-bot` (machine.local.md; next to the other smart-scheduler repos). The code from TASK-938 is already there, so it gets connected to this remote.
+- **Full git rights for THIS repo** (the SA seat that owns it, Sector/Team C): init, remote, branch, commit, push. Other repos keep the narrower grant (commit + push after a sid pass). Secrets never go in: .env / .env.send stay git-ignored, and .env.example lists every key.
+
+## The 7 REQ-5010 extras: FREE until 17 Nov [owner 2026-11-10, after the meeting with พี่เบส + แนท; Trolley card 19 marked done]
+- Owner, verbatim: *"สรุป เรื่องนี้ จบโดย ให้ถือทำฟรีไป จนกว่าจะ ครบ วันที่ 17"*
+- The 7 extras on Trolley (cards 12–18) count as **free** inside the feedback window that ends 17 Nov: they're shown on the GR web as "Proposed" and go into the URS. After the URS is signed, the scope rule applies (≤ 1–2 d = do it; bigger = talk first).
+- **The meeting summary (owner + พี่เบส + แนท, 2026-11-10)** is filed verbatim at `project-docs/meeting-2026-11-10-dong-best-nat/summary-VERBATIM.md`. Points it adds:
+  - the URS (the summary calls it a "UI spec") goes to the customer **by email as a PDF**, with a LINE note saying it was sent, and they **sign and return it by email**;
+  - the team reviews the PDF before it is sent (an "18th" is mentioned, unclear what for);
+  - after the spec is signed, every new request is a **change request**, maybe paid;
+  - **the free threshold is still OPEN.** The meeting floated ~1–1.5 d; the owner told Porter ≤ 1–2 d. Use the owner's wording until he settles it.
+  - **Differences from the owner's later words to Porter:** the meeting said block 1 runs IN PARALLEL with the feedback round, and gave the customer **7 working days**. After the meeting, the owner told Porter: pause the real build until 14 Nov, feedback until 17 Nov. The owner's latest words stand.
+- **CONFIRMED by the owner after the meeting summary (2026-11-10):** *"พักถึง 14เพราะมีโอกาสที่ฟีดแบ็กจะมาทำให้ต้องมาแก้ซ้ำเยอะเกินไปก็เลยไปเริ่มทำอีกทีวันที่14"*. The real build stays PAUSED until 14 Nov. This overrides the meeting's "in parallel".
+- **CORRECTED by the owner 2026-11-10:** *"get requirement ต้องเสร็จวันนี้ต้องขึ้นวันนี้แล้วก็จะเริ่มวันพรุ่งนี้ในการให้เขาลองใช้ลอง feedback"*. The GR web must be **finished and online TODAY, 10 Nov**. The customer starts trying it and giving feedback on **11 Nov**. Not "12 Nov".
+
+## The owner's standard git branches for every repo [owner 2026-11-10]
+- Verbatim: *"เราต้องมีบานซิท โปรดักชั่น เดเวลลอป แล้วก็บานของฉันชื่อว่าโด่งหรือ nichaphon ก็ได้"* → branches **sit · production · develop · dong** (or nichaphon). He asked Atlas to make it a skill (REQUEST-porter-to-atlas-2026-11-10-standard-branch-pattern-skill.md).
+- develyst-line-bot: the host is **line-bot.develyst.online** (Otto's proposal, OK'd); the repo stays **PUBLIC** (*"GitHub เป็น Public ไม่ต้องสนใจปล่อยเป็น Public"*).
+- **develyst-line-bot · working branch `dong` · 2026-11-10 [Sector, git-command §3D].** The remote has `main` (the default) + `develop` · `sit` · `production` · `dong`, all created at `b1ffa6c`. The local checkout is still on `main` because Otto's untracked `.github/workflows/deploy-sit.yml` makes the tree dirty; it switches to `dong` once that workflow is committed. Owner's one-liners: set the GitHub default branch to `develop` (recommended); CI on `sit` is Otto's.
+
+## Porter answers the customer's GR-web questions for the owner [owner 2026-11-10]
+- Owner, verbatim (on ขวัญ's first GR-web question, "Run / Lock"): *"เนี่ย ฉันอยากให้นายตอบคำถามแบบนี้แทนฉันเองได้"*
+- Porter drafts the answer to each customer question about the GR web or the system, checked against the files. Until the LINE bot can post (REQ-5012), the owner pastes it; after that the bot posts on his "ส่ง". Questions that need a decision (scope, money, a new feature) go to the owner first. They are never answered as settled.
+- **2026-11-10, the owner:** *"อยากให้นายตอบผ่านบอทไปเลยว่ะ"*. He wants Porter to answer the customer through the bot. **Limit stated once:** Porter's own safety rules mean every message sent to the customer needs the owner's OK for that message. A standing "send anything" is not possible. **The smallest path:** Porter shows each draft in the owner's chat, the owner replies **"ส่ง"** (one word), and Porter posts it through the bot (/send). There is no copy-paste and no forwarding. Reading the group comes from phase 2 (TASK-943).
+- **2026-11-10 ~02:40: the bot is LIVE and recording.** `line-bot.develyst.online` (sit 7dbf9a8, phase 2). The OA "Develyst" was added to SOM SYSTEM at 02:35. The owner posted the consent notice ("ส่งละ"): internal use only, auto-deleted within 90 days. Then Otto set RECORD_GROUP_MESSAGES=true, and /health shows recording:true.
+  - **Read:** in the `develyst-line-bot` checkout (path in machine.local.md), run `bun scripts/pull.ts --since <iso|msg-id> --out <desk>/.private/line-pull-<date>.json`. It prints only the count and the next id. Raw text stays in the git-ignored `.private/`.
+  - **Send:** only after the owner's "ส่ง", with his word quoted in the log. Run `bun scripts/send.ts --text <note> [--dry-run]`. On a failure, re-run with `--retry-key`.
+  - First test pull at 02:40: count 0. It works; the group had no messages yet after recording started.
+
+## GR web feedback must land in the real code [owner 2026-11-10]
+- Owner, verbatim: *"อย่าลืมนะตามกฎตามเป้าหมายของเราคือเก็บฟีดแบ็กถึงเวลาแล้วก็นำฟีดแบ็กมาทำจริงมาอะแดปต์จริงทำลงโค้ดจริงโอเคไหม"*
+- The GR web only collects feedback. Every accepted item is tracked in `GR-FEEDBACK-TO-CODE.md` and becomes a real-code TASK when the build resumes on 14 Nov. It is closed only after a sid pass. Fixing the GR web alone never closes an item.
+- **The loop, owner 2026-11-10 ~03:00 (verbatim):** *"ไม่ใช่เก็บฟีดแบ็กอย่างเดียวนิ่งๆนะเก็บฟีดแบ็กนำมาแก้deployให้ลูกค้าดูใหม่แคปรูปให้เขาดูด้วยถ้าเขาฟีดแบ็กมาก็เก็บฟีดแบ็กนำมาแก้ดิบควายให้เขาดูใหม่เนี่ยพาไปเขาดูด้วยวนไปอย่างนี้"* ("ดิบควาย" = deploy, a voice-typing slip). It repeats every round:
+  1. Porter reads the group, logs each item in GR-FEEDBACK-TO-CODE.md, and hands it to Sober.
+  2. Sober fixes the GR web and rebuilds.
+  3. Tanya checks it and **captures screenshots** of each changed screen.
+  4. Otto deploys.
+  5. Porter drafts a short message plus the screenshots, walking the customer to each change.
+  6. The owner says "ส่ง", and the bot posts it (send.ts --img).
+
+  Then wait for the next feedback, and so on. The real-code ledger still applies (see above). A customer message never goes out without his "ส่ง", so anything ready while he sleeps waits as a draft.

@@ -226,3 +226,10 @@ The agreed final UI's installments **sum to the fee** (`mock/a-fo.ts`: 5,000 + 4
 3. **The camp package list** (`GET /api/camp/packages`) gains `confirmedOn: "YYYY-MM-DD" | null` (from the line's `occurred_on`), so the screen can show the state.
 4. **SF (TASK-901):** the final UI's card + dialog on the camp package view; "Not confirmed yet" (REQ-5010 #11) / "Confirmed"; Thai labels via Porter.
 - **LINE:** none. A confirm sends no message.
+
+## 12. Backlog for when the build resumes (after 14 Nov), recorded 2026-11-10
+- **Course activity change (REQ-5007 / F3), DECISIONS row 24:** a mid-course activity change **does NOT move revenue**. The amount stays in its original month and line; only the revenue **category** follows the new activity; a price difference is entered by hand ("Add Manually"). **This replaces the Master Plan §8.2 split (−4,895 / +4,895).** Design when F3 is un-held: the activity-change path re-files the course's existing `rl:course:<id>` line to the new activity's category (same amount, date, branch, method), with no new line and no negative line. Size then.
+- **GR-web build gaps (TASK-937):**
+  - BF Revenue Summary: Period + Category filters;
+  - BF Revenue Detail: the agreed Export;
+  - BF Stock Report: export (Stock is Team A's; listed for completeness).

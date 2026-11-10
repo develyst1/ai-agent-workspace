@@ -1,6 +1,6 @@
 {
   "harness": "develyst-harness",
-  "version": "2.6.18",
+  "version": "2.6.19",
   "sharedTools": {
     "ai-worker/add-failure.mjs": "791081e8b61e7c50b2cf56d697f212f795896ed0626218eb977adcb4bab92901",
     "ai-worker/append-log.mjs": "81f520ddb7d2c3df897e79c7fd4114343028341684729f6257ab9d1250e297f9",
@@ -19,7 +19,7 @@
     "ai-worker/new-id.mjs": "2b6fa6721d79eaff6ff08cef78e34a0bf3b87307aa006c100a478db7d4cb7c36"
   },
   "ruleFiles": {
-    "CLAUDE.md": "0f62a98840bd40d3233567ce168d6e44a02c1aa6f31464588270c214cef877fc",
+    "CLAUDE.md": "621c9f68e1e9da408a67a552a4420b7a1788b5bcd41fec101f3e217843ed0e6e",
     "AGENTS.md": "9927330ad68feedf2ba122e1b9cc5758af7a021b9376b6ec1d05816d4e3eb6eb",
     "ROLES.md": "315e66f7a76818ab3356b02f5681e7320d3f9e8f95a44aaa35b2582de27d6f57"
   },

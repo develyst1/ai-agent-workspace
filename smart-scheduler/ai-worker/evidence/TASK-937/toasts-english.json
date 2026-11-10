@@ -1,0 +1,76 @@
+{
+ "toasts": [
+  {
+   "label": "Demo: move without a reason",
+   "text": "Give a reason first; the history keeps it",
+   "thai": false
+  },
+  {
+   "label": "Demo: moved",
+   "text": "Moved 1 × Surfskate board from Bravo to STA (history saved)",
+   "thai": false
+  },
+  {
+   "label": "Demo: location added",
+   "text": "Location added: ISB (last column; reorder under More)",
+   "thai": false
+  },
+  {
+   "label": "Low Stock: saved",
+   "text": "Alert levels saved: F&B 6 · Safety 1 · Miller 5 · Sock 1 · Shirt 1",
+   "thai": false
+  },
+  {
+   "label": "ECA: saved",
+   "text": "ECA payment saved: STA Term 3, 36,000 ฿, counted on 16/10/26",
+   "thai": false
+  },
+  {
+   "label": "Refund: saved",
+   "text": "Refund saved: 4 unattended sessions cancelled and the family told by LINE (sample)",
+   "thai": false
+  },
+  {
+   "label": "Add Manually: saved",
+   "text": "Revenue added: +500 ฿ (type OTHER, category Shirt, branch Bravo)",
+   "thai": false
+  },
+  {
+   "label": "Summary: filtered",
+   "text": "Filtered by the branch, period, type and category you picked",
+   "thai": false
+  },
+  {
+   "label": "Detail: filtered",
+   "text": "Filtered: only the items that match are shown",
+   "thai": false
+  },
+  {
+   "label": "Categories: added",
+   "text": "Category added: Roller derby (type COURSE); you can pick it in Detail and Add Manually",
+   "thai": false
+  },
+  {
+   "label": "Proposed 1: saved",
+   "text": "New rates saved; they apply from the next pay period (sample)",
+   "thai": false
+  },
+  {
+   "label": "Proposed 5: moved",
+   "text": "Course moved to Other (sample)",
+   "thai": false
+  },
+  {
+   "label": "Proposed 2: reset",
+   "text": "Filters cleared",
+   "thai": false
+  },
+  {
+   "label": "Students: CSV",
+   "text": "Downloaded students.csv (5 visible rows)",
+   "thai": false
+  }
+ ],
+ "anyThai": false,
+ "consoleProblems": []
+}

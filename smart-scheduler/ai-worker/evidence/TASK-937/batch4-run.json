@@ -1,0 +1,89 @@
+{
+ "roles": {
+  "CEO": [
+   "stock/reports:opens",
+   "stock/low-stock:opens",
+   "stock/demo:opens"
+  ],
+  "Admin": [
+   "stock/reports:opens",
+   "stock/low-stock:opens",
+   "stock/demo:opens"
+  ],
+  "Coach": [
+   "stock/reports:cannot-see",
+   "stock/low-stock:cannot-see",
+   "stock/demo:cannot-see"
+  ]
+ },
+ "flows": {
+  "report_movement_oct": 8,
+  "report_caption": "01/10/26 – 31/10/26",
+  "report_type_adjustment": 1,
+  "report_type_sale": 5,
+  "report_sales_rows": 5,
+  "report_walkin": true,
+  "report_customers": [
+   "All",
+   "น้องข้าวหอม",
+   "น้องมะลิ"
+  ],
+  "report_sales_one_customer": 1,
+  "report_balance_rows": 12,
+  "report_balance_note": "The quantity on hand now — the period above does not change it.",
+  "report_no_location_col": true,
+  "report_day_caption": "16/10/26 – 16/10/26",
+  "report_custom_caption": "16/10/26 – 16/10/26",
+  "low_default": {
+   "count": "2 LOW",
+   "rows": 2,
+   "settingRows": 8
+  },
+  "low_default_defaults": [
+   "10",
+   "1",
+   "5",
+   "1",
+   "1",
+   "",
+   "",
+   ""
+  ],
+  "low_after_fnb5": {
+   "count": "1 LOW",
+   "rows": 1
+  },
+  "low_after_miller_empty": {
+   "count": "0 LOW",
+   "none": true
+  },
+  "low_after_other5": {
+   "count": "3 LOW",
+   "rows": 3
+  },
+  "demo_move_needs_reason": "ต้องบอกเหตุผลก่อนบันทึก ระบบเก็บประวัติไว้",
+  "demo_move_hist": [
+   6,
+   7
+  ],
+  "demo_whole_hides_site_and_qty": true,
+  "demo_rows": [
+   5,
+   4
+  ],
+  "demo_defect_hist": 13,
+  "demo_isb_column": true,
+  "hscroll_375_CEO": {
+   "stock/reports": false,
+   "stock/low-stock": false,
+   "stock/demo": false
+  },
+  "hscroll_375_Admin": {
+   "stock/reports": false,
+   "stock/low-stock": false,
+   "stock/demo": false
+  }
+ },
+ "consoleProblems": [],
+ "networkRequests": []
+}

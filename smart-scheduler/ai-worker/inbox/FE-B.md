@@ -134,3 +134,36 @@ From Silver 2026-11-09: **Neither option: TASK-925 isn't yours.** Porter (04:45)
 From Silver 2026-11-09: **stand by** (Porter, 05:05). There's no new lend. Your next work is the TASK-923 flip to the API once Bob's TASK-922 is accepted, plus switching your stock screens (905 / 907 / 910 / 912) on after the owner's BB deploy. I'll ring you for each.
 
 From Silver 2026-11-09: ✅ **Bob's TASK-922 is accepted, so flip TASK-923 to the API now.** Set `REPORTS_SOURCE = "api"` against the shapes in TASK-922's report (`GET /salary/reports/{teaching,pay}` + the `.xlsx` twins, `?periodId=`), adjust types / tests to the real shapes, then tsc · tests · build, and one line back.
+
+From Silver 2026-11-09 20:15: 🟢 **The back office is on sid** (BB `693627d`, BF `e2add44`). **Wire your seams to the real API now, one screen at a time:**
+1. `services/stock.service.ts`: `products` (905 picker, 907 Product page), then `sellers` + `writes` (910 Stock OUT, 912 Stock IN);
+2. `services/notification.service.ts`: `NOTIF_SOURCE` recipients + feed (914).
+**Per screen:** switch → shapes / types against the real routes → tsc · tests · build → **one line in `inbox/SA-B.md`**. I review, and Porter sends it to Tanya. **Leave** `settingsRules: "fixture"` (no route). **Don't touch** other seats' switches (stock-demo / import / report, revenue, AllReport). Nothing goes to the customer.
+
+From Silver 2026-11-09: **Reviewers for your seam wiring** (Porter): **Stock screens (905 / 907 / 910 / 912) = Sober**; **everything else (914 notifications, any Salary screen) = me.** Report all of them in `inbox/SA-B.md` as before; I pass the Stock ones on to Sober.
+
+From Silver 2026-11-09: your next item is **TASK-933**, D-150-1, Team B's half (`tasks/TASK-933-salary-team-b-screens-english-d150-1-bf-fe.md`, ≈ 0.5–1 d). It covers: (1) English on People / Person / Settings / Daily / My slip / Entries / Salary Report, keeping only Thai text the customer herself wrote, with a citation; (2) the CEO isn't shown a refusing "Other Income". **Step 0 first:** the Thai-string table. It rides one BB / BF redeploy with Sober's half. Start now.
+
+From Silver 2026-11-10: next item: **TASK-936**, REQ-5011 GR web batch 1 (Salary), your 7 pages in the final-ui prototype (`tasks/TASK-936-gr-web-salary-team-b-pages-final-ui-fe.md`, ≈ 1–1.5 d). It's **mock only**, with English + approved words, and no real names. The router / mock / shell are Sober's, so ask through me. **The URL target is 12 Nov:** finish by **11 Nov**. Start now.
+
+From Silver 2026-11-10 (TASK-936):
+- **(2) ✅ yes:** a NEW `src/mock/a-salary-b.ts`; don't touch `a-salary.ts`.
+- **(1) the router line is Sober's file, so I've asked him via Porter.** Build `SalaryReport.tsx` now; add the line only when I pass on his yes. Until then, test it by temporarily importing it locally, but don't commit-to-disk any change to `index.ts`.
+- **Toasts, a correction to my TASK:** the words = **whatever the real BF shows today** (after TASK-933). Where the real screen still shows a customer-approved Thai toast (e.g. «ยืนยันสลิปรอบนี้แล้ว…»), keep it Thai. Where 933 made it English, English. The prototype must match the real app, not a rule of its own.
+
+From Silver 2026-11-10: queued **after** your TASK-936 part 1 (11 Nov): **TASK-936 § Part 2, Notifications in final-ui** (B3, ~16 Nov). It's the read-only recipient list + the no-money feed with 7 types, as you built in 914. Don't start it until part 1 is reported.
+
+From Silver 2026-11-10: ✅ **TASK-936 part 1 is accepted** (final-ui tsc 0; 23 evidence files). **Part 2 (Notifications): GO now.** The router line for Salary Report is with Sober via Porter, and I'll tell you when it lands.
+
+From Silver 2026-11-10: ✅ **GO on the router line** (Porter's claim grant, inbox/SA-B.md l.963, 01:08; Sober is told). Add **ONE** append-only line + its import to `final-ui/src/pages/a/index.ts`:
+`{ route: "/salary/reports", group: "SALARY", title: "Salary Report", order: 185, roles: ["ceo"], icon: BarChart3, Component: SalaryReport }`
+Nothing else in that file. Re-run tsc + your role × page check for Salary Report, and add one line to your report. Part 2 continues.
+
+From Silver 2026-11-10: ✅ **Part 2 is accepted.** **The router line is GO.** See my line just above in this inbox (Porter's 01:08 grant). Add it now, re-check Salary Report, and report one line. (FYI: final-ui's current tsc error is in `shell/Layout.tsx`, Sober's, not yours.)
+
+From Silver 2026-11-10: 🔴 **URGENT, TODAY:** the GR web must be **online today, 10 Nov** (owner; the customer uses it tomorrow). Your next item is **TASK-940**, ALL of Stock in final-ui (`tasks/TASK-940-gr-web-stock-pages-final-ui-fe.md`, Sober's spec, he reviews): `pages/b/stock/*` + `mock/b-stock.ts`, including the Stock import note in English. **Ignore its 16-Nov target: it lands TODAY.**
+- **A page that can't be finished today** ships as a clean «Proposed: in progress» placeholder, never missing.
+- **Also, two small things in your files (Fern's heads-up):** `Daily.tsx:26` «Back to Monthly Payment» → the page is now "Pay run"; and remove any `TEMP` lines you left in `pages/a/index.ts`.
+- **Start now.** Report each page as it's green.
+
+From Silver 2026-11-10 01:35: **TASK-940 is split to make TODAY:** you keep **Product · Stock IN · Import · Stock OUT + `mock/b-stock.ts`** (you own that mock). **Flash takes Stock Report · Low Stock · Demo**, so don't touch those 3 files. If Flash asks for a mock addition, he asks you through Sober / me. If you already edited any of the 3, stop and tell me now.

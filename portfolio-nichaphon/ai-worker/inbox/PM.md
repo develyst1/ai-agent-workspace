@@ -5,3 +5,5 @@
 
 
 
+
+## From Marie 2026-11-10: CLAUDE.md rule 6 has a 4th owner git command, `ตั้ง branch` (the owner's standard branches develop/sit/production/his own; git-command skill §3D). Relay it to your SA.

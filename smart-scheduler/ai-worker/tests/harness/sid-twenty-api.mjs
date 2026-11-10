@@ -32,11 +32,21 @@ export async function openApi() {
   if (/login|signin/i.test(page.url())) throw new Error("SESSION NOT VALID: login page");
   if (!auth) throw new Error("no Authorization header observed");
   async function call(method, p, body) {
-    const r = await page.request.fetch(`${SID}/api${p}`, {
-      method,
-      headers: { "Content-Type": "application/json", Authorization: auth },
-      data: body === undefined ? undefined : JSON.stringify(body),
-    });
+    // 🔒 Playwright's fetch error prints the whole request (Authorization + cookies). Never let it out:
+    // rethrow a NEW error carrying only the method, path and the error's first line before any header.
+    let r;
+    try {
+      r = await page.request.fetch(`${SID}/api${p}`, {
+        method,
+        headers: { "Content-Type": "application/json", Authorization: auth },
+        data: body === undefined ? undefined : JSON.stringify(body),
+      });
+    } catch (e) {
+      const first = String(e?.message ?? e).split("\n")[0].replace(/Bearer\s+\S+/g, "Bearer [redacted]").slice(0, 120);
+      const err = new Error(`${method} ${p} failed: ${first}`);
+      err.stack = err.message;
+      throw err;
+    }
     const text = await r.text();
     let json = null;
     try { json = JSON.parse(text); } catch {}

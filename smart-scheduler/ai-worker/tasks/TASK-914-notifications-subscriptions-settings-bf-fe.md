@@ -50,3 +50,11 @@ Fanta correctly flagged a conflict I missed: **ruling C-h (REQ-122 l.172): "noti
 
 ## Conversion VERIFIED (Sober, 2026-11-09) — ✅ fully accepted
 Read `NotificationSettings.tsx`: now a plain READ-ONLY recipient list (Who · Role · Gets), no switches, no save; the header comment cites C-h and "the list reflects the role-derived rules; no pay data (R0)". The feed is unchanged. **914 fully ✅ ACCEPTED on the fixture** (C-h honored).
+
+## Review of the API wiring — @Silver, 2026-11-09 (Silver is the reviewer for this seam, Porter's split): ✅ ACCEPTED on code
+- **My re-run:** BF tsc 0 · `bun test` **368 pass / 0 fail**.
+- **Wiring:** `NOTIF_SOURCE = { recipients: "api", feed: "api" }` (`notification.service.ts:10`) on BB TASK-917's `/v1/notifications*`.
+  - Recipients + coaches are CEO only: no request is made for anyone else.
+  - The feed is the signed-in person's own items, and a coach makes no request.
+- **Live check** (feed items appear after a Salary event; mark-read) → Tanya's gate on sid.
+- **Security review:** none. The server scopes it to the caller's own rows (TASK-917), and the FE never asks for what the role can't read.

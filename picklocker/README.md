@@ -42,7 +42,31 @@ node picklocker/login.mjs som
 | Kind | Sites | Picklocker flow |
 |---|---|---|
 | **password** (auto) | email/password forms | `login.mjs <site>` fills + saves |
+| **basic-auth** (context) | HTTP Basic at nginx (e.g. `som-gr`) | no form, no `storageState`: `basic-auth.mjs` hands a browser context that already carries the credential |
 | **OAuth / Cloudflare Access** (manual-once) | Google sign-in (`possibility`), owner email + one-time PIN (`blueprint-sit`) | the **owner** signs in once in a real browser and exports the session into `state/<site>.json` (no password is ever given to an agent) |
+
+### A basic-auth card — how a harness uses it without seeing the secret
+
+```js
+// no password in the script, none in the output
+import { openCard } from '<workspace>/picklocker/basic-auth.mjs'
+const { context, page } = await openCard(browser, 'som-gr')   // browser = playwright chromium
+await page.goto('https://som-gr.develyst.online/')            // page is already signed in
+// screenshot / read as usual; the credential lives only in the git-ignored access.txt
+```
+
+Check it from a shell (prints status + URL, never the value): `node picklocker/basic-auth.mjs som-gr`
+
+**Rule:** a `basic-auth` card is never written to `state/` — an `httpCredentials` object would be the
+password in a file. Only the context is handed over, and it dies with the browser.
+
+### Other tools
+
+- `check-card.mjs <site>` — read-only "is this session still signed in?" (GET only, never logs in).
+- `keep-fresh.mjs` — reuse-verify every password-mode site; re-login only if lapsed; skips a site
+  with no credential instead of failing.
+- `probe.mjs <url>` — GET-only look at an allowlisted page's form; no credential, no click.
+- `creds.mjs` — the shared credential lookup (env first, then `access.txt` sections).
 
 ## Files
 

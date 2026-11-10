@@ -1064,4 +1064,9 @@ source.** After editing a skill there, copy it to `.claude/skills/` again, or th
       - a hand-off is an inbox line plus a doorbell, never a log line;
       - the PM runs the idle sweep from its own watcher with `WATCH_TICK_MIN=30`, which replaces Porter's session cron.
     - **Lesson:** an "OWED" step on a live desk is a hole that waits for a bad night. Chase OWED items to closure; do not let them sit in the ops log.
+  - **Standard branches: the owner's 4th git command `ตั้ง branch` (ORDER 62, harness 2.6.19, 2026-11-10).** The four branches are own (`dong`/`nichaphon`) → `develop` → `sit` (a push deploys SIT) → `production` (via `release code`).
+    - The SA creates only the missing ones, at the remote default's commit, and never moves or deletes anything. It skips `sit` if a `sit` deploy workflow already exists.
+    - Not ours: the GitHub default branch (the owner's setting) and CI (Otto's).
+    - **Open gap:** there is no command for develop → sit. It stays with the owner or Otto unless he names a 5th command.
+    - Installed on 9 desks. **call-scribe is HELD**, the same as smart-scheduler-atom: it is Atom's desk (its only commit is 9fcb0f6, "atom: save call-scribe desk state"), so it is never installed from this box.
   - **Personal data on a public repo:** the repo `develyst1/ai-agent-workspace` is **public** (GitHub API 200 unauthenticated), and 17d1a91 committed 3 sid captures with parents' phones and children's names. The owner said "เอาออกก็ได้". Atlas added `*/ai-worker/tests/evidence/` to `.gitignore`. Untracking and making the repo private are the owner's: git and account settings are his. History still holds the files until he rewrites it, which is his call.

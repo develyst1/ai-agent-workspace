@@ -72,6 +72,36 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-056 — 2026-11-10 — SA (Sector) — I accepted all 4 TASK-937 batches without checking for Thai text; Silver found Thai toasts
+- **Status:** NEW
+- **What happened:** I accepted the GR-web pages Flash carried into final-ui (Revenue, All Report, 7 Proposed pages, Stock Report / Low Stock / Demo) on tsc, the build, his click-through and two screenshots. I never scanned the files for Thai text. Silver saw Thai toasts on Low Stock / Demo. My scan then found Thai `notify(...)` texts in about 11 files, so the pages would have gone to the customer in mixed language, against R0.5 / D2.
+- **Rule involved:** role-sa §6, "checking the gate, not the generator": tsc and a clean console don't prove the English rule. The TASK said "Words: English (D2/R0.5)" and I didn't verify it. There was also a tool trap: `grep -P '[ก-๛]'` without UTF mode also matches — − ฿, so a quick scan is noisy unless it's UTF-aware.
+- **How it was caught:** Silver, via Porter, before Tanya's click-through. It never reached the customer.
+- **Cost:** one extra rework round for Flash on deadline day (the GR web must go online today).
+- **Evidence:** TASK-937 "REWORK: Thai toasts → English"; Porter's inbox line 2026-11-10 01:42.
+
+## F-055 — 2026-11-10 — PM (Porter) — Set the GR-web date as "12 Nov" when the owner needed it online the same day
+- **Status:** NEW
+- **What happened:** The owner said the customer gives feedback until 17 Nov. I proposed "a URL around 11 Nov", then let the teams plan "B1 by 12 Nov" without checking it with him. He corrected me: *"get requirement ต้องเสร็จวันนี้ต้องขึ้นวันนี้แล้วก็จะเริ่มวันพรุ่งนี้"* (it goes up today, and they start tomorrow). The feedback window starts the moment the URL exists, so every day of slack takes a day away from the customer.
+- **Rule involved:** role-pm §1/§3: a date the owner will hold the customer to is confirmed with him; it is not set by the desk.
+- **How it was caught:** the owner.
+- **Fix I apply:** for any customer-facing date, I state the date I'm planning to the owner in one line and get his OK before the teams plan around it.
+
+## F-055 — 2026-11-09 — Silver (SA-B) — I wrote "tsc 0" to the PM before reading the tsc result, and it was red
+- **Status:** NEW
+- **What happened:** reviewing Bob's /stock route tests, I ran tsc + the suite and the PM message in ONE batch. The message said "BB tsc 0 and green, no source changed". The result I hadn't read yet said `tsc=2`, with `schema.ts` / `migration-witness.ts` modified: another seat's in-flight migration 0021 broke `auth-login-task856.test.ts`. I corrected it in the next line, two minutes later.
+- **Rule for me:** never put a check's result into a message in the same batch as the check. Run it, read the output, then write. A claim is only as good as the output I've actually seen.
+
+## F-054 — 2026-11-09 — QA (Twenty) — My sid harness printed the session's bearer token and cookies into tool output on a dropped connection
+- **Status:** NEW
+- **What happened:** During the TEST-142 part-2 clean-up, `POST /api/vouchers/<id>/cancel` on sid failed with `read ECONNRESET`. The error came from Playwright's `page.request.fetch` in my harness `tests/harness/sid-twenty-api.mjs`. That error's call log prints the whole request, so the sid admin `Authorization: Bearer …` token and the NextAuth session cookies (from PokerVault's `picklocker/state/som.json`) went into my session's tool output. They were not written to any file in the repo, log, TEST or inbox. I added the guard after it happened: `call()` now catches the error and rethrows a new one carrying only the method, the path and the first line, with any bearer value redacted.
+- **Rule involved:** workforce-protocol §14, *"A secret never reaches output, not even when something fails. Failure messages print what they hold."* Also role-qa §4: the session file is loaded as-is, *"never read, print or copy what is inside it"*.
+- **How it was caught:** myself, on reading the failure output, at once.
+- **Cost:** a live sid admin session (token `exp` about 2026-11-12) and its cookies sat in one agent transcript. Whether to reissue or revoke it is the owner's call, via Porter → PokerVault.
+- **Evidence:** `log/2026-11-09.md` (Twenty's part-2 entry); the guard in `tests/harness/sid-twenty-api.mjs` `call()`.
+
+
+
 ## F-053 — 2026-11-09 — PM (Porter) — Staffed the same work twice, two times in one hour
 - **Status:** NEW
 - **What happened:** (1) I lent Brew to Silver for TASK-922 without first reading Silver's line, which already queued Bob for it after 921. Brew started, then had to strip his hunks out of the shared tree. (2) I lent Fanta for half of TASK-925 while Flash was idle-looking. I assumed "906 still open" meant Flash was busy, but he had already built all of 925. In both cases a lend went out before I checked who held the work.
@@ -622,3 +652,9 @@ where the owner sees them. When he is ready he opens Atlas with
 **Why it slipped:** I speced from R0.4 alone ("per person and per type") without checking the C-ruling table, which had already SIMPLIFIED R0.4. R0.4's data phrasing survived, but the UI policy was overruled by C-h.
 **Fix:** Converted 914's settings to the final-UI read-only recipient list (role-derived, no toggles); feed kept.
 **Lesson:** before speccing a UI that encodes a POLICY (opt-in/out, who-can-edit, visibility), grep the C-ruling table (REQ-120 §8/§9, REQ-122) + CUSTOMER-ANSWERS for that feature — a later ruling may have overridden the base REQ's wording. The requirement's base text is not the final word when a C-ruling touched it.
+
+## 2026-11-09 — a broken route validator reached sid untested (TASK-911, POST /v1/stock/in)
+**What:** `routes/stock.ts:57` `receivedOn` regex lost its backslashes — `/^d{4}-d{2}-d{2}$/` instead of `/^\d{4}-\d{2}-\d{2}$/` — so every POST /v1/stock/in 400'd on sid. Caught by Silver on sid, AFTER deploy, not in review or CI.
+**Why it slipped:** the 911 service tests bypass the route's zod validator (they call the service directly), so no test ever exercised the route body schema. tsc doesn't catch a valid-but-wrong regex. So a broken validator passed review (1087/0) and deploy.
+**Lesson (team-wide — I'll raise the hygiene check):** every route with a zod validator needs at least ONE **route-level** test — a valid body passes, an invalid one 400s — not just service tests. A regex/schema bug is invisible to service tests + tsc. Porter asked for a sweep of BB routes with zero route-level tests; worth doing. In review, when a route adds/changes a validator, check there's a route-level test for it.
+**Fix:** regex corrected + a route-level test added (Bob, hotfix; Jason's session was closed).

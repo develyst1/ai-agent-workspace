@@ -1,6 +1,6 @@
 # TEST-142: TASK-860 (F4 links, first coach, coach change, Bonus 100 pick) + TASK-861 (F5 "No Teacher")
 - Source REQ: REQ-120 §5 (F4, F5) · §1.2 Bonus 50/100 · §9.4 #4–5. Built as TASK-860 + TASK-861 (Team B; both ACCEPTED by Silver 2026-11-08).
-- Status: **IN_TEST.** Part 1 (sale / change / pick / F5) is done 2026-11-09. Part 2 (day-end cases) runs after the 2026-11-09 17:30 day-end.
+- Status: **TEST_PASSED** (2026-11-09). Every case that was run passed, no defect. NOT_TESTED, each named below with its reason: case 18 (needs a second day-end), the NO_SHOW variant of case 8, F5-6 and F5-12.
 - Surfaces: sid API (som.develyst.online) · sid painted front office (desktop 1600 px, headless Chrome) · sid DB catalog + `bo.movement`, read-only · local suite.
 - Tested: 2026-11-08 (round 1) and 2026-11-09 (round 2) by Twenty.
 - Rounds from Porter: 2026-11-08 (F4) and 2026-11-09 (re-run after the sid deploy, F5 added), both whole and sid only.
@@ -44,9 +44,9 @@
 | 14 | First purchase ever: both prev null | boundary | sid API | A1 both null | both null | PASS |
 | 15 | An import writes no links | negative | sid API | F1 all null, although trial F is ATTENDED and unused | F1 all null | PASS |
 | 16 | DUO: links on the primary child only | edge | sid API | G1 = trial G; trial H stays unused | G1 = `8ff36982…` = trial G. H's own voucher H1 later linked **trial H** (so the DUO didn't consume it), with `prevCourseId` = G1 (the DUO counts in H's history, as Bob's report says) | PASS |
-| 17 | Day-end stamps the first coach = the coach on the earliest ATTENDED row | happy | sid, day-end 2026-11-09 17:30 | J1 = Kid · J2 = Kid · **K1 = Print** (its wk-1 11-01 row was covered by Print; the course teacher is Toth) · B1 voucher = Print · G1 null (none attended) | — | **PENDING part 2** |
-| 18 | The day-end step is idempotent | regression | sid, day-end 11-10 | same values on 11-11 | — | PENDING part 2 (read on 11-11) |
-| 19 | The first night fills old courses, imports included | happy | sid DB read | `first_teacher_id` set on old courses with ≥1 ATTENDED row | 0 of 277 before (round 1) | PENDING part 2 |
+| 17 | Day-end stamps the first coach = the coach on the earliest ATTENDED row | happy | sid, day-end 2026-11-09 17:30 | J1 = Kid · J2 = Kid · **K1 = Print** (its wk-1 11-01 row was covered by Print; the course teacher is Toth) · B1 voucher = Print · G1 null (none attended) | `end-of-day` job_run for 2026-11-09 = `success`. **J1 = Kid · J2 = Kid · K1 = Print · B1 = Print · G1 null.** All other `Twenty-` courses and vouchers (no attended class) null | **PASS** |
+| 18 | The day-end step is idempotent | regression | sid, day-end 11-10 | same values on 11-11 | — | **NOT_TESTED**: needs a second day-end (2026-11-10). Settle: re-run `sid-task860-part2-read.ts` after it; J1/J2/K1/B1 must be unchanged and the mismatch count 0 |
+| 19 | The first night fills old courses, imports included | happy | sid DB read | `first_teacher_id` set on every course and voucher with ≥1 ATTENDED row | courses: **122 of 122** stamped, 0 missing, 6 of them imports. Vouchers: **10 of 10**, 0 missing. Stamped coach ≠ the earliest ATTENDED row's teacher: **0**. Stamped = the system teacher: **0** | **PASS** |
 | 20 | A whole-course teacher change stamps `coachChangedAt` + `latestTeacherId` | happy | sid API | A2 → New: both set | set | PASS |
 | 21 | A time-only change writes nothing | negative | sid API | A1 (Kid → Kid, 10:00 → 16:00) null | null | PASS |
 | 22 | A single-session cover writes nothing (5A) | negative | sid API | K1 wk-1 row → Print: null | null | PASS |
@@ -54,7 +54,7 @@
 | 24a | Pick: 400 on a bad value | negative | sid API | 400 | 400 (case 0) | PASS |
 | 24b | Pick: 409 `NO_COACH_CHANGE` | negative | sid API | A1 → 409 | 409 `NO_COACH_CHANGE` | PASS |
 | 24c | Pick: success stamps by + at | happy | sid API | A2 SHARE → 200 | 200 `bonus100Pick:"SHARE"`, `bonus100PickBy:"admin"`, `bonus100PickAt` set; re-read via `GET /courses` matches | PASS |
-| 24d | Pick: 409 `SAME_COACH` when latest = first | negative | sid API, after day-end | J2 (first Kid after tonight, latest Kid) → 409 | — | PENDING part 2 |
+| 24d | Pick: 409 `SAME_COACH` when latest = first | negative | sid API, after day-end | J2 (first Kid after tonight, latest Kid) → 409 | 409 `SAME_COACH`. Also J1 (first Kid, latest New) FIRST → 200, stamped `admin` + at | **PASS** |
 | 25 | Regression: every sale still posts its revenue | regression | `bo.movement`, read-only | one SALE movement per sale | **14 of 14** (9 courses incl. the DUO, 5 vouchers); the import posted none, which is correct | PASS |
 | 26 | Front office unchanged by the additive DTO keys | regression | sid painted | calendar renders | renders; 0 console errors on the round-2 picker run (one 404 on the first load, not reproduced) | PASS |
 
@@ -67,11 +67,11 @@
 | F5-4 | Teacher moves refused: whole-course (TASK-838) and one session | negative | sid API | 400 | 400 `SYSTEM_TEACHER_NOT_BOOKABLE`, both | PASS |
 | F5-5 | Teacher writes refused: edit, leave, calendar link, LINE unlink | negative | sid API | 409 `SYSTEM_TEACHER` | 409, all four; the row re-read unchanged | PASS |
 | F5-6 | Archive refused | negative | — | 409 | — | **NOT_TESTED**: on a guard defect the shared row would be archived, and the way back (reactivate) runs through the same guard. Not risked on a row I didn't create |
-| F5-7 | Excluded from the daily report `byTeacher`, SOM, attention, type-order | negative | sid API | absent | absent from all four, with my OTHER block on it today (11 byTeacher rows) | PASS (before day-end; re-read after, in part 2) |
+| F5-7 | Excluded from the daily report `byTeacher`, SOM, attention, type-order | negative | sid API | absent | absent from all four, with my OTHER block on it today (11 byTeacher rows). Re-read after the day-end, with the block ATTENDED: still absent from daily and SOM | PASS |
 | F5-8 | Calendar: the column is shown **last**, and the block shows on it | happy | sid painted, Daily 2026-11-09 | No Teacher last | header row ends `… Mu · Tarb · No Teacher`; block painted | PASS |
 | F5-9 | Lesson pickers exclude it; OTHER includes it | negative + happy | sid painted, booking modal from Tarb's cell | 1st Trial / 1 HR / Voucher: no "No Teacher"; Other: listed | exactly that | PASS |
 | F5-10 | Its cell opens on อื่นๆ only (Silver's ruling) | happy | sid painted | one tab: Other, No Teacher preselected | exactly that | PASS |
-| F5-11 | Its OTHER rows still settle at day-end like any OTHER | regression | sid, day-end 11-09 | park block ATTENDED, its 100 ฿ posted | — | PENDING part 2 |
+| F5-11 | Its OTHER rows still settle at day-end like any OTHER | regression | sid, day-end 11-09 | park block ATTENDED, its 100 ฿ posted | ATTENDED, still on No Teacher. One `bo.movement` SALE of 10000 minor (100 ฿), key `rev:4ea2a243…`, posted 2026-11-09 11:30 UTC | **PASS** |
 | F5-12 | Course modal (`CreateCourseModal`) picker, roster page, leave panels, 375 px | negative | sid painted | excluded / OK | — | NOT_TESTED this round: the course modal opens from another page I didn't reach. The back end refuses a course on it anyway (F5-3) |
 
 ## Observations (not defects in this change)
@@ -80,30 +80,37 @@
 3. **The OTHER form on the No Teacher column shows "Rate per teacher (฿) · No Teacher · primary".** A coach rate can be typed for the system teacher. That rate is stored for the back office, so the pay readers must skip `is_system` (Silver already raised this for TASK-862/865/869).
 
 ## Defects
-None so far.
+None.
 
-## Test data created (sid)
-| What | Removed? |
+## Test data created (sid): end state 2026-11-09
+| What | End state |
 |---|---|
-| Children `Twenty-F4 A, B, C, D, E, F, G, H, J` with new parents on phones 0900091001–0900091009 (unlinked, so no LINE) | no, held for part 2. Archiving is refused while classes are ahead, so these clear after the courses are cancelled |
-| 10 trial bookings (dated 10-31, 11-08 and 11-15) | no (history; nothing is ever deleted) |
-| Courses A1 A2 A4 C1 D1 G1 J1 J2 K1 + import F1 · vouchers A3 B1 B2 E1 H1 · voucher class Bv (11-08) | no, held for part 2; then I cancel the courses that have classes ahead |
-| **Revenue on sid's ledger: 14 SALE movements = 75,120 ฿** (8 × 4,790 + DUO 6,800 + 5 × 6,000) | **no, cannot be.** Cancelling never reverses posted revenue (SYSTEM-FACTS). Every one carries a `Twenty-` id in `ref_id`, so a sid revenue check can skip them |
-| OTHER "Twenty-F5 park fee test" 2026-11-09 09:00 on No Teacher, 100 ฿, CONFIRMED | no, held for F5-11 (it posts 100 ฿ tonight) |
-| A2's Bonus-100 pick = SHARE | stays (my course) |
+| Children `Twenty-F4 A, B, C, D, E, F, G, H, J`, with new unlinked parents on phones 0900091001–0900091009 (so no LINE) | **archived** (hidden from every picker; history kept) |
+| Courses A1 A2 A4 C1 D1 G1 J1 J2 K1 + import F1 | **cancelled** with `ADMIN_ERROR`, note "Twenty TEST-142 cleanup". This removed every future class (39 rows); the past ATTENDED rows remain as history |
+| Vouchers A3 B1 B2 E1 H1 | **cancelled** the same way |
+| 10 trial bookings (10-31, 11-08, 11-15) · voucher class Bv (11-08) | stay as history (nothing is ever deleted) |
+| OTHER "Twenty-F5 park fee test", 2026-11-09 09:00, on No Teacher | ATTENDED by the day-end; stays as history |
+| **Revenue on sid's ledger: 15 SALE movements = 75,220 ฿** (14 sales = 75,120 + park block 100) | **stays, cannot be reversed** (cancelling never reverses posted revenue). Each `ref_id` / key carries one of my `Twenty-` ids |
+| Bonus-100 picks: A2 = SHARE, J1 = FIRST | stay (my cancelled courses) |
+| ⚠️ Incident during the clean-up: a dropped connection printed the sid session's bearer token + cookies into my tool output (no file). Recorded as **F-054**; the harness is now guarded. Reissue is the owner's call | open, with Porter |
 
 ## Evidence
 - `project-docs/qa-2026-11-09/task861-daily-right-1600.png`: Daily 2026-11-09. No Teacher is the last column and carries "Twenty-F5 park fee test" (F5-8).
 - `project-docs/qa-2026-11-09/task861-picker-tarb-1st_Trial-0.png`: the 1st Trial teacher list ends at Tarb, with no No Teacher (F5-9). Siblings: `…-1_HR-0`, `…-Voucher-0`, and `…-Other-0` (which lists it).
 - `project-docs/qa-2026-11-09/task861-modal-noteacher-cell.png`: No Teacher's cell opens with only the Other tab, No Teacher preselected (F5-10).
-- F4 has no screen, so its evidence is the API output, quoted verbatim in the table. Harness: `tests/harness/sid-task860-step.mjs` (steps `read`, `change`, `pick`), `sid-task860-revenue-read.ts`.
+- F4 has no screen, so its evidence is the API output, quoted verbatim in the table. Harness: `tests/harness/sid-task860-step.mjs` (steps `read`, `change`, `pick`, `part2`), `sid-task860-revenue-read.ts`.
+- Part 2: `tests/harness/sid-task860-part2-read.ts` (read-only, host 154.197.124.206). Its output is quoted in cases 17, 19 and F5-11, and includes the 2026-11-09 `end-of-day` job_run = `success`.
 
 ## Verdict
-**Part 1: PASS, no defect.**
-- F4: cases 0–16, 20–23, 24a–c, 25 and 26 PASS; within case 8, NO_SHOW is NOT_TESTED.
-- F5 (F5-1…10): 9 items PASS; F5-6 (archive) and F5-12 (course modal, roster, 375 px) are NOT_TESTED.
-
-**Still open, so no `TEST_PASSED` yet:** cases 17, 18, 19, 24d and F5-11, after the 2026-11-09 17:30 day-end (18 after the 11-10 run).
+**`TEST_PASSED`: every case that was run passed, no defect.**
+- **F4 (TASK-860) PASS:** cases 0–17, 19, 20–23, 24a–d, 25, 26.
+- **F5 (TASK-861) PASS:** F5-1…5 and F5-7…11.
+- **NOT_TESTED, named:**
+  - case 18 (idempotency): needs the 2026-11-10 day-end; one read settles it;
+  - case 8's NO_SHOW variant: no path writes NO_SHOW;
+  - F5-6 (archive): would risk the shared row;
+  - F5-12 (course modal, roster, 375 px).
 
 ## Questions
-1. Porter: part 2 needs one read after the 2026-11-09 17:30 day-end, and case 18 one more after 11-10's. Ring me any time after 17:30 tonight and I run it. Nothing else blocks.
+1. Porter: case 18 is a single read-only command after the 2026-11-10 day-end. Ring me if you want it before the gate; it doesn't change the verdict unless it fails.
+2. F-054: the sid admin session's token printed into my transcript. Reissuing it is the owner's call; PokerVault holds the session file.

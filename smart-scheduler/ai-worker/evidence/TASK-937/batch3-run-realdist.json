@@ -1,0 +1,147 @@
+{
+ "roles": {
+  "CEO": [
+   "summary:opens",
+   "lines:opens",
+   "manual:opens",
+   "refund:opens",
+   "categories:opens",
+   "eca-term:opens",
+   "all-report:opens"
+  ],
+  "Admin": [
+   "summary:cannot-see",
+   "lines:cannot-see",
+   "manual:cannot-see",
+   "refund:cannot-see",
+   "categories:cannot-see",
+   "eca-term:cannot-see",
+   "all-report:opens"
+  ],
+  "Coach": [
+   "summary:cannot-see",
+   "lines:cannot-see",
+   "manual:cannot-see",
+   "refund:cannot-see",
+   "categories:cannot-see",
+   "eca-term:cannot-see",
+   "all-report:cannot-see"
+  ]
+ },
+ "flows": {
+  "summary_title": "Summary",
+  "summary_buttons": [
+   "Detail",
+   "Refund",
+   "ECA Payment",
+   "Add Manually",
+   "Apply filters",
+   "Today"
+  ],
+  "detail": {
+   "productName": true,
+   "payment": true,
+   "summaryButton": true
+  },
+  "manual_errors": true,
+  "categories_dup": true,
+  "categories_added": true,
+  "eca_total_empty": "0 ฿",
+  "eca_errors": true,
+  "eca_total_live": "36,000 ฿",
+  "eca_rows": [
+   2,
+   3
+  ],
+  "eca_cleared": true,
+  "eca_toast": "ECA payment saved: STA Term 3, 36,000 ฿, counted on 16/10/26",
+  "refund_amount_default": "9,500 ฿",
+  "refund_session_before": true,
+  "refund_after": {
+   "savedAlert": true,
+   "refundedBadge": true,
+   "lineTold": true,
+   "cancelledBadge": true
+  },
+  "refund_save_disabled": true,
+  "refund_already": true,
+  "allreport_CEO_1280": {
+   "cards": 10,
+   "money": 1,
+   "hscroll": {
+    "report": false,
+    "course": false,
+    "student": false
+   },
+   "courseRows": 10,
+   "revenueCol": true,
+   "unmatched": 1,
+   "voucherRows": 3,
+   "studentRows": 5,
+   "counts": "Active 5 · Inactive 3 · Showing 5",
+   "csv": {
+    "name": "students.csv",
+    "bom": true,
+    "lines": 6
+   },
+   "rowsAll": 8,
+   "rowsSearch": 1,
+   "branchNote": true,
+   "prevMonthCards": 10,
+   "stockLink": 1,
+   "salaryLink": "#/salary/reports",
+   "checkInNote": "Coming with Salary.",
+   "salaryTabShown": true
+  },
+  "allreport_CEO_375": {
+   "cards": 10,
+   "money": 1,
+   "hscroll": {
+    "report": false,
+    "course": false,
+    "student": false
+   },
+   "courseRows": 10,
+   "revenueCol": true,
+   "unmatched": 1,
+   "voucherRows": 3,
+   "studentRows": 5,
+   "counts": "Active 5 · Inactive 3 · Showing 5",
+   "salaryTabShown": true
+  },
+  "allreport_Admin_1280": {
+   "cards": 8,
+   "money": 0,
+   "hscroll": {
+    "report": false,
+    "course": false,
+    "student": false
+   },
+   "courseRows": 10,
+   "revenueCol": false,
+   "unmatched": 0,
+   "voucherRows": 3,
+   "studentRows": 5,
+   "counts": "Active 5 · Inactive 3 · Showing 5",
+   "salaryTabShown": false
+  },
+  "allreport_Admin_375": {
+   "cards": 8,
+   "money": 0,
+   "hscroll": {
+    "report": false,
+    "course": false,
+    "student": false
+   },
+   "courseRows": 10,
+   "revenueCol": false,
+   "unmatched": 0,
+   "voucherRows": 3,
+   "studentRows": 5,
+   "counts": "Active 5 · Inactive 3 · Showing 5",
+   "salaryTabShown": false
+  }
+ },
+ "consoleProblems": [],
+ "networkRequests": []
+}

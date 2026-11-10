@@ -2955,7 +2955,43 @@ Done by Atlas:
    is quiet, as in ORDER 34.
 3. Nudge Atlas with the result.
 
+### ORDER 62 — 2026-11-10 — ⏳ PARTLY DONE 2026-11-10 (9 desks + call-scribe and atom HELD per Atlas; smart-scheduler's note owed until quiet — see Operations log) — harness 2.6.19: the owner's 4th git command, `ตั้ง branch` (standard branches)
+
+**Owner, via Porter, 2026-11-10:** *"เราต้องมีบานซิท โปรดักชั่น เดเวลลอป แล้วก็บานของฉันชื่อว่าโด่งหรือ nichaphon ก็ได้"*.
+Source and design: `REQUEST-porter-to-atlas-2026-11-10-standard-branch-pattern-skill.md` § Atlas's answer. Done by Atlas:
+- root `CLAUDE.md` rule 6 adds a 4th command, **ตั้ง branch**, and "no new branches beyond `ตั้ง branch`";
+- `git-command` skill §3D, copied to `.claude/skills/`; check-skills PASS;
+- harness → **2.6.19**.
+
+**Do:**
+1. Run `node scripts/install.mjs <desk>` on every desk except smart-scheduler-atom (HELD), then `check-harness`.
+   **`call-scribe`** is listed on 2.6.14, so check that it is a live desk and not held before installing.
+2. Re-read note to each desk PM: *"From Marie 2026-11-10: CLAUDE.md rule 6 has a 4th owner git command, `ตั้ง branch`
+   (the owner's standard branches develop/sit/production/his own; git-command skill §3D). Relay it to your SA."*
+   Only when each desk is quiet. It is not urgent.
+3. Nudge Atlas.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-11-10 01:5x — **ORDER 62: Atlas ruled call-scribe HELD** (same as smart-scheduler-atom, ORDER 53). It lives on
+  Atom's box, and an install here would collide with Atom's next sync. **No install, and no nudge to anyone about it.**
+  ORDER 62 stands at 9 desks + 2 held. **Closes when smart-scheduler's re-read note lands.** Checked 01:51: still
+  live (board, DECISIONS, TASK-937 evidence written in the last 15 min), so the note stays owed.
+
+- 2026-11-10 01:5x — ⏳ **ORDER 62 — install DONE on 9 desks; call-scribe NOT installed (question to Atlas); notes on
+  4 of 5 live desks.** **Install:** `install.mjs` × 9 (buddy-screen, corner-chat, develyst-ai, dte, i-space,
+  portfolio-nichaphon, possibility, pun-kub-fang, smart-scheduler), exit 0 ×9, *"shared tools already current — none
+  touched"*, only `.harness` rewritten. `check-harness`: **"2.6.19: 11 desk(s), 2 not current"** = smart-scheduler-atom
+  (HELD, 2.6.9) + call-scribe (2.6.14).
+  **call-scribe — not live here, so held:** its only commit is `9fcb0f6 2026-11-07 "atom: save call-scribe desk state
+  and God Plan initial notes"`, i.e. **pushed from Atom's box on branch `atom`**. No README row, never in `MARIE.md`
+  before ORDER 62, newest log `2026-11-07`, and every file's mtime here is the 11-09 20:07 checkout, so no session has
+  written to it on this box. Installing here would edit a desk that lives on Atom's box, the same reason atom is held.
+  **Atlas decides.**
+  **Re-read note** verbatim → `inbox/PM.md` of the live desks (gate `active`) that are quiet: buddy-screen, corner-chat,
+  i-space, portfolio-nichaphon, each 1 on disk ✓. **smart-scheduler OWED**: live right now (inbox/FE-C written 01:50).
+  No bells, since it is not urgent; the PMs' watchers or their next boot will pick it up.
+  Not sent to the non-live desks (develyst-ai, dte, possibility, pun-kub-fang), as in ORDER 54/55.
 
 - 2026-11-09 00:5x — ✅ **ORDER 61 smart-scheduler step VERIFIED by me (Porter's hands).** Archive
   `archive/PROTOCOL.md.before-ORDER61.2026-11-09` = md5 `ad8bc2ca…`, my pre-edit fingerprint ✓ · `diff` archive →

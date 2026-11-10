@@ -226,6 +226,25 @@ switch (step) {
     console.log(`system teacher now: ${JSON.stringify({ id: nt?.id, name: nt?.name, nickname: nt?.nickname, active: nt?.active, archived: nt?.archived, lineLinked: nt?.lineLinked, budgetMinor: nt?.budgetMinor, subjects: nt?.subjects?.length })}`);
     break;
   }
+  case "part2": {
+    log("pick J2 (first Kid = latest Kid) FIRST", await call("PUT", `/courses/${S.J2.courseId}/bonus100-pick`, { pick: "FIRST" }));
+    log("pick J1 (first Kid, latest New) FIRST", await call("PUT", `/courses/${S.J1.courseId}/bonus100-pick`, { pick: "FIRST" }));
+    const d = await call("GET", "/reports/daily?date=2026-11-09");
+    const bt = d.json?.byTeacher ?? [];
+    console.log(`daily 11-09 after day-end → ${d.status}; byTeacher ${bt.length} rows; NT id present: ${d.text.includes(T.NoTeacher)}; "No Teacher" present: ${d.text.includes("No Teacher")}`);
+    const som = await call("GET", "/reports/som");
+    console.log(`som → ${som.status}; NT id present: ${som.text.includes(T.NoTeacher)}`);
+    const c = await call("GET", "/courses?q=Twenty-&limit=200");
+    for (const x of (c.json?.items ?? [])) if ([S.J1.courseId, S.J2.courseId, S.K1.courseId].includes(x.id)) console.log(`C ${x.id.slice(0, 8)} ${JSON.stringify(pickLinks(x))}`);
+    break;
+  }
+  case "cleanup": {
+    const body = { reason: "ADMIN_ERROR", note: "Twenty TEST-142 cleanup: QA test data (Twenty-F4)" };
+    // A1…K1 and A3/B1/B2 were cancelled in the first cleanup run (2026-11-09); only the rest here.
+    for (const k of ["E1", "H1"]) log(`cancel voucher ${k}`, await call("POST", `/vouchers/${S[k].voucherId}/cancel`, body));
+    for (const k of ["trialA", "trialB", "trialC", "trialD", "trialE", "trialF", "trialG", "trialH", "trialJ"]) log(`archive student ${k}`, await call("POST", `/students/${S[k].studentId}/archive`));
+    break;
+  }
   case "plans": {
     for (const key of ["J1", "J2", "K1"]) {
       const r = await call("GET", `/entitlements/${S[key].courseId}/plan`);
