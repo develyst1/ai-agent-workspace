@@ -1,0 +1,60 @@
+{
+ "runs": [
+  {
+   "width": 1280,
+   "hscroll": {
+    "report": false,
+    "course": false,
+    "student": false
+   },
+   "errors": [],
+   "calls": [
+    "GET overview 200",
+    "GET overview 200",
+    "GET overview 200",
+    "GET overview 200",
+    "GET courses 200",
+    "GET students 200",
+    "GET courses 200"
+   ],
+   "cards": 10,
+   "revenueCard": true,
+   "allBranchesNote": true,
+   "courseRows": 27,
+   "courseHasRevenueCol": true,
+   "unmatchedNote": 1,
+   "approxNote": 0,
+   "voucherRows": 3,
+   "studentRows": 42,
+   "studentCounts": "Active 42 · Inactive 154 · Showing 42"
+  },
+  {
+   "width": 375,
+   "hscroll": {
+    "report": false,
+    "course": false,
+    "student": false
+   },
+   "errors": [],
+   "calls": [
+    "GET overview 200",
+    "GET overview 200",
+    "GET overview 200",
+    "GET overview 200",
+    "GET courses 200",
+    "GET students 200",
+    "GET courses 200"
+   ],
+   "cards": 10,
+   "revenueCard": true,
+   "allBranchesNote": true,
+   "courseRows": 27,
+   "courseHasRevenueCol": true,
+   "unmatchedNote": 1,
+   "approxNote": 0,
+   "voucherRows": 3,
+   "studentRows": 42,
+   "studentCounts": "Active 42 · Inactive 154 · Showing 42"
+  }
+ ]
+}

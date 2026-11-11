@@ -1,76 +1,116 @@
-# TEST-142: TASK-860 — F4 trial → course/voucher link, renewal link, first coach, coach change, Bonus 100 pick
-- Source REQ: REQ-120 §5 (F4) · §1.2 Bonus 50/100 · §9.4 #4–5 — built as TASK-860 (Team B, Bob; ACCEPTED by Silver 2026-11-08)
-- Status: **NOT_TESTED (behaviour) — blocked: TASK-860's code is not deployed on sid.** Schema layer PASS · team suite PASS.
-- Surfaces: local suite (dummy DB) · sid API · sid DB catalog (read-only). No screen exists for F4.
-- Tested: 2026-11-08 by Twenty
-- Round given by Porter 2026-11-08 (inbox/QA-2.md), whole, sid only.
-
-## Scope
-F4 stores facts only, and pays nothing. In scope:
-- the sale writes `from_trial_booking_id` / `prev_course_id` / `prev_voucher_id`;
-- day-end stamps `first_teacher_id`;
-- TASK-838's whole-course teacher change stamps `coach_changed_at` + `latest_teacher_id`;
-- `PUT /courses/:id/bonus100-pick`.
-
-Out of scope, by design (TASK-860 "rule-neutral"): Bonus 100 1A/1B, A10, any go-live date filter, any bonus amount, any screen. The two new Thai 409 strings are Silver's follow-up for the Bonus screen TASK, so they are not judged here.
+# TEST-142: TASK-860 (F4 links, first coach, coach change, Bonus 100 pick) + TASK-861 (F5 "No Teacher")
+- Source REQ: REQ-120 §5 (F4, F5) · §1.2 Bonus 50/100 · §9.4 #4–5. Built as TASK-860 + TASK-861 (Team B; both ACCEPTED by Silver 2026-11-08).
+- Status: **TEST_PASSED** (2026-11-09). Every case that was run passed, no defect. NOT_TESTED, each named below with its reason: case 18 (needs a second day-end), the NO_SHOW variant of case 8, F5-6 and F5-12.
+- Surfaces: sid API (som.develyst.online) · sid painted front office (desktop 1600 px, headless Chrome) · sid DB catalog + `bo.movement`, read-only · local suite.
+- Tested: 2026-11-08 (round 1) and 2026-11-09 (round 2) by Twenty.
+- Rounds from Porter: 2026-11-08 (F4) and 2026-11-09 (re-run after the sid deploy, F5 added), both whole and sid only.
 
 ## Build under test
-- Repo `smart-scheduler-back`, branch `dong`, HEAD `0a1f250`. TASK-860 is **uncommitted** in the working tree.
-- The same tree also holds **TASK-861 in progress** (`drizzle/0075_system_teacher.sql`, `src/lib/system-teacher.ts`). 0075 is not in MIGRATION-QUEUE, so it is not on sid.
-- `dist.zip` in that repo is dated **2026-11-07 02:28**, before TASK-860 was cut (2026-11-08).
-- **sid's running API:** pre-TASK-860. See case 0.
+- **Round 2 (this verdict):** sid runs SB `976cf33` + SF `d8f800c`, deployed by the owner 2026-11-09 (*"deploy sid done"*, relayed by Porter). Case 0 confirms the F4 route is live.
+- Round 1 (2026-11-08): sid ran pre-F4 code (`404 route not found`). Its schema checks (cases 1–4) still stand.
 
-## Cases
-| # | Case (from AC) | Type | Surface | Steps | Expected | Actual | Result |
-|---|---|---|---|---|---|---|---|
-| 0 | Is the TASK-860 code running on sid? | precondition | sid API | `harness/sid-task860-deployed-probe.mjs`: PokerVault's sid session, as-is (landed `https://som.develyst.online/scheduler/calendar`, HTTP 200, not a login page). Sends `PUT /api/courses/<nil uuid>/bonus100-pick` with `{pick:"NOT_A_PICK"}` (invalid, so it writes nothing). | TASK-860 code answers `400` (validator) | **`404 {"error":{"code":"NOT_FOUND","message":"route not found"}}`** | **FAIL as a precondition: not deployed** |
-| 1 | §1 migration 0074 is on sid: 9 course + 4 voucher columns, all nullable | schema | sid DB catalog, read-only | `harness/sid-task860-schema-read.ts`. DB host printed only: `154.197.124.206` = sid. | 13 nullable columns, as in TASK §1 | all 13 present: the uuid columns, `coach_changed_at` / `bonus100_pick_at` timestamptz, `bonus100_pick` / `bonus100_pick_by` text. All `nullable=YES`. | PASS |
-| 2 | §1 CHECKs: at most one prev; pick ∈ FIRST/LATEST/SHARE | schema | same | same | `course_prev_one_chk`, `voucher_prev_one_chk`, `course_bonus100_pick_chk` | all 3 present, each with the expected definition | PASS |
-| 3 | §1 one trial converts at most once per table | schema | same | same | partial unique indexes on `from_trial_booking_id WHERE NOT NULL` | `course_from_trial_uq` and `voucher_from_trial_uq` are present, partial | PASS |
-| 4 | §1 additive, no data written | schema | same | same | no links or first coach filled yet | 277 courses: 0 with a link, 0 with `first_teacher_id`. Vouchers: 0 with `first_teacher_id`. Ledger: 123 rows (matches Bob's `db:verify`). | PASS (consistent with the code not running) |
-| 5 | Team suite for F4 (TASK §7, cases 1–8) | unit | local, dummy `DATABASE_URL` | `bun test src/lib/first-coach-task860.test.ts` | green | **25 pass · 0 fail** (126 expects). Ran on the mixed 860+861 tree. | PASS (layer 1 only; proves nothing about sid) |
-| 6 | Bonus 50 link: a course sold after the child's ATTENDED 1st Trial sets `from_trial_booking_id` | happy | sid API | `Twenty-F4` child → FIRST_TRIAL booking → mark ATTENDED → sell course (SALE) → read course | `fromTrialBookingId` = that trial | — | NOT_TESTED (case 0) |
-| 7 | The same trial does not re-link: a 2nd purchase (course, then voucher) | negative | sid API | same child, buy again | null on the 2nd and 3rd sales | — | NOT_TESTED (case 0) |
-| 8 | Only ATTENDED counts: PENDING / NO_SHOW / CANCELLED trial → no link | negative | sid API | 3 children, one trial status each, then a sale | `fromTrialBookingId` null | — | NOT_TESTED (case 0) |
-| 9 | A future-dated ATTENDED trial is not linked ("on or before today") | boundary | sid API | trial dated tomorrow, if the API lets it be attended | null | — | NOT_TESTED (case 0) |
-| 10 | Voucher after a 1st Trial also links (Bonus 50 = course OR voucher) | happy | sid API | trial ATTENDED → sell voucher | voucher `fromTrialBookingId` set | — | NOT_TESTED (case 0) |
-| 11 | Renewal: course after course sets `prev_course_id`, across programs (4A) | happy | sid API | course in program X → course in program Y | `prevCourseId` = X course | — | NOT_TESTED (case 0) |
-| 12 | Voucher after voucher sets `prev_voucher_id` (kept; the Bonus line decides it is not a renewal) | happy | sid API | voucher → voucher | `prevVoucherId` set, `prevCourseId` null | — | NOT_TESTED (case 0) |
-| 13 | Course after voucher / voucher after course: links recorded, no kind filter (A10 neutral) | rule-neutral | sid API | both orders | the matching prev id, the other null | — | NOT_TESTED (case 0) |
-| 14 | First purchase ever: both prev null | boundary | sid API | brand-new child | both null | — | NOT_TESTED (case 0) |
-| 15 | Import paths write no links | negative | sid API | the `เรียนอยู่แล้ว (ย้ายข้อมูล)` import for a child who has an attended trial | all link columns null | — | NOT_TESTED (case 0) |
-| 16 | DUO: links on the primary child only | edge | sid API | DUO course for two `Twenty-` children | primary gets links; co-student none | — | NOT_TESTED (case 0) |
-| 17 | Day-end stamps the first coach = the coach on the earliest ATTENDED row; the `booking_teachers` extras do not count | happy | sid, the 17:30 day-end | fixture course with ATTENDED rows on two dates, two coaches, **created before 17:30** | `firstTeacherId` = the earliest row's `teacherId` | — | NOT_TESTED (case 0, and needs a day-end run on the new build) |
-| 18 | Day-end step is idempotent: the 2nd run changes nothing | regression | sid | read after the next day's run | same value | — | NOT_TESTED (as 17) |
-| 19 | First night fills old courses too, imports included | happy | sid DB read | counts after the first new-build day-end | `first_teacher_id` filled for every course with ≥1 ATTENDED row | — | NOT_TESTED (as 17) |
-| 20 | TASK-838 act with a NEW teacher stamps `coach_changed_at` + `latest_teacher_id` | happy | sid API | course-wide teacher change on a `Twenty-` course | both set | — | NOT_TESTED (case 0) |
-| 21 | A time-only TASK-838 act writes nothing | negative | sid API | same teacher, new time | both stay null | — | NOT_TESTED (case 0) |
-| 22 | A single-session cover writes nothing (5A) | negative | sid API | change one session's teacher | both stay null | — | NOT_TESTED (case 0) |
-| 23 | A second change overwrites `latest_teacher_id` | state | sid API | change twice | latest = the 2nd teacher | — | NOT_TESTED (case 0) |
-| 24 | Pick refusals: 409 `NO_COACH_CHANGE`, 409 `SAME_COACH`, 400 bad value; success stamps `bonus100_pick_by/at` | negative + happy | sid API | PUT on the cases above | as TASK §5 | — | NOT_TESTED (case 0) |
-| 25 | Regression: a sale still succeeds and posts its revenue as before | regression | sid API + `bo.movement` | each sale above | sale 2xx; revenue movement present | — | NOT_TESTED (case 0) |
-| 26 | Front office unchanged by the additive DTO keys | regression | sid, painted | open the calendar + a course | renders as before | — | NOT_TESTED (case 0) |
+## Session and sign-in
+- PokerVault's sid session file was used as-is: never read, printed or copied, and no login.
+- Proven on `https://som.develyst.online/scheduler/calendar`: HTTP 200, the calendar is painted, not a login page.
+- The page's own Authorization header was reused in memory only. Harness: `tests/harness/sid-twenty-api.mjs`.
+
+## Fixtures (all mine, named `Twenty-F4 A…J` / `Twenty-F5 …`; ids in `tests/harness/state/test142-sid.json`)
+| Child | Trial | Then |
+|---|---|---|
+| A | 1st Trial 2026-11-08 09:00 Kid, ATTENDED | course A1 INLINE → course A2 BIKE → voucher A3 → course A4 SCOOTER |
+| B | 1st Trial 11-08 10:00, ATTENDED | voucher B1 → voucher B2 · voucher class on B1, 11-08 16:00, Print, ATTENDED |
+| C | 1st Trial 11-08 11:00, left PENDING | course C1 |
+| D | 1st Trial 11-08 13:00, CANCELLED | course D1 |
+| E | 1st Trial **2026-11-15**, confirmed + ATTENDED (the API allowed it) | voucher E1 |
+| F | 1st Trial 11-08 14:00, ATTENDED | **import** course F1 (10, 3 used) |
+| G + H | both 1st Trials 11-08 15:00, ATTENDED | DUO course G1 (G primary, H co-student) → voucher H1 for H |
+| J | 1st Trial 10-31 CANCELLED | J1 INLINE from 11-08 16:00 Kid · J2 BIKE from 11-08 17:00 Kid · K1 SCOOTER from 11-01 15:00 Toth |
+| — | — | OTHER "Twenty-F5 park fee test", No Teacher, 2026-11-09 09:00, 100 ฿, CONFIRMED |
+
+## Cases — F4 (TASK-860)
+| # | Case (from AC) | Type | Surface | Expected | Actual | Result |
+|---|---|---|---|---|---|---|
+| 0 | F4 code live on sid | precondition | sid API | invalid pick → 400 | `PUT /courses/<nil>/bonus100-pick {pick:"NOT_A_PICK"}` → **400 VALIDATION** (round 1: 404) | PASS |
+| 1–4 | Migration 0074 on sid: 13 nullable columns, 3 CHECKs, 2 partial unique indexes, additive | schema | sid catalog | as TASK §1 | all present; ledger 123 rows (round 1, host 154.197.124.206) | PASS |
+| 5 | Team suite | unit | local | green | 25 pass / 0 fail (round 1) | PASS (layer 1 only) |
+| 6 | A course sold after an ATTENDED 1st Trial links it | happy | sid API | A1 `fromTrialBookingId` = trial A | A1 = `45ed26f8…` = trial A | PASS |
+| 7 | One trial converts once: later sales don't re-link | negative | sid API | A2, A3, A4, B2 null | all null | PASS |
+| 8 | Only ATTENDED counts | negative | sid API | C1 (PENDING trial) and D1 (CANCELLED) null | both null | PASS (PENDING, CANCELLED) · **NO_SHOW NOT_TESTED**: no API action writes NO_SHOW (`updateStatus` = confirm/attend/sick-leave/cancel), and day-end never writes it (SYSTEM-FACTS C-01) |
+| 9 | A trial dated after today does not link | boundary | sid API | E1 null | E1 null (trial E is dated 11-15, ATTENDED) | PASS |
+| 10 | A voucher after an attended trial links it (Bonus 50 = course OR voucher) | happy | sid API | B1 = trial B | B1 = `813e02f4…` = trial B | PASS |
+| 11 | Course after course sets `prevCourseId`, across programs (4A) | happy | sid API | A2 → A1 | A2 `prevCourseId` = A1 (INLINE → BIKE) | PASS |
+| 12 | Voucher after voucher sets `prevVoucherId` | happy | sid API | B2 → B1 | B2 `prevVoucherId` = B1, `prevCourseId` null | PASS |
+| 13 | No kind filter: course → voucher and voucher → course both recorded (A10 neutral) | rule-neutral | sid API | A3 → A2 course; A4 → A3 voucher | A3 `prevCourseId` = A2 · A4 `prevVoucherId` = A3 | PASS |
+| 14 | First purchase ever: both prev null | boundary | sid API | A1 both null | both null | PASS |
+| 15 | An import writes no links | negative | sid API | F1 all null, although trial F is ATTENDED and unused | F1 all null | PASS |
+| 16 | DUO: links on the primary child only | edge | sid API | G1 = trial G; trial H stays unused | G1 = `8ff36982…` = trial G. H's own voucher H1 later linked **trial H** (so the DUO didn't consume it), with `prevCourseId` = G1 (the DUO counts in H's history, as Bob's report says) | PASS |
+| 17 | Day-end stamps the first coach = the coach on the earliest ATTENDED row | happy | sid, day-end 2026-11-09 17:30 | J1 = Kid · J2 = Kid · **K1 = Print** (its wk-1 11-01 row was covered by Print; the course teacher is Toth) · B1 voucher = Print · G1 null (none attended) | `end-of-day` job_run for 2026-11-09 = `success`. **J1 = Kid · J2 = Kid · K1 = Print · B1 = Print · G1 null.** All other `Twenty-` courses and vouchers (no attended class) null | **PASS** |
+| 18 | The day-end step is idempotent | regression | sid, day-end 11-10 | same values on 11-11 | — | **NOT_TESTED**: needs a second day-end (2026-11-10). Settle: re-run `sid-task860-part2-read.ts` after it; J1/J2/K1/B1 must be unchanged and the mismatch count 0 |
+| 19 | The first night fills old courses, imports included | happy | sid DB read | `first_teacher_id` set on every course and voucher with ≥1 ATTENDED row | courses: **122 of 122** stamped, 0 missing, 6 of them imports. Vouchers: **10 of 10**, 0 missing. Stamped coach ≠ the earliest ATTENDED row's teacher: **0**. Stamped = the system teacher: **0** | **PASS** |
+| 20 | A whole-course teacher change stamps `coachChangedAt` + `latestTeacherId` | happy | sid API | A2 → New: both set | set | PASS |
+| 21 | A time-only change writes nothing | negative | sid API | A1 (Kid → Kid, 10:00 → 16:00) null | null | PASS |
+| 22 | A single-session cover writes nothing (5A) | negative | sid API | K1 wk-1 row → Print: null | null | PASS |
+| 23 | A second change overwrites `latestTeacherId` | state | sid API | A2 New → Print: latest = Print | Print (`34ce6f67…`) · J2 New → Kid: latest = Kid | PASS |
+| 24a | Pick: 400 on a bad value | negative | sid API | 400 | 400 (case 0) | PASS |
+| 24b | Pick: 409 `NO_COACH_CHANGE` | negative | sid API | A1 → 409 | 409 `NO_COACH_CHANGE` | PASS |
+| 24c | Pick: success stamps by + at | happy | sid API | A2 SHARE → 200 | 200 `bonus100Pick:"SHARE"`, `bonus100PickBy:"admin"`, `bonus100PickAt` set; re-read via `GET /courses` matches | PASS |
+| 24d | Pick: 409 `SAME_COACH` when latest = first | negative | sid API, after day-end | J2 (first Kid after tonight, latest Kid) → 409 | 409 `SAME_COACH`. Also J1 (first Kid, latest New) FIRST → 200, stamped `admin` + at | **PASS** |
+| 25 | Regression: every sale still posts its revenue | regression | `bo.movement`, read-only | one SALE movement per sale | **14 of 14** (9 courses incl. the DUO, 5 vouchers); the import posted none, which is correct | PASS |
+| 26 | Front office unchanged by the additive DTO keys | regression | sid painted | calendar renders | renders; 0 console errors on the round-2 picker run (one 404 on the first load, not reproduced) | PASS |
+
+## Cases — F5 (TASK-861)
+| # | Case | Type | Surface | Expected | Actual | Result |
+|---|---|---|---|---|---|---|
+| F5-1 | The system teacher exists, flagged by DTO | happy | sid API | one `isSystem:true` row "No Teacher", FREELANCE, not LINE-linked, no subjects | exactly that (`f57601fa…`); 29 others `isSystem:false` | PASS |
+| F5-2 | An OTHER (park fee) block is accepted on it | happy | sid API | 201 | 201, then confirmed | PASS |
+| F5-3 | Lesson types refused: 1st Trial, 1 HR, voucher class, course | negative | sid API | 400 `SYSTEM_TEACHER_NOT_BOOKABLE` | 400 with that code, all four | PASS |
+| F5-4 | Teacher moves refused: whole-course (TASK-838) and one session | negative | sid API | 400 | 400 `SYSTEM_TEACHER_NOT_BOOKABLE`, both | PASS |
+| F5-5 | Teacher writes refused: edit, leave, calendar link, LINE unlink | negative | sid API | 409 `SYSTEM_TEACHER` | 409, all four; the row re-read unchanged | PASS |
+| F5-6 | Archive refused | negative | — | 409 | — | **NOT_TESTED**: on a guard defect the shared row would be archived, and the way back (reactivate) runs through the same guard. Not risked on a row I didn't create |
+| F5-7 | Excluded from the daily report `byTeacher`, SOM, attention, type-order | negative | sid API | absent | absent from all four, with my OTHER block on it today (11 byTeacher rows). Re-read after the day-end, with the block ATTENDED: still absent from daily and SOM | PASS |
+| F5-8 | Calendar: the column is shown **last**, and the block shows on it | happy | sid painted, Daily 2026-11-09 | No Teacher last | header row ends `… Mu · Tarb · No Teacher`; block painted | PASS |
+| F5-9 | Lesson pickers exclude it; OTHER includes it | negative + happy | sid painted, booking modal from Tarb's cell | 1st Trial / 1 HR / Voucher: no "No Teacher"; Other: listed | exactly that | PASS |
+| F5-10 | Its cell opens on อื่นๆ only (Silver's ruling) | happy | sid painted | one tab: Other, No Teacher preselected | exactly that | PASS |
+| F5-11 | Its OTHER rows still settle at day-end like any OTHER | regression | sid, day-end 11-09 | park block ATTENDED, its 100 ฿ posted | ATTENDED, still on No Teacher. One `bo.movement` SALE of 10000 minor (100 ฿), key `rev:4ea2a243…`, posted 2026-11-09 11:30 UTC | **PASS** |
+| F5-12 | Course modal (`CreateCourseModal`) picker, roster page, leave panels, 375 px | negative | sid painted | excluded / OK | — | NOT_TESTED this round: the course modal opens from another page I didn't reach. The back end refuses a course on it anyway (F5-3) |
+
+## Observations (not defects in this change)
+1. **A future-dated booking can be marked ATTENDED by the API.** Trial E (dated 2026-11-15) was confirmed and attended on 11-09. F4 behaved correctly, but whether "attend" should accept a future date is a product question, not TASK-860's.
+2. **The F5 refusal sentence reads "ครู No Teacher ถูกปิดการใช้งานแล้ว"** ("teacher No Teacher has been deactivated"). That is the reused archived-teacher sentence (DECISIONS row 11), so it is as ruled. For staff it reads oddly on a booking refusal. Wording is Porter's call.
+3. **The OTHER form on the No Teacher column shows "Rate per teacher (฿) · No Teacher · primary".** A coach rate can be typed for the system teacher. That rate is stored for the back office, so the pay readers must skip `is_system` (Silver already raised this for TASK-862/865/869).
 
 ## Defects
-None. Case 0 is an environment state, not a defect in TASK-860.
+None.
 
-## Test data created
-| What | Where | Removed? |
-|---|---|---|
-| none: the probe sent one INVALID PUT (answered 404, nothing written) and catalog SELECTs only | sid | n/a. Read-only. |
-
-Planned for the run, all named `Twenty-F4 …`: about 8 children, their trials, courses and vouchers.
-
-## Verdict
-**NOT_TESTED for behaviour (cases 6–26).** TASK-860's code is not on sid: the route answers 404 `route not found`, and the newest back build is dated before the TASK. The schema layer (cases 1–4) and the team suite (case 5) PASS. Neither proves a sale writes a link. The owner's standing rule is "every QA pass needs a sid deploy" (SYSTEM-FACTS, owner 2026-08-19), so I did not run a local server against sid. Doing that would also run the day-end sweep over every team's rows.
+## Test data created (sid): end state 2026-11-09
+| What | End state |
+|---|---|
+| Children `Twenty-F4 A, B, C, D, E, F, G, H, J`, with new unlinked parents on phones 0900091001–0900091009 (so no LINE) | **archived** (hidden from every picker; history kept) |
+| Courses A1 A2 A4 C1 D1 G1 J1 J2 K1 + import F1 | **cancelled** with `ADMIN_ERROR`, note "Twenty TEST-142 cleanup". This removed every future class (39 rows); the past ATTENDED rows remain as history |
+| Vouchers A3 B1 B2 E1 H1 | **cancelled** the same way |
+| 10 trial bookings (10-31, 11-08, 11-15) · voucher class Bv (11-08) | stay as history (nothing is ever deleted) |
+| OTHER "Twenty-F5 park fee test", 2026-11-09 09:00, on No Teacher | ATTENDED by the day-end; stays as history |
+| **Revenue on sid's ledger: 15 SALE movements = 75,220 ฿** (14 sales = 75,120 + park block 100) | **stays, cannot be reversed** (cancelling never reverses posted revenue). Each `ref_id` / key carries one of my `Twenty-` ids |
+| Bonus-100 picks: A2 = SHARE, J1 = FIRST | stay (my cancelled courses) |
+| ⚠️ Incident during the clean-up: a dropped connection printed the sid session's bearer token + cookies into my tool output (no file). Recorded as **F-054**; the harness is now guarded. Reissue is the owner's call | open, with Porter |
 
 ## Evidence
-- `project-docs/qa-2026-11-08/task860-sid-landing.png`: the sid session I used is live (the calendar is painted, not a login page). Case 0's 404 came through this session.
-- Case 0's response, verbatim: `PUT /api/courses/<nil>/bonus100-pick {pick:"NOT_A_PICK"} → HTTP 404 · {"error":{"code":"NOT_FOUND","message":"route not found"}}`. This is an API result, so there is no screen to shoot.
-- Cases 1–4: the output of `harness/sid-task860-schema-read.ts`, quoted in the table (host `154.197.124.206`).
+- `project-docs/qa-2026-11-09/task861-daily-right-1600.png`: Daily 2026-11-09. No Teacher is the last column and carries "Twenty-F5 park fee test" (F5-8).
+- `project-docs/qa-2026-11-09/task861-picker-tarb-1st_Trial-0.png`: the 1st Trial teacher list ends at Tarb, with no No Teacher (F5-9). Siblings: `…-1_HR-0`, `…-Voucher-0`, and `…-Other-0` (which lists it).
+- `project-docs/qa-2026-11-09/task861-modal-noteacher-cell.png`: No Teacher's cell opens with only the Other tab, No Teacher preselected (F5-10).
+- F4 has no screen, so its evidence is the API output, quoted verbatim in the table. Harness: `tests/harness/sid-task860-step.mjs` (steps `read`, `change`, `pick`, `part2`), `sid-task860-revenue-read.ts`.
+- Part 2: `tests/harness/sid-task860-part2-read.ts` (read-only, host 154.197.124.206). Its output is quoted in cases 17, 19 and F5-11, and includes the 2026-11-09 `end-of-day` job_run = `success`.
+
+## Verdict
+**`TEST_PASSED`: every case that was run passed, no defect.**
+- **F4 (TASK-860) PASS:** cases 0–17, 19, 20–23, 24a–d, 25, 26.
+- **F5 (TASK-861) PASS:** F5-1…5 and F5-7…11.
+- **NOT_TESTED, named:**
+  - case 18 (idempotency): needs the 2026-11-10 day-end; one read settles it;
+  - case 8's NO_SHOW variant: no path writes NO_SHOW;
+  - F5-6 (archive): would risk the shared row;
+  - F5-12 (course modal, roster, 375 px).
 
 ## Questions
-1. **For Porter: a sid deploy of TASK-860's build is needed before cases 6–26 can run.**
-   - The working tree also holds TASK-861 in progress, with migration 0075 not on sid. So the build has to be cut so that it carries F4 and does not need 0075. Which build that is, is Team B's to say.
-   - Once it is up, I re-run case 0 (expect 400), then 6–26.
-   - Cases 17–19 also need the 17:30 day-end to run once on the new build, with my fixture made before 17:30. Their results come the morning after.
+1. Porter: case 18 is a single read-only command after the 2026-11-10 day-end. Ring me if you want it before the gate; it doesn't change the verdict unless it fails.
+2. F-054: the sid admin session's token printed into my transcript. Reissuing it is the owner's call; PokerVault holds the session file.

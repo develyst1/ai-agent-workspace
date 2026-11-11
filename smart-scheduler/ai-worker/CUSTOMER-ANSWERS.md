@@ -341,3 +341,29 @@
 ## Other
 - 2026-10-15 · "5. สิ่งที่ต้องเพิ่มในหน้าบ้าน: ตรง" → project-docs/customer-2026-10-14-backoffice-spec-draft/khwan-answers-draft1-VERBATIM.md §5
 - 2026-10-19 · "ครบทุกข้อค่ะ" (prototype v2, pages 18–31) → project-docs/customer-2026-10-16-backoffice-prototype/khwan-answers-proto-v2-part2-2026-10-19-VERBATIM.md
+
+## 2026-11-09 LINE "SOM SYSTEM" (ขวัญ typed after a phone call; the owner says his answers on that call were rushed) → project-docs/customer-2026-11-09-line-som-system/line-som-system-2026-11-09-VERBATIM.txt
+- 2026-11-09 13:13 · Bonus 100: "ให้ 100 ตามคอร์สที่ต่อในเดือนที่เริ่มใช้ระบบค่ะ … ไม่ให้ย้อนหลัง ถ้าระบบเริ่มใช้กลางเดือน … 15 วันก่อนหน้า ขวันใส่มือเองได้ค่ะ" → reads as 1A (a renewal after go-live counts; nothing earlier; she enters the pre-go-live days of that month by hand)
+- 2026-11-09 13:13 · Revenue start: "เริ่มนับคำนวณเดือนนี้ได้เลยค่ะ" → AMBIGUOUS: "this month" = the go-live month (D5) or Nov 2026? Not yet confirmed
+- 2026-11-09 13:13 · Park fee: "พร้อมกันหลายกรุ้ปได้นะคะ" → several groups in the same hour are allowed. ⚠️ CONFLICTS with DECISIONS-REQ-120-build row 11 (one block per hour)
+- 2026-11-09 13:13/14:15 · Data: "ส่งให้ได้วันพุธค่ะ" then "ข้อมูลข้อ 4 ที่เหลือ ขวันส่งให้วันนี้ได้เลย ค่ำๆค่ะ" (staff + types, vehicles, schools + distance, Merit); revenue types/categories + branches put ON HOLD by the owner ("hold ไว้ก่อน … ผมขอไปทำให้เห็นภาพง่ายๆ")
+- 2026-11-09 13:33 · Dashboard: "ขอคำนวณจาก Total Customer + 1 Hr (Last 3 months)"; "prefer pie chart … ถ้าข้อมูลเยอะ … เป็นรูปแบบอื่นได้"; "Voucher ไม่ต้องคำนวณ … นับที่ซื้อเป็นกิจกรรม"; count = number of COURSES ("นับเป็นจำนวนคอร์สถูกต้อง"), with her example (Private SURFSKATE 87: 10x/61, 6x/11, 1 ชม./15; Private BIKE 54: 1HR/25, 4x/10); "แยก 1st Trial ออกมาคำนวณแยกกันเหมือนเดิม"
+- 2026-11-09 17:08 · New front-office issues from admins' real use: (1) fixed schedule only supports 1 day/week and 1 hour; needs 2 h/session and 2 days/week, and a leave must move the class to the NEXT real class day in order; (2) a PENDING course must send parents NO notification (e.g. on a leave); notify only after Confirm Course. "หากมีความซับซ้อน … สามารถแจ้งได้เลย … อาจจะพิจารณาไม่ปรับ"
+- 2026-11-09 17:31 · Her list of open front-office work, for the owner to confirm: 1 multi-day schedule · 2 notify on extended class before confirm · 3 change activity · 4 close a whole day · 5 leave extends onto the same date · 6 dashboard per her latest feedback. Back office: "รอข้อมูลจากทางขวัน"
+- 2026-11-09 19:58–21:11 · Question to us: why are the REPORT · COURSE · STUDENT reports their own timeline line, if each block's report comes with that block?
+- 2026-11-10 01:53 (private chat, re-asked) · Her 9-Nov item 3 explained: it is the dashboard **Gender / Nationality** chart. Today its base, 202, = "เด็กที่มาเรียนอย่างน้อย 1 ครั้งในช่วงเวลาที่เลือก (รวม 1st Trial และ 1 HR)"; it is not all registered kids and not Total Customer. **She wants the base = "Total Customer + 1 Hr (Last 3 months)"** → REQ-5009 #3 (SOM dashboard). Item 4 ("ขอชื่อ") still unanswered.
+- 2026-11-10 01:54 (private chat) · Her 9-Nov item 4 explained: **Address**. "ตอนนี้เหลือผู้ปกครอง 3 คนที่ยังมีที่อยู่แบบพิมพ์เองค้างอยู่ แอดมินแก้ได้โดยเข้าไปเลือกจังหวัดใหม่ … ถ้าต้องการรายชื่อ 3 คนนี้ ส่งให้ได้ครับ" → her reply: **"รบกวนขอชื่อหน่อยนะคะ"**, i.e. she wants the names of the 3 parents whose address is still free-typed (REQ-5009 #4).
+- 2026-11-10 01:57 (GR web, group) · Her first question: "Run / Lock หน้านี้คืออะไรหรอคะ เมื่อกี้ขวัญกด Lock ไป แล้วเราจะกลับมา unlock ไม่ได้ด้วยหรอคะ" (Pay run screen). No unlock exists in the design today, so this is an open feedback item.
+
+## 2026-11-10 01:50–02:10 LINE "SOM SYSTEM" (her first GR-web feedback + answers on the Master Plan) → project-docs/customer-2026-11-09-line-som-system/line-som-system-2026-11-10-0150-0213-VERBATIM.txt
+- 01:59 · "ทำไม Other Income ถึงรวมอยู่กับ payment detail แล้วคะ แล้วค่าอื่นๆ นอกจาก other เราลงตรงไหนคะ" (as CEO she saw the Other Income pointer page)
+- 02:08 · Theme: "ถ้าต้องเลือกเราขอเป็นสีขาวนะคะ เหมือนหน้าบ้าน … และขอคู่สีเป็นสีส้มนะคะ" → LIGHT theme by default, orange accent
+- 02:08 · Lock: "สลิปล็อกแก้ไม่ได้ แต่ถ้ามีเรื่องต้องแก้ไขจริงๆ พี่ฟีนแก้ได้ใช่ไหมคะ หรือปลดล็อกให้แอดมินแก้ได้" → wants a CEO unlock
+- 02:08 · Refund: "ไม่ใช่ทุกคอร์สที่ cancel ไปเราจะคืนเงิน ขอรีคอนเฟิร์มว่าแอคชั่นคืนเงินนี้ จะเกิดจากหลังบ้านคือรายการ refund เท่านั้นใช่ไหมคะ ไม่ได้ผูกกับการ cancel คอร์สหน้าบ้าน"
+- 02:08 · Revenue visibility: "แอดมินและขวัญเปิดหน้ารายได้ไม่ได้ มีพี่ฟีนคนเดียวที่เห็น / ก้อนรายได้ ขวันเห็นด้วยค่ะ" (agrees)
+- 02:09 · Commission FT: "ของ full time จะมีเป็นของ full time ใช่ไหมคะ เราไม่ต้องมาเลือกทีละคนเอง จะมีกล่อง full time ที่ระบบจับว่าเป็นใครบ้างได้"
+- 02:09 · Data: "3 อย่างแรก ส่งเรียบร้อยนะคะ" + asks which file "รายการสินค้า ได้รับแล้ว 3 พ.ย." is
+- 02:10 · Revenue on a mid-course change: "จริงๆ รายได้ไม่ควรเปลี่ยนหรือขยับอะไรค่ะ สิ่งที่ควรเปลี่ยนตามคอร์สจริงๆคือ category ของรายได้ค่า" (vs Master Plan §8.2's split)
+- 02:10 · Bonus 100: "Bonus คือคอร์สต่อคอร์สนะคะ ระบบเริ่มคำนวณได้ตอนไหนก็ขึ้นในสลิปตอนนั้นค่ะ แจ้งเรามาค่ะ ว่าเริ่มนับตั้งแต่วันที่เท่าไหร่ ก่อนหน้านั้นใส่มือเองได้ค่ะ"
+- 02:10 · Price difference on an activity change: "ใส่เงิน Manually ในราคาส่วนต่างค่ะ" (REQ-5007's open price question)
+- 02:10 · Go-live month: "หมายถึงเอารายได้ไปคำนวณใช่ไหมคะ / เริ่มคำนวณจากเดือนนี้ไปได้เลยค่ะ" → wants revenue counted from Nov 2026

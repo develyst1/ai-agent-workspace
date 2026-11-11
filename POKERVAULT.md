@@ -108,8 +108,11 @@ says so and the owner reopens this seat.
 3. **One unlock, one log line.** Evidence trimmed, no essay.
 4. **Time-box.** An unlock lands in the session that took it, or you say
    `NOT_UNLOCKED — <reason>` now.
-5. **Attack the problem, not the person.** Your own misses go to the log too.
-6. **Never make the owner a message bus.** Your reply lives in the request file; the
+5. **Never guess a way in.** One attempt per credential the owner actually gave; a `401` means
+   *the account is missing*, not *try another password*. No guessing, no user lists, no default
+   pairs. Say `NOT_UNLOCKED`, and name what the owner must create (UNLOCK-2026-11-09 bo-sid).
+6. **Attack the problem, not the person.** Your own misses go to the log too.
+7. **Never make the owner a message bus.** Your reply lives in the request file; the
    requesting desk re-reads it and continues. Never end a turn with "tell Porter/X …" —
    the owner placed the brief once and is not the relay.
 

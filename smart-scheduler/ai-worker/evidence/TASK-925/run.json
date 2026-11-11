@@ -1,0 +1,154 @@
+[
+ {
+  "w": 1280,
+  "role": "ceo",
+  "mode": "ok",
+  "hscroll": {
+   "report": false,
+   "course": false,
+   "student": false
+  },
+  "errors": [],
+  "reportCards": 10,
+  "reportHasMoney": true,
+  "courseRows": 6,
+  "courseHasRevenue": true,
+  "unmatchedNote": 1,
+  "studentRows": 2,
+  "stockLink": "/stock/reports",
+  "salaryText": true
+ },
+ {
+  "w": 1280,
+  "role": "admin",
+  "mode": "ok",
+  "hscroll": {
+   "report": false,
+   "course": false,
+   "student": false
+  },
+  "errors": [],
+  "reportCards": 8,
+  "reportHasMoney": false,
+  "courseRows": 6,
+  "courseHasRevenue": false,
+  "unmatchedNote": 0,
+  "studentRows": 2,
+  "stockLink": "/stock/reports",
+  "salaryText": true
+ },
+ {
+  "w": 1280,
+  "role": "ceo",
+  "mode": "empty",
+  "hscroll": {
+   "report": false,
+   "course": false,
+   "student": false
+  },
+  "errors": [],
+  "reportCards": 0,
+  "reportHasMoney": false,
+  "courseRows": 0,
+  "courseHasRevenue": false,
+  "unmatchedNote": 0,
+  "studentRows": 0,
+  "stockLink": "/stock/reports",
+  "salaryText": true
+ },
+ {
+  "w": 1280,
+  "role": "ceo",
+  "mode": "error",
+  "hscroll": {
+   "report": false,
+   "course": false,
+   "student": false
+  },
+  "errors": [],
+  "reportCards": 0,
+  "reportHasMoney": false,
+  "courseRows": 0,
+  "courseHasRevenue": false,
+  "unmatchedNote": 0,
+  "studentRows": 0,
+  "stockLink": "/stock/reports",
+  "salaryText": true
+ },
+ {
+  "w": 375,
+  "role": "ceo",
+  "mode": "ok",
+  "hscroll": {
+   "report": false,
+   "course": false,
+   "student": false
+  },
+  "errors": [],
+  "reportCards": 10,
+  "reportHasMoney": true,
+  "courseRows": 6,
+  "courseHasRevenue": true,
+  "unmatchedNote": 1,
+  "studentRows": 2,
+  "stockLink": "/stock/reports",
+  "salaryText": true
+ },
+ {
+  "w": 375,
+  "role": "admin",
+  "mode": "ok",
+  "hscroll": {
+   "report": false,
+   "course": false,
+   "student": false
+  },
+  "errors": [],
+  "reportCards": 8,
+  "reportHasMoney": false,
+  "courseRows": 6,
+  "courseHasRevenue": false,
+  "unmatchedNote": 0,
+  "studentRows": 2,
+  "stockLink": "/stock/reports",
+  "salaryText": true
+ },
+ {
+  "w": 375,
+  "role": "ceo",
+  "mode": "empty",
+  "hscroll": {
+   "report": false,
+   "course": false,
+   "student": false
+  },
+  "errors": [],
+  "reportCards": 0,
+  "reportHasMoney": false,
+  "courseRows": 0,
+  "courseHasRevenue": false,
+  "unmatchedNote": 0,
+  "studentRows": 0,
+  "stockLink": "/stock/reports",
+  "salaryText": true
+ },
+ {
+  "w": 375,
+  "role": "ceo",
+  "mode": "error",
+  "hscroll": {
+   "report": false,
+   "course": false,
+   "student": false
+  },
+  "errors": [],
+  "reportCards": 0,
+  "reportHasMoney": false,
+  "courseRows": 0,
+  "courseHasRevenue": false,
+  "unmatchedNote": 0,
+  "studentRows": 0,
+  "stockLink": "/stock/reports",
+  "salaryText": true
+ }
+]

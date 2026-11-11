@@ -30,3 +30,28 @@ backoffice-back: `src/services/salary*.ts` (the auto-line engine on `runPeriod`)
 
 ## Questions / Implementation Notes / Review
 _(—)_
+
+## Jason (BE) 2026-11-08 — TASK-878 GREEN + Sober's insertLine defect FIXED
+**Defect (yours, confirmed):** `salary-db.store.ts insertLine` dropped `sourceRef`. Fixed: it now persists `source_ref`; an AUTO line (needs a sourceRef, else it throws) is written `ON CONFLICT DO NOTHING` against the 0011 partial index and returns the EXISTING row on a duplicate. Manual lines unchanged. Memory store mirrors it. 878's batch goes through `syncAutoLines` (diff + same index), not insertLine. Sector (867) shares this store: no signature change, `sourceRef?` was already on `Line`.
+**Built (backoffice-back, no migration, no scheduler file, no git):** `src/lib/pay-rules.ts` (pure, integer satang, round once at the line) · `salary.service.ts runPeriod` now FT/PT/FL slips + auto lines (FL "Freelance Hour" per date, Extra Hour per date: 240 min weekday / 300 weekend, PT on PT days only, FL never) · `addOt` (admin minutes, base÷26÷8×1.15, FT/PT days, fixed at entry) · `addMerit` (typed, merit_eligible only) · routes `POST /slips/:id/ot` and `/merit` (ceo) · `lineDTO.kindLabel` · `syncAutoLines` on both stores. A day with minutes but no FL rate is returned in `warnings`, never paid at 0.
+**Hand example (Oct 2026, 30/9–30/10):** Ton FT 25,000: Wed 14/10 6 Hr → 2×350 = 700.00; Sun 18/10 6.5 Hr → 525.00; Thu 4 Hr and Sat 5 Hr → 0 (confirms 240/300; REQ-120 line 57). Ploy PT+FL: Wed FL private 2 Hr×400 + group 1 Hr×250 = 1,050.00; Thu FL 5 Hr×400 = 2,000.00 (no extra for FL); Sat PT 6 Hr → 350.00; Fri camp with no rate → warning. OT 2 Hr on 25,000 = 276.44.
+**Evidence:** pinned tsc 5.6.3 → 0 `error TS` (5.9.2 was not used) · DB-less suite 577 pass / 0 fail · new `salary-auto-lines-task878.test.ts` covers the pure rules, the hand example, idempotency (re-run, changed/vanished day, manual lines kept, confirmed slip frozen, locked refused), OT/Merit guards, and insertLine sourceRef round-trip + dup no-op.
+**sid, rolled back (host check true, nothing printed; 13/13 PASS, left behind: periods 0, profiles 0):** totals match the hand figures; second runPeriod changes nothing; OT 27,644 and Merit survive a re-run; changed hours rewrite one line and remove the vanished one; insertLine round-trips sourceRef; duplicate auto via insertLine is a no-op (1 row); two more runs add no rows.
+**Pin edits (mine):** 865/871 tests now inject an empty reader; slips cover FT/PT/FL (counts 2→3 etc.); route count 13→15; line DTO gains `kindLabel`.
+**Decisions for you:** (1) OT amount is fixed at entry and goes stale if the base changes later; delete and re-enter. (2) Student names for R1.6 are not in the reader, so labels itemise by class type. (3) runPeriod now also creates PT/FL slips; STAFF is still excluded.
+Security review: none (CEO-only routes, zod + service bounds, Drizzle-parameterised, integer/BigInt money, auto sync touches only auto lines of the derived kinds).
+Ball: Sober.
+
+## Review (Sober, SA Lead A, 2026-11-08) — ✅ ACCEPTED / DONE — the money-grade spine is COMPLETE
+Read the code, traced the money, not just the report.
+- **The defect fix is correct** (`salary-db.store.ts:127-134`): `insertLine` now persists `sourceRef: l.sourceRef ?? null`; an `auto` line **requires** a sourceRef (throws if missing — fail-closed, so NULL-ref auto rows can't recur) and is `onConflictDoNothing` against the 0011 index, returning the existing row on a duplicate. Manual lines unaffected. Memory store mirrors it. 878's batch uses `syncAutoLines`.
+- **`pay-rules.ts` is correct, pure, integer-satang, no float** — verified each: `roundDiv` round-half-up on integers; `payForMinutes` = min÷60×rate rounded once; `otPaySatang` BigInt (base×115×min ÷ 1,248,000) — traced 25,000฿·120min = 27,644 satang = 276.44฿ ✓; `flPayLines` sums class min×rate per FL day, **missing-rate day → `missingRates` warning, never silent 0**; `extraHourLines` excludes FL/STAFF, PT only on PT days, thresholds 240/300.
+- **Hand example (Oct 30/9–30/10) matches the rules** — traced: Ton FT Wed 6h→(6−4)×350=700, Sun 6.5h→(6.5−5)×350=525, Thu 4h/Sat 5h→0 (confirms 240/300); Ploy PT+FL Wed FL 1,050 (2h×400+1h×250), Thu FL 2,000 (no Extra for FL), Sat PT 6h→350, camp-no-rate→warning; OT 276.44. All correct.
+- **Idempotency** proven (double `runPeriod` no dup; 0011 index) — DB-less 577/0, sid rolled-back 13/13. **Security review: none** (accepted — CEO-only routes, zod + bounds, Drizzle-parameterised, integer/BigInt money, auto-sync touches only derived auto kinds).
+- **Pay-side only** (no scheduler file), no migration (uses 0010/0011), no git. ✓
+
+**Your 3 decisions — accepted:** (1) OT fixed at entry (stale if base changes → delete+re-enter) — fine for now, noted as a known limit. (2) runPeriod now creates FT/PT/FL slips, STAFF excluded — correct for the full spine. (3) Labels itemise by class type because the reader carries no student names — accepted, **but see the R1.6 gap below.**
+
+**One gap I'm raising to Porter (not a 878 defect, not demo-blocking):** R1.6 / Khwan §1.3 want "สอนใครไปบ้าง" (WHO was taught) on each line; the hours reader (TASK-872) returns only minutes-by-class-type, so lines itemise by class type, not student. Surfacing student names needs a reader extension (link 2) or a separate lookup — a scope decision for Porter/owner, after the demo.
+
+**Verdict: ✅ DONE.** Links 1 (871) + 2 (872) + 3 (878) are all in — **the money-grade Salary spine is complete.**

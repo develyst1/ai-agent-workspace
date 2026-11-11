@@ -1,0 +1,44 @@
+# TASK-913 — FE: Low Stock view + per-type thresholds (R3.7) — backoffice-front, Stock block — @Fanta (lent to Team A's Stock block)
+
+**From @Sober, 2026-11-09. R3.7 Low Stock: the web view of products at/under their type's threshold, plus the editable per-type thresholds.** On a fixture now (the 904 `GET /v1/stock/products` + a small thresholds fixture). Repo `smart-scheduler-backoffice-front`, branch `dong`. **Brownfield — map the final-UI Low Stock screen first.** Git only on the owner's word. **Chain: report + questions in this TASK `## Questions`; Sober reviews.**
+
+## Requirement (REQ-120 R3.7, verbatim)
+- **Low Stock = products whose quantity ≤ the threshold for their TYPE** (category).
+- **Thresholds are per type, editable. Defaults: F&B 10 · Safety 1 · Miller 5 · Sock 1 · Shirt 1.** (A type with no set threshold → pick a sensible default, e.g. 0 = never low, and say so; confirm the full type list against the real categories.)
+- "Every Monday, in the web, to chosen people (today London + ฟีน)" — the **weekly delivery is a backend job + ties to Notifications (R0.4 / TASK-914); NOT this task.** This task is the **web VIEW + the threshold settings** only.
+
+## Step 0 (map first, file:line, in `## Implementation Notes`)
+- The final-UI Low Stock screen (`final-ui/.../stock/LowStock*` or the alert page — path in `machine.local.md`): the list, how a type's threshold is shown/edited.
+- Reuse the 904 products fixture (quantity + category) and your 905/907 list patterns.
+
+## Build (on a fixture)
+- **Low-stock list:** the products where `quantity ≤ threshold(category)` — Model code · Name · Category · Quantity · the type's threshold · (how far under). Group or sort by category. A zero-stock product is low (0 ≤ any threshold ≥ 0).
+- **Per-type thresholds, editable:** a small settings panel listing each category with its threshold (defaults above), editable (whole number ≥ 0), saved via a **fixture seam** `getLowStockThresholds` / `setLowStockThresholds` (a tiny BE store comes later — `STOCK_SOURCE.writes = "fixture"` until then). Changing a threshold re-filters the list.
+- CEO + admin gated; one `PAGE_RULES` row tagged `🔻 TASK-913`, coordinating with the other /stock rows.
+- Error envelope = app standard `{ error: { code, message, details } }` (match the block).
+
+## Done = (evidence in `## Implementation Notes`)
+- `tsc` 0 · `bun test` green · `next build` 0 · the pure filter rule (quantity ≤ type threshold, per category) + the threshold round-trip proven; static markup. (Browser DOM run = the block's known gap.)
+- `git status` = only your files; no Salary file, no `smart-scheduler-back`; no git command.
+
+## Claim
+backoffice-front: the Low Stock view + the thresholds settings + their fixture seam + the `PAGE_RULES` row. **Sober reviews.** Questions → me. **The Monday delivery + the real thresholds store are follow-ons (not in this task).**
+
+## Questions / Implementation Notes / Review
+_(—)_
+
+## Implementation Notes — Fanta, 2026-11-09 (built on fixtures; Sober reviews)
+**Step 0 — the final-UI Low Stock** (`final-ui/src/pages/b/stock/LowStock.tsx`, my TASK-753 port, `:8–110`): header «Balance Stock» + «Send a test message»; LEFT card «Setting» — a Location select, a table «Type · Alert (Unit)» with a whole-number box per type (F&B 10 · Safety 1 · Miller 5 · Sock 1 · Shirt 1), «Save»; RIGHT card «Monday <date>» with a «N low» badge, a table «Product · Balance · Alert (Unit)», and a «To» recipients MultiSelect. This TASK is narrower: the VIEW + the thresholds only — the Monday message, the recipients and «Send a test message» are the BE / Notifications (914) follow-on; Location is gone (a single location); «Balance Stock» left out.
+**Built (BF; new files + 3 small edits):** `components/partials/Stock/{LowStock.tsx, low-stock-logic.ts, stock-913.test.tsx}`, `app/(admin)/stock/low/page.tsx`, `services/stock.service.ts` (+`getLowStockThresholds` / `setLowStockThresholds`, an in-memory store reset by `resetStockFixture`), `StockData.ts` (+2 hooks), `types/app/stock.ts` (+`LowStockThresholds`), `lib/roles/pages.ts` (one row `🔻 TASK-913` `/stock/low` «Low Stock», STOCK, CEO + Admin, `BellRing`).
+**The rule (`lowProducts`):** an ACTIVE product is low when its quantity ≤ the threshold of its TYPE (a product's category). Exactly at the level is low. A product at 0 is low whenever its type HAS a threshold (even 0). **A type with NO threshold (empty / absent) is never low** — my answer to your "a type with no threshold → pick a default": no alert (null), so an uncategorised or new category never floods the list; it can be given a level in Setting. Sorted by category, then furthest under first, then name. Columns: MODEL CODE · PRODUCT NAME · CATEGORY · UNIT (the balance; REQ-5010 15a) · Alert (Unit) · **Under by** (= threshold − quantity) + a «N low» badge.
+**Thresholds (`low-stock-logic.ts`, `DEFAULT_THRESHOLDS`):** F&B 10 · Safety 1 · Miller 5 · Sock 1 · Shirt 1. A product's category falls under a type by the same name (any case) OR its first word («Miller division» → «Miller»); no match ⇒ no alert. Settings = a box per type («Alert (Unit) of F&B»…): whole number ≥ 0, **empty = no alert**; Save sends the whole map; a bad box turns red and nothing is sent; the list re-reads and re-filters after a save. Seam (fixture, `STOCK_SOURCE.writes = "fixture"`): `getLowStockThresholds(role)` / `setLowStockThresholds(role, map)`; a Coach gets `{}` / `FORBIDDEN`; a non-whole / negative level or an empty type name → `INVALID` in the standard envelope (`.body`), nothing saved.
+**With the fixture + defaults:** Low = Miller helmet (4 ≤ 5, under 1) and Water (8 ≤ 10, under 2). **Open point (your instruction «confirm the full type list against the real categories»):** my fixture categories are Miller division · Inlineskate · Bike · Safety · F&B · Other, and Sock / Shirt are PRODUCTS under «Other», so the Sock / Shirt rows exist (customer's list) but match no category yet; the Sock at 0 is NOT flagged. The real category list arrives with the 904 import — if Sock / Shirt are products inside a type (not categories), the rule must key on something else; tell me.
+**Evidence:** `tsc` (bunx typescript 5.9.3) 0 · `bun test` **211 pass / 0 fail** (whole front; `stock-913.test.tsx` 14; mutation ≤ → < failed 3, restored) · `bun run build` 0 (`/stock/low` listed) · no git; no Salary file, no `smart-scheduler-back`. **NOT PROVEN:** a browser run (typing a level, a real Save) — no DOM test lib in the BF, no sign-in; proven = the pure rule, the seam round-trip, static markup (no money, no recipients).
+**Questions for Sober:** (1) Sock / Shirt vs the real categories (above); (2) a type with no threshold = never low — OK? (3) the first-word match («Miller division» under «Miller») is mine — keep, or exact names only once the real categories are known? (4) new English words for Porter: «Low Stock», «Setting», «Type», «Alert (Unit)» (final UI), «Low», «N low», «Under by», «No product is low».
+
+## Review (Sober, SA Lead A, 2026-11-09) — ✅ ACCEPTED on the fixture; 4 answers (one refinement for wiring)
+Clean: active product low when `quantity ≤ threshold(category)`, exact-at-level is low, sorted sensibly, «Under by» + «N low», no money/recipients (right — those are 914/the BE). tsc 0 · front 211/0 (14 new) · build 0 · mutation bites. **Verdict: ✅ ACCEPTED on the fixture.**
+**Q1 — Sock/Shirt vs real categories, and Q3 — the first-word match: one refinement for wiring.** The REQ's `F&B/Safety/Miller/Sock/Shirt` are the customer's EXAMPLE thresholds; the real type list = the **categories the 904 import establishes**. So on wiring: **drive the Setting list dynamically from the actual categories present** (one threshold row per real category), seeded with the REQ defaults where a name matches — don't hardcode the 5. Then **match the threshold to a product by its EXACT category** and **drop the first-word heuristic** (it only existed because "Miller" ≠ "Miller division"; once Setting lists the real category names, the match is exact and the heuristic's mis-bucket risk goes away). If Sock/Shirt turn out to be PRODUCTS under a parent category (not categories of their own), they inherit that category's threshold; if the customer wants Sock/Shirt-specific alerts that's finer granularity than the model — I'll confirm the real categories post-import and raise it with Porter only if needed. For the fixture now, your category-keyed rule stands.
+**Q2 — a type with no threshold = never low: YES, correct** — it keeps un-thresholded/new categories from flooding the list; a category gets alerts only once given a level in Setting. Keep it.
+**Q4 — words → Porter** (relaying): «Low Stock», «Setting», «Type», «Alert (Unit)», «Low», «N low», «Under by», «No product is low».
+Nothing to change on the fixture now; the dynamic-Setting + exact-match refinement lands at wiring (when the 904 import categories are real). Ball: you (→ TASK-914 next).

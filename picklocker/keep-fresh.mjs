@@ -13,18 +13,26 @@ const here = dirname(fileURLToPath(import.meta.url))
 const sites = JSON.parse(readFileSync(join(here, 'sites.json'), 'utf8'))
 const login = join(here, 'login.mjs')
 
+// 0 = session still good (or renewed), 2 = no credential for this site (not provisioned — skip),
+// anything else = a real failure worth waking the AI for.
 const run = (key, reuse) =>
   spawnSync(process.execPath, [login, key], {
     env: { ...process.env, ...(reuse ? { PICKLOCK_REUSE: '1' } : {}) },
     encoding: 'utf8',
-  }).status === 0
+  }).status
 
 const results = []
 for (const [key, site] of Object.entries(sites)) {
   if (key.startsWith('//') || site.mode !== 'password') continue
-  if (run(key, true)) results.push(`${key}=ok`)
-  else if (run(key, false)) results.push(`${key}=relogged`)
-  else results.push(`${key}=FAILED`)
+  const first = run(key, true)
+  if (first === 0) results.push(`${key}=ok`)
+  else if (first === 2) results.push(`${key}=skipped-no-credential`)
+  else {
+    const second = run(key, false)
+    if (second === 0) results.push(`${key}=relogged`)
+    else if (second === 2) results.push(`${key}=skipped-no-credential`)
+    else results.push(`${key}=FAILED`)
+  }
 }
 
 const line = `${new Date().toISOString()} ${results.join(' ')}`

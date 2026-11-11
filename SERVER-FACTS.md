@@ -735,3 +735,66 @@ The scheduled audit (`otto-daily-security-audit`, 20:30) compares against `serve
   - **After ~90 s (one poll):** no `mail:` lines in the log, so no failing mailbox row so far. The poller logs only failures.
   - **Not proven yet:** a forwarded mail showing up in the app. That waits for the owner to connect the Gmail box in the app, then QA TEST-006 row 10.
   - **Roll back:** set the line back to `0` and restart.
+- **2026-11-10 — blueprint parked** (owner: *"ปิดแอปที่รันอยู่ตอนนี้ให้หน่อยดิ … บูปิน … ปิดทิ้งไว้หรือว่าลบออกไปเลยก็ได้ … ให้มันเบาลงพักไปก่อน"*; the SOM project will come with a deploy).
+  - **Before:** 4 apps online: blueprint-back-sit 65 MB, blueprint-sit 165 MB, cornerchat-api-sit 95 MB, cornerchat-sit 100 MB. RAM used 1067 MB of 5919.
+  - **Done:** `pm2 delete blueprint-sit blueprint-back-sit` + `pm2 save`. They are out of the pm2 list and the saved dump, so they stay off after a reboot. Used 888 MB after.
+  - **Kept:** `/srv/apps/blueprint-*` (releases, `current`, `shared/.env`), the ports 3001/3002 in `ports.tsv`, the nginx site, the Access app, and the CI key.
+  - **Bring back:** `pm2 start /srv/apps/<name>/ecosystem.config.cjs && pm2 save`, or the next push to `sit` (`deploy-app` starts it again).
+  - `blueprint-sit.develyst.online` now gives 502 behind Access (expected).
+  - **corner-chat left running:** the owner thought blueprint was the only app; corner-chat SIT is the desk's QA target, so the owner is asked.
+- **2026-11-10 — SOM (smart-scheduler) asks arrived via Porter: plan only, nothing done on the box.** Reply: `REQUEST-otto-to-porter-2026-11-10-som-deploys.md`.
+  - **GR web (REQ-5011):** static. `final-ui/dist` = one `index.html` (vite-plugin-singlefile, 1.3 MB). Not a git repo.
+    - **Plan:** `new-app <name> static` + a one-off `deploy-app` from the PC today. Gate = nginx Basic Auth: the owner types the shared password at `htpasswd` in one sudo sitting; Cloudflare Access cannot do one shared password. CI after the owner makes a repo.
+    - **Waiting on:** the hostname, the owner's go, Sober confirming the build.
+  - **develyst-line-bot (REQ-5012):** a public process app (LINE webhook + HMAC). Survey before deploy; it comes after the GR web.
+- **2026-11-10 — corner-chat SIT stays running** (owner: *"เปิดไว้ก่อน"*).
+- **2026-11-10 ~01:40 local — GR web LIVE: `https://som-gr.develyst.online`** (owner go via Porter: *"URL web เอาตามที่ auto เสนอได้เลย"*; Sober confirmed the build).
+  - **Order:** `new-app som-gr static`, then the gate, then the content, so it was never public with content.
+  - **Gate:** `server-platform/readyidc/som-gr-gate.sh` (sha256 `ba76e46a…`), run by the owner via `sudo` in terminal tab c12. He typed the shared password; no agent saw it.
+    - It wrote `/etc/nginx/htpasswd-som-gr` (root:www-data 640, login `som`, apr1 hash) and added `auth_basic` to `som-gr.conf` (backup `.bak-20261109-184012`, server UTC).
+    - Re-run the script to change the password.
+  - **Content:** `final-ui/dist/index.html`, md5 `e0a8f3cc39190b92893b03b4d7ad4721` (matches Sober's), deployed with `deploy-app`; release `20261109-184034`.
+  - **Proven from outside:**
+    - with no password `/`, `/salary` and an asset → 401;
+    - a wrong password → 401;
+    - the direct IP times out (firewall).
+    - **Not proven by Otto:** right password → 200. That is the owner's browser check.
+  - **Redeploy (until CI):** Sober pings a new md5, then Otto packs `dist/index.html` and runs `deploy-app som-gr` (it keeps the current release + 1 previous).
+- **2026-11-10 01:42 local — GR web owner check PASSED.** The owner's screenshot shows `som-gr.develyst.online` after login: the SOM BALANCE Back Office home with the Salary, Notification, Setting and Revenue menus. Gate 6 for the one-off is closed. Remaining: CI waits for the repo.
+- **2026-11-10 — develyst-line-bot survey (read-only).**
+  - **Repo and checks:** public repo, `b1ffa6c`. It compiles to a Linux binary in CI (no repo build script). `bun test` 39/39 with no DB.
+  - **Routes:** `/health`, `/line/webhook`, `/send` (Bearer `SEND_KEY`), `/img/:name`.
+  - **Server needs:** `DATA_DIR` must be `shared/data`. It binds `0.0.0.0` (the firewall covers it). `api.line.me` and `api-data.line.me` are open.
+  - **Proposed host:** `line-bot.develyst.online`. Waiting on the owner's name OK via Porter.
+- **2026-11-10 — line-bot set up (owner via Porter: host `line-bot.develyst.online`, repo stays public *"ปล่อยเป็น Public"*).**
+  - **`new-app line-bot process --start "./develyst-line-bot" --health /health`:** port **3005**, public, no Access.
+  - **`shared/.env`** (600; values never printed):
+    - Otto set `LINE_API_BASE`, `PUBLIC_BASE_URL`, `PORT=3005`, `DATA_DIR=/srv/apps/line-bot/shared/data` (dir 700), and a `SEND_KEY` generated on the box (`openssl rand -hex 32`);
+    - `LINE_CHANNEL_SECRET` and `LINE_CHANNEL_ACCESS_TOKEN` are left EMPTY for the owner.
+  - **Desk `.env.send`** (git-ignored, in the bot repo checkout): `BOT_URL` plus the same `SEND_KEY`, copied over ssh straight into the file and never shown.
+  - **CI key:** `github-ci@develyst-line-bot-2026-11-10` `SHA256:QeG514dHmrtTouMdgT85az7Zvn8SgHjr8qEO78l/8EM`, line 6 of `authorized_keys` (backup `.bak-20261110-linebot`). Refuses `id` ("no app id"). Expected total: 6 keys.
+  - **Workflow written (not committed):** `.github/workflows/deploy-sit.yml`. Steps: `bun install` → typecheck → `bun test` (39, local fake LINE) → compile → deploy `line-bot`. Local typecheck rc 0.
+  - **Deploy branch = `sit`** (platform standard).
+- **2026-11-10 ~02:00 local — GR web redeployed** (Sober's new build: Stock, Users/login, toasts, menu). md5 `f6744d5e0a30e06785216daa335f51e4` checked on the PC and on the box. Release `20261109-190032` (previous `…184034` kept for rollback). No password → 401 still. Note: `deploy-app` is `/usr/local/bin/deploy-app`, not `~/.local/bin`.
+- **2026-11-10 — line-bot phase 2 keys added to the server `.env`:** `RECORD_GROUP_MESSAGES=` (empty = OFF; it turns on only after the owner tells the group) and `MESSAGE_RETENTION_DAYS=90`.
+  - A leftover unmodified `nano` from the closed tab c13 was killed first; no `.save` file was left.
+  - Phase 2 is `dong` `8427a0e`; `sit` = `b1ffa6c`. The owner's step list is in the REQUEST file.
+- **2026-11-10 — GR web redeploy #2** (Sober, feedback round 1: light theme, CEO Unlock). md5 `9a5e7307693a5aaff89f8999a16fafc7` checked on the PC; the box result is in the line above. Gate still 401.
+  - Box: release `20261109-193056` (previous `…190032` kept), server md5 `9a5e7307…fafc7` matches; no password → 401. (Correction: the line above says 'in the line above'; the box result is this line.)
+- **2026-11-10 — line-bot:** the owner filled both LINE values (checked as filled, never printed) and added both GitHub secrets. Waiting on Sector to commit the workflow, bring dong into sit and push.
+- **2026-11-10 ~02:33 local — line-bot LIVE: `https://line-bot.develyst.online`** (CI from `sit` `7dbf9a8` = phase 2 + workflow; Sector pushed on the owner's word via Porter).
+  - **Release:** `20261109-193312`, a 109 MB binary. pm2 `line-bot` online, ↺ 0, 25 MB. Log: "develyst-line-bot on :3005 (push ON)".
+  - **Proven from outside:**
+    - `/health` → 200 `{"ok":true,"groupKnown":false,"recording":false}`;
+    - unsigned and bad-signature webhook → 401;
+    - `/send` and `/messages` without the key → 401;
+    - `/img/../.env` → 404.
+  - **Binding:** it listens on `*:3005` (all interfaces). The firewall blocks it from outside (direct `:3005` checked).
+  - **Clean-up:** the CI key files were deleted from the PC; the key now lives only in GitHub.
+  - **Not proven yet:**
+    - a real LINE event (it waits for the owner's webhook switch + adding the OA to the group);
+    - a real `/send`;
+    - a failing CI case through this repo.
+- **2026-11-10 02:35 local — line-bot joined SOM SYSTEM:** `/health` → `groupKnown:true`, `recording:false`. `shared/data/group.json` was written at 19:35 UTC, so a real LINE webhook arrived and passed the signature check. The data sits in `shared/data` and survives deploys.
+- **2026-11-10 — line-bot recording ON** (owner via Porter: *"ส่งละ"*, after sending the consent notice to SOM SYSTEM: messages are for internal team use and auto-deleted within 90 days). `RECORD_GROUP_MESSAGES=true` (backup `.env.bak-20261110-recordon`), then restart + `pm2 save`. `/health` → `recording:true`, `groupKnown:true`. **Roll back:** clear the value and restart.
+- **2026-11-10 — GR web redeploy #3** (Sober, round 2: orange menu highlight, logo and banner). md5 `6ac40756f3e238cd8a47717c2a4e1973` matches on the PC and the box. Release `20261109-200651` (previous `…193056` kept). No password → 401.

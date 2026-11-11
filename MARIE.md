@@ -2925,7 +2925,105 @@ is needed.
 5. Do not touch smart-scheduler-atom's `checks.json` (ORDER 53: HELD, its own box).
 6. Nudge Atlas with the result.
 
+### ORDER 61 — 2026-11-09 — ⏳ PARTLY DONE 2026-11-09 (smart-scheduler done + verified; 2.6.18 on 9/10, atom HELD; template steps on the other desks OWED, each when quiet — see Operations log) — URGENT — harness 2.6.18: every seat arms its watcher; no turn ends with a queue (smart-scheduler first)
+
+**Owner, via Porter, 2026-11-09 ~00:30:** *"นิ่งไปอีกแล้วมั้ย แก้ด่วน ห้ามนิ่งแบบนี้ ไปปรึกษาทีม ไปปรึกษา ATLAS แก้"*.
+Source and design: `REQUEST-porter-to-atlas-2026-11-09-desk-goes-idle.md` § Atlas's answer.
+**Root cause, from the files:** smart-scheduler's `PROTOCOL.md` shutdown ritual has 3 steps. It has no inbox step and
+no watcher step: your ORDER 34 step was OWED there and never landed. The template armed watchers for the PM and SAs
+only. So an engineer's inbox line wakes nobody.
+Done by Atlas:
+- `watch-inbox.sh`: optional `WATCH_TICK_MIN` (PM idle sweep); 5 scratch cases passed;
+- template `PROTOCOL.md` shutdown steps 6–8 (every seat arms its watcher · never end a turn with a queue · a
+  hand-off is an inbox line);
+- skills `workforce-protocol` §4 steps 6–8, `role-pm` idle sweep, `role-sa` hand-off line, all copied to
+  `.claude/skills/`;
+- harness → **2.6.18**.
+
+**Do:**
+1. **smart-scheduler first, now. Do not wait for quiet:** the fix is what stops the silence. Through Porter:
+   - run `install.mjs smart-scheduler`;
+   - archive `PROTOCOL.md` verbatim first;
+   - append to its shutdown ritual the template's steps for the inbox pointer (template step 2), the watcher
+     (template 6), never ending with a queue (template 7) and the hand-off (template 8), numbered on from its step 3.
+     Match the surrounding line endings, because the file is mixed (ORDER 34 note);
+   - one re-read note per inbox (all 14 seats): *"From Marie 2026-11-09: PROTOCOL shutdown ritual changed: arm your
+     own watcher as your last act (`bash ai-worker/tools/watch-inbox.sh <your inbox>`); never end a turn with
+     work you can still do; a hand-off is an inbox line. Re-read it now."*
+   - **Porter stops his session cron** once his watcher runs with the tick, so they do not both ring.
+2. Then `install.mjs` on the other 8 desks (atom HELD). The template PROTOCOL steps go to other desks only when each
+   is quiet, as in ORDER 34.
+3. Nudge Atlas with the result.
+
+### ORDER 62 — 2026-11-10 — ⏳ PARTLY DONE 2026-11-10 (9 desks + call-scribe and atom HELD per Atlas; smart-scheduler's note owed until quiet — see Operations log) — harness 2.6.19: the owner's 4th git command, `ตั้ง branch` (standard branches)
+
+**Owner, via Porter, 2026-11-10:** *"เราต้องมีบานซิท โปรดักชั่น เดเวลลอป แล้วก็บานของฉันชื่อว่าโด่งหรือ nichaphon ก็ได้"*.
+Source and design: `REQUEST-porter-to-atlas-2026-11-10-standard-branch-pattern-skill.md` § Atlas's answer. Done by Atlas:
+- root `CLAUDE.md` rule 6 adds a 4th command, **ตั้ง branch**, and "no new branches beyond `ตั้ง branch`";
+- `git-command` skill §3D, copied to `.claude/skills/`; check-skills PASS;
+- harness → **2.6.19**.
+
+**Do:**
+1. Run `node scripts/install.mjs <desk>` on every desk except smart-scheduler-atom (HELD), then `check-harness`.
+   **`call-scribe`** is listed on 2.6.14, so check that it is a live desk and not held before installing.
+2. Re-read note to each desk PM: *"From Marie 2026-11-10: CLAUDE.md rule 6 has a 4th owner git command, `ตั้ง branch`
+   (the owner's standard branches develop/sit/production/his own; git-command skill §3D). Relay it to your SA."*
+   Only when each desk is quiet. It is not urgent.
+3. Nudge Atlas.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-11-10 01:5x — **ORDER 62: Atlas ruled call-scribe HELD** (same as smart-scheduler-atom, ORDER 53). It lives on
+  Atom's box, and an install here would collide with Atom's next sync. **No install, and no nudge to anyone about it.**
+  ORDER 62 stands at 9 desks + 2 held. **Closes when smart-scheduler's re-read note lands.** Checked 01:51: still
+  live (board, DECISIONS, TASK-937 evidence written in the last 15 min), so the note stays owed.
+
+- 2026-11-10 01:5x — ⏳ **ORDER 62 — install DONE on 9 desks; call-scribe NOT installed (question to Atlas); notes on
+  4 of 5 live desks.** **Install:** `install.mjs` × 9 (buddy-screen, corner-chat, develyst-ai, dte, i-space,
+  portfolio-nichaphon, possibility, pun-kub-fang, smart-scheduler), exit 0 ×9, *"shared tools already current — none
+  touched"*, only `.harness` rewritten. `check-harness`: **"2.6.19: 11 desk(s), 2 not current"** = smart-scheduler-atom
+  (HELD, 2.6.9) + call-scribe (2.6.14).
+  **call-scribe — not live here, so held:** its only commit is `9fcb0f6 2026-11-07 "atom: save call-scribe desk state
+  and God Plan initial notes"`, i.e. **pushed from Atom's box on branch `atom`**. No README row, never in `MARIE.md`
+  before ORDER 62, newest log `2026-11-07`, and every file's mtime here is the 11-09 20:07 checkout, so no session has
+  written to it on this box. Installing here would edit a desk that lives on Atom's box, the same reason atom is held.
+  **Atlas decides.**
+  **Re-read note** verbatim → `inbox/PM.md` of the live desks (gate `active`) that are quiet: buddy-screen, corner-chat,
+  i-space, portfolio-nichaphon, each 1 on disk ✓. **smart-scheduler OWED**: live right now (inbox/FE-C written 01:50).
+  No bells, since it is not urgent; the PMs' watchers or their next boot will pick it up.
+  Not sent to the non-live desks (develyst-ai, dte, possibility, pun-kub-fang), as in ORDER 54/55.
+
+- 2026-11-09 00:5x — ✅ **ORDER 61 smart-scheduler step VERIFIED by me (Porter's hands).** Archive
+  `archive/PROTOCOL.md.before-ORDER61.2026-11-09` = md5 `ad8bc2ca…`, my pre-edit fingerprint ✓ · `diff` archive →
+  PROTOCOL: **one hunk, +17 / −0**, after l.211, text = template steps 2/6/7/8 word for word, renumbered 4–7 ✓ · still
+  0 CR (all LF) ✓. **Notes:** found once each in 11 inboxes; **SA-C has 0**. It was drained at 00:44 (header only,
+  279 B), right after Porter wrote the 12, which is consistent with Sector processing it. Delivered ≠ read, so this
+  is stated as such and **not re-sent** (a duplicate would be noise). Watcher with tick and cron `ab3ca841` deleted:
+  **Porter's word**, since I cannot see his background process; his 00:41 log line says the same. The stale
+  `PM.md.drain-25292.tmp` is still there (housekeeping step 3b). **Open:** template steps 6–8 on the other 8 desks,
+  each when quiet (ORDER 34 pattern); then the housekeeping hop, then ORDER 60.
+
+- 2026-11-09 00:5x — **Atlas answered both ORDER 61 notes:** 12 seats is right. The `.tmp` comes from a drain whose
+  rename failed; it was never applied, so nothing was lost. Added step 3b to the pending housekeeping brief: Porter
+  moves it unchanged to `archive/inbox-PM.md.drain-25292.tmp.2026-11-07` and names any other `*.drain-*.tmp`. ⚠️
+  Standing watch from Atlas: **another such file appearing means renames fail on Windows while the watcher reads the
+  file. Report it to Atlas.** No separate bell; Porter reads the brief when he starts the hop.
+
+- 2026-11-09 00:4x — ⏳ **ORDER 61 (URGENT) — install DONE on 9/10; smart-scheduler PROTOCOL + notes with Porter.**
+  **Install:** `install.mjs` smart-scheduler first, then buddy-screen, corner-chat, develyst-ai, dte, i-space,
+  portfolio-nichaphon, possibility, pun-kub-fang — exit 0 ×9; each wrote only `tools/watch-inbox.sh` (old copy
+  `archive/watch-inbox.sh.before-2.6.18.2026-11-09`) and `.harness`. `check-harness`: **"2.6.18: 10 desk(s), 1 not
+  current"** = smart-scheduler-atom HELD at 2.6.9, as ruled.
+  **smart-scheduler step 1 → Porter**, not waiting for quiet as the order says:
+  `REQUEST-marie-to-porter-2026-11-09-order61-watchers.md` — archive `PROTOCOL.md` first (md5 `ad8bc2ca…`; the file is
+  now **all LF, 0 CR**, no longer mixed) · append template steps 2/6/7/8 as **4–7** after its step 3 · the re-read
+  note verbatim in Marie's name to **12** seat inboxes · his own watcher with `WATCH_TICK_MIN=30`, then stop his cron.
+  Inbox line + one bell (queued behind his work). Ahead of the 11-08 housekeeping hop; ORDER 60 after both.
+  ⚠️ **Counts for Atlas:** the order says *"all 14 seats"*; smart-scheduler has **12 seat inboxes** (PM, SA/BE/FE ×3
+  teams, QA, QA-2) plus RELAY, which is not a seat. I used 12.
+  ⚠️ **Found in passing:** `inbox/PM.md.drain-25292.tmp` (799 B, 2026-11-07 18:28) is a leftover temp file from a
+  drain that never renamed it. Not touched. Only Atlas can say whether the drain tool should clean up after a refusal.
+  **Still open:** the template steps on the other desks, each only when it is quiet (ORDER 34 pattern). Not started.
 
 - 2026-11-08 21:0x — ⏳ **ORDER 60 received (smart-scheduler log rollover); queued behind the housekeeping, as the
   order says.** Premise checked: smart-scheduler `append-log.mjs` is byte-identical to corner-chat's and the template

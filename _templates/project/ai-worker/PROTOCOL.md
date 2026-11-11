@@ -192,13 +192,21 @@ work into one file, so this is a hard rule:
    on and set its status to `BLOCKED` on the board.
 5. If the owner stated a fact this session, it is already in `SYSTEM-FACTS.md`
    (rule 2 above) — check, don't assume.
-6. **PM and SA Lead: arm your inbox watcher as the last act of every turn**, with
+6. **Every seat arms its inbox watcher as the last act of every turn**, with
    the Bash tool's `run_in_background`: the PM runs
-   `bash ai-worker/tools/watch-inbox.sh PM RELAY`, an SA runs
-   `bash ai-worker/tools/watch-inbox.sh <its inbox name>` (`SA`, `SA-B`, …). When a
-   line lands in your inbox it exits and the app wakes you, even if every sender's
+   `bash ai-worker/tools/watch-inbox.sh PM RELAY`; every other seat runs
+   `bash ai-worker/tools/watch-inbox.sh <its inbox name>` (`SA`, `BE`, `FE-B`, `QA`, …).
+   When a line lands in your inbox it exits and the app wakes you, even if every sender's
    nudges are capped. On wake: read the inbox, act, arm it again. Never run two at
-   once.
+   once. While any seat holds open work, the PM arms it as
+   `WATCH_TICK_MIN=30 bash ai-worker/tools/watch-inbox.sh PM RELAY` and runs the idle
+   sweep on each `TICK:` (role-pm skill).
+7. **Never end a turn with a queue.** If your inbox or your TASK still holds an item you
+   can do, do it now. End a turn only when nothing is left, or when every item left waits
+   on a named seat; your last line says who (`waiting on <seat> for <what>`).
+8. **A hand-off is an inbox line, never a log line alone.** "Ball → <seat>" in the log
+   wakes nobody; the line in `inbox/<seat>.md` wakes its watcher. Add a doorbell
+   (nudge-session) when you can.
 
 ## Inbox — the delivery channel
 

@@ -149,7 +149,7 @@ CREATE UNIQUE INDEX "bo_payment_ref_n_uq" ON "bo"."payment" ("ref_type","ref_id"
 3. **At sale (SB, TASK-875):** after the course or voucher commits, insert row `n=1`: `paid_on` = the sale's Bangkok date, `amount_minor` = the net sale (list + discount, the same number `recordSale` posts), `method` = the method the sale dialog sent (default `TRANSFER`). It uses `ON CONFLICT DO NOTHING`, and it is best-effort and loud like `recordSale` (it never fails the sale).
 4. **The revenue line's method = row `n=1`'s method.** The writer (TASK-864's `writeRevenueLine`) reads it when present, else `TRANSFER`. **An edit of row 1's method later updates the matching `bo.revenue_line.method`** (keys `rl:course:<id>` / `rl:voucher:<id>`), in the same transaction as the edit, so the R2.5 "Payment" column follows the record. Installments (`n ≥ 2`) never change the revenue line (row 13: the whole amount counts at confirm).
 5. **APIs, same shape on both sides.**
-   - **SB** `/api/v1/payments` (staff auth, as the existing SB routes) and **BB** `/api/v1/revenue/payments` (`requireRole("ceo","admin")`; an admin records payments but sees no revenue figure: the response carries no revenue-line data).
+   - **SB** `/api/payments` (staff auth, as the existing SB routes; SB has no `/v1`. Corrected 2026-11-08 on Flash's Q6, and TASK-875 already says `/api/payments`) and **BB** `/api/v1/revenue/payments` (`requireRole("ceo","admin")`; an admin records payments but sees no revenue figure: the response carries no revenue-line data).
    - `GET ?refType=&refId=` → `200 { "payments": [{ "id","refType","refId","n","paidOn","amountMinor","method","updatedAt" }] }`, ordered by `n`.
    - `PATCH /:id` `{ "method"?, "paidOn"?, "amountMinor"? }` → `200 { "payment": … }`. Row 1's `amountMinor` is **not** editable (it is the sale's net; 400 `VALIDATION`).
    - `POST` `{ "refType","refId","paidOn","amountMinor","method" }` → `201`, with `n` = max+1.
@@ -173,3 +173,63 @@ The agreed final UI's installments **sum to the fee** (`mock/a-fo.ts`: 5,000 + 4
 - **Revenue is unchanged** (row 13: the whole amount counts at confirm). The revenue line's method still follows **row 1**.
 - **No fee** (a sale whose movements didn't post): the API returns `feeMinor: null` and refuses POST (409 `NO_FEE`). The card shows the rows only.
 - **Standing rule (Silver via Porter, 2026-11-08, after TASK-861):** any Team C reader of `public.teachers`, including future revenue coach columns, skips `teachers.is_system = true` ("No Teacher"). The park-fee revenue line (TASK-864) uses the flag on purpose and is the one exception.
+
+## 9. Slice 2b: F1 branch at booking, decided 2026-11-09 [SA-decided, DECISIONS row 20] → TASK (BE, Brew) now; the SF TASK after TASK-876
+- **Data (SB, one additive migration via the queue, Team C):** `branch text NOT NULL DEFAULT 'BRAVO'` + `CHECK (branch IN ('BRAVO','OTHER'))` on `course_packages`, `vouchers` and `bookings`. Existing rows become BRAVO (true today: one branch).
+- **Write rules:**
+  - a course's or voucher's branch is chosen at sale (default BRAVO), and a course's sessions are created with the course's branch;
+  - a single booking (trial / 1 HR / OTHER) takes its own branch at creation;
+  - **a one-off move** (Move session) may set that booking's branch;
+  - **a whole-course change** sets the course's branch and that of its not-yet-attended sessions (Silver's REQ-5010 #7 answer: picked at create; one-off in Move session; whole course next to Change teacher).
+- **Revenue (C1 follow):** `writeRevenueLine` takes `branch` from the source (course → `course_packages.branch`; voucher → `vouchers.branch`; trial / 1 HR / park → `bookings.branch`; rental → its booking's), replacing the fixed BRAVO. Lines already written keep theirs. A later branch change doesn't move a counted line (it counted where it was sold).
+- **API:** an optional `branch` on the create-course / create-voucher / create-booking bodies, on move-booking, and on the course update. Absent ⇒ unchanged (create ⇒ BRAVO).
+- **Labels:** the field is "Branch" (EN) / "สาขา" (TH); values Bravo / Other.
+
+## 10. Refund (REQ-120 R2.3 + §9 C-f / §9.1 C-f), decided 2026-11-09 [SA-decided] → TASK-892 (SB) · TASK-893 (BB) · TASK-894 (BF), queued behind TASK-890/891
+**Read:**
+- final UI `pages/b/revenue/Refund.tsx` (CEO only; a "From" pick of the sale, Date, Amount ≤ the sale, Method, Remark, Save; a session table that cancels the unattended ones; "a voucher works the same way");
+- SB `endCourse` (`scheduler.service.ts:6406`, reason in `COURSE_END_REASONS`, `course-plan.ts:455`) and `endVoucher` (`:6570`, `END_REASONS`, `:443`); both have `CUSTOMER_CANCELLED`, are idempotent by refusal, and already cancel the unattended sessions and tell the family;
+- SB `routes/internal.ts` (the `x-internal-secret` gate, `:42–48`) and BB's existing caller of it (`slip-confirm.service.ts:94–102`: `SCHEDULER_API_URL` + `INTERNAL_JOB_SECRET`, both already in BB `.env.example`).
+
+**The seam:** the CEO enters a refund in the back office, but cancelling sessions and a course/voucher is a scheduler write, and BB never writes `public`. So **BB calls SB's internal API**, the existing pattern (`/internal/salary-remind-now`).
+1. **SB `POST /internal/refund-cancel`** (TASK-892), `x-internal-secret`; body `{ refType: "COURSE"|"VOUCHER", refId, actor }`.
+   - It runs `endCourse` / `endVoucher` with reason **`CUSTOMER_CANCELLED`**, note `"refund"`: the unattended sessions are cancelled, the status becomes CANCELLED, and the family is told (C-f).
+   - `200 { cancelledSessions, alreadyCancelled: bool }`. An already-ended plan is `200 { alreadyCancelled: true }`, not an error, so a retry is safe.
+2. **BB `POST /api/v1/revenue/refunds`** (TASK-893), CEO only (`requireRevenueAccess`).
+   - Body: `{ refType, refId, refundedOn: "YYYY-MM-DD", amountMinor: int > 0, method, remark? }`.
+   - Order: the fee (the TASK-874 rule) must exist and `amountMinor ≤ fee`. Then the SB call (`NOT_CONFIGURED` → 503 with nothing written; SB error → 502 with nothing written). Then **one REFUND line**:
+     - `type REFUND`, `amount_minor = −amountMinor`, `occurred_on = refundedOn` (R2.3: an expense in the month of the refund);
+     - `category_id` NULL, `product_name "Refund: <plan label>"`, `method`, `remark`, `source REFUND`, `ref_type`/`ref_id`;
+     - **`idempotency_key rl:refund:<type>:<id>`, so one refund per sale.** A second POST → 409 `ALREADY_REFUNDED`.
+   - `201 { line, cancelledSessions }`.
+3. **BB `GET /api/v1/revenue/refunds/sources?q=`** (TASK-893), CEO only: the latest courses and vouchers (read-only `public`) matching a student name, each `{ refType, refId, label, soldOn, feeMinor, attended, toCancel, refunded: bool }`, at most 20. Personal data stays inside the CEO-only route.
+4. **BF Refund screen** (TASK-894): the final UI carried over, wired to 2 and 3, with REQ-5010 #13's wording: the box says **"Cancelled"** and the button **"Save"**.
+- **Not decided here, and not asked** (C-f is ruled): partial refunds are allowed (amount ≤ fee). A second refund on the same sale is refused.
+- **LINE:** the family notice is SB's existing `endCourse`/`endVoucher` path. Testing it on a phone is the owner's.
+- **Env:** none new. On BB the keys are **`SCHEDULER_API_URL` / `SCHEDULER_INTERNAL_SECRET`** (already in BB `.env.example`, Team B, TASK-887). The secret's value must equal SB's `INTERNAL_JOB_SECRET`, which is SB's name for the same value. *(Corrected 2026-11-09 on Brew's TASK-893 report; this line first said `INTERNAL_JOB_SECRET` for BB.)* The owner has set them for sid if 887's remind works there.
+
+## 11. D3 "Confirm camp", decided 2026-11-09 [SA-decided] → TASK-900 (SB, Brew) · TASK-901 (SF, Flash)
+**Ruling:** REQ-120 §8 **D3 = B**: *"a separate 'confirm camp' button. Revenue counts on the date the admin confirms."*
+
+**Read:**
+- final UI `pages/a/frontoffice/ConfirmCamp.tsx` (the card "Sold — not confirmed yet" / "Confirmed" (REQ-5010 #11 → **"Not confirmed yet"**); the confirm dialog with **Date received** · **Amount** (read-only) · **Payment Method**);
+- SB `routes/camp.ts` (`POST /packages` = sale; the camp's sale posts `camp-sale:<packageId>` at booking, `camp.service.ts:400`);
+- the SB `permissions.ts:135–138` camp keys; `route-access.ts:234` (`POST /camp/packages` = `act(["menu:camp"], "action:camp.sell")`).
+
+**Design:**
+1. **No schema change.** A camp package is *confirmed* when its revenue line `rl:camp:<packageId>` exists. The confirm writes, in **one** SB transaction:
+   - **the revenue line:** `type COURSE`, category **"Balance Camp"** (seeded, COURSE), `amount` = the camp's net posted sale (`camp-sale:<id>` + `discount:<id>`, the TASK-864 course rule), **`occurred_on` = today, Bangkok** (D3: the date the admin confirms), `branch` = the package's (BRAVO until F1 adds a column for camps; not in scope), `method` = the chosen one, `source BOOKING`, `ref_type CAMP`;
+   - **the payment row 1** (`bo.payment`, `ref_type CAMP`, `n 1`): `paid_on` = **Date received**, the amount = the net, the method.
+   - No posted sale → 409 `NO_FEE`. A second confirm → 409 `ALREADY_CONFIRMED`.
+2. **SB `POST /api/camp/packages/:id/confirm`** `{ receivedOn: "YYYY-MM-DD", method: "TRANSFER"|"CASH"|"CARD" }` → `200 { packageId, confirmedOn, amountMinor, method }`.
+   - Route-access: **`act(["menu:camp"], "action:camp.sell")`**, the same right as selling the camp. No new key (DECISIONS row 19 pattern).
+3. **The camp package list** (`GET /api/camp/packages`) gains `confirmedOn: "YYYY-MM-DD" | null` (from the line's `occurred_on`), so the screen can show the state.
+4. **SF (TASK-901):** the final UI's card + dialog on the camp package view; "Not confirmed yet" (REQ-5010 #11) / "Confirmed"; Thai labels via Porter.
+- **LINE:** none. A confirm sends no message.
+
+## 12. Backlog for when the build resumes (after 14 Nov), recorded 2026-11-10
+- **Course activity change (REQ-5007 / F3), DECISIONS row 24:** a mid-course activity change **does NOT move revenue**. The amount stays in its original month and line; only the revenue **category** follows the new activity; a price difference is entered by hand ("Add Manually"). **This replaces the Master Plan §8.2 split (−4,895 / +4,895).** Design when F3 is un-held: the activity-change path re-files the course's existing `rl:course:<id>` line to the new activity's category (same amount, date, branch, method), with no new line and no negative line. Size then.
+- **GR-web build gaps (TASK-937):**
+  - BF Revenue Summary: Period + Category filters;
+  - BF Revenue Detail: the agreed Export;
+  - BF Stock Report: export (Stock is Team A's; listed for completeness).

@@ -156,3 +156,22 @@
   - The shared-DB rule 4 says nobody deletes shared data. The rows are 4 × 1 ฿ on sid only, all named `C-TEST`. Tanya filters on `C-TEST`, as she does for Flash's rows.
   - Listed to Porter. No DATA REQUEST.
 - **Still open, not his:** the confirm path end to end on sid, in the QA round Porter queued for the next SB sid deploy (recipe: Q1 above).
+
+**sid read for TEST-148 §(3) (Sector, 2026-11-09).** One read-only scratch script: a `READ ONLY` transaction, rolled back; host printed first (`154.197.124.206` = sid, the script aborts otherwise). It ran Tanya's SELECT exactly. **9 rows:**
+
+| idempotency_key | type | amount_minor | source | ref_type | occurred_on |
+|---|---|---|---|---|---|
+| rl:booking:34477210-… (her FIRST_TRIAL) | TRIAL | 139000 | BOOKING | BOOKING | 2026-11-09 |
+| rl:booking:210fcf6e-… (her SINGLE_SESSION) | COURSE | 139000 | BOOKING | BOOKING | 2026-11-09 |
+| rl:voucher:32881b3d-… (her V1) | VOUCHER | 600000 | BOOKING | VOUCHER | 2026-11-09 |
+| rl:voucher:f73a2cb7-… (her V2) | VOUCHER | 600000 | BOOKING | VOUCHER | 2026-11-09 |
+| 5 more `rl:voucher:` rows (0a2fb221, 54133d03, 6a5c34c7, 6b35c27a, f6535eec) | VOUCHER | 600000 each | BOOKING | VOUCHER | 2026-11-09 |
+
+**Against her expectation:**
+- **TRIAL:** 1 row, 1,390 ฿ = `FIRST_TRIAL_MINOR` (`sale-items.ts:102`). ✅
+- **1 HR:** 1 COURSE row, 1,390 ฿ = that program's single-session price (`sale-items.ts:76/79`). ✅
+- **Her 2 vouchers:** each 6,000 ฿ = `VOUCHER_PRICE[5]` (`sale-items.ts:90`). ✅
+- **All dated 2026-11-09 (Bangkok), and all still there after her cancels** (C1: a confirmed sale stays; money back goes through Refund). ✅
+- **The 5 extra voucher rows** are other vouchers sold on sid today (other teams' runs); her filter selects every voucher line of the day. Not a C1 defect.
+- **One thing she can check:** the TRIAL and COURSE rows carry the 1,390 ฿ list price, so neither had a discount.
+- No personal data in this table (ids only).

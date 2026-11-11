@@ -14,6 +14,10 @@
 # second" and exits 3 (not a WAKE: your watcher is already armed; do nothing). It never stops the other one.
 # (F-005; ORDER 42, 2026-10-29.)
 # If it ends WITHOUT a "WAKE:" line and not with exit 3 (killed, session restarted), just arm it again.
+#
+# PM only, while any seat holds open work: `WATCH_TICK_MIN=30 bash ai-worker/tools/watch-inbox.sh PM RELAY`.
+# It then also exits with "TICK:" after 30 quiet minutes, so the PM sweeps for idle seats (role-pm: idle sweep).
+# An env var, not an argument, so the one-watcher check above is unchanged. (Atlas, 2026-11-09, desk-goes-idle.)
 
 cd "$(dirname "$0")/.." || exit 2
 [ $# -ge 1 ] || { echo "usage: watch-inbox.sh <ROLE> [<ROLE>...]   e.g. PM RELAY"; exit 2; }
@@ -59,9 +63,16 @@ size() { if [ -f "$1" ]; then wc -c < "$1" | tr -d ' '; else echo 0; fi; }
 
 declare -A base
 for f in "${files[@]}"; do base[$f]=$(size "$f"); done
-echo "watching: ${files[*]} since $(date +%H:%M)"
+tick=${WATCH_TICK_MIN:-0}
+case "$tick" in ''|*[!0-9]*) echo "WATCH_TICK_MIN must be a whole number of minutes"; exit 2 ;; esac
+echo "watching: ${files[*]} since $(date +%H:%M)$([ "$tick" -gt 0 ] && echo " (tick every $tick min)")"
 
+SECONDS=0
 while true; do
+  if [ "$tick" -gt 0 ] && [ "$SECONDS" -ge $((tick * 60)) ]; then
+    echo "TICK: $tick quiet minutes at $(date +%H:%M) - sweep for idle seats that hold open work, then arm the watcher again."
+    exit 0
+  fi
   for f in "${files[@]}"; do
     now=$(size "$f")
     if [ "$now" -gt "${base[$f]}" ]; then

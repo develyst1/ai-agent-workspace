@@ -138,7 +138,7 @@ A bare nudge from the human ("ไปเลย", "continue") = re-read board + to
 log, then do whatever waits for YOUR role. A nudge is never a new requirement.
 
 6. **Git happens only when the OWNER says it.** Inside a CODE repo the **SA**
-   (and only the SA) types git — but only one of the owner's three commands,
+   (and only the SA) types git — but only one of the owner's four commands,
    said by the owner and relayed by the PM with his words quoted. **The PM never
    originates a git command; no role runs git on its own judgement.** (Owner,
    2026-10-25: *"ฉันไม่ได้อยากให้สกิลนี้ ทำให้ SA ทำงานgit เอง แต่ฉันต้องการแค่
@@ -149,12 +149,18 @@ log, then do whatever waits for YOUR role. A nudge is never a new requirement.
    - **รวมโค้ด** = run the repo's `merge-workflow.sh` (develop ↔ current branch);
      a conflict is fixed, then the script is rerun;
    - **release code** = run the repo's `release-workflow.sh` (develop →
-     production); missing ⇒ install it from the skill, then run.
+     production); missing ⇒ install it from the skill, then run;
+   - **ตั้ง branch** = give the repo the owner's **standard branches**, the ones
+     missing, at the default branch's commit: `develop`, `sit` (a push here deploys
+     to SIT), `production`, and his own working branch **`dong`** (or **`nichaphon`**
+     where the desk records it). Nothing existing is moved, renamed or deleted.
+     (Owner, 2026-11-10, via Porter: *"เราต้องมีบานซิท โปรดักชั่น เดเวลลอป แล้วก็บานของฉัน
+     ชื่อว่าโด่งหรือ nichaphon ก็ได้"*.)
    Every result goes to the owner on the **first line** of the PM's next reply,
    with the commit hashes. Everyone else — PM, engineers, Atlas, Marie, the
    dispatcher — never commits or pushes. Hard lines no command crosses: **the
    workspace's own `ai-worker/` files are never committed by any agent, ever**;
-   no history rewriting, no new branches; **tags, server deploys and the
+   no history rewriting, no new branches beyond `ตั้ง branch`; **tags, server deploys and the
    customer's system stay the human's** (reading git state is always fine).
 
    **One exception: Atom syncs the workspace from its own box** (owner, 2026-10-27:

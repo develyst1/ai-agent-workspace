@@ -182,31 +182,64 @@ It runs **once when this seat opens**. The scheduler offer is withdrawn. My repl
 
 ---
 
-## STANDBY · 2026-11-11 16:10 · duty taken up in the usb-oda workspace (macOS)
+## NOT_UNLOCKED · 2026-11-09 20:2x · bo-sid (3 back-office cards) for Porter/Tanya
 
-- Session opened at `Work/ai-agent-workspace` (operator: *"นายคือ pokervault จงเตรียมตัวทำงานซะ นายต้องทำหน้าที่ login แทนฉัน"*). `picklocker/` was copied there at 15:47 (`ATLAS.md:1199`); `state/` was empty; `access.txt` was not copied (ATLAS's rule: an AI does not move secrets).
-- **The hands work:** `node picklocker/login.mjs som`, credentials read from this workspace's git-ignored `access.txt` **in place** (env only — no secret copied, none printed) → `verified: status 200 · https://som.develyst.online/scheduler/calendar · AUTHENTICATED`. `check-card.mjs som` → AUTHENTICATED; card at that workspace's `picklocker/state/som.json` (mode 600). `keep-fresh.mjs` once → `som=ok`.
-- **`uat002-mc` is MISSING and cannot be minted by me:** it is `session-import`, outside the `develyst.online` allowlist, and needs EntraID + OTP. Only the owner's one-time `node picklocker/export-session.mjs uat002-mc` creates it. No request file exists.
-- Watcher armed (`bash-7d0043ae22dc4e10`, 20 s poll, `-to-pokervault-` + `-to-picklocker-`); no request waiting.
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-09-bo-sid.md` — TEST-150 needs three cards:
+  CEO (`bo-ceo.json`), admin (`bo-admin.json`), coach (`bo-coach.json`) on the back office
+  deployed to sid today (BB 693627d + BF e2add44).
+- **Site:** `https://backoffice-som.develyst.online` · `/login` · `POST /api/v1/auth/login` ·
+  Mantine form, inputs carry no name/placeholder, submit is `button[type=submit]`. Page says the
+  username/password are the same as the front office.
+- **Ran (read-only first, then four login attempts):** `probe.mjs` on the login URL (GET only);
+  then `admin`/bo-2026-07-20, `admin`/front-office-live, `qa-coach-qatt75`, `qa-nostatus-077`.
+- **Verified:** every attempt `401 UNAUTHORIZED · ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง`. No cookie, no
+  localStorage token, URL stays `/login`.
+- **Result:** `NOT_UNLOCKED` — the bo user store has no matching account; the three role users do
+  not exist yet and creating them is the owner's.
+- **Ready for the moment they exist:** `sites.json` has `bo-admin` / `bo-ceo` / `bo-coach`
+  (real selectors, own auth); `access.txt` now supports `[site-key]` credential sections
+  (login.mjs change, backwards compatible — `som` re-verified 200 after it). One command per card.
+- **Tooling added:** `picklocker/probe.mjs` — allowlisted, GET-only page probe (no credential,
+  no click), so a new site can be mapped without a login attempt.
 
 ---
 
-## CORRECTION · 2026-11-11 16:25 · UAT2's EntraID has no OTP
+## UNLOCK-008 · 2026-11-09 · bo-ceo for Porter/Tanya (TEST-150, back office on sid)
 
-- The operator corrected the STANDBY line above: AIS UAT2's EntraID login is **email + password, no OTP**. My "needs EntraID + OTP" was a wrong relay.
-- Checked the real page read-only (no credential): app → `uat-federated-auth.assistedchannel.ais.th/authenticationendpoint/login.do` (`#icon-2`, "Sign In With EntraID") → `login.microsoftonline.com/…` with `#i0116` email → `#idSIButton9` Next → `#i0118` password → Sign in. No OTP step seen.
-- New `picklocker/login-entra.mjs` (in the usb-oda workspace): only sites whose `sites.json` entry has `flow:"entra"` + `allowAiLogin` (owner 2026-11-11). `login.mjs` and its `*.develyst.online` allowlist are untouched. Saves `state/<site>.json` with IndexedDB, mode 600, verifies in a clean context. Tested: `node --check`, JSON, refusals (`som` → exit 2, no creds → exit 2). NOT run end-to-end yet — no credential.
-- `uat002-mc` stays `session-import` (nothing auto-renews). Owner drops `uat002-mc.user` / `uat002-mc.password` in `access.txt`; then `node picklocker/login-entra.mjs uat002-mc`.
-
----
-
-## UNLOCK-008 · 2026-11-11 · uat002-mc for the operator (Tanya's next UAT2 walk)
-
-- **Request:** operator, chat 16:2x: *"EntraID ไม่มี otp ใส่ mail กับpasswordได้เลย"* — correcting the OTP claim above, and asking PokerVault to log in instead of him.
-- **Ran:** the new `picklocker/login-entra.mjs uat002-mc` (owner-authorized `flow:"entra"` + `allowAiLogin`; `login.mjs` and its `*.develyst.online` allowlist untouched).
-- **Miss, first run (`NOT_UNLOCKED`):** `waitForURL` timed out on the AIS auth page. Cause: the EntraID button's `onclick` attaches after the page's scripts; a click right after `waitForSelector` is a no-op. Fixed: 3 s settle + one retry. Second run: credential accepted, no OTP page.
-- **Verified:** `verified: status 200 · https://uat002-mychannel.ais.th/ · AUTHENTICATED`; `check-card.mjs uat002-mc` → **AUTHENTICATED** (GET-only).
-- **Handed:** `Work/ai-agent-workspace/picklocker/state/uat002-mc.json` (mode 600, cookies + localStorage + IndexedDB).
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-09-bo-ceo.md` — the CEO card only;
+  `bo-admin` / `bo-coach` wait for TASK-930 (front-office accounts).
+- **Credential:** the owner had written the pair inside the commented `[bo-ceo]` block of the
+  git-ignored `access.txt`; uncommented the section (value never printed). No env vars needed now.
+- **Ran:** `node picklocker/login.mjs bo-ceo` → session saved; `check-card.mjs bo-ceo` → ok.
+- **Verified:** status **200** · `https://backoffice-som.develyst.online/dashboard` ·
+  **AUTHENTICATED** at **20:55** · the auth response carries `JWT {"sub":"ceo","role":"ceo"}`, so
+  it is the CEO account, not the admin one.
+- **Handed:** `picklocker/state/bo-ceo.json` (plus `sites.json` `bo-*` entries pointing their
+  `authenticatedUrl` at `/dashboard`).
 - **Result:** `UNLOCKED`
-- **Path seen:** app → `uat-federated-auth.assistedchannel.ais.th/authenticationendpoint/login.do` (`#icon-2` EntraID) → Microsoft tenant `4a034771…` (`#i0116` email, `#i0118` password) → back to the app. No OTP.
-- **Note:** the app's own logout kills this card (not re-tested); Tanya should not log out. Credential is in git-ignored `access.txt` (600), never printed.
+- **Tooling fixed (this is why two attempts looked refused):** both sid apps now render the
+  sign-in form with Mantine/Next. A click before hydration is a native GET submit, so the login
+  "fails" while the credential is correct. `login.mjs` now waits for network idle, retries 3×,
+  and treats a dropped connection as a retry. `som` re-verified 200 after the change; `keep-fresh`
+  reports `bo-admin`/`bo-coach` as `skipped-no-credential` (exit 0) instead of failing.
+- **Unlock-009 pending:** `bo-admin`, `bo-coach` — need accounts after TASK-930.
+
+---
+
+## NOT_UNLOCKED · 2026-11-10 03:0x · som-gr (GR / feedback web, LIVE) for Porter/Tanya
+
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-10-som-gr.md` — a card so Tanya can check and
+  screenshot each feedback round on the real site (owner: *"อยากให้ดูของจริงมากกว่าดูในเครื่องว่ะ"*).
+- **Site:** `https://som-gr.develyst.online` — **401 Unauthorized** with no credential: HTTP Basic
+  at nginx, no form, nothing to sign into inside the app.
+- **Why not a session file:** a `storageState` cannot carry Basic Auth, and writing
+  `httpCredentials` into `state/` would be **the password in a file**, which the charter forbids.
+- **Built instead (card = a context, not a file):** `sites.json` → `som-gr` `"mode": "basic-auth"`;
+  `picklocker/basic-auth.mjs` → `openCard(browser, 'som-gr')` returns a context whose
+  `httpCredentials` came from the git-ignored `access.txt` (`send: 'always'`). Nothing is printed,
+  nothing is persisted. CLI verify prints only status + URL.
+- **Waiting:** the password. `access.txt` has `[som-gr]` with `user = som` and a blank password for
+  the owner to paste when he wakes. Until then the card check says `MISSING · no credential`.
+- **Refactor, tested:** the credential lookup moved to `picklocker/creds.mjs` (shared with
+  `login.mjs`); `som` re-verified **200** after the move, so the refactor changed no behaviour.
+- **Result:** `NOT_UNLOCKED` — one paste away from `UNLOCKED`.

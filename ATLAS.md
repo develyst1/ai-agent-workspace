@@ -1055,6 +1055,20 @@ source.** After editing a skill there, copy it to `.claude/skills/` again, or th
     - Phase 1 is read-only through `uat-select.mjs --target trolley`. The SA maps the schema, the allowlisted board tables and whether an API exists into `smart-scheduler/ai-worker/TROLLEY.md`.
     - Phase 2: I build a write tool from that allowlist. It refuses tables off the list, backs up first, does a dry run by default, and commits only with `--commit` after the owner's go.
     - Harness 2.6.17, ORDER 59 DONE (9/10, atom HELD). **Open on me:** the write tool, once TROLLEY.md exists. ORDER 58 CLOSED too: smart-scheduler CUSTOMER-ANSWERS.md is back-filled with 22 topics, names scrubbed to [child]/[parent]/[coach]/[staff], and it is not a boot read.
+  - **smart-scheduler log rollover (ORDER 60, 2026-11-08):** yes at 90 KB, as on corner-chat. Its `checks.json` gets no `ids` key, so `new-id.mjs` still starts at 1.
+  - **Desk goes idle with work queued (ORDER 61, harness 2.6.18, 2026-11-09; owner: "ห้ามนิ่งแบบนี้ … ไปปรึกษา ATLAS แก้").**
+    - Root cause: smart-scheduler's PROTOCOL shutdown ritual had no inbox step and no watcher step (the ORDER 34 step was owed and never landed), and the template armed watchers only for the PM and SAs. An engineer was woken by nothing.
+    - Fix:
+      - every seat arms its own `watch-inbox.sh`;
+      - no turn ends while the seat still has work it can do (the last line names who it waits on);
+      - a hand-off is an inbox line plus a doorbell, never a log line;
+      - the PM runs the idle sweep from its own watcher with `WATCH_TICK_MIN=30`, which replaces Porter's session cron.
+    - **Lesson:** an "OWED" step on a live desk is a hole that waits for a bad night. Chase OWED items to closure; do not let them sit in the ops log.
+  - **Standard branches: the owner's 4th git command `ตั้ง branch` (ORDER 62, harness 2.6.19, 2026-11-10).** The four branches are own (`dong`/`nichaphon`) → `develop` → `sit` (a push deploys SIT) → `production` (via `release code`).
+    - The SA creates only the missing ones, at the remote default's commit, and never moves or deletes anything. It skips `sit` if a `sit` deploy workflow already exists.
+    - Not ours: the GitHub default branch (the owner's setting) and CI (Otto's).
+    - **Open gap:** there is no command for develop → sit. It stays with the owner or Otto unless he names a 5th command.
+    - Installed on 9 desks. **call-scribe is HELD**, the same as smart-scheduler-atom: it is Atom's desk (its only commit is 9fcb0f6, "atom: save call-scribe desk state"), so it is never installed from this box.
   - **Personal data on a public repo:** the repo `develyst1/ai-agent-workspace` is **public** (GitHub API 200 unauthenticated), and 17d1a91 committed 3 sid captures with parents' phones and children's names. The owner said "เอาออกก็ได้". Atlas added `*/ai-worker/tests/evidence/` to `.gitignore`. Untracking and making the repo private are the owner's: git and account settings are his. History still holds the files until he rewrites it, which is his call.
 
 ## Charlotte born (2026-11-10 15:50, the owner in the other workspace's Atlas session)

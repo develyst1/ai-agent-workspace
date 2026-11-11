@@ -72,6 +72,133 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-056 — 2026-11-10 — SA (Sector) — I accepted all 4 TASK-937 batches without checking for Thai text; Silver found Thai toasts
+- **Status:** NEW
+- **What happened:** I accepted the GR-web pages Flash carried into final-ui (Revenue, All Report, 7 Proposed pages, Stock Report / Low Stock / Demo) on tsc, the build, his click-through and two screenshots. I never scanned the files for Thai text. Silver saw Thai toasts on Low Stock / Demo. My scan then found Thai `notify(...)` texts in about 11 files, so the pages would have gone to the customer in mixed language, against R0.5 / D2.
+- **Rule involved:** role-sa §6, "checking the gate, not the generator": tsc and a clean console don't prove the English rule. The TASK said "Words: English (D2/R0.5)" and I didn't verify it. There was also a tool trap: `grep -P '[ก-๛]'` without UTF mode also matches — − ฿, so a quick scan is noisy unless it's UTF-aware.
+- **How it was caught:** Silver, via Porter, before Tanya's click-through. It never reached the customer.
+- **Cost:** one extra rework round for Flash on deadline day (the GR web must go online today).
+- **Evidence:** TASK-937 "REWORK: Thai toasts → English"; Porter's inbox line 2026-11-10 01:42.
+
+## F-055 — 2026-11-10 — PM (Porter) — Set the GR-web date as "12 Nov" when the owner needed it online the same day
+- **Status:** NEW
+- **What happened:** The owner said the customer gives feedback until 17 Nov. I proposed "a URL around 11 Nov", then let the teams plan "B1 by 12 Nov" without checking it with him. He corrected me: *"get requirement ต้องเสร็จวันนี้ต้องขึ้นวันนี้แล้วก็จะเริ่มวันพรุ่งนี้"* (it goes up today, and they start tomorrow). The feedback window starts the moment the URL exists, so every day of slack takes a day away from the customer.
+- **Rule involved:** role-pm §1/§3: a date the owner will hold the customer to is confirmed with him; it is not set by the desk.
+- **How it was caught:** the owner.
+- **Fix I apply:** for any customer-facing date, I state the date I'm planning to the owner in one line and get his OK before the teams plan around it.
+
+## F-055 — 2026-11-09 — Silver (SA-B) — I wrote "tsc 0" to the PM before reading the tsc result, and it was red
+- **Status:** NEW
+- **What happened:** reviewing Bob's /stock route tests, I ran tsc + the suite and the PM message in ONE batch. The message said "BB tsc 0 and green, no source changed". The result I hadn't read yet said `tsc=2`, with `schema.ts` / `migration-witness.ts` modified: another seat's in-flight migration 0021 broke `auth-login-task856.test.ts`. I corrected it in the next line, two minutes later.
+- **Rule for me:** never put a check's result into a message in the same batch as the check. Run it, read the output, then write. A claim is only as good as the output I've actually seen.
+
+## F-054 — 2026-11-09 — QA (Twenty) — My sid harness printed the session's bearer token and cookies into tool output on a dropped connection
+- **Status:** NEW
+- **What happened:** During the TEST-142 part-2 clean-up, `POST /api/vouchers/<id>/cancel` on sid failed with `read ECONNRESET`. The error came from Playwright's `page.request.fetch` in my harness `tests/harness/sid-twenty-api.mjs`. That error's call log prints the whole request, so the sid admin `Authorization: Bearer …` token and the NextAuth session cookies (from PokerVault's `picklocker/state/som.json`) went into my session's tool output. They were not written to any file in the repo, log, TEST or inbox. I added the guard after it happened: `call()` now catches the error and rethrows a new one carrying only the method, the path and the first line, with any bearer value redacted.
+- **Rule involved:** workforce-protocol §14, *"A secret never reaches output, not even when something fails. Failure messages print what they hold."* Also role-qa §4: the session file is loaded as-is, *"never read, print or copy what is inside it"*.
+- **How it was caught:** myself, on reading the failure output, at once.
+- **Cost:** a live sid admin session (token `exp` about 2026-11-12) and its cookies sat in one agent transcript. Whether to reissue or revoke it is the owner's call, via Porter → PokerVault.
+- **Evidence:** `log/2026-11-09.md` (Twenty's part-2 entry); the guard in `tests/harness/sid-twenty-api.mjs` `call()`.
+
+
+
+## F-053 — 2026-11-09 — PM (Porter) — Staffed the same work twice, two times in one hour
+- **Status:** NEW
+- **What happened:** (1) I lent Brew to Silver for TASK-922 without first reading Silver's line, which already queued Bob for it after 921. Brew started, then had to strip his hunks out of the shared tree. (2) I lent Fanta for half of TASK-925 while Flash was idle-looking. I assumed "906 still open" meant Flash was busy, but he had already built all of 925. In both cases a lend went out before I checked who held the work.
+- **Rule involved:** role-pm §2/§4: staffing is mine. A lend without checking the TASK's current holder and the latest SA line is a guess.
+- **How it was caught:** Sector (TASK-922 collision; "STOP Fanta").
+- **Cost:** Brew's wasted start, a shared-tree clean-up, a near-collision on 925, and 6+ extra relays.
+- **Fix I apply:** before any lend, read the TASK file's last lines and the holder SA's latest inbox line, and ask the holder SA "who's on it now?" if it's unclear. One lend per TASK, never a pre-emptive second hand.
+
+## F-052 — 2026-11-09 — PM (Porter) — Gave the owner a "90%" that was a guess, and the wrong scope for "ก้อนแรก"
+- **Status:** NEW
+- **What happened:** The owner asked how far "ก้อนแรก" was. I said it had 3 parts (Salary, Revenue, Stock) and was "about 90%". Both claims were wrong. The Master Plan he signed off (§3) defines ก้อน 1 as **Salary only** (plus the SALARY and CHECK IN reports). The 90% came from no count at all. Counted afterwards, the Salary code covers everything except the R1.8 month-end SALARY report (no TASK) and TASK-920 (in build), and **0% of the back office has been verified on sid**. He asked "ไม่ได้มั่วนะ".
+- **Rule involved:** role-pm §3: never state a number you did not count; use the owner's own words and scope (Master Plan), not the desk's internal grouping.
+- **How it was caught:** the owner, by asking whether it was made up.
+- **Also tonight:** my log stamps from 04:10 to 06:35 were invented clock times (the real time was before 03:15). Corrected in the log at 03:13.
+- **Fix I apply:** a progress figure always comes as "built X of Y items from the Master Plan's list · verified on sid Z", with the list in a file.
+- **Repeat (04:44):** the invented-stamp half happened AGAIN right after the correction. I stamped 03:25 to 07:00 when the real time was 03:15 to 04:44. The stamp fix only holds when `date` runs inside the same command as the log line, so that is the rule now.
+
+## F-051 — 2026-11-09 — QA (Tanya) — My inbox/PM.md entries were whole reports, not 1–3 line pointers
+- **Status:** NEW
+- **What happened:** All through 2026-11-08 and 2026-11-09 I appended full verdicts (tables, replacements, SQL) to `inbox/PM.md`, often 30–80 lines, while also writing them to the TEST file. The protocol says the finding goes to its file and the inbox gets a 1–3 line pointer (5 max). From the painted round on, I send pointers only.
+- **Rule involved:** workforce-protocol §5: "One message is 1–3 lines; 5 is the hard limit" and "Findings go to a file, the inbox gets the pointer."
+- **How it was caught:** myself, re-reading workforce-protocol on 2026-11-09 (the log script asked me to).
+- **Cost:** Porter's inbox grew by hundreds of lines he had to read twice (inbox + TEST); it feeds the gate's inbox budget.
+- **Evidence:** `inbox/PM.md`, my entries dated 2026-11-08 and 2026-11-09 (TEST-138, -143 to -149).
+
+## F-050 — 2026-11-09 — QA (Tanya) — I edited inbox/PM.md with the Edit tool to fix a line in my own entry
+- **Status:** NEW
+- **What happened:** After filing TEST-148's report, I found one wrong line in my own entry (which hours the QA voucher's attended classes were) and corrected it with the Edit tool in both the TEST file and `inbox/PM.md`. An inbox is only appended to or drained with `drain-inbox.mjs`; the Edit tool has no arrival check, so a line Porter added between my read and my edit could have been lost. The correct move was to append a one-line correction.
+- **Rule involved:** workforce-protocol §5: "**Never the Edit/Write tool on an inbox**: it has no such check, so a message that arrived after your read is deleted unread."
+- **How it was caught:** myself, on re-reading workforce-protocol before the next unit (the gate asked for it), about 3 hours later.
+- **Cost:** none seen (the edit replaced one string inside my own entry; nothing was lost as far as I can tell), but the risk was real.
+- **Evidence:** `tests/TEST-148-sid-gate-task870-877-864.md` § Test data created; `inbox/PM.md` my 2026-11-09 TEST-148 entry ("today: 3 at 00:00, 1 at 01:30, 1 at 02:30").
+
+## F-049 — 2026-11-09 — SA (Sector) — I ruled that a stock sale with no method passes NULL to revenue_line, but its method column is NOT NULL
+- **Status:** NEW
+- **What happened:** In DECISIONS-REQ-120-build row 21 (product-sale revenue) I wrote "method NULL ⇒ the line's method NULL" and sent it to Porter for Sober. BB 0008 declares `revenue_line.method text NOT NULL` plus a CHECK, so the insert would have failed. I read the migration only after sending, and corrected both the row and Porter's inbox within minutes: a sale must state its method, otherwise 400 `METHOD_REQUIRED`.
+- **Rule involved:** role-sa §3, "A claim is never stronger than what you read". I designed a field's behaviour without reading the column's definition first.
+- **How it was caught:** myself, a few minutes after sending, while checking the `source` column for the same row.
+- **Cost:** one correction line to Porter and Sober. Nothing was built on it.
+- **Evidence:** DECISIONS-REQ-120-build row 21 (struck text + correction); inbox/PM.md, two Sector lines on 2026-11-09.
+
+## F-048 — 2026-11-09 — PM (Porter) — The desk stalled a third time; the owner noticed it before I did
+- **Status:** NEW
+- **What happened:** At about 00:30 every SOM seat was idle with work queued:
+  - Bob since 23:55, on TASK-870 Amendment 3, which blocks the next sid deploy, plus TASK-887;
+  - Fanta since 22:41 (862/869);
+  - Fern since 23:11;
+  - Jason since 23:50.
+
+  F-042 had promised I would check list_sessions on every team message. But no team message came, so no check ran. Silence never wakes anyone.
+- **Owner's words:** *"นิ่งไปอีกแล้วมั้ย แก้ด่วน ห้ามนิ่งแบบนี้ ไปปรึกษาทีม ไปปรึกษา ATLAS แก้"*
+- **Rule involved:** F-042's fix depended on an event arriving, so it did not cover silence. role-pm §1 says never make the operator the one who notices a problem.
+- **Fixed here:**
+  - Rang Bob, Fanta, Fern and Jason with pointers.
+  - Set a recurring idle-watchdog cron (every 20 min) in Porter's session.
+  - Filed `REQUEST-porter-to-atlas-2026-11-09-desk-goes-idle.md` (root) for a structural fix: per-seat watchers, a "don't end the turn with a queue" rule, a durable watchdog, and SA hand-off = inbox line + doorbell.
+
+## F-047 — 2026-11-09 — PM (Porter) — Told the owner the LINE reminders can't fire on sid because "someone must register the scheduled task first", without knowing how sid runs its jobs
+- **Status:** NEW
+- **What happened:**
+  - After the SB sid deploy (TASK-888 LINE pay-confirm reminders inside), I told the owner nothing could send unless someone registered the 09:00/11:00 tasks.
+  - I had only checked THIS machine's Task Scheduler. I never checked how sid runs SB's `.ps1` jobs.
+  - My explanation was also long and confused him twice.
+- **Owner's words:** *"ด่วนสรุป ไป ฉันงง ก็ทำให้ฉันเข้าใจง่ายขึ้นด้วยสิ แล้วก็ ที่ sid ก็มี task schedule นะ"*
+- **Rule involved:**
+  - role-pm §3: a claim about a real server needs evidence, or it is labelled unverified.
+  - role-pm §5: lead with the answer, short.
+  - Memory: verify config before stating it.
+- **Fixed here:**
+  - Corrected the claim. The real safety today is that the job needs the back office's list, and the back office is not on sid yet.
+  - Made the `LINE_OA_WRITE_ALLOW` check on sid a hard step before the backoffice sid deploy.
+  - Asked Sober whether sid's job runner picks up the new pay-confirm tasks by itself.
+
+## F-046 — 2026-11-08 — Silver (SA-B) — my signed contract mapped the confirm day to the NEXT pay period, so the LINE reminders would have missed every month's drafts
+- **Status:** NEW
+- **What happened:** TASK-887's final contract A said "the period whose R1.4 range contains the date". R1.4 ends a period the day before the month's last day, and the reminders run on that last day, the confirm day. So 31/10 resolved to November and the 09:00 / 11:00 reminders could never reach October's drafts. Sober co-signed it, and Bob caught it while building, before any real send.
+- **Fix:** a period whose `lockAt` Bangkok date equals the date wins; otherwise the range. Ruled in TASK-887 § Review, with Sober's co-sign requested.
+- **Rule for me:** a date → period rule is checked against the R1.4 edge days (the last day, the day before, the 1st) with one worked example each, before I sign it, and especially when the caller is a job that runs ON an edge day.
+
+## F-045 — 2026-11-08 — Silver (SA-B) — I wrote a cross-repo contract tweak from a TASK's prose, not from the built code, and it drifted from what Jason had built
+- **Status:** NEW
+- **What happened:** after TASK-888 was accepted, I told Bob that E4b calls `/internal/jobs/pay-confirm-now` and that BB's read must also take `?periodId=`. Jason's built code has `/internal/salary-remind-now`, and SB only ever calls BB with `?date=` (it checks the period itself). I took the endpoint name from Sober's Q1 GO wording in TASK-888 and inferred the lookup, without opening `routes/internal.ts` / `pay-confirm-reminder.service.ts`. Porter caught the drift before Bob coded it.
+- **Fix:** TASK-887 § "THE FINAL remind ↔ send contract" was rewritten from SB's code, with file:line cited, and is waiting on Sober's signature. Bob was told to ignore the earlier lines.
+- **Rule for me:** a contract with a seam that is already built is written **from that seam's code (file:line), never from a TASK's description of it**. If the code isn't built yet, the contract is marked PROPOSED, and the builder confirms it against the code before the other side codes.
+
+## F-044 — 2026-11-08 — PM (Porter) — Read Palm's Discord message my own way and pushed two follow-ups on it instead of asking
+- **Status:** NEW
+- **What happened:**
+  - The owner forwarded Palm's (NeRo's) message: SOM card changes merged into develop `afdf41b`, screen only.
+  - Without asking, I read it as "the EN label deviates" and "the owner must deploy develop to uat". I carried both as open owner items for several turns.
+  - Asked what I understood, I explained and still guessed.
+- **Owner's words:** *"นายเข้าใจเขาผิดเว้ย งง ก็ถามสิ มึงจะแกล้งเข้าใจทำไม"*
+- **Rule involved:**
+  - role-pm §6: a message that is unclear gets ONE clarifying question before it becomes work.
+  - Memory: quote, never paraphrase; distrust my own reading of someone else's words.
+- **Fix:** I asked the owner what Palm meant, and dropped my two assumed follow-ups until he answers.
+
 ## F-043 — 2026-11-08 — Silver (SA-B) — a PM GO in my inbox (REQ-5009 Capacity TASK) went uncut for hours, and Team B's stall went unseen until the owner noticed
 - **Status:** NEW
 - **What happened:**
@@ -519,3 +646,15 @@ where the owner sees them. When he is ready he opens Atlas with
 - **What:** REQ-5002's CHECK Q1 defaulted "a course ended early = cancelled, out of all counts". REQ-126 has her words on that exact case: *"แต่ไม่ใช่การ pause ไว้ หรือ cancel ไปค่ะ"*, and TASK-837 stores it as `ENDED_EARLY`. Bob built on it. Caught when TEST-136's Q6 named ตัดจบคอร์ส. No uat number was affected (0 such rows).
 - **Why:** I reasoned from `courseStatus` (every ended course = CANCELLED) and never grepped requirements/ for the case.
 - **Rule:** before stating a default on a customer-visible meaning, grep `requirements/` for that case and for her words. The code's label is not her meaning.
+
+## 2026-11-09 — Sober (SA Lead A): speced a UI against an existing customer ruling (TASK-914)
+**What:** Cut TASK-914 (Notifications) asking for a per-person × per-type **opt-out matrix**, directly against **ruling C-h** (REQ-122 l.172: "notifications: no opt-out ticks; everyone always gets all their own"). Fanta built it but flagged the conflict instead of silently shipping it.
+**Why it slipped:** I speced from R0.4 alone ("per person and per type") without checking the C-ruling table, which had already SIMPLIFIED R0.4. R0.4's data phrasing survived, but the UI policy was overruled by C-h.
+**Fix:** Converted 914's settings to the final-UI read-only recipient list (role-derived, no toggles); feed kept.
+**Lesson:** before speccing a UI that encodes a POLICY (opt-in/out, who-can-edit, visibility), grep the C-ruling table (REQ-120 §8/§9, REQ-122) + CUSTOMER-ANSWERS for that feature — a later ruling may have overridden the base REQ's wording. The requirement's base text is not the final word when a C-ruling touched it.
+
+## 2026-11-09 — a broken route validator reached sid untested (TASK-911, POST /v1/stock/in)
+**What:** `routes/stock.ts:57` `receivedOn` regex lost its backslashes — `/^d{4}-d{2}-d{2}$/` instead of `/^\d{4}-\d{2}-\d{2}$/` — so every POST /v1/stock/in 400'd on sid. Caught by Silver on sid, AFTER deploy, not in review or CI.
+**Why it slipped:** the 911 service tests bypass the route's zod validator (they call the service directly), so no test ever exercised the route body schema. tsc doesn't catch a valid-but-wrong regex. So a broken validator passed review (1087/0) and deploy.
+**Lesson (team-wide — I'll raise the hygiene check):** every route with a zod validator needs at least ONE **route-level** test — a valid body passes, an invalid one 400s — not just service tests. A regex/schema bug is invisible to service tests + tsc. Porter asked for a sweep of BB routes with zero route-level tests; worth doing. In review, when a route adds/changes a validator, check there's a route-level test for it.
+**Fix:** regex corrected + a route-level test added (Bob, hotfix; Jason's session was closed).
