@@ -342,3 +342,10 @@ If anything could not be tested, say exactly what and why.
 ## Questions
 (For Porter; he answers as `> answer: ...`)
 ```
+
+## Standing rules moved from the inbox (ORDER 63, 2026-11-12)
+## [Porter → Tanya, 2026-11-10 02:59] Standing from now (owner): every GR-web round check also CAPTURES SCREENSHOTS of each changed screen
+Save them under smart-scheduler/ai-worker/tests/evidence/gr-round-<n>/ (no personal data; it is mock data) and list the paths in your verdict. Porter sends them to the customer with the round note, after the owner says "ส่ง". Rule: SYSTEM-FACTS § GR web feedback must land in the real code (the loop).
+
+## [Porter → Tanya, 2026-11-10 03:03] som-gr LIVE card is ready: from now on, check and screenshot GR rounds on the REAL site
+Owner: "อยากให้ดูของจริงมากกว่าดูในเครื่องว่ะ". `node picklocker/basic-auth.mjs som-gr` → AUTHENTICATED · 200 (Porter ran it). How: REQUEST-porter-to-pokervault-2026-11-10-som-gr.md § Reply (openCard(browser, "som-gr"); you never see the value; never write httpCredentials to disk). Now: re-shoot round 1 on https://som-gr.develyst.online into tests/evidence/gr-round-1-live/, and close TEST-151 line 48's live NOT_TESTED items (card-7 banner, front-office rows, Lock then reload). Headless only.

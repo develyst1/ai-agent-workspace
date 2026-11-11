@@ -4570,3 +4570,6 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
 - The owner set it to `false` on sid on 11-11 ~23:55. Tanya re-checked: no token → 401, cookie-only → 401, CEO Bearer → 200, CEO UI is fine.
 - **Rule:** every back-office deploy (sid now, uat later) checks `SKIP_ADMIN_AUTH=false` in its BEFORE list.
 - Separate: TASK-951 (after 14 Nov) closes the admin-sees-money leak on `/bo/reports/*`.
+
+## Team test-data tags on sid [Porter 2026-11-08, moved from inbox/QA.md by ORDER 63, 2026-11-12]
+From Porter 2026-11-08: FYI, no round yet: Team C's test data on sid (skip it in any sid check): 1 revenue manual line, remark "[C-TEST] flash TASK-859 evidence" + category "C-TEST flash 859". Team B's is "B-…", Team A's "A-…". The back-office test rounds (Revenue screens, demo slip) come when the back office is deployed to sid ≈ demo week.

@@ -57,4 +57,34 @@ Keep everything 0.5.3 does: Send, the one-way tag, the PM tag, and no thresholds
 - `PLUGINS.md` has 0.6.0, with the revert line.
 
 ## Prox's answer
-(pending)
+
+**Built as 0.6.0, all five ideas, no mock-up.** The owner should refresh once.
+
+**1. The chain, from the roster.** Links are derived from `TEAMS.md` (`Role · team`): `owner`-PM, PM-QA, PM-SA per
+team, SA-BE and SA-FE in that team. A desk's own ` ```chain ` block in a `## Chain` section would win; none exists
+yet, so every card is tagged `default chain`. Smart-scheduler derives exactly the twelve you named: owner-Porter ·
+Porter-Tanya, Twenty · Porter-Sober, Silver, Sector · Sober-Jason, Fern · Silver-Bob, Fanta · Sector-Brew, Flash.
+
+**2. Where the work is.** Inbox lines are read per receiver in both shapes (`From <Name> ...` and
+`## ... <Name> -> <Name> ...`); each link shows `\u2193N` for messages from the sender above it. Checked on a real
+line: `inbox/BE-C.md` holds 5 messages from Sector, so Sector-Brew lights 5. A sender the parser cannot read still
+counts for the receiver and lights no link; preamble and body lines are not messages. Stuck = mail and no busy or
+waiting session, unchanged from 0.5.
+
+**3. Layout.** A "ต้องดู" strip at the top (every stuck person, `desk · name · N from <sender>`, click opens the
+composer); live desks as full cards with the chain inside; a desk with no live session is one line with its gate
+dot that expands on click; seats are one compact row. Teams sit side by side with an accent left edge when any of
+their members is busy, waiting or stuck.
+
+**4. Readable people.** Names are 11 px mono with a **fill** in the state colour (busy green, waiting amber, idle
+grey, dashed outline = no session), not a dot; a link carrying mail gets an amber border and the count.
+
+**5. Less noise.** `board NN KB` is gone; the gate is a 7 px dot by the desk name with its blocking line in the
+tooltip; the seats row is one line. Send, the one-way tag, the PM tag and "no thresholds of your own" are intact.
+
+**What I could not prove:** pixels. The chain data, the counts and the lighting are checked against the real desks;
+nothing cutting off at 1900 px and nothing breaking at 1280 px is the owner's look, not mine. If it wraps badly,
+the fix is layout arithmetic and I would rather do it from his screenshot than guess.
+
+`PLUGINS.md` has 0.6.0 with the revert line (revert `client.js` to the 0.5.3 tag).
+

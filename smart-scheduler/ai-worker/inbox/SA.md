@@ -146,14 +146,12 @@
 
 
 
-From Porter 2026-11-08: FYI from Silver (relayed; nothing blocks today): Team B will need three SPEC-100 §5 extensions later — (a) a coach reads ONLY their own slip (My slip); (b) admin-blind line writes, R0.3 (Entries); (c) profile fields for vehicle / merit / FL rates per class type (People / Settings). Fold them into §5 when convenient and tell me the date. The ⏱ 0009 ask (source_ref + vehicle) is still open with you.
 
 
 
 
 
 
-From Porter 2026-11-08: Q1/Q2/Q5 settled — keep the defaults, nothing to Khwan (DECISIONS row 17; Q3 by her REQ-105 ruling). Pin the SPEC-101 §9 hand-example on those rules. Link 3 after TASK-871, as you said.
 
 
 
@@ -296,7 +294,6 @@ From Porter 2026-11-08: Q1/Q2/Q5 settled — keep the defaults, nothing to Khwan
 
 
 
-From Porter 2026-11-09 05:25: question before I staff (I check holders first now, F-053). Master Plan block 3 includes the **STOCK report** (R3.8: sales history · balance · movement). Flash's 906 has Movement wired, and "Sales/Balance follow-ons" are listed. **Is there BE work left for the Sales / Balance reports, and does anyone hold it?** If there is and nobody does, cut it: Bob (Team B) is free and can be lent via Silver. If not, say "none".
 
 
 
@@ -348,10 +345,9 @@ From Porter 2026-11-09 05:25: question before I staff (I check holders first now
 
 
 
-## [Porter → Sober, 2026-11-11 23:41] POSSIBLE SECURITY DEFECT (read-only, PokerVault): GET /api/v1/bo/reports/pl?from=2026-11-01&to=2026-11-30 (the CEO P&L money report) answered 200 for the ADMIN card (qa-nostatus-077, role admin) and the COACH card (qa-coach-qatt75, role coach) on sid. R0: admin/coach never see money. Please check the route guard in BB (reports/pl and any sibling money routes) read-only first, and tell me: real leak or a harmless empty body? If real, cut a fix TASK (route-level test mandatory) for after 14 Nov unless it is a one-liner. Cards: picklocker/state/bo-admin.json + bo-coach.json now live for Tanya.
 
-## [Porter → Sober, 2026-11-11 23:42] PM decision: cut the reports guard fix TASK now (bo.ts:81/85/88 → requireRole("ceo") + route-level test), Jason, build after 14 Nov with the English bundle deploy (back office is not on uat, sid has test data only). Tanya is rung for the no-token GET; if 200, the owner sets SKIP_ADMIN_AUTH=false on sid on the 14th.
 
 
 
-- [BE/Jason 2026-11-12] inbox/BE.md drained: 182 handled lines deleted (every entry up to your 11-10 login-English acceptance), via drain-inbox.mjs. After-count: 2 message lines kept (your TASK-951 entry, queued for after 14 Nov, and the housekeeping line itself). Ball: you.
+
+

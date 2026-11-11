@@ -379,6 +379,19 @@ function teamKey(team) {
   return match ? match[0].toUpperCase() : "ALL";
 }
 
+// The desk records its own short code in TEAMS.md ("Desk short code **BUD**").
+// It is the only honest way to recognise a live session the roster cannot name;
+// the person's own name would match every desk (`Porter-CC`, `Porter-ISP`, ...).
+export function deskShortCode(text) {
+  const match = /Desk short code\s*\**\s*`?([A-Za-z0-9]+)`?/i.exec(String(text || ""));
+  return match ? match[1].toLowerCase() : null;
+}
+
+function lastToken(value) {
+  const tokens = nameTokens(value);
+  return tokens.length ? tokens[tokens.length - 1] : "";
+}
+
 function cleanName(value) {
   return String(value || "").replace(/^@/, "").trim();
 }
@@ -473,6 +486,30 @@ export function liveSession(agents, name) {
   return null;
 }
 
+// The owner should never have to fill a table by hand: the desk's memory hook
+// records which desk and person every Claude session is, in
+// `<workspace>/.claude/session-desk/<sessionId>` (`<desk> <Name> <ROLE>`, or
+// `none`). Read only; the console never writes it.
+export function sessionDeskCache(root) {
+  const map = new Map();
+  const dir = join(root, ".claude", "session-desk");
+  let files = [];
+  try {
+    files = readdirSync(dir);
+  } catch {
+    return map;
+  }
+  for (const file of files) {
+    try {
+      const line = readFileSync(join(dir, file), "utf8").trim();
+      if (!line || /^none$/i.test(line)) continue;
+      const [desk, name, role] = line.split(/\s+/);
+      if (desk && name) map.set(file, { desk, name, role: role || "" });
+    } catch {}
+  }
+  return map;
+}
+
 function sessionByName(agents, sessionName) {
   if (!sessionName) return null;
   return agents.find((agent) => sameSessionName(agent && agent.name, sessionName)) || null;
@@ -489,14 +526,75 @@ function mailWaiting(file) {
     const text = readFileSync(file, "utf8");
     const parsed = parseInboxMessages(text);
     if (!parsed.total) return null;
-    const ageMinutes = Math.max(0, Math.round((Date.now() - statSync(file).mtimeMs) / 60000));
-    return { lines: parsed.total, ageMinutes, senders: parsed.senders };
+    const touchedAt = statSync(file).mtimeMs;
+    const ageMinutes = Math.max(0, Math.round((Date.now() - touchedAt) / 60000));
+    return { lines: parsed.total, ageMinutes, touchedAt, senders: parsed.senders };
   } catch {
     return null;
   }
 }
 
-function deskList(root, agents) {
+// "Last moved" is the person's own session transcript: Claude keeps one JSONL
+// per session under ~/.claude/projects/<slug>/<sessionId>.jsonl. Harness seats
+// have no transcript, so their cache's lastMessageTime stands in.
+const transcriptCache = { at: 0, map: new Map() };
+
+function transcriptMap() {
+  if (transcriptCache.map.size && Date.now() - transcriptCache.at < 60000) return transcriptCache.map;
+  const map = new Map();
+  const base = join(homedir(), ".claude", "projects");
+  let projects = [];
+  try {
+    projects = readdirSync(base, { withFileTypes: true }).filter((entry) => entry.isDirectory());
+  } catch {
+    return map;
+  }
+  for (const project of projects) {
+    let files = [];
+    try {
+      files = readdirSync(join(base, project.name)).filter((name) => /\.jsonl$/i.test(name));
+    } catch {
+      continue;
+    }
+    for (const file of files) {
+      map.set(file.replace(/\.jsonl$/i, ""), join(base, project.name, file));
+    }
+  }
+  transcriptCache.at = Date.now();
+  transcriptCache.map = map;
+  return map;
+}
+
+function lastMovedAt(live) {
+  if (!live) return null;
+  if (live.sessionId) {
+    const file = transcriptMap().get(String(live.sessionId));
+    if (file && isFile(file)) {
+      try {
+        return statSync(file).mtimeMs;
+      } catch {}
+    }
+  }
+  if (typeof live.lastActivity === "number") return live.lastActivity;
+  return null;
+}
+
+// Match order: the desk's TEAMS.md session cell first, then the desk's own
+// session-desk cache line, then nothing (the session stays "other").
+export function matchPerson(agents, person, deskName, deskCache) {
+  const byTeams = sessionByName(agents, person.session);
+  if (byTeams) return { agent: byTeams, by: "teams" };
+  const byCache =
+    agents.find((agent) => {
+      const hit = deskCache && deskCache.get(String(agent.sessionId));
+      return hit && hit.desk === deskName && hit.name.toLowerCase() === person.name.toLowerCase();
+    }) || null;
+  if (byCache) return { agent: byCache, by: "session-desk" };
+  return { agent: null, by: null };
+}
+
+function deskList(root, agents, deskMap) {
+  const deskCache = deskMap || new Map();
   const out = [];
   let entries = [];
   try {
@@ -535,10 +633,15 @@ function deskList(root, agents) {
     }
     const ownChain = parseChain(teamsText);
     const chain = { links: ownChain || defaultChain(people), derived: !ownChain };
+    const code = deskShortCode(teamsText);
     const roster = people.map((person) => {
-      const live = sessionByName(agents, person.session);
+      const matched = matchPerson(agents, person, entry.name, deskCache);
+      const live = matched.agent;
       const mail = person.inbox ? mailWaiting(join(desk, person.inbox)) : null;
       const state = live ? live.status : null;
+      const movedAt = lastMovedAt(live);
+      const newMail = Boolean(live && mail && mail.touchedAt && movedAt && mail.touchedAt > movedAt);
+      const stuck = newMail && !(state === "busy" || state === "waiting");
       return {
         name: person.name,
         role: person.role,
@@ -547,10 +650,15 @@ function deskList(root, agents) {
         session: person.session,
         status: state,
         sessionName: live ? live.name : null,
+        matchedBy: matched.by,
+        lastMoved: movedAt,
         mail,
         messages: mail ? mail.senders : [],
-        // A seat holding mail with nothing moving is the ball.
-        ball: Boolean(mail) && !(state === "busy" || state === "waiting"),
+        // Stuck is new mail only: written after the person last moved, and no
+        // session of theirs is running. Old lines are housekeeping, not work.
+        newMail,
+        stuck,
+        ball: stuck,
       };
     });
     out.push({
@@ -560,7 +668,9 @@ function deskList(root, agents) {
       logAgeDays,
       quiet: logAgeDays == null || logAgeDays > QUIET_DAYS,
       live: roster.filter((person) => person.status).length,
-      balls: roster.filter((person) => person.ball).length,
+      balls: roster.filter((person) => person.stuck).length,
+      code,
+      dark: [],
       chain,
       people: roster,
     });
@@ -662,6 +772,23 @@ function harnessFor(harness, name) {
   );
 }
 
+// A session the roster cannot name is still that desk's if its short code is the
+// session's last token. No code, no attribution - it stays "other".
+export function attributeDark(desks, agents) {
+  const matched = new Set();
+  for (const desk of desks) {
+    for (const person of desk.people || []) if (person.sessionName) matched.add(person.sessionName);
+  }
+  for (const desk of desks) {
+    desk.dark = [];
+    if (!desk.code) continue;
+    desk.dark = agents
+      .filter((agent) => agent && agent.name && !matched.has(agent.name) && lastToken(agent.name) === desk.code)
+      .map((agent) => ({ name: agent.name, status: agent.status || null }));
+  }
+  return desks;
+}
+
 function workspaceSeats(roots, agents, harness, seatList) {
   const index = requestIndex(roots);
   return seatList.map((seat) => {
@@ -734,7 +861,7 @@ async function snapshot(ctx) {
   const roots = candidateRoots(ctx, agents);
   const claude = resolveClaude();
   const harness = harnessSessions(ctx);
-  const desks = deskList(root, agents);
+  const desks = attributeDark(deskList(root, agents, sessionDeskCache(root)), agents);
   const gates = await Promise.all(desks.map((desk) => deskGate(root, desk.name)));
   const gated = desks.map((desk, index) => ({ ...desk, gate: gates[index] }));
   const data = {
@@ -776,6 +903,10 @@ function compact(data) {
       balls: desk.balls,
       quiet: desk.quiet,
       log: desk.lastLog,
+      chain: desk.chain ? desk.chain.links.length : 0,
+      chainOwn: desk.chain ? !desk.chain.derived : false,
+      code: desk.code || null,
+      dark: (desk.dark || []).map((session) => session.name),
     })),
     seats: data.seats.map((seat) => ({
       name: seat.name,
@@ -783,6 +914,30 @@ function compact(data) {
       state: seat.state,
       open: seat.open,
     })),
+    stuck: data.desks.flatMap((desk) =>
+      (desk.people || [])
+        .filter((person) => person.stuck)
+        .map((person) => ({
+          desk: desk.name,
+          name: person.name,
+          inbox: person.inbox,
+          inboxAt: person.mail && person.mail.touchedAt ? new Date(person.mail.touchedAt).toISOString() : null,
+          movedAt: person.lastMoved ? new Date(person.lastMoved).toISOString() : null,
+          minutes: person.mail ? person.mail.ageMinutes : null,
+        }))
+    ),
+    mailChecks: data.desks
+      .filter((desk) => desk.live > 0)
+      .flatMap((desk) =>
+        (desk.people || []).map((person) => ({
+          desk: desk.name,
+          name: person.name,
+          inboxAt: person.mail && person.mail.touchedAt ? new Date(person.mail.touchedAt).toISOString() : null,
+          movedAt: person.lastMoved ? new Date(person.lastMoved).toISOString() : null,
+          newMail: person.newMail,
+          stuck: person.stuck,
+        }))
+      ),
   };
 }
 

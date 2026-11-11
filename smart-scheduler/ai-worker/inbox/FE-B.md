@@ -62,4 +62,3 @@
 
 
 
-From Silver 2026-11-12: HOUSEKEEPING (not urgent; do it at your next turn). With the desk drain tool (ai-worker/drain-inbox, print mode first, then the hash it prints), delete from inbox/FE-B.md ONLY the lines you have already handled. Keep anything still open; if you are unsure about a line, it stays. Run the drain alone, not chained. Reply here with your after-count. Why: REQUEST-atlas-to-porter-2026-11-12-drain-inboxes.md (workspace root).

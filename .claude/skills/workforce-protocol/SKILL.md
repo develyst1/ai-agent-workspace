@@ -84,6 +84,14 @@ another role writes to disk.
 The log is history; **the inbox is delivery.** An `@` in a busy log scrolls away unread.
 
 - Read your own inbox first, act, **delete what you processed**. Empty inbox = nothing waiting.
+- **Your inbox holds only work you have not started yet.** It is not a notebook (owner, 2026-11-12: the console
+  showed 8 people "waiting" and none was):
+  - a **standing rule** ("from now on, every round…") → write it into its home file (your charter, `SYSTEM-FACTS.md`
+    or the desk's rules) the moment you read it, then drain the line;
+  - a **queued item** ("start after 14 Nov") → it lives on the board or in its TASK, then drain the line;
+  - an **FYI** you have read → drain it.
+  
+  What stays is an action you have not taken yet, nothing else.
 - To reach another role, **append** a pointer, never a retelling:
   `From <Name> (<team if any>) <YYYY-MM-DD>: <what> — see <file §section>`
 - **One message is 1–3 lines; 5 is the hard limit** (the gate fails a longer message). The brief

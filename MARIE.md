@@ -2955,7 +2955,7 @@ Done by Atlas:
    is quiet, as in ORDER 34.
 3. Nudge Atlas with the result.
 
-### ORDER 62 — 2026-11-10 — ⏳ PARTLY DONE 2026-11-10 (9 desks + call-scribe and atom HELD per Atlas; smart-scheduler's note owed until quiet — see Operations log) — harness 2.6.19: the owner's 4th git command, `ตั้ง branch` (standard branches)
+### ORDER 62 — 2026-11-10 — ✅ CLOSED 2026-11-12 (9 desks + call-scribe and atom HELD per Atlas; smart-scheduler's note landed 11-12 — see Operations log) — harness 2.6.19: the owner's 4th git command, `ตั้ง branch` (standard branches)
 
 **Owner, via Porter, 2026-11-10:** *"เราต้องมีบานซิท โปรดักชั่น เดเวลลอป แล้วก็บานของฉันชื่อว่าโด่งหรือ nichaphon ก็ได้"*.
 Source and design: `REQUEST-porter-to-atlas-2026-11-10-standard-branch-pattern-skill.md` § Atlas's answer. Done by Atlas:
@@ -2971,7 +2971,75 @@ Source and design: `REQUEST-porter-to-atlas-2026-11-10-standard-branch-pattern-s
    Only when each desk is quiet. It is not urgent.
 3. Nudge Atlas.
 
+### ORDER 63 — 2026-11-12 — ✅ CLOSED 2026-11-12 (12 inboxes at 0 open lines; rules/fact homed verbatim; TASK-951 on the board — see Operations log) — smart-scheduler: inboxes hold only work not yet started (the owner's "เอา")
+
+**Owner, 2026-11-12:** the console showed 8 smart-scheduler people "waiting"; he found it *"แปลกๆ"*. Atlas read every
+line left after Porter's drain, and **none was un-started work**. What was left:
+- standing rules (QA: screenshot every GR round, live GR card; BE-C: unique drizzle `when`);
+- handled FYIs and decisions (SA 11-08/09, SA-B 11-10, FE 11-09, SA 11-11 security item already cut as TASK-951);
+- one queued item (BE: TASK-951, start after 14 Nov);
+- the drain notice itself (BE-B, FE-B).
+
+The owner said **"เอา"** to: *inbox = only work not yet started; standing rules go to their home file, queued items
+to the board.*
+Done by Atlas: `workforce-protocol` §5 has the rule (skill, copied to `.claude/skills/`, no harness change).
+
+**Do, through Porter, scope 1 (moving content between files is yours):**
+1. For each remaining line in the 12 inboxes:
+   - a standing rule → append it **verbatim**, with its date and sender, to its home file (`QA.md` / `SYSTEM-FACTS.md`
+     / the role file);
+   - a queued item → check that its board row or TASK already carries it (TASK-951: start after 14 Nov);
+   - then the reader drains the line.
+
+   Anything unsure **stays**. Archive each inbox verbatim first, as always.
+2. One re-read note per inbox: *"From Marie 2026-11-12: workforce-protocol §5: your inbox holds only work you have not
+   started. Standing rules go to their home file, queued items to the board, read FYIs are drained."*
+3. Other desks: none now. Quiet desks get the note at their next housekeeping.
+4. Nudge Atlas with the after-counts.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-11-12 01:3x — ✅ **ORDER 63 CLOSED. ⚠️ Correction to my previous entry: "10 were not written" was WRONG.** I
+  inferred it from mtimes, but a drain also sets the mtime. With 2.6.18 every seat's watcher wakes on a new line, and the
+  reader drains a read FYI (§5), so notes vanish within seconds. Evidence: after Porter's re-append, my grep at 01:31:34
+  shows the count changing under my eyes (BE-B, BE-C, FE-C, PM, QA = 1; others already back to 0), and Sector's 01:29
+  log entry quotes the §5 rule. **Lesson: a 0 in an inbox is no longer proof of non-delivery. Check the reader's log or
+  the drain record, not the inbox.** Some seats now got the note twice; harmless.
+
+- 2026-11-12 01:3x — ⏳ **ORDER 63 verified on disk except the notes.** Archives 12/12
+  (`archive/inbox-<SEAT>-2026-11-12-pre-order63.md`) ✓. The 2 QA rules are in `QA.md` § "Standing rules moved from the
+  inbox (ORDER 63, 2026-11-12)", 4/4 lines verbatim ✓. The C-TEST fact is in `SYSTEM-FACTS.md` verbatim ✓. TASK-951 has
+  1 board row ✓. **After-counts (message lines, before notes): 0 in all 12.** Bytes: SA 3,563→1,192 · QA 3,106→520 ·
+  PM 2,566→2,263 (blank lines left) · FE 1,890→635 · BE-C 1,511→403 · BE 1,206→652 · BE-B 814→367 · FE-B 784→337 ·
+  SA-B 605→218 · SA-C 489 · FE-C 217 · QA-2 223.
+  The one un-started line was closed by Sober, not drained blind: the SPEC-100 §5 FYI's (a)(b) were built in TASK-880
+  and (c) in TASK-895/903 (his 01:28 log). Brew drained the TASK-935 lines as carried by the TASK file at :51-63.
+  ⚠️ **Re-read note on disk in only 2 of 12 inboxes (PM, BE-C)**, although Porter reported 12. Nothing has drained since
+  01:29:59, so 10 were not written. Asked him to append the 10 and grep before replying (line in the REQUEST + bell,
+  delivered). The SAs all logged the §5 rule from the drain asks, so the rule reached the seats. Closes when the 10 land.
+  Porter also notes that git `e152c9e` (11-11 23:54) holds the full inboxes from before Atlas's earlier drain round.
+
+- 2026-11-12 01:2x — ⏳ **ORDER 63 delivered to Porter · ✅ ORDER 62 CLOSED · ✅ the 11-08 housekeeping hop VERIFIED
+  (late).**
+  **Housekeeping hop (11-08 brief):** Porter never wrote a `## Reply` or rang me, but the work is on disk. Step-1 archives
+  exist for the board and the 7 inboxes. `board-2026-11-08-pre-housekeeping.md` = md5 `a21336f8…`, **my 20:51
+  fingerprint ✓**. `board-closed.md` has `## Swept 2026-11-08 (Marie housekeeping)` with **9 rows, 9/9 found verbatim**
+  in the pre archive; **327 REQ/TASK/DEF/TEST ids of the pre board, 0 absent** from board + board-closed. Only 9 of 23
+  rows were swept: lossless, but partial. The board has since regrown to **95.2 KB**. ⚠️ `inbox/PM.md.drain-25292.tmp`
+  (step 3b) is **still there**. Gate re-run and the board's regrowth are left for the next hop. (Archive mtimes all read
+  11-10 08:37, which is a checkout/restore — see `archive/RESUME-HERE-2026-11-10-0837-reverted-by-git.md` — not when the
+  copies were made.)
+  **ORDER 62:** the desk was quiet at 01:26 (only my own line in 20 min), so the owed note was written verbatim into
+  `inbox/PM.md` in the same visit as ORDER 63. 9 + 2 HELD → **closed**.
+  **ORDER 63:** I read all 12 inboxes and checked each item against the board, the TASK files and SYSTEM-FACTS before
+  briefing. Brief: `REQUEST-marie-to-porter-2026-11-12-order63-inbox-only-unstarted.md`, with a per-line table:
+  - **To QA.md, verbatim:** the 2 QA standing rules (11-10 02:59 GR screenshots, 03:03 som-gr live card).
+  - **To SYSTEM-FACTS, verbatim:** the C-TEST sid data fact ("C-TEST" had 0 hits there).
+  - **Already home:** the drizzle `when` rule (SYSTEM-FACTS l.4395).
+  - ⚠️ **TASK-951 has no board row** (the file exists, `board.md` 0 hits), so Sober adds it before Jason/Sober drain.
+  - **Stays unless Sober carries it:** the SPEC-100 §5 extensions FYI is the one line that is genuinely un-started.
+  - **Readers drain the rest**, and engineers are reached through their SA.
+  Then the 12 notes, after the drains are asked for. Inbox line + one bell (queued; his turn busy).
 
 - 2026-11-10 01:5x — **ORDER 62: Atlas ruled call-scribe HELD** (same as smart-scheduler-atom, ORDER 53). It lives on
   Atom's box, and an install here would collide with Atom's next sync. **No install, and no nudge to anyone about it.**

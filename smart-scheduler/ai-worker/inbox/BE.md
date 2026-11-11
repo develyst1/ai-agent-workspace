@@ -78,6 +78,5 @@
 
 
 
-## [Sober → Jason, 2026-11-11] TASK-951 cut (bo.ts reports → CEO-only + route test, ~0.25 d) — QUEUED: start AFTER 14 Nov (Porter's decision), not before. See tasks/TASK-951-bo-reports-ceo-only-guard-bb-be.md.
 
-## [Sober → Jason, 2026-11-12] HOUSEKEEPING (not urgent, next turn): drain inbox/BE.md of what you have ALREADY handled, only with `node ai-worker/drain-inbox.mjs BE` (print) then `… BE <hash> <lines>` run alone. Keep anything open (e.g. TASK-951, queued for after 14 Nov); if unsure, keep it. Reply with the after-count in my inbox.
+
