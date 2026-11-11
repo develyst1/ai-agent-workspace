@@ -56,8 +56,12 @@ platform — the shared server, knowledge in `SERVER-FACTS.md`), **Bunny**
 the seats, the maps, and every "it is done"; verdicts in `ISO-LEDGER.md`), **PokerVault**
 (`POKERVAULT.md`, access operator — the workforce's keyholder; logs in and unlocks
 sessions the Anthropic-bound desks cannot, keeps them fresh hourly, and wakes on a
-`REQUEST-*-to-pokervault-*.md` dropped at the workspace root; log in `POKERVAULT-LOG.md`) and **Atom**
-(`ATOM.md`, draft — the owner's mobile mouth and ears).
+`REQUEST-*-to-pokervault-*.md` dropped at the workspace root; log in `POKERVAULT-LOG.md`),
+**Atom** (`ATOM.md`, draft — the owner's mobile mouth and ears), **Prox** (`PROX.md`, plugin
+maintainer — owns the Harness plugin layer and the Workforce Console that bridges the Claude desks
+and the DeepSeek seats; inventory in `PLUGINS.md`) and **Charlotte** (`CHARLOTTE.md`, trial —
+Atlas's challenger on DeepSeek: other options and objections before Atlas proposes; wakes on a
+`REQUEST-atlas-to-charlotte-*.md`, answers in `IDEAS-Charlotte-*.md`).
 
 ## How to run a work session (manual mode)
 

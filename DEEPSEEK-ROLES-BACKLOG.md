@@ -29,3 +29,9 @@
 
 - **Red Team** (failure prediction), **Evaluator** (model scout), **Observer** (live
   war correspondent) — discussed, left aside for now.
+
+## Born from outside this list
+
+- **Charlotte** (2026-11-10), Challenger to Atlas: `CHARLOTTE.md`. She covers part of what **Red Team**
+  would have done (finding where a proposal breaks), but only for Atlas's proposals and before anything is
+  decided.
