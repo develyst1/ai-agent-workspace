@@ -243,3 +243,57 @@ It runs **once when this seat opens**. The scheduler offer is withdrawn. My repl
 - **Refactor, tested:** the credential lookup moved to `picklocker/creds.mjs` (shared with
   `login.mjs`); `som` re-verified **200** after the move, so the refactor changed no behaviour.
 - **Result:** `NOT_UNLOCKED` — one paste away from `UNLOCKED`.
+
+---
+
+## UNLOCK-009 · 2026-11-10 20:10 · bo-ceo renewed for Porter/Tanya (TEST-150 Bonus 100 re-run)
+
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-10-bo-ceo.md` — renew; the card had lapsed
+  (`LAPSED · status 200 · /login?next=%2Fdashboard`, Porter's check at 20:10).
+- **Ran:** `node picklocker/login.mjs bo-ceo` (same `[bo-ceo]` credential), then `check-card.mjs`.
+- **Verified:** status **200** · `https://backoffice-som.develyst.online/dashboard` ·
+  **AUTHENTICATED** at **20:10**; `check-card.mjs bo-ceo` exit 0.
+- **Cause:** the ~23 h JWT from 2026-11-09 20:55, not the account — no owner action needed.
+- **Handed:** `picklocker/state/bo-ceo.json`
+- **Result:** `UNLOCKED`
+- **Note for the pattern:** the back-office CEO card lasts about a day. If a desk plans a long
+  round, it should check the card first (the PM's `check-card.mjs` step) rather than discover the
+  lapse mid-run.
+
+---
+
+## UNLOCK-010 · 2026-11-11 23:40 · bo-admin + bo-coach for Porter/Tanya (sid back office)
+
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-11-bo-admin-bo-coach.md` — the two remaining
+  role cards; the front-office QA accounts had to be copied from the machine's live credential
+  file, since the owner does not hold their passwords.
+- **Ran:** copied `qa-nostatus-077` / `qa-coach-qatt75` pairs from the live file into the
+  git-ignored `access.txt` sections (values never printed), then `login.mjs bo-admin` and
+  `login.mjs bo-coach`.
+- **Verified:** both **200 · /dashboard**; `check-card.mjs` `AUTHENTICATED`; JWT claims read from the
+  card's `bo_token` cookie without printing the token:
+  - admin → `{"sub":"qa-nostatus-077","role":"admin","teacherId":null}`
+  - coach → `{"sub":"qa-coach-qatt75","role":"coach","teacherId":"7508e641-…"}`
+  Different accounts, different roles — the cards are not clones.
+- **Admission:** the back office accepted both front-office logins; no "Admit a login" step was
+  needed for them.
+- **Observation handed to the PM (not a verdict):** one read-only GET to `/api/v1/bo/reports/pl`
+  returned **200 for all three cards** (ceo, admin, coach) — the JWT roles are distinct, so this is
+  an API-enforcement question for the team, and Tanya's admin-sees-no-money / coach-own-slip checks
+  are where it is settled.
+- **Handed:** `picklocker/state/bo-admin.json`, `picklocker/state/bo-coach.json`
+- **Result:** `UNLOCKED`
+
+---
+
+## UNLOCK-011 · 2026-11-11 23:40 · som-gr (GR web, LIVE) — the password arrived
+
+- **Backlog item from 2026-11-10:** the request waited only on the owner's password; he pasted it
+  into `[som-gr]` in the git-ignored `access.txt`.
+- **Ran:** `node picklocker/basic-auth.mjs som-gr` (the basic-auth card: a context carrying
+  `httpCredentials`, no file in `state/`).
+- **Verified:** `AUTHENTICATED · status 200 · https://som-gr.develyst.online/` (was 401 with no
+  credential on 11-10). Reply updated in `REQUEST-porter-to-pokervault-2026-11-10-som-gr.md`.
+- **Handed:** nothing to hand — the QA harness calls `openCard(browser, 'som-gr')` and the
+  credential never leaves `access.txt`.
+- **Result:** `UNLOCKED`

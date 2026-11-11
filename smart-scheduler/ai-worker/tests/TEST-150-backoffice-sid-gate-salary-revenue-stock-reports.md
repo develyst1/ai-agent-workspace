@@ -139,3 +139,43 @@ Salary profiles for QA coaches `2ade954f` (FT 20,000) and `f453d207` (PT 8,000);
 - No real coach has a salary profile on sid, so the run made no slip for anyone else.
 - Porter's condition 2: I finish well before **30 Nov 12:00**; the Bonus 100 re-check is the only thing left in it.
 **Test data (SB):** children QA150bonus + QA150bonus2 (under QA parent `030dea39`, no LINE); a 1st Trial (attended, its C1 TRIAL line written); courses A, B, X (1 attended), Y — all QA coaches, sold (their C1 sale / payment rows stay).
+
+## Bonus 100 re-run, 2026-11-10 ~20:20 (after the day-end): first coach ✅ stamped · apply-bonus BLOCKED (CEO card lapsed)
+- **SB (som.json, GET):** old course X `fe2f1edf` now has **firstTeacherId = `2ade954f`** (used 1, ACTIVE) — the day-end stamped it as TASK-860 says ✓. Renewal Y still has `prevCourseId` = X ✓.
+- **Back office:** `bo-ceo.json` **lapsed** — `/dashboard` redirects to `/login`. I don't sign in myself, so `apply-bonus` on the Nov 2026 period (expected: **Bonus 100 = 100.00 to `2ade954f`**) waits for a fresh CEO card. Nothing was written. The Nov 2026 period is untouched (open), and the 30 Nov 12:00 lock is still far off.
+
+## Bonus 100 — closed, 2026-11-10 ~20:35 (fresh bo-ceo card): ✅ TEST_PASSED
+- `apply-bonus` on the Nov 2026 period → **written 1, unchanged 1** (the earlier Bonus 50 not doubled).
+- The QA FT slip `2ade954f` now has **«Bonus 100 · QA150bonus2 (Private)» 100.00 (auto)** beside «Bonus 50 · QA150bonus (Private)» 50.00; slip total **20,150.00** = 20,000 + 50 + 100 ✓.
+- It went to the **old course X's first coach** (`2ade954f`, stamped by the day-end), not to the renewal Y's coach (`f453d207`); the renewal is no longer listed as unresolved ✓.
+- Period 2026-11 still **open** (not locked).
+- Not checked: the PT slip's lines (only that the renewal resolved to the FT coach).
+**Bonus 50 + Bonus 100 both TEST_PASSED** on sid; the Nov 2026 period's contents are now: 3 QA draft slips (`2ade954f` FT, `f453d207` PT, `7c9bbc14` FL) + 2 auto bonus lines (50 + 100) on `2ade954f`.
+
+## P&L guard settling call (Porter 23:42, for `CHECK-2026-11-11-bo-reports-pl-guard.md`), 2026-11-11 ~23:50: 🔴 D-150-3, sid's P&L is open with NO login
+`GET https://backoffice-som.develyst.online/api/v1/bo/reports/pl?from=2026-11-01&to=2026-11-30`, GET only. Bodies were not kept; I recorded only the shape.
+| Request | Status | Body |
+|---|---|---|
+| **No token at all** (plain `fetch` from my machine: no cookie, no header) | **200** | JSON `from, to, incomeMinor, expenseMinor, profitMinor, byDirection, byCadence, byItem`: **has data** |
+| `bo-coach` card, **cookie only** (no Authorization header) | **200** | the same: has data |
+| `bo-coach` card, **Bearer header only** (`credentials: 'omit'`) | **403** | `{error}` |
+| `bo-admin` card, Bearer header only | **200** | has data (whether an admin may see the P&L belongs to the money-visibility rules, not judged here) |
+- **Meaning:**
+  - A request without a Bearer is answered as if signed in. That fits Sober's inferred `SKIP_ADMIN_AUTH=true` on sid.
+  - A valid coach Bearer is still refused (403), so the code's own guard works.
+  - The coach 200 in UNLOCK-010 is explained by the cookie-only path.
+- **Severity:** high, if this env reaches any customer-facing host. On sid, anyone who can reach the URL reads the P&L.
+- **Fix owner:** the owner or Otto, by setting sid's env `SKIP_ADMIN_AUTH=false` (CHECK §2). Not mine.
+- **Re-check after the fix:** the no-token GET must give **401**, cookie-only 401, coach Bearer 403.
+- **Not checked here:** whether a never-admitted FO user can sign in (CHECK §3).
+
+### Re-check after the owner set `SKIP_ADMIN_AUTH=false` and restarted (Porter 23:48), ~23:55: ✅ D-150-3 CLOSED
+| Request | Before | Now |
+|---|---|---|
+| (1) No token at all | 200 | **401** ✅ |
+| Cookie only (CEO / admin / coach cards) | 200 (coach) | **401 / 401 / 401** ✅ |
+| (2) CEO card Bearer | — | **200** ✅ |
+| admin Bearer · coach Bearer | 200 · 403 | 200 · 403 (unchanged) |
+- **(3) The CEO in the browser:** opens on `/dashboard` (the P&L page heading shows), and is still on `/dashboard` after a reload. **No 401 loop.** The only 401 on the page was my own cookie-only probe.
+- The admin card lands on `/items` and the coach card on `/salary/my-slip`. Both load.
+

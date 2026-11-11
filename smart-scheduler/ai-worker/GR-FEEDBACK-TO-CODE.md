@@ -18,3 +18,19 @@ Porter adds a row the moment an item is accepted (source = the verbatim LINE fil
 | 8 | 11-10 | Revenue from Nov: earlier months via Add Manually | LINE 02:10 + reply #10 | n/a | Confirm manual-entry path | — | WAIT ขวัญ OK |
 | 9 | 11-09 | Park fee: several groups may rent in the same hour | DECISIONS row 23 | n/a | TASK-942 | TASK-942 | OPEN (after 14) |
 | 10 | 11-10 | The active menu item is still blue (GR cosmetic, O-151-2) | Tanya | Next round | Covered by #1 | — | GR only |
+| 11 | 11-10 | Brand at top left = "SOM BACK OFFICE" only | พี่ฟีน LINE 09:30 | Round 3 | BF shell brand text | — | OPEN (after 14) |
+| 12 | 11-10 | Revenue block visible to ขวัญ too (corrects reply #5); other admins unchanged | ขวัญ LINE 11:31 | Round 3 (once HOW is answered) | BB+BF revenue gate: a per-user grant | — | WAIT ขวัญ (how) |
+| 13 | 11-10 | Merit shows for the CEO only, never for admin | ขวัญ LINE 11:32 | Round 3 | BB+BF Other Income / slip: hide Merit from admin | — | OPEN (after 14) |
+| 14 | 11-09 | F1 fixed schedule on 2+ weekdays and 2-hour sessions; a leave follows the real day order | ขวัญ LINE 11-09 17:08 #1; CHECK-2026-11-09 F1 | Round 4 (Proposed FO page) | SB+SF course day pattern (6–8 d, high risk) | — | GR to build |
+| 15 | 11-09 | F2 no parent message while the course is Pending; send it once at Confirm Course | ขวัญ LINE 11-09 17:08 #2; CHECK F2 | Round 4 (Proposed FO page) | SB notify gate (1–1.5 d) | — | GR to build |
+| 16 | 11-09 | F3 change a course's activity | ขวัญ LINE 11-09 17:31 #3; REQ-5007 | — | held: owner + พี่เบส | — | HELD |
+| 17 | 11-09 | F4 close a whole day's schedule | ขวัญ 17:31 #4; CHECK F4 | Round 4 (Proposed FO page) | SB+SF closed day (3–4 d) | — | GR to build |
+| 18 | 11-09 | F5 a leave on a make-up should not land on the same date | ขวัญ 17:31 #5; REQ-5006; CHECK F5 | Round 4 (Proposed FO page) | SB 0.5 d; reverses TASK-551 (owner) | — | GR to build |
+| 19 | 11-09 | F6 Dashboard per her latest feedback | ขวัญ 17:31 #6; REQ-5009 | — | owner: Palm or us | — | HELD |
+| 20 | 11-11 | F4 / F1 / F3 quotes: Trolley cards 21 (F4 A/B), 22 (F1), 23 (F3 FO+BO) on SOM System Dev → NEW REQUIREMENT, waiting for the doc team | owner 11-10/11 | n/a (front office) | CONCEPT-F4 / CHECK F1 / CONCEPT-F3 | — | QUOTE |
+| 21 | 11-11 | Per-MENU permissions in the back office, like the front office (not per block) | ขวัญ LINE 09:21 + 10:51 | Round 5 | BB+BF role/permission model per menu | — | SIZE (may exceed 1–2 d → owner) |
+| 22 | 11-11 | 16-point UI list (names, order, layout, labels) | ขวัญ LINE 13:36 | Round 5 | BF labels/layout | — | OPEN (after 14) |
+| 23 | 11-11 | Revenue Summary: a category total box (Unit + Revenue) + Unit on the top box | ขวัญ LINE 13:50–13:51 | Round 5 | BB+BF Revenue Summary | — | OPEN (after 14) |
+| 24 | 11-11 | Collapsible left-menu groups | ขวัญ LINE 13:52 | Round 5 | BF shell | — | OPEN (after 14) |
+| 25 | 11-11 | Product: image upload back; commission group is a dropdown; she sets the category | ขวัญ LINE 13:36 #13 | Round 5 | BF/BB product | — | OPEN (after 14) |
+| 26 | 11-11 | Per-menu permissions as a 2-option quote: Revenue-only ≈ 600 ฿ (recommended) / every menu ≈ 2,500 ฿ | owner 11-11 "ทำเป็นออปชันให้เขาเลือก" | Single switch stays (round 4/5) | see row 21 | Trolley card 24 | QUOTE |

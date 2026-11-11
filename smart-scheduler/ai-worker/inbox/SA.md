@@ -1052,3 +1052,63 @@ Tanya's round-1 screenshots (tests/evidence/gr-round-1/) still show a blue menu 
 
 ## [Porter → Sober, 2026-11-10 03:05] Banner call: make it ORANGE; then ship round 2 now (do not wait for the morning)
 The customer asked for an orange pair, and blue in a screenshot invites a "why is this blue" round. Fold `Alert color="orange"` into c1f230ae, rebuild, then Tanya checks + screenshots on the LIVE site after Otto copies (she has the som-gr card now). Order: your rebuild → Tanya local spot → Otto → Tanya live screenshots. The customer message waits for the owner's "ส่ง" in the morning.
+
+## [Porter → Sober, 2026-11-10 18:52] GR round 3: 2 fixes now (customer feedback via the bot)
+Source: CUSTOMER-ANSWERS § 2026-11-10 SOM SYSTEM group; ledger rows 11 + 13.
+(1) Top-left brand = "SOM BACK OFFICE" only (พี่ฟีน).
+(2) Merit is shown for the CEO only, never for admin (ขวัญ): hide Merit from the admin role wherever it appears (Other Income page, slip lines, Payment Setting if present).
+Row 12 (revenue visible to ขวัญ) WAITS on her answer about HOW; do not build it yet.
+Loop: rebuild → Otto → Tanya LIVE check + screenshots of both → Porter.
+
+## [Porter → Sober, 2026-11-10 20:05] GR round 3 is green in final-ui (Fanta: Merit is CEO-only on Entries + People + Person; 31/0) → rebuild dist with your brand text → Otto → Tanya LIVE + screenshots
+Also, for the real app after 14 (no work now): Silver flagged that SPEC-102 §5-E2 + TASK-880/882 let the ADMIN enter merit, and BF TASK-869 shows the admin a merit flag. PM ruling: ขวัญ's "ขึ้น merit ให้เฉพาะพี่ฟีน ไม่ให้ขึ้นแอดมิน" covers ENTERING too, because the admin cannot enter what she must not see; merit is entered by the CEO. Amend SPEC-102 when the build resumes (ledger row 13). This reverses our own earlier reply #1, which she corrected, so no question goes back to her.
+
+## [Porter → Sober, 2026-11-10 23:41] GR round 4: add "Front office (Proposed)" pages for ขวัญ's 9 Nov front-office asks, so she can SEE them before the 17th
+Owner: "พวกที่ขวัญพิมพ์มายาวๆ … เอามาอัปเดต getrequirement". GR web only; NO real code. Source: INTAKE-2026-11-09-khwan-line-frontoffice.md + CHECK-2026-11-09-frontoffice-intake.md (Sector's step 0 has the behaviour + the questions with defaults); ledger rows 14, 15, 17, 18.
+One "Proposed" page each, mock data, showing the BEHAVIOUR with a before/after:
+- F1: course setup with a day pattern (e.g. Thu + Sun) and session length 1 or 2 h; a leave → the make-up goes to the next day in the pattern (Sun leave → next Thu), and a 2 h leave moves as one slot.
+- F2: a Pending course: leave → make-up created, parent message HELD; Confirm Course → ONE message with the whole schedule, including the make-up.
+- F4: "Close this day" dialog listing that day's classes, and the result (cancelled, +1 week, family message), per CHECK defaults.
+- F5: a leave on the last (make-up) class → it moves +1 week, not back onto the same date.
+Put each CHECK question + default on the page as a small "to confirm" note (her answers fill the URS). Size: show effort/risk only if it helps her choose (F1 is the big one). F3 and F6 are HELD (not on the page). Loop as usual: build → Otto → Tanya LIVE + screenshots → Porter. Use the front-office look (it is her FO), labelled Proposed.
+
+## [Porter → Sober, 2026-11-10 23:42] STOP GR round 4 (the front-office Proposed pages): owner said "หยุดก่อน". Do not build further; keep what you have, ship nothing. Wait for my next line.
+
+## [Porter → ALL SAs, 2026-11-10 23:42] ⏸️ DESK STOP (owner: "บอกทีมหยุดก่อน"): finish the step you are on, start nothing new, ship nothing, and tell your engineers the same. Wait for Porter.
+
+## [Porter → Sober, 2026-11-11 07:28] GR round 4 (BACK OFFICE ONLY, replaces the cancelled FO round 4): per-person revenue view in User Setting
+ขวัญ 07:12: "ให้พี่ฟีนเลือกได้ว่าใครเห็นหน้ารายได้บ้างเป็นรายคน / โอเคค่า" (ledger row 12). Owner's loop rule: back-office feedback → update the demo → tell ขวัญ. On the GR web: in User Setting (CEO only), each user row gets a "เห็นหน้ารายได้" / "Can see Revenue" switch; ขวัญ's mock user ON by default, other admins OFF; the Revenue menu + pages show for the CEO and for any admin whose switch is ON. Add a mock admin "Khwan" if none exists so the role switcher can show it (e.g. Admin (Khwan) vs Admin). No "Proposed" badge: she accepted it. Loop: build → Otto → Tanya LIVE + screenshots (User Setting with the switch; Revenue visible as Khwan; hidden as another admin) → Porter.
+
+## [Fern → Sober, 2026-11-11] TASK-948 done — "Can see Revenue" switch (round 4), incl. your shell seam: all green
+Notes in `tasks/TASK-948-…` § Implementation Notes. `UserSetting.tsx` + `mock/a-users.ts` (login `khwan`). Headless covered the whole round through the real «Viewing as» dropdown: CEO column (Khwan ON/Kung OFF) · Admin (Khwan) sees REVENUE · Admin (Kung) doesn't (by link → «cannot see») · Kung ON→REVENUE appears, OFF→gone, survives navigation + reload · Coach none · 375px no overflow · 0 console errors. tsc 0, build OK, Thai-clean. No git. unhandled-between-tests: 0. Ball: Sober (review → rebuild).
+
+## [Porter → Sober, 2026-11-11 19:14] GR round 5: ขวัญ's big back-office batch (owner loop: update the demo, then tell her)
+Verbatim: project-docs/customer-2026-11-11-line-som-system/khwan-backoffice-feedback-2026-11-11-VERBATIM.md; ledger rows 21–25. Her 7 images were not captured (I ask the owner; go on from the text).
+(A) Build on the GR web, split across teams as you see fit: the 16-point list; the Revenue Summary category box (Unit + Revenue) + Unit on the top box; collapsible left-menu groups; Product image + commission-group dropdown.
+(B) PER-MENU permissions (her ruling: "หลังบ้านต้องทำแยกสิทธิทุกเมนูเหมือนหน้าบ้าน"): show it on the GR web (e.g. Role/User Setting with a per-menu tick list, Revenue sub-menus split: Refund for one admin, Type and Category for another); AND size the REAL-code change (BB+BF permission model) in days + risk, because it may exceed the 1–2 d free limit and must go to the owner.
+(C) Answers for her 3 questions, 2–3 lines each, from the files and the code: where the commission per group is set and whether she creates it; what All Report / REPORTS offers vs the Dashboard; where she adds a Demo (Stock Demo).
+Loop as usual: build → Otto → Tanya LIVE + screenshots → me. Send (B) size + (C) answers to my inbox first; I take them to the owner.
+
+## [Porter → Sober, 2026-11-11 19:18] Round 5: GO on (A) + the "Add Demo" button on the GR web. HOLD the per-menu tick list until the owner decides (it is 9–10 d real code, his call on price)
+Keep round 4's single Revenue switch for now. I take (B) + (C) to the owner.
+
+## [Porter → Sober, 2026-11-11 19:23] Round 5: Team B + C slices ROUTED to Silver + Sector. #16 Conversion: DROP the Proposed banner (she treats it as a real page). Add Demo goes to Team C (Stock Demo). Rebuild the single file when all three teams report green.
+
+## [Porter → Sober, 2026-11-11 19:24] FYI shared-file edit (Silver asked me to relay): for #6, Fanta changes ONE line in final-ui/src/pages/a/index.ts, the /salary/entries roles ["admin"] → ["ceo","admin"], tagged 🔻 GR5. PM OK given (it is exactly her #6). If you object, say so in my inbox before your rebuild.
+
+## [Fern → Sober, 2026-11-11] TASK-949 (GR round 5) done — Monthly Payment · Payment Detail · User Setting menu access; your shell checked too
+Notes + file:line in `tasks/TASK-949-…` § Implementation Notes; screenshots in `tests/evidence/task-949-fern/`. #2 titles → «Monthly Payment» · #5 «Add an Other ±», fields stacked, note under Amount, block under the Other ± lines (new `afterOther` slot on SlipView) · #10 User Setting words + «Accept Login» · (B) «Menu Access» column + «Menu access — <Name>» modal on `useMenuGrants` (round-4 switch replaced). Headless ~55 checks through the real dropdown ALL PASS incl. your shell: group order ending REPORT, fold + reload, defaults unchanged, Kung=Refund only / Khwan=Type and Category only (by-link → «cannot see», survives reload), never-tickable pages absent, 375px no overflow, 0 console errors. tsc 0, build OK. Two things for you: **`Daily.tsx:26` «Back to Pay run» and `Entries.tsx:33` «Open Pay run» still say Pay run** (not my files — yours/Fanta's call); the icon-only sidebar check I did not run. No git. unhandled-between-tests: 0. Ball: Sober (review → rebuild).
+
+## [Fern → Sober, 2026-11-11] TASK-949 rework done — item 4 gated behind MENU_ACCESS_HELD; stray TASK file merged + deleted
+Your review is answered in `tasks/TASK-949-…-team-a-…-fe.md` § Implementation Notes (2nd block; the stray file is gone, notes moved). `UserSetting.tsx:15` `MENU_ACCESS_HELD = true` → «Revenue Visible» + round-4 switch (live); false → Menu Access column + modal, unchanged (tested once both ways). Final state: tsc 0 · build OK · 30 headless checks 0 FAIL incl. Kung ON→all REVENUE / OFF→gone, groups/fold/defaults, and the **icon-only sidebar** (Collapse menu: every icon incl. a folded group; expand again). Flag=false run: 47 pass. Screenshots in `tests/evidence/task-949-fern/` (users, slip, collapsed). `pages/a/index.ts`: only my `/salary/payrun` title edited; Fanta's line untouched. No git. unhandled-between-tests: 0. Ball: Sober (re-review → rebuild).
+
+## [Porter → Sober, 2026-11-11 19:33] Round 5 Team B GREEN (Silver: TASK-936 Part 4, all 7 + Monthly Payment rename, tsc/build 0). Waiting on Team C only; then your single rebuild → Otto → Tanya LIVE.
+
+## [Porter → Sober, 2026-11-11 19:34] Round 5 Team C GREEN (Sector: #11/#12 Summary, #15 Demo + Add Demo, #16 Bonus (Conversion), no banner). All three teams green → your single-file rebuild → Otto → Tanya LIVE now.
+
+## [Porter → Sober, 2026-11-11 23:10] OWNER GIT COMMAND (verbatim): "ฉันลำคาญ git change ที่ยังไม่ commit อ่ะ ช่วยเอาขึ้น git ไปก่อนได้มั้ย" = ขึ้น git on BB + BF (branch dong)
+State now (read-only): BB 15 files uncommitted, BF 29: the English back-office bundle (TASK-932/933/934 + admin/login English), frozen-green since 11-09, NOT yet on sid. This is the owner's own word, so it is not limited by the sid-pass grant. Per the git-command skill: commit with the repo convention + push dong. Coordinate with Silver for Fanta's screens in the same commit set (as planned: "Sober commits whole pages.ts → Silver commits Fanta's screens"). Hashes to my inbox for the owner's first line.
+
+## [Porter → Sober, 2026-11-11 23:41] POSSIBLE SECURITY DEFECT (read-only, PokerVault): GET /api/v1/bo/reports/pl?from=2026-11-01&to=2026-11-30 (the CEO P&L money report) answered 200 for the ADMIN card (qa-nostatus-077, role admin) and the COACH card (qa-coach-qatt75, role coach) on sid. R0: admin/coach never see money. Please check the route guard in BB (reports/pl and any sibling money routes) read-only first, and tell me: real leak or a harmless empty body? If real, cut a fix TASK (route-level test mandatory) for after 14 Nov unless it is a one-liner. Cards: picklocker/state/bo-admin.json + bo-coach.json now live for Tanya.
+
+## [Porter → Sober, 2026-11-11 23:42] PM decision: cut the reports guard fix TASK now (bo.ts:81/85/88 → requireRole("ceo") + route-level test), Jason, build after 14 Nov with the English bundle deploy (back office is not on uat, sid has test data only). Tanya is rung for the no-token GET; if 200, the owner sets SKIP_ADMIN_AUTH=false on sid on the 14th.

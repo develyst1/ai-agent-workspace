@@ -4499,3 +4499,74 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
   - No salary figure goes into any shared file, inbox, log, board, TASK, test or screenshot. **Nothing about money is ever posted to the LINE group** (the bot included).
   - A seat that needs it for seeding the salary block reads it from `.private` only, on the owner's per-case word (the coach-pay rule).
   - Porter read only the sheet headers.
+
+## Think before anything goes to the group [owner 2026-11-10 evening]
+- Owner, verbatim: *"ก่อนพิมพ์ข้อความส่งขวัญ หรือส่งอะไรในกลุ่มต้องคิดมาดีแล้วนะ"*
+- Before Porter shows a group draft, check it:
+  - every claim is true today (not "เปิดให้แล้ว" for something not built);
+  - it does not contradict an earlier reply or the GR web;
+  - every customer word is quoted, not guessed;
+  - batch it with whatever is about to land, so the customer gets one message instead of a trickle.
+- **The GR web covers the front-office asks too [owner 2026-11-10 evening]:** *"ฉันหมาย ถึง พวก ที่ขวัญพิมพ์ฺมายาวๆ เนี้ย เอามาอัปเดต getrequirement ยัง"*.
+  - ขวัญ's long 9 Nov front-office items (F1–F6, INTAKE-2026-11-09) go onto the GR web as "Proposed" mock screens. She sees how each would work and confirms it before the 17th.
+  - They do not start in the real code. Same loop as the back office.
+- **Owner, 2026-11-10 evening, the routing rule (verbatim):** *"get requirement = backoffice demo … หากเป็น feedback backoffice มึงต้องไป update backoffice demo แล้วแจ้งขวัญ นอกนั้นเอามาคุยกับกู"*
+  - The GR web is the BACK-OFFICE demo only.
+  - Back-office feedback: Porter updates the demo through the loop and tells ขวัญ.
+  - Everything else (front office, dashboard, scope or money): Porter brings it to the owner first.
+  - Round 4 (front-office pages on the GR web) was wrong and is cancelled (TASK-945 stub, never built).
+
+## Front-office F5 decision: a leave on a make-up moves +1 week [owner 2026-11-10 evening]
+- Owner, verbatim: *"แก้สิ เราทำไม่ถูก"*. Asked: when a family takes leave on the last class (a make-up), it should move to the next week and the family should be told; it should not land back on the same date.
+- **This REVERSES TASK-551.** Our own earlier rule, "a make-up put straight back in the same slot changed nothing", is retired.
+- Fix as in CHECK-2026-11-09-frontoffice-intake.md § F5: put the cancelled row's coach+date into `coachOff`, in the single cancel and the group cancel. About 0.5 d plus tests. Team C.
+- It is a bug fix in the live front office, so it is not held by the back-office pause.
+- **F2 decision [owner 2026-11-10 evening]:** *"แก้ให้ถูกอ่ะ"*, in answer to Porter's F2 proposal.
+  - While a course is Pending, no message goes to the parent. A make-up is still born CONFIRMED, as in ขวัญ's 10-06 rule.
+  - When Confirm Course is pressed, the parent gets the whole course schedule once, make-ups included.
+  - The undo-leave and expiry notices follow the same gate.
+  - Fix as in CHECK-2026-11-09 § F2, about 1–1.5 d, Team C, after TASK-946 (same file).
+
+## SOM Dashboard split [owner 2026-11-11]
+- Owner, verbatim: *"frontend ปาล์มทำ backend เราทำ หมายถึง dashboard นะ"*.
+- For the SOM Dashboard (REQ-5004 / REQ-5009), Palm builds the screens and our team builds the numbers (SB API).
+- Open now: REQ-5009 #3, the Gender/Nationality base = "Total Customer + 1 Hr (Last 3 months)"; and #5, the Activity/Program chart (count COURSES per package, vouchers excluded, 1st Trial separate, pie preferred), per ขวัญ 11-09 13:33 and 11-10 01:53.
+- It is inside the 39,200 scope; no quote.
+
+## A ball line means the holder is MOVING [owner 2026-11-11]
+- Owner, verbatim: *"ส่งบอลยังไงให้พวกนั้นไม่ขยับ แก้ด้วย"*.
+- Case: Sober wrote TASK-948 to Fern's inbox at about 07:30, but Fern's session never woke. Its last activity was 11-10 16:43. Porter told the owner "ลูกอยู่ที่ Fern" twice without checking.
+- **Rule, from now on:**
+  1. Every hand-off gets a doorbell. Porter also rings an SA's engineer directly, pointing at the SA's inbox line.
+  2. Before writing "ลูกอยู่ที่ X", Porter checks X's session in `list_sessions`: running, or lastActivity after the hand-off. If not, ring again and say so.
+  3. While any seat holds open work, the watcher always runs with the 30-min tick. At each tick, any seat with work and no activity since its hand-off is rung, and the owner is told if it is still idle on the next tick.
+
+## The owner's PC is offline during the day [owner 2026-11-11]
+- Owner, verbatim: *"ตัวเช็คไลน์ต่อไม่ติดก็เพราะว่าฉันออกจากที่นี่ไปประมาณ8โมงครึ่งอินเทอร์เน็ตมันหลุดไง มันจะเป็นอย่างนี้ตลอดแหละ … น่าจะโผล่อีกทีประมาณเนี่ยแหละทุ่มสองทุ่ม"*.
+- **Normal day:** offline from about 08:30 until about 19:00–20:00. During that window the LINE poller fails ("offline"), the desk sessions on this PC don't run, and no bot send is possible.
+- **What follows:**
+  - An "offline" alarm in that window is expected. Don't treat it as a fault, and don't tell the owner about it.
+  - ขวัญ's daytime group messages are read when the PC is back. The poller's cursor catches up on its first poll, so nothing is lost.
+  - Anything that needs the owner's "ส่ง" waits for the evening.
+
+## VAT on quotes: the same as the earlier package [owner 2026-11-11]
+- Owner, verbatim: *"ไม่ค่อยเข้าใจเรื่องแวท เอาแบบรอบที่แล้วอ่ะ ที่เขาซื้อเเพคเกจเรา เรื่อง permission ระบบหน้าบ้าน"*.
+- The earlier deal was quoted as plain numbers with **no VAT line**: package 73,000 + user-permission 3,500 (BRIEF-owner-backoffice-money-meeting-2026-10-27 §1). So were the back office 39,200 and the extra-work proposal.
+- Rule: extra-work quotes follow the same form, a plain price and no VAT line.
+- Open: whether Develyst is VAT-registered is the owner's to check with แนท/พี่เบส for the contract. Porter does not guess it.
+- **Free small-change limit, SETTLED [owner 2026-11-11]:** *"ไม่เกินสองวัน"*. After the 17 Nov scope freeze, a change of **at most 2 days** is done free. Anything larger is a change request at the old rate. This replaces the open "1–2 d vs 1–1.5 d" note above, and goes into แนท's agreement clause 7.
+- **Source code ownership [owner 2026-11-11]:** *"ของลูกค้าหลังจบbackoffice ด้วย"*. The source code becomes the CUSTOMER's after the back-office job is finished (and paid). It goes into แนท's agreement. The lawyer check on that clause, which แนท flagged, still stands.
+- **Server, domain and LINE costs [owner 2026-11-11]:** *"ค่าเซิร์ฟเวอร์ลูกค้าจะจ่ายหลังจบตอนนี้ลูกค้าฝากฉันจ่ายแทนโดเมนก็จะเปลี่ยนไปใช้ของลูกค้าตอนจบไลน์ลูกค้าจ่ายเองอยู่แล้วของที่ใช้อยู่บน UAT"*.
+  - **Server:** the owner pays on the customer's behalf now; the customer pays after the job ends.
+  - **Domain:** it moves to the customer's own domain at the end.
+  - **LINE:** the customer already pays the LINE OA used on UAT.
+
+  All three go into แนท's agreement.
+- **Acceptance and payment terms [owner 2026-11-11, "ตามแนะนำ"]:** the customer checks a delivery within **7 working days**; silence past that counts as accepted (แนท's clause 6). Payment is due within **7 days** of the signed acceptance.
+- **The owner's uat routine [owner 2026-11-11]:** *"ปกติ ตอนฉันทำ ก็ทำแบบนี้อยู่แล้ว"*. He deploys and migrates on uat with each repo's `.env.uat` as a matter of course. Deploy notes give him only what goes, the migrate output, the numbers and the STOP lines. Never the env plumbing.
+
+## SKIP_ADMIN_AUTH must be false on every deployed back office [2026-11-11]
+- sid BB ran with `SKIP_ADMIN_AUTH=true` (the `.env.example` default). With it, any request without a token became the dev CEO, so the back-office API was open to the internet (D-150-3, Tanya; found via PokerVault's probe).
+- The owner set it to `false` on sid on 11-11 ~23:55. Tanya re-checked: no token → 401, cookie-only → 401, CEO Bearer → 200, CEO UI is fine.
+- **Rule:** every back-office deploy (sid now, uat later) checks `SKIP_ADMIN_AUTH=false` in its BEFORE list.
+- Separate: TASK-951 (after 14 Nov) closes the admin-sees-money leak on `/bo/reports/*`.

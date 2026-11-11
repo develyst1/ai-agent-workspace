@@ -30,7 +30,9 @@ const a = process.argv;
 const out = a[a.indexOf("--out") + 1]!;
 appendFileSync("args.log", JSON.stringify({ cwd: process.cwd().split(/[\\/]/).pop(), since: a[a.indexOf("--since") + 1] }) + "\n");
 const mode = process.env.FAKE_MODE ?? "ok";
-if (mode === "fail") { console.log("boom: internal detail SECRET-TEXT"); process.exit(1); }
+if (mode === "fail") { console.log("no answer from the bot (timeout or network); nothing was written"); console.error("bun says hello\nsecond stderr line"); process.exit(1); }
+if (mode === "http401") { console.log("401 {\"error\":{\"code\":\"UNAUTHORIZED\",\"message\":\"Bad key\"}}"); process.exit(1); }
+if (mode === "longfail") { console.log("x".repeat(300) + "\nsecond stdout line"); process.exit(2); }
 if (mode === "junk") { console.log("hello SECRET-TEXT world"); process.exit(0); }
 if (mode === "stderr") { console.error("diagnostic SECRET-TEXT on stderr"); }
 if (mode === "off") { console.log("recording is OFF on the bot (RECORD_GROUP_MESSAGES is not true): nothing to pull"); process.exit(0); }
@@ -95,10 +97,13 @@ for mode in fail junk nofile; do
   FAKE_MODE=$mode FAKE_COUNT=3 FAKE_NEXT=m9 run --once; rc=$?
   check "$mode: exit 0 (the poller itself never fails), no RELAY line" '[ $rc = 0 ] && [ "$(sumrelay)" = "$before" ]'
   check "$mode: cursor unchanged, no file left" '[ "$(cursor)" = keepme ] && [ -z "$(ls "$T/ai-worker/.private" | grep -E "^line-.*json")" ]'
-  check "$mode: nothing logged contains the output text" '! grep -q SECRET-TEXT "$T/ai-worker/.private/watch-line.log" 2>/dev/null'
+  check "$mode: nothing a SUCCESSFUL pull printed is logged (a fixed phrase only)" '! grep -q SECRET-TEXT "$T/ai-worker/.private/watch-line.log" 2>/dev/null'
 done
 mk; echo keepme > "$T/ai-worker/.private/line-cursor"; FAKE_MODE=fail run --once
-check "a non-zero exit logs the exit code" 'grep -q "pull exit 1" "$T/ai-worker/.private/watch-line.log"'
+check "a no-answer failure is logged plainly as offline, with the exit code AND why (pull's first stdout line and first stderr line)" 'grep -q "offline or bot unreachable (no answer): pull exit 1: no answer from the bot (timeout or network); nothing was written | stderr: bun says hello$" "$T/ai-worker/.private/watch-line.log"'
+check "only the FIRST line of stderr / stdout is logged" '! grep -q "second stderr line" "$T/ai-worker/.private/watch-line.log"'
+mk; echo keepme > "$T/ai-worker/.private/line-cursor"; FAKE_MODE=longfail run --once
+check "a long, multi-line failure is cut to 200 characters and one line" '[ "$(tail -1 "$T/ai-worker/.private/watch-line.log" | sed "s/^[^ ]* pull exit 2: //" | wc -c)" -le 202 ] && ! grep -q "second stdout line" "$T/ai-worker/.private/watch-line.log"'
 mk; echo keepme > "$T/ai-worker/.private/line-cursor"; FAKE_COUNT=2 FAKE_NEXT=none run --once
 check "count > 0 but next none: no line, cursor unchanged" '[ "$(relay | wc -l)" = 1 ] && [ "$(cursor)" = keepme ]'
 mk; echo keepme > "$T/ai-worker/.private/line-cursor"; FAKE_COUNT=2 FAKE_NEXT='bad id;rm' run --once
@@ -115,6 +120,56 @@ mk; echo keepme > "$T/ai-worker/.private/line-cursor"
 outall=$(FAKE_MODE=stderr FAKE_COUNT=1 FAKE_NEXT=m6 run --once 2>&1)
 check "a diagnostic on pull.ts's stderr never appears in the poller's output" '! echo "$outall" | grep -q SECRET-TEXT'
 check "that poll still produced its line" '[ "$(relay | wc -l)" = 2 ]'
+echo "== a failure streak is loud: ONE alarm per streak, ONE recovered =="
+mk; echo keepme > "$T/ai-worker/.private/line-cursor"
+FAIL_RE='^From line-poll [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}: LINE poll FAILING: offline or bot unreachable \(no answer\) — 2 in a row since [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$'
+FAKE_MODE=fail run --once
+check "1 failure: no RELAY line yet" '[ "$(relay | wc -l)" = 1 ]'
+FAKE_MODE=fail run --once
+check "2 no-answer failures in a row: exactly ONE FAILING line, in the exact offline wording" '[ "$(relay | wc -l)" = 2 ] && relay | tail -1 | grep -Eq "$FAIL_RE"'
+FAKE_MODE=fail run --once; FAKE_MODE=fail run --once
+check "a 3rd and 4th failure: still ONE (one alarm per streak)" '[ "$(relay | wc -l)" = 2 ]'
+check "the cursor never moved during the streak" '[ "$(cursor)" = keepme ]'
+FAKE_COUNT=0 FAKE_NEXT=none run --once
+check "the first success: exactly ONE recovered line" '[ "$(relay | wc -l)" = 3 ] && relay | tail -1 | grep -Eq "^From line-poll [0-9-]+ [0-9:]+: LINE poll recovered$"'
+FAKE_COUNT=0 FAKE_NEXT=none run --once
+check "a second success adds nothing" '[ "$(relay | wc -l)" = 3 ]'
+check "the streak files are gone after a success" '[ -z "$(ls "$T/ai-worker/.private" | grep "line-fail")" ]'
+FAKE_MODE=fail run --once; FAKE_MODE=fail run --once
+check "a NEW streak raises a NEW alarm" '[ "$(relay | wc -l)" = 4 ] && relay | tail -1 | grep -q "LINE poll FAILING"'
+echo "any other failure keeps pull exit <rc>: <reason> (not the offline wording)"
+mk; echo keepme > "$T/ai-worker/.private/line-cursor"
+FAKE_MODE=http401 run --once; FAKE_MODE=http401 run --once
+check "a bot error status: log and alarm say pull exit 1 with the status line, NOT offline" 'grep -q "pull exit 1: 401 {" "$T/ai-worker/.private/watch-line.log" && ! grep -q "offline" "$T/ai-worker/.private/watch-line.log" && relay | tail -1 | grep -Eq "LINE poll FAILING \(2 in a row since [0-9: -]+\): pull exit 1: 401 \{" && ! relay | grep -q offline'
+echo "the 'since' time is the FIRST failure's, not the latest"
+mk; echo keepme > "$T/ai-worker/.private/line-cursor"
+FAKE_MODE=fail run --once
+echo "2026-01-02 03:04" > "$T/ai-worker/.private/line-fail-since"
+FAKE_MODE=fail run --once
+check "the alarm names the time of the first failure of the streak" 'relay | tail -1 | grep -q "2 in a row since 2026-01-02 03:04$"'
+mk; echo keepme > "$T/ai-worker/.private/line-cursor"
+FAKE_MODE=fail run --once; echo "2026-01-02 03:04" > "$T/ai-worker/.private/line-fail-since"; FAKE_MODE=fail run --once; FAKE_MODE=fail run --once
+check "a third failure does not move it (still one alarm, same since file)" '[ "$(cat "$T/ai-worker/.private/line-fail-since")" = "2026-01-02 03:04" ] && [ "$(relay | wc -l)" = 2 ]'
+
+echo "recovery that also brings messages: the recovered line first, then the messages line"
+mk; echo keepme > "$T/ai-worker/.private/line-cursor"
+FAKE_MODE=fail run --once; FAKE_MODE=fail run --once
+FAKE_COUNT=2 FAKE_NEXT=m30 run --once
+check "recovered, then the normal new-messages line, in that order" '[ "$(relay | wc -l)" = 4 ] && relay | tail -2 | head -1 | grep -q "LINE poll recovered" && relay | tail -1 | grep -q ": 2 new LINE message(s) in SOM SYSTEM"'
+check "and the cursor moved" '[ "$(cursor)" = m30 ]'
+echo "a streak of unexpected output (exit 0) counts too; a recording-OFF answer is a success"
+mk; echo keepme > "$T/ai-worker/.private/line-cursor"
+FAKE_MODE=junk run --once; FAKE_MODE=junk run --once
+check "2 unexpected outputs: one FAILING line, reason is the fixed phrase, none of the output text" '[ "$(relay | wc -l)" = 2 ] && relay | tail -1 | grep -q "pull exit 0: unexpected pull output" && ! relay | grep -q SECRET-TEXT'
+FAKE_MODE=off run --once
+check "recording OFF is a success: it ends the streak with a recovered line" '[ "$(relay | wc -l)" = 3 ] && relay | tail -1 | grep -q "LINE poll recovered"'
+echo "the reason in RELAY is cut to 120 characters"
+mk; echo keepme > "$T/ai-worker/.private/line-cursor"
+FAKE_MODE=longfail run --once; FAKE_MODE=longfail run --once
+check "RELAY reason: one line, at most 120 characters after 'pull exit 2: '" '[ "$(relay | wc -l)" = 2 ] && [ "$(relay | tail -1 | sed "s/.*pull exit 2: //" | wc -c)" -le 122 ] && ! relay | grep -q "second stdout line"'
+echo "an unsuccessful poll never leaves a file or a temp file behind"
+check "no line-*.json, no .tmp, no .err left" '[ -z "$(ls "$T/ai-worker/.private" | grep -E "^line-.*(json|tmp|err)")" ]'
+
 echo "== no cursor yet: start from now, never from history =="
 mk; rm -f "$T/ai-worker/.private/line-cursor"
 FAKE_COUNT=0 FAKE_NEXT=none run --once

@@ -309,3 +309,7 @@ From Silver 2026-11-09: ✅ **Porter says YES. Your next item is route-level tes
 - Run each test against a deliberately broken validator once to prove it catches it.
 - **Tests only:** if a test exposes a real bug, stop and report it; don't fix it in the same change.
 - Report in `inbox/SA-B.md`. Start now.
+
+From Silver 2026-11-10: ⏸️ **DESK STOP** (owner: "บอกทีมหยุดก่อน", via Porter). Finish only the step you're in, start nothing new, ship nothing (no migration apply, no sid proof), and report where you stopped in one line in `inbox/SA-B.md`. Wait for my go.
+
+From Silver 2026-11-11: **the desk stop is lifted for this task.** Your next item is **TASK-950**: build SPEC-104, the SOM dashboard BE (#3 demographics base + #5 `activityPackages`), in SB `som-contract.ts` (`tasks/TASK-950-…`, ≈ 1.25–1.5 d, no migration). Palm's FE is waiting on it. Read SPEC-104 whole, then start now. Report green + a read-only sid call in `inbox/SA-B.md`.

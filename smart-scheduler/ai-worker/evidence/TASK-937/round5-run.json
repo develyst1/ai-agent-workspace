@@ -1,0 +1,113 @@
+{
+ "roles": {
+  "CEO": [
+   "revenue/summary:opens",
+   "stock/demo:opens",
+   "proposed/conversion:opens"
+  ],
+  "Admin": [
+   "revenue/summary:opens",
+   "stock/demo:opens",
+   "proposed/conversion:cannot-see"
+  ],
+  "Coach": [
+   "revenue/summary:cannot-see",
+   "stock/demo:cannot-see",
+   "proposed/conversion:cannot-see"
+  ]
+ },
+ "flows": {
+  "apply_button": 1,
+  "top_headers": "Type Unit Revenue",
+  "summary_today": {
+   "topUnits": 16,
+   "topTotal": 82700,
+   "catUnits": 16,
+   "catTotal": 82700,
+   "catRows": 11,
+   "unitsMatch": true,
+   "revenueMatches": true
+  },
+  "summary_mtd": {
+   "topUnits": 208,
+   "topTotal": 757475,
+   "catUnits": 208,
+   "catTotal": 757475,
+   "catRows": 17,
+   "unitsMatch": true,
+   "revenueMatches": true
+  },
+  "summary_ytd": {
+   "topUnits": 2067,
+   "topTotal": 7113915,
+   "catUnits": 2067,
+   "catTotal": 7113915,
+   "catRows": 17,
+   "unitsMatch": true,
+   "revenueMatches": true
+  },
+  "summary_today_bravo": {
+   "topUnits": 15,
+   "topTotal": 82200,
+   "catUnits": 15,
+   "catTotal": 82200,
+   "catRows": 11,
+   "unitsMatch": true,
+   "revenueMatches": true
+  },
+  "demo_matrix": {
+   "layout": "fixed",
+   "allCentred": true,
+   "siteColumnWidths": [
+    109,
+    109,
+    109,
+    109,
+    109,
+    109
+   ],
+   "equalWidths": true
+  },
+  "add_demo_needs_reason": "Give a reason first; the history keeps it",
+  "add_demo": {
+   "cellBefore": "2",
+   "cellAfter": "4",
+   "historyRows": [
+    6,
+    7
+   ],
+   "toast": "Demo added: 2 × Surfskate board at STA",
+   "firstHistory": "16/10/26 Ploy Surfskate board Added → STA 2 Bought 2 more for the school class"
+  },
+  "conv": {
+   "title": "Bonus (Conversion)",
+   "banner": 0,
+   "total": "Total: 7 (Bonus 500 ฿)",
+   "headers": "Date Student Package Coach Type Amount"
+  },
+  "conv_menu": {
+   "before": "Payment Detail",
+   "item": "Bonus (Conversion)",
+   "after": "Other Income",
+   "salarySectionOrder": [
+    "Payment Setting",
+    "Monthly Payment",
+    "Payment Detail",
+    "Bonus (Conversion)",
+    "Other Income",
+    "Daily Training Report"
+   ]
+  },
+  "conv_export": {
+   "banner": 1,
+   "headers": "Date Student Package Coach Type Amount"
+  },
+  "hscroll_375_CEO": {
+   "revenue/summary": false,
+   "stock/demo": false,
+   "proposed/conversion": false
+  }
+ },
+ "consoleProblems": [],
+ "networkRequests": []
+}

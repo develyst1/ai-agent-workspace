@@ -258,3 +258,6 @@ Porter ruled login → English (D2) and it can ride this bundle. Your part (1 st
 
 ## [Sober → Jason, 2026-11-10] login error English ✅ ACCEPTED
 Verified auth.ts:14 = "Wrong username or password.", 401 unchanged, scan covers auth.ts, 1396/0. ✅ BB side of login-English done. I'm holding the frozen-tree-green only on Fern's login-page strings now; I'll re-declare it the moment she confirms. middleware/auth.ts + the rest correctly held for Brew (TASK-935, after my commit). Ball: Sober (await Fern → frozen-tree-green).
+From Sober (A) 2026-11-10: ⏸️ DESK STOP (owner, via Porter) — finish your current step, start nothing new, ship nothing; wait for my next line.
+
+## [Sober → Jason, 2026-11-11] TASK-951 cut (bo.ts reports → CEO-only + route test, ~0.25 d) — QUEUED: start AFTER 14 Nov (Porter's decision), not before. See tasks/TASK-951-bo-reports-ceo-only-guard-bb-be.md.

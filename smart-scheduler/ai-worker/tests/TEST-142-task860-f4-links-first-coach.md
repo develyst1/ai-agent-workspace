@@ -1,6 +1,6 @@
 # TEST-142: TASK-860 (F4 links, first coach, coach change, Bonus 100 pick) + TASK-861 (F5 "No Teacher")
 - Source REQ: REQ-120 §5 (F4, F5) · §1.2 Bonus 50/100 · §9.4 #4–5. Built as TASK-860 + TASK-861 (Team B; both ACCEPTED by Silver 2026-11-08).
-- Status: **TEST_PASSED** (2026-11-09). Every case that was run passed, no defect. NOT_TESTED, each named below with its reason: case 18 (needs a second day-end), the NO_SHOW variant of case 8, F5-6 and F5-12.
+- Status: **TEST_PASSED** (2026-11-09; case 18 added 2026-11-10). Every case that was run passed, no defect. NOT_TESTED, each named below with its reason: the NO_SHOW variant of case 8, F5-6 and F5-12.
 - Surfaces: sid API (som.develyst.online) · sid painted front office (desktop 1600 px, headless Chrome) · sid DB catalog + `bo.movement`, read-only · local suite.
 - Tested: 2026-11-08 (round 1) and 2026-11-09 (round 2) by Twenty.
 - Rounds from Porter: 2026-11-08 (F4) and 2026-11-09 (re-run after the sid deploy, F5 added), both whole and sid only.
@@ -45,7 +45,7 @@
 | 15 | An import writes no links | negative | sid API | F1 all null, although trial F is ATTENDED and unused | F1 all null | PASS |
 | 16 | DUO: links on the primary child only | edge | sid API | G1 = trial G; trial H stays unused | G1 = `8ff36982…` = trial G. H's own voucher H1 later linked **trial H** (so the DUO didn't consume it), with `prevCourseId` = G1 (the DUO counts in H's history, as Bob's report says) | PASS |
 | 17 | Day-end stamps the first coach = the coach on the earliest ATTENDED row | happy | sid, day-end 2026-11-09 17:30 | J1 = Kid · J2 = Kid · **K1 = Print** (its wk-1 11-01 row was covered by Print; the course teacher is Toth) · B1 voucher = Print · G1 null (none attended) | `end-of-day` job_run for 2026-11-09 = `success`. **J1 = Kid · J2 = Kid · K1 = Print · B1 = Print · G1 null.** All other `Twenty-` courses and vouchers (no attended class) null | **PASS** |
-| 18 | The day-end step is idempotent | regression | sid, day-end 11-10 | same values on 11-11 | — | **NOT_TESTED**: needs a second day-end (2026-11-10). Settle: re-run `sid-task860-part2-read.ts` after it; J1/J2/K1/B1 must be unchanged and the mismatch count 0 |
+| 18 | The day-end step is idempotent | regression | sid, day-end 11-10 | same values on 11-11 | Read 2026-11-10 20:1x, after the 2026-11-10 `end-of-day` (job_run `success`): **J1 = Kid · J2 = Kid · K1 = Print · B1 = Print, unchanged**; the others still null; picks unchanged. Fill 124/124 courses (2 newly attended since 11-09, also stamped) and 10/10 vouchers; mismatch vs the earliest ATTENDED row **0**; on No Teacher **0** | **PASS** |
 | 19 | The first night fills old courses, imports included | happy | sid DB read | `first_teacher_id` set on every course and voucher with ≥1 ATTENDED row | courses: **122 of 122** stamped, 0 missing, 6 of them imports. Vouchers: **10 of 10**, 0 missing. Stamped coach ≠ the earliest ATTENDED row's teacher: **0**. Stamped = the system teacher: **0** | **PASS** |
 | 20 | A whole-course teacher change stamps `coachChangedAt` + `latestTeacherId` | happy | sid API | A2 → New: both set | set | PASS |
 | 21 | A time-only change writes nothing | negative | sid API | A1 (Kid → Kid, 10:00 → 16:00) null | null | PASS |
@@ -103,14 +103,13 @@ None.
 
 ## Verdict
 **`TEST_PASSED`: every case that was run passed, no defect.**
-- **F4 (TASK-860) PASS:** cases 0–17, 19, 20–23, 24a–d, 25, 26.
+- **F4 (TASK-860) PASS:** cases 0–26 (24a–d included); case 18 settled 2026-11-10.
 - **F5 (TASK-861) PASS:** F5-1…5 and F5-7…11.
 - **NOT_TESTED, named:**
-  - case 18 (idempotency): needs the 2026-11-10 day-end; one read settles it;
   - case 8's NO_SHOW variant: no path writes NO_SHOW;
   - F5-6 (archive): would risk the shared row;
   - F5-12 (course modal, roster, 375 px).
 
 ## Questions
-1. Porter: case 18 is a single read-only command after the 2026-11-10 day-end. Ring me if you want it before the gate; it doesn't change the verdict unless it fails.
+1. ~~Porter: case 18 after the 2026-11-10 day-end.~~ Done 2026-11-10: PASS.
 2. F-054: the sid admin session's token printed into my transcript. Reissuing it is the owner's call; PokerVault holds the session file.

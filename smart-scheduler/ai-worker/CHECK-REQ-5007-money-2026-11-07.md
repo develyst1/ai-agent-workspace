@@ -77,3 +77,26 @@
 - Real data: how many courses change across price groups, and whether any imported course is in the mix.
 - The sizes are read from the code, not built.
 - Whether the back-office screen lets staff send a ref on a manual entry. The API allows it, but I didn't read the screen.
+
+## 6. Re-size after ขวัญ's 11-10 ruling (DECISIONS row 24: the amount + month stay, only the CATEGORY follows, the difference goes in by hand). Silver, 2026-11-11, size only, the desk stop holds
+**Read today:**
+- BB `src/db/schema-revenue.ts` `revenue_line`: `category_id` (updatable) · `product_name` · `remark` · `ref_type` / `ref_id` ("NULL for MANUAL") · `source`;
+- `revenue-ledger.service.ts` (a manual line typed REFUND is refused; Tanya, TEST-150 Block C);
+- `routes/bo.ts:85`, the legacy "revenue by activity" report, still mounted (the menu label «รายได้แยกตามกิจกรรม»).
+
+| piece | what | size |
+|---|---|---|
+| **M0 read fix** | the legacy `/bo/reports/revenue-by-activity` takes the course's own activity, not "any one class row". **Alternative:** retire that legacy report, since Revenue Summary (by category) replaces it. That's a menu decision, ≈ 0.25 d. | **0.5 d** (or 0.25 d to retire) |
+| **Category relabel + history** | on change: `UPDATE revenue_line SET category_id = <new>` for the course's own line(s) (`ref_type = course`, its id), in the same tx as the class change, + a history row. **No column for history today**, so either append to `remark` (0 migration, crude) or a small `bo.revenue_line_change` (who · when · from → to; 1 additive migration). **I'd use the table.** | **≈ 1 d** |
+| **Manual difference linked to the course** | Add Manually gains an optional "course" link (`ref_type` / `ref_id`; today MANUAL leaves them NULL) + the reason «ส่วนต่างเปลี่ยนกิจกรรม» pre-filled from the change screen (BB API + the Revenue FE form) | **≈ 0.5–1 d** |
+| **No re-class pair** | ruled out by row 24 (nothing moves between months) | 0 |
+
+**Money part total ≈ 2–2.5 d** (was ≈ 0.5 + 1.5 = 2 d for M0 + the add-on). It's about the same days but simpler, with no pair logic. **Risk: low–medium** (it writes into Team C's revenue ledger, so Sector's team builds or reviews it).
+
+**🔴 Things in the CONCEPT that are wrong or missing against the code:**
+1. **"A lower price is a manual refund line" can't be done today.** Add Manually refuses type REFUND (400, by design), and the Refund screen is tied to a course refund that **cancels sessions** (C-f), which the concept says must not fire. **A negative difference needs a new path:** a REFUND-type manual line with a "no session cancel" reason, or a negative "adjustment" type. **+≈ 0.5–1 d** and a product decision. **Ask ขวัญ:** does a cheaper new activity ever give money back? If it never does, nothing is needed.
+2. **`product_name` stays the OLD product** (e.g. "Skate Private 6 Hr") while the category becomes the new activity, so the Revenue Detail row reads mixed. **Decide:** also rewrite `product_name` (my default: keep it, the history row explains), or show both.
+3. **"Linked to the course"** needs the manual-line link above; today a manual line can't carry a ref.
+4. **Owner of the build:** the revenue pieces are **Team C's** (Sector; `revenue_line` is his C1 ledger). My sizes are reads, not his estimate.
+
+**Front office** (unchanged from 11-07): the button 3–4 d + 1 HR / Trial 1–1.5 d. **Quote total ≈ 6.5–8 d** with the money part above (+ 0.5–1 d if a negative difference is wanted).

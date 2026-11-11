@@ -419,3 +419,41 @@ Owner: "อยากให้ดูของจริงมากกว่าด
 
 ## [Porter → Tanya, 2026-11-10 03:07] GR round 2 LIVE (md5 6ac40756): live check + screenshots for the customer
 Sober verified live (release 20261109-200651). On https://som-gr.develyst.online with the som-gr card: confirm no blue left (menu highlight, logo, welcome banner), dark toggle, Unlock still OK. Screenshots for the CUSTOMER into tests/evidence/gr-round-2-live/: (1) Home in light/orange as CEO; (2) Pay run locked showing the Unlock button; (3) Pay run after Unlock (editable). Mock data only. Verdict + paths into TEST-151.
+
+## [Porter → Tanya, 2026-11-10 20:07] GR round 3 LIVE (md5 cb7334e7): live check + screenshots for the customer
+On https://som-gr.develyst.online with the som-gr card. Check: (1) the top-left brand reads "SOM BACK OFFICE" only; (2) as Admin, Merit appears NOWHERE (Other Income/Entries, People, Person); as CEO, Merit is still there. Screenshots into tests/evidence/gr-round-3-live/: (a) the sidebar top-left brand; (b) Admin → Other Income without Merit; (c) Admin → People without Merit. Mock data only. Verdict + paths into TEST-151.
+
+## [Porter → Tanya, 2026-11-10 20:10] bo-ceo card is NEW (UNLOCKED 20:10, PokerVault): finish the Bonus 100 apply-bonus on Nov 2026
+REQUEST-porter-to-pokervault-2026-11-10-bo-ceo.md § Reply. Same rule as before: the Nov 2026 period stays OPEN and is never locked. Verdict into TEST-150 § Bonus 100 re-run.
+
+## [Porter → Tanya, 2026-11-10 23:42] ⏸️ DESK STOP (owner: "บอกทีมหยุดก่อน"): finish the step you are on, start nothing new. Wait for Porter.
+
+## [Porter → Tanya, 2026-11-11 00:23] sid round: front-office F5 + F2 (TASK-946 + 947), SB just deployed by the owner. The desk stop is lifted for THIS round only
+On sid (API + painted where you can), use your own Tanya- test courses only:
+(1) PENDING course + a leave ⇒ the make-up is created, NO parent LINE message (the coach still gets his), including the undo-leave, cancel, move and daily-reminder paths.
+(2) Confirm Course on that course ⇒ the parent gets ONE course-schedule message that includes the make-up line «ขยายคาบ» / "Extended".
+(3) A leave or cancel on a make-up (the last class) ⇒ it moves to the next free week, NEVER the same date; the course +1 week; a family notice (school-issue tick).
+Verdict into a new TEST file; screenshots of the LINE text if you can see the outbox. Report to my inbox.
+
+## [Porter → Tanya, 2026-11-11 00:48] SB redeployed on sid with the O-152-1 fix: re-run TEST-152 step 1b on a NEW pending Tanya- course
+Expect: undo-leave brings the class back PENDING (not CONFIRMED). Then tell me; Sector reads the outbox (no parent message expected).
+
+## [Porter → Tanya, 2026-11-11 08:20] GR round 4 LIVE (md5 949cf32a): live check + screenshots for the customer
+On som-gr with your card. The "Viewing as" switcher is now a DROPDOWN (CEO / Admin (Khwan) / Admin (Kung) / Coach). Check: (1) CEO → User Setting has a "Can see Revenue" switch per user, Khwan ON, Kung OFF; (2) Admin (Khwan) sees the Revenue menu + pages; (3) Admin (Kung) does not; flipping Kung ON in User Setting (as CEO) shows Revenue for Kung. Screenshots into tests/evidence/gr-round-4-live/: (a) User Setting with the switches; (b) Revenue visible as Admin (Khwan); (c) the menu as Admin (Kung) without Revenue. Verdict in TEST-151.
+
+## [Porter → Tanya, 2026-11-11 19:35] GR round 5 LIVE (md5 3341cf63): live check + customer screenshots
+ขวัญ's 11/11 list (verbatim: project-docs/customer-2026-11-11-line-som-system/; split in PLAN-2026-11-11-gr-round5-split.md). Check all 16 points + the Revenue Summary category box (Unit + Revenue) + foldable menu groups + Add Demo + "Revenue Visible" switch. Screenshots into tests/evidence/gr-round-5-live/ for the customer (pick 4–5 that show the biggest changes): the menu (new order, Monthly Payment, Bonus (Conversion), folding), Revenue Summary with the category box, Salary Report, Stock Demo with Add Demo, User Setting. Verdict in TEST-151.
+
+## [Porter → Tanya, 2026-11-11 20:10] sid round: SPEC-104 SOM dashboard API (TASK-950), SB just deployed
+On sid, GET /api/reports/som (CEO card): (1) demographics.base = "CUSTOMERS_PLUS_RECENT_1HR" and gender.total = Total Customers + the 1 HR (3 months) children who are not customers (Bob saw 38 = 33 + 5); (2) activityPackages: per activity, COURSE counts by size sum to the Active-course card (Bob saw 79), vouchers absent, SINGLE_SESSION = children, firstTrial separate and not in total; (3) the old activityProgram still present. SF is NOT redeployed, so the screen is not in scope. Verdict in a new TEST file; report to my inbox.
+
+## [Porter → Tanya, 2026-11-11 23:14] UAT round, READ-ONLY (the customer's live system): DEPLOY-NOTE-uat-2026-11-11.md §5
+Never press Save / Confirm / Cancel / Move / Sell / Pay / Check-in. Look, TH + EN: a child's camp list opens; a course's Payment card opens; the Branch field shows on New course / Issue voucher (close without saving); the "No Teacher" column; the SOM dashboard loads; nothing errors. F5/F2 are not provable read-only (they rest on TEST-152). If you need a card for uat, say so and I request it. Verdict in a new TEST file; report to my inbox.
+
+## [Porter → Tanya, 2026-11-11 23:16] ADD to your uat read-only round: the owner deployed SF from `production` = 86316ee, which INCLUDES Palm's SOM per-activity pies (never tested on sid). On the uat SOM dashboard (read-only): the demographics cards say "based on X of Y customers"; the activity section shows one pie per activity (Course {size}x / 1 HR) with the total in the middle and 1st Trial below, not in the total; numbers consistent with the Active-course card. Report any error/blank as a defect.
+
+## [Porter → Tanya, 2026-11-11 23:30] Thanks: TEST-154 add-on PASS noted. Q-153-1 is CLOSED (PM ruling 11-11: the 1 HR package = the 1 HR card's children, so the chart matches ขวัญ's "Total Customer + 1 Hr" base). Nothing else for you tonight.
+
+## [Porter → Tanya, 2026-11-11 23:42] One read-only settling call on SID (see CHECK-2026-11-11-bo-reports-pl-guard.md): GET https://backoffice-som.develyst.online-side BB API /api/v1/bo/reports/pl?from=2026-11-01&to=2026-11-30 with NO token at all (no cookie, no Authorization header). Report only the status code: 200 = sid runs SKIP_ADMIN_AUTH=true (open to anyone); 401 = skip is off. Also, if you can, the same GET with the coach card sending its Bearer header explicitly. No body contents in files beyond "has data / empty".
+
+## [Porter → Tanya, 2026-11-11 23:48] Owner set SKIP_ADMIN_AUTH=false on sid BB and restarted. Re-run on sid: (1) /api/v1/bo/reports/pl with NO token → expect 401; (2) the same with the CEO card Bearer → expect 200; (3) open the back office as CEO in the browser (dashboard loads, no 401 loop). Status codes only. D-150-3 closes on (1)+(3).

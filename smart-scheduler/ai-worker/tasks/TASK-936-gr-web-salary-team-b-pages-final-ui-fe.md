@@ -57,3 +57,41 @@
 - **8 `notify-*` screenshots** + `result-notify.txt` in the evidence folder: CEO / admin / coach × settings / inbox, a 375-px view, all-read.
 - **final-ui tsc at 01:16 = 1 error, NOT hers:** `src/shell/Layout.tsx:9`, a missing `PROPOSED` icon key. That's the shell (Sober's), mid-edit for batch 2's "Proposed" group. It goes to Porter.
 - **Still open:** the `/salary/reports` router line. The GO is in her inbox (Porter's 01:08 grant); not added yet.
+
+## Part 3 (GR round 3, ขวัญ's ruling via Sober / Porter, 2026-11-10): **Merit is shown to the CEO only, NEVER to the admin.** Do it now, in final-ui
+- **`Entries.tsx`:** drop the **Merit card** when the role is `admin`. The admin's Other Income shows the other cards only. Keep it for the CEO.
+- **`People.tsx`:** the admin no longer sees the Merit column / flag, so the admin's list is **names only**.
+- **`Person.tsx`:** the admin no longer sees the Merit row.
+- **Tests / checks:** your role × page script asserts **no "Merit" text anywhere for admin** on these 3 pages, and that it's still there for the CEO. 0 console errors; re-shoot the affected screenshots.
+- **Report one line in `inbox/SA-B.md`.** I tell Sober, who rebuilds → Otto → Tanya live.
+
+## Review — part 3 (Merit is CEO-only) — @Silver, 2026-11-10: ✅ ACCEPTED
+- **Read in code:**
+  - `Entries.tsx`: no Merit card (the admin's page);
+  - `People.tsx:46 / 71`: the Merit column behind `ceo &&`;
+  - `Person.tsx:52–53`: the Merit row inside `if (ceo)`.
+- **Fanta's role check:** 31 PASS, no "Merit" for the admin on the 3 pages, still present for the CEO; 0 console errors; tsc 0; build 0 (scratch outDir; **Sober rebuilds `dist/`**).
+
+## Part 4: GR round 5, Team B slice (ขวัญ 11-11, `PLAN-2026-11-11-gr-round5-split.md` § Team B; verbatim in `project-docs/customer-2026-11-11-line-som-system/`). final-ui only. Fanta builds, Silver reviews, then Sober rebuilds → Otto → Tanya LIVE
+| # | page / file | change |
+|---|---|---|
+| 4 | Employee `People.tsx` | balance the columns; **Base salary** lines up with the other rows |
+| 6 | Other Income `Entries.tsx` + the router row (Porter's grant applies only to this role change) | **the CEO sees the same page as the admin** (no pointer / "go back"); **the Merit card shows for the CEO only** (round 3), so the admin's view stays without it |
+| 7 | Daily Training Report `Daily.tsx` | balance the rows |
+| 8 | Salary Report `SalaryReport.tsx` | balance the rows · tab "Teaching" → **"Teaching (HR)"**, hours shown **without .00** · tab "Pay" → **"Payment"** · "Camp (hours)" → **"Camp (HR)"** · **grid lines** on the Payment table · **remove "Classes"**, keep only Total |
+| 9 | Notification Setting `notify/NotifySettings.tsx` | column "Gets" → **"Visible"** · **remove "In the web"** |
+| 13 | Product `pages/b/stock/Product.tsx` (TASK-940, yours) | **restore the image field** · **commission group = a dropdown** of the groups made in Payment Setting (no free typing; the mock reads the same list Payment Setting shows) · revenue category stays as is |
+| 14 | STOCK OUT `pages/b/stock/StockOut.tsx` (yours) | remove the top **"Items"** word · the Product box is **searchable** · **Save at the very bottom** (one vertical flow) |
+- **Her words are the approved words** (round 5). Nothing else changes.
+- **The Entries router row** (`pages/a/index.ts`, `roles` for `/salary/entries` → `["ceo","admin"]`) is the one shared-file edit in this part. Mark it `🔻 GR5`, and I tell Sober.
+- **Done =** final-ui tsc 0 · build 0 (scratch outDir; Sober rebuilds) · your role × page checks updated (CEO sees the Merit card on Other Income, the admin doesn't; no "In the web"; no "Classes") · 0 console errors · re-shot screenshots · one line in `inbox/SA-B.md`.
+- **Added to Part 4 (Porter 19:28, from Sober; ขวัญ #2: "Pay run" is renamed "Monthly Payment"):** `Daily.tsx:26` «Back to Pay run» → **«Back to Monthly Payment»**; `Entries.tsx:33` «Open Pay run» → **«Open Monthly Payment»**. The Entries one probably vanishes with #6 (no pointer for the CEO); if it stays anywhere, rename it. Grep your pages for any other "Pay run" and rename the same way.
+
+## Review — part 4 (GR round 5) — @Silver, 2026-11-11: ✅ accepted except one line
+- **Checked:**
+  - final-ui tsc **0**;
+  - the Entries Merit card is behind `ceo &&` (`Entries.tsx:65`); the CEO sees the same page;
+  - the `/salary/entries` row already had `["ceo","admin"]` (`index.ts:31`), so no edit was needed;
+  - no "In the web" / "Gets" / "Classes" left.
+- **Open:** `Daily.tsx:26` «Back to Pay run» → «Back to Monthly Payment» (the 19:28 add-on). Sent back to Fanta.
+- **✅ Part 4 complete (Silver, 2026-11-11):** `Daily.tsx:26` = «Back to Monthly Payment», checked. No user-visible "Pay run" is left on Fanta's pages; Fanta reports tsc 0, build 0, Salary check 34 PASS, and 0 console errors.

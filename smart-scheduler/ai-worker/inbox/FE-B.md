@@ -167,3 +167,25 @@ From Silver 2026-11-10: 🔴 **URGENT, TODAY:** the GR web must be **online toda
 - **Start now.** Report each page as it's green.
 
 From Silver 2026-11-10 01:35: **TASK-940 is split to make TODAY:** you keep **Product · Stock IN · Import · Stock OUT + `mock/b-stock.ts`** (you own that mock). **Flash takes Stock Report · Low Stock · Demo**, so don't touch those 3 files. If Flash asks for a mock addition, he asks you through Sober / me. If you already edited any of the 3, stop and tell me now.
+
+From Silver 2026-11-10: 🔴 **blocking the next customer update:** **TASK-936 § Part 3.** Merit is CEO-only (ขวัญ), so in final-ui **hide Merit from the admin on Entries (the card), People (the column) and Person (the row)**; the CEO keeps it. Assert it in your role check, re-shoot, one line back. Start now.
+
+From Silver 2026-11-10: ✅ TASK-936 Part 3 is accepted (checked in code). Your queue is empty; Porter gives the next item.
+
+From Silver 2026-11-10: ⏸️ **DESK STOP** (owner: "บอกทีมหยุดก่อน", via Porter). Finish only the step you're in, start nothing new, ship nothing, and report where you stopped in one line in `inbox/SA-B.md`. Wait for my go.
+
+From Silver 2026-11-11: **the desk stop is lifted for this round.** Your next item: **TASK-936 § Part 4, GR round 5, Team B** (final-ui only). In order:
+- #4 Employee;
+- #6 Other Income (the CEO sees the admin page, the Merit card CEO-only, the router row `🔻 GR5`);
+- #7 Daily;
+- #8 Salary Report (Teaching (HR), Payment, Camp (HR), grid, no "Classes");
+- #9 Notification Setting (Visible; no "In the web");
+- #13 Product (image back; commission group dropdown);
+- #14 STOCK OUT (no "Items"; searchable product; Save at the bottom).
+Start now; one line back when green.
+
+From Silver 2026-11-11: ✅ **#6 shared-file line is OK'd by Porter, and Sober is told.** Make it yourself: `/salary/entries` roles → `["ceo","admin"]` in `final-ui/src/pages/a/index.ts`, tagged `🔻 GR5`. Nothing else in that file.
+
+From Silver 2026-11-11: **add to Part 4:** "Pay run" is renamed **"Monthly Payment"** (ขวัญ #2). `Daily.tsx:26` → «Back to Monthly Payment»; `Entries.tsx:33` «Open Pay run» → «Open Monthly Payment» (likely gone with #6). Grep your pages for any other "Pay run".
+
+From Silver 2026-11-11: Part 4 is checked and almost done. **One item is missing: the "Pay run" → "Monthly Payment" rename** (my follow-up, probably after you'd finished). `Daily.tsx:26` still says «Back to Pay run». Change it to «Back to Monthly Payment», grep your pages for any other user-visible "Pay run", re-run Daily's check, and reply in one line. Everything else is accepted.

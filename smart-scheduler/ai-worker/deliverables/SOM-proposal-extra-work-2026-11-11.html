@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOM งานเพิ่มเติม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1f2328; --muted:#57606a; --line:#e6e8eb; --bg:#ffffff; --soft:#fff6ee;
+    --orange:#e8650a; --orange-ink:#9a3f00; --green:#1a7f37; --green-soft:#eaf7ee;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+  .page{max-width:880px;margin:0 auto;padding:48px 24px 64px}
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+    border-bottom:2px solid var(--orange);padding-bottom:20px;margin-bottom:32px;flex-wrap:wrap}
+  .brand{font-weight:700;font-size:15px;color:var(--orange-ink);letter-spacing:.02em}
+  h1{font-size:30px;line-height:1.25;margin:6px 0 0;text-wrap:balance}
+  .meta{color:var(--muted);font-size:14px;text-align:right}
+  .lead{font-size:16px;color:var(--muted);max-width:68ch;margin:0 0 36px}
+  h2{font-size:21px;margin:44px 0 6px;display:flex;align-items:center;gap:10px}
+  h2 .tag{font-size:13px;font-weight:600;padding:2px 10px;border-radius:999px}
+  .tag.free{background:var(--green-soft);color:var(--green)}
+  .tag.paid{background:var(--soft);color:var(--orange-ink)}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 16px}
+  ul.plain{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  ul.plain li{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:baseline}
+  ul.plain li:first-child{border-top:0}
+  .check{color:var(--green);font-weight:700;flex:none}
+  .status{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap}
+  .item{border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:14px 0}
+  .item-head{display:flex;justify-content:space-between;gap:16px;align-items:baseline;flex-wrap:wrap}
+  .item h3{margin:0;font-size:18px}
+  .price{font-size:22px;font-weight:700;color:var(--orange-ink);white-space:nowrap}
+  .price small{font-size:14px;font-weight:500;color:var(--muted)}
+  .item p{margin:8px 0 0;max-width:70ch}
+  .why{color:var(--muted);font-size:14px}
+  .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
+  .opt{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff}
+  .opt.rec{border-color:var(--orange);background:var(--soft)}
+  .opt b{display:block;margin-bottom:4px}
+  .opt .p{font-weight:700;color:var(--orange-ink);margin-top:8px}
+  .badge{display:inline-block;font-size:12px;font-weight:600;color:#fff;background:var(--orange);
+    border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:2px}
+  table.sum{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
+  table.sum th,table.sum td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
+  table.sum th{font-size:13px;color:var(--muted);font-weight:600}
+  table.sum td.r,table.sum th.r{text-align:right;white-space:nowrap}
+  .note{background:#f6f8fa;border-radius:12px;padding:16px 18px;font-size:14px;color:var(--muted);margin-top:36px}
+  .note p{margin:4px 0}
+  @media print{ .page{padding:24px 0} h2{break-after:avoid} .item,.opt{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <div class="brand">DEVELYST × SOM</div>
+      <h1>สรุปงานที่ขอเพิ่ม<br>และค่าใช้จ่าย</h1>
+    </div>
+    <div class="meta">ระบบ SOM หน้าบ้าน และหลังบ้าน<br>11 พฤศจิกายน 2569</div>
+  </header>
+
+  <p class="lead">สรุปรายการที่ขวัญและพี่ฟีนแจ้งเข้ามา แยกเป็นงานที่ทีมทำให้โดยไม่มีค่าใช้จ่าย และงานใหม่ที่มีค่าใช้จ่าย บางรายการมีตัวเลือกให้เลือกตามความเหมาะสมครับ</p>
+
+  <h2>ทำให้ฟรี <span class="tag free">ไม่มีค่าใช้จ่าย</span></h2>
+  <p class="sub">แก้ไขการทำงานที่ยังไม่ถูกต้อง และรายการที่รวมอยู่ในขอบเขตเดิม</p>
+  <ul class="plain">
+    <li><span class="check">✓</span><span>ลาคลาสชดเชยแล้ว คลาสเลื่อนไปสัปดาห์ถัดไป ไม่กลับมาลงวันเดิม</span><span class="status">แก้แล้ว กำลังทดสอบ</span></li>
+    <li><span class="check">✓</span><span>คอร์สที่ยัง Pending ระบบจะยังไม่ส่งแจ้งเตือนผู้ปกครอง ส่งตารางให้ครั้งเดียวเมื่อกด Confirm Course</span><span class="status">แก้แล้ว กำลังทดสอบ</span></li>
+    <li><span class="check">✓</span><span>SOM Dashboard: กราฟ Gender / Nationality นับจาก Total Customer + 1 Hr (3 เดือนล่าสุด) และกราฟกิจกรรมแยกตามแพ็ก ไม่นับ Voucher แยก 1st Trial</span><span class="status">กำลังทำ</span></li>
+    <li><span class="check">✓</span><span>หลังบ้าน: ปรับหน้าตาและสิทธิ์ตาม feedback เว็บทดลอง (ธีมขาว-ส้ม, ปุ่ม Unlock สำหรับพี่ฟีน, Merit เห็นเฉพาะพี่ฟีน, ชื่อ SOM BACK OFFICE, หน้ารายได้)</span><span class="status">อยู่ในเว็บทดลองแล้ว</span></li>
+    <li><span class="check">✓</span><span>หลังบ้าน 7 รายการที่พี่ฟีนขอเพิ่ม: แก้เรทค่าจ้างเองได้ · หน้า Conversion ช่อง Total และตัวกรอง · Export Conversion · Export Revenue Summary · ย้ายสาขาทั้งคอร์ส · ตัวกรองและช่องค้นหาหน้า Stock report · หน้า Report Revenue และ Report Conversion</span><span class="status">รับ feedback ถึง 17 พ.ย.</span></li>
+  </ul>
+
+  <h2>งานใหม่ <span class="tag paid">มีค่าใช้จ่าย</span></h2>
+  <p class="sub">ไม่อยู่ในขอบเขตเดิม ประเมินค่าแรงตามเรทเดิม เริ่มทำเมื่อตกลงกันแล้ว</p>
+
+  <div class="item">
+    <div class="item-head">
+      <h3>1. ปิดตารางเรียนทั้งวัน</h3>
+      <div class="price">800 – 1,600 <small>บาท</small></div>
+    </div>
+    <p>สำหรับวันหยุดหรือวันที่สถานที่ปิด ให้แอดมินปิดวันได้ในครั้งเดียว ไม่ต้องไล่แก้ทีละคลาส</p>
+    <div class="opts">
+      <div class="opt rec">
+        <b>แบบ A: กดครั้งเดียว ระบบจัดการให้ <span class="badge">แนะนำ</span></b>
+        เลือกวัน ระบบแสดงคลาสที่โดนผลกระทบให้ดูก่อน กดยืนยันแล้วระบบยกเลิกคลาส เลื่อนไปท้ายคอร์ส และส่งไลน์แจ้งผู้ปกครองให้อัตโนมัติ
+        <div class="p">1,600 บาท</div>
+      </div>
+      <div class="opt">
+        <b>แบบ B: ปิดวัน แล้วแอดมินจัดการเอง</b>
+        ระบบห้ามจองเพิ่มในวันนั้น แสดงรายการคลาสที่ค้าง ให้แอดมินย้ายหรือยกเลิกทีละคลาส และเตือนแอดมินทุกเช้าจนกว่าจะจัดการครบ
+        <div class="p">800 บาท</div>
+      </div>
+    </div>
+    <p class="why"><b>เหตุผลที่แนะนำแบบ A:</b> ปัญหาที่แจ้งมาคือแอดมินต้องไล่แก้ทีละคลาสเมื่อปิดทั้งวัน แบบ A ปิดได้ในครั้งเดียวและแจ้งผู้ปกครองให้ครบทุกครอบครัว ส่วนแบบ B ช่วยไม่ให้ลืมและไม่ให้จองซ้ำ แต่แอดมินยังต้องย้ายเองทีละคลาส เหมาะถ้าปิดวันไม่บ่อย หรืออยากเริ่มด้วยงบน้อยก่อน (อัปเกรดเป็นแบบ A ภายหลังได้ เพิ่ม 800 บาท)</p>
+  </div>
+
+  <div class="item">
+    <div class="item-head">
+      <h3>2. ตารางเรียนหลายวันต่อสัปดาห์ หรือครั้งละ 2 ชั่วโมง</h3>
+      <div class="price">1,850 <small>บาท</small></div>
+    </div>
+    <p>ตั้งคอร์สได้ 1–3 วันต่อสัปดาห์ (เช่น พฤหัส + อาทิตย์) และครั้งละ 1 หรือ 2 ชั่วโมง เมื่อน้องลา ระบบเลื่อนไปวันเรียนถัดไปตามจริง คลาส 2 ชั่วโมงย้ายไปด้วยกันทั้งก้อน</p>
+    <p class="why">เป็นการปรับส่วนที่ทุกคอร์สใช้ร่วมกัน ทีมจะทดสอบละเอียดให้คอร์สเดิมทำงานเหมือนเดิมทุกอย่าง</p>
+  </div>
+
+  <div class="item">
+    <div class="item-head">
+      <h3>3. เปลี่ยนกิจกรรมกลางคอร์ส</h3>
+      <div class="price">1,900 <small>บาท</small></div>
+    </div>
+    <p>ปุ่มเปลี่ยนกิจกรรมตั้งแต่ครั้งถัดไป รวมราย 1 ชั่วโมงและ Trial คลาสที่เรียนแล้วยังเป็นกิจกรรมเดิม รายงานการสอนและสถิตินับตามที่เรียนจริง ฝั่งหลังบ้าน ยอดขายอยู่เดือนเดิม category เปลี่ยนตามกิจกรรมใหม่พร้อมบันทึกที่มา ส่วนต่างราคาลงผ่าน Add Manually</p>
+    <div class="opts">
+      <div class="opt">
+        <b>เปลี่ยนไปกิจกรรมที่ถูกกว่า: ไม่คืนส่วนต่าง</b>
+        เช่น Balance Private ไป Balance Group 6 ชม. ต่างกัน 2,200 บาท ส่วนต่างไม่คืน
+        <div class="p">รวมใน 1,900 บาท</div>
+      </div>
+      <div class="opt">
+        <b>เปลี่ยนไปกิจกรรมที่ถูกกว่า: คืนส่วนต่าง</b>
+        บันทึกการคืนเงินส่วนต่างได้ โดยไม่ยกเลิกคลาสที่เหลือ
+        <div class="p">+200 บาท</div>
+      </div>
+    </div>
+    <p class="why"><b>ข้อนี้ทีมไม่แนะนำ</b> เพราะการคืนเงินเป็นนโยบายของ SOM เอง ขึ้นกับว่าอยากดูแลผู้ปกครองแบบไหน ทั้ง 2 แบบระบบทำได้ครับ</p>
+  </div>
+
+  <div class="item">
+    <div class="item-head">
+      <h3>4. แยกสิทธิ์แอดมินรายเมนู (หลังบ้าน)</h3>
+      <div class="price">600 – 2,500 <small>บาท</small></div>
+    </div>
+    <p>ตอนนี้หลังบ้านแยกสิทธิ์ตามตำแหน่ง (CEO / แอดมิน / ครู) และเปิดหน้ารายได้ให้รายคนได้แล้ว ส่วนนี้คือให้พี่ฟีนเลือกได้ว่าแอดมินแต่ละคนเห็นเมนูไหน เช่น Refund ให้แอดมินคนหนึ่ง Type and Category ให้อีกคน</p>
+    <div class="opts">
+      <div class="opt rec">
+        <b>ทุกเมนูในหลังบ้าน <span class="badge">แนะนำ</span></b>
+        เลือกสิทธิ์รายคนได้ทุกเมนูเหมือนหน้าบ้าน ยกเว้นข้อมูลเงินเดือนและ Merit ที่เห็นได้เฉพาะพี่ฟีนเสมอ
+        <div class="p">2,500 บาท</div>
+      </div>
+      <div class="opt">
+        <b>เฉพาะเมนูในก้อนรายได้</b>
+        เลือกสิทธิ์รายคนได้ทีละเมนูใน 6 หน้าของรายได้ (Summary, Detail, Refund, Add Manually, Type and Category, ECA Payment)
+        <div class="p">600 บาท</div>
+      </div>
+    </div>
+    <p class="why"><b>เหตุผลที่แนะนำทุกเมนู:</b> ตามที่แจ้งไว้ว่าหลังบ้านต้องแยกสิทธิ์ทุกเมนูเหมือนหน้าบ้าน ทำครั้งเดียวครบ แอดมินแต่ละคนเห็นเฉพาะงานของตัวเอง ส่วนแบบเฉพาะก้อนรายได้ แก้เรื่อง Refund และ Type and Category ที่ยกตัวอย่างมาได้ทันที แต่เมนูอื่นยังแยกตามตำแหน่งเหมือนเดิม</p>
+  </div>
+
+  <h2>สรุป</h2>
+  <table class="sum">
+    <thead><tr><th>รายการ</th><th>ตัวเลือก</th><th class="r">ค่าใช้จ่าย (บาท)</th></tr></thead>
+    <tbody>
+      <tr><td>ปิดตารางเรียนทั้งวัน</td><td>A (แนะนำ) / B</td><td class="r">1,600 / 800</td></tr>
+      <tr><td>ตารางเรียนหลายวัน / ครั้งละ 2 ชม.</td><td>–</td><td class="r">1,850</td></tr>
+      <tr><td>เปลี่ยนกิจกรรมกลางคอร์ส</td><td>ไม่คืน / คืนส่วนต่าง (SOM เลือก)</td><td class="r">1,900 / 2,100</td></tr>
+      <tr><td>แยกสิทธิ์แอดมินรายเมนู</td><td>ทุกเมนู (แนะนำ) / ก้อนรายได้</td><td class="r">2,500 / 600</td></tr>
+      <tr><td><b>รวมเมื่อเลือกตามที่แนะนำ</b> (เปลี่ยนกิจกรรมแบบไม่คืน)</td><td></td><td class="r"><b>7,850</b></td></tr>
+      <tr><td>รวมเมื่อเลือกแบบประหยัดทุกข้อ</td><td></td><td class="r">5,150</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <p>เลือกทำบางรายการได้ ไม่จำเป็นต้องทำครบทุกข้อครับ</p>
+    <p>ราคาเป็นราคาประมาณการตามเรทเดิม ตัวเลขสุดท้ายจะอยู่ในใบเสนอราคาหรือใบขอเปลี่ยนแปลงงาน</p>
+  </div>
+</div>
+</body>
+</html>

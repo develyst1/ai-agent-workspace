@@ -35,3 +35,13 @@ await page.goto('https://som-gr.develyst.online/')            // already signed 
 **When the owner wakes and pastes it into `[som-gr]`:** one command verifies the card —
 `node picklocker/basic-auth.mjs som-gr` → expects `AUTHENTICATED · status 200`, then a second request
 (or a nudge on this same file) and Tanya can shoot every round on the real site.
+
+---
+
+## UPDATE — 2026-11-11 23:40: UNLOCKED
+
+The owner pasted the password into `[som-gr]`, and the card verifies:
+
+`node picklocker/basic-auth.mjs som-gr` → **`card som-gr: AUTHENTICATED · status 200 · https://som-gr.develyst.online/`** (exit 0)
+
+Tanya can shoot every feedback round on the live site now with the snippet above — `openCard(browser, 'som-gr')`, then `page.goto('https://som-gr.develyst.online/')`. Nothing to paste into her harness; the credential stays in the git-ignored access file. Basic auth is applied to every request (`send: 'always'`), so subresources load too.

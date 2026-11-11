@@ -146,3 +146,37 @@ DoD: tsc 0, vite build ok, the scan output, and one click-through of the toasts 
   - final-ui `tsc` 0.
   - 28 lines in 13 files fixed. His real-dist click-through: console 0, network 0, 14 toasts as CEO with no Thai letter (`evidence/TASK-937/toast-*.png`).
   - **Team C's whole GR-web share is ready for Tanya.** Otto deploys from a fresh build.
+
+## Batch 5: GR round 5, Team C slice (Sector, 2026-11-11; Porter's route; PLAN-2026-11-11-gr-round5-split.md § Team C; her verbatim `project-docs/customer-2026-11-11-line-som-system/khwan-backoffice-feedback-2026-11-11-VERBATIM.md`). **GR web only (final-ui), mock only.**
+- **#11 Revenue Summary:** "Apply filters" → **"Apply Filter"**; the top box shows **Unit** before Total (e.g. "Course 10 / 97,900").
+- **#12 Revenue Summary:** a **second box under it, "Category / Unit / Revenue"**: every category at once, no filter clicks (her example, verbatim l.115–119). Mock totals must add up to the top box.
+- **#15 Stock Demo:**
+  - balance the rows (aligned columns);
+  - **PLUS a new "Add Demo" button** (PM ruling via Porter: her question found a real gap, CHECK-2026-11-11 Q3). It opens a dialog: **item + site + qty + reason** → the matrix cell goes up, and a history line is written. Same look as the existing Defect → Demo dialog.
+  - **No "Proposed" banner on it** (Porter routed it as part of the page). Real build later ≈ 0.5 d.
+- **#16 Conversion** (your `pages/proposed/ConversionFilters.tsx`, and Export if it shows the same strings):
+  - "Total: 7 conversions · 500 ฿" → **"Total: 7 (Bonus 500 ฿)"**; tidy the spacing;
+  - column "Conversion" → **"Type"**, "Bonus" → **"Amount"**;
+  - **menu: move it under SALARY, right before Other Income, titled "Bonus (Conversion)":** group and order in your own `pages/proposed/index.ts` entry (take Other Income's order from Team A's list and use one less);
+  - **DROP its "Proposed" banner** (PM ruling: she's refining it as a real page). The other Proposed pages keep theirs.
+- **Words:** English, no Thai on screen.
+- **DoD:** final-ui tsc 0 + vite build ok; a real-dist click-through as CEO / Admin / Coach (console 0, network 0, no h-scroll at 375); a **UTF-aware Thai scan** of your files (only names); shots in `evidence/TASK-937/round5-*`. Report to me; then Sober rebuilds the single file → Otto → Tanya LIVE.
+- Don't touch the shell (Sober is changing the menu order, labels and folding in round 5 at the same time).
+
+### Batch 5 done (Flash, 2026-11-11): #11 · #12 · #15 · #16
+**Files (mine only; no shell, no `mock/b-stock.ts`, no Team A file):** `pages/b/revenue/{Summary.tsx, summaryBoxes.ts (new)}` · `pages/b/stock/Demo.tsx` · `pages/proposed/{ConversionFilters.tsx, parts.tsx, index.ts}`.
+- **#11 Summary:** the button reads **"Apply Filter"**; the top box is now **Type · Unit · Revenue**, the Total row carries the unit total, the Refund (Expense) row has no unit. Units: Today counts the day's lines (a "× 3" in a line is 3 units, otherwise 1); MTD / YTD are sample numbers.
+- **#12 Summary:** a second box under it, **"Category / Unit / Revenue"**: every heading at once, no filter click. Her "big headings": COURSE split by sport (Inline Skate, Surfskate, Skateboard, Bike, …, plus Balance Camp and Birthday), every other type one row named after the type (Voucher, ECA, Sales, F&B, Rent, Other, 1st Trial). **It adds up** (checked in the browser, `round5-run.json`): Today 16 units / 82,700 ฿ in both boxes; MTD 208 / 757,475; YTD 2,067 / 7,113,915; Today with Branch = Bravo 15 / 82,200, both boxes. Branch splits Today only (as before: the other tabs show both branches and say so). The box ignores the Type / Category filters on purpose (her words: everything at once).
+- **#15 Demo:** the matrix is a fixed-layout grid: equal-width site columns (6 × 109 px), headers and numbers centred, so the rows balance. **New "Add Demo" button** (first in the header, no Proposed banner): dialog Item + Location + Qty + Reason, same look as Defect → Demo; Save without a reason is refused, a good Save raises the cell (Surfskate board at STA 2 → 4), writes one history line («Added → STA, 2, Bought 2 more for the school class») and the toast reads "Demo added: 2 × Surfskate board at STA".
+- **#16 Conversion:** title **"Bonus (Conversion)"**, the **Proposed banner is gone**, the Total reads **"Total: 7 (Bonus 500 ฿)"**, columns **Type** and **Amount** (the shared table, so the Conversion export page shows the same two names and keeps its own banner). Menu: its entry in `pages/proposed/index.ts` is now `group: "SALARY", order: 169` (Other Income is 170): the sidebar shows **Payment Detail → Bonus (Conversion) → Other Income** (read from the built page).
+- **Gates:** real folder `tsc --noEmit` 0 · `vite build` ✓ (dist rebuilt, 6th time; the single file now includes Sober's round-5 shell as it stood) · **click-through on the real dist `round5-run.json`: console 0, network 0**; no horizontal scroll at 375 on the three pages (CEO); shots `round5-1280-ceo-{summary-today,summary-mtd,demo,add-demo-dialog,demo-after-add,conversion}.png`, `round5-375-ceo-*.png`. **Thai scan** (the UTF-aware `Grep` over my folders, now including `.ts`): one line left, the name «ขวัญ» in a code comment (`ReportRevenueConversion.tsx:8`).
+- **Roles seen on the new shell:** CEO opens all three; **Coach none**; **Admin (Khwan)** opens Summary, Detail and Stock Demo but not Bonus (Conversion); **Admin (Kung)** opens Stock Demo only. The shell now has TWO admin entries in "Viewing as" (CEO · Admin (Khwan) · Admin (Kung) · Coach) and lets Khwan's admin see Revenue; that is Sober's shell logic, not my `roles` (my Revenue entries still say `["ceo"]`). Flagging it so nobody thinks I changed it.
+- **Not re-run:** my earlier click scripts (batch 2–4, toasts) still point at the old role switcher (a segmented control); the "Viewing as" Select broke their `setRole`, so I only re-ran the round-5 script. Say if you want the older ones refreshed for the new shell.
+- **Review batch 5 (Sector, 2026-11-11): ✅ accepted.**
+  - final-ui tsc 0 (re-run by me); the UTF-aware Thai scan leaves only a code comment.
+  - Summary: "Apply Filter" (`Summary.tsx:103`) and the "Category / Unit / Revenue" box (`:186`); Flash's browser sums agree (Today 16 / 82,700 · MTD 208 / 757,475 · YTD 2,067 / 7,113,915).
+  - Demo: the aligned grid + the "Add Demo" dialog.
+  - Conversion: "Bonus (Conversion)" in SALARY at order 169 (before Other Income 170), no banner, "Total: 7 (Bonus 500 ฿)", columns Type / Amount.
+  - The shell is untouched. Khwan-vs-Kung on Revenue is Sober's round-5 per-menu grants (Khwan gets all of REVENUE from round 4), as designed.
+  - Note: the route path stays `/proposed/conversion`. It's cosmetic, and the menu shows the new title.
+  - → Sober rebuilds the single file → Otto → Tanya LIVE.

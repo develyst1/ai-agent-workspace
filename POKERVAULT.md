@@ -63,9 +63,10 @@ Full brief, written for Atlas on the owner's order (2026-11-07):
 - **Keep the doors open with no tokens** — `keep-fresh.mjs`, run **once when the seat opens**
   (reuse-verify, re-login only if lapsed, one log line). There is **no hourly check**: the owner
   refused one on 2026-11-07 (*"ทำไมต้องทำให้มันทำงาน เปลืองคอมฉันทุกชั่วโมงด้วย"*).
-- **Other real-world hands** — non-password auth (`extraHTTPHeaders`/service tokens,
-  owner-exported `storageState`), downloads, JS evaluation, evidence captures for the owner
-  (personal data never to git), read-only reads on `uat`.
+- **Other real-world hands** — non-password auth: **HTTP Basic** (`basic-auth.mjs` hands a context
+  carrying `httpCredentials`; never a file in `state/`, since that would be the password on disk —
+  `som-gr`), service tokens/`extraHTTPHeaders`, owner-exported `storageState`, downloads, JS
+  evaluation, evidence captures for the owner (personal data never to git), read-only reads on `uat`.
 - **Tooling** — node scripts in `picklocker/` that run with no AI in the loop, so a repeated
   step costs nothing after it is written.
 

@@ -367,3 +367,23 @@
 - 02:10 · Bonus 100: "Bonus คือคอร์สต่อคอร์สนะคะ ระบบเริ่มคำนวณได้ตอนไหนก็ขึ้นในสลิปตอนนั้นค่ะ แจ้งเรามาค่ะ ว่าเริ่มนับตั้งแต่วันที่เท่าไหร่ ก่อนหน้านั้นใส่มือเองได้ค่ะ"
 - 02:10 · Price difference on an activity change: "ใส่เงิน Manually ในราคาส่วนต่างค่ะ" (REQ-5007's open price question)
 - 02:10 · Go-live month: "หมายถึงเอารายได้ไปคำนวณใช่ไหมคะ / เริ่มคำนวณจากเดือนนี้ไปได้เลยค่ะ" → wants revenue counted from Nov 2026
+
+## 2026-11-10 SOM SYSTEM group, read by the bot (09:29–11:35 BKK)
+- พี่ฟีน 09:29: *"สวยแล้วค่ะ"*. The round-2 look (white + orange) is accepted.
+- พี่ฟีน 09:30: *"เขียนแค่ SOM BACK OFFICE ก็พอค่ะ มุมซ้ายบน"*. The top-left brand reads "SOM BACK OFFICE" only.
+- พี่ฟีน 10:19: *"นี้ให้เข้าไปลองดูเลยหรอคะ"*. The owner answered: a demo for gathering requirements until the 17th. Then *"เคค่ะ"*.
+- ขวัญ 11:31: *"ขอโทษนะคะ รายได้ที่ขวัญบอกว่า ขวัญเห็นด้วย หมายถึงก้อนรายได้ ต้องเปิดให้ขวัญเห็นด้วยค่า 🙏"*. **This CORRECTS our reply #5** ("เฉพาะพี่ฟีนเห็นหน้ารายได้"). The revenue block must be visible to ขวัญ too; other admins stay as before. HOW (a per-person grant vs. a role) is open.
+- ขวัญ 11:32: *"1. ต้องขึ้น merit ให้เฉพาะพี่ฟีน (ceo) ค่ะ ไม่ให้ขึ้นแอดมินค่ะ"*. Merit shows for the CEO only, not for admin.
+- 2026-11-11 07:12 (group, read by the bot) · ขวัญ: *"ให้พี่ฟีนเลือกได้ว่าใครเห็นหน้ารายได้บ้างเป็นรายคน / โอเคค่า ขอบคุณค่ะ ส่วน Merit ให้เห็นเฉพาะพี่ฟีน / โอเคค่ะ"*. She accepts the per-person revenue-view grant chosen by the CEO in User Setting (ledger row 12) and confirms Merit for the CEO only (row 13).
+- 2026-11-11 07:53 (group, bot) · ขวัญ: *"ไฟล์ที่ส่งไปแล้วไม่ใช่ final stock นะคะ เป็น Format stock เฉยๆค่ะ"*. The stock Excel (sent 30 Oct, cited in our reply #7) is the FORMAT only; the final stock list is still to come. The Stock block's seed waits for her real list.
+- 2026-11-11 (private chat, the owner pasted Porter's draft, "ส่งละ") · Our status reply on her 6 front-office items:
+  - **1, 3 and 4** are new work, with details and price sent separately. The interim workarounds were given: hand-edit the plan; for 3, End course "เปลี่ยนโปรแกรม" plus a new course; for 4, cancel each class with "ปัญหาจากทางเรา".
+  - **2 and 5** are fixed and tested, waiting for go-live. The date comes later, so no date was promised.
+  - **6** is being adjusted per her feedback.
+  - **Back office:** the staff data was received; the stock list is still awaited.
+- 2026-11-11 07:58 (group, bot) · ขวัญ on our reply #10: *"หมายถึงเดือนก่อน พฤศจิกายน ใช่ไหมคะ ที่ต้องใส่มือย้อนหลัง หรือหมายถึงตั้งแต่เดือนนี้เลยคะ"*. Open; our answer is drafted (Nov 2026 up to the revenue go-live = monthly totals by hand; months before Nov not needed).
+- 2026-11-11 08:43–13:52 (group, bot) · ขวัญ's back-office feedback batch. Verbatim: project-docs/customer-2026-11-11-line-som-system/khwan-backoffice-feedback-2026-11-11-VERBATIM.md (7 images were not captured by the bot).
+  - **Ruling:** *"หลังบ้านต้องทำแยกสิทธิทุกเมนูเหมือนหน้าบ้านนะคะ ปิดเป็นก้อนๆไม่ได้ค่า ต้องเลือกเมนูให้ดูได้ด้วยค่ะ"*. Permissions are per MENU, like the front office. Example: Refund is handled by one admin, Type and Category by another.
+  - **Her questions:** (a) where the commission per group is set, and whether she creates and sets it herself; (b) what "All Report / REPORTS" offers versus the Dashboard; (c) where she adds a Demo herself (Stock Demo).
+  - **Her 16-point UI list (11/11):** menu order and names; Pay run → Monthly Payment; REPORTS → REPORT; balance and layout fixes; Salary Report labels and grid; Notification Setting; User Setting texts; Summary unit counts; a Product image and commission-group dropdown; STOCK OUT search; Conversion renamed "Bonus (Conversion)" and moved under Salary.
+  - **Also:** a Revenue Summary box that totals by category with Unit + Revenue, plus a Unit column on the top box; a collapsible left menu.
