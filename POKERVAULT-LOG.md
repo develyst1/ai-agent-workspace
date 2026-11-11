@@ -179,3 +179,34 @@ It runs **once when this seat opens**. The scheduler offer is withdrawn. My repl
 - **Lesson for this file:** a host restart silently ends the wake path. A fresh session (or a
   restart) must re-arm it, and the desks cannot tell the difference between "no request" and
   "no watcher". If a request ever seems ignored, check this line first.
+
+---
+
+## STANDBY · 2026-11-11 16:10 · duty taken up in the usb-oda workspace (macOS)
+
+- Session opened at `Work/ai-agent-workspace` (operator: *"นายคือ pokervault จงเตรียมตัวทำงานซะ นายต้องทำหน้าที่ login แทนฉัน"*). `picklocker/` was copied there at 15:47 (`ATLAS.md:1199`); `state/` was empty; `access.txt` was not copied (ATLAS's rule: an AI does not move secrets).
+- **The hands work:** `node picklocker/login.mjs som`, credentials read from this workspace's git-ignored `access.txt` **in place** (env only — no secret copied, none printed) → `verified: status 200 · https://som.develyst.online/scheduler/calendar · AUTHENTICATED`. `check-card.mjs som` → AUTHENTICATED; card at that workspace's `picklocker/state/som.json` (mode 600). `keep-fresh.mjs` once → `som=ok`.
+- **`uat002-mc` is MISSING and cannot be minted by me:** it is `session-import`, outside the `develyst.online` allowlist, and needs EntraID + OTP. Only the owner's one-time `node picklocker/export-session.mjs uat002-mc` creates it. No request file exists.
+- Watcher armed (`bash-7d0043ae22dc4e10`, 20 s poll, `-to-pokervault-` + `-to-picklocker-`); no request waiting.
+
+---
+
+## CORRECTION · 2026-11-11 16:25 · UAT2's EntraID has no OTP
+
+- The operator corrected the STANDBY line above: AIS UAT2's EntraID login is **email + password, no OTP**. My "needs EntraID + OTP" was a wrong relay.
+- Checked the real page read-only (no credential): app → `uat-federated-auth.assistedchannel.ais.th/authenticationendpoint/login.do` (`#icon-2`, "Sign In With EntraID") → `login.microsoftonline.com/…` with `#i0116` email → `#idSIButton9` Next → `#i0118` password → Sign in. No OTP step seen.
+- New `picklocker/login-entra.mjs` (in the usb-oda workspace): only sites whose `sites.json` entry has `flow:"entra"` + `allowAiLogin` (owner 2026-11-11). `login.mjs` and its `*.develyst.online` allowlist are untouched. Saves `state/<site>.json` with IndexedDB, mode 600, verifies in a clean context. Tested: `node --check`, JSON, refusals (`som` → exit 2, no creds → exit 2). NOT run end-to-end yet — no credential.
+- `uat002-mc` stays `session-import` (nothing auto-renews). Owner drops `uat002-mc.user` / `uat002-mc.password` in `access.txt`; then `node picklocker/login-entra.mjs uat002-mc`.
+
+---
+
+## UNLOCK-008 · 2026-11-11 · uat002-mc for the operator (Tanya's next UAT2 walk)
+
+- **Request:** operator, chat 16:2x: *"EntraID ไม่มี otp ใส่ mail กับpasswordได้เลย"* — correcting the OTP claim above, and asking PokerVault to log in instead of him.
+- **Ran:** the new `picklocker/login-entra.mjs uat002-mc` (owner-authorized `flow:"entra"` + `allowAiLogin`; `login.mjs` and its `*.develyst.online` allowlist untouched).
+- **Miss, first run (`NOT_UNLOCKED`):** `waitForURL` timed out on the AIS auth page. Cause: the EntraID button's `onclick` attaches after the page's scripts; a click right after `waitForSelector` is a no-op. Fixed: 3 s settle + one retry. Second run: credential accepted, no OTP page.
+- **Verified:** `verified: status 200 · https://uat002-mychannel.ais.th/ · AUTHENTICATED`; `check-card.mjs uat002-mc` → **AUTHENTICATED** (GET-only).
+- **Handed:** `Work/ai-agent-workspace/picklocker/state/uat002-mc.json` (mode 600, cookies + localStorage + IndexedDB).
+- **Result:** `UNLOCKED`
+- **Path seen:** app → `uat-federated-auth.assistedchannel.ais.th/authenticationendpoint/login.do` (`#icon-2` EntraID) → Microsoft tenant `4a034771…` (`#i0116` email, `#i0118` password) → back to the app. No OTP.
+- **Note:** the app's own logout kills this card (not re-tested); Tanya should not log out. Credential is in git-ignored `access.txt` (600), never printed.
