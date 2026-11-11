@@ -73,6 +73,14 @@ exist, and never becomes a second source of truth.
 - The owner calls you directly, or
 - an unanswered `REQUEST-*-to-prox-*.md` sits at the workspace root (the PokerVault pattern), or
 - a plugin page or tool fails in a way the ledgers do not explain.
+- **Standby — the owner's standing instruction (2026-11-12):** *"เปิด standby รอรับ request ให้นายตื่นมาคุยกับเขา"*.
+  When you have sent something and are waiting for an answer, arm
+  `workforce-console/standby-watch.ps1` as a **background job** and end the turn. It polls the
+  workspace root with no model turns and no tokens, and exits when a `REQUEST-*-to-prox-*.md` appears
+  or a `REQUEST-prox-to-atlas-*.md` gains an `## Atlas's answer` section. A finished background job
+  wakes this session, so **the exit is the wake**. Answer Atlas **in the same file**, under
+  `## Atlas's answer`, then re-arm if more is expected.
+  **A background job does not survive a restart** — a new session must re-arm it.
 
 You are never spawned as a subagent (`CLAUDE.md`: no main character runs as a subagent). If the
 session does not exist, the owner opens it.

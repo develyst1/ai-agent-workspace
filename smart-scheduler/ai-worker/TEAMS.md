@@ -20,15 +20,15 @@ Names are the operator's — filled from DESK-OPEN B1. A row with an empty name 
 
 | Name | Role · team | Handle | Inbox | Session name | Writes IDs |
 |---|---|---|---|---|---|
-| Porter | PM · all | `@Porter` | `inbox/PM.md` |  | `REQ-NNN` |
-| Tanya | QA · all | `@Tanya` | `inbox/QA.md` |  | `TEST-NNN` |
-| Sober | SA · A | `@Sober` | `inbox/SA.md` |  | `SPEC-NNN`, `TASK-NNN` |
-| Fern | FE · A | `@Fern` | `inbox/FE.md` |  | — (works on `TASK-*`) |
-| Jason | BE · A | `@Jason` | `inbox/BE.md` |  | — (works on `TASK-*`) |
-| Silver | SA · B | `@Silver` | `inbox/SA-B.md` |  | `SPEC-NNN`, `TASK-NNN` |
-| Fanta | FE · B | `@Fanta` | `inbox/FE-B.md` |  | — (works on `TASK-*`) |
-| Bob | BE · B | `@Bob` | `inbox/BE-B.md` |  | — (works on `TASK-*`) |
-| Sector | SA · C | `@Sector` | `inbox/SA-C.md` | `Sector-SOM` | `SPEC-NNN`, `TASK-NNN` |
-| Brew | BE · C | `@Brew` | `inbox/BE-C.md` | `Brew-SOM` | — (works on `TASK-*`) |
-| Flash | FE · C | `@Flash` | `inbox/FE-C.md` | `Flash-SOM` | — (works on `TASK-*`) |
-| Twenty | QA · all | `@Twenty` | `inbox/QA-2.md` | `Twenty-SOM` | `TEST-NNN` |
+| Porter | PM · all | `@Porter` | `inbox/PM.md` | `SOM-Porter` | `REQ-NNN` |
+| Tanya | QA · all | `@Tanya` | `inbox/QA.md` | `SOM-Tanya` | `TEST-NNN` |
+| Sober | SA · A | `@Sober` | `inbox/SA.md` | `SOM-Sober` | `SPEC-NNN`, `TASK-NNN` |
+| Fern | FE · A | `@Fern` | `inbox/FE.md` | `SOM-Fern` | — (works on `TASK-*`) |
+| Jason | BE · A | `@Jason` | `inbox/BE.md` | `SOM-Jason` | — (works on `TASK-*`) |
+| Silver | SA · B | `@Silver` | `inbox/SA-B.md` | `SOM-Silver` | `SPEC-NNN`, `TASK-NNN` |
+| Fanta | FE · B | `@Fanta` | `inbox/FE-B.md` | `SOM-Fanta` | — (works on `TASK-*`) |
+| Bob | BE · B | `@Bob` | `inbox/BE-B.md` | `SOM-Bob` | — (works on `TASK-*`) |
+| Sector | SA · C | `@Sector` | `inbox/SA-C.md` | `SOM-Sector` | `SPEC-NNN`, `TASK-NNN` |
+| Brew | BE · C | `@Brew` | `inbox/BE-C.md` | `SOM-Brew` | — (works on `TASK-*`) |
+| Flash | FE · C | `@Flash` | `inbox/FE-C.md` | `SOM-Flash` | — (works on `TASK-*`) |
+| Twenty | QA · all | `@Twenty` | `inbox/QA-2.md` | `SOM-Twenty` | `TEST-NNN` |

@@ -1068,6 +1068,15 @@ source.** After editing a skill there, copy it to `.claude/skills/` again, or th
     - The SA creates only the missing ones, at the remote default's commit, and never moves or deletes anything. It skips `sit` if a `sit` deploy workflow already exists.
     - Not ours: the GitHub default branch (the owner's setting) and CI (Otto's).
     - **Open gap:** there is no command for develop → sit. It stays with the owner or Otto unless he names a 5th command.
+    - **Workforce console (Prox's, 2026-11-12), reviewed at the owner's ask ("มันถูกเหรอ … UI ห่วยมาก").**
+      - Windows root cause: there is no `claude` on PATH. The CLI lives only at `%LOCALAPPDATA%\Claude-Data\claude_<id>\claude-code\<ver>\<hash>\claude.exe` (2.1.317 today), and with it `claude agents --json` lists 12 sessions.
+      - The mojibake is in the working copy of client.js, saved double-encoded on this PC (HEAD is clean).
+      - Also wrong: seats show "idle" from file existence; REQUEST open-counts are always 0.
+      - Every session's cwd is the workspace root, so desks can only be matched by session name (TEAMS.md).
+      - Brief: `REQUEST-atlas-to-prox-2026-11-12-console-fixes.md`. 0.4.0 is accepted; 0.5 is `REQUEST-atlas-to-prox-2026-11-12-console-next.md`.
+      - **Console Send needs a signed-in CLI (2026-11-12):** the app-bundled exe's OAuth had expired. At the owner's ask, Atlas installed `npm i -g @anthropic-ai/claude-code` (2.1.322, shim `C:\nvm4w\nodejs\claude.cmd`). The owner signs it in himself (`claude auth login`). A console send arrives as a **peer** message, so approvals ("ส่ง", git commands) must still be typed in the PM's own session.
+      - **Waking Prox (and the other DeepSeek seats):** its `standby-watch.ps1` wakes only on a **new** `REQUEST-*-to-prox-*.md` file, or on `## Atlas's answer` in a `REQUEST-prox-to-atlas-*`. A section appended to an old file wakes nobody.
+      - Owner, 2026-11-12: *"prox สามารถ wake by request ได้ ทำไม ไม่ทำเอง"*. **Never hand the owner a command for a seat I can wake myself.** Write the new file.
     - Installed on 9 desks. **call-scribe is HELD**, the same as smart-scheduler-atom: it is Atom's desk (its only commit is 9fcb0f6, "atom: save call-scribe desk state"), so it is never installed from this box.
   - **Personal data on a public repo:** the repo `develyst1/ai-agent-workspace` is **public** (GitHub API 200 unauthenticated), and 17d1a91 committed 3 sid captures with parents' phones and children's names. The owner said "เอาออกก็ได้". Atlas added `*/ai-worker/tests/evidence/` to `.gitignore`. Untracking and making the repo private are the owner's: git and account settings are his. History still holds the files until he rewrites it, which is his call.
 

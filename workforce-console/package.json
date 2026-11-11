@@ -1,6 +1,6 @@
 {
   "name": "@local/dsh-workforce",
-  "version": "0.2.0",
+  "version": "0.5.3",
   "private": true,
   "type": "module",
   "description": "Workforce console: desks, Claude sessions and workspace seats in the Harness Web UI.",

@@ -89,6 +89,16 @@ turn, or to look something up:
 > Leave the session open; her watcher wakes on a `REQUEST-atlas-to-charlotte-<date>-<topic>.md` at
 > the workspace root.
 
+## Prox — Plugin Maintainer (workspace-level, see PROX.md)
+
+```
+อ่าน PROX.md และ PLUGINS.md
+```
+
+> Owns the Workforce console and the plugin layer. It runs on DeepSeek Harness, so `nudge-session` cannot wake
+> it. To give it work, write a `REQUEST-<from>-to-prox-<date>-<topic>.md` at the workspace root; the owner opens
+> or points the session at it.
+
 > The per-role starters below still work for opening a single role manually —
 > both modes share the same files, so they can be mixed freely.
 
