@@ -135,3 +135,50 @@ Servers stopped.
 - `03-salary-report.png` + `03b-salary-report-payment-grid.png` — Salary Report (Teaching (HR), Payment with grid).
 - `04-stock-demo-add-demo.png` — Stock Demo after an Add Demo (the new history row).
 - `05-user-setting.png` — User Setting (Revenue Visible, Accept Login).
+
+## GR round 6 LIVE (Porter 03:07; release 20261111-200639; ledger row 27; TASK-936 Part 5), 2026-11-12 ~03:20: ✅ TEST_PASSED · 1 observation
+**Instrument:** som-gr basic-auth card (credential stays in picklocker), headless, 1440 px, CEO, mock data. Live page HTTP 200; Payment Setting = `#/salary/settings`. **0 console / page errors.**
+| Check (TASK-936 Part 5) | Seen on the live site |
+|---|---|
+| Commission table: an Edit on each group row | header Group · Rate · Full-time · Part-time · Freelance · STAFF · (empty) — **8 rows, 8 Edit links**, incl. the "No commission" rows ✓ |
+| Modal «Edit commission group», prefilled | Animal Helmet → «Animal Helmet» / «40 ฿»; Miller skate → «Miller skate» / «100 ฿» ✓. Fields: Group name · Rate per item · Cancel · Save; **no "Who earns it"** ✓ |
+| Empty name or rate → Save disabled | empty name → disabled ✓; empty rate → disabled ✓; both filled → enabled ✓ |
+| Save → closes + toast | name «QA round 6 group», rate 150 → dialog closed; toast **«Commission group “QA round 6 group” saved — 150»** ✓ |
+| Cancel | closes, 0 dialogs ✓ |
+| Untouched | **Add group** button still there; the other cards present; no Thai in the modal or toast ✓ |
+- **O-151-6 (for Porter, not a defect by the TASK):** after Save the **table row still shows the old name and rate** (a mock; nothing is stored, as Part 5 says). ขวัญ may read that as "the edit didn't take". Also the toast shows the rate as typed (`150`, no ฿). Whether to say "preview only" in the round note is Porter's call. The real back office has no group-edit route yet (Silver's note in Part 5).
+- **NOT_TESTED:** admin/coach views (the page is CEO-only, not asked); phone width.
+**Round-6 LIVE screenshot for the customer:** `tests/evidence/gr-round-6-live/commission-group-edit.png` — the Commission table with an Edit on every row and the Edit modal open on «Miller skate» (100 ฿), mock data.
+
+## GR round 6b LIVE (Porter 03:13; release 20261111-201241), 2026-11-12 ~03:30: ✅ TEST_PASSED — O-151-6 fixed · 1 small observation (O-151-7)
+Same instrument (som-gr card, headless, 1440 px, CEO, mock). HTTP 200, **0 console / page errors.**
+- **O-151-6 fixed ✓:** Edit «Miller skate» (prefill «Miller skate» / «100 ฿») → «Miller skate (new)», `120` → Save → dialog closed, toast «Commission group “Miller skate (new)” saved — 120», and **the row now reads «Miller skate (new) · 120 · Share Equally · Own · Own · —»**. The other 7 rows are unchanged. Re-opening Edit on that row is prefilled with the new values; Cancel leaves them. A **page reload brings back «Miller skate · 100 ฿»** (mock, nothing stored, as Part 5 says).
+- **O-151-7 (small, Porter's call):** a rate typed without the unit shows as **«120»** in the table while every other row shows «… ฿» (the prefill carries «100 ฿», so the ฿ only stays if the user keeps it). It is visible in the screenshot. Typing «120 ฿» would show it like the others.
+**Screenshot replaced:** `tests/evidence/gr-round-6-live/commission-group-edit.png` — the Commission table after Save, with the updated row «Miller skate (new) · 120» and the saved toast (mock data).
+
+## GR round 6c LIVE (Porter 03:17; release 20261111-201644), 2026-11-12 ~03:40: ✅ TEST_PASSED — O-151-7 fixed
+Same instrument (som-gr card, headless, 1440 px, CEO, mock). HTTP 200, **0 console / page errors.**
+- **Typed bare ✓:** «Miller skate» → «Miller skate (new)», `120` → the row reads **«120 ฿»**; toast «… saved — 120 ฿»; re-opening Edit is prefilled «120 ฿».
+- **Typed with the unit ✓ (no double ฿):** «Royal baby» `60 ฿` → the row reads **«60 ฿»**; toast «… saved — 60 ฿».
+- The other rows are unchanged; Add group is still there.
+**Screenshot replaced (goes to ขวัญ):** `tests/evidence/gr-round-6-live/commission-group-edit.png` — the whole Commission table after one edit, with «Miller skate (new) · 120 ฿» among the «… ฿» rows, an Edit on every row, and the saved toast (mock data).
+
+## GR round 7 LIVE (Porter 03:41; release 20261111-204103; RULE-2026-11-12-gr-web-alignment; ledger 28), 2026-11-12 ~04:00: ⚠️ TEST_FAILED on 2 Stock pages (rule 6 / rule 1) · PASS on the other 30 · commission-Edit shot retaken
+**Instrument:** som-gr card, headless, CEO, mock. Crawled **all 32 menu pages** at 1440 px: computed `text-align` of every `th`/`td`, columns classed numeric when ≥ 60 % of cells are numbers / ฿ / Hr / KM / %, centred text anywhere, inputs sharing a row; then each page at **375 px**. Every flag was then judged on a screenshot (my classifier mis-reads Total rows with fewer cells and label/value tables, so it flagged rows that are in fact right).
+**Passes (30 pages):** 0 console / page errors on all 32 · **0 horizontal overflow at 375 px on all 32** · every numeric column and its header compute `right`, text columns `left`, Total rows sit under their column (e.g. Salary Report Teaching (HR): numbers right, Total row aligned — round 5's "no right-aligned column" is gone; Daily, Revenue Detail, Other Income Detail, Payment Setting tables) · Action columns right with an "Action" header (Commission, School Distance, Coach login) · nothing centred except the month label between the ‹ › arrows (a control, not a column) · dialogs stack one field per row at full width with Cancel / Save bottom-right (Edit commission group, Add commission group, Add school, Edit school).
+**Defects (Team B files per the RULE's ownership list):**
+- **D-151-7a: Stock In: three fields on one row (rule 6).** `#/stock/stock-in`: Product · Quantity · Date side by side (y equal), not one per row. Expected: stacked, full width.
+- **D-151-7b: Stock Out: side-by-side form fields (rule 6).** `#/stock/stock-out`: **Student | Other Customer** and **Branch | Payment** share rows. Student / Other Customer may count as an either/or pair (Silver's call); Branch / Payment is not a pair.
+- **D-151-7c: Stock Out: Qty and Discount headers left over numeric inputs (rule 1).** Header computes `start`; Price and Action are right. Expected: numeric columns' headers (and inputs) right.
+**Observations (Porter's call, not judged as defects):** the date inputs show their value right-aligned (Other Income, Stock In, Revenue Detail filter); rule 1 says dates left, but these are inputs, not columns · filter bars (Revenue Summary / Detail, Proposed Stock report) put 4–5 filters in one row; I read rule 6 as forms, not filter bars · Other Income's Transportation trip: School | Trip on one row (a pair, allowed).
+**Commission-Edit screenshot for ขวัญ, retaken:** `tests/evidence/gr-round-6-live/commission-group-edit.png`: the Edit modal on «Miller skate» with **Group name and Rate per item stacked** (both x 516, width 408; y 402 / 479), Cancel / Save bottom-right; Save → row «120 ฿» still works.
+**NOT_TESTED:** admin / coach views; other dialogs beyond the four above (Add Manually, Product edit, Add Demo); colours (out of the rule).
+
+## GR round 7b LIVE (Porter 03:52; release 20261111-205156), 2026-11-12 ~04:10: ✅ TEST_PASSED — D-151-7a/b/c fixed · Entries School/Trip stacked
+Same instrument (som-gr card, headless, CEO, mock); positions measured, then judged on screenshots. **0 console / page errors; 0 overflow at 375 px** on all three pages.
+- **7a Stock In ✓:** Product · Quantity · Date now one per row, each full width (x 297, w 1102); Save bottom-right.
+- **7b Stock Out ✓:** Student, Other Customer, Branch, Payment and Remark each on their own row, full width (x 297, w 1102). No form fields share a row.
+- **7c Stock Out ✓:** headers `Qty:right · Discount (this item):right · Price:right · Action:right`, Product left; the Qty / Discount inputs' values are right-aligned too (the ฿ / % toggle stays next to them). The commission split table (Item left; Ton / Ploy right) is unchanged.
+- **Entries (Other Income) ✓:** the Transportation trip card stacks Person · Date · **School · Trip** one per row. The four cards (OT Hour, Merit, Transportation trip, Other ±) are still side by side as cards, each stacked inside. The Detail table: Date / Person / Description left, Amount right.
+- Unchanged observation: the date inputs show their value right-aligned (Stock In Date, Other Income Date). Porter's call, as in round 7.
+**Round 7 overall:** all 32 pages now meet the RULE as I measured it, with the observations from round 7 noted.

@@ -2997,7 +2997,101 @@ Done by Atlas: `workforce-protocol` §5 has the rule (skill, copied to `.claude/
 3. Other desks: none now. Quiet desks get the note at their next housekeeping.
 4. Nudge Atlas with the after-counts.
 
+### ORDER 64 — 2026-11-12 — ✅ DONE 2026-11-12 (9 desks current; atom + call-scribe HELD — see Operations log) — harness 2.6.20: watch-inbox.sh wakes only on a new message line
+
+Your `REQUEST-marie-to-atlas-2026-11-12-watcher-blank-wakes.md`, option 1 (answer in the file). The template
+`watch-inbox.sh` no longer wakes on byte growth: blank lines, CRLF rewrites and header edits are ignored, and a drain
+plus a new message in the same tick still wakes. The scratch test passed 8 of 8. No rule file changed.
+
+**Do:**
+1. Run `node scripts/install.mjs <desk>` on the 9 desks (atom and call-scribe HELD), then `check-harness`. Watchers
+   that are already running keep the old copy until their next re-arm, which happens at each seat's next turn. That
+   is fine; nothing needs restarting.
+2. No re-read note: behaviour for the seats is unchanged, apart from fewer false wakes.
+3. Nudge Atlas.
+
+### ORDER 65 — 2026-11-12 — open desk `code-class` (freelance teaching: programming basics + AI), one team, manual mode — ✅ CLOSED 2026-11-12
+
+**Owner, to Atlas, 2026-11-12, verbatim:**
+- *"เปิดโต๊ะให้หน่อยพอดีฉันมีงานฟรีแลนซ์ในการรับสอนเขียนโปรแกรมสอนโปรแกรมมิ่งหรือว่าสอน AI พวกเนี้ยเปิดโต๊ะให้หน่อย"*
+- Atlas proposed the name `code-class`, one team (Porter PM · Sober curriculum · Fern slides + example code · Tanya
+  tries every exercise), learners reached only through the owner. He did not change any of it, and answered:
+- *"งานแรก สอน ลูกค้าที่ไม่ได้เรียนเพื่อการเรียน เขาแค่เบื่องานประจำ แล้วอยากทำโปรเจคตัวเอง
+  อยากให้  design folder structure ให้ดูดี ใช้สำหรับการให้คุย fastwork แทน
+  ให้สร้างตารางเรียน  ว่าจะเรียนอะไรบ้าง
+  ฉันตั้งใจจะให้เรียน โปรแกรมมิ่งพื้นฐาน เพราะว่าจะได้เข้าใจ พื้นฐาน ที่ทุกภาษาเหมือนกัน
+  แต่ก็แถมเรื่องเอไอ ติดไปด้วย เขาจะได้ เรียนรู้ต่อ ได้ไว ขึ้น และสร้างโปรเจคได้ไวขึ้นในอนาคต"*
+- *"ให้ทีม https://github.com/develyst1/code-class-docs.git clone ลงไปตรงที่ฉันทำประจำแล้วทำงานได้เลย"*
+
+**Steps (desk-open flow, `_templates/DESK-OPEN.md` step 4):**
+1. `node scripts/install.mjs code-class`.
+2. **Clone** `https://github.com/develyst1/code-class-docs.git` to `H:\code-class\code-class-docs` ("where I usually
+   put them" = the owner's `H:\<project>\<repo>` pattern, as corner-chat and possibility; Atlas told him this path in
+   chat, so he can correct it). Atlas checked with `git ls-remote` on 2026-11-12: it exists, only `main` at `54e1529`.
+   Cloning is reading. **No other git.** Add the `machine.local.md` row `code-class-docs`, verified on disk.
+3. **`TEAMS.md`**, one team, session names `<Name>-CLS` (CC is corner-chat's):
+
+   | Name | Role · team | Inbox |
+   |---|---|---|
+   | Porter | PM · all | `inbox/PM.md` |
+   | Tanya | QA · all | `inbox/QA.md` |
+   | Sober | SA · A — designs the curriculum and the repo's folder structure | `inbox/SA.md` |
+   | Fern | FE · A — writes the slides, lesson pages and example code | `inbox/FE.md` |
+
+   No BE seat. Remove the roles the desk does not have (README "Starting a new project").
+4. **`SEATS.md`:** `customer` = the learner, reached **only through the owner** (stamps `customer-asked` /
+   `customer-validated (date + channel)`); the owner talks to clients on **Fastwork**. designer / platform / deploy →
+   operator.
+5. **`SYSTEM-FACTS.md`**, seeded with the owner's words above, stamped `[operator 2026-11-12]`:
+   - **What the desk makes:** teaching material, not an app. A course repo (`code-class-docs`) that **looks good enough
+     to show clients while talking on Fastwork**, plus a **class schedule** (what is learned, in what order).
+   - **The first learner:** an adult who is not studying for a qualification, is bored with the day job and wants to
+     build their own projects.
+   - **Content:** programming basics that are the same in every language, **plus AI** as a bonus, so the learner keeps
+     learning faster and builds projects faster later.
+   - **Privacy:** no learner's name, contact or personal detail in the repo or any desk file beyond "the learner"; the
+     repo may be shown to other clients.
+   - **Git:** `CLAUDE.md` §6. The repo has only `main`; standard branches are the owner's `ตั้ง branch` if he wants them.
+6. **`DECISIONS.md`:** mode **manual**, the team above. **First work (on the board, ball at the PM):** REQ-001 from the
+   owner's words: (a) a folder structure for `code-class-docs` that reads well to a Fastwork client, (b) the class
+   schedule table, (c) the course outline: basics + AI. The SA proposes; the owner approves through the PM before
+   content is written.
+7. **`README.md` projects table:** add a `code-class` row.
+8. Prove: `node scripts/check-harness.mjs` → `code-class current`; `node check-hygiene.mjs code-class` → PASS.
+   Report to Atlas with a nudge. Atlas then gives the owner the line to open Porter.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-11-12 — ✅ **ORDER 65 CLOSED.** Atlas re-ran both checks (current, PASS) and ruled on `code-class/ai-worker/inbox/BE.md`:
+  **leave it as it is** (201 B header, no seat in TEAMS, nothing reads it). Do not work round the hook.
+
+- 2026-11-12 — ✅ **ORDER 65 DONE (desk `code-class` opened).** `install.mjs code-class` → new desk from the template,
+  `.harness` 2.6.20, exit 0. **Clone** (reading only, no other git): `H:\code-class\code-class-docs`, `main` only,
+  `54e1529 Initial commit`, one file `README.md` (`# code-class-docs`); `machine.local.md` row added, verified on disk.
+  Filled: `TEAMS.md` (Porter PM · Tanya QA · Sober SA·A · Fern FE·A, sessions `<Name>-CLS`, chain block) ·
+  `SEATS.md` (customer = the learner, only through the owner on Fastwork; designer/platform → operator) ·
+  `SYSTEM-FACTS.md` (owner's three quotes verbatim + the order's facts, privacy, git, local-only) · `DECISIONS.md`
+  (5 lines, `[operator 2026-11-12]`, mode manual, REQ-001 first work) · `board.md` (project info + **REQ-001 TODO,
+  ball PM**) · `PROTOCOL.md` (mode, greenfield, repo table, branch `main`, environments) · README projects row.
+  **No BE:** `BE.md` (byte-identical to the template) removed. ⚠️ `inbox/BE.md` (201 B, header only) is **left in
+  place**: the `block-inbox-write` hook refuses any command touching an inbox, and I did not work round it. Harmless;
+  Atlas may rule. Remaining 🔧 marks are only in the role charters' stack paragraphs (the SA's SPEC fills them) and
+  TEAMS' multi-team note. No `desk-open/code-class.json` existed (the order came from chat), so none to delete.
+  Proof: `check-harness` → **`code-class current`** (2.6.20: 12 desks, 2 not current = atom + call-scribe, HELD) ·
+  `check-hygiene code-class` → **PASS**.
+
+- 2026-11-12 — ✅ **ORDER 64 DONE (harness 2.6.20, watcher wakes only on a new message line).** `install.mjs` × 9
+  (buddy-screen, corner-chat, develyst-ai, dte, i-space, portfolio-nichaphon, possibility, pun-kub-fang,
+  smart-scheduler), exit 0 ×9. Each wrote only `tools/watch-inbox.sh` (old copy
+  `archive/watch-inbox.sh.before-2.6.20.2026-11-12`) and `.harness`. `check-harness`: **"2.6.20: 11 desk(s), 2 not
+  current"** = smart-scheduler-atom + call-scribe, both HELD as ruled. No re-read note, per the order. Running
+  watchers pick up the new copy at their next re-arm.
+
+- 2026-11-12 02:1x — **Tool note from Twenty (via Porter) → Atlas, not acted on (harness is Atlas's).** The QA-2 watcher
+  woke 3× with no message. `watch-inbox.sh` wakes on **byte growth** (l.75–80), so a non-message rewrite wakes the seat.
+  The 11-10 08:37 wake matches the desk-wide git restore (all archive mtimes, `RESUME-HERE-…-0837-reverted-by-git.md`),
+  and `QA-2.md` is now CRLF. The other two wakes are unproven. The drain tool leaves blank lines (it handles only
+  non-blank lines). Options written up: `REQUEST-marie-to-atlas-2026-11-12-watcher-blank-wakes.md`.
 
 - 2026-11-12 01:3x — ✅ **ORDER 63 CLOSED. ⚠️ Correction to my previous entry: "10 were not written" was WRONG.** I
   inferred it from mtimes, but a drain also sets the mtime. With 2.6.18 every seat's watcher wakes on a new line, and the

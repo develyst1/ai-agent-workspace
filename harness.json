@@ -1,12 +1,12 @@
 {
   "harness": "develyst-harness",
-  "version": "2.6.19",
+  "version": "2.6.20",
   "sharedTools": {
     "ai-worker/add-failure.mjs": "791081e8b61e7c50b2cf56d697f212f795896ed0626218eb977adcb4bab92901",
     "ai-worker/append-log.mjs": "81f520ddb7d2c3df897e79c7fd4114343028341684729f6257ab9d1250e297f9",
     "ai-worker/drain-inbox.mjs": "24dcdd8244507b428e0c2716bbd95b232192247ca0243d8f2193a5582129a2c0",
     "ai-worker/tools/pm-hub.sh": "777f42870cd2509a204eaacf2f7bde7d2e2637021a9bd9124f3eeed9138425d4",
-    "ai-worker/tools/watch-inbox.sh": "738563ee17bf5131202b35cdd2a5e5982df06cb10725a0e65a37bd6387f1bdc1",
+    "ai-worker/tools/watch-inbox.sh": "181bd09ecd65b31486192a9b521059e1a8e3da11a9b98652609a41c5bdc906ce",
     "ai-worker/tools/nudge-count.sh": "25946053a106ac55c9281e7ffc2be36b90d21c095dfd95f24e0c4579e1a5d5b0",
     "ai-worker/verify-before-relay.md": "29ec9bca9aa7672150e6f6019f184e7a59f5e74d3787c80f1e6ede32e42c5029",
     "ai-worker/reproduce-first.md": "fc9c14869c737f0475ad7e64ce94e3904b2b0a1e72f96cae9c967c3672ce25d9",

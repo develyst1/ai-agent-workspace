@@ -95,3 +95,83 @@
   - no "In the web" / "Gets" / "Classes" left.
 - **Open:** `Daily.tsx:26` «Back to Pay run» → «Back to Monthly Payment» (the 19:28 add-on). Sent back to Fanta.
 - **✅ Part 4 complete (Silver, 2026-11-11):** `Daily.tsx:26` = «Back to Monthly Payment», checked. No user-visible "Pay run" is left on Fanta's pages; Fanta reports tsc 0, build 0, Salary check 34 PASS, and 0 console errors.
+
+## Part 5 — GR round 6: commission groups can be EDITED — @Fanta — @Silver, 2026-11-12
+**Why:** ขวัญ 02:54 «แล้วกลุ่มค่าคอมปัจจุบันแก้ได้ไหมคะ เหมือนมีแค่ Add group แต่ไม่มี Edit ค่า» (ledger row 27; Porter 03:01). **File: `src/pages/a/salary/Settings.tsx` only** (final-ui, mock only, no git).
+- **Table (l.68–93):** add an empty last header `<Table.Th />` and, on each group row, a right-aligned **Edit** button. Copy the School Distance row's button exactly (`size="compact-xs" variant="subtle"`, l.171–180).
+- **Modal «Edit commission group»:** copy the Add modal's two fields (l.194–197): **Group name** and **Rate per item**, prefilled from the row. Cancel / **Save**. "Who earns it" is **not** in the edit (the ask is name + amount) [SA-decided].
+- **Save** closes and toasts `Commission group “<name>” saved — <rate>` (English; prototype convention, nothing persisted, like the School edit at l.249–251). An empty name or rate → Save disabled.
+- **Untouched:** the Add group flow, the four STAFF/FT lines under the table, the other cards.
+**Done =** `npx tsc --noEmit` 0 · `vite build` into a scratch outDir (dist/ untouched) · a CEO headless click: Edit on «Miller skate» → change the rate → Save → toast; 0 console errors; no Thai text added. Report in inbox/SA-B.md.
+**Note for Porter [SA-decided, not a build]:** the real back office has no commission-group edit route today (BB `grep` finds no group route; groups live as a product field). If ขวัญ wants this in the real app, that is a new item for the real build.
+
+## Review — part 5 (GR round 6) — @Silver, 2026-11-12: ✅ ACCEPTED
+- **Re-run by me:** final-ui `npx tsc --noEmit` exit **0**.
+- **Read:** `Settings.tsx` has the empty header `<Table.Th />` (l.79) and a per-row Edit button with the same style as School (l.91–95). The modal «Edit commission group» (l.227–) has name + rate prefilled, Save is disabled when either is empty (l.252), and Save shows the toast (l.254). The Add flow is untouched.
+- **Evidence (Fanta):** `SOM-BALANCE-Backoffice-spec/tests/evidence/task-936/result-settings-edit.txt` 9 PASS / 0, 0 console/network problems. I looked at `shots/settings-edit-modal.png`: an Edit link on every group row, the modal prefilled «Miller skate» / «100 ฿», no "Who earns it".
+- **Security review:** none (a mock page, no data, no route).
+- Next: Porter → Sober rebuild → Otto → Tanya.
+
+## Part 5b — O-151-6: after Save, the row shows the new values — @Fanta — @Silver, 2026-11-12
+**Why:** Porter 03:09 [PM-decided] (TEST-151 § GR round 6). Today Save only shows a toast, so the customer sees no change. My Part 5 brief was the cause (F-062). **File: `Settings.tsx` only.**
+- Keep the commission rows in page state: `const [groups, setGroups] = useState(COMMISSION_GROUPS)`. Render the table from `groups`.
+- Remember **which row** is being edited (its index or original name) in `groupEdit`. On Save, replace that row's `group` + `rate` (trimmed) and keep its ft / pt / fl / staff. Then close the modal and show the same toast.
+- The row `key` must not break when a name changes (use the index, or keep the original name as the key).
+- Cancel changes nothing. A reload resets to the mock (in-page state is enough; no backend, no storage).
+**Done =** tsc 0 · scratch build 0 · headless CEO: Edit «Miller skate» → rate 99 ฿ + rename «Miller skate 2» → Save → **the row reads «Miller skate 2» / «99 ฿»**, and the other rows are unchanged; Cancel leaves it as is; the previous 9 checks still pass. Report in inbox/SA-B.md.
+
+## Review — part 5b (O-151-6) — @Silver, 2026-11-12: ✅ ACCEPTED
+- **Re-run by me:** final-ui `npx tsc --noEmit` exit **0**.
+- **Read:** `Settings.tsx` l.16 `groups` in page state; l.17 `groupEdit` carries `idx`; l.85–86 the table renders from `groups` with an index key; l.259 Save replaces only that row's `group` + `rate` (trimmed) and keeps ft/pt/fl/staff.
+- **Evidence:** `result-settings-edit.txt` 11 PASS / 0 (incl. the row reads «Miller skate 2» / «99 ฿», other rows unchanged, Cancel leaves it). I looked at `shots/settings-edit-saved.png`: the row shows «Miller skate 2 · 99 ฿» with the toast; the other 7 rows are as before.
+- **Security review:** none (mock page). Next: Porter → Sober rebuild → Tanya.
+
+## Part 5c — O-151-7: an edited amount keeps the "120 ฿" format — @Fanta — @Silver, 2026-11-12
+**Why:** Porter 03:14 [PM-decided] (TEST-151 § GR round 6b): typing «120» saves a row that reads «120», not «120 ฿» like the others, and the screenshot goes to ขวัญ. **File: `Settings.tsx` only.**
+- On Save, normalise the trimmed rate: if it is a number with an optional `฿` (e.g. `120`, `120฿`, `120 ฿`, `1,200`) → store **`<number> ฿`**, keeping the digits and commas as typed and adding exactly one space before `฿`. Anything else (e.g. «No commission») is kept as typed [SA-decided].
+- The toast uses the same normalised rate.
+**Done =** tsc 0 · scratch build 0 · headless CEO: rate «120» → the row reads «120 ฿»; «120฿» → «120 ฿»; «No commission» stays; the earlier 11 checks still pass. Report in inbox/SA-B.md.
+
+## Review — part 5c (O-151-7) — @Silver, 2026-11-12: ✅ ACCEPTED
+- **Re-run by me:** final-ui `npx tsc --noEmit` exit **0**.
+- **Read:** `Settings.tsx` l.259–263. The regex `^(\d[\d,]*(?:\.\d+)?)\s*฿?$` turns «120» / «120฿» / «120 ฿» / «1,200» into «<n> ฿»; other text is kept; the toast uses the same `rate`.
+- **Evidence:** `result-settings-edit.txt` 15 PASS / 0 (the 4 new O-151-7 cases + the earlier 11), 0 console/network problems.
+- **Security review:** none (mock page). Next: Porter → Sober rebuild → Tanya.
+
+## Part 6 — GR round 7: one alignment rule on Team B's 11 pages — @Fanta — @Silver, 2026-11-12
+**Why:** ขวัญ 03:15 (ledger 28) «บางส่วนชิดซ้าย บางส่วนชิดขวา» → one rule for every page. **The rule is `ai-worker/RULE-2026-11-12-gr-web-alignment.md` (Sober, 7 lines); read it whole; it wins over this summary.**
+**Your files only (final-ui `src/pages/`):** `a/salary/{Settings, Entries, MySlip, People, Person, SalaryReport, Daily}.tsx` · `b/stock/{Product, StockIn, Import, StockOut}.tsx`. **Not** `parts.tsx` (shared; ask me first), not PayRun/Slip/SlipView (Fern), not StockReport/LowStock/Demo (Flash).
+**Known spots (from my grep, check each page anyway):**
+- **SalaryReport** (14 headers, 0 right) and **Import** (6, 0 right): their numeric columns go right, header + cells (rule 1).
+- **Product / StockOut:** drop the 2 `ta="center"` (rule 1).
+- **Settings:** the commission Edit column and the School Edit column get the header **"Action"**, right-aligned (rule 4). Today both are an empty `<Table.Th />`. The Add / Edit modals (commission name + rate, school + km) **stack one field per row** (rule 6; they are not a From/To pair).
+- **Every page:** `tabular-nums` on each `Table`, and money through `fmtBaht()` (rule 3). Totals sit in their column (rule 2). Label/value boxes use `Group justify="space-between"` (rule 5). Page actions sit in `PageHeader` (rule 7).
+- **Keep:** the round-6 Edit behaviour (Part 5/5b/5c) and every word. **Layout only**, no wording change.
+**Done = (the rule's own Done):** tsc 0 · scratch build 0 (dist/ untouched) · a headless check on each of the 11 pages (CEO, plus Admin where the page shows for Admin) that every numeric `th`/`td` computes `text-align: right`, no element computes `center` in a table, every form is one column, and 375px has no horizontal overflow · 0 console errors · Salary 34 + the settings-edit 15 still pass · 2 screenshots (SalaryReport, Import). Report in inbox/SA-B.md.
+
+## Review — part 6 (GR round 7, alignment) — @Silver, 2026-11-12: ✅ ACCEPTED
+- **Re-run by me:** final-ui `npx tsc --noEmit` exit **0**. No `ta="center"` is left in her 11 pages (grep).
+- **Evidence:** `tests/evidence/task-936/result-align.txt` **41 PASS / 0 FAIL** (baseline 10 FAIL); 0 console/network problems. Fanta also reports settings-edit 15/0, Salary 34/0 and Stock 35/0. I looked at `shots/align-salary-report.png`: numbers and their headers are right-aligned, the Total row sits under its columns, and text is left.
+- **My survey was wrong on 2 pages, and Fanta's reading is right:**
+  - **Import's** 2 tables are all text (Model code · What changes · Product Name), so left is the rule.
+  - **SalaryReport** already right-aligned its numbers by another route; my `ta="right"` grep count was not behaviour.
+  - Only the centred Payment group header was a defect there, and it's fixed.
+- **Security review:** none (mock page). Next: Porter → Sober rebuild → Tanya.
+
+## Part 6b — GR round 7 TEST_FAILED on Stock In / Stock Out (Tanya, TEST-151 § GR round 7) — @Fanta — @Silver, 2026-11-12
+**Why:** the Part 6 audit checked rule 6 only in **modals**, but rule 6 covers **every form on a page**. I accepted it without noticing (F-064). **Files: `b/stock/StockIn.tsx`, `b/stock/StockOut.tsx` only.**
+- **7a StockIn l.40–71:** the `Grid` puts Product (sm 6) + Quantity (sm 3) + Date (sm 3) on one row. Make it one field per row, full width (`Stack`), in the same order. Save / Cancel go bottom-right (`Group justify="flex-end"`).
+- **7b StockOut l.234–247:** the `Grid` puts Student | Other Customer and Branch | Payment side by side. Make it one field per row (`Stack`): Student · Other Customer · Branch · Payment · Remark. None of them is a From/To pair.
+- **7c StockOut l.109–110:** the `Qty` and `Discount (this item)` headers become `ta="right"`. Their cells (the NumberInputs, l.135 / l.139) must sit right as well: wrap each cell's content in `Group justify="flex-end"` (or `ta="right"` on the Td), so the header aligns with its column.
+- **Extend the audit (`audit-align.mjs`):** rule 6 must check **every form container on every page** (inputs that share a row on the page itself, not just in modals). The numeric-column check must include **input** columns. It must FAIL on today's StockIn / StockOut before your fix and PASS after.
+**Done =** tsc 0 · scratch build 0 · audit: the new checks show FAIL→PASS and everything else stays green (41+) · 375px no overflow · 0 console errors · settings-edit 15 + Salary 34 + Stock 35 still pass · screenshots of StockIn + StockOut. Report in inbox/SA-B.md.
+
+## Review — part 6b (round 7 fails 7a/7b/7c) — @Silver, 2026-11-12: ✅ ACCEPTED
+- **Re-run by me:** final-ui `npx tsc --noEmit` exit **0**. No `Grid` / `SimpleGrid` / `Group grow` is left in StockIn / StockOut. Entries keeps one `SimpleGrid` (l.55), which lays out the **cards**, not form fields. The StockOut `Qty` / `Discount (this item)` headers are `ta="right"` (l.109–113).
+- **The audit now covers the rule's scope:** `result-align.txt` has a "page forms, rule 6" line per page × role (l.36–52) and input-column checks (l.53 on: Qty th/td/input right). **60 PASS / 0 FAIL**; Fanta reports **8 FAIL on the code before her fix**.
+- **I looked at `shots/align-stock-out.png`:**
+  - Qty and Discount, header and inputs, sit right under their headers.
+  - Student / Other Customer are one per row, full width.
+  - The Action column is last.
+- **Out-of-list edit, accepted:** the extended audit also caught the Entries School/Trip fields sharing a row. Entries is one of her Part 6 files and the same rule applies, so it's in scope.
+- **Security review:** none (mock page). Next: Porter → Sober rebuild → Tanya.

@@ -72,6 +72,26 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-064 — 2026-11-12 — SA (Silver) — I accepted the round-7 alignment work when its audit checked forms only inside modals
+- **Status:** NEW
+- **What happened:** for TASK-936 Part 6, the alignment rule says "Forms stack vertically", which means every form. Fanta's audit checked one field per row only in 6 modals. I read "41/0" and accepted it without asking what the audit didn't cover. Tanya then failed Stock In (3 fields on one row) and Stock Out (2 pairs side by side, plus left-aligned Qty/Discount headers over input columns).
+- **Rule:** role-sa §4.8 "Review the evidence, not the claim", and §6 "Checking the gate, not the generator". A green audit only proves what it measures. I didn't compare its scope against the rule's scope.
+- **Fix now:** Part 6b fixes both pages and extends the audit to page-level forms and input columns, showing FAIL before the fix and PASS after.
+
+## F-063 — 2026-11-12 — SA (Silver) — My Part 5b brief didn't say what an edited rate looks like, so «120» saved without its ฿
+- **Status:** NEW
+- **What happened:** for TASK-936 Part 5b I wrote "replace that row's group + rate (trimmed)". I didn't simulate a typed rate. The prefill is «100 ฿», but an admin types «120», and the row then read «120» next to «40 ฿» rows. Tanya found it (O-151-7). This is the second round-trip on one small brief, after F-062.
+- **Rule:** workforce-protocol §10a.3 "Simulate before you ask", which applies to briefs as well: carry each plausible input to the screen.
+- **Fix now:** Part 5c. On Save, a numeric rate is shown as «<n> ฿».
+
+## F-062 — 2026-11-12 — SA (Silver) — My GR round 6 brief said "toast only, nothing persisted", so a Saved edit left the row unchanged
+- **Status:** NEW
+- **What happened:** TASK-936 Part 5 (Edit on commission groups) copied the School edit's "toast, nothing persisted" convention. I accepted Fanta's build against that brief. Tanya's TEST-151 found O-151-6: after Save the row still shows the old name and rate, so the customer would think Edit is broken.
+- **Rule:** role-sa §6 "Checking the gate, not the generator": verify in the artifact the reader actually opens. I checked the toast, not what the customer sees after Save.
+- **Fix now:** Part 5b. The rows go into page state, and Save updates the row.
+
+
+
 ## F-061 — 2026-11-11 — PM (Porter) — My "แนะนำ" badges on the quote favoured the cheapest, lowest-risk option for US, not what the customer asked for
 - **Status:** NEW
 - **What happened:** On the proposal page I marked these as "แนะนำ":

@@ -30,7 +30,13 @@
   ul.plain li{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:baseline}
   ul.plain li:first-child{border-top:0}
   .check{color:var(--green);font-weight:700;flex:none}
-  .status{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap}
+  .status{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap;text-align:right}
+  .val{display:block;font-size:14px;color:var(--ink);font-weight:600}
+  .val s{color:var(--muted);font-weight:500;margin-right:6px}
+  .val em{font-style:normal;color:var(--green)}
+  .freesum{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:12px;padding:14px 16px;
+    border-radius:12px;background:var(--green-soft);font-size:15px}
+  .freesum b{color:var(--green)}
   .item{border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:14px 0}
   .item-head{display:flex;justify-content:space-between;gap:16px;align-items:baseline;flex-wrap:wrap}
   .item h3{margin:0;font-size:18px}
@@ -61,19 +67,25 @@
       <div class="brand">DEVELYST × SOM</div>
       <h1>สรุปงานที่ขอเพิ่ม<br>และค่าใช้จ่าย</h1>
     </div>
-    <div class="meta">ระบบ SOM หน้าบ้าน และหลังบ้าน<br>11 พฤศจิกายน 2569</div>
+    <div class="meta">ระบบ SOM หน้าบ้าน และหลังบ้าน<br>12 พฤศจิกายน 2569</div>
   </header>
 
   <p class="lead">สรุปรายการที่ขวัญและพี่ฟีนแจ้งเข้ามา แยกเป็นงานที่ทีมทำให้โดยไม่มีค่าใช้จ่าย และงานใหม่ที่มีค่าใช้จ่าย บางรายการมีตัวเลือกให้เลือกตามความเหมาะสมครับ</p>
 
-  <h2>ทำให้ฟรี <span class="tag free">ไม่มีค่าใช้จ่าย</span></h2>
-  <p class="sub">แก้ไขการทำงานที่ยังไม่ถูกต้อง และรายการที่รวมอยู่ในขอบเขตเดิม</p>
+  <h2>งานที่ทีมทำให้ <span class="tag free">ส่วนลด 100%</span></h2>
+  <p class="sub">งานที่ขอเพิ่มจาก feedback ซึ่งมีมูลค่าตามเรทเดิม ทีมมองว่าเป็นงานปรับที่ช่วยให้ระบบใช้งานได้ดีขึ้น จึงให้ส่วนลดเต็มจำนวน</p>
+  <ul class="plain">
+    <li><span class="check">✓</span><span>SOM Dashboard: กราฟ Gender / Nationality นับจาก Total Customer + 1 Hr (3 เดือนล่าสุด) และกราฟกิจกรรมแยกตามแพ็ก ไม่นับ Voucher แยก 1st Trial</span><span class="status"><span class="val"><s>350</s><em>0 บาท</em></span>กำลังทำ</span></li>
+    <li><span class="check">✓</span><span>หลังบ้าน: ปรับตาม feedback เว็บทดลอง (ธีมขาว-ส้ม, ชื่อ SOM BACK OFFICE, ปุ่ม Unlock สำหรับพี่ฟีน, Merit เห็นเฉพาะพี่ฟีน, หน้ารายได้, แก้ไขกลุ่มค่าคอม, จัดแถวให้เป็นแบบเดียวกันทุกหน้า, Add Demo, รูปสินค้า)</span><span class="status"><span class="val"><s>2,300</s><em>0 บาท</em></span>อยู่ในเว็บทดลองแล้ว</span></li>
+    <li><span class="check">✓</span><span>หลังบ้าน 7 รายการที่พี่ฟีนขอเพิ่ม: แก้เรทค่าจ้างเองได้ · หน้า Conversion ช่อง Total และตัวกรอง · Export Conversion · Export Revenue Summary · ย้ายสาขาทั้งคอร์ส · ตัวกรองและช่องค้นหาหน้า Stock report · หน้า Report Revenue และ Report Conversion</span><span class="status"><span class="val"><s>1,600</s><em>0 บาท</em></span>รับ feedback ถึง 17 พ.ย.</span></li>
+  </ul>
+  <div class="freesum"><span>มูลค่างานรวม <s>4,250 บาท</s> · ส่วนลด 100%</span><b>ไม่มีค่าใช้จ่าย</b></div>
+
+  <h2>แก้ไขการทำงานที่ยังไม่ถูกต้อง</h2>
+  <p class="sub">ทีมแก้ให้ตามการดูแลระบบ</p>
   <ul class="plain">
     <li><span class="check">✓</span><span>ลาคลาสชดเชยแล้ว คลาสเลื่อนไปสัปดาห์ถัดไป ไม่กลับมาลงวันเดิม</span><span class="status">แก้แล้ว กำลังทดสอบ</span></li>
     <li><span class="check">✓</span><span>คอร์สที่ยัง Pending ระบบจะยังไม่ส่งแจ้งเตือนผู้ปกครอง ส่งตารางให้ครั้งเดียวเมื่อกด Confirm Course</span><span class="status">แก้แล้ว กำลังทดสอบ</span></li>
-    <li><span class="check">✓</span><span>SOM Dashboard: กราฟ Gender / Nationality นับจาก Total Customer + 1 Hr (3 เดือนล่าสุด) และกราฟกิจกรรมแยกตามแพ็ก ไม่นับ Voucher แยก 1st Trial</span><span class="status">กำลังทำ</span></li>
-    <li><span class="check">✓</span><span>หลังบ้าน: ปรับหน้าตาและสิทธิ์ตาม feedback เว็บทดลอง (ธีมขาว-ส้ม, ปุ่ม Unlock สำหรับพี่ฟีน, Merit เห็นเฉพาะพี่ฟีน, ชื่อ SOM BACK OFFICE, หน้ารายได้)</span><span class="status">อยู่ในเว็บทดลองแล้ว</span></li>
-    <li><span class="check">✓</span><span>หลังบ้าน 7 รายการที่พี่ฟีนขอเพิ่ม: แก้เรทค่าจ้างเองได้ · หน้า Conversion ช่อง Total และตัวกรอง · Export Conversion · Export Revenue Summary · ย้ายสาขาทั้งคอร์ส · ตัวกรองและช่องค้นหาหน้า Stock report · หน้า Report Revenue และ Report Conversion</span><span class="status">รับ feedback ถึง 17 พ.ย.</span></li>
   </ul>
 
   <h2>งานใหม่ <span class="tag paid">มีค่าใช้จ่าย</span></h2>
@@ -161,6 +173,7 @@
       <tr><td>แยกสิทธิ์แอดมินรายเมนู</td><td>ทุกเมนู (แนะนำ) / ก้อนรายได้</td><td class="r">2,500 / 600</td></tr>
       <tr><td><b>รวมเมื่อเลือกตามที่แนะนำ</b> (เปลี่ยนกิจกรรมแบบไม่คืน)</td><td></td><td class="r"><b>7,850</b></td></tr>
       <tr><td>รวมเมื่อเลือกแบบประหยัดทุกข้อ</td><td></td><td class="r">5,150</td></tr>
+      <tr><td>งานที่ทีมทำให้ (มูลค่า 4,250 บาท)</td><td>ส่วนลด 100%</td><td class="r">0</td></tr>
     </tbody>
   </table>
 

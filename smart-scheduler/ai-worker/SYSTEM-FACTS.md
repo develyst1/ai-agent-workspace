@@ -4573,3 +4573,7 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
 
 ## Team test-data tags on sid [Porter 2026-11-08, moved from inbox/QA.md by ORDER 63, 2026-11-12]
 From Porter 2026-11-08: FYI, no round yet: Team C's test data on sid (skip it in any sid check): 1 revenue manual line, remark "[C-TEST] flash TASK-859 evidence" + category "C-TEST flash 859". Team B's is "B-…", Team A's "A-…". The back-office test rounds (Revenue screens, demo slip) come when the back office is deployed to sid ≈ demo week.
+
+## The extra-work proposal HTML is internal until แนท + พี่เบส have seen it [owner 2026-11-12 ~08:35]
+- Verbatim: *"ไอ้ HTML ตัวเนี้ยเราจะยังไม่ส่งให้ลูกค้าเราจะเอามาคุยกับแนทกับพี่เบสก่อน … เราบอกแค่ลูกค้าได้ว่ามีการคิดเงินส่วนไหนบ้างหรือว่าบอกคร่าวๆก็ได้"* · *"จะทำการคุยกับแนทวันนี้"*.
+- `deliverables/SOM-proposal-extra-work-2026-11-11.html` is NOT sent to the customer. To ขวัญ we only say which items carry a cost (no prices, no options, no totals). Prices go out only after the owner's talk with แนท and พี่เบส.

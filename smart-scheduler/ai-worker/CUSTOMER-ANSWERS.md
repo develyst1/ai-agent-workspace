@@ -387,3 +387,11 @@
   - **Her questions:** (a) where the commission per group is set, and whether she creates and sets it herself; (b) what "All Report / REPORTS" offers versus the Dashboard; (c) where she adds a Demo herself (Stock Demo).
   - **Her 16-point UI list (11/11):** menu order and names; Pay run → Monthly Payment; REPORTS → REPORT; balance and layout fixes; Salary Report labels and grid; Notification Setting; User Setting texts; Summary unit counts; a Product image and commission-group dropdown; STOCK OUT search; Conversion renamed "Bonus (Conversion)" and moved under Salary.
   - **Also:** a Revenue Summary box that totals by category with Unit + Revenue, plus a Unit column on the top box; a collapsible left menu.
+- 2026-11-12 02:54 (group, bot) · ขวัญ, replying to our round-5 answers:
+  - (1) *"แล้วกลุ่มค่าคอมปัจจุบันแก้ได้ไหมคะ เหมือนมีแค่ Add group แต่ไม่มี Edit ค่า"*. She wants to EDIT existing commission groups.
+  - (2) *"Dashboard หน้าบ้านนะคะ // แต่ยังไงเดี๋ยวส่วนข้อ All reports ตรงนี้จะให้ทางเราแจ้งอีกทีใช่ไหมคะ ว่าต้องการเห็นอะไรบ้าง"*. Her "Dashboard" meant the FRONT-OFFICE SOM dashboard. She asks whether she will tell us later what she wants to see in All Report.
+  - (3) *"ขอบคุณค่ะ"*.
+- 2026-11-12 03:15 (group, bot) · ขวัญ:
+  - *"proposed แต่ละอันจะไปอยู่กับเมนูไหนบ้างหรอคะ หรือต้องให้ทางเราแจ้งไป หรือต้องการให้ขวันตอบกลับสวนไหนเพิ่มเติมไหมคะ"*. She asks which menu each "Proposed" item will sit under, whether she should tell us, or whether we need more answers from her.
+  - 03:16 *"ในส่วนของการจัดวางแถว Balance ขอหมายถึงทุกหน้าของระบบเลยนะคะ … บางส่วนชิดซ้าย บางส่วนชิดขวา … ปรับ Layout ให้มีรูปแบบที่สอดคล้องกันทุกหน้า"*. Her 11/11 "จัด Balance แถว" items (#4, 7, 8, 15, 16) apply to EVERY back-office page: one consistent alignment.
+- 2026-11-12 (private chat, owner's screenshot; her times 02:38 / 02:57) · Asks again for the names of the 3 parents: "ขวัญขอชื่อสามบ้านนี้หน่อยนะคะ". And: "พี่โด่งจะประเมินรายละเอียดและค่าใช้จ่ายให้ได้ประมาณวันไหนคะ 1. เรียนตารางหลายวัน / 2 ชม 2. เปลี่ยนกิจกรรมทั้งคอร์ส 3. การปิดตารางทั้งวัน" → answered by the proposal deliverables/SOM-proposal-extra-work-2026-11-11.html (F1 / F3 / F4); the owner sends it.

@@ -8,8 +8,8 @@
 # Usage, at the END of your turn, with the Bash tool's run_in_background:
 #   bash ai-worker/tools/watch-inbox.sh PM RELAY      # the PM
 #   bash ai-worker/tools/watch-inbox.sh SA            # an SA (SA-B, … for other teams)
-# It exits — and so wakes you — only when a watched file GROWS. Your own drain shrinks the file and does
-# not wake you. On wake: read the inbox, act, then arm it again. One watcher per desk and role set: if one
+# It exits — and so wakes you — only when a NEW MESSAGE LINE lands in a watched file (blank lines, line-ending
+# rewrites and the header do not count). Your own drain does not wake you. On wake: read the inbox, act, then arm it again. One watcher per desk and role set: if one
 # is already running, this script REFUSES — prints "already watching: <files> (pid N) — not starting a
 # second" and exits 3 (not a WAKE: your watcher is already armed; do nothing). It never stops the other one.
 # (F-005; ORDER 42, 2026-10-29.)
@@ -59,10 +59,15 @@ for d in /proc/[0-9]*; do
   fi
 done
 
-size() { if [ -f "$1" ]; then wc -c < "$1" | tr -d ' '; else echo 0; fi; }
+# What counts is a NEW MESSAGE LINE, not byte growth (Atlas 2026-11-12, REQUEST-marie-to-atlas-…-watcher-blank-wakes):
+# a git checkout rewriting the file to CRLF, or a blank line, woke seats with nothing to read. A message line is any
+# line that is not blank, not the `# ` title and not a `>` preamble line, compared with CRs stripped. The watcher wakes
+# when a line appears that was not there before. A drain or an edit only resets what counts as "seen".
+export LC_ALL=C
+msgs() { [ -f "$1" ] && tr -d '\r' < "$1" | grep -vE '^[[:space:]]*$|^# |^>' | sort -u; }
 
 declare -A base
-for f in "${files[@]}"; do base[$f]=$(size "$f"); done
+for f in "${files[@]}"; do base[$f]=$(msgs "$f"); done
 tick=${WATCH_TICK_MIN:-0}
 case "$tick" in ''|*[!0-9]*) echo "WATCH_TICK_MIN must be a whole number of minutes"; exit 2 ;; esac
 echo "watching: ${files[*]} since $(date +%H:%M)$([ "$tick" -gt 0 ] && echo " (tick every $tick min)")"
@@ -74,12 +79,12 @@ while true; do
     exit 0
   fi
   for f in "${files[@]}"; do
-    now=$(size "$f")
-    if [ "$now" -gt "${base[$f]}" ]; then
+    now=$(msgs "$f")
+    if [ -n "$(comm -13 <(printf '%s\n' "${base[$f]}") <(printf '%s\n' "$now") | grep -v '^$')" ]; then
       echo "WAKE: new line(s) in $f at $(date +%H:%M) - read it now, act, then arm the watcher again."
       exit 0
     fi
-    if [ "$now" -lt "${base[$f]}" ]; then base[$f]=$now; fi
+    base[$f]=$now
   done
   sleep 20
 done

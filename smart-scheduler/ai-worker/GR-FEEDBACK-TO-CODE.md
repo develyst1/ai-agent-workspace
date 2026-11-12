@@ -34,3 +34,6 @@ Porter adds a row the moment an item is accepted (source = the verbatim LINE fil
 | 24 | 11-11 | Collapsible left-menu groups | ขวัญ LINE 13:52 | Round 5 | BF shell | — | OPEN (after 14) |
 | 25 | 11-11 | Product: image upload back; commission group is a dropdown; she sets the category | ขวัญ LINE 13:36 #13 | Round 5 | BF/BB product | — | OPEN (after 14) |
 | 26 | 11-11 | Per-menu permissions as a 2-option quote: Revenue-only ≈ 600 ฿ (recommended) / every menu ≈ 2,500 ฿ | owner 11-11 "ทำเป็นออปชันให้เขาเลือก" | Single switch stays (round 4/5) | see row 21 | Trolley card 24 | QUOTE |
+| 27 | 11-12 | Commission groups: EDIT an existing group (name + amount), not only Add | ขวัญ LINE 02:54 | Round 6 | BB+BF commission group edit | — | OPEN (after 14) |
+| 28 | 11-12 | One consistent row/column alignment on EVERY back-office page (extends 11/11 #4,7,8,15,16) | ขวัญ LINE 03:16 | Round 7 (A + B pages) | BF: shared table/form alignment rules | — | OPEN |
+| 29 | 11-12 | Which menu each "Proposed" item lives under (question) | ขวัญ LINE 03:15 | Answer (Sober lists the Proposed items + their menu) | — | — | OPEN |
