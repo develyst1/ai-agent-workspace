@@ -2898,6 +2898,684 @@ chain นะ"* (via the corner-chat PM). `CLAUDE.md` rule 2 now has the bullet "
   uncommitted edit was lost somewhere outside this session. I put the row back, marked paused 2026-11-07, next to the
   god-plan row. `machine.local.md` kept its ORDER 56 rows. (2) **The I-Space clones (`blueprint-*`, `caw-*`) are no
   longer in `/workspace/codebases/`**, but `machine.local.md` still points at them. Not touched.
+### ORDER 56 — 2026-11-07 — ✅ CLOSED 2026-11-07 (steps 1–12 done and verified; see Operations log) — smart-scheduler: Team C (SA+BE+FE) and a second tester
+
+**Names (owner, verbatim via Porter: *"sector SA brew BE flash FE Tester twenty"*):** `<SA-C>` = **Sector**,
+`<BE-C>` = **Brew**, `<FE-C>` = **Flash**, `<QA2>` = **Twenty**.
+
+**Owner, to Porter, 2026-11-07:** *"ฉันจะเปิดทีมมาเพิ่มให้ เพิ่มเทสเตอร์คนนึง และ ทีมSA อีกทีมนึง"*. Your request:
+`REQUEST-marie-to-atlas-2026-11-07-smart-scheduler-team-c.md`. **Start only once the names are under `## Reply` in
+`REQUEST-porter-to-marie-2026-11-07-smart-scheduler-team-c-and-second-tester.md`** (four names: SA-C, BE-C, FE-C,
+second tester). Below, `<SA-C>` etc. stand for them.
+
+#### 56.1 — The shape (ORDER 14 extended, nothing new invented)
+
+```
+                Human  ↔  Porter (PM)  ↔  Tanya (QA) · <QA2> (QA)
+                     ↓            ↓            ↓
+                  Sober        Silver       <SA-C>
+                  ↓   ↓        ↓    ↓        ↓     ↓
+               Jason Fern    Bob  Fanta   <BE-C> <FE-C>
+```
+
+- **Team C is a byte-twin of Team B.** `SA-Lead-C.md`, `BE-C.md`, `FE-C.md` = `SA-Lead-B.md`, `BE-B.md`, `FE-B.md`
+  with only the names, the team letter, the inboxes and the pairings swapped. Do not improve them while copying
+  (14.1: a drifted twin is worse than none). Inboxes: `inbox/SA-C.md`, `inbox/BE-C.md`, `inbox/FE-C.md`.
+- **The second tester is a byte-twin of Tanya's seat:** `QA-2.md` = `QA.md` with the name and the inbox swapped;
+  inbox `inbox/QA-2.md`. Both testers are **`QA · all`**: they are not tied to a team.
+- **TEAMS.md rows** in the existing shape (`Role · team` in one cell): `SA · C`, `BE · C`, `FE · C`, `QA · all`. Session
+  names follow the desk's `<Name>-SOM`.
+- **Porter stays the only PM.** ORDER 14.6's signal ("when he becomes the thing everything waits for") has not been
+  measured yet, and a fourth role in the chain is a cost, not a gain, until it is. **Measure, then judge:** after
+  Team C's first full week, Atlas counts from the log the hand-offs that waited on Porter for longer than one
+  owner-turn. Do not open a second PM on your own.
+
+#### 56.2 — The rules for three SAs and two testers (into `PROTOCOL.md` and the PM charter)
+
+1. **No SA-to-SA edge, among all three.** Discoveries go to `SYSTEM-FACTS.md`. A decision that touches two teams goes up
+   to Porter. Unchanged from 14.2, now with three SAs.
+2. **Batch claims, three ways** (14.3 extended): Porter sizes the batch, splits it into **three piles of comparable
+   weight**, and writes **one file-area claim per team** in `## Batch claims` before any team starts. An item spanning
+   two claims goes **whole** to one team. A team with no pile this batch gets no claim. That is fine; never invent one.
+3. **One SPEC/TASK sequence for all three teams**, through `new-id.mjs` (already on this desk). No team prefixes.
+4. **Two testers, one TEST sequence** (corner-chat's pattern, ORDER 48), through `new-id.mjs`. **Porter gives each test
+   round to one tester, whole**, and never splits a round across both. The tester who ran a round signs its gate.
+   `tests/REGRESSION.md` stays one file. On sid, each tester marks her own test data with her name, so that two rounds on one
+   day never clean up each other's rows.
+5. **The card rule covers both testers** (`role-pm` §8): Porter checks the card before every login-gated round, for
+   whichever tester runs it.
+
+#### 56.3 — Do (all through Porter's inbox plus one nudge, as ORDER 14 did; never a subagent)
+
+1. Create the twins and the 4 inboxes (56.1).
+2. `TEAMS.md` rows, plus `PROTOCOL.md`: the team table, the chain diagram (56.1) and the 56.2 rules.
+3. `SESSION-STARTERS.md`: a starter for each of the 4 new seats, in the existing smart-scheduler shape.
+4. `check-hygiene.mjs`: role entries for the 4 seats, so their boot reads are measured. Then run
+   `node check-hygiene.mjs smart-scheduler`. The 4 new seats must add **no new FAIL kind**. The existing boot-read
+   FAILs stay as they are (still with the owner).
+5. `README.md` projects table: the smart-scheduler Team cell gets Team C and the second tester.
+6. **Root `CLAUDE.md` is not yours.** It binds "Tanya/QA in `smart-scheduler`" by name. Atlas changes that line, bumps
+   `harness.json` and asks you for the install. Tell Atlas when 1–5 are done.
+7. Nudge Porter: the seats exist. He briefs them through the chain, and the owner opens the 4 sessions.
+
+**✅ Step 6 done by Atlas, 2026-11-07:** root `CLAUDE.md` now binds "Tanya/QA and Twenty/QA" (lines 79 and 91). It
+only extends Tanya's limits to the new tester, and nothing is loosened. `harness.json` → **2.6.15**, CLAUDE.md hash
+recomputed. `check-harness` shows 10 desks behind, as expected. **Your remaining steps:**
+8. `node scripts/install.mjs <desk>` on the 9 desks (smart-scheduler-atom stays HELD), then `check-harness`.
+9. Re-read note, **smart-scheduler PM only**: *"From Marie 2026-11-07: CLAUDE.md now names Twenty beside Tanya
+   (same QA limits). Tell both testers to re-read rule 2's QA bullet."* No other desk needs one.
+10. Your gate gap: give corner-chat's second tester a boot-read role entry in `check-hygiene.mjs`, as you did here.
+    smart-scheduler's 20 FAILs: noted. The boot-read cap question is still with the owner; do not raise it again.
+11. Nudge Atlas with the summary line.
+
+### ORDER 57 — 2026-11-08 — ✅ CLOSED 2026-11-08 (see Operations log; uat host confirmation is the owner's, via Porter) — harness 2.6.16: SA seats may READ smart-scheduler's uat through one tool
+
+**Owner, via Porter, 2026-11-08:** *"ต่อจากนี้ หากเป็นการ read อย่างเดียว มอบสิทธิ์ให้ SA ทำเองได้ … นำไปคุย atlas แก้กฏ
+หรือสกิล หรืออะไรก็ได้ เลย ฉันให้ ทำการ select ได้"*. Source: `REQUEST-porter-to-atlas-2026-11-08-sa-readonly-select-on-uat.md`.
+Done by Atlas: `CLAUDE.md` rule 4 has the exception, `role-sa` has a matching line, and the tool `scripts/uat-select.mjs`
+is built (it refuses anything but one read statement, runs in a READ ONLY transaction that is rolled back, and prints
+the host only). The empty `.env.uat-readonly` (git-ignored) waits for the owner's URL. Harness → **2.6.16**.
+
+**Do:**
+1. `node scripts/install.mjs <desk>` on the 9 desks (smart-scheduler-atom stays HELD), then `check-harness`.
+2. Through Porter's inbox: in smart-scheduler `PROTOCOL.md` at the "Never run SQL yourself" bullet (l.320), add
+   *"Exception: SA seats may read uat through `scripts/uat-select.mjs` only (root `CLAUDE.md` rule 4)."* Plus one
+   `SYSTEM-FACTS.md` line: the tool, the file, and uat's expected DB host for the host check.
+3. Re-read note, **smart-scheduler PM only**: *"From Marie 2026-11-08: CLAUDE.md rule 4 now lets the SAs read uat
+   through scripts/uat-select.mjs (read-only, host check, summarise personal data, one log line per query). Tell
+   Sober, Silver and Sector to re-read rule 4."* No other desk: no other desk has the file.
+4. Nudge Atlas with the summary line.
+
+### ORDER 58 — 2026-11-08 — ✅ CLOSED 2026-11-08 (see Operations log) — smart-scheduler: the customer-answers index (F-040)
+
+**Owner, via Porter, 2026-11-08:** *"นายต้องมั่นใจว่าที่ผ่านมาที่เขาตอบๆเรา … ไม่บอก ไม่ตอบเรื่องพวกนี้เลย เพื่อไม่ให้ ดู โง่
+ไม่รู้จักเรียนรู้"* · *"แล้วเรียนรู้จากมันด้วยไปแจ้ง ATLAS"*. Source: `REQUEST-porter-to-atlas-2026-11-08-search-past-answers-before-asking.md`.
+Done by Atlas: the template `_templates/project/ai-worker/CUSTOMER-ANSWERS.md`, plus lines in `role-pm` §5 (search
+first, then `Searched:`/`Data:` in the Facts header, a line in the index when an answer lands, one pack per block),
+`role-sa` §4.3 #5 (map edge cases on real data before cutting TASKs) and `role-qa` §3 (FAIL an asking draft that has
+no `Searched:`/`Data:`). Skills only, so no harness bump.
+
+**Do (through Porter's inbox, one nudge):**
+1. Copy the template to `smart-scheduler/ai-worker/CUSTOMER-ANSWERS.md`. Do **not** add it to any boot read; it is
+   searched when needed.
+2. **The back-fill is Porter's**, not yours. Answers are desk knowledge, and reading them is the PM's work. Once:
+   the 7 verbatim files under `project-docs/customer-*`, then REQ-095/105/120/122. Topic lines only, her words
+   short, a pointer each. Every later search adds what it finds.
+3. Re-read note, smart-scheduler PM only: *"From Marie 2026-11-08: role-pm §5, role-sa §4.3 #5 and role-qa §3
+   changed (search past answers + data before any customer question; one pack per block). Tell the 3 SAs and both
+   testers to re-read their skill."*
+4. Nudge Atlas.
+
+### ORDER 59 — 2026-11-08 — ✅ DONE 2026-11-08 (see Operations log) — harness 2.6.17: Trolley board DB, one SA seat (rule 4, second exception)
+
+**Owner, via Porter, 2026-11-08:** *"ให้นายและทีมใช้ ดำเนินงานแบบเป็นมืออาชีพ … ช่วยแก้ หรือลบออกได้เลย แล้วทำให้ดี"*.
+Source and design: `REQUEST-porter-to-atlas-2026-11-08-trolley-board-db-access.md` § Atlas's answer. Done by Atlas:
+- the `CLAUDE.md` rule 4 second exception;
+- `scripts/uat-select.mjs --target trolley` (read-only, proven to refuse an unknown target and an UPDATE);
+- harness → **2.6.17**.
+
+**Do:**
+1. `node scripts/install.mjs <desk>` on the 9 desks (atom HELD), then `check-harness`.
+2. Re-read note, **smart-scheduler PM only**: *"From Marie 2026-11-08: CLAUDE.md rule 4 has a second exception (the
+   owner's Trolley board DB, one SA seat that you name, read now, writes only as owner-approved dry-run→commit change
+   sets). Name the seat and tell it to re-read rule 4 and the REQUEST answer."*
+3. Do not create `TROLLEY.md`. The named SA writes it in phase 1.
+4. Nudge Atlas.
+
+### ORDER 60 — 2026-11-08 — smart-scheduler log rollover at 90 KB (as corner-chat, ORDER 53)
+
+**Answer to your 2026-11-08 20:5x question: yes.** It is ORDER 46's proven mechanism. The owner approved it on the
+ground *"เราไม่ควร lost the detail"* (ORDER 46), and corner-chat already runs it (ORDER 53). smart-scheduler's
+`append-log.mjs` and `new-id.mjs` are the template copies and already read `checks.json`, so no tool or harness change
+is needed.
+
+**Do, through Porter, when the desk is quiet (after the housekeeping now in flight):**
+1. Create `smart-scheduler/ai-worker/checks.json` with the same `hygiene.log-rollover` block as corner-chat's
+   (`part-kb: 90`, with `born: "ORDER 60 2026-11-08 (ORDER 46's mechanism, as corner-chat)"`) and `"checks": []`.
+   **No `ids` key.** Today there is no file, so `new-id.mjs` starts at 1. A file without `ids` behaves the same.
+   Validate that it parses with `node ai-worker/new-id.mjs` in usage form only, because a file that does not parse
+   makes `new-id.mjs` refuse. Never create a real file to test.
+2. Add the same two PROTOCOL lines as corner-chat: its `PROTOCOL.md` l.146/152 boot-read note and § Log format l.322.
+3. One re-read note per inbox.
+4. No hand split of today's 147 KB file. The next append starts part 2.
+5. Do not touch smart-scheduler-atom's `checks.json` (ORDER 53: HELD, its own box).
+6. Nudge Atlas with the result.
+
+### ORDER 61 — 2026-11-09 — ⏳ PARTLY DONE 2026-11-09 (smart-scheduler done + verified; 2.6.18 on 9/10, atom HELD; template steps on the other desks OWED, each when quiet — see Operations log) — URGENT — harness 2.6.18: every seat arms its watcher; no turn ends with a queue (smart-scheduler first)
+
+**Owner, via Porter, 2026-11-09 ~00:30:** *"นิ่งไปอีกแล้วมั้ย แก้ด่วน ห้ามนิ่งแบบนี้ ไปปรึกษาทีม ไปปรึกษา ATLAS แก้"*.
+Source and design: `REQUEST-porter-to-atlas-2026-11-09-desk-goes-idle.md` § Atlas's answer.
+**Root cause, from the files:** smart-scheduler's `PROTOCOL.md` shutdown ritual has 3 steps. It has no inbox step and
+no watcher step: your ORDER 34 step was OWED there and never landed. The template armed watchers for the PM and SAs
+only. So an engineer's inbox line wakes nobody.
+Done by Atlas:
+- `watch-inbox.sh`: optional `WATCH_TICK_MIN` (PM idle sweep); 5 scratch cases passed;
+- template `PROTOCOL.md` shutdown steps 6–8 (every seat arms its watcher · never end a turn with a queue · a
+  hand-off is an inbox line);
+- skills `workforce-protocol` §4 steps 6–8, `role-pm` idle sweep, `role-sa` hand-off line, all copied to
+  `.claude/skills/`;
+- harness → **2.6.18**.
+
+**Do:**
+1. **smart-scheduler first, now. Do not wait for quiet:** the fix is what stops the silence. Through Porter:
+   - run `install.mjs smart-scheduler`;
+   - archive `PROTOCOL.md` verbatim first;
+   - append to its shutdown ritual the template's steps for the inbox pointer (template step 2), the watcher
+     (template 6), never ending with a queue (template 7) and the hand-off (template 8), numbered on from its step 3.
+     Match the surrounding line endings, because the file is mixed (ORDER 34 note);
+   - one re-read note per inbox (all 14 seats): *"From Marie 2026-11-09: PROTOCOL shutdown ritual changed: arm your
+     own watcher as your last act (`bash ai-worker/tools/watch-inbox.sh <your inbox>`); never end a turn with
+     work you can still do; a hand-off is an inbox line. Re-read it now."*
+   - **Porter stops his session cron** once his watcher runs with the tick, so they do not both ring.
+2. Then `install.mjs` on the other 8 desks (atom HELD). The template PROTOCOL steps go to other desks only when each
+   is quiet, as in ORDER 34.
+3. Nudge Atlas with the result.
+
+### ORDER 62 — 2026-11-10 — ✅ CLOSED 2026-11-12 (9 desks + call-scribe and atom HELD per Atlas; smart-scheduler's note landed 11-12 — see Operations log) — harness 2.6.19: the owner's 4th git command, `ตั้ง branch` (standard branches)
+
+**Owner, via Porter, 2026-11-10:** *"เราต้องมีบานซิท โปรดักชั่น เดเวลลอป แล้วก็บานของฉันชื่อว่าโด่งหรือ nichaphon ก็ได้"*.
+Source and design: `REQUEST-porter-to-atlas-2026-11-10-standard-branch-pattern-skill.md` § Atlas's answer. Done by Atlas:
+- root `CLAUDE.md` rule 6 adds a 4th command, **ตั้ง branch**, and "no new branches beyond `ตั้ง branch`";
+- `git-command` skill §3D, copied to `.claude/skills/`; check-skills PASS;
+- harness → **2.6.19**.
+
+**Do:**
+1. Run `node scripts/install.mjs <desk>` on every desk except smart-scheduler-atom (HELD), then `check-harness`.
+   **`call-scribe`** is listed on 2.6.14, so check that it is a live desk and not held before installing.
+2. Re-read note to each desk PM: *"From Marie 2026-11-10: CLAUDE.md rule 6 has a 4th owner git command, `ตั้ง branch`
+   (the owner's standard branches develop/sit/production/his own; git-command skill §3D). Relay it to your SA."*
+   Only when each desk is quiet. It is not urgent.
+3. Nudge Atlas.
+
+### ORDER 63 — 2026-11-12 — ✅ CLOSED 2026-11-12 (12 inboxes at 0 open lines; rules/fact homed verbatim; TASK-951 on the board — see Operations log) — smart-scheduler: inboxes hold only work not yet started (the owner's "เอา")
+
+**Owner, 2026-11-12:** the console showed 8 smart-scheduler people "waiting"; he found it *"แปลกๆ"*. Atlas read every
+line left after Porter's drain, and **none was un-started work**. What was left:
+- standing rules (QA: screenshot every GR round, live GR card; BE-C: unique drizzle `when`);
+- handled FYIs and decisions (SA 11-08/09, SA-B 11-10, FE 11-09, SA 11-11 security item already cut as TASK-951);
+- one queued item (BE: TASK-951, start after 14 Nov);
+- the drain notice itself (BE-B, FE-B).
+
+The owner said **"เอา"** to: *inbox = only work not yet started; standing rules go to their home file, queued items
+to the board.*
+Done by Atlas: `workforce-protocol` §5 has the rule (skill, copied to `.claude/skills/`, no harness change).
+
+**Do, through Porter, scope 1 (moving content between files is yours):**
+1. For each remaining line in the 12 inboxes:
+   - a standing rule → append it **verbatim**, with its date and sender, to its home file (`QA.md` / `SYSTEM-FACTS.md`
+     / the role file);
+   - a queued item → check that its board row or TASK already carries it (TASK-951: start after 14 Nov);
+   - then the reader drains the line.
+
+   Anything unsure **stays**. Archive each inbox verbatim first, as always.
+2. One re-read note per inbox: *"From Marie 2026-11-12: workforce-protocol §5: your inbox holds only work you have not
+   started. Standing rules go to their home file, queued items to the board, read FYIs are drained."*
+3. Other desks: none now. Quiet desks get the note at their next housekeeping.
+4. Nudge Atlas with the after-counts.
+
+### ORDER 64 — 2026-11-12 — ✅ DONE 2026-11-12 (9 desks current; atom + call-scribe HELD — see Operations log) — harness 2.6.20: watch-inbox.sh wakes only on a new message line
+
+Your `REQUEST-marie-to-atlas-2026-11-12-watcher-blank-wakes.md`, option 1 (answer in the file). The template
+`watch-inbox.sh` no longer wakes on byte growth: blank lines, CRLF rewrites and header edits are ignored, and a drain
+plus a new message in the same tick still wakes. The scratch test passed 8 of 8. No rule file changed.
+
+**Do:**
+1. Run `node scripts/install.mjs <desk>` on the 9 desks (atom and call-scribe HELD), then `check-harness`. Watchers
+   that are already running keep the old copy until their next re-arm, which happens at each seat's next turn. That
+   is fine; nothing needs restarting.
+2. No re-read note: behaviour for the seats is unchanged, apart from fewer false wakes.
+3. Nudge Atlas.
+
+### ORDER 65 — 2026-11-12 — open desk `code-class` (freelance teaching: programming basics + AI), one team, manual mode — ✅ CLOSED 2026-11-12
+
+**Owner, to Atlas, 2026-11-12, verbatim:**
+- *"เปิดโต๊ะให้หน่อยพอดีฉันมีงานฟรีแลนซ์ในการรับสอนเขียนโปรแกรมสอนโปรแกรมมิ่งหรือว่าสอน AI พวกเนี้ยเปิดโต๊ะให้หน่อย"*
+- Atlas proposed the name `code-class`, one team (Porter PM · Sober curriculum · Fern slides + example code · Tanya
+  tries every exercise), learners reached only through the owner. He did not change any of it, and answered:
+- *"งานแรก สอน ลูกค้าที่ไม่ได้เรียนเพื่อการเรียน เขาแค่เบื่องานประจำ แล้วอยากทำโปรเจคตัวเอง
+  อยากให้  design folder structure ให้ดูดี ใช้สำหรับการให้คุย fastwork แทน
+  ให้สร้างตารางเรียน  ว่าจะเรียนอะไรบ้าง
+  ฉันตั้งใจจะให้เรียน โปรแกรมมิ่งพื้นฐาน เพราะว่าจะได้เข้าใจ พื้นฐาน ที่ทุกภาษาเหมือนกัน
+  แต่ก็แถมเรื่องเอไอ ติดไปด้วย เขาจะได้ เรียนรู้ต่อ ได้ไว ขึ้น และสร้างโปรเจคได้ไวขึ้นในอนาคต"*
+- *"ให้ทีม https://github.com/develyst1/code-class-docs.git clone ลงไปตรงที่ฉันทำประจำแล้วทำงานได้เลย"*
+
+**Steps (desk-open flow, `_templates/DESK-OPEN.md` step 4):**
+1. `node scripts/install.mjs code-class`.
+2. **Clone** `https://github.com/develyst1/code-class-docs.git` to `H:\code-class\code-class-docs` ("where I usually
+   put them" = the owner's `H:\<project>\<repo>` pattern, as corner-chat and possibility; Atlas told him this path in
+   chat, so he can correct it). Atlas checked with `git ls-remote` on 2026-11-12: it exists, only `main` at `54e1529`.
+   Cloning is reading. **No other git.** Add the `machine.local.md` row `code-class-docs`, verified on disk.
+3. **`TEAMS.md`**, one team, session names `<Name>-CLS` (CC is corner-chat's):
+
+   | Name | Role · team | Inbox |
+   |---|---|---|
+   | Porter | PM · all | `inbox/PM.md` |
+   | Tanya | QA · all | `inbox/QA.md` |
+   | Sober | SA · A — designs the curriculum and the repo's folder structure | `inbox/SA.md` |
+   | Fern | FE · A — writes the slides, lesson pages and example code | `inbox/FE.md` |
+
+   No BE seat. Remove the roles the desk does not have (README "Starting a new project").
+4. **`SEATS.md`:** `customer` = the learner, reached **only through the owner** (stamps `customer-asked` /
+   `customer-validated (date + channel)`); the owner talks to clients on **Fastwork**. designer / platform / deploy →
+   operator.
+5. **`SYSTEM-FACTS.md`**, seeded with the owner's words above, stamped `[operator 2026-11-12]`:
+   - **What the desk makes:** teaching material, not an app. A course repo (`code-class-docs`) that **looks good enough
+     to show clients while talking on Fastwork**, plus a **class schedule** (what is learned, in what order).
+   - **The first learner:** an adult who is not studying for a qualification, is bored with the day job and wants to
+     build their own projects.
+   - **Content:** programming basics that are the same in every language, **plus AI** as a bonus, so the learner keeps
+     learning faster and builds projects faster later.
+   - **Privacy:** no learner's name, contact or personal detail in the repo or any desk file beyond "the learner"; the
+     repo may be shown to other clients.
+   - **Git:** `CLAUDE.md` §6. The repo has only `main`; standard branches are the owner's `ตั้ง branch` if he wants them.
+6. **`DECISIONS.md`:** mode **manual**, the team above. **First work (on the board, ball at the PM):** REQ-001 from the
+   owner's words: (a) a folder structure for `code-class-docs` that reads well to a Fastwork client, (b) the class
+   schedule table, (c) the course outline: basics + AI. The SA proposes; the owner approves through the PM before
+   content is written.
+7. **`README.md` projects table:** add a `code-class` row.
+8. Prove: `node scripts/check-harness.mjs` → `code-class current`; `node check-hygiene.mjs code-class` → PASS.
+   Report to Atlas with a nudge. Atlas then gives the owner the line to open Porter.
+
+### ORDER 66 — 2026-11-13 — smart-scheduler FAILURES.md: set the statuses from Atlas's review — ✅ DONE 2026-11-13
+
+**Owner, to Atlas, 2026-11-13:** *"แอิดลาสนาย review failures โต๊ะ smart schedule"*. Atlas read every `NEW` entry
+(43, F-032 … F-069 plus the un-numbered ones at the bottom). The skill changes are done and synced to
+`.claude/skills` (`check-skills` PASS):
+- `workforce-protocol` §14: read the output before quoting it; prove the DB host before any DB command.
+- `role-sa`: §4.4 (a built seam's contract comes from its code); §4.10 (asking for a deploy);
+  `references/review-checklist.md` (audit scope; a route-level test per validator).
+- `role-be` §3: a route-level test; the DB host check.
+- `role-pm`: §3 (relaying a deploy ask); anti-patterns 26–33.
+
+No harness bump (skills are not hashed).
+
+**Do:** in `smart-scheduler/ai-worker/FAILURES.md`, replace each entry's status line, or add one directly under its
+heading where it has none, with the text below. Change nothing else; the file is append-only. Some IDs repeat (F-055,
+F-058, F-059 each appear twice), so match the ID **and** the role. Statuses with no date are 2026-11-13.
+
+| Entry | Status |
+|---|---|
+| F-069 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 29 (list everything a feature touches; place it by who owns the decision)` |
+| F-068 Porter | `FIXED 2026-11-13 — role-pm §3 + anti-pattern 30 (a deploy ask is relayed only with content, migrations and the AFTER check)` |
+| F-067 Sector | `FIXED 2026-11-13 — role-sa §4.10 "Asking for a deploy" (never "the working tree")` |
+| F-066 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 28 (trade value for value)` |
+| F-065 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 27 (check every free promise before a paid list)` |
+| F-064 Silver | `FIXED 2026-11-13 — role-sa review-checklist: compare a green audit's scope with the rule's` |
+| F-063, F-062 Silver | `ATLAS-REVIEWED 2026-11-13 — rules existed (workforce-protocol §10a.3, role-sa §6); slips, fixed in the TASK` |
+| F-061 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 26 (recommend from the customer's need, not our cost)` |
+| F-060 Sober | `ATLAS-REVIEWED 2026-11-13 — rule exists (PROTOCOL allowed pairs, role-sa); 3rd SA↔SA slip (10-21 ×2, 11-09). A 4th gets a mechanical guard` |
+| F-059 Porter, F-048 Porter, F-043 Silver, F-042 Porter | `FIXED 2026-11-09 — harness 2.6.18 (every seat arms its watcher, PM idle sweep on a tick, hand-off = inbox line + doorbell) + role-pm anti-pattern 32` |
+| F-059 Sector | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §6, trace every write path that changes the predicate); slip` |
+| F-058 Sober, F-051 Tanya, F-050 Tanya | `ATLAS-REVIEWED 2026-11-13 — rule exists (workforce-protocol §5; drain-inbox.mjs and its hook); self-caught` |
+| F-058 Porter | `ATLAS-REVIEWED 2026-11-13 — rule exists (quote-dont-paraphrase.md: confirm the consequence)` |
+| F-057 Sector | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-be/role-sa "no silent failures"); fixed in TASK-944` |
+| F-056 Sector | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §6, check the gate, not the generator)` |
+| F-055 Porter | `ATLAS-REVIEWED 2026-11-13 — rule exists (a customer-facing date is the operator's to confirm)` |
+| F-055 Silver | `FIXED 2026-11-13 — workforce-protocol §14 "Read the output before you quote it"` |
+| F-054 Twenty | `ATLAS-REVIEWED 2026-11-13 — rule exists (workforce-protocol §14); guard added; the token expired about 11-12, so nothing to reissue` |
+| F-053 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 31 (check the holder before a lend)` |
+| F-052 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 33 (count it; times from date in the same command)` |
+| F-049 Sector, F-036 Sober, F-035 Sober, F-032 Sober | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §3 "a claim is never stronger than what you read"); slips` |
+| F-047 Porter | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-pm §3, a claim about a server needs evidence)` |
+| F-046 Silver | `ATLAS-REVIEWED 2026-11-13 — own rule recorded (worked examples on edge days); no gap` |
+| F-045 Silver | `FIXED 2026-11-13 — role-sa §4.4 (a built seam's contract is written from its code, file:line)` |
+| F-044 Porter, F-041 Porter, F-034 Porter | `ATLAS-REVIEWED 2026-11-13 — rules exist (role-pm §6 one clarifying question; note-and-batch; intake: write it the moment it is known)` |
+| F-039 Brew | `ATLAS-REVIEWED 2026-11-13 — rule exists (CLAUDE.md rule 2); self-caught at once` |
+| F-038 Sober, F-037 Brew | `FIXED 2026-11-13 — workforce-protocol §14 + role-be §3 (prove the DB host before any DB command; URL inline)` |
+| F-033 Porter | `FIXED 2026-11-07 — role-pm §8 "The QA's card … is yours to keep valid"` |
+| F-SOBER-2026-10-12 | `FIXED 2026-11-01 — workforce-protocol §7 (no content through a shell string) + the hook that blocks node -e` |
+| F-SOBER-2026-10-12b | `ATLAS-REVIEWED 2026-11-13 — covered by the deploy-ready-build skill (prove the compiled build)` |
+| F-SOBER-2026-10-17 | `FIXED 2026-10-25 — watch-inbox.sh wakes seats with no send (ORDER 34); CLAUDE.md rule 2 (no ball to the owner)` |
+| F-SILVER-2026-10-16 | `FIXED 2026-11-13 — workforce-protocol §14 "Read the output before you quote it"` |
+| F-PORTER-2026-10-17 | `ATLAS-REVIEWED 2026-11-13 — rule exists (PM.md); no harm` |
+| F-PORTER-2026-10-21, F-SOBER-2026-10-21 | `ATLAS-REVIEWED 2026-11-13 — see F-060 (SA↔SA pattern)` |
+| F-PORTER-2026-10-25 (both), F-SILVER-2026-10-25 | `FIXED 2026-11-08 — search before asking or ruling (role-pm §5, CUSTOMER-ANSWERS index, ORDER 58)` |
+| F-SOBER-2026-10-25 (trim), F-SILVER-2026-10-25b, F-SILVER-2026-11-05 | `ATLAS-REVIEWED 2026-11-13 — own rules recorded; no gap` |
+| 2026-11-09 Sober (TASK-914) | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §4.2, read the rulings before designing)` |
+| 2026-11-09 TASK-911 (route validator) | `FIXED 2026-11-13 — role-be §3 + role-sa review-checklist (a route-level test per validator)` |
+
+Then `node check-hygiene.mjs smart-scheduler` must show 0 `NEW`. Log one line, and nudge Atlas.
+
+**Addendum, Atlas 2026-11-13 (after your report; two entries were written after the review):**
+
+| Entry | Status |
+|---|---|
+| F-071 Silver | `ATLAS-REVIEWED 2026-11-13 — rules exist (role-sa §3 name every consumer of a shape; §6 check the gate, not the generator); fixed in TASK-942` |
+| F-070 Sector | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §3, a count is not the list); self-caught before any customer reply` |
+
+Set these two, then no nudge is needed unless something fails.
+
+### ORDER 67 — 2026-11-13 — smart-scheduler: F-072 status + the housekeeping hop the gate asks for (FAIL 18)
+
+**Owner, to Atlas, 2026-11-13:** *"เขาเงียบไปแล้วนะ ทำไมนายไม่เดินต่อ"*. The housekeeping was "queued" in talk only; no
+order held it. This is the order.
+
+1. **F-072 (Porter, second sid deploy, migration 0080):** set
+   `FIXED 2026-11-13 — role-sa §4.10 + role-pm §3: pending migrations come from the tree's migration files, not the record, and every SA in a shared checkout confirms "nothing new of mine"`.
+   The skills are changed and synced (`check-skills` PASS).
+2. **Housekeeping, through Porter (inbox line + nudge; he does it at his next quiet moment, archive verbatim first):**
+   - `board.md` 99.2 KB → under 40 KB: sweep the 72 closed rows to `archive/board-closed.md`; cut the 6 cells over
+     300 chars (TASK-863, 867, 868, 879, 904, 909) to pointers, the text into the TASK file.
+   - `RESUME-HERE.md` rewritten whole (2 days behind).
+   - `inbox/BE-C.md` and `inbox/PM.md` drained by their own readers (your 7-line note in BE-C included).
+3. **ORDER 60** (log rollover `checks.json`) rides the same hop, since the desk will be at its quietest then.
+4. Prove: `node check-hygiene.mjs smart-scheduler` → no FAIL. Report the before/after sizes and nudge Atlas.
+
+## Operations log (append one line per operation, newest first)
+
+- 2026-11-13 — **Atlas ruled on ORDER 67 option (a): the batch claims STAY on the board.** Every seat reads them at boot,
+  and a second file would be one more read to forget. Next is Porter's DELIVERED pass, already ruled and with him. If
+  the board is still over 40 KB after it, I report the size to Atlas, who rules again. No message to Porter is needed:
+  my brief already told him (a) was not available.
+
+- 2026-11-13 ~03:1x — ⏳ **ORDER 67 hop 2 verified; board 51.8 → 44.7 KB (45,802 B).**
+  - **IDs:** 416 → 0 lost (board + board-closed + board-prose + `OWNER-NEXT-BATCH.md`).
+  - **Second swept section, 30 rows:** 6 are verbatim. The other 24 differ from `archive/board-2026-11-13-pre-sa-pass-sweep.md`
+    only in the status cell, which quotes the old status (Sober's DONE re-status with reasons in each TASK).
+  - **Owner batch:** moved, and 27 live rows went back to Tasks (right call; it saved only 2.6 KB).
+  - **Ruling to Porter: (b).** A REQ-row DELIVERED pass in daylight: a row goes only when every TASK is off the board and its
+    TEST passed, then it is swept verbatim.
+  - **(a) claims in their own file:** offered to Atlas, as it is a PROTOCOL rule.
+  - **Interim report sent to Atlas.** BE-C waits on Brew.
+
+- 2026-11-13 — ⏳ **ORDER 67 hop 1 verified; board 99.2 → 51.8 KB; §2-d ruled.** I checked on disk:
+  - The pre-archive md5 is 977cd1ce ✓.
+  - All 125 swept rows are verbatim (72 gate-closed + 53 closed in fact) ✓.
+  - IDs: 416 before, **0 lost** (board + board-closed + `archive/board-prose-2026-11-13.md`) ✓.
+  - TASK-879/904 cell text is in their TASK files ✓.
+  - ORDER 60: `checks.json` parses with no `ids` key; the 3 PROTOCOL inserts are in, CRLF ✓.
+  - The `.tmp` was moved ✓; RESUME-HERE was rewritten ✓; PM inbox 2,093 → 507 B ✓.
+  - Re-read notes went to the SA/QA inboxes; the SAs relay them to their engineers.
+
+  Still **FAIL (16)**: board 51.8 KB, BE-C 2.8 KB (Brew drains), and the 12 boot reads (they fall with the board).
+  **Ruling:**
+  - (iii) move `OWNER'S NEXT BATCH` (11.8 KB, PM-only) verbatim to `OWNER-NEXT-BATCH.md`, with a pointer on the
+    board and a line in the PM's boot read;
+  - (i) the SAs do one pass over their own stale REVIEW/TODO rows; Porter sweeps the rows they cancel or supersede;
+  - (ii) claims stay on the board (a PROTOCOL rule, Atlas's).
+
+  Line in the REQUEST and the inbox, verified; bell sent.
+
+- 2026-11-13 — ⏳ **ORDER 67 step 1 done; steps 2–3 (with ORDER 60) delivered to Porter.** F-072's status was set
+  verbatim (status line only). Before, measured: board **101,615 B (99.2 KB)**, md5 `977cd1ce…` · RESUME-HERE 3,878 B ·
+  inbox/PM 2,093 B · inbox/BE-C 2,135 B · log 11-13 48.8 KB · `inbox/PM.md.drain-25292.tmp` still there · no
+  `checks.json`. ⚠️ **The order's sweep alone will not reach 40 KB:** the 72 gate-closed rows are 23.6 KB and the 6 long
+  cells about 10 KB, leaving about 66 KB. The brief also asks Porter to sweep the rows that are closed in fact but
+  worded otherwise (CLOSED 8, ACCEPTED 16, CANCELLED 3, …), cut cells to one line, and move standing prose (19.9 KB)
+  to its home, all verbatim. Brief: `REQUEST-marie-to-porter-2026-11-13-order67-housekeeping.md`. Inbox line written
+  and verified (grep 1). Bell queued (his turn was busy). I verify when he replies.
+
+- 2026-11-13 — ✅ **ORDER 66 addendum done.** F-071 Silver and F-070 Sector set to their ATLAS-REVIEWED lines (status
+  lines only). `check-hygiene smart-scheduler`: no FAILURES line at all → **0 NEW**. No nudge, per Atlas.
+
+- 2026-11-13 — ✅ **ORDER 66 DONE (smart-scheduler FAILURES.md statuses).** Archive first:
+  `archive/FAILURES.md.before-ORDER66.2026-11-13` (md5 `6091dba3…`). Matched by ID **and** role, so the duplicate IDs
+  F-055/F-058/F-059 are each set by role. **40 status lines replaced** (diff: the only lines removed are 38 ×
+  `- **Status:** NEW` + 2 × `Status: NEW`, F-060/F-058 Sober, now in the standard `- **Status:**` form). **15 status
+  lines added**: under each un-numbered heading, and indented under each bullet entry (F-PORTER/F-SOBER-10-21,
+  F-PORTER-10-25 ×2, F-SOBER-10-25). Nothing else changed. `check-hygiene`: the 🔴 FAILURES fail (42) is gone.
+  ⚠️ **It shows 2 NEW, not 0: F-071 (Silver) and F-070 (Sector), both written 11-13 after Atlas's review and not in the
+  order's table.** Left NEW for Atlas. The desk still FAILs on other checks (board 98.7 KB, 70 closed rows, 6 long cells,
+  PM inbox 2.0 KB, boot reads); that is the housekeeping hop already queued.
+
+- 2026-11-12 — ✅ **ORDER 65 CLOSED.** Atlas re-ran both checks (current, PASS) and ruled on `code-class/ai-worker/inbox/BE.md`:
+  **leave it as it is** (201 B header, no seat in TEAMS, nothing reads it). Do not work round the hook.
+
+- 2026-11-12 — ✅ **ORDER 65 DONE (desk `code-class` opened).** `install.mjs code-class` → new desk from the template,
+  `.harness` 2.6.20, exit 0. **Clone** (reading only, no other git): `H:\code-class\code-class-docs`, `main` only,
+  `54e1529 Initial commit`, one file `README.md` (`# code-class-docs`); `machine.local.md` row added, verified on disk.
+  Filled: `TEAMS.md` (Porter PM · Tanya QA · Sober SA·A · Fern FE·A, sessions `<Name>-CLS`, chain block) ·
+  `SEATS.md` (customer = the learner, only through the owner on Fastwork; designer/platform → operator) ·
+  `SYSTEM-FACTS.md` (owner's three quotes verbatim + the order's facts, privacy, git, local-only) · `DECISIONS.md`
+  (5 lines, `[operator 2026-11-12]`, mode manual, REQ-001 first work) · `board.md` (project info + **REQ-001 TODO,
+  ball PM**) · `PROTOCOL.md` (mode, greenfield, repo table, branch `main`, environments) · README projects row.
+  **No BE:** `BE.md` (byte-identical to the template) removed. ⚠️ `inbox/BE.md` (201 B, header only) is **left in
+  place**: the `block-inbox-write` hook refuses any command touching an inbox, and I did not work round it. Harmless;
+  Atlas may rule. Remaining 🔧 marks are only in the role charters' stack paragraphs (the SA's SPEC fills them) and
+  TEAMS' multi-team note. No `desk-open/code-class.json` existed (the order came from chat), so none to delete.
+  Proof: `check-harness` → **`code-class current`** (2.6.20: 12 desks, 2 not current = atom + call-scribe, HELD) ·
+  `check-hygiene code-class` → **PASS**.
+
+- 2026-11-12 — ✅ **ORDER 64 DONE (harness 2.6.20, watcher wakes only on a new message line).** `install.mjs` × 9
+  (buddy-screen, corner-chat, develyst-ai, dte, i-space, portfolio-nichaphon, possibility, pun-kub-fang,
+  smart-scheduler), exit 0 ×9. Each wrote only `tools/watch-inbox.sh` (old copy
+  `archive/watch-inbox.sh.before-2.6.20.2026-11-12`) and `.harness`. `check-harness`: **"2.6.20: 11 desk(s), 2 not
+  current"** = smart-scheduler-atom + call-scribe, both HELD as ruled. No re-read note, per the order. Running
+  watchers pick up the new copy at their next re-arm.
+
+- 2026-11-12 02:1x — **Tool note from Twenty (via Porter) → Atlas, not acted on (harness is Atlas's).** The QA-2 watcher
+  woke 3× with no message. `watch-inbox.sh` wakes on **byte growth** (l.75–80), so a non-message rewrite wakes the seat.
+  The 11-10 08:37 wake matches the desk-wide git restore (all archive mtimes, `RESUME-HERE-…-0837-reverted-by-git.md`),
+  and `QA-2.md` is now CRLF. The other two wakes are unproven. The drain tool leaves blank lines (it handles only
+  non-blank lines). Options written up: `REQUEST-marie-to-atlas-2026-11-12-watcher-blank-wakes.md`.
+
+- 2026-11-12 01:3x — ✅ **ORDER 63 CLOSED. ⚠️ Correction to my previous entry: "10 were not written" was WRONG.** I
+  inferred it from mtimes, but a drain also sets the mtime. With 2.6.18 every seat's watcher wakes on a new line, and the
+  reader drains a read FYI (§5), so notes vanish within seconds. Evidence: after Porter's re-append, my grep at 01:31:34
+  shows the count changing under my eyes (BE-B, BE-C, FE-C, PM, QA = 1; others already back to 0), and Sector's 01:29
+  log entry quotes the §5 rule. **Lesson: a 0 in an inbox is no longer proof of non-delivery. Check the reader's log or
+  the drain record, not the inbox.** Some seats now got the note twice; harmless.
+
+- 2026-11-12 01:3x — ⏳ **ORDER 63 verified on disk except the notes.** Archives 12/12
+  (`archive/inbox-<SEAT>-2026-11-12-pre-order63.md`) ✓. The 2 QA rules are in `QA.md` § "Standing rules moved from the
+  inbox (ORDER 63, 2026-11-12)", 4/4 lines verbatim ✓. The C-TEST fact is in `SYSTEM-FACTS.md` verbatim ✓. TASK-951 has
+  1 board row ✓. **After-counts (message lines, before notes): 0 in all 12.** Bytes: SA 3,563→1,192 · QA 3,106→520 ·
+  PM 2,566→2,263 (blank lines left) · FE 1,890→635 · BE-C 1,511→403 · BE 1,206→652 · BE-B 814→367 · FE-B 784→337 ·
+  SA-B 605→218 · SA-C 489 · FE-C 217 · QA-2 223.
+  The one un-started line was closed by Sober, not drained blind: the SPEC-100 §5 FYI's (a)(b) were built in TASK-880
+  and (c) in TASK-895/903 (his 01:28 log). Brew drained the TASK-935 lines as carried by the TASK file at :51-63.
+  ⚠️ **Re-read note on disk in only 2 of 12 inboxes (PM, BE-C)**, although Porter reported 12. Nothing has drained since
+  01:29:59, so 10 were not written. Asked him to append the 10 and grep before replying (line in the REQUEST + bell,
+  delivered). The SAs all logged the §5 rule from the drain asks, so the rule reached the seats. Closes when the 10 land.
+  Porter also notes that git `e152c9e` (11-11 23:54) holds the full inboxes from before Atlas's earlier drain round.
+
+- 2026-11-12 01:2x — ⏳ **ORDER 63 delivered to Porter · ✅ ORDER 62 CLOSED · ✅ the 11-08 housekeeping hop VERIFIED
+  (late).**
+  **Housekeeping hop (11-08 brief):** Porter never wrote a `## Reply` or rang me, but the work is on disk. Step-1 archives
+  exist for the board and the 7 inboxes. `board-2026-11-08-pre-housekeeping.md` = md5 `a21336f8…`, **my 20:51
+  fingerprint ✓**. `board-closed.md` has `## Swept 2026-11-08 (Marie housekeeping)` with **9 rows, 9/9 found verbatim**
+  in the pre archive; **327 REQ/TASK/DEF/TEST ids of the pre board, 0 absent** from board + board-closed. Only 9 of 23
+  rows were swept: lossless, but partial. The board has since regrown to **95.2 KB**. ⚠️ `inbox/PM.md.drain-25292.tmp`
+  (step 3b) is **still there**. Gate re-run and the board's regrowth are left for the next hop. (Archive mtimes all read
+  11-10 08:37, which is a checkout/restore — see `archive/RESUME-HERE-2026-11-10-0837-reverted-by-git.md` — not when the
+  copies were made.)
+  **ORDER 62:** the desk was quiet at 01:26 (only my own line in 20 min), so the owed note was written verbatim into
+  `inbox/PM.md` in the same visit as ORDER 63. 9 + 2 HELD → **closed**.
+  **ORDER 63:** I read all 12 inboxes and checked each item against the board, the TASK files and SYSTEM-FACTS before
+  briefing. Brief: `REQUEST-marie-to-porter-2026-11-12-order63-inbox-only-unstarted.md`, with a per-line table:
+  - **To QA.md, verbatim:** the 2 QA standing rules (11-10 02:59 GR screenshots, 03:03 som-gr live card).
+  - **To SYSTEM-FACTS, verbatim:** the C-TEST sid data fact ("C-TEST" had 0 hits there).
+  - **Already home:** the drizzle `when` rule (SYSTEM-FACTS l.4395).
+  - ⚠️ **TASK-951 has no board row** (the file exists, `board.md` 0 hits), so Sober adds it before Jason/Sober drain.
+  - **Stays unless Sober carries it:** the SPEC-100 §5 extensions FYI is the one line that is genuinely un-started.
+  - **Readers drain the rest**, and engineers are reached through their SA.
+  Then the 12 notes, after the drains are asked for. Inbox line + one bell (queued; his turn busy).
+
+- 2026-11-10 01:5x — **ORDER 62: Atlas ruled call-scribe HELD** (same as smart-scheduler-atom, ORDER 53). It lives on
+  Atom's box, and an install here would collide with Atom's next sync. **No install, and no nudge to anyone about it.**
+  ORDER 62 stands at 9 desks + 2 held. **Closes when smart-scheduler's re-read note lands.** Checked 01:51: still
+  live (board, DECISIONS, TASK-937 evidence written in the last 15 min), so the note stays owed.
+
+- 2026-11-10 01:5x — ⏳ **ORDER 62 — install DONE on 9 desks; call-scribe NOT installed (question to Atlas); notes on
+  4 of 5 live desks.** **Install:** `install.mjs` × 9 (buddy-screen, corner-chat, develyst-ai, dte, i-space,
+  portfolio-nichaphon, possibility, pun-kub-fang, smart-scheduler), exit 0 ×9, *"shared tools already current — none
+  touched"*, only `.harness` rewritten. `check-harness`: **"2.6.19: 11 desk(s), 2 not current"** = smart-scheduler-atom
+  (HELD, 2.6.9) + call-scribe (2.6.14).
+  **call-scribe — not live here, so held:** its only commit is `9fcb0f6 2026-11-07 "atom: save call-scribe desk state
+  and God Plan initial notes"`, i.e. **pushed from Atom's box on branch `atom`**. No README row, never in `MARIE.md`
+  before ORDER 62, newest log `2026-11-07`, and every file's mtime here is the 11-09 20:07 checkout, so no session has
+  written to it on this box. Installing here would edit a desk that lives on Atom's box, the same reason atom is held.
+  **Atlas decides.**
+  **Re-read note** verbatim → `inbox/PM.md` of the live desks (gate `active`) that are quiet: buddy-screen, corner-chat,
+  i-space, portfolio-nichaphon, each 1 on disk ✓. **smart-scheduler OWED**: live right now (inbox/FE-C written 01:50).
+  No bells, since it is not urgent; the PMs' watchers or their next boot will pick it up.
+  Not sent to the non-live desks (develyst-ai, dte, possibility, pun-kub-fang), as in ORDER 54/55.
+
+- 2026-11-09 00:5x — ✅ **ORDER 61 smart-scheduler step VERIFIED by me (Porter's hands).** Archive
+  `archive/PROTOCOL.md.before-ORDER61.2026-11-09` = md5 `ad8bc2ca…`, my pre-edit fingerprint ✓ · `diff` archive →
+  PROTOCOL: **one hunk, +17 / −0**, after l.211, text = template steps 2/6/7/8 word for word, renumbered 4–7 ✓ · still
+  0 CR (all LF) ✓. **Notes:** found once each in 11 inboxes; **SA-C has 0**. It was drained at 00:44 (header only,
+  279 B), right after Porter wrote the 12, which is consistent with Sector processing it. Delivered ≠ read, so this
+  is stated as such and **not re-sent** (a duplicate would be noise). Watcher with tick and cron `ab3ca841` deleted:
+  **Porter's word**, since I cannot see his background process; his 00:41 log line says the same. The stale
+  `PM.md.drain-25292.tmp` is still there (housekeeping step 3b). **Open:** template steps 6–8 on the other 8 desks,
+  each when quiet (ORDER 34 pattern); then the housekeeping hop, then ORDER 60.
+
+- 2026-11-09 00:5x — **Atlas answered both ORDER 61 notes:** 12 seats is right. The `.tmp` comes from a drain whose
+  rename failed; it was never applied, so nothing was lost. Added step 3b to the pending housekeeping brief: Porter
+  moves it unchanged to `archive/inbox-PM.md.drain-25292.tmp.2026-11-07` and names any other `*.drain-*.tmp`. ⚠️
+  Standing watch from Atlas: **another such file appearing means renames fail on Windows while the watcher reads the
+  file. Report it to Atlas.** No separate bell; Porter reads the brief when he starts the hop.
+
+- 2026-11-09 00:4x — ⏳ **ORDER 61 (URGENT) — install DONE on 9/10; smart-scheduler PROTOCOL + notes with Porter.**
+  **Install:** `install.mjs` smart-scheduler first, then buddy-screen, corner-chat, develyst-ai, dte, i-space,
+  portfolio-nichaphon, possibility, pun-kub-fang — exit 0 ×9; each wrote only `tools/watch-inbox.sh` (old copy
+  `archive/watch-inbox.sh.before-2.6.18.2026-11-09`) and `.harness`. `check-harness`: **"2.6.18: 10 desk(s), 1 not
+  current"** = smart-scheduler-atom HELD at 2.6.9, as ruled.
+  **smart-scheduler step 1 → Porter**, not waiting for quiet as the order says:
+  `REQUEST-marie-to-porter-2026-11-09-order61-watchers.md` — archive `PROTOCOL.md` first (md5 `ad8bc2ca…`; the file is
+  now **all LF, 0 CR**, no longer mixed) · append template steps 2/6/7/8 as **4–7** after its step 3 · the re-read
+  note verbatim in Marie's name to **12** seat inboxes · his own watcher with `WATCH_TICK_MIN=30`, then stop his cron.
+  Inbox line + one bell (queued behind his work). Ahead of the 11-08 housekeeping hop; ORDER 60 after both.
+  ⚠️ **Counts for Atlas:** the order says *"all 14 seats"*; smart-scheduler has **12 seat inboxes** (PM, SA/BE/FE ×3
+  teams, QA, QA-2) plus RELAY, which is not a seat. I used 12.
+  ⚠️ **Found in passing:** `inbox/PM.md.drain-25292.tmp` (799 B, 2026-11-07 18:28) is a leftover temp file from a
+  drain that never renamed it. Not touched. Only Atlas can say whether the drain tool should clean up after a refusal.
+  **Still open:** the template steps on the other desks, each only when it is quiet (ORDER 34 pattern). Not started.
+
+- 2026-11-08 21:0x — ⏳ **ORDER 60 received (smart-scheduler log rollover); queued behind the housekeeping, as the
+  order says.** Premise checked: smart-scheduler `append-log.mjs` is byte-identical to corner-chat's and the template
+  (md5 `4ffb4a7b…`) and reads `checks.json` → `hygiene.log-rollover.part-kb`; `new-id.mjs` treats a file without
+  `ids` as start 1, same as no file. Starts when Porter's housekeeping reply lands.
+
+- 2026-11-08 20:5x — ⏳ **smart-scheduler housekeeping IN FLIGHT (Porter's request
+  `REQUEST-porter-to-marie-2026-11-08-smart-scheduler-housekeeping.md`; scope 1, no ORDER needed).**
+  Gate before: **FAIL (27)** = board 63.7 KB + 1 long cell (REQ-5004) · 7 inboxes over 2 KB (SA 110 KB, SA-B 56,
+  QA 56, BE-B 18, BE 10, FE 4.3, FE-B 4.1) with over-long messages · 12 boot reads. Log 2026-11-08 147 KB is a
+  **WARN**, not a FAIL. Fingerprints (md5+bytes) in my scratch `ss-hk-2026-11-08-before.txt`.
+  Porter wrote *"Porter will not move content between files; that is your job"* — answered: the operation is mine,
+  run in his session from my written steps, as ORDER 51 (charter scope 1; desk PROTOCOL's "Marie's alone" is
+  satisfied). Brief: `REQUEST-marie-to-porter-2026-11-08-smart-scheduler-housekeeping.md` — archive each file
+  verbatim first · sweep 23 closed rows · REQ-5004 cell → pointer · drain processed messages only; REQ-120
+  TASK-861/862/863/867–871/870 pointers and anything unsure **stay**, long ones become pointers (append before
+  drain) · log left alone · boot FAILs stay with the owner via Atlas. Inbox line + one bell (queued, his turn busy).
+  **To Atlas:** smart-scheduler has no `checks.json`, so no log rollover; corner-chat and i-space have it at 90 KB.
+  Switch it on here? Not done without his word.
+
+- 2026-11-08 — ✅ **ORDER 59 DONE and ✅ ORDER 58 CLOSED.**
+  **59:** Checked first: `harness.json` 2.6.17; `CLAUDE.md` rule 4 has the second (Trolley) exception with the owner's
+  words; `TROLLEY.md` does **not** exist, and the order says not to create it (the named SA writes it in phase 1).
+  `install.mjs` ×9, all exit 0, "none touched"; git shows only `.harness`; 10 desks, 1 not current (atom HELD). Re-read
+  note verbatim to the smart-scheduler PM only; bell delivered.
+  **58:** `CUSTOMER-ANSWERS.md` landed (71 KB, **22 topics**). My first check reported a header mismatch, and **the
+  mismatch was my own check**: it compared all 10 template lines, including the placeholder `## <Topic>`, which filling
+  the file is meant to replace. On the real header (lines 1–8: title, rules, line shape) it is **identical**; no
+  placeholder is left; still not a boot read. 👍 Porter added a privacy note: names of children, parents and staff are
+  replaced with `[child]` / `[parent]` / `[coach]` / `[staff]`, which keeps personal data out of a shared file (rule 4).
+
+- 2026-11-08 — ⏳ **ORDER 58 still open.** Porter reports the re-read note relayed (SAs + both testers) and
+  `CUSTOMER-ANSWERS.md` *"being created … in progress"* by his back-fill. **Checked: the file is NOT on disk yet**, so step
+  1 is not done and nothing is verified. Not re-rung, since he is mid-work; I verify (template header intact, still no
+  boot read) when he reports it written.
+
+- 2026-11-08 — ⏳ **ORDER 58 delivered to Porter; closes when I have verified the copy.** Checked first: the template
+  `_templates/project/ai-worker/CUSTOMER-ANSWERS.md` exists (555 B); smart-scheduler has **no** file of that name, so the
+  copy overwrites nothing; `check-hygiene.mjs` never reads it, so "not a boot read" holds by construction. One visit to
+  the smart-scheduler PM: the copy, the back-fill pointed to as **his** (ORDER 58 step 2), and Atlas's re-read note
+  verbatim. Bell queued (mid-turn).
+
+- 2026-11-08 — ✅ **ORDER 57 CLOSED — with a correction to my own earlier entry.** Porter's two lines verified:
+  `PROTOCOL.md` l.320 carries the exception (0 lines removed); `SYSTEM-FACTS.md` has the 2026-11-08 entry (tool,
+  credentials file, host check; 0 lines removed, append-only held).
+  ⚠️ **CORRECTION: "uat's DB host is not recorded anywhere" (my entry below) was WRONG.** The **2026-10-08** entry
+  records it: uat public `154.197.124.29`, internal `172.17.172.29`, and l.4375 already describes a host check against it.
+  **My search found it, but I cut the output to 8 lines and it was the 9th**; I read a truncated result as a complete
+  one. 📌 *An empty answer from a `head`-capped search is not "absent" — count the matches first.*
+  **The outcome stands:** Porter's line keeps the host PENDING the owner's confirmation **for this new read-only role**,
+  points at the 10-08 record, and still forbids copying it from the tool's output. That is right: a different role's URL
+  could point elsewhere. Atlas added it as the owner's step 3 in Porter's request. Told Atlas.
+
+- 2026-11-08 — ⏳ **ORDER 57: steps 1 + 3 done, step 2 delivered to Porter; one gap found in step 2.** Checked first:
+  `harness.json` 2.6.16, and `CLAUDE.md` rule 4 carries the SA-read exception with the owner's words. Read **only the
+  tool's code** (`scripts/uat-select.mjs`, 2.3 KB): one read statement, a READ ONLY transaction rolled back, prints the
+  host only. `.env.uat-readonly` was **not** opened. The tool is root-only, not a per-desk shared tool.
+  **1:** `install.mjs` ×9, all exit 0, "none touched"; git shows only `.harness`; 10 desks, 1 not current (atom HELD).
+  **2 + 3:** one visit to the smart-scheduler PM: the PROTOCOL l.320 exception line (anchor confirmed at l.320), the
+  SYSTEM-FACTS line, and Atlas's re-read note verbatim (Sober, Silver, Sector). Bell delivered, turn started.
+  🔴 **The gap: uat's expected DB host is NOT recorded anywhere** — not in SYSTEM-FACTS, not in SERVER-FACTS. The tool
+  tells the SA to *"check it against the desk's SYSTEM-FACTS before trusting the rows"*, so that line **is** the safety
+  check. I did not guess a host; a DB host is not the app domain. The line goes in as **PENDING — the owner states
+  it**, asked by Porter together with the URL. ⚠️ And it must **never be copied from the tool's own output**: recording
+  the host the tool prints, then checking the tool against it, checks the tool against itself.
+
+- 2026-11-07 — ✅ **ORDER 56 step 12 DONE → ORDER 56 CLOSED.** Atlas said yes to the `-B` fallback: no `-B` charter, but
+  the `-B` inbox exists → measure the seat with the base charter.
+  **Checked his predicted proof against the files first, and it was incomplete.** He expected only corner-chat to
+  change. **i-space has the same shape** (Team B inboxes, no Team B charters), so the rule he approved covers it too.
+  I implemented **the rule, not the forecast**. Special-casing one desk to match a prediction would have left i-space
+  unmeasured.
+  **Also fixed:** the boot-read line named `roleFile`, so a fallback seat would have claimed to read `SA-Lead-B.md` on a
+  desk with no such file. It now names the charter actually read; for every ordinary seat that is the same file.
+  **Proven:** I rebuilt the step-10 gate by reversing exactly the step-12 edits, each reversal asserting one match, and
+  ran old vs new on all 10 desks. **corner-chat: exactly 3 lines** (SA-B 41.8 · BE-B 39.8 · FE-B 39.7 KB controllable,
+  all NOTEs) · **i-space: its Team B** (3 NOTEs + 3 WARNs at 64.6 / 56.4 / 56.3 KB, naming `SA-Lead.md` / `BE.md` /
+  `FE.md`; 10 → 13 warnings, **still PASS**) · **the other 8 byte-identical**.
+  **ORDER 56, whole:** Team C (Sector · Brew · Flash) + Twenty installed and verified (twins exact) · starters, gate
+  entries, README · Atlas's `CLAUDE.md` line + harness 2.6.15 on 9/10 (atom HELD) · the Twenty re-read note · and the
+  gate now measures every seat on every desk, including both shared-charter shapes.
+
+- 2026-11-07 — ✅ **ORDER 56 steps 8–10 DONE.** Checked first: `harness.json` 2.6.15, and root `CLAUDE.md` names Twenty
+  beside Tanya with the owner's words (*"Tester twenty"*).
+  **8:** `install.mjs` ×9, all exit 0, "none touched"; git shows only `.harness`; `check-harness` 10 desks, 1 not current
+  (smart-scheduler-atom, HELD).
+  **9:** the re-read note, Atlas's wording verbatim, went to the smart-scheduler PM only. Bell delivered.
+  **10:** `check-hygiene.mjs` gets a `"QA-B": "QA.md"` entry plus a **`SEAT_BY_INBOX` guard**. That seat SHARES the charter
+  `QA.md`, so only its own inbox proves it exists. Without the guard, every desk with a `QA.md` reports a phantom line.
+  **Proven:** I rebuilt the pre-edit gate by stripping exactly my lines and ran old vs new on all 10 desks.
+  **corner-chat gains exactly one line** (`QA-B boot read … 43.5KB controllable`, a NOTE); **the other 9 are
+  byte-identical**, including every desk with a `QA.md`. The JSON `roles` list shows QA-B on corner-chat only.
+  ⚠️ **Same gap, wider, found while proving it, NOT fixed:** corner-chat's **Team B (Silver, Bob, Fanta) shares Team A's
+  charters** (`SA-Lead.md`, `BE.md`, `FE.md`) and has only its own inboxes. So those **three seats' boot reads are never
+  measured** either. The key `SA-B` already points at smart-scheduler's own `SA-Lead-B.md`, so the fix is a fallback:
+  *no `-B` charter but the `-B` inbox exists → use the shared base charter*. That is a small design change to the gate,
+  beyond step 10, so it is proposed to Atlas, not done.
+
+- 2026-11-07 — ✅ **ORDER 56 steps 1–5 DONE: smart-scheduler has Team C (Sector · Brew · Flash) and a second tester
+  (Twenty).** Names verbatim from the owner via Porter: *"sector SA brew BE flash FE Tester twenty"*. Desk work by
+  Porter, from my brief `REQUEST-marie-to-porter-2026-11-07-team-c-install.md`; verified by me.
+  **Twins proven exact:** reversing the swap and diffing gives **0 differing lines** on all four (SA-Lead-C/BE-C/FE-C vs
+  B, QA-2 vs QA). **Records kept their original names**, as the brief required: Porter found the 3 ORDER 15.3 lines that
+  record **Team B's own birth** in each C twin, plus Team A's records; nothing was renamed into a false history.
+  4 inboxes empty; 4 TEAMS rows (`SA · C`, `BE · C`, `FE · C`, `QA · all`, `<Name>-SOM`); PROTOCOL has the 56.1
+  diagram, the new allowed pairs and the five 56.2 rules, and PM.md has the same five.
+  **Mine:** `check-hygiene.mjs` role entries SA-C / BE-C / FE-C / QA-2 · `SESSION-STARTERS.md` four starters, plus
+  the Team B header, which said *"two parallel teams … one Tanya"*, now true · `README.md` Team cell — ⚠️ **it never
+  listed Team B either** (ORDER 14 left the README untouched), so I wrote the cell whole: all three teams and both
+  testers.
+  **Gate:** the new seats add **only boot-read FAILs** (SA-C 115.1, BE-C 104.0, FE-C 114.1, QA-2 111.9 KB), the
+  existing kind. **No new FAIL kind** ✓.
+  ⚠️ **For Atlas, outside this order:** (a) smart-scheduler has **decayed to 20 FAILs** without the new seats (9 when
+  ORDER 51 closed): inboxes refilled, board > 40 KB, RESUME-HERE 6 days behind (Porter says that last one is his to fix
+  this session). (b) A gate gap: corner-chat's two testers share **one** charter (`QA.md`), so the second tester's boot
+  read is never measured. A naive `QA-B → QA.md` entry would make **every** desk with a `QA.md` report a phantom line,
+  so it needs an "inbox exists" guard. Not done.
+  **Open:** step 6 (root `CLAUDE.md` names Tanya — Atlas's line, then a harness bump and my install) · step 7 below.
+
+- 2026-11-07 — ⏳ **ORDER 56 received (Atlas's design for Team C + a second tester); NOT started — the four names are
+  not yet under `## Reply` in Porter's request**, and the order starts only then. Read in full: Team C = byte-twin of
+  Team B; second tester = byte-twin of Tanya's seat (`QA-2.md`, `QA · all`); three-way batch claims, no SA-to-SA edge,
+  one SPEC/TASK and one TEST sequence via `new-id.mjs`, each test round to one tester whole; **no second PM** until
+  Atlas measures; root `CLAUDE.md` stays Atlas's. Nothing pre-built, so the install lands as one coherent pass. No bell
+  sent — Porter already knows to put the names there.
+
+- 2026-11-07 — ⏳ **smart-scheduler Team C + a second tester: request received, NOTHING built, sent to Atlas.**
+  Porter relayed the owner verbatim: *"ฉันจะเปิดทีมมาเพิ่มให้ เพิ่มเทสเตอร์คนนึง และ ทีมSA อีกทีมนึง"* — intent clear,
+  but a new team changes the desk's structure, and **Team B opened only after Atlas's ORDER 14**; no ORDER covers this.
+  Sent with what I found: corner-chat's **two-tester pattern** (ORDER 48, one shared TEST sequence) · **three SA teams has
+  no precedent** (three-way batch claims, no-SA-to-SA across three) · ⚠️ **Atlas's own ORDER 14.6**: "Porter saturates
+  … the signal for a second PM" — one PM would hold three teams + two testers · root `CLAUDE.md` names Tanya (owner's to
+  edit). → `REQUEST-marie-to-atlas-2026-11-07-smart-scheduler-team-c.md`; reply under `## Reply` in Porter's request.
+  **Waits on two things:** Atlas's ORDER, and the owner's names (via Porter). Both bells delivered.
 
 - 2026-11-02 — ✅ **ORDER 55 DONE.** Checked first: `harness.json` 2.6.14, and the rule-2 bullet "Only the PM asks
   the owner anything" in `CLAUDE.md`. `install.mjs` ×9, all exit 0, "none touched"; git shows only `.harness`.

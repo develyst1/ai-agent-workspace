@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>SOM ตัวเลือกงานเพิ่ม</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1f2328;--muted:#57606a;--line:#e6e8eb;--soft:#fff6ee;--orange:#e8650a;--orange-ink:#9a3f00}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#fff;color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,sans-serif;line-height:1.55}
+  .page{width:760px;padding:36px 36px 30px}
+  header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--orange);padding-bottom:16px;margin-bottom:22px}
+  .brand{font-weight:700;font-size:13px;color:var(--orange-ink);letter-spacing:.03em}
+  h1{font-size:26px;margin:4px 0 0}
+  .meta{font-size:13px;color:var(--muted);text-align:right}
+  .item{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px}
+  .head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  h3{margin:0 0 10px;font-size:18px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .opt{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14.5px;color:var(--muted)}
+  .opt b{display:block;color:var(--ink);font-size:15.5px;margin-bottom:2px}
+  .p{display:block;margin-top:8px;font-size:21px;font-weight:700;color:var(--orange-ink)}
+  .p small{font-size:13px;font-weight:500;color:var(--muted)}
+  .solo{font-size:21px;font-weight:700;color:var(--orange-ink);white-space:nowrap}
+  .note{font-size:13.5px;color:var(--muted);margin:10px 0 0}
+  .foot{font-size:13px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div><div class="brand">DEVELYST × SOM</div><h1>ตัวเลือกงานที่มีค่าใช้จ่าย</h1></div>
+    <div class="meta">รบกวนเลือกแบบในข้อ 1–3<br>12 พฤศจิกายน 2569</div>
+  </header>
+
+  <div class="item">
+    <h3>1. ปิดตารางทั้งวัน</h3>
+    <div class="opts">
+      <div class="opt"><b>แบบ A: ระบบจัดการให้</b>กดยืนยันครั้งเดียว ระบบยกเลิกคลาส เลื่อนไปท้ายคอร์ส และส่งไลน์แจ้งผู้ปกครองอัตโนมัติ<span class="p">1,600 <small>บาท</small></span></div>
+      <div class="opt"><b>แบบ B: แอดมินจัดการเอง</b>ระบบปิดไม่ให้จองวันนั้น แสดงคลาสที่ค้าง แอดมินย้ายเองทีละคลาส ระบบเตือนทุกเช้าจนครบ<span class="p">800 <small>บาท</small></span></div>
+    </div>
+    <p class="note">เลือกแบบ B ก่อน แล้วอัปเกรดเป็นแบบ A ภายหลังได้ เพิ่ม 800 บาท</p>
+  </div>
+
+  <div class="item">
+    <h3>2. เปลี่ยนกิจกรรมทั้งคอร์ส</h3>
+    <div class="opts">
+      <div class="opt"><b>แบบ A: ไม่คืนส่วนต่าง</b>เมื่อเปลี่ยนไปกิจกรรมที่ราคาถูกกว่า ส่วนต่างไม่คืน<span class="p">1,900 <small>บาท</small></span></div>
+      <div class="opt"><b>แบบ B: คืนส่วนต่างได้</b>บันทึกการคืนเงินส่วนต่างได้ โดยคลาสที่เหลือยังอยู่ครบ<span class="p">2,100 <small>บาท</small></span></div>
+    </div>
+  </div>
+
+  <div class="item">
+    <h3>3. แยกสิทธิ์แอดมินรายเมนู (หลังบ้าน)</h3>
+    <div class="opts">
+      <div class="opt"><b>แบบ A: ทุกเมนู</b>เลือกสิทธิ์รายคนได้ทุกเมนูเหมือนหน้าบ้าน ข้อมูลเงินเดือนและ Merit ยังเห็นเฉพาะพี่ฟีน<span class="p">2,500 <small>บาท</small></span></div>
+      <div class="opt"><b>แบบ B: เฉพาะหน้ารายได้</b>เลือกสิทธิ์รายคนได้เฉพาะ 6 หน้าของรายได้ เมนูอื่นแยกตามตำแหน่งเหมือนเดิม<span class="p">600 <small>บาท</small></span></div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="head"><h3 style="margin:0">4. ตารางเรียนหลายวันต่อสัปดาห์ / ครั้งละ 2 ชม.</h3><span class="solo">1,850 <small style="font-size:13px;font-weight:500;color:var(--muted)">บาท</small></span></div>
+    <p class="note" style="margin-top:6px">มีแบบเดียว ตั้งคอร์สได้ 1–3 วันต่อสัปดาห์ ครั้งละ 1 หรือ 2 ชั่วโมง</p>
+  </div>
+
+  <p class="foot">ราคาประมาณการตามเรทเดิม ตัวเลขสุดท้ายจะอยู่ในใบเสนอราคา</p>
+</div>
+</body>
+</html>

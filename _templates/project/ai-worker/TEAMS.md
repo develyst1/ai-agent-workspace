@@ -23,3 +23,25 @@ Names are the operator's — filled from DESK-OPEN B1. A row with an empty name 
 |  | SA · A | `@<Name>` | `inbox/SA.md` | `<Name>-<desk short name>` | `SPEC-NNN`, `TASK-NNN` |
 |  | FE · A | `@<Name>` | `inbox/FE.md` | `<Name>-<desk short name>` | — (works on `TASK-*`) |
 |  | BE · A | `@<Name>` | `inbox/BE.md` | `<Name>-<desk short name>` | — (works on `TASK-*`) |
+
+## Chain — who hands work to whom on this desk
+
+One line per link, `<Name> ↔ <Name>`, with `owner` for the human. Work and messages move **only along these
+lines**, in both directions. The owner's console draws this chain and lights the link a message is travelling on.
+
+The default, when this section is missing, comes from the roster above:
+- `owner ↔ PM`;
+- `PM ↔ QA`;
+- `PM ↔ SA` of each team;
+- each team's `SA ↔` its own `BE` and `FE`.
+
+Write the section only where this desk differs (a desk without QA, an extra link the owner approved, …), and keep it
+in step with the roster. Like the rest of this file, it is **state-free**: it holds links, never who is busy.
+
+```chain
+owner ↔ <PM name>
+<PM name> ↔ <QA name>
+<PM name> ↔ <SA name>
+<SA name> ↔ <BE name>
+<SA name> ↔ <FE name>
+```

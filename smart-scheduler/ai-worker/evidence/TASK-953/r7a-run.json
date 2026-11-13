@@ -1,0 +1,245 @@
+{
+ "pages": {
+  "stock/reports#Sales History": {
+   "tables": 1,
+   "cells": 30,
+   "numericCells": 6,
+   "bad": []
+  },
+  "stock/reports#Balance": {
+   "tables": 1,
+   "cells": 26,
+   "numericCells": 13,
+   "bad": []
+  },
+  "stock/reports#Movement": {
+   "tables": 1,
+   "cells": 36,
+   "numericCells": 9,
+   "bad": []
+  },
+  "stock/low-stock": {
+   "tables": 2,
+   "cells": 36,
+   "numericCells": 9,
+   "bad": []
+  },
+  "stock/demo": {
+   "tables": 2,
+   "cells": 90,
+   "numericCells": 49,
+   "bad": []
+  },
+  "revenue/summary#Today": {
+   "tables": 2,
+   "cells": 83,
+   "numericCells": 47,
+   "bad": []
+  },
+  "revenue/summary#MTD": {
+   "tables": 2,
+   "cells": 101,
+   "numericCells": 59,
+   "bad": []
+  },
+  "revenue/summary#YTD": {
+   "tables": 2,
+   "cells": 101,
+   "numericCells": 59,
+   "bad": []
+  },
+  "revenue/lines": {
+   "tables": 1,
+   "cells": 126,
+   "numericCells": 17,
+   "bad": []
+  },
+  "revenue/manual": {
+   "tables": 0,
+   "cells": 0,
+   "numericCells": 0,
+   "bad": []
+  },
+  "revenue/refund": {
+   "tables": 0,
+   "cells": 0,
+   "numericCells": 0,
+   "bad": []
+  },
+  "revenue/categories": {
+   "tables": 0,
+   "cells": 0,
+   "numericCells": 0,
+   "bad": []
+  },
+  "revenue/eca-term": {
+   "tables": 1,
+   "cells": 12,
+   "numericCells": 3,
+   "bad": []
+  },
+  "reports/home#REPORT": {
+   "tables": 0,
+   "cells": 0,
+   "numericCells": 0,
+   "bad": []
+  },
+  "reports/home#COURSE": {
+   "tables": 1,
+   "cells": 106,
+   "numericCells": 83,
+   "bad": []
+  },
+  "reports/home#STUDENT": {
+   "tables": 1,
+   "cells": 66,
+   "numericCells": 12,
+   "bad": []
+  },
+  "proposed/payment-setting": {
+   "tables": 5,
+   "cells": 32,
+   "numericCells": 16,
+   "bad": []
+  },
+  "proposed/payment-setting (edit)": {
+   "tables": 5,
+   "cells": 32,
+   "numericCells": 0,
+   "bad": []
+  },
+  "proposed/conversion": {
+   "tables": 1,
+   "cells": 48,
+   "numericCells": 8,
+   "bad": []
+  },
+  "proposed/conversion-export": {
+   "tables": 1,
+   "cells": 48,
+   "numericCells": 8,
+   "bad": []
+  },
+  "proposed/revenue-export": {
+   "tables": 1,
+   "cells": 32,
+   "numericCells": 24,
+   "bad": []
+  },
+  "proposed/move-course": {
+   "tables": 0,
+   "cells": 0,
+   "numericCells": 0,
+   "bad": []
+  },
+  "proposed/stock-report": {
+   "tables": 1,
+   "cells": 40,
+   "numericCells": 10,
+   "bad": []
+  },
+  "proposed/report-revenue-conversion": {
+   "tables": 1,
+   "cells": 28,
+   "numericCells": 21,
+   "bad": []
+  }
+ },
+ "forms": {
+  "stock/demo Add dialog": {
+   "fields": 4,
+   "maxPerRow": 1,
+   "labels": [
+    "Item",
+    "Location",
+    "Qty",
+    "Reason"
+   ]
+  },
+  "revenue/manual": {
+   "fields": 7,
+   "maxPerRow": 1,
+   "labels": [
+    "Type",
+    "Category",
+    "Amount",
+    "Date",
+    "Branch",
+    "Method",
+    "Remark"
+   ]
+  },
+  "revenue/refund": {
+   "fields": 5,
+   "maxPerRow": 1,
+   "labels": [
+    "From",
+    "Date",
+    "Amount",
+    "Method",
+    "Remark"
+   ]
+  },
+  "revenue/categories Add dialog": {
+   "fields": 2,
+   "maxPerRow": 1,
+   "labels": [
+    "Type",
+    "New category"
+   ]
+  },
+  "revenue/eca-term": {
+   "fields": 6,
+   "maxPerRow": 1,
+   "labels": [
+    "School",
+    "Term",
+    "Price per class",
+    "Student",
+    "Class / Term",
+    "Payment Date"
+   ]
+  },
+  "proposed/payment-setting": {
+   "fields": 6,
+   "maxPerRow": 1,
+   "labels": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ]
+  }
+ },
+ "hscroll375": {
+  "stock/reports": false,
+  "stock/low-stock": false,
+  "stock/demo": false,
+  "revenue/summary": false,
+  "revenue/lines": false,
+  "revenue/manual": false,
+  "revenue/refund": false,
+  "revenue/categories": false,
+  "revenue/eca-term": false,
+  "reports/home": false,
+  "proposed/payment-setting": false,
+  "proposed/conversion": false,
+  "proposed/conversion-export": false,
+  "proposed/revenue-export": false,
+  "proposed/move-course": false,
+  "proposed/stock-report": false,
+  "proposed/report-revenue-conversion": false
+ },
+ "badTotal": [],
+ "summary": {
+  "pages": 24,
+  "tables": 32,
+  "numericCells": 453,
+  "badCells": 0,
+  "anyHscroll375": false
+ },
+ "consoleProblems": [],
+ "networkRequests": []
+}

@@ -65,6 +65,8 @@ Environments table. **The absence of a technical guard is not permission.**
 - [ ] `## Test data created` is filled (or says "none — read-only") and the desk's footprint
       ledger is updated for every shared environment touched.
 - [ ] No secret, token or real person's data in any file, log, screenshot or pasted output.
+- [ ] A customer draft that **asks** anything carries `Searched:` and `Data:` lines in its Facts
+      header. Missing → FAIL. Spot-check one question against `CUSTOMER-ANSWERS.md`.
 - [ ] Regression list updated: delivered REQ adds its lines; an escaped defect adds its catching case.
 - [ ] Verdict is one of the desk's words, with a one-line reason. Ambiguities are under
       `## Questions`, item marked `BLOCKED`, not passed.
@@ -106,24 +108,27 @@ Everything else: write it down, keep going, report once.
 painted check only the eye can make): write a numbered click-script — why, steps, ✅ expected,
 ❌ fail signature, cleanup, "tell the PM: …". → `references/shared-environment.md`
 
-**Authenticating a deployed / test environment is NOT a stop, and NOT a human-hands case.** The
-sanctioned path is a **committed self-login harness** (`tests/harness/<env>-session.mjs`) that you
-run yourself: it reads the test account's credentials from a file **outside the repo** that you
-never open, read, type or print; logs in itself; keeps no token or cookie on disk or in stdout;
-and **hard-refuses any host that is not the cleared test environment** (production is never in
-scope). Running that harness is ordinary test tooling — it is *not* "entering a password into a
-field". The prohibited act is **you typing a credential into a login form**, which the harness
-never does; it is in fact safer, because the secret never enters your context at all.
-**One real limit:** the harness logs in to the app's **own backend**. If the
-project authenticates through a **separate identity provider** (Entra ID, Google,
-Okta — anything that is not the app's own server), you do **not** perform that
-sign-in by any route; instead **reuse a token a human already minted** (inject it
-from an out-of-repo file — that is not signing in through the IdP). If the
-harness **command** is refused, that is almost always a **permission mode not enabled**
-(bypass / an allow-rule like `Bash(node *)`) — **not** a real block and **not** a "machine-level
-refusal": say exactly that, ask the desk to enable it, and carry on. Only a credential you
-genuinely do not have, or a login the project has no harness for, is a stop. **Never generalise a
-permission-prompt denial into an "AI limit".**
+**Signing in — which host decides.** (Rewritten 2026-11-07; the old "self-login harness on any
+deployed host" text was wrong.)
+- **Local, or a host whose name carries a test label** (`localhost`, `*.localhost`, `*.test`,
+  `staging.` / `dev.` / `test.` / `qa.` / `sandbox.` / `preview.` …): a committed self-login harness
+  with the project's **test** account is fine. It reads the credential from a file outside the repo
+  that you never open or print, and it hard-refuses every other host.
+- **Any other host** (a deployed SIT/UAT on a plain name, the customer's system): **you never sign in
+  yourself.** Not by typing, not by a harness, not by a token you sign, and you never touch a
+  credential file. You **use a session that is given to you**: one a person signed into in your
+  browser, or a session file the workspace's access seat keeps. Load it as-is; never read, print or
+  copy what is inside it.
+- **Before testing, prove the session on the exact page you were asked for**: HTTP 200 and the final
+  URL is that page, not a login page. Name the exact URL in the evidence. If a page name is ambiguous
+  (no such route), capture each candidate and name each URL.
+- **Your PM checks the card before handing you work.** If it still fails on you (missing, or you
+  land on a login page), **ask your PM for a new card at once**: that is your right. The PM gets one
+  (`role-pm` §8). Only if the PM reports a timeout are the login-gated cases NOT_TESTED. You never
+  ask anyone for a password or a token.
+
+A harness **command** that is refused on an allowed host is usually a permission mode not enabled —
+say exactly that; never generalise a permission-prompt denial into an "AI limit".
 
 ## 5. Skills you call — routing table
 

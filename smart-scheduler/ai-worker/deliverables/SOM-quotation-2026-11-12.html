@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOM ใบเสนอราคางานเพิ่ม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1f2328; --muted:#57606a; --line:#e6e8eb; --bg:#ffffff; --soft:#fff6ee;
+    --orange:#e8650a; --orange-ink:#9a3f00; --green:#1a7f37; --green-soft:#eaf7ee;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+  .page{max-width:880px;margin:0 auto;padding:48px 24px 64px}
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+    border-bottom:2px solid var(--orange);padding-bottom:20px;margin-bottom:32px;flex-wrap:wrap}
+  .brand{font-weight:700;font-size:15px;color:var(--orange-ink);letter-spacing:.02em}
+  h1{font-size:30px;line-height:1.25;margin:6px 0 0;text-wrap:balance}
+  .meta{color:var(--muted);font-size:14px;text-align:right}
+  .lead{font-size:16px;color:var(--muted);max-width:68ch;margin:0 0 28px}
+  h2{font-size:21px;margin:40px 0 6px;display:flex;align-items:center;gap:10px}
+  h2 .tag{font-size:13px;font-weight:600;padding:2px 10px;border-radius:999px}
+  .tag.free{background:var(--green-soft);color:var(--green)}
+  .tag.paid{background:var(--soft);color:var(--orange-ink)}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 16px}
+  ul.plain{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  ul.plain li{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:baseline}
+  ul.plain li:first-child{border-top:0}
+  .check{color:var(--green);font-weight:700;flex:none}
+  .status{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap;text-align:right}
+  .val{display:block;font-size:14px;color:var(--ink);font-weight:600}
+  .val s{color:var(--muted);font-weight:500;margin-right:6px}
+  .val em{font-style:normal;color:var(--green)}
+  .amt{margin-left:auto;font-weight:700;color:var(--orange-ink);white-space:nowrap}
+  .sum-line{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:12px;padding:14px 16px;
+    border-radius:12px;font-size:15px}
+  .sum-line.free{background:var(--green-soft)}
+  .sum-line.free b{color:var(--green)}
+  .sum-line.paid{background:var(--soft)}
+  .sum-line.paid b{color:var(--orange-ink);font-size:18px}
+  .opt-note{display:block;font-size:13px;color:var(--muted)}
+  table.sum{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
+  table.sum th,table.sum td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
+  table.sum th{font-size:13px;color:var(--muted);font-weight:600}
+  table.sum td.r,table.sum th.r{text-align:right;white-space:nowrap}
+  table.sum tr.total td{font-weight:700;border-bottom:0;font-size:17px}
+  .note{background:#f6f8fa;border-radius:12px;padding:16px 18px;font-size:14px;color:var(--muted);margin-top:36px}
+  .note p{margin:4px 0}
+  @media print{ .page{padding:24px 0} h2{break-after:avoid} li{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <div class="brand">DEVELYST × SOM</div>
+      <h1>ใบเสนอราคา<br>งานที่ขอเพิ่ม</h1>
+    </div>
+    <div class="meta">ระบบ SOM หน้าบ้าน และหลังบ้าน<br>12 พฤศจิกายน 2569</div>
+  </header>
+
+  <p class="lead">สรุปตามที่พี่ฟีนเลือก งานหลังบ้านทุกข้อที่แจ้งผ่าน feedback ภายในวันที่ 17 พ.ย. ทีมทำให้โดยไม่มีค่าใช้จ่าย ส่วนที่มีค่าใช้จ่ายคืองานใหม่ของหน้าบ้าน 3 ข้อครับ</p>
+
+  <h2>งานที่มีค่าใช้จ่าย <span class="tag paid">หน้าบ้าน</span></h2>
+  <p class="sub">ไม่อยู่ในขอบเขตเดิม ประเมินค่าแรงตามเรทเดิม</p>
+  <ul class="plain">
+    <li><span>1. ปิดตารางเรียนทั้งวัน แบบแอดมินจัดการเอง<span class="opt-note">ระบบปิดไม่ให้จองวันนั้น แสดงคลาสที่ค้าง แอดมินย้ายเองทีละคลาส ระบบเตือนทุกเช้าจนครบ (อัปเกรดเป็นแบบระบบจัดการให้ภายหลังได้ เพิ่ม 800 บาท)</span></span><span class="amt">800</span></li>
+    <li><span>2. เปลี่ยนกิจกรรมทั้งคอร์ส แบบไม่คืนส่วนต่าง<span class="opt-note">เปลี่ยนตั้งแต่ครั้งถัดไป คลาสที่เรียนแล้วยังเป็นกิจกรรมเดิม สถิตินับตามที่เรียนจริง ฝั่งหลังบ้าน category เปลี่ยนตามกิจกรรมใหม่</span></span><span class="amt">1,900</span></li>
+    <li><span>3. ตารางเรียนหลายวันต่อสัปดาห์ / ครั้งละ 2 ชม.<span class="opt-note">ตั้งคอร์สได้ 1–3 วันต่อสัปดาห์ ครั้งละ 1 หรือ 2 ชั่วโมง เป็นการปรับระบบตารางที่ทุกคอร์สใช้ร่วมกัน ทีมทดสอบให้คอร์สเดิมทำงานเหมือนเดิมทุกอย่าง</span></span><span class="amt">1,850</span></li>
+  </ul>
+  <div class="sum-line paid"><span>รวมค่าใช้จ่าย</span><b>4,550 บาท</b></div>
+
+  <h2>งานที่ทีมทำให้ <span class="tag free">ส่วนลด 100%</span></h2>
+  <p class="sub">งานที่ขอเพิ่มจาก feedback ซึ่งมีมูลค่าตามเรทเดิม ทีมให้ส่วนลดเต็มจำนวน</p>
+  <ul class="plain">
+    <li><span class="check">✓</span><span>หลังบ้าน: ปรับตาม feedback เว็บทดลอง (ธีมขาว-ส้ม, ชื่อ SOM BACK OFFICE, ปุ่ม Unlock สำหรับพี่ฟีน, Merit เห็นเฉพาะพี่ฟีน, หน้ารายได้, แก้ไขกลุ่มค่าคอม, จัดแถวให้เป็นแบบเดียวกันทุกหน้า, Add Demo, รูปสินค้า)</span><span class="status"><span class="val"><s>2,300</s><em>0 บาท</em></span></span></li>
+    <li><span class="check">✓</span><span>หลังบ้าน: แยกสิทธิ์แอดมินรายเมนู เลือกสิทธิ์รายคนได้ทุกเมนูเหมือนหน้าบ้าน ข้อมูลเงินเดือนและ Merit เห็นเฉพาะพี่ฟีน</span><span class="status"><span class="val"><s>2,500</s><em>0 บาท</em></span></span></li>
+    <li><span class="check">✓</span><span>หลังบ้าน: รายการที่พี่ฟีนขอเพิ่ม แก้เรทค่าจ้างเองได้ · Conversion ช่อง Total และตัวกรอง · Export Conversion · Export Revenue Summary · ย้ายสาขาทั้งคอร์ส · ตัวกรองทุกหน้าของ Stock · Report Revenue (Category และ Type) · Report Conversion กดดูรายชื่อได้</span><span class="status"><span class="val"><s>2,300</s><em>0 บาท</em></span></span></li>
+    <li><span class="check">✓</span><span>หลังบ้าน: ECA Payment สร้างรายการแบบ Pending รอเงินเข้า และช่อง VAT 7% / ภาษีหัก ณ ที่จ่าย คำนวณให้อัตโนมัติ</span><span class="status"><span class="val"><s>400</s><em>0 บาท</em></span></span></li>
+    <li><span class="check">✓</span><span>หน้าบ้าน: ย้ายคอร์สไปสาขาอื่นจากหน้าบ้าน</span><span class="status"><span class="val"><s>350</s><em>0 บาท</em></span></span></li>
+    <li><span class="check">✓</span><span>SOM Dashboard: กราฟ Gender / Nationality, กราฟกิจกรรมแยกตามแพ็ก และกราฟวงกลม 3 ชุดที่มีแถว TOTAL ด้านบน</span><span class="status"><span class="val"><s>550</s><em>0 บาท</em></span></span></li>
+  </ul>
+  <div class="sum-line free"><span>มูลค่างานรวม <s>8,400 บาท</s> · ส่วนลด 100%</span><b>ไม่มีค่าใช้จ่าย</b></div>
+
+  <h2>แก้ไขการทำงานที่ยังไม่ถูกต้อง</h2>
+  <p class="sub">ทีมแก้ให้ตามการดูแลระบบ</p>
+  <ul class="plain">
+    <li><span class="check">✓</span><span>ลาคลาสชดเชยแล้ว คลาสเลื่อนไปสัปดาห์ถัดไป ไม่กลับมาลงวันเดิม</span></li>
+    <li><span class="check">✓</span><span>คอร์สที่ยัง Pending ระบบจะยังไม่ส่งแจ้งเตือนผู้ปกครอง ส่งตารางให้ครั้งเดียวเมื่อกด Confirm Course</span></li>
+  </ul>
+
+  <h2>สรุป</h2>
+  <table class="sum">
+    <thead><tr><th>รายการ</th><th class="r">มูลค่า (บาท)</th><th class="r">ชำระ (บาท)</th></tr></thead>
+    <tbody>
+      <tr><td>งานใหม่หน้าบ้าน 3 ข้อ</td><td class="r">4,550</td><td class="r">4,550</td></tr>
+      <tr><td>งานที่ทีมทำให้ (ส่วนลด 100%)</td><td class="r">8,400</td><td class="r">0</td></tr>
+      <tr class="total"><td>รวม</td><td class="r">12,950</td><td class="r">4,550</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <p>งานหลังบ้านรับ feedback ถึงวันที่ 17 พ.ย. หลังจากนั้นจะสรุปเป็นเอกสาร URS ให้เซ็นยืนยันขอบเขตงาน</p>
+    <p>ราคาประเมินตามเรทเดิม</p>
+  </div>
+</div>
+</body>
+</html>

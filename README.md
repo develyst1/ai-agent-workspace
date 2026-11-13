@@ -50,8 +50,18 @@ All coordination state lives in each project's `ai-worker/` folder:
 
 Both modes read and write the same `ai-worker/` files, so nothing migrates
 when you switch. Workspace-level identities: **Atlas** (`ATLAS.md`, architect),
-**Marie** (`MARIE.md`, workflow operations) and **Otto** (`OTTO.md`, release &
-platform — the shared server, knowledge in `SERVER-FACTS.md`).
+**Marie** (`MARIE.md`, workflow operations), **Otto** (`OTTO.md`, release &
+platform — the shared server, knowledge in `SERVER-FACTS.md`), **Bunny**
+(`BUNNY.md`, weaver of each desk's memory), **Iso** (`ISO.md`, independent verifier — inspects the machine that produces the work: the rules,
+the seats, the maps, and every "it is done"; verdicts in `ISO-LEDGER.md`), **PokerVault**
+(`POKERVAULT.md`, access operator — the workforce's keyholder; logs in and unlocks
+sessions the Anthropic-bound desks cannot, keeps them fresh hourly, and wakes on a
+`REQUEST-*-to-pokervault-*.md` dropped at the workspace root; log in `POKERVAULT-LOG.md`),
+**Atom** (`ATOM.md`, draft — the owner's mobile mouth and ears), **Prox** (`PROX.md`, plugin
+maintainer — owns the Harness plugin layer and the Workforce Console that bridges the Claude desks
+and the DeepSeek seats; inventory in `PLUGINS.md`) and **Charlotte** (`CHARLOTTE.md`, trial —
+Atlas's challenger on DeepSeek: other options and objections before Atlas proposes; wakes on a
+`REQUEST-atlas-to-charlotte-*.md`, answers in `IDEAS-Charlotte-*.md`).
 
 ## How to run a work session (manual mode)
 
@@ -92,7 +102,8 @@ with the rules older desks had to learn.) Opening a desk is Marie's job
 
 | Project | Description | Team |
 |---------|-------------|------|
-| `smart-scheduler` | Scheduling + back-office ERP for a sports activity center (monorepo, 4 repos) | Porter (PM/BA), Sober (SA Lead), Jason (BE), Fern (FE), **Tanya (QA — trial)** |
+| `smart-scheduler` | Scheduling + back-office ERP for a sports activity center (monorepo, 4 repos) | Porter (PM/BA) · **Team A** Sober (SA Lead), Jason (BE), Fern (FE) · **Team B** Silver (SA Lead), Bob (BE), Fanta (FE) · **Team C** Sector (SA Lead), Brew (BE), Flash (FE) · **Tanya + Twenty (QA — trial, both `QA · all`)** |
+| `i-space` | **I-Space (Intelligent Space)** — one product in two halves: **Blueprint** (an AI interview turns sources into a confirmed spec version) and **CAW** (the AI-workforce runner that executes confirmed versions with Claude CLI workers, *"เสมือน Atom"*). Brownfield, 4 repos on branch `atom`, **MANUAL mode** (8 sessions `<Name>-ISP`), IDs from 101 | Porter (PM/BA/PO/UX writer), Tanya (QA) · Team A (Blueprint): Sober (SA), Jason (BE), Fern (FE) · Team B (CAW): Silver (SA), Bob (BE), Fanta (FE) |
 | `develyst-ai` | Develyst AI Gateway — Bun+Hono multi-provider AI API (single backend repo) | Porter (PM), Sober (SA Lead), Jason (BE) |
 | `portfolio-nichaphon` | Personal portfolio / freelance-services site for Nichaphon Sayvav (`portfolio.develyst.online`) — Next.js 15 + Mantine 8, frontend only, single repo `portfolio-nichaphon-web`. **Dispatcher-run** | Porter (PM), Sober (SA Lead), Fern (FE) — no BE, no QA |
 | `dte` | **DTE — "Disrupt Thai Education"**: online learning platform with a per-course AI Teacher, live at `dte.develyst.online`. **Brownfield, real users.** Single repo `dte` = `back/` (Bun + ElysiaJS + PostgreSQL, raw SQL, no ORM) + `front/` (Next.js 15 + React 19 + Tailwind); AI via the `develyst-ai` gateway. **Dispatcher-run**, branch `develop`. Born 2026-09-06 with `SYSTEM-FACTS.md` + `inbox/` + `tests/` | Porter (PM), Sober (SA Lead), Jason (BE — `back/`), Fern (FE — `front/`) — no QA |
@@ -101,3 +112,6 @@ with the rules older desks had to learn.) Opening a desk is Marie's job
 | `corner-chat` | Unified inbox with an AI guard — LINE, Discord, Zimbra Mail, Web Chat (later Teams) in one place, AI filtering before people, auto-reply rules, dashboard. **Greenfield, MANUAL mode**, two repos (`corner-chat-back` = Bun + Hono or Elysia, never NestJS, + Postgres; `corner-chat-front` = Dashboard + Web Chat, stack in SPEC-001), **both teams share both repos** via the PM's batch claims. Opened 2026-11-01 | Porter (PM) · Team A: Sober (SA), Jason (BE), Fern (FE), Tanya (QA) · Team B: Silver (SA), Bob (BE), Fanta (FE), Tefany (QA) |
 | `call-scribe` | Call recording on the owner's Oppo Android phone → AI transcript → who said what + summary. **Greenfield app + the owner's gateway, MANUAL mode, on Atom's box**, three repos (`call-scribe-back` = Bun + Hono or Elysia; `call-scribe-front` = mobile-first web app, never Flutter, stack in SPEC-101; `develyst-ai` = the gateway, gets an audio endpoint). IDs from 101. Opened 2026-11-06; **paused 2026-11-07 for God Plan** | Porter (PM) · Team A: Sober (SA), Jason (BE), Fern (FE), Tanya (QA) · Team B: Silver (SA), Bob (BE), Fanta (FE), Tefany (QA) |
 | `god-plan` | God Plan — the owner creates projects and tasks; family and team members view progress and blockers and comment (like Trello or Jira); AI through the owner's gateway. **Greenfield, MANUAL mode, on Atom's box**, two repos (`god-plan-back`, `god-plan-front`, not cloned yet); stack, database and dev-server method **undecided — the owner's**. Opened 2026-11-08 | Porter (PM) · Sober (SA) · Jason (BE) · Fern (FE) · Tanya (QA) — one team |
+| `smart-scheduler-atom` | **Fork of `smart-scheduler` on Atom's own box** (owner's option C, 2026-10-26): reads that desk's knowledge, writes only to itself, IDs from **5000**, code branch `atom`. **MANUAL mode**, 8 sessions `<Name>-SOMA`. Not the same tree as `smart-scheduler` | same eight people as `smart-scheduler`: Porter (PM), Tanya (QA) · A: Sober (SA), Jason (BE), Fern (FE) · B: Silver (SA), Bob (BE), Fanta (FE) |
+| `code-class` | **Freelance teaching** — programming basics (the same in every language) plus AI. Makes teaching material, not an app: the course repo `code-class-docs`, shown to clients on Fastwork, and a class schedule. Learners reached only through the owner. **Greenfield, MANUAL mode**, sessions `<Name>-CLS`. Opened 2026-11-12 (ORDER 65) | Porter (PM), Tanya (QA) · Team A: Sober (SA — curriculum + folder structure), Fern (FE — slides, lessons, example code) — no BE |
+| `buddy-screen` | **Parked 2026-10-29** — the owner dropped it from the active codebase list (*"ลบบัดดี้สกรีนออกไปเลย เพราะเราโค้ดขึ้น git แล้ว"*); the folder and the desk stay on disk, never deleted, no new work. One team (BUD) | Porter (PM), Tanya (QA), Sober (SA), Fern (FE), Jason (BE) — no second team |

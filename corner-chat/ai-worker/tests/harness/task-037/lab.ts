@@ -50,7 +50,7 @@ if (mode === "up") {
   const made = await fetch(`${api}/admin/users`, {
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
-    body: JSON.stringify({ name: "ผู้ทดสอบ B", email: "appb@corner.test", password }),
+    body: JSON.stringify({ name: "ผู้ทดสอบ B", email: "fanta-b-appb@corner.test", password }),
   });
   console.log(`create user: ${made.status}`);
   await Bun.write(pwFile, password);
@@ -65,7 +65,7 @@ if (mode === "up") {
     select id, 'line', ${ext}, 'U9001', 'คุณทดสอบ', 'G9001', ${"กลุ่มทดสอบ " + ext},
            ${"ข้อความใหม่สำหรับทดสอบการแจ้งเตือน " + ext}, 'to', now(), 'done', ${outcome},
            case when ${outcome} = 'notified' then now() end
-    from users where email = 'appb@corner.test'
+    from users where email = 'fanta-b-appb@corner.test'
     returning id`;
   await db`
     insert into decisions (message_id, decided_by, outcome, summary, score, reason, bar, layer1_provider, layer1_model, prompt_version)
@@ -76,7 +76,7 @@ if (mode === "up") {
   // The made-up user's LINE link, straight into the throwaway database (no webhook, no secret, nothing sent anywhere).
   const { db } = await import(`${root}/src/core/db`);
   await db`insert into line_links (user_id, line_user_id, display_name)
-           select id, 'L-appb-1', 'เอ' from users where email = 'appb@corner.test' on conflict do nothing`;
+           select id, 'L-appb-1', 'เอ' from users where email = 'fanta-b-appb@corner.test' on conflict do nothing`;
   console.log("line link: inserted");
   await db.close();
 } else if (mode === "count") {

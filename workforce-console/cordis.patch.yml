@@ -1,0 +1,4 @@
+- insert:
+    - id: dsh-workforce
+      name: '@local/dsh-workforce'
+      config: {}

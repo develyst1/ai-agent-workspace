@@ -1,0 +1,76 @@
+{
+  "//": "Picklocker allowlist. Fill in the login URL + selectors per site. mode: password = login.mjs can do it; session-import = the owner signs in once in a real browser and exports state/<key>.json. read-write vs read-only only documents the desk's own QA rule; picklocker never overrides it.",
+  "som": {
+    "name": "smart-scheduler sid (dev server)",
+    "baseUrl": "https://som.develyst.online",
+    "loginUrl": "https://som.develyst.online/login",
+    "authenticatedUrl": "https://som.develyst.online/scheduler/calendar",
+    "mode": "password",
+    "access": "read-write",
+    "selectors": { "email": "input[placeholder=\"admin\"]", "password": "input[type=\"password\"]", "submit": "button[type=\"submit\"]" }
+  },
+  "possibility": {
+    "name": "possibility SIT",
+    "baseUrl": "https://possibility.develyst.online",
+    "loginUrl": "https://possibility.develyst.online/ideas/new",
+    "mode": "session-import",
+    "access": "read-write",
+    "note": "Google sign-in — OAuth popup cannot be automated; the owner exports the session once."
+  },
+  "blueprint-sit": {
+    "name": "i-space Blueprint SIT",
+    "baseUrl": "https://blueprint-sit.develyst.online",
+    "loginUrl": "https://blueprint-sit.develyst.online",
+    "mode": "session-import",
+    "access": "read-write",
+    "note": "Behind Cloudflare Access (owner email + one-time PIN); owner exports the session once."
+  },
+  "bo-admin": {
+    "name": "smart-scheduler sid back office — admin role (REQ-120 R0: an admin sees no money)",
+    "baseUrl": "https://backoffice-som.develyst.online",
+    "loginUrl": "https://backoffice-som.develyst.online/login",
+    "authenticatedUrl": "https://backoffice-som.develyst.online/dashboard",
+    "mode": "password",
+    "access": "read-write",
+    "selectors": { "email": "input:not([type=\"password\"])", "password": "input[type=\"password\"]", "submit": "button[type=\"submit\"]" },
+    "note": "Mantine form, inputs carry no name/placeholder (verified 2026-11-09). Own auth: POST /api/v1/auth/login. Waits for TASK-930 (front-office accounts); no credential yet."
+  },
+  "bo-ceo": {
+    "name": "smart-scheduler sid back office — CEO role (Salary + Revenue + Stock)",
+    "baseUrl": "https://backoffice-som.develyst.online",
+    "loginUrl": "https://backoffice-som.develyst.online/login",
+    "authenticatedUrl": "https://backoffice-som.develyst.online/dashboard",
+    "mode": "password",
+    "access": "read-write",
+    "selectors": { "email": "input:not([type=\"password\"])", "password": "input[type=\"password\"]", "submit": "button[type=\"submit\"]" },
+    "note": "Same page as bo-admin; the owner-seeded CEO account (JWT role=ceo). Card verified 2026-11-09."
+  },
+  "bo-coach": {
+    "name": "smart-scheduler sid back office — coach role (own slip only)",
+    "baseUrl": "https://backoffice-som.develyst.online",
+    "loginUrl": "https://backoffice-som.develyst.online/login",
+    "authenticatedUrl": "https://backoffice-som.develyst.online/dashboard",
+    "mode": "password",
+    "access": "read-write",
+    "selectors": { "email": "input:not([type=\"password\"])", "password": "input[type=\"password\"]", "submit": "button[type=\"submit\"]" },
+    "note": "Same page as bo-admin; a distinct coach account. Waits for TASK-930; no credential yet."
+  },
+  "som-gr": {
+    "name": "smart-scheduler GR / feedback web (LIVE, mock data)",
+    "baseUrl": "https://som-gr.develyst.online",
+    "loginUrl": "https://som-gr.develyst.online",
+    "mode": "basic-auth",
+    "access": "read-write",
+    "note": "HTTP Basic Auth at nginx — no form, no storageState. A card is a browser context carrying httpCredentials (picklocker/basic-auth.mjs). Verified 401 without the credential on 2026-11-10."
+  },
+  "uat": {
+    "name": "smart-scheduler uat (customer's system)",
+    "baseUrl": "https://frontoffice.develyst.online",
+    "loginUrl": "https://frontoffice.develyst.online/login",
+    "authenticatedUrl": "https://frontoffice.develyst.online/scheduler/calendar",
+    "mode": "session-import",
+    "access": "read-only",
+    "selectors": { "email": "input[placeholder=\"admin\"]", "password": "input[type=\"password\"]", "submit": "button[type=\"submit\"]" },
+    "note": "READ-ONLY. Never write here; picklocker only supplies a login and never writes. Same sign-in form as som (verified 2026-11-07); the login works with --allow-import, a deliberate one-off. Default stays session-import so nothing renews it automatically."
+  }
+}

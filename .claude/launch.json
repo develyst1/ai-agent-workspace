@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "som-master-plan",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "smart-scheduler/ai-worker/project-docs/master-plan-2026-11-07/web", "run", "dev"],
+      "port": 5188
+    }
+  ]
+}

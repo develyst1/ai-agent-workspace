@@ -1,13 +1,13 @@
 {
   "harness": "develyst-harness",
-  "version": "2.6.14",
-  "installedAt": "2026-11-02",
+  "version": "2.6.20",
+  "installedAt": "2026-11-12",
   "packageHashes": {
     "ai-worker/add-failure.mjs": "791081e8b61e7c50b2cf56d697f212f795896ed0626218eb977adcb4bab92901",
     "ai-worker/append-log.mjs": "81f520ddb7d2c3df897e79c7fd4114343028341684729f6257ab9d1250e297f9",
     "ai-worker/drain-inbox.mjs": "24dcdd8244507b428e0c2716bbd95b232192247ca0243d8f2193a5582129a2c0",
     "ai-worker/tools/pm-hub.sh": "777f42870cd2509a204eaacf2f7bde7d2e2637021a9bd9124f3eeed9138425d4",
-    "ai-worker/tools/watch-inbox.sh": "b2133e73126c1bf056b2ac8a744475a546b98cc60b8e559981b2b420f0798130",
+    "ai-worker/tools/watch-inbox.sh": "181bd09ecd65b31486192a9b521059e1a8e3da11a9b98652609a41c5bdc906ce",
     "ai-worker/tools/nudge-count.sh": "25946053a106ac55c9281e7ffc2be36b90d21c095dfd95f24e0c4579e1a5d5b0",
     "ai-worker/verify-before-relay.md": "29ec9bca9aa7672150e6f6019f184e7a59f5e74d3787c80f1e6ede32e42c5029",
     "ai-worker/reproduce-first.md": "fc9c14869c737f0475ad7e64ce94e3904b2b0a1e72f96cae9c967c3672ce25d9",
@@ -18,7 +18,7 @@
     "ai-worker/attribution.md": "cb79b4c4f6b6a30beb104346e100d97b000a63e5d263cf3c869602f2f197d7e0",
     "ai-worker/predict-then-probe.md": "37d47dd04346f4da6d60a630e1dc6db7b69dd9ef077c781e90ffe8bf33c79e94",
     "ai-worker/new-id.mjs": "2b6fa6721d79eaff6ff08cef78e34a0bf3b87307aa006c100a478db7d4cb7c36",
-    "CLAUDE.md": "b633e438a4e3adb69fa0cd85a0cc2a8e9d1484acf6fc95dec4b172633b17a2a0",
+    "CLAUDE.md": "621c9f68e1e9da408a67a552a4420b7a1788b5bcd41fec101f3e217843ed0e6e",
     "AGENTS.md": "9927330ad68feedf2ba122e1b9cc5758af7a021b9376b6ec1d05816d4e3eb6eb",
     "ROLES.md": "315e66f7a76818ab3356b02f5681e7320d3f9e8f95a44aaa35b2582de27d6f57"
   }

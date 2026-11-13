@@ -99,3 +99,6 @@ None. Nothing outside the claim turned red (full suite 1095/0), so the standing 
   - `link-refusal-halves-task698.dom.test.tsx` + `.mutations.json`;
   - the re-anchored `link-parent-task669.mutations.json` and `link-parent-create-task696.mutations.json`;
   - `lib/i18n/dictionaries.ts`.
+
+## ORDER 67 pass — Silver, 2026-11-13
+The board row still read REVIEW/TODO, but this TASK is **DONE** (see § Review) and its code is committed (board row now names the hash). Nothing owed; the row is ready to sweep. The old board cell is preserved verbatim in `archive/board-2026-11-13-pre-ownerbatch-move.md`.

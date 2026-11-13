@@ -10,6 +10,11 @@ caused it.
 - [ ] You re-ran the decisive check yourself when it is cheap, and quote your own output.
 - [ ] The check used the tool the user will actually use (built page, rendered screen, real
       response) — not only the validator, linter or gate.
+- [ ] A green audit or gate proves only what it measures. Compare its scope with the rule's scope
+      (every form, not only the forms in modals) before you accept it.
+- [ ] A route that adds or changes a request validator has a **route-level** test: a valid body
+      passes, an invalid one is rejected. Service tests skip the validator, and a type check does not
+      catch a wrong pattern.
 
 ## Against the SPEC
 - [ ] Every contract field matches the SPEC, including casing, status codes and error bodies.

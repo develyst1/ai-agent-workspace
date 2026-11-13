@@ -1,0 +1,295 @@
+{
+  "trialA": {
+    "bookingId": "45ed26f8-ac72-4d85-b3b5-556db59a2d4c",
+    "studentId": "76f33be7-aba2-4fab-a3e3-7baba702786d"
+  },
+  "A1": {
+    "courseId": "bdafdffc-82b8-4ec8-a3ea-341ea83e95a8",
+    "links": {
+      "fromTrialBookingId": "45ed26f8-ac72-4d85-b3b5-556db59a2d4c",
+      "prevCourseId": null,
+      "prevVoucherId": null,
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    }
+  },
+  "A2": {
+    "courseId": "a161c9a5-7864-4ddb-8997-838426232e21",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": "bdafdffc-82b8-4ec8-a3ea-341ea83e95a8",
+      "prevVoucherId": null,
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    }
+  },
+  "A3": {
+    "voucherId": "6a5c34c7-740f-442f-9ef3-049fe55b8600",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": "a161c9a5-7864-4ddb-8997-838426232e21",
+      "prevVoucherId": null,
+      "firstTeacherId": null
+    }
+  },
+  "A4": {
+    "courseId": "46d01ded-79a3-4ab9-8f5e-ddfe6da0f6d6",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": null,
+      "prevVoucherId": "6a5c34c7-740f-442f-9ef3-049fe55b8600",
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    }
+  },
+  "trialB": {
+    "bookingId": "813e02f4-4ab6-41ea-b70f-9181bdc66101",
+    "studentId": "7b830b71-2a78-4a35-a089-41b9779672fd"
+  },
+  "B1": {
+    "voucherId": "54133d03-efac-4b05-81d4-621bd83c6ca3",
+    "links": {
+      "fromTrialBookingId": "813e02f4-4ab6-41ea-b70f-9181bdc66101",
+      "prevCourseId": null,
+      "prevVoucherId": null,
+      "firstTeacherId": null
+    }
+  },
+  "B2": {
+    "voucherId": "0a2fb221-48fd-4557-865d-9e8c8637b499",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": null,
+      "prevVoucherId": "54133d03-efac-4b05-81d4-621bd83c6ca3",
+      "firstTeacherId": null
+    }
+  },
+  "trialC": {
+    "bookingId": "4ded4b05-3bc4-454e-9d14-b23864829033",
+    "studentId": "5d7e6378-8fa5-42a7-969d-1a901a3a4746"
+  },
+  "C1": {
+    "courseId": "12af54a5-bcc6-4ed4-92b8-e83b88c6d9fc",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": null,
+      "prevVoucherId": null,
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    }
+  },
+  "trialD": {
+    "bookingId": "7975ad1c-31dc-4ddb-ad95-ac87f9ba66ec",
+    "studentId": "ec8d7c99-6d5e-421b-8d1d-22a006d23676"
+  },
+  "D1": {
+    "courseId": "002bc9b1-bf7e-4b99-a436-6b7dae2baf84",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": null,
+      "prevVoucherId": null,
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    }
+  },
+  "trialE": {
+    "bookingId": "a185156f-5660-4efd-873d-dcab5b44128b",
+    "studentId": "fa7d985c-b235-46a9-96bd-b2c209226daa"
+  },
+  "E1": {
+    "voucherId": "f6535eec-185f-47a0-aece-9f4105e74a01",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": null,
+      "prevVoucherId": null,
+      "firstTeacherId": null
+    }
+  },
+  "trialF": {
+    "bookingId": "b15777ba-713a-4b50-b0c8-1ef3e5a98e16",
+    "studentId": "1948f2ff-f86a-4072-ac52-764163fc8ead"
+  },
+  "F1": {
+    "courseId": "85028ad6-123c-4ad3-b299-d793dc31cb8b",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": null,
+      "prevVoucherId": null,
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    }
+  },
+  "trialG": {
+    "bookingId": "8ff36982-fb1c-4c0b-835a-ee06032ac301",
+    "studentId": "b9382096-5fa8-45ad-85a2-9b0ea75761f7"
+  },
+  "trialH": {
+    "bookingId": "c3760b96-3010-4bc9-94c6-6b3784b0fef8",
+    "studentId": "91a61b4e-9097-4795-af6b-41fb58253521"
+  },
+  "G1": {
+    "courseId": "f8bcd3e3-ac50-471d-a34a-77a683bf1181",
+    "links": {
+      "fromTrialBookingId": "8ff36982-fb1c-4c0b-835a-ee06032ac301",
+      "prevCourseId": null,
+      "prevVoucherId": null,
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    }
+  },
+  "H1": {
+    "voucherId": "6b35c27a-175b-498d-9659-14de223ebf51",
+    "links": {
+      "fromTrialBookingId": "c3760b96-3010-4bc9-94c6-6b3784b0fef8",
+      "prevCourseId": "f8bcd3e3-ac50-471d-a34a-77a683bf1181",
+      "prevVoucherId": null,
+      "firstTeacherId": null
+    }
+  },
+  "trialJ": {
+    "bookingId": "8ddfb9f1-5d84-474e-acc4-c55c96ec6b64",
+    "studentId": "e3c0251a-e1b0-4465-9e85-87781b9435f1"
+  },
+  "J1": {
+    "courseId": "507a7b47-c8c0-46f7-bac3-0075fd57439d",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": null,
+      "prevVoucherId": null,
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    },
+    "rows": [
+      {
+        "id": "f7965ea3-47ad-4428-84fc-5813589ae0da",
+        "date": "2026-11-08",
+        "status": "PENDING"
+      },
+      {
+        "id": "d784eeec-0359-4423-a686-a87aac3152f4",
+        "date": "2026-11-15",
+        "status": "PENDING"
+      },
+      {
+        "id": "1aa0e56a-2d9b-404b-8a95-72da3c0c7081",
+        "date": "2026-11-22",
+        "status": "PENDING"
+      },
+      {
+        "id": "edf62d12-31b4-475c-b2f5-a5eaa1c0c659",
+        "date": "2026-11-29",
+        "status": "PENDING"
+      }
+    ]
+  },
+  "J2": {
+    "courseId": "97dc84a3-703b-4fae-a072-2988e5ee6726",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": "507a7b47-c8c0-46f7-bac3-0075fd57439d",
+      "prevVoucherId": null,
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    },
+    "rows": [
+      {
+        "id": "48f0ea3c-2f2b-4da3-9d56-3c5671f062ef",
+        "date": "2026-11-08",
+        "status": "PENDING"
+      },
+      {
+        "id": "645bbb29-c26e-468d-9ed6-8fb7f72a9d65",
+        "date": "2026-11-15",
+        "status": "PENDING"
+      },
+      {
+        "id": "b4238bf1-fa13-405f-9fc0-d3ddb2bbe2c9",
+        "date": "2026-11-22",
+        "status": "PENDING"
+      },
+      {
+        "id": "9ad30adc-9ebd-420c-be1d-2ca61dc833c9",
+        "date": "2026-11-29",
+        "status": "PENDING"
+      }
+    ]
+  },
+  "K1": {
+    "courseId": "675f802c-daa6-4ea3-be4d-e01a75f079f9",
+    "links": {
+      "fromTrialBookingId": null,
+      "prevCourseId": "97dc84a3-703b-4fae-a072-2988e5ee6726",
+      "prevVoucherId": null,
+      "firstTeacherId": null,
+      "coachChangedAt": null,
+      "latestTeacherId": null,
+      "bonus100Pick": null,
+      "bonus100PickBy": null,
+      "bonus100PickAt": null
+    },
+    "rows": [
+      {
+        "id": "76a19a74-b449-435d-81a4-b2860cc25b74",
+        "date": "2026-11-01",
+        "status": "PENDING"
+      },
+      {
+        "id": "a3bf7188-65b5-4f72-b889-68501eb9a459",
+        "date": "2026-11-08",
+        "status": "PENDING"
+      },
+      {
+        "id": "45d1d2d4-4e4e-4e57-89c8-ccadff522d77",
+        "date": "2026-11-15",
+        "status": "PENDING"
+      },
+      {
+        "id": "113417c2-7538-4101-9a3d-ae40b7623a4d",
+        "date": "2026-11-22",
+        "status": "PENDING"
+      }
+    ]
+  },
+  "Bv": {
+    "bookingId": "3b533533-0e3f-48c5-a5d8-d2167cfec7d7"
+  },
+  "F5other": {
+    "bookingId": "4ea2a243-000b-47ee-8bc1-2b73a140b358"
+  }
+}

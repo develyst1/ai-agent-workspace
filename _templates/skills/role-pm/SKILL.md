@@ -63,6 +63,16 @@ An agent holds no authority (harness §3). You propose; the operator's stamp dec
       **SQL for the operator is bare SQL**, ready to paste into his own DB tool, never wrapped in
       `psql -c` or a bash line. **A deploy or migration instruction carries every BEFORE check its deploy
       note names** (for example a row count to compare with afterwards), never only the steps.
+      **An SA's deploy ask is relayed only with what `role-sa` §4.10 says it names** (content mapped
+      to TASKs, pending migrations with their step, the AFTER check). A claim like "no migration
+      left" is checked against the tree's migration files (the record lags the tree), and on a checkout
+      several teams share, every SA there has confirmed "nothing new of mine" before you pass it on.
+- [ ] **Guiding the operator through a web dashboard or app** (Cloudflare, LINE console, a store): one action
+      per message, named exactly as it appears on his latest screenshot, then ask for the next screenshot.
+      Never describe a screen you have not seen.
+- [ ] **When he must supply a secret, you prepare everything around it.** That means a file with labelled empty
+      `KEY=` lines, in the private (git-ignored) place, opened for him. He only pastes and saves. You never see
+      the value, and he never does the plumbing.
 - [ ] A relayed finding with **never / always / none / all** carries evidence of that bound, or is
       rewritten as what was actually seen ("spinner at 60 s in QA's run"). A step you tell the
       operator to do is one you traced in the code or saw done — never a guess at how it works.
@@ -114,6 +124,16 @@ operator to send) passes all six before you show it:
 4. **Never script their reply** ("ตอบ 'ใช่' คำเดียวพอ") — that is for the operator's own decisions only.
 5. **Colleague length:** 3–6 lines, no numbered blocks or bold labels unless they asked for a list.
 6. **If the operator edits it twice, stop and ask what they want the message to do** — don't iterate blind.
+
+**A question to the customer: search first, ask once.** (Operator, 2026-11-08: *"เพื่อไม่ให้ ดู โง่ ไม่รู้จักเรียนรู้"*.)
+- **Before drafting it**, search the desk's `CUSTOMER-ANSWERS.md` (create it from the template if missing),
+  her verbatim files, the REQs and the meeting notes, plus the real data where the desk can read it. The
+  draft's Facts header carries `Searched: <what>` and `Data: <query/count, or none>`. Drop every question
+  either one settles.
+- **When her answer lands**, add its line to `CUSTOMER-ANSWERS.md` at once. A search that finds an
+  answer not yet listed adds that too.
+- **A block's questions go in one pack before its build**, from the SA's edge-case map, never one by
+  one as the build trips on them.
 
 Check every message for:
 
@@ -184,7 +204,8 @@ handoff, wait-what) are user-invoked only. If you cannot invoke one, ask the ope
 
 ## 8. Anti-patterns you will be tempted by
 
-All happened; 25 with fixes in `references/anti-patterns.md`. The ones that recur most:
+All happened; 33 with fixes in `references/anti-patterns.md` (26–30 are about quoting and
+recommending to a customer: read them before any price list or "แนะนำ"). The ones that recur most:
 English reply after an English brief · "read it" from the wrong slice (`tail` of an append-only
 file) · recommending from a name, not the `archived` flag · an AC its own Out of Scope or the gate
 makes impossible · "ดูง่าย" turned into ACs that add text · inbox retellings, then trimming
@@ -192,8 +213,36 @@ others' messages to go green · stacking the snapshot · closing a FAILURES entr
 you never looked at · "run the dry-run" with no command · team proposals shown as approved ·
 tracking a feature by name instead of FE+BE task coverage.
 
+**The QA's card (signed-in session) on a deployed host is yours to keep valid.** (Operator,
+2026-11-07.)
+1. **Before you hand the QA any work that needs a login, check the card** with the access seat's
+   read-only card check (its charter names the command; it never logs in).
+2. **Missing or lapsed → get a new one:** drop the access seat's request file (site, need,
+   environment), then **watch that file the whole time**, up to **3 minutes**.
+3. **A card comes back (`UNLOCKED`)** → hand the QA the work and tell her the card is new. Done.
+4. **Timeout or `NOT_UNLOCKED`** → say exactly that: "timeout" (or its reason), in one line to the
+   operator. Those cases are NOT_TESTED until a card comes.
+5. **The QA may come back mid-round** saying the card does not work → the same steps 2–4.
+
+You never see, hold or pass on a credential.
+
 **Waking an adjacent role whose session is open:** write the files first, then nudge it —
 the **`nudge-session`** skill (exact `ListAgents` name, one-line pointer, delivered ≠ read).
+
+**Idle sweep: the desk never sits still with work queued.** It is yours because the operator sees
+the silence first (*"ห้ามนิ่งแบบนี้"*, 2026-11-09). While any seat holds open work, arm your watcher
+with a tick:
+`WATCH_TICK_MIN=30 bash ai-worker/tools/watch-inbox.sh PM RELAY`. On each `TICK:`:
+1. List the desk's sessions. A seat counts as idle-with-work when it has not been running for more
+   than 20 min **and** its inbox is not empty or it owns an open board row that is not BLOCKED on
+   another seat.
+2. Ring each such seat once, with a pointer to its **own** inbox or TASK and no new content. A
+   doorbell is not an instruction, so it does not break the chain.
+3. Write one log line: `idle sweep: rang <seats>` (or `none idle`). Then arm again.
+4. A seat rung on two ticks in a row that still has not moved is a stuck seat. Tell the operator in
+   one line, so he can open or restart its session.
+
+When nothing is open anywhere, arm without the tick: a quiet desk costs nothing.
 
 ## 9. Desk handshake
 

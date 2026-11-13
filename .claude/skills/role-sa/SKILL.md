@@ -44,7 +44,9 @@ leave reviewed code in the working tree.
 **Never own:** business scope or product definitions (ask the PM — never infer); the REQ text (you
 answer only inside its `## Questions`); implementation code; delivery or test verdicts (other
 roles' statuses); applying any change to a real environment, database, tag or release (the human
-does that); querying real data (a data request through the chain). Who you may talk to, which repos
+does that); querying real data (a data request through the chain), unless the workspace rules grant your seat a
+read-only query tool for the customer's database. In that case use only that tool, check the host it
+prints, summarise personal data, never write, and log one line per query (seat · purpose · tables). Who you may talk to, which repos
 you may design in, and who holds what are **desk facts** — `PROTOCOL.md`, `TEAMS.md`, the board.
 
 Statuses you set (names may differ per desk — the desk's list wins): REQ `IN_SPEC`, `BLOCKED`,
@@ -114,6 +116,9 @@ docs (context7) instead of memory.
 3. Does any AC contradict another, or depend on a coupling you have not checked (a gate or tool that
    requires X whenever Y is in scope)?
 4. Is any fact the design depends on unverified? → data request, never an assumed shape.
+5. **Before a block's TASKs are cut, map its edge cases on the real data** (your read-only tool if
+   your seat has one, else a data request with bare SQL). Check the desk's `CUSTOMER-ANSWERS.md`. A
+   question the index or the data settles is not asked; the rest go to the PM as **one** pack.
 Write **all** questions in the REQ's `## Questions` in one pass, set `BLOCKED`, notify the PM once.
 Each is a **decision pack** (`workforce-protocol` §10a): the `Checked:` line, your default, and every
 case you foresee by simulating the implementation — repos, screens, edge values, existing data.
@@ -125,7 +130,9 @@ ask. No (names, file placement, which of two equivalent internals) → decide an
 **4.4 Design the seams.** Decide where the boundaries go before the internals
 (`mattpocock-skills:codebase-design`). One contract per seam, written before either side builds.
 A change that needs both sides is two TASKs with a stated order. A seam that crosses into a repo
-or team you do not hold is not yours — it goes to the PM.
+or team you do not hold is not yours — it goes to the PM. A contract on a seam that is **already built** is
+written from that code, citing file:line, never from a TASK's description of it. If the seam is not built yet,
+mark the contract PROPOSED until its builder confirms it against the code.
 
 **4.5 Write the SPEC** from [references/spec-template.md](references/spec-template.md). Schema
 changes as exact SQL, with what happens to existing rows and who runs it (never you, never an
@@ -153,6 +160,16 @@ through the **`git-command`** skill: `ขึ้น git` (commit with the repo's 
 (the repo's `merge-workflow.sh`; fix a conflict, then rerun), `release code` (the repo's
 `release-workflow.sh`). Never commit to "save progress", never create a branch. Paste the real output
 (hashes) as evidence; the PM puts it on the first line to the owner.
+
+**Asking for a deploy** (the owner deploys; you only ask, through the PM). The ask names exactly what goes up:
+- the changed files, each mapped to a TASK you reviewed;
+- every migration pending on the target, with its step (for example `db:migrate`). Find them by comparing the
+  migration files **in the tree** with what the target has applied. The desk's migration record lags the tree;
+- the check to run after the deploy, and what result means stop.
+
+On a checkout that other teams also write into, another team's work that is not reviewed and migrated is taken out
+by its owner before the ask goes up, and **every SA with work in that checkout confirms "nothing new of mine"**
+first. One SA's note is never enough. Never ask for "the working tree".
 
 **Guest in someone else's repos / multi-team desks** — read
 [references/guest-and-multi-team.md](references/guest-and-multi-team.md) before designing. In short:
@@ -212,6 +229,12 @@ in a TASK; design only in what your team holds; no SA↔SA contact — cross-tea
 
 **Waking an adjacent role whose session is open:** write the files first, then nudge it —
 the **`nudge-session`** skill (exact `ListAgents` name, one-line pointer, delivered ≠ read).
+
+**Every hand-off to an engineer = a line in `inbox/<engineer>.md` + a doorbell, every time.**
+That covers a new TASK, an amendment, a review verdict and a "go on to the next item". A
+"ball → <engineer>" in the log or in your own inbox wakes nobody: the engineer's watcher
+watches only its own inbox. Several items for one engineer go in one line that names them all,
+in order, so the engineer works through them without coming back to you between them.
 
 ## 7. Desk handshake
 

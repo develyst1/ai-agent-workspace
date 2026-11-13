@@ -1,0 +1,29 @@
+{
+  "name": "@local/dsh-workforce",
+  "version": "0.7.7",
+  "private": true,
+  "type": "module",
+  "description": "Workforce console: desks, Claude sessions and workspace seats in the Harness Web UI.",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

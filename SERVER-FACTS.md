@@ -605,3 +605,216 @@ The scheduled audit (`otto-daily-security-audit`, 20:30) compares against `serve
   - **Idea:** Tailscale (or Cloudflare Access/Tunnel for SSH) so port 22 is not public. That ends the scanner noise and the fail2ban self-lockouts.
   - **Cost:** CI needs a way in too (a Tailscale GitHub Action + auth key, or Cloudflare Access for SSH).
   - **Next time** (a new server, or the next security talk): present it again in ≤5 lines, **and compare at least one alternative** before recommending (e.g. Cloudflare Tunnel `cloudflared access ssh` + a service token for CI; WireGuard on the box; port-knocking is NOT acceptable).
+- **2026-11-02 — corner-chat deploy request** (owner via Porter: *"ส่งรายละเอียดไปบอก otto หน่อยว่ามีแอป อยาก deploy"*; `REQUEST-porter-to-otto-2026-11-02-corner-chat-deploy.md`). Survey is read-only; nothing has changed on the box yet.
+  - **Repos** (branch `D1`; private, since the GitHub API gives 404):
+    - back `519ebf5`: Bun + Hono, already `bun build --compile` → `dist/corner-chat-back`; Bearer-session auth; the LINE webhook checks the HMAC signature. Migrations run only from `scripts/` (db-init / migrate), **not at start-up**.
+    - front `2a90393`: Next standalone + copy script. `NEXT_PUBLIC_API_BASE_URL` is **baked in at build time**, so CI must set it.
+    - app `21eb731`: Capacitor/Vite APK; `VITE_API_BASE` is baked in at build.
+  - **Back tests need a real Postgres:** they create `corner_chat_test_r<pid>_…` DBs on the server in `DATABASE_URL`/`DATABASE_URL_TEST`.
+  - **Outbound from this box:** `api.line.me:443` open; `ai.develyst.online:443` open; `154.197.124.206:5432` open; **`mail.entronica.in.th` (202.183.141.121): 993, 465, 587, 143, 25 and even 443 all BLOCKED**, while the owner's PC reaches 993/465 fine. So the mail host (or its network) refuses this box's IP. **The mail poller cannot work from here until `43.228.86.89` is allowed** (the owner or entronica IT).
+  - **Capacity:** 5.1 GB RAM free, 53 G disk; the ports in use are 3001 and 3002.
+- **2026-11-02 — corner-chat APK prep (Porter, TASK-041):**
+  - **`VITE_FAKE` defaults to true**, so the release APK build must set `VITE_FAKE=false` together with `VITE_API_BASE=https://<api host>/api/v1`.
+  - The repo now git-ignores `*.jks`.
+  - The APK still waits on the owner's final API hostname and on where the signing key is kept.
+- **2026-11-02 — mail block: it is NOT this box.** The owner asked *"ไม่ได้เป็นที่เราเหรอ นี่เครื่องที่บ้านฉันนะ ยังเข้าได้ปกติเลย ไม่ใช่เครื่องบริษัท"*. Read-only checks:
+  - From this box: `imap.gmail.com:993`, `smtp.gmail.com:465`, `outlook.office365.com:993` are **open**; `mail.entronica.in.th:993/465` still **fail**; ping to 202.183.141.121 gets 0 replies.
+  - Outbound policy here is `DEFAULT_OUTPUT_POLICY="ACCEPT"`; nothing in `/etc/ufw` or `/etc/fail2ban` names 202.183.x; the route is the normal gateway 43.228.86.1.
+  - The owner's home PC (today `223.24.168.26`) reaches `202.183.141.121:993`.
+  - **So the mail side (or its network) drops this box's IP** — likely an allow-list or a block on data-centre IPs. Fix is on the mail side: allow `43.228.86.89`.
+  - **Note:** the PC's IP changed again (`223.24.156.113` → `223.24.168.26`); fail2ban `ignoreip` still holds the old one.
+- **2026-11-02 — owner: park entronica, use an ordinary mailbox for now.** Owner: *"ปิดข้าม เรื่อง เมล entronica ไว้ก่อนแล้วกันทำให้ มันทำงานได้ แค่เมลธรรมดาก็ได้ ก่อน"*.
+  - **No code change needed:** the back reads the mail host from env: `ZIMBRA_IMAP_HOST/PORT`, `ZIMBRA_SMTP_HOST/PORT` (`src/config.ts`, `origin/D1`). The server `.env` points them at an ordinary provider (e.g. Gmail `imap.gmail.com:993` / `smtp.gmail.com:465`, both reachable from this box).
+  - **One host serves every user**, so each user's mailbox in the app must be on that provider.
+  - **Gmail:** needs 2-Step Verification + an App Password per mailbox. Set `MAIL_APPEND_SENT=false`, because Gmail's SMTP already files sent mail (the code finds Sent by `\Sent`, so leaving it true would duplicate).
+  - Waiting on the owner: which provider.
+- **2026-11-02 — owner's mail is Outlook (personal); that cannot work with the app as built.**
+  - **The network is fine:** from this box, `outlook.office365.com:993`, `smtp.office365.com:587` and `smtp-mail.outlook.com:587` are all open (587 = STARTTLS, which `connection.ts` requires on non-465 ports).
+  - **Why it still fails:** Microsoft ended password (basic-auth) logins for IMAP/SMTP on personal Outlook/Hotmail accounts on 2024-09-16. App passwords are refused too, and only OAuth2 works. The app logs in to IMAP/SMTP with a stored password (`imapflow` with `password_enc`), so an Outlook mailbox would be refused at login.
+  - **Options for the owner:**
+    - (a) a Gmail mailbox with an App Password: env change only, works now;
+    - (b) the desk adds Microsoft OAuth2 sign-in. That is code work, and it goes through Porter.
+- **2026-11-02 — owner: incoming mail only for now** (*"ไม่เอา เอาแค่ขาเข้ามาก่อนก็ได้"*).
+  - No env switch turns off outgoing: `app.ts:66` always starts the outbox. It sends only when a user presses reply (`POST /messages/:id/replies`), though, so "incoming only" just means not replying.
+  - **Incoming still logs in to IMAP with a password,** so the Outlook limit applies to reading too. The mailbox choice stands: Gmail + App Password, or entronica once it allows `43.228.86.89`.
+- **2026-11-02 — DECIDED: mail off on SIT for now** (owner: *"ปิดเมลไว้ก่อน"*). The server `.env` for the corner-chat back gets `MAIL_POLL_SECONDS=0`, so the poller does not start (`app.ts:65`). Tanya's SIT pass skips the mail poller. Revisit when entronica allows `43.228.86.89`, or the owner picks a Gmail box.
+- **2026-11-02 — DECIDED: mail via forward** (owner: *"forward"*; replaces "mail off"). Incoming only (*"ฉันไม่เอาส่งออก ฉันเอา ขาเข้ามา เพื่อรับรู้ว่าใครทักมาจากไหนบ้าง"*).
+  - **The owner** sets a forward in the entronica webmail (Zimbra) to one Gmail box. That Gmail box needs 2-Step Verification and an App Password. He connects it in the app himself; the password never passes through Otto.
+  - **The server `.env` (corner-chat back):** `ZIMBRA_IMAP_HOST=imap.gmail.com`, `ZIMBRA_IMAP_PORT=993`, `ZIMBRA_SMTP_HOST=smtp.gmail.com`, `ZIMBRA_SMTP_PORT=465`, `MAIL_POLL_SECONDS=60`, `MAIL_APPEND_SENT=false`.
+  - **To prove:** one test mail to the entronica address shows up in the app with the original sender (not the forwarder).
+  - **Later:** when entronica allows `43.228.86.89`, switch the env back to `mail.entronica.in.th` and drop the forward.
+- **2026-11-02 — DECIDED: hostnames** (owner: *"ตามนั้นก็ได้"*).
+  - API `cornerchat-api-sit.develyst.online`: public, no Access, because LINE and the APK must reach it.
+  - Admin web `cornerchat-sit.develyst.online`: behind Cloudflare Access (owner only).
+  - APK `VITE_API_BASE=https://cornerchat-api-sit.develyst.online/api/v1`.
+- **2026-11-02 — DECIDED: corner-chat uses the owner's Postgres without SSL for now** (owner: *"ใช้ไปก่อน"*). This is an accepted risk, the same as review gap 10: the DB password and the data cross the internet unencrypted between `43.228.86.89` and `154.197.124.206:5432`. Raise it again when the gaps are reviewed.
+- **2026-11-02 — DECIDED: LINE on SIT = the test OA LifeStyle-Shop (@183qrfme)** (owner: *"ใช้ OA ทดสอบ"*).
+  - Its channel secret/token go into the server `.env` only, plus `LINE_LIVE=1`.
+  - After the first deploy, the owner sets the Webhook URL in the LINE console to `https://cornerchat-api-sit.develyst.online/api/v1/webhooks/line`.
+- **2026-11-02 — DECIDED: corner-chat back CI runs no DB tests** (owner: *"ไม่ต่อ"*).
+  - The workflow runs typecheck, lint and build only, and **no `bun test`**, because the tests need a real Postgres and the owner keeps the DB secret out of GitHub.
+  - Gate 6 gap, said out loud: CI does not run the back's unit tests. The desk runs them locally against the dev DB.
+- **2026-11-02 — DECIDED: APK signing key lives on the owner's PC + a backup off the PC** (owner: *"เครื่องนี้ + สำรอง"*).
+  - On the PC: a folder **outside every repo**. Its path goes in `machine.local.md` only.
+  - The off-PC backup (password manager or a private drive) is the owner's to make.
+  - Never in git (`*.jks` is git-ignored).
+- **All owner decisions for the first corner-chat SIT deploy are in** (2026-11-02): mail via forward to Gmail, hostnames, DB without SSL, the test LINE OA, CI without DB tests, the key location. Next: server `.env` source, then `new-app` ×2, Access, CI keys, workflows.
+- **2026-11-02 — corner-chat apps created on the box** (owner: *"ก็อปไปเลย"* for the `.env`).
+  - **`new-app`** (no password; both rc=0):
+    - `cornerchat-api-sit`: process, `--start "./corner-chat-back"`, `--health /api/v1/health`, port **3003**, public;
+    - `cornerchat-sit`: process, port **3004**, public, Access still to add.
+  - Ports in `ports.tsv`: 3001–3004. nginx on the API returns 502 until the first deploy (expected).
+  - **`shared/.env` for the back** (600, 32 lines, no duplicate keys, values never printed): the team's local `.env` piped in.
+    These keys are replaced with server values: `PORT=3003`, `HOST=127.0.0.1`, `ADMIN_WEB_ORIGIN=https://cornerchat-sit.develyst.online`, Gmail IMAP/SMTP, `MAIL_APPEND_SENT=false`, `LLM_GATEWAY_URL=https://ai.develyst.online` (the local value was `localhost:3009`; prod per the `llm-gateway` skill, no key needed), `LINE_LIVE=1`.
+    **`MAIL_POLL_SECONDS=0` for now** (see the next entry). `PG_LOCAL_*` and `TEST_MAIL_*` came along with the copy.
+  - **`shared/.env` for the front:** comments only. The API URL is a build-time value set in CI.
+- **2026-11-02 — OPEN: SIT and local dev share one database.** The back only accepts the DB name `corner_chat` (or `corner_chat_test_*`) (`src/config.ts:60-91`), so the SIT back and anyone's local back write the same rows.
+  - **Mail:** the mail host is one global setting, so a SIT poller (Gmail) would try every mailbox in `mail_accounts`, including the team's entronica ones, and fail on them (writing `last_error`), and vice versa. So the poller stays at 0 until the owner decides.
+  - **Options:**
+    - (a) the desk lets the back accept a SIT DB name (small code change, through Porter);
+    - (b) accept the sharing, and only one back polls mail at a time.
+- **2026-11-02 — corner-chat release APK built** (Porter, TASK-041 DONE; `REQUEST-porter-to-otto-…` Follow-up 2).
+  - `app-release.apk`, 3,361,589 bytes, SHA-256 `9816a1b5…8b96e3b`. It points at `https://cornerchat-api-sit.develyst.online/api/v1`.
+  - Not handed out yet. Its install and sign-in are not yet proven, because the API is not deployed.
+  - **Otto tells Porter when SIT is up; that starts the desk's release QA** (owner: *"เสร็จแล้วฝากส่งรายละเอียดให้ทีมเทสต่อด้วยนะ"*).
+- **2026-11-02 — DECIDED: SIT shares the `corner_chat` DB with local dev** (owner: *"ใช้ร่วมกัน"*).
+  - Only one back may poll mail at a time. The SIT poller stays at `MAIL_POLL_SECONDS=0` until the owner connects the Gmail box.
+  - At that point Otto turns the SIT poller on, and the desk's local backs run with `MAIL_POLL_SECONDS=0`. Porter is told this with the "SIT is up" note.
+- **2026-11-02 — corner-chat CI keys + workflows (Otto).**
+  - **CI keys** (made in `C:\Users\KUYDONG\ci-secrets\`, ACL that user only; lines 4–5 of `/home/deploy/.ssh/authorized_keys`, forced command `ci-deploy`, `restrict`; backup `authorized_keys.bak-20261102-cornerchat`):
+    - `github-ci@corner-chat-back-2026-11-02` `SHA256:68TQ31A/D81G8qLu0ogk6ZD57gtLkNVCtSHSKFGkwtU`;
+    - `github-ci@corner-chat-front-2026-11-02` `SHA256:cqz8soO3fUos4ndjYxJdroQDqyw1hXK++bGPxwXkSD0`.
+    - **Proven:** both are refused for `id` ("no app id") and `cat /etc/passwd` (usage). **Expected total now: 5 keys.**
+    - **Revoke** = delete the line ending with that comment.
+  - **Workflows written (not committed)**, `.github/workflows/deploy-sit.yml` in `corner-chat-back` and `corner-chat-front`:
+    - **back:** `bun install` → `bunx tsc --noEmit` (the repo has no typecheck script; it passed locally at `519ebf5`) → build → deploy `cornerchat-api-sit`. **No tests and no lint** (no lint script; DB tests decided out).
+    - **front:** `bun install` → typecheck → lint → build with `NEXT_PUBLIC_API_BASE_URL=https://cornerchat-api-sit.develyst.online/api/v1` → deploy `cornerchat-sit`. **No UI tests** (the repo has none).
+  - **Remote `sit` exists in both repos** and is an ancestor of `D1`, so `git push origin D1:sit` fast-forwards (no force).
+  - **Waiting on the owner:** the Access app for `cornerchat-sit.develyst.online` (before the front's first push), the two secrets per repo, then his git commands.
+- **2026-11-02 23:13 — corner-chat SIT is UP** (both CI runs green after the owner fixed the secrets).
+  - **Runs:** front run 41477535507 re-run (`94f3b1c`), back run 41479201958 (`4323ee1`).
+  - **Releases:** `cornerchat-sit` `20261102-161151`, `cornerchat-api-sit` `20261102-161312`.
+  - **On the box:**
+    - both apps are online in pm2, ↺ 0 (api 56 MB, front 86 MB);
+    - `/api/v1/health` → `{"ok":true,"db":true}`, which reads the DB;
+    - front `/` → 307 (app redirect), and a `/_next/static` chunk → 200;
+    - API log: `line: target=live`, "database connection is not encrypted" (accepted), and "Owner account created for owner@corner-chat.local".
+  - **From outside:**
+    - API `https://cornerchat-api-sit.develyst.online/api/v1/health` → 200;
+    - the admin web via the IP directly times out (firewall OK);
+    - 🔴 **the admin web `https://cornerchat-sit.develyst.online/` → 307 to `/users`, NOT to the Access login. So Cloudflare Access is NOT on it yet.** It is protected only by the app's own sign-in until the owner adds the Access app.
+  - **Gate 6 gaps:**
+    - back CI = tsc + build only; front CI = typecheck + lint + build. No tests.
+    - Not yet done: a failing case pushed through CI, and a rollback proof, for these repos.
+    - The health check catches a crash, not wrong behaviour.
+  - **Open for QA:** Access is owner-only (email PIN), so Tanya's headless browser cannot pass it. A Cloudflare Access service token for QA is the usual fix; the owner decides.
+- **2026-11-02 ~23:30 — Access ON for `cornerchat-sit`.** The owner made Access app `cornerchat-sit` (destination `cornerchat-sit.develyst.online`, policy `owner only`, self-hosted).
+  - From outside, `/`, `/users` and `/_next/static/…` all → 302 to `aged-fire-690b.cloudflareaccess.com/…/login/cornerchat-sit.develyst.online`.
+  - The API stays public: health → 200.
+  - Closes the 🔴 in the 23:13 entry.
+- **2026-11-02 ~23:55 — QA Access token for `cornerchat-sit`** (owner: *"ทำเลย"*).
+  - **Token:** Cloudflare service token `corner-chat-qa` (1 year; expires around 2027-11-02, renew before then). The owner made it in the dashboard.
+  - **Policy:** `qa service token` (Service Auth, Include = that token), order 2, after `owner only`.
+  - **The values** sit in a private file on the PC; its path is in `machine.local.md` only. Otto never printed them. The harness did show the file to Otto's session once, by accident (diff notice). The owner was told and may rotate the token.
+  - **Proven from outside:**
+    - with the token headers: `/` → 307 (the app itself) and an unknown static file → 404 (the app);
+    - without them: → 302 to the Access login;
+    - before the app page's Save: → 403.
+- **2026-11-02 — clean-up:** deleted the two corner-chat CI key files (private + `.pub`) from `C:\Users\KUYDONG\ci-secrets\`; their private halves now live only in the GitHub secrets. Left in that folder: `known_hosts.txt` (not secret) and `corner-chat-qa-token.txt` (the QA token, in use).
+- **2026-11-02 — LINE webhook switched to SIT** (owner: *"เปลี่ยนเลย"*, then *"done"* after Update + Verify in the LINE console). The test OA LifeStyle-Shop now posts to `https://cornerchat-api-sit.develyst.online/api/v1/webhooks/line`.
+  - **Checked from outside:** an unsigned POST → 401, and a bad `x-line-signature` → 401, so the route is live and the HMAC check works.
+  - **Not seen by Otto:** LINE's own Verify call. nginx `access.log` is `www-data:adm 640`, and `deploy` is not in `adm`, so the log needs sudo. The app logs nothing per webhook.
+  - **Gap:** a real LINE message showing up in the admin web is not proven yet. That is in QA's pass.
+  - **Side effect:** the desk's local back no longer gets LINE events for this OA.
+- **2026-11-03 00:3x — the owner signed in to the SIT admin web through Access + the app login** (`owner@corner-chat.local`). His screenshot shows the users page working, with QA's test users already there (`qa-sit-*`, 23:16–23:30). So QA has started.
+  - The page's LINE number is "LINE messages **sent** in Nov 2569 = 0". That is outgoing quota, not received messages, so it cannot prove the owner's test message arrived.
+  - **Inbound LINE stays unproven;** the check is the APK inbox in QA's pass.
+- **2026-11-03 ~01:05 — SIT mail poller ON** (asked by Porter, Follow-up 3: the owner's entronica→Gmail forward is set; this is the step the owner's "forward / gmail" decision planned).
+  - **Server `.env`:** `MAIL_POLL_SECONDS=0` → `60`, guarded by an exact-one-line match. Backup `.env.bak-20261103-mailon`. The Gmail IMAP/SMTP host and `MAIL_APPEND_SENT=false` were already set.
+  - **Restart:** `pm2 restart --update-env`, then `pm2 save`. Online, ↺ 1 (this restart), health `{"ok":true,"db":true}`.
+  - **After ~90 s (one poll):** no `mail:` lines in the log, so no failing mailbox row so far. The poller logs only failures.
+  - **Not proven yet:** a forwarded mail showing up in the app. That waits for the owner to connect the Gmail box in the app, then QA TEST-006 row 10.
+  - **Roll back:** set the line back to `0` and restart.
+- **2026-11-10 — blueprint parked** (owner: *"ปิดแอปที่รันอยู่ตอนนี้ให้หน่อยดิ … บูปิน … ปิดทิ้งไว้หรือว่าลบออกไปเลยก็ได้ … ให้มันเบาลงพักไปก่อน"*; the SOM project will come with a deploy).
+  - **Before:** 4 apps online: blueprint-back-sit 65 MB, blueprint-sit 165 MB, cornerchat-api-sit 95 MB, cornerchat-sit 100 MB. RAM used 1067 MB of 5919.
+  - **Done:** `pm2 delete blueprint-sit blueprint-back-sit` + `pm2 save`. They are out of the pm2 list and the saved dump, so they stay off after a reboot. Used 888 MB after.
+  - **Kept:** `/srv/apps/blueprint-*` (releases, `current`, `shared/.env`), the ports 3001/3002 in `ports.tsv`, the nginx site, the Access app, and the CI key.
+  - **Bring back:** `pm2 start /srv/apps/<name>/ecosystem.config.cjs && pm2 save`, or the next push to `sit` (`deploy-app` starts it again).
+  - `blueprint-sit.develyst.online` now gives 502 behind Access (expected).
+  - **corner-chat left running:** the owner thought blueprint was the only app; corner-chat SIT is the desk's QA target, so the owner is asked.
+- **2026-11-10 — SOM (smart-scheduler) asks arrived via Porter: plan only, nothing done on the box.** Reply: `REQUEST-otto-to-porter-2026-11-10-som-deploys.md`.
+  - **GR web (REQ-5011):** static. `final-ui/dist` = one `index.html` (vite-plugin-singlefile, 1.3 MB). Not a git repo.
+    - **Plan:** `new-app <name> static` + a one-off `deploy-app` from the PC today. Gate = nginx Basic Auth: the owner types the shared password at `htpasswd` in one sudo sitting; Cloudflare Access cannot do one shared password. CI after the owner makes a repo.
+    - **Waiting on:** the hostname, the owner's go, Sober confirming the build.
+  - **develyst-line-bot (REQ-5012):** a public process app (LINE webhook + HMAC). Survey before deploy; it comes after the GR web.
+- **2026-11-10 — corner-chat SIT stays running** (owner: *"เปิดไว้ก่อน"*).
+- **2026-11-10 ~01:40 local — GR web LIVE: `https://som-gr.develyst.online`** (owner go via Porter: *"URL web เอาตามที่ auto เสนอได้เลย"*; Sober confirmed the build).
+  - **Order:** `new-app som-gr static`, then the gate, then the content, so it was never public with content.
+  - **Gate:** `server-platform/readyidc/som-gr-gate.sh` (sha256 `ba76e46a…`), run by the owner via `sudo` in terminal tab c12. He typed the shared password; no agent saw it.
+    - It wrote `/etc/nginx/htpasswd-som-gr` (root:www-data 640, login `som`, apr1 hash) and added `auth_basic` to `som-gr.conf` (backup `.bak-20261109-184012`, server UTC).
+    - Re-run the script to change the password.
+  - **Content:** `final-ui/dist/index.html`, md5 `e0a8f3cc39190b92893b03b4d7ad4721` (matches Sober's), deployed with `deploy-app`; release `20261109-184034`.
+  - **Proven from outside:**
+    - with no password `/`, `/salary` and an asset → 401;
+    - a wrong password → 401;
+    - the direct IP times out (firewall).
+    - **Not proven by Otto:** right password → 200. That is the owner's browser check.
+  - **Redeploy (until CI):** Sober pings a new md5, then Otto packs `dist/index.html` and runs `deploy-app som-gr` (it keeps the current release + 1 previous).
+- **2026-11-10 01:42 local — GR web owner check PASSED.** The owner's screenshot shows `som-gr.develyst.online` after login: the SOM BALANCE Back Office home with the Salary, Notification, Setting and Revenue menus. Gate 6 for the one-off is closed. Remaining: CI waits for the repo.
+- **2026-11-10 — develyst-line-bot survey (read-only).**
+  - **Repo and checks:** public repo, `b1ffa6c`. It compiles to a Linux binary in CI (no repo build script). `bun test` 39/39 with no DB.
+  - **Routes:** `/health`, `/line/webhook`, `/send` (Bearer `SEND_KEY`), `/img/:name`.
+  - **Server needs:** `DATA_DIR` must be `shared/data`. It binds `0.0.0.0` (the firewall covers it). `api.line.me` and `api-data.line.me` are open.
+  - **Proposed host:** `line-bot.develyst.online`. Waiting on the owner's name OK via Porter.
+- **2026-11-10 — line-bot set up (owner via Porter: host `line-bot.develyst.online`, repo stays public *"ปล่อยเป็น Public"*).**
+  - **`new-app line-bot process --start "./develyst-line-bot" --health /health`:** port **3005**, public, no Access.
+  - **`shared/.env`** (600; values never printed):
+    - Otto set `LINE_API_BASE`, `PUBLIC_BASE_URL`, `PORT=3005`, `DATA_DIR=/srv/apps/line-bot/shared/data` (dir 700), and a `SEND_KEY` generated on the box (`openssl rand -hex 32`);
+    - `LINE_CHANNEL_SECRET` and `LINE_CHANNEL_ACCESS_TOKEN` are left EMPTY for the owner.
+  - **Desk `.env.send`** (git-ignored, in the bot repo checkout): `BOT_URL` plus the same `SEND_KEY`, copied over ssh straight into the file and never shown.
+  - **CI key:** `github-ci@develyst-line-bot-2026-11-10` `SHA256:QeG514dHmrtTouMdgT85az7Zvn8SgHjr8qEO78l/8EM`, line 6 of `authorized_keys` (backup `.bak-20261110-linebot`). Refuses `id` ("no app id"). Expected total: 6 keys.
+  - **Workflow written (not committed):** `.github/workflows/deploy-sit.yml`. Steps: `bun install` → typecheck → `bun test` (39, local fake LINE) → compile → deploy `line-bot`. Local typecheck rc 0.
+  - **Deploy branch = `sit`** (platform standard).
+- **2026-11-10 ~02:00 local — GR web redeployed** (Sober's new build: Stock, Users/login, toasts, menu). md5 `f6744d5e0a30e06785216daa335f51e4` checked on the PC and on the box. Release `20261109-190032` (previous `…184034` kept for rollback). No password → 401 still. Note: `deploy-app` is `/usr/local/bin/deploy-app`, not `~/.local/bin`.
+- **2026-11-10 — line-bot phase 2 keys added to the server `.env`:** `RECORD_GROUP_MESSAGES=` (empty = OFF; it turns on only after the owner tells the group) and `MESSAGE_RETENTION_DAYS=90`.
+  - A leftover unmodified `nano` from the closed tab c13 was killed first; no `.save` file was left.
+  - Phase 2 is `dong` `8427a0e`; `sit` = `b1ffa6c`. The owner's step list is in the REQUEST file.
+- **2026-11-10 — GR web redeploy #2** (Sober, feedback round 1: light theme, CEO Unlock). md5 `9a5e7307693a5aaff89f8999a16fafc7` checked on the PC; the box result is in the line above. Gate still 401.
+  - Box: release `20261109-193056` (previous `…190032` kept), server md5 `9a5e7307…fafc7` matches; no password → 401. (Correction: the line above says 'in the line above'; the box result is this line.)
+- **2026-11-10 — line-bot:** the owner filled both LINE values (checked as filled, never printed) and added both GitHub secrets. Waiting on Sector to commit the workflow, bring dong into sit and push.
+- **2026-11-10 ~02:33 local — line-bot LIVE: `https://line-bot.develyst.online`** (CI from `sit` `7dbf9a8` = phase 2 + workflow; Sector pushed on the owner's word via Porter).
+  - **Release:** `20261109-193312`, a 109 MB binary. pm2 `line-bot` online, ↺ 0, 25 MB. Log: "develyst-line-bot on :3005 (push ON)".
+  - **Proven from outside:**
+    - `/health` → 200 `{"ok":true,"groupKnown":false,"recording":false}`;
+    - unsigned and bad-signature webhook → 401;
+    - `/send` and `/messages` without the key → 401;
+    - `/img/../.env` → 404.
+  - **Binding:** it listens on `*:3005` (all interfaces). The firewall blocks it from outside (direct `:3005` checked).
+  - **Clean-up:** the CI key files were deleted from the PC; the key now lives only in GitHub.
+  - **Not proven yet:**
+    - a real LINE event (it waits for the owner's webhook switch + adding the OA to the group);
+    - a real `/send`;
+    - a failing CI case through this repo.
+- **2026-11-10 02:35 local — line-bot joined SOM SYSTEM:** `/health` → `groupKnown:true`, `recording:false`. `shared/data/group.json` was written at 19:35 UTC, so a real LINE webhook arrived and passed the signature check. The data sits in `shared/data` and survives deploys.
+- **2026-11-10 — line-bot recording ON** (owner via Porter: *"ส่งละ"*, after sending the consent notice to SOM SYSTEM: messages are for internal team use and auto-deleted within 90 days). `RECORD_GROUP_MESSAGES=true` (backup `.env.bak-20261110-recordon`), then restart + `pm2 save`. `/health` → `recording:true`, `groupKnown:true`. **Roll back:** clear the value and restart.
+- **2026-11-10 — GR web redeploy #3** (Sober, round 2: orange menu highlight, logo and banner). md5 `6ac40756f3e238cd8a47717c2a4e1973` matches on the PC and the box. Release `20261109-200651` (previous `…193056` kept). No password → 401.
+- **2026-11-10 — GR web redeploy #4** (Sober, round 3: brand 'SOM BACK OFFICE', Merit card CEO-only). md5 `cb7334e73e449dc4d71a28b87fb62e90` matches on the PC and the box. Release `20261110-130639` (previous `20261109-200651` kept). No password → 401.
+- **2026-11-11 — GR web redeploy #5** (Sober, round 4: per-person 'Can see Revenue' switch + 'Viewing as' dropdown). md5 `949cf32a203c4304caf75566575fa9ca` matches on the PC and the box. Release `20261111-011937` (previous `20261110-130639` kept). No password → 401.
+- **2026-11-11 — GR web redeploy #6** (Sober, round 5: Khwan's 11-11 batch across 3 teams). md5 `3341cf63e8e97915e7ca5f5e264cfe79` matches on the PC and the box. Release `20261111-123508` (previous `20261111-011937` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #7** (Sober, round 6: Payment Setting commission groups get Edit). md5 `7465f7908ab15f0c7751f32ea30b6462` matches on the PC and the box. Release `20261111-200639` (server UTC; previous `20261111-123508` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #8** (Sober, round 6b: Silver's O-151-6 fix on Payment Setting). md5 `91c3b9f78d80fbbfa52fb280c81c26bd` matches on the PC and the box. Release `20261111-201241` (previous `20261111-200639` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #9** (Sober, round 6c: Silver's O-151-7 ฿ fix on Payment Setting). md5 `5af7555e6e211918a9b308e99dbf0372` was checked on the PC before deploy; for the box md5 and release id, see the next line.
+  - Box: release `20261111-201644` (previous `20261111-201241` kept); server md5 `5af7555e…dbf0372` matches. No password → 401.
+- **2026-11-12 — GR web redeploy #10** (round 7; Porter relayed for Sober, whose sends are capped). md5 `2118f70a575e33a7bce42b224a5c4c59` matches on the PC and the box. Release `20261111-204103` (previous `20261111-201644` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #11** (round 7b, relayed by Porter for Sober). md5 `2377855377dab248b9af79de4e550026` matches on the PC and the box. Release `20261111-205156` (previous `20261111-204103` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #12** (Sober, round 8: per-menu permissions, TASK-954). md5 `0ba926f4635859c1dfa9d7d2c2fa9a52` matches on the PC and the box. Release `20261112-121234` (previous `20261111-205156` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #13** (Sober, round 9: hide buttons to pages the viewer can't open + lock-page text, TASK-955). md5 `dc7a73dc0e980018b33c9c895ff73bd4` matches on the PC and the box. Release `20261112-123023` (previous `20261112-121234` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #14** (Sober, round 10: TASK-956). md5 `207fcd1abad6aa87d713c3ee2ca4b299` matches on the PC and the box. Release `20261112-141003` (previous `20261112-123023` kept). No password → 401.
+  - **Blip:** in the ~2 minutes after the deploy, about 4 of 14 HTTPS calls from the owner's PC to `som-gr` failed (TLS error 35 or a 15 s timeout).
+    - Over the same window `line-bot` and `cornerchat-api-sit` were 6/6 OK.
+    - The box was healthy: load 0.5, nginx active, local 401 fine.
+    - A batch of 10 minutes later was 10/10 OK on both.
+  - **Not explained:** the PC↔Cloudflare path, or the Cloudflare edge, are the suspects; the box shows nothing. nginx `error.log` needs sudo, so it was not read. Re-test if it happens again.
+- **2026-11-12 — GR web redeploy #15** (Sober, round 10b). md5 `e9590dc66e45893ed6444db065012c39` matches on the PC and the box. Release `20261112-143446` (previous `20261112-141003` kept). Gate 401 in 5/5 tries, no blip this time.
+- **2026-11-12 — GR web redeploy #16** (Sober, round 11). md5 `6e26e1cc577ec3971cb865b911d25ffd` matches on the PC (1,324,687 bytes) and the box. Release `20261112-154503` (previous `20261112-143446` kept). Gate 401 in 5/5 tries. Note: my first try ran `sudo -n deploy-app` and was refused (deploy-app runs as deploy, no sudo); nothing changed, the second try without sudo deployed.
+- **2026-11-12 — GR web redeploy #17** (Sober, round 12). md5 `21731a389bf1bd92b5d62ee2d0fa347e` matches on the PC (1,325,537 bytes) and the box. Release `20261112-162516` (previous `20261112-154503` kept). Gate 401 in 5/5 tries.

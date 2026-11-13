@@ -1,0 +1,15 @@
+sockets now:
+webview_devtools_remote_2573 -> process: com.develyst.cornerchat
+--- debuggable flag per package (dumpsys package | grep flags):
+com.develyst.cornerchat: flags=0x0 | DEBUGGABLE? 0
+com.android.vending: flags=0x0 | DEBUGGABLE? 0
+com.google.android.apps.youtube.music: flags=0x0 | DEBUGGABLE? 0
+com.google.android.apps.maps: flags=0x0 | DEBUGGABLE? 0
+com.google.android.googlequicksearchbox: flags=0x0 | DEBUGGABLE? 0
+com.google.android.calendar: flags=0x0 | DEBUGGABLE? 0
+com.develyst.cornerchat: running pid=2573 pkgFlags: pkgFlags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+com.android.vending: running pid= pkgFlags: pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+com.google.android.apps.youtube.music: running pid=1656 pkgFlags: pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE LARGE_HEAP ]
+com.google.android.apps.maps: running pid=4364 pkgFlags: pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION LARGE_HEAP ]
+com.google.android.googlequicksearchbox: running pid=4522 pkgFlags: pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION LARGE_HEAP ]
+com.google.android.calendar: running pid=4644 pkgFlags: pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION ]

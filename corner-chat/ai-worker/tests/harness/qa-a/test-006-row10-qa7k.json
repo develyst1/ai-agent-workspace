@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-02T18:16:09.399Z",
+  "code": "qa7k",
+  "user": "d…@gmail.com",
+  "subject": "[corner-chat TEST-002] ทดสอบภาษาไทย qa7k",
+  "textStart": "[corner-chat TEST-002] ทดสอบภาษาไทย qa7k\n",
+  "storedAfterDateHeader_s": 394,
+  "senderIsPersonalB": true,
+  "senderIsWorkA": false,
+  "senderIsAGmail": false,
+  "senderNamePresent": true,
+  "recipientKind": "to",
+  "filterState": "done",
+  "outcome": "held",
+  "decidedBy": "ai",
+  "score": 5,
+  "bar": 70,
+  "models": "deepseek-flash / deepseek-v4-pro",
+  "summary": "ข้อความทดสอบภาษาไทย qa7k",
+  "notified": false,
+  "replacementChars": false
+}

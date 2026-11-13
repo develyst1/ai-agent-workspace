@@ -1,0 +1,222 @@
+{
+ "checks": [
+  {
+   "name": "Today: by-Type rows equal round 11's",
+   "pass": true,
+   "detail": "10 rows; first: COURSE|4|31,000 ฿ / COURSE|4|31,000 ฿"
+  },
+  {
+   "name": "Today: by-Category rows equal round 11's",
+   "pass": true,
+   "detail": "12 rows"
+  },
+  {
+   "name": "MTD: by-Type rows equal round 11's",
+   "pass": true,
+   "detail": "10 rows; first: COURSE|47|401,000 ฿ / COURSE|47|401,000 ฿"
+  },
+  {
+   "name": "MTD: by-Category rows equal round 11's",
+   "pass": true,
+   "detail": "18 rows"
+  },
+  {
+   "name": "YTD: by-Type rows equal round 11's",
+   "pass": true,
+   "detail": "10 rows; first: COURSE|447|3,732,400 ฿ / COURSE|447|3,732,400 ฿"
+  },
+  {
+   "name": "YTD: by-Category rows equal round 11's",
+   "pass": true,
+   "detail": "18 rows"
+  },
+  {
+   "name": "1280: the two cards are side by side (Type left, Category right, same top)",
+   "pass": true,
+   "detail": "type x280 w397 · cat x693 w563 · y 303/303"
+  },
+  {
+   "name": "1280: Type card is narrower than Category (5 / 7)",
+   "pass": true,
+   "detail": "397 < 563"
+  },
+  {
+   "name": "1024: the cards stack (Category under Type), each at most 720 wide",
+   "pass": true,
+   "detail": "type w720 · cat w720 · cat y897 ≥ 881"
+  },
+  {
+   "name": "1024: no horizontal overflow",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "375: the cards stack (Category under Type), each at most 720 wide",
+   "pass": true,
+   "detail": "type w343 · cat w343 · cat y1081 ≥ 1065"
+  },
+  {
+   "name": "375: no horizontal overflow",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "Both Summary tables are striped and highlight on hover",
+   "pass": true,
+   "detail": "10"
+  },
+  {
+   "name": "Total Revenue row: 2 px top border, tinted, bold",
+   "pass": true,
+   "detail": "{\"bt\":\"2px\",\"bg\":\"rgb(248, 249, 250)\",\"fw\":\"700\"}"
+  },
+  {
+   "name": "Today: «View» button is gone; one chevron per Type row (8)",
+   "pass": true,
+   "detail": "8 chevrons"
+  },
+  {
+   "name": "Today: a click on the COURSE row opens Detail filtered to it",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE"
+  },
+  {
+   "name": "Today: Enter on the focused COURSE row does the same",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE"
+  },
+  {
+   "name": "Today: Category, Total and Refund rows do not navigate; Category has no chevron",
+   "pass": true,
+   "detail": "#/revenue/summary"
+  },
+  {
+   "name": "MTD: «View» button is gone; one chevron per Type row (8)",
+   "pass": true,
+   "detail": "8 chevrons"
+  },
+  {
+   "name": "MTD: a click on the COURSE row opens Detail filtered to it",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE"
+  },
+  {
+   "name": "MTD: Enter on the focused COURSE row does the same",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE"
+  },
+  {
+   "name": "MTD: Category, Total and Refund rows do not navigate; Category has no chevron",
+   "pass": true,
+   "detail": "#/revenue/summary"
+  },
+  {
+   "name": "YTD: «View» button is gone; one chevron per Type row (8)",
+   "pass": true,
+   "detail": "8 chevrons"
+  },
+  {
+   "name": "YTD: a click on the COURSE row opens Detail filtered to it",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE"
+  },
+  {
+   "name": "YTD: Enter on the focused COURSE row does the same",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE"
+  },
+  {
+   "name": "YTD: Category, Total and Refund rows do not navigate; Category has no chevron",
+   "pass": true,
+   "detail": "#/revenue/summary"
+  },
+  {
+   "name": "Detail table is striped and highlights on hover",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "All Report REVENUE: both tables striped",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "All Report REVENUE: Total Revenue row has the 2 px border and the tint",
+   "pass": true,
+   "detail": "{\"bt\":\"2px\",\"bg\":\"rgb(248, 249, 250)\"}"
+  },
+  {
+   "name": "ECA 375: «Pending» / «Received» read in full, not clipped",
+   "pass": true,
+   "detail": "[{\"t\":\"Pending\",\"clipped\":false,\"label\":false},{\"t\":\"Received\",\"clipped\":false,\"label\":false},{\"t\":\"Received\",\"clipped\":false,\"label\":false}]"
+  },
+  {
+   "name": "ECA 375: Term stays on one line (every row the same one-line height)",
+   "pass": true,
+   "detail": "41,37,37"
+  },
+  {
+   "name": "ECA 375: no page overflow; the table scrolls in its own box",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "Admin: Summary opens when ticked",
+   "pass": true,
+   "detail": "#/revenue/summary"
+  },
+  {
+   "name": "Admin (no Detail): no chevron, no pointer on the Type rows",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Admin (no Detail): a click and Enter do nothing",
+   "pass": true,
+   "detail": "#/revenue/summary"
+  },
+  {
+   "name": "Admin: no console error",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "0 console errors/warnings in the whole run",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "No network requests",
+   "pass": true,
+   "detail": ""
+  }
+ ],
+ "passed": 38,
+ "failed": 0,
+ "sampleBeforeAfterToday": {
+  "before": [
+   "COURSE|4|31,000 ฿",
+   "1ST TRIAL|1|600 ฿",
+   "VOUCHER|1|8,400 ฿",
+   "ECA|1|36,000 ฿",
+   "SALES|1|3,510 ฿",
+   "F&B|3|150 ฿",
+   "RENT|2|2,300 ฿",
+   "OTHER|3|740 ฿",
+   "Total Revenue|16|82,700 ฿",
+   "Refund (Expense)||−5,000 ฿"
+  ],
+  "after": [
+   "COURSE|4|31,000 ฿|",
+   "1ST TRIAL|1|600 ฿|",
+   "VOUCHER|1|8,400 ฿|",
+   "ECA|1|36,000 ฿|",
+   "SALES|1|3,510 ฿|",
+   "F&B|3|150 ฿|",
+   "RENT|2|2,300 ฿|",
+   "OTHER|3|740 ฿|",
+   "Total Revenue|16|82,700 ฿|",
+   "Refund (Expense)||−5,000 ฿|"
+  ]
+ }
+}

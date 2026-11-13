@@ -236,3 +236,68 @@ Questions: `COPY-DRAFT-khwan-backoffice-build-questions-2026-10-27.md` → SHORT
 | 5 | when "coach changed mid-course" (Special Case) applies | **A:** only a real whole-course teacher change; a 1–2 day cover does not count | A11 / B4 |
 | 6 | what Khwan herself sees | **B:** like an admin; she enters items but sees no pay totals and no revenue (checked with ฟีน) | A20 |
 - Every other readiness question = the SA's stated default (owner, 2026-10-27). A10 (course ↔ voucher) was not asked, so its default stands.
+
+## 11. The customer's block order, before the meeting (LINE group, 2026-11-05 00:11, the owner's screenshot; kn = Khwan, replying to the agenda the owner posted)
+Verbatim:
+> ขวัญน่าจะไม่เห็นข้อความนั้นเองค่ะ ขอโทษค่า ยังไงเดี๋ยวขวัญเช็คให้และ feedback กลับนะคะ
+
+> อันนี้เราจะทำเป็น เงินเดือน รายได้ สต็อก ตามลำดับนะคะ
+> แจ้งเพิ่มเติมค่ะ
+> เงินเดือนก้อนแรก อยากให้เรียงทำแบบนี้ เอาเรื่อง ฐานเงินเดือน / Extra hour / Bonus คอร์สต่อคอร์สขึ้นมาก่อนค่ะ
+> ** โบนัสให้เริ่มจาก 100 ก่อนนะคะ ตัว 50 ทำทีหลังได้ค่ะ
+> และ
+> ก้อนรายได้ต้องมีเรื่อง ECA ด้วยนะคะ
+
+**Status:** the order is stated; it is confirmed in the 11-07 room, with พี่ฟีน present (the owner: Khwan is not the only decider). No build GO yet.
+**Installments if confirmed (DELIVERY-FACTS Q5):** SALARY 13,500 + Roles 3,600 = 17,100 · REVENUE 13,800 · STOCK 8,300 = 39,200.
+**Open, asked of both SAs 2026-11-05:** the weeks for her first Salary slice. It differs from the slice in DELIVERY-FACTS Q4 (base + manual lines, ≈ 5–6 wk): Extra Hour and Bonus 100 are in it, and Q2.3 says F3 feeds Extra Hour and F4 feeds the bonuses.
+**ECA in Revenue:** already in scope, §2 (the ECA row).
+
+## 12. Reports: per block or all at the end (LINE, 8:22 PM, the owner's screenshots 2026-11-07)
+Khwan, verbatim:
+> @Dong_08 Report แต่ละเรื่องทำสุดท้ายใช่ไหมคะ เราทำเป็นเรื่องๆ หรือ มาทำรวมทีหลังทีเดียวคะ เช่น Report เงินเดือน Report สต็อก อะไรแบบนี้ค่ะ
+
+The owner replied: *"หลังบ้านจะเป็นเรื่องๆครับจบตามก้อนแต่ละเรื่องเลยครับ"*, and to Porter: *"แก้ได้นะ หมายถึงเราจะทำยังไง"*.
+**Porter's reading of this REQ, for the owner to rule:** each block's own reports finish with that block: Salary R1.7 + R1.8, Revenue R2.5, Stock R3.8. The §4 pages (REPORT · STOCK · CHECK IN · COURSE · SALARY · STUDENT) stay last, their content agreed when that part starts. No price change (§9, owner 10-22). The SAs have not been asked whether a block's reports can ship inside it as sized.
+
+**Owner's ruling, 2026-11-07:** *"เอาแบบนั้นแหละ"*. Two layers as read above. Open, read-only, before any GO: both SAs confirm their sizes include each block's reports.
+
+**Sizes confirmed, 2026-11-07:** each block's reports are already inside its size, 0 days missing. Sober: R1.7 2.8 d + R1.8 3.3 d in Salary 43.1; R3.8 4.4 d in Stock 37.0. Silver: R2.5 6.6 d in R2 ≈ 32.8. The §4 pages stay outside these sizes.
+
+## 13. The 11-07 meeting (owner's file, 2026-11-07)
+**Source:** repo `smart-scheduler-requirement`, `20261107-meeting.md`: an AI-written summary of the call, not verbatim. **Read-out and open points:** `talks/BRAINSTORM-2026-11-07-meeting-readout.md`. Headlines as reported: coach confirm + export + CEO reminders kept if small; Stock import described as overwrite (🔴 vs R3.4); พี่เบส asked for a stock card and a Master Plan before work starts; back office dark theme; maintenance 6 months free then 500 ฿/man-day; project total 97,600. Not reported: Bonus 100 A/B, go-live date, GO.
+
+**Owner's ruling on Stock import, 2026-11-07** (replaces the meeting's "overwrite"; R3.4's "never deletes history" stands): *"การ import excel อยากทำแนวคิดเดียวกันกับ gitเลย เวลาอัปเข้ามา ก็ให้ เช็ค diff ว่ามี change ยังไง ให้เขากด ยืนยัน แล้ว ค่อยไป สร้าง movement ให้ เห็นว่ามี การ in out ยังไง นั่นแหละ คือแบบ stockcard ที่พี่เบสบอก เลย"*.
+- Upload → a diff per item (new item, changed quantity +/−, other changed fields) → the user confirms → each change is written as a stock movement (in / out / adjustment). The movements are the stock card. Nothing is deleted.
+- Size: Sober (Stock is Team A's), read-only; the customer is told in the Master Plan.
+- **Sober's size, 2026-11-07:** git-style import ≈ +2.5 d over R3.4's 3.9 d (classified diff + per-line confirm 1.5, each balance change as a movement 1.0) → Stock ≈ 39.5 d. A removed row is shown, never deleted; a price or name change is a field edit, not a movement; a negative result is flagged and refused. A per-item stock card view (running balance) is separate from R3.8: ≈ +2–2.5 d → ≈ 41.5–42 d if wanted. Extras at 263 ฿/d unless the owner folds them in.
+
+**Owner's ruling on course-change revenue, 2026-11-07:** *"เอาแบบ A ก็ได้ แต่ต้องเอามาให้เขาดูด้วย ว่าจะเป็นแบบไหน"*. A = at the change, the sale is split by hours: hours taught stay on the old activity, the rest moves to the new one (Silver, ≈ +1.5 d; may overlap REQ-5007's revenue add-on). Not B (earned per hour). **Before it is built, the customer sees a worked example** (e.g. 10 h skate, 5 taught, switch to bike: what the revenue report shows per activity and month) in the Master Plan, and agrees.
+
+**Owner, 2026-11-07, on พี่เบส's stock card:** *"Stock Card เอาออกไปเลย เพราะ import แบบ git change ตอบโจทย์แล้ว"*. The separate per-item stock card view (Sober ≈ +2–2.5 d) is OUT; the git-style import's movements answer it. Remaining extras not yet priced: slip export 5 d · "remind now" 1 d · git-style import 2.5 d · course-change revenue split 1.5 d · dark theme 0.5–1 d ≈ 10.5–11 d ≈ 2,750–2,900 ฿ at 263 ฿/d (in 39,200 or extra: owner's call).
+
+**Owner, 2026-11-07, on the extras:** *"รวมให้ทั้งหมด"*. Slip export · "remind now" · git-style import · course-change revenue split (A) · dark theme are IN scope, inside 39,200, no extra charge (≈ 10.5–11 d added to the build: Salary +6 d, Stock +2.5 d, Revenue +1.5 d, UI +0.5–1 d). The Master Plan names each as included, and states that asks after it are charged at 263 ฿/d by size.
+
+**Owner, 2026-11-07, Master Plan calls:** the 6 free months count from block 3's (Stock) delivery (*"ใช่ตามนั้น"*). The possible server cost (+≈500 ฿/month) stays out of the plan: try the current server first (*"ลองดูก่อน"*). On the §4 report pages he asked: *"มันจะอยู่ในแต่ละเมนู หรือแยกออกมารวมทุกอย่างหรือยังไง ถ้ามันต้องแยก ก็ทำตามก้อนที่ทำเมนูพวกมันไปเลยมั้ย"* (open, Porter answering).
+**Owner, 2026-11-07, on the §4 report pages:** *"เอาตามนั้น ทำตามก้อน"*. The 6 pages ship with the block whose menus they report on, not last: **Salary → SALARY · CHECK IN · Revenue → REPORT · COURSE · STUDENT · Stock → STOCK** (Porter's mapping; the SAs confirm). Content is agreed with Khwan when each block starts. Supersedes §12's "the §4 pages stay last". Sizes per page and the week shift: the SAs.
+**Owner, 2026-11-07:** the 6 free months count from the delivery of **all** blocks (*"ใช่ นับจากส่งงานครบทุกก้อน"*), replacing "from block 3" once the report pages moved Revenue's last drop to ≈ wk 13–14.
+**Owner, 2026-11-07: work starts Monday 9 Nov 2026** (*"ใช่ เริ่ม 9 พ.ย."*). Master Plan §3 states it; §9 keeps only the go-live month open. Not yet a build GO in words: TASKs wait for the owner's GO, Bonus 100 A/B, the three test databases + env.
+**Owner, 2026-11-07, when each installment is paid:** *"เอาแบบ A จ่ายตอนขึ้นระบบจริง"*: on the block's go-up to the real system for trial, not on passing its acceptance check. Master Plan §2 + the dated page say the same words. Also added: a thin-slip demo for พี่ฟีน on sid ≈ 20–23 Nov (Sober: Salary dates unmoved; 2 BEs those 2 weeks).
+
+## 14. BUILD GO (owner, 2026-11-08)
+Verbatim: *"อ่า GO เลยจะได้ ทำให้ก้อนแรกเสร็จได้ไว"*. Start Mon 9 Nov 2026, per Master Plan v1 (plan md5 83592c51) and `CHECK-REQ-120-three-team-schedule-2026-11-07.md` (rounds + Porter's GO list + "shared sid DB rules"). Priority: block 1 (Salary) first and fast; thin-slip demo for พี่ฟีน on sid ≈ 20–23 Nov.
+**Where the work goes (code facts, 2026-11-08):** all four repos on branch `dong`, no new branches, git only on the owner's word.
+- `smart-scheduler-backoffice-front` (Next 16 + Mantine 9): every back-office screen, carried over from the agreed final UI (`som-balance-backoffice-spec` → `final-ui/`, REQ-133, md5 1d0ce1f6; a prototype, never the product).
+- `smart-scheduler-backoffice-back` (Hono): R0 roles/users, Salary, Revenue, Stock APIs + reports.
+- `smart-scheduler-front` + `smart-scheduler-back`: the front-office changes F1–F6, camp confirm, refund cancel, C1 (revenue at confirm).
+- One shared DB: sid on the owner's Postgres (§ shared sid DB rules; `MIGRATION-QUEUE.md`).
+Open, not blocking wk 1: Bonus 100 1A/1B and the Revenue go-live month (Khwan).
+**Owner, 2026-11-08 (after the GO), verbatim:** *"งั้นเริ่มเลยก็ได้ ของเดิมที่ ทำมาแล้วเขาไม่เอา แล้วเอาออกหมดเริ่มใหม่หมดเลยก็ได้"* ⇒ (a) start now, not Monday; (b) the old back-office code the customer doesn't want may be removed entirely and rebuilt from scratch. Open for the SAs before anything is removed: C1 (the scheduling back writes `bo.item` / `bo.movement` in the same DB: FL ceiling in the booking transaction, every sale posting, undo reversals) — removing those tables breaks the live front office unless the same release moves those write points; and the sizing reused ≈ 24.9 d of BO_old parts (§10), so "all new" may change weeks. Removal = code edits on `dong`; nothing in uat's data is touched; git only on the owner's word.
+**Owner, 2026-11-08, verbatim:** *"ไปเลย นะ ทำไปเลย นะติดอะไร ก็ตัดสินใจกันไป ก่อนที่ต้องการฉันก็ team brainstrom แล้ว ตัดสินใจแล้ว ลิ้สต์ๆ ไว้ ว่า มีอะไรบ้างทำไปเลย"* ⇒ build blockers are decided by the team (SAs brainstorm → decide → one row in `DECISIONS-REQ-120-build.md`) and work continues; the owner reads the list and may overturn. Still up the chain: customer rules (ขวัญ), money, git, uat writes, env values, anything changing the Master Plan's promises. This covers the old-back-office removal question above: Sober + Silver + Sector decide it and list it.
+
+## 15. Khwan's answers to the 2 pre-build questions (LINE, 2026-11-08 ~7:47 AM, the owner's screenshot), VERBATIM
+Asked in `COPY-DRAFT-khwan-bonus100-and-golive-month-2026-11-07.md`.
+- **Q1 (Bonus 100, old course renewed after go-live):** *"ขอรีเช็คว่าเข้าใจถูกต้องนะคะ ข้อ 1 หมายถึงถ้าเราเริ่มใช้ระบบเงินเดือนตอนไหน ให้เริ่มคิดโบนัสตามระบบตอนนั้นใช่ไหม ตอบคือใช่ค่ะ ไม่มีการคิดย้อนหลังค่ะ ถ้าเราเริ่มใช้ต้นเดือน แต่ถ้าเริ่มใช้ระบบเงินเดือนกลางเดือน มีคอร์สที่เปิดไปแล้ว ระบบไม่ได้มาคำนวณย้อนหลังให้ ส่วนนี้ไม่เป็นไรค่ะ ขวัญใส่มือได้ค่ะ"*
+  - **NOT a ruling on A vs B.** She restated it as "bonuses start when the salary system starts, no back-calc" — true under both A and B. The case asked (course bought BEFORE go-live, renewed AFTER) is not answered. New fact: courses opened before a mid-month go-live, she enters by hand (Other ±). ⇒ follow-up with one concrete example. Build default stays 1A, switchable (DECISIONS row 12).
+- **Q2 (Revenue go-live month):** *"ข้อ 2 เราเลือกได้เลยหรอคะ ว่าให้เริ่มนับตอนไหน หรือต้องดูจากเดือนที่ระบบรายได้จะเสร็จคะ เพราะจริงๆ ตอนนี้ก็ค่อนข้างตรงแล้วนะคะ แทบไม่มีคอร์สเก่ามาลงย้อนหลังแล้ว อาจจะมีบ้างแต่ไม่เยอะค่า"*
+  - A question back, not a month. Answer: it depends on when the Revenue block goes up (plan wk 11–12 ⇒ earliest Feb 2570); from then she picks the month. Still open.

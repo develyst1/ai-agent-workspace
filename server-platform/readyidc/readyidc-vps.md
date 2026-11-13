@@ -26,6 +26,9 @@
   1. The owner's MacBook Air, `entronica@Mac.localdomain`. The owner's way in.
   2. The owner's Windows PC, `otto@KUYDONG-win-2026-10-31`. Otto (Claude) uses it from that PC.
   3. GitHub Actions, `github-ci@blueprint-2026-10-31`, **shared by both blueprint repos** (made before the one-key-per-repo rule). **Restricted:** it can only run `ci-deploy`, which deploys one app from stdin. It gets no shell. Its private half exists only in those two repos' GitHub secrets, so **every new repo gets its own new CI key** (skill `platform-deploy-app` §3).
+  4. GitHub Actions for `develyst1/corner-chat-back`, `github-ci@corner-chat-back-2026-11-02`. Same `ci-deploy` restriction.
+  5. GitHub Actions for `develyst1/corner-chat-front`, `github-ci@corner-chat-front-2026-11-02`. Same `ci-deploy` restriction.
+  6. GitHub Actions for `develyst1/develyst-line-bot`, `github-ci@develyst-line-bot-2026-11-10`. Same `ci-deploy` restriction.
 - `sshd` allows **only user `deploy`** (`AllowUsers`), with no TCP, agent or X11 forwarding and `MaxAuthTries 3`.
 - fail2ban never bans the admin machines (`ignoreip`: the PC `223.24.156.113` and the Mac `202.129.207.248`). **These are home IPs and change.** When an admin IP changes, update `ignoreip` in `/etc/fail2ban/jail.local` (one sudo).
 - To revoke a key, delete its line (find it by the comment at the end).
@@ -94,6 +97,11 @@ push to sit → GitHub: install → tests → build → ssh deploy@43.228.86.89 
 |---|---|---|---|
 | `blueprint-sit` (front, Next.js) | 3002 | `https://blueprint-sit.develyst.online`, **behind Cloudflare Access** (owner's email, one-time PIN) | `develyst1/blueprint-front`, push to `sit` → typecheck + Playwright isolation + build + deploy |
 | `blueprint-back-sit` (Bun binary) | 3001 | **private** (127.0.0.1 only; it has no login) | `develyst1/blueprint-back`, push to `sit` → bun test + build + deploy |
+| `cornerchat-api-sit` (Bun binary `corner-chat-back`, health `/api/v1/health`) | 3003 | `https://cornerchat-api-sit.develyst.online`, **public, no Access**: LINE's webhook and the APK must reach it; it has Bearer-session auth and HMAC on the webhook | `develyst1/corner-chat-back`. CI not yet set up. Planned: typecheck + lint + build, **no `bun test`** (needs a DB; the owner keeps the DB secret out of GitHub) |
+| `som-gr` (static, one `index.html`) | — | `https://som-gr.develyst.online`, **nginx Basic Auth** (login `som`, one shared password the owner set with `som-gr-gate.sh`) | no repo yet. Manual `deploy-app` from the PC on Sober's new md5 |
+| `line-bot` (Bun binary `develyst-line-bot`, health `/health`) | 3005 | `https://line-bot.develyst.online`, **public, no Access** (LINE webhook HMAC; `/send` needs `SEND_KEY`) | `develyst1/develyst-line-bot` (public), push to `sit` → typecheck + bun test + compile + deploy. `DATA_DIR` = `shared/data` |
+| `blueprint-sit` / `blueprint-back-sit` | 3002 / 3001 | **parked 2026-11-10**: removed from pm2, files kept | push to `sit` brings it back |
+| `cornerchat-sit` (front, Next.js admin web) | 3004 | `https://cornerchat-sit.develyst.online`. **Needs a Cloudflare Access app before its first deploy** | `develyst1/corner-chat-front`. CI not yet set up. `NEXT_PUBLIC_API_BASE_URL` is set at build in CI |
 
 **Adding a new app: follow the skill `platform-deploy-app`.** The workflow templates are in
 `server-platform/templates/`, and each repo gets **a new CI key**. In short:

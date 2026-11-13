@@ -68,12 +68,30 @@ another role writes to disk.
 3. Write your log entry with `append-log.mjs` (§6).
 4. Blocked? The question is in the artifact's `## Questions` and the item is `BLOCKED` on the board (§10).
 5. Any fact a seat stated this session is already in its home file — check, don't assume.
+6. **Never end a turn with a queue.** An item you can still do in your inbox or TASK → do it
+   now. End only when nothing is left or every item waits on a named seat, and say who:
+   `waiting on <seat> for <what>`. (Owner 2026-11-09: *"ห้ามนิ่งแบบนี้"*: the desk sat idle
+   for hours with queued work.)
+7. **A hand-off is the inbox line (step 2), never a log line alone.** "Ball → X" in a log wakes
+   nobody.
+8. **Last act: arm your own inbox watcher** in the background, if the desk has
+   `ai-worker/tools/watch-inbox.sh`: `bash ai-worker/tools/watch-inbox.sh <your inbox name>`
+   (the PM: `PM RELAY`). A new line in your inbox then wakes you without anyone's nudge. Exit
+   3 = already armed, do nothing. One at a time.
 
 ## 5. Inbox — the delivery channel
 
 The log is history; **the inbox is delivery.** An `@` in a busy log scrolls away unread.
 
 - Read your own inbox first, act, **delete what you processed**. Empty inbox = nothing waiting.
+- **Your inbox holds only work you have not started yet.** It is not a notebook (owner, 2026-11-12: the console
+  showed 8 people "waiting" and none was):
+  - a **standing rule** ("from now on, every round…") → write it into its home file (your charter, `SYSTEM-FACTS.md`
+    or the desk's rules) the moment you read it, then drain the line;
+  - a **queued item** ("start after 14 Nov") → it lives on the board or in its TASK, then drain the line;
+  - an **FYI** you have read → drain it.
+  
+  What stays is an action you have not taken yet, nothing else.
 - To reach another role, **append** a pointer, never a retelling:
   `From <Name> (<team if any>) <YYYY-MM-DD>: <what> — see <file §section>`
 - **One message is 1–3 lines; 5 is the hard limit** (the gate fails a longer message). The brief
@@ -304,6 +322,14 @@ Entry template: [references/failures-entry.md](references/failures-entry.md).
     test setup has replaced the real value.
   If a secret did print, say so at once in a FAILURES entry. Whether to reissue it is the owner's call,
   through the PM.
+- **Read the output before you quote it.** A check's result goes into a message only after you have read that
+  output. Never send the message, or the nudge, in the same batch as the command or the write it reports: the
+  batch runs before you see what came back.
+- **Before any database command, prove the host.** Resolve the `DATABASE_URL` the command will really use, print
+  the **host only** (never the value), and compare it with the desk's facts file. A different host means stop:
+  do not run it, and say which host it resolved to. A tool that loads `.env` by itself (Bun does, and `.env` wins)
+  gets its URL inline, test runs included. A "verified" line names the host it was proven on; a schema check
+  proves the schema is there, not where.
 - **A rule file you loaded can change while your session runs.** When `CLAUDE.md`, `PROTOCOL.md` or your
   charter changed today, re-read it before you run anything it governs (environments, databases, git).
 

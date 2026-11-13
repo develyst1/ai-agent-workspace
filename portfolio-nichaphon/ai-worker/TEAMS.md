@@ -19,7 +19,7 @@ Names are the operator's — filled from DESK-OPEN B1. A row with an empty name 
 
 | Name | Role · team | Handle | Inbox | Session name | Writes IDs |
 |---|---|---|---|---|---|
-| Porter | PM · all | `@Porter` | `inbox/PM.md` |  | `REQ-NNN` |
-| Tanya | QA · all | `@Tanya` | `inbox/QA.md` |  | `TEST-NNN` |
-| Sober | SA · A | `@Sober` | `inbox/SA.md` |  | `SPEC-NNN`, `TASK-NNN` |
-| Fern | FE · A | `@Fern` | `inbox/FE.md` |  | — (works on `TASK-*`) |
+| Porter | PM · all | `@Porter` | `inbox/PM.md` | `Porter-port` | `REQ-NNN` |
+| Tanya | QA · all | `@Tanya` | `inbox/QA.md` | `Tanya-port` | `TEST-NNN` |
+| Sober | SA · A | `@Sober` | `inbox/SA.md` | `Sober-port` | `SPEC-NNN`, `TASK-NNN` |
+| Fern | FE · A | `@Fern` | `inbox/FE.md` | `Fern-port` | — (works on `TASK-*`) |

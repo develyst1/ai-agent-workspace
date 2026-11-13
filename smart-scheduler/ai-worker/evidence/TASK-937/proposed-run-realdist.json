@@ -1,0 +1,33 @@
+{
+ "roles": {
+  "CEO": [
+   "payment-setting:opens",
+   "conversion:opens",
+   "conversion-export:opens",
+   "revenue-export:opens",
+   "move-course:opens",
+   "stock-report:opens",
+   "report-revenue-conversion:opens"
+  ],
+  "Admin": [
+   "payment-setting:cannot-see",
+   "conversion:cannot-see",
+   "conversion-export:cannot-see",
+   "revenue-export:cannot-see",
+   "move-course:cannot-see",
+   "stock-report:opens",
+   "report-revenue-conversion:cannot-see"
+  ],
+  "Coach": [
+   "payment-setting:cannot-see",
+   "conversion:cannot-see",
+   "conversion-export:cannot-see",
+   "revenue-export:cannot-see",
+   "move-course:cannot-see",
+   "stock-report:cannot-see",
+   "report-revenue-conversion:cannot-see"
+  ]
+ },
+ "interactions": {},
+ "consoleProblems": []
+}

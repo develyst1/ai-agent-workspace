@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>SOM BALANCE Fastwork</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1f2328;--muted:#57606a;--line:#ecdccd;--orange:#e8650a;--orange-ink:#9a3f00;--bg:#fff7f0}
+  *{box-sizing:border-box}
+  html,body{margin:0;width:1200px;height:900px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,sans-serif}
+  .wrap{position:relative;width:1200px;height:900px;padding:64px 0 0 64px}
+  .brand{font-weight:700;font-size:18px;color:var(--orange-ink);letter-spacing:.06em}
+  .logos{display:flex;align-items:center;gap:14px}
+  .logos img{width:68px;height:68px;border-radius:16px;object-fit:cover;box-shadow:0 0 0 1px var(--line),0 6px 16px rgba(120,60,10,.12);background:#fff}
+  .logos img.mark{object-fit:contain;padding:12px}
+  .logos .x{font-size:22px;color:var(--muted);font-weight:500}
+  h1{font-size:60px;line-height:1.1;margin:14px 0 10px;letter-spacing:-.01em}
+  h1 span{color:var(--orange)}
+  .lead{font-size:23px;color:var(--muted);margin:0 0 30px;max-width:520px;line-height:1.5}
+  .cols{display:flex;gap:28px;max-width:540px}
+  .col h3{margin:0 0 10px;font-size:19px;color:var(--orange-ink)}
+  .col ul{margin:0;padding:0;list-style:none;font-size:17px;line-height:1.85}
+  .col li::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-right:10px;vertical-align:3px}
+  .shot{position:absolute;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 24px 60px rgba(120,60,10,.18),0 0 0 1px var(--line)}
+  .shot .bar{height:30px;background:#f3ece6;display:flex;align-items:center;gap:7px;padding:0 12px}
+  .shot .bar i{width:10px;height:10px;border-radius:50%;background:#e2d3c6;display:block}
+  .shot img{display:block;width:100%}
+  .s1{left:640px;top:70px;width:640px}
+  .s2{left:560px;top:430px;width:600px}
+  .foot{position:absolute;left:64px;bottom:46px;font-size:16px;color:var(--muted);max-width:470px;line-height:1.6}
+  .foot b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logos"><img class="mark" src="logo-develyst.svg" alt="Develyst"><span class="x">×</span><img class="mark" src="logo-choiceflow.svg" alt="Choice Flow"><span class="x">×</span><img src="logo-som.png" alt="SOM Balance School"></div>
+  <h1>ระบบจัดการ<br>โรงเรียนกีฬา<br><span>ครบวงจร</span></h1>
+  <p class="lead">ตั้งแต่ผู้ปกครองจองคลาสผ่าน LINE ไปจนถึงเงินเดือนโค้ช รายได้ และสต็อก ในระบบเดียว</p>
+  <div class="cols">
+    <div class="col"><h3>หน้าบ้าน</h3><ul>
+      <li>จองคลาสผ่าน LINE</li><li>คอร์ส · Voucher · Camp · ECA</li><li>ลา · ชดเชย · ครูลา</li><li>แจ้งเตือนผู้ปกครองอัตโนมัติ</li><li>Dashboard ผู้บริหาร</li></ul></div>
+    <div class="col"><h3>หลังบ้าน</h3><ul>
+      <li>เงินเดือน · ค่าคอม · โบนัส</li><li>รายได้ รายวัน / เดือน / ปี</li><li>สต็อกสินค้า</li><li>รายงาน Excel</li><li>สิทธิ์ผู้ใช้รายเมนู</li></ul></div>
+  </div>
+  <div class="shot s1"><div class="bar"><i></i><i></i><i></i></div><img src="home.png" alt=""></div>
+  <div class="shot s2"><div class="bar"><i></i><i></i><i></i></div><img src="revenue.png" alt=""></div>
+  <div class="foot"><b>Develyst × Choice Flow</b> สำหรับ SOM Balance School<br>Web App + LINE · ภาพตัวอย่างใช้ข้อมูลจำลอง</div>
+</div>
+</body>
+</html>

@@ -52,6 +52,9 @@ Batch 2026-11-01 (REQ-001…005): Team A → `corner-chat-back` all except the L
 |----|-------|-------------|-------------------------------|-------|------------|
 | TASK-003 | Zimbra connect + intake | SPEC-001 | DONE 2026-11-01, SA Sober — live on real Zimbra (to/cc rows, nothing read, 0 password in log); Thai on the real server UNVERIFIED — `tasks/TASK-003-zimbra-connect-and-intake.md` § Review | BE Jason | TASK-002 |
 | TASK-004 | Mail reply outbox | SPEC-001 | DONE 2026-11-01, SA Sober — live: reply sent, 1 Sent copy each, retry no dup; threading in B needs the owner's look — `tasks/TASK-004-mail-reply-outbox.md` § Review | BE Jason | TASK-003 code |
+| TASK-043 | App: header + tab bar inside the phone's safe area (owner's phone, HIGH) | SPEC-003 | DONE 2026-11-03, SA-B review (diff, 130 tests, APK cert/SHA/bundle re-checked); new APK d9ec28e2…; owner's phone UNVERIFIED — `tasks/TASK-043-app-safe-area-system-bars.md` | FE Fanta | emulator free |
+| TASK-042 | App: release APK must not expose WebView debugging (TEST-006 Q2, MINOR) | SPEC-003 | DONE 2026-11-02, SA-B review — cause = userdebug emulator; release guard in, signed APK rebuilt (3edb05dc…); real phone UNVERIFIED; QA re-test Q2 — `tasks/TASK-042-release-apk-webview-debugging.md` | FE Fanta | TASK-041, emulator free |
+| TASK-041 | App: release APK (signed, HTTPS, SIT API) | SPEC-003 | DONE 2026-11-02, SA-B review (cert, APK SHA, bundle, manifest re-checked); APK built, not sent; owner to back up the key folder — `tasks/TASK-041-app-release-apk.md` § Review | FE Fanta | — |
 | TASK-038 | App: back key closes an open dialog/menu first (D46 extended) | SPEC-003 | DONE 2026-11-01, SA-B review (130 tests re-run; 4 overlay rows + 5 back rows on device); ready for QA re-test — `tasks/TASK-038-app-back-key-closes-dialogs.md` § Review | FE Fanta | TASK-037 |
 | TASK-037 | App: grouped-notification tap opens the message (DEF-2) + back key = back arrow (D46) | SPEC-003 | DONE 2026-11-01, SA-B review (122 tests re-run; cause confirmed ranker_group; device 5/5, 3/3, 3/3); ready for QA re-test #4 #5 #17 — `tasks/TASK-037-app-notification-group-and-back-key.md` § Review | FE Fanta | — |
 | TASK-035 | App: no password/token/message text in logcat (DEF-1) | SPEC-003 | DONE 2026-11-01, SA-B review (APK config read); DEF-1 ready for QA re-test (local APK needs the D43 DB URL) — `tasks/TASK-035-app-no-sensitive-logs.md` | — | — |
@@ -67,6 +70,7 @@ Batch 2026-11-01 (REQ-001…005): Team A → `corner-chat-back` all except the L
 |-----|------|------------------------|---------|
 | REQ-002 | TEST-002 | run 2 2026-11-01, Tanya: stand-in 48/48, app 15/15 (app `25db8739…`), owner window qa7k all PASS; DEF-1 fixed — `tests/TEST-002-req-002-zimbra-mail-in-and-reply.md` § Run 2 | **TEST_PASSED** |
 | REQ-003 | TEST-004 | run 3 2026-11-01, Tefany: REAL LINE live — link, codes, group, reply, name, mention, @All (type all), hold, push ×4 all PASS; closed, DB dropped — `tests/TEST-004-line-groups-in-and-line-notification.md` § Run 3 | **TEST_PASSED** (B7, #1b NOT_TESTED) |
+| REQ-001…005 (SIT) | TEST-006 | round 1 final 2026-11-03, Tanya: rows 1–11 PASS for corner-chat's part; 0 open defects; entronica→Gmail forward blocked outside corner-chat (relay spam reject) — `tests/TEST-006-sit-release-pass-round-1.md` § Verdict | **TEST_PASSED** |
 | REQ-005 | TEST-005 | run 6 2026-11-02, Tefany: APK `05fbbbca…` (TASK-037/038) on owner's server 8/8; 0 open defects — `tests/TEST-005-android-app.md` § Run 6 | **TEST_PASSED** |
 
 ## Blocked / waiting

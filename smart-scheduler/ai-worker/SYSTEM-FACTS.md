@@ -4370,3 +4370,242 @@ Skill requested from Atlas: `REQUEST-porter-to-atlas-2026-10-08-skill-reproduce-
 - 2026-10-27: **BooBee_NS (LINE) = พี่ปู** (owner). Call him พี่ปู in any draft, not "BooBee".
 
 - 2026-10-27: **กุ้ง is addressed as "พี่กุ้ง"** in drafts (owner: *"ใช้คำว่าพี่กุ้ง"*). This differs from Khwan, who is plain "ขวัญ".
+
+## 2026-11-08 — 🔴 Local env files on the owner's machine point at REAL servers. Check the host before any DB or API run (Sector, Team C; Flash found the BF one)
+- **Host check, by name only, against this file's 2026-10-08 entry** (sid = `154.197.124.206`, uat = `154.197.124.29`).
+- **`smart-scheduler-backoffice-back/.env`:**
+  - It pointed at **uat (.29), the customer's system**, until the owner repointed it to sid on 2026-11-08.
+  - Team A's `0007_bo_users_roles` landed on uat because of it. The owner keeps those objects there (MIGRATION-QUEUE.md).
+- **`smart-scheduler-back/.env`:** sid (.206).
+- **`smart-scheduler-backoffice-front/.env.local`:** `NEXT_PUBLIC_BACKOFFICE_API_URL` = `https://backoffice-som.develyst.online/api`, the **deployed sid back office**. A plain `next dev` sends every call there.
+  - **Fix:** set the var inline, e.g. `NEXT_PUBLIC_BACKOFFICE_API_URL=http://localhost:4310/api next dev -p 3310`. The process env wins over `.env.local`.
+  - The base URL must end in `/api`.
+- **Bun auto-loads `.env` into every `bun` command**, including `bun test`. A test that imports the db connects to whatever `.env` names (F-037).
+  - **Before any command that can connect:** print the host only, `grep -E '^DATABASE_URL=' .env | sed -E 's#^DATABASE_URL=[a-z]+://[^@]*@([^:/]+).*#host \1#'`, and compare it with sid.
+
+## 2026-11-08 — SA read-only access to uat (ORDER 57, Atlas; owner: "มอบสิทธิ์ให้ SA ทำเองได้ … ทำการ select ได้")
+- **Tool:** `bun scripts/uat-select.mjs "<SELECT …>"` from the workspace root — one read statement, READ ONLY transaction rolled back, 15 s timeout, prints the DB host (never the URL), ≤ 200 rows. SA seats only (Sober, Silver, Sector). Root `CLAUDE.md` rule 4; PROTOCOL l.320.
+- **Credentials:** the git-ignored `.env.uat-readonly` at the workspace root (`UAT_READONLY_DATABASE_URL=` for role `sa_readonly`, SELECT-only, created by the owner). **No agent opens or prints it.**
+- **uat's expected DB host: 154.197.124.29 (internal 172.17.172.29)** — from the 2026-10-08 entry above (the owner's `.env.uat`), per Atlas 2026-11-08 (REQUEST-porter-to-atlas-2026-11-08… end). The SA checks the host the tool prints against THIS line — never against the tool's own output.
+- Per query: host check, summarise personal data (never paste it into shared files), one log line (seat · purpose · tables), no coach pay (R0.2) unless the owner says so per case.
+
+## 2026-11-09 — sid LINE OA allow-list (owner, verbatim)
+*"ใช่ตอนนี้ LINE_OA_WRITE_ALLOW ที่ deploy sid เป็นของ line SOM DEMO ของฉัน"*. On sid, smart-scheduler-back's `LINE_OA_WRITE_ALLOW` holds the owner's own **SOM DEMO** LINE OA, not the customer's. LINE sends from sid (including TASK-888 pay-confirm reminders) can reach only the demo OA. Keep it that way on sid. The customer's OA belongs only on the real (production) server.
+
+## Migrations: journal `when` must be UNIQUE across the team (drizzle silently skips a collision)
+2026-11-09 (Jason, TASK-915). `drizzle-kit migrate` applies only migrations whose journal `when` is **strictly newer** than the ledger's newest applied row. If a new migration's `when` **equals** an already-applied one (e.g. two engineers pick the same timestamp), `migrate` prints success but **creates nothing** — the ledger row it matches is the older one. Jason's 0019 `when` equalled Bob's 0018 `when`; the tables were silently not created. **Fix:** bump the new migration's `when` to a unique, strictly-greater value and re-run. **Always run `db:verify` after a migration** — it caught this ("NOT recorded"). Rule: when adding a migration, give its journal `when` a value no other migration uses and greater than every applied one.
+
+## Delivery bar: finish 2 weeks before every Master Plan due date [owner 2026-11-09]
+- Owner, verbatim: *"งานเราอ่ะ ต้องแน่น แม่นยำ และไว ซึ่งจะเพิ่งคำนึกไว้ว่าเราต้องทำเสร็จก่อน due ใน master plan -2week"*
+- Master Plan v1 (`project-docs/master-plan-2026-11-07/MASTER-PLAN-v1.md` §3): wk 1 = Mon 9 Nov 2026. **Internal target = the EARLIEST week of each range, minus 2 weeks:**
+  | Block | Plan: sid / uat | **Our target: sid / uat** |
+  |---|---|---|
+  | Salary demo (พี่ฟีน tries a slip on sid) | ≈ 20–23 Nov | **as soon as the owner's backoffice ขึ้น git + sid deploy** (the code is ready) |
+  | 1. Salary (whole block except commission) | wk 6–7 / wk 7–8 | **by Sun 6 Dec (wk 4) / by Sun 13 Dec (wk 5)** |
+  | 2. Revenue | wk 10–11 / wk 11–12 | **by Sun 3 Jan (wk 8) / by Sun 10 Jan (wk 9)** |
+  | 3. Stock + commission on the slip | wk 10–11 / wk 11 | **by Sun 3 Jan (wk 8) / by Sun 10 Jan (wk 9)** |
+  | 2.1 Reports REPORT · COURSE · STUDENT | wk 12–13 / wk 13–14 | **by Sun 17 Jan (wk 10) / by Sun 24 Jan (wk 11)** |
+- uat dates also depend on the owner's uat-deploy rule (frontoffice stable first).
+- "แน่น แม่นยำ": speed never skips the gate. Every block still passes Tanya's sid gate before it counts as done.
+- **Delivery pacing, the "omakase" rule [owner 2026-11-09]**, verbatim: *"ต่อให้เสร็จไวแค่ไหนก็ตามเราต้องมีชั้นเชิงในการ ส่งมอบ ความหมายคือ ต่อให้เสร็จเร็วมากที่สุดแบบ ดีงามมากๆ เราก็จะ ค่อยๆ นำมา ส่งมอบช้าๆ ทีละ อย่าง เหมือนการ serve omakase"*
+  1. **Build and test early, internally:** finish before the Master Plan dates (the −2-week targets above).
+  2. **Hand to the customer slowly, one piece at a time,** like courses served in order. Being finished early is **not** a reason to show or announce it early.
+  3. Consequences for the desk: no customer message or draft says "it's all ready" or offers early dates. Each piece goes out on its own, in the Master Plan's order, when the owner chooses to serve it. The owner decides when each course is served; the PM proposes the order. SAs and QA never promise dates or scope to anyone outside the desk.
+
+## Git after a sid pass: ask at once, never leave it hanging [owner 2026-11-09]
+- Owner, verbatim: *"จดไว้ ถ้าขึ้น sid แล้ว เทสผ่าน ให้ ขอ ขึ้น git ทันที ไม่ปล่อยค้างไว้แบบนี้ หรือ ถ้าหาก ฉันให้สิทธิ ก็ขึ้นเองได้เลย"*
+- **Rule:** the moment code is on sid AND Tanya's test passes, the PM asks the owner for the matching ขึ้น git (หน้าบ้าน / หลังบ้าน) **in the same reply as the pass**, so no tested code stays uncommitted.
+- **The standing permission to commit without asking is NOT granted yet.** The owner said "if I grant it". Until he states it in writing, rule 6 of the workspace CLAUDE.md stands: git only on his word. When he grants it, record the exact words here.
+- Trigger case: TASK-916 sat uncommitted in smart-scheduler-back after it was deployed to sid from the owner's local tree and passed Tanya's re-check (08:38).
+- **GRANTED 2026-11-09 [owner, verbatim]:** *"ฉันให้สิทธิ์ git ในการ commit + push"*
+  - **Scope = ขึ้น git only** (commit + push on the current branch `dong`, with the repo's commit convention). The SA seats run it on their own once a change **is on sid AND has passed Tanya's test**; the owner no longer has to say "ขึ้น git" each time.
+  - **Not granted (still the owner's word):** รวมโค้ด (merge-workflow), release code, tags, new branches, history rewriting, any deploy, uat/customer systems. The workspace's own `ai-worker/` files are never committed.
+  - Only SA seats type git; engineers, QA and the PM never do. Every commit is reported to the PM with hashes, and the PM puts them on the first line of his next reply to the owner.
+
+## Route-level tests: two rules for every BE [Silver/Bob 2026-11-09, after the /stock/in 400 bug]
+- (a) A route test asserts **zod's own 400 body**, not just the status, because the service also answers 400.
+- (b) A test that reaches a handler **stubs the DB to fail at once**, or the shared client keeps retrying and times out another team's test.
+- Why: `POST /v1/stock/in` shipped to sid answering 400 for every date (a regex lost its backslashes). The service tests bypassed the route validator, so the suite stayed green.
+
+## Deploys from the owner's LOCAL tree need a freeze [Porter 2026-11-09]
+- The owner may deploy from his local working tree. In-flight work by any seat (a half-made migration, a red test) ships with it. Before asking him to deploy: the SAs confirm **tsc 0 + tests + build on a frozen tree**, and every in-flight hunk is stashed or finished (for a schema change, its migration must already be applied on sid).
+
+## Migration SQL files must be LF — CRLF changes the db:verify ledger hash
+2026-11-09 (Jason, TASK-930). `db:verify` hashes each migration's SQL file, so the WORKING-COPY line endings matter: a migration stored/checked-out as CRLF has a different hash than the LF version applied on sid → db:verify goes red ("ledger hash mismatch"). Jason's `git stash pop` re-wrote `0021_*.sql` as CRLF (Windows autocrlf) and broke db:verify; restoring it to LF fixed it. **This can bite ANY fresh checkout/pop of ANY migration** (0013–0021), and the owner deploys from a local tree. **Fix:** add a repo `.gitattributes` with `*.sql text eol=lf` (and `drizzle/** text eol=lf`) so git always normalises migrations to LF regardless of `core.autocrlf`. Until that lands: after a checkout/stash-pop on Windows, verify migration SQL is LF before `db:verify`/deploy. (Sober will add the .gitattributes with the R0.1 commit.)
+
+## Scope freeze → URS for signature [owner 2026-11-10, after his meeting with พี่เบส + แนท]
+- Owner, verbatim: *"ตอนนี้จะแบ่งเป็นสองงาน งานแรก คือเดินงาน ต่อไปพยายามให้ได้ ก่อน due ตามเดิม งานสอง มาอัปเดตเป็นภาพที่ถูกต้อง และ จะให้เวลา เขา บอก ขวัญ และ พี่ฟีน ว่ามีเวลาให้ถึง วันที่ 17 เพื่อทำให้เป็น URS SPEC เพื่อนำมาทำ URS SPEC ไปส่งเมล ให้เขา sign ตกลง จบ แล้วหลังจากนั้น หากงอก out of scope มากเกิน 1-2 วัน ให้นำมาคุย หาก 1-2 วัน ทำเลย ทำให้เลย"* · why: *"final ui ตอนนี้ ที่เราส่งไป เขา feedback รัวๆ ขอให้ชัดขึ้นๆๆ จนหมดเวลา แล้ว freeze"*
+- **Track 1:** the build continues toward the same dates (−2-week targets above). Nothing stops.
+- **Track 2:** ขวัญ + พี่ฟีน get until **17 Nov 2026** to give the full picture (all feedback). Then we write a **URS (User Requirement Specification)**, email it, and **they sign** it. That **freezes the scope**.
+- **After the signature:** a request outside the URS that takes **≤ 1–2 days** gets done without asking; anything **bigger** comes back to the owner to discuss (a change request).
+- **Customer told 2026-11-10** (the owner sent the announcement to the group): feedback by 17 Nov → URS by email → sign → freeze.
+
+## "Get Requirement web": the real build PAUSES until 14 Nov [owner 2026-11-10]
+- Owner, verbatim: *"ตอนนี้ เอาจริงๆ เราจะต้องเบรก งานจริงไว้ก่อน ที่กำลังทำอยู่ ไม่ว่าจะก้อน1 2 3 เบรคไว้ก่อน แล้วไปทำ ตัวเว็บปลอมเนี่ย เรียกว่า เว็บ get requirement แล้วกัน ไป deploy แล้วทำให้มันอัปเดตตามfeedback ที่เรานำมาแก้ แล้วdeploy ขึ้นไปใหม่แล้วบอก ขวัญ หรือพี่ฟีน ให้ดูใหม่ได้เลย … เขาจะหมดสิทธิ ฟีทแบควันที่ 17 … เรา ก็เริ่มทำก้อนแรกต่อ ตั้ง แต่ 14 … ต่อให้ เขาแจ้งมา เราก็ต้องแก้ตาม ไป แม้จะเป้นการทำงานซ้ำซ้อน เราก็ต้องทำ"*
+- **Now → 13 Nov:** the real build of blocks 1/2/3 is PAUSED. Every hand goes to the **Get Requirement web (GR web)**, the clickable mock (the final-UI Vite prototype, mock data, it can fake anything not built yet). It is deployed at one URL, updated from feedback and redeployed. Each time, we tell ขวัญ / พี่ฟีน to look again.
+- **17 Nov:** their last day for feedback. Then URS → signature → freeze.
+- **14 Nov:** the real build of block 1 resumes, at the owner's accepted risk. Feedback from 14–17 Nov on built parts is still fixed, even if it means rework.
+- Prototype, not the real app, because the real app can't show unbuilt parts (owner: *"ถ้าเว็บจริงยังไม่เสร็จ ก้อนไหน ก้อนนั้นจะไม่สามารถ นำขึ้น โชว์"*).
+
+## develyst-line-bot repo + FULL git rights on it [owner 2026-11-10]
+- Owner, verbatim: *"https://github.com/develyst1/develyst-line-bot.git เอาไป clone เองในที่ๆ ควรทำนะ ดูจากที่เดิมๆ ที่ฉันมักทำก็ได้ แล้วก็ให้สิทธิกิตเต็มที่"*
+- Place: `H:\scheduler\develyst-line-bot` (machine.local.md; next to the other smart-scheduler repos). The code from TASK-938 is already there, so it gets connected to this remote.
+- **Full git rights for THIS repo** (the SA seat that owns it, Sector/Team C): init, remote, branch, commit, push. Other repos keep the narrower grant (commit + push after a sid pass). Secrets never go in: .env / .env.send stay git-ignored, and .env.example lists every key.
+
+## The 7 REQ-5010 extras: FREE until 17 Nov [owner 2026-11-10, after the meeting with พี่เบส + แนท; Trolley card 19 marked done]
+- Owner, verbatim: *"สรุป เรื่องนี้ จบโดย ให้ถือทำฟรีไป จนกว่าจะ ครบ วันที่ 17"*
+- The 7 extras on Trolley (cards 12–18) count as **free** inside the feedback window that ends 17 Nov: they're shown on the GR web as "Proposed" and go into the URS. After the URS is signed, the scope rule applies (≤ 1–2 d = do it; bigger = talk first).
+- **The meeting summary (owner + พี่เบส + แนท, 2026-11-10)** is filed verbatim at `project-docs/meeting-2026-11-10-dong-best-nat/summary-VERBATIM.md`. Points it adds:
+  - the URS (the summary calls it a "UI spec") goes to the customer **by email as a PDF**, with a LINE note saying it was sent, and they **sign and return it by email**;
+  - the team reviews the PDF before it is sent (an "18th" is mentioned, unclear what for);
+  - after the spec is signed, every new request is a **change request**, maybe paid;
+  - **the free threshold is still OPEN.** The meeting floated ~1–1.5 d; the owner told Porter ≤ 1–2 d. Use the owner's wording until he settles it.
+  - **Differences from the owner's later words to Porter:** the meeting said block 1 runs IN PARALLEL with the feedback round, and gave the customer **7 working days**. After the meeting, the owner told Porter: pause the real build until 14 Nov, feedback until 17 Nov. The owner's latest words stand.
+- **CONFIRMED by the owner after the meeting summary (2026-11-10):** *"พักถึง 14เพราะมีโอกาสที่ฟีดแบ็กจะมาทำให้ต้องมาแก้ซ้ำเยอะเกินไปก็เลยไปเริ่มทำอีกทีวันที่14"*. The real build stays PAUSED until 14 Nov. This overrides the meeting's "in parallel".
+- **CORRECTED by the owner 2026-11-10:** *"get requirement ต้องเสร็จวันนี้ต้องขึ้นวันนี้แล้วก็จะเริ่มวันพรุ่งนี้ในการให้เขาลองใช้ลอง feedback"*. The GR web must be **finished and online TODAY, 10 Nov**. The customer starts trying it and giving feedback on **11 Nov**. Not "12 Nov".
+
+## The owner's standard git branches for every repo [owner 2026-11-10]
+- Verbatim: *"เราต้องมีบานซิท โปรดักชั่น เดเวลลอป แล้วก็บานของฉันชื่อว่าโด่งหรือ nichaphon ก็ได้"* → branches **sit · production · develop · dong** (or nichaphon). He asked Atlas to make it a skill (REQUEST-porter-to-atlas-2026-11-10-standard-branch-pattern-skill.md).
+- develyst-line-bot: the host is **line-bot.develyst.online** (Otto's proposal, OK'd); the repo stays **PUBLIC** (*"GitHub เป็น Public ไม่ต้องสนใจปล่อยเป็น Public"*).
+- **develyst-line-bot · working branch `dong` · 2026-11-10 [Sector, git-command §3D].** The remote has `main` (the default) + `develop` · `sit` · `production` · `dong`, all created at `b1ffa6c`. The local checkout is still on `main` because Otto's untracked `.github/workflows/deploy-sit.yml` makes the tree dirty; it switches to `dong` once that workflow is committed. Owner's one-liners: set the GitHub default branch to `develop` (recommended); CI on `sit` is Otto's.
+
+## Porter answers the customer's GR-web questions for the owner [owner 2026-11-10]
+- Owner, verbatim (on ขวัญ's first GR-web question, "Run / Lock"): *"เนี่ย ฉันอยากให้นายตอบคำถามแบบนี้แทนฉันเองได้"*
+- Porter drafts the answer to each customer question about the GR web or the system, checked against the files. Until the LINE bot can post (REQ-5012), the owner pastes it; after that the bot posts on his "ส่ง". Questions that need a decision (scope, money, a new feature) go to the owner first. They are never answered as settled.
+- **2026-11-10, the owner:** *"อยากให้นายตอบผ่านบอทไปเลยว่ะ"*. He wants Porter to answer the customer through the bot. **Limit stated once:** Porter's own safety rules mean every message sent to the customer needs the owner's OK for that message. A standing "send anything" is not possible. **The smallest path:** Porter shows each draft in the owner's chat, the owner replies **"ส่ง"** (one word), and Porter posts it through the bot (/send). There is no copy-paste and no forwarding. Reading the group comes from phase 2 (TASK-943).
+- **2026-11-10 ~02:40: the bot is LIVE and recording.** `line-bot.develyst.online` (sit 7dbf9a8, phase 2). The OA "Develyst" was added to SOM SYSTEM at 02:35. The owner posted the consent notice ("ส่งละ"): internal use only, auto-deleted within 90 days. Then Otto set RECORD_GROUP_MESSAGES=true, and /health shows recording:true.
+  - **Read:** in the `develyst-line-bot` checkout (path in machine.local.md), run `bun scripts/pull.ts --since <iso|msg-id> --out <desk>/.private/line-pull-<date>.json`. It prints only the count and the next id. Raw text stays in the git-ignored `.private/`.
+  - **Send:** only after the owner's "ส่ง", with his word quoted in the log. Run `bun scripts/send.ts --text <note> [--dry-run]`. On a failure, re-run with `--retry-key`.
+  - First test pull at 02:40: count 0. It works; the group had no messages yet after recording started.
+
+## GR web feedback must land in the real code [owner 2026-11-10]
+- Owner, verbatim: *"อย่าลืมนะตามกฎตามเป้าหมายของเราคือเก็บฟีดแบ็กถึงเวลาแล้วก็นำฟีดแบ็กมาทำจริงมาอะแดปต์จริงทำลงโค้ดจริงโอเคไหม"*
+- The GR web only collects feedback. Every accepted item is tracked in `GR-FEEDBACK-TO-CODE.md` and becomes a real-code TASK when the build resumes on 14 Nov. It is closed only after a sid pass. Fixing the GR web alone never closes an item.
+- **The loop, owner 2026-11-10 ~03:00 (verbatim):** *"ไม่ใช่เก็บฟีดแบ็กอย่างเดียวนิ่งๆนะเก็บฟีดแบ็กนำมาแก้deployให้ลูกค้าดูใหม่แคปรูปให้เขาดูด้วยถ้าเขาฟีดแบ็กมาก็เก็บฟีดแบ็กนำมาแก้ดิบควายให้เขาดูใหม่เนี่ยพาไปเขาดูด้วยวนไปอย่างนี้"* ("ดิบควาย" = deploy, a voice-typing slip). It repeats every round:
+  1. Porter reads the group, logs each item in GR-FEEDBACK-TO-CODE.md, and hands it to Sober.
+  2. Sober fixes the GR web and rebuilds.
+  3. Tanya checks it and **captures screenshots** of each changed screen.
+  4. Otto deploys.
+  5. Porter drafts a short message plus the screenshots, walking the customer to each change.
+  6. The owner says "ส่ง", and the bot posts it (send.ts --img).
+
+  Then wait for the next feedback, and so on. The real-code ledger still applies (see above). A customer message never goes out without his "ส่ง", so anything ready while he sleeps waits as a draft.
+
+## Staff + salary data from พี่ฟีน: CONFIDENTIAL [customer 2026-11-09/10, via the owner]
+- พี่ฟีน sent `รายชื่อพนักงานและเงินเดือนลงระบบ.xlsx` in his PRIVATE chat with the owner (11-09 22:01). It holds staff names, salaries, vehicle (car/motorbike), Merit, schools and distances: the data asked for on 11-09.
+- His words: *"เงินเดือนถ้าบางค.ถ้ามีเปลี่ยนฐาน ไปปรับได้เลย ง่ายๆเนอะ"*, then *"พวกนี้จะ confidential มากนะคะ เงินค."*, then (owner: ห้ามส่งลงกลุ่ม?) *"เรื่องเงินต้องระมัดระวัง ใช่ค่ะ ไม่ลงกลุ่มและ เป็นความลับค่ะ สำหรับตัวเงิน"*.
+- **Rules:**
+  - The file is kept ONLY at `.private/staff-salary-2026-11-09.xlsx` (git-ignored).
+  - No salary figure goes into any shared file, inbox, log, board, TASK, test or screenshot. **Nothing about money is ever posted to the LINE group** (the bot included).
+  - A seat that needs it for seeding the salary block reads it from `.private` only, on the owner's per-case word (the coach-pay rule).
+  - Porter read only the sheet headers.
+
+## Think before anything goes to the group [owner 2026-11-10 evening]
+- Owner, verbatim: *"ก่อนพิมพ์ข้อความส่งขวัญ หรือส่งอะไรในกลุ่มต้องคิดมาดีแล้วนะ"*
+- Before Porter shows a group draft, check it:
+  - every claim is true today (not "เปิดให้แล้ว" for something not built);
+  - it does not contradict an earlier reply or the GR web;
+  - every customer word is quoted, not guessed;
+  - batch it with whatever is about to land, so the customer gets one message instead of a trickle.
+- **The GR web covers the front-office asks too [owner 2026-11-10 evening]:** *"ฉันหมาย ถึง พวก ที่ขวัญพิมพ์ฺมายาวๆ เนี้ย เอามาอัปเดต getrequirement ยัง"*.
+  - ขวัญ's long 9 Nov front-office items (F1–F6, INTAKE-2026-11-09) go onto the GR web as "Proposed" mock screens. She sees how each would work and confirms it before the 17th.
+  - They do not start in the real code. Same loop as the back office.
+- **Owner, 2026-11-10 evening, the routing rule (verbatim):** *"get requirement = backoffice demo … หากเป็น feedback backoffice มึงต้องไป update backoffice demo แล้วแจ้งขวัญ นอกนั้นเอามาคุยกับกู"*
+  - The GR web is the BACK-OFFICE demo only.
+  - Back-office feedback: Porter updates the demo through the loop and tells ขวัญ.
+  - Everything else (front office, dashboard, scope or money): Porter brings it to the owner first.
+  - Round 4 (front-office pages on the GR web) was wrong and is cancelled (TASK-945 stub, never built).
+
+## Front-office F5 decision: a leave on a make-up moves +1 week [owner 2026-11-10 evening]
+- Owner, verbatim: *"แก้สิ เราทำไม่ถูก"*. Asked: when a family takes leave on the last class (a make-up), it should move to the next week and the family should be told; it should not land back on the same date.
+- **This REVERSES TASK-551.** Our own earlier rule, "a make-up put straight back in the same slot changed nothing", is retired.
+- Fix as in CHECK-2026-11-09-frontoffice-intake.md § F5: put the cancelled row's coach+date into `coachOff`, in the single cancel and the group cancel. About 0.5 d plus tests. Team C.
+- It is a bug fix in the live front office, so it is not held by the back-office pause.
+- **F2 decision [owner 2026-11-10 evening]:** *"แก้ให้ถูกอ่ะ"*, in answer to Porter's F2 proposal.
+  - While a course is Pending, no message goes to the parent. A make-up is still born CONFIRMED, as in ขวัญ's 10-06 rule.
+  - When Confirm Course is pressed, the parent gets the whole course schedule once, make-ups included.
+  - The undo-leave and expiry notices follow the same gate.
+  - Fix as in CHECK-2026-11-09 § F2, about 1–1.5 d, Team C, after TASK-946 (same file).
+
+## SOM Dashboard split [owner 2026-11-11]
+- Owner, verbatim: *"frontend ปาล์มทำ backend เราทำ หมายถึง dashboard นะ"*.
+- For the SOM Dashboard (REQ-5004 / REQ-5009), Palm builds the screens and our team builds the numbers (SB API).
+- Open now: REQ-5009 #3, the Gender/Nationality base = "Total Customer + 1 Hr (Last 3 months)"; and #5, the Activity/Program chart (count COURSES per package, vouchers excluded, 1st Trial separate, pie preferred), per ขวัญ 11-09 13:33 and 11-10 01:53.
+- It is inside the 39,200 scope; no quote.
+
+## A ball line means the holder is MOVING [owner 2026-11-11]
+- Owner, verbatim: *"ส่งบอลยังไงให้พวกนั้นไม่ขยับ แก้ด้วย"*.
+- Case: Sober wrote TASK-948 to Fern's inbox at about 07:30, but Fern's session never woke. Its last activity was 11-10 16:43. Porter told the owner "ลูกอยู่ที่ Fern" twice without checking.
+- **Rule, from now on:**
+  1. Every hand-off gets a doorbell. Porter also rings an SA's engineer directly, pointing at the SA's inbox line.
+  2. Before writing "ลูกอยู่ที่ X", Porter checks X's session in `list_sessions`: running, or lastActivity after the hand-off. If not, ring again and say so.
+  3. While any seat holds open work, the watcher always runs with the 30-min tick. At each tick, any seat with work and no activity since its hand-off is rung, and the owner is told if it is still idle on the next tick.
+
+## The owner's PC is offline during the day [owner 2026-11-11]
+- Owner, verbatim: *"ตัวเช็คไลน์ต่อไม่ติดก็เพราะว่าฉันออกจากที่นี่ไปประมาณ8โมงครึ่งอินเทอร์เน็ตมันหลุดไง มันจะเป็นอย่างนี้ตลอดแหละ … น่าจะโผล่อีกทีประมาณเนี่ยแหละทุ่มสองทุ่ม"*.
+- **Normal day:** offline from about 08:30 until about 19:00–20:00. During that window the LINE poller fails ("offline"), the desk sessions on this PC don't run, and no bot send is possible.
+- **What follows:**
+  - An "offline" alarm in that window is expected. Don't treat it as a fault, and don't tell the owner about it.
+  - ขวัญ's daytime group messages are read when the PC is back. The poller's cursor catches up on its first poll, so nothing is lost.
+  - Anything that needs the owner's "ส่ง" waits for the evening.
+
+## VAT on quotes: the same as the earlier package [owner 2026-11-11]
+- Owner, verbatim: *"ไม่ค่อยเข้าใจเรื่องแวท เอาแบบรอบที่แล้วอ่ะ ที่เขาซื้อเเพคเกจเรา เรื่อง permission ระบบหน้าบ้าน"*.
+- The earlier deal was quoted as plain numbers with **no VAT line**: package 73,000 + user-permission 3,500 (BRIEF-owner-backoffice-money-meeting-2026-10-27 §1). So were the back office 39,200 and the extra-work proposal.
+- Rule: extra-work quotes follow the same form, a plain price and no VAT line.
+- Open: whether Develyst is VAT-registered is the owner's to check with แนท/พี่เบส for the contract. Porter does not guess it.
+- **Free small-change limit, SETTLED [owner 2026-11-11]:** *"ไม่เกินสองวัน"*. After the 17 Nov scope freeze, a change of **at most 2 days** is done free. Anything larger is a change request at the old rate. This replaces the open "1–2 d vs 1–1.5 d" note above, and goes into แนท's agreement clause 7.
+- **Source code ownership [owner 2026-11-11]:** *"ของลูกค้าหลังจบbackoffice ด้วย"*. The source code becomes the CUSTOMER's after the back-office job is finished (and paid). It goes into แนท's agreement. The lawyer check on that clause, which แนท flagged, still stands.
+- **Server, domain and LINE costs [owner 2026-11-11]:** *"ค่าเซิร์ฟเวอร์ลูกค้าจะจ่ายหลังจบตอนนี้ลูกค้าฝากฉันจ่ายแทนโดเมนก็จะเปลี่ยนไปใช้ของลูกค้าตอนจบไลน์ลูกค้าจ่ายเองอยู่แล้วของที่ใช้อยู่บน UAT"*.
+  - **Server:** the owner pays on the customer's behalf now; the customer pays after the job ends.
+  - **Domain:** it moves to the customer's own domain at the end.
+  - **LINE:** the customer already pays the LINE OA used on UAT.
+
+  All three go into แนท's agreement.
+- **Acceptance and payment terms [owner 2026-11-11, "ตามแนะนำ"]:** the customer checks a delivery within **7 working days**; silence past that counts as accepted (แนท's clause 6). Payment is due within **7 days** of the signed acceptance.
+- **The owner's uat routine [owner 2026-11-11]:** *"ปกติ ตอนฉันทำ ก็ทำแบบนี้อยู่แล้ว"*. He deploys and migrates on uat with each repo's `.env.uat` as a matter of course. Deploy notes give him only what goes, the migrate output, the numbers and the STOP lines. Never the env plumbing.
+
+## SKIP_ADMIN_AUTH must be false on every deployed back office [2026-11-11]
+- sid BB ran with `SKIP_ADMIN_AUTH=true` (the `.env.example` default). With it, any request without a token became the dev CEO, so the back-office API was open to the internet (D-150-3, Tanya; found via PokerVault's probe).
+- The owner set it to `false` on sid on 11-11 ~23:55. Tanya re-checked: no token → 401, cookie-only → 401, CEO Bearer → 200, CEO UI is fine.
+- **Rule:** every back-office deploy (sid now, uat later) checks `SKIP_ADMIN_AUTH=false` in its BEFORE list.
+- Separate: TASK-951 (after 14 Nov) closes the admin-sees-money leak on `/bo/reports/*`.
+
+## Team test-data tags on sid [Porter 2026-11-08, moved from inbox/QA.md by ORDER 63, 2026-11-12]
+From Porter 2026-11-08: FYI, no round yet: Team C's test data on sid (skip it in any sid check): 1 revenue manual line, remark "[C-TEST] flash TASK-859 evidence" + category "C-TEST flash 859". Team B's is "B-…", Team A's "A-…". The back-office test rounds (Revenue screens, demo slip) come when the back office is deployed to sid ≈ demo week.
+
+## The extra-work proposal HTML is internal until แนท + พี่เบส have seen it [owner 2026-11-12 ~08:35]
+- Verbatim: *"ไอ้ HTML ตัวเนี้ยเราจะยังไม่ส่งให้ลูกค้าเราจะเอามาคุยกับแนทกับพี่เบสก่อน … เราบอกแค่ลูกค้าได้ว่ามีการคิดเงินส่วนไหนบ้างหรือว่าบอกคร่าวๆก็ได้"* · *"จะทำการคุยกับแนทวันนี้"*.
+- `deliverables/SOM-proposal-extra-work-2026-11-11.html` is NOT sent to the customer. To ขวัญ we only say which items carry a cost (no prices, no options, no totals). Prices go out only after the owner's talk with แนท and พี่เบส.
+
+## The 10–14 Nov build pause covers the BACK OFFICE only [owner 2026-11-12 ~23:55]
+- Verbatim: *"ไม่ๆ พักงาน คือพัก แค่ หลังบ้านนะ"*.
+- It corrects my reading of l.4443, which said all of blocks 1/2/3 were paused. Front-office work may start now, including the paid items พี่ฟีน agreed on 11-12 (close-day B, change activity A, multi-day).
+
+## REQ-053 (no activity change inside a course) was the owner's own assumption, so it is lifted for the paid "change activity" [owner 2026-11-13 ~00:05]
+- Verbatim: *"นั่นตั้งนานมาแล้ว ไม่รู้เรื่องไง เพราะคิดเอง แล้วว่า ไม่น่าได้เพราะตอนนั้นคิดว่าราคาไม่เท่ากัน"*. The 08-16 lock came from his guess that the prices differ. It was never the customer's rule.
+- Scope [PM reading, from the agreed option A]: the lock is lifted for the deliberate whole-course "change activity from the next class" action only. Attended classes keep their activity. Details still to confirm with ขวัญ (CONCEPT-F3 open points 1–4).
+
+## Coach time ranges + multi-coach closing are FREE (owed from the early front office) [owner 2026-11-13 ~01:10]
+- Verbatim: *"ทำฟรีไป เรื่องนี้น่าจะเคยพูดตั้งแต่ เริ่มทำหน้าบ้านวันแรกๆ แล้ว"*.
+- Confirmed in the files: REQ-038 (her "Standard Timetable" feedback, 2026-08-04), item 6 «ช่วงเวลาทำงานของครู», was marked 🟡 partial. Working DAYS were built; working TIME never was.
+- Free scope: (1) close/leave for several coaches at once; (2) coach leave for part of a day; (3) coach working hours per day. → REQ-5015.
+
+## Deploy rule for the shared SB/SF tree: finish everything, then ONE deploy; sid may stay broken meanwhile [owner 2026-11-13 ~01:50]
+- Verbatim: *"ก็ทำให้จบทีรเดียวค่อยขึ้น ปล่อยพังไว้งั้นแหละ sid"*.
+- No parking and no split deploys. The teams finish every task in the tree (942 fix, 961/962, 965/966). Then the SAs run the full gate on the whole tree (tsc 0, suites 0 fail, journal vs ledger) and the owner says «ขึ้น git». Silver commits both repos, and the owner deploys that commit to sid, then Tanya tests. uat follows the same commit.
+- Until then, sid runs the current half-built tree. Tanya tests only what isn't on Sector's avoid list.
+
+## The paid front-office items are AGREED, not paid; keep building, but don't tell ขวัญ yet [owner 2026-11-13 ~02:00]
+- Verbatim: *"ยังไม่จ่ายนะ แค่ตกลง"* · *"ทำไปต่อ นั่นแหละ แต่อย่าเพิ่งแจ้งขวัญ"*.
+- Close-a-day B and change activity A (4,000 ฿) are agreed but unpaid; แนท's quotation is pending. The build continues.
+- **No message to ขวัญ about these items' progress or readiness** until the owner says so. This includes the combined deploy, which is done quietly.
+
+## The owner deploys sid from his local checkout (this machine), not by picking a commit hash [owner 2026-11-13 ~03:50]
+- Verbatim: *"sid ฉัน deploy จากเครื่องนี้เลย ไม่เลือก commit hash"* · *"จำไว้ด้วย"*.
+- So "deploy a commit" means: the local checkouts (`H:\scheduler\smart-scheduler-back` / `-front`, per machine.local.md) must be **clean and at that commit** when he deploys. **Rule for every deploy ask:** «ขึ้น git» first; then I check `git status` = 0 and HEAD = the reported hash in both repos (a read); only then I ask him to deploy. Any engineer edit after the commit dirties his deploy, so the tree stays frozen from «ขึ้น git» until his "deploy done".
+- Checked 2026-11-13 ~03:50: SB HEAD 738b6eb, SF 6c52040, both clean (0 paths), so this sid deploy = the commits. db:verify 81/129/81 ✅ (his paste).
+- **uat deploys from branch `production`** [owner 2026-11-13 ~03:55, verbatim: *"sid deploy from local code / uat deploy from branch production"*]. So work reaches uat only through the owner's git commands: «รวมโค้ด» (dong ↔ develop, merge-workflow.sh) and then «release code» (develop → production, release-workflow.sh), both run by the SA on his word. After that, the owner deploys uat from `production`.
+- **The owner's uat routine, his words** [2026-11-13 ~04:00]: *"ไม่ต้องแจ้ง hash แจ้งทำไม ฉัน remote เข้า server แล้ว fetch and sync branch production and build and copy file from source code folder to deploy folder แล้วรัน pm2 restart"*. So: never give him a hash for uat. A uat deploy note gives only: «รวมโค้ด» / «release code» done, the migrate step + its BEFORE/AFTER checks, and the STOP lines.
+- **LINE poll period = 15 min** [owner 2026-11-13 ~02:10: *"ทุก 15 แทนได้มั้ย"*]. Start it with `LINE_POLL_MIN=15 bash ai-worker/tools/watch-line.sh /h/scheduler/develyst-line-bot` from `smart-scheduler/`. It replaces the 30-min default of 2026-11-10. An empty poll costs nothing; only a poll that finds new messages wakes Porter (AI usage).
+- 2026-11-13 [owner-asked] LINE group images: Porter reads them himself in the built-in browser. The owner stays signed in at chat.line.biz; switch to the **Develyst** account (not the first user that loads), open the SOM SYSTEM group, and click a thumbnail to open the viewer (← → steps through). Read only: no download, no send, no settings. The bot pull (`pull.ts`) still gives the text.

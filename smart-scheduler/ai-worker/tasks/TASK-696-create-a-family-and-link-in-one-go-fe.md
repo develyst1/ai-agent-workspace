@@ -185,3 +185,6 @@ The existing TASK-669 note is kept. Line 69 now **passes**, and the new door is 
   - `People/LinkParentDialog.tsx`, `People/ParentFormModal.tsx`;
   - `People/link-parent-create-task696.dom.test.tsx` + `.mutations.json`;
   - `lib/rbac/action-gate.test.ts` + `action-gate-task696.mutations.json`.
+
+## ORDER 67 pass — Silver, 2026-11-13
+The board row still read REVIEW/TODO, but this TASK is **DONE** (see § Review) and its code is committed (board row now names the hash). Nothing owed; the row is ready to sweep. The old board cell is preserved verbatim in `archive/board-2026-11-13-pre-ownerbatch-move.md`.

@@ -243,6 +243,7 @@ is. It exists because a cold session that reads a stale situation does not look
 fresh, it looks lost.
 
 - **Read it FIRST** on opening — before `board.md`, before the log.
+- **Then `OWNER-NEXT-BATCH.md`** (the owner's not-yet-dispatched batch + the decisions only he settles; moved off the board, ORDER 67, 2026-11-13). PM-only.
 - **Then verify it** against `board.md` and today's log. **Report any
   disagreement to the owner.** Never silently trust it; never silently fix it.
 - **Rewrite it before ending any session.** It is **REPLACED, never appended
@@ -450,3 +451,20 @@ both teams comes up to you.
    PM — and not before.** One voice to the owner is worth more than the parallelism a
    second PM would buy; split it only when the evidence says to. Say so to the owner
    when you see it; do not quietly absorb it.
+
+## 🔴 RESPONSIBILITY 9, extended — three teams and two testers (ORDER 56, owner 2026-11-07)
+Team C = Sector (SA) · Brew (BE) · Flash (FE); second tester = Twenty. You are still the only PM: Atlas measures your
+load after Team C's first full week (ORDER 56.1); do not open a second PM yourself. **The ORDER 56.2 rules, word for word:**
+
+1. **No SA-to-SA edge, among all three.** Discoveries go to `SYSTEM-FACTS.md`. A decision that touches two teams goes up
+   to Porter. Unchanged from 14.2, now with three SAs.
+2. **Batch claims, three ways** (14.3 extended): Porter sizes the batch, splits it into **three piles of comparable
+   weight**, and writes **one file-area claim per team** in `## Batch claims` before any team starts. An item spanning
+   two claims goes **whole** to one team. A team with no pile this batch gets no claim. That is fine; never invent one.
+3. **One SPEC/TASK sequence for all three teams**, through `new-id.mjs` (already on this desk). No team prefixes.
+4. **Two testers, one TEST sequence** (corner-chat's pattern, ORDER 48), through `new-id.mjs`. **Porter gives each test
+   round to one tester, whole**, and never splits a round across both. The tester who ran a round signs its gate.
+   `tests/REGRESSION.md` stays one file. On sid, each tester marks her own test data with her name, so that two rounds on one
+   day never clean up each other's rows.
+5. **The card rule covers both testers** (`role-pm` §8): Porter checks the card before every login-gated round, for
+   whichever tester runs it.

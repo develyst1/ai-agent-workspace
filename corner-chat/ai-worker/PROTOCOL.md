@@ -444,6 +444,7 @@ workspace-root `machine.local.md` and nowhere else — never in a committed file
 |---|---|---|
 | Local (the developer's own machine) | the team | full — this is where evidence comes from |
 | Real systems (LINE OA, Discord, the Zimbra mailbox, Teams) | the team | **read** when needed · **send or change** only on the owner's go, each time, by DATA REQUEST through the PM · test accounts by default (`SYSTEM-FACTS.md`) |
+| SIT (`cornerchat-api-sit` / `cornerchat-sit` .develyst.online; DB = the shared `corner_chat`; deployed and run by Otto, 2026-11-02) | the team, QA leading | read anything · write only rows QA creates (users prefixed `qa-sit-`, recorded in the TEST) · never the owner account or others' rows · no restart, redeploy or config (Otto's) · mail and LINE only as the TEST's rules allow · local backs on the shared DB run with `MAIL_POLL_SECONDS=0` [PM-decided 2026-11-02, from Tanya's TEST-006 Q1] |
 | Production (none yet) | **the human, alone** | 🚫 **nothing** |
 
 **The absence of a technical guard is NOT permission.** Nothing in a repo stops

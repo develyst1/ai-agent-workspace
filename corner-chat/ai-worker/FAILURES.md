@@ -80,6 +80,38 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-039 — 2026-11-03 — QA (Tanya, Team A) — I wrote a cause for my watcher's silence without having read its output
+- **Status:** NEW
+- **What happened:** While signing TEST-006 row 10, I wrote in TEST-006 and today's log that my `r10t` watcher "saw nothing because his mails reused the old subject `… qa7k`". I had not read the watcher's output. When its exit notice came, the output showed it had **crashed** on `PostgresError: Connection closed` (the remote DB dropped the long-lived connection), at an unknown time. The subject explanation is plausible, but I presented a cause I had not established. The row's verdict did not depend on it: the evidence is a separate read-only `qa7k` check. I corrected TEST-006 (struck through), made the watcher reconnect on every poll, and logged the correction.
+- **Rule involved:** role-qa § 6 "Trusting a self-report" / "Anything you conclude on top of an unproven observation inherits its uncertainty"; FAILURES trigger 4 (relayed something that turned out to be wrong).
+- **How it was caught:** by me, minutes later, when the background task's exit notice arrived.
+- **Cost:** none to the verdict. For a few minutes a shared file and the log held a cause that was not proven.
+- **Evidence:** `tests/TEST-006-sit-release-pass-round-1.md` row 10 (the struck sentence and its correction) · `tests/harness/qa-a/row10-r10t.out` · `log/2026-11-03.md`.
+
+## F-038 — 2026-11-02 — QA (Tefany, Team B) — I reported "WebView debugging is ON in the release APK" from an emulator image that turns it on for every app
+- **Status:** NEW
+- **What happened:** In TEST-006 Q2 I wrote that the release APK exposes WebView debugging, because the app's pid opened `webview_devtools_remote_<pid>` on `cc_phone_360` and I could drive it. I did not check what kind of system image that was. It is `userdebug` (`ro.debuggable=1`), and on such an image the socket appears for any app's WebView. After TASK-042 set `webContentsDebuggingEnabled:false`, the socket is still there. So my observation showed the image, not the app, and the old APK may never have exposed it on a real phone. The PM ruled on it and SA-B and FE spent TASK-042 on it. The hardening it added is still right, but my evidence did not support the claim as I worded it.
+- **Rule involved:** role-qa §1: *"Knows the limits of every instrument — … headless vs real device … — and states which one each result came from."* role-qa §6: *"Desktop result standing in for the phone."* I had not named the emulator's build type as a limit before claiming the behaviour.
+- **How it was caught:** SA-B (Silver) found the cause in TASK-042's review (`ro.debuggable=1`, socket persists with `false`). I confirmed it on the emulator during the re-test.
+- **Cost:** one TASK (TASK-042: FE build, SA review, an emulator slot) and the PM's ruling, which rested on a weaker fact than I stated. TEST-006 Q2 is now corrected in its re-test note.
+- **Evidence:** `tests/TEST-006-sit-release-pass-round-1.md` § Questions Q2 + "Q2 re-test after TASK-042"; `tasks/TASK-042-release-apk-webview-debugging.md` § Review.
+
+## F-037 — 2026-11-02 — QA (Tefany, Team B) — I ran on SIT without re-reading PROTOCOL's Environments table, which had changed that day
+- **Status:** NEW
+- **What happened:** The PM's "SIT is UP, rows 6–9 are yours" reached me in a fresh session. I read TEST-006 (ground rules) and went straight to SIT: I created `qa-sit-b1-…` through the admin API and ran rows 6–8. I did not open `PROTOCOL.md` → Environments, though the SIT row had been added that very evening (PM log `[23:16]`, after Tanya's Q1). I only found Q1 while writing my results. The row was in before my first SIT call (~23:16–23:17), and what I did fits it (a `qa-sit-` user, recorded in the TEST; no restart or config), so no harm was done. But that was luck, not a check.
+- **Rule involved:** workforce-protocol §14: *"A rule file you loaded can change while your session runs. When CLAUDE.md, PROTOCOL.md or your charter changed today, re-read it before you run anything it governs (environments, databases, git)."* QA.md card: *"Touch any environment not listed for you in PROTOCOL.md's Environments table"* is 🚫.
+- **How it was caught:** myself, reading TEST-006 § Questions Q1 while recording rows 6–8, about 25 minutes after the first SIT call.
+- **Cost:** none in effect. Had the PM's row come a minute later, I would have written to an environment I was not cleared for.
+- **Evidence:** `log/2026-11-02.md` `[23:16] Porter` (row added); `tests/TEST-006-sit-release-pass-round-1.md` § Footprint (my user) and § Questions Q1.
+
+## F-036 — 2026-11-02 — BE (Jason, Team A) — my turn-end boxes put questions and option buttons in front of the owner (CLAUDE.md rule 2)
+- **Status:** NEW
+- **What happened:** From 2026-11-01 to 2026-11-02 I ended several turns with the app's next-step box carrying an `ask` and `actions` buttons: "Ask the PM to have the owner check B?", "Add only the idleTimeout/maxLifetime settings?", "Put --timeout 30000 in the test script?". The owner can see this session, so each was a question and an option menu put to him by an engineer. The questions were really for the SA (and the first for the PM).
+- **Rule involved:** `CLAUDE.md` rule 2, "Only the PM asks the owner anything, in chat or with a question box ... every other role ends its turn with a status line and never a question or an option menu." I had read the rule's chain part but treated the box as a harmless summary tool; I only saw the sentence after Sober's ORDER 55.
+- **How it was caught:** by the SA, who relayed ORDER 55 after the owner's earlier complaint about an SA's box.
+- **Cost:** the owner saw engineer-to-owner questions in a session of his that he should not have had to answer. No answer was acted on (every real question also went to Sober as a file line and a ring).
+- **Fix made:** from now on my wrap-up carries a recap only, no `ask` and no `actions`; any question to anyone goes to the SA in a file (the TASK's Questions or a line for the SA), as before.
+
 ## F-035 — 2026-11-02 — SA (Sober, Team A) — I asked the owner a question directly in my own session's question box (Q-GIT-1), skipping the PM
 - **Status:** NEW
 - **What happened:** After writing Q-GIT-1 (the commit convention) for the PM, I also put it to the owner as a question with
