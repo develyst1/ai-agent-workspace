@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>SOM สรุปงานหน้าบ้าน</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1f2328;--muted:#57606a;--line:#e6e8eb;--soft:#fff6ee;--orange:#e8650a;--orange-ink:#9a3f00;--green:#1a7f37;--green-soft:#eaf7ee}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#fff;color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,sans-serif;line-height:1.55}
+  .page{width:760px;padding:36px 36px 30px}
+  header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--orange);padding-bottom:16px;margin-bottom:22px}
+  .brand{font-weight:700;font-size:13px;color:var(--orange-ink);letter-spacing:.03em}
+  h1{font-size:26px;margin:4px 0 0}
+  .meta{font-size:13px;color:var(--muted);text-align:right}
+  h2{font-size:17px;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  .tag{font-size:12px;font-weight:600;padding:2px 10px;border-radius:999px}
+  .tag.paid{background:var(--soft);color:var(--orange-ink)}
+  .tag.free{background:var(--green-soft);color:var(--green)}
+  ul{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  li{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:11px 16px;border-top:1px solid var(--line);font-size:15px}
+  li:first-child{border-top:0}
+  li small{display:block;color:var(--muted);font-size:13px}
+  .amt{font-weight:700;color:var(--orange-ink);white-space:nowrap}
+  .fv{white-space:nowrap;font-size:14px;font-weight:600}
+  .fv s{color:var(--muted);font-weight:500;margin-right:6px}
+  .fv em{font-style:normal;color:var(--green)}
+  .total{display:flex;justify-content:space-between;align-items:baseline;margin-top:22px;padding:16px 18px;border-radius:14px;background:var(--soft)}
+  .total span{font-size:15px}
+  .total b{font-size:26px;color:var(--orange-ink)}
+  .sub{font-size:13.5px;color:var(--muted);margin:8px 0 0}
+  .foot{font-size:13px;color:var(--muted);margin-top:14px}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div><div class="brand">DEVELYST × SOM</div><h1>สรุปงานเพิ่มของหน้าบ้าน</h1></div>
+    <div class="meta">ตามที่พี่ฟีนเลือก<br>12 พฤศจิกายน 2569</div>
+  </header>
+
+  <h2>งานที่มีค่าใช้จ่าย <span class="tag paid">ตามที่เลือก</span></h2>
+  <ul>
+    <li><span>ปิดตารางทั้งวัน<small>แบบแอดมินจัดการเอง (อัปเกรดเป็นแบบระบบจัดการให้ภายหลังได้) · เร็วสุด 3 วันทำการ · ช้าสุด 6 วันทำการ</small></span><span class="amt">800</span></li>
+    <li><span>เปลี่ยนกิจกรรมทั้งคอร์ส<small>แบบไม่คืนส่วนต่าง · เร็วสุด 5 วันทำการ · ช้าสุด 11 วันทำการ (ส่วนยอดเงินหลังบ้านขึ้นพร้อมเมนูรายได้)</small></span><span class="amt">1,900</span></li>
+    <li><span>ตารางเรียนหลายวันต่อสัปดาห์ / ครั้งละ 2 ชม.<small>เร็วสุด 5 วันทำการ · ช้าสุด 15 วันทำการ (นับหลังได้คำตอบรายละเอียดจากทาง SOM)</small></span><span class="amt">1,850</span></li>
+  </ul>
+  <p class="sub">ระยะเวลานับจากวันที่ตกลงจนพร้อมให้ทดลองใช้ ข้อ 1 และ 2 ทำพร้อมกัน · ครบทั้ง 3 ข้อ เร็วสุดประมาณ 2 สัปดาห์ ช้าสุดประมาณ 4 สัปดาห์</p>
+
+  <h2>งานที่ทีมทำให้ <span class="tag free">ส่วนลด 100%</span></h2>
+  <ul>
+    <li><span>SOM Dashboard ปรับตาม feedback ทุกรอบ<small>นับตามนิยามของ SOM · เลือกช่วงเวลา · Coach Capacity · Gender / Nationality · กราฟวงกลม</small></span><span class="fv"><s>2,800</s><em>0</em></span></li>
+    <li><span>ย้ายคอร์สไปสาขาอื่นจากหน้าบ้าน</span><span class="fv"><s>350</s><em>0</em></span></li>
+  </ul>
+  <p class="sub">มูลค่ารวม 3,150 บาท ไม่มีค่าใช้จ่าย</p>
+
+  <div class="total"><span>รวมค่าใช้จ่าย</span><b>4,550 บาท</b></div>
+
+  <p class="foot">งานหลังบ้านที่แจ้งผ่าน feedback ถึงวันที่ 17 พ.ย. ไม่มีค่าใช้จ่าย · ใบเสนอราคาฉบับจริงจะส่งให้อีกครั้ง</p>
+</div>
+</body>
+</html>

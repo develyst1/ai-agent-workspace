@@ -297,3 +297,15 @@ It runs **once when this seat opens**. The scheduler offer is withdrawn. My repl
 - **Handed:** nothing to hand — the QA harness calls `openCard(browser, 'som-gr')` and the
   credential never leaves `access.txt`.
 - **Result:** `UNLOCKED`
+
+---
+
+## UNLOCK-012 · 2026-11-13 00:58 · bo-ceo renewed for Porter/Tanya (TEST-155 · TASK-942 park-fee revenue)
+
+- **Request:** `REQUEST-porter-to-pokervault-2026-11-13-bo-ceo.md` — renew; Porter's check said LAPSED.
+- **Ran:** `node picklocker/login.mjs bo-ceo`, then `check-card.mjs bo-ceo`.
+- **Verified:** status **200** · `https://backoffice-som.develyst.online/dashboard` · **AUTHENTICATED** ·
+  `check-card` exit 0 · `role=ceo` on the card cookie.
+- **Cause:** the ~1-day JWT from 2026-11-11 23:40; the account is fine.
+- **Handed:** `picklocker/state/bo-ceo.json`
+- **Result:** `UNLOCKED`

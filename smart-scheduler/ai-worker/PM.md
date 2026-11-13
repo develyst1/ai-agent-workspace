@@ -243,6 +243,7 @@ is. It exists because a cold session that reads a stale situation does not look
 fresh, it looks lost.
 
 - **Read it FIRST** on opening — before `board.md`, before the log.
+- **Then `OWNER-NEXT-BATCH.md`** (the owner's not-yet-dispatched batch + the decisions only he settles; moved off the board, ORDER 67, 2026-11-13). PM-only.
 - **Then verify it** against `board.md` and today's log. **Report any
   disagreement to the owner.** Never silently trust it; never silently fix it.
 - **Rewrite it before ending any session.** It is **REPLACED, never appended

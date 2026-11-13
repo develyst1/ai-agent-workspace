@@ -28,12 +28,12 @@ Porter adds a row the moment an item is accepted (source = the verbatim LINE fil
 | 18 | 11-09 | F5 a leave on a make-up should not land on the same date | ขวัญ 17:31 #5; REQ-5006; CHECK F5 | Round 4 (Proposed FO page) | SB 0.5 d; reverses TASK-551 (owner) | — | GR to build |
 | 19 | 11-09 | F6 Dashboard per her latest feedback | ขวัญ 17:31 #6; REQ-5009 | — | owner: Palm or us | — | HELD |
 | 20 | 11-11 | F4 / F1 / F3 quotes: Trolley cards 21 (F4 A/B), 22 (F1), 23 (F3 FO+BO) on SOM System Dev → NEW REQUIREMENT, waiting for the doc team | owner 11-10/11 | n/a (front office) | CONCEPT-F4 / CHECK F1 / CONCEPT-F3 | — | QUOTE |
-| 21 | 11-11 | Per-MENU permissions in the back office, like the front office (not per block) | ขวัญ LINE 09:21 + 10:51 | Round 5 | BB+BF role/permission model per menu | — | SIZE (may exceed 1–2 d → owner) |
+| 21 | 11-11 | Per-MENU permissions in the back office, like the front office (not per block) | ขวัญ LINE 09:21 + 10:51 | Round 5 built (held) → **round 8 live** (TASK-954) | BB+BF role/permission model per menu (≈ 9–10 d, CHECK-2026-11-11; from 14 Nov in the block plan) | — | BUILD on GR, free (owner 11-12) |
 | 22 | 11-11 | 16-point UI list (names, order, layout, labels) | ขวัญ LINE 13:36 | Round 5 | BF labels/layout | — | OPEN (after 14) |
 | 23 | 11-11 | Revenue Summary: a category total box (Unit + Revenue) + Unit on the top box | ขวัญ LINE 13:50–13:51 | Round 5 | BB+BF Revenue Summary | — | OPEN (after 14) |
 | 24 | 11-11 | Collapsible left-menu groups | ขวัญ LINE 13:52 | Round 5 | BF shell | — | OPEN (after 14) |
 | 25 | 11-11 | Product: image upload back; commission group is a dropdown; she sets the category | ขวัญ LINE 13:36 #13 | Round 5 | BF/BB product | — | OPEN (after 14) |
-| 26 | 11-11 | Per-menu permissions as a 2-option quote: Revenue-only ≈ 600 ฿ (recommended) / every menu ≈ 2,500 ฿ | owner 11-11 "ทำเป็นออปชันให้เขาเลือก" | Single switch stays (round 4/5) | see row 21 | Trolley card 24 | QUOTE |
+| 26 | 11-11 | Per-menu permissions as a 2-option quote: Revenue-only ≈ 600 ฿ (recommended) / every menu ≈ 2,500 ฿ | owner 11-11 "ทำเป็นออปชันให้เขาเลือก" | Single switch stays (round 4/5) | see row 21 | Trolley card 24 | ~~QUOTE~~ SUPERSEDED 11-12: owner "หลังบ้าน เราให้feedbackแก้ฟรีจนถึง 17" → row 21, free, every menu, GR round 8 (TASK-954) |
 | 27 | 11-12 | Commission groups: EDIT an existing group (name + amount), not only Add | ขวัญ LINE 02:54 | Round 6 | BB+BF commission group edit | — | OPEN (after 14) |
 | 28 | 11-12 | One consistent row/column alignment on EVERY back-office page (extends 11/11 #4,7,8,15,16) | ขวัญ LINE 03:16 | Round 7 (A + B pages) | BF: shared table/form alignment rules | — | OPEN |
 | 29 | 11-12 | Which menu each "Proposed" item lives under (question) | ขวัญ LINE 03:15 | Answer (Sober lists the Proposed items + their menu) | — | — | OPEN |

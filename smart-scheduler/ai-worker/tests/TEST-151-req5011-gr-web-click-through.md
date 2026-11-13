@@ -182,3 +182,177 @@ Same instrument (som-gr card, headless, CEO, mock); positions measured, then jud
 - **Entries (Other Income) ✓:** the Transportation trip card stacks Person · Date · **School · Trip** one per row. The four cards (OT Hour, Merit, Transportation trip, Other ±) are still side by side as cards, each stacked inside. The Detail table: Date / Person / Description left, Amount right.
 - Unchanged observation: the date inputs show their value right-aligned (Stock In Date, Other Income Date). Porter's call, as in round 7.
 **Round 7 overall:** all 32 pages now meet the RULE as I measured it, with the observations from round 7 noted.
+
+## GR round 8 LIVE (Porter 2026-11-12; release 20261112-121234; TASK-954 § Review), 2026-11-12: ✅ TEST_PASSED on every Done line · 2 observations
+**Instrument:** som-gr card, headless, 1440 px, mock. **Live page md5 `0ba926f4635859c1dfa9d7d2c2fa9a52` = Sober's round-8 build** ✓. The viewer was switched through the real «Viewing as» dropdown (CEO · Admin (Khwan) · Admin (Kung) · Coach). **0 console / page errors.** Every tick I changed was put back (mock state; a reload resets it anyway).
+| Check | Seen on the live site |
+|---|---|
+| CEO · User Setting | headers Username · Role · Person · Status · **Menu Access** · Action; **no «Revenue Visible» switch**. phin (CEO) «All»; kung «11 of 18 menus» + Edit; khwan «17 of 18 menus» + Edit; coaches «—»; the deactivated admin «11 of 18», with Edit greyed out ✓ |
+| Modal «Menu access — Kung» | groups SALARY · REVENUE · STOCK · NOTIFICATION · REPORT, with a group checkbox each (half-filled when partly ticked) + **18 pages**; **no PROPOSED**; **none** of Payment Setting / Monthly Payment / Payment Detail / Daily Training Report / Salary Report / User Setting / **Bonus (Conversion)** (Sober's shell change is live) ✓. «Notification Setting» is tickable (Sober: not money) |
+| Defaults | Khwan: Home · Employee · Other Income · Summary · Detail · Add Manually · Refund · Type and Category · ECA Payment · Product · STOCK IN · Import from Excel · STOCK OUT · Stock Demo · Low Stock · Stock Report · Stock Report filters · Notification Alert · All Report. **Kung: the same without the 6 REVENUE pages.** Equal to Fern's "before" lists ✓. Coach: Payment Detail · Notification Alert ✓ |
+| Untick → gone | CEO unticks STOCK › Product for Kung → toast «Kung: Product off», his cell 11 → **10 of 18**; as Kung the menu has no Product and **`#/stock/products` shows the lock page** ✓. Re-tick → Product is back in his menu and the page opens ✓ |
+| Tick → appears | CEO ticks REVENUE › Summary for Kung → **Summary appears in his menu and the page opens** ✓ (then unticked again: 11 of 18) |
+| Merit stays CEO-only | as Kung: Other Income has **no Merit card**; Employee has **no Merit column** (Name only) ✓. Control: the CEO sees Merit on Other Income ✓ |
+| Never-grantable by URL | as Kung: `#/salary/payrun` and `#/proposed/conversion` → lock page ✓ |
+| 375 px | User Setting and the modal: 0 horizontal overflow ✓ |
+**Observations (Porter's call, not defects by TASK-954):**
+- **O-151-8a, a dead-end shortcut:** with only Summary ticked, Kung's Revenue Summary still shows the header buttons **Detail · Refund · ECA Payment · Add Manually** (and the per-row **View**). Each leads to the lock page. The gate holds, but the admin is offered pages he can't open. Hiding those buttons when the page isn't granted would fix it. Revenue pages are Team C's under the round-7 RULE's ownership list.
+- **O-151-8b, the lock page text is per role:** "This role cannot see this page / The Admin role does not see this page (Product)". With per-person menus, another Admin (Khwan) **does** see Product, so the sentence is no longer true. Something like "You don't have access to this page" would fit. Home's welcome text also still says "switch roles (CEO / Admin / Coach)", which is still true for the preview.
+**Round-8 LIVE screenshots for the customer** in `tests/evidence/gr-round-8-live/` (mock data):
+- `01-user-setting-menu-access.png`: User Setting with «Menu Access» (N of 18 menus + Edit).
+- `02-menu-access-modal.png`: the «Menu access — Kung» modal (groups and per-menu ticks).
+- `03-admin-product-unticked-no-access.png`: Kung after Product was unticked: gone from the menu, and the lock page on its URL.
+**NOT_TESTED:** Khwan's untick/tick (the same code path, tested on Kung) · a group checkbox click (whole group on/off) · the deactivated admin's view (not in «Viewing as»).
+
+## GR round 9 LIVE (Porter 2026-11-12; release 20261112-123023; TASK-955 § Review), 2026-11-12: ✅ TEST_PASSED — O-151-8a and O-151-8b fixed
+**Instrument:** som-gr card, headless, 1440 px, mock. **Live md5 `dc7a73dc0e980018b33c9c895ff73bd4` = Sober's round-9 build** ✓. Ticks were made as CEO in User Setting, then the viewer switched to Admin (Kung) through the real «Viewing as» dropdown; hash navigation (the ticks live in memory). **0 console / page errors.** Kung was put back to his default (11 of 18) at the end.
+Buttons in `main`, per page, for each viewer (LOCK = the lock page):
+| Page | CEO | Kung: Summary only | Kung: + Detail | Kung: + Detail, Product off, Alert off, Notif. Setting on | Kung: all ticked |
+|---|---|---|---|---|---|
+| Revenue Summary | Detail · Refund · ECA Payment · Add Manually · Apply Filter · View × 8 | **Apply Filter only** ✓ | Detail · Apply Filter · View × 8 ✓ | same ✓ | = CEO ✓ |
+| Revenue Detail | Summary · Export · Add Manually · Apply filters | LOCK | Summary · Export · Apply filters (no Add Manually) ✓ | same ✓ | = CEO ✓ |
+| Add Manually / Refund / ECA Payment | Summary · (date) · [Cancel] · Save | LOCK | LOCK | LOCK | = CEO ✓ |
+| Import from Excel | Export · Add product manually · Choose file · Cancel · Apply import | unchanged (Product open) | unchanged | **no «Add product manually»** ✓ | = CEO ✓ |
+| STOCK OUT | Product · Add item · Cancel · Save | unchanged | unchanged | **no «Product» button** ✓ | = CEO ✓ |
+| Notification Setting | Notification Alert | LOCK | LOCK | **no buttons** (page opens) ✓ | = CEO ✓ |
+- **Cancel stays put without Product ✓:** as Kung with Product unticked, Cancel on STOCK OUT and on Import from Excel stays on its own page; neither lands on the lock page.
+- **8b lock text ✓:** «**You don't have access to this page** / Product is not open for this login. The CEO can give access in User Setting. In this preview, switch «Viewing as» at the top to see it.» No role named.
+**Round-9 LIVE screenshots for the customer** in `tests/evidence/gr-round-9-live/` (mock data):
+- `01-admin-summary-only-no-links.png`: Kung with only Summary of REVENUE ticked. The Summary page has no buttons to Detail / Refund / ECA / Add Manually and no row View.
+- `02-lock-page-text.png`: the new lock-page text (Product unticked).
+**NOT_TESTED:** Khwan (the same rule, tested on Kung) · "Apply import" with Product unticked (needs a file; Sober read it in code) · phone width this round.
+
+## GR round 10 (TASK-956, ขวัญ's 11-12 approvals) — 2026-11-12 — ⚠️ TEST_FAILED on 1 item (D-151-10a, School Distance) · everything else ✅
+**Build:** live `https://som-gr.develyst.online` md5 `207fcd1abad6aa87d713c3ee2ca4b299` = Sober's round-10 build ✓. Headless Chrome with the som-gr card. The viewer was switched through the real «Viewing as» box. Console/page errors: **0** on every run. Mock data only. Scripts: my scratchpad `gr32`–`gr44`.
+**Slice C (Flash):**
+- **ECA Payment ✓.** The form has one field per row: Status · Payment Date · Mode · VAT % (7) · WHT % (3). **Her example, Price 100 × 10 students × 10 classes, «Amount includes VAT» → Total 10,000 ฿ · Before VAT 9,345.79 · VAT 654.21 · Total incl. VAT 10,000.00 · WHT 280.37 · Net received 9,719.63**, exactly. There is one net line, tagged «Proposed: to confirm».
+  - «excludes»: 10,000 → 10,000.00 / 700.00 / 10,700.00 / 300.00 / 10,400.00 ✓.
+  - «net after WHT»: 10,000 → 9,615.38 / 673.08 / 10,288.46 / 288.46 / 10,000.00, and the lines add up ✓.
+  - **Pending ✓:**
+    - Payment Date hides while Pending. Saving gives the toast «saved as Pending … counts as revenue once it is Received», and the total stays at **64,800.00**.
+    - Mark received opens a modal with Payment Date and Amount. Save → Received, total **74,145.79** (= 64,800 + 9,345.79) ✓.
+    - Received rows have no action. Delete on a Pending row asks «Delete this Pending entry? … cannot be undone». Cancel keeps the row; Delete removes it.
+    - Status filter: All 3 · Pending 1 · Received 2 ✓. «Revenue = Before VAT · Proposed: to confirm» sits next to the total ✓.
+- **All Report → REVENUE (CEO) ✓.** Box 1 is by Category (Aug–Nov + Total) and box 2 by Type. **Every column's rows add up to its Total Revenue row** (both boxes 1,320,000 / 1,540,000 / 1,610,500 / 1,482,000 / 5,952,500 ฿), with Refund (Expense) under it. The Excel button gives the toast `report-revenue.xlsx`.
+- **All Report → CONVERSION ✓.** Columns Coach · 1st Trial (Student) · Open Course (After Trial) · Conversion % · Renewal Course. Every % = Open ÷ Trial, rounded (58/44/38, Total 48) ✓. **All 9 count links open a list whose length = the count** ✓. Month ‹ › and Branch filters are there.
+- **Admin (Kung, and Khwan) ✓:** tabs REPORT · STOCK · CHECK IN · COURSE · STUDENT · CONVERSION. **No REVENUE** and no SALARY. CONVERSION shows no ฿ and no Excel button.
+- **Exports ✓:**
+  - Bonus (Conversion): Excel → `conversion-2026-10-01_2026-10-31.xlsx`, PDF → `.pdf`.
+  - Revenue Summary: Excel → `revenue-summary-2026-10-16.xlsx`.
+- **PROPOSED menu ✓:** the only `/proposed` links left are «Bonus (Conversion)» (under SALARY) and «Move course to branch».
+**Slice B (Fanta):**
+- **Payment Setting Edit ✓ on the cards.** There are 18 Edit buttons:
+  - Extra Hour rate 350 → 375 → Save → the card shows «375 ฿ per hour», with the toast «Extra Hour saved — applies from the next pay period» ✓.
+  - Transportation: Edit → change → Cancel → unchanged ✓.
+  - Commission Royal baby 50 → 55 → Save → shows 55 ฿ ✓.
+  - Each dialog has one field per row with Cancel/Save bottom-right.
+- **Product filter bar ✓:** one bar (Type · Product · Search), the same as slice A.
+- 🔴 **D-151-10a (minor; probably older than round 10): School Distance Add and Edit change nothing except the toast.**
+  - **Repro:** as the CEO, Payment Setting → School Distance → STA (12 KM) → Edit → type 13 → Save.
+    - **Expected:** STA shows 13 KM.
+    - **Actual:** toast «Distance of STA changed to 13 km», but the table still says **12 KM**, reopening Edit shows 12, and so does leaving and coming back.
+  - **Add school:** typing «QAS» and 7 → Save → toast «School **NIS (18 km)** added …», which is not what was typed, and **no row is added**.
+  - Round 7 checked only these dialogs' layout, so this may predate round 10. It sits on the page ขวัญ approved for editing.
+**Slice A (Fern) + Product ✓**, as the CEO **and** as Admin (Kung, whose defaults already include all of STOCK). Every list:
+- Type has «All» first and offers only the types that list has.
+- Type narrows the list: Product 12→3, Low Stock 10→9, Demo 11→7, Report Sales 5→1, Balance 12→3, Movement 8→1.
+- Product narrows it further; «All» restores it; Search «zzz» shows «No matching items»; clearing the search restores it.
+- On Stock Report the bar works on all 3 tabs, and the Movement tab has «Movement type».
+**375 px:** no horizontal overflow on All Report (REVENUE and CONVERSION), ECA, Payment Setting, Stock Report / Low Stock / Demo / Product, Bonus (Conversion), Summary ✓.
+**Observations (not defects):**
+- **O-151-10a:** Payment Setting edits only one number per card:
+  - Extra Hour = the rate only; Weekday > 4th / Weekend > 5th can't be edited;
+  - Transportation = per-KM only; Minimum / Trip can't be edited;
+  - OT = the multiplier;
+  - Bonus = the amount; condition and Pay to can't be edited.
+  - ขวัญ asked for «rates, commission rules». Whether the thresholds and minimums count is Porter's to judge.
+- **O-151-10b:** the conversion name list for Pete · 1st Trial · Oct has **12 rows but 10 children**: «Nong Phum» and «Nong Baibua» each appear twice, with different dates and activities. The header says «1st Trial (Student)» and «12 students». If the column counts students, it should be 10; if it counts trials, the label is off. The mock only has to be consistent, but ขวัญ may read it.
+- Payment Setting's commission notes are still in Thai (as in earlier rounds; not this round's change).
+**Round-10 LIVE screenshots** in `tests/evidence/gr-round-10-live/` (mock data, invented names):
+- `01-all-report-revenue-ceo.png`: REVENUE, both boxes.
+- `02-all-report-conversion-modal.png`: CONVERSION with Pete's 1st Trial list open.
+- `03-eca-form-10000-incl-vat.png`: ขวัญ's 10,000 example → 9,345.79 / 654.21 / 10,000.00 / 280.37 / 9,719.63.
+- `04-eca-history-after-mark-received.png`: after Mark received; total 74,145.79.
+- `05-payment-setting-edit-bonus50.png`: the Edit dialog.
+- `06-admin-kung-all-report-conversion.png`: Admin, with no REVENUE tab.
+**NOT_TESTED:** Conversion month ‹ › / Branch switching (present, not exercised) · the Apply-import path · Khwan on the Stock bars (same code as Kung).
+**Test data:** none persists. GR is in-memory mock, and every change made is gone on reload.
+
+## GR round 10b (TASK-956 § Round 10b) — 2026-11-12 — ✅ PASS: D-151-10a fixed, O-151-10a and O-151-10b done
+**Build:** live md5 `e9590dc66e45893ed6444db065012c39` = Sober's round-10b build ✓. Headless, som-gr card, real «Viewing as» box. Console/page errors: **0**. Scripts: my scratchpad `gr45`–`gr47`.
+- **D-151-10a ✓ fixed.**
+  - STA Edit 12 → 13 → Save: the row shows **13 KM**, the toast says «changed to 13 km», and reopening shows 13.
+  - **Add school «QAS» + 7** → a row «QAS 7 KM» appears, with the toast «School QAS (7 km) added».
+  - Save is disabled on an empty name, on the duplicate name STA, on KM 0 and on KM −3.
+- **O-151-10a ✓, every number is editable**, each dialog one field per row:
+  - **Extra Hour:** rate, Weekday and Weekend thresholds. 360 / 3 / 6 → the card reads «360 ฿ per hour · > 3rd HR · > 6th HR», with a toast.
+  - **OT:** the multiplier. 1.2 → «Salary ÷ 26 ÷ 8 × 1.20».
+  - **Bonus 50 / 100:** Amount, plus Condition and Pay to as selects. Bonus 50 → 60 ฿ with Condition «Renewal Course» shows on the card. Pay to has a single option, «1st Coach», the only value the page shows.
+  - **Transportation:** Car and Motorcycle, each with per-KM and Minimum / Trip. Car Min 70 and Motorcycle 4 ฿ show on the card.
+  - **Cancel** (Bonus 100 amount set to 999) leaves the card unchanged ✓.
+  - Admin Kung and Khwan both still get «You don't have access to this page» ✓.
+- **O-151-10b ✓, counts are distinct children.**
+  - Pete · Oct · 1st Trial = **10**, and the modal reads «10 students (one row per child)» with 10 rows. Children with 2 trials show both dates and courses in one row.
+  - **All 92 non-zero counts** were checked: every month with data (Aug–Nov) × branch (All / Bravo / Other) × coach × column (1st Trial · Open Course · Renewal). On each, count = rows = distinct names; a 0 has no link. Lists hold 54 multi-date rows. There are no suffixed names.
+  - The Total row = the sum of the coach rows, and every % = Open ÷ Trial (both 0 off). All = Bravo + Other on the cells I compared. Jun and Jul show no table (no data).
+- **Regression ✓:** the ECA 10,000 example still gives 9,345.79 / 654.21 / 10,000.00 / 280.37 / 9,719.63; Status filter 1 / 2 / 3.
+**Screenshots** in `tests/evidence/gr-round-10-live/`:
+- New: `07-payment-setting-edit-bonus50-10b.png` (Amount + Condition + Pay to) and `08-conversion-pete-oct-trial-10b.png` (10 children, one row each).
+- **Removed as out of date:** `02-…conversion-modal.png` (12 rows) and `05-…bonus50.png` (one field).
+- Kept: 01, 03, 04, 06.
+**NOT_TESTED:** phone width this round; the edit dialogs as Khwan (locked out).
+**Test data:** none persists (in-memory mock).
+
+## GR round 11 (TASK-957, ECA tweaks, ขวัญ 22:32) — 2026-11-12 — ✅ PASS · 1 small observation
+**Build:** live md5 `6e26e1cc577ec3971cb865b911d25ffd` = Sober's round-11 build ✓. Headless, som-gr card, CEO. Console/page errors: **0**. Scripts: my scratchpad `gr48`–`gr50`. Inputs: Price 100 × Student 10 × Class 10 = 10,000.
+- **1 · Default mode ✓.** A new entry opens on «Amount includes VAT». After Save the form resets to «includes VAT» with both ticks on and Term empty.
+- **2 · Tick boxes ✓.** VAT ☑ and WHT ☑ by default, each beside its % box.
+  - **Both ticked:** ขวัญ's example → **9,345.79 / 654.21 / 10,000.00 / 280.37 / 9,719.63** ✓. Modes offered: excludes · includes · net.
+  - **VAT unticked:**
+    - The VAT % box is disabled. «includes» is not offered, and the mode switched to «Amount (no VAT)».
+    - 10,000 → Before **10,000.00** · VAT **–** · Total **10,000.00** · WHT **300.00** · Net **9,700.00** ✓.
+    - With «net after WHT»: Before 10,309.28 · VAT – · WHT 309.28 · Net 10,000.00 (= Amount ÷ 0.97) ✓.
+  - **WHT unticked:**
+    - «net after WHT» is not offered. includes VAT 10,000 → WHT **–** · Net **10,000.00** ✓.
+    - With «net» selected first, unticking WHT switches the mode to «includes VAT» ✓.
+  - **Both unticked:** the Mode select shows «Amount (no VAT)», **disabled**; Net = **10,000.00** = Amount ✓.
+  - **Saved row:** a VAT-off / WHT-on row (KIS Term QA, Received) shows Before **10,000.00** and Net **9,700.00**. The revenue total rose by 10,000 to 74,800.00 ✓.
+- **Mark received ✓:**
+  - A Pending entry (STA Term P, includes VAT) saved with Payment Date hidden. Mark received → Save → Received 16/10/26, and the total moved +9,345.79 to 84,145.79.
+  - Status filter: Pending 1 · Received 4 · All 5 ✓.
+- **3 · Compact layout ✓.**
+  - **1280:** the rows are School · Term · Status / Price · Student · Class / Payment Date · Mode (Mode across 2 cells) / VAT ☑ % · WHT ☑ %. Save is bottom-right of the form. **The summary card sits on the right** with Total Amount and the 5 lines, and «Proposed: to confirm» stays on Net received.
+  - **While Pending:** Mode · VAT · WHT share row 3, and there is no Payment Date.
+  - **375 px:** one column, the summary card **under** the form, and no horizontal overflow (scrollWidth 375) ✓.
+- **O-151-11a (minor, not this round's change):** at 375 px the History table's Status badges are cut off («Pend…», «Recei…»), and Term wraps («Term / 3»). The page itself doesn't overflow. Porter's call whether it matters on a phone.
+**Screenshots** in `tests/evidence/gr-round-11-live/`:
+- `01-eca-1280-form-summary.png`: the 10,000 example, form and summary side by side.
+- `02-eca-375.png`: phone width, the summary under the form.
+**NOT_TESTED:** Admin Khwan on ECA (the page logic is the same; her access was checked in round 9/10) · Delete (unchanged, passed in round 10).
+**Test data:** none persists (in-memory mock).
+
+## GR round 12 (TASK-958, Revenue Summary readable, ขวัญ 22:59 + O-151-11a) — 2026-11-12 — ✅ PASS
+**Build:** live md5 `21731a389bf1bd92b5d62ee2d0fa347e` = Sober's round-12 build ✓. Headless, som-gr card, real «Viewing as» box. Console/page errors: **0**. Scripts: my scratchpad `gr51`–`gr52`.
+- **Side by side ✓ (Today, MTD and YTD alike).**
+  - **1280:** the Type card is at x280, w464 and the Category card beside it at x760, w656.
+  - **1024:** they stack, each w720 (= `maw`).
+  - **375:** they stack at w343. No page overflow at any width.
+- **Numbers ✓.** On every tab, each table's rows add up to its Total, and Type Total = Category Total:
+  - Today: 82,700 ฿ (16 units), Refund −5,000;
+  - MTD: 757,475 (208), Refund −15,000;
+  - YTD: 7,113,915 (2,067), Refund −96,000.
+  - Today's values are the same as in my round-10/11 runs, which used the same seed.
+- **Row style ✓:** zebra rows. Total Revenue is bold with a top border and tint, and Refund is red under it (seen in `01`). Detail and All Report REVENUE are also striped, with the Total row bold.
+- **Type row → Detail ✓.**
+  - The 8 Type rows have `tabindex=0`, a chevron and a pointer cursor.
+  - Click on COURSE → `#/revenue/lines?type=COURSE`. Enter on a focused «1st Trial» row → `?type=1st Trial`. Both work on all 3 tabs.
+  - **Category rows, Total and Refund** have no chevron and no pointer; a click stays on Summary ✓.
+- **Admin Kung with only Summary ticked** (ticked by the CEO, then put back to «11 of 18»): no tabindex, no chevron, no pointer. Click and Enter both stay on Summary, with no console error ✓.
+- **O-151-11a ✓ fixed:** at 375 px the ECA History badges read «Pending» / «Received» in full, «Term 3» stays on one line, the table scrolls inside its own box, and the page doesn't overflow.
+- **Observation (not this round's change):** a Type row clicked on **MTD or YTD** opens Detail on **Day 16/10/26**, not on that period. COURSE is 47 units on MTD, but Detail shows today's lines. This is the same target the old View button had. Porter's call whether ขวัญ will expect the period to carry over.
+**Screenshots** in `tests/evidence/gr-round-12-live/`:
+- `01-summary-1280-side-by-side.png`
+- `02-summary-375.png`
+- `03-eca-history-375.png`
+**NOT_TESTED:** dark mode tint · Khwan (same rule as Kung).
+**Test data:** none persists (in-memory mock). Kung's ticks were restored.

@@ -95,3 +95,6 @@ per-field is speculative YAGNI. If the owner ever needs to correct a label on an
 Source + ordering assertions can't execute "ended course + POST extra-session → 409, **zero rows written**" without a
 DB. **That is the resulting-state test Part A missed — it must run live on `sid` before Part B is signed** (Tanya/owner,
 ~3 min, the same path the owner used to find the hole). Routed to @Porter. Everything else is DONE.
+
+## Status pass 2026-11-13 (ORDER 67, Sober)
+- DONE — my review verdict is already in this file (Status line / § Review); the code is in smart-scheduler-back (grep 2026-11-13). The board row still read REVIEW only because it was never updated. (`assertCourseWritable`, 9 files)

@@ -807,3 +807,14 @@ The scheduled audit (`otto-daily-security-audit`, 20:30) compares against `serve
   - Box: release `20261111-201644` (previous `20261111-201241` kept); server md5 `5af7555e…dbf0372` matches. No password → 401.
 - **2026-11-12 — GR web redeploy #10** (round 7; Porter relayed for Sober, whose sends are capped). md5 `2118f70a575e33a7bce42b224a5c4c59` matches on the PC and the box. Release `20261111-204103` (previous `20261111-201644` kept). No password → 401.
 - **2026-11-12 — GR web redeploy #11** (round 7b, relayed by Porter for Sober). md5 `2377855377dab248b9af79de4e550026` matches on the PC and the box. Release `20261111-205156` (previous `20261111-204103` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #12** (Sober, round 8: per-menu permissions, TASK-954). md5 `0ba926f4635859c1dfa9d7d2c2fa9a52` matches on the PC and the box. Release `20261112-121234` (previous `20261111-205156` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #13** (Sober, round 9: hide buttons to pages the viewer can't open + lock-page text, TASK-955). md5 `dc7a73dc0e980018b33c9c895ff73bd4` matches on the PC and the box. Release `20261112-123023` (previous `20261112-121234` kept). No password → 401.
+- **2026-11-12 — GR web redeploy #14** (Sober, round 10: TASK-956). md5 `207fcd1abad6aa87d713c3ee2ca4b299` matches on the PC and the box. Release `20261112-141003` (previous `20261112-123023` kept). No password → 401.
+  - **Blip:** in the ~2 minutes after the deploy, about 4 of 14 HTTPS calls from the owner's PC to `som-gr` failed (TLS error 35 or a 15 s timeout).
+    - Over the same window `line-bot` and `cornerchat-api-sit` were 6/6 OK.
+    - The box was healthy: load 0.5, nginx active, local 401 fine.
+    - A batch of 10 minutes later was 10/10 OK on both.
+  - **Not explained:** the PC↔Cloudflare path, or the Cloudflare edge, are the suspects; the box shows nothing. nginx `error.log` needs sudo, so it was not read. Re-test if it happens again.
+- **2026-11-12 — GR web redeploy #15** (Sober, round 10b). md5 `e9590dc66e45893ed6444db065012c39` matches on the PC and the box. Release `20261112-143446` (previous `20261112-141003` kept). Gate 401 in 5/5 tries, no blip this time.
+- **2026-11-12 — GR web redeploy #16** (Sober, round 11). md5 `6e26e1cc577ec3971cb865b911d25ffd` matches on the PC (1,324,687 bytes) and the box. Release `20261112-154503` (previous `20261112-143446` kept). Gate 401 in 5/5 tries. Note: my first try ran `sudo -n deploy-app` and was refused (deploy-app runs as deploy, no sudo); nothing changed, the second try without sudo deployed.
+- **2026-11-12 — GR web redeploy #17** (Sober, round 12). md5 `21731a389bf1bd92b5d62ee2d0fa347e` matches on the PC (1,325,537 bytes) and the box. Release `20261112-162516` (previous `20261112-154503` kept). Gate 401 in 5/5 tries.

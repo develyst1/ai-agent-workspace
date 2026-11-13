@@ -1,0 +1,54 @@
+{
+ "checks": [
+  {
+   "name": "every coach × month × branch × column (108 cells): count = modal rows = distinct names, courses match dates",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Total row = sum of the coach rows in every month/branch",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "Conversion % follows (coach rows and Total)",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "At least one child row carries two dates (a child with two trials / renewals)",
+   "pass": true,
+   "detail": "54"
+  },
+  {
+   "name": "No child appears under two coaches in one month",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Every name is «Nong <Nickname>» with no letter suffix",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "No nickname is shared by two children (distinct across the whole mock)",
+   "pass": true,
+   "detail": "136 distinct of 136 child-months"
+  },
+  {
+   "name": "Pete · Oct 2026 · 1st Trial = 10, with 10 rows",
+   "pass": true,
+   "detail": "10 / 10"
+  },
+  {
+   "name": "Pete · Oct: its Conversion % = 7 ÷ 10 = 70%",
+   "pass": true,
+   "detail": ""
+  }
+ ],
+ "passed": 9,
+ "failed": 0,
+ "modalSample": "10 students (one row per child)\n\nStudent\tDate\tCourse\nNong Lita\t01/10/26\t1st Trial (Inline Skate)\nNong Max\t01/10/26\t1st Trial (Skateboard)\nNong Kwang\t06/10/26\t1st Trial (Surfskate)\nNong Mai\t06/10/26\t1st Trial (Inline Skate)\nNong Lek\t11/10/26, 18/10/26\t1st Trial (Surfskate), 1st Trial (Skateboard)\nNong Mam\t11/10/26, 18/10/26\t1st Trial (Inline Skate), 1st Trial (Surfskate)\nNong Mook\t11/10/26\t1st Tria",
+ "consoleProblems": [],
+ "networkRequests": []
+}

@@ -7,33 +7,38 @@
 
 ## What we are in the middle of
 
-- REQ-001 (first course: repo folder structure, front page, class schedule, course outline) is READY_FOR_SA.
-  `[owner-approved 2026-11-12 — "เริ่มเขียนเลย"]`
-- The second-reading round settled the Fastwork phrase without asking the owner: one front page, the course plan on
-  top for a person still deciding, "start here" below. ACs amended from the QA's check. `[PM-decided]`
-- Next owner touchpoint: AC-1 — the SA's one-screen proposal (tree, front-page mock, schedule, class count/length,
-  two example languages), relayed by the PM for his yes. `[owner-approved 2026-11-12]`
+- **The first learner is real and paid: 8 h, 4 evenings 2026-11-16..19 18:30–20:30 + bonus 1 h 2026-11-20.**
+  `[customer-validated 2026-11-12, Fastwork]` — `talks/2026-11-12-learner-fastwork-chat-summary.md`.
+- Owner chose: 12-class full course in the repo; this learner takes classes 01–04, re-cut to end with one small
+  calculation program. `[owner-approved 2026-11-12 — "เอาตามนั้น"]`
+- REQ-001 (repo structure, front page, schedule): SA revising SPEC-001 for the owner's AC-1. Due 2026-11-15.
+- REQ-002 (class 01–04 + bonus material): READY_FOR_SA; class 01 due 2026-11-15. `[owner-approved 2026-11-12]`
 
 ## What each thread is waiting on, and from whom
 
 | Thread | Waiting on | Since | What unblocks it |
 |---|---|---|---|
-| REQ-001 SPEC / AC-1 proposal | the SA | 2026-11-12 | SPEC lands; PM shows it to the owner |
-| TEST-001 draft | the QA | 2026-11-12 | drafted from the REQ |
+| SPEC-001 revision | the SA | 2026-11-12 | revised SPEC → PM shows the owner AC-1 (languages, AI share, format, course name, catalogue) |
+| REQ-002 SPEC/TASKs | the SA | 2026-11-12 | REQ-001 AC-1 for the language; class 01 drafted in parallel |
+| TEST drafts | the QA | 2026-11-12 | TEST-001 exists; REQ-002's TEST to draft |
+| Fastwork chat | the learner | 2026-11-12 09:09 | owner asked nickname/age/job/goal; PM drafts replies, owner approves each send |
 
 ## Decided recently, not yet in a REQ
 
-- Nothing — everything the owner said on 2026-11-12 is in REQ-001. `[carried-over]`
+- None — the 2026-11-12 decision is in REQ-001 Q2/Q3 and REQ-002. `[carried-over]`
 
 ## What becomes urgent, and when
 
-- No date set by the owner. `[carried-over]`
+- **2026-11-15:** class 01 page + repo structure ready, owner's AC-1 yes and his push before class 01. `[PM-decided]`
+- **2026-11-16 18:30:** class 01 taught. Classes 02–04 each due the day before. `[customer-validated]`
 
 ## What we already tried that did NOT work
 
-- Nothing yet. `[carried-over]`
+- Reading Fastwork through the app's browser pane: Cloudflare bot check, not passable by an agent.
+- Claude in Chrome: an old extension instance ("Browser 2") was a different Chrome; the owner reinstalled it and the
+  local one is `DESKTOP-V5GJILT` — select that one with `select_browser`. The owner is signed in to chat.fastwork.co
+  there. (F-001 records the four wasted rounds.)
 
 ## Open questions with the owner
 
-- None asked yet. Q1 settled by the team; Q5 (owner's contact off the front page) is PM-decided, cheap to undo.
-  `[PM-decided]`
+- REQ-001 AC-1: the remaining SPEC-001 §6 lines, once the SA revises it. `[team-proposed]`

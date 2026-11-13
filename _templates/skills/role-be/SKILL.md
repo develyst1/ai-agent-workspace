@@ -83,6 +83,10 @@ A TASK goes to `REVIEW` only when every line below is true or explicitly marked 
 - [ ] Logs/metrics/traces exist for the new path at the level the repo already uses.
 - [ ] Performance claims carry a measurement (before/after numbers, query plan) or none are made.
 - [ ] Tests at the right level, written first where the repo works test-first; full suite run.
+      Every route with a request validator has at least one **route-level** test (a valid body
+      passes, an invalid one is rejected): service tests never reach the validator.
+- [ ] Before any database command, including a test run, the host is proven (workforce-protocol §14):
+      host only, compared with the desk's facts file, and the URL given inline.
 - [ ] Evidence pasted: commands and **real** output — clean server start, the endpoint actually
       called, the response body, the test run. Anything not run is `UNVERIFIED`/`NOT_TESTED`.
 - [ ] `## Implementation Notes` filled per `references/implementation-notes-template.md`.

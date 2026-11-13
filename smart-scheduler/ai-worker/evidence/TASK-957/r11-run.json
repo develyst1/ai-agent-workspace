@@ -1,0 +1,167 @@
+{
+ "checks": [
+  {
+   "name": "1 A new entry opens on «Amount includes VAT»",
+   "pass": true,
+   "detail": "Amount includes VAT"
+  },
+  {
+   "name": "2 VAT and WHT are ticked by default, % boxes enabled",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "2 Both ticked: three modes offered",
+   "pass": true,
+   "detail": "Amount excludes VAT|Amount includes VAT|Amount is net after WHT"
+  },
+  {
+   "name": "3 Her example (includes VAT 10,000): 9,345.79 / 654.21 / 10,000.00 / 280.37 / 9,719.63",
+   "pass": true,
+   "detail": "{\"before\":9345.79,\"vat\":\"654.21 ฿\",\"incl\":10000,\"wht\":\"280.37 ฿\",\"net\":9719.63}"
+  },
+  {
+   "name": "4 1280 px: summary sits to the right of the form",
+   "pass": true,
+   "detail": "form 297+611 y157 · summary x958 y157"
+  },
+  {
+   "name": "4 Row 1 has three fields on one line (School · Term · Status)",
+   "pass": true,
+   "detail": "157,157,157,234,234,234,311,311,387,387"
+  },
+  {
+   "name": "4 Rows: 3 fields · 3 fields (Price/Student/Class) · Payment Date + Mode · VAT + WHT (4 lines of fields)",
+   "pass": true,
+   "detail": "157,157,157,234,234,234,311,311,387,387"
+  },
+  {
+   "name": "4 Save is at the bottom right of the form card",
+   "pass": true,
+   "detail": "save x839 y439"
+  },
+  {
+   "name": "4 No horizontal overflow at 1280",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "5 VAT unticked, 10,000: Before 10,000.00 · VAT – · Total 10,000.00 · WHT 300.00 · Net 9,700.00",
+   "pass": true,
+   "detail": "{\"before\":10000,\"vat\":\"–\",\"incl\":10000,\"wht\":\"300.00 ฿\",\"net\":9700}"
+  },
+  {
+   "name": "5 «includes VAT» was switched to «Amount (no VAT)»",
+   "pass": true,
+   "detail": "Amount (no VAT)"
+  },
+  {
+   "name": "5 «Amount includes VAT» is not offered; «Amount excludes VAT» reads «Amount (no VAT)»",
+   "pass": true,
+   "detail": "Amount (no VAT)|Amount is net after WHT"
+  },
+  {
+   "name": "5 The VAT % box is disabled",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "5 No result value wraps onto two lines (Net received stays on one line)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "5 VAT off + net after WHT 10,000: Before 10,309.28 (÷ 0.97), Net 10,000.00, VAT –",
+   "pass": true,
+   "detail": "{\"before\":10309.28,\"vat\":\"–\",\"incl\":10309.28,\"wht\":\"309.28 ฿\",\"net\":10000}"
+  },
+  {
+   "name": "6 WHT unticked, includes VAT 10,000: WHT – · Net 10,000.00",
+   "pass": true,
+   "detail": "{\"before\":9345.79,\"vat\":\"654.21 ฿\",\"incl\":10000,\"wht\":\"–\",\"net\":10000}"
+  },
+  {
+   "name": "6 «Amount is net after WHT» is not offered",
+   "pass": true,
+   "detail": "Amount excludes VAT|Amount includes VAT"
+  },
+  {
+   "name": "6 The WHT % box is disabled",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "7 Both unticked: Net = Amount 10,000.00, VAT – and WHT –",
+   "pass": true,
+   "detail": "{\"before\":10000,\"vat\":\"–\",\"incl\":10000,\"wht\":\"–\",\"net\":10000}"
+  },
+  {
+   "name": "7 One mode left, shown and disabled",
+   "pass": true,
+   "detail": "Amount (no VAT) / disabled=true"
+  },
+  {
+   "name": "8 «net after WHT» selected, then WHT unticked → default «includes VAT»",
+   "pass": true,
+   "detail": "Amount includes VAT"
+  },
+  {
+   "name": "9 The saved row (VAT off, WHT 3 %, excludes): Before VAT 10,000.00 · Net received 9,700.00",
+   "pass": true,
+   "detail": "STA | Term 5 | Pending | 10,000 ฿ | 10,000.00 ฿ | 9,700.00 ฿ | – | Mark received\nDelete"
+  },
+  {
+   "name": "9 After Save: Mode is back on «includes VAT» and both ticks are on",
+   "pass": true,
+   "detail": "Amount includes VAT"
+  },
+  {
+   "name": "9 Existing rows keep their own mode (seed Received rows: Before VAT = Total Amount)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "10 Mark received turns the Pending row into Received",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "10 Status filter «Pending» hides the Received rows",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "11 375 px: one column (the first three fields stack)",
+   "pass": true,
+   "detail": "149,226,303"
+  },
+  {
+   "name": "11 375 px: the summary is under the form",
+   "pass": true,
+   "detail": "form bottom 775 · summary top 927"
+  },
+  {
+   "name": "11 No horizontal overflow at 375",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "12 No centred text on the page",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "12 0 console errors/warnings",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "12 No network requests",
+   "pass": true,
+   "detail": ""
+  }
+ ],
+ "passed": 32,
+ "failed": 0,
+ "consoleProblems": []
+}

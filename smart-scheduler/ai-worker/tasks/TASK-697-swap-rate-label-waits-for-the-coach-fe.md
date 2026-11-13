@@ -94,3 +94,6 @@ The pin still names what it holds: the next line (`if (needRate && canRate && co
 - `OtherSeriesDialogs.tsx` has only the two `&& to &&` conditions.
 - **Re-run by me:** the full front suite **1088 / 0**. Set `swap-rate-after-coach-task697` → **2/2 BITES**, `CHECKSUM identical`.
 - **Files to commit:** `OtherSeries/OtherSeriesDialogs.tsx`, `series-scope.dom.test.tsx`, `swap-rate-after-coach-task697.mutations.json`, `lib/scheduler/series-scope.test.ts`.
+
+## ORDER 67 pass — Silver, 2026-11-13
+The board row still read REVIEW/TODO, but this TASK is **DONE** (see § Review) and its code is committed (board row now names the hash). Nothing owed; the row is ready to sweep. The old board cell is preserved verbatim in `archive/board-2026-11-13-pre-ownerbatch-move.md`.

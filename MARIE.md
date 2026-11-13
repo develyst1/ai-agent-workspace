@@ -3060,7 +3060,147 @@ plus a new message in the same tick still wakes. The scratch test passed 8 of 8.
 8. Prove: `node scripts/check-harness.mjs` → `code-class current`; `node check-hygiene.mjs code-class` → PASS.
    Report to Atlas with a nudge. Atlas then gives the owner the line to open Porter.
 
+### ORDER 66 — 2026-11-13 — smart-scheduler FAILURES.md: set the statuses from Atlas's review — ✅ DONE 2026-11-13
+
+**Owner, to Atlas, 2026-11-13:** *"แอิดลาสนาย review failures โต๊ะ smart schedule"*. Atlas read every `NEW` entry
+(43, F-032 … F-069 plus the un-numbered ones at the bottom). The skill changes are done and synced to
+`.claude/skills` (`check-skills` PASS):
+- `workforce-protocol` §14: read the output before quoting it; prove the DB host before any DB command.
+- `role-sa`: §4.4 (a built seam's contract comes from its code); §4.10 (asking for a deploy);
+  `references/review-checklist.md` (audit scope; a route-level test per validator).
+- `role-be` §3: a route-level test; the DB host check.
+- `role-pm`: §3 (relaying a deploy ask); anti-patterns 26–33.
+
+No harness bump (skills are not hashed).
+
+**Do:** in `smart-scheduler/ai-worker/FAILURES.md`, replace each entry's status line, or add one directly under its
+heading where it has none, with the text below. Change nothing else; the file is append-only. Some IDs repeat (F-055,
+F-058, F-059 each appear twice), so match the ID **and** the role. Statuses with no date are 2026-11-13.
+
+| Entry | Status |
+|---|---|
+| F-069 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 29 (list everything a feature touches; place it by who owns the decision)` |
+| F-068 Porter | `FIXED 2026-11-13 — role-pm §3 + anti-pattern 30 (a deploy ask is relayed only with content, migrations and the AFTER check)` |
+| F-067 Sector | `FIXED 2026-11-13 — role-sa §4.10 "Asking for a deploy" (never "the working tree")` |
+| F-066 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 28 (trade value for value)` |
+| F-065 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 27 (check every free promise before a paid list)` |
+| F-064 Silver | `FIXED 2026-11-13 — role-sa review-checklist: compare a green audit's scope with the rule's` |
+| F-063, F-062 Silver | `ATLAS-REVIEWED 2026-11-13 — rules existed (workforce-protocol §10a.3, role-sa §6); slips, fixed in the TASK` |
+| F-061 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 26 (recommend from the customer's need, not our cost)` |
+| F-060 Sober | `ATLAS-REVIEWED 2026-11-13 — rule exists (PROTOCOL allowed pairs, role-sa); 3rd SA↔SA slip (10-21 ×2, 11-09). A 4th gets a mechanical guard` |
+| F-059 Porter, F-048 Porter, F-043 Silver, F-042 Porter | `FIXED 2026-11-09 — harness 2.6.18 (every seat arms its watcher, PM idle sweep on a tick, hand-off = inbox line + doorbell) + role-pm anti-pattern 32` |
+| F-059 Sector | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §6, trace every write path that changes the predicate); slip` |
+| F-058 Sober, F-051 Tanya, F-050 Tanya | `ATLAS-REVIEWED 2026-11-13 — rule exists (workforce-protocol §5; drain-inbox.mjs and its hook); self-caught` |
+| F-058 Porter | `ATLAS-REVIEWED 2026-11-13 — rule exists (quote-dont-paraphrase.md: confirm the consequence)` |
+| F-057 Sector | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-be/role-sa "no silent failures"); fixed in TASK-944` |
+| F-056 Sector | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §6, check the gate, not the generator)` |
+| F-055 Porter | `ATLAS-REVIEWED 2026-11-13 — rule exists (a customer-facing date is the operator's to confirm)` |
+| F-055 Silver | `FIXED 2026-11-13 — workforce-protocol §14 "Read the output before you quote it"` |
+| F-054 Twenty | `ATLAS-REVIEWED 2026-11-13 — rule exists (workforce-protocol §14); guard added; the token expired about 11-12, so nothing to reissue` |
+| F-053 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 31 (check the holder before a lend)` |
+| F-052 Porter | `FIXED 2026-11-13 — role-pm anti-pattern 33 (count it; times from date in the same command)` |
+| F-049 Sector, F-036 Sober, F-035 Sober, F-032 Sober | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §3 "a claim is never stronger than what you read"); slips` |
+| F-047 Porter | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-pm §3, a claim about a server needs evidence)` |
+| F-046 Silver | `ATLAS-REVIEWED 2026-11-13 — own rule recorded (worked examples on edge days); no gap` |
+| F-045 Silver | `FIXED 2026-11-13 — role-sa §4.4 (a built seam's contract is written from its code, file:line)` |
+| F-044 Porter, F-041 Porter, F-034 Porter | `ATLAS-REVIEWED 2026-11-13 — rules exist (role-pm §6 one clarifying question; note-and-batch; intake: write it the moment it is known)` |
+| F-039 Brew | `ATLAS-REVIEWED 2026-11-13 — rule exists (CLAUDE.md rule 2); self-caught at once` |
+| F-038 Sober, F-037 Brew | `FIXED 2026-11-13 — workforce-protocol §14 + role-be §3 (prove the DB host before any DB command; URL inline)` |
+| F-033 Porter | `FIXED 2026-11-07 — role-pm §8 "The QA's card … is yours to keep valid"` |
+| F-SOBER-2026-10-12 | `FIXED 2026-11-01 — workforce-protocol §7 (no content through a shell string) + the hook that blocks node -e` |
+| F-SOBER-2026-10-12b | `ATLAS-REVIEWED 2026-11-13 — covered by the deploy-ready-build skill (prove the compiled build)` |
+| F-SOBER-2026-10-17 | `FIXED 2026-10-25 — watch-inbox.sh wakes seats with no send (ORDER 34); CLAUDE.md rule 2 (no ball to the owner)` |
+| F-SILVER-2026-10-16 | `FIXED 2026-11-13 — workforce-protocol §14 "Read the output before you quote it"` |
+| F-PORTER-2026-10-17 | `ATLAS-REVIEWED 2026-11-13 — rule exists (PM.md); no harm` |
+| F-PORTER-2026-10-21, F-SOBER-2026-10-21 | `ATLAS-REVIEWED 2026-11-13 — see F-060 (SA↔SA pattern)` |
+| F-PORTER-2026-10-25 (both), F-SILVER-2026-10-25 | `FIXED 2026-11-08 — search before asking or ruling (role-pm §5, CUSTOMER-ANSWERS index, ORDER 58)` |
+| F-SOBER-2026-10-25 (trim), F-SILVER-2026-10-25b, F-SILVER-2026-11-05 | `ATLAS-REVIEWED 2026-11-13 — own rules recorded; no gap` |
+| 2026-11-09 Sober (TASK-914) | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §4.2, read the rulings before designing)` |
+| 2026-11-09 TASK-911 (route validator) | `FIXED 2026-11-13 — role-be §3 + role-sa review-checklist (a route-level test per validator)` |
+
+Then `node check-hygiene.mjs smart-scheduler` must show 0 `NEW`. Log one line, and nudge Atlas.
+
+**Addendum, Atlas 2026-11-13 (after your report; two entries were written after the review):**
+
+| Entry | Status |
+|---|---|
+| F-071 Silver | `ATLAS-REVIEWED 2026-11-13 — rules exist (role-sa §3 name every consumer of a shape; §6 check the gate, not the generator); fixed in TASK-942` |
+| F-070 Sector | `ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §3, a count is not the list); self-caught before any customer reply` |
+
+Set these two, then no nudge is needed unless something fails.
+
+### ORDER 67 — 2026-11-13 — smart-scheduler: F-072 status + the housekeeping hop the gate asks for (FAIL 18)
+
+**Owner, to Atlas, 2026-11-13:** *"เขาเงียบไปแล้วนะ ทำไมนายไม่เดินต่อ"*. The housekeeping was "queued" in talk only; no
+order held it. This is the order.
+
+1. **F-072 (Porter, second sid deploy, migration 0080):** set
+   `FIXED 2026-11-13 — role-sa §4.10 + role-pm §3: pending migrations come from the tree's migration files, not the record, and every SA in a shared checkout confirms "nothing new of mine"`.
+   The skills are changed and synced (`check-skills` PASS).
+2. **Housekeeping, through Porter (inbox line + nudge; he does it at his next quiet moment, archive verbatim first):**
+   - `board.md` 99.2 KB → under 40 KB: sweep the 72 closed rows to `archive/board-closed.md`; cut the 6 cells over
+     300 chars (TASK-863, 867, 868, 879, 904, 909) to pointers, the text into the TASK file.
+   - `RESUME-HERE.md` rewritten whole (2 days behind).
+   - `inbox/BE-C.md` and `inbox/PM.md` drained by their own readers (your 7-line note in BE-C included).
+3. **ORDER 60** (log rollover `checks.json`) rides the same hop, since the desk will be at its quietest then.
+4. Prove: `node check-hygiene.mjs smart-scheduler` → no FAIL. Report the before/after sizes and nudge Atlas.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-11-13 — **Atlas ruled on ORDER 67 option (a): the batch claims STAY on the board.** Every seat reads them at boot,
+  and a second file would be one more read to forget. Next is Porter's DELIVERED pass, already ruled and with him. If
+  the board is still over 40 KB after it, I report the size to Atlas, who rules again. No message to Porter is needed:
+  my brief already told him (a) was not available.
+
+- 2026-11-13 ~03:1x — ⏳ **ORDER 67 hop 2 verified; board 51.8 → 44.7 KB (45,802 B).**
+  - **IDs:** 416 → 0 lost (board + board-closed + board-prose + `OWNER-NEXT-BATCH.md`).
+  - **Second swept section, 30 rows:** 6 are verbatim. The other 24 differ from `archive/board-2026-11-13-pre-sa-pass-sweep.md`
+    only in the status cell, which quotes the old status (Sober's DONE re-status with reasons in each TASK).
+  - **Owner batch:** moved, and 27 live rows went back to Tasks (right call; it saved only 2.6 KB).
+  - **Ruling to Porter: (b).** A REQ-row DELIVERED pass in daylight: a row goes only when every TASK is off the board and its
+    TEST passed, then it is swept verbatim.
+  - **(a) claims in their own file:** offered to Atlas, as it is a PROTOCOL rule.
+  - **Interim report sent to Atlas.** BE-C waits on Brew.
+
+- 2026-11-13 — ⏳ **ORDER 67 hop 1 verified; board 99.2 → 51.8 KB; §2-d ruled.** I checked on disk:
+  - The pre-archive md5 is 977cd1ce ✓.
+  - All 125 swept rows are verbatim (72 gate-closed + 53 closed in fact) ✓.
+  - IDs: 416 before, **0 lost** (board + board-closed + `archive/board-prose-2026-11-13.md`) ✓.
+  - TASK-879/904 cell text is in their TASK files ✓.
+  - ORDER 60: `checks.json` parses with no `ids` key; the 3 PROTOCOL inserts are in, CRLF ✓.
+  - The `.tmp` was moved ✓; RESUME-HERE was rewritten ✓; PM inbox 2,093 → 507 B ✓.
+  - Re-read notes went to the SA/QA inboxes; the SAs relay them to their engineers.
+
+  Still **FAIL (16)**: board 51.8 KB, BE-C 2.8 KB (Brew drains), and the 12 boot reads (they fall with the board).
+  **Ruling:**
+  - (iii) move `OWNER'S NEXT BATCH` (11.8 KB, PM-only) verbatim to `OWNER-NEXT-BATCH.md`, with a pointer on the
+    board and a line in the PM's boot read;
+  - (i) the SAs do one pass over their own stale REVIEW/TODO rows; Porter sweeps the rows they cancel or supersede;
+  - (ii) claims stay on the board (a PROTOCOL rule, Atlas's).
+
+  Line in the REQUEST and the inbox, verified; bell sent.
+
+- 2026-11-13 — ⏳ **ORDER 67 step 1 done; steps 2–3 (with ORDER 60) delivered to Porter.** F-072's status was set
+  verbatim (status line only). Before, measured: board **101,615 B (99.2 KB)**, md5 `977cd1ce…` · RESUME-HERE 3,878 B ·
+  inbox/PM 2,093 B · inbox/BE-C 2,135 B · log 11-13 48.8 KB · `inbox/PM.md.drain-25292.tmp` still there · no
+  `checks.json`. ⚠️ **The order's sweep alone will not reach 40 KB:** the 72 gate-closed rows are 23.6 KB and the 6 long
+  cells about 10 KB, leaving about 66 KB. The brief also asks Porter to sweep the rows that are closed in fact but
+  worded otherwise (CLOSED 8, ACCEPTED 16, CANCELLED 3, …), cut cells to one line, and move standing prose (19.9 KB)
+  to its home, all verbatim. Brief: `REQUEST-marie-to-porter-2026-11-13-order67-housekeeping.md`. Inbox line written
+  and verified (grep 1). Bell queued (his turn was busy). I verify when he replies.
+
+- 2026-11-13 — ✅ **ORDER 66 addendum done.** F-071 Silver and F-070 Sector set to their ATLAS-REVIEWED lines (status
+  lines only). `check-hygiene smart-scheduler`: no FAILURES line at all → **0 NEW**. No nudge, per Atlas.
+
+- 2026-11-13 — ✅ **ORDER 66 DONE (smart-scheduler FAILURES.md statuses).** Archive first:
+  `archive/FAILURES.md.before-ORDER66.2026-11-13` (md5 `6091dba3…`). Matched by ID **and** role, so the duplicate IDs
+  F-055/F-058/F-059 are each set by role. **40 status lines replaced** (diff: the only lines removed are 38 ×
+  `- **Status:** NEW` + 2 × `Status: NEW`, F-060/F-058 Sober, now in the standard `- **Status:**` form). **15 status
+  lines added**: under each un-numbered heading, and indented under each bullet entry (F-PORTER/F-SOBER-10-21,
+  F-PORTER-10-25 ×2, F-SOBER-10-25). Nothing else changed. `check-hygiene`: the 🔴 FAILURES fail (42) is gone.
+  ⚠️ **It shows 2 NEW, not 0: F-071 (Silver) and F-070 (Sector), both written 11-13 after Atlas's review and not in the
+  order's table.** Left NEW for Atlas. The desk still FAILs on other checks (board 98.7 KB, 70 closed rows, 6 long cells,
+  PM inbox 2.0 KB, boot reads); that is the housekeeping hop already queued.
 
 - 2026-11-12 — ✅ **ORDER 65 CLOSED.** Atlas re-ran both checks (current, PASS) and ruled on `code-class/ai-worker/inbox/BE.md`:
   **leave it as it is** (201 B header, no seat in TEAMS, nothing reads it). Do not work round the hook.

@@ -44,6 +44,11 @@
 | 14 | AC-9 | negative | List every file under the class folders | Placeholders only. No lesson, slide, exercise or example-code file (no `.py`, `.js`, etc. in a class folder) | | NOT_TESTED |
 | 15 | AC-10 | happy | From the front page, click to the overview and to the schedule | Each is one click away | | NOT_TESTED |
 
+**Timing note (2026-11-12, after REQ-002 and the PM's Q-QA-2 answer in TEST-002):** schedule rows = class folders = 12.
+The bonus-hour page is an extra page, not a class folder, so it is not counted in case 9. Case 14 (AC-9, placeholders
+only) is judged on the REQ-001 build, **before** REQ-002 material lands. After that, folders 01–04 hold lesson material
+by design, and case 14 is checked only on folders 05–12.
+
 **Deliberately not tested:** how good the teaching is, and whether the schedule length fits the learner. Those are the
 owner's call at AC-1, not ACs. Any placement of AI beyond "the AI cell is filled" is the same.
 

@@ -60,3 +60,5 @@
 **Review 1, Sector, 2026-11-09. Verdict: the build is ACCEPTED.** DONE follows Tanya's sid round after TASK-892/893 deploy. By design there's no engineer real-API write run.
 - **Type check:** your files have 0 errors, and `next build` exits 0. The 5 whole-project `error TS` are in another team's in-progress Salary files (`Salary/Daily.tsx`, `salary-862.test.tsx`), not yours. Noted to Porter.
 - The fake is off (`config.ts:5`); the old `/revenue` page is untouched; the footprint is Team C files only.
+
+**ORDER 67 pass (Sector, 2026-11-13): still owed.** Code accepted 11-09. DONE waits on Tanya's sid refund re-run, blocked by D-150-2 (the owner sets SCHEDULER_API_URL / SCHEDULER_INTERNAL_SECRET on the sid back office; back office paused until then).

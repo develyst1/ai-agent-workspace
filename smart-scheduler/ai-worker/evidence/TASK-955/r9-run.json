@@ -1,0 +1,222 @@
+{
+ "ceo": {
+  "revenue/summary": {
+   "h2": "Summary",
+   "buttons": [
+    "Detail",
+    "Refund",
+    "ECA Payment",
+    "Add Manually",
+    "Apply Filter",
+    "Today",
+    "MTD",
+    "YTD",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View"
+   ]
+  },
+  "revenue/lines": {
+   "h2": "Detail",
+   "buttons": [
+    "Summary",
+    "Export",
+    "Add Manually",
+    "16/10/26",
+    "Apply filters"
+   ]
+  },
+  "revenue/manual": {
+   "h2": "Add Manually",
+   "buttons": [
+    "Summary",
+    "16/10/26",
+    "Cancel",
+    "Save"
+   ]
+  },
+  "revenue/refund": {
+   "h2": "Refund",
+   "buttons": [
+    "Summary",
+    "16/10/26",
+    "Save"
+   ]
+  },
+  "revenue/eca-term": {
+   "h2": "ECA Payment",
+   "buttons": [
+    "Summary",
+    "16/10/26",
+    "Save"
+   ]
+  }
+ },
+ "kungOnlySummary": {
+  "revenue/summary": {
+   "h2": "Summary",
+   "buttons": [
+    "Apply Filter",
+    "Today",
+    "MTD",
+    "YTD"
+   ]
+  },
+  "revenue/lines": {
+   "h2": "",
+   "buttons": [
+    "Back to Home"
+   ]
+  },
+  "revenue/manual": {
+   "h2": "",
+   "buttons": [
+    "Back to Home"
+   ]
+  },
+  "revenue/refund": {
+   "h2": "",
+   "buttons": [
+    "Back to Home"
+   ]
+  },
+  "revenue/eca-term": {
+   "h2": "",
+   "buttons": [
+    "Back to Home"
+   ]
+  }
+ },
+ "kungSummaryPlusDetail": {
+  "revenue/summary": {
+   "h2": "Summary",
+   "buttons": [
+    "Detail",
+    "Apply Filter",
+    "Today",
+    "MTD",
+    "YTD",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View"
+   ]
+  },
+  "revenue/lines": {
+   "h2": "Detail",
+   "buttons": [
+    "Summary",
+    "Export",
+    "16/10/26",
+    "Apply filters"
+   ]
+  },
+  "revenue/manual": {
+   "h2": "",
+   "buttons": [
+    "Back to Home"
+   ]
+  },
+  "revenue/refund": {
+   "h2": "",
+   "buttons": [
+    "Back to Home"
+   ]
+  },
+  "revenue/eca-term": {
+   "h2": "",
+   "buttons": [
+    "Back to Home"
+   ]
+  }
+ },
+ "kungAllRevenue": {
+  "revenue/summary": {
+   "h2": "Summary",
+   "buttons": [
+    "Detail",
+    "Refund",
+    "ECA Payment",
+    "Add Manually",
+    "Apply Filter",
+    "Today",
+    "MTD",
+    "YTD",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View",
+    "View"
+   ]
+  },
+  "revenue/lines": {
+   "h2": "Detail",
+   "buttons": [
+    "Summary",
+    "Export",
+    "Add Manually",
+    "16/10/26",
+    "Apply filters"
+   ]
+  },
+  "revenue/manual": {
+   "h2": "Add Manually",
+   "buttons": [
+    "Summary",
+    "16/10/26",
+    "Cancel",
+    "Save"
+   ]
+  },
+  "revenue/refund": {
+   "h2": "Refund",
+   "buttons": [
+    "Summary",
+    "16/10/26",
+    "Save"
+   ]
+  },
+  "revenue/eca-term": {
+   "h2": "ECA Payment",
+   "buttons": [
+    "Summary",
+    "16/10/26",
+    "Save"
+   ]
+  }
+ },
+ "notes": {
+  "ticked:Summary": "1 of 18 menus",
+  "ticked:Summary+Detail": "2 of 18 menus",
+  "ticked:Summary+Detail+Add Manually+Refund+ECA Payment": "5 of 18 menus",
+  "ticked:Detail": "1 of 18 menus",
+  "ticked:Add Manually": "1 of 18 menus"
+ },
+ "kungDetailOnly": {
+  "revenue/lines": [
+   "Export",
+   "16/10/26",
+   "Apply filters"
+  ]
+ },
+ "kungManualOnly": {
+  "revenue/manual": [
+   "16/10/26",
+   "Save"
+  ]
+ },
+ "consoleProblems": [],
+ "networkRequests": []
+}

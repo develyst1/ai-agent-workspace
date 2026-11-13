@@ -80,3 +80,6 @@
 - **Grep:** no `ครู${` left in `camp.service.ts`.
 - **Re-run by me, no database:** the three test files → **36 / 0**. Your full suite was 4179/0.
 - 📌 **Left, correctly:** the test's TITLE (`:63`, "keeps its old spelling") is now untrue, but the grant was the assertion only. Flagged to Porter for Team A.
+
+## ORDER 67 pass — Silver, 2026-11-13
+The board row still read REVIEW/TODO, but this TASK is **DONE** (see § Review) and its code is committed (board row now names the hash). Nothing owed; the row is ready to sweep. The old board cell is preserved verbatim in `archive/board-2026-11-13-pre-ownerbatch-move.md`.

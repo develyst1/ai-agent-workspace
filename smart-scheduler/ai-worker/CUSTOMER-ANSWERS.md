@@ -395,3 +395,52 @@
   - *"proposed แต่ละอันจะไปอยู่กับเมนูไหนบ้างหรอคะ หรือต้องให้ทางเราแจ้งไป หรือต้องการให้ขวันตอบกลับสวนไหนเพิ่มเติมไหมคะ"*. She asks which menu each "Proposed" item will sit under, whether she should tell us, or whether we need more answers from her.
   - 03:16 *"ในส่วนของการจัดวางแถว Balance ขอหมายถึงทุกหน้าของระบบเลยนะคะ … บางส่วนชิดซ้าย บางส่วนชิดขวา … ปรับ Layout ให้มีรูปแบบที่สอดคล้องกันทุกหน้า"*. Her 11/11 "จัด Balance แถว" items (#4, 7, 8, 15, 16) apply to EVERY back-office page: one consistent alignment.
 - 2026-11-12 (private chat, owner's screenshot; her times 02:38 / 02:57) · Asks again for the names of the 3 parents: "ขวัญขอชื่อสามบ้านนี้หน่อยนะคะ". And: "พี่โด่งจะประเมินรายละเอียดและค่าใช้จ่ายให้ได้ประมาณวันไหนคะ 1. เรียนตารางหลายวัน / 2 ชม 2. เปลี่ยนกิจกรรมทั้งคอร์ส 3. การปิดตารางทั้งวัน" → answered by the proposal deliverables/SOM-proposal-extra-work-2026-11-11.html (F1 / F3 / F4); the owner sends it.
+- 2026-11-12 15:13 (SOM group, bot pull .private/line-20261112-152856.json) · **Front-office Dashboard labels, from พี่ปุ้ม + พี่ฟีน, "เขียนตามนี้เลย"**: rename + order — EXISTING CUSTOMERS: Active course · Active voucher · ลงเรียนเป็น ชม (last 3 months) · Active Customer (Course + Voucher นับเป็นคน) · มาลองเรียนแล้วไม่ต่อ │ NEW VS RENEWING: 1st Trial · 1st Trial - เปิดคอร์ส · 1st Trial - ไม่เปิดคอร์ส · Renew Course · Course / Voucher not renewed · New Course previous month. (Old → new names in the file.)
+- 2026-11-12 15:26 (SOM group, same file) · **Her answers on the GR-web Proposed list** (her numbering): 1 Payment Setting Edit, 2 Conversion export, 3 Revenue Summary export → "รับทราบนะคะ". 4 Move course to branch → "รับทราบ แต่ส่วนนี้ไม่ได้จะไปอยู่หน้าบ้านด้วยหรอคะ". 5 Stock Report filters → "เอา Filters นี้ไว้ทุกหน้าเลยได้ไหมคะ Sales History และ Balance ด้วยค่ะ". 6 Report Revenue → "เดี๋ยวแจ้งกลับอีกที"; Report Conversion → wants click-through to the name list like the front-office dashboard, shown as 1st Trial (Student) · Open Course (After Trial) · Conversion % · Renewal Course. **Not yet answered.**
+- 2026-11-12 15:31 (SOM group, .private/line-20261112-155857.json) · **Front-office Dashboard pie charts**: a TOTAL row at the top, larger than the per-activity rows beneath it. 3 pies: (1) Active Course, from every active course excluding 1st / 1HR / Voucher, split by activity; (2) TOTAL 1st Trial, by activity; (3) 1HR + Voucher booked in the chosen Period, counted in classes, by activity. She gave example numbers. At 15:57 she sent an image (the bot can't read it; 15:54 one was unsent).
+- 2026-11-12 15:58 (same file) · **Report Revenue: "เอานะคะ"**: count by Category first, then a second box by Type ("เอา Category ขึ้นก่อนค่ะ").
+- 2026-11-12 18:49 (SOM group, .private/line-20261112-185903.json) · **ECA Payment (back office)**: (1) create an entry and keep it Pending until the money arrives ("บางทีเราไม่รู้วันเงินเข้า แต่รู้จำนวนเงินก่อน"); (2) two more fields calculated automatically from Amount: VAT 7% and withholding tax ("ภาษีหัก ณ ที่จ่าย"), with 3 example images (the bot can't read them). Not answered yet.
+- 2026-11-12 16:25 (private chat with the owner, his screenshot) · **พี่ฟีน picked**: 1. close the whole day, option B, 800 · 2. change activity for the whole course, option A (no refund of the difference), 1,900 · 3. multi-day schedule, 1,850 · "Total 4,550". Per-menu admin permissions were not picked. On a call she asked the owner to look at the prices again ("ดูเหมือนแพง"). She also asked: "ข้อสาม มันของหลังบ้านไม่ใช่เหรอ หลังบ้าน free ไม่ใช่เหรอ". The owner replied that he will get the reasons and talk it through.
+- 2026-11-12 19:18–19:20 (พี่ฟีน, private chat, owner's screenshot) · "ขอ Production period ของแต่ละข้อด้วยนะคะ … จะได้รู้ว่าใช้เวลาแค่ไหน เพื่อตัดสินใจด้วยค่ะ". This covers the 3 paid front-office items (close day B, change activity A, multi-day). The owner replied that he would answer after the quotation.
+- 2026-11-12 20:02–20:07 (private chat with พี่ฟีน, owner's screenshot) · She accepted the offer of **4,000 ฿ for the 3 paid front-office items, in exchange for a Fastwork collab + review**: she replied to the owner's offer with a "THANK YOU" sticker. SOM has no Fastwork account ("Account ไหนหรอคะ เราไม่มีของ som นะคะ"). She asked the owner to have ขวัญ create it: "แจ้งขข ได้เลยค่ะ … ขวัญ". The owner suggested the account name "SOM BALANCE School", with the Facebook and TikTok links attached.
+- 2026-11-12 15:57 + 18:49 images (from the owner's screenshots; saved in project-docs/customer-2026-11-12-line-images/):
+  - 15:57 is our GR "Report Revenue + Conversion" page, Report Revenue tab, by Type per month. It is the context for her 15:58 "Category first, then Type".
+  - 18:49: our GR ECA Payment page, and a VAT/WHT calculator as her model. The calculator has 3 modes (ไม่รวม VAT / รวม VAT / หลังหัก ณ ที่จ่าย), editable VAT 7% and WHT 3%, and calculates WHT on the pre-VAT price.
+- 2026-11-12 15:38 (private chat, owner's screenshot) · On the SOM Dashboard Nationality card ("based on 242 of 317 customers · not specified 75"), she asks who the 1 customer with nationality "-" is: "รบกวนพี่โด่งขอดูของคนนี้ที่เป็น - ให้ด้วยได้ไหมคะ". The same card also shows near-duplicate values: China/Chinese, Foreign, Thai&German.
+- 2026-11-12 22:32–22:33 (SOM group, .private/line-20261112-223501.json) · **ECA Payment on GR round 10:**
+  - "Default Mode เป็น includes VAT ไว้ได้ไหมคะ"
+  - VAT and WHT each get a tick box to choose whether to apply them: "ขอมี ให้ติ๊ก เลือกด้วยนะคะ ว่าคิดไหม"
+  - Make the page easier to read, with shorter boxes rather than full-width long rows: "ทำให้กล่องสั้นลงไม่ต้องเป็นแถวยาวไปด้านข้างแบบนี้ทุกอันค่า". She sent 1 image (unread by the bot).
+  - "1-3 รับทราบค่ะ ขอบคุณค่ะ" acknowledges points 1–3 of the 20:5x reply (Dashboard, Proposed, permissions).
+  - The 2 ECA questions (revenue = pre-VAT? net received = gross − WHT?) are still **not answered**.
+- 2026-11-12 22:59 (SOM group, .private/line-20261112-230704.json; the owner screenshotted her image) · **REVENUE → Summary on the GR web is hard to read**: "ต้อนนี้มองซ้ายสุดทีแล้วต้องมองขวาสุดทีค่อนข้างดูยากเลยค่า". The full-width table puts Type on the far left and Unit / Revenue / View on the far right. She asks how to make it easier to read.
+- 2026-11-13 00:21 (SOM group, .private/line-20261113-002621.json) · **Multi-day schedule (F1), her answers to our 3 questions:**
+  - (1) "ไม่จำกัดต่อสัปดาห์และไม่ได้จำกัดเวลาค่ะ": e.g. 4 classes all in one week. Time is 10.00–12.00 in a row, or 10.00–11.00 then 12.00–13.00 (with a gap).
+  - (2) "ได้ ตั้งเวลาและครูแยกแต่ละวัน".
+  - (3) Coaches can differ, both by day (Wed coach A / Fri coach B) and inside one session (10–11 coach A, 11–12 coach B).
+  - New question: "ถ้าคุณแม่ที่เรียน 2 ชม ขอลาแค่ชมแรกละคะ สมมุติเรียน 10-11 และ 12-13 ขอลาแค่ 12-13". She asks about a leave of one hour only.
+  - ⚠️ This is wider than what we quoted: "1–3 วันต่อสัปดาห์ ครั้งละ 1 หรือ 2 ชั่วโมง", 1,850.
+- 2026-11-13 00:26 (SOM group, .private/line-20261113-002914.json) · **Change activity (F3), her answers to our 4 questions:**
+  - (1) "ตามนั้น": attended classes keep the old activity, and only the rest change.
+  - (2) The difference is pro-rated on the remaining classes. Her example: "Surfskate 10 ครั้ง 100 บาท ขอย้ายไปเรียน Onewheel (ราคาคอร์ส 10ครั้ง 120บาท) ใน 4 ครั้งที่เหลือ ก็จะจ่ายส่วนต่าง 8 บาท".
+  - (3) **Not our default.** "ถ้าไม่มีราคา เราใส่ manual เองไม่ได้หรอคะ": she wants to type the price when the new activity has none. She also asks: "ถ้าใช้วิธียกเลิกคอร์สแล้วคลาสที่เข้าเรียนไปก่อนหน้าละคะ ประวัติจะหายไหมคะ".
+  - (4) "ตามนั้น" (an optional new coach).
+  - Then: "พรุ่งนี้เช้า feedback กลับอีกทีนะคะ".
+- 2026-11-13 00:30 (SOM group, .private/line-20261113-003525.json, plus 1 image of the daily schedule) · **"No Teacher" slot (park fee / OTHER block): only one household per hour.** "No teacher / 1 slot จองได้แค่บ้านเดียวหรอคะ เพิ่มเป็นหลายบ้านได้ไหมคะ". She points out that this was already asked and she said yes. Cancel-and-rebook breaks the money: household A paid 30 yesterday for 10–11, household B pays today for 10–11, so a cancel-and-add puts the money in on the wrong day. → TASK-942 (owner 11-10: several groups per hour).
+- 2026-11-13 00:36–00:37 (private chat, owner's screenshots) · "พี่โด่งคะ เราจะสร้างกิจกรรมเองได้ ตอนเสร็จก้อนไหนหรอคะ" · then "เรามีที่เป็นมิกซ์ด้วยหลายอัน แต่ตอนนี้เราใส่ตรง remark ไว้อยู่นะคะ พวก Surfskate & Inline Skate , Inline & Freeskate อะไรแบบนี้ค่ะ ที่เป็นครั้งแรก ที่พ่อแม่จะขอสองกิจกรรมมา". She wants to create activities herself, including mixed ones for a 1st Trial where the parent asks for two activities.
+- 2026-11-13 00:43–00:46 (SOM group, .private/line-20261113-005555.json) · Her replies to our 00:4x message:
+  - **No Teacher:** "หมายถึงกำลังทำอยู่ใช่ไหมคะ".
+  - **Multi-day (F1):**
+    - (1) **"ตอนนี้เรานับเป็นสัปดาห์นะคะ ไม่ได้นับสิทธิ์เป็นครั้ง".** The leave quota is counted in WEEKS, not per class or hour. This is NOT our default.
+    - (2) ตามนั้น. (3) ตามนั้น.
+    - (4) "งงค่ะ" (the change-pattern-mid-course rule).
+    - (5) ตามนั้น, with a check: "ลง 10 ครั้ง เรียนทุก จันทร์ - พฤ นับเป็น 4 ไหม".
+  - **Close a day (REQ-5013), new scope:**
+    - choose all coaches or only some ("กรณีมีประชุมปิดรับกันหลายคนพร้อมกัน แต่ไม่ใช่ทั้งรร");
+    - choose several days (e.g. 30/12–2/1);
+    - warn when a course falls on a closed day.
+  - **Also asked:** coach leave with a time range ("ลาแค่เช้า 10.00-12.00"), and coach working hours, e.g. a coach who works only weekend afternoons, set in the working-hours page.
+- 2026-11-13 01:01–01:03 (SOM group, .private/line-20261113-010505.json):
+  - F1 (4): "ข้อ 4 ใช่ค่ะ ถ้ามีการเปลี่ยนตารางเรียนใหม่ตอนเปลี่ยนคอร์ส".
+  - Mixed activities: "รับทราบค่ะ".
+  - Waiting on us for: closing a day for several coaches at once; a time range in coach working hours; a time range for coach leave ("ขวัญรอตอบกลับเรื่อง ปิดตารางทั้งวันแบบเลือกครูหลายคนกับ เลือก range เวลาในวันทำงานของครู และวันลานะคะ").

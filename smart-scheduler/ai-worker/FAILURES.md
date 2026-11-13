@@ -72,20 +72,117 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
-## F-064 — 2026-11-12 — SA (Silver) — I accepted the round-7 alignment work when its audit checked forms only inside modals
+## F-074 — 2026-11-13 — PM (Porter) — I told the owner "ลูกอยู่ที่ทีม C, เริ่ม multi-day แล้ว" without checking. No REQ existed and SA-C was empty
 - **Status:** NEW
+- **What happened:** In the status summary I wrote that Team C had started multi-day (F1). I checked afterwards: there was no F1 REQ and inbox/SA-C.md was empty, so nobody was moving. The paid F1 had sat un-dispatched since the owner's "ทำไปต่อ นั่นแหละ".
+- **Rule:** memory `porter-ball-line-means-moving` (a ball line means the holder is moving; check before writing it), and role-pm §4 step 4 (no claim line, no team started).
+- **How it was caught:** by me, right after sending, before the owner noticed.
+- **Fix now:** wrote REQ-5016 READY_FOR_SA → SA-C and rang Sector (delivered). I corrected the owner in the next reply.
+
+## F-073 — 2026-11-13 — SA (Silver) — SPEC-106 changed what "a course's activity" means without naming the SF reader that takes it from the first row; and I accepted the dialog with no real run
+- **Status:** NEW
+- **What happened:**
+  - **D-157-2:** after a change, a course has two activities (attended rows old, remaining rows new). SPEC-106 changed that meaning, but § 7 never said where the SF dialog gets "the current activity". Fanta used `PlanModal`'s `courseSlot`, the **first** non-extra row, which is an attended row after a change. So the dialog offers the activity the course already has and hides the old one.
+  - **D-157-1:** the typed price loops the preview. Her tests passed against the loop, and I accepted TASK-962 after waiving the local run, so the first real run was Tanya's on sid.
+- **Rule:** role-sa § 3, "a shape change names every consumer of that shape (you grepped them)": this is the consumers of "a course's activity" in SF. And § 6, "checking the gate, not the generator": I accepted mocked-API tests as proof of an interaction loop.
+- **Fix now:** TASK-962 § Fix D-157-1 + D-157-2.
+  - The current activity is taken from the remaining rows.
+  - The loop gets a test that counts preview calls, and a mutant that drops the typed price.
+  - **Going forward:** when a SPEC changes the meaning of a field, it lists every SF/SB reader of that field. When the local run is waived, I say in the review that the real run belongs to QA, and I don't call the screen DONE before then.
+
+
+
+## F-072 — 2026-11-13 — PM (Porter) — Same night, second sid deploy: I checked MIGRATION-QUEUE but not the tree, and an unannounced migration (0080) shipped
+- **Status:** FIXED 2026-11-13 — role-sa §4.10 + role-pm §3: pending migrations come from the tree's migration files, not the record, and every SA in a shared checkout confirms "nothing new of mine"
+- **What happened:** Before relaying Silver's sid deploy ask, I checked MIGRATION-QUEUE (0077–0079 applied) and told the owner "no db:migrate". The shared SB tree also held Team C's just-started TASK-965 with a new migration, 0080_coach_time_ranges, which was in no queue line yet. db:verify went RED after the owner's deploy (Journal 81, witnesses 80).
+- **Rule involved:** role-pm §3: verify "no migration left" against the desk's migration record. I did that, but the record lags the tree. F-068's lesson ("BEFORE check: git status / pending migrations vs sid") was written two hours earlier and I didn't apply it fully.
+- **How it was caught:** by the owner's db:verify, which stopped the restart.
+- **Cost:** a second broken sid deploy in one night; the owner's time again.
+- **Evidence:** the owner's paste, 2026-11-13 ~01:30; log/2026-11-13.md.
+- **Lesson:** a deploy ask goes to the owner only after an SA has listed the tree's `drizzle/` journal against the target DB's ledger, and every SA whose work sits in the shared tree has confirmed "nothing new of mine". With several teams in one checkout, a single SA's note is never enough.
+
+## F-071 — 2026-11-13 — SA (Silver) — TASK-942 asked the calendar to stack N park blocks without checking that its payload can carry N
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rules exist (role-sa §3 name every consumer of a shape; §6 check the gate, not the generator); fixed in TASK-942
+- **What happened:** TASK-942 § FE said "the No Teacher column shows N blocks in one hour cell". I didn't read the calendar's payload. SB `getCalendar` keeps one booking per `date|teacher|time` (`scheduler.service.ts` l.580–593) and sends `slots[].booking`. SF's mapper flattens that single field. Fanta's stack worked in a DOM test fed bookings directly, and I accepted that test as proof. On sid, Tanya saw only park A (D-155-1, High).
+- **Rule:** role-sa § 3, "a shape change names every consumer of that shape (you grepped them)", and § 6, "checking the gate, not the generator". The UI change depended on a server shape I never traced end to end, and at review I accepted a test that skipped the real path.
+- **Fix now:** TASK-942 § Fix D-155-1. The slot gains an optional `more` (park blocks only, byte-identical otherwise), and the SF mapper pushes it. A payload-level test is required, so the gap can't recur through a fixture that skips the API.
+
+
+
+## F-070 — 2026-11-13 — SA (Sector, Team C) — I answered "mixed activities" without listing the activities that already exist
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §3, a count is not the list); self-caught before any customer reply
+- **What happened:** On REQUEST …create-activities-mixed, I counted uat `subjects` (22 rows) but didn't read the names. I then wrote as if her mixed activities («Surfskate & Inline Skate» …) had to be created, by a DATA REQUEST or a new page. Reading the names an hour later for the prices request showed six mixed ones already live, among them «Private SURFSKATE & INLINESKATE», her own example. Only «Inline & Freeskate» is missing.
+- **Rule involved:** role-sa §3, "a claim is never stronger than what you read" (a count isn't the list); the desk's "customer self-serve first" habit (say what she can do herself today).
+- **How it was caught:** by me, on the next request, before any customer reply went out.
+- **Cost:** none to the customer yet. The owner weighed "manage activities" partly on my incomplete answer.
+- **Evidence:** REQUEST …create-activities-mixed § Answer §1/§3 + its Correction line; REQUEST …activities-and-prices-backoffice § Answer §0.
+- **Lesson:** When a customer names a thing she wants created, read whether it already exists by name (a read-only SELECT of the names, not a count) before sizing a way to create it.
+
+## F-069 — 2026-11-13 — PM (Porter) — I placed "manage activities" in the front office by data location and treated ขวัญ as front-office only; the owner had to walk me to prices and to the back office
+- **Status:** FIXED 2026-11-13 — role-pm anti-pattern 29 (list everything a feature touches; place it by who owns the decision)
+- **What happened:** ขวัญ asked to create activities herself. I offered a front-office page and a free/500 choice, and I defended "front office" twice ("the data lives there"). I had not thought about prices, which are hard-coded per price group. A new activity with a new price can't be done that way. I also assumed ขวัญ works only in the front office. The owner: *"แล้วราคาคอร์สล่ะ?"* → *"ยังเป้นหน้าบ้านอยู่เหรอ"* → *"เลิกคิดว่าขวัญอยู่แค่หน้าบ้านได้แล้ว ขวัญก็เข้าหลังบ้านด้วย เพราะเขาคือ admin … ถ้านายโง่แบบนี้ มันจะชิบหายหมด ที่ฉันให้นายตอบไลน์แทนฉัน"*.
+- **Rule involved:** role-pm §6: "Grill yourself before sending a REQ or a recommendation … Check the flag, the gate, the column — not the name". Also simulate the follow-ups before asking (workforce-protocol §10a.3).
+- **How it was caught:** by the owner, after 4 rounds.
+- **Cost:** 4 confusing rounds with the owner late at night, a wrong recommendation, and a hit to the owner's trust in Porter answering LINE for him.
+- **Evidence:** this chat, 2026-11-13 ~00:45–01:00; REQUEST-porter-to-sector-2026-11-13-activities-and-prices-backoffice.md.
+- **Lesson:**
+  - Before recommending where a feature goes, list everything it touches: prices, money, roles, both systems. Then choose by who owns the decision (money → back office / CEO), not by where the table sits today.
+  - ขวัญ is an admin in BOTH systems.
+
+## F-068 — 2026-11-13 — PM (Porter) — I relayed a sid deploy request without its steps or a BEFORE check, and it shipped another team's half-done migration
+- **Status:** FIXED 2026-11-13 — role-pm §3 + anti-pattern 30 (a deploy ask is relayed only with content, migrations and the AFTER check)
+- **What happened:** Sector asked for an SB sid deploy "of the working tree (no migration step left)". I passed the ask to the owner as one line. It carried no command, no `db:migrate` step and no check of which migrations were pending. The tree also held Team B's TASK-942 with migration 0078, so after the deploy, sid's code read a column that did not exist. The owner: *"ก็มึงไม่ได้บอกให้กู db:migrate"*.
+- **Rule involved:** role-pm §3: "A deploy or migration instruction carries every BEFORE check its deploy note names … never only the steps". Also: "Every instruction that runs something carries the exact command, the expected output, and what output means stop". I handed over neither.
+- **How it was caught:** by Sector's post-deploy db:verify (RED), then by the owner.
+- **Cost:** sid booking reads were at risk until Bob applied 0078. Flash's and Tanya's runs were held. The owner's time was spent on a deploy that needed a fix-up.
+- **Evidence:** log/2026-11-13.md; Sector F-067; MIGRATION-QUEUE.md l.45.
+- **Lesson:** Before any deploy ask, I get from the SA:
+  - the exact steps, including `db:migrate` when a migration is pending;
+  - the BEFORE check: `git status` / the list of pending migrations versus sid;
+  - the expected AFTER check.
+  The owner gets all of it in one message. "No migration step left" is a claim I verify against MIGRATION-QUEUE before relaying it.
+
+## F-067 — 2026-11-13 — SA (Sector, Team C) — I asked for a sid deploy of "the working tree" without checking that it also held Team B's unfinished TASK-942
+- **Status:** FIXED 2026-11-13 — role-sa §4.10 "Asking for a deploy" (never "the working tree")
+- **What happened:** For TASK-959 I asked Porter for "an SB sid deploy of the working tree (no migration step left)". SB is one checkout that both teams write into. By then it also held Team B's in-progress TASK-942: `bookings.slot_exempt` in `schema.ts` and its migration `0078_slot_exempt_park_blocks`, which was not applied on sid. The owner deployed it. After the deploy, `db:verify` on sid → Journal 79 · ledger 126 · 78 witnessed · 🔴 0078 not applied, "Do not restart the app against this schema." If the deployed build includes 942's schema, sid's booking reads ask for a column that doesn't exist.
+- **Rule involved:** role-sa §1 "own the technical risk"; workforce-protocol §14 ("works on my machine" includes the tree you look at). Not a written rule: before asking for a deploy of a shared tree, list every changed file and map it to a reviewed TASK (git-command §2 says this for commits only).
+- **How it was caught:** by me, on the post-deploy `db:verify` the owner's deploy note asked for.
+- **Cost:** sid may be broken for booking reads until 0078 is applied or SB is redeployed without 942. Flash's real run and Tanya are held.
+- **Evidence:** db:verify output 2026-11-13 (host 154.197.124.206); `git status` in SB shows `drizzle/0078_slot_exempt_park_blocks.sql` untracked next to `0077_closed_days.sql`; TASK-959 ## Review "Next" line; inbox/PM.md.
+- **Lesson:** A deploy request for a shared checkout names its exact content: `git status` mapped to reviewed TASKs, and every other team's hunk either reviewed and migrated, or stashed out by its owner, before the request goes up. Never "the working tree".
+
+## F-066 — 2026-11-12 — PM (Porter) — I answered a discount request with a plain compromise instead of a win-win
+- **Status:** FIXED 2026-11-13 — role-pm anti-pattern 28 (trade value for value)
+- **What happened:** พี่ฟีน asked for a lower price on the 3 paid items (4,550). I proposed rounding down to 4,000, or giving the close-day upgrade for free. Both options give value away and ask for nothing in return. The owner: *"ผิดแล้ว แบบนี้ เรียกประณีประนอม ในฐานะ PM นายควรหา ทาง Win Win ให้เจอ ไม่ใช้ หนีปัญหาโดยการ ประณีประนอม"*.
+- **Rule involved:** NONE. No rule covered it. role-pm §1, "own the outcome", comes closest.
+- **How it was caught:** by the owner, on the first reply.
+- **Cost:** one wasted round with the owner, while พี่ฟีน was waiting.
+- **Evidence:** this chat, 2026-11-12 ~19:30; log/2026-11-12.md.
+- **Lesson:** When a customer pushes on price, any concession is traded for something the team values: payment terms, a scope freeze, a firm decision date, or trimming scope she doesn't need. Find what each side really needs before touching the number.
+
+## F-065 — 2026-11-12 — PM (Porter) — I priced back-office feedback (per-menu permissions) as a paid option inside the free feedback window
+- **Status:** FIXED 2026-11-13 — role-pm anti-pattern 27 (check every free promise before a paid list)
+- **What happened:** In the paid-options image sent to ขวัญ on 2026-11-12, I listed "แยกสิทธิ์แอดมินรายเมนู (หลังบ้าน)" at 2,500 / 600 ฿. This was ขวัญ's back-office feedback from 11-11 (GR-FEEDBACK-TO-CODE #21). Back-office feedback is free until 17 Nov. พี่ฟีน spotted it on a call ("หลังบ้าน free ไม่ใช่เหรอ"). After that, I defended the price to the owner twice: first on the wrong item, then by citing the package scope and his 11-11 "ทำเป็นออปชัน".
+- **Rule involved:** SYSTEM-FACTS.md l.4455: "The 7 REQ-5010 extras: FREE until 17 Nov". Owner: *"ให้ถือทำฟรีไป จนกว่าจะ ครบ วันที่ 17"*. Also l.4447: feedback until 17 Nov is fixed, even if it means rework.
+- **How it was caught:** By the customer (พี่ฟีน), and then by the owner: *"มึงคิดดีๆ นะ หลังบ้าน เราให้feedbackแก้ฟรีจนถึง 17 ไม่ใช่เหรอ"*. It was caught late, after the image had reached the customer.
+- **Cost:** The customer saw a price on something promised free, which made "ดูเหมือนแพง" worse. It also cost the owner a phone explanation and two wasted reply rounds.
+- **Evidence:** deliverables/SOM-options-prices-2026-11-12.png · log/2026-11-12.md 19:xx · CUSTOMER-ANSWERS 2026-11-12 16:25.
+- **Lesson:** Before any item goes into a paid list, check it against the free window: back office, or front office, and before 17 Nov.
+
+## F-064 — 2026-11-12 — SA (Silver) — I accepted the round-7 alignment work when its audit checked forms only inside modals
+- **Status:** FIXED 2026-11-13 — role-sa review-checklist: compare a green audit's scope with the rule's
 - **What happened:** for TASK-936 Part 6, the alignment rule says "Forms stack vertically", which means every form. Fanta's audit checked one field per row only in 6 modals. I read "41/0" and accepted it without asking what the audit didn't cover. Tanya then failed Stock In (3 fields on one row) and Stock Out (2 pairs side by side, plus left-aligned Qty/Discount headers over input columns).
 - **Rule:** role-sa §4.8 "Review the evidence, not the claim", and §6 "Checking the gate, not the generator". A green audit only proves what it measures. I didn't compare its scope against the rule's scope.
 - **Fix now:** Part 6b fixes both pages and extends the audit to page-level forms and input columns, showing FAIL before the fix and PASS after.
 
 ## F-063 — 2026-11-12 — SA (Silver) — My Part 5b brief didn't say what an edited rate looks like, so «120» saved without its ฿
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rules existed (workforce-protocol §10a.3, role-sa §6); slips, fixed in the TASK
 - **What happened:** for TASK-936 Part 5b I wrote "replace that row's group + rate (trimmed)". I didn't simulate a typed rate. The prefill is «100 ฿», but an admin types «120», and the row then read «120» next to «40 ฿» rows. Tanya found it (O-151-7). This is the second round-trip on one small brief, after F-062.
 - **Rule:** workforce-protocol §10a.3 "Simulate before you ask", which applies to briefs as well: carry each plausible input to the screen.
 - **Fix now:** Part 5c. On Save, a numeric rate is shown as «<n> ฿».
 
 ## F-062 — 2026-11-12 — SA (Silver) — My GR round 6 brief said "toast only, nothing persisted", so a Saved edit left the row unchanged
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rules existed (workforce-protocol §10a.3, role-sa §6); slips, fixed in the TASK
 - **What happened:** TASK-936 Part 5 (Edit on commission groups) copied the School edit's "toast, nothing persisted" convention. I accepted Fanta's build against that brief. Tanya's TEST-151 found O-151-6: after Save the row still shows the old name and rate, so the customer would think Edit is broken.
 - **Rule:** role-sa §6 "Checking the gate, not the generator": verify in the artifact the reader actually opens. I checked the toast, not what the customer sees after Save.
 - **Fix now:** Part 5b. The rows go into page state, and Save updates the row.
@@ -93,7 +190,7 @@ where the owner sees them. When he is ready he opens Atlas with
 
 
 ## F-061 — 2026-11-11 — PM (Porter) — My "แนะนำ" badges on the quote favoured the cheapest, lowest-risk option for US, not what the customer asked for
-- **Status:** NEW
+- **Status:** FIXED 2026-11-13 — role-pm anti-pattern 26 (recommend from the customer's need, not our cost)
 - **What happened:** On the proposal page I marked these as "แนะนำ":
   - F4 B (mark the day and clear it by hand), though ขวัญ asked to close the whole day;
   - F3 "no refund", which is her business choice, not ours;
@@ -109,10 +206,10 @@ where the owner sees them. When he is ready he opens Atlas with
 **Effect:** two build orders reached Team B (mine + Silver's own); Silver had to act on an off-chain channel; Porter lost sight of cross-team decisions he owns.
 **Fix going forward:** anything for Team B/C (Silver, Sector, Bob, Fanta, Brew, Flash) → a one-line pointer in `inbox/PM.md`; shared facts → `SYSTEM-FACTS.md`. I cut TASKs only for my own engineers (Jason, Fern).
 **Rule broken:** PROTOCOL.md §allowed pairs (:74, :125) + role-sa §4 multi-team ("no SA↔SA contact").
-Status: NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (PROTOCOL allowed pairs, role-sa); 3rd SA↔SA slip (10-21 ×2, 11-09). A 4th gets a mechanical guard
 
 ## F-059 — 2026-11-11 — PM (Porter) — I told the owner "the ball is with Fern" twice while Fern's session never woke
-- **Status:** NEW
+- **Status:** FIXED 2026-11-09 — harness 2.6.18 (every seat arms its watcher, PM idle sweep on a tick, hand-off = inbox line + doorbell) + role-pm anti-pattern 32
 - **What happened:** Sober wrote TASK-948 into Fern's inbox around 07:30. I relayed "ลูกอยู่ที่ Fern" to the owner twice. Fern's last activity was 11-10 16:43, so she never started. The owner noticed first: *"ส่งบอลยังไงให้พวกนั้นไม่ขยับ แก้ด้วย"*. The same thing happened on 11-10 at 19:00 with Silver.
 - **Rule involved:** role-pm idle sweep, and "never make the operator the one who notices a problem". A ball line is a claim; I never checked it.
 - **Fix:**
@@ -124,7 +221,7 @@ Status: NEW
 - **Evidence:** list_sessions 2026-11-11 ~08:05 (Fern lastActivity 2026-11-10T16:43Z); inbox/FE.md line 84.
 
 ## F-059 — 2026-11-11 — SA (Sector) — My F2 design and my TASK-947 review missed that undoing a leave restores the class as CONFIRMED, so a pending course still messaged parents
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §6, trace every write path that changes the predicate); slip
 - **What happened:** TASK-947 gates parent messages on "the course has a CONFIRMED/ATTENDED class of its own". I listed the undo-leave notice as a path to gate, but never asked **what status the undo restores**. `undo.service.ts:147` always restores CONFIRMED, so on a pending course the undo made the course look confirmed, and its two family notices went out. I accepted 947 on 5802/0 and a code read. Tanya's TEST-152 round plus my outbox read on sid caught it.
 - **Rule involved:** role-sa §6, "a method existing is not the user reaching it" / "designing from structure, not code". I designed the gate from the predicate and never traced the one write path that changes the predicate's input.
 - **How it was caught:** myself, reading the sid outbox for TEST-152 after Tanya's behaviour round. The rows were SKIPPED: no family received anything (no LINE on sid).
@@ -137,10 +234,10 @@ Status: NEW
 **Effect:** likely a contributor to the gate `RESULT: FAIL` seen earlier; reader noise.
 **Fix going forward:** inbox = one-line pointer; verdicts/plans live in the TASK's `## Review` / the SPEC; status to the PM is a line + pointer.
 **Rule broken:** workforce-protocol §5 + role-sa §6.
-Status: NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (workforce-protocol §5; drain-inbox.mjs and its hook); self-caught
 
 ## F-057 — 2026-11-10 — SA (Sector) — My TASK-944 contract made the LINE poller fail silently: 14 customer messages missed, Porter never woke
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-be/role-sa "no silent failures"); fixed in TASK-944
 - **What happened:** I specified that on a failed pull `watch-line.sh` logs **only the exit code** and writes **no RELAY line**. Brew built exactly that. Porter's running copy then got "pull exit 1" at every tick from 06:16Z to 11:46Z with no reason recorded and no alarm, while the group had 14 messages. The cause can't be recovered now, because my contract threw the error text away. The same tool runs fine today.
 - **Rule involved:** role-sa §3, the "No silent failures" standard and "a risk you saw and didn't write down is yours". A wake-up tool whose only job is to raise a signal needs its own failure to raise a signal too. I designed for "no noise" and got "no signal".
 - **How it was caught:** Porter, about 12 hours later, by reading `.private/watch-line.log` by hand.
@@ -148,7 +245,7 @@ Status: NEW
 - **Evidence:** TASK-944 "Defect + REWORK"; `.private/watch-line.log` ("pull exit 1" × 12); Porter's inbox line 2026-11-10 18:52.
 
 ## F-058 — 2026-11-10 — PM (Porter) — I misread ขวัญ's "ก้อนรายได้ ขวันเห็นด้วยค่ะ" and told her in writing that only พี่ฟีน sees revenue
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (quote-dont-paraphrase.md: confirm the consequence)
 - **What happened:** her 02:08 message quoted the doc line ("แอดมินและขวัญเปิดหน้ารายได้ไม่ได้ มีพี่ฟีนคนเดียวที่เห็น") and then said "ก้อนรายได้ ขวันเห็นด้วยค่ะ". I read that as agreement with the quoted line. Reply #5 (sent) said "เห็นตรงกันครับ เฉพาะพี่ฟีนเห็นหน้ารายได้". On 11-10 at 11:31 she corrected it: the revenue block must be open to her too.
 - **Rule involved:** memory "Distrust the customer's own words" and "Quote the customer, never paraphrase". A quote followed by a short reaction is ambiguous. I should have restated the consequence ("ขวัญเองก็จะเปิดหน้ารายได้ไม่ได้ ถูกไหมครับ") instead of filing it as agreement.
 - **How it was caught:** the customer herself, the next morning. Nothing had been built from it yet; the GR web already showed revenue as CEO-only.
@@ -156,7 +253,7 @@ Status: NEW
 - **Evidence:** CUSTOMER-ANSWERS § 2026-11-10 SOM SYSTEM group; COPY-DRAFT-khwan-gr-feedback-reply-2026-11-10.md item 5.
 
 ## F-056 — 2026-11-10 — SA (Sector) — I accepted all 4 TASK-937 batches without checking for Thai text; Silver found Thai toasts
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §6, check the gate, not the generator)
 - **What happened:** I accepted the GR-web pages Flash carried into final-ui (Revenue, All Report, 7 Proposed pages, Stock Report / Low Stock / Demo) on tsc, the build, his click-through and two screenshots. I never scanned the files for Thai text. Silver saw Thai toasts on Low Stock / Demo. My scan then found Thai `notify(...)` texts in about 11 files, so the pages would have gone to the customer in mixed language, against R0.5 / D2.
 - **Rule involved:** role-sa §6, "checking the gate, not the generator": tsc and a clean console don't prove the English rule. The TASK said "Words: English (D2/R0.5)" and I didn't verify it. There was also a tool trap: `grep -P '[ก-๛]'` without UTF mode also matches — − ฿, so a quick scan is noisy unless it's UTF-aware.
 - **How it was caught:** Silver, via Porter, before Tanya's click-through. It never reached the customer.
@@ -164,19 +261,19 @@ Status: NEW
 - **Evidence:** TASK-937 "REWORK: Thai toasts → English"; Porter's inbox line 2026-11-10 01:42.
 
 ## F-055 — 2026-11-10 — PM (Porter) — Set the GR-web date as "12 Nov" when the owner needed it online the same day
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (a customer-facing date is the operator's to confirm)
 - **What happened:** The owner said the customer gives feedback until 17 Nov. I proposed "a URL around 11 Nov", then let the teams plan "B1 by 12 Nov" without checking it with him. He corrected me: *"get requirement ต้องเสร็จวันนี้ต้องขึ้นวันนี้แล้วก็จะเริ่มวันพรุ่งนี้"* (it goes up today, and they start tomorrow). The feedback window starts the moment the URL exists, so every day of slack takes a day away from the customer.
 - **Rule involved:** role-pm §1/§3: a date the owner will hold the customer to is confirmed with him; it is not set by the desk.
 - **How it was caught:** the owner.
 - **Fix I apply:** for any customer-facing date, I state the date I'm planning to the owner in one line and get his OK before the teams plan around it.
 
 ## F-055 — 2026-11-09 — Silver (SA-B) — I wrote "tsc 0" to the PM before reading the tsc result, and it was red
-- **Status:** NEW
+- **Status:** FIXED 2026-11-13 — workforce-protocol §14 "Read the output before you quote it"
 - **What happened:** reviewing Bob's /stock route tests, I ran tsc + the suite and the PM message in ONE batch. The message said "BB tsc 0 and green, no source changed". The result I hadn't read yet said `tsc=2`, with `schema.ts` / `migration-witness.ts` modified: another seat's in-flight migration 0021 broke `auth-login-task856.test.ts`. I corrected it in the next line, two minutes later.
 - **Rule for me:** never put a check's result into a message in the same batch as the check. Run it, read the output, then write. A claim is only as good as the output I've actually seen.
 
 ## F-054 — 2026-11-09 — QA (Twenty) — My sid harness printed the session's bearer token and cookies into tool output on a dropped connection
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (workforce-protocol §14); guard added; the token expired about 11-12, so nothing to reissue
 - **What happened:** During the TEST-142 part-2 clean-up, `POST /api/vouchers/<id>/cancel` on sid failed with `read ECONNRESET`. The error came from Playwright's `page.request.fetch` in my harness `tests/harness/sid-twenty-api.mjs`. That error's call log prints the whole request, so the sid admin `Authorization: Bearer …` token and the NextAuth session cookies (from PokerVault's `picklocker/state/som.json`) went into my session's tool output. They were not written to any file in the repo, log, TEST or inbox. I added the guard after it happened: `call()` now catches the error and rethrows a new one carrying only the method, the path and the first line, with any bearer value redacted.
 - **Rule involved:** workforce-protocol §14, *"A secret never reaches output, not even when something fails. Failure messages print what they hold."* Also role-qa §4: the session file is loaded as-is, *"never read, print or copy what is inside it"*.
 - **How it was caught:** myself, on reading the failure output, at once.
@@ -186,7 +283,7 @@ Status: NEW
 
 
 ## F-053 — 2026-11-09 — PM (Porter) — Staffed the same work twice, two times in one hour
-- **Status:** NEW
+- **Status:** FIXED 2026-11-13 — role-pm anti-pattern 31 (check the holder before a lend)
 - **What happened:** (1) I lent Brew to Silver for TASK-922 without first reading Silver's line, which already queued Bob for it after 921. Brew started, then had to strip his hunks out of the shared tree. (2) I lent Fanta for half of TASK-925 while Flash was idle-looking. I assumed "906 still open" meant Flash was busy, but he had already built all of 925. In both cases a lend went out before I checked who held the work.
 - **Rule involved:** role-pm §2/§4: staffing is mine. A lend without checking the TASK's current holder and the latest SA line is a guess.
 - **How it was caught:** Sector (TASK-922 collision; "STOP Fanta").
@@ -194,7 +291,7 @@ Status: NEW
 - **Fix I apply:** before any lend, read the TASK file's last lines and the holder SA's latest inbox line, and ask the holder SA "who's on it now?" if it's unclear. One lend per TASK, never a pre-emptive second hand.
 
 ## F-052 — 2026-11-09 — PM (Porter) — Gave the owner a "90%" that was a guess, and the wrong scope for "ก้อนแรก"
-- **Status:** NEW
+- **Status:** FIXED 2026-11-13 — role-pm anti-pattern 33 (count it; times from date in the same command)
 - **What happened:** The owner asked how far "ก้อนแรก" was. I said it had 3 parts (Salary, Revenue, Stock) and was "about 90%". Both claims were wrong. The Master Plan he signed off (§3) defines ก้อน 1 as **Salary only** (plus the SALARY and CHECK IN reports). The 90% came from no count at all. Counted afterwards, the Salary code covers everything except the R1.8 month-end SALARY report (no TASK) and TASK-920 (in build), and **0% of the back office has been verified on sid**. He asked "ไม่ได้มั่วนะ".
 - **Rule involved:** role-pm §3: never state a number you did not count; use the owner's own words and scope (Master Plan), not the desk's internal grouping.
 - **How it was caught:** the owner, by asking whether it was made up.
@@ -203,7 +300,7 @@ Status: NEW
 - **Repeat (04:44):** the invented-stamp half happened AGAIN right after the correction. I stamped 03:25 to 07:00 when the real time was 03:15 to 04:44. The stamp fix only holds when `date` runs inside the same command as the log line, so that is the rule now.
 
 ## F-051 — 2026-11-09 — QA (Tanya) — My inbox/PM.md entries were whole reports, not 1–3 line pointers
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (workforce-protocol §5; drain-inbox.mjs and its hook); self-caught
 - **What happened:** All through 2026-11-08 and 2026-11-09 I appended full verdicts (tables, replacements, SQL) to `inbox/PM.md`, often 30–80 lines, while also writing them to the TEST file. The protocol says the finding goes to its file and the inbox gets a 1–3 line pointer (5 max). From the painted round on, I send pointers only.
 - **Rule involved:** workforce-protocol §5: "One message is 1–3 lines; 5 is the hard limit" and "Findings go to a file, the inbox gets the pointer."
 - **How it was caught:** myself, re-reading workforce-protocol on 2026-11-09 (the log script asked me to).
@@ -211,7 +308,7 @@ Status: NEW
 - **Evidence:** `inbox/PM.md`, my entries dated 2026-11-08 and 2026-11-09 (TEST-138, -143 to -149).
 
 ## F-050 — 2026-11-09 — QA (Tanya) — I edited inbox/PM.md with the Edit tool to fix a line in my own entry
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (workforce-protocol §5; drain-inbox.mjs and its hook); self-caught
 - **What happened:** After filing TEST-148's report, I found one wrong line in my own entry (which hours the QA voucher's attended classes were) and corrected it with the Edit tool in both the TEST file and `inbox/PM.md`. An inbox is only appended to or drained with `drain-inbox.mjs`; the Edit tool has no arrival check, so a line Porter added between my read and my edit could have been lost. The correct move was to append a one-line correction.
 - **Rule involved:** workforce-protocol §5: "**Never the Edit/Write tool on an inbox**: it has no such check, so a message that arrived after your read is deleted unread."
 - **How it was caught:** myself, on re-reading workforce-protocol before the next unit (the gate asked for it), about 3 hours later.
@@ -219,7 +316,7 @@ Status: NEW
 - **Evidence:** `tests/TEST-148-sid-gate-task870-877-864.md` § Test data created; `inbox/PM.md` my 2026-11-09 TEST-148 entry ("today: 3 at 00:00, 1 at 01:30, 1 at 02:30").
 
 ## F-049 — 2026-11-09 — SA (Sector) — I ruled that a stock sale with no method passes NULL to revenue_line, but its method column is NOT NULL
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §3 "a claim is never stronger than what you read"); slips
 - **What happened:** In DECISIONS-REQ-120-build row 21 (product-sale revenue) I wrote "method NULL ⇒ the line's method NULL" and sent it to Porter for Sober. BB 0008 declares `revenue_line.method text NOT NULL` plus a CHECK, so the insert would have failed. I read the migration only after sending, and corrected both the row and Porter's inbox within minutes: a sale must state its method, otherwise 400 `METHOD_REQUIRED`.
 - **Rule involved:** role-sa §3, "A claim is never stronger than what you read". I designed a field's behaviour without reading the column's definition first.
 - **How it was caught:** myself, a few minutes after sending, while checking the `source` column for the same row.
@@ -227,7 +324,7 @@ Status: NEW
 - **Evidence:** DECISIONS-REQ-120-build row 21 (struck text + correction); inbox/PM.md, two Sector lines on 2026-11-09.
 
 ## F-048 — 2026-11-09 — PM (Porter) — The desk stalled a third time; the owner noticed it before I did
-- **Status:** NEW
+- **Status:** FIXED 2026-11-09 — harness 2.6.18 (every seat arms its watcher, PM idle sweep on a tick, hand-off = inbox line + doorbell) + role-pm anti-pattern 32
 - **What happened:** At about 00:30 every SOM seat was idle with work queued:
   - Bob since 23:55, on TASK-870 Amendment 3, which blocks the next sid deploy, plus TASK-887;
   - Fanta since 22:41 (862/869);
@@ -243,7 +340,7 @@ Status: NEW
   - Filed `REQUEST-porter-to-atlas-2026-11-09-desk-goes-idle.md` (root) for a structural fix: per-seat watchers, a "don't end the turn with a queue" rule, a durable watchdog, and SA hand-off = inbox line + doorbell.
 
 ## F-047 — 2026-11-09 — PM (Porter) — Told the owner the LINE reminders can't fire on sid because "someone must register the scheduled task first", without knowing how sid runs its jobs
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-pm §3, a claim about a server needs evidence)
 - **What happened:**
   - After the SB sid deploy (TASK-888 LINE pay-confirm reminders inside), I told the owner nothing could send unless someone registered the 09:00/11:00 tasks.
   - I had only checked THIS machine's Task Scheduler. I never checked how sid runs SB's `.ps1` jobs.
@@ -259,19 +356,19 @@ Status: NEW
   - Asked Sober whether sid's job runner picks up the new pay-confirm tasks by itself.
 
 ## F-046 — 2026-11-08 — Silver (SA-B) — my signed contract mapped the confirm day to the NEXT pay period, so the LINE reminders would have missed every month's drafts
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — own rule recorded (worked examples on edge days); no gap
 - **What happened:** TASK-887's final contract A said "the period whose R1.4 range contains the date". R1.4 ends a period the day before the month's last day, and the reminders run on that last day, the confirm day. So 31/10 resolved to November and the 09:00 / 11:00 reminders could never reach October's drafts. Sober co-signed it, and Bob caught it while building, before any real send.
 - **Fix:** a period whose `lockAt` Bangkok date equals the date wins; otherwise the range. Ruled in TASK-887 § Review, with Sober's co-sign requested.
 - **Rule for me:** a date → period rule is checked against the R1.4 edge days (the last day, the day before, the 1st) with one worked example each, before I sign it, and especially when the caller is a job that runs ON an edge day.
 
 ## F-045 — 2026-11-08 — Silver (SA-B) — I wrote a cross-repo contract tweak from a TASK's prose, not from the built code, and it drifted from what Jason had built
-- **Status:** NEW
+- **Status:** FIXED 2026-11-13 — role-sa §4.4 (a built seam's contract is written from its code, file:line)
 - **What happened:** after TASK-888 was accepted, I told Bob that E4b calls `/internal/jobs/pay-confirm-now` and that BB's read must also take `?periodId=`. Jason's built code has `/internal/salary-remind-now`, and SB only ever calls BB with `?date=` (it checks the period itself). I took the endpoint name from Sober's Q1 GO wording in TASK-888 and inferred the lookup, without opening `routes/internal.ts` / `pay-confirm-reminder.service.ts`. Porter caught the drift before Bob coded it.
 - **Fix:** TASK-887 § "THE FINAL remind ↔ send contract" was rewritten from SB's code, with file:line cited, and is waiting on Sober's signature. Bob was told to ignore the earlier lines.
 - **Rule for me:** a contract with a seam that is already built is written **from that seam's code (file:line), never from a TASK's description of it**. If the code isn't built yet, the contract is marked PROPOSED, and the builder confirms it against the code before the other side codes.
 
 ## F-044 — 2026-11-08 — PM (Porter) — Read Palm's Discord message my own way and pushed two follow-ups on it instead of asking
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rules exist (role-pm §6 one clarifying question; note-and-batch; intake: write it the moment it is known)
 - **What happened:**
   - The owner forwarded Palm's (NeRo's) message: SOM card changes merged into develop `afdf41b`, screen only.
   - Without asking, I read it as "the EN label deviates" and "the owner must deploy develop to uat". I carried both as open owner items for several turns.
@@ -283,7 +380,7 @@ Status: NEW
 - **Fix:** I asked the owner what Palm meant, and dropped my two assumed follow-ups until he answers.
 
 ## F-043 — 2026-11-08 — Silver (SA-B) — a PM GO in my inbox (REQ-5009 Capacity TASK) went uncut for hours, and Team B's stall went unseen until the owner noticed
-- **Status:** NEW
+- **Status:** FIXED 2026-11-09 — harness 2.6.18 (every seat arms its watcher, PM idle sweep on a tick, hand-off = inbox line + doorbell) + role-pm anti-pattern 32
 - **What happened:**
   - Porter wrote *"GO for item (2): cut the Capacity TASK"* in `inbox/SA-B.md`. Each later doorbell pointed at a newer entry, so I handled only the newest one and never re-read the inbox from my last action.
   - In the same stretch, I didn't check whether Bob and Fanta were actually moving. The owner noticed first ("nobody has moved").
@@ -293,7 +390,7 @@ Status: NEW
   - When I reply to Porter, check one thing more: did my engineers' trees or reports move since my last look? If not, say so in the same reply.
 
 ## F-042 — 2026-11-08 — PM (Porter) — Told the owner "the team is working" without checking; every SOM session had been idle for about an hour, and the engineers since early morning
-- **Status:** NEW
+- **Status:** FIXED 2026-11-09 — harness 2.6.18 (every seat arms its watcher, PM idle sweep on a tick, hand-off = inbox line + doorbell) + role-pm anti-pattern 32
 - **What happened:** at about 20:40 I told the owner "ทีมทำงานกันต่ออยู่แล้ว" (the team is already working) and "ลูกอยู่ที่ทีม" (the ball is with the team). I based that on the board's GO rows and the SAs' ball lines, not on whether anyone was actually running.
   - In fact the last team log entry was 19:57.
   - `list_sessions` showed every SOM session idle: Jason and Fern since about 02:30, Bob and Fanta since about 01:50, the SAs since about 19:57.
@@ -305,7 +402,7 @@ Status: NEW
 
 
 ## F-041 — 2026-11-08 — PM (Porter) — Asked the owner "were these sent?" instead of handing him one combined, ready message
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rules exist (role-pm §6 one clarifying question; note-and-batch; intake: write it the moment it is known)
 - **What happened:** after the owner sent the REQ-5009 item-5 table, I asked whether the items 1–4 reply and the Palm brief were sent. Owner: *"ก็พิมพ์ รวมมาเลยสิ ไอโง่"*. He wanted the pending text, combined and ready, not a status question. The items 1–4 text also still promised a call that never happened (item 5 went as a table).
 - **Rule involved:** role-pm §1 "protect the operator's time"; memory "note it, then batch the reply". When messages to the same person pile up, the PM hands over ONE paste-ready message, updated for what has already gone out.
 - **Fixed here:** item 5's call line removed from the reply (v3, deletion only, quick re-gate); one combined block handed to him.
@@ -322,7 +419,7 @@ Status: NEW
 - **Evidence:** `COPY-DRAFT-khwan-teaching-hours-rules-2026-11-08.md` (DROPPED) · `requirements/REQ-105-…md` §5 #4 · DECISIONS-REQ-120-build.md rows 16–17 · log 2026-11-08.
 
 ## F-039 — 2026-11-08 — BE Team C (Brew) — Put a question and two buttons for the owner in the next-step (wrap-up) box on TASK-864; only the PM asks the owner
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (CLAUDE.md rule 2); self-caught at once
 - **What happened:** closing the TASK-864 turn I filled the wrap-up box's `ask` and `actions` with "Extend the rental line to course-upfront and standalone rentals?" — a scope question that is Sector's to answer. The box shows to the owner. The same question was already, correctly, in the TASK's `## Questions` for Sector; the box was a second, wrong channel straight to him.
 - **Rule involved:** workspace `CLAUDE.md` rule 2: *"Only the PM asks the owner anything, in chat or with a question box (the app's ask-a-question or next-step options) … every other role ends its turn with a status line and never a question or an option menu for him. Its question goes up the chain in a file."* Also `BE-C.md`: my only contact is Sector.
 - **How it was caught:** by me, right after the box was rendered, rereading the rule.
@@ -330,7 +427,7 @@ Status: NEW
 - **Evidence:** this session's wrap-up call for TASK-864 · `tasks/TASK-864-c1-revenue-line-at-confirm-sb-be.md` ## Questions.
 
 ## F-038 — 2026-11-08 — SA Lead Team A (Sober) — Cut TASK-856 "apply the migration on sid" with no host check, and accepted Jason's "applied · verified on sid" claim; 0007 actually landed on uat (the customer's system)
-- **Status:** NEW
+- **Status:** FIXED 2026-11-13 — workforce-protocol §14 + role-be §3 (prove the DB host before any DB command; URL inline)
 - **What happened:** TASK-856 step 1 said "applies through the queue **on sid**" but named no way to prove the target host. Jason ran `bunx drizzle-kit migrate` with `.env.sid` and reported "applied · verified on sid"; I was about to accept it. The repo's `.env` (and the host `.env.sid` resolved to) was **154.197.124.29 = uat**, not sid (154.197.124.206). So `0007_bo_users_roles` — the `bo.role` enum + empty `bo.users` table — was created on **uat, the customer's system**, not the shared dev DB. Caught by Silver's then Porter's host check, not by me or by the TASK's "verified" step (the `db:verify` witness confirms the schema is present, not *which host* it is present on). The objects are additive and empty; the owner chose to **keep** them on uat (undoing them is a uat write, his call), repointed BB `.env` to sid, and Team A re-applies to sid.
 - **Rule involved:** CLAUDE.md "Never run SQL or touch real databases/environments" + role-sa evidence discipline — a "verified on sid" claim is not proven until the **host** is proven. There was no written pre-DB host check; this entry installs one (below). Same read-before-asserting family as F-036.
 - **How it was caught:** Silver's host check, then Porter's (host only, vs SYSTEM-FACTS) — after 0007 had already landed on uat.
@@ -340,7 +437,7 @@ Status: NEW
 - **Clarification — Sober, 2026-11-08 (same day, still NEW):** after the re-apply, the evidence says 0007 reached **sid** on the *first* run. The sid ledger row has `created_at 1794075519530` and the re-apply to the host-confirmed sid (.206) was a **no-op** (the row was already present, identical `created_at`/hash) — a fresh insert would carry a new `created_at`. Porter's "applied to uat" was an **inference from the plain `.env` host (.29)**, not a read of uat's ledger; Jason's migrate used `.env.sid`. So whether a *copy* of 0007 also exists on uat is **unconfirmed, and cannot be confirmed by us** — reading uat's ledger is a DB command against the customer's system (forbidden). It is harmless either way (additive, empty) and the owner already rules "keep whatever is on uat, untouched," so nothing is forced. The real failure stands unchanged: **the TASK carried no host gate**, which is why a plain-`.env`-vs-`.env.sid` host mix-up could scare the whole team. The standing host-only check (installed above) is the fix regardless of where 0007 landed. Brew's F-037 (a bare `bun test` auto-loading the plain `.env` = uat) is the concrete uat-contact risk, not the migrate.
 
 ## F-037 — 2026-11-08 — BE Team C (Brew) — Ran bare `bun test` in backoffice-back whose `.env` points at uat; the auth tests import the db, so a uat connection may have opened
-- **Status:** NEW
+- **Status:** FIXED 2026-11-13 — workforce-protocol §14 + role-be §3 (prove the DB host before any DB command; URL inline)
 - **What happened:** during TASK-858 I ran `bun test` (whole suite) and then `bun test src/middleware/auth.test.ts` with no inline `DATABASE_URL`. Bun auto-loads `.env`, and this repo's `.env` is uat's (the customer's). `auth.test.ts` imports `routes/auth` → `bo-user.service` → `db`, and both login cases returned 500, so a login lookup against uat was probably attempted. Whether any connection or query reached uat is UNVERIFIED (I cannot see the server). Nothing was written by me: the code path is Team A's login read.
 - **Rule involved:** `PROTOCOL.md` "Missing knowledge" 🚨 box: *"Bun auto-loads `.env`, and `.env` wins … anything such a run happens to display is NOT a sanctioned DATA REQUEST answer"*. I read it at boot and did not apply it before the first test run. Sector's SAFETY STOP landed in TASK-858 during the same step (I had not yet seen it).
 - **How it was caught:** by me, on re-reading the TASK after Sector's stop, then grepping which tests import the db.
@@ -348,7 +445,7 @@ Status: NEW
 - **Evidence:** `log/2026-11-08.md` (Brew entry) · TASK-858 "SAFETY STOP" line · `src/middleware/auth.test.ts` imports.
 
 ## F-036 — 2026-11-08 — SA Lead Team A (Sober) — Asserted "API_BASE is not a backoffice-back key" without grepping the repo; it is (scripts/smoke.ts:5)
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §3 "a claim is never stronger than what you read"); slips
 - **What happened:** reconciling the shared-env rules, I told Porter `API_BASE` is not a BB key because "BB is the API, not a caller." BB's own `scripts/smoke.ts:5` reads `process.env.API_BASE`. I reasoned from a mental model instead of `grep -rn API_BASE`. Porter checked the file and corrected me.
 - **Rule involved:** role-sa §3 "A claim is never stronger than what you read" — the same read-before-asserting miss as F-035.
 - **How it was caught:** Porter (PM), same session, before the key list was finalised — no cost.
@@ -356,7 +453,7 @@ Status: NEW
 - **Evidence:** `scripts/smoke.ts:5` · `inbox/PM.md`/`inbox/SA.md` 2026-11-08 · `tasks/TASK-856` Addendum 2.
 
 ## F-035 — 2026-11-07 — SA Lead Team A (Sober) — Named an API-only cancel reason («ครูลา») as a self-serve step in a REQ-5006 answer without checking it is on the admin screen
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §3 "a claim is never stronger than what you read"); slips
 - **What happened:** answering REQ-5006 §3 (what Khwan can do today), I wrote "cancel the class with the reason «ครูลา» (TEACHER_LEAVE)" as a self-serve door. `TEACHER_LEAVE` is an **API-only** reason — it is not on the admin's cancel screen — so the step cannot be done from the UI. I had cited the service/handler code but not the render line that would prove the reason is selectable. Tanya's sid reproduce (TEST-140 round 2) caught it and found the recipe that actually works.
 - **Rule involved:** role-sa §6, *"A method existing is not the user reaching it … Cite the render line"*, and §3's DoD *"Every claim that a user can do something cites the line that renders/exposes it."* I cited the handler, not the screen.
 - **How it was caught:** QA (Tanya) on sid, before any customer message — the self-serve answer had not yet gone out.
@@ -364,7 +461,7 @@ Status: NEW
 - **Evidence:** `requirements/REQ-5006-*.md` "## Answer" (original Q3 + the "Q3 — CORRECTED" block) · `inbox/SA.md` 2026-11-07 (Porter relaying Tanya) · `log/2026-11-07.md`.
 
 ## F-034 — 2026-11-07 — PM (Porter) — Dropped the customer's back-office report messages: noted a cut-off line, never asked for it, and nothing tracked her report-page feedback
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rules exist (role-pm §6 one clarifying question; note-and-batch; intake: write it the moment it is known)
 - **What happened:** On 11-05 a Khwan message was cut off in the owner's screenshot; its tail mentioned teaching reports, activity statistics and back-office money. I wrote in REQ-5002 §1 "Porter asks the owner for the whole line if it matters" and never asked. The same day she said she would check the report pages and feed back (log 11-05, REQ-120 §11). No board row or REQ tracked either, so REQ-5002 and REQ-5004 closed around the front office only.
 - **Rule involved:** Intake discipline: a customer item is written to its home file the moment it is known, and an "ask later" note needs an owner on the board.
 - **How it was caught:** by the owner, 2026-11-07: *"เหมือนเขาทักเรื่อง report ด้วยนะ ไม่รู้นายลืมหรือเปล่า ของ backoffice"*.
@@ -372,7 +469,7 @@ Status: NEW
 - **Evidence:** `requirements/REQ-5002-*.md` line 43; `log/2026-11-05.md` line 7; `log/2026-11-04.md` line 7.
 
 ## F-033 — 2026-11-05 — PM (Porter) — Relayed Tanya's "owner, please sign in" to him without checking; her access already existed (third time on login: 09-24, 09-26, 11-05)
-- **Status:** NEW
+- **Status:** FIXED 2026-11-07 — role-pm §8 "The QA's card … is yours to keep valid"
 - **What happened:** Tanya stopped logging in to sid and asked the owner to sign in for her in her pane. I passed that to him three times in one evening and offered it as my recommended option, without opening `project-docs` or checking that she had logged in from his access file all along. F-005 records the same mistake on 09-24 (sid login) and 09-26 (uat access), and that fix (ORDER 12.3) did not stop it.
 - **Rule involved:** F-005's fix: ORDER 12.3 ② intake discipline (PM.md). QA.md: *"Credentials come from the human via Porter"* and live in `../project-docs/`. The rule exists; I relayed a team ask to the owner without testing it against the files.
 - **How it was caught:** by the owner, after the third relay, when he asked why she doesn't log in herself: *"ไม่ ฉันให้ access เป็นไฟล์ไว้แล้ว พวกนาย เคยLogin test sit and uat(only read) มานานแล้ว"*.
@@ -382,7 +479,7 @@ Status: NEW
 
 
 ## F-032 — 2026-11-03 — SA Lead Team A (Sober) — Gave the PM a delivery total built on the wrong team split (R0, F3, F6 under Team B), so "≈ 10 weeks" understated the critical path
-- **Status:** NEW
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §3 "a claim is never stronger than what you read"); slips
 - **What happened:** for REQ-5001 §8 (the customer's question about delivery order) I compiled Q1–Q5 and assigned roles R0, F3 and F6 to Team B. They are Team A's: my own 10-25 readiness review covers them, and Porter set F3 / F6 = Team A on 10-16. I also used a full-parallel rate (10 engineer-days a week) without saying it was optimistic. Together that made Team B the "long pole" and gave "≈ 10 weeks, 2–3 months stays true". With the right split and Silver's 70 % rate, the critical path is Team A, ≈ 13 weeks rebalanced, ≈ 3 months.
 - **Rule involved:** role-sa §3, *"A claim is never stronger than what you read"*. I took ownership from memory of the sizing files' authors (Silver sized R0 / F1–F6 on 10-15), not from the assignment records.
 - **How it was caught:** by Silver's own Team B lines (via Porter), the same day, before any customer wording was written.
@@ -679,15 +776,18 @@ Status: NEW
 - **Evidence:** `REPORT-porter-pm-failures-2026-09-28.md` §1.A; `log/2026-09-23.md`, `log/2026-09-24.md`, `log/2026-09-26.md`, `log/2026-09-27.md`.
 
 ## F-SOBER-2026-10-12 — note text with `git` commands executed by the shell (workspace repo), harmless this time
+- **Status:** FIXED 2026-11-01 — workforce-protocol §7 (no content through a shell string) + the hook that blocks node -e
 **What:** editing `DEPLOY-uat-2026-10-12-final-front-office.md` through an inline `node -e "…"` in bash, the note's backtick-quoted commands (`git checkout d32bdc4`, `git checkout dong`, `git status`, `git log …`) were command-substituted by bash and RAN in the workspace folder. `git checkout d32bdc4` failed (no such commit in this repo); `git checkout dong` was a no-op (already on it); the others errored. **Verified at once: branch `dong`, HEAD `520e8d7`, no stash, working files intact.**
 **Why it mattered:** agents never run git writes; a checkout in the human's repo with uncommitted work could have moved it.
 **Rule from now:** any text containing backticks or shell commands is written to a FILE first (Write tool) and applied by a script reading that file — never inside a double-quoted inline command.
 
 ## F-SOBER-2026-10-12b — REQ-118 verified on `bun test` only; the COMPILED binary could not find its dataset (TEST-099 F2)
+- **Status:** ATLAS-REVIEWED 2026-11-13 — covered by the deploy-ready-build skill (prove the compiled build)
 **What:** TASK-800 read `src/data/thai-geography.json` at runtime via `import.meta.dir`. Every test (and my combined run) used `bun test`, where that is the real folder. sid runs `bun build --compile`, where `import.meta.dir` is the binary's virtual root (`B:\~BUN\…`) ⇒ 500 on every valid-code area call. Caught by @Tanya on sid, before uat.
 **Rule from now:** any change that reads a FILE at runtime (data, template, asset) must show, in its Done-means, the feature working from a **compiled build started outside the repo** — or use a static import that the compiler embeds.
 
 ## F-SOBER-2026-10-17 — handed the ball to the OWNER when the app paused my sends (4 times in one evening)
+- **Status:** FIXED 2026-10-25 — watch-inbox.sh wakes seats with no send (ORDER 34); CLAUDE.md rule 2 (no ball to the owner)
 **What:** each time the app paused my cross-session sends (about 10 since the owner last typed in my session), I ended my reply with "Ball: you — please type anything so I can nudge". The owner had to type "ready" to keep the work moving, and was confused about why the SA was handing him the ball.
 **Why it mattered:** the owner is not in the chain below the PM. A pause is a delivery problem, not his decision. Asking him to type moved the work onto his time.
 **Rule from now** (owner, via Porter; also in `SYSTEM-FACTS.md`, 10-17): when paused:
@@ -698,45 +798,57 @@ Status: NEW
 **Same evening, a repeat of F-SOBER-2026-10-12:** I wrote this very entry inside an inline `node -e '…'`, and the apostrophe in "engineer's" closed the shell quote. It was a syntax error, so nothing ran. **File first, every time.**
 
 ## F-SILVER-2026-10-16 — nudged Porter "done" before the writes had landed (REQ-120 deltas)
+- **Status:** FIXED 2026-11-13 — workforce-protocol §14 "Read the output before you quote it"
 **What:** I sent the write commands and the nudge in the same turn. A stray `cat >> x.tmp` with no input blocked the shell, so none of the appends ran (it left an empty `.tmp` file), but the nudge still went out saying "done". I found it and rewrote everything (19:29). Porter had already checked at 19:2x and found nothing.
 **Cost:** one extra round trip for Porter.
 **Rule from now:** **a nudge only AFTER the writes are verified on disk** (grep / re-read). Never in the same batch as the write command. Never use `cat >>` without a heredoc.
 
 ## F-PORTER-2026-10-17 — messaged Marie directly (routing)
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (PM.md); no harm
 - **What:** I woke Marie by session id with an install request. `PM.md` says *"Marie is not on your chain — you cannot call her; you tell the owner to."* The owner's ask that day ("ใช้สกิล nudge", "ส่งรายงานไปบอก ATLAS") named Atlas, not Marie.
 - **Harm:** none (Marie answered and routed the choice to the owner), but it erodes the rule.
 - **Rule for me:** workspace identities only through the owner, except a report file **the owner ordered for that identity**. Marie's install request goes as one line to the owner.
 
 - **F-PORTER-2026-10-21:** I told Sober to "coordinate the shell contract with Silver". That invited SA → SA messages, a non-adjacent pair, and Sober wrote to Silver's inbox. **Fix:** contracts between teams are FILES (CONVENTIONS.md), and anything to agree goes through Porter. Both SAs told.
+  - **Status:** ATLAS-REVIEWED 2026-11-13 — see F-060 (SA↔SA pattern)
 - **F-SOBER-2026-10-21:** I read "coordinate with Silver" as leave to write to `inbox/SA-B.md`, twice. **Rule for me:** an instruction's wording never adds a channel. Team B is reached only through a shared file (CONVENTIONS.md) or through Porter. If an ask seems to need a new channel, I ask Porter which one.
+  - **Status:** ATLAS-REVIEWED 2026-11-13 — see F-060 (SA↔SA pattern)
 
 - **F-PORTER-2026-10-25:** Khwan answered the 4 REQ-120 follow-ups on 10-21 11:21 in LINE. I never recorded it, and on 10-25 I told the owner they were unanswered (and offered to re-ask). **Fix:** when a question goes out, record it as 'asked, waiting'. When the owner forwards any LINE screenshot, scan it for answers to open questions before saying anything is unanswered.
+  - **Status:** FIXED 2026-11-08 — search before asking or ruling (role-pm §5, CUSTOMER-ANSWERS index, ORDER 58)
 
 - **F-PORTER-2026-10-25 (REQ-130):** I relayed Silver's 'move the day-end from 17:30 to 23:30' to the owner as a fix. 17:30 was a deliberate customer ruling, already in REQ-089 / REQ-094 / SYSTEM-FACTS. **Fix:** before proposing to change any schedule or rule on the customer's system, grep requirements + SYSTEM-FACTS for it. A deploy doc is not the source of truth for a business setting.
+  - **Status:** FIXED 2026-11-08 — search before asking or ruling (role-pm §5, CUSTOMER-ANSWERS index, ORDER 58)
 
 ## F-SILVER-2026-10-25 — told the owner to move the day-end to 23:30, against a recorded owner ruling (17:30)
+- **Status:** FIXED 2026-11-08 — search before asking or ruling (role-pm §5, CUSTOMER-ANSWERS index, ORDER 58)
 **What:** REQ-130 round 3. I took "23:30" from the code repo's `DEPLOY-scheduled-tasks-windows.md` and called 17:30 a misconfiguration. I sent the owner a `schtasks /change … /st 23:30` step. I did not open `SYSTEM-FACTS.md`, which records (l.75-81) that **the OWNER set 17:30 on 2026-09-16 at the customer's request** (the team leaves at 17:30). I also called "effect (2)" (classes starting after 17:30 never auto-marked) systemic, although `TIME_SLOTS` ends at 17:00, so no class starts after 17:30.
 **Caught by:** Porter, the same hour, before the owner acted.
 **Cost:** a wrong server step and a false alarm in front of the owner; a round trip.
 **Rule from now:** **before I call any schedule, setting or environment value "wrong", I grep `SYSTEM-FACTS.md` (and the REQ that set it) for it.** A deploy doc or a code comment is not the ruling. The SYSTEM-FACTS rule (F-011..F-014) already says facts come from the source of truth; this is the same failure on a time value.
 - **F-SOBER-2026-10-25:** my commit-list script ran `.trim()` on `git status --short` output. That stripped the leading space of the FIRST line (` M drizzle/meta/_journal.json`), so its path parsed one character off, and **the migration journal fell into the "NOT in this commit" list** while I was filtering out another team's files. Caught by checking the counts against my frozen list (60/5 vs 61/4) before sending. **Rule for me:** `trimEnd()` only on porcelain output; and whenever a list is FILTERED, assert its count against an independent source before publishing it.
+  - **Status:** ATLAS-REVIEWED 2026-11-13 — own rules recorded; no gap
 
 ## F-SILVER-2026-10-25b — "posted once" accepted from a key test; the re-run "safe" claim was never checked against the ledger
+- **Status:** ATLAS-REVIEWED 2026-11-13 — own rules recorded; no gap
 - **What:** TASK-749 went DONE with a DoD of "posted once", proven only by a pure test (the same booking + the same generation ⇒ the same key). On sid, two runs posted each sale twice: the generation is DERIVED from the posts, so run 2 always gets a new key (TEST-123). I had also told the owner a day-end re-run "is safe: idempotent" (REQ-130, 10-25), which has been false since TASK-258 (2026-09-06).
 - **Rule:** an idempotency claim is proven by value, **by running the thing twice against a ledger that keeps run 1's writes**, never by a key function alone. Before I call a re-run safe, I read how its key is BUILT (where the generation or counter comes from), not just that a key exists.
 
 ## F-SILVER-2026-11-05: I wrote a default that contradicted the customer's own words, and it got a GO
+- **Status:** ATLAS-REVIEWED 2026-11-13 — own rules recorded; no gap
 - **What:** REQ-5002's CHECK Q1 defaulted "a course ended early = cancelled, out of all counts". REQ-126 has her words on that exact case: *"แต่ไม่ใช่การ pause ไว้ หรือ cancel ไปค่ะ"*, and TASK-837 stores it as `ENDED_EARLY`. Bob built on it. Caught when TEST-136's Q6 named ตัดจบคอร์ส. No uat number was affected (0 such rows).
 - **Why:** I reasoned from `courseStatus` (every ended course = CANCELLED) and never grepped requirements/ for the case.
 - **Rule:** before stating a default on a customer-visible meaning, grep `requirements/` for that case and for her words. The code's label is not her meaning.
 
 ## 2026-11-09 — Sober (SA Lead A): speced a UI against an existing customer ruling (TASK-914)
+- **Status:** ATLAS-REVIEWED 2026-11-13 — rule exists (role-sa §4.2, read the rulings before designing)
 **What:** Cut TASK-914 (Notifications) asking for a per-person × per-type **opt-out matrix**, directly against **ruling C-h** (REQ-122 l.172: "notifications: no opt-out ticks; everyone always gets all their own"). Fanta built it but flagged the conflict instead of silently shipping it.
 **Why it slipped:** I speced from R0.4 alone ("per person and per type") without checking the C-ruling table, which had already SIMPLIFIED R0.4. R0.4's data phrasing survived, but the UI policy was overruled by C-h.
 **Fix:** Converted 914's settings to the final-UI read-only recipient list (role-derived, no toggles); feed kept.
 **Lesson:** before speccing a UI that encodes a POLICY (opt-in/out, who-can-edit, visibility), grep the C-ruling table (REQ-120 §8/§9, REQ-122) + CUSTOMER-ANSWERS for that feature — a later ruling may have overridden the base REQ's wording. The requirement's base text is not the final word when a C-ruling touched it.
 
 ## 2026-11-09 — a broken route validator reached sid untested (TASK-911, POST /v1/stock/in)
+- **Status:** FIXED 2026-11-13 — role-be §3 + role-sa review-checklist (a route-level test per validator)
 **What:** `routes/stock.ts:57` `receivedOn` regex lost its backslashes — `/^d{4}-d{2}-d{2}$/` instead of `/^\d{4}-\d{2}-\d{2}$/` — so every POST /v1/stock/in 400'd on sid. Caught by Silver on sid, AFTER deploy, not in review or CI.
 **Why it slipped:** the 911 service tests bypass the route's zod validator (they call the service directly), so no test ever exercised the route body schema. tsc doesn't catch a valid-but-wrong regex. So a broken validator passed review (1087/0) and deploy.
 **Lesson (team-wide — I'll raise the hygiene check):** every route with a zod validator needs at least ONE **route-level** test — a valid body passes, an invalid one 400s — not just service tests. A regex/schema bug is invisible to service tests + tsc. Porter asked for a sweep of BB routes with zero route-level tests; worth doing. In review, when a route adds/changes a validator, check there's a route-level test for it.

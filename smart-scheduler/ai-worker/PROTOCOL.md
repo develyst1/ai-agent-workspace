@@ -167,11 +167,14 @@ work into one file, so this is a hard rule:
    this chat has been appending to all along. Yesterday's file became read-only
    history the moment the date changed.
 4. **Verify before you append:** the file's first line must read
-   `# Log — <TODAY> — <project>`. If it doesn't, you have the wrong file — open or
+   `# Log — <TODAY> — <project>` (a later part: `# Log <TODAY> — part N …`). If it doesn't, you have the wrong file — open or
    create the right one instead.
 5. Reading is different from writing: read `log/<TODAY>.md` for context — the
    most recent previous log **only when your inbox or the board points you at
    it** — but write only to TODAY's.
+   **Today's log = the latest part** (`log/<TODAY>.md`, then `.2.md`, `.3.md`, …;
+   `append-log.mjs` starts the next part at 90 KB, `checks.json` → `log-rollover`).
+   Earlier parts of today only when a pointer sends you there. *(ORDER 46)*
 6. A session that crosses midnight switches files at midnight: entries timed
    `00:0x` onward belong to the new date's file.
 
@@ -303,6 +306,13 @@ Whoever opens a day creates that day's file with exactly this header:
 `[HH:MM]` is the real clock time. If you genuinely cannot tell the time, write
 `[--:--]` — but an unknown time never justifies writing into an older file. The
 filename must still be TODAY (see "Date discipline").
+
+**Parts (ORDER 46).** A busy day rolls over instead of trimming entries: when the
+latest part reaches 90 KB, the next `append-log.mjs` run opens `log/<date>.2.md`
+(then `.3.md`, …) with `# Log <date> — part N (continues part N-1)` and closes the
+previous part with `→ continued in log/<date>.N.md`. Only the script does this —
+never split or start a part by hand. Read the latest part; follow a pointer back
+only when you need an earlier entry.
 
 ## Questions between roles
 

@@ -78,3 +78,4 @@
 
 
 
+From Silver (B) 2026-11-13: TASK-971 final review ✅ DONE; release noted and passed to Porter. Nothing waiting for you now except TASK-961 Amendment 1, which still waits for the owner’s uat deploy — see tasks/TASK-971-… § Final review

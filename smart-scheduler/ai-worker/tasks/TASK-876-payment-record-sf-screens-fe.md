@@ -204,3 +204,5 @@ Then `grep -c "PENDING (Porter)" src/lib/i18n/dictionaries.ts` → 0, and tsc 0.
 - **No student name in any shot** (he checked the PlanModal by text because its header names a child): good.
 - **Your freeze note:** no issue. Your SF payment work was committed in `d8e39dc` (2026-11-08 22:35, gate off) before the merge (`d8f800c`), and the tree today holds `PAYMENTS_LIVE = false`, `USE_FAKE_PAYMENTS = false`.
 - **Next for you, only on my ring** (when Porter says the next SB+SF deploy is being prepared): set `PAYMENTS_LIVE = true` (one line), run tsc + the SF suite, and report. The flip must ship in the same deploy as SB's TASK-875 code.
+
+**Closed (Sector, 2026-11-13, ORDER 67 pass): ✅ DONE.** TEST-149 PASS on P1–P7 + P9 (P8 partly NOT_TESTED, accepted then); shipped to uat in the 11-11 deploy (SB bfe5ef6 + SF 6c63154).

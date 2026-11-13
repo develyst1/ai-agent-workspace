@@ -124,11 +124,15 @@ draft Thai text of the front page; the PM owns the final words and sets them bef
   > schedule the same. See "Second reading" → Outcome.
 - **Q2 (SA proposes → owner approves — does not block)** — How many classes, how long each, how often. Nothing is
   recorded. The SA proposes numbers with a reason; the owner approves them at AC-1.
-  > answer: _(pending)_
+  > answer: **ANSWERED 2026-11-12 by the owner, `[operator]`** — "เอาตามนั้น" on the PM's recommendation
+  > (`DECISIONS.md` 2026-11-12): the full course is 12 classes × 2 h; the first learner takes 01–04 (4 evenings ×
+  > 2 h, 2026-11-16..19) + a 1 h bonus. Classes 01–04 are re-cut to end with one small working calculation program.
+  > The repo shows "4 evenings × 2 hours" style counts, no real dates `[PM-decided]`.
 - **Q3 (SA proposes → owner approves — does not block)** — Should the course end with the learner's own small
   project? The owner said the learner wants their own projects and AI should help them build "ในอนาคต" (later), so
   this is not asked for. The SA may offer it as an option at AC-1, marked `team-proposed`.
-  > answer: _(pending)_
+  > answer: **ANSWERED 2026-11-12** — the first learner's 8 h end with one small working calculation program (owner's
+  > "เอาตามนั้น", `DECISIONS.md`). Whether class 12 of the full course is "my own project" stays an AC-1 line.
 - **Q4 (SA → owner — does not block)** — Is the repo for this one course, or the home of several courses later?
   > recommendation `[team-proposed]`: a structure that can take a second course without moving the first; build only
   > the first.

@@ -134,3 +134,7 @@ Read the built code, not just the report:
 - **Total integrity intact:** `Total = model.totalSatang/100`, each line counted once; the memo was never added to it.
 - **`flTotalSatang`: KEEP it (my call).** It is a pure read-only derived number (`slip-sections.ts:22/73`), rendered nowhere, consumed only by 3 tests, with the explicit "already inside totalSatang via its class rows — never add it again" comment. The SPEC-102 My-slip/Entries FE may want a "Freelance total" summary line without re-summing; removing it buys nothing and churns 3 tests. Leave it, unrendered.
 - Evidence accepted: tsc 5.9.3 → 0, BB suite 998/0, samples regenerated. **Verdict: ✅ ACCEPTED.** Jason is free; routing back to his SA (Silver, Team B) for his next.
+
+## Board text moved 2026-11-13 (ORDER 67) — TASK-879, board column 4
+
+✅ Silver-accepted 11-09 (formula-injection guard on XLSX + the 865 CSV name [Sober-verified]; /sec-review clean; PDF subtotal no-wrap fix; 857/0, mutation 18/18) — Silver closes verdict. **+ FL class-split render + memo-row DROP ✅ Sober-accepted 11-09** (code-read: no "all classes" row in XLSX/PDF, Total counts class rows once, flTotalSatang kept unrendered; BB 998/0)

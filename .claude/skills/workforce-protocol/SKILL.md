@@ -322,6 +322,14 @@ Entry template: [references/failures-entry.md](references/failures-entry.md).
     test setup has replaced the real value.
   If a secret did print, say so at once in a FAILURES entry. Whether to reissue it is the owner's call,
   through the PM.
+- **Read the output before you quote it.** A check's result goes into a message only after you have read that
+  output. Never send the message, or the nudge, in the same batch as the command or the write it reports: the
+  batch runs before you see what came back.
+- **Before any database command, prove the host.** Resolve the `DATABASE_URL` the command will really use, print
+  the **host only** (never the value), and compare it with the desk's facts file. A different host means stop:
+  do not run it, and say which host it resolved to. A tool that loads `.env` by itself (Bun does, and `.env` wins)
+  gets its URL inline, test runs included. A "verified" line names the host it was proven on; a schema check
+  proves the schema is there, not where.
 - **A rule file you loaded can change while your session runs.** When `CLAUDE.md`, `PROTOCOL.md` or your
   charter changed today, re-read it before you run anything it governs (environments, databases, git).
 

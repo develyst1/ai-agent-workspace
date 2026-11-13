@@ -1,55 +1,53 @@
 # RESUME HERE: where this project is right now
 
 > 🔴 **REPLACED, NEVER APPENDED TO.** A snapshot, not a log. The previous one is kept verbatim at
-> `archive/RESUME-HERE-2026-11-11-2358-pre-rewrite.md`.
+> `archive/RESUME-HERE-2026-11-13-pre-rewrite.md`.
 > History → `log/` · decisions → `SYSTEM-FACTS.md` / `DECISIONS-REQ-120-build.md` · state → `board.md`.
 
-**Written:** 2026-11-11 ~23:58 by Porter (PM). Newest log: `log/2026-11-11.md`.
+**Written:** 2026-11-13 ~02:20 by Porter (PM), state line updated ~03:30. Newest log: `log/2026-11-13.md`.
+
+> **NOW (~03:15 11-13): REQ-5016 is SPEC_DONE; all 4 TASKs are built (969, 970+A1, 971, 972). 0081 is applied on sid (82/130/82). Gate #2: Team C GREEN; Team B signs after clearing ChangeActivityDialog.tsx. Then I ask the owner for «ขึ้น git» in the morning, he deploys sid, and Tanya tests REQ-5016. uat later = 5 pending (0077–0081), ledger 98 → 103. Owner's morning wording pack: REQ-5015 Q1, REQ-5016 Q1 (pattern line), TASK-972 new Thai strings, and whether a leave should send the family a message (AC4 correction).**
+> **Earlier (~02:30 11-13): REQ-5016 multi-day (paid 1,850) is being built by TWO teams on the owner's «ให้ทีม B ช่วยเลย»: SPEC-109 §8, Brew/Flash (C) + Bob/Fanta (B), sid ≈ 11-16. Owner asleep, wants the full picture on waking. Overnight: an idle sweep every 30 min, and SA-B and SA-C coordinate through me.**
+> **Earlier (later 11-13): committed SB 738b6eb / SF 6c52040 is on sid. Tanya passed REQ-5013/5014/5015 and TASK-942. The owner said «ยังไม่รวมโค้ด»: uat waits on his word. Follow-ups wait for the uat deploy: TASK-961 Amendment 1 (Bob) and TASK-967/968 (Brew/Flash). Multi-day F1 (Team C) is next. LINE images: read them in chat.line.biz (SYSTEM-FACTS).**
+> _Older line:_ **(03:30): the joint full-tree gate is GREEN** (PLAN-2026-11-13-joint-deployable-commit-sb-sf.md § Gate result). All 4 front-office jobs are done: 942, 959/960, 961/962, 965/966. **Waiting for the owner's «ขึ้น git»**, then the sid deploy of that commit, then Tanya, then uat. uat steps for the owner go in chat at the moment of asking (uat = «รวมโค้ด» + «release code», then his routine + preflight/migrate/verify 0077–0080, ledger 102); team detail in `DEPLOY-NOTE-uat-2026-11-13-close-a-day.md` + PLAN § Gate result. **Don't tell ขวัญ** (owner, 11-13). Quote brief for แนท: `deliverables/QUOTE-BRIEF-for-nat-som-2026-11-13.md`. Daylight to-do: the REQ-row DELIVERED pass (Marie ORDER 67 (b)); the board is 44.7 KB.
 
 ## Standing ways of working (full text in SYSTEM-FACTS)
-- **GR web = the BACK-OFFICE demo only.**
-  - Back-office feedback: update the demo (Sober → Otto → Tanya LIVE + screenshots), then a message to ขวัญ on the owner's "ส่ง", sent by the bot.
-  - Everything else (front office, money, scope): take it to the owner first.
-  - Every accepted item also goes in `GR-FEEDBACK-TO-CODE.md` and is built in the real code from 14 Nov.
+- **Deploys:**
+  - The shared SB/SF tree is finished whole, then shipped once.
+  - The gate is: tsc 0, every suite 0 fail, journal = ledger. Then the owner says «ขึ้น git», Silver commits both repos, and the owner deploys **that commit** to sid. Tanya tests, then uat gets the same commit.
+  - **Never deploy a working tree.** Before any deploy ask, every SA confirms "nothing new of mine", and I check the tree's migrations against the target DB (F-068, F-072).
+  - sid may stay broken until then (owner, 11-13).
+- **The build pause until 14 Nov covers the BACK OFFICE only.** Front-office work runs now (owner, 11-12).
+- **Pricing:** extra money is charged for the FRONT office only. Back-office feedback is free until 17 Nov (it goes on the GR web first). ขวัญ is an admin in BOTH systems.
 - **LINE bot:**
-  - It is live and records the SOM SYSTEM group.
-  - `tools/watch-line.sh` polls every 30 min. Start it each session from `smart-scheduler/`: `bash ai-worker/tools/watch-line.sh /h/scheduler/develyst-line-bot`.
-  - The bot sends at most **3 images** per send.
-  - Every customer message needs the owner's "ส่ง" for that message.
-- **The owner's PC is offline from about 08:30 to 19:00–20:00.** Daytime "offline" alarms are normal.
-- **A ball line means the holder is moving.** Check `list_sessions` first; doorbell every hand-off, including an SA's engineer.
-- **Recommendations to the customer start from her own asks** (F-061), not from our cost.
-- **The free small-change limit after 17 Nov is ≤ 2 days.** VAT is quoted as before (no VAT line). The source code becomes the customer's after the back office. Acceptance is 7 working days; payment is 7 days after acceptance.
+  - The poller is `tools/watch-line.sh`. For a manual pull: `bun scripts/pull.ts --since $(cat .private/line-cursor)`, then file the result in `.private/line-*.json` and advance the cursor.
+  - The bot sends at most 3 images per send. Every customer message needs the owner's "ส่ง".
+  - When QA passes on something she asked for, I draft the "done" message at once.
+- **One topic and one ask per message to the owner.** A ball line means the holder is moving. Relay doorbells for SAs whose sends are capped.
 
 ## Where things stand
-- **uat (the customer's live system) was deployed on 11-11 with SB bfe5ef6 + SF 86316ee** (Palm's SOM pies included).
-  - The back-office DB schema on uat now equals sid (BB full migrate + seed-ledger).
-  - TEST-154 is a read-only PASS. ขวัญ was told (bot).
-  - It includes F5 + F2 (TEST-152), the voucher, payments, branch, camp, No Teacher, and the SOM dashboard API (TEST-153).
-- **sid:** SB bfe5ef6. BB/BF are an older build; the English bundle is committed but not deployed (BB e3a37de, BF 68a9409).
-  - `SKIP_ADMIN_AUTH=false` since 11-11 (D-150-3 closed).
-- **GR web (som-gr) is at round 5 (md5 3341cf63).** All of ขวัญ's 11/11 feedback is answered.
-  - The per-menu permission tick list is HELD behind a flag until she chooses from the quote.
-- **All 4 code repos are clean.** SB 8ee821a → bfe5ef6; BF 68a9409; BB e3a37de.
+- **Paid front-office deal: 4,000 ฿.** พี่ฟีน accepted it 11-12, in exchange for a Fastwork collab and a review. The post is up.
+  - close-a-day B (REQ-5013): ✅ TEST-156 on sid.
+  - change activity A (REQ-5014: TASK-961/962, Team B): done; Tanya is testing on sid.
+  - multi-day schedule F1 (≈ 7.5 d, Team C): starts after REQ-5015. ขวัญ's answers are in.
+- **Free:**
+  - REQ-5015 (Team C, TASK-965/966): multi-coach leave, part-day leave, coach hours. Due **11-15**.
+  - TASK-942: park fee, several groups per hour. D-155-1 fix done; the re-test waits for the full tree.
+  - Activities & prices page in the back office: sized, step 1 ≈ 1.5 d, from 14 Nov. Owner go pending.
+- **sid** runs the owner's full deploy of the shared tree (0077–0080 applied). Some paths are broken until 965 is green; Sector's avoid list is in TASK-965.
+- **uat:** SB bfe5ef6 / SF 86316ee (11-11). Mixed activity «Private INLINE SKATE & FREESKATE» was added 11-13.
+- **GR web:** round 12 live (TEST-151 passed). All of ขวัญ's 11-12 back-office feedback is on it.
 
 ## Waiting
-- **ขวัญ:**
-  - the quote: `deliverables/SOM-proposal-extra-work-2026-11-11.html`, recommended 7,850 ฿ / cheapest 5,150 ฿;
-  - the owner sends it, with Trolley cards 21–24 for the doc team;
-  - more GR feedback until 17 Nov.
-- **แนท:** the agreement answers are posted on Trolley board 2 card 20. The owner sends the party details himself.
-- **The owner:** nothing urgent.
+- **The owner:** approve the LINE words for part-day leave («เวลา {from}–{to}»), REQ-5015 Q1. Then the go for the activities & prices page.
+- **ขวัญ:** 2 ECA questions (revenue = pre-VAT? net = gross − WHT?), the Fastwork account name, and her morning feedback.
+- **แนท:** the quotation, from `deliverables/NAT-info-som-extra-work-2026-11-12.md`. Paid 4,000.
 
-## On 14 Nov (the real build resumes)
-1. Deploy the English back office (BB + BF) to sid.
-   - Add the Refund env (`SCHEDULER_API_URL`, `SCHEDULER_INTERNAL_SECRET`).
-   - Check `SKIP_ADMIN_AUTH=false`.
-2. TASK-951 (Jason): `/bo/reports/*` is CEO-only, with route tests.
-3. Back-office ledger rows (GR-FEEDBACK-TO-CODE 1–25): TASK-942 park fee, TASK-935 English sweep, row 24, Revenue filters/export, Stock Report export.
-4. Palm's SOM pies to sid; then Tanya's screen check. It is already on uat.
-5. TASK-946 follow-up: the group-series cancel-all still regrows the old way (≈ 0.25 d).
+## Next
+1. **~11-15:** Team C finishes. Then the full-tree gate, «ขึ้น git», the sid deploy of that commit, and Tanya: TEST-155 re-run, REQ-5014, REQ-5015.
+2. **uat:** the same commit. Migrations 0077–0080 run in one go at a quiet time (0078 locks bookings), per `DEPLOY-NOTE-uat-2026-11-13-close-a-day.md`.
+3. **14 Nov:** the back office resumes. Deploy the English bundle (BB e3a37de / BF 68a9409) to sid, TASK-951, TASK-963/964, then the activities & prices page.
 
 ## Dates
-- **17 Nov:** the GR feedback window closes.
-- **18 Nov:** the URS PDF goes out by email.
+- **17 Nov:** the GR feedback window closes. **18 Nov:** the URS PDF goes out.
 - **Delivery bar:** Salary sid by 6 Dec, uat by 13 Dec · Revenue + Stock sid by 3 Jan · reports by 17 Jan.

@@ -130,7 +130,9 @@ ask. No (names, file placement, which of two equivalent internals) → decide an
 **4.4 Design the seams.** Decide where the boundaries go before the internals
 (`mattpocock-skills:codebase-design`). One contract per seam, written before either side builds.
 A change that needs both sides is two TASKs with a stated order. A seam that crosses into a repo
-or team you do not hold is not yours — it goes to the PM.
+or team you do not hold is not yours — it goes to the PM. A contract on a seam that is **already built** is
+written from that code, citing file:line, never from a TASK's description of it. If the seam is not built yet,
+mark the contract PROPOSED until its builder confirms it against the code.
 
 **4.5 Write the SPEC** from [references/spec-template.md](references/spec-template.md). Schema
 changes as exact SQL, with what happens to existing rows and who runs it (never you, never an
@@ -158,6 +160,16 @@ through the **`git-command`** skill: `ขึ้น git` (commit with the repo's 
 (the repo's `merge-workflow.sh`; fix a conflict, then rerun), `release code` (the repo's
 `release-workflow.sh`). Never commit to "save progress", never create a branch. Paste the real output
 (hashes) as evidence; the PM puts it on the first line to the owner.
+
+**Asking for a deploy** (the owner deploys; you only ask, through the PM). The ask names exactly what goes up:
+- the changed files, each mapped to a TASK you reviewed;
+- every migration pending on the target, with its step (for example `db:migrate`). Find them by comparing the
+  migration files **in the tree** with what the target has applied. The desk's migration record lags the tree;
+- the check to run after the deploy, and what result means stop.
+
+On a checkout that other teams also write into, another team's work that is not reviewed and migrated is taken out
+by its owner before the ask goes up, and **every SA with work in that checkout confirms "nothing new of mine"**
+first. One SA's note is never enough. Never ask for "the working tree".
 
 **Guest in someone else's repos / multi-team desks** — read
 [references/guest-and-multi-team.md](references/guest-and-multi-team.md) before designing. In short:

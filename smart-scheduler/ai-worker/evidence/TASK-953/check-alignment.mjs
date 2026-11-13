@@ -106,9 +106,12 @@ for (const slug of PAGES) {
     await page.screenshot({ path: join(here, `r7a-1280-ceo-${slug.replace("/", "-")}.png`), fullPage: true });
   }
   if (slug === "proposed/payment-setting") {
-    await page.getByRole("button", { name: "Edit" }).click();
-    await page.waitForTimeout(300);
-    res.pages[`${slug} (edit)`] = await audit();
+    // Round 12 (Flash): the page no longer has an «Edit» button (PaymentSettingEdit was removed), so audit the edit view only if it exists, instead of timing out.
+    if (await page.getByRole("button", { name: "Edit" }).count()) {
+      await page.getByRole("button", { name: "Edit" }).first().click();
+      await page.waitForTimeout(300);
+      res.pages[`${slug} (edit)`] = await audit();
+    } else console.error(`${slug}: no Edit button on this build, edit view not audited`);
     res.forms[slug] = await formRows("main");
     await page.screenshot({ path: join(here, "r7a-1280-ceo-payment-setting-edit.png"), fullPage: true });
   }

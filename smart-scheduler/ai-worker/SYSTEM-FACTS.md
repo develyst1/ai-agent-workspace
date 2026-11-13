@@ -4577,3 +4577,35 @@ From Porter 2026-11-08: FYI, no round yet: Team C's test data on sid (skip it in
 ## The extra-work proposal HTML is internal until แนท + พี่เบส have seen it [owner 2026-11-12 ~08:35]
 - Verbatim: *"ไอ้ HTML ตัวเนี้ยเราจะยังไม่ส่งให้ลูกค้าเราจะเอามาคุยกับแนทกับพี่เบสก่อน … เราบอกแค่ลูกค้าได้ว่ามีการคิดเงินส่วนไหนบ้างหรือว่าบอกคร่าวๆก็ได้"* · *"จะทำการคุยกับแนทวันนี้"*.
 - `deliverables/SOM-proposal-extra-work-2026-11-11.html` is NOT sent to the customer. To ขวัญ we only say which items carry a cost (no prices, no options, no totals). Prices go out only after the owner's talk with แนท and พี่เบส.
+
+## The 10–14 Nov build pause covers the BACK OFFICE only [owner 2026-11-12 ~23:55]
+- Verbatim: *"ไม่ๆ พักงาน คือพัก แค่ หลังบ้านนะ"*.
+- It corrects my reading of l.4443, which said all of blocks 1/2/3 were paused. Front-office work may start now, including the paid items พี่ฟีน agreed on 11-12 (close-day B, change activity A, multi-day).
+
+## REQ-053 (no activity change inside a course) was the owner's own assumption, so it is lifted for the paid "change activity" [owner 2026-11-13 ~00:05]
+- Verbatim: *"นั่นตั้งนานมาแล้ว ไม่รู้เรื่องไง เพราะคิดเอง แล้วว่า ไม่น่าได้เพราะตอนนั้นคิดว่าราคาไม่เท่ากัน"*. The 08-16 lock came from his guess that the prices differ. It was never the customer's rule.
+- Scope [PM reading, from the agreed option A]: the lock is lifted for the deliberate whole-course "change activity from the next class" action only. Attended classes keep their activity. Details still to confirm with ขวัญ (CONCEPT-F3 open points 1–4).
+
+## Coach time ranges + multi-coach closing are FREE (owed from the early front office) [owner 2026-11-13 ~01:10]
+- Verbatim: *"ทำฟรีไป เรื่องนี้น่าจะเคยพูดตั้งแต่ เริ่มทำหน้าบ้านวันแรกๆ แล้ว"*.
+- Confirmed in the files: REQ-038 (her "Standard Timetable" feedback, 2026-08-04), item 6 «ช่วงเวลาทำงานของครู», was marked 🟡 partial. Working DAYS were built; working TIME never was.
+- Free scope: (1) close/leave for several coaches at once; (2) coach leave for part of a day; (3) coach working hours per day. → REQ-5015.
+
+## Deploy rule for the shared SB/SF tree: finish everything, then ONE deploy; sid may stay broken meanwhile [owner 2026-11-13 ~01:50]
+- Verbatim: *"ก็ทำให้จบทีรเดียวค่อยขึ้น ปล่อยพังไว้งั้นแหละ sid"*.
+- No parking and no split deploys. The teams finish every task in the tree (942 fix, 961/962, 965/966). Then the SAs run the full gate on the whole tree (tsc 0, suites 0 fail, journal vs ledger) and the owner says «ขึ้น git». Silver commits both repos, and the owner deploys that commit to sid, then Tanya tests. uat follows the same commit.
+- Until then, sid runs the current half-built tree. Tanya tests only what isn't on Sector's avoid list.
+
+## The paid front-office items are AGREED, not paid; keep building, but don't tell ขวัญ yet [owner 2026-11-13 ~02:00]
+- Verbatim: *"ยังไม่จ่ายนะ แค่ตกลง"* · *"ทำไปต่อ นั่นแหละ แต่อย่าเพิ่งแจ้งขวัญ"*.
+- Close-a-day B and change activity A (4,000 ฿) are agreed but unpaid; แนท's quotation is pending. The build continues.
+- **No message to ขวัญ about these items' progress or readiness** until the owner says so. This includes the combined deploy, which is done quietly.
+
+## The owner deploys sid from his local checkout (this machine), not by picking a commit hash [owner 2026-11-13 ~03:50]
+- Verbatim: *"sid ฉัน deploy จากเครื่องนี้เลย ไม่เลือก commit hash"* · *"จำไว้ด้วย"*.
+- So "deploy a commit" means: the local checkouts (`H:\scheduler\smart-scheduler-back` / `-front`, per machine.local.md) must be **clean and at that commit** when he deploys. **Rule for every deploy ask:** «ขึ้น git» first; then I check `git status` = 0 and HEAD = the reported hash in both repos (a read); only then I ask him to deploy. Any engineer edit after the commit dirties his deploy, so the tree stays frozen from «ขึ้น git» until his "deploy done".
+- Checked 2026-11-13 ~03:50: SB HEAD 738b6eb, SF 6c52040, both clean (0 paths), so this sid deploy = the commits. db:verify 81/129/81 ✅ (his paste).
+- **uat deploys from branch `production`** [owner 2026-11-13 ~03:55, verbatim: *"sid deploy from local code / uat deploy from branch production"*]. So work reaches uat only through the owner's git commands: «รวมโค้ด» (dong ↔ develop, merge-workflow.sh) and then «release code» (develop → production, release-workflow.sh), both run by the SA on his word. After that, the owner deploys uat from `production`.
+- **The owner's uat routine, his words** [2026-11-13 ~04:00]: *"ไม่ต้องแจ้ง hash แจ้งทำไม ฉัน remote เข้า server แล้ว fetch and sync branch production and build and copy file from source code folder to deploy folder แล้วรัน pm2 restart"*. So: never give him a hash for uat. A uat deploy note gives only: «รวมโค้ด» / «release code» done, the migrate step + its BEFORE/AFTER checks, and the STOP lines.
+- **LINE poll period = 15 min** [owner 2026-11-13 ~02:10: *"ทุก 15 แทนได้มั้ย"*]. Start it with `LINE_POLL_MIN=15 bash ai-worker/tools/watch-line.sh /h/scheduler/develyst-line-bot` from `smart-scheduler/`. It replaces the 30-min default of 2026-11-10. An empty poll costs nothing; only a poll that finds new messages wakes Porter (AI usage).
+- 2026-11-13 [owner-asked] LINE group images: Porter reads them himself in the built-in browser. The owner stays signed in at chat.line.biz; switch to the **Develyst** account (not the first user that loads), open the SOM SYSTEM group, and click a thumbnail to open the viewer (← → steps through). Read only: no download, no send, no settings. The bot pull (`pull.ts`) still gives the text.

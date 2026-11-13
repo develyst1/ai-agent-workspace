@@ -114,3 +114,7 @@ Re-read the rebuilt code (53 tests / 73 mutants / 1051-0 / 14-of-14 sid — stro
 
 ## Bob — envelope fix done (2026-11-09, Sober's addendum)
 `negativeBalanceBody` and the two route catches are deleted; NEGATIVE_BALANCE / STALE / BATCH_NOT_FOUND now all fall through to the app's `onError` → `{error:{code,message,details}}` (NEGATIVE_BALANCE details = `{model,name,resultingBalance}`). The one test re-pointed (it now pins that the routes add no special body and that `index.ts` renders the standard envelope). 904's mutation set re-run: 73/73 bite; BB 1072/0; tsc 0. The 904 sid check (14/14) exercised the service's ApiException, which is unchanged.
+
+## Board text moved 2026-11-13 (ORDER 67) — TASK-904, board column 4
+
+✅ **ACCEPTED 2026-11-09** (code-read: apply={batchId}+staging to pin, NEGATIVE_BALANCE/STALE/BATCH_NOT_FOUND; 46 unit+63/63 mut+1044/0; 18/18 sid rolled-back; 0015 additive verified; 327-product preview; rebuild 53/73mut/1051-0/14-of-14 sid). Error-envelope fix VERIFIED in code (negativeBalanceBody gone; all 3 errors via onError) · in-memory staging approved. ✅ **DEPLOY-READY — waiting only on owner's ขึ้น git + sid deploy = the gate that wires 905/907/908/910/912** · Sober reviewed

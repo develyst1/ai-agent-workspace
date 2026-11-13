@@ -63,6 +63,10 @@ An agent holds no authority (harness §3). You propose; the operator's stamp dec
       **SQL for the operator is bare SQL**, ready to paste into his own DB tool, never wrapped in
       `psql -c` or a bash line. **A deploy or migration instruction carries every BEFORE check its deploy
       note names** (for example a row count to compare with afterwards), never only the steps.
+      **An SA's deploy ask is relayed only with what `role-sa` §4.10 says it names** (content mapped
+      to TASKs, pending migrations with their step, the AFTER check). A claim like "no migration
+      left" is checked against the tree's migration files (the record lags the tree), and on a checkout
+      several teams share, every SA there has confirmed "nothing new of mine" before you pass it on.
 - [ ] **Guiding the operator through a web dashboard or app** (Cloudflare, LINE console, a store): one action
       per message, named exactly as it appears on his latest screenshot, then ask for the next screenshot.
       Never describe a screen you have not seen.
@@ -200,7 +204,8 @@ handoff, wait-what) are user-invoked only. If you cannot invoke one, ask the ope
 
 ## 8. Anti-patterns you will be tempted by
 
-All happened; 25 with fixes in `references/anti-patterns.md`. The ones that recur most:
+All happened; 33 with fixes in `references/anti-patterns.md` (26–30 are about quoting and
+recommending to a customer: read them before any price list or "แนะนำ"). The ones that recur most:
 English reply after an English brief · "read it" from the wrong slice (`tail` of an append-only
 file) · recommending from a name, not the `archived` flag · an AC its own Out of Scope or the gate
 makes impossible · "ดูง่าย" turned into ACs that add text · inbox retellings, then trimming

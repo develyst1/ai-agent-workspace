@@ -175,3 +175,99 @@
   - The Action column is last.
 - **Out-of-list edit, accepted:** the extended audit also caught the Entries School/Trip fields sharing a row. Entries is one of her Part 6 files and the same rule applies, so it's in scope.
 - **Security review:** none (mock page). Next: Porter → Sober rebuild → Tanya.
+
+## Part 7 — GR round 9: never offer a link to a page the viewer can't open (TASK-955, Team B slice) — @Fanta — @Silver, 2026-11-12
+**Why:** Tanya O-151-8a. The rule and the helper live in `TASK-955 § The rule` / `§ Done by me` (Sober): `const canOpen = useCanOpen();` from `@/shell`, pass the **registry route** (`/stock/products`). **Files: `b/stock/Import.tsx`, `b/stock/StockOut.tsx` only.**
+- **My grep finds 5 calls, not 3** (TASK-955 lists Import 2, StockOut 1). [SA-decided] per kind:
+  - **Page links → hidden when `!canOpen("/stock/products")`:** Import l.21 «Add product manually» (header) · StockOut l.91 «Product» (header).
+  - **Form actions → always drawn; they only skip the move:** Import l.125 «Cancel» and StockOut l.247 «Cancel» go to `/stock/products` when it can open, else stay on the page and reset the form. Import l.131 «Apply import» keeps its toast, then goes to `/stock/products` only when it can open, else stays. (Hiding Cancel/Apply would break the form; they are not links to another page.)
+- No other change, no new words.
+**Done = (TASK-955's own Done, for these 2 pages):** `npx --yes --package typescript@5.6.3 tsc --noEmit` 0 · scratch build 0 (dist/ untouched) · no Thai · no `ta="center"` · headless through the real «Viewing as» dropdown: CEO sees both header buttons (paste the list per page) · Kung with only Import (then only Stock Out) ticked sees no header button to Product, and Cancel / Apply stay on the page with the toast · tick Product too ⇒ the buttons are back and Cancel / Apply go to Product · 0 console errors · align 60 + Stock 35 still pass · 1 screenshot: Kung's Stock Out. Report in inbox/SA-B.md.
+
+## Review — part 7 (GR round 9, TASK-955 Team B slice) — @Silver, 2026-11-12: ✅ ACCEPTED
+- **Re-run by me:** final-ui `npx tsc --noEmit` exit **0**. The grep matches the brief: Import l.22 and StockOut l.105 draw the header link only when `canOpen("/stock/products")`. Import Cancel (l.128) / Apply (l.134) and StockOut `cancel()` (l.65–75) go to Product only when it can open, else they stay; Cancel resets the form.
+- **Evidence:** `tests/evidence/task-936/result-links.txt` **15 PASS / 0 FAIL**. It covers the CEO and Kung button lists per page and Product ticked ⇒ the buttons are back, with 0 console problems. Fanta also reports align 60/0 and Stock 35/0.
+- **Screenshot `shots/links-kung-stock-out.png`:** viewing as Kung, only STOCK OUT is in the menu, and the form's Cancel and Save are there. *Caveat:* the shot is scrolled past the header, so it does not show the hidden «Product» button; result-links l.7 proves that. The Thai shown is the sample student name, not UI text.
+- **Security review:** none (mock page). Next: Porter → Sober review / rebuild → Otto → Tanya.
+
+## Part 8 — GR round 10, TASK-956 Slice B (ขวัญ's approvals) — @Fanta — @Silver, 2026-11-12 · ETA 13 Nov
+**Read first:** `TASK-956 § Rules for every slice` + `§ Slice B` (Sober). **Files: `a/salary/Settings.tsx`, `b/stock/Product.tsx` only.** Do not import from or edit `pages/proposed/*` or `mock/proposed.ts` (Flash's; he deletes the PROPOSED card in the same build).
+**8a. Payment Setting edit (`Settings.tsx`), CEO only as now.** The fields come from `proposed/PaymentSettingEdit.tsx` l.9–15: Extra Hour rate · OT multiplier · Motorbike / Car per km · Bonus 50 / Bonus 100 amount. [SA-decided]:
+- **One edit style = round 6's:** an «Edit» button (`size="compact-sm" variant="light"`, as Commission's «Add group») in each card's header (`KvCard`'s `aside`; the Transportation card's own header). Each opens a modal titled «Edit <card>» with **only that card's rate fields**, one `NumberInput` per row (rule 6), Cancel / Save bottom-right. Save updates the card in **page state** (like `groups`), closes, and toasts «<Card> saved — applies from the next pay period». Cancel changes nothing. Save is disabled when a field is empty.
+- **Values = what Settings shows today, not the proposed mock:** Extra Hour 350 ฿ · OT 1.15 (2 decimals; it is a multiplier, so no ฿) · Car 6 ฿ / Motorcycle 3 ฿ per KM (the mock's 7 / 4 is wrong for this page). Minimum / Trip and the rule text rows stay read-only.
+- **Bonus 50 / Bonus 100 cards get one new first row «Amount» = 50 ฿ / 100 ฿**, so there is a number to edit. This is the only new visible row. Money via `fmtBaht()`.
+- Update the l.21 comment ("READ-ONLY…") to say what is now editable.
+**8b. Product filter bar (`Product.tsx`).** The category `Tabs` (l.94–102) **is replaced** by one bar above the list: **Type** (`Select`, «All» first, values = the categories in the page's own `rows`) · **Product** (`Select searchable`, «All» first, the names left after Type) · **Search** (`TextInput`, free text on the product name, case-insensitive). Live, no Apply button; the three combine (AND). Changing Type resets Product to «All». An empty result shows «No matching items» in the table. CEO and Admin both get the bar. Add / Edit / the rest stay as they are.
+- **No bar on STOCK IN / Import / STOCK OUT** (TASK-956 § Slice B, [SA-decided] by Sober).
+**Done =** tsc (`npx --yes --package typescript@5.6.3 tsc --noEmit`) 0 · scratch build 0 (dist/ untouched) · no Thai added · no `ta="center"` · headless: as CEO, each of the 4 cards Edit → change → Save → new value on the card + toast, and Cancel → unchanged · Admin does not reach Payment Setting (as now) · Product as CEO and as Kung (Product ticked): each filter narrows, «All» restores, the 3 combine, the empty state shows · 375 px no overflow · 0 console errors · align 60 + Stock 35 + settings-edit 15 + links 15 still pass · screenshots: Payment Setting with an Edit modal open, Product filtered. Report in inbox/SA-B.md.
+
+### Part 8 — amendment to 8b (Sober's note, via Porter) — @Silver, 2026-11-12
+**Product imports the shared bar; build no copy:** `import { NO_FILTER, StockFilterBar, passes, type StockFilter } from "./StockFilterBar";`. It's Fern's slice A file, accepted by Sober in TASK-956 § Review. Use it as `LowStock.tsx` does: l.5 imports it, l.53 calls `passes(filter, name, cat)` and l.110 draws `<StockFilterBar value=… onChange=… items=…>`. Pass `items = rows.map(r => ({ name: r.name, cat: r.cat }))` so Type comes from the product's own category.
+- **Its behaviour replaces mine in 8b:** a Type change clears only a Product outside that Type; it does not always reset to «All». Its Search is a substring match on the name.
+- **Do not edit `StockFilterBar.tsx`.** It's Team C's file this round. If it lacks something Product needs, write it in `## Questions` and I'll route it through Porter.
+- Everything else in Part 8 stands: the Tabs go, «No matching items», CEO + Kung, and Done.
+
+## Review — part 8 (GR round 10, TASK-956 Slice B) — @Silver, 2026-11-12: ✅ ACCEPTED
+- **Re-run by me:** final-ui `npx tsc --noEmit` exit **0**. There is no `ta="center"`; the grep only hits the Modal `centered` prop and a picture `Stack align`. `Product.tsx` l.8 / l.96 imports and draws the **shared** `./StockFilterBar` (the amendment is honoured). `StockFilterBar.tsx` was last written at 20:57, before her work, so it was not edited.
+- **Her report says "changing Type resets Product to «All»".** Her code instead uses the shared bar's rule, which clears only a Product outside the new Type. The test case passes because the chosen product is out of type. Only the wording is stale.
+- **Evidence:** `result-round10b.txt` **53 PASS / 0 FAIL**. It covers:
+  - the 5 cards: Edit, then Cancel leaves the value unchanged, then Save shows the new value with a toast;
+  - Save disabled on an empty field;
+  - Kung locked out of Payment Setting;
+  - the Product bar as CEO and as Kung: each filter, the three combined, the empty state, and «All» restoring the list;
+  - 375 px with no overflow, and 0 console problems.
+  The regression suites still pass: settings-edit 15, links 15, Stock 35, align 60.
+- **Screenshots:**
+  - `r10b-payment-edit-modal.png`: «Edit Extra Hour» has one field (350 ฿) with Cancel / Save at the bottom right. Every card has an Edit button, and Bonus 50 / 100 show their new «Amount» row.
+  - `r10b-product-filtered.png`: Type F&B gives 2 / 12 rows, the bar sits above the table and the tabs are gone.
+- **Two test edits, both accepted:**
+  1. `shoot-stock.mjs` now drives the Type select, because the tabs are gone.
+  2. `audit-align.mjs` l.116: a container with no button of its own counts as a filter bar, not a form, so its fields may share a row. [SA-decided: matches rule 6's intent ("Save / Cancel go at the bottom"). Sober owns the rule, so I am flagging it to him via Porter. Slice A's StockReport / LowStock / Demo bars share a row the same way.]
+- **Nit, not blocking:** `Settings.tsx` l.343 `opened={schoolOpen}onClose=` lost its space. It is valid JSX; tidy it next time you touch the file.
+- **Security review:** none (mock page). Next: Porter, then Sober's review and the round-10 build (with Flash's PROPOSED-card removal), then Otto, then Tanya.
+- **Addendum (Silver, 2026-11-12, after Fanta's amendment report):** the round10b evidence is now **57 PASS / 0 FAIL**. Its Type check tests the shared bar's rule. As CEO and as Kung (l.35 / l.48): Type → «Miller» clears Product «Snack» to «All», and Type → All keeps it. This settles the stale-wording point above. The verdict stays ✅. The l.343 nit is still open.
+
+## Part 9 — GR round 10b, TASK-956 § 10b-B (Tanya D-151-10a / O-151-10a) — @Fanta — @Silver, 2026-11-12
+**Read first:** `TASK-956 § Round 10b → 10b-B` (Sober). It is the spec; this Part only pins the interpretations. **File: `a/salary/Settings.tsx` only.** Reuse the round-10 `rates` / `rateEdit` / `RATE_CARDS` pattern, not a second style.
+- **9a School Distance (D-151-10a):** move `SCHOOLS` into page state (`useState(SCHOOLS)`, like `groups`).
+  - **Edit → Save** writes that row's KM; reopening Edit shows it (STA 12 → 13).
+  - **Add school:** the 2 fields become controlled (no `defaultValue`), start empty, and on Save add the row exactly as typed. The toast is «School <name> (<km> km) added».
+  - **Save is disabled** on an empty name, a duplicate name (trimmed, case-insensitive) or KM ≤ 0 / not a number, in both modals. In Edit, the row's own name is not a duplicate.
+- **9b Every number on each card (O-151-10a).** Extend `RATE_CARDS` with these fields:
+  - **Extra Hour:** Rate · Weekday threshold · Weekend threshold. The thresholds are whole hours, shown as «> <n>th HR» with the right suffix (1st, 2nd, 3rd, 4th…).
+  - **OT:** the multiplier only (already editable); the «Salary ÷ 26 ÷ 8 ×» text stays.
+  - **Transportation:** for Car and Motorcycle, Per KM **and** Minimum / Trip. [SA-decided: TASK-956's «per-KM rate, Minimum, Trip» = the table's two number columns, «Minimum / Trip» being one column; there is no separate Trip number.]
+  - **Bonus 50 / 100:** Amount · Condition · Pay to. Condition and Pay to are `Select`s, `allowDeselect={false}`, whose options are the union of the values both Bonus cards show today. Condition: «New Course/ Voucher Package after 1st Trial» · «Renewal Course». Pay to: «1st Coach». No free text. A select field is never "empty", so Save stays enabled.
+  - **Left read-only:** «Apply to», «Hour: Enter manually», «Special Case», «NO: Renewal Voucher», the footnotes and the Thai commission notes. List them in your Notes, as TASK-956 asks.
+- **Update the l.48 comment** to the new truth (Minimum / Trip is editable now).
+**Done = (TASK-956's):** tsc 0 · scratch build 0 · no `ta="center"`, no Thai added · headless:
+- Tanya's repros pass: STA 12 → 13 shows on the row and on reopen; QAS 7 adds the row and the toast names it.
+- The 3 disabled cases, in Add and in Edit.
+- Every new field: Edit → Save shows the value on the card plus a toast, and Cancel changes nothing.
+- Kung is still locked out; 0 console errors.
+- round10b 57 + settings-edit 15 + align 60 still pass.
+- One screenshot: the Transportation or Bonus edit modal open.
+
+Report in inbox/SA-B.md. While in the file, fix the l.343 nit (`opened={schoolOpen}onClose`).
+
+## Review — part 9 (GR round 10b, TASK-956 § 10b-B) — @Silver, 2026-11-12: ✅ ACCEPTED
+- **Re-run by me:** final-ui `npx tsc --noEmit` exit **0**. There is no `ta="center"`.
+  - School rows are page state (l.71). Add appends (l.413) and Edit replaces the row (l.451).
+  - The l.343 nit is fixed.
+- **Evidence:** `result-round10c.txt` **53 PASS / 0 FAIL**. It covers:
+  - Tanya's repros: STA 12 → 13 on the row, in the toast and on reopen (l.3–4); QAS 7 added exactly as typed and named in the toast (l.21–22);
+  - the 3 disabled cases in Add and in Edit;
+  - the ordinal suffixes;
+  - the Bonus selects;
+  - Cancel;
+  - read-only rows unchanged;
+  - Kung locked out;
+  - 0 console problems.
+- **Her other suites, re-run on the same build:** round10b 57, settings-edit 15, align 60, links 15 and Stock 35 still pass.
+- **Screenshots:**
+  - `r10c-transportation-edit-modal.png`: 4 fields, one per row (Car / Motorcycle × Per KM / Minimum per trip). The School table behind it shows STA 13 KM and an added QAS row.
+  - `r10c-bonus-edit-modal.png`: Amount plus the Condition and Pay to selects. The Extra Hour card behind it reads «> 23rd HR», which is the suffix test's leftover state.
+- **The Edit school modal also has the name field.** My brief implied it: it has a duplicate check in which the row's own name doesn't count. Accepted.
+- **Test edit accepted:** `shoot-round10b.mjs` now expects the 10b field sets, still 57/0.
+- **Read-only list** (for TASK-956 Notes): Apply to · OT «Hour: Enter manually» and the «Salary ÷ 26 ÷ 8 ×» text · Bonus 100 «Special Case» and «NO: Renewal Voucher» · the footnotes · the Thai commission notes.
+- **Security review:** none (mock page). Next: Porter → Sober review / 10b build → Otto → Tanya.
