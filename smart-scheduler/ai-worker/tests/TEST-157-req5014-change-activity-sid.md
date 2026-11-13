@@ -78,3 +78,12 @@ New QA course `b7366772…`: Private FREESKATE ×4, QADT2, the parentless QA stu
 - **Still no «Open Add Manually» link**, so it stays NOT_TESTED (as in case 9).
 - **Evidence** (`tests/evidence/req-5014-sid-r2/`): `01-typed-price-preview.png` (D-157-1 settled, Confirm on) · `02-typed-success.png` · `03-reopen-current-is-new-back-to-freeskate.png` (D-157-2 header and options, plus the OLD_PRICE_NOT_ON_CARD refusal).
 - **Test data:** course `b7366772…` **cancelled** (ADMIN_ERROR). The 13 Nov 10:00 class stays ATTENDED; 3 rows CANCELLED. 1 more `activity_changes` history row (MANUAL 5,500, difference 533). No revenue line.
+
+## Extra cases 2026-11-13, ขวัญ's 11:06 question (SB `40f2917` · SF `6ffaa6e`): ✅ both PASS
+Asked by Porter (inbox/QA.md). Same QA student and coach (QADT2); target activity Private ONEWHEEL E-SKATE. API through the som card, then the screens headless at 1280 (every non-GET `change-activity` act from the browser was aborted; the acts were API only).
+| # | Case | Result |
+|---|---|---|
+| 13 | **1st TRIAL** `dbcf5993…` 11 Feb 2027 10:00, Private FREESKATE, PENDING | ✅ preview 200: remaining 1 · 139000 → 139000 · CARD · **difference 0**. Act 200 (`changeId` written). Row after: FIRST_TRIAL · PENDING · **Private ONEWHEEL E-SKATE** · same coach. UI: the booking card's ⋯ menu lists «Change activity»; the dialog reads «Change 1 class from 11/Feb/27 · 1,390 ฿ → 1,390 ฿ · 0 ฿ · no refund». |
+| 14 | **Course not started** `e871c155…` Private FREESKATE ×4, from 15 Feb 2027, all 4 classes PENDING | ✅ preview 200: **remaining 4** (15 Feb → 8 Mar) · 479000 → 579000 · CARD · **difference 100000** (the full 1,000 ฿, size = remaining). Act 200. After: all 4 rows PENDING on Private ONEWHEEL E-SKATE. UI: the plan's «Change activity» button is there, and the dialog opens with the new activity as current. |
+- **Evidence** (`tests/evidence/req-5014-khwan-1106/`): `01-not-started-course-change-activity-dialog.png` (the button and dialog on the not-started course) · `02-trial-menu-change-activity.png` (the Trial's ⋯ menu) · `03-trial-change-activity-preview.png` (0 ฿ · no refund).
+- **Test data:** the Trial and the course are **CANCELLED** (ADMIN_ERROR); a read of QADT2's Feb–Mar 2027 rows for the QA student shows no PENDING / CONFIRMED left. 2 more `activity_changes` history rows (Trial diff 0; course diff 1,000 ฿). No revenue line. **0 live.**

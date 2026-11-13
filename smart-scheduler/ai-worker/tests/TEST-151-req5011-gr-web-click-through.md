@@ -356,3 +356,42 @@ Buttons in `main`, per page, for each viewer (LOCK = the lock page):
 - `03-eca-history-375.png`
 **NOT_TESTED:** dark mode tint · Khwan (same rule as Kung).
 **Test data:** none persists (in-memory mock). Kung's ticks were restored.
+
+## GR round 13 (TASK-976 A · TASK-978 B · TASK-977 C + Amd 1, ขวัญ Feedback 13/11) — 2026-11-13 — ✅ PASS on items 1–14 · items 15–17 NOT_TESTED live (not in the build) · 3 observations
+**Build:** live md5 `15c265e1ce4aff6afe40675a52ce0bb5` = Sober's round-13 build ✓ (release 20261113-085526). Headless Chrome, som-gr card, «Viewing as» CEO (Kung/Khwan only for #14). Console/page errors: **0** on every page. Scripts: my scratchpad `t151/r1`–`r9`.
+| # | Item | Result |
+|---|---|---|
+| 1 | Employee + Monthly Payment: Base Salary / Net Total left, title case | ✅ Employee: Base Salary header L50 %–R64 % (target ≤ 65 %), right-aligned. Monthly Payment: Coach 0–24 %, **Base Salary 24–41 %, Net Total 41–58 %**, both right-aligned. Labels «Base Salary», «Net Total»; Payment Detail reads «Net Total (…)». |
+| 2 | Daily: row → detail, Edit pay | ✅ View on Ton (14/10/26) → «Time · Class · Hours · Students: 16:00 Private 1 Hr Emma … Daily Income 300 ฿» + Edit. Edit: Save **disabled with a blank Reason**, enabled once filled. 300 → 400 ฿ → the row shows **«Edited»** and 400 ฿, Total **1,350 → 1,450 ฿**. Pete (Full-time) Edit has **no Daily Income** field (Hours + Reason only). |
+| 3 | Daily: Hour column left | ✅ Hour header L32 %–**R42 %** (target ≤ 45 %), right-aligned, next to Role. |
+| 4 | Summary: Category rows → Detail; Refund in the Category box | ✅ Category rows have `tabindex=0`. Skateboard → `#/revenue/lines?cat=Skateboard&tab=today|mtd|ytd&branch=All`, and Detail opens on **that tab's period** (Date 16/10/26 · Month Oct 2026 · 01/01/26–16/10/26). Category box ends with **Refund (Expense)** = Type box's on every tab (−5,000 · −15,000 · −96,000). |
+| 5 | Add Manually: typed Other | ✅ Type OTHER → categories Shirt · Sock · Bag · **Other (type it)** → a required «Category name». Empty → «Type the category name». «QA Locker fee» 123 ฿ → toast «Revenue added: +123 ฿ (type OTHER, category QA Locker fee, branch Bravo)». The category list and Type and Category page are **unchanged**. |
+| 6 | Refund badge | ✅ An unrefunded sale shows **REFUND** before save (no «CANCELLED ON SAVE» anywhere); Save → confirm → **REFUNDED**. |
+| 7 | Type and Category: no SPORTS | ✅ no «SPORTS» on the page. |
+| 8 | ECA Payment | ✅ New entry defaults to **Pending** (also after re-opening the page). History headers exactly: School · Term · Status · **Net Amount** (Proposed: to confirm) · **Students** · Payment Date · Action, with no Total Amount or Before VAT. **Cancel** STA: confirm needs a reason (blank → «Enter the reason», row unchanged); with a reason the row reads «Cancelled · QA check: wrong term», has no Edit/Cancel, and the total goes **64,800.00 → 28,800.00**. **Edit** RIS prefills (RIS · Term 2 · Received · 18) with «Save changes / Drop changes»; Student 18 → 20 replaces the row (33,280.00 ฿ · 20) and the total follows (32,000.00). 375 px: no overflow. |
+| 9 | STOCK IN / STOCK OUT short fields | ✅ STOCK IN: Quantity **240 px**, Date **240 px** (Product full width). STOCK OUT: Student / Other Customer **360 px**, Branch / Payment **240 px**, Remark full width. |
+| 10 | Stock Demo: Edit a History row | ✅ «Edit history line» (Item · From · To · Qty · Reason). Qty 2 → 3 + a remark → the row shows the new remark and **«edited»**; the grid follows (Skateboard Bravo 5 → 4, STA 3 → 4, total 13). |
+| 11 | Stock Report: no Month | ✅ the control reads **Day · Custom** only. |
+| 12 | Notification Setting | ✅ the line «This list is set up by the SOM BALANCE team. To change who receives a notification, ask the team.» (Sober's corrected answer). |
+| 13 | User Setting «menu» | ✅ «10 of 17 menu», «16 of 17 menu». |
+| 14 | All Report hidden | ✅ not in the menu or on Home as CEO, Admin (Kung) or Admin (Khwan). `#/reports/home` shows Home, the same as any unknown hash (`#/no-such-page`). |
+| 15–17 | All Report REVENUE period picker, the two titles, the Conversion note | ⚪ **NOT_TESTED live.** With #14 the page is no longer in the build: the live HTML (= local `dist/index.html`) has none of «Revenue By Category», «Revenue By Type» or the new note. The source has them (`RevenueTab.tsx` l.94 MonthPicker + Branch, l.116 / l.143 titles; `ConversionTab.tsx` l.115 the exact note), but that is a code read. They can be checked when the menu comes back. |
+| — | 375 px | ✅ no page overflow on Employee, Monthly Payment, Daily, Summary, STOCK IN, STOCK OUT, Demo. |
+**Observations (for Porter, not defects against the TASKs):**
+- **O-151-13a:** after a Daily pay edit (300 → 400 ฿), the Description still reads «Private 1 Hr × 300 ฿» next to 400 ฿ (`04`). ขวัญ may read it as a mismatch.
+- **O-151-13b:** a manual line (typed «QA Locker fee», and a plain «Shirt» as a control) doesn't appear on Detail, which still shows 14 items for 16/10/26. That is the mock's existing behaviour, not this round's; the typed name is shown only in the toast.
+- **O-151-13c:** the ECA **form's** summary card still says «Net received»; only History was renamed (as asked). Porter's call whether she wants both the same.
+- (Info) Category → Detail on MTD/YTD lists only the sample's 14–16/10 lines (e.g. Skateboard 80,200 ฿ on MTD vs 22,000 ฿ of lines); the page says so in its own note.
+**Screenshots for ขวัญ** in `tests/evidence/gr-round-13-live/`: `01-employee-1280` · `02-monthly-payment-1280` · `03-daily-detail-modal` · `04-daily-after-edit` · `05-summary-1280` (full page) · `06-detail-from-category-mtd` · `07-type-and-category-1280` · `08-add-manually-other-typed` · `13-refund-badge-before-save` · `13b-refund-after-save` · `10-eca-after-cancel-1280` · `11-eca-375` · `12-eca-cancel-blank-reason` · `14-stock-in-1280` · `15-stock-out-1280-bottom` · `16-demo-after-edit-1280` · `21-notification-setting-1280` · `22-user-setting-1280` · `23-stock-report-1280` · 375 px: `17-employee` · `18-monthly-payment` · `19-summary` · `20-demo`. (`09-refund-already-refunded-sale` is a working shot.) Screenshots show the mock's sample children's names, as in earlier rounds.
+**NOT_TESTED:** items 15–17 (above) · Admin views of the changed pages other than #14 · dark mode.
+**Test data:** none persists (in-memory mock; every edit is gone on reload).
+
+## GR round 13b (TASK-978 Amd 1 · TASK-977 Amd 2) — 2026-11-13 — ✅ PASS: O-151-13a and O-151-13c fixed
+**Build:** live md5 `f12833e4e85a4c300d61006e21af736f` = Sober's r13b build ✓ (release 20261113-091125). Headless, som-gr card, CEO. Console/page errors: **0**. Scripts: my scratchpad `t151/b1`–`b2`.
+- **O-151-13a ✓ (Daily description follows a pay edit).** Row cell and the detail's Description read the same in each case:
+  - 14/10 Ton, Daily Income 300 → 400: «Private 1 Hr × 300 ฿» → **«Private 1 Hr × 400 ฿»**, «Edited», 400 ฿.
+  - 10/10 Ton (Part-time, 7 Hr taught), 700 → 755: «Extra Hour 2 Hr × 350 ฿» → **«Extra Hour 2 Hr · 755 ฿»** (755 ÷ 2 isn't whole, so no rate; the 2 paid hours are kept, not the 7 taught).
+  - 14/10 May, Hours 5 → 6 only: **«Extra Hour 1 Hr × 350 ฿»**, unchanged (row «Edited», 6 Hr, 350 ฿).
+- **O-151-13c ✓ (ECA form card).** The summary card reads **«Net Amount»** with «Proposed: to confirm», value **bold** (700); «Net received» appears nowhere on the page. History still reads «Net Amount» too.
+**Screenshots replaced/added** in `tests/evidence/gr-round-13-live/`: `04-daily-after-edit.png` (now «Private 1 Hr × 400 ฿») · `10c-eca-form-net-amount-1280.png` (the form card). `10-eca-after-cancel-1280.png` and `11-eca-375.png` **retaken on 13b** (full page, so the card now reads «Net Amount»; 375 px no overflow). `12` is a dialog close-up and is unaffected.
+**Test data:** none persists (in-memory mock).

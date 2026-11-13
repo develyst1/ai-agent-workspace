@@ -26,7 +26,7 @@ const modeText = async () => (await modeInput.inputValue()).trim();
 const modeOptions = async () => { await modeInput.click(); const o = (await page.getByRole("option").allInnerTexts()).map((s) => s.trim()); await page.keyboard.press("Escape"); await page.waitForTimeout(100); return o; };
 const lineText = async (k) => (await page.locator(`[data-eca-line="${k}"]`).innerText()).split("\n").pop().trim();
 const num = (s) => Number(String(s).replace(/[^0-9.\-]/g, ""));
-const result = async () => ({ before: num(await lineText("Before VAT")), vat: await lineText("VAT"), incl: num(await lineText("Total incl. VAT")), wht: await lineText("Withholding tax"), net: num(await lineText("Net received")) });
+const result = async () => ({ before: num(await lineText("Before VAT")), vat: await lineText("VAT"), incl: num(await lineText("Total incl. VAT")), wht: await lineText("Withholding tax"), net: num(await lineText("Net Amount")) }); // round 13 (TASK-977 Amd 2, declared): the card line is «Net Amount»
 const tick = async (name, on) => { await page.getByRole("checkbox", { name, exact: true }).setChecked(on); await page.waitForTimeout(100); };
 const overflow = () => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
 
@@ -50,6 +50,9 @@ const bf = await page.locator("[data-eca-form]").boundingBox();
 const br = await page.locator("[data-eca-result]").boundingBox();
 ok("4 1280 px: summary sits to the right of the form", br.x > bf.x + bf.width - 5 && br.y < bf.y + bf.height, `form ${Math.round(bf.x)}+${Math.round(bf.width)} y${Math.round(bf.y)} · summary x${Math.round(br.x)} y${Math.round(br.y)}`);
 const rowYs = () => page.locator("[data-eca-form] .mantine-Grid-col").evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().y)));
+// Round 13 (TASK-977 #8a, declared): a new entry now opens as Pending, which has no Payment Date; this layout check is about the Received form, so set Received first.
+await pick("Status", "Received");
+await page.waitForTimeout(250);
 const cols = await rowYs();
 ok("4 Row 1 has three fields on one line (School · Term · Status)", new Set(cols.slice(0, 3)).size === 1, cols.join(","));
 ok("4 Rows: 3 fields · 3 fields (Price/Student/Class) · Payment Date + Mode · VAT + WHT (4 lines of fields)", new Set(cols).size === 4 && cols[3] === cols[4] && cols[4] === cols[5] && cols[6] === cols[7] && cols[8] === cols[9] && cols[8] > cols[6], cols.join(","));
@@ -68,7 +71,7 @@ ok("5 «includes VAT» was switched to «Amount (no VAT)»", (await modeText()) 
 const optsV = await modeOptions();
 ok("5 «Amount includes VAT» is not offered; «Amount excludes VAT» reads «Amount (no VAT)»", JSON.stringify(optsV) === JSON.stringify(["Amount (no VAT)", "Amount is net after WHT"]), optsV.join("|"));
 ok("5 The VAT % box is disabled", await page.getByLabel("VAT %").isDisabled());
-ok("5 No result value wraps onto two lines (Net received stays on one line)", await page.locator("[data-eca-result] [data-eca-line] p").evaluateAll((els) => els.every((e) => e.getBoundingClientRect().height < 30)));
+ok("5 No result value wraps onto two lines (Net Amount stays on one line)", await page.locator("[data-eca-result] [data-eca-line] p").evaluateAll((els) => els.every((e) => e.getBoundingClientRect().height < 30)));
 // VAT unticked + net after WHT: Before = Amount ÷ (1 − w), Net fixed
 await pick("Mode", "Amount is net after WHT");
 r = await result();
@@ -107,7 +110,8 @@ await page.getByRole("button", { name: "Save", exact: true }).first().click();
 await page.waitForTimeout(300);
 const row = page.locator('[data-eca-row="Pending"]', { hasText: "Term 5" });
 const cells = (await row.locator("td").allInnerTexts()).map((s) => s.trim());
-ok("9 The saved row (VAT off, WHT 3 %, excludes): Before VAT 10,000.00 · Net received 9,700.00", cells.some((c) => c.startsWith("10,000.00")) && cells.some((c) => c.startsWith("9,700.00")), cells.join(" | "));
+// Round 13 (TASK-977 #8d, declared): the History no longer has Total Amount / Before VAT columns; the row shows Net Amount only.
+ok("9 The saved row (VAT off, WHT 3 %, excludes): Net Amount 9,700.00", cells.some((c) => c.startsWith("9,700.00")) && !cells.some((c) => c.startsWith("10,000.00")), cells.join(" | "));
 ok("9 After Save: Mode is back on «includes VAT» and both ticks are on", (await modeText()) === "Amount includes VAT" && (await page.getByRole("checkbox", { name: "VAT", exact: true }).isChecked()) && (await page.getByRole("checkbox", { name: "WHT", exact: true }).isChecked()), await modeText());
 ok("9 Existing rows keep their own mode (seed Received rows: Before VAT = Total Amount)", true);
 

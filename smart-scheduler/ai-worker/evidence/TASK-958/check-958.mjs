@@ -98,12 +98,12 @@ for (const t of ["Today", "MTD", "YTD"]) {
   await hash(page, "revenue/summary");
   await tab(page, t);
   const h0 = await page.evaluate(() => location.hash);
-  await page.locator("[data-category-box] tbody tr").first().click();
+  // Round 13 (TASK-977 #4, declared): Category rows now open Detail like Type rows, so only the Total rows are clicked here (the new behaviour is checked in TASK-977/check-977.mjs).
   await page.locator("[data-type-box] [data-total-row]").click();
   const refund = page.locator("[data-type-box] tbody tr", { hasText: "Refund (Expense)" });
   if (await refund.count()) await refund.click();
   await page.waitForTimeout(300);
-  ok(`${t}: Category, Total and Refund rows do not navigate; Category has no chevron`, (await page.evaluate(() => location.hash)) === h0 && (await page.locator("[data-category-box] svg.lucide-chevron-right").count()) === 0, h0);
+  ok(`${t}: Total and Refund rows do not navigate`, (await page.evaluate(() => location.hash)) === h0, h0);
 }
 
 /* the same style on Detail and All Report REVENUE */

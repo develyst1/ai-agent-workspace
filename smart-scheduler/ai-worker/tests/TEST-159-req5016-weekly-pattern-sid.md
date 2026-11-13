@@ -124,3 +124,32 @@ New QA course `8349c52f…`: the same 4 slots (Mon 10:00 QADT2 · Mon 11:00 QADT
 - **Test data:** both QA courses **cancelled** (ADMIN_ERROR): 28 CANCELLED, 2 SICK_LEAVE kept as the cancel leaves them, **0 live**.
 - **Evidence:** API only. Statuses and dates are quoted above. Scripts are in my scratchpad and are not committed.
 - **NOT_TESTED** unchanged (LINE text, coach-away make-up, notices, Duo, TH / 375).
+
+## Gap 1, 2026-11-13: pattern change vs part-day coach leave / working hours (SB `40f2917`): ❌ REPRODUCED, both halves, in opposite directions
+Asked by Porter (inbox/QA.md), from Sector's gap 1 (`REQUEST-porter-to-silver-sector-2026-11-13-fo-feedback-1311.md` § Answer). API only, som card. Set-up: QADT3 part-day leave **Tue 16 Feb 2027 13:00–15:00**; QACT working hours **Wed 13:00–18:00** (other days unchanged). Two QA courses, Private FREESKATE ×4, QADT2, Mon from 15 Feb 2027 (A 10:00, B 11:00). Control = TASK-838 «change teacher/time» preview on the same course and the same target.
+| # | Target | TASK-838 (control) | Change weekly pattern | Verdict |
+|---|---|---|---|---|
+| G1-1 | QADT3 Tue **13:00** (inside the leave) | 409 TEACHER_ON_LEAVE | preview **and** act 409 TEACHER_ON_LEAVE; rows unchanged | ✅ refused (right result) |
+| G1-2 | QADT3 Tue **10:00** (before the leave) | **200** | preview **409 TEACHER_ON_LEAVE** | ❌ **over-blocks**: a part-day leave refuses the whole day |
+| G1-3 | QADT3 Tue **16:00** (after the leave) | — | preview **409 TEACHER_ON_LEAVE** | ❌ same |
+| G1-4 | QACT Wed **10:00** (outside 13:00–18:00) | 400 «ครู QACT ทำงานวันพุธ เวลา 13:00–18:00 …» | preview 200 moved 4 · **act 200**: 17 Feb, 24 Feb, 3 Mar, 10 Mar 10:00 QACT PENDING | ❌ **under-blocks**: classes land outside the coach's hours |
+- Door check (single new class): QADT3 16 Feb 13:00 → 409 TEACHER_ON_LEAVE; QACT 17 Feb 10:00 → 400 hours sentence. So only the pattern act differs.
+- **What I saw, not a diagnosis:** the pattern act treats any leave on the day as a whole-day leave and ignores working hours. That fits Sector's reading (the time isn't passed), with the leave half failing closed rather than open.
+- **D-159-3 (Medium):** the two rows above. Admin impact: (a) a coach with a 2-hour leave can't take a pattern class anywhere that day, while «change teacher/time» allows it; (b) a pattern change can put a coach's classes outside their working hours with no warning.
+- **Not tested:** the dialog's display of these refusals (server only); a multi-slot pattern where only one slot hits the window.
+- **Test data:** courses `b7077465…` and `34b424f0…` **cancelled** (ADMIN_ERROR); the 16 Feb leave **lifted** (DELETE 200); QACT hours **cleared** (`workHours null`, workDays all 7). A read of Feb–Apr 2027 for QADT2 / QADT3 / QACT shows no live rows and no leaves. **0 live.**
+
+## D-159-3 re-test, 2026-11-13 (SB `f68cd5d`, TASK-979, deployed to sid by the owner): ✅ FIXED, all four cases
+Asked by Porter (inbox/QA.md). API only, som card. Same set-up as Gap 1: QADT3 part-day leave **Tue 16 Feb 2027 13:00–15:00**; QACT hours **Wed 13:00–18:00**; two new QA courses (Private FREESKATE ×4, QADT2, Mon from 15 Feb 2027; A 10:00 `2980da3f…`, B 11:00 `6062a7aa…`). Control = TASK-838 «change teacher/time» preview, same course and target.
+| # | Target | TASK-838 (control) | Change weekly pattern now | Verdict |
+|---|---|---|---|---|
+| G1-1 | QADT3 Tue **13:00** (inside the leave) | 409 TEACHER_ON_LEAVE | preview **and** act 409 TEACHER_ON_LEAVE; A's 4 rows unchanged (Mon 10:00 QADT2) | ✅ still refused |
+| G1-2 | QADT3 Tue **10:00** (before the leave) | 200 | preview 200 moved 4 · **act 200 moved 4**: 16 Feb, 23 Feb, 2 Mar, 9 Mar 10:00 QADT3 PENDING | ✅ was 409, now allowed |
+| G1-3 | QADT3 Tue **16:00** (after the leave) | — | preview 200 moved 4, first 16 Feb | ✅ was 409, now allowed |
+| G1-4 | QACT Wed **10:00** (outside 13:00–18:00) | 400 «ครู QACT ทำงานวันพุธ เวลา 13:00–18:00 — กรุณาเลือกเวลาอื่นหรือครูอื่น» | preview **and** act **400**, same sentence; B's 4 rows unchanged (Mon 11:00 QADT2) | ✅ was 200, now refused |
+| G1-4+ | QACT Wed **14:00** (inside the hours, positive control) | — | preview 200 moved 4, first 17 Feb | ✅ |
+- The pattern act and TASK-838 now give the same answer in every case. D-159-3 is closed on sid.
+- **Observation (existing wording, not TASK-979's):** the leave refusal says «ครู QADT3 ลาวันที่ 2027-02-16 — เพิ่มคาบกับครูในวันนั้นไม่ได้» («can't add a class with the coach that day») even for a part-day leave. TASK-838 shows the same text. Raising it only in case the wording should name the hours.
+- **Not tested:** the dialog's display of these refusals (server only); a multi-slot pattern where only one slot hits the window.
+- **Test data:** courses `2980da3f…` and `6062a7aa…` **cancelled** (ADMIN_ERROR, 200); the 16 Feb leave **lifted** (DELETE 200); QACT hours **cleared** (`workHours null`, workDays all 7, as before). A read of Feb–Apr 2027 for QADT2 / QADT3 / QACT shows no live rows and no leaves. **0 live.**
+- **Evidence:** API only; statuses, sentences and dates quoted above. Script in my scratchpad, not committed.

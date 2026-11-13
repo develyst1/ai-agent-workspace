@@ -35,3 +35,17 @@ Please: (a) size (3) as a manual-price input on the change screen (who may type 
 ### (c) Other questions, with defaults
 1. **1 HR / Trial with no price for the new activity:** the same typed price, used for that one booking at day-end posting. [default: yes, same rule, inside the +0.5 d]
 2. **None blocking.** Porter can write the REQ for Team B on these defaults.
+
+## § Answer 2 — ขวัญ 11:06: does change activity cover a 1st Trial, and a course that hasn't started? (Silver, 2026-11-13, read on SB 40f2917 / SF 6ffaa6e)
+**1. A 1st TRIAL: YES** (code + unit test; **not run on sid**).
+- SB `scheduler.service.ts` `runBookingActivityChange` (≈ l.6972–6990): the booking door accepts `SINGLE_SESSION` **and** `FIRST_TRIAL`. It refuses an attended row (`ALREADY_DELIVERED`) and a cancelled / leave / paused row (`NOT_LIVE_BOOKING`). A PENDING or CONFIRMED Trial passes.
+- A Trial's price is one flat price, so **the difference is always 0 ฿**: no money to collect.
+- SF `BookingModal.tsx` l.530: «Change activity» is in the ⋯ menu for `SINGLE_SESSION` / `FIRST_TRIAL` with a PENDING / CONFIRMED / EXTENDED status (l.141).
+- Test: `activity-change-task961.test.ts` l.310 ("a 1st Trial: the difference is ALWAYS 0"). TEST-157 l.48: no QA Trial was made, so it was never tried on sid.
+**2. A course with every class still PENDING (not started): YES** (code; **not run on sid as a whole-course case**).
+- SB `lib/activity-change.ts` l.82: the classes that change are every **live** row (`PENDING` / `CONFIRMED` / `EXTENDED`, `course-plan.ts` l.7) **dated today or later**. Nothing requires a class to have been taught first.
+- The course gate (`assertCourseWritable`, l.1546) refuses only an ENDED or PAUSED course. A not-started course is neither, so all its classes change, and the difference is over all of them (`remaining = size`).
+- SF `PlanModal.tsx` l.547: the button needs only `canPlan` and no GROUP class. Starting is not a condition.
+- Tests: the unit fixtures mix PENDING rows with taught ones (`activity-change-task961.test.ts` l.85, l.193). There is no all-PENDING case. TEST-157 case 1 used a course with class 1 already attended.
+- **One edge:** a PENDING class dated **before today** (an old unconfirmed date) is not changed, because only today-or-later rows move. For a course that hasn't started, all dates are in the future, so this doesn't arise.
+**For Porter:** both are yes as built. If he wants proof before telling her, Tanya can run one Trial and one not-started course on sid; nothing needs building.

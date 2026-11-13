@@ -1,0 +1,82 @@
+{
+ "pass": 15,
+ "total": 15,
+ "checks": [
+  {
+   "name": "#16 the two section titles read «Revenue By Category» and «Revenue By Type»",
+   "pass": true,
+   "detail": "Revenue By Category|Revenue By Type"
+  },
+  {
+   "name": "#15 the REVENUE tab has a Month picker and a Branch select (the REPORT tab's bar)",
+   "pass": true,
+   "detail": "Month Oct 2026 Branch"
+  },
+  {
+   "name": "#15 default month Oct 2026 → columns: Sep 2026, Oct 2026, Total",
+   "pass": true,
+   "detail": "Category|Type|Sep 2026|Oct 2026|Total"
+  },
+  {
+   "name": "#15 Oct 2026 Total Revenue (1,610,500 ฿) equals the REPORT tab's Revenue for Oct (1610500)",
+   "pass": true,
+   "detail": "Total Revenue |  | 1,540,000 ฿ | 1,610,500 ฿ | 3,150,500 ฿ vs 1610500"
+  },
+  {
+   "name": "#15 both boxes agree on the Total row",
+   "pass": true,
+   "detail": "Total Revenue||1,540,000 ฿|1,610,500 ฿|3,150,500 ฿ / Total Revenue|1,540,000 ฿|1,610,500 ฿|3,150,500 ฿"
+  },
+  {
+   "name": "#15 picking Nov → columns Oct 2026, Nov 2026, Total (the table follows the picked period)",
+   "pass": true,
+   "detail": "Category|Type|Oct 2026|Nov 2026|Total · picker: Next month"
+  },
+  {
+   "name": "#15 Nov 2026 Total Revenue (1,482,000 ฿) equals the REPORT tab's Revenue for Nov (1482000)",
+   "pass": true,
+   "detail": "Total Revenue |  | 1,610,500 ฿ | 1,482,000 ฿ | 3,092,500 ฿ vs 1482000"
+  },
+  {
+   "name": "#15 back on REVENUE, Nov again: its Total still equals the REPORT's Nov",
+   "pass": true,
+   "detail": "Total Revenue |  | 1,610,500 ฿ | 1,482,000 ฿ | 3,092,500 ฿"
+  },
+  {
+   "name": "#15 Branch Bravo: both boxes still add up to the same Total row",
+   "pass": true,
+   "detail": "Total Revenue||1,368,925 ฿|1,289,340 ฿|2,658,265 ฿"
+  },
+  {
+   "name": "#15 Branch Bravo: its Total is smaller than All",
+   "pass": true,
+   "detail": "1,289,340 ฿ < 1,482,000 ฿"
+  },
+  {
+   "name": "#15 a month outside the sample (Dec 2026) reads «No data for this period», no crash",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Admin: the REVENUE tab is still not drawn",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#17 the Conversion note reads exactly «Conversion % = Open Course ÷ 1st Trial (กดที่ตัวเลขเพื่อดูรายละเอียด)»",
+   "pass": true,
+   "detail": "[\"Conversion % = Open Course ÷ 1st Trial (กดที่ตัวเลขเพื่อดูรายละเอียด)\"]"
+  },
+  {
+   "name": "375 All Report REVENUE: no page overflow",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "0 console errors / warnings",
+   "pass": true,
+   "detail": ""
+  }
+ ],
+ "problems": []
+}

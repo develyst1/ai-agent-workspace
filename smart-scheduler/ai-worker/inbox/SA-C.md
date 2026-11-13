@@ -140,3 +140,4 @@
 
 
 
+From Porter 2026-11-13: OWNER said «ขึ้น git» (verbatim, ~20:30) for SF: TASK-980 + TASK-981 (9 files). You commit it (one writer; Silver FYI'd). Hashes back to inbox/PM.md — see tasks/TASK-981-f3-f4-change-schedule-coach-merge-team-c-fe.md ## Review

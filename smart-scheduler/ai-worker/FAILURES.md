@@ -72,6 +72,40 @@ where the owner sees them. When he is ready he opens Atlas with
 
 <!-- newest entry goes directly below this line -->
 
+## F-078 — 2026-11-13 — SA (Sector) — TASK-981's closed file list missed a consumer (action-gate.test.ts), and its DoD asked for a screenshot nobody can take
+- **Status:** NEW
+- **What happened:**
+  - **The missing file.** TASK-981 merges two `bookings.course-plan` buttons into one, so one `can("action:bookings.course-plan")` literal disappears from PlanModal. I did not grep the `action:` literal's consumers. `src/lib/rbac/action-gate.test.ts` keeps a site inventory of those literals, so the full suite failed on it. Flash fixed it outside the closed list and declared it.
+  - **The screenshot.** I also put a plan-modal screenshot in the DoD. It needs a signed-in SF user, and nobody types a password (the desk rule), so it could not be done.
+- **Rule involved:** role-sa §3, "A shape change names every consumer of that shape (you grepped them)", and "Every DoD expected output was run on the base first".
+- **How it was caught:** Flash, by the full-suite run, the same evening.
+- **Cost:** one out-of-list edit and one DoD item left NOT_TESTED. No rework round.
+- **Evidence:** `tasks/TASK-981-f3-f4-change-schedule-coach-merge-team-c-fe.md` § Implementation Notes and § Review.
+
+## F-077 — 2026-11-13 — PM (Porter) — I asked the owner for «release code» while SB f68cd5d (TASK-979) was on `dong` only, not merged to `develop`
+- **Status:** NEW
+- **What happened:** After Tanya passed D-159-3 on sid, I asked the owner for «release code» (develop → production). I did not check `develop` first. SB `f68cd5d` was only on `dong`, so the release would have shipped uat WITHOUT the fix the owner had just ordered "แก้ก่อนเลย". The owner asked «รวมโค้ดก่อนมั้ย?»; only then did I check (`git log origin/develop..HEAD`) and find it. Owner: *"จดไว้ด้วยอย่าพลาดอีกแบบนี้"*.
+- **Rule involved:** CLAUDE.md §6 (รวมโค้ด = develop ↔ branch; release code = develop → production); role-pm §3 "a claim … is checked against the tree".
+- **Fix (standing):** before ANY «release code» ask, run read-only in every repo of the release: `git fetch -q origin && git log --oneline origin/develop..origin/dong`. Non-empty ⇒ the ask is «รวมโค้ด» first, naming the commits. The same check after «ขึ้น git»: a new commit on `dong` always means «รวมโค้ด» before «release code».
+- **How it was caught:** the owner, before he typed the command. Nothing shipped.
+- **Evidence:** log/2026-11-13.2.md (Porter entries after Tanya's D-159-3 PASS).
+
+## F-076 — 2026-11-13 — SA (Silver) — I passed TASK-978 as DONE without running the desk's alignment audit; Daily.tsx failed it
+- **Status:** NEW
+- **What happened:** TASK-978 added an Action column to Daily (GR round 13). I reviewed Fanta's evidence and re-ran tsc, but did not run `tests/evidence/task-936/audit-align.mjs`, and my own DoD did not ask for it. The Total row's empty last cell (`Daily.tsx` l.172) is left-aligned, which fails rule 4 (`audit-align` l.60 checks every last-column cell). Sector's round-13 run caught it: 59/1, was 60/0.
+- **Rule involved:** RULE-2026-11-12-gr-web-alignment "Done = … a headless check that every numeric th/td computes text-align: right" + rule 4; role-sa §4.8 "Run or re-run the decisive check yourself when it is cheap".
+- **How it was caught:** Sector (Team C SA), reviewing TASK-977, before Sober's round-13 build. Nothing reached the customer.
+- **Cost:** one REWORK round trip for Fanta (one attribute) and a short hold on the round-13 build.
+- **Evidence:** TASK-977 § Implementation Notes l.115 · TASK-978 § Review 2.
+
+## F-075 — 2026-11-13 — SA (Sober) — I answered "who receives a notification follows their role, change it in User Setting" from the mock's comment, not the real code; it was wrong
+- **Status:** NEW
+- **What happened:** For ขวัญ's #12 (GR round 13) I wrote, in the REQUEST § Answer and in TASK-976, that recipients follow each person's role and that the role is changed in User Setting. I read only the final-ui mock comment ("role-derived", `mock/a-notify-b.ts` l.8). The real `recipientsForType` (backoffice-back `notification.service.ts` l.25–33) reads a stored assignment list, where a type is assigned to a role **or to a named person**. No screen edits that list, and changing a role in User Setting does not change it. Fern built the hint line from my wording.
+- **Rule involved:** role-sa §3 "A claim is never stronger than what you read"; anti-pattern "Designing from structure, not code".
+- **How it was caught:** by me, reviewing Fern's screenshot: two Admins showed different types, which a role rule can't produce. Caught before Porter sent anything to ขวัญ.
+- **Cost:** one REWORK round trip for Fern (one line). The answer to Porter was corrected in place.
+- **Evidence:** REQUEST-porter-to-sober-2026-11-13-gr-round-13-feedback-1311.md § Answer (#12, corrected) · TASK-976 § 3 + § Review.
+
 ## F-074 — 2026-11-13 — PM (Porter) — I told the owner "ลูกอยู่ที่ทีม C, เริ่ม multi-day แล้ว" without checking. No REQ existed and SA-C was empty
 - **Status:** NEW
 - **What happened:** In the status summary I wrote that Team C had started multi-day (F1). I checked afterwards: there was no F1 REQ and inbox/SA-C.md was empty, so nobody was moving. The paid F1 had sat un-dispatched since the owner's "ทำไปต่อ นั่นแหละ".

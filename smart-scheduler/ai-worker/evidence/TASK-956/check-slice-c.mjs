@@ -86,15 +86,29 @@ const totalCat = catRows.find((r) => r[0] === "Total Revenue");
 const totalType = typeRows.find((r) => r[0] === "Total Revenue");
 const catBody = catRows.filter((r) => r[0] !== "Total Revenue" && r[0] !== "Refund (Expense)");
 const typeBody = typeRows.filter((r) => r[0] !== "Total Revenue" && r[0] !== "Refund (Expense)");
+// Round 13 (TASK-977 #15, declared): the REVENUE tab now has a Month picker and shows the picked month and the one before it (not all four at once).
+// So this check steps the picker through each month and reads that month's column (the one just before «Total»).
 const monthCols = ["Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026"];
-const colSum = (rows, off, i) => rows.reduce((s, r) => s + num(r[off + i]), 0);
 let sumsOk = true, typeEqCat = true, matchesReport = true;
-monthCols.forEach((m, i) => {
-  if (colSum(catBody, 2, i) !== num(totalCat[2 + i])) sumsOk = false;
-  if (colSum(typeBody, 1, i) !== num(totalType[1 + i])) sumsOk = false;
-  if (num(totalCat[2 + i]) !== num(totalType[1 + i])) typeEqCat = false;
-  if (num(totalCat[2 + i]) !== reportRevenue[m]) matchesReport = false;
-});
+const revCur = async () => (await page.locator("[data-month-picker] p, [data-month-picker] .mantine-Text-root").first().innerText()).trim();
+for (const m of monthCols) {
+  let guard = 0;
+  while ((await revCur()) !== m && guard++ < 8) {
+    await page.getByRole("button", { name: monthCols.indexOf(m) > monthCols.indexOf(await revCur()) ? "Next month" : "Previous month" }).click();
+    await page.waitForTimeout(200);
+  }
+  const cR = await tableRows('[data-rr-box="category"] table');
+  const tR = await tableRows('[data-rr-box="type"] table');
+  const last = (r) => r.length - 2; // the month's own column, just before «Total»
+  const cBody = cR.filter((r) => r[0] !== "Total Revenue" && r[0] !== "Refund (Expense)");
+  const tBody = tR.filter((r) => r[0] !== "Total Revenue" && r[0] !== "Refund (Expense)");
+  const cTot = cR.find((r) => r[0] === "Total Revenue");
+  const tTot = tR.find((r) => r[0] === "Total Revenue");
+  if (cBody.reduce((s, r) => s + num(r[last(r)]), 0) !== num(cTot[last(cTot)])) sumsOk = false;
+  if (tBody.reduce((s, r) => s + num(r[last(r)]), 0) !== num(tTot[last(tTot)])) sumsOk = false;
+  if (num(cTot[last(cTot)]) !== num(tTot[last(tTot)])) typeEqCat = false;
+  if (num(cTot[last(cTot)]) !== reportRevenue[m]) matchesReport = false;
+}
 ok("3 Every month total = sum of its rows (both boxes)", sumsOk);
 ok("3 Category box total = Type box total", typeEqCat);
 ok("3 Month totals = REPORT tab Revenue", matchesReport, JSON.stringify(reportRevenue));
@@ -154,7 +168,7 @@ ok("4 A month with no data shows the empty state", (await page.locator("[data-co
 await hash("revenue/eca-term");
 const pick = async (label, option) => { await page.getByRole("combobox", { name: label, exact: true }).first().click(); await page.getByRole("option", { name: option, exact: true }).first().click(); };
 const lineVal = async (k) => num(await page.locator(`[data-eca-line="${k}"]`).innerText().then((s) => s.split("\n").pop()));
-const result = async () => ({ before: await lineVal("Before VAT"), vat: await lineVal("VAT"), incl: await lineVal("Total incl. VAT"), wht: await lineVal("Withholding tax"), net: await lineVal("Net received") });
+const result = async () => ({ before: await lineVal("Before VAT"), vat: await lineVal("VAT"), incl: await lineVal("Total incl. VAT"), wht: await lineVal("Withholding tax"), net: await lineVal("Net Amount") }); // round 13 (TASK-977 Amd 2, declared): «Net received» is now «Net Amount»
 await pick("School", "STA");
 await page.getByLabel("Term", { exact: true }).fill("Term 4");
 await page.getByLabel("Price per class").fill("100");
@@ -167,8 +181,8 @@ await page.setViewportSize({ width: 1280, height: 1500 });
 await page.screenshot({ path: join(here, "r10c-1280-ceo-eca-form-example.png") });
 await page.setViewportSize({ width: 1280, height: 900 });
 const lineLabels = await page.locator("[data-eca-result] [data-eca-line]").evaluateAll((els) => els.map((e) => e.getAttribute("data-eca-line")));
-ok("5 Result block has exactly the five lines", JSON.stringify(lineLabels) === JSON.stringify(["Before VAT", "VAT", "Total incl. VAT", "Withholding tax", "Net received"]), lineLabels.join("|"));
-ok("5 «Proposed: to confirm» tag next to Net received", (await page.locator('[data-eca-line="Net received"] [data-proposed-tag]').innerText()).trim() === "Proposed: to confirm");
+ok("5 Result block has exactly the five lines", JSON.stringify(lineLabels) === JSON.stringify(["Before VAT", "VAT", "Total incl. VAT", "Withholding tax", "Net Amount"]), lineLabels.join("|"));
+ok("5 «Proposed: to confirm» tag next to Net Amount", (await page.locator('[data-eca-line="Net Amount"] [data-proposed-tag]').innerText()).trim() === "Proposed: to confirm");
 await pick("Mode", "Amount excludes VAT");
 r = await result();
 ok("5 Excludes VAT 10,000: 10,000 / 700 / 10,700 / 300 / 10,400", r.before === 10000 && r.vat === 700 && r.incl === 10700 && r.wht === 300 && r.net === 10400, JSON.stringify(r));

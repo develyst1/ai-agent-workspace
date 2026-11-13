@@ -1,0 +1,377 @@
+{
+ "pass": 74,
+ "total": 74,
+ "checks": [
+  {
+   "name": "#4 Today: a Type row (COURSE) opens Detail with tab and branch",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE&tab=today&branch=All"
+  },
+  {
+   "name": "#4 Today: COURSE Detail filter shows Day · type COURSE",
+   "pass": true,
+   "detail": "All | All | Day | Day | 2026-10-16 | COURSE | COURSE | All | All"
+  },
+  {
+   "name": "#4 Today: Detail line total = the row's Revenue (31,000 ฿)",
+   "pass": true,
+   "detail": "Detail: Total Revenue (4 items) | 31,000 ฿ |  · row: COURSE | 4 | 31,000 ฿ | "
+  },
+  {
+   "name": "#4 Today: a Category row (Inline Skate) opens Detail with cat, tab, branch",
+   "pass": true,
+   "detail": "#/revenue/lines?cat=Inline%20Skate&tab=today&branch=All"
+  },
+  {
+   "name": "#4 Today: Detail Category filter = «Inline Skate · All» and type COURSE",
+   "pass": true,
+   "detail": "All | All | Day | Day | 2026-10-16 | COURSE | COURSE | Inline Skate · All | Inline Skate · All"
+  },
+  {
+   "name": "#4 Today: Inline Skate Detail line total = the row's Revenue (9,500 ฿)",
+   "pass": true,
+   "detail": "Detail: Total Revenue (1 items) | 9,500 ฿ |  · row: Inline Skate | 1 | 9,500 ฿ | "
+  },
+  {
+   "name": "#4 Today: the «ECA» heading opens Detail on type ECA",
+   "pass": true,
+   "detail": "All | All | Day | Day | 2026-10-16 | ECA | ECA | All | All"
+  },
+  {
+   "name": "#4 Today: ECA Detail line total = the row's Revenue (36,000 ฿)",
+   "pass": true,
+   "detail": "Detail: Total Revenue (1 items) | 36,000 ฿ | "
+  },
+  {
+   "name": "#4 Today: one chevron per Category row (11)",
+   "pass": true,
+   "detail": "11"
+  },
+  {
+   "name": "#4 Today: Enter on a focused Category row opens Detail",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#4 Today: Total and Refund rows of the Category box do not navigate",
+   "pass": true,
+   "detail": "#/revenue/summary"
+  },
+  {
+   "name": "#4 Today: Category box shows the Refund line equal to the Type box's",
+   "pass": true,
+   "detail": "type: Refund (Expense) −5,000 ฿ · category: Refund (Expense) −5,000 ฿"
+  },
+  {
+   "name": "#4 MTD: a Type row (COURSE) opens Detail with tab and branch",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE&tab=mtd&branch=All"
+  },
+  {
+   "name": "#4 MTD: COURSE Detail filter shows Month · type COURSE",
+   "pass": true,
+   "detail": "All | All | Month | Month | COURSE | COURSE | All | All"
+  },
+  {
+   "name": "#4 MTD: Detail total shown (sample has lines for 14–16 Oct only: 51,500 ฿ vs the row's 401,000 ฿)",
+   "pass": true,
+   "detail": "Detail: Total Revenue (6 items) | 51,500 ฿ | "
+  },
+  {
+   "name": "#4 MTD: a Category row (Inline Skate) opens Detail with cat, tab, branch",
+   "pass": true,
+   "detail": "#/revenue/lines?cat=Inline%20Skate&tab=mtd&branch=All"
+  },
+  {
+   "name": "#4 MTD: Detail Category filter = «Inline Skate · All» and type COURSE",
+   "pass": true,
+   "detail": "All | All | Month | Month | COURSE | COURSE | Inline Skate · All | Inline Skate · All"
+  },
+  {
+   "name": "#4 MTD: the «ECA» heading opens Detail on type ECA",
+   "pass": true,
+   "detail": "All | All | Month | Month | ECA | ECA | All | All"
+  },
+  {
+   "name": "#4 MTD: one chevron per Category row (17)",
+   "pass": true,
+   "detail": "17"
+  },
+  {
+   "name": "#4 MTD: Enter on a focused Category row opens Detail",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#4 MTD: Total and Refund rows of the Category box do not navigate",
+   "pass": true,
+   "detail": "#/revenue/summary"
+  },
+  {
+   "name": "#4 MTD: Category box shows the Refund line equal to the Type box's",
+   "pass": true,
+   "detail": "type: Refund (Expense) −15,000 ฿ · category: Refund (Expense) −15,000 ฿"
+  },
+  {
+   "name": "#4 YTD: a Type row (COURSE) opens Detail with tab and branch",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE&tab=ytd&branch=All"
+  },
+  {
+   "name": "#4 YTD: COURSE Detail filter shows Custom · type COURSE",
+   "pass": true,
+   "detail": "All | All | Custom | Custom | 2026-01-01 | 2026-10-16 | COURSE | COURSE | All | All"
+  },
+  {
+   "name": "#4 YTD: Detail total shown (sample has lines for 14–16 Oct only: 51,500 ฿ vs the row's 3,732,400 ฿)",
+   "pass": true,
+   "detail": "Detail: Total Revenue (6 items) | 51,500 ฿ | "
+  },
+  {
+   "name": "#4 YTD: a Category row (Inline Skate) opens Detail with cat, tab, branch",
+   "pass": true,
+   "detail": "#/revenue/lines?cat=Inline%20Skate&tab=ytd&branch=All"
+  },
+  {
+   "name": "#4 YTD: Detail Category filter = «Inline Skate · All» and type COURSE",
+   "pass": true,
+   "detail": "All | All | Custom | Custom | 2026-01-01 | 2026-10-16 | COURSE | COURSE | Inline Skate · All | Inline Skate · All"
+  },
+  {
+   "name": "#4 YTD: the «ECA» heading opens Detail on type ECA",
+   "pass": true,
+   "detail": "All | All | Custom | Custom | 2026-01-01 | 2026-10-16 | ECA | ECA | All | All"
+  },
+  {
+   "name": "#4 YTD: one chevron per Category row (17)",
+   "pass": true,
+   "detail": "17"
+  },
+  {
+   "name": "#4 YTD: Enter on a focused Category row opens Detail",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#4 YTD: Total and Refund rows of the Category box do not navigate",
+   "pass": true,
+   "detail": "#/revenue/summary"
+  },
+  {
+   "name": "#4 YTD: Category box shows the Refund line equal to the Type box's",
+   "pass": true,
+   "detail": "type: Refund (Expense) −96,000 ฿ · category: Refund (Expense) −96,000 ฿"
+  },
+  {
+   "name": "#4 Today with Branch=Bravo: Detail opens on Bravo",
+   "pass": true,
+   "detail": "#/revenue/lines?type=COURSE&tab=today&branch=Bravo · Bravo | Bravo | Day | Day | 2026-10-16 | COURSE | COURSE | All | All"
+  },
+  {
+   "name": "#4 the header «Detail» button (no params) opens on Day, All, All",
+   "pass": true,
+   "detail": "All | All | Day | Day | 2026-10-16 | All | All | All | All"
+  },
+  {
+   "name": "#5 Type OTHER: the Category list ends with «Other (type it)»",
+   "pass": true,
+   "detail": "Shirt, Sock, Bag, Other (type it)"
+  },
+  {
+   "name": "#5 picking it shows a required «Category name» box (max 60)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#5 empty typed category → an error under the field",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#5 the saved line shows the typed name (trimmed) as its category",
+   "pass": true,
+   "detail": "Filtered by the branch, period, type and category you picked / Revenue added: +500 ฿ (type OTHER, category Team poster, branch Bravo)"
+  },
+  {
+   "name": "#5 the category list / Categories page do not gain it",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#5 Manual's list for OTHER is unchanged",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#7 no SPORTS block on Type and Category",
+   "pass": true,
+   "detail": "Type and Category Add  COURSE  PRIVATE DUO 1 HR  Other Course  BALANCE CAMP BIRTHDAY  Other Type  1st Trial  1ST TRIAL ("
+  },
+  {
+   "name": "#6 Refund before save: the wording «Cancelled on save» is gone",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#6 the session badges include «Refund» before save",
+   "pass": true,
+   "detail": "VOUCHER, EXPENSE, VOUCHER 10 HR — น้องภูมิ, KEPT, REFUND"
+  },
+  {
+   "name": "#8d History headers: School · Term · Status · Net Amount · Students · Payment Date · Action",
+   "pass": true,
+   "detail": "School | Term | Status | Net Amount Proposed: to confirm | Students | Payment Date | Action"
+  },
+  {
+   "name": "#8d the «Proposed: to confirm» tag stays on Net Amount",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#8a a new entry's Status defaults to Pending",
+   "pass": true,
+   "detail": " |  |  | Pending | Pending |  |  |  | Amount includes VAT | incl | on | 7 % | on | 3 %"
+  },
+  {
+   "name": "#8b Edit prefills the same form (school, term, price, students, classes)",
+   "pass": true,
+   "detail": "STA | STA | Term 2 | Received | Received | 400 ฿ | 18 | 5 | 2026-10-16 | Amount excludes VAT | excl | on | 7 % | on | 3 %"
+  },
+  {
+   "name": "#8b saving replaces that row (same count, new term)",
+   "pass": true,
+   "detail": "3 → 3"
+  },
+  {
+   "name": "#8c Cancel with an empty reason is refused (reason required)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#8c the row stays as a grey Cancelled badge with its reason",
+   "pass": true,
+   "detail": "STA Term 2b Cancelled School withdrew the term 37,440.00 ฿ 18 16/10/26"
+  },
+  {
+   "name": "#8c a Cancelled row has no Edit / Cancel / Delete",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#8c the revenue total drops (before 64,800.00 ฿, after 28,800.00 ฿)",
+   "pass": true,
+   "detail": "64,800.00 ฿ → 28,800.00 ฿"
+  },
+  {
+   "name": "#8c the Status filter offers Cancelled",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#8c a Pending row still has Delete",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#8d Net Amount and Students are right-aligned",
+   "pass": true,
+   "detail": "start,start,start,right,right,start,right"
+  },
+  {
+   "name": "#8d O-151-11a kept: Status / Term nowrap, table minWidth 900",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Amd 2: the form card reads «Net Amount» (value bold) with the Proposed tag",
+   "pass": true,
+   "detail": "{\"label\":\"Net Amount\",\"fw\":\"700\",\"tag\":1}"
+  },
+  {
+   "name": "Amd 2: «Net received» appears nowhere on the page",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "1280 ECA History: no header is clipped",
+   "pass": true,
+   "detail": "[{\"t\":\"School\",\"clipped\":false},{\"t\":\"Term\",\"clipped\":false},{\"t\":\"Status\",\"clipped\":false},{\"t\":\"Net Amount Proposed: to confirm\",\"clipped\":false},{\"t\":\"Students\",\"clipped\":false},{\"t\":\"Payment Date\",\"clipped\":false},{\"t\":\"Action\",\"clipped\":false}]"
+  },
+  {
+   "name": "1280 ECA History: the last header reads «Action» in full",
+   "pass": true,
+   "detail": "Action"
+  },
+  {
+   "name": "1280 ECA History: the table fits its card (no inner scroll, last header inside the card)",
+   "pass": true,
+   "detail": "{\"tableRight\":1239,\"cardRight\":1256,\"lastHeadRight\":1239,\"scroll\":false}"
+  },
+  {
+   "name": "1280 ECA History: «Proposed: to confirm» is whole and sits under «Net Amount»",
+   "pass": true,
+   "detail": "{\"clipped\":false,\"text\":\"Proposed: to confirm\",\"under\":true}"
+  },
+  {
+   "name": "#10 an edited History row shows «edited» and the new remark",
+   "pass": true,
+   "detail": "16/10/26 Ploy Skateboard Bravo → STA 1 Needed for the Wednesday class edited Edit"
+  },
+  {
+   "name": "#10 stock counts follow: Skateboard Bravo +1, STA −1 (qty 2 → 1)",
+   "pass": true,
+   "detail": "before Skateboard,5,3,2,2,1,0,13 → after Skateboard,6,2,2,2,1,0,13 (was: 16/10/26 Ploy Skateboard Bravo → STA 2 Needed for the Tuesday class Edit)"
+  },
+  {
+   "name": "#11 the period control shows only Day and Custom, default Day",
+   "pass": true,
+   "detail": "Day,Custom"
+  },
+  {
+   "name": "#14 /^CEO/: no «All Report» in the menu or on Home",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#14 /^CEO/: /reports/home gives the shell's not-found / cannot-see screen",
+   "pass": true,
+   "detail": "Home Welcome — this is a preview of the SOM BALANCE back office. Pick a page from the left menu or a"
+  },
+  {
+   "name": "#14 /^Admin/: no «All Report» in the menu or on Home",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "#14 /^Admin/: /reports/home gives the shell's not-found / cannot-see screen",
+   "pass": true,
+   "detail": "Home Welcome — this is a preview of the SOM BALANCE back office. Pick a page from the left menu or a"
+  },
+  {
+   "name": "375 Summary: no page overflow",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "375 ECA Payment: no page overflow",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "375 ECA History: «Pending» / «Received» / «Cancelled» read in full, not clipped (O-151-11a)",
+   "pass": true,
+   "detail": "[{\"t\":\"Pending\",\"clipped\":false},{\"t\":\"Received\",\"clipped\":false},{\"t\":\"Received\",\"clipped\":false}]"
+  },
+  {
+   "name": "375 Stock Demo: no page overflow",
+   "pass": true,
+   "detail": "0"
+  },
+  {
+   "name": "0 console errors / warnings on the touched pages",
+   "pass": true,
+   "detail": ""
+  }
+ ],
+ "problems": []
+}
