@@ -38,3 +38,11 @@ Format:
 - Root cause: Atom relayed context ("เล่าให้ฟัง") as if it were an order and added its own DoD to it; Atom did not check new REQs against what the owner actually ordered.
 - Fix / rule: when relaying, mark the owner's words as ORDER or INFO ONLY; never add a DoD or scope of Atom's own; when a REQ cites the owner, check that he ordered that work before giving git words or asking him follow-up questions about it.
 - Status: NEW
+
+## AF-004 — Failed to initiate God Plan setup or surface its startup blocker
+- When: 2026-11-07 21:11 Asia/Bangkok
+- What happened: After the owner requested moving to God Plan, Atom completed save/cleanup but did not start the Atlas-to-Marie desk setup handoff or promptly report the startup configuration needed. The owner had to repeat the order.
+- Owner's words: "ก็ทำสิ"
+- Root cause: Atom treated setup as a future discussion instead of actively resolving the existing-session route and surfacing the minimal blocker.
+- Fix / rule: ATOM.md A1: track the actual setup result, inspect existing sessions, act within authority, and report an exact startup blocker immediately instead of a passive status.
+- Status: NEW

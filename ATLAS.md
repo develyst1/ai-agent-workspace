@@ -1028,3 +1028,28 @@ source.** After editing a skill there, copy it to `.claude/skills/` again, or th
     - Porter's reading of rule 4 is upheld: QA test instruments held only in a run's process env (the fake LINE, a fake gateway, a throwaway SECRET_KEY or login for QA's own test DB) are not "stand-ins". The rule targets owner-provided values and real infrastructure.
 - **Rule (2026-11-01, owner via the corner-chat PM): only the PM asks the owner anything** (chat, question box, or next-step options). Prompted by SA Sober's own session ending with a question box to him: "ทำไม sober ถามฉัน อันนี้ผิด chain นะ". Written in CLAUDE.md rule 2; harness 2.6.14 (ORDER 55, with a re-read note).
   - **Possible mechanical guard later:** a PreToolUse hook on AskUserQuestion that reads the session's role from `.claude/session-desk/` and refuses non-PM roles. Build it if the rule is broken again.
+
+## 2026-11-06 … 11-07 — call-scribe and God Plan (restored, then new)
+
+- **Lost text (finding, 2026-11-07).** At 2026-11-06 17:17, ATLAS.md and MARIE.md were reset to their committed copy (5296896), probably during the develop→atom merge (a260890 / 05be46a).
+  - Everything written on 11-06 was lost, including ORDER 56 and this file's call-scribe notes.
+  - ORDER 56 has been restored in MARIE.md from Atlas's session.
+  - **Lesson:** uncommitted charter text is lost in a merge. Atom should commit ATLAS.md and MARIE.md before any merge.
+- **call-scribe (CSC), opened 2026-11-06 (ORDER 56).**
+  - Requirement: the owner records calls on his Oppo Android phone; AI produces a transcript, who said what, and a summary.
+    - Phone only. The front is never Flutter. The back is Bun + Hono or Elysia.
+    - AI goes through the gateway; a new audio endpoint is added in `develyst-ai` (Team B).
+    - Never a local Postgres.
+  - Team: the corner-chat shape, with session names ending `-CSC`. I-Space was paused for it.
+  - **Owner ruling, 11-06 13:36: Atom may create branches.** "ห้าม agent สร้าง branch" applies to desk teams only. The owner has not yet updated CSC's CLAUDE.md §6 or the ATOM.md text.
+  - Since 2026-11-07 the desk is **PAUSED for God Plan**. Everything is on git, pending review (see its board).
+- **God Plan, 2026-11-07 21:17.** Owner via Atom: *"เปิด Atlas เดิมด้วยโมเดลเดิม ใช้ effort medium แล้วส่ง requirement กับ repo ให้ตั้งโต๊ะ God Plan เลย"*.
+  - Requirement: `call-scribe/project-docs/god-plan-initial-notes-2026-11-07.md`.
+  - Repos: `god-plan-back` and `god-plan-front`, each with `main` only.
+  - ORDER 57 is written and on ⏸ HOLD, waiting for two answers:
+    - Q1, team shape. Atlas recommends one team plus one tester.
+    - Q2, model and effort for Marie and the GP sessions. Atlas recommends the ATOM.md precedent: opus with medium effort for Marie, PM, SA and QA; sonnet with medium effort for engineers.
+  - Setup includes an ACTIVE swap: call-scribe out, God Plan in, with no exception needed.
+- **2026-11-08 00:27 ORDER 57 → ▶️ GO.** Owner via Atom: one team (Porter, Sober, Jason, Fern, Tanya); Marie/PM/SA/QA opus medium, BE/FE sonnet medium; *"ยังไม่กำหนด Postgres หรือวิธีรัน dev server แทนฉัน"* → stack, DB and dev-server method UNDECIDED in the desk (PM asks him). ORDER 57 updated (team, models, PM hand-off step 7); Marie nudged.
+- **2026-11-08 ORDER 57 DONE** (Marie), verified by Atlas: check-harness god-plan current; check-hygiene god-plan PASS; ACTIVE = 2 god-plan rows. Marie findings: README call-scribe row had been lost too (restored); I-Space clones removed from codebases (Atom cleanup) but machine.local.md still lists them. Next: Atom launches the 5 GP sessions.
+- **2026-11-13 09:37 god-plan FAILURES F-001…F-010 → ACCEPTED, unreviewed** (owner via Atom: *"เรื่อง Failures ให้ปิดทิ้งหมด เพราะฉันไม่เชื่อ ตอนนี้"*; Porter filed it in DECISIONS.md). Atlas set the 10 statuses; no fix designed. New entries after today follow the normal route.

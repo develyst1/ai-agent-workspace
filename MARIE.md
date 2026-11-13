@@ -2782,7 +2782,122 @@ chain นะ"* (via the corner-chat PM). `CLAUDE.md` rule 2 now has the bullet "
    No bell for atom or buddy-screen.
 3. Nudge Atlas.
 
+### ORDER 56 — 2026-11-06 — ✅ DONE 2026-11-06 13:49 (Marie; verified by Atlas) · text RESTORED by Atlas 2026-11-07 — open desk `call-scribe` (CSC): two teams, two testers, manual mode, on Atom's box · I-Space paused
+
+**Restored by Atlas, 2026-11-07.** On 2026-11-06 at 17:17, this file and ATLAS.md were overwritten by their committed copies, and that wiped out this ORDER together with Marie's Operations-log line for it. What follows is Atlas's reconstruction from the session in which it was written; the wording is close to the original but not byte-exact. The desk files in `call-scribe/` are the record of what was done.
+
+**Owner, via Atom, 2026-11-06** (all verbatim in `call-scribe/project-docs/requirements-from-owner-2026-11-06.md`):
+- 12:43 the requirement: *"อยากได้แอปที่บันทึกเสียงโทรเบอร์โทรไลน์โทรเฟสแล้วก็ส่งให้เอไอถอดทรานสคริปต์ออกมา แล้วก็ส่งให้เอไอวิเคราะห์บทสนทนาว่าคุยกันใครคนไหนพูดอะไรแล้วก็บทสรุปว่าเนื้อหาที่คุยกันคืออะไรบ้าง"*
+- 12:41 team: *"ทีมเอาเหมือนเดิมเลย มีสอง ทีม SA แล้วก็ Tester สองคน"*. 12:48: name `call-scribe` OK, solo use, Atlas's defaults kept, Postgres as before.
+- 13:08–13:12:
+  - phone only;
+  - front **never Flutter**;
+  - back **Bun + Hono or Elysia**;
+  - AI through the owner's gateway;
+  - gateway changes go into `develyst-ai` (GitLab);
+  - env later;
+  - **never local Postgres**.
+- 13:18 Oppo Android. 13:34 *"ก"*: pause I-Space; call-scribe may use 3 repos.
+- 13:36 *"ไม่ใช่ กฏ ห้าม agent สร้าง branchหมายถึง ทีม ไม่ใช่นายatomนายสร้างได้ สร้างเลย develop sit production atom ถ้าไม่มี"*.
+  - Atom made `develop`, `sit`, `production` and `atom` from `main` on both GitHub repos.
+  - On `develyst-ai` it made `sit` from `main`, and `atom` from the latest branch, `D1`.
+  - 13:38: Atom cloned all three on `atom`: back 72295b5, front 82438f1, develyst-ai 790f63a.
+
+**Steps as ordered:**
+1. install.
+2. Move the requirement file in, byte for byte.
+3. Set up the team.
+   - `TEAMS.md` in the corner-chat shape, with `<Name>-CSC` names (Porter; Tanya and Tefany; Sober, Jason and Fern; Silver, Bob and Fanta) and the `-B` inboxes.
+   - Team A works on back and front. Team B adds an audio endpoint to `develyst-ai` first.
+4. IDs start at 101.
+5. Fill in `machine.local.md` rows.
+6. `ACTIVE.md` and `RULES.md`: take out I-Space, add the 3 call-scribe repos, and add an exception line.
+7. Write the pause line in I-Space's `inbox/PM.md`.
+8. Seed `SYSTEM-FACTS.md`: stack, device, LINE limit, gateway audio gap, data/PDPA, secrets, git, and the old `develyst-ai` desk left untouched.
+9. Write `DECISIONS.md` and `board.md`.
+10. Turn on `checks.json` rollover at 90.
+11. Add the README row.
+12. Prove it.
+
+**Marie's result, as Atlas read it at 13:5x:**
+- The desk was opened with install 2.6.14, and the requirement was moved byte for byte (`cmp` equal).
+- `TEAMS.md` has 9 rows. The `-B` inboxes and `QA-B` exist. `ids.start` is 101 and rollover is 90.
+- `SYSTEM-FACTS`, `DECISIONS`, `board` and `SEATS` are filled in. The PM, SA, BE, FE and QA placeholders are also filled in.
+- `ACTIVE`, `RULES`, `machine.local` and `README` are updated.
+- I-Space's PM took the pause and wrote a PAUSED line on its board.
+- Atlas re-ran both checks: `check-harness` shows call-scribe current, and `check-hygiene call-scribe` gives PASS.
+
+### ORDER 57 — 2026-11-07 — ✅ DONE 2026-11-08 (Marie; see Operations log) — ▶️ GO 2026-11-08 00:27 (owner via Atom: *"อนุมัติ God Plan ทีมเดียว Porter PM, Sober SA, Jason BE, Fern FE, Tanya QA ให้ Marie/PM/SA/QA ใช้ opus effort medium และ BE/FE ใช้ sonnet effort medium ตั้งโต๊ะได้ แต่ยังไม่กำหนด Postgres หรือวิธีรัน dev server แทนฉัน"*) — open desk `god-plan` (GP) on Atom's box
+
+**Owner via Atom, 2026-11-07:**
+- 12:16, verbatim in `call-scribe/project-docs/god-plan-initial-notes-2026-11-07.md` (filed there by Porter-CSC). This is the God Plan requirement: *"…ชื่อ God Plan … การสร้างโปรเจกต์และสร้างทาร์กของฉันได้และให้คนอื่นเข้ามารู้ได้ … ช่วยฉันคอมเมนต์ต่าง ๆ ได้เหมือนกับเป็นเทนโล่หรือว่าจีระเลย … LM Gateway ของฉันที่เอาไปปลั๊กด้วย …"*.
+- 21:11 *"ก็ทำสิ"*
+- 21:17 *"เปิด Atlas เดิมด้วยโมเดลเดิม ใช้ effort medium แล้วส่ง requirement กับ repo ให้ตั้งโต๊ะ God Plan เลย"*.
+- Repos:
+  - `https://github.com/develyst1/god-plan-back.git`
+  - `https://github.com/develyst1/god-plan-front.git`
+  - Both had only `main` on 2026-11-07 (checked with ls-remote).
+- **Atom's summary, NOT the owner's words** (`/workspace/god-plan-setup-handoff-2026-11-07.md`):
+  - The owner confirmed that AI should both break projects into tasks and summarise progress and blockers.
+  - Requiring a human to approve before the AI writes was Atom's suggestion only. The owner has **not** agreed to it.
+
+**Steps** follow `_templates/DESK-OPEN.md` step 4. Do no git, no clone, open no session, and never ask the owner.
+1. Run `node scripts/install.mjs god-plan`.
+2. **Copy** the requirement; do not move it, because the original belongs to call-scribe.
+   - Copy `call-scribe/project-docs/god-plan-initial-notes-2026-11-07.md` to `god-plan/project-docs/requirements-from-owner-2026-11-07.md` byte for byte, and check with `cmp`.
+   - Next to it, write `owner-facts-via-atom-2026-11-07.md` with the 21:11 and 21:17 quotes, the repo URLs and Atom's summary above, labelled as Atom's summary.
+3. **`TEAMS.md`:** session names are `<Name>-GP` and the code is **GP**. **One team, one tester** (owner 2026-11-08 00:27): Porter PM · all (`inbox/PM.md`), Sober SA · A (`inbox/SA.md`), Jason BE · A (`inbox/BE.md`), Fern FE · A (`inbox/FE.md`), Tanya QA · A (`inbox/QA.md`). No `-B` seats. Record the models in `DECISIONS.md`: PM/SA/QA opus, effort medium; BE/FE sonnet, effort medium (Marie herself: opus, medium).
+4. **`machine.local.md`:** add rows `god-plan-back` and `god-plan-front` → `/workspace/codebases/<name>`, marked `— not cloned yet (Atom clones on branch atom)`.
+5. **`/workspace/codebases/ACTIVE.md` and `RULES.md`:** call-scribe is PAUSED for God Plan (its board, 2026-11-07).
+   - Take the 3 call-scribe rows out of ACTIVE. The clones stay on disk.
+   - In RULES, mark call-scribe's exception line "paused 2026-11-07".
+   - Add `god-plan-back` and `god-plan-front` (`— branch atom — not cloned yet — god-plan`). Two repos fit the rule, so no exception is needed.
+6. **`SYSTEM-FACTS.md`:** seed these, stamped `[operator 2026-11-07]`:
+   - **What it is:** the owner alone creates projects and tasks. Family and team members, who are real people, view progress and blockers and comment, like Trello or Jira. AI comes through the owner's gateway (the `llm-gateway` skill).
+   - **Open questions for the PM to ask the owner in REQ-001.** The desk never decides these:
+     - whether the AI writes tasks directly or proposes them for his approval (not agreed);
+     - how invited people sign in, and what each can see or do;
+     - his word on paid gateway use.
+   - **UNDECIDED — the owner's, asked by the PM; never filled in by the desk** (owner 2026-11-08 00:27: *"ยังไม่กำหนด Postgres หรือวิธีรัน dev server แทนฉัน"*): the back/front stack, the database (Postgres or not, which server), and how the dev server is run. Do **not** copy call-scribe's or corner-chat's choices in as facts. The workspace rule still holds: never install or start a local Postgres (`CLAUDE.md` rule 4). Env values come only from the owner.
+   - **Data:** invited people's names and comments are personal data, so tests use synthetic people only.
+   - **Git:**
+     - Use branch `atom` once it exists. Atom creates branches (owner ruling, 2026-11-06 13:36).
+     - Commit format is `<type>: <summary> (REQ, TASK)`, with author `develyst <develyst1@hotmail.com>`.
+     - Git runs only on the owner's three commands.
+7. **Hand the PM the requirement.** One line in the desk's PM inbox: `From Marie 2026-11-08: desk opened (ORDER 57). Owner's requirement: project-docs/requirements-from-owner-2026-11-07.md (verbatim) + project-docs/owner-facts-via-atom-2026-11-07.md (Atom's summary: AI breaks projects into tasks AND summarises progress/blockers; approval-before-AI-writes is only Atom's proposal, not agreed). Repos god-plan-back / god-plan-front (main only, not cloned). Stack, DB and dev-server method are undecided — ask the owner. Write REQ-001.` No nudge: no PM session exists yet.
+8. **Other desk files:**
+   - **`DECISIONS.md`:** mode **manual**, the team, the repos and the branch.
+   - **`board.md`:** Project info, plus one row: REQ-001 NOT WRITTEN, ball with the PM.
+   - **`checks.json`:** turn `log-rollover` on (90).
+   - **`README.md`:** add a `god-plan` row.
+9. **Prove it:**
+   - `check-harness` shows `god-plan current`.
+   - `check-hygiene god-plan` gives PASS.
+   - Write the Operations log line, then nudge "Atlas" with one line. Questions go to Atlas.
+
 ## Operations log (append one line per operation, newest first)
+
+- 2026-11-08 — ✅ **ORDER 57 DONE: desk `god-plan` (GP) open, one team; call-scribe out of ACTIVE. No git, no clone, no
+  session opened.** `install.mjs god-plan` → new desk, harness 2.6.14, exit 0. **Requirement COPIED** (original kept for
+  call-scribe): `cmp` equal, sha256 3c86c74f…aee48d both, 2240 B; `.gitkeep` copied; `owner-facts-via-atom-2026-11-07.md`
+  written (21:11, 21:17 and 00:27 quotes verbatim, repo URLs, Atom's summary in its own labelled section).
+  **Filled:** `TEAMS.md` (5 rows, `<Name>-GP`, no `-B`), `SEATS.md` (customer `skipped`: the invited people are users,
+  and their words reach the desk through the owner), `DECISIONS.md` (5 lines: mode, team, models, repos, branch),
+  `SYSTEM-FACTS.md` (what it is; the 4 open questions for REQ-001, including stack, DB and dev server, stated as
+  UNDECIDED and the owner's, with nothing copied from call-scribe or corner-chat; never a local Postgres; data; git),
+  `board.md` (Project info + REQ-001 NOT WRITTEN, ball PM), `checks.json` (`log-rollover` 90, no `ids.start` ⇒ IDs from
+  001), `PROTOCOL.md`, `FAILURES.md`, and every 🔧 and repo placeholder in `PM` `SA-Lead` `BE` `FE` `QA` (the BE has no
+  "own local database" until the owner names one). **Outside the desk:** `ACTIVE.md` (3 call-scribe rows and its
+  exception out, pause note, 2 god-plan rows), `RULES.md` (call-scribe line marked "paused 2026-11-07"),
+  `machine.local.md` +2 rows "not cloned yet", `README.md` +`god-plan` row. **PM inbox:** the order's line, read
+  back: exactly 1; no bell (no PM session yet, per the order). **Proof:** `check-harness` → `god-plan current` (only
+  smart-scheduler-atom behind, HELD); `check-hygiene god-plan` → **PASS**, exit 0; `new-id REQ` on a scratch copy →
+  `REQ-001`; no absolute path in the desk.
+  ⚠️ **Findings for Atlas, not acted on beyond what is noted:** (1) **ORDER 56's `README.md` `call-scribe` row was gone.**
+  The working tree matched HEAD; Atom's commits of 2026-11-07 (9fcb0f6, 0fba0c2, a665978) do not include README, so the
+  uncommitted edit was lost somewhere outside this session. I put the row back, marked paused 2026-11-07, next to the
+  god-plan row. `machine.local.md` kept its ORDER 56 rows. (2) **The I-Space clones (`blueprint-*`, `caw-*`) are no
+  longer in `/workspace/codebases/`**, but `machine.local.md` still points at them. Not touched.
 
 - 2026-11-02 — ✅ **ORDER 55 DONE.** Checked first: `harness.json` 2.6.14, and the rule-2 bullet "Only the PM asks
   the owner anything" in `CLAUDE.md`. `install.mjs` ×9, all exit 0, "none touched"; git shows only `.harness`.
