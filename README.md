@@ -61,7 +61,10 @@ sessions the Anthropic-bound desks cannot, keeps them fresh hourly, and wakes on
 maintainer — owns the Harness plugin layer and the Workforce Console that bridges the Claude desks
 and the DeepSeek seats; inventory in `PLUGINS.md`) and **Charlotte** (`CHARLOTTE.md`, trial —
 Atlas's challenger on DeepSeek: other options and objections before Atlas proposes; wakes on a
-`REQUEST-atlas-to-charlotte-*.md`, answers in `IDEAS-Charlotte-*.md`).
+`REQUEST-atlas-to-charlotte-*.md`, answers in `IDEAS-Charlotte-*.md`) and **Modio** (`MODIO.md`,
+`team-proposed` — AI engineer for local/open-weight models with two brains: Claude thinks and teaches,
+DeepSeek + scripts act; goal: cut the Claude plan $200 → $20 (or $100) and prove whether owning a GPU
+pays; log in `MODIO-LOG.md`, tooling in `llm-rent/`).
 
 ## How to run a work session (manual mode)
 

@@ -89,6 +89,24 @@ turn, or to look something up:
 > Leave the session open; her watcher wakes on a `REQUEST-atlas-to-charlotte-<date>-<topic>.md` at
 > the workspace root.
 
+## Modio — AI Engineer, Local Models (workspace-level, see MODIO.md · team-proposed)
+
+Brain (Claude):
+
+```
+อ่าน MODIO.md แล้ว MODIO-LOG.md
+```
+
+Hands (DeepSeek Harness):
+
+```
+You are Modio-hands. Read MODIO.md, section "Standby — Modio-hands", and stand by.
+```
+
+> Modio thinks, teaches and writes the runbook. Modio-hands runs it: rents and stops the GPU machine
+> under a $10/month cap, and holds the keys. Modio-hands wakes on a
+> `REQUEST-modio-to-modio-hands-<date>-<topic>.md` at the workspace root.
+
 ## Prox — Plugin Maintainer (workspace-level, see PROX.md)
 
 ```
